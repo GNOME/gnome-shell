@@ -69,6 +69,8 @@ struct _CoglRectangleMap
 
   unsigned int n_rectangles;
 
+  unsigned int space_remaining;
+
   GDestroyNotify value_destroy_func;
 
   /* Stack used for walking the structure. This is only used during
@@ -83,7 +85,7 @@ struct _CoglRectangleMapNode
 
   CoglRectangleMapEntry rectangle;
 
-  unsigned int space_remaining;
+  unsigned int largest_gap;
 
   CoglRectangleMapNode *parent;
 
@@ -136,11 +138,12 @@ _cogl_rectangle_map_new (unsigned int width,
   root->rectangle.y = 0;
   root->rectangle.width = width;
   root->rectangle.height = height;
-  root->space_remaining = width * height;
+  root->largest_gap = width * height;
 
   map->root = root;
   map->n_rectangles = 0;
   map->value_destroy_func = value_destroy_func;
+  map->space_remaining = width * height;
 
   map->stack = g_array_new (FALSE, FALSE, sizeof (CoglRectangleMapStackEntry));
 
@@ -198,8 +201,8 @@ _cogl_rectangle_map_node_split_horizontally (CoglRectangleMapNode *node,
   left_node->rectangle.y = node->rectangle.y;
   left_node->rectangle.width = left_width;
   left_node->rectangle.height = node->rectangle.height;
-  left_node->space_remaining = (left_node->rectangle.width *
-                                left_node->rectangle.height);
+  left_node->largest_gap = (left_node->rectangle.width *
+                            left_node->rectangle.height);
   node->d.branch.left = left_node;
 
   right_node = _cogl_rectangle_map_node_new ();
@@ -209,8 +212,8 @@ _cogl_rectangle_map_node_split_horizontally (CoglRectangleMapNode *node,
   right_node->rectangle.y = node->rectangle.y;
   right_node->rectangle.width = node->rectangle.width - left_width;
   right_node->rectangle.height = node->rectangle.height;
-  right_node->space_remaining = (right_node->rectangle.width *
-                                 right_node->rectangle.height);
+  right_node->largest_gap = (right_node->rectangle.width *
+                             right_node->rectangle.height);
   node->d.branch.right = right_node;
 
   node->type = COGL_RECTANGLE_MAP_BRANCH;
@@ -240,8 +243,8 @@ _cogl_rectangle_map_node_split_vertically (CoglRectangleMapNode *node,
   top_node->rectangle.y = node->rectangle.y;
   top_node->rectangle.width = node->rectangle.width;
   top_node->rectangle.height = top_height;
-  top_node->space_remaining = (top_node->rectangle.width *
-                               top_node->rectangle.height);
+  top_node->largest_gap = (top_node->rectangle.width *
+                           top_node->rectangle.height);
   node->d.branch.left = top_node;
 
   bottom_node = _cogl_rectangle_map_node_new ();
@@ -251,8 +254,8 @@ _cogl_rectangle_map_node_split_vertically (CoglRectangleMapNode *node,
   bottom_node->rectangle.y = node->rectangle.y + top_height;
   bottom_node->rectangle.width = node->rectangle.width;
   bottom_node->rectangle.height = node->rectangle.height - top_height;
-  bottom_node->space_remaining = (bottom_node->rectangle.width *
-                                  bottom_node->rectangle.height);
+  bottom_node->largest_gap = (bottom_node->rectangle.width *
+                              bottom_node->rectangle.height);
   node->d.branch.right = bottom_node;
 
   node->type = COGL_RECTANGLE_MAP_BRANCH;
@@ -266,8 +269,8 @@ static unsigned int
 _cogl_rectangle_map_verify_recursive (CoglRectangleMapNode *node)
 {
   /* This is just used for debugging the data structure. It
-     recursively walks the tree to verify that the remaining space
-     values all add up */
+     recursively walks the tree to verify that the largest gap values
+     all add up */
 
   switch (node->type)
     {
@@ -276,20 +279,48 @@ _cogl_rectangle_map_verify_recursive (CoglRectangleMapNode *node)
         int sum =
           _cogl_rectangle_map_verify_recursive (node->d.branch.left) +
           _cogl_rectangle_map_verify_recursive (node->d.branch.right);
-        g_assert (node->space_remaining ==
-                  node->d.branch.left->space_remaining +
-                  node->d.branch.right->space_remaining);
+        g_assert (node->largest_gap ==
+                  MAX (node->d.branch.left->largest_gap,
+                       node->d.branch.right->largest_gap));
         return sum;
       }
 
     case COGL_RECTANGLE_MAP_EMPTY_LEAF:
-      g_assert (node->space_remaining ==
+      g_assert (node->largest_gap ==
                 node->rectangle.width * node->rectangle.height);
       return 0;
 
     case COGL_RECTANGLE_MAP_FILLED_LEAF:
-      g_assert (node->space_remaining == 0);
+      g_assert (node->largest_gap == 0);
       return 1;
+    }
+
+  return 0;
+}
+
+static unsigned int
+_cogl_rectangle_map_get_space_remaining_recursive (CoglRectangleMapNode *node)
+{
+  /* This is just used for debugging the data structure. It
+     recursively walks the tree to verify that the remaining space
+     value adds up */
+
+  switch (node->type)
+    {
+    case COGL_RECTANGLE_MAP_BRANCH:
+      {
+        CoglRectangleMapNode *l = node->d.branch.left;
+        CoglRectangleMapNode *r = node->d.branch.right;
+
+        return (_cogl_rectangle_map_get_space_remaining_recursive (l) +
+                _cogl_rectangle_map_get_space_remaining_recursive (r));
+      }
+
+    case COGL_RECTANGLE_MAP_EMPTY_LEAF:
+      return node->rectangle.width * node->rectangle.height;
+
+    case COGL_RECTANGLE_MAP_FILLED_LEAF:
+      return 0;
     }
 
   return 0;
@@ -300,8 +331,11 @@ _cogl_rectangle_map_verify (CoglRectangleMap *map)
 {
   unsigned int actual_n_rectangles =
     _cogl_rectangle_map_verify_recursive (map->root);
+  unsigned int actual_space_remaining =
+    _cogl_rectangle_map_get_space_remaining_recursive (map->root);
 
   g_assert_cmpuint (actual_n_rectangles, ==, map->n_rectangles);
+  g_assert_cmpuint (actual_space_remaining, ==, map->space_remaining);
 }
 
 #endif /* COGL_ENABLE_DEBUG */
@@ -344,7 +378,7 @@ _cogl_rectangle_map_add (CoglRectangleMap *map,
          it */
       if (node->rectangle.width >= width &&
           node->rectangle.height >= height &&
-          node->space_remaining >= rectangle_size)
+          node->largest_gap >= rectangle_size)
         {
           if (node->type == COGL_RECTANGLE_MAP_EMPTY_LEAF)
             {
@@ -399,22 +433,25 @@ _cogl_rectangle_map_add (CoglRectangleMap *map,
 
       found_node->type = COGL_RECTANGLE_MAP_FILLED_LEAF;
       found_node->d.data = data;
-      found_node->space_remaining = 0;
+      found_node->largest_gap = 0;
       if (rectangle)
         *rectangle = found_node->rectangle;
 
-      /* Walk back up the tree and reduce the amount of space
-         remaining in each rectangle containing this node */
+      /* Walk back up the tree and update the stored largest gap for
+         the node's sub tree */
       for (node = found_node->parent; node; node = node->parent)
         {
           /* This node is a parent so it should always be a branch */
           g_assert (node->type == COGL_RECTANGLE_MAP_BRANCH);
 
-          node->space_remaining -= rectangle_size;
+          node->largest_gap = MAX (node->d.branch.left->largest_gap,
+                                   node->d.branch.right->largest_gap);
         }
 
       /* There is now an extra rectangle in the map */
       map->n_rectangles++;
+      /* and less space */
+      map->space_remaining -= rectangle_size;
 
 #ifdef COGL_ENABLE_DEBUG
       if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DUMP_ATLAS_IMAGE))
@@ -471,7 +508,7 @@ _cogl_rectangle_map_remove (CoglRectangleMap *map,
       if (map->value_destroy_func)
         map->value_destroy_func (node->d.data);
       node->type = COGL_RECTANGLE_MAP_EMPTY_LEAF;
-      node->space_remaining += rectangle_size;
+      node->largest_gap = rectangle_size;
 
       /* Walk back up the tree combining branch nodes that have two
          empty leaves back into a single empty leaf */
@@ -486,7 +523,9 @@ _cogl_rectangle_map_remove (CoglRectangleMap *map,
               _cogl_rectangle_map_node_free (node->d.branch.left);
               _cogl_rectangle_map_node_free (node->d.branch.right);
               node->type = COGL_RECTANGLE_MAP_EMPTY_LEAF;
-              node->space_remaining += rectangle_size;
+
+              node->largest_gap = (node->rectangle.width *
+                                   node->rectangle.height);
             }
           else
             break;
@@ -495,11 +534,14 @@ _cogl_rectangle_map_remove (CoglRectangleMap *map,
       /* Reduce the amount of space remaining in all of the parents
          further up the chain */
       for (; node; node = node->parent)
-        node->space_remaining += rectangle_size;
+        node->largest_gap = MAX (node->d.branch.left->largest_gap,
+                                 node->d.branch.right->largest_gap);
 
       /* There is now one less rectangle */
       g_assert (map->n_rectangles > 0);
       map->n_rectangles--;
+      /* and more space */
+      map->space_remaining += rectangle_size;
     }
 
 #ifdef COGL_ENABLE_DEBUG
@@ -528,7 +570,7 @@ _cogl_rectangle_map_get_height (CoglRectangleMap *map)
 unsigned int
 _cogl_rectangle_map_get_remaining_space (CoglRectangleMap *map)
 {
-  return map->root->space_remaining;
+  return map->space_remaining;
 }
 
 unsigned int
