@@ -259,12 +259,119 @@ cogl_program_get_uniform_location (CoglHandle  handle,
                                    const char *uniform_name);
 
 /**
+ * cogl_program_set_uniform_1f:
+ * @program: A #CoglHandle for a linked program
+ * @uniform_location: the uniform location retrieved from
+ *    cogl_program_get_uniform_location().
+ * @value: the new value of the uniform.
+ *
+ * Changes the value of a floating point uniform for the given linked
+ * @program.
+ *
+ * Since: 1.4
+ */
+void
+cogl_program_set_uniform_1f (CoglHandle program,
+                             int uniform_location,
+                             float value);
+
+/**
+ * cogl_program_set_uniform_1i:
+ * @program: A #CoglHandle for a linked program
+ * @uniform_location: the uniform location retrieved from
+ *    cogl_program_get_uniform_location().
+ * @value: the new value of the uniform.
+ *
+ * Changes the value of an integer uniform for the given linked
+ * @program.
+ *
+ * Since: 1.4
+ */
+void
+cogl_program_set_uniform_1i (CoglHandle program,
+                             int uniform_location,
+                             int value);
+
+/**
+ * cogl_program_set_uniform_float:
+ * @program: A #CoglHandle for a linked program
+ * @uniform_location: the uniform location retrieved from
+ *    cogl_program_get_uniform_location().
+ * @n_components: The number of components for the uniform. For
+ * example with glsl you'd use 3 for a vec3 or 4 for a vec4.
+ * @count: For uniform arrays this is the array length otherwise just
+ * pass 1
+ * @value: (array length=count): the new value of the uniform[s].
+ *
+ * Changes the value of a float vector uniform, or uniform array for
+ * the given linked @program.
+ *
+ * Since: 1.4
+ */
+void
+cogl_program_set_uniform_float (CoglHandle program,
+                                int uniform_location,
+                                int n_components,
+                                int count,
+                                const float *value);
+
+/**
+ * cogl_program_set_uniform_int:
+ * @program: A #CoglHandle for a linked program
+ * @uniform_location: the uniform location retrieved from
+ *    cogl_program_get_uniform_location().
+ * @n_components: The number of components for the uniform. For
+ * example with glsl you'd use 3 for a vec3 or 4 for a vec4.
+ * @count: For uniform arrays this is the array length otherwise just
+ * pass 1
+ * @value: (array length=count): the new value of the uniform[s].
+ *
+ * Changes the value of a int vector uniform, or uniform array for
+ * the given linked @program.
+ *
+ * Since: 1.4
+ */
+void
+cogl_program_set_uniform_int (CoglHandle program,
+                              int uniform_location,
+                              int n_components,
+                              int count,
+                              const int *value);
+
+/**
+ * cogl_program_set_uniform_matrix:
+ * @program: A #CoglHandle for a linked program
+ * @uniform_location: the uniform location retrieved from
+ *    cogl_program_get_uniform_location().
+ * @dimensions: The dimensions of the matrix. So for for example pass
+ *    2 for a 2x2 matrix or 3 for 3x3.
+ * @count: For uniform arrays this is the array length otherwise just
+ * pass 1
+ * @transpose: Whether to transpose the matrix when setting the uniform.
+ * @value: (array length=count): the new value of the uniform.
+ *
+ * Changes the value of a matrix uniform, or uniform array in the
+ * given linked @program.
+ *
+ * Since: 1.4
+ */
+void
+cogl_program_set_uniform_matrix (CoglHandle program,
+                                 int uniform_location,
+                                 int dimensions,
+                                 int count,
+                                 gboolean transpose,
+                                 const float *value);
+
+/**
  * cogl_program_uniform_1f:
- * @uniform_no: the unform to set.
+ * @uniform_no: the uniform to set.
  * @value: the new value of the uniform.
  *
  * Changes the value of a floating point uniform in the currently
  * used (see cogl_program_use()) shader program.
+ *
+ * Deprecated: 1.4: Use cogl_program_set_uniform_1f() instead.
  */
 void
 cogl_program_uniform_1f (int   uniform_no,
@@ -272,17 +379,19 @@ cogl_program_uniform_1f (int   uniform_no,
 
 /**
  * cogl_program_uniform_1i:
- * @uniform_no: the unform to set.
+ * @uniform_no: the uniform to set.
  * @value: the new value of the uniform.
  *
  * Changes the value of an integer uniform in the currently
  * used (see cogl_program_use()) shader program.
+ *
+ * Deprecated: 1.4: Use cogl_program_set_uniform_1i() instead.
  */
 void
 cogl_program_uniform_1i (int uniform_no,
                          int value);
 
- /**
+/**
  * cogl_program_uniform_float:
  * @uniform_no: the uniform to set.
  * @size: Size of float vector.
@@ -291,12 +400,14 @@ cogl_program_uniform_1i (int uniform_no,
  *
  * Changes the value of a float vector uniform, or uniform array in the
  * currently used (see cogl_program_use()) shader program.
+ *
+ * Deprecated: 1.4: Use cogl_program_set_uniform_float() instead.
  */
 void
 cogl_program_uniform_float (int            uniform_no,
                             int            size,
                             int            count,
-                            const GLfloat *value);
+                            const float   *value);
 
 /**
  * cogl_program_uniform_int:
