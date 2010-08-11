@@ -269,65 +269,77 @@ cogl_program_get_uniform_location (CoglHandle   handle,
 }
 
 void
-cogl_program_uniform_1f (int uniform_no,
-                         float  value)
+cogl_program_set_uniform_1f (CoglHandle handle,
+                             int uniform_location,
+                             float value)
 {
-  CoglProgram *program;
+  CoglProgram *program = handle;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  program = ctx->current_program;
-
-  g_return_if_fail (program != NULL);
-
+  g_return_if_fail (cogl_is_program (handle));
   g_return_if_fail (program->language != COGL_SHADER_LANGUAGE_ARBFP);
 
   _cogl_gl_use_program_wrapper (program);
 
-  GE (glUniform1f (uniform_no, value));
+  GE (glUniform1f (uniform_location, value));
 }
 
 void
-cogl_program_uniform_1i (int uniform_no,
-                         int    value)
+cogl_program_uniform_1f (int uniform_location,
+                         float value)
 {
-  CoglProgram *program;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  cogl_program_set_uniform_1f (ctx->current_program,
+                               uniform_location, value);
+}
+
+void
+cogl_program_set_uniform_1i (CoglHandle handle,
+                             int uniform_location,
+                             int value)
+{
+  CoglProgram *program = handle;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  program = ctx->current_program;
-
-  g_return_if_fail (program != NULL);
-
+  g_return_if_fail (cogl_is_program (handle));
   g_return_if_fail (program->language != COGL_SHADER_LANGUAGE_ARBFP);
 
   _cogl_gl_use_program_wrapper (program);
 
-  GE (glUniform1i (uniform_no, value));
+  GE (glUniform1i (uniform_location, value));
 }
 
 void
-cogl_program_uniform_float (int uniform_no,
-                            int size,
-                            int count,
-                            const GLfloat *value)
+cogl_program_uniform_1i (int uniform_location,
+                         int value)
 {
-  CoglProgram *program;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  cogl_program_set_uniform_1i (ctx->current_program, uniform_location, value);
+}
+
+void
+cogl_program_set_uniform_float (CoglHandle handle,
+                                int uniform_location,
+                                int n_components,
+                                int count,
+                                const float *value)
+{
+  CoglProgram *program = handle;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  program = ctx->current_program;
-
-  g_return_if_fail (program != NULL);
+  g_return_if_fail (cogl_is_program (handle));
 
   if (program->language == COGL_SHADER_LANGUAGE_ARBFP)
     {
-      unsigned int _index = uniform_no;
+      unsigned int _index = uniform_location;
       unsigned int index_end = _index + count;
       int i;
       int j;
 
-      g_return_if_fail (size == 4);
+      g_return_if_fail (n_components == 4);
 
       GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, program->gl_handle));
 
@@ -344,19 +356,19 @@ cogl_program_uniform_float (int uniform_no,
     {
       _cogl_gl_use_program_wrapper (program);
 
-      switch (size)
+      switch (n_components)
         {
         case 1:
-          GE (glUniform1fv (uniform_no, count, value));
+          GE (glUniform1fv (uniform_location, count, value));
           break;
         case 2:
-          GE (glUniform2fv (uniform_no, count, value));
+          GE (glUniform2fv (uniform_location, count, value));
           break;
         case 3:
-          GE (glUniform3fv (uniform_no, count, value));
+          GE (glUniform3fv (uniform_location, count, value));
           break;
         case 4:
-          GE (glUniform4fv (uniform_no, count, value));
+          GE (glUniform4fv (uniform_location, count, value));
           break;
         default:
           g_warning ("%s called with invalid size parameter", G_STRFUNC);
@@ -365,34 +377,45 @@ cogl_program_uniform_float (int uniform_no,
 }
 
 void
-cogl_program_uniform_int (int  uniform_no,
-                          int     size,
-                          int     count,
-                          const int *value)
+cogl_program_uniform_float (int uniform_location,
+                            int n_components,
+                            int count,
+                            const float *value)
 {
-  CoglProgram *program;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  cogl_program_set_uniform_float (ctx->current_program,
+                                  uniform_location,
+                                  n_components, count, value);
+}
+
+void
+cogl_program_set_uniform_int (CoglHandle handle,
+                              int uniform_location,
+                              int n_components,
+                              int count,
+                              const int *value)
+{
+  CoglProgram *program = handle;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  program = ctx->current_program;
-
-  g_return_if_fail (program != NULL);
+  g_return_if_fail (cogl_is_program (handle));
 
   _cogl_gl_use_program_wrapper (program);
 
-  switch (size)
+  switch (n_components)
     {
     case 1:
-      glUniform1iv (uniform_no, count, value);
+      glUniform1iv (uniform_location, count, value);
       break;
     case 2:
-      glUniform2iv (uniform_no, count, value);
+      glUniform2iv (uniform_location, count, value);
       break;
     case 3:
-      glUniform3iv (uniform_no, count, value);
+      glUniform3iv (uniform_location, count, value);
       break;
     case 4:
-      glUniform4iv (uniform_no, count, value);
+      glUniform4iv (uniform_location, count, value);
       break;
     default:
       g_warning ("%s called with invalid size parameter", G_STRFUNC);
@@ -400,38 +423,60 @@ cogl_program_uniform_int (int  uniform_no,
 }
 
 void
-cogl_program_uniform_matrix (int   uniform_no,
-                             int      size,
-                             int      count,
-                             gboolean  transpose,
-                             const GLfloat  *value)
+cogl_program_uniform_int (int uniform_location,
+                          int n_components,
+                          int count,
+                          const int *value)
 {
-  CoglProgram *program;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  cogl_program_set_uniform_int (ctx->current_program,
+                                uniform_location, n_components, count, value);
+}
+
+void
+cogl_program_set_uniform_matrix (CoglHandle handle,
+                                 int uniform_location,
+                                 int n_components,
+                                 int count,
+                                 gboolean transpose,
+                                 const float*value)
+{
+  CoglProgram *program = handle;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  program = ctx->current_program;
-
-  g_return_if_fail (program != NULL);
-
+  g_return_if_fail (cogl_is_program (handle));
   g_return_if_fail (program->language != COGL_SHADER_LANGUAGE_ARBFP);
 
   _cogl_gl_use_program_wrapper (program);
 
-  switch (size)
+  switch (n_components)
     {
     case 2 :
-      GE (glUniformMatrix2fv (uniform_no, count, transpose, value));
+      GE (glUniformMatrix2fv (uniform_location, count, transpose, value));
       break;
     case 3 :
-      GE (glUniformMatrix3fv (uniform_no, count, transpose, value));
+      GE (glUniformMatrix3fv (uniform_location, count, transpose, value));
       break;
     case 4 :
-      GE (glUniformMatrix4fv (uniform_no, count, transpose, value));
+      GE (glUniformMatrix4fv (uniform_location, count, transpose, value));
       break;
     default :
       g_warning ("%s called with invalid size parameter", G_STRFUNC);
     }
+}
+
+void
+cogl_program_uniform_matrix (int uniform_location,
+                             int dimensions,
+                             int count,
+                             gboolean  transpose,
+                             const float *value)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  cogl_program_set_uniform_matrix (ctx->current_program,
+                                   uniform_location, dimensions,
+                                   count, transpose, value);
 }
 
 CoglShaderLanguage
