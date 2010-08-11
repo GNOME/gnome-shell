@@ -441,8 +441,9 @@ _scroll_event_cb (ClutterActor *actor,
         of how to connect to scroll events, it doesn't do much to
         help with really implementing a scrollable actor. That's what
         we'll do in this section. The full code for the example we'll
-        walk through here is available <link linkend="">in this
-        later section</link>.</para>
+        walk through here is available
+        <link linkend="events-mouse-scroll-example">in this later
+        section</link>.</para>
       </section>
     </section>
 
