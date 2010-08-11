@@ -191,7 +191,7 @@ test_drag_main (int argc, char *argv[])
   clutter_actor_add_action (handle, action);
 
   clutter_actor_add_effect_with_name (handle, "disable", clutter_desaturate_effect_new (0.0));
-  clutter_actor_add_effect_with_name (handle, "curl", clutter_page_turn_effect_new (0.0, 135.0, 12.0));
+  clutter_actor_add_effect_with_name (handle, "curl", clutter_page_turn_effect_new (0.0, 45.0, 12.0));
 
   clutter_actor_show (stage);
 
