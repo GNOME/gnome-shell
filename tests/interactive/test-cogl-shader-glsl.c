@@ -234,24 +234,19 @@ set_shader_num (int new_no)
   cogl_handle_unref (shader);
   cogl_program_link (program);
 
-  /* Shesh this API is really F'ugly! */
-  cogl_program_use (program);
-
   uniform_no = cogl_program_get_uniform_location (program, "tex");
-  cogl_program_uniform_1i (uniform_no, 0);
+  cogl_program_set_uniform_1i (program, uniform_no, 0);
   uniform_no = cogl_program_get_uniform_location (program, "radius");
-  cogl_program_uniform_1f (uniform_no, 3.0);
+  cogl_program_set_uniform_1f (program, uniform_no, 3.0);
   uniform_no = cogl_program_get_uniform_location (program, "brightness");
-  cogl_program_uniform_1f (uniform_no, 0.4);
+  cogl_program_set_uniform_1f (program, uniform_no, 0.4);
   uniform_no = cogl_program_get_uniform_location (program, "contrast");
-  cogl_program_uniform_1f (uniform_no, -1.9);
+  cogl_program_set_uniform_1f (program, uniform_no, -1.9);
 
   uniform_no = cogl_program_get_uniform_location (program, "x_step");
-  cogl_program_uniform_1f (uniform_no, 1.0f / image_width);
+  cogl_program_set_uniform_1f (program, uniform_no, 1.0f / image_width);
   uniform_no = cogl_program_get_uniform_location (program, "y_step");
-  cogl_program_uniform_1f (uniform_no, 1.0f / image_height);
-
-  cogl_program_use (COGL_INVALID_HANDLE);
+  cogl_program_set_uniform_1f (program, uniform_no, 1.0f / image_height);
 
   cogl_material_set_user_program (material, program);
   cogl_handle_unref (program);

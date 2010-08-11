@@ -270,10 +270,7 @@ set_shader_num (int new_no)
   param0[3] = -1.9; /* contrast */
 
   uniform_no = cogl_program_get_uniform_location (program, "program.local[0]");
-  /* Shesh this API is really F'ugly! */
-  cogl_program_use (program);
-  cogl_program_uniform_float (uniform_no, 4, 1, param0);
-  cogl_program_use (COGL_INVALID_HANDLE);
+  cogl_program_set_uniform_float (program, uniform_no, 4, 1, param0);
 
   cogl_material_set_user_program (material, program);
   cogl_handle_unref (program);
