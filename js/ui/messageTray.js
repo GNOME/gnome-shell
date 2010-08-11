@@ -40,7 +40,6 @@ function _cleanMarkup(text) {
 }
 
 // Notification:
-// @id: the notification's id
 // @source: the notification's Source
 // @title: the title
 // @banner: the banner text
@@ -64,13 +63,12 @@ function _cleanMarkup(text) {
 // of the notification (as with addBody()) when the banner is expanded.
 // In this case, if @banner is too long to fit in the single-line mode,
 // the notification will be made expandable automatically.
-function Notification(id, source, title, banner, bannerBody) {
-    this._init(id, source, title, banner, bannerBody);
+function Notification(source, title, banner, bannerBody) {
+    this._init(source, title, banner, bannerBody);
 }
 
 Notification.prototype = {
-    _init: function(id, source, title, banner, bannerBody) {
-        this.id = id;
+    _init: function(source, title, banner, bannerBody) {
         this.source = source;
         this._bannerBody = bannerBody;
         this.urgent = false;
@@ -949,16 +947,10 @@ MessageTray.prototype = {
             this._notificationQueue.splice(index, 1);
     },
 
-    _getNotification: function(id, source) {
-        if (this._notification && this._notification.id == id)
-            return this._notification;
-
-        for (let i = 0; i < this._notificationQueue.length; i++) {
-            if (this._notificationQueue[i].id == id && this._notificationQueue[i].source == source)
-                return this._notificationQueue[i];
-        }
-
-        return null;
+    _hasNotification: function(notification) {
+        if (this._notification == notification)
+            return true;
+        return this._notificationQueue.indexOf(notification) != -1;
     },
 
     lock: function() {
@@ -977,7 +969,7 @@ MessageTray.prototype = {
         if (notification == this._summaryNotification)
             return;
 
-        if (this._getNotification(notification.id, source) == null) {
+        if (!this._hasNotification(notification)) {
             notification.connect('destroy',
                                  Lang.bind(this, this.removeNotification));
 

@@ -522,7 +522,7 @@ Source.prototype = {
             Main.messageTray.add(this);
 
         if (!this._notification)
-            this._notification = new Notification(this._targetId, this);
+            this._notification = new Notification(this);
     },
 
     _messageReceived: function(channel, id, timestamp, sender,
@@ -568,15 +568,15 @@ Source.prototype = {
     }
 };
 
-function Notification(id, source) {
-    this._init(id, source);
+function Notification(source) {
+    this._init(source);
 }
 
 Notification.prototype = {
     __proto__:  MessageTray.Notification.prototype,
 
-    _init: function(id, source) {
-        MessageTray.Notification.prototype._init.call(this, id, source, source.title);
+    _init: function(source) {
+        MessageTray.Notification.prototype._init.call(this, source, source.title);
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response' });
         this._responseEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));

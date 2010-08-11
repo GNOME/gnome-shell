@@ -207,11 +207,11 @@ NotificationDaemon.prototype = {
 
         if (notification == null) {
             id = nextNotificationId++;
-            notification = new MessageTray.Notification(id, source, summary, body, true);
+            notification = new MessageTray.Notification(source, summary, body, true);
             this._currentNotifications[id] = notification;
             notification.connect('dismissed', Lang.bind(this,
                 function(n) {
-                    this._emitNotificationClosed(n.id, NotificationClosedReason.DISMISSED);
+                    this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
                 }));
             notification.connect('destroy', Lang.bind(this,
                 function(n) {
