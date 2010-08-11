@@ -1,9 +1,3 @@
-/*
- * Scroll in the y axis by moving an enclosed box (with layout)
- * up and down inside a "letterbox" in the center of the stage
- *
- * gcc -g -O0 -DTESTS_DATA_DIR="\"/home/ell/dev/clutter_src/tests/data\"" -o events-mouse-scroll events-mouse-scroll.c `pkg-config --libs --cflags clutter-1.0 glib-2.0` -lm
- */
 #include <clutter/clutter.h>
 
 #define STAGE_HEIGHT 400
