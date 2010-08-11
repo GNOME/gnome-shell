@@ -359,8 +359,8 @@ clutter_stage_set_key_focus (stage, actor);
     <section>
       <title>Solution</title>
 
-      <para>Connect a callback handler to the scroll-event signal
-      for an actor.</para>
+      <para>Connect a callback handler to the <code>scroll-event</code>
+      signal of an actor.</para>
 
       <para>First, ensure that the actor is reactive (i.e. will
       respond to events):</para>
