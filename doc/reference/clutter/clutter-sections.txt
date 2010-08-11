@@ -303,6 +303,7 @@ ClutterAllocationFlags
 clutter_actor_allocate
 clutter_actor_allocate_preferred_size
 clutter_actor_allocate_available_size
+clutter_actor_allocate_align_fill
 clutter_actor_get_allocation_box
 clutter_actor_get_allocation_geometry
 clutter_actor_get_allocation_vertices
@@ -2065,6 +2066,53 @@ CLUTTER_BOX_LAYOUT_GET_CLASS
 <SUBSECTION Private>
 ClutterBoxLayoutPrivate
 clutter_box_layout_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-table-layout</FILE>
+ClutterTableAlignment
+ClutterTableLayout
+ClutterTableLayoutClass
+clutter_table_layout_new
+clutter_table_layout_set_row_spacing
+clutter_table_layout_get_row_spacing
+clutter_table_layout_set_column_spacing
+clutter_table_layout_get_column_spacing
+clutter_table_layout_get_row_count
+clutter_table_layout_get_column_count
+
+<SUBSECTION>
+clutter_table_layout_pack
+
+<SUBSECTION>
+clutter_table_layout_set_alignment
+clutter_table_layout_get_alignment
+clutter_table_layout_set_expand
+clutter_table_layout_get_expand
+clutter_table_layout_set_fill
+clutter_table_layout_get_fill
+clutter_table_layout_get_span
+clutter_table_layout_set_span
+
+<SUBSECTION>
+clutter_table_layout_set_use_animations
+clutter_table_layout_get_use_animations
+clutter_table_layout_set_easing_duration
+clutter_table_layout_get_easing_duration
+clutter_table_layout_set_easing_mode
+clutter_table_layout_get_easing_mode
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_TABLE_LAYOUT
+CLUTTER_TABLE_LAYOUT
+CLUTTER_TABLE_LAYOUT_CLASS
+CLUTTER_IS_TABLE_LAYOUT
+CLUTTER_IS_TABLE_LAYOUT_CLASS
+CLUTTER_TABLE_LAYOUT_GET_CLASS
+
+<SUBSECTION Private>
+ClutterTableLayoutPrivate
+clutter_table_layout_get_type
 </SECTION>
 
 <SECTION>

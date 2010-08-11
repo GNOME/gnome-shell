@@ -71,3 +71,4 @@
 /test-scrolling
 /test-bind
 /test-cogl-point-sprites
+/test-table-layout

@@ -95,6 +95,7 @@
 #include "clutter-stage-manager.h"
 #include "clutter-stage-window.h"
 #include "clutter-state.h"
+#include "clutter-table-layout.h"
 #include "clutter-texture.h"
 #include "clutter-text.h"
 #include "clutter-timeline.h"

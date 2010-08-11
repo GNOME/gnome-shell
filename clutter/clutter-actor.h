@@ -361,6 +361,13 @@ void                  clutter_actor_allocate_available_size   (ClutterActor     
                                                                gfloat                 available_width,
                                                                gfloat                 available_height,
                                                                ClutterAllocationFlags flags);
+void                  clutter_actor_allocate_align_fill       (ClutterActor          *self,
+                                                               const ClutterActorBox *box,
+                                                               gdouble                x_align,
+                                                               gdouble                y_align,
+                                                               gboolean               x_fill,
+                                                               gboolean               y_fill,
+                                                               ClutterAllocationFlags flags);
 void                  clutter_actor_get_allocation_box        (ClutterActor          *self,
                                                                ClutterActorBox       *box);
 void                  clutter_actor_get_allocation_geometry   (ClutterActor          *self,

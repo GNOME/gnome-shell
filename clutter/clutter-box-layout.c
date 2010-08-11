@@ -437,106 +437,22 @@ clutter_box_child_init (ClutterBoxChild *self)
   self->last_allocation = NULL;
 }
 
-static inline void
-allocate_fill (ClutterActor    *child,
-               ClutterActorBox *childbox,
-               ClutterBoxChild *box_child)
+static gdouble
+get_box_alignment_factor (ClutterBoxAlignment alignment)
 {
-  gfloat natural_width, natural_height;
-  gfloat min_width, min_height;
-  gfloat child_width, child_height;
-  gfloat available_width, available_height;
-  ClutterRequestMode request;
-  ClutterActorBox allocation = { 0, };
-  gdouble x_align, y_align;
-
-  if (box_child->x_align == CLUTTER_BOX_ALIGNMENT_START)
-    x_align = 0.0;
-  else if (box_child->x_align == CLUTTER_BOX_ALIGNMENT_CENTER)
-    x_align = 0.5;
-  else
-    x_align = 1.0;
-
-  if (box_child->y_align == CLUTTER_BOX_ALIGNMENT_START)
-    y_align = 0.0;
-  else if (box_child->y_align == CLUTTER_BOX_ALIGNMENT_CENTER)
-    y_align = 0.5;
-  else
-    y_align = 1.0;
-
-  available_width  = childbox->x2 - childbox->x1;
-  available_height = childbox->y2 - childbox->y1;
-
-  if (available_width < 0)
-    available_width = 0;
-
-  if (available_height < 0)
-    available_height = 0;
-
-  if (box_child->x_fill)
+  switch (alignment)
     {
-      allocation.x1 = childbox->x1;
-      allocation.x2 = ceilf (allocation.x1 + available_width);
+    case CLUTTER_BOX_ALIGNMENT_CENTER:
+      return 0.5;
+
+    case CLUTTER_BOX_ALIGNMENT_START:
+      return 0.0;
+
+    case CLUTTER_BOX_ALIGNMENT_END:
+      return 1.0;
     }
 
-  if (box_child->y_fill)
-    {
-      allocation.y1 = childbox->y1;
-      allocation.y2 = ceilf (allocation.y1 + available_height);
-    }
-
-  /* if we are filling horizontally and vertically then we're done */
-  if (box_child->x_fill && box_child->y_fill)
-    {
-      *childbox = allocation;
-      return;
-    }
-
-  request = clutter_actor_get_request_mode (child);
-  if (request == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
-    {
-      clutter_actor_get_preferred_width (child, available_height,
-                                         &min_width,
-                                         &natural_width);
-
-      child_width = CLAMP (natural_width, min_width, available_width);
-
-      clutter_actor_get_preferred_height (child, child_width,
-                                          &min_height,
-                                          &natural_height);
-
-      child_height = CLAMP (natural_height, min_height, available_height);
-    }
-  else
-    {
-      clutter_actor_get_preferred_height (child, available_width,
-                                          &min_height,
-                                          &natural_height);
-
-      child_height = CLAMP (natural_height, min_height, available_height);
-
-      clutter_actor_get_preferred_width (child, child_height,
-                                         &min_width,
-                                         &natural_width);
-
-      child_width = CLAMP (natural_width, min_width, available_width);
-    }
-
-  if (!box_child->x_fill)
-    {
-      allocation.x1 = ceilf (childbox->x1
-                    + ((available_width - child_width) * x_align));
-      allocation.x2 = ceilf (allocation.x1 + child_width);
-    }
-
-  if (!box_child->y_fill)
-    {
-      allocation.y1 = ceilf (childbox->y1
-                    + ((available_height - child_height) * y_align));
-      allocation.y2 = ceilf (allocation.y1 + child_height);
-    }
-
-  *childbox = allocation;
+  return 0.0;
 }
 
 static GType
@@ -784,7 +700,17 @@ allocate_box_child (ClutterBoxLayout       *self,
       child_box.y2 = floorf (avail_height + 0.5);
     }
 
-  allocate_fill (child, &child_box, box_child);
+  clutter_actor_allocate_align_fill (child, &child_box,
+                                     get_box_alignment_factor (box_child->x_align),
+                                     get_box_alignment_factor (box_child->y_align),
+                                     box_child->x_fill,
+                                     box_child->y_fill,
+                                     flags);
+
+  /* retrieve the allocation computed and set by allocate_align_fill();
+   * since we call this *after* allocate(), it's just a cheap copy
+   */
+  clutter_actor_get_allocation_box (child, &child_box);
 
   if (priv->use_animations && priv->is_animating)
     {
