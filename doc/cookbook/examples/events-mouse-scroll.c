@@ -1,6 +1,6 @@
 #include <clutter/clutter.h>
 
-#define STAGE_HEIGHT 400
+#define STAGE_HEIGHT 300
 #define STAGE_WIDTH STAGE_HEIGHT
 #define SCROLL_AMOUNT STAGE_HEIGHT * 0.125
 
