@@ -27,6 +27,9 @@ _scroll_event_cb (ClutterActor *scroll,
     case CLUTTER_SCROLL_DOWN:
       y += SCROLL_AMOUNT;
       break;
+    case CLUTTER_SCROLL_LEFT:
+    case CLUTTER_SCROLL_RIGHT:
+      break;
     }
 
   y = CLAMP (y,
