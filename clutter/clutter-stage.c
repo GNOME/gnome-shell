@@ -134,7 +134,7 @@ enum
   PROP_CURSOR_VISIBLE,
   PROP_PERSPECTIVE,
   PROP_TITLE,
-  PROP_USER_RESIZE,
+  PROP_USER_RESIZABLE,
   PROP_USE_FOG,
   PROP_FOG,
   PROP_USE_ALPHA,
@@ -828,7 +828,7 @@ clutter_stage_set_property (GObject      *object,
       clutter_stage_set_title (stage, g_value_get_string (value));
       break;
 
-    case PROP_USER_RESIZE:
+    case PROP_USER_RESIZABLE:
       clutter_stage_set_user_resizable (stage, g_value_get_boolean (value));
       break;
 
@@ -892,7 +892,7 @@ clutter_stage_get_property (GObject    *gobject,
       g_value_set_string (value, priv->title);
       break;
 
-    case PROP_USER_RESIZE:
+    case PROP_USER_RESIZABLE:
       g_value_set_boolean (value, priv->is_user_resizable);
       break;
 
@@ -1068,7 +1068,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
-                                   PROP_USER_RESIZE,
+                                   PROP_USER_RESIZABLE,
                                    pspec);
   /**
    * ClutterStage:color:
