@@ -654,6 +654,17 @@ g_signal_connect (viewport,
 
         </orderedlist>
 
+        <para>Here's a video of the result:</para>
+
+        <inlinemediaobject>
+          <videoobject>
+            <videodata fileref="videos/events-mouse-scroll.ogv"/>
+          </videoobject>
+          <alt>
+            <para>Video showing a scrollable actor</para>
+          </alt>
+        </inlinemediaobject>
+
       </section>
     </section>
 
