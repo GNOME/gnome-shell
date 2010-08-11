@@ -50,6 +50,7 @@ _scroll_event_cb (ClutterActor *viewport,
              viewport_height - scrollable_height,
              0.0);
 
+  /* animate the change to the scrollable's y coordinate */
   clutter_actor_animate (scrollable,
                          CLUTTER_EASE_OUT_CUBIC,
                          300,
