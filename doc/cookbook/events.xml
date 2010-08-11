@@ -1,7 +1,7 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 
-<chapter id="events">
+<chapter id="events" xmlns:xi="http://www.w3.org/2003/XInclude">
   <title>Events</title>
 
   <epigraph>
