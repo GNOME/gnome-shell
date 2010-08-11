@@ -4,14 +4,19 @@
 #define STAGE_WIDTH STAGE_HEIGHT
 #define SCROLL_AMOUNT STAGE_HEIGHT * 0.125
 
-static const ClutterColor stage_color = { 0x33, 0x33, 0x55, 0xff };
-
 static gboolean
 _scroll_event_cb (ClutterActor *viewport,
                   ClutterEvent *event,
                   gpointer      user_data)
 {
   ClutterActor *scrollable = CLUTTER_ACTOR (user_data);
+
+  gfloat viewport_height = clutter_actor_get_height (viewport);
+  gfloat scrollable_height = clutter_actor_get_height (scrollable);
+
+  /* no need to scroll if the scrollable is shorter than the viewport */
+  if (scrollable_height < viewport_height)
+    return TRUE;
 
   gfloat y = clutter_actor_get_y (scrollable);
 
@@ -26,14 +31,23 @@ _scroll_event_cb (ClutterActor *viewport,
     case CLUTTER_SCROLL_DOWN:
       y += SCROLL_AMOUNT;
       break;
+
+    /* we're only interested in up and down */
     case CLUTTER_SCROLL_LEFT:
     case CLUTTER_SCROLL_RIGHT:
       break;
     }
 
+  /*
+   * the CLAMP macro returns a value for the first argument
+   * that falls within the range specified by the second and
+   * third arguments
+   *
+   * we allow the scrollable's y position to be decremented to the point
+   * where its base is aligned with the base of the viewport
+   */
   y = CLAMP (y,
-             clutter_actor_get_height (viewport)
-             - clutter_actor_get_height (scrollable),
+             viewport_height - scrollable_height,
              0.0);
 
   clutter_actor_animate (scrollable,
@@ -48,6 +62,13 @@ _scroll_event_cb (ClutterActor *viewport,
 int
 main (int argc, char *argv[])
 {
+  gchar *image_file_path = TESTS_DATA_DIR "/redhand.png";
+
+  if (argc > 1)
+    {
+      image_file_path = argv[1];
+    }
+
   ClutterActor *stage;
   ClutterActor *viewport;
   ClutterActor *texture;
@@ -56,8 +77,6 @@ main (int argc, char *argv[])
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, STAGE_WIDTH, STAGE_HEIGHT);
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   /* the scrollable actor */
   texture = clutter_texture_new ();
@@ -69,7 +88,7 @@ main (int argc, char *argv[])
   clutter_actor_set_height (texture, STAGE_HEIGHT);
 
   clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
-                                 TESTS_DATA_DIR "/redhand.png",
+                                 image_file_path,
                                  NULL);
 
   /* the viewport which the box is scrolled within */
