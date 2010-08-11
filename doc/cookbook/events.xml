@@ -345,4 +345,119 @@ clutter_stage_set_key_focus (stage, actor);
     </section>
 
   </section>
+
+  <section id="events-mouse-scroll">
+    <title>Detecting mouse wheel scrolling on an actor</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to detect when the mouse wheel is scrolled on an
+      actor.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Connect a callback handler to the scroll-event signal
+      for an actor.</para>
+
+      <para>First, ensure that the actor is reactive (i.e. will
+      respond to events):</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+clutter_actor_set_reactive (actor, TRUE);
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>Next, connect a callback handler to the
+      <code>scroll-event</code> signal of the actor:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+g_signal_connect (actor,
+                  "scroll-event",
+                  G_CALLBACK (_scroll_event_cb),
+                  NULL);
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>Finally, create a callback handler to examine the scroll
+      event and respond to it:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+static gboolean
+_scroll_event_cb (ClutterActor *actor,
+                  ClutterEvent *event,
+                  gpointer      user_data)
+{
+  /* determine the direction the mouse wheel was scrolled */
+  ClutterScrollDirection direction;
+  direction = clutter_event_get_scroll_direction (event);
+
+  /* replace these stubs with real code to move the actor etc. */
+  switch (direction)
+    {
+    case CLUTTER_SCROLL_UP:
+      g_debug ("Scrolled up");
+      break;
+    case CLUTTER_SCROLL_DOWN:
+      g_debug ("Scrolled down");
+      break;
+    case CLUTTER_SCROLL_RIGHT:
+      g_debug ("Scrolled right");
+      break;
+    case CLUTTER_SCROLL_LEFT:
+      g_debug ("Scrolled left");
+      break;
+    }
+
+  return TRUE; /* event has been handled */
+}
+]]>
+        </programlisting>
+      </informalexample>
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>A standard mouse wheel will only return up and
+      down movements; but in cases where the mouse has left and
+      right scrolling (e.g. a trackball mouse), left and right scroll
+      events may also be emitted.</para>
+
+      <section>
+        <title>Creating a full scrollable actor</title>
+
+        <para>While the simple outline above explains the basics
+        of how to connect to scroll events, it doesn't do much to
+        help with really implementing a scrollable actor. That's what
+        we'll do in this section. The full code for the example we'll
+        walk through here is available <link linkend="">in this
+        later section</link>.</para>
+      </section>
+    </section>
+
+    <section>
+      <title>Full example</title>
+
+      <example id="events-mouse-scroll-example">
+        <title>Mouse scrolling over <type>ClutterActor</type></title>
+        <programlisting>
+<xi:include href="examples/events-mouse-scroll.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+    </section>
+
+  </section>
 </chapter>
