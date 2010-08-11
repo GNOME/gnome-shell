@@ -30,10 +30,6 @@
  * #ClutterBlurEffect is a sub-class of #ClutterEffect that allows blurring a
  * actor and its contents.
  *
- * #ClutterBlurEffect uses the programmable pipeline of the GPU and an
- * offscreen buffer, so it is only available on graphics hardware that supports
- * these two features.
- *
  * #ClutterBlurEffect is available since Clutter 1.4
  */
 
@@ -50,8 +46,8 @@
 #include "cogl/cogl.h"
 
 #include "clutter-debug.h"
+#include "clutter-offscreen-effect.h"
 #include "clutter-private.h"
-#include "clutter-shader-effect.h"
 
 typedef struct _ClutterBlurEffectClass  ClutterBlurEffectClass;
 
@@ -85,7 +81,7 @@ static const gchar *box_blur_glsl_shader =
 
 struct _ClutterBlurEffect
 {
-  ClutterShaderEffect parent_instance;
+  ClutterOffscreenEffect parent_instance;
 
   /* a back pointer to our actor, so that we can query it */
   ClutterActor *actor;
@@ -95,21 +91,25 @@ struct _ClutterBlurEffect
    */
   gfloat x_step;
   gfloat y_step;
+
+  CoglHandle shader;
+  CoglHandle program;
+
+  gint tex_uniform;
+  gint x_step_uniform;
+  gint y_step_uniform;
+
+  guint is_compiled : 1;
 };
 
 struct _ClutterBlurEffectClass
 {
-  ClutterShaderEffectClass parent_class;
-};
-
-enum
-{
-  PROP_0
+  ClutterOffscreenEffectClass parent_class;
 };
 
 G_DEFINE_TYPE (ClutterBlurEffect,
                clutter_blur_effect,
-               CLUTTER_TYPE_SHADER_EFFECT);
+               CLUTTER_TYPE_OFFSCREEN_EFFECT);
 
 static int
 next_p2 (int a)
@@ -126,7 +126,6 @@ static gboolean
 clutter_blur_effect_pre_paint (ClutterEffect *effect)
 {
   ClutterBlurEffect *self = CLUTTER_BLUR_EFFECT (effect);
-  ClutterShaderEffect *shader_effect;
   ClutterEffectClass *parent_class;
   ClutterActorBox allocation;
   gfloat width, height;
@@ -144,59 +143,107 @@ clutter_blur_effect_pre_paint (ClutterEffect *effect)
   self->x_step = 1.0f / (float) next_p2 (width);
   self->y_step = 1.0f / (float) next_p2 (height);
 
-  shader_effect = CLUTTER_SHADER_EFFECT (effect);
+  if (self->shader == COGL_INVALID_HANDLE)
+    {
+      self->shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
+      cogl_shader_source (self->shader, box_blur_glsl_shader);
 
-  clutter_shader_effect_set_shader_source (shader_effect, box_blur_glsl_shader);
+      self->is_compiled = FALSE;
+      self->tex_uniform = -1;
+      self->x_step_uniform = -1;
+      self->y_step_uniform = -1;
+    }
 
-  clutter_shader_effect_set_uniform (shader_effect,
-                                     "tex",
-                                     G_TYPE_INT, 1,
-                                     0);
-  clutter_shader_effect_set_uniform (shader_effect,
-                                     "x_step",
-                                     G_TYPE_FLOAT, 1,
-                                     self->x_step);
-  clutter_shader_effect_set_uniform (shader_effect,
-                                     "y_step",
-                                     G_TYPE_FLOAT, 1,
-                                     self->y_step);
+  if (self->program == COGL_INVALID_HANDLE)
+    self->program = cogl_create_program ();
+
+  if (!self->is_compiled)
+    {
+      g_assert (self->shader != COGL_INVALID_HANDLE);
+      g_assert (self->program != COGL_INVALID_HANDLE);
+
+      cogl_shader_compile (self->shader);
+      if (!cogl_shader_is_compiled (self->shader))
+        {
+          gchar *log_buf = cogl_shader_get_info_log (self->shader);
+
+          g_warning (G_STRLOC ": Unable to compile the box blur shader: %s",
+                     log_buf);
+          g_free (log_buf);
+
+          cogl_handle_unref (self->shader);
+          cogl_handle_unref (self->program);
+
+          self->shader = COGL_INVALID_HANDLE;
+          self->program = COGL_INVALID_HANDLE;
+        }
+      else
+        {
+          cogl_program_attach_shader (self->program, self->shader);
+          cogl_program_link (self->program);
+
+          cogl_handle_unref (self->shader);
+
+          self->is_compiled = TRUE;
+
+          self->tex_uniform =
+            cogl_program_get_uniform_location (self->program, "tex");
+          self->x_step_uniform =
+            cogl_program_get_uniform_location (self->program, "x_step");
+          self->y_step_uniform =
+            cogl_program_get_uniform_location (self->program, "y_step");
+        }
+    }
 
   parent_class = CLUTTER_EFFECT_CLASS (clutter_blur_effect_parent_class);
   return parent_class->pre_paint (effect);
 }
 
 static void
-clutter_blur_effect_finalize (GObject *gobject)
+clutter_blur_effect_paint_target (ClutterOffscreenEffect *effect)
 {
-  G_OBJECT_CLASS (clutter_blur_effect_parent_class)->finalize (gobject);
+  ClutterBlurEffect *self = CLUTTER_BLUR_EFFECT (effect);
+  ClutterOffscreenEffectClass *parent;
+  CoglHandle material;
+
+  if (self->program == COGL_INVALID_HANDLE)
+    goto out;
+
+  cogl_program_use (self->program);
+
+  if (self->tex_uniform > -1)
+    cogl_program_uniform_1i (self->tex_uniform, 0);
+
+  if (self->x_step_uniform > -1)
+    cogl_program_uniform_1f (self->x_step_uniform, self->x_step);
+
+  if (self->y_step_uniform > -1)
+    cogl_program_uniform_1f (self->y_step_uniform, self->y_step);
+
+  cogl_program_use (COGL_INVALID_HANDLE);
+
+  material = clutter_offscreen_effect_get_target (effect);
+  cogl_material_set_user_program (material, self->program);
+
+out:
+  parent = CLUTTER_OFFSCREEN_EFFECT_CLASS (clutter_blur_effect_parent_class);
+  parent->paint_target (effect);
 }
 
 static void
-clutter_blur_effect_set_property (GObject      *gobject,
-                                  guint         prop_id,
-                                  const GValue *value,
-                                  GParamSpec   *pspec)
+clutter_blur_effect_dispose (GObject *gobject)
 {
-  switch (prop_id)
-    {
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
-    }
-}
+  ClutterBlurEffect *self = CLUTTER_BLUR_EFFECT (gobject);
 
-static void
-clutter_blur_effect_get_property (GObject    *gobject,
-                                  guint       prop_id,
-                                  GValue     *value,
-                                  GParamSpec *pspec)
-{
-  switch (prop_id)
+  if (self->program != COGL_INVALID_HANDLE)
     {
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
+      cogl_handle_unref (self->program);
+
+      self->program = COGL_INVALID_HANDLE;
+      self->shader = COGL_INVALID_HANDLE;
     }
+
+  G_OBJECT_CLASS (clutter_blur_effect_parent_class)->dispose (gobject);
 }
 
 static void
@@ -204,12 +251,14 @@ clutter_blur_effect_class_init (ClutterBlurEffectClass *klass)
 {
   ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterOffscreenEffectClass *offscreen_class;
+
+  gobject_class->dispose = clutter_blur_effect_dispose;
 
   effect_class->pre_paint = clutter_blur_effect_pre_paint;
 
-  gobject_class->set_property = clutter_blur_effect_set_property;
-  gobject_class->get_property = clutter_blur_effect_get_property;
-  gobject_class->finalize = clutter_blur_effect_finalize;
+  offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
+  offscreen_class->paint_target = clutter_blur_effect_paint_target;
 }
 
 static void
