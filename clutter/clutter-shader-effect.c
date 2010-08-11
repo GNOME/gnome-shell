@@ -156,21 +156,20 @@ G_DEFINE_ABSTRACT_TYPE (ClutterShaderEffect,
                         CLUTTER_TYPE_OFFSCREEN_EFFECT);
 
 static inline void
-clutter_shader_effect_clear (ClutterShaderEffect *effect,
+clutter_shader_effect_clear (ClutterShaderEffect *self,
                              gboolean             reset_uniforms)
 {
-  ClutterShaderEffectPrivate *priv = effect->priv;
+  ClutterShaderEffectPrivate *priv = self->priv;
 
-  if (priv->shader != COGL_INVALID_HANDLE)
-    {
-      cogl_handle_unref (priv->shader);
-      priv->shader = COGL_INVALID_HANDLE;
-    }
+  if (priv->shader != COGL_INVALID_HANDLE && !priv->is_compiled)
+    cogl_handle_unref (priv->shader);
 
   if (priv->program != COGL_INVALID_HANDLE)
     {
       cogl_handle_unref (priv->program);
+
       priv->program = COGL_INVALID_HANDLE;
+      priv->shader = COGL_INVALID_HANDLE;
     }
 
   if (reset_uniforms && priv->uniforms != NULL)
@@ -214,6 +213,11 @@ clutter_shader_effect_update_uniforms (ClutterShaderEffect *effect)
 
   if (priv->uniforms == NULL)
     return;
+
+  /* XXX - we need to do this dance here because the cogl_program_uniform*
+   * family of functions do not take the program as a parameter
+   */
+  cogl_program_use (priv->program);
 
   key = value = NULL;
   g_hash_table_iter_init (&iter, priv->uniforms);
@@ -263,6 +267,8 @@ clutter_shader_effect_update_uniforms (ClutterShaderEffect *effect)
                    g_type_name (G_VALUE_TYPE (&uniform->value)),
                    uniform->name);
     }
+
+  cogl_program_use (COGL_INVALID_HANDLE);
 }
 
 static void
@@ -324,16 +330,17 @@ clutter_shader_effect_paint_target (ClutterOffscreenEffect *effect)
 {
   ClutterShaderEffectPrivate *priv = CLUTTER_SHADER_EFFECT (effect)->priv;
   ClutterOffscreenEffectClass *parent;
+  CoglHandle material;
 
   /* we haven't been prepared or we don't have support for
    * GLSL shaders in Clutter
    */
   if (priv->program == COGL_INVALID_HANDLE ||
       priv->shader == COGL_INVALID_HANDLE)
-    return;
+    goto out;
 
   if (!priv->source_set)
-    return;
+    goto out;
 
   if (!priv->is_compiled)
     {
@@ -353,10 +360,12 @@ clutter_shader_effect_paint_target (ClutterOffscreenEffect *effect)
           cogl_handle_unref (priv->program);
           priv->shader = COGL_INVALID_HANDLE;
 
-          return;
+          goto out;
         }
 
       cogl_program_attach_shader (priv->program, priv->shader);
+      cogl_handle_unref (priv->shader);
+
       cogl_program_link (priv->program);
 
       priv->is_compiled = TRUE;
@@ -365,17 +374,17 @@ clutter_shader_effect_paint_target (ClutterOffscreenEffect *effect)
   CLUTTER_NOTE (SHADER, "Applying the shader effect of type '%s'",
                 G_OBJECT_TYPE_NAME (effect));
 
-  /* set the shader */
-  cogl_program_use (priv->program);
-
   clutter_shader_effect_update_uniforms (CLUTTER_SHADER_EFFECT (effect));
 
+  /* associate the program to the offscreen target material */
+  material = clutter_offscreen_effect_get_target (effect);
+  cogl_material_set_user_program (material, priv->program);
+
+out:
   /* paint the offscreen buffer */
   parent = CLUTTER_OFFSCREEN_EFFECT_CLASS (clutter_shader_effect_parent_class);
   parent->paint_target (effect);
 
-  /* unset the shader */
-  cogl_program_use (COGL_INVALID_HANDLE);
 }
 
 static void
