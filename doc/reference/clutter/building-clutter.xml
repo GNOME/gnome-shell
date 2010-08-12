@@ -47,13 +47,14 @@
         <varlistentry>
           <term>Backend Windowing System Library</term>
           <listitem>
-            <para>GLX, EGL (1.1), SDL, Cocoa (OS X) and WGL (Windows)</para>
+            <para>GLX, EGL (1.1), Cocoa (OS X) and WGL (Windows)</para>
           </listitem>
         </varlistentry>
         <varlistentry>
           <term>Graphics Rendering </term>
           <listitem>
-            <para>Open GL (1.4+) or Open GL ES (1.1 or 2.0) </para>
+            <para>Open GL (1.3+ or 1.2 with multitexturing support) or
+                  Open GL ES (1.1 or 2.0)</para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -140,7 +141,7 @@
               </varlistentry>
 
               <varlistentry>
-                <term>--with-flavour=[glx/eglx/eglnative/sdl/win32/osx/fruity]</term>
+                <term>--with-flavour=[glx/eglx/eglnative/win32/osx/fruity]</term>
                 <listitem>
                   <para>Select the Clutter backend; default=glx.
                   </para>
@@ -203,37 +204,14 @@
         <title>Windows</title>
           <para>
             The recommended way of building Clutter for Windows is using the
-            <ulink type="http" url="http://www.mingw.org/">mingw</ulink> tool
-            chain. One option is to cross-compile Clutter under Linux -- you
-            can use the script found in the <filename>build/mingw/</filename>
-            directory to simplify the process (the script takes care of setting
-            up the necessary dependencies).
+            <ulink type="http"
+            url="http://www.mingw.org/">mingw</ulink> tool chain. This
+            will work either by cross compiling from a Linux
+            installation or directly on Windows using MSYS. See
+            the <ulink type="http" url=
+            "http://wiki.clutter-project.org/wiki/BuildingClutterOnWindows">
+            wiki</ulink> for more information.
           </para>
-
-          <para>
-            If you wish to build Clutter using mingw direcly under Windows, you
-            can do so the normal *nix way (described above) using the mingw
-            POSIX shell. Should you prefer to use Microsoft Visual Studio, a
-            project file for MSVC 2005 is located in the
-            <filename>build/msvc_2k5/</filename> directory. In either case, you
-            will need to first install the required dependencies.
-            </para>
-            <para>
-            There are currently two backends that are supported on
-            Windows. One uses the Win32 and WGL APIs directly and the
-            other is built on top of SDL. You must choose one of the
-            backends when running the configure script using the
-            following argument:
-            <variablelist>
-              <varlistentry>
-                <term>--with-flavour=[win32/sdl]</term>
-                <listitem>
-                  <para>Select the Clutter backend; default=glx.
-                  </para>
-                </listitem>
-              </varlistentry>
-            </variablelist>
-            </para>
       </section>
 
       <section id='building-osx'>
