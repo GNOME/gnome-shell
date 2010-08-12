@@ -341,7 +341,9 @@ if HAVE_INTROSPECTION
 # comments for COGL are in the headers, so we don't need the source files.
 
 Clutter-@CLUTTER_API_VERSION@.gir: Makefile $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
-	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
+	$(QUIET_SCAN)$(INTROSPECTION_SCANNER) \
+		$(INTROSPECTION_SCANNER_ARGS) \
+		--quiet \
 		--namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
 		$(AM_CPPFLAGS) \
@@ -390,7 +392,9 @@ BUILT_GIRSOURCES += Cogl-@CLUTTER_API_VERSION@.gir
 # we cannot build Cally.gir under cally/ and then do the shlib trick we do
 # for Cogl and ClutterJson.
 Cally-@CLUTTER_API_VERSION@.gir: Makefile $(INTROSPECTION_SCANNER) Clutter-@CLUTTER_API_VERSION@.gir
-	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
+	$(QUIET_SCAN)$(INTROSPECTION_SCANNER) \
+		$(INTROSPECTION_SCANNER_ARGS) \
+		--quiet \
 		--namespace Cally --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
 		$(AM_CPPFLAGS) \
@@ -423,12 +427,12 @@ typelibsdir = $(libdir)/girepository-1.0/
 typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 
 %.typelib: %.gir $(INTROSPECTION_COMPILER)
-	$(QUIET_GEN) \
+	$(QUIET_COMP) \
 	LD_LIBRARY_PATH=.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH} \
 	$(INTROSPECTION_COMPILER) \
 		--includedir=$(srcdir) \
 		--includedir=. \
-		$(INTROSPECTION_COMPILER_OPTS) $< -o $(@F)
+		$(INTROSPECTION_COMPILER_ARGS) $< -o $(@F)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
 endif # HAVE_INTROSPECTION
