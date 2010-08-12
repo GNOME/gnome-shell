@@ -1,0 +1,19 @@
+# -*- mode: python -*-
+
+# The username for repositories can be overridden.
+#
+#repos["git.gnome.org"] = "ssh://<username>@git.gnome.org/git/"
+#repos["git.clutter-project.org"] = "ssh://git@git.clutter-project.org/"
+
+# Directory where to check sources out
+#
+#checkoutroot = '/opt/clutter/source'
+
+# Directory where to install
+#
+#prefix = '/opt/clutter/install'
+
+# Work around http://bugzilla.gnome.org/show_bug.cgi?id=571240 if
+# your 'install' program is somewhere other than /usr/bin/install
+# (affects: Arch Linux)
+#installprog = 'bin/install'
