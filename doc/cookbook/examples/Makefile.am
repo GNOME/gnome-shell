@@ -11,6 +11,8 @@ noinst_PROGRAMS = \
 	layouts-stacking \
 	layouts-stacking-diff-sized-actors	\
 	events-mouse-scroll \
+	textures-crossfade	\
+	textures-crossfade-cogl	\
 	$(NULL)
 
 INCLUDES = \
@@ -40,5 +42,7 @@ textures_sub_texture_SOURCES               = textures-sub-texture.c
 layouts_stacking_SOURCES                   = layouts-stacking.c
 layouts_stacking_diff_sized_actors_SOURCES = layouts-stacking-diff-sized-actors.c
 events_mouse_scroll_SOURCES                = events-mouse-scroll.c
+textures_crossfade_SOURCES                 = textures-crossfade.c
+textures_crossfade_cogl_SOURCES            = textures-crossfade-cogl.c
 
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore
