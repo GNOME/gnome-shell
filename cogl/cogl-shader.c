@@ -195,14 +195,16 @@ cogl_shader_get_info_log (CoglHandle handle)
 
   shader = _cogl_shader_pointer_from_handle (handle);
 
+#ifdef HAVE_COGL_GL
   if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
     {
       /* ARBfp exposes a program error string, but since cogl_program
        * doesn't have any API to query an error log it is not currently
        * exposed. */
-      return "";
+      return g_strdup ("");
     }
   else
+#endif
     {
       char buffer[512];
       int len = 0;
