@@ -46,7 +46,6 @@
 /test-stage-read-pixels
 /test-clip
 /test-layout
-/test-random-text
 /test-texture-async
 /test-texture-quality
 /test-paint-wrapper
