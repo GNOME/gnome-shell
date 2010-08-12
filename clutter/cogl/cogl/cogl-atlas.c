@@ -34,6 +34,7 @@
 #include "cogl-context.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-2d-private.h"
+#include "cogl-texture-driver.h"
 #include "cogl-material-opengl-private.h"
 #include "cogl-debug.h"
 
@@ -315,23 +316,26 @@ _cogl_atlas_get_next_size (unsigned int *map_width,
 }
 
 static CoglRectangleMap *
-_cogl_atlas_create_map (unsigned int             map_width,
+_cogl_atlas_create_map (CoglPixelFormat          format,
+                        unsigned int             map_width,
                         unsigned int             map_height,
                         unsigned int             n_textures,
                         CoglAtlasRepositionData *textures)
 {
-  GLint max_texture_size = 1024;
+  GLenum gl_intformat;
+  GLenum gl_type;
 
-  GE( glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_texture_size) );
-
-  /* Sanity check that we're not going to get stuck in an infinite
-     loop if the maximum texture size has the high bit set */
-  if ((max_texture_size & (1 << (sizeof (GLint) * 8 - 2))))
-    max_texture_size >>= 1;
+  _cogl_pixel_format_to_gl (format,
+                            &gl_intformat,
+                            NULL, /* gl_format */
+                            &gl_type);
 
   /* Keep trying increasingly larger atlases until we can fit all of
      the textures */
-  while (map_width < max_texture_size && map_height < max_texture_size)
+  while (_cogl_texture_driver_size_supported (GL_TEXTURE_2D,
+                                              gl_intformat,
+                                              gl_type,
+                                              map_width, map_height))
     {
       CoglRectangleMap *new_atlas = _cogl_rectangle_map_new (map_width,
                                                              map_height,
@@ -524,7 +528,8 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
         }
     }
 
-  new_map = _cogl_atlas_create_map (map_width, map_height,
+  new_map = _cogl_atlas_create_map (atlas->texture_format,
+                                    map_width, map_height,
                                     data.n_textures, data.textures);
 
   /* If we can't create a map with the texture then give up */
