@@ -38,6 +38,7 @@
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
+#include "cogl-shader-private.h"
 
 #ifndef HAVE_COGL_GLES
 #include "cogl-program.h"
