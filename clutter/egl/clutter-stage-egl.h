@@ -1,17 +1,23 @@
 #ifndef __CLUTTER_STAGE_EGL_H__
 #define __CLUTTER_STAGE_EGL_H__
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <glib-object.h>
 #include <clutter/clutter-stage.h>
 
+#ifdef COGL_HAS_X11_SUPPORT
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
+#include "../x11/clutter-stage-x11.h"
+#endif
 
 #include "clutter-egl-headers.h"
 #include "clutter-backend-egl.h"
 
-#include "../x11/clutter-stage-x11.h"
 
 #define CLUTTER_TYPE_STAGE_EGL                  (_clutter_stage_egl_get_type ())
 #define CLUTTER_STAGE_EGL(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE_EGL, ClutterStageEGL))
@@ -25,13 +31,15 @@ typedef struct _ClutterStageEGLClass    ClutterStageEGLClass;
 
 struct _ClutterStageEGL
 {
-  ClutterStageX11 parent_instance;
-
 #ifdef COGL_HAS_X11_SUPPORT
+
+  ClutterStageX11 parent_instance;
 
   EGLSurface egl_surface;
 
 #else
+
+  GObject parent_instance;
 
  /* the stage wrapper */
   ClutterStage      *wrapper;
@@ -44,7 +52,11 @@ struct _ClutterStageEGL
 
 struct _ClutterStageEGLClass
 {
+#ifdef COGL_HAS_X11_SUPPORT
   ClutterStageX11Class parent_class;
+#else
+  GObjectClass parent_class;
+#endif
 };
 
 GType _clutter_stage_egl_get_type (void) G_GNUC_CONST;
