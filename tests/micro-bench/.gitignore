@@ -1,4 +1,5 @@
 *.o
+/test-picking
+/test-random-text
 /test-text-perf
 /test-text
-/test-picking
