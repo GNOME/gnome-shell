@@ -315,6 +315,43 @@ _cogl_atlas_get_next_size (unsigned int *map_width,
     *map_height <<= 1;
 }
 
+static void
+_cogl_atlas_get_initial_size (CoglPixelFormat format,
+                              unsigned int *map_width,
+                              unsigned int *map_height)
+{
+  unsigned int size;
+  GLenum gl_intformat;
+  GLenum gl_type;
+
+  _cogl_pixel_format_to_gl (format,
+                            &gl_intformat,
+                            NULL, /* gl_format */
+                            &gl_type);
+
+  /* At least on Intel hardware, the texture size will be rounded up
+     to at least 1MB so we might as well try to aim for that as an
+     initial minimum size. If the format is only 1 byte per pixel we
+     can use 1024x1024, otherwise we'll assume it will take 4 bytes
+     per pixel and use 512x512. */
+  if (_cogl_get_format_bpp (format) == 1)
+    size = 1024;
+  else
+    size = 512;
+
+  /* Some platforms might not support this large size so we'll
+     decrease the size until it can */
+  while (size > 1 &&
+         !_cogl_texture_driver_size_supported (GL_TEXTURE_2D,
+                                               gl_intformat,
+                                               gl_type,
+                                               size, size))
+    size >>= 1;
+
+  *map_width = size;
+  *map_height = size;
+}
+
 static CoglRectangleMap *
 _cogl_atlas_create_map (CoglPixelFormat          format,
                         unsigned int             map_width,
@@ -510,23 +547,8 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
         _cogl_atlas_get_next_size (&map_width, &map_height);
     }
   else
-    {
-      /* At least on Intel hardware, the texture size will be rounded
-         up to at least 1MB so we might as well try to aim for that as
-         an initial minimum size. If the format is only 1 byte per
-         pixel we can use 1024x1024, otherwise we'll assume it will
-         take 4 bytes per pixel and use 512x512. */
-      if (_cogl_get_format_bpp (atlas->texture_format) == 1)
-        {
-          map_width = 1024;
-          map_height = 1024;
-        }
-      else
-        {
-          map_width = 512;
-          map_height = 512;
-        }
-    }
+    _cogl_atlas_get_initial_size (atlas->texture_format,
+                                  &map_width, &map_height);
 
   new_map = _cogl_atlas_create_map (atlas->texture_format,
                                     map_width, map_height,
