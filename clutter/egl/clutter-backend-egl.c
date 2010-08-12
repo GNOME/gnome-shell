@@ -780,11 +780,13 @@ _clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
 #endif
 }
 
+#ifdef CLUTTER_EGL_BACKEND_GENERIC
 GType
 _clutter_backend_impl_get_type (void)
 {
   return _clutter_backend_egl_get_type ();
 }
+#endif
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 EGLDisplay

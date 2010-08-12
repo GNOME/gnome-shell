@@ -138,7 +138,7 @@ experimental_backend=no
 experimental_image=no
 
 AC_ARG_WITH([flavour],
-            [AC_HELP_STRING([--with-flavour=@<:@glx/opengl-egl-xlib/eglx/eglnative/osx/win32/fruity@:>@],
+            [AC_HELP_STRING([--with-flavour=@<:@glx/opengl-egl-xlib/eglx/eglnative/osx/win32/fruity/cex100@:>@],
                             [Select the Clutter window system backend])],
             [CLUTTER_FLAVOUR=$with_flavour])
 
@@ -194,6 +194,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
         [
           cogl_gl_headers="GL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
+          CLUTTER_EGL_BACKEND="generic"
 
           SUPPORT_X11=1
           SUPPORT_XLIB=1
@@ -217,6 +218,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
         [
           # the GL header is defined in the COGL checks above
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
+          CLUTTER_EGL_BACKEND="generic"
 
           SUPPORT_X11=1
           SUPPORT_XLIB=1
@@ -235,6 +237,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
         [
           # the GL header is defined in the COGL checks above
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGLNATIVE"
+          CLUTTER_EGL_BACKEND="cex100"
 
           SUPPORT_EGL=1
           SUPPORT_EGL_PLATFORM_POWERVR_NULL=1
@@ -251,6 +254,35 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
           CLUTTER_WINSYS=egl
           CLUTTER_SONAME_INFIX=eglnative
+        ],
+
+        [cex100],
+        [
+          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
+
+          SUPPORT_EGL=1
+          SUPPORT_EGL_PLATFORM_POWERVR_GDL=1
+
+          COGL_DRIVER="gles"
+
+          # The cex100 is a small specialization of the EGL backend
+          CLUTTER_WINSYS=egl
+          CLUTTER_SONAME_INFIX=cex100
+
+          found_gdl=no
+          AC_CHECK_HEADERS([libgdl.h], found_gdl=yes)
+          AS_IF([test x"$found_gdl" = "xno"],
+                AC_CHECK_HEADERS([CE4100/libgdl.h],
+                                 [
+                                   FLAVOUR_CFLAGS="-I/usr/include/CE4100"
+                                   found_gdl=yes
+                                 ])
+               )
+
+          AS_IF([test x"$found_gdl" = "xno"],
+                AC_MSG_ERROR([libgdl.h not found]))
+
+          FLAVOUR_LIBS="$FLAVOUR_LIBS -lgdl"
         ],
 
         [fruity],
@@ -343,6 +375,12 @@ AS_IF([test "x$SUPPORT_EGL" = "x1"],
         AC_DEFINE([COGL_HAS_EGL_SUPPORT], [1], [Cogl supports GLES using the EGL API])
       ])
 
+AS_IF([test "x$CLUTTER_EGL_BACKEND" = "xgeneric"],
+      AC_DEFINE([CLUTTER_EGL_BACKEND_GENERIC], [1], [Use Generic EGL backend]))
+
+AS_IF([test "x$CLUTTER_EGL_BACKEND" = "xcex100"],
+      AC_DEFINE([CLUTTER_EGL_BACKEND_CEX100], [1], [Use CEX100 EGL backend]))
+
 AS_IF([test "x$SUPPORT_EGL_POWERVR_X11" = "x1"],
       [
         AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT], [1],
@@ -355,6 +393,13 @@ AS_IF([test "x$SUPPORT_EGL_POWERVR_NULL" = "x1"],
                   [Cogl supports OpenGLES using the EGL API with PowerVR NULL platform typedefs])
       ])
 
+AS_IF([test "x$SUPPORT_EGL_POWERVR_GDL" = "x1"],
+      [
+        AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT], [1],
+                  [Cogl supports OpenGLES using the EGL API with PowerVR GDL platform typedefs])
+      ])
+
+
 # winsys conditionals for use in automake files...
 AM_CONDITIONAL(SUPPORT_GLX, [test "x$SUPPORT_GLX" = "x1"])
 AM_CONDITIONAL(SUPPORT_X11, [test "x$SUPPORT_X11" = "x1"])
@@ -362,9 +407,11 @@ AM_CONDITIONAL(SUPPORT_XLIB, [test "x$SUPPORT_XLIB" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL, [test "x$SUPPORT_EGL" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_X11, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_X11" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_NULL" = "x1"])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_GDL, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_GDL" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_FRUITY, [test "x$CLUTTER_WINSYS" = "xfruity"])
 AM_CONDITIONAL(SUPPORT_OSX, [test "x$CLUTTER_WINSYS" = "xosx"])
 AM_CONDITIONAL(SUPPORT_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
+AM_CONDITIONAL(SUPPORT_CEX100, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_GDL" = "x1"])
 
 dnl === COGL driver backend =====================================================
 
