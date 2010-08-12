@@ -2640,18 +2640,26 @@ static gboolean
 _cogl_material_layer_texture_equal (CoglMaterialLayer *authority0,
                                     CoglMaterialLayer *authority1)
 {
-  if (authority0->texture != authority1->texture)
-    return FALSE;
+  GLuint gl_handle0, gl_handle1;
+  GLenum gl_target0, gl_target1;
 
-  if (authority0->texture_overridden != authority1->texture_overridden)
-    return FALSE;
+  if (authority0->texture_overridden)
+    {
+      gl_handle0 = authority0->slice_gl_texture;
+      gl_target0 = authority0->slice_gl_target;
+    }
+  else
+    cogl_texture_get_gl_texture (authority0->texture, &gl_handle0, &gl_target0);
 
-  if (authority0->texture_overridden &&
-      (authority0->slice_gl_texture != authority1->slice_gl_texture ||
-       authority0->slice_gl_target != authority1->slice_gl_target))
-    return FALSE;
+  if (authority1->texture_overridden)
+    {
+      gl_handle1 = authority1->slice_gl_texture;
+      gl_target1 = authority1->slice_gl_target;
+    }
+  else
+    cogl_texture_get_gl_texture (authority1->texture, &gl_handle1, &gl_target1);
 
-  return TRUE;
+  return gl_handle0 == gl_handle1 && gl_target0 == gl_target1;
 }
 
 /* Determine the mask of differences between two layers.
@@ -3182,6 +3190,15 @@ simple_property_equal (CoglMaterial *material0,
  *
  * It is acceptable to have false negatives - although they will result
  * in redundant OpenGL calls that try and update the state.
+ *
+ * When comparing texture layers, _cogl_material_equal will actually
+ * compare the underlying GL texture handle that the Cogl texture uses
+ * so that atlas textures and sub textures will be considered equal if
+ * they point to the same texture. This is useful for comparing
+ * materials in the journal but it means that _cogl_material_equal
+ * doesn't strictly compare whether the materials are the same. If we
+ * needed those semantics we could perhaps add another function or
+ * some flags to control the behaviour.
  *
  * False positives aren't allowed.
  */
