@@ -44,7 +44,6 @@ BUILT_GIRSOURCES =
 ClutterJson-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-json.la
 	$(QUIET_SCAN)$(INTROSPECTION_SCANNER) \
 		$(INTROSPECTION_SCANNER_ARGS) \
-		--quiet \
 		--namespace ClutterJson --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
 		--add-include-path=$(srcdir) --add-include-path=. \
