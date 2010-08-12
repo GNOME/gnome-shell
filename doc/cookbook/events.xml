@@ -635,6 +635,17 @@ _scroll_event_cb (ClutterActor *viewport,
 
             <para>Scrolling down adds to the <code>y</code> coordinate
             (but only up to a maximum value of <code>0.0</code>).</para>
+
+            <para>To see how this works in practice, look at
+            <link linkend="events-mouse-scroll-example">the code
+            sample</link>. There, the height of the scrollable actor is
+            set to <code>300</code> and the height of the viewport to
+            <code>150</code>. This means that the <code>y</code>
+            coordinate value for the scrollable actor will vary between
+            <code>-150.0</code> (<code>150 - 300</code>), making
+            its base visible and clipping the top; and
+            <code>0.0</code>, where its top is visible and its base
+            clipped.</para>
           </listitem>
 
           <listitem>
