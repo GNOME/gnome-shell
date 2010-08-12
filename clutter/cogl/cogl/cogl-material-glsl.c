@@ -30,6 +30,7 @@
 #endif
 
 #include "cogl-material-private.h"
+#include "cogl-shader-private.h"
 
 #ifdef COGL_MATERIAL_BACKEND_GLSL
 
