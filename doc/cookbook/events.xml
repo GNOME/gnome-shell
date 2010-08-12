@@ -347,13 +347,14 @@ clutter_stage_set_key_focus (stage, actor);
   </section>
 
   <section id="events-mouse-scroll">
-    <title>Detecting mouse wheel scrolling on an actor</title>
+    <title>Detecting mouse scrolling on an actor</title>
 
     <section>
       <title>Problem</title>
 
-      <para>You want to detect when the mouse wheel is scrolled on an
-      actor.</para>
+      <para>You want to detect when the mouse is scrolled on an
+      actor (e.g. the pointer is over an actor when a mouse
+      wheel is scrolled).</para>
     </section>
 
     <section>
@@ -373,21 +374,7 @@ clutter_actor_set_reactive (actor, TRUE);
         </programlisting>
       </informalexample>
 
-      <para>Next, connect a callback handler to the
-      <code>scroll-event</code> signal of the actor:</para>
-
-      <informalexample>
-        <programlisting>
-<![CDATA[
-g_signal_connect (actor,
-                  "scroll-event",
-                  G_CALLBACK (_scroll_event_cb),
-                  NULL);
-]]>
-        </programlisting>
-      </informalexample>
-
-      <para>Finally, create a callback handler to examine the scroll
+      <para>Next, create a callback handler to examine the scroll
       event and respond to it:</para>
 
       <informalexample>
@@ -398,7 +385,7 @@ _scroll_event_cb (ClutterActor *actor,
                   ClutterEvent *event,
                   gpointer      user_data)
 {
-  /* determine the direction the mouse wheel was scrolled */
+  /* determine the direction the mouse was scrolled */
   ClutterScrollDirection direction;
   direction = clutter_event_get_scroll_direction (event);
 
@@ -424,6 +411,21 @@ _scroll_event_cb (ClutterActor *actor,
 ]]>
         </programlisting>
       </informalexample>
+
+      <para>Finally, connect the callback handler to the
+      <code>scroll-event</code> signal of the actor:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+g_signal_connect (actor,
+                  "scroll-event",
+                  G_CALLBACK (_scroll_event_cb),
+                  NULL);
+]]>
+        </programlisting>
+      </informalexample>
+
     </section>
 
     <section>
@@ -431,8 +433,8 @@ _scroll_event_cb (ClutterActor *actor,
 
       <para>A standard mouse wheel will only return up and
       down movements; but in cases where the mouse has left and
-      right scrolling (e.g. a trackball mouse), left and right scroll
-      events may also be emitted.</para>
+      right scrolling (e.g. a trackball mouse or trackpad), left and
+      right scroll events may also be emitted.</para>
 
       <section>
         <title>Creating a scrolling viewport for an actor</title>
@@ -475,7 +477,7 @@ _scroll_event_cb (ClutterActor *actor,
         <orderedlist>
           <listitem>
             <para>Create the scrollable actor; it should be larger
-            than the scrollview. This example uses a <type>ClutterTexture</type>,
+            than the viewport. This example uses a <type>ClutterTexture</type>,
             but any <type>ClutterActor</type> will work:</para>
             <informalexample>
               <programlisting>
@@ -488,14 +490,15 @@ clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (texture),
 
 /*
  * set the texture's height so it's as tall as the stage
- * (STAGE_HEIGHT is define'd at the top of the file);
- * see <link linkend="textures-aspect-ratio">this recipe</link>
- * for more about loading images into textures
+ * (STAGE_HEIGHT is define'd at the top of the file)
  */
 clutter_actor_set_request_mode (texture, CLUTTER_REQUEST_WIDTH_FOR_HEIGHT);
 clutter_actor_set_height (texture, STAGE_HEIGHT);
 
-/* load the image file */
+/*
+ * load the image file;
+ * see <link linkend="textures-aspect-ratio">this recipe</link> for more about loading images into textures
+ */
 clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
                                image_file_path,
                                NULL);
@@ -533,17 +536,17 @@ clutter_actor_set_clip_to_allocation (viewport, TRUE);
               <para>The key here is calling
               <code>clutter_actor_set_clip_to_allocation (viewport, TRUE)</code>.
               This configures the <varname>viewport</varname> group so
-              that any of its children are clipped: i.e. only the area of
-              the children which fits inside the group is visible. This
+              that any of its children are clipped: i.e. only parts of
+              its children which fit inside its allocation are visible. This
               in turn requires setting an explicit size on the group,
               rather than allowing it to size itself to fit its
-              children (the default).</para>
+              children (the latter is the default).</para>
 
           </listitem>
 
           <listitem>
-            <para>Put the scrollable actor into the scroll view and
-            the scroll view into its container (in this case,
+            <para>Put the scrollable actor into the viewport; and
+            the viewport into its container (in this case,
             the default stage):</para>
 
             <informalexample>
@@ -557,8 +560,8 @@ clutter_container_add_actor (CLUTTER_CONTAINER (stage), viewport);
           </listitem>
 
           <listitem>
-            <para>Create a callback handler for scroll event signals
-            emitted by the viewport:</para>
+            <para>Create a callback handler for <code>scroll-event</code>
+            signals emitted by the viewport:</para>
 
             <informalexample>
               <programlisting>
@@ -625,15 +628,15 @@ _scroll_event_cb (ClutterActor *viewport,
             <para>The approach taken here is to move the scrollable
             actor up, relative to the viewport. Initially, the
             scrollable will have a <code>y</code> coordinate value
-            of <code>0.0</code> (it is aligned to the top of the viewport).
-            Scrolling up subtracts from the
+            of <code>0.0</code> (aligned to the top of the viewport).
+            Scrolling up decrements the
             <code>y</code> coordinate (down to a minumum of
             <code>viewport_height - scrollable_height</code>). This moves
-            the top of the scrollable "outside" the clip area of the
+            the top of the scrollable actor "outside" the clip area of the
             viewport; simultaneously, more of the bottom part of the
             scrollable moves into the clip area, becoming visible.</para>
 
-            <para>Scrolling down adds to the <code>y</code> coordinate
+            <para>Scrolling down increments the <code>y</code> coordinate
             (but only up to a maximum value of <code>0.0</code>).</para>
 
             <para>To see how this works in practice, look at
@@ -642,16 +645,17 @@ _scroll_event_cb (ClutterActor *viewport,
             set to <code>300</code> and the height of the viewport to
             <code>150</code>. This means that the <code>y</code>
             coordinate value for the scrollable actor will vary between
-            <code>-150.0</code> (<code>150 - 300</code>), making
-            its base visible and clipping the top; and
+            <code>-150.0</code>: <code>150</code> (the viewport's height)
+            <code>- 300</code> (the scrollable actor's height), making
+            its base visible and clipping its top; and
             <code>0.0</code>, where its top is visible and its base
             clipped.</para>
           </listitem>
 
           <listitem>
             <para>Connect the callback handler to the signal; note
-            that we pass the scrollable (the texture) to the callback,
-            as we're moving the texture inside the viewport to
+            that we pass the scrollable actor (the texture) to the callback,
+            as we're moving the texture relative to the viewport to
             create the scrolling effect:</para>
 
             <informalexample>
