@@ -251,7 +251,9 @@
             revision="master"/>
     <dependencies>
       <dep package="clutter"/>
+      <dep package="clutter-gtk"/>
       <dep package="mx"/>
+      <dep package="gjs"/>
     </dependencies>
   </autotools>
 
@@ -346,5 +348,17 @@
       <dep package="pyclutter-gtk"/>
     </dependencies>
   </metamodule>
+
+  <autotools id="gjs">
+    <branch repo="git.gnome.org"
+            module="gjs"
+            revision="master"/>
+    <dependencies>
+      <dep package="gobject-introspection"/>
+    </dependencies>
+    <after>
+      <dep package="gir-repository"/>
+    </after>
+  </autotools>
 
 </moduleset>
