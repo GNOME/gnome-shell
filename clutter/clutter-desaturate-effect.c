@@ -209,15 +209,13 @@ clutter_desaturate_effect_paint_target (ClutterOffscreenEffect *effect)
   if (self->program == COGL_INVALID_HANDLE)
     goto out;
 
-  cogl_program_use (self->program);
-
   if (self->tex_uniform > -1)
-    cogl_program_uniform_1i (self->tex_uniform, 0);
+    cogl_program_set_uniform_1i (self->program, self->tex_uniform, 0);
 
   if (self->factor_uniform > -1)
-    cogl_program_uniform_1f (self->factor_uniform, self->factor);
-
-  cogl_program_use (COGL_INVALID_HANDLE);
+    cogl_program_set_uniform_1f (self->program,
+                                 self->factor_uniform,
+                                 self->factor);
 
   material = clutter_offscreen_effect_get_target (effect);
   cogl_material_set_user_program (material, self->program);

@@ -211,13 +211,11 @@ clutter_shader_effect_update_uniforms (ClutterShaderEffect *effect)
   gpointer key, value;
   gsize size;
 
-  if (priv->uniforms == NULL)
+  if (priv->program == COGL_INVALID_HANDLE)
     return;
 
-  /* XXX - we need to do this dance here because the cogl_program_uniform*
-   * family of functions do not take the program as a parameter
-   */
-  cogl_program_use (priv->program);
+  if (priv->uniforms == NULL)
+    return;
 
   key = value = NULL;
   g_hash_table_iter_init (&iter, priv->uniforms);
@@ -234,41 +232,50 @@ clutter_shader_effect_update_uniforms (ClutterShaderEffect *effect)
           const GLfloat *floats;
 
           floats = clutter_value_get_shader_float (&uniform->value, &size);
-          cogl_program_uniform_float (uniform->location, size, 1, floats);
+          cogl_program_set_uniform_float (priv->program, uniform->location,
+                                          size, 1,
+                                          floats);
         }
       else if (CLUTTER_VALUE_HOLDS_SHADER_INT (&uniform->value))
         {
           const GLint *ints;
 
           ints = clutter_value_get_shader_int (&uniform->value, &size);
-          cogl_program_uniform_int (uniform->location, size, 1, ints);
+          cogl_program_set_uniform_int (priv->program, uniform->location,
+                                        size, 1,
+                                        ints);
         }
       else if (CLUTTER_VALUE_HOLDS_SHADER_MATRIX (&uniform->value))
         {
           const GLfloat *matrix;
 
           matrix = clutter_value_get_shader_matrix (&uniform->value, &size);
-          cogl_program_uniform_matrix (uniform->location, size, 1, FALSE, matrix);
+          cogl_program_set_uniform_matrix (priv->program, uniform->location,
+                                           size, 1,
+                                           FALSE,
+                                           matrix);
         }
       else if (G_VALUE_HOLDS_FLOAT (&uniform->value))
         {
           const GLfloat float_val = g_value_get_float (&uniform->value);
 
-          cogl_program_uniform_float (uniform->location, 1, 1, &float_val);
+          cogl_program_set_uniform_float (priv->program, uniform->location,
+                                          1, 1,
+                                          &float_val);
         }
       else if (G_VALUE_HOLDS_INT (&uniform->value))
         {
           const GLint int_val = g_value_get_int (&uniform->value);
 
-          cogl_program_uniform_int (uniform->location, 1, 1, &int_val);
+          cogl_program_set_uniform_int (priv->program, uniform->location,
+                                        1, 1,
+                                        &int_val);
         }
       else
         g_warning ("Invalid uniform of type '%s' for name '%s'",
                    g_type_name (G_VALUE_TYPE (&uniform->value)),
                    uniform->name);
     }
-
-  cogl_program_use (COGL_INVALID_HANDLE);
 }
 
 static void

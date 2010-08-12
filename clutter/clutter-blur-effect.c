@@ -221,18 +221,18 @@ clutter_blur_effect_paint_target (ClutterOffscreenEffect *effect)
   if (self->program == COGL_INVALID_HANDLE)
     goto out;
 
-  cogl_program_use (self->program);
-
   if (self->tex_uniform > -1)
-    cogl_program_uniform_1i (self->tex_uniform, 0);
+    cogl_program_set_uniform_1i (self->program, self->tex_uniform, 0);
 
   if (self->x_step_uniform > -1)
-    cogl_program_uniform_1f (self->x_step_uniform, self->x_step);
+    cogl_program_set_uniform_1f (self->program,
+                                 self->x_step_uniform,
+                                 self->x_step);
 
   if (self->y_step_uniform > -1)
-    cogl_program_uniform_1f (self->y_step_uniform, self->y_step);
-
-  cogl_program_use (COGL_INVALID_HANDLE);
+    cogl_program_set_uniform_1f (self->program,
+                                 self->y_step_uniform,
+                                 self->y_step);
 
   material = clutter_offscreen_effect_get_target (effect);
   cogl_material_set_user_program (material, self->program);

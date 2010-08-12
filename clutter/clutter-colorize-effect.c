@@ -200,10 +200,8 @@ clutter_colorize_effect_paint_target (ClutterOffscreenEffect *effect)
   if (self->program == COGL_INVALID_HANDLE)
     goto out;
 
-  cogl_program_use (self->program);
-
   if (self->tex_uniform > -1)
-    cogl_program_uniform_1i (self->tex_uniform, 0);
+    cogl_program_set_uniform_1i (self->program, self->tex_uniform, 0);
 
   if (self->tint_uniform > -1)
     {
@@ -213,10 +211,10 @@ clutter_colorize_effect_paint_target (ClutterOffscreenEffect *effect)
         self->tint.blue / 255.0
       };
 
-      cogl_program_uniform_float (self->tint_uniform, 3, 1, tint);
+      cogl_program_set_uniform_float (self->program, self->tint_uniform,
+                                      3, 1,
+                                      tint);
     }
-
-  cogl_program_use (COGL_INVALID_HANDLE);
 
   material = clutter_offscreen_effect_get_target (effect);
   cogl_material_set_user_program (material, self->program);
