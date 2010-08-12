@@ -267,6 +267,7 @@ on_captured_event (ClutterActor      *stage,
         emit_drag_end (action, actor, event);
       break;
 
+    case CLUTTER_ENTER:
     case CLUTTER_LEAVE:
       if (priv->in_drag)
         return TRUE;
