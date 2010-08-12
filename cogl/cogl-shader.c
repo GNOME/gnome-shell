@@ -129,8 +129,8 @@ cogl_shader_source (CoglHandle   handle,
           g_free (shader->arbfp_source);
           shader->arbfp_source = NULL;
         }
-#endif
       else
+#endif
         {
           if (shader->gl_handle)
             GE (glDeleteShader (shader->gl_handle));
