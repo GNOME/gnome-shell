@@ -89,7 +89,7 @@ UNIT_TESTS = `./test-conformance -l -m thorough | $(GREP) '^/'`
 
 wrappers: stamp-test-conformance
 	@true
-stamp-test-conformance: test-conformance$(EXEEXT)
+stamp-test-conformance: Makefile test-conformance$(EXEEXT)
 	@mkdir -p wrappers
 	@chmod +x test-launcher.sh
 	@( echo "/stamp-test-conformance" ; \
