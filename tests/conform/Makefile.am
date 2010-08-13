@@ -92,6 +92,12 @@ wrappers: stamp-test-conformance
 stamp-test-conformance: test-conformance$(EXEEXT)
 	@mkdir -p wrappers
 	@chmod +x test-launcher.sh
+	@( echo "/stamp-test-conformance" ; \
+	   echo "/test-conformance" ; \
+	   echo "/test-launcher.sh" ; \
+	   echo "*.o" ; \
+	   echo ".gitignore" ; \
+	   echo "/wrappers/" ) > .gitignore
 	@for i in $(UNIT_TESTS); \
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
@@ -100,6 +106,7 @@ stamp-test-conformance: test-conformance$(EXEEXT)
 		( echo "#!/bin/sh" ; echo "exec ./test-conformance$(EXEEXT) -p $$i \"\$$@\"" ) > wrappers/$$unit$(EXEEXT) ; \
 		chmod +x $$unit$(EXEEXT); \
 		chmod +x wrappers/$$unit$(EXEEXT); \
+		echo "/$$unit$(EXEEXT)" >> .gitignore; \
 	done \
 	&& echo timestamp > $(@F)
 
