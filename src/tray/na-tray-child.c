@@ -265,9 +265,7 @@ na_tray_child_new (GdkScreen *screen,
 
   new_colormap = FALSE;
 
-  if (visual == gdk_screen_get_rgb_visual (screen))
-    colormap = gdk_screen_get_rgb_colormap (screen);
-  else if (visual == gdk_screen_get_rgba_visual (screen))
+  if (visual == gdk_screen_get_rgba_visual (screen))
     colormap = gdk_screen_get_rgba_colormap (screen);
   else if (visual == gdk_screen_get_system_visual (screen))
     colormap = gdk_screen_get_system_colormap (screen);
