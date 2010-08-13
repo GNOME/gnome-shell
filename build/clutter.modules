@@ -205,7 +205,6 @@
       <dep package="pango"/>
       <dep package="gdk-pixbuf"/>
       <dep package="gobject-introspection"/>
-      <dep package="gir-repository"/>
       <dep package="json-glib"/>
     </dependencies>
   </autotools>
@@ -369,9 +368,6 @@
     <dependencies>
       <dep package="gobject-introspection"/>
     </dependencies>
-    <after>
-      <dep package="gir-repository"/>
-    </after>
   </autotools>
 
 </moduleset>
