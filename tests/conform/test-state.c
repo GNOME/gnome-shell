@@ -70,9 +70,6 @@ test_state_base (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
   g_assert_cmpint (g_list_length (keys), ==, 2);
   g_list_free (keys);
 
-  keys = clutter_state_get_keys (CLUTTER_STATE (state), NULL, NULL,
-                                 NULL, NULL);
-
   states = clutter_state_get_states (CLUTTER_STATE (state));
   g_assert_cmpint (g_list_length (states), ==, 2);
   g_list_free (states);

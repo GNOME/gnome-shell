@@ -242,6 +242,8 @@ clutter_state_key_free (gpointer clutter_state_key)
                            key->target_state->clutter_state);
     }
 
+  g_value_unset (&key->value);
+
   g_object_unref (key->alpha);
   g_object_unref (key->interval);
 
@@ -730,12 +732,15 @@ clutter_state_set (ClutterState *state,
       GParamSpec *pspec;
       GValue value = { 0, };
       gchar *error = NULL;
-      const gchar *real_property_name = property_name;
+      gboolean is_delayed = FALSE;
 
       if (g_str_has_prefix (property_name, "delayed::"))
-        real_property_name = strstr (property_name, "::") + 2;
+        {
+          property_name = strstr (property_name, "::") + 2;
+          is_delayed = TRUE;
+        }
 
-      pspec = get_property_from_object (object, real_property_name);
+      pspec = get_property_from_object (object, property_name);
       if (pspec == NULL)
         break;
 
@@ -755,7 +760,7 @@ clutter_state_set (ClutterState *state,
           break;
         }
 
-      if (g_str_has_prefix (property_name, "delayed::"))
+      if (is_delayed)
         {
           gdouble pre_delay = va_arg (args, gdouble);
           gdouble post_delay = va_arg (args, gdouble);
@@ -764,7 +769,7 @@ clutter_state_set (ClutterState *state,
                                  source_state_name,
                                  target_state_name,
                                  object,
-                                 real_property_name,
+                                 property_name,
                                  mode,
                                  &value,
                                  pre_delay,
@@ -782,6 +787,8 @@ clutter_state_set (ClutterState *state,
                                  0.0,
                                  0.0);
         }
+
+      g_value_unset (&value);
 
       object = va_arg (args, gpointer);
       if (object != NULL)
@@ -1724,7 +1731,7 @@ parse_state_transition (JsonArray *array,
   State *source_state, *target_state;
   JsonArray *keys;
   GSList *valid_keys = NULL;
-  GList *k;
+  GList *array_keys, *k;
 
   if (JSON_NODE_TYPE (element) != JSON_NODE_OBJECT)
     {
@@ -1796,9 +1803,8 @@ parse_state_transition (JsonArray *array,
   else
     g_value_init (clos->value, G_TYPE_POINTER);
 
-  for (k = json_array_get_elements (keys);
-       k != NULL;
-       k = k->next)
+  array_keys = json_array_get_elements (keys);
+  for (k = array_keys; k != NULL; k = k->next)
     {
       JsonNode *node = k->data;
       JsonArray *key = json_node_get_array (node);
@@ -1875,6 +1881,8 @@ parse_state_transition (JsonArray *array,
 
       valid_keys = g_slist_prepend (valid_keys, state_key);
     }
+
+  g_list_free (array_keys);
 
   g_value_set_pointer (clos->value, g_slist_reverse (valid_keys));
 
