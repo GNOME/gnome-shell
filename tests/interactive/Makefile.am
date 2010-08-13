@@ -66,9 +66,14 @@ endif
 # For convenience, this provides a way to easily run individual unit tests:
 wrappers: stamp-test-interactive
 	@true
-stamp-test-interactive: test-interactive$(EXEEXT)
+stamp-test-interactive: Makefile test-interactive$(EXEEXT)
 	@wrapper=$(abs_builddir)/wrapper.sh ; \
 	chmod +x $$wrapper && \
+	( echo "/stamp-test-interactive" ; \
+	  echo "/test-interactive" ; \
+	  echo "/wrapper.sh" ; \
+	  echo "*.o" ; \
+	  echo ".gitignore" ) > .gitignore ; \
 	for i in $(UNIT_TESTS); \
 	do \
 		test_bin=$${i%*.c} ; \
@@ -77,6 +82,7 @@ stamp-test-interactive: test-interactive$(EXEEXT)
 		  echo "$$wrapper $$test_bin \$$@" \
 		) > $$test_bin$(EXEEXT) ; \
 		chmod +x $$test_bin$(EXEEXT) ; \
+		echo "/$$test_bin$(EXEEXT)" >> .gitignore ; \
 	done \
 	&& echo timestamp > $(@F)
 
