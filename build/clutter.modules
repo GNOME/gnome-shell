@@ -163,6 +163,19 @@
     </dependencies>
   </autotools>
 
+  <autotools id="gtk2">
+    <branch repo="git.gnome.org"
+            module="gtk+"
+            revision="gtk-2-22"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gdk-pixbuf"/>
+      <dep package="atk"/>
+      <dep package="cairo"/>
+      <dep package="pango"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gir-repository">
     <branch repo="git.gnome.org"
             module="gir-repository"
@@ -231,7 +244,7 @@
             revision="master"/>
     <dependencies>
       <dep package="clutter"/>
-      <dep package="gtk+"/>
+      <dep package="gtk2"/>
     </dependencies>
   </autotools>
 
@@ -283,7 +296,7 @@
             revision="master"/>
     <dependencies>
       <dep package="pygobject"/>
-      <dep package="gtk+"/>
+      <dep package="gtk2"/>
       <dep package="pycairo"/>
     </dependencies>
   </autotools>
