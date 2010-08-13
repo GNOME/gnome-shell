@@ -336,7 +336,7 @@ mutter-enum-types.h: stamp-mutter-enum-types.h Makefile
 stamp-mutter-enum-types.h: $(libmutterinclude_base_headers) mutter-enum-types.h.in
 	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
-	    --template $(srcdir)/mutter-enum-types.h.in \
+	    --template mutter-enum-types.h.in \
 	  $(libmutterinclude_base_headers) ) >> xgen-teth && \
 	(cmp -s xgen-teth mutter-enum-types.h || cp xgen-teth mutter-enum-types.h) && \
 	rm -f xgen-teth && \
@@ -345,7 +345,7 @@ stamp-mutter-enum-types.h: $(libmutterinclude_base_headers) mutter-enum-types.h.
 mutter-enum-types.c: stamp-mutter-enum-types.h mutter-enum-types.c.in
 	  $(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
-	    --template $(srcdir)/mutter-enum-types.c.in \
+	    --template mutter-enum-types.c.in \
 	  $(libmutterinclude_base_headers) ) >> xgen-tetc && \
 	cp xgen-tetc mutter-enum-types.c && \
 	rm -f xgen-tetc
