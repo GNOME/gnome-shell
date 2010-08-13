@@ -50,9 +50,9 @@ static ClutterBackendEGL *backend_singleton = NULL;
 static const gchar *clutter_fb_device = NULL;
 
 #ifdef COGL_HAS_X11_SUPPORT
-G_DEFINE_TYPE (ClutterBackendEGL, clutter_backend_egl, CLUTTER_TYPE_BACKEND_X11);
+G_DEFINE_TYPE (ClutterBackendEGL, _clutter_backend_egl, CLUTTER_TYPE_BACKEND_X11);
 #else
-G_DEFINE_TYPE (ClutterBackendEGL, clutter_backend_egl, CLUTTER_TYPE_BACKEND);
+G_DEFINE_TYPE (ClutterBackendEGL, _clutter_backend_egl, CLUTTER_TYPE_BACKEND);
 #endif
 
 static void
@@ -69,7 +69,7 @@ clutter_backend_egl_pre_parse (ClutterBackend  *backend,
   const gchar *env_string;
 #ifdef COGL_HAS_X11_SUPPORT
   ClutterBackendClass *backend_x11_class =
-    CLUTTER_BACKEND_CLASS (clutter_backend_egl_parent_class);
+    CLUTTER_BACKEND_CLASS (_clutter_backend_egl_parent_class);
 
   if (!backend_x11_class->pre_parse (backend, error))
     return FALSE;
@@ -90,7 +90,7 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
 #ifdef COGL_HAS_X11_SUPPORT
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterBackendClass *backend_x11_class =
-    CLUTTER_BACKEND_CLASS (clutter_backend_egl_parent_class);
+    CLUTTER_BACKEND_CLASS (_clutter_backend_egl_parent_class);
 #endif
   EGLBoolean status;
 
@@ -475,7 +475,7 @@ clutter_backend_egl_redraw (ClutterBackend *backend,
 
   g_assert (CLUTTER_IS_STAGE_EGL (impl));
 
-  clutter_stage_egl_redraw (CLUTTER_STAGE_EGL (impl), stage);
+  _clutter_stage_egl_redraw (CLUTTER_STAGE_EGL (impl), stage);
 }
 
 #ifdef HAVE_TSLIB
@@ -493,7 +493,7 @@ clutter_backend_egl_finalize (GObject *gobject)
   if (backend_singleton)
     backend_singleton = NULL;
 
-  G_OBJECT_CLASS (clutter_backend_egl_parent_class)->finalize (gobject);
+  G_OBJECT_CLASS (_clutter_backend_egl_parent_class)->finalize (gobject);
 }
 
 static void
@@ -510,7 +510,7 @@ clutter_backend_egl_dispose (GObject *gobject)
      ClutterBackendX11 will destroy all of the stages before we
      destroy the egl context. Otherwise the actors may try to make GL
      calls during destruction which causes a crash */
-  G_OBJECT_CLASS (clutter_backend_egl_parent_class)->dispose (gobject);
+  G_OBJECT_CLASS (_clutter_backend_egl_parent_class)->dispose (gobject);
 
 #ifdef HAVE_TSLIB
   /* XXX: This should be renamed to _clutter_events_tslib_uninit */
@@ -583,7 +583,7 @@ clutter_backend_egl_constructor (GType                  gtype,
 
   if (!backend_singleton)
     {
-      parent_class = G_OBJECT_CLASS (clutter_backend_egl_parent_class);
+      parent_class = G_OBJECT_CLASS (_clutter_backend_egl_parent_class);
       retval = parent_class->constructor (gtype, n_params, params);
 
       backend_singleton = CLUTTER_BACKEND_EGL (retval);
@@ -733,7 +733,7 @@ clutter_backend_egl_get_visual_info (ClutterBackendX11 *backend_x11)
 #endif
 
 static void
-clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
+_clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
@@ -762,7 +762,7 @@ clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
 }
 
 static void
-clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
+_clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
 {
 #ifndef COGL_HAS_XLIB_SUPPORT
   ClutterBackend *backend = CLUTTER_BACKEND (backend_egl);
@@ -784,7 +784,7 @@ clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
 GType
 _clutter_backend_impl_get_type (void)
 {
-  return clutter_backend_egl_get_type ();
+  return _clutter_backend_egl_get_type ();
 }
 
 #ifdef COGL_HAS_XLIB_SUPPORT

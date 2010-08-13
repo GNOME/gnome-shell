@@ -25,7 +25,7 @@ static ClutterStageWindowIface *clutter_stage_egl_parent_iface = NULL;
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterStageEGL,
-                         clutter_stage_egl,
+                         _clutter_stage_egl,
 #ifdef COGL_HAS_X11_SUPPORT
                          CLUTTER_TYPE_STAGE_X11,
 #else
@@ -306,11 +306,11 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 static void
 clutter_stage_egl_dispose (GObject *gobject)
 {
-  G_OBJECT_CLASS (clutter_stage_egl_parent_class)->dispose (gobject);
+  G_OBJECT_CLASS (_clutter_stage_egl_parent_class)->dispose (gobject);
 }
 
 static void
-clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
+_clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
@@ -318,7 +318,7 @@ clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
 }
 
 static void
-clutter_stage_egl_init (ClutterStageEGL *stage)
+_clutter_stage_egl_init (ClutterStageEGL *stage)
 {
   stage->egl_surface = EGL_NO_SURFACE;
 }
@@ -326,12 +326,12 @@ clutter_stage_egl_init (ClutterStageEGL *stage)
 #else /* COGL_HAS_X11_SUPPORT */
 
 static void
-clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
+_clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
 {
 }
 
 static void
-clutter_stage_egl_init (ClutterStageEGL *stage)
+_clutter_stage_egl_init (ClutterStageEGL *stage)
 {
   /* Without X we only support one surface and that is associated
    * with the backend directly instead of the stage */
@@ -340,7 +340,7 @@ clutter_stage_egl_init (ClutterStageEGL *stage)
 #endif /* COGL_HAS_X11_SUPPORT */
 
 void
-clutter_stage_egl_redraw (ClutterStageEGL *stage_egl,
+_clutter_stage_egl_redraw (ClutterStageEGL *stage_egl,
                           ClutterStage    *stage)
 {
   ClutterBackend     *backend = clutter_get_default_backend ();

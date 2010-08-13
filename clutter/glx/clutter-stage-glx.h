@@ -34,7 +34,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_STAGE_GLX                  (clutter_stage_glx_get_type ())
+#define CLUTTER_TYPE_STAGE_GLX                  (_clutter_stage_glx_get_type ())
 #define CLUTTER_STAGE_GLX(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE_GLX, ClutterStageGLX))
 #define CLUTTER_IS_STAGE_GLX(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_STAGE_GLX))
 #define CLUTTER_STAGE_GLX_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_STAGE_GLX, ClutterStageGLXClass))
@@ -62,9 +62,9 @@ struct _ClutterStageGLXClass
   ClutterStageX11Class parent_class;
 };
 
-GType clutter_stage_glx_get_type  (void) G_GNUC_CONST;
+GType _clutter_stage_glx_get_type  (void) G_GNUC_CONST;
 
-void  clutter_stage_glx_redraw    (ClutterStageGLX *stage_glx,
+void  _clutter_stage_glx_redraw    (ClutterStageGLX *stage_glx,
                                    ClutterStage *stage);
 
 G_END_DECLS

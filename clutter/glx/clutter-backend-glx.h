@@ -35,7 +35,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_BACKEND_GLX                (clutter_backend_glx_get_type ())
+#define CLUTTER_TYPE_BACKEND_GLX                (_clutter_backend_glx_get_type ())
 #define CLUTTER_BACKEND_GLX(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_GLX, ClutterBackendGLX))
 #define CLUTTER_IS_BACKEND_GLX(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_GLX))
 #define CLUTTER_BACKEND_GLX_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_GLX, ClutterBackendGLXClass))
@@ -108,7 +108,7 @@ struct _ClutterBackendGLXClass
   ClutterBackendX11Class parent_class;
 };
 
-GType clutter_backend_glx_get_type (void) G_GNUC_CONST;
+GType _clutter_backend_glx_get_type (void) G_GNUC_CONST;
 
 gboolean
 _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_x11,

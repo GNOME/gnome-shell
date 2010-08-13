@@ -62,7 +62,7 @@ static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 static ClutterStageWindowIface *clutter_stage_glx_parent_iface = NULL;
 
 G_DEFINE_TYPE_WITH_CODE (ClutterStageGLX,
-                         clutter_stage_glx,
+                         _clutter_stage_glx,
                          CLUTTER_TYPE_STAGE_X11,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init));
@@ -276,11 +276,11 @@ clutter_stage_glx_get_pending_swaps (ClutterStageWindow *stage_window)
 static void
 clutter_stage_glx_dispose (GObject *gobject)
 {
-  G_OBJECT_CLASS (clutter_stage_glx_parent_class)->dispose (gobject);
+  G_OBJECT_CLASS (_clutter_stage_glx_parent_class)->dispose (gobject);
 }
 
 static void
-clutter_stage_glx_class_init (ClutterStageGLXClass *klass)
+_clutter_stage_glx_class_init (ClutterStageGLXClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
@@ -288,7 +288,7 @@ clutter_stage_glx_class_init (ClutterStageGLXClass *klass)
 }
 
 static void
-clutter_stage_glx_init (ClutterStageGLX *stage)
+_clutter_stage_glx_init (ClutterStageGLX *stage)
 {
 }
 
@@ -490,7 +490,7 @@ wait_for_vblank (ClutterBackendGLX *backend_glx)
 }
 
 void
-clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
+_clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
                           ClutterStage *stage)
 {
   ClutterBackend    *backend;

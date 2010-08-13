@@ -43,7 +43,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_BACKEND_EGL                (clutter_backend_egl_get_type ())
+#define CLUTTER_TYPE_BACKEND_EGL                (_clutter_backend_egl_get_type ())
 #define CLUTTER_BACKEND_EGL(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_EGL, ClutterBackendEGL))
 #define CLUTTER_IS_BACKEND_EGL(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_EGL))
 #define CLUTTER_BACKEND_EGL_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_EGL, ClutterBackendEGLClass))
@@ -106,7 +106,7 @@ struct _ClutterBackendEGLClass
 #endif
 };
 
-GType clutter_backend_egl_get_type (void) G_GNUC_CONST;
+GType _clutter_backend_egl_get_type (void) G_GNUC_CONST;
 
 void _clutter_events_egl_init   (ClutterBackendEGL *backend);
 void _clutter_events_egl_uninit (ClutterBackendEGL *backend);

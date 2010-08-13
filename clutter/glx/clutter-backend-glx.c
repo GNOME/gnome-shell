@@ -51,7 +51,7 @@
 #include "cogl/cogl.h"
 
 
-G_DEFINE_TYPE (ClutterBackendGLX, clutter_backend_glx, CLUTTER_TYPE_BACKEND_X11);
+G_DEFINE_TYPE (ClutterBackendGLX, _clutter_backend_glx, CLUTTER_TYPE_BACKEND_X11);
 
 /* singleton object */
 static ClutterBackendGLX *backend_singleton = NULL;
@@ -59,7 +59,7 @@ static ClutterBackendGLX *backend_singleton = NULL;
 static gchar    *clutter_vblank_name = NULL;
 
 G_CONST_RETURN gchar*
-clutter_backend_glx_get_vblank_method (void)
+_clutter_backend_glx_get_vblank_method (void)
 {
   return clutter_vblank_name;
 }
@@ -87,7 +87,7 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
   ClutterBackendClass *backend_class =
-    CLUTTER_BACKEND_CLASS (clutter_backend_glx_parent_class);
+    CLUTTER_BACKEND_CLASS (_clutter_backend_glx_parent_class);
   int glx_major, glx_minor;
 
   if (!backend_class->post_parse (backend, error))
@@ -143,7 +143,7 @@ clutter_backend_glx_finalize (GObject *gobject)
   if (backend_singleton)
     backend_singleton = NULL;
 
-  G_OBJECT_CLASS (clutter_backend_glx_parent_class)->finalize (gobject);
+  G_OBJECT_CLASS (_clutter_backend_glx_parent_class)->finalize (gobject);
 }
 
 static void
@@ -174,7 +174,7 @@ clutter_backend_glx_dispose (GObject *gobject)
       backend_glx->dummy_xwin = None;
     }
 
-  G_OBJECT_CLASS (clutter_backend_glx_parent_class)->dispose (gobject);
+  G_OBJECT_CLASS (_clutter_backend_glx_parent_class)->dispose (gobject);
 }
 
 static GObject *
@@ -187,7 +187,7 @@ clutter_backend_glx_constructor (GType                  gtype,
 
   if (!backend_singleton)
     {
-      parent_class = G_OBJECT_CLASS (clutter_backend_glx_parent_class);
+      parent_class = G_OBJECT_CLASS (_clutter_backend_glx_parent_class);
       retval = parent_class->constructor (gtype, n_params, params);
 
       backend_singleton = CLUTTER_BACKEND_GLX (retval);
@@ -776,8 +776,8 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
 
   g_assert (CLUTTER_IS_STAGE_GLX (impl));
 
-  clutter_stage_glx_redraw (CLUTTER_STAGE_GLX (impl),
-                            stage);
+  _clutter_stage_glx_redraw (CLUTTER_STAGE_GLX (impl),
+                             stage);
 }
 
 static ClutterStageWindow *
@@ -810,7 +810,7 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
 }
 
 static void
-clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
+_clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
@@ -830,11 +830,11 @@ clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
   backend_class->ensure_context = clutter_backend_glx_ensure_context;
 
   backendx11_class->get_visual_info = clutter_backend_glx_get_visual_info;
-  backendx11_class->handle_event = clutter_backend_glx_handle_event;
+  backendx11_class->handle_event = _clutter_backend_glx_handle_event;
 }
 
 static void
-clutter_backend_glx_init (ClutterBackendGLX *backend_glx)
+_clutter_backend_glx_init (ClutterBackendGLX *backend_glx)
 {
 
 }
@@ -843,5 +843,5 @@ clutter_backend_glx_init (ClutterBackendGLX *backend_glx)
 GType
 _clutter_backend_impl_get_type (void)
 {
-  return clutter_backend_glx_get_type ();
+  return _clutter_backend_glx_get_type ();
 }

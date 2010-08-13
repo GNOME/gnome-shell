@@ -29,7 +29,7 @@
 G_BEGIN_DECLS
 
 gboolean
-clutter_backend_glx_handle_event (ClutterBackendX11 *backend,
+_clutter_backend_glx_handle_event (ClutterBackendX11 *backend,
                                   XEvent            *xevent);
 
 G_END_DECLS

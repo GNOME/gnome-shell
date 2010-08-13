@@ -13,7 +13,7 @@
 
 #include "../x11/clutter-stage-x11.h"
 
-#define CLUTTER_TYPE_STAGE_EGL                  (clutter_stage_egl_get_type ())
+#define CLUTTER_TYPE_STAGE_EGL                  (_clutter_stage_egl_get_type ())
 #define CLUTTER_STAGE_EGL(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE_EGL, ClutterStageEGL))
 #define CLUTTER_IS_STAGE_EGL(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_STAGE_EGL))
 #define CLUTTER_STAGE_EGL_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_STAGE_EGL, ClutterStageEGLClass))
@@ -47,9 +47,9 @@ struct _ClutterStageEGLClass
   ClutterStageX11Class parent_class;
 };
 
-GType clutter_stage_egl_get_type (void) G_GNUC_CONST;
+GType _clutter_stage_egl_get_type (void) G_GNUC_CONST;
 
-void  clutter_stage_egl_redraw   (ClutterStageEGL *stage_egl,
+void  _clutter_stage_egl_redraw   (ClutterStageEGL *stage_egl,
                                   ClutterStage    *stage);
 
 #endif /* __CLUTTER_STAGE_EGL_H__ */

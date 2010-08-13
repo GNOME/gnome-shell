@@ -40,7 +40,7 @@
 #include <glib.h>
 
 gboolean
-clutter_backend_glx_handle_event (ClutterBackendX11 *backend_x11,
+_clutter_backend_glx_handle_event (ClutterBackendX11 *backend_x11,
                                   XEvent            *xevent)
 {
 #ifdef GLX_INTEL_swap_event
