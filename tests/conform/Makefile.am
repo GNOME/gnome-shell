@@ -4,62 +4,83 @@ NULL =
 
 noinst_PROGRAMS = test-conformance
 
-test_conformance_SOURCES = 		\
-	test-conform-main.c 		\
-	test-conform-common.c 		\
-	test-conform-common.h 		\
-	\
+# the common sources
+common_sources = \
+	test-conform-common.h 	\
+	test-conform-common.c 	\
+	test-conform-main.c	\
+	$(NULL)
+
+# the unit-specific sources; please: keep all sections in alphabetical order!
+units_sources =
+
+# animation tests
+units_sources += \
+	test-animator.c			\
+	test-behaviours.c		\
+	test-score.c			\
+	test-state.c			\
+	test-timeline.c			\
 	test-timeline-interpolate.c 	\
 	test-timeline-rewind.c 		\
-	test-timeline.c 		\
-	test-cogl-vertex-buffer-contiguous.c \
-	test-cogl-vertex-buffer-interleved.c \
-	test-cogl-vertex-buffer-mutability.c \
-	test-cogl-fixed.c 		\
-	test-cogl-backface-culling.c 	\
-	test-cogl-npot-texture.c        \
-	test-cogl-blend-strings.c	\
-	test-cogl-premult.c		\
-	test-cogl-materials.c		\
-	test-cogl-viewport.c		\
-	test-cogl-offscreen.c		\
-	test-cogl-readpixels.c		\
-	test-cogl-multitexture.c        \
-	test-cogl-texture-mipmaps.c     \
-	test-cogl-texture-rectangle.c   \
-	test-cogl-texture-3d.c          \
-	test-cogl-texture-pixmap-x11.c  \
-	test-cogl-texture-get-set-data.c \
-	test-cogl-wrap-modes.c          \
-	test-cogl-pixel-buffer.c	\
-	test-cogl-path.c		\
-	test-cogl-object.c		\
-	test-cogl-depth-test.c		\
-	test-path.c 			\
-	test-pick.c 			\
-	test-clutter-rectangle.c 	\
-	test-actor-invariants.c 	\
-	test-paint-opacity.c 		\
-	test-binding-pool.c		\
-        test-clutter-text.c             \
-	test-clutter-cairo-texture.c    \
-        test-text-cache.c               \
-	test-anchors.c                  \
-	test-model.c			\
-	test-color.c			\
-	test-clutter-units.c		\
-	test-group.c			\
-	test-actor-size.c		\
-	test-texture-fbo.c		\
-	test-cogl-sub-texture.c         \
-	test-script-parser.c		\
+	$(NULL)
+
+# cogl tests
+units_sources += \
+	test-cogl-backface-culling.c 		\
+	test-cogl-blend-strings.c		\
+	test-cogl-depth-test.c			\
+	test-cogl-fixed.c 			\
+	test-cogl-materials.c			\
+	test-cogl-viewport.c			\
+	test-cogl-multitexture.c        	\
+	test-cogl-npot-texture.c        	\
+	test-cogl-object.c			\
+	test-cogl-offscreen.c			\
+	test-cogl-path.c			\
+	test-cogl-pixel-buffer.c		\
+	test-cogl-premult.c			\
+	test-cogl-readpixels.c			\
+	test-cogl-sub-texture.c         	\
+	test-cogl-texture-3d.c          	\
+	test-cogl-texture-get-set-data.c 	\
+	test-cogl-texture-mipmaps.c     	\
+	test-cogl-texture-pixmap-x11.c  	\
+	test-cogl-texture-rectangle.c   	\
+	test-cogl-vertex-buffer-contiguous.c 	\
+	test-cogl-vertex-buffer-interleved.c 	\
+	test-cogl-vertex-buffer-mutability.c 	\
+	test-cogl-wrap-modes.c          	\
+	$(NULL)
+
+# actors tests
+units_sources += \
 	test-actor-destroy.c		\
-	test-behaviours.c		\
-	test-animator.c			\
-	test-state.c			\
+	test-actor-size.c		\
+	test-actor-invariants.c 	\
+	test-anchors.c                  \
+	test-binding-pool.c		\
+	test-clutter-cairo-texture.c    \
+	test-clutter-rectangle.c 	\
+        test-clutter-text.c             \
 	test-clutter-texture.c		\
-	test-score.c			\
+	test-group.c			\
+	test-path.c 			\
+	test-paint-opacity.c 		\
+	test-pick.c 			\
+	test-texture-fbo.c		\
+        test-text-cache.c               \
+	$(NULL)
+
+# objects tests
+units_sources += \
+	test-clutter-units.c		\
+	test-color.c			\
+	test-model.c			\
+	test-script-parser.c		\
         $(NULL)
+
+test_conformance_SOURCES = $(common_sources) $(units_sources)
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers clean-wrappers
