@@ -444,16 +444,10 @@ clutter_animator_finalize (GObject *object)
   g_list_free (priv->score);
   priv->score = NULL;
 
-#if 0
-  for (; priv->score;
-       priv->score = g_list_remove (priv->score, priv->score->data))
-    {
-      clutter_animator_key_free (priv->score->data);
-    }
-#endif
-
   g_object_unref (priv->timeline);
   g_object_unref (priv->slave_timeline);
+
+  g_hash_table_destroy (priv->properties);
 
   G_OBJECT_CLASS (clutter_animator_parent_class)->finalize (object);
 }
@@ -1543,7 +1537,7 @@ parse_animator_property (JsonArray *array,
   GObjectClass *klass;
   GParamSpec *pspec;
   GSList *valid_keys = NULL;
-  GList *k;
+  GList *array_keys, *k;
   ClutterInterpolation interpolation = CLUTTER_INTERPOLATION_LINEAR;
   gboolean ease_in = FALSE;
 
@@ -1615,9 +1609,8 @@ parse_animator_property (JsonArray *array,
   else
     g_value_init (clos->value, G_TYPE_POINTER);
 
-  for (k = json_array_get_elements (keys);
-       k != NULL;
-       k = k->next)
+  array_keys = json_array_get_elements (keys);
+  for (k = array_keys; k != NULL; k = k->next)
     {
       JsonNode *node = k->data;
       JsonArray *key = json_node_get_array (node);
@@ -1655,6 +1648,8 @@ parse_animator_property (JsonArray *array,
 
       valid_keys = g_slist_prepend (valid_keys, animator_key);
     }
+
+  g_list_free (array_keys);
 
   g_value_set_pointer (clos->value, g_slist_reverse (valid_keys));
 
@@ -1827,7 +1822,6 @@ clutter_animator_init (ClutterAnimator *animator)
   clutter_animator_set_timeline (animator, clutter_timeline_new (2000));
 
   priv->slave_timeline = clutter_timeline_new (10000);
-  g_object_ref_sink (priv->slave_timeline);
 }
 
 
