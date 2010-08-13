@@ -242,7 +242,7 @@ HTML_REPORTS = \
 	full-report-npot.html
 
 EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh.in run-tests.sh
-DISTCLEANFILES = test-launcher.sh
+DISTCLEANFILES = test-launcher.sh .gitignore
 
 # we override the clean-generic target to clean up the wrappers so
 # we cannot use CLEANFILES
