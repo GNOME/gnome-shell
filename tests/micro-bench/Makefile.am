@@ -1,5 +1,7 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
 
+DISTCLEANFILES =
+
 noinst_PROGRAMS = \
 	test-text \
 	test-picking \
@@ -26,3 +28,4 @@ test_picking_SOURCES = test-picking.c
 test_text_perf_SOURCES = test-text-perf.c
 test_random_text_SOURCES = test-random-text.c
 
+-include $(top_srcdir)/build/autotools/Makefile.am.gitignore

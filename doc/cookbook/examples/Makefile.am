@@ -40,3 +40,7 @@ textures_sub_texture_SOURCES               = textures-sub-texture.c
 layouts_stacking_SOURCES                   = layouts-stacking.c
 layouts_stacking_diff_sized_actors_SOURCES = layouts-stacking-diff-sized-actors.c
 events_mouse_scroll_SOURCES                = events-mouse-scroll.c
+
+DISTCLEANFILES =
+
+-include $(top_srcdir)/build/autotools/Makefile.am.gitignore

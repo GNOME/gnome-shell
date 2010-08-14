@@ -61,3 +61,7 @@ cally_clone_example_CFLAGS		= 	$(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS) \
 						$(INCLUDES)
 cally_clone_example_SOURCES		= 	cally-clone-example.c		\
 						$(common_sources)
+
+DISTCLEANFILES =
+
+-include $(top_srcdir)/build/autotools/Makefile.am.gitignore
