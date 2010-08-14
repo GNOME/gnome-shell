@@ -147,3 +147,12 @@ install-data-local:
 	$(INSTALL_DATA) html/clutter-cookbook.devhelp $(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
 
 .PHONY : doc
+
+COOKBOOK_BASE_PATH = /home/clutter/web/docs.clutter-project.org/docs/clutter-cookbook
+COOKBOOK_VERSION = $(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)
+COOKBOOK_PATH = $(COOKBOOK_BASE_PATH)/$(COOKBOOK_VERSION)
+
+publish: html-build.stamp
+	scp -r html/* clutter@clutter-project.org:$(COOKBOOK_PATH)
+
+.PHONY : publish
