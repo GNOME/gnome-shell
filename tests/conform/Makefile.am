@@ -244,6 +244,8 @@ HTML_REPORTS = \
 EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh.in run-tests.sh
 DISTCLEANFILES = test-launcher.sh
 
+MAINTAINERCLEANFILES = .gitignore
+
 # we override the clean-generic target to clean up the wrappers so
 # we cannot use CLEANFILES
 clean-generic: clean-wrappers

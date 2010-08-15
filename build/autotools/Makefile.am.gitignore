@@ -7,15 +7,18 @@ $(srcdir)/.gitignore: Makefile.am
 	$(QUIET_GEN)( \
 	  echo "*.o" ; \
 	  echo ".gitignore" ; \
-	) > .gitignore ; \
+	) > $(srcdir)/.gitignore ; \
 	for p in $(noinst_PROGRAMS); do \
-		echo "/$$p" >> .gitignore ; \
+		echo "/$$p" >> $(srcdir)/.gitignore ; \
 	done
 
 gitignore: $(srcdir)/.gitignore
 
-.PHONY: gitignore
+gitignore-clean:
+	$(QUIET_RM)rm -f $(srcdir)/.gitignore
 
-DISTCLEANFILES += $(srcdir)/.gitignore
+.PHONY: gitignore gitignore-clean
 
 all: gitignore
+
+maintainer-clean: gitignore-clean
