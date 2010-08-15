@@ -117,7 +117,7 @@ test_interactive_LDFLAGS = -export-dynamic
 test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd)
 
 EXTRA_DIST = wrapper.sh.in
-DISTCLEANFILES = wrapper.sh .gitignore
+DISTCLEANFILES = wrapper.sh
 
 BUILT_SOURCES = wrappers
 
