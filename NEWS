@@ -1,3 +1,43 @@
+Clutter 1.3.12 (16/08/2010)
+===============================================================================
+
+  • List of changes since Clutter 1.3.10
+
+    » New recipes in the Cookbook:
+      - create and animate sub-textures
+      - layout managers
+      - scroll events
+
+    » Set the ClutterTexture:filename property to also be readable.
+
+    » Avoid layout cycles when creating ClutterLayoutMeta objects
+      during the ::allocate implementation
+
+    » Add a ClutterTableLayout, a layout manager for tabular layouts.
+
+    » Capture ENTER and LEAVE events on the stage within the DragAction.
+
+    » Plug memory leaks.
+
+    » Use g_object_notify_by_pspec(), if available, to speed up the
+      emission of the ::notify signal on property changes.
+
+    » Re-use the Cogl texture atlas for the CoglPango glyphs cache,
+      and improve the performance with large font sizes.
+
+    » Various fixes in the Materials comparison and inheritance.
+
+    » Add the ability to associate a user program to a material.
+
+Many thanks to:
+
+  Neil Roberts
+  Elliot Smith
+  Robert Bragg
+  Damien Lespiau
+  José Dapena Paz
+  Owen W. Taylor
+
 Clutter 1.3.10 (04/08/2010)
 ===============================================================================
 
