@@ -192,10 +192,17 @@ clutter_effect_real_post_paint (ClutterEffect *effect)
 }
 
 static void
+clutter_effect_real_get_paint_volume (ClutterEffect      *effect,
+                                      ClutterPaintVolume *volume)
+{
+}
+
+static void
 clutter_effect_class_init (ClutterEffectClass *klass)
 {
   klass->pre_paint = clutter_effect_real_pre_paint;
   klass->post_paint = clutter_effect_real_post_paint;
+  klass->get_paint_volume = clutter_effect_real_get_paint_volume;
 }
 
 static void
@@ -217,4 +224,14 @@ _clutter_effect_post_paint (ClutterEffect *effect)
   g_return_if_fail (CLUTTER_IS_EFFECT (effect));
 
   CLUTTER_EFFECT_GET_CLASS (effect)->post_paint (effect);
+}
+
+void
+_clutter_effect_get_paint_volume (ClutterEffect      *effect,
+                                  ClutterPaintVolume *volume)
+{
+  g_return_if_fail (CLUTTER_IS_EFFECT (effect));
+  g_return_if_fail (volume != NULL);
+
+  CLUTTER_EFFECT_GET_CLASS (effect)->get_paint_volume (effect, volume);
 }

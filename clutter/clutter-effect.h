@@ -72,16 +72,21 @@ struct _ClutterEffectClass
   ClutterActorMetaClass parent_class;
 
   /*< public >*/
-  gboolean (* pre_paint)  (ClutterEffect *effect);
-  void     (* post_paint) (ClutterEffect *effect);
+  gboolean (* pre_paint)        (ClutterEffect      *effect);
+  void     (* post_paint)       (ClutterEffect      *effect);
+
+  void     (* get_paint_volume) (ClutterEffect      *effect,
+                                 ClutterPaintVolume *volume);
 
   /*< private >*/
+  void (* _clutter_effect0) (void);
   void (* _clutter_effect1) (void);
   void (* _clutter_effect2) (void);
   void (* _clutter_effect3) (void);
   void (* _clutter_effect4) (void);
   void (* _clutter_effect5) (void);
   void (* _clutter_effect6) (void);
+  void (* _clutter_effect7) (void);
 };
 
 GType clutter_effect_get_type (void) G_GNUC_CONST;

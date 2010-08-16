@@ -384,8 +384,10 @@ void _clutter_run_repaint_functions (void);
 
 gint32 _clutter_backend_get_units_serial (ClutterBackend *backend);
 
-gboolean _clutter_effect_pre_paint  (ClutterEffect *effect);
-void     _clutter_effect_post_paint (ClutterEffect *effect);
+gboolean _clutter_effect_pre_paint        (ClutterEffect      *effect);
+void     _clutter_effect_post_paint       (ClutterEffect      *effect);
+void     _clutter_effect_get_paint_volume (ClutterEffect      *effect,
+                                           ClutterPaintVolume *volume);
 
 void _clutter_constraint_update_allocation (ClutterConstraint *constraint,
                                             ClutterActor      *actor,

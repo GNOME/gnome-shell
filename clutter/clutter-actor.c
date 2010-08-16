@@ -493,6 +493,8 @@ struct _ClutterActorPrivate
   ClutterMetaGroup *actions;
   ClutterMetaGroup *constraints;
   ClutterMetaGroup *effects;
+
+  ClutterActorMeta *current_effect;
 };
 
 enum
@@ -2338,13 +2340,19 @@ _clutter_actor_effects_pre_paint (ClutterActor *self)
   const GList *effects, *l;
   gboolean was_pre_painted = FALSE;
 
+  priv->current_effect = NULL;
+
   effects = _clutter_meta_group_peek_metas (priv->effects);
   for (l = effects; l != NULL; l = l->next)
     {
       ClutterEffect *effect = l->data;
 
+      priv->current_effect = l->data;
+
       was_pre_painted |= _clutter_effect_pre_paint (effect);
     }
+
+  priv->current_effect = NULL;
 
   return was_pre_painted;
 }
@@ -2355,14 +2363,20 @@ _clutter_actor_effects_post_paint (ClutterActor *self)
   ClutterActorPrivate *priv = self->priv;
   const GList *effects, *l;
 
+  priv->current_effect = NULL;
+
   /* we walk the list backwards, to unwind the post-paint order */
   effects = _clutter_meta_group_peek_metas (priv->effects);
   for (l = g_list_last ((GList *) effects); l != NULL; l = l->prev)
     {
       ClutterEffect *effect = l->data;
 
+      priv->current_effect = l->data;
+
       _clutter_effect_post_paint (effect);
     }
+
+  priv->current_effect = NULL;
 }
 
 /* Recursively applies the transforms associated with this actor and
@@ -3259,11 +3273,13 @@ clutter_actor_real_get_paint_volume (ClutterActor       *self,
                                      ClutterPaintVolume *volume)
 {
   ClutterActorPrivate *priv = self->priv;
+  gfloat width, height;
 
   /* the default origin is set to { 0, 0, 0 } */
+  clutter_actor_box_get_size (&priv->allocation, &width, &height);
+  clutter_paint_volume_set_width (volume, width);
+  clutter_paint_volume_set_height (volume, height);
 
-  clutter_paint_volume_set_width (volume, priv->allocation.x2 - priv->allocation.x1);
-  clutter_paint_volume_set_height (volume, priv->allocation.y2 - priv->allocation.y1);
   clutter_paint_volume_set_depth (volume, priv->z);
 }
 
@@ -11682,12 +11698,46 @@ _clutter_paint_volume_get_box (ClutterPaintVolume *pv,
 ClutterPaintVolume *
 clutter_actor_get_paint_volume (ClutterActor *self)
 {
+  ClutterActorPrivate *priv;
   ClutterPaintVolume *pv;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
   pv = _clutter_paint_volume_new (self);
   CLUTTER_ACTOR_GET_CLASS (self)->get_paint_volume (self, pv);
+
+  priv = self->priv;
+
+  /* since effects can modify the paint volume, we allow them to actually
+   * do this by making get_paint_volume() "context sensitive"
+   */
+  if (priv->effects != NULL)
+    {
+      if (priv->current_effect != NULL)
+        {
+          const GList *effects, *l;
+
+          /* if we are being called from within the paint sequence of
+           * an actor, get the paint volume up to the current effect
+           */
+          effects = _clutter_meta_group_peek_metas (priv->effects);
+          for (l = effects;
+               l != NULL || (l != NULL && l->data != priv->current_effect);
+               l = l->next)
+            {
+              _clutter_effect_get_paint_volume (l->data, pv);
+            }
+        }
+      else
+        {
+          const GList *effects, *l;
+
+          /* otherwise, get the cumulative volume */
+          effects = _clutter_meta_group_peek_metas (priv->effects);
+          for (l = effects; l != NULL; l = l->next)
+            _clutter_effect_get_paint_volume (l->data, pv);
+        }
+    }
 
   return pv;
 }
