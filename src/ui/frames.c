@@ -2004,32 +2004,64 @@ meta_frames_destroy_event           (GtkWidget           *widget,
   return TRUE;
 }
 
+#if !GTK_CHECK_VERSION(2,21,6)
+/* Copied from GDK */
+static cairo_pattern_t *
+gdk_window_get_background_pattern (GdkWindow *window)
+{
+  GdkWindowObject *private = (GdkWindowObject *) window;
+  cairo_pattern_t *pattern;
+
+  g_return_val_if_fail (GDK_IS_WINDOW (window), NULL);
+
+  if (private->bg_pixmap == GDK_PARENT_RELATIVE_BG)
+    pattern = NULL;
+  else if (private->bg_pixmap != GDK_NO_BG &&
+           private->bg_pixmap != NULL)
+    {
+      static cairo_user_data_key_t key;
+      cairo_surface_t *surface;
+
+      surface = _gdk_drawable_ref_cairo_surface (private->bg_pixmap);
+      pattern = cairo_pattern_create_for_surface (surface);
+      cairo_surface_destroy (surface);
+
+      cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REPEAT);
+      cairo_pattern_set_user_data (pattern,
+                                   &key,
+                                   g_object_ref (private->bg_pixmap),
+                                   g_object_unref);
+    }
+  else
+    pattern =
+        cairo_pattern_create_rgb (private->bg_color.red   / 65535.,
+                                  private->bg_color.green / 65535.,
+                                  private->bg_color.blue / 65535.);
+    }
+
+  return pattern;
+}
+#endif
+
 static void
 setup_bg_cr (cairo_t *cr, GdkWindow *window, int x_offset, int y_offset)
 {
   GdkWindow *parent = gdk_window_get_parent (window);
-  GdkPixmap *back_pixmap;
-  gboolean parent_relative;
+  cairo_pattern_t *bg_pattern;
 
-  gdk_window_get_back_pixmap (window, &back_pixmap, &parent_relative);
-  if (parent_relative && parent)
+  bg_pattern = gdk_window_get_background_pattern (window);
+  if (bg_pattern == NULL && parent)
     {
       gint window_x, window_y;
 
       gdk_window_get_position (window, &window_x, &window_y);
       setup_bg_cr (cr, parent, x_offset + window_x, y_offset + window_y);
     }
-  else if (back_pixmap)
+  else if (bg_pattern)
     {
-      gdk_cairo_set_source_pixmap (cr, back_pixmap, x_offset, y_offset);
-      cairo_pattern_set_extend (cairo_get_source (cr), CAIRO_EXTEND_REPEAT);
-    }
-  else
-    {
-      GdkColor bg_color;
-
-      gdk_window_get_background (window, &bg_color);
-      gdk_cairo_set_source_color (cr, &bg_color);
+      cairo_translate (cr, - x_offset, - y_offset);
+      cairo_set_source (cr, bg_pattern);
+      cairo_translate (cr, x_offset, y_offset);
     }
 }
 
