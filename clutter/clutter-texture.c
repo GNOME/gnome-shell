@@ -1416,7 +1416,7 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
             {
               ClutterRequestMode request;
 
-              if (priv->image_width > priv->image_height)
+              if (priv->image_width >= priv->image_height)
                 request = CLUTTER_REQUEST_HEIGHT_FOR_WIDTH;
               else
                 request = CLUTTER_REQUEST_WIDTH_FOR_HEIGHT;
