@@ -9211,10 +9211,10 @@ clutter_actor_box_clamp_to_pixel (ClutterActorBox *box)
 {
   g_return_if_fail (box != NULL);
 
-  box->x1 = floorf (box->x1 + 0.5);
-  box->y1 = floorf (box->y1 + 0.5);
-  box->x2 = floorf (box->x2 + 0.5);
-  box->y2 = floorf (box->y2 + 0.5);
+  box->x1 = floorf (box->x1);
+  box->y1 = floorf (box->y1);
+  box->x2 = ceilf (box->x2);
+  box->y2 = ceilf (box->y2);
 }
 
 /******************************************************************************/
