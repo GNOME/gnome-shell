@@ -296,6 +296,14 @@ Release Notes for Clutter 1.4
   The value will be unset when using the set_from_*_data() family of
   functions.
 
+• If both the :sync-size and the :keep-aspect-ratio properties of a
+  ClutterTexture are set to TRUE, then the texture actor will update its
+  ClutterActor:request-mode property depending on the orientation of the
+  image data - height-for-width for landscape, and width-for-height for
+  portrait. Square image data will default to height-for-width, like all
+  actors. You can still explicitly override the :request-mode value, or
+  you can unset the :sync-size property to control the size yourself.
+
 Release Notes for Clutter 1.2
 -------------------------------------------------------------------------------
 
