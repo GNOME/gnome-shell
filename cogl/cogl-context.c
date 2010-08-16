@@ -27,6 +27,7 @@
 
 #include "cogl.h"
 #include "cogl-internal.h"
+#include "cogl-profile.h"
 #include "cogl-util.h"
 #include "cogl-context.h"
 #include "cogl-journal-private.h"
@@ -67,6 +68,22 @@ cogl_create_context (void)
 
   if (_context != NULL)
     return FALSE;
+
+#ifdef CLUTTER_ENABLE_PROFILE
+  /* We need to be absolutely sure that uprof has been initialized
+   * before calling _cogl_uprof_init. uprof_init (NULL, NULL)
+   * will be a NOP if it has been initialized but it will also
+   * mean subsequent parsing of the UProf GOptionGroup will have no
+   * affect.
+   *
+   * Sadly GOptionGroup based library initialization is extremely
+   * fragile by design because GOptionGroups have no notion of
+   * dependencies and so the order things are initialized isn't
+   * currently under tight control.
+   */
+  uprof_init (NULL, NULL);
+  _cogl_uprof_init ();
+#endif
 
   /* Allocate context memory */
   _context = (CoglContext*) g_malloc (sizeof (CoglContext));
