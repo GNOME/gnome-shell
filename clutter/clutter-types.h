@@ -33,10 +33,11 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_ACTOR_BOX  (clutter_actor_box_get_type ())
-#define CLUTTER_TYPE_GEOMETRY   (clutter_geometry_get_type ())
-#define CLUTTER_TYPE_KNOT       (clutter_knot_get_type ())
-#define CLUTTER_TYPE_VERTEX     (clutter_vertex_get_type ())
+#define CLUTTER_TYPE_ACTOR_BOX          (clutter_actor_box_get_type ())
+#define CLUTTER_TYPE_GEOMETRY           (clutter_geometry_get_type ())
+#define CLUTTER_TYPE_KNOT               (clutter_knot_get_type ())
+#define CLUTTER_TYPE_PAINT_VOLUME       (clutter_paint_volume_get_type ())
+#define CLUTTER_TYPE_VERTEX             (clutter_vertex_get_type ())
 
 /* Forward delarations to avoid header catch 22's */
 typedef struct _ClutterActor            ClutterActor;
@@ -90,6 +91,7 @@ typedef struct _ClutterActorBox         ClutterActorBox;
 typedef struct _ClutterGeometry         ClutterGeometry;
 typedef struct _ClutterKnot             ClutterKnot;
 typedef struct _ClutterVertex           ClutterVertex;
+typedef struct _ClutterPaintVolume      ClutterPaintVolume;
 
 /**
  * ClutterVertex:
@@ -432,6 +434,25 @@ typedef enum {
   CLUTTER_VERTEX_SHADER,
   CLUTTER_FRAGMENT_SHADER
 } ClutterShaderType;
+
+GType clutter_paint_volume_get_type (void) G_GNUC_CONST;
+
+ClutterPaintVolume *clutter_paint_volume_copy       (const ClutterPaintVolume *pv);
+void                clutter_paint_volume_free       (ClutterPaintVolume       *pv);
+
+void                clutter_paint_volume_set_origin (ClutterPaintVolume       *pv,
+                                                     const ClutterVertex      *origin);
+void                clutter_paint_volume_get_origin (const ClutterPaintVolume *pv,
+                                                     ClutterVertex            *vertex);
+void                clutter_paint_volume_set_width  (ClutterPaintVolume       *pv,
+                                                     gfloat                    width);
+gfloat              clutter_paint_volume_get_width  (const ClutterPaintVolume *pv);
+void                clutter_paint_volume_set_height (ClutterPaintVolume       *pv,
+                                                     gfloat                    height);
+gfloat              clutter_paint_volume_get_height (const ClutterPaintVolume *pv);
+void                clutter_paint_volume_set_depth  (ClutterPaintVolume       *pv,
+                                                     gfloat                    depth);
+gfloat              clutter_paint_volume_get_depth  (const ClutterPaintVolume *pv);
 
 G_END_DECLS
 

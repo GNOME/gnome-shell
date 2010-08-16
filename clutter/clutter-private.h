@@ -409,6 +409,10 @@ gpointer _clutter_event_get_platform_data (const ClutterEvent *event);
 
 #endif
 
+ClutterPaintVolume *_clutter_paint_volume_new     (ClutterActor       *actor);
+void                _clutter_paint_volume_get_box (ClutterPaintVolume *pv,
+                                                   ClutterActorBox    *box);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_PRIVATE_H */

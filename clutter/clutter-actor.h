@@ -306,9 +306,12 @@ struct _ClutterActorClass
   /* accessibility support */
   AtkObject * (* get_accessible)    (ClutterActor         *actor);
 
+  void        (* get_paint_volume)  (ClutterActor         *actor,
+                                     ClutterPaintVolume   *volume);
+
   /*< private >*/
   /* padding for future expansion */
-  gpointer _padding_dummy[30];
+  gpointer _padding_dummy[29];
 };
 
 GType                 clutter_actor_get_type                  (void) G_GNUC_CONST;
@@ -586,6 +589,9 @@ gboolean             clutter_actor_has_allocation     (ClutterActor         *sel
 AtkObject *          clutter_actor_get_accessible     (ClutterActor         *self);
 
 gboolean             clutter_actor_has_key_focus      (ClutterActor         *self);
+ClutterPaintVolume  *clutter_actor_get_paint_volume   (ClutterActor         *self);
+void                 clutter_actor_get_paint_box      (ClutterActor         *self,
+                                                       ClutterActorBox      *box);
 
 G_END_DECLS
 

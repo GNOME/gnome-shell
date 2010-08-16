@@ -312,6 +312,37 @@ typedef struct _AnchorCoord AnchorCoord;
 #define CLUTTER_ACTOR_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ACTOR, ClutterActorPrivate))
 
+/**
+ * ClutterPaintVolume:
+ *
+ * <structname>ClutterPaintVolume</structname> is an opaque structure whose
+ * members cannot be directly accessed
+ *
+ * Since: 1.4
+ */
+struct _ClutterPaintVolume
+{
+  ClutterActor *actor;
+
+  /* cuboid for the volume:
+   *
+   *   0: origin  ┐
+   *   1: width   │→ plane[0], Z value = 0
+   *   2: height  ┘
+   *
+   *   3. depth → X = 0, Y = 0, Z = @actor:depth
+   *
+   *   4: anti-origin ┐
+   *   5: width       │→ plane[1], Z value = @actor:depth
+   *   6: height      ┘
+   *
+   *   7: depth → X = anti-origin.x, Y = anti-origin.y, Z = @actor:depth
+   *
+   * the first four elements are filled in by the PaintVolume setters
+   */
+  ClutterVertex vertices[8];
+};
+
 /* Internal helper struct to represent a point that can be stored in
    either direct pixel coordinates or as a fraction of the actor's
    size. It is used for the anchor point, scale center and rotation
@@ -3224,6 +3255,19 @@ atk_implementor_iface_init (AtkImplementorIface *iface)
 }
 
 static void
+clutter_actor_real_get_paint_volume (ClutterActor       *self,
+                                     ClutterPaintVolume *volume)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  /* the default origin is set to { 0, 0, 0 } */
+
+  clutter_paint_volume_set_width (volume, priv->allocation.x2 - priv->allocation.x1);
+  clutter_paint_volume_set_height (volume, priv->allocation.y2 - priv->allocation.y1);
+  clutter_paint_volume_set_depth (volume, priv->z);
+}
+
+static void
 clutter_actor_class_init (ClutterActorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -4633,6 +4677,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->queue_relayout = clutter_actor_real_queue_relayout;
   klass->apply_transform = clutter_actor_real_apply_transform;
   klass->get_accessible = clutter_actor_real_get_accessible;
+  klass->get_paint_volume = clutter_actor_real_get_paint_volume;
 }
 
 static void
@@ -11437,4 +11482,228 @@ clutter_actor_has_key_focus (ClutterActor *self)
     return FALSE;
 
   return clutter_stage_get_key_focus (CLUTTER_STAGE (stage)) == self;
+}
+
+GType
+clutter_paint_volume_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (G_UNLIKELY (our_type == 0))
+    our_type =
+      g_boxed_type_register_static (I_("ClutterPaintVolume"),
+                                    (GBoxedCopyFunc) clutter_paint_volume_copy,
+                                    (GBoxedFreeFunc) clutter_paint_volume_free);
+
+  return our_type;
+}
+
+ClutterPaintVolume *
+_clutter_paint_volume_new (ClutterActor *actor)
+{
+  ClutterPaintVolume *pv;
+
+  pv = g_slice_new (ClutterPaintVolume);
+  pv->actor = (actor != NULL) ? g_object_ref (actor) : NULL;
+
+  memset (pv->vertices, 0, 8 * sizeof (ClutterVertex));
+
+  return pv;
+}
+
+ClutterPaintVolume *
+clutter_paint_volume_copy (const ClutterPaintVolume *pv)
+{
+  ClutterPaintVolume *copy;
+
+  if (G_UNLIKELY (pv == NULL))
+    return NULL;
+
+  copy = g_slice_dup (ClutterPaintVolume, pv);
+  copy->actor = g_object_ref (pv->actor);
+
+  return copy;
+}
+
+void
+clutter_paint_volume_free (ClutterPaintVolume *pv)
+{
+  if (G_UNLIKELY (pv == NULL))
+    {
+      if (pv->actor != NULL)
+        g_object_unref (pv->actor);
+
+      g_slice_free (ClutterPaintVolume, pv);
+    }
+}
+
+void
+clutter_paint_volume_set_origin (ClutterPaintVolume  *pv,
+                                 const ClutterVertex *origin)
+{
+  g_return_if_fail (pv != NULL);
+
+  pv->vertices[0] = *origin;
+}
+
+void
+clutter_paint_volume_get_origin (const ClutterPaintVolume *pv,
+                                 ClutterVertex            *vertex)
+{
+  g_return_if_fail (pv != NULL);
+  g_return_if_fail (vertex != NULL);
+
+  *vertex = pv->vertices[0];
+}
+
+void
+clutter_paint_volume_set_width (ClutterPaintVolume *pv,
+                                gfloat              width)
+{
+  g_return_if_fail (pv != NULL);
+  g_return_if_fail (width >= 0.0f);
+
+  pv->vertices[1].x = width;
+}
+
+gfloat
+clutter_paint_volume_get_width (const ClutterPaintVolume *pv)
+{
+  g_return_val_if_fail (pv != NULL, 0.0);
+
+  return pv->vertices[1].x;
+}
+
+void
+clutter_paint_volume_set_height (ClutterPaintVolume *pv,
+                                 gfloat              height)
+{
+  g_return_if_fail (pv != NULL);
+  g_return_if_fail (height >= 0.0f);
+
+  pv->vertices[2].y = height;
+}
+
+gfloat
+clutter_paint_volume_get_height (const ClutterPaintVolume *pv)
+{
+  g_return_val_if_fail (pv != NULL, 0.0);
+
+  return pv->vertices[2].y;
+}
+
+void
+clutter_paint_volume_set_depth (ClutterPaintVolume *pv,
+                                gfloat              depth)
+{
+  g_return_if_fail (pv != NULL);
+
+  pv->vertices[3].z = depth;
+}
+
+gfloat
+clutter_paint_volume_get_depth (const ClutterPaintVolume *pv)
+{
+  g_return_val_if_fail (pv != NULL, 0.0);
+
+  return pv->vertices[3].z;
+}
+
+void
+_clutter_paint_volume_get_box (ClutterPaintVolume *pv,
+                               ClutterActorBox    *box)
+{
+  ClutterVertex screen_v[8];
+  gfloat x_min, y_min, x_max, y_max;
+  gint i;
+
+  g_return_if_fail (pv != NULL);
+  g_return_if_fail (box != NULL);
+
+  if (pv->actor == NULL)
+    {
+      g_warning ("Paint volume created without a reference actor");
+      return;
+    }
+
+  /* anti-origin */
+  pv->vertices[4].x = pv->vertices[1].x;
+  pv->vertices[4].y = pv->vertices[2].y;
+  pv->vertices[4].z = 0.0f;
+
+  if (pv->vertices[3].z < 0.00001 || pv->vertices[3].z > 0.00001)
+    {
+      pv->vertices[5].x = pv->vertices[1].x;
+      pv->vertices[5].y = pv->vertices[0].y;
+      pv->vertices[5].z = pv->vertices[3].z;
+
+      pv->vertices[6].x = pv->vertices[0].x;
+      pv->vertices[6].y = pv->vertices[2].y;
+      pv->vertices[6].z = pv->vertices[3].z;
+
+      pv->vertices[7].x = pv->vertices[1].x;
+      pv->vertices[7].y = pv->vertices[2].y;
+      pv->vertices[7].z = pv->vertices[3].z;
+    }
+
+  if (!_clutter_actor_fully_transform_vertices (pv->actor,
+                                                pv->vertices,
+                                                screen_v,
+                                                G_N_ELEMENTS (screen_v)))
+    return;
+
+  box->x1 = box->y1 = box->x2 = box->y2 = 0.0f;
+
+  x_min = y_min = G_MAXFLOAT;
+  x_max = y_max = -G_MAXFLOAT;
+
+  for (i = 0; i < G_N_ELEMENTS (screen_v); i++)
+    {
+      if (screen_v[i].x < x_min)
+        x_min = screen_v[i].x;
+
+      if (screen_v[i].x > x_max)
+        x_max = screen_v[i].x;
+
+      if (screen_v[i].y < y_min)
+        y_min = screen_v[i].y;
+
+      if (screen_v[i].y > y_max)
+        y_max = screen_v[i].y;
+    }
+
+  box->x1 = x_min;
+  box->y1 = y_min;
+  box->x2 = x_max;
+  box->y2 = y_max;
+  clutter_actor_box_clamp_to_pixel (box);
+}
+
+ClutterPaintVolume *
+clutter_actor_get_paint_volume (ClutterActor *self)
+{
+  ClutterPaintVolume *pv;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  pv = _clutter_paint_volume_new (self);
+  CLUTTER_ACTOR_GET_CLASS (self)->get_paint_volume (self, pv);
+
+  return pv;
+}
+
+void
+clutter_actor_get_paint_box (ClutterActor    *self,
+                             ClutterActorBox *box)
+{
+  ClutterPaintVolume *pv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (box != NULL);
+
+  pv = clutter_actor_get_paint_volume (self);
+
+  _clutter_paint_volume_get_box (pv, box);
+
+  clutter_paint_volume_free (pv);
 }
