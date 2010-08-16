@@ -26,8 +26,21 @@ debug_option_setter (gboolean value, void *user_data)
     cogl_debug_flags &= ~(1 << shift);
 }
 
-static void __attribute__ ((constructor))
-cogl_uprof_constructor (void)
+static void
+print_exit_report (void)
+{
+  if (getenv ("COGL_PROFILE_OUTPUT_REPORT"))
+    {
+      UProfReport *report = uprof_report_new ("Cogl report");
+      uprof_report_add_context (report, _cogl_uprof_context);
+      uprof_report_print (report);
+      uprof_report_unref (report);
+    }
+  uprof_context_unref (_cogl_uprof_context);
+}
+
+void
+_cogl_uprof_init (void)
 {
   _cogl_uprof_context = uprof_context_new ("Cogl");
 #define OPT(MASK_NAME, GROUP, NAME, NAME_FORMATTED, DESCRIPTION) \
@@ -47,19 +60,8 @@ cogl_uprof_constructor (void)
 
 #include "cogl-debug-options.h"
 #undef OPT
-}
 
-static void __attribute__ ((destructor))
-cogl_uprof_destructor (void)
-{
-  if (getenv ("COGL_PROFILE_OUTPUT_REPORT"))
-    {
-      UProfReport *report = uprof_report_new ("Cogl report");
-      uprof_report_add_context (report, _cogl_uprof_context);
-      uprof_report_print (report);
-      uprof_report_unref (report);
-    }
-  uprof_context_unref (_cogl_uprof_context);
+  g_atexit (print_exit_report);
 }
 
 void

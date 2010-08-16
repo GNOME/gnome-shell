@@ -39,6 +39,9 @@ extern UProfContext *_cogl_uprof_context;
 #define COGL_TIMER_STOP      UPROF_TIMER_STOP
 
 void
+_cogl_uprof_init (void);
+
+void
 _cogl_profile_trace_message (const char *format, ...);
 
 #else
