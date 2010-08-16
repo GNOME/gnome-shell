@@ -109,16 +109,8 @@ main (int argc, char *argv[])
   CoglHandle texture_1 = load_cogl_texture ("source", source);
   CoglHandle texture_2 = load_cogl_texture ("target", target);
 
-  /* sizes of textures */
-  gfloat source_width, source_height, target_width, target_height;
-  source_width = cogl_texture_get_width (texture_1);
-  source_height = cogl_texture_get_height (texture_1);
-  target_width = cogl_texture_get_width (texture_2);
-  target_height = cogl_texture_get_height (texture_2);
-
   /* Create a new Cogl material holding the two textures inside two
-   * separate layers. Layer 0 is the one which will end
-   * up being visible.
+   * separate layers.
    */
   CoglHandle material = cogl_material_new ();
   cogl_material_set_layer (material, 1, texture_1);
@@ -145,25 +137,22 @@ main (int argc, char *argv[])
    * assign the material we created earlier to the Texture for painting
    * it
    */
-  ClutterActor *stage = clutter_stage_new ();
+  ClutterActor *stage = clutter_stage_get_default ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "cross-fade");
   clutter_actor_set_size (stage, 600, 600);
   clutter_actor_show (stage);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   ClutterActor *texture = clutter_texture_new ();
-  clutter_actor_set_size (texture, source_width, source_height);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), texture);
   clutter_texture_set_cogl_material (CLUTTER_TEXTURE (texture), material);
   clutter_actor_add_constraint (texture, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5));
   clutter_actor_add_constraint (texture, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5));
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), texture);
   cogl_handle_unref (material);
 
   /* The timeline will drive the cross-fading */
   ClutterTimeline *timeline = clutter_timeline_new (duration);
   g_signal_connect (timeline, "new-frame", G_CALLBACK (_update_progress_cb), texture);
-
-  /* animate */
   clutter_timeline_start (timeline);
 
   clutter_main ();
