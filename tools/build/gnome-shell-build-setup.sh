@@ -69,7 +69,7 @@ fi
 #
 # (*) only needed for --xephyr
 
-if test x$system = xUbuntu -o x$system = xDebian -o x$system = xLinuxMint ; then
+if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint ; then
   reqd=""
   if [ ! -x /usr/bin/dpkg-checkbuilddeps ]; then
     echo "Please run 'sudo apt-get install dpkg-dev' and try again."
@@ -96,7 +96,7 @@ if test x$system = xUbuntu -o x$system = xDebian -o x$system = xLinuxMint ; then
   fi
 fi
 
-if test x$system = xFedora ; then
+if test "x$system" = xFedora ; then
   reqd="
     binutils curl gcc gcc-c++ make
     automake bison flex gettext git gnome-common gnome-doc-utils gvfs intltool
@@ -122,7 +122,7 @@ if test x$system = xFedora ; then
   fi
 fi
 
-if test x$system = xSUSE ; then
+if test "x$system" = xSUSE -o "x$system" = "xSUSE LINUX" ; then
   reqd=""
   for pkg in \
     curl \
@@ -142,7 +142,7 @@ if test x$system = xSUSE ; then
   fi
 fi
 
-if test x$system = xMandrivaLinux ; then
+if test "x$system" = xMandrivaLinux ; then
   reqd=""
   for pkg in \
     curl \
