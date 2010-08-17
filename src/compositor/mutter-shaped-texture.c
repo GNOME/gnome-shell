@@ -73,6 +73,8 @@ struct _MutterShapedTexturePrivate
   guint mask_width, mask_height;
 
   GArray *rectangles;
+
+  guint create_mipmaps : 1;
 };
 
 static void
@@ -105,6 +107,7 @@ mutter_shaped_texture_init (MutterShapedTexture *self)
 
   priv->paint_tower = mutter_texture_tower_new ();
   priv->mask_texture = COGL_INVALID_HANDLE;
+  priv->create_mipmaps = TRUE;
 }
 
 static void
@@ -163,8 +166,9 @@ mutter_shaped_texture_notify (GObject    *object,
       MutterShapedTexture *stex = (MutterShapedTexture *) object;
       MutterShapedTexturePrivate *priv = stex->priv;
 
-      mutter_texture_tower_set_base_texture (priv->paint_tower,
-					     clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex)));
+      if (priv->create_mipmaps)
+	mutter_texture_tower_set_base_texture (priv->paint_tower,
+					       clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex)));
     }
 }
 
@@ -296,27 +300,25 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (stex)))
     clutter_actor_realize (CLUTTER_ACTOR (stex));
 
-  /* If mipmaps are supported, then the texture filter quality will
-   * still be HIGH here. In that case we just want to use the base
-   * texture. If mipmaps are not support then
-   * on_glx_texture_pixmap_pre_paint() will have reset the texture
-   * filter quality to MEDIUM, and we should use the MutterTextureTower
-   * mipmap emulation.
+  /* The GL EXT_texture_from_pixmap extension does allow for it to be
+   * used together with SGIS_generate_mipmap, however this is very
+   * rarely supported. Also, even when it is supported there
+   * are distinct performance implications from:
    *
-   * http://bugzilla.openedhand.com/show_bug.cgi?id=1877 is an RFE
-   * for a better way of handling this.
+   *  - Updating mipmaps that we don't need
+   *  - Having to reallocate pixmaps on the server into larger buffers
    *
-   * While it would be nice to have direct access to the 'can_mipmap'
-   * boolean in ClutterGLXTexturePixmap, since since MutterTextureTower
-   * creates the scaled down images on demand there is no substantial
-   * overhead from doing the work to create and update the tower and
-   * not using it, other than the memory allocated for the MutterTextureTower
-   * structure itself.
+   * So, we just unconditionally use our mipmap emulation code. If we
+   * wanted to use SGIS_generate_mipmap, we'd have to  query COGL to
+   * see if it was supported (no API currently), and then if and only
+   * if that was the case, set the clutter texture quality to HIGH.
+   * Setting the texture quality to high without SGIS_generate_mipmap
+   * support for TFP textures will result in fallbacks to XGetImage.
    */
-  if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (stex)) == CLUTTER_TEXTURE_QUALITY_HIGH)
-    paint_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex));
-  else
+  if (priv->create_mipmaps)
     paint_tex = mutter_texture_tower_get_paint_texture (priv->paint_tower);
+  else
+    paint_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex));
 
   if (paint_tex == COGL_INVALID_HANDLE)
     return;
@@ -488,6 +490,31 @@ mutter_shaped_texture_new (void)
   ClutterActor *self = g_object_new (MUTTER_TYPE_SHAPED_TEXTURE, NULL);
 
   return self;
+}
+
+void
+mutter_shaped_texture_set_create_mipmaps (MutterShapedTexture *stex,
+					  gboolean             create_mipmaps)
+{
+  MutterShapedTexturePrivate *priv;
+
+  g_return_if_fail (MUTTER_IS_SHAPED_TEXTURE (stex));
+
+  priv = stex->priv;
+
+  create_mipmaps = create_mipmaps != FALSE;
+
+  if (create_mipmaps != priv->create_mipmaps)
+    {
+      CoglHandle base_texture;
+
+      priv->create_mipmaps = create_mipmaps;
+
+      base_texture = create_mipmaps ?
+	clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex)) : COGL_INVALID_HANDLE;
+
+      mutter_texture_tower_set_base_texture (priv->paint_tower, base_texture);
+    }
 }
 
 void

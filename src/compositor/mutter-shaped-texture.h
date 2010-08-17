@@ -86,6 +86,9 @@ GType mutter_shaped_texture_get_type (void) G_GNUC_CONST;
 
 ClutterActor *mutter_shaped_texture_new (void);
 
+void mutter_shaped_texture_set_create_mipmaps (MutterShapedTexture *stex,
+					       gboolean             create_mipmaps);
+
 void mutter_shaped_texture_clear_rectangles (MutterShapedTexture *stex);
 
 void mutter_shaped_texture_add_rectangle (MutterShapedTexture *stex,

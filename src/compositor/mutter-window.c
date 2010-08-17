@@ -1606,13 +1606,9 @@ check_needs_pixmap (MutterWindow *self)
           return;
         }
 
-      /* MUST call before setting pixmap or serious performance issues
-       * seemingly caused by cogl_texture_set_filters() in set_filter
-       * Not sure if that call is actually needed.
-       */
-      if (!compositor->no_mipmaps)
-        clutter_texture_set_filter_quality (CLUTTER_TEXTURE (priv->actor),
-                                            CLUTTER_TEXTURE_QUALITY_HIGH );
+      if (compositor->no_mipmaps)
+        mutter_shaped_texture_set_create_mipmaps (MUTTER_SHAPED_TEXTURE (priv->actor),
+                                                  FALSE);
 
       clutter_x11_texture_pixmap_set_pixmap
                        (CLUTTER_X11_TEXTURE_PIXMAP (priv->actor),
