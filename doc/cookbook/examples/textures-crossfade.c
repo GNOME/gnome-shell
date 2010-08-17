@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 
-static const ClutterColor stage_color = { 0x33, 0x33, 0x55, 0xff };
-
 static gchar *source   = NULL;
 static gchar *target   = NULL;
 static guint  duration = 1000;
