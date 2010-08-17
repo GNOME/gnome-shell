@@ -29,6 +29,16 @@ static GOptionEntry entries[] = {
 };
 
 static gboolean
+start_animation (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      user_data)
+{
+  ClutterState *transitions = CLUTTER_STATE (user_data);
+  clutter_state_set_state (transitions, "show-top");
+  return TRUE;
+}
+
+static gboolean
 load_image (ClutterTexture *texture,
             gchar          *image_path)
 {
@@ -75,7 +85,7 @@ main (int argc, char *argv[])
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "cross-fade");
-  clutter_actor_set_size (stage, 600, 600);
+  clutter_actor_set_size (stage, 400, 300);
   clutter_actor_show (stage);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
@@ -83,7 +93,7 @@ main (int argc, char *argv[])
                                    CLUTTER_BIN_ALIGNMENT_CENTER);
 
   box = clutter_box_new (layout);
-  clutter_actor_set_size (box, 600, 600);
+  clutter_actor_set_size (box, 400, 300);
 
   bottom = clutter_texture_new ();
   top = clutter_texture_new ();
@@ -113,8 +123,11 @@ main (int argc, char *argv[])
   /* make the bottom opaque and top transparent */
   clutter_state_warp_to_state (transitions, "show-bottom");
 
-  /* fade in the top texture and fade out the bottom texture */
-  clutter_state_set_state (transitions, "show-top");
+  /* on key press, fade in the top texture and fade out the bottom texture */
+  g_signal_connect (stage,
+                    "key-press-event",
+                    G_CALLBACK (start_animation),
+                    transitions);
 
   clutter_actor_show (stage);
 
