@@ -388,26 +388,6 @@ enable_compositor (MetaDisplay *display,
 }
 
 static void
-disable_compositor (MetaDisplay *display)
-{
-  GSList *list;
-  
-  if (!display->compositor)
-    return;
-  
-  for (list = display->screens; list != NULL; list = list->next)
-    {
-      MetaScreen *screen = list->data;
-      
-      meta_compositor_unmanage_screen (screen->display->compositor,
-				       screen);
-    }
-  
-  meta_compositor_destroy (display->compositor);
-  display->compositor = NULL;
-}
-
-static void
 meta_display_init (MetaDisplay *disp)
 {
   /* Some stuff could go in here that's currently in _open,
@@ -839,8 +819,7 @@ meta_display_open (void)
   /* We don't composite the windows here because they will be composited 
      faster with the call to meta_screen_manage_all_windows further down 
      the code */
-  if (1) /* meta_prefs_get_compositing_manager ()) FIXME */
-    enable_compositor (the_display, FALSE);
+  enable_compositor (the_display, FALSE);
    
   meta_display_grab (the_display);
   
@@ -5187,15 +5166,6 @@ prefs_changed_callback (MetaPreference pref,
   else if (pref == META_PREF_AUDIBLE_BELL)
     {
       meta_bell_set_audible (display, meta_prefs_bell_is_audible ());
-    }
-  else if (pref == META_PREF_COMPOSITING_MANAGER)
-    {
-      gboolean cm = meta_prefs_get_compositing_manager ();
-
-      if (cm)
-        enable_compositor (display, TRUE);
-      else
-	disable_compositor (display);
     }
   else if (pref == META_PREF_ATTACH_MODAL_DIALOGS)
     {

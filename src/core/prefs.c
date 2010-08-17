@@ -50,7 +50,6 @@
  */
 #define KEY_TITLEBAR_FONT "/apps/metacity/general/titlebar_font"
 #define KEY_NUM_WORKSPACES "/apps/metacity/general/num_workspaces"
-#define KEY_COMPOSITOR "/apps/metacity/general/compositing_manager"
 #define KEY_GNOME_ACCESSIBILITY "/desktop/gnome/interface/accessibility"
 
 #define KEY_COMMAND_DIRECTORY "/apps/metacity/keybinding_commands"
@@ -102,7 +101,6 @@ static gboolean gnome_accessibility = FALSE;
 static gboolean gnome_animations = TRUE;
 static char *cursor_theme = NULL;
 static int   cursor_size = 24;
-static gboolean compositing_manager = FALSE;
 static gboolean resize_with_right_button = FALSE;
 static gboolean edge_tiling = FALSE;
 static gboolean force_fullscreen = TRUE;
@@ -412,11 +410,6 @@ static MetaBoolPreference preferences_bool[] =
       META_PREF_GNOME_ANIMATIONS,
       &gnome_animations,
       TRUE,
-    },
-    { "/apps/metacity/general/compositing_manager",
-      META_PREF_COMPOSITING_MANAGER,
-      &compositing_manager,
-      FALSE,
     },
     { "/apps/metacity/general/resize_with_right_button",
       META_PREF_RESIZE_WITH_RIGHT_BUTTON,
@@ -2004,9 +1997,6 @@ meta_preference_to_string (MetaPreference pref)
     case META_PREF_CURSOR_SIZE:
       return "CURSOR_SIZE";
 
-    case META_PREF_COMPOSITING_MANAGER:
-      return "COMPOSITING_MANAGER";
-
     case META_PREF_RESIZE_WITH_RIGHT_BUTTON:
       return "RESIZE_WITH_RIGHT_BUTTON";
 
@@ -2992,12 +2982,6 @@ meta_prefs_get_window_binding (const char          *name,
   g_assert_not_reached ();
 }
 
-gboolean
-meta_prefs_get_compositing_manager (void)
-{
-  return compositing_manager;
-}
-
 guint
 meta_prefs_get_mouse_button_resize (void)
 {
@@ -3014,28 +2998,6 @@ gboolean
 meta_prefs_get_force_fullscreen (void)
 {
   return force_fullscreen;
-}
-
-void
-meta_prefs_set_compositing_manager (gboolean whether)
-{
-#ifdef HAVE_GCONF
-  GError *err = NULL;
-
-  gconf_client_set_bool (default_client,
-                         KEY_COMPOSITOR,
-                         whether,
-                         &err);
-
-  if (err)
-    {
-      meta_warning (_("Error setting compositor status: %s\n"),
-                    err->message);
-      g_error_free (err);
-    }
-#else
-  compositing_manager = whether;
-#endif
 }
 
 /**
