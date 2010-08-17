@@ -49,7 +49,6 @@ struct _StThemeNodeTransitionPrivate {
 
   ClutterActorBox last_allocation;
   ClutterActorBox offscreen_box;
-  guint8          last_opacity;
 
   gboolean needs_setup;
 };
@@ -200,8 +199,7 @@ calculate_offscreen_box (StThemeNodeTransition *transition,
 
 static gboolean
 setup_framebuffers (StThemeNodeTransition *transition,
-                    const ClutterActorBox *allocation,
-                    guint8                 paint_opacity)
+                    const ClutterActorBox *allocation)
 {
   StThemeNodeTransitionPrivate *priv = transition->priv;
   CoglColor clear_color = { 0, 0, 0, 0 };
@@ -243,10 +241,16 @@ setup_framebuffers (StThemeNodeTransition *transition,
     cogl_handle_unref (priv->material);
   priv->material = cogl_material_new ();
 
+  cogl_material_set_layer_combine (priv->material, 0,
+                                   "RGBA = REPLACE (TEXTURE)",
+                                   NULL);
   cogl_material_set_layer_combine (priv->material, 1,
                                    "RGBA = INTERPOLATE (PREVIOUS, "
                                                        "TEXTURE, "
                                                        "CONSTANT[A])",
+                                   NULL);
+  cogl_material_set_layer_combine (priv->material, 2,
+                                   "RGBA = MODULATE (PREVIOUS, PRIMARY)",
                                    NULL);
 
   cogl_material_set_layer (priv->material, 0, priv->new_texture);
@@ -257,9 +261,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
   cogl_ortho (priv->offscreen_box.x1, priv->offscreen_box.x2,
               priv->offscreen_box.y2, priv->offscreen_box.y1,
               0.0, 1.0);
-  st_theme_node_paint (priv->old_theme_node,
-                       allocation,
-                       paint_opacity);
+  st_theme_node_paint (priv->old_theme_node, allocation, 255);
   cogl_pop_framebuffer ();
 
   cogl_push_framebuffer (priv->new_offscreen);
@@ -267,9 +269,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
   cogl_ortho (priv->offscreen_box.x1, priv->offscreen_box.x2,
               priv->offscreen_box.y2, priv->offscreen_box.y1,
               0.0, 1.0);
-  st_theme_node_paint (priv->new_theme_node,
-                       allocation,
-                       paint_opacity);
+  st_theme_node_paint (priv->new_theme_node, allocation, 255);
   cogl_pop_framebuffer ();
 
   return TRUE;
@@ -291,25 +291,24 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
   g_return_if_fail (ST_IS_THEME_NODE (priv->old_theme_node));
   g_return_if_fail (ST_IS_THEME_NODE (priv->new_theme_node));
 
-  if (!clutter_actor_box_equal (allocation, &priv->last_allocation) ||
-      paint_opacity != priv->last_opacity)
+  if (!clutter_actor_box_equal (allocation, &priv->last_allocation))
     priv->needs_setup = TRUE;
 
   if (priv->needs_setup)
     {
       priv->last_allocation = *allocation;
-      priv->last_opacity = paint_opacity;
 
       calculate_offscreen_box (transition, allocation);
-      priv->needs_setup = !setup_framebuffers (transition,
-                                               allocation,
-                                               paint_opacity);
+      priv->needs_setup = !setup_framebuffers (transition, allocation);
     }
 
-  cogl_color_set_from_4ub (&constant, 0, 0, 0,
-                           clutter_alpha_get_alpha (priv->alpha) * paint_opacity);
-
+  cogl_color_set_from_4f (&constant, 0., 0., 0.,
+                          clutter_alpha_get_alpha (priv->alpha));
   cogl_material_set_layer_combine_constant (priv->material, 1, &constant);
+
+  cogl_material_set_color4ub (priv->material,
+                              paint_opacity, paint_opacity,
+                              paint_opacity, paint_opacity);
 
   cogl_set_source (priv->material);
   cogl_rectangle_with_multitexture_coords (priv->offscreen_box.x1,
