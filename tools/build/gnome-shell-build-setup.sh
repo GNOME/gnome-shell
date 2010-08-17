@@ -126,8 +126,8 @@ if test "x$system" = xSUSE -o "x$system" = "xSUSE LINUX" ; then
   reqd=""
   for pkg in \
     curl \
-    bison flex gnome-doc-utils-devel \
-    libffi-devel gnome-desktop-devel libwnck-devel \
+    bison flex gtk-doc gnome-common gnome-doc-utils-devel \
+    libtiff-devel cups-devel libffi-devel gnome-desktop-devel libwnck-devel \
     xorg-x11-proto-devel readline-devel mozilla-xulrunner190-devel \
     libcroco-devel xorg-x11-devel xorg-x11 xorg-x11-server-extra \
     ; do
