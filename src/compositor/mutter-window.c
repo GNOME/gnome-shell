@@ -1028,10 +1028,10 @@ mutter_window_detach (MutterWindow *self)
   if (!priv->back_pixmap)
     return;
 
-  priv->back_pixmap = None;
   clutter_x11_texture_pixmap_set_pixmap (CLUTTER_X11_TEXTURE_PIXMAP (priv->actor),
                                          None);
   XFreePixmap (xdisplay, priv->back_pixmap);
+  priv->back_pixmap = None;
 
   mutter_window_queue_create_pixmap (self);
 }
