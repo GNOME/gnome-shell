@@ -269,6 +269,8 @@ clutter_state_remove_key_internal (ClutterState *this,
   if (source_state_name)
     source_state = clutter_state_fetch_state (this, source_state_name, FALSE);
 
+again_from_start:
+
   if (target_state_name != NULL)
     state_list = g_list_append (NULL, (gpointer) target_state_name);
   else
@@ -278,31 +280,36 @@ clutter_state_remove_key_internal (ClutterState *this,
     {
       State *target_state;
       target_state = clutter_state_fetch_state (this, s->data, FALSE);
-
+      /* Go through each TargetState */
       if (target_state)
         {
           GList *k;
-again:
+again_for_target_state:
           for (k = target_state->keys; k != NULL; k = k->next)
             {
               ClutterStateKey *key = k->data;
 
+              /* Check if each key matches query */
               if (   (object == NULL        || (object == key->object))
                   && (source_state == NULL  || (source_state == key->source_state))
                   && (property_name == NULL || ((property_name == key->property_name))))
                 {
+                  /* Remove matching key */
                   target_state->keys = g_list_remove (target_state->keys, key);
-
-                  if (target_state->keys == NULL)
-                    {
-                      /* no more keys, so remove this state */
-                      clutter_state_remove_key (this, s->data, NULL, NULL, NULL);
-                      g_hash_table_remove (this->priv->states, s->data);
-                    }
-
                   key->is_inert = is_inert;
                   clutter_state_key_free (key);
-                  goto again;
+
+                  /* no more keys with transitions to this target_state*/
+                  if (target_state->keys == NULL)
+                    {
+                      /* remove any keys that exist that uses this state as a source */
+                      clutter_state_remove_key (this, s->data, NULL, NULL, NULL);
+
+                      g_hash_table_remove (this->priv->states, s->data);
+                      goto again_from_start; /* we have just freed State *target_state, so
+                                                need to restart removal */
+                    }
+                  goto again_for_target_state;
                 }
             }
         }
