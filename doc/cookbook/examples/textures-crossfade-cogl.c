@@ -139,7 +139,7 @@ main (int argc, char *argv[])
    */
   ClutterActor *stage = clutter_stage_get_default ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "cross-fade");
-  clutter_actor_set_size (stage, 600, 600);
+  clutter_actor_set_size (stage, 400, 300);
   clutter_actor_show (stage);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
