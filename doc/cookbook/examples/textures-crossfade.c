@@ -97,26 +97,26 @@ main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (box), front);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 
-  /* animations */
-  transitions = clutter_state_new ();
-  clutter_state_set (transitions, NULL, "show-front",
-                     front, "opacity", CLUTTER_EASE_IN_CUBIC, 255,
-                     back, "opacity", CLUTTER_EASE_IN_CUBIC, 0,
-                     NULL);
-  clutter_state_set (transitions, NULL, "show-back",
-                     front, "opacity", CLUTTER_LINEAR, 0,
-                     back, "opacity", CLUTTER_LINEAR, 255,
-                     NULL);
-  clutter_state_set_duration (transitions, NULL, NULL, duration);
-
-  /* make the back opaque and front transparent */
-  clutter_state_warp_to_state (transitions, "show-back");
-
   /* load the first image into the back */
   load_image (CLUTTER_TEXTURE (back), source);
 
   /* load the second image into the front */
   load_image (CLUTTER_TEXTURE (front), target);
+
+  /* animations */
+  transitions = clutter_state_new ();
+  clutter_state_set (transitions, NULL, "show-back",
+                     front, "opacity", CLUTTER_LINEAR, 0,
+                     back, "opacity", CLUTTER_LINEAR, 255,
+                     NULL);
+  clutter_state_set (transitions, NULL, "show-front",
+                     front, "opacity", CLUTTER_EASE_IN_CUBIC, 255,
+                     back, "opacity", CLUTTER_EASE_IN_CUBIC, 0,
+                     NULL);
+  clutter_state_set_duration (transitions, NULL, NULL, duration);
+
+  /* make the back opaque and front transparent */
+  clutter_state_warp_to_state (transitions, "show-back");
 
   /* fade in the front texture and fade out the back texture */
   clutter_state_set_state (transitions, "show-front");
