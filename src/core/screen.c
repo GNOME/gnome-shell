@@ -978,7 +978,15 @@ meta_screen_composite_all_windows (MetaScreen *screen)
   windows = meta_display_list_windows (display,
                                        META_LIST_INCLUDE_OVERRIDE_REDIRECT);
   for (tmp = windows; tmp != NULL; tmp = tmp->next)
-    meta_compositor_add_window (display->compositor, tmp->data);
+    {
+      MetaWindow *window = tmp->data;
+
+      meta_compositor_add_window (display->compositor, window);
+      if (window->visible_to_compositor)
+        meta_compositor_show_window (display->compositor, window,
+                                     META_COMP_EFFECT_NONE);
+    }
+
   g_slist_free (windows);
   
   /* initialize the compositor's view of the stacking order */
