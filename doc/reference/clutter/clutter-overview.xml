@@ -28,8 +28,8 @@
     Actors are also able to receive events.</para>
 
     <para>Subclasses of #ClutterActor include #ClutterStage, #ClutterTexture,
-    #ClutterLabel, #ClutterRectangle, #ClutterEntry and
-    #ClutterGroup. #ClutterActor<!-- -->s are added to a parent, transformed
+    #ClutterText, #ClutterRectangle, #ClutterCairoTexture, #ClutterGroup and
+    #ClutterBox. #ClutterActor<!-- -->s are added to a parent, transformed
     and then made visible.</para>
 
     <para>#ClutterStage is the top level #ClutterActor - it's the
@@ -37,16 +37,25 @@
     when Clutter is initialised. #ClutterStage is a #ClutterGroup, a class
     implementing the #ClutterCointainer interface.</para>
 
+    <para>Clutter allows explicit positioning and sizing through the
+    #ClutterFixedLayout layout manager; and implicit positioning and sizing
+    through fluid layout managers like #ClutterBoxLayout, #ClutterFlowLayout
+    and #ClutterTableLayout. Actors inside fixed layout managers like
+    #ClutterGroup and #ClutterStage can also be positioned and sized implicitly
+    using the #ClutterConstraint sub-classes.</para>
+
     <para>#ClutterTimeline<!-- -->s provide the basis for Clutter's animation
-    utilities. Multiple timelines can be synchronised using #ClutterScore,
-    and #ClutterBehaviour and #ClutterEffect allow for the creation of
-    animation effects such as transitions.</para>
+    utilities. #ClutterActor<!-- -->s can be animated using explicit animations
+    through the various #ClutterBehaviour implementations, or implicit
+    animations, through the clutter_actor_animate() function. Animations can
+    also be defined as named states through the #ClutterState class.</para>
 
     <para>Clutter further contains a number of utilities, including;
     #ClutterScript - for loading 'UI definition' files formatted in
-    <ulink type="http" url="http://json.org">JSON</ulink>, #ClutterShader - a
+    <ulink type="http" url="http://json.org">JSON</ulink>; #ClutterShader - a
     class for applying GPU shaders to actors, #ClutterModel - a utility class
-    for MVC list type implementations, and fixed point math utilities.</para>
+    for MVC list type implementations; #ClutterAction<!-- -->s,
+    #ClutterConstraint<!-- -->s and #ClutterEffect<!-- -->s.</para>
 
   </partintro>
 

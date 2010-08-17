@@ -490,7 +490,7 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    *
    * The #ClutterActor that is effectively being dragged
    *
-   * A #ClutterDragActor will, be default, use the #ClutterActor that
+   * A #ClutterDragAction will, be default, use the #ClutterActor that
    * has been attached to the action; it is possible to create a
    * separate #ClutterActor and use it instead.
    *

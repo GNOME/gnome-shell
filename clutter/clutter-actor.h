@@ -229,8 +229,8 @@ struct _ClutterActor
  * @enter_event: signal class closure for #ClutterActor::enter-event
  * @leave_event: signal class closure for #ClutterActor::leave-event
  * @captured_event: signal class closure for #ClutterActor::captured-event
- * @key_focus_in: signal class closure for #ClutterActor::focus-in
- * @key_focus_out: signal class closure for #ClutterActor::focus-out
+ * @key_focus_in: signal class closure for #ClutterActor::key-focus-in
+ * @key_focus_out: signal class closure for #ClutterActor::key-focus-out
  * @queue_relayout: class handler for #ClutterActor::queue-relayout
  *
  * Base class for actors.

@@ -325,7 +325,7 @@ clutter_colorize_effect_init (ClutterColorizeEffect *self)
  * @tint: the color to be used
  *
  * Creates a new #ClutterColorizeEffect to be used with
- * clutter_actor_set_effect()
+ * clutter_actor_add_effect()
  *
  * Return value: the newly created #ClutterColorizeEffect or %NULL
  *

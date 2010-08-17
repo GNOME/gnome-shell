@@ -1034,10 +1034,10 @@ clutter_actor_real_map (ClutterActor *self)
  * actor is not visible.
  *
  * Calling this is allowed in only one case: you are implementing the
- * #ClutterActor::map virtual function in an actor and you need to map
- * the children of that actor. It is not necessary to call this
- * if you implement #ClutterContainer because the default implementation
- * will automatically map children of containers.
+ * #ClutterActor <function>map()</function> virtual function in an actor
+ * and you need to map the children of that actor. It is not necessary
+ * to call this if you implement #ClutterContainer because the default
+ * implementation will automatically map children of containers.
  *
  * When overriding map, it is mandatory to chain up to the parent
  * implementation.
@@ -1098,10 +1098,10 @@ clutter_actor_real_unmap (ClutterActor *self)
  * unmaps its children if they were mapped.
  *
  * Calling this is allowed in only one case: you are implementing the
- * #ClutterActor::unmap virtual function in an actor and you need to
- * unmap the children of that actor. It is not necessary to call this
- * if you implement #ClutterContainer because the default implementation
- * will automatically unmap children of containers.
+ * #ClutterActor <function>unmap()</function> virtual function in an actor
+ * and you need to unmap the children of that actor. It is not necessary
+ * to call this if you implement #ClutterContainer because the default
+ * implementation will automatically unmap children of containers.
  *
  * When overriding unmap, it is mandatory to chain up to the parent
  * implementation.
@@ -1412,7 +1412,15 @@ clutter_actor_real_unrealize (ClutterActor *self)
  * sure it isn't mapped, an application-visible side effect that you
  * may not be expecting.
  *
- * This function should not really be in the public API, because
+ * This function should not be called by application code.
+ */
+void
+clutter_actor_unrealize (ClutterActor *self)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (!CLUTTER_ACTOR_IS_MAPPED (self));
+
+/* This function should not really be in the public API, because
  * there isn't a good reason to call it. ClutterActor will already
  * unrealize things for you when it's important to do so.
  *
@@ -1429,11 +1437,6 @@ clutter_actor_real_unrealize (ClutterActor *self)
  * _clutter_actor_rerealize() (inside Clutter) or just call your
  * code that recreates your resources directly (outside Clutter).
  */
-void
-clutter_actor_unrealize (ClutterActor *self)
-{
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (!CLUTTER_ACTOR_IS_MAPPED (self));
 
 #ifdef CLUTTER_ENABLE_DEBUG
   clutter_actor_verify_map_state (self);
@@ -4642,7 +4645,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * ClutterActor::key-focus-in:
    * @actor: the actor which now has key focus
    *
-   * The ::focus-in signal is emitted when @actor recieves key focus.
+   * The ::key-focus-in signal is emitted when @actor receives key focus.
    *
    * Since: 0.6
    */
@@ -4800,30 +4803,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   NULL, NULL,
                   _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-
-  /**
-   * ClutterActor::map:
-   * @actor: the #ClutterActor to map
-   *
-   * The ::map virtual functon must be overridden in order to call
-   * clutter_actor_map() on any child actors if the actor is not a
-   * #ClutterContainer.  When overriding, it is mandatory to chain up
-   * to the parent implementation.
-   *
-   * Since: 1.0
-   */
-
-  /**
-   * ClutterActor::unmap:
-   * @actor: the #ClutterActor to unmap
-   *
-   * The ::unmap virtual functon must be overridden in order to call
-   * clutter_actor_unmap() on any child actors if the actor is not a
-   * #ClutterContainer.  When overriding, it is mandatory to chain up
-   * to the parent implementation.
-   *
-   * Since: 1.0
-   */
 
   /**
    * ClutterActor::pick:

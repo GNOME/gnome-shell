@@ -51,8 +51,8 @@
  * ]|
  *
  * <note>If the alpha function is a periodic function, i.e. it returns to
- * 0 after reaching %CLUTTER_ALPHA_MAX_ALPHA, then the actors will walk
- * the path back to the starting #ClutterKnot.</note>
+ * 0.0 after reaching 1.0, then the actors will walk the path back to the
+ * starting #ClutterKnot.</note>
  *
  * #ClutterBehaviourPath is available since Clutter 0.2
  */
@@ -225,7 +225,7 @@ clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
   /**
    * ClutterBehaviourPath::knot-reached:
    * @pathb: the object which received the signal
-   * @knot_num: the index of the #ClutterPathKnot reached
+   * @knot_num: the index of the #ClutterKnot reached
    *
    * This signal is emitted each time a node defined inside the path
    * is reached.
