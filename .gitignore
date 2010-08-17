@@ -83,8 +83,6 @@ doc/reference/cally/cally.signals
 doc/reference/cally/cally-docs.xml
 doc/reference/cally/*.stamp
 doc/reference/cally/*.bak
-doltcompile
-doltlibtool
 gtk-doc.make
 install-sh
 libtool

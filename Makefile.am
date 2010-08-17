@@ -33,7 +33,7 @@ EXTRA_DIST = 				\
 
 CLEANFILES = $(pcfiles)
 
-DISTCLEANFILES = doltcompile doltlibtool
+DISTCLEANFILES =
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-maintainer-flags
 
