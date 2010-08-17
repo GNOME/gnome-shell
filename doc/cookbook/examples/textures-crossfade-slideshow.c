@@ -16,8 +16,8 @@ static guint animation_duration_ms = 1500;
 static const ClutterColor stage_color = { 0x33, 0x33, 0x55, 0xff };
 
 typedef struct {
-  ClutterActor *front;
-  ClutterActor *back;
+  ClutterActor *top;
+  ClutterActor *bottom;
   ClutterState *transitions;
   GSList       *image_paths;
   guint         next_image_index;
@@ -48,20 +48,20 @@ load_next_image (State *app)
   g_debug ("Loading %s", image_path);
 
   CoglHandle *cogl_texture;
-  cogl_texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (app->front));
+  cogl_texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (app->top));
 
   if (cogl_texture != NULL)
     {
       /* copy the current texture into the background */
-      clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (app->back), cogl_texture);
+      clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (app->bottom), cogl_texture);
 
-      /* make the back opaque and front transparent */
-      clutter_state_warp_to_state (app->transitions, "show-back");
+      /* make the bottom opaque and top transparent */
+      clutter_state_warp_to_state (app->transitions, "show-bottom");
     }
 
-  /* load the next image into the front */
+  /* load the next image into the top */
   GError *error = NULL;
-  clutter_texture_set_from_file (CLUTTER_TEXTURE (app->front),
+  clutter_texture_set_from_file (CLUTTER_TEXTURE (app->top),
                                  image_path,
                                  &error);
 
@@ -72,8 +72,8 @@ load_next_image (State *app)
       return FALSE;
     }
 
-  /* fade in the front texture and fade out the back texture */
-  clutter_state_set_state (app->transitions, "show-front");
+  /* fade in the top texture and fade out the bottom texture */
+  clutter_state_set_state (app->transitions, "show-top");
 
   app->next_image_index++;
 
@@ -133,25 +133,25 @@ main (int argc, char *argv[])
   box = clutter_box_new (layout);
   clutter_actor_set_size (box, stage_side, stage_side);
 
-  app->back = clutter_texture_new ();
-  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (app->back), TRUE);
+  app->bottom = clutter_texture_new ();
+  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (app->bottom), TRUE);
 
-  app->front = clutter_texture_new ();
-  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (app->front), TRUE);
+  app->top = clutter_texture_new ();
+  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (app->top), TRUE);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), app->back);
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), app->front);
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), app->bottom);
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), app->top);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 
   /* animations */
   app->transitions = clutter_state_new ();
-  clutter_state_set (app->transitions, NULL, "show-front",
-                     app->front, "opacity", CLUTTER_EASE_IN_CUBIC, 255,
-                     app->back, "opacity", CLUTTER_EASE_IN_CUBIC, 0,
+  clutter_state_set (app->transitions, NULL, "show-top",
+                     app->top, "opacity", CLUTTER_EASE_IN_CUBIC, 255,
+                     app->bottom, "opacity", CLUTTER_EASE_IN_CUBIC, 0,
                      NULL);
-  clutter_state_set (app->transitions, NULL, "show-back",
-                     app->front, "opacity", CLUTTER_LINEAR, 0,
-                     app->back, "opacity", CLUTTER_LINEAR, 255,
+  clutter_state_set (app->transitions, NULL, "show-bottom",
+                     app->top, "opacity", CLUTTER_LINEAR, 0,
+                     app->bottom, "opacity", CLUTTER_LINEAR, 255,
                      NULL);
   clutter_state_set_duration (app->transitions,
                               NULL,

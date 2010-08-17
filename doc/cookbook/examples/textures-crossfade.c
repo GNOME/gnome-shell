@@ -70,7 +70,7 @@ main (int argc, char *argv[])
   ClutterActor *stage;
   ClutterLayoutManager *layout;
   ClutterActor *box;
-  ClutterActor *front, *back;
+  ClutterActor *top, *bottom;
   ClutterState *transitions;
 
   clutter_init (&argc, &argv);
@@ -87,36 +87,36 @@ main (int argc, char *argv[])
   box = clutter_box_new (layout);
   clutter_actor_set_size (box, 600, 600);
 
-  back = clutter_texture_new ();
-  front = clutter_texture_new ();
+  bottom = clutter_texture_new ();
+  top = clutter_texture_new ();
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), back);
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), front);
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), bottom);
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), top);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 
-  /* load the first image into the back */
-  load_image (CLUTTER_TEXTURE (back), source);
+  /* load the first image into the bottom */
+  load_image (CLUTTER_TEXTURE (bottom), source);
 
-  /* load the second image into the front */
-  load_image (CLUTTER_TEXTURE (front), target);
+  /* load the second image into the top */
+  load_image (CLUTTER_TEXTURE (top), target);
 
   /* animations */
   transitions = clutter_state_new ();
-  clutter_state_set (transitions, NULL, "show-back",
-                     front, "opacity", CLUTTER_LINEAR, 0,
-                     back, "opacity", CLUTTER_LINEAR, 255,
+  clutter_state_set (transitions, NULL, "show-bottom",
+                     top, "opacity", CLUTTER_LINEAR, 0,
+                     bottom, "opacity", CLUTTER_LINEAR, 255,
                      NULL);
-  clutter_state_set (transitions, NULL, "show-front",
-                     front, "opacity", CLUTTER_EASE_IN_CUBIC, 255,
-                     back, "opacity", CLUTTER_EASE_IN_CUBIC, 0,
+  clutter_state_set (transitions, NULL, "show-top",
+                     top, "opacity", CLUTTER_EASE_IN_CUBIC, 255,
+                     bottom, "opacity", CLUTTER_EASE_IN_CUBIC, 0,
                      NULL);
   clutter_state_set_duration (transitions, NULL, NULL, duration);
 
-  /* make the back opaque and front transparent */
-  clutter_state_warp_to_state (transitions, "show-back");
+  /* make the bottom opaque and top transparent */
+  clutter_state_warp_to_state (transitions, "show-bottom");
 
-  /* fade in the front texture and fade out the back texture */
-  clutter_state_set_state (transitions, "show-front");
+  /* fade in the top texture and fade out the bottom texture */
+  clutter_state_set_state (transitions, "show-top");
 
   clutter_actor_show (stage);
 
