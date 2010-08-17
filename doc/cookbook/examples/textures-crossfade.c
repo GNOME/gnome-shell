@@ -88,10 +88,7 @@ main (int argc, char *argv[])
   clutter_actor_set_size (box, 600, 600);
 
   back = clutter_texture_new ();
-  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (back), TRUE);
-
   front = clutter_texture_new ();
-  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (front), TRUE);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (box), back);
   clutter_container_add_actor (CLUTTER_CONTAINER (box), front);
