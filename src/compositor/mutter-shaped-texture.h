@@ -89,6 +89,8 @@ ClutterActor *mutter_shaped_texture_new (void);
 void mutter_shaped_texture_set_create_mipmaps (MutterShapedTexture *stex,
 					       gboolean             create_mipmaps);
 
+void mutter_shaped_texture_clear (MutterShapedTexture *stex);
+
 void mutter_shaped_texture_clear_rectangles (MutterShapedTexture *stex);
 
 void mutter_shaped_texture_add_rectangle (MutterShapedTexture *stex,

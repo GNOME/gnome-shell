@@ -1028,8 +1028,15 @@ mutter_window_detach (MutterWindow *self)
   if (!priv->back_pixmap)
     return;
 
+  /* Get rid of all references to the pixmap before freeing it; it's unclear whether
+   * you are supposed to be able to free a GLXPixmap after freeing the underlying
+   * pixmap, but it certainly doesn't work with current DRI/Mesa
+   */
   clutter_x11_texture_pixmap_set_pixmap (CLUTTER_X11_TEXTURE_PIXMAP (priv->actor),
                                          None);
+  mutter_shaped_texture_clear (MUTTER_SHAPED_TEXTURE (priv->actor));
+  cogl_flush();
+
   XFreePixmap (xdisplay, priv->back_pixmap);
   priv->back_pixmap = None;
 

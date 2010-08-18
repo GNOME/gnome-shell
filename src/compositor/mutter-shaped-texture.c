@@ -166,6 +166,8 @@ mutter_shaped_texture_notify (GObject    *object,
       MutterShapedTexture *stex = (MutterShapedTexture *) object;
       MutterShapedTexturePrivate *priv = stex->priv;
 
+      mutter_shaped_texture_clear (stex);
+
       if (priv->create_mipmaps)
 	mutter_texture_tower_set_base_texture (priv->paint_tower,
 					       clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex)));
@@ -190,6 +192,9 @@ mutter_shaped_texture_dirty_mask (MutterShapedTexture *stex)
 
       cogl_handle_unref (priv->mask_texture);
       priv->mask_texture = COGL_INVALID_HANDLE;
+
+      if (priv->material != COGL_INVALID_HANDLE)
+        cogl_material_set_layer (priv->material, 1, COGL_INVALID_HANDLE);
     }
 }
 
@@ -515,6 +520,40 @@ mutter_shaped_texture_set_create_mipmaps (MutterShapedTexture *stex,
 
       mutter_texture_tower_set_base_texture (priv->paint_tower, base_texture);
     }
+}
+
+/* This is a workaround for deficiencies in the hack tower:
+ *
+ * When we call clutter_x11_texture_pixmap_set_pixmap(tp, None),
+ * ClutterX11TexturePixmap knows that it has to get rid of the old texture, but
+ * clutter_texture_set_cogl_texture(texture, COGL_INVALID_HANDLE) isn't allowed, so
+ * it grabs the material for the texture and manually sets the texture in it. This means
+ * that the "cogl-texture" property isn't notified, so we don't find out about it.
+ *
+ * And if we keep the CoglX11TexturePixmap around after the X pixmap is freed, then
+ * we'll trigger X errors when we actually try to free it.
+ *
+ * The only correct thing to do here is to change our code to derive
+ * from ClutterActor and get rid of the inheritance hack tower.  Once
+ * we want to depend on Clutter-1.4 (which has CoglTexturePixmapX11),
+ * that will be very easy to do.
+ */
+void
+mutter_shaped_texture_clear (MutterShapedTexture *stex)
+{
+  MutterShapedTexturePrivate *priv;
+
+  g_return_if_fail (MUTTER_IS_SHAPED_TEXTURE (stex));
+
+  priv = stex->priv;
+
+  mutter_texture_tower_set_base_texture (priv->paint_tower, COGL_INVALID_HANDLE);
+
+  if (priv->material != COGL_INVALID_HANDLE)
+    cogl_material_set_layer (priv->material, 0, COGL_INVALID_HANDLE);
+
+  if (priv->material_unshaped != COGL_INVALID_HANDLE)
+    cogl_material_set_layer (priv->material_unshaped, 0, COGL_INVALID_HANDLE);
 }
 
 void
