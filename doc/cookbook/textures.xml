@@ -1187,7 +1187,7 @@ clutter_state_set_state (transitions, "show-top");
         different dimensions, the <emphasis>source</emphasis> will
         appear distorted.</para>
 
-        <para>There are a few ways you can remedy this:</para>
+        <para>There are a couple of ways you can remedy this:</para>
 
         <orderedlist>
 
@@ -1209,91 +1209,92 @@ clutter_state_set_state (transitions, "show-top");
           </listitem>
 
           <listitem>
-            <para>If the bounds of the images you're going to be loading
-            are known (i.e. you know the greatest width and height
-            of all the images you're going to load), you can size
-            the <type>ClutterTexture</type> to those bounds.</para>
+            <para>Use GdkPixbuf (or similar) to load the images into a temporary
+            data structure. (GdkPixbuf works well for this as it can resize
+            the image while retaining its aspect ratio.) Then load the data from
+            the pixbuf into a <emphasis>region</emphasis> of a
+            <type>CoglTexture</type> which has the same dimensions as
+            the <type>ClutterTexture</type>.</para>
 
-            <para>Then, as you load each image (e.g. you could do this in the
+            <para>Here's an example of how you can rewrite the
             <function>load_cogl_texture()</function> function of
-            the <link linkend="textures-crossfade-example-2">code
-            example</link>):</para>
+            the <link linkend="textures-crossfade-example-2">single
+            texture example</link> to do this:</para>
 
-            <itemizedlist>
-              <listitem>
-                <para>Load the image into a temporary
-                <type>CoglTexture</type> (e.g. called
-                <varname>filetex</varname>). Then use the
-                <type>CoglTexture</type> API to get the data from it.
-                For example:</para>
-
-                <informalexample>
-                  <programlisting>
+            <informalexample>
+              <programlisting>
 <![CDATA[
-/* load texture from a file */
-CoglHandle *filetex = cogl_texture_new_from_file (FOX_FILE,
-                                                  COGL_TEXTURE_NO_SLICING,
-                                                  COGL_PIXEL_FORMAT_ANY,
-                                                  NULL);
+/* requires this extra include */
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
-CoglPixelFormat format = cogl_texture_get_format (filetex);
-guint rowstride = cogl_texture_get_rowstride (filetex);
-guint width = cogl_texture_get_width (filetex);
-guint height = cogl_texture_get_height (filetex);
+static CoglHandle
+load_cogl_texture (const char  *type,
+                   const char  *file,
+                   const guint texture_width,
+                   const guint texture_height)
+{
+  GError *error = NULL;
 
-/* allocate memory large enough for the data */
-gint size = cogl_texture_get_data (filetex, format, 0, NULL);
-guchar *data = g_new0 (guchar, size);
+  /*
+   * Load image data from a file into a GdkPixbuf,
+   * but constrained to the size of the target ClutterTexture;
+   * aspect ratio is maintained
+   *
+   * texture_width and texture_height are set elsewhere to
+   * the width and height of the ClutterTexture
+   */
+  GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file_at_size (file,
+                                                        texture_width,
+                                                        texture_height,
+                                                        &error);
 
-/* get the data from the texture */
-cogl_texture_get_data (filetex,
-                       format,
-                       rowstride,
-                       data);
+  if (error != NULL)
+    {
+      g_print ("Unable to load %s image: %s\n", type, error->message);
+      g_error_free (error);
+      exit (EXIT_FAILURE);
+    }
+
+  guint rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+  guint width = gdk_pixbuf_get_width (pixbuf);
+  guint height = gdk_pixbuf_get_height (pixbuf);
+  guchar *data = gdk_pixbuf_get_pixels (pixbuf);
+
+  CoglPixelFormat format = COGL_PIXEL_FORMAT_RGB_888;
+  if (gdk_pixbuf_get_has_alpha (pixbuf) == TRUE)
+    format = COGL_PIXEL_FORMAT_RGBA_8888;
+
+  /* CoglTexture with the same dimensions as the ClutterTexture */
+  CoglHandle *tex = cogl_texture_new_with_size (texture_width,
+                                                texture_height,
+                                                COGL_TEXTURE_NO_SLICING,
+                                                format);
+
+  /*
+   * load the texture data into a region of the full-sized texture;
+   * the size of the region is set from the size of the image data
+   * (as resized by GdkPixbuf)
+   */
+  cogl_texture_set_region (tex,
+                           0, 0,                          /* from top-left corner of the pixbuf */
+                           (texture_width - width) / 2,   /* center on the CoglTexture */
+                           (texture_height - height) / 2, /* center on the CoglTexture */
+                           width, height,
+                           width, height,
+                           format,
+                           rowstride,
+                           data);
+
+  return tex;
+}
 ]]>
-                  </programlisting>
-                </informalexample>
-              </listitem>
-              <listitem>
-                <para>Create another <type>CoglTexture</type> as
-                large as the <type>ClutterTexture</type> (i.e. big enough
-                to fit any image you're going to load). Then copy the
-                data from <varname>filetex</varname> into a region of
-                it. For example:</para>
+              </programlisting>
+            </informalexample>
 
-                <informalexample>
-                  <programlisting>
-<![CDATA[
-/* COGL texture which is the same size as the ClutterTexture */
-CoglHandle *tex = cogl_texture_new_with_size (clutter_texture_width,
-                                              clutter_texture_height,
-                                              COGL_TEXTURE_NO_SLICING,
-                                              format);
-
-/* copy the texture data (from filetex) into a region of the full-sized texture */
-cogl_texture_set_region (tex,
-                         0, 0, 0, 0,
-                         clutter_texture_width,
-                         clutter_texture_height,
-                         width,
-                         height,
-                         format,
-                         rowstride,
-                         data);
-]]>
-                  </programlisting>
-                </informalexample>
-
-                <para>Because you're copying the image data from the
-                file into a region of the <type>CoglTexture</type>
-                that's the same size as the image data, it won't be
-                distorted. However, it's worth stressing that the
-                <type>ClutterTexture</type> needs to be as wide as
-                the widest image and as tall as the tallest, so
-                all the images can be accommodated. Otherwise this
-                works, but images might be clipped.</para>
-              </listitem>
-            </itemizedlist>
+            <para>Because you're copying the image data from the
+            file into a region of the <type>CoglTexture</type>
+            that's the same size as the image data in the pixbuf, it isn't
+            distorted.</para>
 
           </listitem>
 
