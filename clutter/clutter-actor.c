@@ -4981,6 +4981,10 @@ clutter_actor_destroy (ClutterActor *self)
  *
  * Also be aware that painting is a NOP for actors with an opacity of
  * 0
+ *
+ * When you are implementing a custom actor you must queue a redraw
+ * whenever some private state changes that will affect painting or
+ * picking of your actor.
  */
 void
 clutter_actor_queue_redraw (ClutterActor *self)
