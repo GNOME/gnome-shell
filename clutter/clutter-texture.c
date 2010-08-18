@@ -2910,6 +2910,11 @@ clutter_texture_set_pick_with_alpha (ClutterTexture *texture,
 
   /* NB: the pick material is created lazily when we first pick */
   priv->pick_with_alpha = pick_with_alpha;
+
+  /* NB: actors are expected to call clutter_actor_queue_redraw when
+   * ever some state changes that will affect painting *or picking...
+   */
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
 }
 
 /**
