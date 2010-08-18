@@ -207,7 +207,8 @@ NotificationDaemon.prototype = {
 
         if (notification == null) {
             id = nextNotificationId++;
-            notification = new MessageTray.Notification(source, summary, body, true);
+            notification = new MessageTray.Notification(source, summary, body,
+                                                        { bannerBody: true });
             this._currentNotifications[id] = notification;
             notification.connect('dismissed', Lang.bind(this,
                 function(n) {
@@ -219,9 +220,7 @@ NotificationDaemon.prototype = {
                 }));
             notification.connect('action-invoked', Lang.bind(this, this._actionInvoked, source, id));
         } else {
-            // passing in true as the last parameter will clear out extra actors,
-            // such as actions
-            notification.update(summary, body, true);
+            notification.update(summary, body, { clear: true });
         }
 
         if (actions.length) {

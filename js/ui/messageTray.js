@@ -11,6 +11,7 @@ const St = imports.gi.St;
 const Tweener = imports.ui.tweener;
 
 const Main = imports.ui.main;
+const Params = imports.misc.params;
 
 const ANIMATION_TIME = 0.2;
 const NOTIFICATION_TIMEOUT = 4;
@@ -43,7 +44,7 @@ function _cleanMarkup(text) {
 // @source: the notification's Source
 // @title: the title
 // @banner: the banner text
-// @bannerBody: whether or not to promote the banner to the body on overflow
+// @params: optional additional params
 //
 // Creates a notification. In banner mode, it will show
 // @source's icon, @title (in bold) and @banner, all on a single line
@@ -59,19 +60,22 @@ function _cleanMarkup(text) {
 // scrolled and can contain a single actor. There are also convenience
 // methods for creating a button box in the action area.
 //
-// If @bannerBody is %true, then @banner will also be used as the body
-// of the notification (as with addBody()) when the banner is expanded.
-// In this case, if @banner is too long to fit in the single-line mode,
-// the notification will be made expandable automatically.
-function Notification(source, title, banner, bannerBody) {
-    this._init(source, title, banner, bannerBody);
+// If @params contains a 'body' parameter, that text will be displayed
+// in the body area (as with addBody()). Alternatively, if it includes
+// a 'bannerBody' parameter with the value %true, then @banner will
+// also be used as the body of the notification when the banner is
+// expanded. In this case, if @banner is too long to fit in the
+// single-line mode, the notification will be made expandable
+// automatically.
+function Notification(source, title, banner, params) {
+    this._init(source, title, banner, params);
 }
 
 Notification.prototype = {
-    _init: function(source, title, banner, bannerBody) {
+    _init: function(source, title, banner, params) {
         this.source = source;
-        this._bannerBody = bannerBody;
         this.urgent = false;
+        this._bannerBody = false;
 
         this._hasFocus = false;
         this._lockTrayOnFocusGrab = false;
@@ -123,7 +127,7 @@ Notification.prototype = {
         this._bannerLabel = new St.Label();
         this._bannerBox.add_actor(this._bannerLabel);
 
-        this.update(title, banner, true);
+        this.update(title, banner, params);
 
         Main.overview.connect('showing', Lang.bind(this,
             function() {
@@ -138,24 +142,30 @@ Notification.prototype = {
     // update:
     // @title: the new title
     // @banner: the new banner
-    // @clear: whether or not to clear out body and action actors
+    // @params: as in the Notification constructor
     //
     // Updates the notification by regenerating its icon and updating
-    // the title/banner. If @clear is %true, it will also remove any
-    // additional actors/action buttons previously added.
-    update: function(title, banner, clear) {
+    // the title/banner. If @params.clear is %true, it will also
+    // remove any additional actors/action buttons previously added.
+    update: function(title, banner, params) {
+        params = Params.parse(params, { bannerBody: this._bannerBody,
+                                        body: null,
+                                        clear: false });
+
         if (this._icon)
             this._icon.destroy();
-        if (this._scrollArea && (this._bannerBody || clear)) {
+        if (this._scrollArea && (this._bannerBody || params.clear)) {
             this._scrollArea.destroy();
             this._scrollArea = null;
             this._contentArea = null;
         }
-        if (this._actionArea && clear) {
+        if (this._actionArea && params.clear) {
             this._actionArea.destroy();
             this._actionArea = null;
             this._buttonBox = null;
         }
+
+        this._bannerBody = params.bannerBody;
 
         this._icon = this.source.createIcon(ICON_SIZE);
         this.actor.add(this._icon, { row: 0,
@@ -179,6 +189,8 @@ Notification.prototype = {
         // Add the bannerBody now if we know for sure we'll need it
         if (this._bannerBodyText && this._bannerBodyText.indexOf('\n') > -1)
             this._addBannerBody();
+        else if (params.body)
+            this.addBody(params.body);
     },
 
     // addActor:

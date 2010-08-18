@@ -70,11 +70,11 @@ WindowAttentionHandler.prototype = {
             source.connect('destroy', Lang.bind(this, function() { delete this._sources[appId]; }));
         }
 
-        let notification = new MessageTray.Notification(source, this._getTitle(app, window), this._getBanner(app, window), true);
+        let notification = new MessageTray.Notification(source, this._getTitle(app, window), this._getBanner(app, window), { bannerBody: true });
         source.notify(notification);
 
         window.connect('notify::title', Lang.bind(this, function(win) {
-                                                            notification.update(this._getTitle(app, win), this._getBanner(app, win), false);
+                                                            notification.update(this._getTitle(app, win), this._getBanner(app, win));
                                                         }));
         window.connect('notify::demands-attention', Lang.bind(this, function() { source.destroy(); }));
         window.connect('focus', Lang.bind(this, function() { source.destroy(); }));
