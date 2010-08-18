@@ -301,6 +301,13 @@ _clutter_do_redraw (ClutterStage *stage)
 
   ctx = _clutter_context_get_default ();
 
+  /* We have an optimization to avoid pick renders while scene is static.
+   * This is implied by seeing multiple picks per frame so we have to
+   * reset a pick counter each frame and also invalidate any current pick
+   * buffer. */
+  ctx->picks_per_frame = 0;
+  ctx->have_complete_pick_buffer = FALSE;
+
   /* Before we can paint, we have to be sure we have the latest layout */
   _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
 
@@ -577,6 +584,7 @@ _clutter_do_pick (ClutterStage   *stage,
   guint32             id;
   GLboolean           dither_was_on;
   ClutterActor       *actor;
+  gboolean            is_clipped;
   CLUTTER_STATIC_COUNTER (do_pick_counter,
                           "_clutter_do_pick counter",
                           "Increments for each full pick run",
@@ -617,13 +625,52 @@ _clutter_do_pick (ClutterStage   *stage,
 
   context = _clutter_context_get_default ();
 
+  /* It's possible that we currently have a static scene and have renderered a
+   * full, unclipped pick buffer. If so we can simply continue to read from
+   * this cached buffer until the scene next changes. */
+  if (context->have_complete_pick_buffer)
+    {
+      CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
+      cogl_read_pixels (x, y, 1, 1,
+                        COGL_READ_PIXELS_COLOR_BUFFER,
+                        COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                        pixel);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_read);
+
+      /* FIXME: This is a lazy copy and paste of the logic at the end of this
+       * function used when we actually do a pick render. It should be
+       * consolidated somehow.
+       */
+      if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
+        {
+          actor = CLUTTER_ACTOR (stage);
+          goto result;
+        }
+
+      id = _clutter_pixel_to_id (pixel);
+      actor = clutter_get_actor_by_gid (id);
+      goto result;
+    }
+
+  context->picks_per_frame++;
+
   _clutter_backend_ensure_context (context->backend, stage);
 
   /* needed for when a context switch happens */
   _clutter_stage_maybe_setup_viewport (stage);
 
-  if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-    cogl_clip_push_window_rectangle (x, y, 1, 1);
+  /* If we are seeing multiple picks per frame that means the scene is static
+   * so we promote to doing a non-scissored pick render so that all subsequent
+   * picks for the same static scene won't require additional renders */
+  if (context->picks_per_frame >= 2)
+    {
+      if (G_LIKELY (!(clutter_pick_debug_flags &
+                      CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+        cogl_clip_push_window_rectangle (x, y, 1, 1);
+      is_clipped = TRUE;
+    }
+  else
+    is_clipped = FALSE;
 
   cogl_disable_fog ();
   cogl_color_set_from_4ub (&stage_pick_id, 255, 255, 255, 255);
@@ -647,8 +694,14 @@ _clutter_do_pick (ClutterStage   *stage,
   context->pick_mode = CLUTTER_PICK_NONE;
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_paint);
 
-  if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-    cogl_clip_pop ();
+  if (is_clipped)
+    {
+      if (G_LIKELY (!(clutter_pick_debug_flags &
+                      CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+        cogl_clip_pop ();
+    }
+  else
+    context->have_complete_pick_buffer = TRUE;
 
   /* Make sure Cogl flushes any batched geometry to the GPU driver */
   cogl_flush ();
