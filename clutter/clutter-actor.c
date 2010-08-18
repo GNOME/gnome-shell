@@ -2661,6 +2661,9 @@ clutter_actor_paint (ClutterActor *self)
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
+    return;
+
   priv = self->priv;
 
   context = _clutter_context_get_default ();
