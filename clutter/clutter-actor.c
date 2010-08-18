@@ -2634,7 +2634,14 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
  * This function should not be called directly by applications.
  * Call clutter_actor_queue_redraw() to queue paints, instead.
  *
- * This function will emit the #ClutterActor::paint signal.
+ * This function is context-aware, and will either cause a
+ * regular paint or a pick paint.
+ *
+ * This function will emit the #ClutterActor::paint signal or
+ * the #ClutterActor::pick signal, depending on the context.
+ *
+ * This function does not paint the actor if the actor is set to 0,
+ * unless it is performing a pick paint.
  */
 void
 clutter_actor_paint (ClutterActor *self)
