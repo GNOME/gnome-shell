@@ -413,39 +413,15 @@ set_viewport_with_buffer_under_fbo_source (ClutterActor *fbo_source,
                                            int viewport_width,
                                            int viewport_height)
 {
-  ClutterVertex verts[4];
-  float x_min = G_MAXFLOAT, y_min = G_MAXFLOAT;
-  int x_offset, y_offset;
-  int i;
+  ClutterActorBox box = { 0, };
+  float x_offset, y_offset;
 
-  /* Get the actors allocation transformed into screen coordinates.
-   *
-   * XXX: Note: this may not be a bounding box for the actor, since an
-   * actor with depth may escape the box due to its perspective
-   * projection. */
-  clutter_actor_get_abs_allocation_vertices (fbo_source, verts);
-
-  for (i = 0; i < G_N_ELEMENTS (verts); ++i)
-    {
-      if (verts[i].x < x_min)
-	x_min = verts[i].x;
-      if (verts[i].y < y_min)
-	y_min = verts[i].y;
-    }
-
-  /* XXX: It's not good enough to round by simply truncating the fraction here
-   * via a cast, as it results in offscreen rendering being offset by 1 pixel
-   * in many cases... */
-#define ROUND(x) ((x) >= 0 ? (long)((x) + 0.5) : (long)((x) - 0.5))
-
-  x_offset = ROUND (-x_min);
-  y_offset = ROUND (-y_min);
-
-#undef ROUND
+  clutter_actor_get_paint_box (fbo_source, &box);
+  clutter_actor_box_get_origin (&box, &x_offset, &y_offset);
 
   /* translate the viewport so that the source actor lands on the
    * sub-region backed by the offscreen framebuffer... */
-  cogl_set_viewport (x_offset, y_offset, viewport_width, viewport_height);
+  cogl_set_viewport (-x_offset, -y_offset, viewport_width, viewport_height);
 }
 
 static void
@@ -2338,8 +2314,10 @@ on_fbo_source_size_change (GObject          *object,
 {
   ClutterTexturePrivate *priv = texture->priv;
   gfloat w, h;
+  ClutterActorBox box;
 
-  clutter_actor_get_transformed_size (priv->fbo_source, &w, &h);
+  clutter_actor_get_paint_box (priv->fbo_source, &box);
+  clutter_actor_box_get_size (&box, &w, &h);
 
   if (w != priv->image_width || h != priv->image_height)
     {
@@ -2479,6 +2457,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
   ClutterTexture        *texture;
   ClutterTexturePrivate *priv;
   gfloat w, h;
+  ClutterActorBox box;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
 
@@ -2493,10 +2472,13 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 	return NULL;
     }
 
-  clutter_actor_get_transformed_size (actor, &w, &h);
+  clutter_actor_get_paint_box (actor, &box);
+  clutter_actor_box_get_size (&box, &w, &h);
 
-  if (w == 0 || h == 0)
-    return NULL;
+  /* We can't create a 0x0 fbo so always bump the size up to at least
+   * 1 */
+  w = MAX(1,w);
+  h = MAX(1,h);
 
   /* Hopefully now were good.. */
   texture = g_object_new (CLUTTER_TYPE_TEXTURE,
