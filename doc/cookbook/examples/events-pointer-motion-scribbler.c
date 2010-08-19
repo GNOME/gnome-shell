@@ -13,8 +13,8 @@ typedef struct {
 } Context;
 
 static void
-convert_clutter_path_node_to_cogl_path (const ClutterPathNode *node,
-                                        gpointer               data)
+_convert_clutter_path_node_to_cogl_path (const ClutterPathNode *node,
+                                         gpointer               data)
 {
   g_return_if_fail (node != NULL);
 
@@ -38,8 +38,8 @@ convert_clutter_path_node_to_cogl_path (const ClutterPathNode *node,
 }
 
 static void
-_paint_cb (ClutterActor *actor,
-           gpointer      user_data)
+_canvas_paint_cb (ClutterActor *actor,
+                  gpointer      user_data)
 {
   Context *context = (Context *)user_data;
 
@@ -47,7 +47,7 @@ _paint_cb (ClutterActor *actor,
 
   cogl_set_path (context->cogl_path);
 
-  clutter_path_foreach (context->path, convert_clutter_path_node_to_cogl_path, NULL);
+  clutter_path_foreach (context->path, _convert_clutter_path_node_to_cogl_path, NULL);
 
   cogl_path_stroke_preserve ();
 
@@ -59,9 +59,9 @@ _paint_cb (ClutterActor *actor,
 }
 
 static gboolean
-_motion_cb (ClutterActor *actor,
-            ClutterEvent *event,
-            gpointer      user_data)
+_pointer_motion_cb (ClutterActor *actor,
+                    ClutterEvent *event,
+                    gpointer      user_data)
 {
   ClutterMotionEvent *motion_event = (ClutterMotionEvent *)event;
   Context *context = (Context *)user_data;
@@ -79,9 +79,9 @@ _motion_cb (ClutterActor *actor,
 }
 
 static gboolean
-_enter_cb (ClutterActor *actor,
-           ClutterEvent *event,
-           gpointer      user_data)
+_pointer_enter_cb (ClutterActor *actor,
+                   ClutterEvent *event,
+                   gpointer      user_data)
 {
   ClutterCrossingEvent *cross_event = (ClutterCrossingEvent *)event;
   Context *context = (Context *)user_data;
@@ -136,17 +136,17 @@ main (int argc, char *argv[])
 
   g_signal_connect (canvas,
                     "motion-event",
-                    G_CALLBACK (_motion_cb),
+                    G_CALLBACK (_pointer_motion_cb),
                     context);
 
   g_signal_connect (canvas,
                     "enter-event",
-                    G_CALLBACK (_enter_cb),
+                    G_CALLBACK (_pointer_enter_cb),
                     context);
 
   g_signal_connect (canvas,
                     "paint",
-                    G_CALLBACK (_paint_cb),
+                    G_CALLBACK (_canvas_paint_cb),
                     context);
 
   clutter_actor_show (stage);

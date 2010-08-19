@@ -4,9 +4,9 @@ static const ClutterColor stage_color = { 0x33, 0x33, 0x55, 0xff };
 static const ClutterColor rectangle_color = { 0xaa, 0x99, 0x00, 0xff };
 
 static gboolean
-_pointer_moved_cb (ClutterActor *actor,
-                   ClutterEvent *event,
-                   gpointer      user_data)
+_pointer_motion_cb (ClutterActor *actor,
+                    ClutterEvent *event,
+                    gpointer      user_data)
 {
   ClutterMotionEvent *motion_event = (ClutterMotionEvent *)event;
 
@@ -45,7 +45,7 @@ main (int argc, char *argv[])
 
   g_signal_connect (rectangle,
                     "motion-event",
-                    G_CALLBACK (_pointer_moved_cb),
+                    G_CALLBACK (_pointer_motion_cb),
                     NULL);
 
   clutter_actor_show (stage);

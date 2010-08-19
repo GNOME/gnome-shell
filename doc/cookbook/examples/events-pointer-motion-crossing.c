@@ -5,9 +5,9 @@ static const ClutterColor yellow = { 0xaa, 0x99, 0x00, 0xff };
 static const ClutterColor white = { 0xff, 0xff, 0xff, 0xff };
 
 static gboolean
-_on_enter_cb (ClutterActor *actor,
-              ClutterEvent *event,
-              gpointer      user_data)
+_pointer_enter_cb (ClutterActor *actor,
+                   ClutterEvent *event,
+                   gpointer      user_data)
 {
   ClutterState *transitions = CLUTTER_STATE (user_data);
   clutter_state_set_state (transitions, "fade-in");
@@ -15,9 +15,9 @@ _on_enter_cb (ClutterActor *actor,
 }
 
 static gboolean
-_on_leave_cb (ClutterActor *actor,
-              ClutterEvent *event,
-              gpointer      user_data)
+_pointer_leave_cb (ClutterActor *actor,
+                   ClutterEvent *event,
+                   gpointer      user_data)
 {
   ClutterState *transitions = CLUTTER_STATE (user_data);
   clutter_state_set_state (transitions, "fade-out");
@@ -89,12 +89,12 @@ main (int argc, char *argv[])
 
   g_signal_connect (box,
                     "enter-event",
-                    G_CALLBACK (_on_enter_cb),
+                    G_CALLBACK (_pointer_enter_cb),
                     transitions);
 
   g_signal_connect (box,
                     "leave-event",
-                    G_CALLBACK (_on_leave_cb),
+                    G_CALLBACK (_pointer_leave_cb),
                     transitions);
 
   /* bind the stage size to the box size + 50px in each axis */
