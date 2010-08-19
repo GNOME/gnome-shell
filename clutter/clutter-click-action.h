@@ -20,6 +20,9 @@
  *
  * Author:
  *   Emmanuele Bassi <ebassi@linux.intel.com>
+ *
+ * Inspired by the StClickable class in GNOME Shell, written by:
+ *   Colin Walters <walters@verbum.org>
  */
 
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
