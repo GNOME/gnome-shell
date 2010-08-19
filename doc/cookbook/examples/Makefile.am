@@ -12,6 +12,7 @@ noinst_PROGRAMS = \
 	layouts-stacking-diff-sized-actors	\
 	events-mouse-scroll \
 	events-pointer-motion-crossing \
+	events-pointer-motion-scribbler \
 	$(NULL)
 
 INCLUDES = \
@@ -42,5 +43,6 @@ layouts_stacking_SOURCES                   = layouts-stacking.c
 layouts_stacking_diff_sized_actors_SOURCES = layouts-stacking-diff-sized-actors.c
 events_mouse_scroll_SOURCES                = events-mouse-scroll.c
 events_pointer_motion_crossing_SOURCES     = events-pointer-motion-crossing.c
+events_pointer_motion_scribbler_SOURCES    = events-pointer-motion-scribbler.c
 
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore
