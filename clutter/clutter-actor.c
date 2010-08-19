@@ -9331,6 +9331,34 @@ clutter_actor_box_clamp_to_pixel (ClutterActorBox *box)
   box->y2 = ceilf (box->y2);
 }
 
+/**
+ * clutter_actor_box_union:
+ * @a: (in): the first #ClutterActorBox
+ * @a: (in): a second #ClutterActorBox
+ * @result: (out): the #ClutterActorBox representing a union of @a and
+ *          @b
+ *
+ * Unions the two boxes @a and @b and stores the result in @result.
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_box_union (ClutterActorBox *a,
+                         ClutterActorBox *b,
+                         ClutterActorBox *result)
+{
+  g_return_if_fail (a != NULL);
+  g_return_if_fail (b != NULL);
+  g_return_if_fail (result != NULL);
+
+  result->x1 = MIN (a->x1, b->x1);
+  result->y1 = MIN (a->y1, b->y1);
+
+  result->x2 = MAX (a->x2, b->x2);
+  result->y2 = MAX (a->y2, b->y2);
+}
+
+
 /******************************************************************************/
 
 struct _ShaderData
