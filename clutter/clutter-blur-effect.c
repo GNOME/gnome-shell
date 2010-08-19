@@ -49,6 +49,8 @@
 #include "clutter-offscreen-effect.h"
 #include "clutter-private.h"
 
+#define BLUR_PADDING    2
+
 typedef struct _ClutterBlurEffectClass  ClutterBlurEffectClass;
 
 /* FIXME - lame shader; we should really have a decoupled
@@ -211,6 +213,17 @@ clutter_blur_effect_pre_paint (ClutterEffect *effect)
   return parent_class->pre_paint (effect);
 }
 
+static CoglHandle
+clutter_blur_effect_create_texture (ClutterOffscreenEffect *effect,
+                                    gfloat                  min_width,
+                                    gfloat                  min_height)
+{
+  return cogl_texture_new_with_size (min_width + (2 * BLUR_PADDING),
+                                     min_height + (2 * BLUR_PADDING),
+                                     COGL_TEXTURE_NO_SLICING,
+                                     COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+}
+
 static void
 clutter_blur_effect_paint_target (ClutterOffscreenEffect *effect)
 {
@@ -243,6 +256,26 @@ out:
 }
 
 static void
+clutter_blur_effect_get_paint_volume (ClutterEffect      *effect,
+                                      ClutterPaintVolume *volume)
+{
+  gfloat cur_width, cur_height;
+  ClutterVertex origin;
+
+  clutter_paint_volume_get_origin (volume, &origin);
+  cur_width = clutter_paint_volume_get_width (volume);
+  cur_height = clutter_paint_volume_get_height (volume);
+
+  origin.x -= BLUR_PADDING;
+  origin.y -= BLUR_PADDING;
+  cur_width += BLUR_PADDING;
+  cur_height += BLUR_PADDING;
+  clutter_paint_volume_set_origin (volume, &origin);
+  clutter_paint_volume_set_width (volume, cur_width);
+  clutter_paint_volume_set_height (volume, cur_height);
+}
+
+static void
 clutter_blur_effect_dispose (GObject *gobject)
 {
   ClutterBlurEffect *self = CLUTTER_BLUR_EFFECT (gobject);
@@ -268,8 +301,10 @@ clutter_blur_effect_class_init (ClutterBlurEffectClass *klass)
   gobject_class->dispose = clutter_blur_effect_dispose;
 
   effect_class->pre_paint = clutter_blur_effect_pre_paint;
+  effect_class->get_paint_volume = clutter_blur_effect_get_paint_volume;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
+  offscreen_class->create_texture = clutter_blur_effect_create_texture;
   offscreen_class->paint_target = clutter_blur_effect_paint_target;
 }
 
