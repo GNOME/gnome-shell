@@ -384,6 +384,8 @@ clutter_actor_get_paint_opacity
 clutter_actor_get_paint_visibility
 clutter_actor_get_abs_allocation_vertices
 clutter_actor_get_transformation_matrix
+clutter_actor_get_paint_volume
+clutter_actor_get_paint_box
 
 <SUBSECTION>
 clutter_actor_set_anchor_point
@@ -467,10 +469,24 @@ ClutterGeometry
 clutter_geometry_union
 clutter_geometry_intersects
 
+<SUBSECTION>
+ClutterPaintVolume
+clutter_paint_volume_copy
+clutter_paint_volume_free
+clutter_paint_volume_set_origin
+clutter_paint_volume_get_origin
+clutter_paint_volume_set_width
+clutter_paint_volume_get_width
+clutter_paint_volume_set_height
+clutter_paint_volume_get_height
+clutter_paint_volume_set_depth
+clutter_paint_volume_get_depth
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY
 CLUTTER_TYPE_ACTOR_BOX
 CLUTTER_TYPE_VERTEX
+CLUTTER_TYPE_PAINT_VOLUME
 CLUTTER_ACTOR
 CLUTTER_IS_ACTOR
 CLUTTER_TYPE_ACTOR

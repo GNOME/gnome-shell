@@ -11514,6 +11514,17 @@ clutter_paint_volume_get_type (void)
   return our_type;
 }
 
+/*<private>
+ * _clutter_paint_volume_new:
+ * @actor: a #ClutterActor
+ *
+ * Creates a new #ClutterPaintVolume for the given @actor.
+ *
+ * Return value: the newly allocated #ClutterPaintVolume. Use
+ *   clutter_paint_volume_free() to free the resources it uses
+ *
+ * Since: 1.4
+ */
 ClutterPaintVolume *
 _clutter_paint_volume_new (ClutterActor *actor)
 {
@@ -11527,6 +11538,16 @@ _clutter_paint_volume_new (ClutterActor *actor)
   return pv;
 }
 
+/**
+ * clutter_paint_volume_copy:
+ * @pv: a #ClutterPaintVolume
+ *
+ * Copies @pv into a new #ClutterPaintVolume
+ *
+ * Return value: a newly allocated copy of a #ClutterPaintVolume
+ *
+ * Since: 1.4
+ */
 ClutterPaintVolume *
 clutter_paint_volume_copy (const ClutterPaintVolume *pv)
 {
@@ -11541,6 +11562,14 @@ clutter_paint_volume_copy (const ClutterPaintVolume *pv)
   return copy;
 }
 
+/**
+ * clutter_paint_volume_free:
+ * @pv: a #ClutterPaintVolume
+ *
+ * Frees the resources allocated by @pv
+ *
+ * Since: 1.4
+ */
 void
 clutter_paint_volume_free (ClutterPaintVolume *pv)
 {
@@ -11553,6 +11582,20 @@ clutter_paint_volume_free (ClutterPaintVolume *pv)
     }
 }
 
+/**
+ * clutter_paint_volume_set_origin:
+ * @pv: a #ClutterPaintVolume
+ * @origin: a #ClutterVertex
+ *
+ * Sets the origin of the paint volume.
+ *
+ * The origin is defined as the X and Y coordinates of the top-left corner
+ * of an actor's paint volume, with a Z coordinate of 0.
+ *
+ * The default is origin is assumed at: (0, 0, 0)
+ *
+ * Since: 1.4
+ */
 void
 clutter_paint_volume_set_origin (ClutterPaintVolume  *pv,
                                  const ClutterVertex *origin)
@@ -11562,6 +11605,15 @@ clutter_paint_volume_set_origin (ClutterPaintVolume  *pv,
   pv->vertices[0] = *origin;
 }
 
+/**
+ * clutter_paint_volume_get_origin:
+ * @pv: a #ClutterPaintVolume
+ * @vertex: (out): the return location for a #ClutterVertex
+ *
+ * Retrieves the origin of the #ClutterPaintVolume.
+ *
+ * Since: 1.4
+ */
 void
 clutter_paint_volume_get_origin (const ClutterPaintVolume *pv,
                                  ClutterVertex            *vertex)
@@ -11572,6 +11624,19 @@ clutter_paint_volume_get_origin (const ClutterPaintVolume *pv,
   *vertex = pv->vertices[0];
 }
 
+/**
+ * clutter_paint_volume_set_width:
+ * @pv: a #ClutterPaintVolume
+ * @width: the width vector of the paint volume, in pixels
+ *
+ * Sets the magnitude of the width vector of the paint volume.
+ *
+ * The width vector is defined as the vector that has the initial
+ * point in the origin, the sense of the X axis and the magnitude
+ * as the horizontal span of an actor.
+ *
+ * Since: 1.4
+ */
 void
 clutter_paint_volume_set_width (ClutterPaintVolume *pv,
                                 gfloat              width)
@@ -11582,6 +11647,16 @@ clutter_paint_volume_set_width (ClutterPaintVolume *pv,
   pv->vertices[1].x = width;
 }
 
+/**
+ * clutter_paint_volume_get_width:
+ * @pv: a #ClutterPaintVolume
+ *
+ * Retrieves the width set using clutter_paint_volume_get_width()
+ *
+ * Return value: the width, in pixels
+ *
+ * Since: 1.4
+ */
 gfloat
 clutter_paint_volume_get_width (const ClutterPaintVolume *pv)
 {
@@ -11590,6 +11665,19 @@ clutter_paint_volume_get_width (const ClutterPaintVolume *pv)
   return pv->vertices[1].x;
 }
 
+/**
+ * clutter_paint_volume_set_height:
+ * @pv: a #ClutterPaintVolume
+ * @height: the magnitude of the height vector of the paint volume, in pixels
+ *
+ * Sets the magnitude of the height vector of the paint volume.
+ *
+ * The height vector is defined as the vector that has the initial
+ * point in the origin, the sense of the Y axis and the magnitude
+ * as the vertical span of an actor.
+ *
+ * Since: 1.4
+ */
 void
 clutter_paint_volume_set_height (ClutterPaintVolume *pv,
                                  gfloat              height)
@@ -11600,6 +11688,16 @@ clutter_paint_volume_set_height (ClutterPaintVolume *pv,
   pv->vertices[2].y = height;
 }
 
+/**
+ * clutter_paint_volume_get_height:
+ * @pv: a #ClutterPaintVolume
+ *
+ * Retrieves the height set using clutter_paint_volume_get_height()
+ *
+ * Return value: the height, in pixels
+ *
+ * Since: 1.4
+ */
 gfloat
 clutter_paint_volume_get_height (const ClutterPaintVolume *pv)
 {
@@ -11608,6 +11706,19 @@ clutter_paint_volume_get_height (const ClutterPaintVolume *pv)
   return pv->vertices[2].y;
 }
 
+/**
+ * clutter_paint_volume_set_depth:
+ * @pv: a #ClutterPaintVolume
+ * @depth: the magnitude of the depth vector of the paint volume
+ *
+ * Sets the magnitude of the depth vector of the paint volume.
+ *
+ * The height vector is defined as the vector that has the initial
+ * point in the origin, the sense of the Z axis and the magnitude
+ * as the depth span of an actor.
+ *
+ * Since: 1.4
+ */
 void
 clutter_paint_volume_set_depth (ClutterPaintVolume *pv,
                                 gfloat              depth)
@@ -11617,6 +11728,16 @@ clutter_paint_volume_set_depth (ClutterPaintVolume *pv,
   pv->vertices[3].z = depth;
 }
 
+/**
+ * clutter_paint_volume_get_depth:
+ * @pv: a #ClutterPaintVolume
+ *
+ * Retrieves the depth set using clutter_paint_volume_get_depth()
+ *
+ * Return value: the depth
+ *
+ * Since: 1.4
+ */
 gfloat
 clutter_paint_volume_get_depth (const ClutterPaintVolume *pv)
 {
@@ -11625,6 +11746,15 @@ clutter_paint_volume_get_depth (const ClutterPaintVolume *pv)
   return pv->vertices[3].z;
 }
 
+/*<private>
+ * _clutter_paint_volume_get_box:
+ * @pv: a #ClutterPaintVolume
+ * @box: a #ClutterActorBox
+ *
+ * Transforms a 3D paint volume into a 2D bounding box
+ *
+ * Since: 1.4
+ */
 void
 _clutter_paint_volume_get_box (ClutterPaintVolume *pv,
                                ClutterActorBox    *box)
@@ -11695,6 +11825,29 @@ _clutter_paint_volume_get_box (ClutterPaintVolume *pv,
   clutter_actor_box_clamp_to_pixel (box);
 }
 
+/**
+ * clutter_actor_get_paint_volume:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the paint volume of the passed #ClutterActor.
+ *
+ * The paint volume is defined as the 3D space occupied by an actor
+ * when being painted.
+ *
+ * This function will call the <function>get_paint_volume()</function>
+ * virtual function of the #ClutterActor class. Sub-classes of #ClutterActor
+ * should not usually care about overriding the default implementation,
+ * unless they are, for instance, painting outside their allocation area.
+ *
+ * <note>Overriding the <function>get_paint_box()</function> for 2D actors
+ * should set a degenerate depth vector using the same value as the Z
+ * coordinate of the origin.</note>
+ *
+ * Return value: (transfer full): a newly allocated #ClutterPaintVolume.
+ *   Use clutter_paint_volume_free() to free the resources when done.
+ *
+ * Since: 1.4
+ */
 ClutterPaintVolume *
 clutter_actor_get_paint_volume (ClutterActor *self)
 {
@@ -11742,6 +11895,19 @@ clutter_actor_get_paint_volume (ClutterActor *self)
   return pv;
 }
 
+/**
+ * clutter_actor_get_paint_box:
+ * @self: a #ClutterActor
+ * @box: (out): return location for a #ClutterActorBox
+ *
+ * Retrieves the paint volume of the passed #ClutterActor, and transforms it
+ * into a 2D bounding box in stage coordinates.
+ *
+ * This function is useful to determine the on screen area occupied by the
+ * actor.
+ *
+ * Since: 1.4
+ */
 void
 clutter_actor_get_paint_box (ClutterActor    *self,
                              ClutterActorBox *box)
