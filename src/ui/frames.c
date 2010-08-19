@@ -2006,6 +2006,14 @@ meta_frames_destroy_event           (GtkWidget           *widget,
 
 #if !GTK_CHECK_VERSION(2,21,6)
 /* Copied from GDK */
+static cairo_surface_t *
+_gdk_drawable_ref_cairo_surface (GdkDrawable *drawable)
+{
+  g_return_val_if_fail (GDK_IS_DRAWABLE (drawable), NULL);
+
+  return GDK_DRAWABLE_GET_CLASS (drawable)->ref_cairo_surface (drawable);
+}
+
 static cairo_pattern_t *
 gdk_window_get_background_pattern (GdkWindow *window)
 {
@@ -2033,7 +2041,8 @@ gdk_window_get_background_pattern (GdkWindow *window)
                                    g_object_unref);
     }
   else
-    pattern =
+    {
+      pattern =
         cairo_pattern_create_rgb (private->bg_color.red   / 65535.,
                                   private->bg_color.green / 65535.,
                                   private->bg_color.blue / 65535.);
