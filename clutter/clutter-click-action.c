@@ -302,3 +302,33 @@ clutter_click_action_new (void)
 {
   return g_object_new (CLUTTER_TYPE_CLICK_ACTION, NULL);
 }
+
+/**
+ * clutter_click_action_release:
+ * @action: a #ClutterClickAction
+ *
+ * Emulates a release of the pointer button, which ungrabs the pointer
+ * and unsets the #ClutterClickAction:pressed state.
+ *
+ * This function is useful to break a grab, for instance after a certain
+ * amount of time has passed.
+ *
+ * Since: 1.4
+ */
+void
+clutter_click_action_force_release (ClutterClickAction *action)
+{
+  ClutterClickActionPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_CLICK_ACTION (action));
+
+  priv = action->priv;
+
+  if (!priv->is_held)
+    return;
+
+  priv->is_held = FALSE;
+  clutter_ungrab_pointer ();
+
+  click_action_set_pressed (action, FALSE);
+}
