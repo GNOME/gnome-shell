@@ -38,51 +38,53 @@ typedef enum {
 
 #ifdef CLUTTER_ENABLE_DEBUG
 
-#ifdef __GNUC__
-#define CLUTTER_NOTE(type,x,a...)                     G_STMT_START { \
-        if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_##type)) \
-          { g_message ("[" #type "] " G_STRLOC ": " x, ##a); }       \
-                                                      } G_STMT_END
+#define CLUTTER_HAS_DEBUG(type)         ((clutter_debug_flags & CLUTTER_DEBUG_##type) != FALSE)
 
-#define CLUTTER_TIMESTAMP(type,x,a...)                G_STMT_START { \
-        if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_##type)) \
-          { g_message ("[" #type "]" " %li:"  G_STRLOC ": "          \
-                       x, clutter_get_timestamp(), ##a); }           \
-                                                      } G_STMT_END
-#else
+#ifdef __GNUC__
+
+/* Try the GCC extension for valists in macros */
+#define CLUTTER_NOTE(type,x,a...)             G_STMT_START {    \
+        if (G_UNLIKELY (CLUTTER_HAS_DEBUG (type))) {            \
+          g_message ("[" #type "] " G_STRLOC ": " x, ##a);      \
+        }                                     } G_STMT_END
+
+#define CLUTTER_TIMESTAMP(type,x,a...)        G_STMT_START {    \
+        if (G_UNLIKELY (CLUTTER_HAS_DEBUG (type))) {            \
+          g_message ("[" #type "]" " %li:"  G_STRLOC ": "       \
+                     x, clutter_get_timestamp(), ##a);          \
+        }                                     } G_STMT_END
+
+#else /* !__GNUC__ */
+
 /* Try the C99 version; unfortunately, this does not allow us to pass
  * empty arguments to the macro, which means we have to
  * do an intemediate printf.
  */
-#define CLUTTER_NOTE(type,...)                        G_STMT_START { \
-        if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_##type)) \
-          {                                                          \
-            gchar * _fmt = g_strdup_printf (__VA_ARGS__);            \
-            g_message ("[" #type "] " G_STRLOC ": %s",_fmt);         \
-            g_free (_fmt);                                           \
-          }                                                          \
-                                                      } G_STMT_END
+#define CLUTTER_NOTE(type,...)                G_STMT_START {    \
+        if (G_UNLIKELY (CLUTTER_HAS_DEBUG (type))) {            \
+          gchar * _fmt = g_strdup_printf (__VA_ARGS__);         \
+          g_message ("[" #type "] " G_STRLOC ": %s",_fmt);      \
+          g_free (_fmt); }                    } G_STMT_END
 
-#define CLUTTER_TIMESTAMP(type,...)                   G_STMT_START { \
-        if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_##type)) \
-          {                                                          \
-            gchar * _fmt = g_strdup_printf (__VA_ARGS__);            \
-            g_message ("[" #type "]" " %li:"  G_STRLOC ": %s",       \
-                       clutter_get_timestamp(), _fmt);               \
-            g_free (_fmt);                                           \
-          }                                                          \
-                                                      } G_STMT_END
-#endif
+#define CLUTTER_TIMESTAMP(type,...)           G_STMT_START {    \
+        if (G_UNLIKELY (CLUTTER_HAS_DEBUG (type))) {            \
+          gchar * _fmt = g_strdup_printf (__VA_ARGS__);         \
+          g_message ("[" #type "]" " %li:"  G_STRLOC ": %s",    \
+                     clutter_get_timestamp(), _fmt);            \
+          g_free (_fmt);                                        \
+        }                                     } G_STMT_END
 
-#define CLUTTER_MARK()      CLUTTER_NOTE(MISC, "== mark ==")
-#define CLUTTER_DBG(x) { a }
+#endif /* __GNUC__ */
+
+#define CLUTTER_MARK()          CLUTTER_NOTE(MISC, "== mark ==")
+#define CLUTTER_DBG(x)          { a }
 
 #define CLUTTER_GLERR()                         G_STMT_START {  \
-        if (clutter_debug_flags & CLUTTER_DEBUG_GL)             \
-          { GLenum _err = glGetError (); /* roundtrip */        \
-            if (_err != GL_NO_ERROR)                            \
-              g_warning (G_STRLOC ": GL Error %x", _err);       \
-          }                                     } G_STMT_END
+        if (clutter_debug_flags & CLUTTER_DEBUG_GL) {           \
+          GLenum _err = glGetError (); /* roundtrip */          \
+          if (_err != GL_NO_ERROR)                              \
+            g_warning (G_STRLOC ": GL Error %x", _err);         \
+        }                                       } G_STMT_END
 
 
 #else /* !CLUTTER_ENABLE_DEBUG */
@@ -92,6 +94,7 @@ typedef enum {
 #define CLUTTER_DBG(x)                 G_STMT_START { } G_STMT_END
 #define CLUTTER_GLERR()                G_STMT_START { } G_STMT_END
 #define CLUTTER_TIMESTAMP(type,...)    G_STMT_START { } G_STMT_END
+#define CLUTTER_HAS_DEBUG(type)        FALSE
 
 #endif /* CLUTTER_ENABLE_DEBUG */
 

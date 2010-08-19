@@ -8520,7 +8520,7 @@ clutter_actor_set_custom_property (ClutterScriptable *scriptable,
   ClutterActor *actor = CLUTTER_ACTOR (scriptable);
 
 #ifdef CLUTTER_ENABLE_DEBUG
-  if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_SCRIPT))
+  if (G_UNLIKELY (CLUTTER_HAS_DEBUG (SCRIPT)))
     {
       gchar *tmp = g_strdup_value_contents (value);
 

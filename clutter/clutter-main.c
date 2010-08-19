@@ -612,7 +612,7 @@ _clutter_do_pick (ClutterStage   *stage,
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
 
-  if (clutter_debug_flags & CLUTTER_DEBUG_NOP_PICKING)
+  if (G_UNLIKELY (clutter_pick_debug_flags & CLUTTER_DEBUG_NOP_PICKING))
     return CLUTTER_ACTOR (stage);
 
 #ifdef CLUTTER_ENABLE_PROFILE
