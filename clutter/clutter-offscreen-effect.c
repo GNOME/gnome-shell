@@ -153,7 +153,13 @@ update_fbo (ClutterEffect *effect)
    * FIXME - this is actually not enough: we need the paint area
    * to make this work reliably
    */
-  clutter_actor_get_transformed_size (priv->actor, &width, &height);
+  {
+    ClutterActorBox box = { 0, };
+
+    clutter_actor_get_paint_box (priv->actor, &box);
+    clutter_actor_box_get_size (&box, &width, &height);
+  }
+
   if (priv->target_width == width &&
       priv->target_height == height)
     return TRUE;
@@ -202,36 +208,23 @@ get_screen_offsets (ClutterActor *actor,
                     gfloat       *x_offset,
                     gfloat       *y_offset)
 {
-  ClutterVertex verts[4];
-  gfloat x_min = G_MAXFLOAT, y_min = G_MAXFLOAT;
   gfloat v[4] = { 0, };
-  gint i;
 
-  /* Get the actors allocation transformed into screen coordinates.
-   *
-   * XXX: Note: this may not be a bounding box for the actor, since an
-   * actor with depth may escape the box due to its perspective
-   * projection. */
-  clutter_actor_get_abs_allocation_vertices (actor, verts);
-
-  for (i = 0; i < G_N_ELEMENTS (verts); ++i)
+  if (CLUTTER_ACTOR_IS_TOPLEVEL (actor))
     {
-      if (verts[i].x < x_min)
-        x_min = verts[i].x;
-
-      if (verts[i].y < y_min)
-        y_min = verts[i].y;
+      /* trivial optimization: a top-level actor is always going to
+       * have a (0, 0) offset
+       */
+      *x_offset = 0.0f;
+      *y_offset = 0.0f;
     }
+  else
+    {
+      ClutterActorBox box = { 0, };
 
-  /* XXX: It's not good enough to round by simply truncating the fraction here
-   * via a cast, as it results in offscreen rendering being offset by 1 pixel
-   * in many cases... */
-#define ROUND(x) ((x) >= 0 ? (long)((x) + 0.5) : (long)((x) - 0.5))
-
-  *x_offset = ROUND (x_min);
-  *y_offset = ROUND (y_min);
-
-#undef ROUND
+      clutter_actor_get_paint_box (actor, &box);
+      clutter_actor_box_get_origin (&box, x_offset, y_offset);
+    }
 
   /* since we're setting up a viewport with a negative offset to paint
    * in an FBO with the same modelview and projection matrices as the
