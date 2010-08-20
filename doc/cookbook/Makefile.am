@@ -54,6 +54,7 @@ VIDEO_FILES = \
 	videos/animations-rotating-container-reverses-direction.ogv \
 	videos/textures-split-go.ogv \
 	videos/events-mouse-scroll.ogv \
+	videos/textures-crossfade-two-textures.ogv \
 	$(NULL)
 
 EXTRA_DIST = \
