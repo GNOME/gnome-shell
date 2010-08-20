@@ -38,6 +38,7 @@ IMAGE_FILES = \
 	images/text-shadow.png \
 	images/textures-sub-texture.png \
 	images/layouts-stacking-diff-actor-sizes.png \
+	images/events-pointer-motion-stacking.png	\
 	$(NULL)
 VIDEO_FILES = \
 	videos/animations-fading-out.ogv \

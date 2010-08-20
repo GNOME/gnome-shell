@@ -698,4 +698,327 @@ g_signal_connect (viewport,
     </section>
 
   </section>
+
+  <section id="events-pointer-motion">
+    <title>Detecting pointer movements on an actor</title>
+
+    <section id="events-pointer-motion-problem">
+      <title>Problem</title>
+
+      <para>You want to be able to tell when the pointer (e.g. associated
+      with a mouse or touches on a screen) enters, leaves, or moves over
+      an actor.</para>
+
+      <para>Example use cases include:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Adding a tooltip or hover effect to an actor when
+          a pointer moves onto it.</para>
+        </listitem>
+        <listitem>
+          <para>Tracing the path of the pointer over an actor (e.g.
+          in a drawing application).</para>
+        </listitem>
+      </itemizedlist>
+
+    </section>
+
+    <section id="events-pointer-motion-solution">
+      <title>Solution</title>
+
+      <para>Connect to the pointer motion signals emitted by the actor.</para>
+
+      <section>
+        <title>Responding to crossing events</title>
+
+        <para>To detect the pointer crossing the boundary of an actor
+        (entering or leaving), connect to the <code>enter-event</code>
+        and/or <code>leave-event</code> signals. For example:</para>
+
+        <informalexample>
+          <programlisting>
+ClutterActor *actor = clutter_texture_new ();
+
+/* ...set size, color, image etc., depending on the actor... */
+
+/* make the actor reactive: see <link linkend="events-pointer-motion-discussion">Discussion</link> for more details */
+clutter_actor_set_reactive (actor, TRUE);
+
+/* connect to the signals */
+g_signal_connect (actor,
+                  "enter-event",
+                  G_CALLBACK (_pointer_enter_cb),
+                  NULL);
+
+g_signal_connect (actor,
+                  "leave-event",
+                  G_CALLBACK (_pointer_leave_cb),
+                  NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>The signature for callbacks connected to each of these
+        signals is:</para>
+
+        <informalexample>
+          <programlisting>
+gboolean
+_on_crossing (ClutterActor *actor,
+              ClutterEvent *event,
+              gpointer      user_data)
+          </programlisting>
+        </informalexample>
+
+        <para>In the callback, you can examine the event to get the
+        coordinates where the pointer entered or left the actor. For
+        example, <function>_pointer_enter_cb()</function> could
+        follow this template:</para>
+
+        <informalexample id="events-pointer-motion-callback-example">
+          <programlisting>
+<![CDATA[
+/* the event passed to the callback is of type ClutterCrossingEvent */
+static gboolean
+_pointer_enter_cb (ClutterActor *actor,
+                   ClutterEvent *event,
+                   gpointer      user_data)
+{
+  /* get the coordinates where the pointer crossed into the actor */
+  gfloat stage_x, stage_y;
+  clutter_event_get_coords (event, &stage_x, &stage_y);
+
+  /*
+   * as the coordinates are relative to the stage, rather than
+   * the actor which emitted the signal, it can be useful to
+   * transform them to actor-relative coordinates
+   */
+  gfloat actor_x, actor_y;
+  clutter_actor_transform_stage_point (actor,
+                                       stage_x, stage_y,
+                                       &actor_x, &actor_y);
+
+  g_debug ("pointer at stage x %.0f, y %.0f; actor x %.0f, y %.0f",
+           stage_x, stage_y,
+           actor_x, actor_y);
+
+  return TRUE;
+}
+]]>
+          </programlisting>
+        </informalexample>
+
+        <para>See <link linkend="events-pointer-motion-example-1">the
+        code example in the appendix</link> for an example of how
+        you can implement a hover effect on a "button" (rectangle
+        with text overlay) using this approach.</para>
+
+      </section>
+
+      <section>
+        <title>Responding to motion events</title>
+
+        <para>Motion events occur when a pointer moves over an actor;
+        the actor emits a <code>motion-event</code> signal when this
+        happens. To respond to motion events, connect to this signal:</para>
+
+        <informalexample>
+          <programlisting>
+/* set up the actor, make reactive etc., as above */
+
+/* connect to motion-event signal */
+g_signal_connect (actor,
+                  "motion-event",
+                  G_CALLBACK (_pointer_motion_cb),
+                  transitions);
+          </programlisting>
+        </informalexample>
+
+        <para>The signature of the callback is the same as for
+        the <code>enter-event/leave-event</code> signals, so you can use
+        <link linkend="events-pointer-motion-callback-example">code
+        similar to the above</link> to handle it. However, the
+        type of the event is a <type>ClutterMotionEvent</type>
+        (rather than a <type>ClutterCrossingEvent</type>).</para>
+
+      </section>
+
+    </section>
+
+    <section id="events-pointer-motion-discussion">
+      <title>Discussion</title>
+
+      <para>A few more useful things to know about pointer motion
+      events:</para>
+
+      <itemizedlist>
+
+        <listitem>
+          <para>Each crossing event is accompanied by a motion event at
+          the same coordinates.</para>
+        </listitem>
+
+        <listitem>
+          <para>Before an actor will emit signals for pointer events,
+          it needs to be made reactive with:</para>
+
+          <informalexample>
+            <programlisting>
+clutter_actor_set_reactive (actor, TRUE);
+            </programlisting>
+          </informalexample>
+        </listitem>
+
+        <listitem>
+          <para>A pointer event structure includes other data. Some
+          examples:</para>
+
+          <informalexample>
+            <programlisting>
+/* keys and mouse buttons pressed down when the pointer moved */
+ClutterModifierType modifiers = clutter_event_get_state (event);
+
+/* time (since the epoch) when the event occurred */
+guint32 event_time = clutter_event_get_time (event);
+
+/* actor where the event originated */
+ClutterActor *actor = clutter_event_get_actor (event);
+
+/* stage where the event originated */
+ClutterStage *stage = clutter_event_get_stage (event);
+            </programlisting>
+          </informalexample>
+
+          <para>There's no need to cast the event to use these
+          functions: they will work on any <type>ClutterEvent</type>.</para>
+        </listitem>
+
+        <listitem>
+          <para>The coordinates of an event (as returned by
+          <function>clutter_event_get_coords()</function>) are relative
+          to the stage where they originated, rather than the actor. Unless
+          the actor is the same size as the stage, you'll typically want
+          the actor-relative coordinates instead. To get those, use
+          <function>clutter_actor_transform_stage_point()</function>.</para>
+        </listitem>
+
+      </itemizedlist>
+
+      <para>The <link linkend="events-pointer-motion-example-4">simple
+      scribble application</link> gives a more
+      thorough example of how to integrate pointer events into a
+      Clutter application (in this case, for drawing on a
+      <type>ClutterTexture</type>).</para>
+
+      <para>The effect of actor depth on pointer motion events is
+      worth slightly deeper discussion, and is covered next.</para>
+
+      <section>
+        <title>Pointer events on actors at different depths</title>
+
+        <para>If you have actors stacked on top of each other, the
+        reactive actor nearest the "top" is the one
+        which emits the signal (when the pointer crosses into or moves
+        over it). "Top" here means either at the top of
+        the depth ordering (if all actors are at the same depth)
+        or the closest to the view point (if actors have different
+        depths in the <code>z</code> axis).</para>
+
+        <para>Here's an example of three rectangles overlapping each
+        other:</para>
+
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata format="PNG"
+                         fileref="images/events-pointer-motion-stacking.png" />
+            </imageobject>
+            <alt>
+              <para>Pointer events in actors with different depth ordering</para>
+            </alt>
+          </mediaobject>
+        </screenshot>
+
+        <para>The rectangles are all at the same point on the
+        <code>z</code> axis but stacked (different positions in the depth
+        order). They have the following properties:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>The <emphasis>red</emphasis> rectangle is lowest down
+            the depth ordering and reactive. Pointer motion signals are
+            emitted by this actor when the pointer crosses or moves on the
+            area of the rectangle <emphasis>not</emphasis> overlapped by the
+            green rectangle.</para>
+          </listitem>
+          <listitem>
+            <para>The <emphasis>green</emphasis> rectangle is in the
+            middle of the depth ordering and reactive. This actor emits
+            events over its whole surface, even though it is overlapped
+            by the blue rectangle (as the blue rectangle is not
+            reactive).</para>
+            <para>Even if the blue rectangle were fully opaque, a pointer
+            crossing into or moving on the green rectangle's area (even if
+            obscured by the blue rectangle) would still cause a signal
+            to be emitted.</para>
+          </listitem>
+          <listitem>
+            <para>The <emphasis>blue</emphasis> rectangle is at the top
+            of the depth ordering and <emphasis>not</emphasis> reactive.
+            This actor doesn't emit any pointer motion signals and doesn't
+            block events from occurring on any other actor.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>See <link linkend="events-pointer-motion-example-3">the
+        sample code in the appendix</link> for more details.</para>
+
+      </section>
+
+    </section>
+
+    <section>
+      <title>Full examples</title>
+
+      <example id="events-pointer-motion-example-1">
+        <title>Simple button with a hover animation (change in opacity
+        as the pointer enters and leaves it)</title>
+        <programlisting>
+<xi:include href="examples/events-pointer-motion-crossing.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="events-pointer-motion-example-2">
+        <title>Detecting pointer motion on a <type>ClutterRectangle</type></title>
+        <programlisting>
+<xi:include href="examples/events-pointer-motion.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="events-pointer-motion-example-3">
+        <title>How actors influence pointer events on each other</title>
+        <programlisting>
+<xi:include href="examples/events-pointer-motion-stacked.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="events-pointer-motion-example-4">
+        <title>Scribbling on a <type>ClutterTexture</type> in response
+        to pointer events</title>
+        <programlisting>
+<xi:include href="examples/events-pointer-motion-scribbler.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+    </section>
+
+  </section>
 </chapter>
