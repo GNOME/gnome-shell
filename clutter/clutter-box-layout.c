@@ -569,7 +569,7 @@ static void
 get_preferred_height (ClutterBoxLayout *self,
                       ClutterContainer *container,
                       GList            *children,
-                      gfloat            for_height,
+                      gfloat            for_width,
                       gfloat           *min_height_p,
                       gfloat           *natural_height_p)
 {
@@ -608,7 +608,7 @@ get_preferred_height (ClutterBoxLayout *self,
 
       clutter_actor_get_preferred_height (child,
                                           (priv->is_vertical)
-                                            ? for_height
+                                            ? for_width
                                             : -1,
                                           &child_min,
                                           &child_nat);
