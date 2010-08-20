@@ -8,10 +8,8 @@ _pointer_motion_cb (ClutterActor *actor,
                     ClutterEvent *event,
                     gpointer      user_data)
 {
-  ClutterMotionEvent *motion_event = (ClutterMotionEvent *)event;
-
-  gfloat stage_x = motion_event->x;
-  gfloat stage_y = motion_event->y;
+  gfloat stage_x, stage_y;
+  clutter_event_get_coords (event, &stage_x, &stage_y);
 
   gfloat actor_x, actor_y;
   clutter_actor_transform_stage_point (actor,
