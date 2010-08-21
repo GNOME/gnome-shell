@@ -8,6 +8,7 @@ const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const GenericDisplay = imports.ui.genericDisplay;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
