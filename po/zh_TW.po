@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.31.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-20 19:27+0800\n"
-"PO-Revision-Date: 2010-07-19 15:59+0800\n"
+"POT-Creation-Date: 2010-08-21 21:01+0800\n"
+"PO-Revision-Date: 2010-08-20 19:15+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "MIME-Version: 1.0\n"
@@ -166,7 +166,7 @@ msgstr "當循環視窗時是否顯示彈出視窗/框架。"
 
 #: ../src/core/main.c:333
 msgid "Internal argument for GObject introspection"
-msgstr ""
+msgstr "GObject introspection 內部引數"
 
 #: ../src/core/main.c:663
 #, c-format
@@ -411,7 +411,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6228
+#: ../src/core/window.c:6237
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -427,7 +427,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6891
+#: ../src/core/window.c:6900
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -1284,7 +1284,7 @@ msgstr "座標表達式中似乎沒有任何運算符或運算子"
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "佈景主題中含有引致錯誤的表達式：%s\n"
 
-#: ../src/ui/theme.c:4261
+#: ../src/ui/theme.c:4255
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1293,25 +1293,25 @@ msgstr ""
 "此邊框款式必須指定 <button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/>"
 
-#: ../src/ui/theme.c:4769 ../src/ui/theme.c:4794
+#: ../src/ui/theme.c:4763 ../src/ui/theme.c:4788
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "缺少了 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:4838
+#: ../src/ui/theme.c:4832
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "無法載入佈景主題“%s”：%s\n"
 
-#: ../src/ui/theme.c:4970 ../src/ui/theme.c:4977 ../src/ui/theme.c:4984
-#: ../src/ui/theme.c:4991 ../src/ui/theme.c:4998
+#: ../src/ui/theme.c:4964 ../src/ui/theme.c:4971 ../src/ui/theme.c:4978
+#: ../src/ui/theme.c:4985 ../src/ui/theme.c:4992
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "佈景主題“%s”未指定 <%s>"
 
-#: ../src/ui/theme.c:5006
+#: ../src/ui/theme.c:5000
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1320,13 +1320,13 @@ msgstr ""
 "在佈景主題“%2$s”中，視窗類型“%1$s”沒有指定任何邊框款式。請加上 <window type="
 "\"%3$s\" style_set=\"whatever\"/> 元素"
 
-#: ../src/ui/theme.c:5449 ../src/ui/theme.c:5511 ../src/ui/theme.c:5574
+#: ../src/ui/theme.c:5443 ../src/ui/theme.c:5505 ../src/ui/theme.c:5568
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "自行定義的常數必須以大寫字母開始；但“%s”不是"
 
-#: ../src/ui/theme.c:5457 ../src/ui/theme.c:5519 ../src/ui/theme.c:5582
+#: ../src/ui/theme.c:5451 ../src/ui/theme.c:5513 ../src/ui/theme.c:5576
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "已定義了“%s”常數"
