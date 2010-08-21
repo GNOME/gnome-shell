@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell 2.31.4\n"
+"Project-Id-Version: gnome-shell 2.31.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-12 19:23+0800\n"
-"PO-Revision-Date: 2010-07-12 19:24+0800\n"
+"POT-Creation-Date: 2010-08-21 20:42+0800\n"
+"PO-Revision-Date: 2010-08-21 20:43+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
 "MIME-Version: 1.0\n"
@@ -52,7 +52,7 @@ msgstr "用來儲存畫面廣播的延伸檔名"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid "Framerate used for recording screencasts."
-msgstr ""
+msgstr "錄製畫面廣播的框架率。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid ""
@@ -133,7 +133,7 @@ msgstr "錄製好的畫面廣播檔案名稱會以目前的時刻作為獨特的
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
-msgstr ""
+msgstr "由 GNOME Shell 的畫面廣播錄製程式所錄製成果的框架率，以 frames-per-second 計。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "The gstreamer pipeline used to encode the screencast"
@@ -208,27 +208,27 @@ msgid "_24 hour format"
 msgstr "_24 小時制"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:388 ../js/ui/dash.js:777
+#: ../js/ui/appDisplay.js:384 ../js/ui/dash.js:778
 msgid "APPLICATIONS"
 msgstr "程式集"
 
-#: ../js/ui/appDisplay.js:420
+#: ../js/ui/appDisplay.js:416
 msgid "PREFERENCES"
 msgstr "偏好設定"
 
-#: ../js/ui/appDisplay.js:725
+#: ../js/ui/appDisplay.js:721
 msgid "New Window"
 msgstr "新視窗"
 
-#: ../js/ui/appDisplay.js:729
+#: ../js/ui/appDisplay.js:725
 msgid "Remove from Favorites"
 msgstr "自喜好中移除"
 
-#: ../js/ui/appDisplay.js:730
+#: ../js/ui/appDisplay.js:726
 msgid "Add to Favorites"
 msgstr "加入喜好"
 
-#: ../js/ui/appDisplay.js:1037
+#: ../js/ui/appDisplay.js:1033
 msgid "Drag here to add favorites"
 msgstr "拖放到這裏加入喜好"
 
@@ -237,32 +237,32 @@ msgstr "拖放到這裏加入喜好"
 msgid "%s has been added to your favorites."
 msgstr "%s 已加入你的喜好中。"
 
-#: ../js/ui/appFavorites.js:106
+#: ../js/ui/appFavorites.js:107
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s 已經從你的喜好中移除。"
 
-#: ../js/ui/dash.js:146
+#: ../js/ui/dash.js:142
 msgid "Find"
 msgstr "尋找"
 
-#: ../js/ui/dash.js:475
+#: ../js/ui/dash.js:473
 msgid "Searching..."
 msgstr "搜尋中..."
 
-#: ../js/ui/dash.js:489
+#: ../js/ui/dash.js:487
 msgid "No matching results."
 msgstr "沒有相符的結果。"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:796 ../js/ui/placeDisplay.js:552
+#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
 msgid "PLACES & DEVICES"
 msgstr "位置 & 裝置"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:803 ../js/ui/docDisplay.js:497
+#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "最近使用項目"
 
@@ -294,78 +294,96 @@ msgstr "檢示來源"
 msgid "Web Page"
 msgstr "網頁"
 
-#: ../js/ui/overview.js:165
+#: ../js/ui/overview.js:160
 msgid "Undo"
 msgstr "復原"
 
-#: ../js/ui/panel.js:517
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:473
+#, c-format
+msgid "Quit %s"
+msgstr "結束 %s"
+
+#: ../js/ui/panel.js:498
 msgid "Preferences"
 msgstr "偏好設定"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:603
+#: ../js/ui/panel.js:584
 msgid "%a %b %e, %R:%S"
 msgstr "%b %e %a, %R:%S"
 
-#: ../js/ui/panel.js:604
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %R"
 msgstr "%b %e %a, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:608
+#: ../js/ui/panel.js:589
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:609
+#: ../js/ui/panel.js:590
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:616
+#: ../js/ui/panel.js:597
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%b %e %a, %p %l:%M:%S"
 
-#: ../js/ui/panel.js:617
+#: ../js/ui/panel.js:598
 msgid "%a %b %e, %l:%M %p"
 msgstr "%b %e %a, %p %l:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:621
+#: ../js/ui/panel.js:602
 msgid "%a %l:%M:%S %p"
 msgstr "%a %p %l:%M:%S"
 
-#: ../js/ui/panel.js:622
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M %p"
 msgstr "%a %p %l:%M"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:760
+#: ../js/ui/panel.js:748
 msgid "Activities"
 msgstr "概覽 "
 
-#: ../js/ui/placeDisplay.js:109
+#: ../js/ui/placeDisplay.js:111
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "無法卸載「%s」"
 
-#: ../js/ui/placeDisplay.js:112
+#: ../js/ui/placeDisplay.js:114
 msgid "Retry"
 msgstr "重試"
 
-#: ../js/ui/placeDisplay.js:157
+#: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
 msgstr "連接到..."
 
-#: ../js/ui/runDialog.js:234
+#. Translators: the "ON" and "OFF" strings are used in the
+#. toggle switches in the status area menus, and must be SHORT.
+#. If you don't have suitable short words, consider initials,
+#. "0"/"1", "⚪"/"⚫", etc.
+#: ../js/ui/popupMenu.js:30 ../js/ui/popupMenu.js:40
+msgid "ON"
+msgstr "開"
+
+#: ../js/ui/popupMenu.js:31 ../js/ui/popupMenu.js:45
+msgid "OFF"
+msgstr "關"
+
+#: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
 msgstr "請輸入指令："
 
-#: ../js/ui/runDialog.js:379
+#: ../js/ui/runDialog.js:378
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "執行「%s」失敗："
@@ -406,48 +424,48 @@ msgstr "登出..."
 msgid "Shut Down..."
 msgstr "關機..."
 
-#: ../js/ui/windowAttentionHandler.js:47
+#: ../js/ui/windowAttentionHandler.js:45
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s 已完成啟動"
 
-#: ../js/ui/windowAttentionHandler.js:49
+#: ../js/ui/windowAttentionHandler.js:47
 #, c-format
 msgid "'%s' is ready"
 msgstr "「%s」已就緒"
 
-#: ../js/ui/workspacesView.js:237
+#: ../js/ui/workspacesView.js:230
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "不能加入新的工作區，因為已達到最大工作區上限。"
 
-#: ../js/ui/workspacesView.js:254
+#: ../js/ui/workspacesView.js:247
 msgid "Can't remove the first workspace."
 msgstr "不能移除第一個工作區。"
 
-#: ../src/shell-global.c:1039
+#: ../src/shell-global.c:1105
 msgid "Less than a minute ago"
 msgstr "少於一分鐘之前"
 
-#: ../src/shell-global.c:1043
+#: ../src/shell-global.c:1109
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分鐘前"
 
-#: ../src/shell-global.c:1048
+#: ../src/shell-global.c:1114
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小時前"
 
-#: ../src/shell-global.c:1053
+#: ../src/shell-global.c:1119
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d 天前"
 
-#: ../src/shell-global.c:1058
+#: ../src/shell-global.c:1124
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
