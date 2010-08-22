@@ -1,4 +1,4 @@
-# Danish translation of Metacity.
+# Danish translation of Mutter.
 # Copyright (C) 2002-2009
 # This file is distributed under the same license as the metacity package.
 # Kjartan Maraas <kmaraas@gnome.org>, 2002
@@ -6,8 +6,8 @@
 # Ole Laursen <olau@hardworking.dk>, 2002.
 # Martin Willemoes Hansen <mwh@sysrq.dk>, 2004, 05.
 # Lasse Bang Mikkelsen <lbm@fatalerror.dk>, 2006.
-# Ask Hjorth Larsen <asklarsen@gmail.com>, 2007, 09.
 # Kenneth Nielsen <k.nielsen81@gmail.com>, 2008.
+# Ask Hjorth Larsen <asklarsen@gmail.com>, 2007, 09, 10.
 #
 # Konventioner:
 #
@@ -15,76 +15,58 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity\n"
+"Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 14:05+0100\n"
-"PO-Revision-Date: 2009-02-15 03:41+0100\n"
+"POT-Creation-Date: 2010-08-22 13:36+0200\n"
+"PO-Revision-Date: 2010-08-22 03:11+0200\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/50-metacity-desktop-key.xml.in.h:1
-msgid "Desktop"
-msgstr "Skrivebord"
+#: ../src/core/bell.c:302
+msgid "Bell event"
+msgstr "Bip-hændelse"
 
-#: ../src/50-metacity-key.xml.in.h:1
-msgid "Window Management"
-msgstr "Vindueshåndtering"
-
-#: ../src/core/core.c:206
+#: ../src/core/core.c:213
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Ukendt forespørgsel efter vinduesinformation: %d"
 
-#: ../src/core/delete.c:70 ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
+#. Translators: %s is a window title
+#: ../src/core/delete.c:94
 #, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "Kunne ikke fortolke \"%s\" som et heltal"
+msgid "<tt>%s</tt> is not responding."
+msgstr "<tt>%s</tt> svarer ikke."
 
-#: ../src/core/delete.c:77 ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Forstod ikke de afsluttende tegn \"%s\" i tekststrengen \"%s\""
-
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Kunne ikke fortolke beskeden \"%s\" fra vinduesproces\n"
-
-#: ../src/core/delete.c:253
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr "Fejl ved læsning fra vinduesprocessen: %s\n"
-
-#: ../src/core/delete.c:336
-#, c-format
+#: ../src/core/delete.c:99
 msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
 msgstr ""
-"Fejl ved start af metacity-dialog for at spørge om afslutning af et program: "
-"%s\n"
+"Du kan vælge at vente et lille stykke tid på at programmet fortsætter, eller "
+"du kan tvinge programmet til at afslutte fuldstændigt."
 
-#: ../src/core/delete.c:445
-#, c-format
-msgid "Failed to get hostname: %s\n"
-msgstr "Kunne ikke skaffe værtsnavn: %s\n"
+#: ../src/core/delete.c:108
+msgid "_Wait"
+msgstr "_Vent"
 
-#: ../src/core/display.c:256
+#: ../src/core/delete.c:108
+msgid "_Force Quit"
+msgstr "_Tving til at afslutte"
+
+#: ../src/core/display.c:365
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Manglende %s-udvidelse som kræves til komposition"
 
-#: ../src/core/display.c:334
+#: ../src/core/display.c:451
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Kunne ikke åbne X Window System-terminalen \"%s\"\n"
 
-#: ../src/core/errors.c:272
+#: ../src/core/errors.c:233
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -95,12 +77,12 @@ msgstr ""
 "sandsynligvis blev X-serveren lukket ned eller du afsluttede\n"
 "vindueshåndteringen.\n"
 
-#: ../src/core/errors.c:279
+#: ../src/core/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IO-fejl %d (%s) på terminal \"%s\".\n"
 
-#: ../src/core/keybindings.c:680
+#: ../src/core/keybindings.c:708
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -111,7 +93,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2294
+#: ../src/core/keybindings.c:2399
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -122,73 +104,92 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2381
+#: ../src/core/keybindings.c:2489
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er blevet defineret.\n"
 
-#: ../src/core/keybindings.c:3335
+#: ../src/core/keybindings.c:3502
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Ingen terminal-kommando er blevet defineret.\n"
 
-#: ../src/core/main.c:116
+#: ../src/core/main.c:130
 #, c-format
 msgid ""
-"metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
-"metacity %s\n"
-"Copyright © 2001-2008 Havoc Pennington, Red Hat, Inc., og andre\n"
+"mutter %s\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., og andre\n"
 "Dette er frit programmel; se kildekoden for kopieringsbetingelser.\n"
 "Der er INGEN garanti; ikke engang for SALGBARHED eller EGNETHED TIL ET "
 "BESTEMT FORMÅL.\n"
 
-#: ../src/core/main.c:253
+#: ../src/core/main.c:261
 msgid "Disable connection to session manager"
 msgstr "Deaktivér forbindelse til sessionshåndtering"
 
-#: ../src/core/main.c:259
-msgid "Replace the running window manager with Metacity"
-msgstr "Erstat den kørende vindueshåndtering med Metacity"
+#: ../src/core/main.c:267
+msgid "Replace the running window manager with Mutter"
+msgstr "Erstat den kørende vindueshåndtering med Mutter"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:273
 msgid "Specify session management ID"
 msgstr "Angiv sessionhåndterings-id"
 
-#: ../src/core/main.c:270
+#: ../src/core/main.c:278
 msgid "X Display to use"
 msgstr "X-skærm som bruges"
 
-#: ../src/core/main.c:276
+#: ../src/core/main.c:284
 msgid "Initialize session from savefile"
 msgstr "Initialisér session fra gemt fil"
 
-#: ../src/core/main.c:282
+#: ../src/core/main.c:290
 msgid "Print version"
 msgstr "Vis version"
 
-#: ../src/core/main.c:288
+#: ../src/core/main.c:296
 msgid "Make X calls synchronous"
 msgstr "Gør kald til X synkrone"
 
-#: ../src/core/main.c:294
+#: ../src/core/main.c:302
 msgid "Turn compositing on"
 msgstr "Aktivér komposition"
 
-#: ../src/core/main.c:300
+#: ../src/core/main.c:308
 msgid "Turn compositing off"
 msgstr "Deaktivér komposition"
 
-#: ../src/core/main.c:478
+#: ../src/core/main.c:314
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+"Opret ikke fuldskærmsvinduer, der er maksimeret, og ikke indeholder "
+"dekorationer"
+
+#: ../src/core/main.c:320
+msgid "Comma-separated list of compositor plugins"
+msgstr "Kommaadskilt liste af komposit-udvidelsesmoduler"
+
+#: ../src/core/main.c:326
+msgid "Whether window popup/frame should be shown when cycling windows."
+msgstr "Om vinduets pop-op/ramme skal vises, når der skiftes mellem vinduer."
+
+#: ../src/core/main.c:333
+msgid "Internal argument for GObject introspection"
+msgstr "Internt argument til GObject-introspektion"
+
+#: ../src/core/main.c:663
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Kunne ikke skanne temamappe: %s\n"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:679
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -196,7 +197,7 @@ msgstr ""
 "Kunne ikke finde et tema! Sikr dig at %s eksisterer og indeholder de "
 "sædvanlige temaer.\n"
 
-#: ../src/core/main.c:550
+#: ../src/core/main.c:743
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Kunne ikke genstarte: %s\n"
@@ -212,24 +213,36 @@ msgstr "Kunne ikke genstarte: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:536 ../src/core/prefs.c:697
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nøglen \"%s\" er sat til en ugyldig værdi\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:623 ../src/core/prefs.c:866
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d lagret i GConf-nøgle %s er uden for intervallet %d til %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:667 ../src/core/prefs.c:744 ../src/core/prefs.c:792
+#: ../src/core/prefs.c:856 ../src/core/prefs.c:1323 ../src/core/prefs.c:1339
+#: ../src/core/prefs.c:1356 ../src/core/prefs.c:1372
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nøglen \"%s\" er sat til en ugyldig type\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1202
+#, c-format
+msgid "GConf key %s is already in use and can't be used to override %s\n"
+msgstr ""
+"GConf-nøglen %s er allerede i brug og kan ikke bruges til at tilsidesætte %"
+"s\n"
+
+#: ../src/core/prefs.c:1261
+#, c-format
+msgid "Can't override GConf key, %s not found\n"
+msgstr "Kan ikke tilsidesætte GConf-nøgle, %s ikke fundet\n"
+
+#: ../src/core/prefs.c:1463
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -237,13 +250,13 @@ msgstr ""
 "Omgåelser for ødelagte programmer deaktiveret. Nogle programmer opfører sig "
 "måske ikke korrekt.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1534
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Kunne ikke fortolke skrifttypebeskrivelsen \"%s\" fra GConf-nøglen %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1596
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -252,17 +265,17 @@ msgstr ""
 "\"%s\" fundet i konfigurationsdatabasen er ikke en gyldig værdi som "
 "museknapsmodifikation\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:2023
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fejl under sætning af antallet af arbejdsområder til %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:2205 ../src/core/prefs.c:2707
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbejdsområde %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2237 ../src/core/prefs.c:2415
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -271,22 +284,38 @@ msgstr ""
 "\"%s\" fundet i konfigurationsdatabasen er ikke en gyldig værdi for "
 "tastebindingen \"%s\"\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2788
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fejl under sætning af navnet for arbejdsområde %d til \"%s\": %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2992
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Fejl ved indstilling af status for kompositor: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/prefs.c:3021
+#, c-format
+msgid "Error setting clutter plugin list: %s\n"
+msgstr "Fejl ved indstilling af udvidelsesmodulliste for clutter: %s\n"
+
+#: ../src/core/prefs.c:3065
+#, c-format
+msgid "Error setting live hidden windows status status: %s\n"
+msgstr "Fejl ved indstilling af status for skjulte levende vinduer: %s\n"
+
+# (hvad taler de om?)
+#: ../src/core/prefs.c:3093
+#, c-format
+msgid "Error setting no tab popup status: %s\n"
+msgstr "Fejl ved indstilling af \"intet faneblad\"-popup-status: %s\n"
+
+#: ../src/core/screen.c:577
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skærm %d på terminal \"%s\" er ugyldig\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:593
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -295,7 +324,7 @@ msgstr ""
 "Skærm %d på terminal \"%s\" har allerede en vindueshåndtering; prøv "
 "tilvalget --replace for at erstatte den aktuelle vindueshåndtering.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:620
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -303,162 +332,117 @@ msgstr ""
 "Kunne ikke fremskaffe vindueshåndteringvælgeren på skærm %d på terminal \"%s"
 "\"\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:675
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skærm %d på terminal \"%s\" har allerede en vindueshåndtering\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:857
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikke frigive skærm %d på terminal \"%s\"\n"
 
-#. Translators: Please don't translate "Control", "Shift", etc, since these
-#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
-#. * "disabled" must also stay as it is.
-#.
-#: ../src/core/schema-bindings.c:169
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
-"Formatet ser ud som \"<Control>a\" eller \"<Skift><Al>F1\".\n"
-"\n"
-"Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-"forkortelser som \"<Ctl>\" og \"<Ctrl>\". Hvis du sætter indstillingen til "
-"den specielle tekststreng \"disabled\", vil der ikke være nogen "
-"tastaturgenvej til denne handling."
-
-#: ../src/core/schema-bindings.c:177
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action.\n"
-"\n"
-"This keybinding may be reversed by holding down the \"shift\" key; "
-"therefore, \"shift\" cannot be one of the keys it uses."
-msgstr ""
-"Formatet ser ud som \"<Control>a\" eller \"<Skift><Alt>F1\".\n"
-"\n"
-"Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-"forkortelser som \"<Ctl>\" og \"<Ctrl>\". Hvis du sætter indstillingen til "
-"den specielle tekststreng \"disabled\", vil der ikke være nogen "
-"tastaturgenvej til denne handling."
-
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:856 ../src/core/session.c:863
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunne ikke oprette mappen \"%s\": %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:873
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunne ikke åbne sessionsfilen \"%s\" til skrivning: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1014
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Fejl under skrivning af sessionsfilen \"%s\": %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1019
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Fejl under lukning af sessionsfilen \"%s\": %s\n"
 
-#. oh, just give up
-#: ../src/core/session.c:1093
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "Kunne ikke læse den lagrede sessionsfil %s: %s\n"
-
-#: ../src/core/session.c:1132
+#: ../src/core/session.c:1149
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Kunne ikke fortolke den lagrede sessionsfil: %s\n"
 
-#: ../src/core/session.c:1181
+#: ../src/core/session.c:1198
 #, c-format
-msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "<metacity_session>-egenskaben set, men vi har allerede sessions-id'en"
+msgid "<mutter_session> attribute seen but we already have the session ID"
+msgstr ""
+"<mutter_session>-egenskaben blev fundet, men vi har allerede sessions-id'en"
 
-#: ../src/core/session.c:1194 ../src/core/session.c:1269
-#: ../src/core/session.c:1301 ../src/core/session.c:1373
-#: ../src/core/session.c:1433
+#: ../src/core/session.c:1211 ../src/core/session.c:1286
+#: ../src/core/session.c:1318 ../src/core/session.c:1390
+#: ../src/core/session.c:1450
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Ukendt egenskab %s for <%s>-element"
 
-#: ../src/core/session.c:1211
+#: ../src/core/session.c:1228
 #, c-format
 msgid "nested <window> tag"
 msgstr "indlejret <window>-mærke"
 
-#: ../src/core/session.c:1453
+#: ../src/core/session.c:1470
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukendt element %s"
 
-#: ../src/core/session.c:1879
-#, c-format
+#: ../src/core/session.c:1822
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
-"Fejl ved start af metacity-dialog for at advare om programmer der ikke "
-"understøtter sessionshåndtering: %s\n"
+"Disse vinduer understøtter ikke gemning af deres opsætning og skal "
+"genstartes manuelt næste gang du logger på."
 
-#: ../src/core/util.c:101
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Kunne ikke åbne fejlinformationslog: %s\n"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:121
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Kunne ikke udføre fdopen() på logfilen %s: %s\n"
 
-#: ../src/core/util.c:117
+#: ../src/core/util.c:127
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Åbnede logfilen %s\n"
 
-#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:146 ../src/tools/mutter-message.c:176
 #, c-format
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity blev oversat uden understøttelse for verbose-tilstand\n"
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr "Mutter blev kompileret uden understøttelse for uddybende tilstand\n"
 
-#: ../src/core/util.c:236
+#: ../src/core/util.c:286
 msgid "Window manager: "
 msgstr "Vindueshåndtering: "
 
-#: ../src/core/util.c:388
+#: ../src/core/util.c:434
 msgid "Bug in window manager: "
 msgstr "Fejl i vindueshåndtering: "
 
-#: ../src/core/util.c:421
+#: ../src/core/util.c:467
 msgid "Window manager warning: "
 msgstr "Vindueshåndteringsadvarsel: "
 
-#: ../src/core/util.c:449
+#: ../src/core/util.c:495
 msgid "Window manager error: "
 msgstr "Vindueshåndteringsfejl: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:577 ../src/metacity.desktop.in.h:1
-#: ../src/metacity-wm.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
+#: ../src/core/util.c:616 ../src/mutter.desktop.in.h:1
+#: ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:5626
+#: ../src/core/window.c:6237
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -474,7 +458,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6191
+#: ../src/core/window.c:6900
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -484,18 +468,18 @@ msgstr ""
 "ændres, men angiver den mindste størrelse %d x %d og den maksimale størrelse "
 "%d x %d; dette giver ikke mening.\n"
 
-#: ../src/core/window-props.c:260
+#: ../src/core/window-props.c:309
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Program angav en ugyldig _NET_WM_PID %lu\n"
 
 # Lad os håbe dette er rigtigt
-#: ../src/core/window-props.c:377
+#: ../src/core/window-props.c:426
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
 
-#: ../src/core/window-props.c:1358
+#: ../src/core/window-props.c:1478
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ugyldig WM_TRANSIENT_FOR vindue 0x%lx specificeret for %s.\n"
@@ -515,12 +499,12 @@ msgstr ""
 "Dette er sandsynligvis en fejl i programmet og ikke i vindueshåndteringen.\n"
 "Vinduet har titlen \"%s\", klassen \"%s\" og navnet \"%s\"\n"
 
-#: ../src/core/xprops.c:401
+#: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Egenskaben %s for vinduet 0x%lx indeholdt ugyldig UTF-8\n"
 
-#: ../src/core/xprops.c:484
+#: ../src/core/xprops.c:494
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
@@ -640,715 +624,291 @@ msgstr "Skift mellem paneler og skrivebordet omgående"
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Gå baglæns gennem paneler og skrivebordet omgående"
 
-#: ../src/include/all-keybindings.h:191
+#: ../src/include/all-keybindings.h:203
 msgid "Hide all normal windows and set focus to the desktop"
 msgstr "Skjul alle normale vinduer og fokusér skrivebordet"
 
-#: ../src/include/all-keybindings.h:194
+#: ../src/include/all-keybindings.h:206
 msgid "Show the panel's main menu"
 msgstr "Vis panelets hovedmenu"
 
-#: ../src/include/all-keybindings.h:197
+#: ../src/include/all-keybindings.h:209
 msgid "Show the panel's \"Run Application\" dialog box"
 msgstr "Vis panelets \"Kør program\"-vindue"
 
-#: ../src/include/all-keybindings.h:238
+#: ../src/include/all-keybindings.h:211
+msgid "Start or stop recording the session"
+msgstr "Start eller stop optagelse af sessionen"
+
+#: ../src/include/all-keybindings.h:252
 msgid "Take a screenshot"
 msgstr "Gem skærmbillede"
 
-#: ../src/include/all-keybindings.h:240
+#: ../src/include/all-keybindings.h:254
 msgid "Take a screenshot of a window"
 msgstr "Gem skærmbillede for et vindue"
 
-#: ../src/include/all-keybindings.h:242
+#: ../src/include/all-keybindings.h:256
 msgid "Run a terminal"
 msgstr "Start en terminal"
 
-#: ../src/include/all-keybindings.h:257
+#: ../src/include/all-keybindings.h:271
 msgid "Activate the window menu"
 msgstr "Aktivér vinduesmenuen"
 
-#: ../src/include/all-keybindings.h:260
+#: ../src/include/all-keybindings.h:274
 msgid "Toggle fullscreen mode"
 msgstr "Skift fuldskærmstilstand"
 
-#: ../src/include/all-keybindings.h:262
+#: ../src/include/all-keybindings.h:276
 msgid "Toggle maximization state"
 msgstr "Skift maksimeringstilstand"
 
 # Nogen bedre forslag?
-#: ../src/include/all-keybindings.h:264
+#: ../src/include/all-keybindings.h:278
 msgid "Toggle whether a window will always be visible over other windows"
 msgstr ""
 "Slå til eller fra hvorvidt et vindue altid vil være synligt over andre "
 "vinduer"
 
-#: ../src/include/all-keybindings.h:266
+#: ../src/include/all-keybindings.h:280
 msgid "Maximize window"
 msgstr "Maksimér vindue"
 
-#: ../src/include/all-keybindings.h:268
+#: ../src/include/all-keybindings.h:282
 msgid "Restore window"
 msgstr "Gendan vindue"
 
-#: ../src/include/all-keybindings.h:270
+#: ../src/include/all-keybindings.h:284
 msgid "Toggle shaded state"
 msgstr "Skift oprullethed"
 
-#: ../src/include/all-keybindings.h:272
+#: ../src/include/all-keybindings.h:286
 msgid "Minimize window"
 msgstr "Minimér vindue"
 
-#: ../src/include/all-keybindings.h:274
+#: ../src/include/all-keybindings.h:288
 msgid "Close window"
 msgstr "Luk vindue"
 
-#: ../src/include/all-keybindings.h:276
+#: ../src/include/all-keybindings.h:290
 msgid "Move window"
 msgstr "Flyt vindue"
 
-#: ../src/include/all-keybindings.h:278
+#: ../src/include/all-keybindings.h:292
 msgid "Resize window"
 msgstr "Ændre størrelsen på vindue"
 
-#: ../src/include/all-keybindings.h:281
+#: ../src/include/all-keybindings.h:295
 msgid "Toggle whether window is on all workspaces or just one"
 msgstr ""
 "Skift mellem hvorvidt vinduet vises på alle arbejdsområder eller kun et"
 
-#: ../src/include/all-keybindings.h:285
+#: ../src/include/all-keybindings.h:299
 msgid "Move window to workspace 1"
 msgstr "Flyt vindue til arbejdsområde 1"
 
-#: ../src/include/all-keybindings.h:288
+#: ../src/include/all-keybindings.h:302
 msgid "Move window to workspace 2"
 msgstr "Flyt vindue til arbejdsområde 2"
 
-#: ../src/include/all-keybindings.h:291
+#: ../src/include/all-keybindings.h:305
 msgid "Move window to workspace 3"
 msgstr "Flyt vindue til arbejdsområde 3"
 
-#: ../src/include/all-keybindings.h:294
+#: ../src/include/all-keybindings.h:308
 msgid "Move window to workspace 4"
 msgstr "Flyt vindue til arbejdsområde 4"
 
-#: ../src/include/all-keybindings.h:297
+#: ../src/include/all-keybindings.h:311
 msgid "Move window to workspace 5"
 msgstr "Flyt vindue til arbejdsområde 5"
 
-#: ../src/include/all-keybindings.h:300
+#: ../src/include/all-keybindings.h:314
 msgid "Move window to workspace 6"
 msgstr "Flyt vindue til arbejdsområde 6"
 
-#: ../src/include/all-keybindings.h:303
+#: ../src/include/all-keybindings.h:317
 msgid "Move window to workspace 7"
 msgstr "Flyt vindue til arbejdsområde 7"
 
-#: ../src/include/all-keybindings.h:306
+#: ../src/include/all-keybindings.h:320
 msgid "Move window to workspace 8"
 msgstr "Flyt vindue til arbejdsområde 8"
 
-#: ../src/include/all-keybindings.h:309
+#: ../src/include/all-keybindings.h:323
 msgid "Move window to workspace 9"
 msgstr "Flyt vindue til arbejdsområde 9"
 
-#: ../src/include/all-keybindings.h:312
+#: ../src/include/all-keybindings.h:326
 msgid "Move window to workspace 10"
 msgstr "Flyt vindue til arbejdsområde 10"
 
-#: ../src/include/all-keybindings.h:315
+#: ../src/include/all-keybindings.h:329
 msgid "Move window to workspace 11"
 msgstr "Flyt vindue til arbejdsområde 11"
 
-#: ../src/include/all-keybindings.h:318
+#: ../src/include/all-keybindings.h:332
 msgid "Move window to workspace 12"
 msgstr "Flyt vindue til arbejdsområde 12"
 
-#: ../src/include/all-keybindings.h:330
+#: ../src/include/all-keybindings.h:344
 msgid "Move window one workspace to the left"
 msgstr "Flyt vindue et arbejdsområde til venstre"
 
-#: ../src/include/all-keybindings.h:333
+#: ../src/include/all-keybindings.h:347
 msgid "Move window one workspace to the right"
 msgstr "Flyt vindue et arbejdsområde til højre"
 
-#: ../src/include/all-keybindings.h:336
+#: ../src/include/all-keybindings.h:350
 msgid "Move window one workspace up"
 msgstr "Flyt vindue et arbejdsområde op"
 
-#: ../src/include/all-keybindings.h:339
+#: ../src/include/all-keybindings.h:353
 msgid "Move window one workspace down"
 msgstr "Flyt vindue et arbejdsområde ned"
 
-#: ../src/include/all-keybindings.h:342
+#: ../src/include/all-keybindings.h:356
 msgid "Raise window if it's covered by another window, otherwise lower it"
 msgstr "Hæv vindue hvis det er dækket af et andet vindue, ellers sænk det"
 
-#: ../src/include/all-keybindings.h:344
+#: ../src/include/all-keybindings.h:358
 msgid "Raise window above other windows"
 msgstr "Hæv vindue over andre vinduer"
 
-#: ../src/include/all-keybindings.h:346
+#: ../src/include/all-keybindings.h:360
 msgid "Lower window below other windows"
 msgstr "Sænk vindue under andre vinduer"
 
-#: ../src/include/all-keybindings.h:350
+#: ../src/include/all-keybindings.h:364
 msgid "Maximize window vertically"
 msgstr "Maksimér et vindue lodret"
 
-#: ../src/include/all-keybindings.h:354
+#: ../src/include/all-keybindings.h:368
 msgid "Maximize window horizontally"
 msgstr "Maksimér et vindue vandret"
 
-#: ../src/include/all-keybindings.h:358
+#: ../src/include/all-keybindings.h:372
 msgid "Move window to north-west (top left) corner"
 msgstr "Flyt vindue til det nordvestlige (øverste venstre) hjørne"
 
-#: ../src/include/all-keybindings.h:361
+#: ../src/include/all-keybindings.h:375
 msgid "Move window to north-east (top right) corner"
 msgstr "Flyt vindue til det nordøstlige (øverste højre) hjørne"
 
-#: ../src/include/all-keybindings.h:364
+#: ../src/include/all-keybindings.h:378
 msgid "Move window to south-west (bottom left) corner"
 msgstr "Flyt vindue til det sydvestlige (nederste venstre) hjørne"
 
-#: ../src/include/all-keybindings.h:367
+#: ../src/include/all-keybindings.h:381
 msgid "Move window to south-east (bottom right) corner"
 msgstr "Flyt vindue til det sydøstlige (nederste højre) hjørne"
 
-#: ../src/include/all-keybindings.h:371
+#: ../src/include/all-keybindings.h:385
 msgid "Move window to north (top) side of screen"
 msgstr "Flyt vindue til skærmens nordlige (øverste) kant"
 
-#: ../src/include/all-keybindings.h:374
+#: ../src/include/all-keybindings.h:388
 msgid "Move window to south (bottom) side of screen"
 msgstr "Flyt vindue til skærmens sydlige (nederste) kant"
 
-#: ../src/include/all-keybindings.h:377
+#: ../src/include/all-keybindings.h:391
 msgid "Move window to east (right) side of screen"
 msgstr "Flyt vindue til skærmens østlige (højre) kant"
 
-#: ../src/include/all-keybindings.h:380
+#: ../src/include/all-keybindings.h:394
 msgid "Move window to west (left) side of screen"
 msgstr "Flyt vindue til skærmens vestlige (venstre) kant"
 
-#: ../src/include/all-keybindings.h:383
+#: ../src/include/all-keybindings.h:397
 msgid "Move window to center of screen"
 msgstr "Flyt vindue til skærmens centrum"
 
-#: ../src/metacity.schemas.in.in.h:1
-msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Ikke implementeret) Navigatering virker med programmer ikke vinduer"
+#: ../src/mutter.schemas.in.h:1
+msgid "Clutter Plugins"
+msgstr "Udvidelsesmoduler til Clutter"
 
-#: ../src/metacity.schemas.in.in.h:2
+#: ../src/mutter.schemas.in.h:2
 msgid ""
-"A font description string describing a font for window titlebars. The size "
-"from the description will only be used if the titlebar_font_size option is "
-"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
-"option is set to true."
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
 msgstr ""
-"En skrifttypebeskrivelsesstreng der beskriver skrifttypen for "
-"vinduestitellinjer. Størrelsen fra beskrivelsen vil dog kun blive brugt hvis "
-"indstillingen \"titlebar_font_size\" er sat til 0. Desuden er denne "
-"indstilling deaktiveret hvis indstillingen \"titlebar_uses_desktop_font\" er "
-"sat til \"true\"."
+"Angiver om skjulte vinduer (f.eks. minimerede vinduer og vinduer på andre "
+"arbejdsområder end det nuværende) holdes i live."
 
-#: ../src/metacity.schemas.in.in.h:3
-msgid "Action on title bar double-click"
-msgstr "Handling ved dobbeltklik på titellinjen"
+#: ../src/mutter.schemas.in.h:3
+msgid "Live Hidden Windows"
+msgstr "Levende skjulte vinduer"
 
-#: ../src/metacity.schemas.in.in.h:4
-msgid "Action on title bar middle-click"
-msgstr "Handling ved midterklik på titellinjen"
+#: ../src/mutter.schemas.in.h:4
+msgid "Modifier to use for extended window management operations"
+msgstr "Modifikationstast til brug for udvidede vindueshåndteringsoperationer"
 
-#: ../src/metacity.schemas.in.in.h:5
-msgid "Action on title bar right-click"
-msgstr "Handling ved højreklik på titellinjen"
+#: ../src/mutter.schemas.in.h:5
+msgid "Plugins to load for the Clutter-based compositing manager."
+msgstr ""
+"Udvidelsesmoduler, der skal indlæses for den Clutter-baserede "
+"komposithåndtering."
 
-#: ../src/metacity.schemas.in.in.h:6
-msgid "Arrangement of buttons on the titlebar"
-msgstr "Arrangeringen af knapper på titellinjen"
-
-#: ../src/metacity.schemas.in.in.h:7
+#: ../src/mutter.schemas.in.h:6
 msgid ""
-"Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
-"corner of the window from the right corner, and the button names are comma-"
-"separated. Duplicate buttons are not allowed. Unknown button names are "
-"silently ignored so that buttons can be added in future metacity versions "
-"without breaking older versions. A special spacer tag can be used to insert "
-"some space between two adjacent buttons."
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
 msgstr ""
-"Arrangeringen af knapper på titellinjen. Værdien skal være en tekststreng, "
-"såsom \"menu:minimize,maximize,spacer,close\"; kolon adskiller venstre "
-"hjørne fra højre hjørne, og knapnavnene er kommaadskilte. Hver knap kan kun "
-"optræde én gang. Ukendte knapnavne ignoreres uden advarsel sådan at "
-"yderligere knapper kan tilføjes i senere versioner af Metacity uden at "
-"ødelægge ældre versioner. Et specielt skillemærke \"spacer\" kan bruges til "
-"at indsætte noget plads mellem to knapper."
+"Denne nøgle vil klargøre \"overlay\", som er en kombineret vinduesoversigt "
+"og programstartsystem. Standardværdien på PC-hardware er tiltænkt som "
+"\"Windows\"-tasten. Det forventes at denne binding enten har "
+"standardværdien, eller er sat til den tomme streng."
 
-#: ../src/metacity.schemas.in.in.h:8
-msgid "Automatically raises the focused window"
-msgstr "Hæv automatisk det fokuserede vindue"
-
-#: ../src/metacity.schemas.in.in.h:9
-msgid ""
-"Clicking a window while holding down this modifier key will move the window "
-"(left click), resize the window (middle click), or show the window menu "
-"(right click). The left and right operations may be swapped using the "
-"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
-"\"&lt;Super&gt;\" for example."
-msgstr ""
-"Klik på et vindue mens denne modifikationstast holdes nede vil flytte "
-"vinduet (venstreklik), ændre størrelsen af vinduet (midterklik) eller vise "
-"vinduesmenuen (højreklik). Modifikationstasten kan f.eks. udtrykkes som "
-"\"&lt;Alt&gt;\" eller \"&lt;Super&gt;\"."
-
-#: ../src/metacity.schemas.in.in.h:10
-msgid "Commands to run in response to keybindings"
-msgstr "Kommando der skal køres ved tastegenvej"
-
-#: ../src/metacity.schemas.in.in.h:11
-msgid "Compositing Manager"
-msgstr "Kompositionshåndtering"
-
-#: ../src/metacity.schemas.in.in.h:12
-msgid "Control how new windows get focus"
-msgstr "Indstil måden hvorpå nye vinduer tildeles fokus"
-
-#: ../src/metacity.schemas.in.in.h:13
-msgid "Current theme"
-msgstr "Aktuelt tema"
-
-#: ../src/metacity.schemas.in.in.h:14
-msgid "Delay in milliseconds for the auto raise option"
-msgstr "Ventetid i millisekunder for autohævningsindstillingen"
-
-#: ../src/metacity.schemas.in.in.h:15
-msgid "Determines whether Metacity is a compositing manager."
-msgstr "Bestemmer om Metacity håndterer komposition."
-
-#: ../src/metacity.schemas.in.in.h:16
-msgid ""
-"Determines whether applications or the system can generate audible 'beeps'; "
-"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
-"Bestemmer om programmer eller systemet kan generere hørbare bip; kan bruges "
-"sammen med visuelt bip til at opnå lydløse systembip."
-
-#: ../src/metacity.schemas.in.in.h:17
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
-"Deaktiver uheldige faciliteter der kræves af ældre eller ødelagte programmer"
-
-#: ../src/metacity.schemas.in.in.h:18
-msgid "Enable Visual Bell"
-msgstr "Aktivér visuelt bip"
-
-#: ../src/metacity.schemas.in.in.h:19
-msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focused window will be automatically raised after a delay specified by "
-"the auto_raise_delay key. This is not related to clicking on a window to "
-"raise it, nor to entering a window during drag-and-drop."
-msgstr ""
-"Hvis sat til \"true\", og fokustilstanden er enten \"sloppy\" eller \"mouse"
-"\", så vil det fokuserede vindue automatisk hæves efter en ventetid "
-"specificeret af nøglen \"auto_raise_delay\". Dette er ikke relateret til at "
-"klikke på et vindue for at hæve det, ej heller at komme ind i et vindue "
-"under træk-og-slip."
-
-#: ../src/metacity.schemas.in.in.h:20
-msgid ""
-"If true, ignore the titlebar_font option, and use the standard application "
-"font for window titles."
-msgstr ""
-"Hvis sand, ignorér indstillingen titlebar_font og brug standardskrifttypen "
-"for programmer til vinduestitler."
-
-#: ../src/metacity.schemas.in.in.h:21
-msgid ""
-"If true, metacity will give the user less feedback by using wireframes, "
-"avoiding animations, or other means. This is a significant reduction in "
-"usability for many users, but may allow legacy applications to continue "
-"working, and may also be a useful tradeoff for terminal servers. However, "
-"the wireframe feature is disabled when accessibility is on."
-msgstr ""
-"Hvis sand, vil Metacity give brugeren mindre tilbagemelding ved at bruge "
-"rammelinjer, undgå animeringer og andet. Dette er en betydelig formindskelse "
-"af brugbarheden for mange brugere, men kan sætte gamle programmer i stand "
-"til at fungere, samt kan være et brugbart kompromis for terminalservere. "
-"Rammelinje-faciliteten er dog deaktiveret når tilgængelighed er slået til."
-
-#: ../src/metacity.schemas.in.in.h:22
-msgid ""
-"If true, then Metacity works in terms of applications rather than windows. "
-"The concept is a bit abstract, but in general an application-based setup is "
-"more like the Mac and less like Windows. When you focus a window in "
-"application-based mode, all the windows in the application will be raised. "
-"Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. Application-based mode is, however, largely "
-"unimplemented at the moment."
-msgstr ""
-"Hvis sand, så arbejder Metacity med programmer i stedet for vinduer. "
-"Konceptet er en smule abstrakt, men generelt er en programbaseret opsætning "
-"mere i retning af Mac og mindre som Windows. Når et vindue fokuseres i den "
-"programbaserede tilstand, vil alle vinduer i programmet blive hævet. Desuden "
-"bliver fokusklik ikke sendt videre til vinduer i andre programmer. I øvrigt "
-"er programbaseret tilstand i øjeblikket for størstedelens vedkommende ikke "
-"implementeret."
-
-#: ../src/metacity.schemas.in.in.h:23
-msgid "If true, trade off usability for less resource usage"
-msgstr "Hvis sand, så formindsk brugbarhed af hensyn til resurseforbrug"
-
-#: ../src/metacity.schemas.in.in.h:24
-msgid "Modifier to use for modified window click actions"
-msgstr "Modifikationstast til brug for modificerede vinduesklikhandlinger"
-
-#: ../src/metacity.schemas.in.in.h:25
-msgid "Name of workspace"
-msgstr "Arbejdsområdets navn"
-
-#: ../src/metacity.schemas.in.in.h:26
-msgid "Number of workspaces"
-msgstr "Antal arbejdsområder"
-
-#: ../src/metacity.schemas.in.in.h:27
-msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum to "
-"prevent making the desktop unusable by accidentally asking for too many "
-"workspaces."
-msgstr ""
-"Antal arbejdsområder. Skal være større end nul og har et fast maksimum for "
-"at forhindre at skrivebordet gøres ubrugeligt ved et uheld ved at antallet "
-"sættes for stort."
-
-#: ../src/metacity.schemas.in.in.h:28
-msgid "Run a defined command"
-msgstr "Kør en defineret kommando"
-
-#: ../src/metacity.schemas.in.in.h:29
-msgid ""
-"Set this to true to resize with the right button and show a menu with the "
-"middle button while holding down the key given in \"mouse_button_modifier\"; "
-"set it to false to make it work the opposite way around."
-msgstr ""
-"Sæt denne til \"true\" for at ændre størrelse med højre knap og vise en menu "
-"med midterste knap mens tasten givet i \"mouse_button_modifier\" holdes "
-"nede; sæt den til \"false\" for at få det til at fungere på modsat vis."
-
-#: ../src/metacity.schemas.in.in.h:30
-msgid ""
-"Setting this option to false can lead to buggy behavior, so users are "
-"strongly discouraged from changing it from the default of true. Many actions "
-"(e.g. clicking in the client area, moving or resizing the window) normally "
-"raise the window as a side-effect. Setting this option to false, which is "
-"strongly discouraged, will decouple raising from other user actions, and "
-"ignore raise requests generated by applications. See http://bugzilla.gnome."
-"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
-"still be raised by an alt-left-click anywhere on the window, a normal click "
-"on the window decorations, or by special messages from pagers, such as "
-"activation requests from tasklist applets. This option is currently disabled "
-"in click-to-focus mode. Note that the list of ways to raise windows when "
-"raise_on_click is false does not include programmatic requests from "
-"applications to raise windows; such requests will be ignored regardless of "
-"the reason for the request. If you are an application developer and have a "
-"user complaining that your application does not work with this setting "
-"disabled, tell them it is _their_ fault for breaking their window manager "
-"and that they need to change this option back to true or live with the \"bug"
-"\" they requested."
-msgstr ""
-"At sætte denne indstilling til false kan føre til fejlagtig opførsel, så "
-"brugere frarådes stærkt at ændre den fra standardværdien, som er true. Mange "
-"handlinger (såsom at klikke i klientområdet, at flytte eller ændre størrelse "
-"på et vindue) vil normalt hæve vinduet som sideeffekt. Sæt denne indstilling "
-"til false for at afkoble hævningen fra de andre brugerhandlinger, og "
-"ignorere hæveforespørgsler genereret af programmer. Se http://bugzilla.gnome."
-"org/show_bug.cgi?id=445447#c6. Selv når denne indstilling er false, kan "
-"vinduer stadig hæves ved at alt-venstreklikke hvor som helst på vinduet, ved "
-"at foretage et normalt klik på vinduesdekorationerne, eller som følge af "
-"specielle signaler fra programskiftere, såsom aktiveringsforespørgsler fra "
-"opgaveliste-panelprogrammer. Denne indstilling er på nuværende tidspunkt "
-"deaktiveret i klik-for-fokus-tilstand. Bemærk at denne liste af måder hvorpå "
-"vinduer kan hæves når raise_on_click er sat til false, ikke inkluderer "
-"programmerbare forespørgsler fra programmer om hævning af vinduer; sådanne "
-"forespørgsler vil blive ignoreret uanset årsagen til forespørgslen. Hvis du "
-"er en applikationsprogrammør og har en bruger, der klager over at dit "
-"program ikke fungerer med denne indstilling slået fra, så fortæl dem at det "
-"er _deres_ skyld idet de misbruger deres vindueshåndtering, og at de skal "
-"ændre denne indstilling tilbage til true, eller leve med den pågældende fejl."
-
-#: ../src/metacity.schemas.in.in.h:31
-msgid ""
-"Some applications disregard specifications in ways that result in window "
-"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
-"which gives a more consistent user interface, provided one does not need to "
-"run any misbehaving applications."
-msgstr ""
-"Visse programmer ignorerer specifikationer således at vindueshåndteringen "
-"kan bringes til fejlagtig opførsel. Denne indstilling sætter Metacity i en "
-"strengt korrekt tilstand, hvilket giver en mere konsistent "
-"brugergrænseflade, såfremt man ikke behøver nogen uartige programmer."
-
-#: ../src/metacity.schemas.in.in.h:32
-msgid "System Bell is Audible"
-msgstr "Systembip er hørbart"
-
-#: ../src/metacity.schemas.in.in.h:33
-msgid ""
-"Tells Metacity how to implement the visual indication that the system bell "
-"or another application 'bell' indicator has been rung. Currently there are "
-"two valid values, \"fullscreen\", which causes a fullscreen white-black "
-"flash, and \"frame_flash\" which causes the titlebar of the application "
-"which sent the bell signal to flash. If the application which sent the bell "
-"is unknown (as is usually the case for the default \"system beep\"), the "
-"currently focused window's titlebar is flashed."
-msgstr ""
-"Angiver hvordan den visuelle indikering af at bip hør lydt skal vises. I "
-"øjeblikket er der to gyldige værdier, \"fullscreen\", som forårsager at hele "
-"skærmen skifter mellem sort og hvid, og \"frame_flash\" som forårsager at "
-"titellinjen for vinduet blinker. Hvis programmet som sendte bippet ikke er "
-"kendt (som det som regel er for standardsystembippet), vil titellinjen for "
-"det aktuelt fokuserede vindue blinke."
-
-#: ../src/metacity.schemas.in.in.h:34
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
-"that correspond to these commands. Pressing the keybinding for run_command_N "
-"will execute command_N."
-msgstr ""
-"Nøglerne /apps/metacity/global_keybindings/run_command_N definerer "
-"tastebindinger der svarer til disse kommandoer. Ved tryk på tastebindingen "
-"for run_command_N udføres command_N."
-
-#: ../src/metacity.schemas.in.in.h:35
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
-"keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
-"Nøglen /apps/metacity/global_keybindings/run_command_screenshot definerer en "
-"tastebinding der forårsager at kommandoen for denne indstilling bliver "
-"udført."
-
-#: ../src/metacity.schemas.in.in.h:36
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-"defines a keybinding which causes the command specified by this setting to "
-"be invoked."
-msgstr ""
-"Nøglen /apps/metacity/global_keybindings/run_command_screenshot_window "
-"definerer en tastebinding der forårsager at kommandoen for denne indstilling "
-"bliver udført."
-
-#: ../src/metacity.schemas.in.in.h:37
-msgid ""
-"The keybinding that runs the correspondingly-numbered command in /apps/"
-"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-"Denne tastaturgenvej starter den tilsvarende nummererede kommando i /apps/"
-"metacity/keybinding_commands. Formatet ser ud som \"&lt;Control&gt;a\" eller "
-"\"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-"store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-"Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-"\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#: ../src/metacity.schemas.in.in.h:38
-msgid "The name of a workspace."
-msgstr "Arbejdsområdets navn."
-
-#: ../src/metacity.schemas.in.in.h:39
-msgid "The screenshot command"
-msgstr "Kommando for skærmbillede"
-
-#: ../src/metacity.schemas.in.in.h:40
-msgid ""
-"The theme determines the appearance of window borders, titlebar, and so "
-"forth."
-msgstr "Temaet bestemmer udseendet af vindueskanter, titellinjer osv."
-
-#: ../src/metacity.schemas.in.in.h:41
-msgid ""
-"The time delay before raising a window if auto_raise is set to true. The "
-"delay is given in thousandths of a second."
-msgstr ""
-"Ventetiden før et vindue hæves hvis auto_raise er sat til sand. Tiden "
-"angives i tusinddele af et sekund."
-
-#: ../src/metacity.schemas.in.in.h:42
-msgid ""
-"The window focus mode indicates how windows are activated. It has three "
-"possible values; \"click\" means windows must be clicked in order to focus "
-"them, \"sloppy\" means windows are focused when the mouse enters the window, "
-"and \"mouse\" means windows are focused when the mouse enters the window and "
-"unfocused when the mouse leaves the window."
-msgstr ""
-"Vinduesfokuseringstilstanden fortæller hvordan vinduer aktiveres. Der er tre "
-"mulige værdier: \"click\" betyder at vinduer skal klikkes på for at fokusere "
-"dem, \"sloppy\" betyder at vinduer fokuseres når musen føres ind i vinduet "
-"og \"mouse\" betyder at vinduer fokuseres når musen føres ind i vinduet og "
-"mister fokus igen når musen forlader vinduet."
-
-#: ../src/metacity.schemas.in.in.h:43
-msgid "The window screenshot command"
-msgstr "Kommando for vinduesskærmbillede"
-
-#: ../src/metacity.schemas.in.in.h:44
-msgid ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Angiver hvad der sker når der dobbeltklikkes på titellinjen. Nuværende "
-"gyldige muligheder er \"toggle_shade\" som ruller vinduet op/ned, "
-"\"toggle_maximize\" som skifter mellem maksimeret/normal tilstand for "
-"vinduet, \"toggle_maximize_horizontally\" og \"toggle_maximize_vertically\" "
-"som vil skifte mellem maksimeret og normal tilstand kun i den retning, "
-"\"minimize\" som vil minimere vinduet, \"shade\" som vil rulle vinduet op, "
-"\"menu\" som vil vise vinduesmenuen, \"lower\" som vil placere vinduet bag "
-"alle andre og \"none\" som ingenting gør."
-
-#: ../src/metacity.schemas.in.in.h:45
-msgid ""
-"This option determines the effects of middle-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Angiver hvad der sker når der midterklikkes på titellinjen. Nuværende "
-"gyldige muligheder er \"toggle_shade\" som ruller vinduet op/ned, "
-"\"toggle_maximize\" som skifter mellem maksimeret/normal tilstand for "
-"vinduet, \"toggle_maximize_horizontally\" og \"toggle_maximize_vertically\" "
-"som vil skifte mellem maksimeret og normal tilstand kun i den retning, "
-"\"minimize\" som vil minimere vinduet, \"shade\" som vil rulle vinduet op, "
-"\"menu\" som vil vise vinduesmenuen, \"lower\" som vil placere vinduet bag "
-"alle andre og \"none\" som ingenting gør."
-
-#: ../src/metacity.schemas.in.in.h:46
-msgid ""
-"This option determines the effects of right-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Angiver hvad der sker når der højreklikkes på titellinjen. Nuværende gyldige "
-"muligheder er \"toggle_shade\" som ruller vinduet op/ned, \"toggle_maximize"
-"\" som skifter mellem maksimeret/normal tilstand for vinduet, "
-"\"toggle_maximize_horizontally\" og \"toggle_maximize_vertically\" som vil "
-"skifte mellem maksimeret og normal tilstand kun i den retning, \"minimize\" "
-"som vil minimere vinduet, \"shade\" som vil rulle vinduet op, \"menu\" som "
-"vil vise vinduesmenuen, \"lower\" som vil placere vinduet bag alle andre og "
-"\"none\" som ingenting gør."
-
-#: ../src/metacity.schemas.in.in.h:47
-msgid ""
-"This option provides additional control over how newly created windows get "
-"focus. It has two possible values; \"smart\" applies the user's normal focus "
-"mode, and \"strict\" results in windows started from a terminal not being "
-"given focus."
-msgstr ""
-"Denne indstilling giver yderligere kontrol over måden hvorpå nyoprettede "
-"vinduer bringes i fokus. Den har to mulige værdier; \"smart\" anvender "
-"brugerens normale fokusindstillinger, og \"strict\" resulterer i at vinduer "
-"der startes fra en terminal ikke gives fokus."
-
-#: ../src/metacity.schemas.in.in.h:48
-msgid ""
-"Turns on a visual indication when an application or the system issues a "
-"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments."
-msgstr ""
-"Aktiverer visuel tilkendegivelse idet et program eller systemet udsender et "
-"bip; nyttigt for svagthørende eller til brug i støjende omgivelser."
-
-#: ../src/metacity.schemas.in.in.h:49
-msgid "Use standard system font in window titles"
-msgstr "Benyt standardskrifttypen i vinduestitler"
-
-#: ../src/metacity.schemas.in.in.h:50
-msgid "Visual Bell Type"
-msgstr "Visuel bip-type"
-
-#: ../src/metacity.schemas.in.in.h:51
-msgid "Whether raising should be a side-effect of other user interactions"
-msgstr "Om hævning skal være en bivirkning af andre brugerhændelser"
-
-#: ../src/metacity.schemas.in.in.h:52
-msgid "Whether to resize with the right button"
-msgstr "Om der ændres størrelse med højre tast"
-
-#: ../src/metacity.schemas.in.in.h:53
-msgid "Window focus mode"
-msgstr "Vinduesfokuseringstilstand"
-
-#: ../src/metacity.schemas.in.in.h:54
-msgid "Window title font"
-msgstr "Skrifttype til vinduestitel"
-
-#: ../src/tools/metacity-message.c:150
+#: ../src/tools/mutter-message.c:150
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Brug: %s\n"
 
-#: ../src/ui/frames.c:1118
+#: ../src/ui/frames.c:1112
 msgid "Close Window"
 msgstr "Luk vindue"
 
-#: ../src/ui/frames.c:1121
+#: ../src/ui/frames.c:1115
 msgid "Window Menu"
 msgstr "Vinduesmenu"
 
-#: ../src/ui/frames.c:1124
+#: ../src/ui/frames.c:1118
 msgid "Minimize Window"
 msgstr "Minimér vindue"
 
-#: ../src/ui/frames.c:1127
+#: ../src/ui/frames.c:1121
 msgid "Maximize Window"
 msgstr "Maksimér vindue"
 
-#: ../src/ui/frames.c:1130
+#: ../src/ui/frames.c:1124
 msgid "Restore Window"
 msgstr "Gendan vindue"
 
 # roll up = sørg for at kun vindues-headeren er synlig.
-#: ../src/ui/frames.c:1133
+#: ../src/ui/frames.c:1127
 msgid "Roll Up Window"
 msgstr "Rul vinduet op"
 
-#: ../src/ui/frames.c:1136
+#: ../src/ui/frames.c:1130
 msgid "Unroll Window"
 msgstr "Rul vinduet ned"
 
-#: ../src/ui/frames.c:1139
+#: ../src/ui/frames.c:1133
 msgid "Keep Window On Top"
 msgstr "Behold vinduet øverst"
 
-#: ../src/ui/frames.c:1142
+#: ../src/ui/frames.c:1136
 msgid "Remove Window From Top"
 msgstr "Fjern vinduet fra toppen"
 
-#: ../src/ui/frames.c:1145
+#: ../src/ui/frames.c:1139
 msgid "Always On Visible Workspace"
 msgstr "Altid på synligt arbejdsområde"
 
-#: ../src/ui/frames.c:1148
+#: ../src/ui/frames.c:1142
 msgid "Put Window On Only One Workspace"
 msgstr "Vis vindue på kun ét arbejdsområde"
 
@@ -1449,7 +1009,7 @@ msgstr "Arbejdsområde 1_0"
 msgid "Workspace %s%d"
 msgstr "Arbejdsområde %s%d"
 
-#: ../src/ui/menu.c:395
+#: ../src/ui/menu.c:396
 msgid "Move to Another _Workspace"
 msgstr "Flyt til andet _arbejdsområde"
 
@@ -1458,7 +1018,7 @@ msgstr "Flyt til andet _arbejdsområde"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:104
+#: ../src/ui/metaaccellabel.c:75
 msgid "Shift"
 msgstr "Skift"
 
@@ -1467,7 +1027,7 @@ msgstr "Skift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:110
+#: ../src/ui/metaaccellabel.c:81
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -1476,7 +1036,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:116
+#: ../src/ui/metaaccellabel.c:87
 msgid "Alt"
 msgstr "Alt"
 
@@ -1485,7 +1045,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:122
+#: ../src/ui/metaaccellabel.c:93
 msgid "Meta"
 msgstr "Meta"
 
@@ -1494,7 +1054,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:128
+#: ../src/ui/metaaccellabel.c:99
 msgid "Super"
 msgstr "Super"
 
@@ -1503,7 +1063,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:134
+#: ../src/ui/metaaccellabel.c:105
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -1512,7 +1072,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:140
+#: ../src/ui/metaaccellabel.c:111
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -1521,7 +1081,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:146
+#: ../src/ui/metaaccellabel.c:117
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -1530,7 +1090,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:152
+#: ../src/ui/metaaccellabel.c:123
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -1539,106 +1099,60 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:158
+#: ../src/ui/metaaccellabel.c:129
 msgid "Mod5"
 msgstr "Mod5"
-
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "\"%s\" svarer ikke."
-
-#: ../src/ui/metacity-dialog.c:97
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Du kan vælge at vente et lille stykke tid på at programmet fortsætter, eller "
-"du kan tvinge programmet til at afslutte fuldstændigt."
-
-#: ../src/ui/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "_Vent"
-
-#: ../src/ui/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "_Tving til at afslutte"
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "Titel"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "Klasse"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"Disse vinduer understøtter ikke gemning af deres opsætning og skal "
-"genstartes manuelt næste gang du logger på."
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"Der opstod en fejl ved kørsel af \"%s\":\n"
-"%s."
 
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
-#: ../src/ui/resizepopup.c:113
+#: ../src/ui/resizepopup.c:114
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:254
+#: ../src/ui/theme.c:256
 msgid "top"
 msgstr "top"
 
-#: ../src/ui/theme.c:256
+#: ../src/ui/theme.c:258
 msgid "bottom"
 msgstr "bund"
 
-#: ../src/ui/theme.c:258
+#: ../src/ui/theme.c:260
 msgid "left"
 msgstr "venstre"
 
-#: ../src/ui/theme.c:260
+#: ../src/ui/theme.c:262
 msgid "right"
 msgstr "højre"
 
-#: ../src/ui/theme.c:287
+#: ../src/ui/theme.c:289
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "rammegeometri angiver ikke dimensionen \"%s\""
 
-#: ../src/ui/theme.c:306
+#: ../src/ui/theme.c:308
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "rammegeometri angiver ikke dimensionen \"%s\" for kanten \"%s\""
 
-#: ../src/ui/theme.c:343
+#: ../src/ui/theme.c:345
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Knapformatforholdet %g er ikke fornuftigt"
 
-#: ../src/ui/theme.c:355
+#: ../src/ui/theme.c:357
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Rammegeometri angiver ikke størrelsen af knapper"
 
-#: ../src/ui/theme.c:1020
+#: ../src/ui/theme.c:1022
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Farveovergange skal mindst have to farver"
 
-#: ../src/ui/theme.c:1146
+#: ../src/ui/theme.c:1148
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1647,7 +1161,7 @@ msgstr ""
 "GTK-farvespecifikation skal have tilstanden i firkantede klammer, f.eks. gtk:"
 "fg[NORMAL] hvor NORMAL er tilstanden; kunne ikke fortolke \"%s\""
 
-#: ../src/ui/theme.c:1160
+#: ../src/ui/theme.c:1162
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1656,17 +1170,17 @@ msgstr ""
 "GTK-farvespecifikation skal have en afsluttende klamme efter tilstanden, f."
 "eks. gtk:fg[NORMAL] hvor NORMAL er tilstanden; kunne ikke fortolke \"%s\""
 
-#: ../src/ui/theme.c:1171
+#: ../src/ui/theme.c:1173
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Forstod ikke tilstanden \"%s\" i farvespecifikationen"
 
-#: ../src/ui/theme.c:1184
+#: ../src/ui/theme.c:1186
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Forstod ikke farvekomponenten \"%s\" i farvespecifikationen"
 
-#: ../src/ui/theme.c:1214
+#: ../src/ui/theme.c:1216
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1675,56 +1189,56 @@ msgstr ""
 "Blandingsformat er \"blend/bg_color/fg_color/alpha\", \"%s\" passer ikke med "
 "formatet"
 
-#: ../src/ui/theme.c:1225
+#: ../src/ui/theme.c:1227
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Kunne ikke fortolke alfaværdien \"%s\" i blandet farve"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1237
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Alfaværdien \"%s\" i blandet farve er ikke mellem 0,0 og 1,0"
 
-#: ../src/ui/theme.c:1282
+#: ../src/ui/theme.c:1284
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Skyggeformat er \"shade/base_color/factor\", \"%s\" passer ikke med formatet"
 
-#: ../src/ui/theme.c:1293
+#: ../src/ui/theme.c:1295
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Kunne ikke fortolke skyggeværdien \"%s\" i skygget farve"
 
-#: ../src/ui/theme.c:1303
+#: ../src/ui/theme.c:1305
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Skyggefaktoren \"%s\" i skygget farve er negativ"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1334
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Kunne ikke fortolke farven \"%s\""
 
-#: ../src/ui/theme.c:1582
+#: ../src/ui/theme.c:1588
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Koordinatudtryk indeholder tegnet \"%s\" som ikke er tilladt"
 
-#: ../src/ui/theme.c:1609
+#: ../src/ui/theme.c:1615
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "Koordinatudtryk indeholder kommatallet \"%s\" som ikke kunne tolkes"
 
-#: ../src/ui/theme.c:1623
+#: ../src/ui/theme.c:1629
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Koordinatudtryk indeholder heltallet \"%s\" som ikke kunne tolkes"
 
-#: ../src/ui/theme.c:1745
+#: ../src/ui/theme.c:1751
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1732,39 +1246,39 @@ msgid ""
 msgstr ""
 "Koordinatudtryk indeholdt en ukendt operator i begyndelsen af teksten: \"%s\""
 
-#: ../src/ui/theme.c:1802
+#: ../src/ui/theme.c:1808
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Koordinatudtrykket var tomt eller blev ikke forstået"
 
-#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#: ../src/ui/theme.c:1919 ../src/ui/theme.c:1929 ../src/ui/theme.c:1963
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Koordinatudtrykket resulterer i division med nul"
 
-#: ../src/ui/theme.c:1965
+#: ../src/ui/theme.c:1971
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Koordinatudtrykket prøver at bruge modulo-operator på et kommatal"
 
-#: ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2027
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Koordinatudtrykket har en operator \"%s\" hvor en operand var ventet"
 
-#: ../src/ui/theme.c:2030
+#: ../src/ui/theme.c:2036
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Koordinatudtrykket havde en operand hvor en operator var ventet"
 
-#: ../src/ui/theme.c:2038
+#: ../src/ui/theme.c:2044
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Koordinatudtrykket sluttede med en operator i stedet for en operand"
 
-#: ../src/ui/theme.c:2048
+#: ../src/ui/theme.c:2054
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1773,38 +1287,38 @@ msgstr ""
 "Koordinatudtrykket har en operator \"%c\" efter en operator \"%c\" og ingen "
 "operand mellem dem"
 
-#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2205 ../src/ui/theme.c:2250
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Koordinatudtrykket havde en ukendt variabel eller konstant \"%s\""
 
-#: ../src/ui/theme.c:2290
+#: ../src/ui/theme.c:2304
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Koordinatudtryksfortolkeren har fået bufferoverløb."
 
-#: ../src/ui/theme.c:2319
+#: ../src/ui/theme.c:2333
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Koordinatudtrykket havde en slutparantes uden startparantes"
 
-#: ../src/ui/theme.c:2383
+#: ../src/ui/theme.c:2397
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Koordinatudtrykket havde en startparantes uden en slutparantes"
 
-#: ../src/ui/theme.c:2394
+#: ../src/ui/theme.c:2408
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "Koordinatudtrykket ser ikke ud til at have nogen operatorer eller operander"
 
-#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#: ../src/ui/theme.c:2610 ../src/ui/theme.c:2630 ../src/ui/theme.c:2650
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Tema indeholdt et udtryk som resulterede i en fejl: %s\n"
 
-#: ../src/ui/theme.c:4187
+#: ../src/ui/theme.c:4255
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1813,7 +1327,7 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"et-eller-andet\"/> skal "
 "angives for denne rammestil"
 
-#: ../src/ui/theme.c:4695 ../src/ui/theme.c:4720
+#: ../src/ui/theme.c:4763 ../src/ui/theme.c:4788
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -1821,18 +1335,18 @@ msgstr ""
 "Manglende <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"et-eller-"
 "andet\"/>"
 
-#: ../src/ui/theme.c:4764
+#: ../src/ui/theme.c:4832
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Kunne ikke indlæse temaet \"%s\": %s\n"
 
-#: ../src/ui/theme.c:4894 ../src/ui/theme.c:4901 ../src/ui/theme.c:4908
-#: ../src/ui/theme.c:4915 ../src/ui/theme.c:4922
+#: ../src/ui/theme.c:4964 ../src/ui/theme.c:4971 ../src/ui/theme.c:4978
+#: ../src/ui/theme.c:4985 ../src/ui/theme.c:4992
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Ingen <%s> angivet for temaet \"%s\""
 
-#: ../src/ui/theme.c:4930
+#: ../src/ui/theme.c:5000
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1841,7 +1355,7 @@ msgstr ""
 "Ingen rammestil angivet for vinduestypen \"%s\" i temaet \"%s\", tilføj et "
 "<window type=\"%s\" style_set=\"et-eller-andet\"/>-element"
 
-#: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
+#: ../src/ui/theme.c:5443 ../src/ui/theme.c:5505 ../src/ui/theme.c:5568
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1849,7 +1363,7 @@ msgstr ""
 "Brugerdefinerede konstanter skal begynde med et stort bogstav; det gør \"%s"
 "\" ikke"
 
-#: ../src/ui/theme.c:5391 ../src/ui/theme.c:5453 ../src/ui/theme.c:5516
+#: ../src/ui/theme.c:5451 ../src/ui/theme.c:5513 ../src/ui/theme.c:5576
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanten \"%s\" er allerede defineret"
@@ -1857,58 +1371,68 @@ msgstr "Konstanten \"%s\" er allerede defineret"
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
 #.
-#: ../src/ui/theme-parser.c:202
+#: ../src/ui/theme-parser.c:236
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "Ingen \"%s\"-egenskab i elementet <%s>"
 
-#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
+#: ../src/ui/theme-parser.c:265 ../src/ui/theme-parser.c:283
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Linje %d tegn %d: %s"
 
-#: ../src/ui/theme-parser.c:413
+#: ../src/ui/theme-parser.c:479
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Egenskaben \"%s\" er gentaget to gange i det samme <%s>-element"
 
-#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
+#: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Egenskaben \"%s\" er ugyldig i <%s>-elementet i denne sammenhæng"
 
-#: ../src/ui/theme-parser.c:541
+#: ../src/ui/theme-parser.c:594
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Kunne ikke fortolke \"%s\" som et heltal"
+
+#: ../src/ui/theme-parser.c:603 ../src/ui/theme-parser.c:658
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Forstod ikke de afsluttende tegn \"%s\" i tekststrengen \"%s\""
+
+#: ../src/ui/theme-parser.c:613
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "Heltallet %ld skal være positivt"
 
-#: ../src/ui/theme-parser.c:549
+#: ../src/ui/theme-parser.c:621
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Heltallet %ld er for stort, det nuværende maksimum er %d"
 
-#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
+#: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Kunne ikke fortolke \"%s\" som et kommatal"
 
-#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
+#: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Booleske værdier skal være \"true\" eller \"false\" ikke \"%s\""
 
-#: ../src/ui/theme-parser.c:663
+#: ../src/ui/theme-parser.c:735
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "Vinkel skal være mellem 0.0 og 360.0, var %g\n"
 
-#: ../src/ui/theme-parser.c:726
+#: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
 "Alfa skal være mellem 0.0 (usynlig) og 1.0 (helt ugennemsigtig), var %g\n"
 
-#: ../src/ui/theme-parser.c:791
+#: ../src/ui/theme-parser.c:863
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
@@ -1917,58 +1441,58 @@ msgstr ""
 "Ugyldig titelskalering \"%s\" (skal være en af xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 
-#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
-#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
+#: ../src/ui/theme-parser.c:1008 ../src/ui/theme-parser.c:1071
+#: ../src/ui/theme-parser.c:1105 ../src/ui/theme-parser.c:1208
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s>-navnet \"%s\" brugt to gange"
 
-#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
-#: ../src/ui/theme-parser.c:1148
+#: ../src/ui/theme-parser.c:1020 ../src/ui/theme-parser.c:1117
+#: ../src/ui/theme-parser.c:1220
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s>-ophavet \"%s\" er ikke blevet defineret"
 
-#: ../src/ui/theme-parser.c:1058
+#: ../src/ui/theme-parser.c:1130
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "<%s>-geometrien \"%s\" er ikke blevet defineret"
 
-#: ../src/ui/theme-parser.c:1071
+#: ../src/ui/theme-parser.c:1143
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "<%s> skal enten angive en geometri eller et ophav der har en geometri"
 
-#: ../src/ui/theme-parser.c:1113
+#: ../src/ui/theme-parser.c:1185
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "Du skal angive en baggrund hvis en alfaværdi skal være meningsfuld"
 
-#: ../src/ui/theme-parser.c:1180
+#: ../src/ui/theme-parser.c:1252
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Ukendt type \"%s\" i <%s>-element"
 
-#: ../src/ui/theme-parser.c:1191
+#: ../src/ui/theme-parser.c:1263
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "Ukendt style_set \"%s\" i <%s>-element"
 
-#: ../src/ui/theme-parser.c:1199
+#: ../src/ui/theme-parser.c:1271
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Vinduestypen \"%s\" er allerede blevet tildelt et stilsæt"
 
-#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2732
-#: ../src/ui/theme-parser.c:2778 ../src/ui/theme-parser.c:2926
-#: ../src/ui/theme-parser.c:3118 ../src/ui/theme-parser.c:3156
-#: ../src/ui/theme-parser.c:3194 ../src/ui/theme-parser.c:3232
+#: ../src/ui/theme-parser.c:1301 ../src/ui/theme-parser.c:1365
+#: ../src/ui/theme-parser.c:1591 ../src/ui/theme-parser.c:2826
+#: ../src/ui/theme-parser.c:2872 ../src/ui/theme-parser.c:3020
+#: ../src/ui/theme-parser.c:3212 ../src/ui/theme-parser.c:3250
+#: ../src/ui/theme-parser.c:3288 ../src/ui/theme-parser.c:3326
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Elementet <%s> er ikke tilladt under <%s>"
 
-#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
-#: ../src/ui/theme-parser.c:1402
+#: ../src/ui/theme-parser.c:1415 ../src/ui/theme-parser.c:1429
+#: ../src/ui/theme-parser.c:1474
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
@@ -1976,123 +1500,123 @@ msgstr ""
 "Kan ikke angive både \"button_width\"/\"button_height\" og \"aspect_ratio\" "
 "for knapper"
 
-#: ../src/ui/theme-parser.c:1366
+#: ../src/ui/theme-parser.c:1438
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "Afstanden \"%s\" er ukendt"
 
-#: ../src/ui/theme-parser.c:1411
+#: ../src/ui/theme-parser.c:1483
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Formatforholdet \"%s\" er ukendt"
 
-#: ../src/ui/theme-parser.c:1473
+#: ../src/ui/theme-parser.c:1545
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Kanten \"%s\" er ukendt"
 
-#: ../src/ui/theme-parser.c:1776
+#: ../src/ui/theme-parser.c:1856
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Ingen \"start_angle\"- eller \"from\"-egenskab på elementet <%s>"
 
-#: ../src/ui/theme-parser.c:1783
+#: ../src/ui/theme-parser.c:1863
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Ingen \"extent_angle\"- eller \"to\"-egenskab på elementet <%s>"
 
-#: ../src/ui/theme-parser.c:2023
+#: ../src/ui/theme-parser.c:2103
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Forstod ikke værdien \"%s\" for farveovergangstypen"
 
-#: ../src/ui/theme-parser.c:2101 ../src/ui/theme-parser.c:2476
+#: ../src/ui/theme-parser.c:2181 ../src/ui/theme-parser.c:2556
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Forstod ikke fyldtypen \"%s\" for <%s>-elementet"
 
-#: ../src/ui/theme-parser.c:2268 ../src/ui/theme-parser.c:2351
-#: ../src/ui/theme-parser.c:2414
+#: ../src/ui/theme-parser.c:2348 ../src/ui/theme-parser.c:2431
+#: ../src/ui/theme-parser.c:2494
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Forstod ikke tilstanden \"%s\" for <%s>-elementet"
 
-#: ../src/ui/theme-parser.c:2278 ../src/ui/theme-parser.c:2361
+#: ../src/ui/theme-parser.c:2358 ../src/ui/theme-parser.c:2441
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Forstod ikke skyggen \"%s\" for <%s>-elementet"
 
-#: ../src/ui/theme-parser.c:2288
+#: ../src/ui/theme-parser.c:2368
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Forstod ikke pilen \"%s\" for <%s>-elementet"
 
-#: ../src/ui/theme-parser.c:2588 ../src/ui/theme-parser.c:2684
+#: ../src/ui/theme-parser.c:2682 ../src/ui/theme-parser.c:2778
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Ingen <draw_ops> med navnet \"%s\" er blevet defineret"
 
-#: ../src/ui/theme-parser.c:2600 ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Medtagelse af draw_ops \"%s\" ville skabe en cirkulær reference"
 
-#: ../src/ui/theme-parser.c:2811
+#: ../src/ui/theme-parser.c:2905
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Ukendt position \"%s\" for rammestykke"
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2913
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Rammestil har allerede et stykke på position %s"
 
-#: ../src/ui/theme-parser.c:2836 ../src/ui/theme-parser.c:2911
+#: ../src/ui/theme-parser.c:2930 ../src/ui/theme-parser.c:3005
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Ingen <draw_ops> med navnet \"%s\" er blevet defineret"
 
-#: ../src/ui/theme-parser.c:2865
+#: ../src/ui/theme-parser.c:2959
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Ukendt funktion \"%s\" for knap"
 
-#: ../src/ui/theme-parser.c:2874
+#: ../src/ui/theme-parser.c:2968
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "Knapfunktionen \"%s\" findes ikke i denne version (%d, kræver %d)"
 
-#: ../src/ui/theme-parser.c:2886
+#: ../src/ui/theme-parser.c:2980
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Ukendt tilstand \"%s\" for knap"
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:2988
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "Rammestil har allerede en knap for funktion %s tilstand %s"
 
-#: ../src/ui/theme-parser.c:2965
+#: ../src/ui/theme-parser.c:3059
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" er ikke en gyldig værdi for fokusegenskaben"
 
-#: ../src/ui/theme-parser.c:2974
+#: ../src/ui/theme-parser.c:3068
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" er ikke en gyldig værdi for tilstandsegenskaben"
 
-#: ../src/ui/theme-parser.c:2984
+#: ../src/ui/theme-parser.c:3078
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "En stil ved navn \"%s\" er ikke blevet defineret"
 
-#: ../src/ui/theme-parser.c:3005 ../src/ui/theme-parser.c:3028
+#: ../src/ui/theme-parser.c:3099 ../src/ui/theme-parser.c:3122
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" er ikke en gyldig værdi for størrelsesændringsegenskaben"
 
-#: ../src/ui/theme-parser.c:3039
+#: ../src/ui/theme-parser.c:3133
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -2101,7 +1625,7 @@ msgstr ""
 "Skal ikke have en \"resize\"-egenskab i <%s>-elementet for maksimerede/"
 "oprullede tilstande"
 
-#: ../src/ui/theme-parser.c:3053
+#: ../src/ui/theme-parser.c:3147
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
@@ -2109,19 +1633,19 @@ msgstr ""
 "Skal ikke have en \"resize\"-egenskab i <%s>-elementet for maksimerede "
 "tilstande"
 
-#: ../src/ui/theme-parser.c:3067 ../src/ui/theme-parser.c:3089
+#: ../src/ui/theme-parser.c:3161 ../src/ui/theme-parser.c:3183
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
 "Stilen er allerede blevet angivet for tilstand %s størrelsesændring %s fokus "
 "%s"
 
-#: ../src/ui/theme-parser.c:3078 ../src/ui/theme-parser.c:3100
+#: ../src/ui/theme-parser.c:3172 ../src/ui/theme-parser.c:3194
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Stilen er allerede blevet angivet for tilstand %s fokus %s"
 
-#: ../src/ui/theme-parser.c:3139
+#: ../src/ui/theme-parser.c:3233
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2129,7 +1653,7 @@ msgstr ""
 "Kan ikke have to draw_ops for et <piece>-element (tema angav en draw_ops "
 "egenskab og også et <draw_ops>-element, eller angav to elementer)"
 
-#: ../src/ui/theme-parser.c:3177
+#: ../src/ui/theme-parser.c:3271
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2137,7 +1661,7 @@ msgstr ""
 "Kan ikke have to draw_ops for et <button>-element (tema angav en draw_ops "
 "egenskab og også et <draw_ops>-element, eller angav to elementer)"
 
-#: ../src/ui/theme-parser.c:3215
+#: ../src/ui/theme-parser.c:3309
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -2145,12 +1669,31 @@ msgstr ""
 "Kan ikke have to draw_ops for et <menu_icon>-element (tema angav en draw_ops "
 "egenskab og også et <draw_ops>-element, eller angav to elementer)"
 
-#: ../src/ui/theme-parser.c:3263
+#: ../src/ui/theme-parser.c:3373
+#, c-format
+msgid "Bad version specification '%s'"
+msgstr "Ugyldig versionsangivelse \"%s\""
+
+#: ../src/ui/theme-parser.c:3446
+msgid ""
+"\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
+"theme-2.xml"
+msgstr ""
+"Egenskaben \"version\" kan ikke bruges i metacity-theme-1.xml eller metacity-"
+"theme-2.xml"
+
+#: ../src/ui/theme-parser.c:3469
+#, c-format
+msgid "Theme requires version %s but latest supported theme version is %d.%d"
+msgstr ""
+"Temaet kræver version %s, men sidste understøttede temaversion er %d.%d"
+
+#: ../src/ui/theme-parser.c:3501
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Det yderste element i temaet skal være <metacity_theme> ikke <%s>"
 
-#: ../src/ui/theme-parser.c:3283
+#: ../src/ui/theme-parser.c:3521
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
@@ -2158,12 +1701,12 @@ msgstr ""
 "Elementet <%s> er ikke tilladt inde i et navne-/forfatter-/dato-/"
 "beskrivelseselement"
 
-#: ../src/ui/theme-parser.c:3288
+#: ../src/ui/theme-parser.c:3526
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Elementet <%s> er ikke tilladt inde i et <constant>-element"
 
-#: ../src/ui/theme-parser.c:3300
+#: ../src/ui/theme-parser.c:3538
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
@@ -2171,211 +1714,189 @@ msgstr ""
 "Elementet <%s> er ikke tilladt inde i et element af typen distance/border/"
 "aspect_ratio"
 
-#: ../src/ui/theme-parser.c:3322
+#: ../src/ui/theme-parser.c:3560
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Elementet <%s> er ikke tilladt inde i et tegneoperationselement"
 
-#: ../src/ui/theme-parser.c:3332 ../src/ui/theme-parser.c:3362
-#: ../src/ui/theme-parser.c:3367 ../src/ui/theme-parser.c:3372
+#: ../src/ui/theme-parser.c:3570 ../src/ui/theme-parser.c:3600
+#: ../src/ui/theme-parser.c:3605 ../src/ui/theme-parser.c:3610
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Elementet <%s> er ikke tilladt inde i et <%s>-element"
 
-#: ../src/ui/theme-parser.c:3594
+#: ../src/ui/theme-parser.c:3838
 msgid "No draw_ops provided for frame piece"
 msgstr "Ingen draw_ops angivet for rammestykke"
 
-#: ../src/ui/theme-parser.c:3609
+#: ../src/ui/theme-parser.c:3853
 msgid "No draw_ops provided for button"
 msgstr "Ingen draw_ops angivet for knap"
 
-#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3907
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Tekst er ikke tilladt inden i elementet <%s>"
 
-#: ../src/ui/theme-parser.c:3716
-msgid "<name> specified twice for this theme"
-msgstr "<name> angivet to gange for dette tema"
+#: ../src/ui/theme-parser.c:3965 ../src/ui/theme-parser.c:3977
+#: ../src/ui/theme-parser.c:3989 ../src/ui/theme-parser.c:4001
+#: ../src/ui/theme-parser.c:4013
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "<%s> angivet to gange for dette tema"
 
-#: ../src/ui/theme-parser.c:3727
-msgid "<author> specified twice for this theme"
-msgstr "<author> angivet to gange for dette tema"
-
-#: ../src/ui/theme-parser.c:3738
-msgid "<copyright> specified twice for this theme"
-msgstr "<copyright> angivet to gange for dette tema"
-
-#: ../src/ui/theme-parser.c:3749
-msgid "<date> specified twice for this theme"
-msgstr "<date> angivet to gange for dette tema"
-
-#: ../src/ui/theme-parser.c:3760
-msgid "<description> specified twice for this theme"
-msgstr "<description> angivet to gange for dette tema"
-
-#: ../src/ui/theme-parser.c:4027
+#: ../src/ui/theme-parser.c:4283
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Kunne ikke finde en gyldig fil til temaet %s\n"
 
-#: ../src/ui/theme-parser.c:4083
-#, c-format
-msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "Temafilen %s indeholdt ikke et rodelement <metacity_theme>"
+#: ../src/ui/theme-viewer.c:99
+msgid "_Windows"
+msgstr "_Vinduer"
 
-#: ../src/ui/theme-viewer.c:75
-msgid "/_Windows"
-msgstr "/_Vinduer"
+#: ../src/ui/theme-viewer.c:100
+msgid "_Dialog"
+msgstr "_Dialog"
 
-#: ../src/ui/theme-viewer.c:76
-msgid "/Windows/tearoff"
-msgstr "/Vinduer/rivaf"
+#: ../src/ui/theme-viewer.c:101
+msgid "_Modal dialog"
+msgstr "_Modaldialog"
 
-#: ../src/ui/theme-viewer.c:77
-msgid "/Windows/_Dialog"
-msgstr "/Vinduer/_Meddelelsevindue"
+#: ../src/ui/theme-viewer.c:102
+msgid "_Utility"
+msgstr "_Værktøj"
 
-#: ../src/ui/theme-viewer.c:78
-msgid "/Windows/_Modal dialog"
-msgstr "/Vinduer/_Modalt meddelelsevindue"
+#: ../src/ui/theme-viewer.c:103
+msgid "_Splashscreen"
+msgstr "_Velkomstskærm"
 
-#: ../src/ui/theme-viewer.c:79
-msgid "/Windows/_Utility"
-msgstr "/Windows/_Værktøj"
+#: ../src/ui/theme-viewer.c:104
+msgid "_Top dock"
+msgstr "_Topdok"
 
-#: ../src/ui/theme-viewer.c:80
-msgid "/Windows/_Splashscreen"
-msgstr "/Windows/_Velkomstskærm"
+#: ../src/ui/theme-viewer.c:105
+msgid "_Bottom dock"
+msgstr "_Bunddok"
 
-#: ../src/ui/theme-viewer.c:81
-msgid "/Windows/_Top dock"
-msgstr "/Windows/_Topdok"
+#: ../src/ui/theme-viewer.c:106
+msgid "_Left dock"
+msgstr "_Venstre dok"
 
-#: ../src/ui/theme-viewer.c:82
-msgid "/Windows/_Bottom dock"
-msgstr "/Windows/_Bunddok"
+#: ../src/ui/theme-viewer.c:107
+msgid "_Right dock"
+msgstr "_Højre dok"
 
-#: ../src/ui/theme-viewer.c:83
-msgid "/Windows/_Left dock"
-msgstr "/Windows/_Venstre dok"
+#: ../src/ui/theme-viewer.c:108
+msgid "_All docks"
+msgstr "_Alle dokke"
 
-#: ../src/ui/theme-viewer.c:84
-msgid "/Windows/_Right dock"
-msgstr "/Windows/_Højre dok"
+#: ../src/ui/theme-viewer.c:109
+msgid "Des_ktop"
+msgstr "Skrive_bord"
 
-#: ../src/ui/theme-viewer.c:85
-msgid "/Windows/_All docks"
-msgstr "/Windows/_Alle dokke"
-
-#: ../src/ui/theme-viewer.c:86
-msgid "/Windows/Des_ktop"
-msgstr "/Windows/_Skrivebord"
-
-#: ../src/ui/theme-viewer.c:135
+#: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
 msgstr "Åbn endnu et af disse vinduer"
 
-#: ../src/ui/theme-viewer.c:142
+#: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
 msgstr "Dette er en demoknap med et \"åbn\"-ikon"
 
-#: ../src/ui/theme-viewer.c:149
+#: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Dette er en demoknap med et \"afslut\"-ikon"
 
-#: ../src/ui/theme-viewer.c:242
+#: ../src/ui/theme-viewer.c:253
 msgid "This is a sample message in a sample dialog"
 msgstr "Dette er en eksempelbesked i et eksempelmeddelelsevindue"
 
-#: ../src/ui/theme-viewer.c:325
+#: ../src/ui/theme-viewer.c:336
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Uægte menupunkt %d\n"
 
-#: ../src/ui/theme-viewer.c:359
+#: ../src/ui/theme-viewer.c:370
 msgid "Border-only window"
 msgstr "Vindue med kun ramme"
 
-#: ../src/ui/theme-viewer.c:361
+#: ../src/ui/theme-viewer.c:372
 msgid "Bar"
 msgstr "Linje"
 
-#: ../src/ui/theme-viewer.c:378
+#: ../src/ui/theme-viewer.c:389
 msgid "Normal Application Window"
 msgstr "Almindeligt programvindue"
 
-#: ../src/ui/theme-viewer.c:382
+#: ../src/ui/theme-viewer.c:393
 msgid "Dialog Box"
 msgstr "Meddelelsevindue"
 
-#: ../src/ui/theme-viewer.c:386
+#: ../src/ui/theme-viewer.c:397
 msgid "Modal Dialog Box"
 msgstr "Modalt meddelelsevindue"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:401
 msgid "Utility Palette"
 msgstr "Værktøjspalet"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:405
 msgid "Torn-off Menu"
 msgstr "Afrevet menu"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:409
 msgid "Border"
 msgstr "Ramme"
 
-#: ../src/ui/theme-viewer.c:726
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "Knaplayouttest %d"
 
-#: ../src/ui/theme-viewer.c:755
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g millisekunder for at tegne én vinduesramme"
 
-#: ../src/ui/theme-viewer.c:798
+#: ../src/ui/theme-viewer.c:810
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Brug: metacity-theme-viewer [TEMANAVN]\n"
 
-#: ../src/ui/theme-viewer.c:805
+#: ../src/ui/theme-viewer.c:817
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Fejl under indlæsning af tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:811
+#: ../src/ui/theme-viewer.c:823
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Indlæste tema \"%s\" på %g sekunder\n"
 
-#: ../src/ui/theme-viewer.c:852
+#: ../src/ui/theme-viewer.c:866
 msgid "Normal Title Font"
 msgstr "Normal titelskrifttype"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:872
 msgid "Small Title Font"
 msgstr "Lille titelskrifttype"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:878
 msgid "Large Title Font"
 msgstr "Stor titelskrifttype"
 
-#: ../src/ui/theme-viewer.c:869
+#: ../src/ui/theme-viewer.c:883
 msgid "Button Layouts"
 msgstr "Knaplayout"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:888
 msgid "Benchmark"
 msgstr "Tidstest"
 
-#: ../src/ui/theme-viewer.c:921
+#: ../src/ui/theme-viewer.c:935
 msgid "Window Title Goes Here"
 msgstr "Vinduestitel er her"
 
-#: ../src/ui/theme-viewer.c:1025
+#: ../src/ui/theme-viewer.c:1039
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -2386,52 +1907,426 @@ msgstr ""
 "sekunders almindelig tid inkl. X-server-resurser (%g millisekunder pr. "
 "ramme)\n"
 
-#: ../src/ui/theme-viewer.c:1244
+#: ../src/ui/theme-viewer.c:1258
 msgid "position expression test returned TRUE but set error"
 msgstr "positionsudtrykstest returnede TRUE, men sat fejl"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1260
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "positionsudtrykstest returnede FALSE, men satte ikke fejl"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1264
 msgid "Error was expected but none given"
 msgstr "Fejl var forventet, men ingen givet"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1266
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Fejl %d var forventet, men %d givet"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1272
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Fejl var ikke forventet, men én blev returneret: %s"
 
-#: ../src/ui/theme-viewer.c:1262
+#: ../src/ui/theme-viewer.c:1276
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x-værdi var %d, %d var forventet"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1279
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y-værdi var %d, %d var forventet"
 
-#: ../src/ui/theme-viewer.c:1330
+#: ../src/ui/theme-viewer.c:1344
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d koordinatudtryk fortolket på %g sekunder (%g sekunder i gennemsnit)\n"
 
-#~ msgid ""
-#~ "Error launching metacity-dialog to print an error about a command: %s\n"
-#~ msgstr ""
-#~ "Fejl ved start af metacity-dialog for at vise en fejl for en kommando: %"
-#~ "s\n"
+#~ msgid "Window Management"
+#~ msgstr "Vindueshåndtering"
 
-#~ msgid "Unknown attribute %s on <metacity_session> element"
-#~ msgstr "Ukendt egenskab %s for <metacity_session>-element"
+#~ msgid "Failed to parse message \"%s\" from dialog process\n"
+#~ msgstr "Kunne ikke fortolke beskeden \"%s\" fra vinduesproces\n"
+
+#~ msgid "Error reading from dialog display process: %s\n"
+#~ msgstr "Fejl ved læsning fra vinduesprocessen: %s\n"
+
+#~ msgid "Failed to get hostname: %s\n"
+#~ msgstr "Kunne ikke skaffe værtsnavn: %s\n"
+
+#~ msgid ""
+#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Formatet ser ud som \"<Control>a\" eller \"<Skift><Al>F1\".\n"
+#~ "\n"
+#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
+#~ "forkortelser som \"<Ctl>\" og \"<Ctrl>\". Hvis du sætter indstillingen "
+#~ "til den specielle tekststreng \"disabled\", vil der ikke være nogen "
+#~ "tastaturgenvej til denne handling."
+
+#~ msgid ""
+#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action.\n"
+#~ "\n"
+#~ "This keybinding may be reversed by holding down the \"shift\" key; "
+#~ "therefore, \"shift\" cannot be one of the keys it uses."
+#~ msgstr ""
+#~ "Formatet ser ud som \"<Control>a\" eller \"<Skift><Alt>F1\".\n"
+#~ "\n"
+#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
+#~ "forkortelser som \"<Ctl>\" og \"<Ctrl>\". Hvis du sætter indstillingen "
+#~ "til den specielle tekststreng \"disabled\", vil der ikke være nogen "
+#~ "tastaturgenvej til denne handling."
+
+#~ msgid "Failed to read saved session file %s: %s\n"
+#~ msgstr "Kunne ikke læse den lagrede sessionsfil %s: %s\n"
+
+#~ msgid ""
+#~ "(Not implemented) Navigation works in terms of applications not windows"
+#~ msgstr ""
+#~ "(Ikke implementeret) Navigatering virker med programmer ikke vinduer"
+
+#~ msgid ""
+#~ "A font description string describing a font for window titlebars. The "
+#~ "size from the description will only be used if the titlebar_font_size "
+#~ "option is set to 0. Also, this option is disabled if the "
+#~ "titlebar_uses_desktop_font option is set to true."
+#~ msgstr ""
+#~ "En skrifttypebeskrivelsesstreng der beskriver skrifttypen for "
+#~ "vinduestitellinjer. Størrelsen fra beskrivelsen vil dog kun blive brugt "
+#~ "hvis indstillingen \"titlebar_font_size\" er sat til 0. Desuden er denne "
+#~ "indstilling deaktiveret hvis indstillingen \"titlebar_uses_desktop_font\" "
+#~ "er sat til \"true\"."
+
+#~ msgid "Action on title bar double-click"
+#~ msgstr "Handling ved dobbeltklik på titellinjen"
+
+#~ msgid "Action on title bar middle-click"
+#~ msgstr "Handling ved midterklik på titellinjen"
+
+#~ msgid "Action on title bar right-click"
+#~ msgstr "Handling ved højreklik på titellinjen"
+
+#~ msgid "Arrangement of buttons on the titlebar"
+#~ msgstr "Arrangeringen af knapper på titellinjen"
+
+#~ msgid "Automatically raises the focused window"
+#~ msgstr "Hæv automatisk det fokuserede vindue"
+
+#~ msgid ""
+#~ "Clicking a window while holding down this modifier key will move the "
+#~ "window (left click), resize the window (middle click), or show the window "
+#~ "menu (right click). The left and right operations may be swapped using "
+#~ "the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" "
+#~ "or \"&lt;Super&gt;\" for example."
+#~ msgstr ""
+#~ "Klik på et vindue mens denne modifikationstast holdes nede vil flytte "
+#~ "vinduet (venstreklik), ændre størrelsen af vinduet (midterklik) eller "
+#~ "vise vinduesmenuen (højreklik). Modifikationstasten kan f.eks. udtrykkes "
+#~ "som \"&lt;Alt&gt;\" eller \"&lt;Super&gt;\"."
+
+#~ msgid "Commands to run in response to keybindings"
+#~ msgstr "Kommando der skal køres ved tastegenvej"
+
+#~ msgid "Compositing Manager"
+#~ msgstr "Kompositionshåndtering"
+
+#~ msgid "Control how new windows get focus"
+#~ msgstr "Indstil måden hvorpå nye vinduer tildeles fokus"
+
+#~ msgid "Current theme"
+#~ msgstr "Aktuelt tema"
+
+#~ msgid "Delay in milliseconds for the auto raise option"
+#~ msgstr "Ventetid i millisekunder for autohævningsindstillingen"
+
+#~ msgid ""
+#~ "Determines whether applications or the system can generate audible "
+#~ "'beeps'; may be used in conjunction with 'visual bell' to allow silent "
+#~ "'beeps'."
+#~ msgstr ""
+#~ "Bestemmer om programmer eller systemet kan generere hørbare bip; kan "
+#~ "bruges sammen med visuelt bip til at opnå lydløse systembip."
+
+#~ msgid "Disable misfeatures that are required by old or broken applications"
+#~ msgstr ""
+#~ "Deaktiver uheldige faciliteter der kræves af ældre eller ødelagte "
+#~ "programmer"
+
+#~ msgid "Enable Visual Bell"
+#~ msgstr "Aktivér visuelt bip"
+
+#~ msgid ""
+#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+#~ "the focused window will be automatically raised after a delay specified "
+#~ "by the auto_raise_delay key. This is not related to clicking on a window "
+#~ "to raise it, nor to entering a window during drag-and-drop."
+#~ msgstr ""
+#~ "Hvis sat til \"true\", og fokustilstanden er enten \"sloppy\" eller "
+#~ "\"mouse\", så vil det fokuserede vindue automatisk hæves efter en "
+#~ "ventetid specificeret af nøglen \"auto_raise_delay\". Dette er ikke "
+#~ "relateret til at klikke på et vindue for at hæve det, ej heller at komme "
+#~ "ind i et vindue under træk-og-slip."
+
+#~ msgid ""
+#~ "If true, ignore the titlebar_font option, and use the standard "
+#~ "application font for window titles."
+#~ msgstr ""
+#~ "Hvis sand, ignorér indstillingen titlebar_font og brug "
+#~ "standardskrifttypen for programmer til vinduestitler."
+
+#~ msgid "If true, trade off usability for less resource usage"
+#~ msgstr "Hvis sand, så formindsk brugbarhed af hensyn til resurseforbrug"
+
+#~ msgid "Name of workspace"
+#~ msgstr "Arbejdsområdets navn"
+
+#~ msgid "Number of workspaces"
+#~ msgstr "Antal arbejdsområder"
+
+#~ msgid ""
+#~ "Number of workspaces. Must be more than zero, and has a fixed maximum to "
+#~ "prevent making the desktop unusable by accidentally asking for too many "
+#~ "workspaces."
+#~ msgstr ""
+#~ "Antal arbejdsområder. Skal være større end nul og har et fast maksimum "
+#~ "for at forhindre at skrivebordet gøres ubrugeligt ved et uheld ved at "
+#~ "antallet sættes for stort."
+
+#~ msgid "Run a defined command"
+#~ msgstr "Kør en defineret kommando"
+
+#~ msgid ""
+#~ "Set this to true to resize with the right button and show a menu with the "
+#~ "middle button while holding down the key given in \"mouse_button_modifier"
+#~ "\"; set it to false to make it work the opposite way around."
+#~ msgstr ""
+#~ "Sæt denne til \"true\" for at ændre størrelse med højre knap og vise en "
+#~ "menu med midterste knap mens tasten givet i \"mouse_button_modifier\" "
+#~ "holdes nede; sæt den til \"false\" for at få det til at fungere på modsat "
+#~ "vis."
+
+#~ msgid ""
+#~ "Setting this option to false can lead to buggy behavior, so users are "
+#~ "strongly discouraged from changing it from the default of true. Many "
+#~ "actions (e.g. clicking in the client area, moving or resizing the window) "
+#~ "normally raise the window as a side-effect. Setting this option to false, "
+#~ "which is strongly discouraged, will decouple raising from other user "
+#~ "actions, and ignore raise requests generated by applications. See http://"
+#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is "
+#~ "false, windows can still be raised by an alt-left-click anywhere on the "
+#~ "window, a normal click on the window decorations, or by special messages "
+#~ "from pagers, such as activation requests from tasklist applets. This "
+#~ "option is currently disabled in click-to-focus mode. Note that the list "
+#~ "of ways to raise windows when raise_on_click is false does not include "
+#~ "programmatic requests from applications to raise windows; such requests "
+#~ "will be ignored regardless of the reason for the request. If you are an "
+#~ "application developer and have a user complaining that your application "
+#~ "does not work with this setting disabled, tell them it is _their_ fault "
+#~ "for breaking their window manager and that they need to change this "
+#~ "option back to true or live with the \"bug\" they requested."
+#~ msgstr ""
+#~ "At sætte denne indstilling til false kan føre til fejlagtig opførsel, så "
+#~ "brugere frarådes stærkt at ændre den fra standardværdien, som er true. "
+#~ "Mange handlinger (såsom at klikke i klientområdet, at flytte eller ændre "
+#~ "størrelse på et vindue) vil normalt hæve vinduet som sideeffekt. Sæt "
+#~ "denne indstilling til false for at afkoble hævningen fra de andre "
+#~ "brugerhandlinger, og ignorere hæveforespørgsler genereret af programmer. "
+#~ "Se http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Selv når denne "
+#~ "indstilling er false, kan vinduer stadig hæves ved at alt-venstreklikke "
+#~ "hvor som helst på vinduet, ved at foretage et normalt klik på "
+#~ "vinduesdekorationerne, eller som følge af specielle signaler fra "
+#~ "programskiftere, såsom aktiveringsforespørgsler fra opgaveliste-"
+#~ "panelprogrammer. Denne indstilling er på nuværende tidspunkt deaktiveret "
+#~ "i klik-for-fokus-tilstand. Bemærk at denne liste af måder hvorpå vinduer "
+#~ "kan hæves når raise_on_click er sat til false, ikke inkluderer "
+#~ "programmerbare forespørgsler fra programmer om hævning af vinduer; "
+#~ "sådanne forespørgsler vil blive ignoreret uanset årsagen til "
+#~ "forespørgslen. Hvis du er en applikationsprogrammør og har en bruger, der "
+#~ "klager over at dit program ikke fungerer med denne indstilling slået fra, "
+#~ "så fortæl dem at det er _deres_ skyld idet de misbruger deres "
+#~ "vindueshåndtering, og at de skal ændre denne indstilling tilbage til "
+#~ "true, eller leve med den pågældende fejl."
+
+#~ msgid "System Bell is Audible"
+#~ msgstr "Systembip er hørbart"
+
+#~ msgid "The name of a workspace."
+#~ msgstr "Arbejdsområdets navn."
+
+#~ msgid "The screenshot command"
+#~ msgstr "Kommando for skærmbillede"
+
+#~ msgid ""
+#~ "The theme determines the appearance of window borders, titlebar, and so "
+#~ "forth."
+#~ msgstr "Temaet bestemmer udseendet af vindueskanter, titellinjer osv."
+
+#~ msgid ""
+#~ "The time delay before raising a window if auto_raise is set to true. The "
+#~ "delay is given in thousandths of a second."
+#~ msgstr ""
+#~ "Ventetiden før et vindue hæves hvis auto_raise er sat til sand. Tiden "
+#~ "angives i tusinddele af et sekund."
+
+#~ msgid ""
+#~ "The window focus mode indicates how windows are activated. It has three "
+#~ "possible values; \"click\" means windows must be clicked in order to "
+#~ "focus them, \"sloppy\" means windows are focused when the mouse enters "
+#~ "the window, and \"mouse\" means windows are focused when the mouse enters "
+#~ "the window and unfocused when the mouse leaves the window."
+#~ msgstr ""
+#~ "Vinduesfokuseringstilstanden fortæller hvordan vinduer aktiveres. Der er "
+#~ "tre mulige værdier: \"click\" betyder at vinduer skal klikkes på for at "
+#~ "fokusere dem, \"sloppy\" betyder at vinduer fokuseres når musen føres ind "
+#~ "i vinduet og \"mouse\" betyder at vinduer fokuseres når musen føres ind i "
+#~ "vinduet og mister fokus igen når musen forlader vinduet."
+
+#~ msgid "The window screenshot command"
+#~ msgstr "Kommando for vinduesskærmbillede"
+
+#~ msgid ""
+#~ "This option determines the effects of double-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "Angiver hvad der sker når der dobbeltklikkes på titellinjen. Nuværende "
+#~ "gyldige muligheder er \"toggle_shade\" som ruller vinduet op/ned, "
+#~ "\"toggle_maximize\" som skifter mellem maksimeret/normal tilstand for "
+#~ "vinduet, \"toggle_maximize_horizontally\" og \"toggle_maximize_vertically"
+#~ "\" som vil skifte mellem maksimeret og normal tilstand kun i den retning, "
+#~ "\"minimize\" som vil minimere vinduet, \"shade\" som vil rulle vinduet "
+#~ "op, \"menu\" som vil vise vinduesmenuen, \"lower\" som vil placere "
+#~ "vinduet bag alle andre og \"none\" som ingenting gør."
+
+#~ msgid ""
+#~ "This option determines the effects of middle-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "Angiver hvad der sker når der midterklikkes på titellinjen. Nuværende "
+#~ "gyldige muligheder er \"toggle_shade\" som ruller vinduet op/ned, "
+#~ "\"toggle_maximize\" som skifter mellem maksimeret/normal tilstand for "
+#~ "vinduet, \"toggle_maximize_horizontally\" og \"toggle_maximize_vertically"
+#~ "\" som vil skifte mellem maksimeret og normal tilstand kun i den retning, "
+#~ "\"minimize\" som vil minimere vinduet, \"shade\" som vil rulle vinduet "
+#~ "op, \"menu\" som vil vise vinduesmenuen, \"lower\" som vil placere "
+#~ "vinduet bag alle andre og \"none\" som ingenting gør."
+
+#~ msgid ""
+#~ "This option determines the effects of right-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "Angiver hvad der sker når der højreklikkes på titellinjen. Nuværende "
+#~ "gyldige muligheder er \"toggle_shade\" som ruller vinduet op/ned, "
+#~ "\"toggle_maximize\" som skifter mellem maksimeret/normal tilstand for "
+#~ "vinduet, \"toggle_maximize_horizontally\" og \"toggle_maximize_vertically"
+#~ "\" som vil skifte mellem maksimeret og normal tilstand kun i den retning, "
+#~ "\"minimize\" som vil minimere vinduet, \"shade\" som vil rulle vinduet "
+#~ "op, \"menu\" som vil vise vinduesmenuen, \"lower\" som vil placere "
+#~ "vinduet bag alle andre og \"none\" som ingenting gør."
+
+#~ msgid ""
+#~ "This option provides additional control over how newly created windows "
+#~ "get focus. It has two possible values; \"smart\" applies the user's "
+#~ "normal focus mode, and \"strict\" results in windows started from a "
+#~ "terminal not being given focus."
+#~ msgstr ""
+#~ "Denne indstilling giver yderligere kontrol over måden hvorpå nyoprettede "
+#~ "vinduer bringes i fokus. Den har to mulige værdier; \"smart\" anvender "
+#~ "brugerens normale fokusindstillinger, og \"strict\" resulterer i at "
+#~ "vinduer der startes fra en terminal ikke gives fokus."
+
+#~ msgid ""
+#~ "Turns on a visual indication when an application or the system issues a "
+#~ "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+#~ "environments."
+#~ msgstr ""
+#~ "Aktiverer visuel tilkendegivelse idet et program eller systemet udsender "
+#~ "et bip; nyttigt for svagthørende eller til brug i støjende omgivelser."
+
+#~ msgid "Use standard system font in window titles"
+#~ msgstr "Benyt standardskrifttypen i vinduestitler"
+
+#~ msgid "Visual Bell Type"
+#~ msgstr "Visuel bip-type"
+
+#~ msgid "Whether raising should be a side-effect of other user interactions"
+#~ msgstr "Om hævning skal være en bivirkning af andre brugerhændelser"
+
+#~ msgid "Whether to resize with the right button"
+#~ msgstr "Om der ændres størrelse med højre tast"
+
+#~ msgid "Window focus mode"
+#~ msgstr "Vinduesfokuseringstilstand"
+
+#~ msgid "Window title font"
+#~ msgstr "Skrifttype til vinduestitel"
+
+#~ msgid "Title"
+#~ msgstr "Titel"
+
+#~ msgid "Class"
+#~ msgstr "Klasse"
+
+#~ msgid ""
+#~ "There was an error running \"%s\":\n"
+#~ "%s."
+#~ msgstr ""
+#~ "Der opstod en fejl ved kørsel af \"%s\":\n"
+#~ "%s."
+
+#~ msgid "<author> specified twice for this theme"
+#~ msgstr "<author> angivet to gange for dette tema"
+
+#~ msgid "<copyright> specified twice for this theme"
+#~ msgstr "<copyright> angivet to gange for dette tema"
+
+#~ msgid "<date> specified twice for this theme"
+#~ msgstr "<date> angivet to gange for dette tema"
+
+#~ msgid "<description> specified twice for this theme"
+#~ msgstr "<description> angivet to gange for dette tema"
+
+#~ msgid "/Windows/tearoff"
+#~ msgstr "/Vinduer/rivaf"
+
+#~ msgid "/Windows/_Dialog"
+#~ msgstr "/Vinduer/_Meddelelsevindue"
+
+#~ msgid "/Windows/_Modal dialog"
+#~ msgstr "/Vinduer/_Modalt meddelelsevindue"
+
+#~ msgid "/Windows/Des_ktop"
+#~ msgstr "/Windows/_Skrivebord"
 
 #~ msgid "Unknown attribute %s on <maximized> element"
 #~ msgstr "Ukendt egenskab %s for <maximized>-element"
@@ -3775,36 +3670,6 @@ msgstr ""
 #~ "retvinklet-hævning). Den er ikke relateret til tilgang af vindue under "
 #~ "hiv og slip (fordi det resulterer i at programmet fanger musen)"
 
-#~ msgid ""
-#~ "Some applications break specifications in ways that result in window "
-#~ "manager misfeatures. For example, ideally Metacity would place all "
-#~ "dialogs in a consistent position with respect to their parent window. "
-#~ "This requires ignoring application-specified positions for dialogs. But "
-#~ "some versions of Java/Swing mark their popup menus as dialogs, so "
-#~ "Metacity has to disable dialog positioning to allow menus to work in "
-#~ "broken Java applications. There are several other examples like this. "
-#~ "This option puts Metacity in full-on Correct mode, which perhaps gives a "
-#~ "moderately nicer UI if you don't need to run any broken apps. Sadly, "
-#~ "workarounds must be enabled by default; the real world is an ugly place. "
-#~ "Some of the workarounds are workarounds for limitations in the "
-#~ "specifications themselves, so sometimes a bug in no-workarounds mode "
-#~ "won't be fixable without amending a spec."
-#~ msgstr ""
-#~ "Nogle programmer bryder specifikationerne på sådanne måder at det "
-#~ "resulterer i problemer for vindueshåndteringen. For eksempel ville det "
-#~ "være bedst hvis Metacity kunne placere alle meddelelsesvinduer på samme "
-#~ "måde i forhold til deres ophavsvinduer. Dette kræver at programspecifikke "
-#~ "placeringer for meddelsesvinduer ignoreres. Men nogle version af Java/"
-#~ "Swing markerer deres popop-menuer som vinduer så Metacity er nødt til at "
-#~ "deaktivere placering af meddelsesvinduer for at få menuer til at virke i "
-#~ "ødelagt Javaprogrammer. Der er flere andre eksempler på dette. Denne "
-#~ "indstillinger får Metacity til at opføre sig fuldstændigt korrekt hvilket "
-#~ "muligvis giver en lidt bedre grænseflade hvis du ikke kører nogen "
-#~ "ødelagte programmer. Desværre må omgåelser aktiveres som standard; den "
-#~ "virkelige verden er et uskønt sted. Nogle af omgåelserne er omgåelser for "
-#~ "begrænsninger i specifikationerne selv så nogle gange kan en fejl i "
-#~ "tilstanden uden omgåelser ikke rettes uden at vedtage en ny specifikation."
-
 #~ msgid "Unknown function \"%s\" for menu icon"
 #~ msgstr "Ukendt funktion \"%s\" til menuikon"
 
@@ -3819,14 +3684,6 @@ msgstr ""
 
 #~ msgid "Failed to read theme from file %s: %s\n"
 #~ msgstr "Kunne ikke læse tema fra filen %s: %s\n"
-
-#~ msgid ""
-#~ "Coordinate expression parser overflowed its buffer, this is really a "
-#~ "Metacity bug, but are you sure you need a huge expression like that?"
-#~ msgstr ""
-#~ "Koordinatudtrykkets fortolkningsprocess overskred sit mellemlager. Dette "
-#~ "er egentlig en fejl i Metacity, men er du sikker på at du behøver så "
-#~ "store udtryk?"
 
 #~ msgid ""
 #~ "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
