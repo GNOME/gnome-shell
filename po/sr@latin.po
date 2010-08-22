@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&component=general\n"
-"POT-Creation-Date: 2010-07-02 13:54+0000\n"
-"PO-Revision-Date: 2010-08-19 14:41+0200\n"
+"POT-Creation-Date: 2010-08-19 12:48+0000\n"
+"PO-Revision-Date: 2010-08-22 15:37+0200\n"
 "Last-Translator: Miloš Popović <gpopac@gmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,6 @@ msgstr "Zahtevana je nepoznata informacija o prozoru: %d"
 #. Translators: %s is a window title
 #: ../src/core/delete.c:94
 #, c-format
-#| msgid "\"%s\" is not responding."
 msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> ne daje odziv."
 
@@ -122,7 +121,7 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
-"muter %s\n"
+"mater %s\n"
 "Sva prava zadržana (C) 2001–%d Havoc Pennington, Red Hat, Inc., i ostali\n"
 "Ovo je slobodan program; pogledajte izvorni kod za uslove korišćenja.\n"
 "NE postoji nikakva garancija; čak ni garancija o podobnosti za određenu "
@@ -133,9 +132,8 @@ msgid "Disable connection to session manager"
 msgstr "Onemogući vezu sa upravnikom sesije"
 
 #: ../src/core/main.c:267
-#| msgid "Replace the running window manager with Metacity"
 msgid "Replace the running window manager with Mutter"
-msgstr "Zameni tekućeg upravnika prozorima Muterom"
+msgstr "Zameni tekućeg upravnika prozorima Materom"
 
 #: ../src/core/main.c:273
 msgid "Specify session management ID"
@@ -291,19 +289,16 @@ msgstr "Greška pri postavljanju stanja kompozitora: %s\n"
 
 #: ../src/core/prefs.c:3021
 #, c-format
-#| msgid "Error setting compositor status: %s\n"
 msgid "Error setting clutter plugin list: %s\n"
-msgstr "Greška pri postavljanju spiska dodataka za kluter: %s\n"
+msgstr "Greška pri postavljanju spiska dodataka za klater: %s\n"
 
 #: ../src/core/prefs.c:3065
 #, c-format
-#| msgid "Error setting compositor status: %s\n"
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Greška pri postavljanju stanja skrivenih prozora: %s\n"
 
 #: ../src/core/prefs.c:3093
 #, c-format
-#| msgid "Error setting compositor status: %s\n"
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Greška pri postavljanju stanja bez iskačućih listova: %s\n"
 
@@ -365,7 +360,6 @@ msgstr "Nisam uspeo da obradim sačuvanu datoteku sesije: %s\n"
 
 #: ../src/core/session.c:1198
 #, c-format
-#| msgid "<metacity_session> attribute seen but we already have the session ID"
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr ""
 "<mutter_session> atribut je primećen ali mi već imamo indetifikaciju sesije"
@@ -395,52 +389,51 @@ msgstr ""
 "Ovi prozori ne podržavaju mogućnost „snimi trenutna podešavanja“ pa ćete "
 "morati da ih ručno ponovo pokrenete kada se sledeći put prijavite."
 
-#: ../src/core/util.c:110
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Nisam uspeo da otvorim istorijat grešaka: %s\n"
 
-#: ../src/core/util.c:120
+#: ../src/core/util.c:121
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Nisam uspeo da fdopen() datoteku sa istorijatom %s: %s\n"
 
-#: ../src/core/util.c:126
+#: ../src/core/util.c:127
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Otvorena datoteka sa istorijatom %s\n"
 
-#: ../src/core/util.c:145 ../src/tools/mutter-message.c:176
+#: ../src/core/util.c:146 ../src/tools/mutter-message.c:176
 #, c-format
-#| msgid "Metacity was compiled without support for verbose mode\n"
 msgid "Mutter was compiled without support for verbose mode\n"
-msgstr "Muter je preveden bez podrške za obaveštajni način rada\n"
+msgstr "Mater je preveden bez podrške za obaveštajni način rada\n"
 
-#: ../src/core/util.c:285
+#: ../src/core/util.c:286
 msgid "Window manager: "
 msgstr "Menadžer prozora:"
 
-#: ../src/core/util.c:433
+#: ../src/core/util.c:434
 msgid "Bug in window manager: "
 msgstr "Greška u menadžeru prozora: "
 
-#: ../src/core/util.c:466
+#: ../src/core/util.c:467
 msgid "Window manager warning: "
 msgstr "Upozorenje upravnika prozora: "
 
-#: ../src/core/util.c:494
+#: ../src/core/util.c:495
 msgid "Window manager error: "
 msgstr "Greška menadžera prozora: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:615 ../src/mutter.desktop.in.h:1
+#: ../src/core/util.c:616 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
-msgstr "Muter"
+msgstr "Mater"
 
 #. first time through
-#: ../src/core/window.c:6228
+#: ../src/core/window.c:6237
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -456,7 +449,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6891
+#: ../src/core/window.c:6900
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -818,7 +811,7 @@ msgstr "Premesti prozor na sredinu ekrana"
 
 #: ../src/mutter.schemas.in.h:1
 msgid "Clutter Plugins"
-msgstr "Dodaci za Kluter"
+msgstr "Dodaci za Klater"
 
 #: ../src/mutter.schemas.in.h:2
 msgid ""
@@ -833,13 +826,12 @@ msgid "Live Hidden Windows"
 msgstr "Održavaj skrivene prozore"
 
 #: ../src/mutter.schemas.in.h:4
-#| msgid "Modifier to use for modified window click actions"
 msgid "Modifier to use for extended window management operations"
 msgstr "Taster koji se koristi za radnje proširenog upravnika prozorima"
 
 #: ../src/mutter.schemas.in.h:5
 msgid "Plugins to load for the Clutter-based compositing manager."
-msgstr "Dodatak za učitavanje Kluterovih kompozitnih upravnika."
+msgstr "Dodatak za učitavanje Klaterovih kompozitnih upravnika."
 
 #: ../src/mutter.schemas.in.h:6
 msgid ""
@@ -1308,7 +1300,7 @@ msgstr "Izraz sa koordinatama nema ni jedan operator ili operand"
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Tema sadrži izraz koji rezultira greškom: %s\n"
 
-#: ../src/ui/theme.c:4261
+#: ../src/ui/theme.c:4255
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1317,25 +1309,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"bilo šta\"/> mora biti "
 "naveden za ovaj stil okvira"
 
-#: ../src/ui/theme.c:4769 ../src/ui/theme.c:4794
+#: ../src/ui/theme.c:4763 ../src/ui/theme.c:4788
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Nedostaje <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"bilo šta\"/>"
 
-#: ../src/ui/theme.c:4838
+#: ../src/ui/theme.c:4832
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Nisam uspeo da učitam temu „%s“: %s\n"
 
-#: ../src/ui/theme.c:4970 ../src/ui/theme.c:4977 ../src/ui/theme.c:4984
-#: ../src/ui/theme.c:4991 ../src/ui/theme.c:4998
+#: ../src/ui/theme.c:4964 ../src/ui/theme.c:4971 ../src/ui/theme.c:4978
+#: ../src/ui/theme.c:4985 ../src/ui/theme.c:4992
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nije definisan element <%s> za temu „%s“"
 
-#: ../src/ui/theme.c:5006
+#: ../src/ui/theme.c:5000
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1344,14 +1336,14 @@ msgstr ""
 "Nije podešen stil okvira za prozor tipa „%s“ u temi „%s“. Dodajte <window "
 "type=\"%s\" style_set=\"bilo šta\"/> element."
 
-#: ../src/ui/theme.c:5449 ../src/ui/theme.c:5511 ../src/ui/theme.c:5574
+#: ../src/ui/theme.c:5443 ../src/ui/theme.c:5505 ../src/ui/theme.c:5568
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Korisnički definisane konstante moraju početi velikim slovom; „%s“ ne počinje"
 
-#: ../src/ui/theme.c:5457 ../src/ui/theme.c:5519 ../src/ui/theme.c:5582
+#: ../src/ui/theme.c:5451 ../src/ui/theme.c:5513 ../src/ui/theme.c:5576
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta „%s“ je već definisana"
@@ -1735,57 +1727,46 @@ msgid "Failed to find a valid file for theme %s\n"
 msgstr "Nisam uspeo da pronađem ispravnu datoteku za temu %s\n"
 
 #: ../src/ui/theme-viewer.c:99
-#| msgid "/_Windows"
 msgid "_Windows"
 msgstr "_Prozori"
 
 #: ../src/ui/theme-viewer.c:100
-#| msgid "Dialog Box"
 msgid "_Dialog"
 msgstr "Pro_zorče"
 
 #: ../src/ui/theme-viewer.c:101
-#| msgid "Modal Dialog Box"
 msgid "_Modal dialog"
 msgstr "_Važno prozorče"
 
 #: ../src/ui/theme-viewer.c:102
-#| msgid "/Windows/_Utility"
 msgid "_Utility"
 msgstr "_Alatka"
 
 #: ../src/ui/theme-viewer.c:103
-#| msgid "/Windows/_Splashscreen"
 msgid "_Splashscreen"
 msgstr "_Uvodni ekran"
 
 #: ../src/ui/theme-viewer.c:104
-#| msgid "/Windows/_Top dock"
 msgid "_Top dock"
 msgstr "_Gornje pripajanje"
 
 #: ../src/ui/theme-viewer.c:105
-#| msgid "/Windows/_Bottom dock"
 msgid "_Bottom dock"
 msgstr "_Donje pripajanje"
 
 #: ../src/ui/theme-viewer.c:106
-#| msgid "/Windows/_Left dock"
 msgid "_Left dock"
 msgstr "_Levo pripajanje"
 
 #: ../src/ui/theme-viewer.c:107
-#| msgid "/Windows/_Right dock"
 msgid "_Right dock"
 msgstr "D_esno pripajanje"
 
 #: ../src/ui/theme-viewer.c:108
-#| msgid "/Windows/_All docks"
 msgid "_All docks"
 msgstr "_Sva pripajanja"
 
 #: ../src/ui/theme-viewer.c:109
-#| msgid "Desktop"
 msgid "Des_ktop"
 msgstr "_Radna površina"
 
