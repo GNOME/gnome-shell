@@ -25,7 +25,7 @@
 
   <tarball id="vala" version="0.9.7" autogenargs="--enable-vapigen">
     <source href="http://ftp.gnome.org/pub/GNOME/sources/vala/0.9/vala-0.9.7.tar.bz2"
-            hash="sha256:4a09219fc1abb960c17b4f7704332a4dd1edc21216520a3e5deeaac44cc6b4a"
+            hash="sha256:4a09219fc1abb960c17b4f7704332a4dd1edc21216520a3e5deeaac44cc6b4a7"
             md5sum="3062fe00c0f5b8f40cd2a94ff9bbe2da" size="2394250"/>
     <dependencies>
       <dep package="glib"/>
