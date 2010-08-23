@@ -1772,7 +1772,9 @@ mutter_window_pre_paint (MutterWindow *self)
 
   if (priv->received_damage)
     {
+      meta_error_trap_push (display);
       XDamageSubtract (xdisplay, priv->damage, None, None);
+      meta_error_trap_pop (display, FALSE);
       priv->received_damage = FALSE;
     }
 
