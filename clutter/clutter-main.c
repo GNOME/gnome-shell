@@ -666,7 +666,7 @@ _clutter_do_pick (ClutterStage   *stage,
   /* If we are seeing multiple picks per frame that means the scene is static
    * so we promote to doing a non-scissored pick render so that all subsequent
    * picks for the same static scene won't require additional renders */
-  if (context->picks_per_frame >= 2)
+  if (context->picks_per_frame < 2)
     {
       if (G_LIKELY (!(clutter_pick_debug_flags &
                       CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
