@@ -156,6 +156,7 @@ static const GDebugKey clutter_debug_keys[] = {
   { "texture", CLUTTER_DEBUG_TEXTURE },
   { "event", CLUTTER_DEBUG_EVENT },
   { "paint", CLUTTER_DEBUG_PAINT },
+  { "pick", CLUTTER_DEBUG_PICK },
   { "gl", CLUTTER_DEBUG_GL },
   { "alpha", CLUTTER_DEBUG_ALPHA },
   { "behaviour", CLUTTER_DEBUG_BEHAVIOUR },
@@ -637,6 +638,9 @@ _clutter_do_pick (ClutterStage   *stage,
                         pixel);
       CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_read);
 
+      CLUTTER_NOTE (PICK, "Reusing pick buffer from previous render to fetch "
+                    "actor at %i,%i", x, y);
+
       /* FIXME: This is a lazy copy and paste of the logic at the end of this
        * function used when we actually do a pick render. It should be
        * consolidated somehow.
@@ -671,6 +675,9 @@ _clutter_do_pick (ClutterStage   *stage,
     }
   else
     is_clipped = FALSE;
+
+  CLUTTER_NOTE (PICK, "Performing %s pick at %i,%i",
+                is_clipped ? "clippped" : "full", x, y);
 
   cogl_disable_fog ();
   cogl_color_set_from_4ub (&stage_pick_id, 255, 255, 255, 255);
