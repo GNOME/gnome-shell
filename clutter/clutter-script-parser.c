@@ -1773,7 +1773,6 @@ _clutter_script_check_unresolved (ClutterScript *script,
       if (parent != NULL && CLUTTER_IS_CONTAINER (parent))
         {
           ClutterContainer *container = CLUTTER_CONTAINER (parent);
-          ClutterActor *actor = CLUTTER_ACTOR (oinfo->object);
           GList *children, *l;
 
           children = clutter_container_get_children (container);
@@ -1793,10 +1792,10 @@ _clutter_script_check_unresolved (ClutterScript *script,
                 continue;
 
               apply_child_properties (script, container,
-                                      actor,
+                                      CLUTTER_ACTOR (child),
                                       child_info);
               apply_layout_properties (script, container,
-                                       actor,
+                                       CLUTTER_ACTOR (child),
                                        child_info);
             }
 
