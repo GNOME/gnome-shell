@@ -2,21 +2,21 @@
 # Copyright (C) 2010 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 # Miloš Popović <gpopac@gmail.com>, 2010.
-# Miloš Popović <gpopac@gmail.com>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-03-20 22:48+0000\n"
-"PO-Revision-Date: 2010-03-24 01:45+0100\n"
+"POT-Creation-Date: 2010-07-22 13:07+0000\n"
+"PO-Revision-Date: 2010-08-23 23:03+0200\n"
 "Last-Translator: Miloš Popović <gpopac@gmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n%"
-"10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4;    plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 :    n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -26,206 +26,479 @@ msgstr "Gnomova školjka"
 msgid "Window management and application launching"
 msgstr "Upravnik prozorima i pokretač programa"
 
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
+msgid "Clock"
+msgstr "Sat"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
+msgid "Customize the panel clock"
+msgstr "Podešava sat na panelu"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Dozvoljava pristup sistemu za traženje grešaka u alatima za praćenje u Alt-F2 "
+"prozorčetu."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Custom format of the clock"
+msgstr "Proizvoljan format časovnika"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr "Uključuje alate korisne programerima u Alt-F2 prozorčetu"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "File extension used for storing the screencast"
+msgstr "Ekstenzija datoteke za čuvanje video snimaka ekrana"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Framerate used for recording screencasts."
+msgstr "Učestanost kadrova za video snimak ekrana."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+"Proširenja Gnomove školjke imaju uuid vrednost; ovaj ključ ispisuje proširenja "
+"koja treba učitati."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for command (Alt-F2) dialog"
+msgstr "Istorijat naredbi Alt-F2 prozorčeta"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "Hour format"
+msgstr "Format časovnika"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
+"clock, in addition to time."
+msgstr ""
+"Prikazuje datum pored časovnik, ukoliko je postavljeno na „true“ (tačno) i "
+"ako je format postavljen na „12-hour“ (12 časa) ili „24-hour“ (24 časa)."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
+"time."
+msgstr ""
+"Prikazuje sekunde u časovniku, ukoliko je postavljeno na „true“ (tačno) i "
+"format postavljen na „12-hour“ (12 časa) ili „24-hour“ (24 časa)."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "If true, display the ISO week date in the calendar."
+msgstr ""
+"Ukoliko je postavljeno na „true“ (tačno), prikazuje ISO dan u nedelji unutar "
+"kalendara."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Spisak IB datoteka radne površine sa omiljenim programima"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "Overview workspace view mode"
+msgstr "Način za pregled radnih površina"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+msgstr ""
+"Postavlja GStrimerov cevovod za prekodiranje snimaka. On dozvoljava sintaksu iz "
+"programa gst-launch. Cevovod mora da bude bez povezanog dovoda za čuvanje "
+"snimljenog videa. Izvor će obično biti nepovezan; izlaz će biti u izlaznu "
+"datoteku. Ipak cevovod može da radi sa sopstvenim izlazom — ovo možete da "
+"upotrebite za slanje izlaza u ajskast server preko shout2send ili slične "
+"naredbe. Kada ova opcija nije postavljena biće upotrebljen podrazumevani "
+"cevovod, koji podrazumeva „videorate ! theoraenc ! oggmux“ i čuva datoteke u "
+"Ogg Teora format."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show date in clock"
+msgstr "Prikaži datum u panelu"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show the week date in the calendar"
+msgstr "Prikaži dan u nedelji u kalendaru"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "Show time with seconds"
+msgstr "Prikaži vreme i sekunde"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Program kome odgovaraju ove odrednice se prikazuje unutar oblasti sa "
+"omiljenim programima."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"Ime datoteke za sačuvani video snimak ekrana će biti jedinstveno jer sadrži "
+"datum i čuva datoteke u ovaj format. Treba ga promeniti pri snimanju u drugi "
+"format."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"Učestanost kadrova snimka snimljenih pomoću Gnomove školjke u kadrovima po "
+"sekundi."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "Gstrimerov cevovod za kodiranje video snimka ekrana"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid ""
+"The selected workspace view mode in the overview. Supported values are "
+"\"single\" and \"grid\"."
+msgstr ""
+"Izabrani način pregleda radnih površina. Podržane vrednosti su "
+"„single“ (pojedinačno) i „grid“ (u mreži)."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"Školjka prati pokrenute programe kako bi otkrila one koji se najviše koriste. "
+"Iako su podaci tajni, možda želite da isključite ovi opciju zbog veće "
+"privatnosti. Na taj način nećete obrisati već prikupljene podatke."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid ""
+"This key specifies the format used by the panel clock when the format key is "
+"set to \"custom\". You can use conversion specifiers understood by strftime"
+"() to obtain a specific format. See the strftime() manual for more "
+"information."
+msgstr ""
+"Ovaj ključ određuje format vremena u panelu, kada je „format“ (format) "
+"postavljen na „custom“ (proizvoljno). Možete iskoristiti format podržan unutar "
+"funkcije strftime(). Pogledajte uputstvo za strftime()."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
+msgid ""
+"This key specifies the hour format used by the panel clock. Possible values "
+"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
+"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
+"to \"custom\", the clock will display time according to the format specified "
+"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
+"the show_date and show_seconds keys are ignored."
+msgstr ""
+"Ovaj ključ određuje format časovnika u panelu. Dozvoljene vrednosti su „12-"
+"hour“ (12 časaova), „24-hour“ (24 časa), „unix“ (Juniks) i "
+"„custom“ (proizvoljno). Ukoliko ga postavite na „unix“ sat će prikazivati "
+"vreme na osnovu epohe, npr. 1970-01-01. Ukoliko ga postavite na „custom“ sat "
+"će prikazivati vreme na osnovu ključa „custom_format“ (proizvoljni format). "
+"Ukoliko postavite na ključ na „unix“ ili „custom“ zanemaruju se ključevi "
+"„show_date“ (prikaži datum) i „show_seconds“ (prikaži sekunde)."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#| msgid "No extensions installed"
+msgid "Uuids of extensions to disable"
+msgstr "Zanemarena uuid proširenja"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
+msgid "Whether to collect stats about applications usage"
+msgstr "Da li da prikupljam podatke o pokretanim programima"
+
+#: ../data/clock-preferences.ui.h:1
+msgid "Clock Format"
+msgstr "Format časovnika"
+
+#: ../data/clock-preferences.ui.h:2
+#| msgid "System Preferences..."
+msgid "Clock Preferences"
+msgstr "Postavke časovnika"
+
+#: ../data/clock-preferences.ui.h:3
+msgid "Panel Display"
+msgstr "Prikaz na panelu"
+
+#: ../data/clock-preferences.ui.h:4
+msgid "Show seco_nds"
+msgstr "Prikaži _sekunde"
+
+#: ../data/clock-preferences.ui.h:5
+msgid "Show the _date"
+msgstr "Prikaži _datum"
+
+#: ../data/clock-preferences.ui.h:6
+msgid "_12 hour format"
+msgstr "_12 časova"
+
+#: ../data/clock-preferences.ui.h:7
+msgid "_24 hour format"
+msgstr "_24 časa"
+
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:852
+#: ../js/ui/appDisplay.js:384 ../js/ui/dash.js:773
 msgid "APPLICATIONS"
 msgstr "PROGRAMI"
 
-#: ../js/ui/appDisplay.js:343
+#: ../js/ui/appDisplay.js:416
 msgid "PREFERENCES"
 msgstr "POSTAVKE"
 
-#: ../js/ui/appDisplay.js:728
+#: ../js/ui/appDisplay.js:721
 msgid "New Window"
 msgstr "Novi prozor"
 
-#: ../js/ui/appDisplay.js:732
+#: ../js/ui/appDisplay.js:725
 msgid "Remove from Favorites"
 msgstr "Ukloni iz omiljenih"
 
-#: ../js/ui/appDisplay.js:733
+#: ../js/ui/appDisplay.js:726
 msgid "Add to Favorites"
 msgstr "Dodaj u omiljene"
 
-#: ../js/ui/appDisplay.js:1085
+#: ../js/ui/appDisplay.js:1033
 msgid "Drag here to add favorites"
 msgstr "Prevucite ovde kako bi dodali u omiljene"
 
-#: ../js/ui/appFavorites.js:89
+#: ../js/ui/appFavorites.js:88
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s je dodat među omiljene"
 
 #: ../js/ui/appFavorites.js:107
 #, c-format
-#| msgid "Remove from Favorites"
 msgid "%s has been removed from your favorites."
 msgstr "%s je uklonjen iz omiljenih"
 
-#: ../js/ui/dash.js:194
-#| msgid "Find..."
+#: ../js/ui/dash.js:142
 msgid "Find"
 msgstr "Nađi"
 
-#: ../js/ui/dash.js:507
+#: ../js/ui/dash.js:471
 msgid "Searching..."
 msgstr "Tražim..."
 
-#: ../js/ui/dash.js:521
+#: ../js/ui/dash.js:485
 msgid "No matching results."
 msgstr "Ništa nije pronađeno."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:871 ../js/ui/placeDisplay.js:579
+#: ../js/ui/dash.js:792 ../js/ui/placeDisplay.js:550
 msgid "PLACES & DEVICES"
 msgstr "MESTA I UREĐAJI"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:878 ../js/ui/docDisplay.js:488
+#: ../js/ui/dash.js:799 ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "SKORAŠNJE STAVKE"
 
-#: ../js/ui/lookingGlass.js:363
+#: ../js/ui/lookingGlass.js:471
 msgid "No extensions installed"
 msgstr "Nisu instalirana proširenja"
 
-#: ../js/ui/lookingGlass.js:400
+#: ../js/ui/lookingGlass.js:508
 msgid "Enabled"
 msgstr "Omogućeno"
 
-#: ../js/ui/lookingGlass.js:402
+#: ../js/ui/lookingGlass.js:510
 msgid "Disabled"
 msgstr "Onemogućeno"
 
-#: ../js/ui/lookingGlass.js:404
+#: ../js/ui/lookingGlass.js:512
 msgid "Error"
 msgstr "Greška"
 
-#: ../js/ui/lookingGlass.js:406
+#: ../js/ui/lookingGlass.js:514
 msgid "Out of date"
 msgstr "Istekao je datum"
 
-#: ../js/ui/lookingGlass.js:431
+#: ../js/ui/lookingGlass.js:539
 msgid "View Source"
 msgstr "Pogledaj izvor"
 
-#: ../js/ui/lookingGlass.js:437
+#: ../js/ui/lookingGlass.js:545
 msgid "Web Page"
 msgstr "Internet stranica"
 
-#: ../js/ui/overview.js:182
+#: ../js/ui/overview.js:159
 msgid "Undo"
 msgstr "Opozovi"
 
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:385
-msgid "Activities"
-msgstr "Aktivnosti"
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:473
+#, c-format
+msgid "Quit %s"
+msgstr "Izađi iz %s"
 
-#. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:616
+#: ../js/ui/panel.js:498
+#| msgid "System Preferences..."
+msgid "Preferences"
+msgstr "Postavke"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:584
+msgid "%a %b %e, %R:%S"
+msgstr "%A, %e. %b, %R:%S"
+
+#: ../js/ui/panel.js:585
+#| msgid "%a %l:%M %p"
+msgid "%a %b %e, %R"
+msgstr "%A, %e. %b, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:589
+#| msgid "%a %R"
+msgid "%a %R:%S"
+msgstr "%A, %R:%S"
+
+#: ../js/ui/panel.js:590
 msgid "%a %R"
 msgstr "%A, %R"
 
-#. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:619
-msgid "%a %l:%M %p"
-msgstr "%A, %H:%M"
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/panel.js:597
+#| msgid "%a %l:%M %p"
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%A, %e. %b, %l:%M:S"
 
-#: ../js/ui/placeDisplay.js:103
+#: ../js/ui/panel.js:598
+#| msgid "%a %l:%M %p"
+msgid "%a %b %e, %l:%M %p"
+msgstr "%A, %e. %b, %l:%M"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/panel.js:602
+#| msgid "%a %l:%M %p"
+msgid "%a %l:%M:%S %p"
+msgstr "%A, %l:%M:%S"
+
+#: ../js/ui/panel.js:603
+msgid "%a %l:%M %p"
+msgstr "%A, %l:%M"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:741
+msgid "Activities"
+msgstr "Aktivnosti"
+
+#: ../js/ui/placeDisplay.js:107
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Ne mogu da demontiram „%s“"
 
-#: ../js/ui/placeDisplay.js:106
+#: ../js/ui/placeDisplay.js:110
 msgid "Retry"
 msgstr "Ponovi"
 
-#: ../js/ui/placeDisplay.js:151
+#: ../js/ui/placeDisplay.js:155
 msgid "Connect to..."
 msgstr "Poveži se na..."
 
-#: ../js/ui/runDialog.js:232
+#. Translators: the "ON" and "OFF" strings are used in the
+#. toggle switches in the status area menus, and must be SHORT.
+#. If you don't have suitable short words, consider initials,
+#. "0"/"1", "⚪"/"⚫", etc.
+#: ../js/ui/popupMenu.js:30 ../js/ui/popupMenu.js:40
+msgid "ON"
+msgstr "⚫"
+
+#: ../js/ui/popupMenu.js:31 ../js/ui/popupMenu.js:45
+msgid "OFF"
+msgstr "⚪"
+
+#: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
 msgstr "Unesite naredbu:"
 
-#: ../js/ui/runDialog.js:374
+#: ../js/ui/runDialog.js:378
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Nije uspelo pokretanje „%s“:"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:91
 msgid "Available"
 msgstr "Dostupan"
 
-#: ../js/ui/statusMenu.js:112
+#: ../js/ui/statusMenu.js:95
 msgid "Busy"
 msgstr "Zauzet"
 
-#: ../js/ui/statusMenu.js:117
+#: ../js/ui/statusMenu.js:99
 msgid "Invisible"
 msgstr "Nevidljiv"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:106
 msgid "Account Information..."
 msgstr "Podaci o nalogu..."
 
-#: ../js/ui/statusMenu.js:132
-#| msgid "Search"
-msgid "Sidebar"
-msgstr "Bočna traka"
-
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:110
 msgid "System Preferences..."
 msgstr "Postavke sistema..."
 
-#: ../js/ui/statusMenu.js:151
+#: ../js/ui/statusMenu.js:117
 msgid "Lock Screen"
 msgstr "Zaključaj ekran"
 
-#: ../js/ui/statusMenu.js:156
+#: ../js/ui/statusMenu.js:121
 msgid "Switch User"
 msgstr "Promeni korisnika"
 
-#: ../js/ui/statusMenu.js:162
+#: ../js/ui/statusMenu.js:126
 msgid "Log Out..."
 msgstr "Odjavi me..."
 
-#: ../js/ui/statusMenu.js:167
+#: ../js/ui/statusMenu.js:130
 msgid "Shut Down..."
 msgstr "Isključi..."
 
-#. Translators: This is a time format.
-#: ../js/ui/widget.js:163
-msgid "%H:%M"
-msgstr "%H:%M"
-
-#: ../js/ui/widget.js:317
-msgid "Applications"
-msgstr "Programi"
-
-#: ../js/ui/widget.js:339
-msgid "Recent Documents"
-msgstr "Skorašnji dokumenti"
-
-#: ../js/ui/windowAttentionHandler.js:47
+#: ../js/ui/windowAttentionHandler.js:45
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s je pokrenut"
 
-#: ../js/ui/windowAttentionHandler.js:49
+#: ../js/ui/windowAttentionHandler.js:47
 #, c-format
 msgid "'%s' is ready"
 msgstr "„%s“ je spreman"
 
-#: ../src/shell-global.c:967
+#: ../js/ui/workspacesView.js:230
+msgid ""
+"Can't add a new workspace because maximum workspaces limit has been reached."
+msgstr ""
+"Ne mogu da dodam novu radnu površinu jer je već dostignut najveći broj."
+
+#: ../js/ui/workspacesView.js:247
+msgid "Can't remove the first workspace."
+msgstr "Ne mogu da uklonim prvu radnu površinu."
+
+#: ../src/shell-global.c:1105
 msgid "Less than a minute ago"
 msgstr "Pre manje od jednog minuta"
 
-#: ../src/shell-global.c:971
+#: ../src/shell-global.c:1109
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -234,7 +507,7 @@ msgstr[1] "Pre %d minuta"
 msgstr[2] "Pre %d minuta"
 msgstr[3] "Pre %d minuta"
 
-#: ../src/shell-global.c:976
+#: ../src/shell-global.c:1114
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -243,7 +516,7 @@ msgstr[1] "Pre %d sata"
 msgstr[2] "Pre %d sata"
 msgstr[3] "Pre %d sata"
 
-#: ../src/shell-global.c:981
+#: ../src/shell-global.c:1119
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -252,7 +525,7 @@ msgstr[1] "Pre %d dana"
 msgstr[2] "Pre %d dana"
 msgstr[3] "Pre %d dana"
 
-#: ../src/shell-global.c:986
+#: ../src/shell-global.c:1124
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -284,3 +557,16 @@ msgstr "Traži"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~| msgid "Search"
+#~ msgid "Sidebar"
+#~ msgstr "Bočna traka"
+
+#~ msgid "%H:%M"
+#~ msgstr "%H:%M"
+
+#~ msgid "Applications"
+#~ msgstr "Programi"
+
+#~ msgid "Recent Documents"
+#~ msgstr "Skorašnji dokumenti"
