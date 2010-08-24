@@ -150,7 +150,7 @@
     </dependencies>
   </autotools>
 
-  <autotools id="librsvg" supports-non-srcdir-builds="no">
+  <autotools id="librsvg" supports-non-srcdir-builds="no" autogenargs="--disable-gtk-theme">
     <branch repo="git.gnome.org" module="librsvg"/>
     <dependencies>
       <dep package="gtk3"/>
