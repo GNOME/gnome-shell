@@ -9,12 +9,13 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter trunk\n"
+"Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-27 10:49+0200\n"
-"PO-Revision-Date: 2010-02-27 10:49+0200\n"
+"POT-Creation-Date: 2010-08-24 15:45+0300\n"
+"PO-Revision-Date: 2010-08-24 15:45+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
+"Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -51,17 +52,12 @@ msgstr "Из_чакване"
 msgid "_Force Quit"
 msgstr "_Принудително спиране"
 
-#: ../src/core/delete.c:206
-#, c-format
-msgid "Failed to get hostname: %s\n"
-msgstr "Неуспех при получаването на името на хоста: %s\n"
-
-#: ../src/core/display.c:362
+#: ../src/core/display.c:365
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Липсва разширението „%s“, необходимо за наслагване"
 
-#: ../src/core/display.c:447
+#: ../src/core/display.c:451
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Неуспех при отварянето на дисплея на X Window „%s“\n"
@@ -82,7 +78,7 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Фатална вх./изх. грешка %d (%s) на дисплей „%s“.\n"
 
-#: ../src/core/keybindings.c:697
+#: ../src/core/keybindings.c:708
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -92,7 +88,7 @@ msgstr "Някоя друга програма използва бързия к�
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2388
+#: ../src/core/keybindings.c:2409
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -103,12 +99,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2478
+#: ../src/core/keybindings.c:2499
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Не е дефинирана команда %d.\n"
 
-#: ../src/core/keybindings.c:3491
+#: ../src/core/keybindings.c:3512
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Не е дефинирана команда за терминал.\n"
@@ -215,25 +211,37 @@ msgstr "Неуспех при рестартиране: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:529 ../src/core/prefs.c:690
+#: ../src/core/prefs.c:536 ../src/core/prefs.c:697
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Ключът на GConf — „%s“ е с невалидна стойност\n"
 
-#: ../src/core/prefs.c:616 ../src/core/prefs.c:859
+#: ../src/core/prefs.c:623 ../src/core/prefs.c:866
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr ""
-"Стойността %d записана в ключа на GConf — %s е извън обхвата от %d÷%d\n"
+"Стойността %d записана в ключа на GConf — „%s“ е извън обхвата от %d÷%d\n"
 
-#: ../src/core/prefs.c:660 ../src/core/prefs.c:737 ../src/core/prefs.c:785
-#: ../src/core/prefs.c:849 ../src/core/prefs.c:1149 ../src/core/prefs.c:1165
-#: ../src/core/prefs.c:1182 ../src/core/prefs.c:1198
+#: ../src/core/prefs.c:667 ../src/core/prefs.c:744 ../src/core/prefs.c:792
+#: ../src/core/prefs.c:856 ../src/core/prefs.c:1323 ../src/core/prefs.c:1339
+#: ../src/core/prefs.c:1356 ../src/core/prefs.c:1372
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Ключът на GConf — „%s“ е от невалиден вид\n"
 
-#: ../src/core/prefs.c:1289
+#: ../src/core/prefs.c:1202
+#, c-format
+msgid "GConf key %s is already in use and can't be used to override %s\n"
+msgstr ""
+"Ключът на GConf — „%s“ вече се използва и чрез него не могат да се заменят "
+"настройките зададени в „%s“\n"
+
+#: ../src/core/prefs.c:1261
+#, c-format
+msgid "Can't override GConf key, %s not found\n"
+msgstr "Не може да се замени стойността на ключа на GConf, „%s“ липсва\n"
+
+#: ../src/core/prefs.c:1463
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -241,14 +249,14 @@ msgstr ""
 "Триковете за развалените програми са изключени. Някои програми могат да са с "
 "неправилно поведение.\n"
 
-#: ../src/core/prefs.c:1360
+#: ../src/core/prefs.c:1534
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Описанието на шрифт „%s“ от ключа на GConf — %s, не може да бъде "
 "анализирано\n"
 
-#: ../src/core/prefs.c:1422
+#: ../src/core/prefs.c:1596
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -257,17 +265,17 @@ msgstr ""
 "„%s“, който е открит в базата от данни с настройките, не е валиден "
 "модификатор на бутон на мишката\n"
 
-#: ../src/core/prefs.c:1849
+#: ../src/core/prefs.c:2023
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Грешка при задаване на броя на работни места да е %d: %s\n"
 
-#: ../src/core/prefs.c:2028 ../src/core/prefs.c:2531
+#: ../src/core/prefs.c:2205 ../src/core/prefs.c:2707
 #, c-format
 msgid "Workspace %d"
 msgstr "Работен плот %d"
 
-#: ../src/core/prefs.c:2061 ../src/core/prefs.c:2239
+#: ../src/core/prefs.c:2237 ../src/core/prefs.c:2415
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -276,33 +284,33 @@ msgstr ""
 "Низът „%s“ открит в базата от данни с настройки е невалиден за стойност на "
 "клавишната комбинация „%s“\n"
 
-#: ../src/core/prefs.c:2612
+#: ../src/core/prefs.c:2788
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Грешка при задаване на името на работното място %d да е „%s“: %s\n"
 
-#: ../src/core/prefs.c:2816
+#: ../src/core/prefs.c:2992
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Грешка при задаване на състоянието на мениджъра за наслагването: %s\n"
 
-#: ../src/core/prefs.c:2845
+#: ../src/core/prefs.c:3021
 #, c-format
 msgid "Error setting clutter plugin list: %s\n"
 msgstr "Грешка при задаване на списъка с приставки на clutter: %s\n"
 
-#: ../src/core/prefs.c:2889
+#: ../src/core/prefs.c:3065
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr ""
 "Грешка при задаване на състоянието обновяването на скритите прозорци: %s\n"
 
-#: ../src/core/prefs.c:2917
+#: ../src/core/prefs.c:3093
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr ""
-"Грешка при задаване на показването на изскачащите прозорци при обхождане: %"
-"s\n"
+"Грешка при задаване на показването на изскачащите прозорци при обхождане: "
+"%s\n"
 
 #: ../src/core/screen.c:577
 #, c-format
@@ -392,51 +400,51 @@ msgstr ""
 "Тези прозорци не поддържат операцията по записване на текущото състояние и "
 "ще трябва да се стартират ръчно при следващото ви влизане."
 
-#: ../src/core/util.c:104
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Неуспех при отварянето на дневника за изчистване на грешки: %s\n"
 
-#: ../src/core/util.c:114
+#: ../src/core/util.c:121
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Неуспех при изпълнението на fdopen() върху журналния файл %s: %s\n"
 
-#: ../src/core/util.c:120
+#: ../src/core/util.c:127
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Отворен е дневника %s\n"
 
-#: ../src/core/util.c:139 ../src/tools/mutter-message.c:176
+#: ../src/core/util.c:146 ../src/tools/mutter-message.c:176
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter е компилиран без поддръжка на подробен режим\n"
 
-#: ../src/core/util.c:239
+#: ../src/core/util.c:286
 msgid "Window manager: "
 msgstr "Мениджър на прозорци: "
 
-#: ../src/core/util.c:391
+#: ../src/core/util.c:434
 msgid "Bug in window manager: "
 msgstr "Грешка в мениджъра на прозорци: "
 
-#: ../src/core/util.c:424
+#: ../src/core/util.c:467
 msgid "Window manager warning: "
 msgstr "Предупреждение от мениджъра на прозорци: "
 
-#: ../src/core/util.c:452
+#: ../src/core/util.c:495
 msgid "Window manager error: "
 msgstr "Грешка от мениджъра на прозорци: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:573 ../src/mutter.desktop.in.h:1
+#: ../src/core/util.c:616 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6217
+#: ../src/core/window.c:6237
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -452,11 +460,11 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6880
+#: ../src/core/window.c:6900
 #, c-format
 msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
+"%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 "Прозорецът %s задава подсказка MWM за това, че размерът му не може да се "
 "променя, но едновременно с това указва минимален размер %d x %d и максимален "
@@ -472,7 +480,7 @@ msgstr "Приложението зададе неверен _NET_WM_PID %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (от %s)"
 
-#: ../src/core/window-props.c:1435
+#: ../src/core/window-props.c:1478
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "За %2$s е указан неправилен WM_TRANSIENT_FOR, прозорец 0x%1$lx.\n"
@@ -870,47 +878,47 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Употреба: %s\n"
 
-#: ../src/ui/frames.c:1118
+#: ../src/ui/frames.c:1112
 msgid "Close Window"
 msgstr "Затваряне на прозореца"
 
-#: ../src/ui/frames.c:1121
+#: ../src/ui/frames.c:1115
 msgid "Window Menu"
 msgstr "Меню за прозорците"
 
-#: ../src/ui/frames.c:1124
+#: ../src/ui/frames.c:1118
 msgid "Minimize Window"
 msgstr "Минимизиране на прозореца"
 
-#: ../src/ui/frames.c:1127
+#: ../src/ui/frames.c:1121
 msgid "Maximize Window"
 msgstr "Максимизиране на прозореца"
 
-#: ../src/ui/frames.c:1130
+#: ../src/ui/frames.c:1124
 msgid "Restore Window"
 msgstr "Възстановяване на прозорец"
 
-#: ../src/ui/frames.c:1133
+#: ../src/ui/frames.c:1127
 msgid "Roll Up Window"
 msgstr "Навиване на прозореца"
 
-#: ../src/ui/frames.c:1136
+#: ../src/ui/frames.c:1130
 msgid "Unroll Window"
 msgstr "Развиване на прозореца"
 
-#: ../src/ui/frames.c:1139
+#: ../src/ui/frames.c:1133
 msgid "Keep Window On Top"
 msgstr "Прозорецът да е отгоре"
 
-#: ../src/ui/frames.c:1142
+#: ../src/ui/frames.c:1136
 msgid "Remove Window From Top"
 msgstr "Прозорецът да не е само отгоре"
 
-#: ../src/ui/frames.c:1145
+#: ../src/ui/frames.c:1139
 msgid "Always On Visible Workspace"
 msgstr "Винаги на видимия работен плот"
 
-#: ../src/ui/frames.c:1148
+#: ../src/ui/frames.c:1142
 msgid "Put Window On Only One Workspace"
 msgstr "Прозорецът да се появява само на едно работно място"
 
@@ -1011,7 +1019,7 @@ msgstr "Работен плот 1_0"
 msgid "Workspace %s%d"
 msgstr "Работен плот %s%d"
 
-#: ../src/ui/menu.c:395
+#: ../src/ui/menu.c:396
 msgid "Move to Another _Workspace"
 msgstr "Преместване на др_уг работен плот"
 
@@ -1020,7 +1028,7 @@ msgstr "Преместване на др_уг работен плот"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:104
+#: ../src/ui/metaaccellabel.c:75
 msgid "Shift"
 msgstr "Shift"
 
@@ -1029,7 +1037,7 @@ msgstr "Shift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:110
+#: ../src/ui/metaaccellabel.c:81
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -1038,7 +1046,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:116
+#: ../src/ui/metaaccellabel.c:87
 msgid "Alt"
 msgstr "Alt"
 
@@ -1047,7 +1055,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:122
+#: ../src/ui/metaaccellabel.c:93
 msgid "Meta"
 msgstr "Meta"
 
@@ -1056,7 +1064,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:128
+#: ../src/ui/metaaccellabel.c:99
 msgid "Super"
 msgstr "Super"
 
@@ -1065,7 +1073,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:134
+#: ../src/ui/metaaccellabel.c:105
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -1074,7 +1082,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:140
+#: ../src/ui/metaaccellabel.c:111
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -1083,7 +1091,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:146
+#: ../src/ui/metaaccellabel.c:117
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -1092,7 +1100,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:152
+#: ../src/ui/metaaccellabel.c:123
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -1101,60 +1109,60 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:158
+#: ../src/ui/metaaccellabel.c:129
 msgid "Mod5"
 msgstr "Mod5"
 
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
-#: ../src/ui/resizepopup.c:113
+#: ../src/ui/resizepopup.c:114
 #, c-format
 msgid "%d x %d"
 msgstr "%d×%d"
 
-#: ../src/ui/theme.c:254
+#: ../src/ui/theme.c:256
 msgid "top"
 msgstr "горния"
 
-#: ../src/ui/theme.c:256
+#: ../src/ui/theme.c:258
 msgid "bottom"
 msgstr "долния"
 
-#: ../src/ui/theme.c:258
+#: ../src/ui/theme.c:260
 msgid "left"
 msgstr "левия"
 
-#: ../src/ui/theme.c:260
+#: ../src/ui/theme.c:262
 msgid "right"
 msgstr "десния"
 
-#: ../src/ui/theme.c:287
+#: ../src/ui/theme.c:289
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "геометрията на рамката не указва „%s“ размер"
 
-#: ../src/ui/theme.c:306
+#: ../src/ui/theme.c:308
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "геометрията на рамката не указва „%s“ размер на „%s“ ръб"
 
-#: ../src/ui/theme.c:343
+#: ../src/ui/theme.c:345
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Отношението на размерите на бутона %g е неподходящо"
 
-#: ../src/ui/theme.c:355
+#: ../src/ui/theme.c:357
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Геометрията на рамката не указва размера на бутоните"
 
-#: ../src/ui/theme.c:1020
+#: ../src/ui/theme.c:1022
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Преливките трябва да имат поне два цвята"
 
-#: ../src/ui/theme.c:1146
+#: ../src/ui/theme.c:1148
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1164,7 +1172,7 @@ msgstr ""
 "скоби, напр. gtk:fg[NORMAL], където NORMAL е състоянието. Неуспех при "
 "анализира „%s“"
 
-#: ../src/ui/theme.c:1160
+#: ../src/ui/theme.c:1162
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1174,17 +1182,17 @@ msgstr ""
 "състоянието, напр. gtk:fg[NORMAL], където NORMAL е състоянието. Неуспех при "
 "анализа на „%s“"
 
-#: ../src/ui/theme.c:1171
+#: ../src/ui/theme.c:1173
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Неуспех при анализа на състоянието „%s“ в цветовата спецификация"
 
-#: ../src/ui/theme.c:1184
+#: ../src/ui/theme.c:1186
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Неуспех при анализа на цветови компонент „%s“ в цветовата спецификация"
 
-#: ../src/ui/theme.c:1214
+#: ../src/ui/theme.c:1216
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1193,17 +1201,17 @@ msgstr ""
 "Форматът на смесването е „blend/bg_color/fg_color/alpha“, „%s“ не се "
 "подчинява на формата"
 
-#: ../src/ui/theme.c:1225
+#: ../src/ui/theme.c:1227
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Неуспех при анализира на алфа стойността „%s“ в смесения цвят"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1237
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Алфа стойността „%s“ в смесения цвят не е между 0.0 и 1.0"
 
-#: ../src/ui/theme.c:1282
+#: ../src/ui/theme.c:1284
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -1211,27 +1219,27 @@ msgstr ""
 "Форматът на навиването е „shade/base_color/factor“, „%s“ не съответства на "
 "формата"
 
-#: ../src/ui/theme.c:1293
+#: ../src/ui/theme.c:1295
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Неуспех при анализа на фактора на навиването „%s“ в цвета за навиване"
 
-#: ../src/ui/theme.c:1303
+#: ../src/ui/theme.c:1305
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Факторът на навиване „%s“ в цвета за сянката е отрицателен"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1334
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Неуспех при анализа на цвета „%s“"
 
-#: ../src/ui/theme.c:1582
+#: ../src/ui/theme.c:1588
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Изразът за координати съдържа символа „%s“, който не е позволен"
 
-#: ../src/ui/theme.c:1609
+#: ../src/ui/theme.c:1615
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -1240,40 +1248,40 @@ msgstr ""
 "Изразът за координати съдържа числото с плаваща запетая „%s“, което не може "
 "да бъде анализирано"
 
-#: ../src/ui/theme.c:1623
+#: ../src/ui/theme.c:1629
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "Изразът за координати съдържа цялото число „%s“, което не може да бъде "
 "анализирано"
 
-#: ../src/ui/theme.c:1745
+#: ../src/ui/theme.c:1751
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
-"Изразът за координати съдържа непознат оператор в началото на този текст: „%"
-"s“"
+"Изразът за координати съдържа непознат оператор в началото на този текст: "
+"„%s“"
 
-#: ../src/ui/theme.c:1802
+#: ../src/ui/theme.c:1808
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Изразът за координати бе празен или не бе разбран"
 
-#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#: ../src/ui/theme.c:1919 ../src/ui/theme.c:1929 ../src/ui/theme.c:1963
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Изразът за координати дава деление на нула"
 
-#: ../src/ui/theme.c:1965
+#: ../src/ui/theme.c:1971
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Изразът за координати използва оператора mod върху число с плаваща запетая"
 
-#: ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2027
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
@@ -1281,18 +1289,18 @@ msgstr ""
 "Изразът за координати използва оператора „%s“ на място, където се очаква "
 "операнд"
 
-#: ../src/ui/theme.c:2030
+#: ../src/ui/theme.c:2036
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 "Изразът за координати използва оператор на място, където се очаква операнд"
 
-#: ../src/ui/theme.c:2038
+#: ../src/ui/theme.c:2044
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Изразът за координати завършва с оператор вместо с операнд"
 
-#: ../src/ui/theme.c:2048
+#: ../src/ui/theme.c:2054
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1301,38 +1309,38 @@ msgstr ""
 "Изразът за координати използва оператора „%c“ след „%c“ без да има операнд "
 "между тях"
 
-#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2205 ../src/ui/theme.c:2250
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
 "Изразът за координати използва непознатата променлива или константа „%s“"
 
-#: ../src/ui/theme.c:2290
+#: ../src/ui/theme.c:2304
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Анализаторът на изрази за координати препълни буфера си."
 
-#: ../src/ui/theme.c:2319
+#: ../src/ui/theme.c:2333
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "В израза за координати има затваряща скоба без съответна отваряща"
 
-#: ../src/ui/theme.c:2383
+#: ../src/ui/theme.c:2397
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "В изразът за координати има отваряща скоба без съответна затваряща"
 
-#: ../src/ui/theme.c:2394
+#: ../src/ui/theme.c:2408
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Изразът за координати не съдържа нито оператори, нито операнди"
 
-#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#: ../src/ui/theme.c:2610 ../src/ui/theme.c:2630 ../src/ui/theme.c:2650
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Темата съдържа израз, който даде грешка: %s\n"
 
-#: ../src/ui/theme.c:4203
+#: ../src/ui/theme.c:4255
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1341,25 +1349,25 @@ msgstr ""
 "За този стил на рамката трябва да се укаже <button function=\"%s\" state=\"%s"
 "\" draw_ops=\"нещо си\"/>"
 
-#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
+#: ../src/ui/theme.c:4763 ../src/ui/theme.c:4788
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Липсва <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"нещо си\"/>"
 
-#: ../src/ui/theme.c:4780
+#: ../src/ui/theme.c:4832
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Неуспех при зареждането на темата „%s“: %s\n"
 
-#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
-#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
+#: ../src/ui/theme.c:4964 ../src/ui/theme.c:4971 ../src/ui/theme.c:4978
+#: ../src/ui/theme.c:4985 ../src/ui/theme.c:4992
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Не е даден елементът <%s> за темата „%s“"
 
-#: ../src/ui/theme.c:4946
+#: ../src/ui/theme.c:5000
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1368,15 +1376,15 @@ msgstr ""
 "Няма указан стил на рамката за „%s“ прозорците в тема „%s“. Добавете елемент "
 "<window type=\"%s\" style_set=\"нещо си\"/>"
 
-#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
+#: ../src/ui/theme.c:5443 ../src/ui/theme.c:5505 ../src/ui/theme.c:5568
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
-"Константите определени от потребителя трябва да започват с главна буква, а „%"
-"s“ не започва така"
+"Константите определени от потребителя трябва да започват с главна буква, а "
+"„%s“ не започва така"
 
-#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
+#: ../src/ui/theme.c:5451 ../src/ui/theme.c:5513 ../src/ui/theme.c:5576
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Константата „%s“ вече е дефинирана"
@@ -1384,69 +1392,69 @@ msgstr "Константата „%s“ вече е дефинирана"
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
 #.
-#: ../src/ui/theme-parser.c:202
+#: ../src/ui/theme-parser.c:236
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "Елементът <%s> няма атрибут „%s“"
 
-#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
+#: ../src/ui/theme-parser.c:265 ../src/ui/theme-parser.c:283
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Ред %d, знак %d: %s"
 
-#: ../src/ui/theme-parser.c:413
+#: ../src/ui/theme-parser.c:479
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Атрибутът „%s“ се повтаря два пъти в един елемент <%s>"
 
-#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
+#: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Атрибутът „%s“ е невалиден за елемента <%s> в този контекст"
 
-#: ../src/ui/theme-parser.c:522
+#: ../src/ui/theme-parser.c:594
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "„%s“ не може да се анализира като цяло число"
 
-#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#: ../src/ui/theme-parser.c:603 ../src/ui/theme-parser.c:658
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Крайните символи „%s“ в низа „%s“ са неразбираеми"
 
-#: ../src/ui/theme-parser.c:541
+#: ../src/ui/theme-parser.c:613
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "Цялото число %ld трябва да е положително"
 
-#: ../src/ui/theme-parser.c:549
+#: ../src/ui/theme-parser.c:621
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Цялото число %ld е прекалено голямо, максимумът е %d"
 
-#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
+#: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "„%s“ не може да се интерпретира като число с плаваща запетая"
 
-#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
+#: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Булевите стойности са или „истина“, или „лъжа“. Не са „%s“"
 
-#: ../src/ui/theme-parser.c:663
+#: ../src/ui/theme-parser.c:735
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "Ъгълът трябва да е между 0.0 и 360.0, а е %g\n"
 
-#: ../src/ui/theme-parser.c:726
+#: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
 "Алфа трябва да е между 0.0 (пълна прозрачност) и 1.0 (пълна непрозрачност), "
 "а е %g\n"
 
-#: ../src/ui/theme-parser.c:791
+#: ../src/ui/theme-parser.c:863
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
@@ -1455,58 +1463,58 @@ msgstr ""
 "Невалидно увеличение на заглавието „%s“ (трябва да е едно от „xx-small“, „x-"
 "small“, „small“,„medium“, „large“, „x-large“, „xx-large“)\n"
 
-#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
-#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
+#: ../src/ui/theme-parser.c:1008 ../src/ui/theme-parser.c:1071
+#: ../src/ui/theme-parser.c:1105 ../src/ui/theme-parser.c:1208
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "Името „%2$s“ на <%1$s> е използвано втори път"
 
-#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
-#: ../src/ui/theme-parser.c:1148
+#: ../src/ui/theme-parser.c:1020 ../src/ui/theme-parser.c:1117
+#: ../src/ui/theme-parser.c:1220
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "Родителят „%2$s“ на <%1$s> не е дефиниран"
 
-#: ../src/ui/theme-parser.c:1058
+#: ../src/ui/theme-parser.c:1130
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "Геометрията „%2$s“ на <%1$s> не е дефинирана"
 
-#: ../src/ui/theme-parser.c:1071
+#: ../src/ui/theme-parser.c:1143
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "<%s> трябва да указва или геометрия, или родител с геометрия"
 
-#: ../src/ui/theme-parser.c:1113
+#: ../src/ui/theme-parser.c:1185
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "За да бъде алфа стойността валидна, трябва да е указан фон"
 
-#: ../src/ui/theme-parser.c:1180
+#: ../src/ui/theme-parser.c:1252
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Непознат вид „%s“ на елемента <%s>"
 
-#: ../src/ui/theme-parser.c:1191
+#: ../src/ui/theme-parser.c:1263
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "Непознат style_set „%s“ на елемента <%s>"
 
-#: ../src/ui/theme-parser.c:1199
+#: ../src/ui/theme-parser.c:1271
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Видът прозорци „%s“ вече има установен вид на стила"
 
-#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
-#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
-#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
-#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
+#: ../src/ui/theme-parser.c:1301 ../src/ui/theme-parser.c:1365
+#: ../src/ui/theme-parser.c:1591 ../src/ui/theme-parser.c:2826
+#: ../src/ui/theme-parser.c:2872 ../src/ui/theme-parser.c:3020
+#: ../src/ui/theme-parser.c:3212 ../src/ui/theme-parser.c:3250
+#: ../src/ui/theme-parser.c:3288 ../src/ui/theme-parser.c:3326
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Елементът <%s> не е позволен под <%s>"
 
-#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
-#: ../src/ui/theme-parser.c:1402
+#: ../src/ui/theme-parser.c:1415 ../src/ui/theme-parser.c:1429
+#: ../src/ui/theme-parser.c:1474
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
@@ -1515,124 +1523,124 @@ msgstr ""
 "„button_height“ — височина и широчина на бутоните), и отношението на "
 "размерите им — „aspect_ratio“"
 
-#: ../src/ui/theme-parser.c:1366
+#: ../src/ui/theme-parser.c:1438
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "Разстоянието „%s“ е неизвестно"
 
-#: ../src/ui/theme-parser.c:1411
+#: ../src/ui/theme-parser.c:1483
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Пропорцията „%s“ е неизвестна"
 
-#: ../src/ui/theme-parser.c:1473
+#: ../src/ui/theme-parser.c:1545
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Границата „%s“ е непозната"
 
-#: ../src/ui/theme-parser.c:1784
+#: ../src/ui/theme-parser.c:1856
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Елементът <%s> няма атрибут „start_angle“ или „from“"
 
-#: ../src/ui/theme-parser.c:1791
+#: ../src/ui/theme-parser.c:1863
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Елементът <%s> няма атрибут „extent_angle“ или „to“"
 
-#: ../src/ui/theme-parser.c:2031
+#: ../src/ui/theme-parser.c:2103
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Стойността „%s“ не може да се анализира като вид градиент"
 
-#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
+#: ../src/ui/theme-parser.c:2181 ../src/ui/theme-parser.c:2556
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Непознато запълване „%s“ за елемента <%s>"
 
-#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
-#: ../src/ui/theme-parser.c:2422
+#: ../src/ui/theme-parser.c:2348 ../src/ui/theme-parser.c:2431
+#: ../src/ui/theme-parser.c:2494
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Неуспех при анализа на състоянието „%s“ на елемента <%s>"
 
-#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
+#: ../src/ui/theme-parser.c:2358 ../src/ui/theme-parser.c:2441
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Неуспех при анализа на сянката „%s“ на елемента <%s>"
 
-#: ../src/ui/theme-parser.c:2296
+#: ../src/ui/theme-parser.c:2368
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Неуспех при анализа на стрелката „%s“ на елемента <%s>"
 
-#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
+#: ../src/ui/theme-parser.c:2682 ../src/ui/theme-parser.c:2778
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Няма дефинирани <draw_ops> с име „%s“"
 
-#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
+#: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Включването на draw_ops „%s“ тук би предизвикало циклична зависимост"
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2905
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Непозната позиция „%s“ за елемент на рамката"
 
-#: ../src/ui/theme-parser.c:2827
+#: ../src/ui/theme-parser.c:2913
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Стилът на рамката вече има елемент на позицията %s"
 
-#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
+#: ../src/ui/theme-parser.c:2930 ../src/ui/theme-parser.c:3005
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Няма дефиниран <draw_ops> с името „%s“"
 
-#: ../src/ui/theme-parser.c:2873
+#: ../src/ui/theme-parser.c:2959
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Непозната функция „%s“ за бутона"
 
-#: ../src/ui/theme-parser.c:2882
+#: ../src/ui/theme-parser.c:2968
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr ""
 "Функцията на бутона „%s“ не съществува в тази версия (%d, а трябва да е %d)"
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:2980
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Непознато състояние „%s“ за бутона"
 
-#: ../src/ui/theme-parser.c:2902
+#: ../src/ui/theme-parser.c:2988
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "Стилът на рамката има бутон за функция %s, състояние %s"
 
-#: ../src/ui/theme-parser.c:2973
+#: ../src/ui/theme-parser.c:3059
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "„%s“ не е валидна стойност за атрибута фокус"
 
-#: ../src/ui/theme-parser.c:2982
+#: ../src/ui/theme-parser.c:3068
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "„%s“ не е валидна стойност за атрибута състояние"
 
-#: ../src/ui/theme-parser.c:2992
+#: ../src/ui/theme-parser.c:3078
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "Не е дефиниран стил на име  „%s“"
 
-#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
+#: ../src/ui/theme-parser.c:3099 ../src/ui/theme-parser.c:3122
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "„%s“ не е валидна стойност за атрибута оразмеряване"
 
-#: ../src/ui/theme-parser.c:3047
+#: ../src/ui/theme-parser.c:3133
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -1641,24 +1649,24 @@ msgstr ""
 "Елементът <%s> не трябва да има атрибут „resize“ за състоянията максимизиран/"
 "засенчен"
 
-#: ../src/ui/theme-parser.c:3061
+#: ../src/ui/theme-parser.c:3147
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 "Елементът <%s> не трябва да има атрибут „resize“ за състоянието максимизиран"
 
-#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
+#: ../src/ui/theme-parser.c:3161 ../src/ui/theme-parser.c:3183
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "Вече е указан стил за състояние %s, оразмеряване %s, фокус %s"
 
-#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
+#: ../src/ui/theme-parser.c:3172 ../src/ui/theme-parser.c:3194
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Вече е указан стил за състояние %s, фокус %s"
 
-#: ../src/ui/theme-parser.c:3147
+#: ../src/ui/theme-parser.c:3233
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1666,7 +1674,7 @@ msgstr ""
 "Не може да има два draw_ops за елемент <piece> (темата е указала атрибут "
 "draw_ops и елемент <draw_ops> или два елемента)"
 
-#: ../src/ui/theme-parser.c:3185
+#: ../src/ui/theme-parser.c:3271
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1674,7 +1682,7 @@ msgstr ""
 "Не може да има два draw_ops за елемент <button> (темата е указала атрибут "
 "draw_ops и елемент <draw_ops> или два елемента)"
 
-#: ../src/ui/theme-parser.c:3223
+#: ../src/ui/theme-parser.c:3309
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -1682,220 +1690,229 @@ msgstr ""
 "Не може да има два draw_ops за елемент <menu_icon> (темата е указала атрибут "
 "draw_ops и елемент <draw_ops> или два елемента)"
 
-#: ../src/ui/theme-parser.c:3271
+#: ../src/ui/theme-parser.c:3373
+#, c-format
+msgid "Bad version specification '%s'"
+msgstr "Неправилна версия „%s“"
+
+#: ../src/ui/theme-parser.c:3446
+msgid ""
+"\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
+"theme-2.xml"
+msgstr ""
+"Атрибутът „version“ (версия) не може да се използва в in metacity-theme-1."
+"xml или metacity-theme-2.xml"
+
+#: ../src/ui/theme-parser.c:3469
+#, c-format
+msgid "Theme requires version %s but latest supported theme version is %d.%d"
+msgstr "Темата изисква версия %s, но най-високата поддържана версия е %d.%d"
+
+#: ../src/ui/theme-parser.c:3501
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Най-външният елемент в темата трябва да е <metacity_theme>, а не <%s>"
 
-#: ../src/ui/theme-parser.c:3291
+#: ../src/ui/theme-parser.c:3521
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "Елементът <%s> не е разрешен в елементите name/author/date/description"
 
-#: ../src/ui/theme-parser.c:3296
+#: ../src/ui/theme-parser.c:3526
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Елементът <%s> не е позволен в <constant> елемент"
 
-#: ../src/ui/theme-parser.c:3308
+#: ../src/ui/theme-parser.c:3538
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "Елементът <%s> не е позволен в елемент distance/border/aspect_ratio"
 
-#: ../src/ui/theme-parser.c:3330
+#: ../src/ui/theme-parser.c:3560
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Елементът <%s> не е позволен в елемент с операция за чертане"
 
-#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
-#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
+#: ../src/ui/theme-parser.c:3570 ../src/ui/theme-parser.c:3600
+#: ../src/ui/theme-parser.c:3605 ../src/ui/theme-parser.c:3610
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Елементът <%s> не е позволен в елемент <%s>"
 
-#: ../src/ui/theme-parser.c:3602
+#: ../src/ui/theme-parser.c:3838
 msgid "No draw_ops provided for frame piece"
 msgstr "Няма draw_ops за детайл от рамката"
 
-#: ../src/ui/theme-parser.c:3617
+#: ../src/ui/theme-parser.c:3853
 msgid "No draw_ops provided for button"
 msgstr "Няма draw_ops за бутон"
 
-#: ../src/ui/theme-parser.c:3669
+#: ../src/ui/theme-parser.c:3907
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Не е позволен текст в елемента <%s>"
 
-#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
-#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
-#: ../src/ui/theme-parser.c:3772
+#: ../src/ui/theme-parser.c:3965 ../src/ui/theme-parser.c:3977
+#: ../src/ui/theme-parser.c:3989 ../src/ui/theme-parser.c:4001
+#: ../src/ui/theme-parser.c:4013
 #, c-format
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> е указан два пъти за тази тема"
 
-#: ../src/ui/theme-parser.c:4040
+#: ../src/ui/theme-parser.c:4283
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Неуспех при намирането на валиден файл за темата %s\n"
 
-#: ../src/ui/theme-parser.c:4096
-#, c-format
-msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "Файлът-тема %s не съдържа коренов <metacity_theme> елемент"
+#: ../src/ui/theme-viewer.c:99
+msgid "_Windows"
+msgstr "_Прозорци"
 
-#: ../src/ui/theme-viewer.c:75
-msgid "/_Windows"
-msgstr "/_Прозорци"
+#: ../src/ui/theme-viewer.c:100
+msgid "_Dialog"
+msgstr "_Диалогов прозорец"
 
-#: ../src/ui/theme-viewer.c:76
-msgid "/Windows/tearoff"
-msgstr "/Прозорци/откъсване"
+#: ../src/ui/theme-viewer.c:101
+msgid "_Modal dialog"
+msgstr "_Модален диалогов прозорец"
 
-#: ../src/ui/theme-viewer.c:77
-msgid "/Windows/_Dialog"
-msgstr "/Прозорци/_Диалогов"
+#: ../src/ui/theme-viewer.c:102
+msgid "_Utility"
+msgstr "_Инструмент"
 
-#: ../src/ui/theme-viewer.c:78
-msgid "/Windows/_Modal dialog"
-msgstr "/Прозорци/_Модален диалогов"
+#: ../src/ui/theme-viewer.c:103
+msgid "_Splashscreen"
+msgstr "_Стартиращ екран"
 
-#: ../src/ui/theme-viewer.c:79
-msgid "/Windows/_Utility"
-msgstr "/Прозорци/_Инструмент"
+#: ../src/ui/theme-viewer.c:104
+msgid "_Top dock"
+msgstr "_Горен док"
 
-#: ../src/ui/theme-viewer.c:80
-msgid "/Windows/_Splashscreen"
-msgstr "/Прозорци/_Стартиращ екран"
+#: ../src/ui/theme-viewer.c:105
+msgid "_Bottom dock"
+msgstr "_Долен док"
 
-#: ../src/ui/theme-viewer.c:81
-msgid "/Windows/_Top dock"
-msgstr "/Прозорци/_Горен док"
+#: ../src/ui/theme-viewer.c:106
+msgid "_Left dock"
+msgstr "_Ляв док"
 
-#: ../src/ui/theme-viewer.c:82
-msgid "/Windows/_Bottom dock"
-msgstr "/Прозорци/_Долен док"
+#: ../src/ui/theme-viewer.c:107
+msgid "_Right dock"
+msgstr "_Десен док"
 
-#: ../src/ui/theme-viewer.c:83
-msgid "/Windows/_Left dock"
-msgstr "/Прозорци/_Ляв док"
+#: ../src/ui/theme-viewer.c:108
+msgid "_All docks"
+msgstr "_Всички докове"
 
-#: ../src/ui/theme-viewer.c:84
-msgid "/Windows/_Right dock"
-msgstr "/Прозорци/_Десен док"
+#: ../src/ui/theme-viewer.c:109
+msgid "Des_ktop"
+msgstr "Работен _плот"
 
-#: ../src/ui/theme-viewer.c:85
-msgid "/Windows/_All docks"
-msgstr "/Прозорци/_Всички докове"
-
-#: ../src/ui/theme-viewer.c:86
-msgid "/Windows/Des_ktop"
-msgstr "/Прозорци/Работен _плот"
-
-#: ../src/ui/theme-viewer.c:151
+#: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
 msgstr "Отваряне на друг от следните прозорци"
 
-#: ../src/ui/theme-viewer.c:153
+#: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
 msgstr "Демонстрационен бутон с икона за отваряне"
 
-#: ../src/ui/theme-viewer.c:155
+#: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Демонстрационен бутон с икона за спиране на програмата"
 
-#: ../src/ui/theme-viewer.c:245
+#: ../src/ui/theme-viewer.c:253
 msgid "This is a sample message in a sample dialog"
 msgstr "Това е примерно съобщение в примерен диалогов прозорец"
 
-#: ../src/ui/theme-viewer.c:328
+#: ../src/ui/theme-viewer.c:336
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Фалшив обект на менюто %d\n"
 
-#: ../src/ui/theme-viewer.c:362
+#: ../src/ui/theme-viewer.c:370
 msgid "Border-only window"
 msgstr "Прозорец само с граници"
 
-#: ../src/ui/theme-viewer.c:364
+#: ../src/ui/theme-viewer.c:372
 msgid "Bar"
 msgstr "Лента"
 
-#: ../src/ui/theme-viewer.c:381
+#: ../src/ui/theme-viewer.c:389
 msgid "Normal Application Window"
 msgstr "Нормален прозорец на програма"
 
-#: ../src/ui/theme-viewer.c:385
-msgid "Dialog Box"
-msgstr "Диалогова кутия"
-
-#: ../src/ui/theme-viewer.c:389
-msgid "Modal Dialog Box"
-msgstr "Модална диалогова кутия"
-
 #: ../src/ui/theme-viewer.c:393
+msgid "Dialog Box"
+msgstr "Диалогов прозорец"
+
+#: ../src/ui/theme-viewer.c:397
+msgid "Modal Dialog Box"
+msgstr "Модален диалогов прозорец"
+
+#: ../src/ui/theme-viewer.c:401
 msgid "Utility Palette"
 msgstr "Палитра на инструментите"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:405
 msgid "Torn-off Menu"
 msgstr "Откъсване на менюто"
 
-#: ../src/ui/theme-viewer.c:401
+#: ../src/ui/theme-viewer.c:409
 msgid "Border"
 msgstr "Граница"
 
-#: ../src/ui/theme-viewer.c:729
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "Тест за подредбата на бутоните %d"
 
-#: ../src/ui/theme-viewer.c:758
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g милисекунди за да изрисува една прозоречна рамка"
 
-#: ../src/ui/theme-viewer.c:801
+#: ../src/ui/theme-viewer.c:810
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Употреба: metacity-theme-viewer [ИМЕНАТЕМАТА]\n"
 
-#: ../src/ui/theme-viewer.c:808
+#: ../src/ui/theme-viewer.c:817
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Грешка при зареждането на темата: %s\n"
 
-#: ../src/ui/theme-viewer.c:814
+#: ../src/ui/theme-viewer.c:823
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Темата „%s“ е заредена за %g секунди\n"
 
-#: ../src/ui/theme-viewer.c:855
+#: ../src/ui/theme-viewer.c:866
 msgid "Normal Title Font"
 msgstr "Нормален шрифт на заглавието"
 
-#: ../src/ui/theme-viewer.c:861
+#: ../src/ui/theme-viewer.c:872
 msgid "Small Title Font"
 msgstr "Малък шрифт на заглавието"
 
-#: ../src/ui/theme-viewer.c:867
+#: ../src/ui/theme-viewer.c:878
 msgid "Large Title Font"
 msgstr "Голям шрифт на заглавието"
 
-#: ../src/ui/theme-viewer.c:872
+#: ../src/ui/theme-viewer.c:883
 msgid "Button Layouts"
 msgstr "Изглед на бутоните"
 
-#: ../src/ui/theme-viewer.c:877
+#: ../src/ui/theme-viewer.c:888
 msgid "Benchmark"
 msgstr "Статистика"
 
-#: ../src/ui/theme-viewer.c:924
+#: ../src/ui/theme-viewer.c:935
 msgid "Window Title Goes Here"
 msgstr "Тук се поставя заглавието на прозорците"
 
-#: ../src/ui/theme-viewer.c:1028
+#: ../src/ui/theme-viewer.c:1039
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1906,43 +1923,43 @@ msgstr ""
 "на кадър) и %g секунди нормално време, което включва ресурси от страна на "
 "сървъра X (по %g милисекунди на кадър)\n"
 
-#: ../src/ui/theme-viewer.c:1247
+#: ../src/ui/theme-viewer.c:1258
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 "изразът за проверка на разположението върна TRUE, но зададе състояние за "
 "грешка"
 
-#: ../src/ui/theme-viewer.c:1249
+#: ../src/ui/theme-viewer.c:1260
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "изразът за проверка на разположението върна FALSE, но не зададе състояние за "
 "грешка"
 
-#: ../src/ui/theme-viewer.c:1253
+#: ../src/ui/theme-viewer.c:1264
 msgid "Error was expected but none given"
 msgstr "Очакваше се грешка, но не беше дадена никаква"
 
-#: ../src/ui/theme-viewer.c:1255
+#: ../src/ui/theme-viewer.c:1266
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Очакваше се грешка %d, но беше дадена %d"
 
-#: ../src/ui/theme-viewer.c:1261
+#: ../src/ui/theme-viewer.c:1272
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Не се очакваше грешка, но беше върната една: %s"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1276
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "стойността на x бе %d, а се очакваше %d"
 
-#: ../src/ui/theme-viewer.c:1268
+#: ../src/ui/theme-viewer.c:1279
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "стойността y бе %d, а се очакваше %d"
 
-#: ../src/ui/theme-viewer.c:1333
+#: ../src/ui/theme-viewer.c:1344
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d координатен израз обработен за %g секунди (%g секунди средно)\n"
