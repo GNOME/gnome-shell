@@ -45,15 +45,17 @@
   </bookinfo>
 
   <chapter>
-    <title>Cogl - GL Abstraction API</title>
+    <title>Cogl - a modern 3D graphics API</title>
 
     <section id="cogl-intro">
       <title>About Cogl</title>
 
-      <para>Cogl is a low level OpenGL abstraction library developed for (and
-      part of) Clutter. It is used primarily by Clutter to provide a common
-      rendering API that works transparently across OpenGL >=1.4,
-      OpenGL ES 1.1 and OpenGL ES 2.0.</para>
+      <para>Cogl is a modern 3D graphics API with associated utility
+      APIs designed to expose the features of 3D graphics hardware
+      using a more object oriented design than OpenGL. The library has
+      primarily been driven by the practical needs of Clutter but it
+      is not tied to any one toolkit or even constrained to developing
+      UI toolkits.</para>
 
     </section>
 
