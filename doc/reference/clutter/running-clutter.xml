@@ -66,7 +66,7 @@
         <varlistentry>
           <term>COGL_DEBUG</term>
           <listitem>
-            <para>Enables debugging modes for COGL.</para>
+            <para>Enables debugging modes for Cogl.</para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -130,11 +130,11 @@
         <varlistentry>
           <term>--cogl-debug=FLAGS</term>
           <listitem><para>Equivalent of COGL_DEBUG. Sets FLAGS as the
-          COGL debugging flags.</para></listitem>
+          Cogl debugging flags.</para></listitem>
         </varlistentry>
         <varlistentry>
           <term>--cogl-no-debug=FLAGS</term>
-          <listitem><para>Unsets FLAGS from the COGL debugging
+          <listitem><para>Unsets FLAGS from the Cogl debugging
           flags.</para></listitem>
         </varlistentry>
         <varlistentry>

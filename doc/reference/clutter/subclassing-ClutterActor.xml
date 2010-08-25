@@ -385,16 +385,15 @@ foo_actor_allocate (ClutterActor           *actor,
     <title>Painting and picking</title>
 
     <para>The <classname>ClutterActor</classname>::paint() method should be
-    overridden if the actor needs to control its drawing process, either by
-    using the Clutter GL and GLES abstraction library (COGL) or by directly
-    using the GL or GLES API.</para>
+    overridden if the actor needs to control its drawing process, by
+    painting other child actors or drawing with the Cogl 3D graphics
+    API.</para>
 
     <example id="simple-actor-paint-example">
       <title>Paint implementation of a simple actor</title>
       <para>In this example, the <classname>FooActor</classname>
       implementation of the paint() virtual function is drawing a rectangle
-      with rounded corners with a custom color. The COGL API is used, to
-      allow portability between GL and GLES platforms.</para>
+      with rounded corners with a custom color using the Cogl API.</para>
       <programlisting>
 static void
 foo_actor_paint (ClutterActor *actor)

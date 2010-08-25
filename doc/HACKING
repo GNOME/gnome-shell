@@ -18,7 +18,7 @@ General notes and rules on clutter core hacking;
  - Properties should always be in floating point (never fixed point).
    The preferred precision is double for angles, and single precision
    for size and position -- especially if they have to be passed down
-   to COGL.
+   to Cogl.
 
  - Properties should use pixels whenever is possible. Dimensional and
    positional properties can also use ClutterParamSpecUnits to define
@@ -41,11 +41,11 @@ General notes and rules on clutter core hacking;
  - Private, non-static functions must begin with an underscore and
    be declared inside clutter-private.h.
 
- - Don't add direct GL calls but add API to COGL (both GL and GL|ES
+ - Don't add direct GL calls but add API to Cogl (both GL and GL|ES
    versions if possible).
 
  - Use the CLUTTER_NOTE() macro for debug statements in Clutter, and
-   the COGL_NOTE() macro for debug statements in COGL. If necessary,
+   the COGL_NOTE() macro for debug statements in Cogl. If necessary,
    add a value inside ClutterDebugFlags or CoglDebugFlags to specify
    the debug section.
 
