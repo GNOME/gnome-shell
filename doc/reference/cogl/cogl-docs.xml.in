@@ -6,8 +6,8 @@
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <bookinfo>
-    <title>COGL Reference Manual</title>
-    <releaseinfo>for COGL &version;</releaseinfo>
+    <title>Cogl Reference Manual</title>
+    <releaseinfo>for Cogl &version;</releaseinfo>
 
     <copyright>
       <year>2008</year>
@@ -45,12 +45,12 @@
   </bookinfo>
 
   <chapter>
-    <title>COGL - GL Abstraction API</title>
+    <title>Cogl - GL Abstraction API</title>
 
     <section id="cogl-intro">
-      <title>About COGL</title>
+      <title>About Cogl</title>
 
-      <para>COGL is a low level OpenGL abstraction library developed for (and
+      <para>Cogl is a low level OpenGL abstraction library developed for (and
       part of) Clutter. It is used primarily by Clutter to provide a common
       rendering API that works transparently across OpenGL >=1.4,
       OpenGL ES 1.1 and OpenGL ES 2.0.</para>
@@ -75,12 +75,12 @@
   </chapter>
 
   <chapter>
-    <title>COGL experimental API</title>
+    <title>Cogl experimental API</title>
 
     <section id="cogl-experimental">
       <title>About the experimental API</title>
 
-      <para>COGL has some experimental API developers are welcomed to play
+      <para>Cogl has some experimental API developers are welcomed to play
       with. The main drawback when using those is that there is no API
       stability guarantee, functions flagged as experimental could be changed
       or removed in future versions of the library. To use this experimental
