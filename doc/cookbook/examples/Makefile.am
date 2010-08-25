@@ -18,6 +18,7 @@ noinst_PROGRAMS = \
 	textures-crossfade	\
 	textures-crossfade-cogl	\
 	textures-crossfade-slideshow	\
+	script-ui	\
 	$(NULL)
 
 INCLUDES = \
@@ -37,7 +38,7 @@ AM_CFLAGS = \
         -DG_DISABLE_SINGLE_INCLUDES \
         -DTESTS_DATA_DIR=\""$(top_srcdir)/tests/data/"\"
 
-AM_LDFLAGS = $(CLUTTER_LIBS)
+AM_LDFLAGS = $(CLUTTER_LIBS) -export-dynamic
 
 animations_rotating_SOURCES                = animations-rotating.c
 text_shadow_SOURCES                        = text-shadow.c
@@ -54,5 +55,6 @@ events_pointer_motion_scribbler_SOURCES    = events-pointer-motion-scribbler.c
 textures_crossfade_SOURCES                 = textures-crossfade.c
 textures_crossfade_cogl_SOURCES            = textures-crossfade-cogl.c
 textures_crossfade_slideshow_SOURCES       = textures-crossfade-slideshow.c
+script_ui_SOURCES                          = script-ui.c
 
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore
