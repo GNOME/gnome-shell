@@ -8454,6 +8454,32 @@ meta_window_refresh_resize_popup (MetaWindow *window)
   if (window->display->grab_window != window)
     return;
 
+  switch (window->display->grab_op)
+    {
+    case META_GRAB_OP_RESIZING_SE:
+    case META_GRAB_OP_RESIZING_S:
+    case META_GRAB_OP_RESIZING_SW:
+    case META_GRAB_OP_RESIZING_N:
+    case META_GRAB_OP_RESIZING_NE:
+    case META_GRAB_OP_RESIZING_NW:
+    case META_GRAB_OP_RESIZING_W:
+    case META_GRAB_OP_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+    case META_GRAB_OP_KEYBOARD_RESIZING_S:
+    case META_GRAB_OP_KEYBOARD_RESIZING_N:
+    case META_GRAB_OP_KEYBOARD_RESIZING_W:
+    case META_GRAB_OP_KEYBOARD_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+      break;
+
+    default:
+      /* Not resizing */
+      return;
+    }
+
   if (window->display->grab_resize_popup == NULL)
     {
       if (window->size_hints.width_inc > 1 ||
