@@ -45,9 +45,10 @@ on_button_press_event (ClutterActor *actor,
 
   clutter_event_get_coords (event, &x, &y);
 
-  g_print ("*** button press event (button:%d) at %.2f, %.2f ***\n",
+  g_print ("*** button press event (button:%d) at %.2f, %.2f on %s ***\n",
            clutter_event_get_button (event),
-           x, y);
+           x, y,
+           clutter_actor_get_name (actor));
 
   clutter_actor_hide (actor);
 
@@ -157,6 +158,7 @@ test_actors_main (int argc, char *argv[])
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 800, 600);
+  clutter_actor_set_name (stage, "Default Stage");
 
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Clone Test");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
@@ -187,6 +189,7 @@ test_actors_main (int argc, char *argv[])
 
   /* create a new group to hold multiple actors in a group */
   oh->group = clutter_group_new();
+  clutter_actor_set_name (oh->group, "Group");
 
   oh->hand = g_new (ClutterActor*, n_hands);
 
@@ -200,9 +203,15 @@ test_actors_main (int argc, char *argv[])
       gint x, y, w, h;
 
       if (i == 0)
-        oh->hand[i] = real_hand;
+        {
+          oh->hand[i] = real_hand;
+          clutter_actor_set_name (oh->hand[i], "Real Hand");
+        }
       else
-        oh->hand[i] = clutter_clone_new (real_hand);
+        {
+          oh->hand[i] = clutter_clone_new (real_hand);
+          clutter_actor_set_name (oh->hand[i], "Clone Hand");
+        }
 
       clutter_actor_set_reactive (oh->hand[i], TRUE);
 
