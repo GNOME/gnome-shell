@@ -23,6 +23,7 @@ XSLTOPTS = \
 	--stringparam  section.autolabel 1 			\
 	--stringparam gtkdoc.bookname "clutter-cookbook" 	\
 	--stringparam gtkdoc.version @CLUTTER_API_VERSION@ 	\
+	--stringparam callout.graphics 0	\
 	--path $(top_srcdir)/doc/common				\
 	--xinclude
 
