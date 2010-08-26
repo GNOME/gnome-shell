@@ -13,6 +13,7 @@ XML_FILES = \
 	text.xml		\
 	textures.xml		\
 	layouts.xml		\
+	script.xml		\
 	$(NULL)
 
 XSLTOPTS = \

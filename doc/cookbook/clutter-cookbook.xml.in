@@ -45,6 +45,7 @@
   <xi:include href="animations.xml" />
   <xi:include href="text.xml" />
   <xi:include href="layouts.xml" />
+  <xi:include href="script.xml" />
 
   <appendix id="contributing">
     <title>Contributing to this document</title>

@@ -1,0 +1,45 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+ "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<chapter id="script"
+         xmlns:xi="http://www.w3.org/2003/XInclude">
+  <title>Script</title>
+
+  <epigraph>
+    <attribution>who</attribution>
+    <para>what</para>
+  </epigraph>
+
+  <section id="script-introduction">
+    <title>Introduction</title>
+
+    <para>intro</para>
+  </section>
+
+  <section id="script-ui">
+    <title>Defining a user interface using <type>ClutterScript</type></title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>User interfaces are hard to maintain when the code
+      for creating elements and the code for interacting with
+      them is mixed together.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Use <type>ClutterScript</type> to define the UI
+      declaratively.</para>
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>...</para>
+    </section>
+
+  </section>
+
+</chapter>
