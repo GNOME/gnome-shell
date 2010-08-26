@@ -1222,12 +1222,18 @@ st_widget_recompute_style (StWidget    *widget,
 {
   StThemeNode *new_theme_node = st_widget_get_theme_node (widget);
   int transition_duration;
+  gboolean paint_equal;
 
   if (!old_theme_node ||
       !st_theme_node_geometry_equal (old_theme_node, new_theme_node))
     clutter_actor_queue_relayout ((ClutterActor *) widget);
 
   transition_duration = st_theme_node_get_transition_duration (new_theme_node);
+
+  paint_equal = old_theme_node && st_theme_node_paint_equal (old_theme_node, new_theme_node);
+
+  if (paint_equal)
+    st_theme_node_copy_cached_paint_state (new_theme_node, old_theme_node);
 
   if (transition_duration > 0)
     {
@@ -1236,8 +1242,14 @@ st_widget_recompute_style (StWidget    *widget,
           st_theme_node_transition_update (widget->priv->transition_animation,
                                            new_theme_node);
         }
-      else if (old_theme_node)
+      else if (old_theme_node && !paint_equal)
         {
+          /* Since our transitions are only of the painting done by StThemeNode, we
+           * only want to start a transition when what is painted changes; if
+           * other visual aspects like the foreground color of a label change,
+           * we can't animate that anyways.
+           */
+
           widget->priv->transition_animation =
             st_theme_node_transition_new (old_theme_node,
                                           new_theme_node,

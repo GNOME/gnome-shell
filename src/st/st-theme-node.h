@@ -191,11 +191,15 @@ void st_theme_node_get_paint_box           (StThemeNode           *node,
 
 gboolean st_theme_node_geometry_equal (StThemeNode *node,
                                        StThemeNode *other);
+gboolean st_theme_node_paint_equal    (StThemeNode *node,
+                                       StThemeNode *other);
 
 void st_theme_node_paint (StThemeNode            *node,
                           const ClutterActorBox  *box,
                           guint8                  paint_opacity);
 
+void st_theme_node_copy_cached_paint_state (StThemeNode *node,
+                                            StThemeNode *other);
 
 G_END_DECLS
 

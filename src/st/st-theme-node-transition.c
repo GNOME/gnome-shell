@@ -165,9 +165,16 @@ st_theme_node_transition_update (StThemeNodeTransition *transition,
           guint new_duration = st_theme_node_get_transition_duration (new_node);
 
           clutter_timeline_set_duration (priv->timeline, new_duration);
+
+          /* If the change doesn't affect painting, we don't need to redraw,
+           * but we still need to replace the node so that we properly share
+           * caching with the painting that happens after the transition finishes.
+           */
+          if (!st_theme_node_paint_equal (priv->new_theme_node, new_node))
+              priv->needs_setup = TRUE;
+
           g_object_unref (priv->new_theme_node);
           priv->new_theme_node = g_object_ref (new_node);
-          priv->needs_setup = TRUE;
         }
     }
 }

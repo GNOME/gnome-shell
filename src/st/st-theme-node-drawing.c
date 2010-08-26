@@ -1198,3 +1198,40 @@ st_theme_node_paint (StThemeNode           *node,
       paint_texture_with_opacity (node->background_texture, &background_box, paint_opacity);
     }
 }
+
+/**
+ * st_theme_node_copy_cached_paint_state:
+ * @node: a #StThemeNode
+ * @other: a different #StThemeNode
+ *
+ * Copy cached painting state from @other to @node. This function can be used to
+ * optimize redrawing cached background images when the style on an element changess
+ * in a way that doesn't affect background drawing. This function must only be called
+ * if st_theme_node_paint_equal (node, other) returns %TRUE.
+ */
+void
+st_theme_node_copy_cached_paint_state (StThemeNode *node,
+                                       StThemeNode *other)
+{
+  g_return_if_fail (ST_IS_THEME_NODE (node));
+  g_return_if_fail (ST_IS_THEME_NODE (other));
+
+  /* Check omitted for speed: */
+  /* g_return_if_fail (st_theme_node_paint_equal (node, other)); */
+
+  _st_theme_node_free_drawing_state (node);
+
+  node->alloc_width = other->alloc_width;
+  node->alloc_height = other->alloc_height;
+
+  if (other->background_shadow_material)
+    node->background_shadow_material = cogl_handle_ref (other->background_shadow_material);
+  if (other->border_shadow_material)
+    node->border_shadow_material = cogl_handle_ref (other->border_shadow_material);
+  if (other->background_texture)
+    node->background_texture = cogl_handle_ref (other->background_texture);
+  if (other->border_texture)
+    node->border_texture = cogl_handle_ref (other->border_texture);
+  if (other->corner_texture)
+    node->corner_texture = cogl_handle_ref (other->corner_texture);
+}

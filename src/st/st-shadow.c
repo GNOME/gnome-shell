@@ -78,6 +78,37 @@ st_shadow_free (StShadow *shadow)
 }
 
 /**
+ * st_shadow_equal:
+ * @shadow: a #StShadow
+ * @other: a different #StShadow
+ *
+ * Check if two shadow objects are identical. Note that two shadows may
+ * compare non-identically if they differ only by floating point rounding
+ * errors.
+ *
+ * Return value: %TRUE if the two shadows are identical
+ */
+gboolean
+st_shadow_equal (StShadow *shadow,
+                 StShadow *other)
+{
+  g_return_val_if_fail (shadow != NULL, FALSE);
+  g_return_val_if_fail (other != NULL, FALSE);
+
+  /* We use strict equality to compare double quantities; this means
+   * that, for example, a shadow offset of 0.25in does not necessarily
+   * compare equal to a shadow offset of 18pt in this test. Assume
+   * that a few false negatives are mostly harmless.
+   */
+
+  return (clutter_color_equal (&shadow->color, &other->color) &&
+          shadow->xoffset == other->xoffset &&
+          shadow->yoffset == other->yoffset &&
+          shadow->blur == other->blur &&
+          shadow->spread == other->spread);
+}
+
+/**
  * st_shadow_get_box:
  * @shadow: a #StShadow
  * @actor_box: the box allocated to a #ClutterAlctor
@@ -104,7 +135,6 @@ st_shadow_get_box (StShadow              *shadow,
   shadow_box->y2 = actor_box->y2 + shadow->yoffset
                    + shadow->blur + shadow->spread;
 }
-
 
 GType
 st_shadow_get_type (void)

@@ -33,6 +33,9 @@ void        st_border_image_get_borders  (StBorderImage *image,
                                           int           *border_bottom,
                                           int           *border_left);
 
+gboolean st_border_image_equal (StBorderImage *image,
+                                StBorderImage *other);
+
 G_END_DECLS
 
 #endif /* __ST_BORDER_IMAGE_H__ */

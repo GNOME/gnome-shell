@@ -2,6 +2,8 @@
 
 #include <config.h>
 
+#include <string.h>
+
 #include "st-border-image.h"
 
 struct _StBorderImage {
@@ -89,4 +91,27 @@ st_border_image_get_borders (StBorderImage *image,
     *border_bottom = image->border_bottom;
   if (border_left)
     *border_left = image->border_left;
+}
+
+/**
+ * st_border_image_equal:
+ * @border_image: a #StBorder_Image
+ * @other: a different #StBorder_Image
+ *
+ * Check if two border_image objects are identical.
+ *
+ * Return value: %TRUE if the two border image objects are identical
+ */
+gboolean
+st_border_image_equal (StBorderImage *image,
+                       StBorderImage *other)
+{
+  g_return_val_if_fail (ST_IS_BORDER_IMAGE (image), FALSE);
+  g_return_val_if_fail (ST_IS_BORDER_IMAGE (other), FALSE);
+
+  return (image->border_top == other->border_top &&
+          image->border_right == other->border_right &&
+          image->border_bottom == other->border_bottom &&
+          image->border_left == other->border_left &&
+          strcmp (image->filename, other->filename) == 0);
 }
