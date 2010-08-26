@@ -32,7 +32,7 @@
 #define __ST_SCROLL_BAR_H__
 
 #include <st/st-adjustment.h>
-#include <st/st-bin.h>
+#include <st/st-widget.h>
 
 G_BEGIN_DECLS
 
@@ -56,14 +56,14 @@ typedef struct _StScrollBarClass     StScrollBarClass;
 struct _StScrollBar
 {
   /*< private >*/
-  StBin parent_instance;
+  StWidget parent_instance;
 
   StScrollBarPrivate *priv;
 };
 
 struct _StScrollBarClass
 {
-  StBinClass parent_class;
+  StWidgetClass parent_class;
 
   /* signals */
   void (*scroll_start) (StScrollBar *bar);

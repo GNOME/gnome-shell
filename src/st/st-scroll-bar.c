@@ -44,7 +44,7 @@
 #include "st-private.h"
 #include "st-button.h"
 
-G_DEFINE_TYPE (StScrollBar, st_scroll_bar, ST_TYPE_BIN)
+G_DEFINE_TYPE (StScrollBar, st_scroll_bar, ST_TYPE_WIDGET)
 
 #define ST_SCROLL_BAR_GET_PRIVATE(o)  (G_TYPE_INSTANCE_GET_PRIVATE ((o), ST_TYPE_SCROLL_BAR, StScrollBarPrivate))
 
@@ -463,6 +463,7 @@ st_scroll_bar_allocate (ClutterActor          *actor,
 {
   StScrollBar *bar = ST_SCROLL_BAR (actor);
   StScrollBarPrivate *priv = bar->priv;
+
   priv->needs_allocation = FALSE;
 
   /* Chain up */
