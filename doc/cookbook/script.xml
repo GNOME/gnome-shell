@@ -6,14 +6,181 @@
   <title>Script</title>
 
   <epigraph>
-    <attribution>who</attribution>
-    <para>what</para>
+    <attribution>Alfred Hitchcock</attribution>
+    <para>When an actor comes to me and wants to discuss his character,
+    I say, "It's in the script". If he says, "But what's my motivation?",
+    I say, "Your salary".</para>
   </epigraph>
 
   <section id="script-introduction">
     <title>Introduction</title>
 
-    <para>intro</para>
+    <para>User interfaces can become difficult to maintain when
+    described entirely in code: declarations of UI
+    elements become entwined with procedural code for
+    handling interactions. This can make refactoring tough, as
+    you have to find the right place in the code ("Where did I
+    set the color of that rectangle?") and make sure your edits
+    don't break any behaviour.</para>
+
+    <para>Other frameworks separate presentation from programming
+    logic, making it easier to change the appearance of the UI
+    without affecting its behaviour (and vice versa). For example,
+    in web development you can use HTML and CSS to define
+    presentation, and JavaScript to implement application logic.</para>
+
+    <para><type>ClutterScript</type> enables a similar separation:
+    you can define the UI declaratively using
+    <ulink href="http://www.json.org/">JSON</ulink>; then load
+    the UI from the JSON and handle interactions with it through Clutter code
+    (in C, Python, Vala or some other language). This has several
+    benefits, including:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Separation of UI element declarations from control logic
+        (see above).</para>
+      </listitem>
+      <listitem>
+        <para>More concise code: typically, describing a UI in JSON
+        requires far fewer characters than the equivalent procedural
+        code.</para>
+      </listitem>
+      <listitem>
+        <para>If you write your JSON in external files, you can make the
+        structure of the UI evident in the layout of the file. For
+        example, child elements can be indented within the parent
+        element. This can make identifying relationships between
+        elements simpler and less error-prone.</para>
+      </listitem>
+      <listitem>
+        <para>Creating and configuring some objects (e.g. animations,
+        layouts) becomes much simpler in JSON.</para>
+      </listitem>
+      <listitem>
+        <para>Less compilation (if you're using a compiled language):
+        because you can edit the UI by editing external JSON files,
+        you can make changes to it without needing to recompile
+        the whole application.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>The <type>ClutterScript</type> API reference describes many
+    of its useful features. However, the following sections are intended
+    to give an overview of  how <type>ClutterScript</type> works, and
+    how to use it in an application.</para>
+
+    <para>The recipes in this chapter give more detail about
+    particular aspects of <type>ClutterScript</type>, such as
+    how to connect signals and how merge multiple JSON definitions
+    in a single script.</para>
+
+    <section>
+      <title>Basic principles of <type>ClutterScript</type></title>
+
+      <para>Clutter is built on top of <ulink href="???">GObject</ulink>,
+      an object system for C. As in other object systems, properties
+      are fundamental to GObject. <type>ClutterScript</type>
+      effectively provides a way to create instances of GObjects and
+      set their properties. For example:</para>
+
+      <informalexample>
+        <programlisting>
+[   <co id="script-ui-introduction-json-list-bracket" />
+  {   <co id="script-ui-introduction-json-object-bracket" />
+    "id" : "stage",   <co id="script-ui-introduction-json-id" />
+    "type" : "ClutterStage",   <co id="script-ui-introduction-json-type" />
+    "is-default" : true,
+    "width" : 400,
+    "height" : 400,
+    "color" : "#333355ff",   <co id="script-ui-introduction-json-color-html" />
+    "children" : [ "box" ]   <co id="script-ui-introduction-json-child-by-id" />
+  },
+
+  {
+    "id" : "box",
+    "type" : "ClutterBox",
+    "width" : 400,
+    "height" : 400,
+
+    "layout-manager" : {   <co id="script-ui-introduction-json-no-id" />
+      "type" : "ClutterBinLayout",
+      "x-align" : "CLUTTER_BIN_ALIGNMENT_CENTER",
+      "y-align" : "CLUTTER_BIN_ALIGNMENT_CENTER"
+    },
+
+    "children" : [   <co id="script-ui-introduction-json-child-by-embedding" />
+      {
+        "id" : "rectangle",
+        "type" : "ClutterRectangle",
+        "width" : 200,
+        "height" : 200,
+        "color" : "red"   <co id="script-ui-introduction-json-color-word" />
+      }
+    ]
+  }
+]
+        </programlisting>
+      </informalexample>
+
+      <note>
+        <para>N.B. The numbers in brackets in the example further
+        explain the JSON structure, and are not part of the UI
+        definition. See below for more details.</para>
+      </note>
+
+      <calloutlist>
+        <callout arearefs="script-ui-introduction-json-list-bracket">
+          <para>list bracket???</para>
+        </callout>
+        <callout arearefs="script-ui-introduction-json-object-bracket">
+          <para>object bracket???</para>
+        </callout>
+        <callout arearefs="script-ui-introduction-json-id">
+          <para>ID???</para>
+        </callout>
+        <callout arearefs="script-ui-introduction-json-type">
+          <para>type???</para>
+        </callout>
+        <callout arearefs="script-ui-introduction-json-color-html">
+          <para>color???</para>
+        </callout>
+        <callout arearefs="script-ui-introduction-json-child-by-id">
+          <para>referencing a child by ID???</para>
+        </callout>
+        <callout arearefs="script-ui-introduction-json-no-id">
+          <para>no ID for implicit objects???</para>
+        </callout>
+        <callout arearefs="script-ui-introduction-json-child-by-embedding">
+          <para>embedded child???</para>
+        </callout>
+        <callout arearefs="script-ui-introduction-json-color-word">
+          <para>color???</para>
+        </callout>
+      </calloutlist>
+
+      <para>Once you grasp that Clutter objects are GObjects, and you
+      are setting their properties, you can determine what is scriptable
+      by referring to the <emphasis>Properties</emphasis> sections
+      in the Clutter API reference. Any of the properties described
+      there can be set using <type>ClutterScript</type>.</para>
+
+    </section>
+
+    <section>
+      <title>Data types and JSON</title>
+
+      <para>The next important consideration is the data type of the
+      property.??? null, float, int, string, color</para>
+
+      <para>special properties which aren't obvious: layout::* ??? perhaps
+      leave to the appropriate recipe</para>
+
+      <para>properties with multiple values??? e.g. children, constraints</para>
+
+      <para>objects as property values??? referencing by ID??? objects without IDs???</para>
+    </section>
+
   </section>
 
   <section id="script-ui">
@@ -22,22 +189,42 @@
     <section>
       <title>Problem</title>
 
-      <para>User interfaces are hard to maintain when the code
-      for creating elements and the code for interacting with
-      them is mixed together.</para>
+      <para>???</para>
     </section>
 
     <section>
       <title>Solution</title>
 
-      <para>Use <type>ClutterScript</type> to define the UI
-      declaratively.</para>
+      <para>???</para>
     </section>
 
     <section>
       <title>Discussion</title>
 
-      <para>...</para>
+      <para>???converting an existing program to ClutterScript</para>
+    </section>
+
+    <section>
+      <title>Full example</title>
+
+      <example id="script-ui-example-1">
+        <title>Description of a user interface in JSON</title>
+        <programlisting>
+<xi:include href="examples/script-ui.json" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="script-ui-example-2">
+        <title>Loading a JSON user interface definition in Clutter</title>
+        <programlisting>
+<xi:include href="examples/script-ui.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
     </section>
 
   </section>
