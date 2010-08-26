@@ -93,8 +93,10 @@ struct _ClutterClickActionClass
 
 GType clutter_click_action_get_type (void) G_GNUC_CONST;
 
-ClutterAction *clutter_click_action_new     (void);
-void           clutter_click_action_release (ClutterClickAction *action);
+ClutterAction *clutter_click_action_new        (void);
+
+guint          clutter_click_action_get_button (ClutterClickAction *action);
+void           clutter_click_action_release    (ClutterClickAction *action);
 
 G_END_DECLS
 

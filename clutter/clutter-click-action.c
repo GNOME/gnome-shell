@@ -332,3 +332,21 @@ clutter_click_action_release (ClutterClickAction *action)
 
   click_action_set_pressed (action, FALSE);
 }
+
+/**
+ * clutter_click_action_get_button:
+ * @action: a #ClutterClickAction
+ *
+ * Retrieves the button that was pressed.
+ *
+ * Return value: the button value
+ *
+ * Since: 1.4
+ */
+guint
+clutter_click_action_get_button (ClutterClickAction *action)
+{
+  g_return_val_if_fail (CLUTTER_IS_CLICK_ACTION (action), 0);
+
+  return action->priv->press_button;
+}

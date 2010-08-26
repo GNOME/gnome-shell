@@ -2346,6 +2346,7 @@ ClutterStatePrivate
 ClutterClickAction
 ClutterClickActionClass
 clutter_click_action_new
+clutter_click_action_get_button
 clutter_click_action_release
 
 <SUBSECTION Standard>
