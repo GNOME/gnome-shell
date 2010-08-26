@@ -12,6 +12,8 @@
   {
     "id" : "box",
     "type" : "ClutterBox",
+    "width" : 400,
+    "height" : 400,
 
     "layout-manager" : {
       "type" : "ClutterBinLayout",
@@ -19,84 +21,13 @@
       "y-align" : "CLUTTER_BIN_ALIGNMENT_CENTER"
     },
 
-    "constraints" : [
+    "children" : [
       {
-        "type" : "ClutterAlignConstraint",
-        "align-axis" : "CLUTTER_ALIGN_X_AXIS",
-        "factor" : 0.5,
-        "source" : "stage"
-      },
-      {
-        "type" : "ClutterAlignConstraint",
-        "align-axis" : "CLUTTER_ALIGN_Y_AXIS",
-        "factor" : 0.5,
-        "source" : "stage"
-      }
-    ],
-
-    "children" : [ "texture1", "texture2" ]
-  },
-
-  {
-    "id" : "texture1",
-    "type" : "ClutterTexture",
-    "width" : 200,
-    "keep-aspect-ratio" : true,
-    "filename" : "redhand.png",
-    "load-async" : true,
-    "reactive" : true,
-
-    "signals" : [
-      { "name" : "motion-event", "handler" : "_pointer_motion_cb" }
-    ],
-
-    "actions" : [
-      {
-        "type" : "ClutterClickAction",
-        "signals" : [
-          { "name" : "clicked", "handler" : "_button_clicked_cb" }
-        ]
-      }
-    ]
-  },
-
-  {
-    "id" : "texture2",
-    "type" : "ClutterTexture",
-    "filename" : "redhand.png",
-    "load-async" : true,
-    "rotation-center-z-gravity" : "CLUTTER_GRAVITY_CENTER",
-    "layout::x-align" : "CLUTTER_BIN_ALIGNMENT_FILL",
-    "layout::y-align" : "CLUTTER_BIN_ALIGNMENT_FILL",
-
-    "effects" : [
-      { "type" : "ClutterColorizeEffect", "tint" : "blue" }
-    ]
-  },
-
-  {
-    "id" : "transitions",
-    "type" : "ClutterState",
-    "duration" : 2000,
-    "state" : "faded-out",
-
-    "transitions" : [
-      {
-        "source" : null,
-        "target" : "faded-out",
-        "keys" : [
-          [ "texture2", "opacity", "linear", 0 ]
-        ]
-      },
-
-      {
-        "source" : null,
-        "target" : "faded-in",
-        "keys" : [
-          [ "texture1", "opacity", "linear", 0 ],
-          [ "texture2", "opacity", "linear", 255 ],
-          [ "texture2", "rotation-angle-z", "linear", 90.0 ]
-        ]
+        "id" : "rectangle",
+        "type" : "ClutterRectangle",
+        "width" : 200,
+        "height" : 200,
+        "color" : "red"
       }
     ]
   }
