@@ -79,6 +79,7 @@ Notification.prototype = {
         this.source = source;
         this.urgent = false;
         this._bannerBody = false;
+        this._spacing = 0;
 
         this._hasFocus = false;
         this._lockTrayOnFocusGrab = false;
@@ -322,20 +323,8 @@ Notification.prototype = {
     },
 
     _styleChanged: function() {
-        let [has_spacing, spacing] = this.actor.get_theme_node().get_length('spacing-columns', false);
-        this._spacing = has_spacing ? spacing : 0;
-
-        // Figure out now (before allocation starts) whether or not we
-        // need to be expandable, and add the expansion row if so
-        if (this._bannerBodyText) {
-            let [minBannerWidth, natBannerWidth] =
-                this._bannerBox.get_preferred_width(-1);
-            let [minNotificationWidth, natNotificationWidth] =
-                this.actor.get_preferred_width(-1);
-
-            if (natBannerWidth > natNotificationWidth)
-                this._addBannerBody();
-        }
+        let [hasSpacing, spacing] = this.actor.get_theme_node().get_length('spacing-columns', false);
+        this._spacing = hasSpacing ? spacing : 0;
     },
 
     _bannerBoxGetPreferredWidth: function(actor, forHeight, alloc) {
@@ -363,17 +352,31 @@ Notification.prototype = {
         titleBox.y2 = titleNatH;
         this._titleLabel.allocate(titleBox, flags);
 
+        let bannerFits = true;
         if (titleBox.x2 + this._spacing > availWidth) {
             this._bannerLabel.hide();
+            bannerFits = false;
         } else {
             let bannerBox = new Clutter.ActorBox();
             bannerBox.x1 = titleBox.x2 + this._spacing;
             bannerBox.y1 = 0;
             bannerBox.x2 = Math.min(bannerBox.x1 + bannerNatW, availWidth);
             bannerBox.y2 = titleNatH;
+            bannerFits = (bannerBox.x1 + bannerNatW <= availWidth);
             this._bannerLabel.show();
             this._bannerLabel.allocate(bannerBox, flags);
         }
+
+        // If the banner doesn't fully fit in the banner box and this._bannerBodyText is
+        // true (meaning this._bannerBody is true and we haven't yet added the banner
+        // to the body), we need to add the banner to the body. We can't do that from
+        // here though since that will force a relayout, so we add it to the main loop.
+        if (!bannerFits && this._bannerBodyText)
+            Mainloop.idle_add(Lang.bind(this,
+                                        function() {
+                                            this._addBannerBody();
+                                            return false;
+                                        }));
     },
 
     popOut: function() {
