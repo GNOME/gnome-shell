@@ -11,6 +11,7 @@ main (int argc, char *argv[])
   gchar *filename = "script-ui.json";
   GError *error = NULL;
 
+  /* load a JSON file into the script */
   clutter_script_load_from_file (ui, filename, &error);
 
   if (error != NULL)
@@ -20,6 +21,7 @@ main (int argc, char *argv[])
       exit (EXIT_FAILURE);
     }
 
+  /* retrieve objects from the script */
   ClutterActor *stage;
 
   clutter_script_get_objects (ui,
