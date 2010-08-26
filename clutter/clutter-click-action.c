@@ -316,7 +316,7 @@ clutter_click_action_new (void)
  * Since: 1.4
  */
 void
-clutter_click_action_force_release (ClutterClickAction *action)
+clutter_click_action_release (ClutterClickAction *action)
 {
   ClutterClickActionPrivate *priv;
 
