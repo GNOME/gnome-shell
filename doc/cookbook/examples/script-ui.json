@@ -16,8 +16,8 @@
 
     "layout-manager" : {
       "type" : "ClutterBinLayout",
-      "x-align" : "CLUTTER_BIN_ALIGNMENT_CENTER",
-      "y-align" : "CLUTTER_BIN_ALIGNMENT_CENTER"
+      "x-align" : "center",
+      "y-align" : "center"
     },
 
     "children" : [
