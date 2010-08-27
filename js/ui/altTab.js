@@ -215,6 +215,9 @@ AltTabPopup.prototype = {
     _keyPressEvent : function(actor, event) {
         let keysym = event.get_key_symbol();
         let shift = (Shell.get_event_state(event) & Clutter.ModifierType.SHIFT_MASK);
+        // X allows servers to represent Shift+Tab in two different ways
+        if (shift && keysym == Clutter.Tab)
+            keysym = Clutter.ISO_Left_Tab;
 
         this._disableHover();
 
@@ -222,17 +225,22 @@ AltTabPopup.prototype = {
         // keys aren't mapped correctly
 
         if (keysym == Clutter.grave)
-            this._select(this._currentApp, shift ? this._previousWindow() : this._nextWindow());
+            this._select(this._currentApp, this._nextWindow());
+        else if (keysym == Clutter.asciitilde)
+            this._select(this._currentApp, this._previousWindow());
         else if (keysym == Clutter.Escape)
             this.destroy();
         else if (this._thumbnailsFocused) {
             if (keysym == Clutter.Tab) {
-                if (shift && (this._currentWindow == 0 || this._currentWindow == -1))
-                    this._select(this._previousApp());
-                else if (!shift && this._currentWindow == this._appIcons[this._currentApp].cachedWindows.length - 1)
+                if (this._currentWindow == this._appIcons[this._currentApp].cachedWindows.length - 1)
                     this._select(this._nextApp());
                 else
-                    this._select(this._currentApp, shift ? this._previousWindow() : this._nextWindow());
+                    this._select(this._currentApp, this._nextWindow());
+            } else if (keysym == Clutter.ISO_Left_Tab) {
+                if (this._currentWindow == 0 || this._currentWindow == -1)
+                    this._select(this._previousApp());
+                else
+                    this._select(this._currentApp, this._previousWindow());
             } else if (keysym == Clutter.Left || keysym == Clutter.a)
                 this._select(this._currentApp, this._previousWindow());
             else if (keysym == Clutter.Right || keysym == Clutter.d)
@@ -241,7 +249,9 @@ AltTabPopup.prototype = {
                 this._select(this._currentApp, null, true);
         } else {
             if (keysym == Clutter.Tab)
-                this._select(shift ? this._previousApp() : this._nextApp());
+                this._select(this._nextApp());
+            else if (keysym == Clutter.ISO_Left_Tab)
+                this._select(this._previousApp());
             else if (keysym == Clutter.Left || keysym == Clutter.a)
                 this._select(this._previousApp());
             else if (keysym == Clutter.Right || keysym == Clutter.d)
