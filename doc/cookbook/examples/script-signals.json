@@ -1,0 +1,40 @@
+[
+  {
+    "id" : "stage",
+    "type" : "ClutterStage",
+    "width" : 300,
+    "height" : 300,
+    "color" : "#335",
+
+    "signals" : [
+      { "name" : "destroy", "handler" : "clutter_main_quit" }
+    ],
+
+    "children" : [ "rectangle" ]
+  },
+
+  {
+    "id" : "rectangle",
+    "type" : "ClutterRectangle",
+    "width" : 200,
+    "height" : 200,
+    "x" : 50,
+    "y" : 50,
+    "color" : "#a90",
+    "rotation-center-z-gravity" : "center",
+    "reactive" : true,
+
+    "signals" : [
+      { "name" : "motion-event", "handler" : "foo_pointer_motion_cb" }
+    ],
+
+    "actions" : [
+      {
+        "type" : "ClutterClickAction",
+        "signals" : [
+          { "name" : "clicked", "handler" : "foo_button_clicked_cb" }
+        ]
+      }
+    ]
+  }
+]
