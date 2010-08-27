@@ -181,7 +181,8 @@ libmutterinclude_base_headers =		\
 # atomnames.h: macros cause problems for scanning process
 libmutterinclude_extra_headers =		\
 	ui/preview-widget.h			\
-	include/atomnames.h
+	include/atomnames.h			\
+	include/region.h
 
 libmutterinclude_HEADERS =			\
 	$(libmutterinclude_base_headers)	\
