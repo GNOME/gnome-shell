@@ -1256,6 +1256,7 @@ clutter_win32_disable_event_retrieval
 clutter_win32_set_stage_foreign
 clutter_win32_get_stage_from_window
 clutter_win32_get_stage_window
+clutter_win32_handle_event
 </SECTION>
 
 <SECTION>

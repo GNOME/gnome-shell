@@ -343,10 +343,27 @@ get_key_modifier_state (const BYTE *key_states)
   return ret;
 }
 
-static void
-message_translate (ClutterBackend *backend,
-		   const MSG      *msg,
-		   gboolean       *call_def_window_proc)
+/**
+ * clutter_win32_handle_event:
+ * @msg: A pointer to a structure describing a Win32 message.
+ *
+ * This function processes a single Win32 message. It can be used to
+ * hook into external windows message processing (for example, a GDK
+ * filter function).
+ *
+ * If clutter_win32_disable_event_retrieval() has been called, you must
+ * let this function process events to update Clutter's internal state.
+ *
+ * Return value: %TRUE if the message was handled entirely by Clutter
+ * and no further processing (such as calling the default window
+ * procedure) should take place. %FALSE is returned if is the message
+ * was not handled at all or if Clutter expects processing to take
+ * place.
+ *
+ * Since: 1.6
+ */
+gboolean
+clutter_win32_handle_event (const MSG *msg)
 {
   ClutterBackendWin32  *backend_win32;
   ClutterStageWin32    *stage_win32;
@@ -354,16 +371,17 @@ message_translate (ClutterBackend *backend,
   ClutterInputDevice   *core_pointer, *core_keyboard;
   ClutterStage         *stage;
   ClutterStageWindow   *impl;
+  gboolean              return_value = FALSE;
 
-  backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
-
-  /* Do further processing only on events for the stage window */
   stage = clutter_win32_get_stage_from_window (msg->hwnd);
 
+  /* Ignore any messages for windows which we don't have a stage for */
   if (stage == NULL)
-    return;
-  impl        = _clutter_stage_get_window (stage);
+    return FALSE;
+
+  impl = _clutter_stage_get_window (stage);
   stage_win32 = CLUTTER_STAGE_WIN32 (impl);
+  backend_win32 = stage_win32->backend;
 
   manager = clutter_device_manager_get_default ();
   core_pointer =
@@ -460,8 +478,7 @@ message_translate (ClutterBackend *backend,
         /* The default window proc will destroy the window so we want to
            prevent this to allow applications to optionally destroy the
            window themselves */
-        if (call_def_window_proc)
-          *call_def_window_proc = FALSE;
+        return_value = TRUE;
       }
       break;
 
@@ -680,8 +697,7 @@ message_translate (ClutterBackend *backend,
       {
 	MINMAXINFO *min_max_info = (MINMAXINFO *) msg->lParam;
 	_clutter_stage_win32_get_min_max_info (stage_win32, min_max_info);
-	if (call_def_window_proc)
-	  *call_def_window_proc = FALSE;
+        return_value = TRUE;
       }
       break;
 
@@ -691,30 +707,32 @@ message_translate (ClutterBackend *backend,
          instead */
       if (LOWORD (msg->lParam) == HTCLIENT && !stage_win32->is_cursor_visible)
         {
-          if (call_def_window_proc)
-            *call_def_window_proc = FALSE;
+          return_value = TRUE;
           _clutter_stage_win32_update_cursor (stage_win32);
         }
       break;
     }
+
+  return return_value;
 }
 
 LRESULT CALLBACK
 _clutter_stage_win32_window_proc (HWND hwnd, UINT umsg,
 				  WPARAM wparam, LPARAM lparam)
 {
-  ClutterStageWin32 *stage_win32
-    = (ClutterStageWin32 *) GetWindowLongPtrW (hwnd, 0);
-  gboolean call_def_window_proc = TRUE;
+  gboolean message_handled = FALSE;
 
-  /* Ignore any messages before SetWindowLongPtr has been called to
-     set the stage */
-  if (stage_win32 != NULL)
+  /* Windows sends some messages such as WM_GETMINMAXINFO and
+     WM_CREATE before returning from CreateWindow. The stage point
+     will not yet be stored in the Window structure in this case so we
+     need to skip these messages because we can't know which stage the
+     window belongs to */
+  if (GetWindowLongPtrW (hwnd, 0))
     {
-      ClutterBackendWin32 *backend_win32 = stage_win32->backend;
       MSG msg;
       DWORD message_pos = GetMessagePos ();
 
+      /* Convert the parameters to a MSG struct */
       msg.hwnd = hwnd;
       msg.message = umsg;
       msg.wParam = wparam;
@@ -725,11 +743,11 @@ _clutter_stage_win32_window_proc (HWND hwnd, UINT umsg,
       msg.pt.x = (SHORT) LOWORD (message_pos);
       msg.pt.y = (SHORT) HIWORD (message_pos);
 
-      message_translate (CLUTTER_BACKEND (backend_win32),
-                         &msg, &call_def_window_proc);
+      /* Process the message */
+      message_handled = clutter_win32_handle_event (&msg);
     }
 
-  if (call_def_window_proc)
+  if (!message_handled)
     return DefWindowProcW (hwnd, umsg, wparam, lparam);
   else
     return 0;

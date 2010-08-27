@@ -51,6 +51,8 @@ gboolean      clutter_win32_set_stage_foreign       (ClutterStage *stage,
 
 void          clutter_win32_disable_event_retrieval (void);
 
+gboolean      clutter_win32_handle_event            (const MSG *msg);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_WIN32_H__ */
