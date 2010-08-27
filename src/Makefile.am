@@ -141,6 +141,7 @@ libmutter_private_la_SOURCES=			\
 	include/common.h			\
 	ui/preview-widget.c			\
 	ui/preview-widget.h			\
+	ui/region.h				\
 	ui/theme-parser.c			\
 	ui/theme-parser.h			\
 	ui/theme.c				\
