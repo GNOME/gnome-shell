@@ -19,11 +19,11 @@
     described entirely in code: declarations of UI
     elements become entwined with procedural code for
     handling interactions. This can make refactoring tough, as
-    you have to find the right place in the code ("Where did I
-    set the color of that rectangle?") and make sure your edits
-    don't break any behaviour.</para>
+    you have to find the right place in the code to modify the UI
+    ("Where did I set the color of that rectangle?") and make sure
+    your UI modifications don't break any behaviour.</para>
 
-    <para>Other frameworks separate presentation from programming
+    <para>Many frameworks separate presentation from programming
     logic, making it easier to change the appearance of the UI
     without affecting its behaviour (and vice versa). For example,
     in web development you can use HTML and CSS to define
@@ -31,8 +31,8 @@
 
     <para><type>ClutterScript</type> enables a similar separation:
     you can define the UI declaratively using
-    <ulink href="http://www.json.org/">JSON</ulink>; then load
-    the UI from the JSON and handle interactions with it through Clutter code
+    <ulink href="http://www.json.org/">JSON</ulink>, load
+    the UI from the JSON, then handle interactions with it through Clutter code
     (in C, Python, Vala or some other language). This has several
     benefits, including:</para>
 
@@ -44,7 +44,8 @@
       <listitem>
         <para>More concise code: typically, describing a UI in JSON
         requires far fewer characters than the equivalent procedural
-        code.</para>
+        code (at least, once you have more than three or four actors in
+        your application).</para>
       </listitem>
       <listitem>
         <para>If you write your JSON in external files, you can make the
@@ -55,42 +56,45 @@
       </listitem>
       <listitem>
         <para>Creating and configuring some objects (e.g. animations,
-        layouts) becomes much simpler in JSON.</para>
+        layouts) can be much simpler in JSON.</para>
       </listitem>
       <listitem>
         <para>Less compilation (if you're using a compiled language):
-        because you can edit the UI by editing external JSON files,
+        because you can change the UI by editing external JSON files,
         you can make changes to it without needing to recompile
         the whole application.</para>
       </listitem>
     </itemizedlist>
 
-    <para>The <type>ClutterScript</type> API reference describes many
-    of its useful features. However, the following sections are intended
+    <para>The following sections are intended
     to give an overview of  how <type>ClutterScript</type> works, and
-    how to use it in an application.</para>
-
-    <para>The recipes in this chapter give more detail about
-    particular aspects of <type>ClutterScript</type>, such as
-    how to connect signals and how merge multiple JSON definitions
-    in a single script.</para>
+    how to use it in an application. The recipes in this chapter
+    then provide more detail about particular aspects of
+    <type>ClutterScript</type>, such as how to connect signals to handlers,
+    how to merge multiple JSON definitions in a single script, etc.
+    There is also a lot of useful information in the <type>ClutterScript</type>
+    API reference.</para>
 
     <section>
       <title>Basic principles of <type>ClutterScript</type></title>
 
-      <para>Clutter is built on top of <ulink href="???">GObject</ulink>,
-      an object system for C. As in other object systems, properties
-      are fundamental to GObject. <type>ClutterScript</type>
-      effectively provides a way to create instances of GObjects and
+      <para>Clutter is built on top of
+      <ulink href="http://library.gnome.org/devel/gobject/">GObject</ulink>,
+      an object system for C. <type>ClutterScript</type>
+      provides a way to create instances of GObjects and
       set their properties. For example:</para>
 
-      <informalexample>
-        <programlisting>
+      <example>
+        <title>Example UI definition in JSON for use with
+        <type>ClutterScript</type></title>
+
+        <programlistingco>
+          <programlisting>
 [   <co id="script-ui-introduction-json-list-bracket" />
   {   <co id="script-ui-introduction-json-object-bracket" />
     "id" : "stage",   <co id="script-ui-introduction-json-id" />
     "type" : "ClutterStage",   <co id="script-ui-introduction-json-type" />
-    "is-default" : true,
+    "is-default" : true,   <co id="script-ui-introduction-json-default-stage" />
     "width" : 400,
     "height" : 400,
     "color" : "#333355ff",   <co id="script-ui-introduction-json-color-html" />
@@ -120,110 +124,318 @@
     ]
   }
 ]
-        </programlisting>
-      </informalexample>
+          </programlisting>
 
-      <note>
-        <para>N.B. The numbers in brackets in the example further
-        explain the JSON structure, and are not part of the UI
-        definition. See below for more details.</para>
-      </note>
+          <note>
+            <para>N.B. The numbers in brackets in the example further
+            explain the JSON structure, and are not part of the UI
+            definition.</para>
+          </note>
 
-      <calloutlist>
-        <callout arearefs="script-ui-introduction-json-list-bracket">
-          <para>list bracket???</para>
-        </callout>
-        <callout arearefs="script-ui-introduction-json-object-bracket">
-          <para>object bracket???</para>
-        </callout>
-        <callout arearefs="script-ui-introduction-json-id">
-          <para>ID???</para>
-        </callout>
-        <callout arearefs="script-ui-introduction-json-type">
-          <para>type???</para>
-        </callout>
-        <callout arearefs="script-ui-introduction-json-color-html">
-          <para>color???</para>
-        </callout>
-        <callout arearefs="script-ui-introduction-json-child-by-id">
-          <para>referencing a child by ID???</para>
-        </callout>
-        <callout arearefs="script-ui-introduction-json-no-id">
-          <para>no ID for implicit objects???</para>
-        </callout>
-        <callout arearefs="script-ui-introduction-json-child-by-embedding">
-          <para>embedded child???</para>
-        </callout>
-        <callout arearefs="script-ui-introduction-json-color-word">
-          <para>color???</para>
-        </callout>
-      </calloutlist>
+          <calloutlist>
+            <callout arearefs="script-ui-introduction-json-list-bracket">
+              <para>All the objects defined for the UI sit inside a JSON
+              list structure, marked with square brackets.</para>
+            </callout>
+            <callout arearefs="script-ui-introduction-json-object-bracket">
+              <para>A pair of braces surrounds each object definition;
+              inside the braces, key-value pairs set properties on the
+              object. See the
+              <link linkend="script-introduction-data-types">section on
+              datatypes</link> for more about the acceptable values.</para>
+            </callout>
+            <callout arearefs="script-ui-introduction-json-id
+            script-ui-introduction-json-no-id">
+              <para>An <varname>id</varname> is required for objects which
+              are referred to elsewhere in the JSON or which need to be
+              accessible from code (see
+              <link linkend="script-ui">this recipe</link> for the basics of
+              using object IDs from code).</para>
+              <para>In cases where an object doesn't need to be accessible
+              from code and is not referenced elsewhere in the JSON file,
+              the <varname>id</varname> can be omitted.</para>
+            </callout>
+            <callout arearefs="script-ui-introduction-json-type">
+              <para>The <varname>type</varname> key is mandatory, and
+              specifies the type of the object; usually this will be
+              one of the Clutter object types.</para>
+            </callout>
+            <callout arearefs="script-ui-introduction-json-default-stage">
+              <para><varname>is-default</varname> is a special stage-only
+              property, which tells Clutter that the <type>ClutterStage</type>
+              instance used should be the default stage.</para>
+            </callout>
+            <callout arearefs="script-ui-introduction-json-color-html
+            script-ui-introduction-json-color-word">
+              <para>Colors can be set using hexadecimal color code strings,
+              as used in HTML and CSS; or by using color words. The
+              range of acceptable values is as for the
+              <function>pango_color_from_string()</function> function.</para>
+            </callout>
+            <callout arearefs="script-ui-introduction-json-child-by-id
+            script-ui-introduction-json-child-by-embedding">
+              <para>Children can be associated with a parent through
+              the <varname>children</varname> property. Children are
+              either added to the <varname>children</varname> list by ID;
+              or by directly embedding the child JSON object as an element
+              within the list. The two can be mixed in a single
+              list of <varname>children</varname>.</para>
+            </callout>
+          </calloutlist>
+
+        </programlistingco>
+      </example>
 
       <para>Once you grasp that Clutter objects are GObjects, and you
-      are setting their properties, you can determine what is scriptable
+      are setting their properties, you can work out what is "scriptable"
       by referring to the <emphasis>Properties</emphasis> sections
-      in the Clutter API reference. Any of the properties described
-      there can be set using <type>ClutterScript</type>.</para>
+      of the API reference for each Clutter type. Any of the properties
+      described there can be set using <type>ClutterScript</type>.</para>
+
+      <para>Having said this, there are some special properties which
+      aren't obvious, but which can be set via JSON;
+      <emphasis>layout properties</emphasis> are one example. These aren't
+      listed as properties of <type>ClutterActor</type> but can be set
+      as part of a <type>ClutterActor</type> object definition
+      (using the <code>layout::&lt;property name&gt;</code>
+      syntax for the key). Some of these are covered in recipes later in
+      this chapter.</para>
 
     </section>
 
-    <section>
-      <title>Data types and JSON</title>
+    <section id="script-introduction-data-types">
+      <title>Data types</title>
 
-      <para>The next important consideration is the data type of the
-      property.??? null, float, int, string, color</para>
+      <para><type>ClutterScript</type> uses the standard JSON format.
+      It is very important that you respect the data type of the property
+      you are setting, ensuring that you use the right JSON data type.
+      You may get unexpected results or errors if you try to set a property
+      using the wrong data type: for example, setting a property
+      to an integer <type>number</type> in the JSON, when the Clutter property
+      is expecting a <type>gfloat</type>, may cause errors.</para>
 
-      <para>special properties which aren't obvious: layout::* ??? perhaps
-      leave to the appropriate recipe</para>
+      <para>To assist in using the right data types in your JSON
+      definitions, the table below shows how Clutter and GLib data
+      types map to JSON:</para>
 
-      <para>properties with multiple values??? e.g. children, constraints</para>
+      <informaltable>
+        <thead>
+          <tr>
+            <th>C data type (Clutter/GLib)</th>
+            <th>Maps to JSON</th>
+            <th>Example (C =&gt; JSON)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>floating point number (gfloat, gdouble)</td>
+            <td>number (int frac, int exp, int frac exp)</td>
+            <td>
+              <para><code>1.0</code> =&gt; <code>1.0</code></para>
+              <para><code>1e-1</code> =&gt; <code>1e-1</code></para>
+              <para><code>1E-1</code> =&gt; <code>1E-1</code></para>
+              <para><code>0.1E-1</code> =&gt; <code>0.1E-1</code></para>
+            </td>
+          </tr>
+          <tr>
+            <td>integer (guint8, gint)</td>
+            <td>number (int)</td>
+            <td>
+              <para><code>1</code> =&gt; <code>1</code></para>
+              <para><code>0x00</code> =&gt; <code>0</code> (no hex in JSON)</para>
+              <para><code>01</code> =&gt; <code>1</code> (no octal in JSON)</para>
+            </td>
+          </tr>
+          <tr>
+            <td>gboolean</td>
+            <td>true/false</td>
+            <td>
+              <para><code>TRUE</code> =&gt; <code>true</code></para>
+              <para><code>FALSE</code> =&gt; <code>false</code></para>
+            </td>
+          </tr>
+          <tr>
+            <td>gchar</td>
+            <td>string</td>
+            <td><code>"hello world"</code> =&gt; <code>"hello world"</code></td>
+          </tr>
+          <tr>
+            <td>enum (e.g. Clutter constants)</td>
+            <td>string</td>
+            <td><code>CLUTTER_ALIGN_X_AXIS</code> =&gt;
+            <code>"CLUTTER_ALIGN_X_AXIS"</code></td>
+          </tr>
+          <tr>
+            <td>ClutterColor</td>
+            <td>color string</td>
+            <td>
+              <code>clutter_color_new (255, 0, 0, 255)</code> =&gt;
+              <code>"red"</code> or <code>"#f00f"</code> or
+              <code>"#ff0000ff"</code>; alternatively,
+              <code>"#f00"</code> or <code>"#ff0000"</code>
+              (implicitly sets alpha value to 255)
+            </td>
+          </tr>
+          <tr>
+            <td>ClutterActor (or other Clutter type)</td>
+            <td>object</td>
+            <td>
+              <code>clutter_rectangle_new ()</code> =&gt;
+              <code>{ "type" : "ClutterRectangle" }</code>
+            </td>
+          </tr>
+          <tr>
+            <td>Property which takes a list or array of values</td>
+            <td>array of objects and/or IDs</td>
+            <td>
+              <code>clutter_container_add_actor (stage, rectangle)</code> =&gt;
+              <programlisting>
+{
+  "id" : "stage",
+  "type" : "ClutterStage",
+  ...,
 
-      <para>objects as property values??? referencing by ID??? objects without IDs???</para>
+  "children" : [
+    {
+      "id" : "rectangle",
+      "type" : "ClutterRectangle",
+      ...
+    }
+  ]
+}
+              </programlisting>
+            </td>
+          </tr>
+          <tr>
+            <td><code>NULL</code></td>
+            <td><code>null</code></td>
+            <td>-</td>
+          </tr>
+        </tbody>
+      </informaltable>
+
     </section>
 
   </section>
 
   <section id="script-ui">
-    <title>Defining a user interface using <type>ClutterScript</type></title>
+    <title>Defining a user interface with JSON</title>
 
     <section>
       <title>Problem</title>
 
-      <para>???</para>
+      <para>You want to create a user interface as quickly as
+      possible; you also need to change it easily as requirements shift.</para>
+
+      <para>This need can arise when:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>you are prototyping a user interface, and you need to
+          quickly test new ideas.</para>
+        </listitem>
+        <listitem>
+          <para>the user interface you are building is likely to contain many
+          elements and relationships between them.</para>
+        </listitem>
+      </itemizedlist>
     </section>
 
     <section>
       <title>Solution</title>
 
-      <para>???</para>
-    </section>
+      <para>Define the user interface in an external JSON file. Then
+      create a <type>ClutterScript</type> object and load the JSON
+      into it from the file.</para>
 
-    <section>
-      <title>Discussion</title>
+      <para>This keeps the UI definition separate from the application
+      logic and makes it easier to manage.</para>
 
-      <para>???converting an existing program to ClutterScript</para>
-    </section>
+      <note>
+        <para>See <link linkend="script-introduction">the introduction</link>
+        for the reasons why <type>ClutterScript</type> is a good solution,
+        and for an overview of how JSON definitions work.</para>
+      </note>
 
-    <section>
-      <title>Full example</title>
+      <para>Here's an example JSON definition to put in the file:</para>
 
-      <example id="script-ui-example-1">
-        <title>Description of a user interface in JSON</title>
+      <informalexample>
         <programlisting>
 <xi:include href="examples/script-ui.json" parse="text">
   <xi:fallback>a code sample should be here... but isn't</xi:fallback>
 </xi:include>
         </programlisting>
-      </example>
+      </informalexample>
 
-      <example id="script-ui-example-2">
-        <title>Loading a JSON user interface definition in Clutter</title>
+      <para>In the application, load the JSON from the file with
+      <function>clutter_script_load_from_file()</function>. (You can
+      also load JSON from a string (<type>gchar*</type>) with
+      <function>clutter_script_load_from_data()</function>.)</para>
+
+      <para>Then retrieve objects by ID to use them in your code:</para>
+
+      <example>
+        <title>Loading JSON from a file and retrieving objects
+        defined by it</title>
         <programlisting>
 <xi:include href="examples/script-ui.c" parse="text">
   <xi:fallback>a code sample should be here... but isn't</xi:fallback>
 </xi:include>
         </programlisting>
       </example>
+
+      <para>Although we only retrieved the stage in the example above,
+      <function>clutter_script_get_objects()</function> can
+      retrieve multiple objects with a single call:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+ClutterScript *script;
+script = clutter_script_new ();
+
+/* ...load JSON file etc. */
+
+ClutterStage *stage;
+ClutterActor *actor1;
+ClutterActor *actor2;
+
+/* use a NULL-terminated argument list of id,variable pairs */
+clutter_script_get_objects (script,
+                            "stage", &stage,
+                            "actor1", &actor1,
+                            "actor2", &actor2,
+                            NULL);
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>You can also use <function>clutter_script_get_object()</function>
+      to retrieve a single object, though you may have to cast
+      it to the right type before use; for example:</para>
+
+      <informalexample>
+        <programlisting>
+ClutterStage *stage = CLUTTER_STAGE (clutter_script_get_object (script, "stage));
+        </programlisting>
+      </informalexample>
+
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>In the sample code, the stage is part of the JSON definition.
+      However, it doesn't have to be: it is possible to create the
+      stage in application code; then load more components from one
+      or more JSON definitions and attach them to the stage you
+      constructed in code.</para>
+
+      <para>However, keeping most of the user interface definition
+      in external JSON files makes it easier to change
+      the UI without having to touch any code. If you have some user
+      interface elements constructed in code and some in JSON, it can
+      make refactoring more difficult.</para>
 
     </section>
 
