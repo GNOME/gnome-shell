@@ -28,6 +28,10 @@
  * @short_description: EGL specific API
  *
  * The EGL backend for Clutter provides some EGL specific API
+ *
+ * You need to include
+ * <filename class="headerfile">&lt;clutter/egl/clutter-egl.h&gt;</filename>
+ * to have access to the functions documented here.
  */
 
 #ifndef __CLUTTER_EGL_H__
@@ -42,8 +46,6 @@
 #endif
 
 #include "clutter-egl-headers.h"
-
-#include <clutter/clutter-stage.h>
 
 G_BEGIN_DECLS
 

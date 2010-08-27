@@ -22,17 +22,19 @@
 #ifndef __CLUTTER_EGL_HEADERS_H__
 #define __CLUTTER_EGL_HEADERS_H__
 
-#ifdef HAVE_COGL_GLES2
+#include <cogl/cogl.h>
+
+#ifdef COGL_HAS_GLES2
 #include <GLES2/gl2.h>
 #include <EGL/egl.h>
-#else /* HAVE_COGL_GLES2 */
+#else /* COGL_HAS_GLES2 */
 #include <GLES/gl.h>
 #include <GLES/egl.h>
-#endif /* HAVE_COGL_GLES2 */
+#endif /* COGL_HAS_GLES2 */
 
-#ifdef HAVE_COGL_GLES2
+#ifdef COGL_HAS_GLES2
 #define NativeDisplayType EGLNativeDisplayType
 #define NativeWindowType EGLNativeWindowType
-#endif /* HAVE_COGL_GLES2 */
+#endif /* COGL_HAS_GLES2 */
 
 #endif /* __CLUTTER_EGL_HEADERS_H__ */

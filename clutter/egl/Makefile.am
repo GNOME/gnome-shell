@@ -1,5 +1,5 @@
-libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
-libclutterinclude_HEADERS = clutter-egl.h
+libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter/egl
+libclutterinclude_HEADERS = clutter-egl.h clutter-egl-headers.h
 
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterEGL\" \
