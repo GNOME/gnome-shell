@@ -94,7 +94,6 @@
   {   <co id="script-ui-introduction-json-object-bracket" />
     "id" : "stage",   <co id="script-ui-introduction-json-id" />
     "type" : "ClutterStage",   <co id="script-ui-introduction-json-type" />
-    "is-default" : true,   <co id="script-ui-introduction-json-default-stage" />
     "width" : 400,
     "height" : 400,
     "color" : "#333355ff",   <co id="script-ui-introduction-json-color-html" />
@@ -159,11 +158,6 @@
               <para>The <varname>type</varname> key is mandatory, and
               specifies the type of the object; usually this will be
               one of the Clutter object types.</para>
-            </callout>
-            <callout arearefs="script-ui-introduction-json-default-stage">
-              <para><varname>is-default</varname> is a special stage-only
-              property, which tells Clutter that the <type>ClutterStage</type>
-              instance used should be the default stage.</para>
             </callout>
             <callout arearefs="script-ui-introduction-json-color-html
             script-ui-introduction-json-color-word">

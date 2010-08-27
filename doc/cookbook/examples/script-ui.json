@@ -2,7 +2,6 @@
   {
     "id" : "stage",
     "type" : "ClutterStage",
-    "is-default" : true,
     "width" : 400,
     "height" : 400,
     "color" : "#333355ff",
