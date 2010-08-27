@@ -262,8 +262,11 @@
           <tr>
             <td>enum (e.g. Clutter constants)</td>
             <td>string</td>
-            <td><code>CLUTTER_ALIGN_X_AXIS</code> =&gt;
-            <code>"CLUTTER_ALIGN_X_AXIS"</code></td>
+            <td>
+              <code>CLUTTER_ALIGN_X_AXIS</code> =&gt;
+              <code>"CLUTTER_ALIGN_X_AXIS"</code> or <code>"x-axis"</code>
+              (the latter is the GEnum nickname for the constant)
+            </td>
           </tr>
           <tr>
             <td>ClutterColor</td>
