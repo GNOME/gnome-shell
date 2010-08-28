@@ -1836,6 +1836,12 @@ clutter_eglx_display
 </SECTION>
 
 <SECTION>
+<TITLE>Intel CE3100, CE4100 Specific Support</TITLE>
+<FILE>clutter-cex100</FILE>
+clutter_cex100_set_plane
+</SECTION>
+
+<SECTION>
 <TITLE>Stage Manager</TITLE>
 <FILE>clutter-stage-manager</FILE>
 ClutterStageManager

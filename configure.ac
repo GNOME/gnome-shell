@@ -276,8 +276,10 @@ AS_CASE([$CLUTTER_FLAVOUR],
                                  [
                                    FLAVOUR_CFLAGS="-I/usr/include/CE4100"
                                    found_gdl=yes
+                                   CLUTTER_CEX100_LIBGDL_PREFIX=CE4100/
                                  ])
                )
+          AC_SUBST(CLUTTER_CEX100_LIBGDL_PREFIX)
 
           AS_IF([test x"$found_gdl" = "xno"],
                 AC_MSG_ERROR([libgdl.h not found]))
@@ -1113,6 +1115,7 @@ AC_CONFIG_FILES([
         clutter/x11/clutter-x11.pc
         clutter/glx/Makefile
         clutter/egl/Makefile
+        clutter/egl/clutter-cex100.h
         clutter/fruity/Makefile
         clutter/osx/Makefile
         clutter/win32/Makefile

@@ -35,12 +35,37 @@
 #include "clutter-main.h"
 
 #include "clutter-backend-cex100.h"
+#include "clutter-cex100.h"
 
 static gdl_plane_id_t gdl_plane = GDL_PLANE_ID_UPP_C;
 
 G_DEFINE_TYPE (ClutterBackendCex100,
                clutter_backend_cex100,
                CLUTTER_TYPE_BACKEND_EGL)
+
+#ifdef CLUTTER_ENABLE_DEBUG
+static const gchar *
+gdl_get_plane_name (gdl_plane_id_t plane)
+{
+  switch (plane)
+    {
+    case GDL_PLANE_ID_UPP_A:
+      return "UPP_A";
+    case GDL_PLANE_ID_UPP_B:
+      return "UPP_B";
+    case GDL_PLANE_ID_UPP_C:
+      return "UPP_C";
+    case GDL_PLANE_ID_UPP_D:
+      return "UPP_D";
+    case GDL_PLANE_ID_UPP_E:
+      return "UPP_E";
+    default:
+      g_assert_not_reached ();
+    }
+
+  return NULL; /* never reached */
+}
+#endif
 
 static gboolean
 gdl_plane_init (gdl_display_id_t   dpy,
@@ -140,6 +165,8 @@ clutter_backend_cex100_create_context (ClutterBackend  *backend,
 
   if (backend_egl->egl_context != EGL_NO_CONTEXT)
     return TRUE;
+
+  CLUTTER_NOTE (BACKEND, "Using the %s plane", gdl_get_plane_name (gdl_plane));
 
   /* Start by initializing the GDL plane */
   if (!gdl_plane_init (GDL_DISPLAY_ID_0, gdl_plane, GDL_PF_ARGB_32))
@@ -329,4 +356,12 @@ GType
 _clutter_backend_impl_get_type (void)
 {
   return clutter_backend_cex100_get_type ();
+}
+
+void
+clutter_cex100_set_plane (gdl_plane_id_t plane)
+{
+  g_return_if_fail (plane >= GDL_PLANE_ID_UPP_A && plane <= GDL_PLANE_ID_UPP_E);
+
+  gdl_plane = plane;
 }

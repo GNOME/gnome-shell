@@ -27,6 +27,7 @@ stamp-marshal
 /clutter/cogl/cogl/driver/gles/cogl-defines.h
 /clutter/cogl/cogl/driver/gles/cogl-fixed-vertex-shader.[ch]
 /clutter/cogl/cogl/driver/gles/cogl-fixed-fragment-shader.[ch]
+/clutter/egl/clutter-cex100.h
 /clutter/x11/clutter-x11-enum-types.[ch]
 /clutter/json/*.gir
 /clutter/cally/cally*.pc

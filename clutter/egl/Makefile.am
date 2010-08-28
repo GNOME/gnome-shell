@@ -42,4 +42,5 @@ endif
 
 if SUPPORT_CEX100
 libclutter_egl_la_SOURCES += clutter-backend-cex100.c clutter-backend-cex100.h
+libclutterinclude_HEADERS += clutter-cex100.h
 endif
