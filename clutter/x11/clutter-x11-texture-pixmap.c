@@ -26,6 +26,7 @@
 
 /**
  * SECTION:clutter-x11-texture-pixmap
+ * @Title: ClutterX11TexturePixmap
  * @short_description: A texture which displays the content of an X Pixmap.
  *
  * #ClutterX11TexturePixmap is a class for displaying the content of an
