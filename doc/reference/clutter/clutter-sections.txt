@@ -1193,7 +1193,13 @@ clutter_x11_get_input_devices
 clutter_x11_has_xinput
 clutter_x11_enable_xinput
 
-<SUBSECTION>
+<SUBSECTION Private>
+ClutterX11XInputDevice
+ClutterX11XInputEventTypes
+</SECTION>
+
+<SECTION>
+<FILE>clutter-x11-texture-pixmap</FILE>
 ClutterX11TexturePixmap
 ClutterX11TexturePixmapClass
 clutter_x11_texture_pixmap_new
@@ -1216,8 +1222,6 @@ clutter_x11_texture_pixmap_get_type
 
 <SUBSECTION Private>
 ClutterX11TexturePixmapPrivate
-ClutterX11XInputDevice
-ClutterX11XInputEventTypes
 </SECTION>
 
 <SECTION>
