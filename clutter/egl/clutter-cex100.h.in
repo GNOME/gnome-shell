@@ -59,6 +59,33 @@ G_BEGIN_DECLS
  */
 void clutter_cex100_set_plane (gdl_plane_id_t plane);
 
+/**
+ * ClutterCex100BufferingMode:
+ * @CLUTTER_CEX100_DOUBLE_BUFFERING: The GDL plane will be double buffered
+ * @CLUTTER_CEX100_TRIPLE_BUFFERING: The GDL plane will be triple buffered
+ *
+ * Enum passed to clutter_cex100_set_buffering_mode().
+ */
+typedef enum /*< prefix=CLUTTER_CEX100 >*/
+{
+  CLUTTER_CEX100_DOUBLE_BUFFERING = 2,
+  CLUTTER_CEX100_TRIPLE_BUFFERING = 3
+} ClutterCex100BufferingMode;
+
+/**
+ * clutter_cex100_set_buffering_mode:
+ * @mode: a #ClutterCex100BufferingMode
+ *
+ * Configure the buffering mode of the underlying GDL plane. The GDL
+ * surface used by Clutter to draw can be backed up by either one or two
+ * back buffers thus being double or triple buffered, respectively.
+ *
+ * Clutter defaults to #CLUTTER_CEX100_TRIPLE_BUFFERING.
+ *
+ * <note>This function has to be called before clutter_init()</note>
+ */
+void clutter_cex100_set_buffering_mode (ClutterCex100BufferingMode mode);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_CEX100_H__ */

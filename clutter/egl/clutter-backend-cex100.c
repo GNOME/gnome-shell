@@ -38,6 +38,7 @@
 #include "clutter-cex100.h"
 
 static gdl_plane_id_t gdl_plane = GDL_PLANE_ID_UPP_C;
+static guint gdl_n_buffers = CLUTTER_CEX100_TRIPLE_BUFFERING;
 
 G_DEFINE_TYPE (ClutterBackendCex100,
                clutter_backend_cex100,
@@ -122,17 +123,8 @@ gdl_plane_init (gdl_display_id_t   dpy,
   if (rc == GDL_SUCCESS)
     rc = gdl_plane_set_attr (GDL_PLANE_DST_RECT, &dstRect);
 
-#if 0
-  /*
-   * Change the number of back buffers for the eglWindowSurface, Default
-   * value is 3, could be changed to 2, means one front buffer and one back
-   * buffer.
-   *
-   * TODO: Make a new API to tune that;
-   */
   if (rc == GDL_SUCCESS)
-    rc = gdl_plane_set_uint (GDL_PLANE_NUM_GFX_SURFACES, 2);
-#endif
+    rc = gdl_plane_set_uint (GDL_PLANE_NUM_GFX_SURFACES, gdl_n_buffers);
 
   if (rc == GDL_SUCCESS)
     rc = gdl_plane_config_end (GDL_FALSE);
@@ -364,4 +356,13 @@ clutter_cex100_set_plane (gdl_plane_id_t plane)
   g_return_if_fail (plane >= GDL_PLANE_ID_UPP_A && plane <= GDL_PLANE_ID_UPP_E);
 
   gdl_plane = plane;
+}
+
+void
+clutter_cex100_set_buffering_mode (ClutterCex100BufferingMode mode)
+{
+  g_return_if_fail (mode == CLUTTER_CEX100_DOUBLE_BUFFERING ||
+                    mode == CLUTTER_CEX100_TRIPLE_BUFFERING);
+
+  gdl_n_buffers = mode;
 }

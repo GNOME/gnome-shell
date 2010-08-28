@@ -1839,6 +1839,8 @@ clutter_eglx_display
 <TITLE>Intel CE3100, CE4100 Specific Support</TITLE>
 <FILE>clutter-cex100</FILE>
 clutter_cex100_set_plane
+ClutterCex100BufferingMode
+clutter_cex100_set_buffering_mode
 </SECTION>
 
 <SECTION>
