@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-24 14:25+0100\n"
-"PO-Revision-Date: 2010-03-24 14:26+0100\n"
+"POT-Creation-Date: 2010-08-29 19:43+0200\n"
+"PO-Revision-Date: 2010-08-29 19:43+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "MIME-Version: 1.0\n"
@@ -25,32 +25,259 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Ablakkezelés és alkalmazásindítás"
 
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
+msgid "Clock"
+msgstr "Óra"
+
+#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
+msgid "Customize the panel clock"
+msgstr "A panel órájának személyre szabása"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Belső hibakereső és megfigyelő eszközök elérésének engedélyezése az Alt-F2 "
+"ablak használatával."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Custom format of the clock"
+msgstr "Egyéni óraformátum"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Fejlesztők és tesztelők számára hasznos belső eszközök engedélyezése az Alt-"
+"F2 ablakból"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "File extension used for storing the screencast"
+msgstr "A képernyővideó tárolásához használt fájlkiterjesztés"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Framerate used for recording screencasts."
+msgstr "A képernyővideók felvételéhez használt képkockasebesség."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+"A GNOME Shell kiterjesztések rendelkeznek egy uuid tulajdonsággal; ez a "
+"kulcs felsorolja a be nem töltendő kiterjesztéseket."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for command (Alt-F2) dialog"
+msgstr "A parancsablak (Alt-F2) előzményei"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "Hour format"
+msgstr "Óraformátum"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
+"clock, in addition to time."
+msgstr ""
+"Ha igaz, és az időformátum „12-hour” vagy „24-hour”, akkor az idő mellett a "
+"dátumot is megjeleníti az óra."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid ""
+"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
+"time."
+msgstr ""
+"Ha igaz, és az időformátum „12-hour” vagy „24-hour”, akkor az időben a "
+"másodperceket is megjeleníti."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Ha be van állítva, a naptárban megjeleníti az ISO hétszámot."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "List of desktop file IDs for favorite applications"
+msgstr "A kedvenc alkalmazások asztalifájl-azonosítóinak listája"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "Overview workspace view mode"
+msgstr "Áttekintés munkaterületnézet-módja"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+msgstr ""
+"Beállítja a felvételek kódolásához használt GStreamer adatcsatornát. A gst-"
+"launch szintaxisát követi. Az adatcsatornának rendelkeznie kell egy nem "
+"csatlakoztatott nyelőkitöltővel, ahová a felvett videó felvételre kerül. "
+"Normális esetben rendelkezni fog egy nem csatlakoztatott nyelőkitöltővel, "
+"amely kitöltő kimenete a kimeneti fájlba kerül kiírásra. Azonban az "
+"adatcsatorna is kezelheti a saját kimenetét - ennek segítségével a kimenet "
+"elküldhető egy icecast kiszolgálóra a shout2send vagy hasonló segítségével. "
+"Ha nincs beállítva, vagy üres értékre van állítva, akkor az alapértelmezett "
+"adatcsatorna kerül felhasználásra. Ez jelenleg: „videorate ! theoraenc ! "
+"oggmux” és Ogg Theora formátumba rögzít."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show date in clock"
+msgstr "Dátum megjelenítése az órában"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show the week date in the calendar"
+msgstr "Hetek számának megjelenítése a naptárban"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "Show time with seconds"
+msgstr "Másodpercek megjelenítése"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Az itt felsorolt azonosítóknak megfelelő alkalmazások jelennek meg a "
+"kedvencek területen."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"A rögzített képernyővideók fájlneve az aktuális dátumon alapuló egyedi "
+"névvel, és ezzel a kiterjesztéssel fog rendelkezni. Más tárolóformátumba "
+"való rögzítéskor módosítani kell."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"A GNOME Shell képernyőfelvevője által felvett eredményül kapott "
+"képernyővideó képkockasebessége képkocka/másodpercben."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "A képernyővideó kódolására használt GStreamer adatcsatorna"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid ""
+"The selected workspace view mode in the overview. Supported values are "
+"\"single\" and \"grid\"."
+msgstr ""
+"Az áttekintésben kiválasztott munkaterületnézet-mód. A támogatott értékek a "
+"„single” és a „grid”."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"A Shell általában figyeli az aktív alkalmazásokat a legtöbbet használtak "
+"megjelenítése érdekében (például az indítóikonokban). Noha ezek az adatok "
+"titkosak maradnak, magánszférájának védelme érdekében letilthatja ezek "
+"gyűjtését. Ne feledje, hogy ez nem fogja a már mentett adatokat törölni."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid ""
+"This key specifies the format used by the panel clock when the format key is "
+"set to \"custom\". You can use conversion specifiers understood by strftime"
+"() to obtain a specific format. See the strftime() manual for more "
+"information."
+msgstr ""
+"Ez a kulcs megadja a panelóra által használt formátumot, ha a format kulcs "
+"értéke „custom”. Használhat a strftime() által értelmezhető konverziós "
+"előírásokat speciális formátumok előállításához. További információkért "
+"tekintse meg az strftime() kézikönyvét."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
+msgid ""
+"This key specifies the hour format used by the panel clock. Possible values "
+"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
+"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
+"to \"custom\", the clock will display time according to the format specified "
+"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
+"the show_date and show_seconds keys are ignored."
+msgstr ""
+"Ez a kulcs megadja a panelóra által használt időformátumot. Lehetséges "
+"értékek: „12-hour” (12 órás), „24-hour” (24 órás), „unix” és "
+"„custom” (egyéni). Ha az érték „unix”, az óra az 1970-01-01 óta eltelt időt "
+"mutatja másodpercekben. Ha az érték „custom”, az óra a custom_format "
+"kulcsban megadott formátumnak megfelelően fogja az időt mutatni. Ne feledje, "
+"hogy ha a „unix” vagy „custom” egyikének használata esetén a show_date és "
+"show_seconds kulcsok figyelmen kívül maradnak."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
+msgid "Uuids of extensions to disable"
+msgstr "Letiltandó kiterjesztések uuid-jei"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:27
+msgid "Whether to collect stats about applications usage"
+msgstr "Statisztikák gyűjtése alkalmazások használatáról"
+
+#: ../data/clock-preferences.ui.h:1
+msgid "Clock Format"
+msgstr "Óraformátum"
+
+#: ../data/clock-preferences.ui.h:2
+msgid "Clock Preferences"
+msgstr "Óra beállításai"
+
+#: ../data/clock-preferences.ui.h:3
+msgid "Panel Display"
+msgstr "Megjelenés a panelen"
+
+#: ../data/clock-preferences.ui.h:4
+msgid "Show seco_nds"
+msgstr "_Másodpercek megjelenítése"
+
+#: ../data/clock-preferences.ui.h:5
+msgid "Show the _date"
+msgstr "Dát_um megjelenítése"
+
+#: ../data/clock-preferences.ui.h:6
+msgid "_12 hour format"
+msgstr "_12 órás formátum"
+
+#: ../data/clock-preferences.ui.h:7
+msgid "_24 hour format"
+msgstr "2_4 órás formátum"
+
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:311 ../js/ui/dash.js:852
+#: ../js/ui/appDisplay.js:384 ../js/ui/dash.js:778
 msgid "APPLICATIONS"
 msgstr "ALKALMAZÁSOK"
 
-#: ../js/ui/appDisplay.js:343
+#: ../js/ui/appDisplay.js:416
 msgid "PREFERENCES"
 msgstr "BEÁLLÍTÁSOK"
 
-#: ../js/ui/appDisplay.js:729
+#: ../js/ui/appDisplay.js:721
 msgid "New Window"
 msgstr "Új ablak"
 
-#: ../js/ui/appDisplay.js:733
+#: ../js/ui/appDisplay.js:725
 msgid "Remove from Favorites"
 msgstr "Eltávolítás a Kedvencek közül"
 
-#: ../js/ui/appDisplay.js:734
+#: ../js/ui/appDisplay.js:726
 msgid "Add to Favorites"
 msgstr "Hozzáadás a Kedvencekhez"
 
-#: ../js/ui/appDisplay.js:1086
+#: ../js/ui/appDisplay.js:1033
 msgid "Drag here to add favorites"
 msgstr "Ide húzással kedvenceket vehet fel"
 
-#: ../js/ui/appFavorites.js:89
+#: ../js/ui/appFavorites.js:88
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s felvéve a Kedvencek közé."
@@ -60,189 +287,235 @@ msgstr "%s felvéve a Kedvencek közé."
 msgid "%s has been removed from your favorites."
 msgstr "%s eltávolítva a Kedvencek közül"
 
-#: ../js/ui/dash.js:194
+#: ../js/ui/dash.js:142
 msgid "Find"
 msgstr "Keresés"
 
-#: ../js/ui/dash.js:507
+#: ../js/ui/dash.js:473
 msgid "Searching..."
 msgstr "Keresés…"
 
-#: ../js/ui/dash.js:521
+#: ../js/ui/dash.js:487
 msgid "No matching results."
 msgstr "Nincs találat."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:871 ../js/ui/placeDisplay.js:580
+#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
 msgid "PLACES & DEVICES"
 msgstr "HELYEK ÉS ESZKÖZÖK"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:878 ../js/ui/docDisplay.js:488
+#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "LEGUTÓBBI ELEMEK"
 
-#: ../js/ui/lookingGlass.js:363
+#: ../js/ui/lookingGlass.js:552
 msgid "No extensions installed"
 msgstr "Nincsenek kiterjesztések telepítve"
 
-#: ../js/ui/lookingGlass.js:400
+#: ../js/ui/lookingGlass.js:589
 msgid "Enabled"
 msgstr "Engedélyezve"
 
-#: ../js/ui/lookingGlass.js:402
+#: ../js/ui/lookingGlass.js:591
 msgid "Disabled"
 msgstr "Tiltva"
 
-#: ../js/ui/lookingGlass.js:404
+#: ../js/ui/lookingGlass.js:593
 msgid "Error"
 msgstr "Hiba"
 
-#: ../js/ui/lookingGlass.js:406
+#: ../js/ui/lookingGlass.js:595
 msgid "Out of date"
 msgstr "Elavult"
 
-#: ../js/ui/lookingGlass.js:431
+#: ../js/ui/lookingGlass.js:620
 msgid "View Source"
 msgstr "Forrás megtekintése"
 
-#: ../js/ui/lookingGlass.js:437
+#: ../js/ui/lookingGlass.js:626
 msgid "Web Page"
 msgstr "Weblap"
 
-#: ../js/ui/overview.js:182
+#: ../js/ui/overview.js:160
 msgid "Undo"
 msgstr "Visszavonás"
 
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:385
-msgid "Activities"
-msgstr "Tevékenységek"
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:473
+#, c-format
+msgid "Quit %s"
+msgstr "%s bezárása"
 
-#. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:616
+#: ../js/ui/panel.js:498
+msgid "Preferences"
+msgstr "Beállítások"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:584
+msgid "%a %b %e, %R:%S"
+msgstr "%a %b %e, %k.%M.%S"
+
+#: ../js/ui/panel.js:585
+msgid "%a %b %e, %R"
+msgstr "%a %b %e, %k.%M"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/panel.js:589
+msgid "%a %R:%S"
+msgstr "%a %k.%M.%S"
+
+#: ../js/ui/panel.js:590
 msgid "%a %R"
-msgstr "%a %R"
+msgstr "%a %k.%M"
 
-#. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:619
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/panel.js:597
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a %b %e, %p %l.%M.%S"
+
+#: ../js/ui/panel.js:598
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a %b %e, %p %l.%M"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/panel.js:602
+msgid "%a %l:%M:%S %p"
+msgstr "%a, %p %l.%M.%S"
+
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M %p"
 msgstr "%a, %p %l.%M"
 
-#: ../js/ui/placeDisplay.js:103
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:748
+msgid "Activities"
+msgstr "Tevékenységek"
+
+#: ../js/ui/placeDisplay.js:111
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "„%s” leválasztása meghiúsult"
 
-#: ../js/ui/placeDisplay.js:106
+#: ../js/ui/placeDisplay.js:114
 msgid "Retry"
 msgstr "Újra"
 
-#: ../js/ui/placeDisplay.js:151
+#: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
 msgstr "Kapcsolódás…"
 
-#: ../js/ui/runDialog.js:232
+#. Translators: the "ON" and "OFF" strings are used in the
+#. toggle switches in the status area menus, and must be SHORT.
+#. If you don't have suitable short words, consider initials,
+#. "0"/"1", "⚪"/"⚫", etc.
+#: ../js/ui/popupMenu.js:30 ../js/ui/popupMenu.js:40
+msgid "ON"
+msgstr "BE"
+
+#: ../js/ui/popupMenu.js:31 ../js/ui/popupMenu.js:45
+msgid "OFF"
+msgstr "KI"
+
+#: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
 msgstr "Adjon meg egy parancsot:"
 
-#: ../js/ui/runDialog.js:376
+#: ../js/ui/runDialog.js:378
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "„%s” végrehajtása meghiúsult:"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:91
 msgid "Available"
 msgstr "Elérhető"
 
-#: ../js/ui/statusMenu.js:112
+#: ../js/ui/statusMenu.js:95
 msgid "Busy"
 msgstr "Elfoglalt"
 
-#: ../js/ui/statusMenu.js:117
+#: ../js/ui/statusMenu.js:99
 msgid "Invisible"
 msgstr "Láthatatlan"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:106
 msgid "Account Information..."
 msgstr "Fiókinformációk…"
 
-#: ../js/ui/statusMenu.js:132
-msgid "Sidebar"
-msgstr "Oldalsáv"
-
-#: ../js/ui/statusMenu.js:142
+#: ../js/ui/statusMenu.js:110
 msgid "System Preferences..."
 msgstr "Rendszerbeállítások…"
 
-#: ../js/ui/statusMenu.js:151
+#: ../js/ui/statusMenu.js:117
 msgid "Lock Screen"
 msgstr "Képernyő zárolása"
 
-#: ../js/ui/statusMenu.js:156
+#: ../js/ui/statusMenu.js:121
 msgid "Switch User"
 msgstr "Felhasználóváltás"
 
-#: ../js/ui/statusMenu.js:162
+#: ../js/ui/statusMenu.js:126
 msgid "Log Out..."
 msgstr "Kijelentkezés…"
 
-#: ../js/ui/statusMenu.js:167
+#: ../js/ui/statusMenu.js:130
 msgid "Shut Down..."
 msgstr "Leállítás…"
 
-#. Translators: This is a time format.
-#: ../js/ui/widget.js:163
-msgid "%H:%M"
-msgstr "%k.%M"
-
-#: ../js/ui/widget.js:317
-msgid "Applications"
-msgstr "Alkalmazások"
-
-#: ../js/ui/widget.js:339
-msgid "Recent Documents"
-msgstr "Legutóbbi dokumentumok"
-
-#: ../js/ui/windowAttentionHandler.js:47
+#: ../js/ui/windowAttentionHandler.js:43
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s indítása befejeződött"
 
-#: ../js/ui/windowAttentionHandler.js:49
+#: ../js/ui/windowAttentionHandler.js:45
 #, c-format
 msgid "'%s' is ready"
 msgstr "„%s” kész"
 
-#: ../src/shell-global.c:967
+#: ../js/ui/workspacesView.js:230
+msgid ""
+"Can't add a new workspace because maximum workspaces limit has been reached."
+msgstr ""
+"Nem vehető fel új munkaterület, mert már elérte a munkaterületek számának "
+"felső korlátját."
+
+#: ../js/ui/workspacesView.js:247
+msgid "Can't remove the first workspace."
+msgstr "Az első munkaterület nem távolítható el."
+
+#: ../src/shell-global.c:1105
 msgid "Less than a minute ago"
 msgstr "Kevesebb, mint egy perce"
 
-#: ../src/shell-global.c:971
+#: ../src/shell-global.c:1109
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d perce"
 msgstr[1] "%d perce"
 
-#: ../src/shell-global.c:976
+#: ../src/shell-global.c:1114
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d órája"
 msgstr[1] "%d órája"
 
-#: ../src/shell-global.c:981
+#: ../src/shell-global.c:1119
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d napja"
 msgstr[1] "%d napja"
 
-#: ../src/shell-global.c:986
+#: ../src/shell-global.c:1124
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -272,4 +545,3 @@ msgstr "Oldalsáv"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
