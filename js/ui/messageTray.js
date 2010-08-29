@@ -96,6 +96,7 @@ Notification.prototype = {
         this.urgent = false;
         this._customContent = false;
         this._bannerBodyText = null;
+        this._titleFitsInBannerMode = true;
         this._spacing = 0;
 
         this._hasFocus = false;
@@ -197,7 +198,8 @@ Notification.prototype = {
                                      col: 0,
                                      x_expand: false,
                                      y_expand: false,
-                                     y_fill: false });
+                                     y_fill: false,
+                                     y_align: St.Align.START });
 
         title = title ? _cleanMarkup(title.replace(/\n/g, ' ')) : '';
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
@@ -377,6 +379,7 @@ Notification.prototype = {
         titleBox.x2 = Math.min(titleNatW, availWidth);
         titleBox.y2 = titleNatH;
         this._titleLabel.allocate(titleBox, flags);
+        this._titleFitsInBannerMode = (titleNatW <= availWidth);
 
         let bannerFits = true;
         if (titleBox.x2 + this._spacing > availWidth) {
@@ -405,21 +408,43 @@ Notification.prototype = {
     },
 
     popOut: function(animate) {
-        if (this.actor.row_count <= 1)
-            return false;
+        // The banner is never shown when the title did not fit, so this
+        // can be an if-else statement.
+        if (!this._titleFitsInBannerMode) {
+            // Remove ellipsization from the title label and make it wrap so that
+            // we show the full title when the notification is expanded.
+            this._titleLabel.clutter_text.line_wrap = true;
+            this._titleLabel.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
+            this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            return true;
+        } else if (this.actor.row_count > 1) {
+            // We always hide the banner if the notification has additional content.
+            //
+            // We don't need to wrap the banner that doesn't fit the way we wrap the
+            // title that doesn't fit because we won't have a notification with
+            // row_count=1 that has a banner that doesn't fully fit. We'll either add
+            // that banner to the content of the notification in _bannerBoxAllocate()
+            // or the notification will have custom content.
+            if (animate)
+                Tweener.addTween(this._bannerLabel,
+                                 { opacity: 0,
+                                   time: ANIMATION_TIME,
+                                   transition: 'easeOutQuad' });
+            else
+                this._bannerLabel.opacity = 0;
 
-        if (animate)
-            Tweener.addTween(this._bannerLabel,
-                             { opacity: 0,
-                               time: ANIMATION_TIME,
-                               transition: 'easeOutQuad' });
-        else
-            this._bannerLabel.opacity = 0;
+            return true;
+        }
 
-        return true;
+        return false;
     },
 
     popInCompleted: function() {
+        // Make sure we don't line wrap the title, and ellipsize it instead.
+        this._titleLabel.clutter_text.line_wrap = false;
+        this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+        // Restore banner opacity in case the notification is shown in the
+        // banner mode again on update.
         this._bannerLabel.opacity = 255;
     },
 
