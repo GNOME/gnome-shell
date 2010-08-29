@@ -379,26 +379,23 @@ Notification.prototype = {
                                         }));
     },
 
-    popOut: function() {
+    popOut: function(animate) {
         if (this.actor.row_count <= 1)
             return false;
 
-        Tweener.addTween(this._bannerLabel,
-                         { opacity: 0,
-                           time: ANIMATION_TIME,
-                           transition: 'easeOutQuad' });
+        if (animate)
+            Tweener.addTween(this._bannerLabel,
+                             { opacity: 0,
+                               time: ANIMATION_TIME,
+                               transition: 'easeOutQuad' });
+        else
+            this._bannerLabel.opacity = 0;
+
         return true;
     },
 
-    popIn: function() {
-        if (this.actor.row_count <= 1)
-            return false;
-
-        Tweener.addTween(this._bannerLabel,
-                         { opacity: 255,
-                           time: ANIMATION_TIME,
-                           transition: 'easeOutQuad' });
-        return true;
+    popInCompleted: function() {
+        this._bannerLabel.opacity = 255;
     },
 
     grabFocus: function(lockTray) {
@@ -1241,7 +1238,6 @@ MessageTray.prototype = {
 
     _hideNotification: function() {
         this._notification.ungrabFocus();
-        this._notification.popIn();
 
         if (this._reExpandNotificationId) {
             this._notificationBin.disconnect(this._reExpandNotificationId);
@@ -1262,11 +1258,12 @@ MessageTray.prototype = {
         this._notificationRemoved = false;
         this._notificationBin.hide();
         this._notificationBin.child = null;
+        this._notification.popInCompleted();
         this._notification = null;
     },
 
     _expandNotification: function() {
-        if (this._notification && this._notification.popOut()) {
+        if (this._notification && this._notification.popOut(true)) {
             // Don't grab focus in urgent notifications that are auto-expanded.
             if (!this._notification.urgent)
                 this._notification.grabFocus(false);
@@ -1335,7 +1332,7 @@ MessageTray.prototype = {
             this._notificationQueue.splice(index, 1);
 
         this._summaryNotificationBin.child = this._summaryNotification.actor;
-        this._summaryNotification.popOut();
+        this._summaryNotification.popOut(false);
         this._summaryNotification.grabFocus(true);
 
         this._summaryNotificationBin.opacity = 0;
@@ -1366,7 +1363,6 @@ MessageTray.prototype = {
         if (this._summaryState != State.SHOWN)
             this._clickedSummaryItem = null;
         this._summaryNotification.ungrabFocus();
-        this._summaryNotification.popIn();
 
         this._tween(this._summaryNotificationBin, '_summaryNotificationState', State.HIDDEN,
                     { y: this.actor.height,
@@ -1386,6 +1382,7 @@ MessageTray.prototype = {
     _hideSummaryNotificationCompleted: function() {
         this._summaryNotificationBin.hide();
         this._summaryNotificationBin.child = null;
+        this._summaryNotification.popInCompleted();
         this._summaryNotification = null;
     }
 };
