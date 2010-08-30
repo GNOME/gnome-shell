@@ -15,7 +15,9 @@ function BaseIcon(label, createIcon) {
 }
 
 BaseIcon.prototype = {
-    _init : function(label, createIcon) {
+    _init : function(label, params) {
+        params = Params.parse(params, { createIcon: null,
+                                        setSizeManually: false });
         this.actor = new St.Bin({ style_class: 'overview-icon',
                                   x_fill: true,
                                   y_fill: true });
@@ -35,8 +37,9 @@ BaseIcon.prototype = {
         this._name = new St.Label({ text: label });
         box.add_actor(this._name);
 
-        if (createIcon)
-            this.createIcon = createIcon;
+        if (params.createIcon)
+            this.createIcon = params.createIcon;
+        this._setSizeManually = params.setSizeManually;
 
         this.icon = this.createIcon(this.iconSize);
         this._iconBin.set_child(this.icon);
@@ -48,17 +51,29 @@ BaseIcon.prototype = {
         throw new Error('no implementation of createIcon in ' + this);
     },
 
-    _onStyleChanged: function() {
-        let node = this.actor.get_theme_node();
-        let [success, len] = node.get_length('icon-size', false);
-        if (success) {
-            if (len == this.iconSize)
-                return;
+    setIconSize: function(size) {
+        if (!this._setSizeManually)
+            throw new Error('setSizeManually has to be set to use setIconsize');
 
-            this.icon.destroy();
-            this.iconSize = len;
-            this.icon = this.createIcon(this.iconSize);
-            this._iconBin.set_child(this.icon);
+        this._setIconSize(size);
+    },
+
+    _setIconSize: function(size) {
+        if (size == this.iconSize)
+            return;
+
+        this.icon.destroy();
+        this.iconSize = size;
+        this.icon = this.createIcon(this.iconSize);
+        this._iconBin.child = this.icon;
+    },
+
+    _onStyleChanged: function() {
+        if (!this._setSizeManually) {
+            let node = this.actor.get_theme_node();
+            let [success, len] = node.get_length('icon-size', false);
+            if (success)
+                this._setIconSize(len);
         }
     }
 };
