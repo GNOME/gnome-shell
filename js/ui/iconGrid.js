@@ -22,17 +22,23 @@ BaseIcon.prototype = {
                                   x_fill: true,
                                   y_fill: true });
         this.actor._delegate = this;
-
         this.actor.connect('style-changed',
                            Lang.bind(this, this._onStyleChanged));
 
-        let box = new St.BoxLayout({ vertical: true });
+        this._spacing = 0;
+
+        let box = new Shell.GenericContainer();
+        box.connect('allocate', Lang.bind(this, this._allocate));
+        box.connect('get-preferred-width',
+                    Lang.bind(this, this._getPreferredWidth));
+        box.connect('get-preferred-height',
+                    Lang.bind(this, this._getPreferredHeight));
         this.actor.set_child(box);
 
         this.iconSize = ICON_SIZE;
         this._iconBin = new St.Bin();
 
-        box.add(this._iconBin, { expand: true, x_fill: false, y_fill: false });
+        box.add_actor(this._iconBin);
 
         this._name = new St.Label({ text: label });
         box.add_actor(this._name);
@@ -43,6 +49,44 @@ BaseIcon.prototype = {
 
         this.icon = this.createIcon(this.iconSize);
         this._iconBin.set_child(this.icon);
+    },
+
+    _allocate: function(actor, box, flags) {
+        let availWidth = box.x2 - box.x1;
+        let availHeight = box.y2 - box.y1;
+
+        let [labelMinHeight, labelNatHeight] = this._name.get_preferred_height(-1);
+        let [iconMinHeight, iconNatHeight] = this._iconBin.get_preferred_height(-1);
+        let preferredHeight = labelNatHeight + this._spacing + iconNatHeight;
+        let labelHeight = availHeight >= preferredHeight ? labelNatHeight
+                                                         : labelMinHeight;
+        let iconSize = availHeight - this._spacing - labelHeight;
+        let iconPadding = (availWidth - iconSize) / 2;
+
+        let childBox = new Clutter.ActorBox();
+
+        childBox.x1 = iconPadding;
+        childBox.y1 = 0;
+        childBox.x2 = availWidth - iconPadding;
+        childBox.y2 = iconSize;
+        this._iconBin.allocate(childBox, flags);
+
+        childBox.x1 = 0;
+        childBox.x2 = availWidth;
+        childBox.y1 = iconSize + this._spacing;
+        childBox.y2 = childBox.y1 + labelHeight;
+        this._name.allocate(childBox, flags);
+    },
+
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        this._getPreferredHeight(actor, -1, alloc);
+    },
+
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        let [iconMinHeight, iconNatHeight] = this._iconBin.get_preferred_height(forWidth);
+        let [labelMinHeight, labelNatHeight] = this._name.get_preferred_height(forWidth);
+        alloc.min_size = iconMinHeight + this._spacing + labelMinHeight;
+        alloc.natural_size = iconNatHeight + this._spacing + labelNatHeight;
     },
 
     // This can be overridden by a subclass, or by the createIcon
@@ -69,12 +113,19 @@ BaseIcon.prototype = {
     },
 
     _onStyleChanged: function() {
-        if (!this._setSizeManually) {
-            let node = this.actor.get_theme_node();
-            let [success, len] = node.get_length('icon-size', false);
-            if (success)
-                this._setIconSize(len);
-        }
+        let success, len;
+        let node = this.actor.get_theme_node();
+
+        [success, len] = node.get_length('spacing', false);
+        if (success)
+            this._spacing = spacing;
+
+        if (this._setSizeManually)
+            return;
+
+        [success, len] = node.get_length('icon-size', false);
+        if (success)
+            this._setIconSize(len);
     }
 };
 
