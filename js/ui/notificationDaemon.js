@@ -238,8 +238,7 @@ NotificationDaemon.prototype = {
         if (notification == null) {
             id = nextNotificationId++;
             notification = new MessageTray.Notification(source, summary, body,
-                                                        { bannerBody: true,
-                                                          icon: iconActor });
+                                                        { icon: iconActor });
             this._currentNotifications[id] = notification;
             notification.connect('dismissed', Lang.bind(this,
                 function(n) {

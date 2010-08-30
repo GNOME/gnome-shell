@@ -45,31 +45,47 @@ function _cleanMarkup(text) {
 // @banner: the banner text
 // @params: optional additional params
 //
-// Creates a notification. In banner mode, it will show an
-// icon, @title (in bold) and @banner, all on a single line
-// (with @banner ellipsized if necessary).
+// Creates a notification. In the banner mode, the notification
+// will show an icon, @title (in bold) and @banner, all on a single
+// line (with @banner ellipsized if necessary).
+//
+// The notification will be expandable if either it has additional
+// elements that were added to it or if the @banner text did not
+// fit fully in the banner mode. When the notification is expanded,
+// the @banner text from the top line is always removed. The complete
+// @banner text is added as the first element in the content section,
+// unless 'customContent' parameter with the value 'true' is specified
+// in @params.
+//
+// Additional notification content can be added with addActor() and
+// addBody() methods. The notification content is put inside a
+// scrollview, so if it gets too tall, the notification will scroll
+// rather than continue to grow. In addition to this main content
+// area, there is also a single-row action area, which is not
+// scrolled and can contain a single actor. The action area can
+// be set by calling setActionArea() method. There is also a
+// convenience method addButton() for adding a button to the action
+// area.
+//
+// @params can contain values for 'customContent', 'body', 'icon',
+// and 'clear' parameters.
+//
+// If @params contains a 'customContent' parameter with the value %true,
+// then @banner will not be shown in the body of the notification when the
+// notification is expanded and calls to update() will not clear the content
+// unless 'clear' parameter with value %true is explicitly specified.
+//
+// If @params contains a 'body' parameter, then that text will be added to
+// the content area (as with addBody()).
 //
 // By default, the icon shown is created by calling
-// source.createNotificationIcon(). However, you can override this
-// by passing an 'icon' parameter in @params.
+// source.createNotificationIcon(). However, if @params contains an 'icon'
+// parameter, the passed in icon will be used.
 //
-// Additional notification details can be added, in which case the
-// notification can be expanded by moving the pointer into it. In
-// expanded mode, the banner text disappears, and there can be one or
-// more rows of additional content. This content is put inside a
-// scrollview, so if it gets too tall, the notification will scroll
-// rather than continuing to grow. In addition to this main content
-// area, there is also a single-row "action area", which is not
-// scrolled and can contain a single actor. There are also convenience
-// methods for creating a button box in the action area.
-//
-// If @params contains a 'body' parameter, that text will be displayed
-// in the body area (as with addBody()). Alternatively, if it includes
-// a 'bannerBody' parameter with the value %true, then @banner will
-// also be used as the body of the notification when the banner is
-// expanded. In this case, if @banner is too long to fit in the
-// single-line mode, the notification will be made expandable
-// automatically.
+// If @params contains a 'clear' parameter with the value %true, then
+// the content and the action area of the notification will be cleared.
+// The content area is also always cleared if 'customContent' is false
+// because it might contain the @banner that didn't fit in the banner mode.
 function Notification(source, title, banner, params) {
     this._init(source, title, banner, params);
 }
@@ -78,7 +94,8 @@ Notification.prototype = {
     _init: function(source, title, banner, params) {
         this.source = source;
         this.urgent = false;
-        this._bannerBody = false;
+        this._customContent = false;
+        this._bannerBodyText = null;
         this._spacing = 0;
 
         this._hasFocus = false;
@@ -152,14 +169,19 @@ Notification.prototype = {
     // the title/banner. If @params.clear is %true, it will also
     // remove any additional actors/action buttons previously added.
     update: function(title, banner, params) {
-        params = Params.parse(params, { bannerBody: this._bannerBody,
+        params = Params.parse(params, { customContent: false,
                                         body: null,
                                         icon: null,
                                         clear: false });
 
+        this._customContent = params.customContent;
+
         if (this._icon)
             this._icon.destroy();
-        if (this._scrollArea && (this._bannerBody || params.clear)) {
+        // We always clear the content area if we don't have custom
+        // content because it might contain the @banner that didn't
+        // fit in the banner mode.
+        if (this._scrollArea && (!this._customContent || params.clear)) {
             this._scrollArea.destroy();
             this._scrollArea = null;
             this._contentArea = null;
@@ -169,8 +191,6 @@ Notification.prototype = {
             this._actionArea = null;
             this._buttonBox = null;
         }
-
-        this._bannerBody = params.bannerBody;
 
         this._icon = params.icon || this.source.createNotificationIcon();
         this.actor.add(this._icon, { row: 0,
@@ -182,10 +202,11 @@ Notification.prototype = {
         title = title ? _cleanMarkup(title.replace(/\n/g, ' ')) : '';
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
 
-        if (this._bannerBody)
-            this._bannerBodyText = banner;
-        else
-            this._bannerBodyText = null;
+        // Unless the notification has custom content, we save this._bannerBodyText
+        // to add it to the content of the notification if the notification is
+        // expandable due to other elements in its content area or due to the banner
+        // not fitting fully in the single-line mode.
+        this._bannerBodyText = this._customContent ? null : banner;
 
         banner = banner ? _cleanMarkup(banner.replace(/\n/g, '  ')) : '';
         this._bannerLabel.clutter_text.set_markup(banner);
@@ -194,7 +215,8 @@ Notification.prototype = {
         // Add the bannerBody now if we know for sure we'll need it
         if (this._bannerBodyText && this._bannerBodyText.indexOf('\n') > -1)
             this._addBannerBody();
-        else if (params.body)
+
+        if (params.body)
             this.addBody(params.body);
     },
 
@@ -213,6 +235,9 @@ Notification.prototype = {
             this._contentArea = new St.BoxLayout({ name: 'notification-body',
                                                    vertical: true });
             this._scrollArea.add_actor(this._contentArea);
+            // If we know the notification will be expandable, we need to add
+            // the banner text to the body as the first element.
+            this._addBannerBody();
         }
 
         this._contentArea.add(actor);
@@ -238,8 +263,11 @@ Notification.prototype = {
     },
 
     _addBannerBody: function() {
-        this.addBody(this._bannerBodyText);
-        this._bannerBodyText = null;
+        if (this._bannerBodyText) {
+            let text = this._bannerBodyText;
+            this._bannerBodyText = null;
+            this.addBody(text);
+        }
     },
 
     // scrollTo:
@@ -294,8 +322,6 @@ Notification.prototype = {
     // %action-invoked signal with @id as a parameter
     addButton: function(id, label) {
         if (!this._buttonBox) {
-            if (this._bannerBodyText)
-                this._addBannerBody();
 
             let box = new St.BoxLayout({ name: 'notification-actions' });
             this.setActionArea(box, { x_expand: false,
@@ -367,11 +393,10 @@ Notification.prototype = {
             this._bannerLabel.allocate(bannerBox, flags);
         }
 
-        // If the banner doesn't fully fit in the banner box and this._bannerBodyText is
-        // true (meaning this._bannerBody is true and we haven't yet added the banner
-        // to the body), we need to add the banner to the body. We can't do that from
-        // here though since that will force a relayout, so we add it to the main loop.
-        if (!bannerFits && this._bannerBodyText)
+        // If the banner doesn't fully fit in the banner box, we possibly need to add the
+        // banner to the body. We can't do that from here though since that will force a
+        // relayout, so we add it to the main loop.
+        if (!bannerFits)
             Mainloop.idle_add(Lang.bind(this,
                                         function() {
                                             this._addBannerBody();

@@ -579,7 +579,7 @@ Notification.prototype = {
     __proto__:  MessageTray.Notification.prototype,
 
     _init: function(source) {
-        MessageTray.Notification.prototype._init.call(this, source, source.title);
+        MessageTray.Notification.prototype._init.call(this, source, source.title, null, { customContent: true });
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response' });
         this._responseEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
@@ -590,9 +590,9 @@ Notification.prototype = {
 
     appendMessage: function(text, asTitle) {
         if (asTitle)
-            this.update(text);
+            this.update(text, null, { customContent: true });
         else
-            this.update(this.source.title, text);
+            this.update(this.source.title, text, { customContent: true });
         this._append(text, 'chat-received');
     },
 

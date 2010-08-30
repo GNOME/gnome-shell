@@ -70,7 +70,7 @@ WindowAttentionHandler.prototype = {
             source.connect('destroy', Lang.bind(this, function() { delete this._sources[appId]; }));
         }
 
-        let notification = new MessageTray.Notification(source, this._getTitle(app, window), this._getBanner(app, window), { bannerBody: true });
+        let notification = new MessageTray.Notification(source, this._getTitle(app, window), this._getBanner(app, window));
         source.notify(notification);
 
         window.connect('notify::title', Lang.bind(this, function(win) {
