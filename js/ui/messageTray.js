@@ -18,6 +18,7 @@ const NOTIFICATION_TIMEOUT = 4;
 const SUMMARY_TIMEOUT = 1;
 
 const HIDE_TIMEOUT = 0.2;
+const LONGER_HIDE_TIMEOUT = 0.6;
 
 const BUTTON_ICON_SIZE = 36;
 
@@ -852,6 +853,7 @@ MessageTray.prototype = {
 
         this._trayState = State.HIDDEN;
         this._locked = false;
+        this._useLongerTrayLeftTimeout = false;
         this._trayLeftTimeoutId = 0;
         this._pointerInTray = false;
         this._summaryState = State.HIDDEN;
@@ -1089,23 +1091,52 @@ MessageTray.prototype = {
 
     _onTrayHoverChanged: function() {
         if (this.actor.hover) {
+            // Don't do anything if the one pixel area at the bottom is hovered over while the tray is hidden.
+            if (this._trayState == State.HIDDEN)
+                return;
+
+            // Don't do anything if this._useLongerTrayLeftTimeout is true, meaning the notification originally
+            // popped up under the pointer, but this._trayLeftTimeoutId is 0, meaning the pointer didn't leave
+            // the tray yet. We need to check for this case because sometimes _onTrayHoverChanged() gets called
+            // multiple times while this.actor.hover is true.
+            if (this._useLongerTrayLeftTimeout && !this._trayLeftTimeoutId)
+                return;
+
+            this._useLongerTrayLeftTimeout = false;
             if (this._trayLeftTimeoutId) {
                 Mainloop.source_remove(this._trayLeftTimeoutId);
                 this._trayLeftTimeoutId = 0;
                 return;
             }
 
+            if (this._showNotificationMouseX >= 0) {
+                let actorAtShowNotificationPosition =
+                    global.stage.get_actor_at_pos(Clutter.PickMode.ALL, this._showNotificationMouseX, this._showNotificationMouseY);
+                this._showNotificationMouseX = -1;
+                this._showNotificationMouseY = -1;
+                // Don't set this._pointerInTray to true if the pointer was initially in the area where the notification
+                // popped up. That way we will not be expanding notifications that happen to pop up over the pointer
+                // automatically. Instead, the user is able to expand the notification by mousing away from it and then
+                // mousing back in. Because this is an expected action, we set the boolean flag that indicates that a longer
+                // timeout should be used before popping down the notification.
+                if (this._notificationBin.contains(actorAtShowNotificationPosition)) {
+                    this._useLongerTrayLeftTimeout = true;
+                    return;
+                }
+            }
             this._pointerInTray = true;
             this._updateState();
         } else {
-            // We wait just a little before hiding the message tray in case the
-            // user quickly moves the mouse back into it.
-            let timeout = HIDE_TIMEOUT * 1000;
+            // We wait just a little before hiding the message tray in case the user quickly moves the mouse back into it.
+            // We wait for a longer period if the notification popped up where the mouse pointer was already positioned.
+            // That gives the user more time to mouse away from the notification and mouse back in in order to expand it.
+            let timeout = this._useLongerHideTimeout ? LONGER_HIDE_TIMEOUT * 1000 : HIDE_TIMEOUT * 1000;
             this._trayLeftTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._onTrayLeftTimeout));
         }
     },
 
     _onTrayLeftTimeout: function() {
+        this._useLongerTrayLeftTimeout = false;
         this._trayLeftTimeoutId = 0;
         this._pointerInTray = false;
         this._pointerInSummary = false;
@@ -1258,6 +1289,16 @@ MessageTray.prototype = {
         }
 
         let [x, y, mods] = global.get_pointer();
+        // We save the position of the mouse at the time when we started showing the notification
+        // in order to determine if the notification popped up under it. We make that check if
+        // the user starts moving the mouse and _onTrayHoverChanged() gets called. We don't
+        // expand the notification if it just happened to pop up under the mouse unless the user
+        // explicitly mouses away from it and then mouses back in.
+        this._showNotificationMouseX = x;
+        this._showNotificationMouseY = y;
+        // We save the y coordinate of the mouse at the time when we started showing the notification
+        // and then we update it in _notifiationTimeout() if the mouse is moving towards the
+        // notification. We don't pop down the notification if the mouse is moving towards it.
         this._lastSeenMouseY = y;
     },
 
