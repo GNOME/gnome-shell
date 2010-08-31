@@ -461,4 +461,270 @@ ClutterStage *stage = CLUTTER_STAGE (clutter_script_get_object (script, "stage))
 
   </section>
 
+  <section id="script-signals">
+    <title>Connecting to signals in <type>ClutterScript</type></title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You have declared an actor using JSON, and want to add
+      handlers for signals emitted by it.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Add a <varname>signals</varname> property to the actor's
+      JSON definition.</para>
+
+      <para>Here's how to connect a <type>ClutterStage's</type>
+      <code>destroy</code> signal to the
+      <function>clutter_main_quit()</function> function:</para>
+
+      <informalexample>
+        <programlisting>
+{
+  "id" : "stage",
+  "type" : "ClutterStage",
+  "width" : 300,
+  "height" : 300,
+
+  <emphasis>"signals" : [
+    { "name" : "destroy", "handler" : "clutter_main_quit" }
+  ]</emphasis>
+}
+        </programlisting>
+      </informalexample>
+
+      <para>The highlighted part of the code is where the
+      signal is connected. In this case, a Clutter function is used
+      as the handler; in most cases, you'll want to define your own
+      handlers, rather than using functions from other libraries,
+      as follows:</para>
+
+      <informalexample>
+        <programlisting>
+{
+  "id" : "rectangle",
+  "type" : "ClutterRectangle",
+  "width" : 200,
+  "height" : 200,
+  "reactive" : true,
+
+  <emphasis>"signals" : [
+    { "name" : "motion-event", "handler" : "foo_pointer_motion_cb" }
+  ]</emphasis>
+}
+        </programlisting>
+      </informalexample>
+
+      <para>This signal handler definition sets
+      <function>foo_pointer_motion_cb()</function>
+      as the handler for the <code>motion-event</code>
+      signal on the rectangle. (NB the rectangle has
+      <varname>reactive</varname> set to true, otherwise it
+      can't emit this signal.)</para>
+
+      <para>As per standard event handling in Clutter,
+      you define the handler function next. For example:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+/* handler which just prints the position of the pointer at each motion event */
+gboolean
+foo_pointer_motion_cb (ClutterActor *actor,
+                       ClutterEvent *event,
+                       gpointer      user_data)
+{
+  gfloat x, y;
+  clutter_event_get_coords (event, &x, &y);
+
+  g_print ("Pointer movement at %.0f,%.0f\n", x, y);
+
+  return TRUE;
+}
+]]>
+        </programlisting>
+      </informalexample>
+
+      <note>
+        <para>See the
+        <link linkend="script-signals-discussion-writing-handlers">Discussion</link>
+        section for more about writing handler functions.</para>
+      </note>
+
+      <para>To make the signal connections active in your code,
+      call the <function>clutter_script_connect_signals()</function>
+      function after loading the JSON:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+GError *error = NULL;
+
+/* load JSON from a file */
+ClutterScript *ui = clutter_script_new ();
+clutter_script_load_from_file (ui, filename, &error);
+
+/* ...handle errors etc... */
+
+/* connect the signals defined in the JSON file
+ *
+ * the first argument is the script into which the JSON
+ * definition was loaded
+ *
+ * the second argument is passed as user_data to all
+ * handlers: in this case, we pass the script as user_data
+ * to all handlers, so that all the objects in the UI
+ * are available to callback functions
+ */
+clutter_script_connect_signals (ui, ui);
+]]>
+        </programlisting>
+      </informalexample>
+
+    </section>
+
+    <section id="script-signals-discussion">
+      <title>Discussion</title>
+
+      <section>
+        <title>Options for connecting signals to handlers</title>
+
+        <para>Every connection between a signal and handler requires
+        a JSON object with <varname>name</varname> and
+        <varname>handler</varname> keys. The <varname>name</varname>
+        is the name of the signal you're connecting a handler to; the
+        <varname>handler</varname> is the name of the function which
+        will handle the signal.</para>
+
+        <para>You can also specify these optional keys for a handler
+        object:</para>
+
+        <orderedlist>
+          <listitem>
+            <para><code>"after" : true</code> configures the handler
+            to run after the default handler for the signal. (Default is
+            <code>"after" : false</code>).</para>
+          </listitem>
+          <listitem>
+            <para><varname>"swapped" : true</varname> specifies that
+            the instance and the user data passed to the
+            handler function are swapped around; i.e. the instance emitting
+            the signal is passed in as the user data argument (usually the
+            last argument), and any user data is passed in as the first
+            argument. (Default is <code>"swapped" : false</code>).</para>
+          </listitem>
+        </orderedlist>
+
+        <note>
+          <para>While the connections to signals were specified in JSON
+          above, it is still possible to connect handlers to signals in
+          code (e.g. if you need to conditionally connect a handler). Just
+          retrieve the object from the <type>ClutterScript</type> and
+          connect to its signals with
+          <function>g_signal_connect()</function>.</para>
+        </note>
+
+      </section>
+
+      <section id="script-signals-discussion-writing-handlers">
+        <title>Writing handler functions</title>
+
+        <para>The handler function has the usual signature required
+        for the signal. However, the function cannot be static, otherwise
+        the function is invisible to GModule (the mechanism used by
+        <type>ClutterScript</type> to look up functions named
+        in the JSON definition). Consequently, callback functions should be
+        namespaced in such a way that they won't clash with function
+        definitions in other parts of your code or in libraries you link
+        to.</para>
+
+        <para>You should also ensure that you use the
+        <option>-export-dynamic</option> flag when you compile your
+        application: either by passing it on the command line (if you're
+        calling <command>gcc</command> directly); or by adding
+        it to the appropriate <varname>LDFLAGS</varname> variable in
+        your <filename>Makefile</filename> (if you're using
+        <command>make</command>); or by whatever other mechanism is
+        appropriate for your build environment.</para>
+
+      </section>
+
+      <section>
+        <title>Passing objects to handler functions</title>
+
+        <para>In a typical Clutter application, handler functions
+        require access to objects other than the one which emitted a
+        signal. For example, a button may move another actor when
+        clicked. Typically, you would pass any required objects
+        to the handler function as user data, like this:</para>
+
+        <informalexample>
+          <programlisting>
+g_signal_connect (button,
+                  "clicked",
+                  G_CALLBACK (_button_clicked_cb),
+                  actor_to_move);
+          </programlisting>
+        </informalexample>
+
+        <para>Note how <varname>actor_to_move</varname> is passed
+        as user data to the handler.</para>
+
+        <para>However, the JSON definition doesn't allow you to specify
+        that different user data be passed to different handlers. So,
+        to get at all required objects in the handler, a simple
+        solution is to pass the <type>ClutterScript</type> to
+        <emphasis>every</emphasis> handler function; then inside
+        <emphasis>each</emphasis> handler function, retrieve
+        the required objects from the script.</para>
+
+        <para>This was done in the code example above, by passing
+        the <type>ClutterScript</type> instance as two arguments to
+        <function>clutter_script_connect_signals()</function>:
+        the first argument specifies the script which defines the
+        signal handlers; the second specifies the user data passed to every
+        handler function. This ensures that each handler has access
+        to all of the elements defined in the JSON file.</para>
+
+        <note>
+          <para>Alternatively, you could create some other structure to
+          hold the objects you need and pass it to all handler functions.
+          But this would effectively be a reimplementation of some aspects
+          of <type>ClutterScript</type>.</para>
+        </note>
+
+      </section>
+
+    </section>
+
+    <section>
+      <title>Full examples</title>
+
+      <example id="script-signals-examples-1">
+        <title><type>ClutterScript</type> JSON with signal handler
+        definitions</title>
+        <programlisting>
+<xi:include href="examples/script-signals.json" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="script-signals-examples-2">
+        <title>Loading a JSON file into a <type>ClutterScript</type>
+        and connecting signal handlers</title>
+        <programlisting>
+<xi:include href="examples/script-signals.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+    </section>
+
+  </section>
+
 </chapter>
