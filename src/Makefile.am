@@ -207,12 +207,13 @@ typelib_DATA = Meta-$(api_version).typelib
 
 # We need to strip out the attribute that would point back to libmutter-introspect
 # so that libgirepository looks for symbols in the executable instead
-Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mutter_SOURCES)
+Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mutter_SOURCES) Makefile
 	$(AM_V_GEN) pwd=`pwd` ;				\
         cd $(srcdir) &&					\
 	$(G_IR_SCANNER)					\
 		--namespace=Meta			\
 		--nsversion=$(api_version)		\
+		--warn-all				\
 		--include=GObject-2.0			\
 		--include=Gdk-@GTK_API_VERSION@		\
 		--include=Gtk-@GTK_API_VERSION@		\
