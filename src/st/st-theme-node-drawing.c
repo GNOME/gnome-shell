@@ -466,8 +466,8 @@ get_background_position (StThemeNode             *self,
   w = cogl_texture_get_width (self->background_texture);
   h = cogl_texture_get_height (self->background_texture);
 
-  /* scale the background into the allocated bounds */
-  if (w > result->x2 || h > result->y2)
+  /* scale the background into the allocated bounds, when not being absolutely positioned */
+  if ((w > result->x2 || h > result->y2) && !self->background_position_set)
     {
       gint new_h, new_w, offset;
       gint box_w, box_h;
@@ -500,9 +500,18 @@ get_background_position (StThemeNode             *self,
     }
   else
     {
-      /* center the background on the widget */
-      result->x1 = (int)(((allocation->x2 - allocation->x1) / 2) - (w / 2));
-      result->y1 = (int)(((allocation->y2 - allocation->y1) / 2) - (h / 2));
+      /* honor the specified position if any */
+      if (self->background_position_set)
+        {
+          result->x1 = self->background_position_x;
+          result->y1 = self->background_position_y;
+        }
+      else
+        {
+          /* center the background on the widget */
+          result->x1 = (int)(((allocation->x2 - allocation->x1) / 2) - (w / 2));
+          result->y1 = (int)(((allocation->y2 - allocation->y1) / 2) - (h / 2));
+        }
       result->x2 = result->x1 + w;
       result->y2 = result->y1 + h;
     }

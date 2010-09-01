@@ -679,8 +679,19 @@ get_length_from_term (StThemeNode *node,
       return VALUE_NOT_FOUND;
 
     case NUM_GENERIC:
-      g_warning ("length values must specify a unit");
-      return VALUE_NOT_FOUND;
+      {
+        if (num->val != 0)
+          {
+            g_warning ("length values must specify a unit");
+            return VALUE_NOT_FOUND;
+          }
+        else
+          {
+            type = ABSOLUTE;
+            multiplier = 0;
+          }
+        break;
+      }
 
     case NUM_PERCENTAGE:
       g_warning ("percentage lengths not currently supported");
@@ -1424,6 +1435,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
   node->background_computed = TRUE;
   node->background_color = TRANSPARENT_COLOR;
   node->background_gradient_type = ST_GRADIENT_NONE;
+  node->background_position_set = FALSE;
 
   ensure_properties (node);
 
@@ -1450,6 +1462,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
           node->background_color = TRANSPARENT_COLOR;
           g_free (node->background_image);
           node->background_image = NULL;
+          node->background_position_set = FALSE;
 
           for (term = decl->value; term; term = term->next)
             {
@@ -1477,6 +1490,27 @@ _st_theme_node_ensure_background (StThemeNode *node)
                                                                      term->content.str->stryng->str);
                 }
             }
+        }
+      else if (strcmp (property_name, "-position") == 0)
+        {
+          GetFromTermResult result = get_length_from_term_int (node, decl->value, FALSE, &node->background_position_x);
+          if (result == VALUE_NOT_FOUND)
+            {
+              node->background_position_set = FALSE;
+              continue;
+            }
+          else
+            node->background_position_set = TRUE;
+            
+           result = get_length_from_term_int (node, decl->value->next, FALSE, &node->background_position_y);
+
+          if (result == VALUE_NOT_FOUND)
+            {
+              node->background_position_set = FALSE;
+              continue;
+            }
+          else
+            node->background_position_set = TRUE;
         }
       else if (strcmp (property_name, "-color") == 0)
         {

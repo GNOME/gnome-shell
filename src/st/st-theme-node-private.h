@@ -22,6 +22,10 @@ struct _StThemeNode {
   StGradientType background_gradient_type;
   ClutterColor background_gradient_end;
 
+  int background_position_x;
+  int background_position_y;
+  gboolean background_position_set : 1;
+
   ClutterColor foreground_color;
   ClutterColor border_color[4];
   ClutterColor outline_color;
