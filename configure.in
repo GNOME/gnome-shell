@@ -301,7 +301,7 @@ else
 fi
 
 if test x$with_introspection != xno; then
-  PKG_CHECK_MODULES(INTROSPECTION, gobject-introspection-1.0, have_introspection=yes, have_introspection=no)
+  PKG_CHECK_MODULES(INTROSPECTION, gobject-introspection-1.0 >= 0.9.5, have_introspection=yes, have_introspection=no)
   if test x$have_introspection=xyes; then
     MUTTER_PC_MODULES="$MUTTER_PC_MODULES gobject-introspection-1.0"
     AC_DEFINE(HAVE_INTROSPECTION, 1, [Define if GObject introspection is available])

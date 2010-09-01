@@ -214,6 +214,7 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mu
 		--namespace=Meta			\
 		--nsversion=$(api_version)		\
 		--warn-all				\
+		--accept-unprefixed			\
 		--include=GObject-2.0			\
 		--include=Gdk-@GTK_API_VERSION@		\
 		--include=Gtk-@GTK_API_VERSION@		\
