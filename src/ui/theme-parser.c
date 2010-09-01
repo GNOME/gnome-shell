@@ -4204,6 +4204,10 @@ keep_trying (GError **error)
   return FALSE;
 }
 
+/**
+ * meta_theme_load: (skip)
+ *
+ */
 MetaTheme*
 meta_theme_load (const char *theme_name,
                  GError    **err)

@@ -87,6 +87,16 @@ blank_pixbuf (int width, int height, gboolean no_padding)
                                    free_buffer, NULL);
 }
 
+/**
+ * meta_gradient_create_simple:
+ * @width: Width in pixels
+ * @height: Height in pixels
+ * @from: Starting color
+ * @to: Ending color
+ * @style: Gradient style
+ *
+ * Returns: (transfer full): A new linear gradient
+ */
 GdkPixbuf*
 meta_gradient_create_simple (int              width,
                              int              height,
@@ -113,6 +123,16 @@ meta_gradient_create_simple (int              width,
   return NULL;
 }
 
+/**
+ * meta_gradient_create_multi:
+ * @width: Width in pixels
+ * @height: Height in pixels
+ * @colors: (array length=n_colors): Array of colors
+ * @n_colors: Number of colors
+ * @style: Gradient style
+ *
+ * Returns: (transfer full): A new multi-step linear gradient
+ */
 GdkPixbuf*
 meta_gradient_create_multi (int              width,
                             int              height,
@@ -150,7 +170,10 @@ meta_gradient_create_multi (int              width,
   return NULL;
 }
 
-/* Interwoven essentially means we have two vertical gradients,
+/**
+ * meta_gradient_create_interwoven: (skip)
+ *
+ * Interwoven essentially means we have two vertical gradients,
  * cut into horizontal strips of the given thickness, and then the strips
  * are alternated. I'm not sure what it's good for, just copied since
  * WindowMaker had it.

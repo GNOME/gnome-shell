@@ -529,7 +529,12 @@ compare_rect_areas (gconstpointer a, gconstpointer b)
   return b_area - a_area; /* positive ret value denotes b > a, ... */
 }
 
-/* This function is trying to find a "minimal spanning set (of rectangles)"
+/**
+ * meta_rectangle_get_minimal_spanning_set_for_region:
+ * @basic_rect: Input rectangle
+ * @all_struts: (element-type Meta.Rectangle): List of struts
+ *
+ * This function is trying to find a "minimal spanning set (of rectangles)"
  * for a given region.
  *
  * The region is given by taking basic_rect, then removing the areas
@@ -542,10 +547,7 @@ compare_rect_areas (gconstpointer a, gconstpointer b)
  * the region if and only if it is contained within at least one of the
  * rectangles.
  *
- * The GList* returned will be a list of (allocated) MetaRectangles.
- * The list will need to be freed by calling
- * meta_rectangle_free_spanning_set() on it (or by manually
- * implementing that function...)
+ * Returns: (transfer full) (element-type Meta.Rectangle): Minimal spanning set
  */
 GList*
 meta_rectangle_get_minimal_spanning_set_for_region (
@@ -678,6 +680,10 @@ meta_rectangle_get_minimal_spanning_set_for_region (
   return ret;
 }
 
+/**
+ * meta_rectangle_expand_region: (skip)
+ *
+ */
 GList*
 meta_rectangle_expand_region (GList     *region,
                               const int  left_expand,
@@ -694,6 +700,10 @@ meta_rectangle_expand_region (GList     *region,
                                                      0);
 }
 
+/**
+ * meta_rectangle_expand_region_conditionally: (skip)
+ *
+ */
 GList*
 meta_rectangle_expand_region_conditionally (GList     *region,
                                             const int  left_expand,
@@ -1671,7 +1681,10 @@ fix_up_edges (MetaRectangle *rect,         MetaEdge *edge,
     }
 }
 
-/* This function removes intersections of edges with the rectangles from the
+/**
+ * meta_rectangle_remove_intersections_with_boxes_from_edges: (skip)
+ *
+ * This function removes intersections of edges with the rectangles from the
  * list of edges.
  */
 GList*
@@ -1737,7 +1750,11 @@ meta_rectangle_remove_intersections_with_boxes_from_edges (
   return edges;
 }
 
-/* This function is trying to find all the edges of an onscreen region. */
+/**
+ * meta_rectangle_find_onscreen_edges: (skip)
+ *
+ * This function is trying to find all the edges of an onscreen region.
+ */
 GList*
 meta_rectangle_find_onscreen_edges (const MetaRectangle *basic_rect,
                                     const GSList        *all_struts)
@@ -1820,6 +1837,10 @@ meta_rectangle_find_onscreen_edges (const MetaRectangle *basic_rect,
   return ret;
 }
 
+/**
+ * meta_rectangle_find_nonintersected_monitor_edges: (skip)
+ *
+ */
 GList*
 meta_rectangle_find_nonintersected_monitor_edges (
                                     const GList         *monitor_rects,

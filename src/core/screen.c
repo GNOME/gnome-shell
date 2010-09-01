@@ -3122,6 +3122,10 @@ meta_screen_get_display (MetaScreen *screen)
   return screen->display;
 }
 
+/**
+ * meta_screen_get_xroot: (skip)
+ *
+ */
 Window
 meta_screen_get_xroot (MetaScreen *screen)
 {
@@ -3137,6 +3141,10 @@ meta_screen_get_size (MetaScreen *screen,
   *height = screen->rect.height;
 }
 
+/**
+ * meta_screen_get_compositor_data: (skip)
+ *
+ */
 gpointer
 meta_screen_get_compositor_data (MetaScreen *screen)
 {
@@ -3178,6 +3186,12 @@ meta_screen_unset_cm_selection (MetaScreen *screen)
                       None, screen->wm_cm_timestamp);
 }
 
+/**
+ * meta_screen_get_workspaces: (skip)
+ * @screen: a #MetaScreen
+ *
+ * Returns: (transfer none) (element-type Meta.Workspace): The workspaces for @screen
+ */
 GList *
 meta_screen_get_workspaces (MetaScreen *screen)
 {

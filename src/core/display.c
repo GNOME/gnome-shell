@@ -4550,6 +4550,18 @@ find_tab_backward (MetaDisplay   *display,
   return NULL;
 }
 
+/**
+ * meta_display_get_tab_list:
+ * @display: a #MetaDisplay
+ * @type: type of tab list
+ * @screen: a #MetaScreen
+ * @workspace: origin workspace
+ *
+ * Determine the list of windows that should be displayed for Alt-TAB
+ * functionality.  The windows are returned in most recently used order.
+ *
+ * Returns: (transfer container) (element-type Meta.Window): List of windows
+ */
 GList*
 meta_display_get_tab_list (MetaDisplay   *display,
                            MetaTabList    type,
@@ -4627,6 +4639,21 @@ meta_display_get_tab_list (MetaDisplay   *display,
   return tab_list;
 }
 
+/**
+ * meta_display_get_tab_next:
+ * @display: a #MetaDisplay
+ * @type: type of tab list
+ * @screen: a #MetaScreen
+ * @workspace: origin workspace
+ * @window: (allow-none): starting window 
+ * @backward: If %TRUE, look for the previous window.  
+ *
+ * Determine the next window that should be displayed for Alt-TAB
+ * functionality.
+ *
+ * Returns: (transfer none): Next window
+ *
+ */
 MetaWindow*
 meta_display_get_tab_next (MetaDisplay   *display,
                            MetaTabList    type,
@@ -4677,6 +4704,18 @@ meta_display_get_tab_next (MetaDisplay   *display,
   return ret;
 }
 
+/**
+ * meta_display_get_tab_current:
+ * @display: a #MetaDisplay
+ * @type: type of tab list
+ * @screen: a #MetaScreen
+ * @workspace: origin workspace
+ *
+ * Determine the active window that should be displayed for Alt-TAB.
+ *
+ * Returns: (transfer none): Current window
+ *
+ */
 MetaWindow*
 meta_display_get_tab_current (MetaDisplay   *display,
                               MetaTabList    type,
@@ -5353,18 +5392,32 @@ meta_display_get_compositor_version (MetaDisplay *display,
   *minor = display->composite_minor_version;
 }
 
+/**
+ * meta_display_get_xdisplay: (skip)
+ *
+ */
 Display *
 meta_display_get_xdisplay (MetaDisplay *display)
 {
   return display->xdisplay;
 }
 
+/**
+ * meta_display_get_compositor: (skip)
+ *
+ */
 MetaCompositor *
 meta_display_get_compositor (MetaDisplay *display)
 {
   return display->compositor;
 }
 
+/**
+ * meta_display_get_screens:
+ * @display: a #MetaDisplay
+ *
+ * Returns: (transfer none) (element-type Meta.Screen): Screens for this display
+ */
 GSList *
 meta_display_get_screens (MetaDisplay *display)
 {

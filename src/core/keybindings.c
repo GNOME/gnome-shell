@@ -3547,6 +3547,10 @@ meta_keybindings_set_custom_handler (const gchar        *name,
   return TRUE;
 }
 
+/**
+ * meta_keybindings_switch_window: (skip)
+ *
+ */
 void
 meta_keybindings_switch_window (MetaDisplay    *display,
                                 MetaScreen     *screen,

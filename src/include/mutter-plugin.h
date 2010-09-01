@@ -39,7 +39,15 @@
 #define MUTTER_IS_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  MUTTER_TYPE_PLUGIN))
 #define MUTTER_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  MUTTER_TYPE_PLUGIN, MutterPluginClass))
 
+/**
+ * MetaMutterPlugin: (skip)
+ *
+ */
 typedef struct _MutterPlugin        MutterPlugin;
+/**
+ * MetaMutterPluginClass: (skip)
+ *
+ */
 typedef struct _MutterPluginClass   MutterPluginClass;
 typedef struct _MutterPluginVersion MutterPluginVersion;
 typedef struct _MutterPluginInfo    MutterPluginInfo;

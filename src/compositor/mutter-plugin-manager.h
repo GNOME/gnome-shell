@@ -40,6 +40,10 @@
 
 #define MUTTER_PLUGIN_ALL_EFFECTS      (~0)
 
+/**
+ * MutterPluginManager: (skip)
+ *
+ */
 typedef struct MutterPluginManager MutterPluginManager;
 
 MutterPluginManager * mutter_plugin_manager_get         (MetaScreen *screen);

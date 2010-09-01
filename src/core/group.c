@@ -104,6 +104,10 @@ meta_group_unref (MetaGroup *group)
     }
 }
 
+/**
+ * meta_window_get_group: (skip)
+ *
+ */
 MetaGroup*
 meta_window_get_group (MetaWindow *window)
 {
@@ -198,6 +202,10 @@ meta_window_shutdown_group (MetaWindow *window)
   remove_window_from_group (window);
 }
 
+/**
+ * meta_display_lookup_group: (skip)
+ *
+ */
 MetaGroup*
 meta_display_lookup_group (MetaDisplay *display,
                            Window       group_leader)
@@ -213,6 +221,12 @@ meta_display_lookup_group (MetaDisplay *display,
   return group;
 }
 
+/**
+ * meta_group_list_windows:
+ * @group: A #MetaGroup
+ *
+ * Returns: (transfer container) (element-type Meta.Window): List of windows
+ */
 GSList*
 meta_group_list_windows (MetaGroup *group)
 {
@@ -263,6 +277,10 @@ meta_group_get_startup_id (MetaGroup *group)
   return group->startup_id;
 }
 
+/**
+ * meta_group_property_notify: (skip)
+ *
+ */
 gboolean
 meta_group_property_notify (MetaGroup  *group,
                             XEvent     *event)

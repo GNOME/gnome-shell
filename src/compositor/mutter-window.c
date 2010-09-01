@@ -651,6 +651,10 @@ mutter_window_has_shadow (MutterWindow *self)
   return FALSE;
 }
 
+/**
+ * mutter_window_get_x_window: (skip)
+ *
+ */
 Window
 mutter_window_get_x_window (MutterWindow *self)
 {

@@ -29,18 +29,70 @@
 #include "common.h"
 #include <gtk/gtk.h>
 
+/**
+ * MetaFrameStyle: (skip)
+ *
+ */
 typedef struct _MetaFrameStyle MetaFrameStyle;
+/**
+ * MetaFrameStyleSet: (skip)
+ *
+ */
 typedef struct _MetaFrameStyleSet MetaFrameStyleSet;
+/**
+ * MetaDrawOp: (skip)
+ *
+ */
 typedef struct _MetaDrawOp MetaDrawOp;
+/**
+ * MetaDrawOpList: (skip)
+ *
+ */
 typedef struct _MetaDrawOpList MetaDrawOpList;
+/**
+ * MetaGradientSpec: (skip)
+ *
+ */
 typedef struct _MetaGradientSpec MetaGradientSpec;
+/**
+ * MetaAlphaGradientSpec: (skip)
+ *
+ */
 typedef struct _MetaAlphaGradientSpec MetaAlphaGradientSpec; 
+/**
+ * MetaColorSpec: (skip)
+ *
+ */
 typedef struct _MetaColorSpec MetaColorSpec;
+/**
+ * MetaFrameLayout: (skip)
+ *
+ */
 typedef struct _MetaFrameLayout MetaFrameLayout;
+/**
+ * MetaButtonSpace: (skip)
+ *
+ */
 typedef struct _MetaButtonSpace MetaButtonSpace;
+/**
+ * MetaFrameGeometry: (skip)
+ *
+ */
 typedef struct _MetaFrameGeometry MetaFrameGeometry;
+/**
+ * MetaTheme: (skip)
+ *
+ */
 typedef struct _MetaTheme MetaTheme;
+/**
+ * MetaPositionExprEnv: (skip)
+ *
+ */
 typedef struct _MetaPositionExprEnv MetaPositionExprEnv;
+/**
+ * MetaDrawInfo: (skip)
+ *
+ */
 typedef struct _MetaDrawInfo MetaDrawInfo;
 
 #define META_THEME_ERROR (g_quark_from_static_string ("meta-theme-error"))
@@ -384,6 +436,8 @@ typedef struct
 } PosToken;
 
 /**
+ * MetaDrawSpec: (skip)
+ *
  * A computed expression in our simple vector drawing language.
  * While it appears to take the form of a tree, this is actually
  * merely a list; concerns such as precedence of operators are
@@ -393,7 +447,8 @@ typedef struct
  * pos_eval() fills this with ...FIXME. Are tokens a tree or a list?
  * \ingroup parser
  */
-typedef struct _MetaDrawSpec
+typedef struct _MetaDrawSpec MetaDrawSpec;
+struct _MetaDrawSpec
 {
   /**
    * If this spec is constant, this is the value of the constant;
@@ -409,7 +464,7 @@ typedef struct _MetaDrawSpec
 
   /** Does the expression contain any variables? */
   gboolean constant : 1;
-} MetaDrawSpec;
+};
 
 /**
  * A single drawing operation in our simple vector drawing language.

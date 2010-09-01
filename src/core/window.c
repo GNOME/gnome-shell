@@ -4371,10 +4371,17 @@ idle_move_resize (gpointer data)
   return FALSE;
 }
 
-/* This is used to notify us of an unrequested configuration
- * (only applicable to override redirect windows) */
+/**
+ * meta_window_configure_notify: (skip)
+ * @window: a #MetaWindow
+ * @event: a #XConfigureEvent
+ *
+ * This is used to notify us of an unrequested configuration
+ * (only applicable to override redirect windows)
+ */
 void
-meta_window_configure_notify (MetaWindow *window, XConfigureEvent *event)
+meta_window_configure_notify (MetaWindow      *window,
+                              XConfigureEvent *event)
 {
   g_assert (window->override_redirect);
   g_assert (window->frame == NULL);
@@ -4927,6 +4934,15 @@ find_root_ancestor (MetaWindow *window,
   return TRUE;
 }
 
+/**
+ * meta_window_find_root_ancestor:
+ * @window: a #MetaWindow
+ *
+ * Follow the chain of parents of @window, skipping transient windows,
+ * and return the "root" window which has no non-transient parent.
+ *
+ * Returns: (transfer none): The root ancestor window
+ */
 MetaWindow *
 meta_window_find_root_ancestor (MetaWindow *window)
 {
@@ -8828,6 +8844,10 @@ meta_window_unset_demands_attention (MetaWindow *window)
     }
 }
 
+/**
+ * meta_window_get_frame: (skip)
+ *
+ */
 MetaFrame *
 meta_window_get_frame (MetaWindow *window)
 {
@@ -8896,12 +8916,22 @@ meta_window_get_screen (MetaWindow *window)
   return window->screen;
 }
 
+/**
+ * meta_window_get_display:
+ * @window: A #MetaWindow
+ *
+ * Returns: (transfer none): The display for @window
+ */
 MetaDisplay *
 meta_window_get_display (MetaWindow *window)
 {
   return window->display;
 }
 
+/**
+ * meta_window_get_xwindow: (skip)
+ *
+ */
 Window
 meta_window_get_xwindow (MetaWindow *window)
 {

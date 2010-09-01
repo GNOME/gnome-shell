@@ -214,6 +214,7 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mu
 		--namespace=Meta			\
 		--nsversion=$(api_version)		\
 		--warn-all				\
+		--warn-error				\
 		--accept-unprefixed			\
 		--include=GObject-2.0			\
 		--include=Gdk-@GTK_API_VERSION@		\
@@ -224,13 +225,11 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mu
 		--include=xlib-2.0			\
 		--include=xfixes-4.0			\
 		--program=$$pwd/mutter			\
+		mutter-enum-types.h			\
 		$(filter %.c,$(mutter_SOURCES))		\
 		$(libmutterinclude_base_headers)	\
 		$(INCLUDES)				\
-		-o $$pwd/$@.tmp &&			\
-	$(PYTHON) $(srcdir)/fix-meta-rectangle.py $$pwd/$@.tmp $$pwd/$@.tmp2 &&	\
-	rm $$pwd/$@.tmp &&							\
-	mv $$pwd/$@.tmp2 $$pwd/$@
+		-o $@
 
 Meta-$(api_version).typelib: $(G_IR_COMPILER) Meta-$(api_version).gir
 	$(AM_V_GEN) LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. $(G_IR_COMPILER) Meta-$(api_version).gir -o $@
@@ -307,7 +306,6 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(desktopfiles_in_files)	\
 	$(wmproperties_in_files)	\
 	$(schema_in_files)		\
-	fix-meta-rectangle.py		\
 	libmutter-private.pc.in	\
 	mutter-plugins.pc.in  \
 	mutter-enum-types.h.in \

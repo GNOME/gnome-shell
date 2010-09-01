@@ -204,10 +204,12 @@ init_border (GtkBorder *border)
 }
 
 /**
+ * meta_frame_layout_new: (skip)
+ *
  * Creates a new, empty MetaFrameLayout. The fields will be set to dummy
  * values.
  *
- * \return The newly created MetaFrameLayout.
+ * Returns: The newly created MetaFrameLayout.
  */
 MetaFrameLayout*
 meta_frame_layout_new  (void)
@@ -940,6 +942,10 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
     fgeom->bottom_right_corner_rounded_radius = layout->bottom_right_corner_rounded_radius;
 }
 
+/**
+ * meta_gradient_spec_new: (skip)
+ *
+ */
 MetaGradientSpec*
 meta_gradient_spec_new (MetaGradientType type)
 {
@@ -1026,6 +1032,10 @@ meta_gradient_spec_validate (MetaGradientSpec *spec,
   return TRUE;
 }
 
+/**
+ * meta_alpha_gradient_spec_new: (skip)
+ *
+ */
 MetaAlphaGradientSpec*
 meta_alpha_gradient_spec_new (MetaGradientType       type,
                               int                    n_alphas)
@@ -1052,6 +1062,10 @@ meta_alpha_gradient_spec_free (MetaAlphaGradientSpec *spec)
   g_free (spec);
 }
 
+/**
+ * meta_color_spec_new: (skip)
+ *
+ */
 MetaColorSpec*
 meta_color_spec_new (MetaColorSpecType type)
 {
@@ -1120,6 +1134,10 @@ meta_color_spec_free (MetaColorSpec *spec)
   g_free (spec);
 }
 
+/**
+ * meta_color_spec_new_from_string: (skip)
+ *
+ */
 MetaColorSpec*
 meta_color_spec_new_from_string (const char *str,
                                  GError    **err)
@@ -1343,6 +1361,10 @@ meta_color_spec_new_from_string (const char *str,
   return spec;
 }
 
+/**
+ * meta_color_spec_new_gtk: (skip)
+ *
+ */
 MetaColorSpec*
 meta_color_spec_new_gtk (MetaGtkColorComponent component,
                          GtkStateType          state)
@@ -2483,6 +2505,10 @@ pos_eval (MetaDrawSpec              *spec,
  * most contexts.
  */
 
+/**
+ * meta_parse_position_expression: (skip)
+ *
+ */
 gboolean
 meta_parse_position_expression (MetaDrawSpec              *spec,
                                 const MetaPositionExprEnv *env,
@@ -2520,6 +2546,10 @@ meta_parse_position_expression (MetaDrawSpec              *spec,
 }
 
 
+/**
+ * meta_parse_size_expression: (skip)
+ *
+ */
 gboolean
 meta_parse_size_expression (MetaDrawSpec              *spec,
                             const MetaPositionExprEnv *env,
@@ -2664,6 +2694,10 @@ meta_draw_spec_free (MetaDrawSpec *spec)
   g_slice_free (MetaDrawSpec, spec);
 }
 
+/**
+ * meta_draw_spec_new: (skip)
+ *
+ */
 MetaDrawSpec *
 meta_draw_spec_new (MetaTheme  *theme,
                     const char *expr,
@@ -2692,6 +2726,10 @@ meta_draw_spec_new (MetaTheme  *theme,
   return spec;
 }
 
+/**
+ * meta_draw_op_new: (skip)
+ *
+ */
 MetaDrawOp*
 meta_draw_op_new (MetaDrawType type)
 {
@@ -3911,6 +3949,10 @@ meta_draw_op_draw (const MetaDrawOp    *op,
                                 drawable, clip, info, logical_region);
 }
 
+/**
+ * meta_draw_op_list_new: (skip)
+ *
+ */
 MetaDrawOpList*
 meta_draw_op_list_new (int n_preallocs)
 {
@@ -4804,6 +4846,10 @@ meta_frame_style_set_validate  (MetaFrameStyleSet *style_set,
   return TRUE;
 }
 
+/**
+ * meta_theme_get_current: (skip)
+ *
+ */
 MetaTheme*
 meta_theme_get_current (void)
 {
@@ -4844,6 +4890,10 @@ meta_theme_set_current (const char *name,
     }
 }
 
+/**
+ * meta_theme_new: (skip)
+ *
+ */
 MetaTheme*
 meta_theme_new (void)
 {
@@ -5008,6 +5058,10 @@ meta_theme_validate (MetaTheme *theme,
   return TRUE;
 }
 
+/**
+ * meta_theme_load_image: (skip)
+ *
+ */
 GdkPixbuf*
 meta_theme_load_image (MetaTheme  *theme,
                        const char *filename,

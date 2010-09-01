@@ -191,6 +191,12 @@ get_output_window (MetaScreen *screen)
   return output;
 }
 
+/**
+ * mutter_get_stage_for_screen:
+ * @screen: a #MetaScreen
+ *
+ * Returns: (transfer none): The #ClutterStage for the screen
+ */
 ClutterActor *
 mutter_get_stage_for_screen (MetaScreen *screen)
 {
@@ -202,6 +208,12 @@ mutter_get_stage_for_screen (MetaScreen *screen)
   return info->stage;
 }
 
+/**
+ * mutter_get_overlay_group_for_screen:
+ * @screen: a #MetaScreen
+ *
+ * Returns: (transfer none): The overlay group corresponding to @screen
+ */
 ClutterActor *
 mutter_get_overlay_group_for_screen (MetaScreen *screen)
 {
@@ -213,6 +225,12 @@ mutter_get_overlay_group_for_screen (MetaScreen *screen)
   return info->overlay_group;
 }
 
+/**
+ * mutter_get_window_group_for_screen:
+ * @screen: a #MetaScreen
+ *
+ * Returns: (transfer none): The window group corresponding to @screen
+ */
 ClutterActor *
 mutter_get_window_group_for_screen (MetaScreen *screen)
 {
@@ -224,6 +242,12 @@ mutter_get_window_group_for_screen (MetaScreen *screen)
   return info->window_group;
 }
 
+/**
+ * mutter_get_windows:
+ * @screen: a #MetaScreen
+ *
+ * Returns: (transfer none) (element-type Clutter.Actor): The windows on @screen
+ */
 GList *
 mutter_get_windows (MetaScreen *screen)
 {
@@ -592,7 +616,10 @@ is_grabbed_event (XEvent *event)
 
   return FALSE;
 }
-
+/**
+ * meta_compositor_process_event: (skip)
+ *
+ */
 gboolean
 meta_compositor_process_event (MetaCompositor *compositor,
                                XEvent         *event,
@@ -997,6 +1024,10 @@ mutter_repaint_func (gpointer data)
   return TRUE;
 }
 
+/**
+ * meta_compositor_new: (skip)
+ *
+ */
 MetaCompositor *
 meta_compositor_new (MetaDisplay *display)
 {
@@ -1034,6 +1065,10 @@ meta_compositor_new (MetaDisplay *display)
   return compositor;
 }
 
+/**
+ * mutter_get_overlay_window: (skip)
+ *
+ */
 Window
 mutter_get_overlay_window (MetaScreen *screen)
 {

@@ -886,6 +886,10 @@ handle_preference_update_int (const gchar *key, GConfValue *value)
 /* Listeners.                                                               */
 /****************************************************************************/
 
+/**
+ * meta_prefs_add_listener: (skip)
+ *
+ */
 void
 meta_prefs_add_listener (MetaPrefsChangedFunc func,
                          gpointer             data)
@@ -899,6 +903,10 @@ meta_prefs_add_listener (MetaPrefsChangedFunc func,
   listeners = g_list_prepend (listeners, l);
 }
 
+/**
+ * meta_prefs_remove_listener: (skip)
+ *
+ */
 void
 meta_prefs_remove_listener (MetaPrefsChangedFunc func,
                             gpointer             data)
@@ -2998,6 +3006,11 @@ meta_prefs_set_compositing_manager (gboolean whether)
 #endif
 }
 
+/**
+ * meta_prefs_get_clutter_plugins:
+ *
+ * Returns: (transfer none) (element-type utf8): Plugin names to load
+ */
 GSList *
 meta_prefs_get_clutter_plugins (void)
 {

@@ -23,6 +23,10 @@
 #include "display.h"
 #include "common.h"
 
+/**
+ * MetaKeyHandlerFunc: (skip)
+ *
+ */
 typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
                                      MetaScreen     *screen,
                                      MetaWindow     *window,
