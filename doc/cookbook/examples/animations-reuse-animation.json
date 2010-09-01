@@ -9,7 +9,6 @@
     "id" : "bounce",
     "timeline" : {
       "type" : "ClutterTimeline",
-      "id" : "bounce_timeline",
       "duration" : 2500
     },
 

@@ -5,8 +5,8 @@
 #define ANIMATION_FILE "animations-reuse-animation.json"
 
 static gboolean
-_load_script (ClutterScript *script,
-              gchar         *filename)
+load_script_from_file (ClutterScript *script,
+                       gchar         *filename)
 {
   GError *error = NULL;
 
@@ -30,16 +30,15 @@ foo_button_pressed_cb (ClutterActor *actor,
   ClutterScript *ui = CLUTTER_SCRIPT (user_data);
   ClutterStage *stage = CLUTTER_STAGE (clutter_script_get_object (ui, "stage"));
 
-  ClutterScript *script = clutter_script_new ();
-
-  _load_script (script, ANIMATION_FILE);
-
-  ClutterAnimator *bounce;
+  ClutterScript *script;
   ClutterActor *rig;
-  ClutterTimeline *bounce_timeline;
+  ClutterAnimator *bounce;
+
+  script = clutter_script_new ();
+
+  load_script_from_file (script, ANIMATION_FILE);
 
   clutter_script_get_objects (script,
-                              "bounce_timeline", &bounce_timeline,
                               "rig", &rig,
                               "bounce", &bounce,
                               NULL);
@@ -53,11 +52,8 @@ foo_button_pressed_cb (ClutterActor *actor,
                                         foo_button_pressed_cb,
                                         NULL);
 
-  /* add a handler to clean up when the animation completes */
-  g_signal_connect_swapped (bounce_timeline,
-                            "completed",
-                            G_CALLBACK (g_object_unref),
-                            script);
+  /* add a callback to clean up the script when the rig is destroyed */
+  g_object_set_data_full (G_OBJECT (rig), "script", script, g_object_unref);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rig);
 
@@ -71,14 +67,16 @@ foo_button_pressed_cb (ClutterActor *actor,
 int
 main (int argc, char *argv[])
 {
+  ClutterScript *script;
+  ClutterActor *stage;
+
   clutter_init (&argc, &argv);
 
-  ClutterScript *script = clutter_script_new ();
-  _load_script (script, UI_FILE);
+  script = clutter_script_new ();
+  load_script_from_file (script, UI_FILE);
 
   clutter_script_connect_signals (script, script);
 
-  ClutterActor *stage;
   clutter_script_get_objects (script,
                               "stage", &stage,
                               NULL);
