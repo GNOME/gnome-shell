@@ -1,12 +1,38 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 
+#define UI_FILE "animations-reuse-ui.json"
+#define ANIMATION_FILE "animations-reuse-animation.json"
+
+static gboolean
+_load_script (ClutterScript *script,
+              gchar         *filename)
+{
+  GError *error = NULL;
+
+  clutter_script_load_from_file (script, filename, &error);
+
+  if (error != NULL)
+    {
+      g_critical ("Error loading ClutterScript file %s\n%s", filename, error->message);
+      g_error_free (error);
+      exit (EXIT_FAILURE);
+    }
+
+  return TRUE;
+}
+
 gboolean
 foo_button_pressed_cb (ClutterActor *actor,
                        ClutterEvent *event,
                        gpointer      user_data)
 {
-  ClutterScript *script = CLUTTER_SCRIPT (user_data);
+  ClutterScript *ui = CLUTTER_SCRIPT (user_data);
+  ClutterStage *stage = CLUTTER_STAGE (clutter_script_get_object (ui, "stage"));
+
+  ClutterScript *script = clutter_script_new ();
+
+  _load_script (script, ANIMATION_FILE);
 
   ClutterAnimator *bounce;
   ClutterActor *rig;
@@ -18,13 +44,22 @@ foo_button_pressed_cb (ClutterActor *actor,
                               "bounce", &bounce,
                               NULL);
 
-  /* don't allow animation to be reused until it is complete */
-  if (clutter_timeline_is_playing (bounce_timeline))
-    return TRUE;
+  /* remove the button press handler */
+  g_signal_handlers_disconnect_matched (actor,
+                                        G_SIGNAL_MATCH_FUNC,
+                                        0,
+                                        0,
+                                        NULL,
+                                        foo_button_pressed_cb,
+                                        NULL);
 
-  clutter_actor_set_position (rig, 0, 0);
+  /* add a handler to clean up when the animation completes */
+  g_signal_connect_swapped (bounce_timeline,
+                            "completed",
+                            G_CALLBACK (g_object_unref),
+                            script);
 
-  clutter_actor_set_scale (rig, 1.0, 1.0);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), rig);
 
   clutter_actor_reparent (actor, rig);
 
@@ -33,72 +68,13 @@ foo_button_pressed_cb (ClutterActor *actor,
   return TRUE;
 }
 
-/* set the actor's position to the rig's position
- * but parented to the background;
- * remove the click handler so the rectangle can't be animated again
- */
-static void
-_move_to_background_cb (ClutterActor *actor,
-                        gpointer      user_data)
-{
-  ClutterActor *background = CLUTTER_ACTOR (user_data);
-
-  gfloat x, y;
-  clutter_actor_get_position (clutter_actor_get_parent (actor), &x, &y);
-
-  gdouble scale_x, scale_y;
-  clutter_actor_get_scale (clutter_actor_get_parent (actor), &scale_x, &scale_y);
-
-  clutter_actor_reparent (actor, background);
-
-  clutter_actor_set_position (actor, x, y);
-  clutter_actor_set_scale (actor, scale_x, scale_y);
-
-  g_signal_handlers_disconnect_matched (actor,
-                                        G_SIGNAL_MATCH_FUNC,
-                                        0,
-                                        0,
-                                        NULL,
-                                        foo_button_pressed_cb,
-                                        NULL);
-}
-
-void
-foo_rig_animation_complete_cb (ClutterTimeline *timeline,
-                               gpointer         user_data)
-{
-  ClutterScript *script = CLUTTER_SCRIPT (user_data);
-
-  ClutterContainer *rig;
-  ClutterActor *background;
-
-  clutter_script_get_objects (script,
-                              "rig", &rig,
-                              "background", &background,
-                              NULL);
-
-  clutter_container_foreach (rig,
-                             CLUTTER_CALLBACK (_move_to_background_cb),
-                             background);
-}
-
 int
 main (int argc, char *argv[])
 {
   clutter_init (&argc, &argv);
 
-  gchar *filename = "animations-reuse.json";
-  GError *error = NULL;
-
   ClutterScript *script = clutter_script_new ();
-  clutter_script_load_from_file (script, filename, &error);
-
-  if (error != NULL)
-    {
-      g_critical ("Error loading ClutterScript file %s\n%s", filename, error->message);
-      g_error_free (error);
-      exit (EXIT_FAILURE);
-    }
+  _load_script (script, UI_FILE);
 
   clutter_script_connect_signals (script, script);
 
