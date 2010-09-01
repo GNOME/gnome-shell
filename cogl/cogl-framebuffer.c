@@ -709,7 +709,7 @@ cogl_pop_framebuffer (void)
 
   cogl_object_unref (to_pop);
   ctx->framebuffer_stack =
-    g_slist_remove_link (ctx->framebuffer_stack,
+    g_slist_delete_link (ctx->framebuffer_stack,
                          ctx->framebuffer_stack);
 
   /* If the framebuffer has changed as a result of popping the top
