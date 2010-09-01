@@ -29,6 +29,7 @@ struct _StShadow {
     gdouble      yoffset;
     gdouble      blur;
     gdouble      spread;
+    volatile int ref_count;
 };
 
 GType     st_shadow_get_type (void) G_GNUC_CONST;
@@ -38,8 +39,8 @@ StShadow *st_shadow_new      (ClutterColor   *color,
                               gdouble         yoffset,
                               gdouble         blur,
                               gdouble         spread);
-StShadow *st_shadow_copy     (const StShadow *shadow);
-void      st_shadow_free     (StShadow       *shadow);
+StShadow *st_shadow_ref      (StShadow       *shadow);
+void      st_shadow_unref    (StShadow       *shadow);
 
 gboolean  st_shadow_equal    (StShadow       *shadow,
                               StShadow       *other);

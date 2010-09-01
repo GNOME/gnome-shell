@@ -36,45 +36,50 @@ st_shadow_new (ClutterColor *color,
 
   shadow = g_slice_new (StShadow);
 
-  shadow->color   = *color;
-  shadow->xoffset = xoffset;
-  shadow->yoffset = yoffset;
-  shadow->blur    = blur;
-  shadow->spread  = spread;
+  shadow->color     = *color;
+  shadow->xoffset   = xoffset;
+  shadow->yoffset   = yoffset;
+  shadow->blur      = blur;
+  shadow->spread    = spread;
+  shadow->ref_count = 1;
 
   return shadow;
 }
 
 /**
- * st_shadow_copy:
+ * st_shadow_ref:
  * @shadow: a #StShadow
  *
- * Makes a copy of @shadow.
+ * Atomically increments the reference count of @shadow by one.
  *
- * Returns: an allocated copy of @shadow - the result must be freed with
- *          st_shadow_free() when done
+ * Returns: the passed in #StShadow.
  */
 StShadow *
-st_shadow_copy (const StShadow *shadow)
+st_shadow_ref (StShadow *shadow)
 {
   g_return_val_if_fail (shadow != NULL, NULL);
+  g_return_val_if_fail (shadow->ref_count > 0, shadow);
 
-  return g_slice_dup (StShadow, shadow);
+  g_atomic_int_add (&shadow->ref_count, 1);
+  return shadow;
 }
 
 /**
- * st_shadow_free:
+ * st_shadow_unref:
  * @shadow: a #StShadow
  *
- * Frees the shadow structure created with st_shadow_new() or
- * st_shadow_copy()
+ * Atomically decrements the reference count of @shadow by one.
+ * If the reference count drops to 0, all memory allocated by the
+ * #StShadow is released.
  */
 void
-st_shadow_free (StShadow *shadow)
+st_shadow_unref (StShadow *shadow)
 {
   g_return_if_fail (shadow != NULL);
+  g_return_if_fail (shadow->ref_count > 0);
 
-  g_slice_free (StShadow, shadow);
+  if (g_atomic_int_exchange_and_add (&shadow->ref_count, -1) - 1 == 0)
+    g_slice_free (StShadow, shadow);
 }
 
 /**
@@ -144,8 +149,8 @@ st_shadow_get_type (void)
   if (G_UNLIKELY (_st_shadow_type == 0))
     _st_shadow_type =
         g_boxed_type_register_static ("StShadow",
-                                      (GBoxedCopyFunc) st_shadow_copy,
-                                      (GBoxedFreeFunc) st_shadow_free);
+                                      (GBoxedCopyFunc) st_shadow_ref,
+                                      (GBoxedFreeFunc) st_shadow_unref);
 
   return _st_shadow_type;
 }

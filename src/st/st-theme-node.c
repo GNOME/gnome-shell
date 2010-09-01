@@ -99,7 +99,7 @@ st_theme_node_finalize (GObject *object)
 
   if (node->shadow)
     {
-      st_shadow_free (node->shadow);
+      st_shadow_unref (node->shadow);
       node->shadow = NULL;
     }
 
