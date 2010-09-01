@@ -53,7 +53,7 @@
  *   transformed size of the #ClutterActor using the offscreen effect.
  *   Sub-classes of #ClutterOffscreenEffect can change the texture creation
  *   code to provide bigger textures by overriding the
- *   <function>create_target()</function> virtual function; no chain up
+ *   <function>create_texture()</function> virtual function; no chain up
  *   to the #ClutterOffscreenEffect implementation is required in this
  *   case.</para>
  * </refsect2>
@@ -75,7 +75,7 @@
 struct _ClutterOffscreenEffectPrivate
 {
   CoglHandle offscreen;
-  CoglHandle target;
+  CoglMaterial *target;
 
   ClutterActor *actor;
   ClutterActor *stage;
@@ -120,9 +120,9 @@ clutter_offscreen_effect_set_actor (ClutterActorMeta *meta,
 }
 
 static CoglHandle
-clutter_offscreen_effect_real_create_target (ClutterOffscreenEffect *effect,
-                                             gfloat                  width,
-                                             gfloat                  height)
+clutter_offscreen_effect_real_create_texture (ClutterOffscreenEffect *effect,
+                                              gfloat                  width,
+                                              gfloat                  height)
 {
   return cogl_texture_new_with_size (MAX (width, 1), MAX (height, 1),
                                      COGL_TEXTURE_NO_SLICING,
@@ -166,7 +166,7 @@ update_fbo (ClutterEffect *effect)
 
   priv->target = cogl_material_new ();
 
-  texture = clutter_offscreen_effect_create_target (self, width, height);
+  texture = clutter_offscreen_effect_create_texture (self, width, height);
   if (texture == COGL_INVALID_HANDLE)
      return FALSE;
 
@@ -174,7 +174,7 @@ update_fbo (ClutterEffect *effect)
   cogl_handle_unref (texture);
 
   /* we need to use the size of the texture target and not the minimum
-   * size we passed to the create_target() vfunc, as any sub-class might
+   * size we passed to the create_texture() vfunc, as any sub-class might
    * give use a bigger texture
    */
   priv->target_width = cogl_texture_get_width (texture);
@@ -401,7 +401,7 @@ clutter_offscreen_effect_class_init (ClutterOffscreenEffectClass *klass)
 
   g_type_class_add_private (klass, sizeof (ClutterOffscreenEffectPrivate));
 
-  klass->create_target = clutter_offscreen_effect_real_create_target;
+  klass->create_texture = clutter_offscreen_effect_real_create_texture;
   klass->paint_target = clutter_offscreen_effect_real_paint_target;
 
   meta_class->set_actor = clutter_offscreen_effect_set_actor;
@@ -427,13 +427,16 @@ clutter_offscreen_effect_init (ClutterOffscreenEffect *self)
  * Retrieves the material used as a render target for the offscreen
  * buffer created by @effect
  *
- * Return value: (transfer none): a handle for a #CoglMaterial, or
- *   %COGL_INVALID_HANDLE. The returned handle is owned by Clutter
- *   and it should not be modified or freed
+ * You should only use the returned #CoglMaterial when painting. The
+ * returned material might change between different frames.
+ *
+ * Return value: (transfer none): a #CoglMaterial or %NULL. The
+ *   returned material is owned by Clutter and it should not be
+ *   modified or freed
  *
  * Since: 1.4
  */
-CoglHandle
+CoglMaterial *
 clutter_offscreen_effect_get_target (ClutterOffscreenEffect *effect)
 {
   g_return_val_if_fail (CLUTTER_IS_OFFSCREEN_EFFECT (effect),
@@ -459,26 +462,26 @@ clutter_offscreen_effect_paint_target (ClutterOffscreenEffect *effect)
 }
 
 /**
- * clutter_offscreen_effect_create_target:
+ * clutter_offscreen_effect_create_texture:
  * @effect: a #ClutterOffscreenEffect
  * @width: the minimum width of the target texture
  * @height: the minimum height of the target texture
  *
- * Calls the create_target() virtual function of the @effect
+ * Calls the create_texture() virtual function of the @effect
  *
- * Return value: a handle to the target texture
+ * Return value: a handle to a Cogl texture, or %COGL_INVALID_HANDLE
  *
  * Since: 1.4
  */
 CoglHandle
-clutter_offscreen_effect_create_target (ClutterOffscreenEffect *effect,
-                                        gfloat                  width,
-                                        gfloat                  height)
+clutter_offscreen_effect_create_texture (ClutterOffscreenEffect *effect,
+                                         gfloat                  width,
+                                         gfloat                  height)
 {
   g_return_val_if_fail (CLUTTER_IS_OFFSCREEN_EFFECT (effect),
                         COGL_INVALID_HANDLE);
 
-  return CLUTTER_OFFSCREEN_EFFECT_GET_CLASS (effect)->create_target (effect,
-                                                                     width,
-                                                                     height);
+  return CLUTTER_OFFSCREEN_EFFECT_GET_CLASS (effect)->create_texture (effect,
+                                                                      width,
+                                                                      height);
 }
