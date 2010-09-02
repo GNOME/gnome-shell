@@ -3,6 +3,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 UNIT_TESTS = \
 	test-textures.c \
 	test-texture-async.c \
+	test-texture-material.c \
 	test-events.c \
 	test-offscreen.c \
 	test-scale.c \

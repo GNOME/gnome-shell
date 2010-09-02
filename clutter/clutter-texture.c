@@ -167,6 +167,8 @@ static guint        repaint_upload_func = 0;
 static GList       *upload_list = NULL;
 static GStaticMutex upload_list_mutex = G_STATIC_MUTEX_INIT;
 
+static CoglMaterial *texture_template_material = NULL;
+
 static void
 texture_fbo_free_resources (ClutterTexture *texture);
 
@@ -559,7 +561,7 @@ create_pick_material (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
-  CoglHandle pick_material = cogl_material_new ();
+  CoglHandle pick_material = cogl_material_copy (texture_template_material);
   GError *error = NULL;
 
   if (!cogl_material_set_layer_combine (pick_material, 0,
@@ -1234,13 +1236,26 @@ clutter_texture_init (ClutterTexture *self)
   priv->repeat_x          = FALSE;
   priv->repeat_y          = FALSE;
   priv->sync_actor_size   = TRUE;
-  priv->material          = cogl_material_new ();
   priv->fbo_handle        = COGL_INVALID_HANDLE;
   priv->pick_material     = COGL_INVALID_HANDLE;
   priv->keep_aspect_ratio = FALSE;
   priv->pick_with_alpha   = FALSE;
   priv->pick_with_alpha_supported = TRUE;
   priv->seen_create_pick_material_warning = FALSE;
+
+  if (G_UNLIKELY (texture_template_material == NULL))
+    {
+      CoglHandle dummy_tex;
+
+      dummy_tex = cogl_texture_new_with_size (1, 1, COGL_TEXTURE_NO_SLICING,
+                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+
+      texture_template_material = cogl_material_new ();
+      cogl_material_set_layer (texture_template_material, 0, dummy_tex);
+      cogl_handle_unref (dummy_tex);
+    }
+
+  priv->material = cogl_material_copy (texture_template_material);
 }
 
 /**
