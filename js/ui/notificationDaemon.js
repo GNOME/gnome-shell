@@ -81,14 +81,6 @@ const rewriteRules = {
     ]
 };
 
-// The notification spec stipulates using formal names for the appName the applications
-// pass in. However, not all applications do that. Here is a list of the offenders we
-// encountered so far.
-const appNameMap = {
-    'evolution-mail-notification': 'Evolution Mail',
-    'rhythmbox': 'Rhythmbox'
-};
-
 function NotificationDaemon() {
     this._init();
 }
@@ -108,7 +100,9 @@ NotificationDaemon.prototype = {
                                   Lang.bind(this, this._lostName));
 
         this._sources = {};
-        this._currentNotifications = {};
+        this._senderToPid = {};
+        this._notifications = {};
+        this._busProxy = new Bus();
 
         Shell.WindowTracker.get_default().connect('notify::focus-app',
             Lang.bind(this, this._onFocusAppChanged));
@@ -174,47 +168,19 @@ NotificationDaemon.prototype = {
 
     Notify: function(appName, replacesId, icon, summary, body,
                      actions, hints, timeout) {
-        let source = this._sources[appName];
-        let id = null;
+        let id;
 
         // Filter out notifications from Empathy, since we
         // handle that information from telepathyClient.js
         if (appName == 'Empathy') {
+            // Ignore replacesId since we already sent back a
+            // NotificationClosed for that id.
             id = nextNotificationId++;
             Mainloop.idle_add(Lang.bind(this,
                                         function () {
                                             this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
                                         }));
             return id;
-        }
-
-        hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
-
-        // Source may be null if we have never received a notification
-        // from this app or if all notifications from this app have
-        // been acknowledged.
-        if (source == null) {
-            let title = appNameMap[appName] || appName;
-            source = new Source(title);
-            Main.messageTray.add(source);
-            this._sources[appName] = source;
-
-            source.connect('clicked', Lang.bind(this,
-                function() {
-                    source.destroy();
-                }));
-            source.connect('destroy', Lang.bind(this,
-                function() {
-                    delete this._sources[appName];
-                }));
-
-            let sender = DBus.getCurrentMessageContext().sender;
-            let busProxy = new Bus();
-            busProxy.GetConnectionUnixProcessIDRemote(sender, function (result, excp) {
-                let app = Shell.WindowTracker.get_default().get_app_from_pid(result);
-                if (app)
-                    source.setApp(app);
-            });
         }
 
         summary = GLib.markup_escape_text(summary, -1);
@@ -228,25 +194,89 @@ NotificationDaemon.prototype = {
             }
         }
 
-        let notification;
-        if (replacesId != 0) {
-            id = replacesId;
-            notification = this._currentNotifications[id];
+        hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
+
+        let ndata = { appName: appName,
+                      icon: icon,
+                      summary: summary,
+                      body: body,
+                      actions: actions,
+                      hints: hints,
+                      timeout: timeout };
+        if (replacesId != 0 && this._notifications[replacesId]) {
+            ndata.id = id = replacesId;
+            ndata.notification = this._notifications[replacesId].notification;
+        } else {
+            replacesId = 0;
+            ndata.id = id = nextNotificationId++;
+        }
+        this._notifications[id] = ndata;
+
+        let sender = DBus.getCurrentMessageContext().sender;
+        let pid = this._senderToPid[sender];
+        let source = pid ? this._sources[pid] : null;
+
+        if (source) {
+            this._notifyForSource(source, ndata);
+            return id;
         }
 
+        if (replacesId) {
+            // There's already a pending call to GetConnectionUnixProcessID,
+            // which will see the new notification data when it finishes,
+            // so we don't have to do anything.
+            return id;
+        }
+
+        this._busProxy.GetConnectionUnixProcessIDRemote(sender, Lang.bind(this,
+            function (pid, ex) {
+                // The app may have updated or removed the notification
+                ndata = this._notifications[id];
+                if (!ndata)
+                    return;
+
+                this._senderToPid[sender] = pid;
+                source = this._sources[pid];
+
+                if (!source) {
+                    source = new Source(appName, pid);
+                    source.connect('clicked', Lang.bind(this,
+                        function() {
+                            source.destroy();
+                        }));
+                    source.connect('destroy', Lang.bind(this,
+                        function() {
+                            delete this._sources[pid];
+                            delete this._senderToPid[sender];
+                        }));
+
+                    this._sources[pid] = source;
+                    Main.messageTray.add(source);
+                }
+
+                this._notifyForSource(source, ndata);
+            }));
+
+        return id;
+    },
+
+    _notifyForSource: function(source, ndata) {
+        let [id, icon, summary, body, actions, hints, notification] =
+            [ndata.id, ndata.icon, ndata.summary, ndata.body,
+             ndata.actions, ndata.hints, ndata.notification];
+
         let iconActor = this._iconForNotificationData(icon, hints, source.ICON_SIZE);
+
         if (notification == null) {
-            id = nextNotificationId++;
-            notification = new MessageTray.Notification(source, summary, body,
-                                                        { icon: iconActor });
-            this._currentNotifications[id] = notification;
+            notification = new MessageTray.Notification(source, summary, body, { icon: iconActor });
+            ndata.notification = notification;
             notification.connect('dismissed', Lang.bind(this,
                 function(n) {
                     this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
                 }));
             notification.connect('destroy', Lang.bind(this,
                 function(n) {
-                    delete this._currentNotifications[id];
+                    delete this._notifications[id];
                 }));
             notification.connect('action-invoked', Lang.bind(this, this._actionInvoked, source, id));
         } else {
@@ -261,15 +291,17 @@ NotificationDaemon.prototype = {
 
         notification.setUrgent(hints.urgency == Urgency.CRITICAL);
 
-        let sourceIconActor = this._iconForNotificationData(icon, hints, source.ICON_SIZE);
-        source.notify(sourceIconActor, notification);
-        return id;
+        let sourceIconActor = source.app ? null : this._iconForNotificationData(icon, hints, source.ICON_SIZE);
+        source.notify(notification, sourceIconActor);
     },
 
     CloseNotification: function(id) {
-        let notification = this._currentNotifications[id];
-        if (notification)
-            notification.destroy();
+        let ndata = this._notifications[id];
+        if (ndata) {
+            if (ndata.notification)
+                ndata.notification.destroy();
+            delete this._notifications[id];
+        }
         this._emitNotificationClosed(id, NotificationClosedReason.APP_CLOSED);
     },
 
@@ -332,22 +364,26 @@ NotificationDaemon.prototype = {
 
 DBus.conformExport(NotificationDaemon.prototype, NotificationDaemonIface);
 
-function Source(title) {
-    this._init(title);
+function Source(title, pid) {
+    this._init(title, pid);
 }
 
 Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
-    _init: function(title) {
+    _init: function(title, pid) {
         MessageTray.Source.prototype._init.call(this, title);
 
-        this.app = null;
-        this._openAppRequested = false;
+        this.app = Shell.WindowTracker.get_default().get_app_from_pid(pid);
+        if (this.app) {
+            this.title = this.app.get_name();
+            this._setSummaryIcon(this.app.create_icon_texture(this.ICON_SIZE));
+        }
     },
 
-    notify: function(icon, notification) {
-        this._setSummaryIcon(icon);
+    notify: function(notification, icon) {
+        if (icon)
+            this._setSummaryIcon(icon);
         MessageTray.Source.prototype.notify.call(this, notification);
     },
 
@@ -356,22 +392,14 @@ Source.prototype = {
         MessageTray.Source.prototype.clicked.call(this);
     },
 
-    setApp: function(app) {
-        this.app = app;
-        if (this._openAppRequested)
-            this.openApp();
-    },
-
     openApp: function() {
-        if (this.app == null) {
-            this._openAppRequested = true;
+        if (this.app == null)
             return;
-        }
+
         let windows = this.app.get_windows();
         if (windows.length > 0) {
             let mostRecentWindow = windows[0];
             Main.activateWindow(mostRecentWindow);
         }
-        this._openAppRequested = false;
     }
 };
