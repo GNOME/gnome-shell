@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&component=general\n"
 "POT-Creation-Date: 2010-09-01 17:20+0000\n"
-"PO-Revision-Date: 2010-08-26 11:02+0200\n"
+"PO-Revision-Date: 2010-09-02 22:57+0200\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -234,13 +234,13 @@ msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La chiave GConf «%s» è impostata ad un tipo non valido\n"
 
 #: ../src/core/prefs.c:1202
-#, fuzzy, c-format
+#, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
 msgstr ""
 "La chiave GConf %s è già in uso e non può essere usata per scavalcare %s\n"
 
 #: ../src/core/prefs.c:1261
-#, fuzzy, c-format
+#, c-format
 msgid "Can't override GConf key, %s not found\n"
 msgstr "Impossibile scavalcare la chiave GConf, %s non trovato\n"
 
@@ -1745,12 +1745,11 @@ msgstr ""
 "specificato due elementi)"
 
 #: ../src/ui/theme-parser.c:3373
-#, fuzzy, c-format
+#, c-format
 msgid "Bad version specification '%s'"
 msgstr "Specificazione di versione «%s» errata"
 
 #: ../src/ui/theme-parser.c:3446
-#, fuzzy
 msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
@@ -1759,7 +1758,7 @@ msgstr ""
 "theme-2.xml"
 
 #: ../src/ui/theme-parser.c:3469
-#, fuzzy, c-format
+#, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
 msgstr ""
 "Il tema richiede la versione %s, ma la versione di tema supportata più "
@@ -1831,67 +1830,56 @@ msgid "Failed to find a valid file for theme %s\n"
 msgstr "Ricerca di un file valido per il tema «%s» non riuscita\n"
 
 #: ../src/ui/theme-viewer.c:99
-#, fuzzy
 #| msgid "/_Windows"
 msgid "_Windows"
 msgstr "_Finestre"
 
 #: ../src/ui/theme-viewer.c:100
-#, fuzzy
 #| msgid "Dialog Box"
 msgid "_Dialog"
 msgstr "_Dialogo"
 
 #: ../src/ui/theme-viewer.c:101
-#, fuzzy
 #| msgid "Modal Dialog Box"
 msgid "_Modal dialog"
 msgstr "Dialogo _modale"
 
 #: ../src/ui/theme-viewer.c:102
-#, fuzzy
 #| msgid "/Windows/_Utility"
 msgid "_Utility"
 msgstr "_Utilità"
 
 #: ../src/ui/theme-viewer.c:103
-#, fuzzy
 #| msgid "/Windows/_Splashscreen"
 msgid "_Splashscreen"
 msgstr "_Schermata d'avvio"
 
 #: ../src/ui/theme-viewer.c:104
-#, fuzzy
 #| msgid "/Windows/_Top dock"
 msgid "_Top dock"
 msgstr "Dock superi_ore"
 
 #: ../src/ui/theme-viewer.c:105
-#, fuzzy
 #| msgid "/Windows/_Bottom dock"
 msgid "_Bottom dock"
 msgstr "Dock in_feriore"
 
 #: ../src/ui/theme-viewer.c:106
-#, fuzzy
 #| msgid "/Windows/_Left dock"
 msgid "_Left dock"
 msgstr "Dock _sinistro"
 
 #: ../src/ui/theme-viewer.c:107
-#, fuzzy
 #| msgid "/Windows/_Right dock"
 msgid "_Right dock"
 msgstr "Dock _destro"
 
 #: ../src/ui/theme-viewer.c:108
-#, fuzzy
 #| msgid "/Windows/_All docks"
 msgid "_All docks"
 msgstr "Tutti i doc_k"
 
 #: ../src/ui/theme-viewer.c:109
-#, fuzzy
 #| msgid "Desktop"
 msgid "Des_ktop"
 msgstr "Scri_vania"
