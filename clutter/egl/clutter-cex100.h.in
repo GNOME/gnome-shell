@@ -80,7 +80,7 @@ typedef enum /*< prefix=CLUTTER_CEX100 >*/
  * surface used by Clutter to draw can be backed up by either one or two
  * back buffers thus being double or triple buffered, respectively.
  *
- * Clutter defaults to #CLUTTER_CEX100_TRIPLE_BUFFERING.
+ * Clutter defaults to %CLUTTER_CEX100_TRIPLE_BUFFERING.
  *
  * <note>This function has to be called before clutter_init()</note>
  */
