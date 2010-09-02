@@ -1030,7 +1030,7 @@ AC_SUBST(CLUTTER_LIBS)
 
 dnl === GObject-Introspection check ===========================================
 
-GOBJECT_INTROSPECTION_CHECK([0.6.14])
+GOBJECT_INTROSPECTION_CHECK([0.9.5])
 
 # --quiet has been added in in the 0.9.1 development cycle.
 PKG_CHECK_EXISTS([gobject-introspection-1.0 >= 0.9.2],

@@ -44,13 +44,12 @@ BUILT_GIRSOURCES =
 ClutterJson-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-json.la
 	$(QUIET_SCAN)$(INTROSPECTION_SCANNER) \
 		$(INTROSPECTION_SCANNER_ARGS) \
+		--quiet \
 		--namespace ClutterJson --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
-		--add-include-path=$(srcdir) --add-include-path=. \
 		--include=GObject-2.0 \
 		--library=libclutter-json.la \
 		--libtool="$(top_builddir)/libtool" \
-		--pkg gobject-2.0 \
 		--output $@ \
 		$(clutterjson_HEADERS) \
 		$(source_c)
