@@ -154,22 +154,7 @@ clutter_backend_cex100_create_context (ClutterBackend  *backend,
   EGLConfig configs[2];
   EGLint config_count;
   EGLBoolean status;
-
-  if (backend_egl->egl_context != EGL_NO_CONTEXT)
-    return TRUE;
-
-  CLUTTER_NOTE (BACKEND, "Using the %s plane", gdl_get_plane_name (gdl_plane));
-
-  /* Start by initializing the GDL plane */
-  if (!gdl_plane_init (GDL_DISPLAY_ID_0, gdl_plane, GDL_PF_ARGB_32))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Could not initialize the GDL plane");
-      return FALSE;
-    }
-
-  NativeWindowType window = (NativeWindowType) gdl_plane;
+  NativeWindowType window;
   EGLint cfg_attribs[] = {
       EGL_BUFFER_SIZE,     EGL_DONT_CARE,
       EGL_RED_SIZE,        8,
@@ -186,6 +171,22 @@ clutter_backend_cex100_create_context (ClutterBackend  *backend,
 #endif /* HAVE_COGL_GLES2 */
       EGL_NONE
   };
+
+  if (backend_egl->egl_context != EGL_NO_CONTEXT)
+    return TRUE;
+
+  CLUTTER_NOTE (BACKEND, "Using the %s plane", gdl_get_plane_name (gdl_plane));
+
+  /* Start by initializing the GDL plane */
+  if (!gdl_plane_init (GDL_DISPLAY_ID_0, gdl_plane, GDL_PF_ARGB_32))
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_BACKEND,
+                   "Could not initialize the GDL plane");
+      return FALSE;
+    }
+
+  window = (NativeWindowType) gdl_plane;
 
   status = eglGetConfigs (backend_egl->edpy,
                           configs,
