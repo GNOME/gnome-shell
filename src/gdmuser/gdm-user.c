@@ -78,13 +78,13 @@ struct _GdmUser {
         GFileMonitor   *icon_monitor;
 };
 
-typedef struct _GdmUserClass
+struct _GdmUserClass
 {
         GObjectClass parent_class;
 
         void (* icon_changed)     (GdmUser *user);
         void (* sessions_changed) (GdmUser *user);
-} GdmUserClass;
+};
 
 static void gdm_user_finalize     (GObject      *object);
 
@@ -150,6 +150,12 @@ gdm_user_get_num_sessions (GdmUser    *user)
         return g_list_length (user->sessions);
 }
 
+/**
+ * gdm_user_get_sessions:
+ * @user: a #GdmUser
+ *
+ * Returns: (transfer none) (element-type utf8): Session identifier strings
+ */
 GList *
 gdm_user_get_sessions (GdmUser *user)
 {
@@ -1103,6 +1109,13 @@ frame_pixbuf (GdkPixbuf *source)
         return dest;
 }
 
+/**
+ * gdm_user_render_icon:
+ * @user: a #GdmUser:
+ * @icon_size: icon size in pixels
+ *
+ * Returns: (transfer full): A new icon for the user
+ */
 GdkPixbuf *
 gdm_user_render_icon (GdmUser   *user,
                       gint       icon_size)

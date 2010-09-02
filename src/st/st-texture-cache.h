@@ -107,6 +107,17 @@ ClutterActor *st_texture_cache_load_from_raw  (StTextureCache    *cache,
                                                int                size,
                                                GError           **error);
 
+/**
+ * StTextureCacheLoader: (skip)
+ * @cache: a #StTextureCache
+ * @key: Unique identifier for this texture
+ * @data: Callback user data
+ * @error: A #GError
+ *
+ * See st_texture_cache_load().  Implementations should return a
+ * texture handle for the given key, or set @error.
+ *
+ */
 typedef CoglHandle (*StTextureCacheLoader) (StTextureCache *cache, const char *key, void *data, GError **error);
 
 CoglHandle st_texture_cache_load (StTextureCache       *cache,

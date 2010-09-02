@@ -32,8 +32,6 @@ GType            shell_global_get_type            (void) G_GNUC_CONST;
 gboolean shell_clutter_texture_set_from_pixbuf (ClutterTexture *texture,
                                                 GdkPixbuf      *pixbuf);
 
-ClutterActor *shell_get_event_related(ClutterEvent *event);
-
 ShellGlobal *shell_global_get (void);
 
 MetaScreen *shell_global_get_screen (ShellGlobal  *global);

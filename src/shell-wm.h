@@ -27,8 +27,6 @@ GType    shell_wm_get_type                    (void) G_GNUC_CONST;
 
 ShellWM *shell_wm_new                         (MutterPlugin *plugin);
 
-GList   *shell_wm_get_switch_workspace_actors (ShellWM      *wm);
-
 void     shell_wm_completed_minimize          (ShellWM      *wm,
                                                MutterWindow *actor);
 void     shell_wm_completed_maximize          (ShellWM      *wm,
@@ -40,36 +38,6 @@ void     shell_wm_completed_map               (ShellWM      *wm,
 void     shell_wm_completed_destroy           (ShellWM      *wm,
                                                MutterWindow *actor);
 void     shell_wm_completed_switch_workspace  (ShellWM      *wm);
-
-
-/* These forward along the different effects from GnomeShellPlugin */
-
-void _shell_wm_minimize   (ShellWM      *wm,
-			   MutterWindow *actor);
-void _shell_wm_maximize   (ShellWM      *wm,
-			   MutterWindow *actor,
-			   gint          x,
-			   gint          y,
-			   gint          width,
-			   gint          height);
-void _shell_wm_unmaximize (ShellWM      *wm,
-			   MutterWindow *actor,
-			   gint          x,
-			   gint          y,
-			   gint          width,
-			   gint          height);
-void _shell_wm_map        (ShellWM      *wm,
-			   MutterWindow *actor);
-void _shell_wm_destroy    (ShellWM      *wm,
-			   MutterWindow *actor);
-
-void _shell_wm_switch_workspace (ShellWM              *wm,
-				 gint                  from,
-				 gint                  to,
-				 MetaMotionDirection   direction);
-void _shell_wm_kill_window_effects  (ShellWM              *wm,
-				     MutterWindow         *actor);
-void _shell_wm_kill_switch_workspace (ShellWM              *wm);
 
 /* Keybinding stuff */
 void shell_wm_takeover_keybinding (ShellWM    *wm,

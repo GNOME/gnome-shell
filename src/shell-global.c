@@ -511,7 +511,7 @@ shell_global_get_gdk_screen (ShellGlobal *global)
  *
  * Gets the list of MutterWindows for the plugin's screen
  *
- * Return value: (element-type MutterWindow) (transfer none): the list of windows
+ * Return value: (element-type Meta.MutterWindow) (transfer none): the list of windows
  */
 GList *
 shell_global_get_windows (ShellGlobal *global)
@@ -1369,7 +1369,7 @@ shell_get_event_state (ClutterEvent *event)
  *
  * Get the global GSettings instance.
  *
- * Return value: (transfer none) The GSettings object (transfer none).
+ * Return value: (transfer none): The GSettings object
  */
 GSettings *
 shell_global_get_settings (ShellGlobal *global)
@@ -1467,13 +1467,13 @@ shell_global_get_current_time (ShellGlobal *global)
 }
 
 /**
- * shell_global_get_app_launch_context:
+ * shell_global_create_app_launch_context:
  * @global: A #ShellGlobal
  *
  * Create a #GAppLaunchContext set up with the correct timestamp, and
  * targeted to activate on the current workspace.
  *
- * Return value: A new #GAppLaunchContext
+ * Return value: (transfer full): A new #GAppLaunchContext
  */
 GAppLaunchContext *
 shell_global_create_app_launch_context (ShellGlobal *global)

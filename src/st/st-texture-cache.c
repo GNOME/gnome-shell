@@ -831,7 +831,7 @@ st_texture_cache_bind_pixbuf_property (StTextureCache    *cache,
 }
 
 /**
- * st_texture_cache_load:
+ * st_texture_cache_load: (skip)
  * @cache: A #StTextureCache
  * @key: Arbitrary string used to refer to item
  * @policy: Caching policy
@@ -1272,6 +1272,8 @@ st_texture_cache_load_uri_sync (StTextureCache *cache,
  * This function synchronously loads the given file path
  * into a COGL texture.  On error, a warning is emitted
  * and %COGL_INVALID_HANDLE is returned.
+ *
+ * Returns: (transfer full): a new #CoglHandle
  */
 CoglHandle
 st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,

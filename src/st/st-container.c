@@ -168,7 +168,7 @@ st_container_move_child (StContainer  *container,
  * Get the internal list of @container's child actors. This function
  * should only be used by subclasses of StContainer
  *
- * Returns: list of @container's child actors
+ * Returns: (element-type Clutter.Actor) (transfer none): list of @container's child actors
  */
 GList *
 st_container_get_children_list (StContainer *container)

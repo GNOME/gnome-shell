@@ -22,8 +22,8 @@
  * Facade object for user data, owned by GdmUserManager
  */
 
-#ifndef __GDM_USER__
-#define __GDM_USER__ 1
+#ifndef __GDM_USER_H
+#define __GDM_USER_H
 
 #include <sys/types.h>
 #include <gtk/gtk.h>
@@ -36,6 +36,7 @@ G_BEGIN_DECLS
 #define GDM_IS_USER(object) (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDM_TYPE_USER))
 
 typedef struct _GdmUser GdmUser;
+typedef struct _GdmUserClass GdmUserClass;
 
 GType                 gdm_user_get_type            (void) G_GNUC_CONST;
 

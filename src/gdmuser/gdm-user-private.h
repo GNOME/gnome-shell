@@ -21,8 +21,8 @@
  * Private interfaces to the GdmUser object
  */
 
-#ifndef __GDM_USER_PRIVATE__
-#define __GDM_USER_PRIVATE__ 1
+#ifndef __GDM_USER_PRIVATE_H
+#define __GDM_USER_PRIVATE_H
 
 #include <pwd.h>
 
@@ -41,4 +41,4 @@ void _gdm_user_icon_changed     (GdmUser             *user);
 
 G_END_DECLS
 
-#endif /* !__GDM_USER_PRIVATE__ */
+#endif /* !__GDM_USER_PRIVATE_H */

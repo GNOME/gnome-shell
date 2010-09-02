@@ -51,7 +51,7 @@
 
 #include "shell-global-private.h"
 #include "shell-perf-log.h"
-#include "shell-wm.h"
+#include "shell-wm-private.h"
 #include "st.h"
 
 static void gnome_shell_plugin_dispose     (GObject *object);

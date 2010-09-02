@@ -963,14 +963,14 @@ get_seat_proxy (GdmUserManager *manager)
 }
 
 /**
- * gdm_manager_get_user:
+ * gdm_user_manager_get_user:
  * @manager: the manager to query.
  * @username: the login name of the user to get.
  *
  * Retrieves a pointer to the #GdmUser object for the login named @username
  * from @manager. This pointer is not a reference, and should not be released.
  *
- * Returns: a pointer to a #GdmUser object.
+ * Returns: (transfer none): a pointer to a #GdmUser object.
  **/
 GdmUser *
 gdm_user_manager_get_user (GdmUserManager *manager,
@@ -996,6 +996,17 @@ gdm_user_manager_get_user (GdmUserManager *manager,
         return user;
 }
 
+
+/**
+ * gdm_user_manager_get_user_by_uid:
+ * @manager: the manager to query.
+ * @uid: the user id
+ *
+ * Retrieves a pointer to the #GdmUser object for the login named @username
+ * from @manager.
+ *
+ * Returns: (transfer none): a pointer to a #GdmUser object.
+ **/
 GdmUser *
 gdm_user_manager_get_user_by_uid (GdmUserManager *manager,
                                   gulong          uid)
@@ -1658,6 +1669,11 @@ gdm_user_manager_finalize (GObject *object)
         G_OBJECT_CLASS (gdm_user_manager_parent_class)->finalize (object);
 }
 
+/**
+ * gdm_user_manager_ref_default:
+ *
+ * Returns: (transfer full): The singleton #GdmUserManager object.
+ */
 GdmUserManager *
 gdm_user_manager_ref_default (void)
 {

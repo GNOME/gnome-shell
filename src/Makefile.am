@@ -80,20 +80,17 @@ shell_public_headers_h =		\
 	shell-wm.h              \
 	shell-xfixes-cursor.h
 
-# Files we don't want to be scanned by introspection
-non_gir_sources =				\
-	shell-embedded-window-private.h		\
-	shell-global-private.h			\
-	shell-window-tracker-private.h
-
 libgnome_shell_la_SOURCES =		\
 	$(shell_built_sources)		\
 	$(shell_public_headers_h)	\
-	$(non_gir_sources)		\
+	shell-app-private.h		\
+	shell-embedded-window-private.h	\
+	shell-global-private.h		\
+	shell-window-tracker-private.h	\
+	shell-wm-private.h	\
 	gnome-shell-plugin.c		\
 	gtk-compat.h			\
 	shell-app.c			\
-	shell-app-private.h		\
 	shell-app-system.c		\
 	shell-app-usage.c		\
 	shell-arrow.c			\
@@ -113,6 +110,9 @@ libgnome_shell_la_SOURCES =		\
 	shell-wm.c              \
 	shell-xfixes-cursor.c
 
+libgnome_shell_la_gir_sources = \
+	$(filter-out %-private.h $(shell_recorder_non_gir_sources), $(shell_public_headers_h) $(libgnome_shell_la_SOURCES))
+
 shell_recorder_sources =        \
 	shell-recorder.c	\
 	shell-recorder.h
@@ -123,8 +123,7 @@ shell_recorder_non_gir_sources =  \
 	shell-recorder-src.h
 
 if BUILD_RECORDER
-libgnome_shell_la_SOURCES += $(shell_recorder_sources)
-non_gir_sources += $(shell_recorder_non_gir_sources)
+libgnome_shell_la_SOURCES += $(shell_recorder_sources) $(shell_recorder_non_gir_sources)
 
 noinst_PROGRAMS += test-recorder
 
@@ -136,8 +135,6 @@ test_recorder_SOURCES =     \
 	test-recorder.c
 endif BUILD_RECORDER
 
-libgnome_shell_la_gir_sources = \
-	$(filter-out $(non_gir_sources), $(libgnome_shell_la_SOURCES))
 
 shell-marshal.h: stamp-shell-marshal.h
 	@true
@@ -199,6 +196,8 @@ Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) St-1.0.gir libgnome-shell.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)			\
 		--namespace=Shell			\
 		--nsversion=0.1				\
+		--warn-all				\
+		--warn-error				\
 		--add-include-path=$(MUTTER_LIB_DIR)/mutter/ \
 		--include=Clutter-1.0			\
 		--include=Meta-2.31			\
@@ -210,10 +209,7 @@ Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) St-1.0.gir libgnome-shell.la Makefile
 		$(addprefix $(srcdir)/,$(libgnome_shell_la_gir_sources)) \
 		$(libgnome_shell_la_CPPFLAGS)		\
 		-I $(srcdir)				\
-		-o $@.tmp &&				\
-	$(PYTHON) $(srcdir)/fix-meta-rectangle.py $@.tmp $@.tmp2 &&	\
-	rm $@.tmp &&							\
-	mv $@.tmp2 $@
+		-o $@
 CLEANFILES += Shell-0.1.gir
 EXTRA_DIST += fix-meta-rectangle.py
 
@@ -231,13 +227,15 @@ St-1.0.gir: $(mutter) $(G_IR_SCANNER) libst-1.0.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)						\
 	        --namespace=St							\
 	        --nsversion=1.0							\
+		--warn-all							\
+		--warn-error							\
 	        --include=Clutter-1.0						\
 	        --include=Gtk-3.0						\
 		--add-include-path=$(builddir)     				\
 	        --libtool="$(LIBTOOL)"						\
 	        --library=libst-1.0.la						\
 	        -DST_COMPILATION						\
-	        $(addprefix $(srcdir)/,$(st_source_h))				\
+	        $(filter-out %-private.h, $(addprefix $(srcdir)/,$(st_source_h))) \
 	        $(addprefix $(srcdir)/,$(st_source_c))				\
 	        $(srcdir)/st-enum-types.h					\
 	        $(st_cflags)							\
@@ -254,11 +252,13 @@ Gdm-1.0.gir: $(mutter) $(G_IR_SCANNER) libgdmuser-1.0.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)			\
 		--namespace=Gdm				\
 		--nsversion=1.0				\
+		--warn-all				\
+		--warn-error				\
 		--include=GObject-2.0			\
 		--include=GdkPixbuf-2.0			\
 		--libtool="$(LIBTOOL)"			\
 		--library=libgdmuser-1.0.la		\
-		$(addprefix $(srcdir)/,$(gdmuser_source_h))	\
+		$(filter-out %-private.h, $(addprefix $(srcdir)/,$(gdmuser_source_h)))	\
 		$(addprefix $(srcdir)/,$(gdmuser_source_c))	\
 		$(gdmuser_cflags)				\
 		-o $@

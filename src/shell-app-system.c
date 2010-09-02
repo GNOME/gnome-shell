@@ -1282,8 +1282,8 @@ shell_app_info_create_icon_texture (ShellAppInfo *info, float size)
  * shell_app_info_get_source_window:
  * @info: A #ShellAppInfo
  *
- * If @info is tracking a #MetaWindow, return that window.
- * Otherwise, return %NULL.
+ * Returns: (transfer none): If @info is tracking a #MetaWindow,
+ *   return that window.  Otherwise, return %NULL.
  */
 MetaWindow *
 shell_app_info_get_source_window (ShellAppInfo *info)

@@ -4,7 +4,7 @@
 
 #include <string.h>
 
-#include "shell-wm.h"
+#include "shell-wm-private.h"
 #include "shell-global.h"
 #include "shell-marshal.h"
 

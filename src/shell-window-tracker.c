@@ -715,7 +715,7 @@ shell_window_tracker_finalize (GObject *object)
 }
 
 /**
- * shell_window_tracker_get_window_app
+ * shell_window_tracker_get_window_app:
  * @monitor: An app monitor instance
  * @metawin: A #MetaWindow
  *
@@ -741,7 +741,7 @@ shell_window_tracker_get_window_app (ShellWindowTracker *monitor,
 
 
 /**
- * shell_app_system_get_from_pid:
+ * shell_window_tracker_get_app_from_pid:
  * @self; A #ShellAppSystem
  * @pid: A Unix process identifier
  *

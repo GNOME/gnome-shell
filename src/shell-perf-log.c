@@ -686,7 +686,7 @@ shell_perf_log_collect_statistics (ShellPerfLog *perf_log)
 /**
  * shell_perf_log_replay:
  * @perf_log: a #ShellPerfLog
- * @replay_function: function to call for each event in the log
+ * @replay_function: (scope call): function to call for each event in the log
  * @user_data: data to pass to @replay_function
  *
  * Replays the log by calling the given function for each event
