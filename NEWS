@@ -12,6 +12,7 @@ Clutter 1.3.14 ()
       - texture cross-fading
       - ClutterScript definitions
       - event handling
+      - ClutterAnimator
 
     » Add methods to retrieve the clicked button and to force a release
       in ClickAction.
