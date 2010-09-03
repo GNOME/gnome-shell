@@ -96,6 +96,12 @@
 
   </chapter>
 
+  <chapter id="clutterglossary">
+    <title>Glossaries</title>
+
+    <xi:include href="xml/annotation-glossary.xml"><xi:fallback /></xi:include>
+  </chapter>
+
   <index>
     <title>Index of all symbols</title>
     <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
