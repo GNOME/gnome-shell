@@ -968,7 +968,7 @@ clutter_interval_compute (ClutterInterval *interval,
 }
 
 /**
- * clutter_interval_register_progress_func: (skip):
+ * clutter_interval_register_progress_func: (skip)
  * @value_type: a #GType
  * @func: a #ClutterProgressFunc, or %NULL to unset a previously
  *   set progress function

@@ -1124,6 +1124,7 @@ clutter_get_font_flags
 clutter_get_font_map
 ClutterTextDirection
 clutter_get_default_text_direction
+clutter_get_accessibility_enabled
 
 <SUBSECTION>
 clutter_threads_set_lock_functions
@@ -1192,6 +1193,7 @@ clutter_x11_remove_filter
 clutter_x11_get_input_devices
 clutter_x11_has_xinput
 clutter_x11_enable_xinput
+clutter_x11_event_get_key_group
 
 <SUBSECTION Private>
 ClutterX11XInputDevice

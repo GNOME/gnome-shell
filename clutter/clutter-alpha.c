@@ -1313,7 +1313,7 @@ register_alpha_internal (AlphaData *alpha_data)
 }
 
 /**
- * clutter_alpha_register_func: (skip):
+ * clutter_alpha_register_func: (skip)
  * @func: a #ClutterAlphaFunc
  * @data: user data to pass to @func, or %NULL
  *
@@ -1353,7 +1353,7 @@ clutter_alpha_register_func (ClutterAlphaFunc func,
  *
  * The logical id is always greater than %CLUTTER_ANIMATION_LAST.
  *
- * Rename: clutter_alpha_register_func
+ * Rename to: clutter_alpha_register_func
  *
  * Return value: the logical id of the alpha function
  *
