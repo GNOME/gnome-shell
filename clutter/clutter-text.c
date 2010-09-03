@@ -1903,11 +1903,11 @@ clutter_text_paint (ClutterActor *self)
 
   CLUTTER_NOTE (PAINT, "painting text (text: '%s')", priv->text);
 
-  cogl_color_set_from_4ub (&color,
-                           priv->text_color.red,
-                           priv->text_color.green,
-                           priv->text_color.blue,
-                           real_opacity);
+  cogl_color_init_from_4ub (&color,
+                            priv->text_color.red,
+                            priv->text_color.green,
+                            priv->text_color.blue,
+                            real_opacity);
   cogl_pango_render_layout (layout, text_x, 0, &color, 0);
 
   if (clip_set)

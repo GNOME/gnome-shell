@@ -50,7 +50,7 @@ _update_progress_cb (ClutterTimeline *timeline,
    * depending on the current progress of the timeline
    */
   CoglColor constant;
-  cogl_color_set_from_4ub (&constant, 0x00, 0x00, 0x00, 0xff * progress);
+  cogl_color_init_from_4ub (&constant, 0x00, 0x00, 0x00, 0xff * progress);
 
   /* This sets the value of the constant color we use when combining
    * the two layers

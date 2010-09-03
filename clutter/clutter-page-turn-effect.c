@@ -121,7 +121,7 @@ clutter_page_turn_effect_deform_vertex (ClutterDeformEffect *effect,
       /* Add a gradient that makes it look like lighting and hides the switch
        * between textures.
        */
-      cogl_color_set_from_4ub (&vertex->color, shade, shade, shade, 0xff);
+      cogl_color_init_from_4ub (&vertex->color, shade, shade, shade, 0xff);
     }
 
   if (rx > 0)

@@ -56,7 +56,7 @@ on_paint (ClutterActor *actor,
   layout = clutter_actor_create_pango_layout (actor, text);
   pango_layout_get_size (layout, &layout_width, &layout_height);
 
-  cogl_color_set_from_4ub (&color, 0, 0, 0, 255);
+  cogl_color_init_from_4ub (&color, 0, 0, 0, 255);
   cogl_pango_render_layout (layout,
                             (width - (layout_width / 1024)) / 2,
                             (height - (layout_height / 1024)) / 2,

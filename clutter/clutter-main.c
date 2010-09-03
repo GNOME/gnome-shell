@@ -680,7 +680,7 @@ _clutter_do_pick (ClutterStage   *stage,
                 is_clipped ? "clippped" : "full", x, y);
 
   cogl_disable_fog ();
-  cogl_color_set_from_4ub (&stage_pick_id, 255, 255, 255, 255);
+  cogl_color_init_from_4ub (&stage_pick_id, 255, 255, 255, 255);
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_clear);
   cogl_clear (&stage_pick_id,
 	      COGL_BUFFER_BIT_COLOR |

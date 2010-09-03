@@ -677,9 +677,9 @@ _clone_paint_cb (ClutterActor *actor)
   /* figure out the two colors for the reflection: the first is
    * full color and the second is the same, but at 0 opacity
    */
-  cogl_color_set_from_4f (&color_1, 1.0, 1.0, 1.0, opacity / 255.);
+  cogl_color_init_from_4f (&color_1, 1.0, 1.0, 1.0, opacity / 255.);
   cogl_color_premultiply (&color_1);
-  cogl_color_set_from_4f (&color_2, 1.0, 1.0, 1.0, 0.0);
+  cogl_color_init_from_4f (&color_2, 1.0, 1.0, 1.0, 0.0);
   cogl_color_premultiply (&color_2);
 
   /* describe the four vertices of the quad; since it has

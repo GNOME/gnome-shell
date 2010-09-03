@@ -27,7 +27,7 @@ _text_paint_cb (ClutterActor *actor)
 
   /* Create a #ccc color and premultiply it */
   CoglColor color;
-  cogl_color_set_from_4ub (&color, 0xcc, 0xcc, 0xcc, real_opacity);
+  cogl_color_init_from_4ub (&color, 0xcc, 0xcc, 0xcc, real_opacity);
   cogl_color_premultiply (&color);
 
   /* Finally, render the Text layout at a given offset using the color */

@@ -200,7 +200,7 @@ test_invalid_texture_layers_with_constant_colors (TestState *state,
 
   /* ignore the fallback texture on the layer and use a constant color
      instead */
-  cogl_color_set_from_4ub (&constant_color, 0, 0, 255, 255);
+  cogl_color_init_from_4ub (&constant_color, 0, 0, 255, 255);
   cogl_material_set_layer_combine (material, 0,
                                    "RGBA=REPLACE(CONSTANT)",
                                    NULL);

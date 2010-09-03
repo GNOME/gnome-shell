@@ -287,7 +287,7 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
                     perspective.z_near,
                     perspective.z_far);
 
-  cogl_color_set_from_4ub (&transparent, 0, 0, 0, 0);
+  cogl_color_init_from_4ub (&transparent, 0, 0, 0, 0);
   cogl_clear (&transparent,
               COGL_BUFFER_BIT_COLOR |
               COGL_BUFFER_BIT_DEPTH);

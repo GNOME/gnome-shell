@@ -337,11 +337,11 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
       if (node->color_override)
         /* Use the override color but preserve the alpha from the
            draw color */
-        cogl_color_set_from_4ub (&draw_color,
-                                 cogl_color_get_red_byte (&node->color),
-                                 cogl_color_get_green_byte (&node->color),
-                                 cogl_color_get_blue_byte (&node->color),
-                                 cogl_color_get_alpha_byte (color));
+        cogl_color_init_from_4ub (&draw_color,
+                                  cogl_color_get_red_byte (&node->color),
+                                  cogl_color_get_green_byte (&node->color),
+                                  cogl_color_get_blue_byte (&node->color),
+                                  cogl_color_get_alpha_byte (color));
       else
         draw_color = *color;
       cogl_color_premultiply (&draw_color);

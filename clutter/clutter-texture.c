@@ -511,7 +511,7 @@ update_fbo (ClutterActor *self)
 
 
   /* cogl_clear is called to clear the buffers */
-  cogl_color_set_from_4ub (&transparent_col, 0, 0, 0, 0);
+  cogl_color_init_from_4ub (&transparent_col, 0, 0, 0, 0);
   cogl_clear (&transparent_col,
               COGL_BUFFER_BIT_COLOR |
               COGL_BUFFER_BIT_DEPTH);
@@ -615,11 +615,11 @@ clutter_texture_pick (ClutterActor       *self,
       if (priv->fbo_handle != COGL_INVALID_HANDLE)
         update_fbo (self);
 
-      cogl_color_set_from_4ub (&pick_color,
-                               color->red,
-                               color->green,
-                               color->blue,
-                               0xff);
+      cogl_color_init_from_4ub (&pick_color,
+                                color->red,
+                                color->green,
+                                color->blue,
+                                0xff);
       cogl_material_set_layer_combine_constant (priv->pick_material,
                                                 0, &pick_color);
       cogl_material_set_layer (priv->pick_material, 0,

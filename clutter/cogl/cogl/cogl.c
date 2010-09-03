@@ -1048,7 +1048,7 @@ cogl_set_source_texture (CoglHandle texture_handle)
   g_return_if_fail (texture_handle != NULL);
 
   cogl_material_set_layer (ctx->simple_material, 0, texture_handle);
-  cogl_color_set_from_4ub (&white, 0xff, 0xff, 0xff, 0xff);
+  cogl_color_init_from_4ub (&white, 0xff, 0xff, 0xff, 0xff);
   cogl_material_set_color (ctx->simple_material, &white);
   cogl_set_source (ctx->simple_material);
 }
@@ -1061,7 +1061,7 @@ cogl_set_source_color4ub (guint8 red,
 {
   CoglColor c = { 0, };
 
-  cogl_color_set_from_4ub (&c, red, green, blue, alpha);
+  cogl_color_init_from_4ub (&c, red, green, blue, alpha);
   cogl_set_source_color (&c);
 }
 
@@ -1073,7 +1073,7 @@ cogl_set_source_color4f (float red,
 {
   CoglColor c = { 0, };
 
-  cogl_color_set_from_4f (&c, red, green, blue, alpha);
+  cogl_color_init_from_4f (&c, red, green, blue, alpha);
   cogl_set_source_color (&c);
 }
 

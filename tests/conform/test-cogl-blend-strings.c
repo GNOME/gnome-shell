@@ -111,7 +111,7 @@ test_blend (TestState *state,
                blend_string, error->message);
     }
 
-  cogl_color_set_from_4ub (&blend_const_color, Br, Bg, Bb, Ba);
+  cogl_color_init_from_4ub (&blend_const_color, Br, Bg, Bb, Ba);
   cogl_material_set_blend_constant (material, &blend_const_color);
 
   cogl_set_source (material);
@@ -232,7 +232,7 @@ test_tex_combine (TestState *state,
                combine_string, error->message);
     }
 
-  cogl_color_set_from_4ub (&combine_const_color, Cr, Cg, Cb, Ca);
+  cogl_color_init_from_4ub (&combine_const_color, Cr, Cg, Cb, Ca);
   cogl_material_set_layer_combine_constant (material, 1, &combine_const_color);
 
   cogl_set_source (material);

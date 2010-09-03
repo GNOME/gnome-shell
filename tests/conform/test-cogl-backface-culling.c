@@ -204,7 +204,7 @@ on_paint (ClutterActor *actor, TestState *state)
   CoglMatrix stage_projection;
   CoglMatrix stage_modelview;
 
-  cogl_color_set_from_4ub (&clr, 0x00, 0x00, 0x00, 0xff);
+  cogl_color_init_from_4ub (&clr, 0x00, 0x00, 0x00, 0xff);
 
   do_test_backface_culling (state);
 

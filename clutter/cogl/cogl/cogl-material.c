@@ -3530,7 +3530,7 @@ cogl_material_set_color4ub (CoglMaterial *material,
                             guint8 alpha)
 {
   CoglColor color;
-  cogl_color_set_from_4ub (&color, red, green, blue, alpha);
+  cogl_color_init_from_4ub (&color, red, green, blue, alpha);
   cogl_material_set_color (material, &color);
 }
 
@@ -3542,7 +3542,7 @@ cogl_material_set_color4f (CoglMaterial *material,
                            float alpha)
 {
   CoglColor color;
-  cogl_color_set_from_4f (&color, red, green, blue, alpha);
+  cogl_color_init_from_4f (&color, red, green, blue, alpha);
   cogl_material_set_color (material, &color);
 }
 

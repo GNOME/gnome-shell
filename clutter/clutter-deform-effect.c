@@ -199,7 +199,7 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
               vertex->y = height * vertex->ty;
               vertex->z = 0.0f;
 
-              cogl_color_set_from_4ub (&vertex->color, 255, 255, 255, opacity);
+              cogl_color_init_from_4ub (&vertex->color, 255, 255, 255, opacity);
 
               _clutter_deform_effect_deform_vertex (self, width, height, vertex);
             }

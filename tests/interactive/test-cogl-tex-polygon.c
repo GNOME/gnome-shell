@@ -114,11 +114,11 @@ test_coglbox_fade_texture (gfloat     x1,
 
   for (i = 0; i < 4; i++)
     {
-      cogl_color_set_from_4ub (&(vertices[i].color),
-                               255,
-                               255,
-                               255,
-                               ((i ^ (i >> 1)) & 1) ? 0 : 128);
+      cogl_color_init_from_4ub (&(vertices[i].color),
+                                255,
+                                255,
+                                255,
+                                ((i ^ (i >> 1)) & 1) ? 0 : 128);
       cogl_color_premultiply (&(vertices[i].color));
     }
 
