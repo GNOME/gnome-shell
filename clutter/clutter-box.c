@@ -591,7 +591,9 @@ clutter_box_set_layout_manager (ClutterBox           *box,
  *
  * Retrieves the #ClutterLayoutManager instance used by @box
  *
- * Return value: a #ClutterLayoutManager
+ * Return value: (transfer none): a #ClutterLayoutManager. The returned
+ *   #ClutterLayoutManager is owned by the #ClutterBox and it should not
+ *   be unreferenced
  *
  * Since: 1.2
  */

@@ -511,7 +511,7 @@ clutter_behaviour_get_nth_actor (ClutterBehaviour *behave,
 /**
  * clutter_behaviour_actors_foreach:
  * @behave: a #ClutterBehaviour
- * @func: a function called for each actor
+ * @func: (scope call): a function called for each actor
  * @data: optional data to be passed to the function, or %NULL
  *
  * Calls @func for every actor driven by @behave.

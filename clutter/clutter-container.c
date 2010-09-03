@@ -440,7 +440,7 @@ clutter_container_get_children (ClutterContainer *container)
 /**
  * clutter_container_foreach:
  * @container: a #ClutterContainer
- * @callback: a function to be called for each child
+ * @callback: (scope call): a function to be called for each child
  * @user_data: data to be passed to the function, or %NULL
  *
  * Calls @callback for each child of @container that was added
@@ -473,7 +473,7 @@ clutter_container_foreach (ClutterContainer *container,
 /**
  * clutter_container_foreach_with_internals:
  * @container: a #ClutterContainer
- * @callback: a function to be called for each child
+ * @callback: (scope call): a function to be called for each child
  * @user_data: data to be passed to the function, or %NULL
  *
  * Calls @callback for each child of @container, including "internal"

@@ -836,7 +836,9 @@ clutter_shader_get_vertex_source (ClutterShader *shader)
  *
  * Retrieves the underlying #CoglHandle for the shader program.
  *
- * Return value: A #CoglHandle for the shader program, or %NULL
+ * Return value: (transfer none): A #CoglHandle for the shader program,
+ *   or %NULL. The handle is owned by the #ClutterShader and it should
+ *   not be unreferenced
  *
  * Since: 1.0
  */
@@ -854,7 +856,9 @@ clutter_shader_get_cogl_program (ClutterShader *shader)
  *
  * Retrieves the underlying #CoglHandle for the fragment shader.
  *
- * Return value: A #CoglHandle for the fragment shader, or %NULL
+ * Return value: (transfer none): A #CoglHandle for the fragment
+ *   shader, or %NULL. The handle is owned by the #ClutterShader
+ *   and it should not be unreferenced
  *
  * Since: 1.0
  */
@@ -872,7 +876,9 @@ clutter_shader_get_cogl_fragment_shader (ClutterShader *shader)
  *
  * Retrieves the underlying #CoglHandle for the vertex shader.
  *
- * Return value: A #CoglHandle for the vertex shader, or %NULL
+ * Return value: (transfer none): A #CoglHandle for the vertex
+ *   shader, or %NULL. The handle is owned by the #ClutterShader
+ *   and it should not be unreferenced
  *
  * Since: 1.0
  */

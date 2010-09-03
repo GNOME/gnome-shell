@@ -597,7 +597,7 @@ clutter_interval_new_with_values (GType         gtype,
  *
  * Creates a copy of @interval.
  *
- * Return value: the newly created #ClutterInterval
+ * Return value: (transfer full): the newly created #ClutterInterval
  *
  * Since: 1.0
  */
@@ -968,7 +968,7 @@ clutter_interval_compute (ClutterInterval *interval,
 }
 
 /**
- * clutter_interval_register_progress_func:
+ * clutter_interval_register_progress_func: (skip):
  * @value_type: a #GType
  * @func: a #ClutterProgressFunc, or %NULL to unset a previously
  *   set progress function

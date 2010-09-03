@@ -584,7 +584,9 @@ clutter_event_get_device_type (ClutterEvent *event)
  * The #ClutterInputDevice structure is completely opaque and should
  * be cast to the platform-specific implementation.
  *
- * Return value: the #ClutterInputDevice or %NULL
+ * Return value: (transfer none): the #ClutterInputDevice or %NULL. The
+ *   returned device is owned by the #ClutterEvent and it should not
+ *   be unreferenced
  *
  * Since: 1.0
  */

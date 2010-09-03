@@ -825,8 +825,10 @@ get_child_meta (ClutterLayoutManager *manager,
  * to the @actor child of @container, eventually by creating one if the
  * #ClutterLayoutManager supports layout properties
  *
- * Return value: a #ClutterLayoutMeta, or %NULL if the #ClutterLayoutManager
- *   does not have layout properties
+ * Return value: (transfer none): a #ClutterLayoutMeta, or %NULL if the
+ *   #ClutterLayoutManager does not have layout properties. The returned
+ *   layout meta instance is owned by the #ClutterLayoutManager and it
+ *   should not be unreferenced
  *
  * Since: 1.0
  */

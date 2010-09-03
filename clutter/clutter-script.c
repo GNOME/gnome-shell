@@ -984,7 +984,8 @@ connect_each_object (gpointer key,
  * This function allows to control how the signal handlers are
  * going to be connected to their respective signals. It is meant
  * primarily for language bindings to allow resolving the function
- * names using the native API.
+ * names using the native API, but it can also be used on platforms
+ * that do not support GModule.
  *
  * Applications should use clutter_script_connect_signals().
  *

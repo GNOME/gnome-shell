@@ -1084,7 +1084,9 @@ clutter_animator_get_timeline (ClutterAnimator *animator)
  * Start the ClutterAnimator, this is a thin wrapper that rewinds
  * and starts the animators current timeline.
  *
- * Return value: the #ClutterTimeline that drives the animator.
+ * Return value: (transfer none): the #ClutterTimeline that drives
+ *   the animator. The returned timeline is owned by the #ClutterAnimator
+ *   and it should not be unreferenced
  *
  * Since: 1.2
  */

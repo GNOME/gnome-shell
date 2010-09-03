@@ -1248,12 +1248,13 @@ clutter_texture_init (ClutterTexture *self)
  * @texture: A #ClutterTexture
  *
  * Returns a handle to the underlying COGL material used for drawing
- * the actor. No extra reference is taken so if you need to keep the
- * handle then you should call cogl_handle_ref() on it.
+ * the actor.
+ *
+ * Return value: (transfer none): a handle for a #CoglMaterial. The
+ *   material is owned by the #ClutterTexture and it should not be
+ *   unreferenced
  *
  * Since: 1.0
- *
- * Return value: COGL material handle
  */
 CoglHandle
 clutter_texture_get_cogl_material (ClutterTexture *texture)
@@ -1305,7 +1306,7 @@ clutter_texture_set_cogl_material (ClutterTexture *texture,
 }
 
 /**
- * clutter_texture_get_cogl_texture
+ * clutter_texture_get_cogl_texture:
  * @texture: A #ClutterTexture
  *
  * Retrieves the handle to the underlying COGL texture used for drawing
@@ -1317,9 +1318,10 @@ clutter_texture_set_cogl_material (ClutterTexture *texture,
  * layers you should use clutter_texture_get_cogl_material() instead
  * and use the #CoglMaterial API.
  *
- * Since: 0.8
+ * Return value: (transfer none): a #CoglHandle for the texture. The returned
+ *   handle is owned by the #ClutterTexture and it should not be unreferenced
  *
- * Return value: COGL texture handle
+ * Since: 0.8
  */
 CoglHandle
 clutter_texture_get_cogl_texture (ClutterTexture *texture)

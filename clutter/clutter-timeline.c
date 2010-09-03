@@ -965,7 +965,8 @@ clutter_timeline_is_playing (ClutterTimeline *timeline)
  * be started and will not be positioned to the current position of
  * @timeline: you will have to start it with clutter_timeline_start().
  *
- * Return Value: a new #ClutterTimeline, cloned from @timeline
+ * Return Value: (transfer full): a new #ClutterTimeline, cloned
+ *   from @timeline
  *
  * Since: 0.4
  */
@@ -1339,9 +1340,9 @@ collect_markers (const gchar *key,
  * negative integer, all the markers attached to @timeline will be
  * returned.
  *
- * Return value: (array zero-terminated=1 length=n_markers): a newly
- *   allocated, %NULL terminated string array containing the names of
- *   the markers. Use g_strfreev() when done.
+ * Return value: (transfer full) (array zero-terminated=1 length=n_markers):
+ *   a newly allocated, %NULL terminated string array containing the names
+ *   of the markers. Use g_strfreev() when done.
  *
  * Since: 0.8
  */

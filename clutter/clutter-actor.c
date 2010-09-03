@@ -10245,8 +10245,9 @@ clutter_actor_get_pango_context (ClutterActor *self)
  *
  * See also clutter_actor_get_pango_context().
  *
- * Return value: the newly created #PangoContext. Use g_object_unref()
- *   on the returned value to deallocate its resources
+ * Return value: (transfer full): the newly created #PangoContext.
+ *   Use g_object_unref() on the returned value to deallocate its
+ *   resources
  *
  * Since: 1.0
  */
@@ -10279,8 +10280,8 @@ clutter_actor_create_pango_context (ClutterActor *self)
  * and #ClutterBackend::resolution-changed signals, and call
  * pango_layout_context_changed() in response to them.
  *
- * Return value: the newly created #PangoLayout. Use g_object_unref()
- *   when done
+ * Return value: (transfer full): the newly created #PangoLayout.
+ *   Use g_object_unref() when done
  *
  * Since: 1.0
  */

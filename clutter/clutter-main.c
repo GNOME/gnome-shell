@@ -2603,7 +2603,7 @@ _clutter_process_event (ClutterEvent *event)
 
 
 /**
- * clutter_get_actor_by_gid
+ * clutter_get_actor_by_gid:
  * @id: a #ClutterActor ID.
  *
  * Retrieves the #ClutterActor with @id.

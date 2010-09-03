@@ -568,7 +568,9 @@ clutter_state_change (ClutterState *state,
  * The state will animate during its transition, see
  * #clutter_state_warp_to_state for animation-free state switching.
  *
- * Return value: the #ClutterTimeline that drives the state transition
+ * Return value: (transfer none): the #ClutterTimeline that drives the
+ *   state transition. The returned timeline is owned by the #ClutterState
+ *   and it should not be unreferenced
  *
  * Since: 1.4
  */
@@ -588,7 +590,9 @@ clutter_state_set_state (ClutterState *state,
  *
  * Change to the specified target state immediately with no animation.
  *
- * Return value: the #ClutterTimeline that drives the state transition
+ * Return value: (transfer none): the #ClutterTimeline that drives the
+ *   state transition. The returned timeline is owned by the #ClutterState
+ *   and it should not be unreferenced
  *
  * Since: 1.4
  */
@@ -888,8 +892,8 @@ clutter_state_fetch_state (ClutterState *state,
  * Sets one specific end key for a state_name, object, property_name
  * combination.
  *
- * Return value: the #ClutterState instance, allowing chaining of
- *   multiple calls
+ * Return value: (transfer none): the #ClutterState instance, allowing
+ *   chaining of multiple calls
  *
  * Since: 1.4
  */

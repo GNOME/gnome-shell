@@ -995,7 +995,7 @@ clutter_path_get_nodes (ClutterPath *path)
 /**
  * clutter_path_foreach:
  * @path: a #ClutterPath
- * @callback: the function to call with each node
+ * @callback: (scope call): the function to call with each node
  * @user_data: user data to pass to the function
  *
  * Calls a function for each node of the path.
