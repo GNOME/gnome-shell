@@ -57,6 +57,7 @@ VIDEO_FILES = \
 	videos/textures-split-go.ogv \
 	videos/events-mouse-scroll.ogv \
 	videos/textures-crossfade-two-textures.ogv \
+	videos/animations-complex.ogv \
 	$(NULL)
 
 EXTRA_DIST = \

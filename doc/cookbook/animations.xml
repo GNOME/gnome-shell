@@ -1011,4 +1011,431 @@ clutter_actor_set_z_rotation_from_gravity (actor,
 
   </section>
 
+  <section id="animations-complex">
+    <title>Creating complex animations with
+    <type>ClutterAnimator</type></title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to create a complex animation involving one or more
+      actors. The animation will consist of a sequence of transitions
+      over multiple properties on each actor.</para>
+
+      <para>An example might be moving several actors between points,
+      with different types of movement for each part of the path, while
+      transforming each actor (e.g. scaling or rotating it).</para>
+
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Use a <type>ClutterAnimator</type> to define the animation.</para>
+
+      <para>Because there are many complex animations you
+      <emphasis>could</emphasis> implement, the example below does
+      this:</para>
+
+      <inlinemediaobject>
+        <videoobject>
+          <videodata fileref="videos/animations-complex.ogv"/>
+        </videoobject>
+        <alt>
+          <para>Video showing a complex animation of an actor
+          using <type>ClutterAnimator</type></para>
+        </alt>
+      </inlinemediaobject>
+
+      <para>Although this uses a single actor, the animation is complex
+      enough to make it difficult to implement with implicit animations
+      or <type>ClutterState</type> (see
+      <link linkend="animations-complex-why-clutteranimator">the Discussion
+      section</link> for reasons why).</para>
+
+      <para>Here is a JSON definition of the stage, actors, and
+      the <type>ClutterAnimator</type> for this
+      animation:</para>
+
+      <example id="animations-complex-example-1">
+        <title>JSON definition of a complex animation using
+        <type>ClutterAnimator</type></title>
+        <programlisting>
+<xi:include href="examples/animations-complex.json" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <note>
+        <para>The core to understanding this example is understanding
+        how to define keys for a <type>CutterAnimator</type>. As
+        this is an involved topic, further explanation
+        is given in <link linkend="animations-complex-discussion-keys">the
+        Discussion section</link>.</para>
+      </note>
+
+      <para>The program for loading this JSON definition from a file
+      is as follows:</para>
+
+      <example id="animations-complex-example-2">
+        <title>Simple program for loading a JSON script;
+        any key press starts the animation</title>
+        <programlisting>
+<xi:include href="examples/animations-complex.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <note>
+        <para>It is also possible to use the <type>ClutterAnimator</type>
+        C API to define keys for an animation, but this will
+        typically be much more verbose than the JSON equivalent.</para>
+
+        <para>One other advantage of JSON is that it is much simpler
+        to tweak and test an animation, as you don't have to recompile
+        the application each time you edit it (you just load
+        the new JSON file).</para>
+      </note>
+
+    </section>
+
+    <section id="animations-complex-discussion">
+      <title>Discussion</title>
+
+      <para>You can think of <type>ClutterAnimator</type>
+      as a way to give directions to actors. For example,
+      you could give a real (human) actor a direction like "move
+      downstage; when you get there, stop and
+      rotate 90 degrees to your right". In code,
+      this might equate to a transition in the <varname>x</varname>
+      and <varname>y</varname> properties of the actor, followed by a
+      rotation in one axis.</para>
+
+      <note>
+        <para><type>ClutterAnimator</type> can give
+        "directions" to any type of GObject, but we concentrate
+        on animating <type>ClutterActors</type> in this section.</para>
+      </note>
+
+      <para>Each direction like this has an implicit
+      timeline, spanning the length of time the direction should
+      take to fulfil (you set the length of the timeline through
+      the <varname>duration</varname> property of the
+      <type>ClutterAnimator</type>). But within that timeline, you may
+      change the proportion of time spent on each action: "move
+      downstage quickly, then slowly rotate 90 degrees
+      to your right". The direction is the same, but we've
+      specified how much of the timeline should be devoted to each
+      action.</para>
+
+      <para>In <type>ClutterAnimator</type>, this concept is
+      captured by <emphasis>key frames</emphasis>. A
+      key frame represents a point somewhere along the timeline,
+      with one or more target property values for one or more actors.
+      A <type>ClutterAnimator</type> manages the transitions
+      between property values for each object, ensuring that
+      the target values are reached when the associated key frame
+      is reached.</para>
+
+      <para>To change the amount of time a transition
+      should take, you change the percentage of the timeline
+      between key frames. Using our real stage directions as an
+      example, you might define the key frames like this:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>0.2 (after 20% of the timeline):</emphasis>
+          arrive downstage</para>
+        </listitem>
+        <listitem>
+          <para><emphasis>1.0 (by the end of the timeline):</emphasis>
+          achieve a 90 degree rotation to the right</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>See
+      <link linkend="animations-complex-discussion-keys">this
+      section</link> for more details about keys and key frames.</para>
+
+      <para>Finally, a direction might be further refined with
+      a description of the kind of movement to use:
+      rather than saying "move downstage quickly, then
+      slowly rotate 90 degrees to your right" a director could say:
+      "start off slowly, but build up to a run;
+      run downstage quickly; then stop and start rotating
+      slowly to your right, gradually speeding up, turn a little more, then slow
+      down gradually; you should end up rotated 90 degrees to your right"
+      (this granularity of description is closer to what you might
+      see in dance notation like
+      <ulink href="http://en.wikipedia.org/wiki/Labanotation">Laban</ulink>;
+      though of course you can't animate human opacity, scale, dimensions
+      etc...).</para>
+
+      <para><type>ClutterAnimator</type> gives you this level of
+      granularity. Each transition to a property value between
+      key frames can have a separate <emphasis>easing mode</emphasis>:
+      for example, starting off slowly and building to a constant
+      speed equates to an "ease in" mode; starting slowly, speeding
+      up, maintaining a constant speed, then gradually slowing down
+      equates to "ease in and ease out".</para>
+
+      <para>To summarise: creating a complex animation means deciding:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Which properties need to change on which actors?</para>
+        </listitem>
+        <listitem>
+          <para>What target value should each property transition to?</para>
+        </listitem>
+        <listitem>
+          <para>How quickly (by which key frame) should the property
+          reach the target value?</para>
+        </listitem>
+        <listitem>
+          <para>What "shape" (easing mode) should the change to
+          the target value follow?</para>
+        </listitem>
+      </itemizedlist>
+
+      <section id="animations-complex-discussion-keys">
+        <title>Understanding keys and key frames</title>
+
+        <para>A <type>ClutterAnimator</type> maintains a list of
+        <varname>properties</varname> objects, each being a unique pair
+        of <varname>object</varname> (an object to be animated) +
+        <varname>name</varname> (name of the property
+        to be animated on that object).</para>
+
+        <para>Each <varname>properties</varname> object in turn has a
+        list of keys, with each key having three elements:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>The <emphasis>key frame</emphasis>, expressed as a fraction
+            (between 0.0 and 1.0) of the duration of the animation. At this
+            point, the named property should reach a target value.</para>
+          </listitem>
+          <listitem>
+            <para>The <emphasis>easing mode</emphasis> to use to transition
+            the property to that value.</para>
+          </listitem>
+          <listitem>
+            <para>The <emphasis>target value</emphasis> the property
+            should transition to.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>For example:</para>
+
+        <informalexample>
+          <programlisting>
+{
+  "object" : "rectangle",
+  "name" : "x",
+  "ease-in" : true,
+  "keys" : [
+    [ 0.0, "linear", 0.0 ],
+    [ 0.1, "easeInCubic", 150.0 ],
+    [ 0.8, "linear", 150.0 ],
+    [ 1.0, "easeInCubic", 0.0 ]
+  ]
+}
+          </programlisting>
+        </informalexample>
+
+        <para>defines a sequence of transitions for the <varname>x</varname>
+        property (position on the x axis) of the <code>rectangle</code>
+        object, as follows:</para>
+
+        <orderedlist>
+          <listitem>
+            <para><emphasis>[ 0.0, "linear", 0.0 ]</emphasis>:
+            At the start of the animation, <code>x</code> should be
+            0.0; <code>linear</code> is used as the easing mode, as there
+            is no transition here.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>[ 0.1, "easeInCubic", 150.0 ]</emphasis>:
+            By 10% of the way through the animation,
+            <code>x</code> should reach a value of <code>150.0</code>.
+            This moves the rectangle horizontally across the stage.</para>
+
+            <para>The <code>easeInCubic</code> easing mode means that
+            the transition to the new value starts slow and speeds up.
+            This makes the movement look more "natural".</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>[ 0.8, "linear", 150.0 ]</emphasis>:
+            From 10% of the way through the animation to 80%
+            of the way through, the <code>x</code> value remains at
+            <code>150.0</code>. This makes the rectangle stay still
+            on the x axis throughout this period.</para>
+
+            <para>It's important to specify interim key frames if
+            in a later key frame you intend to change the value again
+            (as is done for the <code>x</code> value here). Otherwise
+            you can get premature transitions to a value over longer
+            periods than you intended. By specifying the interim
+            key frames where the value remains constant, you ensure
+            that it doesn't change before you want it to.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>[ 1.0, "easeInCubic", 0.0 ]</emphasis>:
+            From 80% of the way through the animation to the end,
+            the <code>x</code> value should transition back to
+            <code>0.0</code>. This moves the actor back to its
+            starting position on the x axis. Again, an <code>easeInCubic</code>
+            easing mode is used to make the transition appear more natural.</para>
+          </listitem>
+        </orderedlist>
+
+        <para>There are two more properties you can set for each
+        object/property pair:</para>
+
+        <orderedlist>
+          <listitem>
+            <para>Set <varname>ease-in</varname> to <code>true</code> to
+            animate to the target value at the first key frame. If
+            <varname>ease-in</varname> is false, the animation will
+            "jump" to the target value instead (if the target value is
+            different from the current value).</para>
+          </listitem>
+
+          <listitem>
+            <para>Set <varname>interpolation</varname> to either
+            <code>"linear"</code> (the default) or <code>"cubic"</code>.
+            This sets how <type>ClutterAnimator</type> transitions between
+            key frames; in effect, it further modulates any easing modes
+            set on individual keys: if set to <code>"cubic"</code>, you
+            get a slightly more natural and gentle transition between
+            key frames than you do if set to <code>"linear"</code>.</para>
+          </listitem>
+        </orderedlist>
+
+      </section>
+
+      <section id="animations-complex-why-clutteranimator">
+        <title>Why <type>ClutterAnimator</type>?</title>
+
+        <para>Why use <type>ClutterAnimator</type> and not the other
+        <link linkend="animations-introduction-api">Clutter animation
+        approaches</link> for complex animations?</para>
+
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>Implicit animations</emphasis> can animate
+            properties on a single actor; however, you can only specify a
+            single transition for each property. Also, it's not possible
+            to describe complex movement along a path in a single implicit
+            animation: you would have to chain several animations together
+            to do that.</para>
+
+            <para>To animate multiple actors, you'd also need multiple
+            implicit animations, one for each actor. These animations would
+            also need to be synchronized (for example, by sharing a
+            single timeline).</para>
+
+            <para>So it would be possible, but more difficult than
+            an implementation using <type>ClutterAnimator</type>.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis><type>ClutterState</type></emphasis> can
+            be used for complex animations: each state can describe
+            transitions for multiple actors and multiple properties.
+            However, to make continuous movement (as in the example),
+            you would need to write a state for each movement between a
+            pair of points; then add a callback so that when each state
+            is reached, the animation moves onto the next state. This
+            adds some code (a handler for the <code>completed</code>
+            signal emitted by the <type>ClutterState</type> to set
+            the next state). This could work OK for a few states,
+            but doesn't scale as well as <type>ClutterAnimator</type>
+            if you have many transitions.</para>
+
+            <note>
+              <para><type>ClutterState</type> and
+              <type>ClutterAnimator</type> are not mutually exclusive. If
+              you generally need to transition between several known states
+              (e.g. hiding/revealing menus which stay in the same place,
+              moving between two UI layouts), but want to create a
+              complex animation between states, you can use
+              <type>ClutterAnimators</type> to define the transitions: see
+              the documentation for
+              <function>clutter_state_set_animator()</function> for
+              details.</para>
+            </note>
+
+          </listitem>
+        </itemizedlist>
+
+        <para><type>ClutterAnimator</type> is a good fit for complex
+        animations, and probably the best fit for the most complex:
+        it is the simplest way to encode a sequence of transitions
+        for a list of object/property pairs which can be treated
+        as a single animation. This is largely because
+        <type>ClutterAnimator</type> is effectively managing the
+        chaining together of the individual transitions into a whole.</para>
+
+        <para>One other feature of <type>ClutterAnimator</type> which
+        isn't demonstrated here is how it enables transitions to overlap.
+        For example, let's say you wanted an actor
+        to move along a complex path (e.g. described by five pairs of
+        x,y coordinates); but during that movement, you
+        wanted the actor to continuously transition to a scale of
+        4.0 on both the x and y axes.</para>
+
+        <para>To achieve this with <type>ClutterState</type>, you would
+        need to set up five transitions (one to move to each pair of
+        x,y coordinates); plus a callback to chain the state transitions
+        together; and within each transition, you'd have to figure out a
+        percentage of the scaling to apply, so that the actor
+        was at a scale of 4.0 on reaching the final state.</para>
+
+        <para>With <type>ClutterAnimator</type>, you can treat the
+        movement between the coordinates and the scaling separately
+        within the same animation, but overlap their key frames. This
+        makes coding overlapping animations of different properties
+        much more straightforward. See
+        <link linkend="animations-complex-example-3">this JSON
+        definition</link> for an example of how to do this.</para>
+
+      </section>
+
+    </section>
+
+    <section>
+      <title>Full example</title>
+
+      <example id="animations-complex-example-3">
+        <title>Running multiple transition sequences with
+        different key frames in parallel using
+        <type>ClutterAnimator</type></title>
+
+        <note>
+          <para>This JSON file can be loaded with the same code
+          as used for <link linkend="animations-complex-example-2">this
+          example</link>, by passing the JSON file name on the command line:</para>
+
+          <screen>
+            <prompt>$</prompt> <command>./animations-complex animations-complex-overlapping.json</command>
+          </screen>
+        </note>
+
+        <programlisting>
+<xi:include href="examples/animations-complex-overlapping.json" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+    </section>
+
+  </section>
+
 </chapter>
