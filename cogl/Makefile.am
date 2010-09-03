@@ -235,26 +235,26 @@ coglincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
 coglinclude_HEADERS = $(cogl_headers)
 nodist_coglinclude_HEADERS = cogl-defines.h cogl-enum-types.h
 
-if HAVE_INTROSPECTION
-Cogl-@CLUTTER_API_VERSION@.gir: Makefile $(INTROSPECTION_SCANNER) libclutter-cogl.la
-	$(QUIET_SCAN)$(INTROSPECTION_SCANNER) \
-		$(INTROSPECTION_SCANNER_ARGS) \
-		--quiet \
-		--namespace Cogl --nsversion=@CLUTTER_API_VERSION@ \
-		$(INCLUDES) \
-		$(AM_CPPFLAGS) \
-		--c-include='cogl/cogl.h' \
-		--include=GL-1.0 \
-		--include=GObject-2.0 \
-		--library=libclutter-cogl.la \
-		--libtool="$(top_builddir)/libtool" \
-		--output $@ \
-		$(cogl_headers) cogl-enum-types.h
+-include $(INTROSPECTION_MAKEFILE)
 
-BUILT_GIRSOURCES = Cogl-@CLUTTER_API_VERSION@.gir
+INTROSPECTION_GIRS =
+
+if HAVE_INTROSPECTION
+
+Cogl-@CLUTTER_API_VERSION@.gir: libclutter-cogl.la Makefile
+
+Cogl_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Cogl
+Cogl_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
+Cogl_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-cogl.la
+Cogl_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cogl_headers) cogl-enum-types.h
+Cogl_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS)
+Cogl_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0
+Cogl_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'
+
+INTROSPECTION_GIRS += Cogl-@CLUTTER_API_VERSION@.gir
 
 girdir = $(datadir)/gir-1.0
-gir_DATA = $(BUILT_GIRSOURCES)
+dist_gir_DATA = $(INTROSPECTION_GIRS)
 
-CLEANFILES += $(BUILT_GIRSOURCES)
+CLEANFILES += $(INTROSPECTION_GIRS)
 endif
