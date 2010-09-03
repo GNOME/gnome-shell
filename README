@@ -47,11 +47,11 @@ If you are building the additional documentation you will also need:
 
 If you are building the Introspection data you will also need:
 
-  • GObject-Introspection >= 0.6.7
+  • GObject-Introspection >= 0.9.5
 
 If you want support for profiling Clutter you will also need:
 
-  • UProf >= 0.2
+  • UProf >= 0.3
 
 UProf is available from:
 
