@@ -72,7 +72,8 @@ struct _ClutterDragActionPrivate
 {
   ClutterActor *stage;
 
-  gfloat drag_threshold;
+  gfloat x_drag_threshold;
+  gfloat y_drag_threshold;
   ClutterActor *drag_handle;
   ClutterDragAxis drag_axis;
 
@@ -98,7 +99,8 @@ enum
 {
   PROP_0,
 
-  PROP_DRAG_THRESHOLD,
+  PROP_X_DRAG_THRESHOLD,
+  PROP_Y_DRAG_THRESHOLD,
   PROP_DRAG_HANDLE,
   PROP_DRAG_AXIS,
 
@@ -188,8 +190,8 @@ emit_drag_motion (ClutterDragAction *action,
 
   if (priv->emit_delayed_press)
     {
-      if (ABS (delta_x) >= priv->drag_threshold ||
-          ABS (delta_y) >= priv->drag_threshold)
+      if (ABS (delta_x) >= priv->x_drag_threshold ||
+          ABS (delta_y) >= priv->y_drag_threshold)
         {
           priv->emit_delayed_press = FALSE;
 
@@ -308,7 +310,7 @@ on_button_press (ClutterActor      *actor,
                                        &priv->transformed_press_x,
                                        &priv->transformed_press_y);
 
-  if (priv->drag_threshold == 0)
+  if (priv->x_drag_threshold == 0 || priv->y_drag_threshold == 0)
     emit_drag_begin (action, actor, event);
   else
     priv->emit_delayed_press = TRUE;
@@ -375,11 +377,18 @@ clutter_drag_action_set_property (GObject      *gobject,
                                   GParamSpec   *pspec)
 {
   ClutterDragAction *action = CLUTTER_DRAG_ACTION (gobject);
+  ClutterDragActionPrivate *priv = action->priv;
 
   switch (prop_id)
     {
-    case PROP_DRAG_THRESHOLD:
-      clutter_drag_action_set_drag_threshold (action, g_value_get_uint (value));
+    case PROP_X_DRAG_THRESHOLD:
+      clutter_drag_action_set_drag_threshold (action, g_value_get_uint (value),
+                                              priv->y_drag_threshold);
+      break;
+
+    case PROP_Y_DRAG_THRESHOLD:
+      clutter_drag_action_set_drag_threshold (action, priv->x_drag_threshold,
+                                              g_value_get_uint (value));
       break;
 
     case PROP_DRAG_HANDLE:
@@ -405,8 +414,12 @@ clutter_drag_action_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
-    case PROP_DRAG_THRESHOLD:
-      g_value_set_uint (value, priv->drag_threshold);
+    case PROP_X_DRAG_THRESHOLD:
+      g_value_set_uint (value, priv->x_drag_threshold);
+      break;
+
+    case PROP_Y_DRAG_THRESHOLD:
+      g_value_set_uint (value, priv->y_drag_threshold);
       break;
 
     case PROP_DRAG_HANDLE:
@@ -466,24 +479,46 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
   klass->drag_motion = clutter_drag_action_real_drag_motion;
 
   /**
-   * ClutterDragAction:drag-threshold:
+   * ClutterDragAction:x-drag-threshold:
    *
-   * The threshold, in pixels, that begins a drag action
+   * The horizontal threshold, in pixels, that begins a drag action
    *
    * When set to a non-zero value, #ClutterDragAction will only emit
-   * #ClutterDragAction::drag-begin if the pointer has moved at least
-   * of the given amount of pixels since the button press event
+   * #ClutterDragAction::drag-begin if the pointer has moved
+   * horizontally at least of the given amount of pixels since
+   * the button press event
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_uint ("drag-threshold",
-                             P_("Drag Threshold"),
-                             P_("The amount of pixels required to start dragging"),
+  pspec = g_param_spec_uint ("x-drag-threshold",
+                             P_("Horizontal Drag Threshold"),
+                             P_("The horizontal amount of pixels required to start dragging"),
                              0, G_MAXUINT,
                              0,
                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_DRAG_THRESHOLD] = pspec;
-  g_object_class_install_property (gobject_class, PROP_DRAG_THRESHOLD, pspec);
+  obj_props[PROP_X_DRAG_THRESHOLD] = pspec;
+  g_object_class_install_property (gobject_class, PROP_X_DRAG_THRESHOLD, pspec);
+
+  /**
+   * ClutterDragAction:y-drag-threshold:
+   *
+   * The vertical threshold, in pixels, that begins a drag action
+   *
+   * When set to a non-zero value, #ClutterDragAction will only emit
+   * #ClutterDragAction::drag-begin if the pointer has moved
+   * vertically at least of the given amount of pixels since
+   * the button press event
+   *
+   * Since: 1.4
+   */
+  pspec = g_param_spec_uint ("y-drag-threshold",
+                             P_("Vertical Drag Threshold"),
+                             P_("The vertical amount of pixels required to start dragging"),
+                             0, G_MAXUINT,
+                             0,
+                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_Y_DRAG_THRESHOLD] = pspec;
+  g_object_class_install_property (gobject_class, PROP_Y_DRAG_THRESHOLD, pspec);
 
   /**
    * ClutterDragAction:drag-handle:
@@ -535,7 +570,8 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    * starts the dragging
    *
    * The emission of this signal can be delayed by using the
-   * #ClutterDragAction:drag-threshold property
+   * #ClutterDragAction:x-drag-threshold and
+   * #ClutterDragAction:y-drag-threshold properties
    *
    * Since: 1.4
    */
@@ -650,45 +686,67 @@ clutter_drag_action_new (void)
  * @action: a #ClutterDragAction
  * @threshold: a distance, in pixels
  *
- * Sets the drag threshold that must be cleared by the pointer
- * before @action can begin the dragging
+ * Sets the horizontal and vertical drag thresholds that must be
+ * cleared by the pointer before @action can begin the dragging
  *
  * Since: 1.4
  */
 void
 clutter_drag_action_set_drag_threshold (ClutterDragAction *action,
-                                        guint              threshold)
+                                        guint              x_threshold,
+					guint              y_threshold)
 {
   ClutterDragActionPrivate *priv;
+  GObject *self;
 
   g_return_if_fail (CLUTTER_IS_DRAG_ACTION (action));
 
+  self = G_OBJECT (action);
   priv = action->priv;
 
-  if (priv->drag_threshold == threshold)
-    return;
+  g_object_freeze_notify (self);
 
-  priv->drag_threshold = threshold;
+  if (priv->x_drag_threshold != x_threshold)
+    {
+      priv->x_drag_threshold = x_threshold;
 
-  _clutter_notify_by_pspec (G_OBJECT (action), obj_props[PROP_DRAG_THRESHOLD]);
+      _clutter_notify_by_pspec (self, obj_props[PROP_X_DRAG_THRESHOLD]);
+    }
+
+  if (priv->y_drag_threshold != y_threshold)
+    {
+      priv->y_drag_threshold = y_threshold;
+
+      _clutter_notify_by_pspec (self, obj_props[PROP_Y_DRAG_THRESHOLD]);
+    }
+
+  g_object_thaw_notify (self);
 }
 
 /**
  * clutter_drag_action_get_drag_threshold:
  * @action: a #ClutterDragAction
+ * @x_threshold: (out): return location for the horizontal drag
+ *   threshold value, in pixels
+ * @y_threshold: (out): return location for the vertical drag
+ *   threshold value, in pixels
  *
- * Retrieves the value set by clutter_drag_action_set_drag_threshold()
- *
- * Return value: the drag threshold value, in pixels
+ * Retrieves the values set by clutter_drag_action_set_drag_threshold()
  *
  * Since: 1.4
  */
-guint
-clutter_drag_action_get_drag_threshold (ClutterDragAction *action)
+void
+clutter_drag_action_get_drag_threshold (ClutterDragAction *action,
+                                        guint             *x_threshold,
+					guint             *y_threshold)
 {
-  g_return_val_if_fail (CLUTTER_IS_DRAG_ACTION (action), 0);
+  g_return_if_fail (CLUTTER_IS_DRAG_ACTION (action));
 
-  return action->priv->drag_threshold;
+  if (x_threshold)
+    *x_threshold = action->priv->x_drag_threshold;
+
+  if (y_threshold)
+    *y_threshold = action->priv->y_drag_threshold;
 }
 
 /**

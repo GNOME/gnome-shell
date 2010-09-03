@@ -124,8 +124,11 @@ GType clutter_drag_action_get_type (void) G_GNUC_CONST;
 ClutterAction * clutter_drag_action_new                   (void);
 
 void            clutter_drag_action_set_drag_threshold (ClutterDragAction *action,
-                                                        guint              threshold);
-guint           clutter_drag_action_get_drag_threshold (ClutterDragAction *action);
+                                                        guint              x_threshold,
+                                                        guint              y_threshold);
+void            clutter_drag_action_get_drag_threshold (ClutterDragAction *action,
+                                                        guint             *x_threshold,
+                                                        guint             *y_threshold);
 void            clutter_drag_action_set_drag_handle    (ClutterDragAction *action,
                                                         ClutterActor      *handle);
 ClutterActor *  clutter_drag_action_get_drag_handle    (ClutterDragAction *action);

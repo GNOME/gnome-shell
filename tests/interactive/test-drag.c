@@ -120,15 +120,23 @@ get_drag_axis (const gchar *str)
 }
 
 static gchar *drag_axis = NULL;
-static gint drag_threshold = 0;
+static gint x_drag_threshold = 0;
+static gint y_drag_threshold = 0;
 
 static GOptionEntry entries[] = {
   {
-    "threshold", 't',
+    "x-threshold", 'x',
     0,
     G_OPTION_ARG_INT,
-    &drag_threshold,
-    "Set the drag threshold", "PIXELS"
+    &x_drag_threshold,
+    "Set the horizontal drag threshold", "PIXELS"
+  },
+  {
+    "y-threshold", 'y',
+    0,
+    G_OPTION_ARG_INT,
+    &y_drag_threshold,
+    "Set the vertical drag threshold", "PIXELS"
   },
   {
     "axis", 'a',
@@ -181,7 +189,8 @@ test_drag_main (int argc, char *argv[])
 
   action = clutter_drag_action_new ();
   clutter_drag_action_set_drag_threshold (CLUTTER_DRAG_ACTION (action),
-                                          drag_threshold);
+                                          x_drag_threshold,
+                                          y_drag_threshold);
   clutter_drag_action_set_drag_axis (CLUTTER_DRAG_ACTION (action),
                                      get_drag_axis (drag_axis));
 
