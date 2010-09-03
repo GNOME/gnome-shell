@@ -53,36 +53,43 @@ CFILE_GLOB=$(top_srcdir)/clutter/cogl/cogl/*.c
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=\
 	cogl-atlas.h				\
-	cogl-atlas-texture-private.h 		\
-	cogl-bitmap-private.h 			\
+	cogl-atlas-texture-private.h		\
+	cogl-bitmap-private.h			\
+	cogl-buffer-private.h			\
+	cogl-color-private.h			\
+	cogl-feature-private.h			\
+	cogl-framebuffer-private.h		\
+	cogl-journal-private.h			\
+	cogl-material-arbfp-private.h		\
+	cogl-material-fixed-private.h		\
+	cogl-material-glsl-private.h		\
+	cogl-material-opengl-private.h		\
+	cogl-material-private.h			\
+	cogl-matrix-private.h			\
+	cogl-object-private.h			\
+	cogl-path-private.h			\
+	cogl-pixel-array-private.h		\
+	cogl-shader-private.h			\
+	cogl-sub-texture-private.h		\
+	cogl-texture-2d-private.h		\
+	cogl-texture-2d-sliced-private.h	\
+	cogl-texture-3d-private.h		\
+	cogl-texture-private.h			\
+	cogl-texture-rectangle-private.h	\
+	cogl-vertex-buffer-private.h		\
 	cogl-blend-string.h 			\
-	cogl-buffer-private.h 			\
 	cogl-clip-stack.h 			\
 	cogl-context.h 				\
 	cogl-debug.h 				\
 	cogl-defines.h 				\
 	cogl-deprecated.h 			\
-	cogl-draw-buffer-private.h 		\
-	cogl-feature-private.h 			\
-	cogl-framebuffer-private.h 		\
 	cogl-handle.h 				\
 	cogl-internal.h 			\
-	cogl-journal-private.h 			\
-	cogl-material-private.h 		\
 	cogl-matrix-mesa.h 			\
-	cogl-matrix-private.h 			\
 	cogl-matrix-stack.h 			\
 	cogl-spans.h 				\
-	cogl-object-private.h			\
-	cogl-pixel-buffer-private.h		\
 	cogl-profile.h				\
-	cogl-sub-texture-private.h		\
-	cogl-texture-2d-private.h		\
-	cogl-texture-2d-sliced-private.h 	\
-	cogl-texture-driver.h 			\
-	cogl-texture-private.h 			\
 	cogl-util.h 				\
-	cogl-vertex-buffer-private.h 		\
 	driver 					\
 	tesselator				\
 	winsys

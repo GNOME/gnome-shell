@@ -96,7 +96,7 @@
 
   </chapter>
 
-  <chapter id="clutterglossary">
+  <chapter id="coglglossary">
     <title>Glossaries</title>
 
     <xi:include href="xml/annotation-glossary.xml"><xi:fallback /></xi:include>
