@@ -319,10 +319,10 @@ cogl_matrix_get_inverse (const CoglMatrix *matrix,
 /**
  * cogl_matrix_transform_point:
  * @matrix: A 4x4 transformation matrix
- * @x: (in-out): The X component of your points position
- * @y: (in-out): The Y component of your points position
- * @z: (in-out): The Z component of your points position
- * @w: (in-out): The W component of your points position
+ * @x: (inout): The X component of your points position
+ * @y: (inout): The Y component of your points position
+ * @z: (inout): The Z component of your points position
+ * @w: (inout): The W component of your points position
  *
  * Transforms a point whos position is given and returned as four float
  * components.
