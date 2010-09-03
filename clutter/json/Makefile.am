@@ -20,9 +20,6 @@ source_h_priv = \
 
 noinst_LTLIBRARIES = libclutter-json.la
 
-libclutter_json_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
-libclutter_json_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS)
-
 INCLUDES = \
 	-I$(top_srcdir) \
 	-DG_DISABLE_SINGLE_INCLUDES \
@@ -31,32 +28,40 @@ INCLUDES = \
 	-DJSON_COMPILATION
 
 AM_CFLAGS = $(MAINTAINER_CFLAGS)
+AM_CPPFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS)
 
 clutterjsondir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter/json
 clutterjson_HEADERS = $(source_h)
 
+libclutter_json_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
+
 noinst_DATA =
 CLEANFILES =
 
+-include $(INTROSPECTION_MAKEFILE)
+
+INTROSPECTION_GIRS =
+
 if HAVE_INTROSPECTION
+
 BUILT_GIRSOURCES =
 
-ClutterJson-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-json.la
-	$(QUIET_SCAN)$(INTROSPECTION_SCANNER) \
-		$(INTROSPECTION_SCANNER_ARGS) \
-		--quiet \
-		--namespace ClutterJson --nsversion=@CLUTTER_API_VERSION@ \
-		$(INCLUDES) \
-		--include=GObject-2.0 \
-		--library=libclutter-json.la \
-		--libtool="$(top_builddir)/libtool" \
-		--output $@ \
-		$(clutterjson_HEADERS) \
-		$(source_c)
+ClutterJson-@CLUTTER_API_VERSION@.gir: libclutter-json.la Makefile
 
-BUILT_GIRSOURCES += ClutterJson-@CLUTTER_API_VERSION@.gir
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = ClutterJson
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-json.la
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_FILES = $(clutterjson_HEADERS) $(source_c)
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS)
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GObject-2.0
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+	--warn-all \
+	--identifier-prefix=Json \
+	--symbol-prefix=json
 
-noinst_DATA += $(BUILT_GIRSOURCES)
+INTROSPECTION_GIRS += ClutterJson-@CLUTTER_API_VERSION@.gir
 
-CLEANFILES += $(BUILT_GIRSOURCES)
+girdir = $(datadir)/gir-1.0
+dist_gir_DATA = $(INTROSPECTION_GIRS)
+
 endif

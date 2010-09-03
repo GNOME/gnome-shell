@@ -62,20 +62,13 @@ AM_INIT_AUTOMAKE([1.11 foreign -Wno-portability no-define dist-bzip2 check-news]
 
 AM_SILENT_RULES([yes])
 
-CLUTTER_MAJOR_VERSION=clutter_major_version
-CLUTTER_MINOR_VERSION=clutter_minor_version
-CLUTTER_MICRO_VERSION=clutter_micro_version
-CLUTTER_VERSION=clutter_version
-CLUTTER_API_VERSION=clutter_api_version
-CLUTTER_MAJORMINOR=clutter_major_version.clutter_minor_version
-CLUTTER_RELEASE_STATUS=clutter_release_status
-AC_SUBST(CLUTTER_MAJOR_VERSION)
-AC_SUBST(CLUTTER_MINOR_VERSION)
-AC_SUBST(CLUTTER_MICRO_VERSION)
-AC_SUBST(CLUTTER_VERSION)
-AC_SUBST(CLUTTER_API_VERSION)
-AC_SUBST(CLUTTER_MAJORMINOR)
-AC_SUBST(CLUTTER_RELEASE_STATUS)
+AC_SUBST([CLUTTER_MAJOR_VERSION],  [clutter_major_version])
+AC_SUBST([CLUTTER_MINOR_VERSION],  [clutter_minor_version])
+AC_SUBST([CLUTTER_MICRO_VERSION],  [clutter_micro_version])
+AC_SUBST([CLUTTER_VERSION],        [clutter_version])
+AC_SUBST([CLUTTER_API_VERSION],    [clutter_api_version])
+AC_SUBST([CLUTTER_API_VERSION_AM], [$CLUTTER_MAJOR_VERSION\_0])
+AC_SUBST([CLUTTER_RELEASE_STATUS], [clutter_release_status])
 
 m4_define([lt_current],  [m4_eval(100 * clutter_minor_version + clutter_micro_version - clutter_interface_age)])
 m4_define([lt_revision], [clutter_interface_age])
@@ -88,7 +81,6 @@ CLUTTER_LT_LDFLAGS="-version-info $CLUTTER_LT_VERSION"
 
 AC_SUBST(CLUTTER_LT_VERSION)
 AC_SUBST(CLUTTER_LT_LDFLAGS)
-AC_SUBST(CLUTTER_LINK_FLAGS)
 
 dnl ========================================================================
 
@@ -121,6 +113,7 @@ AC_TRY_LINK([], [int main (void) { return 0; }],
               AC_MSG_RESULT([no])
             ])
 LDFLAGS="${clutter_LDFLAGS}"
+AC_SUBST(CLUTTER_LINK_FLAGS)
 
 dnl ========================================================================
 

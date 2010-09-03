@@ -315,7 +315,11 @@ nodist_clutter_HEADERS = \
 DISTCLEANFILES += clutter-version.h
 EXTRA_DIST += clutter-version.h.in
 
+# these are the gir files we generate
 BUILT_GIRSOURCES =
+
+# these are the gir files we scan
+INTROSPECTION_GIRS =
 
 if LOCAL_JSON_GLIB
 json_gir_include=--include-uninstalled=$(top_builddir)/clutter/json/ClutterJson-@CLUTTER_API_VERSION@.gir
@@ -332,38 +336,25 @@ else
 json_gir_include=--include=Json-1.0
 endif # LOCAL_JSON_GLIB
 
+-include $(INTROSPECTION_MAKEFILE)
+
 if HAVE_INTROSPECTION
-# We can't reference the list of COGL header files, since they are in a
-# subdir Makefile.am, so just extract them from cogl.h instead. The doc
-# comments for COGL are in the headers, so we don't need the source files.
+INTROSPECTION_GIRS += Clutter-@CLUTTER_API_VERSION@.gir
 
-Clutter-@CLUTTER_API_VERSION@.gir: Makefile $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
-	$(QUIET_SCAN)$(INTROSPECTION_SCANNER) \
-		$(INTROSPECTION_SCANNER_ARGS) \
-		--quiet \
-		--namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
-		--pkg-export clutter-1.0 \
-		--warn-all \
-		$(INCLUDES) \
-		$(AM_CPPFLAGS) \
-		--c-include='clutter/clutter.h' \
-		--pkg-export=clutter-1.0 \
-		--include=GL-1.0 \
-		--include=GObject-2.0 \
-		--include=Atk-1.0 \
-		--include=Pango-1.0 \
-		--include=PangoCairo-1.0 \
-		--include-uninstalled=$(top_builddir)/clutter/cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir \
-		$(json_gir_include) \
-		--library=libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la \
-		--libtool="$(top_builddir)/libtool" \
-	        --output $@ \
-		$(clutter_HEADERS) \
-		$(nodist_clutter_HEADERS) \
-		$(source_c) \
-		$(built_source_c)
+Clutter-@CLUTTER_API_VERSION@.gir: libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la Makefile
 
-BUILT_GIRSOURCES += Clutter-@CLUTTER_API_VERSION@.gir
+Clutter_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Clutter
+Clutter_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
+Clutter_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+Clutter_@CLUTTER_API_VERSION_AM@_gir_FILES = $(clutter_HEADERS) $(nodist_clutter_HEADERS) $(source_c) $(built_source_c)
+Clutter_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS)
+Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 Atk-1.0 Pango-1.0 PangoCairo-1.0
+Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+	--warn-all \
+	--c-include='clutter/clutter.h' \
+	--pkg-export clutter-1.0 \
+	$(json_gir_include) \
+	--include-uninstalled=$(top_builddir)/clutter/cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir
 
 # ClutterJson.gir and Cogl.gir are used included into Clutter.gir, so need
 # to be built before the typelib is generated
@@ -386,45 +377,31 @@ BUILT_GIRSOURCES += Cogl-@CLUTTER_API_VERSION@.gir
 # for Cogl and ClutterJson.
 cally_sources=$(top_srcdir)/clutter/cally/*.h $(top_srcdir)/clutter/cally/*.c
 cally_introspection_files=$(filter-out %-private.h, $(cally_sources))
-Cally-@CLUTTER_API_VERSION@.gir: Makefile $(INTROSPECTION_SCANNER) Clutter-@CLUTTER_API_VERSION@.gir
-	$(QUIET_SCAN)$(INTROSPECTION_SCANNER) \
-		$(INTROSPECTION_SCANNER_ARGS) \
-		--quiet \
-		--namespace Cally --nsversion=@CLUTTER_API_VERSION@ \
-		$(INCLUDES) \
-		$(AM_CPPFLAGS) \
-		--c-include='cally/cally.h' \
-		--include=Pango-1.0 \
-		$(json_gir_include) \
-		--include-uninstalled=$(top_builddir)/clutter/cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir \
-		--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir \
-		--library=libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la \
-		--libtool="$(top_builddir)/libtool" \
-		--output $@ \
-		$(cally_introspection_files)
 
-BUILT_GIRSOURCES += Cally-@CLUTTER_API_VERSION@.gir
+Cally-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir Makefile
 
-Cally-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
+Cally_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Cally
+Cally_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
+Cally_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+Cally_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cally_introspection_files)
+Cally_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS)
+Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+	--warn-all \
+	--c-include='cally/cally.h' \
+	--add-include-path $(top_builddir)/clutter \
+	--include-uninstalled $(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
+
+INTROSPECTION_GIRS += Cally-@CLUTTER_API_VERSION@.gir
 
 # INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
 # install anything - we need to install inside our prefix.
 girdir = $(datadir)/gir-1.0
-gir_DATA = $(BUILT_GIRSOURCES)
+dist_gir_DATA = $(BUILT_GIRSOURCES) $(INTROSPECTION_GIRS)
 
 typelibsdir = $(libdir)/girepository-1.0/
+typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib) $(INTROSPECTION_GIRS:.gir=.typelib)
 
-typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
-
-%.typelib: %.gir $(INTROSPECTION_COMPILER)
-	$(QUIET_COMP) \
-	LD_LIBRARY_PATH=.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH} \
-	$(INTROSPECTION_COMPILER) \
-		--includedir=$(srcdir) \
-		--includedir=. \
-		$(INTROSPECTION_COMPILER_ARGS) $< -o $(@F)
-
-CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
+CLEANFILES += $(dist_gir_DATA) $(typelibs_DATA)
 endif # HAVE_INTROSPECTION
 
 gcov_sources = $(source_c)
