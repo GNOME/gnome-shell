@@ -363,6 +363,8 @@ cogl_program_set_uniform_matrix (CoglHandle program,
                                  gboolean transpose,
                                  const float *value);
 
+#ifndef COGL_DISABLE_DEPRECATED
+
 /**
  * cogl_program_uniform_1f:
  * @uniform_no: the uniform to set.
@@ -375,7 +377,7 @@ cogl_program_set_uniform_matrix (CoglHandle program,
  */
 void
 cogl_program_uniform_1f (int   uniform_no,
-                         float value);
+                         float value) G_GNUC_DEPRECATED;
 
 /**
  * cogl_program_uniform_1i:
@@ -389,7 +391,7 @@ cogl_program_uniform_1f (int   uniform_no,
  */
 void
 cogl_program_uniform_1i (int uniform_no,
-                         int value);
+                         int value) G_GNUC_DEPRECATED;
 
 /**
  * cogl_program_uniform_float:
@@ -407,7 +409,7 @@ void
 cogl_program_uniform_float (int            uniform_no,
                             int            size,
                             int            count,
-                            const float   *value);
+                            const float   *value) G_GNUC_DEPRECATED;
 
 /**
  * cogl_program_uniform_int:
@@ -423,7 +425,7 @@ void
 cogl_program_uniform_int (int        uniform_no,
                           int        size,
                           int        count,
-                          const int *value);
+                          const int *value) G_GNUC_DEPRECATED;
 
 /**
  * cogl_program_uniform_matrix:
@@ -442,7 +444,9 @@ cogl_program_uniform_matrix (int          uniform_no,
                              int          size,
                              int          count,
                              gboolean     transpose,
-                             const float *value);
+                             const float *value) G_GNUC_DEPRECATED;
+
+#endif /* COGL_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
