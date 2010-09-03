@@ -1,3 +1,30 @@
+Clutter 1.3.14 ()
+===============================================================================
+
+  • List of changes since Clutter 1.3.12
+
+    » Fix applying layout properties from ClutterScript definitions in case
+      of multiple children.
+
+    » Add a Clutter EGL backend for Intel CEx100 platforms.
+
+    » Add new recipes in the Cookbook:
+      - texture cross-fading
+      - ClutterScript definitions
+      - event handling
+
+    » Add methods to retrieve the clicked button and to force a release
+      in ClickAction.
+
+    » Documentation fixes in the API reference.
+
+    » Cache a full pick buffer and re-use it in case the scene does not change
+      between events.
+
+    » Fix a Valgrind report of memory corruption in ClutterState.remove_key().
+
+    » Depend on GObject-Introspection >= 0.9.5.
+
 Clutter 1.3.12 (16/08/2010)
 ===============================================================================
 
