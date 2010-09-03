@@ -100,19 +100,28 @@ AM_PATH_GLIB_2_0([2.18.0], [have_glib=yes], [have_glib=no],
 AS_IF([test "x$have_glib" = "xno"], AC_MSG_ERROR([glib-2.0 is required]))
 
 # Check for -Bsymbolic-functions to avoid intra-library PLT jumps
-clutter_LDFLAGS="${LDFLAGS}"
-AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
-LDFLAGS=-Wl,-Bsymbolic-functions
-AC_TRY_LINK([], [int main (void) { return 0; }],
-            [
-              CLUTTER_LINK_FLAGS=-Wl[,]-Bsymbolic-functions
-              AC_MSG_RESULT([yes])
-            ],
-            [
-              CLUTTER_LINK_FLAGS=
-              AC_MSG_RESULT([no])
-            ])
-LDFLAGS="${clutter_LDFLAGS}"
+AC_ARG_ENABLE([Bsymbolic],
+              [AC_HELP_STRING([--disable-Bsymbolic],
+                              [Avoid linking with -Bsymbolic])],
+              [],
+              [
+                saved_LDFLAGS="${LDFLAGS}"
+                AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
+                LDFLAGS=-Wl,-Bsymbolic-functions
+                AC_TRY_LINK([], [int main (void) { return 0; }],
+                            [
+                              AC_MSG_RESULT([yes])
+                              enable_Bsymbolic=yes
+                            ],
+                            [
+                              AC_MSG_RESULT([no])
+                              enable_Bsymbolic=no
+                            ])
+                LDFLAGS="${saved_LDFLAGS}"
+              ])
+
+AS_IF([test "x$enable_Bsymbolic" = "xyes"],
+      [CLUTTER_LINK_FLAGS=-Wl[,]-Bsymbolic-functions])
 AC_SUBST(CLUTTER_LINK_FLAGS)
 
 dnl ========================================================================

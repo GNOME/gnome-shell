@@ -153,6 +153,9 @@ Clutter has additional command line options for the configure script:
  --enable-conform=[yes/no]
         Build the Clutter conformance test suite.
 
+ --disable-Bsymbolic
+        Disable linking with -Bsymbolic.
+
  --with-flavour=[glx/eglx/eglnative/osx/win32/fruity]
         Select the Clutter backend: (default=glx)
 
