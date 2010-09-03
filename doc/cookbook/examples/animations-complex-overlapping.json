@@ -1,0 +1,80 @@
+[
+  {
+    "type" : "ClutterStage",
+    "id" : "stage",
+    "width" : 550,
+    "height" : 350,
+    "color" : "#333355ff",
+
+    "signals" : [
+      { "name" : "destroy", "handler" : "clutter_main_quit" },
+      { "name" : "key-press-event", "handler" : "foo_key_pressed_cb" }
+    ],
+
+    "children" : [
+      {
+        "type" : "ClutterRectangle",
+        "id" : "rectangle",
+        "color" : "red",
+        "width" : 50,
+        "height" : 50,
+        "x" : 0,
+        "y" : 0,
+        "scale-gravity" : "center"
+      }
+    ]
+  },
+
+  {
+    "type" : "ClutterAnimator",
+    "id" : "animator",
+    "duration" : 4000,
+
+    "properties" : [
+      {
+        "object" : "rectangle",
+        "name" : "x",
+        "ease-in" : true,
+        "keys" : [
+          [ 0.0, "linear", 0.0 ],
+          [ 0.1, "easeInCubic", 50.0 ],
+          [ 0.2, "easeInCubic", 200.0 ],
+          [ 0.4, "easeInCubic", 75.0 ],
+          [ 0.5, "easeOutCubic", 300.0 ],
+          [ 1.0, "easeInCubic", 400.0 ]
+        ]
+      },
+      {
+        "object" : "rectangle",
+        "name" : "y",
+        "ease-in" : true,
+        "keys" : [
+          [ 0.0, "linear", 0.0 ],
+          [ 0.1, "easeInCubic", 50.0 ],
+          [ 0.2, "easeInCubic", 200.0 ],
+          [ 0.4, "easeInCubic", 75.0 ],
+          [ 0.5, "easeOutCubic", 150.0 ],
+          [ 1.0, "easeInCubic", 200.0 ]
+        ]
+      },
+      {
+        "object" : "rectangle",
+        "name" : "scale-x",
+        "ease-in" : true,
+        "keys" : [
+          [ 0.0, "linear", 1.0 ],
+          [ 1.0, "linear", 4.0 ]
+        ]
+      },
+      {
+        "object" : "rectangle",
+        "name" : "scale-y",
+        "ease-in" : true,
+        "keys" : [
+          [ 0.0, "linear", 1.0 ],
+          [ 1.0, "linear", 4.0 ]
+        ]
+      }
+    ]
+  }
+]

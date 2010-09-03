@@ -30,19 +30,24 @@ foo_key_pressed_cb (ClutterActor *actor,
 int
 main (int argc, char *argv[])
 {
+  gchar *filename = UI_FILE;
+
   ClutterScript *script;
   ClutterActor *stage;
 
   GError *error = NULL;
 
+  if (argc > 1)
+    filename = argv[1];
+
   clutter_init (&argc, &argv);
 
   script = clutter_script_new ();
-  clutter_script_load_from_file (script, UI_FILE, &error);
+  clutter_script_load_from_file (script, filename, &error);
 
   if (error != NULL)
    {
-     g_critical ("Error loading ClutterScript file %s\n%s", UI_FILE, error->message);
+     g_critical ("Error loading ClutterScript file %s\n%s", filename, error->message);
      g_error_free (error);
      exit (EXIT_FAILURE);
    }
