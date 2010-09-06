@@ -55,8 +55,9 @@ G_BEGIN_DECLS
  *
  * Note: This does not work with sliced Cogl textures.
  *
- * Returns: a #CoglHandle for the new offscreen buffer or %COGL_INVALID_HANDLE
- *          if it wasn't possible to create the buffer.
+ * Return value: (transfer full): a #CoglHandle for the new offscreen
+ *   buffer or %COGL_INVALID_HANDLE if it wasn't possible to create the
+ *   buffer.
  */
 CoglHandle      cogl_offscreen_new_to_texture (CoglHandle         handle);
 
@@ -80,9 +81,9 @@ gboolean        cogl_is_offscreen             (CoglHandle          handle);
  *
  * Increments the reference count on the offscreen buffer.
  *
- * Returns: For convenience it returns the given CoglHandle
+ * Return value: (transfer none): For convenience it returns the given CoglHandle
  *
- * Deprecated: 1.2: cogl_handle_ref should be used in new code.
+ * Deprecated: 1.2: cogl_handle_ref() should be used in new code.
  */
 CoglHandle      cogl_offscreen_ref            (CoglHandle          handle) G_GNUC_DEPRECATED;
 
@@ -93,7 +94,7 @@ CoglHandle      cogl_offscreen_ref            (CoglHandle          handle) G_GNU
  * Decreases the reference count for the offscreen buffer and frees it when
  * the count reaches 0.
  *
- * Deprecated: 1.2: cogl_handle_unref should be used in new code.
+ * Deprecated: 1.2: cogl_handle_unref() should be used in new code.
  */
 void            cogl_offscreen_unref          (CoglHandle          handle) G_GNUC_DEPRECATED;
 

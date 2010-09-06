@@ -68,7 +68,7 @@ cogl_handle_get_type (void) G_GNUC_CONST;
  *
  * Increases the reference count of @handle by 1
  *
- * Returns: the handle, with its reference count increased
+ * Return value: (transfer none): the handle, with its reference count increased
  */
 CoglHandle
 cogl_handle_ref (CoglHandle handle);
