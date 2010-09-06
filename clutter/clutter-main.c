@@ -1055,7 +1055,7 @@ clutter_threads_init (void)
 }
 
 /**
- * clutter_threads_set_lock_functions:
+ * clutter_threads_set_lock_functions: (skip)
  * @enter_fn: function called when aquiring the Clutter main lock
  * @leave_fn: function called when releasing the Clutter main lock
  *
@@ -1854,7 +1854,7 @@ post_parse_hook (GOptionContext  *context,
 }
 
 /**
- * clutter_get_option_group:
+ * clutter_get_option_group: (skip)
  *
  * Returns a #GOptionGroup for the command line arguments recognized
  * by Clutter. You should add this group to your #GOptionContext with
@@ -1911,7 +1911,7 @@ clutter_get_option_group (void)
 }
 
 /**
- * clutter_get_option_group_without_init:
+ * clutter_get_option_group_without_init: (skip)
  *
  * Returns a #GOptionGroup for the command line arguments recognized
  * by Clutter. You should add this group to your #GOptionContext with

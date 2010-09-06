@@ -945,7 +945,7 @@ cogl_material_layer_get_type (CoglMaterialLayer *layer);
  * should call cogl_material_layer_get_type() first in order check it is of
  * type %COGL_MATERIAL_LAYER_TYPE_TEXTURE before calling this function.</note>
  *
- * Return value: a #CoglHandle for the texture inside the layer
+ * Return value: (transfer none): a #CoglHandle for the texture inside the layer
  */
 CoglHandle
 cogl_material_layer_get_texture (CoglMaterialLayer *layer);

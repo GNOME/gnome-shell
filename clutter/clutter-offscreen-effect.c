@@ -469,7 +469,9 @@ clutter_offscreen_effect_paint_target (ClutterOffscreenEffect *effect)
  *
  * Calls the create_texture() virtual function of the @effect
  *
- * Return value: a handle to a Cogl texture, or %COGL_INVALID_HANDLE
+ * Return value: (transfer full): a handle to a Cogl texture, or
+ *   %COGL_INVALID_HANDLE. The returned handle has its reference
+ *   count increased.
  *
  * Since: 1.4
  */
