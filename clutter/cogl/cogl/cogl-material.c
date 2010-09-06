@@ -4457,7 +4457,8 @@ _cogl_material_layer_free (CoglMaterialLayer *layer)
         }
     }
 
-  if (layer->differences & COGL_MATERIAL_LAYER_STATE_TEXTURE)
+  if (layer->differences & COGL_MATERIAL_LAYER_STATE_TEXTURE &&
+      layer->texture != COGL_INVALID_HANDLE)
     cogl_handle_unref (layer->texture);
 
   if (layer->differences & COGL_MATERIAL_LAYER_STATE_NEEDS_BIG_STATE)
