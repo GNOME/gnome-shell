@@ -32,14 +32,6 @@
     </dependencies>
   </tarball>
 
-  <autotools id="libgee">
-    <branch repo="git.gnome.org" module="libgee"/>
-    <dependencies>
-      <dep package="vala"/>
-      <dep package="glib"/>
-    </dependencies>
-  </autotools>
-
   <autotools id="atk">
     <branch repo="git.gnome.org" module="atk"/>
     <dependencies>
@@ -129,7 +121,6 @@
     <dependencies>
       <dep package="glib"/>
       <dep package="gobject-introspection"/>
-      <dep package="libgee"/>
       <dep package="vala"/>
     </dependencies>
   </autotools>
