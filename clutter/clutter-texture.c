@@ -1306,7 +1306,6 @@ clutter_texture_set_cogl_material (ClutterTexture *texture,
 
   cogl_handle_ref (cogl_material);
 
-  /* This */
   if (texture->priv->material)
     cogl_handle_unref (texture->priv->material);
 
@@ -1341,14 +1340,22 @@ clutter_texture_set_cogl_material (ClutterTexture *texture,
 CoglHandle
 clutter_texture_get_cogl_texture (ClutterTexture *texture)
 {
+  CoglMaterialLayerType layer_type;
   const GList *layers;
   int n_layers;
 
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), COGL_INVALID_HANDLE);
 
   layers = cogl_material_get_layers (texture->priv->material);
+  if (layers == NULL)
+    return COGL_INVALID_HANDLE;
+
   n_layers = g_list_length ((GList *)layers);
   if (n_layers == 0)
+    return COGL_INVALID_HANDLE;
+
+  layer_type = cogl_material_layer_get_type (layers->data);
+  if (layer_type != COGL_MATERIAL_LAYER_TYPE_TEXTURE)
     return COGL_INVALID_HANDLE;
 
   return cogl_material_layer_get_texture (layers->data);
