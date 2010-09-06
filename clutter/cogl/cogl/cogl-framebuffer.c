@@ -432,6 +432,10 @@ try_creating_fbo (CoglOffscreen *offscreen,
           GLuint renderbuffer = GPOINTER_TO_UINT (l->data);
           GE (glDeleteRenderbuffers (1, &renderbuffer));
         }
+
+      g_slist_free (offscreen->renderbuffers);
+      offscreen->renderbuffers = NULL;
+
       return FALSE;
     }
 
