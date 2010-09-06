@@ -217,10 +217,12 @@ texture_free_gl_resources (ClutterTexture *texture)
   CLUTTER_MARK();
 
   if (priv->material != COGL_INVALID_HANDLE)
-    /* We want to keep the layer so that the filter settings will
-       remain but we want to free its resources so we clear the
-       texture handle */
-    cogl_material_set_layer (priv->material, 0, COGL_INVALID_HANDLE);
+    {
+      /* We want to keep the layer so that the filter settings will
+         remain but we want to free its resources so we clear the
+         texture handle */
+      cogl_material_set_layer (priv->material, 0, COGL_INVALID_HANDLE);
+    }
 }
 
 static void
@@ -734,20 +736,12 @@ static void
 clutter_texture_dispose (GObject *object)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (object);
+  ClutterTexturePrivate *priv = texture->priv;
 
   texture_free_gl_resources (texture);
   texture_fbo_free_resources (texture);
 
   clutter_texture_async_load_cancel (texture);
-
-  G_OBJECT_CLASS (clutter_texture_parent_class)->dispose (object);
-}
-
-static void
-clutter_texture_finalize (GObject *object)
-{
-  ClutterTexture *texture = CLUTTER_TEXTURE (object);
-  ClutterTexturePrivate *priv = texture->priv;
 
   if (priv->material != COGL_INVALID_HANDLE)
     {
@@ -760,6 +754,14 @@ clutter_texture_finalize (GObject *object)
       cogl_handle_unref (priv->pick_material);
       priv->pick_material = COGL_INVALID_HANDLE;
     }
+
+  G_OBJECT_CLASS (clutter_texture_parent_class)->dispose (object);
+}
+
+static void
+clutter_texture_finalize (GObject *object)
+{
+  ClutterTexturePrivate *priv = CLUTTER_TEXTURE (object)->priv;
 
   g_free (priv->filename);
 
