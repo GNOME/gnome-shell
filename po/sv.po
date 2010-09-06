@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-06 01:17+0200\n"
-"PO-Revision-Date: 2010-08-06 01:24+0100\n"
+"POT-Creation-Date: 2010-09-06 22:51+0200\n"
+"PO-Revision-Date: 2010-09-06 22:56+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr "Anpassa panelklockan"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
-msgstr ""
+msgstr "Tillåter åtkomst till interna verktyg för felsökning och övervakning med dialogen Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Custom format of the clock"
@@ -42,15 +42,15 @@ msgstr "Anpassat format för klockan"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
+msgstr "Aktivera interna verktyg användbara för utvecklare och testare från Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "File extension used for storing the screencast"
-msgstr ""
+msgstr "Filändelse att använda för lagring av skärminspelningen"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid "Framerate used for recording screencasts."
-msgstr ""
+msgstr "Bildfrekvens för inspelade skärminspelningar."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should not be loaded."
@@ -58,27 +58,27 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
-msgstr ""
+msgstr "Historik för kommandodialog (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "Hour format"
-msgstr ""
+msgstr "Timmesformat"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true and format is either \"12-hour\" or \"24-hour\", display date in the clock, in addition to time."
-msgstr ""
+msgstr "Om true och formatet antingen är \"12-hour\" eller \"24-hour\", visa datum i klockan, i tillägg till tiden."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true and format is either \"12-hour\" or \"24-hour\", display seconds in time."
-msgstr ""
+msgstr "Om true och formatet antingen är \"12-hour\" eller \"24-hour\", visa sekunder i tiden."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "If true, display the ISO week date in the calendar."
-msgstr ""
+msgstr "Om true, visa veckodatum enligt ISO i kalendern."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:12
 msgid "List of desktop file IDs for favorite applications"
-msgstr ""
+msgstr "Lista över skrivbordsfil-id för favoritprogram"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Overview workspace view mode"
@@ -90,7 +90,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show date in clock"
-msgstr ""
+msgstr "Visa datum i klocka"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show the week date in the calendar"
@@ -102,7 +102,7 @@ msgstr "Visa tid med sekunder"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
-msgstr ""
+msgstr "Programmen som motsvarar dessa identifierare kommer att visas i favoritområdet."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
@@ -134,11 +134,11 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "Uuids of extensions to disable"
-msgstr ""
+msgstr "Uuid:er för tillägg att inaktivera"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:27
 msgid "Whether to collect stats about applications usage"
-msgstr ""
+msgstr "Huruvida statistik ska samlas in för programanvändning"
 
 #: ../data/clock-preferences.ui.h:1
 msgid "Clock Format"
@@ -150,7 +150,7 @@ msgstr "Klockinställningar"
 
 #: ../data/clock-preferences.ui.h:3
 msgid "Panel Display"
-msgstr ""
+msgstr "Panelvisning"
 
 #: ../data/clock-preferences.ui.h:4
 msgid "Show seco_nds"
@@ -162,15 +162,15 @@ msgstr "Visa _datum"
 
 #: ../data/clock-preferences.ui.h:6
 msgid "_12 hour format"
-msgstr ""
+msgstr "_12-timmarsformat"
 
 #: ../data/clock-preferences.ui.h:7
 msgid "_24 hour format"
-msgstr ""
+msgstr "_24-timmarsformat"
 
 #. **** Applications ****
 #: ../js/ui/appDisplay.js:384
-#: ../js/ui/dash.js:776
+#: ../js/ui/dash.js:778
 msgid "APPLICATIONS"
 msgstr "PROGRAM"
 
@@ -208,57 +208,57 @@ msgstr "%s har tagits bort från dina favoriter."
 msgid "Find"
 msgstr "Sök"
 
-#: ../js/ui/dash.js:471
+#: ../js/ui/dash.js:473
 msgid "Searching..."
 msgstr "Söker..."
 
-#: ../js/ui/dash.js:485
+#: ../js/ui/dash.js:487
 msgid "No matching results."
 msgstr "Inga sökträffar."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:795
-#: ../js/ui/placeDisplay.js:550
+#: ../js/ui/dash.js:797
+#: ../js/ui/placeDisplay.js:554
 msgid "PLACES & DEVICES"
 msgstr "PLATSER OCH ENHETER"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:802
+#: ../js/ui/dash.js:804
 #: ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "TIDIGARE OBJEKT"
 
-#: ../js/ui/lookingGlass.js:471
+#: ../js/ui/lookingGlass.js:552
 msgid "No extensions installed"
 msgstr "Inga tillägg installerade"
 
-#: ../js/ui/lookingGlass.js:508
+#: ../js/ui/lookingGlass.js:589
 msgid "Enabled"
 msgstr "Aktiverad"
 
-#: ../js/ui/lookingGlass.js:510
+#: ../js/ui/lookingGlass.js:591
 msgid "Disabled"
 msgstr "Inaktiverad"
 
-#: ../js/ui/lookingGlass.js:512
+#: ../js/ui/lookingGlass.js:593
 msgid "Error"
 msgstr "Fel"
 
-#: ../js/ui/lookingGlass.js:514
+#: ../js/ui/lookingGlass.js:595
 msgid "Out of date"
-msgstr ""
+msgstr "Utanför datumintervallet"
 
-#: ../js/ui/lookingGlass.js:539
+#: ../js/ui/lookingGlass.js:620
 msgid "View Source"
 msgstr "Visa källa"
 
-#: ../js/ui/lookingGlass.js:545
+#: ../js/ui/lookingGlass.js:626
 msgid "Web Page"
 msgstr "Webbsida"
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:160
 msgid "Undo"
 msgstr "Ångra"
 
@@ -314,20 +314,20 @@ msgstr "%a %H.%M"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:741
+#: ../js/ui/panel.js:748
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/placeDisplay.js:107
+#: ../js/ui/placeDisplay.js:111
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Misslyckades med att avmontera \"%s\""
 
-#: ../js/ui/placeDisplay.js:110
+#: ../js/ui/placeDisplay.js:114
 msgid "Retry"
 msgstr "Försök igen"
 
-#: ../js/ui/placeDisplay.js:155
+#: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
 msgstr "Anslut till..."
 
@@ -390,12 +390,12 @@ msgstr "Logga ut..."
 msgid "Shut Down..."
 msgstr "Stäng av..."
 
-#: ../js/ui/windowAttentionHandler.js:45
+#: ../js/ui/windowAttentionHandler.js:43
 #, c-format
 msgid "%s has finished starting"
-msgstr ""
+msgstr "%s har startat"
 
-#: ../js/ui/windowAttentionHandler.js:47
+#: ../js/ui/windowAttentionHandler.js:45
 #, c-format
 msgid "'%s' is ready"
 msgstr "\"%s\" är redo"
