@@ -5282,6 +5282,13 @@ clutter_actor_allocate (ClutterActor           *self,
   gboolean child_moved;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  if (G_UNLIKELY (_clutter_actor_get_stage_internal (self) == NULL))
+    {
+      g_warning ("Spurious clutter_actor_allocate called for actor %p/%s "
+                 "which isn't a descendent of the stage!\n",
+                 self, G_OBJECT_TYPE_NAME (self));
+      return;
+    }
 
   priv = self->priv;
 
