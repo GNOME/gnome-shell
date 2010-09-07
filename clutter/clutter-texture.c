@@ -2426,6 +2426,21 @@ on_fbo_parent_change (ClutterActor        *actor,
       }
 }
 
+static void
+fbo_source_queue_redraw_cb (ClutterActor *source,
+			    ClutterActor *origin,
+			    ClutterTexture *texture)
+{
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
+}
+
+static void
+fbo_source_queue_relayout_cb (ClutterActor *source,
+			      ClutterTexture *texture)
+{
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
+}
+
 /**
  * clutter_texture_new_from_actor:
  * @actor: A source #ClutterActor
@@ -2589,6 +2604,11 @@ clutter_texture_new_from_actor (ClutterActor *actor)
                     G_CALLBACK(on_fbo_source_size_change),
                     texture);
 
+  g_signal_connect (actor, "queue-relayout",
+                    G_CALLBACK (fbo_source_queue_relayout_cb), texture);
+  g_signal_connect (actor, "queue-redraw",
+                    G_CALLBACK (fbo_source_queue_redraw_cb), texture);
+
   /* And a warning if the source becomes a child of the texture */
   g_signal_connect (actor,
                     "parent-set",
@@ -2630,6 +2650,16 @@ texture_fbo_free_resources (ClutterTexture *texture)
       g_signal_handlers_disconnect_by_func
                             (priv->fbo_source,
                              G_CALLBACK(on_fbo_source_size_change),
+                             texture);
+
+      g_signal_handlers_disconnect_by_func
+                            (priv->fbo_source,
+                             G_CALLBACK(fbo_source_queue_relayout_cb),
+                             texture);
+
+      g_signal_handlers_disconnect_by_func
+                            (priv->fbo_source,
+                             G_CALLBACK(fbo_source_queue_redraw_cb),
                              texture);
 
       g_object_unref (priv->fbo_source);
