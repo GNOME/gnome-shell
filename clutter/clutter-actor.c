@@ -5487,6 +5487,7 @@ clutter_actor_allocate (ClutterActor           *self,
   ClutterActorClass *klass;
   ClutterActorBox alloc;
   gboolean child_moved;
+  gboolean stage_allocation_changed;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   if (G_UNLIKELY (_clutter_actor_get_stage_internal (self) == NULL))
@@ -5516,6 +5517,14 @@ clutter_actor_allocate (ClutterActor           *self,
   child_moved = (alloc.x1 != priv->allocation.x1 ||
                  alloc.y1 != priv->allocation.y1);
 
+  if (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED ||
+      child_moved ||
+      alloc.x2 != priv->allocation.x2 ||
+      alloc.y2 != priv->allocation.y2)
+    stage_allocation_changed = TRUE;
+  else
+    stage_allocation_changed = FALSE;
+
   /* If we get an allocation "out of the blue"
    * (we did not queue relayout), then we want to
    * ignore it. But if we have needs_allocation set,
@@ -5529,11 +5538,7 @@ clutter_actor_allocate (ClutterActor           *self,
    * not moved.
    */
 
-  if (!priv->needs_allocation &&
-      !(flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED) &&
-      !child_moved &&
-      alloc.x2 == priv->allocation.x2 &&
-      alloc.y2 == priv->allocation.y2)
+  if (!priv->needs_allocation && !stage_allocation_changed)
     {
       CLUTTER_NOTE (LAYOUT, "No allocation needed");
       return;
@@ -5554,6 +5559,9 @@ clutter_actor_allocate (ClutterActor           *self,
   klass->allocate (self, &alloc, flags);
 
   CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_RELAYOUT);
+
+  if (stage_allocation_changed)
+    clutter_actor_queue_redraw (self);
 }
 
 /**
