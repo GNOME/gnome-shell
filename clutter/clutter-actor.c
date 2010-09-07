@@ -1863,12 +1863,9 @@ clutter_actor_real_queue_relayout (ClutterActor *self)
   memset (priv->height_requests, 0,
           N_CACHED_SIZE_REQUESTS * sizeof (SizeRequest));
 
-  /* always repaint also (no-op if not mapped) */
-  clutter_actor_queue_redraw (self);
-
   /* We need to go all the way up the hierarchy */
   if (priv->parent_actor)
-    clutter_actor_queue_relayout (priv->parent_actor);
+    _clutter_actor_queue_only_relayout (priv->parent_actor);
 }
 
 /**
