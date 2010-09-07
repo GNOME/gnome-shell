@@ -179,7 +179,8 @@ static const GDebugKey clutter_pick_debug_keys[] = {
 static const GDebugKey clutter_paint_debug_keys[] = {
   { "disable-swap-events", CLUTTER_DEBUG_DISABLE_SWAP_EVENTS },
   { "disable-clipped-redraws", CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS },
-  { "redraws", CLUTTER_DEBUG_REDRAWS }
+  { "redraws", CLUTTER_DEBUG_REDRAWS },
+  { "paint-volumes", CLUTTER_DEBUG_PAINT_VOLUMES },
 };
 
 #ifdef CLUTTER_ENABLE_PROFILE
@@ -1609,6 +1610,10 @@ clutter_init_real (GError **error)
    */
   if (!_clutter_backend_post_parse (backend, error))
     return CLUTTER_INIT_ERROR_BACKEND;
+
+  /* The same is true when drawing the outlines of paint volumes... */
+  if (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES)
+    clutter_paint_debug_flags |= CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS;
 
   /* this will take care of initializing Cogl's state and
    * query the GL machinery for features

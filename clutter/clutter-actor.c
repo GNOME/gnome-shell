@@ -2383,6 +2383,99 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
   _clutter_actor_apply_modelview_transform (self, matrix);
 }
 
+static void
+_clutter_actor_draw_paint_volume (ClutterActor *self)
+{
+  static CoglMaterial *outline = NULL;
+  CoglHandle vbo;
+  ClutterPaintVolume *pv;
+  gboolean free_fake_pv;
+  ClutterPaintVolume fake_pv;
+  ClutterVertex line_ends[12 * 2];
+  int n_vertices;
+  PangoLayout *layout;
+  CoglColor color;
+
+  if (outline == NULL)
+    outline = cogl_material_new ();
+
+  pv = _clutter_actor_get_paint_volume_mutable (self);
+  if (!pv)
+    {
+      gfloat width, height;
+      /* XXX: actually for debugging it might be more useful to draw a
+       * blue rectangle around the transformed allocation and add a
+       * label showing that a volume can't be determined. */
+      ClutterActor *stage = _clutter_actor_get_stage_internal (self);
+      _clutter_paint_volume_init_static (stage, &fake_pv);
+      free_fake_pv = TRUE;
+
+      clutter_actor_get_size (stage, &width, &height);
+      clutter_paint_volume_set_width (&fake_pv, width);
+      clutter_paint_volume_set_height (&fake_pv, height);
+
+      pv = &fake_pv;
+      cogl_color_init_from_4f (&color, 0, 0, 1, 1);
+    }
+  else
+    {
+      cogl_color_init_from_4f (&color, 0, 1, 0, 1);
+      free_fake_pv = FALSE;
+    }
+
+  _clutter_paint_volume_complete (pv);
+
+  n_vertices = pv->is_2d ? 4 * 2 : 12 * 2;
+
+  /* Front face */
+  line_ends[0] = pv->vertices[0]; line_ends[1] = pv->vertices[1];
+  line_ends[2] = pv->vertices[1]; line_ends[3] = pv->vertices[2];
+  line_ends[4] = pv->vertices[2]; line_ends[5] = pv->vertices[3];
+  line_ends[6] = pv->vertices[3]; line_ends[7] = pv->vertices[0];
+
+  if (!pv->is_2d)
+    {
+      /* Back face */
+      line_ends[8] = pv->vertices[4]; line_ends[9] = pv->vertices[5];
+      line_ends[10] = pv->vertices[5]; line_ends[11] = pv->vertices[6];
+      line_ends[12] = pv->vertices[6]; line_ends[13] = pv->vertices[7];
+      line_ends[14] = pv->vertices[7]; line_ends[15] = pv->vertices[4];
+
+      /* Lines connecting front face to back face */
+      line_ends[16] = pv->vertices[0]; line_ends[17] = pv->vertices[4];
+      line_ends[18] = pv->vertices[1]; line_ends[19] = pv->vertices[5];
+      line_ends[20] = pv->vertices[2]; line_ends[21] = pv->vertices[6];
+      line_ends[22] = pv->vertices[3]; line_ends[23] = pv->vertices[7];
+    }
+
+  vbo = cogl_vertex_buffer_new (n_vertices);
+  cogl_vertex_buffer_add (vbo,
+                          "gl_Vertex",
+                          3, /* n_components */
+                          COGL_ATTRIBUTE_TYPE_FLOAT,
+                          FALSE, /* normalized */
+                          0, /* stride */
+                          line_ends);
+
+  cogl_material_set_color (outline, &color);
+  cogl_set_source (outline);
+  cogl_vertex_buffer_draw (vbo, COGL_VERTICES_MODE_LINES,
+                           0 , n_vertices);
+  cogl_object_unref (vbo);
+
+  layout = pango_layout_new (clutter_actor_get_pango_context (self));
+  pango_layout_set_text (layout, G_OBJECT_TYPE_NAME (self), -1);
+  cogl_pango_render_layout (layout,
+                            pv->vertices[0].x,
+                            pv->vertices[0].y,
+                            &color,
+                            0);
+  g_object_unref (layout);
+
+  if (free_fake_pv)
+    clutter_paint_volume_free (&fake_pv);
+}
+
 /**
  * clutter_actor_paint:
  * @self: A #ClutterActor
@@ -2528,6 +2621,9 @@ clutter_actor_paint (ClutterActor *self)
         _clutter_actor_effects_post_paint (self);
       else if (priv->shader_data != NULL)
         clutter_actor_shader_post_paint (self);
+
+      if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES))
+        _clutter_actor_draw_paint_volume (self);
     }
   else
     {
