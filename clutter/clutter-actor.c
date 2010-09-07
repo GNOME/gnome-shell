@@ -642,6 +642,8 @@ static void           clutter_anchor_coord_set_gravity (AnchorCoord    *coord,
 
 static gboolean clutter_anchor_coord_is_zero (const AnchorCoord *coord);
 
+static void _clutter_actor_queue_only_relayout (ClutterActor *self);
+
 static void _clutter_actor_get_relative_modelview (ClutterActor *self,
                                                    ClutterActor *ancestor,
                                                    CoglMatrix *matrix);
@@ -5031,20 +5033,8 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
     clutter_paint_volume_free (pv);
 }
 
-/**
- * clutter_actor_queue_relayout:
- * @self: A #ClutterActor
- *
- * Indicates that the actor's size request or other layout-affecting
- * properties may have changed. This function is used inside #ClutterActor
- * subclass implementations, not by applications directly.
- *
- * Queueing a new layout automatically queues a redraw as well.
- *
- * Since: 0.8
- */
-void
-clutter_actor_queue_relayout (ClutterActor *self)
+static void
+_clutter_actor_queue_only_relayout (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
 
@@ -5068,6 +5058,26 @@ clutter_actor_queue_relayout (ClutterActor *self)
 #endif /* CLUTTER_ENABLE_DEBUG */
 
   g_signal_emit (self, actor_signals[QUEUE_RELAYOUT], 0);
+}
+
+/**
+ * clutter_actor_queue_relayout:
+ * @self: A #ClutterActor
+ *
+ * Indicates that the actor's size request or other layout-affecting
+ * properties may have changed. This function is used inside #ClutterActor
+ * subclass implementations, not by applications directly.
+ *
+ * Queueing a new layout automatically queues a redraw as well.
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_queue_relayout (ClutterActor *self)
+{
+  _clutter_actor_queue_only_relayout (self);
+
+  clutter_actor_queue_redraw (self);
 }
 
 /**
