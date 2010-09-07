@@ -468,6 +468,9 @@ struct _ClutterActorPrivate
   gboolean paint_volume_valid;
   ClutterPaintVolume paint_volume;
 
+  gboolean last_paint_box_valid;
+  ClutterActorBox last_paint_box;
+
   gboolean paint_volume_disabled;
 };
 
@@ -2606,6 +2609,23 @@ clutter_actor_paint (ClutterActor *self)
         {
           priv->paint_volume_disabled = TRUE;
           clutter_actor_queue_redraw (self);
+          priv->last_paint_box_valid = FALSE;
+        }
+
+      if (G_LIKELY (!priv->paint_volume_disabled))
+        {
+          /* We save the current paint box so that the next time the
+           * actor queues a redraw we can constrain the redraw to just
+           * cover the union of the new bounding box and the old.
+           *
+           * XXX: We are starting to do a lot of vertex transforms on
+           * the CPU in a typical paint, so at some point we should
+           * audit these and consider caching some things.
+           */
+          if (clutter_actor_get_paint_box (self, &priv->last_paint_box))
+            priv->last_paint_box_valid = TRUE;
+          else
+            priv->last_paint_box_valid = FALSE;
         }
 
       if (priv->effects != NULL)
@@ -4894,9 +4914,64 @@ clutter_actor_destroy (ClutterActor *self)
 void
 clutter_actor_queue_redraw (ClutterActor *self)
 {
+  ClutterActorPrivate *priv;
+  const ClutterPaintVolume *pv;
+  gboolean clipped;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  priv = self->priv;
+
+  /* Don't clip this redraw if we don't know what position we had for
+   * the previous redraw since we don't know where to set the clip so
+   * it will clear the actor as it is currently. */
+  if (G_LIKELY (priv->last_paint_box_valid))
+    {
+      pv = clutter_actor_get_paint_volume (self);
+      if (pv)
+        {
+          ClutterActor *stage = _clutter_actor_get_stage_internal (self);
+          ClutterPaintVolume stage_pv;
+          _clutter_paint_volume_init_static (stage, &stage_pv);
+          ClutterActorBox *box = &priv->last_paint_box;
+          ClutterVertex origin;
+
+          origin.x = box->x1;
+          origin.y = box->y1;
+          origin.z = 0;
+          clutter_paint_volume_set_origin (&stage_pv, &origin);
+          clutter_paint_volume_set_width (&stage_pv, box->x2 - box->x1);
+          clutter_paint_volume_set_height (&stage_pv, box->y2 - box->y1);
+
+          /* The idea is that if we know the paint volume for where
+           * the actor was last drawn and we also have the paint
+           * volume for where it will be drawn next then if we queue
+           * a redraw for both these regions that will cover
+           * everything that needs to be redrawn to clear the old
+           * view and show the latest view of the actor.
+           */
+          _clutter_actor_queue_redraw_with_clip (stage, 0, &stage_pv);
+
+          clutter_paint_volume_free (&stage_pv);
+          _clutter_actor_set_queue_redraw_clip (self, pv);
+          clipped = TRUE;
+        }
+      else
+        clipped = FALSE;
+    }
+  else
+    clipped = FALSE;
+
   clutter_actor_queue_redraw_with_origin (self, self);
+
+  /* Just in case anyone is manually firing redraw signals without
+   * using the public queue_redraw() API we are careful to ensure that
+   * our out-of-band clip member is cleared before returning...
+   *
+   * Note: A NULL clip denotes a full-stage, un-clipped redraw
+   */
+  if (G_LIKELY (clipped))
+    _clutter_actor_set_queue_redraw_clip (self, NULL);
 }
 
 static void
