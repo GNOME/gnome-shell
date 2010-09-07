@@ -91,6 +91,23 @@ typedef enum {
   CLUTTER_INTERNAL_CHILD = 1 << 6
 } ClutterPrivateFlags;
 
+/*
+ * ClutterRedrawFlags:
+ * @CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION: Tells clutter the maximum
+ *   extents of what needs to be redrawn lies within the actors
+ *   current allocation. (Only use this for 2D actors though because
+ *   any actor with depth may be projected outside of its allocation)
+ *
+ * Flags passed to the clutter_actor_queue_redraw_with_clip ()
+ * function
+ *
+ * Since: 1.6
+ */
+typedef enum
+{
+  CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION  = 1 << 0
+} ClutterRedrawFlags;
+
 struct _ClutterInputDevice
 {
   GObject parent_instance;
@@ -452,10 +469,10 @@ gboolean _clutter_actor_transform_and_project_box (ClutterActor          *self,
 
 void _clutter_actor_queue_redraw_with_clip (ClutterActor          *self,
                                             ClutterRedrawFlags     flags,
-                                            ClutterActorBox       *clip);
-const ClutterActorBox *_clutter_actor_get_queue_redraw_clip (ClutterActor *self);
+                                            ClutterPaintVolume    *clip_volume);
+const ClutterPaintVolume *_clutter_actor_get_queue_redraw_clip (ClutterActor *self);
 void _clutter_actor_set_queue_redraw_clip (ClutterActor *self,
-                                           const ClutterActorBox *clip);
+                                           const ClutterPaintVolume *clip_volume);
 
 void _clutter_run_repaint_functions (void);
 

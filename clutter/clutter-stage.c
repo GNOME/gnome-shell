@@ -729,10 +729,10 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
   ClutterStagePrivate *priv = stage->priv;
   ClutterStageWindow *stage_window;
   ClutterGeometry stage_clip;
-  const ClutterActorBox *clip;
-  ClutterActorBox bounds;
-  ClutterVertex v[4];
-  int i;
+  const ClutterPaintVolume *redraw_clip;
+  ClutterPaintVolume projected_clip;
+  CoglMatrix modelview;
+  ClutterActorBox bounding_box;
 
   CLUTTER_NOTE (PAINT, "Redraw request number %lu",
                 CLUTTER_CONTEXT ()->redraw_count + 1);
@@ -761,47 +761,50 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
 
   /* If the backend can't do anything with redraw clips (e.g. it already knows
    * it needs to redraw everything anyway) then don't spend time transforming
-   * any clip regions into stage coordinates... */
+   * any clip volume into stage coordinates... */
   stage_window = _clutter_stage_get_window (stage);
   if (_clutter_stage_window_ignoring_redraw_clips (stage_window))
     return;
 
-  /* Convert the clip rectangle (which is in leaf actor coordinates) into stage
+  /* Convert the clip volume (which is in leaf actor coordinates) into stage
    * coordinates and then into an axis aligned stage coordinates bounding
    * box...
    */
 
-  clip = _clutter_actor_get_queue_redraw_clip (leaf);
-  if (!clip)
+  if (!_clutter_actor_get_queue_redraw_clip (leaf))
     {
       _clutter_stage_window_add_redraw_clip (stage_window, NULL);
       return;
     }
 
-  _clutter_actor_transform_and_project_box (leaf, clip, v);
+  redraw_clip = _clutter_actor_get_queue_redraw_clip (leaf);
 
-  bounds.x1 = v[0].x; bounds.y1 = v[0].y;
-  bounds.x2 = v[0].x; bounds.y2 = v[0].y;
+  _clutter_paint_volume_copy_static (redraw_clip, &projected_clip);
 
-  for (i = 0; i < 4; i++)
-    {
-      if (v[i].x < bounds.x1)
-        bounds.x1 = v[i].x;
-      else if (v[i].x > bounds.x2)
-        bounds.x2 = v[i].x;
+  /* NB: _clutter_actor_apply_modelview_transform_recursive will never
+   * include the transformation between stage coordinates and OpenGL
+   * window coordinates, we have to explicitly use the
+   * stage->apply_transform to get that... */
+  cogl_matrix_init_identity (&modelview);
+  _clutter_actor_apply_modelview_transform (CLUTTER_ACTOR (stage), &modelview);
+  _clutter_actor_apply_modelview_transform_recursive (leaf, NULL, &modelview);
 
-      if (v[i].y < bounds.y1)
-        bounds.y1 = v[i].y;
-      else if (v[i].y > bounds.y2)
-        bounds.y2 = v[i].y;
-    }
+  _clutter_paint_volume_project (&projected_clip,
+                                 &modelview,
+                                 &priv->projection,
+                                 priv->viewport);
+
+  _clutter_paint_volume_get_bounding_box (&projected_clip, &bounding_box);
+  clutter_paint_volume_free (&projected_clip);
+
+  clutter_actor_box_clamp_to_pixel (&bounding_box);
 
   /* when converting to integer coordinates make sure we round the edges of the
    * clip rectangle outwards... */
-  stage_clip.x = bounds.x1;
-  stage_clip.y = bounds.y1;
-  stage_clip.width = ceilf (bounds.x2) - stage_clip.x;
-  stage_clip.height = ceilf (bounds.y2) - stage_clip.y;
+  stage_clip.x = bounding_box.x1;
+  stage_clip.y = bounding_box.y1;
+  stage_clip.width = bounding_box.x2 - stage_clip.x;
+  stage_clip.height = bounding_box.y2 - stage_clip.y;
 
   _clutter_stage_window_add_redraw_clip (stage_window, &stage_clip);
 }

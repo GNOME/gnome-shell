@@ -317,7 +317,8 @@ clutter_x11_texture_pixmap_real_queue_damage_redraw (
   ClutterActorBox  allocation;
   float            scale_x;
   float            scale_y;
-  ClutterActorBox  clip;
+  ClutterVertex    origin;
+  ClutterPaintVolume clip;
 
   /* NB: clutter_actor_queue_clipped_redraw expects a box in the actor's
    * coordinate space so we need to convert from pixmap coordinates to
@@ -344,14 +345,17 @@ clutter_x11_texture_pixmap_real_queue_damage_redraw (
   scale_x = (allocation.x2 - allocation.x1) / priv->pixmap_width;
   scale_y = (allocation.y2 - allocation.y1) / priv->pixmap_height;
 
-  clip.x1 = x * scale_x;
-  clip.y1 = y * scale_y;
-  clip.x2 =  clip.x1 + width * scale_x;
-  clip.y2 = clip.y1 + height * scale_y;
+  _clutter_paint_volume_init_static (self, &clip);
 
-  _clutter_actor_queue_redraw_with_clip (self,
-                                         CLUTTER_REDRAW_CLIPPED_TO_BOX,
-                                         &clip);
+  origin.x = x * scale_x;
+  origin.y = y * scale_y;
+  origin.z = 0;
+  clutter_paint_volume_set_origin (&clip, &origin);
+  clutter_paint_volume_set_width (&clip, width * scale_x);
+  clutter_paint_volume_set_height (&clip, height * scale_y);
+
+  _clutter_actor_queue_redraw_with_clip (self, 0, &clip);
+  clutter_paint_volume_free (&clip);
 }
 
 static void

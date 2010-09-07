@@ -457,7 +457,7 @@ struct _ClutterActorPrivate
    * of the QUEUE_REDRAW signal. It's an out-of-band argument.
    * See clutter_actor_queue_clipped_redraw() for details.
    */
-  const ClutterActorBox *oob_queue_redraw_clip;
+  const ClutterPaintVolume *oob_queue_redraw_clip;
 
   ClutterMetaGroup *actions;
   ClutterMetaGroup *constraints;
@@ -4907,7 +4907,7 @@ _clutter_actor_get_allocation_clip (ClutterActor *self,
   ClutterActorBox allocation;
 
   /* XXX: we don't care if we get an out of date allocation here
-   * because clutter_actor_queue_redraw_with_origin knows to ignore
+   * because clutter_actor_queue_redraw_with_clip knows to ignore
    * the clip if the actor's allocation is invalid.
    *
    * This is noted because clutter_actor_get_allocation_box does some
@@ -4917,7 +4917,7 @@ _clutter_actor_get_allocation_clip (ClutterActor *self,
    */
   clutter_actor_get_allocation_box (self, &allocation);
 
-  /* NB: clutter_actor_queue_clipped_redraw expects a box in the
+  /* NB: clutter_actor_queue_redraw_with_clip expects a box in the
    * actor's own coordinate space but the allocation is in parent
    * coordinates */
   clip->x1 = 0;
@@ -4931,7 +4931,7 @@ _clutter_actor_get_allocation_clip (ClutterActor *self,
  * @self: A #ClutterActor
  * @flags: A mask of #ClutterRedrawFlags controlling the behaviour of
  *   this queue redraw.
- * @clip: A #ClutterActorBox describing the bounds of what needs to be
+ * @volume: A #ClutterPaintVolume describing the bounds of what needs to be
  *   redrawn or %NULL if you are just using a @flag to state your
  *   desired clipping.
  *
@@ -4939,21 +4939,16 @@ _clutter_actor_get_allocation_clip (ClutterActor *self,
  * occurs once the main loop becomes idle (after the current batch of
  * events has been processed, roughly).
  *
- * If the %CLUTTER_REDRAW_CLIPPED_TO_BOX @flag is used, the clip box is
+ * If no flags are given the clip volume is defined by @volume
  * specified in actor coordinates and tells Clutter that only content
- * within this box has been changed so Clutter can optionally optimize
- * the redraw.
+ * within this volume has been changed so Clutter can optionally
+ * optimize the redraw.
  *
- * If you are queuing a clipped redraw it is assumed that the actor is
- * flat, and once the clip rectangle is projected into stage
- * coordinates it will cover the area of the stage that needs to be
- * redrawn. This is not possible to determine for 3D actors since the
- * projection of such actors may escape the clip rectangle.
- *
- * If the %CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION @flag is used, @clip
- * should be NULL and this tells Clutter to use the actors current
- * allocation as a clip box. As above this flag can only be used for
- * 2D actors.
+ * If the %CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION @flag is used, @volume
+ * should be %NULL and this tells Clutter to use the actor's current
+ * allocation as a clip box. This flag can only be used for 2D actors,
+ * because any actor with depth may be projected outside its
+ * allocation.
  *
  * Applications rarely need to call this, as redraws are handled
  * automatically by modification functions.
@@ -4963,16 +4958,25 @@ _clutter_actor_get_allocation_clip (ClutterActor *self,
  *
  * Also be aware that painting is a NOP for actors with an opacity of
  * 0
+ *
+ * When you are implementing a custom actor you must queue a redraw
+ * whenever some private state changes that will affect painting or
+ * picking of your actor.
  */
 void
 _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
                                        ClutterRedrawFlags  flags,
-                                       ClutterActorBox    *clip)
+                                       ClutterPaintVolume *volume)
 {
-  ClutterActorBox allocation_clip;
+  ClutterPaintVolume allocation_pv;
+  ClutterPaintVolume *pv;
+  gboolean should_free_pv;
 
   /* If the actor doesn't have a valid allocation then we will queue a
-   * full stage redraw */
+   * full stage redraw.
+   *
+   * XXX: Is this check redundant? Or should it maybe only be done
+   * when flags & CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION? */
   if (self->priv->needs_allocation)
     {
       clutter_actor_queue_redraw (self);
@@ -4981,16 +4985,37 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
 
   if (flags & CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION)
     {
+      ClutterActorBox allocation_clip;
+      ClutterVertex origin;
+
+      _clutter_paint_volume_init_static (self, &allocation_pv);
+      pv = &allocation_pv;
+
       _clutter_actor_get_allocation_clip (self, &allocation_clip);
-      clip = &allocation_clip;
+
+      origin.x = allocation_clip.x1;
+      origin.y = allocation_clip.y1;
+      origin.z = 0;
+      clutter_paint_volume_set_origin (pv, &origin);
+      clutter_paint_volume_set_width (pv,
+                                      allocation_clip.x2 - allocation_clip.x1);
+      clutter_paint_volume_set_height (pv,
+                                       allocation_clip.y2 -
+                                       allocation_clip.y1);
+      should_free_pv = TRUE;
+    }
+  else
+    {
+      pv = volume;
+      should_free_pv = FALSE;
     }
 
-  /* XXX: Ideally the redraw signal would take a clip rectangle
+  /* XXX: Ideally the redraw signal would take a clip volume
    * argument, but that would be an ABI break. Until we can break the
    * ABI we pass the argument out-of-band via an actor->priv member...
    */
 
-  _clutter_actor_set_queue_redraw_clip (self, clip);
+  _clutter_actor_set_queue_redraw_clip (self, pv);
 
   clutter_actor_queue_redraw_with_origin (self, self);
 
@@ -5001,6 +5026,9 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
    * Note: A NULL clip denotes a full-stage, un-clipped redraw
    */
   _clutter_actor_set_queue_redraw_clip (self, NULL);
+
+  if (should_free_pv)
+    clutter_paint_volume_free (pv);
 }
 
 /**
@@ -10895,7 +10923,7 @@ clutter_actor_has_pointer (ClutterActor *self)
  * the QUEUE_REDRAW signal. It is an out-of-band argument.  See
  * clutter_actor_queue_clipped_redraw() for details.
  */
-const ClutterActorBox *
+const ClutterPaintVolume *
 _clutter_actor_get_queue_redraw_clip (ClutterActor *self)
 {
   return self->priv->oob_queue_redraw_clip;
@@ -10903,7 +10931,7 @@ _clutter_actor_get_queue_redraw_clip (ClutterActor *self)
 
 void
 _clutter_actor_set_queue_redraw_clip (ClutterActor *self,
-                                      const ClutterActorBox *clip)
+                                      const ClutterPaintVolume *clip)
 {
   self->priv->oob_queue_redraw_clip = clip;
 }
