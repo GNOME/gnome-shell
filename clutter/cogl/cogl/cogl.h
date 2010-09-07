@@ -290,32 +290,6 @@ cogl_ortho (float left,
             float near,
             float far);
 
-/*
- * _cogl_setup_viewport:
- * @width: Width of the viewport
- * @height: Height of the viewport
- * @fovy: Field of view angle in degrees
- * @aspect: Aspect ratio to determine the field of view along the x-axis
- * @z_near: Nearest visible point along the z-axis
- * @z_far: Furthest visible point along the z-axis
- *
- * Replaces the current viewport and projection matrix with the given
- * values. The viewport is placed at the top left corner of the window
- * with the given width and height. The projection matrix is replaced
- * with one that has a viewing angle of @fovy along the y-axis and a
- * view scaled according to @aspect along the x-axis. The view is
- * clipped according to @z_near and @z_far on the z-axis.
- *
- * This function is used only by Clutter.
- */
-void
-_cogl_setup_viewport (unsigned int width,
-                      unsigned int height,
-                      float fovy,
-                      float aspect,
-                      float z_near,
-                      float z_far);
-
 #ifndef COGL_DISABLE_DEPRECATED
 
 /**
