@@ -1093,14 +1093,15 @@ AM_CONDITIONAL(ENABLE_PDFS, [test "x$enable_pdfs" = "xyes"])
 
 dnl === I18N ==================================================================
 
+AM_GNU_GETTEXT_VERSION([0.17])
+AM_GNU_GETTEXT([external])
+
 GETTEXT_PACKAGE="clutter-$CLUTTER_API_VERSION"
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,
                    "$GETTEXT_PACKAGE",
                    [The prefix for our gettext translation domains.])
 AS_ALL_LINGUAS
-AM_GLIB_GNU_GETTEXT
-GLIB_DEFINE_LOCALEDIR(CLUTTER_LOCALEDIR)
 
 dnl ===========================================================================
 
