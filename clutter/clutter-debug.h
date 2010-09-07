@@ -36,7 +36,8 @@ typedef enum {
   CLUTTER_DEBUG_DISABLE_SWAP_EVENTS     = 1 << 0,
   CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS = 1 << 1,
   CLUTTER_DEBUG_REDRAWS                 = 1 << 2,
-  CLUTTER_DEBUG_PAINT_VOLUMES           = 1 << 3
+  CLUTTER_DEBUG_PAINT_VOLUMES           = 1 << 3,
+  CLUTTER_DEBUG_DISABLE_CULLING         = 1 << 4
 } ClutterDrawDebugFlag;
 
 #ifdef CLUTTER_ENABLE_DEBUG

@@ -181,6 +181,7 @@ static const GDebugKey clutter_paint_debug_keys[] = {
   { "disable-clipped-redraws", CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS },
   { "redraws", CLUTTER_DEBUG_REDRAWS },
   { "paint-volumes", CLUTTER_DEBUG_PAINT_VOLUMES },
+  { "disable-culling", CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS }
 };
 
 #ifdef CLUTTER_ENABLE_PROFILE
@@ -622,7 +623,7 @@ _clutter_do_pick (ClutterStage   *stage,
   */
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_paint);
   context->pick_mode = mode;
-  _clutter_stage_do_paint (stage);
+  _clutter_stage_do_paint (stage, NULL);
   context->pick_mode = CLUTTER_PICK_NONE;
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_paint);
 

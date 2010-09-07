@@ -120,6 +120,8 @@ struct _ClutterStagePrivate
 
   GArray             *paint_volume_stack;
 
+  const ClutterGeometry *current_paint_clip;
+
   guint relayout_pending       : 1;
   guint redraw_pending         : 1;
   guint is_fullscreen          : 1;
@@ -314,12 +316,20 @@ clutter_stage_allocate (ClutterActor           *self,
 
 /* This provides a common point of entry for painting the scenegraph
  * for picking or painting...
+ *
+ * XXX: Instead of having a toplevel 2D clip region, it might be
+ * better to have a clip volume within the view frustum. This could
+ * allow us to avoid projecting actors into window coordinates to
+ * be able to cull them.
  */
 void
-_clutter_stage_do_paint (ClutterStage *stage)
+_clutter_stage_do_paint (ClutterStage *stage, const ClutterGeometry *clip)
 {
+  ClutterStagePrivate *priv = stage->priv;
+  priv->current_paint_clip = clip;
   _clutter_stage_paint_volume_stack_free_all (stage);
   clutter_actor_paint (CLUTTER_ACTOR (stage));
+  priv->current_paint_clip = NULL;
 }
 
 static void
@@ -3098,5 +3108,13 @@ _clutter_stage_paint_volume_stack_free_all (ClutterStage *stage)
     }
 
   g_array_set_size (paint_volume_stack, 0);
+}
+
+/* The is an out-of-band paramater available while painting that
+ * can be used to cull actors. */
+const ClutterGeometry *
+_clutter_stage_get_clip (ClutterStage *stage)
+{
+  return stage->priv->current_paint_clip;
 }
 

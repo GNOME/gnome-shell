@@ -359,7 +359,7 @@ _clutter_stage_egl_redraw (ClutterStageEGL *stage_egl,
   egl_surface = backend_egl->egl_surface;
 #endif
 
-  _clutter_stage_do_paint (CLUTTER_STAGE (wrapper));
+  _clutter_stage_do_paint (CLUTTER_STAGE (wrapper), NULL);
   cogl_flush ();
 
   eglSwapBuffers (backend_egl->edpy, egl_surface);

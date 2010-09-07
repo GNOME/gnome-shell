@@ -329,7 +329,8 @@ void _clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manage
                                                ClutterStage        *stage);
 
 /* stage */
-void                _clutter_stage_do_paint             (ClutterStage *stage);
+void                _clutter_stage_do_paint             (ClutterStage *stage,
+                                                         const ClutterGeometry *clip);
 void                _clutter_stage_set_window           (ClutterStage       *stage,
                                                          ClutterStageWindow *stage_window);
 ClutterStageWindow *_clutter_stage_get_window           (ClutterStage       *stage);
@@ -376,6 +377,9 @@ guint    _clutter_stage_get_picks_per_frame_counter       (ClutterStage *stage);
 
 ClutterPaintVolume *_clutter_stage_paint_volume_stack_allocate (ClutterStage *stage);
 void                _clutter_stage_paint_volume_stack_free_all (ClutterStage *stage);
+
+const ClutterGeometry *_clutter_stage_get_clip (ClutterStage *stage);
+
 
 /* vfuncs implemented by backend */
 GType         _clutter_backend_impl_get_type  (void);

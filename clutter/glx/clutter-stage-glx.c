@@ -544,11 +544,11 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
                                        stage_glx->bounding_redraw_clip.y,
                                        stage_glx->bounding_redraw_clip.width,
                                        stage_glx->bounding_redraw_clip.height);
-      _clutter_stage_do_paint (stage);
+      _clutter_stage_do_paint (stage, &stage_glx->bounding_redraw_clip);
       cogl_clip_pop ();
     }
   else
-    _clutter_stage_do_paint (stage);
+    _clutter_stage_do_paint (stage, NULL);
 
   if (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS &&
       may_use_clipped_redraw)

@@ -2478,6 +2478,38 @@ _clutter_actor_draw_paint_volume (ClutterActor *self)
     clutter_paint_volume_free (&fake_pv);
 }
 
+/* Returns TRUE if the actor can be ignored */
+static gboolean
+cull_actor (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
+  ClutterActor *stage;
+  const ClutterGeometry *stage_clip;
+  ClutterActorBox *box;
+  ClutterGeometry paint_geom;
+
+  if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_DISABLE_CULLING))
+    return FALSE;
+
+  stage = _clutter_actor_get_stage_internal (self);
+  stage_clip = _clutter_stage_get_clip (CLUTTER_STAGE (stage));
+  if (G_UNLIKELY (!stage_clip))
+    return FALSE;
+
+  /* XXX: It might be better if _get_paint_box returned a
+   * ClutterGeometry instead. */
+  box = &priv->last_paint_box;
+  paint_geom.x = box->x1;
+  paint_geom.y = box->y1;
+  paint_geom.width = box->x2 - box->x1;
+  paint_geom.height = box->y2 - box->y1;
+
+  if (!clutter_geometry_intersects (stage_clip, &paint_geom))
+    return TRUE;
+  else
+    return FALSE;
+}
+
 /**
  * clutter_actor_paint:
  * @self: A #ClutterActor
@@ -2621,9 +2653,27 @@ clutter_actor_paint (ClutterActor *self)
            * XXX: We are starting to do a lot of vertex transforms on
            * the CPU in a typical paint, so at some point we should
            * audit these and consider caching some things.
+           *
+           * XXX: We should consider doing all our culling in the
+           * stage's model space using PaintVolumes so we don't have
+           * to project actor paint volumes all the way into window
+           * coordinates!
+           *   XXX: To do this we also need a way to store an
+           *   "absolute paint volume" in some way. Currently the
+           *   paint volumes are defined relative to a referenced
+           *   actor's coordinates, but we'd need to be able to cache
+           *   the last paint volume used with the actor's *current*
+           *   modelview and either with a specific projection matrix
+           *   or we'd need to be able to invalidate paint-volumes on
+           *   projection changes.
            */
           if (clutter_actor_get_paint_box (self, &priv->last_paint_box))
-            priv->last_paint_box_valid = TRUE;
+            {
+              priv->last_paint_box_valid = TRUE;
+
+              if (cull_actor (self))
+                goto done;
+            }
           else
             priv->last_paint_box_valid = FALSE;
         }
@@ -2659,6 +2709,7 @@ clutter_actor_paint (ClutterActor *self)
       g_signal_emit (self, actor_signals[PICK], 0, &col);
     }
 
+done:
   if (clip_set)
     cogl_clip_pop();
 
