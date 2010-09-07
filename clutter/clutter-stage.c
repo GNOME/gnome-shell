@@ -118,6 +118,8 @@ struct _ClutterStagePrivate
 
   gint                picks_per_frame;
 
+  GArray             *paint_volume_stack;
+
   guint redraw_pending         : 1;
   guint is_fullscreen          : 1;
   guint is_cursor_visible      : 1;
@@ -307,6 +309,16 @@ clutter_stage_allocate (ClutterActor           *self,
    * since it may bail-out early if something preemptively set the
    * viewport before the stage was really allocated its new size. */
   clutter_actor_queue_redraw (self);
+}
+
+/* This provides a common point of entry for painting the scenegraph
+ * for picking or painting...
+ */
+void
+_clutter_stage_do_paint (ClutterStage *stage)
+{
+  _clutter_stage_paint_volume_stack_free_all (stage);
+  clutter_actor_paint (CLUTTER_ACTOR (stage));
 }
 
 static void
@@ -1071,6 +1083,8 @@ clutter_stage_finalize (GObject *object)
 
   g_free (stage->priv->title);
 
+  g_array_free (priv->paint_volume_stack, TRUE);
+
   G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
 }
 
@@ -1468,6 +1482,9 @@ clutter_stage_init (ClutterStage *self)
 
   _clutter_stage_set_pick_buffer_valid (self, FALSE);
   _clutter_stage_reset_picks_per_frame_counter (self);
+
+  priv->paint_volume_stack =
+    g_array_new (FALSE, FALSE, sizeof (ClutterPaintVolume));
 }
 
 /**
@@ -2986,3 +3003,33 @@ _clutter_stage_get_picks_per_frame_counter (ClutterStage *stage)
 
   return stage->priv->picks_per_frame;
 }
+
+ClutterPaintVolume *
+_clutter_stage_paint_volume_stack_allocate (ClutterStage *stage)
+{
+  GArray *paint_volume_stack = stage->priv->paint_volume_stack;
+
+  g_array_set_size (paint_volume_stack,
+                    paint_volume_stack->len+1);
+
+  return &g_array_index (paint_volume_stack,
+                         ClutterPaintVolume,
+                         paint_volume_stack->len - 1);
+}
+
+void
+_clutter_stage_paint_volume_stack_free_all (ClutterStage *stage)
+{
+  GArray *paint_volume_stack = stage->priv->paint_volume_stack;
+  int i;
+
+  for (i = 0; i < paint_volume_stack->len; i++)
+    {
+      ClutterPaintVolume *pv =
+        &g_array_index (paint_volume_stack, ClutterPaintVolume, i);
+      clutter_paint_volume_free (pv);
+    }
+
+  g_array_set_size (paint_volume_stack, 0);
+}
+

@@ -255,7 +255,7 @@ out:
   parent->paint_target (effect);
 }
 
-static void
+static gboolean
 clutter_blur_effect_get_paint_volume (ClutterEffect      *effect,
                                       ClutterPaintVolume *volume)
 {
@@ -273,6 +273,8 @@ clutter_blur_effect_get_paint_volume (ClutterEffect      *effect,
   clutter_paint_volume_set_origin (volume, &origin);
   clutter_paint_volume_set_width (volume, cur_width);
   clutter_paint_volume_set_height (volume, cur_height);
+
+  return TRUE;
 }
 
 static void

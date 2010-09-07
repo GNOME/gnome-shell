@@ -416,8 +416,46 @@ set_viewport_with_buffer_under_fbo_source (ClutterActor *fbo_source,
   ClutterActorBox box = { 0, };
   float x_offset, y_offset;
 
-  clutter_actor_get_paint_box (fbo_source, &box);
-  clutter_actor_box_get_origin (&box, &x_offset, &y_offset);
+  if (clutter_actor_get_paint_box (fbo_source, &box))
+    clutter_actor_box_get_origin (&box, &x_offset, &y_offset);
+  else
+    {
+      /* As a fallback when the paint box can't be determined we use
+       * the transformed allocation to come up with an offset instead.
+       *
+       * FIXME: when we don't have a paint box we should instead be
+       * falling back to a stage sized fbo with an offset of (0,0)
+       */
+
+      ClutterVertex verts[4];
+      float x_min = G_MAXFLOAT, y_min = G_MAXFLOAT;
+      int i;
+
+      /* Get the actors allocation transformed into screen coordinates.
+       *
+       * XXX: Note: this may not be a bounding box for the actor, since an
+       * actor with depth may escape the box due to its perspective
+       * projection. */
+      clutter_actor_get_abs_allocation_vertices (fbo_source, verts);
+
+      for (i = 0; i < G_N_ELEMENTS (verts); ++i)
+        {
+          if (verts[i].x < x_min)
+           x_min = verts[i].x;
+          if (verts[i].y < y_min)
+           y_min = verts[i].y;
+        }
+
+      /* XXX: It's not good enough to round by simply truncating the fraction here
+       * via a cast, as it results in offscreen rendering being offset by 1 pixel
+       * in many cases... */
+#define ROUND(x) ((x) >= 0 ? (long)((x) + 0.5) : (long)((x) - 0.5))
+
+      x_offset = ROUND (x_min);
+      y_offset = ROUND (y_min);
+
+#undef ROUND
+    }
 
   /* translate the viewport so that the source actor lands on the
    * sub-region backed by the offscreen framebuffer... */
@@ -432,7 +470,7 @@ update_fbo (ClutterActor *self)
   ClutterMainContext    *context;
   ClutterShader         *shader = NULL;
   ClutterActor          *stage = NULL;
-  ClutterPerspective     perspective;
+  CoglMatrix             projection;
   CoglColor              transparent_col;
 
   context = _clutter_context_get_default ();
@@ -466,24 +504,21 @@ update_fbo (ClutterActor *self)
        * under the actor.
        */
 
-      clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
+      _clutter_stage_get_projection_matrix (CLUTTER_STAGE (stage), &projection);
+
+      /* Set the projection matrix modelview matrix as it is for the
+       * stage... */
+      cogl_set_projection_matrix (&projection);
+
       clutter_actor_get_size (stage, &stage_width, &stage_height);
 
-      /* Set the projection matrix modelview matrix and viewport size as
-       * they are for the stage... */
-      _cogl_setup_viewport (stage_width, stage_height,
-                            perspective.fovy,
-                            perspective.aspect,
-                            perspective.z_near,
-                            perspective.z_far);
-
-      /* Negatively offset the viewport so that the offscreen framebuffer is
-       * position underneath the fbo_source actor... */
+      /* Set a negatively offset the viewport so that the offscreen
+       * framebuffer is position underneath the fbo_source actor... */
       set_viewport_with_buffer_under_fbo_source (priv->fbo_source,
                                                  stage_width,
                                                  stage_height);
 
-      /* Reapply the source's parent transformations */
+      /* Apply the source's parent transformations to the modelview */
       if ((source_parent = clutter_actor_get_parent (priv->fbo_source)))
         {
           CoglMatrix modelview;
@@ -2315,9 +2350,26 @@ on_fbo_source_size_change (GObject          *object,
   ClutterTexturePrivate *priv = texture->priv;
   gfloat w, h;
   ClutterActorBox box;
+  gboolean status;
 
-  clutter_actor_get_paint_box (priv->fbo_source, &box);
-  clutter_actor_box_get_size (&box, &w, &h);
+  status = clutter_actor_get_paint_box (priv->fbo_source, &box);
+  if (status)
+    clutter_actor_box_get_size (&box, &w, &h);
+
+  /* In the end we will size the framebuffer according to the paint
+   * box, but for code that does:
+   *   tex = clutter_texture_new_from_actor (src);
+   *   clutter_actor_get_size (tex, &width, &height);
+   * it seems more helpfull to return the src actor size if it has a
+   * degenerate paint box. The most likely reason it will have a
+   * degenerate paint box is simply that the src currently has no
+   * parent. */
+  if (status == FALSE || w == 0 || h == 0)
+    clutter_actor_get_size (priv->fbo_source, &w, &h);
+
+  /* We can't create a texture with a width or height of 0... */
+  w = MAX (1, w);
+  h = MAX (1, h);
 
   if (w != priv->image_width || h != priv->image_height)
     {
@@ -2458,6 +2510,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
   ClutterTexturePrivate *priv;
   gfloat w, h;
   ClutterActorBox box;
+  gboolean status;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
 
@@ -2472,13 +2525,25 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 	return NULL;
     }
 
-  clutter_actor_get_paint_box (actor, &box);
-  clutter_actor_box_get_size (&box, &w, &h);
+  status = clutter_actor_get_paint_box (actor, &box);
+  if (status)
+    clutter_actor_box_get_size (&box, &w, &h);
+
+  /* In the end we will size the framebuffer according to the paint
+   * box, but for code that does:
+   *   tex = clutter_texture_new_from_actor (src);
+   *   clutter_actor_get_size (tex, &width, &height);
+   * it seems more helpfull to return the src actor size if it has a
+   * degenerate paint box. The most likely reason it will have a
+   * degenerate paint box is simply that the src currently has no
+   * parent. */
+  if (status == FALSE || w == 0 || h == 0)
+    clutter_actor_get_size (actor, &w, &h);
 
   /* We can't create a 0x0 fbo so always bump the size up to at least
    * 1 */
-  w = MAX(1,w);
-  h = MAX(1,h);
+  w = MAX (1, w);
+  h = MAX (1, h);
 
   /* Hopefully now were good.. */
   texture = g_object_new (CLUTTER_TYPE_TEXTURE,

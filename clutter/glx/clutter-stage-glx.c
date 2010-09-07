@@ -532,11 +532,11 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
                                        stage_glx->bounding_redraw_clip.y,
                                        stage_glx->bounding_redraw_clip.width,
                                        stage_glx->bounding_redraw_clip.height);
-      clutter_actor_paint (CLUTTER_ACTOR (stage));
+      _clutter_stage_do_paint (stage);
       cogl_clip_pop ();
     }
   else
-    clutter_actor_paint (CLUTTER_ACTOR (stage));
+    _clutter_stage_do_paint (stage);
 
   cogl_flush ();
   CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);

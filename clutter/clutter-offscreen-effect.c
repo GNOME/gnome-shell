@@ -130,11 +130,10 @@ clutter_offscreen_effect_real_create_texture (ClutterOffscreenEffect *effect,
 }
 
 static gboolean
-update_fbo (ClutterEffect *effect)
+update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
 {
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
   ClutterOffscreenEffectPrivate *priv = self->priv;
-  gfloat width, height;
   CoglHandle texture;
 
   priv->stage = clutter_actor_get_stage (priv->actor);
@@ -147,21 +146,8 @@ update_fbo (ClutterEffect *effect)
       return FALSE;
     }
 
-  /* the target should at least be big enough to contain the
-   * transformed allocation of the actor
-   *
-   * FIXME - this is actually not enough: we need the paint area
-   * to make this work reliably
-   */
-  {
-    ClutterActorBox box = { 0, };
-
-    clutter_actor_get_paint_box (priv->actor, &box);
-    clutter_actor_box_get_size (&box, &width, &height);
-  }
-
-  if (priv->target_width == width &&
-      priv->target_height == height)
+  if (priv->target_width == fbo_width &&
+      priv->target_height == fbo_height)
     return TRUE;
 
   if (priv->target != COGL_INVALID_HANDLE)
@@ -172,7 +158,8 @@ update_fbo (ClutterEffect *effect)
 
   priv->target = cogl_material_new ();
 
-  texture = clutter_offscreen_effect_create_texture (self, width, height);
+  texture =
+    clutter_offscreen_effect_create_texture (self, fbo_width, fbo_height);
   if (texture == COGL_INVALID_HANDLE)
      return FALSE;
 
@@ -203,49 +190,16 @@ update_fbo (ClutterEffect *effect)
   return TRUE;
 }
 
-static void
-get_screen_offsets (ClutterActor *actor,
-                    gfloat       *x_offset,
-                    gfloat       *y_offset)
-{
-  gfloat v[4] = { 0, };
-
-  if (CLUTTER_ACTOR_IS_TOPLEVEL (actor))
-    {
-      /* trivial optimization: a top-level actor is always going to
-       * have a (0, 0) offset
-       */
-      *x_offset = 0.0f;
-      *y_offset = 0.0f;
-    }
-  else
-    {
-      ClutterActorBox box = { 0, };
-
-      clutter_actor_get_paint_box (actor, &box);
-      clutter_actor_box_get_origin (&box, x_offset, y_offset);
-    }
-
-  /* since we're setting up a viewport with a negative offset to paint
-   * in an FBO with the same modelview and projection matrices as the
-   * stage, we need to offset the computed absolute allocation vertices
-   * with the current viewport's X and Y offsets. this works even with
-   * the default case where the viewport is set up by Clutter to be
-   * (0, 0, stage_width, stage_height)
-   */
-  cogl_get_viewport (v);
-  *x_offset -= v[0];
-  *y_offset -= v[1];
-}
-
 static gboolean
 clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
 {
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
   ClutterOffscreenEffectPrivate *priv = self->priv;
+  ClutterActorBox box;
   CoglMatrix projection;
   CoglColor transparent;
   CoglMatrix modelview;
+  gfloat fbo_width, fbo_height;
   gfloat width, height;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
@@ -254,7 +208,22 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   if (priv->actor == NULL)
     return FALSE;
 
-  if (!update_fbo (effect))
+  /* The paint box is the bounding box of the actor's paint volume in
+   * stage coordinates. This will give us the size for the framebuffer
+   * we need to redirect its rendering offscreen and its position will
+   * be used to setup an offset viewport */
+  if (clutter_actor_get_paint_box (priv->actor, &box))
+    clutter_actor_box_get_size (&box, &fbo_width, &fbo_height);
+  else
+    {
+      /* If we can't get a valid paint box then we fallback to
+       * creating a full stage size fbo. */
+      ClutterActor *stage = _clutter_actor_get_stage_internal (priv->actor);
+      clutter_actor_get_size (stage, &fbo_width, &fbo_height);
+    }
+
+  /* First assert that the framebuffer is the right size... */
+  if (!update_fbo (effect, fbo_width, fbo_height))
     return FALSE;
 
   /* get the current modelview matrix so that we can copy it
@@ -265,12 +234,11 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   /* let's draw offscreen */
   cogl_push_framebuffer (priv->offscreen);
 
-  /* set up the viewport so that it has the same size of the stage,
-   * and it has its origin at the same position of the stage's; also
-   * set up the perspective to be the same as the stage's
-   */
+  /* Set up the viewport so that it has the same size as the stage,
+   * but offset it so that the actor of interest lands on our
+   * framebuffer. */
   clutter_actor_get_size (priv->stage, &width, &height);
-  get_screen_offsets (priv->actor, &priv->x_offset, &priv->y_offset);
+  clutter_actor_box_get_origin (&box, &priv->x_offset, &priv->y_offset);
   cogl_set_viewport (-priv->x_offset, -priv->y_offset, width, height);
 
   /* Copy the stage's projection matrix across to the framebuffer */
@@ -306,10 +274,10 @@ clutter_offscreen_effect_real_paint_target (ClutterOffscreenEffect *effect)
                               paint_opacity);
   cogl_set_source (priv->target);
 
-  /* paint the texture at the same position as the actor would be,
-   * in Stage coordinates, since we set up the modelview matrix to
-   * be exactly as the stage sets it up, plus the eventual offsets
-   * due to offscreen effects stacking
+  /* At this point we are in stage coordinates translated so if
+   * we draw our texture using a textured quad the size of the paint
+   * box then we will overlay where the actor would have drawn if it
+   * hadn't been redirected offscreen.
    */
   cogl_rectangle_with_texture_coords (0, 0,
                                       priv->target_width,

@@ -147,7 +147,7 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
 - (void) drawRect: (NSRect) bounds
 {
-  clutter_actor_paint (CLUTTER_ACTOR (self->stage_osx->wrapper));
+  _clutter_stage_do_paint (CLUTTER_STAGE (self->stage_osx->wrapper));
   cogl_flush ();
   [[self openGLContext] flushBuffer];
 }

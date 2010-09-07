@@ -91,6 +91,22 @@ typedef struct _ClutterActorBox         ClutterActorBox;
 typedef struct _ClutterGeometry         ClutterGeometry;
 typedef struct _ClutterKnot             ClutterKnot;
 typedef struct _ClutterVertex           ClutterVertex;
+
+/**
+ * ClutterPaintVolume:
+ *
+ * <structname>ClutterPaintVolume</structname> is an opaque structure
+ * whose members cannot be directly accessed.
+ *
+ * A <structname>ClutterPaintVolume</structname> represents an
+ * a bounding volume whos internal representation isn't defined but
+ * can be set and queried in terms of an axis aligned bounding box.
+ *
+ * Other internal representation and methods for describing the
+ * bounding volume may be added in the future.
+ *
+ * Since: 1.4
+ */
 typedef struct _ClutterPaintVolume      ClutterPaintVolume;
 
 /**
@@ -456,6 +472,8 @@ gfloat              clutter_paint_volume_get_height (const ClutterPaintVolume *p
 void                clutter_paint_volume_set_depth  (ClutterPaintVolume       *pv,
                                                      gfloat                    depth);
 gfloat              clutter_paint_volume_get_depth  (const ClutterPaintVolume *pv);
+void                clutter_paint_volume_union      (ClutterPaintVolume       *pv,
+                                                     const ClutterPaintVolume       *another_pv);
 
 G_END_DECLS
 

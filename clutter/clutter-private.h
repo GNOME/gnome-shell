@@ -185,6 +185,79 @@ struct _ClutterMainContext
   ClutterSettings *settings;
 };
 
+struct _ClutterPaintVolume
+{
+  ClutterActor *actor;
+
+  /* cuboid for the volume:
+   *
+   *       4━━━━━━━┓5
+   *    ┏━━━━━━━━┓╱┃
+   *    ┃0 ┊7   1┃ ┃
+   *    ┃   ┄┄┄┄┄┃┄┃6
+   *    ┃3      2┃╱
+   *    ┗━━━━━━━━┛
+   *
+   *   0: top, left (origin)  : always valid
+   *   1: top, right          : always valid
+   *   2: bottom, right       :  updated lazily
+   *   3: bottom, left        : always valid
+   *
+   *   4: top, left, back     : always valid
+   *   5: top, right, back    :  updated lazily
+   *   6: bottom, right, back :  updated lazily
+   *   7: bottom, left, back  :  updated lazily
+   *
+   * Elements 0, 1, 3 and 4 are filled in by the PaintVolume setters
+   *
+   * Note: the reason for this ordering is that we can simply ignore
+   * elements 4, 5, 6 and 7 most of the time for 2D actors when
+   * calculating the projected paint box.
+   */
+  ClutterVertex vertices[8];
+
+  /* As an optimization for internally managed PaintVolumes we allow
+   * initializing ClutterPaintVolume variables allocated on the stack
+   * so we can avoid hammering the slice allocator. */
+  guint is_static:1;
+
+  /* A newly initialized PaintVolume is considered empty as it is
+   * degenerate on all three axis.
+   *
+   * We consider this carefully when we union an empty volume with
+   * another so that the union simply results in a copy of the other
+   * volume instead of also bounding the origin of the empty volume.
+   *
+   * For example this is a convenient property when calculating the
+   * volume of a container as the union of the volume of its children
+   * where the initial volume passed to the containers
+   * ->get_paint_volume method will be empty. */
+  guint is_empty:1;
+
+  /* TRUE when we've updated the values we calculate lazily */
+  guint is_complete:1;
+
+  /* TRUE if vertices 4-7 can be ignored. (Only valid if complete is
+   * TRUE) */
+  guint is_2d:1;
+
+  /* Set to TRUE initialy but cleared if the paint volume is
+   * transfomed by a matrix. */
+  guint is_axis_aligned:1;
+
+
+  /* Note: There is a precedence to the above bitfields that should be
+   * considered whenever we implement code that manipulates
+   * PaintVolumes...
+   *
+   * Firstly if ->is_empty == TRUE then the values for ->is_complete
+   * and ->is_2d are undefined, so you should typically check
+   * ->is_empty as the first priority.
+   *
+   * XXX: document other invariables...
+   */
+};
+
 #define CLUTTER_CONTEXT()	(_clutter_context_get_default ())
 ClutterMainContext *_clutter_context_get_default (void);
 gboolean            _clutter_context_is_initialized (void);
@@ -239,6 +312,7 @@ void _clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manage
                                                ClutterStage        *stage);
 
 /* stage */
+void                _clutter_stage_do_paint             (ClutterStage *stage);
 void                _clutter_stage_set_window           (ClutterStage       *stage,
                                                          ClutterStageWindow *stage_window);
 ClutterStageWindow *_clutter_stage_get_window           (ClutterStage       *stage);
@@ -282,6 +356,9 @@ gboolean _clutter_stage_get_pick_buffer_valid             (ClutterStage *stage);
 void     _clutter_stage_increment_picks_per_frame_counter (ClutterStage *stage);
 void     _clutter_stage_reset_picks_per_frame_counter     (ClutterStage *stage);
 guint    _clutter_stage_get_picks_per_frame_counter       (ClutterStage *stage);
+
+ClutterPaintVolume *_clutter_stage_paint_volume_stack_allocate (ClutterStage *stage);
+void                _clutter_stage_paint_volume_stack_free_all (ClutterStage *stage);
 
 /* vfuncs implemented by backend */
 GType         _clutter_backend_impl_get_type  (void);
@@ -386,7 +463,7 @@ gint32 _clutter_backend_get_units_serial (ClutterBackend *backend);
 
 gboolean _clutter_effect_pre_paint        (ClutterEffect      *effect);
 void     _clutter_effect_post_paint       (ClutterEffect      *effect);
-void     _clutter_effect_get_paint_volume (ClutterEffect      *effect,
+gboolean _clutter_effect_get_paint_volume (ClutterEffect      *effect,
                                            ClutterPaintVolume *volume);
 
 void _clutter_constraint_update_allocation (ClutterConstraint *constraint,
@@ -411,9 +488,18 @@ gpointer _clutter_event_get_platform_data (const ClutterEvent *event);
 
 #endif
 
-ClutterPaintVolume *_clutter_paint_volume_new     (ClutterActor       *actor);
-void                _clutter_paint_volume_get_box (ClutterPaintVolume *pv,
-                                                   ClutterActorBox    *box);
+void                _clutter_paint_volume_init_static      (ClutterActor *actor,
+                                                            ClutterPaintVolume *pv);
+ClutterPaintVolume *_clutter_paint_volume_new              (ClutterActor       *actor);
+void                _clutter_paint_volume_copy_static      (const ClutterPaintVolume *src_pv,
+                                                            ClutterPaintVolume *dst_pv);
+
+void                _clutter_paint_volume_project          (ClutterPaintVolume *pv,
+                                                            const CoglMatrix   *modelview,
+                                                            const CoglMatrix   *projection,
+                                                            const int          *viewport);
+void                _clutter_paint_volume_get_bounding_box (ClutterPaintVolume *pv,
+                                                            ClutterActorBox    *box);
 
 G_END_DECLS
 

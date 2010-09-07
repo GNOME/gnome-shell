@@ -312,37 +312,6 @@ typedef struct _AnchorCoord AnchorCoord;
 #define CLUTTER_ACTOR_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ACTOR, ClutterActorPrivate))
 
-/**
- * ClutterPaintVolume:
- *
- * <structname>ClutterPaintVolume</structname> is an opaque structure whose
- * members cannot be directly accessed
- *
- * Since: 1.4
- */
-struct _ClutterPaintVolume
-{
-  ClutterActor *actor;
-
-  /* cuboid for the volume:
-   *
-   *   0: origin  ┐
-   *   1: width   │→ plane[0], Z value = 0
-   *   2: height  ┘
-   *
-   *   3. depth → X = 0, Y = 0, Z = @actor:depth
-   *
-   *   4: anti-origin ┐
-   *   5: width       │→ plane[1], Z value = @actor:depth
-   *   6: height      ┘
-   *
-   *   7: depth → X = anti-origin.x, Y = anti-origin.y, Z = @actor:depth
-   *
-   * the first four elements are filled in by the PaintVolume setters
-   */
-  ClutterVertex vertices[8];
-};
-
 /* Internal helper struct to represent a point that can be stored in
    either direct pixel coordinates or as a fraction of the actor's
    size. It is used for the anchor point, scale center and rotation
@@ -495,6 +464,11 @@ struct _ClutterActorPrivate
   ClutterMetaGroup *effects;
 
   ClutterActorMeta *current_effect;
+
+  gboolean paint_volume_valid;
+  ClutterPaintVolume paint_volume;
+
+  gboolean paint_volume_disabled;
 };
 
 enum
@@ -671,6 +645,9 @@ static gboolean clutter_anchor_coord_is_zero (const AnchorCoord *coord);
 static void _clutter_actor_get_relative_modelview (ClutterActor *self,
                                                    ClutterActor *ancestor,
                                                    CoglMatrix *matrix);
+
+static ClutterPaintVolume *_clutter_actor_get_paint_volume_mutable (ClutterActor *self);
+static void _clutter_paint_volume_complete (ClutterPaintVolume *pv);
 
 /* Helper macro which translates by the anchor coord, applies the
    given transformation and then translates back */
@@ -2509,6 +2486,36 @@ clutter_actor_paint (ClutterActor *self)
 
       CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
 
+      /* Check if there are any handlers connected to the paint
+       * signal. If there are then all bets are off for what the paint
+       * volume for this actor might possibly be!
+       *
+       * Actually it's a bit late to find this out because the redraw
+       * may have already had a scissor set on the stage based on the
+       * projected paint volume of this actor, but since glib doesn't
+       * provide a mechanism to notify when signal handlers are
+       * connected and removed for a signal we don't have many options
+       * and being able to clip redraws is a crucial optimization.
+       *
+       * If we ever find that a handler is connected we simply mark
+       * self->priv->paint_volume_disabled = TRUE which will mean the
+       * actor will always report a NULL (un-determined) paint volume.
+       * We also queue another redraw of this actor which will result
+       * in a full stage redraw. The status is never reverted to FALSE
+       * because we don't want to end up in a situation where we see
+       * lots of artefacts caused by intermittent periods with no
+       * handlers followed by periods with handlers that paint outside
+       * the paint volume.
+       */
+      if (g_signal_has_handler_pending (self,
+                                        actor_signals[PAINT],
+                                        0,
+                                        TRUE))
+        {
+          priv->paint_volume_disabled = TRUE;
+          clutter_actor_queue_redraw (self);
+        }
+
       if (priv->effects != NULL)
         effect_painted = _clutter_actor_effects_pre_paint (self);
       else if (priv->shader_data != NULL)
@@ -3268,19 +3275,23 @@ atk_implementor_iface_init (AtkImplementorIface *iface)
   iface->ref_accessible = _clutter_actor_ref_accessible;
 }
 
-static void
+static gboolean
 clutter_actor_real_get_paint_volume (ClutterActor       *self,
                                      ClutterPaintVolume *volume)
 {
   ClutterActorPrivate *priv = self->priv;
   gfloat width, height;
 
+  if (G_UNLIKELY (priv->needs_allocation))
+    return FALSE;
+
   /* the default origin is set to { 0, 0, 0 } */
   clutter_actor_box_get_size (&priv->allocation, &width, &height);
   clutter_paint_volume_set_width (volume, width);
   clutter_paint_volume_set_height (volume, height);
+  /* the default depth will be 0 since most actors are 2D */
 
-  clutter_paint_volume_set_depth (volume, priv->z);
+  return TRUE;
 }
 
 static void
@@ -11558,12 +11569,66 @@ _clutter_paint_volume_new (ClutterActor *actor)
 {
   ClutterPaintVolume *pv;
 
+  g_return_val_if_fail (actor != NULL, NULL);
+
   pv = g_slice_new (ClutterPaintVolume);
-  pv->actor = (actor != NULL) ? g_object_ref (actor) : NULL;
+
+  pv->actor = g_object_ref (actor);
 
   memset (pv->vertices, 0, 8 * sizeof (ClutterVertex));
 
+  pv->is_static = FALSE;
+  pv->is_empty = TRUE;
+  pv->is_axis_aligned = TRUE;
+  pv->is_complete = TRUE;
+  pv->is_2d = TRUE;
+
   return pv;
+}
+
+/* Since paint volumes are used so heavily in a typical paint
+ * traversal of a Clutter scene graph and since paint volumes often
+ * have a very short life cycle that maps well to stack allocation we
+ * allow initializing a static ClutterPaintVolume variable to avoid
+ * hammering the slice allocator.
+ *
+ * We were seeing slice allocation take about 1% cumulative CPU time
+ * for some very simple clutter tests which although it isn't a *lot*
+ * this is an easy way to basically drop that to 0%.
+ *
+ * The PaintVolume will be internally marked as static and
+ * clutter_paint_volume_free should still be used to "free" static
+ * volumes. This allows us to potentially store dynamically allocated
+ * data inside paint volumes in the future since we would be able to
+ * free it during _paint_volume_free().
+ */
+void
+_clutter_paint_volume_init_static (ClutterActor *actor,
+                                   ClutterPaintVolume *pv)
+{
+  g_return_if_fail (actor != NULL);
+
+  pv->actor = g_object_ref (actor);
+
+  memset (pv->vertices, 0, 8 * sizeof (ClutterVertex));
+
+  pv->is_static = TRUE;
+  pv->is_empty = TRUE;
+  pv->is_axis_aligned = TRUE;
+  pv->is_complete = TRUE;
+  pv->is_2d = TRUE;
+}
+
+void
+_clutter_paint_volume_copy_static (const ClutterPaintVolume *src_pv,
+                                   ClutterPaintVolume *dst_pv)
+{
+
+  g_return_if_fail (src_pv != NULL && dst_pv != NULL);
+
+  memcpy (dst_pv, src_pv, sizeof (ClutterPaintVolume));
+  g_object_ref (dst_pv->actor);
+  dst_pv->is_static = TRUE;
 }
 
 /**
@@ -11581,11 +11646,15 @@ clutter_paint_volume_copy (const ClutterPaintVolume *pv)
 {
   ClutterPaintVolume *copy;
 
+  /* XXX: can we just g_return_val_if_fail instead‽ */
   if (G_UNLIKELY (pv == NULL))
     return NULL;
 
   copy = g_slice_dup (ClutterPaintVolume, pv);
-  copy->actor = g_object_ref (pv->actor);
+  if (copy->actor)
+    g_object_ref (copy->actor);
+
+  copy->is_static = FALSE;
 
   return copy;
 }
@@ -11601,13 +11670,14 @@ clutter_paint_volume_copy (const ClutterPaintVolume *pv)
 void
 clutter_paint_volume_free (ClutterPaintVolume *pv)
 {
-  if (G_UNLIKELY (pv == NULL))
-    {
-      if (pv->actor != NULL)
-        g_object_unref (pv->actor);
+  g_return_if_fail (pv != NULL);
 
-      g_slice_free (ClutterPaintVolume, pv);
-    }
+  g_object_unref (pv->actor);
+
+  if (G_LIKELY (pv->is_static))
+    return;
+
+  g_slice_free (ClutterPaintVolume, pv);
 }
 
 /**
@@ -11617,8 +11687,8 @@ clutter_paint_volume_free (ClutterPaintVolume *pv)
  *
  * Sets the origin of the paint volume.
  *
- * The origin is defined as the X and Y coordinates of the top-left corner
- * of an actor's paint volume, with a Z coordinate of 0.
+ * The origin is defined as the X, Y and Z coordinates of the top-left
+ * corner of an actor's paint volume, in actor coordinates.
  *
  * The default is origin is assumed at: (0, 0, 0)
  *
@@ -11628,9 +11698,25 @@ void
 clutter_paint_volume_set_origin (ClutterPaintVolume  *pv,
                                  const ClutterVertex *origin)
 {
-  g_return_if_fail (pv != NULL);
+  float dx = origin->x - pv->vertices[0].x;
+  float dy = origin->y - pv->vertices[0].y;
+  float dz = origin->z - pv->vertices[0].z;
+  int key_vertices[4] = {0, 1, 3, 4};
+  int i;
 
-  pv->vertices[0] = *origin;
+  g_return_if_fail (pv != NULL);
+  g_return_if_fail (pv->is_axis_aligned);
+
+  /* If we change the origin then all the key vertices of the paint
+   * volume need to be shifted too... */
+  for (i = 0; i < 4; i++)
+    {
+      pv->vertices[key_vertices[i]].x += dx;
+      pv->vertices[key_vertices[i]].y += dy;
+      pv->vertices[key_vertices[i]].z += dz;
+    }
+
+  pv->is_complete = FALSE;
 }
 
 /**
@@ -11652,16 +11738,23 @@ clutter_paint_volume_get_origin (const ClutterPaintVolume *pv,
   *vertex = pv->vertices[0];
 }
 
+static void
+_clutter_paint_volume_update_is_empty (ClutterPaintVolume *pv)
+{
+  if (pv->vertices[0].x == pv->vertices[1].x &&
+      pv->vertices[0].y == pv->vertices[3].y &&
+      pv->vertices[0].z == pv->vertices[4].z)
+    pv->is_empty = TRUE;
+  else
+    pv->is_empty = FALSE;
+}
+
 /**
  * clutter_paint_volume_set_width:
  * @pv: a #ClutterPaintVolume
- * @width: the width vector of the paint volume, in pixels
+ * @width: the width of the paint volume, in pixels
  *
- * Sets the magnitude of the width vector of the paint volume.
- *
- * The width vector is defined as the vector that has the initial
- * point in the origin, the sense of the X axis and the magnitude
- * as the horizontal span of an actor.
+ * Sets the width of the paint volume.
  *
  * Since: 1.4
  */
@@ -11669,10 +11762,29 @@ void
 clutter_paint_volume_set_width (ClutterPaintVolume *pv,
                                 gfloat              width)
 {
+  gfloat right_xpos;
+
   g_return_if_fail (pv != NULL);
+  g_return_if_fail (pv->is_axis_aligned);
   g_return_if_fail (width >= 0.0f);
 
-  pv->vertices[1].x = width;
+  /* If the volume is currently empty then only the origin is
+   * currently valid */
+  if (pv->is_empty)
+    pv->vertices[1] = pv->vertices[3] = pv->vertices[4] = pv->vertices[0];
+
+  right_xpos = pv->vertices[0].x + width;
+
+  /* Move the right vertices of the paint box relative to the
+   * origin... */
+  pv->vertices[1].x = right_xpos;
+  /* pv->vertices[2].x = right_xpos; NB: updated lazily */
+  /* pv->vertices[5].x = right_xpos; NB: updated lazily */
+  /* pv->vertices[6].x = right_xpos; NB: updated lazily */
+
+  pv->is_complete = FALSE;
+
+  _clutter_paint_volume_update_is_empty (pv);
 }
 
 /**
@@ -11689,20 +11801,20 @@ gfloat
 clutter_paint_volume_get_width (const ClutterPaintVolume *pv)
 {
   g_return_val_if_fail (pv != NULL, 0.0);
+  g_return_val_if_fail (pv->is_axis_aligned, 0);
 
-  return pv->vertices[1].x;
+  if (pv->is_empty)
+    return 0;
+  else
+    return pv->vertices[1].x - pv->vertices[0].x;
 }
 
 /**
  * clutter_paint_volume_set_height:
  * @pv: a #ClutterPaintVolume
- * @height: the magnitude of the height vector of the paint volume, in pixels
+ * @height: the height of the paint volume, in pixels
  *
- * Sets the magnitude of the height vector of the paint volume.
- *
- * The height vector is defined as the vector that has the initial
- * point in the origin, the sense of the Y axis and the magnitude
- * as the vertical span of an actor.
+ * Sets the height of the paint volume.
  *
  * Since: 1.4
  */
@@ -11710,19 +11822,38 @@ void
 clutter_paint_volume_set_height (ClutterPaintVolume *pv,
                                  gfloat              height)
 {
+  gfloat height_ypos;
+
   g_return_if_fail (pv != NULL);
+  g_return_if_fail (pv->is_axis_aligned);
   g_return_if_fail (height >= 0.0f);
 
-  pv->vertices[2].y = height;
+  /* If the volume is currently empty then only the origin is
+   * currently valid */
+  if (pv->is_empty)
+    pv->vertices[1] = pv->vertices[3] = pv->vertices[4] = pv->vertices[0];
+
+  height_ypos = pv->vertices[0].y + height;
+
+  /* Move the bottom vertices of the paint box relative to the
+   * origin... */
+  /* pv->vertices[2].y = height_ypos; NB: updated lazily */
+  pv->vertices[3].y = height_ypos;
+  /* pv->vertices[6].y = height_ypos; NB: updated lazily */
+  /* pv->vertices[7].y = height_ypos; NB: updated lazily */
+  pv->is_complete = FALSE;
+
+  _clutter_paint_volume_update_is_empty (pv);
 }
 
 /**
  * clutter_paint_volume_get_height:
  * @pv: a #ClutterPaintVolume
  *
- * Retrieves the height set using clutter_paint_volume_get_height()
+ * Retrieves the height of the paint volume set using
+ * clutter_paint_volume_get_height()
  *
- * Return value: the height, in pixels
+ * Return value: the height of the paint volume, in pixels
  *
  * Since: 1.4
  */
@@ -11730,20 +11861,20 @@ gfloat
 clutter_paint_volume_get_height (const ClutterPaintVolume *pv)
 {
   g_return_val_if_fail (pv != NULL, 0.0);
+  g_return_val_if_fail (pv->is_axis_aligned, 0);
 
-  return pv->vertices[2].y;
+  if (pv->is_empty)
+    return 0;
+  else
+    return pv->vertices[3].y - pv->vertices[0].y;
 }
 
 /**
  * clutter_paint_volume_set_depth:
  * @pv: a #ClutterPaintVolume
- * @depth: the magnitude of the depth vector of the paint volume
+ * @depth: the depth of the paint volume, in pixels
  *
- * Sets the magnitude of the depth vector of the paint volume.
- *
- * The height vector is defined as the vector that has the initial
- * point in the origin, the sense of the Z axis and the magnitude
- * as the depth span of an actor.
+ * Sets the depth of the paint volume.
  *
  * Since: 1.4
  */
@@ -11751,16 +11882,37 @@ void
 clutter_paint_volume_set_depth (ClutterPaintVolume *pv,
                                 gfloat              depth)
 {
-  g_return_if_fail (pv != NULL);
+  gfloat depth_zpos;
 
-  pv->vertices[3].z = depth;
+  g_return_if_fail (pv != NULL);
+  g_return_if_fail (pv->is_axis_aligned);
+  g_return_if_fail (depth >= 0.0f);
+
+  /* If the volume is currently empty then only the origin is
+   * currently valid */
+  if (pv->is_empty)
+    pv->vertices[1] = pv->vertices[3] = pv->vertices[4] = pv->vertices[0];
+
+  depth_zpos = pv->vertices[0].z + depth;
+
+  /* Move the back vertices of the paint box relative to the
+   * origin... */
+  pv->vertices[4].z = depth_zpos;
+  /* pv->vertices[5].z = depth_zpos; NB: updated lazily */
+  /* pv->vertices[6].z = depth_zpos; NB: updated lazily */
+  /* pv->vertices[7].z = depth_zpos; NB: updated lazily */
+
+  pv->is_complete = FALSE;
+  pv->is_2d = depth ? FALSE : TRUE;
+  _clutter_paint_volume_update_is_empty (pv);
 }
 
 /**
  * clutter_paint_volume_get_depth:
  * @pv: a #ClutterPaintVolume
  *
- * Retrieves the depth set using clutter_paint_volume_get_depth()
+ * Retrieves the depth of the paint volume set using
+ * clutter_paint_volume_get_depth()
  *
  * Return value: the depth
  *
@@ -11770,124 +11922,441 @@ gfloat
 clutter_paint_volume_get_depth (const ClutterPaintVolume *pv)
 {
   g_return_val_if_fail (pv != NULL, 0.0);
+  g_return_val_if_fail (pv->is_axis_aligned, 0);
 
-  return pv->vertices[3].z;
+  if (pv->is_empty)
+    return 0;
+  else
+    return pv->vertices[4].z - pv->vertices[0].z;
+}
+
+/**
+ * clutter_paint_volume_union:
+ * @pv: The first #ClutterPaintVolume and destination for resulting
+ *      union
+ * @another_pv: A second #ClutterPaintVolume to union with @pv
+ *
+ * Updates the geometry of @pv to be the union bounding box that
+ * encompases @pv and @another_pv.
+ *
+ * Since: 1.4
+ */
+void
+clutter_paint_volume_union (ClutterPaintVolume *pv,
+                            const ClutterPaintVolume *another_pv)
+{
+  int key_vertices[4] = {0, 1, 3, 4};
+
+  g_return_if_fail (pv != NULL);
+  g_return_if_fail (pv->is_axis_aligned);
+  g_return_if_fail (another_pv != NULL);
+  g_return_if_fail (another_pv->is_axis_aligned);
+
+  /* NB: we only have to update vertices 0, 1, 3 and 4
+   * (See the ClutterPaintVolume typedef for more details) */
+
+  /* We special case empty volumes because otherwise we'd end up
+   * calculating a bounding box that would enclose the origin of
+   * the empty volume which isn't desired.
+   */
+  if (another_pv->is_empty)
+    return;
+
+  if (pv->is_empty)
+    {
+      int i;
+      for (i = 0; i < 4; i++)
+        pv->vertices[key_vertices[i]] = another_pv->vertices[key_vertices[i]];
+      pv->is_2d = another_pv->is_2d;
+      goto done;
+    }
+
+  /* grow left*/
+  /* left vertices 0, 3, 4, 7 */
+  if (another_pv->vertices[0].x < pv->vertices[0].x)
+    {
+      int min_x = another_pv->vertices[0].x;
+      pv->vertices[0].x = min_x;
+      pv->vertices[3].x = min_x;
+      pv->vertices[4].x = min_x;
+      /* pv->vertices[7].x = min_x; */
+    }
+
+  /* grow right */
+  /* right vertices 1, 2, 5, 6 */
+  if (another_pv->vertices[1].x > pv->vertices[1].x)
+    {
+      int max_x = another_pv->vertices[1].x;
+      pv->vertices[1].x = max_x;
+      /* pv->vertices[2].x = max_x; */
+      /* pv->vertices[5].x = max_x; */
+      /* pv->vertices[6].x = max_x; */
+    }
+
+  /* grow up */
+  /* top vertices 0, 1, 4, 5 */
+  if (another_pv->vertices[0].y < pv->vertices[0].y)
+    {
+      int min_y = another_pv->vertices[0].y;
+      pv->vertices[0].y = min_y;
+      pv->vertices[1].y = min_y;
+      pv->vertices[4].y = min_y;
+      /* pv->vertices[5].y = min_y; */
+    }
+
+  /* grow down */
+  /* bottom vertices 2, 3, 6, 7 */
+  if (another_pv->vertices[3].y > pv->vertices[3].y)
+    {
+      int may_y = another_pv->vertices[3].y;
+      /* pv->vertices[2].y = may_y; */
+      pv->vertices[3].y = may_y;
+      /* pv->vertices[6].y = may_y; */
+      /* pv->vertices[7].y = may_y; */
+    }
+
+  /* grow forward */
+  /* front vertices 0, 1, 2, 3 */
+  if (another_pv->vertices[0].z < pv->vertices[0].z)
+    {
+      int min_z = another_pv->vertices[0].z;
+      pv->vertices[0].z = min_z;
+      pv->vertices[1].z = min_z;
+      /* pv->vertices[2].z = min_z; */
+      pv->vertices[3].z = min_z;
+    }
+
+  /* grow backward */
+  /* back vertices 4, 5, 6, 7 */
+  if (another_pv->vertices[4].z > pv->vertices[4].z)
+    {
+      int maz_z = another_pv->vertices[4].z;
+      pv->vertices[4].z = maz_z;
+      /* pv->vertices[5].z = maz_z; */
+      /* pv->vertices[6].z = maz_z; */
+      /* pv->vertices[7].z = maz_z; */
+    }
+
+  if (pv->vertices[4].z == pv->vertices[0].z)
+    pv->is_2d = TRUE;
+  else
+    pv->is_2d = FALSE;
+
+done:
+  pv->is_empty = FALSE;
+  pv->is_complete = FALSE;
+}
+
+/* The paint_volume setters only update vertices 0, 1, 3 and
+ * 4 since the others can be drived from them.
+ *
+ * This will set pv->completed = TRUE;
+ */
+static void
+_clutter_paint_volume_complete (ClutterPaintVolume *pv)
+{
+  if (pv->is_complete || pv->is_empty)
+    return;
+
+  g_return_if_fail (pv->is_axis_aligned);
+
+  /* front-bottom-right */
+  pv->vertices[2].x = pv->vertices[1].x;
+  pv->vertices[2].y = pv->vertices[3].y;
+  pv->vertices[2].z = pv->vertices[0].z;
+
+  if (G_UNLIKELY (!pv->is_2d))
+    {
+      /* back-top-right */
+      pv->vertices[5].x = pv->vertices[1].x;
+      pv->vertices[5].y = pv->vertices[0].y;
+      pv->vertices[5].z = pv->vertices[4].z;
+
+      /* back-bottom-right */
+      pv->vertices[6].x = pv->vertices[1].x;
+      pv->vertices[6].y = pv->vertices[3].y;
+      pv->vertices[6].z = pv->vertices[4].z;
+
+      /* back-bottom-left */
+      pv->vertices[7].x = pv->vertices[0].x;
+      pv->vertices[7].y = pv->vertices[3].y;
+      pv->vertices[7].z = pv->vertices[4].z;
+    }
+
+  pv->is_complete = TRUE;
 }
 
 /*<private>
  * _clutter_paint_volume_get_box:
  * @pv: a #ClutterPaintVolume
- * @box: a #ClutterActorBox
+ * @box: a pixel aligned #ClutterGeometry
  *
- * Transforms a 3D paint volume into a 2D bounding box
+ * Transforms a 3D paint volume into a 2D bounding box in the
+ * same coordinate space as the 3D paint volume.
+ *
+ * To get an actors "paint box" you should first project
+ * the paint volume into window coordinates before getting
+ * the 2D bounding box.
+ *
+ * <note>The coordinates of the returned box are not clamped to
+ * integer pixel values, if you need them to be clamped you can use
+ * clutter_actor_box_clamp_to_pixel()</note>
  *
  * Since: 1.4
  */
 void
-_clutter_paint_volume_get_box (ClutterPaintVolume *pv,
-                               ClutterActorBox    *box)
+_clutter_paint_volume_get_bounding_box (ClutterPaintVolume *pv,
+                                        ClutterActorBox *box)
 {
-  ClutterVertex screen_v[8];
   gfloat x_min, y_min, x_max, y_max;
+  ClutterVertex *vertices;
+  int count;
   gint i;
 
   g_return_if_fail (pv != NULL);
   g_return_if_fail (box != NULL);
 
-  if (pv->actor == NULL)
+  if (pv->is_empty)
     {
-      g_warning ("Paint volume created without a reference actor");
+      box->x1 = box->x2 = pv->vertices[0].x;
+      box->y1 = box->y2 = pv->vertices[0].y;
       return;
     }
 
-  /* anti-origin */
-  pv->vertices[4].x = pv->vertices[1].x;
-  pv->vertices[4].y = pv->vertices[2].y;
-  pv->vertices[4].z = 0.0f;
+  /* Updates the vertices we calculate lazily
+   * (See ClutterPaintVolume typedef for more details) */
+  _clutter_paint_volume_complete (pv);
 
-  if (pv->vertices[3].z < 0.00001 || pv->vertices[3].z > 0.00001)
+  vertices = pv->vertices;
+
+  x_min = x_max = vertices[0].x;
+  y_min = y_max = vertices[0].y;
+
+  /* Most actors are 2D so we only have to look at the front 4
+   * vertices of the paint volume... */
+  if (G_LIKELY (pv->is_2d))
+    count = 4;
+  else
+    count = 8;
+
+  for (i = 1; i < count; i++)
     {
-      pv->vertices[5].x = pv->vertices[1].x;
-      pv->vertices[5].y = pv->vertices[0].y;
-      pv->vertices[5].z = pv->vertices[3].z;
+      if (vertices[i].x < x_min)
+        x_min = vertices[i].x;
+      else if (vertices[i].x > x_max)
+        x_max = vertices[i].x;
 
-      pv->vertices[6].x = pv->vertices[0].x;
-      pv->vertices[6].y = pv->vertices[2].y;
-      pv->vertices[6].z = pv->vertices[3].z;
-
-      pv->vertices[7].x = pv->vertices[1].x;
-      pv->vertices[7].y = pv->vertices[2].y;
-      pv->vertices[7].z = pv->vertices[3].z;
-    }
-
-  if (!_clutter_actor_fully_transform_vertices (pv->actor,
-                                                pv->vertices,
-                                                screen_v,
-                                                G_N_ELEMENTS (screen_v)))
-    return;
-
-  box->x1 = box->y1 = box->x2 = box->y2 = 0.0f;
-
-  x_min = y_min = G_MAXFLOAT;
-  x_max = y_max = -G_MAXFLOAT;
-
-  for (i = 0; i < G_N_ELEMENTS (screen_v); i++)
-    {
-      if (screen_v[i].x < x_min)
-        x_min = screen_v[i].x;
-
-      if (screen_v[i].x > x_max)
-        x_max = screen_v[i].x;
-
-      if (screen_v[i].y < y_min)
-        y_min = screen_v[i].y;
-
-      if (screen_v[i].y > y_max)
-        y_max = screen_v[i].y;
+      if (vertices[i].y < y_min)
+        y_min = vertices[i].y;
+      else if (vertices[i].y > y_max)
+        y_max = vertices[i].y;
     }
 
   box->x1 = x_min;
   box->y1 = y_min;
   box->x2 = x_max;
   box->y2 = y_max;
-  clutter_actor_box_clamp_to_pixel (box);
 }
 
-/**
- * clutter_actor_get_paint_volume:
- * @self: a #ClutterActor
- *
- * Retrieves the paint volume of the passed #ClutterActor.
- *
- * The paint volume is defined as the 3D space occupied by an actor
- * when being painted.
- *
- * This function will call the <function>get_paint_volume()</function>
- * virtual function of the #ClutterActor class. Sub-classes of #ClutterActor
- * should not usually care about overriding the default implementation,
- * unless they are, for instance, painting outside their allocation area.
- *
- * <note>Overriding the <function>get_paint_box()</function> for 2D actors
- * should set a degenerate depth vector using the same value as the Z
- * coordinate of the origin.</note>
- *
- * Return value: (transfer full): a newly allocated #ClutterPaintVolume.
- *   Use clutter_paint_volume_free() to free the resources when done.
- *
- * Since: 1.4
+void
+_clutter_paint_volume_project (ClutterPaintVolume *pv,
+                               const CoglMatrix *modelview,
+                               const CoglMatrix *projection,
+                               const int *viewport)
+{
+  int transform_count;
+
+  if (pv->is_empty)
+    {
+      /* Just transform the origin... */
+      _fully_transform_vertices (modelview,
+                                 projection,
+                                 viewport,
+                                 pv->vertices,
+                                 pv->vertices,
+                                 1);
+      return;
+    }
+
+  /* All the vertices must be up to date, since after the projection
+   * it wont be trivial to derive the other vertices. */
+  _clutter_paint_volume_complete (pv);
+
+  /* Most actors are 2D so we only have to transform the front 4
+   * vertices of the paint volume... */
+  if (G_LIKELY (pv->is_2d))
+    transform_count = 4;
+  else
+    transform_count = 8;
+
+  _fully_transform_vertices (modelview,
+                             projection,
+                             viewport,
+                             pv->vertices,
+                             pv->vertices,
+                             transform_count);
+
+  pv->is_axis_aligned = FALSE;
+}
+
+static void
+_clutter_paint_volume_transform (ClutterPaintVolume *pv,
+                                 const CoglMatrix *matrix)
+{
+  int transform_count;
+  int i;
+
+  if (pv->is_empty)
+    {
+      gfloat w = 1;
+      /* Just transform the origin */
+      cogl_matrix_transform_point (matrix,
+                                   &pv->vertices[0].x,
+                                   &pv->vertices[0].y,
+                                   &pv->vertices[0].z,
+                                   &w);
+      return;
+    }
+
+  /* All the vertices must be up to date, since after the transform
+   * it wont be trivial to derive the other vertices. */
+  _clutter_paint_volume_complete (pv);
+
+  /* Most actors are 2D so we only have to transform the front 4
+   * vertices of the paint volume... */
+  if (G_LIKELY (pv->is_2d))
+    transform_count = 4;
+  else
+    transform_count = 8;
+
+
+  for (i = 0; i < transform_count; i++)
+    {
+      gfloat w = 1;
+      cogl_matrix_transform_point (matrix,
+                                   &pv->vertices[i].x,
+                                   &pv->vertices[i].y,
+                                   &pv->vertices[i].z,
+                                   &w);
+    }
+
+  pv->is_axis_aligned = FALSE;
+}
+
+
+/* Given a paint volume that has been transformed by an arbitrary
+ * modelview and is no longer axis aligned, this derives a replacement
+ * that is axis aligned. */
+static void
+_clutter_paint_volume_axis_align (ClutterPaintVolume *pv)
+{
+  int count;
+  int i;
+  ClutterVertex origin;
+  float max_x;
+  float max_y;
+  float max_z;
+
+  if (pv->is_empty)
+    return;
+
+  g_return_if_fail (pv->is_complete);
+
+  if (G_LIKELY (pv->is_axis_aligned))
+    return;
+
+  if (G_LIKELY (pv->vertices[0].x == pv->vertices[1].x &&
+                pv->vertices[0].y == pv->vertices[3].y &&
+                pv->vertices[0].z == pv->vertices[4].y))
+    {
+      pv->is_axis_aligned = TRUE;
+      return;
+    }
+
+  origin = pv->vertices[0];
+  max_x = pv->vertices[0].x;
+  max_y = pv->vertices[0].y;
+  max_z = pv->vertices[0].z;
+
+  count = pv->is_2d ? 4 : 8;
+  for (i = 1; i < count; i++)
+    {
+      if (pv->vertices[i].x < origin.x)
+        origin.x = pv->vertices[i].x;
+      else if (pv->vertices[i].x > max_x)
+        max_x = pv->vertices[i].x;
+
+      if (pv->vertices[i].y < origin.y)
+        origin.y = pv->vertices[i].y;
+      else if (pv->vertices[i].y > max_y)
+        max_y = pv->vertices[i].y;
+
+      if (pv->vertices[i].z < origin.z)
+        origin.z = pv->vertices[i].z;
+      else if (pv->vertices[i].z > max_z)
+        max_z = pv->vertices[i].z;
+    }
+
+  pv->vertices[0] = origin;
+
+  pv->vertices[1].x = max_x;
+  pv->vertices[1].y = origin.y;
+  pv->vertices[1].z = origin.z;
+
+  pv->vertices[3].x = origin.x;
+  pv->vertices[3].y = max_y;
+  pv->vertices[3].z = origin.z;
+
+  pv->vertices[4].x = origin.x;
+  pv->vertices[4].y = origin.y;
+  pv->vertices[4].z = max_z;
+
+  pv->is_complete = FALSE;
+  pv->is_axis_aligned = TRUE;
+
+  if (pv->vertices[4].z == pv->vertices[0].z)
+    pv->is_2d = TRUE;
+  else
+    pv->is_2d = FALSE;
+}
+
+/* The public clutter_actor_get_paint_volume API returns a const
+ * pointer since we return a pointer directly to the cached
+ * PaintVolume associated with the actor and don't want the user to
+ * inadvertently modify it, but for internal uses we sometimes need
+ * access to the same PaintVolume but need to apply some book-keeping
+ * modifications to it so we don't want a const pointer.
  */
-ClutterPaintVolume *
-clutter_actor_get_paint_volume (ClutterActor *self)
+static ClutterPaintVolume *
+_clutter_actor_get_paint_volume_mutable (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
   ClutterPaintVolume *pv;
 
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
-
-  pv = _clutter_paint_volume_new (self);
-  CLUTTER_ACTOR_GET_CLASS (self)->get_paint_volume (self, pv);
-
   priv = self->priv;
+
+  if (priv->paint_volume_valid)
+    {
+      clutter_paint_volume_free (&priv->paint_volume);
+      priv->paint_volume_valid = FALSE;
+    }
+
+  if (G_UNLIKELY (priv->paint_volume_disabled))
+    return NULL;
+
+  /* Actors are only expected to report a valid paint volume
+   * while they have a valid allocation. */
+  if (G_UNLIKELY (priv->needs_allocation))
+    return NULL;
+
+  pv = &priv->paint_volume;
+  _clutter_paint_volume_init_static (self, pv);
+
+  if (!CLUTTER_ACTOR_GET_CLASS (self)->get_paint_volume (self, pv))
+    {
+      clutter_paint_volume_free (pv);
+      return NULL;
+    }
 
   /* since effects can modify the paint volume, we allow them to actually
    * do this by making get_paint_volume() "context sensitive"
@@ -11906,7 +12375,11 @@ clutter_actor_get_paint_volume (ClutterActor *self)
                l != NULL || (l != NULL && l->data != priv->current_effect);
                l = l->next)
             {
-              _clutter_effect_get_paint_volume (l->data, pv);
+              if (!_clutter_effect_get_paint_volume (l->data, pv))
+                {
+                  clutter_paint_volume_free (pv);
+                  return NULL;
+                }
             }
         }
       else
@@ -11916,11 +12389,105 @@ clutter_actor_get_paint_volume (ClutterActor *self)
           /* otherwise, get the cumulative volume */
           effects = _clutter_meta_group_peek_metas (priv->effects);
           for (l = effects; l != NULL; l = l->next)
-            _clutter_effect_get_paint_volume (l->data, pv);
+            if (!_clutter_effect_get_paint_volume (l->data, pv))
+              {
+                clutter_paint_volume_free (pv);
+                return NULL;
+              }
         }
     }
 
+  priv->paint_volume_valid = TRUE;
   return pv;
+}
+
+/**
+ * clutter_actor_get_paint_volume:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the paint volume of the passed #ClutterActor, or %NULL
+ * when a paint volume can't be determined.
+ *
+ * The paint volume is defined as the 3D space occupied by an actor
+ * when being painted.
+ *
+ * This function will call the <function>get_paint_volume()</function>
+ * virtual function of the #ClutterActor class. Sub-classes of #ClutterActor
+ * should not usually care about overriding the default implementation,
+ * unless they are, for instance: painting outside their allocation, or
+ * actors with a depth factor (not in terms of #ClutterActor:depth but real
+ * 3D depth).
+ *
+ * <note>2D actors overriding <function>get_paint_volume()</function>
+ * ensure their volume has a depth of 0. (This will be true so long as
+ * you don't call clutter_paint_volume_set_depth().)</note>
+ *
+ * Return value: (transfer none): a pointer to a #ClutterPaintVolume
+ *   or %NULL if no volume could be determined.
+ *
+ * Since: 1.4
+ */
+const ClutterPaintVolume *
+clutter_actor_get_paint_volume (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  return _clutter_actor_get_paint_volume_mutable (self);
+}
+
+/**
+ * clutter_actor_get_transformed_paint_volume:
+ * @self: a #ClutterActor
+ * @relative_to_ancestor: A #ClutterActor that is an ancestor of @self
+ *    (or %NULL for the stage)
+ *
+ * Retrieves the 3D paint volume of an actor like
+ * clutter_actor_get_paint_volume() does (Please refer to the
+ * documentation of clutter_actor_get_paint_volume() for more
+ * details.) and it additionally transforms the paint volume into the
+ * coordinate space of @relative_to_ancestor. (Or the stage if %NULL
+ * is passed for @relative_to_ancestor)
+ *
+ * This can be used by containers that base their paint volume on
+ * the volume of their children. Such containers can query the
+ * transformed paint volume of all of its children and union them
+ * together using clutter_paint_volume_union().
+ *
+ * Return value: (transfer none): a pointer to a #ClutterPaintVolume
+ *   or %NULL if no volume could be determined.
+ *
+ * Since: 1.4
+ */
+const ClutterPaintVolume *
+clutter_actor_get_transformed_paint_volume (ClutterActor *self,
+                                            ClutterActor *relative_to_ancestor)
+{
+  CoglMatrix matrix;
+  const ClutterPaintVolume *volume;
+  ClutterStage *stage;
+  ClutterPaintVolume *transformed_volume;
+
+  if (relative_to_ancestor == NULL)
+    relative_to_ancestor = _clutter_actor_get_stage_internal (self);
+
+  if (relative_to_ancestor == NULL)
+    return NULL;
+
+  volume = clutter_actor_get_paint_volume (self);
+  if (!volume)
+    return NULL;
+
+  _clutter_actor_get_relative_modelview (self, relative_to_ancestor, &matrix);
+
+  stage = CLUTTER_STAGE (_clutter_actor_get_stage_internal (self));
+  transformed_volume = _clutter_stage_paint_volume_stack_allocate (stage);
+  _clutter_paint_volume_copy_static (volume, transformed_volume);
+  _clutter_paint_volume_transform (transformed_volume, &matrix);
+  _clutter_paint_volume_axis_align (transformed_volume);
+  g_object_unref (transformed_volume->actor);
+  transformed_volume->actor = g_object_ref (relative_to_ancestor);
+
+  return transformed_volume;
 }
 
 /**
@@ -11928,26 +12495,73 @@ clutter_actor_get_paint_volume (ClutterActor *self)
  * @self: a #ClutterActor
  * @box: (out): return location for a #ClutterActorBox
  *
- * Retrieves the paint volume of the passed #ClutterActor, and transforms it
- * into a 2D bounding box in stage coordinates.
+ * Retrieves the paint volume of the passed #ClutterActor, and
+ * transforms it into a 2D bounding box in stage coordinates.
  *
- * This function is useful to determine the on screen area occupied by the
- * actor.
+ * This function is useful to determine the on screen area occupied by
+ * the actor. The box is only an approximation and may often be
+ * considerably larger due to the optimizations used to calculate the
+ * box. The box is never smaller though, so it can reliably be used
+ * for culling.
+ *
+ * There are times when a 2D paint box can't be determined, e.g.
+ * because the actor isn't yet parented under a stage or because
+ * the actor is unable to determine a paint volume.
+ *
+ * Return value: %TRUE if a 2D paint box could be determined, else
+ * %FALSE.
  *
  * Since: 1.4
  */
-void
+gboolean
 clutter_actor_get_paint_box (ClutterActor    *self,
                              ClutterActorBox *box)
 {
-  ClutterPaintVolume *pv;
+  ClutterActor *stage;
+  const ClutterPaintVolume *pv;
+  CoglMatrix modelview;
+  CoglMatrix projection;
+  int viewport[4];
+  ClutterPaintVolume projected_pv;
 
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (box != NULL);
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+  g_return_val_if_fail (box != NULL, FALSE);
+
+  stage = _clutter_actor_get_stage_internal (self);
+  if (G_UNLIKELY (!stage))
+    return FALSE;
 
   pv = clutter_actor_get_paint_volume (self);
+  if (G_UNLIKELY (!pv))
+    return FALSE;
 
-  _clutter_paint_volume_get_box (pv, box);
+  /* NB: _clutter_actor_apply_modelview_transform_recursive will never
+   * include the transformation between stage coordinates and OpenGL
+   * window coordinates, we have to explicitly use the
+   * stage->apply_transform to get that... */
+  cogl_matrix_init_identity (&modelview);
+  _clutter_actor_apply_modelview_transform (stage, &modelview);
+  _clutter_actor_apply_modelview_transform_recursive (pv->actor,
+                                                      stage, &modelview);
 
-  clutter_paint_volume_free (pv);
+  _clutter_stage_get_projection_matrix (CLUTTER_STAGE (stage), &projection);
+  _clutter_stage_get_viewport (CLUTTER_STAGE (stage),
+                               &viewport[0],
+                               &viewport[1],
+                               &viewport[2],
+                               &viewport[3]);
+
+  _clutter_paint_volume_copy_static (pv, &projected_pv);
+  _clutter_paint_volume_project (&projected_pv,
+                                 &modelview,
+                                 &projection,
+                                 viewport);
+
+  _clutter_paint_volume_get_bounding_box (&projected_pv, box);
+  clutter_actor_box_clamp_to_pixel (box);
+
+  clutter_paint_volume_free (&projected_pv);
+
+  return TRUE;
 }
+

@@ -665,7 +665,7 @@ _clutter_do_pick (ClutterStage   *stage,
   */
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_paint);
   context->pick_mode = mode;
-  clutter_actor_paint (CLUTTER_ACTOR (stage));
+  _clutter_stage_do_paint (stage);
   context->pick_mode = CLUTTER_PICK_NONE;
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_paint);
 

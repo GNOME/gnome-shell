@@ -75,7 +75,7 @@ struct _ClutterEffectClass
   gboolean (* pre_paint)        (ClutterEffect      *effect);
   void     (* post_paint)       (ClutterEffect      *effect);
 
-  void     (* get_paint_volume) (ClutterEffect      *effect,
+  gboolean (* get_paint_volume) (ClutterEffect      *effect,
                                  ClutterPaintVolume *volume);
 
   /*< private >*/
