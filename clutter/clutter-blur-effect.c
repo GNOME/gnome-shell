@@ -268,8 +268,8 @@ clutter_blur_effect_get_paint_volume (ClutterEffect      *effect,
 
   origin.x -= BLUR_PADDING;
   origin.y -= BLUR_PADDING;
-  cur_width += BLUR_PADDING;
-  cur_height += BLUR_PADDING;
+  cur_width += 2 * BLUR_PADDING;
+  cur_height += 2 * BLUR_PADDING;
   clutter_paint_volume_set_origin (volume, &origin);
   clutter_paint_volume_set_width (volume, cur_width);
   clutter_paint_volume_set_height (volume, cur_height);
