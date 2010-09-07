@@ -272,19 +272,18 @@ AS_CASE([$CLUTTER_FLAVOUR],
           CLUTTER_SONAME_INFIX=cex100
 
           found_gdl=no
-          AC_CHECK_HEADERS([libgdl.h], found_gdl=yes)
-          AS_IF([test x"$found_gdl" = "xno"],
-                AC_CHECK_HEADERS([CE4100/libgdl.h],
-                                 [
-                                   FLAVOUR_CFLAGS="-I/usr/include/CE4100"
-                                   found_gdl=yes
-                                   CLUTTER_CEX100_LIBGDL_PREFIX=CE4100/
-                                 ])
-               )
+          AC_CHECK_HEADERS([libgdl.h], [found_gdl=yes])
+          AS_IF([test "x$found_gdl" = "xno"],
+                [AC_CHECK_HEADERS([CE4100/libgdl.h],
+                                  [
+                                    FLAVOUR_CFLAGS="-I/usr/include/CE4100"
+                                    found_gdl=yes
+                                    CLUTTER_CEX100_LIBGDL_PREFIX=CE4100/
+                                  ])
+                ])
           AC_SUBST(CLUTTER_CEX100_LIBGDL_PREFIX)
 
-          AS_IF([test x"$found_gdl" = "xno"],
-                AC_MSG_ERROR([libgdl.h not found]))
+          AS_IF([test x"$found_gdl" = "xno"], [AC_MSG_ERROR([libgdl.h not found])])
 
           FLAVOUR_LIBS="$FLAVOUR_LIBS -lgdl"
         ],
