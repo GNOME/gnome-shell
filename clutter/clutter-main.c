@@ -225,47 +225,6 @@ clutter_get_accessibility_enabled (void)
   return cally_get_cally_initialized ();
 }
 
-
-void
-_clutter_stage_maybe_relayout (ClutterActor *stage)
-{
-  gfloat natural_width, natural_height;
-  ClutterActorBox box = { 0, };
-  CLUTTER_STATIC_TIMER (relayout_timer,
-                        "Mainloop", /* no parent */
-                        "Layouting",
-                        "The time spent reallocating the stage",
-                        0 /* no application private data */);
-
-  /* avoid reentrancy */
-  if (!CLUTTER_ACTOR_IN_RELAYOUT (stage))
-    {
-      CLUTTER_TIMER_START (_clutter_uprof_context, relayout_timer);
-      CLUTTER_NOTE (ACTOR, "Recomputing layout");
-
-      CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_IN_RELAYOUT);
-
-      natural_width = natural_height = 0;
-      clutter_actor_get_preferred_size (stage,
-                                        NULL, NULL,
-                                        &natural_width, &natural_height);
-
-      box.x1 = 0;
-      box.y1 = 0;
-      box.x2 = natural_width;
-      box.y2 = natural_height;
-
-      CLUTTER_NOTE (ACTOR, "Allocating (0, 0 - %d, %d) for the stage",
-                    (int) natural_width,
-                    (int) natural_height);
-
-      clutter_actor_allocate (stage, &box, CLUTTER_ALLOCATION_NONE);
-
-      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_IN_RELAYOUT);
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, relayout_timer);
-    }
-}
-
 void
 _clutter_do_redraw (ClutterStage *stage)
 {
@@ -277,9 +236,6 @@ _clutter_do_redraw (ClutterStage *stage)
 
   _clutter_stage_set_pick_buffer_valid (stage, FALSE);
   _clutter_stage_reset_picks_per_frame_counter (stage);
-
-  /* Before we can paint, we have to be sure we have the latest layout */
-  _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
 
   _clutter_backend_ensure_context (ctx->backend, stage);
 

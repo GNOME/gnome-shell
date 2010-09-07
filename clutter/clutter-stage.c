@@ -120,6 +120,7 @@ struct _ClutterStagePrivate
 
   GArray             *paint_volume_stack;
 
+  guint relayout_pending       : 1;
   guint redraw_pending         : 1;
   guint is_fullscreen          : 1;
   guint is_cursor_visible      : 1;
@@ -673,7 +674,54 @@ _clutter_stage_needs_update (ClutterStage *stage)
 
   priv = stage->priv;
 
-  return priv->redraw_pending;
+  return priv->relayout_pending || priv->redraw_pending;
+}
+
+void
+_clutter_stage_maybe_relayout (ClutterActor *actor)
+{
+  ClutterStage *stage = CLUTTER_STAGE (actor);
+  ClutterStagePrivate *priv = stage->priv;
+  gfloat natural_width, natural_height;
+  ClutterActorBox box = { 0, };
+  CLUTTER_STATIC_TIMER (relayout_timer,
+                        "Mainloop", /* no parent */
+                        "Layouting",
+                        "The time spent reallocating the stage",
+                        0 /* no application private data */);
+
+  if (!priv->relayout_pending)
+    return;
+  priv->relayout_pending = FALSE;
+
+  /* avoid reentrancy */
+  if (!CLUTTER_ACTOR_IN_RELAYOUT (stage))
+    {
+      CLUTTER_TIMER_START (_clutter_uprof_context, relayout_timer);
+      CLUTTER_NOTE (ACTOR, "Recomputing layout");
+
+      CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_IN_RELAYOUT);
+
+      natural_width = natural_height = 0;
+      clutter_actor_get_preferred_size (CLUTTER_ACTOR (stage),
+                                        NULL, NULL,
+                                        &natural_width, &natural_height);
+
+      box.x1 = 0;
+      box.y1 = 0;
+      box.x2 = natural_width;
+      box.y2 = natural_height;
+
+      CLUTTER_NOTE (ACTOR, "Allocating (0, 0 - %d, %d) for the stage",
+                    (int) natural_width,
+                    (int) natural_height);
+
+      clutter_actor_allocate (CLUTTER_ACTOR (stage),
+                              &box, CLUTTER_ALLOCATION_NONE);
+
+      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_IN_RELAYOUT);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, relayout_timer);
+    }
 }
 
 /**
@@ -693,16 +741,14 @@ _clutter_stage_do_update (ClutterStage *stage)
 
   priv = stage->priv;
 
-  if (!priv->redraw_pending)
-    return FALSE;
-
-  /* clutter_do_redraw() will also call maybe_relayout(), but since a relayout
-   * can queue a redraw, we want to do the relayout before we clear the
-   * update_idle to avoid painting the stage twice. Calling maybe_relayout()
-   * twice in a row is cheap because of caching of requested and allocated
-   * size.
+  /* NB: We need to ensure we have an up to date layout *before* we
+   * check or clear the pending redraws flag since a relayout may
+   * queue a redraw.
    */
   _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
+
+  if (!priv->redraw_pending)
+    return FALSE;
 
   CLUTTER_NOTE (PAINT, "redrawing via idle for stage[%p]", stage);
   _clutter_do_redraw (stage);
@@ -719,6 +765,20 @@ _clutter_stage_do_update (ClutterStage *stage)
     }
 
   return TRUE;
+}
+
+static void
+clutter_stage_real_queue_relayout (ClutterActor *self)
+{
+  ClutterStage *stage = CLUTTER_STAGE (self);
+  ClutterStagePrivate *priv = stage->priv;
+  ClutterActorClass *parent_class;
+
+  priv->relayout_pending = TRUE;
+
+  /* chain up */
+  parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
+  parent_class->queue_relayout (self);
 }
 
 static void
@@ -1112,6 +1172,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   actor_class->unrealize = clutter_stage_unrealize;
   actor_class->show = clutter_stage_show;
   actor_class->hide = clutter_stage_hide;
+  actor_class->queue_relayout = clutter_stage_real_queue_relayout;
   actor_class->queue_redraw = clutter_stage_real_queue_redraw;
   actor_class->apply_transform = clutter_stage_real_apply_transform;
 
@@ -1470,6 +1531,8 @@ clutter_stage_init (ClutterStage *self)
   /* depth cueing */
   priv->fog.z_near = 1.0;
   priv->fog.z_far  = 2.0;
+
+  priv->relayout_pending = TRUE;
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
   clutter_stage_set_title (self, g_get_prgname ());
@@ -2617,6 +2680,7 @@ clutter_stage_ensure_redraw (ClutterStage *stage)
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
   priv = stage->priv;
+  priv->relayout_pending = TRUE;
   priv->redraw_pending = TRUE;
 
   master_clock = _clutter_master_clock_get_default ();
