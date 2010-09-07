@@ -418,7 +418,7 @@ get_children_cb (ClutterActor *child,
  *
  * Retrieves all the children of @container.
  *
- * Return value: (element-type Actor) (transfer container): a list
+ * Return value: (element-type Clutter.Actor) (transfer container): a list
  *   of #ClutterActor<!-- -->s. Use g_list_free() on the returned
  *   list when done.
  *
