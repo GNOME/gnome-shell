@@ -115,11 +115,6 @@ CLUTTER_ACTOR_ABOUT_TO_UNPARENT
         actor is removed from the stage, so unrealize implementations
         can use clutter_actor_get_stage().
 
-CLUTTER_ACTOR_SYNC_MATRICES
-        Set internally by ClutterStage implementations
-        Means: the size of the stage changed and the viewport must be
-        synchronized to the new size
-
 CLUTTER_ACTOR_IN_PAINT:
         Set internally by clutter_actor_paint()
 

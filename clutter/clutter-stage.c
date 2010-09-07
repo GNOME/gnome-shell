@@ -105,6 +105,8 @@ struct _ClutterStagePrivate
 
   ClutterColor        color;
   ClutterPerspective  perspective;
+  CoglMatrix          projection;
+  int                 viewport[4];
   ClutterFog          fog;
 
   gchar              *title;
@@ -122,6 +124,8 @@ struct _ClutterStagePrivate
   guint throttle_motion_events : 1;
   guint use_alpha              : 1;
   guint min_size_changed       : 1;
+  guint dirty_viewport         : 1;
+  guint dirty_projection       : 1;
 };
 
 enum
@@ -291,6 +295,15 @@ clutter_stage_allocate (ClutterActor           *self,
       klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
       klass->allocate (self, &override, flags);
     }
+
+  clutter_actor_get_allocation_geometry (self, &geom);
+  _clutter_stage_set_viewport (CLUTTER_STAGE (self),
+                               0, 0, geom.width, geom.height);
+
+  /* Note: we don't assume that set_viewport will queue a full redraw
+   * since it may bail-out early if something preemptively set the
+   * viewport before the stage was really allocated its new size. */
+  clutter_actor_queue_redraw (self);
 }
 
 static void
@@ -376,7 +389,8 @@ clutter_stage_realize (ClutterActor *self)
    * first paint (which will likely occur before the ConfigureNotify
    * is received)
    */
-  CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_SYNC_MATRICES);
+  priv->dirty_viewport = TRUE;
+  priv->dirty_projection = TRUE;
 
   g_assert (priv->impl != NULL);
   is_realized = _clutter_stage_window_realize (priv->impl);
@@ -795,6 +809,72 @@ clutter_stage_real_delete_event (ClutterStage *stage,
 }
 
 static void
+clutter_stage_real_apply_transform (ClutterActor *stage,
+                                    CoglMatrix   *matrix)
+{
+  ClutterStagePrivate *priv = CLUTTER_STAGE (stage)->priv;
+  CoglMatrix perspective;
+  gfloat z_camera;
+  gfloat width, height;
+
+  /*
+   * In theory, we can compute the camera distance from screen as:
+   *
+   *   0.5 * tan (FOV)
+   *
+   * However, it's better to compute the z_camera from our projection
+   * matrix so that we get a 1:1 mapping at the screen distance. Consider
+   * the upper-left corner of the screen. It has object coordinates
+   * (0,0,0), so by the transform below, ends up with eye coordinate
+   *
+   *   x_eye = x_object / width - 0.5 = - 0.5
+   *   y_eye = (height - y_object) / width - 0.5 = 0.5
+   *   z_eye = z_object / width - z_camera = - z_camera
+   *
+   * From cogl_perspective(), we know that the projection matrix has
+   * the form:
+   *
+   *  (x, 0,  0, 0)
+   *  (0, y,  0, 0)
+   *  (0, 0,  c, d)
+   *  (0, 0, -1, 0)
+   *
+   * Applied to the above, we get clip coordinates of
+   *
+   *  x_clip = x * (- 0.5)
+   *  y_clip = y * 0.5
+   *  w_clip = - 1 * (- z_camera) = z_camera
+   *
+   * Dividing through by w to get normalized device coordinates, we
+   * have, x_nd = x * 0.5 / z_camera, y_nd = - y * 0.5 / z_camera.
+   * The upper left corner of the screen has normalized device coordinates,
+   * (-1, 1), so to have the correct 1:1 mapping, we have to have:
+   *
+   *   z_camera = 0.5 * x = 0.5 * y
+   *
+   * If x != y, then we have a non-uniform aspect ration, and a 1:1 mapping
+   * doesn't make sense.
+   */
+
+  cogl_matrix_init_identity (&perspective);
+  cogl_matrix_perspective (&perspective,
+                           priv->perspective.fovy,
+                           priv->perspective.aspect,
+                           priv->perspective.z_near,
+                           priv->perspective.z_far);
+
+  z_camera = 0.5f * perspective.xx;
+
+  clutter_actor_get_size (stage, &width, &height);
+
+  cogl_matrix_init_identity (matrix);
+  cogl_matrix_translate (matrix, -0.5f, -0.5f, -z_camera);
+  cogl_matrix_scale (matrix,
+                     1.0f / width, -1.0f / height, 1.0f / width);
+  cogl_matrix_translate (matrix, 0.0f, -1.0f * height, 0.0f);
+}
+
+static void
 clutter_stage_set_property (GObject      *object,
 			    guint         prop_id,
 			    const GValue *value,
@@ -1003,6 +1083,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   actor_class->show = clutter_stage_show;
   actor_class->hide = clutter_stage_hide;
   actor_class->queue_redraw = clutter_stage_real_queue_redraw;
+  actor_class->apply_transform = clutter_stage_real_apply_transform;
 
   /**
    * ClutterStage:fullscreen:
@@ -1313,6 +1394,7 @@ clutter_stage_init (ClutterStage *self)
 {
   ClutterStagePrivate *priv;
   ClutterBackend *backend;
+  ClutterGeometry geom;
 
   /* a stage is a top-level object */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IS_TOPLEVEL);
@@ -1348,6 +1430,13 @@ clutter_stage_init (ClutterStage *self)
   priv->perspective.z_near = 0.1;
   priv->perspective.z_far  = 100.0;
 
+  cogl_matrix_init_identity (&priv->projection);
+  cogl_matrix_perspective (&priv->projection,
+                           priv->perspective.fovy,
+                           priv->perspective.aspect,
+                           priv->perspective.z_near,
+                           priv->perspective.z_far);
+
   /* depth cueing */
   priv->fog.z_near = 1.0;
   priv->fog.z_far  = 2.0;
@@ -1360,6 +1449,9 @@ clutter_stage_init (ClutterStage *self)
                     G_CALLBACK (clutter_stage_notify_min_size), NULL);
   g_signal_connect (self, "notify::min-height",
                     G_CALLBACK (clutter_stage_notify_min_size), NULL);
+
+  _clutter_stage_window_get_geometry (priv->impl, &geom);
+  _clutter_stage_set_viewport (self, 0, 0, geom.width, geom.height);
 }
 
 /**
@@ -1463,12 +1555,23 @@ clutter_stage_set_perspective (ClutterStage       *stage,
 
   priv = stage->priv;
 
+  if (priv->perspective.fovy == perspective->fovy &&
+      priv->perspective.aspect == perspective->aspect &&
+      priv->perspective.z_near == perspective->z_near &&
+      priv->perspective.z_far == perspective->z_far)
+    return;
+
   priv->perspective = *perspective;
 
-  /* this will cause the viewport to be reset; see
-   * clutter_maybe_setup_viewport() inside clutter-main.c
-   */
-  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_SYNC_MATRICES);
+  cogl_matrix_init_identity (&priv->projection);
+  cogl_matrix_perspective (&priv->projection,
+                           priv->perspective.fovy,
+                           priv->perspective.aspect,
+                           priv->perspective.z_near,
+                           priv->perspective.z_far);
+
+  priv->dirty_projection = TRUE;
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 }
 
 /**
@@ -1487,6 +1590,148 @@ clutter_stage_get_perspective (ClutterStage       *stage,
   g_return_if_fail (perspective != NULL);
 
   *perspective = stage->priv->perspective;
+}
+
+/*
+ * clutter_stage_get_projection_matrix:
+ * @stage: A #ClutterStage
+ * @projection: return location for a #CoglMatrix representing the
+ *              perspective projection applied to actors on the given
+ *              @stage.
+ *
+ * Retrieves the @stage's projection matrix. This is derived from the
+ * current perspective set using clutter_stage_set_perspective().
+ *
+ * Since: 1.6
+ */
+void
+_clutter_stage_get_projection_matrix (ClutterStage *stage,
+                                      CoglMatrix *projection)
+{
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+  g_return_if_fail (projection != NULL);
+
+  *projection = stage->priv->projection;
+}
+
+/* This simply provides a simple mechanism for us to ensure that
+ * the projection matrix gets re-asserted before painting.
+ *
+ * This is used when switching between multiple stages */
+void
+_clutter_stage_dirty_projection (ClutterStage *stage)
+{
+  stage->priv->dirty_projection = TRUE;
+}
+
+/*
+ * clutter_stage_set_viewport:
+ * @stage: A #ClutterStage
+ * @x: The X postition to render the stage at, in window coordinates
+ * @y: The Y position to render the stage at, in window coordinates
+ * @width: The width to render the stage at, in window coordinates
+ * @height: The height to render the stage at, in window coordinates
+ *
+ * Sets the stage viewport. The viewport defines a final scale and
+ * translation of your rendered stage and actors. This lets you render
+ * your stage into a subregion of the stage window or you could use it to
+ * pan a subregion of the stage if your stage window is smaller then
+ * the stage. (XXX: currently this isn't possible)
+ *
+ * Unlike a scale and translation done using the modelview matrix this
+ * is done after everything has had perspective projection applied, so
+ * for example if you were to pan across a subregion of the stage using
+ * the viewport then you would not see a change in perspective for the
+ * actors on the stage.
+ *
+ * Normally the stage viewport will automatically track the size of the
+ * stage window with no offset so the stage will fill your window. This
+ * behaviour can be changed with the "viewport-mimics-window" property
+ * which will automatically be set to FALSE if you use this API. If
+ * you want to revert to the original behaviour then you should set
+ * this property back to %TRUE using
+ * clutter_stage_set_viewport_mimics_window().
+ * (XXX: If we were to make this API public then we might want to do
+ *  add that property.)
+ *
+ * Since: 1.6
+ */
+void
+_clutter_stage_set_viewport (ClutterStage *stage,
+                             int           x,
+                             int           y,
+                             int           width,
+                             int           height)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+
+  if (x == priv->viewport[0] &&
+      y == priv->viewport[1] &&
+      width == priv->viewport[2] &&
+      height == priv->viewport[3])
+    return;
+
+  priv->viewport[0] = x;
+  priv->viewport[1] = y;
+  priv->viewport[2] = width;
+  priv->viewport[3] = height;
+
+  priv->dirty_viewport = TRUE;
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+}
+
+/* This simply provides a simple mechanism for us to ensure that
+ * the viewport gets re-asserted before next painting.
+ *
+ * This is used when switching between multiple stages */
+void
+_clutter_stage_dirty_viewport (ClutterStage *stage)
+{
+  stage->priv->dirty_viewport = TRUE;
+}
+
+/*
+ * clutter_stage_get_viewport:
+ * @stage: A #ClutterStage
+ * @x: A location for the X position where the stage is rendered,
+ *     in window coordinates.
+ * @y: A location for the Y position where the stage is rendered,
+ *     in window coordinates.
+ * @width: A location for the width the stage is rendered at,
+ *         in window coordinates.
+ * @height: A location for the height the stage is rendered at,
+ *          in window coordinates.
+ *
+ * Returns the viewport offset and size set using
+ * clutter_stage_set_viewport() or if the "viewport-mimics-window" property
+ * is TRUE then @x and @y will be set to 0 and @width and @height will equal
+ * the width if the stage window.
+ *
+ * Since: 1.6
+ */
+void
+_clutter_stage_get_viewport (ClutterStage *stage,
+                             int          *x,
+                             int          *y,
+                             int          *width,
+                             int          *height)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  *x = priv->viewport[0];
+  *y = priv->viewport[1];
+  *width = priv->viewport[2];
+  *height = priv->viewport[3];
 }
 
 /**
@@ -1534,6 +1779,15 @@ clutter_stage_set_fullscreen (ClutterStage *stage,
       if (iface->set_fullscreen)
 	iface->set_fullscreen (impl, fullscreen);
     }
+
+  /* If the backend did fullscreen the stage window then we need to resize
+   * the stage and update its viewport so we queue a relayout.  Note: if the
+   * fullscreen request is handled asynchronously we can't rely on this
+   * queue_relayout to update the viewport, but for example the X backend
+   * will recieve a ConfigureNotify after a successful resize which is how
+   * we ensure the viewport is updated on X.
+   */
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
 }
 
 /**
@@ -2279,9 +2533,31 @@ clutter_stage_ensure_viewport (ClutterStage *stage)
 {
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
-  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_SYNC_MATRICES);
+  _clutter_stage_dirty_viewport (stage);
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+}
+
+void
+_clutter_stage_maybe_setup_viewport (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  if (priv->dirty_viewport)
+    {
+      CLUTTER_NOTE (PAINT,
+                    "Setting up the viewport { w:%d, h:%d }",
+                    priv->viewport[2], priv->viewport[3]);
+
+      cogl_set_viewport (priv->viewport[0],
+                         priv->viewport[1],
+                         priv->viewport[2],
+                         priv->viewport[3]);
+
+    }
+
+  if (priv->dirty_projection)
+    cogl_set_projection_matrix (&priv->projection);
 }
 
 /**

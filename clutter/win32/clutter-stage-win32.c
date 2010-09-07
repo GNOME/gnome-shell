@@ -63,7 +63,6 @@ clutter_stage_win32_show (ClutterStageWindow *stage_window,
     {
       ShowWindow (stage_win32->hwnd, do_raise ? SW_SHOW : SW_SHOWNA);
 
-      clutter_stage_ensure_viewport (CLUTTER_STAGE (stage_win32->wrapper));
       clutter_actor_map (CLUTTER_ACTOR (stage_win32->wrapper));
     }
 }
@@ -190,9 +189,6 @@ clutter_stage_win32_resize (ClutterStageWindow *stage_window,
                             SWP_NOZORDER | SWP_NOMOVE);
             }
         }
-
-      CLUTTER_SET_PRIVATE_FLAGS (stage_win32->wrapper,
-                                 CLUTTER_SYNC_MATRICES);
     }
 }
 
@@ -347,9 +343,6 @@ clutter_stage_win32_set_fullscreen (ClutterStageWindow *stage_window,
                         full_width, full_height,
                         SWP_NOZORDER | SWP_NOMOVE);
         }
-
-      CLUTTER_SET_PRIVATE_FLAGS (stage_win32->wrapper,
-				 CLUTTER_SYNC_MATRICES);
     }
 
   /* Report the state change */

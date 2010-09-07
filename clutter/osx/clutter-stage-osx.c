@@ -170,8 +170,6 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
   stage_osx->requisition_height = [self bounds].size.height;
   clutter_actor_set_size (CLUTTER_ACTOR (self->stage_osx->wrapper),
                           (int)[self bounds].size.width, (int)[self bounds].size.height);
-  /* make sure that the viewport is updated */
-  CLUTTER_SET_PRIVATE_FLAGS (self->stage_osx->wrapper, CLUTTER_SYNC_MATRICES);
 }
 
 /* Simply forward all events that reach our view to clutter. */
@@ -300,8 +298,6 @@ clutter_stage_osx_realize (ClutterStageWindow *stage_window)
                   initWithView: self->view
                      UTF8Title: clutter_stage_get_title (CLUTTER_STAGE (self->wrapper))
                          stage: self];
-  /* all next operations will cause draw operation and viewport should be setup now */
-  _clutter_stage_maybe_setup_viewport(self->wrapper);
   /* looks better than positioning to 0,0 (bottom right) */
   [self->window center];
 
@@ -422,9 +418,6 @@ clutter_stage_osx_resize (ClutterStageWindow *stage_window,
   [self->window setContentSize: size];
 
   CLUTTER_OSX_POOL_RELEASE ();
-  
-  /* make sure that the viewport is updated */
-  CLUTTER_SET_PRIVATE_FLAGS (self->wrapper, CLUTTER_SYNC_MATRICES);
 }
 
 /*************************************************************************/

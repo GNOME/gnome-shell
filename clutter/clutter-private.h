@@ -75,25 +75,20 @@ typedef enum {
   CLUTTER_IS_TOPLEVEL    = 1 << 1,
   CLUTTER_IN_REPARENT    = 1 << 2,
 
-  /* Used by the stage to indicate GL viewport / perspective etc needs
-   * (re)setting.
-   */
-  CLUTTER_SYNC_MATRICES  = 1 << 3,
+  /* Used to avoid recursion */
+  CLUTTER_IN_PAINT       = 1 << 3,
 
   /* Used to avoid recursion */
-  CLUTTER_IN_PAINT       = 1 << 4,
-
-  /* Used to avoid recursion */
-  CLUTTER_IN_RELAYOUT    = 1 << 5,
+  CLUTTER_IN_RELAYOUT    = 1 << 4,
 
   /* Used by the stage if resizing is an asynchronous operation (like on
    * X11) to delay queueing relayouts until we got a notification from the
    * event handling
    */
-  CLUTTER_IN_RESIZE      = 1 << 6,
+  CLUTTER_IN_RESIZE      = 1 << 5,
 
   /* a flag for internal children of Containers */
-  CLUTTER_INTERNAL_CHILD = 1 << 7
+  CLUTTER_INTERNAL_CHILD = 1 << 6
 } ClutterPrivateFlags;
 
 struct _ClutterInputDevice
@@ -251,6 +246,23 @@ void                _clutter_stage_set_window           (ClutterStage       *sta
                                                          ClutterStageWindow *stage_window);
 ClutterStageWindow *_clutter_stage_get_window           (ClutterStage       *stage);
 ClutterStageWindow *_clutter_stage_get_default_window   (void);
+void                _clutter_stage_get_projection_matrix (ClutterStage *stage,
+                                                          CoglMatrix *projection);
+
+void                _clutter_stage_dirty_projection     (ClutterStage *stage);
+void                _clutter_stage_set_viewport         (ClutterStage *stage,
+                                                         int           x,
+                                                         int           y,
+                                                         int           width,
+                                                         int           height);
+void                _clutter_stage_get_viewport         (ClutterStage *stage,
+                                                         int          *x,
+                                                         int          *y,
+                                                         int          *width,
+                                                         int          *height);
+void                _clutter_stage_dirty_viewport       (ClutterStage *stage);
+
+
 void                _clutter_stage_maybe_setup_viewport (ClutterStage       *stage);
 void                _clutter_stage_maybe_relayout       (ClutterActor       *stage);
 gboolean            _clutter_stage_needs_update         (ClutterStage       *stage);
@@ -330,8 +342,12 @@ gboolean _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
                                                gpointer               dummy);
 
 ClutterActor *_clutter_actor_get_stage_internal         (ClutterActor *actor);
+
+void _clutter_actor_apply_modelview_transform           (ClutterActor *self,
+                                                         CoglMatrix *matrix);
 void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
-						       ClutterActor *ancestor);
+						         ClutterActor *ancestor,
+                                                         CoglMatrix *matrix);
 
 void _clutter_actor_rerealize           (ClutterActor    *self,
                                          ClutterCallback  callback,
@@ -349,9 +365,9 @@ void _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
 void _clutter_actor_set_has_pointer (ClutterActor *self,
                                      gboolean      has_pointer);
 
-void _clutter_actor_transform_and_project_box (ClutterActor          *self,
-					       const ClutterActorBox *box,
-					       ClutterVertex          verts[]);
+gboolean _clutter_actor_transform_and_project_box (ClutterActor          *self,
+                                                   const ClutterActorBox *box,
+                                                   ClutterVertex          verts[]);
 
 void _clutter_actor_queue_redraw_with_clip (ClutterActor          *self,
                                             ClutterRedrawFlags     flags,

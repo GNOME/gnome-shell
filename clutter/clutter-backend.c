@@ -421,6 +421,17 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
           clutter_actor_get_size (CLUTTER_ACTOR (stage), &width, &height);
 
           _cogl_onscreen_clutter_backend_set_size (width, height);
+
+          /* Eventually we will have a separate CoglFramebuffer for
+           * each stage and each one will track private projection
+           * matrix and viewport state, but until then we need to make
+           * sure we update the projection and viewport whenever we
+           * switch between stages.
+           *
+           * This dirty mechanism will ensure they are asserted before
+           * the next paint... */
+          _clutter_stage_dirty_viewport (stage);
+          _clutter_stage_dirty_projection (stage);
         }
 
       /* FIXME: With a NULL stage and thus no active context it may make more
@@ -429,17 +440,6 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
        * potential issue of GL calls with no context)
        */
       current_context_stage = new_stage;
-
-      /* if the new stage has a different size than the previous one
-       * we need to update the viewport; we do it by simply setting the
-       * SYNC_MATRICES flag and letting the next redraw cycle take care
-       * of calling glViewport()
-       */
-      if (current_context_stage)
-        {
-          CLUTTER_SET_PRIVATE_FLAGS (current_context_stage,
-                                     CLUTTER_SYNC_MATRICES);
-        }
     }
   else
     CLUTTER_NOTE (MULTISTAGE, "Stage is the same");

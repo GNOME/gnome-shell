@@ -266,34 +266,6 @@ _clutter_stage_maybe_relayout (ClutterActor *stage)
 }
 
 void
-_clutter_stage_maybe_setup_viewport (ClutterStage *stage)
-{
-  if ((CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_SYNC_MATRICES) &&
-      !CLUTTER_STAGE_IN_RESIZE (stage))
-    {
-      ClutterPerspective perspective;
-      gfloat width, height;
-
-      clutter_actor_get_preferred_size (CLUTTER_ACTOR (stage),
-                                        NULL, NULL,
-                                        &width, &height);
-      clutter_stage_get_perspective (stage, &perspective);
-
-      CLUTTER_NOTE (PAINT,
-                    "Setting up the viewport { w:%.2f, h:%.2f }",
-                    width, height);
-
-      _cogl_setup_viewport (width, height,
-                            perspective.fovy,
-                            perspective.aspect,
-                            perspective.z_near,
-                            perspective.z_far);
-
-      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_SYNC_MATRICES);
-    }
-}
-
-void
 _clutter_do_redraw (ClutterStage *stage)
 {
   static GTimer *timer = NULL;

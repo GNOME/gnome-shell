@@ -588,8 +588,6 @@ static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 static void clutter_animatable_iface_init (ClutterAnimatableIface *iface);
 static void atk_implementor_iface_init    (AtkImplementorIface    *iface);
 
-static void _clutter_actor_apply_modelview_transform           (ClutterActor *self);
-
 static void clutter_actor_shader_pre_paint  (ClutterActor *actor,
                                              gboolean      repeat);
 static void clutter_actor_shader_post_paint (ClutterActor *actor);
@@ -636,6 +634,10 @@ static void           clutter_anchor_coord_set_gravity (AnchorCoord    *coord,
                                                         ClutterGravity  gravity);
 
 static gboolean clutter_anchor_coord_is_zero (const AnchorCoord *coord);
+
+static void _clutter_actor_get_relative_modelview (ClutterActor *self,
+                                                   ClutterActor *ancestor,
+                                                   CoglMatrix *matrix);
 
 /* Helper macro which translates by the anchor coord, applies the
    given transformation and then translates back */
@@ -1863,174 +1865,6 @@ clutter_actor_real_queue_relayout (ClutterActor *self)
     clutter_actor_queue_relayout (priv->parent_actor);
 }
 
-/* like ClutterVertex, but with a w component */
-typedef struct {
-  gfloat x;
-  gfloat y;
-  gfloat z;
-  gfloat w;
-} full_vertex_t;
-
-/* copies a fixed vertex into a ClutterVertex */
-static inline void
-full_vertex_to_units (const full_vertex_t *f,
-                      ClutterVertex       *u)
-{
-  u->x = f->x;
-  u->y = f->y;
-  u->z = f->z;
-}
-
-/* transforms a 4-tuple of coordinates using @matrix and
- * places the result into a @vertex
- */
-static inline void
-full_vertex_transform (const CoglMatrix *matrix,
-                       gfloat            x,
-                       gfloat            y,
-                       gfloat            z,
-                       gfloat            w,
-                       full_vertex_t    *vertex)
-{
-  cogl_matrix_transform_point (matrix, &x, &y, &z, &w);
-
-  vertex->x = x;
-  vertex->y = y;
-  vertex->z = z;
-  vertex->w = w;
-}
-
-/* Help macros to scale from OpenGL <-1,1> coordinates system to our
- * X-window based <0,window-size> coordinates
- */
-#define MTX_GL_SCALE_X(x,w,v1,v2)       ((((((x) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
-#define MTX_GL_SCALE_Y(y,w,v1,v2)       ((v1) - (((((y) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
-#define MTX_GL_SCALE_Z(z,w,v1,v2)       (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
-
-/* scales a fixed @vertex using @matrix and @viewport, and
- * transforms the result into a ClutterVertex, filling @vertex_p
- */
-static inline void
-full_vertex_scale (const CoglMatrix    *matrix,
-                   const full_vertex_t *vertex,
-                   const gfloat         viewport[],
-                   ClutterVertex       *vertex_p)
-{
-  gfloat v_x, v_y, v_width, v_height;
-  full_vertex_t tmp;
-
-  tmp = *vertex;
-
-  cogl_matrix_transform_point (matrix, &tmp.x, &tmp.y, &tmp.z, &tmp.w);
-
-  v_x      = viewport[0];
-  v_y      = viewport[1];
-  v_width  = viewport[2];
-  v_height = viewport[3];
-
-  tmp.x = MTX_GL_SCALE_X (tmp.x, tmp.w, v_width,  v_x);
-  tmp.y = MTX_GL_SCALE_Y (tmp.y, tmp.w, v_height, v_y);
-  tmp.z = MTX_GL_SCALE_Z (tmp.z, tmp.w, v_width,  v_x);
-  tmp.w = 0;
-
-  full_vertex_to_units (&tmp, vertex_p);
-}
-
-/* Applies the transforms associated with this actor and its ancestors,
- * retrieves the resulting OpenGL modelview matrix, and uses the matrix
- * to transform the supplied point
- *
- * The point coordinates are in-out parameters
- */
-static void
-clutter_actor_transform_point_relative (ClutterActor *actor,
-					ClutterActor *ancestor,
-					gfloat       *x,
-					gfloat       *y,
-					gfloat       *z,
-					gfloat       *w)
-{
-  full_vertex_t vertex;
-  CoglMatrix matrix;
-
-  vertex.x = (x != NULL) ? *x : 0;
-  vertex.y = (y != NULL) ? *y : 0;
-  vertex.z = (z != NULL) ? *z : 0;
-  vertex.w = (w != NULL) ? *w : 0;
-
-  cogl_push_matrix();
-
-  _clutter_actor_apply_modelview_transform_recursive (actor, ancestor);
-
-  cogl_get_modelview_matrix (&matrix);
-  cogl_matrix_transform_point (&matrix,
-                               &vertex.x,
-                               &vertex.y,
-                               &vertex.z,
-                               &vertex.w);
-
-
-  cogl_pop_matrix();
-
-  if (x)
-    *x = vertex.x;
-
-  if (y)
-    *y = vertex.y;
-
-  if (z)
-    *z = vertex.z;
-
-  if (w)
-    *w = vertex.w;
-}
-
-/* Applies the transforms associated with this actor and its ancestors,
- * retrieves the resulting OpenGL modelview matrix, and uses the matrix
- * to transform the supplied point
- */
-static void
-clutter_actor_transform_point (ClutterActor *actor,
-			       gfloat       *x,
-			       gfloat       *y,
-			       gfloat       *z,
-			       gfloat       *w)
-{
-  full_vertex_t vertex;
-  CoglMatrix matrix;
-
-  vertex.x = (x != NULL) ? *x : 0;
-  vertex.y = (y != NULL) ? *y : 0;
-  vertex.z = (z != NULL) ? *z : 0;
-  vertex.w = (w != NULL) ? *w : 0;
-
-  cogl_push_matrix();
-
-  _clutter_actor_apply_modelview_transform_recursive (actor, NULL);
-
-  cogl_get_modelview_matrix (&matrix);
-  cogl_matrix_transform_point (&matrix,
-                               &vertex.x,
-                               &vertex.y,
-                               &vertex.z,
-                               &vertex.w);
-
-
-  cogl_pop_matrix();
-
-  if (x)
-    *x = vertex.x;
-
-  if (y)
-    *y = vertex.y;
-
-  if (z)
-    *z = vertex.z;
-
-  if (w)
-    *w = vertex.w;
-}
-
 /**
  * clutter_actor_apply_relative_transform_to_point:
  * @self: A #ClutterActor
@@ -2056,34 +1890,119 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
 						 const ClutterVertex *point,
 						 ClutterVertex       *vertex)
 {
-  gfloat x, y, z, w;
-  full_vertex_t tmp;
-  gfloat v[4];
+  gfloat w;
+  CoglMatrix matrix;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (ancestor == NULL || CLUTTER_IS_ACTOR (ancestor));
   g_return_if_fail (point != NULL);
   g_return_if_fail (vertex != NULL);
 
-  x = point->x;
-  y = point->y;
-  z = point->z;
+  *vertex = *point;
   w = 1.0;
 
-  /* First we tranform the point using the OpenGL modelview matrix */
-  clutter_actor_transform_point_relative (self, ancestor, &x, &y, &z, &w);
+  if (ancestor == NULL)
+    ancestor = _clutter_actor_get_stage_internal (self);
 
-  cogl_get_viewport (v);
+  if (ancestor == NULL)
+    {
+      *vertex = *point;
+      return;
+    }
 
-  /* The w[3] parameter should always be 1.0 here, so we ignore it; otherwise
-   * we would have to divide the original verts with it.
-   */
-  tmp.x = (x + 0.5) * v[2];
-  tmp.y = (0.5 - y) * v[3];
-  tmp.z = (z + 0.5) * v[2];
-  tmp.w = 0;
+  _clutter_actor_get_relative_modelview (self, ancestor, &matrix);
+  cogl_matrix_transform_point (&matrix, &vertex->x, &vertex->y, &vertex->z, &w);
+}
 
-  full_vertex_to_units (&tmp, vertex);
+/* Help macros to scale from OpenGL <-1,1> coordinates system to
+ * window coordinates ranging [0,window-size]
+ */
+#define MTX_GL_SCALE_X(x,w,v1,v2) ((((((x) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
+#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - (((((y) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
+#define MTX_GL_SCALE_Z(z,w,v1,v2) (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
+
+static void
+_fully_transform_vertices (const CoglMatrix *modelview,
+                           const CoglMatrix *projection,
+                           const int *viewport,
+                           const ClutterVertex *vertices_in,
+                           ClutterVertex *vertices_out,
+                           int n_vertices)
+{
+  CoglMatrix modelview_projection;
+  int i;
+
+  /* XXX: we should find a way to cache this per actor */
+  cogl_matrix_multiply (&modelview_projection,
+                        projection,
+                        modelview);
+
+  for (i = 0; i < n_vertices; i++)
+    {
+      const ClutterVertex *vertex_in = &vertices_in[i];
+      ClutterVertex *vertex_out = &vertices_out[i];
+      gfloat x, y, z, w;
+
+      x = vertex_in->x;
+      y = vertex_in->y;
+      z = vertex_in->z;
+      w = 1.0;
+
+      /* Transform the point using the modelview matrix */
+      cogl_matrix_transform_point (&modelview_projection, &x, &y, &z, &w);
+
+      /* Finally translate from OpenGL coords to window coords */
+      vertex_out->x = MTX_GL_SCALE_X (x, w, viewport[2], viewport[0]);
+      vertex_out->y = MTX_GL_SCALE_Y (y, w, viewport[3], viewport[1]);
+      vertex_out->z = MTX_GL_SCALE_Z (z, w, viewport[2], viewport[0]);
+    }
+}
+
+static gboolean
+_clutter_actor_fully_transform_vertices (ClutterActor *self,
+                                         const ClutterVertex *vertices_in,
+                                         ClutterVertex *vertices_out,
+                                         int n_vertices)
+{
+  ClutterActor *stage;
+  CoglMatrix modelview;
+  CoglMatrix projection;
+  int viewport[4];
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  /* NB: _clutter_actor_apply_modelview_transform_recursive will never
+   * include the transformation between stage coordinates and OpenGL
+   * window coordinates, we have to explicitly use the
+   * stage->apply_transform to get that... */
+  stage = _clutter_actor_get_stage_internal (self);
+
+  /* We really can't do anything meaningful in this case so don't try
+   * to do any transform */
+  if (stage == NULL)
+    return FALSE;
+
+  /* Setup the modelview */
+  cogl_matrix_init_identity (&modelview);
+  _clutter_actor_apply_modelview_transform (stage, &modelview);
+  _clutter_actor_apply_modelview_transform_recursive (self, stage, &modelview);
+
+  /* Fetch the projection and viewport */
+  _clutter_stage_get_projection_matrix (CLUTTER_STAGE (stage), &projection);
+  _clutter_stage_get_viewport (CLUTTER_STAGE (stage),
+                               &viewport[0],
+                               &viewport[1],
+                               &viewport[2],
+                               &viewport[3]);
+
+  _fully_transform_vertices (&modelview,
+                             &projection,
+                             viewport,
+                             vertices_in,
+                             vertices_out,
+                             n_vertices);
+
+  return TRUE;
 }
 
 /**
@@ -2103,233 +2022,75 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
                                         const ClutterVertex *point,
                                         ClutterVertex       *vertex)
 {
-  full_vertex_t tmp = { 0, };
-  gfloat x, y, z, w;
-  CoglMatrix matrix_p;
-  gfloat v[4];
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (point != NULL);
   g_return_if_fail (vertex != NULL);
-
-  x = point->x;
-  y = point->y;
-  z = point->z;
-  w = 1.0;
-
-  /* First we tranform the point using the OpenGL modelview matrix */
-  clutter_actor_transform_point (self, &x, &y, &z, &w);
-
-  tmp.x = x;
-  tmp.y = y;
-  tmp.z = z;
-  tmp.w = w;
-
-  cogl_get_projection_matrix (&matrix_p);
-  cogl_get_viewport (v);
-
-  /* Now, transform it again with the projection matrix */
-  cogl_matrix_transform_point (&matrix_p,
-                               &tmp.x,
-                               &tmp.y,
-                               &tmp.z,
-                               &tmp.w);
-
-
-  /* Finaly translate from OpenGL coords to window coords */
-  vertex->x = MTX_GL_SCALE_X (tmp.x, tmp.w, v[2], v[0]);
-  vertex->y = MTX_GL_SCALE_Y (tmp.y, tmp.w, v[3], v[1]);
-  vertex->z = MTX_GL_SCALE_Z (tmp.z, tmp.w, v[2], v[0]);
-}
-
-/* Recursively tranform supplied vertices with the tranform for the current
- * actor and up to the ancestor (like clutter_actor_transform_point() but
- * for all the vertices in one go).
- */
-static void
-clutter_actor_transform_vertices_relative (ClutterActor  *self,
-					   ClutterActor  *ancestor,
-                                           full_vertex_t  vertices[])
-{
-  ClutterActorPrivate *priv = self->priv;
-  gfloat width, height;
-  CoglMatrix mtx;
-
-  width  = priv->allocation.x2 - priv->allocation.x1;
-  height = priv->allocation.y2 - priv->allocation.y1;
-
-  cogl_push_matrix();
-
-  _clutter_actor_apply_modelview_transform_recursive (self, ancestor);
-
-  cogl_get_modelview_matrix (&mtx);
-
-  full_vertex_transform (&mtx, 0,     0,      0, 1.0, &vertices[0]);
-  full_vertex_transform (&mtx, width, 0,      0, 1.0, &vertices[1]);
-  full_vertex_transform (&mtx, 0,     height, 0, 1.0, &vertices[2]);
-  full_vertex_transform (&mtx, width, height, 0, 1.0, &vertices[3]);
-
-  cogl_pop_matrix();
-}
-
-/* _clutter_actor_ensure_stage_current
- *
- * Ensures that the actors corresponding stage is made current so we
- * have a valid viewport, projection matrix and modelview matrix stack.
- */
-static void
-_clutter_actor_ensure_stage_current (ClutterActor *self)
-{
-  ClutterActor *stage;
-
-  /* We essentially have to dupe some code from clutter_redraw() here
-   * to make sure GL Matrices etc are initialised if we're called and we
-   * haven't yet rendered anything.
-   *
-   * Simply duping code for now in wait for Cogl cleanup that can hopefully
-   * address this in a nicer way.
-  */
-  stage = _clutter_actor_get_stage_internal (self);
-
-  /* FIXME: if were not yet added to a stage, its probably unsafe to
-   * return default - ideally the func should fail
-  */
-  if (stage == NULL)
-    stage = clutter_stage_get_default ();
-
-  clutter_stage_ensure_current (CLUTTER_STAGE (stage));
-  _clutter_stage_maybe_setup_viewport (CLUTTER_STAGE (stage));
+  _clutter_actor_fully_transform_vertices (self, point, vertex, 1);
 }
 
 /* _clutter_actor_get_relative_modelview:
  *
- * Retrives the modelview transformation relative to some ancestor actor, or
- * the stage if NULL is given for the ancestor.
+ * Retrieves the modelview transformation relative to some ancestor
+ * actor, or the stage if NULL is given for the ancestor.
  *
- * It assumes you currently have an empty matrix stack.
+ * Note: This will never include the transformations from
+ * stage::apply_transform since that would give you a modelview
+ * transform relative to the OpenGL window coordinate space that the
+ * stage lies within.
+ *
+ * If you need to do a full modelview + projective transform and get
+ * to window coordinates then you should explicitly apply the stage
+ * transform to an identity matrix and use
+ * _clutter_actor_apply_modelview_transform like:
+ *
+ *   cogl_matrix_init_identity (&mtx);
+ *   stage = _clutter_actor_get_stage_internal (self);
+ *   _clutter_actor_apply_modelview_transform (stage, &mtx);
  */
 /* FIXME: We should be caching the stage relative modelview along with the
  * actor itself */
-/* TODO: Replace all other occurrences of this code pattern in clutter-actor.c:
- *   cogl_push_matrix();
- *   _clutter_actor_apply_modelview_transform_recursive (self, ancestor)
- *   cogl_get_modelview_matrix()
- *   cogl_pop_matrix();
- * with a call to this function:
- */
-void
+static void
 _clutter_actor_get_relative_modelview (ClutterActor *self,
                                        ClutterActor *ancestor,
                                        CoglMatrix *matrix)
 {
-  ClutterActor *stage;
-  gfloat width, height;
-  CoglMatrix tmp_matrix;
-  gfloat z_camera;
-  ClutterPerspective perspective;
+  g_return_if_fail (ancestor != NULL);
 
-  _clutter_actor_ensure_stage_current (self);
+  cogl_matrix_init_identity (matrix);
 
-  cogl_push_matrix ();
-
-  if (ancestor == NULL)
-    {
-      stage = _clutter_actor_get_stage_internal (self);
-
-      clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
-      cogl_perspective (perspective.fovy,
-                        perspective.aspect,
-                        perspective.z_near,
-                        perspective.z_far);
-
-      cogl_get_projection_matrix (&tmp_matrix);
-      z_camera = 0.5f * tmp_matrix.xx;
-
-      clutter_actor_get_size (stage, &width, &height);
-
-      /* obliterate the current modelview matrix and reset it to be
-       * the same as the stage's at the beginning of a paint run; this
-       * is done to paint the target material in screen coordinates at
-       * the same place as the actor would have been
-       */
-      cogl_matrix_init_identity (&tmp_matrix);
-      cogl_matrix_translate (&tmp_matrix, -0.5f, -0.5f, -z_camera);
-      cogl_matrix_scale (&tmp_matrix, 1.0f / width, -1.0f / height, 1.0f / width);
-      cogl_matrix_translate (&tmp_matrix, 0.0f, -1.0f * height, 0.0f);
-      cogl_set_modelview_matrix (&tmp_matrix);
-    }
-  else
-    {
-      static CoglMatrix identity;
-      static gboolean initialized_identity = FALSE;
-
-       if (!initialized_identity)
-        {
-          cogl_matrix_init_identity (&identity);
-          initialized_identity = TRUE;
-        }
-
-      cogl_set_modelview_matrix (&identity);
-    }
-
-  _clutter_actor_apply_modelview_transform_recursive (self, ancestor);
-
-  cogl_get_modelview_matrix (matrix);
-
-  cogl_pop_matrix ();
+  _clutter_actor_apply_modelview_transform_recursive (self, ancestor, matrix);
 }
 
-/* _clutter_actor_get_projection_and_viewport
- *
- * Retrieves the projection matrix and viewport for the actors corresponding
- * stage.
- */
-void
-_clutter_actor_get_projection_and_viewport (ClutterActor *self,
-                                            CoglMatrix   *matrix,
-                                            float        *viewport)
-{
-  _clutter_actor_ensure_stage_current (self);
-
-  cogl_get_projection_matrix (matrix);
-  cogl_get_viewport (viewport);
-}
-
-/* Recursively transform supplied box with the transform for the current
- * actor and all its ancestors (like clutter_actor_transform_point()
- * but for all the vertices in one go) and project it into screen
- * coordinates
- */
-void
+/* Project the given @box into stage window coordinates, writing the
+ * transformed vertices to @verts[]. */
+gboolean
 _clutter_actor_transform_and_project_box (ClutterActor          *self,
 					  const ClutterActorBox *box,
 					  ClutterVertex          verts[])
 {
-  CoglMatrix mtx;
-  CoglMatrix mtx_p;
-  float v[4];
-  full_vertex_t vertices[4];
+  ClutterVertex box_vertices[4];
 
-  _clutter_actor_get_relative_modelview (self, NULL, &mtx);
+  box_vertices[0].x = box->x1;
+  box_vertices[0].y = box->y1;
+  box_vertices[0].z = 0;
+  box_vertices[1].x = box->x2;
+  box_vertices[1].y = box->y1;
+  box_vertices[1].z = 0;
+  box_vertices[2].x = box->x1;
+  box_vertices[2].y = box->y2;
+  box_vertices[2].z = 0;
+  box_vertices[3].x = box->x2;
+  box_vertices[3].y = box->y2;
+  box_vertices[3].z = 0;
 
-  full_vertex_transform (&mtx, box->x1, box->y1, 0, 1.0, &vertices[0]);
-  full_vertex_transform (&mtx, box->x2, box->y1, 0, 1.0, &vertices[1]);
-  full_vertex_transform (&mtx, box->x1, box->y2, 0, 1.0, &vertices[2]);
-  full_vertex_transform (&mtx, box->x2, box->y2, 0, 1.0, &vertices[3]);
-
-  _clutter_actor_get_projection_and_viewport (self, &mtx_p, v);
-
-  full_vertex_scale (&mtx_p, &vertices[0], v, &verts[0]);
-  full_vertex_scale (&mtx_p, &vertices[1], v, &verts[1]);
-  full_vertex_scale (&mtx_p, &vertices[2], v, &verts[2]);
-  full_vertex_scale (&mtx_p, &vertices[3], v, &verts[3]);
+  return
+    _clutter_actor_fully_transform_vertices (self, box_vertices, verts, 4);
 }
 
 /**
  * clutter_actor_get_allocation_vertices:
  * @self: A #ClutterActor
  * @ancestor: (allow-none): A #ClutterActor to calculate the vertices
- *   against, or %NULL to use the default #ClutterStage
+ *   against, or %NULL to use the #ClutterStage
  * @verts: (out) (array fixed-size=4) (element-type Clutter.Vertex): return
  *   location for an array of 4 #ClutterVertex in which to store the result
  *
@@ -2356,67 +2117,70 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
                                        ClutterVertex  verts[])
 {
   ClutterActorPrivate *priv;
-  ClutterActor *stage;
-  gfloat v[4];
-  full_vertex_t vertices[4];
-  full_vertex_t tmp = { 0, };
+  ClutterActorBox box;
+  ClutterVertex vertices[4];
+  CoglMatrix modelview;
+  float w;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (ancestor == NULL || CLUTTER_IS_ACTOR (ancestor));
 
+  if (ancestor == NULL)
+    ancestor = _clutter_actor_get_stage_internal (self);
+
+  /* Fallback to a NOP transform if the actor isn't parented under a
+   * stage. */
+  if (ancestor == NULL)
+    ancestor = self;
+
   priv = self->priv;
 
-  /* We essentially have to dupe some code from clutter_redraw() here
-   * to make sure GL Matrices etc are initialised if we're called and we
-   * havn't yet rendered anything.
-   *
-   * Simply duping code for now in wait for Cogl cleanup that can hopefully
-   * address this in a nicer way.
-   */
-  stage = _clutter_actor_get_stage_internal (self);
-
-  /* FIXME: if were not yet added to a stage, its probably unsafe to
-   * return default - idealy the func should fail
-  */
-  if (stage == NULL)
-    stage = clutter_stage_get_default ();
-
-  clutter_stage_ensure_current (CLUTTER_STAGE (stage));
-  _clutter_stage_maybe_setup_viewport (CLUTTER_STAGE (stage));
-
   /* if the actor needs to be allocated we force a relayout, so that
-   * clutter_actor_transform_vertices_relative() will have valid values
-   * to use in the transformations
-   */
+   * we will have valid values to use in the transformations */
   if (priv->needs_allocation)
-    _clutter_stage_maybe_relayout (stage);
+    {
+      ClutterActor *stage = _clutter_actor_get_stage_internal (self);
+      if (stage)
+        _clutter_stage_maybe_relayout (stage);
+      else
+        {
+          box.x1 = box.y1 = 0;
+          /* The result isn't really meaningful in this case but at
+           * least try to do something *vaguely* reasonable... */
+          clutter_actor_get_size (self, &box.x2, &box.y2);
+        }
+    }
 
-  clutter_actor_transform_vertices_relative (self, ancestor, vertices);
+  clutter_actor_get_allocation_box (self, &box);
 
-  cogl_get_viewport (v);
+  vertices[0].x = box.x1;
+  vertices[0].y = box.y1;
+  vertices[0].z = 0;
+  vertices[1].x = box.x2;
+  vertices[1].y = box.y1;
+  vertices[1].z = 0;
+  vertices[2].x = box.x1;
+  vertices[2].y = box.y2;
+  vertices[2].z = 0;
+  vertices[3].x = box.x2;
+  vertices[3].y = box.y2;
+  vertices[3].z = 0;
 
-  /* The w[3] parameter should always be 1.0 here, so we ignore it;
-   * otherwise we would have to divide the original verts with it.
-   */
-  tmp.x = ((vertices[0].x + 0.5) * v[2]);
-  tmp.y = ((0.5 - vertices[0].y) * v[3]);
-  tmp.z = ((vertices[0].z + 0.5) * v[2]);
-  full_vertex_to_units (&tmp, &verts[0]);
+  _clutter_actor_get_relative_modelview (self, ancestor, &modelview);
 
-  tmp.x = ((vertices[1].x + 0.5) * v[2]);
-  tmp.y = ((0.5 - vertices[1].y) * v[3]);
-  tmp.z = ((vertices[1].z + 0.5) * v[2]);
-  full_vertex_to_units (&tmp, &verts[1]);
-
-  tmp.x = ((vertices[2].x + 0.5) * v[2]);
-  tmp.y = ((0.5 - vertices[2].y) * v[3]);
-  tmp.z = ((vertices[2].z + 0.5) * v[2]);
-  full_vertex_to_units (&tmp, &verts[2]);
-
-  tmp.x = ((vertices[3].x + 0.5) * v[2]);
-  tmp.y = ((0.5 - vertices[3].y) * v[3]);
-  tmp.z = ((vertices[3].z + 0.5) * v[2]);
-  full_vertex_to_units (&tmp, &verts[3]);
+  w = 1;
+  cogl_matrix_transform_point (&modelview,
+                               &vertices[0].x, &vertices[0].y, &vertices[0].z,
+                               &w);
+  cogl_matrix_transform_point (&modelview,
+                               &vertices[1].x, &vertices[1].y, &vertices[1].z,
+                               &w);
+  cogl_matrix_transform_point (&modelview,
+                               &vertices[2].x, &vertices[2].y, &vertices[2].z,
+                               &w);
+  cogl_matrix_transform_point (&modelview,
+                               &vertices[3].x, &vertices[3].y, &vertices[3].z,
+                               &w);
 }
 
 /**
@@ -2455,12 +2219,9 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
   if (priv->needs_allocation)
     {
       ClutterActor *stage = _clutter_actor_get_stage_internal (self);
-
-      /* FIXME: if were not yet added to a stage, its probably unsafe to
-       * return default - idealy the func should fail
-       */
-      if (stage == NULL)
-	stage = clutter_stage_get_default ();
+      /* There's nothing meaningful we can do now */
+      if (!stage)
+        return;
 
       _clutter_stage_maybe_relayout (stage);
     }
@@ -2481,15 +2242,11 @@ clutter_actor_real_apply_transform (ClutterActor *self,
                                     CoglMatrix   *matrix)
 {
   ClutterActorPrivate *priv = self->priv;
-  gboolean is_stage = CLUTTER_IS_STAGE (self);
 
-  if (!is_stage)
-    {
-      cogl_matrix_translate (matrix,
-                             priv->allocation.x1,
-                             priv->allocation.y1,
-                             0.0);
-    }
+  cogl_matrix_translate (matrix,
+                         priv->allocation.x1,
+                         priv->allocation.y1,
+                         0.0);
 
   if (priv->z)
     cogl_matrix_translate (matrix, 0, 0, priv->z);
@@ -2531,7 +2288,7 @@ clutter_actor_real_apply_transform (ClutterActor *self,
                                                       priv->rxang,
                                                       1.0, 0, 0));
 
-  if (!is_stage && !clutter_anchor_coord_is_zero (&priv->anchor))
+  if (!clutter_anchor_coord_is_zero (&priv->anchor))
     {
       gfloat x, y, z;
 
@@ -2540,26 +2297,13 @@ clutter_actor_real_apply_transform (ClutterActor *self,
     }
 }
 
-/* Applies the transforms associated with this actor to the
- * OpenGL modelview matrix.
- *
- * This function does not push/pop matrix; it is the responsibility
- * of the caller to do so as appropriate
- */
-static void
-_clutter_actor_apply_modelview_transform (ClutterActor *self)
+/* Applies the transforms associated with this actor to the given
+ * matrix. */
+void
+_clutter_actor_apply_modelview_transform (ClutterActor *self,
+                                          CoglMatrix *matrix)
 {
-  CoglMatrix matrix, cur, new;
-
-  cogl_matrix_init_identity (&matrix);
-
-  clutter_actor_get_transformation_matrix (self, &matrix);
-
-  cogl_get_modelview_matrix (&cur);
-
-  cogl_matrix_multiply (&new, &cur, &matrix);
-
-  cogl_set_modelview_matrix (&new);
+  CLUTTER_ACTOR_GET_CLASS (self)->apply_transform (self, matrix);
 }
 
 static gboolean
@@ -2597,42 +2341,30 @@ _clutter_actor_effects_post_paint (ClutterActor *self)
 }
 
 /* Recursively applies the transforms associated with this actor and
- * its ancestors to the OpenGL modelview matrix. Use NULL if you want this
+ * its ancestors to the given matrix. Use NULL if you want this
  * to go all the way down to the stage.
- *
- * This function does not push/pop matrix; it is the responsibility
- * of the caller to do so as appropriate
  */
 void
 _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
-						    ClutterActor *ancestor)
+						    ClutterActor *ancestor,
+                                                    CoglMatrix *matrix)
 {
-  ClutterActor *parent, *stage;
+  ClutterActor *parent;
 
-  parent = clutter_actor_get_parent (self);
-
-  /*
-   * If we reached the ancestor, quit
-   * NB: NULL ancestor means the stage, and this will not trigger
-   * (as it should not)
-   */
+  /* Note we terminate before ever calling stage->apply_transform()
+   * since that would conceptually be relative to the underlying
+   * window OpenGL coordinates so we'd need a special @ancestor
+   * value to represent the fake parent of the stage. */
   if (self == ancestor)
     return;
 
-  stage = _clutter_actor_get_stage_internal (self);
-
-  /* FIXME: if were not yet added to a stage, its probably unsafe to
-   * return default - idealy the func should fail
-  */
-  if (stage == NULL)
-    stage = clutter_stage_get_default ();
+  parent = clutter_actor_get_parent (self);
 
   if (parent != NULL)
-    _clutter_actor_apply_modelview_transform_recursive (parent, ancestor);
-  else if (self != stage)
-    _clutter_actor_apply_modelview_transform (stage);
+    _clutter_actor_apply_modelview_transform_recursive (parent, ancestor,
+                                                        matrix);
 
-  _clutter_actor_apply_modelview_transform (self);
+  _clutter_actor_apply_modelview_transform (self, matrix);
 }
 
 /**
@@ -2703,7 +2435,15 @@ clutter_actor_paint (ClutterActor *self)
   cogl_push_matrix();
 
   if (priv->enable_model_view_transform)
-    _clutter_actor_apply_modelview_transform (self);
+    {
+      CoglMatrix matrix;
+      /* XXX: It could be better to cache the modelview with the actor
+       * instead of progressively building up the transformations on
+       * the matrix stack every time we paint. */
+      cogl_get_modelview_matrix (&matrix);
+      _clutter_actor_apply_modelview_transform (self, &matrix);
+      cogl_set_modelview_matrix (&matrix);
+    }
 
   if (priv->has_clip)
     {
@@ -5066,27 +4806,6 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
   /* If the actor doesn't have a valid allocation then we will queue a
    * full stage redraw */
   if (self->priv->needs_allocation)
-    {
-      clutter_actor_queue_redraw (self);
-      return;
-    }
-
-  /* SYNC_MATRICES is a flag for the stage, which means that we just
-   * got resized and we need to re-setup the viewport.
-   * IN_RESIZE is used on X11 where the resize is asynchronous, so we
-   * don't ask for a viewport change before we have the final size.
-   *
-   * If either of these flags are set then we won't be able to
-   * transform the given clip rectangle into valid stage coordinates,
-   * so we instead queue a full stage redraw.
-   *
-   * (Note: to some extent this is redundant because these flags
-   *  should imply a full stage redraw will be queued, but we at least
-   *  avoid needlessly traversing the actors ancestors to derive an
-   *  incorrect modelview matrix.)
-   */
-  if ((CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_SYNC_MATRICES) &&
-      !CLUTTER_STAGE_IN_RESIZE (self))
     {
       clutter_actor_queue_redraw (self);
       return;
@@ -10657,7 +10376,8 @@ clutter_actor_unset_flags (ClutterActor      *self,
  * @self: a #ClutterActor
  * @matrix: (out): the return location for a #CoglMatrix
  *
- * Retrieves the transformations applied to @self
+ * Retrieves the transformations applied to @self relative to its
+ * parent.
  *
  * Since: 1.0
  */
@@ -10669,7 +10389,7 @@ clutter_actor_get_transformation_matrix (ClutterActor *self,
 
   cogl_matrix_init_identity (matrix);
 
-  CLUTTER_ACTOR_GET_CLASS (self)->apply_transform (self, matrix);
+  _clutter_actor_apply_modelview_transform (self, matrix);
 }
 
 /**

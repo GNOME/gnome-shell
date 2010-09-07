@@ -225,7 +225,6 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterBackendX11 *backend_x11;
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
-  ClutterStage *stage = stage_x11->wrapper;
   gboolean resize;
 
   if (stage_x11->is_foreign_xwin)
@@ -277,26 +276,14 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
           CLUTTER_SET_PRIVATE_FLAGS (stage_x11->wrapper,
                                      CLUTTER_IN_RESIZE);
 
+          /* XXX: in this case we can rely on a subsequent
+           * ConfigureNotify that will result in the stage
+           * being reallocated so we don't actively do anything
+           * to affect the stage allocation here. */
           XResizeWindow (backend_x11->xdpy,
                          stage_x11->xwin,
                          width,
                          height);
-
-          /* If the viewport hasn't previously been initialized then even
-           * though we can't guarantee that the server will honour our request
-           * we need to ensure a valid viewport is set before our first paint.
-           */
-          if (G_UNLIKELY (!stage_x11->viewport_initialized))
-            {
-              ClutterPerspective perspective;
-              clutter_stage_get_perspective (stage, &perspective);
-              _cogl_setup_viewport (width,
-                                    height,
-                                    perspective.fovy,
-                                    perspective.aspect,
-                                    perspective.z_near,
-                                    perspective.z_far);
-            }
         }
     }
 }
@@ -436,8 +423,6 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
 
   CLUTTER_NOTE (BACKEND, "%ssetting fullscreen", is_fullscreen ? "" : "un");
 
-  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_SYNC_MATRICES);
-
   if (is_fullscreen)
     {
       int width, height;
@@ -516,8 +501,10 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
         }
     }
 
-  clutter_stage_ensure_viewport (CLUTTER_STAGE (stage_x11->wrapper));
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_x11->wrapper));
+  /* XXX: Note we rely on the ConfigureNotify mechanism as the common
+   * mechanism to handle notifications of new X window sizes from the
+   * X server so we don't actively change the stage viewport here or
+   * queue a relayout etc. */
 }
 
 static void
@@ -706,7 +693,6 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->is_foreign_xwin = FALSE;
   stage->fullscreening = FALSE;
   stage->is_cursor_visible = TRUE;
-  stage->viewport_initialized = FALSE;
 
   stage->title = NULL;
 
@@ -949,7 +935,16 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
                             set_foreign_window_callback,
                             &fwd);
 
-  clutter_stage_ensure_viewport (stage);
+  /* Queue a relayout - so the stage will be allocated the new
+   * window size.
+   *
+   * Note also that when the stage gets allocated the new
+   * window size that will result in the stage's
+   * priv->viewport being changed, which will in turn result
+   * in the Cogl viewport changing when _clutter_do_redraw
+   * calls _clutter_stage_maybe_setup_viewport().
+   */
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
 
   return TRUE;
 }
