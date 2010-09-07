@@ -498,6 +498,8 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
   ClutterStageX11   *stage_x11;
   GLXDrawable        drawable;
   unsigned int       video_sync_count;
+  gboolean           may_use_clipped_redraw;
+  gboolean           use_clipped_redraw;
   CLUTTER_STATIC_TIMER (painting_timer,
                         "Redrawing", /* parent */
                         "Painting actors",
@@ -522,11 +524,21 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
 
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
 
-  if (backend_glx->can_blit_sub_buffer &&
+  if (G_LIKELY (backend_glx->can_blit_sub_buffer) &&
       /* NB: a degenerate redraw clip width == full stage redraw */
-      (stage_glx->bounding_redraw_clip.width != 0) &&
+      stage_glx->bounding_redraw_clip.width != 0)
+    may_use_clipped_redraw = TRUE;
+  else
+    may_use_clipped_redraw = FALSE;
+
+  if (may_use_clipped_redraw &&
       G_LIKELY (!(clutter_paint_debug_flags &
                   CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
+    use_clipped_redraw = TRUE;
+  else
+    use_clipped_redraw = FALSE;
+
+  if (use_clipped_redraw)
     {
       cogl_clip_push_window_rectangle (stage_glx->bounding_redraw_clip.x,
                                        stage_glx->bounding_redraw_clip.y,
@@ -537,6 +549,52 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
     }
   else
     _clutter_stage_do_paint (stage);
+
+  if (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS &&
+      may_use_clipped_redraw)
+    {
+      ClutterGeometry *clip = &stage_glx->bounding_redraw_clip;
+      static CoglMaterial *outline = NULL;
+      CoglHandle vbo;
+      float x_1 = clip->x;
+      float x_2 = clip->x + clip->width;
+      float y_1 = clip->y;
+      float y_2 = clip->y + clip->height;
+      float quad[8] = {
+        x_1, y_1,
+        x_2, y_1,
+        x_2, y_2,
+        x_1, y_2
+      };
+      CoglMatrix modelview;
+
+      if (outline == NULL)
+        {
+          outline = cogl_material_new ();
+          cogl_material_set_color4ub (outline, 0xff, 0x00, 0x00, 0xff);
+        }
+
+      vbo = cogl_vertex_buffer_new (4);
+      cogl_vertex_buffer_add (vbo,
+                              "gl_Vertex",
+                              2, /* n_components */
+                              COGL_ATTRIBUTE_TYPE_FLOAT,
+                              FALSE, /* normalized */
+                              0, /* stride */
+                              quad);
+      cogl_vertex_buffer_submit (vbo);
+
+      cogl_push_matrix ();
+      cogl_matrix_init_identity (&modelview);
+      _clutter_actor_apply_modelview_transform (CLUTTER_ACTOR (stage),
+                                                &modelview);
+      cogl_set_modelview_matrix (&modelview);
+      cogl_set_source (outline);
+      cogl_vertex_buffer_draw (vbo, COGL_VERTICES_MODE_LINE_LOOP,
+                               0 , 4);
+      cogl_pop_matrix ();
+      cogl_object_unref (vbo);
+    }
 
   cogl_flush ();
   CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);
@@ -558,11 +616,7 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
     backend_glx->get_video_sync (&video_sync_count);
 
   /* push on the screen */
-  if (backend_glx->can_blit_sub_buffer &&
-      /* NB: a degenerate redraw clip width == full stage redraw */
-      (stage_glx->bounding_redraw_clip.width != 0) &&
-      G_LIKELY (!(clutter_paint_debug_flags &
-                  CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
+  if (use_clipped_redraw)
     {
       ClutterGeometry *clip = &stage_glx->bounding_redraw_clip;
       ClutterGeometry copy_area;
@@ -576,43 +630,6 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
                     stage_glx->bounding_redraw_clip.y,
                     stage_glx->bounding_redraw_clip.width,
                     stage_glx->bounding_redraw_clip.height);
-
-      if (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS)
-        {
-          static CoglHandle outline = COGL_INVALID_HANDLE;
-          CoglHandle vbo;
-          float x_1 = clip->x;
-          float x_2 = clip->x + clip->width;
-          float y_1 = clip->y;
-          float y_2 = clip->y + clip->height;
-          float quad[8] = {
-            x_1, y_1,
-            x_2, y_1,
-            x_2, y_2,
-            x_1, y_2
-          };
-
-          if (outline == COGL_INVALID_HANDLE)
-            {
-              outline = cogl_material_new ();
-              cogl_material_set_color4ub (outline, 0xff, 0x00, 0x00, 0xff);
-            }
-
-          vbo = cogl_vertex_buffer_new (4);
-          cogl_vertex_buffer_add (vbo,
-                                  "gl_Vertex",
-                                  2, /* n_components */
-                                  COGL_ATTRIBUTE_TYPE_FLOAT,
-                                  FALSE, /* normalized */
-                                  0, /* stride */
-                                  quad);
-          cogl_vertex_buffer_submit (vbo);
-
-          cogl_set_source (outline);
-          cogl_vertex_buffer_draw (vbo, COGL_VERTICES_MODE_LINE_LOOP,
-                                   0 , 4);
-          cogl_flush ();
-        }
 
       /* XXX: It seems there will be a race here in that the stage
        * window may be resized before glXCopySubBufferMESA is handled

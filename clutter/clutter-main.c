@@ -1611,6 +1611,13 @@ clutter_init_real (GError **error)
   if (!_clutter_backend_post_parse (backend, error))
     return CLUTTER_INIT_ERROR_BACKEND;
 
+  /* If we are displaying the regions that would get redrawn with clipped
+   * redraws enabled we actually have to disable the clipped redrawing
+   * because otherwise we end up with nasty trails of rectangles everywhere.
+   */
+  if (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS)
+    clutter_paint_debug_flags |= CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS;
+
   /* The same is true when drawing the outlines of paint volumes... */
   if (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES)
     clutter_paint_debug_flags |= CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS;
