@@ -463,10 +463,6 @@ void _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
 void _clutter_actor_set_has_pointer (ClutterActor *self,
                                      gboolean      has_pointer);
 
-gboolean _clutter_actor_transform_and_project_box (ClutterActor          *self,
-                                                   const ClutterActorBox *box,
-                                                   ClutterVertex          verts[]);
-
 void _clutter_actor_queue_redraw_with_clip (ClutterActor          *self,
                                             ClutterRedrawFlags     flags,
                                             ClutterPaintVolume    *clip_volume);

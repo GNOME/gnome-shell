@@ -2065,7 +2065,7 @@ _clutter_actor_get_relative_modelview (ClutterActor *self,
 
 /* Project the given @box into stage window coordinates, writing the
  * transformed vertices to @verts[]. */
-gboolean
+static gboolean
 _clutter_actor_transform_and_project_box (ClutterActor          *self,
 					  const ClutterActorBox *box,
 					  ClutterVertex          verts[])
