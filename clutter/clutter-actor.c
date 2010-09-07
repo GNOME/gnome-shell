@@ -8724,6 +8724,32 @@ clutter_geometry_union (const ClutterGeometry *geometry_a,
   result->height = y_2 - y_1;
 }
 
+/**
+ * clutter_geometry_intersects:
+ * @geometry0: The first geometry to test
+ * @geometry1: The second geometry to test
+ *
+ * Determines if @geometry0 and geometry1 intersect returning %TRUE if
+ * they do else %FALSE.
+ *
+ * Return value: %TRUE of @geometry0 and geometry1 intersect else
+ * %FALSE.
+ *
+ * Since: 1.4
+ */
+gboolean
+clutter_geometry_intersects (const ClutterGeometry *geometry0,
+                             const ClutterGeometry *geometry1)
+{
+  if (geometry1->x >= (geometry0->x + (gint)geometry0->width) ||
+      geometry1->y >= (geometry0->y + (gint)geometry0->height) ||
+      (geometry1->x + (gint)geometry1->width) <= geometry0->x ||
+      (geometry1->y + (gint)geometry1->height) <= geometry0->y)
+    return FALSE;
+  else
+    return TRUE;
+}
+
 /*
  * ClutterVertices
  */

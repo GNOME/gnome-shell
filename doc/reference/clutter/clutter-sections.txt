@@ -465,6 +465,7 @@ clutter_vertex_equal
 <SUBSECTION>
 ClutterGeometry
 clutter_geometry_union
+clutter_geometry_intersects
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY

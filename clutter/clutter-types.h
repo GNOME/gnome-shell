@@ -188,9 +188,11 @@ struct _ClutterGeometry
 
 GType clutter_geometry_get_type (void) G_GNUC_CONST;
 
-void  clutter_geometry_union (const ClutterGeometry *geometry_a,
-                              const ClutterGeometry *geometry_b,
-                              ClutterGeometry       *result);
+void      clutter_geometry_union      (const ClutterGeometry *geometry_a,
+                                       const ClutterGeometry *geometry_b,
+                                       ClutterGeometry       *result);
+gboolean  clutter_geometry_intersects (const ClutterGeometry *geometry0,
+                                       const ClutterGeometry *geometry1);
 
 /**
  * ClutterKnot:
