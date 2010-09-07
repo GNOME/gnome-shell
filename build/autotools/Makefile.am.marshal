@@ -14,19 +14,27 @@
 #
 # Author: Emmanuele Bassi <ebassi@linux.intel.com>
 
+# Basic sanity checks
+$(if $(GLIB_GENMARSHAL),,$(error Need to define GLIB_GENMARSHAL))
+
+$(if $(or $(glib_marshal_list), \
+          $(glib_marshal_prefix)),, \
+    $(error Need to define glib_marshal_list and glib_marshal_prefix))
+
 marshal_h = $(glib_marshal_list:.list=.h)
 marshal_c = $(glib_marshal_list:.list=.c)
+marshal_list = $(addprefix $(srcdir)/, $(glib_marshal_list))
 
 CLEANFILES += stamp-marshal
 DISTCLEANFILES += $(marshal_h) $(marshal_c)
 BUILT_SOURCES += $(marshal_h) $(marshal_c)
-EXTRA_DIST += $(srcdir)/$(glib_marshal_list)
+EXTRA_DIST += $(marshal_list)
 
-stamp-marshal: $(glib_marshal_list)
-	$(QUIET_GEN)$(GLIB_GENMARSHAL) \
+stamp-marshal: $(marshal_list)
+	$(AM_V_GEN)$(GLIB_GENMARSHAL) \
 		--prefix=$(glib_marshal_prefix) \
 		--header \
-	$(srcdir)/$(glib_marshal_list) > xgen-mh \
+	$(marshal_list) > xgen-mh \
 	&& (cmp -s xgen-mh $(marshal_h) || cp -f xgen-mh $(marshal_h)) \
 	&& rm -f xgen-mh \
 	&& echo timestamp > $(@F)
@@ -35,11 +43,10 @@ $(marshal_h): stamp-marshal
 	@true
 
 $(marshal_c): $(marshal_h)
-	$(QUIET_GEN)(echo "#include \"$(marshal_h)\"" ; \
+	$(AM_V_GEN)(echo "#include \"$(marshal_h)\"" ; \
 	$(GLIB_GENMARSHAL) \
 		--prefix=$(glib_marshal_prefix) \
 		--body \
-	$(srcdir)/$(glib_marshal_list)) > xgen-mc \
+	$(marshal_list)) > xgen-mc \
 	&& cp xgen-mc $(marshal_c) \
 	&& rm -f xgen-mc
-
