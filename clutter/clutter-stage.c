@@ -210,6 +210,22 @@ clutter_stage_get_preferred_height (ClutterActor *self,
   if (natural_height_p)
     *natural_height_p = geom.height;
 }
+
+static void
+queue_full_redraw (ClutterStage *stage)
+{
+  ClutterStageWindow *stage_window;
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+
+  /* Just calling clutter_actor_queue_redraw will typically only
+   * redraw the bounding box of the children parented on the stage but
+   * in this case we really need to ensure that the full stage is
+   * redrawn so we add a NULL redraw clip to the stage window. */
+  stage_window = _clutter_stage_get_window (stage);
+  _clutter_stage_window_add_redraw_clip (stage_window, NULL);
+}
+
 static void
 clutter_stage_allocate (ClutterActor           *self,
                         const ClutterActorBox  *box,
@@ -311,7 +327,7 @@ clutter_stage_allocate (ClutterActor           *self,
   /* Note: we don't assume that set_viewport will queue a full redraw
    * since it may bail-out early if something preemptively set the
    * viewport before the stage was really allocated its new size. */
-  clutter_actor_queue_redraw (self);
+  queue_full_redraw (CLUTTER_STAGE (self));
 }
 
 /* This provides a common point of entry for painting the scenegraph
@@ -1792,7 +1808,7 @@ _clutter_stage_set_viewport (ClutterStage *stage,
 
   priv->dirty_viewport = TRUE;
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+  queue_full_redraw (stage);
 }
 
 /* This simply provides a simple mechanism for us to ensure that
