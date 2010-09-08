@@ -485,7 +485,7 @@ clutter_color_from_string (ClutterColor *color,
  * hex digits representing the red, green, blue and alpha components
  * respectively.
  *
- * Return value: a newly-allocated text string
+ * Return value: (transfer full): a newly-allocated text string
  *
  * Since: 0.2
  */
@@ -599,8 +599,8 @@ clutter_color_free (ClutterColor *color)
  *
  * Creates a new #ClutterColor with the given values.
  *
- * Return value: the newly allocated color. Use clutter_color_free()
- *   when done
+ * Return value: (transfer full): the newly allocated color.
+ *   Use clutter_color_free() when done
  *
  * Since: 0.8.4
  */
@@ -701,7 +701,7 @@ clutter_value_set_color (GValue             *value,
  *
  * Gets the #ClutterColor contained in @value.
  *
- * Return value: the colors inside the passed #GValue
+ * Return value: (transfer none): the color inside the passed #GValue
  *
  * Since: 0.8.4
  */

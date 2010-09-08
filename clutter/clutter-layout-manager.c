@@ -1230,9 +1230,9 @@ clutter_layout_manager_find_child_property (ClutterLayoutManager *manager,
  * Retrieves all the #GParamSpec<!-- -->s for the layout properties
  * stored inside the #ClutterLayoutMeta sub-class used by @manager
  *
- * Return value: (transfer full): the newly-allocated, %NULL-terminated
- *   array of #GParamSpec<!-- -->s. Use g_free() to free the resources
- *   allocated for the array
+ * Return value: (transfer full) (array length=n_pspecs): the newly-allocated,
+ *   %NULL-terminated array of #GParamSpec<!-- -->s. Use g_free() to free the
+ *   resources allocated for the array
  *
  * Since: 1.2
  */

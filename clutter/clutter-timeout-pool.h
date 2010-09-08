@@ -39,6 +39,10 @@
 
 G_BEGIN_DECLS
 
+/**
+ * ClutterTimeoutPool: (skip)
+ *
+ */
 typedef struct _ClutterTimeoutPool    ClutterTimeoutPool;
 
 ClutterTimeoutPool *clutter_timeout_pool_new    (gint                priority);

@@ -981,7 +981,7 @@ clutter_state_get_states (ClutterState *state)
  * Returns a list of pointers to opaque structures with accessor functions
  * that describe the keys added to an animator.
  *
- * Return value: (transfer container) (element-type ClutterStateKey): a
+ * Return value: (transfer container) (element-type Clutter.StateKey): a
  *   newly allocated #GList of #ClutterStateKey<!-- -->s. The contents of
  *   the returned list are owned by the #ClutterState and should not be
  *   modified or freed. Use g_list_free() to free the resources allocated

@@ -2332,8 +2332,8 @@ _clutter_actor_transform_and_project_box (ClutterActor          *self,
  * @self: A #ClutterActor
  * @ancestor: (allow-none): A #ClutterActor to calculate the vertices
  *   against, or %NULL to use the default #ClutterStage
- * @verts: (out) (array fixed-size=4): return location for an array of
- *   4 #ClutterVertex in which to store the result.
+ * @verts: (out) (array fixed-size=4) (element-type Clutter.Vertex): return
+ *   location for an array of 4 #ClutterVertex in which to store the result
  *
  * Calculates the transformed coordinates of the four corners of the
  * actor in the plane of @ancestor. The returned vertices relate to
@@ -11112,7 +11112,7 @@ clutter_actor_remove_action_by_name (ClutterActor *self,
  *
  * Retrieves the list of actions applied to @self
  *
- * Return value: (transfer container) (element-type ClutterAction): a copy
+ * Return value: (transfer container) (element-type Clutter.Action): a copy
  *   of the list of #ClutterAction<!-- -->s. The contents of the list are
  *   owned by the #ClutterActor. Use g_list_free() to free the resources
  *   allocated by the returned #GList
@@ -11317,7 +11317,7 @@ clutter_actor_remove_constraint_by_name (ClutterActor *self,
  *
  * Retrieves the list of constraints applied to @self
  *
- * Return value: (transfer container) (element-type ClutterConstraint): a copy
+ * Return value: (transfer container) (element-type Clutter.Constraint): a copy
  *   of the list of #ClutterConstraint<!-- -->s. The contents of the list are
  *   owned by the #ClutterActor. Use g_list_free() to free the resources
  *   allocated by the returned #GList
@@ -11573,7 +11573,7 @@ clutter_actor_remove_effect_by_name (ClutterActor *self,
  *
  * Retrieves the #ClutterEffect<!-- -->s applied on @self, if any
  *
- * Return value: (transfer container) (element-type ClutterEffect): a list
+ * Return value: (transfer container) (element-type Clutter.Effect): a list
  *   of #ClutterEffect<!-- -->s, or %NULL. The elements of the returned
  *   list are owned by Clutter and they should not be freed. You should
  *   free the returned list using g_list_free() when done

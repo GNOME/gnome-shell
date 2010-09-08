@@ -1148,9 +1148,10 @@ clutter_script_lookup_filename (ClutterScript *script,
  * Note: this function does not increment the reference count of the
  * objects it returns.
  *
- * Return value: (transfer container) (element-type GObject): a list of #GObject<!-- -->s,
- *   or %NULL. The objects are owned by the #ClutterScript instance. Use g_list_free() on the
- *   returned value when done.
+ * Return value: (transfer container) (element-type GObject.Object): a list
+ *   of #GObject<!-- -->s, or %NULL. The objects are owned by the
+ *   #ClutterScript instance. Use g_list_free() on the returned list when
+ *   done.
  *
  * Since: 0.8.2
  */

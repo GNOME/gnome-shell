@@ -655,7 +655,7 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
  * for derived classes to use this in there alpha notify method but use 
  * #clutter_behaviour_actors_foreach as it avoids alot of needless allocations.
  *
- * Return value: (transfer container) (element-type ClutterActor): a list of
+ * Return value: (transfer container) (element-type Clutter.Actor): a list of
  *   actors. You should free the returned list with g_slist_free() when
  *   finished using it.
  * 

@@ -1354,7 +1354,7 @@ clutter_animator_set_key (ClutterAnimator *animator,
  * Returns a list of pointers to opaque structures with accessor functions
  * that describe the keys added to an animator.
  *
- * Return value: (transfer container) (element-type ClutterAnimatorKey): a
+ * Return value: (transfer container) (element-type Clutter.AnimatorKey): a
  *   list of #ClutterAnimatorKey<!-- -->s; the contents of the list are owned
  *   by the #ClutterAnimator, but you should free the returned list when done,
  *   using g_list_free()

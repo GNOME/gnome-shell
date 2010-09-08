@@ -1223,6 +1223,8 @@ clutter_threads_dispatch_free (gpointer data)
  *                                  NULL);
  * ]|
  *
+ * Rename to: clutter_threads_add_idle
+ *
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 0.4
@@ -1248,7 +1250,7 @@ clutter_threads_add_idle_full (gint           priority,
 }
 
 /**
- * clutter_threads_add_idle:
+ * clutter_threads_add_idle: (skip)
  * @func: function to call
  * @data: data to pass to the function
  *
@@ -1295,6 +1297,8 @@ clutter_threads_add_idle (GSourceFunc func,
  *
  * See also clutter_threads_add_idle_full().
  *
+ * Rename to: clutter_threads_add_timeout
+ *
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 0.4
@@ -1322,7 +1326,7 @@ clutter_threads_add_timeout_full (gint           priority,
 }
 
 /**
- * clutter_threads_add_timeout:
+ * clutter_threads_add_timeout: (skip)
  * @interval: the time between calls to the function, in milliseconds
  * @func: function to call
  * @data: data to pass to the function
@@ -1373,6 +1377,8 @@ clutter_threads_add_timeout (guint       interval,
  *
  * See also clutter_threads_add_idle_full().
  *
+ * Rename to: clutter_threads_add_frame_source
+ *
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 0.8
@@ -1400,7 +1406,7 @@ clutter_threads_add_frame_source_full (gint           priority,
 }
 
 /**
- * clutter_threads_add_frame_source:
+ * clutter_threads_add_frame_source: (skip)
  * @fps: the number of times per second to call the function
  * @func: function to call
  * @data: data to pass to the function

@@ -860,7 +860,7 @@ clutter_score_clear (ClutterScore *score)
 /**
  * clutter_score_append:
  * @score: a #ClutterScore
- * @parent: a #ClutterTimeline in the score, or %NULL
+ * @parent: (allow-none): a #ClutterTimeline in the score, or %NULL
  * @timeline: a #ClutterTimeline
  *
  * Appends a timeline to another one existing in the score; the newly
@@ -1109,10 +1109,10 @@ clutter_score_get_timeline (ClutterScore *score,
  *
  * Retrieves a list of all the #ClutterTimelines managed by @score.
  *
- * Return value: (transfer container) (element-type ClutterTimeline): a #GSList
- *   containing all the timelines in the score. This function does not increase
- *   the reference count of the returned timelines. Use g_slist_free() on the
- *   returned list to deallocate its resources.
+ * Return value: (transfer container) (element-type Clutter.Timeline): a
+ *   #GSList containing all the timelines in the score. This function does
+ *   not increase the reference count of the returned timelines. Use
+ *   g_slist_free() on the returned list to deallocate its resources.
  *
  * Since: 0.6
  */

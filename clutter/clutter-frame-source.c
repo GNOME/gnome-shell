@@ -80,6 +80,8 @@ static GSourceFuncs clutter_frame_source_funcs =
  * multiple times to catch up missing frames if @func takes more than
  * @interval ms to execute.
  *
+ * Rename to: clutter_frame_source_add
+ *
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 0.8
@@ -115,7 +117,7 @@ clutter_frame_source_add_full (gint           priority,
 }
 
 /**
- * clutter_frame_source_add:
+ * clutter_frame_source_add: (skip)
  * @fps: the number of times per second to call the function
  * @func: function to call
  * @data: data to pass to the function

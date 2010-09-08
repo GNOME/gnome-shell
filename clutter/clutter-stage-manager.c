@@ -260,7 +260,7 @@ clutter_stage_manager_get_default_stage (ClutterStageManager *stage_manager)
  *
  * Lists all currently used stages.
  *
- * Return value: (transfer container) (element-type ClutterStage): a newly
+ * Return value: (transfer container) (element-type Clutter.Stage): a newly
  *   allocated list of #ClutterStage objects. Use g_slist_free() to
  *   deallocate it when done.
  *
@@ -278,7 +278,7 @@ clutter_stage_manager_list_stages (ClutterStageManager *stage_manager)
  *
  * Lists all currently used stages.
  *
- * Return value: (transfer none) (element-type ClutterStage): a pointer
+ * Return value: (transfer none) (element-type Clutter.Stage): a pointer
  *   to the internal list of #ClutterStage objects. The returned list
  *   is owned by the #ClutterStageManager and should never be modified
  *   or freed

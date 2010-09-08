@@ -212,7 +212,7 @@ clutter_device_manager_get_default (void)
  *
  * Lists all currently registered input devices
  *
- * Return value: (transfer container) (element-type ClutterInputDevice):
+ * Return value: (transfer container) (element-type Clutter.InputDevice):
  *   a newly allocated list of #ClutterInputDevice objects. Use
  *   g_slist_free() to deallocate it when done
  *
@@ -236,7 +236,7 @@ clutter_device_manager_list_devices (ClutterDeviceManager *device_manager)
  *
  * Lists all currently registered input devices
  *
- * Return value: (transfer none) (element-type ClutterInputDevice):
+ * Return value: (transfer none) (element-type Clutter.InputDevice):
  *   a pointer to the internal list of #ClutterInputDevice objects. The
  *   returned list is owned by the #ClutterDeviceManager and should never
  *   be modified or freed

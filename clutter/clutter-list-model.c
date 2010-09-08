@@ -799,7 +799,7 @@ clutter_list_model_new (guint n_columns,
  * Non-vararg version of clutter_list_model_new(). This function is
  * useful for language bindings.
  *
- * Return value: a new default #ClutterModel
+ * Return value: (transfer full): a new default #ClutterModel
  *
  * Since: 0.6
  */

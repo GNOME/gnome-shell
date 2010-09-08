@@ -891,7 +891,7 @@ clutter_container_class_find_child_property (GObjectClass *klass,
  *
  * Returns an array of #GParamSpec for all child properties.
  *
- * Return value: (array length=n_properties) (transfer container): an array
+ * Return value: (array length=n_properties) (transfer full): an array
  *   of #GParamSpec<!-- -->s which should be freed after use.
  *
  * Since: 0.8

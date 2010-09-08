@@ -1461,7 +1461,7 @@ clutter_model_get_sorting_column (ClutterModel *model)
 /**
  * clutter_model_foreach:
  * @model: a #ClutterModel
- * @func: a #ClutterModelForeachFunc
+ * @func: (scope call): a #ClutterModelForeachFunc
  * @user_data: user data to pass to @func
  *
  * Calls @func for each row in the model. 
@@ -2262,7 +2262,7 @@ clutter_model_iter_get_row (ClutterModelIter *iter)
  *
  * Copies the passed iterator.
  *
- * Return value: a copy of the iterator, or %NULL
+ * Return value: (transfer full): a copy of the iterator, or %NULL
  *
  * Since: 0.8
  */
