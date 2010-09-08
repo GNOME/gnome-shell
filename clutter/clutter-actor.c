@@ -4911,6 +4911,13 @@ clutter_actor_init (ClutterActor *self)
   priv->opacity_parent = NULL;
   priv->enable_model_view_transform = TRUE;
 
+  /* Initialize an empty paint box to start with */
+  priv->last_paint_box.x1 = 0;
+  priv->last_paint_box.y1 = 0;
+  priv->last_paint_box.x2 = 0;
+  priv->last_paint_box.y2 = 0;
+  priv->last_paint_box_valid = TRUE;
+
   memset (priv->clip, 0, sizeof (gfloat) * 4);
 }
 
