@@ -31,6 +31,10 @@ stamp-marshal
 /clutter/x11/clutter-x11-enum-types.[ch]
 /clutter/json/*.gir
 /clutter/cally/cally*.pc
+/build/autotools/*.m4
+!/build/autotools/introspection.m4
+!/build/autotools/as-linguas.m4
+!/build/autotools/as-compiler-flag.m4
 *.gir
 *.typelib
 config.*
