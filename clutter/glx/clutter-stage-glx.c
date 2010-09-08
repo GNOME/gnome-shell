@@ -527,6 +527,9 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
   if (G_LIKELY (backend_glx->can_blit_sub_buffer) &&
       /* NB: a degenerate redraw clip width == full stage redraw */
       stage_glx->bounding_redraw_clip.width != 0 &&
+      /* some drivers struggle to get going and produce some junk
+       * frames when starting up... */
+      G_LIKELY (stage_glx->frame_count > 3) &&
       /* While resizing a window clipped redraws are disabled to avoid
        * artefacts. See clutter-event-x11.c:event_translate for a
        * detailed explanation */
@@ -739,5 +742,7 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
 
   /* reset the redraw clipping for the next paint... */
   stage_glx->initialized_redraw_clip = FALSE;
+
+  stage_glx->frame_count++;
 }
 
