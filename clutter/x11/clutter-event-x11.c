@@ -692,6 +692,33 @@ event_translate (ClutterBackend *backend,
       {
         CLUTTER_NOTE (MULTISTAGE, "expose for stage: %p, redrawing", stage);
         clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+        XExposeEvent *expose = (XExposeEvent *)xevent;
+        ClutterPaintVolume clip;
+        ClutterVertex origin;
+
+        CLUTTER_NOTE (MULTISTAGE,
+                      "expose for stage: %p, "
+                      "redrawing (x=%d, y=%d, width=%d, height=%d)",
+                      stage,
+                      expose->x,
+                      expose->y,
+                      expose->width,
+                      expose->height);
+
+        origin.x = expose->x;
+        origin.y = expose->y;
+        origin.z = 0;
+
+        _clutter_paint_volume_init_static (CLUTTER_ACTOR (stage), &clip);
+
+        clutter_paint_volume_set_origin (&clip, &origin);
+        clutter_paint_volume_set_width (&clip, expose->width);
+        clutter_paint_volume_set_height (&clip, expose->height);
+
+        _clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stage), 0, &clip);
+
+        clutter_paint_volume_free (&clip);
+
         res = FALSE;
       }
       break;
