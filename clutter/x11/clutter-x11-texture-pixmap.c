@@ -797,8 +797,6 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
 
   priv = texture->priv;
 
-  clutter_x11_trap_x_errors ();
-
   /* Get rid of the existing Cogl texture early because it may try to
      use the pixmap which we might destroy */
   material = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (texture));
@@ -807,6 +805,7 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
 
   if (pixmap != None)
     {
+      clutter_x11_trap_x_errors ();
       status = XGetGeometry (clutter_x11_get_default_display(),
 			     (Drawable)pixmap,
 			     &root,
