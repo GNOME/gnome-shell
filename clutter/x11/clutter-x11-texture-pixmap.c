@@ -312,10 +312,9 @@ clutter_x11_texture_pixmap_real_queue_damage_redraw (
                                               gint width,
                                               gint height)
 {
+  ClutterX11TexturePixmapPrivate *priv = texture->priv;
   ClutterActor    *self = CLUTTER_ACTOR (texture);
   ClutterActorBox  allocation;
-  guint	           pixmap_width = 0;
-  guint            pixmap_height = 0;
   float            scale_x;
   float            scale_y;
   ClutterActorBox  clip;
@@ -337,15 +336,13 @@ clutter_x11_texture_pixmap_real_queue_damage_redraw (
       return;
     }
 
+  if (priv->pixmap_width == 0 || priv->pixmap_height == 0)
+    return;
+
   clutter_actor_get_allocation_box (self, &allocation);
 
-  g_object_get (self,
-                "pixmap-width",  &pixmap_width,
-                "pixmap-height", &pixmap_height,
-                NULL);
-
-  scale_x = (allocation.x2 - allocation.x1) / pixmap_width;
-  scale_y = (allocation.y2 - allocation.y1) / pixmap_height;
+  scale_x = (allocation.x2 - allocation.x1) / priv->pixmap_width;
+  scale_y = (allocation.y2 - allocation.y1) / priv->pixmap_height;
 
   clip.x1 = x * scale_x;
   clip.y1 = y * scale_y;
@@ -872,6 +869,7 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
    * above members so the values are all available to the
    * signal handlers. */
   g_object_ref (texture);
+
   if (new_pixmap)
     g_object_notify (G_OBJECT (texture), "pixmap");
   if (new_pixmap_width)
