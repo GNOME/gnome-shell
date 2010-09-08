@@ -1,3 +1,4 @@
+ABOUT-NLS
 INSTALL
 Makefile
 Makefile.in
@@ -100,6 +101,15 @@ TAGS
 /po/POTFILES
 /po/*.pot
 /po/*.gmo
+/po/Makefile.in.in
+/po/Makevars.template
+/po/Rules-quot
+/po/boldquot.sed
+/po/en@boldquot.header
+/po/en@quot.header
+/po/insert-header.sin
+/po/quot.sed
+/po/remove-potcdate.sin
 *.swn
 *.swo
 *.swp
