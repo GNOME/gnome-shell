@@ -482,9 +482,9 @@ clutter_backend_x11_get_features (ClutterBackend *backend)
 }
 
 static void
-clutter_backend_x11_copy_event_data (ClutterBackend *backend,
-                                     ClutterEvent   *src,
-                                     ClutterEvent   *dest)
+clutter_backend_x11_copy_event_data (ClutterBackend     *backend,
+                                     const ClutterEvent *src,
+                                     ClutterEvent       *dest)
 {
   gpointer event_x11;
 

@@ -98,7 +98,7 @@ _clutter_event_set_platform_data (ClutterEvent *event,
  * Return value: a #ClutterEventType
  */
 ClutterEventType
-clutter_event_type (ClutterEvent *event)
+clutter_event_type (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, CLUTTER_NOTHING);
 
@@ -116,7 +116,7 @@ clutter_event_type (ClutterEvent *event)
  * Since: 0.4
  */
 guint32
-clutter_event_get_time (ClutterEvent *event)
+clutter_event_get_time (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, CLUTTER_CURRENT_TIME);
 
@@ -134,7 +134,7 @@ clutter_event_get_time (ClutterEvent *event)
  * Since: 0.4
  */
 ClutterModifierType
-clutter_event_get_state (ClutterEvent *event)
+clutter_event_get_state (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, 0);
 
@@ -164,17 +164,17 @@ clutter_event_get_state (ClutterEvent *event)
 /**
  * clutter_event_get_coords:
  * @event: a #ClutterEvent
- * @x: return location for the X coordinate
- * @y: return location for the Y coordinate
+ * @x: (out): return location for the X coordinate, or %NULL
+ * @y: (out): return location for the Y coordinate, or %NULL
  *
  * Retrieves the coordinates of @event and puts them into @x and @y.
  *
  * Since: 0.4
  */
 void
-clutter_event_get_coords (ClutterEvent *event,
-                          gfloat       *x,
-                          gfloat       *y)
+clutter_event_get_coords (const ClutterEvent *event,
+                          gfloat             *x,
+                          gfloat             *y)
 {
   gfloat event_x, event_y;
 
@@ -235,7 +235,7 @@ clutter_event_get_coords (ClutterEvent *event,
  * Since: 0.6
  */
 ClutterActor *
-clutter_event_get_source (ClutterEvent *event)
+clutter_event_get_source (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, NULL);
 
@@ -254,7 +254,7 @@ clutter_event_get_source (ClutterEvent *event)
  * Since: 0.8
  */
 ClutterStage *
-clutter_event_get_stage (ClutterEvent *event)
+clutter_event_get_stage (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, NULL);
 
@@ -272,7 +272,7 @@ clutter_event_get_stage (ClutterEvent *event)
  * Since: 1.0
  */
 ClutterEventFlags
-clutter_event_get_flags (ClutterEvent *event)
+clutter_event_get_flags (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, CLUTTER_EVENT_NONE);
 
@@ -291,7 +291,7 @@ clutter_event_get_flags (ClutterEvent *event)
  * Since: 1.0
  */
 ClutterActor *
-clutter_event_get_related (ClutterEvent *event)
+clutter_event_get_related (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, NULL);
   g_return_val_if_fail (event->type == CLUTTER_ENTER ||
@@ -311,7 +311,7 @@ clutter_event_get_related (ClutterEvent *event)
  * Since: 1.0
  */
 ClutterScrollDirection
-clutter_event_get_scroll_direction (ClutterEvent *event)
+clutter_event_get_scroll_direction (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, CLUTTER_SCROLL_UP);
   g_return_val_if_fail (event->type == CLUTTER_SCROLL, CLUTTER_SCROLL_UP);
@@ -331,7 +331,7 @@ clutter_event_get_scroll_direction (ClutterEvent *event)
  * Since: 1.0
  */
 guint32
-clutter_event_get_button (ClutterEvent *event)
+clutter_event_get_button (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, 0);
   g_return_val_if_fail (event->type == CLUTTER_BUTTON_PRESS ||
@@ -352,7 +352,7 @@ clutter_event_get_button (ClutterEvent *event)
  * Since: 1.0
  */
 guint32
-clutter_event_get_click_count (ClutterEvent *event)
+clutter_event_get_click_count (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, 0);
   g_return_val_if_fail (event->type == CLUTTER_BUTTON_PRESS ||
@@ -375,7 +375,7 @@ clutter_event_get_click_count (ClutterEvent *event)
  * Since: 1.0
  */
 guint
-clutter_event_get_key_symbol (ClutterEvent *event)
+clutter_event_get_key_symbol (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, 0);
   g_return_val_if_fail (event->type == CLUTTER_KEY_PRESS ||
@@ -396,7 +396,7 @@ clutter_event_get_key_symbol (ClutterEvent *event)
  * Since: 1.0
  */
 guint16
-clutter_event_get_key_code (ClutterEvent *event)
+clutter_event_get_key_code (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, 0);
   g_return_val_if_fail (event->type == CLUTTER_KEY_PRESS ||
@@ -414,7 +414,7 @@ clutter_event_get_key_code (ClutterEvent *event)
  * Return value: The unicode value representing the key
  */
 guint32
-clutter_event_get_key_unicode (ClutterEvent *event)
+clutter_event_get_key_unicode (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, 0);
   g_return_val_if_fail (event->type == CLUTTER_KEY_PRESS ||
@@ -483,7 +483,7 @@ clutter_keysym_to_unicode (guint keyval)
  *   no specific device set.
  */
 gint
-clutter_event_get_device_id (ClutterEvent *event)
+clutter_event_get_device_id (const ClutterEvent *event)
 {
   ClutterInputDevice *device = NULL;
 
@@ -533,7 +533,7 @@ clutter_event_get_device_id (ClutterEvent *event)
  * Since: 1.0
  */
 ClutterInputDeviceType
-clutter_event_get_device_type (ClutterEvent *event)
+clutter_event_get_device_type (const ClutterEvent *event)
 {
   ClutterInputDevice *device = NULL;
 
@@ -591,7 +591,7 @@ clutter_event_get_device_type (ClutterEvent *event)
  * Since: 1.0
  */
 ClutterInputDevice *
-clutter_event_get_device (ClutterEvent *event)
+clutter_event_get_device (const ClutterEvent *event)
 {
   ClutterInputDevice *device = NULL;
 
@@ -661,7 +661,7 @@ clutter_event_new (ClutterEventType type)
   new_event = (ClutterEvent *) priv;
   new_event->type = new_event->any.type = type;
 
-  if (all_events == NULL)
+  if (G_UNLIKELY (all_events == NULL))
     all_events = g_hash_table_new (NULL, NULL);
 
   g_hash_table_replace (all_events, priv, GUINT_TO_POINTER (1));
@@ -678,7 +678,7 @@ clutter_event_new (ClutterEventType type)
  * Return value: A newly allocated #ClutterEvent
  */
 ClutterEvent *
-clutter_event_copy (ClutterEvent *event)
+clutter_event_copy (const ClutterEvent *event)
 {
   ClutterEvent *new_event;
 
@@ -776,7 +776,7 @@ clutter_event_peek (void)
  * Since: 0.6
  */
 void
-clutter_event_put (ClutterEvent *event)
+clutter_event_put (const ClutterEvent *event)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
   ClutterEvent       *event_copy;

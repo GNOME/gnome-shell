@@ -519,9 +519,9 @@ _clutter_backend_get_units_per_em (ClutterBackend       *backend,
 }
 
 void
-_clutter_backend_copy_event_data (ClutterBackend *backend,
-                                  ClutterEvent   *src,
-                                  ClutterEvent   *dest)
+_clutter_backend_copy_event_data (ClutterBackend     *backend,
+                                  const ClutterEvent *src,
+                                  ClutterEvent       *dest)
 {
   ClutterBackendClass *klass;
 

@@ -85,11 +85,11 @@ struct _ClutterBackendClass
                                                 ClutterStage    *stage);
   ClutterDeviceManager *(* get_device_manager) (ClutterBackend  *backend);
 
-  void                  (* copy_event_data)    (ClutterBackend  *backend,
-                                                ClutterEvent    *src,
-                                                ClutterEvent    *dest);
-  void                  (* free_event_data)    (ClutterBackend  *backend,
-                                                ClutterEvent    *event);
+  void                  (* copy_event_data)    (ClutterBackend     *backend,
+                                                const ClutterEvent *src,
+                                                ClutterEvent       *dest);
+  void                  (* free_event_data)    (ClutterBackend     *backend,
+                                                ClutterEvent       *event);
 
   /* signals */
   void (* resolution_changed) (ClutterBackend *backend);

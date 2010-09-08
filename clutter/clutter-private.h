@@ -291,11 +291,11 @@ gboolean      _clutter_backend_post_parse     (ClutterBackend  *backend,
                                                GError         **error);
 void          _clutter_backend_init_events    (ClutterBackend  *backend);
 
-void          _clutter_backend_copy_event_data (ClutterBackend  *backend,
-                                                ClutterEvent    *src,
-                                                ClutterEvent    *dest);
-void          _clutter_backend_free_event_data (ClutterBackend  *backend,
-                                                ClutterEvent    *event);
+void          _clutter_backend_copy_event_data (ClutterBackend     *backend,
+                                                const ClutterEvent *src,
+                                                ClutterEvent       *dest);
+void          _clutter_backend_free_event_data (ClutterBackend     *backend,
+                                                ClutterEvent       *event);
 
 ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
 
