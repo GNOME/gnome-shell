@@ -394,6 +394,38 @@ Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 
 INTROSPECTION_GIRS += Cally-@CLUTTER_API_VERSION@.gir
 
+if SUPPORT_X11
+
+x11_sources = \
+	x11/clutter-backend-x11.c		\
+	x11/clutter-backend-x11.h		\
+	x11/clutter-device-manager-x11.c	\
+	x11/clutter-device-manager-x11.h	\
+	x11/clutter-event-x11.c			\
+	x11/clutter-input-device-x11.c		\
+	x11/clutter-input-device-x11.h		\
+	x11/clutter-keymap-x11.c		\
+	x11/clutter-keymap-x11.h		\
+	x11/clutter-settings-x11.h		\
+	x11/clutter-stage-x11.c			\
+	x11/clutter-stage-x11.h			\
+	x11/clutter-x11-enum-types.c		\
+	x11/clutter-x11-enum-types.h		\
+	x11/clutter-x11.h			\
+	x11/clutter-x11-texture-pixmap.c	\
+	x11/clutter-x11-texture-pixmap.h
+
+ClutterX11-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
+
+ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = --warn-all --identifier-prefix=ClutterX11 --symbol-prefix=clutter_x11
+ClutterX11_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = Clutter-1.0 xlib-2.0
+ClutterX11_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+ClutterX11_@CLUTTER_API_VERSION_AM@_gir_FILES = $(x11_sources)
+ClutterX11_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS) -L$(top_builddir)/clutter
+
+INTROSPECTION_GIRS += ClutterX11-@CLUTTER_API_VERSION@.gir
+endif # SUPPORT_X11
+
 # INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
 # install anything - we need to install inside our prefix.
 girdir = $(datadir)/gir-1.0
