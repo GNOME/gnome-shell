@@ -136,9 +136,9 @@ clutter_color_darken (const ClutterColor *color,
 /**
  * clutter_color_to_hls:
  * @color: a #ClutterColor
- * @hue: return location for the hue value or %NULL
- * @luminance: return location for the luminance value or %NULL
- * @saturation: return location for the saturation value or %NULL
+ * @hue: (out): return location for the hue value or %NULL
+ * @luminance: (out): return location for the luminance value or %NULL
+ * @saturation: (out): return location for the saturation value or %NULL
  *
  * Converts @color to the HLS format.
  *

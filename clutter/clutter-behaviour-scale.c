@@ -377,13 +377,13 @@ clutter_behaviour_scale_set_bounds (ClutterBehaviourScale *scale,
 /**
  * clutter_behaviour_scale_get_bounds:
  * @scale: a #ClutterBehaviourScale
- * @x_scale_start: return location for the initial scale factor on the X
+ * @x_scale_start: (out): return location for the initial scale factor on the X
  *   axis, or %NULL
- * @y_scale_start: return location for the initial scale factor on the Y
+ * @y_scale_start: (out): return location for the initial scale factor on the Y
  *   axis, or %NULL
- * @x_scale_end: return location for the final scale factor on the X axis,
+ * @x_scale_end: (out): return location for the final scale factor on the X axis,
  *   or %NULL
- * @y_scale_end: return location for the final scale factor on the Y axis,
+ * @y_scale_end: (out): return location for the final scale factor on the Y axis,
  *   or %NULL
  *
  * Retrieves the bounds used by scale behaviour.

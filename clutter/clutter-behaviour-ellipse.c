@@ -629,8 +629,8 @@ clutter_behaviour_ellipse_set_center (ClutterBehaviourEllipse *self,
 /**
  * clutter_behaviour_ellipse_get_center:
  * @self: a #ClutterBehaviourEllipse
- * @x: return location for the X coordinate of the center, or %NULL
- * @y: return location for the Y coordinate of the center, or %NULL
+ * @x: (out): return location for the X coordinate of the center, or %NULL
+ * @y: (out): return location for the Y coordinate of the center, or %NULL
  *
  * Gets the center of the elliptical path path.
  *
@@ -979,9 +979,9 @@ clutter_behaviour_ellipse_set_tilt (ClutterBehaviourEllipse *self,
 /**
  * clutter_behaviour_ellipse_get_tilt:
  * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_x: return location for tilt angle on the X axis, or %NULL.
- * @angle_tilt_y: return location for tilt angle on the Y axis, or %NULL.
- * @angle_tilt_z: return location for tilt angle on the Z axis, or %NULL.
+ * @angle_tilt_x: (out): return location for tilt angle on the X axis, or %NULL.
+ * @angle_tilt_y: (out): return location for tilt angle on the Y axis, or %NULL.
+ * @angle_tilt_z: (out): return location for tilt angle on the Z axis, or %NULL.
  *
  * Gets the tilt of the ellipse around the center in Y axis.
  *

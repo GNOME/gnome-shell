@@ -746,9 +746,9 @@ clutter_text_coords_to_position (ClutterText *text,
  * clutter_text_position_to_coords:
  * @self: a #ClutterText
  * @position: position in characters
- * @x: return location for the X coordinate, or %NULL
- * @y: return location for the Y coordinate, or %NULL
- * @line_height: return location for the line height, or %NULL
+ * @x: (out): return location for the X coordinate, or %NULL
+ * @y: (out): return location for the Y coordinate, or %NULL
+ * @line_height: (out): return location for the line height, or %NULL
  *
  * Retrieves the coordinates of the given @position.
  *

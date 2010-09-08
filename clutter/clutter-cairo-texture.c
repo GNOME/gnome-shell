@@ -732,8 +732,8 @@ clutter_cairo_texture_set_surface_size (ClutterCairoTexture *self,
 /**
  * clutter_cairo_texture_get_surface_size:
  * @self: a #ClutterCairoTexture
- * @width: return location for the surface width, or %NULL
- * @height: return location for the surface height, or %NULL
+ * @width: (out): return location for the surface width, or %NULL
+ * @height: (out): return location for the surface height, or %NULL
  *
  * Retrieves the surface width and height for @self.
  *

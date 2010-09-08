@@ -8764,7 +8764,7 @@ clutter_animatable_iface_init (ClutterAnimatableIface *iface)
 }
 
 /**
- * clutter_actor_transform_stage_point
+ * clutter_actor_transform_stage_point:
  * @self: A #ClutterActor
  * @x: (in): x screen coordinate of the point to unproject
  * @y: (in): y screen coordinate of the point to unproject

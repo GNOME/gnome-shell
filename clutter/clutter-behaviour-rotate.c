@@ -655,9 +655,9 @@ clutter_behaviour_rotate_set_center (ClutterBehaviourRotate *rotate,
 /**
  * clutter_behaviour_rotate_get_center:
  * @rotate: a #ClutterBehaviourRotate
- * @x: return location for the X center of rotation
- * @y: return location for the Y center of rotation
- * @z: return location for the Z center of rotation
+ * @x: (out): return location for the X center of rotation
+ * @y: (out): return location for the Y center of rotation
+ * @z: (out): return location for the Z center of rotation
  *
  * Retrieves the center of rotation set using
  * clutter_behaviour_rotate_set_center().

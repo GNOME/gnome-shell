@@ -287,8 +287,8 @@ clutter_behaviour_opacity_set_bounds (ClutterBehaviourOpacity *behaviour,
 /**
  * clutter_behaviour_opacity_get_bounds:
  * @behaviour: a #ClutterBehaviourOpacity
- * @opacity_start: return location for the minimum level of opacity, or %NULL
- * @opacity_end: return location for the maximum level of opacity, or %NULL
+ * @opacity_start: (out): return location for the minimum level of opacity, or %NULL
+ * @opacity_end: (out): return location for the maximum level of opacity, or %NULL
  *
  * Gets the initial and final levels of the opacity applied by @behaviour
  * on each actor it controls.

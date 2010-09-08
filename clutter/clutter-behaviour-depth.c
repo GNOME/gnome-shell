@@ -263,8 +263,8 @@ clutter_behaviour_depth_set_bounds (ClutterBehaviourDepth *behaviour,
 /**
  * clutter_behaviour_depth_get_bounds:
  * @behaviour: a #ClutterBehaviourDepth
- * @depth_start: return location for the initial depth value, or %NULL
- * @depth_end: return location for the final depth value, or %NULL
+ * @depth_start: (out): return location for the initial depth value, or %NULL
+ * @depth_end: (out): return location for the final depth value, or %NULL
  *
  * Gets the boundaries of the @behaviour
  *

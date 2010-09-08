@@ -149,7 +149,7 @@ clutter_script_get_type_from_class (const gchar *name)
  * clutter_script_enum_from_string:
  * @type: a #GType for an enumeration type
  * @string: the enumeration value as a string
- * @enum_value: return location for the enumeration value as an integer
+ * @enum_value: (out): return location for the enumeration value as an integer
  *
  * Converts an enumeration value inside @string into a numeric
  * value and places it into @enum_value.
