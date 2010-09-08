@@ -685,6 +685,31 @@ clutter_texture_paint (ClutterActor *self)
   gen_texcoords_and_draw_cogl_rectangle (self);
 }
 
+static gboolean
+clutter_texture_get_paint_volume (ClutterActor *self,
+                                  ClutterPaintVolume *volume)
+{
+  ClutterGeometry allocation;
+
+  /* XXX: we are being conservative here and not making assumptions
+   * that sub-classes won't paint outside their allocation. */
+  if (G_OBJECT_TYPE (self) != CLUTTER_TYPE_TEXTURE)
+    return FALSE;
+
+  /* XXX: clutter_actor_get_allocation can potentially be very
+   * expensive to call if called while the actor doesn't have a valid
+   * allocation since it will trigger a synchronous relayout of the
+   * scenegraph. We explicitly check we have a valid allocation
+   * to avoid hitting that codepath. */
+  if (!clutter_actor_has_allocation (self))
+    return FALSE;
+
+  clutter_actor_get_allocation_geometry (self, &allocation);
+  clutter_paint_volume_set_width (volume, allocation.width);
+  clutter_paint_volume_set_height (volume, allocation.height);
+  return TRUE;
+}
+
 static void
 clutter_texture_async_data_free (ClutterTextureAsyncData *data)
 {
@@ -956,10 +981,11 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 
   g_type_class_add_private (klass, sizeof (ClutterTexturePrivate));
 
-  actor_class->paint          = clutter_texture_paint;
-  actor_class->pick           = clutter_texture_pick;
-  actor_class->realize        = clutter_texture_realize;
-  actor_class->unrealize      = clutter_texture_unrealize;
+  actor_class->paint            = clutter_texture_paint;
+  actor_class->pick             = clutter_texture_pick;
+  actor_class->get_paint_volume = clutter_texture_get_paint_volume;
+  actor_class->realize          = clutter_texture_realize;
+  actor_class->unrealize        = clutter_texture_unrealize;
 
   actor_class->get_preferred_width  = clutter_texture_get_preferred_width;
   actor_class->get_preferred_height = clutter_texture_get_preferred_height;

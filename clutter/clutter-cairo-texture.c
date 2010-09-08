@@ -366,6 +366,31 @@ clutter_cairo_texture_get_preferred_height (ClutterActor *actor,
     *natural_height = (gfloat) priv->height;
 }
 
+static gboolean
+clutter_cairo_texture_get_paint_volume (ClutterActor *self,
+                                        ClutterPaintVolume *volume)
+{
+  ClutterGeometry allocation;
+
+  /* XXX: we are being conservative here and not making assumptions
+   * that sub-classes won't paint outside their allocation. */
+  if (G_OBJECT_TYPE (self) != CLUTTER_TYPE_CAIRO_TEXTURE)
+    return FALSE;
+
+  /* XXX: clutter_actor_get_allocation can potentially be very
+   * expensive to call if called while the actor doesn't have a valid
+   * allocation since it will trigger a synchronous relayout of the
+   * scenegraph. We explicitly check we have a valid allocation
+   * to avoid hitting that codepath. */
+  if (!clutter_actor_has_allocation (self))
+    return FALSE;
+
+  clutter_actor_get_allocation_geometry (self, &allocation);
+  clutter_paint_volume_set_width (volume, allocation.width);
+  clutter_paint_volume_set_height (volume, allocation.height);
+  return TRUE;
+}
+
 static void
 clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
 {
@@ -377,6 +402,9 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
   gobject_class->set_property = clutter_cairo_texture_set_property;
   gobject_class->get_property = clutter_cairo_texture_get_property;
   gobject_class->notify       = clutter_cairo_texture_notify;
+
+  actor_class->get_paint_volume =
+    clutter_cairo_texture_get_paint_volume;
 
   actor_class->get_preferred_width =
     clutter_cairo_texture_get_preferred_width;

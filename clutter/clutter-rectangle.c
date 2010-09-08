@@ -152,6 +152,31 @@ clutter_rectangle_paint (ClutterActor *self)
     }
 }
 
+static gboolean
+clutter_rectangle_get_paint_volume (ClutterActor *self,
+                                    ClutterPaintVolume *volume)
+{
+  ClutterGeometry allocation;
+
+  /* XXX: we are being conservative here and not making assumptions
+   * that sub-classes won't paint outside their allocation. */
+  if (G_OBJECT_TYPE (self) != CLUTTER_TYPE_RECTANGLE)
+    return FALSE;
+
+  /* XXX: clutter_actor_get_allocation can potentially be very
+   * expensive to call if called while the actor doesn't have a valid
+   * allocation since it will trigger a synchronous relayout of the
+   * scenegraph. We explicitly check we have a valid allocation
+   * to avoid hitting that codepath. */
+  if (!clutter_actor_has_allocation (self))
+    return FALSE;
+
+  clutter_actor_get_allocation_geometry (self, &allocation);
+  clutter_paint_volume_set_width (volume, allocation.width);
+  clutter_paint_volume_set_height (volume, allocation.height);
+  return TRUE;
+}
+
 static void
 clutter_rectangle_set_property (GObject      *object,
 				guint         prop_id,
@@ -231,7 +256,8 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec        *pspec;
 
-  actor_class->paint        = clutter_rectangle_paint;
+  actor_class->paint            = clutter_rectangle_paint;
+  actor_class->get_paint_volume = clutter_rectangle_get_paint_volume;
 
   gobject_class->finalize     = clutter_rectangle_finalize;
   gobject_class->dispose      = clutter_rectangle_dispose;

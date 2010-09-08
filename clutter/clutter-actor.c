@@ -3457,19 +3457,7 @@ static gboolean
 clutter_actor_real_get_paint_volume (ClutterActor       *self,
                                      ClutterPaintVolume *volume)
 {
-  ClutterActorPrivate *priv = self->priv;
-  gfloat width, height;
-
-  if (G_UNLIKELY (priv->needs_allocation))
-    return FALSE;
-
-  /* the default origin is set to { 0, 0, 0 } */
-  clutter_actor_box_get_size (&priv->allocation, &width, &height);
-  clutter_paint_volume_set_width (volume, width);
-  clutter_paint_volume_set_height (volume, height);
-  /* the default depth will be 0 since most actors are 2D */
-
-  return TRUE;
+  return FALSE;
 }
 
 static void
