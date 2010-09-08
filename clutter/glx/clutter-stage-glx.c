@@ -380,12 +380,11 @@ clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
   if (stage_clip == NULL)
     {
       stage_glx->bounding_redraw_clip.width = 0;
+      stage_glx->initialized_redraw_clip = TRUE;
       return;
     }
 
-  /* Do nothing on an empty clip to avoid confusing with out magic-flag
-   * degenerate clip
-   */
+  /* Ignore requests to add degenerate/empty clip rectangles */
   if (stage_clip->width == 0 || stage_clip->height == 0)
     return;
 
