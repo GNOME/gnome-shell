@@ -390,17 +390,11 @@ static void
 clutter_x11_texture_pixmap_dispose (GObject *object)
 {
   ClutterX11TexturePixmap *texture = CLUTTER_X11_TEXTURE_PIXMAP (object);
-  ClutterX11TexturePixmapPrivate *priv = texture->priv;
 
   free_damage_resources (texture);
 
   clutter_x11_remove_filter (on_x_event_filter_too, (gpointer)texture);
-
-  if (priv->owns_pixmap && priv->pixmap)
-    {
-      XFreePixmap (clutter_x11_get_default_display (), priv->pixmap);
-      priv->pixmap = None;
-    }
+  clutter_x11_texture_pixmap_set_pixmap (texture, None);
 
   G_OBJECT_CLASS (clutter_x11_texture_pixmap_parent_class)->dispose (object);
 }
@@ -814,21 +808,27 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
   if (material)
     cogl_material_set_layer (material, 0, COGL_INVALID_HANDLE);
 
-  status = XGetGeometry (clutter_x11_get_default_display(),
-                         (Drawable)pixmap,
-                         &root,
-                         &x,
-                         &y,
-                         &width,
-                         &height,
-                         &border_width,
-                         &depth);
-
-  if (clutter_x11_untrap_x_errors () || status == 0)
+  if (pixmap != None)
     {
-      if (pixmap != None)
-        g_warning ("Unable to query pixmap: %lx", pixmap);
-      pixmap = None;
+      status = XGetGeometry (clutter_x11_get_default_display(),
+			     (Drawable)pixmap,
+			     &root,
+			     &x,
+			     &y,
+			     &width,
+			     &height,
+			     &border_width,
+			     &depth);
+
+      if (clutter_x11_untrap_x_errors () || status == 0)
+	{
+	  g_warning ("Unable to query pixmap: %lx", pixmap);
+	  pixmap = None;
+	  width = height = depth = 0;
+	}
+    }
+  else
+    {
       width = height = depth = 0;
     }
 
@@ -843,7 +843,7 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
       /* The damage object is created on the pixmap, so it needs to be
        * recreated with a change in pixmap.
        */
-      if (priv->automatic_updates && new_pixmap)
+      if (priv->automatic_updates)
 	{
 	  free_damage_resources (texture);
 	  create_damage_resources (texture);
@@ -942,6 +942,8 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
                                   CompositeRedirectAutomatic : CompositeRedirectManual);
       XSync (clutter_x11_get_default_display (), False);
       clutter_x11_untrap_x_errors ();
+
+      clutter_x11_texture_pixmap_set_pixmap (texture, None);
     }
 
   priv->window = window;
