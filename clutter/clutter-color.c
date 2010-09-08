@@ -50,7 +50,7 @@
  * clutter_color_add:
  * @a: a #ClutterColor
  * @b: a #ClutterColor
- * @result: (out): return location for the result
+ * @result: (out caller-allocates): return location for the result
  *
  * Adds @a to @b and saves the resulting color inside @result.
  *
@@ -77,7 +77,7 @@ clutter_color_add (const ClutterColor *a,
  * clutter_color_subtract:
  * @a: a #ClutterColor
  * @b: a #ClutterColor
- * @result: (out): return location for the result
+ * @result: (out caller-allocates): return location for the result
  *
  * Subtracts @b from @a and saves the resulting color inside @result.
  *
@@ -106,7 +106,7 @@ clutter_color_subtract (const ClutterColor *a,
 /**
  * clutter_color_lighten:
  * @color: a #ClutterColor
- * @result: (out): return location for the lighter color
+ * @result: (out caller-allocates): return location for the lighter color
  *
  * Lightens @color by a fixed amount, and saves the changed color
  * in @result.
@@ -121,7 +121,7 @@ clutter_color_lighten (const ClutterColor *color,
 /**
  * clutter_color_darken:
  * @color: a #ClutterColor
- * @result: (out): return location for the darker color
+ * @result: (out caller-allocates): return location for the darker color
  *
  * Darkens @color by a fixed amount, and saves the changed color
  * in @result.
@@ -290,7 +290,7 @@ clutter_color_from_hls (ClutterColor *color,
  * clutter_color_shade:
  * @color: a #ClutterColor
  * @factor: the shade factor to apply
- * @result: (out): return location for the shaded color
+ * @result: (out caller-allocates): return location for the shaded color
  *
  * Shades @color by @factor and saves the modified color into @result.
  */
@@ -345,7 +345,7 @@ clutter_color_to_pixel (const ClutterColor *color)
 
 /**
  * clutter_color_from_pixel:
- * @color: (out): return location for a #ClutterColor
+ * @color: (out caller-allocates): return location for a #ClutterColor
  * @pixel: a 32 bit packed integer containing a color
  *
  * Converts @pixel from the packed representation of a four 8 bit channel
@@ -365,7 +365,7 @@ clutter_color_from_pixel (ClutterColor *color,
 
 /**
  * clutter_color_from_string:
- * @color: (out): return location for a #ClutterColor
+ * @color: (out caller-allocates): return location for a #ClutterColor
  * @str: a string specifiying a color (named color or #RRGGBBAA)
  *
  * Parses a string definition of a color, filling the
@@ -562,7 +562,7 @@ clutter_color_hash (gconstpointer v)
  * Makes a copy of the color structure.  The result must be
  * freed using clutter_color_free().
  *
- * Return value: an allocated copy of @color.
+ * Return value: (transfer full): an allocated copy of @color.
  *
  * Since: 0.2
  */
@@ -787,7 +787,7 @@ clutter_param_color_get_type (void)
 }
 
 /**
- * clutter_param_spec_color:
+ * clutter_param_spec_color: (skip)
  * @name: name of the property
  * @nick: short name
  * @blurb: description (can be translatable)

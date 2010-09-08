@@ -698,7 +698,7 @@ clutter_interval_set_initial_value (ClutterInterval *interval,
 /**
  * clutter_interval_get_initial_value:
  * @interval: a #ClutterInterval
- * @value: a #GValue
+ * @value: (out caller-allocates): a #GValue
  *
  * Retrieves the initial value of @interval and copies
  * it into @value.
@@ -767,7 +767,7 @@ clutter_interval_set_final_value (ClutterInterval *interval,
 /**
  * clutter_interval_get_final_value:
  * @interval: a #ClutterInterval
- * @value: a #GValue
+ * @value: (out caller-allocates): a #GValue
  *
  * Retrieves the final value of @interval and copies
  * it into @value.
@@ -901,7 +901,7 @@ clutter_interval_validate (ClutterInterval *interval,
  * clutter_interval_compute_value:
  * @interval: a #ClutterInterval
  * @factor: the progress factor, between 0 and 1
- * @value: return location for an initialized #GValue
+ * @value: (out caller-allocates): return location for an initialized #GValue
  *
  * Computes the value between the @interval boundaries given the
  * progress @factor and copies it into @value.

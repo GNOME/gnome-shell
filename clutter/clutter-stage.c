@@ -1474,7 +1474,8 @@ clutter_stage_set_perspective (ClutterStage       *stage,
 /**
  * clutter_stage_get_perspective:
  * @stage: A #ClutterStage
- * @perspective: return location for a #ClutterPerspective
+ * @perspective: (out caller-allocates) (allow-none): return location for a
+ *   #ClutterPerspective
  *
  * Retrieves the stage perspective.
  */

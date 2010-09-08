@@ -153,7 +153,7 @@ clutter_param_fixed_get_type (void)
 }
 
 /**
- * clutter_param_spec_fixed:
+ * clutter_param_spec_fixed: (skip)
  * @name: name of the property
  * @nick: short name
  * @blurb: description (can be translatable)

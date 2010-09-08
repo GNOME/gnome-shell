@@ -140,7 +140,7 @@ units_em_to_pixels (const gchar *font_name,
 
 /**
  * clutter_units_from_mm:
- * @units: a #ClutterUnits
+ * @units: (out caller-allocates): a #ClutterUnits
  * @mm: millimeters
  *
  * Stores a value in millimiters inside @units
@@ -166,7 +166,7 @@ clutter_units_from_mm (ClutterUnits *units,
 
 /**
  * clutter_units_from_cm:
- * @units: a #ClutterUnits
+ * @units: (out caller-allocates): a #ClutterUnits
  * @cm: centimeters
  *
  * Stores a value in centimeters inside @units
@@ -192,7 +192,7 @@ clutter_units_from_cm (ClutterUnits *units,
 
 /**
  * clutter_units_from_pt:
- * @units: a #ClutterUnits
+ * @units: (out caller-allocates): a #ClutterUnits
  * @pt: typographic points
  *
  * Stores a value in typographic points inside @units
@@ -218,7 +218,7 @@ clutter_units_from_pt (ClutterUnits *units,
 
 /**
  * clutter_units_from_em:
- * @units: a #ClutterUnits
+ * @units: (out caller-allocates): a #ClutterUnits
  * @em: em
  *
  * Stores a value in em inside @units, using the default font
@@ -245,8 +245,8 @@ clutter_units_from_em (ClutterUnits *units,
 
 /**
  * clutter_units_from_em_for_font:
- * @units: a #ClutterUnits
- * @font_name: the font name and size
+ * @units: (out caller-allocates): a #ClutterUnits
+ * @font_name: (allow-none): the font name and size
  * @em: em
  *
  * Stores a value in em inside @units using @font_name
@@ -273,7 +273,7 @@ clutter_units_from_em_for_font (ClutterUnits *units,
 
 /**
  * clutter_units_from_pixels:
- * @units: a #ClutterUnits
+ * @units: (out caller-allocates): a #ClutterUnits
  * @px: pixels
  *
  * Stores a value in pixels inside @units
@@ -339,8 +339,9 @@ clutter_units_get_unit_value (const ClutterUnits *units)
  *
  * Copies @units
  *
- * Return value: the newly created copy of a #ClutterUnits structure.
- *   Use clutter_units_free() to free the allocated resources
+ * Return value: (transfer full): the newly created copy of a
+ *   #ClutterUnits structure. Use clutter_units_free() to free
+ *   the allocated resources
  *
  * Since: 1.0
  */
@@ -427,7 +428,7 @@ clutter_units_to_pixels (ClutterUnits *units)
 
 /**
  * clutter_units_from_string:
- * @units: a #ClutterUnits
+ * @units: (out caller-allocates): a #ClutterUnits
  * @str: the string to convert
  *
  * Parses a value and updates @units with it
@@ -911,7 +912,7 @@ clutter_param_units_get_type (void)
 }
 
 /**
- * clutter_param_spec_units:
+ * clutter_param_spec_units: (skip)
  * @name: name of the property
  * @nick: short name
  * @blurb: description (can be translatable)
