@@ -2488,6 +2488,9 @@ cull_actor (ClutterActor *self)
   ClutterActorBox *box;
   ClutterGeometry paint_geom;
 
+  if (G_UNLIKELY (priv->last_paint_box_valid == FALSE))
+    return FALSE;
+
   if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_DISABLE_CULLING))
     return FALSE;
 
@@ -2610,6 +2613,7 @@ clutter_actor_paint (ClutterActor *self)
   if (context->pick_mode == CLUTTER_PICK_NONE)
     {
       gboolean effect_painted = FALSE;
+      gboolean need_paint_box;
 
       CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
 
@@ -2644,39 +2648,47 @@ clutter_actor_paint (ClutterActor *self)
           priv->last_paint_box_valid = FALSE;
         }
 
-      if (G_LIKELY (!priv->paint_volume_disabled))
-        {
-          /* We save the current paint box so that the next time the
-           * actor queues a redraw we can constrain the redraw to just
-           * cover the union of the new bounding box and the old.
-           *
-           * XXX: We are starting to do a lot of vertex transforms on
-           * the CPU in a typical paint, so at some point we should
-           * audit these and consider caching some things.
-           *
-           * XXX: We should consider doing all our culling in the
-           * stage's model space using PaintVolumes so we don't have
-           * to project actor paint volumes all the way into window
-           * coordinates!
-           *   XXX: To do this we also need a way to store an
-           *   "absolute paint volume" in some way. Currently the
-           *   paint volumes are defined relative to a referenced
-           *   actor's coordinates, but we'd need to be able to cache
-           *   the last paint volume used with the actor's *current*
-           *   modelview and either with a specific projection matrix
-           *   or we'd need to be able to invalidate paint-volumes on
-           *   projection changes.
-           */
-          if (clutter_actor_get_paint_box (self, &priv->last_paint_box))
-            {
-              priv->last_paint_box_valid = TRUE;
+      if (G_UNLIKELY (priv->paint_volume_disabled ||
+                      (clutter_paint_debug_flags &
+                       CLUTTER_DEBUG_DISABLE_CULLING &&
+                       clutter_paint_debug_flags &
+                       CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
+        need_paint_box = FALSE;
+      else
+        need_paint_box = TRUE;
 
-              if (cull_actor (self))
-                goto done;
-            }
-          else
-            priv->last_paint_box_valid = FALSE;
-        }
+      /* We save the current paint box so that the next time the
+       * actor queues a redraw we can constrain the redraw to just
+       * cover the union of the new bounding box and the old.
+       *
+       * We also fetch the current paint box to perform culling so we
+       * can avoid painting actors outside the current clip region.
+       *
+       * XXX: We are starting to do a lot of vertex transforms on
+       * the CPU in a typical paint, so at some point we should
+       * audit these and consider caching some things.
+       *
+       * XXX: We should consider doing all our culling in the
+       * stage's model space using PaintVolumes so we don't have
+       * to project actor paint volumes all the way into window
+       * coordinates!
+       *   XXX: To do this we also need a way to store an
+       *   "absolute paint volume" in some way. Currently the
+       *   paint volumes are defined relative to a referenced
+       *   actor's coordinates, but we'd need to be able to cache
+       *   the last paint volume used with the actor's *current*
+       *   modelview and either with a specific projection matrix
+       *   or we'd need to be able to invalidate paint-volumes on
+       *   projection changes.
+       */
+      if (G_LIKELY (need_paint_box) &&
+          clutter_actor_get_paint_box (self, &priv->last_paint_box))
+        priv->last_paint_box_valid = TRUE;
+      else
+        priv->last_paint_box_valid = FALSE;
+
+      if (cull_actor (self))
+        goto done;
 
       if (priv->effects != NULL)
         effect_painted = _clutter_actor_effects_pre_paint (self);
