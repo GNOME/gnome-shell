@@ -96,6 +96,7 @@ stamp-test-conformance: Makefile test-conformance$(EXEEXT)
 	   echo "/test-conformance" ; \
 	   echo "/test-launcher.sh" ; \
 	   echo "*.o" ; \
+	   echo "*.xml" ; \
 	   echo ".gitignore" ; \
 	   echo "/wrappers/" ) > .gitignore
 	@for i in $(UNIT_TESTS); \
