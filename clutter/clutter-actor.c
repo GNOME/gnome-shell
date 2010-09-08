@@ -5116,21 +5116,21 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
   ClutterPaintVolume *pv;
   gboolean should_free_pv;
 
-  /* If the actor doesn't have a valid allocation then we will queue a
-   * full stage redraw.
-   *
-   * XXX: Is this check redundant? Or should it maybe only be done
-   * when flags & CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION? */
-  if (self->priv->needs_allocation)
-    {
-      clutter_actor_queue_redraw (self);
-      return;
-    }
-
   if (flags & CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION)
     {
       ClutterActorBox allocation_clip;
       ClutterVertex origin;
+
+      /* If the actor doesn't have a valid allocation then we will
+       * queue a full stage redraw. */
+      if (self->priv->needs_allocation)
+        {
+          /* NB: NULL denotes an undefined clip which will result in a
+           * full redraw... */
+          _clutter_actor_set_queue_redraw_clip (self, NULL);
+          clutter_actor_queue_redraw_with_origin (self, self);
+          return;
+        }
 
       _clutter_paint_volume_init_static (self, &allocation_pv);
       pv = &allocation_pv;
