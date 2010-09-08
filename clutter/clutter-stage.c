@@ -232,6 +232,7 @@ clutter_stage_allocate (ClutterActor           *self,
                         ClutterAllocationFlags  flags)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  ClutterGeometry prev_geom;
   ClutterGeometry geom = { 0, };
   gboolean origin_changed;
   gint width, height;
@@ -240,6 +241,8 @@ clutter_stage_allocate (ClutterActor           *self,
 
   if (priv->impl == NULL)
     return;
+
+  clutter_actor_get_allocation_geometry (self, &prev_geom);
 
   width = clutter_actor_box_get_width (box);
   height = clutter_actor_box_get_height (box);
@@ -321,13 +324,16 @@ clutter_stage_allocate (ClutterActor           *self,
     }
 
   clutter_actor_get_allocation_geometry (self, &geom);
-  _clutter_stage_set_viewport (CLUTTER_STAGE (self),
-                               0, 0, geom.width, geom.height);
+  if (geom.width != prev_geom.width || geom.height != prev_geom.height)
+    {
+      _clutter_stage_set_viewport (CLUTTER_STAGE (self),
+                                   0, 0, geom.width, geom.height);
 
-  /* Note: we don't assume that set_viewport will queue a full redraw
-   * since it may bail-out early if something preemptively set the
-   * viewport before the stage was really allocated its new size. */
-  queue_full_redraw (CLUTTER_STAGE (self));
+      /* Note: we don't assume that set_viewport will queue a full redraw
+       * since it may bail-out early if something preemptively set the
+       * viewport before the stage was really allocated its new size. */
+      queue_full_redraw (CLUTTER_STAGE (self));
+    }
 }
 
 /* This provides a common point of entry for painting the scenegraph
