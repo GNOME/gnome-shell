@@ -99,7 +99,6 @@ stamp-h1
 TAGS
 /tests/tools/disable-npots.sh
 /po/POTFILES
-/po/*.pot
 /po/*.gmo
 /po/Makefile.in.in
 /po/Makevars.template
