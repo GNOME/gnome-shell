@@ -471,6 +471,16 @@ handle_xembed_event (ClutterBackendX11 *backend_x11,
 }
 
 static gboolean
+clipped_redraws_cool_off_cb (void *data)
+{
+  ClutterStageX11 *stage_x11 = data;
+
+  stage_x11->clipped_redraws_cool_off = 0;
+
+  return FALSE;
+}
+
+static gboolean
 event_translate (ClutterBackend *backend,
                  ClutterEvent   *event,
                  XEvent         *xevent)
@@ -580,6 +590,43 @@ event_translate (ClutterBackend *backend,
           clutter_actor_set_size (CLUTTER_ACTOR (stage),
                                   xevent->xconfigure.width,
                                   xevent->xconfigure.height);
+
+          /* XXX: This is a workaround for a race condition when
+           * resizing windows while there are in-flight
+           * glXCopySubBuffer blits happening.
+           *
+           * The problem stems from the fact that rectangles for the
+           * blits are described relative to the bottom left of the
+           * window and because we can't guarantee control over the X
+           * window gravity used when resizing so the gravity is
+           * typically NorthWest not SouthWest.
+           *
+           * This means if you grow a window vertically the server
+           * will make sure to place the old contents of the window
+           * at the top-left/north-west of your new larger window, but
+           * that may happen asynchronous to GLX preparing to do a
+           * blit specified relative to the bottom-left/south-west of
+           * the window (based on the old smaller window geometry).
+           *
+           * When the GLX issued blit finally happens relative to the
+           * new bottom of your window, the destination will have
+           * shifted relative to the top-left where all the pixels you
+           * care about are so it will result in a nasty artefact
+           * making resizing look very ugly!
+           *
+           * We can't currently fix this completely, in-part because
+           * the window manager tends to trample any gravity we might
+           * set.  This workaround instead simply disables blits for a
+           * while if we are notified of any resizes happening so if
+           * the user is resizing a window via the window manager then
+           * they may see an artefact for one frame but then we will
+           * fallback to redrawing the full stage until the cooling
+           * off period is over.
+           */
+          if (stage_x11->clipped_redraws_cool_off)
+            g_source_remove (stage_x11->clipped_redraws_cool_off);
+          stage_x11->clipped_redraws_cool_off =
+            g_timeout_add_seconds (1, clipped_redraws_cool_off_cb, stage_x11);
 
           CLUTTER_UNSET_PRIVATE_FLAGS (stage_x11->wrapper,
                                        CLUTTER_IN_RESIZE);

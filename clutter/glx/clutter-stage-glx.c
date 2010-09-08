@@ -526,7 +526,11 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
 
   if (G_LIKELY (backend_glx->can_blit_sub_buffer) &&
       /* NB: a degenerate redraw clip width == full stage redraw */
-      stage_glx->bounding_redraw_clip.width != 0)
+      stage_glx->bounding_redraw_clip.width != 0 &&
+      /* While resizing a window clipped redraws are disabled to avoid
+       * artefacts. See clutter-event-x11.c:event_translate for a
+       * detailed explanation */
+      G_LIKELY (stage_x11->clipped_redraws_cool_off == 0))
     may_use_clipped_redraw = TRUE;
   else
     may_use_clipped_redraw = FALSE;

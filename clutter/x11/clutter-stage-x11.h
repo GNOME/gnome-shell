@@ -60,6 +60,8 @@ struct _ClutterStageX11
   gint         xwin_height; /* FIXME target_width / height */
   gchar       *title;
 
+  guint        clipped_redraws_cool_off;
+
   ClutterStageState  state;
 
   ClutterStageX11State wm_state;
