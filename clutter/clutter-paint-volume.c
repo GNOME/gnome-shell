@@ -139,9 +139,7 @@ clutter_paint_volume_copy (const ClutterPaintVolume *pv)
 {
   ClutterPaintVolume *copy;
 
-  /* XXX: can we just g_return_val_if_fail instead‽ */
-  if (G_UNLIKELY (pv == NULL))
-    return NULL;
+  g_return_val_if_fail (pv != NULL, NULL);
 
   copy = g_slice_dup (ClutterPaintVolume, pv);
   if (copy->actor)
