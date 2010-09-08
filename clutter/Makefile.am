@@ -238,6 +238,7 @@ source_c = \
 	$(srcdir)/clutter-timeout-pool.c	\
 	$(srcdir)/clutter-units.c		\
 	$(srcdir)/clutter-util.c 		\
+	$(srcdir)/clutter-paint-volume.c 	\
 	$(NULL)
 
 source_c_priv = \

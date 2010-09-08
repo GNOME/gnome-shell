@@ -73,3 +73,48 @@ _clutter_gettext (const gchar *str)
 {
   return g_dgettext (GETTEXT_PACKAGE, str);
 }
+
+/* Help macros to scale from OpenGL <-1,1> coordinates system to
+ * window coordinates ranging [0,window-size]
+ */
+#define MTX_GL_SCALE_X(x,w,v1,v2) ((((((x) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
+#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - (((((y) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
+#define MTX_GL_SCALE_Z(z,w,v1,v2) (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
+
+void
+_clutter_util_fully_transform_vertices (const CoglMatrix *modelview,
+                                        const CoglMatrix *projection,
+                                        const int *viewport,
+                                        const ClutterVertex *vertices_in,
+                                        ClutterVertex *vertices_out,
+                                        int n_vertices)
+{
+  CoglMatrix modelview_projection;
+  int i;
+
+  /* XXX: we should find a way to cache this per actor */
+  cogl_matrix_multiply (&modelview_projection,
+                        projection,
+                        modelview);
+
+  for (i = 0; i < n_vertices; i++)
+    {
+      const ClutterVertex *vertex_in = &vertices_in[i];
+      ClutterVertex *vertex_out = &vertices_out[i];
+      gfloat x, y, z, w;
+
+      x = vertex_in->x;
+      y = vertex_in->y;
+      z = vertex_in->z;
+      w = 1.0;
+
+      /* Transform the point using the modelview matrix */
+      cogl_matrix_transform_point (&modelview_projection, &x, &y, &z, &w);
+
+      /* Finally translate from OpenGL coords to window coords */
+      vertex_out->x = MTX_GL_SCALE_X (x, w, viewport[2], viewport[0]);
+      vertex_out->y = MTX_GL_SCALE_Y (y, w, viewport[3], viewport[1]);
+      vertex_out->z = MTX_GL_SCALE_Z (z, w, viewport[2], viewport[0]);
+    }
+}
+

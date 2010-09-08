@@ -510,13 +510,25 @@ void                _clutter_paint_volume_init_static      (ClutterActor *actor,
 ClutterPaintVolume *_clutter_paint_volume_new              (ClutterActor       *actor);
 void                _clutter_paint_volume_copy_static      (const ClutterPaintVolume *src_pv,
                                                             ClutterPaintVolume *dst_pv);
-
+void                _clutter_paint_volume_complete         (ClutterPaintVolume *pv);
+void                _clutter_paint_volume_transform        (ClutterPaintVolume *pv,
+                                                            const CoglMatrix *matrix);
 void                _clutter_paint_volume_project          (ClutterPaintVolume *pv,
                                                             const CoglMatrix   *modelview,
                                                             const CoglMatrix   *projection,
                                                             const int          *viewport);
 void                _clutter_paint_volume_get_bounding_box (ClutterPaintVolume *pv,
                                                             ClutterActorBox    *box);
+void                _clutter_paint_volume_axis_align       (ClutterPaintVolume *pv);
+
+
+
+void                _clutter_util_fully_transform_vertices (const CoglMatrix *modelview,
+                                                            const CoglMatrix *projection,
+                                                            const int *viewport,
+                                                            const ClutterVertex *vertices_in,
+                                                            ClutterVertex *vertices_out,
+                                                            int n_vertices);
 
 G_END_DECLS
 
