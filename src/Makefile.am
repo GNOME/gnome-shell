@@ -74,6 +74,7 @@ shell_public_headers_h =		\
 	shell-perf-log.h		\
 	shell-slicer.h			\
 	shell-stack.h			\
+	shell-tray-icon.h		\
 	shell-tray-manager.h		\
 	shell-uri-util.h		\
 	shell-window-tracker.h		\
@@ -104,6 +105,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-perf-log.c		\
 	shell-slicer.c			\
 	shell-stack.c			\
+	shell-tray-icon.c		\
 	shell-tray-manager.c		\
 	shell-uri-util.c		\
 	shell-window-tracker.c		\

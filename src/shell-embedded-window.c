@@ -38,10 +38,17 @@
 
 G_DEFINE_TYPE (ShellEmbeddedWindow, shell_embedded_window, GTK_TYPE_WINDOW);
 
+enum {
+   PROP_0,
+
+   PROP_STAGE
+};
+
 struct _ShellEmbeddedWindowPrivate {
   ShellGtkEmbed *actor;
 
   GdkRectangle position;
+  Window stage_xwindow;
 };
 
 /*
@@ -87,22 +94,9 @@ static void
 shell_embedded_window_realize (GtkWidget *widget)
 {
   ShellEmbeddedWindow *window = SHELL_EMBEDDED_WINDOW (widget);
-  ClutterActor *stage;
-  Window stage_xwindow;
 
   GTK_WIDGET_CLASS (shell_embedded_window_parent_class)->realize (widget);
 
-  stage = clutter_actor_get_stage (CLUTTER_ACTOR (window->priv->actor));
-
-  /* Clutter is buggy and will realize an actor when it has a parent
-   * but no grandparent; this is a workaround until
-   * http://bugzilla.openedhand.com/show_bug.cgi?id=1138 is fixed - we
-   * only have one stage in the shell in any case.
-   */
-  if (!stage)
-    stage = clutter_stage_get_default ();
-
-  stage_xwindow = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
   /* Using XReparentWindow() is simpler than using gdk_window_reparent(),
    * since it avoids maybe having to create a new foreign GDK window for
@@ -113,7 +107,7 @@ shell_embedded_window_realize (GtkWidget *widget)
    */
   XReparentWindow (GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (widget)),
                    GDK_WINDOW_XWINDOW (gtk_widget_get_window (widget)),
-                   stage_xwindow,
+                   window->priv->stage_xwindow,
                    window->priv->position.x, window->priv->position.y);
 }
 
@@ -141,6 +135,27 @@ shell_embedded_window_check_resize (GtkContainer *container)
    */
   if (window->priv->actor)
     clutter_actor_queue_relayout (CLUTTER_ACTOR (window->priv->actor));
+}
+
+static void
+shell_embedded_window_set_property (GObject         *object,
+                                    guint            prop_id,
+                                    const GValue    *value,
+                                    GParamSpec      *pspec)
+{
+  ShellEmbeddedWindow *window = SHELL_EMBEDDED_WINDOW (object);
+
+  switch (prop_id)
+    {
+    case PROP_STAGE:
+      window->priv->stage_xwindow =
+        clutter_x11_get_stage_window (g_value_get_object (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
 }
 
 static GObject *
@@ -177,6 +192,7 @@ shell_embedded_window_class_init (ShellEmbeddedWindowClass *klass)
 
   g_type_class_add_private (klass, sizeof (ShellEmbeddedWindowPrivate));
 
+  object_class->set_property    = shell_embedded_window_set_property;
   object_class->constructor     = shell_embedded_window_constructor;
 
   widget_class->show            = shell_embedded_window_show;
@@ -185,6 +201,14 @@ shell_embedded_window_class_init (ShellEmbeddedWindowClass *klass)
   widget_class->configure_event = shell_embedded_window_configure_event;
 
   container_class->check_resize    = shell_embedded_window_check_resize;
+
+  g_object_class_install_property (object_class,
+                                   PROP_STAGE,
+                                   g_param_spec_object ("stage",
+                                                        "Stage",
+                                                        "ClutterStage to embed on",
+                                                        CLUTTER_TYPE_STAGE,
+                                                        G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -207,8 +231,9 @@ _shell_embedded_window_set_actor (ShellEmbeddedWindow  *window,
 
   window->priv->actor = actor;
 
-  if (gtk_widget_get_visible (GTK_WIDGET (window))
-      && CLUTTER_ACTOR_IS_REALIZED (actor))
+  if (actor &&
+      CLUTTER_ACTOR_IS_REALIZED (actor) &&
+      gtk_widget_get_visible (GTK_WIDGET (window)))
     gtk_widget_map (GTK_WIDGET (window));
 }
 
@@ -267,8 +292,9 @@ _shell_embedded_window_unrealize (ShellEmbeddedWindow *window)
  * Public API
  */
 GtkWidget *
-shell_embedded_window_new (void)
+shell_embedded_window_new (ClutterStage *stage)
 {
   return g_object_new (SHELL_TYPE_EMBEDDED_WINDOW,
+                       "stage", stage,
                        NULL);
 }

@@ -885,7 +885,9 @@ Panel.prototype = {
                          });
     },
 
-    _onTrayIconAdded: function(o, icon, wmClass) {
+    _onTrayIconAdded: function(o, icon) {
+        let wmClass = icon.wm_class.toLowerCase();
+
         icon.height = PANEL_ICON_SIZE;
 
         let role = STANDARD_TRAY_ICON_IMPLEMENTATIONS[wmClass];
