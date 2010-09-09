@@ -417,7 +417,12 @@ x11_sources = \
 
 ClutterX11-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
 
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = --warn-all --identifier-prefix=ClutterX11 --symbol-prefix=clutter_x11 --include-uninstalled=Clutter-1.0.gir
+ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+	--warn-all \
+	--identifier-prefix=ClutterX11 \
+	--symbol-prefix=clutter_x11 \
+	--include-uninstalled=$(top_builddir)/clutter/cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir \
+	--include-uninstalled=Clutter-1.0.gir
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = xlib-2.0
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_FILES = $(x11_sources)
