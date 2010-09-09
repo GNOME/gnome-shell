@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -983,6 +984,12 @@ MessageTray.prototype = {
             function () {
                 this.removeSource(source);
             }));
+
+        // We need to display the newly-added summary item, but if the
+        // caller is about to post a notification, we want to show that
+        // *first* and not show the summary item until after it hides.
+        // So postpone calling _updateState() a tiny bit.
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() { this._updateState(); return false; }));
     },
 
     removeSource: function(source) {
