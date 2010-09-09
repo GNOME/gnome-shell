@@ -1540,6 +1540,14 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 
   _cogl_bitmask_clear_all (&ctx->temp_bitmask);
 
+  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
+   * as the material state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. We need to do this
+   * before setting up the array pointers because setting up the clip
+   * stack can cause some drawing which would change the array
+   * pointers. */
+  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
+
   for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
     {
       CoglVertexBufferVBO *cogl_vbo = tmp->data;
@@ -1728,11 +1736,6 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 
   /* Disable any tex coord arrays that we didn't use */
   _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
-
-  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the material state) when flushing the clip stack, so should
-   * always be done first when preparing to draw. */
-  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   options.fallback_layers = fallback_layers;
 
