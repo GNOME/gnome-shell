@@ -4930,10 +4930,16 @@ clutter_actor_queue_redraw (ClutterActor *self)
   ClutterActorPrivate *priv;
   const ClutterPaintVolume *pv;
   gboolean clipped;
+  ClutterActor *stage;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
+
+  /* Ignore queuing a redraw for actors not descended from a stage */
+  stage = _clutter_actor_get_stage_internal (self);
+  if (!stage)
+    return;
 
   /* Don't clip this redraw if we don't know what position we had for
    * the previous redraw since we don't know where to set the clip so
@@ -4943,7 +4949,6 @@ clutter_actor_queue_redraw (ClutterActor *self)
       pv = clutter_actor_get_paint_volume (self);
       if (pv)
         {
-          ClutterActor *stage = _clutter_actor_get_stage_internal (self);
           ClutterPaintVolume stage_pv;
           _clutter_paint_volume_init_static (stage, &stage_pv);
           ClutterActorBox *box = &priv->last_paint_box;
