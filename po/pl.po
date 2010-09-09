@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
 "POT-Creation-Date: 2010-09-08 12:21+0100\n"
-"PO-Revision-Date: 2010-02-23 15:00+0100\n"
+"PO-Revision-Date: 2010-09-09 16:29+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3509
 msgid "X coordinate"
-msgstr ""
+msgstr "Współrzędna X"
 
 #: clutter/clutter-actor.c:3510
 msgid "X coordinate of the actor"
@@ -32,7 +32,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3525
 msgid "Y coordinate"
-msgstr ""
+msgstr "Współrzędna Y"
 
 #: clutter/clutter-actor.c:3526
 msgid "Y coordinate of the actor"
@@ -40,7 +40,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3541 clutter/clutter-behaviour-ellipse.c:473
 msgid "Width"
-msgstr ""
+msgstr "Szerokość"
 
 #: clutter/clutter-actor.c:3542
 msgid "Width of the actor"
@@ -48,7 +48,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3556 clutter/clutter-behaviour-ellipse.c:489
 msgid "Height"
-msgstr ""
+msgstr "Wysokość"
 
 #: clutter/clutter-actor.c:3557
 msgid "Height of the actor"
@@ -80,7 +80,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3634
 msgid "Min Width"
-msgstr ""
+msgstr "Minimalna szerokość"
 
 #: clutter/clutter-actor.c:3635
 msgid "Forced minimum width request for the actor"
@@ -88,7 +88,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3654
 msgid "Min Height"
-msgstr ""
+msgstr "Minimalna wysokość"
 
 #: clutter/clutter-actor.c:3655
 msgid "Forced minimum height request for the actor"
@@ -96,7 +96,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3674
 msgid "Natural Width"
-msgstr ""
+msgstr "Naturalna szerokość"
 
 #: clutter/clutter-actor.c:3675
 msgid "Forced natural width request for the actor"
@@ -104,7 +104,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3694
 msgid "Natural Height"
-msgstr ""
+msgstr "Naturalna wysokość"
 
 #: clutter/clutter-actor.c:3695
 msgid "Forced natural height request for the actor"
@@ -160,7 +160,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3854
 msgid "Depth"
-msgstr ""
+msgstr "Głębia"
 
 #: clutter/clutter-actor.c:3855
 msgid "Position on the Z axis"
@@ -219,14 +219,13 @@ msgid "Clip"
 msgstr ""
 
 #: clutter/clutter-actor.c:3963
-#, fuzzy
 msgid "The clip region for the actor"
-msgstr "Kierunek tekstu"
+msgstr ""
 
 #: clutter/clutter-actor.c:3977 clutter/clutter-actor-meta.c:179
 #: clutter/clutter-binding-pool.c:320 clutter/clutter-input-device.c:148
 msgid "Name"
-msgstr ""
+msgstr "Nazwa"
 
 #: clutter/clutter-actor.c:3978
 msgid "Name of the actor"
@@ -370,10 +369,9 @@ msgstr ""
 
 #: clutter/clutter-actor.c:4277
 msgid "Text Direction"
-msgstr ""
+msgstr "Kierunek tekstu"
 
 #: clutter/clutter-actor.c:4278
-#, fuzzy
 msgid "Direction of the text"
 msgstr "Kierunek tekstu"
 
@@ -387,7 +385,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:4314
 msgid "Actions"
-msgstr ""
+msgstr "Działania"
 
 #: clutter/clutter-actor.c:4315
 msgid "Adds an action to the actor"
@@ -415,7 +413,7 @@ msgstr ""
 
 #: clutter/clutter-actor-meta.c:194 clutter/clutter-shader.c:261
 msgid "Enabled"
-msgstr ""
+msgstr "Włączone"
 
 #: clutter/clutter-actor-meta.c:195
 msgid "Whether the meta is enabled"
@@ -424,7 +422,7 @@ msgstr ""
 #: clutter/clutter-align-constraint.c:213
 #: clutter/clutter-bind-constraint.c:274 clutter/clutter-clone.c:278
 msgid "Source"
-msgstr ""
+msgstr "Źródło"
 
 #: clutter/clutter-align-constraint.c:214
 msgid "The source of the alignment"
@@ -466,15 +464,15 @@ msgstr ""
 
 #: clutter/clutter-alpha.c:378 clutter/clutter-animation.c:480
 msgid "Mode"
-msgstr ""
+msgstr "Tryb"
 
 #: clutter/clutter-alpha.c:379
 msgid "Progress mode"
-msgstr ""
+msgstr "Tryb postępu"
 
 #: clutter/clutter-animation.c:463
 msgid "Object"
-msgstr ""
+msgstr "Obiekt"
 
 #: clutter/clutter-animation.c:464
 msgid "Object to which the animation applies"
@@ -482,20 +480,20 @@ msgstr ""
 
 #: clutter/clutter-animation.c:481
 msgid "The mode of the animation"
-msgstr ""
+msgstr "Tryb animacji"
 
 #: clutter/clutter-animation.c:496 clutter/clutter-animator.c:1787
 #: clutter/clutter-media.c:196 clutter/clutter-state.c:1195
 msgid "Duration"
-msgstr ""
+msgstr "Czas trwania"
 
 #: clutter/clutter-animation.c:497
 msgid "Duration of the animation, in milliseconds"
-msgstr ""
+msgstr "Czas trwania animacji, w milisekundach"
 
 #: clutter/clutter-animation.c:511
 msgid "Loop"
-msgstr ""
+msgstr "Pętla"
 
 #: clutter/clutter-animation.c:512
 msgid "Whether the animation should loop"
@@ -602,13 +600,12 @@ msgstr ""
 #: clutter/clutter-behaviour-ellipse.c:520
 #: clutter/clutter-behaviour-rotate.c:331
 msgid "Direction"
-msgstr ""
+msgstr "Kierunek"
 
 #: clutter/clutter-behaviour-ellipse.c:521
 #: clutter/clutter-behaviour-rotate.c:332
-#, fuzzy
 msgid "Direction of rotation"
-msgstr "Kierunek tekstu"
+msgstr "Kierunek obrotu"
 
 #: clutter/clutter-behaviour-opacity.c:184
 msgid "Opacity Start"
@@ -628,7 +625,7 @@ msgstr ""
 
 #: clutter/clutter-behaviour-path.c:217
 msgid "Path"
-msgstr ""
+msgstr "Ścieżka"
 
 #: clutter/clutter-behaviour-path.c:218
 msgid "The ClutterPath object representing the path to animate along"
@@ -644,11 +641,11 @@ msgstr ""
 
 #: clutter/clutter-behaviour-rotate.c:313
 msgid "Axis"
-msgstr ""
+msgstr "Oś"
 
 #: clutter/clutter-behaviour-rotate.c:314
 msgid "Axis of rotation"
-msgstr ""
+msgstr "Oś obrotu"
 
 #: clutter/clutter-behaviour-rotate.c:349
 msgid "Center X"
@@ -712,7 +709,7 @@ msgstr ""
 
 #: clutter/clutter-bind-constraint.c:290
 msgid "Coordinate"
-msgstr ""
+msgstr "Współrzędna"
 
 #: clutter/clutter-bind-constraint.c:291
 msgid "The coordinate to bind"
@@ -767,7 +764,7 @@ msgstr ""
 #: clutter/clutter-box.c:514 clutter/clutter-rectangle.c:247
 #: clutter/clutter-stage.c:1079
 msgid "Color"
-msgstr ""
+msgstr "Kolor"
 
 #: clutter/clutter-box.c:515
 msgid "The background color of the box"
@@ -852,7 +849,7 @@ msgstr ""
 
 #: clutter/clutter-box-layout.c:1150
 msgid "Use Animations"
-msgstr ""
+msgstr "Użycie animacji"
 
 #: clutter/clutter-box-layout.c:1151
 msgid "Whether layout changes should be animated"
@@ -892,7 +889,7 @@ msgstr ""
 
 #: clutter/clutter-child-meta.c:127
 msgid "Container"
-msgstr ""
+msgstr "Kontener"
 
 #: clutter/clutter-child-meta.c:128
 msgid "The container that created this data"
@@ -1060,27 +1057,27 @@ msgstr ""
 
 #: clutter/clutter-input-device.c:131
 msgid "Id"
-msgstr ""
+msgstr "Identyfikator"
 
 #: clutter/clutter-input-device.c:132
 msgid "Unique identifier of the device"
-msgstr ""
+msgstr "Unikalny identyfikator urządzenia"
 
 #: clutter/clutter-input-device.c:149
 msgid "The name of the device"
-msgstr ""
+msgstr "Nazwa urządzenia"
 
 #: clutter/clutter-input-device.c:164
 msgid "Device Type"
-msgstr ""
+msgstr "Typ urządzenia"
 
 #: clutter/clutter-input-device.c:165
 msgid "The type of the device"
-msgstr ""
+msgstr "Typ urządzenia"
 
 #: clutter/clutter-interval.c:412
 msgid "Value Type"
-msgstr ""
+msgstr "Typ wartości"
 
 #: clutter/clutter-interval.c:413
 msgid "The type of the values in the interval"
@@ -1088,7 +1085,7 @@ msgstr ""
 
 #: clutter/clutter-layout-meta.c:117
 msgid "Manager"
-msgstr ""
+msgstr "Menedżer"
 
 #: clutter/clutter-layout-meta.c:118
 msgid "The manager that created this data"
@@ -1104,7 +1101,7 @@ msgstr "Wyświetla liczbę klatek na sekundę"
 
 #: clutter/clutter-main.c:1686
 msgid "Default frame rate"
-msgstr "Domyśla liczba klatek na sekundę"
+msgstr "Domyślna liczba klatek na sekundę"
 
 #: clutter/clutter-main.c:1688
 msgid "Make all warnings fatal"
@@ -1152,15 +1149,15 @@ msgstr "Wyświetla opcje biblioteki Clutter"
 
 #: clutter/clutter-media.c:79
 msgid "URI"
-msgstr ""
+msgstr "URI"
 
 #: clutter/clutter-media.c:80
 msgid "URI of a media file"
-msgstr ""
+msgstr "Adres URI pliku multimedialnego"
 
 #: clutter/clutter-media.c:93
 msgid "Playing"
-msgstr ""
+msgstr "Odtwarzanie"
 
 #: clutter/clutter-media.c:94
 msgid "Wheter the actor is playing"
@@ -1168,35 +1165,35 @@ msgstr ""
 
 #: clutter/clutter-media.c:108
 msgid "Progress"
-msgstr ""
+msgstr "Postęp"
 
 #: clutter/clutter-media.c:109
 msgid "Current progress of the playback"
-msgstr ""
+msgstr "Obecny postęp odtwarzania"
 
 #: clutter/clutter-media.c:122
 msgid "Subtitle URI"
-msgstr ""
+msgstr "Adres URI napisów"
 
 #: clutter/clutter-media.c:123
 msgid "URI of a subtitle file"
-msgstr ""
+msgstr "Adres URI pliku napisów"
 
 #: clutter/clutter-media.c:138
 msgid "Subtitle Font Name"
-msgstr ""
+msgstr "Nazwa czcionki napisów"
 
 #: clutter/clutter-media.c:139
 msgid "The font used to display subtitles"
-msgstr ""
+msgstr "Czcionka używana do wyświetlania napisów"
 
 #: clutter/clutter-media.c:153
 msgid "Audio Volume"
-msgstr ""
+msgstr "Głośność dźwięku"
 
 #: clutter/clutter-media.c:154
 msgid "The volume of the audio"
-msgstr ""
+msgstr "Głośność dźwięku"
 
 #: clutter/clutter-media.c:167
 msgid "Can Seek"
@@ -1256,31 +1253,27 @@ msgstr ""
 
 #: clutter/clutter-script.c:420 clutter/clutter-texture.c:1034
 msgid "Filename"
-msgstr ""
+msgstr "Nazwa pliku"
 
 #: clutter/clutter-script.c:421
 msgid "The path of the currently parsed file"
-msgstr ""
+msgstr "Ścieżka do obecnie przetwarzanego pliku"
 
 #: clutter/clutter-shader.c:215
-#, fuzzy
 msgid "Vertex Source"
-msgstr "Cieniowanie wierzchołkowe"
+msgstr "Źródło wierzchołków"
 
 #: clutter/clutter-shader.c:216
-#, fuzzy
 msgid "Source of vertex shader"
-msgstr "Cieniowanie wierzchołkowe"
+msgstr "Źródło cieniowania wierzchołkowego"
 
 #: clutter/clutter-shader.c:230
-#, fuzzy
 msgid "Fragment Source"
-msgstr "Cieniowanie fragmentów"
+msgstr "Źródło fragmentów"
 
 #: clutter/clutter-shader.c:231
-#, fuzzy
 msgid "Source of fragment shader"
-msgstr "Cieniowanie fragmentów"
+msgstr "Źródło cieniowania fragmentów"
 
 #: clutter/clutter-shader.c:246
 msgid "Compiled"
@@ -1309,11 +1302,11 @@ msgstr "Cieniowanie fragmentów"
 
 #: clutter/clutter-shader-effect.c:452
 msgid "Shader Type"
-msgstr ""
+msgstr "Typ cieniowania"
 
 #: clutter/clutter-shader-effect.c:453
 msgid "The type of shader used"
-msgstr ""
+msgstr "Typ używanego cieniowania"
 
 #: clutter/clutter-stage.c:1021
 msgid "Fullscreen Set"
@@ -1361,7 +1354,7 @@ msgstr ""
 
 #: clutter/clutter-stage.c:1110
 msgid "Title"
-msgstr ""
+msgstr "Tytuł"
 
 #: clutter/clutter-stage.c:1111
 msgid "Stage Title"
@@ -1369,7 +1362,7 @@ msgstr ""
 
 #: clutter/clutter-stage.c:1126
 msgid "Use Fog"
-msgstr ""
+msgstr "Użycie mgły"
 
 #: clutter/clutter-stage.c:1127
 msgid "Whether to enable depth cueing"
@@ -1377,7 +1370,7 @@ msgstr ""
 
 #: clutter/clutter-stage.c:1141
 msgid "Fog"
-msgstr ""
+msgstr "Mgła"
 
 #: clutter/clutter-stage.c:1142
 msgid "Settings for the depth cueing"
@@ -1409,36 +1402,35 @@ msgstr ""
 
 #: clutter/clutter-state.c:1181
 msgid "State"
-msgstr ""
+msgstr "Stan"
 
 #: clutter/clutter-state.c:1182
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr ""
 
 #: clutter/clutter-state.c:1196
-#, fuzzy
 msgid "Default transition duration"
-msgstr "Domyśla liczba klatek na sekundę"
+msgstr "Domyślny czas trwania przejścia"
 
 #: clutter/clutter-text.c:2509
 msgid "Font Name"
-msgstr ""
+msgstr "Nazwa czcionki"
 
 #: clutter/clutter-text.c:2510
 msgid "The font to be used by the text"
-msgstr ""
+msgstr "Czcionka używana przez tekst"
 
 #: clutter/clutter-text.c:2527
 msgid "Font Description"
-msgstr ""
+msgstr "Opis czcionki"
 
 #: clutter/clutter-text.c:2528
 msgid "The font description to be used"
-msgstr ""
+msgstr "Używany opis czcionki"
 
 #: clutter/clutter-text.c:2544
 msgid "Text"
-msgstr ""
+msgstr "Tekst"
 
 #: clutter/clutter-text.c:2545
 msgid "The text to render"
@@ -1446,11 +1438,11 @@ msgstr ""
 
 #: clutter/clutter-text.c:2559
 msgid "Font Color"
-msgstr ""
+msgstr "Kolor czcionki"
 
 #: clutter/clutter-text.c:2560
 msgid "Color of the font used by the text"
-msgstr ""
+msgstr "Kolor czcionki używanej przez tekst"
 
 #: clutter/clutter-text.c:2574
 msgid "Editable"
@@ -1502,7 +1494,7 @@ msgstr ""
 
 #: clutter/clutter-text.c:2683
 msgid "Position"
-msgstr ""
+msgstr "Położenie"
 
 #: clutter/clutter-text.c:2684
 msgid "The cursor position"
@@ -1530,7 +1522,7 @@ msgstr ""
 
 #: clutter/clutter-text.c:2746
 msgid "Attributes"
-msgstr ""
+msgstr "Atrybuty"
 
 #: clutter/clutter-text.c:2747
 msgid "A list of style attributes to apply to the contents of the actor"
@@ -1538,7 +1530,7 @@ msgstr ""
 
 #: clutter/clutter-text.c:2769
 msgid "Use markup"
-msgstr ""
+msgstr "Użycie znaczników"
 
 #: clutter/clutter-text.c:2770
 msgid "Whether or not the text includes Pango markup"
@@ -1668,7 +1660,7 @@ msgstr ""
 
 #: clutter/clutter-texture.c:1009
 msgid "COGL Texture"
-msgstr ""
+msgstr "Tekstura COGL"
 
 #: clutter/clutter-texture.c:1010
 msgid "The underlying COGL texture handle used to draw this actor"
@@ -1676,7 +1668,7 @@ msgstr ""
 
 #: clutter/clutter-texture.c:1017
 msgid "COGL Material"
-msgstr ""
+msgstr "Materiał COGL"
 
 #: clutter/clutter-texture.c:1018
 msgid "The underlying COGL material handle used to draw this actor"
@@ -1697,9 +1689,8 @@ msgid ""
 msgstr ""
 
 #: clutter/clutter-texture.c:1069
-#, fuzzy
 msgid "Load asynchronously"
-msgstr "Synchroniczne wywołania X"
+msgstr "Wczytywanie asynchroniczne"
 
 #: clutter/clutter-texture.c:1070
 msgid ""
@@ -1707,9 +1698,8 @@ msgid ""
 msgstr ""
 
 #: clutter/clutter-texture.c:1086
-#, fuzzy
 msgid "Load data asynchronously"
-msgstr "Synchroniczne wywołania X"
+msgstr "Asynchroniczne wczytywanie danych"
 
 #: clutter/clutter-texture.c:1087
 msgid ""
@@ -1747,7 +1737,7 @@ msgstr "Włącza obsługę XInput"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:519
 msgid "Pixmap"
-msgstr ""
+msgstr "Mapa pikseli"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:520
 msgid "The X11 Pixmap to be bound"
@@ -1787,7 +1777,7 @@ msgstr ""
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:564
 msgid "Window"
-msgstr ""
+msgstr "Okno"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:565
 msgid "The X11 Window to be bound"
@@ -1819,7 +1809,7 @@ msgstr ""
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:603
 msgid "Window X"
-msgstr ""
+msgstr "Okno X"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:604
 msgid "X position of window on screen according to X11"
@@ -1827,7 +1817,7 @@ msgstr ""
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:612
 msgid "Window Y"
-msgstr ""
+msgstr "Okno Y"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:613
 msgid "Y position of window on screen according to X11"
