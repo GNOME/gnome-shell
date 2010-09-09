@@ -40,12 +40,12 @@
 #define MUTTER_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  MUTTER_TYPE_PLUGIN, MutterPluginClass))
 
 /**
- * MetaMutterPlugin: (skip)
+ * MutterPlugin: (skip)
  *
  */
 typedef struct _MutterPlugin        MutterPlugin;
 /**
- * MetaMutterPluginClass: (skip)
+ * MutterPluginClass: (skip)
  *
  */
 typedef struct _MutterPluginClass   MutterPluginClass;
