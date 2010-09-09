@@ -505,24 +505,26 @@ gpointer _clutter_event_get_platform_data (const ClutterEvent *event);
 
 #endif
 
-void                _clutter_paint_volume_init_static      (ClutterActor *actor,
-                                                            ClutterPaintVolume *pv);
-ClutterPaintVolume *_clutter_paint_volume_new              (ClutterActor       *actor);
-void                _clutter_paint_volume_copy_static      (const ClutterPaintVolume *src_pv,
-                                                            ClutterPaintVolume *dst_pv);
-void                _clutter_paint_volume_set_from_volume  (ClutterPaintVolume *pv,
-                                                            const ClutterPaintVolume *src);
+void                _clutter_paint_volume_init_static          (ClutterActor *actor,
+                                                                ClutterPaintVolume *pv);
+ClutterPaintVolume *_clutter_paint_volume_new                  (ClutterActor       *actor);
+void                _clutter_paint_volume_copy_static          (const ClutterPaintVolume *src_pv,
+                                                                ClutterPaintVolume *dst_pv);
+void                _clutter_paint_volume_set_from_volume      (ClutterPaintVolume *pv,
+                                                                const ClutterPaintVolume *src);
 
-void                _clutter_paint_volume_complete         (ClutterPaintVolume *pv);
-void                _clutter_paint_volume_transform        (ClutterPaintVolume *pv,
-                                                            const CoglMatrix *matrix);
-void                _clutter_paint_volume_project          (ClutterPaintVolume *pv,
-                                                            const CoglMatrix   *modelview,
-                                                            const CoglMatrix   *projection,
-                                                            const int          *viewport);
-void                _clutter_paint_volume_get_bounding_box (ClutterPaintVolume *pv,
-                                                            ClutterActorBox    *box);
-void                _clutter_paint_volume_axis_align       (ClutterPaintVolume *pv);
+void                _clutter_paint_volume_complete             (ClutterPaintVolume *pv);
+void                _clutter_paint_volume_transform            (ClutterPaintVolume *pv,
+                                                                const CoglMatrix *matrix);
+void                _clutter_paint_volume_project              (ClutterPaintVolume *pv,
+                                                                const CoglMatrix   *modelview,
+                                                                const CoglMatrix   *projection,
+                                                                const int          *viewport);
+void                _clutter_paint_volume_get_bounding_box     (ClutterPaintVolume *pv,
+                                                                ClutterActorBox    *box);
+void                _clutter_paint_volume_axis_align           (ClutterPaintVolume *pv);
+void                _clutter_paint_volume_set_reference_actor  (ClutterPaintVolume *pv,
+                                                                ClutterActor *actor);
 
 
 

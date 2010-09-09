@@ -908,3 +908,18 @@ clutter_paint_volume_set_from_allocation (ClutterPaintVolume *pv,
 
   return _clutter_actor_set_default_paint_volume (actor, G_TYPE_INVALID, pv);
 }
+
+/* Currently paint volumes are defined relative to a given actor, but
+ * in some cases it is desireable to be able to change the actor that
+ * a volume relates too (For instance for ClutterClone actors where we
+ * need to masquarade the source actors volume as the volume for the
+ * clone). */
+void
+_clutter_paint_volume_set_reference_actor (ClutterPaintVolume *pv,
+                                           ClutterActor *actor)
+{
+  g_return_if_fail (pv != NULL);
+
+  g_object_unref (pv->actor);
+  pv->actor = g_object_ref (actor);
+}
