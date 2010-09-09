@@ -510,6 +510,9 @@ void                _clutter_paint_volume_init_static      (ClutterActor *actor,
 ClutterPaintVolume *_clutter_paint_volume_new              (ClutterActor       *actor);
 void                _clutter_paint_volume_copy_static      (const ClutterPaintVolume *src_pv,
                                                             ClutterPaintVolume *dst_pv);
+void                _clutter_paint_volume_set_from_volume  (ClutterPaintVolume *pv,
+                                                            const ClutterPaintVolume *src);
+
 void                _clutter_paint_volume_complete         (ClutterPaintVolume *pv);
 void                _clutter_paint_volume_transform        (ClutterPaintVolume *pv,
                                                             const CoglMatrix *matrix);

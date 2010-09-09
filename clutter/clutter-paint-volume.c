@@ -150,6 +150,18 @@ clutter_paint_volume_copy (const ClutterPaintVolume *pv)
   return copy;
 }
 
+void
+_clutter_paint_volume_set_from_volume (ClutterPaintVolume *pv,
+                                       const ClutterPaintVolume *src)
+{
+  if (src->actor != pv->actor)
+    {
+      g_object_unref (pv->actor);
+      g_object_ref (src->actor);
+    }
+  memcpy (pv, src, sizeof (ClutterPaintVolume));
+}
+
 /**
  * clutter_paint_volume_free:
  * @pv: a #ClutterPaintVolume
