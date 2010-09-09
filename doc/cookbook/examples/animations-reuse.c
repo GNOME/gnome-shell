@@ -32,18 +32,20 @@ foo_button_pressed_cb (ClutterActor *actor,
 
   ClutterScript *script;
   ClutterActor *rig;
-  ClutterAnimator *bounce;
+  ClutterAnimator *animator;
 
+  /* load the rig and its animator from a JSON file */
   script = clutter_script_new ();
 
+  /* use a function defined statically in this source file to load the JSON */
   load_script_from_file (script, ANIMATION_FILE);
 
   clutter_script_get_objects (script,
                               "rig", &rig,
-                              "bounce", &bounce,
+                              "animator", &animator,
                               NULL);
 
-  /* remove the button press handler */
+  /* remove the button press handler from the rectangle */
   g_signal_handlers_disconnect_matched (actor,
                                         G_SIGNAL_MATCH_FUNC,
                                         0,
@@ -55,11 +57,21 @@ foo_button_pressed_cb (ClutterActor *actor,
   /* add a callback to clean up the script when the rig is destroyed */
   g_object_set_data_full (G_OBJECT (rig), "script", script, g_object_unref);
 
+  /* add the rig to the stage */
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rig);
 
+  /* place the rig at the same coordinates on the stage as the rectangle */
+  clutter_actor_set_position (rig,
+                              clutter_actor_get_x (actor),
+                              clutter_actor_get_y (actor));
+
+  /* put the rectangle into the top-left corner of the rig */
   clutter_actor_reparent (actor, rig);
 
-  clutter_animator_start (bounce);
+  clutter_actor_set_position (actor, 0, 0);
+
+  /* animate the rig */
+  clutter_animator_start (animator);
 
   return TRUE;
 }

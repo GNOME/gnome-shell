@@ -6,11 +6,8 @@
 
   {
     "type" : "ClutterAnimator",
-    "id" : "bounce",
-    "timeline" : {
-      "type" : "ClutterTimeline",
-      "duration" : 2500
-    },
+    "id" : "animator",
+    "duration" : 2000,
 
     "properties" : [
       {
@@ -18,21 +15,8 @@
         "name" : "x",
         "ease-in" : true,
         "keys" : [
-          [ 0.2, "easeOutCubic", 100.0 ],
-          [ 0.6, "easeOutCubic", 150.0 ],
-          [ 0.8, "linear", 350.0 ],
-          [ 1.0, "linear", 500.0 ]
-        ]
-      },
-      {
-        "object" : "rig",
-        "name" : "y",
-        "ease-in" : true,
-        "keys" : [
-          [ 0.2, "easeOutCubic", 200.0 ],
-          [ 0.6, "easeOutBounce",  200.0 ],
-          [ 0.8, "linear", 200.0 ],
-          [ 1.0, "linear", 0.0 ]
+          [ 0.0, "linear", 0.0 ],
+          [ 1.0, "easeOutCubic", 150.0 ]
         ]
       },
       {
@@ -40,10 +24,8 @@
         "name" : "scale-x",
         "ease-in" : true,
         "keys" : [
-          [ 0.2, "easeOutElastic", 2.0 ],
-          [ 0.6, "easeOutBounce",  4.0 ],
-          [ 0.8, "linear", 4.0 ],
-          [ 1.0, "linear", 1.0 ]
+          [ 0.5, "linear", 1.0 ],
+          [ 1.0, "easeOutBack", 2.0 ]
         ]
       },
       {
@@ -51,10 +33,8 @@
         "name" : "scale-y",
         "ease-in" : true,
         "keys" : [
-          [ 0.2, "easeOutElastic", 2.0 ],
-          [ 0.6, "easeOutBounce",  4.0 ],
-          [ 0.8, "linear", 4.0 ],
-          [ 1.0, "linear", 1.0 ]
+          [ 0.5, "linear", 1.0 ],
+          [ 1.0, "easeOutBack", 2.0 ]
         ]
       }
     ]
