@@ -859,3 +859,40 @@ _clutter_actor_set_default_paint_volume (ClutterActor       *self,
 
   return TRUE;
 }
+
+/**
+ * clutter_paint_volume_set_from_allocation:
+ * @pv: a #ClutterPaintVolume
+ * @actor: a #ClutterActor
+ *
+ * Sets the #ClutterPaintVolume from the allocation of @actor.
+ *
+ * This function should be used when overriding the
+ * <function>get_paint_volume()</function> by #ClutterActor sub-classes that do
+ * not paint outside their allocation.
+ *
+ * A typical example is:
+ *
+ * |[
+ * static gboolean
+ * my_actor_get_paint_volume (ClutterActor       *self,
+ *                            ClutterPaintVolume *volume)
+ * {
+ *   return clutter_paint_volume_set_from_allocation (volume, self);
+ * }
+ * ]|
+ *
+ * Return value: %TRUE if the paint volume was successfully set, and %FALSE
+ *   otherwise
+ *
+ * Since: 1.4
+ */
+gboolean
+clutter_paint_volume_set_from_allocation (ClutterPaintVolume *pv,
+                                          ClutterActor       *actor)
+{
+  g_return_val_if_fail (pv != NULL, FALSE);
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
+
+  return _clutter_actor_set_default_paint_volume (actor, G_TYPE_INVALID, pv);
+}
