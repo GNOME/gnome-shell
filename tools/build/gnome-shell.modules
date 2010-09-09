@@ -112,6 +112,7 @@
     <dependencies>
         <dep package="json-glib"/>
         <dep package="gobject-introspection"/>
+        <dep package="atk"/>
         <dep package="pango"/>
     </dependencies>
   </autotools>
