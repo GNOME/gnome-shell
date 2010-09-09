@@ -1921,28 +1921,12 @@ clutter_text_paint (ClutterActor *self)
 }
 
 static gboolean
-clutter_text_get_paint_volume (ClutterActor *self,
+clutter_text_get_paint_volume (ClutterActor       *self,
                                ClutterPaintVolume *volume)
 {
-  ClutterGeometry allocation;
-
-  /* XXX: we are being conservative here and not making assumptions
-   * that sub-classes won't paint outside their allocation. */
-  if (G_OBJECT_TYPE (self) != CLUTTER_TYPE_TEXT)
-    return FALSE;
-
-  /* XXX: clutter_actor_get_allocation can potentially be very
-   * expensive to call if called while the actor doesn't have a valid
-   * allocation since it will trigger a synchronous relayout of the
-   * scenegraph. We explicitly check we have a valid allocation
-   * to avoid hitting that codepath. */
-  if (!clutter_actor_has_allocation (self))
-    return FALSE;
-
-  clutter_actor_get_allocation_geometry (self, &allocation);
-  clutter_paint_volume_set_width (volume, allocation.width);
-  clutter_paint_volume_set_height (volume, allocation.height);
-  return TRUE;
+  return _clutter_actor_set_default_paint_volume (self,
+                                                  CLUTTER_TYPE_TEXT,
+                                                  volume);
 }
 
 static void
