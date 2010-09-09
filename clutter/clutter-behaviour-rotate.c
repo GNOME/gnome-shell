@@ -411,7 +411,7 @@ clutter_behaviour_rotate_init (ClutterBehaviourRotate *rotate)
 
 /**
  * clutter_behaviour_rotate_new:
- * @alpha: a #ClutterAlpha, or %NULL
+ * @alpha: (allow-none): a #ClutterAlpha instance, or %NULL
  * @axis: the rotation axis
  * @direction: the rotation direction
  * @angle_start: the starting angle in degrees, between 0 and 360.
@@ -422,6 +422,10 @@ clutter_behaviour_rotate_init (ClutterBehaviourRotate *rotate)
  * @angle_end. Angles >= 360 degrees will be clamped to the canonical interval
  * <0, 360), if angle_start == angle_end, the behaviour will carry out a
  * single rotation of 360 degrees.
+ *
+ * If @alpha is not %NULL, the #ClutterBehaviour will take ownership
+ * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
+ * it can be set later with clutter_behaviour_set_alpha().
  *
  * Return value: the newly created #ClutterBehaviourRotate.
  *

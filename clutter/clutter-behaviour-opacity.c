@@ -79,7 +79,7 @@ enum
 
 static GParamSpec *obj_props[PROP_LAST];
 
-static void 
+static void
 alpha_notify_foreach (ClutterBehaviour *behaviour,
 		      ClutterActor     *actor,
 		      gpointer          data)
@@ -219,13 +219,17 @@ clutter_behaviour_opacity_init (ClutterBehaviourOpacity *self)
 
 /**
  * clutter_behaviour_opacity_new:
- * @alpha: a #ClutterAlpha instance, or %NULL
+ * @alpha: (allow-none): a #ClutterAlpha instance, or %NULL
  * @opacity_start: minimum level of opacity
  * @opacity_end: maximum level of opacity
  *
  * Creates a new #ClutterBehaviourOpacity object, driven by @alpha
  * which controls the opacity property of every actor, making it
  * change in the interval between @opacity_start and @opacity_end.
+ *
+ * If @alpha is not %NULL, the #ClutterBehaviour will take ownership
+ * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
+ * it can be set later with clutter_behaviour_set_alpha().
  *
  * Return value: the newly created #ClutterBehaviourOpacity
  *
@@ -236,7 +240,7 @@ clutter_behaviour_opacity_new (ClutterAlpha *alpha,
 			       guint8        opacity_start,
 			       guint8        opacity_end)
 {
-  return g_object_new (CLUTTER_TYPE_BEHAVIOUR_OPACITY, 
+  return g_object_new (CLUTTER_TYPE_BEHAVIOUR_OPACITY,
                        "alpha", alpha,
                        "opacity-start", opacity_start,
                        "opacity-end", opacity_end,

@@ -548,7 +548,7 @@ clutter_behaviour_ellipse_init (ClutterBehaviourEllipse * self)
 
 /**
  * clutter_behaviour_ellipse_new:
- * @alpha: a #ClutterAlpha, or %NULL
+ * @alpha: (allow-none): a #ClutterAlpha instance, or %NULL
  * @x: x coordinace of the center
  * @y: y coordiance of the center
  * @width: width of the ellipse
@@ -563,6 +563,10 @@ clutter_behaviour_ellipse_init (ClutterBehaviourEllipse * self)
  * degrees. Angles greated than 360 degrees get clamped to the canonical
  * interval <0, 360); if @start is equal to @end, the behaviour will
  * rotate by exacly 360 degrees.
+ *
+ * If @alpha is not %NULL, the #ClutterBehaviour will take ownership
+ * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
+ * it can be set later with clutter_behaviour_set_alpha().
  *
  * Return value: the newly created #ClutterBehaviourEllipse
  *

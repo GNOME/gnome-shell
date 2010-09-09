@@ -197,12 +197,16 @@ clutter_behaviour_depth_init (ClutterBehaviourDepth *depth)
 
 /**
  * clutter_behaviour_depth_new:
- * @alpha: a #ClutterAlpha or %NULL
+ * @alpha: (allow-none): a #ClutterAlpha instance, or %NULL
  * @depth_start: initial value of the depth
  * @depth_end: final value of the depth
  *
  * Creates a new #ClutterBehaviourDepth which can be used to control
  * the ClutterActor:depth property of a set of #ClutterActor<!-- -->s.
+ *
+ * If @alpha is not %NULL, the #ClutterBehaviour will take ownership
+ * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
+ * it can be set later with clutter_behaviour_set_alpha().
  *
  * Return value: the newly created behaviour
  *

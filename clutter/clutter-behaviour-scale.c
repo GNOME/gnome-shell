@@ -97,7 +97,7 @@ clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave,
   priv = CLUTTER_BEHAVIOUR_SCALE (behave)->priv;
 
   /* Fix the start/end values, avoids potential rounding errors on large
-   * values. 
+   * values.
   */
   if (alpha_value == 1.0)
     {
@@ -114,7 +114,7 @@ clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave,
       closure.scale_x = (priv->x_scale_end - priv->x_scale_start)
                       * alpha_value
                       + priv->x_scale_start;
-      
+
       closure.scale_y = (priv->y_scale_end - priv->y_scale_start)
                       * alpha_value
                       + priv->y_scale_start;
@@ -290,13 +290,17 @@ clutter_behaviour_scale_init (ClutterBehaviourScale *self)
 
 /**
  * clutter_behaviour_scale_new:
- * @alpha: a #ClutterAlpha
+ * @alpha: (allow-none): a #ClutterAlpha instance, or %NULL
  * @x_scale_start: initial scale factor on the X axis
  * @y_scale_start: initial scale factor on the Y axis
  * @x_scale_end: final scale factor on the X axis
  * @y_scale_end: final scale factor on the Y axis
  *
  * Creates a new  #ClutterBehaviourScale instance.
+ *
+ * If @alpha is not %NULL, the #ClutterBehaviour will take ownership
+ * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
+ * it can be set later with clutter_behaviour_set_alpha().
  *
  * Return value: the newly created #ClutterBehaviourScale
  *

@@ -310,7 +310,7 @@ clutter_behaviour_path_init (ClutterBehaviourPath *self)
 
 /**
  * clutter_behaviour_path_new:
- * @alpha: a #ClutterAlpha, or %NULL
+ * @alpha: (allow-none): a #ClutterAlpha instance, or %NULL
  * @path: a #ClutterPath or %NULL for an empty path
  *
  * Creates a new path behaviour. You can use this behaviour to drive
@@ -318,6 +318,10 @@ clutter_behaviour_path_init (ClutterBehaviourPath *self)
  *
  * This will claim the floating reference on the #ClutterPath so you
  * do not need to unref if it.
+ *
+ * If @alpha is not %NULL, the #ClutterBehaviour will take ownership
+ * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
+ * it can be set later with clutter_behaviour_set_alpha().
  *
  * Return value: a #ClutterBehaviour
  *
@@ -335,11 +339,15 @@ clutter_behaviour_path_new (ClutterAlpha *alpha,
 
 /**
  * clutter_behaviour_path_new_with_description:
- * @alpha: a #ClutterAlpha
+ * @alpha: (allow-none): a #ClutterAlpha instance, or %NULL
  * @desc: a string description of the path
  *
  * Creates a new path behaviour using the path described by @desc. See
  * clutter_path_add_string() for a description of the format.
+ *
+ * If @alpha is not %NULL, the #ClutterBehaviour will take ownership
+ * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
+ * it can be set later with clutter_behaviour_set_alpha().
  *
  * Return value: a #ClutterBehaviour
  *
@@ -357,7 +365,7 @@ clutter_behaviour_path_new_with_description (ClutterAlpha *alpha,
 
 /**
  * clutter_behaviour_path_new_with_knots:
- * @alpha: a #ClutterAlpha
+ * @alpha: (allow-none): a #ClutterAlpha instance, or %NULL
  * @knots: an array of #ClutterKnot<!-- -->s
  * @n_knots: number of entries in @knots
  *
@@ -367,6 +375,10 @@ clutter_behaviour_path_new_with_description (ClutterAlpha *alpha,
  * A path will be created where the first knot is used in a
  * %CLUTTER_PATH_MOVE_TO and the subsequent knots are used in
  * %CLUTTER_PATH_LINE_TO<!-- -->s.
+ *
+ * If @alpha is not %NULL, the #ClutterBehaviour will take ownership
+ * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
+ * it can be set later with clutter_behaviour_set_alpha().
  *
  * Return value: a #ClutterBehaviour
  *
