@@ -80,9 +80,6 @@ G_DEFINE_TYPE_WITH_CODE (StScrollView, st_scroll_view, ST_TYPE_BIN,
                                                              ST_TYPE_SCROLL_VIEW, \
                                                              StScrollViewPrivate))
 
-/* Default width (or height - the narrow dimension) for the scrollbars*/
-#define DEFAULT_SCROLLBAR_WIDTH 24
-
 struct _StScrollViewPrivate
 {
   /* a pointer to the child; this is actually stored
@@ -344,36 +341,37 @@ st_scroll_view_pick (ClutterActor       *actor,
 }
 
 static double
-get_scrollbar_width (StScrollView *scroll)
+get_scrollbar_width (StScrollView *scroll,
+                     gfloat        for_height)
 {
   StScrollViewPrivate *priv = scroll->priv;
 
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
     {
-      StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (scroll));
-      double result = DEFAULT_SCROLLBAR_WIDTH;
+      gfloat min_size;
 
-      st_theme_node_get_length (theme_node, "scrollbar-width", FALSE, &result);
-
-      return result;
+      clutter_actor_get_preferred_width (CLUTTER_ACTOR (priv->vscroll), for_height,
+                                         &min_size, NULL);
+      return min_size;
     }
   else
     return 0;
 }
 
 static double
-get_scrollbar_height (StScrollView *scroll)
+get_scrollbar_height (StScrollView *scroll,
+                      gfloat        for_width)
 {
   StScrollViewPrivate *priv = scroll->priv;
 
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->hscroll))
     {
-      StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (scroll));
-      double result = DEFAULT_SCROLLBAR_WIDTH;
+      gfloat min_size;
 
-      st_theme_node_get_length (theme_node, "scrollbar-height", FALSE, &result);
+      clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->hscroll), for_width,
+                                          &min_size, NULL);
 
-      return result;
+      return min_size;
     }
   else
     return 0;
@@ -434,7 +432,7 @@ st_scroll_view_get_preferred_width (ClutterActor *actor,
   account_for_vscrollbar = priv->vscrollbar_policy != GTK_POLICY_NEVER;
   if (account_for_vscrollbar)
     {
-      float sb_width = get_scrollbar_width (ST_SCROLL_VIEW (actor));
+      float sb_width = get_scrollbar_width (ST_SCROLL_VIEW (actor), for_height);
 
       min_width += sb_width;
       natural_width += sb_width;
@@ -476,7 +474,7 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
   if (min_height_p)
     *min_height_p = 0;
 
-  sb_width = get_scrollbar_width (ST_SCROLL_VIEW (actor));
+  sb_width = get_scrollbar_width (ST_SCROLL_VIEW (actor), -1);
 
   switch (priv->vscrollbar_policy)
     {
@@ -522,7 +520,7 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
 
   if (account_for_hscrollbar)
     {
-      float sb_height = get_scrollbar_height (ST_SCROLL_VIEW (actor));
+      float sb_height = get_scrollbar_height (ST_SCROLL_VIEW (actor), for_width);
 
       min_height += sb_height;
       natural_height += sb_height;
@@ -574,14 +572,21 @@ st_scroll_view_allocate (ClutterActor          *actor,
   CLUTTER_ACTOR_CLASS (parent_parent_class)->
   allocate (actor, box, flags);
 
-
   st_theme_node_get_content_box (theme_node, box, &content_box);
 
   avail_width = content_box.x2 - content_box.x1;
   avail_height = content_box.y2 - content_box.y1;
 
-  sb_width = get_scrollbar_width (ST_SCROLL_VIEW (actor));
-  sb_height = get_scrollbar_height (ST_SCROLL_VIEW (actor));
+  if (clutter_actor_get_request_mode (actor) == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
+    {
+      sb_width = get_scrollbar_width (ST_SCROLL_VIEW (actor), -1);
+      sb_height = get_scrollbar_height (ST_SCROLL_VIEW (actor), sb_width);
+    }
+  else
+    {
+      sb_height = get_scrollbar_height (ST_SCROLL_VIEW (actor), -1);
+      sb_width = get_scrollbar_width (ST_SCROLL_VIEW (actor), sb_height);
+    }
 
   /* Determine what scrollbars are visible. The basic idea of the
    * handling of an automatic scrollbars is that we start off with the
