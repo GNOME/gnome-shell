@@ -530,6 +530,10 @@ void                _clutter_util_fully_transform_vertices (const CoglMatrix *mo
                                                             ClutterVertex *vertices_out,
                                                             int n_vertices);
 
+gboolean           _clutter_actor_set_default_paint_volume (ClutterActor *self,
+                                                            GType         check_gtype,
+                                                            ClutterPaintVolume *volume);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_PRIVATE_H */

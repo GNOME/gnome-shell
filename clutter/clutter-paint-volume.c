@@ -812,4 +812,50 @@ _clutter_paint_volume_axis_align (ClutterPaintVolume *pv)
     pv->is_2d = FALSE;
 }
 
+/*<private>
+ * _clutter_actor_set_default_paint_volume:
+ * @self: a #ClutterActor
+ * @check_gtype: if not %G_TYPE_INVALID, match the type of @self against
+ *   this type
+ * @volume: the #ClutterPaintVolume to set
+ *
+ * Sets the default paint volume for @self.
+ *
+ * This function should be called by #ClutterActor sub-classes that follow
+ * the default assumption that their paint volume is defined by their
+ * allocation.
+ *
+ * If @check_gtype is not %G_TYPE_INVALID, this function will check the
+ * type of @self and only compute the paint volume if the type matches;
+ * this can be used to avoid computing the paint volume for sub-classes
+ * of an actor class
+ *
+ * Return value: %TRUE if the paint volume was set, and %FALSE otherwise
+ */
+gboolean
+_clutter_actor_set_default_paint_volume (ClutterActor       *self,
+                                         GType               check_gtype,
+                                         ClutterPaintVolume *volume)
+{
+  ClutterGeometry geometry = { 0, };
 
+  if (check_gtype != G_TYPE_INVALID)
+    {
+      if (G_OBJECT_TYPE (self) != check_gtype)
+        return FALSE;
+    }
+
+  /* calling clutter_actor_get_allocation_* can potentially be very
+   * expensive, as it can result in a synchronous full stage relayout
+   * and redraw
+   */
+  if (!clutter_actor_has_allocation (self))
+    return FALSE;
+
+  clutter_actor_get_allocation_geometry (self, &geometry);
+
+  clutter_paint_volume_set_width (volume, geometry.width);
+  clutter_paint_volume_set_height (volume, geometry.height);
+
+  return TRUE;
+}
