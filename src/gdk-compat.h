@@ -15,4 +15,10 @@
 
 #endif /*GTK_CHECK_VERSION */
 
+
+/* Compatibility with old GDK key symbols */
+#ifndef GDK_KEY_Escape
+#define GDK_KEY_Escape GDK_Escape
+#endif /* GDK_KEY_Escape */
+
 #endif /* __GDK_COMPAT_H__ */
