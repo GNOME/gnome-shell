@@ -457,6 +457,124 @@ scroll_bar_allocate_children (StScrollBar           *bar,
 }
 
 static void
+st_scroll_bar_get_preferred_width (ClutterActor *self,
+                                   gfloat        for_height,
+                                   gfloat       *min_width_p,
+                                   gfloat       *natural_width_p)
+{
+  StScrollBar *bar = ST_SCROLL_BAR (self);
+  StScrollBarPrivate *priv = bar->priv;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
+
+  st_theme_node_adjust_for_height (theme_node, &for_height);
+
+  if (min_width_p)
+    *min_width_p = 0;
+
+  if (natural_width_p)
+    *natural_width_p = 0;
+  if (priv->vertical)
+    {
+      gfloat tmin_width_p, tnatural_width_p;
+
+      #define ADJUST_WIDTH_IF_LARGER(actor) \
+        _st_actor_get_preferred_width (actor, for_height, TRUE, \
+                                       &tmin_width_p, &tnatural_width_p); \
+        if (min_width_p && tmin_width_p > *min_width_p) \
+          *min_width_p = tmin_width_p; \
+        if (natural_width_p && tnatural_width_p > *natural_width_p) \
+          *natural_width_p = tnatural_width_p;
+
+      ADJUST_WIDTH_IF_LARGER (priv->bw_stepper);
+      ADJUST_WIDTH_IF_LARGER (priv->fw_stepper);
+      ADJUST_WIDTH_IF_LARGER (priv->trough);
+      ADJUST_WIDTH_IF_LARGER (priv->handle);
+
+      #undef ADJUST_WIDTH_IF_LARGER
+    }
+  else
+    {
+      gfloat tmin_width_p, tnatural_width_p;
+
+      #define ADD_TO_WIDTH(actor) \
+        _st_actor_get_preferred_width (actor, for_height, TRUE, \
+                                       &tmin_width_p, &tnatural_width_p); \
+        if (min_width_p) \
+          *min_width_p += tmin_width_p; \
+        if (natural_width_p ) \
+          *natural_width_p += tnatural_width_p;
+
+      ADD_TO_WIDTH (priv->bw_stepper);
+      ADD_TO_WIDTH (priv->fw_stepper);
+      ADD_TO_WIDTH (priv->trough);
+      ADD_TO_WIDTH (priv->handle);
+
+      #undef ADD_TO_WIDTH
+    }
+
+  st_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
+}
+
+static void
+st_scroll_bar_get_preferred_height (ClutterActor *self,
+                                    gfloat        for_width,
+                                    gfloat       *min_height_p,
+                                    gfloat       *natural_height_p)
+{
+  StScrollBar *bar = ST_SCROLL_BAR (self);
+  StScrollBarPrivate *priv = bar->priv;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
+
+  st_theme_node_adjust_for_width (theme_node, &for_width);
+
+  if (min_height_p)
+    *min_height_p = 0;
+
+  if (natural_height_p)
+    *natural_height_p = 0;
+  if (priv->vertical)
+    {
+      gfloat tmin_height_p, tnatural_height_p;
+
+      #define ADD_TO_HEIGHT(actor) \
+        _st_actor_get_preferred_height (actor, for_width, FALSE, \
+                                        &tmin_height_p, &tnatural_height_p); \
+        if (min_height_p) \
+          *min_height_p += tmin_height_p; \
+        if (natural_height_p) \
+          *natural_height_p += tnatural_height_p;
+
+      ADD_TO_HEIGHT (priv->bw_stepper);
+      ADD_TO_HEIGHT (priv->fw_stepper);
+      ADD_TO_HEIGHT (priv->trough);
+      ADD_TO_HEIGHT (priv->handle);
+
+      #undef ADD_TO_HEIGHT
+    }
+  else
+    {
+      gfloat tmin_height_p, tnatural_height_p;
+
+      #define ADJUST_HEIGHT_IF_LARGER(actor) \
+        _st_actor_get_preferred_height (actor, for_width, FALSE, \
+                                        &tmin_height_p, &tnatural_height_p); \
+        if (min_height_p && tmin_height_p > *min_height_p) \
+          *min_height_p = tmin_height_p; \
+        if (natural_height_p && tnatural_height_p > *natural_height_p) \
+          *natural_height_p = tnatural_height_p;
+
+      ADJUST_HEIGHT_IF_LARGER (priv->bw_stepper);
+      ADJUST_HEIGHT_IF_LARGER (priv->fw_stepper);
+      ADJUST_HEIGHT_IF_LARGER (priv->trough);
+      ADJUST_HEIGHT_IF_LARGER (priv->handle);
+
+      #undef ADJUST_HEIGHT_IF_LARGER
+    }
+
+  st_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
+}
+
+static void
 st_scroll_bar_allocate (ClutterActor          *actor,
                         const ClutterActorBox *box,
                         ClutterAllocationFlags flags)
@@ -599,6 +717,8 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
   object_class->dispose      = st_scroll_bar_dispose;
   object_class->constructor  = st_scroll_bar_constructor;
 
+  actor_class->get_preferred_width  = st_scroll_bar_get_preferred_width;
+  actor_class->get_preferred_height = st_scroll_bar_get_preferred_height;
   actor_class->parent_set     = st_scroll_bar_parent_set;
   actor_class->queue_relayout = st_scroll_bar_queue_relayout;
   actor_class->allocate       = st_scroll_bar_allocate;
