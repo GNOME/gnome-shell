@@ -116,6 +116,8 @@ struct _ClutterStagePrivate
 
   ClutterStageHint    stage_hints;
 
+  gint                picks_per_frame;
+
   guint redraw_pending         : 1;
   guint is_fullscreen          : 1;
   guint is_cursor_visible      : 1;
@@ -126,6 +128,7 @@ struct _ClutterStagePrivate
   guint min_size_changed       : 1;
   guint dirty_viewport         : 1;
   guint dirty_projection       : 1;
+  guint have_valid_pick_buffer : 1;
 };
 
 enum
@@ -733,6 +736,16 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
     }
   else
     CLUTTER_CONTEXT ()->redraw_count += 1;
+
+  /* We have an optimization in _clutter_do_pick to detect when the
+   * scene is static so we can cache a full, un-clipped pick buffer to
+   * avoid continuous pick renders.
+   *
+   * Currently the assumption is that actors queue a redraw when some
+   * state changes that affects painting *or* picking so we can use
+   * this point to invalidate any currently cached pick buffer.
+   */
+  _clutter_stage_set_pick_buffer_valid (stage, FALSE);
 
   /* If the backend can't do anything with redraw clips (e.g. it already knows
    * it needs to redraw everything anyway) then don't spend time transforming
@@ -2928,4 +2941,37 @@ clutter_stage_get_no_clear_hint (ClutterStage *stage)
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
 
   return (stage->priv->stage_hints & CLUTTER_STAGE_NO_CLEAR_ON_PAINT) != 0;
+}
+
+gboolean
+_clutter_stage_get_pick_buffer_valid (ClutterStage *stage)
+{
+  return stage->priv->have_valid_pick_buffer;
+}
+
+void
+_clutter_stage_set_pick_buffer_valid (ClutterStage *stage,
+                                      gboolean      valid)
+{
+  valid = !!valid;
+
+  stage->priv->have_valid_pick_buffer = valid;
+}
+
+void
+_clutter_stage_increment_pick_counter (ClutterStage *stage)
+{
+  stage->priv->picks_per_frame += 1;
+}
+
+void
+_clutter_stage_unset_pick_counter (ClutterStage *stage)
+{
+  stage->priv->picks_per_frame = 0;
+}
+
+guint
+_clutter_stage_get_pick_counter (ClutterStage *stage)
+{
+  return stage->priv->picks_per_frame;
 }

@@ -274,12 +274,8 @@ _clutter_do_redraw (ClutterStage *stage)
 
   ctx = _clutter_context_get_default ();
 
-  /* We have an optimization to avoid pick renders while scene is static.
-   * This is implied by seeing multiple picks per frame so we have to
-   * reset a pick counter each frame and also invalidate any current pick
-   * buffer. */
-  ctx->picks_per_frame = 0;
-  ctx->have_complete_pick_buffer = FALSE;
+  _clutter_stage_set_pick_buffer_valid (stage, FALSE);
+  _clutter_stage_unset_pick_counter (stage);
 
   /* Before we can paint, we have to be sure we have the latest layout */
   _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
@@ -601,7 +597,7 @@ _clutter_do_pick (ClutterStage   *stage,
   /* It's possible that we currently have a static scene and have renderered a
    * full, unclipped pick buffer. If so we can simply continue to read from
    * this cached buffer until the scene next changes. */
-  if (context->have_complete_pick_buffer)
+  if (_clutter_stage_get_pick_buffer_valid (stage))
     {
       CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
       cogl_read_pixels (x, y, 1, 1,
@@ -628,7 +624,7 @@ _clutter_do_pick (ClutterStage   *stage,
       goto result;
     }
 
-  context->picks_per_frame++;
+  _clutter_stage_increment_pick_counter (stage);
 
   _clutter_backend_ensure_context (context->backend, stage);
 
@@ -638,7 +634,7 @@ _clutter_do_pick (ClutterStage   *stage,
   /* If we are seeing multiple picks per frame that means the scene is static
    * so we promote to doing a non-scissored pick render so that all subsequent
    * picks for the same static scene won't require additional renders */
-  if (context->picks_per_frame < 2)
+  if (_clutter_stage_get_pick_counter (stage) < 2)
     {
       if (G_LIKELY (!(clutter_pick_debug_flags &
                       CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
@@ -680,7 +676,7 @@ _clutter_do_pick (ClutterStage   *stage,
         cogl_clip_pop ();
     }
   else
-    context->have_complete_pick_buffer = TRUE;
+    _clutter_stage_set_pick_buffer_valid (stage, TRUE);
 
   /* Make sure Cogl flushes any batched geometry to the GPU driver */
   cogl_flush ();

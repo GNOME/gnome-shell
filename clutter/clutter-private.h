@@ -183,9 +183,6 @@ struct _ClutterMainContext
   GList *repaint_funcs;
 
   ClutterSettings *settings;
-
-  gint picks_per_frame;
-  gboolean have_complete_pick_buffer;
 };
 
 #define CLUTTER_CONTEXT()	(_clutter_context_get_default ())
@@ -278,6 +275,13 @@ void     _clutter_stage_update_input_devices   (ClutterStage *stage);
 int      _clutter_stage_get_pending_swaps      (ClutterStage *stage);
 
 gboolean _clutter_stage_has_full_redraw_queued (ClutterStage *stage);
+
+void     _clutter_stage_set_pick_buffer_valid  (ClutterStage *stage,
+                                                gboolean      valid);
+gboolean _clutter_stage_get_pick_buffer_valid  (ClutterStage *stage);
+void     _clutter_stage_increment_pick_counter (ClutterStage *stage);
+void     _clutter_stage_unset_pick_counter     (ClutterStage *stage);
+guint    _clutter_stage_get_pick_counter       (ClutterStage *stage);
 
 /* vfuncs implemented by backend */
 GType         _clutter_backend_impl_get_type  (void);
