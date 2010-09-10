@@ -95,6 +95,7 @@ Notification.prototype = {
     _init: function(source, title, banner, params) {
         this.source = source;
         this.urgent = false;
+        this.expanded = false;
         this._customContent = false;
         this._bannerBodyText = null;
         this._titleFitsInBannerMode = true;
@@ -193,6 +194,8 @@ Notification.prototype = {
             this._actionArea = null;
             this._buttonBox = null;
         }
+        if (!this._scrollArea && !this._actionArea)
+            this.actor.remove_style_class_name('multi-line-notification');
 
         this._icon = params.icon || this.source.createNotificationIcon();
         this.actor.add(this._icon, { row: 0,
@@ -221,6 +224,7 @@ Notification.prototype = {
 
         if (params.body)
             this.addBody(params.body);
+        this._updated();
     },
 
     // addActor:
@@ -229,6 +233,7 @@ Notification.prototype = {
     // Appends @actor to the notification's body
     addActor: function(actor) {
         if (!this._scrollArea) {
+            this.actor.add_style_class_name('multi-line-notification');
             this._scrollArea = new St.ScrollView({ name: 'notification-scrollview',
                                                    vscrollbar_policy: Gtk.PolicyType.AUTOMATIC,
                                                    hscrollbar_policy: Gtk.PolicyType.NEVER,
@@ -244,6 +249,7 @@ Notification.prototype = {
         }
 
         this._contentArea.add(actor);
+        this._updated();
     },
 
     // addBody:
@@ -310,7 +316,9 @@ Notification.prototype = {
         props.row = 2;
         props.col = 1;
 
+        this.actor.add_style_class_name('multi-line-notification');
         this.actor.add(this._actionArea, props);
+        this._updated();
     },
 
     // addButton:
@@ -345,6 +353,7 @@ Notification.prototype = {
 
         this._buttonBox.add(button);
         button.connect('clicked', Lang.bind(this, function() { this.emit('action-invoked', id); }));
+        this._updated();
     },
 
     setUrgent: function(urgent) {
@@ -404,11 +413,27 @@ Notification.prototype = {
             Mainloop.idle_add(Lang.bind(this,
                                         function() {
                                             this._addBannerBody();
+                                            if (!this._titleFitsInBannerMode)
+                                                this.actor.add_style_class_name('multi-line-notification');
+                                            this._updated();
                                             return false;
                                         }));
+        else if (!this._contentArea && !this._actionArea)
+            // We need to set the opacity of the banner label to 255, in case it was
+            // previously 0 because the banner didn't fully fit before and the notification
+            // was in the expanded state. expand() will be called again if this._contentArea
+            // or this._actionArea will get re-populated with other elements, so the banner
+            // label opacity will be set to 0 if necessary.
+            this._bannerLabel.opacity = 255;
     },
 
-    popOut: function(animate) {
+    _updated: function() {
+        if (this.expanded)
+            this.expand(false);
+    },
+
+    expand: function(animate) {
+        this.expanded = true;
         // The banner is never shown when the title did not fit, so this
         // can be an if-else statement.
         if (!this._titleFitsInBannerMode) {
@@ -417,8 +442,7 @@ Notification.prototype = {
             this._titleLabel.clutter_text.line_wrap = true;
             this._titleLabel.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
             this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-            return true;
-        } else if (this.actor.row_count > 1) {
+        } else if (this.actor.row_count > 1 && this._bannerLabel.opacity != 0) {
             // We always hide the banner if the notification has additional content.
             //
             // We don't need to wrap the banner that doesn't fit the way we wrap the
@@ -433,14 +457,12 @@ Notification.prototype = {
                                    transition: 'easeOutQuad' });
             else
                 this._bannerLabel.opacity = 0;
-
-            return true;
         }
-
-        return false;
+        this.emit('expanded');
     },
 
-    popInCompleted: function() {
+    collapseCompleted: function() {
+        this.expanded = false;
         // Make sure we don't line wrap the title, and ellipsize it instead.
         this._titleLabel.clutter_text.line_wrap = false;
         this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.END;
@@ -861,10 +883,13 @@ MessageTray.prototype = {
         this._pointerInSummary = false;
         this._notificationState = State.HIDDEN;
         this._notificationTimeoutId = 0;
+        this._notificationExpandedId = 0;
         this._summaryNotificationState = State.HIDDEN;
         this._summaryNotificationTimeoutId = 0;
+        this._summaryNotificationExpandedId = 0;
         this._overviewVisible = Main.overview.visible;
         this._notificationRemoved = false;
+        this._reNotifyWithSummaryNotificationAfterHide = false;
 
         Main.chrome.addActor(this.actor, { affectsStruts: false,
                                            visibleInOverview: true });
@@ -1001,10 +1026,7 @@ MessageTray.prototype = {
         let needUpdate = false;
 
         if (this._notification && this._notification.source == source) {
-            if (this._notificationTimeoutId) {
-                Mainloop.source_remove(this._notificationTimeoutId);
-                this._notificationTimeoutId = 0;
-            }
+            this._updateNotificationTimeout(0);
             this._notificationRemoved = true;
             needUpdate = true;
         }
@@ -1019,10 +1041,7 @@ MessageTray.prototype = {
 
     removeNotification: function(notification) {
         if (this._notification == notification && (this._notificationState == State.SHOWN || this._notificationState == State.SHOWING)) {
-            if (this._notificationTimeoutId) {
-                Mainloop.source_remove(this._notificationTimeoutId);
-                this._notificationTimeoutId = 0;
-            }
+            this._updateNotificationTimeout(0);
             this._notificationRemoved = true;
             this._updateState();
             return;
@@ -1031,12 +1050,6 @@ MessageTray.prototype = {
         let index = this._notificationQueue.indexOf(notification);
         if (index != -1)
             this._notificationQueue.splice(index, 1);
-    },
-
-    _hasNotification: function(notification) {
-        if (this._notification == notification)
-            return true;
-        return this._notificationQueue.indexOf(notification) != -1;
     },
 
     lock: function() {
@@ -1052,10 +1065,24 @@ MessageTray.prototype = {
     },
 
     _onNotify: function(source, notification) {
-        if (notification == this._summaryNotification)
+        if (notification == this._summaryNotification) {
+            if (!this._summaryNotificationExpandedId)
+                // We must be in the process of hiding the summary notification.
+                // If the summary notification is updated while it is being
+                // hidden, we show the update as a new notification. However,
+                // we must first wait till the hide is complete and the
+                // notification actor is not part of the stage.
+                this._reNotifyWithSummaryNotificationAfterHide = true;
             return;
+        }
 
-        if (!this._hasNotification(notification)) {
+        if (this._notification == notification) {
+            // If a notification that is being shown is updated, we update
+            // how it is shown and extend the time until it auto-hides.
+            // If a new notification is updated while it is being hidden,
+            // we stop hiding it and show it again.
+            this._updateShowingNotification();
+        } else if (this._notificationQueue.indexOf(notification) < 0) {
             notification.connect('destroy',
                                  Lang.bind(this, this.removeNotification));
 
@@ -1140,6 +1167,7 @@ MessageTray.prototype = {
         this._trayLeftTimeoutId = 0;
         this._pointerInTray = false;
         this._pointerInSummary = false;
+        this._updateNotificationTimeout(0);
         this._updateState();
         return false;
     },
@@ -1148,10 +1176,7 @@ MessageTray.prototype = {
         this.unlock();
         this._pointerInTray = false;
         this._pointerInSummary = false;
-        if (this._notificationTimeoutId) {
-            Mainloop.source_remove(this._notificationTimeoutId);
-            this._notificationTimeoutId = 0;
-        }
+        this._updateNotificationTimeout(0);
         this._updateState();
     },
 
@@ -1174,7 +1199,7 @@ MessageTray.prototype = {
             if (notificationExpired)
                 this._hideNotification();
             else if (notificationPinned && !notificationExpanded)
-                this._expandNotification();
+                this._expandNotification(false);
             else if (notificationPinned)
                 this._ensureNotificationFocused();
         }
@@ -1273,20 +1298,7 @@ MessageTray.prototype = {
         this._notificationBin.y = this.actor.height;
         this._notificationBin.show();
 
-        this._tween(this._notificationBin, '_notificationState', State.SHOWN,
-                    { y: 0,
-                      opacity: 255,
-                      time: ANIMATION_TIME,
-                      transition: 'easeOutQuad',
-                      onComplete: this._showNotificationCompleted,
-                      onCompleteScope: this
-                    });
-
-        if (this._notification.urgent) {
-            // This will overwrite the y tween, but leave the opacity
-            // tween, and so the onComplete will remain as well.
-            this._expandNotification();
-        }
+        this._updateShowingNotification();
 
         let [x, y, mods] = global.get_pointer();
         // We save the position of the mouse at the time when we started showing the notification
@@ -1302,10 +1314,40 @@ MessageTray.prototype = {
         this._lastSeenMouseY = y;
     },
 
+    _updateShowingNotification: function() {
+        Tweener.removeTweens(this._notificationBin);
+        this._tween(this._notificationBin, '_notificationState', State.SHOWN,
+                    { y: 0,
+                      opacity: 255,
+                      time: ANIMATION_TIME,
+                      transition: 'easeOutQuad',
+                      onComplete: this._showNotificationCompleted,
+                      onCompleteScope: this
+                    });
+
+        // We auto-expand urgent notifications.
+        // We call _expandNotification() again on the notifications that
+        // are expanded in case they were in the process of hiding and need
+        // to re-expand.
+        if (this._notification.urgent || this._notification.expanded)
+            // This will overwrite the y tween, but leave the opacity
+            // tween, and so the onComplete will remain as well.
+            this._expandNotification(true);
+   },
+
     _showNotificationCompleted: function() {
-        this._notificationTimeoutId =
-            Mainloop.timeout_add(NOTIFICATION_TIMEOUT * 1000,
-                                 Lang.bind(this, this._notificationTimeout));
+        this._updateNotificationTimeout(NOTIFICATION_TIMEOUT * 1000);
+    },
+
+    _updateNotificationTimeout: function(timeout) {
+        if (this._notificationTimeoutId) {
+            Mainloop.source_remove(this._notificationTimeoutId);
+            this._notificationTimeoutId = 0;
+        }
+        if (timeout > 0)
+            this._notificationTimeoutId =
+                Mainloop.timeout_add(timeout,
+                                     Lang.bind(this, this._notificationTimeout));
     },
 
     _notificationTimeout: function() {
@@ -1316,9 +1358,7 @@ MessageTray.prototype = {
             // the old one) each time because the bookkeeping is
             // simpler.)
             this._lastSeenMouseY = y;
-            this._notificationTimeoutId =
-                Mainloop.timeout_add(1000,
-                                     Lang.bind(this, this._notificationTimeout));
+            this._updateNotificationTimeout(1000);
         } else {
             this._notificationTimeoutId = 0;
             this._updateState();
@@ -1329,10 +1369,9 @@ MessageTray.prototype = {
 
     _hideNotification: function() {
         this._notification.ungrabFocus();
-
-        if (this._reExpandNotificationId) {
-            this._notificationBin.disconnect(this._reExpandNotificationId);
-            this._reExpandNotificationId = 0;
+        if (this._notificationExpandedId) {
+            this._notification.disconnect(this._notificationExpandedId);
+            this._notificationExpandedId = 0;
         }
 
         this._tween(this._notificationBin, '_notificationState', State.HIDDEN,
@@ -1349,25 +1388,32 @@ MessageTray.prototype = {
         this._notificationRemoved = false;
         this._notificationBin.hide();
         this._notificationBin.child = null;
-        this._notification.popInCompleted();
+        this._notification.collapseCompleted();
         this._notification = null;
     },
 
-    _expandNotification: function() {
-        if (this._notification && this._notification.popOut(true)) {
-            // Don't grab focus in urgent notifications that are auto-expanded.
-            if (!this._notification.urgent)
-                this._notification.grabFocus(false);
+    _expandNotification: function(autoExpanding) {
+        // Don't grab focus in notifications that are auto-expanded.
+        if (!autoExpanding)
+            this._notification.grabFocus(false);
+
+        if (!this._notificationExpandedId)
+            this._notificationExpandedId =
+                this._notification.connect('expanded',
+                                           Lang.bind(this, this._onNotificationExpanded));
+        // Don't animate changes in notifications that are auto-expanding.
+        this._notification.expand(!autoExpanding);
+    },
+
+   _onNotificationExpanded: function() {
+        let expandedY = this.actor.height - this._notificationBin.height;
+        if (this._notificationBin.y != expandedY)
             this._tween(this._notificationBin, '_notificationState', State.SHOWN,
-                        { y: this.actor.height - this._notificationBin.height,
+                        { y: expandedY,
                           time: ANIMATION_TIME,
                           transition: 'easeOutQuad'
                         });
-
-            if (!this._reExpandNotificationId)
-                this._reExpandNotificationId = this._notificationBin.connect('notify::height', Lang.bind(this, this._expandNotification));
-        }
-    },
+   },
 
     // We use this function to grab focus when the user moves the pointer
     // to an urgent notification that was already auto-expanded.
@@ -1423,33 +1469,32 @@ MessageTray.prototype = {
             this._notificationQueue.splice(index, 1);
 
         this._summaryNotificationBin.child = this._summaryNotification.actor;
-        this._summaryNotification.popOut(false);
         this._summaryNotification.grabFocus(true);
 
         this._summaryNotificationBin.opacity = 0;
         this._summaryNotificationBin.y = this.actor.height;
         this._summaryNotificationBin.show();
 
+        if (!this._summaryNotificationExpandedId)
+            this._summaryNotificationExpandedId = this._summaryNotification.connect('expanded', Lang.bind(this, this._onSummaryNotificationExpanded));
+        this._summaryNotification.expand(false);
+    },
+
+    _onSummaryNotificationExpanded: function() {
         this._tween(this._summaryNotificationBin, '_summaryNotificationState', State.SHOWN,
                     { y: this.actor.height - this._summaryNotificationBin.height,
                       opacity: 255,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
-
-        if (!this._reExpandSummaryNotificationId)
-            this._reExpandSummaryNotificationId = this._summaryNotificationBin.connect('notify::height', Lang.bind(this, this._reExpandSummaryNotification));
-    },
-
-    _reExpandSummaryNotification: function() {
-        this._tween(this._summaryNotificationBin, '_summaryNotificationState', State.SHOWN,
-                    { y: this.actor.height - this._summaryNotificationBin.height,
-                      time: ANIMATION_TIME,
-                      transition: 'easeOutQuad'
-                    });
     },
 
     _hideSummaryNotification: function() {
+        if (this._summaryNotificationExpandedId) {
+            this._summaryNotification.disconnect(this._summaryNotificationExpandedId);
+            this._summaryNotificationExpandedId = 0;
+        }
+
         // Unset this._clickedSummaryItem if we are no longer showing the summary
         if (this._summaryState != State.SHOWN)
             this._clickedSummaryItem = null;
@@ -1463,17 +1508,17 @@ MessageTray.prototype = {
                       onComplete: this._hideSummaryNotificationCompleted,
                       onCompleteScope: this
                     });
-
-        if (this._reExpandSummaryNotificationId) {
-            this._summaryNotificationBin.disconnect(this._reExpandSummaryNotificationId);
-            this._reExpandSummaryNotificationId = 0;
-        }
     },
 
     _hideSummaryNotificationCompleted: function() {
         this._summaryNotificationBin.hide();
         this._summaryNotificationBin.child = null;
-        this._summaryNotification.popInCompleted();
+        this._summaryNotification.collapseCompleted();
+        let summaryNotification = this._summaryNotification;
         this._summaryNotification = null;
+        if (this._reNotifyWithSummaryNotificationAfterHide) {
+            this._onNotify(summaryNotification.source, summaryNotification);
+            this._reNotifyWithSummaryNotificationAfterHide = false;
+        }
     }
 };
