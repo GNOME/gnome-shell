@@ -139,7 +139,8 @@ menu_closed (GtkMenu *widget,
   menu = data;
 
   meta_frames_notify_menu_hide (menu->frames);
-  (* menu->func) (menu, gdk_display,
+  (* menu->func) (menu,
+                  GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
                   menu->client_xwindow,
                   gtk_get_current_event_time (),
                   0, 0,
@@ -158,7 +159,8 @@ activate_cb (GtkWidget *menuitem, gpointer data)
   md = data;
 
   meta_frames_notify_menu_hide (md->menu->frames);
-  (* md->menu->func) (md->menu, gdk_display,
+  (* md->menu->func) (md->menu,
+                      GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
                       md->menu->client_xwindow,
                       gtk_get_current_event_time (),
                       md->op,

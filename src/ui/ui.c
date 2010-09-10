@@ -62,7 +62,7 @@ meta_ui_init (int *argc, char ***argv)
 Display*
 meta_ui_get_display (void)
 {
-  return gdk_display;
+  return GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 }
 
 typedef struct _EventFunc EventFunc;
@@ -126,7 +126,7 @@ meta_ui_new (Display *xdisplay,
   ui->xdisplay = xdisplay;
   ui->xscreen = screen;
 
-  g_assert (xdisplay == gdk_display);
+  g_assert (xdisplay == GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
   ui->frames = meta_frames_new (XScreenNumberOfScreen (screen));
   gtk_widget_realize (GTK_WIDGET (ui->frames));
   
@@ -408,7 +408,8 @@ meta_image_window_set_showing  (MetaImageWindow *iw,
   else
     {
       gtk_widget_hide (iw->window);
-      meta_core_increment_event_serial (gdk_display);
+      meta_core_increment_event_serial (
+          GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
     }
 }
 
