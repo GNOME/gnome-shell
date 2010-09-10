@@ -393,7 +393,7 @@ Notification.prototype = {
 
         let bannerFits = true;
         if (titleBox.x2 + this._spacing > availWidth) {
-            this._bannerLabel.hide();
+            this._bannerLabel.opacity = 0;
             bannerFits = false;
         } else {
             let bannerBox = new Clutter.ActorBox();
@@ -402,8 +402,13 @@ Notification.prototype = {
             bannerBox.x2 = Math.min(bannerBox.x1 + bannerNatW, availWidth);
             bannerBox.y2 = titleNatH;
             bannerFits = (bannerBox.x1 + bannerNatW <= availWidth);
-            this._bannerLabel.show();
             this._bannerLabel.allocate(bannerBox, flags);
+
+            // Make _bannerLabel visible if the entire notification
+            // fits on one line, or if the notification is currently
+            // unexpanded and only showing one line anyway.
+            if (!this.expanded || (bannerFits && this.actor.row_count == 1))
+                this._bannerLabel.opacity = 255;
         }
 
         // If the banner doesn't fully fit in the banner box, we possibly need to add the
@@ -418,13 +423,6 @@ Notification.prototype = {
                                             this._updated();
                                             return false;
                                         }));
-        else if (!this._contentArea && !this._actionArea)
-            // We need to set the opacity of the banner label to 255, in case it was
-            // previously 0 because the banner didn't fully fit before and the notification
-            // was in the expanded state. expand() will be called again if this._contentArea
-            // or this._actionArea will get re-populated with other elements, so the banner
-            // label opacity will be set to 0 if necessary.
-            this._bannerLabel.opacity = 255;
     },
 
     _updated: function() {
