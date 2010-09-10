@@ -292,7 +292,11 @@ key_release_cb (ClutterActor *actor,
                 ClutterEvent *event,
                 void *user_data)
 {
-  if (event->key.keyval == CLUTTER_Q || event->key.keyval == CLUTTER_q)
+  guint keysym = clutter_event_get_key_symbol (event);
+  ClutterModifierType mods = clutter_event_get_state (event);
+
+  if (keysym == CLUTTER_KEY_q ||
+      ((mods & CLUTTER_SHIFT_MASK) && keysym == CLUTTER_KEY_q))
     clutter_main_quit ();
 
   return FALSE;

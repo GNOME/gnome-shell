@@ -207,23 +207,23 @@ key_group_class_init (KeyGroupClass *klass)
   binding_pool = clutter_binding_pool_get_for_class (klass);
 
   clutter_binding_pool_install_action (binding_pool, "move-right",
-                                       CLUTTER_Right, 0,
+                                       CLUTTER_KEY_Right, 0,
                                        G_CALLBACK (key_group_action_move_right),
                                        NULL, NULL);
   clutter_binding_pool_install_action (binding_pool, "move-left",
-                                       CLUTTER_Left, 0,
+                                       CLUTTER_KEY_Left, 0,
                                        G_CALLBACK (key_group_action_move_left),
                                        NULL, NULL);
   clutter_binding_pool_install_action (binding_pool, "activate",
-                                       CLUTTER_Return, 0,
+                                       CLUTTER_KEY_Return, 0,
                                        G_CALLBACK (key_group_action_activate),
                                        NULL, NULL);
   clutter_binding_pool_install_action (binding_pool, "activate",
-                                       CLUTTER_KP_Enter, 0,
+                                       CLUTTER_KEY_KP_Enter, 0,
                                        G_CALLBACK (key_group_action_activate),
                                        NULL, NULL);
   clutter_binding_pool_install_action (binding_pool, "activate",
-                                       CLUTTER_ISO_Enter, 0,
+                                       CLUTTER_KEY_ISO_Enter, 0,
                                        G_CALLBACK (key_group_action_activate),
                                        NULL, NULL);
 }

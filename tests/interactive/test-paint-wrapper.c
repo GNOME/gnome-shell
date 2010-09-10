@@ -87,13 +87,13 @@ input_cb (ClutterActor *stage,
       g_print ("*** key press event (key:%c) ***\n",
 	       clutter_event_get_key_symbol (event));
 
-      if (clutter_event_get_key_symbol (event) == CLUTTER_q)
+      if (clutter_event_get_key_symbol (event) == CLUTTER_KEY_q)
         {
 	  clutter_main_quit ();
 
           return TRUE;
         }
-      else if (clutter_event_get_key_symbol (event) == CLUTTER_r)
+      else if (clutter_event_get_key_symbol (event) == CLUTTER_KEY_r)
         {
           gint i;
 

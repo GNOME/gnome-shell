@@ -73,6 +73,7 @@ IGNORE_HFILES=\
 	clutter-id-pool.h 		\
 	clutter-json.h 			\
 	clutter-keysyms.h 		\
+	clutter-keysyms-compat.h	\
 	clutter-keysyms-table.h 	\
 	clutter-marshal.h 		\
 	clutter-master-clock.h 		\

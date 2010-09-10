@@ -114,6 +114,7 @@ source_h =					\
 	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
 	$(srcdir)/clutter-keysyms.h 		\
+	$(srcdir)/clutter-keysyms-compat.h	\
 	$(srcdir)/clutter-layout-manager.h	\
 	$(srcdir)/clutter-layout-meta.h		\
 	$(srcdir)/clutter-list-model.h		\
@@ -442,6 +443,8 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib) $(INTROSPECTION_GIRS:.gir=.typ
 
 CLEANFILES += $(dist_gir_DATA) $(typelibs_DATA)
 endif # HAVE_INTROSPECTION
+
+EXTRA_DIST += clutter-keysyms-update.pl
 
 gcov_sources = $(source_c)
 include $(top_srcdir)/build/autotools/Makefile.am.gcov

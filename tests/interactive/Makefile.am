@@ -113,7 +113,9 @@ test_interactive_SOURCES = test-main.c $(UNIT_TESTS)
 test_interactive_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 test_interactive_CPPFLAGS = \
 	-DTESTS_DATADIR=\""$(abs_top_srcdir)/tests/data"\" \
-	-DG_DISABLE_SINGLE_INCLUDES
+	-DG_DISABLE_SINGLE_INCLUDES \
+	-DCOGL_DISABLE_DEPRECATED \
+	-DCLUTTER_DISABLE_DEPRECATED
 test_interactive_LDFLAGS = -export-dynamic
 test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd)
 

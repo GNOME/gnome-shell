@@ -84,12 +84,12 @@ stage_key_release_cb (ClutterActor *actor,
 {
   switch (clutter_event_get_key_symbol (event))
     {
-    case CLUTTER_q:
-    case CLUTTER_Q:
+    case CLUTTER_KEY_q:
+    case CLUTTER_KEY_Q:
       clutter_main_quit ();
       break;
 
-    case CLUTTER_m:
+    case CLUTTER_KEY_m:
       toggle_texture_quality (actor);
       break;
     }

@@ -261,17 +261,18 @@ free_clips (CallbackData *data)
 }
 
 static gboolean
-on_key_press (ClutterActor *stage, ClutterKeyEvent *event,
+on_key_press (ClutterActor *stage,
+              ClutterEvent *event,
               CallbackData *data)
 {
-  switch (event->keyval)
+  switch (clutter_event_get_key_symbol (event))
     {
-    case CLUTTER_r:
+    case CLUTTER_KEY_r:
       free_clips (data);
       clutter_actor_queue_redraw (stage);
       break;
 
-    case CLUTTER_u:
+    case CLUTTER_KEY_u:
       if (data->clips)
         {
           g_slice_free (Clip, data->clips->data);

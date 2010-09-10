@@ -51,7 +51,7 @@ key_group_action_move_left (KeyGroup            *self,
   gint n_children;
 
   g_assert_cmpstr (action_name, ==, "move-left");
-  g_assert_cmpint (key_val, ==, CLUTTER_Left);
+  g_assert_cmpint (key_val, ==, CLUTTER_KEY_Left);
 
   n_children = clutter_group_get_n_children (CLUTTER_GROUP (self));
 
@@ -72,7 +72,7 @@ key_group_action_move_right (KeyGroup            *self,
   gint n_children;
 
   g_assert_cmpstr (action_name, ==, "move-right");
-  g_assert_cmpint (key_val, ==, CLUTTER_Right);
+  g_assert_cmpint (key_val, ==, CLUTTER_KEY_Right);
 
   n_children = clutter_group_get_n_children (CLUTTER_GROUP (self));
 
@@ -93,9 +93,9 @@ key_group_action_activate (KeyGroup            *self,
   ClutterActor *child = NULL;
 
   g_assert_cmpstr (action_name, ==, "activate");
-  g_assert (key_val == CLUTTER_Return ||
-            key_val == CLUTTER_KP_Enter ||
-            key_val == CLUTTER_ISO_Enter);
+  g_assert (key_val == CLUTTER_KEY_Return ||
+            key_val == CLUTTER_KEY_KP_Enter ||
+            key_val == CLUTTER_KEY_ISO_Enter);
 
   if (self->selected_index == -1)
     return FALSE;
@@ -200,23 +200,23 @@ key_group_class_init (KeyGroupClass *klass)
   binding_pool = clutter_binding_pool_get_for_class (klass);
 
   clutter_binding_pool_install_action (binding_pool, "move-right",
-                                       CLUTTER_Right, 0,
+                                       CLUTTER_KEY_Right, 0,
                                        G_CALLBACK (key_group_action_move_right),
                                        NULL, NULL);
   clutter_binding_pool_install_action (binding_pool, "move-left",
-                                       CLUTTER_Left, 0,
+                                       CLUTTER_KEY_Left, 0,
                                        G_CALLBACK (key_group_action_move_left),
                                        NULL, NULL);
   clutter_binding_pool_install_action (binding_pool, "activate",
-                                       CLUTTER_Return, 0,
+                                       CLUTTER_KEY_Return, 0,
                                        G_CALLBACK (key_group_action_activate),
                                        NULL, NULL);
   clutter_binding_pool_install_action (binding_pool, "activate",
-                                       CLUTTER_KP_Enter, 0,
+                                       CLUTTER_KEY_KP_Enter, 0,
                                        G_CALLBACK (key_group_action_activate),
                                        NULL, NULL);
   clutter_binding_pool_install_action (binding_pool, "activate",
-                                       CLUTTER_ISO_Enter, 0,
+                                       CLUTTER_KEY_ISO_Enter, 0,
                                        G_CALLBACK (key_group_action_activate),
                                        NULL, NULL);
 }
@@ -287,23 +287,23 @@ test_binding_pool (TestConformSimpleFixture *fixture,
 
   g_assert_cmpint (key_group->selected_index, ==, -1);
 
-  send_keyval (key_group, CLUTTER_Left);
+  send_keyval (key_group, CLUTTER_KEY_Left);
   g_assert_cmpint (key_group->selected_index, ==, 2);
 
-  send_keyval (key_group, CLUTTER_Left);
+  send_keyval (key_group, CLUTTER_KEY_Left);
   g_assert_cmpint (key_group->selected_index, ==, 1);
 
-  send_keyval (key_group, CLUTTER_Right);
+  send_keyval (key_group, CLUTTER_KEY_Right);
   g_assert_cmpint (key_group->selected_index, ==, 2);
 
-  send_keyval (key_group, CLUTTER_Right);
+  send_keyval (key_group, CLUTTER_KEY_Right);
   g_assert_cmpint (key_group->selected_index, ==, 0);
 
   g_signal_connect (key_group,
                     "activate", G_CALLBACK (on_activate),
                     GINT_TO_POINTER (0));
 
-  send_keyval (key_group, CLUTTER_Return);
+  send_keyval (key_group, CLUTTER_KEY_Return);
 
   clutter_actor_destroy (CLUTTER_ACTOR (key_group));
 }

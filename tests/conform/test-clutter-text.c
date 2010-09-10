@@ -377,13 +377,13 @@ test_text_cursor (TestConformSimpleFixture *fixture,
       clutter_text_set_cursor_position (text, 2);
 
       /* test cursor moves and is clamped */
-      send_keyval (text, CLUTTER_Left);
+      send_keyval (text, CLUTTER_KEY_Left);
       g_assert_cmpint (clutter_text_get_cursor_position (text), ==, 1);
 
-      send_keyval (text, CLUTTER_Left);
+      send_keyval (text, CLUTTER_KEY_Left);
       g_assert_cmpint (clutter_text_get_cursor_position (text), ==, 0);
 
-      send_keyval (text, CLUTTER_Left);
+      send_keyval (text, CLUTTER_KEY_Left);
       g_assert_cmpint (clutter_text_get_cursor_position (text), ==, 0);
 
       /* delete text containing the cursor */
@@ -391,7 +391,7 @@ test_text_cursor (TestConformSimpleFixture *fixture,
       g_assert_cmpint (clutter_text_get_cursor_position (text), ==, 3);
 
       clutter_text_delete_text (text, 2, 4);
-      send_keyval (text, CLUTTER_Left);
+      send_keyval (text, CLUTTER_KEY_Left);
 
       /* FIXME: cursor position should be -1?
       g_assert_cmpint (clutter_text_get_cursor_position (text), ==, -1);

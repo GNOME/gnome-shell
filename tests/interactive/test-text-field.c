@@ -50,7 +50,7 @@ on_captured_event (ClutterText *text,
 
   c = clutter_event_get_key_unicode (event);
   keyval = clutter_event_get_key_symbol (event);
-  if (keyval == CLUTTER_u)
+  if (keyval == CLUTTER_KEY_u)
     {
       ClutterModifierType mods = clutter_event_get_state (event);
 
@@ -133,7 +133,7 @@ on_captured_event (ClutterText *text,
 
       return TRUE;
     }
-  else if (is_unicode_mode && (keyval == CLUTTER_BackSpace))
+  else if (is_unicode_mode && (keyval == CLUTTER_KEY_BackSpace))
     {
       GString *str = g_object_get_data (G_OBJECT (text), "unicode-str");
       PangoAttrList *attrs;
@@ -155,10 +155,10 @@ on_captured_event (ClutterText *text,
       return TRUE;
     }
   else if (is_unicode_mode &&
-           (keyval == CLUTTER_Return ||
-            keyval == CLUTTER_KP_Enter ||
-            keyval == CLUTTER_ISO_Enter ||
-            keyval == CLUTTER_KP_Space))
+           (keyval == CLUTTER_KEY_Return ||
+            keyval == CLUTTER_KEY_KP_Enter ||
+            keyval == CLUTTER_KEY_ISO_Enter ||
+            keyval == CLUTTER_KEY_KP_Space))
     {
       GString *str = g_object_get_data (G_OBJECT (text), "unicode-str");
       const gchar *contents = clutter_text_get_text (text);

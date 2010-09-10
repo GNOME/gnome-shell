@@ -150,7 +150,7 @@ on_key_press_event (ClutterStage *stage,
 
   switch (clutter_event_get_key_symbol (event))
     {
-    case CLUTTER_s:
+    case CLUTTER_KEY_s:
       clutter_text_set_text (CLUTTER_TEXT (help_label), "Press 'q' to quit");
 
       clutter_timeline_start (timeline);
@@ -163,7 +163,7 @@ on_key_press_event (ClutterStage *stage,
       g_thread_create (test_thread_func, data, FALSE, NULL);
       return TRUE;
 
-    case CLUTTER_q:
+    case CLUTTER_KEY_q:
       clutter_main_quit ();
       return TRUE;
 

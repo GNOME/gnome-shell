@@ -171,27 +171,27 @@ key_release_cb (ClutterActor     *actor,
 
   switch (clutter_event_get_key_symbol (event))
     {
-    case CLUTTER_a:
+    case CLUTTER_KEY_a:
       toggle = clutter_box_layout_get_use_animations (layout);
       clutter_box_layout_set_use_animations (layout, !toggle);
       break;
 
-    case CLUTTER_v:
+    case CLUTTER_KEY_v:
       toggle = clutter_box_layout_get_vertical (layout);
       clutter_box_layout_set_vertical (layout, !toggle);
       break;
 
-    case CLUTTER_h:
+    case CLUTTER_KEY_h:
       toggle = clutter_box_layout_get_homogeneous (layout);
       clutter_box_layout_set_homogeneous (layout, !toggle);
       break;
 
-    case CLUTTER_p:
+    case CLUTTER_KEY_p:
       toggle = clutter_box_layout_get_pack_start (layout);
       clutter_box_layout_set_pack_start (layout, !toggle);
       break;
 
-    case CLUTTER_s:
+    case CLUTTER_KEY_s:
       spacing = clutter_box_layout_get_spacing (layout);
 
       if (spacing > 12)
@@ -202,11 +202,11 @@ key_release_cb (ClutterActor     *actor,
       clutter_box_layout_set_spacing (layout, spacing);
       break;
 
-    case CLUTTER_plus:
+    case CLUTTER_KEY_plus:
       add_actor (layout, last_index++);
       break;
 
-    case CLUTTER_q:
+    case CLUTTER_KEY_q:
       clutter_main_quit ();
       break;
 

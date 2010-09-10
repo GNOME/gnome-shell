@@ -307,6 +307,11 @@ Release Notes for Clutter 1.4
   actors. You can still explicitly override the :request-mode value, or
   you can unset the :sync-size property to control the size yourself.
 
+• All the key symbol macros have been renamed from CLUTTER_* to
+  CLUTTER_KEY_*. The old names are still available inside the
+  clutter-keysyms-compat.h header, which is included by clutter-keysyms.h
+  unless CLUTTER_DISABLE_DEPRECATED is defined.
+
 Release Notes for Clutter 1.2
 -------------------------------------------------------------------------------
 

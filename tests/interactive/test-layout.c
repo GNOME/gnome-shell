@@ -640,12 +640,11 @@ keypress_cb (ClutterActor *actor,
 {
   switch (clutter_event_get_key_symbol (event))
     {
-    case CLUTTER_q:
-      {
-        clutter_main_quit ();
-      }
+    case CLUTTER_KEY_q:
+      clutter_main_quit ();
+      break;
 
-    case CLUTTER_a:
+    case CLUTTER_KEY_a:
       {
         if (icon != NULL)
           {
@@ -657,7 +656,7 @@ keypress_cb (ClutterActor *actor,
         break;
       }
 
-    case CLUTTER_d:
+    case CLUTTER_KEY_d:
       {
         GList *children = 
           clutter_container_get_children (CLUTTER_CONTAINER (box));
@@ -673,37 +672,37 @@ keypress_cb (ClutterActor *actor,
         break;
       }
 
-    case CLUTTER_w:
+    case CLUTTER_KEY_w:
       {
         decrease_property_value (box, "padding");
         break;
       }
 
-    case CLUTTER_e:
+    case CLUTTER_KEY_e:
       {
         increase_property_value (box, "padding");
         break;
       }
 
-    case CLUTTER_r:
+    case CLUTTER_KEY_r:
       {
         decrease_property_value (box, "spacing");
         break;
       }
 
-    case CLUTTER_s:
+    case CLUTTER_KEY_s:
       {
         toggle_property_value (box, "use-transformed-box");
         break;
       }
 
-    case CLUTTER_t:
+    case CLUTTER_KEY_t:
       {
         increase_property_value (box, "spacing");
         break;
       }
 
-    case CLUTTER_z:
+    case CLUTTER_KEY_z:
       {
         if (clutter_timeline_is_playing (main_timeline))
           clutter_timeline_pause (main_timeline);
