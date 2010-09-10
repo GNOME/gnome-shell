@@ -1780,7 +1780,7 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
                                  ClutterActor *origin)
 {
   ClutterActor *parent;
-  ClutterMainContext *context;
+  ClutterActor *stage;
 
   CLUTTER_NOTE (PAINT, "Redraw queued on '%s' (from: '%s')",
                 get_actor_debug_name (self),
@@ -1798,16 +1798,11 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
   if (!CLUTTER_ACTOR_IS_VISIBLE (self))
     return;
 
-  /* We have an optimization in _clutter_do_pick to detect when the scene is
-   * static so we can cache a full, un-clipped pick buffer to avoid continuous
-   * pick renders.
-   *
-   * Currently the assumption is that actors queue a redraw when some state
-   * changes that affects painting *or* picking so we can use this point
-   * to invalidate any currently cached pick buffer.
+  /* XXX: when we merge the paint-box branch we should only need to
+   * invalidate the pick buffer in _clutter_stage_queue_actor_redraw
    */
-  context = _clutter_context_get_default ();
-  context->have_complete_pick_buffer = FALSE;
+  stage = _clutter_actor_get_stage_internal (self);
+  _clutter_stage_set_pick_buffer_valid (CLUTTER_STAGE (stage), FALSE);
 
   /* Although we could determine here that a full stage redraw
    * has already been queued and immediately bail out, we actually
@@ -1818,8 +1813,6 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
    */
   if (self->priv->propagated_one_redraw)
     {
-      ClutterActor *stage = _clutter_actor_get_stage_internal (self);
-
       if (stage != NULL &&
           _clutter_stage_has_full_redraw_queued (CLUTTER_STAGE (stage)))
         return;
