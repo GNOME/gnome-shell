@@ -38,6 +38,8 @@ AM_CFLAGS = \
         $(CLUTTER_CFLAGS) \
         $(MAINTAINER_CFLAGS) \
         -DG_DISABLE_SINGLE_INCLUDES \
+	-DCOGL_DISABLE_DEPRECATED \
+	-DCLUTTER_DISABLE_DEPRECATED \
         -DTESTS_DATA_DIR=\""$(top_srcdir)/tests/data/"\"
 
 AM_LDFLAGS = $(CLUTTER_LIBS) -export-dynamic
