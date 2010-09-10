@@ -2461,3 +2461,56 @@ clutter_actor_get_animation (ClutterActor *actor)
 
   return g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
 }
+
+/**
+ * clutter_actor_detach_animation:
+ * @actor: a #ClutterActor
+ *
+ * Detaches the #ClutterAnimation used by @actor, if clutter_actor_animate()
+ * has been called on @actor.
+ *
+ * Once the animation has been detached, it loses a reference. If it was
+ * the only reference then the #ClutterAnimation becomes invalid.
+ *
+ * The #ClutterAnimation::completed signal will not be emitted.
+ *
+ * Since: 1.4
+ */
+void
+clutter_actor_detach_animation (ClutterActor *actor)
+{
+  ClutterAnimation *animation;
+  ClutterAnimationPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
+  if (animation == NULL)
+    return;
+
+  priv = animation->priv;
+
+  g_assert (priv->object == G_OBJECT (actor));
+
+  /* we can't call get_timeline_internal() here because it would be
+   * pointless to create a timeline on an animation we want to detach
+   */
+  if (priv->alpha != NULL)
+    {
+      ClutterTimeline *timeline;
+
+      timeline = clutter_alpha_get_timeline (priv->alpha);
+      if (timeline != NULL)
+        clutter_timeline_stop (timeline);
+    }
+
+  /* set_object(NULL) does no call weak_unref() because the weak reference
+   * is added by animation_create_for_actor()
+   */
+  g_object_weak_unref (priv->object, on_actor_dispose, animation);
+
+  clutter_animation_set_object (animation, NULL);
+
+  /* drop the reference on the animation */
+  g_object_unref (animation);
+}

@@ -172,6 +172,7 @@ ClutterAnimation *   clutter_actor_animate_with_alphav    (ClutterActor         
                                                            const GValue         *values);
 
 ClutterAnimation *   clutter_actor_get_animation          (ClutterActor         *actor);
+void                 clutter_actor_detach_animation       (ClutterActor         *actor);
 
 G_END_DECLS
 
