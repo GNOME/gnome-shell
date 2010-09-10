@@ -821,11 +821,14 @@ static void
 update_pango_context (ClutterBackend *backend,
                       PangoContext   *context)
 {
+  ClutterSettings *settings;
   PangoFontDescription *font_desc;
   const cairo_font_options_t *font_options;
-  const gchar *font_name;
+  gchar *font_name;
   PangoDirection pango_dir;
   gdouble resolution;
+
+  settings = clutter_settings_get_default ();
 
   /* update the text direction */
   if (clutter_text_direction == CLUTTER_TEXT_DIRECTION_RTL)
@@ -835,8 +838,9 @@ update_pango_context (ClutterBackend *backend,
 
   pango_context_set_base_dir (context, pango_dir);
 
+  g_object_get (settings, "font-name", &font_name, NULL);
+
   /* get the configuration for the PangoContext from the backend */
-  font_name = clutter_backend_get_font_name (backend);
   font_options = clutter_backend_get_font_options (backend);
   resolution = clutter_backend_get_resolution (backend);
 
@@ -850,6 +854,7 @@ update_pango_context (ClutterBackend *backend,
   pango_cairo_context_set_resolution (context, resolution);
 
   pango_font_description_free (font_desc);
+  g_free (font_name);
 }
 
 PangoContext *
@@ -2160,13 +2165,18 @@ event_click_count_generate (ClutterEvent *event)
   static gint    previous_button_number = -1;
 
   ClutterInputDevice *device = NULL;
+  ClutterSettings *settings;
   ClutterBackend *backend;
   guint double_click_time;
   guint double_click_distance;
 
+  settings = clutter_settings_get_default ();
   backend = clutter_get_default_backend ();
-  double_click_distance = clutter_backend_get_double_click_distance (backend);
-  double_click_time = clutter_backend_get_double_click_time (backend);
+
+  g_object_get (settings,
+                "double-click-distance", &double_click_distance,
+                "double-click-time", &double_click_time,
+                NULL);
 
   device = clutter_event_get_device (event);
   if (device != NULL)

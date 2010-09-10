@@ -121,12 +121,18 @@ get_units_per_em (ClutterBackend       *backend,
 
   if (font_desc == NULL)
     {
-      const gchar *font_name = clutter_backend_get_font_name (backend);
+      ClutterSettings *settings;
+      gchar *font_name = NULL;
+
+      settings = clutter_settings_get_default ();
+      g_object_get (settings, "font-name", &font_name, NULL);
 
       if (G_LIKELY (font_name != NULL && *font_name != '\0'))
         {
           font_desc = pango_font_description_from_string (font_name);
           free_font_desc = TRUE;
+
+          g_free (font_name);
         }
     }
 

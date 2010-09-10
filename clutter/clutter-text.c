@@ -495,16 +495,21 @@ clutter_text_font_changed_cb (ClutterText *text)
 {
   if (text->priv->is_default_font)
     {
-      const gchar *font_name;
       PangoFontDescription *font_desc;
+      ClutterSettings *settings;
+      gchar *font_name = NULL;
 
-      font_name = clutter_backend_get_font_name (clutter_get_default_backend ());
+      settings = clutter_settings_get_default ();
+      g_object_get (settings, "font-name", &font_name, NULL);
+
       CLUTTER_NOTE (ACTOR, "Text[%p]: default font changed to '%s'",
                     text,
                     font_name);
 
       font_desc = pango_font_description_from_string (font_name);
       clutter_text_set_font_description_internal (text, font_desc);
+
+      g_free (font_name);
     }
 
   clutter_text_dirty_cache (text);
@@ -3109,8 +3114,9 @@ clutter_text_class_init (ClutterTextClass *klass)
 static void
 clutter_text_init (ClutterText *self)
 {
+  ClutterSettings *settings;
   ClutterTextPrivate *priv;
-  const gchar *font_name;
+  gchar *font_name;
   int i;
 
   self->priv = priv = CLUTTER_TEXT_GET_PRIVATE (self);
@@ -3140,8 +3146,10 @@ clutter_text_init (ClutterText *self)
    * set_font_description() here because we are initializing
    * the Text and we don't need notifications and sanity checks
    */
-  font_name = clutter_backend_get_font_name (clutter_get_default_backend ());
-  priv->font_name = g_strdup (font_name);
+  settings = clutter_settings_get_default ();
+  g_object_get (settings, "font-name", &font_name, NULL);
+
+  priv->font_name = font_name; /* font_name is allocated */
   priv->font_desc = pango_font_description_from_string (font_name);
   priv->is_default_font = TRUE;
 
@@ -3846,7 +3854,11 @@ clutter_text_set_font_name (ClutterText *self,
   /* get the default font name from the backend */
   if (!font_name || font_name[0] == '\0')
     {
-      font_name = clutter_backend_get_font_name (clutter_get_default_backend ());
+      ClutterSettings *settings = clutter_settings_get_default ();
+      gchar *default_font_name = NULL;
+
+      g_object_get (settings, "font-name", default_font_name, NULL);
+      font_name = default_font_name;
       is_default_font = TRUE;
     }
   else
@@ -3855,7 +3867,7 @@ clutter_text_set_font_name (ClutterText *self,
   priv = self->priv;
 
   if (priv->font_name && strcmp (priv->font_name, font_name) == 0)
-    return;
+    goto out;
 
   desc = pango_font_description_from_string (font_name);
   if (!desc)
@@ -3863,7 +3875,7 @@ clutter_text_set_font_name (ClutterText *self,
       g_warning ("Attempting to create a PangoFontDescription for "
 		 "font name '%s', but failed.",
 		 font_name);
-      return;
+      goto out;
     }
 
   /* this will set the font_name field as well */
@@ -3871,6 +3883,10 @@ clutter_text_set_font_name (ClutterText *self,
   priv->is_default_font = is_default_font;
 
   _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FONT_NAME]);
+
+out:
+  if (is_default_font)
+    g_free ((gchar *) font_name);
 }
 
 /**
