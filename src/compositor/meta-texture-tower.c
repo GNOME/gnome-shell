@@ -97,6 +97,7 @@ meta_texture_tower_free (MetaTextureTower *tower)
   g_slice_free (MetaTextureTower, tower);
 }
 
+#ifdef GL_TEXTURE_RECTANGLE_ARB
 static gboolean
 texture_is_rectangle (CoglHandle texture)
 {
@@ -106,10 +107,12 @@ texture_is_rectangle (CoglHandle texture)
   cogl_texture_get_gl_texture (texture, &gl_tex, &gl_target);
   return gl_target == GL_TEXTURE_RECTANGLE_ARB;
 }
+#endif /* GL_TEXTURE_RECTANGLE_ARB */
 
 static void
 free_texture (CoglHandle texture)
 {
+#ifdef GL_TEXTURE_RECTANGLE_ARB
   GLuint gl_tex;
   GLenum gl_target;
 
@@ -117,6 +120,7 @@ free_texture (CoglHandle texture)
 
   if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
     glDeleteTextures (1, &gl_tex);
+#endif /* GL_TEXTURE_RECTANGLE_ARB */
 
   cogl_handle_unref (texture);
 }
@@ -362,11 +366,13 @@ get_paint_level (int width, int height)
     return (int)(0.5 + lambda);
 }
 
+#ifdef GL_TEXTURE_RECTANGLE_ARB
 static gboolean
 is_power_of_two (int x)
 {
   return (x & (x - 1)) == 0;
 }
+#endif /* GL_TEXTURE_RECTANGLE_ARB */
 
 static void
 texture_tower_create_texture (MetaTextureTower *tower,
@@ -374,6 +380,7 @@ texture_tower_create_texture (MetaTextureTower *tower,
                               int               width,
                               int               height)
 {
+#ifdef GL_TEXTURE_RECTANGLE_ARB
   if ((!is_power_of_two (width) || !is_power_of_two (height)) &&
       texture_is_rectangle (tower->textures[level - 1]))
     {
@@ -396,6 +403,7 @@ texture_tower_create_texture (MetaTextureTower *tower,
                                                               TEXTURE_FORMAT);
     }
   else
+#endif /* GL_TEXTURE_RECTANGLE_ARB */
     {
       tower->textures[level] = cogl_texture_new_with_size (width, height,
                                                            COGL_TEXTURE_NO_AUTO_MIPMAP,

@@ -1,5 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+#include <config.h>
+
 #define _ISOC99_SOURCE /* for roundf */
 #include <math.h>
 
@@ -1823,9 +1825,11 @@ check_needs_pixmap (MetaWindowActor *self)
        * do it here.
        * See: http://bugzilla.clutter-project.org/show_bug.cgi?id=2236
        */
+#ifdef HAVE_GLX_TEXTURE_PIXMAP
       if (G_UNLIKELY (!clutter_glx_texture_pixmap_using_extension (
                                   CLUTTER_GLX_TEXTURE_PIXMAP (priv->actor))))
         g_warning ("NOTE: Not using GLX TFP!\n");
+#endif
 
       g_object_get (priv->actor,
                     "pixmap-width", &pxm_width,

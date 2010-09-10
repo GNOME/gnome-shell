@@ -187,8 +187,10 @@ meta_shaped_texture_dirty_mask (MetaShapedTexture *stex)
       cogl_texture_get_gl_texture (priv->mask_texture,
                                    &mask_gl_tex, &mask_gl_target);
 
+#ifdef GL_TEXTURE_RECTANGLE_ARB
       if (mask_gl_target == GL_TEXTURE_RECTANGLE_ARB)
         glDeleteTextures (1, &mask_gl_tex);
+#endif
 
       cogl_handle_unref (priv->mask_texture);
       priv->mask_texture = COGL_INVALID_HANDLE;
@@ -253,6 +255,7 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
 
       cogl_texture_get_gl_texture (paint_tex, NULL, &paint_gl_target);
 
+#ifdef GL_TEXTURE_RECTANGLE_ARB
       if (paint_gl_target == GL_TEXTURE_RECTANGLE_ARB)
         {
           GLuint tex;
@@ -275,6 +278,7 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
                                              COGL_PIXEL_FORMAT_A_8);
         }
       else
+#endif /* GL_TEXTURE_RECTANGLE_ARB */
         priv->mask_texture = cogl_texture_new_from_data (tex_width, tex_height,
                                                          COGL_TEXTURE_NONE,
                                                          COGL_PIXEL_FORMAT_A_8,
