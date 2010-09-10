@@ -1586,6 +1586,15 @@ Workspace.prototype = {
     },
 
     // Draggable target interface
+    handleDragOver : function(source, actor, x, y, time) {
+        if (source instanceof WindowClone)
+            return DND.DragMotionResult.MOVE_DROP;
+        if (source.shellWorkspaceLaunch)
+            return DND.DragMotionResult.COPY_DROP;
+
+        return DND.DragMotionResult.CONTINUE;
+    },
+
     acceptDrop : function(source, actor, x, y, time) {
         if (source instanceof WindowClone) {
             let win = source.realWindow;

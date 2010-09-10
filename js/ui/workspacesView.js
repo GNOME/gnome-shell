@@ -269,6 +269,14 @@ GenericWorkspacesView.prototype = {
         throw new Error('Not implemented');
     },
 
+    _handleDragOverNewWorkspace: function(source, dropActor, x, y, time) {
+        if (source instanceof Workspace.WindowClone)
+            return DND.DragMotionResult.MOVE_DROP;
+        if (source.shellWorkspaceLaunch)
+            return DND.DragMotionResult.COPY_DROP;
+        return DND.DragMotionResult.CONTINUE;
+    },
+
     _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {
         let ws = this.addWorkspace();
         if (ws == null)
@@ -487,14 +495,15 @@ NewWorkspaceArea.prototype = {
     }
 };
 
-function WorkspaceIndicator(activateWorkspace, workspaceAcceptDrop, scrollEventCb) {
-    this._init(activateWorkspace, workspaceAcceptDrop, scrollEventCb);
+function WorkspaceIndicator(activateWorkspace, workspaceAcceptDrop, workspaceHandleDragOver, scrollEventCb) {
+    this._init(activateWorkspace, workspaceAcceptDrop, workspaceHandleDragOver, scrollEventCb);
 }
 
 WorkspaceIndicator.prototype = {
-    _init: function(activateWorkspace, workspaceAcceptDrop, scrollEventCb) {
+    _init: function(activateWorkspace, workspaceAcceptDrop, workspaceHandleDragOver, scrollEventCb) {
         this._activateWorkspace = activateWorkspace;
         this._workspaceAcceptDrop = workspaceAcceptDrop;
+        this._workspaceHandleDragOver = workspaceHandleDragOver;
         this._scrollEventCb = scrollEventCb;
         let actor = new St.Bin({ style_class: 'panel-button' });
 
@@ -591,6 +600,9 @@ WorkspaceIndicator.prototype = {
             }
             else
                 return false;
+        });
+        actor._delegate.handleDragOver = Lang.bind(this, function(source, actor, x, y, time) {
+            return this._workspaceHandleDragOver(i, source, actor, x, y, time);
         });
 
         actor.connect('scroll-event', this._scrollEventCb);
@@ -1187,7 +1199,7 @@ SingleView.prototype = {
             leftWorkspace.setReservedSlot(dragEvent.dragActor._delegate);
             this._dragOverLastX = leftEdge;
 
-            return DND.DragMotionResult.MOVE_DROP;
+            return DND.DragMotionResult.CONTINUE;
         }
         let rightEdge = primary.x + primary.width - 1;
         let switchRight = (dragEvent.x >= rightEdge && rightWorkspace);
@@ -1196,15 +1208,17 @@ SingleView.prototype = {
             rightWorkspace.setReservedSlot(dragEvent.dragActor._delegate);
             this._dragOverLastX = rightEdge;
 
-            return DND.DragMotionResult.MOVE_DROP;
+            return DND.DragMotionResult.CONTINUE;
         }
         this._dragOverLastX = dragEvent.x;
+        let result = DND.DragMotionResult.CONTINUE;
 
         // check hover state of new workspace area / inactive workspaces
         if (leftWorkspace) {
             if (dragEvent.targetActor == this._leftShadow) {
                 hoverWorkspace = leftWorkspace;
                 leftWorkspace.opacity = leftWorkspace.actor.opacity = 255;
+                result = leftWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
             } else {
                 leftWorkspace.opacity = leftWorkspace.actor.opacity = 200;
             }
@@ -1214,17 +1228,18 @@ SingleView.prototype = {
             if (dragEvent.targetActor == this._rightShadow) {
                 hoverWorkspace = rightWorkspace;
                 rightWorkspace.opacity = rightWorkspace.actor.opacity = 255;
+                result = rightWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
             } else {
                 rightWorkspace.opacity = rightWorkspace.actor.opacity = 200;
             }
         } else {
             let targetParent = dragEvent.targetActor.get_parent();
-            if (targetParent == this._newWorkspaceArea.actor)
+            if (targetParent == this._newWorkspaceArea.actor) {
                 this._newWorkspaceArea.setStyle(true);
-            else
+                result = this._handleDragOverNewWorkspace(dragEvent.source, dragEvent.dragActor);
+            } else
                 this._newWorkspaceArea.setStyle(false);
         }
-
 
         // handle delayed workspace switches
         if (hoverWorkspace) {
@@ -1242,7 +1257,7 @@ SingleView.prototype = {
             }
         }
 
-        return DND.DragMotionResult.CONTINUE;
+        return result;
     },
 
     _dragEnd: function() {
@@ -1377,6 +1392,10 @@ SingleView.prototype = {
             if (this._workspaces[i] != undefined)
                 return this._workspaces[i].acceptDrop(source, actor, x, y, time);
             return false;
+        }), Lang.bind(this, function(i, source, actor, x, y, time) {
+            if (this._workspaces[i] != undefined)
+                return this._workspaces[i].handleDragOver(source, actor, x, y, time);
+            return DND.DragMotionResult.CONTINUE;
         }), Lang.bind(this, this._onScrollEvent));
 
         actor.add(indicator.actor, { expand: true, x_fill: true, y_fill: true });
@@ -1463,6 +1482,10 @@ WorkspacesControls.prototype = {
         this._addButton._delegate.acceptDrop = Lang.bind(this,
             function(source, actor, x, y, time) {
                 return this._currentView._acceptNewWorkspaceDrop(source, actor, x, y, time);
+            });
+        this._addButton._delegate.handleDragOver = Lang.bind(this,
+            function(source, actor, x, y, time) {
+                return this._currentView._handleDragOverNewWorkspace(source, actor, x, y, time);
             });
         this.actor.add(this._addButton, { y_fill: false,
                                           y_align: St.Align.START });

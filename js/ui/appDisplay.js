@@ -1035,6 +1035,29 @@ AppWell.prototype = {
         }
     },
 
+    handleDragOver : function(source, actor, x, y, time) {
+        let app = null;
+        if (source instanceof AppWellIcon)
+            app = this._appSystem.get_app(source.getId());
+        else if (source instanceof Workspace.WindowClone)
+            app = this._tracker.get_window_app(source.metaWindow);
+
+        // Don't allow favoriting of transient apps
+        if (app == null || app.is_transient())
+            return DND.DragMotionResult.NO_DROP;
+
+        let id = app.get_id();
+
+        let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
+
+        let srcIsFavorite = (id in favorites);
+
+        if (srcIsFavorite)
+            return DND.DragMotionResult.NO_DROP;
+
+        return DND.DragMotionResult.COPY_DROP;
+    },
+
     // Draggable target interface
     acceptDrop : function(source, actor, x, y, time) {
         let app = null;

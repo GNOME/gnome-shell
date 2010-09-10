@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
 const St = imports.gi.St;
 const Lang = imports.lang;
+const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
@@ -22,6 +23,12 @@ const DragMotionResult = {
     COPY_DROP: 1,
     MOVE_DROP: 2,
     CONTINUE:  3
+};
+
+const DRAG_CURSOR_MAP = {
+    0: Shell.Cursor.UNSUPPORTED_TARGET,
+    1: Shell.Cursor.COPY,
+    2: Shell.Cursor.MOVE
 };
 
 const DragDropResult = {
@@ -203,6 +210,7 @@ _Draggable.prototype = {
         if (this._onEventId)
             this._ungrabActor();
         this._grabEvents();
+        global.set_cursor(Shell.Cursor.IN_DRAG);
 
         this._dragX = this._dragStartX = stageX;
         this._dragY = this._dragStartY = stageY;
@@ -335,36 +343,38 @@ _Draggable.prototype = {
                 x: stageX,
                 y: stageY,
                 dragActor: this._dragActor,
+                source: this.actor._delegate,
                 targetActor: target
             };
             for (let i = 0; i < dragMonitors.length; i++) {
                 let motionFunc = dragMonitors[i].dragMotion;
-                if (motionFunc)
-                    switch (motionFunc(dragEvent)) {
-                        case DragMotionResult.NO_DROP:
-                        case DragMotionResult.COPY_DROP:
-                        case DragMotionResult.MOVE_DROP:
-                            // TODO: set a special cursor or something ;)
-                            return true;
-                        case DragMotionResult.CONTINUE:
-                            continue;
+                if (motionFunc) {
+                    let result = motionFunc(dragEvent);
+                    if (result != DragMotionResult.CONTINUE) {
+                        global.set_cursor(DRAG_CURSOR_MAP[result]);
+                        return true;
                     }
+                }
             }
-
             while (target) {
                 if (target._delegate && target._delegate.handleDragOver) {
                     let [r, targX, targY] = target.transform_stage_point(stageX, stageY);
                     // We currently loop through all parents on drag-over even if one of the children has handled it.
                     // We can check the return value of the function and break the loop if it's true if we don't want
                     // to continue checking the parents.
-                    target._delegate.handleDragOver(this.actor._delegate,
-                                                    this._dragActor,
-                                                    targX,
-                                                    targY,
-                                                    event.get_time());
+                    let result = target._delegate.handleDragOver(this.actor._delegate,
+                                                                 this._dragActor,
+                                                                 targX,
+                                                                 targY,
+                                                                 event.get_time());
+                    if (result != DragMotionResult.CONTINUE) {
+                        global.set_cursor(DRAG_CURSOR_MAP[result]);
+                        return true;
+                    }
                 }
                 target = target.get_parent();
             }
+            global.set_cursor(Shell.Cursor.IN_DRAG);
         }
 
         return true;
@@ -418,6 +428,7 @@ _Draggable.prototype = {
                     }
 
                     this._dragInProgress = false;
+                    global.unset_cursor();
                     this.emit('drag-end', event.get_time(), true);
                     this._dragComplete();
                     return true;
@@ -491,6 +502,7 @@ _Draggable.prototype = {
         } else {
             dragActor.destroy();
         }
+        global.unset_cursor();
         this.emit('drag-end', eventTime, false);
 
         this._animationInProgress = false;
