@@ -5250,27 +5250,7 @@ clutter_actor_queue_relayout (ClutterActor *self)
 {
   _clutter_actor_queue_only_relayout (self);
 
-  /* XXX: We have bent the originally documented semantics a bit so
-   * now where we say "Queueing a new layout automatically queues
-   * a redraw as well" it might be clearer to say "Queuing a new
-   * layout implicitly queues a redraw as well if anything in the
-   * layout changes".
-   *
-   * If we don't comment this out then we fail to take advantage
-   * of clipped redraws in a lot of cases because queuing a redraw
-   * with priv->needs_allocation == TRUE will automatically be
-   * promoted to a full stage redraw since it's not possible to
-   * determine a valid paint-volume.
-   *
-   * It doesn't just work to do the queue redraw first. I didn't debug
-   * why in detail but at the very least it would end up registering a
-   * redundant clipped redraw for the current location, doing quite a
-   * lot of redundant transforms, and then later when allocated
-   * another queue redraw will happen with the correct paint-volume.
-   */
-#if 0
   clutter_actor_queue_redraw (self);
-#endif
 }
 
 /**
