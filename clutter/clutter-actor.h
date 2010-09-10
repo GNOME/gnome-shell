@@ -585,6 +585,8 @@ gboolean             clutter_actor_has_allocation     (ClutterActor         *sel
 
 AtkObject *          clutter_actor_get_accessible     (ClutterActor         *self);
 
+gboolean             clutter_actor_has_key_focus      (ClutterActor         *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_H__ */

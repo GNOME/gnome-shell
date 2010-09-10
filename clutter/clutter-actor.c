@@ -11643,3 +11643,27 @@ clutter_actor_clear_effects (ClutterActor *self)
 
   _clutter_meta_group_clear_metas (self->priv->effects);
 }
+
+/**
+ * clutter_actor_has_key_focus:
+ * @self: a #ClutterActor
+ *
+ * Checks whether @self is the #ClutterActor that has key focus
+ *
+ * Return value: %TRUE if the actor has key focus, and %FALSE otherwise
+ *
+ * Since: 1.4
+ */
+gboolean
+clutter_actor_has_key_focus (ClutterActor *self)
+{
+  ClutterActor *stage;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  stage = clutter_actor_get_stage_internal (self);
+  if (stage == NULL)
+    return FALSE;
+
+  return clutter_stage_get_key_focus (CLUTTER_STAGE (stage)) == self;
+}
