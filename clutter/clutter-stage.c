@@ -98,6 +98,13 @@ typedef enum { /*< prefix=CLUTTER_STAGE >*/
 
 #define STAGE_NO_CLEAR_ON_PAINT(s)      ((((ClutterStage *) (s))->priv->stage_hints & CLUTTER_STAGE_NO_CLEAR_ON_PAINT) != 0)
 
+struct _ClutterStageQueueRedrawEntry
+{
+  ClutterActor *actor;
+  gboolean has_clip;
+  ClutterPaintVolume clip;
+};
+
 struct _ClutterStagePrivate
 {
   /* the stage implementation */
@@ -121,6 +128,8 @@ struct _ClutterStagePrivate
   GArray             *paint_volume_stack;
 
   const ClutterGeometry *current_paint_clip;
+
+  GList              *pending_queue_redraws;
 
   guint relayout_pending       : 1;
   guint redraw_pending         : 1;
@@ -168,6 +177,11 @@ enum
 static guint stage_signals[LAST_SIGNAL] = { 0, };
 
 static const ClutterColor default_stage_color = { 255, 255, 255, 255 };
+
+static void _clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage);
+
+static void
+_clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage);
 
 static void
 clutter_stage_get_preferred_width (ClutterActor *self,
@@ -782,6 +796,8 @@ _clutter_stage_do_update (ClutterStage *stage)
   if (!priv->redraw_pending)
     return FALSE;
 
+  _clutter_stage_maybe_finish_queue_redraws (stage);
+
   CLUTTER_NOTE (PAINT, "redrawing via idle for stage[%p]", stage);
   _clutter_do_redraw (stage);
 
@@ -825,31 +841,6 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
   ClutterPaintVolume projected_clip;
   CoglMatrix modelview;
   ClutterActorBox bounding_box;
-
-  CLUTTER_NOTE (PAINT, "Redraw request number %lu",
-                CLUTTER_CONTEXT ()->redraw_count + 1);
-
-  if (!priv->redraw_pending)
-    {
-      ClutterMasterClock *master_clock;
-
-      priv->redraw_pending = TRUE;
-
-      master_clock = _clutter_master_clock_get_default ();
-      _clutter_master_clock_start_running (master_clock);
-    }
-  else
-    CLUTTER_CONTEXT ()->redraw_count += 1;
-
-  /* We have an optimization in _clutter_do_pick to detect when the
-   * scene is static so we can cache a full, un-clipped pick buffer to
-   * avoid continuous pick renders.
-   *
-   * Currently the assumption is that actors queue a redraw when some
-   * state changes that affects painting *or* picking so we can use
-   * this point to invalidate any currently cached pick buffer.
-   */
-  _clutter_stage_set_pick_buffer_valid (stage, FALSE);
 
   /* If the backend can't do anything with redraw clips (e.g. it already knows
    * it needs to redraw everything anyway) then don't spend time transforming
@@ -3138,5 +3129,137 @@ const ClutterGeometry *
 _clutter_stage_get_clip (ClutterStage *stage)
 {
   return stage->priv->current_paint_clip;
+}
+
+/* When an actor queues a redraw we add it to a list on the stage that
+ * gets processed once all updates to the stage have been finished.
+ *
+ * This deferred approach to processing queue_redraw requests means
+ * that we can avoid redundant transformations of clip volumes if
+ * something later triggers a full stage redraw anyway. It also means
+ * we can be more sure that all the referenced actors will have valid
+ * allocations improving the chance that we can determine the actors
+ * paint volume so we can clip the redraw request even if the user
+ * didn't explicitly do so.
+ */
+ClutterStageQueueRedrawEntry *
+_clutter_stage_queue_actor_redraw (ClutterStage *stage,
+                                   ClutterStageQueueRedrawEntry *entry,
+                                   ClutterActor *actor,
+                                   ClutterPaintVolume *clip)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  CLUTTER_NOTE (PAINT, "Redraw request number %lu",
+                CLUTTER_CONTEXT ()->redraw_count + 1);
+
+  if (!priv->redraw_pending)
+    {
+      ClutterMasterClock *master_clock;
+
+      priv->redraw_pending = TRUE;
+
+      master_clock = _clutter_master_clock_get_default ();
+      _clutter_master_clock_start_running (master_clock);
+    }
+  else
+    CLUTTER_CONTEXT ()->redraw_count += 1;
+
+  /* We have an optimization in _clutter_do_pick to detect when the
+   * scene is static so we can cache a full, un-clipped pick buffer to
+   * avoid continuous pick renders.
+   *
+   * Currently the assumption is that actors queue a redraw when some
+   * state changes that affects painting *or* picking so we can use
+   * this point to invalidate any currently cached pick buffer.
+   */
+  _clutter_stage_set_pick_buffer_valid (stage, FALSE);
+
+  if (entry)
+    {
+      /* Ignore all requests to queue a redraw for an actor if a full
+       * (non-clipped) redraw of the actor has already been queued. */
+      if (!entry->has_clip)
+        return entry;
+
+      /* If queuing a clipped redraw and a clipped redraw has
+       * previously been queued for this actor then combine the latest
+       * clip together with the existing clip */
+      if (clip)
+        clutter_paint_volume_union (&entry->clip, clip);
+      return entry;
+    }
+  else
+    {
+      entry = g_slice_new (ClutterStageQueueRedrawEntry);
+      entry->actor = g_object_ref (actor);
+
+      if (clip)
+        {
+          entry->has_clip = TRUE;
+          _clutter_paint_volume_init_static (actor, &entry->clip);
+          _clutter_paint_volume_set_from_volume (&entry->clip, clip);
+        }
+
+      stage->priv->pending_queue_redraws =
+        g_list_prepend (stage->priv->pending_queue_redraws, entry);
+
+      return entry;
+    }
+}
+
+static void
+free_queue_redraw_entry (ClutterStageQueueRedrawEntry *entry)
+{
+  g_object_unref (entry->actor);
+  if (entry->has_clip)
+    clutter_paint_volume_free (&entry->clip);
+  g_slice_free (ClutterStageQueueRedrawEntry, entry);
+}
+
+void
+_clutter_stage_queue_redraw_entry_invalidate (
+                                          ClutterStageQueueRedrawEntry *entry)
+{
+  g_object_unref (entry->actor);
+  entry->actor = NULL;
+  if (entry->has_clip)
+    clutter_paint_volume_free (&entry->clip);
+}
+
+static void
+_clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage)
+{
+  /* Note: we have to repeat until the pending_queue_redraws list is
+   * empty because actors are allowed to queue redraws in response to
+   * the queue-redraw signal. For example Clone actors or
+   * texture_new_from_actor actors will have to queue a redraw if
+   * their source queues a redraw.
+   */
+  while (stage->priv->pending_queue_redraws)
+    {
+      GList *l;
+      /* XXX: we need to allow stage->priv->pending_queue_redraws to
+       * be updated while we process the current entries in the list
+       * so we steal the list pointer and then reset it to an empty
+       * list before processing... */
+      GList *stolen_list = stage->priv->pending_queue_redraws;
+      stage->priv->pending_queue_redraws = NULL;
+
+      for (l = stolen_list; l; l = l->next)
+        {
+          ClutterStageQueueRedrawEntry *entry = l->data;
+
+          /* NB: Entries may be invalidated if the actor gets destroyed */
+          if (G_UNLIKELY (entry->actor == NULL))
+            continue;
+
+          ClutterPaintVolume *clip = entry->has_clip ? &entry->clip : NULL;
+
+          _clutter_actor_finish_queue_redraw (entry->actor, clip);
+          free_queue_redraw_entry (entry);
+        }
+      g_list_free (stolen_list);
+    }
 }
 

@@ -275,6 +275,8 @@ struct _ClutterPaintVolume
    */
 };
 
+typedef struct _ClutterStageQueueRedrawEntry ClutterStageQueueRedrawEntry;
+
 #define CLUTTER_CONTEXT()	(_clutter_context_get_default ())
 ClutterMainContext *_clutter_context_get_default (void);
 gboolean            _clutter_context_is_initialized (void);
@@ -380,6 +382,13 @@ void                _clutter_stage_paint_volume_stack_free_all (ClutterStage *st
 
 const ClutterGeometry *_clutter_stage_get_clip (ClutterStage *stage);
 
+ClutterStageQueueRedrawEntry *_clutter_stage_queue_actor_redraw           (ClutterStage *stage,
+                                                                           ClutterStageQueueRedrawEntry *entry,
+                                                                           ClutterActor *actor,
+                                                                           ClutterPaintVolume *clip);
+
+void                          _clutter_stage_queue_redraw_entry_invalidate (ClutterStageQueueRedrawEntry *entry);
+
 
 /* vfuncs implemented by backend */
 GType         _clutter_backend_impl_get_type  (void);
@@ -467,12 +476,14 @@ void _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
 void _clutter_actor_set_has_pointer (ClutterActor *self,
                                      gboolean      has_pointer);
 
-void _clutter_actor_queue_redraw_with_clip (ClutterActor          *self,
-                                            ClutterRedrawFlags     flags,
-                                            ClutterPaintVolume    *clip_volume);
+void _clutter_actor_queue_redraw_with_clip   (ClutterActor              *self,
+                                              ClutterRedrawFlags         flags,
+                                              ClutterPaintVolume        *clip_volume);
 const ClutterPaintVolume *_clutter_actor_get_queue_redraw_clip (ClutterActor *self);
-void _clutter_actor_set_queue_redraw_clip (ClutterActor *self,
-                                           const ClutterPaintVolume *clip_volume);
+void _clutter_actor_set_queue_redraw_clip     (ClutterActor             *self,
+                                               const ClutterPaintVolume *clip_volume);
+void _clutter_actor_finish_queue_redraw       (ClutterActor             *self,
+                                               ClutterPaintVolume       *clip);
 
 void _clutter_run_repaint_functions (void);
 

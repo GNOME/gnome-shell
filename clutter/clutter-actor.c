@@ -472,6 +472,8 @@ struct _ClutterActorPrivate
   ClutterActorBox last_paint_box;
 
   gboolean paint_volume_disabled;
+
+  ClutterStageQueueRedrawEntry *queue_redraw_entry;
 };
 
 enum
@@ -1773,8 +1775,8 @@ clutter_actor_real_allocate (ClutterActor           *self,
 }
 
 static void
-clutter_actor_queue_redraw_with_origin (ClutterActor *self,
-                                        ClutterActor *origin)
+_clutter_actor_signal_queue_redraw (ClutterActor *self,
+                                    ClutterActor *origin)
 {
   /* no point in queuing a redraw on a destroyed actor */
   if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
@@ -1842,7 +1844,7 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
   if (parent != NULL)
     {
       /* this will go up recursively */
-      clutter_actor_queue_redraw_with_origin (parent, origin);
+      _clutter_actor_signal_queue_redraw (parent, origin);
     }
 }
 
@@ -4903,6 +4905,80 @@ clutter_actor_destroy (ClutterActor *self)
   g_object_unref (self);
 }
 
+void
+_clutter_actor_finish_queue_redraw (ClutterActor *self,
+                                    ClutterPaintVolume *clip)
+{
+  ClutterActorPrivate *priv = self->priv;
+  const ClutterPaintVolume *pv;
+  gboolean clipped;
+
+  /* The idea is that if we know the paint box for where the actor was
+   * last drawn and we also have the paint volume for where it will be
+   * drawn next then if we queue a redraw for both these regions that
+   * will cover everything that needs to be redrawn to clear the old
+   * view and show the latest view of the actor.
+   *
+   * Don't clip this redraw if we don't know what position we had for
+   * the previous redraw since we don't know where to set the clip so
+   * it will clear the actor as it is currently.
+   */
+  if (G_LIKELY (priv->last_paint_box_valid))
+    {
+      pv = clutter_actor_get_paint_volume (self);
+      if (pv)
+        {
+          ClutterActor *stage = _clutter_actor_get_stage_internal (self);
+          ClutterPaintVolume stage_pv;
+          ClutterActorBox *box = &priv->last_paint_box;
+          ClutterVertex origin;
+
+          _clutter_paint_volume_init_static (stage, &stage_pv);
+
+          origin.x = box->x1;
+          origin.y = box->y1;
+          origin.z = 0;
+          clutter_paint_volume_set_origin (&stage_pv, &origin);
+          clutter_paint_volume_set_width (&stage_pv, box->x2 - box->x1);
+          clutter_paint_volume_set_height (&stage_pv, box->y2 - box->y1);
+
+          /* make sure we redraw the actors old position... */
+          _clutter_actor_set_queue_redraw_clip (stage, &stage_pv);
+          _clutter_actor_signal_queue_redraw (stage, stage);
+          _clutter_actor_set_queue_redraw_clip (stage, NULL);
+
+          clutter_paint_volume_free (&stage_pv);
+
+          /* XXX: Ideally the redraw signal would take a clip volume
+           * argument, but that would be an ABI break. Until we can
+           * break the ABI we pass the argument out-of-band via an
+           * actor->priv member...
+           */
+
+          /* setup the clip for the actors new position... */
+          _clutter_actor_set_queue_redraw_clip (self, pv);
+          clipped = TRUE;
+        }
+      else
+        clipped = FALSE;
+    }
+  else
+    clipped = FALSE;
+
+  _clutter_actor_signal_queue_redraw (self, self);
+
+  /* Just in case anyone is manually firing redraw signals without
+   * using the public queue_redraw() API we are careful to ensure that
+   * our out-of-band clip member is cleared before returning...
+   *
+   * Note: A NULL clip denotes a full-stage, un-clipped redraw
+   */
+  if (G_LIKELY (clipped))
+    _clutter_actor_set_queue_redraw_clip (self, NULL);
+
+  priv->queue_redraw_entry = NULL;
+}
+
 /**
  * clutter_actor_queue_redraw:
  * @self: A #ClutterActor
@@ -4927,69 +5003,83 @@ clutter_actor_destroy (ClutterActor *self)
 void
 clutter_actor_queue_redraw (ClutterActor *self)
 {
-  ClutterActorPrivate *priv;
-  const ClutterPaintVolume *pv;
-  gboolean clipped;
   ClutterActor *stage;
 
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  /* Here's an outline of the actor queue redraw mechanism:
+   *
+   * The process starts either here or in
+   * _clutter_actor_queue_redraw_with_clip.
+   *
+   * These functions queue an entry in a list associated with the
+   * stage which is a list of actors that queued a redraw while
+   * updating the timelines, performing layouting and processing other
+   * mainloop sources before the next paint starts.
+   *
+   * We aim to minimize the processing done at this point because
+   * there is a good chance other events will happen while updating
+   * the scenegraph that would invalidate any expensive work we might
+   * otherwise try to do here. For example we don't try and resolve
+   * the screen space bounding box of an actor at this stage so as to
+   * minimize how much of the screen redraw because it's possible
+   * something else will happen which will force a full redraw anyway.
+   *
+   * When all updates are complete and we come to paint the stage then
+   * we iterate this list and actually emit the "queue-redraw" signals
+   * for each of the listed actors which will bubble up to the stage
+   * for each actor and at that point we will transform the actors
+   * paint volume into screen coordinates to determine the clip region
+   * for what needs to be redrawn in the next paint.
+   *
+   * Besides minimizing redundant work another reason for this
+   * deferred design is that it's more likely we will be able to
+   * determine the paint volume of an actor once we've finished
+   * updating the scenegraph because its allocation should be up to
+   * date. NB: If we can't determine an actors paint volume then we
+   * can't automatically queue a clipped redraw which can make a big
+   * difference to performance.
+   *
+   * So the control flow goes like this:
+   * clutter_actor_queue_redraw and
+   * _clutter_actor_queue_redraw_with_clip
+   *
+   * then control moves to:
+   *   _clutter_stage_queue_actor_redraw
+   *
+   * later during _clutter_stage_do_update, once relayouting is done
+   * and the scenegraph has been updated we will call:
+   * _clutter_stage_finish_queue_redraws
+   *
+   * _clutter_stage_finish_queue_redraws will call
+   * _clutter_actor_finish_queue_redraw for each listed actor.
+   * Note: actors *are* allowed to queue further redraws during this
+   * process (considering clone actors or texture_new_from_actor which
+   * respond to their source queueing a redraw by queuing a redraw
+   * themselves). We repeat the process until the list is empty.
+   *
+   * This will result in the "queue-redraw" signal being fired for
+   * each actor which will pass control to the default signal handler:
+   * clutter_actor_real_queue_redraw
+   *
+   * This will bubble up to the stages handler:
+   * clutter_stage_real_queue_redraw
+   *
+   * clutter_stage_real_queue_redraw will transform the actors paint
+   * volume into screen space and add it as a clip region for the next
+   * paint.
+   */
 
-  priv = self->priv;
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   /* Ignore queuing a redraw for actors not descended from a stage */
   stage = _clutter_actor_get_stage_internal (self);
   if (!stage)
     return;
 
-  /* Don't clip this redraw if we don't know what position we had for
-   * the previous redraw since we don't know where to set the clip so
-   * it will clear the actor as it is currently. */
-  if (G_LIKELY (priv->last_paint_box_valid))
-    {
-      pv = clutter_actor_get_paint_volume (self);
-      if (pv)
-        {
-          ClutterPaintVolume stage_pv;
-          _clutter_paint_volume_init_static (stage, &stage_pv);
-          ClutterActorBox *box = &priv->last_paint_box;
-          ClutterVertex origin;
-
-          origin.x = box->x1;
-          origin.y = box->y1;
-          origin.z = 0;
-          clutter_paint_volume_set_origin (&stage_pv, &origin);
-          clutter_paint_volume_set_width (&stage_pv, box->x2 - box->x1);
-          clutter_paint_volume_set_height (&stage_pv, box->y2 - box->y1);
-
-          /* The idea is that if we know the paint volume for where
-           * the actor was last drawn and we also have the paint
-           * volume for where it will be drawn next then if we queue
-           * a redraw for both these regions that will cover
-           * everything that needs to be redrawn to clear the old
-           * view and show the latest view of the actor.
-           */
-          _clutter_actor_queue_redraw_with_clip (stage, 0, &stage_pv);
-
-          clutter_paint_volume_free (&stage_pv);
-          _clutter_actor_set_queue_redraw_clip (self, pv);
-          clipped = TRUE;
-        }
-      else
-        clipped = FALSE;
-    }
-  else
-    clipped = FALSE;
-
-  clutter_actor_queue_redraw_with_origin (self, self);
-
-  /* Just in case anyone is manually firing redraw signals without
-   * using the public queue_redraw() API we are careful to ensure that
-   * our out-of-band clip member is cleared before returning...
-   *
-   * Note: A NULL clip denotes a full-stage, un-clipped redraw
-   */
-  if (G_LIKELY (clipped))
-    _clutter_actor_set_queue_redraw_clip (self, NULL);
+  self->priv->queue_redraw_entry =
+    _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
+                                       self->priv->queue_redraw_entry,
+                                       self,
+                                       NULL);
 }
 
 static void
@@ -5063,6 +5153,9 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
   ClutterPaintVolume allocation_pv;
   ClutterPaintVolume *pv;
   gboolean should_free_pv;
+  ClutterActor *stage;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   if (flags & CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION)
     {
@@ -5076,7 +5169,7 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
           /* NB: NULL denotes an undefined clip which will result in a
            * full redraw... */
           _clutter_actor_set_queue_redraw_clip (self, NULL);
-          clutter_actor_queue_redraw_with_origin (self, self);
+          _clutter_actor_signal_queue_redraw (self, self);
           return;
         }
 
@@ -5102,25 +5195,15 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
       should_free_pv = FALSE;
     }
 
-  /* XXX: Ideally the redraw signal would take a clip volume
-   * argument, but that would be an ABI break. Until we can break the
-   * ABI we pass the argument out-of-band via an actor->priv member...
-   */
+  /* Ignore queuing a redraw for actors not descended from a stage */
+  stage = _clutter_actor_get_stage_internal (self);
+  if (!stage)
+    return;
 
-  _clutter_actor_set_queue_redraw_clip (self, pv);
-
-  clutter_actor_queue_redraw_with_origin (self, self);
-
-  /* Just in case anyone is manually firing redraw signals without
-   * using the public queue_redraw() API we are careful to ensure that
-   * our out-of-band clip member is cleared before returning...
-   *
-   * Note: A NULL clip denotes a full-stage, un-clipped redraw
-   */
-  _clutter_actor_set_queue_redraw_clip (self, NULL);
-
-  if (should_free_pv)
-    clutter_paint_volume_free (pv);
+  _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
+                                     self->priv->queue_redraw_entry,
+                                     self,
+                                     pv);
 }
 
 static void
@@ -7586,6 +7669,12 @@ clutter_actor_unparent (ClutterActor *self)
 
   if (priv->parent_actor == NULL)
     return;
+
+  /* We take this opportunity to invalidate any queue redraw entry
+   * associated with the actor since we won't be able to determine the
+   * appropriate stage after this. */
+  if (priv->queue_redraw_entry)
+    _clutter_stage_queue_redraw_entry_invalidate (priv->queue_redraw_entry);
 
   was_mapped = CLUTTER_ACTOR_IS_MAPPED (self);
 
