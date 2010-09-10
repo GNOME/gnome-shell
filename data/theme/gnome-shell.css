@@ -64,7 +64,7 @@ StScrollView > .bottom-shadow
     height: 30px;
 }
 
-StScrollBar {
+StScrollBar StBin#trough {
     background-color: #080808;
     border: 1px solid #2d2d2d;
     border-radius: 8px;
