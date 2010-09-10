@@ -34,6 +34,18 @@ gboolean shell_clutter_texture_set_from_pixbuf (ClutterTexture *texture,
 
 ShellGlobal *shell_global_get (void);
 
+typedef enum {
+  SHELL_CURSOR_DND_IN_DRAG,
+  SHELL_CURSOR_DND_UNSUPPORTED_TARGET,
+  SHELL_CURSOR_DND_MOVE,
+  SHELL_CURSOR_DND_COPY
+} ShellCursor;
+
+void shell_global_set_cursor (ShellGlobal *global,
+                              ShellCursor type);
+
+void shell_global_unset_cursor (ShellGlobal  *global);
+
 MetaScreen *shell_global_get_screen (ShellGlobal  *global);
 
 GdkScreen *shell_global_get_gdk_screen (ShellGlobal  *global);

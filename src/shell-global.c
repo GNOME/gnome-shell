@@ -59,6 +59,7 @@ struct _ShellGlobal {
 
   /* Displays the root window; see shell_global_create_root_pixmap_actor() */
   ClutterActor *root_pixmap;
+  GdkWindow    *stage_window;
 
   gint last_change_screen_width, last_change_screen_height;
 
@@ -206,6 +207,7 @@ shell_global_init (ShellGlobal *global)
   global->gtk_grab_active = FALSE;
 
   global->root_pixmap = NULL;
+  global->stage_window = NULL;
 
   global->input_mode = SHELL_STAGE_INPUT_MODE_NORMAL;
 
@@ -433,6 +435,88 @@ shell_global_set_stage_input_mode (ShellGlobal         *global,
       global->input_mode = mode;
       g_object_notify (G_OBJECT (global), "stage-input-mode");
     }
+}
+
+/**
+ * shell_global_set_cursor:
+ * @global: A #ShellGlobal
+ * @type: the type of the cursor
+ *
+ * Set the cursor on the stage window.
+ */
+void
+shell_global_set_cursor (ShellGlobal *global,
+                         ShellCursor type)
+{
+  const char *name;
+  GdkCursor *cursor;
+
+  switch (type)
+    {
+    case SHELL_CURSOR_DND_IN_DRAG:
+      name = "dnd-none";
+      break;
+    case SHELL_CURSOR_DND_MOVE:
+      name = "dnd-move";
+      break;
+    case SHELL_CURSOR_DND_COPY:
+      name = "dnd-copy";
+      break;
+    case SHELL_CURSOR_DND_UNSUPPORTED_TARGET:
+      name = "dnd-none";
+      break;
+    default:
+      g_return_if_reached ();
+    }
+
+  cursor = gdk_cursor_new_from_name (gdk_display_get_default (), name);
+  if (!cursor)
+    {
+      GdkCursorType cursor_type;
+      switch (type)
+        {
+        case SHELL_CURSOR_DND_IN_DRAG:
+          cursor_type = GDK_FLEUR;
+          break;
+        case SHELL_CURSOR_DND_MOVE:
+          cursor_type = GDK_TARGET;
+          break;
+        case SHELL_CURSOR_DND_COPY:
+          cursor_type = GDK_PLUS;
+          break;
+        case SHELL_CURSOR_DND_UNSUPPORTED_TARGET:
+          cursor_type = GDK_X_CURSOR;
+          break;
+        default:
+          g_return_if_reached ();
+        }
+      cursor = gdk_cursor_new (cursor_type);
+    }
+  if (!global->stage_window)
+    {
+      ClutterStage *stage = CLUTTER_STAGE (mutter_plugin_get_stage (global->plugin));
+
+      global->stage_window = gdk_window_foreign_new (clutter_x11_get_stage_window (stage));
+    }
+
+  gdk_window_set_cursor (global->stage_window, cursor);
+
+  gdk_cursor_unref (cursor);
+}
+
+/**
+ * shell_global_unset_cursor:
+ * @global: A #ShellGlobal
+ *
+ * Unset the cursor on the stage window.
+ */
+void
+shell_global_unset_cursor (ShellGlobal  *global)
+{
+  if (!global->stage_window) /* cursor has never been set */
+    return;
+
+  gdk_window_set_cursor (global->stage_window, NULL);
 }
 
 /**
