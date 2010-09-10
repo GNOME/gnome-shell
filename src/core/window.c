@@ -3779,6 +3779,19 @@ send_sync_request (MetaWindow *window)
 }
 #endif
 
+static gboolean
+move_attached_dialog (MetaWindow *window,
+                      void       *data)
+{
+  MetaWindow *parent = meta_window_get_transient_for (window);
+
+  if (window->type == META_WINDOW_MODAL_DIALOG && parent && parent != window)
+    /* It ignores x,y for such a dialog  */
+    meta_window_move (window, FALSE, 0, 0);
+
+  return FALSE;
+}
+
 static void
 meta_window_move_resize_internal (MetaWindow          *window,
                                   MetaMoveResizeFlags  flags,
@@ -4235,6 +4248,9 @@ meta_window_move_resize_internal (MetaWindow          *window,
    *      server-side size/pos of window->xwindow and frame->xwindow
    *   b) all constraints are obeyed by window->rect and frame->rect
    */
+
+  if (meta_prefs_get_attach_modal_dialogs ())
+    meta_window_foreach_transient (window, move_attached_dialog, NULL);
 }
 
 void
@@ -5839,6 +5855,22 @@ meta_window_client_message (MetaWindow *window,
   return FALSE;
 }
 
+static void
+check_ancestor_focus_appearance (MetaWindow *window)
+{
+  MetaWindow *parent = meta_window_get_transient_for (window);
+
+  if (!meta_prefs_get_attach_modal_dialogs ())
+    return;
+
+  if (window->type != META_WINDOW_MODAL_DIALOG || !parent || parent == window)
+    return;
+  if (parent->frame)
+    meta_frame_queue_draw (parent->frame);
+
+  check_ancestor_focus_appearance (parent);
+}
+
 gboolean
 meta_window_notify_focus (MetaWindow *window,
                           XEvent     *event)
@@ -5981,6 +6013,9 @@ meta_window_notify_focus (MetaWindow *window,
               !meta_prefs_get_raise_on_click())
             meta_display_ungrab_focus_window_button (window->display, window);
 
+          /* parent window become active. */
+          check_ancestor_focus_appearance (window);
+
           g_signal_emit (window, window_signals[FOCUS], 0);
           g_object_notify (G_OBJECT (window->display), "focus-window");
         }
@@ -6010,6 +6045,9 @@ meta_window_notify_focus (MetaWindow *window,
           window->display->focus_window = NULL;
           g_object_notify (G_OBJECT (window->display), "focus-window");
           window->has_focus = FALSE;
+          /* parent window become inactive. */
+          check_ancestor_focus_appearance (window);
+
           if (window->frame)
             meta_frame_queue_draw (window->frame);
 
@@ -6929,6 +6967,16 @@ recalc_window_features (MetaWindow *window)
   /* Semantic category overrides the MWM hints */
   if (window->type == META_WINDOW_TOOLBAR)
     window->decorated = FALSE;
+
+  if (window->type == META_WINDOW_MODAL_DIALOG && meta_prefs_get_attach_modal_dialogs ())
+    {
+      MetaWindow *parent = meta_window_get_transient_for (window);
+      if (parent)
+        {
+          window->has_resize_func = FALSE;
+          window->border_only = TRUE;
+        }
+    }
 
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK ||
@@ -8852,6 +8900,28 @@ MetaFrame *
 meta_window_get_frame (MetaWindow *window)
 {
   return window->frame;
+}
+
+static gboolean
+transient_has_focus (MetaWindow *window,
+                     void       *data)
+{
+  if (window->type == META_WINDOW_MODAL_DIALOG && meta_window_appears_focused (window))
+    *((gboolean *)data) = TRUE;
+
+  return FALSE;
+}
+
+gboolean
+meta_window_appears_focused (MetaWindow *window)
+{
+  if (!window->has_focus && meta_prefs_get_attach_modal_dialogs ())
+    {
+      gboolean focus = FALSE;
+      meta_window_foreach_transient (window, transient_has_focus, &focus);
+      return focus;
+    }
+  return window->has_focus;
 }
 
 gboolean

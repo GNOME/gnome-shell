@@ -38,6 +38,22 @@
     </schema>
 
     <schema>
+      <key>/schemas/apps/mutter/general/attach_modal_dialogs</key>
+      <applyto>/apps/mutter/general/attach_modal_dialogs</applyto>
+      <owner>mutter</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Attach modal dialogs</short>
+        <long>
+          When true, instead
+          of having independent titlebars, modal dialogs appear attached to the titlebar
+          of the parent window and are moved together with the parent window.
+        </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/mutter/general/live_hidden_windows</key>
       <applyto>/apps/mutter/general/live_hidden_windows</applyto>
       <owner>mutter</owner>

@@ -140,7 +140,10 @@ typedef struct
   GList  *usable_screen_region;
   GList  *usable_monitor_region;
 } ConstraintInfo;
-
+static gboolean constrain_modal_dialog       (MetaWindow         *window,
+                                              ConstraintInfo     *info,
+                                              ConstraintPriority  priority,
+                                              gboolean            check_only);
 static gboolean constrain_maximization       (MetaWindow         *window,
                                               ConstraintInfo     *info,
                                               ConstraintPriority  priority,
@@ -210,6 +213,7 @@ typedef struct {
 } Constraint;
 
 static const Constraint all_constraints[] = {
+  {constrain_modal_dialog,       "constrain_modal_dialog"},
   {constrain_maximization,       "constrain_maximization"},
   {constrain_fullscreen,         "constrain_fullscreen"},
   {constrain_size_increments,    "constrain_size_increments"},
@@ -724,6 +728,48 @@ get_size_limits (const MetaWindow        *window,
       else
         max_size->height = G_MAXINT;
     }
+}
+
+static gboolean
+constrain_modal_dialog (MetaWindow         *window,
+                        ConstraintInfo     *info,
+                        ConstraintPriority  priority,
+                        gboolean            check_only)
+{
+  int x, y;
+  MetaWindow *parent = meta_window_get_transient_for (window);
+  gboolean constraint_already_satisfied;
+
+  if (!meta_prefs_get_attach_modal_dialogs ())
+    return TRUE;
+  if (window->type != META_WINDOW_MODAL_DIALOG || !parent || parent == window)
+    return TRUE;
+
+  x = parent->rect.x + (parent->rect.width / 2  - info->current.width / 2);
+  y = 0;
+  if (parent->frame)
+    {
+      MetaFrameGeometry fgeom;
+
+      x += parent->frame->rect.x;
+      y += parent->frame->rect.y;
+
+      meta_frame_calc_geometry (parent->frame, &fgeom);
+      y += fgeom.top_height;
+
+      y += info->fgeom->top_height;
+    }
+  else
+    y = parent->rect.y + info->fgeom->top_height;
+
+  constraint_already_satisfied = (x == info->current.x) && (y == info->current.y);
+
+  if (check_only || constraint_already_satisfied)
+    return constraint_already_satisfied;
+
+  info->current.y = y;
+  info->current.x = x;
+  return TRUE;
 }
 
 static gboolean

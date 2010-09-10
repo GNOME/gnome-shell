@@ -5192,6 +5192,34 @@ prefs_changed_callback (MetaPreference pref,
       else
 	disable_compositor (display);
     }
+  else if (pref == META_PREF_ATTACH_MODAL_DIALOGS)
+    {
+      MetaDisplay *display = data;
+      GSList *windows;
+      GSList *tmp;
+
+      windows = meta_display_list_windows (display, META_LIST_DEFAULT);
+
+      for (tmp = windows; tmp != NULL; tmp = tmp->next)
+        {
+          MetaWindow *w = tmp->data;
+          MetaWindow *parent = meta_window_get_transient_for (w);
+          meta_window_recalc_features (w);
+
+          if (w->type == META_WINDOW_MODAL_DIALOG && parent && parent != w)
+            {
+              int x, y;
+              /* Forcing a call to move_resize() does two things: first, it handles
+               * resizing the dialog frame window to the correct size when we remove
+               * or add the decorations. Second, it will take care of positioning the
+               * dialog as "attached" to the parent when we turn the preference on
+               * via the constrain_modal_dialog() constraint.
+               **/
+              meta_window_get_position (w, &x, &y);
+              meta_window_move (w, FALSE, x, y);
+            }
+        }
+    }
 }
 
 void

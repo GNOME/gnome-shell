@@ -86,6 +86,7 @@ static MetaVirtualModifier mouse_button_mods = Mod1Mask;
 static MetaFocusMode focus_mode = META_FOCUS_MODE_CLICK;
 static MetaFocusNewWindows focus_new_windows = META_FOCUS_NEW_WINDOWS_SMART;
 static gboolean raise_on_click = TRUE;
+static gboolean attach_modal_dialogs = FALSE;
 static char* current_theme = NULL;
 static int num_workspaces = 4;
 static MetaActionTitlebar action_double_click_titlebar = META_ACTION_TITLEBAR_TOGGLE_MAXIMIZE;
@@ -361,6 +362,11 @@ static MetaEnumPreference preferences_enum[] =
 
 static MetaBoolPreference preferences_bool[] =
   {
+    { "/apps/mutter/general/attach_modal_dialogs",
+      META_PREF_ATTACH_MODAL_DIALOGS,
+      &attach_modal_dialogs,
+      TRUE,
+    },
     { "/apps/metacity/general/raise_on_click",
       META_PREF_RAISE_ON_CLICK,
       &raise_on_click,
@@ -1494,6 +1500,12 @@ meta_prefs_get_focus_new_windows (void)
 }
 
 gboolean
+meta_prefs_get_attach_modal_dialogs (void)
+{
+  return attach_modal_dialogs;
+}
+
+gboolean
 meta_prefs_get_raise_on_click (void)
 {
   /* Force raise_on_click on for click-to-focus, as requested by Havoc
@@ -1913,6 +1925,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_FOCUS_NEW_WINDOWS:
       return "FOCUS_NEW_WINDOWS";
+
+    case META_PREF_ATTACH_MODAL_DIALOGS:
+      return "ATTACH_MODAL_DIALOGS";
 
     case META_PREF_RAISE_ON_CLICK:
       return "RAISE_ON_CLICK";
