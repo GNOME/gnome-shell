@@ -114,7 +114,7 @@ _key_press_cb (ClutterActor *actor,
   gboolean shift_pressed = (state & CLUTTER_SHIFT_MASK ? TRUE : FALSE);
   gboolean ctrl_pressed = (state & CLUTTER_CONTROL_MASK ? TRUE : FALSE);
 
-  if (CLUTTER_Up == keyval)
+  if (CLUTTER_KEY_Up == keyval)
     {
       if (shift_pressed & ctrl_pressed)
         g_debug ("Up and shift and control pressed");
@@ -136,11 +136,11 @@ _key_press_cb (ClutterActor *actor,
 
         <note>
           <para>Clutter provides a range of key value definitions
-          (like <constant>CLUTTER_Up</constant>, used above). These are
+          (like <constant>CLUTTER_KEY_Up</constant>, used above). These are
           generated from the list in the
           <ulink url="http://cgit.freedesktop.org/xorg/proto/x11proto/plain/keysymdef.h">X.Org source code</ulink>
-          (replace "XK" with "CLUTTER" in the definitions there to get the
-          CLUTTER equivalents; alternatively, look at the
+          (replace "XK" with "CLUTTER_KEY" in the definitions there to get the
+          Clutter equivalents; alternatively, look at the
           <filename>clutter-keysyms.h</filename> header file for the
           list).</para>
 
@@ -188,11 +188,11 @@ binding_pool = clutter_binding_pool_get_for_class (stage_class);
         <informalexample>
           <programlisting>
 clutter_binding_pool_install_action (binding_pool,
-                                     "move-up",     /* identifier */
-                                     CLUTTER_Up,    /* up arrow pressed */
-                                     0,             /* no modifiers pressed */
+                                     "move-up",      /* identifier */
+                                     CLUTTER_KEY_Up, /* up arrow pressed */
+                                     0,              /* no modifiers pressed */
                                      G_CALLBACK (_move_up),
-                                     NULL,          /* no user data passed */
+                                     NULL,           /* no user data passed */
                                      NULL);
           </programlisting>
         </informalexample>
@@ -206,7 +206,7 @@ clutter_binding_pool_install_action (binding_pool,
           <programlisting>
 clutter_binding_pool_install_action (binding_pool,
                                      "move-up-shift-control",
-                                     CLUTTER_Up,
+                                     CLUTTER_KEY_Up,
                                      CLUTTER_SHIFT_MASK + CLUTTER_CONTROL_MASK,
                                      G_CALLBACK (_move_up_shift_control),
                                      NULL,
