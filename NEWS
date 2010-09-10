@@ -24,7 +24,28 @@ Clutter 1.3.14 ()
 
     » Fix a Valgrind report of memory corruption in ClutterState.remove_key().
 
+    » Allow detaching animations created with clutter_actor_animate().
+
     » Depend on GObject-Introspection >= 0.9.5.
+
+    » Provide introspection data for the X11-specific API, like
+      ClutterX11TexturePixmap
+
+    » Use a template material for ClutterTexture to minimize the creation of
+      new materials.
+
+    » Split ClutterDragAction:drag-threshold into two, per-axis properties:
+      :x-drag-threshold and :y-drag-threshold.
+
+    » Allow disabling the -Bsymbolic flag when linking.
+
+    » Use gettext >= 0.17 to handle the localization.
+
+    » Flush the framebuffer earlier when drawing the vertex buffers, to fix
+      a crash when dealing with clip stacks.
+
+    » Make sure ClutterX11TexturePixmap removes the Cogl texture handle before
+      freeing the X11 Pixmap to avoid an error.
 
 Clutter 1.3.12 (16/08/2010)
 ===============================================================================
