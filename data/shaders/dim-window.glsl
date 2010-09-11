@@ -1,4 +1,4 @@
-#version 100
+#version 110
 uniform sampler2D sampler0;
 uniform float fraction;
 uniform float height;
