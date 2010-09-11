@@ -188,6 +188,24 @@ clutter_clone_paint (ClutterActor *self)
   _clutter_actor_set_opacity_parent (priv->clone_source, NULL);
 }
 
+gboolean
+clutter_clone_get_paint_volume (ClutterActor *self,
+                                ClutterPaintVolume *volume)
+{
+  ClutterClonePrivate *priv = CLUTTER_CLONE (self)->priv;
+  const ClutterPaintVolume *source_volume;
+
+  /* query the volume of the source actor and simply masquarade it as
+   * the clones volume... */
+  source_volume = clutter_actor_get_paint_volume (priv->clone_source);
+  if (!source_volume)
+    return FALSE;
+
+  _clutter_paint_volume_set_from_volume (volume, source_volume);
+  _clutter_paint_volume_set_reference_actor (volume, self);
+  return TRUE;
+}
+
 static void
 clutter_clone_allocate (ClutterActor           *self,
                         const ClutterActorBox  *box,
@@ -273,6 +291,7 @@ clutter_clone_class_init (ClutterCloneClass *klass)
 
   actor_class->apply_transform      = clutter_clone_apply_transform;
   actor_class->paint                = clutter_clone_paint;
+  actor_class->get_paint_volume     = clutter_clone_get_paint_volume;
   actor_class->get_preferred_width  = clutter_clone_get_preferred_width;
   actor_class->get_preferred_height = clutter_clone_get_preferred_height;
   actor_class->allocate             = clutter_clone_allocate;
