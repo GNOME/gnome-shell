@@ -70,6 +70,10 @@ menudir = $(sysconfdir)/xdg/menus
 menu_DATA = \
 	gs-applications.menu
 
+shadersdir = $(pkgdatadir)/shaders
+shaders_DATA = \
+	shaders/dim-window.glsl
+
 install-data-local:
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$(gconfschema_DATA)
 

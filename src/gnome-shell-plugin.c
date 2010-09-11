@@ -154,6 +154,8 @@ static void
 gnome_shell_plugin_init (GnomeShellPlugin *shell_plugin)
 {
   g_setenv ("XDG_MENU_PREFIX", "gs-", TRUE);
+  meta_prefs_override_preference_location ("/apps/mutter/general/attach_modal_dialogs",
+                                           "/desktop/gnome/shell/windows/attach_modal_dialogs");
   meta_prefs_override_preference_location ("/apps/metacity/general/button_layout",
                                            "/desktop/gnome/shell/windows/button_layout");
 }

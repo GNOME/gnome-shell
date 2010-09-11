@@ -1,6 +1,8 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
@@ -11,6 +13,68 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
 const WINDOW_ANIMATION_TIME = 0.25;
+const DIM_TIME = 0.500;
+const UNDIM_TIME = 0.250;
+
+var dimShader = undefined;
+
+function getDimShader() {
+    if (dimShader === null)
+        return null;
+    if (!dimShader) {
+        let [success, source, length] = GLib.file_get_contents(global.datadir +
+                                                               '/shaders/dim-window.glsl');
+        try {
+            let shader = new Clutter.Shader();
+            shader.set_fragment_source(source, -1);
+            shader.compile();
+
+            dimShader = shader;
+        } catch (e) {
+            log(e.message);
+            dimShader = null;
+        }
+    }
+    return dimShader;
+}
+
+function WindowDimmer(actor) {
+    this._init(actor);
+}
+
+WindowDimmer.prototype = {
+    _init: function(actor) {
+        this.actor = actor;
+    },
+
+    set dimFraction(fraction) {
+        this._dimFraction = fraction;
+        let shader = getDimShader();
+        if (!Meta.prefs_get_attach_modal_dialogs() || !shader) {
+            this.actor.set_shader(null);
+            return;
+        }
+        if (fraction > 0.01) {
+            this.actor.set_shader(shader);
+            this.actor.set_shader_param_float('height', this.actor.get_height());
+            this.actor.set_shader_param_float('fraction', fraction);
+        } else
+            this.actor.set_shader(null);
+    },
+
+    get dimFraction() {
+        return this._dimFraction;
+    },
+
+    _dimFraction: 0.0
+};
+
+function getWindowDimmer(texture) {
+    if (!texture._windowDimmer)
+        texture._windowDimmer = new WindowDimmer(texture);
+
+    return texture._windowDimmer;
+}
 
 function WindowManager() {
     this._init();
@@ -147,7 +211,75 @@ WindowManager.prototype = {
     _unmaximizeWindowDone : function(shellwm, actor) {
     },
 
+    _parentHasOtherAttachedDialog: function(parent, self) {
+        var count = 0;
+        parent.foreach_transient(function(win) {
+            if (win.get_window_type() == Meta.CompWindowType.MODAL_DIALOG && win != self)
+                count++;
+            return false;
+        });
+        return count != 0;
+    },
+
+    _dimParentWindow: function(actor) {
+        let meta = actor.get_meta_window();
+        let parent = meta.get_transient_for();
+        if (!parent)
+            return;
+        let parentActor = parent.get_compositor_private();
+        if (!parentActor)
+            return;
+        if (!this._parentHasOtherAttachedDialog(parent, meta)) {
+            let texture = parentActor.get_texture();
+            Tweener.addTween(getWindowDimmer(texture),
+                             { dimFraction: 1.0,
+                               time: DIM_TIME,
+                               transition: 'linear'
+                             });
+        }
+    },
+
+    _undimParentWindow: function(actor) {
+        let meta = actor.get_meta_window();
+        let parent = meta.get_transient_for();
+        if (!parent)
+            return;
+        let parentActor = parent.get_compositor_private();
+        if (!parentActor)
+            return;
+        if (!this._parentHasOtherAttachedDialog(parent, meta)) {
+            let texture = parentActor.get_texture();
+            Tweener.addTween(getWindowDimmer(texture),
+                             { dimFraction: 0.0,
+                               time: UNDIM_TIME,
+                               transition: 'linear'
+                             });
+        }
+    },
+
     _mapWindow : function(shellwm, actor) {
+        if (this._shouldAnimate() && actor
+            && actor.get_window_type() == Meta.CompWindowType.MODAL_DIALOG
+            && Meta.prefs_get_attach_modal_dialogs()
+            && actor.get_meta_window().get_transient_for()) {
+            actor.set_scale(1.0, 0.0);
+            actor.show();
+            this._mapping.push(actor);
+
+            Tweener.addTween(actor,
+                             { scale_y: 1,
+                               time: WINDOW_ANIMATION_TIME,
+                               transition: "easeOutQuad",
+                               onComplete: this._mapWindowDone,
+                               onCompleteScope: this,
+                               onCompleteParams: [shellwm, actor],
+                               onOverwrite: this._mapWindowOverwrite,
+                               onOverwriteScope: this,
+                               onOverwriteParams: [shellwm, actor]
+                             });
+            this._dimParentWindow(actor);
+            return;
+        }
         if (!this._shouldAnimate(actor)) {
             shellwm.completed_map(actor);
             return;
@@ -185,11 +317,46 @@ WindowManager.prototype = {
         }
     },
 
-    _destroyWindow : function(shellwm, actor) {
+    _destroyWindowOverwrite : function(shellwm, actor) {
+        if (this._removeEffect(this._mapping, actor)) {
+            shellwm.completed_destroy(actor);
+        }
+    },
+
+     _destroyWindow : function(shellwm, actor) {
+        while (actor && this._shouldAnimate()
+               && actor.get_window_type() == Meta.CompWindowType.MODAL_DIALOG
+               && actor.get_meta_window().get_transient_for()) {
+            this._undimParentWindow(actor);
+            if (!Meta.prefs_get_attach_modal_dialogs())
+                break;
+            actor.set_scale(1.0, 1.0);
+            actor.show();
+            this._mapping.push(actor);
+
+            Tweener.addTween(actor,
+                             { scale_y: 0,
+                               time: WINDOW_ANIMATION_TIME,
+                               transition: "easeOutQuad",
+                               onComplete: this._destroyWindowDone,
+                               onCompleteScope: this,
+                               onCompleteParams: [shellwm, actor],
+                               onOverwrite: this._destroyWindowOverwrite,
+                               onOverwriteScope: this,
+                               onOverwriteParams: [shellwm, actor]
+                             });
+            return;
+        }
         shellwm.completed_destroy(actor);
     },
-    
+
     _destroyWindowDone : function(shellwm, actor) {
+        if (actor && actor.get_window_type() == Meta.CompWindowType.MODAL_DIALOG &&
+            actor.get_meta_window().get_transient_for()) {
+            if (this._removeEffect(this._mapping, actor)) {
+                shellwm.completed_destroy(actor);
+            }
+        }
     },
 
     _switchWorkspace : function(shellwm, from, to, direction) {

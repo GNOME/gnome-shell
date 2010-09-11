@@ -3,6 +3,21 @@
 
       <!-- Metacity overrides -->
       <schema>
+        <key>/schemas/desktop/gnome/shell/windows/attach_modal_dialogs</key>
+        <applyto>/desktop/gnome/shell/windows/attach_modal_dialogs</applyto>
+        <owner>gnome-shell</owner>
+        <type>bool</type>
+        <default>true</default>
+        <locale name="C">
+          <short>Attach modal dialog to the parent window</short>
+          <long>
+             This key overrides /apps/mutter/general/attach_modal_dialogs when
+             running GNOME Shell.
+          </long>
+        </locale>
+      </schema>
+
+      <schema>
         <key>/schemas/desktop/gnome/shell/windows/button_layout</key>
         <applyto>/desktop/gnome/shell/windows/button_layout</applyto>
         <owner>gnome-shell</owner>
