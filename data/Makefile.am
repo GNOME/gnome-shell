@@ -84,6 +84,7 @@ EXTRA_DIST =						\
 	gnome-shell-clock-preferences.desktop.in.in	\
 	$(menu_DATA)					\
 	$(gconfschema_DATA)				\
+	$(shaders_DATA) \
 	org.gnome.accessibility.magnifier.gschema.xml.in	\
 	org.gnome.shell.gschema.xml.in
 
