@@ -2362,14 +2362,11 @@ _clutter_actor_draw_paint_volume (ClutterActor *self)
   if (!pv)
     {
       gfloat width, height;
-      /* XXX: actually for debugging it might be more useful to draw a
-       * blue rectangle around the transformed allocation and add a
-       * label showing that a volume can't be determined. */
       ClutterActor *stage = _clutter_actor_get_stage_internal (self);
       _clutter_paint_volume_init_static (stage, &fake_pv);
       free_fake_pv = TRUE;
 
-      clutter_actor_get_size (stage, &width, &height);
+      clutter_actor_get_size (self, &width, &height);
       clutter_paint_volume_set_width (&fake_pv, width);
       clutter_paint_volume_set_height (&fake_pv, height);
 
