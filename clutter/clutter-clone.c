@@ -120,12 +120,39 @@ clutter_clone_get_preferred_height (ClutterActor *self,
 }
 
 static void
+clutter_clone_apply_transform (ClutterActor *self, CoglMatrix *matrix)
+{
+  ClutterClonePrivate *priv = CLUTTER_CLONE (self)->priv;
+  ClutterGeometry geom;
+  ClutterGeometry source_geom;
+  gfloat x_scale;
+  gfloat y_scale;
+
+  /* First chain up and apply all the standard ClutterActor
+   * transformations... */
+  CLUTTER_ACTOR_CLASS (clutter_clone_parent_class)->apply_transform (self,
+                                                                     matrix);
+
+  /* get our allocated size */
+  clutter_actor_get_allocation_geometry (self, &geom);
+
+  /* and get the allocated size of the source */
+  clutter_actor_get_allocation_geometry (priv->clone_source, &source_geom);
+
+  /* We need to scale what the clone-source actor paints to fill our own
+   * allocation...
+   */
+  x_scale = (gfloat) geom.width  / source_geom.width;
+  y_scale = (gfloat) geom.height / source_geom.height;
+
+  cogl_matrix_scale (matrix, x_scale, y_scale, x_scale);
+}
+
+static void
 clutter_clone_paint (ClutterActor *self)
 {
   ClutterClone *clone = CLUTTER_CLONE (self);
   ClutterClonePrivate *priv = clone->priv;
-  ClutterGeometry geom, clone_geom;
-  gfloat x_scale, y_scale;
   gboolean was_unmapped = FALSE;
 
   if (G_UNLIKELY (priv->clone_source == NULL))
@@ -135,20 +162,6 @@ clutter_clone_paint (ClutterActor *self)
                 "painting clone actor '%s'",
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
-
-  /* get our allocated size */
-  clutter_actor_get_allocation_geometry (self, &geom);
-
-  /* and get the allocated size of the source */
-  clutter_actor_get_allocation_geometry (priv->clone_source, &clone_geom);
-
-  /* We need to scale what the clone-source actor paints to fill our own
-   * allocation...
-   */
-  x_scale = (gfloat) geom.width  / clone_geom.width;
-  y_scale = (gfloat) geom.height / clone_geom.height;
-
-  cogl_scale (x_scale, y_scale, 1.0);
 
   /* The final bits of magic:
    * - We need to make sure that when the clone-source actor's paint
@@ -258,6 +271,7 @@ clutter_clone_class_init (ClutterCloneClass *klass)
 
   g_type_class_add_private (gobject_class, sizeof (ClutterClonePrivate));
 
+  actor_class->apply_transform      = clutter_clone_apply_transform;
   actor_class->paint                = clutter_clone_paint;
   actor_class->get_preferred_width  = clutter_clone_get_preferred_width;
   actor_class->get_preferred_height = clutter_clone_get_preferred_height;
