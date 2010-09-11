@@ -55,6 +55,9 @@ struct _StThemeNodeTransitionPrivate {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
+/* template material to avoid unnecessary shader compilation */
+static CoglHandle global_material = COGL_INVALID_HANDLE;
+
 G_DEFINE_TYPE (StThemeNodeTransition, st_theme_node_transition, G_TYPE_OBJECT);
 
 
@@ -244,21 +247,27 @@ setup_framebuffers (StThemeNodeTransition *transition,
   g_return_val_if_fail (priv->old_offscreen != COGL_INVALID_HANDLE, FALSE);
   g_return_val_if_fail (priv->new_offscreen != COGL_INVALID_HANDLE, FALSE);
 
-  if (priv->material)
-    cogl_handle_unref (priv->material);
-  priv->material = cogl_material_new ();
+  if (priv->material == NULL)
+    {
+      if (G_UNLIKELY (global_material == COGL_INVALID_HANDLE))
+        {
+          global_material = cogl_material_new ();
 
-  cogl_material_set_layer_combine (priv->material, 0,
-                                   "RGBA = REPLACE (TEXTURE)",
-                                   NULL);
-  cogl_material_set_layer_combine (priv->material, 1,
-                                   "RGBA = INTERPOLATE (PREVIOUS, "
-                                                       "TEXTURE, "
-                                                       "CONSTANT[A])",
-                                   NULL);
-  cogl_material_set_layer_combine (priv->material, 2,
-                                   "RGBA = MODULATE (PREVIOUS, PRIMARY)",
-                                   NULL);
+          cogl_material_set_layer_combine (global_material, 0,
+                                           "RGBA = REPLACE (TEXTURE)",
+                                           NULL);
+          cogl_material_set_layer_combine (global_material, 1,
+                                           "RGBA = INTERPOLATE (PREVIOUS, "
+                                                               "TEXTURE, "
+                                                               "CONSTANT[A])",
+                                           NULL);
+          cogl_material_set_layer_combine (global_material, 2,
+                                           "RGBA = MODULATE (PREVIOUS, "
+                                                            "PRIMARY)",
+                                           NULL);
+        }
+      priv->material = cogl_material_copy (global_material);
+    }
 
   cogl_material_set_layer (priv->material, 0, priv->new_texture);
   cogl_material_set_layer (priv->material, 1, priv->old_texture);
