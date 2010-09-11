@@ -260,14 +260,13 @@ meta_core_user_raise (Display *xdisplay,
   meta_window_raise (window);
 }
 
-void
-meta_core_user_lower_and_unfocus (Display *xdisplay,
-                                  Window   frame_xwindow,
-                                  guint32  timestamp)
+static gboolean
+lower_window_and_transients (MetaWindow *window,
+                             gpointer   data)
 {
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-  
   meta_window_lower (window);
+
+  meta_window_foreach_transient (window, lower_window_and_transients, NULL);
 
   if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
       meta_prefs_get_raise_on_click ())
@@ -296,11 +295,25 @@ meta_core_user_lower_and_unfocus (Display *xdisplay,
         }
     }
 
-  /* focus the default window, if needed */
-  if (window->has_focus)
-    meta_workspace_focus_default_window (window->screen->active_workspace,
-                                         NULL,
-                                         timestamp);
+  return FALSE;
+}
+
+void
+meta_core_user_lower_and_unfocus (Display *xdisplay,
+                                  Window   frame_xwindow,
+                                  guint32  timestamp)
+{
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
+
+  lower_window_and_transients (window, NULL);
+
+ /* Rather than try to figure that out whether we just lowered
+  * the focus window, assume that's always the case. (Typically,
+  * this will be invoked via keyboard action or by a mouse action;
+  * in either case the window or a modal child will have been focused.) */
+  meta_workspace_focus_default_window (window->screen->active_workspace,
+                                       NULL,
+                                       timestamp);
 }
 
 void
