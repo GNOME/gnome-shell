@@ -266,7 +266,7 @@ AltTabPopup.prototype = {
     _keyReleaseEvent : function(actor, event) {
         let keysym = event.get_key_symbol();
 
-        if (keysym == Clutter.Alt_L || keysym == Clutter.Alt_R)
+        if (keysym == Clutter.Alt_L || keysym == Clutter.Alt_R || keysym == Clutter.Meta_L || keysym == Clutter.Meta_R)
             this._finish();
 
         return true;
