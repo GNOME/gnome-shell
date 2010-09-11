@@ -364,6 +364,8 @@ CoglHandle
 _st_create_shadow_material (StShadow   *shadow_spec,
                             CoglHandle  src_texture)
 {
+  static CoglHandle shadow_material_template = COGL_INVALID_HANDLE;
+
   CoglHandle  material;
   CoglHandle  texture;
   guchar     *pixels_in, *pixels_out;
@@ -483,17 +485,21 @@ _st_create_shadow_material (StShadow   *shadow_spec,
   g_free (pixels_in);
   g_free (pixels_out);
 
-  material = cogl_material_new ();
+  if (G_UNLIKELY (shadow_material_template == COGL_INVALID_HANDLE))
+    {
+      shadow_material_template = cogl_material_new ();
+
+      /* We set up the material to blend the shadow texture with the combine
+       * constant, but defer setting the latter until painting, so that we can
+       * take the actor's overall opacity into account. */
+      cogl_material_set_layer_combine (shadow_material_template, 0,
+                                       "RGBA = MODULATE (CONSTANT, TEXTURE[A])",
+                                       NULL);
+    }
+
+  material = cogl_material_copy (shadow_material_template);
 
   cogl_material_set_layer (material, 0, texture);
-
-  /* We set up the material to blend the shadow texture with the combine
-   * constant, but defer setting the latter until painting, so that we can
-   * take the actor's overall opacity into account. */
-  cogl_material_set_layer_combine (material, 0,
-                                   "RGBA = MODULATE (CONSTANT, TEXTURE[A])",
-                                   NULL);
-
 
   cogl_handle_unref (texture);
 
