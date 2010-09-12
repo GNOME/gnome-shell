@@ -91,6 +91,8 @@ WindowManager.prototype = {
         this._mapping = [];
         this._destroying = [];
 
+        this._dimmedWindows = [];
+
         this._switchData = null;
         this._shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
         this._shellwm.connect('kill-window-effects', Lang.bind(this, function (shellwm, actor) {
@@ -114,6 +116,15 @@ WindowManager.prototype = {
         this.setKeybindingHandler('switch_to_workspace_up', Lang.bind(this, this._showWorkspaceSwitcher));
         this.setKeybindingHandler('switch_to_workspace_down', Lang.bind(this, this._showWorkspaceSwitcher));
         this.setKeybindingHandler('switch_windows', Lang.bind(this, this._startAppSwitcher));
+
+        Main.overview.connect('showing', Lang.bind(this, function() {
+            for (let i = 0; i < this._dimmedWindows.length; i++)
+                this._undimParentWindow(this._dimmedWindows[i], true);
+        }));
+        Main.overview.connect('hiding', Lang.bind(this, function() {
+            for (let i = 0; i < this._dimmedWindows.length; i++)
+                this._dimParentWindow(this._dimmedWindows[i], true);
+        }));
     },
 
     setKeybindingHandler: function(keybinding, handler){
@@ -221,63 +232,69 @@ WindowManager.prototype = {
         return count != 0;
     },
 
-    _dimParentWindow: function(actor) {
+    _dimParentWindow: function(actor, animate) {
         let meta = actor.get_meta_window();
         let parent = meta.get_transient_for();
         if (!parent)
             return;
         let parentActor = parent.get_compositor_private();
-        if (!parentActor)
+        if (!parentActor || this._parentHasOtherAttachedDialog(parent, meta))
             return;
-        if (!this._parentHasOtherAttachedDialog(parent, meta)) {
-            let texture = parentActor.get_texture();
+        let texture = parentActor.get_texture();
+        if (animate)
             Tweener.addTween(getWindowDimmer(texture),
                              { dimFraction: 1.0,
                                time: DIM_TIME,
                                transition: 'linear'
                              });
-        }
+        else
+            getWindowDimmer(texture).dimFraction = 1.0;
     },
 
-    _undimParentWindow: function(actor) {
+    _undimParentWindow: function(actor, animate) {
         let meta = actor.get_meta_window();
         let parent = meta.get_transient_for();
         if (!parent)
             return;
         let parentActor = parent.get_compositor_private();
-        if (!parentActor)
+        if (!parentActor || this._parentHasOtherAttachedDialog(parent, meta))
             return;
-        if (!this._parentHasOtherAttachedDialog(parent, meta)) {
-            let texture = parentActor.get_texture();
+        let texture = parentActor.get_texture();
+        if (animate)
             Tweener.addTween(getWindowDimmer(texture),
                              { dimFraction: 0.0,
                                time: UNDIM_TIME,
                                transition: 'linear'
                              });
-        }
+        else
+            getWindowDimmer(texture).dimFraction = 0.0;
     },
 
     _mapWindow : function(shellwm, actor) {
-        if (this._shouldAnimate() && actor
-            && actor.get_window_type() == Meta.CompWindowType.MODAL_DIALOG
+        if (actor.get_window_type() == Meta.CompWindowType.MODAL_DIALOG
             && Meta.prefs_get_attach_modal_dialogs()
             && actor.get_meta_window().get_transient_for()) {
-            actor.set_scale(1.0, 0.0);
-            actor.show();
-            this._mapping.push(actor);
+            this._dimmedWindows.push(actor);
+            if (this._shouldAnimate()) {
+                actor.set_scale(1.0, 0.0);
+                actor.show();
+                this._mapping.push(actor);
 
-            Tweener.addTween(actor,
-                             { scale_y: 1,
-                               time: WINDOW_ANIMATION_TIME,
-                               transition: "easeOutQuad",
-                               onComplete: this._mapWindowDone,
-                               onCompleteScope: this,
-                               onCompleteParams: [shellwm, actor],
-                               onOverwrite: this._mapWindowOverwrite,
-                               onOverwriteScope: this,
-                               onOverwriteParams: [shellwm, actor]
-                             });
-            this._dimParentWindow(actor);
+                Tweener.addTween(actor,
+                                 { scale_y: 1,
+                                   time: WINDOW_ANIMATION_TIME,
+                                   transition: "easeOutQuad",
+                                   onComplete: this._mapWindowDone,
+                                   onCompleteScope: this,
+                                   onCompleteParams: [shellwm, actor],
+                                   onOverwrite: this._mapWindowOverwrite,
+                                   onOverwriteScope: this,
+                                   onOverwriteParams: [shellwm, actor]
+                                 });
+                this._dimParentWindow(actor, true);
+                return;
+            }
+            shellwm.completed_map(actor);
             return;
         }
         if (!this._shouldAnimate(actor)) {
@@ -324,11 +341,15 @@ WindowManager.prototype = {
     },
 
      _destroyWindow : function(shellwm, actor) {
-        while (actor && this._shouldAnimate()
-               && actor.get_window_type() == Meta.CompWindowType.MODAL_DIALOG
+        while (actor.get_window_type() == Meta.CompWindowType.MODAL_DIALOG
                && actor.get_meta_window().get_transient_for()) {
-            this._undimParentWindow(actor);
-            if (!Meta.prefs_get_attach_modal_dialogs())
+            if (!Main.overview.visible)
+                this._undimParentWindow(actor, true);
+            this._dimmedWindows = this._dimmedWindows.filter(function(win) {
+                return win != actor;
+            });
+            if (!Meta.prefs_get_attach_modal_dialogs()
+                || !this._shouldAnimate())
                 break;
             actor.set_scale(1.0, 1.0);
             actor.show();
