@@ -434,6 +434,8 @@ struct _ClutterActorPrivate
   guint8 opacity;
 
   ClutterActor   *parent_actor;
+  GList          *children;
+  gint            n_children;
 
   gchar          *name;
   guint32         id; /* Unique ID */
@@ -7509,6 +7511,7 @@ clutter_actor_set_parent (ClutterActor *self,
 		          ClutterActor *parent)
 {
   ClutterActorPrivate *priv;
+  ClutterActorPrivate *parent_priv;
   ClutterTextDirection text_dir;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
@@ -7538,6 +7541,12 @@ clutter_actor_set_parent (ClutterActor *self,
 
   g_object_ref_sink (self);
   priv->parent_actor = parent;
+
+  /* Maintain an explicit list of children for every actor... */
+  parent_priv = parent->priv;
+  parent_priv->children =
+    g_list_prepend (parent_priv->children, self);
+  parent_priv->n_children++;
 
   /* if push_internal() has been called then we automatically set
    * the flag on the actor
@@ -7638,6 +7647,7 @@ clutter_actor_unparent (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
   ClutterActor *old_parent;
+  ClutterActorPrivate *old_parent_priv;
   gboolean was_mapped;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
@@ -7669,6 +7679,10 @@ clutter_actor_unparent (ClutterActor *self)
   /* clutter_actor_reparent() will emit ::parent-set for us */
   if (!CLUTTER_ACTOR_IN_REPARENT (self))
     g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
+
+  old_parent_priv = old_parent->priv;
+  old_parent_priv->children = g_list_remove (old_parent_priv->children, self);
+  old_parent_priv->n_children--;
 
   /* Queue a redraw on old_parent only if we were painted in the first
    * place. Will be no-op if old parent is not shown.
