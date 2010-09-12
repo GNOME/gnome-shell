@@ -12116,3 +12116,10 @@ clutter_actor_get_paint_box (ClutterActor    *self,
   return TRUE;
 }
 
+gint
+_clutter_actor_get_n_children (ClutterActor *self)
+{
+  return self->priv->n_children;
+}
+
+

@@ -452,6 +452,7 @@ gboolean _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
                                                const GValue          *handler_return,
                                                gpointer               dummy);
 
+gint          _clutter_actor_get_n_children             (ClutterActor *self);
 ClutterActor *_clutter_actor_get_stage_internal         (ClutterActor *actor);
 
 void _clutter_actor_apply_modelview_transform           (ClutterActor *self,
