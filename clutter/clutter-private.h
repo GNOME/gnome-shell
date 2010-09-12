@@ -275,6 +275,31 @@ struct _ClutterPaintVolume
    */
 };
 
+/* ClutterActorTraverseFlags:
+ *
+ * Controls some options for how clutter_actor_traverse() iterates
+ * through the graph.
+ */
+typedef enum _ClutterActorTraverseFlags
+{
+  CLUTTER_ACTOR_TRAVERSE_PLACE_HOLDER  = 1L<<0
+} ClutterActorTraverseFlags;
+
+/* ClutterForeachCallback:
+ * @actor: The actor being iterated
+ * @user_data: The private data specified when starting the iteration
+ *
+ * A generic callback for iterating over actor, such as with
+ * _clutter_actor_foreach_child. The difference when compared to
+ * #ClutterCallback is that it returns a boolean so it is possible to break
+ * out of an iteration early.
+ *
+ * Return value: %TRUE to continue iterating or %FALSE to break iteration
+ * early.
+ */
+typedef gboolean (*ClutterForeachCallback) (ClutterActor *actor,
+                                            void *user_data);
+
 typedef struct _ClutterStageQueueRedrawEntry ClutterStageQueueRedrawEntry;
 
 #define CLUTTER_CONTEXT()	(_clutter_context_get_default ())
@@ -453,6 +478,13 @@ gboolean _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
                                                gpointer               dummy);
 
 gint          _clutter_actor_get_n_children             (ClutterActor *self);
+gboolean      _clutter_actor_foreach_child              (ClutterActor *self,
+                                                         ClutterForeachCallback callback,
+                                                         void *user_data);
+gboolean      _clutter_actor_traverse                   (ClutterActor *actor,
+                                                         ClutterActorTraverseFlags flags,
+                                                         ClutterForeachCallback callback,
+                                                         void *user_data);
 ClutterActor *_clutter_actor_get_stage_internal         (ClutterActor *actor);
 
 void _clutter_actor_apply_modelview_transform           (ClutterActor *self,

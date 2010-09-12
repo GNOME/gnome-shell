@@ -12122,4 +12122,68 @@ _clutter_actor_get_n_children (ClutterActor *self)
   return self->priv->n_children;
 }
 
+/* _clutter_actor_foreach_child:
+ * @actor: The actor whos children you want to iterate
+ * @callback: The function to call for each child
+ * @user_data: Private data to pass to @callback
+ *
+ * Calls a given @callback once for each child of the specified @actor and
+ * passing the @user_data pointer each time.
+ *
+ * Return value: returns %TRUE if all children were iterated, else
+ *    %FALSE if a callback broke out of iteration early.
+ */
+gboolean
+_clutter_actor_foreach_child (ClutterActor *self,
+                              ClutterForeachCallback callback,
+                              void *user_data)
+{
+  ClutterActorPrivate *priv = self->priv;
+  gboolean cont;
+  GList *l;
+
+  for (cont = TRUE, l = priv->children; cont && l; l = l->next)
+    cont = callback (l->data, user_data);
+
+  return cont;
+}
+
+/* _clutter_actor_traverse:
+ * @actor: The actor to start traversing the graph from
+ * @flags: These flags may affect how the traversal is done
+ * @callback: The function to call for each actor traversed
+ * @user_data: The private data to pass to the @callback
+ *
+ * Traverses the scenegraph starting at the specified @actor and
+ * descending through all its children and its children's children.
+ * For each actor traversed @callback is called with the specified
+ * @user_data.
+ *
+ * If @callback ever returns %FALSE then no more actors will be
+ * traversed.
+ *
+ * Return value: %TRUE if @actor and all its descendants were
+ *   traversed or %FALSE if the @callback returned %FALSE to stop
+ *   traversal early.
+ */
+gboolean
+_clutter_actor_traverse (ClutterActor              *actor,
+                         ClutterActorTraverseFlags  flags,
+                         ClutterForeachCallback     callback,
+                         gpointer                   user_data)
+{
+  ClutterActorPrivate *priv;
+  GList *l;
+  gboolean cont;
+
+  if (!callback (actor, user_data))
+    return FALSE;
+
+  priv = actor->priv;
+
+  for (cont = TRUE, l = priv->children; cont && l; l = l->next)
+    cont = _clutter_actor_traverse (l->data, flags, callback, user_data);
+
+  return cont;
+}
 
