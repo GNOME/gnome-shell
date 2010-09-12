@@ -2,12 +2,15 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 NULL =
 
-SUBDIRS = driver tesselator
+SUBDIRS = driver
 
 BUILT_SOURCES =
+
 EXTRA_DIST =
 CLEANFILES =
 DISTCLEANFILES =
+
+noinst_LTLIBRARIES =
 
 # pkg-config ==================================================================
 pc_files = \
@@ -48,7 +51,6 @@ AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 
 BUILT_SOURCES += cogl-defines.h
 DISTCLEANFILES += cogl-defines.h
-
 EXTRA_DIST += cogl-defines.h.in
 
 # public headers
@@ -73,12 +75,52 @@ cogl_public_h = \
 	$(srcdir)/cogl.h			\
 	$(NULL)
 
+# winsys sources, common to all backends
+cogl_winsys_common_sources = \
+	$(srcdir)/winsys/cogl-winsys.h				\
+	$(srcdir)/winsys/cogl-context-winsys.h          	\
+	$(srcdir)/winsys/cogl-context-winsys.c          	\
+	$(srcdir)/winsys/cogl-winsys-feature-functions.h	\
+	$(NULL)
+
+# tesselator sources
+cogl_tesselator_sources = \
+	$(srcdir)/tesselator/dict-list.h 	\
+	$(srcdir)/tesselator/dict.c 		\
+	$(srcdir)/tesselator/dict.h 		\
+	$(srcdir)/tesselator/geom.c 		\
+	$(srcdir)/tesselator/geom.h 		\
+	$(srcdir)/tesselator/gluos.h 		\
+	$(srcdir)/tesselator/memalloc.h 	\
+	$(srcdir)/tesselator/mesh.c 		\
+	$(srcdir)/tesselator/mesh.h 		\
+	$(srcdir)/tesselator/normal.c 		\
+	$(srcdir)/tesselator/normal.h 		\
+	$(srcdir)/tesselator/priorityq-heap.h 	\
+	$(srcdir)/tesselator/priorityq-sort.h 	\
+	$(srcdir)/tesselator/priorityq.c 	\
+	$(srcdir)/tesselator/priorityq.h 	\
+	$(srcdir)/tesselator/render.c 		\
+	$(srcdir)/tesselator/render.h 		\
+	$(srcdir)/tesselator/sweep.c 		\
+	$(srcdir)/tesselator/sweep.h 		\
+	$(srcdir)/tesselator/tess.c 		\
+	$(srcdir)/tesselator/tess.h 		\
+	$(srcdir)/tesselator/tesselator.h 	\
+	$(srcdir)/tesselator/tessmono.c 	\
+	$(srcdir)/tesselator/tessmono.h 	\
+	$(srcdir)/tesselator/GL/glu.h 		\
+	$(NULL)
+
+EXTRA_DIST += \
+	$(srcdir)/tesselator/README \
+	$(srcdir)/tesselator/priorityq-heap.c
+
+# sources
 cogl_sources_c = \
+	$(cogl_winsys_common_sources)			\
+	$(cogl_tesselator_sources)			\
 	$(srcdir)/cogl-debug.h 				\
-	$(srcdir)/winsys/cogl-winsys.h			\
-	$(srcdir)/winsys/cogl-context-winsys.h          \
-	$(srcdir)/winsys/cogl-context-winsys.c          \
-	$(srcdir)/winsys/cogl-winsys-feature-functions.h \
 	$(srcdir)/cogl-handle.h 			\
 	$(srcdir)/cogl-context.h			\
 	$(srcdir)/cogl-context.c			\
@@ -174,12 +216,11 @@ glib_enum_c = cogl-enum-types.c
 glib_enum_headers = $(cogl_public_h)
 include $(top_srcdir)/build/autotools/Makefile.am.enums
 
-noinst_LTLIBRARIES = libclutter-cogl.la
+noinst_LTLIBRARIES += libclutter-cogl.la
 
 libclutter_cogl_la_LIBADD = \
 	-lm $(CLUTTER_LIBS) \
-	$(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/libclutter-cogl-driver.la \
-	$(top_builddir)/clutter/cogl/cogl/tesselator/libtesselator.la
+	$(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/libclutter-cogl-driver.la
 
 libclutter_cogl_la_SOURCES = $(cogl_sources_c)
 nodist_libclutter_cogl_la_SOURCES = $(BUILT_SOURCES)
