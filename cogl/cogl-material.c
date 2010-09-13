@@ -4876,6 +4876,32 @@ changed:
 }
 
 void
+_cogl_material_get_layer_combine_constant (CoglMaterial *material,
+                                           int layer_index,
+                                           float *constant)
+{
+  CoglMaterialLayerState       change =
+    COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT;
+  CoglMaterialLayer *layer;
+  CoglMaterialLayer *authority;
+
+  g_return_if_fail (cogl_is_material (material));
+
+  /* Note: this will ensure that the layer exists, creating one if it
+   * doesn't already.
+   *
+   * Note: If the layer already existed it's possibly owned by another
+   * material. If the layer is created then it will be owned by
+   * material. */
+  layer = _cogl_material_get_layer (material, layer_index);
+  /* FIXME: we shouldn't ever construct a layer in a getter function */
+
+  authority = _cogl_material_layer_get_authority (layer, change);
+  memcpy (constant, authority->big_state->texture_combine_constant,
+          sizeof (float) * 4);
+}
+
+void
 cogl_material_set_layer_matrix (CoglMaterial *material,
 				int layer_index,
                                 const CoglMatrix *matrix)

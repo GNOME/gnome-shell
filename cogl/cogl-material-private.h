@@ -913,5 +913,10 @@ _cogl_material_foreach_layer (CoglMaterial *material,
 int
 _cogl_material_layer_get_unit_index (CoglMaterialLayer *layer);
 
+void
+_cogl_material_get_layer_combine_constant (CoglMaterial *material,
+                                           int layer_index,
+                                           float *constant);
+
 #endif /* __COGL_MATERIAL_PRIVATE_H */
 
