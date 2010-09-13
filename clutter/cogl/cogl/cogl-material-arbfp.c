@@ -74,6 +74,11 @@
 #define GL_TEXTURE_3D                           0x806F
 #endif
 
+typedef struct _UnitState
+{
+  unsigned int sampled:1;
+} UnitState;
+
 typedef struct _CoglMaterialBackendARBfpPrivate
 {
   CoglMaterial *authority_cache;
@@ -82,7 +87,7 @@ typedef struct _CoglMaterialBackendARBfpPrivate
   CoglHandle user_program;
   GString *source;
   GLuint gl_program;
-  gboolean *sampled;
+  UnitState *unit_state;
   int next_constant_id;
 } CoglMaterialBackendARBfpPrivate;
 
@@ -332,10 +337,19 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
     }
   authority_priv = authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
 
+  /*
+   * Now we can start to prepare the authoritative arbfp state...
+   */
+
+  if (!authority_priv->unit_state)
+    authority_priv->unit_state = g_new0 (UnitState, n_layers);
+
   authority_priv->user_program = user_program;
 
   if (user_program == COGL_INVALID_HANDLE && authority_priv->gl_program == 0)
     {
+      int i;
+
       /* We reuse a single grow-only GString for ARBfp code-gen */
       g_string_set_size (ctx->arbfp_source_buffer, 0);
       authority_priv->source = ctx->arbfp_source_buffer;
@@ -347,7 +361,11 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
                        "PARAM one = {1, 1, 1, 1};\n"
                        "PARAM two = {2, 2, 2, 2};\n"
                        "PARAM minus_one = {-1, -1, -1, -1};\n");
-      authority_priv->sampled = g_new0 (gboolean, n_layers);
+
+      for (i = 0; i < n_layers; i++)
+        {
+          authority_priv->unit_state[i].sampled = FALSE;
+        }
     }
 
   return TRUE;
@@ -462,7 +480,7 @@ setup_texture_source (CoglMaterialBackendARBfpPrivate *priv,
                       int unit_index,
                       GLenum gl_target)
 {
-  if (!priv->sampled[unit_index])
+  if (!priv->unit_state[unit_index].sampled)
     {
       g_string_append_printf (priv->source,
                               "TEMP texel%d;\n"
@@ -473,7 +491,7 @@ setup_texture_source (CoglMaterialBackendARBfpPrivate *priv,
                               unit_index,
                               unit_index,
                               gl_target_to_arbfp_string (gl_target));
-      priv->sampled[unit_index] = TRUE;
+      priv->unit_state[unit_index].sampled = TRUE;
     }
 }
 
@@ -981,9 +999,6 @@ _cogl_material_backend_arbfp_end (CoglMaterial *material,
         }
 
       priv->source = NULL;
-
-      g_free (priv->sampled);
-      priv->sampled = NULL;
     }
 
   if (priv->user_program != COGL_INVALID_HANDLE)
@@ -1027,6 +1042,9 @@ _cogl_material_backend_arbfp_material_pre_change_notify (
       GE (glDeletePrograms (1, &priv->gl_program));
       priv->gl_program = 0;
     }
+
+  g_free (priv->unit_state);
+  priv->unit_state = NULL;
 }
 
 static gboolean
@@ -1073,8 +1091,8 @@ _cogl_material_backend_arbfp_free_priv (CoglMaterial *material)
         material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
 
       glDeletePrograms (1, &priv->gl_program);
-      if (priv->sampled)
-        g_free (priv->sampled);
+      g_free (priv->unit_state);
+      priv->unit_state = NULL;
       g_slice_free (CoglMaterialBackendARBfpPrivate, priv);
       material->backend_priv_set_mask &= ~COGL_MATERIAL_BACKEND_ARBFP_MASK;
     }
