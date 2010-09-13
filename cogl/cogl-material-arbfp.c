@@ -1200,6 +1200,13 @@ _cogl_material_backend_arbfp_layer_pre_change_notify (
                                                 CoglMaterialLayer *layer,
                                                 CoglMaterialLayerState change)
 {
+  CoglMaterialBackendARBfpPrivate *priv = get_arbfp_authority_priv (owner);
+
+  if (!priv)
+    return;
+
+  dirty_fragment_state (owner, priv);
+
   /* TODO: we could be saving snippets of texture combine code along
    * with each layer and then when a layer changes we would just free
    * the snippet. */

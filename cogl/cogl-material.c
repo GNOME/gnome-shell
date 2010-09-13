@@ -1131,7 +1131,27 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
     {
       const CoglMaterialBackend *backend =
         _cogl_material_backends[material->backend];
-      backend->material_pre_change_notify (material, change, new_color);
+
+      /* To simplify things for the backends we are careful about how
+       * we report STATE_LAYERS changes.
+       *
+       * All STATE_LAYERS changes with the exception of ->n_layers
+       * will also result in layer_pre_change_notifications. For
+       * backends that perform code generation for fragment processing
+       * they typically need to understand the details of how layers
+       * get changed to determine if they need to repeat codegen. It
+       * doesn't help them to report a material STATE_LAYERS change
+       * for all layer changes since it's so broad, they really need
+       * to wait for the layer change to be notified.  What does help
+       * though is to report a STATE_LAYERS change for a change in
+       * ->n_layers because they typically do need to repeat codegen
+       *  in that case.
+       *
+       * This just ensures backends only get a single material or
+       * layer pre-change notification for any particular change.
+       */
+      if (!from_layer_change)
+        backend->material_pre_change_notify (material, change, new_color);
     }
 
   /* There may be an arbitrary tree of descendants of this material;
