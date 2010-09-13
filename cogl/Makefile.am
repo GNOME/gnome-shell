@@ -295,7 +295,7 @@ Cogl_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = --warn-all --c-include='cogl/co
 INTROSPECTION_GIRS += Cogl-@CLUTTER_API_VERSION@.gir
 
 girdir = $(datadir)/gir-1.0
-dist_gir_DATA = $(INTROSPECTION_GIRS)
+gir_DATA = $(INTROSPECTION_GIRS)
 
 CLEANFILES += $(INTROSPECTION_GIRS)
 endif
