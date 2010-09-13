@@ -317,7 +317,7 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
 typedef enum {
   COGL_INDICES_TYPE_UNSIGNED_BYTE,
   COGL_INDICES_TYPE_UNSIGNED_SHORT,
-  COGL_INDICES_TYPE_UNSIGNED_INT,
+  COGL_INDICES_TYPE_UNSIGNED_INT
 } CoglIndicesType;
 
 /**
