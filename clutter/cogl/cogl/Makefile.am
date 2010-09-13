@@ -32,6 +32,7 @@ CLEANFILES += $(pc_files)
 INCLUDES = \
 	-I$(top_srcdir)				\
 	-I$(top_srcdir)/clutter/cogl		\
+	-I$(srcdir)/tesselator			\
 	-I$(srcdir)/winsys 			\
 	-I$(srcdir)/driver/$(COGL_DRIVER) 	\
 	-I$(top_builddir)/clutter/cogl          \
