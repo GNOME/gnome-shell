@@ -76,6 +76,10 @@
 
 typedef struct _UnitState
 {
+  int layer_index; /* only valid when the combine constant is dirty */
+  int constant_id; /* The program.local[] index */
+  unsigned int dirty_combine_constant:1;
+
   unsigned int sampled:1;
 } UnitState;
 
@@ -134,7 +138,6 @@ layers_arbfp_would_differ (CoglMaterialLayer **material0_layers,
   /* The layer state that affects arbfp codegen... */
   unsigned long arbfp_codegen_modifiers =
     COGL_MATERIAL_LAYER_STATE_COMBINE |
-    COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT |
     COGL_MATERIAL_LAYER_STATE_UNIT;
 
   for (i = 0; i < n_layers; i++)
@@ -420,8 +423,11 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
 
       for (i = 0; i < n_layers; i++)
         {
+          authority_priv->unit_state[i].layer_index = -1;
           authority_priv->unit_state[i].sampled = FALSE;
+          authority_priv->unit_state[i].dirty_combine_constant = FALSE;
         }
+      authority_priv->next_constant_id = 0;
     }
 
   return TRUE;
@@ -589,7 +595,7 @@ append_arg (GString *source, const CoglMaterialBackendARBfpArg *arg)
                               arg->texture_unit, arg->swizzle);
       break;
     case COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_CONSTANT:
-      g_string_append_printf (source, "constant%d%s",
+      g_string_append_printf (source, "program.local[%d]%s",
                               arg->constant_id, arg->swizzle);
       break;
     case COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE:
@@ -630,29 +636,16 @@ setup_arg (CoglMaterial *material,
       break;
     case GL_CONSTANT:
       {
-        unsigned long state = COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT;
-        CoglMaterialLayer *authority =
-          _cogl_material_layer_get_authority (layer, state);
-        CoglMaterialLayerBigState *big_state = authority->big_state;
-        char buf[4][G_ASCII_DTOSTR_BUF_SIZE];
-        int i;
+        int unit_index = _cogl_material_layer_get_unit_index (layer);
+        UnitState *unit_state = &priv->unit_state[unit_index];
+
+        unit_state->layer_index = layer->index;
+        unit_state->constant_id = priv->next_constant_id++;
+        unit_state->dirty_combine_constant = TRUE;
 
         arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_CONSTANT;
-        arg->name = "constant%d";
-        arg->constant_id = priv->next_constant_id++;
-
-        for (i = 0; i < 4; i++)
-          g_ascii_dtostr (buf[i], G_ASCII_DTOSTR_BUF_SIZE,
-                          big_state->texture_combine_constant[i]);
-
-        g_string_append_printf (priv->source,
-                                "PARAM constant%d = "
-                                "  {%s, %s, %s, %s};\n",
-                                arg->constant_id,
-                                buf[0],
-                                buf[1],
-                                buf[2],
-                                buf[3]);
+        arg->name = "program.local[%d]";
+        arg->constant_id = unit_state->constant_id;
         break;
       }
     case GL_PRIMARY_COLOR:
@@ -1072,6 +1065,28 @@ _cogl_material_backend_arbfp_end (CoglMaterial *material,
   GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, gl_program));
   _cogl_use_program (COGL_INVALID_HANDLE, COGL_MATERIAL_PROGRAM_TYPE_ARBFP);
 
+  if (priv->user_program == COGL_INVALID_HANDLE)
+    {
+      int n_layers = cogl_material_get_n_layers (material);
+      int i;
+      for (i = 0; i < n_layers; i++)
+        {
+          UnitState *unit_state = &priv->unit_state[i];
+          if (unit_state->dirty_combine_constant)
+            {
+              float constant[4];
+              int layer_index = unit_state->layer_index;
+              _cogl_material_get_layer_combine_constant (material,
+                                                         layer_index,
+                                                         constant);
+              GE (glProgramLocalParameter4fv (GL_FRAGMENT_PROGRAM_ARB,
+                                              unit_state->constant_id,
+                                              constant));
+              unit_state->dirty_combine_constant = FALSE;
+            }
+        }
+    }
+
   return TRUE;
 }
 
@@ -1201,6 +1216,7 @@ _cogl_material_backend_arbfp_layer_pre_change_notify (
 {
   CoglMaterialBackendARBfpPrivate *priv = get_arbfp_authority_priv (owner);
   static const unsigned long not_fragment_op_changes =
+    COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT |
     COGL_MATERIAL_LAYER_STATE_TEXTURE;
 
   priv = get_arbfp_authority_priv (owner);
@@ -1211,6 +1227,12 @@ _cogl_material_backend_arbfp_layer_pre_change_notify (
     {
       dirty_fragment_state (owner, priv);
       return;
+    }
+
+  if (change & COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT)
+    {
+      int unit_index = _cogl_material_layer_get_unit_index (layer);
+      priv->unit_state[unit_index].dirty_combine_constant = TRUE;
     }
 
   /* TODO: we could be saving snippets of texture combine code along
