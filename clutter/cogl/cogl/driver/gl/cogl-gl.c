@@ -153,7 +153,7 @@ _cogl_check_driver_valid (GError **error)
 #define COGL_FEATURE_END()                      \
   { NULL, 0 },                                  \
   };
-#include "cogl-feature-functions.h"
+#include "cogl-feature-functions-gl.h"
 
 /* Define an array of features */
 #undef COGL_FEATURE_BEGIN
@@ -170,7 +170,7 @@ _cogl_check_driver_valid (GError **error)
 
 static const CoglFeatureData cogl_feature_data[] =
   {
-#include "cogl-feature-functions.h"
+#include "cogl-feature-functions-gl.h"
   };
 
 void

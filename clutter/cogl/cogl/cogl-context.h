@@ -25,7 +25,15 @@
 #define __COGL_CONTEXT_H
 
 #include "cogl-internal.h"
-#include "cogl-context-driver.h"
+
+#if HAVE_COGL_GL
+#include "cogl-context-driver-gl.h"
+#endif
+
+#if HAVE_COGL_GLES || HAVE_COGL_GLES2
+#include "cogl-context-driver-gles.h"
+#endif
+
 #include "cogl-context-winsys.h"
 #include "cogl-primitives.h"
 #include "cogl-clip-stack.h"

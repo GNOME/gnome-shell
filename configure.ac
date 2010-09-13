@@ -413,6 +413,7 @@ AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL, [test "x$SUPPORT_EGL_PLATFORM_
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_GDL, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_GDL" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_FRUITY, [test "x$CLUTTER_WINSYS" = "xfruity"])
 AM_CONDITIONAL(SUPPORT_OSX, [test "x$CLUTTER_WINSYS" = "xosx"])
+AM_CONDITIONAL(SUPPORT_FRUITY, [test "x$CLUTTER_WINSYS" = "xfruity"])
 AM_CONDITIONAL(SUPPORT_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
 AM_CONDITIONAL(SUPPORT_CEX100, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_GDL" = "x1"])
 
@@ -581,6 +582,8 @@ for x in $cogl_gl_headers; do
 done;
 AC_SUBST(COGL_GL_HEADER_INCLUDES)
 
+AM_CONDITIONAL([COGL_DRIVER_GLES], [test "x$COGL_DRIVER" = "xgles"])
+AM_CONDITIONAL([COGL_DRIVER_GL],   [test "x$COGL_DRIVER" = "xgl"])
 
 dnl === Clutter substitutions =================================================
 # Eventually the idea of a winsys should be hidden from Clutter and moved
@@ -1106,58 +1109,53 @@ AS_ALL_LINGUAS
 dnl ===========================================================================
 
 AC_CONFIG_FILES([
-        Makefile
-        build/Makefile
-        build/autotools/Makefile
-        build/mingw/Makefile
-        clutter/Makefile
-        clutter/clutter-version.h
-        clutter/clutter-json.h
-        clutter/x11/Makefile
-        clutter/x11/clutter-x11.pc
-        clutter/glx/Makefile
-        clutter/egl/Makefile
-        clutter/egl/clutter-cex100.h
-        clutter/fruity/Makefile
-        clutter/osx/Makefile
-        clutter/win32/Makefile
-        clutter/win32/clutter-win32.pc
-        clutter/cally/Makefile
-        clutter/cally/cally.pc
-        clutter/cogl/Makefile
-        clutter/cogl/cogl/Makefile
-        clutter/cogl/cogl/cogl-defines.h
-        clutter/cogl/cogl/cogl.pc
-        clutter/cogl/cogl/driver/Makefile
-        clutter/cogl/cogl/driver/gl/Makefile
-        clutter/cogl/cogl/driver/gles/Makefile
-        clutter/cogl/pango/Makefile
-        clutter/json/Makefile
-        tests/Makefile
-        tests/accessibility/Makefile
-        tests/conform/Makefile
-        tests/conform/test-launcher.sh
-        tests/data/Makefile
-        tests/interactive/Makefile
-        tests/interactive/wrapper.sh
-        tests/micro-bench/Makefile
-        tests/tools/Makefile
-        doc/Makefile
-        doc/reference/Makefile
-        doc/reference/clutter/Makefile
-        doc/reference/clutter/clutter-docs.xml
-        doc/reference/cogl/Makefile
-        doc/reference/cogl/cogl-docs.xml
-        doc/reference/cally/Makefile
-        doc/reference/cally/cally-docs.xml
-        doc/common/Makefile
-        doc/manual/Makefile
-        doc/manual/clutter-manual.xml
-        doc/cookbook/Makefile
-        doc/cookbook/clutter-cookbook.xml
-        doc/cookbook/examples/Makefile
-        po/Makefile.in
-        clutter.pc
+	Makefile
+
+	build/Makefile
+	build/autotools/Makefile
+	build/mingw/Makefile
+
+	clutter/Makefile
+	clutter/clutter-version.h
+	clutter/clutter-json.h
+	clutter/clutter-$CLUTTER_API_VERSION.pc:clutter/clutter.pc.in
+
+	clutter/cally/cally-$CLUTTER_API_VERSION.pc:clutter/cally/cally.pc.in
+
+	clutter/cogl/Makefile
+	clutter/cogl/cogl/Makefile
+	clutter/cogl/cogl/cogl-defines.h
+	clutter/cogl/cogl/cogl-$CLUTTER_API_VERSION.pc:clutter/cogl/cogl/cogl.pc.in
+	clutter/cogl/pango/Makefile
+
+	clutter/egl/clutter-cex100.h
+
+	tests/Makefile
+	tests/accessibility/Makefile
+	tests/conform/Makefile
+	tests/conform/test-launcher.sh
+	tests/data/Makefile
+	tests/interactive/Makefile
+	tests/interactive/wrapper.sh
+	tests/micro-bench/Makefile
+	tests/tools/Makefile
+
+	doc/Makefile
+	doc/reference/Makefile
+	doc/reference/clutter/Makefile
+	doc/reference/clutter/clutter-docs.xml
+	doc/reference/cogl/Makefile
+	doc/reference/cogl/cogl-docs.xml
+	doc/reference/cally/Makefile
+	doc/reference/cally/cally-docs.xml
+	doc/common/Makefile
+	doc/manual/Makefile
+	doc/manual/clutter-manual.xml
+	doc/cookbook/Makefile
+	doc/cookbook/clutter-cookbook.xml
+	doc/cookbook/examples/Makefile
+
+	po/Makefile.in
 ])
 
 AC_OUTPUT

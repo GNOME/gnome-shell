@@ -55,11 +55,12 @@
 #include "cogl/cogl.h"
 #include "cogl/cogl-internal.h"
 
-#include "../clutter-debug.h"
-#include "../clutter-device-manager.h"
-#include "../clutter-event.h"
-#include "../clutter-main.h"
-#include "../clutter-private.h"
+#include "clutter-backend.h"
+#include "clutter-debug.h"
+#include "clutter-device-manager.h"
+#include "clutter-event.h"
+#include "clutter-main.h"
+#include "clutter-private.h"
 
 G_DEFINE_TYPE (ClutterBackendX11, clutter_backend_x11, CLUTTER_TYPE_BACKEND);
 
@@ -285,10 +286,13 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
 
   if (backend_x11->xdpy)
     {
+      ClutterSettings *settings;
       Atom atoms[n_atom_names];
       double dpi;
 
       CLUTTER_NOTE (BACKEND, "Getting the X screen");
+
+      settings = clutter_settings_get_default ();
 
       /* Cogl needs to know the Xlib display connection for
          CoglTexturePixmapX11 */
@@ -310,7 +314,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
       dpi = (((double) DisplayHeight (backend_x11->xdpy, backend_x11->xscreen_num) * 25.4)
             / (double) DisplayHeightMM (backend_x11->xdpy, backend_x11->xscreen_num));
 
-      clutter_backend_set_resolution (backend, dpi);
+      g_object_set (settings, "font-dpi", (int) dpi * 1024, NULL);
 
       /* register input devices */
       backend_x11->device_manager =

@@ -44,8 +44,13 @@
 #include "cogl-journal-private.h"
 #include "cogl-color-private.h"
 #include "cogl-profile.h"
-#ifndef HAVE_COGL_GLES
-#include "cogl-program.h"
+
+#ifdef HAVE_COGL_GL
+#include "cogl-program-gl.h"
+#endif
+
+#ifdef HAVE_COGL_GLES2
+#include "cogl-program-gles.h"
 #endif
 
 #include <glib.h>

@@ -115,6 +115,5 @@ cd $ORIGDIR || exit $?
 
 if test -z "$NOCONFIGURE"; then
         $srcdir/configure $AUTOGEN_CONFIGURE_ARGS "$@" || exit $?
-
         echo "Now type 'make' to compile $PROJECT."
 fi
