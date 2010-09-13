@@ -1073,10 +1073,19 @@ _cogl_material_backend_arbfp_material_set_parent_notify (
                                      NULL);
 }
 
+/* NB: layers are considered immutable once they have any dependants
+ * so although multiple materials can end up depending on a single
+ * static layer, we can guarantee that if a layer is being *changed*
+ * then it can only have one material depending on it.
+ *
+ * XXX: Don't forget this is *pre* change, we can't read the new value
+ * yet!
+ */
 static void
 _cogl_material_backend_arbfp_layer_pre_change_notify (
+                                                CoglMaterial *owner,
                                                 CoglMaterialLayer *layer,
-                                                CoglMaterialLayerState changes)
+                                                CoglMaterialLayerState change)
 {
   /* TODO: we could be saving snippets of texture combine code along
    * with each layer and then when a layer changes we would just free

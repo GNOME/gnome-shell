@@ -557,7 +557,8 @@ typedef struct _CoglMaterialBackend
                                       CoglMaterialState change,
                                       const CoglColor *new_color);
   void (*material_set_parent_notify) (CoglMaterial *material);
-  void (*layer_pre_change_notify) (CoglMaterialLayer *layer,
+  void (*layer_pre_change_notify) (CoglMaterial *owner,
+                                   CoglMaterialLayer *layer,
                                    CoglMaterialLayerState change);
 
   void (*free_priv) (CoglMaterial *material);
