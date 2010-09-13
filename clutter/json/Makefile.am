@@ -37,33 +37,3 @@ libclutter_json_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
 
 noinst_DATA =
 CLEANFILES =
-
--include $(INTROSPECTION_MAKEFILE)
-
-INTROSPECTION_GIRS =
-
-if HAVE_INTROSPECTION
-
-BUILT_GIRSOURCES =
-
-ClutterJson-@CLUTTER_API_VERSION@.gir: libclutter-json.la Makefile
-
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = ClutterJson
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-json.la
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_FILES = $(clutterjson_HEADERS) $(source_c)
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS)
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GObject-2.0
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
-	--warn-all \
-	--identifier-prefix=Json \
-	--symbol-prefix=json
-
-INTROSPECTION_GIRS += ClutterJson-@CLUTTER_API_VERSION@.gir
-
-girdir = $(datadir)/gir-1.0
-gir_DATA = $(INTROSPECTION_GIRS)
-
-CLEANFILES += $(INTROSPECTION_GIRS)
-
-endif

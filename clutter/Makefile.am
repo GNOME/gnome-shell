@@ -325,16 +325,25 @@ BUILT_GIRSOURCES =
 INTROSPECTION_GIRS =
 
 if LOCAL_JSON_GLIB
-json_gir_include=--include-uninstalled=$(top_builddir)/clutter/json/ClutterJson-@CLUTTER_API_VERSION@.gir
+json_gir_include=--include-uninstalled=$(top_builddir)/clutter/ClutterJson-@CLUTTER_API_VERSION@.gir
 
-# If we are building it, ClutterJson gets the same handling as described
-# for Cogl above
-ClutterJson-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir json/ClutterJson-@CLUTTER_API_VERSION@.gir
-	$(QUIET_GEN) \
-	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
-	sed "s/shared-library=\"[^\"]*\"/shared-library=\"$$shlib\"/"< json/ClutterJson-@CLUTTER_API_VERSION@.gir > $@
+ClutterJson-@CLUTTER_API_VERSION@.gir: libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la Makefile
 
-BUILT_GIRSOURCES += ClutterJson-@CLUTTER_API_VERSION@.gir
+clutterjson_sources = $(top_srcdir)/clutter/json/*.h $(top_srcdir)/clutter/json/*.c
+clutterjson_introspection_files=$(filter-out %-private.h, $(clutterjson_sources))
+
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = ClutterJson
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_FILES = $(clutterjson_introspection_files)
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS) -DJSON_COMPILATION
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GObject-2.0
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+	--warn-all \
+	--identifier-prefix=Json \
+	--symbol-prefix=json
+
+INTROSPECTION_GIRS += ClutterJson-@CLUTTER_API_VERSION@.gir
 else
 json_gir_include=--include=Json-1.0
 endif # LOCAL_JSON_GLIB
@@ -359,8 +368,8 @@ Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	$(json_gir_include) \
 	--include-uninstalled=$(top_builddir)/clutter/cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir
 
-# ClutterJson.gir and Cogl.gir are used included into Clutter.gir, so need
-# to be built before the typelib is generated
+# ClutterJson.gir and Cogl.gir are used included into Clutter.gir, so they
+# need to be built before the typelib is generated
 Clutter-@CLUTTER_API_VERSION@.typelib: $(clutter_json_gir) Cogl-@CLUTTER_API_VERSION@.gir
 
 # We build Cogl.gir in the cogl/ subdir, but it needs to reference the shared
@@ -377,7 +386,7 @@ BUILT_GIRSOURCES += Cogl-@CLUTTER_API_VERSION@.gir
 
 # Cally depends on Clutter because it exposes Clutter types; for this reason,
 # we cannot build Cally.gir under cally/ and then do the shlib trick we do
-# for Cogl and ClutterJson.
+# for Cogl
 cally_sources=$(top_srcdir)/clutter/cally/*.h $(top_srcdir)/clutter/cally/*.c
 cally_introspection_files=$(filter-out %-private.h, $(cally_sources))
 
@@ -392,6 +401,7 @@ Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='cally/cally.h' \
 	--add-include-path $(top_builddir)/clutter \
+	$(json_gir_include) \
 	--include-uninstalled $(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 
 INTROSPECTION_GIRS += Cally-@CLUTTER_API_VERSION@.gir
@@ -423,8 +433,9 @@ ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--identifier-prefix=ClutterX11 \
 	--symbol-prefix=clutter_x11 \
+	$(json_gir_include) \
 	--include-uninstalled=$(top_builddir)/clutter/cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir \
-	--include-uninstalled $(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
+	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = xlib-2.0
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_FILES = $(x11_sources)
