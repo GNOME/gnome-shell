@@ -21,33 +21,19 @@
  *
  */
 
-#ifndef __COGL_CONTEXT_DRIVER_H
-#define __COGL_CONTEXT_DRIVER_H
-
-#include "cogl.h"
-
-#ifndef APIENTRY
-#define APIENTRY
+#ifdef HAVE_CONFIG_H
+#include "config.h"
 #endif
 
+#include "cogl-context.h"
+
 #define COGL_FEATURE_BEGIN(a, b, c, d, e, f, g)
-
 #define COGL_FEATURE_FUNCTION(ret, name, args) \
-  ret (APIENTRY * pf_ ## name) args;
-
+  _context->drv.pf_ ## name = NULL;
 #define COGL_FEATURE_END()
 
-typedef struct _CoglContextDriver
+void
+_cogl_create_context_driver (CoglContext *_context)
 {
-  /* This defines a list of function pointers */
-#include "cogl-feature-functions.h"
-
-  GLint gl_max_program_temoraries_arb;
-} CoglContextDriver;
-
-#undef COGL_FEATURE_BEGIN
-#undef COGL_FEATURE_FUNCTION
-#undef COGL_FEATURE_END
-
-#endif /* __COGL_CONTEXT_DRIVER_H */
-
+  #include "cogl-feature-functions-gl.h"
+}

@@ -26,7 +26,7 @@
 
 #include "cogl.h" /* needed for gl header include */
 #include "cogl-internal.h"
-#include "cogl-program.h"
+#include "cogl-program-gles.h"
 
 G_BEGIN_DECLS
 
