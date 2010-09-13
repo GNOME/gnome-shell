@@ -135,8 +135,7 @@ layers_arbfp_would_differ (CoglMaterialLayer **material0_layers,
   unsigned long arbfp_codegen_modifiers =
     COGL_MATERIAL_LAYER_STATE_COMBINE |
     COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT |
-    COGL_MATERIAL_LAYER_STATE_UNIT |
-    COGL_MATERIAL_LAYER_STATE_TEXTURE;
+    COGL_MATERIAL_LAYER_STATE_UNIT;
 
   for (i = 0; i < n_layers; i++)
     {
@@ -1201,11 +1200,18 @@ _cogl_material_backend_arbfp_layer_pre_change_notify (
                                                 CoglMaterialLayerState change)
 {
   CoglMaterialBackendARBfpPrivate *priv = get_arbfp_authority_priv (owner);
+  static const unsigned long not_fragment_op_changes =
+    COGL_MATERIAL_LAYER_STATE_TEXTURE;
 
+  priv = get_arbfp_authority_priv (owner);
   if (!priv)
     return;
 
-  dirty_fragment_state (owner, priv);
+  if (!(change & not_fragment_op_changes))
+    {
+      dirty_fragment_state (owner, priv);
+      return;
+    }
 
   /* TODO: we could be saving snippets of texture combine code along
    * with each layer and then when a layer changes we would just free
