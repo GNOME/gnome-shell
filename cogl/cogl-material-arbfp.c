@@ -371,8 +371,12 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
   return TRUE;
 }
 
+/* The "no_check" refers to the fact that this doesn't check that the
+ * cache is still valid by looking at the age of the referenced
+ * material. This should only be used where we *know* the cache has
+ * already been checked. */
 static CoglMaterial *
-get_arbfp_authority (CoglMaterial *material)
+get_arbfp_authority_no_check (CoglMaterial *material)
 {
   CoglMaterialBackendARBfpPrivate *priv =
     material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
@@ -551,7 +555,7 @@ setup_arg (CoglMaterial *material,
            GLint op,
            CoglMaterialBackendARBfpArg *arg)
 {
-  CoglMaterial *arbfp_authority = get_arbfp_authority (material);
+  CoglMaterial *arbfp_authority = get_arbfp_authority_no_check (material);
   CoglMaterialBackendARBfpPrivate *priv =
     arbfp_authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
   static const char *tmp_name[3] = { "tmp0", "tmp1", "tmp2" };
@@ -692,7 +696,7 @@ append_function (CoglMaterial *material,
                  CoglMaterialBackendARBfpArg *args,
                  int n_args)
 {
-  CoglMaterial *arbfp_authority = get_arbfp_authority (material);
+  CoglMaterial *arbfp_authority = get_arbfp_authority_no_check (material);
   CoglMaterialBackendARBfpPrivate *priv =
     arbfp_authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
   const char *mask_name;
@@ -859,7 +863,7 @@ _cogl_material_backend_arbfp_add_layer (CoglMaterial *material,
                                         CoglMaterialLayer *layer,
                                         unsigned long layers_difference)
 {
-  CoglMaterial *arbfp_authority = get_arbfp_authority (material);
+  CoglMaterial *arbfp_authority = get_arbfp_authority_no_check (material);
   CoglMaterialBackendARBfpPrivate *priv =
     arbfp_authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
   CoglMaterialLayer *combine_authority =
@@ -942,7 +946,7 @@ _cogl_material_backend_arbfp_add_layer (CoglMaterial *material,
 gboolean
 _cogl_material_backend_arbfp_passthrough (CoglMaterial *material)
 {
-  CoglMaterial *arbfp_authority = get_arbfp_authority (material);
+  CoglMaterial *arbfp_authority = get_arbfp_authority_no_check (material);
   CoglMaterialBackendARBfpPrivate *priv =
     arbfp_authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
 
@@ -957,7 +961,7 @@ static gboolean
 _cogl_material_backend_arbfp_end (CoglMaterial *material,
                                   unsigned long materials_difference)
 {
-  CoglMaterial *arbfp_authority = get_arbfp_authority (material);
+  CoglMaterial *arbfp_authority = get_arbfp_authority_no_check (material);
   CoglMaterialBackendARBfpPrivate *priv =
     arbfp_authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
   GLuint gl_program;
