@@ -55,9 +55,6 @@ struct _StThemeNodeTransitionPrivate {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-/* template material to avoid unnecessary shader compilation */
-static CoglHandle global_material = COGL_INVALID_HANDLE;
-
 G_DEFINE_TYPE (StThemeNodeTransition, st_theme_node_transition, G_TYPE_OBJECT);
 
 
@@ -215,6 +212,9 @@ setup_framebuffers (StThemeNodeTransition *transition,
   CoglColor clear_color = { 0, 0, 0, 0 };
   guint width, height;
 
+  /* template material to avoid unnecessary shader compilation */
+  static CoglHandle material_template = COGL_INVALID_HANDLE;
+
   width  = priv->offscreen_box.x2 - priv->offscreen_box.x1;
   height = priv->offscreen_box.y2 - priv->offscreen_box.y1;
 
@@ -249,24 +249,24 @@ setup_framebuffers (StThemeNodeTransition *transition,
 
   if (priv->material == NULL)
     {
-      if (G_UNLIKELY (global_material == COGL_INVALID_HANDLE))
+      if (G_UNLIKELY (material_template == COGL_INVALID_HANDLE))
         {
-          global_material = cogl_material_new ();
+          material_template = cogl_material_new ();
 
-          cogl_material_set_layer_combine (global_material, 0,
+          cogl_material_set_layer_combine (material_template, 0,
                                            "RGBA = REPLACE (TEXTURE)",
                                            NULL);
-          cogl_material_set_layer_combine (global_material, 1,
+          cogl_material_set_layer_combine (material_template, 1,
                                            "RGBA = INTERPOLATE (PREVIOUS, "
                                                                "TEXTURE, "
                                                                "CONSTANT[A])",
                                            NULL);
-          cogl_material_set_layer_combine (global_material, 2,
+          cogl_material_set_layer_combine (material_template, 2,
                                            "RGBA = MODULATE (PREVIOUS, "
                                                             "PRIMARY)",
                                            NULL);
         }
-      priv->material = cogl_material_copy (global_material);
+      priv->material = cogl_material_copy (material_template);
     }
 
   cogl_material_set_layer (priv->material, 0, priv->new_texture);
