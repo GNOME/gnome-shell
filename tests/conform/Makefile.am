@@ -85,12 +85,13 @@ test_conformance_SOURCES = $(common_sources) $(units_sources)
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers clean-wrappers
 
-UNIT_TESTS = `./test-conformance -l -m thorough | $(GREP) '^/'`
+#UNIT_TESTS = `./test-conformance -l -m thorough | $(GREP) '^/'`
 
 wrappers: stamp-test-conformance
 	@true
 stamp-test-conformance: Makefile test-conformance$(EXEEXT)
 	@mkdir -p wrappers
+	@( ./test-conformance$(EXEEXT) -l -m thorough | $(GREP) '^/' ) > unit-tests
 	@chmod +x test-launcher.sh
 	@( echo "/stamp-test-conformance" ; \
 	   echo "/test-conformance" ; \
@@ -98,8 +99,9 @@ stamp-test-conformance: Makefile test-conformance$(EXEEXT)
 	   echo "*.o" ; \
 	   echo "*.xml" ; \
 	   echo ".gitignore" ; \
+	   echo "unit-tests" ; \
 	   echo "/wrappers/" ) > .gitignore
-	@for i in $(UNIT_TESTS); \
+	@for i in `cat unit-tests`; \
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "  GEN    $$unit"; \
@@ -112,13 +114,14 @@ stamp-test-conformance: Makefile test-conformance$(EXEEXT)
 	&& echo timestamp > $(@F)
 
 clean-wrappers:
-	@for i in $(UNIT_TESTS); \
+	@for i in `cat unit-tests`; \
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "  RM     $$unit"; \
 		rm -f $$unit$(EXEEXT) ; \
 		rm -f wrappers/$$unit$(EXEEXT) ; \
 	done \
+	&& rm -f unit-tests \
 	&& rm -f stamp-test-conformance
 
 # NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
