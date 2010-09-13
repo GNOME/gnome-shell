@@ -1418,7 +1418,8 @@ _cogl_material_prune_to_n_layers (CoglMaterial *material, int n)
 }
 
 static void
-_cogl_material_backend_layer_change_notify (CoglMaterialLayer *layer,
+_cogl_material_backend_layer_change_notify (CoglMaterial *owner,
+                                            CoglMaterialLayer *layer,
                                             CoglMaterialLayerState change)
 {
   int i;
@@ -1433,7 +1434,7 @@ _cogl_material_backend_layer_change_notify (CoglMaterialLayer *layer,
           _cogl_material_backends[i]->layer_pre_change_notify)
         {
           const CoglMaterialBackend *backend = _cogl_material_backends[i];
-          backend->layer_pre_change_notify (layer, change);
+          backend->layer_pre_change_notify (owner, layer, change);
         }
     }
 }
@@ -1594,7 +1595,7 @@ _cogl_material_layer_pre_change_notify (CoglMaterial *required_owner,
    * this layer (required_owner), and there are no other layers
    * dependant on this layer so it's ok to modify it. */
 
-  _cogl_material_backend_layer_change_notify (layer, change);
+  _cogl_material_backend_layer_change_notify (required_owner, layer, change);
 
   /* If the layer being changed is the same as the last layer we
    * flushed to the corresponding texture unit then we keep a track of
