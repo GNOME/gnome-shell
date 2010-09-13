@@ -81,9 +81,22 @@ typedef struct _UnitState
 
 typedef struct _CoglMaterialBackendARBfpPrivate
 {
+  /* The private state is either used to link to another material
+   * called the "arbfp-authority" or it directly tracks the
+   * authoritative arbfp private state for a material. */
+
+  /* These are used for linking to another material as the arbfp
+   * authority. If authoritative state is provided by a priv instance
+   * then the authority_cache will simply point back to the same
+   * material.
+   *
+   * It will be NULL when the cache is invalid and
+   * find_arbfp_authority() will need to be called to search for the
+   * authority. */
   CoglMaterial *authority_cache;
   unsigned long authority_cache_age;
 
+  /* These are used to provide authoritative arbfp state */
   CoglHandle user_program;
   GString *source;
   GLuint gl_program;
@@ -243,7 +256,7 @@ find_arbfp_authority (CoglMaterial *material, CoglHandle user_program)
 }
 
 static void
-invalidate_arbfp_authority_cache (CoglMaterial *material)
+break_arbfp_authority_link (CoglMaterial *material)
 {
   if (material->backend_priv_set_mask  & COGL_MATERIAL_BACKEND_ARBFP_MASK)
     {
@@ -252,6 +265,23 @@ invalidate_arbfp_authority_cache (CoglMaterial *material)
       priv->authority_cache = NULL;
       priv->authority_cache_age = 0;
     }
+}
+
+static void
+free_authoritative_state (CoglMaterialBackendARBfpPrivate *priv)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  priv->user_program = COGL_INVALID_HANDLE;
+
+  if (priv->gl_program)
+    {
+      GE (glDeletePrograms (1, &priv->gl_program));
+      priv->gl_program = 0;
+    }
+
+  g_free (priv->unit_state);
+  priv->unit_state = NULL;
 }
 
 static gboolean
@@ -287,9 +317,8 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
    *
    * The arbfp-authority is the oldest ancestor whos state will result in
    * the same program being generated.
-   */
-
-  /* Note: we allocate ARBfp private state for both the given material
+   *
+   * Note: we allocate ARBfp private state for both the given material
    * and the arbfp-authority. The former will simply cache a pointer
    * to the authority and the later will track the arbfp program that
    * we will generate.
@@ -313,16 +342,38 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
   /* If the given material has changed since we last cached its
    * arbfp-authority then invalidate our cache and then search the
    * material's ancestors for one with matching fragment processing
-   * state. */
+   * state.
+   *
+   * Note: there are multiple ways a arbfp-authority link may be
+   * broken; 1. the authority's age changes (handled here), 2.
+   * a material that defers to an authority is reparented will
+   * immediatly break any authority link and 3. when a material
+   * is modified that defers to an authority it will immediatly
+   * break any authority link. See:
+   * _cogl_material_backend_arbfp_material_set_parent_notify and
+   * _cogl_material_backend_arbfp_material_pre_change_notify
+   */
 
   if (priv->authority_cache &&
-      priv->authority_cache_age != _cogl_material_get_age (material))
-    invalidate_arbfp_authority_cache (material);
+      priv->authority_cache_age !=
+      _cogl_material_get_age (priv->authority_cache))
+    break_arbfp_authority_link (material);
 
+  /* If the authority cache is invalid then we have to walkt through
+   * the materials ancestors to try and find a suitable
+   * arbfp-authority... */
   if (!priv->authority_cache)
     {
       priv->authority_cache = find_arbfp_authority (material, user_program);
-      priv->authority_cache_age = _cogl_material_get_age (material);
+      priv->authority_cache_age =
+        _cogl_material_get_age (priv->authority_cache);
+
+      /* A priv either links to an authority or provides authoritative
+       * state, but never both, so if the authority_cache doesn't
+       * point back to the current material we need to free any
+       * authoritative state... */
+      if (priv->authority_cache != material)
+        free_authoritative_state (priv);
     }
 
   /* Now we have our arbfp-authority fetch the ARBfp backend private
@@ -334,6 +385,12 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
       authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP] =
         g_slice_new0 (CoglMaterialBackendARBfpPrivate);
       authority->backend_priv_set_mask |= COGL_MATERIAL_BACKEND_ARBFP_MASK;
+
+      /* It's implied that an authority for the current material would
+       * also be its own authority... */
+      authority_priv = authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+      authority_priv->authority_cache = authority;
+      authority_priv->authority_cache_age = priv->authority_cache_age;
     }
   authority_priv = authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
 
@@ -1020,6 +1077,49 @@ _cogl_material_backend_arbfp_end (CoglMaterial *material,
 }
 
 static void
+dirty_fragment_state (CoglMaterial *material,
+                      CoglMaterialBackendARBfpPrivate *priv)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_return_if_fail (material->backend_priv_set_mask &
+                    COGL_MATERIAL_BACKEND_ARBFP_MASK);
+
+  priv = material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+
+  /* If we are currently deferring to another material as
+   * the arbfp authority then break our link with it, otherwise
+   * delete any authoritative state. */
+  if (priv->authority_cache != material)
+    break_arbfp_authority_link (material);
+  else
+    free_authoritative_state (priv);
+}
+
+static CoglMaterialBackendARBfpPrivate *
+get_arbfp_authority_priv (CoglMaterial *material)
+{
+  CoglMaterialBackendARBfpPrivate *priv;
+  CoglMaterial *authority;
+
+  if (!(material->backend_priv_set_mask & COGL_MATERIAL_BACKEND_ARBFP_MASK))
+    return NULL;
+
+  priv = material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+  authority = priv->authority_cache;
+  if (!authority)
+    return NULL;
+
+  if (_cogl_material_get_age (authority) != priv->authority_cache_age)
+    {
+      break_arbfp_authority_link (material);
+      return NULL;
+    }
+
+  return authority->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+}
+
+static void
 _cogl_material_backend_arbfp_material_pre_change_notify (
                                                    CoglMaterial *material,
                                                    CoglMaterialState change,
@@ -1033,30 +1133,22 @@ _cogl_material_backend_arbfp_material_pre_change_notify (
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (!(material->backend_priv_set_mask & COGL_MATERIAL_BACKEND_ARBFP_MASK) ||
-      !(change & fragment_op_changes))
+  if (!(change & fragment_op_changes))
     return;
 
-  priv = material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+  priv = get_arbfp_authority_priv (material);
+  if (!priv)
+    return;
 
-  priv->user_program = COGL_INVALID_HANDLE;
-
-  if (priv->gl_program)
-    {
-      GE (glDeletePrograms (1, &priv->gl_program));
-      priv->gl_program = 0;
-    }
-
-  g_free (priv->unit_state);
-  priv->unit_state = NULL;
+  dirty_fragment_state (material, priv);
 }
 
 static gboolean
-invalidate_arbfp_authority_cache_cb (CoglMaterialNode *node,
-                                     void *user_data)
+break_arbfp_authority_link_cb (CoglMaterialNode *node,
+                               void *user_data)
 {
   CoglMaterial *material = COGL_MATERIAL (node);
-  invalidate_arbfp_authority_cache (material);
+  break_arbfp_authority_link (material);
   return TRUE;
 }
 
@@ -1064,12 +1156,33 @@ static void
 _cogl_material_backend_arbfp_material_set_parent_notify (
                                                 CoglMaterial *material)
 {
-  /* Any arbfp authority cache associated with this material or
-   * any of its descendants will now be invalid. */
-  invalidate_arbfp_authority_cache (material);
-
+  /* There are two aspects to a material being reparented that we need
+   * to consider:
+   *
+   * 1) the material could be an arbfp authority so we need to make
+   * sure that other materials defering to it for its arbfp state
+   * should break their link.
+   *
+   * 2) the material could be defering to another material for its
+   * arbfp state but the authority is no longer an ancestor, so we
+   * also need to break the link. If the material that's be
+   * re-parented has children then they may all also be affected in
+   * the same way.
+   *
+   * 1 should be handle by the material-age mechanism. I.e. when
+   * we next come to reference the cache we will see that the
+   * authority material has changed so we will re-evaluate what
+   * other material we can defer to as the arbfp authority.
+   * XXX: Actually the age is of the material that owns the cache
+   * not of the material referenced in the cache! Double check how
+   * this case is handled!!
+   *
+   * 2 can be dealt with now by NULLing any authority cache associated
+   * with the material, and doing the same for any children.
+   */
+  break_arbfp_authority_link (material);
   _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
-                                     invalidate_arbfp_authority_cache_cb,
+                                     break_arbfp_authority_link_cb,
                                      NULL);
 }
 
@@ -1103,9 +1216,7 @@ _cogl_material_backend_arbfp_free_priv (CoglMaterial *material)
       CoglMaterialBackendARBfpPrivate *priv =
         material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
 
-      glDeletePrograms (1, &priv->gl_program);
-      g_free (priv->unit_state);
-      priv->unit_state = NULL;
+      free_authoritative_state (priv);
       g_slice_free (CoglMaterialBackendARBfpPrivate, priv);
       material->backend_priv_set_mask &= ~COGL_MATERIAL_BACKEND_ARBFP_MASK;
     }
