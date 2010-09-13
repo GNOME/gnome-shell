@@ -844,7 +844,7 @@ clutter_actor_set_z_rotation_from_gravity (actor,
 
       </section>
 
-      <section>
+      <section id="animations-rotating-discussion-direction">
         <title>Direction of rotation</title>
 
         <para>The apparent direction of an animated rotation depends on
