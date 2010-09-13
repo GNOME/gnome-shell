@@ -397,7 +397,7 @@ typedef enum {
 typedef enum
 {
   CLUTTER_FONT_MIPMAPPING = (1 << 0),
-  CLUTTER_FONT_HINTING    = (1 << 1),
+  CLUTTER_FONT_HINTING    = (1 << 1)
 } ClutterFontFlags;
 
 /**

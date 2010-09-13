@@ -59,7 +59,7 @@ typedef struct _ClutterAlignConstraint  ClutterAlignConstraint;
  */
 typedef enum { /*< prefix=CLUTTER_ALIGN >*/
   CLUTTER_ALIGN_X_AXIS,
-  CLUTTER_ALIGN_Y_AXIS,
+  CLUTTER_ALIGN_Y_AXIS
 } ClutterAlignAxis;
 
 GType clutter_align_constraint_get_type (void) G_GNUC_CONST;

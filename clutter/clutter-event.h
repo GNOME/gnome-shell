@@ -116,7 +116,7 @@ typedef enum {
  */
 typedef enum {
   CLUTTER_EVENT_NONE           = 0,
-  CLUTTER_EVENT_FLAG_SYNTHETIC = 1 << 0,
+  CLUTTER_EVENT_FLAG_SYNTHETIC = 1 << 0
 } ClutterEventFlags;
 
 /**
@@ -139,7 +139,7 @@ typedef enum {
  *
  * Since: 0.4
  */
-typedef enum 
+typedef enum
 {
   CLUTTER_NOTHING = 0,
   CLUTTER_KEY_PRESS,
