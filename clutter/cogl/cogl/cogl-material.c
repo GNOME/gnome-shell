@@ -1080,7 +1080,8 @@ reparent_children_cb (CoglMaterialNode *node,
 static void
 _cogl_material_pre_change_notify (CoglMaterial     *material,
                                   CoglMaterialState change,
-                                  const CoglColor  *new_color)
+                                  const CoglColor  *new_color,
+                                  gboolean          from_layer_change)
 {
   CoglMaterial *authority;
 
@@ -1246,7 +1247,8 @@ _cogl_material_add_layer_difference (CoglMaterial *material,
    */
   _cogl_material_pre_change_notify (material,
                                     COGL_MATERIAL_STATE_LAYERS,
-                                    NULL);
+                                    NULL,
+                                    FALSE);
 
   material->differences |= COGL_MATERIAL_STATE_LAYERS;
 
@@ -1275,7 +1277,8 @@ _cogl_material_remove_layer_difference (CoglMaterial *material,
    */
   _cogl_material_pre_change_notify (material,
                                     COGL_MATERIAL_STATE_LAYERS,
-                                    NULL);
+                                    NULL,
+                                    FALSE);
 
   layer->owner = NULL;
   cogl_object_unref (layer);
@@ -1330,7 +1333,8 @@ handle_automatic_blend_enable (CoglMaterial *material,
        */
       _cogl_material_pre_change_notify (material,
                                         COGL_MATERIAL_STATE_REAL_BLEND_ENABLE,
-                                        NULL);
+                                        NULL,
+                                        FALSE);
       material->real_blend_enable = blend_enable;
     }
 }
@@ -1402,7 +1406,8 @@ _cogl_material_prune_to_n_layers (CoglMaterial *material, int n)
                */
               _cogl_material_pre_change_notify (material,
                                                 COGL_MATERIAL_STATE_LAYERS,
-                                                NULL);
+                                                NULL,
+                                                FALSE);
               notified_change = TRUE;
             }
 
@@ -1566,7 +1571,8 @@ _cogl_material_layer_pre_change_notify (CoglMaterial *required_owner,
    */
   _cogl_material_pre_change_notify (required_owner,
                                     COGL_MATERIAL_STATE_LAYERS,
-                                    NULL);
+                                    NULL,
+                                    TRUE);
 
   /* Unlike materials; layers are simply considered immutable once
    * they have dependants - either direct children, or another
@@ -3528,7 +3534,7 @@ cogl_material_set_color (CoglMaterial    *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, color);
+  _cogl_material_pre_change_notify (material, state, color, FALSE);
 
   material->color = *color;
 
@@ -3602,7 +3608,7 @@ _cogl_material_set_blend_enabled (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   material->blend_enable = enable;
 
@@ -3648,7 +3654,7 @@ cogl_material_set_ambient (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   lighting_state = &material->big_state->lighting_state;
   lighting_state->ambient[0] = cogl_color_get_red_float (ambient);
@@ -3698,7 +3704,7 @@ cogl_material_set_diffuse (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   lighting_state = &material->big_state->lighting_state;
   lighting_state->diffuse[0] = cogl_color_get_red_float (diffuse);
@@ -3756,7 +3762,7 @@ cogl_material_set_specular (CoglMaterial *material, const CoglColor *specular)
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   lighting_state = &material->big_state->lighting_state;
   lighting_state->specular[0] = cogl_color_get_red_float (specular);
@@ -3812,7 +3818,7 @@ cogl_material_set_shininess (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   lighting_state = &material->big_state->lighting_state;
   lighting_state->shininess = shininess;
@@ -3856,7 +3862,7 @@ cogl_material_set_emission (CoglMaterial *material, const CoglColor *emission)
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   lighting_state = &material->big_state->lighting_state;
   lighting_state->emission[0] = cogl_color_get_red_float (emission);
@@ -3893,7 +3899,7 @@ cogl_material_set_alpha_test_function (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   alpha_state = &material->big_state->alpha_state;
   alpha_state->alpha_func = alpha_func;
@@ -4046,7 +4052,7 @@ cogl_material_set_blend (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   blend_state = &material->big_state->blend_state;
 #ifndef HAVE_COGL_GLES
@@ -4115,7 +4121,7 @@ cogl_material_set_blend_constant (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   blend_state = &material->big_state->blend_state;
   blend_state->blend_constant = *constant_color;
@@ -4165,7 +4171,7 @@ cogl_material_set_user_program (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   if (program != COGL_INVALID_HANDLE)
     _cogl_material_set_backend (material, COGL_MATERIAL_BACKEND_DEFAULT);
@@ -4223,7 +4229,7 @@ cogl_material_set_depth_test_enabled (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   material->big_state->depth_state.depth_test_enabled = enable;
 
@@ -4265,7 +4271,7 @@ cogl_material_set_depth_writing_enabled (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   material->big_state->depth_state.depth_writing_enabled = enable;
 
@@ -4307,7 +4313,7 @@ cogl_material_set_depth_test_function (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   material->big_state->depth_state.depth_test_function = function;
 
@@ -4355,7 +4361,7 @@ cogl_material_set_depth_range (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   material->big_state->depth_state.depth_range_near = near_val;
   material->big_state->depth_state.depth_range_far = far_val;
@@ -4415,7 +4421,7 @@ _cogl_material_set_fog_state (CoglMaterial *material,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   material->big_state->fog_state = *fog_state;
 
@@ -5280,7 +5286,7 @@ cogl_material_set_point_size (CoglHandle handle,
    * - If the material isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL);
+  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
 
   material->big_state->point_size = point_size;
 
