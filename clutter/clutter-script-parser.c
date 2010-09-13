@@ -686,8 +686,10 @@ construct_timeline (ClutterScript *script,
   _clutter_script_apply_properties (script, oinfo);
   retval = CLUTTER_TIMELINE (oinfo->object);
 
-  /* we transfer ownership to the alpha function later */
-  oinfo->is_toplevel = FALSE;
+  /* we transfer ownership to the alpha function, so we ref before
+   * destroying the ObjectInfo to avoid the timeline going away
+   */
+  g_object_ref (retval);
   object_info_free (oinfo);
 
   return retval;
@@ -864,6 +866,10 @@ _clutter_script_parse_alpha (ClutterScript *script,
     clutter_alpha_set_func (CLUTTER_ALPHA (retval), alpha_func, NULL, NULL);
 
   clutter_alpha_set_timeline (CLUTTER_ALPHA (retval), timeline);
+
+  /* if we created an implicit timeline, the Alpha has full ownership
+   * of it now, since it won't be accessible from ClutterScript
+   */
   if (unref_timeline)
     g_object_unref (timeline);
 
@@ -961,9 +967,13 @@ clutter_script_parser_object_end (JsonParser *json_parser,
       json_object_remove_member (object, "signals");
     }
 
+  oinfo->is_actor = FALSE;
+
   if (strcmp (oinfo->class_name, "ClutterStage") == 0 &&
       json_object_has_member (object, "is-default"))
     {
+      oinfo->is_actor = TRUE;
+      oinfo->is_stage = TRUE;
       oinfo->is_stage_default =
         json_object_get_boolean_member (object, "is-default");
 
@@ -972,7 +982,6 @@ clutter_script_parser_object_end (JsonParser *json_parser,
   else
     oinfo->is_stage_default = FALSE;
 
-  oinfo->is_toplevel = FALSE;
   oinfo->is_unmerged = FALSE;
   oinfo->has_unresolved = TRUE;
 
@@ -1899,13 +1908,12 @@ _clutter_script_construct_object (ClutterScript *script,
       if (G_UNLIKELY (oinfo->gtype == G_TYPE_INVALID))
         return;
 
-      oinfo->is_toplevel =
-        g_type_is_a (oinfo->gtype, G_TYPE_INITIALLY_UNOWNED)
-          ? FALSE
-          : TRUE;
+      oinfo->is_actor = g_type_is_a (oinfo->gtype, CLUTTER_TYPE_ACTOR);
+      if (oinfo->is_actor)
+        oinfo->is_stage = g_type_is_a (oinfo->gtype, CLUTTER_TYPE_STAGE);
     }
 
-  if (oinfo->gtype == CLUTTER_TYPE_STAGE && oinfo->is_stage_default)
+  if (oinfo->is_stage && oinfo->is_stage_default)
     {
       GList *properties = oinfo->properties;
 
@@ -1949,6 +1957,12 @@ _clutter_script_construct_object (ClutterScript *script,
       oinfo->object = g_object_newv (oinfo->gtype,
                                      params->len,
                                      (GParameter *) params->data);
+
+      /* by sinking the floating reference, we make sure that the reference
+       * count is correct whether the object is referenced from somewhere
+       * else too or only by this ClutterScript object.
+       */
+      g_object_ref_sink (oinfo->object);
 
       for (i = 0; i < params->len; i++)
         {

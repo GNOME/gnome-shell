@@ -314,25 +314,15 @@ object_info_free (gpointer data)
        * unless we are unmerging in which case we have to destroy
        * the actor to unparent them
        */
-      if (oinfo->object)
+      if (oinfo->object != NULL)
         {
           if (oinfo->is_unmerged)
             {
-              if (oinfo->is_toplevel)
-                g_object_unref (oinfo->object);
-              else
-                {
-                  /* destroy every actor, unless it's the default stage */
-                  if (oinfo->is_stage_default == FALSE &&
-                      CLUTTER_IS_ACTOR (oinfo->object))
-                    clutter_actor_destroy (CLUTTER_ACTOR (oinfo->object));
-                }
+              if (oinfo->is_actor && !oinfo->is_stage)
+                clutter_actor_destroy (CLUTTER_ACTOR (oinfo->object));
             }
-          else
-            {
-              if (oinfo->is_toplevel)
-                g_object_unref (oinfo->object);
-            }
+
+          g_object_unref (oinfo->object);
 
           oinfo->object = NULL;
         }
