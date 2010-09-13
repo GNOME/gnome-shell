@@ -4,6 +4,7 @@ NULL =
 
 noinst_PROGRAMS = \
 	animations-complex	\
+	animations-reuse	\
 	animations-rotating	\
 	text-shadow		\
 	textures-reflection	\
@@ -45,6 +46,7 @@ AM_CFLAGS = \
 AM_LDFLAGS = $(CLUTTER_LIBS) -export-dynamic
 
 animations_complex_SOURCES                 = animations-complex.c
+animations_reuse_SOURCES                   = animations-reuse.c
 animations_rotating_SOURCES                = animations-rotating.c
 text_shadow_SOURCES                        = text-shadow.c
 textures_reflection_SOURCES                = textures-reflection.c

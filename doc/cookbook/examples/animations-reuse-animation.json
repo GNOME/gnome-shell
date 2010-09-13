@@ -1,0 +1,42 @@
+[
+  {
+    "type" : "ClutterGroup",
+    "id" : "rig"
+  },
+
+  {
+    "type" : "ClutterAnimator",
+    "id" : "animator",
+    "duration" : 2000,
+
+    "properties" : [
+      {
+        "object" : "rig",
+        "name" : "x",
+        "ease-in" : true,
+        "keys" : [
+          [ 0.0, "linear", 0.0 ],
+          [ 1.0, "easeOutCubic", 150.0 ]
+        ]
+      },
+      {
+        "object" : "rig",
+        "name" : "scale-x",
+        "ease-in" : true,
+        "keys" : [
+          [ 0.5, "linear", 1.0 ],
+          [ 1.0, "easeOutBack", 2.0 ]
+        ]
+      },
+      {
+        "object" : "rig",
+        "name" : "scale-y",
+        "ease-in" : true,
+        "keys" : [
+          [ 0.5, "linear", 1.0 ],
+          [ 1.0, "easeOutBack", 2.0 ]
+        ]
+      }
+    ]
+  }
+]

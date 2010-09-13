@@ -1,0 +1,80 @@
+[
+  {
+    "type" : "ClutterStage",
+    "id" : "stage",
+    "width" : 300,
+    "height" : 200,
+    "color" : "#333355ff",
+
+    "signals" : [
+      { "name" : "destroy", "handler" : "clutter_main_quit" }
+    ],
+
+    "children" : [
+      {
+        "type" : "ClutterRectangle",
+        "id" : "rect1",
+        "color" : "white",
+        "width" : 50,
+        "height" : 50,
+        "y" : 50,
+        "reactive" : true,
+        "signals" : [
+          { "name" : "button-press-event", "handler" : "foo_button_pressed_cb" }
+        ]
+      },
+
+      {
+        "type" : "ClutterRectangle",
+        "id" : "rect2",
+        "color" : "blue",
+        "width" : 50,
+        "height" : 50,
+        "y" : 50,
+        "reactive" : true,
+        "signals" : [
+          { "name" : "button-press-event", "handler" : "foo_button_pressed_cb" }
+        ]
+      },
+
+      {
+        "type" : "ClutterRectangle",
+        "id" : "rect3",
+        "color" : "green",
+        "width" : 50,
+        "height" : 50,
+        "y" : 50,
+        "reactive" : true,
+        "signals" : [
+          { "name" : "button-press-event", "handler" : "foo_button_pressed_cb" }
+        ]
+      },
+
+      {
+        "type" : "ClutterRectangle",
+        "id" : "rect4",
+        "color" : "red",
+        "width" : 50,
+        "height" : 50,
+        "y" : 50,
+        "reactive" : true,
+        "signals" : [
+          { "name" : "button-press-event", "handler" : "foo_button_pressed_cb" }
+        ]
+      },
+
+      {
+        "type" : "ClutterRectangle",
+        "id" : "rect5",
+        "color" : "grey",
+        "width" : 50,
+        "height" : 50,
+        "y" : 50,
+        "reactive" : true,
+        "signals" : [
+          { "name" : "button-press-event", "handler" : "foo_button_pressed_cb" }
+        ]
+      }
+    ]
+  }
+]

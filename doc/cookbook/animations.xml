@@ -844,7 +844,7 @@ clutter_actor_set_z_rotation_from_gravity (actor,
 
       </section>
 
-      <section>
+      <section id="animations-rotating-discussion-direction">
         <title>Direction of rotation</title>
 
         <para>The apparent direction of an animated rotation depends on
@@ -1434,6 +1434,384 @@ clutter_actor_set_z_rotation_from_gravity (actor,
 </xi:include>
         </programlisting>
       </example>
+    </section>
+
+  </section>
+
+  <section id="animations-reuse">
+    <title>Reusing a complex animation on different actors</title>
+
+    <section id="animations-reuse-problem">
+      <title>Problem</title>
+
+      <para>You want to apply the same complex animation to several
+      different actors.</para>
+
+    </section>
+
+    <section id="animations-reuse-solution">
+      <title>Solution</title>
+
+      <para>Instead of animating each actor separately, create a
+      <emphasis>rig</emphasis>: an empty container with an associated
+      animation, which will be animated in lieu of
+      animating the actor directly. Do this as follows:</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Initialise the stage and actors, including those
+          to be animated.</para>
+        </listitem>
+        <listitem>
+          <para>Define a <type>ClutterContainer</type> and a
+          <type>ClutterAnimator</type> animation to animate it.</para>
+        </listitem>
+        <listitem>
+          <para>When you need to animate an actor:</para>
+
+          <orderedlist>
+            <listitem>
+              <para>Create an instance of the rig and its animator.</para>
+            </listitem>
+            <listitem>
+              <para>Reparent the actor to the rig.</para>
+            </listitem>
+            <listitem>
+              <para>Run the rig's animation.</para>
+            </listitem>
+          </orderedlist>
+        </listitem>
+      </orderedlist>
+
+      <para>For this solution, we're using
+      <ulink url="http://json.org/">JSON</ulink> to define the
+      animation and the user interface elements. For more
+      details about this approach, see
+      <link linkend="script-introduction">the chapter
+      on <type>ClutterScript</type></link>.</para>
+
+      <para>Here's an extract of the JSON definition for the stage and
+      one of five rectangles placed at its left edge (the full definition
+      is in <link linkend="animations-reuse-example-1">the
+      appendix</link>):</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+[
+  {
+    "type" : "ClutterStage",
+    "id" : "stage",
+
+    ... stage properties, signal handlers etc. ...
+
+    "children" : [
+      {
+        "type" : "ClutterRectangle",
+        "id" : "rect1",
+        "color" : "white",
+        "width" : 50,
+        "height" : 50,
+        "y" : 50,
+        "reactive" : true,
+        "signals" : [
+          { "name" : "button-press-event", "handler" : "foo_button_pressed_cb" }
+        ]
+      },
+
+      ... more children defined here ...
+    ]
+  }
+]
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>The key point to note is how a signal handler is defined
+      for the <code>button-press-event</code>, so that the
+      <function>foo_button_pressed_cb()</function> function will trigger
+      the animation when a (mouse) button is pressed on each rectangle.</para>
+
+      <para>The second JSON definition includes the rig
+      (an empty <type>ClutterGroup</type>) and a
+      <type>ClutterAnimator</type> to animate it. The animation moves the
+      container across the stage and scales it to twice its original
+      size. (This is the <link linkend="animations-reuse-example-2">same
+      code as in the appendix</link>):</para>
+
+      <informalexample>
+        <programlisting>
+<xi:include href="examples/animations-reuse-animation.json" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </informalexample>
+
+      <para>The remaining parts of the application code load
+      the user interface definition, setting up the stage and rectangles;
+      and define the callback. The full code is
+      <link linkend="animations-reuse-example-3">in the appendix</link>,
+      but below is the most important part, the callback function:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+gboolean
+foo_button_pressed_cb (ClutterActor *actor,
+                       ClutterEvent *event,
+                       gpointer      user_data)
+{
+  ClutterScript *ui = CLUTTER_SCRIPT (user_data);
+  ClutterStage *stage = CLUTTER_STAGE (clutter_script_get_object (ui, "stage"));
+
+  ClutterScript *script;
+  ClutterActor *rig;
+  ClutterAnimator *animator;
+
+  /* load the rig and its animator from a JSON file */
+  script = clutter_script_new ();
+
+  /* use a function defined statically in this source file to load the JSON */
+  load_script_from_file (script, ANIMATION_FILE);
+
+  clutter_script_get_objects (script,
+                              "rig", &rig,
+                              "animator", &animator,
+                              NULL);
+
+  /* remove the button press handler from the rectangle */
+  g_signal_handlers_disconnect_matched (actor,
+                                        G_SIGNAL_MATCH_FUNC,
+                                        0,
+                                        0,
+                                        NULL,
+                                        foo_button_pressed_cb,
+                                        NULL);
+
+  /* add a callback to clean up the script when the rig is destroyed */
+  g_object_set_data_full (G_OBJECT (rig), "script", script, g_object_unref);
+
+  /* add the rig to the stage */
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), rig);
+
+  /* place the rig at the same coordinates on the stage as the rectangle */
+  clutter_actor_set_position (rig,
+                              clutter_actor_get_x (actor),
+                              clutter_actor_get_y (actor));
+
+  /* put the rectangle into the top-left corner of the rig */
+  clutter_actor_reparent (actor, rig);
+
+  clutter_actor_set_position (actor, 0, 0);
+
+  /* animate the rig */
+  clutter_animator_start (animator);
+
+  return TRUE;
+}
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>The code creates a new rig and associated animation
+      at the point when the rectangle is clicked. It then positions the
+      rig at the same coordinates as the rectangle, reparents
+      the rectangle to the rig, and starts the rig's animation.</para>
+
+      <note>
+        <para>The signal handler has to be declared non-static and
+        you must use <code>-export-dynamic</code> as an option to the
+        compiler, otherwise the function isn't visible to
+        <type>ClutterScript</type> (as outlined
+        <link linkend="script-signals">in this recipe</link>).</para>
+      </note>
+
+      <para>This is what the animation looks like:</para>
+
+      <inlinemediaobject>
+          <videoobject>
+            <videodata fileref="videos/animations-reuse.ogv"/>
+          </videoobject>
+          <alt>
+            <para>Video of a simple reusable animation</para>
+          </alt>
+        </inlinemediaobject>
+
+    </section>
+
+    <section id="animations-reuse-discussion">
+      <title>Discussion</title>
+
+      <para>The above solution reparents an actor to be animated
+      into a rig (an empty placeholder). The rig is a container
+      which acts as a temporary parent for the actor we
+      <emphasis>really</emphasis> want to animate. By animating the rig,
+      it appears as though the actor inside it is being animated (but
+      <link linkend="animations-reuse-discussion-rig-not-actor">see
+      these caveats</link>). This means the same animation can be
+      easily applied to different actors: create an
+      instance of the rig, reparent an actor to it, then
+      run the rig's animation. This is simpler than creating
+      a separate animation for each actor individually, or
+      reusing a single <type>ClutterAnimator</type> on different
+      actors (see
+      <link linkend="animations-reuse-discussion-one-or-many">this
+      section</link>).</para>
+
+      <para>Using JSON enhances the animation's reusability (it's even
+      potentially reusable in another application), makes the code
+      simpler (an animation can be loaded directly from the script),
+      and makes refactoring easier (the animation can be modified
+      without recompiling the application code). However, it also puts
+      some minor limitations on the animation's reusability; namely, you
+      can only set absolute property values in a JSON animation
+      definition. This makes JSON less useful in cases where
+      you need to animate properties relative to their starting
+      values: for example, "move 50 pixels along the x axis" or
+      "rotate by 10 degrees more on the z axis". (This type of animation
+      is probably less portable anyway.) In such cases, the programmable
+      API may be a better option: see the <type>ClutterAnimator</type>
+      documentation for examples.</para>
+
+      <section id="animations-reuse-discussion-one-or-many">
+        <title>One animation vs. many</title>
+
+        <para>In the sample code, a new instance of the rig and its
+        animation are created for each actor. One side effect of this
+        is that all of the actors can animate simultaneously with the
+        "same" animation. If you don't want this behaviour, but still
+        want to use a rig approach, you could create a single instance
+        of the rig and its animation. Then, you could reparent each actor
+        to it in turn.</para>
+
+        <para>To ensure that the rig only animates one actor (or group
+        of actors) at a time, you could track whether the rig is
+        currently animating (e.g. by examining the animation's
+        timeline with <function>clutter_animator_get_timeline()</function>).
+        Then, if the animation is running, prevent any other actor
+        from being reparented to the rig.</para>
+
+        <para>Note that you would also need to "reset" the rig each time the
+        animation completed (move it back to the right start values for
+        its properties), ready to animate the next actor.</para>
+      </section>
+
+      <section id="animations-reuse-discussion-rig-not-actor">
+        <title>Caveats about animating a rig instead of an actor</title>
+
+        <para>There are a few issues to be aware of in cases
+        where you animate a rig with contained actors, rather than
+        animating the actor directly:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Animating a rig doesn't <emphasis>always</emphasis>
+            produce the same visual effect as animating an actor directly.
+            For example, compare the following cases:</para>
+
+            <itemizedlist>
+              <listitem>
+                <para>You rotate an actor by 180 degrees in the
+                <code>y</code> axis, then by 90 degrees in the
+                <code>z</code> axis. The actor appears to rotate in
+                a <emphasis>clockwise</emphasis> direction.</para>
+              </listitem>
+              <listitem>
+                <para>You rotate the parent container of an actor
+                by 180 degrees in the <code>y</code> axis; then rotate
+                the actor by 90 degrees in the <code>z</code> axis.
+                The actor appears to rotate in an
+                <emphasis>anti-clockwise</emphasis> direction. By
+                rotating the container, the "back" of the
+                actor faces the view point, so the actor's movement
+                appears reversed. See
+                <link linkend="animations-rotating-discussion-direction">this
+                recipe</link> for more details.</para>
+              </listitem>
+            </itemizedlist>
+
+            <para>There may be other situations where you get similar
+            discrepancies.</para>
+          </listitem>
+
+          <listitem>
+            <para>Animating a rig doesn't change an actor's properties,
+            but animating the actor does.</para>
+
+            <para>When you animate a container rather than the actor
+            directly, the reported properties of the actor may not
+            reflect its visual appearance. For example, if you apply
+            a scale animation to a container, the final scale of
+            actors inside it (as returned by
+            <function>clutter_actor_get_scale()</function>) will not
+            reflect the scaling applied to their container; whereas
+            directly animating the actors would cause their scale
+            properties to change.</para>
+          </listitem>
+
+          <listitem>
+            <para>Reparenting an actor to a rig can cause the actor
+            to "jump" to the rig's position, unless you align the
+            actor to the rig first.</para>
+
+            <para>Note that in the sample code, the position of the actor
+            (<code>x</code>, <code>y</code> coordinates) is copied to
+            the rig before the reparenting happens. The actor is then
+            reparented to the rig, and positioned in the rig's
+            top-left corner. So the actor appears to be in the same
+            position, but is now actually inside a rig at the actor's old
+            position.</para>
+
+            <para>Why bother to do this? Because the rig has a default
+            position of <code>0,0</code> (top-left of <emphasis>its</emphasis>
+            container, the stage). If you reparent the actor to the rig,
+            without first copying the actor's position to the rig, the
+            actor appears to "jump" to the rig's position.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+
+    </section>
+
+    <section id="animations-reuse-examples">
+      <title>Full example</title>
+
+      <note>
+        <para>The three separate code examples in this section
+        constitute a single application which implements the above
+        solution.</para>
+      </note>
+
+      <example id="animations-reuse-example-1">
+        <title><type>ClutterScript</type> JSON defining several
+        rectangles with signal handlers</title>
+        <programlisting>
+<xi:include href="examples/animations-reuse-ui.json" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="animations-reuse-example-2">
+        <title><type>ClutterScript</type> JSON describing a "rig"
+        and a <type>ClutterAnimator</type> animation</title>
+        <programlisting>
+<xi:include href="examples/animations-reuse-animation.json" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="animations-reuse-example-3">
+        <title>Loading <type>ClutterScript</type> from JSON files
+        in response to events in a user interface</title>
+        <programlisting>
+<xi:include href="examples/animations-reuse.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
     </section>
 
   </section>
