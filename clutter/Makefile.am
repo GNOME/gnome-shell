@@ -436,12 +436,12 @@ endif # SUPPORT_X11
 # INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
 # install anything - we need to install inside our prefix.
 girdir = $(datadir)/gir-1.0
-dist_gir_DATA = $(BUILT_GIRSOURCES) $(INTROSPECTION_GIRS)
+gir_DATA = $(BUILT_GIRSOURCES) $(INTROSPECTION_GIRS)
 
 typelibsdir = $(libdir)/girepository-1.0/
 typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib) $(INTROSPECTION_GIRS:.gir=.typelib)
 
-CLEANFILES += $(dist_gir_DATA) $(typelibs_DATA)
+CLEANFILES += $(gir_DATA) $(typelibs_DATA)
 endif # HAVE_INTROSPECTION
 
 EXTRA_DIST += clutter-keysyms-update.pl
