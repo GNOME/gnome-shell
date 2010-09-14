@@ -23,6 +23,8 @@ data/gnome-shell-clock-preferences.desktop.in
 data/gschemas.compiled
 data/org.gnome.shell.gschema.xml
 data/org.gnome.shell.gschema.valid
+data/org.gnome.accessibility.magnifier.gschema.xml
+data/org.gnome.accessibility.magnifier.gschema.valid
 intltool-extract.in
 intltool-merge.in
 intltool-update.in
