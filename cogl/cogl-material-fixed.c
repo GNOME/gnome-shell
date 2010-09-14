@@ -54,6 +54,8 @@
 #include "../gles/cogl-gles2-wrapper.h"
 #endif
 
+const CoglMaterialBackend _cogl_material_fixed_backend;
+
 static int
 _cogl_material_backend_fixed_get_max_texture_units (void)
 {

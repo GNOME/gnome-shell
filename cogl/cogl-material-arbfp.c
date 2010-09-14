@@ -108,6 +108,8 @@ typedef struct _CoglMaterialBackendARBfpPrivate
   int next_constant_id;
 } CoglMaterialBackendARBfpPrivate;
 
+const CoglMaterialBackend _cogl_material_arbfp_backend;
+
 static int
 _cogl_material_backend_arbfp_get_max_texture_units (void)
 {

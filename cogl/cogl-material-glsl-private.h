@@ -30,7 +30,7 @@
 
 #include "cogl-material-private.h"
 
-const CoglMaterialBackend _cogl_material_glsl_backend;
+extern const CoglMaterialBackend _cogl_material_glsl_backend;
 
 #endif /* __COGL_MATERIAL_GLSL_PRIVATE_H */
 

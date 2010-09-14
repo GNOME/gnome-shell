@@ -30,7 +30,7 @@
 
 #include "cogl-material-private.h"
 
-const CoglMaterialBackend _cogl_material_arbfp_backend;
+extern const CoglMaterialBackend _cogl_material_arbfp_backend;
 
 #endif /* __COGL_MATERIAL_ARBFP_PRIVATE_H */
 
