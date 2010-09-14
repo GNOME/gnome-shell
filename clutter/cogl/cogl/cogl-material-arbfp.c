@@ -980,6 +980,7 @@ _cogl_material_backend_arbfp_passthrough (CoglMaterial *material)
 typedef struct _UpdateConstantsState
 {
   int unit;
+  gboolean update_all;
   ArbfpProgramState *arbfp_program_state;
 } UpdateConstantsState;
 
@@ -994,7 +995,7 @@ update_constants_cb (CoglMaterial *material,
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  if (unit_state->dirty_combine_constant)
+  if (state->update_all || unit_state->dirty_combine_constant)
     {
       float constant[4];
       _cogl_material_get_layer_combine_constant (material,
@@ -1072,10 +1073,19 @@ _cogl_material_backend_arbfp_end (CoglMaterial *material,
       UpdateConstantsState state;
       state.unit = 0;
       state.arbfp_program_state = arbfp_program_state;
+      /* If this arbfp program was last used with a different material
+       * then we need to ensure we update all program.local params */
+      state.update_all =
+        material != arbfp_program_state->last_used_for_material;
       cogl_material_foreach_layer (material,
                                    update_constants_cb,
                                    &state);
     }
+
+  /* We need to track what material used this arbfp program last since
+   * we will need to update program.local params when switching
+   * between different materials. */
+  arbfp_program_state->last_used_for_material = material;
 
   return TRUE;
 }
