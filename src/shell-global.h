@@ -87,7 +87,7 @@ void shell_global_gc (ShellGlobal *global);
 
 void shell_global_maybe_gc (ShellGlobal *global);
 
-void shell_global_format_time_relative_pretty (ShellGlobal *global, guint delta, char **text, guint *update_time);
+void shell_global_format_time_relative_pretty (ShellGlobal *global, guint delta, char **text, guint *next_update);
 
 ClutterActor *shell_global_create_root_pixmap_actor (ShellGlobal *global);
 
