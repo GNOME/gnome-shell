@@ -1533,8 +1533,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   if (buffer->new_attributes)
     cogl_vertex_buffer_submit_real (buffer);
 
-  options.flags =
-    COGL_MATERIAL_FLUSH_FALLBACK_MASK;
+  options.flags = 0;
   memset (&options.wrap_mode_overrides, 0,
           sizeof (options.wrap_mode_overrides));
 
@@ -1737,7 +1736,11 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   /* Disable any tex coord arrays that we didn't use */
   _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
 
-  options.fallback_layers = fallback_layers;
+  if (fallback_layers)
+    {
+      options.fallback_layers = fallback_layers;
+      options.flags |= COGL_MATERIAL_FLUSH_FALLBACK_MASK;
+    }
 
   if (G_UNLIKELY (options.flags))
     {
