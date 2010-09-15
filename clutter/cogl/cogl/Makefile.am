@@ -122,6 +122,7 @@ cogl_sources_c = \
 	$(cogl_winsys_common_sources)			\
 	$(cogl_tesselator_sources)			\
 	$(srcdir)/cogl-debug.h 				\
+	$(srcdir)/cogl-debug-options.h			\
 	$(srcdir)/cogl-handle.h 			\
 	$(srcdir)/cogl-context.h			\
 	$(srcdir)/cogl-context.c			\
