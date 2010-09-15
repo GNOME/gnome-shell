@@ -1,4 +1,4 @@
-Clutter 1.3.14 ()
+Clutter 1.3.14 (15/09/2010)
 ===============================================================================
 
   • List of changes since Clutter 1.3.12
@@ -13,6 +13,7 @@ Clutter 1.3.14 ()
       - ClutterScript definitions
       - event handling
       - ClutterAnimator
+      - reusing complex animations
 
     » Add methods to retrieve the clicked button and to force a release
       in ClickAction.
@@ -46,6 +47,27 @@ Clutter 1.3.14 ()
 
     » Make sure ClutterX11TexturePixmap removes the Cogl texture handle before
       freeing the X11 Pixmap to avoid an error.
+
+    » Avoid regenerating the CoglMaterial programs too many times.
+
+Many thanks to:
+
+  Elliot Smith
+  Robert Bragg
+  Damien Lespiau
+  Neil Roberts
+  Colin Walters
+  Owen W. Taylor
+  Bastian Winkler
+  Alejandro Piñeiro
+  Alexandros Frantzis
+  Chris Kühl
+  Luca Invernizzi
+  Henrik Hedberg
+  Javier Jardón
+  Lucas Rocha
+  Murray Cumming
+  Øyvind Kolås
 
 Clutter 1.3.12 (16/08/2010)
 ===============================================================================
