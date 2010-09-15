@@ -166,10 +166,6 @@ AC_CONFIG_FILES([
   Makefile
   data/Makefile
   js/Makefile
-  js/misc/Makefile
-  js/ui/Makefile
-  js/perf/Makefile
-  js/prefs/Makefile
   src/Makefile
   tests/Makefile
   po/Makefile.in
