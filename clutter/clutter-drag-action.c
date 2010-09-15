@@ -684,7 +684,8 @@ clutter_drag_action_new (void)
 /**
  * clutter_drag_action_set_drag_threshold:
  * @action: a #ClutterDragAction
- * @threshold: a distance, in pixels
+ * @x_threshold: a distance on the horizontal axis, in pixels
+ * @y_threshold: a distance on the vertical axis, in pixels
  *
  * Sets the horizontal and vertical drag thresholds that must be
  * cleared by the pointer before @action can begin the dragging
