@@ -28,7 +28,7 @@
 #include <math.h>
 
 int
-cogl_util_next_p2 (int a);
+_cogl_util_next_p2 (int a);
 
 /* The signbit macro is defined by ISO C99 so it should be available,
    however if it's not we can fallback to an evil hack */

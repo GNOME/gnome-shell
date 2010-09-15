@@ -40,16 +40,17 @@
 #include "cogl-handle.h"
 #include "cogl-util.h"
 
-/**
+/*
  * cogl_util_next_p2:
- * @a: Value to get the next power
+ * @a: Value to get the next power of two
  *
- * Calculates the next power greater than @a.
+ * Calculates the next power of two greater than or equal to @a.
  *
- * Return value: The next power after @a.
+ * Return value: @a if @a is already a power of two, otherwise returns
+ *   the next nearest power of two.
  */
 int
-cogl_util_next_p2 (int a)
+_cogl_util_next_p2 (int a)
 {
   int rval = 1;
 

@@ -783,8 +783,8 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds,
     }
   else
     {
-      max_width = cogl_util_next_p2 (width);
-      max_height = cogl_util_next_p2 (height);
+      max_width = _cogl_util_next_p2 (width);
+      max_height = _cogl_util_next_p2 (height);
       tex_2ds->gl_target = GL_TEXTURE_2D;
       slices_for_size = _cogl_pot_slices_for_size;
     }
