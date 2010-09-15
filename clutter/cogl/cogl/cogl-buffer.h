@@ -154,8 +154,7 @@ cogl_buffer_get_update_hint (CoglBuffer *buffer);
 typedef enum { /*< prefix=COGL_BUFFER_ACCESS >*/
  COGL_BUFFER_ACCESS_READ       = 1 << 0,
  COGL_BUFFER_ACCESS_WRITE      = 1 << 1,
- COGL_BUFFER_ACCESS_READ_WRITE = COGL_BUFFER_ACCESS_READ |
-                                 COGL_BUFFER_ACCESS_WRITE
+ COGL_BUFFER_ACCESS_READ_WRITE = COGL_BUFFER_ACCESS_READ | COGL_BUFFER_ACCESS_WRITE
 } CoglBufferAccess;
 
 
