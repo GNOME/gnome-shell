@@ -1309,7 +1309,7 @@ clutter_state_set_animator (ClutterState    *state,
   source_state_name = g_intern_string (source_state_name);
   target_state_name = g_intern_string (target_state_name);
 
-  target_state = clutter_state_fetch_state (state, target_state_name, FALSE);
+  target_state = clutter_state_fetch_state (state, target_state_name, TRUE);
   if (target_state == NULL)
     return;
   
