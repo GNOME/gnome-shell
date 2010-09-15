@@ -1758,21 +1758,12 @@ parse_state_transition (JsonArray *array,
 
   if (!json_object_has_member (object, "source") ||
       !json_object_has_member (object, "target") ||
-      !json_object_has_member (object, "keys"))
+      !(json_object_has_member (object, "keys") ||
+        json_object_has_member (object, "animator")))
     {
       g_warning ("The transition description at index %d is missing one "
-                 "of the mandatory members: source, target and keys",
-                 index_);
-      return;
-    }
-
-  keys = json_object_get_array_member (object, "keys");
-  if (keys == NULL)
-    {
-      g_warning ("The transition description at index %d has an invalid "
-                 "key member of type '%s' when an array was expected.",
-                 index_,
-                 json_node_type_name (json_object_get_member (object, "keys")));
+                 "of the mandatory members: source, target and keys or "
+                 "animator", index_);
       return;
     }
 
@@ -1807,6 +1798,19 @@ parse_state_transition (JsonArray *array,
                                   source_name,
                                   target_name,
                                   CLUTTER_ANIMATOR (animator));
+    }
+
+  if (!json_object_has_member (object, "keys"))
+    return;
+
+  keys = json_object_get_array_member (object, "keys");
+  if (keys == NULL && !json_object_has_member (object, "animator"))
+    {
+      g_warning ("The transition description at index %d has an invalid "
+                 "key member of type '%s' when an array was expected.",
+                 index_,
+                 json_node_type_name (json_object_get_member (object, "keys")));
+      return;
     }
 
   if (G_IS_VALUE (clos->value))
