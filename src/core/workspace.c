@@ -706,7 +706,7 @@ meta_workspace_update_window_hints (MetaWorkspace *workspace)
 
 /**
  * meta_workspace_list_windows:
- * @display: a #MetaDisplay
+ * @workspace: a #MetaWorkspace
  *
  * Gets windows contained on the workspace, including workspace->windows
  * and also sticky windows. Override-redirect windows are not included.

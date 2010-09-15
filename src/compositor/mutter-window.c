@@ -726,7 +726,7 @@ const char *mutter_window_get_description (MutterWindow *self)
 
 /**
  * mutter_window_get_workspace:
- * @self: #MutterWindow
+ * @mcw: #MutterWindow
  *
  * Returns the index of workspace on which this window is located; if the
  * window is sticky, or is not currently located on any workspace, returns -1.
@@ -737,7 +737,7 @@ const char *mutter_window_get_description (MutterWindow *self)
  * located.
  */
 gint
-mutter_window_get_workspace (MutterWindow *self)
+mutter_window_get_workspace (MutterWindow *mcw)
 {
   MutterWindowPrivate *priv;
   MetaWorkspace       *workspace;
