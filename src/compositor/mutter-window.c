@@ -737,7 +737,7 @@ const char *mutter_window_get_description (MutterWindow *self)
  * located.
  */
 gint
-mutter_window_get_workspace (MutterWindow *mcw)
+mutter_window_get_workspace (MutterWindow *self)
 {
   MutterWindowPrivate *priv;
   MetaWorkspace       *workspace;
