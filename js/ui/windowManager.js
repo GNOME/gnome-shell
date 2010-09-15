@@ -334,15 +334,10 @@ WindowManager.prototype = {
         }
     },
 
-    _destroyWindowOverwrite : function(shellwm, actor) {
-        if (this._removeEffect(this._mapping, actor)) {
-            shellwm.completed_destroy(actor);
-        }
-    },
-
-     _destroyWindow : function(shellwm, actor) {
+    _destroyWindow : function(shellwm, actor) {
+        let parent = actor.get_meta_window().get_transient_for();
         while (actor.get_window_type() == Meta.CompWindowType.MODAL_DIALOG
-               && actor.get_meta_window().get_transient_for()) {
+               && parent) {
             if (!Main.overview.visible)
                 this._undimParentWindow(actor, true);
             this._dimmedWindows = this._dimmedWindows.filter(function(win) {
@@ -353,7 +348,12 @@ WindowManager.prototype = {
                 break;
             actor.set_scale(1.0, 1.0);
             actor.show();
-            this._mapping.push(actor);
+            this._destroying.push(actor);
+
+            actor._parentDestroyId = parent.connect('unmanaged', Lang.bind(this, function () {
+                Tweener.removeTweens(actor);
+                this._destroyWindowDone(shellwm, actor);
+            }));
 
             Tweener.addTween(actor,
                              { scale_y: 0,
@@ -362,7 +362,7 @@ WindowManager.prototype = {
                                onComplete: this._destroyWindowDone,
                                onCompleteScope: this,
                                onCompleteParams: [shellwm, actor],
-                               onOverwrite: this._destroyWindowOverwrite,
+                               onOverwrite: this._destroyWindowDone,
                                onOverwriteScope: this,
                                onOverwriteParams: [shellwm, actor]
                              });
@@ -372,11 +372,13 @@ WindowManager.prototype = {
     },
 
     _destroyWindowDone : function(shellwm, actor) {
-        if (actor && actor.get_window_type() == Meta.CompWindowType.MODAL_DIALOG &&
-            actor.get_meta_window().get_transient_for()) {
-            if (this._removeEffect(this._mapping, actor)) {
-                shellwm.completed_destroy(actor);
+        if (this._removeEffect(this._destroying, actor)) {
+            let parent = actor.get_meta_window().get_transient_for();
+            if (parent && actor._parentDestroyId) {
+                parent.disconnect(actor._parentDestroyId);
+                actor._parentDestroyId = 0;
             }
+            shellwm.completed_destroy(actor);
         }
     },
 
