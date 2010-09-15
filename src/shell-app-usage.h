@@ -27,9 +27,9 @@ GType shell_app_usage_get_type (void) G_GNUC_CONST;
 
 ShellAppUsage* shell_app_usage_get_default(void);
 
-GSList *shell_app_usage_get_most_used (ShellAppUsage *monitor,
-                                       const char      *context,
-                                       gint             number);
+GSList *shell_app_usage_get_most_used (ShellAppUsage *usage,
+                                       const char    *context,
+                                       gint           max_count);
 
 G_END_DECLS
 

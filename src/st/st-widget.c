@@ -1144,7 +1144,7 @@ st_widget_remove_style_pseudo_class (StWidget    *actor,
 /**
  * st_widget_set_style:
  * @actor: a #StWidget
- * @style_class: (allow-none): a inline style string, or %NULL
+ * @style: (allow-none): a inline style string, or %NULL
  *
  * Set the inline style string for this widget. The inline style string is an
  * optional ';'-separated list of CSS properties that override the style as
@@ -1152,7 +1152,7 @@ st_widget_remove_style_pseudo_class (StWidget    *actor,
  */
 void
 st_widget_set_style (StWidget  *actor,
-                       const gchar *style)
+                     const gchar *style)
 {
   StWidgetPrivate *priv = actor->priv;
 

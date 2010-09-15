@@ -37,7 +37,7 @@ G_DEFINE_TYPE(ShellDocSystem, shell_doc_system, G_TYPE_OBJECT);
 
 /**
  * shell_doc_system_get_all:
- * @self: A #ShellDocSystem
+ * @system: A #ShellDocSystem
  *
  * Returns the currently cached set of recent files. Recent files are read initially
  * from the underlying #GtkRecentManager, and updated when it changes.
@@ -125,7 +125,7 @@ on_recent_file_query_result (GObject       *source,
 
 /**
  * shell_doc_system_queue_existence_check:
- * @self: A #ShellDocSystem
+ * @system: A #ShellDocSystem
  * @n_items: Count of items to check for existence, starting from most recent
  *
  * Asynchronously start a check of a number of recent file for existence;

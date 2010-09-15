@@ -75,13 +75,13 @@ void st_texture_cache_evict_recent_thumbnail (StTextureCache *cache,
                                               GtkRecentInfo  *info);
 
 ClutterActor *st_texture_cache_load_uri_async (StTextureCache    *cache,
-                                               const gchar       *filename,
+                                               const gchar       *uri,
                                                int                available_width,
                                                int                available_height);
 
 ClutterActor *st_texture_cache_load_uri_sync (StTextureCache       *cache,
                                               StTextureCachePolicy  policy,
-                                              const gchar          *filename,
+                                              const gchar          *uri,
                                               int                   available_width,
                                               int                   available_height,
                                               GError              **error);

@@ -454,7 +454,7 @@ st_overflow_box_set_min_children (StOverflowBox *box,
 
 /**
  * st_overflow_box_get_n_children:
- * @self: a #StOverflowBox
+ * @box: a #StOverflowBox
  *
  * Returns the number of children in this box.
  */
@@ -467,7 +467,7 @@ st_overflow_box_get_n_children  (StOverflowBox *self)
 
 /**
  * st_overflow_box_get_n_visible:
- * @self: a #StOverflowBox
+ * @box: a #StOverflowBox
  *
  * Returns the number of children we will paint.  Only valid
  * after the actor has been allocated.

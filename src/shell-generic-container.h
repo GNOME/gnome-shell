@@ -44,9 +44,9 @@ GType    shell_generic_container_get_type         (void) G_GNUC_CONST;
 guint    shell_generic_container_get_n_skip_paint (ShellGenericContainer *self);
 
 gboolean shell_generic_container_get_skip_paint   (ShellGenericContainer *self,
-                                                   ClutterActor          *actor);
+                                                   ClutterActor          *child);
 void     shell_generic_container_set_skip_paint   (ShellGenericContainer *self,
-                                                   ClutterActor          *actor,
+                                                   ClutterActor          *child,
                                                    gboolean               skip);
 
 #endif /* __SHELL_GENERIC_CONTAINER_H__ */

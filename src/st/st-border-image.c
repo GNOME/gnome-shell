@@ -95,7 +95,7 @@ st_border_image_get_borders (StBorderImage *image,
 
 /**
  * st_border_image_equal:
- * @border_image: a #StBorder_Image
+ * @image: a #StBorder_Image
  * @other: a different #StBorder_Image
  *
  * Check if two border_image objects are identical.

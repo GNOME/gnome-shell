@@ -629,13 +629,14 @@ shell_app_system_create_from_window (ShellAppSystem *system, MetaWindow *window)
 
 /**
  * shell_app_system_lookup_heuristic_basename:
- * @name: Probable application identifier
+ * @system: a #ShellAppSystem
+ * @id: Probable application identifier
  *
  * Find a valid application corresponding to a given
  * heuristically determined application identifier
  * string, or %NULL if none.
  *
- * Returns: (transfer full): A #ShellApp for name
+ * Returns: (transfer full): A #ShellApp for @name
  */
 ShellApp *
 shell_app_system_lookup_heuristic_basename (ShellAppSystem *system,
@@ -902,7 +903,7 @@ shell_app_system_initial_search_internal (ShellAppSystem  *self,
 
 /**
  * shell_app_system_initial_search:
- * @self: A #ShellAppSystem
+ * @system: A #ShellAppSystem
  * @prefs: %TRUE if we should search preferences instead of apps
  * @terms: (element-type utf8): List of terms, logical AND
  *
@@ -922,7 +923,7 @@ shell_app_system_initial_search (ShellAppSystem  *self,
 
 /**
  * shell_app_system_subsearch:
- * @self: A #ShellAppSystem
+ * @system: A #ShellAppSystem
  * @prefs: %TRUE if we should search preferences instead of apps
  * @previous_results: (element-type utf8): List of previous results
  * @terms: (element-type utf8): List of terms, logical AND

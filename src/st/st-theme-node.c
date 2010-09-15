@@ -2669,8 +2669,8 @@ st_theme_node_adjust_for_height (StThemeNode  *node,
 /**
  * st_theme_node_adjust_preferred_width:
  * @node: a #StThemeNode
- * @min_width_p: (inout) (allow-none): the width to adjust
- * @for_height: (inout): the height to adjust
+ * @min_width_p: (inout) (allow-none): the minimum width to adjust
+ * @natural_width_p: (inout): the natural width to adjust
  *
  * Adjusts the minimum and natural width computed for an actor by
  * adding on the necessary space for borders and padding and taking
@@ -2716,7 +2716,7 @@ st_theme_node_adjust_preferred_width (StThemeNode  *node,
  * Adjusts a "for width" passed to clutter_actor_get_preferred_height() to
  * account for borders and padding. This is a convenience function meant
  * to be called from a get_preferred_height() method of a #ClutterActor
- * subclass. The value after adjustmnet is the width available for the actor's
+ * subclass. The value after adjustment is the width available for the actor's
  * content.
  */
 void
@@ -2736,8 +2736,8 @@ st_theme_node_adjust_for_width (StThemeNode  *node,
 /**
  * st_theme_node_adjust_preferred_height:
  * @node: a #StThemeNode
- * @min_height_p: (inout) (allow-none): the height to adjust
- * @for_height: (inout): the height to adjust
+ * @min_height_p: (inout) (allow-none): the minimum height to adjust
+ * @natural_height_p: (inout): the natural height to adjust
  *
  * Adjusts the minimum and natural height computed for an actor by
  * adding on the necessary space for borders and padding and taking

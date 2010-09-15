@@ -38,7 +38,7 @@ GtkRecentInfo *shell_doc_system_lookup_by_uri (ShellDocSystem  *system,
                                                const char     *uri);
 
 void shell_doc_system_queue_existence_check (ShellDocSystem   *system,
-                                             guint             n_recent);
+                                             guint             n_items);
 
 void shell_doc_system_open (ShellDocSystem *system,
                             GtkRecentInfo  *info);
