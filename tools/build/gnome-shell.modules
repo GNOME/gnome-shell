@@ -49,7 +49,7 @@
   </autotools>
 
   <autotools id="cairo">
-    <branch module="snapshots/cairo-1.10.0.tar.gz" version="1.10.0"
+    <branch module="releases/cairo-1.10.0.tar.gz" version="1.10.0"
             repo="cairo.org"
             hash="sha256:0f2ce4cc4615594088d74eb8b5360bad7c3cc3c3da9b61af9bfd979ed1ed94b2"
             md5sum="70a2ece66cf473d976e2db0f75bf199e" size="24022822">
