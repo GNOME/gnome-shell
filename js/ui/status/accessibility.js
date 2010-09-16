@@ -213,7 +213,7 @@ ATIndicator.prototype = {
             let active = on_get();
             if (!active)
                 // setting was modified manually, update it
-                first_value = client.get_value(KEY_FONT_DPI);
+                first_value = client.get_float(KEY_FONT_DPI);
             widget.setToggleState(on_get());
         });
         return widget;
