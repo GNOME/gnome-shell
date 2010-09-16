@@ -15,8 +15,8 @@ const MagnifierDBus = imports.ui.magnifierDBus;
 const MouseTrackingMode = {
     NONE: 0,
     CENTERED: 1,
-    PUSH: 2,
-    PROPORTIONAL: 3
+    PROPORTIONAL: 2,
+    PUSH: 3
 };
 
 const ScreenPosition = {
@@ -681,7 +681,7 @@ ZoomRegion.prototype = {
      * @mode:     One of the enum MouseTrackingMode values.
      */
     setMouseTrackingMode: function(mode) {
-        if (mode >= MouseTrackingMode.NONE && mode <= MouseTrackingMode.PROPORTIONAL)
+        if (mode >= MouseTrackingMode.NONE && mode <= MouseTrackingMode.PUSH)
             this._mouseTrackingMode = mode;
     },
 
