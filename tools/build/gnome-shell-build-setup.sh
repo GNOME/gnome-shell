@@ -59,8 +59,9 @@ fi
 # Devel packages needed by gnome-shell and its deps:
 # dbus-glib, GL, gnome-menus, gstreamer, libffi,
 # libjasper, libjpeg, libpng, libtiff, libwnck,
-# libxml2, python,readline, spidermonkey ({mozilla,firefox,xulrunner}-js),
-# startup-notification, xdamage
+# libxml2, ORBit2, python, readline,
+# spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification
+# xdamage
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
@@ -81,9 +82,10 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     automake bison flex gettext git-core gnome-common gtk-doc-tools gvfs gvfs-backends \
     libdbus-glib-1-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev \
     libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev \
-    libwnck-dev libgl1-mesa-dev libreadline5-dev libxml2-dev mesa-common-dev mesa-utils \
-    python-dev python-gconf python-gobject xulrunner-dev xserver-xephyr gnome-terminal \
-    libcroco3-dev libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
+    libwnck-dev libgl1-mesa-dev liborbit2-dev libreadline5-dev libxml2-dev \
+    mesa-common-dev mesa-utils python-dev python-gconf python-gobject \
+    xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev \
+    libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
     ; do
       if ! dpkg-checkbuilddeps -d $pkg /dev/null 2> /dev/null; then
         reqd="$pkg $reqd"
@@ -101,9 +103,9 @@ if test "x$system" = xFedora ; then
     binutils curl gcc gcc-c++ make
     automake bison flex gettext git gnome-common gnome-doc-utils gvfs intltool
     libtool pkgconfig dbus-glib-devel gnome-desktop-devel gnome-menus-devel
-    gnome-python2-gconf jasper-devel libffi-devel libjpeg-devel
-    libpng-devel libtiff-devel libwnck-devel mesa-libGL-devel
-    python-devel pygobject2 readline-devel xulrunner-devel libXdamage-devel libcroco-devel
+    gnome-python2-gconf jasper-devel libffi-devel libjpeg-devel libpng-devel
+    libtiff-devel libwnck-devel mesa-libGL-devel ORBit2-devel python-devel
+    pygobject2 readline-devel xulrunner-devel libXdamage-devel libcroco-devel
     libxml2-devel gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good
     glx-utils startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
     "
@@ -127,9 +129,10 @@ if test "x$system" = xSUSE -o "x$system" = "xSUSE LINUX" ; then
   for pkg in \
     curl \
     bison flex gtk-doc gnome-common gnome-doc-utils-devel gnome-menus-devel \
-    libtiff-devel cups-devel libffi-devel gnome-desktop-devel libwnck-devel \
-    xorg-x11-proto-devel readline-devel mozilla-xulrunner191-devel \
-    libcroco-devel xorg-x11-devel xorg-x11 xorg-x11-server-extra \
+    libtiff-devel cups-devel libffi-devel gnome-desktop-devel orbit2-devel \
+    libwnck-devel xorg-x11-proto-devel readline-devel \
+    mozilla-xulrunner191-devel libcroco-devel \
+    xorg-x11-devel xorg-x11 xorg-x11-server-extra \
     ; do
       if ! rpm -q $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
@@ -147,8 +150,8 @@ if test "x$system" = xMandrivaLinux ; then
   for pkg in \
     curl \
     bison flex gnome-common gnome-doc-utils gtk-doc intltool \
-    ffi5-devel \
-    libwnck-1-devel GL-devel readline-devel libxulrunner-devel \
+    ffi5-devel libwnck-1-devel GL-devel ORBit2-devel \
+    readline-devel libxulrunner-devel \
     libxdamage-devel mesa-demos x11-server-xephyr zenity \
     libcroco0.6-devel \
     ; do
