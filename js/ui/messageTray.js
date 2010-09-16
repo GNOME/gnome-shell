@@ -346,7 +346,7 @@ Notification.prototype = {
 
         if (Gtk.IconTheme.get_default().has_icon(id)) {
             button.add_style_class_name('notification-icon-button');
-            button.child = St.TextureCache.get_default().load_icon_name(id, BUTTON_ICON_SIZE);
+            button.child = St.TextureCache.get_default().load_icon_name(id, St.IconType.SYMBOLIC, BUTTON_ICON_SIZE);
         } else {
             button.add_style_class_name('notification-button');
             button.label = label;

@@ -252,7 +252,7 @@ PopupImageMenuItem.prototype = {
         if (!show) {
             this._imageBin.hide();
         } else {
-            let img = St.TextureCache.get_default().load_icon_name(this._iconName, this._size);
+            let img = St.TextureCache.get_default().load_icon_name(this._iconName, St.IconType.SYMBOLIC, this._size);
             this._imageBin.set_child(img);
             this._imageBin.show();
         }

@@ -678,8 +678,9 @@ LookingGlass.prototype = {
 
         let toolbar = new St.BoxLayout({ name: 'Toolbar' });
         this.actor.add_actor(toolbar);
-        let inspectIcon = St.TextureCache.get_default().load_gicon(new Gio.ThemedIcon({ name: 'gtk-color-picker' }),
-                                                                   24);
+        let inspectIcon = St.TextureCache.get_default().load_icon_name('gtk-color-picker',
+                                                                       St.IconType.SYMBOLIC,
+                                                                       24);
         toolbar.add_actor(inspectIcon);
         inspectIcon.reactive = true;
         inspectIcon.connect('button-press-event', Lang.bind(this, function () {

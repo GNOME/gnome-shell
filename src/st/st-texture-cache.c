@@ -927,9 +927,16 @@ create_texture_and_ensure_request (StTextureCache        *cache,
 
 /**
  * st_texture_cache_load_gicon:
+ * @cache: The texture cache instance
+ * @icon: the #GIcon to load
+ * @size: Size of themed
  *
- * This method returns a new #ClutterClone for a given #GIcon.  If the
- * icon isn't loaded already, the texture will be filled asynchronously.
+ * This method returns a new #ClutterActor for a given #GIcon. If the
+ * icon isn't loaded already, the texture will be filled
+ * asynchronously.
+ *
+ * This will load @icon as a full-color icon; if you want a symbolic
+ * icon, you must use st_texture_cache_load_icon_name().
  *
  * Return Value: (transfer none): A new #ClutterActor for the icon
  */
@@ -1123,28 +1130,77 @@ st_texture_cache_load_sliced_image (StTextureCache    *cache,
 }
 
 /**
+ * StIconType:
+ * @ST_ICON_SYMBOLIC: a symbolic (ie, mostly monochrome) icon
+ * @ST_ICON_FULLCOLOR: a full-color icon
+ * @ST_ICON_APPLICATION: a full-color icon, which is expected
+ *   to be an application icon
+ * @ST_ICON_DOCUMENT: a full-color icon, which is expected
+ *   to be a document (MIME type) icon
+ *
+ * Describes what style of icon is desired in a call to
+ * st_texture_cache_load_icon_name() or st_texture_cache_load_gicon().
+ * Use %ST_ICON_SYMBOLIC for symbolic icons (eg, for the panel and
+ * much of the rest of the shell chrome) or %ST_ICON_FULLCOLOR for a
+ * full-color icon.
+ *
+ * If you know that the requested icon is either an application icon
+ * or a document type icon, you should use %ST_ICON_APPLICATION or
+ * %ST_ICON_DOCUMENT, which may do a better job of selecting the
+ * correct theme icon for those types. If you are unsure what kind of
+ * icon you are loading, use %ST_ICON_FULLCOLOR.
+ */
+
+/**
  * st_texture_cache_load_icon_name:
  * @cache: The texture cache instance
  * @name: Name of a themed icon
+ * @icon_type: the type of icon to load
  * @size: Size of themed
  *
- * Load a themed icon into a texture.
+ * Load a themed icon into a texture. See the #StIconType documentation
+ * for an explanation of how @icon_type affects the returned icon.
  *
  * Return Value: (transfer none): A new #ClutterTexture for the icon
  */
 ClutterActor *
 st_texture_cache_load_icon_name (StTextureCache    *cache,
                                  const char        *name,
+                                 StIconType         icon_type,
                                  gint               size)
 {
   ClutterActor *texture;
   GIcon *themed;
+  char *symbolic;
 
-  themed = g_themed_icon_new (name);
-  texture = st_texture_cache_load_gicon (cache, themed, size);
-  g_object_unref (themed);
+  switch (icon_type)
+    {
+    case ST_ICON_APPLICATION:
+    case ST_ICON_DOCUMENT:
+      themed = g_themed_icon_new (name);
+      texture = st_texture_cache_load_gicon (cache, themed, size);
+      g_object_unref (themed);
 
-  return CLUTTER_ACTOR (texture);
+      return CLUTTER_ACTOR (texture);
+      break;
+    case ST_ICON_SYMBOLIC:
+      symbolic = g_strconcat (name, "-symbolic", NULL);
+      themed = g_themed_icon_new_with_default_fallbacks ((const gchar*)symbolic);
+      g_free (symbolic);
+      texture = st_texture_cache_load_gicon (cache, themed, size);
+      g_object_unref (themed);
+
+      return CLUTTER_ACTOR (texture);
+      break;
+    case ST_ICON_FULLCOLOR:
+      themed = g_themed_icon_new_with_default_fallbacks (name);
+      texture = st_texture_cache_load_gicon (cache, themed, size);
+
+      return CLUTTER_ACTOR (texture);
+      break;
+    default:
+      g_assert_not_reached ();
+    }
 }
 
 /**

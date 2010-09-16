@@ -33,6 +33,13 @@ struct _StTextureCacheClass
 };
 
 typedef enum {
+  ST_ICON_SYMBOLIC,
+  ST_ICON_FULLCOLOR,
+  ST_ICON_APPLICATION,
+  ST_ICON_DOCUMENT
+} StIconType;
+
+typedef enum {
   ST_TEXTURE_CACHE_POLICY_NONE,
   ST_TEXTURE_CACHE_POLICY_FOREVER
 } StTextureCachePolicy;
@@ -53,6 +60,7 @@ ClutterActor *st_texture_cache_bind_pixbuf_property (StTextureCache    *cache,
 
 ClutterActor *st_texture_cache_load_icon_name (StTextureCache *cache,
                                                const char     *name,
+                                               StIconType      icon_type,
                                                gint            size);
 
 ClutterActor *st_texture_cache_load_gicon (StTextureCache *cache,

@@ -158,7 +158,7 @@ PlacesManager.prototype = {
 
         this._connect = new PlaceInfo('special:connect', _("Connect to..."),
             function (size) {
-                return St.TextureCache.get_default().load_icon_name('applications-internet', size);
+                return St.TextureCache.get_default().load_icon_name('applications-internet', St.IconType.FULLCOLOR, size);
             },
             function () {
                 new Shell.Process({ args: ['nautilus-connect-server'] }).run();
@@ -432,7 +432,7 @@ DashPlaceDisplayItem.prototype = {
         box.add(text, { expand: true, x_fill: true });
 
         if (info.isRemovable()) {
-            let removeIcon = St.TextureCache.get_default().load_icon_name ('media-eject', PLACES_ICON_SIZE);
+            let removeIcon = St.TextureCache.get_default().load_icon_name ('media-eject', St.IconType.FULLCOLOR, PLACES_ICON_SIZE);
             let removeIconBox = new St.Clickable({ child: removeIcon,
                                                    reactive: true });
             box.add(removeIconBox);
