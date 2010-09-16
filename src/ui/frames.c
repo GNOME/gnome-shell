@@ -2235,13 +2235,17 @@ clip_to_screen (MetaRegion *region, MetaUIFrame *frame)
                  META_CORE_GET_FRAME_Y, &frame_area.y,
                  META_CORE_GET_FRAME_WIDTH, &frame_area.width,
                  META_CORE_GET_FRAME_HEIGHT, &frame_area.height,
-                 META_CORE_GET_SCREEN_WIDTH, &screen_area.height,
+                 META_CORE_GET_SCREEN_WIDTH, &screen_area.width,
                  META_CORE_GET_SCREEN_HEIGHT, &screen_area.height,
                  META_CORE_GET_END);
 
   meta_region_translate (region, frame_area.x, frame_area.y);
 
   tmp_region = meta_region_new_from_rectangle (&frame_area);
+  meta_region_intersect (region, tmp_region);
+  meta_region_destroy (tmp_region);
+
+  tmp_region = meta_region_new_from_rectangle (&screen_area);
   meta_region_intersect (region, tmp_region);
   meta_region_destroy (tmp_region);
 
