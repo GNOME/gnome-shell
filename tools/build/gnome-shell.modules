@@ -162,6 +162,14 @@
     <branch repo="git.gnome.org" module="gsettings-desktop-schemas" />
   </autotools>
 
+  <autotools id="gnome-icon-theme">
+    <branch repo="git.gnome.org" module="gnome-icon-theme" />
+  </autotools>
+
+  <autotools id="gnome-icon-theme-symbolic">
+    <branch repo="git.gnome.org" module="gnome-icon-theme-symbolic" />
+  </autotools>
+
   <autotools id="gnome-shell">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
@@ -173,6 +181,8 @@
         <dep package="glib"/>
         <dep package="gnome-desktop-3"/>
         <dep package="gsettings-desktop-schemas"/>
+        <dep package="gnome-icon-theme"/>
+        <dep package="gnome-icon-theme-symbolic"/>
     </dependencies>
   </autotools>
 
