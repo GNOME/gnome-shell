@@ -2500,28 +2500,29 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
       meta_region_subtract (edges, tmp_region);
       meta_region_destroy (tmp_region);
 
+      /* Bug 399529: clamp areas[i] so that it doesn't go too far
+       * off the edge of the screen. This works around a GDK bug
+       * which makes gdk_window_begin_paint_rect cause an X error
+       * if the window is insanely huge. If the client is a GDK program
+       * and does this, it will still probably cause an X error in that
+       * program, but the last thing we want is for Metacity to crash
+       * because it attempted to decorate the silly window.
+       */
+
+      area.x = -DECORATING_BORDER;
+      area.y = -DECORATING_BORDER; 
+      area.width = screen_width + 2 * DECORATING_BORDER;
+      area.height = screen_height + 2 * DECORATING_BORDER;
+      tmp_region = meta_region_new_from_rectangle (&area);
+      meta_region_intersect (edges, tmp_region);
+      meta_region_destroy (tmp_region);
+
       /* Now draw remaining portion of region */
 
       meta_region_get_rectangles (edges, &areas, &n_areas);
 
       for (i = 0; i < n_areas; i++)
         {
-          /* Bug 399529: clamp areas[i] so that it doesn't go too far
-           * off the edge of the screen. This works around a GDK bug
-           * which makes gdk_window_begin_paint_rect cause an X error
-           * if the window is insanely huge. If the client is a GDK program
-           * and does this, it will still probably cause an X error in that
-           * program, but the last thing we want is for Metacity to crash
-           * because it attempted to decorate the silly window.
-           */
-
-          areas[i].x = MAX (areas[i].x, -DECORATING_BORDER); 
-          areas[i].y = MAX (areas[i].y, -DECORATING_BORDER); 
-          if (areas[i].x+areas[i].width  > screen_width  + DECORATING_BORDER)
-            areas[i].width  = MIN (0, screen_width  - areas[i].x);
-          if (areas[i].y+areas[i].height > screen_height + DECORATING_BORDER)
-            areas[i].height = MIN (0, screen_height - areas[i].y);
-
           /* Okay, so let's start painting. */
 
           gdk_window_begin_paint_rect (drawable, &areas[i]);
