@@ -154,8 +154,8 @@ update_fbo (ClutterEffect *effect)
    * to make this work reliably
    */
   clutter_actor_get_transformed_size (priv->actor, &width, &height);
-  if (fabsf (priv->target_width - width) < 0.00001f &&
-      fabsf (priv->target_height - height) < 0.0001f)
+  if (priv->target_width == width &&
+      priv->target_height == height)
     return TRUE;
 
   if (priv->target != COGL_INVALID_HANDLE)
@@ -250,7 +250,7 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
 {
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
   ClutterOffscreenEffectPrivate *priv = self->priv;
-  ClutterPerspective perspective;
+  CoglMatrix projection;
   CoglColor transparent;
   CoglMatrix modelview;
   gfloat width, height;
@@ -265,14 +265,9 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
     return FALSE;
 
   /* get the current modelview matrix so that we can copy it
-   * on the new framebuffer
+   * to the framebuffer
    */
   cogl_get_modelview_matrix (&modelview);
-
-  clutter_stage_get_perspective (CLUTTER_STAGE (priv->stage), &perspective);
-  clutter_actor_get_size (priv->stage, &width, &height);
-
-  get_screen_offsets (priv->actor, &priv->x_offset, &priv->y_offset);
 
   /* let's draw offscreen */
   cogl_push_framebuffer (priv->offscreen);
@@ -281,11 +276,17 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
    * and it has its origin at the same position of the stage's; also
    * set up the perspective to be the same as the stage's
    */
+  clutter_actor_get_size (priv->stage, &width, &height);
+  get_screen_offsets (priv->actor, &priv->x_offset, &priv->y_offset);
   cogl_set_viewport (-priv->x_offset, -priv->y_offset, width, height);
-  cogl_perspective (perspective.fovy,
-                    perspective.aspect,
-                    perspective.z_near,
-                    perspective.z_far);
+
+  /* Copy the stage's projection matrix across to the framebuffer */
+  _clutter_stage_get_projection_matrix (CLUTTER_STAGE (priv->stage),
+                                        &projection);
+  cogl_set_projection_matrix (&projection);
+
+  /* Copy the modelview that would have been used if rendering onscreen */
+  cogl_set_modelview_matrix (&modelview);
 
   cogl_color_init_from_4ub (&transparent, 0, 0, 0, 0);
   cogl_clear (&transparent,
@@ -293,8 +294,6 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
               COGL_BUFFER_BIT_DEPTH);
 
   cogl_push_matrix ();
-
-  cogl_set_modelview_matrix (&modelview);
 
   return TRUE;
 }
@@ -331,10 +330,7 @@ clutter_offscreen_effect_post_paint (ClutterEffect *effect)
 {
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
   ClutterOffscreenEffectPrivate *priv = self->priv;
-  ClutterPerspective perspective;
-  CoglMatrix modelview, matrix;
-  gfloat width, height;
-  gfloat z_camera;
+  CoglMatrix modelview;
 
   if (priv->offscreen == COGL_INVALID_HANDLE ||
       priv->target == COGL_INVALID_HANDLE ||
@@ -344,27 +340,16 @@ clutter_offscreen_effect_post_paint (ClutterEffect *effect)
   cogl_pop_matrix ();
   cogl_pop_framebuffer ();
 
-  clutter_stage_get_perspective (CLUTTER_STAGE (priv->stage), &perspective);
-  clutter_actor_get_size (priv->stage, &width, &height);
-
-  cogl_get_modelview_matrix (&modelview);
-  cogl_get_projection_matrix (&matrix);
-  z_camera = 0.5f * matrix.xx;
-
-  /* obliterate the current modelview matrix and reset it to be
-   * the same as the stage's at the beginning of a paint run; this
-   * is done to paint the target material in screen coordinates at
-   * the same place as the actor would have been
-   */
-  cogl_matrix_init_identity (&matrix);
-  cogl_matrix_translate (&matrix, -0.5f, -0.5f, -z_camera);
-  cogl_matrix_scale (&matrix, 1.0f / width, -1.0f / height, 1.0f / width);
-  cogl_matrix_translate (&matrix, 0.0f, -1.0f * height, 0.0f);
-  cogl_set_modelview_matrix (&matrix);
-
   cogl_push_matrix ();
 
-  cogl_translate (priv->x_offset, priv->y_offset, 0.0f);
+  /* Now reset the modelview to put us in stage coordinates so
+   * we can drawn the result of our offscreen render as a textured
+   * quad... */
+
+  cogl_matrix_init_identity (&modelview);
+  _clutter_actor_apply_modelview_transform (priv->stage, &modelview);
+  cogl_matrix_translate (&modelview, priv->x_offset, priv->y_offset, 0.0f);
+  cogl_set_modelview_matrix (&modelview);
 
   /* paint the target material; this is virtualized for
    * sub-classes that require special hand-holding
@@ -372,9 +357,6 @@ clutter_offscreen_effect_post_paint (ClutterEffect *effect)
   clutter_offscreen_effect_paint_target (self);
 
   cogl_pop_matrix ();
-
-  /* reset the modelview matrix */
-  cogl_set_modelview_matrix (&modelview);
 }
 
 static void
