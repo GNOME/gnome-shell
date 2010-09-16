@@ -41,18 +41,18 @@
   </autotools>
 
   <autotools id="pixman" autogenargs="--disable-gtk">
-    <branch module="releases/pixman-0.18.2.tar.gz" version="0.18.2"
+    <branch module="releases/pixman-0.18.4.tar.gz" version="0.18.4"
             repo="cairo.org"
-            hash="sha256:80aee833b429d105d2c7593ef96993da04441b3b747084f1f3bfd7be594e1c45"
-            md5sum="5d1378fa61610dd5d3c7e0111b2c5253" size="510704">
+            hash="sha256:1484092277c5187f5458229a2b7fd7fbc0cb07e1f220c7f8f9ac65de6dba7989"
+            md5sum="532db4194e18c108d0b7dd85f20d39b8" size="510878">
     </branch>
   </autotools>
 
   <autotools id="cairo">
-    <branch module="snapshots/cairo-1.9.14.tar.gz" version="1.9.14"
+    <branch module="snapshots/cairo-1.10.0.tar.gz" version="1.10.0"
             repo="cairo.org"
-            hash="sha256:47d08aad4bf55a8359bc64b03421fe9f634f9887cc437ab6b3f4b862c40bfb35"
-            md5sum="885951f646e6e1b2d4819734d24b1656" size="23404523">
+            hash="sha256:0f2ce4cc4615594088d74eb8b5360bad7c3cc3c3da9b61af9bfd979ed1ed94b2"
+            md5sum="70a2ece66cf473d976e2db0f75bf199e" size="24022822">
     </branch>
     <dependencies>
       <dep package="pixman"/>
