@@ -2334,11 +2334,6 @@ meta_frames_expose_event (GtkWidget           *widget,
   return TRUE;
 }
 
-/* How far off the screen edge the window decorations should
- * be drawn. Used only in meta_frames_paint_to_drawable, below.
- */
-#define DECORATING_BORDER 100
-
 static void
 meta_frames_paint_to_drawable (MetaFrames   *frames,
                                MetaUIFrame  *frame,
@@ -2477,7 +2472,6 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
 
       GdkRectangle area, *areas;
       int n_areas;
-      int screen_width, screen_height;
       MetaRegion *edges, *tmp_region;
       int top, bottom, left, right;
  
@@ -2486,11 +2480,6 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
       meta_theme_get_frame_borders (meta_theme_get_current (),
                              type, frame->text_height, flags, 
                              &top, &bottom, &left, &right);
-
-      meta_core_get (display, frame->xwindow,
-                     META_CORE_GET_SCREEN_WIDTH, &screen_width,
-                     META_CORE_GET_SCREEN_HEIGHT, &screen_height,
-                     META_CORE_GET_END);
 
       edges = meta_region_copy (region);
 
@@ -2502,23 +2491,6 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
       area.height = h;
       tmp_region = meta_region_new_from_rectangle (&area);
       meta_region_subtract (edges, tmp_region);
-      meta_region_destroy (tmp_region);
-
-      /* Bug 399529: clamp areas[i] so that it doesn't go too far
-       * off the edge of the screen. This works around a GDK bug
-       * which makes gdk_window_begin_paint_rect cause an X error
-       * if the window is insanely huge. If the client is a GDK program
-       * and does this, it will still probably cause an X error in that
-       * program, but the last thing we want is for Metacity to crash
-       * because it attempted to decorate the silly window.
-       */
-
-      area.x = -DECORATING_BORDER;
-      area.y = -DECORATING_BORDER; 
-      area.width = screen_width + 2 * DECORATING_BORDER;
-      area.height = screen_height + 2 * DECORATING_BORDER;
-      tmp_region = meta_region_new_from_rectangle (&area);
-      meta_region_intersect (edges, tmp_region);
       meta_region_destroy (tmp_region);
 
       /* Now draw remaining portion of region */
