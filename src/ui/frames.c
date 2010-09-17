@@ -2253,6 +2253,32 @@ clip_to_screen (MetaRegion *region, MetaUIFrame *frame)
 }
 
 static void
+subtract_client_area (MetaRegion *region, MetaUIFrame *frame)
+{
+  GdkRectangle area;
+  MetaFrameFlags flags;
+  MetaFrameType type;
+  MetaRegion *tmp_region;
+  Display *display;
+  
+  display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
+
+  meta_core_get (display, frame->xwindow,
+                 META_CORE_GET_FRAME_FLAGS, &flags,
+                 META_CORE_GET_FRAME_TYPE, &type,
+                 META_CORE_GET_CLIENT_WIDTH, &area.width,
+                 META_CORE_GET_CLIENT_HEIGHT, &area.height,
+                 META_CORE_GET_END);
+  meta_theme_get_frame_borders (meta_theme_get_current (),
+                         type, frame->text_height, flags, 
+                         &area.x, NULL, &area.y, NULL);
+
+  tmp_region = meta_region_new_from_rectangle (&area);
+  meta_region_subtract (region, tmp_region);
+  meta_region_destroy (tmp_region);
+}
+
+static void
 subtract_from_region (MetaRegion *region, GdkDrawable *drawable,
                       gint x, gint y)
 {
@@ -2327,6 +2353,8 @@ meta_frames_expose_event (GtkWidget           *widget,
   cached_pixels_draw (pixels, frame->window, region);
   
   clip_to_screen (region, frame);
+  subtract_client_area (region, frame);
+
   meta_frames_paint_to_drawable (frames, frame, frame->window, region, 0, 0);
 
   meta_region_destroy (region);
@@ -2470,32 +2498,10 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
     {
       /* A window; happens about 2/3 of the time */
 
-      GdkRectangle area, *areas;
+      GdkRectangle *areas;
       int n_areas;
-      MetaRegion *edges, *tmp_region;
-      int top, bottom, left, right;
  
-      /* Repaint each side of the frame */
-
-      meta_theme_get_frame_borders (meta_theme_get_current (),
-                             type, frame->text_height, flags, 
-                             &top, &bottom, &left, &right);
-
-      edges = meta_region_copy (region);
-
-      /* Punch out the client area */
-
-      area.x = left;
-      area.y = top;
-      area.width = w;
-      area.height = h;
-      tmp_region = meta_region_new_from_rectangle (&area);
-      meta_region_subtract (edges, tmp_region);
-      meta_region_destroy (tmp_region);
-
-      /* Now draw remaining portion of region */
-
-      meta_region_get_rectangles (edges, &areas, &n_areas);
+      meta_region_get_rectangles (region, &areas, &n_areas);
 
       for (i = 0; i < n_areas; i++)
         {
@@ -2522,7 +2528,6 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
         }
 
       g_free (areas);
-      meta_region_destroy (edges);
 
     }
   else
