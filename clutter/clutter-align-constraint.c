@@ -55,6 +55,7 @@ struct _ClutterAlignConstraint
 {
   ClutterConstraint parent_instance;
 
+  ClutterActor *actor;
   ClutterActor *source;
   ClutterAlignAxis align_axis;
   gfloat factor;
@@ -83,51 +84,13 @@ G_DEFINE_TYPE (ClutterAlignConstraint,
                CLUTTER_TYPE_CONSTRAINT);
 
 static void
-update_actor_position (ClutterAlignConstraint *align)
-{
-  gfloat source_width, source_height;
-  gfloat actor_width, actor_height;
-  gfloat source_x, source_y;
-  gfloat new_position;
-  ClutterActor *actor;
-
-  if (align->source == NULL)
-    return;
-
-  if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (align)))
-    return;
-
-  actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (align));
-  if (actor == NULL)
-    return;
-
-  clutter_actor_get_position (align->source, &source_x, &source_y);
-  clutter_actor_get_size (align->source, &source_width, &source_height);
-  clutter_actor_get_size (actor, &actor_width, &actor_height);
-
-  switch (align->align_axis)
-    {
-    case CLUTTER_ALIGN_X_AXIS:
-      new_position = ((source_width - actor_width) * align->factor)
-                   + source_x;
-      clutter_actor_set_x (actor, new_position);
-      break;
-
-    case CLUTTER_ALIGN_Y_AXIS:
-      new_position = ((source_height - actor_height) * align->factor)
-                   + source_y;
-      clutter_actor_set_y (actor, new_position);
-      break;
-    }
-}
-
-static void
 source_position_changed (ClutterActor           *actor,
                          const ClutterActorBox  *allocation,
                          ClutterAllocationFlags  flags,
                          ClutterAlignConstraint *align)
 {
-  update_actor_position (align);
+  if (align->actor != NULL)
+    clutter_actor_queue_relayout (align->actor);
 }
 
 static void
@@ -135,6 +98,62 @@ source_destroyed (ClutterActor           *actor,
                   ClutterAlignConstraint *align)
 {
   align->source = NULL;
+}
+
+static void
+clutter_align_constraint_set_actor (ClutterActorMeta *meta,
+                                    ClutterActor     *new_actor)
+{
+  ClutterAlignConstraint *align = CLUTTER_ALIGN_CONSTRAINT (meta);
+  ClutterActorMetaClass *parent;
+
+  /* store the pointer to the actor, for later use */
+  align->actor = new_actor;
+
+  parent = CLUTTER_ACTOR_META_CLASS (clutter_align_constraint_parent_class);
+  parent->set_actor (meta, new_actor);
+}
+
+static void
+clutter_align_constraint_update_allocation (ClutterConstraint *constraint,
+                                            ClutterActor      *actor,
+                                            ClutterActorBox   *allocation)
+{
+  ClutterAlignConstraint *align = CLUTTER_ALIGN_CONSTRAINT (constraint);
+  ClutterActorMeta *meta = CLUTTER_ACTOR_META (constraint);
+  gfloat source_width, source_height;
+  gfloat actor_width, actor_height;
+  gfloat source_x, source_y;
+
+  if (align->source == NULL)
+    return;
+
+  if (!clutter_actor_meta_get_enabled (meta))
+    return;
+
+  clutter_actor_get_position (align->source, &source_x, &source_y);
+  clutter_actor_get_size (align->source, &source_width, &source_height);
+
+  switch (align->align_axis)
+    {
+    case CLUTTER_ALIGN_X_AXIS:
+      actor_width = clutter_actor_box_get_width (allocation);
+      allocation->x1 = ((source_width - actor_width) * align->factor)
+                     + source_x;
+      allocation->x2 = allocation->x1 + actor_width;
+      break;
+
+    case CLUTTER_ALIGN_Y_AXIS:
+      actor_height = clutter_actor_box_get_height (allocation);
+      allocation->y1 = ((source_height - actor_height) * align->factor)
+                     + source_y;
+      allocation->y2 = allocation->y1 + actor_height;
+      break;
+
+    default:
+      g_assert_not_reached ();
+      break;
+    }
 }
 
 static void
@@ -197,10 +216,16 @@ static void
 clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
+  ClutterConstraintClass *constraint_class = CLUTTER_CONSTRAINT_CLASS (klass);
   GParamSpec *pspec;
 
   gobject_class->set_property = clutter_align_constraint_set_property;
   gobject_class->get_property = clutter_align_constraint_get_property;
+
+  meta_class->set_actor = clutter_align_constraint_set_actor;
+
+  constraint_class->update_allocation = clutter_align_constraint_update_allocation;
 
   /**
    * ClutterAlignConstraint:source:
@@ -261,6 +286,7 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
 static void
 clutter_align_constraint_init (ClutterAlignConstraint *self)
 {
+  self->actor = NULL;
   self->source = NULL;
   self->align_axis = CLUTTER_ALIGN_X_AXIS;
   self->factor = 0.0f;
@@ -328,7 +354,6 @@ clutter_align_constraint_set_source (ClutterAlignConstraint *align,
     }
 
   align->source = source;
-
   if (align->source != NULL)
     {
       g_signal_connect (align->source, "allocation-changed",
@@ -338,7 +363,8 @@ clutter_align_constraint_set_source (ClutterAlignConstraint *align,
                         G_CALLBACK (source_destroyed),
                         align);
 
-      update_actor_position (align);
+      if (align->actor != NULL)
+        clutter_actor_queue_relayout (align->actor);
     }
 
   _clutter_notify_by_pspec (G_OBJECT (align), obj_props[PROP_SOURCE]);
@@ -383,7 +409,8 @@ clutter_align_constraint_set_align_axis (ClutterAlignConstraint *align,
 
   align->align_axis = axis;
 
-  update_actor_position (align);
+  if (align->actor != NULL)
+    clutter_actor_queue_relayout (align->actor);
 
   _clutter_notify_by_pspec (G_OBJECT (align), obj_props[PROP_ALIGN_AXIS]);
 }
@@ -434,7 +461,8 @@ clutter_align_constraint_set_factor (ClutterAlignConstraint *align,
 
   align->factor = CLAMP (factor, 0.0, 1.0);
 
-  update_actor_position (align);
+  if (align->actor != NULL)
+    clutter_actor_queue_relayout (align->actor);
 
   _clutter_notify_by_pspec (G_OBJECT (align), obj_props[PROP_FACTOR]);
 }

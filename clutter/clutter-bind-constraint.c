@@ -101,6 +101,7 @@ struct _ClutterBindConstraint
 {
   ClutterConstraint parent_instance;
 
+  ClutterActor *actor;
   ClutterActor *source;
   ClutterBindCoordinate coordinate;
   gfloat offset;
@@ -129,66 +130,13 @@ G_DEFINE_TYPE (ClutterBindConstraint,
                CLUTTER_TYPE_CONSTRAINT);
 
 static void
-update_actor_coords (ClutterBindConstraint *bind)
-{
-  gfloat source_width, source_height;
-  ClutterVertex source_position;
-  ClutterActor *actor;
-
-  if (bind->source == NULL)
-    return;
-
-  if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (bind)))
-    return;
-
-  actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (bind));
-  if (actor == NULL)
-    return;
-
-  source_position.x = clutter_actor_get_x (bind->source);
-  source_position.y = clutter_actor_get_y (bind->source);
-  source_position.z = clutter_actor_get_depth (bind->source);
-  clutter_actor_get_size (bind->source, &source_width, &source_height);
-
-  switch (bind->coordinate)
-    {
-    case CLUTTER_BIND_X:
-      clutter_actor_set_x (actor, source_position.x + bind->offset);
-      break;
-
-    case CLUTTER_BIND_Y:
-      clutter_actor_set_y (actor, source_position.y + bind->offset);
-      break;
-
-    case CLUTTER_BIND_Z:
-      clutter_actor_set_depth (actor, source_position.z + bind->offset);
-      break;
-
-    case CLUTTER_BIND_WIDTH:
-      clutter_actor_set_width (actor, source_width + bind->offset);
-      break;
-
-    case CLUTTER_BIND_HEIGHT:
-      clutter_actor_set_height (actor, source_height + bind->offset);
-      break;
-    }
-}
-
-static void
 source_allocation_changed (ClutterActor           *source,
                            const ClutterActorBox  *allocation,
                            ClutterAllocationFlags  flags,
                            ClutterBindConstraint  *bind)
 {
-  update_actor_coords (bind);
-}
-
-static void
-source_depth_changed (GObject               *gobject,
-                      GParamSpec            *pspec,
-                      ClutterBindConstraint *bind)
-{
-  update_actor_coords (bind);
+  if (bind->actor != NULL)
+    clutter_actor_queue_relayout (bind->actor);
 }
 
 static void
@@ -196,6 +144,69 @@ source_destroyed (ClutterActor          *actor,
                   ClutterBindConstraint *bind)
 {
   bind->source = NULL;
+}
+
+static void
+clutter_bind_constraint_update_allocation (ClutterConstraint *constraint,
+                                           ClutterActor      *actor,
+                                           ClutterActorBox   *allocation)
+{
+  ClutterBindConstraint *bind = CLUTTER_BIND_CONSTRAINT (constraint);
+  ClutterActorMeta *meta = CLUTTER_ACTOR_META (constraint);
+  gfloat source_width, source_height;
+  gfloat actor_width, actor_height;
+  ClutterVertex source_position = { 0., };
+
+  if (bind->source == NULL)
+    return;
+
+  if (!clutter_actor_meta_get_enabled (meta))
+    return;
+
+  source_position.x = clutter_actor_get_x (bind->source);
+  source_position.y = clutter_actor_get_y (bind->source);
+  clutter_actor_get_size (bind->source, &source_width, &source_height);
+
+  clutter_actor_box_get_size (allocation, &actor_width, &actor_height);
+
+  switch (bind->coordinate)
+    {
+    case CLUTTER_BIND_X:
+      allocation->x1 = source_position.x + bind->offset;
+      allocation->x2 = allocation->x1 + actor_width;
+      break;
+
+    case CLUTTER_BIND_Y:
+      allocation->y1 = source_position.y + bind->offset;
+      allocation->y2 = allocation->y1 + actor_height;
+      break;
+
+    case CLUTTER_BIND_WIDTH:
+      allocation->x2 = allocation->x1 + source_width + bind->offset;
+      break;
+
+    case CLUTTER_BIND_HEIGHT:
+      allocation->y2 = allocation->y1 + source_height + bind->offset;
+      break;
+
+    default:
+      g_assert_not_reached ();
+      break;
+    }
+}
+
+static void
+clutter_bind_constraint_set_actor (ClutterActorMeta *meta,
+                                   ClutterActor     *new_actor)
+{
+  ClutterBindConstraint *bind = CLUTTER_BIND_CONSTRAINT (meta);
+  ClutterActorMetaClass *parent;
+
+  /* store the pointer to the actor, for later use */
+  bind->actor = new_actor;
+
+  parent = CLUTTER_ACTOR_META_CLASS (clutter_bind_constraint_parent_class);
+  parent->set_actor (meta, new_actor);
 }
 
 static void
@@ -257,12 +268,17 @@ clutter_bind_constraint_get_property (GObject    *gobject,
 static void
 clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
 {
+  ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
+  ClutterConstraintClass *constraint_class = CLUTTER_CONSTRAINT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GParamSpec *pspec;
 
   gobject_class->set_property = clutter_bind_constraint_set_property;
   gobject_class->get_property = clutter_bind_constraint_get_property;
 
+  meta_class->set_actor = clutter_bind_constraint_set_actor;
+
+  constraint_class->update_allocation = clutter_bind_constraint_update_allocation;
   /**
    * ClutterBindConstraint:source:
    *
@@ -317,6 +333,7 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
 static void
 clutter_bind_constraint_init (ClutterBindConstraint *self)
 {
+  self->actor = NULL;
   self->source = NULL;
   self->coordinate = CLUTTER_BIND_X;
   self->offset = 0.0f;
@@ -368,6 +385,9 @@ clutter_bind_constraint_set_source (ClutterBindConstraint *constraint,
   g_return_if_fail (CLUTTER_IS_BIND_CONSTRAINT (constraint));
   g_return_if_fail (source == NULL || CLUTTER_IS_ACTOR (source));
 
+  if (constraint->source == source)
+    return;
+
   old_source = constraint->source;
   if (old_source != NULL)
     {
@@ -377,9 +397,6 @@ clutter_bind_constraint_set_source (ClutterBindConstraint *constraint,
       g_signal_handlers_disconnect_by_func (old_source,
                                             G_CALLBACK (source_allocation_changed),
                                             constraint);
-      g_signal_handlers_disconnect_by_func (old_source,
-                                            G_CALLBACK (source_depth_changed),
-                                            constraint);
     }
 
   constraint->source = source;
@@ -388,14 +405,12 @@ clutter_bind_constraint_set_source (ClutterBindConstraint *constraint,
       g_signal_connect (constraint->source, "allocation-changed",
                         G_CALLBACK (source_allocation_changed),
                         constraint);
-      g_signal_connect (constraint->source, "notify::depth",
-                        G_CALLBACK (source_depth_changed),
-                        constraint);
       g_signal_connect (constraint->source, "destroy",
                         G_CALLBACK (source_destroyed),
                         constraint);
 
-      update_actor_coords (constraint);
+      if (constraint->actor != NULL)
+        clutter_actor_queue_relayout (constraint->actor);
     }
 
   _clutter_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_SOURCE]);
@@ -439,7 +454,8 @@ clutter_bind_constraint_set_coordinate (ClutterBindConstraint *constraint,
 
   constraint->coordinate = coordinate;
 
-  update_actor_coords (constraint);
+  if (constraint->actor != NULL)
+    clutter_actor_queue_relayout (constraint->actor);
 
   _clutter_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_COORDINATE]);
 }
@@ -483,7 +499,8 @@ clutter_bind_constraint_set_offset (ClutterBindConstraint *constraint,
 
   constraint->offset = offset;
 
-  update_actor_coords (constraint);
+  if (constraint->actor != NULL)
+    clutter_actor_queue_relayout (constraint->actor);
 
   _clutter_notify_by_pspec (G_OBJECT (constraint), obj_props[PROP_OFFSET]);
 }
