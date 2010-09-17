@@ -114,8 +114,8 @@ guint                 clutter_table_layout_get_row_spacing     (ClutterTableLayo
 
 void                  clutter_table_layout_set_span            (ClutterTableLayout    *layout,
                                                                 ClutterActor          *actor,
-                                                                gint                   column_span,
-                                                                gint                   row_span);
+                                                                gint                   row_span,
+                                                                gint                   column_span);
 void                  clutter_table_layout_get_span            (ClutterTableLayout    *layout,
                                                                 ClutterActor          *actor,
                                                                 gint                  *column_span,
