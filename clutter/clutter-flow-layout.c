@@ -104,6 +104,8 @@ struct _ClutterFlowLayoutPrivate
   /* per-line size */
   GArray *line_min;
   GArray *line_natural;
+  gfloat req_width;
+  gfloat req_height;
 
   guint line_count;
 
@@ -356,6 +358,8 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
                 total_natural_width,
                 for_height);
 
+  priv->req_height = for_height;
+
   if (min_width_p)
     *min_width_p = total_min_width;
 
@@ -531,6 +535,8 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
                 total_natural_height,
                 for_width);
 
+  priv->req_width = for_width;
+
   if (min_height_p)
     *min_height_p = total_min_height;
 
@@ -556,6 +562,21 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
     return;
 
   clutter_actor_box_get_size (allocation, &avail_width, &avail_height);
+
+  /* blow the cached preferred size and re-compute with the given
+   * available size in case the FlowLayout wasn't given the exact
+   * size it requested
+   */
+  if ((priv->req_width > 0 && avail_width != priv->req_width) ||
+      (priv->req_height > 0 && avail_height != priv->req_height))
+    {
+      clutter_flow_layout_get_preferred_width (manager, container,
+                                               avail_height,
+                                               NULL, NULL);
+      clutter_flow_layout_get_preferred_height (manager, container,
+                                                avail_width,
+                                                NULL, NULL);
+    }
 
   items_per_line = compute_lines (CLUTTER_FLOW_LAYOUT (manager),
                                   avail_width, avail_height);
