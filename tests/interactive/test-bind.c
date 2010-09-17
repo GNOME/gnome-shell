@@ -8,7 +8,7 @@
 
 static ClutterActor *rects[N_COLORS] = { NULL, };
 static const gchar *colors[N_COLORS] = {
-  "#cc0000", "#3465a4", "#73d216"
+  "#cc0000", "#73d216", "#3465a4"
 };
 static gboolean is_expanded = FALSE;
 
@@ -83,6 +83,7 @@ test_bind_main (int argc, char *argv[])
   clutter_actor_add_constraint_with_name (rects[1], "green-x", constraint);
   constraint = clutter_bind_constraint_new (rects[0], CLUTTER_BIND_Y, 0.0);
   clutter_actor_add_constraint_with_name (rects[1], "green-y", constraint);
+  clutter_actor_set_name (rects[1], "green rect");
 
   /* third rectangle */
   clutter_color_from_string (&color, colors[2]);
@@ -94,6 +95,7 @@ test_bind_main (int argc, char *argv[])
   clutter_actor_add_constraint_with_name (rects[2], "blue-x", constraint);
   constraint = clutter_bind_constraint_new (rects[0], CLUTTER_BIND_Y, 0.0);
   clutter_actor_add_constraint_with_name (rects[2], "blue-y", constraint);
+  clutter_actor_set_name (rects[2], "blue rect");
 
   /* add everything to the stage */
   clutter_container_add (CLUTTER_CONTAINER (stage),
