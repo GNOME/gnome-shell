@@ -510,6 +510,10 @@ clutter_state_change (ClutterState *state,
                                          priv->target_state_name);
   priv->target_state = new_state;
 
+  if (animator == NULL && new_state->keys == NULL)
+    animator = clutter_state_get_animator (state, NULL,
+                                           priv->target_state_name);
+
   if (animator != NULL)
     {
       /* we've got an animator overriding the tweened animation */
