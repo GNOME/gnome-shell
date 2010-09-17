@@ -413,10 +413,7 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
 {
   int buttons_height, title_height;
   
-  g_return_if_fail (top_height != NULL);
-  g_return_if_fail (bottom_height != NULL);
-  g_return_if_fail (left_width != NULL);
-  g_return_if_fail (right_width != NULL);
+  g_return_if_fail (layout != NULL);
 
   if (!layout->has_title)
     text_height = 0;
