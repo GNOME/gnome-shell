@@ -2329,7 +2329,9 @@ meta_frames_expose_event (GtkWidget           *widget,
   MetaUIFrame *frame;
   MetaFrames *frames;
   CachedPixels *pixels;
-  MetaRegion *region;
+  MetaRegion *region, *area_region;
+  GdkRectangle *areas;
+  int i, n_areas;
 
   frames = META_FRAMES (widget);
 
@@ -2355,7 +2357,22 @@ meta_frames_expose_event (GtkWidget           *widget,
   clip_to_screen (region, frame);
   subtract_client_area (region, frame);
 
-  meta_frames_paint_to_drawable (frames, frame, frame->window, region, 0, 0);
+  meta_region_get_rectangles (region, &areas, &n_areas);
+
+  for (i = 0; i < n_areas; i++)
+    {
+      area_region = meta_region_new_from_rectangle (&areas[i]);
+
+      gdk_window_begin_paint_region (event->window, area_region);
+
+      meta_frames_paint_to_drawable (frames, frame, event->window, area_region, 0, 0);
+
+      gdk_window_end_paint (event->window);
+
+      meta_region_destroy (area_region);
+    }
+
+  g_free (areas);
 
   meta_region_destroy (region);
   
@@ -2494,62 +2511,20 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
 
   meta_prefs_get_button_layout (&button_layout);
 
-  if (G_LIKELY (GDK_IS_WINDOW (drawable)))
-    {
-      /* A window; happens about 2/3 of the time */
-
-      GdkRectangle *areas;
-      int n_areas;
- 
-      meta_region_get_rectangles (region, &areas, &n_areas);
-
-      for (i = 0; i < n_areas; i++)
-        {
-          /* Okay, so let's start painting. */
-
-          gdk_window_begin_paint_rect (drawable, &areas[i]);
-
-          meta_theme_draw_frame_with_style (meta_theme_get_current (),
-            frame->style,
-            widget,
-            drawable,
-            NULL, /* &areas[i], */
-            x_offset, y_offset,
-            type,
-            flags,
-            w, h,
-            frame->layout,
-            frame->text_height,
-            &button_layout,
-            button_states,
-            mini_icon, icon);
-
-          gdk_window_end_paint (drawable);
-        }
-
-      g_free (areas);
-
-    }
-  else
-    {
-      /* Not a window; happens about 1/3 of the time */
-
-      meta_theme_draw_frame_with_style (meta_theme_get_current (),
-                                        frame->style,
-                             widget,
-                             drawable,
-                             NULL,
-                             x_offset, y_offset,
-                             type,
-                             flags,
-                             w, h,
-                             frame->layout,
-                             frame->text_height,
-                             &button_layout,
-                             button_states,
-                             mini_icon, icon);
-    }
-
+  meta_theme_draw_frame_with_style (meta_theme_get_current (),
+                                    frame->style,
+                                    widget,
+                                    drawable,
+                                    NULL, /* &areas[i], */
+                                    x_offset, y_offset,
+                                    type,
+                                    flags,
+                                    w, h,
+                                    frame->layout,
+                                    frame->text_height,
+                                    &button_layout,
+                                    button_states,
+                                    mini_icon, icon);
 }
 
 static void
