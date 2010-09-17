@@ -91,7 +91,7 @@ wrappers: stamp-test-conformance
 	@true
 stamp-test-conformance: Makefile test-conformance$(EXEEXT)
 	@mkdir -p wrappers
-	@( ./test-conformance$(EXEEXT) -l -m thorough | $(GREP) '^/' ) > unit-tests
+	@( $(abs_builddir)/test-conformance$(EXEEXT) -l -m thorough | $(GREP) '^/' ) > unit-tests
 	@chmod +x test-launcher.sh
 	@( echo "/stamp-test-conformance" ; \
 	   echo "/test-conformance" ; \
@@ -106,7 +106,7 @@ stamp-test-conformance: Makefile test-conformance$(EXEEXT)
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "  GEN    $$unit"; \
 		( echo "#!/bin/sh" ; echo "$(abs_builddir)/test-launcher.sh '$$i' \"\$$@\"" ) > $$unit$(EXEEXT) ; \
-		( echo "#!/bin/sh" ; echo "exec ./test-conformance$(EXEEXT) -p $$i \"\$$@\"" ) > wrappers/$$unit$(EXEEXT) ; \
+		( echo "#!/bin/sh" ; echo "exec $(abs_builddir)/test-conformance$(EXEEXT) -p $$i \"\$$@\"" ) > wrappers/$$unit$(EXEEXT) ; \
 		chmod +x $$unit$(EXEEXT); \
 		chmod +x wrappers/$$unit$(EXEEXT); \
 		echo "/$$unit$(EXEEXT)" >> .gitignore; \
