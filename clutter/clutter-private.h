@@ -383,6 +383,10 @@ gint32 _clutter_backend_get_units_serial (ClutterBackend *backend);
 gboolean _clutter_effect_pre_paint  (ClutterEffect *effect);
 void     _clutter_effect_post_paint (ClutterEffect *effect);
 
+void _clutter_constraint_update_allocation (ClutterConstraint *constraint,
+                                            ClutterActor      *actor,
+                                            ClutterActorBox   *allocation);
+
 GType _clutter_layout_manager_get_child_meta_type (ClutterLayoutManager *manager);
 
 void     _clutter_event_set_platform_data (ClutterEvent       *event,

@@ -1724,9 +1724,9 @@ clutter_actor_real_allocate (ClutterActor           *self,
   ClutterActorPrivate *priv = self->priv;
   gboolean x1_changed, y1_changed, x2_changed, y2_changed;
   gboolean flags_changed;
-  ClutterActorBox old = { 0, };
+  ClutterActorBox old_alloc = { 0, };
 
-  clutter_actor_store_old_geometry (self, &old);
+  clutter_actor_store_old_geometry (self, &old_alloc);
 
   x1_changed = priv->allocation.x1 != box->x1;
   y1_changed = priv->allocation.y1 != box->y1;
@@ -1749,11 +1749,11 @@ clutter_actor_real_allocate (ClutterActor           *self,
        * that wish to track the allocation flags
        */
       g_signal_emit (self, actor_signals[ALLOCATION_CHANGED], 0,
-                     box,
+                     &priv->allocation,
                      flags);
     }
 
-  clutter_actor_notify_if_geometry_changed (self, &old);
+  clutter_actor_notify_if_geometry_changed (self, &old_alloc);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -4059,7 +4059,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:constraints:
    *
-   * Adds a #ClutterConstaint to the actor
+   * Adds a #ClutterConstraint to the actor
    *
    * Since: 1.4
    */
@@ -5279,6 +5279,7 @@ clutter_actor_allocate (ClutterActor           *self,
 {
   ClutterActorPrivate *priv;
   ClutterActorClass *klass;
+  ClutterActorBox alloc;
   gboolean child_moved;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
@@ -5292,8 +5293,22 @@ clutter_actor_allocate (ClutterActor           *self,
 
   priv = self->priv;
 
-  child_moved = (box->x1 != priv->allocation.x1 ||
-                 box->y1 != priv->allocation.y1);
+  alloc = *box;
+
+  if (priv->constraints != NULL)
+    {
+      const GList *constraints, *l;
+
+      constraints = _clutter_meta_group_peek_metas (priv->constraints);
+      for (l = constraints; l != NULL; l = l->next)
+        {
+          ClutterConstraint *constraint = l->data;
+          _clutter_constraint_update_allocation (constraint, self, &alloc);
+        }
+    }
+
+  child_moved = (alloc.x1 != priv->allocation.x1 ||
+                 alloc.y1 != priv->allocation.y1);
 
   /* If we get an allocation "out of the blue"
    * (we did not queue relayout), then we want to
@@ -5311,8 +5326,8 @@ clutter_actor_allocate (ClutterActor           *self,
   if (!priv->needs_allocation &&
       !(flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED) &&
       !child_moved &&
-      box->x2 == priv->allocation.x2 &&
-      box->y2 == priv->allocation.y2)
+      alloc.x2 == priv->allocation.x2 &&
+      alloc.y2 == priv->allocation.y2)
     {
       CLUTTER_NOTE (LAYOUT, "No allocation needed");
       return;
@@ -5330,7 +5345,7 @@ clutter_actor_allocate (ClutterActor           *self,
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IN_RELAYOUT);
 
   klass = CLUTTER_ACTOR_GET_CLASS (self);
-  klass->allocate (self, box, flags);
+  klass->allocate (self, &alloc, flags);
 
   CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_RELAYOUT);
 }

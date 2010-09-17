@@ -69,6 +69,10 @@ struct _ClutterConstraintClass
   /*< private >*/
   ClutterActorMetaClass parent_class;
 
+  void (* update_allocation) (ClutterConstraint *constraint,
+                              ClutterActor      *actor,
+                              ClutterActorBox   *allocation);
+
   /*< private >*/
   void (* _clutter_constraint1) (void);
   void (* _clutter_constraint2) (void);
