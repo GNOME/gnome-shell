@@ -5,10 +5,14 @@
  * @See_Also: #ClutterAction, #ClutterConstraint
  *
  * #ClutterActorMeta is an abstract class providing a common API for
- * modifiers of #ClutterActor
+ * modifiers of #ClutterActor behaviour, appearance or layout.
  *
  * A #ClutterActorMeta can only be owned by a single #ClutterActor at
- * any time
+ * any time.
+ *
+ * Every sub-class of #ClutterActorMeta should check if the
+ * #ClutterActorMeta:enabled property is set to %TRUE before applying
+ * any kind of modification.
  *
  * #ClutterActorMeta is available since Clutter 1.4
  */

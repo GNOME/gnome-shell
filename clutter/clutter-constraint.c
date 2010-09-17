@@ -13,6 +13,32 @@
  * allocation of the actor to which they are applied by overriding the
  * <function>update_allocation()</function> virtual function.
  *
+ * <refsect2 id="ClutterConstraint-implementation">
+ *   <title>Implemting a ClutterConstraint</title>
+ *   <para>Creating a sub-class of #ClutterConstraint requires the
+ *   implementation of the <function>update_allocation()</function>
+ *   virtual function.</para>
+ *   <para>The <function>update_allocation()</function> virtual function
+ *   is called during the allocation sequence of a #ClutterActor, and
+ *   allows any #ClutterConstraint attached to that actor to modify the
+ *   allocation before it is passed to the <function>allocate()</function>
+ *   implementation.</para>
+ *   <para>The #ClutterActorBox passed to the
+ *   <function>update_allocation()</function> implementation contains the
+ *   original allocation of the #ClutterActor, plus the eventual modifications
+ *   applied by the other #ClutterConstraint<!-- -->s.</para>
+ *   <note><para>Constraints are queried in the same order as they were
+ *   applied using clutter_actor_add_constraint() or
+ *   clutter_actor_add_constraint_with_name().</para></note>
+ *   <para>It is not necessary for a #ClutterConstraint sub-class to chain
+ *   up to the parent's implementation.</para>
+ *   <para>If a #ClutterConstraint is parametrized - i.e. if it contains
+ *   properties that affect the way the constraint is implemented - it should
+ *   call clutter_actor_queue_relayout() on the actor to which it is attached
+ *   to whenever any parameter is changed. The actor to which it is attached
+ *   can be recovered at any point using clutter_actor_meta_get_actor().</para>
+ * </refsect2>
+ *
  * #ClutterConstraint is available since Clutter 1.4
  */
 
