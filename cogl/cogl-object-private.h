@@ -30,6 +30,7 @@
 
 #include "cogl-types.h"
 #include "cogl-object.h"
+#include "cogl-debug.h"
 
 /* For compatability until all components have been converted */
 typedef struct _CoglObjectClass CoglHandleClass;
