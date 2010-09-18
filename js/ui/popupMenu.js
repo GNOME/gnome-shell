@@ -40,12 +40,12 @@ Switch.prototype = {
             this._on.remove_style_pseudo_class('checked');
             this._on.text = _("ON");
             this._off.add_style_pseudo_class('checked');
-            this._off.text = '|||';
+            this._off.text = '      ';
         } else {
             this._off.remove_style_pseudo_class('checked');
             this._off.text = _("OFF");
             this._on.add_style_pseudo_class('checked');
-            this._on.text = '|||';
+            this._on.text = '      ';
         }
         this.state = state;
     },

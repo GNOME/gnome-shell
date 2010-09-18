@@ -121,7 +121,7 @@ StTooltip {
  * override .popup-menu.font-size, everything else will scale with it.
  */
 .popup-menu-content {
-    padding: .5em 0px;
+    padding: 1em .5em;
 }
 
 .popup-menu-item {
@@ -151,7 +151,6 @@ StTooltip {
 /* Switches (to be used in menus) */
 .switch {
 	border-radius: 5px;
-	border: 1px solid #ffffff;
 	padding: 0px 0.2em;
 }
 .switch-label {
@@ -159,7 +158,6 @@ StTooltip {
 	padding: 2px 0.1em; /* account for border if checked */
 }
 .switch-label:checked {
-	border: 2px solid #ffffff;
 	border-radius: 4px;
 	padding: 0px 0.3em;
 }
