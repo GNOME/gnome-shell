@@ -85,29 +85,29 @@ ATIndicator.prototype = {
         let textZoom = this._buildFontItem(client);
         this.menu.addMenuItem(textZoom);
 
-        let screenReader = this._buildItem(_("Screen reader"), AT_SCREEN_READER_SCHEMA, 'startup');
+        let screenReader = this._buildItem(_("Screen Reader"), AT_SCREEN_READER_SCHEMA, 'startup');
         this.menu.addMenuItem(screenReader);
 
-        let screenKeyboard = this._buildItem(_("Screen keyboard"), AT_SCREEN_KEYBOARD_SCHEMA, 'startup');
+        let screenKeyboard = this._buildItem(_("Screen Keyboard"), AT_SCREEN_KEYBOARD_SCHEMA, 'startup');
         this.menu.addMenuItem(screenKeyboard);
 
-        let visualBell = this._buildItemGConf(_("Visual alerts"), client, KEY_VISUAL_BELL);
+        let visualBell = this._buildItemGConf(_("Visual Alerts"), client, KEY_VISUAL_BELL);
         this.menu.addMenuItem(visualBell);
 
-        let stickyKeys = this._buildItemGConf(_("Sticky keys"), client, KEY_STICKY_KEYS_ENABLED);
+        let stickyKeys = this._buildItemGConf(_("Sticky Keys"), client, KEY_STICKY_KEYS_ENABLED);
         this.menu.addMenuItem(stickyKeys);
 
-        let slowKeys = this._buildItemGConf(_("Slow keys"), client, KEY_SLOW_KEYS_ENABLED);
+        let slowKeys = this._buildItemGConf(_("Slow Keys"), client, KEY_SLOW_KEYS_ENABLED);
         this.menu.addMenuItem(slowKeys);
 
-        let bounceKeys = this._buildItemGConf(_("Bounce keys"), client, KEY_BOUNCE_KEYS_ENABLED);
+        let bounceKeys = this._buildItemGConf(_("Bounce Keys"), client, KEY_BOUNCE_KEYS_ENABLED);
         this.menu.addMenuItem(bounceKeys);
 
-        let mouseKeys = this._buildItemGConf(_("Mouse keys"), client, KEY_MOUSE_KEYS_ENABLED);
+        let mouseKeys = this._buildItemGConf(_("Mouse Keys"), client, KEY_MOUSE_KEYS_ENABLED);
         this.menu.addMenuItem(mouseKeys);
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addAction(_("Universal access settings"), function() {
+        this.menu.addAction(_("Universal Access Settings"), function() {
             let p = new Shell.Process({ args: ['gnome-control-center','universal-access'] });
             p.run();
         });
@@ -200,7 +200,7 @@ ATIndicator.prototype = {
             return (u_dpi - (DPI_FACTOR_LARGE * x_dpi) > -1);
         }
         let initial_setting = on_get();
-        let widget = this._buildItemExtended(_("Large text"),
+        let widget = this._buildItemExtended(_("Large Text"),
             initial_setting,
             client.key_is_writable(KEY_FONT_DPI),
             function (enabled) {
@@ -221,7 +221,7 @@ ATIndicator.prototype = {
 
     _buildMagItem: function() {
         let mag = Main.magnifier;
-        let widget = this._buildItemExtended(_("Zoom screen"),
+        let widget = this._buildItemExtended(_("Zoom"),
             mag.isActive(),
             true,
             Lang.bind(mag, mag.setActive));
