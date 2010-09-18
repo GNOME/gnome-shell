@@ -1271,6 +1271,7 @@ clutter_texture_init (ClutterTexture *self)
       cogl_handle_unref (dummy_tex);
     }
 
+  g_assert (texture_template_material != NULL);
   priv->material = cogl_material_copy (texture_template_material);
 }
 
@@ -1356,13 +1357,16 @@ clutter_texture_set_cogl_material (ClutterTexture *texture,
 CoglHandle
 clutter_texture_get_cogl_texture (ClutterTexture *texture)
 {
+  ClutterTexturePrivate *priv;
   CoglMaterialLayerType layer_type;
   const GList *layers;
   int n_layers;
 
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), COGL_INVALID_HANDLE);
 
-  layers = cogl_material_get_layers (texture->priv->material);
+  priv = texture->priv;
+
+  layers = cogl_material_get_layers (priv->material);
   if (layers == NULL)
     return COGL_INVALID_HANDLE;
 
@@ -1421,6 +1425,10 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   texture_free_gl_resources (texture);
 
   /* Use the new texture */
+  if (priv->material == NULL)
+    priv->material = cogl_material_copy (texture_template_material);
+
+  g_assert (priv->material != NULL);
   cogl_material_set_layer (priv->material, 0, cogl_tex);
 
   /* The material now holds a reference to the texture so we can
