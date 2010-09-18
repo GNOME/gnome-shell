@@ -136,6 +136,10 @@ StTooltip {
     spacing: .75em;
 }
 
+.popup-switch-menu-item {
+    spacing: 2em;
+}
+
 .popup-separator-menu-item {
     -gradient-height: 2px;
     -gradient-start: rgba(8,8,8,0);
