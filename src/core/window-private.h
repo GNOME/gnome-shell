@@ -436,6 +436,11 @@ void        meta_window_queue              (MetaWindow  *window,
 void        meta_window_maximize_internal  (MetaWindow        *window,
                                             MetaMaximizeFlags  directions,
                                             MetaRectangle     *saved_rect);
+void        meta_window_unmaximize_with_gravity (MetaWindow        *window,
+                                                 MetaMaximizeFlags  directions,
+                                                 int                new_width,
+                                                 int                new_height,
+                                                 int                gravity);
 void        meta_window_make_above         (MetaWindow  *window);
 void        meta_window_unmake_above       (MetaWindow  *window);
 void        meta_window_shade              (MetaWindow  *window,

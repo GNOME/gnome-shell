@@ -3250,9 +3250,11 @@ unmaximize_window_before_freeing (MetaWindow        *window)
     }
 }
 
-void
-meta_window_unmaximize (MetaWindow        *window,
-                        MetaMaximizeFlags  directions)
+static void
+meta_window_unmaximize_internal (MetaWindow        *window,
+                                 MetaMaximizeFlags  directions,
+                                 MetaRectangle     *desired_rect,
+                                 int                gravity)
 {
   gboolean unmaximize_horizontally, unmaximize_vertically;
 
@@ -3297,13 +3299,13 @@ meta_window_unmaximize (MetaWindow        *window,
       meta_window_get_client_root_coords (window, &target_rect);
       if (unmaximize_horizontally)
         {
-          target_rect.x     = window->saved_rect.x;
-          target_rect.width = window->saved_rect.width;
+          target_rect.x     = desired_rect->x;
+          target_rect.width = desired_rect->width;
         }
       if (unmaximize_vertically)
         {
-          target_rect.y      = window->saved_rect.y;
-          target_rect.height = window->saved_rect.height;
+          target_rect.y      = desired_rect->y;
+          target_rect.height = desired_rect->height;
         }
 
       /* Window's size hints may have changed while maximized, making
@@ -3317,12 +3319,13 @@ meta_window_unmaximize (MetaWindow        *window,
 
 	  meta_window_get_outer_rect (window, &old_rect);
 
-          meta_window_move_resize (window,
-                                   FALSE,
-                                   target_rect.x,
-                                   target_rect.y,
-                                   target_rect.width,
-                                   target_rect.height);
+          meta_window_move_resize_internal (window,
+                                            META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION,
+                                            gravity,
+                                            target_rect.x,
+                                            target_rect.y,
+                                            target_rect.width,
+                                            target_rect.height);
 
 	  meta_window_get_outer_rect (window, &new_rect);
           meta_compositor_unmaximize_window (window->display->compositor,
@@ -3332,12 +3335,13 @@ meta_window_unmaximize (MetaWindow        *window,
         }
       else
         {
-          meta_window_move_resize (window,
-                                   FALSE,
-                                   target_rect.x,
-                                   target_rect.y,
-                                   target_rect.width,
-                                   target_rect.height);
+          meta_window_move_resize_internal (window,
+                                            META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION,
+                                            gravity,
+                                            target_rect.x,
+                                            target_rect.y,
+                                            target_rect.width,
+                                            target_rect.height);
         }
 
       /* Make sure user_rect is current.
@@ -3365,6 +3369,36 @@ meta_window_unmaximize (MetaWindow        *window,
     g_object_notify (G_OBJECT (window), "maximized-horizontally");
     g_object_notify (G_OBJECT (window), "maximized-vertically");
     g_object_thaw_notify (G_OBJECT (window));
+}
+
+void
+meta_window_unmaximize (MetaWindow        *window,
+                        MetaMaximizeFlags  directions)
+{
+  meta_window_unmaximize_internal (window, directions, &window->saved_rect,
+                                   NorthWestGravity);
+}
+
+/* Like meta_window_unmaximize(), but instead of unmaximizing to the
+ * saved position, we give the new desired size, and the gravity that
+ * determines the positioning relationship between the area occupied
+ * maximized and the new are. The arguments are similar to
+ * meta_window_resize_with_gravity().
+ */
+void
+meta_window_unmaximize_with_gravity (MetaWindow        *window,
+                                     MetaMaximizeFlags  directions,
+                                     int                new_width,
+                                     int                new_height,
+                                     int                gravity)
+{
+  MetaRectangle desired_rect;
+
+  meta_window_get_position (window, &desired_rect.x, &desired_rect.y);
+  desired_rect.width = new_width;
+  desired_rect.height = new_height;
+
+  meta_window_unmaximize_internal (window, directions, &desired_rect, gravity);
 }
 
 void
@@ -7880,6 +7914,112 @@ update_move (MetaWindow  *window,
   meta_window_move (window, TRUE, new_x, new_y);
 }
 
+/* When resizing a maximized window by using alt-middle-drag (resizing
+ * with the grips or the menu for a maximized window is not enabled),
+ * the user can "break" out of the maximized state. This checks for
+ * that possibility. During such a break-out resize the user can also
+ * return to the previous maximization state by resizing back to near
+ * the original size.
+ */
+static MetaMaximizeFlags
+check_resize_unmaximize(MetaWindow *window,
+                        int         dx,
+                        int         dy)
+{
+  int threshold;
+  MetaMaximizeFlags new_unmaximize;
+
+#define DRAG_THRESHOLD_TO_RESIZE_THRESHOLD_FACTOR 3
+
+  threshold = meta_ui_get_drag_threshold (window->screen->ui) *
+    DRAG_THRESHOLD_TO_RESIZE_THRESHOLD_FACTOR;
+  new_unmaximize = 0;
+
+  if (window->maximized_horizontally ||
+      (window->display->grab_resize_unmaximize & META_MAXIMIZE_HORIZONTAL) != 0)
+    {
+      int x_amount;
+
+      /* We allow breaking out of maximization in either direction, to make
+       * the window larger than the monitor as well as smaller than the
+       * monitor. If we wanted to only allow resizing smaller than the
+       * monitor, we'd use - dx for NE/E/SE and dx for SW/W/NW.
+       */
+      switch (window->display->grab_op)
+        {
+        case META_GRAB_OP_RESIZING_NE:
+        case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+        case META_GRAB_OP_RESIZING_E:
+        case META_GRAB_OP_KEYBOARD_RESIZING_E:
+        case META_GRAB_OP_RESIZING_SE:
+        case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+        case META_GRAB_OP_RESIZING_SW:
+        case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+        case META_GRAB_OP_RESIZING_W:
+        case META_GRAB_OP_KEYBOARD_RESIZING_W:
+        case META_GRAB_OP_RESIZING_NW:
+        case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+          x_amount = dx < 0 ? - dx : dx;
+          break;
+        default:
+          x_amount = 0;
+          break;
+        }
+
+      if (x_amount > threshold)
+        new_unmaximize |= META_MAXIMIZE_HORIZONTAL;
+    }
+
+  if (window->maximized_vertically ||
+      (window->display->grab_resize_unmaximize & META_MAXIMIZE_VERTICAL) != 0)
+    {
+      int y_amount;
+
+      switch (window->display->grab_op)
+        {
+        case META_GRAB_OP_RESIZING_N:
+        case META_GRAB_OP_KEYBOARD_RESIZING_N:
+        case META_GRAB_OP_RESIZING_NE:
+        case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+        case META_GRAB_OP_RESIZING_NW:
+        case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+        case META_GRAB_OP_RESIZING_SE:
+        case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+        case META_GRAB_OP_RESIZING_S:
+        case META_GRAB_OP_KEYBOARD_RESIZING_S:
+        case META_GRAB_OP_RESIZING_SW:
+        case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+          y_amount = dy < 0 ? - dy : dy;
+          break;
+        default:
+          y_amount = 0;
+          break;
+        }
+
+      if (y_amount > threshold)
+        new_unmaximize |= META_MAXIMIZE_VERTICAL;
+    }
+
+  /* Metacity doesn't have a full user interface for only horizontally or
+   * vertically maximized, so while only unmaximizing in the direction drags
+   * has some advantages, it will also confuse the user. So, we always
+   * unmaximize both ways if possible.
+   */
+  if (new_unmaximize != 0)
+    {
+      new_unmaximize = 0;
+
+      if (window->maximized_horizontally ||
+          (window->display->grab_resize_unmaximize & META_MAXIMIZE_HORIZONTAL) != 0)
+        new_unmaximize |= META_MAXIMIZE_HORIZONTAL;
+      if (window->maximized_vertically ||
+          (window->display->grab_resize_unmaximize & META_MAXIMIZE_VERTICAL) != 0)
+        new_unmaximize |= META_MAXIMIZE_VERTICAL;
+    }
+
+  return new_unmaximize;
+}
+
 static gboolean
 update_resize_timeout (gpointer data)
 {
@@ -7904,6 +8044,7 @@ update_resize (MetaWindow *window,
   int gravity;
   MetaRectangle old;
   double remaining;
+  MetaMaximizeFlags new_unmaximize;
 
   window->display->grab_latest_motion_x = x;
   window->display->grab_latest_motion_y = y;
@@ -7964,6 +8105,8 @@ update_resize (MetaWindow *window,
           meta_window_update_keyboard_resize (window, TRUE);
         }
     }
+
+  new_unmaximize = check_resize_unmaximize (window, dx, dy);
 
   switch (window->display->grab_op)
     {
@@ -8075,11 +8218,36 @@ update_resize (MetaWindow *window,
                                           snap,
                                           FALSE);
 
-   /* We don't need to update unless the specified width and height
-    * are actually different from what we had before.
-    */
-  if (old.width != new_w || old.height != new_h)
-    meta_window_resize_with_gravity (window, TRUE, new_w, new_h, gravity);
+  if (new_unmaximize == window->display->grab_resize_unmaximize)
+    {
+      /* We don't need to update unless the specified width and height
+       * are actually different from what we had before.
+       */
+      if (old.width != new_w || old.height != new_h)
+        {
+          if ((window->display->grab_resize_unmaximize == new_unmaximize))
+            meta_window_resize_with_gravity (window, TRUE, new_w, new_h, gravity);
+        }
+    }
+  else
+    {
+      if ((new_unmaximize & ~window->display->grab_resize_unmaximize) != 0)
+        {
+          meta_window_unmaximize_with_gravity (window,
+                                               (new_unmaximize & ~window->display->grab_resize_unmaximize),
+                                               new_w, new_h, gravity);
+        }
+
+      if ((window->display->grab_resize_unmaximize & ~new_unmaximize))
+        {
+          MetaRectangle saved_rect = window->saved_rect;
+          meta_window_maximize (window,
+                                (window->display->grab_resize_unmaximize & ~new_unmaximize));
+          window->saved_rect = saved_rect;
+        }
+    }
+
+  window->display->grab_resize_unmaximize = new_unmaximize;
 
   /* Store the latest resize time, if we actually resized. */
   if (window->rect.width != old.width || window->rect.height != old.height)

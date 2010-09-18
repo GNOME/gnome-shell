@@ -3610,6 +3610,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_last_user_action_was_snap = FALSE;
 #endif
   display->grab_frame_action = frame_action;
+  display->grab_resize_unmaximize = 0;
 
   if (display->grab_resize_timeout_id)
     {
