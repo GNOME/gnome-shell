@@ -297,6 +297,10 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   CoglHandle paint_tex;
   guint tex_width, tex_height;
   ClutterActorBox alloc;
+
+  static CoglHandle material_template = COGL_INVALID_HANDLE;
+  static CoglHandle material_unshaped_template = COGL_INVALID_HANDLE;
+
   CoglHandle material;
 
   if (priv->clip_region && meta_region_is_empty (priv->clip_region))
@@ -338,10 +342,14 @@ mutter_shaped_texture_paint (ClutterActor *actor)
     {
       /* If there are no rectangles use a single-layer texture */
 
-      if (priv->material_unshaped == COGL_INVALID_HANDLE)
-	priv->material_unshaped = cogl_material_new ();
+      if (priv->material_unshaped == COGL_INVALID_HANDLE) 
+        {
+          if (G_UNLIKELY (material_unshaped_template == COGL_INVALID_HANDLE))
+            material_unshaped_template = cogl_material_new ();
 
-      material = priv->material_unshaped;
+          priv->material_unshaped = cogl_material_copy (material_unshaped_template);
+        }
+        material = priv->material_unshaped;
     }
   else
     {
@@ -349,11 +357,14 @@ mutter_shaped_texture_paint (ClutterActor *actor)
 
       if (priv->material == COGL_INVALID_HANDLE)
 	{
-	  priv->material = cogl_material_new ();
-
-	  cogl_material_set_layer_combine (priv->material, 1,
+	   if (G_UNLIKELY (material_template == COGL_INVALID_HANDLE))
+	    {
+	      material_template =  cogl_material_new ();
+	      cogl_material_set_layer_combine (material_template, 1,
 					   "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
 					   NULL);
+	    }
+	  priv->material = cogl_material_copy (material_template);
 	}
       material = priv->material;
 
