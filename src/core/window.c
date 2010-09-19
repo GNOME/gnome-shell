@@ -3260,14 +3260,6 @@ meta_window_unmaximize_internal (MetaWindow        *window,
 
   g_return_if_fail (!window->override_redirect);
 
-  /* Restore tiling if necessary */
-  if (window->tile_mode != META_TILE_NONE)
-    {
-      window->maximized_horizontally = FALSE;
-      meta_window_tile (window);
-      return;
-    }
-
   /* At least one of the two directions ought to be set */
   unmaximize_horizontally = directions & META_MAXIMIZE_HORIZONTAL;
   unmaximize_vertically   = directions & META_MAXIMIZE_VERTICAL;
@@ -3375,6 +3367,14 @@ void
 meta_window_unmaximize (MetaWindow        *window,
                         MetaMaximizeFlags  directions)
 {
+  /* Restore tiling if necessary */
+  if (window->tile_mode != META_TILE_NONE)
+    {
+      window->maximized_horizontally = FALSE;
+      meta_window_tile (window);
+      return;
+    }
+
   meta_window_unmaximize_internal (window, directions, &window->saved_rect,
                                    NorthWestGravity);
 }
@@ -3384,6 +3384,8 @@ meta_window_unmaximize (MetaWindow        *window,
  * determines the positioning relationship between the area occupied
  * maximized and the new are. The arguments are similar to
  * meta_window_resize_with_gravity().
+ * Unlike meta_window_unmaximize(), tiling is not restored for windows
+ * with a tile mode other than META_TILE_NONE.
  */
 void
 meta_window_unmaximize_with_gravity (MetaWindow        *window,
@@ -7936,6 +7938,7 @@ check_resize_unmaximize(MetaWindow *window,
   new_unmaximize = 0;
 
   if (window->maximized_horizontally ||
+      window->tile_mode != META_TILE_NONE ||
       (window->display->grab_resize_unmaximize & META_MAXIMIZE_HORIZONTAL) != 0)
     {
       int x_amount;
@@ -8415,6 +8418,17 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                                TRUE);
 	      if (window->display->compositor)
 		meta_compositor_set_updates (window->display->compositor, window, TRUE);
+
+              /* If a tiled window has been dragged free with a
+               * mouse resize without snapping back to the tiled
+               * state, it will end up with an inconsistent tile
+               * mode on mouse release; cleaning the mode earlier
+               * would break the ability to snap back to the tiled
+               * state, so we wait until mouse release.
+               */
+              if (!window->maximized_vertically &&
+                  window->tile_mode != META_TILE_NONE)
+                window->tile_mode = META_TILE_NONE;
             }
         }
 
