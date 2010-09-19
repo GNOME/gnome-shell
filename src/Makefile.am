@@ -124,8 +124,6 @@ mutter_SOURCES= 				\
 	ui/theme-parser.h			\
 	ui/theme.c				\
 	ui/theme.h				\
-	ui/themewidget.c			\
-	ui/themewidget.h			\
 	ui/ui.c					\
 	include/all-keybindings.h               \
 	$(mutter_built_sources)
