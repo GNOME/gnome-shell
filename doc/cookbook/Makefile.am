@@ -41,6 +41,7 @@ IMAGE_FILES = \
 	images/textures-sub-texture.png \
 	images/layouts-stacking-diff-actor-sizes.png \
 	images/events-pointer-motion-stacking.png	\
+	images/layouts-bind-constraint-stage.png	\
 	$(NULL)
 VIDEO_FILES = \
 	videos/animations-fading-out.ogv \

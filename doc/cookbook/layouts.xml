@@ -587,4 +587,224 @@ clutter_actor_raise_top (text);
 
   </section>
 
+  <section id="layouts-bind-constraint">
+    <title>Binding the size of one actor to the size of another</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want one actor (the "target") to automatically change
+      its width or height (or both) when the size of another
+      actor (the "source") changes.</para>
+
+      <para>Example use cases:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Making an actor adjust itself to the size of the stage
+          (particularly when the stage is resizable).</para>
+        </listitem>
+        <listitem>
+          <para>Putting one actor on top of another and keeping their
+          sizes in sync.</para>
+        </listitem>
+      </itemizedlist>
+
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Create a <type>ClutterBindConstraint</type> bound to the
+      width and/or height of one actor (the "source"). Add that constraint
+      to an actor (the "target") whose size should follow the
+      size of the source.</para>
+
+      <para>This short example shows how to create and add a constraint;
+      <varname>source</varname> and <varname>target</varname> can
+      be any two <type>ClutterActors</type>:</para>
+
+      <informalexample>
+        <programlisting>
+<emphasis>ClutterConstraint *width_constraint;</emphasis>
+
+/* create a constraint which binds a target actor's width to 100px less than
+ * the width of the source actor (use CLUTTER_BIND_HEIGHT to create a
+ * constraint based on an actor's height)
+ *
+ * the third argument is a positive or negative offset from the actor's
+ * dimension, in pixels; this is added to the height or width of the source
+ * actor before the constraint is applied to the target actor
+ */
+<emphasis>width_constraint = clutter_bind_constraint_new (source, CLUTTER_BIND_WIDTH, -100);</emphasis>
+
+/* add the constraint to an actor */
+<emphasis>clutter_actor_add_constraint (target, width_constraint);</emphasis>
+        </programlisting>
+      </informalexample>
+
+      <para>Below is a full example, showing how to incorporate a
+      constraint into a Clutter application.</para>
+
+      <example id="layouts-bind-constraint-example-1">
+        <title>Constraining the size of a texture to
+        the size of the stage using <type>ClutterBindConstraint</type></title>
+        <programlisting>
+<xi:include href="examples/layouts-bind-constraint-stage.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <para>The texture in this example is 100px smaller than the stage,
+      leaving a border of visible stage around the texture; and the texture
+      has a tiled image on it. The tiling changes as the texture changes
+      size. Also note that two <type>ClutterAlignConstraints</type> are
+      added to center the actor on the stage.</para>
+
+      <para>The result looks like this:</para>
+
+      <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata format="PNG"
+                         fileref="images/layouts-bind-constraint-stage.png" />
+            </imageobject>
+            <alt>
+              <para>A texture bound to the height and width of the
+              stage using <type>ClutterBindConstraint</type></para>
+            </alt>
+          </mediaobject>
+        </screenshot>
+
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>Sizing constraints are a good solution in these cases:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Where you can't use a layout manager. For
+          example, you can't apply a layout manager to the stage
+          directly; so if you want to control the size of an actor
+          based on the size of the stage (as in
+          <link linkend="layouts-bind-constraint-example-1">the example
+          above</link>), constraints are a good substitute for a layout
+          manager .</para>
+        </listitem>
+
+        <listitem>
+          <para>Where the layout of a UI is fairly simple (perhaps
+          up to half a dozen actors) and fairly static. An example
+          might be something like a text editor, where the arrangement
+          of the UI (menu bar, toolbar, editing panel, footer) changes
+          infrequently. Of course, it is possible to arrange top-level
+          components using constraints, but still use layout
+          managers inside individual components (e.g. a flow layout
+          manager to manage buttons in the toolbar).</para>
+        </listitem>
+
+        <listitem>
+          <para>Where you have an actor whose size can change erratically,
+          but you still want to be able to track its size to control
+          another actor's size. An example might be an application like
+          a drawing program, where a user can create their own actors:
+          you might want the user to be able to describe loose, custom
+          constraints between actors like "keep these actors at the
+          same width", then allow those actors to be moved around and
+          resized in a free-form way as a group. In this situation, a
+          layout manager is too rigid and not appropriate;
+          but adding <type>ClutterConstraints</type> to actors
+          in response to user actions could work well.</para>
+
+          <para>The <link linkend="layouts-bind-constraint-example-2">sample
+          code in the appendix</link> is the kind of thing you might include
+          in a drawing program: you can resize a texture with a key press
+          (<code>+</code> to increase size, <code>-</code> to decrease), and
+          click on the actor to select/deselect it (a semi-transparent overlay is
+          toggled on the texture). The size of the overlay is bound and
+          aligned to the texture, so that it covers and slightly overlaps the
+          texture regardless of its size.</para>
+        </listitem>
+      </itemizedlist>
+
+      <note>
+        <para>You can bind an actor to a single dimension (just height or
+        depth) of another actor: you don't have to bind both height
+        and width. Also, you don't have to bind both dimensions of the
+        target to the same source: for example, you could bind the target's
+        height to one source (actor A) and its width to another source
+        (actor B).</para>
+
+        <para>A <type>ClutterBindConstraint</type> can also be used to
+        constrain a target actor's position on the <code>x</code> and
+        <code>y</code> axes to the position of a source actor. This is
+        covered in another recipe.</para>
+      </note>
+
+      <section>
+        <title>Another way to bind actors' sizes together</title>
+
+        <para>There is another way to control the size of a target
+        actor, based on the size of a source: you can create a handler
+        for the <code>allocation-changed</code> signal
+        of the source, emitted when its size and/or position
+        changes. This signal includes all the data
+        about the source's new allocation (height, width, x and y
+        coordindates), which the handler function can then use to
+        resize the target.</para>
+
+        <para>Alternatively, if you're only interested in
+        a change to width or height, you can create a handler
+        for the <code>notify::width</code> or
+        <code>notify::height</code> signal (respectively), and modify
+        the target's width/height in the handler.</para>
+
+        <para>This approach may be useful if you need a type of
+        control over alignment and size which is not possible using
+        constraints alone (e.g. one actor's size should be
+        a proportion of another's). See
+        <link linkend="layouts-bind-constraint-example-3">the code in
+        this section</link> for an example where the size
+        of one actor is dynamically set to 10% more than the
+        size of another.</para>
+
+        <note>
+          <para><link linkend="actors-allocation-notify">This recipe</link>
+          explains more about monitoring changes to an actor's size.</para>
+        </note>
+      </section>
+
+    </section>
+
+    <section>
+      <title>Full examples</title>
+
+      <example id="layouts-bind-constraint-example-2">
+        <title>Creating an automatically-resizing overlay for a
+        texture using <type>ClutterBindConstraint</type></title>
+        <programlisting>
+<xi:include href="examples/layouts-bind-constraint-overlay.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="layouts-bind-constraint-example-3">
+        <title>Using the <code>allocation-changed</code>
+        signal of one actor to trigger proportional size changes in
+        another</title>
+        <programlisting>
+<xi:include href="examples/layouts-bind-constraint-allocation.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+    </section>
+
+  </section>
+
 </chapter>
