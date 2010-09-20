@@ -1289,8 +1289,8 @@ clutter_state_get_animator (ClutterState *state,
  * the two named states.
  *
  * The @animator allows specifying a transition between the state that is
- * more elaborate than the basic transitions other allowed by the simple
- * tweening of properties defined in the #ClutterState keys.
+ * more elaborate than the basic transitions allowed by the tweening of
+ * properties defined in the #ClutterState keys.
  *
  * If @animator is %NULL it will unset an existing animator.
  *
@@ -1338,8 +1338,11 @@ clutter_state_set_animator (ClutterState    *state,
 
   if (animator != NULL)
     {
-      StateAnimator state_animator =
-                              {source_state_name, g_object_ref (animator)};
+      StateAnimator state_animator = {
+        source_state_name,
+        g_object_ref (animator)
+      };
+
       g_array_append_val (target_state->animators, state_animator);
     }
 }
