@@ -125,6 +125,8 @@ cogl_path_set_fill_rule (CoglPathFillRule fill_rule);
 /**
  * cogl_path_get_fill_rule:
  *
+ * Retrieves the fill rule set using cogl_path_set_fill_rule().
+ *
  * Return value: the fill rule that is used for the current path.
  *
  * Since: 1.4
