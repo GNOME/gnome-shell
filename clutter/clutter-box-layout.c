@@ -477,9 +477,9 @@ clutter_box_layout_set_container (ClutterLayoutManager *layout,
       /* we need to change the :request-mode of the container
        * to match the orientation
        */
-      request_mode = (priv->is_vertical)
-                   ? CLUTTER_REQUEST_WIDTH_FOR_HEIGHT
-                   : CLUTTER_REQUEST_HEIGHT_FOR_WIDTH;
+      request_mode = (priv->is_vertical
+                      ? CLUTTER_REQUEST_HEIGHT_FOR_WIDTH
+                      : CLUTTER_REQUEST_WIDTH_FOR_HEIGHT);
       clutter_actor_set_request_mode (CLUTTER_ACTOR (priv->container),
                                       request_mode);
     }
