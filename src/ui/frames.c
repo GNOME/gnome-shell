@@ -275,7 +275,7 @@ meta_frames_finalize (GObject *object)
 
 typedef struct
 {
-  MetaRectangle rect;
+  GdkRectangle rect;
   GdkPixmap *pixmap;
 } CachedFramePiece;
 
@@ -2109,30 +2109,24 @@ clear_backing (GdkPixmap *pixmap,
 static GdkPixmap *
 generate_pixmap (MetaFrames *frames,
                  MetaUIFrame *frame,
-                 MetaRectangle rect)
+                 GdkRectangle *rect)
 {
-  GdkRectangle rectangle;
   MetaRegion *region;
   GdkPixmap *result;
 
   /* do not create a pixmap for nonexisting areas */
-  if (rect.width <= 0 || rect.height <= 0)
+  if (rect->width <= 0 || rect->height <= 0)
     return NULL;
 
-  rectangle.x = rect.x;
-  rectangle.y = rect.y;
-  rectangle.width = rect.width;
-  rectangle.height = rect.height;
-  
   result = gdk_pixmap_new (frame->window,
-                           rect.width, rect.height, -1);
+                           rect->width, rect->height, -1);
   
-  clear_backing (result, frame->window, rectangle.x, rectangle.y);
+  clear_backing (result, frame->window, rect->x, rect->y);
 
-  region = meta_region_new_from_rectangle (&rectangle);
+  region = meta_region_new_from_rectangle (rect);
 
   meta_frames_paint_to_drawable (frames, frame, result, region,
-                                 -rectangle.x, -rectangle.y);
+                                 -rect->x, -rect->y);
 
   meta_region_destroy (region);
 
@@ -2207,7 +2201,7 @@ populate_cache (MetaFrames *frames,
       /* generate_pixmap() returns NULL for 0 width/height pieces, but
        * does so cheaply so we don't need to cache the NULL return */
       if (!piece->pixmap)
-        piece->pixmap = generate_pixmap (frames, frame, piece->rect);
+        piece->pixmap = generate_pixmap (frames, frame, &piece->rect);
     }
   
   if (frames->invalidate_cache_timeout_id)
