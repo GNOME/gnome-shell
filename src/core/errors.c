@@ -28,17 +28,67 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <gdk/gdk.h>
+#include <gtk/gtk.h> /* Only for GTK_CHECK_VERSION */
 
+/* In GTK+-3.0, the error trapping code was significantly rewritten. The new code
+ * has some neat features (like knowing automatically if a sync is needed or not
+ * and handling errors asynchronously when the error code isn't needed immediately),
+ * but it's basically incompatible with the hacks we played with GTK+-2.0 to
+ * use a custom error handler along with gdk_error_trap_push().
+ *
+ * Since the main point of our custom error trap was to get the error logged
+ * to the right place, with GTK+-3.0 we simply omit our own error handler and
+ * use the GTK+ handling straight-up.
+ * (See https://bugzilla.gnome.org/show_bug.cgi?id=630216 for restoring logging.)
+ */
+#if GTK_CHECK_VERSION(2, 90, 0)
+#define USE_GDK_ERROR_HANDLERS 1
+#endif
+
+#ifndef USE_GDK_ERROR_HANDLERS
 static int x_error_handler    (Display     *display,
                                XErrorEvent *error);
 static int x_io_error_handler (Display     *display);
+#endif
 
 void
 meta_errors_init (void)
 {
+#ifndef USE_GDK_ERROR_HANDLERS
   XSetErrorHandler (x_error_handler);
   XSetIOErrorHandler (x_io_error_handler);
+#endif
 }
+
+#ifdef USE_GDK_ERROR_HANDLERS
+
+void
+meta_error_trap_push (MetaDisplay *display)
+{
+  gdk_error_trap_push ();
+}
+
+void
+meta_error_trap_pop (MetaDisplay *display,
+                     gboolean     last_request_was_roundtrip)
+{
+  gdk_error_trap_pop_ignored ();
+}
+
+void
+meta_error_trap_push_with_return (MetaDisplay *display)
+{
+  gdk_error_trap_push ();
+}
+
+int
+meta_error_trap_pop_with_return  (MetaDisplay *display,
+                                  gboolean     last_request_was_roundtrip)
+{
+  return gdk_error_trap_pop ();
+}
+
+#else /* !USE_GDK_ERROR_HANDLERS */
 
 static void
 meta_error_trap_push_internal (MetaDisplay *display,
@@ -247,3 +297,5 @@ x_io_error_handler (Display *xdisplay)
   
   return 0;
 }
+
+#endif /* USE_GDK_ERROR_HANDLERS */
