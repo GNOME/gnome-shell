@@ -2,7 +2,7 @@
 #ifndef __SHELL_GTK_EMBED_H__
 #define __SHELL_GTK_EMBED_H__
 
-#include <clutter/glx/clutter-glx.h>
+#include <clutter/x11/clutter-x11.h>
 
 #include "shell-embedded-window.h"
 
@@ -15,6 +15,19 @@
 
 typedef struct _ShellGtkEmbed        ShellGtkEmbed;
 typedef struct _ShellGtkEmbedClass   ShellGtkEmbedClass;
+typedef struct _ShellGtkEmbedPrivate ShellGtkEmbedPrivate;
+
+struct _ShellGtkEmbed
+{
+    ClutterX11TexturePixmap parent;
+
+    ShellGtkEmbedPrivate *priv;
+};
+
+struct _ShellGtkEmbedClass
+{
+    ClutterX11TexturePixmapClass parent_class;
+};
 
 GType shell_gtk_embed_get_type (void) G_GNUC_CONST;
 ClutterActor *shell_gtk_embed_new (ShellEmbeddedWindow *window);

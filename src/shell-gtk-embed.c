@@ -5,8 +5,6 @@
 #include "shell-embedded-window-private.h"
 #include "gtk-compat.h"
 
-#include <clutter/glx/clutter-glx.h>
-#include <clutter/x11/clutter-x11.h>
 #include <gdk/gdkx.h>
 
 enum {
@@ -15,32 +13,12 @@ enum {
    PROP_WINDOW
 };
 
-typedef struct _ShellGtkEmbedPrivate ShellGtkEmbedPrivate;
-
-/* The reason that the instance/class structures are here is to avoid
- * problems with g-ir-scanner chocking on ClutterGLXTexturePixmap. We
- * stick with having a separate private structure so that we can move
- * the instance/class structures back to the public header if this
- * code is reused in another context where inheritance from C is useful.
- */
-struct _ShellGtkEmbed
-{
-    ClutterGLXTexturePixmap parent;
-
-    ShellGtkEmbedPrivate *priv;
-};
-
-struct _ShellGtkEmbedClass
-{
-    ClutterGLXTexturePixmapClass parent_class;
-};
-
 struct _ShellGtkEmbedPrivate
 {
   ShellEmbeddedWindow *window;
 };
 
-G_DEFINE_TYPE (ShellGtkEmbed, shell_gtk_embed, CLUTTER_GLX_TYPE_TEXTURE_PIXMAP);
+G_DEFINE_TYPE (ShellGtkEmbed, shell_gtk_embed, CLUTTER_X11_TYPE_TEXTURE_PIXMAP);
 
 static void shell_gtk_embed_set_window (ShellGtkEmbed       *embed,
                                         ShellEmbeddedWindow *window);
