@@ -2094,14 +2094,11 @@ clear_backing (GdkPixmap *pixmap,
                GdkWindow *window,
                int xoffset, int yoffset)
 {
-  int width, height;
   cairo_t *cr = gdk_cairo_create (pixmap);
 
   setup_bg_cr (cr, window, xoffset, yoffset);
 
-  gdk_drawable_get_size (GDK_DRAWABLE (pixmap), &width, &height);
-  cairo_rectangle (cr, 0, 0, width, height);
-  cairo_fill (cr);
+  cairo_paint (cr);
   
   cairo_destroy (cr);
 }
