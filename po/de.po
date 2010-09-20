@@ -2,20 +2,19 @@
 # Copyright Copyright (C) 2006-2008 OpenedHand Ltd., 2009 Intel Corp.
 # This file is distributed under the same license as the clutter-1.0 package.
 # Chris Leick <c.leick@vollbio.de>
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter_1.0 1.0.8\n"
-"Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
-"product=clutter\n"
+"Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?product=clutter\n"
 "POT-Creation-Date: 2010-09-15 15:43+0100\n"
 "PO-Revision-Date: 2009-11-24 21:04+0100\n"
 "Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: clutter/clutter-actor.c:3247
@@ -810,9 +809,7 @@ msgid "Horizontal Fill"
 msgstr "Horizontale Füllung"
 
 #: clutter/clutter-box-layout.c:392
-msgid ""
-"Whether the child should receive priority when the container is allocating "
-"spare space on the horizontal axis"
+msgid "Whether the child should receive priority when the container is allocating spare space on the horizontal axis"
 msgstr ""
 
 #: clutter/clutter-box-layout.c:400
@@ -820,9 +817,7 @@ msgid "Vertical Fill"
 msgstr "Vertikale Füllung"
 
 #: clutter/clutter-box-layout.c:401
-msgid ""
-"Whether the child should receive priority when the container is allocating "
-"spare space on the vertical axis"
+msgid "Whether the child should receive priority when the container is allocating spare space on the vertical axis"
 msgstr ""
 
 #: clutter/clutter-box-layout.c:410
@@ -846,8 +841,7 @@ msgid "Homogeneous"
 msgstr ""
 
 #: clutter/clutter-box-layout.c:1106
-msgid ""
-"Whether the layout should be homogeneous, i.e.all childs get the same size"
+msgid "Whether the layout should be homogeneous, i.e.all childs get the same size"
 msgstr ""
 
 #: clutter/clutter-box-layout.c:1121
@@ -1639,9 +1633,7 @@ msgid "Disable Slicing"
 msgstr ""
 
 #: clutter/clutter-texture.c:972
-msgid ""
-"Forces the underlying texture to be singlular and not made of of smaller "
-"space saving inidivual textures."
+msgid "Forces the underlying texture to be singlular and not made of of smaller space saving inidivual textures."
 msgstr ""
 
 #: clutter/clutter-texture.c:980
@@ -1706,12 +1698,10 @@ msgstr ""
 
 #: clutter/clutter-texture.c:1056
 msgid "Keep Aspect Ratio"
-msgstr ""
+msgstr "Seitenverhältnis beibehalten"
 
 #: clutter/clutter-texture.c:1057
-msgid ""
-"Keep the aspect ratio of the texture when requesting the preferred width or "
-"height"
+msgid "Keep the aspect ratio of the texture when requesting the preferred width or height"
 msgstr ""
 
 #: clutter/clutter-texture.c:1083
@@ -1720,8 +1710,7 @@ msgid "Load asynchronously"
 msgstr "X-Aufrufe synchronisieren"
 
 #: clutter/clutter-texture.c:1084
-msgid ""
-"Load files inside a thread to avoid blocking when loading images from disk."
+msgid "Load files inside a thread to avoid blocking when loading images from disk."
 msgstr ""
 
 #: clutter/clutter-texture.c:1100
@@ -1730,9 +1719,7 @@ msgid "Load data asynchronously"
 msgstr "X-Aufrufe synchronisieren"
 
 #: clutter/clutter-texture.c:1101
-msgid ""
-"Decode image data files inside a thread to reduce blocking when loading "
-"images from disk."
+msgid "Decode image data files inside a thread to reduce blocking when loading images from disk."
 msgstr ""
 
 #: clutter/clutter-texture.c:1125
@@ -1797,7 +1784,7 @@ msgstr ""
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:546
 msgid "Automatic Updates"
-msgstr ""
+msgstr "Aktualisierungen automatisch installieren"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:547
 msgid "If the texture should be kept in sync with any pixmap changes."
@@ -1805,7 +1792,7 @@ msgstr ""
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:555
 msgid "Window"
-msgstr ""
+msgstr "Fenster"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:556
 msgid "The X11 Window to be bound"
