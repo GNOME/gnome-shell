@@ -251,7 +251,7 @@ na_tray_child_new (GdkScreen *screen,
   gdk_error_trap_push ();
   result = XGetWindowAttributes (xdisplay, icon_window,
                                  &window_attributes);
-  gdk_error_trap_pop ();
+  gdk_error_trap_pop_ignored ();
 
   if (!result) /* Window already gone */
     return NULL;
@@ -437,7 +437,7 @@ na_tray_child_force_redraw (NaTrayChild *child)
        * since that is asynchronous.
        */
       XSync (xdisplay, False);
-      gdk_error_trap_pop ();
+      gdk_error_trap_pop_ignored ();
 #else
       /* Hiding and showing is the safe way to do it, but can result in more
        * flickering.
@@ -481,7 +481,7 @@ _get_wmclass (Display *xdisplay,
 
   gdk_error_trap_push ();
   XGetClassHint (xdisplay, xwindow, &ch);
-  gdk_error_trap_pop ();
+  gdk_error_trap_pop_ignored ();
 
   if (res_class)
     *res_class = NULL;
