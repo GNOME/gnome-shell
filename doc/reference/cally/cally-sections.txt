@@ -1,4 +1,22 @@
 <SECTION>
+<FILE>cally-stage</FILE>
+<TITLE>CallyStage</TITLE>
+CallyStage
+CallyStageClass
+cally_stage_new
+<SUBSECTION Standard>
+CALLY_STAGE
+CALLY_IS_STAGE
+CALLY_TYPE_STAGE
+CALLY_STAGE_CLASS
+CALLY_IS_STAGE_CLASS
+CALLY_STAGE_GET_CLASS
+<SUBSECTION Private>
+CallyStagePrivate
+cally_stage_get_type
+</SECTION>
+
+<SECTION>
 <FILE>cally-clone</FILE>
 <TITLE>CallyClone</TITLE>
 CallyClone
@@ -125,24 +143,6 @@ CALLY_GROUP_GET_CLASS
 <SUBSECTION Private>
 CallyGroupPrivate
 cally_group_get_type
-</SECTION>
-
-<SECTION>
-<FILE>cally-stage</FILE>
-<TITLE>CallyStage</TITLE>
-CallyStage
-CallyStageClass
-cally_stage_new
-<SUBSECTION Standard>
-CALLY_STAGE
-CALLY_IS_STAGE
-CALLY_TYPE_STAGE
-CALLY_STAGE_CLASS
-CALLY_IS_STAGE_CLASS
-CALLY_STAGE_GET_CLASS
-<SUBSECTION Private>
-CallyStagePrivate
-cally_stage_get_type
 </SECTION>
 
 <SECTION>

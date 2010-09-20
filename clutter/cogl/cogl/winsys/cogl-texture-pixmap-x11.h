@@ -96,11 +96,13 @@ cogl_texture_pixmap_x11_update_area (CoglHandle handle,
  * cogl_texture_pixmap_x11_is_using_tfp_extension:
  * @handle: A CoglHandle to a CoglTexturePixmapX11 instance
  *
- * Return value: whether the texture is using the
- * GLX_EXT_texture_from_pixmap or similar extension to copy the
- * contents of the pixmap to the texture. This extension is usually
- * implemented as zero-copy so it implies the updates are working
- * efficiently.
+ * Checks whether the texture is using the GLX_EXT_texture_from_pixmap
+ * or similar extension to copy the contents of the pixmap to the texture.
+ * This extension is usually implemented as zero-copy operation so it
+ * implies the updates are working efficiently.
+ *
+ * Return value: %TRUE if the texture is using an efficient extension
+ *   and %FALSE otherwise
  *
  * Since: 1.4
  * Stability: Unstable
@@ -137,8 +139,10 @@ cogl_texture_pixmap_x11_set_damage_object (CoglHandle handle,
  * cogl_is_texture_pixmap_x11:
  * @handle: A CoglHandle
  *
- * Return value: whether @handle points to a CoglTexturePixmapX11
- * instance.
+ * Checks whether @handle points to a CoglTexturePixmapX11 instance.
+ *
+ * Return value: %TRUE if the handle is a CoglTexturePixmapX11, and
+ *   %FALSE otherwise
  *
  * Since: 1.4
  * Stability: Unstable

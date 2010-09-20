@@ -911,10 +911,8 @@ CLUTTER_VALUE_HOLDS_FIXED
 clutter_value_set_fixed
 clutter_value_get_fixed
 
-<SUBSECTION Standard>
-ClutterTimeoutPool
-
 <SUBSECTION Private>
+ClutterTimeoutPool
 CLUTTER_TYPE_PARAM_FIXED
 CLUTTER_PARAM_SPEC_FIXED
 CLUTTER_IS_PARAM_SPEC_FIXED

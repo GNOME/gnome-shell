@@ -42,6 +42,10 @@ G_BEGIN_DECLS
 /**
  * ClutterTimeoutPool: (skip)
  *
+ * <structname>ClutterTimeoutPool</structname> is an opaque structure
+ * whose members cannot be directly accessed.
+ *
+ * Since: 0.6
  */
 typedef struct _ClutterTimeoutPool    ClutterTimeoutPool;
 
