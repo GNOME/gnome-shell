@@ -1022,10 +1022,9 @@ meta_frames_move_resize_frame (MetaFrames *frames,
                                int         height)
 {
   MetaUIFrame *frame = meta_frames_lookup_window (frames, xwindow);
-  int old_x, old_y, old_width, old_height;
+  int old_width, old_height;
   
   gdk_drawable_get_size (frame->window, &old_width, &old_height);
-  gdk_window_get_position (frame->window, &old_x, &old_y);
 
   gdk_window_move_resize (frame->window, x, y, width, height);
 
