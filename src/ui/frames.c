@@ -2115,13 +2115,17 @@ generate_pixmap (MetaFrames *frames,
   MetaRegion *region;
   GdkPixmap *result;
 
+  /* do not create a pixmap for nonexisting areas */
+  if (rect.width <= 0 || rect.height <= 0)
+    return NULL;
+
   rectangle.x = rect.x;
   rectangle.y = rect.y;
-  rectangle.width = MAX (rect.width, 1);
-  rectangle.height = MAX (rect.height, 1);
+  rectangle.width = rect.width;
+  rectangle.height = rect.height;
   
   result = gdk_pixmap_new (frame->window,
-                           rectangle.width, rectangle.height, -1);
+                           rect.width, rect.height, -1);
   
   clear_backing (result, frame->window, rectangle.x, rectangle.y);
 
@@ -2200,6 +2204,8 @@ populate_cache (MetaFrames *frames,
   for (i = 0; i < 4; i++)
     {
       CachedFramePiece *piece = &pixels->piece[i];
+      /* generate_pixmap() returns NULL for 0 width/height pieces, but
+       * does so cheaply so we don't need to cache the NULL return */
       if (!piece->pixmap)
         piece->pixmap = generate_pixmap (frames, frame, piece->rect);
     }
