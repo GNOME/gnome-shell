@@ -2275,26 +2275,11 @@ subtract_client_area (MetaRegion *region, MetaUIFrame *frame)
 }
 
 static void
-subtract_from_region (MetaRegion *region, GdkDrawable *drawable,
-                      gint x, gint y)
-{
-  GdkRectangle rect;
-  MetaRegion *reg_rect;
-
-  gdk_drawable_get_size (drawable, &rect.width, &rect.height);
-  rect.x = x;
-  rect.y = y;
-
-  reg_rect = meta_region_new_from_rectangle (&rect);
-  meta_region_subtract (region, reg_rect);
-  meta_region_destroy (reg_rect);
-}
-
-static void
 cached_pixels_draw (CachedPixels *pixels,
                     GdkWindow    *window,
                     MetaRegion   *region)
 {
+  MetaRegion *region_piece;
   cairo_t *cr;
   int i;
 
@@ -2310,8 +2295,10 @@ cached_pixels_draw (CachedPixels *pixels,
           gdk_cairo_set_source_pixmap (cr, piece->pixmap,
                                        piece->rect.x, piece->rect.y);
           cairo_paint (cr);
-          subtract_from_region (region, piece->pixmap,
-          piece->rect.x, piece->rect.y);
+          
+          region_piece = meta_region_new_from_rectangle (&piece->rect);
+          meta_region_subtract (region, region_piece);
+          meta_region_destroy (region_piece);
         }
     }
   
