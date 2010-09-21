@@ -84,6 +84,7 @@ struct _ClutterColorizeEffectClass
  *   Addison-Wesley
  */
 static const gchar *colorize_glsl_shader =
+"#version 110\n"
 "uniform sampler2D tex;\n"
 "uniform vec3 tint;\n"
 "\n"

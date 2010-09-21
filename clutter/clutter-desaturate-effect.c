@@ -86,6 +86,7 @@ struct _ClutterDesaturateEffectClass
  *   Addison-Wesley
  */
 static const gchar *desaturate_glsl_shader =
+"#version 110\n"
 "uniform sampler2D tex;\n"
 "uniform float factor;\n"
 "\n"

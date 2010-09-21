@@ -55,6 +55,7 @@ typedef struct _ClutterBlurEffectClass  ClutterBlurEffectClass;
  * horizontal/vertical two pass shader for the gaussian blur
  */
 static const gchar *box_blur_glsl_shader =
+"#version 110\n"
 "uniform sampler2D tex;\n"
 "uniform float x_step, y_step;\n"
 "\n"
@@ -66,17 +67,16 @@ static const gchar *box_blur_glsl_shader =
 "void main ()\n"
 "{\n"
 "  vec4 color = gl_Color * texture2D (tex, vec2 (gl_TexCoord[0].xy));\n"
-"  float count = 1.0;\n"
-"  color += get_rgba_rel (tex, -x_step, -y_step); count++;\n"
-"  color += get_rgba_rel (tex, 0.0, -y_step);     count++;\n"
-"  color += get_rgba_rel (tex, x_step, -y_step);  count++;\n"
-"  color += get_rgba_rel (tex, -x_step, 0.0);     count++;\n"
-"  color += get_rgba_rel (tex, 0.0, 0.0);         count++;\n"
-"  color += get_rgba_rel (tex, x_step, 0.0);      count++;\n"
-"  color += get_rgba_rel (tex, -x_step, y_step);  count++;\n"
-"  color += get_rgba_rel (tex, 0.0, y_step);      count++;\n"
-"  color += get_rgba_rel (tex, x_step, y_step);   count++;\n"
-"  gl_FragColor = color / count;\n"
+"  color += get_rgba_rel (tex, -x_step, -y_step);\n"
+"  color += get_rgba_rel (tex,  0.0,    -y_step);\n"
+"  color += get_rgba_rel (tex,  x_step, -y_step);\n"
+"  color += get_rgba_rel (tex, -x_step,  0.0);\n"
+"  color += get_rgba_rel (tex,  0.0,     0.0);\n"
+"  color += get_rgba_rel (tex,  x_step,  0.0);\n"
+"  color += get_rgba_rel (tex, -x_step,  y_step);\n"
+"  color += get_rgba_rel (tex,  0.0,     y_step);\n"
+"  color += get_rgba_rel (tex,  x_step,  y_step);\n"
+"  gl_FragColor = color / 9.0;\n"
 "}";
 
 struct _ClutterBlurEffect
