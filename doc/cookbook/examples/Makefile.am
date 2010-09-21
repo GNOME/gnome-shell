@@ -4,6 +4,7 @@ NULL =
 
 noinst_PROGRAMS = \
 	animations-complex	\
+	animations-moving-implicit	\
 	animations-reuse	\
 	animations-rotating	\
 	text-shadow		\
@@ -49,6 +50,7 @@ AM_CFLAGS = \
 AM_LDFLAGS = $(CLUTTER_LIBS) -export-dynamic
 
 animations_complex_SOURCES                 = animations-complex.c
+animations_moving_implicit_SOURCES         = animations-moving-implicit.c
 animations_reuse_SOURCES                   = animations-reuse.c
 animations_rotating_SOURCES                = animations-rotating.c
 text_shadow_SOURCES                        = text-shadow.c
