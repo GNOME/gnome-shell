@@ -1,3 +1,5 @@
+include $(top_srcdir)/build/autotools/Makefile.am.silent
+
 SUBDIRS = examples
 
 NULL =
@@ -156,10 +158,10 @@ install-data-local:
 .PHONY : doc
 
 COOKBOOK_BASE_PATH = /home/clutter/web/docs.clutter-project.org/docs/clutter-cookbook
-COOKBOOK_VERSION = $(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)
+COOKBOOK_VERSION = $(CLUTTER_API_VERSION)
 COOKBOOK_PATH = $(COOKBOOK_BASE_PATH)/$(COOKBOOK_VERSION)
 
 publish: html-build.stamp
-	scp -r html/* clutter@clutter-project.org:$(COOKBOOK_PATH)
+	$(QUIET_CP)scp -r html/* clutter@clutter-project.org:$(COOKBOOK_PATH)
 
 .PHONY : publish
