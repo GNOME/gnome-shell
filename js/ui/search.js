@@ -258,16 +258,24 @@ SearchSystem.prototype = {
         if (isSubSearch) {
             for (let i = 0; i < this._previousResults.length; i++) {
                 let [provider, previousResults] = this._previousResults[i];
-                let providerResults = provider.getSubsearchResultSet(previousResults, terms);
-                if (providerResults.length > 0)
-                    results.push([provider, providerResults]);
+                try {
+                    let providerResults = provider.getSubsearchResultSet(previousResults, terms);
+                    if (providerResults.length > 0)
+                        results.push([provider, providerResults]);
+                } catch (error) {
+                    global.log ('A ' + error.name + ' has occured in ' + provider.title + ': ' + error.message);
+                }
             }
         } else {
             for (let i = 0; i < this._providers.length; i++) {
                 let provider = this._providers[i];
-                let providerResults = provider.getInitialResultSet(terms);
-                if (providerResults.length > 0)
-                    results.push([provider, providerResults]);
+                try {
+                    let providerResults = provider.getInitialResultSet(terms);
+                    if (providerResults.length > 0)
+                        results.push([provider, providerResults]);
+                } catch (error) {
+                    global.log ('A ' + error.name + ' has occured in ' + provider.title + ': ' + error.message);
+                }
             }
         }
 
