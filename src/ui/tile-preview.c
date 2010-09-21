@@ -111,6 +111,11 @@ on_preview_window_style_set (GtkWidget *widget,
                                      "GtkWindow.GtkIconView",
                                      GTK_TYPE_ICON_VIEW);
 
+  if (style != NULL)
+    g_object_ref (style);
+  else
+    style = gtk_style_new ();
+
   gtk_style_get (style, GTK_TYPE_ICON_VIEW,
                  "selection-box-color", &preview->preview_color,
                  "selection-box-alpha", &preview->preview_alpha,
@@ -120,6 +125,8 @@ on_preview_window_style_set (GtkWidget *widget,
       GdkColor selection = style->base[GTK_STATE_SELECTED];
       preview->preview_color = gdk_color_copy (&selection);
     }
+
+  g_object_unref (style);
 }
 
 MetaTilePreview *
