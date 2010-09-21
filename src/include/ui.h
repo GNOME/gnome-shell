@@ -33,8 +33,6 @@
 
 typedef struct _MetaUI MetaUI;
 
-typedef struct _MetaImageWindow MetaImageWindow;
-
 typedef gboolean (* MetaEventFunc) (XEvent *xevent, gpointer data);
 
 typedef enum
@@ -131,18 +129,6 @@ void            meta_ui_window_menu_popup (MetaWindowMenu     *menu,
                                            guint32             timestamp);
 void            meta_ui_window_menu_free  (MetaWindowMenu     *menu);
 
-
-MetaImageWindow* meta_image_window_new          (Display         *xdisplay,
-                                                 int              screen_number,
-                                                 int              max_width,
-                                                 int              max_height);
-void             meta_image_window_free         (MetaImageWindow *iw);
-void             meta_image_window_set_showing  (MetaImageWindow *iw,
-                                                 gboolean         showing);
-void             meta_image_window_set          (MetaImageWindow *iw,
-                                                 GdkPixbuf       *pixbuf,
-                                                 int              x,
-                                                 int              y);
 
 /* FIXME these lack a display arg */
 GdkPixbuf* meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
