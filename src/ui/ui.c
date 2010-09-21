@@ -128,7 +128,10 @@ meta_ui_new (Display *xdisplay,
 
   g_assert (xdisplay == GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
   ui->frames = meta_frames_new (XScreenNumberOfScreen (screen));
-  gtk_widget_realize (GTK_WIDGET (ui->frames));
+  /* This does not actually show any widget. MetaFrames has been hacked so
+   * that showing it doesn't actually do anything. But we need the flags
+   * set for GTK to deliver events properly. */
+  gtk_widget_show (GTK_WIDGET (ui->frames));
   
   return ui;
 }

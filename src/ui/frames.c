@@ -49,8 +49,8 @@ static void meta_frames_destroy    (GtkObject       *object);
 static void meta_frames_finalize   (GObject         *object);
 static void meta_frames_style_set  (GtkWidget       *widget,
                                     GtkStyle        *prev_style);
-static void meta_frames_realize    (GtkWidget       *widget);
-static void meta_frames_unrealize  (GtkWidget       *widget);
+static void meta_frames_map        (GtkWidget       *widget);
+static void meta_frames_unmap      (GtkWidget       *widget);
 
 static void meta_frames_update_prelit_control (MetaFrames      *frames,
                                                MetaUIFrame     *frame,
@@ -145,8 +145,8 @@ meta_frames_class_init (MetaFramesClass *class)
 
   widget_class->style_set = meta_frames_style_set;
 
-  widget_class->realize = meta_frames_realize;
-  widget_class->unrealize = meta_frames_unrealize;
+  widget_class->map = meta_frames_map;
+  widget_class->unmap = meta_frames_unmap;
   
   widget_class->expose_event = meta_frames_expose_event;
   widget_class->destroy_event = meta_frames_destroy_event;  
@@ -676,17 +676,19 @@ meta_frames_unmanage_window (MetaFrames *frames,
 }
 
 static void
-meta_frames_realize (GtkWidget *widget)
+meta_frames_map (GtkWidget *widget)
 {
-  if (GTK_WIDGET_CLASS (meta_frames_parent_class)->realize)
-    GTK_WIDGET_CLASS (meta_frames_parent_class)->realize (widget);
+  /* We override the parent map function to a no-op because we don't
+   * want to actually show the GDK window. But GTK needs to think that
+   * the widget is mapped or it won't deliver the events we care about.
+   */
+  gtk_widget_set_mapped (widget, TRUE);
 }
 
 static void
-meta_frames_unrealize (GtkWidget *widget)
+meta_frames_unmap (GtkWidget *widget)
 {
-  if (GTK_WIDGET_CLASS (meta_frames_parent_class)->unrealize)
-    GTK_WIDGET_CLASS (meta_frames_parent_class)->unrealize (widget);
+  gtk_widget_set_mapped (widget, FALSE);
 }
 
 static MetaUIFrame*
