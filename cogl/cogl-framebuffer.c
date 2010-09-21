@@ -479,7 +479,9 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
 
   if ((have_working_flags &&
        try_creating_fbo (offscreen, flags, texhandle)) ||
+#ifdef HAVE_COGL_GL
       try_creating_fbo (offscreen, flags = _TRY_DEPTH_STENCIL, texhandle) ||
+#endif
       try_creating_fbo (offscreen, flags = _TRY_DEPTH | _TRY_STENCIL,
                         texhandle) ||
       try_creating_fbo (offscreen, flags = _TRY_STENCIL, texhandle) ||
