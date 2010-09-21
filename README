@@ -312,6 +312,10 @@ Release Notes for Clutter 1.4
   clutter-keysyms-compat.h header, which is included by clutter-keysyms.h
   unless CLUTTER_DISABLE_DEPRECATED is defined.
 
+• The internal copy of json-glib is now deprecated. Building Clutter will
+  default to the system copy and requires an explicit --with-json=internal
+  to override the check.
+
 Release Notes for Clutter 1.2
 -------------------------------------------------------------------------------
 

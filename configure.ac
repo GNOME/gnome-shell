@@ -797,7 +797,7 @@ dnl === JSON parser check =====================================================
 # we allow building clutter with the internal copy of json-glib
 # for platforms without it, but by default we depend on the
 # system copy
-m4_define([default_json], [check])
+m4_define([default_json], [system])
 AC_ARG_WITH([json],
             AC_HELP_STRING([--with-json=@<:@internal/check/system@:>@],
                            [Select the JSON-GLib copy to use @<:@default=default_json@:>@]),
