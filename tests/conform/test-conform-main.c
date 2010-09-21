@@ -69,18 +69,6 @@ static void
 clutter_test_init (gint    *argc,
                    gchar ***argv)
 {
-#ifdef HAVE_CLUTTER_GLX
-  /* on X11 we need a display connection to run the test suite */
-  const gchar *display = g_getenv ("DISPLAY");
-  if (!display || *display == '\0')
-    {
-      g_print ("No DISPLAY found. Unable to run the conformance "
-               "test suite without a display.");
-
-      exit (EXIT_SUCCESS);
-    }
-#endif
-
   /* Turning of sync-to-vblank removes a dependency on the specifics of the
    * test environment. It also means that the timeline-only tests are
    * throttled to a reasonable frame rate rather than running in tight
@@ -97,9 +85,6 @@ clutter_test_init (gint    *argc,
   shared_state = g_new0 (TestConformSharedState, 1);
   shared_state->argc_addr = argc;
   shared_state->argv_addr = argv;
-
-  g_assert (clutter_init (shared_state->argc_addr, shared_state->argv_addr)
-	    == CLUTTER_INIT_SUCCESS);
 }
 
 int

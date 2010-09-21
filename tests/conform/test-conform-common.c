@@ -1,4 +1,7 @@
+#include "config.h"
+
 #include <clutter/clutter.h>
+#include <stdlib.h>
 
 #ifdef COGL_HAS_XLIB
 #include <X11/Xlib.h>
@@ -16,6 +19,7 @@ void
 test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
 				   gconstpointer data)
 {
+  const TestConformSharedState *shared_state = data;
   static int counter = 0;
 
   if (counter != 0)
@@ -26,6 +30,23 @@ test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
                 "If you want to run all the tests you should run\n"
                 "$ make test-report");
   counter++;
+
+#ifdef HAVE_CLUTTER_GLX
+  {
+    /* on X11 we need a display connection to run the test suite */
+    const gchar *display = g_getenv ("DISPLAY");
+    if (!display || *display == '\0')
+      {
+        g_print ("No DISPLAY found. Unable to run the conformance "
+                 "test suite without a display.\n");
+
+        exit (EXIT_SUCCESS);
+      }
+  }
+#endif
+
+  g_assert (clutter_init (shared_state->argc_addr, shared_state->argv_addr)
+            == CLUTTER_INIT_SUCCESS);
 
 #ifdef COGL_HAS_XLIB
   /* A lot of the tests depend on a specific stage / framebuffer size
