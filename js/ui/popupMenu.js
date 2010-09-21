@@ -23,30 +23,21 @@ function Switch() {
 
 Switch.prototype = {
     _init: function(state) {
-        this.actor = new St.BoxLayout({ style_class: 'switch' });
-        // Translators: the "ON" and "OFF" strings are used in the
-        // toggle switches in the status area menus, and must be SHORT.
-        // If you don't have suitable short words, consider initials,
-        // "0"/"1", "⚪"/"⚫", etc.
-        this._on = new St.Label({ style_class: 'switch-label', text: _("ON") });
-        this._off = new St.Label({ style_class: 'switch-label', text: _("OFF") });
-        this.actor.add(this._on, { fill: true });
-        this.actor.add(this._off, { fill: true });
+        this.actor = new St.Bin({ style_class: 'toggle-switch' });
+        // Translators: this MUST be either "toggle-switch-us"
+        // (for toggle switches containing the English words
+        // "ON" and "OFF") or "toggle-switch-intl" (for toggle
+        // switches containing "◯" and "|"). Other values will
+        // simply result in invisible toggle switches.
+        this.actor.add_style_class_name(_("toggle-switch-us"));
         this.setToggleState(state);
     },
 
     setToggleState: function(state) {
-        if (state) {
-            this._on.remove_style_pseudo_class('checked');
-            this._on.text = _("ON");
-            this._off.add_style_pseudo_class('checked');
-            this._off.text = '      ';
-        } else {
-            this._off.remove_style_pseudo_class('checked');
-            this._off.text = _("OFF");
-            this._on.add_style_pseudo_class('checked');
-            this._on.text = '      ';
-        }
+        if (state)
+            this.actor.add_style_pseudo_class('checked');
+        else
+            this.actor.remove_style_pseudo_class('checked');
         this.state = state;
     },
 
@@ -188,8 +179,8 @@ PopupSwitchMenuItem.prototype = {
         this._switch = new Switch(this.active);
 
         this._box = new St.BoxLayout({ style_class: 'popup-switch-menu-item' });
-        this._box.add(this.label,{ expand: true });
-        this._box.add(this._switch.actor);
+        this._box.add(this.label, { expand: true, y_fill: false });
+        this._box.add(this._switch.actor, { y_fill: false });
         this.actor.set_child(this._box);
 
         this.connect('activate', Lang.bind(this,function(from) {

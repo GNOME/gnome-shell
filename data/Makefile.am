@@ -43,6 +43,10 @@ dist_theme_DATA =				\
 	theme/separator-white.png		\
 	theme/single-view-active.svg		\
 	theme/single-view.svg			\
+	theme/toggle-off-us.svg			\
+	theme/toggle-off-intl.svg		\
+	theme/toggle-on-us.svg			\
+	theme/toggle-on-intl.svg		\
 	theme/ws-switch-arrow-left.svg		\
 	theme/ws-switch-arrow-right.svg
 

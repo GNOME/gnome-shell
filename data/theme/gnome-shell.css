@@ -149,17 +149,23 @@ StTooltip {
 }
 
 /* Switches (to be used in menus) */
-.switch {
-	border-radius: 5px;
-	padding: 0px 0.2em;
+.toggle-switch {
+    width: 4.5em;
+    height: 1.5em;
 }
-.switch-label {
-	font-size: 0.8em;
-	padding: 2px 0.1em; /* account for border if checked */
+
+.toggle-switch-us {
+    background-image: url("toggle-off-us.svg");
 }
-.switch-label:checked {
-	border-radius: 4px;
-	padding: 0px 0.3em;
+.toggle-switch-us:checked {
+    background-image: url("toggle-on-us.svg");
+}
+
+.toggle-switch-intl {
+    background-image: url("toggle-off-intl.svg");
+}
+.toggle-switch-intl:checked {
+    background-image: url("toggle-on-intl.svg");
 }
 
 /* Panel */
