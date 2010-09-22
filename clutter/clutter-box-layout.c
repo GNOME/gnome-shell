@@ -670,6 +670,8 @@ allocate_box_child (ClutterBoxLayout       *self,
       clutter_actor_get_preferred_height (child, avail_width,
                                           NULL, &child_nat);
 
+      child_nat = MIN (child_nat, avail_height);
+
       child_box.y1 = floorf (*position + 0.5);
 
       if (priv->is_homogeneous)
@@ -686,6 +688,8 @@ allocate_box_child (ClutterBoxLayout       *self,
     {
       clutter_actor_get_preferred_width (child, avail_height,
                                          NULL, &child_nat);
+
+      child_nat = MIN (child_nat, avail_width);
 
       child_box.x1 = floorf (*position + 0.5);
 
@@ -813,7 +817,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
 {
   ClutterBoxLayoutPrivate *priv = CLUTTER_BOX_LAYOUT (layout)->priv;
   gfloat avail_width, avail_height, pref_width, pref_height;
-  gint n_expand_children, extra_space;
+  gint n_expand_children, n_children, extra_space;
   GList *children, *l;
   gfloat position;
   gboolean is_rtl;
@@ -846,7 +850,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
     }
 
   /* count the number of children with expand set to TRUE */
-  n_expand_children = 0;
+  n_children = n_expand_children = 0;
   for (l = children; l; l = l->next)
     {
       ClutterLayoutMeta *meta;
@@ -857,21 +861,18 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
 
       if (CLUTTER_BOX_CHILD (meta)->expand)
         n_expand_children++;
+
+      n_children++;
     }
 
   if (priv->is_homogeneous)
     {
-      gint n_children;
-
-      n_children = g_list_length (children);
       if (priv->is_vertical)
-	{
-	  extra_space = (avail_height - (n_children - 1)*priv->spacing)/n_children;
-	}
+	extra_space = (avail_height - (n_children - 1) * priv->spacing)
+                    / n_children;
       else
-	{
-	  extra_space = (avail_width - (n_children - 1)*priv->spacing)/n_children;
-	}
+	extra_space = (avail_width - (n_children - 1) * priv->spacing)
+                    / n_children;
     }
   else if (n_expand_children == 0)
     {
