@@ -4,6 +4,7 @@ NULL =
 
 noinst_PROGRAMS = \
 	animations-complex	\
+	animations-moving-animator	\
 	animations-moving-implicit	\
 	animations-moving-state	\
 	animations-reuse	\
@@ -51,6 +52,7 @@ AM_CFLAGS = \
 AM_LDFLAGS = $(CLUTTER_LIBS) -export-dynamic
 
 animations_complex_SOURCES                 = animations-complex.c
+animations_moving_animator_SOURCES         = animations-moving-animator.c
 animations_moving_implicit_SOURCES         = animations-moving-implicit.c
 animations_moving_state_SOURCES            = animations-moving-state.c
 animations_reuse_SOURCES                   = animations-reuse.c
