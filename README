@@ -10,6 +10,7 @@ REQUIREMENTS
 Clutter currently requires:
 
   • GLib >= 2.18.0
+  • JSON-GLib >= 0.10
   • Atk >= 1.17
   • Cairo >= 1.6
   • PangoCairo >= 1.20
@@ -18,7 +19,6 @@ Clutter currently requires:
 
 Clutter also has optional dependencies:
 
-  • JSON-GLib >= 0.10 (optional, see --with-json below)
   • GDK-Pixbuf >= 2.0 (optional, see --with-imagebackend below)
 
 On X11, Clutter depends on the following extensions
@@ -196,19 +196,6 @@ Clutter has additional command line options for the configure script:
 
  --with-gles=[1.1/2.0]
         Select the GLES version (for EGL backends) (default=1.1)
-
- --with-json=[internal/check/system]
-        Select the JSON-GLib copy to use (default=check)
-
-        internal:
-                Use the internal copy of JSON-GLib for ClutterScript
-
-        check:
-                Check for the existence of a system copy of JSON-GLib
-                and if it is available, make Clutter depend on it
-
-        system:
-                Only use the system copy of JSON-GLib and warn if not found
 
 VERSIONING
 -------------------------------------------------------------------------------

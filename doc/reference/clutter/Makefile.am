@@ -71,7 +71,6 @@ IGNORE_HFILES=\
 	clutter-deprecated.h 		\
 	clutter-enum-types.h 		\
 	clutter-id-pool.h 		\
-	clutter-json.h 			\
 	clutter-keysyms.h 		\
 	clutter-keysyms-compat.h	\
 	clutter-keysyms-table.h 	\
@@ -88,7 +87,6 @@ IGNORE_HFILES=\
 	egl 				\
 	fruity				\
 	glx 				\
-	json 				\
 	osx 				\
 	x11 				\
 	win32

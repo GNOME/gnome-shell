@@ -210,8 +210,6 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-#include "json/json-parser.h"
-
 enum
 {
   PROP_0,

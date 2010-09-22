@@ -27,7 +27,8 @@
 #define __CLUTTER_SCRIPT_PRIVATE_H__
 
 #include <glib-object.h>
-#include "clutter-json.h"
+#include <json-glib/json-glib.h>
+
 #include "clutter-color.h"
 #include "clutter-types.h"
 #include "clutter-script.h"

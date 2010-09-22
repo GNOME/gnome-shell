@@ -30,8 +30,8 @@
 #define __CLUTTER_SCRIPTABLE_H__
 
 #include <glib-object.h>
+#include <json-glib/json-glib.h>
 #include <clutter/clutter-script.h>
-#include <clutter/clutter-json.h>
 
 G_BEGIN_DECLS
 

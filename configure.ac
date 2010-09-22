@@ -795,80 +795,6 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
 
 AM_CONDITIONAL(X11_TESTS, [test "x$x11_tests" = "xyes"])
 
-dnl === JSON parser check =====================================================
-
-# we allow building clutter with the internal copy of json-glib
-# for platforms without it, but by default we depend on the
-# system copy
-m4_define([default_json], [system])
-AC_ARG_WITH([json],
-            AC_HELP_STRING([--with-json=@<:@internal/check/system@:>@],
-                           [Select the JSON-GLib copy to use @<:@default=default_json@:>@]),
-            [],
-            [with_json=default_json])
-
-experimental_json=no
-AS_CASE([$with_json],
-
-        [internal],
-        [
-          JSON_PREFIX=json
-          experimental_json=yes
-          have_json=no
-        ],
-
-        [system],
-        [
-          AC_MSG_CHECKING([for installed JSON-GLib])
-          PKG_CHECK_EXISTS([json-glib-1.0 >= 0.10],
-                           [have_json=yes],
-                           [have_json=no])
-          AS_IF([test "x$have_json" = "xyes"],
-                [
-                  JSON_PREFIX=json-glib
-                  JSON_GLIB_PC="json-glib-1.0 >= 0.10"
-
-                  AC_DEFINE([HAVE_JSON_GLIB],
-                            [1],
-                            [Have the JSON-GLib library installed])
-
-                  AC_MSG_RESULT([found])
-                ],
-                [AC_MSG_ERROR([not found])]
-          )
-        ],
-
-        [check],
-        [
-          AC_MSG_CHECKING([for installed JSON-GLib])
-          PKG_CHECK_EXISTS([json-glib-1.0 >= 0.8],
-                           [have_json=yes],
-                           [have_json=no])
-          AS_IF([test "x$have_json" = "xyes"],
-                [
-                  JSON_PREFIX=json-glib
-                  JSON_GLIB_PC="json-glib-1.0 >= 0.8"
-
-                  AC_DEFINE([HAVE_JSON_GLIB],
-                            [1],
-                            [Have the JSON-GLib library installed])
-
-                  AC_MSG_RESULT([found])
-                ],
-                [
-                  JSON_PREFIX=json
-                  experimental_json=yes
-                  AC_MSG_RESULT([not found, using internal copy])
-                ]
-          )
-        ],
-
-        [AC_MSG_ERROR([Unknown argument for --with-json])]
-)
-
-AC_SUBST(JSON_PREFIX)
-AM_CONDITIONAL(LOCAL_JSON_GLIB, test "x$have_json" = "xno")
-
 dnl === Enable debug level ====================================================
 
 m4_define([debug_default], [m4_if(m4_eval(clutter_minor_version % 2), [1], [yes], [minimum])])
@@ -1020,15 +946,12 @@ AS_IF([test "x$enable_maintainer_flags" = "xyes" && test "x$GCC" = "xyes"],
 AC_SUBST(MAINTAINER_CFLAGS)
 
 dnl === Dependencies, compiler flags and linker libraries =====================
-CLUTTER_REQUIRES="cairo >= 1.4 atk >= 1.7 pangocairo >= 1.20 $IMAGE_PC_FILES $BACKEND_PC_FILES $JSON_GLIB_PC"
-
+CLUTTER_REQUIRES="cairo >= 1.8 atk >= 1.7 pangocairo >= 1.20 json-glib-1.0 >= 0.10 $IMAGE_PC_FILES $BACKEND_PC_FILES"
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
-
 AC_SUBST(CLUTTER_REQUIRES)
 
 CLUTTER_CFLAGS="$FLAVOUR_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_PROFILE_CFLAGS $GLIB_CFLAGS"
 CLUTTER_LIBS="$FLAVOUR_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_PROFILE_LDFLAGS $GLIB_LIBS"
-
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
 
@@ -1117,7 +1040,6 @@ AC_CONFIG_FILES([
 
 	clutter/Makefile
 	clutter/clutter-version.h
-	clutter/clutter-json.h
 	clutter/clutter-$CLUTTER_API_VERSION.pc:clutter/clutter.pc.in
 
 	clutter/cally/cally-$CLUTTER_API_VERSION.pc:clutter/cally/cally.pc.in
@@ -1193,12 +1115,6 @@ echo " • Extra:"
 echo "        Build introspection data: ${enable_introspection}"
 echo "        Build conformance test suite: ${enable_conformance}"
 
-if test "x$have_json" = "xyes"; then
-echo "        JSON-GLib: system"
-else
-echo "        JSON-GLib: internal (WARNING: Experimental)"
-fi
-
 # COGL flags
 echo ""
 echo " • COGL Backend:"
@@ -1239,8 +1155,8 @@ echo ""
 
 # General warning about experimental features
 if test "x$experimental_backend" = "xyes" ||
-   test "x$experimental_image" = "xyes" ||
-   test "x$experimental_json" = "xyes"; then
+   test "x$experimental_image" = "xyes"
+then
 echo ""
 echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
 echo " *WARNING*"
