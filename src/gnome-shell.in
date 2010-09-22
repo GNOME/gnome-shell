@@ -303,6 +303,7 @@ def run_shell(perf_output=None):
         termattrs = termios.tcgetattr(0);
 
     normal_exit = False
+    xephyr = None
 
     if options.verbose:
         print "Starting shell"
@@ -316,7 +317,6 @@ def run_shell(perf_output=None):
             os.environ['GNOME_SHELL_NO_REPLACE'] = '1'
             shell = start_shell()
         else:
-            xephyr = None
             shell = start_shell(perf_output=perf_output)
 
         # Wait for shell to exit
