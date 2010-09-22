@@ -1,5 +1,5 @@
 Clutter Coding Style
---------------------
+-------------------------------------------------------------------------------
 
 This document is intended to be a short description of the preferred
 coding style to be used for the Clutter source code.
@@ -21,8 +21,7 @@ When in doubt, check the surrounding code and try to imitate it.
 
 + Line width
 
-The maximum line width is 80 characters, whenever possible.
-
+The maximum line width for source files is 80 characters, whenever possible.
 Longer lines are usually an indication that you either need a function
 or a pre-processor macro.
 
@@ -50,7 +49,8 @@ The tab character must always be expanded to spaces. If a literal
 tab must be used inside the source, the tab must always be interpreted
 according to its traditional meaning:
 
-        Advance to the next column which is a multiple of 8.
+	Advance to the next column which is a multiple of 8.
+        [ these two lines should be aligned ]
 
 + Braces
 
@@ -71,21 +71,51 @@ indentation level:
       statement_3 ();
     }
 
-If the condition or the arguments of the single statement need to be
-split on multiple lines, like:
+The "no block for single statements" rule has only three exceptions:
 
-  if (condition_1 &&
-      (condition_2 || condition_3))
+  ①  if the single statement covers multiple lines, e.g. for functions with
+     many arguments, and it is followed by else or else if:
+
+  /* valid */
+  if (condition)
     {
-      single_statement ();
+      a_single_statement_with_many_arguments (some_lengthy_argument,
+                                              another_lengthy_argument,
+                                              and_another_one,
+                                              plus_one);
     }
   else
+    another_single_statement (arg1, arg2);
+
+  ②  if the condition is composed of many lines:
+
+  /* valid */
+  if (condition1 ||
+      (condition2 && condition3) ||
+      condition4 ||
+      (condition5 && (condition6 || condition7)))
     {
-      another_single_statement (very_long_argument_1,
-                                argument_2,
-                                &return_argument_1,
-                                &return_argument_2);
+      a_single_statement ();
     }
+
+  ③  Nested if's, in which case the block should be placed on the
+     outermost if:
+
+  /* valid */
+  if (condition)
+    {
+      if (another_condition)
+        single_statement ();
+      else
+        another_single_statement ();
+    }
+
+  /* invalid */
+  if (condition)
+    if (another_condition)
+      single_statement ();
+    else if (yet_another_condition)
+      another_single_statement ();
 
 In general, new blocks should be placed on a new indentation level,
 like:
@@ -101,7 +131,7 @@ like:
 
     res = statement_3 (var1);
 
-    retval = res == TRUE ? -1 : 1;
+    retval = res ? -1 : 1;
   }
 
 While curly braces for function definitions should rest on a new line
@@ -129,10 +159,52 @@ they should not add an indentation level:
 
 Curly braces must not be placed on the same line as a condition:
 
+  /* invalid */
   if (condition) {
     statement_1 ();
     statement_2 ();
   }
+
++ Conditions
+
+Do not check boolean values for equality:
+
+  /* invalid */
+  if (condition == TRUE)
+    do_foo ();
+
+  /* valid */
+  if (another_condition)
+    do_bar ();
+
+Even if C handles NULL equality like a boolean, be explicit:
+
+  /* valid */
+  if (some_pointer == NULL)
+    do_blah ();
+
+  /* invalid */
+  if (some_other_pointer)
+    do_blurp ();
+
+In case of conditions split over multiple lines, the logical operators should
+always go at the end of the line:
+
+  /* invalid */
+  if (condition1
+      || condition2
+      || condition3)
+    {
+      do_foo ();
+    }
+
+  /* valid */
+  if (condition1 &&
+      condition2 &&
+      (condition3 || (condition4 && condition5)))
+    {
+      do_blah ();
+    }
 
 + Functions
 
@@ -216,6 +288,45 @@ case block on a new indentation level:
     case BAR: do_bar (); break;
   }
 
+  /* invalid */
+  switch (condition)
+    {
+    case FOO: do_foo ();
+      break;
+    case BAR: do_bar ();
+      break;
+    }
+
+  /* invalid */
+  switch (condition)
+    {
+      case FOO:
+      do_foo ();
+      break;
+      case BAR:
+      do_bar ();
+      break;
+    }
+
+It is preferable, though not mandatory, to separate the various cases with
+a newline:
+
+  switch (condition)
+    {
+    case FOO:
+      do_foo ();
+      break;
+
+    case BAR:
+      do_bar ();
+      break;
+
+    default:
+      do_default ();
+    }
+
+The 'break' statement for the default: case is not mandatory.
+
 If a case block needs to declare new variables, the same rules as the
 inner blocks (see above) apply; the break statement should be placed
 outside of the inner block:
@@ -295,6 +406,13 @@ column:
                                                    GError      **error);
   G_CONST_RETURN gchar *clutter_type_get_property (ClutterType  *type);
 
+It is also possible to align the columns to the next tab:
+
+  void          clutter_type_set_prop           (ClutterType *type,
+                                                 gfloat       value);
+  gfloat        clutter_type_get_prop           (ClutterType *type);
+  gint          clutter_type_update_foobar      (ClutterType *type);
+
 Public headers should never be included directly:
 
   #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
@@ -322,7 +440,7 @@ and C++ guards:
 GObject classes definition and implementation require some additional
 coding style notices.
 
-Typedef declarations should be places at the beginning of the file:
+Typedef declarations should be placed at the beginning of the file:
 
   typedef struct _ClutterActor          ClutterActor;
   typedef struct _ClutterActorPrivate   ClutterActorPrivate;
@@ -330,8 +448,7 @@ Typedef declarations should be places at the beginning of the file:
 
 This includes enumeration types:
 
-  typedef enum
-  {
+  typedef enum {
     CLUTTER_REQUEST_WIDTH_FOR_HEIGHT,
     CLUTTER_REQUEST_HEIGHT_FOR_WIDTH
   } ClutterRequestMode;
@@ -342,17 +459,20 @@ And callback types:
                                     gpointer      user_data);
 
 Instance structures should only contain the parent type and a pointer to a
-private data structure:
+private data structure, and they should be annotated as "private":
 
   struct _ClutterRectangle
   {
+    /*< private >*/
     ClutterActor parent_instance;
 
     ClutterRectanglePrivate *priv;
   };
 
 All the properties should be stored inside the private data structure, which
-is defined inside the source file.
+is defined inside the source file - or, if needed, inside a private header
+file; the private header filename must end with "-private.h" and must not be
+installed.
 
 The private data structure should only be accessed internally using the
 pointer inside the instance structure, and never using the
@@ -363,17 +483,38 @@ Always use the G_DEFINE_TYPE(), G_DEFINE_TYPE_WITH_CODE() macros, or
 their abstract variants G_DEFINE_ABSTRACT_TYPE() and
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE().
 
+Avoid forward declaration for functions: use the G_DEFINE_* macros right
+after the private types, variables and macros declarations.
+
+Interface types should always have the dummy typedef for cast purposes:
+
+        typedef struct _ClutterFoo              ClutterFoo;
+
+The interface structure should have "Iface" postfixed to the dummy typedef:
+
+        typedef struct _ClutterFooIface         ClutterFooIface;
+
+Interfaces must have the following macros:
+
+        - Macro:                                - Expands to:
+        • CLUTTER_TYPE_<iface_name>             <iface_name>_get_type
+        • CLUTTER_<iface_name>                  G_TYPE_CHECK_INSTANCE_CAST
+        • CLUTTER_IS_<iface_name>               G_TYPE_CHECK_INSTANCE_TYPE
+        • CLUTTER_<iface_name>_GET_IFACE        G_TYPE_INSTANCE_GET_INTERFACE
+
 + Memory allocation
 
 When dynamically allocating data on the heap either use g_new() or,
 if allocating multiple small data structures, g_slice_new().
 
 Public structure types should always be returned after being zero-ed,
-either explicitly, or by using g_new0() or g_slice_new0().
+either explicitly for each member, or by using g_new0() or g_slice_new0().
 
 + Macros
 
-Try to avoid macros unless strictly necessary. Remember to #undef them
-at the end of a block or a series of functions needing them.
+Try to avoid private macros unless strictly necessary. Remember to #undef
+them at the end of a block or a series of functions needing them.
 
-Inline functions are usually preferable to macros.
+Inline functions are usually preferable to private macros.
+
+Public macros should not be used unless they evaluate to a constant.
