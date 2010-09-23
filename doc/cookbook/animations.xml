@@ -2011,7 +2011,9 @@ clutter_animator_start (animator);
         corner. However, it is possible to set this to some other
         coordinate, relative to the actor's top-left corner,
         using the <function>clutter_anchor_set_anchor_point()</function>
-        function. For example:</para>
+        function.</para>
+
+        <para>For example:</para>
 
         <informalexample>
           <programlisting>
@@ -2022,6 +2024,19 @@ clutter_actor_set_size (actor, 100, 100);
 clutter_actor_set_anchor_point (actor, 50.0, 0.0);
           </programlisting>
         </informalexample>
+
+        <note>
+          <para>In GL terms, the anchor point of an actor is the equivalent
+          of applying an additional transformation of <code>-x, -y</code> to
+          the actor's modelview. If the anchor point is <code>0, 0</code>,
+          i.e. the top-left corner, then the transformation will leave the
+          actor in the same place.</para>
+          <para>It is important to note that the anchor point will affect the
+          position in which an actor is painted, but will not change the
+          position or size that its parent allocated for it.</para>
+          <para>Finally, the anchor point will affect the other transformations
+          that can be applied to an actor: scaling and rotating.</para>
+        </note>
 
         <para>A positive anchor point within the width/height bounds of the
         actor is inside the actor. An anchor point outside these bounds
