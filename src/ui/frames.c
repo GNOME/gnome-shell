@@ -2081,20 +2081,6 @@ setup_bg_cr (cairo_t *cr, GdkWindow *window, int x_offset, int y_offset)
     }
 }
 
-static void
-clear_backing (GdkPixmap *pixmap,
-               GdkWindow *window,
-               int xoffset, int yoffset)
-{
-  cairo_t *cr = gdk_cairo_create (pixmap);
-
-  setup_bg_cr (cr, window, xoffset, yoffset);
-
-  cairo_paint (cr);
-  
-  cairo_destroy (cr);
-}
-
 /* Returns a pixmap with a piece of the windows frame painted on it.
 */
 
@@ -2113,9 +2099,10 @@ generate_pixmap (MetaFrames *frames,
   result = gdk_pixmap_new (frame->window,
                            rect->width, rect->height, -1);
   
-  clear_backing (result, frame->window, rect->x, rect->y);
-
   cr = meta_cairo_create (result);
+
+  setup_bg_cr (cr, frame->window, rect->x, rect->y);
+  cairo_paint (cr);
 
   meta_frames_paint (frames, frame, cr, -rect->x, -rect->y);
 
