@@ -62,6 +62,8 @@ VIDEO_FILES = \
 	videos/textures-crossfade-two-textures.ogv \
 	videos/animations-complex.ogv \
 	videos/animations-reuse.ogv \
+	videos/animations-moving-anchors.ogv \
+	videos/animations-moving-depth.ogv \
 	$(NULL)
 
 EXTRA_DIST = \

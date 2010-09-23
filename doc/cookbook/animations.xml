@@ -1816,4 +1816,478 @@ foo_button_pressed_cb (ClutterActor *actor,
 
   </section>
 
+  <section id="animations-moving">
+    <title>Moving actors</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to animate the movement of one or more actors.
+      For example:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>To move user interface elements in response to user input
+          (e.g. keyboard control of a character in a game).</para>
+        </listitem>
+        <listitem>
+          <para>To move a group of actors "off stage" to make way
+          for another group of actors (e.g. paging through
+          thumbnails in a photo viewer).</para>
+        </listitem>
+        <listitem>
+          <para>To move an actor to a different position in the
+          interface (e.g. moving an icon for a trashed file into
+          a wastebin).</para>
+        </listitem>
+      </itemizedlist>
+
+    </section>
+
+    <section>
+      <title>Solutions</title>
+
+      <para>Animate the actors movement on one or more axes
+      (<varname>x</varname>, <varname>y</varname>,
+      <varname>z/depth</varname>) using one or more of the approaches
+      available in the Clutter API (implicit animations,
+      <type>ClutterState</type>, <type>ClutterAnimator</type>).</para>
+
+      <section>
+        <title>Solution 1: Implicit animations</title>
+
+        <para>This works well for simple movement of a single actor to
+        a single set of coordinates. Here is an example of how to animate
+        movement of a <type>ClutterActor</type> <varname>actor</varname>
+        to position <code>100.0</code> on <varname>x</varname> axis:</para>
+
+        <informalexample>
+          <programlisting>
+clutter_actor_animate (actor, CLUTTER_LINEAR, 500,
+                       "x", 100.0,
+                       NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>See <link linkend="animations-moving-example-1">this
+        example</link> which demonstrates movement in each axis,
+        in response to (mouse) button presses.</para>
+
+      </section>
+
+      <section>
+        <title>Solution 2: <type>ClutterState</type></title>
+
+        <para>This suits simple, repeated movement of one or more actors
+        between sets of coordinates. Here is an example of how to
+        create two states for a <type>ClutterState</type> instance to
+        move two actors, <varname>actor1</varname> and
+        <varname>actor2</varname>:</para>
+
+        <informalexample>
+          <programlisting>
+ClutterState *transitions = clutter_state_new ();
+
+/* all state transitions take 250ms */
+clutter_state_set_duration (transitions, NULL, NULL, 250);
+
+/* create a state called move-down which moves both actors to y = 200.0 */
+clutter_state_set (transitions, NULL, "move-down",
+                   actor1, "y", CLUTTER_EASE_OUT_CUBIC, 200.0,
+                   actor2, "y", CLUTTER_EASE_OUT_CUBIC, 200.0,
+                   NULL);
+
+/* create a state called move-up which moves both actors to y = 0.0 */
+clutter_state_set (transitions, NULL, "move-up",
+                   actor1, "y", CLUTTER_EASE_OUT_CUBIC, 0.0,
+                   actor2, "y", CLUTTER_EASE_OUT_CUBIC, 0.0,
+                   NULL);
+
+/* move the actors by setting the state */
+clutter_state_set (transitions, "move-down");
+          </programlisting>
+        </informalexample>
+
+        <para>This <link linkend="animations-moving-example-2">full
+        example</link> shows how to move and simultaneously
+        scale two actors. When a button is pressed on one actor, it is
+        moved and scaled to occupy the right-hand side of the stage;
+        the other actor is simultaneously moved back to the left-hand
+        side of the stage and scaled down.</para>
+
+      </section>
+
+      <section>
+        <title>Solution 3: <type>ClutterAnimator</type></title>
+
+        <para>This is a good way to implement complex movement of
+        one or more actors between sets of coordinates.</para>
+
+        <informalexample>
+          <programlisting>
+ClutterAnimator *animator = clutter_animator_new ();
+
+/* the animation takes 500ms */
+clutter_animator_set_duration (animator, 500);
+
+/* at the start of the animation, actor should be at 0.0,0.0;
+ * half-way through, at 100.0,100.0;
+ * by the end, actor should be at 150.0,200.0;
+ * note that you can set different easing modes for each
+ * part of the animation and for each property at each key
+ */
+clutter_animator_set (animator,
+
+                      /* keys for the start of the animation */
+                      actor, "x", CLUTTER_LINEAR, 0.0, 0.0,
+                      actor, "y", CLUTTER_LINEAR, 0.0, 0.0,
+
+                      /* keys for half-way through the animation */
+                      actor, "x", CLUTTER_EASE_OUT_CUBIC, 0.5, 100.0,
+                      actor, "y", CLUTTER_EASE_IN_CUBIC, 0.5, 100.0,
+
+                      /* keys for the end of the animation */
+                      actor, "x", CLUTTER_EASE_OUT_EXPO, 1.0, 150.0,
+                      actor, "y", CLUTTER_EASE_OUT_CUBIC, 1.0, 200.0,
+
+                      NULL);
+
+/* run the animation */
+clutter_animator_start (animator);
+          </programlisting>
+        </informalexample>
+
+        <para>The <link linkend="animations-moving-example-3">full
+        example</link> demonstrates how <type>ClutterAnimator</type>
+        can be used to programmatically animate multiple actors: in this
+        case, to simultaneously move three actors to random positions
+        along the <varname>x</varname> axis. Synchronising the
+        movement of three actors simultaneously using implicit
+        animations would be possible but awkward;
+        <type>ClutterState</type> might be another option,
+        but it wasn't really designed for this case: there are no persistent
+        states to transition between, as the actor positions are
+        generated on each key press.</para>
+
+        <note>
+          <para>If you want to apply the same movement to a group of
+          actors, rather than different movements for each actor,
+          it's often better to put the actors into a container
+          of some kind and move that instead of moving the actors
+          individually.</para>
+        </note>
+
+      </section>
+
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <section>
+        <title>Movement can take an actor "outside" its container</title>
+
+        <para>Actor movement in the <varname>x</varname> and
+        <varname>y</varname> axes is relative to the actor's parent
+        container. There is nothing to stop you animating an actor
+        until it falls outside the bounds of its container. This
+        could result in the actor moving "off" the interface; though it's
+        worth remembering that the actor is not unparented or destroyed
+        if this happens.</para>
+
+        <para>To ensure that an actor remains visible, its position
+        should remain within the visible area of the container. In practice,
+        this means either anywhere in the container, if no clip area
+        has been set; or within the container's clip area, if set.</para>
+
+      </section>
+
+      <section>
+        <title>Anchor points can affect movement</title>
+
+        <para>An actor's anchor point is defined as an <code>x,y</code>
+        coordinate relative to the top-left of the actor. The default
+        anchor point for an actor is in its top-left
+        corner. However, it is possible to set this to some other
+        coordinate, relative to the actor's top-left corner,
+        using the <function>clutter_anchor_set_anchor_point()</function>
+        function. For example:</para>
+
+        <informalexample>
+          <programlisting>
+/* set the actor's size to 100px x 100px */
+clutter_actor_set_size (actor, 100, 100);
+
+/* set an anchor point half-way along the top of the actor */
+clutter_actor_set_anchor_point (actor, 50.0, 0.0);
+          </programlisting>
+        </informalexample>
+
+        <para>A positive anchor point within the width/height bounds of the
+        actor is inside the actor. An anchor point outside these bounds
+        is outside the actor. You can also set a negative
+        <varname>x</varname> or <varname>y</varname> value for
+        the anchor point, which will again place the point outside
+        the actor's bounds.</para>
+
+        <para>This is important with respect to moving an actor, because
+        you are actually moving the anchor point and "dragging" the
+        actor along with it.</para>
+
+        <para>For example: you have an actor with width 50px, and you
+        set its <varname>anchor-x</varname> property to <code>25.0</code>.
+        If you move that actor on the <varname>x</varname> axis, you are
+        effectively moving a point half-way across the top of the
+        actor along the <varname>x</varname> axis (which in turn moves the
+        actor).</para>
+
+        <para>Similarly, you could set the same actor's
+        <varname>anchor-x</varname> to <code>-25.0</code>. If you then
+        moved the actor along the <varname>x</varname> axis, you would
+        effectively be moving the point 25px left of the top of the actor
+        along that axis.</para>
+
+        <para>The video below demonstrates the effect on movement of shifting
+        the anchor point on the <varname>x</varname> axis. The
+        <emphasis>red</emphasis> rectangle has <varname>anchor-x</varname>
+        set to <code>25.0</code>; the <emphasis>green</emphasis> rectangle has
+        <varname>anchor-x</varname> set to <code>0.0</code> (the default); the
+        <emphasis>blue</emphasis> rectangle has <varname>anchor-x</varname>
+        set to <code>-25.0</code>.</para>
+
+        <inlinemediaobject>
+          <videoobject>
+            <videodata fileref="videos/animations-moving-anchors.ogv"/>
+          </videoobject>
+          <alt>
+            <para>Video showing the effect of anchor point on movement</para>
+          </alt>
+        </inlinemediaobject>
+
+        <para> A <type>ClutterAnimator</type> is
+        used to move each of the rectangles to <code>x = 225.0</code>.
+        Although the three rectangles move to the same position on the
+        <varname>x</varname> axis, it's actually the the anchor points
+        which are at the same position. These all align on the
+        <varname>x</varname> axis with the left-hand edge of the green
+        rectangle.</para>
+
+      </section>
+
+      <section>
+        <title>Actors can move in the <varname>z</varname> axis</title>
+
+        <para>The examples so far have shown how to move actors in
+        the <varname>x</varname> and <varname>y</varname> axes; but it
+        is also possible to move actors in the <varname>z</varname>
+        axis (i.e. move them closer or further away from the view point).
+        This lets you move actors under/over each other.</para>
+
+        <para>To move an actor in the <varname>z</varname> axis, animate
+        its <varname>depth</varname> property. Animating to a negative
+        depth moves the actor away from the view point; animating to a
+        positive depth moves the actor towards the view point.</para>
+
+        <para>Changing the depth of an actor also causes perspective
+        effects: the actor gets smaller and converges on the center
+        of the stage as it gets further from the view point, and
+        gets larger and diverges from the center of the stage as it gets
+        closer. This results in an apparent (but not actual) change in
+        the <code>x,y</code> position and scale of the actor.</para>
+
+        <note>
+          <para>Animating the depth of an actor is slightly different
+          from animating its x and y coordinates, as depth is relative
+          to the whole stage, not just the parent container of the
+          actor. This means that perspective effects are with
+          respect to the whole stage: so as an actor's depth
+          moves below <code>0.0</code>, it converges on the center
+          of the stage, and may even apparently move outside its
+          container (if the container stays at the same depth).</para>
+        </note>
+
+        <para>The video below demonstrates the effect of animating
+        the depth of four actors to a value of <code>-15000.0</code>.
+        Note how the actors converge on the center of the stage,
+        as well as appearing to change position and scale; also note
+        that they appear to move outside the bounds of their parent containers
+        (the four yellow <type>ClutterBoxes</type>).</para>
+
+        <inlinemediaobject>
+          <videoobject>
+            <videodata fileref="videos/animations-moving-depth.ogv"/>
+          </videoobject>
+          <alt>
+            <para>Video showing perspective effects when animating
+            actor depth</para>
+          </alt>
+        </inlinemediaobject>
+
+      </section>
+
+      <section>
+        <title>Movement is affected by constraints</title>
+
+        <para>An actor can have its x,y position constrained by
+        the position of other actors through <type>ClutterBindConstraints</type>.
+        This can affect movement in two ways:</para>
+
+        <orderedlist>
+          <listitem>
+            <para>If an actor has its <varname>x</varname> and/or
+            <varname>y</varname> properties
+            bound or aligned to another actor's, you can't animate
+            those properties.</para>
+
+            <para>In effect this means that the bound actor can't be
+            moved on a bound axis directly, but can only be moved by
+            animating the constraint's properties.</para>
+          </listitem>
+
+          <listitem>
+            <para>If you move an actor which has other actors bound to
+            it, the bound actors will also move. For example, if
+            the actor has several other actors whose <varname>x</varname>
+            properties are bound to its <varname>x</varname> property,
+            moving the actor on the <varname>x</varname> axis will also
+            move the bound actors on that axis.</para>
+
+            <para>Similarly, if some actor is the source for
+            alignment constraints on other actors, moving the source
+            will cause those other actors to move, so that they remain in
+            alignment with it.</para>
+          </listitem>
+        </orderedlist>
+
+        <para>For example, consider two actors bound by constraints
+        as follows:</para>
+
+        <informalexample>
+          <programlisting>
+/* the source actor for the constraint */
+ClutterActor *source;
+
+/* the actor bound by the constraint */
+ClutterActor *target;
+
+/* a constraint to be added to target */
+ClutterConstraint *constraint;
+
+/* ...initialize actors etc... */
+
+/* create a constraint for binding the x position of some actor to the
+ * x position of source
+ */
+constraint = clutter_bind_constraint_new (source, CLUTTER_BIND_X, 0.0);
+
+/* add the constraint to target with a name */
+clutter_actor_add_constraint_with_name (target, "bind-x", constraint);
+          </programlisting>
+        </informalexample>
+
+        <para>Animating <varname>source</varname> on the <varname>x</varname>
+        axis also animates <varname>target</varname> on the same axis:</para>
+
+        <informalexample>
+          <programlisting>
+clutter_actor_animate (source, CLUTTER_LINEAR, 500,
+                       "x", 250.0,
+                       NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>...while this has no effect, as it would violate
+        <varname>constraint</varname> (it's best not to animate
+        <varname>target's</varname> <varname>x</varname> property
+        directly):</para>
+
+        <informalexample>
+          <programlisting>
+clutter_actor_animate (target, CLUTTER_LINEAR, 500,
+                       "x", 250.0,
+                       NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>But the constraint's properties can be animated, to change
+        how <varname>source</varname> and <varname>target</varname>
+        are bound; which in turn moves <varname>target</varname>:</para>
+
+        <informalexample>
+          <programlisting>
+clutter_actor_animate (target, CLUTTER_LINEAR, 500,
+                       "@constraints.bind-x.offset", 250.0,
+                       NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>Note the <code>@constraints.&lt;constraint name&gt;.&lt;constraint property&gt;</code>
+        syntax (which is why we needed to use
+        <function>clutter_actor_add_constraint_with_name()</function>,
+        so that the constraint can be accessed through the actor).
+        We are still animating <varname>target</varname>, but really
+        we're indirectly animating a property of one of its constraints.</para>
+
+        <para>Another alternative would be to directly animate
+        the constraint's properties through <type>ClutterState</type>
+        or <type>ClutterAnimator</type>, rather than using
+        pseudo-properties on the actor animation:</para>
+
+        <informalexample>
+          <programlisting>
+ClutterAnimator *animator = clutter_animator_new ();
+clutter_animator_set_duration (animator, 500);
+
+clutter_animator_set (animator,
+                      constraint, "offset", CLUTTER_LINEAR, 0.0, 0.0,
+                      constraint, "offset", CLUTTER_LINEAR, 1.0, 250.0,
+                      NULL);
+
+clutter_animator_start (animator);
+          </programlisting>
+        </informalexample>
+
+        <para>This could be useful if you need to animate
+        multiple constraints between multiple values simultaneously.</para>
+
+      </section>
+
+    </section>
+
+    <section id="animations-moving-examples">
+      <title>Full examples</title>
+
+      <example id="animations-moving-example-1">
+        <title>Simple movement using implicit animations</title>
+        <programlisting>
+<xi:include href="examples/animations-moving-implicit.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="animations-moving-example-2">
+        <title>Using <type>ClutterState</type> to repeatedly move
+        (and scale) two actors</title>
+        <programlisting>
+<xi:include href="examples/animations-moving-state.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="animations-moving-example-3">
+        <title>Using <type>ClutterAnimator</type> to randomly move
+        three actors along the <varname>x</varname> axis</title>
+        <programlisting>
+<xi:include href="examples/animations-moving-animator.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+    </section>
+
+  </section>
+
 </chapter>
