@@ -1802,7 +1802,8 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
    * invalidate the pick buffer in _clutter_stage_queue_actor_redraw
    */
   stage = _clutter_actor_get_stage_internal (self);
-  _clutter_stage_set_pick_buffer_valid (CLUTTER_STAGE (stage), FALSE);
+  if (stage != NULL)
+    _clutter_stage_set_pick_buffer_valid (CLUTTER_STAGE (stage), FALSE);
 
   /* Although we could determine here that a full stage redraw
    * has already been queued and immediately bail out, we actually
