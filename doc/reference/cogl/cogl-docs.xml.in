@@ -98,6 +98,34 @@
 
   </chapter>
 
+  <chapter>
+    <title>Cogl deprecated API</title>
+
+    <section id="cogl-deprecated">
+
+      <title>About the deprecated API</title>
+
+      <para>Cogl has evolved from once being a thin abstraction over
+      OpenGL and GLES where a lot of OpenGL's state machine style APIs
+      were simply rebranded as Cogl API into the more distinguished API
+      style we have today. The result of this evolution though is that
+      some of the APIs are considered deprecated and because we plan to
+      remove them at the next opportunity we have to break the API
+      developers should aim to avoid these functions to keep their code
+      working with future major versions of Cogl.</para>
+
+    </section>
+
+    <xi:include href="xml/cogl-deprecated.xml"/>
+    <xi:include href="xml/cogl-texture-deprecated.xml"/>
+    <xi:include href="xml/cogl-material-deprecated.xml"/>
+    <xi:include href="xml/cogl-clipping-deprecated.xml"/>
+    <xi:include href="xml/cogl-vertex-buffer-deprecated.xml"/>
+    <xi:include href="xml/cogl-shaders-deprecated.xml"/>
+    <xi:include href="xml/cogl-offscreen-deprecated.xml"/>
+
+  </chapter>
+
   <chapter id="coglglossary">
     <title>Glossaries</title>
 
