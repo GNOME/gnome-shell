@@ -1629,13 +1629,13 @@ foo_button_pressed_cb (ClutterActor *actor,
       <para>This is what the animation looks like:</para>
 
       <inlinemediaobject>
-          <videoobject>
-            <videodata fileref="videos/animations-reuse.ogv"/>
-          </videoobject>
-          <alt>
-            <para>Video of a simple reusable animation</para>
-          </alt>
-        </inlinemediaobject>
+        <videoobject>
+          <videodata fileref="videos/animations-reuse.ogv"/>
+        </videoobject>
+        <alt>
+          <para>Video of a simple reusable animation</para>
+        </alt>
+      </inlinemediaobject>
 
     </section>
 
