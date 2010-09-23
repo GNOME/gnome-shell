@@ -943,7 +943,7 @@ static void
 run_theme_benchmark (void)
 {
   GtkWidget* widget;
-  GdkPixmap *pixmap;
+  MetaPixmap *pixmap;
   int top_height, bottom_height, left_width, right_width;
   MetaButtonState button_states[META_BUTTON_TYPE_LAST] =
   {
@@ -1007,12 +1007,11 @@ run_theme_benchmark (void)
       /* Creating the pixmap in the loop is right, since
        * GDK does the same with its double buffering.
        */
-      pixmap = gdk_pixmap_new (gtk_widget_get_window (widget),
-                               client_width + left_width + right_width,
-                               client_height + top_height + bottom_height,
-                               -1);
+      pixmap = meta_pixmap_new (gtk_widget_get_window (widget),
+                                client_width + left_width + right_width,
+                                client_height + top_height + bottom_height);
 
-      cr = meta_cairo_create (pixmap);
+      cr = meta_pixmap_cairo_create (pixmap);
 
       meta_theme_draw_frame (global_theme,
                              widget,
@@ -1029,7 +1028,7 @@ run_theme_benchmark (void)
                              meta_preview_get_icon ());
 
       cairo_destroy (cr);
-      g_object_unref (G_OBJECT (pixmap));
+      meta_pixmap_free (pixmap);
       
       ++i;
       client_width += inc;

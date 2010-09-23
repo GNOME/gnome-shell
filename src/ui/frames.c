@@ -276,7 +276,7 @@ meta_frames_finalize (GObject *object)
 typedef struct
 {
   GdkRectangle rect;
-  GdkPixmap *pixmap;
+  MetaPixmap *pixmap;
 } CachedFramePiece;
 
 typedef struct
@@ -313,7 +313,7 @@ invalidate_cache (MetaFrames *frames,
   
   for (i = 0; i < 4; i++)
     if (pixels->piece[i].pixmap)
-      g_object_unref (pixels->piece[i].pixmap);
+      meta_pixmap_free (pixels->piece[i].pixmap);
   
   g_free (pixels);
   g_hash_table_remove (frames->cache, frame);
@@ -2084,22 +2084,22 @@ setup_bg_cr (cairo_t *cr, GdkWindow *window, int x_offset, int y_offset)
 /* Returns a pixmap with a piece of the windows frame painted on it.
 */
 
-static GdkPixmap *
+static MetaPixmap *
 generate_pixmap (MetaFrames *frames,
                  MetaUIFrame *frame,
                  GdkRectangle *rect)
 {
-  GdkPixmap *result;
+  MetaPixmap *result;
   cairo_t *cr;
 
   /* do not create a pixmap for nonexisting areas */
   if (rect->width <= 0 || rect->height <= 0)
     return NULL;
 
-  result = gdk_pixmap_new (frame->window,
-                           rect->width, rect->height, -1);
+  result = meta_pixmap_new (frame->window,
+                            rect->width, rect->height);
   
-  cr = meta_cairo_create (result);
+  cr = meta_pixmap_cairo_create (result);
 
   setup_bg_cr (cr, frame->window, rect->x, rect->y);
   cairo_paint (cr);
@@ -2270,8 +2270,8 @@ cached_pixels_draw (CachedPixels *pixels,
       
       if (piece->pixmap)
         {
-          gdk_cairo_set_source_pixmap (cr, piece->pixmap,
-                                       piece->rect.x, piece->rect.y);
+          meta_cairo_set_source_pixmap (cr, piece->pixmap,
+                                        piece->rect.x, piece->rect.y);
           cairo_paint (cr);
           
           region_piece = meta_region_new_from_rectangle (&piece->rect);

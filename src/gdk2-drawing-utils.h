@@ -24,6 +24,13 @@
 
 #include <gtk/gtk.h>
 
+#define MetaPixmap GdkPixmap
+
+#define meta_pixmap_new(window, w, h) gdk_pixmap_new (window, w, h, -1)
+#define meta_pixmap_free(pixmap) g_object_unref (pixmap)
+#define meta_pixmap_cairo_create(pixmap) meta_cairo_create (pixmap)
+#define meta_cairo_set_source_pixmap(cr, pixmap, x, y) gdk_cairo_set_source_pixmap (cr, pixmap, x, y)
+
 /* This function only exists for GTK2 code. */
 cairo_t *     meta_cairo_create            (GdkDrawable        *drawable);
 
