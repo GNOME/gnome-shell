@@ -19,6 +19,11 @@ in the kernel CodingStyle document or in Cairo's CODING_STYLE one.
 
 When in doubt, check the surrounding code and try to imitate it.
 
+Clutter provides an Uncrustify configuration file that tries to match
+this document. Since automated tools are not a substitute for human eye,
+they should not be entirely relied upon - but they can give an initial
+layout for contributors.
+
 + Line width
 
 The maximum line width for source files is 80 characters, whenever possible.
