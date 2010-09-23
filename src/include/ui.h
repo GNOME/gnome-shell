@@ -131,15 +131,6 @@ void            meta_ui_window_menu_free  (MetaWindowMenu     *menu);
 
 
 /* FIXME these lack a display arg */
-GdkPixbuf* meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
-                                            Window       xwindow,
-                                            int          src_x,
-                                            int          src_y,
-                                            int          dest_x,
-                                            int          dest_y,
-                                            int          width,
-                                            int          height);
-
 GdkPixbuf* meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
                                             Pixmap       xpixmap,
                                             int          src_x,
