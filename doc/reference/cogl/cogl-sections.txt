@@ -23,7 +23,6 @@ CoglAttributeType
 CoglFeatureFlags
 cogl_get_features
 cogl_features_available
-cogl_check_extension
 cogl_get_proc_address
 cogl_get_option_group
 
@@ -43,15 +42,11 @@ cogl_get_modelview_matrix
 cogl_set_modelview_matrix
 cogl_get_projection_matrix
 cogl_set_projection_matrix
-cogl_viewport
 cogl_set_viewport
 cogl_get_viewport
 
 <SUBSECTION>
 cogl_clear
-cogl_get_bitmasks
-cogl_set_depth_test_enabled
-cogl_get_depth_test_enabled
 cogl_set_backface_culling_enabled
 cogl_get_backface_culling_enabled
 
@@ -139,13 +134,6 @@ cogl_clip_push_window_rectangle
 cogl_clip_push_from_path
 cogl_clip_push_from_path_preserve
 cogl_clip_pop
-
-<SUBSECTION>
-cogl_clip_push
-cogl_clip_push_window_rect
-cogl_clip_ensure
-cogl_clip_stack_save
-cogl_clip_stack_restore
 </SECTION>
 
 <SECTION>
@@ -214,8 +202,6 @@ cogl_texture_new_from_foreign
 cogl_texture_new_from_bitmap
 cogl_texture_new_from_sub_texture
 cogl_is_texture
-cogl_texture_ref
-cogl_texture_unref
 
 <SUBSECTION>
 cogl_texture_get_width
@@ -245,8 +231,6 @@ cogl_is_texture_3d
 <TITLE>Shaders and Programmable Pipeline</TITLE>
 CoglShaderType
 cogl_create_shader
-cogl_shader_ref
-cogl_shader_unref
 cogl_is_shader
 cogl_shader_source
 cogl_shader_compile
@@ -256,31 +240,21 @@ cogl_shader_is_compiled
 
 <SUBSECTION>
 cogl_create_program
-cogl_program_ref
-cogl_program_unref
 cogl_is_program
 cogl_program_attach_shader
 cogl_program_link
-cogl_program_use
 cogl_program_get_uniform_location
 cogl_program_set_uniform_1f
 cogl_program_set_uniform_1i
 cogl_program_set_uniform_float
 cogl_program_set_uniform_int
 cogl_program_set_uniform_matrix
-cogl_program_uniform_1f
-cogl_program_uniform_1i
-cogl_program_uniform_float
-cogl_program_uniform_int
-cogl_program_uniform_matrix
 </SECTION>
 
 <SECTION>
 <FILE>cogl-offscreen</FILE>
 <TITLE>Offscreen Buffers</TITLE>
 cogl_offscreen_new_to_texture
-cogl_offscreen_ref
-cogl_offscreen_unref
 cogl_is_offscreen
 cogl_set_framebuffer
 cogl_push_framebuffer
@@ -431,8 +405,6 @@ cogl_color_equal
 <TITLE>Vertex Buffers</TITLE>
 cogl_vertex_buffer_new
 cogl_vertex_buffer_get_n_vertices
-cogl_vertex_buffer_ref
-cogl_vertex_buffer_unref
 cogl_vertex_buffer_add
 cogl_vertex_buffer_delete
 cogl_vertex_buffer_submit
@@ -476,8 +448,6 @@ cogl_matrix_get_inverse
 <TITLE>Materials</TITLE>
 cogl_material_new
 cogl_material_copy
-cogl_material_ref
-cogl_material_unref
 cogl_is_material
 cogl_material_set_color
 cogl_material_set_color4ub
@@ -509,7 +479,6 @@ cogl_material_set_layer_combine_constant
 cogl_material_set_layer_matrix
 cogl_material_set_layer_point_sprite_coords_enabled
 cogl_material_get_layer_point_sprite_coords_enabled
-cogl_material_get_layers
 cogl_material_get_n_layers
 CoglMaterialFilter
 cogl_material_set_layer_filters
@@ -580,4 +549,72 @@ cogl_vector3_magnitude
 cogl_vector3_cross_product
 cogl_vector3_dot_product
 cogl_vector3_distance
+</SECTION>
+
+<SECTION>
+<FILE>cogl-deprecated</FILE>
+<TITLE>General API (Deprecated)</TITLE>
+cogl_check_extension
+cogl_viewport
+
+cogl_get_bitmasks
+
+cogl_set_depth_test_enabled
+cogl_get_depth_test_enabled
+</SECTION>
+
+<SECTION>
+<FILE>cogl-clipping-deprecated</FILE>
+<TITLE>Clipping (Deprecated)</TITLE>
+cogl_clip_push
+cogl_clip_push_window_rect
+cogl_clip_ensure
+cogl_clip_stack_save
+cogl_clip_stack_restore
+</SECTION>
+
+<SECTION>
+<FILE>cogl-texture-deprecated</FILE>
+<TITLE>Textures (Deprecated)</TITLE>
+cogl_texture_ref
+cogl_texture_unref
+</SECTION>
+
+<SECTION>
+<FILE>cogl-material-deprecated</FILE>
+<TITLE>Materials (Deprecated)</TITLE>
+cogl_material_ref
+cogl_material_unref
+cogl_material_get_layers
+</SECTION>
+
+<SECTION>
+<FILE>cogl-vertex-buffer-deprecated</FILE>
+<TITLE>Vertex Buffers (Deprecated)</TITLE>
+cogl_vertex_buffer_ref
+cogl_vertex_buffer_unref
+</SECTION>
+
+<SECTION>
+<FILE>cogl-shaders-deprecated</FILE>
+<TITLE>Shaders and Programmable Pipeline (Deprecated)</TITLE>
+cogl_shader_ref
+cogl_shader_unref
+
+<SUBSECTION>
+cogl_program_ref
+cogl_program_unref
+cogl_program_use
+cogl_program_uniform_1f
+cogl_program_uniform_1i
+cogl_program_uniform_float
+cogl_program_uniform_int
+cogl_program_uniform_matrix
+</SECTION>
+
+<SECTION>
+<FILE>cogl-offscreen-deprecated</FILE>
+<TITLE>Offscreen Buffers (Deprecated)</TITLE>
+cogl_offscreen_ref
+cogl_offscreen_unref
 </SECTION>
