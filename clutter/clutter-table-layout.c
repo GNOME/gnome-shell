@@ -192,23 +192,23 @@ G_DEFINE_TYPE (ClutterTableLayout,
 
 static void
 table_child_set_position (ClutterTableChild *self,
-                          gint               row,
-                          gint               col)
+                          gint               col,
+                          gint               row)
 {
   gboolean row_changed = FALSE, col_changed = FALSE;
-
-  if (self->row != row)
-    {
-      self->row = row;
-
-      row_changed = TRUE;
-    }
 
   if (self->col != col)
     {
       self->col = col;
 
       col_changed = TRUE;
+    }
+
+  if (self->row != row)
+    {
+      self->row = row;
+
+      row_changed = TRUE;
     }
 
   if (row_changed || col_changed)
@@ -242,23 +242,23 @@ table_child_set_position (ClutterTableChild *self,
 
 static void
 table_child_set_span (ClutterTableChild  *self,
-                      gint                row_span,
-                      gint                col_span)
+                      gint                col_span,
+                      gint                row_span)
 {
   gboolean row_changed = FALSE, col_changed = FALSE;
-
-  if (self->row_span != row_span)
-    {
-      self->row_span = row_span;
-
-      row_changed = TRUE;
-    }
 
   if (self->col_span != col_span)
     {
       self->col_span = col_span;
 
       col_changed = TRUE;
+    }
+
+  if (self->row_span != row_span)
+    {
+      self->row_span = row_span;
+
+      row_changed = TRUE;
     }
 
   if (row_changed || col_changed)
@@ -450,26 +450,26 @@ clutter_table_child_set_property (GObject      *gobject,
     {
     case PROP_CHILD_COLUMN:
       table_child_set_position (self,
-                                self->row,
-                                g_value_get_int (value));
+                                g_value_get_int (value),
+                                self->row);
       break;
 
     case PROP_CHILD_ROW:
       table_child_set_position (self,
-                                g_value_get_int (value),
-                                self->col);
+                                self->col,
+                                g_value_get_int (value));
       break;
 
     case PROP_CHILD_COLUMN_SPAN:
       table_child_set_span (self,
-                            self->row_span,
-                            g_value_get_int (value));
+                            g_value_get_int (value),
+                            self->row_span);
       break;
 
     case PROP_CHILD_ROW_SPAN:
       table_child_set_span (self,
-                            g_value_get_int (value),
-                            self->col_span);
+                            self->col_span,
+                            g_value_get_int (value));
       break;
 
     case PROP_CHILD_X_ALIGN:
@@ -1720,8 +1720,8 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_uint ("column-spacing",
-                             "Column Spacing",
-                             "Spacing between columns",
+                             P_("Column Spacing"),
+                             P_("Spacing between columns"),
                              0, G_MAXUINT, 0,
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_COLUMN_SPACING, pspec);
@@ -1734,8 +1734,8 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_uint ("row-spacing",
-                             "Row Spacing",
-                             "Spacing between rows",
+                             P_("Row Spacing"),
+                             P_("Spacing between rows"),
                              0, G_MAXUINT, 0,
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_ROW_SPACING, pspec);
@@ -1749,8 +1749,8 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_boolean ("use-animations",
-                                "Use Animations",
-                                "Whether layout changes should be animated",
+                                P_("Use Animations"),
+                                P_("Whether layout changes should be animated"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_USE_ANIMATIONS, pspec);
@@ -1771,8 +1771,8 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_ulong ("easing-mode",
-                              "Easing Mode",
-                              "The easing mode of the animations",
+                              P_("Easing Mode"),
+                              P_("The easing mode of the animations"),
                               0, G_MAXULONG,
                               CLUTTER_EASE_OUT_CUBIC,
                               CLUTTER_PARAM_READWRITE);
@@ -1789,8 +1789,8 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_uint ("easing-duration",
-                             "Easing Duration",
-                             "The duration of the animations",
+                             P_("Easing Duration"),
+                             P_("The duration of the animations"),
                              0, G_MAXUINT,
                              500,
                              CLUTTER_PARAM_READWRITE);
@@ -1841,7 +1841,7 @@ clutter_table_layout_new (void)
  */
 void
 clutter_table_layout_set_column_spacing (ClutterTableLayout *layout,
-                                       guint               spacing)
+                                         guint               spacing)
 {
   ClutterTableLayoutPrivate *priv;
 
@@ -1899,7 +1899,7 @@ clutter_table_layout_get_column_spacing (ClutterTableLayout *layout)
  */
 void
 clutter_table_layout_set_row_spacing (ClutterTableLayout *layout,
-                                      guint             spacing)
+                                      guint               spacing)
 {
   ClutterTableLayoutPrivate *priv;
 
@@ -1950,8 +1950,8 @@ clutter_table_layout_get_row_spacing (ClutterTableLayout *layout)
  * clutter_table_layout_pack:
  * @layout: a #ClutterTableLayout
  * @actor: a #ClutterActor
- * @row: the row the @actor should be put, or -1 to append
  * @column: the column the @actor should be put, or -1 to append
+ * @row: the row the @actor should be put, or -1 to append
  *
  * Packs @actor inside the #ClutterContainer associated to @layout
  * at the given row and column.
@@ -1961,8 +1961,8 @@ clutter_table_layout_get_row_spacing (ClutterTableLayout *layout)
 void
 clutter_table_layout_pack (ClutterTableLayout  *layout,
                            ClutterActor        *actor,
-                           gint                 row,
-                           gint                 column)
+                           gint                 column,
+                           gint                 row)
 {
   ClutterTableLayoutPrivate *priv;
   ClutterLayoutManager *manager;
@@ -1997,15 +1997,15 @@ clutter_table_layout_pack (ClutterTableLayout  *layout,
   if (column < 0)
     column = priv->n_cols + 1;
 
-  table_child_set_position (CLUTTER_TABLE_CHILD (meta), row, column);
+  table_child_set_position (CLUTTER_TABLE_CHILD (meta), column, row);
 }
 
 /**
  * clutter_table_layout_set_span:
  * @layout: a #ClutterTableLayout
  * @actor: a #ClutterActor child of @layout
- * @row_span: Row span for @actor
  * @column_span: Column span for @actor
+ * @row_span: Row span for @actor
  *
  * Sets the row and column span for @actor
  * inside @layout
@@ -2015,8 +2015,8 @@ clutter_table_layout_pack (ClutterTableLayout  *layout,
 void
 clutter_table_layout_set_span (ClutterTableLayout *layout,
                                ClutterActor       *actor,
-                               gint                row_span,
-                               gint                column_span)
+                               gint                column_span,
+                               gint                row_span)
 {
   ClutterTableLayoutPrivate *priv;
   ClutterLayoutManager *manager;
@@ -2051,15 +2051,15 @@ clutter_table_layout_set_span (ClutterTableLayout *layout,
 
   g_assert (CLUTTER_IS_TABLE_CHILD (meta));
 
-  table_child_set_span (CLUTTER_TABLE_CHILD (meta), row_span, column_span);
+  table_child_set_span (CLUTTER_TABLE_CHILD (meta), column_span, row_span);
 }
 
 /**
  * clutter_table_layout_get_span:
  * @layout: a #ClutterTableLayout
  * @actor: a #ClutterActor child of @layout
- * @row_span: (out): return location for the row span
  * @column_span: (out): return location for the col span
+ * @row_span: (out): return location for the row span
  *
  * Retrieves the row and column span for @actor as set using
  * clutter_table_layout_pack() or clutter_table_layout_set_span()
@@ -2069,8 +2069,8 @@ clutter_table_layout_set_span (ClutterTableLayout *layout,
 void
 clutter_table_layout_get_span (ClutterTableLayout *layout,
                                ClutterActor       *actor,
-                               gint               *row_span,
-                               gint               *column_span)
+                               gint               *column_span,
+                               gint               *row_span)
 {
   ClutterTableLayoutPrivate *priv;
   ClutterLayoutManager *manager;
@@ -2105,11 +2105,11 @@ clutter_table_layout_get_span (ClutterTableLayout *layout,
 
   g_assert (CLUTTER_IS_TABLE_CHILD (meta));
 
-  if (row_span)
-    *row_span = CLUTTER_TABLE_CHILD (meta)->row_span;
-
   if (column_span)
     *column_span = CLUTTER_TABLE_CHILD (meta)->col_span;
+
+  if (row_span)
+    *row_span = CLUTTER_TABLE_CHILD (meta)->row_span;
 }
 
 /**

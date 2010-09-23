@@ -198,18 +198,18 @@ test_table_layout_main (int argc, char *argv[])
   actor10 = create_text ("label 10", "#aaaf");
 
   clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor1, 0, 0);
-  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor2, 0, 1);
+  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor2, 1, 0);
   clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor3, 1, 1);
-  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor4, 2, 0);
-  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor5, 3, 0);
-  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor6, 3, 1);
-  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor7, 4, 1);
-  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor8, 4, 0);
-  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor9, 5, 0);
-  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor10, -1, 0);
-  clutter_table_layout_set_span (CLUTTER_TABLE_LAYOUT (layout), actor1, 2, 1);
-  clutter_table_layout_set_span (CLUTTER_TABLE_LAYOUT (layout), actor7, 2, 1);
-  clutter_table_layout_set_span (CLUTTER_TABLE_LAYOUT (layout), actor4, 1, 2);
+  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor4, 0, 2);
+  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor5, 0, 3);
+  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor6, 1, 3);
+  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor7, 1, 4);
+  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor8, 0, 4);
+  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor9, 0, 5);
+  clutter_table_layout_pack (CLUTTER_TABLE_LAYOUT (layout), actor10, 0, -1);
+  clutter_table_layout_set_span (CLUTTER_TABLE_LAYOUT (layout), actor1, 1, 2);
+  clutter_table_layout_set_span (CLUTTER_TABLE_LAYOUT (layout), actor7, 1, 2);
+  clutter_table_layout_set_span (CLUTTER_TABLE_LAYOUT (layout), actor4, 2, 1);
 
   clutter_actor_set_size (actor1, 100, 100);
   clutter_actor_set_width (actor4, 250);
