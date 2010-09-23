@@ -36,6 +36,7 @@
 #include "prefs.h"
 #include "ui.h"
 
+#include "gdk2-drawing-utils.h"
 #include "gtk-compat.h"
 #include "gdk-compat.h"
 
@@ -2384,6 +2385,7 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
   MetaButtonLayout button_layout;
   MetaGrabOp grab_op;
   Display *display;
+  cairo_t *cr;
   
   widget = GTK_WIDGET (frames);
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
@@ -2496,11 +2498,12 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
 
   meta_prefs_get_button_layout (&button_layout);
 
+  cr = meta_cairo_create (drawable);
+
   meta_theme_draw_frame_with_style (meta_theme_get_current (),
                                     frame->style,
                                     widget,
-                                    drawable,
-                                    NULL, /* &areas[i], */
+                                    cr,
                                     x_offset, y_offset,
                                     type,
                                     flags,
@@ -2510,6 +2513,8 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
                                     &button_layout,
                                     button_states,
                                     mini_icon, icon);
+
+  cairo_destroy (cr);
 }
 
 static void

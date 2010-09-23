@@ -35,6 +35,8 @@
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x
 
+#include "gdk2-drawing-utils.h"
+
 /* We need to compute all different button arrangements
  * in terms of button location. We don't care about
  * different arrangements in terms of button function.
@@ -959,6 +961,7 @@ run_theme_benchmark (void)
 #define ITERATIONS 100
   int client_width;
   int client_height;
+  cairo_t *cr;
   int inc;
   
   widget = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -1009,10 +1012,11 @@ run_theme_benchmark (void)
                                client_height + top_height + bottom_height,
                                -1);
 
+      cr = meta_cairo_create (pixmap);
+
       meta_theme_draw_frame (global_theme,
                              widget,
-                             pixmap,
-                             NULL,
+                             cr,
                              0, 0,
                              META_FRAME_TYPE_NORMAL,
                              get_flags (widget),
@@ -1024,6 +1028,7 @@ run_theme_benchmark (void)
                              meta_preview_get_mini_icon (),
                              meta_preview_get_icon ());
 
+      cairo_destroy (cr);
       g_object_unref (G_OBJECT (pixmap));
       
       ++i;

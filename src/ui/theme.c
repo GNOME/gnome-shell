@@ -63,6 +63,8 @@
 #include <math.h>
 
 #include "gtk-compat.h"
+#include "gdk-compat.h"
+#include "gdk2-drawing-utils.h"
 
 #define GDK_COLOR_RGBA(color)                                           \
                          ((guint32) (0xff                         |     \
@@ -3448,25 +3450,17 @@ static void
 meta_draw_op_draw_with_env (const MetaDrawOp    *op,
                             GtkStyle            *style_gtk,
                             GtkWidget           *widget,
-                            GdkDrawable         *drawable,
-                            const GdkRectangle  *clip,
+                            cairo_t             *cr,
                             const MetaDrawInfo  *info,
                             MetaRectangle        rect,
                             MetaPositionExprEnv *env)
 {
   GdkColor color;
-  cairo_t *cr;
 
-  cr = gdk_cairo_create (drawable);
+  cairo_save (cr);
 
   cairo_set_line_width (cr, 1.0);
 
-  if (clip)
-    {
-      gdk_cairo_rectangle (cr, clip);
-      cairo_clip (cr);
-    }
-  
   switch (op->type)
     {
     case META_DRAW_LINE:
@@ -3716,11 +3710,10 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.gtk_arrow.width, env);
         rheight = parse_size_unchecked (op->data.gtk_arrow.height, env);
 
-        gtk_paint_arrow (style_gtk,
-                         drawable,
+        meta_paint_arrow (style_gtk,
+                         cr,
                          op->data.gtk_arrow.state,
                          op->data.gtk_arrow.shadow,
-                         (GdkRectangle*) clip,
                          widget,
                          "metacity",
                          op->data.gtk_arrow.arrow,
@@ -3738,11 +3731,10 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.gtk_box.width, env);
         rheight = parse_size_unchecked (op->data.gtk_box.height, env);
 
-        gtk_paint_box (style_gtk,
-                       drawable,
+        meta_paint_box (style_gtk,
+                       cr,
                        op->data.gtk_box.state,
                        op->data.gtk_box.shadow,
-                       (GdkRectangle*) clip,
                        widget,
                        "metacity",
                        rx, ry, rwidth, rheight);
@@ -3757,13 +3749,12 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         ry1 = parse_y_position_unchecked (op->data.gtk_vline.y1, env);
         ry2 = parse_y_position_unchecked (op->data.gtk_vline.y2, env);
         
-        gtk_paint_vline (style_gtk,
-                         drawable,
-                         op->data.gtk_vline.state,
-                         (GdkRectangle*) clip,
-                         widget,
-                         "metacity",
-                         ry1, ry2, rx);
+        meta_paint_vline (style_gtk,
+                          cr,
+                          op->data.gtk_vline.state,
+                          widget,
+                          "metacity",
+                          ry1, ry2, rx);
       }
       break;
 
@@ -3855,7 +3846,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         d_rect.height = parse_size_unchecked (op->data.op_list.height, env);
 
         meta_draw_op_list_draw_with_style (op->data.op_list.op_list,
-                                           style_gtk, widget, drawable, clip, info,
+                                           style_gtk, widget, cr, info,
                                 d_rect);
       }
       break;
@@ -3864,7 +3855,6 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
       {
         int rx, ry, rwidth, rheight;
         int tile_xoffset, tile_yoffset; 
-        GdkRectangle new_clip;
         MetaRectangle tile;
         
         rx = parse_x_position_unchecked (op->data.tile.x, env);
@@ -3872,63 +3862,58 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.tile.width, env);
         rheight = parse_size_unchecked (op->data.tile.height, env);
 
-        new_clip.x = rx;
-        new_clip.y = ry;
-        new_clip.width = rwidth;
-        new_clip.height = rheight;
+        cairo_save (cr);
 
-        if (clip == NULL || gdk_rectangle_intersect ((GdkRectangle*)clip, &new_clip,
-                                                     &new_clip))
-          {
-            tile_xoffset = parse_x_position_unchecked (op->data.tile.tile_xoffset, env);
-            tile_yoffset = parse_y_position_unchecked (op->data.tile.tile_yoffset, env);
-            /* tile offset should not include x/y */
-            tile_xoffset -= rect.x;
-            tile_yoffset -= rect.y;
-            
-            tile.width = parse_size_unchecked (op->data.tile.tile_width, env);
-            tile.height = parse_size_unchecked (op->data.tile.tile_height, env);
+        cairo_rectangle (cr, rx, ry, rwidth, rheight);
+        cairo_clip (cr);
 
-            tile.x = rx - tile_xoffset;
+        tile_xoffset = parse_x_position_unchecked (op->data.tile.tile_xoffset, env);
+        tile_yoffset = parse_y_position_unchecked (op->data.tile.tile_yoffset, env);
+        /* tile offset should not include x/y */
+        tile_xoffset -= rect.x;
+        tile_yoffset -= rect.y;
         
-            while (tile.x < (rx + rwidth))
+        tile.width = parse_size_unchecked (op->data.tile.tile_width, env);
+        tile.height = parse_size_unchecked (op->data.tile.tile_height, env);
+
+        tile.x = rx - tile_xoffset;
+    
+        while (tile.x < (rx + rwidth))
+          {
+            tile.y = ry - tile_yoffset;
+            while (tile.y < (ry + rheight))
               {
-                tile.y = ry - tile_yoffset;
-                while (tile.y < (ry + rheight))
-                  {
-                    meta_draw_op_list_draw_with_style (op->data.tile.op_list,
-                                                       style_gtk, widget, drawable, &new_clip, info,
-                                            tile);
+                meta_draw_op_list_draw_with_style (op->data.tile.op_list,
+                                                   style_gtk, widget, cr, info,
+                                        tile);
 
-                    tile.y += tile.height;
-                  }
-
-                tile.x += tile.width;
+                tile.y += tile.height;
               }
+
+            tile.x += tile.width;
           }
+        cairo_restore (cr);
+
       }
       break;
     }
 
-  cairo_destroy (cr);
+  cairo_restore (cr);
 }
 
 void
 meta_draw_op_draw_with_style (const MetaDrawOp    *op,
                               GtkStyle            *style_gtk,
                    GtkWidget           *widget,
-                   GdkDrawable         *drawable,
-                   const GdkRectangle  *clip,
+                   cairo_t             *cr,
                    const MetaDrawInfo  *info,
                    MetaRectangle        logical_region)
 {
   MetaPositionExprEnv env;
 
-  g_return_if_fail (style_gtk->colormap == gdk_drawable_get_colormap (drawable));
-
   fill_env (&env, info, logical_region);
 
-  meta_draw_op_draw_with_env (op, style_gtk, widget, drawable, clip,
+  meta_draw_op_draw_with_env (op, style_gtk, widget, cr,
                               info, logical_region,
                               &env);
 
@@ -3937,13 +3922,12 @@ meta_draw_op_draw_with_style (const MetaDrawOp    *op,
 void
 meta_draw_op_draw (const MetaDrawOp    *op,
                    GtkWidget           *widget,
-                   GdkDrawable         *drawable,
-                   const GdkRectangle  *clip,
+                   cairo_t             *cr,
                    const MetaDrawInfo  *info,
                    MetaRectangle        logical_region)
 {
   meta_draw_op_draw_with_style (op, gtk_widget_get_style (widget), widget,
-                                drawable, clip, info, logical_region);
+                                cr, info, logical_region);
 }
 
 /**
@@ -4001,17 +3985,12 @@ void
 meta_draw_op_list_draw_with_style  (const MetaDrawOpList *op_list,
                                     GtkStyle             *style_gtk,
                          GtkWidget            *widget,
-                         GdkDrawable          *drawable,
-                         const GdkRectangle   *clip,
+                         cairo_t              *cr,
                          const MetaDrawInfo   *info,
                          MetaRectangle         rect)
 {
   int i;
-  GdkRectangle active_clip;
-  GdkRectangle orig_clip;
   MetaPositionExprEnv env;
-
-  g_return_if_fail (style_gtk->colormap == gdk_drawable_get_colormap (drawable));
 
   if (op_list->n_ops == 0)
     return;
@@ -4029,19 +4008,8 @@ meta_draw_op_list_draw_with_style  (const MetaDrawOpList *op_list,
    * evaluated), we make an array of those, and then fold
    * adjacent items when possible.
    */
-  if (clip)
-    {
-      orig_clip = *clip;
-    }
-  else
-    {
-      orig_clip.x = rect.x;
-      orig_clip.y = rect.y;
-      orig_clip.width = rect.width;
-      orig_clip.height = rect.height;
-    }
 
-  active_clip = orig_clip;
+  cairo_save (cr);
 
   for (i = 0; i < op_list->n_ops; i++)
     {
@@ -4049,35 +4017,39 @@ meta_draw_op_list_draw_with_style  (const MetaDrawOpList *op_list,
       
       if (op->type == META_DRAW_CLIP)
         {
-          active_clip.x = parse_x_position_unchecked (op->data.clip.x, &env);
-          active_clip.y = parse_y_position_unchecked (op->data.clip.y, &env);
-          active_clip.width = parse_size_unchecked (op->data.clip.width, &env);
-          active_clip.height = parse_size_unchecked (op->data.clip.height, &env);
+          cairo_restore (cr);
+
+          cairo_rectangle (cr, 
+                           parse_x_position_unchecked (op->data.clip.x, &env),
+                           parse_y_position_unchecked (op->data.clip.y, &env),
+                           parse_size_unchecked (op->data.clip.width, &env),
+                           parse_size_unchecked (op->data.clip.height, &env));
+          cairo_clip (cr);
           
-          gdk_rectangle_intersect (&orig_clip, &active_clip, &active_clip);
+          cairo_save (cr);
         }
-      else if (active_clip.width > 0 &&
-               active_clip.height > 0)
+      else if (gdk_cairo_get_clip_rectangle (cr, NULL))
         {
           meta_draw_op_draw_with_env (op,
-                                      style_gtk, widget, drawable, &active_clip, info,
+                                      style_gtk, widget, cr, info,
                                       rect,
                                       &env);
         }
     }
+
+  cairo_restore (cr);
 }
 
 void
 meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
                          GtkWidget            *widget,
-                         GdkDrawable          *drawable,
-                         const GdkRectangle   *clip,
+                         cairo_t              *cr,
                          const MetaDrawInfo   *info,
                          MetaRectangle         rect)
 
 {
   meta_draw_op_list_draw_with_style (op_list, gtk_widget_get_style (widget), widget,
-                                     drawable, clip, info, rect);
+                                     cr, info, rect);
 }
 
 void
@@ -4385,10 +4357,9 @@ void
 meta_frame_style_draw_with_style (MetaFrameStyle          *style,
                                   GtkStyle                *style_gtk,
                        GtkWidget               *widget,
-                       GdkDrawable             *drawable,
+                       cairo_t                 *cr,
                        int                      x_offset,
                        int                      y_offset,
-                       const GdkRectangle      *clip,
                        const MetaFrameGeometry *fgeom,
                        int                      client_width,
                        int                      client_height,
@@ -4408,8 +4379,6 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
   PangoRectangle logical_rect;
   MetaDrawInfo draw_info;
   
-  g_return_if_fail (style_gtk->colormap == gdk_drawable_get_colormap (drawable));
-
   titlebar_rect.x = 0;
   titlebar_rect.y = 0;
   titlebar_rect.width = fgeom->width;
@@ -4466,7 +4435,6 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
   while (i < META_FRAME_PIECE_LAST)
     {
       GdkRectangle rect;
-      GdkRectangle combined_clip;
       
       switch ((MetaFramePiece) i)
         {
@@ -4533,17 +4501,12 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
           break;
         }
 
-      rect.x += x_offset;
-      rect.y += y_offset;
+      cairo_save (cr);
 
-      if (clip == NULL)
-        combined_clip = rect;
-      else
-        gdk_rectangle_intersect ((GdkRectangle*) clip, /* const cast */
-                                 &rect,
-                                 &combined_clip);
+      gdk_cairo_rectangle (cr, &rect);
+      cairo_clip (cr);
 
-      if (combined_clip.width > 0 && combined_clip.height > 0)
+      if (gdk_cairo_get_clip_rectangle (cr, NULL))
         {
           MetaDrawOpList *op_list;
           MetaFrameStyle *parent;
@@ -4563,17 +4526,18 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
               meta_draw_op_list_draw_with_style (op_list,
                                                  style_gtk,
                                       widget,
-                                      drawable,
-                                      &combined_clip,
+                                      cr,
                                       &draw_info,
                                       m_rect);
             }
         }
 
+      cairo_restore (cr);
 
       /* Draw buttons just before overlay */
       if ((i + 1) == META_FRAME_PIECE_OVERLAY)
         {
+          MetaDrawOpList *op_list;
           int middle_bg_offset;
 
           middle_bg_offset = 0;
@@ -4585,32 +4549,30 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
               rect.x += x_offset;
               rect.y += y_offset;
               
-              if (clip == NULL)
-                combined_clip = rect;
-              else
-                gdk_rectangle_intersect ((GdkRectangle*) clip, /* const cast */
-                                         &rect,
-                                         &combined_clip);
+              op_list = get_button (style, j, button_states[j]);
               
-              if (combined_clip.width > 0 && combined_clip.height > 0)
+              if (op_list)
                 {
-                  MetaDrawOpList *op_list;
-                  
-                  op_list = get_button (style, j, button_states[j]);
-                  
-                  if (op_list)
+                  cairo_save (cr);
+                  gdk_cairo_rectangle (cr, &rect);
+                  cairo_clip (cr);
+
+                  if (gdk_cairo_get_clip_rectangle (cr, NULL))
                     {
                       MetaRectangle m_rect;
+
                       m_rect = meta_rect (rect.x, rect.y,
                                           rect.width, rect.height);
+
                       meta_draw_op_list_draw_with_style (op_list,
                                                          style_gtk,
-                                              widget,
-                                              drawable,
-                                              &combined_clip,
-                                              &draw_info,
-                                              m_rect);
+                                                         widget,
+                                                         cr,
+                                                         &draw_info,
+                                                         m_rect);
                     }
+
+                  cairo_restore (cr);
                 }
 
               /* MIDDLE_BACKGROUND type may get drawn more than once */
@@ -4627,7 +4589,7 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
                 }
             }
         }
-      
+
       ++i;
     }
 }
@@ -4635,10 +4597,9 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
 void
 meta_frame_style_draw (MetaFrameStyle          *style,
                        GtkWidget               *widget,
-                       GdkDrawable             *drawable,
+                       cairo_t                 *cr,
                        int                      x_offset,
                        int                      y_offset,
-                       const GdkRectangle      *clip,
                        const MetaFrameGeometry *fgeom,
                        int                      client_width,
                        int                      client_height,
@@ -4649,8 +4610,8 @@ meta_frame_style_draw (MetaFrameStyle          *style,
                        GdkPixbuf               *icon)
 {
   meta_frame_style_draw_with_style (style, gtk_widget_get_style (widget), widget,
-                                    drawable, x_offset, y_offset,
-                                    clip, fgeom, client_width, client_height,
+                                    cr, x_offset, y_offset,
+                                    fgeom, client_width, client_height,
                                     title_layout, text_height,
                                     button_states, mini_icon, icon);
 }
@@ -5219,8 +5180,7 @@ void
 meta_theme_draw_frame_with_style (MetaTheme              *theme,
                                   GtkStyle               *style_gtk,
                        GtkWidget              *widget,
-                       GdkDrawable            *drawable,
-                       const GdkRectangle     *clip,
+                       cairo_t                *cr,
                        int                     x_offset,
                        int                     y_offset,
                        MetaFrameType           type,
@@ -5256,9 +5216,8 @@ meta_theme_draw_frame_with_style (MetaTheme              *theme,
   meta_frame_style_draw_with_style (style,
                                     style_gtk,
                                     widget,
-                                    drawable,
+                                    cr,
                                     x_offset, y_offset,
-                                    clip,
                                     &fgeom,
                                     client_width, client_height,
                                     title_layout,
@@ -5270,8 +5229,7 @@ meta_theme_draw_frame_with_style (MetaTheme              *theme,
 void
 meta_theme_draw_frame (MetaTheme              *theme,
                        GtkWidget              *widget,
-                       GdkDrawable            *drawable,
-                       const GdkRectangle     *clip,
+                       cairo_t                *cr,
                        int                     x_offset,
                        int                     y_offset,
                        MetaFrameType           type,
@@ -5286,7 +5244,7 @@ meta_theme_draw_frame (MetaTheme              *theme,
                        GdkPixbuf              *icon)
 {
   meta_theme_draw_frame_with_style (theme, gtk_widget_get_style (widget), widget,
-                                    drawable, clip, x_offset, y_offset, type,flags,
+                                    cr, x_offset, y_offset, type,flags,
                                     client_width, client_height,
                                     title_layout, text_height,
                                     button_layout, button_states,
@@ -5296,8 +5254,7 @@ meta_theme_draw_frame (MetaTheme              *theme,
 void
 meta_theme_draw_frame_by_name (MetaTheme              *theme,
                                GtkWidget              *widget,
-                               GdkDrawable            *drawable,
-                               const GdkRectangle     *clip,
+                               cairo_t                *cr,
                                int                     x_offset,
                                int                     y_offset,
                                const gchar             *style_name,
@@ -5330,9 +5287,8 @@ meta_theme_draw_frame_by_name (MetaTheme              *theme,
 
   meta_frame_style_draw (style,
                          widget,
-                         drawable,
+                         cr,
                          x_offset, y_offset,
-                         clip,
                          &fgeom,
                          client_width, client_height,
                          title_layout,

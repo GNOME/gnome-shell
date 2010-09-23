@@ -45,6 +45,8 @@ mutter_SOURCES= 				\
 	compositor/tidy/tidy-texture-frame.h	\
 	gdk-compat.h				\
 	gtk-compat.h				\
+	gdk2-drawing-utils.c			\
+	gdk2-drawing-utils.h			\
 	include/compositor.h			\
 	include/mutter-plugin.h			\
 	include/mutter-window.h			\
@@ -146,6 +148,8 @@ libmutter_private_la_SOURCES=			\
 	ui/preview-widget.c			\
 	ui/preview-widget.h			\
 	include/region.h			\
+	gdk2-drawing-utils.c			\
+	gdk2-drawing-utils.h			\
 	ui/theme-parser.c			\
 	ui/theme-parser.h			\
 	ui/theme.c				\

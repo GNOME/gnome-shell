@@ -28,6 +28,8 @@
 #include <gtk/gtk.h>
 #include "preview-widget.h"
 
+#include "gdk2-drawing-utils.h"
+
 static void     meta_preview_size_request  (GtkWidget        *widget,
                                             GtkRequisition   *req);
 static void     meta_preview_size_allocate (GtkWidget        *widget,
@@ -220,10 +222,15 @@ meta_preview_expose (GtkWidget      *widget,
   
   if (preview->theme)
     {
+      cairo_t *cr;
+
+      cr = meta_cairo_create (gtk_widget_get_window (widget));
+      gdk_cairo_region (cr, event->region);
+      cairo_clip (cr);
+
       meta_theme_draw_frame (preview->theme,
                              widget,
-                             gtk_widget_get_window (widget),
-                             &event->area,
+                             cr,
                              allocation.x + border_width,
                              allocation.y + border_width,
                              preview->type,
@@ -235,6 +242,8 @@ meta_preview_expose (GtkWidget      *widget,
                              button_states,
                              meta_preview_get_mini_icon (),
                              meta_preview_get_icon ());
+
+      cairo_destroy (cr);
     }
 
   /* draw child */
