@@ -3537,6 +3537,27 @@ _cogl_material_prune_redundant_ancestry (CoglMaterial *material)
 {
   CoglMaterial *new_parent = _cogl_material_get_parent (material);
 
+  /* Before considering pruning redundant ancestry we check if this
+   * material is an authority for layer state and if so only consider
+   * reparenting if it *owns* all the layers it depends on. NB: A
+   * material can be be a STATE_LAYERS authority but it may still
+   * defer to its ancestors to define the state for some of its
+   * layers.
+   *
+   * For example a material that derives from a parent with 5 layers
+   * can become a STATE_LAYERS authority by simply changing it's
+   * ->n_layers count to 4 and in that case it can still defer to its
+   * ancestors to define the state of those 4 layers.
+   *
+   * If a material depends on any ancestors for layer state then we
+   * immediatly bail out.
+   */
+  if (material->differences & COGL_MATERIAL_STATE_LAYERS)
+    {
+      if (material->n_layers != g_list_length (material->layer_differences))
+        return;
+    }
+
   /* walk up past ancestors that are now redundant and potentially
    * reparent the material. */
   while (_cogl_material_get_parent (new_parent) &&
