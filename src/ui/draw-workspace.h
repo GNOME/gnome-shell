@@ -46,7 +46,7 @@ typedef struct
 } WnckWindowDisplayInfo;
 
 void wnck_draw_workspace (GtkWidget                   *widget,
-                          GdkDrawable                 *drawable,
+                          cairo_t                     *cr,
                           int                          x,
                           int                          y,
                           int                          width,

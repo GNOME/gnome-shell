@@ -957,8 +957,10 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
   window = gtk_widget_get_window (widget);
   gtk_widget_get_allocation (widget, &allocation);
 
+  cr = gdk_cairo_create (window);
+
   wnck_draw_workspace (widget,
-                       window,
+                       cr,
                        SELECT_OUTLINE_WIDTH,
                        SELECT_OUTLINE_WIDTH,
                        allocation.width - SELECT_OUTLINE_WIDTH * 2,
@@ -975,7 +977,6 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
   if (META_SELECT_WORKSPACE (widget)->selected)
     {
       style = gtk_widget_get_style (widget);
-      cr = gdk_cairo_create (window);
 
       gdk_cairo_set_source_color (cr,
                                   &style->fg[gtk_widget_get_state (widget)]);
@@ -986,9 +987,9 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
                        allocation.width - SELECT_OUTLINE_WIDTH,
                        allocation.height - SELECT_OUTLINE_WIDTH);
       cairo_stroke (cr);
-
-      cairo_destroy (cr);
     }
+
+  cairo_destroy (cr);
 
   return TRUE;
 }
