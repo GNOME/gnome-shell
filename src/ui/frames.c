@@ -74,12 +74,11 @@ static gboolean meta_frames_leave_notify_event    (GtkWidget           *widget,
 static void meta_frames_attach_style (MetaFrames  *frames,
                                       MetaUIFrame *frame);
 
-static void meta_frames_paint_to_drawable (MetaFrames   *frames,
-                                           MetaUIFrame  *frame,
-                                           GdkDrawable  *drawable,
-                                           MetaRegion   *region,
-                                           int           x_offset,
-                                           int           y_offset);
+static void meta_frames_paint        (MetaFrames   *frames,
+                                      MetaUIFrame  *frame,
+                                      cairo_t      *cr,
+                                      int           x_offset,
+                                      int           y_offset);
 
 static void meta_frames_set_window_background (MetaFrames   *frames,
                                                MetaUIFrame  *frame);
@@ -772,16 +771,6 @@ meta_frames_unflicker_bg (MetaFrames *frames,
   
   frame = meta_frames_lookup_window (frames, xwindow);
   g_return_if_fail (frame != NULL);
-
-#if 0
-  pixmap = gdk_pixmap_new (frame->window,
-                           width, height,
-                           -1);
-
-  /* Oops, no way to get the background here */
-  
-  meta_frames_paint_to_drawable (frames, frame, pixmap);
-#endif
 
   set_background_none (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), frame->xwindow);
 }
@@ -2114,8 +2103,8 @@ generate_pixmap (MetaFrames *frames,
                  MetaUIFrame *frame,
                  GdkRectangle *rect)
 {
-  MetaRegion *region;
   GdkPixmap *result;
+  cairo_t *cr;
 
   /* do not create a pixmap for nonexisting areas */
   if (rect->width <= 0 || rect->height <= 0)
@@ -2126,12 +2115,11 @@ generate_pixmap (MetaFrames *frames,
   
   clear_backing (result, frame->window, rect->x, rect->y);
 
-  region = meta_region_new_from_rectangle (rect);
+  cr = meta_cairo_create (result);
 
-  meta_frames_paint_to_drawable (frames, frame, result, region,
-                                 -rect->x, -rect->y);
+  meta_frames_paint (frames, frame, cr, -rect->x, -rect->y);
 
-  meta_region_destroy (region);
+  cairo_destroy (cr);
 
   return result;
 }
@@ -2318,6 +2306,7 @@ meta_frames_expose_event (GtkWidget           *widget,
   MetaRegion *region, *area_region;
   GdkRectangle *areas;
   int i, n_areas;
+  cairo_t *cr;
 
   frames = META_FRAMES (widget);
 
@@ -2350,9 +2339,13 @@ meta_frames_expose_event (GtkWidget           *widget,
       area_region = meta_region_new_from_rectangle (&areas[i]);
 
       gdk_window_begin_paint_region (event->window, area_region);
+      cr = gdk_cairo_create (event->window);
+      /* no need to clip, begin_paint_region ensures the pixmap
+       * is only as big as the rect we use. */
 
-      meta_frames_paint_to_drawable (frames, frame, event->window, area_region, 0, 0);
+      meta_frames_paint (frames, frame, cr, 0, 0);
 
+      cairo_destroy (cr);
       gdk_window_end_paint (event->window);
 
       meta_region_destroy (area_region);
@@ -2366,12 +2359,11 @@ meta_frames_expose_event (GtkWidget           *widget,
 }
 
 static void
-meta_frames_paint_to_drawable (MetaFrames   *frames,
-                               MetaUIFrame  *frame,
-                               GdkDrawable  *drawable,
-                               MetaRegion   *region,
-                               int           x_offset,
-                               int           y_offset)
+meta_frames_paint (MetaFrames   *frames,
+                   MetaUIFrame  *frame,
+                   cairo_t      *cr,
+                   int           x_offset,
+                   int           y_offset)
 {
   GtkWidget *widget;
   MetaFrameFlags flags;
@@ -2385,7 +2377,6 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
   MetaButtonLayout button_layout;
   MetaGrabOp grab_op;
   Display *display;
-  cairo_t *cr;
   
   widget = GTK_WIDGET (frames);
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
@@ -2498,8 +2489,6 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
 
   meta_prefs_get_button_layout (&button_layout);
 
-  cr = meta_cairo_create (drawable);
-
   meta_theme_draw_frame_with_style (meta_theme_get_current (),
                                     frame->style,
                                     widget,
@@ -2513,8 +2502,6 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
                                     &button_layout,
                                     button_states,
                                     mini_icon, icon);
-
-  cairo_destroy (cr);
 }
 
 static void
