@@ -150,6 +150,8 @@ case "$with_gtk" in
        ;;
 esac
 
+AM_CONDITIONAL(INSTALL_LIBMUTTER_PRIVATE, test "$with_gtk" = "3.0")
+
 MUTTER_PC_MODULES="gtk+-$GTK_API_VERSION >= $GTK_MIN_VERSION pango >= 1.2.0"
 AC_SUBST(GTK_API_VERSION)
 

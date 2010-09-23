@@ -1,7 +1,11 @@
 # Flag build for parallelism; see https://savannah.gnu.org/patch/?6905
 .AUTOPARALLEL:
 
+if INSTALL_LIBMUTTER_PRIVATE
 lib_LTLIBRARIES = libmutter-private.la
+else
+noinst_LTLIBRARIES = libmutter-private.la
+endif
 
 SUBDIRS=wm-tester tools compositor/plugins
 
@@ -150,8 +154,6 @@ libmutter_private_la_SOURCES=			\
 libmutter_private_la_LDFLAGS = -no-undefined
 libmutter_private_la_LIBADD  = @MUTTER_LIBS@
 
-libmutterincludedir = $(includedir)/mutter/mutter-private
-
 # Headers installed for plugins; introspected information will
 # be extracted into Mutter-<version>.gir
 libmutterinclude_base_headers =		\
@@ -184,9 +186,17 @@ libmutterinclude_extra_headers =		\
 	include/atomnames.h			\
 	include/region.h
 
+if INSTALL_LIBMUTTER_PRIVATE
+libmutterincludedir = $(includedir)/mutter/mutter-private
+
 libmutterinclude_HEADERS =			\
 	$(libmutterinclude_base_headers)	\
 	$(libmutterinclude_extra_headers)
+else
+noinst_HEADERS =				\
+	$(libmutterinclude_base_headers)	\
+	$(libmutterinclude_extra_headers)
+endif
 
 mutter_theme_viewer_SOURCES=  \
 	ui/theme-viewer.c
@@ -296,9 +306,11 @@ CLEANFILES =					\
 inlinepixbufs.h: $(IMAGES)
 	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
 
+if INSTALL_LIBMUTTER_PRIVATE
 pkgconfigdir = $(libdir)/pkgconfig
 
 pkgconfig_DATA = libmutter-private.pc mutter-plugins.pc
+endif
 
 EXTRA_DIST=$(desktopfiles_files) 	\
 	$(wmproperties_files)		\
