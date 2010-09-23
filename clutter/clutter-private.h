@@ -276,8 +276,9 @@ int      _clutter_stage_get_pending_swaps      (ClutterStage *stage);
 
 gboolean _clutter_stage_has_full_redraw_queued (ClutterStage *stage);
 
-void     _clutter_stage_set_pick_buffer_valid  (ClutterStage *stage, gboolean valid);
-gboolean _clutter_stage_get_pick_buffer_valid  (ClutterStage *stage);
+void     _clutter_stage_set_pick_buffer_valid             (ClutterStage *stage,
+                                                           gboolean      valid);
+gboolean _clutter_stage_get_pick_buffer_valid             (ClutterStage *stage);
 void     _clutter_stage_increment_picks_per_frame_counter (ClutterStage *stage);
 void     _clutter_stage_reset_picks_per_frame_counter     (ClutterStage *stage);
 guint    _clutter_stage_get_picks_per_frame_counter       (ClutterStage *stage);

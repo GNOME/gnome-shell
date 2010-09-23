@@ -2949,29 +2949,40 @@ clutter_stage_get_no_clear_hint (ClutterStage *stage)
 gboolean
 _clutter_stage_get_pick_buffer_valid (ClutterStage *stage)
 {
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
   return stage->priv->have_valid_pick_buffer;
 }
 
 void
-_clutter_stage_set_pick_buffer_valid (ClutterStage *stage, gboolean valid)
+_clutter_stage_set_pick_buffer_valid (ClutterStage *stage,
+                                      gboolean      valid)
 {
-  stage->priv->have_valid_pick_buffer = valid;
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  stage->priv->have_valid_pick_buffer = !!valid;
 }
 
 void
 _clutter_stage_increment_picks_per_frame_counter (ClutterStage *stage)
 {
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
   stage->priv->picks_per_frame++;
 }
 
 void
 _clutter_stage_reset_picks_per_frame_counter (ClutterStage *stage)
 {
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
   stage->priv->picks_per_frame = 0;
 }
 
 guint
 _clutter_stage_get_picks_per_frame_counter (ClutterStage *stage)
 {
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), 0);
+
   return stage->priv->picks_per_frame;
 }
