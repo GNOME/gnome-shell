@@ -28,7 +28,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <math.h>
-#include <gdk-compat.h>
+
+#include "gdk-compat.h"
 
 static GtkWidget *grab_widget = NULL;
 static GtkWidget *display_window = NULL;
@@ -53,10 +54,9 @@ get_pixbuf (void)
            last_grab_width, last_grab_height);
 #endif
   
-  screenshot = gdk_pixbuf_get_from_drawable (NULL, gdk_get_default_root_window (),
-                                             NULL,
-                                             last_grab_x, last_grab_y, 0, 0,
-                                             last_grab_width, last_grab_height);
+  screenshot = gdk_pixbuf_get_from_window (NULL, gdk_get_default_root_window (),
+                                           last_grab_x, last_grab_y, 0, 0,
+                                           last_grab_width, last_grab_height);
 
   if (screenshot == NULL)
     {

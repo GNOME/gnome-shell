@@ -33,6 +33,8 @@
 #include "metaaccellabel.h"
 #include "ui.h"
 
+#include "gdk-compat.h"
+
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
 
@@ -403,7 +405,7 @@ meta_window_menu_new   (MetaFrames         *frames,
                   window = gtk_widget_get_window (GTK_WIDGET (frames));
                   display = gdk_x11_drawable_get_xdisplay (window);
 
-                  screen = gdk_drawable_get_screen (window);
+                  screen = gdk_window_get_screen (window);
                   xroot = GDK_DRAWABLE_XID (gdk_screen_get_root_window (screen));
 
                   submenu = gtk_menu_new ();

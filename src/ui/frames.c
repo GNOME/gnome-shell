@@ -40,6 +40,8 @@
 #include "gtk-compat.h"
 #include "gdk-compat.h"
 
+#include <cairo-xlib.h>
+
 #ifdef HAVE_SHAPE
 #include <X11/extensions/shape.h>
 #endif
@@ -64,8 +66,13 @@ static gboolean meta_frames_motion_notify_event   (GtkWidget           *widget,
                                                    GdkEventMotion      *event);
 static gboolean meta_frames_destroy_event         (GtkWidget           *widget,
                                                    GdkEventAny         *event);
+#ifdef USE_GTK3
+static gboolean meta_frames_draw                  (GtkWidget           *widget,
+                                                   cairo_t             *cr);
+#else
 static gboolean meta_frames_expose_event          (GtkWidget           *widget,
                                                    GdkEventExpose      *event);
+#endif
 static gboolean meta_frames_enter_notify_event    (GtkWidget           *widget,
                                                    GdkEventCrossing    *event);
 static gboolean meta_frames_leave_notify_event    (GtkWidget           *widget,
@@ -148,7 +155,11 @@ meta_frames_class_init (MetaFramesClass *class)
   widget_class->map = meta_frames_map;
   widget_class->unmap = meta_frames_unmap;
   
+#ifdef USE_GTK3
+  widget_class->draw = meta_frames_draw;
+#else
   widget_class->expose_event = meta_frames_expose_event;
+#endif
   widget_class->destroy_event = meta_frames_destroy_event;  
   widget_class->button_press_event = meta_frames_button_press_event;
   widget_class->button_release_event = meta_frames_button_release_event;
@@ -1016,7 +1027,8 @@ meta_frames_move_resize_frame (MetaFrames *frames,
   MetaUIFrame *frame = meta_frames_lookup_window (frames, xwindow);
   int old_width, old_height;
   
-  gdk_drawable_get_size (frame->window, &old_width, &old_height);
+  old_width = gdk_window_get_width (frame->window);
+  old_height = gdk_window_get_height (frame->window);
 
   gdk_window_move_resize (frame->window, x, y, width, height);
 
@@ -2278,6 +2290,72 @@ cached_pixels_draw (CachedPixels *pixels,
     }
 }
 
+#ifdef USE_GTK3
+static gboolean
+meta_frames_draw (GtkWidget *widget,
+                  cairo_t   *cr)
+{
+  MetaUIFrame *frame;
+  MetaFrames *frames;
+  CachedPixels *pixels;
+  MetaRegion *region;
+  GdkRectangle *areas, clip;
+  int i, n_areas;
+  cairo_surface_t *target;
+
+  frames = META_FRAMES (widget);
+  target = cairo_get_target (cr);
+  gdk_cairo_get_clip_rectangle (cr, &clip);
+
+  g_assert (cairo_surface_get_type (target) == CAIRO_SURFACE_TYPE_XLIB);
+  frame = meta_frames_lookup_window (frames, cairo_xlib_surface_get_drawable (target));
+  if (frame == NULL)
+    return FALSE;
+
+  if (frames->expose_delay_count > 0)
+    {
+      /* Redraw this entire frame later */
+      frame->expose_delayed = TRUE;
+      return TRUE;
+    }
+
+  populate_cache (frames, frame);
+
+  region = meta_region_new_from_rectangle (&clip);
+  
+  pixels = get_cache (frames, frame);
+
+  cached_pixels_draw (pixels, cr, region);
+  
+  clip_to_screen (region, frame);
+  subtract_client_area (region, frame);
+
+  meta_region_get_rectangles (region, &areas, &n_areas);
+
+  for (i = 0; i < n_areas; i++)
+    {
+      cairo_save (cr);
+
+      gdk_cairo_rectangle (cr, &areas[i]);
+      cairo_clip (cr);
+
+      cairo_push_group (cr);
+
+      meta_frames_paint (frames, frame, cr, 0, 0);
+
+      cairo_pop_group_to_source (cr);
+      cairo_paint (cr);
+
+      cairo_restore (cr);
+    }
+
+  g_free (areas);
+
+  meta_region_destroy (region);
+  
+  return TRUE;
+}
+#else /* !USE_GTK3 */
 static gboolean
 meta_frames_expose_event (GtkWidget           *widget,
                           GdkEventExpose      *event)
@@ -2341,6 +2419,7 @@ meta_frames_expose_event (GtkWidget           *widget,
   
   return TRUE;
 }
+#endif /* !USE_GTK3 */
 
 static void
 meta_frames_paint (MetaFrames   *frames,

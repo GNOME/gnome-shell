@@ -24,6 +24,26 @@
 
 #include <gtk/gtk.h>
 
+#if GTK_CHECK_VERSION (2, 90, 8)
+
+#define USE_GTK3 1
+
+#define MetaPixmap cairo_surface_t
+
+#define meta_pixmap_new(window, w, h) gdk_window_create_similar_surface (window, CAIRO_CONTENT_COLOR, w, h)
+#define meta_pixmap_free(pixmap) cairo_surface_destroy (pixmap)
+#define meta_pixmap_cairo_create(pixmap) cairo_create (pixmap)
+#define meta_cairo_set_source_pixmap(cr, pixmap, x, y) cairo_set_source_surface (cr, pixmap, x, y)
+
+#define meta_paint_vline gtk_paint_vline
+#define meta_paint_box gtk_paint_box
+#define meta_paint_arrow gtk_paint_arrow
+#define meta_paint_flat_box gtk_paint_flat_box
+
+#else /* GTK_VERSION < 2.90.8 */
+
+#undef USE_GTK3
+
 #define MetaPixmap GdkPixmap
 
 #define meta_pixmap_new(window, w, h) gdk_pixmap_new (window, w, h, -1)
@@ -74,5 +94,7 @@ void          meta_paint_flat_box          (GtkStyle           *style,
                                             gint                y,
                                             gint                width,
                                             gint                height);
+
+#endif /* GTK_VERSION < 2.90.8 */
 
 #endif /* __GTK3_COMPAT_H__ */

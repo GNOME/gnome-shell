@@ -38,13 +38,19 @@
 #include "util.h"
 
 #include "gtk-compat.h"
+#include "gdk2-drawing-utils.h"
 
 static void     meta_accel_label_destroy      (GtkObject           *object);
 static void     meta_accel_label_finalize     (GObject             *object);
 static void     meta_accel_label_size_request (GtkWidget           *widget,
                                                GtkRequisition      *requisition);
+#ifdef USE_GTK3
+static gboolean meta_accel_label_draw         (GtkWidget           *widget,
+                                               cairo_t             *cr);
+#else
 static gboolean meta_accel_label_expose_event (GtkWidget           *widget,
                                                GdkEventExpose      *event);
+#endif
 
 static void  meta_accel_label_update          (MetaAccelLabel *accel_label);
 static int   meta_accel_label_get_accel_width (MetaAccelLabel *accel_label);
@@ -63,7 +69,11 @@ meta_accel_label_class_init (MetaAccelLabelClass *class)
   object_class->destroy = meta_accel_label_destroy;
 
   widget_class->size_request = meta_accel_label_size_request;
+#ifdef USE_GTK3
+  widget_class->draw = meta_accel_label_draw;
+#else
   widget_class->expose_event = meta_accel_label_expose_event;
+#endif
 
   class->signal_quote1 = g_strdup ("<:");
   class->signal_quote2 = g_strdup (":>");
@@ -225,6 +235,94 @@ meta_accel_label_size_request (GtkWidget	     *widget,
   g_object_unref (G_OBJECT (layout));
 }
 
+#ifdef USE_GTK3
+/* Mostly taken from GTK3. */
+static gboolean
+meta_accel_label_draw (GtkWidget *widget,
+                       cairo_t   *cr)
+{
+  MetaAccelLabel *accel_label = META_ACCEL_LABEL (widget);
+  GtkMisc *misc = GTK_MISC (accel_label);
+  GtkTextDirection direction;
+  int ac_width;
+  GtkAllocation allocation;
+  GtkRequisition requisition;
+
+  direction = gtk_widget_get_direction (widget);
+  ac_width = meta_accel_label_get_accel_width (accel_label);
+  gtk_widget_get_allocation (widget, &allocation);
+  gtk_widget_get_preferred_size (widget,
+                                 &requisition, NULL);
+
+  if (allocation.width >= requisition.width + ac_width)
+    {
+      PangoLayout *label_layout;
+      PangoLayout *accel_layout;
+      GtkLabel *label = GTK_LABEL (widget);
+      gint x, y, xpad, ypad;
+      gfloat xalign, yalign;
+
+      label_layout = gtk_label_get_layout (GTK_LABEL (accel_label));
+      gtk_misc_get_alignment (misc, &xalign, &yalign);
+
+      cairo_save (cr);
+
+      /* XXX: Mad hack: We modify the label's width so it renders
+       * properly in its draw function that we chain to. */
+      if (direction == GTK_TEXT_DIR_RTL)
+        cairo_translate (cr, ac_width, 0);
+      if (gtk_label_get_ellipsize (label))
+        pango_layout_set_width (label_layout,
+                                pango_layout_get_width (label_layout) 
+                                - ac_width * PANGO_SCALE);
+      
+      allocation.width -= ac_width;
+      gtk_widget_set_allocation (widget, &allocation);
+      if (GTK_WIDGET_CLASS (meta_accel_label_parent_class)->draw)
+        GTK_WIDGET_CLASS (meta_accel_label_parent_class)->draw (widget,
+                                                               cr);
+      allocation.width += ac_width;
+      gtk_widget_set_allocation (widget, &allocation);
+      if (gtk_label_get_ellipsize (label))
+        pango_layout_set_width (label_layout,
+                                pango_layout_get_width (label_layout) 
+                                + ac_width * PANGO_SCALE);
+
+      cairo_restore (cr);
+
+      gtk_misc_get_padding (misc, &xpad, &ypad);
+
+      if (direction == GTK_TEXT_DIR_RTL)
+        x = xpad;
+      else
+        x = gtk_widget_get_allocated_width (widget) - xpad - ac_width;
+
+      gtk_label_get_layout_offsets (GTK_LABEL (accel_label), NULL, &y);
+
+      accel_layout = gtk_widget_create_pango_layout (widget, accel_label->accel_string);
+
+      y = (allocation.height - (requisition.height - ypad * 2)) * yalign + 1.5;
+
+      gtk_paint_layout (gtk_widget_get_style (widget),
+                        cr,
+                        gtk_widget_get_state (widget),
+                        FALSE,
+                        widget,
+                        "accellabel",
+                        x, y,
+                        accel_layout);                            
+
+      g_object_unref (accel_layout);
+    }
+  else
+    {
+      if (GTK_WIDGET_CLASS (meta_accel_label_parent_class)->draw)
+        GTK_WIDGET_CLASS (meta_accel_label_parent_class)->draw (widget, cr);
+    }
+  
+  return FALSE;
+}
+#else /* !USE_GTK3 */
 static gboolean
 meta_accel_label_expose_event (GtkWidget      *widget,
 			      GdkEventExpose *event)
@@ -306,6 +404,7 @@ meta_accel_label_expose_event (GtkWidget      *widget,
 
   return FALSE;
 }
+#endif /* !USE_GTK3 */
 
 static void
 meta_accel_label_update (MetaAccelLabel *accel_label)

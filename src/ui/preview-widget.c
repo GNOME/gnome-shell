@@ -34,8 +34,13 @@ static void     meta_preview_size_request  (GtkWidget        *widget,
                                             GtkRequisition   *req);
 static void     meta_preview_size_allocate (GtkWidget        *widget,
                                             GtkAllocation    *allocation);
+#ifdef USE_GTK3
+static gboolean meta_preview_draw          (GtkWidget        *widget,
+                                            cairo_t          *cr);
+#else
 static gboolean meta_preview_expose        (GtkWidget        *widget,
                                             GdkEventExpose   *event);
+#endif
 static void     meta_preview_finalize      (GObject          *object);
 
 G_DEFINE_TYPE (MetaPreview, meta_preview, GTK_TYPE_BIN);
@@ -50,7 +55,11 @@ meta_preview_class_init (MetaPreviewClass *class)
 
   gobject_class->finalize = meta_preview_finalize;
 
+#ifdef USE_GTK3
+  widget_class->draw = meta_preview_draw;
+#else
   widget_class->expose_event = meta_preview_expose;
+#endif
   widget_class->size_request = meta_preview_size_request;
   widget_class->size_allocate = meta_preview_size_allocate;
 }
@@ -185,54 +194,61 @@ ensure_info (MetaPreview *preview)
     }
 }
 
+#ifdef USE_GTK3
+static gboolean
+meta_preview_draw (GtkWidget *widget,
+                   cairo_t   *cr)
+{
+  MetaPreview *preview = META_PREVIEW (widget);
+  GtkAllocation allocation;
+
+  gtk_widget_get_allocation (widget, &allocation);
+#else
 static gboolean
 meta_preview_expose (GtkWidget      *widget,
                      GdkEventExpose *event)
 {
-  MetaPreview *preview;
+  cairo_t *cr = meta_cairo_create (gtk_widget_get_window (widget));
+  MetaPreview *preview = META_PREVIEW (widget);
   GtkAllocation allocation;
-  int border_width;
-  int client_width;
-  int client_height;
-  MetaButtonState button_states[META_BUTTON_TYPE_LAST] =
-  {
-    META_BUTTON_STATE_NORMAL,
-    META_BUTTON_STATE_NORMAL,
-    META_BUTTON_STATE_NORMAL,
-    META_BUTTON_STATE_NORMAL
-  };
-  
-  g_return_val_if_fail (META_IS_PREVIEW (widget), FALSE);
-  g_return_val_if_fail (event != NULL, FALSE);
 
-  preview = META_PREVIEW (widget);
-
-  ensure_info (preview);
-
-  border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
 
   gtk_widget_get_allocation (widget, &allocation);
-  client_width = allocation.width - preview->left_width - preview->right_width - border_width * 2;
-  client_height = allocation.height - preview->top_height - preview->bottom_height - border_width * 2;
+  cairo_translate (cr, allocation.x, allocation.y);
+#endif
 
-  if (client_width < 0)
-    client_width = 1;
-  if (client_height < 0)
-    client_height = 1;  
-  
   if (preview->theme)
     {
-      cairo_t *cr;
+      int border_width;
+      int client_width;
+      int client_height;
+      MetaButtonState button_states[META_BUTTON_TYPE_LAST] =
+      {
+        META_BUTTON_STATE_NORMAL,
+        META_BUTTON_STATE_NORMAL,
+        META_BUTTON_STATE_NORMAL,
+        META_BUTTON_STATE_NORMAL
+      };
+  
+      ensure_info (preview);
 
-      cr = meta_cairo_create (gtk_widget_get_window (widget));
-      gdk_cairo_region (cr, event->region);
-      cairo_clip (cr);
+      border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
 
+      client_width = allocation.width - preview->left_width - preview->right_width - border_width * 2;
+      client_height = allocation.height - preview->top_height - preview->bottom_height - border_width * 2;
+
+      if (client_width < 0)
+        client_width = 1;
+      if (client_height < 0)
+        client_height = 1;  
+      
       meta_theme_draw_frame (preview->theme,
                              widget,
                              cr,
-                             allocation.x + border_width,
-                             allocation.y + border_width,
+                             border_width,
+                             border_width,
                              preview->type,
                              preview->flags,
                              client_width, client_height,
@@ -243,11 +259,17 @@ meta_preview_expose (GtkWidget      *widget,
                              meta_preview_get_mini_icon (),
                              meta_preview_get_icon ());
 
-      cairo_destroy (cr);
     }
+
+#ifdef USE_GTK3
+  /* draw child */
+  return GTK_WIDGET_CLASS (meta_preview_parent_class)->draw (widget, cr);
+#else
+  cairo_destroy (cr);
 
   /* draw child */
   return GTK_WIDGET_CLASS (meta_preview_parent_class)->expose_event (widget, event);
+#endif
 }
 
 static void

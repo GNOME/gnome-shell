@@ -33,9 +33,11 @@
 
 #include "inlinepixbufs.h"
 #include "gdk-compat.h"
+#include "gdk2-drawing-utils.h"
 
 #include <string.h>
 #include <stdlib.h>
+#include <cairo-xlib.h>
 
 static void meta_stock_icons_init (void);
 static void meta_ui_accelerator_parse (const char      *accel,
@@ -172,7 +174,9 @@ meta_ui_create_frame_window (MetaUI *ui,
   gint attributes_mask;
   GdkWindow *window;
   GdkVisual *visual;
+#ifndef USE_GTK3
   GdkColormap *cmap = gdk_screen_get_default_colormap (screen);
+#endif
   
   /* Default depth/visual handles clients with weird visuals; they can
    * always be children of the root depth/visual obviously, but
@@ -185,7 +189,9 @@ meta_ui_create_frame_window (MetaUI *ui,
     {
       visual = gdk_x11_screen_lookup_visual (screen,
                                              XVisualIDFromVisual (xvisual));
+#ifndef USE_GTK3
       cmap = gdk_colormap_new (visual, FALSE);
+#endif
     }
 
   attrs.title = NULL;
@@ -201,7 +207,9 @@ meta_ui_create_frame_window (MetaUI *ui,
   attrs.y = y;
   attrs.wclass = GDK_INPUT_OUTPUT;
   attrs.visual = visual;
+#ifndef USE_GTK3
   attrs.colormap = cmap;
+#endif
   attrs.window_type = GDK_WINDOW_CHILD;
   attrs.cursor = NULL;
   attrs.wmclass_name = NULL;
@@ -211,7 +219,11 @@ meta_ui_create_frame_window (MetaUI *ui,
   attrs.width  = width;
   attrs.height = height;
 
+#ifdef USE_GTK3
+  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL;
+#else
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+#endif
 
   /* We make an assumption that gdk_window_new() is going to call
    * XCreateWindow as it's first operation; this seems to be true currently
@@ -358,6 +370,63 @@ meta_ui_window_menu_free (MetaWindowMenu *menu)
   meta_window_menu_free (menu);
 }
 
+#ifdef USE_GTK3
+GdkPixbuf*
+meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
+                                 Pixmap       xpixmap,
+                                 int          src_x,
+                                 int          src_y,
+                                 int          dest_x,
+                                 int          dest_y,
+                                 int          width,
+                                 int          height)
+{
+  cairo_surface_t *surface;
+  Display *display;
+  Window root_return;
+  int x_ret, y_ret;
+  unsigned int w_ret, h_ret, bw_ret, depth_ret;
+  XWindowAttributes attrs;
+  GdkPixbuf *retval;
+
+  display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
+
+  if (!XGetGeometry (display, xpixmap, &root_return,
+                     &x_ret, &y_ret, &w_ret, &h_ret, &bw_ret, &depth_ret))
+    return NULL;
+
+  if (depth_ret == 1)
+    {
+      surface = cairo_xlib_surface_create_for_bitmap (display,
+                                                      xpixmap,
+                                                      GDK_SCREEN_XSCREEN (gdk_screen_get_default ()),
+                                                      w_ret,
+                                                      h_ret);
+    }
+  else
+    {
+      if (!XGetWindowAttributes (display, root_return, &attrs))
+        return NULL;
+
+      surface = cairo_xlib_surface_create (display,
+                                           xpixmap,
+                                           attrs.visual,
+                                           w_ret, h_ret);
+    }
+
+  retval = gdk_pixbuf_get_from_surface (dest,
+                                        surface,
+                                        src_x,
+                                        src_y,
+                                        dest_x,
+                                        dest_y,
+                                        width,
+                                        height);
+  cairo_surface_destroy (surface);
+
+  return retval;
+}
+#else /* !USE_GTK3 */
 static GdkColormap*
 get_cmap (GdkPixmap *pixmap)
 {
@@ -437,6 +506,7 @@ meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
 
   return retval;
 }
+#endif /* !USE_GTK3 */
 
 void
 meta_ui_push_delay_exposes (MetaUI *ui)

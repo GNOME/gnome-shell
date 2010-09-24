@@ -14,7 +14,34 @@
 
 #define gdk_visual_get_depth(v)           GDK_VISUAL(v)->depth
 
-#endif /*GTK_CHECK_VERSION */
+#endif /* GTK_CHECK_VERSION (2, 21, 1) */
+
+#if !GTK_CHECK_VERSION (2, 90, 8)
+
+#define gdk_window_get_screen gdk_drawable_get_screen
+#define gdk_pixbuf_get_from_window(dest, window, src_x, src_y, dest_x, dest_y, width, height) \
+    gdk_pixbuf_get_from_drawable(dest, window, NULL, src_x, src_y, dest_x, dest_y, width, height)
+
+static inline int
+gdk_window_get_width (GdkWindow *window)
+{
+  int width;
+
+  gdk_drawable_get_size (window, &width, NULL);
+
+  return width;
+}
+
+static inline int
+gdk_window_get_height (GdkWindow *window)
+{
+  int height;
+
+  gdk_drawable_get_size (window, NULL, &height);
+
+  return height;
+}
+
 
 static inline gboolean
 gdk_cairo_get_clip_rectangle (cairo_t      *cr,
@@ -43,6 +70,7 @@ gdk_cairo_get_clip_rectangle (cairo_t      *cr,
   return clip_exists;
 }
 
+#endif /* GTK_CHECK_VERSION (2, 90, 8) */
 
 /* Compatibility with old GDK key symbols */
 #ifndef GDK_KEY_Escape

@@ -30,6 +30,8 @@
 #include "core.h"
 #include "region.h"
 
+#include "gdk2-drawing-utils.h"
+
 #define OUTLINE_WIDTH 5  /* frame width in non-composite case */
 
 
@@ -45,17 +47,21 @@ struct _MetaTilePreview {
   gboolean       has_alpha: 1;
 };
 
+#ifdef USE_GTK3
+static gboolean
+meta_tile_preview_draw (GtkWidget *widget,
+                        cairo_t   *cr,
+                        gpointer   user_data)
+{
+#else
 static gboolean
 meta_tile_preview_expose (GtkWidget      *widget,
                           GdkEventExpose *event,
                           gpointer        user_data)
 {
+  cairo_t *cr = gdk_cairo_create (event->window);
+#endif
   MetaTilePreview *preview = user_data;
-  GdkWindow *window;
-  cairo_t   *cr;
-
-  window = gtk_widget_get_window (widget);
-  cr = gdk_cairo_create (window);
 
   cairo_set_line_width (cr, 1.0);
 
@@ -93,7 +99,9 @@ meta_tile_preview_expose (GtkWidget      *widget,
                    preview->tile_rect.height - 1);
   cairo_stroke (cr);
 
+#ifndef USE_GTK3
   cairo_destroy (cr);
+#endif
 
   return FALSE;
 }
@@ -134,11 +142,9 @@ meta_tile_preview_new (int      screen_number,
                        gboolean composited)
 {
   MetaTilePreview *preview;
-  GdkColormap *rgba_colormap;
   GdkScreen *screen;
 
   screen = gdk_display_get_screen (gdk_display_get_default (), screen_number);
-  rgba_colormap = gdk_screen_get_rgba_colormap (screen);
 
   preview = g_new (MetaTilePreview, 1);
 
@@ -153,11 +159,18 @@ meta_tile_preview_new (int      screen_number,
   preview->tile_rect.x = preview->tile_rect.y = 0;
   preview->tile_rect.width = preview->tile_rect.height = 0;
 
-  preview->has_alpha = rgba_colormap && composited;
+  preview->has_alpha = composited &&
+                       (gdk_screen_get_rgba_visual (screen) != NULL);
 
   if (preview->has_alpha)
     {
-      gtk_widget_set_colormap (preview->preview_window, rgba_colormap);
+#ifdef USE_GTK3
+      gtk_window_set_visual (GTK_WINDOW (preview->preview_window),
+                             gdk_screen_get_rgba_visual (screen));
+#else
+      gtk_widget_set_colormap (preview->preview_window,
+                               gdk_screen_get_rgba_colormap (screen));
+#endif
 
       g_signal_connect (preview->preview_window, "style-set",
                         G_CALLBACK (on_preview_window_style_set), preview);
@@ -169,11 +182,15 @@ meta_tile_preview_new (int      screen_number,
    */
   preview->create_serial = XNextRequest (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
   gtk_widget_realize (preview->preview_window);
+#ifdef USE_GTK3
+  g_signal_connect (preview->preview_window, "draw",
+                    G_CALLBACK (meta_tile_preview_draw), preview);
+#else
   gdk_window_set_back_pixmap (gtk_widget_get_window (preview->preview_window),
                               NULL, FALSE);
-
   g_signal_connect (preview->preview_window, "expose-event",
                     G_CALLBACK (meta_tile_preview_expose), preview);
+#endif
 
   return preview;
 }

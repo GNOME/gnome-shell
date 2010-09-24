@@ -27,6 +27,8 @@
 
 #include "gdk-compat.h"
 
+#ifndef USE_GTK3
+
 static const cairo_user_data_key_t context_key;
 
 cairo_t *
@@ -172,3 +174,4 @@ meta_paint_flat_box (GtkStyle           *style,
                       x + dx, y + dy, width, height);
 }
 
+#endif /* USE_GTK3 */
