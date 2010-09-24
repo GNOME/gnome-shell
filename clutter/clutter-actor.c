@@ -1798,7 +1798,6 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
                                  ClutterActor *origin)
 {
   ClutterActor *parent;
-  ClutterActor *stage;
 
   CLUTTER_NOTE (PAINT, "Redraw queued on '%s' (from: '%s')",
                 get_actor_debug_name (self),
@@ -1816,13 +1815,6 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
   if (!CLUTTER_ACTOR_IS_VISIBLE (self))
     return;
 
-  /* XXX: when we merge the paint-box branch we should only need to
-   * invalidate the pick buffer in _clutter_stage_queue_actor_redraw
-   */
-  stage = _clutter_actor_get_stage_internal (self);
-  if (stage != NULL)
-    _clutter_stage_set_pick_buffer_valid (CLUTTER_STAGE (stage), FALSE);
-
   /* Although we could determine here that a full stage redraw
    * has already been queued and immediately bail out, we actually
    * guarantee that we will propagate a queue-redraw signal to our
@@ -1832,6 +1824,7 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
    */
   if (self->priv->propagated_one_redraw)
     {
+      ClutterActor *stage = _clutter_actor_get_stage_internal (self);
       if (stage != NULL &&
           _clutter_stage_has_full_redraw_queued (CLUTTER_STAGE (stage)))
         return;
