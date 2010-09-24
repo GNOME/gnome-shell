@@ -17,13 +17,13 @@ function makeProxyClass(iface) {
 }
 
 function nameToPath(name) {
-    return '/' + name.replace('.', '/', 'g');
+    return '/' + name.replace(/\./g, '/');
 };
 
 function pathToName(path) {
     if (path[0] != '/')
         throw new Error('not a D-Bus path: ' + path);
-    return path.substr(1).replace('/', '.', 'g');
+    return path.substr(1).replace(/\//g, '.');
 };
 
 // This is tp_escape_as_identifier() from telepathy-glib
