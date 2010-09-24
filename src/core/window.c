@@ -2972,7 +2972,7 @@ ensure_size_hints_satisfied (MetaRectangle    *rect,
 static void
 meta_window_save_rect (MetaWindow *window)
 {
-  if (!(META_WINDOW_MAXIMIZED (window) || META_WINDOW_TILED (window) || window->fullscreen))
+  if (!(META_WINDOW_MAXIMIZED (window) || META_WINDOW_TILED_SIDE_BY_SIDE (window) || window->fullscreen))
     {
       /* save size/pos as appropriate args for move_resize */
       if (!window->maximized_horizontally)
@@ -3014,7 +3014,7 @@ force_save_user_window_placement (MetaWindow *window)
 static void
 save_user_window_placement (MetaWindow *window)
 {
-  if (!(META_WINDOW_MAXIMIZED (window) || META_WINDOW_TILED (window) || window->fullscreen))
+  if (!(META_WINDOW_MAXIMIZED (window) || META_WINDOW_TILED_SIDE_BY_SIDE (window) || window->fullscreen))
     {
       MetaRectangle user_rect;
 
@@ -3218,7 +3218,7 @@ meta_window_tile (MetaWindow *window)
 }
 
 static gboolean
-meta_window_can_tile (MetaWindow *window)
+meta_window_can_tile_side_by_side (MetaWindow *window)
 {
   const MetaMonitorInfo *monitor;
   MetaRectangle tile_area;
@@ -7800,7 +7800,7 @@ update_move (MetaWindow  *window,
     DRAG_THRESHOLD_TO_SHAKE_THRESHOLD_FACTOR;
 
   if (meta_prefs_get_edge_tiling () &&
-      meta_window_can_tile (window))
+      meta_window_can_tile_side_by_side (window))
     {
       const MetaMonitorInfo *monitor;
       MetaRectangle work_area;
@@ -7834,12 +7834,12 @@ update_move (MetaWindow  *window,
    */
 
   if ((META_WINDOW_MAXIMIZED (window) && ABS (dy) >= shake_threshold) ||
-      (META_WINDOW_TILED (window) && (MAX (ABS (dx), ABS (dy)) >= shake_threshold)))
+      (META_WINDOW_TILED_SIDE_BY_SIDE (window) && (MAX (ABS (dx), ABS (dy)) >= shake_threshold)))
     {
       double prop;
 
       /* Shake loose */
-      window->shaken_loose = !META_WINDOW_TILED (window);
+      window->shaken_loose = !META_WINDOW_TILED_SIDE_BY_SIDE (window);
       window->tile_mode = META_TILE_NONE;
 
       /* move the unmaximized window to the cursor */
@@ -7936,7 +7936,7 @@ update_move (MetaWindow  *window,
   meta_window_get_client_root_coords (window, &old);
 
   /* Don't allow movement in the maximized directions or while tiled */
-  if (window->maximized_horizontally || META_WINDOW_TILED (window))
+  if (window->maximized_horizontally || META_WINDOW_TILED_SIDE_BY_SIDE (window))
     new_x = old.x;
   if (window->maximized_vertically)
     new_y = old.y;

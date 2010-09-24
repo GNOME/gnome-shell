@@ -1776,7 +1776,7 @@ meta_screen_tile_preview_update_timeout (gpointer data)
     }
 
   if (window
-      && !META_WINDOW_TILED (window)
+      && !META_WINDOW_TILED_SIDE_BY_SIDE (window)
       && window->tile_mode != META_TILE_NONE)
     {
       MetaRectangle tile_rect;
