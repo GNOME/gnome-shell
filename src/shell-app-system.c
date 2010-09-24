@@ -487,7 +487,7 @@ shell_app_system_get_app (ShellAppSystem   *self,
 /**
  * shell_app_system_get_app_for_path:
  * @system: a #ShellAppSystem
- * @desktop_path: (utf8): UTF-8 encoded absolute file name
+ * @desktop_path: (type utf8): UTF-8 encoded absolute file name
  *
  * Find or create a #ShellApp corresponding to a given absolute
  * file name which must be in the standard paths (XDG_DATA_DIRS).
