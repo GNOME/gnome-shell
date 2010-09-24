@@ -8692,8 +8692,8 @@ meta_window_refresh_resize_popup (MetaWindow *window)
 /**
  * meta_window_foreach_transient:
  * @window: a #MetaWindow
- * @func: (scope call): Called for each window which is a transient of @window (transitively)
- * @user_data: (closure): User data
+ * @func: (scope call) (closure user_data): Called for each window which is a transient of @window (transitively)
+ * @user_data: User data
  *
  * Call @func for every window which is either transient for @window, or is
  * a transient of a window which is in turn transient for @window.
@@ -8731,8 +8731,8 @@ meta_window_foreach_transient (MetaWindow            *window,
 /**
  * meta_window_foreach_ancestor:
  * @window: a #MetaWindow
- * @func: (scope call): Called for each window which is a transient parent of @window
- * @user_data: (closure): User data
+ * @func: (scope call) (closure user_data): Called for each window which is a transient parent of @window
+ * @user_data: User data
  *
  * If @window is transient, call @func with the window for which it's transient,
  * repeatedly until either we find a non-transient window, or @func returns %FALSE.
