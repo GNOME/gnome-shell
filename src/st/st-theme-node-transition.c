@@ -263,7 +263,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
                                            NULL);
           cogl_material_set_layer_combine (material_template, 2,
                                            "RGBA = MODULATE (PREVIOUS, "
-                                                            "CONSTANT)",
+                                                            "PRIMARY)",
                                            NULL);
         }
       priv->material = cogl_material_copy (material_template);
@@ -322,10 +322,9 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
                           clutter_alpha_get_alpha (priv->alpha));
   cogl_material_set_layer_combine_constant (priv->material, 1, &constant);
 
-  cogl_color_set_from_4ub (&constant,
-                           paint_opacity, paint_opacity,
-                           paint_opacity, paint_opacity);
-  cogl_material_set_layer_combine_constant (priv->material, 2, &constant);
+  cogl_material_set_color4ub (priv->material,
+                              paint_opacity, paint_opacity,
+                              paint_opacity, paint_opacity);
 
   cogl_set_source (priv->material);
   cogl_rectangle_with_multitexture_coords (priv->offscreen_box.x1,
