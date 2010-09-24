@@ -29,7 +29,7 @@ const ANIMATED_ICON_UPDATE_TIMEOUT = 100;
 const SPINNER_UPDATE_TIMEOUT = 130;
 const SPINNER_SPEED = 0.02;
 
-const STANDARD_TRAY_ICON_ORDER = ['a11y', 'keyboard', 'volume', 'bluetooth', 'network', 'battery'];
+const STANDARD_TRAY_ICON_ORDER = ['a11y', 'display', 'keyboard', 'volume', 'bluetooth', 'network', 'battery'];
 const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
     'a11y': imports.ui.status.accessibility.ATIndicator
 };

@@ -11,7 +11,9 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'bluetooth-applet': 'bluetooth',
     'gnome-volume-control-applet': 'volume',
     'nm-applet': 'network',
-    'gnome-power-manager': 'battery'
+    'gnome-power-manager': 'battery',
+    'keyboard': 'keyboard',
+    'gnome-settings-daemon': 'display'
 };
 
 function StatusIconDispatcher() {
