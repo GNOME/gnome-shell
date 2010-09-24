@@ -193,7 +193,6 @@ ATIndicator.prototype = {
         let first_gconf_value = client.get_without_default(KEY_FONT_DPI);
         let default_value = getDPIFromX();
         let first_value = first_gconf_value ? first_gconf_value.get_float() : default_value;
-        log('default_value = %f, first_value = %f'.format(default_value,first_value));
         function on_get() {
             let u_dpi = client.get_float(KEY_FONT_DPI);
             let x_dpi = getDPIFromX();
