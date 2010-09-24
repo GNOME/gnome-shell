@@ -7799,7 +7799,7 @@ update_move (MetaWindow  *window,
   shake_threshold = meta_ui_get_drag_threshold (window->screen->ui) *
     DRAG_THRESHOLD_TO_SHAKE_THRESHOLD_FACTOR;
 
-  if (meta_prefs_get_side_by_side_tiling () &&
+  if (meta_prefs_get_edge_tiling () &&
       meta_window_can_tile (window))
     {
       const MetaMonitorInfo *monitor;

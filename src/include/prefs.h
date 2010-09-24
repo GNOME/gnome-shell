@@ -60,7 +60,7 @@ typedef enum
   META_PREF_CURSOR_SIZE,
   META_PREF_COMPOSITING_MANAGER,
   META_PREF_RESIZE_WITH_RIGHT_BUTTON,
-  META_PREF_SIDE_BY_SIDE_TILING,
+  META_PREF_EDGE_TILING,
   META_PREF_FORCE_FULLSCREEN,
   META_PREF_CLUTTER_PLUGINS,
   META_PREF_LIVE_HIDDEN_WINDOWS,
@@ -99,7 +99,7 @@ gboolean                    meta_prefs_get_auto_raise         (void);
 int                         meta_prefs_get_auto_raise_delay   (void);
 gboolean                    meta_prefs_get_gnome_accessibility (void);
 gboolean                    meta_prefs_get_gnome_animations   (void);
-gboolean                    meta_prefs_get_side_by_side_tiling (void);
+gboolean                    meta_prefs_get_edge_tiling        (void);
 
 const char*                 meta_prefs_get_command            (int i);
 
