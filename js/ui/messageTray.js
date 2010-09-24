@@ -700,141 +700,56 @@ Source.prototype = {
 };
 Signals.addSignalMethods(Source.prototype);
 
-function SummaryItem(source, minTitleWidth) {
-    this._init(source, minTitleWidth);
+function SummaryItem(source) {
+    this._init(source);
 }
 
 SummaryItem.prototype = {
-    _init: function(source, minTitleWidth) {
+    _init: function(source) {
         this.source = source;
-        // The message tray items should all be the same width when expanded. Because the only variation is introduced by the width of the title,
-        // we pass in the desired minimum title width, which is the maximum title width of the items which are currently in the tray. If the width
-        // of the title of this item is greater (up to MAX_SOURCE_TITLE_WIDTH), then that width will be used, and the width of all the other items
-        // in the message tray will be readjusted.
-        this._minTitleWidth = minTitleWidth;
         this.actor = new St.Button({ style_class: 'summary-source-button',
                                      reactive: true,
                                      track_hover: true });
 
-        this._sourceBox = new  Shell.GenericContainer({ style_class: 'summary-source',
-                                                        reactive: true });
-        this._sourceBox.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this._sourceBox.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this._sourceBox.connect('allocate', Lang.bind(this, this._allocate));
+        this._sourceBox = new St.BoxLayout({ style_class: 'summary-source' });
 
         this._sourceIcon = source.getSummaryIcon();
-        this._sourceTitleBin = new St.Bin({ y_align: St.Align.MIDDLE, x_fill: true });
+        this._sourceTitleBin = new St.Bin({ y_align: St.Align.MIDDLE,
+                                            x_fill: true,
+                                            clip_to_allocation: true });
         this._sourceTitle = new St.Label({ style_class: 'source-title',
                                            text: source.title });
         this._sourceTitle.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._sourceTitleBin.child = this._sourceTitle;
+        this._sourceTitleBin.width = 0;
 
         this._sourceBox.add_actor(this._sourceIcon);
-        this._sourceBox.add_actor(this._sourceTitleBin);
-        this._widthFraction = 0;
+        this._sourceBox.add_actor(this._sourceTitleBin, { expand: true });
         this.actor.child = this._sourceBox;
     },
 
+    // getTitleNaturalWidth, getTitleWidth, and setTitleWidth include
+    // the spacing between the icon and title (which is actually
+    // _sourceTitle's padding-left) as part of the width.
+
     getTitleNaturalWidth: function() {
-        let [sourceTitleBinMinWidth, sourceTitleBinNaturalWidth] =
-            this._sourceTitleBin.get_preferred_width(-1);
-        return Math.min(sourceTitleBinNaturalWidth, MAX_SOURCE_TITLE_WIDTH);
+        let [minWidth, naturalWidth] = this._sourceTitle.get_preferred_width(-1);
+
+        return Math.min(naturalWidth, MAX_SOURCE_TITLE_WIDTH);
     },
 
-    setMinTitleWidth: function(minTitleWidth) {
-        this._minTitleWidth = minTitleWidth;
+    getTitleWidth: function() {
+        return this._sourceTitleBin.width;
     },
 
-    _getPreferredWidth: function(actor, forHeight, alloc) {
-        let [found, spacing] = this._sourceBox.get_theme_node().get_length('spacing', false);
-        if (!found)
-            spacing = 0;
-        let [sourceIconMinWidth, sourceIconNaturalWidth] = this._sourceIcon.get_preferred_width(forHeight);
-        let [sourceTitleBinMinWidth, sourceTitleBinNaturalWidth] =
-            this._sourceTitleBin.get_preferred_width(forHeight);
-        let minWidth = sourceIconNaturalWidth +
-                       (this._widthFraction > 0 ? spacing : 0) +
-                       this._widthFraction * Math.min(Math.max(sourceTitleBinNaturalWidth, this._minTitleWidth),
-                                                      MAX_SOURCE_TITLE_WIDTH);
-        alloc.min_size = minWidth;
-        alloc.natural_size = minWidth;
+    setTitleWidth: function(width) {
+        width = Math.round(width);
+        if (width != this._sourceTitleBin.width)
+            this._sourceTitleBin.width = width;
     },
 
-    _getPreferredHeight: function(actor, forWidth, alloc) {
-        let [sourceIconMinHeight, sourceIconNaturalHeight] = this._sourceIcon.get_preferred_height(forWidth);
-        alloc.min_size = sourceIconNaturalHeight;
-        alloc.natural_size = sourceIconNaturalHeight;
-    },
-
-    _allocate: function (actor, box, flags) {
-        let width = box.x2 - box.x1;
-        let height = box.y2 - box.y1;
-
-        let [sourceIconMinWidth, sourceIconNaturalWidth] = this._sourceIcon.get_preferred_width(-1);
-        let [sourceIconMinHeight, sourceIconNaturalHeight] = this._sourceIcon.get_preferred_height(-1);
-
-        let iconBox = new Clutter.ActorBox();
-        iconBox.x1 = 0;
-        iconBox.y1 = 0;
-        iconBox.x2 = sourceIconNaturalWidth;
-        iconBox.y2 = sourceIconNaturalHeight;
-
-        this._sourceIcon.allocate(iconBox, flags);
-
-        let [found, spacing] = this._sourceBox.get_theme_node().get_length('spacing', false);
-        if (!found)
-            spacing = 0;
-
-        let titleBox = new Clutter.ActorBox();
-        if (width > sourceIconNaturalWidth + spacing) {
-            titleBox.x1 = iconBox.x2 + spacing;
-            titleBox.x2 = width;
-        } else {
-            titleBox.x1 = iconBox.x2;
-            titleBox.x2 = iconBox.x2;
-        }
-        titleBox.y1 = 0;
-        titleBox.y2 = height;
-
-        this._sourceTitleBin.allocate(titleBox, flags);
-
-        this._sourceTitleBin.set_clip(0, 0, titleBox.x2 - titleBox.x1, height);
-    },
-
-    expand: function() {
-        // this._adjustEllipsization replaces some text with the dots at the end of the animation,
-        // and then we replace the dots with the text before we begin the animation to collapse
-        // the title. These changes are not noticeable at the speed with which we do the animation,
-        // while animating in the ellipsized mode does not look good.
-        Tweener.addTween(this,
-                         { widthFraction: 1,
-                           time: ANIMATION_TIME,
-                           transition: 'linear',
-                           onComplete: this._adjustEllipsization,
-                           onCompleteScope: this });
-    },
-
-    collapse: function() {
-        this._sourceTitle.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        Tweener.addTween(this,
-                         { widthFraction: 0,
-                           time: ANIMATION_TIME,
-                           transition: 'linear' });
-    },
-
-    _adjustEllipsization: function() {
-        let [sourceTitleBinMinWidth, sourceTitleBinNaturalWidth] = this._sourceTitleBin.get_preferred_width(-1);
-        if (sourceTitleBinNaturalWidth > MAX_SOURCE_TITLE_WIDTH)
-            this._sourceTitle.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-    },
-
-    set widthFraction(widthFraction) {
-        this._widthFraction = widthFraction;
-        this._sourceBox.queue_relayout();
-    },
-
-    get widthFraction() {
-        return this._widthFraction;
+    setEllipsization: function(mode) {
+        this._sourceTitle.clutter_text.ellipsize = mode;
     }
 };
 
@@ -873,6 +788,14 @@ MessageTray.prototype = {
         this._summaryNotificationBin.hide();
         this._summaryNotification = null;
         this._clickedSummaryItem = null;
+        this._expandedSummaryItem = null;
+        this._summaryItemTitleWidth = 0;
+
+        // To simplify the summary item animation code, we pretend
+        // that there's an invisible SummaryItem to the left of the
+        // leftmost real summary item, and that it's expanded when all
+        // of the other items are collapsed.
+        this._imaginarySummaryItemTitleWidth = 0;
 
         this._trayState = State.HIDDEN;
         this._locked = false;
@@ -958,17 +881,15 @@ MessageTray.prototype = {
             return;
         }
 
-        let minTitleWidth = (this._longestSummaryItem ? this._longestSummaryItem.getTitleNaturalWidth() : 0);
-        let summaryItem = new SummaryItem(source, minTitleWidth);
+        let summaryItem = new SummaryItem(source);
 
         this._summary.insert_actor(summaryItem.actor, 0);
 
-        let newItemTitleWidth = summaryItem.getTitleNaturalWidth();
-        if (newItemTitleWidth > minTitleWidth) {
-            for (let i = 0; i < this._summaryItems.length; i++) {
-                this._summaryItems[i].setMinTitleWidth(newItemTitleWidth);
-            }
-            summaryItem.setMinTitleWidth(newItemTitleWidth);
+        let titleWidth = summaryItem.getTitleNaturalWidth();
+        if (titleWidth > this._summaryItemTitleWidth) {
+            this._summaryItemTitleWidth = titleWidth;
+            if (!this._expandedSummaryItem)
+                this._imaginarySummaryItemTitleWidth = titleWidth;
             this._longestSummaryItem = summaryItem;
         }
 
@@ -1020,19 +941,20 @@ MessageTray.prototype = {
 
         this._summaryItems.splice(index, 1);
         if (this._longestSummaryItem.source == source) {
-
-            let maxTitleWidth = 0;
+            let newTitleWidth = 0;
             this._longestSummaryItem = null;
             for (let i = 0; i < this._summaryItems.length; i++) {
                 let summaryItem = this._summaryItems[i];
-                if (summaryItem.getTitleNaturalWidth() > maxTitleWidth) {
-                    maxTitleWidth = summaryItem.getTitleNaturalWidth();
+                let titleWidth = summaryItem.getTitleNaturalWidth();
+                if (titleWidth > newTitleWidth) {
+                    newTitleWidth = titleWidth;
                     this._longestSummaryItem = summaryItem;
                 }
             }
-            for (let i = 0; i < this._summaryItems.length; i++) {
-                this._summaryItems[i].setMinTitleWidth(maxTitleWidth);
-            }
+
+            this._summaryItemTitleWidth = newTitleWidth;
+            if (!this._expandedSummaryItem)
+                this._imaginarySummaryItemTitleWidth = newTitleWidth;
         }
 
         let needUpdate = false;
@@ -1108,10 +1030,87 @@ MessageTray.prototype = {
     },
 
     _onSummaryItemHoverChanged: function(summaryItem) {
-        if (summaryItem.actor.hover)
-            summaryItem.expand();
+        // We can't just animate individual summary items as the
+        // pointer moves in and out of them, because if they don't
+        // move in sync you get weird-looking wobbling. So whenever
+        // there's a change, we have to re-tween the entire summary
+        // area.
+
+        if (summaryItem.actor.hover) {
+            if (summaryItem == this._expandedSummaryItem)
+                return;
+
+            this._expandedSummaryItem = summaryItem;
+        } else {
+            if (summaryItem != this._expandedSummaryItem)
+                return;
+
+            this._expandedSummaryItem = null;
+
+            // Turn off ellipsization while collapsing; it looks better
+            summaryItem.setEllipsization(Pango.EllipsizeMode.NONE);
+        }
+
+        // We tween on a "_expandedSummaryItemTitleWidth" pseudo-property
+        // that represents the current title width of the
+        // expanded/expanding item, or the width of the imaginary
+        // invisible item if we're collapsing everything.
+        Tweener.addTween(this,
+                         { _expandedSummaryItemTitleWidth: this._summaryItemTitleWidth,
+                           time: ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: this._expandSummaryItemCompleted,
+                           onCompleteScope: this });
+    },
+
+    get _expandedSummaryItemTitleWidth() {
+        if (this._expandedSummaryItem)
+            return this._expandedSummaryItem.getTitleWidth();
         else
-            summaryItem.collapse();
+            return this._imaginarySummaryItemTitleWidth;
+    },
+
+    set _expandedSummaryItemTitleWidth(expansion) {
+        // Expand the expanding item to its new width
+        if (this._expandedSummaryItem)
+            this._expandedSummaryItem.setTitleWidth(expansion);
+        else
+            this._imaginarySummaryItemTitleWidth = expansion;
+
+        // Figure out how much space the other items are currently
+        // using, and how much they need to be shrunk to keep the
+        // total width (including the width of the imaginary item)
+        // constant.
+        let excess = this._summaryItemTitleWidth - expansion;
+        let oldExcess = 0, shrinkage;
+        if (excess) {
+            for (let i = 0; i < this._summaryItems.length; i++) {
+                if (this._summaryItems[i] != this._expandedSummaryItem)
+                    oldExcess += this._summaryItems[i].getTitleWidth();
+            }
+            if (this._expandedSummaryItem)
+                oldExcess += this._imaginarySummaryItemTitleWidth;
+        }
+        if (excess && oldExcess)
+            shrinkage = excess / oldExcess;
+        else
+            shrinkage = 0;
+
+        // Now shrink each one proportionately
+        for (let i = 0; i < this._summaryItems.length; i++) {
+            if (this._summaryItems[i] == this._expandedSummaryItem)
+                continue;
+
+            let width = this._summaryItems[i].getTitleWidth();
+            this._summaryItems[i].setTitleWidth(width * shrinkage);
+        }
+        if (this._expandedSummaryItem)
+            this._imaginarySummaryItemTitleWidth *= shrinkage;
+    },
+
+    _expandSummaryItemCompleted: function() {
+        if (this._expandedSummaryItem)
+            this._expandedSummaryItem.setEllipsization(Pango.EllipsizeMode.END);
     },
 
     _onSummaryItemClicked: function(summaryItem) {

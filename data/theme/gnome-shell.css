@@ -959,6 +959,10 @@ StTooltip {
  * icons, because then the summary would be 0x0 when there were no
  * icons in it, and so you wouldn't be able to hover over it to
  * activate it.
+ *
+ * Also, the spacing between a summary-source's icon and title is
+ * actually specified as padding-left in source-title, because we
+ * want the spacing to collapse along with the title.
  */
 #summary-mode {
     padding: 2px 0px 0px 4px;
@@ -966,7 +970,6 @@ StTooltip {
 }
 
 .summary-source {
-    spacing: 4px;
 }
 
 .summary-source-button {
@@ -982,6 +985,7 @@ StTooltip {
     font: 12px sans-serif;
     font-weight: bold;
     color: white;
+    padding-left: 4px;
 }
 
 .calendar-calendarweek {
