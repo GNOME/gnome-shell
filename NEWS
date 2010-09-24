@@ -1,3 +1,36 @@
+Clutter 1.4.0  (24/09/2010)
+===============================================================================
+
+  • List of changes since Clutter 1.3.14
+
+    » Add support for describing ClutterState states using ClutterAnimators
+      in ClutterScript.
+
+    » Build fixes
+
+    » Include ClutterConstraints into the allocation phase, to avoid layout
+      cycles and improve the performance.
+
+    » Add new recipes to the Cookbook to illustrate constraints-based
+      layouts.
+
+    » Fix the request mode of ClutterBoxLayout.
+
+    » Fix the handling of transformations in ClutterOffscreenEffect.
+
+    » Documentation and introspection fixes.
+
+Many thanks to:
+
+  Elliot Smith
+  Robert Bragg
+  Neil Roberts
+  Bastian Winkler
+  Dominique Leuenberger
+  Frederik Hahne
+  Jammy Zhou
+  Øyvind Kolås
+
 Clutter 1.3.14 (15/09/2010)
 ===============================================================================
 
