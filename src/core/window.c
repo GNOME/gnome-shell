@@ -3202,6 +3202,10 @@ meta_window_can_tile (MetaWindow *window)
   monitor = meta_screen_get_current_monitor (window->screen);
   meta_window_get_work_area_for_monitor (window, monitor->number, &tile_area);
 
+  /* Do not allow tiling in portrait orientation */
+  if (tile_area.height > tile_area.width)
+    return FALSE;
+
   tile_area.width /= 2;
 
   if (window->frame)
