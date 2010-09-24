@@ -5615,7 +5615,11 @@ dump_material_cb (CoglMaterialNode *node, void *user_data)
     }
 
   if (layers)
-    _cogl_material_foreach_layer_internal (material, dump_layer_ref_cb, state);
+    {
+      g_list_foreach (material->layer_differences,
+                      (GFunc)dump_layer_ref_cb,
+                      state);
+    }
 
   state_out.parent_id = material_id;
 
