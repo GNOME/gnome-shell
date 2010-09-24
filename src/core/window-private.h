@@ -64,7 +64,8 @@ typedef enum {
 typedef enum {
   META_TILE_NONE,
   META_TILE_LEFT,
-  META_TILE_RIGHT
+  META_TILE_RIGHT,
+  META_TILE_MAXIMIZED
 } MetaTileMode;
 
 struct _MetaWindow
