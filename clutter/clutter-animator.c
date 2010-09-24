@@ -1445,23 +1445,14 @@ again:
         }
     }
 
-  if (object)
-    {
-      GHashTableIter iter;
-      gpointer key, value;
+  /* clear off cached state for all properties, this is regenerated in a
+   * correct state by animation_animator_started
+   */
+  g_hash_table_remove_all (priv->properties);
 
-again2:
-      g_hash_table_iter_init (&iter, priv->properties);
-      while (g_hash_table_iter_next (&iter, &key, &value))
-        {
-          PropObjectKey *prop_actor_key = key;
-          if (prop_actor_key->object == object)
-            {
-              g_hash_table_remove (priv->properties, key);
-              goto again2;
-            }
-        }
-    }
+  /* if the animator is already running reinitialize internal iterators */
+  if (clutter_timeline_is_playing (priv->timeline))
+    animation_animator_started (priv->timeline, animator);
 }
 
 /**
