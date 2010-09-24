@@ -8464,8 +8464,7 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                * would break the ability to snap back to the tiled
                * state, so we wait until mouse release.
                */
-              if (!window->maximized_vertically &&
-                  window->tile_mode != META_TILE_NONE)
+              if (!META_WINDOW_TILED_SIDE_BY_SIDE (window))
                 window->tile_mode = META_TILE_NONE;
             }
         }
