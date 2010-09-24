@@ -27,6 +27,7 @@
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
+#include "shell-jsapi-compat-private.h"
 
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
 #define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
@@ -810,6 +811,8 @@ shell_global_add_extension_importer (ShellGlobal *global,
   JSContext *context = gjs_context_get_native_context (global->js_context);
   char *search_path[2] = { 0, 0 };
 
+  JS_BeginRequest (context);
+
   // This is a bit of a hack; ideally we'd be able to pass our target
   // object directly into this function, but introspection doesn't
   // support that at the moment.  Instead evaluate a string to get it.
@@ -829,18 +832,22 @@ shell_global_add_extension_importer (ShellGlobal *global,
                   G_IO_ERROR_FAILED,
                   "%s", message ? message : "(unknown)");
       g_free(message);
-      return FALSE;
+      goto out_error;
     }
 
   if (!JSVAL_IS_OBJECT (target_object))
     {
       g_error ("shell_global_add_extension_importer: invalid target object");
-      return FALSE;
+      goto out_error;
     }
 
   search_path[0] = (char*)directory;
   importer = gjs_define_importer (context, JSVAL_TO_OBJECT (target_object), target_property, (const char **)search_path, FALSE);
+  JS_EndRequest (context);
   return TRUE;
+ out_error:
+  JS_EndRequest (context);
+  return FALSE;
 }
 
 /* Code to close all file descriptors before we exec; copied from gspawn.c in GLib.
@@ -1604,7 +1611,8 @@ shell_global_set_property_mutable (ShellGlobal *global,
   jsuint attrs;
   JSBool found;
 
-  JS_AddRoot (context, &val);
+  JS_BeginRequest (context);
+  JS_AddValueRoot (context, &val);
 
   parts = g_strsplit (object, ".", -1);
   obj = JS_GetGlobalObject (context);
@@ -1613,30 +1621,31 @@ shell_global_set_property_mutable (ShellGlobal *global,
       if (!JS_GetProperty (context, obj, parts[i], &val))
         {
           g_strfreev (parts);
-          JS_RemoveRoot (context, &val);
-          gjs_log_exception (context, NULL);
-          return FALSE;
+          goto out_error;
         }
       obj = JSVAL_TO_OBJECT (val);
     }
   g_strfreev (parts);
 
   if (!JS_GetPropertyAttributes (context, obj, property, &attrs, &found) || !found)
-    {
-      JS_RemoveRoot (context, &val);
-      gjs_log_exception (context, NULL);
-      return FALSE;
-    }
+    goto out_error;
 
   if (mutable)
     attrs &= ~(JSPROP_PERMANENT | JSPROP_READONLY);
   else
     attrs |= (JSPROP_PERMANENT | JSPROP_READONLY);
 
-  JS_SetPropertyAttributes (context, obj, property, attrs, &found);
+  if (!JS_SetPropertyAttributes (context, obj, property, attrs, &found))
+    goto out_error;
 
-  JS_RemoveRoot (context, &val);
-  return !gjs_log_exception (context, NULL);
+  JS_RemoveValueRoot (context, &val);
+  JS_EndRequest (context);
+  return TRUE;
+ out_error:
+  gjs_log_exception (context, NULL);
+  JS_RemoveValueRoot (context, &val);
+  JS_EndRequest (context);
+  return FALSE;
 }
 
 typedef struct

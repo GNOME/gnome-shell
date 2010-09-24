@@ -77,13 +77,12 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
                                  libstartup-notification-1.0
                                  gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION)
 
-# This is for the newly added application id bits, we can replace this with
-# a version check later
 saved_CFLAGS=$CFLAGS
 saved_LIBS=$LIBS
 CFLAGS=$MUTTER_PLUGIN_CFLAGS
 LIBS=$MUTTER_PLUGIN_LIBS
-AC_CHECK_FUNCS(sn_startup_sequence_get_application_id)
+# sn_startup_sequence_get_application_id, we can replace with a version check later
+AC_CHECK_FUNCS(JS_NewGlobalObject sn_startup_sequence_get_application_id)
 CFLAGS=$saved_CFLAGS
 LIBS=$saved_LIBS
 
