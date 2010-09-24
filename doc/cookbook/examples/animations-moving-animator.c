@@ -13,20 +13,6 @@ static const ClutterColor red_color = { 0xff, 0x00, 0x00, 0xff };
 static const ClutterColor green_color = { 0x00, 0xff, 0x00, 0xff };
 static const ClutterColor blue_color = { 0x00, 0x00, 0xff, 0xff };
 
-/* TODO remove this function when bug fixed */
-static void
-remove_keys (gpointer data,
-             gpointer user_data)
-{
-  ClutterAnimatorKey *key = (ClutterAnimatorKey *) data;
-  State *state = (State *) user_data;
-
-  clutter_animator_remove_key (state->animator,
-                               clutter_animator_key_get_object (key),
-                               clutter_animator_key_get_property_name (key),
-                               clutter_animator_key_get_progress (key));
-}
-
 /* add keys to the animator such that the actor is moved
  * to a random x position
  */
@@ -62,14 +48,8 @@ move_actors (ClutterActor *actor,
   if (clutter_timeline_is_playing (clutter_animator_get_timeline (state->animator)))
     return TRUE;
 
-  /* TODO remove when bug fixed
-   * remove all keys from the animator;
-   * when this bug - http://bugzilla.clutter-project.org/show_bug.cgi?id=2335
-   * - is fixed, can just use NULL for the second argument, like this:
-   * clutter_animator_remove_key (state->animator, NULL, NULL, -1);
-   */
-  keys = clutter_animator_get_keys (state->animator, NULL, NULL, -1);
-  g_list_foreach (keys, remove_keys, state);
+  /* remove all keys from the animator */
+  clutter_animator_remove_key (state->animator, NULL, NULL, -1);
 
   /* add keys for all actors in the group */
   clutter_container_foreach (CLUTTER_CONTAINER (state->group),
