@@ -2254,14 +2254,11 @@ subtract_client_area (MetaRegion *region, MetaUIFrame *frame)
 
 static void
 cached_pixels_draw (CachedPixels *pixels,
-                    GdkWindow    *window,
+                    cairo_t      *cr,
                     MetaRegion   *region)
 {
   MetaRegion *region_piece;
-  cairo_t *cr;
   int i;
-
-  cr = gdk_cairo_create (window);
 
   for (i = 0; i < 4; i++)
     {
@@ -2279,8 +2276,6 @@ cached_pixels_draw (CachedPixels *pixels,
           meta_region_destroy (region_piece);
         }
     }
-  
-  cairo_destroy (cr);
 }
 
 static gboolean
@@ -2314,7 +2309,9 @@ meta_frames_expose_event (GtkWidget           *widget,
   
   pixels = get_cache (frames, frame);
 
-  cached_pixels_draw (pixels, frame->window, region);
+  cr = gdk_cairo_create (event->window);
+  cached_pixels_draw (pixels, cr, region);
+  cairo_destroy (cr);
   
   clip_to_screen (region, frame);
   subtract_client_area (region, frame);
