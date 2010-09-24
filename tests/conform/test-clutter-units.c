@@ -9,23 +9,23 @@ test_units_cache (TestConformSimpleFixture *fixture,
 {
   ClutterUnits units;
   ClutterSettings *settings;
-  ClutterBackend *backend;
   gfloat pixels;
-  gint dpi;
+  gint old_dpi;
 
-  backend = clutter_get_default_backend ();
   settings = clutter_settings_get_default ();
+  g_object_get (settings, "font-dpi", &old_dpi, NULL);
 
-  dpi = clutter_backend_get_resolution (backend);
-
+  g_object_set (settings, "font-dpi", 96 * 1024, NULL);
   clutter_units_from_em (&units, 1.0);
   pixels = clutter_units_to_pixels (&units);
 
-  g_object_set (settings, "font-dpi", ((dpi + 10) * 1024), NULL);
+  g_object_set (settings, "font-dpi", ((96 * 2) * 1024), NULL);
   g_assert_cmpfloat (clutter_units_to_pixels (&units), !=, pixels);
 
-  g_object_set (settings, "font-dpi", (dpi * 1024), NULL);
+  g_object_set (settings, "font-dpi", (96 * 1024), NULL);
   g_assert_cmpfloat (clutter_units_to_pixels (&units), ==, pixels);
+
+  g_object_set (settings, "font-dpi", old_dpi, NULL);
 }
 
 void
