@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-07-26 19:16+0000\n"
-"PO-Revision-Date: 2010-07-28 19:48+0200\n"
+"POT-Creation-Date: 2010-09-22 15:13+0000\n"
+"PO-Revision-Date: 2010-09-25 10:43+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -255,27 +255,27 @@ msgid "_24 hour format"
 msgstr "Formato _24 horas"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:384 ../js/ui/dash.js:773
+#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
-#: ../js/ui/appDisplay.js:416
+#: ../js/ui/appDisplay.js:348
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:721
+#: ../js/ui/appDisplay.js:653
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:725
+#: ../js/ui/appDisplay.js:657
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:726
+#: ../js/ui/appDisplay.js:658
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: ../js/ui/appDisplay.js:1033
+#: ../js/ui/appDisplay.js:986
 msgid "Drag here to add favorites"
 msgstr "Arrastrar aquí para añadir a los favoritos"
 
@@ -293,138 +293,135 @@ msgstr "Se ha quitado %s de sus favoritos."
 msgid "Find"
 msgstr "Buscar"
 
-#: ../js/ui/dash.js:471
+#: ../js/ui/dash.js:473
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../js/ui/dash.js:485
+#: ../js/ui/dash.js:487
 msgid "No matching results."
 msgstr "No se encontró ningún resultado coincidente."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:792 ../js/ui/placeDisplay.js:550
+#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
 msgid "PLACES & DEVICES"
 msgstr "LUGARES Y DISPOSITIVOS"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:799 ../js/ui/docDisplay.js:494
+#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECIENTES"
 
-#: ../js/ui/lookingGlass.js:471
+#: ../js/ui/lookingGlass.js:552
 msgid "No extensions installed"
 msgstr "No hay extensiones instaladas"
 
-#: ../js/ui/lookingGlass.js:508
+#: ../js/ui/lookingGlass.js:589
 msgid "Enabled"
 msgstr "Activado"
 
-#: ../js/ui/lookingGlass.js:510
+#: ../js/ui/lookingGlass.js:591
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:512
+#: ../js/ui/lookingGlass.js:593
 msgid "Error"
 msgstr "Error"
 
-#: ../js/ui/lookingGlass.js:514
+#: ../js/ui/lookingGlass.js:595
 msgid "Out of date"
 msgstr "Caducado"
 
-#: ../js/ui/lookingGlass.js:539
+#: ../js/ui/lookingGlass.js:620
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: ../js/ui/lookingGlass.js:545
+#: ../js/ui/lookingGlass.js:626
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:160
 msgid "Undo"
 msgstr "Deshacer"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:473
+#: ../js/ui/panel.js:467
 #, c-format
 msgid "Quit %s"
 msgstr "Salir de %s"
 
-#: ../js/ui/panel.js:498
+#: ../js/ui/panel.js:492
 msgid "Preferences"
 msgstr "Preferencias"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:584
+#: ../js/ui/panel.js:578
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e de %b, %R:%S"
 
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:579
 msgid "%a %b %e, %R"
 msgstr "%a %e de %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:589
+#: ../js/ui/panel.js:583
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:590
+#: ../js/ui/panel.js:584
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:597
+#: ../js/ui/panel.js:591
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e de %b, %H:%M:%S"
 
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:592
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e de %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:602
+#: ../js/ui/panel.js:596
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/panel.js:603
+#: ../js/ui/panel.js:597
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:741
+#: ../js/ui/panel.js:742
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/placeDisplay.js:107
+#: ../js/ui/placeDisplay.js:111
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Falló al desmontar «%s»"
 
-#: ../js/ui/placeDisplay.js:110
+#: ../js/ui/placeDisplay.js:114
 msgid "Retry"
 msgstr "Reintentar"
 
-#: ../js/ui/placeDisplay.js:155
+#: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
 msgstr "Conectar a…"
 
-#. Translators: the "ON" and "OFF" strings are used in the
-#. toggle switches in the status area menus, and must be SHORT.
-#. If you don't have suitable short words, consider initials,
-#. "0"/"1", "⚪"/"⚫", etc.
-#: ../js/ui/popupMenu.js:30 ../js/ui/popupMenu.js:40
-msgid "ON"
-msgstr "ENCENDIDO"
-
-#: ../js/ui/popupMenu.js:31 ../js/ui/popupMenu.js:45
-msgid "OFF"
-msgstr "APAGADO"
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:32
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
@@ -471,12 +468,12 @@ msgstr "Salir…"
 msgid "Shut Down..."
 msgstr "Apagar…"
 
-#: ../js/ui/windowAttentionHandler.js:45
+#: ../js/ui/windowAttentionHandler.js:43
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s finalizó su lanzamiento"
 
-#: ../js/ui/windowAttentionHandler.js:47
+#: ../js/ui/windowAttentionHandler.js:45
 #, c-format
 msgid "'%s' is ready"
 msgstr "«%s» está preparado"
@@ -492,32 +489,32 @@ msgstr ""
 msgid "Can't remove the first workspace."
 msgstr "No se puede quitar el primer área de trabajo."
 
-#: ../src/shell-global.c:1105
+#: ../src/shell-global.c:1189
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:1109
+#: ../src/shell-global.c:1193
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:1114
+#: ../src/shell-global.c:1198
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:1119
+#: ../src/shell-global.c:1203
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:1124
+#: ../src/shell-global.c:1208
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -547,6 +544,12 @@ msgstr "Buscar"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "ON"
+#~ msgstr "ENCENDIDO"
+
+#~ msgid "OFF"
+#~ msgstr "APAGADO"
 
 #~ msgid "Sidebar"
 #~ msgstr "Barra lateral"
