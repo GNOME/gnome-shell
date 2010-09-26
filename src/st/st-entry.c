@@ -202,13 +202,13 @@ st_entry_style_changed (StWidget *self)
   st_theme_node_get_foreground_color (theme_node, &color);
   clutter_text_set_color (CLUTTER_TEXT (priv->entry), &color);
 
-  if (st_theme_node_get_length (theme_node, "caret-size", FALSE, &size))
+  if (st_theme_node_lookup_length (theme_node, "caret-size", FALSE, &size))
     clutter_text_set_cursor_size (CLUTTER_TEXT (priv->entry), (int)(.5 + size));
 
-  if (st_theme_node_get_color (theme_node, "caret-color", FALSE, &color))
+  if (st_theme_node_lookup_color (theme_node, "caret-color", FALSE, &color))
     clutter_text_set_cursor_color (CLUTTER_TEXT (priv->entry), &color);
 
-  if (st_theme_node_get_color (theme_node, "selection-background-color", FALSE, &color))
+  if (st_theme_node_lookup_color (theme_node, "selection-background-color", FALSE, &color))
     clutter_text_set_selection_color (CLUTTER_TEXT (priv->entry), &color);
 
   font = st_theme_node_get_font (theme_node);

@@ -490,7 +490,7 @@ get_color_from_term (StThemeNode  *node,
 }
 
 /**
- * st_theme_node_get_color:
+ * st_theme_node_lookup_color:
  * @node: a #StThemeNode
  * @property_name: The name of the color property
  * @inherit: if %TRUE, if a value is not found for the property on the
@@ -507,14 +507,16 @@ get_color_from_term (StThemeNode  *node,
  * should be used instead. They are cached, so more efficient, and have
  * handling for shortcut properties and other details of CSS.
  *
+ * See also st_theme_node_get_color(), which provides a simpler API.
+ *
  * Return value: %TRUE if the property was found in the properties for this
  *  theme node (or in the properties of parent nodes when inheriting.)
  */
 gboolean
-st_theme_node_get_color (StThemeNode  *node,
-                         const char   *property_name,
-                         gboolean      inherit,
-                         ClutterColor *color)
+st_theme_node_lookup_color (StThemeNode  *node,
+                            const char   *property_name,
+                            gboolean      inherit,
+                            ClutterColor *color)
 {
 
   int i;
@@ -535,7 +537,7 @@ st_theme_node_get_color (StThemeNode  *node,
           else if (result == VALUE_INHERIT)
             {
               if (node->parent_node)
-                return st_theme_node_get_color (node->parent_node, property_name, inherit, color);
+                return st_theme_node_lookup_color (node->parent_node, property_name, inherit, color);
               else
                 break;
             }
@@ -543,13 +545,43 @@ st_theme_node_get_color (StThemeNode  *node,
     }
 
   if (inherit && node->parent_node)
-    return st_theme_node_get_color (node->parent_node, property_name, inherit, color);
+    return st_theme_node_lookup_color (node->parent_node, property_name, inherit, color);
 
   return FALSE;
 }
 
 /**
- * st_theme_node_get_double:
+ * st_theme_node_get_color:
+ * @node: a #StThemeNode
+ * @property_name: The name of the color property
+ * @color: location to store the color that was determined.
+ *
+ * Generically looks up a property containing a single color value. When
+ * specific getters (like st_theme_node_get_background_color()) exist, they
+ * should be used instead. They are cached, so more efficient, and have
+ * handling for shortcut properties and other details of CSS.
+ *
+ * If @property_name is not found, a warning will be logged and a
+ * default color returned.
+ *
+ * See also st_theme_node_lookup_color(), which provides more options,
+ * and lets you handle the case where the theme does not specify the
+ * indicated color.
+ */
+void
+st_theme_node_get_color (StThemeNode  *node,
+                         const char   *property_name,
+                         ClutterColor *color)
+{
+  if (!st_theme_node_lookup_color (node, property_name, FALSE, color))
+    {
+      g_warning ("Did not find color property '%s'", property_name);
+      memset (color, 0, sizeof (ClutterColor));
+    }
+}
+
+/**
+ * st_theme_node_lookup_double:
  * @node: a #StThemeNode
  * @property_name: The name of the numeric property
  * @inherit: if %TRUE, if a value is not found for the property on the
@@ -564,14 +596,16 @@ st_theme_node_get_color (StThemeNode  *node,
  * Generically looks up a property containing a single numeric value
  *  without units.
  *
+ * See also st_theme_node_get_double(), which provides a simpler API.
+ *
  * Return value: %TRUE if the property was found in the properties for this
  *  theme node (or in the properties of parent nodes when inheriting.)
  */
 gboolean
-st_theme_node_get_double (StThemeNode *node,
-                          const char  *property_name,
-                          gboolean     inherit,
-                          double      *value)
+st_theme_node_lookup_double (StThemeNode *node,
+                             const char  *property_name,
+                             gboolean     inherit,
+                             double      *value)
 {
   gboolean result = FALSE;
   int i;
@@ -596,9 +630,39 @@ st_theme_node_get_double (StThemeNode *node,
     }
 
   if (!result && inherit && node->parent_node)
-    result = st_theme_node_get_double (node->parent_node, property_name, inherit, value);
+    result = st_theme_node_lookup_double (node->parent_node, property_name, inherit, value);
 
   return result;
+}
+
+/**
+ * st_theme_node_get_double:
+ * @node: a #StThemeNode
+ * @property_name: The name of the numeric property
+ *
+ * Generically looks up a property containing a single numeric value
+ *  without units.
+ *
+ * See also st_theme_node_lookup_double(), which provides more options,
+ * and lets you handle the case where the theme does not specify the
+ * indicated value.
+ *
+ * Return value: the value found. If @property_name is not
+ *  found, a warning will be logged and 0 will be returned.
+ */
+gdouble
+st_theme_node_get_double (StThemeNode *node,
+                          const char  *property_name)
+{
+  gdouble value;
+
+  if (st_theme_node_lookup_double (node, property_name, FALSE, &value))
+    return value;
+  else
+    {
+      g_warning ("Did not find double property '%s'", property_name);
+      return 0.0;
+    }
 }
 
 static const PangoFontDescription *
@@ -802,7 +866,7 @@ get_length_internal (StThemeNode *node,
 }
 
 /**
- * st_theme_node_get_length:
+ * st_theme_node_lookup_length:
  * @node: a #StThemeNode
  * @property_name: The name of the length property
  * @inherit: if %TRUE, if a value is not found for the property on the
@@ -820,14 +884,16 @@ get_length_internal (StThemeNode *node,
  * should be used instead. They are cached, so more efficient, and have
  * handling for shortcut properties and other details of CSS.
  *
+ * See also st_theme_node_get_length(), which provides a simpler API.
+ *
  * Return value: %TRUE if the property was found in the properties for this
  *  theme node (or in the properties of parent nodes when inheriting.)
  */
 gboolean
-st_theme_node_get_length (StThemeNode *node,
-                          const char  *property_name,
-                          gboolean     inherit,
-                          gdouble     *length)
+st_theme_node_lookup_length (StThemeNode *node,
+                             const char  *property_name,
+                             gboolean     inherit,
+                             gdouble     *length)
 {
   GetFromTermResult result = get_length_internal (node, property_name, NULL, length);
   if (result == VALUE_FOUND)
@@ -836,10 +902,40 @@ st_theme_node_get_length (StThemeNode *node,
     inherit = TRUE;
 
   if (inherit && node->parent_node &&
-      st_theme_node_get_length (node->parent_node, property_name, inherit, length))
+      st_theme_node_lookup_length (node->parent_node, property_name, inherit, length))
     return TRUE;
   else
     return FALSE;
+}
+
+/**
+ * st_theme_node_get_length:
+ * @node: a #StThemeNode
+ * @property_name: The name of the length property
+ *
+ * Generically looks up a property containing a single length value. When
+ * specific getters (like st_theme_node_get_border_width()) exist, they
+ * should be used instead. They are cached, so more efficient, and have
+ * handling for shortcut properties and other details of CSS.
+ *
+ * Unlike st_theme_node_get_color() and st_theme_node_get_double(),
+ * this does not print a warning if the property is not found; it just
+ * returns 0.
+ *
+ * See also st_theme_node_lookup_length(), which provides more options.
+ *
+ * Return value: the length, in pixels, or 0 if the property was not found.
+ */
+gdouble
+st_theme_node_get_length (StThemeNode *node,
+                          const char  *property_name)
+{
+  gdouble length;
+
+  if (st_theme_node_lookup_length (node, property_name, FALSE, &length))
+    return length;
+  else
+    return 0.0;
 }
 
 static void
@@ -1730,7 +1826,7 @@ st_theme_node_get_transition_duration (StThemeNode *node)
   if (node->transition_duration > -1)
     return st_slow_down_factor * node->transition_duration;
 
-  st_theme_node_get_double (node, "transition-duration", FALSE, &value);
+  st_theme_node_lookup_double (node, "transition-duration", FALSE, &value);
 
   node->transition_duration = (int)value;
 

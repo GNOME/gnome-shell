@@ -113,18 +113,14 @@ BaseIcon.prototype = {
     },
 
     _onStyleChanged: function() {
-        let success, len;
         let node = this.actor.get_theme_node();
-
-        [success, len] = node.get_length('spacing', false);
-        if (success)
-            this._spacing = spacing;
+        this._spacing = node.get_length('spacing');
 
         if (this._setSizeManually)
             return;
 
-        [success, len] = node.get_length('icon-size', false);
-        if (success)
+        let len = node.get_length('icon-size');
+        if (len > 0)
             this._setIconSize(len);
     }
 };
@@ -269,12 +265,8 @@ IconGrid.prototype = {
 
     _onStyleChanged: function() {
         let themeNode = this.actor.get_theme_node();
-        let [success, len] = themeNode.get_length('spacing', false);
-        if (success)
-            this._spacing = len;
-        [success, len] = themeNode.get_length('-shell-grid-item-size', false);
-        if (success)
-            this._item_size = len;
+        this._spacing = themeNode.get_length('spacing');
+        this._item_size = themeNode.get_length('-shell-grid-item-size');
         this._grid.queue_relayout();
     },
 

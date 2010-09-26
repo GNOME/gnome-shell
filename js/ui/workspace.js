@@ -553,18 +553,10 @@ WindowOverlay.prototype = {
 
     _onStyleChanged: function() {
         let titleNode = this.title.get_theme_node();
-
-        let [success, len] = titleNode.get_length('-shell-caption-spacing',
-                                                  false);
-        if (success)
-            this.title._spacing = len;
+        this.title._spacing = titleNode.get_length('-shell-caption-spacing');
 
         let closeNode = this.closeButton.get_theme_node();
-
-        [success, len] = closeNode.get_length('-shell-close-overlap',
-                                              false);
-        if (success)
-            this.closeButton._overlap = len;
+        this.closeButton._overlap = closeNode.get_length('-shell-close-overlap');
 
         this._parentActor.queue_relayout();
     }

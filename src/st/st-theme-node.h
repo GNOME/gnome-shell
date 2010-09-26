@@ -99,20 +99,27 @@ const char *st_theme_node_get_pseudo_class  (StThemeNode *node);
  * details of the actual CSS rules, which can be complicated, especially
  * for fonts
  */
-gboolean st_theme_node_get_color  (StThemeNode  *node,
-                                   const char   *property_name,
-                                   gboolean      inherit,
-                                   ClutterColor *color);
+gboolean st_theme_node_lookup_color  (StThemeNode  *node,
+                                      const char   *property_name,
+                                      gboolean      inherit,
+                                      ClutterColor *color);
+gboolean st_theme_node_lookup_double (StThemeNode  *node,
+                                      const char   *property_name,
+                                      gboolean      inherit,
+                                      double       *value);
+gboolean st_theme_node_lookup_length (StThemeNode *node,
+                                      const char  *property_name,
+                                      gboolean     inherit,
+                                      gdouble     *length);
 
-gboolean st_theme_node_get_double (StThemeNode  *node,
-                                   const char   *property_name,
-                                   gboolean      inherit,
-                                   double       *value);
-
-gboolean st_theme_node_get_length (StThemeNode *node,
-                                   const char  *property_name,
-                                   gboolean     inherit,
-                                   gdouble     *length);
+/* Easier-to-use variants of the above, for application-level use */
+void          st_theme_node_get_color  (StThemeNode  *node,
+                                        const char   *property_name,
+                                        ClutterColor *color);
+gdouble       st_theme_node_get_double (StThemeNode  *node,
+                                        const char   *property_name);
+gdouble       st_theme_node_get_length (StThemeNode  *node,
+                                        const char   *property_name);
 
 /* Specific getters for particular properties: cached
  */

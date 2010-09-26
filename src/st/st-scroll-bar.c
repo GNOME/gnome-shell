@@ -410,9 +410,9 @@ scroll_bar_allocate_children (StScrollBar           *bar,
         increment = page_size / (upper - lower);
 
       min_size = 32.;
-      st_theme_node_get_length (theme_node, "min-size", FALSE, &min_size);
+      st_theme_node_lookup_length (theme_node, "min-size", FALSE, &min_size);
       max_size = G_MAXINT16;
-      st_theme_node_get_length (theme_node, "max-size", FALSE, &max_size);
+      st_theme_node_lookup_length (theme_node, "max-size", FALSE, &max_size);
 
       if (upper - lower - page_size <= 0)
         position = 0;

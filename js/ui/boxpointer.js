@@ -46,9 +46,7 @@ BoxPointer.prototype = {
         let x = this.actor.x;
         let y = this.actor.y;
         let themeNode = this.actor.get_theme_node();
-        let [found, rise] = themeNode.get_length('-arrow-rise', false);
-        if (!found)
-            rise = 0;
+        let rise = themeNode.get_length('-arrow-rise');
 
         this.actor.opacity = 0;
         this.actor.show();
@@ -82,9 +80,7 @@ BoxPointer.prototype = {
         let originalX = this.actor.x;
         let originalY = this.actor.y;
         let themeNode = this.actor.get_theme_node();
-        let [found, rise] = themeNode.get_length('-arrow-rise', false);
-        if (!found)
-            rise = 0;
+        let rise = themeNode.get_length('-arrow-rise');
 
         switch (this._arrowSide) {
             case St.Side.TOP:
@@ -118,13 +114,12 @@ BoxPointer.prototype = {
 
     _adjustAllocationForArrow: function(isWidth, alloc) {
         let themeNode = this.actor.get_theme_node();
-        let found, borderWidth, base, rise;
-        [found, borderWidth] = themeNode.get_length('-arrow-border-width', false);
+        let borderWidth = themeNode.get_length('-arrow-border-width');
         alloc.min_size += borderWidth * 2;
         alloc.natural_size += borderWidth * 2;
         if ((!isWidth && (this._arrowSide == St.Side.TOP || this._arrowSide == St.Side.BOTTOM))
             || (isWidth && (this._arrowSide == St.Side.LEFT || this._arrowSide == St.Side.RIGHT))) {
-            let [found, rise] = themeNode.get_length('-arrow-rise', false);
+            let rise = themeNode.get_length('-arrow-rise');
             alloc.min_size += rise;
             alloc.natural_size += rise;
         }
@@ -146,9 +141,8 @@ BoxPointer.prototype = {
 
     _allocate: function(actor, box, flags) {
         let themeNode = this.actor.get_theme_node();
-        let found, borderWidth, borderRadius, rise, base;
-        [found, borderWidth] = themeNode.get_length('-arrow-border-width', false);
-        [found, rise] = themeNode.get_length('-arrow-rise', false);
+        let borderWidth = themeNode.get_length('-arrow-border-width');
+        let rise = themeNode.get_length('-arrow-rise');
         let childBox = new Clutter.ActorBox();
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
@@ -183,19 +177,18 @@ BoxPointer.prototype = {
     _drawBorder: function(area) {
         let themeNode = this.actor.get_theme_node();
 
-        let found, borderWidth, borderRadius, rise, base;
-        [found, borderWidth] = themeNode.get_length('-arrow-border-width', false);
-        [found, base] = themeNode.get_length('-arrow-base', false);
-        [found, rise] = themeNode.get_length('-arrow-rise', false);
-        [found, borderRadius] = themeNode.get_length('-arrow-border-radius', false);
+        let borderWidth = themeNode.get_length('-arrow-border-width');
+        let base = themeNode.get_length('-arrow-base');
+        let rise = themeNode.get_length('-arrow-rise');
+        let borderRadius = themeNode.get_length('-arrow-border-radius');
 
         let halfBorder = borderWidth / 2;
         let halfBase = Math.floor(base/2);
 
         let borderColor = new Clutter.Color();
-        themeNode.get_color('-arrow-border-color', false, borderColor);
+        themeNode.get_color('-arrow-border-color', borderColor);
         let backgroundColor = new Clutter.Color();
-        themeNode.get_color('-arrow-background-color', false, backgroundColor);
+        themeNode.get_color('-arrow-background-color', backgroundColor);
 
         let [width, height] = area.get_surface_size();
         let [boxWidth, boxHeight] = [width, height];

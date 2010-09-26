@@ -143,13 +143,12 @@ PopupSeparatorMenuItem.prototype = {
         let cr = area.get_context();
         let themeNode = area.get_theme_node();
         let [width, height] = area.get_surface_size();
-        let found, margin, gradientHeight;
-        [found, margin] = themeNode.get_length('-margin-horizontal', false);
-        [found, gradientHeight] = themeNode.get_length('-gradient-height', false);
+        let margin = themeNode.get_length('-margin-horizontal');
+        let gradientHeight = themeNode.get_length('-gradient-height');
         let startColor = new Clutter.Color();
-        themeNode.get_color('-gradient-start', false, startColor);
+        themeNode.get_color('-gradient-start', startColor);
         let endColor = new Clutter.Color();
-        themeNode.get_color('-gradient-end', false, endColor);
+        themeNode.get_color('-gradient-end', endColor);
 
         let gradientWidth = (width - margin * 2);
         let gradientOffset = (height - gradientHeight) / 2;
@@ -200,20 +199,17 @@ PopupSliderMenuItem.prototype = {
         let themeNode = area.get_theme_node();
         let [width, height] = area.get_surface_size();
 
-        let found, handleRadius;
-        [found, handleRadius] = themeNode.get_length('-slider-handle-radius', false);
+        let handleRadius = themeNode.get_length('-slider-handle-radius');
 
         let sliderWidth = width - 2 * handleRadius;
-        let sliderHeight;
-        [found, sliderHeight] = themeNode.get_length('-slider-height', false);
+        let sliderHeight = themeNode.get_length('-slider-height');
 
-        let sliderBorderWidth;
-        [found, sliderBorderWidth] = themeNode.get_length('-slider-border-width', false);
+        let sliderBorderWidth = themeNode.get_length('-slider-border-width');
 
         let sliderBorderColor = new Clutter.Color();
-        themeNode.get_color('-slider-border-color', false, sliderBorderColor);
+        themeNode.get_color('-slider-border-color', sliderBorderColor);
         let sliderColor = new Clutter.Color();
-        themeNode.get_color('-slider-background-color', false, sliderColor);
+        themeNode.get_color('-slider-background-color', sliderColor);
 
         cr.setSourceRGBA (
             sliderColor.red / 255,
@@ -288,8 +284,7 @@ PopupSliderMenuItem.prototype = {
         relY = absY - sliderY;
 
         let width = this._slider.width;
-        let found, handleRadius;
-        [found, handleRadius] = this._slider.get_theme_node().get_length('-slider-handle-radius', false);
+        let handleRadius = this._slider.get_theme_node().get_length('-slider-handle-radius');
 
         let newvalue;
         if (relX < handleRadius)
