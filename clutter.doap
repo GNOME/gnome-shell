@@ -28,13 +28,6 @@
 
   <maintainer>
     <foaf:Person>
-      <foaf:name>Matthew Allum</foaf:name>
-      <foaf:mbox rdf:resource="mailto:mallum@o-hand.com"/>
-    </foaf:Person>
-  </maintainer>
-
-  <maintainer>
-    <foaf:Person>
       <foaf:name>Emmanuele Bassi</foaf:name>
       <foaf:mbox rdf:resource="mailto:ebassi@linux.intel.com"/>
     </foaf:Person>
