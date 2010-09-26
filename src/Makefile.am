@@ -77,7 +77,7 @@ shell_public_headers_h =		\
 	shell-stack.h			\
 	shell-tray-icon.h		\
 	shell-tray-manager.h		\
-	shell-uri-util.h		\
+	shell-util.h			\
 	shell-window-tracker.h		\
 	shell-wm.h			\
 	shell-xfixes-cursor.h
@@ -109,7 +109,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-stack.c			\
 	shell-tray-icon.c		\
 	shell-tray-manager.c		\
-	shell-uri-util.c		\
+	shell-util.c			\
 	shell-window-tracker.c		\
 	shell-wm.c			\
 	shell-xfixes-cursor.c

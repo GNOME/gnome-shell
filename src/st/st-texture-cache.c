@@ -1118,6 +1118,8 @@ load_gicon_with_colors (StTextureCache    *cache,
 /**
  * st_texture_cache_load_gicon:
  * @cache: The texture cache instance
+ * @theme_node: (allow-none): The #StThemeNode to use for colors, or NULL
+ *                            if the icon must not be recolored
  * @icon: the #GIcon to load
  * @size: Size of themed
  *
@@ -1132,10 +1134,11 @@ load_gicon_with_colors (StTextureCache    *cache,
  */
 ClutterActor *
 st_texture_cache_load_gicon (StTextureCache    *cache,
+                             StThemeNode       *theme_node,
                              GIcon             *icon,
                              gint               size)
 {
-  return load_gicon_with_colors (cache, icon, size, NULL);
+  return load_gicon_with_colors (cache, icon, size, theme_node ? st_theme_node_get_icon_colors (theme_node) : NULL);
 }
 
 typedef struct {
@@ -1328,7 +1331,7 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
     case ST_ICON_APPLICATION:
     case ST_ICON_DOCUMENT:
       themed = g_themed_icon_new (name);
-      texture = st_texture_cache_load_gicon (cache, themed, size);
+      texture = load_gicon_with_colors (cache, themed, size, NULL);
       g_object_unref (themed);
 
       return CLUTTER_ACTOR (texture);
@@ -1345,7 +1348,8 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
       break;
     case ST_ICON_FULLCOLOR:
       themed = g_themed_icon_new_with_default_fallbacks (name);
-      texture = st_texture_cache_load_gicon (cache, themed, size);
+      texture = load_gicon_with_colors (cache, themed, size, NULL);
+      g_object_unref (themed);
 
       return CLUTTER_ACTOR (texture);
       break;
@@ -1693,7 +1697,7 @@ st_texture_cache_load_thumbnail (StTextureCache    *cache,
   if (!g_str_has_prefix (uri, "file://"))
     {
       GIcon *icon = icon_for_mimetype (mimetype);
-      return st_texture_cache_load_gicon (cache, icon, size);
+      return st_texture_cache_load_gicon (cache, NULL, icon, size);
     }
 
   texture = create_default_texture (cache);
@@ -1770,7 +1774,7 @@ st_texture_cache_load_recent_thumbnail (StTextureCache    *cache,
   if (!g_str_has_prefix (uri, "file://"))
     {
       GIcon *icon = icon_for_recent (info);
-      return st_texture_cache_load_gicon (cache, icon, size);
+      return st_texture_cache_load_gicon (cache, NULL, icon, size);
     }
 
   texture = CLUTTER_TEXTURE (clutter_texture_new ());

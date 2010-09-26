@@ -1274,7 +1274,7 @@ shell_app_info_create_icon_texture (ShellAppInfo *info, float size)
     }
   else
     {
-      ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), icon, (int)size);
+      ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), NULL, icon, (int)size);
       g_object_unref (icon);
     }
 

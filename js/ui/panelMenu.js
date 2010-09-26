@@ -72,18 +72,19 @@ SystemStatusButton.prototype = {
 
     _init: function(iconName,tooltipText) {
         Button.prototype._init.call(this, St.Align.START);
-        this._iconActor = null;
-        this.setIcon(iconName);
+        this._iconActor = new St.Icon({ icon_name: iconName,
+                                        icon_type: St.IconType.SYMBOLIC,
+                                        style_class: 'system-status-icon' });
+        this.actor.set_child(this._iconActor);
         this.setTooltip(tooltipText);
     },
 
     setIcon: function(iconName) {
-        this._iconName = iconName;
-        if (this._iconActor)
-            this._iconActor.destroy();
-        this._iconActor = new St.Icon({ icon_name: this._iconName,
-                                        style_class: 'system-status-icon' });
-        this.actor.set_child(this._iconActor);
+        this._iconActor.icon_name = iconName;
+    },
+
+    setGIcon: function(gicon) {
+        this._iconActor.gicon = gicon;
     },
 
     setTooltip: function(text) {

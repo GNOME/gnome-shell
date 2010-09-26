@@ -79,7 +79,7 @@ PlaceDeviceInfo.prototype = {
 
     iconFactory: function(size) {
         let icon = this._mount.get_icon();
-        return St.TextureCache.get_default().load_gicon(icon, size);
+        return St.TextureCache.get_default().load_gicon(null, icon, size);
     },
 
     launch: function() {
@@ -137,7 +137,7 @@ PlacesManager.prototype = {
         let homeIcon = Shell.util_get_icon_for_uri (homeUri);
         this._home = new PlaceInfo('special:home', homeLabel,
             function(size) {
-                return St.TextureCache.get_default().load_gicon(homeIcon, size);
+                return St.TextureCache.get_default().load_gicon(null, homeIcon, size);
             },
             function() {
                 Gio.app_info_launch_default_for_uri(homeUri, global.create_app_launch_context());
@@ -150,7 +150,7 @@ PlacesManager.prototype = {
         let desktopIcon = Shell.util_get_icon_for_uri (desktopUri);
         this._desktopMenu = new PlaceInfo('special:desktop', desktopLabel,
             function(size) {
-                return St.TextureCache.get_default().load_gicon(desktopIcon, size);
+                return St.TextureCache.get_default().load_gicon(null, desktopIcon, size);
             },
             function() {
                 Gio.app_info_launch_default_for_uri(desktopUri, global.create_app_launch_context());
@@ -327,7 +327,7 @@ PlacesManager.prototype = {
 
             let item = new PlaceInfo('bookmark:' + bookmark, label,
                 function(size) {
-                    return St.TextureCache.get_default().load_gicon(icon, size);
+                    return St.TextureCache.get_default().load_gicon(null, icon, size);
                 },
                 function() {
                     Gio.app_info_launch_default_for_uri(bookmark, global.create_app_launch_context());

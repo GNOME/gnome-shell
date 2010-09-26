@@ -35,6 +35,7 @@ enum
 {
   PROP_0,
 
+  PROP_GICON,
   PROP_ICON_NAME,
   PROP_ICON_TYPE,
   PROP_ICON_SIZE
@@ -49,6 +50,7 @@ struct _StIconPrivate
 {
   ClutterActor *icon_texture;
 
+  GIcon        *gicon;
   gchar        *icon_name;
   StIconType    icon_type;
   gint          prop_icon_size;  /* icon size set as property */
@@ -72,6 +74,10 @@ st_icon_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
+    case PROP_GICON:
+      st_icon_set_gicon (icon, g_value_get_object (value));
+      break;
+
     case PROP_ICON_NAME:
       st_icon_set_icon_name (icon, g_value_get_string (value));
       break;
@@ -100,6 +106,10 @@ st_icon_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
+    case PROP_GICON:
+      g_value_set_object (value, icon->priv->gicon);
+      break;
+
     case PROP_ICON_NAME:
       g_value_set_string (value, st_icon_get_icon_name (icon));
       break;
@@ -127,6 +137,12 @@ st_icon_dispose (GObject *gobject)
     {
       clutter_actor_destroy (priv->icon_texture);
       priv->icon_texture = NULL;
+    }
+
+  if (priv->gicon)
+    {
+      g_object_unref (priv->gicon);
+      priv->gicon = NULL;
     }
 
   G_OBJECT_CLASS (st_icon_parent_class)->dispose (gobject);
@@ -272,6 +288,13 @@ st_icon_class_init (StIconClass *klass)
 
   widget_class->style_changed = st_icon_style_changed;
 
+  pspec = g_param_spec_object ("gicon",
+                               "GIcon",
+                               "A GIcon to override :icon-name",
+                               G_TYPE_ICON,
+                               ST_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_GICON, pspec);
+
   pspec = g_param_spec_string ("icon-name",
                                "Icon name",
                                "An icon name",
@@ -299,6 +322,7 @@ st_icon_init (StIcon *self)
 {
   self->priv = ST_ICON_GET_PRIVATE (self);
 
+  self->priv->gicon = NULL;
   self->priv->icon_size = DEFAULT_ICON_SIZE;
   self->priv->prop_icon_size = -1;
   self->priv->icon_type = DEFAULT_ICON_TYPE;
@@ -308,6 +332,8 @@ static void
 st_icon_update (StIcon *icon)
 {
   StIconPrivate *priv = icon->priv;
+  StThemeNode *theme_node;
+  StTextureCache *cache;
 
   /* Get rid of the old one */
   if (priv->icon_texture)
@@ -317,23 +343,30 @@ st_icon_update (StIcon *icon)
     }
 
   /* Try to lookup the new one */
-  if (priv->icon_name)
+  theme_node = st_widget_peek_theme_node (ST_WIDGET (icon));
+  if (theme_node == NULL)
+    return;
+
+  cache = st_texture_cache_get_default ();
+  if (priv->gicon)
     {
-      StThemeNode *theme_node = st_widget_peek_theme_node (ST_WIDGET (icon));
-
-      if (theme_node)
-        {
-          StTextureCache *cache = st_texture_cache_get_default ();
-          priv->icon_texture = st_texture_cache_load_icon_name (cache,
-                                                                theme_node,
-                                                                priv->icon_name,
-                                                                priv->icon_type,
-                                                                priv->icon_size);
-
-          if (priv->icon_texture)
-            clutter_actor_set_parent (priv->icon_texture, CLUTTER_ACTOR (icon));
-        }
+      priv->icon_texture = st_texture_cache_load_gicon (cache,
+                                                        (priv->icon_type != ST_ICON_APPLICATION &&
+                                                         priv->icon_type != ST_ICON_DOCUMENT) ?
+                                                        theme_node : NULL,
+                                                        priv->gicon,
+                                                        priv->icon_size);
     }
+ else if (priv->icon_name)
+    {
+      priv->icon_texture = st_texture_cache_load_icon_name (cache,
+                                                            theme_node,
+                                                            priv->icon_name,
+                                                            priv->icon_type,
+                                                            priv->icon_size);
+    }
+  if (priv->icon_texture)
+    clutter_actor_set_parent (priv->icon_texture, CLUTTER_ACTOR (icon));
 }
 
 static gboolean
@@ -397,9 +430,16 @@ st_icon_set_icon_name (StIcon      *icon,
   g_free (priv->icon_name);
   priv->icon_name = g_strdup (icon_name);
 
-  st_icon_update (icon);
+  if (priv->gicon)
+    {
+      g_object_unref (priv->gicon);
+      priv->gicon = NULL;
+      g_object_notify (G_OBJECT (icon), "gicon");
+    }
 
   g_object_notify (G_OBJECT (icon), "icon-name");
+
+  st_icon_update (icon);
 }
 
 /**
@@ -446,6 +486,55 @@ st_icon_set_icon_type (StIcon     *icon,
   st_icon_update (icon);
 
   g_object_notify (G_OBJECT (icon), "icon-type");
+}
+
+/**
+ * st_icon_get_gicon:
+ * @icon: an icon
+ *
+ * Return value: (transfer none): the override GIcon, if set, or NULL
+ */
+GIcon *
+st_icon_get_gicon (StIcon *icon)
+{
+  g_return_val_if_fail (ST_IS_ICON (icon), NULL);
+
+  return icon->priv->gicon;
+}
+
+/**
+ * st_icon_set_gicon:
+ * @icon: an icon
+ * @gicon: (allow-none): a #GIcon to override :icon-name
+ */
+void
+st_icon_set_gicon (StIcon *icon, GIcon *gicon)
+{
+  g_return_if_fail (ST_IS_ICON (icon));
+  g_return_if_fail (G_IS_ICON (gicon));
+
+  if (icon->priv->gicon == gicon) /* do nothing */
+    return;
+
+  if (icon->priv->gicon)
+    {
+      g_object_unref (icon->priv->gicon);
+      icon->priv->gicon = NULL;
+    }
+
+  if (gicon)
+    icon->priv->gicon = g_object_ref (gicon);
+
+  if (icon->priv->icon_name)
+    {
+      g_free (icon->priv->icon_name);
+      icon->priv->icon_name = NULL;
+      g_object_notify (G_OBJECT (icon), "icon-name");
+    }
+
+  g_object_notify (G_OBJECT (icon), "gicon");
+
+  st_icon_update (icon);
 }
 
 /**
