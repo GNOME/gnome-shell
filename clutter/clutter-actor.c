@@ -3138,6 +3138,12 @@ clutter_actor_dispose (GObject *object)
       priv->actions = NULL;
     }
 
+  if (priv->constraints != NULL)
+    {
+      g_object_unref (priv->constraints);
+      priv->constraints = NULL;
+    }
+
   if (priv->effects != NULL)
     {
       g_object_unref (priv->effects);
