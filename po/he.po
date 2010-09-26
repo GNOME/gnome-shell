@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-22 16:28+0300\n"
-"PO-Revision-Date: 2010-07-22 16:30+0200\n"
+"POT-Creation-Date: 2010-09-27 00:00+0200\n"
+"PO-Revision-Date: 2010-09-27 00:01+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -247,27 +247,27 @@ msgid "_24 hour format"
 msgstr "מבנה _24 שעות"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:384 ../js/ui/dash.js:773
+#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:416
+#: ../js/ui/appDisplay.js:348
 msgid "PREFERENCES"
 msgstr "העדפות"
 
-#: ../js/ui/appDisplay.js:721
+#: ../js/ui/appDisplay.js:648
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:725
+#: ../js/ui/appDisplay.js:652
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:726
+#: ../js/ui/appDisplay.js:653
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
-#: ../js/ui/appDisplay.js:1033
+#: ../js/ui/appDisplay.js:830
 msgid "Drag here to add favorites"
 msgstr "יש לגרור פריטים לכאן כדי להוסיף מועדפים"
 
@@ -285,138 +285,135 @@ msgstr "%s הוסר מהמועדפים שלך."
 msgid "Find"
 msgstr "חיפוש"
 
-#: ../js/ui/dash.js:471
+#: ../js/ui/dash.js:473
 msgid "Searching..."
 msgstr "בחיפוש..."
 
-#: ../js/ui/dash.js:485
+#: ../js/ui/dash.js:487
 msgid "No matching results."
 msgstr "אין תוצאות תואמות."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:792 ../js/ui/placeDisplay.js:550
+#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
 msgid "PLACES & DEVICES"
 msgstr "מקומות והתקנים"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:799 ../js/ui/docDisplay.js:494
+#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "פריטים אחרונים"
 
-#: ../js/ui/lookingGlass.js:471
+#: ../js/ui/lookingGlass.js:552
 msgid "No extensions installed"
 msgstr "לא מותקנות הרחבות"
 
-#: ../js/ui/lookingGlass.js:508
+#: ../js/ui/lookingGlass.js:589
 msgid "Enabled"
 msgstr "פעיל"
 
-#: ../js/ui/lookingGlass.js:510
+#: ../js/ui/lookingGlass.js:591
 msgid "Disabled"
 msgstr "מנוטרל"
 
-#: ../js/ui/lookingGlass.js:512
+#: ../js/ui/lookingGlass.js:593
 msgid "Error"
 msgstr "שגיאה"
 
-#: ../js/ui/lookingGlass.js:514
+#: ../js/ui/lookingGlass.js:595
 msgid "Out of date"
 msgstr "לא בתוקף"
 
-#: ../js/ui/lookingGlass.js:539
+#: ../js/ui/lookingGlass.js:620
 msgid "View Source"
 msgstr "צפייה במקור"
 
-#: ../js/ui/lookingGlass.js:545
+#: ../js/ui/lookingGlass.js:626
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:160
 msgid "Undo"
 msgstr "ביטול"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:473
+#: ../js/ui/panel.js:461
 #, c-format
 msgid "Quit %s"
 msgstr "יציאה מ־%s"
 
-#: ../js/ui/panel.js:498
+#: ../js/ui/panel.js:486
 msgid "Preferences"
 msgstr "העדפות"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:584
+#: ../js/ui/panel.js:572
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:573
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:589
+#: ../js/ui/panel.js:577
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:590
+#: ../js/ui/panel.js:578
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:597
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:586
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:602
+#: ../js/ui/panel.js:590
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:603
+#: ../js/ui/panel.js:591
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:741
+#: ../js/ui/panel.js:736
 msgid "Activities"
 msgstr "פעילויות"
 
-#: ../js/ui/placeDisplay.js:107
+#: ../js/ui/placeDisplay.js:111
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "ארע כשל בניתוק '%s'"
 
-#: ../js/ui/placeDisplay.js:110
+#: ../js/ui/placeDisplay.js:114
 msgid "Retry"
 msgstr "ניסיון חוזר"
 
-#: ../js/ui/placeDisplay.js:155
+#: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
 msgstr "התחבר אל..."
 
-#. Translators: the "ON" and "OFF" strings are used in the
-#. toggle switches in the status area menus, and must be SHORT.
-#. If you don't have suitable short words, consider initials,
-#. "0"/"1", "⚪"/"⚫", etc.
-#: ../js/ui/popupMenu.js:30 ../js/ui/popupMenu.js:40
-msgid "ON"
-msgstr "1"
-
-#: ../js/ui/popupMenu.js:31 ../js/ui/popupMenu.js:45
-msgid "OFF"
-msgstr "0"
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:32
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
@@ -463,12 +460,12 @@ msgstr "ניתוק..."
 msgid "Shut Down..."
 msgstr "כיבוי..."
 
-#: ../js/ui/windowAttentionHandler.js:45
+#: ../js/ui/windowAttentionHandler.js:43
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s סיים את תהליך ההתחלה"
 
-#: ../js/ui/windowAttentionHandler.js:47
+#: ../js/ui/windowAttentionHandler.js:45
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' מוכן"
@@ -482,32 +479,32 @@ msgstr "לא ניתן להוסיף מרחבי עבודה כיוון שהם ממ�
 msgid "Can't remove the first workspace."
 msgstr "לא ניתן להסיר את מרחב העבודה הראשון."
 
-#: ../src/shell-global.c:1105
+#: ../src/shell-global.c:1189
 msgid "Less than a minute ago"
 msgstr "לפני פחות מדקה"
 
-#: ../src/shell-global.c:1109
+#: ../src/shell-global.c:1193
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "לפני דקה"
 msgstr[1] "לפני %d דקות"
 
-#: ../src/shell-global.c:1114
+#: ../src/shell-global.c:1198
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "לפני שעה"
 msgstr[1] "לפני %d שעות"
 
-#: ../src/shell-global.c:1119
+#: ../src/shell-global.c:1203
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "לפני יום"
 msgstr[1] "לפני %d ימים"
 
-#: ../src/shell-global.c:1124
+#: ../src/shell-global.c:1208
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -537,6 +534,12 @@ msgstr "חפש"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "ON"
+#~ msgstr "1"
+
+#~ msgid "OFF"
+#~ msgstr "0"
 
 #~ msgid "PLACES"
 #~ msgstr "מקומות"
