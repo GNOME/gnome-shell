@@ -233,8 +233,10 @@ meta_preview_expose (GtkWidget      *widget,
       };
   
       ensure_info (preview);
+      cairo_save (cr);
 
       border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
+      cairo_translate (cr, border_width, border_width);
 
       client_width = allocation.width - preview->left_width - preview->right_width - border_width * 2;
       client_height = allocation.height - preview->top_height - preview->bottom_height - border_width * 2;
@@ -247,8 +249,6 @@ meta_preview_expose (GtkWidget      *widget,
       meta_theme_draw_frame (preview->theme,
                              widget,
                              cr,
-                             border_width,
-                             border_width,
                              preview->type,
                              preview->flags,
                              client_width, client_height,
@@ -259,6 +259,7 @@ meta_preview_expose (GtkWidget      *widget,
                              meta_preview_get_mini_icon (),
                              meta_preview_get_icon ());
 
+      cairo_restore (cr);
     }
 
 #ifdef USE_GTK3

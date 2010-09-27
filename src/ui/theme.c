@@ -4358,8 +4358,6 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
                                   GtkStyle                *style_gtk,
                        GtkWidget               *widget,
                        cairo_t                 *cr,
-                       int                      x_offset,
-                       int                      y_offset,
                        const MetaFrameGeometry *fgeom,
                        int                      client_width,
                        int                      client_height,
@@ -4546,9 +4544,6 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
             {
               button_rect (j, fgeom, middle_bg_offset, &rect);
               
-              rect.x += x_offset;
-              rect.y += y_offset;
-              
               op_list = get_button (style, j, button_states[j]);
               
               if (op_list)
@@ -4598,8 +4593,6 @@ void
 meta_frame_style_draw (MetaFrameStyle          *style,
                        GtkWidget               *widget,
                        cairo_t                 *cr,
-                       int                      x_offset,
-                       int                      y_offset,
                        const MetaFrameGeometry *fgeom,
                        int                      client_width,
                        int                      client_height,
@@ -4610,8 +4603,7 @@ meta_frame_style_draw (MetaFrameStyle          *style,
                        GdkPixbuf               *icon)
 {
   meta_frame_style_draw_with_style (style, gtk_widget_get_style (widget), widget,
-                                    cr, x_offset, y_offset,
-                                    fgeom, client_width, client_height,
+                                    cr, fgeom, client_width, client_height,
                                     title_layout, text_height,
                                     button_states, mini_icon, icon);
 }
@@ -5181,8 +5173,6 @@ meta_theme_draw_frame_with_style (MetaTheme              *theme,
                                   GtkStyle               *style_gtk,
                        GtkWidget              *widget,
                        cairo_t                *cr,
-                       int                     x_offset,
-                       int                     y_offset,
                        MetaFrameType           type,
                        MetaFrameFlags          flags,
                        int                     client_width,
@@ -5217,7 +5207,6 @@ meta_theme_draw_frame_with_style (MetaTheme              *theme,
                                     style_gtk,
                                     widget,
                                     cr,
-                                    x_offset, y_offset,
                                     &fgeom,
                                     client_width, client_height,
                                     title_layout,
@@ -5230,8 +5219,6 @@ void
 meta_theme_draw_frame (MetaTheme              *theme,
                        GtkWidget              *widget,
                        cairo_t                *cr,
-                       int                     x_offset,
-                       int                     y_offset,
                        MetaFrameType           type,
                        MetaFrameFlags          flags,
                        int                     client_width,
@@ -5244,7 +5231,7 @@ meta_theme_draw_frame (MetaTheme              *theme,
                        GdkPixbuf              *icon)
 {
   meta_theme_draw_frame_with_style (theme, gtk_widget_get_style (widget), widget,
-                                    cr, x_offset, y_offset, type,flags,
+                                    cr, type,flags,
                                     client_width, client_height,
                                     title_layout, text_height,
                                     button_layout, button_states,
@@ -5255,8 +5242,6 @@ void
 meta_theme_draw_frame_by_name (MetaTheme              *theme,
                                GtkWidget              *widget,
                                cairo_t                *cr,
-                               int                     x_offset,
-                               int                     y_offset,
                                const gchar             *style_name,
                                MetaFrameFlags          flags,
                                int                     client_width,
@@ -5288,7 +5273,6 @@ meta_theme_draw_frame_by_name (MetaTheme              *theme,
   meta_frame_style_draw (style,
                          widget,
                          cr,
-                         x_offset, y_offset,
                          &fgeom,
                          client_width, client_height,
                          title_layout,

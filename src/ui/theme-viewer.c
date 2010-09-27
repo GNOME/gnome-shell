@@ -1016,7 +1016,6 @@ run_theme_benchmark (void)
       meta_theme_draw_frame (global_theme,
                              widget,
                              cr,
-                             0, 0,
                              META_FRAME_TYPE_NORMAL,
                              get_flags (widget),
                              client_width, client_height,

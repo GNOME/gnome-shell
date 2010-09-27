@@ -83,9 +83,7 @@ static void meta_frames_attach_style (MetaFrames  *frames,
 
 static void meta_frames_paint        (MetaFrames   *frames,
                                       MetaUIFrame  *frame,
-                                      cairo_t      *cr,
-                                      int           x_offset,
-                                      int           y_offset);
+                                      cairo_t      *cr);
 
 static void meta_frames_set_window_background (MetaFrames   *frames,
                                                MetaUIFrame  *frame);
@@ -2112,11 +2110,12 @@ generate_pixmap (MetaFrames *frames,
                             rect->width, rect->height);
   
   cr = meta_pixmap_cairo_create (result);
+  cairo_translate (cr, -rect->x, -rect->y);
 
-  setup_bg_cr (cr, frame->window, rect->x, rect->y);
+  setup_bg_cr (cr, frame->window, 0, 0);
   cairo_paint (cr);
 
-  meta_frames_paint (frames, frame, cr, -rect->x, -rect->y);
+  meta_frames_paint (frames, frame, cr);
 
   cairo_destroy (cr);
 
@@ -2341,7 +2340,7 @@ meta_frames_draw (GtkWidget *widget,
 
       cairo_push_group (cr);
 
-      meta_frames_paint (frames, frame, cr, 0, 0);
+      meta_frames_paint (frames, frame, cr);
 
       cairo_pop_group_to_source (cr);
       cairo_paint (cr);
@@ -2405,7 +2404,7 @@ meta_frames_expose_event (GtkWidget           *widget,
       /* no need to clip, begin_paint_region ensures the pixmap
        * is only as big as the rect we use. */
 
-      meta_frames_paint (frames, frame, cr, 0, 0);
+      meta_frames_paint (frames, frame, cr);
 
       cairo_destroy (cr);
       gdk_window_end_paint (event->window);
@@ -2424,9 +2423,7 @@ meta_frames_expose_event (GtkWidget           *widget,
 static void
 meta_frames_paint (MetaFrames   *frames,
                    MetaUIFrame  *frame,
-                   cairo_t      *cr,
-                   int           x_offset,
-                   int           y_offset)
+                   cairo_t      *cr)
 {
   GtkWidget *widget;
   MetaFrameFlags flags;
@@ -2556,7 +2553,6 @@ meta_frames_paint (MetaFrames   *frames,
                                     frame->style,
                                     widget,
                                     cr,
-                                    x_offset, y_offset,
                                     type,
                                     flags,
                                     w, h,
