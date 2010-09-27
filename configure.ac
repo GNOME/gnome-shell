@@ -11,7 +11,7 @@
 # - increase clutter_micro_version to the next odd number
 # - increase clutter_interface_version to the next odd number
 m4_define([clutter_major_version], [1])
-m4_define([clutter_minor_version], [4])
+m4_define([clutter_minor_version], [5])
 m4_define([clutter_micro_version], [1])
 
 m4_define([clutter_release_status],
@@ -42,7 +42,7 @@ m4_define([clutter_api_version], [1.0])
 #   clutter 1.2.10 -> 100 * 2 + 10 = 210, interface age = 4 -> 206
 #   ...
 #
-m4_define([clutter_interface_age], [1])
+m4_define([clutter_interface_age], [0])
 m4_define([clutter_binary_age], [m4_eval(100 * clutter_minor_version + clutter_micro_version)])
 
 AC_PREREQ([2.63])
