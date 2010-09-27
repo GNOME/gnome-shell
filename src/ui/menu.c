@@ -448,7 +448,7 @@ meta_window_menu_new   (MetaFrames         *frames,
                           "workspace",
                           GINT_TO_POINTER (j));
 
-                      g_signal_connect_data (GTK_OBJECT (submi),
+                      g_signal_connect_data (G_OBJECT (submi),
                           "activate",
                           G_CALLBACK (activate_cb),
                           md,
@@ -475,7 +475,7 @@ meta_window_menu_new   (MetaFrames         *frames,
               md->menu = menu;
               md->op = menuitem.op;
               
-              g_signal_connect_data (GTK_OBJECT (mi),
+              g_signal_connect_data (G_OBJECT (mi),
                                      "activate",
                                      G_CALLBACK (activate_cb),
                                      md,

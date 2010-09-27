@@ -48,7 +48,11 @@
 
 #define DEFAULT_INNER_BUTTON_BORDER 3
 
+#ifdef USE_GTK3
+static void meta_frames_destroy    (GtkWidget       *object);
+#else
 static void meta_frames_destroy    (GtkObject       *object);
+#endif
 static void meta_frames_finalize   (GObject         *object);
 static void meta_frames_style_set  (GtkWidget       *widget,
                                     GtkStyle        *prev_style);
@@ -137,16 +141,19 @@ static void
 meta_frames_class_init (MetaFramesClass *class)
 {
   GObjectClass   *gobject_class;
-  GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
 
   gobject_class = G_OBJECT_CLASS (class);
-  object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
 
   gobject_class->constructor = meta_frames_constructor;
   gobject_class->finalize = meta_frames_finalize;
-  object_class->destroy = meta_frames_destroy;
+
+#ifdef USE_GTK3
+  widget_class->destroy = meta_frames_destroy;
+#else
+  GTK_OBJECT_CLASS (class)->destroy = meta_frames_destroy;
+#endif
 
   widget_class->style_set = meta_frames_style_set;
 
@@ -232,8 +239,13 @@ listify_func (gpointer key, gpointer value, gpointer data)
   *listp = g_slist_prepend (*listp, value);
 }
 
+#ifdef USE_GTK3
+static void
+meta_frames_destroy (GtkWidget *object)
+#else
 static void
 meta_frames_destroy (GtkObject *object)
+#endif
 {
   GSList *winlist;
   GSList *tmp;
@@ -257,7 +269,11 @@ meta_frames_destroy (GtkObject *object)
     }
   g_slist_free (winlist);
 
+#ifdef USE_GTK3
+  GTK_WIDGET_CLASS (meta_frames_parent_class)->destroy (object);
+#else
   GTK_OBJECT_CLASS (meta_frames_parent_class)->destroy (object);
+#endif
 }
 
 static void

@@ -40,7 +40,11 @@
 #include "gtk-compat.h"
 #include "gdk2-drawing-utils.h"
 
+#ifdef USE_GTK3
+static void     meta_accel_label_destroy      (GtkWidget           *object);
+#else
 static void     meta_accel_label_destroy      (GtkObject           *object);
+#endif
 static void     meta_accel_label_finalize     (GObject             *object);
 static void     meta_accel_label_size_request (GtkWidget           *widget,
                                                GtkRequisition      *requisition);
@@ -61,12 +65,15 @@ static void
 meta_accel_label_class_init (MetaAccelLabelClass *class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
-  GtkObjectClass *object_class = GTK_OBJECT_CLASS (class);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (class);
 
   gobject_class->finalize = meta_accel_label_finalize;
 
-  object_class->destroy = meta_accel_label_destroy;
+#ifdef USE_GTK3
+  widget_class->destroy = meta_accel_label_destroy;
+#else
+  GTK_OBJECT_CLASS (class)->destroy = meta_accel_label_destroy;
+#endif
 
   widget_class->size_request = meta_accel_label_size_request;
 #ifdef USE_GTK3
@@ -166,8 +173,13 @@ meta_accel_label_new_with_mnemonic (const gchar *string)
   return GTK_WIDGET (accel_label);
 }
 
+#ifdef USE_GTK3
+static void
+meta_accel_label_destroy (GtkWidget *object)
+#else
 static void
 meta_accel_label_destroy (GtkObject *object)
+#endif
 {
   MetaAccelLabel *accel_label = META_ACCEL_LABEL (object);
 
@@ -178,7 +190,11 @@ meta_accel_label_destroy (GtkObject *object)
   accel_label->accel_mods = 0;
   accel_label->accel_key = 0;
 
+#ifdef USE_GTK3
+  GTK_WIDGET_CLASS (meta_accel_label_parent_class)->destroy (object);
+#else
   GTK_OBJECT_CLASS (meta_accel_label_parent_class)->destroy (object);
+#endif
 }
 
 static void
