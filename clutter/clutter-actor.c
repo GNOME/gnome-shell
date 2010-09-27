@@ -7376,7 +7376,8 @@ clutter_actor_reparent (ClutterActor *self,
  * @descendant: A #ClutterActor, possibly contained in @self
  *
  * Determines if @descendant is contained inside @self (either as an
- * immediate child, or as a deeper descendant).
+ * immediate child, or as a deeper descendant). If @self and
+ * @descendant point to the same actor then it will also return %TRUE.
  *
  * Return value: whether @descendent is contained within @self
  *
