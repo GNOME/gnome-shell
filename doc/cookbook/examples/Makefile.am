@@ -28,6 +28,7 @@ noinst_PROGRAMS = \
 	textures-crossfade-slideshow	\
 	script-ui	\
 	script-signals	\
+	events-buttons	\
 	$(NULL)
 
 INCLUDES = \
@@ -76,5 +77,6 @@ textures_crossfade_cogl_SOURCES            = textures-crossfade-cogl.c
 textures_crossfade_slideshow_SOURCES       = textures-crossfade-slideshow.c
 script_ui_SOURCES                          = script-ui.c
 script_signals_SOURCES                     = script-signals.c
+events_buttons_SOURCES                     = events-buttons.c
 
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore
