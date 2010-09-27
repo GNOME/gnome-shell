@@ -7387,12 +7387,16 @@ gboolean
 clutter_actor_contains (ClutterActor *self,
 			ClutterActor *descendant)
 {
+  ClutterActor *actor;
+
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
   g_return_val_if_fail (CLUTTER_IS_ACTOR (descendant), FALSE);
 
-  while (descendant != NULL && descendant != self)
-    descendant = descendant->priv->parent_actor;
-  return descendant == self;
+  for (actor = descendant; actor; actor = actor->priv->parent_actor)
+    if (actor == self)
+      return TRUE;
+
+  return FALSE;
 }
 
 /**
