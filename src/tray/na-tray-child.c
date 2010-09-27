@@ -55,17 +55,18 @@ na_tray_child_realize (GtkWidget *widget)
        * extension. */
 
       /* Set a transparent background */
-      GdkColor transparent = { 0, 0, 0, 0 }; /* only pixel=0 matters */
-      gdk_window_set_background (window, &transparent);
+      cairo_pattern_t *transparent = cairo_pattern_create_rgba (0, 0, 0, 0);
+      gdk_window_set_background_pattern (window, transparent);
       gdk_window_set_composited (window, TRUE);
+      cairo_pattern_destroy (transparent);
 
       child->parent_relative_bg = FALSE;
     }
-  else if (visual == gdk_drawable_get_visual (GDK_DRAWABLE (gdk_window_get_parent (window))))
+  else if (visual == gdk_window_get_visual (gdk_window_get_parent (window)))
     {
       /* Otherwise, if the visual matches the visual of the parent window, we
        * can use a parent-relative background and fake transparency. */
-      gdk_window_set_back_pixmap (window, NULL, TRUE);
+      gdk_window_set_background_pattern (window, NULL);
 
       child->parent_relative_bg = TRUE;
     }
@@ -174,31 +175,46 @@ na_tray_child_size_allocate (GtkWidget      *widget,
 
 /* The plug window should completely occupy the area of the child, so we won't
  * get an expose event. But in case we do (the plug unmaps itself, say), this
- * expose handler draws with real or fake transparency.
+ * draw handler draws with real or fake transparency.
+ * Copy-pasted from GtkTrayIcon.
  */
 static gboolean
-na_tray_child_expose_event (GtkWidget      *widget,
-                            GdkEventExpose *event)
+na_tray_child_draw (GtkWidget *widget,
+                    cairo_t   *cr)
 {
   NaTrayChild *child = NA_TRAY_CHILD (widget);
-  GdkWindow *window = gtk_widget_get_window (widget);
 
   if (na_tray_child_has_alpha (child))
     {
       /* Clear to transparent */
-      cairo_t *cr = gdk_cairo_create (window);
       cairo_set_source_rgba (cr, 0, 0, 0, 0);
       cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-      gdk_cairo_region (cr, event->region);
-      cairo_fill (cr);
-      cairo_destroy (cr);
+      cairo_paint (cr);
     }
   else if (child->parent_relative_bg)
     {
-      /* Clear to parent-relative pixmap */
-      gdk_window_clear_area (window,
-                             event->area.x, event->area.y,
-                             event->area.width, event->area.height);
+      GdkWindow *window;
+      cairo_surface_t *target;
+      GdkRectangle clip_rect;
+
+      window = gtk_widget_get_window (widget);
+      target = cairo_get_group_target (cr);
+
+      gdk_cairo_get_clip_rectangle (cr, &clip_rect);
+
+      /* Clear to parent-relative pixmap
+       * We need to use direct X access here because GDK doesn't know about
+       * the parent relative pixmap. */
+      cairo_surface_flush (target);
+
+      XClearArea (GDK_WINDOW_XDISPLAY (window),
+                  GDK_WINDOW_XID (window),
+                  clip_rect.x, clip_rect.y,
+                  clip_rect.width, clip_rect.height,
+                  False);
+      cairo_surface_mark_dirty_rectangle (target,
+                                          clip_rect.x, clip_rect.y,
+                                          clip_rect.width, clip_rect.height);
     }
 
   return FALSE;
@@ -222,7 +238,7 @@ na_tray_child_class_init (NaTrayChildClass *klass)
   widget_class->style_set = na_tray_child_style_set;
   widget_class->realize = na_tray_child_realize;
   widget_class->size_allocate = na_tray_child_size_allocate;
-  widget_class->expose_event = na_tray_child_expose_event;
+  widget_class->draw = na_tray_child_draw;
 }
 
 GtkWidget *
@@ -234,8 +250,6 @@ na_tray_child_new (GdkScreen *screen,
   NaTrayChild *child;
   GdkVisual *visual;
   gboolean visual_has_alpha;
-  GdkColormap *colormap;
-  gboolean new_colormap;
   int red_prec, green_prec, blue_prec, depth;
   int result;
 
@@ -261,22 +275,10 @@ na_tray_child_new (GdkScreen *screen,
   if (!visual) /* Icon window is on another screen? */
     return NULL;
 
-  new_colormap = FALSE;
-
-  if (visual == gdk_screen_get_rgba_visual (screen))
-    colormap = gdk_screen_get_rgba_colormap (screen);
-  else if (visual == gdk_screen_get_system_visual (screen))
-    colormap = gdk_screen_get_system_colormap (screen);
-  else
-    {
-      colormap = gdk_colormap_new (visual, FALSE);
-      new_colormap = TRUE;
-    }
-
   child = g_object_new (NA_TYPE_TRAY_CHILD, NULL);
   child->icon_window = icon_window;
 
-  gtk_widget_set_colormap (GTK_WIDGET (child), colormap);
+  gtk_widget_set_visual (GTK_WIDGET (child), visual);
 
   /* We have alpha if the visual has something other than red, green,
    * and blue */
@@ -290,9 +292,6 @@ na_tray_child_new (GdkScreen *screen,
                       gdk_display_supports_composite (gdk_screen_get_display (screen)));
 
   child->composited = child->has_alpha;
-
-  if (new_colormap)
-    g_object_unref (colormap);
 
   return GTK_WIDGET (child);
 }

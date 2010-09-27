@@ -218,57 +218,36 @@ shell_tray_manager_manage_stage (ShellTrayManager *manager,
   else
     stage_window = gdk_window_foreign_new (stage_xwindow);
 
-  screen = gdk_drawable_get_screen (stage_window);
+  screen = gdk_window_get_screen (stage_window);
 
   g_object_unref (stage_window);
 
   na_tray_manager_manage_screen (manager->priv->na_manager, screen);
 }
 
-static GdkPixmap *
-create_bg_pixmap (GdkColormap  *colormap,
-                  ClutterColor *color)
-{
-  GdkScreen *screen = gdk_colormap_get_screen (colormap);
-  GdkVisual *visual = gdk_colormap_get_visual (colormap);
-  GdkPixmap *pixmap = gdk_pixmap_new (gdk_screen_get_root_window (screen),
-                                      1, 1,
-                                      gdk_visual_get_depth (visual));
-  cairo_t *cr;
-
-  gdk_drawable_set_colormap (pixmap, colormap);
-
-  cr = gdk_cairo_create (pixmap);
-  cairo_set_source_rgb (cr,
-                        color->red / 255.,
-                        color->green / 255.,
-                        color->blue / 255.);
-  cairo_paint (cr);
-  cairo_destroy (cr);
-
-  return pixmap;
-}
-
 static void
 shell_tray_manager_child_on_realize (GtkWidget             *widget,
                                      ShellTrayManagerChild *child)
 {
-  GdkPixmap *bg_pixmap;
-
   /* If the tray child is using an RGBA colormap (and so we have real
    * transparency), we don't need to worry about the background. If
-   * not, we obey the bg-color property by creating a 1x1 pixmap of
+   * not, we obey the bg-color property by creating a cairo pattern of
    * that color and setting it as our background. Then "parent-relative"
    * background on the socket and the plug within that will cause
    * the icons contents to appear on top of our background color.
    */
   if (!na_tray_child_has_alpha (NA_TRAY_CHILD (child->socket)))
     {
-      bg_pixmap = create_bg_pixmap (gtk_widget_get_colormap (widget),
-                                    &child->manager->priv->bg_color);
-      gdk_window_set_back_pixmap (gtk_widget_get_window (widget),
-                                  bg_pixmap, FALSE);
-      g_object_unref (bg_pixmap);
+      ClutterColor color = child->manager->priv->bg_color;
+      cairo_pattern_t *bg_pattern;
+
+      bg_pattern = cairo_pattern_create_rgb (color.red / 255.,
+                                             color.green / 255.,
+                                             color.blue / 255.);
+      gdk_window_set_background_pattern (gtk_widget_get_window (widget),
+                                         bg_pattern);
+
+      cairo_pattern_destroy (bg_pattern);
     }
 }
 
@@ -306,9 +285,9 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   win = shell_embedded_window_new (manager->priv->stage);
   gtk_container_add (GTK_CONTAINER (win), socket);
 
-  /* The colormap of the socket matches that of its contents; make
+  /* The visual of the socket matches that of its contents; make
    * the window we put it in match that as well */
-  gtk_widget_set_colormap (win, gtk_widget_get_colormap (socket));
+  gtk_widget_set_visual (win, gtk_widget_get_visual (socket));
 
   child = g_slice_new0 (ShellTrayManagerChild);
   child->manager = manager;
