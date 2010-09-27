@@ -2257,7 +2257,7 @@ subtract_client_area (MetaRegion *region, MetaUIFrame *frame)
                  META_CORE_GET_END);
   meta_theme_get_frame_borders (meta_theme_get_current (),
                          type, frame->text_height, flags, 
-                         &area.x, NULL, &area.y, NULL);
+                         &area.y, NULL, &area.x, NULL);
 
   tmp_region = meta_region_new_from_rectangle (&area);
   meta_region_subtract (region, tmp_region);
