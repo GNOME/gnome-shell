@@ -37,6 +37,7 @@ EXTRA_DIST += gnome-shell-clock-preferences.in
 include Makefile-gdmuser.am
 include Makefile-st.am
 include Makefile-tray.am
+include Makefile-gvc.am
 
 gnome_shell_cflags =				\
 	$(MUTTER_PLUGIN_CFLAGS)			\
@@ -190,11 +191,12 @@ libgnome_shell_la_LIBADD =	\
 	$(LIBGNOMEUI_LIBS)      \
 	libst-1.0.la       	\
 	libgdmuser-1.0.la	\
-	libtray.la
+	libtray.la		\
+	libgvc.la
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 typelibdir = $(pkglibdir)
-typelib_DATA = Shell-0.1.typelib St-1.0.typelib Gdm-1.0.typelib
+typelib_DATA = Shell-0.1.typelib St-1.0.typelib Gdm-1.0.typelib Gvc-1.0.typelib
 
 Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) St-1.0.gir libgnome-shell.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)			\

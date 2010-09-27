@@ -297,6 +297,15 @@ add_statistics (GnomeShellPlugin *shell_plugin)
 }
 
 static void
+gvc_muted_debug_log_handler (const char     *log_domain,
+                             GLogLevelFlags  log_level,
+                             const char     *message,
+                             gpointer        data)
+{
+  /* Intentionally empty to discard message */
+}
+
+static void
 gnome_shell_plugin_start (MutterPlugin *plugin)
 {
   GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
@@ -354,6 +363,10 @@ gnome_shell_plugin_start (MutterPlugin *plugin)
   search_path = g_strsplit(shell_js, ":", -1);
   shell_plugin->gjs_context = gjs_context_new_with_search_path(search_path);
   g_strfreev(search_path);
+
+  /* Disable the gnome-volume-control debug */
+  g_log_set_handler ("Gvc", G_LOG_LEVEL_DEBUG,
+                     gvc_muted_debug_log_handler, NULL);
 
   /* Initialize the global object here. */
   global = shell_global_get ();

@@ -1,0 +1,69 @@
+noinst_LTLIBRARIES += libgvc.la
+
+libgvc_la_CPPFLAGS =			\
+	$(WARN_CFLAGS)			\
+	$(GVC_CFLAGS)			\
+	-I$(srcdir)/gvc/		\
+	-DWITH_INTROSPECTION		\
+	-DG_LOG_DOMAIN="\"Gvc\""
+
+libgvc_la_LIBADD =			\
+	$(GVC_LIBS)
+
+libgvc_la_LDFLAGS = -avoid-version
+
+libgvc_la_gir_sources = \
+	gvc/gvc-mixer-stream.h		\
+	gvc/gvc-mixer-stream.c		\
+	gvc/gvc-channel-map.h		\
+	gvc/gvc-channel-map.c		\
+	gvc/gvc-mixer-card.c		\
+	gvc/gvc-mixer-card.h		\
+	gvc/gvc-mixer-sink.h		\
+	gvc/gvc-mixer-sink.c		\
+	gvc/gvc-mixer-source.h		\
+	gvc/gvc-mixer-source.c		\
+	gvc/gvc-mixer-sink-input.h	\
+	gvc/gvc-mixer-sink-input.c	\
+	gvc/gvc-mixer-source-output.h	\
+	gvc/gvc-mixer-source-output.c	\
+	gvc/gvc-mixer-event-role.h	\
+	gvc/gvc-mixer-event-role.c	\
+	gvc/gvc-mixer-control.h		\
+	gvc/gvc-mixer-control.c		\
+	gvc/gvc-pulseaudio-fake.h
+
+libgvc_la_private_sources = 		\
+	gvc/gvc-mixer-stream-private.h	\
+	gvc/gvc-channel-map-private.h	\
+	gvc/gvc-mixer-card-private.h	\
+	gvc/gvc-mixer-control-private.h	\
+	gvc/gvc-pulseaudio-fake.h
+
+libgvc_la_SOURCES =			\
+	$(libgvc_la_gir_sources)	\
+	$(libgvc_la_private_sources)
+
+Gvc-1.0.gir: $(G_IR_SCANNER) libgvc.la Makefile
+	$(AM_V_GEN) $(G_IR_SCANNER)			\
+		--namespace=Gvc				\
+		--nsversion=1.0				\
+		--warn-all				\
+		--quiet					\
+		--libtool="$(LIBTOOL)"			\
+		--add-include-path=$(builddir)		\
+		--include=GObject-2.0			\
+		--library=libgvc.la			\
+		--identifier-prefix=Gvc			\
+		--symbol-prefix=gvc_			\
+		$(addprefix $(srcdir)/,$(libgvc_la_gir_sources))	\
+		$(INCLUDES)				\
+		-I $(srcdir)				\
+		-I $(srcdir)/gvc			\
+		-DWITH_INTROSPECTION			\
+		-o $@
+CLEANFILES += Gvc-1.0.gir
+
+Gvc-1.0.typelib: Gvc-1.0.gir
+	$(AM_V_GEN) $(G_IR_COMPILER) $< -o $@
+CLEANFILES += Gvc-1.0.typelib
