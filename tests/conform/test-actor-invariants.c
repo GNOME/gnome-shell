@@ -265,3 +265,69 @@ test_clone_no_map (TestConformSimpleFixture *fixture,
 
   clutter_actor_hide (stage);
 }
+
+void
+test_contains (TestConformSimpleFixture *fixture,
+               gconstpointer             data)
+{
+  /* This build up the following tree:
+   *
+   *              a
+   *          ╱   │   ╲
+   *         ╱    │    ╲
+   *        b     c     d
+   *       ╱ ╲   ╱ ╲   ╱ ╲
+   *      e   f g   h i   j
+   */
+  struct {
+    ClutterActor *actor_a, *actor_b, *actor_c, *actor_d, *actor_e;
+    ClutterActor *actor_f, *actor_g, *actor_h, *actor_i, *actor_j;
+  } d;
+  int x, y;
+  ClutterActor **actor_array = &d.actor_a;
+
+  /* Matrix of expected results */
+  static const gboolean expected_results[] =
+    {         /* a, b, c, d, e, f, g, h, i, j */
+      /* a */    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      /* b */    0, 1, 0, 0, 1, 1, 0, 0, 0, 0,
+      /* c */    0, 0, 1, 0, 0, 0, 1, 1, 0, 0,
+      /* d */    0, 0, 0, 1, 0, 0, 0, 0, 1, 1,
+      /* e */    0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+      /* f */    0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+      /* g */    0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+      /* h */    0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+      /* i */    0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+      /* j */    0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+    };
+
+  d.actor_a = clutter_group_new ();
+  d.actor_b = clutter_group_new ();
+  d.actor_c = clutter_group_new ();
+  d.actor_d = clutter_group_new ();
+  d.actor_e = clutter_group_new ();
+  d.actor_f = clutter_group_new ();
+  d.actor_g = clutter_group_new ();
+  d.actor_h = clutter_group_new ();
+  d.actor_i = clutter_group_new ();
+  d.actor_j = clutter_group_new ();
+
+  clutter_container_add (CLUTTER_CONTAINER (d.actor_a),
+                         d.actor_b, d.actor_c, d.actor_d, NULL);
+
+  clutter_container_add (CLUTTER_CONTAINER (d.actor_b),
+                         d.actor_e, d.actor_f, NULL);
+
+  clutter_container_add (CLUTTER_CONTAINER (d.actor_c),
+                         d.actor_g, d.actor_h, NULL);
+
+  clutter_container_add (CLUTTER_CONTAINER (d.actor_d),
+                         d.actor_i, d.actor_j, NULL);
+
+  for (y = 0; y < 10; y++)
+    for (x = 0; x < 10; x++)
+      g_assert_cmpint (clutter_actor_contains (actor_array[x],
+                                               actor_array[y]),
+                       ==,
+                       expected_results[x * 10 + y]);
+}
