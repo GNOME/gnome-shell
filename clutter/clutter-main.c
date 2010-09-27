@@ -343,6 +343,26 @@ _clutter_id_to_color (guint id, ClutterColor *col)
 
   ctx = _clutter_context_get_default ();
 
+  if (ctx->fb_g_mask == 0)
+    {
+      /* Figure out framebuffer masks used for pick */
+      cogl_get_bitmasks (&ctx->fb_r_mask,
+			 &ctx->fb_g_mask,
+			 &ctx->fb_b_mask, NULL);
+
+      ctx->fb_r_mask_used = ctx->fb_r_mask;
+      ctx->fb_g_mask_used = ctx->fb_g_mask;
+      ctx->fb_b_mask_used = ctx->fb_b_mask;
+
+      /* XXX - describe what "fuzzy picking" is */
+      if (clutter_use_fuzzy_picking)
+	{
+	  ctx->fb_r_mask_used--;
+	  ctx->fb_g_mask_used--;
+	  ctx->fb_b_mask_used--;
+	}
+    }
+
   /* compute the numbers we'll store in the components */
   red   = (id >> (ctx->fb_g_mask_used+ctx->fb_b_mask_used))
         & (0xff >> (8-ctx->fb_r_mask_used));
@@ -1605,21 +1625,6 @@ clutter_init_real (GError **error)
 #endif
 
   clutter_text_direction = clutter_get_text_direction ();
-
-  /* Figure out framebuffer masks used for pick */
-  cogl_get_bitmasks (&ctx->fb_r_mask, &ctx->fb_g_mask, &ctx->fb_b_mask, NULL);
-
-  ctx->fb_r_mask_used = ctx->fb_r_mask;
-  ctx->fb_g_mask_used = ctx->fb_g_mask;
-  ctx->fb_b_mask_used = ctx->fb_b_mask;
-
-  /* XXX - describe what "fuzzy picking" is */
-  if (clutter_use_fuzzy_picking)
-    {
-      ctx->fb_r_mask_used--;
-      ctx->fb_g_mask_used--;
-      ctx->fb_b_mask_used--;
-    }
 
   /* Initiate event collection */
   _clutter_backend_init_events (ctx->backend);
