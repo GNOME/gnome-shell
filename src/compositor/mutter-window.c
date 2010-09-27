@@ -1712,6 +1712,8 @@ static void
 check_needs_reshape (MutterWindow *self)
 {
   MutterWindowPrivate *priv = self->priv;
+  MetaScreen *screen = priv->screen;
+  MetaDisplay *display = meta_screen_get_display (screen);
 
   if (!priv->needs_reshape)
     return;
@@ -1722,15 +1724,17 @@ check_needs_reshape (MutterWindow *self)
 #ifdef HAVE_SHAPE
   if (priv->shaped)
     {
-      Display *xdisplay = meta_display_get_xdisplay (meta_window_get_display (priv->window));
+      Display *xdisplay = meta_display_get_xdisplay (display);
       XRectangle *rects;
       int n_rects, ordering;
 
+      meta_error_trap_push (display);
       rects = XShapeGetRectangles (xdisplay,
                                    priv->xwindow,
                                    ShapeBounding,
                                    &n_rects,
                                    &ordering);
+      meta_error_trap_pop (display, TRUE);
 
       if (rects)
         {
