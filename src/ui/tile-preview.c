@@ -165,7 +165,7 @@ meta_tile_preview_new (int      screen_number,
   if (preview->has_alpha)
     {
 #ifdef USE_GTK3
-      gtk_window_set_visual (GTK_WINDOW (preview->preview_window),
+      gtk_widget_set_visual (preview->preview_window,
                              gdk_screen_get_rgba_visual (screen));
 #else
       gtk_widget_set_colormap (preview->preview_window,
