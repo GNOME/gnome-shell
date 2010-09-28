@@ -294,6 +294,10 @@ if SUPPORT_EGL_PLATFORM_FRUITY
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-fruity.c
 endif
+if SUPPORT_EGL_PLATFORM_DRM_SURFACELESS
+cogl_sources_c += \
+       $(srcdir)/winsys/cogl-egl.c
+endif
 if SUPPORT_WIN32
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-win32.c

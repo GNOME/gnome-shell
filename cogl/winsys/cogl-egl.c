@@ -27,11 +27,15 @@
 
 #include "cogl.h"
 
-#ifdef HAVE_COGL_GLES2
+#ifdef HAVE_STANDALONE_EGL
 #include <EGL/egl.h>
-#else /* HAVE_COGL_GLES2 */
+#include <EGL/eglext.h>
+#define NativeDisplayType EGLNativeDisplayType
+#define NativeWindowType EGLNativeWindowType
+#else
 #include <GLES/egl.h>
-#endif /* HAVE_COGL_GLES2 */
+#include <GLES/eglext.h>
+#endif
 
 CoglFuncPtr
 _cogl_winsys_get_proc_address (const char *name)
