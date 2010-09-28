@@ -495,6 +495,25 @@ clutterfruity_includedir = $(clutter_includedir)/fruity
 clutterfruity_include_HEADERS = $(srcdir)/fruity/clutter-fruity.h
 endif # SUPPORT_FRUITY
 
+# Wayland backend rules
+if SUPPORT_WAYLAND
+backend_source_h += \
+	$(srcdir)/wayland/clutter-wayland.h
+
+backend_source_h_priv += \
+	$(srcdir)/wayland/clutter-backend-wayland.h \
+	$(srcdir)/wayland/clutter-stage-wayland.h
+
+backend_source_c += \
+	$(srcdir)/wayland/clutter-backend-wayland.c \
+	$(srcdir)/wayland/clutter-stage-wayland.c \
+	$(srcdir)/wayland/clutter-event-wayland.c \
+	$(srcdir)/wayland/clutter-input-device-wayland.c
+
+clutterwayland_includedir = $(clutter_includedir)/wayland
+clutterwayland_include_HEADERS = $(wayland_source_h)
+endif # SUPPORT_WAYLAND
+
 # cally
 cally_sources_h = \
 	$(srcdir)/cally/cally-actor.h		\

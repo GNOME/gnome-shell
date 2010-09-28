@@ -152,7 +152,7 @@ experimental_backend=no
 experimental_image=no
 
 AC_ARG_WITH([flavour],
-            [AC_HELP_STRING([--with-flavour=@<:@glx/opengl-egl-xlib/eglx/eglnative/osx/win32/fruity/cex100@:>@],
+            [AC_HELP_STRING([--with-flavour=@<:@glx/opengl-egl-xlib/wayland/eglx/eglnative/osx/win32/fruity/cex100@:>@],
                             [Select the Clutter window system backend])],
             [CLUTTER_FLAVOUR=$with_flavour])
 
@@ -226,6 +226,26 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
           PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
           PKG_CHECK_EXISTS([egl], [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"], [])
+        ],
+
+        [wayland],
+        [
+          experimental_backend="yes"
+          cogl_gl_headers="GL/gl.h"
+          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_WAYLAND"
+
+          SUPPORT_WAYLAND=1
+          SUPPORT_EGL_PLATFORM_DRM_SURFACELESS=1
+
+          COGL_DRIVER="gl"
+
+          CLUTTER_WINSYS=wayland
+          CLUTTER_SONAME_INFIX=wayland
+
+          PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
+          PKG_CHECK_EXISTS([egl], [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"], [])
+          PKG_CHECK_EXISTS([wayland-client xkbcommon],
+			   [BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-client xkbcommon"], [])
         ],
 
         [eglx],
@@ -383,6 +403,11 @@ AS_IF([test "x$SUPPORT_GLX" = "x1"],
                      [AC_MSG_ERROR([Required GLX library not found])])
       ])
 
+AS_IF([test "x$SUPPORT_WAYLAND" = "x1"],
+      [
+        AC_DEFINE([HAVE_CLUTTER_WAYLAND], [1], [Have the Wayland backend])
+      ])
+
 AS_IF([test "x$SUPPORT_EGL" = "x1"],
       [
         AC_DEFINE([HAVE_CLUTTER_EGL], [1], [Have the EGL backend])
@@ -395,24 +420,29 @@ AS_IF([test "x$CLUTTER_EGL_BACKEND" = "xgeneric"],
 AS_IF([test "x$CLUTTER_EGL_BACKEND" = "xcex100"],
       AC_DEFINE([CLUTTER_EGL_BACKEND_CEX100], [1], [Use CEX100 EGL backend]))
 
-AS_IF([test "x$SUPPORT_EGL_POWERVR_X11" = "x1"],
+AS_IF([test "x$SUPPORT_EGL_PLATFORM_POWERVR_X11" = "x1"],
       [
         AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT], [1],
-                  [Cogl supports OpenGLES using the EGL API with PowerVR X11 platform typedefs])
+                  [Cogl supports OpenGL[ES] using the EGL API with PowerVR X11 platform typedefs])
       ])
 
-AS_IF([test "x$SUPPORT_EGL_POWERVR_NULL" = "x1"],
+AS_IF([test "x$SUPPORT_EGL_PLATFORM_POWERVR_NULL" = "x1"],
       [
         AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT], [1],
-                  [Cogl supports OpenGLES using the EGL API with PowerVR NULL platform typedefs])
+                  [Cogl supports OpenGL[ES] using the EGL API with PowerVR NULL platform typedefs])
       ])
 
-AS_IF([test "x$SUPPORT_EGL_POWERVR_GDL" = "x1"],
+AS_IF([test "x$SUPPORT_EGL_PLATFORM_POWERVR_GDL" = "x1"],
       [
         AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT], [1],
-                  [Cogl supports OpenGLES using the EGL API with PowerVR GDL platform typedefs])
+                  [Cogl supports OpenGL[ES] using the EGL API with the GDL API])
       ])
 
+AS_IF([test "x$SUPPORT_EGL_PLATFORM_DRM_SURFACELESS" = "x1"],
+      [
+        AC_DEFINE([COGL_HAS_EGL_PLATFORM_DRM_SURFACELESS_SUPPORT], [1],
+                  [Cogl supports OpenGL[ES] using the EGL API with EGL_MESA_drm_display])
+      ])
 
 # winsys conditionals for use in automake files...
 AM_CONDITIONAL(SUPPORT_GLX, [test "x$SUPPORT_GLX" = "x1"])
@@ -423,15 +453,20 @@ AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_X11, [test "x$SUPPORT_EGL_PLATFORM_P
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_NULL" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_GDL, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_GDL" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_FRUITY, [test "x$CLUTTER_WINSYS" = "xfruity"])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_DRM_SURFACELESS, [test "x$SUPPORT_EGL_PLATFORM_DRM_SURFACELESS" = "x1"])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_FRUITY, [test "x$CLUTTER_WINSYS" = "xfruity"])
 AM_CONDITIONAL(SUPPORT_OSX, [test "x$CLUTTER_WINSYS" = "xosx"])
 AM_CONDITIONAL(SUPPORT_FRUITY, [test "x$CLUTTER_WINSYS" = "xfruity"])
 AM_CONDITIONAL(SUPPORT_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
 AM_CONDITIONAL(SUPPORT_CEX100, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_GDL" = "x1"])
+AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$CLUTTER_WINSYS" = "xwayland"])
 
 dnl === COGL driver backend =====================================================
 
 AS_IF([test "x$COGL_DRIVER" = "xgl"],
-      [ AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering]) ])
+      [ AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
+	NEED_SEPARATE_EGL=yes
+      ])
 
 cogl_gles_version_define=""
 
@@ -478,7 +513,9 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
             AS_IF([test "x$NEED_SEPARATE_EGL" = "xyes"],
               [
                 PKG_CHECK_EXISTS([egl],
-                  [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"],
+                  [BACKEND_PC_FILES="$BACKEND_PC_FILES egl"
+		   NEED_SEPARATE_EGL=yes
+		  ],
                   [
                     AC_CHECK_HEADERS([GLES/egl.h],
                                      [],
@@ -524,6 +561,8 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
                 FLAVOUR_LIBS="$FLAVOUR_LIBS -lEGL"
               ]
               )
+
+	    NEED_SEPARATE_EGL=yes
           ],
 
           [fruity],
@@ -560,6 +599,10 @@ fi;
 if test "x$SUPPORT_XLIB" = "x1"; then
   COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_XLIB"
 fi;
+
+if test "x$NEED_SEPARATE_EGL" = "xyes"; then
+  AC_DEFINE([HAVE_STANDALONE_EGL], 1, [Have standalone EGL library])
+fi
 
 AS_CASE([$COGL_DRIVER],
         [gl],
