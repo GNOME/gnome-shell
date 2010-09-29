@@ -3516,17 +3516,33 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
 
                 if (y1 == y2)
                   {
+                    if (x2 < x1)
+                    {
+                       x1 ^= x2;
+                       x2 ^= x1;
+                       x1 ^= x2;
+                    }
                     cairo_move_to (cr, x1, y1 + offset);
                     cairo_line_to (cr, x2 + line_extend, y2 + offset);
                   }
                 else
                   {
+                    if (y2 < y1)
+                    {
+                      y1 ^= y2;
+                      y2 ^= y1;
+                      y1 ^= y2;
+                    }
                     cairo_move_to (cr, x1 + offset, y1);
                     cairo_line_to (cr, x2 + offset, y2 + line_extend);
                   }
               }
             else
               {
+                if (op->data.line.width <= 0)
+                  {
+                    cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
+                  }
                 cairo_move_to (cr, x1 + .5, y1 + .5);
                 cairo_line_to (cr, x2 + .5, y2 + .5);
               }
@@ -3627,7 +3643,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
             meta_color_spec_render (op->data.tint.color_spec, widget, &color);
             gdk_cairo_set_source_color (cr, &color);
 
-            cairo_rectangle (cr, rx + .5, ry + .5, rwidth, rheight);
+            cairo_rectangle (cr, rx, ry, rwidth, rheight);
             cairo_fill (cr);
           }
         else
