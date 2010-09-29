@@ -85,7 +85,11 @@
 
   <autotools id="mesa">
     <branch repo="git.freedesktop.org"
-            module="mesa/mesa" checkoutdir="mesa"/>
+            supports-non-srcdir-builds="no"
+            check-target="false"
+            skip-autogen="never"
+            module="mesa/mesa"
+            checkoutdir="mesa"/>
   </autotools>
 
   <autotools id="wayland">
