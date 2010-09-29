@@ -79,6 +79,18 @@ CLUTTER_LT_AGE=lt_age
 CLUTTER_LT_VERSION="$CLUTTER_LT_CURRENT:$CLUTTER_LT_REV:$CLUTTER_LT_AGE"
 CLUTTER_LT_LDFLAGS="-version-info $CLUTTER_LT_VERSION"
 
+AC_MSG_CHECKING([if building for some Win32 platform])
+case "$host" in
+  *-*-mingw*|*-*-cygwin*)
+    CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
+    platform_win32=yes
+    ;;
+  *)
+    platform_win32=no
+    ;;
+esac
+AC_MSG_RESULT([$platform_win32])
+
 AC_SUBST(CLUTTER_LT_VERSION)
 AC_SUBST(CLUTTER_LT_LDFLAGS)
 
@@ -338,7 +350,6 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
           FLAVOUR_LIBS="$FLAVOUR_LIBS -lopengl32 -lgdi32 -lwinmm"
           FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS -D_WIN32_WINNT=0x0500"
-          CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
 
           AC_CHECK_TOOL(WINDRES, windres, no)
           if test "$WINDRES" = no; then
