@@ -115,8 +115,16 @@ handle_configure (void *data, struct wl_shell *shell,
 
   stage_wayland = wl_surface_get_user_data (surface);
 
+  if ((stage_wayland->allocation.width != width) ||
+      (stage_wayland->allocation.height != height))
+    {
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_wayland->wrapper));
+    }
+
   stage_wayland->pending_allocation.x = x;
   stage_wayland->pending_allocation.y = y;
+  stage_wayland->pending_allocation.width = width;
+  stage_wayland->pending_allocation.height = height;
   stage_wayland->allocation = stage_wayland->pending_allocation;
 
   clutter_actor_set_size (CLUTTER_ACTOR (stage_wayland->wrapper),

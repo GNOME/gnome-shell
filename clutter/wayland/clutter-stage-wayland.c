@@ -77,7 +77,10 @@ wayland_create_buffer (ClutterStageWayland *stage_wayland,
       EGL_DRM_BUFFER_USE_MESA, EGL_DRM_BUFFER_USE_SCANOUT_MESA,
       EGL_NONE
   };
-  CoglHandle tex;
+  struct wl_visual *visual;
+  EGLint name;
+  EGLint stride;
+  cairo_rectangle_int_t rect;
 
   buffer = g_slice_new (ClutterStageWaylandWaylandBuffer);
 
@@ -88,16 +91,31 @@ wayland_create_buffer (ClutterStageWayland *stage_wayland,
   glBindTexture (GL_TEXTURE_2D, buffer->texture);
   backend_wayland->image_target_texture_2d (GL_TEXTURE_2D, buffer->drm_image);
 
-  tex = cogl_texture_new_from_foreign (buffer->texture,
-                                       GL_TEXTURE_2D,
-                                       geom->width,
-                                       geom->height,
-                                       0,
-                                       0,
-                                       COGL_PIXEL_FORMAT_ARGB_8888);
-  buffer->offscreen = cogl_offscreen_new_to_texture (tex);
-  cogl_handle_unref (tex);
-  buffer->wayland_buffer = NULL;
+  buffer->tex = cogl_texture_new_from_foreign (buffer->texture,
+					       GL_TEXTURE_2D,
+					       geom->width,
+					       geom->height,
+					       0,
+					       0,
+					       COGL_PIXEL_FORMAT_ARGB_8888);
+  buffer->offscreen = cogl_offscreen_new_to_texture (buffer->tex);
+
+  backend_wayland->export_drm_image (edpy, buffer->drm_image,
+				     &name, NULL, &stride);
+  visual =
+    wl_display_get_premultiplied_argb_visual (backend_wayland->wayland_display);
+  buffer->wayland_buffer =
+    wl_drm_create_buffer (backend_wayland->wayland_drm,
+                          name,
+                          stage_wayland->allocation.width,
+                          stage_wayland->allocation.height,
+                          stride, visual);
+
+  rect.x = geom->x;
+  rect.y = geom->y;
+  rect.width = geom->width;
+  rect.height = geom->height;
+  buffer->dirty_region = cairo_region_create_rectangle (&rect);
 
   return buffer;
 }
@@ -109,9 +127,8 @@ wayland_free_buffer (ClutterStageWaylandWaylandBuffer *buffer)
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
   EGLDisplay edpy = clutter_egl_display ();
 
-  if (buffer->wayland_buffer)
-    wl_buffer_destroy (buffer->wayland_buffer);
-
+  cogl_handle_unref (buffer->tex);
+  wl_buffer_destroy (buffer->wayland_buffer);
   cogl_handle_unref (buffer->offscreen);
   glDeleteTextures (1, &buffer->texture);
   backend_wayland->destroy_image (edpy, buffer->drm_image);
@@ -235,9 +252,61 @@ clutter_stage_wayland_resize (ClutterStageWindow *stage_window,
 			      gint                height)
 {
   ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
+  cairo_rectangle_int_t rect;
+
+  fprintf (stderr, "resize %dx%d\n", width, height);
 
   stage_wayland->pending_allocation.width = width;
   stage_wayland->pending_allocation.height = height;
+
+  /* FIXME: Shouldn't the stage repaint everything when it gets resized? */
+  rect.x = stage_wayland->pending_allocation.x;
+  rect.y = stage_wayland->pending_allocation.y;
+  rect.width = stage_wayland->pending_allocation.width;
+  rect.height = stage_wayland->pending_allocation.height;
+  cairo_region_union_rectangle (stage_wayland->repaint_region, &rect);
+}
+
+#define CAIRO_REGION_FULL ((cairo_region_t *) 1)
+
+static gboolean
+clutter_stage_wayland_has_redraw_clips (ClutterStageWindow *stage_window)
+{
+  return TRUE;
+}
+
+static gboolean
+clutter_stage_wayland_ignoring_redraw_clips (ClutterStageWindow *stage_window)
+{
+  return FALSE;
+}
+
+static void
+clutter_stage_wayland_add_redraw_clip (ClutterStageWindow *stage_window,
+				       ClutterGeometry    *stage_clip)
+{
+  ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
+  cairo_rectangle_int_t rect;
+
+  if (stage_clip == NULL)
+    {
+      rect.x = stage_wayland->allocation.x;
+      rect.y = stage_wayland->allocation.y;
+      rect.width = stage_wayland->allocation.width;
+      rect.height = stage_wayland->allocation.height;
+    }
+  else
+    {
+      rect.x = stage_clip->x;
+      rect.y = stage_clip->y;
+      rect.width = stage_clip->width;
+      rect.height = stage_clip->height;
+    }
+
+  if (stage_wayland->repaint_region == NULL)
+    stage_wayland->repaint_region = cairo_region_create_rectangle (&rect);
+  else
+    cairo_region_union_rectangle (stage_wayland->repaint_region, &rect);
 }
 
 static void
@@ -254,6 +323,10 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->resize = clutter_stage_wayland_resize;
   iface->show = clutter_stage_wayland_show;
   iface->hide = clutter_stage_wayland_hide;
+
+  iface->add_redraw_clip = clutter_stage_wayland_add_redraw_clip;
+  iface->has_redraw_clips = clutter_stage_wayland_has_redraw_clips;
+  iface->ignoring_redraw_clips = clutter_stage_wayland_ignoring_redraw_clips;
 }
 
 static void
@@ -272,20 +345,6 @@ _clutter_stage_wayland_init (ClutterStageWayland *stage_wayland)
 }
 
 static void
-wayland_free_front_buffer (void *data)
-{
-  ClutterStageWayland *stage_wayland = data;
-
-  if (stage_wayland->front_buffer)
-    wayland_free_buffer (stage_wayland->front_buffer);
-  stage_wayland->front_buffer = stage_wayland->pending_buffer;
-  stage_wayland->pending_buffer = NULL;
-
-  if (stage_wayland->back_buffer)
-    wayland_swap_buffers (stage_wayland);
-}
-
-static void
 wayland_frame_callback (void *data, uint32_t _time)
 {
   ClutterStageWayland *stage_wayland = data;
@@ -298,38 +357,19 @@ wayland_swap_buffers (ClutterStageWayland *stage_wayland)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
-  EGLDisplay edpy = clutter_egl_display ();
-  EGLint name;
-  EGLint stride;
-  struct wl_visual *visual;
+  ClutterStageWaylandWaylandBuffer *buffer;
 
-  if (stage_wayland->pending_buffer)
-    return;
+  buffer = stage_wayland->front_buffer;
+  stage_wayland->front_buffer = stage_wayland->back_buffer;
+  stage_wayland->back_buffer = buffer;
 
-  stage_wayland->pending_buffer = stage_wayland->back_buffer;
-  stage_wayland->back_buffer = NULL;
-
-  backend_wayland->export_drm_image (edpy,
-				     stage_wayland->pending_buffer->drm_image,
-				     &name, NULL, &stride);
-  visual =
-    wl_display_get_premultiplied_argb_visual (backend_wayland->wayland_display);
-  stage_wayland->pending_buffer->wayland_buffer =
-    wl_drm_create_buffer (backend_wayland->wayland_drm,
-                          name,
-                          stage_wayland->allocation.width,
-                          stage_wayland->allocation.height,
-                          stride, visual);
   wl_surface_attach (stage_wayland->wayland_surface,
-                     stage_wayland->pending_buffer->wayland_buffer);
+                     stage_wayland->front_buffer->wayland_buffer);
   wl_surface_map (stage_wayland->wayland_surface,
                   stage_wayland->allocation.x,
                   stage_wayland->allocation.y,
                   stage_wayland->allocation.width,
                   stage_wayland->allocation.height);
-  wl_display_sync_callback (backend_wayland->wayland_display,
-                            wayland_free_front_buffer,
-                            stage_wayland);
 
   stage_wayland->pending_swaps++;
   wl_display_frame_callback (backend_wayland->wayland_display,
@@ -337,32 +377,157 @@ wayland_swap_buffers (ClutterStageWayland *stage_wayland)
 			     stage_wayland);
 }
 
+static void
+_clutter_stage_wayland_repair_dirty(ClutterStageWayland *stage_wayland,
+				       ClutterStage     *stage)
+{
+  CoglMaterial *outline = NULL;
+  CoglHandle vbo;
+  float vertices[8], texcoords[8];
+  CoglMatrix modelview;
+  cairo_region_t *dirty;
+  cairo_rectangle_int_t rect;
+  int i, count;
+  float width, height;
+
+  dirty = stage_wayland->back_buffer->dirty_region;
+  stage_wayland->back_buffer->dirty_region = NULL;
+  cairo_region_subtract (dirty, stage_wayland->repaint_region);
+  width = stage_wayland->allocation.width;
+  height = stage_wayland->allocation.height;
+  
+  /* If this is the first time we render, there is no front buffer to
+   * copy back from, but then the dirty region not covered by the
+   * repaint should be empty, because we repaint the entire stage.
+   *
+   * assert(stage_wayland->front_buffer != NULL) ||
+   *   cairo_region_is_empty(dirty);
+   *
+   * FIXME: in test-rotate, the stage never queues a full repaint
+   * initially, it's restricted to the paint box of it's rotating
+   * children.
+   */
+
+  if (!stage_wayland->front_buffer)
+    return;
+
+  outline = cogl_material_new ();
+  cogl_material_set_layer (outline, 0, stage_wayland->front_buffer->tex);
+  count = cairo_region_num_rectangles (dirty);
+
+  for (i = 0; i < count; i++)
+    {
+      cairo_region_get_rectangle (dirty, i, &rect);
+      vbo = cogl_vertex_buffer_new (4);
+
+      vertices[0] = rect.x - 1;
+      vertices[1] = rect.y - 1;
+      vertices[2] = rect.x + rect.width + 1;
+      vertices[3] = rect.y - 1;
+      vertices[4] = rect.x + rect.width + 1;
+      vertices[5] = rect.y + rect.height + 1;
+      vertices[6] = rect.x - 1;
+      vertices[7] = rect.y + rect.height + 1;
+
+      cogl_vertex_buffer_add (vbo,
+			      "gl_Vertex",
+			      2, /* n_components */
+			      COGL_ATTRIBUTE_TYPE_FLOAT,
+			      FALSE, /* normalized */
+			      0, /* stride */
+			      vertices);
+
+      texcoords[0] = vertices[0] / width;
+      texcoords[1] = vertices[1] / height;
+      texcoords[2] = vertices[2] / width;
+      texcoords[3] = vertices[3] / height;
+      texcoords[4] = vertices[4] / width;
+      texcoords[5] = vertices[5] / height;
+      texcoords[6] = vertices[6] / width;
+      texcoords[7] = vertices[7] / height;
+
+      cogl_vertex_buffer_add (vbo,
+			      "gl_MultiTexCoord0",
+			      2, /* n_components */
+			      COGL_ATTRIBUTE_TYPE_FLOAT,
+			      FALSE, /* normalized */
+			      0, /* stride */
+			      texcoords);
+
+      cogl_vertex_buffer_submit (vbo);
+
+      cogl_push_matrix ();
+      cogl_matrix_init_identity (&modelview);
+      _clutter_actor_apply_modelview_transform (CLUTTER_ACTOR (stage),
+						&modelview);
+      cogl_set_modelview_matrix (&modelview);
+      cogl_set_source (outline);
+      cogl_vertex_buffer_draw (vbo, COGL_VERTICES_MODE_TRIANGLE_FAN,
+			       0 , 4);
+      cogl_pop_matrix ();
+      cogl_object_unref (vbo);
+    }
+
+  cairo_region_destroy (dirty);
+}
+
+void
+_clutter_stage_wayland_repaint_region (ClutterStageWayland *stage_wayland,
+				       ClutterStage        *stage)
+{
+  ClutterGeometry geom;
+  cairo_rectangle_int_t rect;
+  int i, count;
+
+  count = cairo_region_num_rectangles (stage_wayland->repaint_region);
+  for (i = 0; i < count; i++)
+    {
+      cairo_region_get_rectangle (stage_wayland->repaint_region, i, &rect);
+
+      cogl_clip_push_window_rectangle (rect.x - 1, rect.y - 1,
+				       rect.width + 2, rect.height + 2);
+
+      geom.x = rect.x;
+      geom.y = rect.y;
+      geom.width = rect.width;
+      geom.height = rect.height;
+      /* FIXME: We should pass geom in as second arg, but some actors
+       * cull themselves a little to much.  Disable for now.*/
+      _clutter_stage_do_paint (stage, NULL);
+
+      cogl_clip_pop ();
+    }
+}
+
 void
 _clutter_stage_wayland_redraw (ClutterStageWayland *stage_wayland,
 			       ClutterStage    *stage)
 {
-  ClutterActor *wrapper = CLUTTER_ACTOR (stage_wayland->wrapper);
-
   stage_wayland->allocation = stage_wayland->pending_allocation;
 
-  if (stage_wayland->back_buffer)
-    {
-      wayland_free_buffer (stage_wayland->back_buffer);
-      stage_wayland->back_buffer = NULL;
-    }
-
-  stage_wayland->back_buffer = wayland_create_buffer (stage_wayland,
-                                                  &stage_wayland->allocation);
+  if (!stage_wayland->back_buffer)
+      stage_wayland->back_buffer =
+	wayland_create_buffer (stage_wayland, &stage_wayland->allocation);
 
   cogl_set_framebuffer (stage_wayland->back_buffer->offscreen);
   _clutter_stage_maybe_setup_viewport (stage_wayland->wrapper);
 
-  clutter_actor_paint (wrapper);
+  _clutter_stage_wayland_repair_dirty (stage_wayland, stage);
+
+  _clutter_stage_wayland_repaint_region (stage_wayland, stage);
+
   cogl_flush ();
   glFlush ();
 
+  wayland_swap_buffers (stage_wayland);
+
+  if (stage_wayland->back_buffer)
+    stage_wayland->back_buffer->dirty_region = stage_wayland->repaint_region;
+  else
+    cairo_region_destroy (stage_wayland->repaint_region);
+
+  stage_wayland->repaint_region = NULL;
+
   cogl_set_framebuffer (stage_wayland->pick_buffer->offscreen);
   _clutter_stage_maybe_setup_viewport (stage_wayland->wrapper);
-
-  wayland_swap_buffers (stage_wayland);
 }

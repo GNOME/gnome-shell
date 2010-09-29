@@ -57,6 +57,8 @@ typedef struct _ClutterStageWaylandWaylandBuffer
   GLuint texture;
   CoglHandle offscreen;
   struct wl_buffer *wayland_buffer;
+  cairo_region_t *dirty_region;
+  CoglHandle tex;
 } ClutterStageWaylandWaylandBuffer;
 
 struct _ClutterStageWayland
@@ -77,8 +79,8 @@ struct _ClutterStageWayland
 
   ClutterStageWaylandWaylandBuffer *front_buffer;
   ClutterStageWaylandWaylandBuffer *back_buffer;
-  ClutterStageWaylandWaylandBuffer *pending_buffer;
   ClutterStageWaylandWaylandBuffer *pick_buffer;
+  cairo_region_t *repaint_region;
 };
 
 struct _ClutterStageWaylandClass
