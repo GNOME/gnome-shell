@@ -678,6 +678,7 @@ PopupMenuManager.prototype = {
             menu:              menu,
             openStateChangeId: menu.connect('open-state-changed', Lang.bind(this, this._onMenuOpenState)),
             activateId:        menu.connect('activate', Lang.bind(this, this._onMenuActivated)),
+            destroyId:         menu.connect('destroy', Lang.bind(this, this._onMenuDestroy)),
             enterId:           0,
             buttonPressId:     0
         };
