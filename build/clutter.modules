@@ -83,6 +83,19 @@
   </autotools>
 -->
 
+  <autotools id="mesa">
+    <branch repo="git.freedesktop.org"
+            module="mesa/mesa" checkoutdir="mesa"/>
+  </autotools>
+
+  <autotools id="wayland">
+    <branch repo="git.freedesktop.org"
+            module="~krh/wayland" checkoutdir="wayland"/>
+    <dependencies>
+      <dep package="mesa"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gtk-doc">
     <branch repo="git.gnome.org"
             module="gtk-doc"
