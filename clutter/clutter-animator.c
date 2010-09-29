@@ -276,6 +276,7 @@ property_iter_new (ClutterAnimator *animator,
                    PropObjectKey   *key,
                    GType            type)
 {
+  ClutterAnimatorPrivate *priv = animator->priv;
   PropertyIter *property_iter = g_slice_new (PropertyIter);
   ClutterInterval *interval = g_object_new (CLUTTER_TYPE_INTERVAL,
                                             "value-type", type,
@@ -287,8 +288,7 @@ property_iter_new (ClutterAnimator *animator,
   property_iter->interval = interval;
   property_iter->key = key;
   property_iter->alpha = clutter_alpha_new ();
-  clutter_alpha_set_timeline (property_iter->alpha,
-                              animator->priv->slave_timeline);
+  clutter_alpha_set_timeline (property_iter->alpha, priv->slave_timeline);
 
   /* as well as the alpha */
   g_object_ref_sink (property_iter->alpha);
@@ -861,6 +861,7 @@ clutter_animator_compute_value (ClutterAnimator *animator,
                                 gdouble          progress,
                                 GValue          *value)
 {
+  ClutterAnimatorPrivate *priv;
   ClutterAnimatorKey   key;
   ClutterAnimatorKey  *previous;
   ClutterAnimatorKey  *next = NULL;
@@ -870,12 +871,14 @@ clutter_animator_compute_value (ClutterAnimator *animator,
   GList               *next_l;
   gboolean             ease_in;
   ClutterInterpolation interpolation;
- 
+
   g_return_val_if_fail (CLUTTER_IS_ANIMATOR (animator), FALSE);
   g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
   g_return_val_if_fail (property_name, FALSE);
   g_return_val_if_fail (value, FALSE);
-  
+
+  priv = animator->priv;
+
   ease_in = clutter_animator_property_get_ease_in (animator, object,
                                                    property_name);
   interpolation = clutter_animator_property_get_interpolation (animator,
@@ -891,7 +894,7 @@ clutter_animator_compute_value (ClutterAnimator *animator,
 
   initial_l = g_list_find_custom (animator->priv->score, &key,
                                   sort_actor_prop_func);
-  if (!initial_l)
+  if (initial_l == NULL)
     return FALSE;
 
   /* first find the interval we belong in, that is the first interval
@@ -914,9 +917,7 @@ clutter_animator_compute_value (ClutterAnimator *animator,
              }
          }
        else
-         {
-           next = NULL;
-         }
+         next = NULL;
 
        if (progress < previous->progress)
          {
@@ -933,13 +934,14 @@ clutter_animator_compute_value (ClutterAnimator *animator,
             g_value_copy (&previous->value, value);
             return TRUE;
          }
+
        if (next && next->progress >= progress)
          {
             ClutterInterval *interval;
             ClutterAlpha    *alpha;
 
             gdouble sub_progress = (progress - previous->progress)
-                                    / (next->progress - previous->progress);
+                                 / (next->progress - previous->progress);
             /* this should be our interval */
             interval = g_object_new (CLUTTER_TYPE_INTERVAL,
                                      "value-type", pspec->value_type,
@@ -954,17 +956,15 @@ clutter_animator_compute_value (ClutterAnimator *animator,
                 g_value_unset (&tmp_value);
               }
             else
-              {
-                clutter_interval_set_initial_value (interval, &previous->value);
-              }
+              clutter_interval_set_initial_value (interval, &previous->value);
+
             clutter_interval_set_final_value (interval, &next->value);
 
             alpha = clutter_alpha_new ();
-            clutter_alpha_set_timeline (alpha,
-                                        animator->priv->slave_timeline);
+            clutter_alpha_set_timeline (alpha, priv->slave_timeline);
             clutter_alpha_set_mode (alpha, next->mode);
 
-            clutter_timeline_advance (animator->priv->slave_timeline,
+            clutter_timeline_advance (priv->slave_timeline,
                                       sub_progress * 10000);
             sub_progress = clutter_alpha_get_alpha (alpha);
 
