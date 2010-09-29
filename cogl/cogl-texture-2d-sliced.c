@@ -1052,17 +1052,6 @@ _cogl_texture_2d_sliced_new_with_size (unsigned int     width,
       return COGL_INVALID_HANDLE;
     }
 
-  if (!_cogl_texture_2d_sliced_slices_create (tex_2ds,
-                                              width,
-                                              height,
-                                              gl_intformat,
-                                              gl_format,
-                                              gl_type))
-    {
-      _cogl_texture_2d_sliced_free (tex_2ds);
-      return COGL_INVALID_HANDLE;
-    }
-
   tex_2ds->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
 
   return _cogl_texture_2d_sliced_handle_new (tex_2ds);
@@ -1119,13 +1108,6 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap      *bmp,
                                           gl_format,
                                           gl_type,
                                           internal_format))
-    goto error;
-
-  if (!_cogl_texture_2d_sliced_slices_create (tex_2ds,
-                                              width, height,
-                                              gl_intformat,
-                                              gl_format,
-                                              gl_type))
     goto error;
 
   if (!_cogl_texture_2d_sliced_upload_to_gl (tex_2ds,
