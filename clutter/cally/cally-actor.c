@@ -101,6 +101,7 @@
 #include "config.h"
 #endif
 
+#include <glib.h>
 #include <clutter/clutter.h>
 
 #ifdef HAVE_CLUTTER_GLX
@@ -1471,7 +1472,9 @@ cally_actor_remove_action_by_name (CallyActor  *cally_actor,
   for (node = priv->action_list; node && !action_found;
        node = node->next)
     {
-      if (!g_strcasecmp (((CallyActorActionInfo *)(node->data))->name, action_name))
+      CallyActorActionInfo *ainfo = node->data;
+
+      if (!g_ascii_strcasecmp (ainfo->name, action_name))
 	{
 	  action_found = TRUE;
 	  break;
