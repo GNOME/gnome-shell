@@ -435,6 +435,18 @@ clutter_animator_key_free (gpointer boxed)
 }
 
 static void
+clutter_animator_dispose (GObject *object)
+{
+  ClutterAnimator *animator = CLUTTER_ANIMATOR (object);
+  ClutterAnimatorPrivate *priv = animator->priv;
+
+  clutter_animator_set_timeline (animator, NULL);
+  g_object_unref (priv->slave_timeline);
+
+  G_OBJECT_CLASS (clutter_animator_parent_class)->dispose (object);
+}
+
+static void
 clutter_animator_finalize (GObject *object)
 {
   ClutterAnimator *animator = CLUTTER_ANIMATOR (object);
@@ -443,9 +455,6 @@ clutter_animator_finalize (GObject *object)
   g_list_foreach (priv->score, (GFunc) clutter_animator_key_free, NULL);
   g_list_free (priv->score);
   priv->score = NULL;
-
-  g_object_unref (priv->timeline);
-  g_object_unref (priv->slave_timeline);
 
   g_hash_table_destroy (priv->properties);
 
@@ -1049,7 +1058,7 @@ clutter_animator_set_timeline (ClutterAnimator *animator,
   priv->timeline = timeline;
   if (timeline != NULL)
     {
-      g_object_ref_sink (priv->timeline);
+      g_object_ref (priv->timeline);
 
       g_signal_connect (priv->timeline, "new-frame",
                         G_CALLBACK (animation_animator_new_frame),
@@ -1764,6 +1773,7 @@ clutter_animator_class_init (ClutterAnimatorClass *klass)
 
   gobject_class->set_property = clutter_animator_set_property;
   gobject_class->get_property = clutter_animator_get_property;
+  gobject_class->dispose = clutter_animator_dispose;
   gobject_class->finalize = clutter_animator_finalize;
 
   /**
@@ -1804,6 +1814,7 @@ static void
 clutter_animator_init (ClutterAnimator *animator)
 {
   ClutterAnimatorPrivate *priv;
+  ClutterTimeline *timeline;
 
   animator->priv = priv = CLUTTER_ANIMATOR_GET_PRIVATE (animator);
 
@@ -1812,7 +1823,9 @@ clutter_animator_init (ClutterAnimator *animator)
                                             prop_actor_key_free,
                                             property_iter_free);
 
-  clutter_animator_set_timeline (animator, clutter_timeline_new (2000));
+  timeline = clutter_timeline_new (2000);
+  clutter_animator_set_timeline (animator, timeline);
+  g_object_unref (timeline);
 
   priv->slave_timeline = clutter_timeline_new (10000);
 }
