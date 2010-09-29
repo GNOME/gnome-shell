@@ -50,7 +50,7 @@ _cogl_check_driver_valid (GError **error)
 #define COGL_FEATURE_END()                      \
   { NULL, 0 },                                  \
   };
-#include "cogl-feature-functions.h"
+#include "cogl-feature-functions-gles.h"
 
 /* Define an array of features */
 #undef COGL_FEATURE_BEGIN

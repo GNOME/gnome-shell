@@ -25,7 +25,6 @@
 #include "config.h"
 #endif
 
-#include <clutter/clutter-fixed.h>
 #include <string.h>
 #include <math.h>
 

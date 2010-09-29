@@ -42,8 +42,13 @@
 #include "cogl-texture-private.h"
 #include "cogl-blend-string.h"
 #include "cogl-profile.h"
-#ifndef HAVE_COGL_GLES
-#include "cogl-program.h"
+
+#ifdef HAVE_COGL_GL
+#include "cogl-program-gl.h"
+#endif
+
+#ifdef HAVE_COGL_GLES2
+#include "cogl-program-gles.h"
 #endif
 
 #include <glib.h>
