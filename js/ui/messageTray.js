@@ -1006,10 +1006,6 @@ MessageTray.prototype = {
         this._notificationQueue = newNotificationQueue;
 
         this._summary.remove_actor(this._summaryItems[index].actor);
-        if (this._summary.get_children().length > 0)
-            this._summaryNeedsToBeShown = true;
-        else
-            this._summaryNeedsToBeShown = false;
 
         this._summaryItems.splice(index, 1);
         if (this._longestSummaryItem.source == source) {
