@@ -29,7 +29,7 @@
 #endif
 
 #include "cogl.h"
-#include "cogl-program.h"
+#include "cogl-program-gl.h"
 #include "cogl-shader-private.h"
 #include "cogl-internal.h"
 #include "cogl-handle.h"

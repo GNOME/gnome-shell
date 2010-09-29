@@ -1,3 +1,3 @@
 SUBDIRS = autotools mingw
 
-EXTRA_DIST = gen-gcov.pl
+EXTRA_DIST = gen-gcov.pl stringify.sh

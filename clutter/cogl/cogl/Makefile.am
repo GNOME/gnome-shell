@@ -1,8 +1,10 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
 
+# preamble
+
 NULL =
 
-SUBDIRS = driver
+SUBDIRS =
 
 BUILT_SOURCES =
 
@@ -11,23 +13,6 @@ CLEANFILES =
 DISTCLEANFILES =
 
 noinst_LTLIBRARIES =
-
-# pkg-config ==================================================================
-pc_files = \
-	cogl-$(COGL_DRIVER)-$(CLUTTER_API_VERSION).pc \
-	cogl-$(CLUTTER_API_VERSION).pc
-
-cogl-$(CLUTTER_API_VERSION).pc: cogl.pc
-	$(QUIET_GEN)cp -f $< $(@F)
-
-cogl-$(COGL_DRIVER)-$(CLUTTER_API_VERSION).pc: cogl.pc
-	$(QUIET_GEN)cp -f $< $(@F)
-
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = $(pc_files)
-
-EXTRA_DIST += cogl.pc.in
-CLEANFILES += $(pc_files)
 
 INCLUDES = \
 	-I$(top_srcdir)				\
@@ -54,6 +39,20 @@ BUILT_SOURCES += cogl-defines.h
 DISTCLEANFILES += cogl-defines.h
 EXTRA_DIST += cogl-defines.h.in
 
+# pkg-config
+pc_files = \
+	cogl-$(COGL_DRIVER)-$(CLUTTER_API_VERSION).pc \
+	cogl-$(CLUTTER_API_VERSION).pc
+
+cogl-$(COGL_DRIVER)-$(CLUTTER_API_VERSION).pc: cogl-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = $(pc_files)
+
+EXTRA_DIST += cogl.pc.in
+DISTCLEANFILES += $(pc_files)
+
 # public headers
 cogl_public_h = \
 	$(srcdir)/cogl-object.h 		\
@@ -75,6 +74,58 @@ cogl_public_h = \
 	$(srcdir)/cogl-vertex-buffer.h 		\
 	$(srcdir)/cogl.h			\
 	$(NULL)
+
+# driver sources
+cogl_driver_sources =
+
+if COGL_DRIVER_GL
+cogl_driver_sources += \
+	$(srcdir)/driver/gl/cogl-context-driver-gl.c	\
+	$(srcdir)/driver/gl/cogl-context-driver-gl.h	\
+	$(srcdir)/driver/gl/cogl-feature-functions-gl.h	\
+	$(srcdir)/driver/gl/cogl-gl.c			\
+	$(srcdir)/driver/gl/cogl-program-gl.c		\
+	$(srcdir)/driver/gl/cogl-program-gl.h		\
+	$(srcdir)/driver/gl/cogl-texture-driver-gl.c	\
+	$(NULL)
+endif
+
+if COGL_DRIVER_GLES
+cogl_driver_sources += \
+	$(srcdir)/driver/gles/cogl-context-driver-gles.c	\
+	$(srcdir)/driver/gles/cogl-context-driver-gles.h	\
+	$(srcdir)/driver/gles/cogl-feature-functions-gles.h	\
+	$(srcdir)/driver/gles/cogl-gles.c			\
+	$(srcdir)/driver/gles/cogl-program-gles.c		\
+	$(srcdir)/driver/gles/cogl-program-gles.h		\
+	$(srcdir)/driver/gles/cogl-texture-driver-gles.c	\
+	$(NULL)
+
+if USE_GLES2_WRAPPER
+cogl_driver_sources += \
+	$(srcdir)/driver/gles/cogl-gles2-wrapper.c	\
+	$(srcdir)/driver/gles/cogl-gles2-wrapper.h	\
+	$(NULL)
+
+BUILT_SOURCES += \
+	cogl-fixed-vertex-shader.h \
+	cogl-fixed-vertex-shader.c \
+	cogl-fixed-fragment-shader.h \
+	cogl-fixed-fragment-shader.c
+
+%.h: $(srcdir)/driver/gles/%.glsl
+	/bin/sh $(top_srcdir)/build/stringify.sh -h $< > $@
+%.c: $(srcdir)/driver/gles/%.glsl
+	/bin/sh $(top_srcdir)/build/stringify.sh $< > $@
+
+endif # USE_GLES2_WAPPER
+
+EXTRA_DIST += \
+	$(srcdir)/driver/gles/cogl-fixed-vertex-shader.glsl 	\
+	$(srcdir)/driver/gles/cogl-fixed-fragment-shader.glsl	\
+	$(NULL)
+
+endif # COGL_DRIVER_GLES
 
 # winsys sources, common to all backends
 cogl_winsys_common_sources = \
@@ -114,11 +165,13 @@ cogl_tesselator_sources = \
 	$(NULL)
 
 EXTRA_DIST += \
-	$(srcdir)/tesselator/README \
-	$(srcdir)/tesselator/priorityq-heap.c
+	$(srcdir)/tesselator/README 		\
+	$(srcdir)/tesselator/priorityq-heap.c	\
+	$(NULL)
 
 # sources
 cogl_sources_c = \
+	$(cogl_driver_sources)				\
 	$(cogl_winsys_common_sources)			\
 	$(cogl_tesselator_sources)			\
 	$(srcdir)/cogl-debug.h 				\
@@ -212,6 +265,47 @@ cogl_sources_c = \
 	$(srcdir)/cogl-callback-list.c                  \
 	$(NULL)
 
+if SUPPORT_XLIB
+cogl_public_h += \
+       $(srcdir)/winsys/cogl-texture-pixmap-x11.h
+
+cogl_sources_c += \
+       $(srcdir)/winsys/cogl-xlib.h \
+       $(srcdir)/winsys/cogl-xlib.c \
+       $(srcdir)/winsys/cogl-texture-pixmap-x11.c \
+       $(srcdir)/winsys/cogl-texture-pixmap-x11-private.h
+endif
+if SUPPORT_GLX
+cogl_sources_c += \
+       $(srcdir)/winsys/cogl-glx.c
+endif
+if SUPPORT_EGL_PLATFORM_POWERVR_X11
+cogl_sources_c += \
+       $(srcdir)/winsys/cogl-egl.c
+endif
+if SUPPORT_EGL_PLATFORM_POWERVR_NULL
+cogl_sources_c += \
+       $(srcdir)/winsys/cogl-egl.c
+endif
+if SUPPORT_EGL_PLATFORM_POWERVR_GDL
+cogl_sources_c += \
+       $(srcdir)/winsys/cogl-egl.c
+endif
+if SUPPORT_EGL_PLATFORM_FRUITY
+cogl_sources_c += \
+       $(srcdir)/winsys/cogl-fruity.c
+endif
+if SUPPORT_WIN32
+cogl_sources_c += \
+       $(srcdir)/winsys/cogl-win32.c
+endif
+if SUPPORT_OSX
+cogl_sources_c += \
+       $(srcdir)/winsys/cogl-osx.c
+endif
+
+EXTRA_DIST += stb_image.c
+
 # glib-mkenums rules
 glib_enum_h = cogl-enum-types.h
 glib_enum_c = cogl-enum-types.c
@@ -220,53 +314,9 @@ include $(top_srcdir)/build/autotools/Makefile.am.enums
 
 noinst_LTLIBRARIES += libclutter-cogl.la
 
-libclutter_cogl_la_LIBADD = \
-	-lm $(CLUTTER_LIBS) \
-	$(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/libclutter-cogl-driver.la
-
+libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS)
 libclutter_cogl_la_SOURCES = $(cogl_sources_c)
 nodist_libclutter_cogl_la_SOURCES = $(BUILT_SOURCES)
-
-if SUPPORT_XLIB
-cogl_public_h += \
-       $(srcdir)/winsys/cogl-texture-pixmap-x11.h
-
-libclutter_cogl_la_SOURCES += \
-       $(srcdir)/winsys/cogl-xlib.h \
-       $(srcdir)/winsys/cogl-xlib.c \
-       $(srcdir)/winsys/cogl-texture-pixmap-x11.c \
-       $(srcdir)/winsys/cogl-texture-pixmap-x11-private.h
-endif
-if SUPPORT_GLX
-libclutter_cogl_la_SOURCES += \
-       $(srcdir)/winsys/cogl-glx.c
-endif
-if SUPPORT_EGL_PLATFORM_POWERVR_X11
-libclutter_cogl_la_SOURCES += \
-       $(srcdir)/winsys/cogl-egl.c
-endif
-if SUPPORT_EGL_PLATFORM_POWERVR_NULL
-libclutter_cogl_la_SOURCES += \
-       $(srcdir)/winsys/cogl-egl.c
-endif
-if SUPPORT_EGL_PLATFORM_POWERVR_GDL
-libclutter_cogl_la_SOURCES += \
-       $(srcdir)/winsys/cogl-egl.c
-endif
-if SUPPORT_EGL_PLATFORM_FRUITY
-libclutter_cogl_la_SOURCES += \
-       $(srcdir)/winsys/cogl-fruity.c
-endif
-if SUPPORT_WIN32
-libclutter_cogl_la_SOURCES += \
-       $(srcdir)/winsys/cogl-win32.c
-endif
-if SUPPORT_OSX
-libclutter_cogl_la_SOURCES += \
-       $(srcdir)/winsys/cogl-osx.c
-endif
-
-EXTRA_DIST += stb_image.c
 
 # COGL installed headers
 cogl_headers = \

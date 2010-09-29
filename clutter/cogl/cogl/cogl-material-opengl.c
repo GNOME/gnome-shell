@@ -36,8 +36,13 @@
 #include "cogl-material-private.h"
 #include "cogl-context.h"
 #include "cogl-texture-private.h"
-#ifndef HAVE_COGL_GLES
-#include "cogl-program.h"
+
+#ifdef HAVE_COGL_GL
+#include "cogl-program-gl.h"
+#endif
+
+#ifdef HAVE_COGL_GLES2
+#include "cogl-program-gles.h"
 #endif
 
 #ifdef COGL_MATERIAL_BACKEND_GLSL

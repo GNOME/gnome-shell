@@ -1,18 +1,10 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
 
+# preamble
 NULL =
 
-SUBDIRS = cogl $(CLUTTER_WINSYS_BASE) $(CLUTTER_WINSYS) cally
-
-if LOCAL_JSON_GLIB
-SUBDIRS += json
-clutter_json_include = -I$(top_srcdir)/clutter/json
-clutter_json_dep = json/libclutter-json.la
-clutter_json_libadd = $(top_builddir)/clutter/json/libclutter-json.la
-clutter_json_gir = ClutterJson-@CLUTTER_API_VERSION@.gir
-endif
-
-DIST_SUBDIRS = glx egl cogl json osx x11 win32 fruity cally
+# we recurse only into Cogl
+SUBDIRS = cogl
 
 # common definitions
 CLEANFILES =
@@ -20,30 +12,16 @@ DISTCLEANFILES =
 EXTRA_DIST =
 BUILT_SOURCES =
 
-if SUPPORT_WIN32
-
-# Ideally this resources stuff would go in win32/ but libtool doesn't
-# seem to pass on the -Wl argument when linking a convenience library
-# so we need to do it here as part of linking the dll. libtool also
-# won't let you link against the .o directly because it wants you to
-# link against libtool objects for dynamic libraries.
-.rc.o :
-	$(WINDRES) -I$(srcdir)/win32 $< $@
-
-win32/resources.o : $(srcdir)/win32/invisible-cursor.cur
-
-win32_resources = win32/resources.o
-win32_resources_ldflag = -Wl,win32/resources.o
-
-endif # SUPPORT_WIN32
+lib_LTLIBRARIES =
 
 INCLUDES = \
 	-I$(top_srcdir) 				\
-	-I$(top_srcdir)/clutter/cally			\
+	-I$(top_srcdir)/clutter				\
 	-I$(top_srcdir)/clutter/cogl			\
 	-I$(top_srcdir)/clutter/cogl/pango		\
-	-I$(top_srcdir)/clutter				\
-	$(clutter_json_include)				\
+	-I$(top_srcdir)/clutter/$(CLUTTER_WINSYS)	\
+	-I$(top_srcdir)/clutter/$(CLUTTER_WINSYS_BASE)	\
+	-I$(top_srcdir)/clutter/cally			\
 	-I$(top_builddir)				\
 	-I$(top_builddir)/clutter			\
 	-I$(top_builddir)/clutter/cogl			\
@@ -66,7 +44,19 @@ AM_CPPFLAGS = \
 
 AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS) $(GCOV_CFLAGS)
 
-# please, keep this sorted alphabetically
+# these are the gir files we generate by hand
+BUILT_GIRSOURCES =
+
+# these are the gir files we generate using g-ir-scanner
+INTROSPECTION_GIRS =
+
+# the base include path for headers
+clutter_includedir = $(includedir)/clutter-$(CLUTTER_API_VERSION)/clutter
+
+# pkg-config files
+pc_files =
+
+# common sources - please, keep these sorted alphabetically
 source_h =					\
 	$(srcdir)/clutter-action.h		\
 	$(srcdir)/clutter-actor-meta.h		\
@@ -146,22 +136,6 @@ source_h =					\
 	$(srcdir)/clutter-util.h 		\
 	$(NULL)
 
-built_source_h = \
-	clutter-enum-types.h			\
-	clutter-marshal.h
-
-# glib-genmarshal rules
-glib_marshal_list = clutter-marshal.list
-glib_marshal_prefix = _clutter_marshal
-include $(top_srcdir)/build/autotools/Makefile.am.marshal
-
-# glib-mkenums rules
-glib_enum_h = clutter-enum-types.h
-glib_enum_c = clutter-enum-types.c
-glib_enum_headers = $(source_h)
-include $(top_srcdir)/build/autotools/Makefile.am.enums
-
-# please, keep this sorted alphabetically
 source_c = \
 	$(srcdir)/clutter-action.c		\
 	$(srcdir)/clutter-actor-meta.c		\
@@ -241,16 +215,7 @@ source_c = \
 	$(srcdir)/clutter-paint-volume.c 	\
 	$(NULL)
 
-source_c_priv = \
-	$(srcdir)/clutter-id-pool.c 		\
-	$(srcdir)/clutter-profile.c		\
-	$(srcdir)/clutter-timeout-interval.c    \
-	$(NULL)
-
-built_source_c = \
-	clutter-enum-types.c			\
-	clutter-marshal.c
-
+# private headers; these should not be distributed or introspected
 source_h_priv = \
 	$(srcdir)/clutter-actor-meta-private.h	\
 	$(srcdir)/clutter-bezier.h		\
@@ -265,32 +230,341 @@ source_h_priv = \
 	$(srcdir)/clutter-timeout-interval.h    \
 	$(NULL)
 
+# private source code; these should not be introspected
+source_c_priv = \
+	$(srcdir)/clutter-id-pool.c 		\
+	$(srcdir)/clutter-profile.c		\
+	$(srcdir)/clutter-timeout-interval.c    \
+	$(NULL)
+
+# built sources
+built_source_c = \
+	clutter-enum-types.c			\
+	clutter-marshal.c			\
+	$(NULL)
+
+# built headers
+built_source_h = \
+	clutter-enum-types.h			\
+	clutter-marshal.h			\
+	$(NULL)
+
+# version header
+DISTCLEANFILES += clutter-version.h
+EXTRA_DIST += clutter-version.h.in
+
+# key symbol update script
+EXTRA_DIST += clutter-keysyms-update.pl
+
+pc_files += clutter-$(CLUTTER_API_VERSION).pc
+
+# backends source listings
+#
+#   backend_source_c := source code
+#   backend_source_h := installed public headers
+#   backend_source_c_priv := source that should not be scanned by g-i
+#   backend_source_h_priv := private headers
+#   backend_source_built := built sources
+#
+backend_source_c =
+backend_source_h =
+backend_source_c_priv =
+backend_source_h_priv =
+backend_source_built =
+
+# X11 backend rules
+if SUPPORT_X11
+x11_source_c = \
+	$(srcdir)/x11/clutter-backend-x11.c		\
+	$(srcdir)/x11/clutter-device-manager-x11.c	\
+	$(srcdir)/x11/clutter-event-x11.c		\
+	$(srcdir)/x11/clutter-input-device-x11.c	\
+	$(srcdir)/x11/clutter-keymap-x11.c		\
+	$(srcdir)/x11/clutter-stage-x11.c		\
+	$(srcdir)/x11/clutter-x11-texture-pixmap.c	\
+	$(NULL)
+
+x11_source_h = \
+	$(srcdir)/x11/clutter-x11.h			\
+	$(srcdir)/x11/clutter-x11-texture-pixmap.h	\
+	$(NULL)
+
+backend_source_h_priv += \
+	$(srcdir)/x11/clutter-backend-x11.h		\
+	$(srcdir)/x11/clutter-device-manager-x11.h	\
+	$(srcdir)/x11/clutter-input-device-x11.h	\
+	$(srcdir)/x11/clutter-keymap-x11.h		\
+	$(srcdir)/x11/clutter-settings-x11.h		\
+	$(srcdir)/x11/clutter-stage-x11.h		\
+	$(NULL)
+
+backend_source_c_priv += \
+	$(srcdir)/x11/xsettings/xsettings-client.c	\
+	$(srcdir)/x11/xsettings/xsettings-client.h	\
+	$(srcdir)/x11/xsettings/xsettings-common.c	\
+	$(srcdir)/x11/xsettings/xsettings-common.h	\
+	$(NULL)
+
+backend_source_h += $(x11_source_h)
+backend_source_c += $(x11_source_c)
+
+# the list of files we want to introspect on X11
+x11_introspection = $(x11_source_c) $(x11_source_h)
+
+# pkg-config file for the X11 meta-backend
+clutter-x11-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-x11-$(CLUTTER_API_VERSION).pc
+
+clutterx11_includedir = $(clutter_includedir)/x11
+clutterx11_include_HEADERS = $(x11_source_h)
+endif # SUPPORT_X11
+
+# GLX backend rules
+if SUPPORT_GLX
+glx_source_c = \
+	$(srcdir)/glx/clutter-backend-glx.c		\
+	$(srcdir)/glx/clutter-event-glx.c		\
+	$(srcdir)/glx/clutter-glx-texture-pixmap.c	\
+	$(srcdir)/glx/clutter-stage-glx.c		\
+	$(NULL)
+
+glx_source_h = \
+	$(srcdir)/glx/clutter-glx-texture-pixmap.h	\
+	$(srcdir)/glx/clutter-glx.h			\
+	$(NULL)
+
+backend_source_h_priv += \
+	$(srcdir)/glx/clutter-backend-glx.h		\
+	$(srcdir)/glx/clutter-event-glx.h		\
+	$(srcdir)/glx/clutter-stage-glx.h		\
+	$(NULL)
+
+backend_source_h += $(glx_source_h)
+backend_source_c += $(glx_source_c)
+
+# XXX - this is another hack; we installed glx headers under includedir/glx
+# instead of using the same directory.
+clutterglx_includedir = $(clutter_includedir)/glx
+clutterglx_include_HEADERS = $(glx_source_h)
+endif # SUPPORT_GLX
+
+# Windows backend rules
+if SUPPORT_WIN32
+# Ideally this resources stuff would go in win32/ but libtool doesn't
+# seem to pass on the -Wl argument when linking a convenience library
+# so we need to do it here as part of linking the dll. libtool also
+# won't let you link against the .o directly because it wants you to
+# link against libtool objects for dynamic libraries.
+.rc.o :
+	$(WINDRES) -I$(srcdir)/win32 $< $@
+
+win32/resources.o : $(srcdir)/win32/invisible-cursor.cur
+
+win32_resources = win32/resources.o
+win32_resources_ldflag = -Wl,win32/resources.o
+
+win32_source_c = \
+	$(srcdir)/win32/clutter-backend-win32.c		\
+	$(srcdir)/win32/clutter-device-manager-win32.c	\
+	$(srcdir)/win32/clutter-event-win32.c		\
+	$(srcdir)/win32/clutter-stage-win32.c		\
+	$(NULL)
+
+win32_source_h = \
+	$(srcdir)/win32/clutter-win32.h			\
+	$(NULL)
+
+backend_source_h_priv += \
+	$(srcdir)/win32/clutter-backend-win32.h		\
+	$(srcdir)/win32/clutter-device-manager-win32.h	\
+	$(srcdir)/win32/clutter-stage-win32.h		\
+	$(NULL)
+
+backend_source_h += $(win32_source_h)
+backend_source_c += $(win32_source_c)
+
+clutterwin_includedir = $(clutter_includedir)/win32
+clutterwin_include_HEADERS = $(win32_source_h)
+
+EXTRA_DIST += invisible-cursor.cur resources.rc
+endif # SUPPORT_WIN32
+
+# EGL backend rules
+if SUPPORT_EGL
+egl_source_h = \
+	$(srcdir)/egl/clutter-egl-headers.h	\
+	$(srcdir)/egl/clutter-egl.h		\
+	$(NULL)
+
+backend_source_c += \
+	$(srcdir)/egl/clutter-backend-egl.c	\
+	$(srcdir)/egl/clutter-stage-egl.c	\
+	$(NULL)
+
+backend_source_h_priv += \
+	$(srcdir)/egl/clutter-backend-egl.h	\
+	$(srcdir)/egl/clutter-stage-egl.h	\
+	$(NULL)
+
+if USE_TSLIB
+backend_source_c_priv += $(srcdir)/egl/clutter-event-tslib.c
+endif # SUPPORT_TSLIB
+
+if SUPPORT_CEX100
+backend_source_h_priv += $(srcdir)/egl/clutter-backend-cex100.h
+backend_source_c_priv += $(srcdir)/egl/clutter-backend-cex100.c
+
+egl_source_h += $(srcdir)/egl/clutter-cex100.h
+endif # SUPPORT_CEX100
+
+backend_source_h += $(egl_source_h)
+
+clutteregl_includedir = $(clutter_includedir)/egl
+clutteregl_include_HEADERS = $(egl_source_h)
+endif # SUPPORT_EGL
+
+# OSX backend rules
+if SUPPORT_OSX
+
+endif # SUPPORT_OSX
+
+# Fruity backend rules
+if SUPPORT_FRUITY
+
+endif # SUPPORT_FRUITY
+
+# cally
+cally_sources_h = \
+	$(srcdir)/cally/cally-actor.h		\
+	$(srcdir)/cally/cally-clone.h		\
+	$(srcdir)/cally/cally-factory.h		\
+	$(srcdir)/cally/cally-group.h		\
+	$(srcdir)/cally/cally.h			\
+	$(srcdir)/cally/cally-main.h		\
+	$(srcdir)/cally/cally-rectangle.h	\
+	$(srcdir)/cally/cally-root.h		\
+	$(srcdir)/cally/cally-stage.h		\
+	$(srcdir)/cally/cally-text.h		\
+	$(srcdir)/cally/cally-texture.h		\
+	$(srcdir)/cally/cally-util.h		\
+	$(NULL)
+
+cally_sources_c = \
+	$(srcdir)/cally/cally-actor.c		\
+	$(srcdir)/cally/cally.c			\
+	$(srcdir)/cally/cally-clone.c		\
+	$(srcdir)/cally/cally-group.c		\
+	$(srcdir)/cally/cally-rectangle.c	\
+	$(srcdir)/cally/cally-root.c		\
+	$(srcdir)/cally/cally-stage.c		\
+	$(srcdir)/cally/cally-text.c		\
+	$(srcdir)/cally/cally-texture.c		\
+	$(srcdir)/cally/cally-util.c		\
+	$(NULL)
+
+cally_sources_private = \
+	$(srcdir)/cally/cally-actor-private.h	\
+	$(NULL)
+
+cally_includedir = $(clutter_includedir)/cally
+cally_include_HEADERS = $(cally_sources_h)
+
+pc_files += cally/cally-$(CLUTTER_API_VERSION).pc
+EXTRA_DIST += cally/cally.pc.in
+
+# json
+if LOCAL_JSON_GLIB
+json_gir = ClutterJson-@CLUTTER_API_VERSION@.gir
+json_gir_include = --include-uninstalled=$(top_builddir)/clutter/ClutterJson-@CLUTTER_API_VERSION@.gir
+
+json_sources_h = \
+	$(srcdir)/json/json-generator.h	\
+	$(srcdir)/json/json-glib.h	\
+	$(srcdir)/json/json-parser.h	\
+	$(srcdir)/json/json-types.h	\
+	$(NULL)
+
+json_sources_c = \
+	$(srcdir)/json/json-array.c	\
+	$(srcdir)/json/json-node.c	\
+	$(srcdir)/json/json-object.c	\
+	$(srcdir)/json/json-parser.c	\
+	$(NULL)
+
+json_sources_priv = \
+	$(srcdir)/json/json-marshal.c		\
+	$(srcdir)/json/json-marshal.h		\
+	$(srcdir)/json/json-types-private.h	\
+	$(NULL)
+
+INCLUDES += $(top_srcdir)/clutter/json
+else
+json_gir_include=--include=Json-1.0
+endif # LOCAL_JSON_GLIB
+
+# general build rules:
+# you should not need to modify anything below this point
+
+# glib-genmarshal rules
+glib_marshal_list = clutter-marshal.list
+glib_marshal_prefix = _clutter_marshal
+include $(top_srcdir)/build/autotools/Makefile.am.marshal
+
+# glib-mkenums rules
+glib_enum_h = clutter-enum-types.h
+glib_enum_c = clutter-enum-types.c
+glib_enum_headers = $(source_h) $(backend_source_h)
+include $(top_srcdir)/build/autotools/Makefile.am.enums
+
+# backend-specific pkg-config file
+clutter-$(CLUTTER_WINSYS)-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+pc_files += clutter-$(CLUTTER_WINSYS)-$(CLUTTER_API_VERSION).pc
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = $(pc_files)
+DISTCLEANFILES += $(pc_files)
+
+clutter_include_HEADERS = $(source_h) $(top_srcdir)/clutter/clutter.h
+nodist_clutter_include_HEADERS = \
+	$(top_builddir)/clutter/clutter-json.h \
+	$(top_builddir)/clutter/clutter-version.h \
+	$(built_source_h)
+
+lib_LTLIBRARIES += libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+
 libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LIBADD = \
 	$(CLUTTER_LIBS) \
-	$(top_builddir)/clutter/cally/libcally.la \
 	$(top_builddir)/clutter/cogl/cogl/libclutter-cogl.la \
-	$(top_builddir)/clutter/cogl/pango/libcoglpango.la \
-	$(top_builddir)/clutter/$(CLUTTER_WINSYS)/libclutter-$(CLUTTER_WINSYS).la \
-	$(clutter_json_libadd) \
-	$(CLUTTER_WINSYS_BASE_LIB)
-
+	$(top_builddir)/clutter/cogl/pango/libcoglpango.la
 
 libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
-	$(top_builddir)/clutter/cally/libcally.la \
 	$(top_builddir)/clutter/cogl/cogl/libclutter-cogl.la \
 	$(top_builddir)/clutter/cogl/pango/libcoglpango.la \
-	$(top_builddir)/clutter/$(CLUTTER_WINSYS)/libclutter-$(CLUTTER_WINSYS).la \
-	$(clutter_json_dep) \
-	$(CLUTTER_WINSYS_BASE_LIB) \
 	$(win32_resources)
 
 libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_SOURCES = \
+	$(backend_source_c) \
+	$(backend_source_h) \
+	$(backend_source_c_priv) \
+	$(backend_source_h_priv) \
 	$(source_c) \
 	$(source_h) \
 	$(source_c_priv) \
-	$(source_h_priv)
+	$(source_h_priv) \
+	$(cally_sources_c) \
+	$(cally_sources_h) \
+	$(cally_sources_private) \
+	$(json_sources_c) \
+	$(json_sources_h) \
+	$(json_sources_priv) \
+	$(NULL)
 
 nodist_libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_SOURCES = \
+	$(backend_source_built) \
 	$(built_source_c) \
 	$(built_source_h)
 
@@ -304,51 +578,7 @@ libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(win32_resources_ldflag) \
 	$(NULL)
 
-lib_LTLIBRARIES = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
-
-clutterdir = $(includedir)/clutter-$(CLUTTER_API_VERSION)/clutter
-clutter_HEADERS = \
-	$(source_h) \
-	$(top_srcdir)/clutter/clutter.h
-nodist_clutter_HEADERS = \
-	$(top_builddir)/clutter/clutter-json.h \
-	$(top_builddir)/clutter/clutter-version.h \
-	$(built_source_h)
-
-
-DISTCLEANFILES += clutter-version.h
-EXTRA_DIST += clutter-version.h.in
-
-# these are the gir files we generate
-BUILT_GIRSOURCES =
-
-# these are the gir files we scan
-INTROSPECTION_GIRS =
-
-if LOCAL_JSON_GLIB
-json_gir_include=--include-uninstalled=$(top_builddir)/clutter/ClutterJson-@CLUTTER_API_VERSION@.gir
-
-ClutterJson-@CLUTTER_API_VERSION@.gir: libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la Makefile
-
-clutterjson_sources = $(top_srcdir)/clutter/json/*.h $(top_srcdir)/clutter/json/*.c
-clutterjson_introspection_files=$(filter-out %-private.h, $(clutterjson_sources))
-
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = ClutterJson
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_FILES = $(clutterjson_introspection_files)
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -DJSON_COMPILATION
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GObject-2.0
-ClutterJson_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
-	--warn-all \
-	--identifier-prefix=Json \
-	--symbol-prefix=json
-
-INTROSPECTION_GIRS += ClutterJson-@CLUTTER_API_VERSION@.gir
-else
-json_gir_include=--include=Json-1.0
-endif # LOCAL_JSON_GLIB
-
+# gobject-introspection rules
 -include $(INTROSPECTION_MAKEFILE)
 
 if HAVE_INTROSPECTION
@@ -365,13 +595,13 @@ Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 Atk-1.0 Pango
 Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='clutter/clutter.h' \
-	--pkg-export clutter-1.0 \
+	--pkg-export clutter-@CLUTTER_API_VERSION@ \
 	$(json_gir_include) \
 	--include-uninstalled=$(top_builddir)/clutter/cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir
 
 # ClutterJson.gir and Cogl.gir are used included into Clutter.gir, so they
 # need to be built before the typelib is generated
-Clutter-@CLUTTER_API_VERSION@.typelib: $(clutter_json_gir) Cogl-@CLUTTER_API_VERSION@.gir
+Clutter-@CLUTTER_API_VERSION@.typelib: $(json_gir) Cogl-@CLUTTER_API_VERSION@.gir
 
 # We build Cogl.gir in the cogl/ subdir, but it needs to reference the shared
 # library that it's built into, so we delay compiling the gir into typelib
@@ -385,62 +615,54 @@ Cogl-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir cogl/
 
 BUILT_GIRSOURCES += Cogl-@CLUTTER_API_VERSION@.gir
 
-# Cally depends on Clutter because it exposes Clutter types; for this reason,
-# we cannot build Cally.gir under cally/ and then do the shlib trick we do
-# for Cogl
-cally_sources=$(top_srcdir)/clutter/cally/*.h $(top_srcdir)/clutter/cally/*.c
-cally_introspection_files=$(filter-out %-private.h, $(cally_sources))
-
 Cally-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir Makefile
 
 Cally_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Cally
 Cally_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
 Cally_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
-Cally_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cally_introspection_files)
+Cally_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cally_sources_h) $(cally_sources_c)
 Cally_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED
 Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='cally/cally.h' \
-	--add-include-path $(top_builddir)/clutter \
+	--pkg-export=cally-@CLUTTER_API_VERSION@ \
 	$(json_gir_include) \
+	--include-uninstalled $(top_builddir)/clutter/Cogl-@CLUTTER_API_VERSION@.gir \
 	--include-uninstalled $(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 
 INTROSPECTION_GIRS += Cally-@CLUTTER_API_VERSION@.gir
 
+if LOCAL_JSON_GLIB
+ClutterJson-@CLUTTER_API_VERSION@.gir: libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = ClutterJson
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_FILES = $(json_sources_c) $(json_sources_h)
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS)
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GObject-2.0
+ClutterJson_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+	--warn-all \
+	--identifier-prefix=Json \
+	--symbol-prefix=json
+
+INTROSPECTION_GIRS += ClutterJson-@CLUTTER_API_VERSION@.gir
+endif # LOCAL_JSON_GLIB
+
 if SUPPORT_X11
-
-x11_sources = \
-	x11/clutter-backend-x11.c		\
-	x11/clutter-backend-x11.h		\
-	x11/clutter-device-manager-x11.c	\
-	x11/clutter-device-manager-x11.h	\
-	x11/clutter-event-x11.c			\
-	x11/clutter-input-device-x11.c		\
-	x11/clutter-input-device-x11.h		\
-	x11/clutter-keymap-x11.c		\
-	x11/clutter-keymap-x11.h		\
-	x11/clutter-settings-x11.h		\
-	x11/clutter-stage-x11.c			\
-	x11/clutter-stage-x11.h			\
-	x11/clutter-x11-enum-types.c		\
-	x11/clutter-x11-enum-types.h		\
-	x11/clutter-x11.h			\
-	x11/clutter-x11-texture-pixmap.c	\
-	x11/clutter-x11-texture-pixmap.h
-
-ClutterX11-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
+ClutterX11-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir Cogl-@CLUTTER_API_VERSION@.gir
 
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--identifier-prefix=ClutterX11 \
 	--symbol-prefix=clutter_x11 \
 	$(json_gir_include) \
-	--include-uninstalled=$(top_builddir)/clutter/cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir \
+	--include-uninstalled=$(top_builddir)/clutter/Cogl-@CLUTTER_API_VERSION@.gir \
 	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = xlib-2.0
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_FILES = $(x11_sources)
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED -L$(top_builddir)/clutter
+ClutterX11_@CLUTTER_API_VERSION_AM@_gir_FILES = $(x11_introspection)
+ClutterX11_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED
 
 INTROSPECTION_GIRS += ClutterX11-@CLUTTER_API_VERSION@.gir
 endif # SUPPORT_X11
@@ -456,7 +678,6 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib) $(INTROSPECTION_GIRS:.gir=.typ
 CLEANFILES += $(gir_DATA) $(typelibs_DATA)
 endif # HAVE_INTROSPECTION
 
-EXTRA_DIST += clutter-keysyms-update.pl
-
-gcov_sources = $(source_c)
+# GCov rules
+gcov_sources = $(source_c) $(backend_source_c)
 include $(top_srcdir)/build/autotools/Makefile.am.gcov
