@@ -3212,6 +3212,8 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
           _clutter_paint_volume_init_static (actor, &entry->clip);
           _clutter_paint_volume_set_from_volume (&entry->clip, clip);
         }
+      else
+        entry->has_clip = FALSE;
 
       stage->priv->pending_queue_redraws =
         g_list_prepend (stage->priv->pending_queue_redraws, entry);
@@ -3236,7 +3238,10 @@ _clutter_stage_queue_redraw_entry_invalidate (
   g_object_unref (entry->actor);
   entry->actor = NULL;
   if (entry->has_clip)
-    clutter_paint_volume_free (&entry->clip);
+    {
+      clutter_paint_volume_free (&entry->clip);
+      entry->has_clip = FALSE;
+    }
 }
 
 static void
