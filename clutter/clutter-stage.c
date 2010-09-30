@@ -225,10 +225,13 @@ clutter_stage_get_preferred_height (ClutterActor *self,
     *natural_height_p = geom.height;
 }
 
-static void
+static inline void
 queue_full_redraw (ClutterStage *stage)
 {
   ClutterStageWindow *stage_window;
+
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
+    return;
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
@@ -237,6 +240,9 @@ queue_full_redraw (ClutterStage *stage)
    * in this case we really need to ensure that the full stage is
    * redrawn so we add a NULL redraw clip to the stage window. */
   stage_window = _clutter_stage_get_window (stage);
+  if (stage_window == NULL)
+    return;
+
   _clutter_stage_window_add_redraw_clip (stage_window, NULL);
 }
 
@@ -842,10 +848,16 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
   CoglMatrix modelview;
   ClutterActorBox bounding_box;
 
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (actor))
+    return;
+
   /* If the backend can't do anything with redraw clips (e.g. it already knows
    * it needs to redraw everything anyway) then don't spend time transforming
    * any clip volume into stage coordinates... */
   stage_window = _clutter_stage_get_window (stage);
+  if (stage_window == NULL)
+    return;
+
   if (_clutter_stage_window_ignoring_redraw_clips (stage_window))
     return;
 
