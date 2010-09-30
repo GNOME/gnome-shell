@@ -232,6 +232,22 @@ WindowManager.prototype = {
         return count != 0;
     },
 
+    _markParentWindowAsDimmable: function(actor, animate) {
+        if (Meta.prefs_get_attach_modal_dialogs()) {
+            this._dimmedWindows.push(actor);
+            if (this._shouldAnimate())
+                this._dimParentWindow(actor, animate);
+        }
+    },
+
+    _unmarkParentWindowAsDimmable: function(actor, animate) {
+        if (!Main.overview.visible)
+            this._undimParentWindow(actor, true);
+        this._dimmedWindows = this._dimmedWindows.filter(function(win) {
+            return win != actor;
+        });
+    },
+
     _dimParentWindow: function(actor, animate) {
         let meta = actor.get_meta_window();
         let parent = meta.get_transient_for();
@@ -271,10 +287,22 @@ WindowManager.prototype = {
     },
 
     _mapWindow : function(shellwm, actor) {
+        actor._windowType = actor.meta_window.get_window_type();
+        actor._notifyWindowTypeSignalId = actor.meta_window.connect('notify::window-type', Lang.bind(this, function () {
+            let type = actor.meta_window.get_window_type();
+            if (type == actor._windowType)
+                return;
+            if (type == Meta.WindowType.MODAL_DIALOG)
+                this._markParentWindowAsDimmable(actor, true);
+            else if (actor._windowType == Meta.WindowType.MODAL_DIALOG)
+                this._unmarkParentWindowAsDimmable(actor, true);
+
+            actor._windowType = type;
+        }));
         if (actor.meta_window.get_window_type() == Meta.WindowType.MODAL_DIALOG
             && Meta.prefs_get_attach_modal_dialogs()
             && actor.get_meta_window().get_transient_for()) {
-            this._dimmedWindows.push(actor);
+            this._markParentWindowAsDimmable(actor, true);
             if (this._shouldAnimate()) {
                 actor.set_scale(1.0, 0.0);
                 actor.show();
@@ -291,7 +319,6 @@ WindowManager.prototype = {
                                    onOverwriteScope: this,
                                    onOverwriteParams: [shellwm, actor]
                                  });
-                this._dimParentWindow(actor, true);
                 return;
             }
             shellwm.completed_map(actor);
@@ -335,14 +362,14 @@ WindowManager.prototype = {
     },
 
     _destroyWindow : function(shellwm, actor) {
-        let parent = actor.get_meta_window().get_transient_for();
+        let parent = actor.meta_window.get_transient_for();
+        if (actor._notifyWindowTypeSignalId) {
+            actor.meta_window.disconnect(actor._notifyWindowTypeSignalId);
+            actor._notifyWindowTypeSignalId = 0;
+        }
         while (actor.meta_window.get_window_type() == Meta.WindowType.MODAL_DIALOG
                && parent) {
-            if (!Main.overview.visible)
-                this._undimParentWindow(actor, true);
-            this._dimmedWindows = this._dimmedWindows.filter(function(win) {
-                return win != actor;
-            });
+            this._unmarkParentWindowAsDimmable(actor, true);
             if (!Meta.prefs_get_attach_modal_dialogs()
                 || !this._shouldAnimate())
                 break;
