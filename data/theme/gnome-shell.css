@@ -535,10 +535,7 @@ StTooltip StLabel {
 }
 
 .all-app {
-    border-radius: 10px;
-    background-color: #111111;
-    border: 2px solid #868686;
-    color: #ffffff;
+    padding: 10px;
 }
 
 .app-section-divider-container {
@@ -549,16 +546,6 @@ StTooltip StLabel {
 .app-section-divider {
     height: 2px;
     background-image: url("separator-white.png");
-}
-
-.all-app-controls-panel {
-    height: 30px;
-}
-
-.all-app-scroll-view {
-    padding-right: 10px;
-    padding-left: 10px;
-    padding-bottom: 10px;
 }
 
 #dash > .app-well-app {
