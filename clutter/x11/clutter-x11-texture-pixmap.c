@@ -304,6 +304,13 @@ free_damage_resources (ClutterX11TexturePixmap *texture)
     }
 }
 
+static gboolean
+clutter_x11_texture_pixmap_get_paint_volume (ClutterActor       *self,
+                                             ClutterPaintVolume *volume)
+{
+  return clutter_paint_volume_set_from_allocation (volume, self);
+}
+
 static void
 clutter_x11_texture_pixmap_real_queue_damage_redraw (
                                               ClutterX11TexturePixmap *texture,
@@ -499,10 +506,13 @@ static void
 clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
 {
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec        *pspec;
   ClutterBackend    *default_backend;
 
   g_type_class_add_private (klass, sizeof (ClutterX11TexturePixmapPrivate));
+
+  actor_class->get_paint_volume = clutter_x11_texture_pixmap_get_paint_volume;
 
   object_class->dispose      = clutter_x11_texture_pixmap_dispose;
   object_class->set_property = clutter_x11_texture_pixmap_set_property;
