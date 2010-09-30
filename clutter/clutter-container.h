@@ -202,6 +202,9 @@ void              clutter_container_child_get                   (ClutterContaine
                                                                  const gchar      *first_prop,
                                                                  ...) G_GNUC_NULL_TERMINATED;
 
+void              clutter_container_child_notify                (ClutterContainer *container,
+                                                                 ClutterActor     *child,
+                                                                 GParamSpec       *pspec);
 
 G_END_DECLS
 

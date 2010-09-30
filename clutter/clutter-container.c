@@ -1225,3 +1225,31 @@ clutter_container_child_get (ClutterContainer *container,
 
   va_end (var_args);
 }
+
+/**
+ * clutter_container_child_notify:
+ * @container: a #ClutterContainer
+ * @child: a #ClutterActor
+ * @pspec: a #GParamSpec
+ *
+ * Calls the <function>child_notify()</function> virtual function of
+ * #ClutterContainer. The default implementation will emit the
+ * #ClutterContainer::child-notify signal.
+ *
+ * Since: 1.6
+ */
+void
+clutter_container_child_notify (ClutterContainer *container,
+                                ClutterActor     *child,
+                                GParamSpec       *pspec)
+{
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
+  g_return_if_fail (pspec != NULL);
+
+  g_return_if_fail (clutter_actor_get_parent (child) == CLUTTER_ACTOR (container));
+
+  CLUTTER_CONTAINER_GET_IFACE (container)->child_notify (container,
+                                                         child,
+                                                         pspec);
+}

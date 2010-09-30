@@ -203,6 +203,7 @@ clutter_container_child_set_property
 clutter_container_child_get_property
 clutter_container_child_set
 clutter_container_child_get
+clutter_container_child_notify
 
 <SUBSECTION>
 clutter_container_create_child_meta
