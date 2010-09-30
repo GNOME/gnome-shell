@@ -97,14 +97,11 @@ stage_key_release_cb (ClutterActor *actor,
 }
 
 static gboolean
-stage_button_press_cb (ClutterActor    *actor,
-		       ClutterEvent    *event,
-		       gpointer         data)
+draw_arc (Pixmap pixmap)
 {
-  Pixmap        pxm = (Pixmap)data;
-  Display      *dpy = clutter_x11_get_default_display ();
-  static GC     gc = None;
-  static int    x = 100, y = 100;
+  Display *dpy = clutter_x11_get_default_display ();
+  static GC gc = None;
+  static int x = 100, y = 100;
 
   if (gc == None)
     {
@@ -117,16 +114,25 @@ stage_button_press_cb (ClutterActor    *actor,
       gc_values.foreground = 0xff000000;
 
       gc = XCreateGC (dpy,
-                      pxm,
+                      pixmap,
                       GCLineWidth | GCForeground,
                       &gc_values);
     }
 
-  XDrawArc (dpy, pxm, gc, x, y, 100, 100, 0, 360 * 64);
+  XDrawArc (dpy, pixmap, gc, x, y, 100, 100, 0, 360 * 64);
 
   x -= 5;
   y -= 5;
 
+  return TRUE;
+}
+
+static gboolean
+stage_button_press_cb (ClutterActor    *actor,
+		       ClutterEvent    *event,
+		       gpointer         data)
+{
+  draw_arc ((Pixmap)data);
   return FALSE;
 }
 
@@ -383,6 +389,8 @@ test_pixmap_main (int argc, char **argv)
 
   if (!disable_animation)
     clutter_timeline_start (timeline);
+
+  g_timeout_add_seconds (1, (GSourceFunc)draw_arc, GUINT_TO_POINTER (pixmap));
 
   clutter_main ();
 # endif /* USE_GDKPIXBUF */
