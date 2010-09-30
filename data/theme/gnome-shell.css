@@ -371,8 +371,7 @@ StTooltip StLabel {
 #dash {
     color: #5f5f5f;
     font-size: 12px;
-    padding: 12px;
-    spacing: 6px;
+    padding: 6px 0px;
     background-color: rgba(0, 0, 0, 0.5);
     border: 2px solid rgba(128, 128, 128, 0.4);
     border-left: 0px;
@@ -562,7 +561,11 @@ StTooltip StLabel {
     padding-bottom: 10px;
 }
 
-.app-well-app {
+#dash > .app-well-app {
+    padding: 6px 12px;
+}
+
+.app-well-app > .overview-icon {
     border-radius: 4px;
     padding: 4px;
     font-size: 10px;
@@ -571,22 +574,22 @@ StTooltip StLabel {
     text-align: center;
 }
 
-.app-well-app.running {
+.app-well-app.running > .overview-icon {
     text-shadow: black 0px 2px 2px;
     background-image: url("running-indicator.svg");
 }
 
-.app-well-app.selected {
+.app-well-app.selected > .overview-icon {
     background: rgba(255,255,255,0.33);
 }
 
-.app-well-app:hover {
+.app-well-app:hover > .overview-icon {
     background: rgba(255,255,255,0.33);
     text-shadow: black 0px 2px 2px;
     transition-duration: 100;
 }
 
-.app-well-app:active {
+.app-well-app:active > .overview-icon {
     background-color: #1e1e1e;
     border: 1px solid #5f5f5f;
 }
