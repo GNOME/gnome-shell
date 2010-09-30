@@ -211,7 +211,7 @@ ContactManager.prototype = {
             throw new Error('Could not parse connection path ' + connPath);
 
         info.cacheDir = this._cacheDir + '/' + match[1];
-        GLib.mkdir_with_parents(info.cacheDir, 0700);
+        GLib.mkdir_with_parents(info.cacheDir, 0x1c0); // 0x1c0 = octal 0700
 
         // info.names[handle] is @handle's real name
         // info.tokens[handle] is the token for @handle's avatar
