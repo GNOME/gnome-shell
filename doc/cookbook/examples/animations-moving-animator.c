@@ -42,7 +42,6 @@ move_actors (ClutterActor *actor,
              gpointer      user_data)
 {
   State *state = (State *) user_data;
-  GList *keys;
 
   /* do nothing if the animator is already running */
   if (clutter_timeline_is_playing (clutter_animator_get_timeline (state->animator)))
