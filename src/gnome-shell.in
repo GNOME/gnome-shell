@@ -246,7 +246,11 @@ def start_shell(perf_output=None):
     if pkgconfig.returncode == 0:
         mozjs_libdir = re.sub('-(sdk|devel)', '', mozjs_sdkdir)
         if os.path.exists(mozjs_libdir + '/libmozjs.so'):
-            env['LD_LIBRARY_PATH'] = os.environ.get('LD_LIBRARY_PATH', '') + ':' + mozjs_libdir
+            if 'LD_LIBRARY_PATH' in env:
+                ld_library_path = env['LD_LIBRARY_PATH'] + ':' + mozjs_libdir
+            else:
+                ld_library_path = mozjs_libdir
+            env['LD_LIBRARY_PATH'] = ld_library_path
 
     # Log everything to stderr (make stderr our "log file")
     env['GJS_DEBUG_OUTPUT'] = 'stderr'
