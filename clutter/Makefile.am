@@ -561,7 +561,7 @@ Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 Atk-1.0 Pango
 Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='clutter/clutter.h' \
-	--pkg-export clutter-@CLUTTER_API_VERSION@ \
+	--pkg-export=clutter-@CLUTTER_API_VERSION@ \
 	--include-uninstalled=$(top_builddir)/clutter/cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir
 
 # Cogl.gir is used included into Clutter.gir, so it needs to be built
@@ -589,10 +589,12 @@ Cally_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cally_sources_h) $(cally_sources_c)
 Cally_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED
 Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
+	--identifier-prefix=Cally \
+	--symbol-prefix=cally \
 	--c-include='cally/cally.h' \
 	--pkg-export=cally-@CLUTTER_API_VERSION@ \
-	--include-uninstalled $(top_builddir)/clutter/Cogl-@CLUTTER_API_VERSION@.gir \
-	--include-uninstalled $(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
+	--include-uninstalled=$(top_builddir)/clutter/Cogl-@CLUTTER_API_VERSION@.gir \
+	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 
 INTROSPECTION_GIRS += Cally-@CLUTTER_API_VERSION@.gir
 
@@ -603,6 +605,8 @@ ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--identifier-prefix=ClutterX11 \
 	--symbol-prefix=clutter_x11 \
+	--c-include='clutter/x11/clutter-x11.h' \
+	--pkg-export=clutter-x11-@CLUTTER_API_VERSION@ \
 	--include-uninstalled=$(top_builddir)/clutter/Cogl-@CLUTTER_API_VERSION@.gir \
 	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = xlib-2.0
