@@ -1021,4 +1021,392 @@ ClutterStage *stage = clutter_event_get_stage (event);
     </section>
 
   </section>
+
+  <section id="events-buttons">
+    <title>Making an actor respond to button events</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want an actor to respond to button events. These might
+      be buttons on an input device like a mouse;
+      or input events caused by other means, like touches on a screen.</para>
+
+      <para>Some examples of where this is useful:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>For implementing button widgets which respond to
+          button clicks.</para>
+        </listitem>
+        <listitem>
+          <para>To make actor selections by mouse click (e.g.
+          as part of a drawing application).</para>
+        </listitem>
+        <listitem>
+          <para>To recognise a button press followed by pointer
+          motion and button release (e.g. to implement drag
+          and drop or kinetic animations).</para>
+        </listitem>
+      </itemizedlist>
+
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Connect a handler to the <emphasis>button-press-event</emphasis>
+      and/or <emphasis>button-release-event</emphasis> signals of an
+      actor.</para>
+
+      <note>
+        <para>The <emphasis>button-press-event</emphasis> is emitted
+        when a button is pressed (not necessarily released) on a reactive
+        actor; the <emphasis>button-release-event</emphasis> when a
+        button is released on a reactive actor (even if the button was
+        pressed down somewhere else).</para>
+      </note>
+
+      <para>First, ensure the actor is reactive:</para>
+
+      <informalexample>
+        <programlisting>
+clutter_actor_set_reactive (actor, TRUE);
+        </programlisting>
+      </informalexample>
+
+      <para>Next, create a function to handle the signal(s) you are
+      interested in. The function signature is the same for both the
+      press and release signals:</para>
+
+      <informalexample>
+        <programlisting>
+gboolean
+callback_function (ClutterActor *actor,
+                   ClutterEvent *event,
+                   gpointer      user_data);
+        </programlisting>
+      </informalexample>
+
+      <para>You can use a single function as the
+      callback for both signals (or write a different one for each signal).
+      Here's an example function which can be used as a callback
+      for both press and release signals, as it simply pulls data
+      out of the event and displays it:</para>
+
+      <informalexample>
+        <programlisting>
+/* <varname>event</varname> is a <type>ClutterButtonEvent</type>
+ * for both the press and the release signal; it contains
+ * data about where the event occurred
+ */
+static gboolean
+button_event_cb (ClutterActor *actor,
+                 ClutterEvent *event,
+                 gpointer      user_data)
+{
+  gfloat x, y;
+  gchar *event_type;
+  guint button_pressed;
+  ClutterModifierType state;
+  gchar *ctrl_pressed;
+  guint32 click_count;
+
+  /* where the pointer was (relative to the stage)
+   * when the button event occurred; use
+   * <function>clutter_actor_transform_stage_point()</function>
+   * to transform to actor-relative coordinates
+   */
+  clutter_event_get_coords (event, &amp;x, &amp;y);
+
+  /* check whether it was a press or release event */
+  event_type = "released";
+  if (clutter_event_type (event) == CLUTTER_BUTTON_PRESS)
+    event_type = "pressed";
+
+  /* which button triggered the event */
+  button_pressed = clutter_event_get_button (event);
+
+  /* keys down when the event occurred;
+   * this is a bit mask composed of the bits for each key held down
+   * when the button was pressed or released; see the
+   * <type>ClutterModifierType</type> enum in the Clutter API docs
+   * for a list of the available modifiers
+   */
+  state = clutter_event_get_state (event);
+
+  ctrl_pressed = "ctrl not pressed";
+  if (state &amp; CLUTTER_CONTROL_MASK)
+    ctrl_pressed = "ctrl pressed";
+
+  /* click count */
+  click_count = clutter_event_get_click_count (event);
+
+  g_debug ("button %d was %s at %.0f,%.0f; %s; click count %d",
+           button_pressed,
+           event_type,
+           x,
+           y,
+           ctrl_pressed,
+           click_count);
+
+  return TRUE;
+}
+        </programlisting>
+      </informalexample>
+
+      <para>Finally, connect the signals to the function(s):</para>
+
+      <informalexample>
+        <programlisting>
+/* connect the press event */
+g_signal_connect (actor,
+                  "button-press-event",
+                  G_CALLBACK (button_event_cb),
+                  NULL);
+
+/* connect the release event */
+g_signal_connect (actor,
+                  "button-release-event",
+                  G_CALLBACK (button_event_cb),
+                  NULL);
+        </programlisting>
+      </informalexample>
+
+      <para>Pressing or releasing a button on the actor will now
+      trigger a call to the <function>button_event_cb()</function>
+      function. See <link linkend="events-buttons-example-1">the full
+      example</link> for more details.</para>
+
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>Properties of the <type>ClutterButtonEvent</type>
+      emitted by both signals should be examined using the
+      <function>clutter_event_*</function> functions (rather than struct
+      members directly), as in the example above. While most of these
+      functions are self-explanatory, a couple require more explanation:
+      see the sections below.</para>
+
+      <para>Also covered below is an alternative approach to handling a
+      button press followed by a release on a single actor: by adding
+      a <type>ClutterClickAction</type> to an actor. See
+      <link linkend="events-buttons-clutterclickaction">this section</link>
+      for details.</para>
+
+      <para>Finally, a <link linkend="events-buttons-example-3">longer
+      example</link> is included, showing how to make use of button press,
+      button release and pointer events in a simple drawing application.</para>
+
+      <section>
+        <title>Click count</title>
+
+        <para>The click count records the number of times a press/release
+        pair occurred in sequence. You can retrieve it via the
+        <function>clutter_event_get_click_count()</function> function.</para>
+
+        <note>
+          <para>A press/release pair is effectively a click, so this term
+          will be used from now on throughout this section,
+          to make the explanation simpler. However, the click count has
+          nothing to do with <type>ClutterClickActions</type>, described
+          <link linkend="events-buttons-clutterclickaction">later</link>.
+          </para>
+        </note>
+
+        <para>For clicks to be considered part of the same sequence (for
+        the purposes of counting), all the clicks after the first one
+        must occur within the global <varname>double_click_distance</varname>
+        (pixels) of the first click; and the time between click
+        <code>n</code> and click <code>n+1</code> must be <code>&lt;=</code>
+        the global <varname>double_click_time</varname> (milliseconds).</para>
+
+        <para>The clicks <emphasis>do not</emphasis> have to occur on
+        the same actor: providing they occur within the double click
+        distance and time, they are counted as part of the same click
+        sequence. Also note that the clicks don't even have to happen
+        on a reactive actor: providing they happen somewhere on the
+        stage, they will still increment the click count.</para>
+
+        <para>The default double click time and distance are
+        stored in the <type>ClutterSettings</type> associated
+        with an application. You can get/set their values like this:</para>
+
+        <informalexample>
+          <programlisting>
+gint double_click_distance;
+gint double_click_time;
+
+ClutterSettings *settings = clutter_settings_get_default ();
+
+/* get double click settings */
+g_object_get (settings,
+              "double-click-distance", &amp;double_click_distance,
+              "double-click-time", &amp;double_click_time,
+              NULL);
+
+/* set */
+g_object_set (settings,
+              "double-click-distance", 50,
+              "double-click-time", 1000,
+              NULL);
+          </programlisting>
+        </informalexample>
+
+      </section>
+
+      <section>
+        <title>Button numbering</title>
+
+        <para><function>clutter_event_get_button()</function> returns
+        an integer representing the pressed or released button.</para>
+
+        <para>In the case of a standard scroll mouse, the numbers
+        returned are reliable across different hardware models:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>1 = left mouse button</para>
+          </listitem>
+          <listitem>
+            <para>2 = scroll wheel</para>
+          </listitem>
+          <listitem>
+            <para>3 = right mouse button</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>For mice with more buttons, or other types of
+        input devices, the mappings may not be so
+        straightforward: you may have to experiment to see
+        which button returns which value.</para>
+
+      </section>
+
+      <section id="events-buttons-clutterclickaction">
+        <title><type>ClutterClickAction</type></title>
+
+        <para><type>ClutterActions</type> add flexible event handling
+        to <type>ClutterActors</type>. They recognise and abstract
+        common sequences of low-level events into a single, more easily
+        managed high-level event. In the case of a
+        <type>ClutterClickAction</type>, the abstraction is over
+        a press followed by a release on a single actor. This is
+        achieved by "synthesising" the press and release signals on
+        the actor: in other words, the action captures those
+        two signals when emitted by a single actor; and, once captured, the
+        action emits a single <emphasis>clicked</emphasis> signal
+        <emphasis>instead</emphasis> of the two signals being
+        emitted by the actor.</para>
+
+        <para>The pointer can move off the actor between the press and
+        release, but the press and release must both occur on the same
+        actor, with no intervening presses or releases on other
+        actors. In addition, there are no maximum distance or time
+        constraints on the press and release.</para>
+
+        <para>If a press occurs and you want to force it to be released
+        (e.g. to break a pointer grab after a certain length of
+        time has elapsed), use
+        <function>clutter_click_action_release()</function>.</para>
+
+        <para>On the down side, the <emphasis>clicked</emphasis> signal
+        doesn't present the same detailed <type>ClutterButtonEvent</type>
+        to the handler. So, for example, you can't get a click count from a
+        <type>ClutterClickAction</type> (though you could count
+        the clicks yourself, of course); and you don't have access
+        to the coordinates where the press or release occurred.</para>
+
+        <para>To add a click action to a <type>ClutterActor</type>:</para>
+
+        <informalexample>
+          <programlisting>
+ClutterAction *action = clutter_click_action_new ();
+clutter_actor_add_action (actor, action);
+          </programlisting>
+        </informalexample>
+
+        <note>
+          <para>An actor must still be set to reactive so that its
+          signals can be routed to a click action.</para>
+        </note>
+
+        <para>Create a handler function (note the function
+        signature is different from the one for the press or
+        releas signal handler):</para>
+
+        <informalexample>
+          <programlisting>
+void
+clicked_cb (ClutterClickAction *action,
+            ClutterActor       *actor,
+            gpointer            user_data)
+{
+  /* display the number of the clicked button (equivalent
+   * to the number returned by clutter_event_get_button())
+   */
+  g_debug ("Button %d clicked", clutter_click_action_get_button (action));
+}
+          </programlisting>
+        </informalexample>
+
+        <para>Connect the signal to the handler:</para>
+
+        <informalexample>
+          <programlisting>
+g_signal_connect (action,
+                  "clicked",
+                  G_CALLBACK (clicked_cb),
+                  NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>The <link linkend="events-buttons-example-2">example
+        code</link> gives a bit more detail about how to use click
+        actions.</para>
+
+      </section>
+
+    </section>
+
+    <section>
+      <title>Full examples</title>
+
+      <example id="events-buttons-example-1">
+        <title>Examining properties of a <type>ClutterButtonEvent</type></title>
+        <programlisting>
+<xi:include href="examples/events-buttons.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="events-buttons-example-2">
+        <title>Using <type>ClutterClickAction</type> to capture
+        button events on an actor</title>
+        <programlisting>
+<xi:include href="examples/events-buttons-click.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="events-buttons-example-3">
+        <title>Using button and pointer events for drawing</title>
+        <para>This code was inspired by
+        <ulink url="http://git.clutter-project.org/cluttersmith/">ClutterSmith</ulink>
+        </para>
+        <programlisting>
+<xi:include href="examples/events-buttons-lasso.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+    </section>
+
+  </section>
+
 </chapter>
