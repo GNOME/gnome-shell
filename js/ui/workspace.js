@@ -614,7 +614,7 @@ Workspace.prototype = {
 
         // Find the desktop window
         for (let i = 0; i < windows.length; i++) {
-            if (windows[i].get_window_type() == Meta.WindowType.DESKTOP) {
+            if (windows[i].meta_window.get_window_type() == Meta.WindowType.DESKTOP) {
                 this._desktop = new DesktopClone(windows[i]);
                 break;
             }

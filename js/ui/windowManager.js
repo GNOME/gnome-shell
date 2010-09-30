@@ -140,7 +140,7 @@ WindowManager.prototype = {
     _shouldAnimate : function(actor) {
         if (Main.overview.visible)
             return false;
-        if (actor && (actor.get_window_type() != Meta.CompWindowType.NORMAL))
+        if (actor && (actor.meta_window.get_window_type() != Meta.WindowType.NORMAL))
             return false;
         return true;
     },
@@ -225,7 +225,7 @@ WindowManager.prototype = {
     _parentHasOtherAttachedDialog: function(parent, self) {
         var count = 0;
         parent.foreach_transient(function(win) {
-            if (win.get_window_type() == Meta.CompWindowType.MODAL_DIALOG && win != self)
+            if (win.get_window_type() == Meta.WindowType.MODAL_DIALOG && win != self)
                 count++;
             return false;
         });
@@ -271,7 +271,7 @@ WindowManager.prototype = {
     },
 
     _mapWindow : function(shellwm, actor) {
-        if (actor.get_window_type() == Meta.CompWindowType.MODAL_DIALOG
+        if (actor.meta_window.get_window_type() == Meta.WindowType.MODAL_DIALOG
             && Meta.prefs_get_attach_modal_dialogs()
             && actor.get_meta_window().get_transient_for()) {
             this._dimmedWindows.push(actor);
@@ -336,7 +336,7 @@ WindowManager.prototype = {
 
     _destroyWindow : function(shellwm, actor) {
         let parent = actor.get_meta_window().get_transient_for();
-        while (actor.get_window_type() == Meta.CompWindowType.MODAL_DIALOG
+        while (actor.meta_window.get_window_type() == Meta.WindowType.MODAL_DIALOG
                && parent) {
             if (!Main.overview.visible)
                 this._undimParentWindow(actor, true);
