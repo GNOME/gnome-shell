@@ -344,14 +344,14 @@ NotificationDaemon.prototype = {
         for (let id in this._sources) {
             let source = this._sources[id];
             if (source.app == tracker.focus_app) {
-                source.destroy();
+                source.activated();
                 return;
             }
         }
     },
 
     _actionInvoked: function(notification, action, source, id) {
-        source.destroy();
+        source.activated();
         this._emitActionInvoked(id, action);
     },
 
@@ -401,6 +401,7 @@ Source.prototype = {
             this.title = this.app.get_name();
         else
             this.useNotificationIcon = true;
+        this._isTrayIcon = false;
     },
 
     notify: function(notification, icon) {
@@ -427,11 +428,18 @@ Source.prototype = {
     setTrayIcon: function(icon) {
         this._setSummaryIcon(icon);
         this.useNotificationIcon = false;
+        this._isTrayIcon = true;
     },
 
-    _notificationClicked: function() {
+    _notificationClicked: function(notification) {
+        notification.destroy();
         this.openApp();
-        this.destroy();
+        this.activated();
+    },
+
+    activated: function() {
+        if (!this._isTrayIcon)
+            this.destroy();
     },
 
     openApp: function() {
