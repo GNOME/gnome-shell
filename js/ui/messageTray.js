@@ -116,11 +116,6 @@ Notification.prototype = {
         this._capturedEventId = 0;
         this._keyPressId = 0;
 
-        source.connect('clicked', Lang.bind(this,
-            function() {
-                this.emit('dismissed');
-            }));
-
         source.connect('destroy', Lang.bind(this, this.destroy));
 
         this.actor = new St.Table({ name: 'notification',
@@ -130,7 +125,7 @@ Notification.prototype = {
             function (actor, event) {
                 if (!this._actionArea ||
                     !this._actionArea.contains(event.get_source()))
-                    this.source.clicked();
+                    this.emit('clicked');
             }));
 
         // The first line should have the title, followed by the
@@ -665,24 +660,24 @@ Source.prototype = {
     },
 
     notify: function(notification) {
-        if (this.notification)
+        if (this.notification) {
+            this.notification.disconnect(this._notificationClickedId);
             this.notification.disconnect(this._notificationDestroyedId);
+        }
 
         this.notification = notification;
 
+        this._notificationClickedId = notification.connect('clicked', Lang.bind(this, this._notificationClicked));
         this._notificationDestroyedId = notification.connect('destroy', Lang.bind(this,
             function () {
                 if (this.notification == notification) {
                     this.notification = null;
                     this._notificationDestroyedId = 0;
+                    this._notificationClickedId = 0;
                 }
             }));
 
         this.emit('notify', notification);
-    },
-
-    clicked: function() {
-        this.emit('clicked');
     },
 
     destroy: function() {
@@ -696,6 +691,10 @@ Source.prototype = {
         if (this._iconBin.child)
             this._iconBin.child.destroy();
         this._iconBin.child = icon;
+    },
+
+    // Default implementation is to do nothing, but subclass can override
+    _notificationClicked: function(notification) {
     }
 };
 Signals.addSignalMethods(Source.prototype);

@@ -66,7 +66,6 @@ WindowAttentionHandler.prototype = {
             source = new Source(app, window);
             this._sources[appId] = source;
             Main.messageTray.add(source);
-            source.connect('clicked', Lang.bind(this, function() { source.destroy(); }));
             source.connect('destroy', Lang.bind(this, function() { delete this._sources[appId]; }));
         }
 
@@ -101,9 +100,8 @@ Source.prototype = {
         return this._app.create_icon_texture(this.ICON_SIZE);
     },
 
-    clicked : function() {
+    _notificationClicked : function(notification) {
         Main.activateWindow(this._window);
-        MessageTray.Source.prototype.clicked.call(this);
+        this.destroy();
     }
-
 };

@@ -173,10 +173,6 @@ NotificationDaemon.prototype = {
         let source = new Source(title, pid);
         this._sources[pid] = source;
 
-        source.connect('clicked', Lang.bind(this,
-            function() {
-                source.destroy();
-            }));
         source.connect('destroy', Lang.bind(this,
             function() {
                 delete this._sources[pid];
@@ -281,7 +277,7 @@ NotificationDaemon.prototype = {
         if (notification == null) {
             notification = new MessageTray.Notification(source, summary, body, { icon: iconActor });
             ndata.notification = notification;
-            notification.connect('dismissed', Lang.bind(this,
+            notification.connect('clicked', Lang.bind(this,
                 function(n) {
                     this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
                 }));
@@ -433,9 +429,9 @@ Source.prototype = {
         this.useNotificationIcon = false;
     },
 
-    clicked: function() {
+    _notificationClicked: function() {
         this.openApp();
-        MessageTray.Source.prototype.clicked.call(this);
+        this.destroy();
     },
 
     openApp: function() {

@@ -484,7 +484,7 @@ Source.prototype = {
                                            this.ICON_SIZE);
     },
 
-    clicked: function() {
+    _notificationClicked: function(notification) {
         channelDispatcher.EnsureChannelRemote(this._accountPath,
                                               { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
                                                 'org.freedesktop.Telepathy.Channel.TargetHandle': this._targetHandle,
@@ -492,8 +492,6 @@ Source.prototype = {
                                               global.get_current_time(),
                                               '',
                                               Lang.bind(this, this._gotChannelRequest));
-
-        MessageTray.Source.prototype.clicked.call(this);
     },
 
     _gotChannelRequest: function (chanReqPath, ex) {
