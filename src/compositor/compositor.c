@@ -133,7 +133,6 @@ process_property_notify (MetaCompositor	*compositor,
                          XPropertyEvent *event,
                          MetaWindow     *window)
 {
-  MetaDisplay *display = compositor->display;
   MutterWindow *cw;
 
   if (window == NULL)
