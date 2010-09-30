@@ -92,6 +92,9 @@ static void              create_child_meta  (ClutterContainer *container,
                                              ClutterActor     *actor);
 static void              destroy_child_meta (ClutterContainer *container,
                                              ClutterActor     *actor);
+static void              child_notify       (ClutterContainer *container,
+                                             ClutterActor     *child,
+                                             GParamSpec       *pspec);
 
 static void
 clutter_container_base_init (gpointer g_iface)
@@ -150,7 +153,8 @@ clutter_container_base_init (gpointer g_iface)
       /**
        * ClutterContainer::child-notify:
        * @container: the container which received the signal
-       * @actor: the child that has had a property set. 
+       * @actor: the child that has had a property set
+       * @pspec: the #GParamSpec of the property set
        *
        * The ::child-notify signal is emitted each time a property is
        * being set through the clutter_container_child_set() and
@@ -161,7 +165,7 @@ clutter_container_base_init (gpointer g_iface)
       container_signals[CHILD_NOTIFY] =
         g_signal_new (I_("child-notify"),
                       iface_type,
-                      G_SIGNAL_RUN_FIRST,
+                      G_SIGNAL_RUN_FIRST | G_SIGNAL_DETAILED,
                       G_STRUCT_OFFSET (ClutterContainerIface, child_notify),
                       NULL, NULL,
                       _clutter_marshal_VOID__OBJECT_OBJECT_PARAM,
@@ -172,6 +176,7 @@ clutter_container_base_init (gpointer g_iface)
       iface->create_child_meta  = create_child_meta;
       iface->destroy_child_meta = destroy_child_meta;
       iface->get_child_meta     = get_child_meta;
+      iface->child_notify       = child_notify;
     }
 }
 
@@ -922,6 +927,16 @@ clutter_container_class_list_child_properties (GObjectClass *klass,
   return retval;
 }
 
+static void
+child_notify (ClutterContainer *container,
+              ClutterActor     *actor,
+              GParamSpec       *pspec)
+{
+  g_signal_emit (container, container_signals[CHILD_NOTIFY],
+                 g_quark_from_string (pspec->name),
+                 actor, pspec);
+}
+
 static inline void
 container_set_child_property (ClutterContainer *container,
                               ClutterActor     *actor,
@@ -935,7 +950,7 @@ container_set_child_property (ClutterContainer *container,
   g_object_set_property (G_OBJECT (data), pspec->name, value);
 
   iface = CLUTTER_CONTAINER_GET_IFACE (container);
-  if (G_LIKELY (iface->child_notify))
+  if (iface->child_notify != NULL)
     iface->child_notify (container, actor, pspec);
 }
 
