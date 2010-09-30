@@ -150,13 +150,7 @@ process_property_notify (MetaCompositor	*compositor,
       DEBUG_TRACE ("process_property_notify: net_wm_window_opacity\n");
       return;
     }
-  else if (event->atom == meta_display_get_atom (display,
-					       META_ATOM__NET_WM_WINDOW_TYPE))
-    {
-      mutter_window_update_window_type (cw);
-      DEBUG_TRACE ("process_property_notify: net_wm_type\n");
-      return;
-    }
+
   DEBUG_TRACE ("process_property_notify: unknown\n");
 }
 

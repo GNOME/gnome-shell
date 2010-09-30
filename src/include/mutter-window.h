@@ -59,7 +59,6 @@ struct _MutterWindow
 GType mutter_window_get_type (void);
 
 Window             mutter_window_get_x_window         (MutterWindow *mcw);
-MetaCompWindowType mutter_window_get_window_type      (MutterWindow *mcw);
 gint               mutter_window_get_workspace        (MutterWindow *mcw);
 gboolean           mutter_window_is_hidden            (MutterWindow *mcw);
 MetaWindow *       mutter_window_get_meta_window      (MutterWindow *mcw);

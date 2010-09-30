@@ -34,7 +34,6 @@ struct _MutterWindowPrivate
   ClutterActor     *shadow;
   Pixmap            back_pixmap;
 
-  MetaCompWindowType  type;
   Damage            damage;
 
   guint8            opacity;
@@ -324,8 +323,6 @@ mutter_window_constructed (GObject *object)
 
   compositor = meta_display_get_compositor (display);
 
-  mutter_window_update_window_type (self);
-
 #ifdef HAVE_SHAPE
   /* Listen for ShapeNotify events on the window */
   if (meta_display_has_shape (display))
@@ -535,13 +532,6 @@ mutter_window_get_property (GObject      *object,
     }
 }
 
-void
-mutter_window_update_window_type (MutterWindow *self)
-{
-  MutterWindowPrivate *priv = self->priv;
-  priv->type = (MetaCompWindowType) meta_window_get_window_type (priv->window);
-}
-
 static gboolean
 is_shaped (MetaDisplay *display, Window xwindow)
 {
@@ -565,6 +555,7 @@ static gboolean
 mutter_window_has_shadow (MutterWindow *self)
 {
   MutterWindowPrivate * priv = self->priv;
+  MetaWindowType window_type = meta_window_get_window_type (priv->window);
 
   if (priv->no_shadow)
     return FALSE;
@@ -618,17 +609,17 @@ mutter_window_has_shadow (MutterWindow *self)
   /*
    * Don't put shadow around DND icon windows
    */
-  if (priv->type == META_COMP_WINDOW_DND ||
-      priv->type == META_COMP_WINDOW_DESKTOP)
+  if (window_type == META_WINDOW_DND ||
+      window_type == META_WINDOW_DESKTOP)
     {
       meta_verbose ("Window 0x%x has no shadow as it is DND or Desktop\n",
 		    (guint)priv->xwindow);
       return FALSE;
     }
 
-  if (priv->type == META_COMP_WINDOW_MENU
+  if (window_type == META_WINDOW_MENU
 #if 0
-      || priv->type == META_COMP_WINDOW_DROPDOWN_MENU
+      || window_type == META_WINDOW_DROPDOWN_MENU
 #endif
       )
     {
@@ -638,7 +629,7 @@ mutter_window_has_shadow (MutterWindow *self)
     }
 
 #if 0
-  if (priv->type == META_COMP_WINDOW_TOOLTIP)
+  if (window_type == META_WINDOW_TOOLTIP)
     {
       meta_verbose ("Window 0x%x has shadow as it is a tooltip\n",
 		    (guint)priv->xwindow);
@@ -688,15 +679,6 @@ ClutterActor *
 mutter_window_get_texture (MutterWindow *self)
 {
   return self->priv->actor;
-}
-
-MetaCompWindowType
-mutter_window_get_window_type (MutterWindow *self)
-{
-  if (!self)
-    return 0;
-
-  return self->priv->type;
 }
 
 gboolean
@@ -1053,10 +1035,12 @@ mutter_window_destroy (MutterWindow *self)
   MetaWindow	      *window;
   MetaCompScreen      *info;
   MutterWindowPrivate *priv;
+  MetaWindowType window_type;
 
   priv = self->priv;
 
   window = priv->window;
+  window_type = meta_window_get_window_type (window);
   meta_window_set_compositor_private (window, NULL);
 
   /*
@@ -1066,13 +1050,13 @@ mutter_window_destroy (MutterWindow *self)
   info = meta_screen_get_compositor_data (priv->screen);
   info->windows = g_list_remove (info->windows, (gconstpointer) self);
 
-  if (priv->type == META_COMP_WINDOW_DROPDOWN_MENU ||
-      priv->type == META_COMP_WINDOW_POPUP_MENU ||
-      priv->type == META_COMP_WINDOW_TOOLTIP ||
-      priv->type == META_COMP_WINDOW_NOTIFICATION ||
-      priv->type == META_COMP_WINDOW_COMBO ||
-      priv->type == META_COMP_WINDOW_DND ||
-      priv->type == META_COMP_WINDOW_OVERRIDE_OTHER)
+  if (window_type == META_WINDOW_DROPDOWN_MENU ||
+      window_type == META_WINDOW_POPUP_MENU ||
+      window_type == META_WINDOW_TOOLTIP ||
+      window_type == META_WINDOW_NOTIFICATION ||
+      window_type == META_WINDOW_COMBO ||
+      window_type == META_WINDOW_DND ||
+      window_type == META_WINDOW_OVERRIDE_OTHER)
     {
       /*
        * No effects, just kill it.

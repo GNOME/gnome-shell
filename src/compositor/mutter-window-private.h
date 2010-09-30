@@ -32,7 +32,6 @@ void     mutter_window_pre_paint               (MutterWindow       *self);
 gboolean mutter_window_effect_in_progress      (MutterWindow       *cw);
 void     mutter_window_sync_actor_position     (MutterWindow       *cw);
 void     mutter_window_sync_visibility         (MutterWindow       *cw);
-void     mutter_window_update_window_type      (MutterWindow       *cw);
 void     mutter_window_update_shape            (MutterWindow       *cw,
                                                 gboolean            shaped);
 void     mutter_window_update_opacity          (MutterWindow       *cw);

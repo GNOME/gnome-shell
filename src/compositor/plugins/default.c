@@ -22,6 +22,7 @@
  */
 
 #include "mutter-plugin.h"
+#include "window.h"
 
 #include <libintl.h>
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
@@ -441,12 +442,14 @@ on_minimize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
 static void
 minimize (MutterPlugin *plugin, MutterWindow *mc_window)
 {
-  MetaCompWindowType          type;
+  MetaWindowType type;
+  MetaWindow *meta_window = mutter_window_get_meta_window (mc_window);
   ClutterActor               *actor  = CLUTTER_ACTOR (mc_window);
 
-  type = mutter_window_get_window_type (mc_window);
 
-  if (type == META_COMP_WINDOW_NORMAL)
+  type = meta_window_get_window_type (meta_window);
+
+  if (type == META_WINDOW_NORMAL)
     {
       ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
@@ -515,17 +518,18 @@ maximize (MutterPlugin *plugin,
           MutterWindow *mc_window,
           gint end_x, gint end_y, gint end_width, gint end_height)
 {
-  MetaCompWindowType  type;
+  MetaWindowType type;
   ClutterActor	     *actor = CLUTTER_ACTOR (mc_window);
+  MetaWindow *meta_window = mutter_window_get_meta_window (mc_window);
 
   gdouble  scale_x    = 1.0;
   gdouble  scale_y    = 1.0;
   gfloat   anchor_x   = 0;
   gfloat   anchor_y   = 0;
 
-  type = mutter_window_get_window_type (mc_window);
+  type = meta_window_get_window_type (meta_window);
 
-  if (type == META_COMP_WINDOW_NORMAL)
+  if (type == META_WINDOW_NORMAL)
     {
       ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
@@ -580,9 +584,10 @@ unmaximize (MutterPlugin *plugin,
             MutterWindow *mc_window,
             gint end_x, gint end_y, gint end_width, gint end_height)
 {
-  MetaCompWindowType type = mutter_window_get_window_type (mc_window);
+  MetaWindow *meta_window = mutter_window_get_meta_window (mc_window);
+  MetaWindowType type = meta_window_get_window_type (meta_window);
 
-  if (type == META_COMP_WINDOW_NORMAL)
+  if (type == META_WINDOW_NORMAL)
     {
       ActorPrivate *apriv = get_actor_private (mc_window);
 
@@ -621,12 +626,13 @@ on_map_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
 static void
 map (MutterPlugin *plugin, MutterWindow *mc_window)
 {
-  MetaCompWindowType  type;
+  MetaWindowType type;
   ClutterActor       *actor = CLUTTER_ACTOR (mc_window);
+  MetaWindow *meta_window = mutter_window_get_meta_window (mc_window);
 
-  type = mutter_window_get_window_type (mc_window);
+  type = meta_window_get_window_type (meta_window);
 
-  if (type == META_COMP_WINDOW_NORMAL)
+  if (type == META_WINDOW_NORMAL)
     {
       ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
@@ -680,12 +686,13 @@ on_destroy_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
 static void
 destroy (MutterPlugin *plugin, MutterWindow *mc_window)
 {
-  MetaCompWindowType   type;
+  MetaWindowType type;
   ClutterActor	      *actor = CLUTTER_ACTOR (mc_window);
+  MetaWindow *meta_window = mutter_window_get_meta_window (mc_window);
 
-  type = mutter_window_get_window_type (mc_window);
+  type = meta_window_get_window_type (meta_window);
 
-  if (type == META_COMP_WINDOW_NORMAL)
+  if (type == META_WINDOW_NORMAL)
     {
       ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
