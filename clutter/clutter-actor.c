@@ -4905,7 +4905,11 @@ _clutter_actor_finish_queue_redraw (ClutterActor *self,
   const ClutterPaintVolume *pv;
   gboolean clipped;
 
-  /* The idea is that if we know the paint box for where the actor was
+  /* If we've been explicitly passed a clip volume then there's
+   * nothing more to calculate, but otherwhise the only thing we know
+   * is that the change is constrained to the given actor.
+   *
+   * The idea is that if we know the paint box for where the actor was
    * last drawn and we also have the paint volume for where it will be
    * drawn next then if we queue a redraw for both these regions that
    * will cover everything that needs to be redrawn to clear the old
@@ -4915,7 +4919,12 @@ _clutter_actor_finish_queue_redraw (ClutterActor *self,
    * the previous redraw since we don't know where to set the clip so
    * it will clear the actor as it is currently.
    */
-  if (G_LIKELY (priv->last_paint_box_valid))
+  if (clip)
+    {
+      _clutter_actor_set_queue_redraw_clip (self, clip);
+      clipped = TRUE;
+    }
+  else if (G_LIKELY (priv->last_paint_box_valid))
     {
       pv = clutter_actor_get_paint_volume (self);
       if (pv)
