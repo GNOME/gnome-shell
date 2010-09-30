@@ -148,22 +148,14 @@ AllAppDisplay.prototype = {
             Main.queueDeferredWork(this._workId);
         }));
 
-        let bin = new St.BoxLayout({ style_class: 'all-app-controls-panel',
-                                     reactive: true });
-        this.actor = new St.BoxLayout({ style_class: 'all-app', vertical: true });
-        this.actor.hide();
-
-        let view = new St.ScrollView({ x_fill: true,
-                                       y_fill: false,
-                                       style_class: 'all-app-scroll-view',
-                                       vshadows: true });
-        this._scrollView = view;
-        this.actor.add(bin);
-        this.actor.add(view, { expand: true, y_fill: false, y_align: St.Align.START });
+        this._scrollView = new St.ScrollView({ x_fill: true,
+                                               y_fill: false,
+                                               vshadows: true });
+        this.actor = new St.Bin({ style_class: 'all-app',
+                                  y_align: St.Align.START,
+                                  child: this._scrollView });
 
         this._appView = new ViewByCategories();
-        this._appView.connect('launching', Lang.bind(this, this.close));
-        this._appView.connect('drag-begin', Lang.bind(this, this.close));
         this._scrollView.add_actor(this._appView.actor);
 
         this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -177,37 +169,6 @@ AllAppDisplay.prototype = {
         });
 
         this._appView.refresh(apps);
-    },
-
-    toggle: function() {
-        if (this.actor.visible) {
-            Tweener.addTween(this.actor,
-                             { opacity: 0,
-                               time: Overview.PANE_FADE_TIME,
-                               transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this,
-                                   function() {
-                                       this.actor.hide();
-                                       this.emit('open-state-changed',
-                                                 this.actor.visible);
-                                   })
-                             });
-        } else {
-            this.actor.show();
-            this.emit('open-state-changed', this.actor.visible);
-            this.actor.opacity = 0;
-            Tweener.addTween(this.actor,
-                             { opacity: 255,
-                               time: Overview.PANE_FADE_TIME,
-                               transition: 'easeOutQuad'
-                             });
-        }
-    },
-
-    close: function() {
-        if (!this.actor.visible)
-            return;
-        this.toggle();
     }
 };
 
