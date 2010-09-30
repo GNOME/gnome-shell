@@ -549,6 +549,23 @@ gpointer _clutter_event_get_platform_data (const ClutterEvent *event);
 
 #endif
 
+/* wrapper for g_object_class_install_properties() */
+static inline void
+_clutter_object_class_install_properties (gpointer     oclass,
+                                          guint        n_pspecs,
+                                          GParamSpec **pspecs)
+{
+#if GLIB_CHECK_VERSION (2, 26, 0)
+  g_object_class_install_properties (oclass, n_pspecs, pspecs);
+#else
+  int i;
+
+  /* XXX - we start at 1 because 0 is a reserved property id */
+  for (i = 1; i < n_pspecs; i++)
+    g_object_class_install_property (oclass, i, pspecs[i]);
+#endif
+}
+
 void                _clutter_paint_volume_init_static          (ClutterActor *actor,
                                                                 ClutterPaintVolume *pv);
 ClutterPaintVolume *_clutter_paint_volume_new                  (ClutterActor       *actor);

@@ -107,7 +107,7 @@ enum
   PROP_LAST
 };
 
-static GParamSpec *obj_props[PROP_LAST];
+static GParamSpec *drag_props[PROP_LAST] = { NULL, };
 
 enum
 {
@@ -466,7 +466,6 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
 {
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (ClutterDragActionPrivate));
 
@@ -490,14 +489,13 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_uint ("x-drag-threshold",
-                             P_("Horizontal Drag Threshold"),
-                             P_("The horizontal amount of pixels required to start dragging"),
-                             0, G_MAXUINT,
-                             0,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_X_DRAG_THRESHOLD] = pspec;
-  g_object_class_install_property (gobject_class, PROP_X_DRAG_THRESHOLD, pspec);
+  drag_props[PROP_X_DRAG_THRESHOLD] =
+    g_param_spec_uint ("x-drag-threshold",
+                       P_("Horizontal Drag Threshold"),
+                       P_("The horizontal amount of pixels required to start dragging"),
+                       0, G_MAXUINT,
+                       0,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterDragAction:y-drag-threshold:
@@ -511,14 +509,13 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_uint ("y-drag-threshold",
-                             P_("Vertical Drag Threshold"),
-                             P_("The vertical amount of pixels required to start dragging"),
-                             0, G_MAXUINT,
-                             0,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_Y_DRAG_THRESHOLD] = pspec;
-  g_object_class_install_property (gobject_class, PROP_Y_DRAG_THRESHOLD, pspec);
+  drag_props[PROP_Y_DRAG_THRESHOLD] =
+    g_param_spec_uint ("y-drag-threshold",
+                       P_("Vertical Drag Threshold"),
+                       P_("The vertical amount of pixels required to start dragging"),
+                       0, G_MAXUINT,
+                       0,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterDragAction:drag-handle:
@@ -534,13 +531,12 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_object ("drag-handle",
-                               P_("Drag Handle"),
-                               P_("The actor that is being dragged"),
-                               CLUTTER_TYPE_ACTOR,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_DRAG_HANDLE] = pspec;
-  g_object_class_install_property (gobject_class, PROP_DRAG_HANDLE, pspec);
+  drag_props[PROP_DRAG_HANDLE] =
+    g_param_spec_object ("drag-handle",
+                         P_("Drag Handle"),
+                         P_("The actor that is being dragged"),
+                         CLUTTER_TYPE_ACTOR,
+                         CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterDragAction:drag-axis:
@@ -549,14 +545,15 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_enum ("drag-axis",
-                             P_("Drag Axis"),
-                             P_("Constraints the dragging to an axis"),
-                             CLUTTER_TYPE_DRAG_AXIS,
-                             CLUTTER_DRAG_AXIS_NONE,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_DRAG_AXIS] = pspec;
-  g_object_class_install_property (gobject_class, PROP_DRAG_AXIS, pspec);
+  drag_props[PROP_DRAG_AXIS] =
+    g_param_spec_enum ("drag-axis",
+                       P_("Drag Axis"),
+                       P_("Constraints the dragging to an axis"),
+                       CLUTTER_TYPE_DRAG_AXIS,
+                       CLUTTER_DRAG_AXIS_NONE,
+                       CLUTTER_PARAM_READWRITE);
+
+  _clutter_object_class_install_properties (klass, PROP_LAST, drag_props);
 
   /**
    * ClutterDragAction::drag-begin:
@@ -711,14 +708,14 @@ clutter_drag_action_set_drag_threshold (ClutterDragAction *action,
     {
       priv->x_drag_threshold = x_threshold;
 
-      _clutter_notify_by_pspec (self, obj_props[PROP_X_DRAG_THRESHOLD]);
+      _clutter_notify_by_pspec (self, drag_props[PROP_X_DRAG_THRESHOLD]);
     }
 
   if (priv->y_drag_threshold != y_threshold)
     {
       priv->y_drag_threshold = y_threshold;
 
-      _clutter_notify_by_pspec (self, obj_props[PROP_Y_DRAG_THRESHOLD]);
+      _clutter_notify_by_pspec (self, drag_props[PROP_Y_DRAG_THRESHOLD]);
     }
 
   g_object_thaw_notify (self);
@@ -775,7 +772,7 @@ clutter_drag_action_set_drag_handle (ClutterDragAction *action,
 
   priv->drag_handle = handle;
 
-  _clutter_notify_by_pspec (G_OBJECT (action), obj_props[PROP_DRAG_HANDLE]);
+  _clutter_notify_by_pspec (G_OBJECT (action), drag_props[PROP_DRAG_HANDLE]);
 }
 
 /**
@@ -823,7 +820,7 @@ clutter_drag_action_set_drag_axis (ClutterDragAction *action,
 
   priv->drag_axis = axis;
 
-  _clutter_notify_by_pspec (G_OBJECT (action), obj_props[PROP_DRAG_AXIS]);
+  _clutter_notify_by_pspec (G_OBJECT (action), drag_props[PROP_DRAG_AXIS]);
 }
 
 /**
