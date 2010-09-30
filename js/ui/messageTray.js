@@ -917,6 +917,11 @@ MessageTray.prototype = {
             }));
 
         this._summaryItems = [];
+        // We keep a list of new summary items that were added to the summary since the last
+        // time it was shown to the user. We automatically show the summary to the user if there
+        // are items in this list once the notifications are done showing or once an item gets
+        // added to the summary without a notification being shown.
+        this._newSummaryItems = [];
         this._longestSummaryItem = null;
     },
 
@@ -955,7 +960,6 @@ MessageTray.prototype = {
         let summaryItem = new SummaryItem(source, minTitleWidth);
 
         this._summary.insert_actor(summaryItem.actor, 0);
-        this._summaryNeedsToBeShown = true;
 
         let newItemTitleWidth = summaryItem.getTitleNaturalWidth();
         if (newItemTitleWidth > minTitleWidth) {
@@ -967,6 +971,7 @@ MessageTray.prototype = {
         }
 
         this._summaryItems.push(summaryItem);
+        this._newSummaryItems.push(summaryItem);
 
         source.connect('notify', Lang.bind(this, this._onNotify));
 
@@ -1006,6 +1011,10 @@ MessageTray.prototype = {
         this._notificationQueue = newNotificationQueue;
 
         this._summary.remove_actor(this._summaryItems[index].actor);
+
+        let newSummaryItemsIndex = this._newSummaryItems.indexOf(this._summaryItems[index]);
+        if (newSummaryItemsIndex != -1)
+            this._newSummaryItems.splice(newSummaryItemsIndex, 1);
 
         this._summaryItems.splice(index, 1);
         if (this._longestSummaryItem.source == source) {
@@ -1214,7 +1223,7 @@ MessageTray.prototype = {
         let notificationsDone = !notificationsVisible && !notificationsPending;
 
         if (this._summaryState == State.HIDDEN) {
-            if (notificationsDone && this._summaryNeedsToBeShown)
+            if (notificationsDone && this._newSummaryItems.length > 0)
                 this._showSummary(true);
             else if (summarySummoned)
                 this._showSummary(false);
@@ -1438,7 +1447,7 @@ MessageTray.prototype = {
     },
 
     _showSummaryCompleted: function(withTimeout) {
-        this._summaryNeedsToBeShown = false;
+        this._newSummaryItems = [];
 
         if (withTimeout) {
             this._summaryTimeoutId =
@@ -1459,7 +1468,7 @@ MessageTray.prototype = {
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
-        this._summaryNeedsToBeShown = false;
+        this._newSummaryItems = [];
     },
 
     _showSummaryNotification: function() {
