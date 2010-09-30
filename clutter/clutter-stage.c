@@ -3199,6 +3199,11 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
        * clip together with the existing clip */
       if (clip)
         clutter_paint_volume_union (&entry->clip, clip);
+      else
+        {
+          clutter_paint_volume_free (&entry->clip);
+          entry->has_clip = FALSE;
+        }
       return entry;
     }
   else
