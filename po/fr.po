@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-09-07 17:52+0000\n"
+"POT-Creation-Date: 2010-09-22 15:13+0000\n"
 "PO-Revision-Date: 2010-09-05 21:03+0200\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -262,27 +262,27 @@ msgid "_24 hour format"
 msgstr "Format _24 heures"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:384 ../js/ui/dash.js:778
+#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
 msgid "APPLICATIONS"
 msgstr "APPLICATIONS"
 
-#: ../js/ui/appDisplay.js:416
+#: ../js/ui/appDisplay.js:348
 msgid "PREFERENCES"
 msgstr "PRÉFÉRENCES"
 
-#: ../js/ui/appDisplay.js:721
+#: ../js/ui/appDisplay.js:653
 msgid "New Window"
 msgstr "Nouvelle fenêtre"
 
-#: ../js/ui/appDisplay.js:725
+#: ../js/ui/appDisplay.js:657
 msgid "Remove from Favorites"
 msgstr "Enlever des favoris"
 
-#: ../js/ui/appDisplay.js:726
+#: ../js/ui/appDisplay.js:658
 msgid "Add to Favorites"
 msgstr "Ajouter aux favoris"
 
-#: ../js/ui/appDisplay.js:1033
+#: ../js/ui/appDisplay.js:986
 msgid "Drag here to add favorites"
 msgstr "Glisser ici pour ajouter aux favoris"
 
@@ -353,58 +353,58 @@ msgid "Undo"
 msgstr "Annuler"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:473
+#: ../js/ui/panel.js:467
 #, c-format
 msgid "Quit %s"
 msgstr "Quitter %s"
 
-#: ../js/ui/panel.js:498
+#: ../js/ui/panel.js:492
 msgid "Preferences"
 msgstr "Préférences"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:584
+#: ../js/ui/panel.js:578
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R:%S"
 
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:579
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:589
+#: ../js/ui/panel.js:583
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:590
+#: ../js/ui/panel.js:584
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:597
+#: ../js/ui/panel.js:591
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l:%M:%S %p"
 
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:592
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:602
+#: ../js/ui/panel.js:596
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:603
+#: ../js/ui/panel.js:597
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:748
+#: ../js/ui/panel.js:742
 msgid "Activities"
 msgstr "Activités"
 
@@ -421,17 +421,14 @@ msgstr "Réessayer"
 msgid "Connect to..."
 msgstr "Connexion à..."
 
-#. Translators: the "ON" and "OFF" strings are used in the
-#. toggle switches in the status area menus, and must be SHORT.
-#. If you don't have suitable short words, consider initials,
-#. "0"/"1", "⚪"/"⚫", etc.
-#: ../js/ui/popupMenu.js:30 ../js/ui/popupMenu.js:40
-msgid "ON"
-msgstr "✔"
-
-#: ../js/ui/popupMenu.js:31 ../js/ui/popupMenu.js:45
-msgid "OFF"
-msgstr "✘"
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:32
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
@@ -499,32 +496,32 @@ msgstr ""
 msgid "Can't remove the first workspace."
 msgstr "Impossible de supprimer le premier espace de travail."
 
-#: ../src/shell-global.c:1105
+#: ../src/shell-global.c:1189
 msgid "Less than a minute ago"
 msgstr "Il y a moins d'une minute"
 
-#: ../src/shell-global.c:1109
+#: ../src/shell-global.c:1193
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Il y a %d minute"
 msgstr[1] "Il y a %d minutes"
 
-#: ../src/shell-global.c:1114
+#: ../src/shell-global.c:1198
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Il y a %d heure"
 msgstr[1] "Il y a %d heures"
 
-#: ../src/shell-global.c:1119
+#: ../src/shell-global.c:1203
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Il y a %d jour"
 msgstr[1] "Il y a %d jours"
 
-#: ../src/shell-global.c:1124
+#: ../src/shell-global.c:1208
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -554,3 +551,4 @@ msgstr "Recherche"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s : %2$s"
+
