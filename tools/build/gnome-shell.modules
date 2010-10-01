@@ -114,6 +114,7 @@
         <dep package="gobject-introspection"/>
         <dep package="atk"/>
         <dep package="pango"/>
+        <dep package="gdk-pixbuf"/>
     </dependencies>
   </autotools>
 
