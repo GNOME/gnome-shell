@@ -3,6 +3,7 @@ EXTRA_DIST = run-test.sh.in
 
 TEST_JS =					\
 	interactive/borders.js			\
+	interactive/border-radius.js		\
 	interactive/box-layout.js		\
 	interactive/calendar.js			\
 	interactive/css-fonts.js		\
