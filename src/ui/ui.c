@@ -372,12 +372,9 @@ meta_ui_window_menu_free (MetaWindowMenu *menu)
 
 #ifdef USE_GTK3
 GdkPixbuf*
-meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
-                                 Pixmap       xpixmap,
+meta_gdk_pixbuf_get_from_pixmap (Pixmap       xpixmap,
                                  int          src_x,
                                  int          src_y,
-                                 int          dest_x,
-                                 int          dest_y,
                                  int          width,
                                  int          height)
 {
@@ -414,12 +411,9 @@ meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
                                            w_ret, h_ret);
     }
 
-  retval = gdk_pixbuf_get_from_surface (dest,
-                                        surface,
+  retval = gdk_pixbuf_get_from_surface (surface,
                                         src_x,
                                         src_y,
-                                        dest_x,
-                                        dest_y,
                                         width,
                                         height);
   cairo_surface_destroy (surface);
@@ -465,12 +459,9 @@ get_cmap (GdkPixmap *pixmap)
 }
 
 GdkPixbuf*
-meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
-                                 Pixmap       xpixmap,
+meta_gdk_pixbuf_get_from_pixmap (Pixmap       xpixmap,
                                  int          src_x,
                                  int          src_y,
-                                 int          dest_x,
-                                 int          dest_y,
                                  int          width,
                                  int          height)
 {
@@ -492,11 +483,11 @@ meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
     {
       cmap = get_cmap (drawable);
   
-      retval = gdk_pixbuf_get_from_drawable (dest,
+      retval = gdk_pixbuf_get_from_drawable (NULL,
                                              drawable,
                                              cmap,
                                              src_x, src_y,
-                                             dest_x, dest_y,
+                                             0, 0,
                                              width, height);
     }
   if (cmap)

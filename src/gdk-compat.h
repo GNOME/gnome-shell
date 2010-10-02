@@ -19,8 +19,8 @@
 #if !GTK_CHECK_VERSION (2, 90, 8)
 
 #define gdk_window_get_screen gdk_drawable_get_screen
-#define gdk_pixbuf_get_from_window(dest, window, src_x, src_y, dest_x, dest_y, width, height) \
-    gdk_pixbuf_get_from_drawable(dest, window, NULL, src_x, src_y, dest_x, dest_y, width, height)
+#define gdk_pixbuf_get_from_window(window, src_x, src_y, width, height) \
+    gdk_pixbuf_get_from_drawable(NULL, window, NULL, src_x, src_y, 0, 0, width, height)
 
 static inline int
 gdk_window_get_width (GdkWindow *window)

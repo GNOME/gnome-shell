@@ -394,17 +394,15 @@ try_pixmap_and_mask (MetaDisplay *display,
 
   get_pixmap_geometry (display, src_pixmap, &w, &h, NULL);
 
-  unscaled = meta_gdk_pixbuf_get_from_pixmap (NULL,
-                                              src_pixmap,
-                                              0, 0, 0, 0,
+  unscaled = meta_gdk_pixbuf_get_from_pixmap (src_pixmap,
+                                              0, 0,
                                               w, h);
 
   if (unscaled && src_mask != None)
     {
       get_pixmap_geometry (display, src_mask, &w, &h, NULL);
-      mask = meta_gdk_pixbuf_get_from_pixmap (NULL,
-                                              src_mask,
-                                              0, 0, 0, 0,
+      mask = meta_gdk_pixbuf_get_from_pixmap (src_mask,
+                                              0, 0,
                                               w, h);
     }
 

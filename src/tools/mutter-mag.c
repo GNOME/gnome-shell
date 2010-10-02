@@ -54,8 +54,8 @@ get_pixbuf (void)
            last_grab_width, last_grab_height);
 #endif
   
-  screenshot = gdk_pixbuf_get_from_window (NULL, gdk_get_default_root_window (),
-                                           last_grab_x, last_grab_y, 0, 0,
+  screenshot = gdk_pixbuf_get_from_window (gdk_get_default_root_window (),
+                                           last_grab_x, last_grab_y,
                                            last_grab_width, last_grab_height);
 
   if (screenshot == NULL)
