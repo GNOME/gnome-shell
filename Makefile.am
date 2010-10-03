@@ -6,10 +6,6 @@ SUBDIRS = build clutter tests doc po
 
 ACLOCAL_AMFLAGS = -I build/autotools
 
-.PHONY: test-report full-report
-test-report full-report:
-	$(MAKE) -C tests/conform $(@)
-
 EXTRA_DIST = \
 	ChangeLog.pre-git-import	\
 	$(NULL)
@@ -31,6 +27,14 @@ MAINTAINERCLEANFILES = 	\
 	$(NULL)
 
 include $(top_srcdir)/build/autotools/Makefile.am.changelog
+include $(top_srcdir)/build/autotools/Makefile.am.release
 
+# proxy rule for gcov
 gcov:
 	@( cd clutter && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $$?
+
+# proxy rules for tests
+test-report full-report:
+	$(MAKE) -C tests/conform $(@)
+
+.PHONY: gcov test-report full-report

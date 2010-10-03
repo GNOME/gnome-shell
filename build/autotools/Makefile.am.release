@@ -1,0 +1,68 @@
+# To make real stable releases or devel snapshots, use either:
+# 	make release-check
+# or	make release-publish
+
+TAR_OPTIONS = --owner=0 --group=0
+
+RELEASE_UPLOAD_HOST = clutter-project.org
+RELEASE_UPLOAD_USER = clutter
+RELEASE_UPLOAD_DIR  = $(RELEASE_UPLOAD_USER)@$(RELEASE_UPLOAD_HOST):~$(RELEASE_UPLOAD_USER)/upload-source
+
+RELEASE_URL_BASE = http://source.clutter-project.org/sources/clutter
+RELEASE_URL      = $(RELEASE_URL_BASE)/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)
+
+release-tag:
+	@if test "x$(CLUTTER_RELEASE_STATUS)" = "xgit"; then \
+	  echo "Cannot tag a Git version; please, update the Clutter version" >&2; \
+	else \
+	  if test -d "$(top_srcdir)/.git"; then \
+	    echo "Tagging release $(CLUTTER_VERSION)..." ; \
+	    $(top_srcdir)/build/missing --run git tag \
+	 	-s \
+	      	-m "Clutter $(CLUTTER_VERSION) ($(CLUTTER_RELEASE_STATUS))" \
+		$(CLUTTER_VERSION) ; \
+	  else \
+	    echo A git checkout is required to tag a release >&2; \
+	  fi \
+	fi
+
+release-check: release-verify-even-micro release-verify-sane-changelogs
+	TAR_OPTIONS="$(TAR_OPTIONS)" $(MAKE) $(AM_MAKEFLAGS) distcheck
+
+release-verify-sane-changelogs: changelogs
+	@echo -n "Checking that the ChangeLog files are sane..."
+	@if grep -q "is required to generate" $(CHANGELOGS); then \
+	  (echo "Ouch." && \
+	   echo "Some of the ChangeLogs are not generated correctly." && \
+	   echo "Remove ChangeLog* and make changelogs" && false); else :; fi
+	@echo "Good."
+
+release-verify-even-micro:
+	@echo -n "Checking that $(VERSION) has an even micro component..."
+	@test "$(CLUTTER_MICRO_VERSION)" = "`echo $(CLUTTER_MICRO_VERSION)/2*2 | bc`" \
+	  || (echo "Ouch." && \
+	      echo "The version micro component '$(CLUTTER_MICRO_VERSION)' is not an even number." && \
+	      echo "The version in configure.ac must be incremented before a new release." && \
+	      false)
+	@echo "Good."
+
+release-upload: $(distdir).tar.bz2
+	@scp $(distdir).tar.bz2 $(RELEASE_UPLOAD_DIR)
+
+release-message:
+	@echo "Release URL: $(RELEASE_URL)/$(distdir).tar.bz2"
+	@echo "Release checksum: $(RELEASE_URL)/$(disdir).sha256sum"
+
+release-publish: release-check
+	$(MAKE) $(AM_MAKEFLAGS) release-tag
+	$(MAKE) $(AM_MAKEFLAGS) release-upload
+	$(MAKE) $(AM_MAKEFLAGS) release-message
+	
+.PHONY: \
+	release-check \
+	release-message \
+	release-publish \
+	release-tag \
+	release-upload \
+	release-verify-even-micro \
+	release-verify-sane-changelogs

@@ -7,6 +7,7 @@ EXTRA_DIST = \
 	Makefile.am.changelog	\
 	Makefile.am.gcov	\
 	Makefile.am.gitignore	\
+	Makefile.am.release	\
 	introspection.m4	\
 	gtk-doc.m4		\
 	as-compiler-flag.m4	\
