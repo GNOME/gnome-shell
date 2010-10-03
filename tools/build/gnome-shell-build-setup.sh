@@ -65,8 +65,8 @@ fi
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
-# gvfs, python, pygobject, gnome-python (gconf), gnome-terminal*
-# Xephyr*, zenity
+# gvfs, python, pygobject, gnome-python (gconf), gnome-terminal*,
+# icon-naming-utils, Xephyr*, zenity
 #
 # (*) only needed for --xephyr
 
@@ -79,7 +79,8 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
   fi
   for pkg in \
     build-essential curl \
-    automake bison flex gettext git-core gnome-common gtk-doc-tools gvfs gvfs-backends \
+    automake bison flex gettext git-core gnome-common gtk-doc-tools \
+    gvfs gvfs-backends icon-naming-utils \
     libdbus-glib-1-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev \
     libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev \
     libwnck-dev libgl1-mesa-dev liborbit2-dev libreadline5-dev libxml2-dev \
@@ -129,9 +130,10 @@ if test "x$system" = xSUSE -o "x$system" = "xSUSE LINUX" ; then
   reqd=""
   for pkg in \
     curl \
-    bison flex gtk-doc gnome-common gnome-doc-utils-devel gnome-menus-devel \
-    libtiff-devel cups-devel libffi-devel gnome-desktop-devel orbit2-devel \
-    libwnck-devel xorg-x11-proto-devel readline-devel \
+    bison flex gtk-doc gnome-common gnome-doc-utils-devel \
+    gnome-desktop-devel gnome-menus-devel icon-naming-utils \
+    libtiff-devel cups-devel libffi-devel \
+    orbit2-devel libwnck-devel xorg-x11-proto-devel readline-devel \
     mozilla-xulrunner191-devel libcroco-devel \
     xorg-x11-devel xorg-x11 xorg-x11-server-extra \
     ; do
@@ -150,8 +152,8 @@ if test "x$system" = xMandrivaLinux ; then
   reqd=""
   for pkg in \
     curl \
-    bison flex gnome-common gnome-doc-utils gtk-doc intltool \
-    ffi5-devel libwnck-1-devel GL-devel ORBit2-devel \
+    bison flex gnome-common gnome-doc-utils gtk-doc icon-naming-utils \
+    intltool ffi5-devel libwnck-1-devel GL-devel ORBit2-devel \
     readline-devel libxulrunner-devel \
     libxdamage-devel mesa-demos x11-server-xephyr zenity \
     libcroco0.6-devel \
