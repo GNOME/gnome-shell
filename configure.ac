@@ -58,7 +58,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build])
 AC_CONFIG_MACRO_DIR([build/autotools])
 
-AM_INIT_AUTOMAKE([1.11 foreign -Wno-portability no-define dist-bzip2 check-news])
+AM_INIT_AUTOMAKE([1.11 foreign -Wno-portability no-define no-dist-gzip dist-bzip2 check-news])
 
 AM_SILENT_RULES([yes])
 
