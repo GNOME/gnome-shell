@@ -3,54 +3,60 @@ RELEASING
 
 When making a new release;
 
- - Verify your working directory is clean:
+ - Verify that you don't have uncommitted changes; both:
 
-     $ git reset --hard <release_branch>
+     $ git diff HEAD
+
+   and:
+
+     $ git log master..origin/master
+
+   should be empty.
+
+ - Clean your work directory:
+
      $ git clean -xdf
+
+   This ensures that you don't have stale files lying around.
 
  - Run:
 
      $ ./autogen.sh --enable-gtk-doc
      $ make all
+     $ make check
+
+   And verify that the code builds from a clean Git snapshot.
+
+ - Update the release documentation:
+
+     - NEWS: new feature details, bugs fixed, acknowledgements
+     - README: dependencies, any behavioural changes relevant to
+       developers;
+
+   The commit the changes.
+
+ - Bump clutter_micro_version to the next even number; if this is a stable
+   release, bump up clutter_interface_version by one as well. Then commit
+   the changes.
 
  - Run:
 
-     $ make distcheck
+     $ make release-publish
 
-   and fix eventual issues. Commit the fixes.
+   which will:
 
- - Update NEWS (New feature details, bug #'s), README (Any API changes
-   relevant to developers + version), AUTHORS if relevant.
+     - do sanity checks on the build
+     - distcheck the release
+     - tag the repository with the version number
+     - upload the tarball to the remote server (needs SSH account)
 
- - Clean everything again with:
-
-     $ git clean -xdf
-
- - Verify versioning in configure.ac, increasing relevant
-   clutter_major_version/clutter_minor_version/clutter_micro_version
-   value. For point releases, bump clutter_micro_version to the next
-   even number.
-
- - If there was no API change (addition, deprecation), increment
-   clutter_interface_age by two. If there was an API change,
-   set clutter_interface_age to zero. The interface_age is used to
-   keep the soname the same across releases.
-
- - Build everything again, and run distcheck to create the tarball.
-
- - Tag the release:
-
-     $ git tag -s <version>
-
- - Bump clutter_micro_version to the next odd number version and commit.
+ - Bump clutter_micro_version to the next odd number; if this is a stable
+   release, bump up clutter_interface_version by one as well. Then commit
+   the changes.
 
  - Push the branch and then the tag, e.g.:
 
      $ git push origin master
      $ git push origin 1.2.4
 
- - Upload the tarball to clutter-project.org.
-
  - Announce release to the waiting world on the blog and mailing lists
-
- - Release any dependant add-ons following similar rules to above.
