@@ -440,6 +440,25 @@ and C++ guards:
 
   #endif /* __CLUTTER_HEADER_H__ */
 
++ Includes
+
+Clutter source files should never include the global clutter.h header, but
+instead include the individual headers that are needed. Every file must
+include config.h first, then its own header, then other Clutter headers
+that it needs, then system and third-party headers that it needs.
+
+  /* valid */
+  #include "config.h"
+
+  #include "clutter-foo.h"
+
+  #include "clutter-actor.h"
+  #include "clutter-container.h"
+
+  ...
+
+  #include <string.h>
+
 + GObject
 
 GObject classes definition and implementation require some additional
@@ -523,3 +542,72 @@ them at the end of a block or a series of functions needing them.
 Inline functions are usually preferable to private macros.
 
 Public macros should not be used unless they evaluate to a constant.
+
++ Public API
+
+Avoid exporting variables as public API, since this is cumbersome on some
+platforms. It is always preferable to add getters and setters instead.
+
++ Private API
+
+Non-exported functions that are needed in more than one source file
+should be named "_clutter_...", and declared in a private header file.
+
+Underscore-prefixed functions are never exported.
+
+Non-exported functions that are only needed in one source file
+should be declared static.
+
++ Documentation
+
+All public APIs must have gtk-doc comments. For functions, these should
+be placed in the source file, directly above the function.
+
+  /* valid */
+  /**
+   * clutter_get_flow:
+   * @actor: a #ClutterActor
+   *
+   * Gets the flow of an actor.
+   *
+   * Note that flows may be laminar or turbulent...
+   *
+   * Return value: (transfer none): the flow of @actor
+   */
+  ClutterFlow *
+  clutter_get_flow (ClutterActor *actor)
+  {
+    ...
+  }
+
+Doc comments for macros, function types, class structs, etc should be
+placed next to the definitions, typically in headers.
+
+Section introductions should be placed in the source file they describe,
+after the license header:
+
+  /* valid */
+  /**
+   * SECTION:clutter-align-constraint
+   * @Title: ClutterAlignConstraint
+   * @Short_Description: A constraint aligning the position of an actor
+   *
+   * #ClutterAlignConstraint is a #ClutterConstraint that aligns the position
+   * of the #ClutterActor to which it is applied to the size of another
+   * #ClutterActor using an alignment factor
+   *
+   * [...]
+   */
+
+To properly document a new function, macro, function type or struct,
+it needs to be listed in the clutter-sections.txt file.
+
+To properly document a new class, it needs to be given its own section
+in clutter-sections.txt, needs to be included in clutter-docs.xml, and the
+get_type function needs to listed in clutter.types.
+
++ Old code
+
+It is ok to update the style of a code block or function when you
+are touching it anyway, but sweeping whitespace changes obscure the
+git history and should be avoided.
