@@ -83,6 +83,9 @@ function init() {
         return St.describe_actor(this);
     };
 
+    if (window.global === undefined) // test environment
+        return;
+
     _blockMethod('Clutter.Event.get_state', 'Shell.get_event_state',
                  'gjs\'s handling of Clutter.ModifierType is broken. See bug 597292.');
     _blockMethod('Gdk.Display.get_device_state', 'global.get_pointer',
