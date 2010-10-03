@@ -932,9 +932,6 @@ child_notify (ClutterContainer *container,
               ClutterActor     *actor,
               GParamSpec       *pspec)
 {
-  g_signal_emit (container, container_signals[CHILD_NOTIFY],
-                 g_quark_from_string (pspec->name),
-                 actor, pspec);
 }
 
 static inline void
@@ -944,14 +941,15 @@ container_set_child_property (ClutterContainer *container,
                               GParamSpec       *pspec)
 {
   ClutterChildMeta *data;
-  ClutterContainerIface *iface;
 
   data = clutter_container_get_child_meta (container, actor);
   g_object_set_property (G_OBJECT (data), pspec->name, value);
 
-  iface = CLUTTER_CONTAINER_GET_IFACE (container);
-  if (iface->child_notify != NULL)
-    iface->child_notify (container, actor, pspec);
+  g_signal_emit (container, container_signals[CHILD_NOTIFY],
+                 (pspec->flags & G_PARAM_STATIC_NAME)
+                   ? g_quark_from_static_string (pspec->name)
+                   : g_quark_from_string (pspec->name),
+                 actor, pspec);
 }
 
 /**
