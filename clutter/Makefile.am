@@ -273,7 +273,6 @@ backend_source_h_priv =
 backend_source_built =
 
 # X11 backend rules
-if SUPPORT_X11
 x11_source_c = \
 	$(srcdir)/x11/clutter-backend-x11.c		\
 	$(srcdir)/x11/clutter-device-manager-x11.c	\
@@ -289,7 +288,7 @@ x11_source_h = \
 	$(srcdir)/x11/clutter-x11-texture-pixmap.h	\
 	$(NULL)
 
-backend_source_h_priv += \
+x11_source_h_priv = \
 	$(srcdir)/x11/clutter-backend-x11.h		\
 	$(srcdir)/x11/clutter-device-manager-x11.h	\
 	$(srcdir)/x11/clutter-input-device-x11.h	\
@@ -298,15 +297,18 @@ backend_source_h_priv += \
 	$(srcdir)/x11/clutter-stage-x11.h		\
 	$(NULL)
 
-backend_source_c_priv += \
+x11_source_c_priv = \
 	$(srcdir)/x11/xsettings/xsettings-client.c	\
 	$(srcdir)/x11/xsettings/xsettings-client.h	\
 	$(srcdir)/x11/xsettings/xsettings-common.c	\
 	$(srcdir)/x11/xsettings/xsettings-common.h	\
 	$(NULL)
 
+if SUPPORT_X11
 backend_source_h += $(x11_source_h)
 backend_source_c += $(x11_source_c)
+backend_source_h_priv += $(x11_source_h_priv)
+backend_source_c_priv += $(x11_source_c_priv)
 
 # the list of files we want to introspect on X11
 x11_introspection = $(x11_source_c) $(x11_source_h)
@@ -319,10 +321,11 @@ pc_files += clutter-x11-$(CLUTTER_API_VERSION).pc
 
 clutterx11_includedir = $(clutter_includedir)/x11
 clutterx11_include_HEADERS = $(x11_source_h)
+else
+EXTRA_DIST += $(x11_source_c) $(x11_source_h) $(x11_source_c_priv) $(x11_source_h_priv)
 endif # SUPPORT_X11
 
 # GLX backend rules
-if SUPPORT_GLX
 glx_source_c = \
 	$(srcdir)/glx/clutter-backend-glx.c		\
 	$(srcdir)/glx/clutter-event-glx.c		\
@@ -335,22 +338,43 @@ glx_source_h = \
 	$(srcdir)/glx/clutter-glx.h			\
 	$(NULL)
 
-backend_source_h_priv += \
+glx_source_h_priv = \
 	$(srcdir)/glx/clutter-backend-glx.h		\
 	$(srcdir)/glx/clutter-event-glx.h		\
 	$(srcdir)/glx/clutter-stage-glx.h		\
 	$(NULL)
 
+if SUPPORT_GLX
 backend_source_h += $(glx_source_h)
 backend_source_c += $(glx_source_c)
+backend_source_h_priv += $(glx_source_h_priv)
 
 # XXX - this is another hack; we installed glx headers under includedir/glx
 # instead of using the same directory.
 clutterglx_includedir = $(clutter_includedir)/glx
 clutterglx_include_HEADERS = $(glx_source_h)
+else
+EXTRA_DIST += $(glx_source_h) $(glx_source_c) $(glx_source_h_priv)
 endif # SUPPORT_GLX
 
 # Windows backend rules
+win32_source_c = \
+	$(srcdir)/win32/clutter-backend-win32.c		\
+	$(srcdir)/win32/clutter-device-manager-win32.c	\
+	$(srcdir)/win32/clutter-event-win32.c		\
+	$(srcdir)/win32/clutter-stage-win32.c		\
+	$(NULL)
+
+win32_source_h = \
+	$(srcdir)/win32/clutter-win32.h			\
+	$(NULL)
+
+win32_source_h_priv = \
+	$(srcdir)/win32/clutter-backend-win32.h		\
+	$(srcdir)/win32/clutter-device-manager-win32.h	\
+	$(srcdir)/win32/clutter-stage-win32.h		\
+	$(NULL)
+
 if SUPPORT_WIN32
 # Ideally this resources stuff would go in win32/ but libtool doesn't
 # seem to pass on the -Wl argument when linking a convenience library
@@ -365,74 +389,136 @@ win32/resources.o : $(srcdir)/win32/invisible-cursor.cur
 win32_resources = win32/resources.o
 win32_resources_ldflag = -Wl,win32/resources.o
 
-win32_source_c = \
-	$(srcdir)/win32/clutter-backend-win32.c		\
-	$(srcdir)/win32/clutter-device-manager-win32.c	\
-	$(srcdir)/win32/clutter-event-win32.c		\
-	$(srcdir)/win32/clutter-stage-win32.c		\
-	$(NULL)
-
-win32_source_h = \
-	$(srcdir)/win32/clutter-win32.h			\
-	$(NULL)
-
-backend_source_h_priv += \
-	$(srcdir)/win32/clutter-backend-win32.h		\
-	$(srcdir)/win32/clutter-device-manager-win32.h	\
-	$(srcdir)/win32/clutter-stage-win32.h		\
-	$(NULL)
-
 backend_source_h += $(win32_source_h)
 backend_source_c += $(win32_source_c)
+backend_source_h_priv += $(win32_source_h_priv)
 
 clutterwin_includedir = $(clutter_includedir)/win32
 clutterwin_include_HEADERS = $(win32_source_h)
 
-EXTRA_DIST += invisible-cursor.cur resources.rc
+EXTRA_DIST += \
+	$(srcdir)/win32/invisible-cursor.cur 	\
+	$(srcdir)/win32/resources.rc		\
+	$(NULL)
+else
+EXTRA_DIST += \
+	$(srcdir)/win32/invisible-cursor.cur 	\
+	$(srcdir)/win32/resources.rc		\
+	$(win32_source_c) 			\
+	$(win32_source_h) 			\
+	$(win32_source_h_priv)
 endif # SUPPORT_WIN32
 
 # EGL backend rules
-if SUPPORT_EGL
 egl_source_h = \
 	$(srcdir)/egl/clutter-egl-headers.h	\
 	$(srcdir)/egl/clutter-egl.h		\
 	$(NULL)
 
-backend_source_c += \
+egl_source_c = \
 	$(srcdir)/egl/clutter-backend-egl.c	\
 	$(srcdir)/egl/clutter-stage-egl.c	\
 	$(NULL)
 
-backend_source_h_priv += \
+egl_source_h_priv = \
 	$(srcdir)/egl/clutter-backend-egl.h	\
 	$(srcdir)/egl/clutter-stage-egl.h	\
 	$(NULL)
 
+egl_source_c_priv =
+
+egl_tslib_c = $(srcdir)/egl/clutter-event-tslib.c
+
+egl_cex_c_priv = $(srcdir)/egl/clutter-backend-cex100.c
+egl_cex_h_priv = $(srcdir)/egl/clutter-backend-cex100.h
+egl_cex_h = $(srcdir)/egl/clutter-cex100.h
+
+if SUPPORT_EGL
 if USE_TSLIB
-backend_source_c_priv += $(srcdir)/egl/clutter-event-tslib.c
+egl_source_c_priv += $(egl_tslib_c)
 endif # SUPPORT_TSLIB
-
 if SUPPORT_CEX100
-backend_source_h_priv += $(srcdir)/egl/clutter-backend-cex100.h
-backend_source_c_priv += $(srcdir)/egl/clutter-backend-cex100.c
-
-egl_source_h += $(srcdir)/egl/clutter-cex100.h
+egl_source_c_priv += $(egl_cex_c_priv)
+egl_source_h_priv += $(egl_cex_h_priv)
+egl_source_h += $(egl_cex_h)
 endif # SUPPORT_CEX100
 
 backend_source_h += $(egl_source_h)
+backend_source_c += $(egl_source_c)
+backend_source_h_priv += $(egl_source_h_priv)
+backend_source_c_priv += $(egl_source_c_priv)
 
 clutteregl_includedir = $(clutter_includedir)/egl
 clutteregl_include_HEADERS = $(egl_source_h)
+else
+EXTRA_DIST += \
+	$(egl_source_c) 	\
+	$(egl_source_h) 	\
+	$(egl_source_h_priv) 	\
+	$(egl_source_c_priv)	\
+	$(egl_cex_h_priv)	\
+	$(egl_cex_c_priv)	\
+	$(egl_cex_h)		\
+	$(egl_tslib_c)		\
+	$(NULL)
 endif # SUPPORT_EGL
 
 # OSX backend rules
-if SUPPORT_OSX
+osx_source_c = \
+	$(srcdir)/osx/clutter-backend-osx.c	\
+	$(srcdir)/osx/clutter-stage-osx.c	\
+	$(NULL)
 
+osx_source_h = $(srcdir)/osx/clutter-osx.h
+
+osx_source_h_priv = \
+	$(srcdir)/osx/clutter-backend-osx.h	\
+	$(srcdir)/osx/clutter-stage-osx.h	\
+	$(NULL)
+
+osx_source_c_priv = $(srcdir)/osx/clutter-event-osx.c
+if SUPPORT_OSX
+AM_CFLAGS += -xobjective-c
+
+backend_source_h += $(osx_source_h)
+backend_source_c += $(osx_source_c)
+backend_source_h_priv += $(osx_source_h_priv)
+backend_source_c_priv += $(osx_source_c_priv)
+
+clutterosx_includedir = $(clutter_includedir)/osx
+clutterosx_include_HEADERS = $(osx_source_h)
+else
+EXTRA_DIST += \
+	$(osx_source_c) 	\
+	$(osx_source_h) 	\
+	$(osx_source_h_priv) 	\
+	$(osx_source_c_priv)	\
+	$(NULL)
 endif # SUPPORT_OSX
 
 # Fruity backend rules
-if SUPPORT_FRUITY
+fruity_source_c = \
+	$(srcdir)/fruity/clutter-backend-fruity.c	\
+	$(srcdir)/fruity/clutter-stage-fruity.c		\
+	$(srcdir)/fruity/clutter-fruity.c		\
+	$(NULL)
 
+fruity_source_h = \
+	$(srcdir)/fruity/clutter-backend-fruity.h	\
+	$(srcdir)/fruity/clutter-stage-fruity.h		\
+	$(srcdir)/fruity/clutter-fruity.h		\
+	$(NULL)
+if SUPPORT_FRUITY
+backend_source_c_priv += $(fruity_source_c)
+backend_source_h_priv += $(fruity_source_h)
+
+clutterfruity_includedir = $(clutter_includedir)/fruity
+clutterfruity_include_HEADERS = $(srcdir)/fruity/clutter-fruity.h
+else
+EXTRA_DIST += \
+	$(fruity_source_c)	\
+	$(fruity_source_h)	\
+	$(NULL)
 endif # SUPPORT_FRUITY
 
 # cally
