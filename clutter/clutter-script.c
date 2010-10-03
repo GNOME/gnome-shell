@@ -971,7 +971,7 @@ connect_each_object (gpointer key,
 }
 
 /**
- * clutter_script_connect_signals_full:
+ * clutter_script_connect_signals_full: (skip)
  * @script: a #ClutterScript
  * @func: signal connection function
  * @user_data: data to be passed to the signal handlers, or %NULL
