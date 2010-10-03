@@ -11,6 +11,14 @@ RELEASE_UPLOAD_DIR  = $(RELEASE_UPLOAD_USER)@$(RELEASE_UPLOAD_HOST):~$(RELEASE_U
 RELEASE_URL_BASE = http://source.clutter-project.org/sources/clutter
 RELEASE_URL      = $(RELEASE_URL_BASE)/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)
 
+RELEASE_ANNOUNCE_LIST = clutter-announce@clutter-project.org (Cc: gnome-announce-list@gnome.org)
+
+tar_file = $(distdir).tar.bz2
+sha256_file = $(distdir).sha256sum
+
+$(sha256_file): $(tar_file)
+	$(AM_V_GEN)sha256sum $^ > $(top_builddir)/build/$@
+
 release-tag:
 	@if test "x$(CLUTTER_RELEASE_STATUS)" = "xgit"; then \
 	  echo "Cannot tag a Git version; please, update the Clutter version" >&2; \
@@ -46,12 +54,38 @@ release-verify-even-micro:
 	      false)
 	@echo "Good."
 
-release-upload: $(distdir).tar.bz2
-	@scp $(distdir).tar.bz2 $(RELEASE_UPLOAD_DIR)
+release-upload: $(tar_file)
+	@scp $(tar_file) $(RELEASE_UPLOAD_DIR)
 
 release-message:
-	@echo "Release URL: $(RELEASE_URL)/$(distdir).tar.bz2"
-	@echo "Release checksum: $(RELEASE_URL)/$(disdir).sha256sum"
+	@echo "Release URL: $(RELEASE_URL)/$(tar_file)"
+	@echo "Release checksum: $(RELEASE_URL)/$(sha256_file)"
+	@echo "Send an email to: $(RELEASE_ANNOUNCE_LIST)"
+	@echo "  Subject: Clutter $(CLUTTER_VERSION) ($(CLUTTER_RELEASE_STATUS))"
+	@echo "Contents:"
+	@echo "--- CUT HERE ---"
+	@echo "A new Clutter $(CLUTTER_RELEASE_STATUS) $(CLUTTER_VERSION) is now available at:"
+	@echo ""
+	@echo "  $(RELEASE_URL)/$(tar_file)"
+	@echo ""
+	@echo "SHA256 Checksum:"
+	@echo ""
+	@cat $(top_builddir)/build/$(sha256_file)
+	@echo ""
+	@echo "Additionally, a git clone of the source tree:"
+	@echo ""
+	@echo "  git clone git://git.clutter-project.org/clutter"
+	@echo ""
+	@echo "will include a signed $(CLUTTER_VERSION) tag which points to a commit named:"
+	@echo "  `git cat-file tag $(CLUTTER_VERSION) | grep ^object | sed -e 's,object ,,'`"
+	@echo ""
+	@echo "which can be verified with:"
+	@echo "  git verify-tag $(CLUTTER_VERSION)"
+	@echo ""
+	@echo "and can be checked out with a command such as:"
+	@echo "  git checkout -b build $(CLUTTER_VERSION)"
+	@echo ""
+	@echo "--- CUT HERE ---"
 
 release-publish: release-check
 	$(MAKE) $(AM_MAKEFLAGS) release-tag
