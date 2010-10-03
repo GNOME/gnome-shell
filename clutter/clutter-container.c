@@ -168,7 +168,7 @@ clutter_container_base_init (gpointer g_iface)
                       G_SIGNAL_RUN_FIRST | G_SIGNAL_DETAILED,
                       G_STRUCT_OFFSET (ClutterContainerIface, child_notify),
                       NULL, NULL,
-                      _clutter_marshal_VOID__OBJECT_OBJECT_PARAM,
+                      _clutter_marshal_VOID__OBJECT_PARAM,
                       G_TYPE_NONE, 2,
                       CLUTTER_TYPE_ACTOR, G_TYPE_PARAM);
 
