@@ -167,7 +167,7 @@ _cogl_texture_rectangle_set_wrap_mode_parameters (CoglTexture *tex,
 
       GE( _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
                                            tex_rect->gl_texture,
-                                           FALSE) );
+                                           tex_rect->is_foreign) );
       GE( glTexParameteri (GL_TEXTURE_RECTANGLE_ARB,
                            GL_TEXTURE_WRAP_S, wrap_mode_s) );
       GE( glTexParameteri (GL_TEXTURE_RECTANGLE_ARB,
@@ -181,7 +181,8 @@ _cogl_texture_rectangle_set_wrap_mode_parameters (CoglTexture *tex,
 static void
 _cogl_texture_rectangle_free (CoglTextureRectangle *tex_rect)
 {
-  _cogl_delete_gl_texture (tex_rect->gl_texture);
+  if (!tex_rect->is_foreign)
+    _cogl_delete_gl_texture (tex_rect->gl_texture);
 
   /* Chain up */
   _cogl_texture_free (COGL_TEXTURE (tex_rect));
@@ -270,7 +271,7 @@ _cogl_texture_rectangle_new_with_size (unsigned int     width,
   _cogl_texture_driver_gen (GL_TEXTURE_RECTANGLE_ARB, 1, &tex_rect->gl_texture);
   GE( _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
                                        tex_rect->gl_texture,
-                                       FALSE) );
+                                       tex_rect->is_foreign) );
   GE( glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0, gl_intformat,
                     width, height, 0, gl_format, gl_type, NULL) );
 
@@ -326,6 +327,105 @@ _cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
   tex_rect->gl_format = gl_intformat;
 
   cogl_object_unref (dst_bmp);
+
+  return _cogl_texture_rectangle_handle_new (tex_rect);
+}
+
+CoglHandle
+_cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
+                                          GLuint width,
+                                          GLuint height,
+                                          CoglPixelFormat format)
+{
+  /* NOTE: width, height and internal format are not queriable
+   * in GLES, hence such a function prototype.
+   */
+
+  GLenum                gl_error      = 0;
+  GLint                 gl_compressed = GL_FALSE;
+  GLenum                gl_int_format = 0;
+  CoglTextureRectangle *tex_rect;
+
+  if (!_cogl_texture_driver_allows_foreign_gl_target (GL_TEXTURE_RECTANGLE_ARB))
+    return COGL_INVALID_HANDLE;
+
+  /* Make sure it is a valid GL texture object */
+  if (!glIsTexture (gl_handle))
+    return COGL_INVALID_HANDLE;
+
+  /* Make sure binding succeeds */
+  while ((gl_error = glGetError ()) != GL_NO_ERROR)
+    ;
+
+  _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB, gl_handle, TRUE);
+  if (glGetError () != GL_NO_ERROR)
+    return COGL_INVALID_HANDLE;
+
+  /* Obtain texture parameters */
+
+#if HAVE_COGL_GL
+
+  GE( glGetTexLevelParameteriv (GL_TEXTURE_RECTANGLE_ARB, 0,
+                                GL_TEXTURE_COMPRESSED,
+                                &gl_compressed) );
+
+  {
+    GLint val;
+
+    GE( glGetTexLevelParameteriv (GL_TEXTURE_RECTANGLE_ARB, 0,
+                                  GL_TEXTURE_INTERNAL_FORMAT,
+                                  &val) );
+
+    gl_int_format = val;
+  }
+
+  /* If we can query GL for the actual pixel format then we'll ignore
+     the passed in format and use that. */
+  if (!_cogl_pixel_format_from_gl_internal (gl_int_format, &format))
+    return COGL_INVALID_HANDLE;
+
+#else
+
+  /* Otherwise we'll assume we can derive the GL format from the
+     passed in format */
+  _cogl_pixel_format_to_gl (format,
+                            &gl_int_format,
+                            NULL,
+                            NULL);
+
+#endif
+
+  /* Note: We always trust the given width and height without querying
+   * the texture object because the user may be creating a Cogl
+   * texture for a texture_from_pixmap object where glTexImage2D may
+   * not have been called and the texture_from_pixmap spec doesn't
+   * clarify that it is reliable to query back the size from OpenGL.
+   */
+
+  /* Validate width and height */
+  if (width <= 0 || height <= 0)
+    return COGL_INVALID_HANDLE;
+
+  /* Compressed texture images not supported */
+  if (gl_compressed == GL_TRUE)
+    return COGL_INVALID_HANDLE;
+
+  /* Create new texture */
+  tex_rect = _cogl_texture_rectangle_create_base (width, height,
+                                                  COGL_TEXTURE_NO_AUTO_MIPMAP,
+                                                  format);
+
+  /* Setup bitmap info */
+  tex_rect->is_foreign = TRUE;
+
+  tex_rect->format = format;
+
+  tex_rect->gl_texture = gl_handle;
+  tex_rect->gl_format = gl_int_format;
+
+  /* Unknown filter */
+  tex_rect->min_filter = GL_FALSE;
+  tex_rect->mag_filter = GL_FALSE;
 
   return _cogl_texture_rectangle_handle_new (tex_rect);
 }
@@ -415,7 +515,7 @@ _cogl_texture_rectangle_set_filters (CoglTexture *tex,
   /* Apply new filters to the texture */
   GE( _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
                                        tex_rect->gl_texture,
-                                       FALSE) );
+                                       tex_rect->is_foreign) );
   GE( glTexParameteri (GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER,
                        mag_filter) );
   GE( glTexParameteri (GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER,
@@ -493,7 +593,7 @@ _cogl_texture_rectangle_get_data (CoglTexture     *tex,
 
   GE( _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
                                        tex_rect->gl_texture,
-                                       FALSE) );
+                                       tex_rect->is_foreign) );
   return _cogl_texture_driver_gl_get_tex_image (GL_TEXTURE_RECTANGLE_ARB,
                                                 gl_format,
                                                 gl_type,
@@ -524,6 +624,12 @@ _cogl_texture_rectangle_get_height (CoglTexture *tex)
   return COGL_TEXTURE_RECTANGLE (tex)->height;
 }
 
+static gboolean
+_cogl_texture_rectangle_is_foreign (CoglTexture *tex)
+{
+  return COGL_TEXTURE_RECTANGLE (tex)->is_foreign;
+}
+
 static const CoglTextureVtable
 cogl_texture_rectangle_vtable =
   {
@@ -544,5 +650,5 @@ cogl_texture_rectangle_vtable =
     _cogl_texture_rectangle_get_gl_format,
     _cogl_texture_rectangle_get_width,
     _cogl_texture_rectangle_get_height,
-    NULL /* is_foreign */
+    _cogl_texture_rectangle_is_foreign
   };

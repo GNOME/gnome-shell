@@ -140,7 +140,7 @@ _cogl_texture_2d_set_wrap_mode_parameters (CoglTexture *tex,
     {
       _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                        tex_2d->gl_texture,
-                                       FALSE);
+                                       tex_2d->is_foreign);
       GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_mode_s) );
       GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_mode_t) );
 
@@ -152,7 +152,8 @@ _cogl_texture_2d_set_wrap_mode_parameters (CoglTexture *tex,
 static void
 _cogl_texture_2d_free (CoglTexture2D *tex_2d)
 {
-  _cogl_delete_gl_texture (tex_2d->gl_texture);
+  if (!tex_2d->is_foreign)
+    _cogl_delete_gl_texture (tex_2d->gl_texture);
 
   /* Chain up */
   _cogl_texture_free (COGL_TEXTURE (tex_2d));
@@ -213,6 +214,8 @@ _cogl_texture_2d_create_base (unsigned int     width,
   tex_2d->wrap_mode_s = GL_FALSE;
   tex_2d->wrap_mode_t = GL_FALSE;
 
+  tex_2d->is_foreign = FALSE;
+
   tex_2d->format = internal_format;
 
   return tex_2d;
@@ -246,7 +249,7 @@ _cogl_texture_2d_new_with_size (unsigned int     width,
   _cogl_texture_driver_gen (GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
-                                   FALSE);
+                                   tex_2d->is_foreign);
   GE( glTexImage2D (GL_TEXTURE_2D, 0, gl_intformat,
                     width, height, 0, gl_format, gl_type, NULL) );
 
@@ -315,6 +318,118 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
   tex_2d->gl_format = gl_intformat;
 
   cogl_object_unref (dst_bmp);
+
+  return _cogl_texture_2d_handle_new (tex_2d);
+}
+
+CoglHandle
+_cogl_texture_2d_new_from_foreign (GLuint gl_handle,
+                                   GLuint width,
+                                   GLuint height,
+                                   CoglPixelFormat format)
+{
+  /* NOTE: width, height and internal format are not queriable
+   * in GLES, hence such a function prototype.
+   */
+
+  GLenum         gl_error      = 0;
+  GLint          gl_compressed = GL_FALSE;
+  GLenum         gl_int_format = 0;
+  CoglTexture2D *tex_2d;
+
+  if (!_cogl_texture_driver_allows_foreign_gl_target (GL_TEXTURE_2D))
+    return COGL_INVALID_HANDLE;
+
+  /* Make sure it is a valid GL texture object */
+  if (!glIsTexture (gl_handle))
+    return COGL_INVALID_HANDLE;
+
+  /* Make sure binding succeeds */
+  while ((gl_error = glGetError ()) != GL_NO_ERROR)
+    ;
+
+  _cogl_bind_gl_texture_transient (GL_TEXTURE_2D, gl_handle, TRUE);
+  if (glGetError () != GL_NO_ERROR)
+    return COGL_INVALID_HANDLE;
+
+  /* Obtain texture parameters
+     (only level 0 we are interested in) */
+
+#if HAVE_COGL_GL
+
+  GE( glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
+                                GL_TEXTURE_COMPRESSED,
+                                &gl_compressed) );
+
+  {
+    GLint val;
+
+    GE( glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
+                                  GL_TEXTURE_INTERNAL_FORMAT,
+                                  &val) );
+
+    gl_int_format = val;
+  }
+
+  /* If we can query GL for the actual pixel format then we'll ignore
+     the passed in format and use that. */
+  if (!_cogl_pixel_format_from_gl_internal (gl_int_format, &format))
+    return COGL_INVALID_HANDLE;
+
+#else
+
+  /* Otherwise we'll assume we can derive the GL format from the
+     passed in format */
+  _cogl_pixel_format_to_gl (format,
+                            &gl_int_format,
+                            NULL,
+                            NULL);
+
+#endif
+
+  /* Note: We always trust the given width and height without querying
+   * the texture object because the user may be creating a Cogl
+   * texture for a texture_from_pixmap object where glTexImage2D may
+   * not have been called and the texture_from_pixmap spec doesn't
+   * clarify that it is reliable to query back the size from OpenGL.
+   */
+
+  /* Validate width and height */
+  if (width <= 0 || height <= 0)
+    return COGL_INVALID_HANDLE;
+
+  /* Compressed texture images not supported */
+  if (gl_compressed == GL_TRUE)
+    return COGL_INVALID_HANDLE;
+
+  /* Note: previously this code would query the texture object for
+     whether it has GL_GENERATE_MIPMAP enabled to determine whether to
+     auto-generate the mipmap. This doesn't make much sense any more
+     since Cogl switch to using glGenerateMipmap. Ideally I think
+     cogl_texture_new_from_foreign should take a flags parameter so
+     that the application can decide whether it wants
+     auto-mipmapping. To be compatible with existing code, Cogl now
+     disables its own auto-mipmapping but leaves the value of
+     GL_GENERATE_MIPMAP alone so that it would still work but without
+     the dirtiness tracking that Cogl would do. */
+
+  /* Create new texture */
+  tex_2d = _cogl_texture_2d_create_base (width, height,
+                                         COGL_TEXTURE_NO_AUTO_MIPMAP,
+                                         format);
+
+  /* Setup bitmap info */
+  tex_2d->is_foreign = TRUE;
+  tex_2d->mipmaps_dirty = TRUE;
+
+  tex_2d->format = format;
+
+  tex_2d->gl_texture = gl_handle;
+  tex_2d->gl_format = gl_int_format;
+
+  /* Unknown filter */
+  tex_2d->min_filter = GL_FALSE;
+  tex_2d->mag_filter = GL_FALSE;
 
   return _cogl_texture_2d_handle_new (tex_2d);
 }
@@ -407,7 +522,7 @@ _cogl_texture_2d_set_filters (CoglTexture *tex,
   /* Apply new filters to the texture */
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
-                                   FALSE);
+                                   tex_2d->is_foreign);
   GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter) );
   GE( glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter) );
 }
@@ -425,7 +540,7 @@ _cogl_texture_2d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
     {
       _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                        tex_2d->gl_texture,
-                                       FALSE);
+                                       tex_2d->is_foreign);
 
       /* glGenerateMipmap is defined in the FBO extension. If it's not
          available we'll fallback to temporarily enabling
@@ -530,7 +645,7 @@ _cogl_texture_2d_get_data (CoglTexture     *tex,
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
-                                   FALSE);
+                                   tex_2d->is_foreign);
   return _cogl_texture_driver_gl_get_tex_image (GL_TEXTURE_2D,
                                                 gl_format,
                                                 gl_type,
@@ -561,6 +676,12 @@ _cogl_texture_2d_get_height (CoglTexture *tex)
   return COGL_TEXTURE_2D (tex)->height;
 }
 
+static gboolean
+_cogl_texture_2d_is_foreign (CoglTexture *tex)
+{
+  return COGL_TEXTURE_2D (tex)->is_foreign;
+}
+
 static const CoglTextureVtable
 cogl_texture_2d_vtable =
   {
@@ -581,5 +702,5 @@ cogl_texture_2d_vtable =
     _cogl_texture_2d_get_gl_format,
     _cogl_texture_2d_get_width,
     _cogl_texture_2d_get_height,
-    NULL /* is_foreign */
+    _cogl_texture_2d_is_foreign
   };

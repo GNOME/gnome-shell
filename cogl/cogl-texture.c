@@ -41,6 +41,7 @@
 #include "cogl-texture-driver.h"
 #include "cogl-texture-2d-sliced-private.h"
 #include "cogl-texture-2d-private.h"
+#include "cogl-texture-rectangle-private.h"
 #include "cogl-sub-texture-private.h"
 #include "cogl-atlas-texture-private.h"
 #include "cogl-material.h"
@@ -510,15 +511,38 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
 			       GLuint           y_pot_waste,
 			       CoglPixelFormat  format)
 {
-  /* FIXME: only create a sliced texture if x or y waste was specified
-   */
-  return _cogl_texture_2d_sliced_new_from_foreign (gl_handle,
-                                                   gl_target,
-                                                   width,
-                                                   height,
-                                                   x_pot_waste,
-                                                   y_pot_waste,
-                                                   format);
+#if HAVE_COGL_GL
+  if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
+    {
+      if (x_pot_waste != 0 || y_pot_waste != 0)
+        {
+          /* It shouldn't be necessary to have waste in this case since
+           * the texture isn't limited to power of two sizes. */
+          g_warning ("You can't create a foreign GL_TEXTURE_RECTANGLE cogl "
+                     "texture with waste\n");
+          return COGL_INVALID_HANDLE;
+        }
+
+      return _cogl_texture_rectangle_new_from_foreign (gl_handle,
+                                                       width,
+                                                       height,
+                                                       format);
+    }
+#endif
+
+  if (x_pot_waste != 0 || y_pot_waste != 0)
+    return _cogl_texture_2d_sliced_new_from_foreign (gl_handle,
+                                                     gl_target,
+                                                     width,
+                                                     height,
+                                                     x_pot_waste,
+                                                     y_pot_waste,
+                                                     format);
+  else
+    return _cogl_texture_2d_new_from_foreign (gl_handle,
+                                              width,
+                                              height,
+                                              format);
 }
 
 gboolean
