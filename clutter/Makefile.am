@@ -455,7 +455,10 @@ osx_source_h_priv = \
 	$(NULL)
 
 osx_source_c_priv = $(srcdir)/osx/clutter-event-osx.c
+
 if SUPPORT_OSX
+# we need to tell the compiler that part of our code base is
+# in Objective C
 AM_CFLAGS += -xobjective-c
 
 backend_source_h += $(osx_source_h)
@@ -481,6 +484,8 @@ fruity_source_h = \
 	$(NULL)
 
 if SUPPORT_FRUITY
+AM_CFLAGS += -xobjective-c
+
 backend_source_c_priv += $(fruity_source_c)
 backend_source_h_priv += $(fruity_source_h)
 
