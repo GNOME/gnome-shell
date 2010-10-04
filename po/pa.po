@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-06-18 18:29+0000\n"
-"PO-Revision-Date: 2010-07-03 06:43+0530\n"
+"POT-Creation-Date: 2010-10-02 20:44+0000\n"
+"PO-Revision-Date: 2010-10-04 07:19+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 1.1\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -41,7 +41,6 @@ msgid ""
 msgstr "Alt-F2 ਡਾਈਲਾਗ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਅੰਦਰੂਨੀ ਡੀਬੱਗਿਗ ਤੇ ਮਾਨੀਟਰਿੰਗ ਟੂਲ ਵਰਤੋਂ ਕਰਨ ਲਈ ਸਹਾਇਕ ਹੈ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
-#| msgid "Customize the panel clock"
 msgid "Custom format of the clock"
 msgstr "ਘੜੀ ਲਈ ਪਸੰਦੀਦਾ ਫਾਰਮੈਟ"
 
@@ -62,15 +61,13 @@ msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
 msgstr ""
-"ਗਨੋਮ ਸ਼ੈਲ ਇਕਸਟੈਨਸ਼ਨ ਲਈ ਇੱਕ uuid ਵਿਸ਼ੇਸ਼ਤਾ ਹੈ; ਇਹ ਕੁੰਜੀ ਇਕਸਟੈਨਸ਼ਨ ਦਰਸਾਉਂਦੀ ਹੈ, ਜੋ ਲੋਡ ਨਹੀਂ "
-"ਹਨ।"
+"ਗਨੋਮ ਸ਼ੈਲ ਇਕਸਟੈਨਸ਼ਨ ਲਈ ਇੱਕ uuid ਵਿਸ਼ੇਸ਼ਤਾ ਹੈ; ਇਹ ਕੁੰਜੀ ਇਕਸਟੈਨਸ਼ਨ ਦਰਸਾਉਂਦੀ ਹੈ, ਜੋ ਲੋਡ ਨਹੀਂ ਹਨ।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
 msgstr "ਕਮਾਂਡ (Alt-F2) ਡਾਈਲਾਗ ਲਈ ਅਤੀਤ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-#| msgid "_12 hour format"
 msgid "Hour format"
 msgstr "ਘੰਟਾ ਫਾਰਮੈਟ"
 
@@ -119,7 +116,6 @@ msgid "Show the week date in the calendar"
 msgstr "ਕੈਲੰਡਰ ਵਿੱਚ ਹਫ਼ਤਾ ਮਿਤੀ ਵੇਖੋ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:17
-#| msgid "Show seco_nds"
 msgid "Show time with seconds"
 msgstr "ਸਮਾਂ ਵਿੱਚ ਸਕਿੰਟ ਵੇਖੋ"
 
@@ -141,6 +137,8 @@ msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
+"ਗਨੋਮ ਸ਼ੈੱਲ ਦੇ ਸਕਰੀਨਕਾਸਟ ਰਿਕਾਰਡਰ ਵਲੋਂ ਰਿਕਾਰਡ ਕਰਕੇ ਬਣਾਈ ਗਈ ਸਕਰੀਨਕਾਸਟ ਦਾ ਫਰੇਮਰੇਟ ਫਰੇਮ ਪ੍ਰਤੀ "
+"ਸਕਿੰਟ 'ਚ ਹੈ।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "The gstreamer pipeline used to encode the screencast"
@@ -168,6 +166,9 @@ msgid ""
 "() to obtain a specific format. See the strftime() manual for more "
 "information."
 msgstr ""
+"ਇਹ ਕੁੰਜੀ ਪੈਨਲ ਘੜੀ ਲਈ ਵਰਤਣ ਵਾਸਤੇ ਫਾਰਮੈਟ ਦਿੰਦੀ ਹੈ, ਜਦੋਂ ਕਿ ਫਾਰਮੈਟ ਕੁੰਜੀ \"ਕਸਟਮ\" ਸੈੱਟ "
+"ਕੀਤੀ ਹੋਵੇ। ਤੁਸੀਂ ਖਾਸ ਫਾਰਮੈਟ ਦੇਣ ਲਈ ਹਦਾਇਤਾਂ ਵਾਸਤੇ  strftime () ਨੂੰ ਵਰਤ ਸਕਦੇ ਹੋ। "
+"ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ  strftime () ਦਸਤਾਵੇਜ਼ ਵੇਖੋ।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid ""
@@ -178,9 +179,14 @@ msgid ""
 "in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
 "the show_date and show_seconds keys are ignored."
 msgstr ""
+"ਇਹ ਕੁੰਜੀ ਤਹਿ ਕਰਦੀ ਹੈ ਕਿ ਕਿਹੜਾ ਪੈਨਲ ਘੜੀ ਵਿੱਚ ਘੰਟਾ ਫਾਰਮੈਟ ਵਰਤਿਆ ਜਾਵੇ। ਸੰਭਵ ਮੁੱਲ ਹਨ "
+"\"12-hour\"(੧੨-ਘੰਟੇ), \"24-hour\" (੨੪-ਘੰਟੇ), \"unix\" (ਯੂਨੈਕਸ) ਅਤੇ \"custom\" "
+"(ਪਸੰਦੀਦਾ)। ਜੇ \"ਯੂਨੈਕਸ\" ਸੈੱਟ ਕੀਤਾ ਗਿਆ ਤਾਂ ਘੜੀ ਨੂੰ ਈਪੋਚ (੦੧-ਜਨਵਰੀ-੧੯੭੦) ਤੋਂ ਵੇਖਾਇਆ\n"
+"ਜਾਵੇਗਾ। ਜੇ \"ਪਸੰਦੀਦਾ\" ਲਈ ਸੈੱਟ ਕੀਤਾ ਗਿਆ ਤਾਂ, ਘੜੀ ਨੂੰ custom_format ਕੁੰਜੀ ਵਿੱਚ ਦਿੱਤੇ "
+"ਫਾਰਮੈਟ ਮੁਤਾਬਕ ਵੇਖਾਇਆ ਜਾਵੇਗਾ। ਯਾਦ ਰੱਖੋ ਕਿ ਜੇ \"ਯੂਨੈਕਸ\" ਜਾਂ \"ਪਸੰਦੀਦਾ\" ਸੈੱਟ ਕੀਤਾ ਤਾਂ ਅੱਪਗਰੇਡ "
+"ਮਿਤੀ ਵੇਖਾਓ ਤੇ ਸਕਿੰਟ ਵੇਖਾਓ ਨੂੰ ਅਣਡਿੱਠਾ ਕੀਤਾ ਜਾਵੇਗਾ।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:26
-#| msgid "No extensions installed"
 msgid "Uuids of extensions to disable"
 msgstr "ਇਕਟੈਨਸ਼ਨ ਦੀ Uuids ਬੰਦ ਹੈ"
 
@@ -217,27 +223,27 @@ msgid "_24 hour format"
 msgstr "_੨੪ ਘੰਟੇ ਫਾਰਮੈਟ"
 
 #. **** Applications ****
-#: ../js/ui/appDisplay.js:388 ../js/ui/dash.js:767
+#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
 msgid "APPLICATIONS"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../js/ui/appDisplay.js:420
+#: ../js/ui/appDisplay.js:348
 msgid "PREFERENCES"
 msgstr "ਪਸੰਦ"
 
-#: ../js/ui/appDisplay.js:726
+#: ../js/ui/appDisplay.js:648
 msgid "New Window"
 msgstr "ਨਵੀਂ ਵਿੰਡੋ"
 
-#: ../js/ui/appDisplay.js:730
+#: ../js/ui/appDisplay.js:652
 msgid "Remove from Favorites"
 msgstr "ਪਸੰਦ ਵਿੱਚੋਂ ਹਟਾਓ"
 
-#: ../js/ui/appDisplay.js:731
+#: ../js/ui/appDisplay.js:653
 msgid "Add to Favorites"
 msgstr "ਪਸੰਦ 'ਚ ਸ਼ਾਮਲ ਕਰੋ"
 
-#: ../js/ui/appDisplay.js:1038
+#: ../js/ui/appDisplay.js:830
 msgid "Drag here to add favorites"
 msgstr "ਪਸੰਦ ਵਿੱਚ ਜੋੜਨ ਲਈ ਇੱਥੇ ਸੁੱਟੋ"
 
@@ -246,135 +252,150 @@ msgstr "ਪਸੰਦ ਵਿੱਚ ਜੋੜਨ ਲਈ ਇੱਥੇ ਸੁੱਟ�
 msgid "%s has been added to your favorites."
 msgstr "%s ਨੂੰ ਤੁਹਾਡੀ ਪਸੰਦ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ।"
 
-#: ../js/ui/appFavorites.js:106
+#: ../js/ui/appFavorites.js:107
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s ਨੂੰ ਤੁਹਾਡੀ ਪਸੰਦ ਤੋਂ ਹਟਾਇਆ ਜਾ ਚੁੱਕਿਆ ਹੈ।"
 
-#: ../js/ui/dash.js:146
+#: ../js/ui/dash.js:142
 msgid "Find"
 msgstr "ਖੋਜ"
 
-#: ../js/ui/dash.js:465
+#: ../js/ui/dash.js:473
 msgid "Searching..."
 msgstr "ਖੋਜ ਜਾਰੀ ਹੈ..."
 
-#: ../js/ui/dash.js:479
+#: ../js/ui/dash.js:487
 msgid "No matching results."
 msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਲੱਭਿਆ।"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:786 ../js/ui/placeDisplay.js:552
+#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
 msgid "PLACES & DEVICES"
 msgstr "ਥਾਵਾਂ ਤੇ ਜੰਤਰ"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:793 ../js/ui/docDisplay.js:497
+#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "ਤਾਜ਼ਾ ਆਈਟਮਾਂ"
 
-#: ../js/ui/lookingGlass.js:471
+#: ../js/ui/lookingGlass.js:552
 msgid "No extensions installed"
 msgstr "ਕੋਈ ਇਕਸਟੈਨਸ਼ਨ ਇੰਸਟਾਲ ਨਹੀਂ ਹੈ"
 
-#: ../js/ui/lookingGlass.js:508
+#: ../js/ui/lookingGlass.js:589
 msgid "Enabled"
 msgstr "ਚਾਲੂ ਹੈ"
 
-#: ../js/ui/lookingGlass.js:510
+#: ../js/ui/lookingGlass.js:591
 msgid "Disabled"
 msgstr "ਬੰਦ ਹੈ"
 
-#: ../js/ui/lookingGlass.js:512
+#: ../js/ui/lookingGlass.js:593
 msgid "Error"
 msgstr "ਗਲਤੀ"
 
-#: ../js/ui/lookingGlass.js:514
+#: ../js/ui/lookingGlass.js:595
 msgid "Out of date"
 msgstr "ਪੁਰਾਣਾ"
 
-#: ../js/ui/lookingGlass.js:539
+#: ../js/ui/lookingGlass.js:620
 msgid "View Source"
 msgstr "ਸਰੋਤ ਵੇਖੋ"
 
-#: ../js/ui/lookingGlass.js:545
+#: ../js/ui/lookingGlass.js:626
 msgid "Web Page"
 msgstr "ਵੈੱਬ ਪੇਜ਼"
 
-#: ../js/ui/overview.js:165
+#: ../js/ui/overview.js:160
 msgid "Undo"
 msgstr "ਵਾਪਸ"
 
-#: ../js/ui/panel.js:519
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:461
+#, c-format
+msgid "Quit %s"
+msgstr "%s ਬੰਦ ਕਰੋ"
+
+#: ../js/ui/panel.js:486
 msgid "Preferences"
 msgstr "ਮੇਰੀ ਪਸੰਦ"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:605
+#: ../js/ui/panel.js:572
 msgid "%a %b %e, %R:%S"
 msgstr "%a, %e %b %R:%S"
 
-#: ../js/ui/panel.js:606
+#: ../js/ui/panel.js:573
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:610
+#: ../js/ui/panel.js:577
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:611
+#: ../js/ui/panel.js:578
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:618
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l:%M:%S %p"
 
-#: ../js/ui/panel.js:619
+#: ../js/ui/panel.js:586
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:623
+#: ../js/ui/panel.js:590
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:624
+#: ../js/ui/panel.js:591
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:726
+#: ../js/ui/panel.js:736
 msgid "Activities"
 msgstr "ਸਰਗਰਮੀਆਂ"
 
-#: ../js/ui/placeDisplay.js:109
+#: ../js/ui/placeDisplay.js:111
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "'%s' ਅਣ-ਮਾਊਂਟ ਕਰਨ ਲਈ ਫੇਲ੍ਹ"
 
-#: ../js/ui/placeDisplay.js:112
+#: ../js/ui/placeDisplay.js:114
 msgid "Retry"
 msgstr "ਮੁੜ-ਕੋਸ਼ਿਸ਼"
 
-#: ../js/ui/placeDisplay.js:157
+#: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
 msgstr "...ਨਾਲ ਕੁਨੈਕਟ ਕਰੋ"
 
-#: ../js/ui/runDialog.js:234
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:33
+msgid "toggle-switch-us"
+msgstr ""
+
+#: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
 msgstr "ਕਮਾਂਡ ਦਿਓ ਜੀ:"
 
-#: ../js/ui/runDialog.js:379
+#: ../js/ui/runDialog.js:378
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "'%s' ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ:"
@@ -396,8 +417,9 @@ msgid "Account Information..."
 msgstr "ਅਕਾਊਂਟ ਜਾਣਕਾਰੀ..."
 
 #: ../js/ui/statusMenu.js:110
-msgid "System Preferences..."
-msgstr "ਸਿਸਟਮ ਪਸੰਦ..."
+#| msgid "System Preferences..."
+msgid "System Settings..."
+msgstr "ਸਿਸਟਮ ਸੈਟਿੰਗ..."
 
 #: ../js/ui/statusMenu.js:117
 msgid "Lock Screen"
@@ -415,50 +437,50 @@ msgstr "ਲਾਗਆਉਟ..."
 msgid "Shut Down..."
 msgstr "ਬੰਦ ਕਰੋ..."
 
-#: ../js/ui/windowAttentionHandler.js:47
+#: ../js/ui/windowAttentionHandler.js:43
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s ਸ਼ੁਰੂ ਹੋਣਾ ਖਤਮ ਹੋਇਆ"
 
-#: ../js/ui/windowAttentionHandler.js:49
+#: ../js/ui/windowAttentionHandler.js:45
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' ਤਿਆਰ ਹੈ"
 
-#: ../js/ui/workspacesView.js:237
+#: ../js/ui/workspacesView.js:230
 msgid "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "ਨਵਾਂ ਵਰਕਸਪੇਸ ਜੋੜਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ, ਕਿਉਂਕਿ ਵਰਕਸਪੇਸਾਂ ਦੀ ਵੱਧੋ-ਵੱਧ ਗਿਣਤੀ ਪੂਰੀ ਹੋ ਚੁੱਕੀ ਹੈ।"
 
-#: ../js/ui/workspacesView.js:254
+#: ../js/ui/workspacesView.js:247
 msgid "Can't remove the first workspace."
 msgstr "ਪਹਿਲਾਂ ਵਰਕਸਪੇਸ ਨਹੀਂ ਹਟਾਇਆ ਜਾ ਸਕਦਾ।"
 
-#: ../src/shell-global.c:1039
+#: ../src/shell-global.c:1196
 msgid "Less than a minute ago"
 msgstr "ਇੱਕ ਮਿੰਟ ਤੋਂ ਘੱਟ ਚਿਰ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1043
+#: ../src/shell-global.c:1200
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1048
+#: ../src/shell-global.c:1205
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ਘੰਟਾ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਘੰਟੇ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1053
+#: ../src/shell-global.c:1210
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d ਦਿਨ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਦਿਨ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1058
+#: ../src/shell-global.c:1215
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -488,9 +510,6 @@ msgstr "ਖੋਜ"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
-#~ msgid "Quit %s"
-#~ msgstr "%s ਬੰਦ ਕਰੋ"
 
 #~ msgid "Sidebar"
 #~ msgstr "ਬਾਹੀ"
