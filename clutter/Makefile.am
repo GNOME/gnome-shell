@@ -51,7 +51,8 @@ BUILT_GIRSOURCES =
 INTROSPECTION_GIRS =
 
 # the base include path for headers
-clutter_includedir = $(includedir)/clutter-$(CLUTTER_API_VERSION)/clutter
+clutter_base_includedir = $(includedir)/clutter-$(CLUTTER_API_VERSION)
+clutter_includedir = $(clutter_base_includedir)/clutter
 
 # pkg-config files
 pc_files =
@@ -526,7 +527,7 @@ cally_sources_private = \
 	$(srcdir)/cally/cally-actor-private.h	\
 	$(NULL)
 
-cally_includedir = $(clutter_includedir)/cally
+cally_includedir = $(clutter_base_includedir)/cally
 cally_include_HEADERS = $(cally_sources_h)
 
 pc_files += cally/cally-$(CLUTTER_API_VERSION).pc

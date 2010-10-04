@@ -3,6 +3,12 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
+apiversion=@CLUTTER_API_VERSION@
+winsys=@CLUTTER_WINSYS@
+soname_infix=@CLUTTER_SONAME_INFIX@
+cogl_driver=@COGL_DRIVER@
+requires=@CLUTTER_REQUIRES@
+
 Name: Cally
 Description: Clutter Accessibility Implementation Library
 Version: @VERSION@
