@@ -119,13 +119,12 @@ BUILT_SOURCES += \
 	/bin/sh $(top_srcdir)/build/stringify.sh $< > $@
 
 endif # USE_GLES2_WAPPER
+endif # COGL_DRIVER_GLES
 
 EXTRA_DIST += \
 	$(srcdir)/driver/gles/cogl-fixed-vertex-shader.glsl 	\
 	$(srcdir)/driver/gles/cogl-fixed-fragment-shader.glsl	\
 	$(NULL)
-
-endif # COGL_DRIVER_GLES
 
 # winsys sources, common to all backends
 cogl_winsys_common_sources = \
