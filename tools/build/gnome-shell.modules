@@ -118,7 +118,7 @@
     </dependencies>
   </autotools>
 
-  <autotools id="dconf">
+  <autotools id="dconf" autogenargs="--disable-editor">
     <branch repo="git.gnome.org" module="dconf"/>
     <dependencies>
       <dep package="glib"/>
