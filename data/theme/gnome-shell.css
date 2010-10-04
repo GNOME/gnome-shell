@@ -262,19 +262,44 @@ StTooltip StLabel {
     spacing: 25px;
 }
 
-.workspaces-bar {
-    spacing: 5px;
+.workspace-indicator-panel {
+    spacing: 8px;
 }
 
 .workspace-indicator {
     width: 24px;
     height: 16px;
-    background: rgba(155,155,155,0.8);
-    border-spacing: 16px;
+    background: rgba(255,255,255,0.2);
 }
 
 .workspace-indicator.active {
     background: rgba(255,255,255,0.8);
+}
+
+.workspace-controls {
+    width: 48px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff;
+    border: 2px solid rgba(128, 128, 128, 0.4);
+    border-right: 0px;
+    border-radius: 9px 0px 0px 9px;
+}
+
+.add-workspace {
+    background-color: rgba(128, 128, 128, 0.4);
+}
+
+.add-workspace:hover {
+    background-color: rgba(128, 128, 128, 0.6);
+}
+
+.remove-workspace {
+    height: 48px;
+}
+
+.remove-workspace:hover {
+    background-color: rgba(128, 128, 128, 0.2);
 }
 
 .window-caption {
@@ -292,39 +317,6 @@ StTooltip StLabel {
     width: 24px;
     -st-shadow: -2px 2px 6px rgba(0,0,0,0.5);
     -shell-close-overlap: 16px;
-}
-
-.single-view-controls {
-    padding: 0px 15px;
-}
-
-.workspace-controls {
-    width: 24px;
-    height: 16px;
-}
-
-.workspace-controls.add {
-    background-image: url("add-workspace.svg");
-}
-
-.workspace-controls.remove {
-    background-image: url("remove-workspace.svg");
-}
-
-.workspace-controls.switch-single {
-    background-image: url("single-view.svg");
-}
-
-.workspace-controls.switch-mosaic {
-    background-image: url("mosaic-view.svg");
-}
-
-.workspace-controls.switch-single:checked {
-    background-image: url("single-view-active.svg");
-}
-
-.workspace-controls.switch-mosaic:checked {
-    background-image: url("mosaic-view-active.svg");
 }
 
 /* Dash */
