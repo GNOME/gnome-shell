@@ -888,12 +888,34 @@ _cogl_texture_pixmap_x11_free_glx_pixmap (CoglTexturePixmapX11 *tex_pixmap)
 {
   if (tex_pixmap->glx_pixmap)
     {
+      CoglXlibTrapState trap_state;
+
       _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
       if (tex_pixmap->pixmap_bound)
         glXReleaseTexImage (_cogl_xlib_get_display (), tex_pixmap->glx_pixmap,
                             GLX_FRONT_LEFT_EXT);
+
+      /* FIXME - we need to trap errors and synchronize here because
+       * of ordering issues between the XPixmap destruction and the
+       * GLXPixmap destruction.
+       *
+       * If the X pixmap is destroyed, the GLX pixmap is destroyed as
+       * well immediately, and thus, when Cogl calls glXDestroyPixmap()
+       * it'll cause a BadDrawable error.
+       *
+       * this is technically a bug in the X server, which should not
+       * destroy either pixmaps until the call to glXDestroyPixmap(); so
+       * at some point we should revisit this code and remove the
+       * trap+sync after verifying that the destruction is indeed safe.
+       *
+       * for reference, see:
+       *   http://bugzilla.clutter-project.org/show_bug.cgi?id=2324
+       */
+      _cogl_xlib_trap_errors (&trap_state);
       glXDestroyPixmap (_cogl_xlib_get_display (), tex_pixmap->glx_pixmap);
+      XSync (_cogl_xlib_get_display (), False);
+      _cogl_xlib_untrap_errors (&trap_state);
 
       tex_pixmap->glx_pixmap = None;
       tex_pixmap->pixmap_bound = FALSE;
