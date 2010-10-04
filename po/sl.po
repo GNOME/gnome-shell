@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-09-22 18:42+0000\n"
-"PO-Revision-Date: 2010-09-23 09:50+0100\n"
+"POT-Creation-Date: 2010-10-04 01:51+0000\n"
+"PO-Revision-Date: 2010-10-04 12:30+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -183,19 +183,19 @@ msgstr "Programi"
 msgid "PREFERENCES"
 msgstr "Možnosti"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:648
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:657
+#: ../js/ui/appDisplay.js:652
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:658
+#: ../js/ui/appDisplay.js:653
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
-#: ../js/ui/appDisplay.js:986
+#: ../js/ui/appDisplay.js:830
 msgid "Drag here to add favorites"
 msgstr "S potegom na to mesto se izbor doda med priljubljene"
 
@@ -268,58 +268,58 @@ msgid "Undo"
 msgstr "Razveljavi"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:467
+#: ../js/ui/panel.js:461
 #, c-format
 msgid "Quit %s"
 msgstr "Končaj %s"
 
-#: ../js/ui/panel.js:492
+#: ../js/ui/panel.js:486
 msgid "Preferences"
 msgstr "Možnosti"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:578
+#: ../js/ui/panel.js:572
 msgid "%a %b %e, %R:%S"
 msgstr "%a. %e. %b., %R:%S"
 
-#: ../js/ui/panel.js:579
+#: ../js/ui/panel.js:573
 msgid "%a %b %e, %R"
 msgstr "%a, %e. %b., %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:577
 msgid "%a %R:%S"
 msgstr "%a. %R:%S"
 
-#: ../js/ui/panel.js:584
+#: ../js/ui/panel.js:578
 msgid "%a %R"
 msgstr "%a. %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:591
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a. %e. %b., %H:%M:%S"
 
-#: ../js/ui/panel.js:592
+#: ../js/ui/panel.js:586
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a. %e. %b., %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:596
+#: ../js/ui/panel.js:590
 msgid "%a %l:%M:%S %p"
 msgstr "%a, %H:%M:%S"
 
-#: ../js/ui/panel.js:597
+#: ../js/ui/panel.js:591
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:742
+#: ../js/ui/panel.js:736
 msgid "Activities"
 msgstr "Dejavnosti"
 
@@ -341,7 +341,7 @@ msgstr "Povezava z ..."
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:32
+#: ../js/ui/popupMenu.js:33
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -371,8 +371,8 @@ msgid "Account Information..."
 msgstr "Podrobnosti računa ..."
 
 #: ../js/ui/statusMenu.js:110
-msgid "System Preferences..."
-msgstr "Sistemske možnosti ..."
+msgid "System Settings..."
+msgstr "Sistemske nastavitve ..."
 
 #: ../js/ui/statusMenu.js:117
 msgid "Lock Screen"
@@ -408,11 +408,11 @@ msgstr "Ni mogoče dodati nove delovne površine, ker je doseženo njihovo najve
 msgid "Can't remove the first workspace."
 msgstr "Ni mogoče odstraniti prve delovne površine."
 
-#: ../src/shell-global.c:1189
+#: ../src/shell-global.c:1196
 msgid "Less than a minute ago"
 msgstr "Pred manj kot eno minuto"
 
-#: ../src/shell-global.c:1193
+#: ../src/shell-global.c:1200
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -421,7 +421,7 @@ msgstr[1] "Pred %d minuto"
 msgstr[2] "Pred %d minutama"
 msgstr[3] "Pred %d minutami"
 
-#: ../src/shell-global.c:1198
+#: ../src/shell-global.c:1205
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -430,7 +430,7 @@ msgstr[1] "Pred %d uro"
 msgstr[2] "Pred %d urama"
 msgstr[3] "Pred %d urami"
 
-#: ../src/shell-global.c:1203
+#: ../src/shell-global.c:1210
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -439,7 +439,7 @@ msgstr[1] "Pred %d dnevom"
 msgstr[2] "Pred %d dnevoma"
 msgstr[3] "Pred %d dnevi"
 
-#: ../src/shell-global.c:1208
+#: ../src/shell-global.c:1215
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
