@@ -17,7 +17,7 @@ tar_file = $(distdir).tar.bz2
 sha256_file = $(distdir).sha256sum
 
 $(sha256_file): $(tar_file)
-	$(AM_V_GEN)sha256sum $^ > $(top_builddir)/build/$@
+	$(AM_V_GEN)sha256sum $^ > $@
 
 release-tag:
 	@if test "x$(CLUTTER_RELEASE_STATUS)" = "xgit"; then \
@@ -54,8 +54,9 @@ release-verify-even-micro:
 	      false)
 	@echo "Good."
 
-release-upload: $(tar_file)
+release-upload: $(sha256_file)
 	@scp $(tar_file) $(RELEASE_UPLOAD_DIR)
+	@mv -f $(sha256_file) $(top_builddir)/build/$(sha256_file)
 
 release-message:
 	@echo "Release URL: $(RELEASE_URL)/$(tar_file)"
@@ -64,7 +65,7 @@ release-message:
 	@echo "  Subject: Clutter $(CLUTTER_VERSION) ($(CLUTTER_RELEASE_STATUS))"
 	@echo "Contents:"
 	@echo "--- CUT HERE ---"
-	@echo "A new Clutter $(CLUTTER_RELEASE_STATUS) $(CLUTTER_VERSION) is now available at:"
+	@echo "A new Clutter $(CLUTTER_RELEASE_STATUS) is now available at:"
 	@echo ""
 	@echo "  $(RELEASE_URL)/$(tar_file)"
 	@echo ""
