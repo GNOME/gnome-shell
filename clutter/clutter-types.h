@@ -185,8 +185,8 @@ void             clutter_actor_box_interpolate   (const ClutterActorBox *initial
                                                   gdouble                progress,
                                                   ClutterActorBox       *result);
 void             clutter_actor_box_clamp_to_pixel (ClutterActorBox       *box);
-void             clutter_actor_box_union          (ClutterActorBox       *a,
-                                                   ClutterActorBox       *b,
+void             clutter_actor_box_union          (const ClutterActorBox *a,
+                                                   const ClutterActorBox *b,
                                                    ClutterActorBox       *result);
 
 /**

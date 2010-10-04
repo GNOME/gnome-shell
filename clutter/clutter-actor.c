@@ -9678,19 +9678,19 @@ clutter_actor_box_clamp_to_pixel (ClutterActorBox *box)
 
 /**
  * clutter_actor_box_union:
- * @a: (in): the first #ClutterActorBox
- * @a: (in): a second #ClutterActorBox
- * @result: (out): the #ClutterActorBox representing a union of @a and
- *          @b
+ * @a: (in) the first #ClutterActorBox
+ * @b: (in): the second #ClutterActorBox
+ * @result: (out): the #ClutterActorBox representing a union
+ *   of @a and @b
  *
  * Unions the two boxes @a and @b and stores the result in @result.
  *
  * Since: 1.4
  */
 void
-clutter_actor_box_union (ClutterActorBox *a,
-                         ClutterActorBox *b,
-                         ClutterActorBox *result)
+clutter_actor_box_union (const ClutterActorBox *a,
+                         const ClutterActorBox *b,
+                         ClutterActorBox       *result)
 {
   g_return_if_fail (a != NULL);
   g_return_if_fail (b != NULL);
