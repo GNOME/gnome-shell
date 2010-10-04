@@ -321,8 +321,6 @@ pc_files += clutter-x11-$(CLUTTER_API_VERSION).pc
 
 clutterx11_includedir = $(clutter_includedir)/x11
 clutterx11_include_HEADERS = $(x11_source_h)
-else
-EXTRA_DIST += $(x11_source_c) $(x11_source_h) $(x11_source_c_priv) $(x11_source_h_priv)
 endif # SUPPORT_X11
 
 # GLX backend rules
@@ -353,8 +351,6 @@ backend_source_h_priv += $(glx_source_h_priv)
 # instead of using the same directory.
 clutterglx_includedir = $(clutter_includedir)/glx
 clutterglx_include_HEADERS = $(glx_source_h)
-else
-EXTRA_DIST += $(glx_source_h) $(glx_source_c) $(glx_source_h_priv)
 endif # SUPPORT_GLX
 
 # Windows backend rules
@@ -395,19 +391,12 @@ backend_source_h_priv += $(win32_source_h_priv)
 
 clutterwin_includedir = $(clutter_includedir)/win32
 clutterwin_include_HEADERS = $(win32_source_h)
+endif # SUPPORT_WIN32
 
 EXTRA_DIST += \
 	$(srcdir)/win32/invisible-cursor.cur 	\
 	$(srcdir)/win32/resources.rc		\
 	$(NULL)
-else
-EXTRA_DIST += \
-	$(srcdir)/win32/invisible-cursor.cur 	\
-	$(srcdir)/win32/resources.rc		\
-	$(win32_source_c) 			\
-	$(win32_source_h) 			\
-	$(win32_source_h_priv)
-endif # SUPPORT_WIN32
 
 # EGL backend rules
 egl_source_h = \
@@ -450,17 +439,6 @@ backend_source_c_priv += $(egl_source_c_priv)
 
 clutteregl_includedir = $(clutter_includedir)/egl
 clutteregl_include_HEADERS = $(egl_source_h)
-else
-EXTRA_DIST += \
-	$(egl_source_c) 	\
-	$(egl_source_h) 	\
-	$(egl_source_h_priv) 	\
-	$(egl_source_c_priv)	\
-	$(egl_cex_h_priv)	\
-	$(egl_cex_c_priv)	\
-	$(egl_cex_h)		\
-	$(egl_tslib_c)		\
-	$(NULL)
 endif # SUPPORT_EGL
 
 # OSX backend rules
@@ -487,13 +465,6 @@ backend_source_c_priv += $(osx_source_c_priv)
 
 clutterosx_includedir = $(clutter_includedir)/osx
 clutterosx_include_HEADERS = $(osx_source_h)
-else
-EXTRA_DIST += \
-	$(osx_source_c) 	\
-	$(osx_source_h) 	\
-	$(osx_source_h_priv) 	\
-	$(osx_source_c_priv)	\
-	$(NULL)
 endif # SUPPORT_OSX
 
 # Fruity backend rules
@@ -508,17 +479,13 @@ fruity_source_h = \
 	$(srcdir)/fruity/clutter-stage-fruity.h		\
 	$(srcdir)/fruity/clutter-fruity.h		\
 	$(NULL)
+
 if SUPPORT_FRUITY
 backend_source_c_priv += $(fruity_source_c)
 backend_source_h_priv += $(fruity_source_h)
 
 clutterfruity_includedir = $(clutter_includedir)/fruity
 clutterfruity_include_HEADERS = $(srcdir)/fruity/clutter-fruity.h
-else
-EXTRA_DIST += \
-	$(fruity_source_c)	\
-	$(fruity_source_h)	\
-	$(NULL)
 endif # SUPPORT_FRUITY
 
 # cally
