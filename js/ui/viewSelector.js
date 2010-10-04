@@ -460,6 +460,29 @@ ViewSelector.prototype = {
             this._switchTab(this._tabs[0]);
     },
 
+    _nextTab: function() {
+        if (this._tabs.length == 0 ||
+            this._tabs[this._tabs.length - 1] == this._activeTab)
+            return;
+
+        for (let i = 0; i < this._tabs.length; i++)
+            if (this._tabs[i] == this._activeTab) {
+                this._switchTab(this._tabs[i + 1]);
+                return;
+            }
+    },
+
+    _prevTab: function() {
+        if (this._tabs.length == 0 || this._tabs[0] == this._activeTab)
+            return;
+
+        for (let i = 0; i < this._tabs.length; i++)
+            if (this._tabs[i] == this._activeTab) {
+                this._switchTab(this._tabs[i - 1]);
+                return;
+            }
+    },
+
     _getPreferredTabBarWidth: function(box, forHeight, alloc) {
         let children = box.get_children();
         for (let i = 0; i < children.length; i++) {
@@ -521,10 +544,21 @@ ViewSelector.prototype = {
         if (focus != stage)
             return false;
 
+        let modifiers = Shell.get_event_state(event);
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.Escape) {
             Main.overview.hide();
             return true;
+        } else if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
+            if (symbol == Clutter.Page_Up) {
+                if (!this._searchActive)
+                    this._prevTab();
+                return true;
+            } else if (symbol == Clutter.Page_Down) {
+                if (!this._searchActive)
+                    this._nextTab();
+                return true;
+            }
         }
         return false;
     },
