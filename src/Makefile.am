@@ -243,7 +243,7 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mu
 		$(filter %.c,$(mutter_SOURCES))		\
 		$(libmutterinclude_base_headers)	\
 		$(INCLUDES)				\
-		-o $@
+		-o $$pwd/$@
 
 Meta-$(api_version).typelib: $(G_IR_COMPILER) Meta-$(api_version).gir
 	$(AM_V_GEN) LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. $(G_IR_COMPILER) Meta-$(api_version).gir -o $@
