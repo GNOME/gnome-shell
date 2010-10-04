@@ -522,7 +522,7 @@ clutter_deform_effect_class_init (ClutterDeformEffectClass *klass)
    * Since: 1.4
    */
   pspec = g_param_spec_uint ("x-tiles",
-                             P_("Horiontal Tiles"),
+                             P_("Horizontal Tiles"),
                              P_("The number of horizontal tiles"),
                              1, G_MAXUINT,
                              DEFAULT_N_TILES,
