@@ -28,7 +28,7 @@ const WorkspacesViewType = {
 const WORKSPACES_VIEW_KEY = 'workspaces-view';
 
 const WORKSPACE_DRAGGING_SCALE = 0.85;
-const WORKSPACE_SHADOW_SCALE = (1 - WORKSPACE_DRAGGING_SCALE) / 2;
+
 
 function GenericWorkspacesView(width, height, x, y, workspaces) {
     this._init(width, height, x, y, workspaces);
@@ -472,32 +472,6 @@ MosaicView.prototype = {
     }
 };
 
-function NewWorkspaceArea() {
-    this._init();
-}
-
-NewWorkspaceArea.prototype = {
-    _init: function() {
-        let width = Math.ceil(global.screen_width * WORKSPACE_SHADOW_SCALE);
-        this.actor = new Clutter.Group({ width: width,
-                                         height: global.screen_height,
-                                         x: global.screen_width });
-
-        this._child1 = new St.Bin({ style_class: 'new-workspace-area',
-                                    width: width,
-                                    height: global.screen_height });
-        this._child2 =  new St.Bin({ style_class: 'new-workspace-area-internal',
-                                     width: width,
-                                     height: global.screen_height,
-                                     reactive: true });
-        this.actor.add_actor(this._child1);
-        this.actor.add_actor(this._child2);
-    },
-
-    setStyle: function(isHover) {
-        this._child1.set_hover(isHover);
-    }
-};
 
 function WorkspaceIndicator(activateWorkspace, workspaceAcceptDrop, workspaceHandleDragOver, scrollEventCb) {
     this._init(activateWorkspace, workspaceAcceptDrop, workspaceHandleDragOver, scrollEventCb);
@@ -636,12 +610,6 @@ SingleView.prototype = {
     __proto__: GenericWorkspacesView.prototype,
 
     _init: function(width, height, x, y, workspaces) {
-
-        this._newWorkspaceArea = new NewWorkspaceArea();
-        this._newWorkspaceArea.actor._delegate = {
-            acceptDrop: Lang.bind(this, this._acceptNewWorkspaceDrop)
-        };
-
         GenericWorkspacesView.prototype._init.call(this, width, height, x, y, workspaces);
 
         this._itemDragBeginId = Main.overview.connect('item-drag-begin',
@@ -654,8 +622,6 @@ SingleView.prototype = {
             this._workspaces[i]._windowDragEndId = this._workspaces[i].connect('window-drag-end',
                                                                                Lang.bind(this, this._dragEnd));
         }
-
-        this.actor.add_actor(this._newWorkspaceArea.actor);
 
         this.actor.add_style_class_name('single');
         this.actor.set_clip(x, y, width, height);
@@ -717,11 +683,6 @@ SingleView.prototype = {
 
             workspace.setSelected(false);
         }
-
-        this._newWorkspaceArea.scale = scale;
-        this._newWorkspaceArea.gridX = this._x + this._activeWorkspaceX
-                                       + (this._workspaces.length - active) * (_width + this._spacing);
-        this._newWorkspaceArea.gridY = this._y + this._activeWorkspaceY;
     },
 
     _transitionWorkspaces: function() {
@@ -908,19 +869,32 @@ SingleView.prototype = {
             workspace.gridX += dx;
 
             if (showAnimation) {
-                Tweener.addTween(workspace.actor,
-                    { x: workspace.gridX,
-                      y: workspace.gridY,
-                      scale_x: workspace.scale,
-                      scale_y: workspace.scale,
-                      opacity: workspace.opacity,
-                      time: WORKSPACE_SWITCH_TIME,
-                      transition: 'easeOutQuad'
-                    });
+                let params = { x: workspace.gridX,
+                               y: workspace.gridY,
+                               scale_x: workspace.scale,
+                               scale_y: workspace.scale,
+                               opacity: workspace.opacity,
+                               time: WORKSPACE_SWITCH_TIME,
+                               transition: 'easeOutQuad'
+                             };
+                // we have to call _updateVisibility() once before the
+                // animation and once afterwards - it does not really
+                // matter which tween we use, so we pick the first one ...
+                if (w == 0) {
+                    this._updateVisibility();
+                    params.onComplete = Lang.bind(this,
+                        function() {
+                            this._animating = false;
+                            this._updateVisibility();
+                        });
+                }
+                Tweener.addTween(workspace.actor, params);
             } else {
                 workspace.actor.set_scale(workspace.scale, workspace.scale);
                 workspace.actor.set_position(workspace.gridX, workspace.gridY);
                 workspace.actor.opacity = workspace.opacity;
+                if (w == 0)
+                    this._updateVisibility();
             }
         }
 
@@ -944,35 +918,6 @@ SingleView.prototype = {
             } else {
                 this._cleanWorkspaces();
             }
-        }
-
-        Tweener.removeTweens(this._newWorkspaceArea.actor);
-
-        this._newWorkspaceArea.gridX += dx;
-        if (showAnimation) {
-            // we have to call _updateVisibility() once before the
-            // animation and once afterwards - it does not really
-            // matter which tween we use, as long as it's not inside
-            // a loop ...
-            this._updateVisibility();
-            Tweener.addTween(this._newWorkspaceArea.actor,
-                             { x: this._newWorkspaceArea.gridX,
-                               y: this._newWorkspaceArea.gridY,
-                               scale_x: this._newWorkspaceArea.scale,
-                               scale_y: this._newWorkspaceArea.scale,
-                               time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this, function() {
-                                   this._animating = false;
-                                   this._updateVisibility();
-                               })
-                             });
-        } else {
-            this._newWorkspaceArea.actor.set_scale(this._newWorkspaceArea.scale,
-                                                   this._newWorkspaceArea.scale);
-            this._newWorkspaceArea.actor.set_position(this._newWorkspaceArea.gridX,
-                                                      this._newWorkspaceArea.gridY);
-            this._updateVisibility();
         }
     },
 
@@ -1155,13 +1100,6 @@ SingleView.prototype = {
             } else {
                 rightWorkspace.opacity = rightWorkspace.actor.opacity = 200;
             }
-        } else {
-            let targetParent = dragEvent.targetActor.get_parent();
-            if (targetParent == this._newWorkspaceArea.actor) {
-                this._newWorkspaceArea.setStyle(true);
-                result = this._handleDragOverNewWorkspace(dragEvent.source, dragEvent.dragActor);
-            } else
-                this._newWorkspaceArea.setStyle(false);
         }
 
         // handle delayed workspace switches
