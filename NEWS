@@ -1,3 +1,55 @@
+Clutter 1.5.2  (04/10/2010)
+===============================================================================
+
+  • List of changes since Clutter 1.4.0
+
+    » Add API to ClutterActor to allow any actor to define its 3D paint
+      volume and its stage-relative 2D bounding box; the paint volume is
+      the 3D space occupied by an actor during the paint sequence. This
+      allows better sizing of the FBOs, and opens the door to scenegraph
+      culling and accurate clipped redraws. The mechanism is opt-in: actors
+      have to implement the get_paint_volume() virtual function. Callbacks
+      attached to the ::paint signal will also disable any culling and
+      clipped redraw in place internally.
+
+    » Plug a leak in ClutterActor by disposing all constraints.
+
+    » Rework the build system to be as non-recursive as possible; this should
+      speed up the build of Clutter, and makes the build layout easier to
+      understand and update.
+
+    » Remove the internal copy of JSON-GLib; the internal copy was falling
+      behind at a spectacular level, and it was actually making the build
+      rather complicated - also by adding an unwanted, but needed,
+      introspection data generation. The required JSON-GLib has also been
+      bumped to the new stable release, 0.12.0.
+
+    » Use g_object_install_properties() with GLib 2.26.
+
+    » Implement ClutterContainer::child-notify, which slipped through the
+      cracks of many development cycles without anyone noticing.
+
+    » Document and test clutter_actor_contains(), especially the corner
+      cases.
+
+    » Plug a leak in CoglTexture2DSliced.
+
+    » Plug a leak in ClutterAnimator's handling of timelines.
+
+    » Trap glXDestroyPixmap() in CoglTexturePixmapX11 to avoid BadDrawable
+      errors when the GLX pixmap is destroyed behind Cogl's back.
+
+Many thanks to:
+
+  Robert Bragg
+  Neil Roberts
+  Elliot Smith
+  Alejandro Piñeiro
+  Aron Xu
+  Colin Walters
+  Ray Strode
+  Stephen Kennedy
+
 Clutter 1.4.0  (24/09/2010)
 ===============================================================================
 
