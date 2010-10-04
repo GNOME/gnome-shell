@@ -61,6 +61,7 @@ struct _ClutterEffect
  * ClutterEffectClass:
  * @pre_paint: virtual function
  * @post_paint: virtual function
+ * @get_paint_volume: virtual function
  *
  * The #ClutterEffectClass structure contains only private data
  *
@@ -79,14 +80,11 @@ struct _ClutterEffectClass
                                  ClutterPaintVolume *volume);
 
   /*< private >*/
-  void (* _clutter_effect0) (void);
-  void (* _clutter_effect1) (void);
   void (* _clutter_effect2) (void);
   void (* _clutter_effect3) (void);
   void (* _clutter_effect4) (void);
   void (* _clutter_effect5) (void);
   void (* _clutter_effect6) (void);
-  void (* _clutter_effect7) (void);
 };
 
 GType clutter_effect_get_type (void) G_GNUC_CONST;
