@@ -191,8 +191,6 @@ struct _ClutterActor
  * @apply_transform: virtual function, used when applying the transformations
  *   to an actor before painting it or when transforming coordinates or
  *   the allocation; it must chain up to the parent's implementation
- * @get_accessible: virtual function, returns the accessible object that
- *   describes the actor to an assistive technology.
  * @parent_set: signal class handler for the #ClutterActor::parent-set
  * @destroy: signal class handler for #ClutterActor::destroy
  * @pick: virtual function, used to draw an outline of the actor with
@@ -213,6 +211,10 @@ struct _ClutterActor
  * @key_focus_in: signal class closure for #ClutterActor::key-focus-in
  * @key_focus_out: signal class closure for #ClutterActor::key-focus-out
  * @queue_relayout: class handler for #ClutterActor::queue-relayout
+ * @get_accessible: virtual function, returns the accessible object that
+ *   describes the actor to an assistive technology.
+ * @get_paint_volume: virtual function, for sub-classes to define their
+ *   #ClutterPaintVolume
  *
  * Base class for actors.
  */
