@@ -184,18 +184,10 @@ Overview.prototype = {
 
         this._group = new St.Group({ name: 'overview' });
         this._group._delegate = this;
-        this._group.connect('destroy', Lang.bind(this,
-            function() {
-                if (this._lightbox) {
-                    this._lightbox.destroy();
-                    this._lightbox = null;
-                }
-            }));
 
         this.shellInfo = new ShellInfo();
 
-        this._workspacesManager = null;
-        this._lightbox = null;
+        this._workspacesDisplay = null;
 
         this.visible = false;
         this.animationInProgress = false;
@@ -258,18 +250,6 @@ Overview.prototype = {
         return clone;
     },
 
-    _onViewChanged: function() {
-        if (!this.visible)
-            return;
-
-        this.workspaces = this._workspacesManager.workspacesView;
-
-        // Show new workspacesView
-        this._group.add_actor(this.workspaces.actor);
-        this._workspacesBar.raise(this.workspaces.actor);
-        this._dash.actor.raise(this.workspaces.actor);
-    },
-
     _recalculateGridSizes: function () {
         let primary = global.get_primary_monitor();
         wideScreen = (primary.width/primary.height > WIDE_SCREEN_CUT_OFF_RATIO) &&
@@ -326,10 +306,6 @@ Overview.prototype = {
         }
         this._dash.actor.height = this._workspacesHeight;
 
-        // place the 'Add Workspace' button in the bottom row of the grid
-        this._workspacesBarX = this._workspacesX;
-        this._workspacesBarWidth = this._workspacesWidth;
-        this._workspacesBarY = primary.height - displayGridRowHeight;
 
         this._paneContainer.set_position(this._dash.actor.x + this._dash.actor.width + DEFAULT_PADDING,
                                          this._workspacesY);
@@ -375,11 +351,6 @@ Overview.prototype = {
                         this._activeDisplayPane.close();
                     return true;
                 }));
-                if (!this._lightbox)
-                    this._lightbox = new Lightbox.Lightbox(this._group,
-                                                           { fadeTime: PANE_FADE_TIME });
-                this._lightbox.show();
-                this._lightbox.highlight(this._paneContainer);
             } else if (pane == this._activeDisplayPane) {
                 this._activeDisplayPane = null;
                 if (backgroundEventId != null) {
@@ -388,7 +359,6 @@ Overview.prototype = {
                 }
                 this._transparentBackground.lower_bottom();
                 this._paneContainer.hide();
-                this._lightbox.hide();
             }
         }));
     },
@@ -443,28 +413,22 @@ Overview.prototype = {
         this.animationInProgress = true;
 
         /* TODO: make this stuff dynamic */
-        this._workspacesManager =
-            new WorkspacesView.WorkspacesManager(this._workspacesWidth,
+        this._workspacesDisplay =
+            new WorkspacesView.WorkspacesDisplay(this._workspacesWidth,
                                                  this._workspacesHeight,
                                                  this._workspacesX,
                                                  this._workspacesY);
-        this._workspacesManager.connect('view-changed',
-                                        Lang.bind(this, this._onViewChanged));
-        this.workspaces = this._workspacesManager.workspacesView;
+        this._workspacesDisplay.actor.set_size(this._workspacesWidth,
+                                               this._workspacesHeight);
+        this._workspacesDisplay.actor.set_position(this._workspacesX,
+                                                   this._workspacesY);
+        this._group.add_actor(this._workspacesDisplay.actor);
+
+        this._workspacesDisplay.show();
+        this.workspaces = this._workspacesDisplay.workspacesView;
+
+        // Show new workspacesView
         this._group.add_actor(this.workspaces.actor);
-
-        // The workspaces actor is as big as the screen, so we have to raise the dash above it
-        // for drag and drop to work.  In the future we should fix the workspaces to not
-        // be as big as the screen.
-        this._dash.actor.raise(this.workspaces.actor);
-
-        this._workspacesBar = this._workspacesManager.controlsBar.actor;
-        this._workspacesBar.set_position(this._workspacesBarX,
-                                         this._workspacesBarY);
-        this._workspacesBar.width = this._workspacesBarWidth;
-
-        this._group.add_actor(this._workspacesBar);
-        this._workspacesBar.raise(this.workspaces.actor);
 
         if (!this._desktopFade.child)
             this._desktopFade.child = this._getDesktopClone();
@@ -605,10 +569,8 @@ Overview.prototype = {
         this.workspaces.destroy();
         this.workspaces = null;
 
-        this._workspacesBar.destroy();
-        this._workspacesBar = null;
-
-        this._workspacesManager = null;
+        this._workspacesDisplay.actor.destroy();
+        this._workspacesDisplay = null;
 
         this._desktopFade.hide();
         this._background.hide();
