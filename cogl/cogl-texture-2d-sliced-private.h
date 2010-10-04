@@ -38,29 +38,11 @@ struct _CoglTexture2DSliced
   CoglTexture       _parent;
   GArray           *slice_x_spans;
   GArray           *slice_y_spans;
-  GArray           *slice_gl_handles;
+  GArray           *slice_textures;
   int               max_waste;
 
-  /* The internal format of the GL texture represented as a
-     CoglPixelFormat */
-  CoglPixelFormat   format;
-  /* The internal format of the GL texture represented as a GL enum */
-  GLenum            gl_format;
-  GLenum            gl_target;
   int               width;
   int               height;
-  GLenum            min_filter;
-  GLenum            mag_filter;
-  gboolean          is_foreign;
-  GLenum            wrap_mode_s;
-  GLenum            wrap_mode_t;
-  gboolean          auto_mipmap;
-  gboolean          mipmaps_dirty;
-
-  /* This holds a copy of the first pixel in each slice. It is only
-     used to force an automatic update of the mipmaps when
-     glGenerateMipmap is not available. */
-  CoglTexturePixel *first_pixels;
 };
 
 GQuark
