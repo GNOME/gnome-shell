@@ -51,6 +51,7 @@ struct _CoglTexture2D
   GLint           wrap_mode_t;
   gboolean        auto_mipmap;
   gboolean        mipmaps_dirty;
+  gboolean        is_foreign;
 
   CoglTexturePixel first_pixel;
 };
@@ -68,6 +69,12 @@ CoglHandle
 _cogl_texture_2d_new_from_bitmap (CoglBitmap      *bmp,
                                   CoglTextureFlags flags,
                                   CoglPixelFormat  internal_format);
+
+CoglHandle
+_cogl_texture_2d_new_from_foreign (GLuint gl_handle,
+                                   GLuint width,
+                                   GLuint height,
+                                   CoglPixelFormat format);
 
 /*
  * _cogl_texture_2d_externally_modified:

@@ -49,6 +49,7 @@ struct _CoglTextureRectangle
   GLenum          mag_filter;
   GLint           wrap_mode_s;
   GLint           wrap_mode_t;
+  gboolean        is_foreign;
 };
 
 GQuark
@@ -64,5 +65,11 @@ CoglHandle
 _cogl_texture_rectangle_new_from_bitmap (CoglBitmap      *bmp,
                                          CoglTextureFlags flags,
                                          CoglPixelFormat  internal_format);
+
+CoglHandle
+_cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
+                                          GLuint width,
+                                          GLuint height,
+                                          CoglPixelFormat format);
 
 #endif /* __COGL_TEXTURE_RECTANGLE_H */
