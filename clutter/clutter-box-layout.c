@@ -1088,8 +1088,8 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    */
   pspec = g_param_spec_boolean ("vertical",
                                 P_("Vertical"),
-                                P_("Whether the layout should be vertical, rather"
-                                   "than horizontal"),
+                                P_("Whether the layout should be vertical, "
+                                   "rather than horizontal"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_VERTICAL, pspec);
@@ -1104,8 +1104,8 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    */
   pspec = g_param_spec_boolean ("homogeneous",
                                 P_("Homogeneous"),
-                                P_("Whether the layout should be homogeneous, i.e."
-                                   "all childs get the same size"),
+                                P_("Whether the layout should be homogeneous, "
+                                   "i.e. all childs get the same size"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_HOMOGENEOUS, pspec);
