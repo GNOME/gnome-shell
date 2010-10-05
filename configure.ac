@@ -1126,9 +1126,9 @@ echo " • Extra:"
 echo "        Build introspection data: ${enable_introspection}"
 echo "        Build conformance test suite: ${enable_conformance}"
 
-# COGL flags
+# Cogl flags
 echo ""
-echo " • COGL Backend:"
+echo " • Cogl Backend:"
 echo "        Driver: ${COGL_DRIVER}"
 echo "        GL header: ${cogl_gl_headers}"
 

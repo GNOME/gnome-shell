@@ -1041,16 +1041,16 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   g_object_class_install_property (gobject_class, PROP_PIXEL_FORMAT, pspec);
 
   pspec = g_param_spec_boxed ("cogl-texture",
-                              P_("COGL Texture"),
-                              P_("The underlying COGL texture handle used to draw this actor"),
+                              P_("Cogl Texture"),
+                              P_("The underlying Cogl texture handle used to draw this actor"),
                               COGL_TYPE_HANDLE,
                               CLUTTER_PARAM_READWRITE);
   obj_props[PROP_COGL_TEXTURE] = pspec;
   g_object_class_install_property (gobject_class, PROP_COGL_TEXTURE, pspec);
 
   pspec = g_param_spec_boxed ("cogl-material",
-                              P_("COGL Material"),
-                              P_("The underlying COGL material handle used to draw this actor"),
+                              P_("Cogl Material"),
+                              P_("The underlying Cogl material handle used to draw this actor"),
                               COGL_TYPE_HANDLE,
                               CLUTTER_PARAM_READWRITE);
   obj_props[PROP_COGL_MATERIAL] = pspec;
@@ -1539,7 +1539,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 
       g_set_error (&inner_error, CLUTTER_TEXTURE_ERROR,
                    CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-                   "Failed to create COGL texture");
+                   "Failed to create Cogl texture");
 
       g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, inner_error);
 
@@ -1935,7 +1935,7 @@ clutter_texture_async_load (ClutterTexture *self,
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		   "Failed to create COGL texture");
+		   "Failed to create Cogl texture");
       return FALSE;
     }
   else
@@ -2030,7 +2030,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
     {
       g_set_error (&internal_error, CLUTTER_TEXTURE_ERROR,
                    CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		   "Failed to create COGL texture");
+		   "Failed to create Cogl texture");
     }
 
   if (internal_error != NULL)
@@ -2337,7 +2337,7 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		   "Failed to upload COGL texture data");
+		   "Failed to upload Cogl texture data");
       return FALSE;
     }
 
