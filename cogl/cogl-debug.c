@@ -151,9 +151,9 @@ cogl_arg_no_debug_cb (const char *key,
 static GOptionEntry cogl_args[] = {
 #ifdef COGL_ENABLE_DEBUG
   { "cogl-debug", 0, 0, G_OPTION_ARG_CALLBACK, cogl_arg_debug_cb,
-    N_("COGL debugging flags to set"), "FLAGS" },
+    N_("Cogl debugging flags to set"), "FLAGS" },
   { "cogl-no-debug", 0, 0, G_OPTION_ARG_CALLBACK, cogl_arg_no_debug_cb,
-    N_("COGL debugging flags to unset"), "FLAGS" },
+    N_("Cogl debugging flags to unset"), "FLAGS" },
 #endif /* COGL_ENABLE_DEBUG */
   { NULL, },
 };
@@ -184,8 +184,8 @@ cogl_get_option_group (void)
   GOptionGroup *group;
 
   group = g_option_group_new ("cogl",
-                              _("COGL Options"),
-                              _("Show COGL options"),
+                              _("Cogl Options"),
+                              _("Show Cogl options"),
                               NULL, NULL);
 
   g_option_group_set_parse_hooks (group, pre_parse_hook, NULL);
