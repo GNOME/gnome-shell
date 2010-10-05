@@ -698,6 +698,10 @@ _cogl_pot_slices_for_size (int    size_to_fill,
       else if (span.size - size_to_fill <= max_waste)
         {
           /* Yes and waste is small enough */
+          /* Pick the next power of two up from size_to_fill. This can
+             sometimes be less than the span.size that would be chosen
+             otherwise */
+          span.size = _cogl_util_next_p2 (size_to_fill);
           span.waste = span.size - size_to_fill;
           if (out_spans)
             g_array_append_val (out_spans, span);
