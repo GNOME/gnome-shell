@@ -40,7 +40,7 @@ include Makefile-tray.am
 
 gnome_shell_cflags =				\
 	$(MUTTER_PLUGIN_CFLAGS)			\
-        $(LIBGNOMEUI_CFLAGS)                    \
+	$(LIBGNOMEUI_CFLAGS)                    \
 	-I$(srcdir)/tray			\
 	-DLOCALEDIR=\"$(datadir)/locale\" \
 	-DGNOME_SHELL_DATADIR=\"$(pkgdatadir)\"	\
@@ -78,7 +78,7 @@ shell_public_headers_h =		\
 	shell-tray-manager.h		\
 	shell-uri-util.h		\
 	shell-window-tracker.h		\
-	shell-wm.h              \
+	shell-wm.h			\
 	shell-xfixes-cursor.h
 
 libgnome_shell_la_SOURCES =		\
@@ -89,7 +89,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-global-private.h		\
 	shell-jsapi-compat-private.h	\
 	shell-window-tracker-private.h	\
-	shell-wm-private.h	\
+	shell-wm-private.h		\
 	gnome-shell-plugin.c		\
 	gtk-compat.h			\
 	shell-app.c			\
@@ -110,7 +110,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-tray-manager.c		\
 	shell-uri-util.c		\
 	shell-window-tracker.c		\
-	shell-wm.c              \
+	shell-wm.c			\
 	shell-xfixes-cursor.c
 
 libgnome_shell_la_gir_sources = \
@@ -184,9 +184,10 @@ shell-enum-types.c: shell-enum-types.c.in stamp-shell-enum-types.h
 EXTRA_DIST += shell-enum-types.c.in
 
 libgnome_shell_la_LDFLAGS = -avoid-version -module
-libgnome_shell_la_LIBADD =-lm \
+libgnome_shell_la_LIBADD =	\
+	-lm			\
 	$(MUTTER_PLUGIN_LIBS)	\
-        $(LIBGNOMEUI_LIBS)      \
+	$(LIBGNOMEUI_LIBS)      \
 	libst-1.0.la       	\
 	libgdmuser-1.0.la	\
 	libtray.la
@@ -205,9 +206,9 @@ Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) St-1.0.gir libgnome-shell.la Makefile
 		--include=Clutter-1.0			\
 		--include=ClutterX11-1.0		\
 		--include=Meta-2.91			\
-		--libtool="$(LIBTOOL)"    \
-		--add-include-path=$(builddir)     \
-		--include=St-1.0     \
+		--libtool="$(LIBTOOL)"			\
+		--add-include-path=$(builddir)		\
+		--include=St-1.0			\
 		--program=mutter			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
 		$(addprefix $(srcdir)/,$(libgnome_shell_la_gir_sources)) \
@@ -263,8 +264,8 @@ Gdm-1.0.gir: $(mutter) $(G_IR_SCANNER) libgdmuser-1.0.la Makefile
 		--libtool="$(LIBTOOL)"			\
 		--library=libgdmuser-1.0.la		\
 		$(filter-out %-private.h, $(addprefix $(srcdir)/,$(gdmuser_source_h)))	\
-		$(addprefix $(srcdir)/,$(gdmuser_source_c))	\
-		$(gdmuser_cflags)				\
+		$(addprefix $(srcdir)/,$(gdmuser_source_c)) \
+		$(gdmuser_cflags)			\
 		-o $@
 CLEANFILES += Gdm-1.0.gir
 

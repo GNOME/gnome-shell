@@ -1,19 +1,19 @@
 st_cflags =					\
-    -I$(top_srcdir)/src				\
-    -DPREFIX=\""$(prefix)"\"			\
-    -DLIBDIR=\""$(libdir)"\"			\
-    -DG_DISABLE_DEPRECATED			\
-    -DG_LOG_DOMAIN=\"St\"			\
-    -DST_COMPILATION				\
-    -DPACKAGE_DATA_DIR=\"$(pkgdatadir)\"	\
-    $(ST_CFLAGS)				\
-    $(NULL)
+	-I$(top_srcdir)/src			\
+	-DPREFIX=\""$(prefix)"\"		\
+	-DLIBDIR=\""$(libdir)"\"		\
+	-DG_DISABLE_DEPRECATED			\
+	-DG_LOG_DOMAIN=\"St\"			\
+	-DST_COMPILATION			\
+	-DPACKAGE_DATA_DIR=\"$(pkgdatadir)\"	\
+	$(ST_CFLAGS)				\
+	$(NULL)
 
 st_built_sources =				\
-    st-enum-types.h				\
-    st-enum-types.c				\
-    st-marshal.h				\
-    st-marshal.c
+	st-enum-types.h				\
+	st-enum-types.c				\
+	st-marshal.h				\
+	st-marshal.c
 
 BUILT_SOURCES += $(st_built_sources)
 
@@ -66,37 +66,37 @@ st-enum-types.c: stamp-st-enum-types.h st/st-enum-types.c.in
 
 # please, keep this sorted alphabetically
 st_source_h =					\
-    st/st-adjustment.h				\
-    st/st-bin.h					\
-    st/st-border-image.h			\
-    st/st-box-layout.h				\
-    st/st-box-layout-child.h			\
-    st/st-button.h				\
-    st/st-clickable.h           \
-    st/st-clipboard.h				\
-    st/st-container.h				\
-    st/st-drawing-area.h        \
-    st/st-entry.h				\
-    st/st-group.h				\
-    st/st-im-text.h				\
-    st/st-label.h				\
-    st/st-overflow-box.h        \
-    st/st-private.h				\
-    st/st-scrollable.h				\
-    st/st-scroll-bar.h				\
-    st/st-scroll-view.h				\
-    st/st-shadow.h                              \
-    st/st-subtexture.h				\
-    st/st-table.h				\
-    st/st-table-child.h				\
-    st/st-texture-cache.h			\
-    st/st-theme.h				\
-    st/st-theme-context.h			\
-    st/st-theme-node.h				\
-    st/st-tooltip.h				\
-    st/st-types.h				\
-    st/st-widget.h				\
-    $(NULL)
+	st/st-adjustment.h			\
+	st/st-bin.h				\
+	st/st-border-image.h			\
+	st/st-box-layout.h			\
+	st/st-box-layout-child.h		\
+	st/st-button.h				\
+	st/st-clickable.h			\
+	st/st-clipboard.h			\
+	st/st-container.h			\
+	st/st-drawing-area.h			\
+	st/st-entry.h				\
+	st/st-group.h				\
+	st/st-im-text.h				\
+	st/st-label.h				\
+	st/st-overflow-box.h			\
+	st/st-private.h				\
+	st/st-scrollable.h			\
+	st/st-scroll-bar.h			\
+	st/st-scroll-view.h			\
+	st/st-shadow.h				\
+	st/st-subtexture.h			\
+	st/st-table.h				\
+	st/st-table-child.h			\
+	st/st-texture-cache.h			\
+	st/st-theme.h				\
+	st/st-theme-context.h			\
+	st/st-theme-node.h			\
+	st/st-tooltip.h				\
+	st/st-types.h				\
+	st/st-widget.h				\
+	$(NULL)
 
 st.h: Makefile
 	$(AM_V_GEN) (echo "#define ST_H_INSIDE 1";	\
@@ -107,58 +107,58 @@ st.h: Makefile
 BUILT_SOURCES += st.h
 
 st_source_private_h =				\
-    st/st-private.h				\
-    st/st-table-private.h			\
-    st/st-theme-private.h			\
-    st/st-theme-node-private.h			\
-    st/st-theme-node-transition.h
+	st/st-private.h				\
+	st/st-table-private.h			\
+	st/st-theme-private.h			\
+	st/st-theme-node-private.h		\
+	st/st-theme-node-transition.h
 
 # please, keep this sorted alphabetically
 st_source_c =					\
-    st/st-adjustment.c				\
-    st/st-bin.c					\
-    st/st-border-image.c			\
-    st/st-box-layout.c				\
-    st/st-box-layout-child.c			\
-    st/st-button.c				\
-    st/st-clickable.c           \
-    st/st-clipboard.c				\
-    st/st-container.c				\
-    st/st-drawing-area.c        \
-    st/st-entry.c				\
-    st/st-group.c				\
-    st/st-im-text.c				\
-    st/st-label.c				\
-    st/st-overflow-box.c        \
-    st/st-private.c				\
-    st/st-scrollable.c				\
-    st/st-scroll-bar.c				\
-    st/st-scroll-view.c				\
-    st/st-shadow.c                              \
-    st/st-subtexture.c				\
-    st/st-table.c				\
-    st/st-table-child.c				\
-    st/st-texture-cache.c			\
-    st/st-theme.c				\
-    st/st-theme-context.c			\
-    st/st-theme-node.c				\
-    st/st-theme-node-drawing.c		\
-    st/st-theme-node-transition.c		\
-    st/st-tooltip.c				\
-    st/st-widget.c				\
-    $(NULL)
+	st/st-adjustment.c			\
+	st/st-bin.c				\
+	st/st-border-image.c			\
+	st/st-box-layout.c			\
+	st/st-box-layout-child.c		\
+	st/st-button.c				\
+	st/st-clickable.c			\
+	st/st-clipboard.c			\
+	st/st-container.c			\
+	st/st-drawing-area.c			\
+	st/st-entry.c				\
+	st/st-group.c				\
+	st/st-im-text.c				\
+	st/st-label.c				\
+	st/st-overflow-box.c			\
+	st/st-private.c				\
+	st/st-scrollable.c			\
+	st/st-scroll-bar.c			\
+	st/st-scroll-view.c			\
+	st/st-shadow.c				\
+	st/st-subtexture.c			\
+	st/st-table.c				\
+	st/st-table-child.c			\
+	st/st-texture-cache.c			\
+	st/st-theme.c				\
+	st/st-theme-context.c			\
+	st/st-theme-node.c			\
+	st/st-theme-node-drawing.c		\
+	st/st-theme-node-transition.c		\
+	st/st-tooltip.c				\
+	st/st-widget.c				\
+	$(NULL)
 
 noinst_LTLIBRARIES += libst-1.0.la
 
 libst_1_0_la_LIBADD = -lm $(ST_LIBS)
 libst_1_0_la_SOURCES =				\
-    $(st_source_c)				\
-    $(st_source_private_h)			\
-    $(st_source_private_c)			\
-    $(st_source_h)				\
-    st.h					\
-    $(st_built_sources)				\
-    $(NULL)
+	$(st_source_c)				\
+	$(st_source_private_h)			\
+	$(st_source_private_c)			\
+	$(st_source_h)				\
+	st.h					\
+	$(st_built_sources)			\
+	$(NULL)
 libst_1_0_la_CPPFLAGS = $(st_cflags)
 libst_1_0_la_LDFLAGS = $(LDADD)
 

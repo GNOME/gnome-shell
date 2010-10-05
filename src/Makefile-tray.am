@@ -6,7 +6,7 @@ tray_cflags =					\
 	$(NULL)
 
 tray_built_sources = \
-	na-marshal.h 		\
+	na-marshal.h \
 	na-marshal.c
 
 BUILT_SOURCES += $(tray_built_sources)
@@ -45,7 +45,7 @@ na-marshal.c: Makefile tray/na-marshal.list
 noinst_LTLIBRARIES += libtray.la
 
 libtray_la_LIBADD = $(TRAY_LIBS)
-libtray_la_SOURCES =	\
+libtray_la_SOURCES =		\
 	$(tray_source)		\
 	$(tray_built_sources)	\
 	$(NULL)
