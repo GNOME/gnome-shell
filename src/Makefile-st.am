@@ -77,6 +77,7 @@ st_source_h =					\
 	st/st-container.h			\
 	st/st-drawing-area.h			\
 	st/st-entry.h				\
+	st/st-focus-manager.h			\
 	st/st-group.h				\
 	st/st-im-text.h				\
 	st/st-label.h				\
@@ -126,6 +127,7 @@ st_source_c =					\
 	st/st-container.c			\
 	st/st-drawing-area.c			\
 	st/st-entry.c				\
+	st/st-focus-manager.c			\
 	st/st-group.c				\
 	st/st-im-text.c				\
 	st/st-label.c				\
