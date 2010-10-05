@@ -142,10 +142,12 @@ case "$with_gtk" in
   2.0) GTK_API_VERSION=2.0
        GTK_MIN_VERSION=2.18
        CANBERRA_GTK=libcanberra-gtk
+       CANBERRA_GTK_VERSION=0.24
        ;;
   3.0) GTK_API_VERSION=3.0
-       GTK_MIN_VERSION=2.90
+       GTK_MIN_VERSION=2.90.7
        CANBERRA_GTK=libcanberra-gtk3
+       CANBERRA_GTK_VERSION=0.26
        AC_DEFINE(USE_CAIRO_REGION, 1, [Use cairo_region_t instead of GdkRegion])
        ;;
 esac
@@ -251,7 +253,7 @@ AC_MSG_CHECKING([libcanberra-gtk])
 if test x$with_libcanberra = xno ; then
   AC_MSG_RESULT([disabled])
 else
-  if $PKG_CONFIG --exists $CANBERRA_GTK; then
+  if $PKG_CONFIG --exists $CANBERRA_GTK '>=' $CANBERRA_GTK_VERSION; then
     have_libcanberra=yes
     AC_MSG_RESULT(yes)
     MUTTER_PC_MODULES="$MUTTER_PC_MODULES $CANBERRA_GTK"
