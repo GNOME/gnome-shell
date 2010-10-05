@@ -95,6 +95,13 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
                                              gint                     width,
                                              gint                     height);
 static void
+clutter_x11_texture_pixmap_sync_window_internal (ClutterX11TexturePixmap *texture,
+                                                 int                      x,
+                                                 int                      y,
+                                                 int                      width,
+                                                 int                      height,
+                                                 gboolean                 override_redirect);
+static void
 clutter_x11_texture_pixmap_set_mapped (ClutterX11TexturePixmap *texture, gboolean mapped);
 static void
 clutter_x11_texture_pixmap_destroyed (ClutterX11TexturePixmap *texture);
@@ -111,8 +118,11 @@ struct _ClutterX11TexturePixmapPrivate
   Damage        damage;
 
   gint          window_x, window_y;
+  gint          window_width, window_height;
 
   guint window_redirect_automatic : 1;
+  /* FIXME: this is inconsistently either whether the window is mapped or whether
+   * it is viewable, and isn't updated correctly. */
   guint window_mapped             : 1;
   guint destroyed                 : 1;
   guint owns_pixmap               : 1;
@@ -212,8 +222,20 @@ on_x_event_filter_too (XEvent *xev, ClutterEvent *cev, gpointer data)
 
   switch (xev->type) {
   case MapNotify:
+    clutter_x11_texture_pixmap_sync_window_internal (texture,
+                                                     priv->window_x,
+                                                     priv->window_y,
+                                                     priv->window_width,
+                                                     priv->window_height,
+                                                     priv->override_redirect);
+    break;
   case ConfigureNotify:
-    clutter_x11_texture_pixmap_sync_window (texture);
+    clutter_x11_texture_pixmap_sync_window_internal (texture,
+                                                     xev->xconfigure.x,
+                                                     xev->xconfigure.y,
+                                                     xev->xconfigure.width,
+                                                     xev->xconfigure.height,
+                                                     xev->xconfigure.override_redirect);
     break;
   case UnmapNotify:
     clutter_x11_texture_pixmap_set_mapped (texture, FALSE);
@@ -995,12 +1017,9 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
 
   clutter_x11_untrap_x_errors ();
 
-  if (priv->window)
-    {
-      XSelectInput (dpy, priv->window,
-                    attr.your_event_mask | StructureNotifyMask);
-      clutter_x11_add_filter (on_x_event_filter_too, (gpointer)texture);
-    }
+  XSelectInput (dpy, priv->window,
+                attr.your_event_mask | StructureNotifyMask);
+  clutter_x11_add_filter (on_x_event_filter_too, (gpointer)texture);
 
   g_object_ref (texture);
   g_object_notify (G_OBJECT (texture), "window");
@@ -1008,10 +1027,111 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
   clutter_x11_texture_pixmap_set_mapped (texture,
                                          attr.map_state == IsViewable);
 
-  clutter_x11_texture_pixmap_sync_window (texture);
+  clutter_x11_texture_pixmap_sync_window_internal (texture,
+                                                   attr.x, attr.y,
+                                                   attr.width, attr.height,
+                                                   attr.override_redirect);
   g_object_unref (texture);
 
 #endif /* HAVE_XCOMPOSITE */
+}
+
+static void
+clutter_x11_texture_pixmap_sync_window_internal (ClutterX11TexturePixmap *texture,
+                                                 int                      x,
+                                                 int                      y,
+                                                 int                      width,
+                                                 int                      height,
+                                                 gboolean                 override_redirect)
+{
+  ClutterX11TexturePixmapPrivate *priv;
+  Pixmap pixmap = None;
+  gboolean mapped = FALSE;
+  gboolean notify_x = FALSE;
+  gboolean notify_y = FALSE;
+  gboolean notify_override_redirect = FALSE;
+
+  priv = texture->priv;
+
+  if (priv->destroyed)
+    return;
+
+  notify_x = x != priv->window_x;
+  notify_y = y != priv->window_y;
+  notify_override_redirect = override_redirect != priv->override_redirect;
+  priv->window_x = x;
+  priv->window_y = y;
+  priv->window_width = width;
+  priv->window_height = height;
+  priv->override_redirect = override_redirect;
+
+  if (!clutter_x11_has_composite_extension())
+    {
+      /* FIXME: this should just be an error, this is unlikely to work worth anything */
+      clutter_x11_texture_pixmap_set_pixmap (texture, priv->window);
+      return;
+    }
+
+  if (priv->pixmap == None || width != priv->pixmap_width || height != priv->pixmap_height)
+    {
+      /* Note that we're checking the size from the event against the size we obtained
+       * from the last XCompositeNameWindowPixmap/XGetGeometry pair. This will always
+       * end up right in the end, but we can have a series like:
+       *
+       *  Window sized to 100x100
+       *  Window sized to 110x110
+       *  Window sized to 120x120
+       *                          Configure received for 100x100 - NameWindowPixmap
+       *                          Configure received for 110x110 - NameWindowPixmap
+       *                          Configure received for 120x120 - last size OK
+       *
+       * Where we NameWindowPixmap several times in a row. (Using pixmap_width/pixmap_height
+       * rather than window_width/window_height saves the last one.)
+       */
+
+      Display *dpy = clutter_x11_get_default_display ();
+
+      /* NB: It's only valid to name a pixmap if the window is viewable.
+       *
+       * We don't explicitly check this though since there would be a race
+       * between checking and naming unless we use a server grab which is
+       * undesireable.
+       *
+       * Instead we gracefully handle any error with naming the pixmap.
+       */
+      clutter_x11_trap_x_errors ();
+
+      pixmap = XCompositeNameWindowPixmap (dpy, priv->window);
+
+      /* Possible improvement: combine with the XGetGeometry in
+       * clutter_x11_texture_pixmap_set_pixmap() */
+      XSync(dpy, False);
+
+      if (clutter_x11_untrap_x_errors ())
+	pixmap = None;
+    }
+
+  g_object_ref (texture); /* guard against unparent */
+  g_object_freeze_notify (G_OBJECT (texture));
+
+  /* FIXME: mapped is always FALSE */
+  clutter_x11_texture_pixmap_set_mapped (texture, mapped);
+
+  if (pixmap)
+    {
+      clutter_x11_texture_pixmap_set_pixmap (texture, pixmap);
+      priv->owns_pixmap = TRUE;
+    }
+
+  if (notify_override_redirect)
+    g_object_notify (G_OBJECT (texture), "window-override-redirect");
+  if (notify_x)
+    g_object_notify (G_OBJECT (texture), "window-x");
+  if (notify_y)
+    g_object_notify (G_OBJECT (texture), "window-y");
+
+  g_object_thaw_notify (G_OBJECT (texture));
+  g_object_unref (texture);
 }
 
 /**
@@ -1027,7 +1147,6 @@ void
 clutter_x11_texture_pixmap_sync_window (ClutterX11TexturePixmap *texture)
 {
   ClutterX11TexturePixmapPrivate *priv;
-  Pixmap pixmap;
 
   g_return_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture));
 
@@ -1036,66 +1155,22 @@ clutter_x11_texture_pixmap_sync_window (ClutterX11TexturePixmap *texture)
   if (priv->destroyed)
     return;
 
-  if (!clutter_x11_has_composite_extension())
-    {
-      clutter_x11_texture_pixmap_set_pixmap (texture, priv->window);
-      return;
-    }
-
   if (priv->window)
     {
       XWindowAttributes attr;
       Display *dpy = clutter_x11_get_default_display ();
-      gboolean mapped = FALSE;
-      gboolean notify_x = FALSE;
-      gboolean notify_y = FALSE;
-      gboolean notify_override_redirect = FALSE;
       Status status;
 
-      /* NB: It's only valid to name a pixmap if the window is viewable.
-       *
-       * We don't explicitly check this though since there would be a race
-       * between checking and naming unless we use a server grab which is
-       * undesireable.
-       *
-       * Instead we gracefully handle any error with naming the pixmap.
-       */
       clutter_x11_trap_x_errors ();
-
-      pixmap = XCompositeNameWindowPixmap (dpy, priv->window);
 
       status = XGetWindowAttributes (dpy, priv->window, &attr);
       if (status != 0)
-	{
-	  notify_x = attr.x != priv->window_x;
-	  notify_y = attr.y != priv->window_y;
-	  notify_override_redirect = attr.override_redirect != priv->override_redirect;
-	  priv->window_x = attr.x;
-	  priv->window_y = attr.y;
-	  priv->override_redirect = attr.override_redirect;
-	}
+        clutter_x11_texture_pixmap_sync_window_internal (texture,
+                                                         attr.x, attr.y,
+                                                         attr.width, attr.height,
+                                                         attr.override_redirect);
 
-      /* We rely on XGetWindowAttributes() implicitly syncing with the server
-       * so if there was an error naming the pixmap that will have been
-       * caught by now. */
-      if (clutter_x11_untrap_x_errors ())
-	pixmap = None;
-
-      g_object_ref (texture); /* guard against unparent */
-      if (pixmap)
-        {
-          clutter_x11_texture_pixmap_set_pixmap (texture, pixmap);
-          priv->owns_pixmap = TRUE;
-        }
-      clutter_x11_texture_pixmap_set_mapped (texture, mapped);
-      /* could do more clever things with a signal, i guess.. */
-      if (notify_override_redirect)
-        g_object_notify (G_OBJECT (texture), "window-override-redirect");
-      if (notify_x)
-        g_object_notify (G_OBJECT (texture), "window-x");
-      if (notify_y)
-        g_object_notify (G_OBJECT (texture), "window-y");
-      g_object_unref (texture);
+      clutter_x11_untrap_x_errors ();
     }
 }
 
