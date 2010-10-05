@@ -990,7 +990,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 
   pspec = g_param_spec_boolean ("disable-slicing",
                                 P_("Disable Slicing"),
-                                P_("Forces the underlying texture to be singlular and not made of of smaller space saving inidivual textures."),
+                                P_("Forces the underlying texture to be singular and not made of smaller space saving "
+                                   "individual textures"),
                                 FALSE,
                                 G_PARAM_CONSTRUCT_ONLY |
                                 CLUTTER_PARAM_READWRITE);
@@ -1008,7 +1009,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 
   pspec = g_param_spec_boolean ("repeat-x",
                                 P_("Horizontal repeat"),
-                                P_("Repeat the contents rather than scaling them horizontally."),
+                                P_("Repeat the contents rather than scaling them horizontally"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   obj_props[PROP_REPEAT_X] = pspec;
@@ -1016,7 +1017,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 
   pspec = g_param_spec_boolean ("repeat-y",
                                 P_("Vertical repeat"),
-                                P_("Repeat the contents rather than scaling them vertically."),
+                                P_("Repeat the contents rather than scaling them vertically"),
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   obj_props[PROP_REPEAT_Y] = pspec;
@@ -1024,7 +1025,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 
   pspec = g_param_spec_enum ("filter-quality",
                              P_("Filter Quality"),
-                             P_("Rendering quality used when drawing the texture."),
+                             P_("Rendering quality used when drawing the texture"),
                              CLUTTER_TYPE_TEXTURE_QUALITY,
                              CLUTTER_TEXTURE_QUALITY_MEDIUM,
                              G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE);
@@ -1033,7 +1034,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 
   pspec = g_param_spec_enum ("pixel-format",
                              P_("Pixel Format"),
-                             P_("The Cogl pixel format to use."),
+                             P_("The Cogl pixel format to use"),
                              COGL_TYPE_PIXEL_FORMAT,
                              COGL_PIXEL_FORMAT_RGBA_8888,
                              CLUTTER_PARAM_READABLE);
@@ -1102,7 +1103,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    */
   pspec = g_param_spec_boolean ("load-async",
                                 P_("Load asynchronously"),
-                                P_("Load files inside a thread to avoid blocking when loading images from disk."),
+                                P_("Load files inside a thread to avoid blocking when loading images from disk"),
                                 FALSE,
                                 CLUTTER_PARAM_WRITABLE);
   obj_props[PROP_LOAD_ASYNC] = pspec;
@@ -1119,7 +1120,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    */
   pspec = g_param_spec_boolean ("load-data-async",
                                 P_("Load data asynchronously"),
-                                P_("Decode image data files inside a thread to reduce blocking when loading images from disk."),
+                                P_("Decode image data files inside a thread to reduce blocking when loading images from disk"),
                                 FALSE,
                                 CLUTTER_PARAM_WRITABLE);
   obj_props[PROP_LOAD_DATA_ASYNC] = pspec;
