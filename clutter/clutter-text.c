@@ -2695,7 +2695,7 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Since: 1.0
    */
   pspec = g_param_spec_int ("position",
-                            P_("Position"),
+                            P_("Cursor Position"),
                             P_("The cursor position"),
                             -1, G_MAXINT,
                             -1,
