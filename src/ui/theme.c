@@ -3581,7 +3581,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rheight = parse_size_unchecked (op->data.arc.height, env);
 
         start_angle = op->data.arc.start_angle * (M_PI / 180.)
-                      - (.25 * M_PI); /* start at 12 instead of 3 oclock */
+                      - (.5 * M_PI); /* start at 12 instead of 3 oclock */
         end_angle = start_angle + op->data.arc.extent_angle * (M_PI / 180.);
         center_x = rx + (double)rwidth / 2. + .5;
         center_y = ry + (double)rheight / 2. + .5;
