@@ -43,6 +43,8 @@ struct _ShellApp
 {
   GObject parent;
 
+  int started_on_workspace;
+
   ShellAppState state;
 
   ShellAppInfo *info;
@@ -573,6 +575,14 @@ shell_app_is_on_workspace (ShellApp *app,
 {
   GSList *iter;
 
+  if (shell_app_get_state (app) == SHELL_APP_STATE_STARTING)
+    {
+      if (meta_workspace_index (workspace) == app->started_on_workspace)
+        return TRUE;
+      else
+        return FALSE;
+    }
+
   if (app->running_state == NULL)
     return FALSE;
 
@@ -815,6 +825,7 @@ _shell_app_handle_startup_sequence (ShellApp          *app,
       shell_app_state_transition (app, SHELL_APP_STATE_STARTING);
       meta_display_focus_the_no_focus_window (display, screen,
                                               sn_startup_sequence_get_timestamp (sequence));
+      app->started_on_workspace = sn_startup_sequence_get_workspace (sequence);
     }
 
   if (!starting)

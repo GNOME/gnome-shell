@@ -186,8 +186,9 @@ AppMenuButton.prototype = {
     _init: function() {
         PanelMenu.Button.prototype._init.call(this, St.Align.START);
         this._metaDisplay = global.screen.get_display();
+        this._startingApps = [];
 
-        this._focusedApp = null;
+        this._targetApp = null;
 
         let bin = new St.Bin({ name: 'appMenu' });
         this.actor.set_child(bin);
@@ -233,6 +234,8 @@ AppMenuButton.prototype = {
         let tracker = Shell.WindowTracker.get_default();
         tracker.connect('notify::focus-app', Lang.bind(this, this._sync));
         tracker.connect('app-state-changed', Lang.bind(this, this._onAppStateChanged));
+
+        global.window_manager.connect('switch-workspace', Lang.bind(this, this._sync));
 
         this._sync();
     },
@@ -411,11 +414,12 @@ AppMenuButton.prototype = {
 
     _onAppStateChanged: function(tracker, app) {
         let state = app.state;
-        if (app == this._lastStartedApp
-            && state != Shell.AppState.STARTING) {
-            this._lastStartedApp = null;
+        if (state != Shell.AppState.STARTING) {
+            this._startingApps = this._startingApps.filter(function(a) {
+                return a != app;
+            });
         } else if (state == Shell.AppState.STARTING) {
-            this._lastStartedApp = app;
+            this._startingApps.push(app);
         }
         // For now just resync on all running state changes; this is mainly to handle
         // cases where the focused window's application changes without the focus
@@ -426,15 +430,20 @@ AppMenuButton.prototype = {
 
     _sync: function() {
         let tracker = Shell.WindowTracker.get_default();
+        let lastStartedApp = null;
+        let workspace = global.screen.get_active_workspace();
+        for (let i = 0; i < this._startingApps.length; i++)
+            if (this._startingApps[i].is_on_workspace(workspace))
+                lastStartedApp = this._startingApps[i];
 
         let focusedApp = tracker.focus_app;
-        if (focusedApp == this._focusedApp) {
-            if (focusedApp && focusedApp.get_state() != Shell.AppState.STARTING)
+        let targetApp = focusedApp != null ? focusedApp : lastStartedApp;
+        if (targetApp == this._targetApp) {
+            if (targetApp && targetApp.get_state() != Shell.AppState.STARTING)
                 this.stopAnimation();
             return;
-        } else {
-            this._stopAnimation();
         }
+        this._stopAnimation();
 
         if (!focusedApp) {
             // If the app has just lost focus to the panel, pretend
@@ -450,9 +459,7 @@ AppMenuButton.prototype = {
         this._label.setText('');
         this.actor.reactive = false;
 
-        this._focusedApp = focusedApp;
-
-        let targetApp = this._focusedApp != null ? this._focusedApp : this._lastStartedApp;
+        this._targetApp = targetApp;
         if (targetApp != null) {
             let icon = targetApp.get_faded_icon(2 * PANEL_ICON_SIZE);
 
