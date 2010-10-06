@@ -131,10 +131,11 @@ struct _ClutterTableChild
 {
   ClutterLayoutMeta parent_instance;
 
-  /* the last stable allocation before an animation; it is
-   * used as the initial ActorBox when interpolating
+  /* the last stable allocation before an animation; it is used as the
+   * initial ActorBox when interpolating. If has_last_allocation is
+   * FALSE then this value is not yet known
    */
-  ClutterActorBox *last_allocation;
+  ClutterActorBox last_allocation;
 
   gint col;
   gint row;
@@ -145,10 +146,11 @@ struct _ClutterTableChild
   ClutterTableAlignment x_align;
   ClutterTableAlignment y_align;
 
-  guint x_expand : 1;
-  guint y_expand : 1;
-  guint x_fill   : 1;
-  guint y_fill   : 1;
+  guint x_expand            : 1;
+  guint y_expand            : 1;
+  guint x_fill              : 1;
+  guint y_fill              : 1;
+  guint has_last_allocation : 1;
 };
 
 enum
@@ -571,16 +573,6 @@ clutter_table_child_get_property (GObject    *gobject,
 }
 
 static void
-clutter_table_child_finalize (GObject *gobject)
-{
-  ClutterTableChild *self = CLUTTER_TABLE_CHILD (gobject);
-
-  clutter_actor_box_free (self->last_allocation);
-
-  G_OBJECT_CLASS (clutter_table_child_parent_class)->finalize (gobject);
-}
-
-static void
 clutter_table_child_class_init (ClutterTableChildClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -588,7 +580,6 @@ clutter_table_child_class_init (ClutterTableChildClass *klass)
 
   gobject_class->set_property = clutter_table_child_set_property;
   gobject_class->get_property = clutter_table_child_get_property;
-  gobject_class->finalize = clutter_table_child_finalize;
 
   pspec = g_param_spec_int ("column",
                             P_("Column Number"),
@@ -696,7 +687,7 @@ clutter_table_child_init (ClutterTableChild *self)
   self->x_fill = TRUE;
   self->y_fill = TRUE;
 
-  self->last_allocation = NULL;
+  self->has_last_allocation = FALSE;
 }
 
 static GType
@@ -1532,18 +1523,19 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
 
           p = clutter_layout_manager_get_animation_progress (layout);
 
-          start = meta->last_allocation;
-          if (start == NULL)
+          if (!meta->has_last_allocation)
             {
               /* if there is no allocation available then the child has just
                * been added to the container; we put it in the final state
                * and store its allocation for later
                */
-              meta->last_allocation = clutter_actor_box_copy (&childbox);
+              meta->last_allocation = childbox;
+              meta->has_last_allocation = TRUE;
 
               goto do_allocate;
             }
 
+          start = &meta->last_allocation;
           end = childbox;
 
           /* interpolate between the initial and final values */
@@ -1564,7 +1556,8 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
       else
         {
           /* store the allocation for later animations */
-          meta->last_allocation = clutter_actor_box_copy (&childbox);
+          meta->last_allocation = childbox;
+          meta->has_last_allocation = TRUE;
         }
 
     do_allocate:
