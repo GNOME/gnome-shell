@@ -5,6 +5,9 @@
 #include "shell-app.h"
 #include "shell-app-system.h"
 
+#define SN_API_NOT_YET_FROZEN 1
+#include <libsn/sn.h>
+
 G_BEGIN_DECLS
 
 ShellAppInfo *_shell_app_get_info (ShellApp *app);
@@ -13,7 +16,7 @@ ShellApp* _shell_app_new_for_window (MetaWindow *window);
 
 ShellApp* _shell_app_new (ShellAppInfo *appinfo);
 
-void _shell_app_set_starting (ShellApp *app, gboolean starting);
+void _shell_app_handle_startup_sequence (ShellApp *app, SnStartupSequence *sequence);
 
 void _shell_app_add_window (ShellApp *app, MetaWindow *window);
 

@@ -658,25 +658,7 @@ on_startup_sequence_changed (MetaScreen            *screen,
 
   app = shell_startup_sequence_get_app ((ShellStartupSequence*)sequence);
   if (app)
-    {
-      gboolean starting = !sn_startup_sequence_get_completed (sequence);
-
-      /* The Shell design calls for on application launch, the app title
-       * appears at top, and no X window is focused.  So when we get
-       * a startup-notification for this app, transition it to STARTING
-       * if it's currently stopped, set it as our application focus,
-       * but focus the no_focus window.
-       */
-      if (starting && shell_app_get_state (app) == SHELL_APP_STATE_STOPPED)
-        {
-          MetaScreen *screen = shell_global_get_screen (shell_global_get ());
-          MetaDisplay *display = meta_screen_get_display (screen);
-
-          _shell_app_set_starting (app, starting);
-          meta_display_focus_the_no_focus_window (display, screen,
-                                                  sn_startup_sequence_get_timestamp (sequence));
-        }
-    }
+    _shell_app_handle_startup_sequence (app, sequence);
 
   g_signal_emit (G_OBJECT (self), signals[STARTUP_SEQUENCE_CHANGED], 0, sequence);
 }

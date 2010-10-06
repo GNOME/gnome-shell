@@ -665,14 +665,10 @@ shell_app_state_transition (ShellApp      *app,
                       state == SHELL_APP_STATE_STARTING));
   app->state = state;
 
-  if (app->state != SHELL_APP_STATE_RUNNING && app->running_state)
+  if (app->state == SHELL_APP_STATE_STOPPED && app->running_state)
     {
       unref_running_state (app->running_state);
       app->running_state = NULL;
-    }
-  else if (app->state == SHELL_APP_STATE_RUNNING)
-    {
-      create_running_state (app);
     }
 
   _shell_window_tracker_notify_app_state_changed (shell_window_tracker_get_default (), app);
@@ -733,11 +729,11 @@ _shell_app_add_window (ShellApp        *app,
 
   g_object_freeze_notify (G_OBJECT (app));
 
-  /* Ensure we've initialized running state */
-  if (app->state != SHELL_APP_STATE_RUNNING)
+  if (app->state != SHELL_APP_STATE_STARTING)
     shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
 
-  g_assert (app->running_state != NULL);
+  if (!app->running_state)
+      create_running_state (app);
 
   app->running_state->window_sort_stale = TRUE;
   app->running_state->windows = g_slist_prepend (app->running_state->windows, g_object_ref (window));
@@ -800,13 +796,34 @@ shell_app_get_pids (ShellApp *app)
 }
 
 void
-_shell_app_set_starting (ShellApp        *app,
-                         gboolean         starting)
+_shell_app_handle_startup_sequence (ShellApp          *app,
+                                    SnStartupSequence *sequence)
 {
-  if (starting && app->state == SHELL_APP_STATE_STOPPED)
-    shell_app_state_transition (app, SHELL_APP_STATE_STARTING);
-  else if (!starting && app->state == SHELL_APP_STATE_STARTING)
-    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
+  gboolean starting = !sn_startup_sequence_get_completed (sequence);
+
+  /* The Shell design calls for on application launch, the app title
+   * appears at top, and no X window is focused.  So when we get
+   * a startup-notification for this app, transition it to STARTING
+   * if it's currently stopped, set it as our application focus,
+   * but focus the no_focus window.
+   */
+  if (starting && shell_app_get_state (app) == SHELL_APP_STATE_STOPPED)
+    {
+      MetaScreen *screen = shell_global_get_screen (shell_global_get ());
+      MetaDisplay *display = meta_screen_get_display (screen);
+
+      shell_app_state_transition (app, SHELL_APP_STATE_STARTING);
+      meta_display_focus_the_no_focus_window (display, screen,
+                                              sn_startup_sequence_get_timestamp (sequence));
+    }
+
+  if (!starting)
+    {
+      if (app->running_state && app->running_state->windows)
+        shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
+      else /* application have > 1 .desktop file */
+        shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
+    }
 }
 
 /**
