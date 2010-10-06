@@ -309,6 +309,8 @@ Notification.prototype = {
             this._actionArea = null;
             if (this._buttonBox)
                 this._buttonBox = null;
+        } else {
+            this._addBannerBody();
         }
         this._actionArea = actor;
 
