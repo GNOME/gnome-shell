@@ -501,11 +501,10 @@ AppWellIcon.prototype = {
                 }
             }));
 
-            this._menuManager.addMenu(this._menu, true);
+            this._menuManager.addMenu(this._menu);
         }
 
         this._menu.popup();
-        this._menuManager.grab();
 
         return false;
     },

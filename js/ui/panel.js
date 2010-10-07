@@ -743,8 +743,9 @@ Panel.prototype = {
         /* Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview". */
         let label = new St.Label({ text: _("Activities") });
         this.button = new St.Clickable({ name: 'panelActivities',
-                                          style_class: 'panel-button',
-                                          reactive: true });
+                                         style_class: 'panel-button',
+                                         reactive: true,
+                                         can_focus: true });
         this.button.set_child(label);
 
         this._leftBox.add(this.button);
