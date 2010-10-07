@@ -195,6 +195,10 @@ clutter_clone_get_paint_volume (ClutterActor *self,
   ClutterClonePrivate *priv = CLUTTER_CLONE (self)->priv;
   const ClutterPaintVolume *source_volume;
 
+  /* if the source is not set the paint volume is defined to be empty */
+  if (priv->clone_source == NULL)
+    return TRUE;
+
   /* query the volume of the source actor and simply masquarade it as
    * the clones volume... */
   source_volume = clutter_actor_get_paint_volume (priv->clone_source);
