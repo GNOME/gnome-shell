@@ -26,12 +26,13 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-/* Note on sync with gdm; need to use -lib here */
-#include <glib/gi18n-lib.h>
+#include <dbus/dbus-glib.h>
+
+#include <glib.h>
+#include <glib/gi18n.h>
 #include <gio/gio.h>
 #include <gtk/gtk.h>
 
-#include "gdm-user-manager.h"
 #include "gdm-user-private.h"
 
 #define GDM_USER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), GDM_TYPE_USER, GdmUserClass))
@@ -39,25 +40,18 @@
 #define GDM_USER_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), GDM_TYPE_USER, GdmUserClass))
 
 #define GLOBAL_FACEDIR    DATADIR "/faces"
-#define MAX_ICON_SIZE     128
 #define MAX_FILE_SIZE     65536
-#define MINIMAL_UID       100
-#define RELAX_GROUP       TRUE
-#define RELAX_OTHER       TRUE
+
+#define ACCOUNTS_NAME           "org.freedesktop.Accounts"
+#define ACCOUNTS_USER_INTERFACE "org.freedesktop.Accounts.User"
 
 enum {
         PROP_0,
-        PROP_MANAGER,
-        PROP_REAL_NAME,
-        PROP_USER_NAME,
-        PROP_UID,
-        PROP_HOME_DIR,
-        PROP_SHELL,
-        PROP_LOGIN_FREQUENCY,
+        PROP_IS_LOADED
 };
 
 enum {
-        ICON_CHANGED,
+        CHANGED,
         SESSIONS_CHANGED,
         LAST_SIGNAL
 };
@@ -65,28 +59,29 @@ enum {
 struct _GdmUser {
         GObject         parent;
 
-        GdmUserManager *manager;
+        DBusGConnection *connection;
+        DBusGProxy      *accounts_proxy;
+        DBusGProxy      *object_proxy;
+        DBusGProxyCall  *get_all_call;
+        char            *object_path;
 
         uid_t           uid;
         char           *user_name;
         char           *real_name;
-        char           *home_dir;
-        char           *shell;
+        char           *icon_file;
         GList          *sessions;
         gulong          login_frequency;
 
-        GFileMonitor   *icon_monitor;
+        guint           is_loaded : 1;
 };
 
 struct _GdmUserClass
 {
         GObjectClass parent_class;
-
-        void (* icon_changed)     (GdmUser *user);
-        void (* sessions_changed) (GdmUser *user);
 };
 
 static void gdm_user_finalize     (GObject      *object);
+static gboolean check_user_file (const char *filename);
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
@@ -150,84 +145,39 @@ gdm_user_get_num_sessions (GdmUser    *user)
         return g_list_length (user->sessions);
 }
 
-/**
- * gdm_user_get_sessions:
- * @user: a #GdmUser
- *
- * Returns: (transfer none) (element-type utf8): Session identifier strings
- */
-GList *
-gdm_user_get_sessions (GdmUser *user)
-{
-        return user->sessions;
-}
-
 static void
-_gdm_user_set_login_frequency (GdmUser *user,
-                               gulong   login_frequency)
-{
-        user->login_frequency = login_frequency;
-        g_object_notify (G_OBJECT (user), "login-frequency");
-}
-
-static void
-gdm_user_set_property (GObject      *object,
-                       guint         param_id,
-                       const GValue *value,
-                       GParamSpec   *pspec)
+gdm_user_set_property (GObject        *object,
+                       guint           prop_id,
+                       const GValue   *value,
+                       GParamSpec     *pspec)
 {
         GdmUser *user;
 
         user = GDM_USER (object);
 
-        switch (param_id) {
-        case PROP_MANAGER:
-                user->manager = g_value_get_object (value);
-                g_assert (user->manager);
-                break;
-        case PROP_LOGIN_FREQUENCY:
-                _gdm_user_set_login_frequency (user, g_value_get_ulong (value));
-                break;
+        switch (prop_id) {
         default:
-                G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+                G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
                 break;
         }
 }
 
 static void
-gdm_user_get_property (GObject    *object,
-                       guint       param_id,
-                       GValue     *value,
-                       GParamSpec *pspec)
+gdm_user_get_property (GObject        *object,
+                       guint           prop_id,
+                       GValue         *value,
+                       GParamSpec     *pspec)
 {
         GdmUser *user;
 
         user = GDM_USER (object);
 
-        switch (param_id) {
-        case PROP_MANAGER:
-                g_value_set_object (value, user->manager);
-                break;
-        case PROP_USER_NAME:
-                g_value_set_string (value, user->user_name);
-                break;
-        case PROP_REAL_NAME:
-                g_value_set_string (value, user->real_name);
-                break;
-        case PROP_HOME_DIR:
-                g_value_set_string (value, user->home_dir);
-                break;
-        case PROP_UID:
-                g_value_set_ulong (value, user->uid);
-                break;
-        case PROP_SHELL:
-                g_value_set_string (value, user->shell);
-                break;
-        case PROP_LOGIN_FREQUENCY:
-                g_value_set_ulong (value, user->login_frequency);
+        switch (prop_id) {
+        case PROP_IS_LOADED:
+                g_value_set_boolean (value, user->is_loaded);
                 break;
         default:
-                G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+                G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
                 break;
         }
 }
@@ -239,70 +189,23 @@ gdm_user_class_init (GdmUserClass *class)
 
         gobject_class = G_OBJECT_CLASS (class);
 
+        gobject_class->finalize = gdm_user_finalize;
         gobject_class->set_property = gdm_user_set_property;
         gobject_class->get_property = gdm_user_get_property;
-        gobject_class->finalize = gdm_user_finalize;
 
         g_object_class_install_property (gobject_class,
-                                         PROP_MANAGER,
-                                         g_param_spec_object ("manager",
-                                                              "Manager",
-                                                              "The user manager object this user is controlled by.",
-                                                              GDM_TYPE_USER_MANAGER,
-                                                              (G_PARAM_READWRITE |
-                                                               G_PARAM_CONSTRUCT_ONLY)));
+                                         PROP_IS_LOADED,
+                                         g_param_spec_boolean ("is-loaded",
+                                                               NULL,
+                                                               NULL,
+                                                               FALSE,
+                                                               G_PARAM_READABLE));
 
-        g_object_class_install_property (gobject_class,
-                                         PROP_REAL_NAME,
-                                         g_param_spec_string ("real-name",
-                                                              "Real Name",
-                                                              "The real name to display for this user.",
-                                                              NULL,
-                                                              G_PARAM_READABLE));
-
-        g_object_class_install_property (gobject_class,
-                                         PROP_UID,
-                                         g_param_spec_ulong ("uid",
-                                                             "User ID",
-                                                             "The UID for this user.",
-                                                             0, G_MAXULONG, 0,
-                                                             G_PARAM_READABLE));
-        g_object_class_install_property (gobject_class,
-                                         PROP_USER_NAME,
-                                         g_param_spec_string ("user-name",
-                                                              "User Name",
-                                                              "The login name for this user.",
-                                                              NULL,
-                                                              G_PARAM_READABLE));
-        g_object_class_install_property (gobject_class,
-                                         PROP_HOME_DIR,
-                                         g_param_spec_string ("home-directory",
-                                                              "Home Directory",
-                                                              "The home directory for this user.",
-                                                              NULL,
-                                                              G_PARAM_READABLE));
-        g_object_class_install_property (gobject_class,
-                                         PROP_SHELL,
-                                         g_param_spec_string ("shell",
-                                                              "Shell",
-                                                              "The shell for this user.",
-                                                              NULL,
-                                                              G_PARAM_READABLE));
-        g_object_class_install_property (gobject_class,
-                                         PROP_LOGIN_FREQUENCY,
-                                         g_param_spec_ulong ("login-frequency",
-                                                             "login frequency",
-                                                             "login frequency",
-                                                             0,
-                                                             G_MAXULONG,
-                                                             0,
-                                                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-
-        signals [ICON_CHANGED] =
-                g_signal_new ("icon-changed",
+        signals [CHANGED] =
+                g_signal_new ("changed",
                               G_TYPE_FROM_CLASS (class),
                               G_SIGNAL_RUN_LAST,
-                              G_STRUCT_OFFSET (GdmUserClass, icon_changed),
+                              0,
                               NULL, NULL,
                               g_cclosure_marshal_VOID__VOID,
                               G_TYPE_NONE, 0);
@@ -310,74 +213,26 @@ gdm_user_class_init (GdmUserClass *class)
                 g_signal_new ("sessions-changed",
                               G_TYPE_FROM_CLASS (class),
                               G_SIGNAL_RUN_LAST,
-                              G_STRUCT_OFFSET (GdmUserClass, sessions_changed),
+                              0,
                               NULL, NULL,
                               g_cclosure_marshal_VOID__VOID,
                               G_TYPE_NONE, 0);
 }
 
-
-static void
-on_icon_monitor_changed (GFileMonitor     *monitor,
-                         GFile            *file,
-                         GFile            *other_file,
-                         GFileMonitorEvent event_type,
-                         GdmUser          *user)
-{
-        g_debug ("Icon changed: %d", event_type);
-
-        if (event_type != G_FILE_MONITOR_EVENT_CHANGED &&
-            event_type != G_FILE_MONITOR_EVENT_CREATED) {
-                return;
-        }
-
-        _gdm_user_icon_changed (user);
-}
-
-static void
-update_icon_monitor (GdmUser *user)
-{
-        GFile  *file;
-        GError *error;
-        char   *path;
-
-        if (user->home_dir == NULL) {
-                return;
-        }
-
-        if (user->icon_monitor != NULL) {
-                g_file_monitor_cancel (user->icon_monitor);
-                user->icon_monitor = NULL;
-        }
-
-        path = g_build_filename (user->home_dir, ".face", NULL);
-        g_debug ("adding monitor for '%s'", path);
-        file = g_file_new_for_path (path);
-        error = NULL;
-        user->icon_monitor = g_file_monitor_file (file,
-                                                  G_FILE_MONITOR_NONE,
-                                                  NULL,
-                                                  &error);
-        if (user->icon_monitor != NULL) {
-                g_signal_connect (user->icon_monitor,
-                                  "changed",
-                                  G_CALLBACK (on_icon_monitor_changed),
-                                  user);
-        } else {
-                g_warning ("Unable to monitor %s: %s", path, error->message);
-                g_error_free (error);
-        }
-        g_object_unref (file);
-        g_free (path);
-}
-
 static void
 gdm_user_init (GdmUser *user)
 {
-        user->manager = NULL;
+        GError *error;
+
         user->user_name = NULL;
         user->real_name = NULL;
         user->sessions = NULL;
+
+        error = NULL;
+        user->connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
+        if (user->connection == NULL) {
+                g_warning ("Couldn't connect to system bus: %s", error->message);
+        }
 }
 
 static void
@@ -387,51 +242,81 @@ gdm_user_finalize (GObject *object)
 
         user = GDM_USER (object);
 
-        g_file_monitor_cancel (user->icon_monitor);
-
         g_free (user->user_name);
         g_free (user->real_name);
+        g_free (user->icon_file);
+        g_free (user->object_path);
+
+        if (user->accounts_proxy != NULL) {
+                g_object_unref (user->accounts_proxy);
+        }
+
+        if (user->object_proxy != NULL) {
+                g_object_unref (user->object_proxy);
+        }
+
+        if (user->connection != NULL) {
+                dbus_g_connection_unref (user->connection);
+        }
 
         if (G_OBJECT_CLASS (gdm_user_parent_class)->finalize)
                 (*G_OBJECT_CLASS (gdm_user_parent_class)->finalize) (object);
 }
 
+static void
+set_is_loaded (GdmUser  *user,
+               gboolean  is_loaded)
+{
+        if (user->is_loaded != is_loaded) {
+                user->is_loaded = is_loaded;
+                g_object_notify (G_OBJECT (user), "is-loaded");
+        }
+}
+
 /**
- * _gdm_user_update:
+ * _gdm_user_update_from_pwent:
  * @user: the user object to update.
  * @pwent: the user data to use.
  *
  * Updates the properties of @user using the data in @pwent.
- *
- * Since: 1.0
  **/
 void
-_gdm_user_update (GdmUser             *user,
-                  const struct passwd *pwent)
+_gdm_user_update_from_pwent (GdmUser             *user,
+                             const struct passwd *pwent)
 {
-        gchar *real_name;
+        gchar *real_name = NULL;
+        gboolean changed;
 
         g_return_if_fail (GDM_IS_USER (user));
         g_return_if_fail (pwent != NULL);
+        g_return_if_fail (user->object_path == NULL);
 
-        g_object_freeze_notify (G_OBJECT (user));
+        changed = FALSE;
 
         /* Display Name */
         if (pwent->pw_gecos && pwent->pw_gecos[0] != '\0') {
-                gchar *first_comma;
-                gchar *real_name_utf8;
+                gchar *first_comma = NULL;
+                gchar *valid_utf8_name = NULL;
 
-                real_name_utf8 = g_locale_to_utf8 (pwent->pw_gecos, -1, NULL, NULL, NULL);
-
-                first_comma = strchr (real_name_utf8, ',');
-                if (first_comma) {
-                        real_name = g_strndup (real_name_utf8, first_comma - real_name_utf8);
-                        g_free (real_name_utf8);
+                if (g_utf8_validate (pwent->pw_gecos, -1, NULL)) {
+                        valid_utf8_name = pwent->pw_gecos;
+                        first_comma = strchr (valid_utf8_name, ',');
                 } else {
-                        real_name = real_name_utf8;
+                        g_warning ("User %s has invalid UTF-8 in GECOS field. "
+                                   "It would be a good thing to check /etc/passwd.",
+                                   pwent->pw_name ? pwent->pw_name : "");
                 }
 
-                if (real_name[0] == '\0') {
+                if (first_comma) {
+                        real_name = g_strndup (valid_utf8_name,
+                                               (first_comma - valid_utf8_name));
+                } else if (valid_utf8_name) {
+                        real_name = g_strdup (valid_utf8_name);
+                } else {
+                        real_name = NULL;
+                }
+
+                if (real_name && real_name[0] == '\0') {
                         g_free (real_name);
                         real_name = NULL;
                 }
@@ -439,14 +324,10 @@ _gdm_user_update (GdmUser             *user,
                 real_name = NULL;
         }
 
-        if ((real_name && !user->real_name) ||
-            (!real_name && user->real_name) ||
-            (real_name &&
-             user->real_name &&
-             strcmp (real_name, user->real_name) != 0)) {
+        if (g_strcmp0 (real_name, user->real_name) != 0) {
                 g_free (user->real_name);
                 user->real_name = real_name;
-                g_object_notify (G_OBJECT (user), "real-name");
+                changed = TRUE;
         } else {
                 g_free (real_name);
         }
@@ -454,60 +335,58 @@ _gdm_user_update (GdmUser             *user,
         /* UID */
         if (pwent->pw_uid != user->uid) {
                 user->uid = pwent->pw_uid;
-                g_object_notify (G_OBJECT (user), "uid");
+                changed = TRUE;
         }
 
         /* Username */
-        if ((pwent->pw_name && !user->user_name) ||
-            (!pwent->pw_name && user->user_name) ||
-            (pwent->pw_name &&
-             user->user_name &&
-             strcmp (user->user_name, pwent->pw_name) != 0)) {
+        if (g_strcmp0 (pwent->pw_name, user->user_name) != 0) {
+                g_free (user->icon_file);
+                user->icon_file = NULL;
+                if (pwent->pw_name != NULL) {
+                        gboolean      res;
+
+                        user->icon_file = g_build_filename (GDM_CACHE_DIR, pwent->pw_name, "face", NULL);
+
+                        res = check_user_file (user->icon_file);
+                        if (!res) {
+                                g_free (user->icon_file);
+                                user->icon_file = g_build_filename (GLOBAL_FACEDIR, pwent->pw_name, NULL);
+                        }
+                }
+
                 g_free (user->user_name);
                 user->user_name = g_strdup (pwent->pw_name);
-                g_object_notify (G_OBJECT (user), "user-name");
+                changed = TRUE;
         }
 
-        /* Home Directory */
-        if ((pwent->pw_dir && !user->home_dir) ||
-            (!pwent->pw_dir && user->home_dir) ||
-            strcmp (user->home_dir, pwent->pw_dir) != 0) {
-                g_free (user->home_dir);
-                user->home_dir = g_strdup (pwent->pw_dir);
-                g_object_notify (G_OBJECT (user), "home-directory");
-                g_signal_emit (user, signals[ICON_CHANGED], 0);
+        if (!user->is_loaded) {
+                set_is_loaded (user, TRUE);
         }
 
-        /* Shell */
-        if ((pwent->pw_shell && !user->shell) ||
-            (!pwent->pw_shell && user->shell) ||
-            (pwent->pw_shell &&
-             user->shell &&
-             strcmp (user->shell, pwent->pw_shell) != 0)) {
-                g_free (user->shell);
-                user->shell = g_strdup (pwent->pw_shell);
-                g_object_notify (G_OBJECT (user), "shell");
+        if (changed) {
+                g_signal_emit (user, signals[CHANGED], 0);
         }
-
-        update_icon_monitor (user);
-
-        g_object_thaw_notify (G_OBJECT (user));
 }
 
 /**
- * _gdm_user_icon_changed:
- * @user: the user to emit the signal for.
+ * _gdm_user_update_login_frequency:
+ * @user: the user object to update
+ * @login_frequency: the number of times the user has logged in
  *
- * Emits the "icon-changed" signal for @user.
- *
- * Since: 1.0
+ * Updates the login frequency of @user
  **/
 void
-_gdm_user_icon_changed (GdmUser *user)
+_gdm_user_update_login_frequency (GdmUser *user,
+                                  guint64  login_frequency)
 {
         g_return_if_fail (GDM_IS_USER (user));
 
-        g_signal_emit (user, signals[ICON_CHANGED], 0);
+        if (login_frequency == user->login_frequency) {
+                return;
+        }
+
+        user->login_frequency = login_frequency;
+        g_signal_emit (user, signals[CHANGED], 0);
 }
 
 /**
@@ -516,10 +395,8 @@ _gdm_user_icon_changed (GdmUser *user)
  *
  * Retrieves the ID of @user.
  *
- * Returns: a pointer to an array of characters which must not be modified or
+ * Returns: (transfer none): a pointer to an array of characters which must not be modified or
  *  freed, or %NULL.
- *
- * Since: 1.0
  **/
 
 gulong
@@ -536,12 +413,10 @@ gdm_user_get_uid (GdmUser *user)
  *
  * Retrieves the display name of @user.
  *
- * Returns: a pointer to an array of characters which must not be modified or
+ * Returns: (transfer none): a pointer to an array of characters which must not be modified or
  *  freed, or %NULL.
- *
- * Since: 1.0
  **/
-G_CONST_RETURN gchar *
+const char *
 gdm_user_get_real_name (GdmUser *user)
 {
         g_return_val_if_fail (GDM_IS_USER (user), NULL);
@@ -555,13 +430,11 @@ gdm_user_get_real_name (GdmUser *user)
  *
  * Retrieves the login name of @user.
  *
- * Returns: a pointer to an array of characters which must not be modified or
+ * Returns: (transfer none): a pointer to an array of characters which must not be modified or
  *  freed, or %NULL.
- *
- * Since: 1.0
  **/
 
-G_CONST_RETURN gchar *
+const char *
 gdm_user_get_user_name (GdmUser *user)
 {
         g_return_val_if_fail (GDM_IS_USER (user), NULL);
@@ -570,45 +443,13 @@ gdm_user_get_user_name (GdmUser *user)
 }
 
 /**
- * gdm_user_get_home_directory:
- * @user: the user object to examine.
+ * gdm_user_get_login_frequency:
+ * @user: a #GdmUser
  *
- * Retrieves the home directory of @user.
+ * Returns the number of times @user has logged in.
  *
- * Returns: a pointer to an array of characters which must not be modified or
- *  freed, or %NULL.
- *
- * Since: 1.0
- **/
-
-G_CONST_RETURN gchar *
-gdm_user_get_home_directory (GdmUser *user)
-{
-        g_return_val_if_fail (GDM_IS_USER (user), NULL);
-
-        return user->home_dir;
-}
-
-/**
- * gdm_user_get_shell:
- * @user: the user object to examine.
- *
- * Retrieves the login shell of @user.
- *
- * Returns: a pointer to an array of characters which must not be modified or
- *  freed, or %NULL.
- *
- * Since: 1.0
- **/
-
-G_CONST_RETURN gchar *
-gdm_user_get_shell (GdmUser *user)
-{
-        g_return_val_if_fail (GDM_IS_USER (user), NULL);
-
-        return user->shell;
-}
-
+ * Returns: the login frequency
+ */
 gulong
 gdm_user_get_login_frequency (GdmUser *user)
 {
@@ -625,10 +466,36 @@ gdm_user_collate (GdmUser *user1,
         const char *str2;
         gulong      num1;
         gulong      num2;
+        guint       len1;
+        guint       len2;
 
-        g_return_val_if_fail (user1 == NULL || GDM_IS_USER (user1), 0);
-        g_return_val_if_fail (user2 == NULL || GDM_IS_USER (user2), 0);
+        g_return_val_if_fail (GDM_IS_USER (user1), 0);
+        g_return_val_if_fail (GDM_IS_USER (user2), 0);
 
+        num1 = user1->login_frequency;
+        num2 = user2->login_frequency;
+
+        if (num1 > num2) {
+                return -1;
+        }
+
+        if (num1 < num2) {
+                return 1;
+        }
+
+
+        len1 = g_list_length (user1->sessions);
+        len2 = g_list_length (user2->sessions);
+
+        if (len1 > len2) {
+                return -1;
+        }
+
+        if (len1 < len2) {
+                return 1;
+        }
+
+        /* if login frequency is equal try names */
         if (user1->real_name != NULL) {
                 str1 = user1->real_name;
         } else {
@@ -641,18 +508,6 @@ gdm_user_collate (GdmUser *user1,
                 str2 = user2->user_name;
         }
 
-        num1 = user1->login_frequency;
-        num2 = user2->login_frequency;
-        g_debug ("Login freq 1=%u 2=%u", (guint)num1, (guint)num2);
-        if (num1 > num2) {
-                return -1;
-        }
-
-        if (num1 < num2) {
-                return 1;
-        }
-
-        /* if login frequency is equal try names */
         if (str1 == NULL && str2 != NULL) {
                 return -1;
         }
@@ -669,17 +524,10 @@ gdm_user_collate (GdmUser *user1,
 }
 
 static gboolean
-check_user_file (const char *filename,
-                 uid_t       user,
-                 gssize      max_file_size,
-                 gboolean    relax_group,
-                 gboolean    relax_other)
+check_user_file (const char *filename)
 {
+        gssize      max_file_size = MAX_FILE_SIZE;
         struct stat fileinfo;
-
-        if (max_file_size < 0) {
-                max_file_size = G_MAXSIZE;
-        }
 
         /* Exists/Readable? */
         if (stat (filename, &fileinfo) < 0) {
@@ -691,21 +539,6 @@ check_user_file (const char *filename,
                 return FALSE;
         }
 
-        /* Owned by user? */
-        if (G_UNLIKELY (fileinfo.st_uid != user)) {
-                return FALSE;
-        }
-
-        /* Group not writable or relax_group? */
-        if (G_UNLIKELY ((fileinfo.st_mode & S_IWGRP) == S_IWGRP && !relax_group)) {
-                return FALSE;
-        }
-
-        /* Other not writable or relax_other? */
-        if (G_UNLIKELY ((fileinfo.st_mode & S_IWOTH) == S_IWOTH && !relax_other)) {
-                return FALSE;
-        }
-
         /* Size is kosher? */
         if (G_UNLIKELY (fileinfo.st_size > max_file_size)) {
                 return FALSE;
@@ -714,224 +547,46 @@ check_user_file (const char *filename,
         return TRUE;
 }
 
-static char *
-get_filesystem_type (const char *path)
-{
-        GFile      *file;
-        GFileInfo  *file_info;
-        GError     *error;
-        char       *filesystem_type;
-
-        file = g_file_new_for_path (path);
-        error = NULL;
-        file_info = g_file_query_filesystem_info (file,
-                                                  G_FILE_ATTRIBUTE_FILESYSTEM_TYPE,
-                                                  NULL,
-                                                  &error);
-        if (file_info == NULL) {
-                g_warning ("Unable to query filesystem type for %s: %s", path, error->message);
-                g_error_free (error);
-                g_object_unref (file);
-                return NULL;
-        }
-
-        filesystem_type = g_strdup (g_file_info_get_attribute_string (file_info,
-                                                                      G_FILE_ATTRIBUTE_FILESYSTEM_TYPE));
-        if (filesystem_type == NULL) {
-                g_warning ("GIO returned NULL filesystem type for %s", path);
-        }
-
-        g_object_unref (file);
-        g_object_unref (file_info);
-
-        return filesystem_type;
-}
-
-static GdkPixbuf *
-render_icon_from_home (GdmUser *user,
-                       int      icon_size)
-{
-        GdkPixbuf  *retval;
-        char       *path;
-        gboolean    is_local;
-        gboolean    is_autofs;
-        gboolean    res;
-        char       *filesystem_type;
-
-        is_local = FALSE;
-
-        /* special case: look at parent of home to detect autofs
-           this is so we don't try to trigger an automount */
-        path = g_path_get_dirname (user->home_dir);
-        filesystem_type = get_filesystem_type (path);
-        is_autofs = (filesystem_type != NULL && strcmp (filesystem_type, "autofs") == 0);
-        g_free (filesystem_type);
-        g_free (path);
-
-        if (is_autofs) {
-                return NULL;
-        }
-
-        /* now check that home dir itself is local */
-        filesystem_type = get_filesystem_type (user->home_dir);
-        is_local = ((filesystem_type != NULL) &&
-                    (strcmp (filesystem_type, "nfs") != 0) &&
-                    (strcmp (filesystem_type, "afs") != 0) &&
-                    (strcmp (filesystem_type, "autofs") != 0) &&
-                    (strcmp (filesystem_type, "unknown") != 0) &&
-                    (strcmp (filesystem_type, "ncpfs") != 0));
-        g_free (filesystem_type);
-
-        /* only look at local home directories so we don't try to
-           read from remote (e.g. NFS) volumes */
-        if (! is_local) {
-                return NULL;
-        }
-
-        /* First, try "~/.face" */
-        path = g_build_filename (user->home_dir, ".face", NULL);
-        res = check_user_file (path,
-                               user->uid,
-                               MAX_FILE_SIZE,
-                               RELAX_GROUP,
-                               RELAX_OTHER);
-        if (res) {
-                retval = gdk_pixbuf_new_from_file_at_size (path,
-                                                           icon_size,
-                                                           icon_size,
-                                                           NULL);
-        } else {
-                retval = NULL;
-        }
-        g_free (path);
-
-        /* Next, try "~/.face.icon" */
-        if (retval == NULL) {
-                path = g_build_filename (user->home_dir,
-                                         ".face.icon",
-                                         NULL);
-                res = check_user_file (path,
-                                       user->uid,
-                                       MAX_FILE_SIZE,
-                                       RELAX_GROUP,
-                                       RELAX_OTHER);
-                if (res) {
-                        retval = gdk_pixbuf_new_from_file_at_size (path,
-                                                                   icon_size,
-                                                                   icon_size,
-                                                                   NULL);
-                } else {
-                        retval = NULL;
-                }
-
-                g_free (path);
-        }
-
-        /* Still nothing, try the user's personal GDM config */
-        if (retval == NULL) {
-                path = g_build_filename (user->home_dir,
-                                         ".gnome",
-                                         "gdm",
-                                         NULL);
-                res = check_user_file (path,
-                                       user->uid,
-                                       MAX_FILE_SIZE,
-                                       RELAX_GROUP,
-                                       RELAX_OTHER);
-                if (res) {
-                        GKeyFile *keyfile;
-                        char     *icon_path;
-
-                        keyfile = g_key_file_new ();
-                        g_key_file_load_from_file (keyfile,
-                                                   path,
-                                                   G_KEY_FILE_NONE,
-                                                   NULL);
-
-                        icon_path = g_key_file_get_string (keyfile,
-                                                           "face",
-                                                           "picture",
-                                                           NULL);
-                        res = check_user_file (icon_path,
-                                               user->uid,
-                                               MAX_FILE_SIZE,
-                                               RELAX_GROUP,
-                                               RELAX_OTHER);
-                        if (icon_path && res) {
-                                retval = gdk_pixbuf_new_from_file_at_size (path,
-                                                                           icon_size,
-                                                                           icon_size,
-                                                                           NULL);
-                        } else {
-                                retval = NULL;
-                        }
-
-                        g_free (icon_path);
-                        g_key_file_free (keyfile);
-                } else {
-                        retval = NULL;
-                }
-
-                g_free (path);
-        }
-
-        return retval;
-}
-
 static void
-curved_rectangle (cairo_t *cr,
-                  double   x0,
-                  double   y0,
-                  double   width,
-                  double   height,
-                  double   radius)
+rounded_rectangle (cairo_t *cr,
+                   gdouble  aspect,
+                   gdouble  x,
+                   gdouble  y,
+                   gdouble  corner_radius,
+                   gdouble  width,
+                   gdouble  height)
 {
-        double x1;
-        double y1;
+        gdouble radius;
+        gdouble degrees;
 
-        x1 = x0 + width;
-        y1 = y0 + height;
+        radius = corner_radius / aspect;
+        degrees = G_PI / 180.0;
 
-        if (width < FLT_EPSILON || height < FLT_EPSILON) {
-                return;
-        }
-
-        if (width / 2 < radius) {
-                if (height / 2 < radius) {
-                        cairo_move_to  (cr, x0, (y0 + y1) / 2);
-                        cairo_curve_to (cr, x0 ,y0, x0, y0, (x0 + x1) / 2, y0);
-                        cairo_curve_to (cr, x1, y0, x1, y0, x1, (y0 + y1) / 2);
-                        cairo_curve_to (cr, x1, y1, x1, y1, (x1 + x0) / 2, y1);
-                        cairo_curve_to (cr, x0, y1, x0, y1, x0, (y0 + y1) / 2);
-                } else {
-                        cairo_move_to  (cr, x0, y0 + radius);
-                        cairo_curve_to (cr, x0, y0, x0, y0, (x0 + x1) / 2, y0);
-                        cairo_curve_to (cr, x1, y0, x1, y0, x1, y0 + radius);
-                        cairo_line_to (cr, x1, y1 - radius);
-                        cairo_curve_to (cr, x1, y1, x1, y1, (x1 + x0) / 2, y1);
-                        cairo_curve_to (cr, x0, y1, x0, y1, x0, y1 - radius);
-                }
-        } else {
-                if (height / 2 < radius) {
-                        cairo_move_to  (cr, x0, (y0 + y1) / 2);
-                        cairo_curve_to (cr, x0, y0, x0 , y0, x0 + radius, y0);
-                        cairo_line_to (cr, x1 - radius, y0);
-                        cairo_curve_to (cr, x1, y0, x1, y0, x1, (y0 + y1) / 2);
-                        cairo_curve_to (cr, x1, y1, x1, y1, x1 - radius, y1);
-                        cairo_line_to (cr, x0 + radius, y1);
-                        cairo_curve_to (cr, x0, y1, x0, y1, x0, (y0 + y1) / 2);
-                } else {
-                        cairo_move_to  (cr, x0, y0 + radius);
-                        cairo_curve_to (cr, x0 , y0, x0 , y0, x0 + radius, y0);
-                        cairo_line_to (cr, x1 - radius, y0);
-                        cairo_curve_to (cr, x1, y0, x1, y0, x1, y0 + radius);
-                        cairo_line_to (cr, x1, y1 - radius);
-                        cairo_curve_to (cr, x1, y1, x1, y1, x1 - radius, y1);
-                        cairo_line_to (cr, x0 + radius, y1);
-                        cairo_curve_to (cr, x0, y1, x0, y1, x0, y1 - radius);
-                }
-        }
-
+        cairo_new_sub_path (cr);
+        cairo_arc (cr,
+                   x + width - radius,
+                   y + radius,
+                   radius,
+                   -90 * degrees,
+                   0 * degrees);
+        cairo_arc (cr,
+                   x + width - radius,
+                   y + height - radius,
+                   radius,
+                   0 * degrees,
+                   90 * degrees);
+        cairo_arc (cr,
+                   x + radius,
+                   y + height - radius,
+                   radius,
+                   90 * degrees,
+                   180 * degrees);
+        cairo_arc (cr,
+                   x + radius,
+                   y + radius,
+                   radius,
+                   180 * degrees,
+                   270 * degrees);
         cairo_close_path (cr);
 }
 
@@ -1065,7 +720,7 @@ frame_pixbuf (GdkPixbuf *source)
 
         w = gdk_pixbuf_get_width (source) + frame_width * 2;
         h = gdk_pixbuf_get_height (source) + frame_width * 2;
-        radius = w / 3.0;
+        radius = w / 10;
 
         dest = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
                                TRUE,
@@ -1090,9 +745,13 @@ frame_pixbuf (GdkPixbuf *source)
         cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.0);
         cairo_fill (cr);
 
-        curved_rectangle (cr, frame_width, frame_width,
-                          w - frame_width * 2, h - frame_width * 2,
-                          radius);
+        rounded_rectangle (cr,
+                           1.0,
+                           frame_width + 0.5,
+                           frame_width + 0.5,
+                           radius,
+                           w - frame_width * 2 - 1,
+                           h - frame_width * 2 - 1);
         cairo_set_source_rgba (cr, 0.5, 0.5, 0.5, 0.3);
         cairo_fill_preserve (cr);
 
@@ -1110,11 +769,28 @@ frame_pixbuf (GdkPixbuf *source)
 }
 
 /**
- * gdm_user_render_icon:
- * @user: a #GdmUser:
- * @icon_size: icon size in pixels
+ * gdm_user_is_logged_in:
+ * @user: a #GdmUser
  *
- * Returns: (transfer full): A new icon for the user
+ * Returns whether or not #GdmUser is currently logged in.
+ *
+ * Returns: %TRUE or %FALSE
+ */
+gboolean
+gdm_user_is_logged_in (GdmUser *user)
+{
+        return user->sessions != NULL;
+}
+
+/**
+ * gdm_user_render_icon:
+ * @user: a #GdmUser
+ * @icon_size: the size to render the icon at
+ *
+ * Returns a #GdkPixbuf of the account icon belonging to @user
+ * at the pixel size specified by @icon_size.
+ *
+ * Returns: (transfer full): a #GdkPixbuf
  */
 GdkPixbuf *
 gdm_user_render_icon (GdmUser   *user,
@@ -1122,59 +798,40 @@ gdm_user_render_icon (GdmUser   *user,
 {
         GdkPixbuf    *pixbuf;
         GdkPixbuf    *framed;
-        char         *path;
-        char         *tmp;
         gboolean      res;
+        GError       *error;
 
         g_return_val_if_fail (GDM_IS_USER (user), NULL);
         g_return_val_if_fail (icon_size > 12, NULL);
 
-        path = NULL;
+        pixbuf = NULL;
+        if (user->icon_file) {
+                res = check_user_file (user->icon_file);
+                if (res) {
+                        pixbuf = gdk_pixbuf_new_from_file_at_size (user->icon_file,
+                                                                   icon_size,
+                                                                   icon_size,
+                                                                   NULL);
+                } else {
+                        pixbuf = NULL;
+                }
+        }
 
-        pixbuf = render_icon_from_home (user, icon_size);
         if (pixbuf != NULL) {
                 goto out;
         }
 
-        /* Try ${GlobalFaceDir}/${username} */
-        path = g_build_filename (GLOBAL_FACEDIR, user->user_name, NULL);
-        res = check_user_file (path,
-                               user->uid,
-                               MAX_FILE_SIZE,
-                               RELAX_GROUP,
-                               RELAX_OTHER);
-        if (res) {
-                pixbuf = gdk_pixbuf_new_from_file_at_size (path,
-                                                           icon_size,
-                                                           icon_size,
-                                                           NULL);
-        } else {
-                pixbuf = NULL;
-        }
+        error = NULL;
+        pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
 
-        g_free (path);
-        if (pixbuf != NULL) {
-                goto out;
+                                           "avatar-default",
+                                           icon_size,
+                                           GTK_ICON_LOOKUP_FORCE_SIZE,
+                                           &error);
+        if (error) {
+                g_warning ("%s", error->message);
+                g_error_free (error);
         }
-
-        /* Finally, ${GlobalFaceDir}/${username}.png */
-        tmp = g_strconcat (user->user_name, ".png", NULL);
-        path = g_build_filename (GLOBAL_FACEDIR, tmp, NULL);
-        g_free (tmp);
-        res = check_user_file (path,
-                               user->uid,
-                               MAX_FILE_SIZE,
-                               RELAX_GROUP,
-                               RELAX_OTHER);
-        if (res) {
-                pixbuf = gdk_pixbuf_new_from_file_at_size (path,
-                                                           icon_size,
-                                                           icon_size,
-                                                           NULL);
-        } else {
-                pixbuf = NULL;
-        }
-        g_free (path);
  out:
 
         if (pixbuf != NULL) {
@@ -1186,4 +843,254 @@ gdm_user_render_icon (GdmUser   *user,
         }
 
         return pixbuf;
+}
+
+/**
+ * gdm_user_get_icon_file:
+ * @user: a #GdmUser
+ *
+ * Returns the path to the account icon belonging to @user.
+ *
+ * Returns: (transfer none): a path to an icon
+ */
+const char *
+gdm_user_get_icon_file (GdmUser *user)
+{
+        g_return_val_if_fail (GDM_IS_USER (user), NULL);
+
+        return user->icon_file;
+}
+
+/**
+ * gdm_user_get_object_path:
+ * @user: a #GdmUser
+ *
+ * Returns the user accounts service object path of @user,
+ * or %NULL if @user doesn't have an object path associated
+ * with it.
+ *
+ * Returns: (transfer none): the primary ConsoleKit session id of the user
+ */
+const char *
+gdm_user_get_object_path (GdmUser *user)
+{
+        g_return_val_if_fail (GDM_IS_USER (user), NULL);
+
+        return user->object_path;
+}
+
+/**
+ * gdm_user_get_primary_session_id:
+ * @user: a #GdmUser
+ *
+ * Returns the primary ConsoleKit session id of @user, or %NULL if @user isn't
+ * logged in.
+ *
+ * Returns: (transfer none): the primary ConsoleKit session id of the user
+ */
+const char *
+gdm_user_get_primary_session_id (GdmUser *user)
+{
+        if (!gdm_user_is_logged_in (user)) {
+                g_debug ("User %s is not logged in, so has no primary session",
+                         gdm_user_get_user_name (user));
+                return NULL;
+        }
+
+        /* FIXME: better way to choose? */
+        return user->sessions->data;
+}
+
+static void
+collect_props (const gchar    *key,
+               const GValue   *value,
+               GdmUser        *user)
+{
+        gboolean handled = TRUE;
+
+        if (strcmp (key, "Uid") == 0) {
+                user->uid = g_value_get_uint64 (value);
+        } else if (strcmp (key, "UserName") == 0) {
+                g_free (user->user_name);
+                user->user_name = g_value_dup_string (value);
+        } else if (strcmp (key, "RealName") == 0) {
+                g_free (user->real_name);
+                user->real_name = g_value_dup_string (value);
+        } else if (strcmp (key, "AccountType") == 0) {
+                /* ignore */
+        } else if (strcmp (key, "Email") == 0) {
+                /* ignore */
+        } else if (strcmp (key, "Language") == 0) {
+                /* ignore */
+        } else if (strcmp (key, "Location") == 0) {
+                /* ignore */
+        } else if (strcmp (key, "LoginFrequency") == 0) {
+                user->login_frequency = g_value_get_uint64 (value);
+        } else if (strcmp (key, "IconFile") == 0) {
+                gboolean res;
+
+                g_free (user->icon_file);
+                user->icon_file = g_value_dup_string (value);
+
+                res = check_user_file (user->icon_file);
+                if (!res) {
+                        g_free (user->icon_file);
+                        user->icon_file = g_build_filename (GLOBAL_FACEDIR, user->user_name, NULL);
+                }
+        } else if (strcmp (key, "Locked") == 0) {
+                /* ignore */
+        } else if (strcmp (key, "AutomaticLogin") == 0) {
+                /* ignore */
+        } else if (strcmp (key, "PasswordMode") == 0) {
+                /* ignore */
+        } else if (strcmp (key, "PasswordHint") == 0) {
+                /* ignore */
+        } else if (strcmp (key, "HomeDirectory") == 0) {
+                /* ignore */
+        } else if (strcmp (key, "Shell") == 0) {
+                /* ignore */
+        } else {
+                handled = FALSE;
+        }
+
+        if (!handled) {
+                g_debug ("unhandled property %s", key);
+        }
+}
+
+static void
+on_get_all_finished (DBusGProxy     *proxy,
+                     DBusGProxyCall *call,
+                     GdmUser        *user)
+{
+        GError      *error;
+        GHashTable  *hash_table;
+        gboolean     res;
+
+        g_assert (user->get_all_call == call);
+        g_assert (user->object_proxy == proxy);
+
+        error = NULL;
+        res = dbus_g_proxy_end_call (proxy,
+                                     call,
+                                     &error,
+                                     dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE),
+                                     &hash_table,
+                                     G_TYPE_INVALID);
+        user->get_all_call = NULL;
+        user->object_proxy = NULL;
+
+        if (! res) {
+                g_debug ("Error calling GetAll() when retrieving properties for %s: %s",
+                         user->object_path, error->message);
+                g_error_free (error);
+                goto out;
+        }
+        g_hash_table_foreach (hash_table, (GHFunc) collect_props, user);
+        g_hash_table_unref (hash_table);
+
+        if (!user->is_loaded) {
+                set_is_loaded (user, TRUE);
+        }
+
+        g_signal_emit (user, signals[CHANGED], 0);
+
+out:
+        g_object_unref (proxy);
+}
+
+static gboolean
+update_info (GdmUser *user)
+{
+        DBusGProxy     *proxy;
+        DBusGProxyCall *call;
+
+        proxy = dbus_g_proxy_new_for_name (user->connection,
+                                           ACCOUNTS_NAME,
+                                           user->object_path,
+                                           DBUS_INTERFACE_PROPERTIES);
+
+        call = dbus_g_proxy_begin_call (proxy,
+                                        "GetAll",
+                                        (DBusGProxyCallNotify)
+                                        on_get_all_finished,
+                                        user,
+                                        NULL,
+                                        G_TYPE_STRING,
+                                        ACCOUNTS_USER_INTERFACE,
+                                        G_TYPE_INVALID);
+
+        if (call == NULL) {
+                g_warning ("GdmUser: failed to make GetAll call");
+                goto failed;
+        }
+
+        user->get_all_call = call;
+        user->object_proxy = proxy;
+        return TRUE;
+
+failed:
+        if (proxy != NULL) {
+                g_object_unref (proxy);
+        }
+
+        return FALSE;
+}
+
+static void
+changed_handler (DBusGProxy *proxy,
+                 gpointer   *data)
+{
+        GdmUser *user = GDM_USER (data);
+
+        update_info (user);
+}
+
+/**
+ * _gdm_user_update_from_object_path:
+ * @user: the user object to update.
+ * @object_path: the object path of the user to use.
+ *
+ * Updates the properties of @user from the accounts service via
+ * the object path in @object_path.
+ **/
+void
+_gdm_user_update_from_object_path (GdmUser    *user,
+                                   const char *object_path)
+{
+        g_return_if_fail (GDM_IS_USER (user));
+        g_return_if_fail (object_path != NULL);
+        g_return_if_fail (user->object_path == NULL);
+
+        user->object_path = g_strdup (object_path);
+
+        user->accounts_proxy = dbus_g_proxy_new_for_name (user->connection,
+                                                          ACCOUNTS_NAME,
+                                                          user->object_path,
+                                                          ACCOUNTS_USER_INTERFACE);
+        dbus_g_proxy_set_default_timeout (user->accounts_proxy, INT_MAX);
+        dbus_g_proxy_add_signal (user->accounts_proxy, "Changed", G_TYPE_INVALID);
+
+        dbus_g_proxy_connect_signal (user->accounts_proxy, "Changed",
+                                     G_CALLBACK (changed_handler), user, NULL);
+
+        if (!update_info (user)) {
+                g_warning ("Couldn't update info for user with object path %s", object_path);
+        }
+}
+
+/**
+ * gdm_user_is_loaded:
+ * @user: a #GdmUser
+ *
+ * Determines whether or not the user object is loaded and ready to read from.
+ * #GdmUserManager:is-loaded property must be %TRUE before calling
+ * gdm_user_manager_list_users()
+ *
+ * Returns: %TRUE or %FALSE
+ */
+gboolean
+gdm_user_is_loaded (GdmUser *user)
+{
+        return user->is_loaded;
 }

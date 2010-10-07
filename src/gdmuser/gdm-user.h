@@ -22,8 +22,8 @@
  * Facade object for user data, owned by GdmUserManager
  */
 
-#ifndef __GDM_USER_H
-#define __GDM_USER_H
+#ifndef __GDM_USER_H__
+#define __GDM_USER_H__
 
 #include <sys/types.h>
 #include <gtk/gtk.h>
@@ -40,20 +40,24 @@ typedef struct _GdmUserClass GdmUserClass;
 
 GType                 gdm_user_get_type            (void) G_GNUC_CONST;
 
+GdmUser              *gdm_user_new_from_object_path (const char *path);
+const char           *gdm_user_get_object_path      (GdmUser *user);
+
 gulong                gdm_user_get_uid             (GdmUser   *user);
-G_CONST_RETURN char  *gdm_user_get_user_name       (GdmUser   *user);
-G_CONST_RETURN char  *gdm_user_get_real_name       (GdmUser   *user);
-G_CONST_RETURN char  *gdm_user_get_home_directory  (GdmUser   *user);
-G_CONST_RETURN char  *gdm_user_get_shell           (GdmUser   *user);
+const char           *gdm_user_get_user_name       (GdmUser   *user);
+const char           *gdm_user_get_real_name       (GdmUser   *user);
 guint                 gdm_user_get_num_sessions    (GdmUser   *user);
-GList                *gdm_user_get_sessions        (GdmUser   *user);
+gboolean              gdm_user_is_logged_in        (GdmUser   *user);
 gulong                gdm_user_get_login_frequency (GdmUser   *user);
+const char           *gdm_user_get_icon_file       (GdmUser   *user);
+const char           *gdm_user_get_primary_session_id (GdmUser *user);
 
 GdkPixbuf            *gdm_user_render_icon         (GdmUser   *user,
                                                     gint       icon_size);
 
 gint                  gdm_user_collate             (GdmUser   *user1,
                                                     GdmUser   *user2);
+gboolean              gdm_user_is_loaded           (GdmUser *user);
 
 G_END_DECLS
 
