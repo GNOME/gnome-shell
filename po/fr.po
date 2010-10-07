@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter 1.3.14\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?product=clutter\n"
 "POT-Creation-Date: 2010-09-15 15:43+0100\n"
-"PO-Revision-Date: 2010-10-04 19:24+0100\n"
+"PO-Revision-Date: 2010-10-05 09:02+0100\n"
 "Last-Translator: Damien Lespiau <damien.lespiau@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -69,11 +69,11 @@ msgstr "Position fixe de l'acteur selon l'axe Y"
 
 #: clutter/clutter-actor.c:3349
 msgid "Fixed position set"
-msgstr ""
+msgstr "Position fixe renseignée"
 
 #: clutter/clutter-actor.c:3350
 msgid "Whether to use fixed positioning for the actor"
-msgstr ""
+msgstr "Si l'acteur utilise un positionnement fixe ou non"
 
 #: clutter/clutter-actor.c:3372
 msgid "Min Width"
@@ -109,35 +109,35 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3449
 msgid "Minimum width set"
-msgstr ""
+msgstr "Largeur minimale renseignée"
 
 #: clutter/clutter-actor.c:3450
 msgid "Whether to use the min-width property"
-msgstr ""
+msgstr "Si la largeur minimale a été renseignée ou non"
 
 #: clutter/clutter-actor.c:3465
 msgid "Minimum height set"
-msgstr ""
+msgstr "Hauteur minimale renseignée"
 
 #: clutter/clutter-actor.c:3466
 msgid "Whether to use the min-height property"
-msgstr ""
+msgstr "Si la hauteur minimale a été renseignée ou non"
 
 #: clutter/clutter-actor.c:3481
 msgid "Natural width set"
-msgstr ""
+msgstr "Largeur naturelle renseignée"
 
 #: clutter/clutter-actor.c:3482
 msgid "Whether to use the natural-width property"
-msgstr ""
+msgstr "Si la largeur naturelle a été renseignée ou non"
 
 #: clutter/clutter-actor.c:3499
 msgid "Natural height set"
-msgstr ""
+msgstr "Haueur naturelle renseignée"
 
 #: clutter/clutter-actor.c:3500
 msgid "Whether to use the natural-height property"
-msgstr ""
+msgstr "Si la hauteur naturelle a été renseignée ou non"
 
 #: clutter/clutter-actor.c:3519
 msgid "Allocation"
@@ -157,7 +157,7 @@ msgstr ""
 
 #: clutter/clutter-actor.c:3592
 msgid "Depth"
-msgstr ""
+msgstr "Profondeur"
 
 #: clutter/clutter-actor.c:3593
 msgid "Position on the Z axis"
@@ -368,19 +368,19 @@ msgstr ""
 
 #: clutter/clutter-actor.c:4015
 msgid "Text Direction"
-msgstr ""
+msgstr "Direction du texte"
 
 #: clutter/clutter-actor.c:4016
 msgid "Direction of the text"
-msgstr ""
+msgstr "La direction du texte"
 
 #: clutter/clutter-actor.c:4034
 msgid "Has Pointer"
-msgstr ""
+msgstr "Contient pointeur"
 
 #: clutter/clutter-actor.c:4035
 msgid "Whether the actor contains the pointer of an input device"
-msgstr ""
+msgstr "Si l'acteur contient le pointer d'un périphérique d'entrée"
 
 #: clutter/clutter-actor.c:4052
 msgid "Actions"
@@ -388,7 +388,7 @@ msgstr "Actions"
 
 #: clutter/clutter-actor.c:4053
 msgid "Adds an action to the actor"
-msgstr ""
+msgstr "Ajoute une action à l'acteur"
 
 #: clutter/clutter-actor.c:4067
 msgid "Constraints"
@@ -405,20 +405,20 @@ msgstr "Acteur"
 
 #: clutter/clutter-actor-meta.c:165
 msgid "The actor attached to the meta"
-msgstr ""
+msgstr "L'acteur attaché au méta"
 
 #: clutter/clutter-actor-meta.c:180
 msgid "The name of the meta"
-msgstr ""
+msgstr "Le nom du méta"
 
 #: clutter/clutter-actor-meta.c:194
 #: clutter/clutter-shader.c:261
 msgid "Enabled"
-msgstr ""
+msgstr "Activé"
 
 #: clutter/clutter-actor-meta.c:195
 msgid "Whether the meta is enabled"
-msgstr ""
+msgstr "Si le méta est activé"
 
 #: clutter/clutter-align-constraint.c:213
 #: clutter/clutter-bind-constraint.c:274
@@ -428,15 +428,15 @@ msgstr "Source"
 
 #: clutter/clutter-align-constraint.c:214
 msgid "The source of the alignment"
-msgstr ""
+msgstr "La source de l'alignement"
 
 #: clutter/clutter-align-constraint.c:229
 msgid "Align Axis"
-msgstr ""
+msgstr "L'axe d'alignement"
 
 #: clutter/clutter-align-constraint.c:230
 msgid "The axis to align the position to"
-msgstr ""
+msgstr "L'axe par rapport auquel aligner la position"
 
 #: clutter/clutter-align-constraint.c:251
 #: clutter/clutter-desaturate-effect.c:311
@@ -445,7 +445,7 @@ msgstr "Facteur"
 
 #: clutter/clutter-align-constraint.c:252
 msgid "The alignment factor, between 0.0 and 1.0"
-msgstr ""
+msgstr "Le facteur d'alignement, entre 0.0 et 1.0"
 
 #: clutter/clutter-alpha.c:339
 #: clutter/clutter-animation.c:526
@@ -459,16 +459,16 @@ msgstr ""
 
 #: clutter/clutter-alpha.c:356
 msgid "Alpha value"
-msgstr ""
+msgstr "Valeur de l'alpha"
 
 #: clutter/clutter-alpha.c:357
 msgid "Alpha value as computed by the alpha"
-msgstr ""
+msgstr "La valeur calculée par l'alpha"
 
 #: clutter/clutter-alpha.c:378
 #: clutter/clutter-animation.c:480
 msgid "Mode"
-msgstr ""
+msgstr "Mode"
 
 #: clutter/clutter-alpha.c:379
 msgid "Progress mode"
@@ -480,7 +480,7 @@ msgstr "Objet"
 
 #: clutter/clutter-animation.c:464
 msgid "Object to which the animation applies"
-msgstr ""
+msgstr "L'object sur lequel l'animation s'applique"
 
 #: clutter/clutter-animation.c:481
 msgid "The mode of the animation"
@@ -495,15 +495,15 @@ msgstr "Durée"
 
 #: clutter/clutter-animation.c:497
 msgid "Duration of the animation, in milliseconds"
-msgstr ""
+msgstr "La durée de l'animation, en milisecondes"
 
 #: clutter/clutter-animation.c:511
 msgid "Loop"
-msgstr ""
+msgstr "Boucler"
 
 #: clutter/clutter-animation.c:512
 msgid "Whether the animation should loop"
-msgstr ""
+msgstr "Si l'animation doit boucler"
 
 #: clutter/clutter-animation.c:527
 msgid "The timeline used by the animation"
@@ -512,15 +512,15 @@ msgstr ""
 #: clutter/clutter-animation.c:541
 #: clutter/clutter-behaviour.c:308
 msgid "Alpha"
-msgstr ""
+msgstr "Alpha"
 
 #: clutter/clutter-animation.c:542
 msgid "The alpha used by the animation"
-msgstr ""
+msgstr "L'alpha utilisé pour l'animation"
 
 #: clutter/clutter-animator.c:1788
 msgid "The duration of the animation"
-msgstr ""
+msgstr "La durée de l'animation"
 
 #: clutter/clutter-animator.c:1805
 msgid "The timeline of the animation"
@@ -528,41 +528,41 @@ msgstr ""
 
 #: clutter/clutter-behaviour.c:309
 msgid "Alpha Object to drive the behaviour"
-msgstr ""
+msgstr "Object alpha a partir duquel dériver le comportement"
 
 #: clutter/clutter-behaviour-depth.c:170
 msgid "Start Depth"
-msgstr ""
+msgstr "Profondeur de départ"
 
 #: clutter/clutter-behaviour-depth.c:171
 msgid "Initial depth to apply"
-msgstr ""
+msgstr "Profondeur initiale à appliquer"
 
 #: clutter/clutter-behaviour-depth.c:184
 msgid "End Depth"
-msgstr ""
+msgstr "Profondeur d'arrivée"
 
 #: clutter/clutter-behaviour-depth.c:185
 msgid "Final depth to apply"
-msgstr ""
+msgstr "Profondeur finale à appliquer"
 
 #: clutter/clutter-behaviour-ellipse.c:393
 msgid "Start Angle"
-msgstr ""
+msgstr "Angle de départ"
 
 #: clutter/clutter-behaviour-ellipse.c:394
 #: clutter/clutter-behaviour-rotate.c:278
 msgid "Initial angle"
-msgstr ""
+msgstr "Angle initial"
 
 #: clutter/clutter-behaviour-ellipse.c:409
 msgid "End Angle"
-msgstr ""
+msgstr "Angle d'arrivée"
 
 #: clutter/clutter-behaviour-ellipse.c:410
 #: clutter/clutter-behaviour-rotate.c:296
 msgid "Final angle"
-msgstr ""
+msgstr "Angle final"
 
 #: clutter/clutter-behaviour-ellipse.c:425
 msgid "Angle x tilt"
@@ -590,165 +590,165 @@ msgstr ""
 
 #: clutter/clutter-behaviour-ellipse.c:474
 msgid "Width of the ellipse"
-msgstr ""
+msgstr "Largeur de l'éllipse"
 
 #: clutter/clutter-behaviour-ellipse.c:490
 msgid "Height of ellipse"
-msgstr ""
+msgstr "Hauteur de l'éllipse"
 
 #: clutter/clutter-behaviour-ellipse.c:505
 msgid "Center"
-msgstr ""
+msgstr "Centre"
 
 #: clutter/clutter-behaviour-ellipse.c:506
 msgid "Center of ellipse"
-msgstr ""
+msgstr "Centre de l'éllipse"
 
 #: clutter/clutter-behaviour-ellipse.c:520
 #: clutter/clutter-behaviour-rotate.c:331
 msgid "Direction"
-msgstr ""
+msgstr "Direction"
 
 #: clutter/clutter-behaviour-ellipse.c:521
 #: clutter/clutter-behaviour-rotate.c:332
 msgid "Direction of rotation"
-msgstr ""
+msgstr "Direction de la rotation"
 
 #: clutter/clutter-behaviour-opacity.c:184
 msgid "Opacity Start"
-msgstr ""
+msgstr "Opacité de départ"
 
 #: clutter/clutter-behaviour-opacity.c:185
 msgid "Initial opacity level"
-msgstr ""
+msgstr "Niveau initial d'opacité"
 
 #: clutter/clutter-behaviour-opacity.c:200
 msgid "Opacity End"
-msgstr ""
+msgstr "Opactité d'arrivée"
 
 #: clutter/clutter-behaviour-opacity.c:201
 msgid "Final opacity level"
-msgstr ""
+msgstr "Niveau final d'opacité"
 
 #: clutter/clutter-behaviour-path.c:217
 msgid "Path"
-msgstr ""
+msgstr "Chemin"
 
 #: clutter/clutter-behaviour-path.c:218
 msgid "The ClutterPath object representing the path to animate along"
-msgstr ""
+msgstr "L'objet ClutterPatch qui représente le chemin que l'animation suit"
 
 #: clutter/clutter-behaviour-rotate.c:277
 msgid "Angle Begin"
-msgstr ""
+msgstr "Angle de départ"
 
 #: clutter/clutter-behaviour-rotate.c:295
 msgid "Angle End"
-msgstr ""
+msgstr "Angle d'arrivée"
 
 #: clutter/clutter-behaviour-rotate.c:313
 msgid "Axis"
-msgstr ""
+msgstr "Axe"
 
 #: clutter/clutter-behaviour-rotate.c:314
 msgid "Axis of rotation"
-msgstr ""
+msgstr "Axe de rotation"
 
 #: clutter/clutter-behaviour-rotate.c:349
 msgid "Center X"
-msgstr ""
+msgstr "Centre (X)"
 
 #: clutter/clutter-behaviour-rotate.c:350
 msgid "X coordinate of the center of rotation"
-msgstr ""
+msgstr "Coordonnée X du centre de rotation"
 
 #: clutter/clutter-behaviour-rotate.c:367
 msgid "Center Y"
-msgstr ""
+msgstr "Centre (Y)"
 
 #: clutter/clutter-behaviour-rotate.c:368
 msgid "Y coordinate of the center of rotation"
-msgstr ""
+msgstr "Coordonnée Y du centre de rotation"
 
 #: clutter/clutter-behaviour-rotate.c:385
 msgid "Center Z"
-msgstr ""
+msgstr "Centre (Z)"
 
 #: clutter/clutter-behaviour-rotate.c:386
 msgid "Z coordinate of the center of rotation"
-msgstr ""
+msgstr "Coordonnée Z du centre de rotation"
 
 #: clutter/clutter-behaviour-scale.c:216
 msgid "X Start Scale"
-msgstr ""
+msgstr "Homothétie (X) de départ"
 
 #: clutter/clutter-behaviour-scale.c:217
 msgid "Initial scale on the X axis"
-msgstr ""
+msgstr "Facteur initial d'homothétie selon l'axe X"
 
 #: clutter/clutter-behaviour-scale.c:233
 msgid "X End Scale"
-msgstr ""
+msgstr "Homothétie (X) de départ"
 
 #: clutter/clutter-behaviour-scale.c:234
 msgid "Final scale on the X axis"
-msgstr ""
+msgstr "Facteur final d'homothétie selon l'axe X"
 
 #: clutter/clutter-behaviour-scale.c:250
 msgid "Y Start Scale"
-msgstr ""
+msgstr "Homothétie (Y) de départ"
 
 #: clutter/clutter-behaviour-scale.c:251
 msgid "Initial scale on the Y axis"
-msgstr ""
+msgstr "Facteur initial d'homothétie selon l'axe Y"
 
 #: clutter/clutter-behaviour-scale.c:267
 msgid "Y End Scale"
-msgstr ""
+msgstr "Homothétie (Y) de départ"
 
 #: clutter/clutter-behaviour-scale.c:268
 msgid "Final scale on the Y axis"
-msgstr ""
+msgstr "Facteur final d'homothétie selon l'axe X"
 
 #: clutter/clutter-bind-constraint.c:275
 msgid "The source of the binding"
-msgstr ""
+msgstr "La source du lien"
 
 #: clutter/clutter-bind-constraint.c:290
 msgid "Coordinate"
-msgstr ""
+msgstr "Coordonnée"
 
 #: clutter/clutter-bind-constraint.c:291
 msgid "The coordinate to bind"
-msgstr ""
+msgstr "La coordonnée à lier"
 
 #: clutter/clutter-bind-constraint.c:307
 msgid "Offset"
-msgstr ""
+msgstr "Décalage"
 
 #: clutter/clutter-bind-constraint.c:308
 msgid "The offset in pixels to apply to the binding"
-msgstr ""
+msgstr "Le décalage, en pixels, à appliquer au lien"
 
 #: clutter/clutter-bin-layout.c:258
 #: clutter/clutter-bin-layout.c:583
 #: clutter/clutter-box-layout.c:409
 msgid "Horizontal Alignment"
-msgstr ""
+msgstr "Alignement horizontal"
 
 #: clutter/clutter-bin-layout.c:259
 msgid "Horizontal alignment for the actor inside the layer"
-msgstr ""
+msgstr "Alignement horizontal de l'acteur à l'intérieur du calque"
 
 #: clutter/clutter-bin-layout.c:270
 #: clutter/clutter-bin-layout.c:601
 #: clutter/clutter-box-layout.c:418
 msgid "Vertical Alignment"
-msgstr ""
+msgstr "Alignement vertical"
 
 #: clutter/clutter-bin-layout.c:271
 msgid "Vertical alignment for the actor inside the layer manager"
-msgstr ""
+msgstr "Alignement vertical de l'acteur à l'intérieur du calque"
 
 #: clutter/clutter-bin-layout.c:584
 msgid "Default horizontal alignment for the actors inside the layout manager"
@@ -782,35 +782,35 @@ msgstr ""
 
 #: clutter/clutter-box.c:529
 msgid "Color Set"
-msgstr ""
+msgstr "Couleur renseignée"
 
 #: clutter/clutter-box.c:530
 msgid "Whether the background color is set"
-msgstr ""
+msgstr "Si la couleur de fond a été renseignée ou non"
 
 #: clutter/clutter-box-layout.c:384
 msgid "Expand"
-msgstr ""
+msgstr "Étendre"
 
 #: clutter/clutter-box-layout.c:385
 msgid "Allocate extra space for the child"
-msgstr ""
+msgstr "Alloue de l'espace supplémentaire pour l'enfant"
 
 #: clutter/clutter-box-layout.c:391
 msgid "Horizontal Fill"
-msgstr ""
+msgstr "Remplissage horizontal"
 
 #: clutter/clutter-box-layout.c:392
 msgid "Whether the child should receive priority when the container is allocating spare space on the horizontal axis"
-msgstr ""
+msgstr "Si l'enfant doit être prioritaire lorsque le conteneur alloue de l'espace supplémentaire sur l'axe horizontal ou non"
 
 #: clutter/clutter-box-layout.c:400
 msgid "Vertical Fill"
-msgstr ""
+msgstr "Remplissage vertical"
 
 #: clutter/clutter-box-layout.c:401
 msgid "Whether the child should receive priority when the container is allocating spare space on the vertical axis"
-msgstr ""
+msgstr "Si l'enfant doit être prioritaire lorsque le conteneur alloue de l'espace supplémentaire sur l'axe vertical ou non"
 
 #: clutter/clutter-box-layout.c:410
 msgid "Horizontal alignment of the actor within the cell"
@@ -847,11 +847,11 @@ msgstr ""
 
 #: clutter/clutter-box-layout.c:1135
 msgid "Spacing"
-msgstr ""
+msgstr "Espacement"
 
 #: clutter/clutter-box-layout.c:1136
 msgid "Spacing between children"
-msgstr ""
+msgstr "Espacement entre les enfants"
 
 #: clutter/clutter-box-layout.c:1150
 msgid "Use Animations"
@@ -859,7 +859,7 @@ msgstr "Utilise les animations"
 
 #: clutter/clutter-box-layout.c:1151
 msgid "Whether layout changes should be animated"
-msgstr ""
+msgstr "Si les changements de position doivent être animés ou non"
 
 #: clutter/clutter-box-layout.c:1172
 msgid "Easing Mode"
@@ -895,11 +895,11 @@ msgstr ""
 
 #: clutter/clutter-child-meta.c:127
 msgid "Container"
-msgstr ""
+msgstr "Conteneur"
 
 #: clutter/clutter-child-meta.c:128
 msgid "The container that created this data"
-msgstr ""
+msgstr "Le conteneur qui a créé cette donnée"
 
 #: clutter/clutter-child-meta.c:144
 msgid "The actor wrapped by this data"
@@ -1071,7 +1071,7 @@ msgstr ""
 
 #: clutter/clutter-input-device.c:149
 msgid "The name of the device"
-msgstr ""
+msgstr "Le nom du périphérique"
 
 #: clutter/clutter-input-device.c:164
 msgid "Device Type"
@@ -1083,23 +1083,23 @@ msgstr "Le type du  périphérique"
 
 #: clutter/clutter-interval.c:412
 msgid "Value Type"
-msgstr ""
+msgstr "Type de valeur"
 
 #: clutter/clutter-interval.c:413
 msgid "The type of the values in the interval"
-msgstr ""
+msgstr "Le type des valeurs dans l'intervalle"
 
 #: clutter/clutter-layout-meta.c:117
 msgid "Manager"
-msgstr ""
+msgstr "Gestionnaire"
 
 #: clutter/clutter-layout-meta.c:118
 msgid "The manager that created this data"
-msgstr ""
+msgstr "Le gestionnaire qui a créé ces données"
 
 #: clutter/clutter-main.c:779
 msgid "default:LTR"
-msgstr ""
+msgstr "default:LTR"
 
 #: clutter/clutter-main.c:1674
 msgid "Show frames per second"
@@ -1260,7 +1260,7 @@ msgstr ""
 #: clutter/clutter-script.c:420
 #: clutter/clutter-texture.c:1048
 msgid "Filename"
-msgstr ""
+msgstr "Nom de fichier"
 
 #: clutter/clutter-script.c:421
 msgid "The path of the currently parsed file"
@@ -1483,31 +1483,31 @@ msgstr ""
 #: clutter/clutter-text.c:2642
 #: clutter/clutter-text.c:2643
 msgid "Cursor Color"
-msgstr ""
+msgstr "La couleur du curseur"
 
 #: clutter/clutter-text.c:2657
 msgid "Cursor Color Set"
-msgstr ""
+msgstr "Couleur du curseur renseignée"
 
 #: clutter/clutter-text.c:2658
 msgid "Whether the cursor color has been set"
-msgstr ""
+msgstr "Si la couleur du curseur a été renseignée ou non"
 
 #: clutter/clutter-text.c:2673
 msgid "Cursor Size"
-msgstr ""
+msgstr "Taille du curseur"
 
 #: clutter/clutter-text.c:2674
 msgid "The width of the cursor, in pixels"
-msgstr ""
+msgstr "La taille du curseur, en pixels"
 
 #: clutter/clutter-text.c:2688
 msgid "Position"
-msgstr ""
+msgstr "Position du curseur"
 
 #: clutter/clutter-text.c:2689
 msgid "The cursor position"
-msgstr ""
+msgstr "La position du curseur"
 
 #: clutter/clutter-text.c:2704
 msgid "Selection-bound"
@@ -1596,35 +1596,35 @@ msgstr ""
 
 #: clutter/clutter-text.c:2888
 msgid "Max Length"
-msgstr ""
+msgstr "Longueur maximale"
 
 #: clutter/clutter-text.c:2889
 msgid "Maximum length of the text inside the actor"
-msgstr ""
+msgstr "Longueur maximale du texte à l'intérieur de l'acteur"
 
 #: clutter/clutter-text.c:2912
 msgid "Single Line Mode"
-msgstr ""
+msgstr "Mode ligne"
 
 #: clutter/clutter-text.c:2913
 msgid "Whether the text should be a single line"
-msgstr ""
+msgstr "Si le texte doit être affiché en une seule ligne ou non"
 
 #: clutter/clutter-texture.c:963
 msgid "Sync size of actor"
-msgstr ""
+msgstr "Synchronise la taille de l'acteur"
 
 #: clutter/clutter-texture.c:964
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
-msgstr ""
+msgstr "Synchronisation de la taille de l'acteur avec les dimensions du pixbuf sous-jacent"
 
 #: clutter/clutter-texture.c:971
 msgid "Disable Slicing"
-msgstr ""
+msgstr "Désactive le découpage"
 
 #: clutter/clutter-texture.c:972
 msgid "Forces the underlying texture to be singlular and not made of of smaller space saving inidivual textures."
-msgstr ""
+msgstr "Force la texture sous-jacente à être singulière et non composée de sous-textures"
 
 #: clutter/clutter-texture.c:980
 msgid "Tile Waste"
@@ -1668,7 +1668,7 @@ msgstr ""
 
 #: clutter/clutter-texture.c:1023
 msgid "COGL Texture"
-msgstr ""
+msgstr "Texture Cogl"
 
 #: clutter/clutter-texture.c:1024
 msgid "The underlying COGL texture handle used to draw this actor"
@@ -1696,7 +1696,7 @@ msgstr ""
 
 #: clutter/clutter-texture.c:1083
 msgid "Load asynchronously"
-msgstr ""
+msgstr "Chargement asynchrone"
 
 #: clutter/clutter-texture.c:1084
 msgid "Load files inside a thread to avoid blocking when loading images from disk."
@@ -1724,51 +1724,51 @@ msgstr ""
 
 #: clutter/x11/clutter-backend-x11.c:385
 msgid "X display to use"
-msgstr ""
+msgstr "Affichage X à utiliser"
 
 #: clutter/x11/clutter-backend-x11.c:391
 msgid "X screen to use"
-msgstr ""
+msgstr "Écran X à utiliser"
 
 #: clutter/x11/clutter-backend-x11.c:396
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "Rendre les appels X synchrones"
 
 #: clutter/x11/clutter-backend-x11.c:403
 msgid "Enable XInput support"
-msgstr ""
+msgstr "Activer le support XInput"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:510
 msgid "Pixmap"
-msgstr ""
+msgstr "Pixmap"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:511
 msgid "The X11 Pixmap to be bound"
-msgstr ""
+msgstr "Le pixmap X11 à lier"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:519
 msgid "Pixmap width"
-msgstr ""
+msgstr "Largeur du pixmap"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:520
 msgid "The width of the pixmap bound to this texture"
-msgstr ""
+msgstr "La largeur du pixmap lié à cette texture"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:528
 msgid "Pixmap height"
-msgstr ""
+msgstr "Hauteur du pixmap"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:529
 msgid "The height of the pixmap bound to this texture"
-msgstr ""
+msgstr "La hauteur du pixmap lié à cette texture"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:537
 msgid "Pixmap Depth"
-msgstr ""
+msgstr "Profondeur du pixmap"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:538
 msgid "The depth (in number of bits) of the pixmap bound to this texture"
-msgstr ""
+msgstr "La profondeurs (en nombre de bits) du pixmap liée à cette texture"
 
 #: clutter/x11/clutter-x11-texture-pixmap.c:546
 msgid "Automatic Updates"
