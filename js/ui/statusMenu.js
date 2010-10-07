@@ -31,6 +31,8 @@ StatusMenuButton.prototype = {
         this.actor.set_child(box);
 
         this._gdm = Gdm.UserManager.ref_default();
+        this._gdm.queue_load()
+
         this._user = this._gdm.get_user(GLib.get_user_name());
         this._presence = new GnomeSession.Presence();
 
@@ -48,27 +50,31 @@ StatusMenuButton.prototype = {
         this._presence.connect('StatusChanged', Lang.bind(this, this._updatePresenceIcon));
         this._presence.getStatus(Lang.bind(this, this._updatePresenceIcon));
 
-        this._name = new St.Label({ text: this._user.get_real_name() });
+        this._name = new St.Label();
         box.add(this._name, { y_align: St.Align.MIDDLE, y_fill: false });
-        this._userNameChangedId = this._user.connect('notify::display-name', Lang.bind(this, this._updateUserName));
+        this._userLoadedId = this._user.connect('notify::is-loaded', Lang.bind(this, this._updateUserName));
+        this._userChangedId = this._user.connect('changed', Lang.bind(this, this._updateUserName));
 
         this._createSubMenu();
-        this._gdm.connect('users-loaded', Lang.bind(this, this._updateSwitchUser));
+        this._gdm.connect('notify::is-loaded', Lang.bind(this, this._updateSwitchUser));
         this._gdm.connect('user-added', Lang.bind(this, this._updateSwitchUser));
         this._gdm.connect('user-removed', Lang.bind(this, this._updateSwitchUser));
     },
 
     _onDestroy: function() {
-        this._user.disconnect(this._userNameChangedId);
+        this._user.disconnect(this._userLoadedId);
+        this._user.disconnect(this._userChangedId);
     },
 
     _updateUserName: function() {
-        this._name.set_text(this._user.get_real_name());
+        if (this._user.is_loaded)
+          this._name.set_text(this._user.get_real_name());
+        else
+          this._name.set_text("");
     },
 
     _updateSwitchUser: function() {
-        let users = this._gdm.list_users();
-        if (users.length > 1)
+        if (this._gdm.can_switch ())
             this._loginScreenItem.actor.show();
         else
             this._loginScreenItem.actor.hide();
