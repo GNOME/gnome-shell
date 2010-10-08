@@ -56,6 +56,24 @@ G_BEGIN_DECLS
 
 typedef struct _ClutterMainContext      ClutterMainContext;
 
+#define _clutter_notify_by_pspec(obj, pspec) \
+  g_object_notify_by_pspec ((obj), (pspec))
+
+#define _clutter_object_class_install_properties(oclass, n_pspecs, pspecs) \
+  g_object_class_install_properties ((oclass), (n_pspecs), (pspecs))
+
+#define CLUTTER_REGISTER_VALUE_TRANSFORM_TO(TYPE_TO,func)             { \
+  g_value_register_transform_func (g_define_type_id, TYPE_TO, func);    \
+}
+
+#define CLUTTER_REGISTER_VALUE_TRANSFORM_FROM(TYPE_FROM,func)         { \
+  g_value_register_transform_func (TYPE_FROM, g_define_type_id, func);  \
+}
+
+#define CLUTTER_REGISTER_INTERVAL_PROGRESS(func)                      { \
+  clutter_interval_register_progress_func (g_define_type_id, func);     \
+}
+
 #define CLUTTER_PRIVATE_FLAGS(a)	 (((ClutterActor *) (a))->private_flags)
 #define CLUTTER_SET_PRIVATE_FLAGS(a,f)	 (CLUTTER_PRIVATE_FLAGS (a) |= (f))
 #define CLUTTER_UNSET_PRIVATE_FLAGS(a,f) (CLUTTER_PRIVATE_FLAGS (a) &= ~(f))
@@ -536,12 +554,6 @@ GType _clutter_layout_manager_get_child_meta_type (ClutterLayoutManager *manager
 void     _clutter_event_set_platform_data (ClutterEvent       *event,
                                            gpointer            data);
 gpointer _clutter_event_get_platform_data (const ClutterEvent *event);
-
-#define _clutter_notify_by_pspec(obj, pspec) \
-  g_object_notify_by_pspec ((obj), (pspec))
-
-#define _clutter_object_class_install_properties(oclass, n_pspecs, pspecs) \
-  g_object_class_install_properties ((oclass), (n_pspecs), (pspecs))
 
 void                _clutter_paint_volume_init_static          (ClutterActor *actor,
                                                                 ClutterPaintVolume *pv);

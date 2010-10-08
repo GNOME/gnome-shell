@@ -731,41 +731,16 @@ clutter_value_transform_string_units (const GValue *src,
   clutter_value_set_units (dest, &units);
 }
 
-GType
-clutter_units_get_type (void)
-{
-  static volatile gsize clutter_units_type__volatile = 0;
-
-  if (g_once_init_enter (&clutter_units_type__volatile))
-    {
-      GType clutter_units_type =
-        g_boxed_type_register_static (I_("ClutterUnits"),
-                                      (GBoxedCopyFunc) clutter_units_copy,
-                                      (GBoxedFreeFunc) clutter_units_free);
-
-      g_value_register_transform_func (clutter_units_type, G_TYPE_INT,
-                                       clutter_value_transform_units_int);
-      g_value_register_transform_func (G_TYPE_INT, clutter_units_type,
-                                       clutter_value_transform_int_units);
-
-      g_value_register_transform_func (clutter_units_type, G_TYPE_FLOAT,
-                                       clutter_value_transform_units_float);
-      g_value_register_transform_func (G_TYPE_FLOAT, clutter_units_type,
-                                       clutter_value_transform_float_units);
-
-      g_value_register_transform_func (clutter_units_type, G_TYPE_STRING,
-                                       clutter_value_transform_units_string);
-      g_value_register_transform_func (G_TYPE_STRING, clutter_units_type,
-                                       clutter_value_transform_string_units);
-
-      clutter_interval_register_progress_func (clutter_units_type,
-                                               clutter_units_progress);
-
-      g_once_init_leave (&clutter_units_type__volatile, clutter_units_type);
-    }
-
-  return clutter_units_type__volatile;
-}
+G_DEFINE_BOXED_TYPE_WITH_CODE (ClutterUnits, clutter_units,
+                               clutter_units_copy,
+                               clutter_units_free,
+                               CLUTTER_REGISTER_VALUE_TRANSFORM_TO (G_TYPE_INT, clutter_value_transform_units_int)
+                               CLUTTER_REGISTER_VALUE_TRANSFORM_TO (G_TYPE_FLOAT, clutter_value_transform_units_float)
+                               CLUTTER_REGISTER_VALUE_TRANSFORM_TO (G_TYPE_STRING, clutter_value_transform_units_string)
+                               CLUTTER_REGISTER_VALUE_TRANSFORM_FROM (G_TYPE_INT, clutter_value_transform_int_units)
+                               CLUTTER_REGISTER_VALUE_TRANSFORM_FROM (G_TYPE_FLOAT, clutter_value_transform_float_units)
+                               CLUTTER_REGISTER_VALUE_TRANSFORM_FROM (G_TYPE_STRING, clutter_value_transform_string_units)
+                               CLUTTER_REGISTER_INTERVAL_PROGRESS (clutter_units_progress));
 
 /**
  * clutter_value_set_units:

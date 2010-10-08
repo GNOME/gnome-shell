@@ -29,6 +29,7 @@
 
 G_BEGIN_DECLS
 
+#define CLUTTER_TYPE_STATE_KEY          (clutter_state_key_get_type ())
 #define CLUTTER_TYPE_STATE              (clutter_state_get_type ())
 #define CLUTTER_STATE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STATE, ClutterState))
 #define CLUTTER_STATE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_STATE, ClutterStateClass))

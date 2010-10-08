@@ -51,6 +51,10 @@ typedef struct _ClutterEventPrivate {
 
 static GHashTable *all_events = NULL;
 
+G_DEFINE_BOXED_TYPE (ClutterEvent, clutter_event,
+                     clutter_event_copy,
+                     clutter_event_free);
+
 static gboolean
 is_event_allocated (const ClutterEvent *event)
 {
@@ -628,18 +632,6 @@ clutter_event_get_device (const ClutterEvent *event)
     }
 
   return device;
-}
-
-GType
-clutter_event_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (!our_type)
-    our_type = g_boxed_type_register_static (I_("ClutterEvent"),
-		    			     (GBoxedCopyFunc) clutter_event_copy,
-					     (GBoxedFreeFunc) clutter_event_free);
-  return our_type;
 }
 
 /**

@@ -1989,19 +1989,9 @@ clutter_animator_property_set_interpolation (ClutterAnimator     *animator,
     }
 }
 
-GType
-clutter_animator_key_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (!our_type)
-    our_type = g_boxed_type_register_static (I_("ClutterAnimatorKey"),
-                                             clutter_animator_key_copy,
-                                             clutter_animator_key_free);
-
-  return our_type;
-}
-
+G_DEFINE_BOXED_TYPE (ClutterAnimatorKey, clutter_animator_key,
+                     clutter_animator_key_copy,
+                     clutter_animator_key_free);
 
 /**
  * clutter_animator_key_get_object:

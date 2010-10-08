@@ -87,13 +87,6 @@
 #include "clutter-bezier.h"
 #include "clutter-private.h"
 
-static void clutter_path_register_transforms (GType type);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterPath,
-                         clutter_path,
-                         G_TYPE_INITIALLY_UNOWNED,
-                         clutter_path_register_transforms (g_define_type_id));
-
 #define CLUTTER_PATH_GET_PRIVATE(obj) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_PATH, \
                                 ClutterPathPrivate))
@@ -142,6 +135,21 @@ static ClutterPathNodeFull *clutter_path_node_full_new (void);
 static void clutter_path_node_full_free (ClutterPathNodeFull *node);
 
 static void clutter_path_finalize (GObject *object);
+
+static void clutter_value_transform_path_string (const GValue *src,
+                                                 GValue       *dest);
+static void clutter_value_transform_string_path (const GValue *src,
+                                                 GValue       *dest);
+
+G_DEFINE_BOXED_TYPE (ClutterPathNode, clutter_path_node,
+                     clutter_path_node_copy,
+                     clutter_path_node_free);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterPath,
+                         clutter_path,
+                         G_TYPE_INITIALLY_UNOWNED,
+                         CLUTTER_REGISTER_VALUE_TRANSFORM_TO (G_TYPE_STRING, clutter_value_transform_path_string)
+                         CLUTTER_REGISTER_VALUE_TRANSFORM_FROM (G_TYPE_STRING, clutter_value_transform_string_path));
 
 static void
 clutter_path_get_property (GObject      *gobject,
@@ -238,16 +246,6 @@ clutter_value_transform_string_path (const GValue *src,
 
   new_path = clutter_path_new_with_description (g_value_get_string (src));
   g_value_take_object (dest, new_path);
-}
-
-static void
-clutter_path_register_transforms (GType type)
-{
-  g_value_register_transform_func (type, G_TYPE_STRING,
-                                   clutter_value_transform_path_string);
-
-  g_value_register_transform_func (G_TYPE_STRING, type,
-                                   clutter_value_transform_string_path);
 }
 
 static void
@@ -1582,20 +1580,4 @@ clutter_path_node_equal (const ClutterPathNode *node_a,
       return FALSE;
 
   return TRUE;
-}
-
-GType
-clutter_path_node_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (G_UNLIKELY (!our_type))
-    {
-      our_type =
-        g_boxed_type_register_static (I_("ClutterPathNode"),
-                                      (GBoxedCopyFunc) clutter_path_node_copy,
-                                      (GBoxedFreeFunc) clutter_path_node_free);
-    }
-
-  return our_type;
 }

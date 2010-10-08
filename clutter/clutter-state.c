@@ -1360,18 +1360,9 @@ clutter_state_key_copy (gpointer boxed)
   return boxed;
 }
 
-GType
-clutter_state_key_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (!our_type)
-    our_type = g_boxed_type_register_static (I_("ClutterStateKey"),
-                                             clutter_state_key_copy,
-                                             clutter_state_key_free);
-
-  return our_type;
-}
+G_DEFINE_BOXED_TYPE (ClutterStateKey, clutter_state_key,
+                     clutter_state_key_copy,
+                     clutter_state_key_free);
 
 /**
  * clutter_state_key_get_pre_delay:

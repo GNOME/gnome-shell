@@ -141,21 +141,9 @@ clutter_knot_equal (const ClutterKnot *knot_a,
   return knot_a->x == knot_b->x && knot_a->y == knot_b->y;
 }
 
-GType
-clutter_knot_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (G_UNLIKELY (!our_type))
-    {
-      our_type =
-        g_boxed_type_register_static (I_("ClutterKnot"),
-                                      (GBoxedCopyFunc) clutter_knot_copy,
-                                      (GBoxedFreeFunc) clutter_knot_free);
-    }
-
-  return our_type;
-}
+G_DEFINE_BOXED_TYPE (ClutterKnot, clutter_knot,
+                     clutter_knot_copy,
+                     clutter_knot_free);
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 

@@ -2549,17 +2549,9 @@ clutter_perspective_free (gpointer data)
     g_slice_free (ClutterPerspective, data);
 }
 
-GType
-clutter_perspective_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (!our_type)
-    our_type = g_boxed_type_register_static (I_("ClutterPerspective"),
-                                             clutter_perspective_copy,
-                                             clutter_perspective_free);
-  return our_type;
-}
+G_DEFINE_BOXED_TYPE (ClutterPerspective, clutter_perspective,
+                     clutter_perspective_copy,
+                     clutter_perspective_free);
 
 static gpointer
 clutter_fog_copy (gpointer data)
@@ -2577,18 +2569,7 @@ clutter_fog_free (gpointer data)
     g_slice_free (ClutterFog, data);
 }
 
-GType
-clutter_fog_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (G_UNLIKELY (our_type == 0))
-    our_type = g_boxed_type_register_static (I_("ClutterFog"),
-                                             clutter_fog_copy,
-                                             clutter_fog_free);
-
-  return our_type;
-}
+G_DEFINE_BOXED_TYPE (ClutterFog, clutter_fog, clutter_fog_copy, clutter_fog_free);
 
 /**
  * clutter_stage_new:

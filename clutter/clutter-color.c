@@ -701,29 +701,12 @@ clutter_value_transform_string_color (const GValue *src,
     clutter_value_set_color (dest, NULL);
 }
 
-GType
-clutter_color_get_type (void)
-{
-  static GType _clutter_color_type = 0;
-  
-  if (G_UNLIKELY (_clutter_color_type == 0))
-    {
-       _clutter_color_type =
-         g_boxed_type_register_static (I_("ClutterColor"),
-                                       (GBoxedCopyFunc) clutter_color_copy,
-                                       (GBoxedFreeFunc) clutter_color_free);
-
-       g_value_register_transform_func (_clutter_color_type, G_TYPE_STRING,
-                                        clutter_value_transform_color_string);
-       g_value_register_transform_func (G_TYPE_STRING, _clutter_color_type,
-                                        clutter_value_transform_string_color);
-
-       clutter_interval_register_progress_func (_clutter_color_type,
-                                                clutter_color_progress);
-    }
-
-  return _clutter_color_type;
-}
+G_DEFINE_BOXED_TYPE_WITH_CODE (ClutterColor, clutter_color,
+                               clutter_color_copy,
+                               clutter_color_free,
+                               CLUTTER_REGISTER_VALUE_TRANSFORM_TO (G_TYPE_STRING, clutter_value_transform_color_string)
+                               CLUTTER_REGISTER_VALUE_TRANSFORM_FROM (G_TYPE_STRING, clutter_value_transform_string_color)
+                               CLUTTER_REGISTER_INTERVAL_PROGRESS (clutter_color_progress));
 
 /**
  * clutter_value_set_color:

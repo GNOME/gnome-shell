@@ -32,19 +32,9 @@
 
 #include "clutter-private.h"
 
-GType
-clutter_paint_volume_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (G_UNLIKELY (our_type == 0))
-    our_type =
-      g_boxed_type_register_static (I_("ClutterPaintVolume"),
-                                    (GBoxedCopyFunc) clutter_paint_volume_copy,
-                                    (GBoxedFreeFunc) clutter_paint_volume_free);
-
-  return our_type;
-}
+G_DEFINE_BOXED_TYPE (ClutterPaintVolume, clutter_paint_volume,
+                     clutter_paint_volume_copy,
+                     clutter_paint_volume_free);
 
 /*<private>
  * _clutter_paint_volume_new:
