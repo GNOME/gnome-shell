@@ -53,18 +53,12 @@
 #include "clutter-debug.h"
 #include "clutter-private.h"
 
-GType
-clutter_animatable_get_type (void)
+typedef ClutterAnimatableIface  ClutterAnimatableInterface;
+G_DEFINE_INTERFACE (ClutterAnimatable, clutter_animatable, G_TYPE_OBJECT);
+
+static void
+clutter_animatable_default_init (ClutterAnimatableInterface *iface)
 {
-  static GType a_type = 0;
-
-  if (G_UNLIKELY (a_type == 0))
-    a_type = g_type_register_static_simple (G_TYPE_INTERFACE,
-                                            I_("ClutterAnimatable"),
-                                            sizeof (ClutterAnimatableIface),
-                                            NULL, 0, NULL, 0);
-
-  return a_type;
 }
 
 /**

@@ -57,206 +57,182 @@ enum
 
 static guint media_signals[LAST_SIGNAL] = { 0, };
 
+typedef ClutterMediaIface       ClutterMediaInterface;
+
+G_DEFINE_INTERFACE (ClutterMedia, clutter_media, G_TYPE_OBJECT);
+
 static void
-clutter_media_base_init (gpointer g_iface)
+clutter_media_default_init (ClutterMediaInterface *iface)
 {
-  static gboolean was_initialized = FALSE;
+  GParamSpec *pspec = NULL;
 
-  if (G_UNLIKELY (!was_initialized))
-    {
-      GParamSpec *pspec = NULL;
+  /**
+   * ClutterMedia:uri:
+   *
+   * The location of a media file, expressed as a valid URI.
+   *
+   * Since: 0.2
+   */
+  pspec = g_param_spec_string ("uri",
+                               P_("URI"),
+                               P_("URI of a media file"),
+                               NULL,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_interface_install_property (iface, pspec);
 
-      was_initialized = TRUE;
+  /**
+   * ClutterMedia:playing:
+   *
+   * Whether the #ClutterMedia actor is playing.
+   *
+   * Since: 0.2
+   */
+  pspec = g_param_spec_boolean ("playing",
+                                P_("Playing"),
+                                P_("Wheter the actor is playing"),
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_interface_install_property (iface, pspec);
 
-      /**
-       * ClutterMedia:uri:
-       *
-       * The location of a media file, expressed as a valid URI.
-       *
-       * Since: 0.2
-       */
-      pspec = g_param_spec_string ("uri",
-                                   P_("URI"),
-                                   P_("URI of a media file"),
-                                   NULL,
-                                   CLUTTER_PARAM_READWRITE);
-      g_object_interface_install_property (g_iface, pspec);
+  /**
+   * ClutterMedia:progress:
+   *
+   * The current progress of the playback, as a normalized
+   * value between 0.0 and 1.0.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_double ("progress",
+                               P_("Progress"),
+                               P_("Current progress of the playback"),
+                               0.0, 1.0, 0.0,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_interface_install_property (iface, pspec);
 
-      /**
-       * ClutterMedia:playing:
-       *
-       * Whether the #ClutterMedia actor is playing.
-       *
-       * Since: 0.2
-       */
-      pspec = g_param_spec_boolean ("playing",
-                                    P_("Playing"),
-                                    P_("Wheter the actor is playing"),
-                                    FALSE,
-                                    CLUTTER_PARAM_READWRITE);
-      g_object_interface_install_property (g_iface, pspec);
+  /**
+   * ClutterMedia:subtitle-uri:
+   *
+   * The location of a subtitle file, expressed as a valid URI.
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_string ("subtitle-uri",
+                               P_("Subtitle URI"),
+                               P_("URI of a subtitle file"),
+                               NULL,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_interface_install_property (iface, pspec);
 
-      /**
-       * ClutterMedia:progress:
-       *
-       * The current progress of the playback, as a normalized
-       * value between 0.0 and 1.0.
-       *
-       * Since: 1.0
-       */
-      pspec = g_param_spec_double ("progress",
-                                   P_("Progress"),
-                                   P_("Current progress of the playback"),
-                                   0.0, 1.0, 0.0,
-                                   CLUTTER_PARAM_READWRITE);
-      g_object_interface_install_property (g_iface, pspec);
+  /**
+   * ClutterMedia:subtitle-font-name:
+   *
+   * The font used to display subtitles. The font description has to
+   * follow the same grammar as the one recognized by
+   * pango_font_description_from_string().
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_string ("subtitle-font-name",
+                               P_("Subtitle Font Name"),
+                               P_("The font used to display subtitles"),
+                               NULL,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_interface_install_property (iface, pspec);
 
-      /**
-       * ClutterMedia:subtitle-uri:
-       *
-       * The location of a subtitle file, expressed as a valid URI.
-       *
-       * Since: 1.2
-       */
-      pspec = g_param_spec_string ("subtitle-uri",
-                                   P_("Subtitle URI"),
-                                   P_("URI of a subtitle file"),
-                                   NULL,
-                                   CLUTTER_PARAM_READWRITE);
-      g_object_interface_install_property (g_iface, pspec);
+  /**
+   * ClutterMedia:audio-volume:
+   *
+   * The volume of the audio, as a normalized value between
+   * 0.0 and 1.0.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_double ("audio-volume",
+                               P_("Audio Volume"),
+                               P_("The volume of the audio"),
+                               0.0, 1.0, 0.5,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_interface_install_property (iface, pspec);
 
-      /**
-       * ClutterMedia:subtitle-font-name:
-       *
-       * The font used to display subtitles. The font description has to
-       * follow the same grammar as the one recognized by
-       * pango_font_description_from_string().
-       *
-       * Since: 1.2
-       */
-      pspec = g_param_spec_string ("subtitle-font-name",
-                                   P_("Subtitle Font Name"),
-                                   P_("The font used to display subtitles"),
-                                   NULL,
-                                   CLUTTER_PARAM_READWRITE);
-      g_object_interface_install_property (g_iface, pspec);
+  /**
+   * ClutterMedia:can-seek:
+   *
+   * Whether the current stream is seekable.
+   *
+   * Since: 0.2
+   */
+  pspec = g_param_spec_boolean ("can-seek",
+                                P_("Can Seek"),
+                                P_("Whether the current stream is seekable"),
+                                FALSE,
+                                CLUTTER_PARAM_READABLE);
+  g_object_interface_install_property (iface, pspec);
 
-      /**
-       * ClutterMedia:audio-volume:
-       *
-       * The volume of the audio, as a normalized value between
-       * 0.0 and 1.0.
-       *
-       * Since: 1.0
-       */
-      pspec = g_param_spec_double ("audio-volume",
-                                   P_("Audio Volume"),
-                                   P_("The volume of the audio"),
-                                   0.0, 1.0, 0.5,
-                                   CLUTTER_PARAM_READWRITE);
-      g_object_interface_install_property (g_iface, pspec);
+  /**
+   * ClutterMedia:buffer-fill:
+   *
+   * The fill level of the buffer for the current stream,
+   * as a value between 0.0 and 1.0.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_double ("buffer-fill",
+                               P_("Buffer Fill"),
+                               P_("The fill level of the buffer"),
+                               0.0, 1.0, 0.0,
+                               CLUTTER_PARAM_READABLE);
+  g_object_interface_install_property (iface, pspec);
 
-      /**
-       * ClutterMedia:can-seek:
-       *
-       * Whether the current stream is seekable.
-       *
-       * Since: 0.2
-       */
-      pspec = g_param_spec_boolean ("can-seek",
-                                    P_("Can Seek"),
-                                    P_("Whether the current stream is seekable"),
-                                    FALSE,
-                                    CLUTTER_PARAM_READABLE);
-      g_object_interface_install_property (g_iface, pspec);
+  /**
+   * ClutterMedia:duration:
+   *
+   * The duration of the current stream, in seconds
+   *
+   * Since: 0.2
+   */
+  pspec = g_param_spec_double ("duration",
+                               P_("Duration"),
+                               P_("The duration of the stream, in seconds"),
+                               0, G_MAXDOUBLE, 0,
+                               CLUTTER_PARAM_READABLE);
+  g_object_interface_install_property (iface, pspec);
 
-      /**
-       * ClutterMedia:buffer-fill:
-       *
-       * The fill level of the buffer for the current stream,
-       * as a value between 0.0 and 1.0.
-       *
-       * Since: 1.0
-       */
-      pspec = g_param_spec_double ("buffer-fill",
-                                   P_("Buffer Fill"),
-                                   P_("The fill level of the buffer"),
-                                   0.0, 1.0, 0.0,
-                                   CLUTTER_PARAM_READABLE);
-      g_object_interface_install_property (g_iface, pspec);
-
-      /**
-       * ClutterMedia:duration:
-       *
-       * The duration of the current stream, in seconds
-       *
-       * Since: 0.2
-       */
-      pspec = g_param_spec_double ("duration",
-                                   P_("Duration"),
-                                   P_("The duration of the stream, in seconds"),
-                                   0, G_MAXDOUBLE, 0,
-                                   CLUTTER_PARAM_READABLE);
-      g_object_interface_install_property (g_iface, pspec);
-
-      /**
-       * ClutterMedia::eos:
-       * @media: the #ClutterMedia instance that received the signal
-       *
-       * The ::eos signal is emitted each time the media stream ends.
-       *
-       * Since: 0.2
-       */
-      media_signals[EOS_SIGNAL] =
-        g_signal_new ("eos",
-                      CLUTTER_TYPE_MEDIA,
-                      G_SIGNAL_RUN_LAST,
-                      G_STRUCT_OFFSET (ClutterMediaIface, eos),
-                      NULL, NULL,
-                      _clutter_marshal_VOID__VOID,
-                      G_TYPE_NONE, 0);
-      /**
-       * ClutterMedia::error:
-       * @media: the #ClutterMedia instance that received the signal
-       * @error: the #GError
-       *
-       * The ::error signal is emitted each time an error occurred.
-       *
-       * Since: 0.2
-       */
-      media_signals[ERROR_SIGNAL] =
-        g_signal_new ("error",
-                      CLUTTER_TYPE_MEDIA,
-                      G_SIGNAL_RUN_LAST,
-                      G_STRUCT_OFFSET (ClutterMediaIface, error),
-                      NULL, NULL,
-                      _clutter_marshal_VOID__POINTER,
-                      G_TYPE_NONE, 1,
-                      G_TYPE_POINTER);
-    }
+  /**
+   * ClutterMedia::eos:
+   * @media: the #ClutterMedia instance that received the signal
+   *
+   * The ::eos signal is emitted each time the media stream ends.
+   *
+   * Since: 0.2
+   */
+  media_signals[EOS_SIGNAL] =
+    g_signal_new (I_("eos"),
+                  CLUTTER_TYPE_MEDIA,
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterMediaIface, eos),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+  /**
+   * ClutterMedia::error:
+   * @media: the #ClutterMedia instance that received the signal
+   * @error: the #GError
+   *
+   * The ::error signal is emitted each time an error occurred.
+   *
+   * Since: 0.2
+   */
+  media_signals[ERROR_SIGNAL] =
+    g_signal_new (I_("error"),
+                  CLUTTER_TYPE_MEDIA,
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterMediaIface, error),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__BOXED,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_ERROR);
 }
 
-
-GType
-clutter_media_get_type (void)
-{
-  static GType media_type = 0;
-
-  if (G_UNLIKELY (media_type == 0))
-    {
-      const GTypeInfo media_info = {
-        sizeof (ClutterMediaIface),     /* class size */
-        clutter_media_base_init,        /* base_init */
-        NULL,                           /* base_finalize */
-      };
-
-      media_type = g_type_register_static (G_TYPE_INTERFACE,
-                                           I_("ClutterMedia"),
-                                           &media_info, 0);
-    }
-
-  return media_type;
-}
 
 /**
  * clutter_media_set_uri:

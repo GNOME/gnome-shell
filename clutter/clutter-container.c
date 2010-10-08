@@ -96,112 +96,84 @@ static void              child_notify       (ClutterContainer *container,
                                              ClutterActor     *child,
                                              GParamSpec       *pspec);
 
+typedef ClutterContainerIface   ClutterContainerInterface;
+
+G_DEFINE_INTERFACE (ClutterContainer, clutter_container, CLUTTER_TYPE_ACTOR);
+
 static void
-clutter_container_base_init (gpointer g_iface)
+clutter_container_default_init (ClutterContainerInterface *iface)
 {
-  static gboolean initialised = FALSE;
+  GType iface_type = G_TYPE_FROM_INTERFACE (iface);
 
-  if (!initialised)
-    {
-      GType iface_type = G_TYPE_FROM_INTERFACE (g_iface);
-      ClutterContainerIface *iface = g_iface;
+  quark_child_meta =
+    g_quark_from_static_string ("clutter-container-child-data");
 
-      initialised = TRUE;
+  /**
+   * ClutterContainer::actor-added:
+   * @container: the actor which received the signal
+   * @actor: the new child that has been added to @container
+   *
+   * The ::actor-added signal is emitted each time an actor
+   * has been added to @container.
+   *
+   * Since: 0.4
+   */
+  container_signals[ACTOR_ADDED] =
+    g_signal_new (I_("actor-added"),
+                  iface_type,
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (ClutterContainerIface, actor_added),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1,
+                  CLUTTER_TYPE_ACTOR);
+  /**
+   * ClutterContainer::actor-removed:
+   * @container: the actor which received the signal
+   * @actor: the child that has been removed from @container
+   *
+   * The ::actor-removed signal is emitted each time an actor
+   * is removed from @container.
+   *
+   * Since: 0.4
+   */
+  container_signals[ACTOR_REMOVED] =
+    g_signal_new (I_("actor-removed"),
+                  iface_type,
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (ClutterContainerIface, actor_removed),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1,
+                  CLUTTER_TYPE_ACTOR);
 
-      quark_child_meta =
-        g_quark_from_static_string ("clutter-container-child-data");
+  /**
+   * ClutterContainer::child-notify:
+   * @container: the container which received the signal
+   * @actor: the child that has had a property set
+   * @pspec: the #GParamSpec of the property set
+   *
+   * The ::child-notify signal is emitted each time a property is
+   * being set through the clutter_container_child_set() and
+   * clutter_container_child_set_property() calls.
+   *
+   * Since: 0.8
+   */
+  container_signals[CHILD_NOTIFY] =
+    g_signal_new (I_("child-notify"),
+                  iface_type,
+                  G_SIGNAL_RUN_FIRST | G_SIGNAL_DETAILED,
+                  G_STRUCT_OFFSET (ClutterContainerIface, child_notify),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__OBJECT_PARAM,
+                  G_TYPE_NONE, 2,
+                  CLUTTER_TYPE_ACTOR, G_TYPE_PARAM);
 
-      /**
-       * ClutterContainer::actor-added:
-       * @container: the actor which received the signal
-       * @actor: the new child that has been added to @container
-       *
-       * The ::actor-added signal is emitted each time an actor
-       * has been added to @container.
-       *
-       * Since: 0.4
-       */
-      container_signals[ACTOR_ADDED] =
-        g_signal_new (I_("actor-added"),
-                      iface_type,
-                      G_SIGNAL_RUN_FIRST,
-                      G_STRUCT_OFFSET (ClutterContainerIface, actor_added),
-                      NULL, NULL,
-                      _clutter_marshal_VOID__OBJECT,
-                      G_TYPE_NONE, 1,
-                      CLUTTER_TYPE_ACTOR);
-      /**
-       * ClutterContainer::actor-removed:
-       * @container: the actor which received the signal
-       * @actor: the child that has been removed from @container
-       *
-       * The ::actor-removed signal is emitted each time an actor
-       * is removed from @container.
-       *
-       * Since: 0.4
-       */
-      container_signals[ACTOR_REMOVED] =
-        g_signal_new (I_("actor-removed"),
-                      iface_type,
-                      G_SIGNAL_RUN_FIRST,
-                      G_STRUCT_OFFSET (ClutterContainerIface, actor_removed),
-                      NULL, NULL,
-                      _clutter_marshal_VOID__OBJECT,
-                      G_TYPE_NONE, 1,
-                      CLUTTER_TYPE_ACTOR);
-
-      /**
-       * ClutterContainer::child-notify:
-       * @container: the container which received the signal
-       * @actor: the child that has had a property set
-       * @pspec: the #GParamSpec of the property set
-       *
-       * The ::child-notify signal is emitted each time a property is
-       * being set through the clutter_container_child_set() and
-       * clutter_container_child_set_property() calls.
-       *
-       * Since: 0.8
-       */
-      container_signals[CHILD_NOTIFY] =
-        g_signal_new (I_("child-notify"),
-                      iface_type,
-                      G_SIGNAL_RUN_FIRST | G_SIGNAL_DETAILED,
-                      G_STRUCT_OFFSET (ClutterContainerIface, child_notify),
-                      NULL, NULL,
-                      _clutter_marshal_VOID__OBJECT_PARAM,
-                      G_TYPE_NONE, 2,
-                      CLUTTER_TYPE_ACTOR, G_TYPE_PARAM);
-
-      iface->child_meta_type    = G_TYPE_INVALID;
-      iface->create_child_meta  = create_child_meta;
-      iface->destroy_child_meta = destroy_child_meta;
-      iface->get_child_meta     = get_child_meta;
-      iface->child_notify       = child_notify;
-    }
-}
-
-GType
-clutter_container_get_type (void)
-{
-  static GType container_type = 0;
-
-  if (G_UNLIKELY (!container_type))
-    {
-      const GTypeInfo container_info =
-      {
-        sizeof (ClutterContainerIface),
-        clutter_container_base_init,
-        NULL, /* iface_base_finalize */
-      };
-
-      container_type = g_type_register_static (G_TYPE_INTERFACE,
-                                               I_("ClutterContainer"),
-                                               &container_info, 0);
-
-      g_type_interface_add_prerequisite (container_type, G_TYPE_OBJECT);
-    }
-
-  return container_type;
+  iface->child_meta_type    = G_TYPE_INVALID;
+  iface->create_child_meta  = create_child_meta;
+  iface->destroy_child_meta = destroy_child_meta;
+  iface->get_child_meta     = get_child_meta;
+  iface->child_notify       = child_notify;
 }
 
 /**

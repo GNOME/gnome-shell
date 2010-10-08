@@ -51,21 +51,13 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-GType
-clutter_scriptable_get_type (void)
+typedef ClutterScriptableIface  ClutterScriptableInterface;
+
+G_DEFINE_INTERFACE (ClutterScriptable, clutter_scriptable, G_TYPE_OBJECT);
+
+static void
+clutter_scriptable_default_init (ClutterScriptableInterface *iface)
 {
-  static GType scriptable_type = 0;
-
-  if (G_UNLIKELY (scriptable_type == 0))
-    {
-      scriptable_type =
-        g_type_register_static_simple (G_TYPE_INTERFACE,
-                                       I_("ClutterScriptable"),
-                                       sizeof (ClutterScriptableIface),
-                                       NULL, 0, NULL, 0);
-    }
-
-  return scriptable_type;
 }
 
 /**
