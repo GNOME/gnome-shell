@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
 "POT-Creation-Date: 2010-10-04 19:52+0000\n"
-"PO-Revision-Date: 2010-10-07 18:02+0200\n"
+"PO-Revision-Date: 2010-10-08 11:05+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -310,27 +310,30 @@ msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
 msgid "Show or hide crosshairs"
-msgstr ""
+msgstr "Mostrar u ocultar las cruces"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
 msgid "Show or hide the magnifier"
-msgstr ""
+msgstr "Mostrar u ocultar el magnificador"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
 msgid "Show or hide the magnifier and all of its zoom regions."
-msgstr ""
+msgstr "Mostrar u ocultar el magnificador y todas sus regiones de ampliación."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
 msgid ""
 "The color of the the vertical and horizontal lines that make up the "
 "crosshairs."
 msgstr ""
+"El color de las líneas verticales y horizontales que conforman las cruces."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
 msgid ""
 "The magnified view either fills the entire screen, or occupies the top-half, "
 "bottom-half, left-half, or right-half of the screen."
 msgstr ""
+"La vista magnificada o llena la pantalla u ocupa la mitad superior, mitad "
+"inferior, mitad izquierda o mitad derecha de la pantalla."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
 msgid ""
