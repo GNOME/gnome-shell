@@ -235,10 +235,6 @@ StTooltip {
     spacing: 4px;
 }
 
-#statusTray {
-    spacing: 14px;
-}
-
 #legacyTray {
     spacing: 14px;
     padding-left: 14px;
