@@ -9,7 +9,7 @@ REQUIREMENTS
 
 Clutter currently requires:
 
-  • GLib >= 2.18.0
+  • GLib >= 2.26.0
   • JSON-GLib >= 0.12
   • Atk >= 1.17
   • Cairo >= 1.6

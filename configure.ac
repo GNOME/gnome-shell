@@ -107,7 +107,8 @@ LT_INIT([disable-static])
 AC_HEADER_STDC
 
 # Checks for typedefs, structures, and compiler characteristics.
-AM_PATH_GLIB_2_0([2.18.0], [have_glib=yes], [have_glib=no],
+AM_PATH_GLIB_2_0([2.26.0],
+                 [have_glib=yes], [have_glib=no],
                  [gobject gthread gmodule-no-export])
 AS_IF([test "x$have_glib" = "xno"], AC_MSG_ERROR([glib-2.0 is required]))
 
