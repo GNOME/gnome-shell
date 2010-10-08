@@ -377,9 +377,7 @@ clutter_timeout_pool_new (gint priority)
   if (!source)
     return NULL;
 
-#if GLIB_CHECK_VERSION (2, 25, 8)
   g_source_set_name (source, "Clutter timeout pool");
-#endif
 
   if (priority != G_PRIORITY_DEFAULT)
     g_source_set_priority (source, priority);
