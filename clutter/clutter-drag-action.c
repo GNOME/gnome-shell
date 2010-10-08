@@ -469,10 +469,6 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
 
   g_type_class_add_private (klass, sizeof (ClutterDragActionPrivate));
 
-  gobject_class->set_property = clutter_drag_action_set_property;
-  gobject_class->get_property = clutter_drag_action_get_property;
-  gobject_class->dispose = clutter_drag_action_dispose;
-
   meta_class->set_actor = clutter_drag_action_set_actor;
 
   klass->drag_motion = clutter_drag_action_real_drag_motion;
@@ -553,7 +549,12 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
                        CLUTTER_DRAG_AXIS_NONE,
                        CLUTTER_PARAM_READWRITE);
 
-  _clutter_object_class_install_properties (klass, PROP_LAST, drag_props);
+  gobject_class->set_property = clutter_drag_action_set_property;
+  gobject_class->get_property = clutter_drag_action_get_property;
+  gobject_class->dispose = clutter_drag_action_dispose;
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            drag_props);
 
   /**
    * ClutterDragAction::drag-begin:
