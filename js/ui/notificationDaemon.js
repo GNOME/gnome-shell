@@ -325,6 +325,7 @@ NotificationDaemon.prototype = {
             'body-markup',
             // 'icon-multi',
             'icon-static',
+            'persistence',
             // 'sound',
             'x-gnome-icon-buttons'
         ];
