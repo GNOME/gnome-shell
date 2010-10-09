@@ -510,7 +510,7 @@ clutter_binding_pool_install_action (ClutterBindingPool  *pool,
     {
       GClosureMarshal marshal;
 
-      marshal = _clutter_marshal_BOOLEAN__STRING_UINT_ENUM;
+      marshal = _clutter_marshal_BOOLEAN__STRING_UINT_FLAGS;
       g_closure_set_marshal (closure, marshal);
     }
 
@@ -576,7 +576,7 @@ clutter_binding_pool_install_closure (ClutterBindingPool  *pool,
     {
       GClosureMarshal marshal;
 
-      marshal = _clutter_marshal_BOOLEAN__STRING_UINT_ENUM;
+      marshal = _clutter_marshal_BOOLEAN__STRING_UINT_FLAGS;
       g_closure_set_marshal (closure, marshal);
     }
 
@@ -644,7 +644,7 @@ clutter_binding_pool_override_action (ClutterBindingPool  *pool,
     {
       GClosureMarshal marshal;
 
-      marshal = _clutter_marshal_BOOLEAN__STRING_UINT_ENUM;
+      marshal = _clutter_marshal_BOOLEAN__STRING_UINT_FLAGS;
       g_closure_set_marshal (closure, marshal);
     }
 }
@@ -704,7 +704,7 @@ clutter_binding_pool_override_closure (ClutterBindingPool  *pool,
     {
       GClosureMarshal marshal;
 
-      marshal = _clutter_marshal_BOOLEAN__STRING_UINT_ENUM;
+      marshal = _clutter_marshal_BOOLEAN__STRING_UINT_FLAGS;
       g_closure_set_marshal (closure, marshal);
     }
 }
