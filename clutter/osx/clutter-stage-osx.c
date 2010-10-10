@@ -400,7 +400,7 @@ clutter_stage_osx_resize (ClutterStageWindow *stage_window,
   ClutterActor *actor = clutter_stage_osx_get_wrapper (stage_window);
 
   guint min_width, min_height;
-  clutter_stage_get_minimum_size (actor,
+  clutter_stage_get_minimum_size (CLUTTER_STAGE (actor),
                                   &min_width,
                                   &min_height);
   [self->window setContentMinSize:NSMakeSize(min_width, min_height)];

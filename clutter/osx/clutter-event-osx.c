@@ -25,7 +25,7 @@
 #include "clutter-stage-osx.h"
 
 #import <AppKit/AppKit.h>
-#include <glib/gmain.h>
+#include <glib/glib.h>
 #include <clutter/clutter-debug.h>
 #include <clutter/clutter-private.h>
 #include <clutter/clutter-keysyms.h>
@@ -112,32 +112,57 @@ static GPollFunc old_poll_func = NULL;
     {
     /* these should be fairly standard */
     /* (maybe add 0x0008 (Ctrl+H) for backspace too) */
-    case 0x000d: return CLUTTER_Return;
-    case 0x001b: return CLUTTER_Escape;
-    case 0x007f: return CLUTTER_BackSpace;
+    case 0x000d:
+      return CLUTTER_KEY_Return;
+    case 0x001b:
+      return CLUTTER_KEY_Escape;
+    case 0x007f:
+      return CLUTTER_KEY_BackSpace;
     /* Defined in NSEvent.h */
-    case NSUpArrowFunctionKey:    return CLUTTER_Up;
-    case NSDownArrowFunctionKey:  return CLUTTER_Down;
-    case NSLeftArrowFunctionKey:  return CLUTTER_Left;
-    case NSRightArrowFunctionKey: return CLUTTER_Right;
-    case NSF1FunctionKey:         return CLUTTER_F1;
-    case NSF2FunctionKey:         return CLUTTER_F2;
-    case NSF3FunctionKey:         return CLUTTER_F3;
-    case NSF4FunctionKey:         return CLUTTER_F4;
-    case NSF5FunctionKey:         return CLUTTER_F5;
-    case NSF6FunctionKey:         return CLUTTER_F6;
-    case NSF7FunctionKey:         return CLUTTER_F7;
-    case NSF8FunctionKey:         return CLUTTER_F8;
-    case NSF9FunctionKey:         return CLUTTER_F9;
-    case NSF10FunctionKey:        return CLUTTER_F10;
-    case NSF11FunctionKey:        return CLUTTER_F11;
-    case NSF12FunctionKey:        return CLUTTER_F12;
-    case NSInsertFunctionKey:     return CLUTTER_Insert;
-    case NSDeleteFunctionKey:     return CLUTTER_Delete;
-    case NSHomeFunctionKey:       return CLUTTER_Home;
-    case NSEndFunctionKey:        return CLUTTER_End;
-    case NSPageUpFunctionKey:     return CLUTTER_Page_Up;
-    case NSPageDownFunctionKey:   return CLUTTER_Page_Down;
+    case NSUpArrowFunctionKey:
+      return CLUTTER_KEY_Up;
+    case NSDownArrowFunctionKey:
+      return CLUTTER_KEY_Down;
+    case NSLeftArrowFunctionKey:
+      return CLUTTER_KEY_Left;
+    case NSRightArrowFunctionKey:
+      return CLUTTER_KEY_Right;
+    case NSF1FunctionKey:
+      return CLUTTER_KEY_F1;
+    case NSF2FunctionKey:
+      return CLUTTER_KEY_F2;
+    case NSF3FunctionKey:
+      return CLUTTER_KEY_F3;
+    case NSF4FunctionKey:
+      return CLUTTER_KEY_F4;
+    case NSF5FunctionKey:
+      return CLUTTER_KEY_F5;
+    case NSF6FunctionKey:
+      return CLUTTER_KEY_F6;
+    case NSF7FunctionKey:
+      return CLUTTER_KEY_F7;
+    case NSF8FunctionKey:
+      return CLUTTER_KEY_F8;
+    case NSF9FunctionKey:
+      return CLUTTER_KEY_F9;
+    case NSF10FunctionKey:
+      return CLUTTER_KEY_F10;
+    case NSF11FunctionKey:
+      return CLUTTER_KEY_F11;
+    case NSF12FunctionKey:
+      return CLUTTER_KEY_F12;
+    case NSInsertFunctionKey:
+      return CLUTTER_KEY_Insert;
+    case NSDeleteFunctionKey:
+      return CLUTTER_KEY_Delete;
+    case NSHomeFunctionKey:
+      return CLUTTER_KEY_Home;
+    case NSEndFunctionKey:
+      return CLUTTER_KEY_End;
+    case NSPageUpFunctionKey:
+      return CLUTTER_KEY_Page_Up;
+    case NSPageDownFunctionKey:
+      return CLUTTER_KEY_Page_Down;
     }
 
   CLUTTER_NOTE (BACKEND, "unhandled unicode key 0x%x (%d)", c, c);
@@ -147,15 +172,24 @@ static GPollFunc old_poll_func = NULL;
    */
   switch ([self keyCode])
     {
-    case 115: return CLUTTER_Home;
-    case 116: return CLUTTER_Page_Up;
-    case 117: return CLUTTER_Delete;
-    case 119: return CLUTTER_End;
-    case 121: return CLUTTER_Page_Down;
-    case 123: return CLUTTER_Left;
-    case 124: return CLUTTER_Right;
-    case 125: return CLUTTER_Down;
-    case 126: return CLUTTER_Up;
+    case 115:
+      return CLUTTER_KEY_Home;
+    case 116:
+      return CLUTTER_KEY_Page_Up;
+    case 117:
+      return CLUTTER_KEY_Delete;
+    case 119:
+      return CLUTTER_KEY_End;
+    case 121:
+      return CLUTTER_KEY_Page_Down;
+    case 123:
+      return CLUTTER_KEY_Left;
+    case 124:
+      return CLUTTER_KEY_Right;
+    case 125:
+      return CLUTTER_KEY_Down;
+    case 126:
+      return CLUTTER_KEY_Up;
     }
 
   return 0;

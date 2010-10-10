@@ -43,12 +43,18 @@ clutter_backend_osx_post_parse (ClutterBackend  *backend,
   NSSize size;
   [[prop valueForKey:@"NSDeviceResolution"] getValue:&size];
   CLUTTER_OSX_POOL_RELEASE();
+
   /* setting dpi for backend, it needs by font rendering library */
   if (size.height > 0)
     {
-      clutter_backend_set_resolution (backend, size.height);
+      ClutterSettings *settings = clutter_settings_get_default ();
+      int font_dpi = size.height * 1024;
+
+      g_object_set (settings, "font-dpi", font_dpi, NULL);
+
       return TRUE;
     }
+
   return FALSE;
 }
 
