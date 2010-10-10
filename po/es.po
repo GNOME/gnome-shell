@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
 "POT-Creation-Date: 2010-10-04 19:52+0000\n"
-"PO-Revision-Date: 2010-10-08 11:05+0200\n"
+"PO-Revision-Date: 2010-10-10 05:12+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -228,7 +228,7 @@ msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
 msgid "Clip the crosshairs at the center"
-msgstr ""
+msgstr "Fijar los cursores en el centro"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
 msgid "Color of the crosshairs"
@@ -239,6 +239,8 @@ msgid ""
 "Determines the length of the vertical and horizontal lines that make up the "
 "crosshairs."
 msgstr ""
+"Determina la longitud de las líneas verticales y horizontales que conforman "
+"los cursores."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
 msgid ""
@@ -258,6 +260,8 @@ msgid ""
 "Determines the transparency of the crosshairs, from fully opaque to fully "
 "transparent."
 msgstr ""
+"Determina la transparencia de los cursores, de completamente opacos a "
+"completamente transparentes."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
 msgid ""
@@ -276,6 +280,8 @@ msgid ""
 "Enables/disables display of crosshairs centered on the magnified mouse "
 "sprite."
 msgstr ""
+"Activa/desactiva el mostrado de los cursores centrados en el «sprite» "
+"magnificado del ratón."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
 msgid ""
@@ -302,7 +308,7 @@ msgstr "Opacidad de las cruces"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
 msgid "Screen position"
-msgstr ""
+msgstr "Posición de la pantalla"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
 msgid "Scroll magnified contents beyond the edges of the desktop"
