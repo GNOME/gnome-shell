@@ -201,14 +201,16 @@ void
 clutter_paint_volume_set_origin (ClutterPaintVolume  *pv,
                                  const ClutterVertex *origin)
 {
-  float dx = origin->x - pv->vertices[0].x;
-  float dy = origin->y - pv->vertices[0].y;
-  float dz = origin->z - pv->vertices[0].z;
-  int key_vertices[4] = {0, 1, 3, 4};
+  static const int key_vertices[4] = { 0, 1, 3, 4 };
+  float dx, dy, dz;
   int i;
 
   g_return_if_fail (pv != NULL);
   g_return_if_fail (pv->is_axis_aligned);
+
+  dx = origin->x - pv->vertices[0].x;
+  dy = origin->y - pv->vertices[0].y;
+  dz = origin->z - pv->vertices[0].z;
 
   /* If we change the origin then all the key vertices of the paint
    * volume need to be shifted too... */
@@ -448,7 +450,7 @@ void
 clutter_paint_volume_union (ClutterPaintVolume *pv,
                             const ClutterPaintVolume *another_pv)
 {
-  int key_vertices[4] = {0, 1, 3, 4};
+  static const int key_vertices[4] = { 0, 1, 3, 4 };
 
   g_return_if_fail (pv != NULL);
   g_return_if_fail (pv->is_axis_aligned);
@@ -760,6 +762,8 @@ _clutter_paint_volume_axis_align (ClutterPaintVolume *pv)
   float max_x;
   float max_y;
   float max_z;
+
+  g_return_if_fail (pv != NULL);
 
   if (pv->is_empty)
     return;
