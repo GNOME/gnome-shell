@@ -569,7 +569,7 @@ clutter_script_load_from_data (ClutterScript  *script,
  * Retrieves the object bound to @name. This function does not increment
  * the reference count of the returned object.
  *
- * Return value: : (transfer none): the named object, or %NULL if no object
+ * Return value: (transfer none): the named object, or %NULL if no object
  *   with the given name was available
  *
  * Since: 0.6
