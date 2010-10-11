@@ -71,10 +71,9 @@ enter_event (ClutterActor *actor,
              ClutterEvent *event,
              gpointer data)
 {
-  ClutterColor color = { 0x00, 0x00, 0x00, 0xff };
-
   clutter_rectangle_set_border_width (CLUTTER_RECTANGLE (actor), 2);
-  clutter_rectangle_set_border_color (CLUTTER_RECTANGLE (actor), &color);
+  clutter_rectangle_set_border_color (CLUTTER_RECTANGLE (actor),
+                                      CLUTTER_COLOR_Black);
 
   hover_actor = actor;
 }
@@ -132,13 +131,14 @@ add_actor (ClutterBoxLayout *layout,
            guint             index_)
 {
   ClutterActor *rect;
-  ClutterColor color = { 0xff, 0xff, 0xff, 255 };
   static gboolean expand = TRUE;
+  ClutterColor color;
 
   clutter_color_from_hls (&color,
                           g_random_double_range (0.0, 360.0),
                           0.5,
                           0.5);
+  color.alpha = 255;
 
   rect = clutter_rectangle_new_with_color (&color);
   clutter_actor_set_size (rect, 32, 64);

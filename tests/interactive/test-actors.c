@@ -10,7 +10,8 @@
 
 typedef struct SuperOH
 {
-  ClutterActor **hand, *bgtex;
+  ClutterActor **hand;
+  ClutterActor  *bgtex;
   ClutterActor  *real_hand;
   ClutterActor  *group;
   ClutterActor  *stage;
@@ -133,7 +134,6 @@ test_actors_main (int argc, char *argv[])
 {
   ClutterAlpha *alpha;
   ClutterActor *stage;
-  ClutterColor  stage_color = { 0x61, 0x64, 0x8c, 0xff };
   SuperOH      *oh;
   gint          i;
   GError       *error;
@@ -156,12 +156,13 @@ test_actors_main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_size (stage, 800, 600);
   clutter_actor_set_name (stage, "Default Stage");
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  clutter_stage_set_title (CLUTTER_STAGE (stage), "Clone Test");
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Actors");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_LightSkyBlue);
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
 
   oh = g_new (SuperOH, 1);
