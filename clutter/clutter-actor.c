@@ -9302,16 +9302,40 @@ clutter_vertex_equal (const ClutterVertex *vertex_a,
          vertex_a->z == vertex_b->z;
 }
 
+static gboolean
+clutter_vertex_progress (const GValue *a,
+                         const GValue *b,
+                         gdouble       progress,
+                         GValue       *retval)
+{
+  const ClutterVertex *av = g_value_get_boxed (a);
+  const ClutterVertex *bv = g_value_get_boxed (b);
+  ClutterVertex res = { 0, };
+
+  res.x = av->x + (bv->x - av->x) * progress;
+  res.y = av->y + (bv->y - av->y) * progress;
+  res.z = av->z + (bv->z - av->z) * progress;
+
+  g_value_set_boxed (retval, &res);
+
+  return TRUE;
+}
+
 GType
 clutter_vertex_get_type (void)
 {
   static GType our_type = 0;
 
   if (G_UNLIKELY (our_type == 0))
-    our_type =
-      g_boxed_type_register_static (I_("ClutterVertex"),
-                                    (GBoxedCopyFunc) clutter_vertex_copy,
-                                    (GBoxedFreeFunc) clutter_vertex_free);
+    {
+      our_type =
+        g_boxed_type_register_static (I_("ClutterVertex"),
+                                      (GBoxedCopyFunc) clutter_vertex_copy,
+                                      (GBoxedFreeFunc) clutter_vertex_free);
+
+      clutter_interval_register_progress_func (our_type,
+                                               clutter_vertex_progress);
+    }
 
   return our_type;
 }
