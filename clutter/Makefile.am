@@ -139,6 +139,7 @@ source_h =					\
 
 source_c = \
 	$(srcdir)/clutter-action.c		\
+	$(srcdir)/clutter-actor-box.c		\
 	$(srcdir)/clutter-actor-meta.c		\
 	$(srcdir)/clutter-actor.c		\
 	$(srcdir)/clutter-align-constraint.c	\
