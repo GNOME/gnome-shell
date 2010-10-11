@@ -155,7 +155,7 @@ clutter_clone_paint (ClutterActor *self)
   ClutterClonePrivate *priv = clone->priv;
   gboolean was_unmapped = FALSE;
 
-  if (G_UNLIKELY (priv->clone_source == NULL))
+  if (priv->clone_source == NULL)
     return;
 
   CLUTTER_NOTE (PAINT,
@@ -218,7 +218,7 @@ clutter_clone_allocate (ClutterActor           *self,
   parent_class = CLUTTER_ACTOR_CLASS (clutter_clone_parent_class);
   parent_class->allocate (self, box, flags);
 
-  if (G_UNLIKELY (priv->clone_source == NULL))
+  if (priv->clone_source == NULL)
     return;
 
   /* we act like a "foster parent" for the source we are cloning;
