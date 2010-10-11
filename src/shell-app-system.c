@@ -1311,7 +1311,6 @@ shell_app_info_launch_full (ShellAppInfo *info,
                             GError      **error)
 {
   GDesktopAppInfo *gapp;
-  char *filename;
   GdkAppLaunchContext *context;
   gboolean ret;
   ShellGlobal *global;
@@ -1333,11 +1332,13 @@ shell_app_info_launch_full (ShellAppInfo *info,
     }
   else if (info->type == SHELL_APP_INFO_TYPE_ENTRY)
     {
-      gapp = g_desktop_app_info_new (shell_app_info_get_id (info));
+      /* Can't use g_desktop_app_info_new, see bug 614879 */
+      const char *filename = gmenu_tree_entry_get_desktop_file_path ((GMenuTreeEntry *)info->entry);
+      gapp = g_desktop_app_info_new_from_filename (filename);
     }
   else
     {
-      filename = shell_app_info_get_desktop_file_path (info);
+      char *filename = shell_app_info_get_desktop_file_path (info);
       gapp = g_desktop_app_info_new_from_filename (filename);
       g_free (filename);
     }
