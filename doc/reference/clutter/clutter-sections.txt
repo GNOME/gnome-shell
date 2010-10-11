@@ -973,6 +973,7 @@ clutter_color_subtract
 clutter_color_lighten
 clutter_color_darken
 clutter_color_shade
+clutter_color_interpolate
 
 <SUBSECTION>
 ClutterParamSpecColor

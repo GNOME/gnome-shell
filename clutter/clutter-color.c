@@ -41,6 +41,7 @@
 
 #include <pango/pango-attributes.h>
 
+#include "clutter-interval.h"
 #include "clutter-main.h"
 #include "clutter-color.h"
 #include "clutter-private.h"
@@ -556,6 +557,50 @@ clutter_color_hash (gconstpointer v)
 }
 
 /**
+ * clutter_color_interpolate:
+ * @initial: the initial #ClutterColor
+ * @final: the final #ClutterColor
+ * @progress: the interpolation progress
+ * @result: (out): return location for the interpolation
+ *
+ * Interpolates between @initial and @final #ClutterColor<!-- -->s
+ * using @progress
+ *
+ * Since: 1.6
+ */
+void
+clutter_color_interpolate (const ClutterColor *initial,
+                           const ClutterColor *final,
+                           gdouble             progress,
+                           ClutterColor       *result)
+{
+  g_return_if_fail (initial != NULL);
+  g_return_if_fail (final != NULL);
+  g_return_if_fail (result != NULL);
+
+  result->red   = initial->red   + (final->red   - initial->red)   * progress;
+  result->green = initial->green + (final->green - initial->green) * progress;
+  result->blue  = initial->blue  + (final->blue  - initial->blue)  * progress;
+  result->alpha = initial->alpha + (final->alpha - initial->alpha) * progress;
+}
+
+static gboolean
+clutter_color_progress (const GValue *a,
+                        const GValue *b,
+                        gdouble       progress,
+                        GValue       *retval)
+{
+  const ClutterColor *a_color = clutter_value_get_color (a);
+  const ClutterColor *b_color = clutter_value_get_color (b);
+  ClutterColor res = { 0, };
+
+  clutter_color_interpolate (a_color, b_color, progress, &res);
+  clutter_value_set_color (retval, &res);
+
+  return TRUE;
+}
+
+/**
  * clutter_color_copy:
  * @color: a #ClutterColor
  *
@@ -672,6 +717,9 @@ clutter_color_get_type (void)
                                         clutter_value_transform_color_string);
        g_value_register_transform_func (G_TYPE_STRING, _clutter_color_type,
                                         clutter_value_transform_string_color);
+
+       clutter_interval_register_progress_func (_clutter_color_type,
+                                                clutter_color_progress);
     }
 
   return _clutter_color_type;

@@ -102,6 +102,11 @@ guint         clutter_color_hash        (gconstpointer       v);
 gboolean      clutter_color_equal       (gconstpointer       v1,
                                          gconstpointer       v2);
 
+void          clutter_color_interpolate (const ClutterColor *initial,
+                                         const ClutterColor *final,
+                                         gdouble             progress,
+                                         ClutterColor       *result);
+
 #define CLUTTER_TYPE_PARAM_COLOR           (clutter_param_color_get_type ())
 #define CLUTTER_PARAM_SPEC_COLOR(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), CLUTTER_TYPE_PARAM_COLOR, ClutterParamSpecColor))
 #define CLUTTER_IS_PARAM_SPEC_COLOR(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), CLUTTER_TYPE_PARAM_COLOR))
