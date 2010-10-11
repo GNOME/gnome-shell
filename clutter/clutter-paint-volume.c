@@ -114,7 +114,7 @@ _clutter_paint_volume_init_static (ClutterActor *actor,
 
 void
 _clutter_paint_volume_copy_static (const ClutterPaintVolume *src_pv,
-                                   ClutterPaintVolume *dst_pv)
+                                   ClutterPaintVolume       *dst_pv)
 {
 
   g_return_if_fail (src_pv != NULL && dst_pv != NULL);
@@ -151,7 +151,7 @@ clutter_paint_volume_copy (const ClutterPaintVolume *pv)
 }
 
 void
-_clutter_paint_volume_set_from_volume (ClutterPaintVolume *pv,
+_clutter_paint_volume_set_from_volume (ClutterPaintVolume       *pv,
                                        const ClutterPaintVolume *src)
 {
   if (src->actor != pv->actor)
@@ -920,7 +920,7 @@ clutter_paint_volume_set_from_allocation (ClutterPaintVolume *pv,
  * clone). */
 void
 _clutter_paint_volume_set_reference_actor (ClutterPaintVolume *pv,
-                                           ClutterActor *actor)
+                                           ClutterActor       *actor)
 {
   g_return_if_fail (pv != NULL);
 
