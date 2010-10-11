@@ -298,23 +298,6 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
       break;
 
     case G_TYPE_BOXED:
-      if (value_type == CLUTTER_TYPE_COLOR)
-        {
-          const ClutterColor *ia, *ib;
-          ClutterColor res = { 0, };
-
-          ia = clutter_value_get_color (initial);
-          ib = clutter_value_get_color (final);
-
-          res.red   = (factor * (ib->red   - (gdouble) ia->red))   + ia->red;
-          res.green = (factor * (ib->green - (gdouble) ia->green)) + ia->green;
-          res.blue  = (factor * (ib->blue  - (gdouble) ia->blue))  + ia->blue;
-          res.alpha = (factor * (ib->alpha - (gdouble) ia->alpha)) + ia->alpha;
-
-          clutter_value_set_color (value, &res);
-
-          retval = TRUE;
-        }
       break;
 
     default:
