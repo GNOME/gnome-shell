@@ -9362,16 +9362,40 @@ clutter_actor_box_free (ClutterActorBox *box)
     g_slice_free (ClutterActorBox, box);
 }
 
+static gboolean
+clutter_actor_box_progress (const GValue *a,
+                            const GValue *b,
+                            gdouble       factor,
+                            GValue       *retval)
+{
+  ClutterActorBox res = { 0, };
+
+  clutter_actor_box_interpolate (g_value_get_boxed (a),
+                                 g_value_get_boxed (b),
+                                 factor,
+                                 &res);
+
+  g_value_set_boxed (retval, &res);
+
+  return TRUE;
+}
+
 GType
 clutter_actor_box_get_type (void)
 {
   static GType our_type = 0;
 
   if (G_UNLIKELY (our_type == 0))
-    our_type =
-      g_boxed_type_register_static (I_("ClutterActorBox"),
-                                    (GBoxedCopyFunc) clutter_actor_box_copy,
-                                    (GBoxedFreeFunc) clutter_actor_box_free);
+    {
+      our_type =
+        g_boxed_type_register_static (I_("ClutterActorBox"),
+                                      (GBoxedCopyFunc) clutter_actor_box_copy,
+                                      (GBoxedFreeFunc) clutter_actor_box_free);
+
+      clutter_interval_register_progress_func (our_type,
+                                               clutter_actor_box_progress);
+    }
+
   return our_type;
 }
 
