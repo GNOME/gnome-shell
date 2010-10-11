@@ -92,6 +92,11 @@ main (int argc, char **argv)
 {
   clutter_test_init (&argc, &argv);
 
+  /* This file is run through a sed script during the make step so the
+     lines containing the tests need to be formatted on a single line
+     each. To comment out a test use the SKIP or TODO macros. Using
+     #if 0 would break the script. */
+
   TEST_CONFORM_SIMPLE ("/timeline", test_timeline);
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_interpolate);
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_rewind);
