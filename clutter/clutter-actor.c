@@ -9114,16 +9114,42 @@ clutter_geometry_free (ClutterGeometry *geometry)
     g_slice_free (ClutterGeometry, geometry);
 }
 
+static gboolean
+clutter_geometry_progress (const GValue *a,
+                           const GValue *b,
+                           gdouble       progress,
+                           GValue       *retval)
+{
+  const ClutterGeometry *a_geom = g_value_get_boxed (a);
+  const ClutterGeometry *b_geom = g_value_get_boxed (b);
+  ClutterGeometry res = { 0, };
+
+  res.x = a_geom->x + (b_geom->x - a_geom->x) * progress;
+  res.y = a_geom->y + (b_geom->y - a_geom->y) * progress;
+
+  res.width = a_geom->width + (b_geom->width - a_geom->width) * progress;
+  res.height = a_geom->height + (b_geom->height - a_geom->height) * progress;
+
+  g_value_set_boxed (retval, &res);
+
+  return TRUE;
+}
+
 GType
 clutter_geometry_get_type (void)
 {
   static GType our_type = 0;
 
   if (G_UNLIKELY (our_type == 0))
-    our_type =
-      g_boxed_type_register_static (I_("ClutterGeometry"),
-                                    (GBoxedCopyFunc) clutter_geometry_copy,
-                                    (GBoxedFreeFunc) clutter_geometry_free);
+    {
+      our_type =
+        g_boxed_type_register_static (I_("ClutterGeometry"),
+                                      (GBoxedCopyFunc) clutter_geometry_copy,
+                                      (GBoxedFreeFunc) clutter_geometry_free);
+
+      clutter_interval_register_progress_func (our_type,
+                                               clutter_geometry_progress);
+    }
 
   return our_type;
 }
