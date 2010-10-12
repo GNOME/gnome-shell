@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2008,2009 Intel Corporation.
+ * Copyright (C) 2008,2009,2010 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -57,39 +57,6 @@
  * - some dirty flag mechanims to know when the shader program has changed
  *   so we don't need to re-query it each time we draw a buffer.
  *
- * TODO:
- * There is currently no API for querying back info about a buffer, E.g.:
- * cogl_vertex_buffer_get_n_vertices (buffer_handle);
- * cogl_vertex_buffer_get_n_components (buffer_handle, "attrib_name");
- * cogl_vertex_buffer_get_stride (buffer_handle, "attrib_name");
- * cogl_vertex_buffer_get_normalized (buffer_handle, "attrib_name");
- * cogl_vertex_buffer_map (buffer_handle, "attrib_name");
- * cogl_vertex_buffer_unmap (buffer_handle, "attrib_name");
- * (Realistically I wouldn't expect anyone to use such an API to examine the
- *  contents of a buffer for modification, since you'd need to handle too many
- *  possibilities, but never the less there might be other value in these.)
-
- * TODO:
- * It may be worth exposing the underlying VBOs for some advanced use
- * cases, e.g.:
- * handle = cogl_vbo_new (COGL_VBO_FLAG_STATIC);
- * pointer = cogl_vbo_map (handle, COGL_VBO_FLAG_WRITEONLY);
- * cogl_vbo_unmap (handle);
- * cogl_vbo_set_data (handle, size, data);
- * cogl_vbo_set_sub_data (handle, offset, size, data);
- * cogl_vbo_set_usage_hint (COGL_VBO_FLAG_DYNAMIC);
- *
- * TODO:
- * Experiment with wider use of the vertex buffers API internally to Cogl.
- * - There is potential, I think, for this API to become a work-horse API
- *   within COGL for submitting geometry to the GPU, and could unify some of
- *   the GL/GLES code paths.
- * E.g.:
- * - Try creating a per-context vertex buffer cache for cogl_texture_rectangle
- *   to sit on top of.
- * - Try saving the tesselation of paths/polygons into vertex buffers
- *   internally.
- *
  * TODO
  * Expose API that lets developers get back a buffer handle for a particular
  * polygon so they may add custom attributes to them.
@@ -136,8 +103,8 @@
 #include "cogl-handle.h"
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-texture-private.h"
+#include "cogl-material.h"
 #include "cogl-material-private.h"
-#include "cogl-material-opengl-private.h"
 #include "cogl-primitives.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-journal-private.h"
@@ -145,72 +112,9 @@
 #define PAD_FOR_ALIGNMENT(VAR, TYPE_SIZE) \
   (VAR = TYPE_SIZE + ((VAR - 1) & ~(TYPE_SIZE - 1)))
 
-
-/*
- * GL/GLES compatability defines for VBO thingies:
- */
-
-#if defined (HAVE_COGL_GL)
-
-#define glGenBuffers ctx->drv.pf_glGenBuffers
-#define glBindBuffer ctx->drv.pf_glBindBuffer
-#define glBufferData ctx->drv.pf_glBufferData
-#define glBufferSubData ctx->drv.pf_glBufferSubData
-#define glGetBufferSubData ctx->drv.pf_glGetBufferSubData
-#define glDeleteBuffers ctx->drv.pf_glDeleteBuffers
-#define glMapBuffer ctx->drv.pf_glMapBuffer
-#define glUnmapBuffer ctx->drv.pf_glUnmapBuffer
-#define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
-#ifndef GL_ARRAY_BUFFER
-#define GL_ARRAY_BUFFER GL_ARRAY_BUFFER_ARB
-#endif
-
-#elif defined (HAVE_COGL_GLES2)
-
-#include "../gles/cogl-gles2-wrapper.h"
-
-#endif
-
-/* This isn't defined in the GLES headers */
-#ifndef GL_UNSIGNED_INT
-#define GL_UNSIGNED_INT 0x1405
-#endif
-
-/*
- * GL/GLES compatability defines for shader things:
- */
-
-#if defined (HAVE_COGL_GL)
-
-#define glVertexAttribPointer ctx->drv.pf_glVertexAttribPointer
-#define glEnableVertexAttribArray ctx->drv.pf_glEnableVertexAttribArray
-#define glDisableVertexAttribArray ctx->drv.pf_glDisableVertexAttribArray
-#define MAY_HAVE_PROGRAMABLE_GL
-
-#elif defined (HAVE_COGL_GLES2)
-
-/* NB: GLES2 had shaders in core since day one so again we don't need
- * defines in this case: */
-#define MAY_HAVE_PROGRAMABLE_GL
-
-#endif
-
-#ifndef HAVE_COGL_GL
-
-/* GLES doesn't have glDrawRangeElements, so we simply pretend it does
- * but that it makes no use of the start, end constraints: */
-#define glDrawRangeElements(mode, start, end, count, type, indices) \
-  glDrawElements (mode, count, type, indices)
-
-#else /* HAVE_COGL_GL */
-
-#define glDrawRangeElements(mode, start, end, count, type, indices) \
-  ctx->drv.pf_glDrawRangeElements (mode, start, end, count, type, indices)
-
-#endif /* HAVE_COGL_GL */
-
 static void _cogl_vertex_buffer_free (CoglVertexBuffer *buffer);
 static void _cogl_vertex_buffer_indices_free (CoglVertexBufferIndices *buffer_indices);
+static CoglUserDataKey _cogl_vertex_buffer_material_priv_key;
 
 COGL_HANDLE_DEFINE (VertexBuffer, vertex_buffer);
 COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (vertex_buffer);
@@ -225,6 +129,8 @@ cogl_vertex_buffer_new (unsigned int n_vertices)
 
   buffer->submitted_vbos = NULL;
   buffer->new_attributes = NULL;
+  buffer->primitive = cogl_primitive_new (COGL_VERTICES_MODE_TRIANGLES,
+                                          n_vertices, NULL);
 
   /* return COGL_INVALID_HANDLE; */
   return _cogl_vertex_buffer_handle_new (buffer);
@@ -347,7 +253,8 @@ validate_custom_attribute_name (const char *attribute_name)
 /* Iterates the CoglVertexBufferVBOs of a buffer and creates a flat list
  * of all the submitted attributes
  *
- * Note: The CoglVertexBufferAttrib structs are deep copied.
+ * Note: The CoglVertexBufferAttrib structs are deep copied, except the
+ * internal CoglVertexAttribute pointer is set to NULL.
  */
 static GList *
 copy_submitted_attributes_list (CoglVertexBuffer *buffer)
@@ -366,71 +273,86 @@ copy_submitted_attributes_list (CoglVertexBuffer *buffer)
 	  CoglVertexBufferAttrib *copy =
             g_slice_alloc (sizeof (CoglVertexBufferAttrib));
 	  *copy = *attribute;
+          copy->name_without_detail =
+            g_strdup (attribute->name_without_detail);
+          copy->attribute = NULL;
 	  submitted_attributes = g_list_prepend (submitted_attributes, copy);
 	}
     }
   return submitted_attributes;
 }
 
-static CoglVertexBufferAttribFlags
-get_attribute_gl_type_flag_from_gl_type (GLenum gl_type)
+static size_t
+sizeof_attribute_type (CoglAttributeType type)
 {
-  switch (gl_type)
-  {
-    case GL_BYTE:
-      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_BYTE;
-    case GL_UNSIGNED_BYTE:
-      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_BYTE;
-    case GL_SHORT:
-      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_SHORT;
-    case GL_UNSIGNED_SHORT:
-      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_SHORT;
-    case GL_FLOAT:
-      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_FLOAT;
-#if HAVE_COGL_GL
-    case GL_INT:
-      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_INT;
-    case GL_UNSIGNED_INT:
-      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_INT;
-    case GL_DOUBLE:
-      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_DOUBLE;
-#endif
-    default:
-      g_warning ("Attribute Buffers API: "
-                 "Unrecognised OpenGL type enum 0x%08x\n", gl_type);
-      return 0;
-  }
+  switch (type)
+    {
+    case COGL_ATTRIBUTE_TYPE_BYTE:
+      return 1;
+    case COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE:
+      return 1;
+    case COGL_ATTRIBUTE_TYPE_SHORT:
+      return 2;
+    case COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT:
+      return 2;
+    case COGL_ATTRIBUTE_TYPE_FLOAT:
+      return 4;
+    }
+  g_return_val_if_reached (0);
 }
 
-static gsize
-get_gl_type_size (CoglVertexBufferAttribFlags flags)
+static size_t
+strideof (CoglAttributeType type, int n_components)
 {
-  CoglVertexBufferAttribFlags gl_type =
-    flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_MASK;
+  return sizeof_attribute_type (type) * n_components;
+}
 
-  switch (gl_type)
+static char *
+canonize_attribute_name (const char *attribute_name)
+{
+  char *detail_seperator = NULL;
+  int name_len;
+
+  if (strncmp (attribute_name, "gl_", 3) != 0)
+    return g_strdup (attribute_name);
+
+  /* skip past the "gl_" */
+  attribute_name += 3;
+
+  detail_seperator = strstr (attribute_name, "::");
+  if (detail_seperator)
+    name_len = detail_seperator - attribute_name;
+  else
     {
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_BYTE:
-      return sizeof (GLbyte);
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_BYTE:
-      return sizeof (GLubyte);
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_SHORT:
-      return sizeof (GLshort);
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_SHORT:
-      return sizeof (GLushort);
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_FLOAT:
-      return sizeof (GLfloat);
-#if HAVE_COGL_GL
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_INT:
-      return sizeof (GLint);
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_INT:
-      return sizeof (GLuint);
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_DOUBLE:
-      return sizeof (GLdouble);
-#endif
-    default:
-      g_warning ("Vertex Buffer API: Unrecognised OpenGL type enum 0x%08x\n", gl_type);
-      return 0;
+      name_len = strlen (attribute_name);
+      detail_seperator = "";
+    }
+
+  if (strncmp (attribute_name, "Vertex", name_len) == 0)
+    return g_strconcat ("cogl_position_in", detail_seperator, NULL);
+  else if (strncmp (attribute_name, "Color", name_len) == 0)
+    return g_strconcat ("cogl_color_in", detail_seperator, NULL);
+  else if (strncmp (attribute_name,
+		    "MultiTexCoord",
+		    strlen ("MultiTexCoord")) == 0)
+    {
+      unsigned int unit;
+
+      if (sscanf (attribute_name, "MultiTexCoord%u", &unit) != 1)
+	{
+	  g_warning ("gl_MultiTexCoord attributes should include a\n"
+		     "texture unit number, E.g. gl_MultiTexCoord0\n");
+	  unit = 0;
+	}
+      return g_strdup_printf ("cogl_tex_coord%u_in%s",
+                              unit, detail_seperator);
+    }
+  else if (strncmp (attribute_name, "Normal", name_len) == 0)
+    return g_strconcat ("cogl_normal_in", detail_seperator, NULL);
+  else
+    {
+      g_warning ("Unknown gl_* attribute name gl_%s\n", attribute_name);
+      return g_strdup (attribute_name);
     }
 }
 
@@ -444,17 +366,23 @@ cogl_vertex_buffer_add (CoglHandle         handle,
 			const void        *pointer)
 {
   CoglVertexBuffer *buffer;
-  GQuark name_quark = g_quark_from_string (attribute_name);
+  char *cogl_attribute_name;
+  GQuark name_quark;
   gboolean modifying_an_attrib = FALSE;
   CoglVertexBufferAttrib *attribute;
   CoglVertexBufferAttribFlags flags = 0;
   guint8 texture_unit = 0;
   GList *tmp;
+  char *detail;
 
   if (!cogl_is_vertex_buffer (handle))
     return;
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer->dirty_attributes = TRUE;
+
+  cogl_attribute_name = canonize_attribute_name (attribute_name);
+  name_quark = g_quark_from_string (cogl_attribute_name);
 
   /* The submit function works by diffing between submitted_attributes
    * and new_attributes to minimize the upload bandwidth + cost of
@@ -487,6 +415,9 @@ cogl_vertex_buffer_add (CoglHandle         handle,
       /* Validate the attribute name, is suitable as a variable name */
       if (strncmp (attribute_name, "gl_", 3) == 0)
 	{
+          /* Note: we pass the original attribute name here so that
+           * any warning messages correspond to the users original
+           * attribute name... */
 	  flags |= validate_gl_attribute (attribute_name + 3,
 					  n_components,
 					  &texture_unit);
@@ -500,16 +431,25 @@ cogl_vertex_buffer_add (CoglHandle         handle,
 	    return;
 	}
 
-      attribute = g_slice_alloc (sizeof (CoglVertexBufferAttrib));
+      attribute = g_slice_alloc0 (sizeof (CoglVertexBufferAttrib));
     }
 
-  attribute->name = g_quark_from_string (attribute_name);
+  attribute->name = name_quark;
+  detail = strstr (cogl_attribute_name, "::");
+  if (detail)
+    attribute->name_without_detail = g_strndup (cogl_attribute_name,
+                                                detail - cogl_attribute_name);
+  else
+    attribute->name_without_detail = g_strdup (cogl_attribute_name);
+  attribute->type = type;
   attribute->n_components = n_components;
-  attribute->stride = buffer->n_vertices > 1 ? stride : 0;
+  if (stride == 0)
+    stride = strideof (type, n_components);
+  attribute->stride = stride;
   attribute->u.pointer = pointer;
   attribute->texture_unit = texture_unit;
+  attribute->attribute = NULL;
 
-  flags |= get_attribute_gl_type_flag_from_gl_type (type);
   flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_ENABLED;
 
   /* Note: We currently just assume, if an attribute is *ever* updated
@@ -523,18 +463,22 @@ cogl_vertex_buffer_add (CoglHandle         handle,
     flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMALIZED;
   attribute->flags = flags;
 
-  /* NB: get_gl_type_size must be called after setting the type
-   * flags, above. */
-  if (attribute->stride)
-    attribute->span_bytes = buffer->n_vertices * attribute->stride;
-  else
-    attribute->span_bytes = buffer->n_vertices
-			    * attribute->n_components
-			    * get_gl_type_size (attribute->flags);
+  attribute->span_bytes = buffer->n_vertices * attribute->stride;
 
   if (!modifying_an_attrib)
     buffer->new_attributes =
       g_list_prepend (buffer->new_attributes, attribute);
+
+  g_free (cogl_attribute_name);
+}
+
+static void
+_cogl_vertex_buffer_attrib_free (CoglVertexBufferAttrib *attribute)
+{
+  if (attribute->attribute)
+    cogl_object_unref (attribute->attribute);
+  g_free (attribute->name_without_detail);
+  g_slice_free (CoglVertexBufferAttrib, attribute);
 }
 
 void
@@ -542,13 +486,17 @@ cogl_vertex_buffer_delete (CoglHandle handle,
 			   const char *attribute_name)
 {
   CoglVertexBuffer *buffer;
-  GQuark name = g_quark_from_string (attribute_name);
+  char *cogl_attribute_name = canonize_attribute_name (attribute_name);
+  GQuark name = g_quark_from_string (cogl_attribute_name);
   GList *tmp;
+
+  g_free (cogl_attribute_name);
 
   if (!cogl_is_vertex_buffer (handle))
     return;
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer->dirty_attributes = TRUE;
 
   /* The submit function works by diffing between submitted_attributes
    * and new_attributes to minimize the upload bandwidth + cost of
@@ -564,7 +512,7 @@ cogl_vertex_buffer_delete (CoglHandle handle,
 	{
 	  buffer->new_attributes =
 	    g_list_delete_link (buffer->new_attributes, tmp);
-	  g_slice_free (CoglVertexBufferAttrib, submitted_attribute);
+          _cogl_vertex_buffer_attrib_free (submitted_attribute);
 	  return;
 	}
     }
@@ -579,13 +527,17 @@ set_attribute_enable (CoglHandle handle,
 		      gboolean state)
 {
   CoglVertexBuffer *buffer;
-  GQuark name_quark = g_quark_from_string (attribute_name);
+  char *cogl_attribute_name = canonize_attribute_name (attribute_name);
+  GQuark name_quark = g_quark_from_string (cogl_attribute_name);
   GList *tmp;
+
+  g_free (cogl_attribute_name);
 
   if (!cogl_is_vertex_buffer (handle))
     return;
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer->dirty_attributes = TRUE;
 
   /* NB: If a buffer is currently being edited, then there can be two seperate
    * lists of attributes; those that are currently submitted and a new list yet
@@ -623,9 +575,9 @@ set_attribute_enable (CoglHandle handle,
 	}
     }
 
-  g_warning ("Failed to find an attribute named %s to %s\n",
-	     attribute_name,
-	     state == TRUE ? "enable" : "disable");
+  g_warning ("Failed to %s attribute named %s/%s\n",
+	     state == TRUE ? "enable" : "disable",
+	     attribute_name, cogl_attribute_name);
 }
 
 void
@@ -640,12 +592,6 @@ cogl_vertex_buffer_disable (CoglHandle handle,
 			    const char *attribute_name)
 {
   set_attribute_enable (handle, attribute_name, FALSE);
-}
-
-static void
-cogl_vertex_buffer_attribute_free (CoglVertexBufferAttrib *attribute)
-{
-  g_slice_free (CoglVertexBufferAttrib, attribute);
 }
 
 /* Given an attribute that we know has already been submitted before, this
@@ -801,12 +747,12 @@ filter_strided_attribute (CoglVertexBufferAttrib *attribute,
 	}
     }
   new_cogl_vbo = g_slice_alloc (sizeof (CoglVertexBufferVBO));
-  new_cogl_vbo->vbo_name = NULL;
   new_cogl_vbo->attributes = NULL;
   new_cogl_vbo->attributes =
     g_list_prepend (new_cogl_vbo->attributes, attribute);
   /* Any one of the interleved attributes will have the same span_bytes */
-  new_cogl_vbo->vbo_bytes = attribute->span_bytes;
+  new_cogl_vbo->array = NULL;
+  new_cogl_vbo->array_bytes = attribute->span_bytes;
   new_cogl_vbo->flags = COGL_VERTEX_BUFFER_VBO_FLAG_STRIDED;
 
   if (attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_INFREQUENT_RESUBMIT)
@@ -893,7 +839,7 @@ disassociate_conflicting_attributes (CoglVertexBufferVBO *conflict_vbo,
 
 	  if (conflict_attribute->name == attribute->name)
 	    {
-	      cogl_vertex_buffer_attribute_free (conflict_attribute);
+	      _cogl_vertex_buffer_attrib_free (conflict_attribute);
 	      conflict_vbo->attributes =
 		g_list_delete_link (conflict_vbo->attributes, tmp2);
 	      break;
@@ -903,27 +849,18 @@ disassociate_conflicting_attributes (CoglVertexBufferVBO *conflict_vbo,
 }
 
 static void
-cogl_vertex_buffer_vbo_free (CoglVertexBufferVBO *cogl_vbo,
-                             gboolean delete_gl_vbo)
+cogl_vertex_buffer_vbo_free (CoglVertexBufferVBO *cogl_vbo)
 {
   GList *tmp;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   for (tmp = cogl_vbo->attributes; tmp != NULL; tmp = tmp->next)
-    {
-      cogl_vertex_buffer_attribute_free (tmp->data);
-    }
+    _cogl_vertex_buffer_attrib_free (tmp->data);
   g_list_free (cogl_vbo->attributes);
 
-  if (delete_gl_vbo && cogl_vbo->flags &
-      COGL_VERTEX_BUFFER_VBO_FLAG_SUBMITTED)
-    {
-      if (cogl_get_features () & COGL_FEATURE_VBOS)
-	GE (glDeleteBuffers (1, (GLuint *)&cogl_vbo->vbo_name));
-      else
-	g_free (cogl_vbo->vbo_name);
-    }
+  if (cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_SUBMITTED)
+    cogl_object_unref (cogl_vbo->array);
 
   g_slice_free (CoglVertexBufferVBO, cogl_vbo);
 }
@@ -963,23 +900,15 @@ prep_strided_vbo_for_upload (CoglVertexBufferVBO *cogl_vbo)
 static gboolean
 upload_multipack_vbo_via_map_buffer (CoglVertexBufferVBO *cogl_vbo)
 {
-#if HAVE_COGL_GL
   GList *tmp;
   unsigned int offset = 0;
-  char *buf;
-  gboolean fallback =
-    (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
+  guint8 *buf;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  if (!fallback)
-    {
-      buf = glMapBuffer (GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-      glGetError();
-    }
-  else
-    buf = cogl_vbo->vbo_name;
-
+  buf = cogl_buffer_map (COGL_BUFFER (cogl_vbo->array),
+                         COGL_BUFFER_ACCESS_WRITE,
+                         COGL_BUFFER_MAP_HINT_DISCARD);
   if (!buf)
     return FALSE;
 
@@ -987,9 +916,9 @@ upload_multipack_vbo_via_map_buffer (CoglVertexBufferVBO *cogl_vbo)
     {
       CoglVertexBufferAttrib *attribute = tmp->data;
       gsize attribute_size = attribute->span_bytes;
-      gsize gl_type_size = get_gl_type_size (attribute->flags);
+      gsize type_size = sizeof_attribute_type (attribute->type);
 
-      PAD_FOR_ALIGNMENT (offset, gl_type_size);
+      PAD_FOR_ALIGNMENT (offset, type_size);
 
       memcpy (buf + offset, attribute->u.pointer, attribute_size);
 
@@ -998,45 +927,29 @@ upload_multipack_vbo_via_map_buffer (CoglVertexBufferVBO *cogl_vbo)
       offset += attribute_size;
     }
 
-  if (!fallback)
-    glUnmapBuffer (GL_ARRAY_BUFFER);
+  cogl_buffer_unmap (COGL_BUFFER (cogl_vbo->array));
 
   return TRUE;
-#else
-  return FALSE;
-#endif
 }
 
 static void
 upload_multipack_vbo_via_buffer_sub_data (CoglVertexBufferVBO *cogl_vbo)
 {
-  GList *tmp;
+  GList *l;
   unsigned int offset = 0;
-  gboolean fallback =
-    (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  for (tmp = cogl_vbo->attributes; tmp != NULL; tmp = tmp->next)
+  for (l = cogl_vbo->attributes; l != NULL; l = l->next)
     {
-      CoglVertexBufferAttrib *attribute = tmp->data;
+      CoglVertexBufferAttrib *attribute = l->data;
       gsize attribute_size = attribute->span_bytes;
-      gsize gl_type_size = get_gl_type_size (attribute->flags);
+      gsize type_size = sizeof_attribute_type (attribute->type);
 
-      PAD_FOR_ALIGNMENT (offset, gl_type_size);
+      PAD_FOR_ALIGNMENT (offset, type_size);
 
-      if (!fallback)
-	{
-	  GE (glBufferSubData (GL_ARRAY_BUFFER,
-			       offset,
-			       attribute_size,
-			       attribute->u.pointer));
-	}
-      else
-	{
-	  char *dest = (char *)cogl_vbo->vbo_name + offset;
-	  memcpy (dest, attribute->u.pointer, attribute_size);
-	}
+      cogl_buffer_set_data (COGL_BUFFER (cogl_vbo->array),
+                            offset,
+                            attribute->u.pointer,
+                            attribute_size);
 
       attribute->u.vbo_offset = offset;
       attribute->flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_SUBMITTED;
@@ -1045,62 +958,28 @@ upload_multipack_vbo_via_buffer_sub_data (CoglVertexBufferVBO *cogl_vbo)
 }
 
 static void
-upload_gl_vbo (CoglVertexBufferVBO *cogl_vbo)
+upload_attributes (CoglVertexBufferVBO *cogl_vbo)
 {
-  GLenum usage;
-  gboolean fallback =
-    (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
+  CoglBufferUpdateHint usage;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_FREQUENT_RESUBMIT)
-    usage = GL_DYNAMIC_DRAW;
+    usage = COGL_BUFFER_UPDATE_HINT_DYNAMIC;
   else
-    usage = GL_STATIC_DRAW;
-
-  if (!fallback)
-    {
-      g_return_if_fail (cogl_vbo->vbo_name != NULL);
-
-      GE (glBindBuffer (GL_ARRAY_BUFFER,
-			GPOINTER_TO_UINT (cogl_vbo->vbo_name)));
-    }
-  else if (cogl_vbo->vbo_name == NULL)
-    {
-      /* If the driver doesn't support VBOs then we simply allocate
-       * a client side fake vbo buffer. Unlike VBOs we can't allocate
-       * without specifying a size which is why we defer allocation
-       * until here. */
-      cogl_vbo->vbo_name = g_malloc (cogl_vbo->vbo_bytes);
-    }
+    usage = COGL_BUFFER_UPDATE_HINT_STATIC;
+  cogl_buffer_set_update_hint (COGL_BUFFER (cogl_vbo->array), usage);
 
   if (cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_STRIDED)
     {
-      const void *pointer =
-	prep_strided_vbo_for_upload (cogl_vbo);
-      if (!fallback)
-	{
-	  GE (glBufferData (GL_ARRAY_BUFFER,
-			    cogl_vbo->vbo_bytes,
-			    pointer,
-			    usage));
-	}
-      else
-	memcpy (cogl_vbo->vbo_name, pointer, cogl_vbo->vbo_bytes);
+      const void *pointer = prep_strided_vbo_for_upload (cogl_vbo);
+      cogl_buffer_set_data (COGL_BUFFER (cogl_vbo->array),
+                            0, /* offset */
+                            pointer,
+                            cogl_vbo->array_bytes);
     }
   else /* MULTIPACK */
     {
-      /* First we make it obvious to the driver that we want to update the
-       * whole buffer (without this, the driver is more likley to block
-       * if the GPU is busy using the buffer) */
-      if (!fallback)
-	{
-	  GE (glBufferData (GL_ARRAY_BUFFER,
-			    cogl_vbo->vbo_bytes,
-			    NULL,
-			    usage));
-	}
-
       /* I think it might depend on the specific driver/HW whether its better
        * to use glMapBuffer here or glBufferSubData here. There is even a good
        * thread about this topic here:
@@ -1113,9 +992,6 @@ upload_gl_vbo (CoglVertexBufferVBO *cogl_vbo)
     }
 
   cogl_vbo->flags |= COGL_VERTEX_BUFFER_VBO_FLAG_SUBMITTED;
-
-  if (!fallback)
-    GE (glBindBuffer (GL_ARRAY_BUFFER, 0));
 }
 
 /* Note: although there ends up being quite a few inner loops involved with
@@ -1149,18 +1025,18 @@ cogl_vertex_buffer_vbo_resolve (CoglVertexBuffer *buffer,
 	  /* See if we can re-use this now empty VBO: */
 
 	  if (!found_target_vbo
-	      && conflict_vbo->vbo_bytes == new_cogl_vbo->vbo_bytes)
+	      && conflict_vbo->array_bytes == new_cogl_vbo->array_bytes)
 	    {
 	      found_target_vbo = TRUE;
-	      new_cogl_vbo->vbo_name = conflict_vbo->vbo_name;
-	      cogl_vertex_buffer_vbo_free (conflict_vbo, FALSE);
+	      new_cogl_vbo->array = cogl_object_ref (conflict_vbo->array);
+	      cogl_vertex_buffer_vbo_free (conflict_vbo);
 
-	      upload_gl_vbo (new_cogl_vbo);
+	      upload_attributes (new_cogl_vbo);
 
 	      *final_vbos = g_list_prepend (*final_vbos, new_cogl_vbo);
 	    }
 	  else
-	    cogl_vertex_buffer_vbo_free (conflict_vbo, TRUE);
+	    cogl_vertex_buffer_vbo_free (conflict_vbo);
 	}
       else
 	{
@@ -1174,15 +1050,70 @@ cogl_vertex_buffer_vbo_resolve (CoglVertexBuffer *buffer,
 
   if (!found_target_vbo)
     {
-      if (cogl_get_features () & COGL_FEATURE_VBOS)
-	GE (glGenBuffers (1, (GLuint *)&new_cogl_vbo->vbo_name));
-      else
-	new_cogl_vbo->vbo_name = NULL;
-        /* this will be allocated at upload time */
+      new_cogl_vbo->array = cogl_vertex_array_new (new_cogl_vbo->array_bytes);
 
-      upload_gl_vbo (new_cogl_vbo);
+      upload_attributes (new_cogl_vbo);
       *final_vbos = g_list_prepend (*final_vbos, new_cogl_vbo);
     }
+}
+
+static void
+update_primitive_attributes (CoglVertexBuffer *buffer)
+{
+  GList *l;
+  int n_attributes = 0;
+  CoglVertexAttribute **attributes;
+  int i;
+
+  if (!buffer->dirty_attributes)
+    return;
+
+  buffer->dirty_attributes = FALSE;
+
+  for (l = buffer->submitted_vbos; l; l = l->next)
+    {
+      CoglVertexBufferVBO *cogl_vbo = l->data;
+      GList *l2;
+
+      for (l2 = cogl_vbo->attributes; l2; l2 = l2->next, n_attributes++)
+        ;
+    }
+
+  g_return_if_fail (n_attributes > 0);
+
+  attributes = g_alloca (sizeof (CoglVertexAttribute *) * n_attributes + 1);
+
+  i = 0;
+  for (l = buffer->submitted_vbos; l; l = l->next)
+    {
+      CoglVertexBufferVBO *cogl_vbo = l->data;
+      GList *l2;
+
+      for (l2 = cogl_vbo->attributes; l2; l2 = l2->next)
+        {
+	  CoglVertexBufferAttrib *attribute = l2->data;
+	  if (G_LIKELY (attribute->flags &
+                        COGL_VERTEX_BUFFER_ATTRIB_FLAG_ENABLED))
+            {
+              if (G_UNLIKELY (!attribute->attribute))
+                {
+                  attribute->attribute =
+                    cogl_vertex_attribute_new (cogl_vbo->array,
+                                               attribute->name_without_detail,
+                                               attribute->stride,
+                                               attribute->u.vbo_offset,
+                                               attribute->n_components,
+                                               attribute->type);
+                }
+
+              attributes[i++] = attribute->attribute;
+            }
+        }
+    }
+
+  attributes[i] = NULL;
+
+  cogl_primitive_set_attributes (buffer->primitive, attributes);
 }
 
 static void
@@ -1196,7 +1127,7 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
   GList *final_vbos = NULL;
 
   if (!buffer->new_attributes)
-    return;
+    goto done;
 
   /* The objective now is to copy the attribute data supplied by the client
    * into buffer objects, but it's important to minimize the number of
@@ -1332,11 +1263,11 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
    */
 
   new_multipack_vbo = g_slice_alloc (sizeof (CoglVertexBufferVBO));
-  new_multipack_vbo->vbo_name = NULL;
+  new_multipack_vbo->array = NULL;
+  new_multipack_vbo->array_bytes = 0;
   new_multipack_vbo->flags =
     COGL_VERTEX_BUFFER_VBO_FLAG_MULTIPACK
     | COGL_VERTEX_BUFFER_VBO_FLAG_INFREQUENT_RESUBMIT;
-  new_multipack_vbo->vbo_bytes = 0;
   new_multipack_vbo->attributes = NULL;
   new_vbos = g_list_prepend (new_vbos, new_multipack_vbo);
   /* We save the link pointer here, just so we can do a fast removal later if
@@ -1380,19 +1311,19 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
 	   * in their own VBO so that updates don't impact other attributes
 	   */
 
-	  cogl_vbo->vbo_name = NULL;
 	  cogl_vbo->flags =
             COGL_VERTEX_BUFFER_VBO_FLAG_MULTIPACK
 	    | COGL_VERTEX_BUFFER_VBO_FLAG_FREQUENT_RESUBMIT;
 	  cogl_vbo->attributes = NULL;
 	  cogl_vbo->attributes = g_list_prepend (cogl_vbo->attributes,
 						 attribute);
-	  cogl_vbo->vbo_bytes = attribute->span_bytes;
+	  cogl_vbo->array = NULL;
+	  cogl_vbo->array_bytes = attribute->span_bytes;
 	  new_vbos = g_list_prepend (new_vbos, cogl_vbo);
 	}
       else
 	{
-	  gsize gl_type_size = get_gl_type_size (attribute->flags);
+	  gsize type_size = sizeof_attribute_type (attribute->flags);
 
 	  /* Infrequently updated attributes just get packed back to back
 	   * in a single VBO: */
@@ -1409,9 +1340,9 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
 	   * is based on the adjacent attribute.
 	   */
 
-	  PAD_FOR_ALIGNMENT (new_multipack_vbo->vbo_bytes, gl_type_size);
+	  PAD_FOR_ALIGNMENT (new_multipack_vbo->array_bytes, type_size);
 
-	  new_multipack_vbo->vbo_bytes += attribute->span_bytes;
+	  new_multipack_vbo->array_bytes += attribute->span_bytes;
 	}
     }
 
@@ -1436,11 +1367,14 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
 
   /* Anything left corresponds to deleted attributes: */
   for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
-    cogl_vertex_buffer_vbo_free (tmp->data, TRUE);
+    cogl_vertex_buffer_vbo_free (tmp->data);
   g_list_free (buffer->submitted_vbos);
   g_list_free (new_vbos);
 
   buffer->submitted_vbos = final_vbos;
+
+done:
+  update_primitive_attributes (buffer);
 }
 
 void
@@ -1456,405 +1390,133 @@ cogl_vertex_buffer_submit (CoglHandle handle)
   cogl_vertex_buffer_submit_real (buffer);
 }
 
-static GLenum
-get_gl_type_from_attribute_flags (CoglVertexBufferAttribFlags flags)
+typedef struct
 {
-  CoglVertexBufferAttribFlags gl_type =
-    flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_MASK;
+  CoglMaterial *real_source;
+} VertexBufferMaterialPrivate;
 
-  switch (gl_type)
-    {
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_BYTE:
-      return GL_BYTE;
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_BYTE:
-      return GL_UNSIGNED_BYTE;
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_SHORT:
-      return GL_SHORT;
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_SHORT:
-      return GL_UNSIGNED_SHORT;
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_FLOAT:
-      return GL_FLOAT;
-#if HAVE_COGL_GL
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_INT:
-      return GL_INT;
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_INT:
-      return GL_UNSIGNED_INT;
-    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_DOUBLE:
-      return GL_DOUBLE;
-#endif
-    default:
-      g_warning ("Couldn't convert from attribute flags (0x%08x) "
-		 "to gl type enum\n", flags);
-      return 0;
-    }
+static void
+weak_override_source_destroyed_cb (CoglMaterial *material,
+                 void *user_data)
+{
+  VertexBufferMaterialPrivate *material_priv = user_data;
+  material_priv->real_source = NULL;
 }
 
-static CoglHandle
-enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
+static gboolean
+validate_layer_cb (CoglMaterial *material,
+                   int layer_index,
+                   void *user_data)
 {
-  GList       *tmp;
-  GLenum       gl_type;
-#ifdef MAY_HAVE_PROGRAMABLE_GL
-  GLuint       generic_index = 0;
-#endif
-  unsigned long enable_flags = 0;
-  const GList *layers;
-  guint32      fallback_layers = 0;
-  int          i;
-  gboolean     skip_gl_color = FALSE;
-  CoglMaterialFlushOptions options;
-  CoglMaterial *source;
-  CoglMaterial *copy = NULL;
+  VertexBufferMaterialPrivate *material_priv = user_data;
+  CoglMaterial *source = material_priv->real_source;
 
-  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
-
-  source = cogl_get_source ();
-
-  if (buffer->new_attributes)
-    cogl_vertex_buffer_submit_real (buffer);
-
-  options.flags = 0;
-  memset (&options.wrap_mode_overrides, 0,
-          sizeof (options.wrap_mode_overrides));
-
-  _cogl_bitmask_clear_all (&ctx->temp_bitmask);
-
-  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the material state) when flushing the clip stack, so should
-   * always be done first when preparing to draw. We need to do this
-   * before setting up the array pointers because setting up the clip
-   * stack can cause some drawing which would change the array
-   * pointers. */
-  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
-
-  for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
+  if (!cogl_material_get_layer_point_sprite_coords_enabled (source,
+                                                            layer_index))
     {
-      CoglVertexBufferVBO *cogl_vbo = tmp->data;
-      GList *tmp2;
-      char *base;
-      const GLvoid *pointer;
+      CoglMaterialWrapMode wrap_s;
+      CoglMaterialWrapMode wrap_t;
+      CoglMaterialWrapMode wrap_p;
+      gboolean need_override_source = FALSE;
 
-      if (cogl_get_features () & COGL_FEATURE_VBOS)
-	{
-	  GE (glBindBuffer (GL_ARRAY_BUFFER,
-			    GPOINTER_TO_UINT (cogl_vbo->vbo_name)));
-	  base = NULL;
-	}
-      else
-	base = cogl_vbo->vbo_name;
-
-      /* When GL VBOs are bing used then the "pointer" we pass to
-       * glColorPointer glVertexAttribPointer etc is actually an offset into
-       * the currently bound VBO.
-       *
-       * If we don't have VBO support though, then we must point into
-       * our fake client side VBO.
+      /* By default COGL_MATERIAL_WRAP_MODE_AUTOMATIC becomes
+       * GL_CLAMP_TO_EDGE but we want GL_REPEAT to maintain
+       * compatibility with older versions of Cogl so we'll override
+       * it. We don't want to do this for point sprites because in
+       * that case the whole texture is drawn so you would usually
+       * want clamp-to-edge.
        */
-
-      for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
-	{
-	  CoglVertexBufferAttrib *attribute = tmp2->data;
-	  CoglVertexBufferAttribFlags type =
-	    attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_TYPE_MASK;
-
-	  if (!(attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_ENABLED))
-	    continue;
-
-	  gl_type = get_gl_type_from_attribute_flags (attribute->flags);
-	  switch (type)
-	    {
-	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_COLOR_ARRAY:
-	      enable_flags |= COGL_ENABLE_COLOR_ARRAY;
-	      /* GE (glEnableClientState (GL_COLOR_ARRAY)); */
-	      pointer = (const GLvoid *)(base + attribute->u.vbo_offset);
-	      GE (glColorPointer (attribute->n_components,
-				  gl_type,
-				  attribute->stride,
-				  pointer));
-
-              if (!_cogl_material_get_real_blend_enabled (source))
-                {
-                  CoglMaterialBlendEnable blend_enable =
-                    COGL_MATERIAL_BLEND_ENABLE_ENABLED;
-                  copy = cogl_material_copy (source);
-                  _cogl_material_set_blend_enabled (copy, blend_enable);
-                  source = copy;
-                  skip_gl_color = TRUE;
-                }
-	      break;
-	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMAL_ARRAY:
-	      /* FIXME: go through cogl cache to enable normal array */
-	      GE (glEnableClientState (GL_NORMAL_ARRAY));
-	      pointer = (const GLvoid *)(base + attribute->u.vbo_offset);
-	      GE (glNormalPointer (gl_type,
-				   attribute->stride,
-				   pointer));
-	      break;
-	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_TEXTURE_COORD_ARRAY:
-              GE (glClientActiveTexture (GL_TEXTURE0 +
-                                         attribute->texture_unit));
-              GE (glEnableClientState (GL_TEXTURE_COORD_ARRAY));
-	      pointer = (const GLvoid *)(base + attribute->u.vbo_offset);
-	      GE (glTexCoordPointer (attribute->n_components,
-				     gl_type,
-				     attribute->stride,
-				     pointer));
-              _cogl_bitmask_set (&ctx->temp_bitmask,
-                                 attribute->texture_unit, TRUE);
-	      break;
-	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY:
-	      enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
-	      /* GE (glEnableClientState (GL_VERTEX_ARRAY)); */
-	      pointer = (const GLvoid *)(base + attribute->u.vbo_offset);
-	      GE (glVertexPointer (attribute->n_components,
-				   gl_type,
-				   attribute->stride,
-				   pointer));
-	      break;
-	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_CUSTOM_ARRAY:
-	      {
-#ifdef MAY_HAVE_PROGRAMABLE_GL
-		GLboolean normalized = GL_FALSE;
-		if (attribute->flags &
-                    COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMALIZED)
-		  normalized = GL_TRUE;
-		/* FIXME: go through cogl cache to enable generic array */
-		GE (glEnableVertexAttribArray (generic_index++));
-		pointer = (const GLvoid *)(base + attribute->u.vbo_offset);
-		GE (glVertexAttribPointer (generic_index,
-					   attribute->n_components,
-					   gl_type,
-					   normalized,
-					   attribute->stride,
-					   pointer));
-#endif
-	      }
-	      break;
-	    default:
-	      g_warning ("Unrecognised attribute type 0x%08x", type);
-	    }
-	}
-    }
-
-  layers = cogl_material_get_layers (source);
-  for (tmp = (GList *)layers, i = 0;
-       tmp != NULL;
-       tmp = tmp->next, i++)
-    {
-      CoglHandle layer = (CoglHandle)tmp->data;
-      CoglHandle tex_handle = cogl_material_layer_get_texture (layer);
-
-      /* invalid textures will be handled correctly in
-       * _cogl_material_flush_layers_gl_state */
-      if (tex_handle == COGL_INVALID_HANDLE)
-        continue;
-
-      if (!cogl_material_get_layer_point_sprite_coords_enabled (source, i))
+      wrap_s = cogl_material_get_layer_wrap_mode_s (source, layer_index);
+      if (wrap_s == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
         {
-          /* By default COGL_MATERIAL_WRAP_MODE_AUTOMATIC becomes
-             GL_CLAMP_TO_EDGE but we want GL_REPEAT to maintain
-             compatibility with older versions of Cogl so we'll
-             override it. We don't want to do this for point sprites
-             because in that case the whole texture is drawn so you
-             would usually want clamp-to-edge. */
-          if (cogl_material_layer_get_wrap_mode_s (layer) ==
-              COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-            {
-              options.wrap_mode_overrides.values[i].s =
-                COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
-              options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
-            }
-          if (cogl_material_layer_get_wrap_mode_t (layer) ==
-              COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-            {
-              options.wrap_mode_overrides.values[i].t =
-                COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
-              options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
-            }
-          if (cogl_material_layer_get_wrap_mode_p (layer) ==
-              COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-            {
-              options.wrap_mode_overrides.values[i].p =
-                COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
-              options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
-            }
+          need_override_source = TRUE;
+          wrap_s = COGL_MATERIAL_WRAP_MODE_REPEAT;
+        }
+      wrap_t = cogl_material_get_layer_wrap_mode_t (source, layer_index);
+      if (wrap_t == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+        {
+          need_override_source = TRUE;
+          wrap_t = COGL_MATERIAL_WRAP_MODE_REPEAT;
+        }
+      wrap_p = cogl_material_get_layer_wrap_mode_p (source, layer_index);
+      if (wrap_p == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+        {
+          need_override_source = TRUE;
+          wrap_p = COGL_MATERIAL_WRAP_MODE_REPEAT;
         }
 
-      /* Give the texture a chance to know that we're rendering
-         non-quad shaped primitives. If the texture is in an atlas it
-         will be migrated */
-      _cogl_texture_ensure_non_quad_rendering (tex_handle);
-
-      /* We need to ensure the mipmaps are ready before deciding
-       * anything else about the texture because the texture storate
-       * could completely change if it needs to be migrated out of the
-       * atlas and will affect how we validate the layer.
-       */
-      _cogl_material_layer_pre_paint (layer);
-
-      if (!_cogl_texture_can_hardware_repeat (tex_handle))
+      if (need_override_source)
         {
-          g_warning ("Disabling layer %d of the current source material, "
-                     "because texturing with the vertex buffer API is not "
-                     "currently supported using sliced textures, or textures "
-                     "with waste\n", i);
+          if (material_priv->real_source == material)
+            material_priv->real_source = source =
+              _cogl_material_weak_copy (material,
+                                        weak_override_source_destroyed_cb,
+                                        material_priv);
 
-          /* XXX: maybe we can add a mechanism for users to forcibly use
-           * textures with waste where it would be their responsability to use
-           * texture coords in the range [0,1] such that sampling outside isn't
-           * required. We can then use a texture matrix (or a modification of
-           * the users own matrix) to map 1 to the edge of the texture data.
-           *
-           * Potentially, given the same guarantee as above we could also
-           * support a single sliced layer too. We would have to redraw the
-           * vertices once for each layer, each time with a fiddled texture
-           * matrix.
-           */
-          fallback_layers |= (1 << i);
+          cogl_material_set_layer_wrap_mode_s (source, layer_index, wrap_s);
+          cogl_material_set_layer_wrap_mode_t (source, layer_index, wrap_t);
+          cogl_material_set_layer_wrap_mode_p (source, layer_index, wrap_p);
         }
     }
 
-  /* Disable any tex coord arrays that we didn't use */
-  _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
-
-  if (fallback_layers)
-    {
-      options.fallback_layers = fallback_layers;
-      options.flags |= COGL_MATERIAL_FLUSH_FALLBACK_MASK;
-    }
-
-  if (G_UNLIKELY (options.flags))
-    {
-      /* If we haven't already created a derived material... */
-      if (!copy)
-        {
-          copy = cogl_material_copy (source);
-          source = copy;
-        }
-      _cogl_material_apply_overrides (copy, &options);
-
-      /* TODO:
-       * overrides = cogl_material_get_data (material,
-       *                                     last_overrides_key);
-       * if (overrides)
-       *   {
-       *     age = cogl_material_get_age (material);
-       *     XXX: actually we also need to check for legacy_state
-       *     and blending overrides for use of glColorPointer...
-       *     if (overrides->ags != age ||
-       *         memcmp (&overrides->options, &options,
-       *                 sizeof (options) != 0)
-       *       {
-       *         cogl_handle_unref (overrides->weak_material);
-       *         g_slice_free (Overrides, overrides);
-       *         overrides = NULL;
-       *       }
-       *   }
-       * if (!overrides)
-       *   {
-       *     overrides = g_slice_new (Overrides);
-       *     overrides->weak_material =
-       *       cogl_material_weak_copy (source);
-       *     _cogl_material_apply_overrides (overrides->weak_material,
-       *                                     &options);
-       *
-       *     cogl_material_set_data (material, last_overrides_key,
-       *                             weak_overrides,
-       *                             free_overrides_cb,
-       *                             NULL);
-       *   }
-       * source = overrides->weak_material;
-       */
-    }
-
-  if (G_UNLIKELY (ctx->legacy_state_set))
-    {
-      /* If we haven't already created a derived material... */
-      if (!copy)
-        {
-          copy = cogl_material_copy (source);
-          source = copy;
-        }
-      _cogl_material_apply_legacy_state (copy);
-    }
-
-  _cogl_material_flush_gl_state (source, skip_gl_color);
-
-  if (ctx->enable_backface_culling)
-    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
-
-  _cogl_enable (enable_flags);
-  _cogl_flush_face_winding ();
-
-  return source;
+  return TRUE;
 }
 
 static void
-disable_state_for_drawing_buffer (CoglVertexBuffer *buffer,
-                                  CoglMaterial *source)
+destroy_material_priv_cb (void *user_data)
 {
-  GList *tmp;
-  GLenum gl_type;
-#ifdef MAY_HAVE_PROGRAMABLE_GL
-  GLuint generic_index = 0;
-#endif
+  g_slice_free (VertexBufferMaterialPrivate, user_data);
+}
+
+static void
+update_primitive_and_draw (CoglVertexBuffer *buffer,
+                           CoglVerticesMode mode,
+                           int first,
+                           int count,
+                           CoglVertexBufferIndices *buffer_indices)
+{
+  VertexBufferMaterialPrivate *material_priv;
+  CoglMaterial *users_source;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (G_UNLIKELY (source != cogl_get_source ()))
-    cogl_object_unref (source);
+  cogl_primitive_set_mode (buffer->primitive, mode);
+  cogl_primitive_set_first_vertex (buffer->primitive, first);
+  cogl_primitive_set_n_vertices (buffer->primitive, count);
 
-  /* Disable all the client state that cogl doesn't currently know
-   * about:
-   */
-  if (cogl_get_features () & COGL_FEATURE_VBOS)
-    GE (glBindBuffer (GL_ARRAY_BUFFER, 0));
+  if (buffer_indices)
+    cogl_primitive_set_indices (buffer->primitive, buffer_indices->indices);
+  else
+    cogl_primitive_set_indices (buffer->primitive, NULL);
 
-  for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
+  cogl_vertex_buffer_submit_real (buffer);
+
+  users_source = cogl_get_source ();
+  material_priv =
+    cogl_object_get_user_data (COGL_OBJECT (users_source),
+                               &_cogl_vertex_buffer_material_priv_key);
+  if (G_UNLIKELY (!material_priv))
     {
-      CoglVertexBufferVBO *cogl_vbo = tmp->data;
-      GList *tmp2;
-
-      for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
-	{
-	  CoglVertexBufferAttrib *attribute = tmp2->data;
-	  CoglVertexBufferAttribFlags type =
-	    attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_TYPE_MASK;
-
-	  if (!(attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_ENABLED))
-	    continue;
-
-	  gl_type = get_gl_type_from_attribute_flags(attribute->flags);
-	  switch (type)
-	    {
-	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_COLOR_ARRAY:
-	      /* GE (glDisableClientState (GL_COLOR_ARRAY)); */
-	      break;
-	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMAL_ARRAY:
-	      /* FIXME: go through cogl cache to enable normal array */
-	      GE (glDisableClientState (GL_NORMAL_ARRAY));
-	      break;
-	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_TEXTURE_COORD_ARRAY:
-              /* The enabled state of the texture coord arrays is
-                 cached in ctx->enabled_texcoord_arrays so we don't
-                 need to do anything here. The array will be disabled
-                 by the next drawing primitive if it is not
-                 required */
-	      break;
-	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY:
-	      /* GE (glDisableClientState (GL_VERTEX_ARRAY)); */
-	      break;
-	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_CUSTOM_ARRAY:
-#ifdef MAY_HAVE_PROGRAMABLE_GL
-	      /* FIXME: go through cogl cache to enable generic array */
-	      GE (glDisableVertexAttribArray (generic_index++));
-#endif
-	      break;
-	    default:
-	      g_warning ("Unrecognised attribute type 0x%08x", type);
-	    }
-	}
+      material_priv = g_slice_new0 (VertexBufferMaterialPrivate);
+      cogl_object_set_user_data (COGL_OBJECT (users_source),
+                                 &_cogl_vertex_buffer_material_priv_key,
+                                 material_priv,
+                                 destroy_material_priv_cb);
     }
+
+  if (G_UNLIKELY (!material_priv->real_source))
+    {
+      material_priv->real_source = users_source;
+      cogl_material_foreach_layer (material_priv->real_source,
+                                   validate_layer_cb,
+                                   material_priv);
+    }
+
+  cogl_push_source (material_priv->real_source);
+
+  cogl_primitive_draw (buffer->primitive);
+
+  cogl_pop_source ();
 }
 
 void
@@ -1864,36 +1526,13 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
 		         int              count)
 {
   CoglVertexBuffer *buffer;
-  CoglHandle source;
 
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  _cogl_journal_flush ();
-
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
-  source = enable_state_for_drawing_buffer (buffer);
-
-  GE (glDrawArrays (mode, first, count));
-
-  disable_state_for_drawing_buffer (buffer, source);
-}
-
-static int
-get_indices_type_size (GLuint indices_type)
-{
-  if (indices_type == GL_UNSIGNED_BYTE)
-    return sizeof (GLubyte);
-  else if (indices_type == GL_UNSIGNED_SHORT)
-    return sizeof (GLushort);
-  else if (indices_type == GL_UNSIGNED_INT)
-    return sizeof (GLuint);
-  else
-    {
-      g_critical ("Unknown indices type %d\n", indices_type);
-      return 0;
-    }
+  update_primitive_and_draw (buffer, mode, first, count, NULL);
 }
 
 CoglHandle
@@ -1901,90 +1540,32 @@ cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
                                 const void      *indices_array,
                                 int              indices_len)
 {
-  gboolean fallback =
-    (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
-  gsize indices_bytes;
-  CoglVertexBufferIndices *indices;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  indices = g_slice_alloc (sizeof (CoglVertexBufferIndices));
-
-  if (indices_type == COGL_INDICES_TYPE_UNSIGNED_BYTE)
-    indices->type = GL_UNSIGNED_BYTE;
-  else if (indices_type == COGL_INDICES_TYPE_UNSIGNED_SHORT)
-    indices->type = GL_UNSIGNED_SHORT;
-  else if (indices_type == COGL_INDICES_TYPE_UNSIGNED_INT)
-    {
-      g_return_val_if_fail (cogl_features_available
-                            (COGL_FEATURE_UNSIGNED_INT_INDICES),
-                            COGL_INVALID_HANDLE);
-
-      indices->type = GL_UNSIGNED_INT;
-    }
-  else
-    {
-      g_critical ("unknown indices type %d", indices_type);
-      g_slice_free (CoglVertexBufferIndices, indices);
-      return NULL;
-    }
-
-  indices_bytes = get_indices_type_size (indices->type) * indices_len;
-  if (fallback)
-    {
-      indices->vbo_name = g_malloc (indices_bytes);
-      memcpy (indices->vbo_name, indices_array, indices_bytes);
-    }
-  else
-    {
-      GE (glGenBuffers (1, (GLuint *)&indices->vbo_name));
-      GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER,
-			GPOINTER_TO_UINT (indices->vbo_name)));
-      GE (glBufferData (GL_ELEMENT_ARRAY_BUFFER,
-                        indices_bytes,
-                        indices_array,
-                        GL_STATIC_DRAW));
-      GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0));
-    }
-
-  return _cogl_vertex_buffer_indices_handle_new (indices);
+  CoglVertexBufferIndices *buffer_indices =
+    g_slice_alloc (sizeof (CoglVertexBufferIndices));
+  buffer_indices->indices =
+    cogl_indices_new (indices_type, indices_array, indices_len);
+  return _cogl_vertex_buffer_indices_handle_new (buffer_indices);
 }
 
 CoglIndicesType
 cogl_vertex_buffer_indices_get_type (CoglHandle indices_handle)
 {
-  CoglVertexBufferIndices *indices = NULL;
+  CoglVertexBufferIndices *buffer_indices = NULL;
 
   if (!cogl_is_vertex_buffer_indices (indices_handle))
     return COGL_INDICES_TYPE_UNSIGNED_SHORT;
 
-  indices = _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
+  buffer_indices =
+    _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
 
-  if (indices->type == GL_UNSIGNED_BYTE)
-    return COGL_INDICES_TYPE_UNSIGNED_BYTE;
-  else if (indices->type == GL_UNSIGNED_SHORT)
-    return COGL_INDICES_TYPE_UNSIGNED_SHORT;
-  else
-    {
-      g_critical ("unknown indices type %d", indices->type);
-      return COGL_INDICES_TYPE_UNSIGNED_SHORT;
-    }
+  return cogl_indices_get_type (buffer_indices->indices);
 }
 
 void
-_cogl_vertex_buffer_indices_free (CoglVertexBufferIndices *indices)
+_cogl_vertex_buffer_indices_free (CoglVertexBufferIndices *buffer_indices)
 {
-  gboolean fallback =
-    (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (fallback)
-    g_free (indices->vbo_name);
-  else
-    GE (glDeleteBuffers (1, (GLuint *)&indices->vbo_name));
-
-  g_slice_free (CoglVertexBufferIndices, indices);
+  cogl_object_unref (buffer_indices->indices);
+  g_slice_free (CoglVertexBufferIndices, buffer_indices);
 }
 
 void
@@ -1997,41 +1578,21 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
                                   int              count)
 {
   CoglVertexBuffer *buffer;
-  gboolean fallback =
-    (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
-  gsize byte_offset;
-  CoglVertexBufferIndices *indices = NULL;
-  CoglHandle source;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglVertexBufferIndices *buffer_indices;
 
   if (!cogl_is_vertex_buffer (handle))
     return;
-
-  _cogl_journal_flush ();
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
   if (!cogl_is_vertex_buffer_indices (indices_handle))
     return;
 
-  indices = _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
+  buffer_indices =
+    _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
 
-  source = enable_state_for_drawing_buffer (buffer);
-
-  byte_offset = indices_offset * get_indices_type_size (indices->type);
-  if (fallback)
-    byte_offset = (size_t)(((char *)indices->vbo_name) + byte_offset);
-  else
-    GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER,
-                      GPOINTER_TO_UINT (indices->vbo_name)));
-
-  GE (glDrawRangeElements (mode, min_index, max_index,
-                           count, indices->type, (void *)byte_offset));
-
-  disable_state_for_drawing_buffer (buffer, source);
-
-  GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0));
+  update_primitive_and_draw (buffer, mode, indices_offset, count,
+                             buffer_indices);
 }
 
 static void
@@ -2040,12 +1601,15 @@ _cogl_vertex_buffer_free (CoglVertexBuffer *buffer)
   GList *tmp;
 
   for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
-    cogl_vertex_buffer_vbo_free (tmp->data, TRUE);
+    cogl_vertex_buffer_vbo_free (tmp->data);
   g_list_free (buffer->submitted_vbos);
 
   for (tmp = buffer->new_attributes; tmp != NULL; tmp = tmp->next)
-    cogl_vertex_buffer_attribute_free (tmp->data);
+    _cogl_vertex_buffer_attrib_free (tmp->data);
   g_list_free (buffer->new_attributes);
+
+  if (buffer->primitive)
+    cogl_object_unref (buffer->primitive);
 
   g_slice_free (CoglVertexBuffer, buffer);
 }
