@@ -437,23 +437,14 @@ _cogl_bitmap_bind (CoglBitmap *bitmap,
 
   bitmap->bound = TRUE;
 
-  /* If buffer is using a malloc fallback then we'll just use the
-     pointer directly */
-  if (bitmap->buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
-    {
-      ptr = NULL;
-
-      if (access == COGL_BUFFER_ACCESS_READ)
-        _cogl_buffer_bind (bitmap->buffer,
-                           COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK);
-      else if (access == COGL_BUFFER_ACCESS_WRITE)
-        _cogl_buffer_bind (bitmap->buffer,
-                           COGL_BUFFER_BIND_TARGET_PIXEL_PACK);
-      else
-        g_assert_not_reached ();
-    }
+  if (access == COGL_BUFFER_ACCESS_READ)
+    ptr = _cogl_buffer_bind (bitmap->buffer,
+                             COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK);
+  else if (access == COGL_BUFFER_ACCESS_WRITE)
+    ptr = _cogl_buffer_bind (bitmap->buffer,
+                             COGL_BUFFER_BIND_TARGET_PIXEL_PACK);
   else
-    ptr = bitmap->buffer->data;
+    g_assert_not_reached ();
 
   /* The data pointer actually stores the offset */
   return GPOINTER_TO_INT (bitmap->data) + ptr;
@@ -472,10 +463,7 @@ _cogl_bitmap_unbind (CoglBitmap *bitmap)
   /* If the bitmap wasn't created from a pixel array then the
      implementation of unbind is the same as unmap */
   if (bitmap->buffer)
-    {
-      if (bitmap->buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
-        _cogl_buffer_unbind (bitmap->buffer);
-    }
+    _cogl_buffer_unbind (bitmap->buffer);
   else
     _cogl_bitmap_unmap (bitmap);
 }
