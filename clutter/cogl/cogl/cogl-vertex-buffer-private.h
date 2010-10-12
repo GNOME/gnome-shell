@@ -29,6 +29,8 @@
 
 #include "cogl-handle.h"
 
+#include "cogl-primitive.h"
+
 #include <glib.h>
 
 /* Note we put quite a bit into the flags here to help keep
@@ -78,17 +80,6 @@ typedef enum _CoglVertexBufferAttribFlags
    | COGL_VERTEX_BUFFER_ATTRIB_FLAG_CUSTOM_ARRAY \
    | COGL_VERTEX_BUFFER_ATTRIB_FLAG_INVALID)
 
-#define COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_MASK \
-  (COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_BYTE \
-   | COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_BYTE \
-   | COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_SHORT \
-   | COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_SHORT \
-   | COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_INT \
-   | COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_INT \
-   | COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_FLOAT \
-   | COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_DOUBLE)
-
-
 typedef struct _CoglVertexBufferAttrib
 {
   /* TODO: look at breaking up the flags into seperate
@@ -96,15 +87,20 @@ typedef struct _CoglVertexBufferAttrib
   CoglVertexBufferAttribFlags   flags:24;
   guint8		   id;
   GQuark		   name;
+  char                    *name_without_detail;
   union _u
   {
     const void		  *pointer;
     size_t		   vbo_offset;
   } u;
+  CoglVertexAttributeType  type;
   size_t		   span_bytes;
   guint16		   stride;
   guint8		   n_components;
   guint8		   texture_unit;
+
+  int                      attribute_first;
+  CoglVertexAttribute     *attribute;
 
 } CoglVertexBufferAttrib;
 
@@ -128,11 +124,9 @@ typedef struct _CoglVertexBufferVBO
 {
   CoglVertexBufferVBOFlags flags;
 
-  /* Note: this is a pointer to handle fallbacks. It normally holds
-   * a GLuint VBO name, but when the driver doesn't support VBOs then
-   * this simply points to an malloc'd buffer. */
-  void  *vbo_name; /*!< The name of the corresponding buffer object */
-  gsize vbo_bytes; /*!< The lengh of the allocated buffer object in bytes */
+  CoglVertexArray *array;
+  size_t array_bytes;
+
   GList *attributes;
 } CoglVertexBufferVBO;
 
@@ -140,11 +134,7 @@ typedef struct _CoglVertexBufferIndices
 {
   CoglHandleObject _parent;
 
-  /* Note: this is a pointer to handle fallbacks. It normally holds
-   * a GLuint VBO name, but when the driver doesn't support VBOs then
-   * this simply points to an malloc'd buffer. */
-  void   *vbo_name;
-  GLenum  type;
+  CoglIndices *indices;
 } CoglVertexBufferIndices;
 
 typedef struct _CoglVertexBuffer
@@ -158,11 +148,17 @@ typedef struct _CoglVertexBuffer
    * modifying a buffer. */
   GList  *new_attributes; /*!< attributes pending submission */
 
+  gboolean dirty_attributes;
+
+  CoglPrimitive *primitive;
+
 } CoglVertexBuffer;
 
-CoglVertexBuffer *_cogl_vertex_buffer_pointer_from_handle (CoglHandle handle);
+CoglVertexBuffer *
+_cogl_vertex_buffer_pointer_from_handle (CoglHandle handle);
+
 CoglVertexBufferIndices *
-     _cogl_vertex_buffer_indices_pointer_from_handle (CoglHandle handle);
+_cogl_vertex_buffer_indices_pointer_from_handle (CoglHandle handle);
 
 #endif /* __COGL_VERTEX_BUFFER_H */
 
