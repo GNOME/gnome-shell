@@ -140,9 +140,7 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/binding-pool", test_binding_pool);
 
-#if 0
   TEST_CONFORM_SIMPLE ("/actor", test_anchors);
-#endif
   TEST_CONFORM_SIMPLE ("/actor", test_actor_destruction);
 
   TEST_CONFORM_SIMPLE ("/model", test_list_model_populate);
