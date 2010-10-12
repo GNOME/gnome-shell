@@ -109,8 +109,6 @@ _cogl_pixel_array_new (unsigned int size)
                            COGL_BUFFER_USAGE_HINT_TEXTURE,
                            COGL_BUFFER_UPDATE_HINT_STATIC);
 
-  pixel_array->flags = COGL_PIXEL_ARRAY_FLAG_NONE;
-
   /* return COGL_INVALID_HANDLE; */
   return _cogl_pixel_array_object_new (pixel_array);
 }
