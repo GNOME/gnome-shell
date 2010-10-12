@@ -439,7 +439,7 @@ _cogl_bitmap_bind (CoglBitmap *bitmap,
 
   /* If buffer is using a malloc fallback then we'll just use the
      pointer directly */
-  if (COGL_BUFFER_FLAG_IS_SET (bitmap->buffer, BUFFER_OBJECT))
+  if (bitmap->buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
     {
       ptr = NULL;
 
@@ -473,7 +473,7 @@ _cogl_bitmap_unbind (CoglBitmap *bitmap)
      implementation of unbind is the same as unmap */
   if (bitmap->buffer)
     {
-      if (COGL_BUFFER_FLAG_IS_SET (bitmap->buffer, BUFFER_OBJECT))
+      if (bitmap->buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
         _cogl_buffer_unbind (bitmap->buffer);
     }
   else
