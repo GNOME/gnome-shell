@@ -11068,6 +11068,7 @@ clutter_actor_add_constraint (ClutterActor      *self,
 
   _clutter_meta_group_add_meta (priv->constraints,
                                 CLUTTER_ACTOR_META (constraint));
+  clutter_actor_queue_relayout (self);
 
   _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONSTRAINTS]);
 }
@@ -11130,6 +11131,7 @@ clutter_actor_remove_constraint (ClutterActor      *self,
 
   _clutter_meta_group_remove_meta (priv->constraints,
                                    CLUTTER_ACTOR_META (constraint));
+  clutter_actor_queue_relayout (self);
 
   _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONSTRAINTS]);
 }
@@ -11164,6 +11166,7 @@ clutter_actor_remove_constraint_by_name (ClutterActor *self,
     return;
 
   _clutter_meta_group_remove_meta (priv->constraints, meta);
+  clutter_actor_queue_relayout (self);
 }
 
 /**
