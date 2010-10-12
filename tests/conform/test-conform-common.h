@@ -19,6 +19,12 @@ typedef struct _TestConformSimpleFixture
   int dummy;
 } TestConformSimpleFixture;
 
+typedef struct _TestConformTodo
+{
+  gchar *name;
+  void (* func) (TestConformSimpleFixture *, gconstpointer);
+} TestConformTodo;
+
 void test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
 					gconstpointer data);
 void test_conform_simple_fixture_teardown (TestConformSimpleFixture *fixture,

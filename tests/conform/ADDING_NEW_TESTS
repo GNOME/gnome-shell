@@ -1,31 +1,65 @@
+How to add new units to the Clutter Conformance test suite
+-------------------------------------------------------------------------------
 
-How:
-----
+If the new unit is not logically part of an existing file, you should create a
+new source file and add it to the build. The built files are listed in the
+Makefile.am template. Please, respect the sections already available there.
 
-You should including the following at the top of your new unit test:
-#include "test-conform-common.h"
+When creating a new file, you should include "test-conform-common.h", as well
+as <clutter/clutter.h> and <glib.h>.
 
-Instead of a main () function add an entry point with a prototype as follows:
+Each new test unit should be contained in a function named following this
+pattern:
 
-void
-test_blah (TestConformSimpleFixture *fixture,
-           gconstpointer data)
-{
+  void
+  <section>_<unit> (void)
+  {
+  }
 
-}
+For instance:
 
-Add a TEST_CONFORM_SIMPLE() entry in test-conform-main.c
+  void
+  actor_allocation_changes (void)
+  {
+    /* test allocation changes */
+  }
 
+  void
+  rectangle_border (void)
+  {
+    /* test ClutterRectangle's border property */
+  }
+
+After adding the test unit, edit test-conform-main.c and add the unit to the
+list of tests, by using one of these three macros:
+
+  • TEST_CONFORM_SIMPLE (path, function_name);
+
+    @path is the unit path in the suite, and it's used to generate the
+          executable wrapper for running the unit as a stand-alone binary
+          and for the HTML report.
+    @function_name is the name of the function containing the newly added
+          test unit.
+
+    This is the simple form of test unit, and it will always be run.
+
+  • TEST_CONFORM_SKIP (condition, path, function_name);
+
+    @condition is used to decide whether to run the unit or not.
+
+    This macro will check @condition on start, and if it evaluates to TRUE
+    then the @function_name will be called and the unit executed; otherwise
+    the test will automatically succeed.
+
+  • TEST_CONFORM_TODO (path, function_name);
+
+    This macro will execute @function_name and will succeed if the unit
+    fails. This macro should be used for tests that are known to fail.
 
 Notes:
-------
 
-NB: A test fails if it exits. (regardless of the exit status)
+  • Do not call clutter_init() in your units; initialization is handled
+    by the conformance test suite itself.
 
-Don't call clutter_init since that is handled in test-conform-common.c
-
-Make sure you clean up *everything* you create. Noteable things you might miss
-include timelines, behaviours, and all actors you add to the stage. This is important because otherwise you can cause cascading failures in other tests.
-
-Be aware that to help avoid tests causing cascading side effects for other tests all children of the default stage are destroyed between tests.
-
+  • All units are invoked in a new process, to prevent clobbering the
+    state.

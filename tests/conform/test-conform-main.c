@@ -15,6 +15,23 @@ test_conform_skip_test (TestConformSimpleFixture *fixture,
   /* void */
 }
 
+static void
+test_conform_todo_test (TestConformSimpleFixture *fixture,
+                        gconstpointer             data)
+{
+#ifdef G_OS_UNIX
+  const TestConformTodo *todo = data;
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+    {
+      todo->func (fixture, NULL);
+      exit (0);
+    }
+
+  g_test_trap_assert_failed ();
+#endif
+}
+
 static TestConformSharedState *shared_state = NULL;
 
 /* This is a bit of sugar for adding new conformance tests:
@@ -52,11 +69,15 @@ static TestConformSharedState *shared_state = NULL;
   } else { TEST_CONFORM_SIMPLE (NAMESPACE, FUNC); }     } G_STMT_END
 
 #define TEST_CONFORM_TODO(NAMESPACE, FUNC)              G_STMT_START {  \
-  g_test_add ("/todo" NAMESPACE "/" #FUNC,                              \
+   extern void FUNC (TestConformSimpleFixture *, gconstpointer);        \
+   TestConformTodo *_clos = g_new0 (TestConformTodo, 1);                \
+   _clos->name = g_strdup ( #FUNC );                                    \
+   _clos->func = FUNC;                                                  \
+   g_test_add ("/todo" NAMESPACE "/" #FUNC,                             \
               TestConformSimpleFixture,                                 \
-              shared_state,                                             \
+              _clos,                                                    \
               test_conform_simple_fixture_setup,                        \
-              test_conform_skip_test,                                   \
+              test_conform_todo_test,                                   \
               test_conform_simple_fixture_teardown);    } G_STMT_END
 
 gchar *
@@ -96,6 +117,9 @@ main (int argc, char **argv)
      lines containing the tests need to be formatted on a single line
      each. To comment out a test use the SKIP or TODO macros. Using
      #if 0 would break the script. */
+
+  /* this is a sanity check for the test suite itself */
+  TEST_CONFORM_TODO ("/suite", verify_failure);
 
   TEST_CONFORM_SIMPLE ("/timeline", test_timeline);
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_interpolate);

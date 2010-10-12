@@ -91,8 +91,10 @@ wrappers: stamp-test-conformance
 	@true
 stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 	@mkdir -p wrappers
-	@sed -n -e 's/^ \{1,\}TEST_CONFORM_SIMPLE *(.*"\([^",]\{1,\}\)", *\([a-zA-Z0-9_]\{1,\}\).*/\/conform\1\/\2/p' \
-	-e 's/^ \{1,\}TEST_CONFORM_SKIP *(.*"\([^",]\{1,\}\)", *\([a-zA-Z0-9_]\{1,\}\).*/\/conform\1\/\2/p' \
+	@sed -n \
+		-e 's/^ \{1,\}TEST_CONFORM_SIMPLE *(.*"\([^",]\{1,\}\)", *\([a-zA-Z0-9_]\{1,\}\).*/\/conform\1\/\2/p' \
+		-e 's/^ \{1,\}TEST_CONFORM_SKIP *(.*"\([^",]\{1,\}\)", *\([a-zA-Z0-9_]\{1,\}\).*/\/conform\1\/\2/p' \
+		-e 's/^ \{1,\}TEST_CONFORM_TODO *(.*"\([^",]\{1,\}\)", *\([a-zA-Z0-9_]\{1,\}\).*/\/conform\1\/\2/p' \
 	$(srcdir)/test-conform-main.c > unit-tests
 	@chmod +x test-launcher.sh
 	@( echo "/stamp-test-conformance" ; \
