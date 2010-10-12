@@ -2280,6 +2280,10 @@ _clutter_actor_effects_pre_paint (ClutterActor *self)
   for (l = effects; l != NULL; l = l->next)
     {
       ClutterEffect *effect = l->data;
+      ClutterActorMeta *meta = l->data;
+
+      if (!clutter_actor_meta_get_enabled (meta))
+        continue;
 
       priv->current_effect = l->data;
 
@@ -2304,6 +2308,10 @@ _clutter_actor_effects_post_paint (ClutterActor *self)
   for (l = g_list_last ((GList *) effects); l != NULL; l = l->prev)
     {
       ClutterEffect *effect = l->data;
+      ClutterActorMeta *meta = l->data;
+
+      if (!clutter_actor_meta_get_enabled (meta))
+        continue;
 
       priv->current_effect = l->data;
 
@@ -5687,7 +5695,10 @@ clutter_actor_allocate (ClutterActor           *self,
       for (l = constraints; l != NULL; l = l->next)
         {
           ClutterConstraint *constraint = l->data;
-          _clutter_constraint_update_allocation (constraint, self, &alloc);
+          ClutterActorMeta *meta = l->data;
+
+          if (clutter_actor_meta_get_enabled (meta))
+            _clutter_constraint_update_allocation (constraint, self, &alloc);
         }
     }
 
