@@ -78,13 +78,6 @@
 static void
 _cogl_pixel_array_free (CoglPixelArray *buffer);
 
-#if !defined (COGL_HAS_GLES)
-static const CoglBufferVtable
-cogl_pixel_array_vtable;
-#endif
-static const CoglBufferVtable
-cogl_malloc_pixel_array_vtable;
-
 COGL_BUFFER_DEFINE (PixelArray, pixel_array)
 
 static CoglPixelArray *
