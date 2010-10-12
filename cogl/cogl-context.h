@@ -145,9 +145,19 @@ typedef struct
 
   /* Pre-generated VBOs containing indices to generate GL_TRIANGLES
      out of a vertex array of quads */
+  /* XXX: These should be removed when the vertex-buffer.c indices
+   * code is re-worked to use cogl_get_rectangle_indices. */
   CoglHandle        quad_indices_byte;
   unsigned int      quad_indices_short_len;
   CoglHandle        quad_indices_short;
+
+  CoglHandle        quad_buffer_indices_byte;
+  unsigned int      quad_buffer_indices_len;
+  CoglHandle        quad_buffer_indices;
+
+  CoglIndices      *rectangle_byte_indices;
+  CoglIndices      *rectangle_short_indices;
+  int               rectangle_short_indices_len;
 
   gboolean          in_begin_gl_block;
 

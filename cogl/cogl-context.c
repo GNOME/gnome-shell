@@ -199,6 +199,14 @@ cogl_create_context (void)
   _context->quad_indices_short = COGL_INVALID_HANDLE;
   _context->quad_indices_short_len = 0;
 
+  _context->quad_buffer_indices_byte = COGL_INVALID_HANDLE;
+  _context->quad_buffer_indices = COGL_INVALID_HANDLE;
+  _context->quad_buffer_indices_len = 0;
+
+  _context->rectangle_byte_indices = NULL;
+  _context->rectangle_short_indices = NULL;
+  _context->rectangle_short_indices_len = 0;
+
   _context->texture_download_material = COGL_INVALID_HANDLE;
 
   /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
@@ -281,6 +289,16 @@ _cogl_destroy_context (void)
     cogl_handle_unref (_context->quad_indices_byte);
   if (_context->quad_indices_short)
     cogl_handle_unref (_context->quad_indices_short);
+
+  if (_context->quad_buffer_indices_byte)
+    cogl_handle_unref (_context->quad_buffer_indices_byte);
+  if (_context->quad_buffer_indices)
+    cogl_handle_unref (_context->quad_buffer_indices);
+
+  if (_context->rectangle_byte_indices)
+    cogl_object_unref (_context->rectangle_byte_indices);
+  if (_context->rectangle_short_indices)
+    cogl_object_unref (_context->rectangle_short_indices);
 
   if (_context->default_material)
     cogl_handle_unref (_context->default_material);
