@@ -926,6 +926,10 @@ _cogl_material_layer_get_authority (CoglMaterialLayer *layer,
 CoglHandle
 _cogl_material_layer_get_texture (CoglMaterialLayer *layer);
 
+CoglHandle
+_cogl_material_get_layer_texture (CoglMaterial *material,
+                                  int layer_index);
+
 typedef gboolean (*CoglMaterialInternalLayerCallback) (CoglMaterialLayer *layer,
                                                        void *user_data);
 
