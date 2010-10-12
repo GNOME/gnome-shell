@@ -54,6 +54,7 @@
 #include <cogl/cogl-pixel-array.h>
 #include <cogl/cogl-vector.h>
 #include <cogl/cogl-texture-3d.h>
+#include <cogl/cogl-index-array.h>
 #endif
 
 G_BEGIN_DECLS
