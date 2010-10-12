@@ -160,9 +160,6 @@ clutter_bind_constraint_update_allocation (ClutterConstraint *constraint,
   if (bind->source == NULL)
     return;
 
-  if (!clutter_actor_meta_get_enabled (meta))
-    return;
-
   source_position.x = clutter_actor_get_x (bind->source);
   source_position.y = clutter_actor_get_y (bind->source);
   clutter_actor_get_size (bind->source, &source_width, &source_height);

@@ -128,9 +128,6 @@ clutter_align_constraint_update_allocation (ClutterConstraint *constraint,
   if (align->source == NULL)
     return;
 
-  if (!clutter_actor_meta_get_enabled (meta))
-    return;
-
   clutter_actor_get_position (align->source, &source_x, &source_y);
   clutter_actor_get_size (align->source, &source_width, &source_height);
 
