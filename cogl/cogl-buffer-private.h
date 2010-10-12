@@ -120,7 +120,7 @@ _cogl_buffer_initialize (CoglBuffer          *buffer,
 void
 _cogl_buffer_fini (CoglBuffer *buffer);
 
-void
+void *
 _cogl_buffer_bind (CoglBuffer *buffer,
                    CoglBufferBindTarget target);
 

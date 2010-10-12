@@ -351,28 +351,31 @@ _cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
 }
 #endif
 
-void
+void *
 _cogl_buffer_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _COGL_GET_CONTEXT (ctx, NULL);
 
-  g_return_if_fail (buffer != NULL);
+  g_return_val_if_fail (buffer != NULL, NULL);
 
   /* Don't allow binding the buffer to multiple targets at the same time */
-  g_return_if_fail (ctx->current_buffer[buffer->last_target] != buffer);
+  g_return_val_if_fail (ctx->current_buffer[buffer->last_target] != buffer,
+                        NULL);
 
   /* Don't allow nesting binds to the same target */
-  g_return_if_fail (ctx->current_buffer[target] == NULL);
+  g_return_val_if_fail (ctx->current_buffer[target] == NULL, NULL);
 
   buffer->last_target = target;
+  ctx->current_buffer[target] = buffer;
 
   if (buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
     {
       GLenum gl_target = convert_bind_target_to_gl_target (buffer->last_target);
       GE( glBindBuffer (gl_target, buffer->gl_handle) );
+      return NULL;
     }
-
-  ctx->current_buffer[target] = buffer;
+  else
+    return buffer->data;
 }
 
 void
