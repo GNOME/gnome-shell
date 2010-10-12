@@ -1761,6 +1761,9 @@ clutter_actor_real_allocate (ClutterActor           *self,
 
   if (x1_changed || y1_changed || x2_changed || y2_changed || flags_changed)
     {
+      CLUTTER_NOTE (LAYOUT, "Allocation for '%s' changed",
+                    get_actor_debug_name (self));
+
       _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ALLOCATION]);
 
       /* we also emit the ::allocation-changed signal for people
