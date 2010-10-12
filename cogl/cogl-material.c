@@ -1970,6 +1970,15 @@ _cogl_material_layer_get_texture (CoglMaterialLayer *layer)
   return authority->texture;
 }
 
+CoglHandle
+_cogl_material_get_layer_texture (CoglMaterial *material,
+                                  int layer_index)
+{
+  CoglMaterialLayer *layer =
+    _cogl_material_get_layer (material, layer_index);
+  return _cogl_material_layer_get_texture (layer);
+}
+
 static void
 _cogl_material_prune_empty_layer_difference (CoglMaterial *layers_authority,
                                              CoglMaterialLayer *layer)
