@@ -254,31 +254,6 @@ cogl_vertex_buffer_enable (CoglHandle  handle,
 			   const char *attribute_name);
 
 /**
- * CoglVerticesMode:
- * @COGL_VERTICES_MODE_POINTS: FIXME, equivalent to %GL_POINTS
- * @COGL_VERTICES_MODE_LINE_STRIP: FIXME, equivalent to %GL_LINE_STRIP
- * @COGL_VERTICES_MODE_LINE_LOOP: FIXME, equivalent to %GL_LINE_LOOP
- * @COGL_VERTICES_MODE_LINES: FIXME, equivalent to %GL_LINES
- * @COGL_VERTICES_MODE_TRIANGLE_STRIP: FIXME, equivalent to %GL_TRIANGLE_STRIP
- * @COGL_VERTICES_MODE_TRIANGLE_FAN: FIXME, equivalent to %GL_TRIANGLE_FAN
- * @COGL_VERTICES_MODE_TRIANGLES: FIXME, equivalent to %GL_TRIANGLES
- *
- * How vertices passed to cogl_vertex_buffer_draw() and
- * cogl_vertex_buffer_draw_elements() should be interpreted
- *
- * Since: 1.0
- */
-typedef enum {
-  COGL_VERTICES_MODE_POINTS = GL_POINTS,
-  COGL_VERTICES_MODE_LINE_STRIP = GL_LINE_STRIP,
-  COGL_VERTICES_MODE_LINE_LOOP = GL_LINE_LOOP,
-  COGL_VERTICES_MODE_LINES = GL_LINES,
-  COGL_VERTICES_MODE_TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
-  COGL_VERTICES_MODE_TRIANGLE_FAN = GL_TRIANGLE_FAN,
-  COGL_VERTICES_MODE_TRIANGLES = GL_TRIANGLES
-} CoglVerticesMode;
-
-/**
  * cogl_vertex_buffer_draw:
  * @handle: A vertex buffer handle
  * @mode: A #CoglVerticesMode specifying how the vertices should be
@@ -297,28 +272,6 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
 		         CoglVerticesMode mode,
 		         int              first,
 		         int              count);
-
-/**
- * CoglIndicesType:
- * @COGL_INDICES_TYPE_UNSIGNED_BYTE: Your indices are unsigned bytes
- * @COGL_INDICES_TYPE_UNSIGNED_SHORT: Your indices are unsigned shorts
- * @COGL_INDICES_TYPE_UNSIGNED_INT: Your indices are unsigned ints
- *
- * You should aim to use the smallest data type that gives you enough
- * range, since it reduces the size of your index array and can help
- * reduce the demand on memory bandwidth.
- *
- * Note that %COGL_INDICES_TYPE_UNSIGNED_INT is only supported if the
- * %COGL_FEATURE_UNSIGNED_INT_INDICES feature is available. This
- * should always be available on OpenGL but on OpenGL ES it will only
- * be available if the GL_OES_element_index_uint extension is
- * advertized.
- */
-typedef enum {
-  COGL_INDICES_TYPE_UNSIGNED_BYTE,
-  COGL_INDICES_TYPE_UNSIGNED_SHORT,
-  COGL_INDICES_TYPE_UNSIGNED_INT
-} CoglIndicesType;
 
 /**
  * cogl_vertex_buffer_indices_new:

@@ -465,6 +465,54 @@ typedef enum { /*< prefix=COGL_ERROR >*/
 GQuark
 _cogl_error_quark (void);
 
+/**
+ * CoglIndicesType:
+ * @COGL_INDICES_TYPE_UNSIGNED_BYTE: Your indices are unsigned bytes
+ * @COGL_INDICES_TYPE_UNSIGNED_SHORT: Your indices are unsigned shorts
+ * @COGL_INDICES_TYPE_UNSIGNED_INT: Your indices are unsigned ints
+ *
+ * You should aim to use the smallest data type that gives you enough
+ * range, since it reduces the size of your index array and can help
+ * reduce the demand on memory bandwidth.
+ *
+ * Note that %COGL_INDICES_TYPE_UNSIGNED_INT is only supported if the
+ * %COGL_FEATURE_UNSIGNED_INT_INDICES feature is available. This
+ * should always be available on OpenGL but on OpenGL ES it will only
+ * be available if the GL_OES_element_index_uint extension is
+ * advertized.
+ */
+typedef enum {
+  COGL_INDICES_TYPE_UNSIGNED_BYTE,
+  COGL_INDICES_TYPE_UNSIGNED_SHORT,
+  COGL_INDICES_TYPE_UNSIGNED_INT
+} CoglIndicesType;
+
+/**
+ * CoglVerticesMode:
+ * @COGL_VERTICES_MODE_POINTS: FIXME, equivalent to %GL_POINTS
+ * @COGL_VERTICES_MODE_LINES: FIXME, equivalent to %GL_LINES
+ * @COGL_VERTICES_MODE_LINE_LOOP: FIXME, equivalent to %GL_LINE_LOOP
+ * @COGL_VERTICES_MODE_LINE_STRIP: FIXME, equivalent to %GL_LINE_STRIP
+ * @COGL_VERTICES_MODE_TRIANGLES: FIXME, equivalent to %GL_TRIANGLES
+ * @COGL_VERTICES_MODE_TRIANGLE_STRIP: FIXME, equivalent to %GL_TRIANGLE_STRIP
+ * @COGL_VERTICES_MODE_TRIANGLE_FAN: FIXME, equivalent to %GL_TRIANGLE_FAN
+ *
+ * Different ways of interpreting vertices when drawing.
+ *
+ * Since: 1.0
+ */
+typedef enum {
+  COGL_VERTICES_MODE_POINTS = 0x0000,
+  COGL_VERTICES_MODE_LINES = 0x0001,
+  COGL_VERTICES_MODE_LINE_LOOP = 0x0002,
+  COGL_VERTICES_MODE_LINE_STRIP = 0x0003,
+  COGL_VERTICES_MODE_TRIANGLES = 0x0004,
+  COGL_VERTICES_MODE_TRIANGLE_STRIP = 0x0005,
+  COGL_VERTICES_MODE_TRIANGLE_FAN = 0x0006
+} CoglVerticesMode;
+
+/* NB: The above definitions are taken from gl.h equivalents */
+
 G_END_DECLS
 
 #endif /* __COGL_TYPES_H__ */
