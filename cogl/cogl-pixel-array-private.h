@@ -37,32 +37,14 @@ G_BEGIN_DECLS
 
 #define COGL_PIXEL_ARRAY(array)     ((CoglPixelArray *)(array))
 
-#define COGL_PIXEL_ARRAY_SET_FLAG(array, flag) \
-  ((array)->flags |= (COGL_PIXEL_ARRAY_FLAG_ ## flag))
-
-#define COGL_PIXEL_ARRAY_CLEAR_FLAG(array, flag) \
-  ((array)->flags &= ~(COGL_PIXEL_ARRAY_FLAG_ ## flag))
-
-#define COGL_PIXEL_ARRAY_FLAG_IS_SET(array, flag) \
-  ((array)->flags & (COGL_PIXEL_ARRAY_FLAG_ ## flag))
-
-typedef enum _CoglPixelArrayFlags
-{
-  COGL_PIXEL_ARRAY_FLAG_NONE = 0,
-  COGL_PIXEL_ARRAY_FLAG_STORE_CREATED = 1 << 0,
-} CoglPixelArrayFlags;
-
 struct _CoglPixelArray
 {
   CoglBuffer            _parent;
-
-  CoglPixelArrayFlags  flags;
 
   CoglPixelFormat       format;
   unsigned int          width;
   unsigned int          height;
   unsigned int          stride;
-
 };
 
 GQuark
