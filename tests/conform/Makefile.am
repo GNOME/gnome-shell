@@ -100,6 +100,7 @@ stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 	   echo "/test-launcher.sh" ; \
 	   echo "*.o" ; \
 	   echo "*.xml" ; \
+	   echo "*.html" ; \
 	   echo ".gitignore" ; \
 	   echo "unit-tests" ; \
 	   echo "/wrappers/" ) > .gitignore
@@ -175,6 +176,12 @@ TEST_PROGS = test-conformance
 test-report perf-report full-report:	${TEST_PROGS}
 	@test -z "${TEST_PROGS}" || { \
 	  export GTESTER_LOGDIR=`mktemp -d "$(srcdir)/.testlogs-XXXXXX"` ; \
+	  if test -d "$(top_srcdir)/.git"; then \
+	    export REVISION="`git describe`" ;  \
+	  else \
+	    export REVISION="$(VERSION) $(CLUTTER_RELEASE_STATUS)" ; \
+	  fi ; \
+	  export TIMESTAMP=`date +%Y-%m-%dT%H:%M:%S%z` ; \
 	  case $@ in \
 	  test-report) test_options="-k";; \
 	  perf-report) test_options="-k -m=perf";; \
@@ -185,12 +192,14 @@ test-report perf-report full-report:	${TEST_PROGS}
 	    --verbose \
 	    $$test_options \
 	    -o `mktemp "$$GTESTER_LOGDIR/log-XXXXXX"` ; \
-	  echo '<?xml version="1.0"?>'            > $@.xml ; \
-	  echo '<report-collection>'             >> $@.xml ; \
-	  echo '<info>'                          >> $@.xml ; \
-	  echo '  <package>$(PACKAGE)</package>' >> $@.xml ; \
-	  echo '  <version>$(VERSION)</version>' >> $@.xml ; \
-	  echo '</info>'                         >> $@.xml ; \
+	  echo '<?xml version="1.0"?>'              > $@.xml ; \
+	  echo '<report-collection>'               >> $@.xml ; \
+	  echo '<info>'                            >> $@.xml ; \
+	  echo '  <package>$(PACKAGE)</package>'   >> $@.xml ; \
+	  echo '  <version>$(VERSION)</version>'   >> $@.xml ; \
+	  echo "  <revision>$$REVISION</revision>" >> $@.xml ; \
+	  echo "  <date>$$TIMESTAMP</date>"        >> $@.xml ; \
+	  echo '</info>'                           >> $@.xml ; \
 	  for lf in `ls -L "$$GTESTER_LOGDIR"/.` ; do \
 	    sed '1,1s/^<?xml\b[^>?]*?>//' <"$$GTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
 	  done ; \
@@ -206,6 +215,12 @@ test-report-npot perf-report-npot full-report-npot:	${TEST_PROGS}
 	@test -z "${TEST_PROGS}" || { \
 	  $(top_srcdir)/tests/tools/disable-npots.sh ; \
 	  export GTESTER_LOGDIR=`mktemp -d "$(srcdir)/.testlogs-XXXXXX"` ; \
+	  if test -d "$(top_srcdir)/.git"; then \
+	    export REVISION="`git describe`" ;  \
+	  else \
+	    export REVISION="$(VERSION) $(CLUTTER_RELEASE_STATUS)" ; \
+	  fi ; \
+	  export TIMESTAMP=`date +%Y-%m-%dT%H:%M:%S%z` ; \
 	  case $@ in \
 	  test-report-npot) test_options="-k";; \
 	  perf-report-npot) test_options="-k -m=perf";; \
@@ -216,12 +231,14 @@ test-report-npot perf-report-npot full-report-npot:	${TEST_PROGS}
 	    --verbose \
 	    $$test_options \
 	    -o `mktemp "$$GTESTER_LOGDIR/log-XXXXXX"` ; \
-	  echo '<?xml version="1.0"?>'            > $@.xml ; \
-	  echo '<report-collection>'             >> $@.xml ; \
-	  echo '<info>'                          >> $@.xml ; \
-	  echo '  <package>$(PACKAGE)</package>' >> $@.xml ; \
-	  echo '  <version>$(VERSION)</version>' >> $@.xml ; \
-	  echo '</info>'                         >> $@.xml ; \
+	  echo '<?xml version="1.0"?>'              > $@.xml ; \
+	  echo '<report-collection>'               >> $@.xml ; \
+	  echo '<info>'                            >> $@.xml ; \
+	  echo '  <package>$(PACKAGE)</package>'   >> $@.xml ; \
+	  echo '  <version>$(VERSION)</version>'   >> $@.xml ; \
+	  echo "  <revision>$$REVISION</revision>" >> $@.xml ; \
+	  echo "  <date>$$TIMESTAMP</date>"        >> $@.xml ; \
+	  echo '</info>'                           >> $@.xml ; \
 	  for lf in `ls -L "$$GTESTER_LOGDIR"/.` ; do \
 	    sed '1,1s/^<?xml\b[^>?]*?>//' <"$$GTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
 	  done ; \
