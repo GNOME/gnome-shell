@@ -47,7 +47,7 @@ G_BEGIN_DECLS
 typedef struct _CoglPrimitive CoglPrimitive;
 
 /**
- * CoglV2Vertex:
+ * CoglP2Vertex:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  *
@@ -60,10 +60,10 @@ typedef struct _CoglPrimitive CoglPrimitive;
 typedef struct
 {
    float x, y;
-} CoglV2Vertex;
+} CoglP2Vertex;
 
 /**
- * CoglV3Vertex:
+ * CoglP3Vertex:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @z: The z component of a position attribute
@@ -77,10 +77,10 @@ typedef struct
 typedef struct
 {
    float x, y, z;
-} CoglV3Vertex;
+} CoglP3Vertex;
 
 /**
- * CoglV2C4Vertex:
+ * CoglP2C4Vertex:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @r: The red component of a color attribute
@@ -98,10 +98,10 @@ typedef struct
 {
    float x, y;
    guint8 r, g, b, a;
-} CoglV2C4Vertex;
+} CoglP2C4Vertex;
 
 /**
- * CoglV3C4Vertex:
+ * CoglP3C4Vertex:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @z: The z component of a position attribute
@@ -120,10 +120,10 @@ typedef struct
 {
    float x, y, z;
    guint8 r, g, b, a;
-} CoglV3C4Vertex;
+} CoglP3C4Vertex;
 
 /**
- * CoglV2T2Vertex:
+ * CoglP2T2Vertex:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @s: The s component of a texture coordinate attribute
@@ -139,10 +139,10 @@ typedef struct
 {
    float x, y;
    float s, t;
-} CoglV2T2Vertex;
+} CoglP2T2Vertex;
 
 /**
- * CoglV3T2Vertex:
+ * CoglP3T2Vertex:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @z: The z component of a position attribute
@@ -159,11 +159,11 @@ typedef struct
 {
    float x, y, z;
    float s, t;
-} CoglV3T2Vertex;
+} CoglP3T2Vertex;
 
 
 /**
- * CoglV2T2C4Vertex:
+ * CoglP2T2C4Vertex:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @s: The s component of a texture coordinate attribute
@@ -184,10 +184,10 @@ typedef struct
    float x, y;
    float s, t;
    guint8 r, g, b, a;
-} CoglV2T2C4Vertex;
+} CoglP2T2C4Vertex;
 
 /**
- * CoglV3T2C4Vertex:
+ * CoglP3T2C4Vertex:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @z: The z component of a position attribute
@@ -209,7 +209,7 @@ typedef struct
    float x, y, z;
    float s, t;
    guint8 r, g, b, a;
-} CoglV3T2C4Vertex;
+} CoglP3T2C4Vertex;
 
 /**
  * cogl_primitive_new:
@@ -237,6 +237,40 @@ cogl_primitive_new_with_attributes_array (CoglVerticesMode mode,
                                           int n_vertices,
                                           CoglVertexAttribute **attributes);
 
+CoglPrimitive *
+cogl_primitive_new_with_v3_attributes (CoglVerticesMode mode,
+                                       int n_vertices,
+                                       const CoglP3Vertex *data);
+
+CoglPrimitive *
+cogl_primitive_new_with_v2c4_attributes (CoglVerticesMode mode,
+                                         int n_vertices,
+                                         const CoglP2C4Vertex *data);
+
+CoglPrimitive *
+cogl_primitive_new_with_v3c4_attributes (CoglVerticesMode mode,
+                                         int n_vertices,
+                                         const CoglP3C4Vertex *data);
+
+CoglPrimitive *
+cogl_primitive_new_with_v2t2_attributes (CoglVerticesMode mode,
+                                         int n_vertices,
+                                         const CoglP2T2Vertex *data);
+
+CoglPrimitive *
+cogl_primitive_new_with_v3t2_attributes (CoglVerticesMode mode,
+                                         int n_vertices,
+                                         const CoglP3T2Vertex *data);
+
+CoglPrimitive *
+cogl_primitive_new_with_v2t2c4_attributes (CoglVerticesMode mode,
+                                           int n_vertices,
+                                           const CoglP2T2C4Vertex *data);
+
+CoglPrimitive *
+cogl_primitive_new_with_v3t2c4_attributes (CoglVerticesMode mode,
+                                           int n_vertices,
+                                           const CoglP3T2C4Vertex *data);
 int
 cogl_primitive_get_first_vertex (CoglPrimitive *primitive);
 

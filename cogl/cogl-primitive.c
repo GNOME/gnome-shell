@@ -96,6 +96,252 @@ cogl_primitive_new (CoglVerticesMode mode,
                                                    attributes);
 }
 
+CoglPrimitive *
+cogl_primitive_new_p3 (CoglVerticesMode mode,
+                       int n_vertices,
+                       const CoglP3Vertex *data)
+{
+  CoglVertexArray *array =
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP3Vertex));
+  CoglBuffer *buffer = COGL_BUFFER (array);
+  CoglVertexAttribute *attributes[2];
+  CoglPrimitive *prim;
+
+  cogl_buffer_set_data (buffer, 0, (guint8 *)data,
+                        n_vertices * sizeof (CoglP3Vertex));
+  attributes[0] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_position_in",
+                               sizeof (CoglP3Vertex),
+                               offsetof (CoglP3Vertex, x),
+                               3,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[1] = NULL;
+  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
+                                                   attributes);
+  cogl_object_unref (prim);
+  return prim;
+}
+
+CoglPrimitive *
+cogl_primitive_new_p2c4 (CoglVerticesMode mode,
+                         int n_vertices,
+                         const CoglP2C4Vertex *data)
+{
+  CoglVertexArray *array =
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP2C4Vertex));
+  CoglBuffer *buffer = COGL_BUFFER (array);
+  CoglVertexAttribute *attributes[3];
+  CoglPrimitive *prim;
+
+  cogl_buffer_set_data (buffer, 0, (guint8 *)data,
+                        n_vertices * sizeof (CoglP2C4Vertex));
+  attributes[0] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_position_in",
+                               sizeof (CoglP2C4Vertex),
+                               offsetof (CoglP2C4Vertex, x),
+                               2,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[1] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_color_in",
+                               sizeof (CoglP2C4Vertex),
+                               offsetof (CoglP2C4Vertex, r),
+                               4,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
+  attributes[2] = NULL;
+  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
+                                                   attributes);
+  cogl_object_unref (prim);
+  return prim;
+}
+
+CoglPrimitive *
+cogl_primitive_new_p3c4 (CoglVerticesMode mode,
+                         int n_vertices,
+                         const CoglP3C4Vertex *data)
+{
+  CoglVertexArray *array =
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP3C4Vertex));
+  CoglBuffer *buffer = COGL_BUFFER (array);
+  CoglVertexAttribute *attributes[3];
+  CoglPrimitive *prim;
+
+  cogl_buffer_set_data (buffer, 0, (guint8 *)data,
+                        n_vertices * sizeof (CoglP3C4Vertex));
+  attributes[0] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_position_in",
+                               sizeof (CoglP3C4Vertex),
+                               offsetof (CoglP3C4Vertex, x),
+                               3,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[1] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_color_in",
+                               sizeof (CoglP3C4Vertex),
+                               offsetof (CoglP3C4Vertex, r),
+                               4,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
+  attributes[2] = NULL;
+  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
+                                                   attributes);
+  cogl_object_unref (prim);
+  return prim;
+}
+
+CoglPrimitive *
+cogl_primitive_new_p2t2 (CoglVerticesMode mode,
+                         int n_vertices,
+                         const CoglP2T2Vertex *data)
+{
+  CoglVertexArray *array =
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP2T2Vertex));
+  CoglBuffer *buffer = COGL_BUFFER (array);
+  CoglVertexAttribute *attributes[3];
+  CoglPrimitive *prim;
+
+  cogl_buffer_set_data (buffer, 0, (guint8 *)data,
+                        n_vertices * sizeof (CoglP2T2Vertex));
+  attributes[0] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_position_in",
+                               sizeof (CoglP2T2Vertex),
+                               offsetof (CoglP2T2Vertex, x),
+                               2,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[1] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_tex_coord0_in",
+                               sizeof (CoglP2T2Vertex),
+                               offsetof (CoglP2T2Vertex, x),
+                               2,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[2] = NULL;
+  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
+                                                   attributes);
+  cogl_object_unref (array);
+  return prim;
+}
+
+CoglPrimitive *
+cogl_primitive_new_p3t2 (CoglVerticesMode mode,
+                         int n_vertices,
+                         const CoglP3T2Vertex *data)
+{
+  CoglVertexArray *array =
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP3T2Vertex));
+  CoglBuffer *buffer = COGL_BUFFER (array);
+  CoglVertexAttribute *attributes[3];
+  CoglPrimitive *prim;
+
+  cogl_buffer_set_data (buffer, 0, (guint8 *)data,
+                        n_vertices * sizeof (CoglP3T2Vertex));
+  attributes[0] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_position_in",
+                               sizeof (CoglP3T2Vertex),
+                               offsetof (CoglP3T2Vertex, x),
+                               3,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[1] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_tex_coord0_in",
+                               sizeof (CoglP3T2Vertex),
+                               offsetof (CoglP3T2Vertex, x),
+                               2,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[2] = NULL;
+  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
+                                                   attributes);
+  cogl_object_unref (prim);
+  return prim;
+
+}
+
+CoglPrimitive *
+cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
+                           int n_vertices,
+                           const CoglP2T2C4Vertex *data)
+{
+  CoglVertexArray *array =
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP2T2C4Vertex));
+  CoglBuffer *buffer = COGL_BUFFER (array);
+  CoglVertexAttribute *attributes[4];
+  CoglPrimitive *prim;
+
+  cogl_buffer_set_data (buffer, 0, (guint8 *)data,
+                        n_vertices * sizeof (CoglP2T2C4Vertex));
+  attributes[0] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_position_in",
+                               sizeof (CoglP2T2C4Vertex),
+                               offsetof (CoglP2T2C4Vertex, x),
+                               2,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[1] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_tex_coord0_in",
+                               sizeof (CoglP2T2C4Vertex),
+                               offsetof (CoglP2T2C4Vertex, x),
+                               2,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[2] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_color_in",
+                               sizeof (CoglP2T2C4Vertex),
+                               offsetof (CoglP2T2C4Vertex, r),
+                               4,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
+  attributes[3] = NULL;
+  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
+                                                   attributes);
+  cogl_object_unref (prim);
+  return prim;
+}
+
+CoglPrimitive *
+cogl_primitive_new_p3t2c4 (CoglVerticesMode mode,
+                           int n_vertices,
+                           const CoglP3T2C4Vertex *data)
+{
+  CoglVertexArray *array =
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP3T2C4Vertex));
+  CoglBuffer *buffer = COGL_BUFFER (array);
+  CoglVertexAttribute *attributes[4];
+  CoglPrimitive *prim;
+
+  cogl_buffer_set_data (buffer, 0, (guint8 *)data,
+                        n_vertices * sizeof (CoglP3T2C4Vertex));
+  attributes[0] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_position_in",
+                               sizeof (CoglP3T2C4Vertex),
+                               offsetof (CoglP3T2C4Vertex, x),
+                               3,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[1] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_tex_coord0_in",
+                               sizeof (CoglP3T2C4Vertex),
+                               offsetof (CoglP3T2C4Vertex, x),
+                               2,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[2] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_color_in",
+                               sizeof (CoglP3T2C4Vertex),
+                               offsetof (CoglP3T2C4Vertex, r),
+                               4,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
+  attributes[3] = NULL;
+  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
+                                                   attributes);
+  cogl_object_unref (prim);
+  return prim;
+}
+
 static void
 free_attributes_list (CoglPrimitive *primitive)
 {
