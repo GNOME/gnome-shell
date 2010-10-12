@@ -5084,7 +5084,7 @@ clutter_actor_queue_redraw (ClutterActor *self)
 
   /* Ignore queuing a redraw for actors not descended from a stage */
   stage = _clutter_actor_get_stage_internal (self);
-  if (!stage)
+  if (stage == NULL)
     return;
 
   self->priv->queue_redraw_entry =
@@ -5209,7 +5209,7 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
 
   /* Ignore queuing a redraw for actors not descended from a stage */
   stage = _clutter_actor_get_stage_internal (self);
-  if (!stage)
+  if (stage == NULL)
     return;
 
   _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
