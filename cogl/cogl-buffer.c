@@ -166,7 +166,7 @@ bo_map (CoglBuffer       *buffer,
   GE_RET( data, glMapBuffer (gl_target,
                              _cogl_buffer_access_to_gl_enum (access)) );
   if (data)
-    COGL_BUFFER_SET_FLAG (buffer, MAPPED);
+    buffer->flags |= COGL_BUFFER_FLAG_MAPPED;
 
   _cogl_buffer_unbind (buffer);
 
@@ -188,7 +188,7 @@ bo_unmap (CoglBuffer *buffer)
   _cogl_buffer_bind (buffer, buffer->last_target);
 
   GE( glUnmapBuffer (convert_bind_target_to_gl_target (buffer->last_target)) );
-  COGL_BUFFER_CLEAR_FLAG (buffer, MAPPED);
+  buffer->flags &= ~COGL_BUFFER_FLAG_MAPPED;
 
   _cogl_buffer_unbind (buffer);
 #else
@@ -242,14 +242,14 @@ malloc_map (CoglBuffer       *buffer,
             CoglBufferAccess  access,
             CoglBufferMapHint hints)
 {
-  COGL_BUFFER_SET_FLAG (buffer, MAPPED);
+  buffer->flags |= COGL_BUFFER_FLAG_MAPPED;
   return buffer->data;
 }
 
 static void
 malloc_unmap (CoglBuffer *buffer)
 {
-  COGL_BUFFER_CLEAR_FLAG (buffer, MAPPED);
+  buffer->flags &= ~COGL_BUFFER_FLAG_MAPPED;
 }
 
 static gboolean
@@ -294,14 +294,14 @@ _cogl_buffer_initialize (CoglBuffer           *buffer,
       buffer->vtable.set_data = bo_set_data;
 
       GE( glGenBuffers (1, &buffer->gl_handle) );
-      COGL_BUFFER_SET_FLAG (buffer, BUFFER_OBJECT);
+      buffer->flags |= COGL_BUFFER_FLAG_BUFFER_OBJECT;
     }
 }
 
 void
 _cogl_buffer_fini (CoglBuffer *buffer)
 {
-  g_return_if_fail (!COGL_BUFFER_FLAG_IS_SET (buffer, MAPPED));
+  g_return_if_fail (!(buffer->flags & COGL_BUFFER_FLAG_MAPPED));
 }
 
 /* OpenGL ES 1.1 and 2 have a GL_OES_mapbuffer extension that is able to map
@@ -369,7 +369,7 @@ _cogl_buffer_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
 
   buffer->last_target = target;
 
-  if (COGL_BUFFER_FLAG_IS_SET (buffer, BUFFER_OBJECT))
+  if (buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
     {
       GLenum gl_target = convert_bind_target_to_gl_target (buffer->last_target);
       GE( glBindBuffer (gl_target, buffer->gl_handle) );
@@ -388,7 +388,7 @@ _cogl_buffer_unbind (CoglBuffer *buffer)
   /* the unbind should pair up with a previous bind */
   g_return_if_fail (ctx->current_buffer[buffer->last_target] == buffer);
 
-  if (COGL_BUFFER_FLAG_IS_SET (buffer, BUFFER_OBJECT))
+  if (buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
     {
       GLenum gl_target = convert_bind_target_to_gl_target (buffer->last_target);
       GE( glBindBuffer (gl_target, 0) );
@@ -436,7 +436,7 @@ cogl_buffer_map (CoglBuffer        *buffer,
   if (!cogl_is_buffer (buffer))
     return NULL;
 
-  if (COGL_BUFFER_FLAG_IS_SET (buffer, MAPPED))
+  if (buffer->flags & COGL_BUFFER_FLAG_MAPPED)
     return buffer->data;
 
   buffer->data = buffer->vtable.map (buffer, access, hints);
@@ -449,7 +449,7 @@ cogl_buffer_unmap (CoglBuffer *buffer)
   if (!cogl_is_buffer (buffer))
     return;
 
-  if (!COGL_BUFFER_FLAG_IS_SET (buffer, MAPPED))
+  if (!(buffer->flags & COGL_BUFFER_FLAG_MAPPED))
     return;
 
   buffer->vtable.unmap (buffer);
