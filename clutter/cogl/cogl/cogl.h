@@ -58,6 +58,7 @@
 #include <cogl/cogl-vertex-array.h>
 #include <cogl/cogl-indices.h>
 #include <cogl/cogl-vertex-attribute.h>
+#include <cogl/cogl-primitive.h>
 #endif
 
 G_BEGIN_DECLS
