@@ -67,8 +67,7 @@ new_frame_cb (ClutterTimeline *timeline,
 }
 
 void
-test_timeline_rewind (TestConformSimpleFixture *fixture,
-		      gconstpointer data)
+timeline_rewind (void)
 {
   TestState state;
 

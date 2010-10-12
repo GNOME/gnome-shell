@@ -79,8 +79,7 @@ test_actor_init (TestActor *self)
 }
 
 void
-test_preferred_size (TestConformSimpleFixture *fixture,
-                     gconstpointer             data)
+actor_preferred_size (void)
 {
   ClutterActor *test;
   TestActor *self;
@@ -140,8 +139,7 @@ test_preferred_size (TestConformSimpleFixture *fixture,
 }
 
 void
-test_fixed_size (TestConformSimpleFixture *fixture,
-                 gconstpointer             data)
+actor_fixed_size (void)
 {
   ClutterActor *rect;
   gboolean min_width_set, nat_width_set;

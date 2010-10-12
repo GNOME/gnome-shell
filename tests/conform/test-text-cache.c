@@ -257,8 +257,7 @@ make_layout_like_label (ClutterText *label)
 }
 
 void
-test_text_cache (TestConformSimpleFixture *fixture,
-                 gconstpointer _data)
+text_cache (void)
 {
   CallbackData data;
 

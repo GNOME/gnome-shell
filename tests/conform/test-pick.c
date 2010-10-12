@@ -117,8 +117,7 @@ on_timeout (State *state)
 }
 
 void
-test_pick (TestConformSimpleFixture *fixture,
-	   gconstpointer data)
+actor_picking (void)
 {
   int y, x;
   State state;
@@ -159,4 +158,3 @@ test_pick (TestConformSimpleFixture *fixture,
 
   g_assert (state.pass);
 }
-

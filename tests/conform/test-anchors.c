@@ -672,8 +672,7 @@ idle_cb (gpointer data)
 }
 
 void
-test_anchors (TestConformSimpleFixture *fixture,
-              gconstpointer data)
+actor_anchors (void)
 {
   TestState state;
   ClutterActor *stage;
@@ -701,8 +700,5 @@ test_anchors (TestConformSimpleFixture *fixture,
   g_idle_remove_by_data (&state);
 
   clutter_actor_destroy (state.rect);
-
-  if (g_test_verbose ())
-    g_print ("OK\n");
 }
 

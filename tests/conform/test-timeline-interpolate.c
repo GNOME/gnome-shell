@@ -132,8 +132,7 @@ completed_cb (ClutterTimeline *timeline,
 }
 
 void
-test_timeline_interpolate (TestConformSimpleFixture *fixture, 
-			   gconstpointer data)
+timeline_interpolation (void)
 {
   TestState state;
 

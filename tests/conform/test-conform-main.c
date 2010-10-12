@@ -32,6 +32,13 @@ test_conform_todo_test (TestConformSimpleFixture *fixture,
 #endif
 }
 
+void
+verify_failure (TestConformSimpleFixture *fixture,
+                gconstpointer             data)
+{
+  g_assert (FALSE);
+}
+
 static TestConformSharedState *shared_state = NULL;
 
 /* This is a bit of sugar for adding new conformance tests:
@@ -45,12 +52,12 @@ static TestConformSharedState *shared_state = NULL;
  *   definition in test-conform-common.h)
  */
 #define TEST_CONFORM_SIMPLE(NAMESPACE, FUNC)            G_STMT_START {  \
-  extern void FUNC (TestConformSimpleFixture *fixture, gconstpointer data); \
-  g_test_add ("/conform" NAMESPACE "/" #FUNC, \
-	      TestConformSimpleFixture, \
-	      shared_state, /* data argument for test */ \
-	      test_conform_simple_fixture_setup, \
-	      FUNC, \
+  extern void FUNC (TestConformSimpleFixture *, gconstpointer);         \
+  g_test_add ("/conform" NAMESPACE "/" #FUNC,                           \
+	      TestConformSimpleFixture,                                 \
+	      shared_state, /* data argument for test */                \
+	      test_conform_simple_fixture_setup,                        \
+	      FUNC,                                                     \
 	      test_conform_simple_fixture_teardown);    } G_STMT_END
 
 /* this is a macro that conditionally executes a test if CONDITION
@@ -118,34 +125,14 @@ main (int argc, char **argv)
      each. To comment out a test use the SKIP or TODO macros. Using
      #if 0 would break the script. */
 
-  /* this is a sanity check for the test suite itself */
+  /* sanity check for the test suite itself */
   TEST_CONFORM_TODO ("/suite", verify_failure);
 
-  TEST_CONFORM_SIMPLE ("/timeline", test_timeline);
-  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_interpolate);
-  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_rewind);
-
-  TEST_CONFORM_SIMPLE ("/score", test_score);
-
-  TEST_CONFORM_SIMPLE ("/picking", test_pick);
-
-  TEST_CONFORM_SIMPLE ("/text", test_text_utf8_validation);
-  TEST_CONFORM_SIMPLE ("/text", test_text_empty);
-  TEST_CONFORM_SIMPLE ("/text", test_text_set_empty);
-  TEST_CONFORM_SIMPLE ("/text", test_text_set_text);
-  TEST_CONFORM_SIMPLE ("/text", test_text_append_some);
-  TEST_CONFORM_SIMPLE ("/text", test_text_prepend_some);
-  TEST_CONFORM_SIMPLE ("/text", test_text_insert);
-  TEST_CONFORM_SIMPLE ("/text", test_text_delete_chars);
-  TEST_CONFORM_SIMPLE ("/text", test_text_delete_text);
-  TEST_CONFORM_SIMPLE ("/text", test_text_cursor);
-  TEST_CONFORM_SIMPLE ("/text", test_text_event);
-  TEST_CONFORM_SIMPLE ("/text", test_text_get_chars);
-  TEST_CONFORM_SIMPLE ("/text", test_text_cache);
-  TEST_CONFORM_SIMPLE ("/text", test_text_password_char);
-
-  TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_size);
-  TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_color);
+  TEST_CONFORM_SIMPLE ("/actor", actor_destruction);
+  TEST_CONFORM_SIMPLE ("/actor", actor_anchors);
+  TEST_CONFORM_SIMPLE ("/actor", actor_picking);
+  TEST_CONFORM_SIMPLE ("/actor", actor_fixed_size);
+  TEST_CONFORM_SIMPLE ("/actor", actor_preferred_size);
 
   TEST_CONFORM_SIMPLE ("/invariants", test_initial_state);
   TEST_CONFORM_SIMPLE ("/invariants", test_shown_not_parented);
@@ -161,6 +148,23 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/opacity", test_rectangle_opacity);
   TEST_CONFORM_SIMPLE ("/opacity", test_paint_opacity);
 
+  TEST_CONFORM_SIMPLE ("/text", text_utf8_validation);
+  TEST_CONFORM_SIMPLE ("/text", text_set_empty);
+  TEST_CONFORM_SIMPLE ("/text", text_set_text);
+  TEST_CONFORM_SIMPLE ("/text", text_append_some);
+  TEST_CONFORM_SIMPLE ("/text", text_prepend_some);
+  TEST_CONFORM_SIMPLE ("/text", text_insert);
+  TEST_CONFORM_SIMPLE ("/text", text_delete_chars);
+  TEST_CONFORM_SIMPLE ("/text", text_delete_text);
+  TEST_CONFORM_SIMPLE ("/text", text_cursor);
+  TEST_CONFORM_SIMPLE ("/text", text_event);
+  TEST_CONFORM_SIMPLE ("/text", text_get_chars);
+  TEST_CONFORM_SIMPLE ("/text", text_cache);
+  TEST_CONFORM_SIMPLE ("/text", text_password_char);
+
+  TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_size);
+  TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_color);
+
   TEST_CONFORM_SIMPLE ("/texture", test_texture_pick_with_alpha);
   TEST_CONFORM_SIMPLE ("/texture", test_texture_fbo);
   TEST_CONFORM_SIMPLE ("/texture/cairo", test_clutter_cairo_texture);
@@ -168,9 +172,6 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/path", test_path);
 
   TEST_CONFORM_SIMPLE ("/binding-pool", test_binding_pool);
-
-  TEST_CONFORM_SIMPLE ("/actor", test_anchors);
-  TEST_CONFORM_SIMPLE ("/actor", test_actor_destruction);
 
   TEST_CONFORM_SIMPLE ("/model", test_list_model_populate);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_iterate);
@@ -188,9 +189,6 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/group", test_group_depth_sorting);
 
-  TEST_CONFORM_SIMPLE ("/sizing", test_fixed_size);
-  TEST_CONFORM_SIMPLE ("/sizing", test_preferred_size);
-
   TEST_CONFORM_SIMPLE ("/script", test_script_single);
   TEST_CONFORM_SIMPLE ("/script", test_script_child);
   TEST_CONFORM_SIMPLE ("/script", test_script_implicit_alpha);
@@ -202,6 +200,12 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/script", test_animator_multi_properties);
   TEST_CONFORM_SIMPLE ("/script", test_state_base);
   TEST_CONFORM_SIMPLE ("/script", test_script_layout_property);
+
+  TEST_CONFORM_SIMPLE ("/timeline", test_timeline);
+  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", timeline_interpolation);
+  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", timeline_rewind);
+
+  TEST_CONFORM_SIMPLE ("/score", test_score);
 
   TEST_CONFORM_SIMPLE ("/behaviours", test_behaviours);
 

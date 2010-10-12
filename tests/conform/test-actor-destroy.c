@@ -151,18 +151,32 @@ test_destroy_init (TestDestroy *self)
   clutter_actor_set_name (self->tex, "Texture");
 }
 
+static void
+on_destroy (ClutterActor *actor,
+            gpointer      data)
+{
+  gboolean *destroy_called = data;
+
+  *destroy_called = TRUE;
+}
+
 void
-test_actor_destruction (TestConformSimpleFixture *fixture,
-                        gconstpointer dummy)
+actor_destruction (void)
 {
   ClutterActor *test = g_object_new (TEST_TYPE_DESTROY, NULL);
   ClutterActor *child = clutter_rectangle_new ();
+  gboolean destroy_called = FALSE;
 
   if (g_test_verbose ())
     g_print ("Adding external child...\n");
 
   clutter_actor_set_name (child, "Child");
   clutter_container_add_actor (CLUTTER_CONTAINER (test), child);
+  g_signal_connect (child, "destroy", G_CALLBACK (on_destroy), &destroy_called);
+
+  if (g_test_verbose ())
+    g_print ("Calling destroy()...\n");
 
   clutter_actor_destroy (test);
+  g_assert (destroy_called);
 }

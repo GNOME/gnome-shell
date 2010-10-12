@@ -17,8 +17,7 @@ test_text_data[] = {
 };
 
 void
-test_text_utf8_validation (TestConformSimpleFixture *fixture,
-			    gconstpointer data)
+text_utf8_validation (void)
 {
   int i;
 
@@ -71,8 +70,7 @@ insert_unichar (ClutterText *text, gunichar unichar, int position)
 }
 
 void
-test_text_empty (TestConformSimpleFixture *fixture,
-		  gconstpointer data)
+text_set_empty (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
 
@@ -80,16 +78,6 @@ test_text_empty (TestConformSimpleFixture *fixture,
   g_assert_cmpint (*clutter_text_get_text (text), ==, '\0');
   g_assert_cmpint (clutter_text_get_cursor_position (text), ==, -1);
 
-  clutter_actor_destroy (CLUTTER_ACTOR (text));
-}
-
-void
-test_text_set_empty (TestConformSimpleFixture *fixture,
-		      gconstpointer data)
-{
-  ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
-
-  /* annoyingly slightly different from initially empty */
   clutter_text_set_text (text, "");
   g_assert_cmpint (get_nchars (text), ==, 0);
   g_assert_cmpint (get_nbytes (text), ==, 0);
@@ -99,8 +87,7 @@ test_text_set_empty (TestConformSimpleFixture *fixture,
 }
 
 void
-test_text_set_text (TestConformSimpleFixture *fixture,
-		     gconstpointer data)
+text_set_text (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
 
@@ -121,8 +108,7 @@ test_text_set_text (TestConformSimpleFixture *fixture,
 }
 
 void
-test_text_append_some (TestConformSimpleFixture *fixture,
-		        gconstpointer data)
+text_append_some (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
@@ -148,8 +134,7 @@ test_text_append_some (TestConformSimpleFixture *fixture,
 }
 
 void
-test_text_prepend_some (TestConformSimpleFixture *fixture,
-		         gconstpointer data)
+text_prepend_some (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
@@ -181,8 +166,7 @@ test_text_prepend_some (TestConformSimpleFixture *fixture,
 }
 
 void
-test_text_insert (TestConformSimpleFixture *fixture,
-		   gconstpointer data)
+text_insert (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
@@ -207,8 +191,7 @@ test_text_insert (TestConformSimpleFixture *fixture,
 }
 
 void
-test_text_delete_chars (TestConformSimpleFixture *fixture,
-			 gconstpointer data)
+text_delete_chars (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
@@ -240,8 +223,7 @@ test_text_delete_chars (TestConformSimpleFixture *fixture,
 }
 
 void
-test_text_get_chars (TestConformSimpleFixture *fixture,
-                     gconstpointer             data)
+text_get_chars (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   gchar *chars;
@@ -271,8 +253,7 @@ test_text_get_chars (TestConformSimpleFixture *fixture,
 }
 
 void
-test_text_delete_text (TestConformSimpleFixture *fixture,
-			gconstpointer data)
+text_delete_text (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
@@ -302,8 +283,7 @@ test_text_delete_text (TestConformSimpleFixture *fixture,
 }
 
 void
-test_text_password_char (TestConformSimpleFixture *fixture,
-                         gconstpointer data)
+text_password_char (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
 
@@ -357,8 +337,7 @@ send_unichar (ClutterText *text, gunichar unichar)
 }
 
 void
-test_text_cursor (TestConformSimpleFixture *fixture,
-		   gconstpointer data)
+text_cursor (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
@@ -404,8 +383,7 @@ test_text_cursor (TestConformSimpleFixture *fixture,
 }
 
 void
-test_text_event (TestConformSimpleFixture *fixture,
-		  gconstpointer data)
+text_event (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;

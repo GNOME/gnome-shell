@@ -6,13 +6,6 @@
 #include "test-conform-common.h"
 
 void
-verify_failure (TestConformSimpleFixture *fixture,
-                gconstpointer data)
-{
-  g_assert (FALSE);
-}
-
-void
 test_initial_state (TestConformSimpleFixture *fixture,
                     gconstpointer             data)
 {
