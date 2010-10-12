@@ -120,7 +120,6 @@ clutter_align_constraint_update_allocation (ClutterConstraint *constraint,
                                             ClutterActorBox   *allocation)
 {
   ClutterAlignConstraint *align = CLUTTER_ALIGN_CONSTRAINT (constraint);
-  ClutterActorMeta *meta = CLUTTER_ACTOR_META (constraint);
   gfloat source_width, source_height;
   gfloat actor_width, actor_height;
   gfloat source_x, source_y;

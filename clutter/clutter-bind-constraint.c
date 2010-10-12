@@ -150,7 +150,6 @@ clutter_bind_constraint_update_allocation (ClutterConstraint *constraint,
                                            ClutterActorBox   *allocation)
 {
   ClutterBindConstraint *bind = CLUTTER_BIND_CONSTRAINT (constraint);
-  ClutterActorMeta *meta = CLUTTER_ACTOR_META (constraint);
   gfloat source_width, source_height;
   gfloat actor_width, actor_height;
   ClutterVertex source_position = { 0., };
