@@ -55,6 +55,7 @@
 #include <cogl/cogl-vector.h>
 #include <cogl/cogl-texture-3d.h>
 #include <cogl/cogl-index-array.h>
+#include <cogl/cogl-vertex-array.h>
 #endif
 
 G_BEGIN_DECLS
