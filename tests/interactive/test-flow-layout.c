@@ -8,7 +8,7 @@
 static gboolean is_homogeneous = FALSE;
 static gboolean vertical       = FALSE;
 static gboolean random_size    = FALSE;
-static gboolean fit_to_stage   = FALSE;
+static gboolean fixed_size     = FALSE;
 
 static gint     n_rects        = N_RECTS;
 static gint     x_spacing      = 0;
@@ -58,11 +58,11 @@ static GOptionEntry entries[] = {
     "Vertical spacing between elements", "PX"
   },
   {
-    "fit-to-stage", 0,
+    "fixed-size", 'f',
     0,
     G_OPTION_ARG_NONE,
-    &fit_to_stage,
-    "Fit to the stage size", NULL
+    &fixed_size,
+    "Fix the layout size", NULL
   },
   { NULL }
 };
@@ -109,7 +109,7 @@ test_flow_layout_main (int argc, char *argv[])
   clutter_box_set_color (CLUTTER_BOX (box), &box_color);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 
-  if (fit_to_stage)
+  if (!fixed_size)
     {
       clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage, CLUTTER_BIND_WIDTH, 0.0));
       clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage, CLUTTER_BIND_HEIGHT, 0.0));
