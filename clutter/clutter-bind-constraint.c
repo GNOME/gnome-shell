@@ -130,10 +130,8 @@ G_DEFINE_TYPE (ClutterBindConstraint,
                CLUTTER_TYPE_CONSTRAINT);
 
 static void
-source_allocation_changed (ClutterActor           *source,
-                           const ClutterActorBox  *allocation,
-                           ClutterAllocationFlags  flags,
-                           ClutterBindConstraint  *bind)
+source_queue_relayout (ClutterActor          *source,
+                       ClutterBindConstraint *bind)
 {
   if (bind->actor != NULL)
     clutter_actor_queue_relayout (bind->actor);
@@ -392,15 +390,15 @@ clutter_bind_constraint_set_source (ClutterBindConstraint *constraint,
                                             G_CALLBACK (source_destroyed),
                                             constraint);
       g_signal_handlers_disconnect_by_func (old_source,
-                                            G_CALLBACK (source_allocation_changed),
+                                            G_CALLBACK (source_queue_relayout),
                                             constraint);
     }
 
   constraint->source = source;
   if (constraint->source != NULL)
     {
-      g_signal_connect (constraint->source, "allocation-changed",
-                        G_CALLBACK (source_allocation_changed),
+      g_signal_connect (constraint->source, "queue-relayout",
+                        G_CALLBACK (source_queue_relayout),
                         constraint);
       g_signal_connect (constraint->source, "destroy",
                         G_CALLBACK (source_destroyed),
