@@ -508,9 +508,8 @@ PopupSwitchMenuItem.prototype = {
     _init: function(text, active) {
         PopupBaseMenuItem.prototype._init.call(this);
 
-        this.active = !!active;
         this.label = new St.Label({ text: text });
-        this._switch = new Switch(this.active);
+        this._switch = new Switch(active);
 
         this.addActor(this.label);
         this.addActor(this._switch.actor);
