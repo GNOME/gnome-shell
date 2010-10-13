@@ -6,6 +6,8 @@ const Lang = imports.lang;
 const St = imports.gi.St;
 const Pango = imports.gi.Pango;
 const Gettext_gtk20 = imports.gettext.domain('gtk20');
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 const WEEKDATE_HEADER_WIDTH_DIGITS = 3;
@@ -15,6 +17,14 @@ function _sameDay(dateA, dateB) {
     return (dateA.getDate() == dateB.getDate() &&
             dateA.getMonth() == dateB.getMonth() &&
             dateA.getYear() == dateB.getYear());
+}
+
+/* TODO: maybe needs config - right now we assume that Saturday and
+ * Sunday are work days (not true in e.g. Israel, it's Sunday and
+ * Monday there)
+ */
+function _isWorkDay(date) {
+    return date.getDay() != 0 && date.getDay() != 6;
 }
 
 function _getCalendarWeekForDate(date) {
@@ -41,6 +51,50 @@ function _getDigitWidth(actor){
     let metrics = context.get_metrics(font, context.get_language());
     let width = metrics.get_approximate_digit_width();
     return width;
+}
+
+function _getCustomDayAbrreviation(day_number) {
+    let ret;
+    switch (day_number) {
+    case 0:
+        /* Translators: One-letter abbreaviation for Sunday - note:
+         * all one-letter abbreviations are always shown together and
+         * in order, e.g. "S M T W T F S"
+         */
+        ret = _("S");
+        break;
+
+    case 1:
+        /* Translators: One-letter abbreaviation for Monday */
+        ret = _("M");
+        break;
+
+    case 2:
+        /* Translators: One-letter abbreaviation for Tuesday */
+        ret = _("T");
+        break;
+
+    case 3:
+        /* Translators: One-letter abbreaviation for Wednesday */
+        ret = _("W");
+        break;
+
+    case 4:
+        /* Translators: One-letter abbreaviation for Thursday */
+        ret = _("T");
+        break;
+
+    case 5:
+        /* Translators: One-letter abbreaviation for Friday */
+        ret = _("F");
+        break;
+
+    case 6:
+        /* Translators: One-letter abbreaviation for Saturday */
+        ret = _("S");
+        break;
+    }
+    return ret;
 }
 
 function Calendar() {
@@ -125,36 +179,32 @@ Calendar.prototype = {
         this._topBox.add(back);
         back.connect('clicked', Lang.bind(this, this._prevMonth));
 
-        this._dateLabel = new St.Label();
+        this._dateLabel = new St.Label({style_class: 'calendar-change-month'});
         this._topBox.add(this._dateLabel, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
 
         let forward = new St.Button({ label: forwardlabel, style_class: 'calendar-change-month' });
         this._topBox.add(forward);
         forward.connect('clicked', Lang.bind(this, this._nextMonth));
 
+        // Add weekday labels...
+        //
         // We need to figure out the abbreviated localized names for the days of the week;
         // we do this by just getting the next 7 days starting from right now and then putting
         // them in the right cell in the table. It doesn't matter if we add them in order
+        //
         let iter = new Date(this.date);
         iter.setSeconds(0); // Leap second protection. Hah!
         iter.setHours(12);
-
-        if (this._useWeekdate) {
-            this._weekdateHeader = new St.Label();
-            this.actor.add(this._weekdateHeader,
-                              { row: 1,
-                                col: 0,
-                                x_fill: false, x_align: St.Align.MIDDLE });
-            this._setWeekdateHeaderWidth();
-        } else {
-            this._weekdateHeader = null;
-        }
-
         for (let i = 0; i < 7; i++) {
-            this.actor.add(new St.Label({ text: iter.toLocaleFormat('%a') }),
+            // Could use iter.toLocaleFormat('%a') but that normally gives three characters
+            // and we want, ideally, a single character for e.g. S M T W T F S
+            let custom_day_abbrev = _getCustomDayAbrreviation(iter.getDay());
+            let label = new St.Label({ text: custom_day_abbrev });
+            label.style_class = 'calendar-day-base calendar-day-heading';
+            this.actor.add(label,
                            { row: 1,
                              col: offsetCols + (7 + iter.getDay() - this._weekStart) % 7,
-                             x_fill: false, x_align: St.Align.END });
+                             x_fill: false, x_align: St.Align.MIDDLE });
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
         }
 
@@ -234,24 +284,30 @@ Calendar.prototype = {
         let row = 2;
         while (true) {
             let label = new St.Label({ text: iter.getDate().toString() });
-            if (_sameDay(now, iter))
-                label.style_class = 'calendar-day calendar-today';
-            else if (iter.getMonth() != this.date.getMonth())
-                label.style_class = 'calendar-day calendar-other-month-day';
+            let style_class;
+
+            style_class = 'calendar-day-base calendar-day';
+            if (_isWorkDay(iter))
+                style_class += ' calendar-work-day'
             else
-                label.style_class = 'calendar-day';
+                style_class += ' calendar-nonwork-day'
+
+            if (_sameDay(now, iter))
+                style_class += ' calendar-today';
+            else if (iter.getMonth() != this.date.getMonth())
+                style_class += ' calendar-other-month-day';
+
+            label.style_class = style_class;
 
             let offsetCols = this._useWeekdate ? 1 : 0;
             this.actor.add(label,
-                           { row: row, col: offsetCols + (7 + iter.getDay() - this._weekStart) % 7,
-                             x_fill: false, x_align: St.Align.END });
+                           { row: row, col: offsetCols + (7 + iter.getDay() - this._weekStart) % 7 });
 
             if (this._useWeekdate && iter.getDay() == 4) {
                 let label = new St.Label({ text: _getCalendarWeekForDate(iter).toString(),
-                                           style_class: 'calendar-day calendar-calendarweek'});
+                                           style_class: 'calendar-day-base calendar-week-number'});
                 this.actor.add(label,
-                              { row: row, col: 0,
-		                        x_fill: false, x_align: St.Align.MIDDLE });
+                               { row: row, col: 0, y_align: St.Align.MIDDLE });
             }
 
             iter.setTime(iter.getTime() + MSECS_IN_DAY);

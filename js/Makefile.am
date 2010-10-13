@@ -17,6 +17,7 @@ nobase_dist_js_DATA = 	\
 	ui/calendar.js		\
 	ui/chrome.js		\
 	ui/dash.js		\
+	ui/dateMenu.js		\
 	ui/dnd.js		\
 	ui/docDisplay.js	\
 	ui/environment.js	\

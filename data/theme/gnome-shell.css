@@ -795,6 +795,14 @@ StTooltip {
 
 /* Calendar popup */
 
+.calendar-vertical-separator {
+    -gradient-width: 2px;
+    -gradient-start: rgba(8,8,8,0);
+    -gradient-end: #333333;
+    -margin-vertical: 1.5em;
+    width: 1em;
+}
+
 #calendarPopup {
     border-radius: 5px;
     background: rgba(0,0,0,0.9);
@@ -807,37 +815,69 @@ StTooltip {
 }
 
 .calendar {
-    spacing-rows: 5px;
-    spacing-columns: 3px;
+    spacing-rows: 0px;
+    spacing-columns: 0px;
 }
 
 .calendar-change-month {
+    color: #666666;
+    font-size: 10px;
     padding: 2px;
 }
 
 .calendar-change-month:hover {
-    background: #314a6c;
+    background: #999999;
     border-radius: 5px;
 }
 
 .calendar-change-month:active {
-    background: #213050;
+    background: #aaaaaa;
     border-radius: 5px;
+}
+
+.datemenu-date-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #999999;
+}
+
+.calendar-day-base {
+    font-size: 10px;
+    padding: 5px 3px;
+    text-align: center;
+}
+
+.calendar-day-heading {
+    color: #666666;
+}
+
+.calendar-week-number {
+    color: #666666;
+    font-weight: bold;
 }
 
 .calendar-day {
-    padding: 1px 2px;
+    border: 1px solid #333333;
+    color: #cccccc;
+}
+
+.calendar-work-day {
+}
+
+.calendar-nonwork-day {
+    background: #181818;
 }
 
 .calendar-today {
+    color: #ffffff;
     font-weight: bold;
-    background: #ffffff;
-    color: black;
-    border-radius: 5px;
+    background-gradient-direction: vertical;
+    background-gradient-start: #3c3c3c;
+    background-gradient-end: #131313;
 }
 
 .calendar-other-month-day {
-    color: #cccccc;
+    color: #333333;
 }
 
 /* Message Tray */
@@ -986,10 +1026,6 @@ StTooltip {
     font-weight: bold;
     color: white;
     padding-left: 4px;
-}
-
-.calendar-calendarweek {
-    color: #666666;
 }
 
 /* App Switcher */

@@ -247,7 +247,7 @@ function _relayout() {
     // will be updated when it is next shown. We do the same for
     // the calendar popdown.
     overview.hide();
-    panel.hideCalendar();
+    //panel.hideCalendar();
 }
 
 // metacity-clutter currently uses the same prefs as plain metacity,

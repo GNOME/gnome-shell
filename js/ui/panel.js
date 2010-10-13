@@ -16,6 +16,7 @@ const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const StatusMenu = imports.ui.statusMenu;
+const DateMenu = imports.ui.dateMenu;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
@@ -33,11 +34,6 @@ const STANDARD_TRAY_ICON_ORDER = ['a11y', 'display', 'keyboard', 'volume', 'blue
 const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
     'a11y': imports.ui.status.accessibility.ATIndicator
 };
-
-const CLOCK_FORMAT_KEY        = 'format';
-const CLOCK_CUSTOM_FORMAT_KEY = 'custom-format';
-const CLOCK_SHOW_DATE_KEY     = 'show-date';
-const CLOCK_SHOW_SECONDS_KEY  = 'show-seconds';
 
 function AnimatedIcon(name, size) {
     this._init(name, size);
@@ -792,11 +788,9 @@ Panel.prototype = {
         this._menus.addMenu(appMenuButton.menu);
 
         /* center */
-
-        this._clockButton = new ClockButton();
-        this._centerBox.add(this._clockButton.actor, { y_fill: true });
-
-        this._menus.addMenu(this._clockButton.menu);
+        this._dateMenu = new DateMenu.DateMenuButton();
+        this._centerBox.add(this._dateMenu.actor, { y_fill: true });
+        this._menus.addMenu(this._dateMenu.menu);
 
         /* right */
 
@@ -854,10 +848,6 @@ Panel.prototype = {
         }));
 
         Main.chrome.addActor(this.actor, { visibleInOverview: true });
-    },
-
-    hideCalendar: function() {
-        this._clockButton.closeCalendar();
     },
 
     startupAnimation: function() {
