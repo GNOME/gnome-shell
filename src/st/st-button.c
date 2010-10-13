@@ -196,6 +196,36 @@ st_button_button_release (ClutterActor       *actor,
 }
 
 static gboolean
+st_button_key_press (ClutterActor    *actor,
+                     ClutterKeyEvent *event)
+{
+  st_widget_hide_tooltip (ST_WIDGET (actor));
+
+  if (event->keyval == CLUTTER_KEY_space ||
+      event->keyval == CLUTTER_KEY_Return)
+    {
+      st_button_press (ST_BUTTON (actor));
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+st_button_key_release (ClutterActor    *actor,
+                       ClutterKeyEvent *event)
+{
+  if (event->keyval == CLUTTER_KEY_space ||
+      event->keyval == CLUTTER_KEY_Return)
+    {
+      st_button_release (ST_BUTTON (actor), TRUE);
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
 st_button_enter (ClutterActor         *actor,
                  ClutterCrossingEvent *event)
 {
@@ -315,6 +345,8 @@ st_button_class_init (StButtonClass *klass)
 
   actor_class->button_press_event = st_button_button_press;
   actor_class->button_release_event = st_button_button_release;
+  actor_class->key_press_event = st_button_key_press;
+  actor_class->key_release_event = st_button_key_release;
   actor_class->enter_event = st_button_enter;
   actor_class->leave_event = st_button_leave;
 

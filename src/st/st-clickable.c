@@ -158,6 +158,37 @@ st_clickable_button_release_event (ClutterActor       *actor,
   return TRUE;
 }
 
+static gboolean
+st_clickable_key_press_event (ClutterActor    *actor,
+                              ClutterKeyEvent *event)
+{
+  StClickable *self = ST_CLICKABLE (actor);
+
+  if (event->keyval == CLUTTER_KEY_space ||
+      event->keyval == CLUTTER_KEY_Return)
+    {
+      set_pressed (self, TRUE);
+      return TRUE;
+    }
+  return FALSE;
+}
+
+static gboolean
+st_clickable_key_release_event (ClutterActor    *actor,
+                                ClutterKeyEvent *event)
+{
+  StClickable *self = ST_CLICKABLE (actor);
+
+  if (event->keyval != CLUTTER_KEY_space &&
+      event->keyval != CLUTTER_KEY_Return)
+    return FALSE;
+
+  set_pressed (self, FALSE);
+
+  g_signal_emit (G_OBJECT (self), st_clickable_signals[CLICKED], 0, event);
+  return TRUE;
+}
+
 /**
  * st_clickable_fake_release:
  * @box:
@@ -240,6 +271,8 @@ st_clickable_class_init (StClickableClass *klass)
   actor_class->leave_event = st_clickable_leave_event;
   actor_class->button_press_event = st_clickable_button_press_event;
   actor_class->button_release_event = st_clickable_button_release_event;
+  actor_class->key_press_event = st_clickable_key_press_event;
+  actor_class->key_release_event = st_clickable_key_release_event;
 
   /**
    * StClickable::clicked
