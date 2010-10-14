@@ -475,15 +475,6 @@ StTooltip StLabel {
     spacing: 4px;
 }
 
-.search-result-content {
-    padding: 4px;
-}
-
-.search-result-content:selected {
-    border-radius: 4px;
-    background: rgba(255,255,255,0.33);
-}
-
 .results-container {
     spacing: 4px;
 }
@@ -553,7 +544,8 @@ StTooltip StLabel {
     padding: 6px 12px;
 }
 
-.app-well-app > .overview-icon {
+.app-well-app > .overview-icon,
+.search-result-content > .overview-icon {
     border-radius: 4px;
     padding: 4px;
     font-size: 10px;
@@ -567,11 +559,13 @@ StTooltip StLabel {
     background-image: url("running-indicator.svg");
 }
 
-.app-well-app.selected > .overview-icon {
+.app-well-app:selected > .overview-icon,
+.search-result-content:selected > .overview-icon {
     background: rgba(255,255,255,0.33);
 }
 
-.app-well-app:hover > .overview-icon {
+.app-well-app:hover > .overview-icon,
+.search-result-content:hover > .overview-icon {
     background: rgba(255,255,255,0.33);
     text-shadow: black 0px 2px 2px;
     transition-duration: 100;

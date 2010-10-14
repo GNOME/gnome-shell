@@ -4,14 +4,16 @@ const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
+const Gtk = imports.gi.Gtk;
+const St = imports.gi.St;
 
 const DND = imports.ui.dnd;
+const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const Search = imports.ui.search;
 
+const MAX_SEARCH_RESULTS_ROWS = 2;
 
-// 25 search results (per result type) should be enough for everyone
-const MAX_RENDERED_SEARCH_RESULTS = 25;
 
 function SearchResult(provider, metaInfo, terms) {
     this._init(provider, metaInfo, terms);
@@ -24,17 +26,19 @@ SearchResult.prototype = {
         this.actor = new St.Clickable({ style_class: 'search-result',
                                         reactive: true,
                                         x_align: St.Align.START,
-                                        x_fill: true,
                                         y_fill: true });
         this.actor._delegate = this;
 
         let content = provider.createResultActor(metaInfo, terms);
         if (content == null) {
-            content = new St.BoxLayout({ style_class: 'search-result-content' });
-            let title = new St.Label({ text: this.metaInfo['name'] });
-            let icon = this.metaInfo['icon'];
-            content.add(icon, { y_fill: false });
-            content.add(title, { expand: true, y_fill: false });
+            content = new St.Bin({ style_class: 'search-result-content',
+                                   reactive: true,
+                                   track_hover: true });
+            let icon = new IconGrid.BaseIcon(this.metaInfo['name'],
+                                             { createIcon: Lang.bind(this, function(size) {
+                                                 return this.metaInfo['icon'];
+                                             })});
+            content.set_child(icon.actor);
         }
         this._content = content;
         this.actor.set_child(content);
@@ -84,36 +88,45 @@ SearchResult.prototype = {
     }
 };
 
-function OverflowSearchResults(provider) {
+
+function GridSearchResults(provider) {
     this._init(provider);
 }
 
-OverflowSearchResults.prototype = {
+GridSearchResults.prototype = {
     __proto__: Search.SearchResultDisplay.prototype,
 
     _init: function(provider) {
         Search.SearchResultDisplay.prototype._init.call(this, provider);
-        this.actor = new St.OverflowBox({ style_class: 'search-section-list-results' });
+        this._grid = new IconGrid.IconGrid({ rowLimit: MAX_SEARCH_RESULTS_ROWS,
+                                             xAlign: St.Align.START });
+        this.actor = new St.Bin({ x_align: St.Align.START });
+        this.actor.set_child(this._grid.actor);
+        this.selectionIndex = -1;
     },
 
     getVisibleResultCount: function() {
-        return this.actor.get_n_visible();
+        return this._grid.visibleItemsCount();
     },
 
     renderResults: function(results, terms) {
-        for (let i = 0; i < results.length && i < MAX_RENDERED_SEARCH_RESULTS; i++) {
+        for (let i = 0; i < results.length; i++) {
             let result = results[i];
             let meta = this.provider.getResultMeta(result);
             let display = new SearchResult(this.provider, meta, terms);
-            this.actor.add_actor(display.actor);
+            this._grid.addItem(display.actor);
         }
     },
 
-    selectIndex: function(index) {
-        let nVisible = this.actor.get_n_visible();
-        let children = this.actor.get_children();
+    clear: function () {
+        this._grid.removeAll();
+        this.selectionIndex = -1;
+    },
+
+    selectIndex: function (index) {
+        let nVisible = this.getVisibleResultCount();
         if (this.selectionIndex >= 0) {
-            let prevActor = children[this.selectionIndex];
+            let prevActor = this._grid.getItemAtIndex(this.selectionIndex);
             prevActor._delegate.setSelected(false);
         }
         this.selectionIndex = -1;
@@ -121,18 +134,20 @@ OverflowSearchResults.prototype = {
             return false;
         else if (index < 0)
             return false;
-        let targetActor = children[index];
+        let targetActor = this._grid.getItemAtIndex(index);
         targetActor._delegate.setSelected(true);
         this.selectionIndex = index;
         return true;
     },
 
     activateSelected: function() {
-        let children = this.actor.get_children();
-        let targetActor = children[this.selectionIndex];
+        if (this.selectionIndex < 0)
+            return;
+        let targetActor = this._grid.getItemAtIndex(this.selectionIndex);
         targetActor._delegate.activate();
     }
 };
+
 
 function SearchResults(searchSystem) {
     this._init(searchSystem);
@@ -142,10 +157,23 @@ SearchResults.prototype = {
     _init: function(searchSystem) {
         this._searchSystem = searchSystem;
 
-        this.actor = new St.BoxLayout({ name: 'searchResults',
-                                        vertical: true });
+        this.actor = new St.Bin({ name: 'searchResults',
+                                  y_align: St.Align.START,
+                                  x_align: St.Align.START,
+                                  x_fill: true });
+        this._content = new St.BoxLayout({ name: 'searchResultsContent',
+                                           vertical: true });
+
+        let scrollView = new St.ScrollView({ x_fill: true,
+                                             y_fill: false,
+                                             vshadows: true });
+        scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        scrollView.add_actor(this._content);
+
+        this.actor.set_child(scrollView);
+
         this._statusText = new St.Label({ style_class: 'search-statustext' });
-        this.actor.add(this._statusText);
+        this._content.add(this._statusText);
         this._selectedProvider = -1;
         this._providers = this._searchSystem.getProviders();
         this._providerMeta = [];
@@ -175,14 +203,14 @@ SearchResults.prototype = {
         providerBox.add(resultDisplayBin, { expand: true });
         let resultDisplay = provider.createResultContainerActor();
         if (resultDisplay == null) {
-            resultDisplay = new OverflowSearchResults(provider);
+            resultDisplay = new GridSearchResults(provider);
         }
         resultDisplayBin.set_child(resultDisplay.actor);
 
         this._providerMeta.push({ actor: providerBox,
                                   resultDisplay: resultDisplay,
                                   count: count });
-        this.actor.add(providerBox);
+        this._content.add(providerBox);
     },
 
     _clearDisplay: function() {

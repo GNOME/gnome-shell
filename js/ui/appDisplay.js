@@ -21,8 +21,6 @@ const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 const Params = imports.misc.params;
 
-const WELL_MAX_COLUMNS = 16;
-const WELL_MAX_SEARCH_ROWS = 1;
 const MENU_POPUP_TIMEOUT = 600;
 
 function AlphabeticalView() {
@@ -171,68 +169,8 @@ AllAppDisplay.prototype = {
         this._appView.refresh(apps);
     }
 };
-
 Signals.addSignalMethods(AllAppDisplay.prototype);
 
-function AppSearchResultDisplay(provider) {
-    this._init(provider);
-}
-
-AppSearchResultDisplay.prototype = {
-    __proto__: Search.SearchResultDisplay.prototype,
-
-    _init: function (provider) {
-        Search.SearchResultDisplay.prototype._init.call(this, provider);
-        this._grid = new IconGrid.IconGrid({ rowLimit: WELL_MAX_SEARCH_ROWS });
-        this.actor = new St.Bin({ name: 'dashAppSearchResults',
-                                  x_align: St.Align.START });
-        this.actor.set_child(this._grid.actor);
-    },
-
-    renderResults: function(results, terms) {
-        let appSys = Shell.AppSystem.get_default();
-        let maxItems = WELL_MAX_SEARCH_ROWS * WELL_MAX_COLUMNS;
-        for (let i = 0; i < results.length && i < maxItems; i++) {
-            let result = results[i];
-            let app = appSys.get_app(result);
-            let display = new AppWellIcon(app);
-            this._grid.addItem(display.actor);
-        }
-    },
-
-    clear: function () {
-        this._grid.removeAll();
-        this.selectionIndex = -1;
-    },
-
-    getVisibleResultCount: function() {
-        return this._grid.visibleItemsCount();
-    },
-
-    selectIndex: function (index) {
-        let nVisible = this.getVisibleResultCount();
-        if (this.selectionIndex >= 0) {
-            let prevActor = this._grid.getItemAtIndex(this.selectionIndex);
-            prevActor._delegate.setSelected(false);
-        }
-        this.selectionIndex = -1;
-        if (index >= nVisible)
-            return false;
-        else if (index < 0)
-            return false;
-        let targetActor = this._grid.getItemAtIndex(index);
-        targetActor._delegate.setSelected(true);
-        this.selectionIndex = index;
-        return true;
-    },
-
-    activateSelected: function() {
-        if (this.selectionIndex < 0)
-            return;
-        let targetActor = this._grid.getItemAtIndex(this.selectionIndex);
-        this.provider.activateResult(targetActor._delegate.app.get_id());
-    }
-};
 
 function BaseAppSearchProvider() {
     this._init();
@@ -285,12 +223,10 @@ AppSearchProvider.prototype = {
         return this._appSys.subsearch(false, previousResults, terms);
     },
 
-    createResultContainerActor: function () {
-        return new AppSearchResultDisplay(this);
-    },
-
     createResultActor: function (resultMeta, terms) {
-        return new AppIcon(resultMeta.id);
+        let app = this._appSys.get_app(resultMeta['id']);
+        let icon = new AppWellIcon(app);
+        return icon.actor;
     },
 
     expandSearch: function(terms) {
@@ -487,14 +423,6 @@ AppWellIcon.prototype = {
         } else {
             Main.overview.hide();
         }
-    },
-
-    setSelected: function (isSelected) {
-        this._selected = isSelected;
-        if (this._selected)
-            this.actor.add_style_class_name('selected');
-        else
-            this.actor.remove_style_class_name('selected');
     },
 
     _onMenuPoppedUp: function() {
