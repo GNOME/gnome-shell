@@ -74,8 +74,10 @@ static GPollFunc old_poll_func = NULL;
 - (gint)clutterModifierState
 {
   guint mods = [self modifierFlags];
+  guint type = [self type];
   gint rv = 0;
 
+  /* add key masks */
   if (mods & NSAlphaShiftKeyMask)
     rv |= CLUTTER_LOCK_MASK;
   if (mods & NSShiftKeyMask)
@@ -86,6 +88,12 @@ static GPollFunc old_poll_func = NULL;
     rv |= CLUTTER_MOD1_MASK;
   if (mods & NSCommandKeyMask)
     rv |= CLUTTER_MOD2_MASK;
+
+  /* add button mask */
+  if ((type == NSLeftMouseDragged) ||
+      (type == NSRightMouseDragged) ||
+      (type == NSOtherMouseDragged))
+    rv |= CLUTTER_BUTTON1_MASK << [self buttonNumber];
 
   return rv;
 }
