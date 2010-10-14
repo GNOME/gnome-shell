@@ -7646,6 +7646,18 @@ clutter_actor_get_paint_visibility (ClutterActor *actor)
   return CLUTTER_ACTOR_IS_MAPPED (actor);
 }
 
+static gboolean
+invalidate_queue_redraw_entry (ClutterActor *self,
+                               void *user_data)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  if (priv->queue_redraw_entry)
+    _clutter_stage_queue_redraw_entry_invalidate (priv->queue_redraw_entry);
+
+  return TRUE;
+}
+
 /**
  * clutter_actor_unparent:
  * @self: a #ClutterActor
@@ -7673,11 +7685,13 @@ clutter_actor_unparent (ClutterActor *self)
   if (priv->parent_actor == NULL)
     return;
 
-  /* We take this opportunity to invalidate any queue redraw entry
-   * associated with the actor since we won't be able to determine the
-   * appropriate stage after this. */
-  if (priv->queue_redraw_entry)
-    _clutter_stage_queue_redraw_entry_invalidate (priv->queue_redraw_entry);
+   /* We take this opportunity to invalidate any queue redraw entry
+    * associated with the actor and descendants since we won't be able to
+    * determine the appropriate stage after this. */
+  _clutter_actor_traverse (self,
+                           0,
+                           invalidate_queue_redraw_entry,
+                           NULL);
 
   was_mapped = CLUTTER_ACTOR_IS_MAPPED (self);
 
