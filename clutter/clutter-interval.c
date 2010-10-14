@@ -327,6 +327,8 @@ clutter_interval_finalize (GObject *gobject)
   g_value_unset (&priv->values[1]);
 
   g_free (priv->values);
+
+  G_OBJECT_CLASS (clutter_interval_parent_class)->finalize (gobject);
 }
 
 static void
