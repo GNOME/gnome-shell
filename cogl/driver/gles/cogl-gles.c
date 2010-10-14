@@ -67,7 +67,7 @@ _cogl_check_driver_valid (GError **error)
 
 static const CoglFeatureData cogl_feature_data[] =
   {
-#include "cogl-feature-functions.h"
+#include "cogl-feature-functions-gles.h"
   };
 
 void
