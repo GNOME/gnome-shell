@@ -3057,6 +3057,15 @@ gdm_user_manager_finalize (GObject *object)
         G_OBJECT_CLASS (gdm_user_manager_parent_class)->finalize (object);
 }
 
+static void
+gdm_user_muted_debug_log_handler (const char     *log_domain,
+                                  GLogLevelFlags  log_level,
+                                  const char     *message,
+                                  gpointer        data)
+{
+        /* Intentionally empty to discard message */
+}
+
 /**
  * gdm_user_manager_ref_default:
  *
@@ -3075,6 +3084,11 @@ gdm_user_manager_ref_default (void)
                 user_manager_object = g_object_new (GDM_TYPE_USER_MANAGER, NULL);
                 g_object_add_weak_pointer (user_manager_object,
                                            (gpointer *) &user_manager_object);
+
+                /* We don't normally care about user manager messages in the shell,
+                 * so mute them */
+                g_log_set_handler (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,
+                                   gdm_user_muted_debug_log_handler, NULL);
         }
 
         return GDM_USER_MANAGER (user_manager_object);
