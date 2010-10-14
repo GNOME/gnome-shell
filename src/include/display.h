@@ -125,7 +125,6 @@ void     meta_display_end_grab_op   (MetaDisplay *display,
 MetaGrabOp meta_display_get_grab_op (MetaDisplay *display);
 
 MetaKeyBindingAction meta_display_get_keybinding_action (MetaDisplay  *display,
-                                                         unsigned int  keysym,
                                                          unsigned int  keycode,
                                                          unsigned long mask);
 

@@ -502,21 +502,21 @@ display_get_keybinding (MetaDisplay  *display,
 /**
  * meta_display_get_keybinding_action:
  * @display: A #MetaDisplay
- * @keysym: Key symbol
  * @keycode: Raw keycode
  * @mask: Event mask
  *
- * Returns: The action that should be taken for the given key, or %META_KEYBINDING_ACTION_NONE.
- *
+ * Returns: The action that should be taken for the given key, or
+ * %META_KEYBINDING_ACTION_NONE.
  */
 MetaKeyBindingAction
 meta_display_get_keybinding_action (MetaDisplay  *display,
-                                    unsigned int  keysym,
                                     unsigned int  keycode,
                                     unsigned long mask)
 {
   MetaKeyBinding *binding;
+  KeySym keysym;
 
+  keysym = XKeycodeToKeysym (display->xdisplay, keycode, 0);
   mask = mask & 0xff & ~display->ignored_modifier_mask;
   binding = display_get_keybinding (display, keysym, keycode, mask);
 
@@ -2778,7 +2778,6 @@ process_workspace_switch_grab (MetaDisplay *display,
       MetaKeyBindingAction action;
 
       action = meta_display_get_keybinding_action (display,
-                                                   keysym,
                                                    event->xkey.keycode,
                                                    display->grab_mask);
 
