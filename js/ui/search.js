@@ -2,7 +2,7 @@
 
 const Signals = imports.signals;
 
-const RESULT_ICON_SIZE = 24;
+const RESULT_ICON_SIZE = 48;
 
 // Not currently referenced by the search API, but
 // this enumeration can be useful for provider
