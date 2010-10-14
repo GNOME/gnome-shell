@@ -271,7 +271,7 @@ AS_CASE([$CLUTTER_FLAVOUR],
         [eglnative],
         [
           # the GL header is defined in the COGL checks above
-          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGLNATIVE"
+          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
           CLUTTER_EGL_BACKEND="generic"
 
           SUPPORT_EGL=1
