@@ -2118,6 +2118,8 @@ init_bindings (void)
   GConfValue *value;
   GHashTable *to_update;
 
+  g_assert (G_N_ELEMENTS (key_bindings) == META_KEYBINDING_ACTION_LAST + 1);
+
   to_update = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
   for (i = 0; prefix[i]; i++)
