@@ -635,6 +635,44 @@ clutter_win32_get_stage_from_window (HWND hwnd)
   return NULL;
 }
 
+typedef struct {
+  ClutterStageWin32 *stage_win32;
+  ClutterGeometry geom;
+  HWND hwnd;
+  guint destroy_old_hwnd : 1;
+} ForeignWindowData;
+
+static void
+set_foreign_window_callback (ClutterActor *actor,
+                             void         *data)
+{
+  ForeignWindowData *fwd = data;
+
+  CLUTTER_NOTE (BACKEND, "Setting foreign window (0x%x)",
+                (guint) fwd->hwnd);
+
+  if (fwd->destroy_old_hwnd && fwd->stage_win32->hwnd != NULL)
+    {
+      CLUTTER_NOTE (BACKEND, "Destroying previous window (0x%x)",
+                    (guint) fwd->stage_win32->hwnd);
+      DestroyWindow (fwd->stage_win32->hwnd);
+    }
+
+  fwd->stage_win32->hwnd = fwd->hwnd;
+  fwd->stage_win32->is_foreign_win = TRUE;
+
+  fwd->stage_win32->win_width = fwd->geom.width;
+  fwd->stage_win32->win_height = fwd->geom.height;
+
+  clutter_actor_set_geometry (actor, &fwd->geom);
+
+  /* calling this with the stage unrealized will unset the stage
+   * from the GL context; once the stage is realized the GL context
+   * will be set again
+   */
+  clutter_stage_ensure_current (CLUTTER_STAGE (actor));
+}
+
 /**
  * clutter_win32_set_stage_foreign:
  * @stage: a #ClutterStage
@@ -654,8 +692,7 @@ clutter_win32_set_stage_foreign (ClutterStage *stage,
   ClutterStageWindow *impl;
   ClutterActor *actor;
   RECT client_rect;
-  POINT window_pos;
-  ClutterGeometry geom;
+  ForeignWindowData fwd;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
   g_return_val_if_fail (hwnd != NULL, FALSE);
@@ -665,35 +702,40 @@ clutter_win32_set_stage_foreign (ClutterStage *stage,
   impl = _clutter_stage_get_window (stage);
   stage_win32 = CLUTTER_STAGE_WIN32 (impl);
 
-  /* FIXME this needs updating to use _clutter_actor_rerealize(),
-   * see the analogous code in x11 backend. Probably best if
-   * win32 maintainer does it so they can be sure it compiles
-   * and works.
-   */
-
-  clutter_actor_unrealize (actor);
-
   if (!GetClientRect (hwnd, &client_rect))
     {
       g_warning ("Unable to retrieve the new window geometry");
       return FALSE;
     }
-  window_pos.x = client_rect.left;
-  window_pos.y = client_rect.right;
-  ClientToScreen (hwnd, &window_pos);
 
-  CLUTTER_NOTE (BACKEND, "Setting foreign window (0x%x)", (int) hwnd);
+  fwd.stage_win32 = stage_win32;
+  fwd.hwnd = hwnd;
 
-  stage_win32->hwnd = hwnd;
-  stage_win32->is_foreign_win = TRUE;
+  /* destroy the old HWND, if we have one and it's ours */
+  if (stage_win32->hwnd != NULL && !stage_win32->is_foreign_win)
+    fwd.destroy_old_hwnd = TRUE;
+  else
+    fwd.destroy_old_hwnd = FALSE;
 
-  geom.x = 0;
-  geom.y = 0;
-  geom.width = client_rect.right - client_rect.left;
-  geom.height = client_rect.bottom - client_rect.top;
+  fwd.geom.x = 0;
+  fwd.geom.y = 0;
+  fwd.geom.width = client_rect.right - client_rect.left;
+  fwd.geom.height = client_rect.bottom - client_rect.top;
 
-  clutter_actor_set_geometry (actor, &geom);
-  clutter_actor_realize (actor);
+  _clutter_actor_rerealize (actor,
+                            set_foreign_window_callback,
+                            &fwd);
+
+  /* Queue a relayout - so the stage will be allocated the new
+   * window size.
+   *
+   * Note also that when the stage gets allocated the new
+   * window size that will result in the stage's
+   * priv->viewport being changed, which will in turn result
+   * in the Cogl viewport changing when _clutter_do_redraw
+   * calls _clutter_stage_maybe_setup_viewport().
+   */
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
 
   return TRUE;
 }
