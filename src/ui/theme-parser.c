@@ -902,36 +902,47 @@ parse_toplevel_element (GMarkupParseContext  *context,
                               NULL))
         return;
 
-      if (strchr (value, '.') && parse_double (value, &dval, context, error))
+      /* We don't know how a a constant is going to be used, so we have guess its
+       * type from its contents:
+       *
+       *  - Starts like a number and contains a '.': float constant
+       *  - Starts like a number and doesn't contain a '.': int constant
+       *  - Starts with anything else: a color constant.
+       *    (colors always start with # or a letter)
+       */
+      if (value[0] == '.' || value[0] == '+' || value[0] == '-' || (value[0] >= '0' && value[0] <= '9'))
         {
-          g_clear_error (error);
-
-          if (!meta_theme_define_float_constant (info->theme,
-                                                 name,
-                                                 dval,
-                                                 error))
+          if (strchr (value, '.'))
             {
-              add_context_to_error (error, context);
-              return;
+              if (!parse_double (value, &dval, context, error))
+                return;
+
+              if (!meta_theme_define_float_constant (info->theme,
+                                                     name,
+                                                     dval,
+                                                     error))
+                {
+                  add_context_to_error (error, context);
+                  return;
+                }
             }
-        }
-      else if (parse_positive_integer (value, &ival, context, info->theme, error))
-        {
-          g_clear_error (error);
-
-          if (!meta_theme_define_int_constant (info->theme,
-                                               name,
-                                               ival,
-                                               error))
+          else
             {
-              add_context_to_error (error, context);
-              return;
+              if (!parse_positive_integer (value, &ival, context, info->theme, error))
+                return;
+
+              if (!meta_theme_define_int_constant (info->theme,
+                                                   name,
+                                                   ival,
+                                                   error))
+                {
+                  add_context_to_error (error, context);
+                  return;
+                }
             }
         }
       else
         {
-          g_clear_error (error);
-
           if (!meta_theme_define_color_constant (info->theme,
                                                  name,
                                                  value,
