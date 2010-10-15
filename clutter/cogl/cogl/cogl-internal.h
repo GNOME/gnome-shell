@@ -38,7 +38,6 @@ typedef enum
   COGL_FRONT_WINDING_COUNTER_CLOCKWISE
 } CoglFrontWinding;
 
-#ifdef HAVE_COGL_GLES2
 typedef enum {
   COGL_BOXED_NONE,
   COGL_BOXED_INT,
@@ -58,10 +57,9 @@ typedef struct _CoglBoxedValue
     float matrix[16];
     float *float_array;
     int *int_array;
-    gpointer array;
+    void *array;
   } v;
 } CoglBoxedValue;
-#endif
 
 #ifdef COGL_GL_DEBUG
 

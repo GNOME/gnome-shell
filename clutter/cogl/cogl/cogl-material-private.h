@@ -709,7 +709,7 @@ _cogl_get_max_texture_image_units (void);
 
 
 void
-_cogl_use_program (CoglHandle program_handle, CoglMaterialProgramType type);
+_cogl_use_program (GLuint gl_program, CoglMaterialProgramType type);
 
 unsigned int
 _cogl_get_n_args_for_combine_func (GLint func);

@@ -834,7 +834,8 @@ cogl_gles2_wrapper_get_program (const CoglGles2WrapperSettings *settings)
   CoglGles2WrapperShader *vertex_shader, *fragment_shader;
   GLint status;
   gboolean custom_vertex_shader = FALSE, custom_fragment_shader = FALSE;
-  CoglProgram *user_program = NULL;
+  GLuint shaders[16];
+  GLsizei n_shaders = 0;
   int i;
 
   _COGL_GET_GLES2_WRAPPER (w, NULL);
@@ -851,23 +852,25 @@ cogl_gles2_wrapper_get_program (const CoglGles2WrapperSettings *settings)
 
   /* Otherwise create a new program */
 
-  /* Check whether the currently used custom program has vertex and
-     fragment shaders */
-  if (w->settings.user_program != COGL_INVALID_HANDLE)
+  if (settings->user_program)
     {
-      user_program
-	= _cogl_program_pointer_from_handle (w->settings.user_program);
+      /* We work out whether the program contains a vertex and
+         fragment shader by looking at the list of attached shaders */
+      glGetAttachedShaders (settings->user_program,
+                            G_N_ELEMENTS (shaders),
+                            &n_shaders, shaders);
 
-      for (node = user_program->attached_shaders; node; node = node->next)
-	{
-	  CoglShader *shader
-	    = _cogl_shader_pointer_from_handle ((CoglHandle) node->data);
+      for (i = 0; i < n_shaders; i++)
+        {
+          GLint shader_type;
 
-	  if (shader->type == COGL_SHADER_TYPE_VERTEX)
-	    custom_vertex_shader = TRUE;
-	  else if (shader->type == COGL_SHADER_TYPE_FRAGMENT)
-	    custom_fragment_shader = TRUE;
-	}
+          glGetShaderiv (shaders[i], GL_SHADER_TYPE, &shader_type);
+
+          if (shader_type == GL_VERTEX_SHADER)
+            custom_vertex_shader = TRUE;
+          else if (shader_type == GL_FRAGMENT_SHADER)
+            custom_fragment_shader = TRUE;
+        }
     }
 
   /* Get or create the fixed functionality shaders for these settings
@@ -892,13 +895,9 @@ cogl_gles2_wrapper_get_program (const CoglGles2WrapperSettings *settings)
     glAttachShader (program->program, vertex_shader->shader);
   if (!custom_fragment_shader)
     glAttachShader (program->program, fragment_shader->shader);
-  if (user_program)
-    for (node = user_program->attached_shaders; node; node = node->next)
-      {
-	CoglShader *shader
-	  = _cogl_shader_pointer_from_handle ((CoglHandle) node->data);
-	glAttachShader (program->program, shader->gl_handle);
-      }
+  /* Attach all the shaders stolen from the user program */
+  for (i = 0; i < n_shaders; i++)
+    glAttachShader (program->program, shaders[i]);
   cogl_gles2_wrapper_bind_attributes (program->program);
   glLinkProgram (program->program);
 
@@ -926,11 +925,6 @@ cogl_gles2_wrapper_get_program (const CoglGles2WrapperSettings *settings)
 				    &program->settings,
 				    &program->uniforms,
 				    &program->attributes);
-
-  /* We haven't tried to get a location for any of the custom uniforms
-     yet */
-  for (i = 0; i < COGL_PROGRAM_NUM_CUSTOM_UNIFORMS; i++)
-    program->custom_gl_uniforms[i] = COGL_PROGRAM_UNBOUND_CUSTOM_UNIFORM;
 
   w->compiled_programs = g_slist_append (w->compiled_programs, program);
 
@@ -1099,82 +1093,9 @@ _cogl_wrap_glNormalPointer (GLenum type, GLsizei stride, const GLvoid *pointer)
 }
 
 static void
-cogl_gles2_do_set_uniform (GLint location, CoglBoxedValue *value)
-{
-  switch (value->type)
-    {
-    case COGL_BOXED_NONE:
-      break;
-
-    case COGL_BOXED_INT:
-      {
-	int *ptr;
-
-	if (value->count == 1)
-	  ptr = value->v.int_value;
-	else
-	  ptr = value->v.int_array;
-
-	switch (value->size)
-	  {
-	  case 1: glUniform1iv (location, value->count, ptr); break;
-	  case 2: glUniform2iv (location, value->count, ptr); break;
-	  case 3: glUniform3iv (location, value->count, ptr); break;
-	  case 4: glUniform4iv (location, value->count, ptr); break;
-	  }
-      }
-      break;
-
-    case COGL_BOXED_FLOAT:
-      {
-	float *ptr;
-
-	if (value->count == 1)
-	  ptr = value->v.float_value;
-	else
-	  ptr = value->v.float_array;
-
-	switch (value->size)
-	  {
-	  case 1: glUniform1fv (location, value->count, ptr); break;
-	  case 2: glUniform2fv (location, value->count, ptr); break;
-	  case 3: glUniform3fv (location, value->count, ptr); break;
-	  case 4: glUniform4fv (location, value->count, ptr); break;
-	  }
-      }
-      break;
-
-    case COGL_BOXED_MATRIX:
-      {
-	float *ptr;
-
-	if (value->count == 1)
-	  ptr = value->v.matrix;
-	else
-	  ptr = value->v.float_array;
-
-	switch (value->size)
-	  {
-	  case 2:
-	    glUniformMatrix2fv (location, value->count, value->transpose, ptr);
-	    break;
-	  case 3:
-	    glUniformMatrix3fv (location, value->count, value->transpose, ptr);
-	    break;
-	  case 4:
-	    glUniformMatrix4fv (location, value->count, value->transpose, ptr);
-	    break;
-	  }
-      }
-      break;
-    }
-}
-
-static void
 _cogl_wrap_prepare_for_draw (void)
 {
   CoglGles2WrapperProgram *program;
-  guint32 dirty_custom_uniforms = 0;
 
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
@@ -1191,22 +1112,21 @@ _cogl_wrap_prepare_for_draw (void)
       /* Start using it if we aren't already */
       if (w->current_program != program)
 	{
-	  glUseProgram (program->program);
 	  w->current_program = program;
 	  /* All of the uniforms are probably now out of date */
 	  w->dirty_uniforms = COGL_GLES2_DIRTY_ALL;
-	  dirty_custom_uniforms = (1 << COGL_PROGRAM_NUM_CUSTOM_UNIFORMS) - 1;
 	}
       w->settings_dirty = FALSE;
     }
   else
-    {
-      CoglProgram *user_program =
-        _cogl_program_pointer_from_handle (w->settings.user_program);
-      if (user_program)
-        dirty_custom_uniforms = user_program->dirty_custom_uniforms;
-      program = w->current_program;
-    }
+    program = w->current_program;
+
+  /* We always have to reassert the program even if it hasn't changed
+     because the fixed-function material backend disables the program
+     again in the _start function. This should go away once the GLSL
+     code is generated in the GLSL material backend so it's probably
+     not worth worrying about now */
+  _cogl_use_program (program->program, COGL_MATERIAL_PROGRAM_TYPE_GLSL);
 
   /* Make sure all of the uniforms are up to date */
   if (w->dirty_uniforms)
@@ -1283,32 +1203,6 @@ _cogl_wrap_prepare_for_draw (void)
                      w->point_size);
 
       w->dirty_uniforms = 0;
-    }
-
-  if (dirty_custom_uniforms)
-    {
-      int i;
-
-      if (w->settings.user_program != COGL_INVALID_HANDLE)
-	{
-	  CoglProgram *user_program
-	    = _cogl_program_pointer_from_handle (w->settings.user_program);
-	  const char *uniform_name;
-
-	  for (i = 0; i < COGL_PROGRAM_NUM_CUSTOM_UNIFORMS; i++)
-	    if ((dirty_custom_uniforms & (1 << i))
-		&& (uniform_name = user_program->custom_uniform_names[i]))
-	      {
-		if (program->custom_gl_uniforms[i]
-		    == COGL_PROGRAM_UNBOUND_CUSTOM_UNIFORM)
-		  program->custom_gl_uniforms[i]
-		    = glGetUniformLocation (program->program, uniform_name);
-		if (program->custom_gl_uniforms[i] >= 0)
-		  cogl_gles2_do_set_uniform (program->custom_gl_uniforms[i],
-					     &user_program->custom_uniforms[i]);
-	      }
-          user_program->dirty_custom_uniforms = 0;
-	}
     }
 
   if (w->dirty_attribute_pointers
@@ -1765,13 +1659,39 @@ _cogl_wrap_glPointSize (GLfloat size)
   w->dirty_uniforms |= COGL_GLES2_DIRTY_POINT_SIZE;
 }
 
+/* This function is a massive hack to get custom GLSL programs to
+   work. It's only necessary until we move the GLSL shader generation
+   into the CoglMaterial. The gl_program specifies the user program to
+   be used. The list of shaders will be extracted out of this and
+   compiled into a new program containing any fixed function shaders
+   that need to be generated. The new program will be returned. */
+GLuint
+_cogl_gles2_use_program (GLuint gl_program)
+{
+  _COGL_GET_GLES2_WRAPPER (w, 0);
+
+  _COGL_GLES2_CHANGE_SETTING (w, user_program, gl_program);
+
+  /* We need to bind the program immediately so that the GLSL material
+     backend can update the custom uniforms */
+  _cogl_wrap_prepare_for_draw ();
+
+  return w->current_program->program;
+}
+
 void
-_cogl_gles2_clear_cache_for_program (CoglHandle user_program)
+_cogl_gles2_clear_cache_for_program (GLuint gl_program)
 {
   GSList *node, *next, *last = NULL;
   CoglGles2WrapperProgram *program;
 
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+  if (w->settings.user_program == gl_program)
+    {
+      w->settings.user_program = 0;
+      w->settings_dirty = TRUE;
+    }
 
   /* Remove any cached programs that link against this custom program */
   for (node = w->compiled_programs; node; node = next)
@@ -1779,7 +1699,7 @@ _cogl_gles2_clear_cache_for_program (CoglHandle user_program)
       next = node->next;
       program = (CoglGles2WrapperProgram *) node->data;
 
-      if (program->settings.user_program == user_program)
+      if (program->settings.user_program == gl_program)
 	{
 	  glDeleteProgram (program->program);
 

@@ -37,14 +37,6 @@
 #include "cogl-context.h"
 #include "cogl-texture-private.h"
 
-#ifdef HAVE_COGL_GL
-#include "cogl-program-gl.h"
-#endif
-
-#ifdef HAVE_COGL_GLES2
-#include "cogl-program-gles.h"
-#endif
-
 #ifdef COGL_MATERIAL_BACKEND_GLSL
 #include "cogl-material-glsl-private.h"
 #endif
@@ -287,124 +279,80 @@ _cogl_material_texture_storage_change_notify (CoglHandle texture)
 }
 
 void
-_cogl_gl_use_program_wrapper (CoglHandle program_handle)
+_cogl_use_program (GLuint gl_program, CoglMaterialProgramType type)
 {
-#ifdef COGL_MATERIAL_BACKEND_GLSL
-
-#ifndef HAVE_COGL_GLES2
-
-  CoglProgram *program = (CoglProgram *)program_handle;
-  GLuint gl_program;
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (program_handle != COGL_INVALID_HANDLE)
-    gl_program = program->gl_handle;
-  else
-    gl_program = 0;
-
-  if (ctx->current_gl_program == gl_program)
-    return;
-
-  if (gl_program != 0)
+  /* If we're changing program type... */
+  if (type != ctx->current_use_program_type)
     {
-      GLenum gl_error;
-
-      while ((gl_error = glGetError ()) != GL_NO_ERROR)
-        ;
-      glUseProgram (gl_program);
-      if (glGetError () != GL_NO_ERROR)
+      /* ... disable the old type */
+      switch (ctx->current_use_program_type)
         {
-          GE (glUseProgram (0));
+        case COGL_MATERIAL_PROGRAM_TYPE_GLSL:
+          GE( glUseProgram (0) );
           ctx->current_gl_program = 0;
-          return;
+          break;
+
+        case COGL_MATERIAL_PROGRAM_TYPE_ARBFP:
+#ifdef HAVE_COGL_GL
+          GE( glDisable (GL_FRAGMENT_PROGRAM_ARB) );
+#endif
+          break;
+
+        case COGL_MATERIAL_PROGRAM_TYPE_FIXED:
+          /* don't need to to anything */
+          break;
+        }
+
+      /* ... and enable the new type */
+      switch (type)
+        {
+        case COGL_MATERIAL_PROGRAM_TYPE_ARBFP:
+#ifdef HAVE_COGL_GL
+          GE( glEnable (GL_FRAGMENT_PROGRAM_ARB) );
+#endif
+          break;
+
+        case COGL_MATERIAL_PROGRAM_TYPE_GLSL:
+        case COGL_MATERIAL_PROGRAM_TYPE_FIXED:
+          /* don't need to to anything */
+          break;
         }
     }
-  else
-    GE (glUseProgram (0));
 
-  ctx->current_gl_program = gl_program;
-
-#else /* HAVE_COGL_GLES2 */
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  ctx->drv.gles2.settings.user_program = program_handle;
-  ctx->drv.gles2.settings_dirty = TRUE;
-
-#endif /* HAVE_COGL_GLES2 */
-
-#endif
-}
-
-static void
-disable_arbfp (void)
-{
-#ifdef COGL_MATERIAL_BACKEND_ARBFP
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (ctx->current_use_program_type == COGL_MATERIAL_PROGRAM_TYPE_ARBFP)
-    GE (glDisable (GL_FRAGMENT_PROGRAM_ARB));
-#endif
-}
-
-void
-_cogl_use_program (CoglHandle program_handle, CoglMaterialProgramType type)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  switch (type)
+  if (type == COGL_MATERIAL_PROGRAM_TYPE_GLSL)
     {
 #ifdef COGL_MATERIAL_BACKEND_GLSL
-    case COGL_MATERIAL_PROGRAM_TYPE_GLSL:
-      {
-        _cogl_gl_use_program_wrapper (program_handle);
-        disable_arbfp ();
 
-        ctx->current_use_program_type = type;
-        break;
-      }
+      if (ctx->current_gl_program != gl_program)
+        {
+          GLenum gl_error;
+
+          while ((gl_error = glGetError ()) != GL_NO_ERROR)
+            ;
+          glUseProgram (gl_program);
+          if (glGetError () == GL_NO_ERROR)
+            ctx->current_gl_program = gl_program;
+          else
+            {
+              GE( glUseProgram (0) );
+              ctx->current_gl_program = 0;
+            }
+        }
+
 #else
-    case COGL_MATERIAL_PROGRAM_TYPE_GLSL:
+
       g_warning ("Unexpected use of GLSL backend!");
-      break;
-#endif
-#ifdef COGL_MATERIAL_BACKEND_ARBFP
-    case COGL_MATERIAL_PROGRAM_TYPE_ARBFP:
 
-      /* _cogl_gl_use_program_wrapper can be called by cogl-program.c
-       * so we can't bailout without making sure we glUseProgram (0)
-       * first. */
-      _cogl_gl_use_program_wrapper (0);
-
-      if (ctx->current_use_program_type == COGL_MATERIAL_PROGRAM_TYPE_ARBFP)
-        break;
-
-      GE (glEnable (GL_FRAGMENT_PROGRAM_ARB));
-
-      ctx->current_use_program_type = type;
-      break;
-#else
-    case COGL_MATERIAL_PROGRAM_TYPE_ARBFP:
-      g_warning ("Unexpected use of GLSL backend!");
-      break;
-#endif
-#ifdef COGL_MATERIAL_BACKEND_FIXED
-    case COGL_MATERIAL_PROGRAM_TYPE_FIXED:
-
-      /* _cogl_gl_use_program_wrapper can be called by cogl-program.c
-       * so we can't bailout without making sure we glUseProgram (0)
-       * first. */
-      _cogl_gl_use_program_wrapper (0);
-
-      if (ctx->current_use_program_type == COGL_MATERIAL_PROGRAM_TYPE_FIXED)
-        break;
-
-      disable_arbfp ();
-
-      ctx->current_use_program_type = type;
-#endif
+#endif /* COGL_MATERIAL_BACKEND_GLSL */
     }
+#ifndef COGL_MATERIAL_BACKEND_ARBFP
+  else if (type == COGL_MATERIAL_PROGRAM_TYPE_ARBFP)
+      g_warning ("Unexpected use of ARBFP backend!");
+#endif /* COGL_MATERIAL_BACKEND_ARBFP */
+
+  ctx->current_use_program_type = type;
 }
 
 #if defined (COGL_MATERIAL_BACKEND_GLSL) || \

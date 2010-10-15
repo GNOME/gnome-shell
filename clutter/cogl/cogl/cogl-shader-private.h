@@ -40,7 +40,6 @@ struct _CoglShader
 {
   CoglHandleObject   _parent;
   GLuint             gl_handle;
-  char              *arbfp_source;
   CoglShaderType     type;
   CoglShaderLanguage language;
 };

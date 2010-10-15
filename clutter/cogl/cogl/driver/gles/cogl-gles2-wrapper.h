@@ -26,7 +26,6 @@
 
 #include "cogl.h" /* needed for gl header include */
 #include "cogl-internal.h"
-#include "cogl-program-gles.h"
 
 G_BEGIN_DECLS
 
@@ -143,7 +142,7 @@ struct _CoglGles2WrapperSettings
   GLint    fog_mode;
 
   /* The current in-use user program */
-  CoglHandle user_program;
+  GLuint   user_program;
 
   unsigned int alpha_test_enabled:1;
   unsigned int fog_enabled:1;
@@ -218,8 +217,6 @@ struct _CoglGles2WrapperProgram
 {
   GLuint    program;
 
-  CoglProgram *user_program;
-
   /* The settings that were used to generate this combination */
   CoglGles2WrapperSettings settings;
 
@@ -229,7 +226,6 @@ struct _CoglGles2WrapperProgram
 
   /* The uniforms for this program */
   CoglGles2WrapperUniforms uniforms;
-  GLint custom_gl_uniforms[COGL_PROGRAM_NUM_CUSTOM_UNIFORMS];
 };
 
 struct _CoglGles2WrapperShader
@@ -394,7 +390,8 @@ void _cogl_wrap_glPointSize (GLfloat point_size);
 /* This function is only available on GLES 2 */
 #define _cogl_wrap_glGenerateMipmap glGenerateMipmap
 
-void _cogl_gles2_clear_cache_for_program (CoglHandle program);
+GLuint _cogl_gles2_use_program (GLuint gl_program);
+void _cogl_gles2_clear_cache_for_program (GLuint gl_program);
 
 /* Remap the missing GL functions to use the wrappers */
 #ifndef COGL_GLES2_WRAPPER_NO_REMAP
