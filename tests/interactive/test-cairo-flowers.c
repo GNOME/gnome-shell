@@ -169,7 +169,7 @@ tick (ClutterTimeline *timeline,
 }
 
 int
-test_clutter_cairo_flowers_main (int argc, char **argv)
+test_cairo_flowers_main (int argc, char **argv)
 {
   int              i;
   ClutterActor    *stage;
@@ -184,7 +184,6 @@ test_clutter_cairo_flowers_main (int argc, char **argv)
   stage = clutter_stage_get_default ();
 
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-  clutter_stage_set_fullscreen (CLUTTER_STAGE (stage), TRUE);
 
   for (i=0; i< N_FLOWERS; i++)
     {

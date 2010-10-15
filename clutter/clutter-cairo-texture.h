@@ -75,7 +75,12 @@ struct _ClutterCairoTextureClass
   /*< private >*/
   ClutterTextureClass parent_class;
 
-  void (*_clutter_cairo_1) (void);
+  /*< public >*/
+  cairo_surface_t *(* create_surface) (ClutterCairoTexture *texture,
+                                       guint                width,
+                                       guint                height);
+
+  /*< private >*/
   void (*_clutter_cairo_2) (void);
   void (*_clutter_cairo_3) (void);
   void (*_clutter_cairo_4) (void);
