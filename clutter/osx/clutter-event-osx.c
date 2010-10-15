@@ -25,7 +25,8 @@
 #include "clutter-stage-osx.h"
 
 #import <AppKit/AppKit.h>
-#include <glib/glib.h>
+
+#include <glib.h>
 #include <clutter/clutter-debug.h>
 #include <clutter/clutter-private.h>
 #include <clutter/clutter-keysyms.h>
