@@ -3237,11 +3237,17 @@ free_queue_redraw_entry (ClutterStageQueueRedrawEntry *entry)
 }
 
 void
-_clutter_stage_queue_redraw_entry_invalidate (
-                                          ClutterStageQueueRedrawEntry *entry)
+_clutter_stage_queue_redraw_entry_invalidate (ClutterStageQueueRedrawEntry *entry)
 {
-  g_object_unref (entry->actor);
-  entry->actor = NULL;
+  if (entry == NULL)
+    return;
+
+  if (entry->actor != NULL)
+    {
+      g_object_unref (entry->actor);
+      entry->actor = NULL;
+    }
+
   if (entry->has_clip)
     {
       clutter_paint_volume_free (&entry->clip);

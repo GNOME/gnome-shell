@@ -7648,11 +7648,11 @@ clutter_actor_get_paint_visibility (ClutterActor *actor)
 
 static gboolean
 invalidate_queue_redraw_entry (ClutterActor *self,
-                               void *user_data)
+                               gpointer      user_data)
 {
   ClutterActorPrivate *priv = self->priv;
 
-  if (priv->queue_redraw_entry)
+  if (priv->queue_redraw_entry != NULL)
     _clutter_stage_queue_redraw_entry_invalidate (priv->queue_redraw_entry);
 
   return TRUE;
