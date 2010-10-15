@@ -214,10 +214,6 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
   ClutterConstraintClass *constraint_class = CLUTTER_CONSTRAINT_CLASS (klass);
-  GParamSpec *pspec;
-
-  gobject_class->set_property = clutter_align_constraint_set_property;
-  gobject_class->get_property = clutter_align_constraint_get_property;
 
   meta_class->set_actor = clutter_align_constraint_set_actor;
 
@@ -230,14 +226,12 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_object ("source",
-                               P_("Source"),
-                               P_("The source of the alignment"),
-                               CLUTTER_TYPE_ACTOR,
-                               CLUTTER_PARAM_READWRITE |
-                               G_PARAM_CONSTRUCT);
-  obj_props[PROP_SOURCE] = pspec;
-  g_object_class_install_property (gobject_class, PROP_SOURCE, pspec);
+  obj_props[PROP_SOURCE] =
+    g_param_spec_object ("source",
+                           P_("Source"),
+                           P_("The source of the alignment"),
+                           CLUTTER_TYPE_ACTOR,
+                           CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
   /**
    * ClutterAlignConstraint:align-axis:
@@ -246,15 +240,13 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_enum ("align-axis",
-                             P_("Align Axis"),
-                             P_("The axis to align the position to"),
-                             CLUTTER_TYPE_ALIGN_AXIS,
-                             CLUTTER_ALIGN_X_AXIS,
-                             CLUTTER_PARAM_READWRITE |
-                             G_PARAM_CONSTRUCT);
-  obj_props[PROP_ALIGN_AXIS] = pspec;
-  g_object_class_install_property (gobject_class, PROP_ALIGN_AXIS, pspec);
+  obj_props[PROP_ALIGN_AXIS] =
+    g_param_spec_enum ("align-axis",
+                       P_("Align Axis"),
+                       P_("The axis to align the position to"),
+                       CLUTTER_TYPE_ALIGN_AXIS,
+                       CLUTTER_ALIGN_X_AXIS,
+                       CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
   /**
    * ClutterAlignConstraint:factor:
@@ -268,15 +260,19 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_float ("factor",
-                              P_("Factor"),
-                              P_("The alignment factor, between 0.0 and 1.0"),
-                              0.0, 1.0,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE |
-                              G_PARAM_CONSTRUCT);
-  obj_props[PROP_FACTOR] = pspec;
-  g_object_class_install_property (gobject_class, PROP_FACTOR, pspec);
+  obj_props[PROP_FACTOR] =
+    g_param_spec_float ("factor",
+                        P_("Factor"),
+                        P_("The alignment factor, between 0.0 and 1.0"),
+                        0.0, 1.0,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+
+  gobject_class->set_property = clutter_align_constraint_set_property;
+  gobject_class->get_property = clutter_align_constraint_get_property;
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 }
 
 static void

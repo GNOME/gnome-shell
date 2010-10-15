@@ -221,7 +221,6 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
-  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (ClutterClickActionPrivate));
 
@@ -236,13 +235,12 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_boolean ("pressed",
-                                P_("Pressed"),
-                                P_("Whether the clickable should be in pressed state"),
-                                FALSE,
-                                CLUTTER_PARAM_READABLE);
-  obj_props[PROP_PRESSED] = pspec;
-  g_object_class_install_property (gobject_class, PROP_PRESSED, pspec);
+  obj_props[PROP_PRESSED] =
+    g_param_spec_boolean ("pressed",
+                          P_("Pressed"),
+                          P_("Whether the clickable should be in pressed state"),
+                          FALSE,
+                          CLUTTER_PARAM_READABLE);
 
   /**
    * ClutterClickAction:held:
@@ -251,13 +249,16 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_boolean ("held",
-                                P_("Held"),
-                                P_("Whether the clickable has a grab"),
-                                FALSE,
-                                CLUTTER_PARAM_READABLE);
-  obj_props[PROP_HELD] = pspec;
-  g_object_class_install_property (gobject_class, PROP_HELD, pspec);
+  obj_props[PROP_HELD] =
+    g_param_spec_boolean ("held",
+                          P_("Held"),
+                          P_("Whether the clickable has a grab"),
+                          FALSE,
+                          CLUTTER_PARAM_READABLE);
+
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 
   /**
    * ClutterClickAction::clicked:

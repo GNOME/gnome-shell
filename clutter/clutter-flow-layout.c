@@ -126,8 +126,12 @@ enum
   PROP_MIN_COLUMN_WIDTH,
   PROP_MAX_COLUMN_WIDTH,
   PROP_MIN_ROW_HEGHT,
-  PROP_MAX_ROW_HEIGHT
+  PROP_MAX_ROW_HEIGHT,
+
+  N_PROPERTIES
 };
+
+static GParamSpec *flow_properties[N_PROPERTIES] = { NULL, };
 
 G_DEFINE_TYPE (ClutterFlowLayout,
                clutter_flow_layout,
@@ -850,16 +854,11 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
 {
   GObjectClass *gobject_class;
   ClutterLayoutManagerClass *layout_class;
-  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (ClutterFlowLayoutPrivate));
 
   gobject_class = G_OBJECT_CLASS (klass);
   layout_class = CLUTTER_LAYOUT_MANAGER_CLASS (klass);
-
-  gobject_class->set_property = clutter_flow_layout_set_property;
-  gobject_class->get_property = clutter_flow_layout_get_property;
-  gobject_class->finalize = clutter_flow_layout_finalize;
 
   layout_class->get_preferred_width =
     clutter_flow_layout_get_preferred_width;
@@ -878,14 +877,13 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_enum ("orientation",
-                             P_("Orientation"),
-                             P_("The orientation of the layout"),
-                             CLUTTER_TYPE_FLOW_ORIENTATION,
-                             CLUTTER_FLOW_HORIZONTAL,
-                             CLUTTER_PARAM_READWRITE |
-                             G_PARAM_CONSTRUCT);
-  g_object_class_install_property (gobject_class, PROP_ORIENTATION, pspec);
+  flow_properties[PROP_ORIENTATION] =
+    g_param_spec_enum ("orientation",
+                       P_("Orientation"),
+                       P_("The orientation of the layout"),
+                       CLUTTER_TYPE_FLOW_ORIENTATION,
+                       CLUTTER_FLOW_HORIZONTAL,
+                       CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
   /**
    * ClutterFlowLayout:homogeneous:
@@ -895,12 +893,12 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_boolean ("homogeneous",
-                                P_("Homogeneous"),
-                                P_("Whether each item should receive the same allocation"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_HOMOGENEOUS, pspec);
+  flow_properties[PROP_HOMOGENEOUS] =
+    g_param_spec_boolean ("homogeneous",
+                          P_("Homogeneous"),
+                          P_("Whether each item should receive the same allocation"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterFlowLayout:column-spacing:
@@ -911,15 +909,13 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_float ("column-spacing",
-                              P_("Column Spacing"),
-                              P_("The spacing between columns"),
-                              0.0, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_COLUMN_SPACING,
-                                   pspec);
+  flow_properties[PROP_COLUMN_SPACING] =
+    g_param_spec_float ("column-spacing",
+                        P_("Column Spacing"),
+                        P_("The spacing between columns"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterFlowLayout:row-spacing:
@@ -930,15 +926,13 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_float ("row-spacing",
-                              P_("Row Spacing"),
-                              P_("The spacing between rows"),
-                              0.0, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_ROW_SPACING,
-                                   pspec);
+  flow_properties[PROP_ROW_SPACING] =
+    g_param_spec_float ("row-spacing",
+                        P_("Row Spacing"),
+                        P_("The spacing between rows"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterFlowLayout:min-column-width:
@@ -947,15 +941,13 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_float ("min-column-width",
-                              P_("Minimum Column Width"),
-                              P_("Minimum width for each column"),
-                              0.0, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_MIN_COLUMN_WIDTH,
-                                   pspec);
+  flow_properties[PROP_MIN_COLUMN_WIDTH] =
+    g_param_spec_float ("min-column-width",
+                        P_("Minimum Column Width"),
+                        P_("Minimum width for each column"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterFlowLayout:max-column-width:
@@ -965,15 +957,13 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_float ("max-column-width",
-                              P_("Maximum Column Width"),
-                              P_("Maximum width for each column"),
-                              -1.0, G_MAXFLOAT,
-                              -1.0,
-                              CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_MAX_COLUMN_WIDTH,
-                                   pspec);
+  flow_properties[PROP_MAX_COLUMN_WIDTH] =
+    g_param_spec_float ("max-column-width",
+                        P_("Maximum Column Width"),
+                        P_("Maximum width for each column"),
+                        -1.0, G_MAXFLOAT,
+                        -1.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterFlowLayout:min-row-height:
@@ -982,15 +972,13 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_float ("min-row-height",
-                              P_("Minimum Row Height"),
-                              P_("Minimum height for each row"),
-                              0.0, G_MAXFLOAT,
-                              0.0,
-                              CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_MIN_ROW_HEGHT,
-                                   pspec);
+  flow_properties[PROP_MIN_ROW_HEGHT] =
+    g_param_spec_float ("min-row-height",
+                        P_("Minimum Row Height"),
+                        P_("Minimum height for each row"),
+                        0.0, G_MAXFLOAT,
+                        0.0,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterFlowLayout:max-row-height:
@@ -1000,15 +988,20 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_float ("max-row-height",
-                              P_("Maximum Row Height"),
-                              P_("Maximum height for each row"),
-                              -1.0, G_MAXFLOAT,
-                              -1.0,
-                              CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_MAX_ROW_HEIGHT,
-                                   pspec);
+  flow_properties[PROP_MAX_ROW_HEIGHT] =
+    g_param_spec_float ("max-row-height",
+                        P_("Maximum Row Height"),
+                        P_("Maximum height for each row"),
+                        -1.0, G_MAXFLOAT,
+                        -1.0,
+                        CLUTTER_PARAM_READWRITE);
+
+  gobject_class->finalize = clutter_flow_layout_finalize;
+  gobject_class->set_property = clutter_flow_layout_set_property;
+  gobject_class->get_property = clutter_flow_layout_get_property;
+  _clutter_object_class_install_properties (gobject_class,
+                                            N_PROPERTIES,
+                                            flow_properties);
 }
 
 static void
@@ -1094,7 +1087,8 @@ clutter_flow_layout_set_orientation (ClutterFlowLayout      *layout,
       manager = CLUTTER_LAYOUT_MANAGER (layout);
       clutter_layout_manager_layout_changed (manager);
 
-      g_object_notify (G_OBJECT (layout), "orientation");
+      _clutter_notify_by_pspec (G_OBJECT (layout),
+                                flow_properties[PROP_ORIENTATION]);
     }
 }
 
@@ -1146,7 +1140,8 @@ clutter_flow_layout_set_homogeneous (ClutterFlowLayout *layout,
       manager = CLUTTER_LAYOUT_MANAGER (layout);
       clutter_layout_manager_layout_changed (manager);
 
-      g_object_notify (G_OBJECT (layout), "homogeneous");
+      _clutter_notify_by_pspec (G_OBJECT (layout),
+                                flow_properties[PROP_HOMOGENEOUS]);
     }
 }
 
@@ -1196,7 +1191,8 @@ clutter_flow_layout_set_column_spacing (ClutterFlowLayout *layout,
       manager = CLUTTER_LAYOUT_MANAGER (layout);
       clutter_layout_manager_layout_changed (manager);
 
-      g_object_notify (G_OBJECT (layout), "column-spacing");
+      _clutter_notify_by_pspec (G_OBJECT (layout),
+                                flow_properties[PROP_COLUMN_SPACING]);
     }
 }
 
@@ -1247,7 +1243,8 @@ clutter_flow_layout_set_row_spacing (ClutterFlowLayout *layout,
       manager = CLUTTER_LAYOUT_MANAGER (layout);
       clutter_layout_manager_layout_changed (manager);
 
-      g_object_notify (G_OBJECT (layout), "row-spacing");
+      _clutter_notify_by_pspec (G_OBJECT (layout),
+                                flow_properties[PROP_ROW_SPACING]);
     }
 }
 
@@ -1316,10 +1313,12 @@ clutter_flow_layout_set_column_width (ClutterFlowLayout *layout,
     }
 
   if (notify_min)
-    g_object_notify (G_OBJECT (layout), "min-column-width");
+    _clutter_notify_by_pspec (G_OBJECT (layout),
+                              flow_properties[PROP_MIN_COLUMN_WIDTH]);
 
   if (notify_max)
-    g_object_notify (G_OBJECT (layout), "max-column-width");
+    _clutter_notify_by_pspec (G_OBJECT (layout),
+                              flow_properties[PROP_MAX_COLUMN_WIDTH]);
 
   g_object_thaw_notify (G_OBJECT (layout));
 }
@@ -1394,10 +1393,12 @@ clutter_flow_layout_set_row_height (ClutterFlowLayout *layout,
     }
 
   if (notify_min)
-    g_object_notify (G_OBJECT (layout), "min-row-height");
+    _clutter_notify_by_pspec (G_OBJECT (layout),
+                              flow_properties[PROP_MIN_ROW_HEGHT]);
 
   if (notify_max)
-    g_object_notify (G_OBJECT (layout), "max-row-height");
+    _clutter_notify_by_pspec (G_OBJECT (layout),
+                              flow_properties[PROP_MAX_ROW_HEIGHT]);
 
   g_object_thaw_notify (G_OBJECT (layout));
 }

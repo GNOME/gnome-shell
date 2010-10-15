@@ -276,7 +276,6 @@ static void
 clutter_behaviour_class_init (ClutterBehaviourClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   object_class->dispose      = clutter_behaviour_dispose;
   object_class->set_property = clutter_behaviour_set_property;
@@ -292,13 +291,16 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
    *
    * Since: 0.2
    */
-  pspec = g_param_spec_object ("alpha",
-                               P_("Alpha"),
-                               P_("Alpha Object to drive the behaviour"),
-                               CLUTTER_TYPE_ALPHA,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ALPHA] = pspec;
-  g_object_class_install_property (object_class, PROP_ALPHA, pspec);
+  obj_props[PROP_ALPHA] =
+    g_param_spec_object ("alpha",
+                         P_("Alpha"),
+                         P_("Alpha Object to drive the behaviour"),
+                         CLUTTER_TYPE_ALPHA,
+                         CLUTTER_PARAM_READWRITE);
+
+  _clutter_object_class_install_properties (object_class,
+                                            PROP_LAST,
+                                            obj_props);
 
   klass->alpha_notify = clutter_behaviour_alpha_notify_unimplemented;
 

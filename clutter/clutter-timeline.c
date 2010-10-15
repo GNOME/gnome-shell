@@ -244,12 +244,6 @@ static void
 clutter_timeline_class_init (ClutterTimelineClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
-
-  object_class->set_property = clutter_timeline_set_property;
-  object_class->get_property = clutter_timeline_get_property;
-  object_class->finalize     = clutter_timeline_finalize;
-  object_class->dispose      = clutter_timeline_dispose;
 
   g_type_class_add_private (klass, sizeof (ClutterTimelinePrivate));
 
@@ -258,13 +252,12 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    *
    * Whether the timeline should automatically rewind and restart.
    */
-  pspec = g_param_spec_boolean ("loop",
-                                "Loop",
-                                "Should the timeline automatically restart",
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_LOOP] = pspec;
-  g_object_class_install_property (object_class, PROP_LOOP, pspec);
+  obj_props[PROP_LOOP] =
+    g_param_spec_boolean ("loop",
+                          P_("Loop"),
+                          P_("Should the timeline automatically restart"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterTimeline:delay:
@@ -274,14 +267,13 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    *
    * Since: 0.4
    */
-  pspec = g_param_spec_uint ("delay",
-                             "Delay",
-                             "Delay before start",
-                             0, G_MAXUINT,
-                             0,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_DELAY] = pspec;
-  g_object_class_install_property (object_class, PROP_DELAY, pspec);
+  obj_props[PROP_DELAY] =
+    g_param_spec_uint ("delay",
+                       P_("Delay"),
+                       P_("Delay before start"),
+                       0, G_MAXUINT,
+                       0,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterTimeline:duration:
@@ -291,14 +283,13 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_uint ("duration",
-                             "Duration",
-                             "Duration of the timeline in milliseconds",
-                             0, G_MAXUINT,
-                             1000,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_DURATION] = pspec;
-  g_object_class_install_property (object_class, PROP_DURATION, pspec);
+  obj_props[PROP_DURATION] =
+    g_param_spec_uint ("duration",
+                       P_("Duration"),
+                       P_("Duration of the timeline in milliseconds"),
+                       0, G_MAXUINT,
+                       1000,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterTimeline:direction:
@@ -308,14 +299,21 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_enum ("direction",
-                             "Direction",
-                             "Direction of the timeline",
-                             CLUTTER_TYPE_TIMELINE_DIRECTION,
-                             CLUTTER_TIMELINE_FORWARD,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_DIRECTION] = pspec;
-  g_object_class_install_property (object_class, PROP_DIRECTION, pspec);
+  obj_props[PROP_DIRECTION] =
+    g_param_spec_enum ("direction",
+                       P_("Direction"),
+                       P_("Direction of the timeline"),
+                       CLUTTER_TYPE_TIMELINE_DIRECTION,
+                       CLUTTER_TIMELINE_FORWARD,
+                       CLUTTER_PARAM_READWRITE);
+
+  object_class->dispose      = clutter_timeline_dispose;
+  object_class->finalize     = clutter_timeline_finalize;
+  object_class->set_property = clutter_timeline_set_property;
+  object_class->get_property = clutter_timeline_get_property;
+  _clutter_object_class_install_properties (object_class,
+                                            PROP_LAST,
+                                            obj_props);
 
   /**
    * ClutterTimeline::new-frame:

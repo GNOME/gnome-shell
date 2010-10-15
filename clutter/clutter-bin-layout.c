@@ -132,7 +132,9 @@ enum
   PROP_LAYER_0,
 
   PROP_LAYER_X_ALIGN,
-  PROP_LAYER_Y_ALIGN
+  PROP_LAYER_Y_ALIGN,
+
+  PROP_LAYER_LAST
 };
 
 enum
@@ -145,7 +147,8 @@ enum
   PROP_LAST
 };
 
-static GParamSpec *obj_props[PROP_LAST];
+static GParamSpec *layer_props[PROP_LAYER_LAST] = { NULL, };
+static GParamSpec *bin_props[PROP_LAST] = { NULL, };
 
 G_DEFINE_TYPE (ClutterBinLayer,
                clutter_bin_layer,
@@ -175,7 +178,7 @@ set_layer_x_align (ClutterBinLayer     *self,
   manager = clutter_layout_meta_get_manager (meta);
   clutter_layout_manager_layout_changed (manager);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_X_ALIGN]);
+  _clutter_notify_by_pspec (G_OBJECT (self), layer_props[PROP_LAYER_X_ALIGN]);
 }
 
 static void
@@ -194,7 +197,7 @@ set_layer_y_align (ClutterBinLayer     *self,
   manager = clutter_layout_meta_get_manager (meta);
   clutter_layout_manager_layout_changed (manager);
 
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_Y_ALIGN]);
+  _clutter_notify_by_pspec (G_OBJECT (self), layer_props[PROP_LAYER_Y_ALIGN]);
 }
 
 static void
@@ -249,34 +252,31 @@ static void
 clutter_bin_layer_class_init (ClutterBinLayerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   gobject_class->set_property = clutter_bin_layer_set_property;
   gobject_class->get_property = clutter_bin_layer_get_property;
 
-  pspec = g_param_spec_enum ("x-align",
-                             P_("Horizontal Alignment"),
-                             P_("Horizontal alignment for the actor "
-                                "inside the layout manager"),
-                             CLUTTER_TYPE_BIN_ALIGNMENT,
-                             CLUTTER_BIN_ALIGNMENT_CENTER,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_LAYER_X_ALIGN] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_LAYER_X_ALIGN,
-                                   pspec);
+  layer_props[PROP_LAYER_X_ALIGN] =
+    g_param_spec_enum ("x-align",
+                       P_("Horizontal Alignment"),
+                       P_("Horizontal alignment for the actor "
+                          "inside the layout manager"),
+                       CLUTTER_TYPE_BIN_ALIGNMENT,
+                       CLUTTER_BIN_ALIGNMENT_CENTER,
+                       CLUTTER_PARAM_READWRITE);
 
-  pspec = g_param_spec_enum ("y-align",
-                             P_("Vertical Alignment"),
-                             P_("Vertical alignment for the actor "
-                                "inside the layout manager"),
-                             CLUTTER_TYPE_BIN_ALIGNMENT,
-                             CLUTTER_BIN_ALIGNMENT_CENTER,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_LAYER_Y_ALIGN] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_LAYER_Y_ALIGN,
-                                   pspec);
+  layer_props[PROP_LAYER_Y_ALIGN] =
+    g_param_spec_enum ("y-align",
+                       P_("Vertical Alignment"),
+                       P_("Vertical alignment for the actor "
+                          "inside the layout manager"),
+                       CLUTTER_TYPE_BIN_ALIGNMENT,
+                       CLUTTER_BIN_ALIGNMENT_CENTER,
+                       CLUTTER_PARAM_READWRITE);
+
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAYER_LAST,
+                                            layer_props);
 }
 
 static void
@@ -305,7 +305,7 @@ set_x_align (ClutterBinLayout    *self,
       manager = CLUTTER_LAYOUT_MANAGER (self);
       clutter_layout_manager_layout_changed (manager);
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_X_ALIGN]);
+      _clutter_notify_by_pspec (G_OBJECT (self), bin_props[PROP_X_ALIGN]);
     }
 }
 
@@ -324,7 +324,7 @@ set_y_align (ClutterBinLayout    *self,
       manager = CLUTTER_LAYOUT_MANAGER (self);
       clutter_layout_manager_layout_changed (manager);
 
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_Y_ALIGN]);
+      _clutter_notify_by_pspec (G_OBJECT (self), bin_props[PROP_Y_ALIGN]);
     }
 }
 
@@ -564,12 +564,8 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterLayoutManagerClass *layout_class =
     CLUTTER_LAYOUT_MANAGER_CLASS (klass);
-  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (ClutterBinLayoutPrivate));
-
-  gobject_class->set_property = clutter_bin_layout_set_property;
-  gobject_class->get_property = clutter_bin_layout_get_property;
 
   /**
    * ClutterBinLayout:x-align:
@@ -579,15 +575,14 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_enum ("x-align",
-                             P_("Horizontal Alignment"),
-                             P_("Default horizontal alignment for the actors "
-                                "inside the layout manager"),
-                             CLUTTER_TYPE_BIN_ALIGNMENT,
-                             CLUTTER_BIN_ALIGNMENT_CENTER,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_X_ALIGN] = pspec;
-  g_object_class_install_property (gobject_class, PROP_X_ALIGN, pspec);
+  bin_props[PROP_X_ALIGN] =
+    g_param_spec_enum ("x-align",
+                       P_("Horizontal Alignment"),
+                       P_("Default horizontal alignment for the actors "
+                          "inside the layout manager"),
+                       CLUTTER_TYPE_BIN_ALIGNMENT,
+                       CLUTTER_BIN_ALIGNMENT_CENTER,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterBinLayout:y-align:
@@ -597,15 +592,20 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_enum ("y-align",
-                             P_("Vertical Alignment"),
-                             P_("Default vertical alignment for the actors "
-                                "inside the layout manager"),
-                             CLUTTER_TYPE_BIN_ALIGNMENT,
-                             CLUTTER_BIN_ALIGNMENT_CENTER,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_Y_ALIGN] = pspec;
-  g_object_class_install_property (gobject_class, PROP_Y_ALIGN, pspec);
+  bin_props[PROP_Y_ALIGN] =
+    g_param_spec_enum ("y-align",
+                       P_("Vertical Alignment"),
+                       P_("Default vertical alignment for the actors "
+                          "inside the layout manager"),
+                       CLUTTER_TYPE_BIN_ALIGNMENT,
+                       CLUTTER_BIN_ALIGNMENT_CENTER,
+                       CLUTTER_PARAM_READWRITE);
+
+  gobject_class->set_property = clutter_bin_layout_set_property;
+  gobject_class->get_property = clutter_bin_layout_get_property;
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            bin_props);
 
   layout_class->get_preferred_width =
     clutter_bin_layout_get_preferred_width;

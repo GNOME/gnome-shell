@@ -289,16 +289,11 @@ clutter_desaturate_effect_class_init (ClutterDesaturateEffectClass *klass)
   ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterOffscreenEffectClass *offscreen_class;
-  GParamSpec *pspec;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
   offscreen_class->paint_target = clutter_desaturate_effect_paint_target;
 
   effect_class->pre_paint = clutter_desaturate_effect_pre_paint;
-
-  gobject_class->set_property = clutter_desaturate_effect_set_property;
-  gobject_class->get_property = clutter_desaturate_effect_get_property;
-  gobject_class->dispose = clutter_desaturate_effect_dispose;
 
   /**
    * ClutterDesaturateEffect:factor:
@@ -308,14 +303,21 @@ clutter_desaturate_effect_class_init (ClutterDesaturateEffectClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_double ("factor",
-                               P_("Factor"),
-                               P_("The desaturation factor"),
-                               0.0, 1.0,
-                               1.0,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_FACTOR] = pspec;
-  g_object_class_install_property (gobject_class, PROP_FACTOR, pspec);
+  obj_props[PROP_FACTOR] =
+    g_param_spec_double ("factor",
+                         P_("Factor"),
+                         P_("The desaturation factor"),
+                         0.0, 1.0,
+                         1.0,
+                         CLUTTER_PARAM_READWRITE);
+
+  gobject_class->dispose = clutter_desaturate_effect_dispose;
+  gobject_class->set_property = clutter_desaturate_effect_set_property;
+  gobject_class->get_property = clutter_desaturate_effect_get_property;
+
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 }
 
 static void

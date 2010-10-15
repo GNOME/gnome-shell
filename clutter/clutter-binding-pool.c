@@ -302,7 +302,6 @@ static void
 clutter_binding_pool_class_init (ClutterBindingPoolClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec = NULL;
 
   gobject_class->constructed = clutter_binding_pool_constructed;
   gobject_class->set_property = clutter_binding_pool_set_property;
@@ -316,14 +315,17 @@ clutter_binding_pool_class_init (ClutterBindingPoolClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_string ("name",
-                               P_("Name"),
-                               P_("The unique name of the binding pool"),
-                               NULL,
-                               CLUTTER_PARAM_READWRITE |
-                               G_PARAM_CONSTRUCT_ONLY);
-  obj_props[PROP_NAME] = pspec;
-  g_object_class_install_property (gobject_class, PROP_NAME, pspec);
+  obj_props[PROP_NAME] =
+    g_param_spec_string ("name",
+                         P_("Name"),
+                         P_("The unique name of the binding pool"),
+                         NULL,
+                         CLUTTER_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT_ONLY);
+
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 }
 
 static void

@@ -288,7 +288,6 @@ clutter_colorize_effect_class_init (ClutterColorizeEffectClass *klass)
   ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterOffscreenEffectClass *offscreen_class;
-  GParamSpec *pspec;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
   offscreen_class->paint_target = clutter_colorize_effect_paint_target;
@@ -306,13 +305,16 @@ clutter_colorize_effect_class_init (ClutterColorizeEffectClass *klass)
    *
    * Since: 1.4
    */
-  pspec = clutter_param_spec_color ("tint",
-                                    P_("Tint"),
-                                    P_("The tint to apply"),
-                                    &default_tint,
-                                    CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_TINT] = pspec;
-  g_object_class_install_property (gobject_class, PROP_TINT, pspec);
+  obj_props[PROP_TINT] =
+    clutter_param_spec_color ("tint",
+                              P_("Tint"),
+                              P_("The tint to apply"),
+                              &default_tint,
+                              CLUTTER_PARAM_READWRITE);
+
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 }
 
 static void

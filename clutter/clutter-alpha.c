@@ -319,7 +319,6 @@ static void
 clutter_alpha_class_init (ClutterAlphaClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   object_class->set_property = clutter_alpha_set_property;
   object_class->get_property = clutter_alpha_get_property;
@@ -335,13 +334,12 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    *
    * Since: 0.2
    */
-  pspec = g_param_spec_object ("timeline",
+  obj_props[PROP_TIMELINE] =
+    g_param_spec_object ("timeline",
                                P_("Timeline"),
                                P_("Timeline used by the alpha"),
                                CLUTTER_TYPE_TIMELINE,
                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_TIMELINE] = pspec;
-  g_object_class_install_property (object_class, PROP_TIMELINE, pspec);
 
   /**
    * ClutterAlpha:alpha:
@@ -352,14 +350,13 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    *
    * Since: 0.2
    */
-  pspec = g_param_spec_double ("alpha",
+  obj_props[PROP_ALPHA] =
+    g_param_spec_double ("alpha",
                                P_("Alpha value"),
                                P_("Alpha value as computed by the alpha"),
                                -1.0, 2.0,
                                0.0,
                                CLUTTER_PARAM_READABLE);
-  obj_props[PROP_ALPHA] = pspec;
-  g_object_class_install_property (object_class, PROP_ALPHA, pspec);
 
   /**
    * ClutterAlpha:mode:
@@ -374,14 +371,17 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_ulong ("mode",
+  obj_props[PROP_MODE] =
+    g_param_spec_ulong ("mode",
                               P_("Mode"),
                               P_("Progress mode"),
                               0, G_MAXULONG,
                               CLUTTER_CUSTOM_MODE,
                               G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_MODE] = pspec;
-  g_object_class_install_property (object_class, PROP_MODE, pspec);
+
+  _clutter_object_class_install_properties (object_class,
+                                            PROP_LAST,
+                                            obj_props);
 }
 
 static void

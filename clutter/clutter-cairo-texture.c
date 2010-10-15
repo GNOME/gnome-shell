@@ -380,7 +380,6 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  GParamSpec *pspec;
 
   gobject_class->finalize     = clutter_cairo_texture_finalize;
   gobject_class->set_property = clutter_cairo_texture_set_property;
@@ -405,16 +404,13 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_uint ("surface-width",
-                             P_("Surface Width"),
-                             P_("The width of the Cairo surface"),
-                             0, G_MAXUINT,
-                             0,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_SURFACE_WIDTH] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_SURFACE_WIDTH,
-                                   pspec);
+  obj_props[PROP_SURFACE_WIDTH] =
+    g_param_spec_uint ("surface-width",
+                       P_("Surface Width"),
+                       P_("The width of the Cairo surface"),
+                       0, G_MAXUINT,
+                       0,
+                       CLUTTER_PARAM_READWRITE);
   /**
    * ClutterCairoTexture:surface-height:
    *
@@ -423,16 +419,17 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_uint ("surface-height",
-                             P_("Surface Height"),
-                             P_("The height of the Cairo surface"),
-                             0, G_MAXUINT,
-                             0,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_SURFACE_HEIGHT] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_SURFACE_HEIGHT,
-                                   pspec);
+  obj_props[PROP_SURFACE_HEIGHT] =
+    g_param_spec_uint ("surface-height",
+                       P_("Surface Height"),
+                       P_("The height of the Cairo surface"),
+                       0, G_MAXUINT,
+                       0,
+                       CLUTTER_PARAM_READWRITE);
+
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 }
 
 static void

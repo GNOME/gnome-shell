@@ -111,7 +111,6 @@ static void
 clutter_child_meta_class_init (ClutterChildMetaClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   gobject_class->set_property = clutter_child_meta_set_property;
   gobject_class->get_property = clutter_child_meta_get_property;
@@ -123,14 +122,13 @@ clutter_child_meta_class_init (ClutterChildMetaClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_object ("container",
-                               P_("Container"),
-                               P_("The container that created this data"),
-                               CLUTTER_TYPE_CONTAINER,
-                               G_PARAM_CONSTRUCT_ONLY |
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_CONTAINER] = pspec;
-  g_object_class_install_property (gobject_class, PROP_CONTAINER, pspec);
+  obj_props[PROP_CONTAINER] =
+    g_param_spec_object ("container",
+                         P_("Container"),
+                         P_("The container that created this data"),
+                         CLUTTER_TYPE_CONTAINER,
+                         G_PARAM_CONSTRUCT_ONLY |
+                         CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterChildMeta:actor:
@@ -139,14 +137,17 @@ clutter_child_meta_class_init (ClutterChildMetaClass *klass)
    *
    * Since: 0.8
    */
-  pspec = g_param_spec_object ("actor",
-                               P_("Actor"),
-                               P_("The actor wrapped by this data"),
-                               CLUTTER_TYPE_ACTOR,
-                               G_PARAM_CONSTRUCT_ONLY |
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ACTOR] = pspec;
-  g_object_class_install_property (gobject_class, PROP_ACTOR, pspec);
+  obj_props[PROP_ACTOR] =
+    g_param_spec_object ("actor",
+                         P_("Actor"),
+                         P_("The actor wrapped by this data"),
+                         CLUTTER_TYPE_ACTOR,
+                         G_PARAM_CONSTRUCT_ONLY |
+                         CLUTTER_PARAM_READWRITE);
+
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 }
 
 static void

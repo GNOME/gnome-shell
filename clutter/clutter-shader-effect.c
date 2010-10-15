@@ -436,9 +436,6 @@ clutter_shader_effect_class_init (ClutterShaderEffectClass *klass)
 
   g_type_class_add_private (klass, sizeof (ClutterShaderEffectPrivate));
 
-  gobject_class->set_property = clutter_shader_effect_set_property;
-  gobject_class->finalize = clutter_shader_effect_finalize;
-
   /**
    * ClutterShaderEffect:shader-type:
    *
@@ -448,15 +445,19 @@ clutter_shader_effect_class_init (ClutterShaderEffectClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_enum ("shader-type",
-                             P_("Shader Type"),
-                             P_("The type of shader used"),
-                             CLUTTER_TYPE_SHADER_TYPE,
-                             CLUTTER_FRAGMENT_SHADER,
-                             CLUTTER_PARAM_WRITABLE |
-                             G_PARAM_CONSTRUCT_ONLY);
-  obj_props[PROP_SHADER_TYPE] = pspec;
-  g_object_class_install_property (gobject_class, PROP_SHADER_TYPE, pspec);
+  obj_props[PROP_SHADER_TYPE] =
+    g_param_spec_enum ("shader-type",
+                       P_("Shader Type"),
+                       P_("The type of shader used"),
+                       CLUTTER_TYPE_SHADER_TYPE,
+                       CLUTTER_FRAGMENT_SHADER,
+                       CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY);
+
+  gobject_class->set_property = clutter_shader_effect_set_property;
+  gobject_class->finalize = clutter_shader_effect_finalize;
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 
   meta_class->set_actor = clutter_shader_effect_set_actor;
 

@@ -121,21 +121,21 @@ static void
 clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (ClutterDeviceManagerPrivate));
 
+  obj_props[PROP_BACKEND] =
+    g_param_spec_object ("backend",
+                         P_("Backend"),
+                         P_("The ClutterBackend of the device manager"),
+                         CLUTTER_TYPE_BACKEND,
+                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
   gobject_class->set_property = clutter_device_manager_set_property;
   gobject_class->get_property = clutter_device_manager_get_property;
-
-  pspec = g_param_spec_object ("backend",
-                               P_("Backend"),
-                               P_("The ClutterBackend of the device manager"),
-                               CLUTTER_TYPE_BACKEND,
-                               CLUTTER_PARAM_READWRITE |
-                               G_PARAM_CONSTRUCT_ONLY);
-  obj_props[PROP_BACKEND] = pspec;
-  g_object_class_install_property (gobject_class, PROP_BACKEND, pspec);
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 
   /**
    * ClutterDeviceManager::device-added:

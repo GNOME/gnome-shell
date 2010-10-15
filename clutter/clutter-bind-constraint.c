@@ -265,7 +265,6 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
   ClutterConstraintClass *constraint_class = CLUTTER_CONSTRAINT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   gobject_class->set_property = clutter_bind_constraint_set_property;
   gobject_class->get_property = clutter_bind_constraint_get_property;
@@ -280,14 +279,12 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_object ("source",
-                               P_("Source"),
-                               P_("The source of the binding"),
-                               CLUTTER_TYPE_ACTOR,
-                               CLUTTER_PARAM_READWRITE |
-                               G_PARAM_CONSTRUCT);
-  obj_props[PROP_SOURCE] = pspec;
-  g_object_class_install_property (gobject_class, PROP_SOURCE, pspec);
+  obj_props[PROP_SOURCE] =
+    g_param_spec_object ("source",
+                         P_("Source"),
+                         P_("The source of the binding"),
+                         CLUTTER_TYPE_ACTOR,
+                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
   /**
    * ClutterBindConstraint:coordinate:
@@ -296,15 +293,13 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_enum ("coordinate",
-                             P_("Coordinate"),
-                             P_("The coordinate to bind"),
-                             CLUTTER_TYPE_BIND_COORDINATE,
-                             CLUTTER_BIND_X,
-                             CLUTTER_PARAM_READWRITE |
-                             G_PARAM_CONSTRUCT);
-  obj_props[PROP_COORDINATE] = pspec;
-  g_object_class_install_property (gobject_class, PROP_COORDINATE, pspec);
+  obj_props[PROP_COORDINATE] =
+    g_param_spec_enum ("coordinate",
+                       P_("Coordinate"),
+                       P_("The coordinate to bind"),
+                       CLUTTER_TYPE_BIND_COORDINATE,
+                       CLUTTER_BIND_X,
+                       CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
   /**
    * ClutterBindConstraint:offset:
@@ -313,15 +308,17 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_float ("offset",
-                              P_("Offset"),
-                              P_("The offset in pixels to apply to the binding"),
-                              -G_MAXFLOAT, G_MAXFLOAT,
-                              0.0f,
-                              CLUTTER_PARAM_READWRITE |
-                              G_PARAM_CONSTRUCT);
-  obj_props[PROP_OFFSET] = pspec;
-  g_object_class_install_property (gobject_class, PROP_OFFSET, pspec);
+  obj_props[PROP_OFFSET] =
+    g_param_spec_float ("offset",
+                        P_("Offset"),
+                        P_("The offset in pixels to apply to the binding"),
+                        -G_MAXFLOAT, G_MAXFLOAT,
+                        0.0f,
+                        CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 }
 
 static void

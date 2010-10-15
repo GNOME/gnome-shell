@@ -386,9 +386,6 @@ clutter_script_class_init (ClutterScriptClass *klass)
 
   klass->get_type_from_name = clutter_script_real_get_type_from_name;
 
-  gobject_class->get_property = clutter_script_get_property;
-  gobject_class->finalize = clutter_script_finalize;
-
   /**
    * ClutterScript:filename-set:
    *
@@ -398,13 +395,12 @@ clutter_script_class_init (ClutterScriptClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_boolean ("filename-set",
-                                P_("Filename Set"),
-                                P_("Whether the :filename property is set"),
-                                FALSE,
-                                CLUTTER_PARAM_READABLE);
-  obj_props[PROP_FILENAME_SET] = pspec;
-  g_object_class_install_property (gobject_class, PROP_FILENAME_SET, pspec);
+  obj_props[PROP_FILENAME_SET] =
+    g_param_spec_boolean ("filename-set",
+                          P_("Filename Set"),
+                          P_("Whether the :filename property is set"),
+                          FALSE,
+                          CLUTTER_PARAM_READABLE);
 
   /**
    * ClutterScript:filename:
@@ -414,13 +410,19 @@ clutter_script_class_init (ClutterScriptClass *klass)
    *
    * Since: 0.6
    */
-  pspec = g_param_spec_string ("filename",
-                               P_("Filename"),
-                               P_("The path of the currently parsed file"),
-                               NULL,
-                               CLUTTER_PARAM_READABLE);
-  obj_props[PROP_FILENAME] = pspec;
-  g_object_class_install_property (gobject_class, PROP_FILENAME, pspec);
+  obj_props[PROP_FILENAME] =
+    g_param_spec_string ("filename",
+                         P_("Filename"),
+                         P_("The path of the currently parsed file"),
+                         NULL,
+                         CLUTTER_PARAM_READABLE);
+
+  gobject_class->get_property = clutter_script_get_property;
+  gobject_class->finalize = clutter_script_finalize;
+
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 }
 
 static void

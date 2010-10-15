@@ -438,7 +438,6 @@ static void
 clutter_animation_class_init (ClutterAnimationClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   quark_object_animation =
     g_quark_from_static_string ("clutter-actor-animation");
@@ -459,13 +458,12 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_object ("object",
-                               P_("Object"),
-                               P_("Object to which the animation applies"),
-                               G_TYPE_OBJECT,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_OBJECT] = pspec;
-  g_object_class_install_property (gobject_class, PROP_OBJECT, pspec);
+  obj_props[PROP_OBJECT] =
+    g_param_spec_object ("object",
+                         P_("Object"),
+                         P_("Object to which the animation applies"),
+                         G_TYPE_OBJECT,
+                         CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterAnimation:mode:
@@ -476,14 +474,13 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_ulong ("mode",
-                              P_("Mode"),
-                              P_("The mode of the animation"),
-                              0, G_MAXULONG,
-                              CLUTTER_LINEAR,
-                              CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_MODE] = pspec;
-  g_object_class_install_property (gobject_class, PROP_MODE, pspec);
+  obj_props[PROP_MODE] =
+    g_param_spec_ulong ("mode",
+                        P_("Mode"),
+                        P_("The mode of the animation"),
+                        0, G_MAXULONG,
+                        CLUTTER_LINEAR,
+                        CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterAnimation:duration:
@@ -492,13 +489,13 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_uint ("duration",
-                             P_("Duration"),
-                             P_("Duration of the animation, in milliseconds"),
-                             0, G_MAXUINT, 0,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_DURATION] = pspec;
-  g_object_class_install_property (gobject_class, PROP_DURATION, pspec);
+  obj_props[PROP_DURATION] =
+    g_param_spec_uint ("duration",
+                       P_("Duration"),
+                       P_("Duration of the animation, in milliseconds"),
+                       0, G_MAXUINT,
+                       0,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterAnimation:loop:
@@ -507,13 +504,12 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_boolean ("loop",
-                                P_("Loop"),
-                                P_("Whether the animation should loop"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_LOOP] = pspec;
-  g_object_class_install_property (gobject_class, PROP_LOOP, pspec);
+  obj_props[PROP_LOOP] =
+    g_param_spec_boolean ("loop",
+                          P_("Loop"),
+                          P_("Whether the animation should loop"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterAnimation:timeline:
@@ -522,13 +518,12 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_object ("timeline",
-                               P_("Timeline"),
-                               P_("The timeline used by the animation"),
-                               CLUTTER_TYPE_TIMELINE,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_TIMELINE] = pspec;
-  g_object_class_install_property (gobject_class, PROP_TIMELINE, pspec);
+  obj_props[PROP_TIMELINE] =
+    g_param_spec_object ("timeline",
+                         P_("Timeline"),
+                         P_("The timeline used by the animation"),
+                         CLUTTER_TYPE_TIMELINE,
+                         CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterAnimation:alpha:
@@ -537,13 +532,16 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_object ("alpha",
-                               P_("Alpha"),
-                               P_("The alpha used by the animation"),
-                               CLUTTER_TYPE_ALPHA,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_ALPHA] = pspec;
-  g_object_class_install_property (gobject_class, PROP_ALPHA, pspec);
+  obj_props[PROP_ALPHA] =
+    g_param_spec_object ("alpha",
+                         P_("Alpha"),
+                         P_("The alpha used by the animation"),
+                         CLUTTER_TYPE_ALPHA,
+                         CLUTTER_PARAM_READWRITE);
+
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 
   /**
    * ClutterAnimation::started:

@@ -1762,7 +1762,6 @@ static void
 clutter_animator_class_init (ClutterAnimatorClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (ClutterAnimatorPrivate));
 
@@ -1779,14 +1778,13 @@ clutter_animator_class_init (ClutterAnimatorClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_uint ("duration",
-                             P_("Duration"),
-                             P_("The duration of the animation"),
-                             0, G_MAXUINT,
-                             2000,
-                             CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_DURATION] = pspec;
-  g_object_class_install_property (gobject_class, PROP_DURATION, pspec);
+  obj_props[PROP_DURATION] =
+    g_param_spec_uint ("duration",
+                       P_("Duration"),
+                       P_("The duration of the animation"),
+                       0, G_MAXUINT,
+                       2000,
+                       CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterAnimator:timeline:
@@ -1796,13 +1794,16 @@ clutter_animator_class_init (ClutterAnimatorClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_object ("timeline",
-                               P_("Timeline"),
-                               P_("The timeline of the animation"),
-                               CLUTTER_TYPE_TIMELINE,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_TIMELINE] = pspec;
-  g_object_class_install_property (gobject_class, PROP_TIMELINE, pspec);
+  obj_props[PROP_TIMELINE] =
+    g_param_spec_object ("timeline",
+                         P_("Timeline"),
+                         P_("The timeline of the animation"),
+                         CLUTTER_TYPE_TIMELINE,
+                         CLUTTER_PARAM_READWRITE);
+
+  _clutter_object_class_install_properties (gobject_class,
+                                            PROP_LAST,
+                                            obj_props);
 }
 
 static void
