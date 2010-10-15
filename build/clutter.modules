@@ -222,6 +222,7 @@
       <dep package="cairo"/>
       <dep package="pango"/>
       <dep package="gdk-pixbuf"/>
+      <dep package="atk"/>
       <dep package="gobject-introspection"/>
       <dep package="json-glib"/>
     </dependencies>
