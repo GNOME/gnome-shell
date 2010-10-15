@@ -279,6 +279,17 @@ COGL_FEATURE_FUNCTION (void, glUniformMatrix4fv,
                         GLboolean             transpose,
                         const GLfloat        *value))
 
+COGL_FEATURE_FUNCTION (void, glGetProgramiv,
+                       (GLuint                program,
+                        GLenum                pname,
+                        GLint                *params))
+
+COGL_FEATURE_FUNCTION (void, glGetProgramInfoLog,
+                       (GLuint                program,
+                        GLsizei               bufSize,
+                        GLsizei              *length,
+                        GLchar               *infoLog))
+
 COGL_FEATURE_END ()
 
 COGL_FEATURE_BEGIN (vbos, 1, 5,

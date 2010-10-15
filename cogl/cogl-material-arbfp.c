@@ -44,14 +44,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-color-private.h"
 #include "cogl-profile.h"
-
-#ifdef HAVE_COGL_GL
-#include "cogl-program-gl.h"
-#endif
-
-#ifdef HAVE_COGL_GLES2
-#include "cogl-program-gles.h"
-#endif
+#include "cogl-program-private.h"
 
 #include <glib.h>
 #include <glib/gprintf.h>
@@ -96,6 +89,10 @@ typedef struct _ArbfpProgramState
   GLuint gl_program;
   UnitState *unit_state;
   int next_constant_id;
+
+  /* Age of the program the last time the uniforms were flushed. This
+     is used to detect when we need to flush all of the uniforms */
+  unsigned int user_program_age;
 
   /* We need to track the last material that an ARBfp program was used
    * with so know if we need to update any program.local parameters. */
@@ -1064,14 +1061,18 @@ _cogl_material_backend_arbfp_end (CoglMaterial *material,
 
   if (arbfp_program_state->user_program != COGL_INVALID_HANDLE)
     {
-      CoglProgram *program = (CoglProgram *)arbfp_program_state->user_program;
-      gl_program = program->gl_handle;
+      /* An arbfp program should contain exactly one shader which we
+         can use directly */
+      CoglProgram *program = arbfp_program_state->user_program;
+      CoglShader *shader = program->attached_shaders->data;
+
+      gl_program = shader->gl_handle;
     }
   else
     gl_program = arbfp_program_state->gl_program;
 
   GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, gl_program));
-  _cogl_use_program (COGL_INVALID_HANDLE, COGL_MATERIAL_PROGRAM_TYPE_ARBFP);
+  _cogl_use_program (0, COGL_MATERIAL_PROGRAM_TYPE_ARBFP);
 
   if (arbfp_program_state->user_program == COGL_INVALID_HANDLE)
     {
@@ -1085,6 +1086,19 @@ _cogl_material_backend_arbfp_end (CoglMaterial *material,
       cogl_material_foreach_layer (material,
                                    update_constants_cb,
                                    &state);
+    }
+  else
+    {
+      CoglProgram *program = arbfp_program_state->user_program;
+      gboolean program_changed;
+
+      /* If the shader has changed since it was last flushed then we
+         need to update all uniforms */
+      program_changed = program->age != arbfp_program_state->user_program_age;
+
+      _cogl_program_flush_uniforms (program, gl_program, program_changed);
+
+      arbfp_program_state->user_program_age = program->age;
     }
 
   /* We need to track what material used this arbfp program last since

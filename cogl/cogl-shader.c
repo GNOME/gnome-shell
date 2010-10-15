@@ -36,12 +36,16 @@
 #include <string.h>
 
 #ifdef HAVE_COGL_GL
-#define glCreateShader      ctx->drv.pf_glCreateShader
-#define glGetShaderiv       ctx->drv.pf_glGetShaderiv
-#define glGetShaderInfoLog  ctx->drv.pf_glGetShaderInfoLog
-#define glCompileShader     ctx->drv.pf_glCompileShader
-#define glShaderSource      ctx->drv.pf_glShaderSource
-#define glDeleteShader      ctx->drv.pf_glDeleteShader
+#define glCreateShader             ctx->drv.pf_glCreateShader
+#define glGetShaderiv              ctx->drv.pf_glGetShaderiv
+#define glGetShaderInfoLog         ctx->drv.pf_glGetShaderInfoLog
+#define glCompileShader            ctx->drv.pf_glCompileShader
+#define glShaderSource             ctx->drv.pf_glShaderSource
+#define glDeleteShader             ctx->drv.pf_glDeleteShader
+#define glProgramString            ctx->drv.pf_glProgramString
+#define glBindProgram              ctx->drv.pf_glBindProgram
+#define glDeletePrograms           ctx->drv.pf_glDeletePrograms
+#define glGenPrograms              ctx->drv.pf_glGenPrograms
 #define GET_CONTEXT         _COGL_GET_CONTEXT
 #else
 #define GET_CONTEXT(CTXVAR,RETVAL) G_STMT_START { } G_STMT_END
@@ -63,7 +67,10 @@ _cogl_shader_free (CoglShader *shader)
 
 #ifdef HAVE_COGL_GL
   if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
-    g_free (shader->arbfp_source);
+    {
+      if (shader->gl_handle)
+        GE (glDeletePrograms (1, &shader->gl_handle));
+    }
   else
 #endif
     if (shader->gl_handle)
@@ -123,11 +130,10 @@ cogl_shader_source (CoglHandle   handle,
   if (G_UNLIKELY (language != shader->language))
     {
 #ifdef HAVE_COGL_GL
-
       if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
         {
-          g_free (shader->arbfp_source);
-          shader->arbfp_source = NULL;
+          if (shader->gl_handle)
+            GE (glDeletePrograms (1, &shader->gl_handle));
         }
       else
 #endif
@@ -139,7 +145,35 @@ cogl_shader_source (CoglHandle   handle,
 
 #ifdef HAVE_COGL_GL
   if (language == COGL_SHADER_LANGUAGE_ARBFP)
-      shader->arbfp_source = g_strdup (source);
+    {
+#ifdef COGL_GL_DEBUG
+      GLenum gl_error;
+#endif
+
+      GE (glGenPrograms (1, &shader->gl_handle));
+
+      GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, shader->gl_handle));
+
+#ifdef COGL_GL_DEBUG
+      while ((gl_error = glGetError ()) != GL_NO_ERROR)
+        ;
+#endif
+      glProgramString (GL_FRAGMENT_PROGRAM_ARB,
+                       GL_PROGRAM_FORMAT_ASCII_ARB,
+                       strlen (source),
+                       source);
+#ifdef COGL_GL_DEBUG
+      gl_error = glGetError ();
+      if (gl_error != GL_NO_ERROR)
+        {
+          g_warning ("%s: GL error (%d): Failed to compile ARBfp:\n%s\n%s",
+                     G_STRLOC,
+                     gl_error,
+                     source,
+                     glGetString (GL_PROGRAM_ERROR_STRING_ARB));
+        }
+#endif
+    }
   else
 #endif
     {

@@ -43,14 +43,6 @@
 #include "cogl-blend-string.h"
 #include "cogl-profile.h"
 
-#ifdef HAVE_COGL_GL
-#include "cogl-program-gl.h"
-#endif
-
-#ifdef HAVE_COGL_GLES2
-#include "cogl-program-gles.h"
-#endif
-
 #include <glib.h>
 #include <glib/gprintf.h>
 #include <string.h>
@@ -83,7 +75,7 @@ _cogl_material_backend_fixed_start (CoglMaterial *material,
                                     int n_layers,
                                     unsigned long materials_difference)
 {
-  _cogl_use_program (COGL_INVALID_HANDLE, COGL_MATERIAL_PROGRAM_TYPE_FIXED);
+  _cogl_use_program (0, COGL_MATERIAL_PROGRAM_TYPE_FIXED);
   return TRUE;
 }
 
@@ -241,6 +233,13 @@ _cogl_material_backend_fixed_end (CoglMaterial *material,
       else
         GE (glDisable (GL_FOG));
     }
+
+#ifdef HAVE_COGL_GLES2
+  /* Let the GLES2 backend know that we're not using a user shader
+     anymore. This is a massive hack but it will go away once the GLSL
+     backend replaces the GLES2 wrapper */
+  _cogl_gles2_use_program (0);
+#endif
 
   return TRUE;
 }
