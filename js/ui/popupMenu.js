@@ -16,8 +16,6 @@ const Tweener = imports.ui.tweener;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
-const POPUP_ANIMATION_TIME = 0.1;
-
 function Switch() {
     this._init.apply(this, arguments);
 }
@@ -639,11 +637,8 @@ PopupMenu.prototype = {
         this.actor.y = Math.floor(menuY);
 
         // Now show it
-        this.actor.opacity = 0;
         this.actor.reactive = true;
-        Tweener.addTween(this.actor, { opacity: 255,
-                                       transition: "easeOutQuad",
-                                       time: POPUP_ANIMATION_TIME });
+        this._boxPointer.animateAppear();
         this.isOpen = true;
         this.emit('open-state-changed', true);
     },
@@ -657,11 +652,7 @@ PopupMenu.prototype = {
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
         this.actor.reactive = false;
-        Tweener.addTween(this.actor, { opacity: 0,
-                                       transition: "easeOutQuad",
-                                       time: POPUP_ANIMATION_TIME,
-                                       onComplete: Lang.bind(this, function () { this.actor.hide(); })});
-
+        this._boxPointer.animateDisappear();
         this.isOpen = false;
         this.emit('open-state-changed', false);
     },

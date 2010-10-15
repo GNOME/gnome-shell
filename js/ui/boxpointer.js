@@ -5,6 +5,10 @@ const Lang = imports.lang;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
+const Tweener = imports.ui.tweener;
+
+const POPUP_ANIMATION_TIME = 0.15;
+
 /**
  * BoxPointer:
  * @side: A St.Side type; currently only St.Side.TOP is implemented
@@ -36,6 +40,80 @@ BoxPointer.prototype = {
         this._border.connect('repaint', Lang.bind(this, this._drawBorder));
         this._container.add_actor(this._border);
         this.bin.raise(this._border);
+    },
+
+    animateAppear: function(onComplete) {
+        let x = this.actor.x;
+        let y = this.actor.y;
+        let themeNode = this.actor.get_theme_node();
+        let [found, rise] = themeNode.get_length('-arrow-rise', false);
+        if (!found)
+            rise = 0;
+
+        this.actor.opacity = 0;
+        this.actor.show();
+
+        switch (this._arrowSide) {
+            case St.Side.TOP:
+                this.actor.y -= rise;
+                break;
+            case St.Side.BOTTOM:
+                this.actor.y += rise;
+                break;
+            case St.Side.LEFT:
+                this.actor.x -= rise;
+                break;
+            case St.Side.RIGHT:
+                this.actor.x += rise;
+                break;
+        }
+
+        Tweener.addTween(this.actor, { opacity: 255,
+                                       x: x,
+                                       y: y,
+                                       transition: "linear",
+                                       onComplete: onComplete,
+                                       time: POPUP_ANIMATION_TIME });
+    },
+
+    animateDisappear: function(onComplete) {
+        let x = this.actor.x;
+        let y = this.actor.y;
+        let originalX = this.actor.x;
+        let originalY = this.actor.y;
+        let themeNode = this.actor.get_theme_node();
+        let [found, rise] = themeNode.get_length('-arrow-rise', false);
+        if (!found)
+            rise = 0;
+
+        switch (this._arrowSide) {
+            case St.Side.TOP:
+                y += rise;
+                break;
+            case St.Side.BOTTOM:
+                y -= rise;
+                break;
+            case St.Side.LEFT:
+                x += rise;
+                break;
+            case St.Side.RIGHT:
+                x -= rise;
+                break;
+        }
+
+        Tweener.addTween(this.actor, { opacity: 0,
+                                       x: x,
+                                       y: y,
+                                       transition: "linear",
+                                       time: POPUP_ANIMATION_TIME,
+                                       onComplete: Lang.bind(this, function () {
+                                           this.actor.hide();
+                                           this.actor.x = originalX;
+                                           this.actor.y = originalY;
+                                           if (onComplete)
+                                               onComplete();
+                                       })
+                                     });
     },
 
     _adjustAllocationForArrow: function(isWidth, alloc) {
