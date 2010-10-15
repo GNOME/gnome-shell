@@ -1001,7 +1001,7 @@ AS_IF([test "x$enable_maintainer_flags" = "xyes" && test "x$GCC" = "xyes"],
 AC_SUBST(MAINTAINER_CFLAGS)
 
 dnl === Dependencies, compiler flags and linker libraries =====================
-CLUTTER_REQUIRES="cairo >= 1.8 atk >= 1.7 pangocairo >= 1.20 json-glib-1.0 >= 0.12 $IMAGE_PC_FILES $BACKEND_PC_FILES"
+CLUTTER_REQUIRES="cairo-gobject >= 1.10 atk >= 1.7 pangocairo >= 1.20 json-glib-1.0 >= 0.12 $IMAGE_PC_FILES $BACKEND_PC_FILES"
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
 AC_SUBST(CLUTTER_REQUIRES)
 

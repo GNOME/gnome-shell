@@ -12,7 +12,7 @@ Clutter currently requires:
   • GLib >= 2.26.0
   • JSON-GLib >= 0.12
   • Atk >= 1.17
-  • Cairo >= 1.6
+  • Cairo >= 1.10
   • PangoCairo >= 1.20
   • OpenGL >= 1.3 or 1.2+multitexturing, OpenGL ES 1.1 or OpenGL ES 2.0
   • GLX, SDL, WGL or an EGL Implementation
