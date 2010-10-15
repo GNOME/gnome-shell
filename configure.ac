@@ -1014,13 +1014,6 @@ dnl === GObject-Introspection check ===========================================
 
 GOBJECT_INTROSPECTION_CHECK([0.9.5])
 
-# --quiet has been added in in the 0.9.1 development cycle.
-PKG_CHECK_EXISTS([gobject-introspection-1.0 >= 0.9.2],
-                 [
-                   INTROSPECTION_SCANNER_ARGS="$INTROSPECTION_SCANNER_ARGS --quiet"
-                   AC_SUBST(INTROSPECTION_SCANNER_ARGS)
-                 ])
-
 dnl === GTK Doc check =========================================================
 
 GTK_DOC_CHECK([1.13], [--flavour no-tmpl])
