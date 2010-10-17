@@ -1,30 +1,29 @@
-# GNOME Kesta eesti keele tõlge.
-# Estonian translation of GNOME Shell.
-#
-# Copyright (C) 2010 The GNOME Project.
+# Estonian translation for gnome-shell.
+# Copyright (C) 2010 The Gnome Project
 # This file is distributed under the same license as the gnome-shell package.
-#
-# Ivar Smolin <okul linux ee>, 2010.
+# Mattias Põldaru <mahfiaz gmail com>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-09-10 02:04+0000\n"
-"PO-Revision-Date: 2010-09-10 08:29+0300\n"
-"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
-"Language-Team: Estonian <et@li.org>\n"
+"POT-Creation-Date: 2010-05-19 17:17+0000\n"
+"PO-Revision-Date: 2010-05-19 20:55+0300\n"
+"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
+"Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Estonian\n"
+"X-Poedit-Country: Estonia\n"
 
 msgid "GNOME Shell"
-msgstr "GNOME Kest"
+msgstr "GNOME kest"
 
 msgid "Window management and application launching"
-msgstr "Aknahaldus ja rakenduste käivitamine"
+msgstr "Aknahaldur ja rakenduste käivitaja"
 
 msgid "Clock"
 msgstr "Kell"
@@ -32,195 +31,75 @@ msgstr "Kell"
 msgid "Customize the panel clock"
 msgstr "Paneelikella kohandamine"
 
-msgid ""
-"Allows access to internal debugging and monitoring tools using the Alt-F2 "
-"dialog."
-msgstr ""
-
-msgid "Custom format of the clock"
-msgstr "Kella kohandatud vorming"
-
-msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-
-msgid "File extension used for storing the screencast"
-msgstr ""
-
-msgid "Framerate used for recording screencasts."
-msgstr ""
-
-msgid ""
-"GNOME Shell extensions have a uuid property; this key lists extensions which "
-"should not be loaded."
-msgstr ""
-
-msgid "History for command (Alt-F2) dialog"
-msgstr ""
-
-msgid "Hour format"
-msgstr "Tundide vorming"
-
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
-"clock, in addition to time."
-msgstr ""
-
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
-"time."
-msgstr ""
-
-msgid "If true, display the ISO week date in the calendar."
-msgstr ""
-
-msgid "List of desktop file IDs for favorite applications"
-msgstr ""
-
-msgid "Overview workspace view mode"
-msgstr ""
-
-msgid ""
-"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
-"used for gst-launch. The pipeline should have an unconnected sink pad where "
-"the recorded video is recorded. It will normally have a unconnected source "
-"pad; output from that pad will be written into the output file. However the "
-"pipeline can also take care of its own output - this might be used to send "
-"the output to an icecast server via shout2send or similar. When unset or set "
-"to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
-msgstr ""
-
-msgid "Show date in clock"
-msgstr "Kuupäeva näitamine koos kellaajaga"
-
-msgid "Show the week date in the calendar"
-msgstr ""
-
-msgid "Show time with seconds"
-msgstr "Aja näitamine koos sekunditega"
-
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-
-msgid ""
-"The filename for recorded screencasts will be a unique filename based on the "
-"current date, and use this extension. It should be changed when recording to "
-"a different container format."
-msgstr ""
-
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
-
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr ""
-
-msgid ""
-"The selected workspace view mode in the overview. Supported values are "
-"\"single\" and \"grid\"."
-msgstr ""
-
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-
-msgid ""
-"This key specifies the format used by the panel clock when the format key is "
-"set to \"custom\". You can use conversion specifiers understood by strftime"
-"() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr ""
-
-msgid ""
-"This key specifies the hour format used by the panel clock. Possible values "
-"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
-"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
-"to \"custom\", the clock will display time according to the format specified "
-"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
-"the show_date and show_seconds keys are ignored."
-msgstr ""
-
-msgid "Uuids of extensions to disable"
-msgstr ""
-
-msgid "Whether to collect stats about applications usage"
-msgstr ""
-
 msgid "Clock Format"
-msgstr "Kella vorming"
+msgstr "Kella formaat"
 
 msgid "Clock Preferences"
 msgstr "Kella eelistused"
 
 msgid "Panel Display"
-msgstr ""
+msgstr "Paneelikuva"
 
 msgid "Show seco_nds"
-msgstr "_Sekundid on nähtaval"
+msgstr "_Sekundeid näidatakse"
 
 msgid "Show the _date"
-msgstr "_Kuupäev on nähtaval"
+msgstr "_Kuupäeva näidatakse"
 
 msgid "_12 hour format"
-msgstr "_12-tunnine vorming"
+msgstr "_12 tunni vorming"
 
 msgid "_24 hour format"
-msgstr "_24-tunnine vorming"
+msgstr "_24 tunni vorming"
 
 #. **** Applications ****
 msgid "APPLICATIONS"
-msgstr "RAKENDUSED"
+msgstr "Rakendused"
 
 msgid "PREFERENCES"
-msgstr "EELISTUSED"
+msgstr "Eelistused"
 
 msgid "New Window"
 msgstr "Uus aken"
 
 msgid "Remove from Favorites"
-msgstr "Eemalda lemmikute hulgast"
+msgstr "Eemalda lemmikutest"
 
 msgid "Add to Favorites"
-msgstr "Lisa lemmikute hulka"
+msgstr "Lisa lemmikutesse"
 
 msgid "Drag here to add favorites"
-msgstr ""
+msgstr "Lemmikute lisamiseks lohista need siia"
 
 #, c-format
 msgid "%s has been added to your favorites."
-msgstr ""
+msgstr "%s lisati lemmikutesse."
 
 #, c-format
 msgid "%s has been removed from your favorites."
-msgstr ""
+msgstr "%s eemaldati lemmikutest."
 
 msgid "Find"
-msgstr ""
+msgstr "Otsi"
 
 msgid "Searching..."
-msgstr ""
+msgstr "Otsimine..."
 
 msgid "No matching results."
-msgstr "Sobivaid vasteid ei leitud."
+msgstr "Tulemused puuduvad."
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
 msgid "PLACES & DEVICES"
-msgstr "ASUKOHAD JA SEADMED"
+msgstr "Asukohad ja seadmed"
 
 #. **** Documents ****
 msgid "RECENT ITEMS"
-msgstr "VIIMASED KIRJED"
+msgstr "Hiljutised dokumendid"
 
 msgid "No extensions installed"
-msgstr "Laiendusi ei ole paigaldatud"
+msgstr "Ühtegi laiendust pole paigaldatud"
 
 msgid "Enabled"
 msgstr "Lubatud"
@@ -232,88 +111,70 @@ msgid "Error"
 msgstr "Viga"
 
 msgid "Out of date"
-msgstr ""
+msgstr "Pole värske"
 
 msgid "View Source"
-msgstr ""
+msgstr "Kuva lähtekoodi"
 
 msgid "Web Page"
 msgstr "Veebileht"
 
 msgid "Undo"
-msgstr "Unusta"
-
-#. TODO - _quit() doesn't really work on apps in state STARTING yet
-#, c-format
-msgid "Quit %s"
-msgstr "Lõpeta %s"
-
-msgid "Preferences"
-msgstr "Eelistused"
-
-#. Translators: This is the time format with date used
-#. in 24-hour mode.
-msgid "%a %b %e, %R:%S"
-msgstr "%a, %e. %b %R:%S"
-
-msgid "%a %b %e, %R"
-msgstr "%a, %e. %b %R"
-
-#. Translators: This is the time format without date used
-#. in 24-hour mode.
-msgid "%a %R:%S"
-msgstr "%a %R:%S"
-
-msgid "%a %R"
-msgstr "%a %R"
-
-#. Translators: This is a time format with date used
-#. for AM/PM.
-msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a, %e. %b %l:%M:%S %p"
-
-msgid "%a %b %e, %l:%M %p"
-msgstr "%a, %e. %b %l:%MS %p"
-
-#. Translators: This is a time format without date used
-#. for AM/PM.
-msgid "%a %l:%M:%S %p"
-msgstr "%a %l:%M:%S %p"
-
-msgid "%a %l:%M %p"
-msgstr "%a %l:%M %p"
+msgstr "Võta tagasi"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
 msgid "Activities"
-msgstr "Ülevaade"
+msgstr "Tegevused"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+msgid "%a %b %e, %R:%S"
+msgstr "%a, %e. %b, %R:%S"
+
+msgid "%a %b %e, %R"
+msgstr "%a, %e. %b, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+msgid "%a %R:%S"
+msgstr "%A %R:%S"
+
+msgid "%a %R"
+msgstr "%A %R"
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a, %e. %b, %l:%M:%S %p"
+
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a, %e. %b, %l:%M %p"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+msgid "%a %l:%M:%S %p"
+msgstr "%A, %l:%M:%S %p"
+
+msgid "%a %l:%M %p"
+msgstr "%A, %l:%M %p"
 
 #, c-format
 msgid "Failed to unmount '%s'"
-msgstr "Tõrge '%s' lahtihaakimisel"
+msgstr "'%s' lahtihaakimine nurjus"
 
 msgid "Retry"
 msgstr "Proovi uuesti"
 
 msgid "Connect to..."
-msgstr ""
-
-#. Translators: the "ON" and "OFF" strings are used in the
-#. toggle switches in the status area menus, and must be SHORT.
-#. If you don't have suitable short words, consider initials,
-#. "0"/"1", "⚪"/"⚫", etc.
-msgid "ON"
-msgstr ""
-
-msgid "OFF"
-msgstr ""
+msgstr "Ühendumine..."
 
 msgid "Please enter a command:"
 msgstr "Palun sisesta käsk:"
 
 #, c-format
 msgid "Execution of '%s' failed:"
-msgstr ""
+msgstr "'%s' käivitamine nurjus:"
 
 msgid "Available"
 msgstr "Saadaval"
@@ -340,11 +201,11 @@ msgid "Log Out..."
 msgstr "Logi välja..."
 
 msgid "Shut Down..."
-msgstr "Seiska..."
+msgstr "Lülita välja..."
 
 #, c-format
 msgid "%s has finished starting"
-msgstr "%s lõpetas käivitumise"
+msgstr "%s läks käima"
 
 #, c-format
 msgid "'%s' is ready"
@@ -352,13 +213,13 @@ msgstr "'%s' on valmis"
 
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
-msgstr ""
+msgstr "Pole võimalik uut tööala lisada, kuna tööalade piir on saavutatud."
 
 msgid "Can't remove the first workspace."
-msgstr ""
+msgstr "Esimest tööala pole võimalik eemaldada."
 
 msgid "Less than a minute ago"
-msgstr "Vähem kui minut aega tagasi"
+msgstr "Vähem kui minuti eest"
 
 #, c-format
 msgid "%d minute ago"
@@ -369,14 +230,14 @@ msgstr[1] "%d minutit tagasi"
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d tund tagasi"
+msgstr[1] "%d tundi tagasi"
 
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d päev tagasi"
+msgstr[1] "%d päeva tagasi"
 
 #, c-format
 msgid "%d week ago"
@@ -385,7 +246,7 @@ msgstr[0] "%d nädal tagasi"
 msgstr[1] "%d nädalat tagasi"
 
 msgid "Home Folder"
-msgstr "Kodukataloog"
+msgstr "Kodukaust"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
