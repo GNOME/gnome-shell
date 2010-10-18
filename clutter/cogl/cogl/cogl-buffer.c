@@ -458,11 +458,8 @@ cogl_buffer_set_data (CoglBuffer   *buffer,
                       const guint8 *data,
                       gsize         size)
 {
-  if (!cogl_is_buffer (buffer))
-    return FALSE;
-
-  if (G_UNLIKELY((offset + size) > buffer->size))
-    return FALSE;
+  g_return_val_if_fail (cogl_is_buffer (buffer), FALSE);
+  g_return_val_if_fail ((offset + size) <= buffer->size, FALSE);
 
   return buffer->vtable.set_data (buffer, offset, data, size);
 }
