@@ -21,37 +21,37 @@
  * 02111-1307, USA.
  */
 
-#ifndef MUTTER_MODULE_H_
-#define MUTTER_MODULE_H_
+#ifndef META_MODULE_H_
+#define META_MODULE_H_
 
 #include <glib-object.h>
 
-#define MUTTER_TYPE_MODULE            (mutter_module_get_type ())
-#define MUTTER_MODULE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MUTTER_TYPE_MODULE, MutterModule))
-#define MUTTER_MODULE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  MUTTER_TYPE_MODULE, MutterModuleClass))
-#define MUTTER_IS_MODULE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MUTTER_MODULE_TYPE))
-#define MUTTER_IS_MODULE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  MUTTER_TYPE_MODULE))
-#define MUTTER_MODULE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  MUTTER_TYPE_MODULE, MutterModuleClass))
+#define META_TYPE_MODULE            (meta_module_get_type ())
+#define META_MODULE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MODULE, MetaModule))
+#define META_MODULE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MODULE, MetaModuleClass))
+#define META_IS_MODULE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_MODULE_TYPE))
+#define META_IS_MODULE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_MODULE))
+#define META_MODULE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_MODULE, MetaModuleClass))
 
-typedef struct _MutterModule        MutterModule;
-typedef struct _MutterModuleClass   MutterModuleClass;
-typedef struct _MutterModulePrivate MutterModulePrivate;
+typedef struct _MetaModule        MetaModule;
+typedef struct _MetaModuleClass   MetaModuleClass;
+typedef struct _MetaModulePrivate MetaModulePrivate;
 
-struct _MutterModule
+struct _MetaModule
 {
   GTypeModule parent;
 
-  MutterModulePrivate *priv;
+  MetaModulePrivate *priv;
 };
 
-struct _MutterModuleClass
+struct _MetaModuleClass
 {
   GTypeModuleClass parent_class;
 };
 
 
-GType mutter_module_get_type (void);
+GType meta_module_get_type (void);
 
-GType mutter_module_get_plugin_type (MutterModule *module);
+GType meta_module_get_plugin_type (MetaModule *module);
 
 #endif

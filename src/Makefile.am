@@ -26,21 +26,21 @@ mutter_SOURCES= 				\
 	include/boxes.h				\
 	compositor/compositor.c			\
 	compositor/compositor-private.h		\
-	compositor/mutter-module.c		\
-	compositor/mutter-module.h		\
-	compositor/mutter-plugin.c		\
-	compositor/mutter-plugin-manager.c	\
-	compositor/mutter-plugin-manager.h	\
-	compositor/mutter-shaped-texture.c	\
-	compositor/mutter-texture-tower.c	\
-	compositor/mutter-texture-tower.h	\
-	compositor/mutter-window.c		\
-	compositor/mutter-window-private.h	\
-	compositor/mutter-window-group.c	\
-	compositor/mutter-window-group.h	\
+	compositor/meta-module.c		\
+	compositor/meta-module.h		\
+	compositor/meta-plugin.c		\
+	compositor/meta-plugin-manager.c	\
+	compositor/meta-plugin-manager.h	\
+	compositor/meta-shaped-texture.c	\
+	compositor/meta-shaped-texture.h	\
+	compositor/meta-texture-tower.c		\
+	compositor/meta-texture-tower.h		\
+	compositor/meta-window-actor.c		\
+	compositor/meta-window-actor-private.h	\
+	compositor/meta-window-group.c		\
+	compositor/meta-window-group.h		\
 	compositor/shadow.c			\
 	compositor/shadow.h			\
-	compositor/mutter-shaped-texture.h	\
 	compositor/tidy/tidy-texture-frame.c	\
 	compositor/tidy/tidy-texture-frame.h	\
 	gdk-compat.h				\
@@ -48,8 +48,8 @@ mutter_SOURCES= 				\
 	gdk2-drawing-utils.c			\
 	gdk2-drawing-utils.h			\
 	include/compositor.h			\
-	include/mutter-plugin.h			\
-	include/mutter-window.h			\
+	include/meta-plugin.h			\
+	include/meta-window-actor.h		\
 	include/compositor-mutter.h 		\
 	core/constraints.c			\
 	core/constraints.h			\
@@ -81,7 +81,7 @@ mutter_SOURCES= 				\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
 	core/main.c				\
-	core/mutter-Xatomtype.h		\
+	core/mutter-Xatomtype.h			\
 	core/place.c				\
 	core/place.h				\
 	core/prefs.c				\
@@ -177,8 +177,8 @@ libmutterinclude_base_headers =		\
 	include/display.h			\
 	include/group.h				\
 	include/keybindings.h			\
-	include/mutter-plugin.h			\
-	include/mutter-window.h
+	include/meta-plugin.h			\
+	include/meta-window-actor.h
 
 # Excluded from scanning for introspection but installed
 # preview-widget.h: only part of libmutter-private

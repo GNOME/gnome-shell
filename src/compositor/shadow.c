@@ -20,7 +20,7 @@
 static unsigned char* shadow_gaussian_make_tile (void);
 
 ClutterActor *
-mutter_create_shadow_frame (MetaCompositor *compositor)
+meta_create_shadow_frame (MetaCompositor *compositor)
 {
   ClutterActor *frame;
 

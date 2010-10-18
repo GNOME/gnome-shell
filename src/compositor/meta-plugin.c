@@ -21,7 +21,7 @@
  * 02111-1307, USA.
  */
 
-#include "mutter-plugin.h"
+#include "meta-plugin.h"
 #include "screen.h"
 #include "display.h"
 
@@ -32,12 +32,12 @@
 #include <clutter/x11/clutter-x11.h>
 
 #include "compositor-private.h"
-#include "mutter-window-private.h"
+#include "meta-window-actor-private.h"
 
-G_DEFINE_ABSTRACT_TYPE (MutterPlugin, mutter_plugin, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (MetaPlugin, meta_plugin, G_TYPE_OBJECT);
 
-#define MUTTER_PLUGIN_GET_PRIVATE(obj) \
-(G_TYPE_INSTANCE_GET_PRIVATE ((obj), MUTTER_TYPE_PLUGIN, MutterPluginPrivate))
+#define META_PLUGIN_GET_PRIVATE(obj) \
+(G_TYPE_INSTANCE_GET_PRIVATE ((obj), META_TYPE_PLUGIN, MetaPluginPrivate))
 
 enum
 {
@@ -49,7 +49,7 @@ enum
   PROP_DEBUG_MODE,
 };
 
-struct _MutterPluginPrivate
+struct _MetaPluginPrivate
 {
   MetaScreen   *screen;
   gchar        *params;
@@ -62,51 +62,51 @@ struct _MutterPluginPrivate
 };
 
 static void
-mutter_plugin_dispose (GObject *object)
+meta_plugin_dispose (GObject *object)
 {
-  G_OBJECT_CLASS (mutter_plugin_parent_class)->dispose (object);
+  G_OBJECT_CLASS (meta_plugin_parent_class)->dispose (object);
 }
 
 static void
-mutter_plugin_finalize (GObject *object)
+meta_plugin_finalize (GObject *object)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (object)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (object)->priv;
 
   g_free (priv->params);
   priv->params = NULL;
 
-  G_OBJECT_CLASS (mutter_plugin_parent_class)->finalize (object);
+  G_OBJECT_CLASS (meta_plugin_parent_class)->finalize (object);
 }
 
 static void
-mutter_plugin_parse_params (MutterPlugin *plugin)
+meta_plugin_parse_params (MetaPlugin *plugin)
 {
   char                  *p;
   gulong                features = 0;
-  MutterPluginPrivate  *priv     = plugin->priv;
-  MutterPluginClass    *klass    = MUTTER_PLUGIN_GET_CLASS (plugin);
+  MetaPluginPrivate  *priv     = plugin->priv;
+  MetaPluginClass    *klass    = META_PLUGIN_GET_CLASS (plugin);
 
 /*
  * Feature flags: identify events that the plugin can handle; a plugin can
  * handle one or more events.
  */
   if (klass->minimize)
-    features |= MUTTER_PLUGIN_MINIMIZE;
+    features |= META_PLUGIN_MINIMIZE;
 
   if (klass->maximize)
-    features |= MUTTER_PLUGIN_MAXIMIZE;
+    features |= META_PLUGIN_MAXIMIZE;
 
   if (klass->unmaximize)
-    features |= MUTTER_PLUGIN_UNMAXIMIZE;
+    features |= META_PLUGIN_UNMAXIMIZE;
 
   if (klass->map)
-    features |= MUTTER_PLUGIN_MAP;
+    features |= META_PLUGIN_MAP;
 
   if (klass->destroy)
-    features |= MUTTER_PLUGIN_DESTROY;
+    features |= META_PLUGIN_DESTROY;
 
   if (klass->switch_workspace)
-    features |= MUTTER_PLUGIN_SWITCH_WORKSPACE;
+    features |= META_PLUGIN_SWITCH_WORKSPACE;
 
   if (priv->params)
     {
@@ -122,22 +122,22 @@ mutter_plugin_parse_params (MutterPlugin *plugin)
             *p = 0;
 
           if (strstr (d, "minimize"))
-            features &= ~ MUTTER_PLUGIN_MINIMIZE;
+            features &= ~ META_PLUGIN_MINIMIZE;
 
           if (strstr (d, "maximize"))
-            features &= ~ MUTTER_PLUGIN_MAXIMIZE;
+            features &= ~ META_PLUGIN_MAXIMIZE;
 
           if (strstr (d, "unmaximize"))
-            features &= ~ MUTTER_PLUGIN_UNMAXIMIZE;
+            features &= ~ META_PLUGIN_UNMAXIMIZE;
 
           if (strstr (d, "map"))
-            features &= ~ MUTTER_PLUGIN_MAP;
+            features &= ~ META_PLUGIN_MAP;
 
           if (strstr (d, "destroy"))
-            features &= ~ MUTTER_PLUGIN_DESTROY;
+            features &= ~ META_PLUGIN_DESTROY;
 
           if (strstr (d, "switch-workspace"))
-            features &= ~MUTTER_PLUGIN_SWITCH_WORKSPACE;
+            features &= ~META_PLUGIN_SWITCH_WORKSPACE;
 
           g_free (d);
         }
@@ -162,12 +162,12 @@ mutter_plugin_parse_params (MutterPlugin *plugin)
 }
 
 static void
-mutter_plugin_set_property (GObject      *object,
-			    guint         prop_id,
-			    const GValue *value,
-			    GParamSpec   *pspec)
+meta_plugin_set_property (GObject      *object,
+                          guint         prop_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (object)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (object)->priv;
 
   switch (prop_id)
     {
@@ -176,7 +176,7 @@ mutter_plugin_set_property (GObject      *object,
       break;
     case PROP_PARAMS:
       priv->params = g_value_dup_string (value);
-      mutter_plugin_parse_params (MUTTER_PLUGIN (object));
+      meta_plugin_parse_params (META_PLUGIN (object));
       break;
     case PROP_DISABLED:
       priv->disabled = g_value_get_boolean (value);
@@ -191,12 +191,12 @@ mutter_plugin_set_property (GObject      *object,
 }
 
 static void
-mutter_plugin_get_property (GObject    *object,
-			    guint       prop_id,
-			    GValue     *value,
-			    GParamSpec *pspec)
+meta_plugin_get_property (GObject    *object,
+                          guint       prop_id,
+                          GValue     *value,
+                          GParamSpec *pspec)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (object)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (object)->priv;
 
   switch (prop_id)
     {
@@ -223,14 +223,14 @@ mutter_plugin_get_property (GObject    *object,
 
 
 static void
-mutter_plugin_class_init (MutterPluginClass *klass)
+meta_plugin_class_init (MetaPluginClass *klass)
 {
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->finalize        = mutter_plugin_finalize;
-  gobject_class->dispose         = mutter_plugin_dispose;
-  gobject_class->set_property    = mutter_plugin_set_property;
-  gobject_class->get_property    = mutter_plugin_get_property;
+  gobject_class->finalize        = meta_plugin_finalize;
+  gobject_class->dispose         = meta_plugin_dispose;
+  gobject_class->set_property    = meta_plugin_set_property;
+  gobject_class->get_property    = meta_plugin_get_property;
 
   g_object_class_install_property (gobject_class,
                                    PROP_SCREEN,
@@ -273,53 +273,53 @@ mutter_plugin_class_init (MutterPluginClass *klass)
                                                       FALSE,
                                                       G_PARAM_READABLE));
 
-  g_type_class_add_private (gobject_class, sizeof (MutterPluginPrivate));
+  g_type_class_add_private (gobject_class, sizeof (MetaPluginPrivate));
 }
 
 static void
-mutter_plugin_init (MutterPlugin *self)
+meta_plugin_init (MetaPlugin *self)
 {
-  MutterPluginPrivate *priv;
+  MetaPluginPrivate *priv;
 
-  self->priv = priv = MUTTER_PLUGIN_GET_PRIVATE (self);
+  self->priv = priv = META_PLUGIN_GET_PRIVATE (self);
 }
 
 gulong
-mutter_plugin_features (MutterPlugin *plugin)
+meta_plugin_features (MetaPlugin *plugin)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   return priv->features;
 }
 
 gboolean
-mutter_plugin_disabled (MutterPlugin *plugin)
+meta_plugin_disabled (MetaPlugin *plugin)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   return priv->disabled;
 }
 
 gboolean
-mutter_plugin_running  (MutterPlugin *plugin)
+meta_plugin_running  (MetaPlugin *plugin)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   return (priv->running > 0);
 }
 
 gboolean
-mutter_plugin_debug_mode (MutterPlugin *plugin)
+meta_plugin_debug_mode (MetaPlugin *plugin)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   return priv->debug;
 }
 
-const MutterPluginInfo *
-mutter_plugin_get_info (MutterPlugin *plugin)
+const MetaPluginInfo *
+meta_plugin_get_info (MetaPlugin *plugin)
 {
-  MutterPluginClass  *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
+  MetaPluginClass  *klass = META_PLUGIN_GET_CLASS (plugin);
 
   if (klass && klass->plugin_info)
     return klass->plugin_info (plugin);
@@ -328,50 +328,50 @@ mutter_plugin_get_info (MutterPlugin *plugin)
 }
 
 ClutterActor *
-mutter_plugin_get_overlay_group (MutterPlugin *plugin)
+meta_plugin_get_overlay_group (MetaPlugin *plugin)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  return mutter_get_overlay_group_for_screen (priv->screen);
+  return meta_get_overlay_group_for_screen (priv->screen);
 }
 
 ClutterActor *
-mutter_plugin_get_stage (MutterPlugin *plugin)
+meta_plugin_get_stage (MetaPlugin *plugin)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  return mutter_get_stage_for_screen (priv->screen);
+  return meta_get_stage_for_screen (priv->screen);
 }
 
 ClutterActor *
-mutter_plugin_get_window_group (MutterPlugin *plugin)
+meta_plugin_get_window_group (MetaPlugin *plugin)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  return mutter_get_window_group_for_screen (priv->screen);
+  return meta_get_window_group_for_screen (priv->screen);
 }
 
 /**
- * _mutter_plugin_effect_started:
+ * _meta_plugin_effect_started:
  * @plugin: the plugin
  *
  * Mark that an effect has started for the plugin. This is called
- * internally by MutterPluginManager.
+ * internally by MetaPluginManager.
  */
 void
-_mutter_plugin_effect_started (MutterPlugin *plugin)
+_meta_plugin_effect_started (MetaPlugin *plugin)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   priv->running++;
 }
 
 void
-mutter_plugin_switch_workspace_completed (MutterPlugin *plugin)
+meta_plugin_switch_workspace_completed (MetaPlugin *plugin)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  MetaScreen *screen = meta_plugin_get_screen (plugin);
 
   if (priv->running-- < 0)
     {
@@ -379,15 +379,15 @@ mutter_plugin_switch_workspace_completed (MutterPlugin *plugin)
       priv->running = 0;
     }
 
-  mutter_switch_workspace_completed (screen);
+  meta_switch_workspace_completed (screen);
 }
 
 static void
-mutter_plugin_window_effect_completed (MutterPlugin *plugin,
-                                       MutterWindow *actor,
-                                       unsigned long event)
+meta_plugin_window_effect_completed (MetaPlugin      *plugin,
+                                     MetaWindowActor *actor,
+                                     unsigned long    event)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   if (priv->running-- < 0)
     {
@@ -397,82 +397,82 @@ mutter_plugin_window_effect_completed (MutterPlugin *plugin,
 
   if (!actor)
     {
-      const MutterPluginInfo *info;
+      const MetaPluginInfo *info;
       const gchar            *name = NULL;
 
-      if (plugin && (info = mutter_plugin_get_info (plugin)))
+      if (plugin && (info = meta_plugin_get_info (plugin)))
         name = info->name;
 
       g_warning ("Plugin [%s] passed NULL for actor!",
                  name ? name : "unknown");
     }
 
-  mutter_window_effect_completed (actor, event);
+  meta_window_actor_effect_completed (actor, event);
 }
 
 void
-mutter_plugin_minimize_completed (MutterPlugin *plugin,
-                                  MutterWindow *actor)
+meta_plugin_minimize_completed (MetaPlugin      *plugin,
+                                MetaWindowActor *actor)
 {
-  mutter_plugin_window_effect_completed (plugin, actor, MUTTER_PLUGIN_MINIMIZE);
+  meta_plugin_window_effect_completed (plugin, actor, META_PLUGIN_MINIMIZE);
 }
 
 void
-mutter_plugin_maximize_completed (MutterPlugin *plugin,
-                                  MutterWindow *actor)
+meta_plugin_maximize_completed (MetaPlugin      *plugin,
+                                MetaWindowActor *actor)
 {
-  mutter_plugin_window_effect_completed (plugin, actor, MUTTER_PLUGIN_MAXIMIZE);
+  meta_plugin_window_effect_completed (plugin, actor, META_PLUGIN_MAXIMIZE);
 }
 
 void
-mutter_plugin_unmaximize_completed (MutterPlugin *plugin,
-                                    MutterWindow *actor)
+meta_plugin_unmaximize_completed (MetaPlugin      *plugin,
+                                  MetaWindowActor *actor)
 {
-  mutter_plugin_window_effect_completed (plugin, actor, MUTTER_PLUGIN_UNMAXIMIZE);
+  meta_plugin_window_effect_completed (plugin, actor, META_PLUGIN_UNMAXIMIZE);
 }
 
 void
-mutter_plugin_map_completed (MutterPlugin *plugin,
-                             MutterWindow *actor)
+meta_plugin_map_completed (MetaPlugin      *plugin,
+                           MetaWindowActor *actor)
 {
-  mutter_plugin_window_effect_completed (plugin, actor, MUTTER_PLUGIN_MAP);
+  meta_plugin_window_effect_completed (plugin, actor, META_PLUGIN_MAP);
 }
 
 void
-mutter_plugin_destroy_completed (MutterPlugin *plugin,
-                                 MutterWindow *actor)
+meta_plugin_destroy_completed (MetaPlugin      *plugin,
+                               MetaWindowActor *actor)
 {
-  mutter_plugin_window_effect_completed (plugin, actor, MUTTER_PLUGIN_DESTROY);
+  meta_plugin_window_effect_completed (plugin, actor, META_PLUGIN_DESTROY);
 }
 
 void
-mutter_plugin_query_screen_size (MutterPlugin *plugin,
-                                 int          *width,
-                                 int          *height)
+meta_plugin_query_screen_size (MetaPlugin *plugin,
+                               int        *width,
+                               int        *height)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   meta_screen_get_size (priv->screen, width, height);
 }
 
 void
-mutter_plugin_set_stage_reactive (MutterPlugin *plugin,
-                                  gboolean      reactive)
+meta_plugin_set_stage_reactive (MetaPlugin *plugin,
+                                gboolean    reactive)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
   MetaScreen  *screen  = priv->screen;
 
   if (reactive)
-    mutter_set_stage_input_region (screen, None);
+    meta_set_stage_input_region (screen, None);
   else
-    mutter_empty_stage_input_region (screen);
+    meta_empty_stage_input_region (screen);
 }
 
 void
-mutter_plugin_set_stage_input_area (MutterPlugin *plugin,
-                                    gint x, gint y, gint width, gint height)
+meta_plugin_set_stage_input_area (MetaPlugin *plugin,
+                                  gint x, gint y, gint width, gint height)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
   MetaScreen   *screen  = priv->screen;
   MetaDisplay  *display = meta_screen_get_display (screen);
   Display      *xdpy    = meta_display_get_xdisplay (display);
@@ -485,43 +485,43 @@ mutter_plugin_set_stage_input_area (MutterPlugin *plugin,
   rect.height = height;
 
   region = XFixesCreateRegion (xdpy, &rect, 1);
-  mutter_set_stage_input_region (screen, region);
+  meta_set_stage_input_region (screen, region);
   XFixesDestroyRegion (xdpy, region);
 }
 
 void
-mutter_plugin_set_stage_input_region (MutterPlugin *plugin,
-                                      XserverRegion region)
+meta_plugin_set_stage_input_region (MetaPlugin   *plugin,
+                                    XserverRegion region)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
   MetaScreen  *screen  = priv->screen;
 
-  mutter_set_stage_input_region (screen, region);
+  meta_set_stage_input_region (screen, region);
 }
 
 /**
- * mutter_plugin_get_windows:
- * @plugin: A #MutterPlugin
+ * meta_plugin_get_window_actors:
+ * @plugin: A #MetaPlugin
  *
- * This function returns all of the #MutterWindow objects referenced by Mutter, including
+ * This function returns all of the #MetaWindowActor objects referenced by Mutter, including
  * override-redirect windows.  The returned list is a snapshot of Mutter's current
  * stacking order, with the topmost window last.
  *
  * The 'restacked' signal of #MetaScreen signals when this value has changed.
  *
- * Returns: (transfer none) (element-type MutterWindow): Windows in stacking order, topmost last
+ * Returns: (transfer none) (element-type MetaWindowActor): Windows in stacking order, topmost last
  */
 GList *
-mutter_plugin_get_windows (MutterPlugin *plugin)
+meta_plugin_get_window_actors (MetaPlugin *plugin)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  return mutter_get_windows (priv->screen);
+  return meta_get_window_actors (priv->screen);
 }
 
 /**
- * mutter_plugin_begin_modal:
- * @plugin: a #MutterPlugin
+ * meta_plugin_begin_modal:
+ * @plugin: a #MetaPlugin
  * @grab_window: the X window to grab the keyboard and mouse on
  * @cursor: the cursor to use for the pointer grab, or None,
  *          to use the normal cursor for the grab window and
@@ -532,7 +532,7 @@ mutter_plugin_get_windows (MutterPlugin *plugin)
  * This function is used to grab the keyboard and mouse for the exclusive
  * use of the plugin. Correct operation requires that both the keyboard
  * and mouse are grabbed, or thing will break. (In particular, other
- * passive X grabs in Mutter can trigger but not be handled by the normal
+ * passive X grabs in Meta can trigger but not be handled by the normal
  * keybinding handling code.) However, the plugin can establish the keyboard
  * and/or mouse grabs ahead of time and pass in the
  * %META_MODAL_POINTER_ALREADY_GRABBED and/or %META_MODAL_KEYBOARD_ALREADY_GRABBED
@@ -545,21 +545,21 @@ mutter_plugin_get_windows (MutterPlugin *plugin)
  *  mouse and made the plugin modal.
  */
 gboolean
-mutter_plugin_begin_modal (MutterPlugin      *plugin,
-                           Window             grab_window,
-                           Cursor             cursor,
-                           MetaModalOptions   options,
-                           guint32            timestamp)
+meta_plugin_begin_modal (MetaPlugin       *plugin,
+                         Window            grab_window,
+                         Cursor            cursor,
+                         MetaModalOptions  options,
+                         guint32           timestamp)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  return mutter_begin_modal_for_plugin (priv->screen, plugin,
-                                        grab_window, cursor, options, timestamp);
+  return meta_begin_modal_for_plugin (priv->screen, plugin,
+                                      grab_window, cursor, options, timestamp);
 }
 
 /**
- * mutter_plugin_end_modal
- * @plugin: a #MutterPlugin
+ * meta_plugin_end_modal
+ * @plugin: a #MetaPlugin
  * @timestamp: the time used for releasing grabs
  *
  * Ends the modal operation begun with meta_plugin_begin_modal(). This
@@ -569,27 +569,27 @@ mutter_plugin_begin_modal (MutterPlugin      *plugin,
  * when beginnning the modal operation.
  */
 void
-mutter_plugin_end_modal (MutterPlugin *plugin,
-                         guint32       timestamp)
+meta_plugin_end_modal (MetaPlugin *plugin,
+                       guint32     timestamp)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  mutter_end_modal_for_plugin (priv->screen, plugin, timestamp);
+  meta_end_modal_for_plugin (priv->screen, plugin, timestamp);
 }
 
 Display *
-mutter_plugin_get_xdisplay (MutterPlugin *plugin)
+meta_plugin_get_xdisplay (MetaPlugin *plugin)
 {
-  MutterPluginPrivate *priv    = MUTTER_PLUGIN (plugin)->priv;
-  MetaDisplay         *display = meta_screen_get_display (priv->screen);
-  Display             *xdpy    = meta_display_get_xdisplay (display);
+  MetaPluginPrivate *priv    = META_PLUGIN (plugin)->priv;
+  MetaDisplay       *display = meta_screen_get_display (priv->screen);
+  Display           *xdpy    = meta_display_get_xdisplay (display);
 
   return xdpy;
 }
 
 /**
- * mutter_plugin_get_screen:
- * @plugin: a #MutterPlugin
+ * meta_plugin_get_screen:
+ * @plugin: a #MetaPlugin
  *
  * Gets the #MetaScreen corresponding to a plugin. Each plugin instance
  * is associated with exactly one screen; if Metacity is managing
@@ -598,9 +598,9 @@ mutter_plugin_get_xdisplay (MutterPlugin *plugin)
  * Return value: (transfer none): the #MetaScreen for the plugin
  */
 MetaScreen *
-mutter_plugin_get_screen (MutterPlugin *plugin)
+meta_plugin_get_screen (MetaPlugin *plugin)
 {
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   return priv->screen;
 }

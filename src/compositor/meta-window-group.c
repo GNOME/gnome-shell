@@ -5,22 +5,22 @@
 #define _ISOC99_SOURCE /* for roundf */
 #include <math.h>
 
-#include "mutter-window-private.h"
-#include "mutter-window-group.h"
+#include "meta-window-actor-private.h"
+#include "meta-window-group.h"
 
-struct _MutterWindowGroupClass
+struct _MetaWindowGroupClass
 {
   ClutterGroupClass parent_class;
 };
 
-struct _MutterWindowGroup
+struct _MetaWindowGroup
 {
   ClutterGroup parent;
 
   MetaScreen *screen;
 };
 
-G_DEFINE_TYPE (MutterWindowGroup, mutter_window_group, CLUTTER_TYPE_GROUP);
+G_DEFINE_TYPE (MetaWindowGroup, meta_window_group, CLUTTER_TYPE_GROUP);
 
 /* We want to find out if the window is "close enough" to
  * 1:1 transform. We do that by converting the transformed coordinates
@@ -98,9 +98,9 @@ actor_is_untransformed (ClutterActor *actor,
 }
 
 static void
-mutter_window_group_paint (ClutterActor *actor)
+meta_window_group_paint (ClutterActor *actor)
 {
-  MutterWindowGroup *window_group = MUTTER_WINDOW_GROUP (actor);
+  MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
   cairo_region_t *visible_region;
   cairo_rectangle_int_t screen_rect = { 0 };
   GList *children, *l;
@@ -122,73 +122,73 @@ mutter_window_group_paint (ClutterActor *actor)
 
   for (l = children; l; l = l->next)
     {
-      MutterWindow *cw;
+      MetaWindowActor *window_actor;
       gboolean x, y;
 
-      if (!MUTTER_IS_WINDOW (l->data) || !CLUTTER_ACTOR_IS_VISIBLE (l->data))
+      if (!META_IS_WINDOW_ACTOR (l->data) || !CLUTTER_ACTOR_IS_VISIBLE (l->data))
         continue;
 
-      cw = l->data;
+      window_actor = l->data;
 
-      if (!actor_is_untransformed (CLUTTER_ACTOR (cw), &x, &y))
+      if (!actor_is_untransformed (CLUTTER_ACTOR (window_actor), &x, &y))
         continue;
 
       /* Temporarily move to the coordinate system of the actor */
       cairo_region_translate (visible_region, - x, - y);
 
-      mutter_window_set_visible_region (cw, visible_region);
+      meta_window_actor_set_visible_region (window_actor, visible_region);
 
-      if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (cw)) == 0xff)
+      if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (window_actor)) == 0xff)
         {
-          cairo_region_t *obscured_region = mutter_window_get_obscured_region (cw);
+          cairo_region_t *obscured_region = meta_window_actor_get_obscured_region (window_actor);
           if (obscured_region)
             cairo_region_subtract (visible_region, obscured_region);
         }
 
-      mutter_window_set_visible_region_beneath (cw, visible_region);
+      meta_window_actor_set_visible_region_beneath (window_actor, visible_region);
       cairo_region_translate (visible_region, x, y);
     }
 
   cairo_region_destroy (visible_region);
 
-  CLUTTER_ACTOR_CLASS (mutter_window_group_parent_class)->paint (actor);
+  CLUTTER_ACTOR_CLASS (meta_window_group_parent_class)->paint (actor);
 
   /* Now that we are done painting, unset the visible regions (they will
    * mess up painting clones of our actors)
    */
   for (l = children; l; l = l->next)
     {
-      MutterWindow *cw;
+      MetaWindowActor *window_actor;
 
-      if (!MUTTER_IS_WINDOW (l->data))
+      if (!META_IS_WINDOW_ACTOR (l->data))
         continue;
 
-      cw = l->data;
-      mutter_window_reset_visible_regions (cw);
+      window_actor = l->data;
+      meta_window_actor_reset_visible_regions (window_actor);
     }
 
   g_list_free (children);
 }
 
 static void
-mutter_window_group_class_init (MutterWindowGroupClass *klass)
+meta_window_group_class_init (MetaWindowGroupClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  actor_class->paint = mutter_window_group_paint;
+  actor_class->paint = meta_window_group_paint;
 }
 
 static void
-mutter_window_group_init (MutterWindowGroup *window_group)
+meta_window_group_init (MetaWindowGroup *window_group)
 {
 }
 
 ClutterActor *
-mutter_window_group_new (MetaScreen *screen)
+meta_window_group_new (MetaScreen *screen)
 {
-  MutterWindowGroup *window_group;
+  MetaWindowGroup *window_group;
 
-  window_group = g_object_new (MUTTER_TYPE_WINDOW_GROUP, NULL);
+  window_group = g_object_new (META_TYPE_WINDOW_GROUP, NULL);
 
   window_group->screen = screen;
 

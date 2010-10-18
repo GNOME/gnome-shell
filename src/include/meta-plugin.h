@@ -21,8 +21,8 @@
  * 02111-1307, USA.
  */
 
-#ifndef MUTTER_PLUGIN_H_
-#define MUTTER_PLUGIN_H_
+#ifndef META_PLUGIN_H_
+#define META_PLUGIN_H_
 
 #include "types.h"
 #include "compositor.h"
@@ -32,64 +32,64 @@
 #include <X11/extensions/Xfixes.h>
 #include <gmodule.h>
 
-#define MUTTER_TYPE_PLUGIN            (mutter_plugin_get_type ())
-#define MUTTER_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MUTTER_TYPE_PLUGIN, MutterPlugin))
-#define MUTTER_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  MUTTER_TYPE_PLUGIN, MutterPluginClass))
-#define MUTTER_IS_PLUGIN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MUTTER_TYPE_PLUGIN))
-#define MUTTER_IS_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  MUTTER_TYPE_PLUGIN))
-#define MUTTER_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  MUTTER_TYPE_PLUGIN, MutterPluginClass))
+#define META_TYPE_PLUGIN            (meta_plugin_get_type ())
+#define META_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_PLUGIN, MetaPlugin))
+#define META_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_PLUGIN, MetaPluginClass))
+#define META_IS_PLUGIN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_PLUGIN))
+#define META_IS_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_PLUGIN))
+#define META_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_PLUGIN, MetaPluginClass))
 
 /**
- * MutterPlugin: (skip)
+ * MetaPlugin: (skip)
  *
  */
-typedef struct _MutterPlugin        MutterPlugin;
+typedef struct _MetaPlugin        MetaPlugin;
 /**
- * MutterPluginClass: (skip)
+ * MetaPluginClass: (skip)
  *
  */
-typedef struct _MutterPluginClass   MutterPluginClass;
-typedef struct _MutterPluginVersion MutterPluginVersion;
-typedef struct _MutterPluginInfo    MutterPluginInfo;
-typedef struct _MutterPluginPrivate MutterPluginPrivate;
+typedef struct _MetaPluginClass   MetaPluginClass;
+typedef struct _MetaPluginVersion MetaPluginVersion;
+typedef struct _MetaPluginInfo    MetaPluginInfo;
+typedef struct _MetaPluginPrivate MetaPluginPrivate;
 
-struct _MutterPlugin
+struct _MetaPlugin
 {
   GObject parent;
 
-  MutterPluginPrivate *priv;
+  MetaPluginPrivate *priv;
 };
 
-struct _MutterPluginClass
+struct _MetaPluginClass
 {
   GObjectClass parent_class;
 
-  void (*start)            (MutterPlugin       *plugin);
+  void (*start)            (MetaPlugin         *plugin);
 
-  void (*minimize)         (MutterPlugin       *plugin,
-                            MutterWindow       *actor);
+  void (*minimize)         (MetaPlugin         *plugin,
+                            MetaWindowActor    *actor);
 
-  void (*maximize)         (MutterPlugin       *plugin,
-                            MutterWindow       *actor,
+  void (*maximize)         (MetaPlugin         *plugin,
+                            MetaWindowActor    *actor,
                             gint                x,
                             gint                y,
                             gint                width,
                             gint                height);
 
-  void (*unmaximize)       (MutterPlugin       *plugin,
-                            MutterWindow       *actor,
+  void (*unmaximize)       (MetaPlugin         *plugin,
+                            MetaWindowActor    *actor,
                             gint                x,
                             gint                y,
                             gint                width,
                             gint                height);
 
-  void (*map)              (MutterPlugin       *plugin,
-                            MutterWindow       *actor);
+  void (*map)              (MetaPlugin         *plugin,
+                            MetaWindowActor    *actor);
 
-  void (*destroy)          (MutterPlugin       *plugin,
-                            MutterWindow       *actor);
+  void (*destroy)          (MetaPlugin         *plugin,
+                            MetaWindowActor    *actor);
 
-  void (*switch_workspace) (MutterPlugin       *plugin,
+  void (*switch_workspace) (MetaPlugin         *plugin,
                             gint                from,
                             gint                to,
                             MetaMotionDirection direction);
@@ -98,21 +98,21 @@ struct _MutterPluginClass
    * Called if an effects should be killed prematurely; the plugin must
    * call the completed() callback as if the effect terminated naturally.
    */
-  void (*kill_window_effects)      (MutterPlugin     *plugin,
-                                    MutterWindow     *actor);
+  void (*kill_window_effects)      (MetaPlugin      *plugin,
+                                    MetaWindowActor *actor);
 
-  void (*kill_switch_workspace)    (MutterPlugin     *plugin);
+  void (*kill_switch_workspace)    (MetaPlugin     *plugin);
 
-  /* General XEvent filter. This is fired *before* mutter itself handles
+  /* General XEvent filter. This is fired *before* meta itself handles
    * an event. Return TRUE to block any further processing.
    */
-  gboolean (*xevent_filter) (MutterPlugin       *plugin,
-                             XEvent             *event);
+  gboolean (*xevent_filter) (MetaPlugin       *plugin,
+                             XEvent           *event);
 
-  const MutterPluginInfo * (*plugin_info) (MutterPlugin *plugin);
+  const MetaPluginInfo * (*plugin_info) (MetaPlugin *plugin);
 };
 
-struct _MutterPluginInfo
+struct _MetaPluginInfo
 {
   const gchar *name;
   const gchar *version;
@@ -121,18 +121,19 @@ struct _MutterPluginInfo
   const gchar *description;
 };
 
-GType mutter_plugin_get_type (void);
+GType meta_plugin_get_type (void);
 
-gulong        mutter_plugin_features            (MutterPlugin *plugin);
-gboolean      mutter_plugin_disabled            (MutterPlugin *plugin);
-gboolean      mutter_plugin_running             (MutterPlugin *plugin);
-gboolean      mutter_plugin_debug_mode          (MutterPlugin *plugin);
-const MutterPluginInfo * mutter_plugin_get_info (MutterPlugin *plugin);
+gulong        meta_plugin_features            (MetaPlugin *plugin);
+gboolean      meta_plugin_disabled            (MetaPlugin *plugin);
+gboolean      meta_plugin_running             (MetaPlugin *plugin);
+gboolean      meta_plugin_debug_mode          (MetaPlugin *plugin);
 
-struct _MutterPluginVersion
+const MetaPluginInfo * meta_plugin_get_info (MetaPlugin *plugin);
+
+struct _MetaPluginVersion
 {
   /*
-   * Version information; the first three numbers match the Mutter version
+   * Version information; the first three numbers match the Meta version
    * with which the plugin was compiled (see clutter-plugins/simple.c for sample
    * code).
    */
@@ -151,13 +152,13 @@ struct _MutterPluginVersion
 /*
  * Convenience macro to set up the plugin type. Based on GEdit.
  */
-#define MUTTER_PLUGIN_DECLARE(ObjectName, object_name)                  \
-  G_MODULE_EXPORT MutterPluginVersion mutter_plugin_version =           \
+#define META_PLUGIN_DECLARE(ObjectName, object_name)                    \
+  G_MODULE_EXPORT MetaPluginVersion meta_plugin_version =               \
     {                                                                   \
-      MUTTER_MAJOR_VERSION,                                           \
-      MUTTER_MINOR_VERSION,                                           \
-      MUTTER_MICRO_VERSION,                                           \
-      MUTTER_PLUGIN_API_VERSION                               \
+      MUTTER_MAJOR_VERSION,                                             \
+      MUTTER_MINOR_VERSION,                                             \
+      MUTTER_MICRO_VERSION,                                             \
+      MUTTER_PLUGIN_API_VERSION                                         \
     };                                                                  \
                                                                         \
   static GType g_define_type_id = 0;                                    \
@@ -170,7 +171,7 @@ struct _MutterPluginVersion
   GType object_name##_register_type (GTypeModule *type_module);         \
                                                                         \
   G_MODULE_EXPORT                                                       \
-  GType mutter_plugin_register_type (GTypeModule *type_module);         \
+  GType meta_plugin_register_type (GTypeModule *type_module);           \
                                                                         \
   GType                                                                 \
   object_name##_get_type ()                                             \
@@ -204,7 +205,7 @@ struct _MutterPluginVersion
       };                                                                \
                                                                         \
     g_define_type_id = g_type_module_register_type (type_module,        \
-                                                    MUTTER_TYPE_PLUGIN, \
+                                                    META_TYPE_PLUGIN,   \
                                                     #ObjectName,        \
                                                     &our_info,          \
                                                     0);                 \
@@ -214,59 +215,59 @@ struct _MutterPluginVersion
   }                                                                     \
                                                                         \
   G_MODULE_EXPORT GType                                                 \
-  mutter_plugin_register_type (GTypeModule *type_module)                \
+  meta_plugin_register_type (GTypeModule *type_module)                  \
   {                                                                     \
     return object_name##_register_type (type_module);                   \
   }                                                                     \
 
 void
-mutter_plugin_switch_workspace_completed (MutterPlugin *plugin);
+meta_plugin_switch_workspace_completed (MetaPlugin *plugin);
 
 void
-mutter_plugin_minimize_completed (MutterPlugin *plugin,
-                                  MutterWindow *actor);
+meta_plugin_minimize_completed (MetaPlugin      *plugin,
+                                MetaWindowActor *actor);
 
 void
-mutter_plugin_maximize_completed (MutterPlugin *plugin,
-                                  MutterWindow *actor);
+meta_plugin_maximize_completed (MetaPlugin      *plugin,
+                                MetaWindowActor *actor);
 
 void
-mutter_plugin_unmaximize_completed (MutterPlugin *plugin,
-                                    MutterWindow *actor);
+meta_plugin_unmaximize_completed (MetaPlugin      *plugin,
+                                  MetaWindowActor *actor);
 
 void
-mutter_plugin_map_completed (MutterPlugin *plugin,
-                             MutterWindow *actor);
+meta_plugin_map_completed (MetaPlugin      *plugin,
+                           MetaWindowActor *actor);
 
 void
-mutter_plugin_destroy_completed (MutterPlugin *plugin,
-                                 MutterWindow *actor);
+meta_plugin_destroy_completed (MetaPlugin      *plugin,
+                               MetaWindowActor *actor);
 
 ClutterActor *
-mutter_plugin_get_overlay_group (MutterPlugin *plugin);
+meta_plugin_get_overlay_group (MetaPlugin *plugin);
 
 ClutterActor *
-mutter_plugin_get_window_group (MutterPlugin *plugin);
+meta_plugin_get_window_group (MetaPlugin *plugin);
 
 ClutterActor *
-mutter_plugin_get_stage (MutterPlugin *plugin);
+meta_plugin_get_stage (MetaPlugin *plugin);
 
 void
-mutter_plugin_query_screen_size (MutterPlugin *plugin,
-                                 int          *width,
-                                 int          *height);
+meta_plugin_query_screen_size (MetaPlugin *plugin,
+                               int        *width,
+                               int        *height);
 
 void
-mutter_plugin_set_stage_reactive (MutterPlugin *plugin,
-                                  gboolean      reactive);
+meta_plugin_set_stage_reactive (MetaPlugin *plugin,
+                                gboolean    reactive);
 
 void
-mutter_plugin_set_stage_input_area (MutterPlugin *plugin,
-                                    gint x, gint y, gint width, gint height);
+meta_plugin_set_stage_input_area (MetaPlugin *plugin,
+                                  gint x, gint y, gint width, gint height);
 
 void
-mutter_plugin_set_stage_input_region (MutterPlugin *plugin,
-                                      XserverRegion region);
+meta_plugin_set_stage_input_region (MetaPlugin   *plugin,
+                                    XserverRegion region);
 
 /**
  * MetaModalOptions:
@@ -275,7 +276,7 @@ mutter_plugin_set_stage_input_region (MutterPlugin *plugin,
  * @META_MODAL_KEYBOARD_ALREADY_GRABBED: if set the keyboard is already
  *   grabbed by the plugin and should not be grabbed again.
  *
- * Options that can be provided when calling mutter_plugin_begin_modal().
+ * Options that can be provided when calling meta_plugin_begin_modal().
  */
 typedef enum {
   META_MODAL_POINTER_ALREADY_GRABBED = 1 << 0,
@@ -283,26 +284,21 @@ typedef enum {
 } MetaModalOptions;
 
 gboolean
-mutter_plugin_begin_modal (MutterPlugin      *plugin,
-                           Window             grab_window,
-                           Cursor             cursor,
-                           MetaModalOptions   options,
-                           guint32            timestamp);
+meta_plugin_begin_modal (MetaPlugin      *plugin,
+                         Window           grab_window,
+                         Cursor           cursor,
+                         MetaModalOptions options,
+                         guint32          timestamp);
 
 void
-mutter_plugin_end_modal (MutterPlugin *plugin,
-                         guint32       timestamp);
+meta_plugin_end_modal (MetaPlugin *plugin,
+                       guint32     timestamp);
 
-GList *
-mutter_plugin_get_windows (MutterPlugin *plugin);
-
-Display *
-mutter_plugin_get_xdisplay (MutterPlugin *plugin);
-
-MetaScreen *
-mutter_plugin_get_screen (MutterPlugin *plugin);
+GList *     meta_plugin_get_window_actors (MetaPlugin *plugin);
+Display *   meta_plugin_get_xdisplay      (MetaPlugin *plugin);
+MetaScreen *meta_plugin_get_screen        (MetaPlugin *plugin);
 
 void
-_mutter_plugin_effect_started (MutterPlugin *plugin);
+_meta_plugin_effect_started (MetaPlugin *plugin);
 
-#endif /* MUTTER_PLUGIN_H_ */
+#endif /* META_PLUGIN_H_ */

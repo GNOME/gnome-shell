@@ -75,7 +75,7 @@
 
 #ifdef HAVE_INTROSPECTION
 #include <girepository.h>
-#include "compositor/mutter-plugin-manager.h"
+#include "compositor/meta-plugin-manager.h"
 #endif
 
 /**
@@ -586,8 +586,8 @@ main (int argc, char **argv)
            * is initialized at this point, and we don't plan to run any real
            * plugin code.
            */
-          MutterPluginManager *mgr = mutter_plugin_manager_get_default ();
-          if (!mutter_plugin_manager_load (mgr))
+          MetaPluginManager *mgr = meta_plugin_manager_get_default ();
+          if (!meta_plugin_manager_load (mgr))
             g_critical ("failed to load plugins");
         }
       if (!g_irepository_dump (meta_args.introspect, &error))

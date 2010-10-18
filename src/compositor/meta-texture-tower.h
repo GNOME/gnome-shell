@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
- * MutterTextureTower
+ * MetaTextureTower
  *
  * Mipmap emulation by creation of scaled down images
  *
@@ -22,18 +22,18 @@
  * 02111-1307, USA.
  */
 
-#ifndef __MUTTER_TEXTURE_TOWER_H__
-#define __MUTTER_TEXTURE_TOWER_H__
+#ifndef __META_TEXTURE_TOWER_H__
+#define __META_TEXTURE_TOWER_H__
 
 #include <clutter/clutter.h>
 
 G_BEGIN_DECLS
 
 /**
- * SECTION:MutterTextureTower
+ * SECTION:MetaTextureTower
  * @short_description: mipmap emulation by creation of scaled down images
  *
- * A #MutterTextureTower is used to get good looking scaled down images when
+ * A #MetaTextureTower is used to get good looking scaled down images when
  * we can't use the GL drivers mipmap support. There are two separate reasons
  *
  *  - Some cards (including radeon cards <= r5xx) only support
@@ -51,19 +51,19 @@ G_BEGIN_DECLS
  * scale for the entire texture.)
  */
 
-typedef struct _MutterTextureTower MutterTextureTower;
+typedef struct _MetaTextureTower MetaTextureTower;
 
-MutterTextureTower *mutter_texture_tower_new               (void);
-void                mutter_texture_tower_free              (MutterTextureTower *tower);
-void                mutter_texture_tower_set_base_texture  (MutterTextureTower *tower,
-                                                            CoglHandle          texture);
-void                mutter_texture_tower_update_area       (MutterTextureTower *tower,
-                                                            int                 x,
-                                                            int                 y,
-                                                            int                 width,
-                                                            int                 height);
-CoglHandle          mutter_texture_tower_get_paint_texture (MutterTextureTower *tower);
+MetaTextureTower *meta_texture_tower_new               (void);
+void              meta_texture_tower_free              (MetaTextureTower *tower);
+void              meta_texture_tower_set_base_texture  (MetaTextureTower *tower,
+                                                        CoglHandle        texture);
+void              meta_texture_tower_update_area       (MetaTextureTower *tower,
+                                                        int               x,
+                                                        int               y,
+                                                        int               width,
+                                                        int               height);
+CoglHandle        meta_texture_tower_get_paint_texture (MetaTextureTower *tower);
 
 G_BEGIN_DECLS
 
-#endif /* __MUTTER_TEXTURE_TOWER_H__ */
+#endif /* __META_TEXTURE_TOWER_H__ */

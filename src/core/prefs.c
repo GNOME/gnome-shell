@@ -27,7 +27,7 @@
 #include "prefs.h"
 #include "ui.h"
 #include "util.h"
-#include "compositor/mutter-plugin-manager.h"
+#include "compositor/meta-plugin-manager.h"
 #ifdef HAVE_GCONF
 #include <gconf/gconf-client.h>
 #endif
@@ -1058,7 +1058,7 @@ meta_prefs_init (void)
 #ifdef HAVE_GCONF
   GError *err = NULL;
   gchar **gconf_dir_cursor;
-  MutterPluginManager *plugin_manager;
+  MetaPluginManager *plugin_manager;
   
   if (default_client != NULL)
     return;
@@ -1087,8 +1087,8 @@ meta_prefs_init (void)
 
   /* We now initialize plugins so that they can override any preference locations */
 
-  plugin_manager = mutter_plugin_manager_get_default ();
-  mutter_plugin_manager_load (plugin_manager);
+  plugin_manager = meta_plugin_manager_get_default ();
+  meta_plugin_manager_load (plugin_manager);
 
   /* Pick up initial values. */
 

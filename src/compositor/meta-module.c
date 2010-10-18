@@ -21,8 +21,8 @@
  * 02111-1307, USA.
  */
 
-#include "mutter-plugin.h"
-#include "mutter-module.h"
+#include "meta-plugin.h"
+#include "meta-module.h"
 
 #include <gmodule.h>
 
@@ -32,23 +32,23 @@ enum
   PROP_PATH,
 };
 
-struct _MutterModulePrivate
+struct _MetaModulePrivate
 {
   GModule      *lib;
   gchar        *path;
   GType         plugin_type;
 };
 
-#define MUTTER_MODULE_GET_PRIVATE(obj) \
-(G_TYPE_INSTANCE_GET_PRIVATE ((obj), MUTTER_TYPE_MODULE, MutterModulePrivate))
+#define META_MODULE_GET_PRIVATE(obj) \
+(G_TYPE_INSTANCE_GET_PRIVATE ((obj), META_TYPE_MODULE, MetaModulePrivate))
 
-G_DEFINE_TYPE (MutterModule, mutter_module, G_TYPE_TYPE_MODULE);
+G_DEFINE_TYPE (MetaModule, meta_module, G_TYPE_TYPE_MODULE);
 
 static gboolean
-mutter_module_load (GTypeModule *gmodule)
+meta_module_load (GTypeModule *gmodule)
 {
-  MutterModulePrivate  *priv = MUTTER_MODULE (gmodule)->priv;
-  MutterPluginVersion  *info = NULL;
+  MetaModulePrivate  *priv = META_MODULE (gmodule)->priv;
+  MetaPluginVersion  *info = NULL;
   GType                (*register_type) (GTypeModule *) = NULL;
 
   if (priv->lib && priv->plugin_type)
@@ -64,9 +64,9 @@ mutter_module_load (GTypeModule *gmodule)
       return FALSE;
     }
 
-  if (g_module_symbol (priv->lib, "mutter_plugin_version",
+  if (g_module_symbol (priv->lib, "meta_plugin_version",
                        (gpointer *)(void *)&info) &&
-      g_module_symbol (priv->lib, "mutter_plugin_register_type",
+      g_module_symbol (priv->lib, "meta_plugin_register_type",
 		       (gpointer *)(void *)&register_type) &&
       info && register_type)
     {
@@ -97,9 +97,9 @@ mutter_module_load (GTypeModule *gmodule)
 }
 
 static void
-mutter_module_unload (GTypeModule *gmodule)
+meta_module_unload (GTypeModule *gmodule)
 {
-  MutterModulePrivate *priv = MUTTER_MODULE (gmodule)->priv;
+  MetaModulePrivate *priv = META_MODULE (gmodule)->priv;
 
   g_module_close (priv->lib);
 
@@ -108,29 +108,29 @@ mutter_module_unload (GTypeModule *gmodule)
 }
 
 static void
-mutter_module_dispose (GObject *object)
+meta_module_dispose (GObject *object)
 {
-  G_OBJECT_CLASS (mutter_module_parent_class)->dispose (object);
+  G_OBJECT_CLASS (meta_module_parent_class)->dispose (object);
 }
 
 static void
-mutter_module_finalize (GObject *object)
+meta_module_finalize (GObject *object)
 {
-  MutterModulePrivate *priv = MUTTER_MODULE (object)->priv;
+  MetaModulePrivate *priv = META_MODULE (object)->priv;
 
   g_free (priv->path);
   priv->path = NULL;
 
-  G_OBJECT_CLASS (mutter_module_parent_class)->finalize (object);
+  G_OBJECT_CLASS (meta_module_parent_class)->finalize (object);
 }
 
 static void
-mutter_module_set_property (GObject      *object,
-			    guint         prop_id,
-			    const GValue *value,
-			    GParamSpec   *pspec)
+meta_module_set_property (GObject      *object,
+                          guint         prop_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
 {
-  MutterModulePrivate *priv = MUTTER_MODULE (object)->priv;
+  MetaModulePrivate *priv = META_MODULE (object)->priv;
 
   switch (prop_id)
     {
@@ -145,12 +145,12 @@ mutter_module_set_property (GObject      *object,
 }
 
 static void
-mutter_module_get_property (GObject    *object,
-			    guint       prop_id,
-			    GValue     *value,
-			    GParamSpec *pspec)
+meta_module_get_property (GObject    *object,
+                          guint       prop_id,
+                          GValue     *value,
+                          GParamSpec *pspec)
 {
-  MutterModulePrivate *priv = MUTTER_MODULE (object)->priv;
+  MetaModulePrivate *priv = META_MODULE (object)->priv;
 
   switch (prop_id)
     {
@@ -164,18 +164,18 @@ mutter_module_get_property (GObject    *object,
 }
 
 static void
-mutter_module_class_init (MutterModuleClass *klass)
+meta_module_class_init (MetaModuleClass *klass)
 {
   GObjectClass     *gobject_class = G_OBJECT_CLASS (klass);
   GTypeModuleClass *gmodule_class = G_TYPE_MODULE_CLASS (klass);
 
-  gobject_class->finalize     = mutter_module_finalize;
-  gobject_class->dispose      = mutter_module_dispose;
-  gobject_class->set_property = mutter_module_set_property;
-  gobject_class->get_property = mutter_module_get_property;
+  gobject_class->finalize     = meta_module_finalize;
+  gobject_class->dispose      = meta_module_dispose;
+  gobject_class->set_property = meta_module_set_property;
+  gobject_class->get_property = meta_module_get_property;
 
-  gmodule_class->load         = mutter_module_load;
-  gmodule_class->unload       = mutter_module_unload;
+  gmodule_class->load         = meta_module_load;
+  gmodule_class->unload       = meta_module_unload;
 
   g_object_class_install_property (gobject_class,
 				   PROP_PATH,
@@ -186,22 +186,22 @@ mutter_module_class_init (MutterModuleClass *klass)
 							G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT_ONLY));
 
-  g_type_class_add_private (gobject_class, sizeof (MutterModulePrivate));
+  g_type_class_add_private (gobject_class, sizeof (MetaModulePrivate));
 }
 
 static void
-mutter_module_init (MutterModule *self)
+meta_module_init (MetaModule *self)
 {
-  MutterModulePrivate *priv;
+  MetaModulePrivate *priv;
 
-  self->priv = priv = MUTTER_MODULE_GET_PRIVATE (self);
+  self->priv = priv = META_MODULE_GET_PRIVATE (self);
 
 }
 
 GType
-mutter_module_get_plugin_type (MutterModule *module)
+meta_module_get_plugin_type (MetaModule *module)
 {
-  MutterModulePrivate *priv = MUTTER_MODULE (module)->priv;
+  MetaModulePrivate *priv = META_MODULE (module)->priv;
 
   return priv->plugin_type;
 }

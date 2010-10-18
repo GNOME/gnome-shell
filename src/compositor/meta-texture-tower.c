@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
- * MutterTextureTower
+ * MetaTextureTower
  *
  * Mipmap emulation by creation of scaled down images
  *
@@ -25,7 +25,7 @@
 #include <math.h>
 #include <string.h>
 
-#include "mutter-texture-tower.h"
+#include "meta-texture-tower.h"
 
 #ifndef M_LOG2E
 #define M_LOG2E 1.4426950408889634074
@@ -55,7 +55,7 @@ typedef struct
   guint16 y2;
 } Box;
 
-struct _MutterTextureTower
+struct _MetaTextureTower
 {
   int n_levels;
   CoglHandle textures[MAX_TEXTURE_LEVELS];
@@ -64,37 +64,37 @@ struct _MutterTextureTower
 };
 
 /**
- * mutter_texture_tower_new:
+ * meta_texture_tower_new:
  *
  * Creates a new texture tower. The base texture has to be set with
- * mutter_texture_tower_set_base_texture() before use.
+ * meta_texture_tower_set_base_texture() before use.
  *
- * Return value: the new texture tower. Free with mutter_texture_tower_free()
+ * Return value: the new texture tower. Free with meta_texture_tower_free()
  */
-MutterTextureTower *
-mutter_texture_tower_new (void)
+MetaTextureTower *
+meta_texture_tower_new (void)
 {
-  MutterTextureTower *tower;
+  MetaTextureTower *tower;
 
-  tower = g_slice_new0 (MutterTextureTower);
+  tower = g_slice_new0 (MetaTextureTower);
 
   return tower;
 }
 
 /**
- * mutter_texture_tower_free:
- * @tower: a #MutterTextureTower
+ * meta_texture_tower_free:
+ * @tower: a #MetaTextureTower
  *
- * Frees a texture tower created with mutter_texture_tower_new().
+ * Frees a texture tower created with meta_texture_tower_new().
  */
 void
-mutter_texture_tower_free (MutterTextureTower *tower)
+meta_texture_tower_free (MetaTextureTower *tower)
 {
   g_return_if_fail (tower != NULL);
 
-  mutter_texture_tower_set_base_texture (tower, COGL_INVALID_HANDLE);
+  meta_texture_tower_set_base_texture (tower, COGL_INVALID_HANDLE);
 
-  g_slice_free (MutterTextureTower, tower);
+  g_slice_free (MetaTextureTower, tower);
 }
 
 static gboolean
@@ -122,8 +122,8 @@ free_texture (CoglHandle texture)
 }
 
 /**
- * mutter_texture_tower_update_area:
- * @tower: a MutterTextureTower
+ * meta_texture_tower_update_area:
+ * @tower: a MetaTextureTower
  * @texture: the new texture used as a base for scaled down versions
  *
  * Sets the base texture that is the scaled texture that the
@@ -132,8 +132,8 @@ free_texture (CoglHandle texture)
  * unset or until the tower is freed.
  */
 void
-mutter_texture_tower_set_base_texture (MutterTextureTower *tower,
-                                       CoglHandle          texture)
+meta_texture_tower_set_base_texture (MetaTextureTower *tower,
+                                     CoglHandle        texture)
 {
   int i;
 
@@ -176,7 +176,7 @@ mutter_texture_tower_set_base_texture (MutterTextureTower *tower,
       tower->n_levels = 1 + MAX ((int)(M_LOG2E * log (width)), (int)(M_LOG2E * log (height)));
       tower->n_levels = MIN(tower->n_levels, MAX_TEXTURE_LEVELS);
 
-      mutter_texture_tower_update_area (tower, 0, 0, width, height);
+      meta_texture_tower_update_area (tower, 0, 0, width, height);
     }
   else
     {
@@ -185,8 +185,8 @@ mutter_texture_tower_set_base_texture (MutterTextureTower *tower,
 }
 
 /**
- * mutter_texture_tower_update_area:
- * @tower: a MutterTextureTower
+ * meta_texture_tower_update_area:
+ * @tower: a MetaTextureTower
  * @x: X coordinate of upper left of rectangle that changed
  * @y: Y coordinate of upper left of rectangle that changed
  * @width: width of rectangle that changed
@@ -197,11 +197,11 @@ mutter_texture_tower_set_base_texture (MutterTextureTower *tower,
  * the appropriate area of the scaled down texture will be updated.
  */
 void
-mutter_texture_tower_update_area (MutterTextureTower *tower,
-                                  int                 x,
-                                  int                 y,
-                                  int                 width,
-                                  int                 height)
+meta_texture_tower_update_area (MetaTextureTower *tower,
+                                int               x,
+                                int               y,
+                                int               width,
+                                int               height)
 {
   int texture_width, texture_height;
   Box invalid;
@@ -257,7 +257,7 @@ mutter_texture_tower_update_area (MutterTextureTower *tower,
  * If window is being painted at an angle from the viewer, then we have to
  * pick a point in the texture; we use the middle of the texture (which is
  * why the width/height are passed in.) This is not the normal case for
- * Mutter.
+ * Meta.
  */
 static int
 get_paint_level (int width, int height)
@@ -369,10 +369,10 @@ is_power_of_two (int x)
 }
 
 static void
-texture_tower_create_texture (MutterTextureTower *tower,
-                              int                 level,
-                              int                 width,
-                              int                 height)
+texture_tower_create_texture (MetaTextureTower *tower,
+                              int               level,
+                              int               width,
+                              int               height)
 {
   if ((!is_power_of_two (width) || !is_power_of_two (height)) &&
       texture_is_rectangle (tower->textures[level - 1]))
@@ -409,8 +409,8 @@ texture_tower_create_texture (MutterTextureTower *tower,
 }
 
 static gboolean
-texture_tower_revalidate_fbo (MutterTextureTower *tower,
-                              int                 level)
+texture_tower_revalidate_fbo (MetaTextureTower *tower,
+                              int               level)
 {
   CoglHandle source_texture = tower->textures[level - 1];
   int source_texture_width = cogl_texture_get_width (source_texture);
@@ -487,8 +487,8 @@ fill_scale_down (guchar       *buf,
 }
 
 static void
-texture_tower_revalidate_client (MutterTextureTower *tower,
-                                 int                 level)
+texture_tower_revalidate_client (MetaTextureTower *tower,
+                                 int               level)
 {
   CoglHandle source_texture = tower->textures[level - 1];
   int source_texture_width = cogl_texture_get_width (source_texture);
@@ -587,16 +587,16 @@ texture_tower_revalidate_client (MutterTextureTower *tower,
 }
 
 static void
-texture_tower_revalidate (MutterTextureTower *tower,
-                          int                 level)
+texture_tower_revalidate (MetaTextureTower *tower,
+                          int               level)
 {
   if (!texture_tower_revalidate_fbo (tower, level))
     texture_tower_revalidate_client (tower, level);
 }
 
 /**
- * mutter_texture_tower_get_paint_texture:
- * @tower: a MutterTextureTower
+ * meta_texture_tower_get_paint_texture:
+ * @tower: a MetaTextureTower
  *
  * Gets the texture from the tower that best matches the current
  * rendering scale. (On the assumption here the texture is going to
@@ -608,7 +608,7 @@ texture_tower_revalidate (MutterTextureTower *tower,
  *  %COGL_INVALID_HANDLE if no base texture has yet been set.
  */
 CoglHandle
-mutter_texture_tower_get_paint_texture (MutterTextureTower *tower)
+meta_texture_tower_get_paint_texture (MetaTextureTower *tower)
 {
   int texture_width, texture_height;
   int level;

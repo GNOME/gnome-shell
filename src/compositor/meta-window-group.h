@@ -1,17 +1,17 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-#ifndef MUTTER_WINDOW_GROUP_H
-#define MUTTER_WINDOW_GROUP_H
+#ifndef META_WINDOW_GROUP_H
+#define META_WINDOW_GROUP_H
 
 #include <clutter/clutter.h>
 
 #include "screen.h"
 
 /**
- * MutterWindowGroup:
+ * MetaWindowGroup:
  *
  * This class is a subclass of ClutterGroup with special handling for
- * MutterWindow when painting the group. When we are painting a stack
+ * MetaWindowActor when painting the group. When we are painting a stack
  * of 5-10 maximized windows, the standard bottom-to-top method of
  * drawing every actor results in a tremendous amount of overdraw
  * and can easily max out the available memory bandwidth on a low-end
@@ -21,7 +21,7 @@
  * The basic technique applied here is to do a pre-pass before painting
  * where we walk window from top to bottom and compute the visible area
  * at each step by subtracting out the windows above it. The visible
- * area is passed to MutterWindow which uses it to clip the portion of
+ * area is passed to MetaWindowActor which uses it to clip the portion of
  * the window which drawn and avoid redrawing the shadow if it is completely
  * obscured.
  *
@@ -34,19 +34,19 @@
  * we have lots of memory and bandwidth.)
  */
 
-#define MUTTER_TYPE_WINDOW_GROUP            (mutter_window_group_get_type ())
-#define MUTTER_WINDOW_GROUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MUTTER_TYPE_WINDOW_GROUP, MutterWindowGroup))
-#define MUTTER_WINDOW_GROUP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), MUTTER_TYPE_WINDOW_GROUP, MutterWindowGroupClass))
-#define MUTTER_IS_WINDOW_GROUP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MUTTER_TYPE_WINDOW_GROUP))
-#define MUTTER_IS_WINDOW_GROU_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), MUTTER_TYPE_WINDOW_GROUP))
-#define MUTTER_WINDOW_GROUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MUTTER_TYPE_WINDOW_GROUP, MutterWindowGroupClass))
+#define META_TYPE_WINDOW_GROUP            (meta_window_group_get_type ())
+#define META_WINDOW_GROUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_WINDOW_GROUP, MetaWindowGroup))
+#define META_WINDOW_GROUP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), META_TYPE_WINDOW_GROUP, MetaWindowGroupClass))
+#define META_IS_WINDOW_GROUP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_WINDOW_GROUP))
+#define META_IS_WINDOW_GROU_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), META_TYPE_WINDOW_GROUP))
+#define META_WINDOW_GROUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), META_TYPE_WINDOW_GROUP, MetaWindowGroupClass))
 
-typedef struct _MutterWindowGroup        MutterWindowGroup;
-typedef struct _MutterWindowGroupClass   MutterWindowGroupClass;
-typedef struct _MutterWindowGroupPrivate MutterWindowGroupPrivate;
+typedef struct _MetaWindowGroup        MetaWindowGroup;
+typedef struct _MetaWindowGroupClass   MetaWindowGroupClass;
+typedef struct _MetaWindowGroupPrivate MetaWindowGroupPrivate;
 
-GType mutter_window_group_get_type (void);
+GType meta_window_group_get_type (void);
 
-ClutterActor *mutter_window_group_new (MetaScreen *screen);
+ClutterActor *meta_window_group_new (MetaScreen *screen);
 
-#endif /* MUTTER_WINDOW_GROUP_H */
+#endif /* META_WINDOW_GROUP_H */
