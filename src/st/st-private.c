@@ -435,11 +435,12 @@ blur_pixels (guchar  *pixels_in,
   guchar *pixels_out;
   float   sigma;
 
-  /* we use an approximation of the sigma - blur radius relationship used
-     in Firefox for doing SVG blurs; see
-     http://mxr.mozilla.org/mozilla-central/source/gfx/thebes/src/gfxBlur.cpp#280
-  */
-  sigma = blur / 1.9;
+  /* The CSS specification defines (or will define) the blur radius as twice
+   * the Gaussian standard deviation. See:
+   *
+   * http://lists.w3.org/Archives/Public/www-style/2010Sep/0002.html
+   */
+  sigma = blur / 2.;
 
   if ((guint) blur == 0)
     {
