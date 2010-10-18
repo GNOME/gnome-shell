@@ -320,6 +320,7 @@ st_theme_load_stylesheet (StTheme    *theme,
     return FALSE;
 
   insert_stylesheet (theme, path, stylesheet);
+  cr_stylesheet_ref (stylesheet);
   theme->custom_stylesheets = g_slist_prepend (theme->custom_stylesheets, stylesheet);
 
   return TRUE;
