@@ -35,6 +35,7 @@
 #include "cogl-material-opengl-private.h"
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-vertex-attribute-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -67,6 +68,7 @@ typedef struct _TextureSlicedPolygonState
   const CoglTextureVertex *vertices;
   int n_vertices;
   int stride;
+  CoglVertexAttribute **attributes;
 } TextureSlicedPolygonState;
 
 static void
@@ -821,211 +823,194 @@ cogl_rectangle (float x_1,
   _cogl_rectangles_with_multitexture_coords (&rect, 1);
 }
 
+typedef struct _AppendTexCoordsState
+{
+  const CoglTextureVertex *vertices_in;
+  int vertex;
+  int layer;
+  float *vertices_out;
+} AppendTexCoordsState;
+
+gboolean
+append_tex_coord_attributes_cb (CoglMaterial *material,
+                                int layer_index,
+                                void *user_data)
+{
+  AppendTexCoordsState *state = user_data;
+  CoglHandle tex_handle;
+  float tx, ty;
+  float *t;
+
+  tx = state->vertices_in[state->vertex].tx;
+  ty = state->vertices_in[state->vertex].ty;
+
+  /* COGL_INVALID_HANDLE textures will be handled in
+   * _cogl_material_flush_layers_gl_state but there is no need to worry
+   * about scaling texture coordinates in this case */
+  tex_handle = _cogl_material_get_layer_texture (material, layer_index);
+  if (tex_handle != COGL_INVALID_HANDLE)
+    _cogl_texture_transform_coords_to_gl (tex_handle, &tx, &ty);
+
+  /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
+  t = state->vertices_out + 3 + 2 * state->layer;
+  t[0] = tx;
+  t[1] = ty;
+
+  state->layer++;
+
+  return TRUE;
+}
+
+typedef struct _ValidateState
+{
+  CoglMaterial *original_material;
+  CoglMaterial *material;
+} ValidateState;
+
+gboolean
+validate_layer_cb (CoglMaterial *material,
+                   int layer_index,
+                   void *user_data)
+{
+  ValidateState *state = user_data;
+
+  /* By default COGL_MATERIAL_WRAP_MODE_AUTOMATIC becomes
+   * GL_CLAMP_TO_EDGE but we want the polygon API to use GL_REPEAT to
+   * maintain compatibility with previous releases
+   */
+
+  if (cogl_material_get_layer_wrap_mode_s (material, layer_index) ==
+      COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+    {
+      if (state->original_material == state->material)
+        state->material = cogl_material_copy (material);
+
+      cogl_material_set_layer_wrap_mode_s (state->material, layer_index,
+                                           COGL_MATERIAL_WRAP_MODE_REPEAT);
+    }
+
+  if (cogl_material_get_layer_wrap_mode_t (material, layer_index) ==
+      COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+    {
+      if (state->original_material == state->material)
+        state->material = cogl_material_copy (material);
+
+      cogl_material_set_layer_wrap_mode_t (state->material, layer_index,
+                                           COGL_MATERIAL_WRAP_MODE_REPEAT);
+    }
+
+  return TRUE;
+}
+
 void
-draw_polygon_sub_texture_cb (CoglHandle tex_handle,
-                             GLuint gl_handle,
-                             GLenum gl_target,
-                             const float *subtexture_coords,
-                             const float *virtual_coords,
-                             void *user_data)
+cogl_polygon (const CoglTextureVertex *vertices,
+              unsigned int n_vertices,
+	      gboolean use_color)
 {
-  TextureSlicedPolygonState *state = user_data;
-  GLfloat *v;
+  CoglMaterial *material;
+  ValidateState validate_state;
+  int n_layers;
+  int n_attributes;
+  CoglVertexAttribute **attributes;
   int i;
-  CoglMaterialFlushOptions options;
-  float slice_origin_x;
-  float slice_origin_y;
-  float virtual_origin_x;
-  float virtual_origin_y;
-  float v_to_s_scale_x;
-  float v_to_s_scale_y;
-  CoglMaterial *source;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  slice_origin_x = subtexture_coords[0];
-  slice_origin_y = subtexture_coords[1];
-  virtual_origin_x = virtual_coords[0];
-  virtual_origin_y = virtual_coords[1];
-  v_to_s_scale_x = ((virtual_coords[2] - virtual_coords[0]) /
-                    (subtexture_coords[2] - subtexture_coords[0]));
-  v_to_s_scale_y = ((virtual_coords[3] - virtual_coords[1]) /
-                    (subtexture_coords[3] - subtexture_coords[1]));
-
-  /* Convert the vertices into an array of GLfloats ready to pass to
-   * OpenGL */
-  v = (GLfloat *)ctx->logged_vertices->data;
-  for (i = 0; i < state->n_vertices; i++)
-    {
-      /* NB: layout = [X,Y,Z,TX,TY,R,G,B,A,...] */
-      GLfloat *t = v + 3;
-
-      t[0] = ((state->vertices[i].tx - virtual_origin_x) * v_to_s_scale_x
-              + slice_origin_x);
-      t[1] = ((state->vertices[i].ty - virtual_origin_y) * v_to_s_scale_y
-              + slice_origin_y);
-
-      v += state->stride;
-    }
-
-  source = cogl_material_copy (cogl_get_source ());
-
-  if (G_UNLIKELY (ctx->legacy_state_set))
-    _cogl_material_apply_legacy_state (source);
-
-  options.flags =
-    COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE |
-    COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
-
-  options.layer0_override_texture = gl_handle;
-
-  /* Override the wrapping mode on all of the slices to use a
-     transparent border so that we can draw the full polygon for
-     each slice. Coordinates outside the texture will be transparent
-     so only the part of the polygon that intersects the slice will
-     be visible. This is a fairly hacky fallback and it relies on
-     the blending function working correctly */
-
-  memset (&options.wrap_mode_overrides, 0,
-          sizeof (options.wrap_mode_overrides));
-  options.wrap_mode_overrides.values[0].s =
-    COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_BORDER;
-  options.wrap_mode_overrides.values[0].t =
-    COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_BORDER;
-
-  if (cogl_material_get_n_layers (source) != 1)
-    {
-      /* disable all except the first layer */
-      options.disable_layers = (guint32)~1;
-      options.flags |= COGL_MATERIAL_FLUSH_DISABLE_MASK;
-    }
-
-  /* If we haven't already created a derived material... */
-  _cogl_material_apply_overrides (source, &options);
-
-  _cogl_material_flush_gl_state (source, FALSE);
-
-  GE (glDrawArrays (GL_TRIANGLE_FAN, 0, state->n_vertices));
-
-  cogl_handle_unref (source);
-}
-
-/* handles 2d-sliced textures with > 1 slice */
-static void
-_cogl_texture_polygon_multiple_primitives (const CoglTextureVertex *vertices,
-                                           unsigned int n_vertices,
-                                           unsigned int stride,
-                                           gboolean use_color)
-{
-  const GList               *layers;
-  CoglHandle                 layer0;
-  CoglHandle                 tex_handle;
-  GLfloat                   *v;
-  int                        i;
-  TextureSlicedPolygonState  state;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* We can assume in this case that we have at least one layer in the
-   * material that corresponds to a sliced cogl texture */
-  layers = cogl_material_get_layers (cogl_get_source ());
-  layer0 = (CoglHandle)layers->data;
-  tex_handle = cogl_material_layer_get_texture (layer0);
-
-  v = (GLfloat *)ctx->logged_vertices->data;
-  for (i = 0; i < n_vertices; i++)
-    {
-      guint8 *c;
-
-      v[0] = vertices[i].x;
-      v[1] = vertices[i].y;
-      v[2] = vertices[i].z;
-
-      if (use_color)
-        {
-          /* NB: [X,Y,Z,TX,TY,R,G,B,A,...] */
-          c = (guint8 *) (v + 5);
-          c[0] = cogl_color_get_red_byte (&vertices[i].color);
-          c[1] = cogl_color_get_green_byte (&vertices[i].color);
-          c[2] = cogl_color_get_blue_byte (&vertices[i].color);
-          c[3] = cogl_color_get_alpha_byte (&vertices[i].color);
-        }
-
-      v += stride;
-    }
-
-  state.stride = stride;
-  state.vertices = vertices;
-  state.n_vertices = n_vertices;
-
-  _cogl_texture_foreach_sub_texture_in_region (tex_handle,
-                                               0, 0, 1, 1,
-                                               draw_polygon_sub_texture_cb,
-                                               &state);
-}
-
-static void
-_cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
-                                             unsigned int n_vertices,
-                                             unsigned int n_layers,
-                                             unsigned int stride,
-                                             gboolean use_color,
-                                             guint32 fallback_layers,
-                                             CoglMaterialWrapModeOverrides *
-                                               wrap_mode_overrides)
-{
-  CoglHandle           material;
-  const GList         *layers;
-  int                  i;
-  GList               *tmp;
-  GLfloat             *v;
-  CoglMaterialFlushOptions options;
-  CoglMaterial        *copy = NULL;
-  CoglMaterial        *source;
+  unsigned int stride;
+  gsize stride_bytes;
+  CoglVertexArray *vertex_array;
+  float *v;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   material = cogl_get_source ();
-  layers = cogl_material_get_layers (material);
 
-  /* Convert the vertices into an array of GLfloats ready to pass to
-     OpenGL */
-  for (v = (GLfloat *)ctx->logged_vertices->data, i = 0;
-       i < n_vertices;
-       v += stride, i++)
+  validate_state.original_material = material;
+  validate_state.material = material;
+  cogl_material_foreach_layer (material,
+                               validate_layer_cb,
+                               &validate_state);
+  material = validate_state.material;
+
+  n_layers = cogl_material_get_n_layers (material);
+
+  n_attributes = 1 + n_layers + (use_color ? 1 : 0);
+  attributes = g_alloca (sizeof (CoglVertexAttribute *) * (n_attributes + 1));
+  attributes[n_attributes] = NULL;
+
+  /* Our data is arranged like:
+   * [X, Y, Z, TX0, TY0, TX1, TY1..., R, G, B, A,...] */
+  stride = 3 + (2 * n_layers) + (use_color ? 1 : 0);
+  stride_bytes = stride * sizeof (float);
+
+  /* Make sure there is enough space in the global vertex array. This
+   * is used so we can render the polygon with a single call to OpenGL
+   * but still support any number of vertices */
+  g_array_set_size (ctx->polygon_vertices, n_vertices * stride);
+
+  vertex_array = cogl_vertex_array_new (n_vertices * stride_bytes);
+
+  attributes[0] =
+    cogl_vertex_attribute_new (vertex_array,
+                               "cogl_position_in",
+                               stride_bytes,
+                               0,
+                               3,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+
+  for (i = 0; i < n_layers; i++)
     {
+      const char *names[] = {
+          "cogl_tex_coord0_in",
+          "cogl_tex_coord1_in",
+          "cogl_tex_coord2_in",
+          "cogl_tex_coord3_in",
+          "cogl_tex_coord4_in",
+          "cogl_tex_coord5_in",
+          "cogl_tex_coord6_in",
+          "cogl_tex_coord7_in"
+      };
+      char *name = i < 8 ? (char *)names[i] :
+        g_strdup_printf ("cogl_tex_coord%d_in", i);
+
+      attributes[i + 1] =
+        cogl_vertex_attribute_new (vertex_array,
+                                   name,
+                                   stride_bytes,
+                                   /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
+                                   12 + 8 * i,
+                                   2,
+                                   COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+    }
+
+  if (use_color)
+    {
+      attributes[n_attributes - 1] =
+        cogl_vertex_attribute_new (vertex_array,
+                                   "cogl_color_in",
+                                   stride_bytes,
+                                   /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
+                                   12 + 8 * n_layers,
+                                   4,
+                                   COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
+    }
+
+  /* Convert the vertices into an array of float vertex attributes */
+  v = (float *)ctx->polygon_vertices->data;
+  for (i = 0; i < n_vertices; i++)
+    {
+      AppendTexCoordsState append_tex_coords_state;
       guint8 *c;
-      int     j;
 
       /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
       v[0] = vertices[i].x;
       v[1] = vertices[i].y;
       v[2] = vertices[i].z;
 
-      for (tmp = (GList *)layers, j = 0; tmp != NULL; tmp = tmp->next, j++)
-        {
-          CoglHandle   layer = (CoglHandle)tmp->data;
-          CoglHandle   tex_handle;
-          GLfloat     *t;
-          float        tx, ty;
-
-          tex_handle = cogl_material_layer_get_texture (layer);
-
-          /* COGL_INVALID_HANDLE textures will be handled in
-           * _cogl_material_flush_layers_gl_state but there is no need to worry
-           * about scaling texture coordinates in this case */
-          if (tex_handle == COGL_INVALID_HANDLE)
-            continue;
-
-          tx = vertices[i].tx;
-          ty = vertices[i].ty;
-          _cogl_texture_transform_coords_to_gl (tex_handle, &tx, &ty);
-
-          /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
-          t = v + 3 + 2 * j;
-          t[0] = tx;
-          t[1] = ty;
-        }
+      append_tex_coords_state.vertices_in = vertices;
+      append_tex_coords_state.vertex = i;
+      append_tex_coords_state.layer = 0;
+      append_tex_coords_state.vertices_out = v;
+      cogl_material_foreach_layer (material,
+                                   append_tex_coord_attributes_cb,
+                                   &append_tex_coords_state);
 
       if (use_color)
         {
@@ -1036,266 +1021,22 @@ _cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
           c[2] = cogl_color_get_blue_byte (&vertices[i].color);
           c[3] = cogl_color_get_alpha_byte (&vertices[i].color);
         }
+
+      v += stride;
     }
 
-  if (G_UNLIKELY (ctx->legacy_state_set))
-    {
-      copy = cogl_material_copy (cogl_get_source ());
-      _cogl_material_apply_legacy_state (copy);
-      source = copy;
-    }
-  else
-    source = cogl_get_source ();
-
-  options.flags = 0;
-
-  if (G_UNLIKELY (fallback_layers))
-    {
-      options.flags |= COGL_MATERIAL_FLUSH_FALLBACK_MASK;
-      options.fallback_layers = fallback_layers;
-    }
-  if (wrap_mode_overrides)
-    {
-      options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
-      options.wrap_mode_overrides = *wrap_mode_overrides;
-    }
-  if (options.flags)
-    {
-      /* If we haven't already created a derived material... */
-      if (!copy)
-        {
-          copy = cogl_material_copy (source);
-          source = copy;
-        }
-      _cogl_material_apply_overrides (copy, &options);
-    }
-
-  _cogl_material_flush_gl_state (source, use_color);
-
-  GE (glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices));
-
-  if (G_UNLIKELY (copy))
-    cogl_handle_unref (copy);
-}
-
-void
-cogl_polygon (const CoglTextureVertex *vertices,
-              unsigned int             n_vertices,
-	      gboolean                 use_color)
-{
-  CoglMaterial        *material;
-  CoglMaterial        *copy = NULL;
-  const GList         *layers, *tmp;
-  int                  n_layers;
-  gboolean	       use_sliced_polygon_fallback = FALSE;
-  guint32              fallback_layers = 0;
-  int                  i;
-  unsigned long        enable_flags;
-  unsigned int         stride;
-  gsize                stride_bytes;
-  GLfloat             *v;
-  CoglMaterialWrapModeOverrides wrap_mode_overrides;
-  CoglMaterialWrapModeOverrides *wrap_mode_overrides_p = NULL;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  _cogl_journal_flush ();
-
-  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the material state) when flushing the clip stack, so should
-   * always be done first when preparing to draw. */
-  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
-
-  material = cogl_get_source ();
-  layers = cogl_material_get_layers (material);
-  n_layers = g_list_length ((GList *)layers);
-
-  memset (&wrap_mode_overrides, 0, sizeof (wrap_mode_overrides));
-
-  for (tmp = layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
-    {
-      CoglHandle layer = tmp->data;
-      CoglHandle tex_handle = cogl_material_layer_get_texture (layer);
-
-      /* COGL_INVALID_HANDLE textures will be handled in
-       * _cogl_material_flush_layers_gl_state */
-      if (tex_handle == COGL_INVALID_HANDLE)
-        continue;
-
-      /* Give the texture a chance to know that we're rendering
-       * non-quad shaped primitives. If the texture is in an atlas it
-       * will be migrated
-       *
-       * FIXME: this needs to be generalized. There could be any
-       * number of things that might require a shuffling of the
-       * underlying texture storage.
-       */
-      _cogl_texture_ensure_non_quad_rendering (tex_handle);
-
-      /* We need to ensure the mipmaps are ready before deciding
-       * anything else about the texture because the texture storate
-       * could completely change if it needs to be migrated out of the
-       * atlas and will affect how we validate the layer.
-       */
-      _cogl_material_layer_pre_paint (layer);
-
-      if (i == 0 && cogl_texture_is_sliced (tex_handle))
-        {
-#if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GLES2)
-          {
-            static gboolean warning_seen = FALSE;
-            if (!warning_seen)
-              g_warning ("cogl_polygon does not work for sliced textures "
-                         "on GL ES");
-            warning_seen = TRUE;
-            return;
-          }
-#endif
-          if (n_layers > 1)
-            {
-              static gboolean warning_seen = FALSE;
-              if (!warning_seen)
-                {
-                  g_warning ("Disabling layers 1..n since multi-texturing with "
-                             "cogl_polygon isn't supported when using sliced "
-                             "textures\n");
-                  warning_seen = TRUE;
-                }
-            }
-
-          use_sliced_polygon_fallback = TRUE;
-          n_layers = 1;
-
-          if (cogl_material_layer_get_min_filter (layer) != GL_NEAREST
-              || cogl_material_layer_get_mag_filter (layer) != GL_NEAREST)
-            {
-              static gboolean warning_seen = FALSE;
-              if (!warning_seen)
-                {
-                  g_warning ("cogl_texture_polygon does not work for sliced textures "
-                             "when the minification and magnification filters are not "
-                             "COGL_MATERIAL_FILTER_NEAREST");
-                  warning_seen = TRUE;
-                }
-              return;
-            }
-
-          break;
-        }
-
-      if (cogl_texture_is_sliced (tex_handle))
-        {
-          static gboolean warning_seen = FALSE;
-          if (!warning_seen)
-            g_warning ("Disabling layer %d of the current source material, "
-                       "because texturing with the vertex buffer API is not "
-                       "currently supported using sliced textures, or "
-                       "textures with waste\n", i);
-          warning_seen = TRUE;
-
-          fallback_layers |= (1 << i);
-          continue;
-        }
-
-      /* By default COGL_MATERIAL_WRAP_MODE_AUTOMATIC becomes
-         GL_CLAMP_TO_EDGE but we want the polygon API to use GL_REPEAT
-         to maintain compatibility with previous releases */
-      if (cogl_material_layer_get_wrap_mode_s (layer) ==
-          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-        {
-          wrap_mode_overrides.values[i].s =
-            COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
-          wrap_mode_overrides_p = &wrap_mode_overrides;
-        }
-      if (cogl_material_layer_get_wrap_mode_t (layer) ==
-          COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
-        {
-          wrap_mode_overrides.values[i].t =
-            COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
-          wrap_mode_overrides_p = &wrap_mode_overrides;
-        }
-    }
-
-  /* Our data is arranged like:
-   * [X, Y, Z, TX0, TY0, TX1, TY1..., R, G, B, A,...] */
-  stride = 3 + (2 * n_layers) + (use_color ? 1 : 0);
-  stride_bytes = stride * sizeof (GLfloat);
-
-  /* Make sure there is enough space in the global vertex
-     array. This is used so we can render the polygon with a single
-     call to OpenGL but still support any number of vertices */
-  g_array_set_size (ctx->logged_vertices, n_vertices * stride);
-  v = (GLfloat *)ctx->logged_vertices->data;
-
-  /* Prepare GL state */
-  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
-
-  if (ctx->enable_backface_culling)
-    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
-
-  if (use_color)
-    {
-      enable_flags |= COGL_ENABLE_COLOR_ARRAY;
-      GE( glColorPointer (4, GL_UNSIGNED_BYTE,
-                          stride_bytes,
-                          /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
-                          v + 3 + 2 * n_layers) );
-
-      if (!_cogl_material_get_real_blend_enabled (material))
-        {
-          CoglMaterialBlendEnable blend_enabled =
-            COGL_MATERIAL_BLEND_ENABLE_ENABLED;
-          copy = cogl_material_copy (material);
-          _cogl_material_set_blend_enabled (copy, blend_enabled);
-          material = copy;
-        }
-    }
-
-  _cogl_enable (enable_flags);
-  _cogl_flush_face_winding ();
-
-  GE (glVertexPointer (3, GL_FLOAT, stride_bytes, v));
-
-  for (i = 0; i < n_layers; i++)
-    {
-      GE (glClientActiveTexture (GL_TEXTURE0 + i));
-      GE (glEnableClientState (GL_TEXTURE_COORD_ARRAY));
-      GE (glTexCoordPointer (2, GL_FLOAT,
-                             stride_bytes,
-                             /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
-                             v + 3 + 2 * i));
-    }
-
-  _cogl_bitmask_clear_all (&ctx->temp_bitmask);
-  _cogl_bitmask_set_range (&ctx->temp_bitmask, n_layers, TRUE);
-  _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
+  v = (float *)ctx->polygon_vertices->data;
+  cogl_buffer_set_data (COGL_BUFFER (vertex_array),
+                        0,
+                        (const guint8 *)v,
+                        ctx->polygon_vertices->len * sizeof (float));
 
   cogl_push_source (material);
 
-  if (use_sliced_polygon_fallback)
-    _cogl_texture_polygon_multiple_primitives (vertices,
-                                               n_vertices,
-                                               stride,
-                                               use_color);
-  else
-    _cogl_multitexture_polygon_single_primitive (vertices,
-                                                 n_vertices,
-                                                 n_layers,
-                                                 stride,
-                                                 use_color,
-                                                 fallback_layers,
-                                                 wrap_mode_overrides_p);
+  cogl_draw_vertex_attributes_array (COGL_VERTICES_MODE_TRIANGLE_FAN,
+                                     0, n_vertices,
+                                     attributes);
 
   cogl_pop_source ();
-
-  if (copy)
-    cogl_object_unref (copy);
-  /* XXX: when we have weak materials then any override material
-   * should get associated with the original material so we don't
-   * create lots of one-shot materials! */
-
-  /* Reset the size of the logged vertex array because rendering
-     rectangles expects it to start at 0 */
-  g_array_set_size (ctx->logged_vertices, 0);
 }
 
