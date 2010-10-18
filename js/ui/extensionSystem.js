@@ -51,6 +51,12 @@ function loadExtension(dir, enabled, type) {
             return;
         }
     }
+
+    if (extensions[meta.uuid] != undefined) {
+        global.logError(baseErrorString + "extension already loaded");
+        return;
+    }
+
     // Encourage people to add this
     if (!meta['url']) {
         global.log(baseErrorString + 'Warning: Missing "url" property in metadata.json');
