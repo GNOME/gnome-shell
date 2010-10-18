@@ -21,7 +21,7 @@
  * 02111-1307, USA.
  */
 
-#include "boxes.h"
+#include "boxes-private.h"
 #include <glib.h>
 #include <stdlib.h>
 #include <stdio.h>

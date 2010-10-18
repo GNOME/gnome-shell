@@ -23,7 +23,7 @@
 
 #include <config.h>
 #include "edge-resistance.h"
-#include "boxes.h"
+#include "boxes-private.h"
 #include "display-private.h"
 #include "workspace-private.h"
 

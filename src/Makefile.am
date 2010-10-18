@@ -23,6 +23,7 @@ mutter_SOURCES= 				\
 	core/bell.c				\
 	core/bell.h				\
 	core/boxes.c				\
+	core/boxes-private.h			\
 	include/boxes.h				\
 	compositor/compositor.c			\
 	compositor/compositor-private.h		\
@@ -126,9 +127,9 @@ mutter_SOURCES= 				\
 	ui/tile-preview.c			\
 	include/tile-preview.h			\
 	ui/theme-parser.c			\
-	ui/theme-parser.h			\
 	ui/theme.c				\
 	ui/theme.h				\
+	ui/theme-private.h			\
 	ui/ui.c					\
 	include/all-keybindings.h               \
 	$(mutter_built_sources)
@@ -149,7 +150,6 @@ libmutter_private_la_SOURCES=			\
 	gdk2-drawing-utils.c			\
 	gdk2-drawing-utils.h			\
 	ui/theme-parser.c			\
-	ui/theme-parser.h			\
 	ui/theme.c				\
 	ui/theme.h
 
@@ -164,7 +164,6 @@ libmutterinclude_base_headers =		\
 	include/main.h				\
 	include/util.h				\
 	include/common.h			\
-	ui/theme-parser.h			\
 	ui/theme.h				\
 	include/prefs.h				\
 	include/window.h			\
@@ -226,7 +225,6 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mu
 		--nsversion=$(api_version)		\
 		--warn-all				\
 		--warn-error				\
-		--accept-unprefixed			\
 		--include=GObject-2.0			\
 		--include=Gdk-@GTK_API_VERSION@		\
 		--include=Gtk-@GTK_API_VERSION@		\

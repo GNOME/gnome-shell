@@ -53,8 +53,7 @@
  */
 
 #include <config.h>
-#include "theme.h"
-#include "theme-parser.h"
+#include "theme-private.h"
 #include "util.h"
 #include "gradient.h"
 #include <gtk/gtk.h>

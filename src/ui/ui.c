@@ -29,7 +29,7 @@
 #include "util.h"
 #include "menu.h"
 #include "core.h"
-#include "theme.h"
+#include "theme-private.h"
 
 #include "inlinepixbufs.h"
 #include "gdk-compat.h"

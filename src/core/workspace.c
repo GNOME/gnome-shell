@@ -26,6 +26,7 @@
 #include <config.h>
 #include "workspace.h"
 #include "workspace-private.h"
+#include "boxes-private.h"
 #include "errors.h"
 #include "prefs.h"
 
@@ -1048,7 +1049,7 @@ strut_lists_equal (GSList *l,
 /**
  * meta_workspace_set_builtin_struts:
  * @workspace: a #MetaWorkspace
- * @struts: (element-type Strut) (transfer none): list of #MetaStrut
+ * @struts: (element-type Meta.Strut) (transfer none): list of #MetaStrut
  *
  * Sets a list of struts that will be used in addition to the struts
  * of the windows in the workspace when computing the work area of

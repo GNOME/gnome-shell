@@ -24,6 +24,7 @@
  */
 
 #include <config.h>
+#include "boxes-private.h"
 #include "constraints.h"
 #include "workspace-private.h"
 #include "place.h"
