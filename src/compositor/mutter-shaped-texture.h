@@ -33,8 +33,6 @@
 #include <clutter/glx/clutter-glx.h>
 #endif /* HAVE_GLX_TEXTURE_PIXMAP */
 
-#include "region.h"
-
 G_BEGIN_DECLS
 
 #define MUTTER_TYPE_SHAPED_TEXTURE			    \
@@ -101,7 +99,7 @@ void mutter_shaped_texture_add_rectangles (MutterShapedTexture *stex,
 
 /* Assumes ownership of clip_region */
 void mutter_shaped_texture_set_clip_region (MutterShapedTexture *stex,
-					    MetaRegion          *clip_region);
+					    cairo_region_t      *clip_region);
 
 G_END_DECLS
 

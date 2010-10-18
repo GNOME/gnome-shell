@@ -880,29 +880,5 @@ meta_later_remove (guint later_id)
     }
 }
 
-#ifdef USE_CAIRO_REGION
-#include "region.h"
-
-void
-meta_region_get_rectangles (MetaRegion    *region,
-                            GdkRectangle **rectangles,
-                            int           *n_rectangles)
-{
-  int n = cairo_region_num_rectangles (region);
-
-  if (n_rectangles != NULL)
-    *n_rectangles = n;
-
-  if (rectangles != NULL)
-    {
-      int i;
-
-      *rectangles = g_new (cairo_rectangle_int_t, n);
-      for (i = 0; i < n; i++)
-        cairo_region_get_rectangle (region, i, *rectangles + i);
-    }
-}
-#endif
-
 /* eof util.c */
 

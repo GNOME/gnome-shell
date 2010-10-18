@@ -27,7 +27,6 @@
 #include <math.h>
 #include "boxes.h"
 #include "frames.h"
-#include "region.h"
 #include "util.h"
 #include "core.h"
 #include "menu.h"
@@ -300,7 +299,7 @@ meta_frames_finalize (GObject *object)
 
 typedef struct
 {
-  GdkRectangle rect;
+  cairo_rectangle_int_t rect;
   MetaPixmap *pixmap;
 } CachedFramePiece;
 
@@ -2111,9 +2110,9 @@ setup_bg_cr (cairo_t *cr, GdkWindow *window, int x_offset, int y_offset)
 */
 
 static MetaPixmap *
-generate_pixmap (MetaFrames *frames,
-                 MetaUIFrame *frame,
-                 GdkRectangle *rect)
+generate_pixmap (MetaFrames            *frames,
+                 MetaUIFrame           *frame,
+                 cairo_rectangle_int_t *rect)
 {
   MetaPixmap *result;
   cairo_t *cr;
@@ -2220,11 +2219,12 @@ populate_cache (MetaFrames *frames,
 }
 
 static void
-clip_to_screen (MetaRegion *region, MetaUIFrame *frame)
+clip_to_screen (cairo_region_t *region,
+                MetaUIFrame    *frame)
 {
-  GdkRectangle frame_area;
-  GdkRectangle screen_area = { 0, 0, 0, 0 };
-  MetaRegion *tmp_region;
+  cairo_rectangle_int_t frame_area;
+  cairo_rectangle_int_t screen_area = { 0, 0, 0, 0 };
+  cairo_region_t *tmp_region;
   
   /* Chop off stuff outside the screen; this optimization
    * is crucial to handle huge client windows,
@@ -2240,26 +2240,27 @@ clip_to_screen (MetaRegion *region, MetaUIFrame *frame)
                  META_CORE_GET_SCREEN_HEIGHT, &screen_area.height,
                  META_CORE_GET_END);
 
-  meta_region_translate (region, frame_area.x, frame_area.y);
+  cairo_region_translate (region, frame_area.x, frame_area.y);
 
-  tmp_region = meta_region_new_from_rectangle (&frame_area);
-  meta_region_intersect (region, tmp_region);
-  meta_region_destroy (tmp_region);
+  tmp_region = cairo_region_create_rectangle (&frame_area);
+  cairo_region_intersect (region, tmp_region);
+  cairo_region_destroy (tmp_region);
 
-  tmp_region = meta_region_new_from_rectangle (&screen_area);
-  meta_region_intersect (region, tmp_region);
-  meta_region_destroy (tmp_region);
+  tmp_region = cairo_region_create_rectangle (&screen_area);
+  cairo_region_intersect (region, tmp_region);
+  cairo_region_destroy (tmp_region);
 
-  meta_region_translate (region, - frame_area.x, - frame_area.y);
+  cairo_region_translate (region, - frame_area.x, - frame_area.y);
 }
 
 static void
-subtract_client_area (MetaRegion *region, MetaUIFrame *frame)
+subtract_client_area (cairo_region_t *region,
+                      MetaUIFrame    *frame)
 {
-  GdkRectangle area;
+  cairo_rectangle_int_t area;
   MetaFrameFlags flags;
   MetaFrameType type;
-  MetaRegion *tmp_region;
+  cairo_region_t *tmp_region;
   Display *display;
   
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
@@ -2274,17 +2275,17 @@ subtract_client_area (MetaRegion *region, MetaUIFrame *frame)
                          type, frame->text_height, flags, 
                          &area.y, NULL, &area.x, NULL);
 
-  tmp_region = meta_region_new_from_rectangle (&area);
-  meta_region_subtract (region, tmp_region);
-  meta_region_destroy (tmp_region);
+  tmp_region = cairo_region_create_rectangle (&area);
+  cairo_region_subtract (region, tmp_region);
+  cairo_region_destroy (tmp_region);
 }
 
 static void
-cached_pixels_draw (CachedPixels *pixels,
-                    cairo_t      *cr,
-                    MetaRegion   *region)
+cached_pixels_draw (CachedPixels   *pixels,
+                    cairo_t        *cr,
+                    cairo_region_t *region)
 {
-  MetaRegion *region_piece;
+  cairo_region_t *region_piece;
   int i;
 
   for (i = 0; i < 4; i++)
@@ -2298,9 +2299,9 @@ cached_pixels_draw (CachedPixels *pixels,
                                         piece->rect.x, piece->rect.y);
           cairo_paint (cr);
           
-          region_piece = meta_region_new_from_rectangle (&piece->rect);
-          meta_region_subtract (region, region_piece);
-          meta_region_destroy (region_piece);
+          region_piece = cairo_region_create_rectangle (&piece->rect);
+          cairo_region_subtract (region, region_piece);
+          cairo_region_destroy (region_piece);
         }
     }
 }
@@ -2313,8 +2314,8 @@ meta_frames_draw (GtkWidget *widget,
   MetaUIFrame *frame;
   MetaFrames *frames;
   CachedPixels *pixels;
-  MetaRegion *region;
-  GdkRectangle *areas, clip;
+  cairo_region_t *region;
+  cairo_rectangle_int_t clip;
   int i, n_areas;
   cairo_surface_t *target;
 
@@ -2336,7 +2337,7 @@ meta_frames_draw (GtkWidget *widget,
 
   populate_cache (frames, frame);
 
-  region = meta_region_new_from_rectangle (&clip);
+  region = cairo_region_create_rectangle (&clip);
   
   pixels = get_cache (frames, frame);
 
@@ -2345,13 +2346,17 @@ meta_frames_draw (GtkWidget *widget,
   clip_to_screen (region, frame);
   subtract_client_area (region, frame);
 
-  meta_region_get_rectangles (region, &areas, &n_areas);
+  n_areas = cairo_region_num_rectangles (region);
 
   for (i = 0; i < n_areas; i++)
     {
+      cairo_rectangle_int_t area;
+
+      cairo_region_get_rectangle (region, i, &area);
+
       cairo_save (cr);
 
-      gdk_cairo_rectangle (cr, &areas[i]);
+      cairo_rectangle (cr, area.x, area.y, area.width, area.height);
       cairo_clip (cr);
 
       cairo_push_group (cr);
@@ -2364,9 +2369,7 @@ meta_frames_draw (GtkWidget *widget,
       cairo_restore (cr);
     }
 
-  g_free (areas);
-
-  meta_region_destroy (region);
+  cairo_region_destroy (region);
   
   return TRUE;
 }
@@ -2378,9 +2381,10 @@ meta_frames_expose_event (GtkWidget           *widget,
   MetaUIFrame *frame;
   MetaFrames *frames;
   CachedPixels *pixels;
-  MetaRegion *region, *area_region;
-  GdkRectangle *areas;
+  cairo_region_t *region;
   int i, n_areas;
+  GdkRectangle *event_rectangles;
+  int n_event_rectangles;
   cairo_t *cr;
 
   frames = META_FRAMES (widget);
@@ -2398,7 +2402,11 @@ meta_frames_expose_event (GtkWidget           *widget,
 
   populate_cache (frames, frame);
 
-  region = meta_region_copy (event->region);
+  /* Count on GdkRectangle and cairo_rectangle_int_t being identical */
+  gdk_region_get_rectangles (event->region, &event_rectangles, &n_event_rectangles);
+  region = cairo_region_create_rectangles ((cairo_rectangle_int_t *)event_rectangles,
+                                           n_event_rectangles);
+  g_free (event_rectangles);
   
   pixels = get_cache (frames, frame);
 
@@ -2409,13 +2417,16 @@ meta_frames_expose_event (GtkWidget           *widget,
   clip_to_screen (region, frame);
   subtract_client_area (region, frame);
 
-  meta_region_get_rectangles (region, &areas, &n_areas);
+  n_areas = cairo_region_num_rectangles (region);
 
   for (i = 0; i < n_areas; i++)
     {
-      area_region = meta_region_new_from_rectangle (&areas[i]);
+      GdkRectangle area;
 
-      gdk_window_begin_paint_region (event->window, area_region);
+      /* Count on GdkRectangle and cairo_rectangle_int_t being identical */
+      cairo_region_get_rectangle (region, i, (cairo_rectangle_int_t *)&area);
+
+      gdk_window_begin_paint_rect (event->window, &area);
       cr = gdk_cairo_create (event->window);
       /* no need to clip, begin_paint_region ensures the pixmap
        * is only as big as the rect we use. */
@@ -2424,13 +2435,9 @@ meta_frames_expose_event (GtkWidget           *widget,
 
       cairo_destroy (cr);
       gdk_window_end_paint (event->window);
-
-      meta_region_destroy (area_region);
     }
 
-  g_free (areas);
-
-  meta_region_destroy (region);
+  cairo_region_destroy (region);
   
   return TRUE;
 }
@@ -2745,7 +2752,7 @@ get_control (MetaFrames *frames,
   MetaFrameGeometry fgeom;
   MetaFrameFlags flags;
   gboolean has_vert, has_horiz;
-  GdkRectangle client;
+  cairo_rectangle_int_t client;
   
   meta_frames_calc_geometry (frames, frame, &fgeom);
 

@@ -28,7 +28,6 @@
 
 #include "tile-preview.h"
 #include "core.h"
-#include "region.h"
 
 #include "gdk2-drawing-utils.h"
 
@@ -241,7 +240,6 @@ meta_tile_preview_show (MetaTilePreview *preview,
   if (!preview->has_alpha)
     {
       GdkRectangle outer_rect, inner_rect;
-      MetaRegion *outer_region, *inner_region;
       GdkColor black;
 
       black = gtk_widget_get_style (preview->preview_window)->black;
@@ -256,14 +254,33 @@ meta_tile_preview_show (MetaTilePreview *preview,
       inner_rect.width = outer_rect.width - 2 * OUTLINE_WIDTH;
       inner_rect.height = outer_rect.height - 2 * OUTLINE_WIDTH;
 
-      outer_region = meta_region_new_from_rectangle (&outer_rect);
-      inner_region = meta_region_new_from_rectangle (&inner_rect);
+#if GTK_CHECK_VERSION (2, 90, 8) /* gtk3 */
+      {
+        cairo_region_t *outer_region, *inner_region;
 
-      meta_region_subtract (outer_region, inner_region);
-      meta_region_destroy (inner_region);
+        outer_region = cairo_region_create_rectangle (&outer_rect);
+        inner_region = cairo_region_create_rectangle (&inner_rect);
 
-      gdk_window_shape_combine_region (window, outer_region, 0, 0);
-      meta_region_destroy (outer_region);
+        cairo_region_subtract (outer_region, inner_region);
+        cairo_region_destroy (inner_region);
+
+        gdk_window_shape_combine_region (window, outer_region, 0, 0);
+        cairo_region_destroy (outer_region);
+      }
+#else /* gtk2 */
+      {
+        GdkRegion *outer_region, *inner_region;
+
+        outer_region = gdk_region_rectangle (&outer_rect);
+        inner_region = gdk_region_rectangle (&inner_rect);
+
+        gdk_region_subtract (outer_region, inner_region);
+        gdk_region_destroy (inner_region);
+
+        gdk_window_shape_combine_region (window, outer_region, 0, 0);
+        gdk_region_destroy (outer_region);
+      }
+#endif /* gtk2 */
     }
 }
 

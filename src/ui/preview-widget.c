@@ -487,11 +487,11 @@ meta_preview_get_mini_icon (void)
   return default_icon;
 }
 
-MetaRegion *
+cairo_region_t *
 meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint new_window_height)
 {
-  GdkRectangle xrect;
-  MetaRegion *corners_xregion, *window_xregion;
+  cairo_rectangle_int_t xrect;
+  cairo_region_t *corners_xregion, *window_xregion;
   gint flags;
   MetaFrameLayout *fgeom;
   MetaFrameStyle *frame_style;
@@ -500,14 +500,14 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
 
   flags = (META_PREVIEW (preview)->flags);
 
-  window_xregion = meta_region_new ();
+  window_xregion = cairo_region_create ();
 
   xrect.x = 0;
   xrect.y = 0;
   xrect.width = new_window_width;
   xrect.height = new_window_height;
 
-  meta_region_union_rectangle (window_xregion, &xrect);
+  cairo_region_union_rectangle (window_xregion, &xrect);
 
   if (preview->theme == NULL)
     return window_xregion;
@@ -518,7 +518,7 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
 
   fgeom = frame_style->layout;
 
-  corners_xregion = meta_region_new ();
+  corners_xregion = cairo_region_create ();
 
   if (fgeom->top_left_corner_rounded_radius != 0)
     {
@@ -535,7 +535,7 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
           xrect.width = width;
           xrect.height = 1;
 
-          meta_region_union_rectangle (corners_xregion, &xrect);
+          cairo_region_union_rectangle (corners_xregion, &xrect);
         }
     }
 
@@ -553,7 +553,7 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
           xrect.width = width;
           xrect.height = 1;
 
-          meta_region_union_rectangle (corners_xregion, &xrect);
+          cairo_region_union_rectangle (corners_xregion, &xrect);
         }
     }
 
@@ -571,7 +571,7 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
           xrect.width = width;
           xrect.height = 1;
 
-          meta_region_union_rectangle (corners_xregion, &xrect);
+          cairo_region_union_rectangle (corners_xregion, &xrect);
         }
     }
 
@@ -589,12 +589,12 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
           xrect.width = width;
           xrect.height = 1;
 
-          meta_region_union_rectangle (corners_xregion, &xrect);
+          cairo_region_union_rectangle (corners_xregion, &xrect);
         }
     }
 
-  meta_region_subtract (window_xregion, corners_xregion);
-  meta_region_destroy (corners_xregion);
+  cairo_region_subtract (window_xregion, corners_xregion);
+  cairo_region_destroy (corners_xregion);
 
   return window_xregion;
 }

@@ -24,7 +24,6 @@
 #include <config.h>
 
 #include "theme.h"
-#include "region.h"
 #include <gtk/gtk.h>
 
 #ifndef META_PREVIEW_WIDGET_H
@@ -80,9 +79,9 @@ void meta_preview_set_frame_flags   (MetaPreview            *preview,
 void meta_preview_set_button_layout (MetaPreview            *preview,
                                      const MetaButtonLayout *button_layout);
 
-MetaRegion * meta_preview_get_clip_region (MetaPreview *preview,
-                                          gint new_window_width,
-                                          gint new_window_height);
+cairo_region_t * meta_preview_get_clip_region (MetaPreview *preview,
+                                               gint         new_window_width,
+                                               gint         new_window_height);
 
 GdkPixbuf* meta_preview_get_icon (void);
 GdkPixbuf* meta_preview_get_mini_icon (void);

@@ -32,7 +32,6 @@
  */
 #include "../core/workspace-private.h"
 #include "../core/frame-private.h"
-#include "region.h"
 #include "draw-workspace.h"
 #include <gtk/gtk.h>
 #include <math.h>
@@ -481,8 +480,6 @@ display_entry (MetaTabPopup *popup,
 {
   GdkRectangle rect;
   GdkWindow *window;
-  MetaRegion *region;
-  MetaRegion *inner_region;
 
   
   if (popup->current_selected_entry)
@@ -520,17 +517,40 @@ display_entry (MetaTabPopup *popup,
       gdk_window_set_background (window,
                                  &gtk_widget_get_style (popup->outline_window)->black);
   
-      region = meta_region_new_from_rectangle (&rect);
-      inner_region = meta_region_new_from_rectangle (&te->inner_rect);
-      meta_region_subtract (region, inner_region);
-      meta_region_destroy (inner_region);
-  
-      gdk_window_shape_combine_region (window,
-                                       region,
-                                       0, 0);
+#if GTK_CHECK_VERSION (2, 90, 8) /* gtk3 */
+      {
+        cairo_region_t *region;
+        cairo_region_t *inner_region;
 
-      meta_region_destroy (region);
-  
+        region = cairo_region_create_rectangle (&rect);
+        inner_region = cairo_region_create_rectangle (&te->inner_rect);
+        cairo_region_subtract (region, inner_region);
+        cairo_region_destroy (inner_region);
+
+        gdk_window_shape_combine_region (window,
+                                         region,
+                                         0, 0);
+
+        cairo_region_destroy (region);
+      }
+#else /* gtk2 */
+      {
+        GdkRegion *region;
+        GdkRegion *inner_region;
+
+        region = gdk_region_rectangle (&rect);
+        inner_region = gdk_region_rectangle (&te->inner_rect);
+        gdk_region_subtract (region, inner_region);
+        gdk_region_destroy (inner_region);
+
+        gdk_window_shape_combine_region (window,
+                                         region,
+                                         0, 0);
+
+        gdk_region_destroy (region);
+      }
+#endif /* gtk2 */
+
       /* This should piss off gtk a bit, but we don't want to raise
        * above the tab popup.  So, instead of calling gtk_widget_show,
        * we manually set the window as mapped and then manually map it

@@ -7,7 +7,6 @@
 
 #include "mutter-window-private.h"
 #include "mutter-window-group.h"
-#include "region.h"
 
 struct _MutterWindowGroupClass
 {
@@ -102,8 +101,8 @@ static void
 mutter_window_group_paint (ClutterActor *actor)
 {
   MutterWindowGroup *window_group = MUTTER_WINDOW_GROUP (actor);
-  MetaRegion *visible_region;
-  GdkRectangle screen_rect = { 0 };
+  cairo_region_t *visible_region;
+  cairo_rectangle_int_t screen_rect = { 0 };
   GList *children, *l;
 
   /* We walk the list from top to bottom (opposite of painting order),
@@ -119,7 +118,7 @@ mutter_window_group_paint (ClutterActor *actor)
    * optimization, however.)
    */
   meta_screen_get_size (window_group->screen, &screen_rect.width, &screen_rect.height);
-  visible_region = meta_region_new_from_rectangle (&screen_rect);
+  visible_region = cairo_region_create_rectangle (&screen_rect);
 
   for (l = children; l; l = l->next)
     {
@@ -135,22 +134,22 @@ mutter_window_group_paint (ClutterActor *actor)
         continue;
 
       /* Temporarily move to the coordinate system of the actor */
-      meta_region_translate (visible_region, - x, - y);
+      cairo_region_translate (visible_region, - x, - y);
 
       mutter_window_set_visible_region (cw, visible_region);
 
       if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (cw)) == 0xff)
         {
-          MetaRegion *obscured_region = mutter_window_get_obscured_region (cw);
+          cairo_region_t *obscured_region = mutter_window_get_obscured_region (cw);
           if (obscured_region)
-            meta_region_subtract (visible_region, obscured_region);
+            cairo_region_subtract (visible_region, obscured_region);
         }
 
       mutter_window_set_visible_region_beneath (cw, visible_region);
-      meta_region_translate (visible_region, x, y);
+      cairo_region_translate (visible_region, x, y);
     }
 
-  meta_region_destroy (visible_region);
+  cairo_region_destroy (visible_region);
 
   CLUTTER_ACTOR_CLASS (mutter_window_group_parent_class)->paint (actor);
 

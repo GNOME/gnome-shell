@@ -68,7 +68,7 @@ struct _MutterShapedTexturePrivate
   CoglHandle material;
   CoglHandle material_unshaped;
 
-  MetaRegion *clip_region;
+  cairo_region_t *clip_region;
 
   guint mask_width, mask_height;
 
@@ -303,7 +303,7 @@ mutter_shaped_texture_paint (ClutterActor *actor)
 
   CoglHandle material;
 
-  if (priv->clip_region && meta_region_is_empty (priv->clip_region))
+  if (priv->clip_region && cairo_region_is_empty (priv->clip_region))
     return;
 
   if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (stex)))
@@ -386,7 +386,6 @@ mutter_shaped_texture_paint (ClutterActor *actor)
 
   if (priv->clip_region)
     {
-      GdkRectangle *rects;
       int n_rects;
       int i;
 
@@ -394,31 +393,27 @@ mutter_shaped_texture_paint (ClutterActor *actor)
        * fall back and draw the whole thing */
 #     define MAX_RECTS 16
 
-      /* Would be nice to be able to check the number of rects first */
-      meta_region_get_rectangles (priv->clip_region, &rects, &n_rects);
-      if (n_rects > MAX_RECTS)
-	{
-	  g_free (rects);
-	  /* Fall through to following code */
-	}
-      else
+      n_rects = cairo_region_num_rectangles (priv->clip_region);
+      if (n_rects <= MAX_RECTS)
 	{
 	  float coords[8];
           float x1, y1, x2, y2;
 
 	  for (i = 0; i < n_rects; i++)
 	    {
-	      GdkRectangle *rect = &rects[i];
+	      cairo_rectangle_int_t rect;
 
-	      x1 = rect->x;
-	      y1 = rect->y;
-	      x2 = rect->x + rect->width;
-	      y2 = rect->y + rect->height;
+	      cairo_region_get_rectangle (priv->clip_region, i, &rect);
 
-              coords[0] = rect->x / (alloc.x2 - alloc.x1);
-	      coords[1] = rect->y / (alloc.y2 - alloc.y1);
-	      coords[2] = (rect->x + rect->width) / (alloc.x2 - alloc.x1);
-	      coords[3] = (rect->y + rect->height) / (alloc.y2 - alloc.y1);
+	      x1 = rect.x;
+	      y1 = rect.y;
+	      x2 = rect.x + rect.width;
+	      y2 = rect.y + rect.height;
+
+	      coords[0] = rect.x / (alloc.x2 - alloc.x1);
+	      coords[1] = rect.y / (alloc.y2 - alloc.y1);
+	      coords[2] = (rect.x + rect.width) / (alloc.x2 - alloc.x1);
+	      coords[3] = (rect.y + rect.height) / (alloc.y2 - alloc.y1);
 
               coords[4] = coords[0];
               coords[5] = coords[1];
@@ -428,8 +423,6 @@ mutter_shaped_texture_paint (ClutterActor *actor)
               cogl_rectangle_with_multitexture_coords (x1, y1, x2, y2,
                                                        &coords[0], 8);
             }
-
-	  g_free (rects);
 
 	  return;
 	}
@@ -624,7 +617,7 @@ mutter_shaped_texture_add_rectangles (MutterShapedTexture *stex,
  */
 void
 mutter_shaped_texture_set_clip_region (MutterShapedTexture *stex,
-				       MetaRegion          *clip_region)
+				       cairo_region_t      *clip_region)
 {
   MutterShapedTexturePrivate *priv;
 
@@ -634,7 +627,7 @@ mutter_shaped_texture_set_clip_region (MutterShapedTexture *stex,
 
   if (priv->clip_region)
     {
-      meta_region_destroy (priv->clip_region);
+      cairo_region_destroy (priv->clip_region);
       priv->clip_region = NULL;
     }
 

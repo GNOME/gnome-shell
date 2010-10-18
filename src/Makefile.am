@@ -50,7 +50,6 @@ mutter_SOURCES= 				\
 	include/compositor.h			\
 	include/mutter-plugin.h			\
 	include/mutter-window.h			\
-	include/region.h			\
 	include/compositor-mutter.h 		\
 	core/constraints.c			\
 	core/constraints.h			\
@@ -147,7 +146,6 @@ libmutter_private_la_SOURCES=			\
 	include/common.h			\
 	ui/preview-widget.c			\
 	ui/preview-widget.h			\
-	include/region.h			\
 	gdk2-drawing-utils.c			\
 	gdk2-drawing-utils.h			\
 	ui/theme-parser.c			\
@@ -187,8 +185,7 @@ libmutterinclude_base_headers =		\
 # atomnames.h: macros cause problems for scanning process
 libmutterinclude_extra_headers =		\
 	ui/preview-widget.h			\
-	include/atomnames.h			\
-	include/region.h
+	include/atomnames.h
 
 if INSTALL_LIBMUTTER_PRIVATE
 libmutterincludedir = $(includedir)/mutter/mutter-private
