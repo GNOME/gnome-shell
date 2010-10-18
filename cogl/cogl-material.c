@@ -5211,6 +5211,51 @@ _cogl_material_layer_get_filters (CoglMaterialLayer *layer,
 }
 
 void
+_cogl_material_get_layer_filters (CoglMaterial *material,
+                                  int layer_index,
+                                  CoglMaterialFilter *min_filter,
+                                  CoglMaterialFilter *mag_filter)
+{
+  CoglMaterialLayer *layer;
+  CoglMaterialLayer *authority;
+
+  g_return_if_fail (cogl_is_material (material));
+
+  layer = _cogl_material_get_layer (material, layer_index);
+
+  authority =
+    _cogl_material_layer_get_authority (layer,
+                                        COGL_MATERIAL_LAYER_STATE_FILTERS);
+
+  *min_filter = authority->min_filter;
+  *mag_filter = authority->mag_filter;
+}
+
+CoglMaterialFilter
+_cogl_material_get_layer_min_filter (CoglMaterial *material,
+                                     int layer_index)
+{
+  CoglMaterialFilter min_filter;
+  CoglMaterialFilter mag_filter;
+
+  _cogl_material_get_layer_filters (material, layer_index,
+                                    &min_filter, &mag_filter);
+  return min_filter;
+}
+
+CoglMaterialFilter
+_cogl_material_get_layer_mag_filter (CoglMaterial *material,
+                                     int layer_index)
+{
+  CoglMaterialFilter min_filter;
+  CoglMaterialFilter mag_filter;
+
+  _cogl_material_get_layer_filters (material, layer_index,
+                                    &min_filter, &mag_filter);
+  return mag_filter;
+}
+
+void
 _cogl_material_layer_pre_paint (CoglMaterialLayer *layer)
 {
   CoglMaterialLayer *texture_authority;

@@ -874,6 +874,20 @@ _cogl_material_layer_get_filters (CoglMaterialLayer *layer,
                                   CoglMaterialFilter *mag_filter);
 
 void
+_cogl_material_get_layer_filters (CoglMaterial *material,
+                                  int layer_index,
+                                  CoglMaterialFilter *min_filter,
+                                  CoglMaterialFilter *mag_filter);
+
+CoglMaterialFilter
+_cogl_material_get_layer_min_filter (CoglMaterial *material,
+                                     int layer_index);
+
+CoglMaterialFilter
+_cogl_material_get_layer_mag_filter (CoglMaterial *material,
+                                     int layer_index);
+
+void
 _cogl_material_texture_storage_change_notify (CoglHandle texture);
 
 void
