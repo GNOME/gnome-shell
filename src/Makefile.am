@@ -28,6 +28,8 @@ mutter_SOURCES= 				\
 	compositor/meta-plugin.c		\
 	compositor/meta-plugin-manager.c	\
 	compositor/meta-plugin-manager.h	\
+	compositor/meta-shadow-factory.c	\
+	compositor/meta-shadow-factory.h	\
 	compositor/meta-shaped-texture.c	\
 	compositor/meta-shaped-texture.h	\
 	compositor/meta-texture-tower.c		\
@@ -36,10 +38,10 @@ mutter_SOURCES= 				\
 	compositor/meta-window-actor-private.h	\
 	compositor/meta-window-group.c		\
 	compositor/meta-window-group.h		\
-	compositor/shadow.c			\
-	compositor/shadow.h			\
-	compositor/tidy/tidy-texture-frame.c	\
-	compositor/tidy/tidy-texture-frame.h	\
+	compositor/meta-window-shape.c		\
+	compositor/meta-window-shape.h		\
+	compositor/region-utils.c		\
+	compositor/region-utils.h		\
 	include/compositor.h			\
 	include/meta-plugin.h			\
 	include/meta-window-actor.h		\
