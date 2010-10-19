@@ -542,6 +542,9 @@ st_theme_node_get_color (StThemeNode  *node,
         }
     }
 
+  if (inherit && node->parent_node)
+    return st_theme_node_get_color (node->parent_node, property_name, inherit, color);
+
   return FALSE;
 }
 
