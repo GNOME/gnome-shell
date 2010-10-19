@@ -162,7 +162,6 @@ test_script_child (TestConformSimpleFixture *fixture,
   g_assert (!focus_ret);
 
   g_object_unref (script);
-  clutter_actor_destroy (CLUTTER_ACTOR (container));
   g_free (test_file);
 }
 
@@ -201,8 +200,6 @@ test_script_single (TestConformSimpleFixture *fixture,
   g_assert_cmpint (color.alpha, ==, 0xff);
 
   g_object_unref (script);
-
-  clutter_actor_destroy (rect);
   g_free (test_file);
 }
 
@@ -273,7 +270,6 @@ test_script_object_property (TestConformSimpleFixture *fixture,
   g_assert (CLUTTER_IS_BIN_LAYOUT (manager));
 
   g_object_unref (script);
-  clutter_actor_destroy (CLUTTER_ACTOR (actor));
   g_free (test_file);
 }
 
@@ -306,7 +302,6 @@ test_script_named_object (TestConformSimpleFixture *fixture,
   g_assert (clutter_box_layout_get_vertical (CLUTTER_BOX_LAYOUT (manager)));
 
   g_object_unref (script);
-  clutter_actor_destroy (CLUTTER_ACTOR (actor));
   g_free (test_file);
 }
 
