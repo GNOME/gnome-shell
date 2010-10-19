@@ -12,6 +12,7 @@ const St = imports.gi.St;
 const Tweener = imports.ui.tweener;
 
 const Main = imports.ui.main;
+const BoxPointer = imports.ui.boxpointer;
 const Params = imports.misc.params;
 
 const ANIMATION_TIME = 0.2;
@@ -778,15 +779,19 @@ MessageTray.prototype = {
         this._summaryBin.child = this._summary;
         this._summaryBin.opacity = 0;
 
-        this._summaryNotificationBin = new St.Bin({ name: 'summary-notification-bin',
-                                                    anchor_gravity: Clutter.Gravity.NORTH_EAST,
-                                                    reactive: true,
-                                                    track_hover: true });
-        this.actor.add_actor(this._summaryNotificationBin);
-        this._summaryNotificationBin.lower_bottom();
-        this._summaryNotificationBin.hide();
+        this._summaryMotionId = 0;
+
+        this._summaryNotificationBoxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM,
+                                                                        { reactive: true,
+                                                                          track_hover: true });
+        this._summaryNotificationBoxPointer.actor.style_class = 'summary-notification-boxpointer';
+        this.actor.add_actor(this._summaryNotificationBoxPointer.actor);
+        this._summaryNotificationBoxPointer.actor.lower_bottom();
+        this._summaryNotificationBoxPointer.actor.hide();
+
         this._summaryNotification = null;
         this._clickedSummaryItem = null;
+        this._clickedSummaryItemAllocationChangedId = 0;
         this._expandedSummaryItem = null;
         this._summaryItemTitleWidth = 0;
 
@@ -817,7 +822,7 @@ MessageTray.prototype = {
         Main.chrome.addActor(this.actor, { affectsStruts: false,
                                            visibleInOverview: true });
         Main.chrome.trackActor(this._notificationBin);
-        Main.chrome.trackActor(this._summaryNotificationBin);
+        Main.chrome.trackActor(this._summaryNotificationBoxPointer.actor);
 
         global.gdk_screen.connect('monitors-changed', Lang.bind(this, this._setSizePosition));
 
@@ -859,7 +864,6 @@ MessageTray.prototype = {
 
         // These work because of their anchor_gravity
         this._summaryBin.x = primary.width;
-        this._summaryNotificationBin.x = primary.width;
     },
 
     contains: function(source) {
@@ -964,7 +968,7 @@ MessageTray.prototype = {
             needUpdate = true;
         }
         if (this._clickedSummaryItem && this._clickedSummaryItem.source == source) {
-            this._clickedSummaryItem = null;
+            this._unsetClickedSummaryItem();
             needUpdate = true;
         }
 
@@ -993,7 +997,7 @@ MessageTray.prototype = {
         if (!this._locked)
             return;
         this._locked = false;
-        this._clickedSummaryItem = null;
+        this._unsetClickedSummaryItem();
         this._updateState();
     },
 
@@ -1116,7 +1120,7 @@ MessageTray.prototype = {
         if (!this._clickedSummaryItem || this._clickedSummaryItem != summaryItem)
             this._clickedSummaryItem = summaryItem;
         else
-            this._clickedSummaryItem = null;
+            this._unsetClickedSummaryItem();
 
         this._updateState();
     },
@@ -1478,25 +1482,51 @@ MessageTray.prototype = {
         if (index != -1)
             this._notificationQueue.splice(index, 1);
 
-        this._summaryNotificationBin.child = this._summaryNotification.actor;
+        this._summaryNotificationBoxPointer.bin.child = this._summaryNotification.actor;
         this._summaryNotification.grabFocus(true);
-
-        this._summaryNotificationBin.opacity = 0;
-        this._summaryNotificationBin.y = this.actor.height;
-        this._summaryNotificationBin.show();
 
         if (!this._summaryNotificationExpandedId)
             this._summaryNotificationExpandedId = this._summaryNotification.connect('expanded', Lang.bind(this, this._onSummaryNotificationExpanded));
         this._summaryNotification.expand(false);
+
+        this._clickedSummaryItemAllocationChangedId =
+            this._clickedSummaryItem.actor.connect('allocation-changed',
+                                                   Lang.bind(this, this._adjustNotificationBoxPointerPosition));
+        // _clickedSummaryItem.actor can change absolute postiion without changing allocation
+        this._summaryMotionId = this._summary.connect('allocation-changed',
+                                                      Lang.bind(this, this._adjustNotificationBoxPointerPosition));
+
+        this._summaryNotificationBoxPointer.actor.opacity = 0;
+        this._summaryNotificationBoxPointer.actor.show();
+        this._adjustNotificationBoxPointerPosition();
+
+        this._summaryNotificationState = State.SHOWNING;
+        this._summaryNotificationBoxPointer.animateAppear(Lang.bind(this, function() {
+            this._summaryNotificationState = State.SHOWN;
+        }));
+    },
+
+    _adjustNotificationBoxPointerPosition: function() {
+        // The position of the arrow origin should be the same as center of this._clickedSummaryItem.actor
+        if (!this._clickedSummaryItem)
+            return;
+
+        this._summaryNotificationBoxPointer.setPosition(this._clickedSummaryItem.actor, 0, St.Align.MIDDLE);
+    },
+
+    _unsetClickedSummaryItem: function() {
+        if (this._clickedSummaryItemAllocationChangedId) {
+            this._clickedSummaryItem.actor.disconnect(this._clickedSummaryItemAllocationChangedId);
+            this._summary.disconnect(this._summaryMotionId);
+            this._clickedSummaryItemAllocationChangedId = 0;
+            this._summaryMotionId = 0;
+        }
+
+        this._clickedSummaryItem = null;
     },
 
     _onSummaryNotificationExpanded: function() {
-        this._tween(this._summaryNotificationBin, '_summaryNotificationState', State.SHOWN,
-                    { y: this.actor.height - this._summaryNotificationBin.height,
-                      opacity: 255,
-                      time: ANIMATION_TIME,
-                      transition: 'easeOutQuad'
-                    });
+        this._adjustNotificationBoxPointerPosition();
     },
 
     _hideSummaryNotification: function() {
@@ -1504,25 +1534,18 @@ MessageTray.prototype = {
             this._summaryNotification.disconnect(this._summaryNotificationExpandedId);
             this._summaryNotificationExpandedId = 0;
         }
-
         // Unset this._clickedSummaryItem if we are no longer showing the summary
         if (this._summaryState != State.SHOWN)
-            this._clickedSummaryItem = null;
-        this._summaryNotification.ungrabFocus();
+            this._unsetClickedSummaryItem();
 
-        this._tween(this._summaryNotificationBin, '_summaryNotificationState', State.HIDDEN,
-                    { y: this.actor.height,
-                      opacity: 0,
-                      time: ANIMATION_TIME,
-                      transition: 'easeOutQuad',
-                      onComplete: this._hideSummaryNotificationCompleted,
-                      onCompleteScope: this
-                    });
+        this._summaryNotification.ungrabFocus();
+        this._summaryNotificationState = State.HIDING;
+        this._summaryNotificationBoxPointer.animateDisappear(Lang.bind(this, this._hideSummaryNotificationCompleted));
     },
 
     _hideSummaryNotificationCompleted: function() {
-        this._summaryNotificationBin.hide();
-        this._summaryNotificationBin.child = null;
+        this._summaryNotificationState = State.HIDDEN;
+        this._summaryNotificationBoxPointer.bin.child = null;
         this._summaryNotification.collapseCompleted();
         let summaryNotification = this._summaryNotification;
         this._summaryNotification = null;
