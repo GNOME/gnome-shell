@@ -415,7 +415,7 @@ WindowManager.prototype = {
             return;
         }
 
-        let windows = global.get_windows();
+        let windows = global.get_window_actors();
 
         /* @direction is the direction that the "camera" moves, so the
          * screen contents have to move one screen's worth in the

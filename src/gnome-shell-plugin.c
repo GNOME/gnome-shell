@@ -25,8 +25,7 @@
 
 #include "config.h"
 
-#define MUTTER_BUILDING_PLUGIN 1
-#include <mutter-plugin.h>
+#include <meta-plugin.h>
 
 #include <glib/gi18n-lib.h>
 
@@ -57,38 +56,40 @@
 static void gnome_shell_plugin_dispose     (GObject *object);
 static void gnome_shell_plugin_finalize    (GObject *object);
 
-static void     gnome_shell_plugin_start            (MutterPlugin         *plugin);
-static void     gnome_shell_plugin_minimize         (MutterPlugin         *plugin,
-                                                     MutterWindow         *actor);
-static void     gnome_shell_plugin_maximize         (MutterPlugin         *plugin,
-                                                     MutterWindow         *actor,
-                                                     gint                  x,
-                                                     gint                  y,
-                                                     gint                  width,
-                                                     gint                  height);
-static void     gnome_shell_plugin_unmaximize       (MutterPlugin         *plugin,
-                                                     MutterWindow         *actor,
-                                                     gint                  x,
-                                                     gint                  y,
-                                                     gint                  width,
-                                                     gint                  height);
-static void     gnome_shell_plugin_map              (MutterPlugin         *plugin,
-                                                     MutterWindow         *actor);
-static void     gnome_shell_plugin_destroy          (MutterPlugin         *plugin,
-                                                     MutterWindow         *actor);
+static void gnome_shell_plugin_start            (MetaPlugin          *plugin);
+static void gnome_shell_plugin_minimize         (MetaPlugin          *plugin,
+                                                 MetaWindowActor     *actor);
+static void gnome_shell_plugin_maximize         (MetaPlugin          *plugin,
+                                                 MetaWindowActor     *actor,
+                                                 gint                 x,
+                                                 gint                 y,
+                                                 gint                 width,
+                                                 gint                 height);
+static void gnome_shell_plugin_unmaximize       (MetaPlugin          *plugin,
+                                                 MetaWindowActor     *actor,
+                                                 gint                 x,
+                                                 gint                 y,
+                                                 gint                 width,
+                                                 gint                 height);
+static void gnome_shell_plugin_map              (MetaPlugin          *plugin,
+                                                 MetaWindowActor     *actor);
+static void gnome_shell_plugin_destroy          (MetaPlugin          *plugin,
+                                                 MetaWindowActor     *actor);
 
-static void     gnome_shell_plugin_switch_workspace (MutterPlugin         *plugin,
-                                                     gint                  from,
-                                                     gint                  to,
-                                                     MetaMotionDirection   direction);
+static void gnome_shell_plugin_switch_workspace (MetaPlugin          *plugin,
+                                                 gint                 from,
+                                                 gint                 to,
+                                                 MetaMotionDirection  direction);
 
-static void     gnome_shell_plugin_kill_window_effects   (MutterPlugin         *plugin,
-                                                          MutterWindow         *actor);
-static void     gnome_shell_plugin_kill_switch_workspace (MutterPlugin         *plugin);
+static void gnome_shell_plugin_kill_window_effects   (MetaPlugin      *plugin,
+                                                      MetaWindowActor *actor);
+static void gnome_shell_plugin_kill_switch_workspace (MetaPlugin      *plugin);
 
-static gboolean                gnome_shell_plugin_xevent_filter (MutterPlugin *plugin,
-                                                                 XEvent       *event);
-static const MutterPluginInfo *gnome_shell_plugin_plugin_info   (MutterPlugin *plugin);
+
+static gboolean              gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
+                                                               XEvent     *event);
+static const MetaPluginInfo *gnome_shell_plugin_plugin_info   (MetaPlugin *plugin);
+
 
 #define GNOME_TYPE_SHELL_PLUGIN            (gnome_shell_plugin_get_type ())
 #define GNOME_SHELL_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GNOME_TYPE_SHELL_PLUGIN, GnomeShellPlugin))
@@ -102,7 +103,7 @@ typedef struct _GnomeShellPluginClass   GnomeShellPluginClass;
 
 struct _GnomeShellPlugin
 {
-  MutterPlugin parent;
+  MetaPlugin parent;
 
   GjsContext *gjs_context;
   Atom panel_action;
@@ -116,20 +117,20 @@ struct _GnomeShellPlugin
 
 struct _GnomeShellPluginClass
 {
-  MutterPluginClass parent_class;
+  MetaPluginClass parent_class;
 };
 
 /*
  * Create the plugin struct; function pointers initialized in
  * g_module_check_init().
  */
-MUTTER_PLUGIN_DECLARE(GnomeShellPlugin, gnome_shell_plugin);
+META_PLUGIN_DECLARE(GnomeShellPlugin, gnome_shell_plugin);
 
 static void
 gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
 {
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
-  MutterPluginClass *plugin_class  = MUTTER_PLUGIN_CLASS (klass);
+  MetaPluginClass *plugin_class  = META_PLUGIN_CLASS (klass);
 
   gobject_class->dispose         = gnome_shell_plugin_dispose;
   gobject_class->finalize        = gnome_shell_plugin_finalize;
@@ -306,7 +307,7 @@ gvc_muted_debug_log_handler (const char     *log_domain,
 }
 
 static void
-gnome_shell_plugin_start (MutterPlugin *plugin)
+gnome_shell_plugin_start (MetaPlugin *plugin)
 {
   GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
   MetaScreen *screen;
@@ -336,7 +337,7 @@ gnome_shell_plugin_start (MutterPlugin *plugin)
                     NULL);
   update_font_options (settings);
 
-  screen = mutter_plugin_get_screen (plugin);
+  screen = meta_plugin_get_screen (plugin);
   display = meta_screen_get_display (screen);
 
   xdisplay = meta_display_get_xdisplay (display);
@@ -371,7 +372,7 @@ gnome_shell_plugin_start (MutterPlugin *plugin)
   /* Initialize the global object here. */
   global = shell_global_get ();
 
-  _shell_global_set_plugin (global, MUTTER_PLUGIN(shell_plugin));
+  _shell_global_set_plugin (global, META_PLUGIN(shell_plugin));
   _shell_global_set_gjs_context (global, shell_plugin->gjs_context);
 
   add_statistics (shell_plugin);
@@ -427,8 +428,8 @@ get_shell_wm (void)
 }
 
 static void
-gnome_shell_plugin_minimize (MutterPlugin         *plugin,
-			     MutterWindow         *actor)
+gnome_shell_plugin_minimize (MetaPlugin         *plugin,
+			     MetaWindowActor    *actor)
 {
   _shell_wm_minimize (get_shell_wm (),
                       actor);
@@ -436,70 +437,70 @@ gnome_shell_plugin_minimize (MutterPlugin         *plugin,
 }
 
 static void
-gnome_shell_plugin_maximize (MutterPlugin         *plugin,
-                             MutterWindow         *actor,
-                             gint                  x,
-                             gint                  y,
-                             gint                  width,
-                             gint                  height)
+gnome_shell_plugin_maximize (MetaPlugin         *plugin,
+                             MetaWindowActor    *actor,
+                             gint                x,
+                             gint                y,
+                             gint                width,
+                             gint                height)
 {
   _shell_wm_maximize (get_shell_wm (),
                       actor, x, y, width, height);
 }
 
 static void
-gnome_shell_plugin_unmaximize (MutterPlugin         *plugin,
-                               MutterWindow         *actor,
-                               gint                  x,
-                               gint                  y,
-                               gint                  width,
-                               gint                  height)
+gnome_shell_plugin_unmaximize (MetaPlugin         *plugin,
+                               MetaWindowActor    *actor,
+                               gint                x,
+                               gint                y,
+                               gint                width,
+                               gint                height)
 {
   _shell_wm_unmaximize (get_shell_wm (),
                         actor, x, y, width, height);
 }
 
 static void
-gnome_shell_plugin_map (MutterPlugin         *plugin,
-                        MutterWindow         *actor)
+gnome_shell_plugin_map (MetaPlugin         *plugin,
+                        MetaWindowActor    *actor)
 {
   _shell_wm_map (get_shell_wm (),
                  actor);
 }
 
 static void
-gnome_shell_plugin_destroy (MutterPlugin         *plugin,
-                            MutterWindow         *actor)
+gnome_shell_plugin_destroy (MetaPlugin         *plugin,
+                            MetaWindowActor    *actor)
 {
   _shell_wm_destroy (get_shell_wm (),
                      actor);
 }
 
 static void
-gnome_shell_plugin_switch_workspace (MutterPlugin         *plugin,
-                                     gint                  from,
-                                     gint                  to,
-                                     MetaMotionDirection   direction)
+gnome_shell_plugin_switch_workspace (MetaPlugin         *plugin,
+                                     gint                from,
+                                     gint                to,
+                                     MetaMotionDirection direction)
 {
   _shell_wm_switch_workspace (get_shell_wm(), from, to, direction);
 }
 
 static void
-gnome_shell_plugin_kill_window_effects (MutterPlugin         *plugin,
-                                        MutterWindow         *actor)
+gnome_shell_plugin_kill_window_effects (MetaPlugin         *plugin,
+                                        MetaWindowActor    *actor)
 {
   _shell_wm_kill_window_effects (get_shell_wm(), actor);
 }
 
 static void
-gnome_shell_plugin_kill_switch_workspace (MutterPlugin         *plugin)
+gnome_shell_plugin_kill_switch_workspace (MetaPlugin         *plugin)
 {
   _shell_wm_kill_switch_workspace (get_shell_wm());
 }
 
 static gboolean
-gnome_shell_plugin_xevent_filter (MutterPlugin *plugin,
-                                  XEvent       *xev)
+gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
+                                  XEvent     *xev)
 {
 #ifdef GLX_INTEL_swap_event
   GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
@@ -539,9 +540,9 @@ gnome_shell_plugin_xevent_filter (MutterPlugin *plugin,
 }
 
 static const
-MutterPluginInfo *gnome_shell_plugin_plugin_info (MutterPlugin *plugin)
+MetaPluginInfo *gnome_shell_plugin_plugin_info (MetaPlugin *plugin)
 {
-  static const MutterPluginInfo info = {
+  static const MetaPluginInfo info = {
     .name = "GNOME Shell",
     .version = "0.1",
     .author = "Various",

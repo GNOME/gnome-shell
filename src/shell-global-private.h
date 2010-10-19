@@ -7,7 +7,7 @@
 #include <gjs/gjs.h>
 
 void _shell_global_set_plugin      (ShellGlobal  *global,
-                                    MutterPlugin *plugin);
+                                    MetaPlugin   *plugin);
 void _shell_global_set_gjs_context (ShellGlobal  *global,
                                     GjsContext   *context);
 

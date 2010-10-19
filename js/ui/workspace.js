@@ -602,7 +602,7 @@ Workspace.prototype = {
         this.actor.height = global.screen_height;
         this.scale = 1.0;
 
-        let windows = global.get_windows().filter(this._isMyWindow, this);
+        let windows = global.get_window_actors().filter(this._isMyWindow, this);
 
         // Find the desktop window
         for (let i = 0; i < windows.length; i++) {

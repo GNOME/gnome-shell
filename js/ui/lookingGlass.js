@@ -220,7 +220,7 @@ WindowList.prototype = {
 
     _updateWindowList: function() {
         this.actor.get_children().forEach(function (actor) { actor.destroy(); });
-        let windows = global.get_windows();
+        let windows = global.get_window_actors();
         let tracker = Shell.WindowTracker.get_default();
         for (let i = 0; i < windows.length; i++) {
             let metaWindow = windows[i].metaWindow;

@@ -233,7 +233,7 @@ Chrome.prototype = {
     },
 
     _windowsRestacked: function() {
-        let windows = global.get_windows();
+        let windows = global.get_window_actors();
         let primary = global.get_primary_monitor();
 
         // The chrome layer should be visible unless there is a window

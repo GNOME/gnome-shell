@@ -190,7 +190,7 @@ GenericWorkspacesView.prototype = {
     },
 
     _onRestacked: function() {
-        let stack = global.get_windows();
+        let stack = global.get_window_actors();
         let stackIndices = {};
 
         for (let i = 0; i < stack.length; i++) {

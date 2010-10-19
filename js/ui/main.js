@@ -253,11 +253,11 @@ function _relayout() {
 // metacity-clutter currently uses the same prefs as plain metacity,
 // which probably means we'll be starting out with multiple workspaces;
 // remove any unused ones. (We do this from an idle handler, because
-// global.get_windows() still returns NULL at the point when start()
+// global.get_window_actors() still returns NULL at the point when start()
 // is called.)
 function _removeUnusedWorkspaces() {
 
-    let windows = global.get_windows();
+    let windows = global.get_window_actors();
     let maxWorkspace = 0;
     for (let i = 0; i < windows.length; i++) {
         let win = windows[i];
