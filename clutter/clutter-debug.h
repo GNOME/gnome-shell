@@ -50,7 +50,7 @@ typedef enum {
 #define CLUTTER_NOTE(type,x,a...)                     G_STMT_START { \
         if (G_UNLIKELY (CLUTTER_HAS_DEBUG (type)))                   \
           { _clutter_profile_trace_message ("[" #type "] "           \
-                                            G_STRLOC " & " x, ##a); } \
+                                            G_STRLOC ": " x, ##a); } \
                                                       } G_STMT_END
 
 #define CLUTTER_TIMESTAMP(type,x,a...)                G_STMT_START { \
@@ -68,7 +68,7 @@ typedef enum {
           {                                                          \
             gchar * _fmt = g_strdup_printf (__VA_ARGS__);            \
             _clutter_profile_trace_message ("[" #type "] "           \
-                                            G_STRLOC " & %s",_fmt);  \
+                                            G_STRLOC ": %s",_fmt);  \
             g_free (_fmt);                                           \
           }                                                          \
                                                       } G_STMT_END
