@@ -380,7 +380,6 @@ static void
 clutter_script_class_init (ClutterScriptClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (ClutterScriptPrivate));
 

@@ -430,7 +430,6 @@ clutter_shader_effect_class_init (ClutterShaderEffectClass *klass)
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterOffscreenEffectClass *offscreen_class;
-  GParamSpec *pspec;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
 
