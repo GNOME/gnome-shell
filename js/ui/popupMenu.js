@@ -56,13 +56,18 @@ PopupBaseMenuItem.prototype = {
         params = Params.parse (params, { reactive: true,
                                          activate: true,
                                          hover: true });
-        this.actor = new St.Bin({ style_class: 'popup-menu-item',
-                                  reactive: params.reactive,
-                                  track_hover: params.reactive,
-                                  x_fill: true,
-                                  y_fill: true,
-                                  x_align: St.Align.START });
+        this.actor = new Shell.GenericContainer({ style_class: 'popup-menu-item',
+                                                  reactive: params.reactive,
+                                                  track_hover: params.reactive });
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
         this.actor._delegate = this;
+
+        this._children = [];
+        this._columnWidths = null;
+        this._spacing = 0;
         this.active = false;
 
         if (params.reactive && params.activate) {
@@ -72,6 +77,12 @@ PopupBaseMenuItem.prototype = {
         }
         if (params.reactive && params.hover)
             this.actor.connect('notify::hover', Lang.bind(this, this._hoverChanged));
+    },
+
+    _onStyleChanged: function (actor) {
+        let themeNode = actor.get_theme_node();
+        let [found, spacing] = themeNode.get_length('spacing', false);
+        this._spacing = found ? spacing : 0;
     },
 
     _hoverChanged: function (actor) {
@@ -107,6 +118,114 @@ PopupBaseMenuItem.prototype = {
     // true if non descendant content includes @actor
     contains: function(actor) {
         return false;
+    },
+
+    // adds an actor to the menu item; @column defaults to the next
+    // open column, @span defaults to 1. If @span is -1, the actor
+    // will span the width of the menu item. Children are not
+    // allowed to overlap each other.
+    addActor: function(child, column, span) {
+        if (column == null) {
+            if (this._children.length) {
+                let lastChild = this._children[this._children.length - 1];
+                column = lastChild.column + lastChild.span;
+            } else
+                column = 0;
+            span = 1;
+        } else if (span == null)
+            span = 1;
+
+        this._children.push({ actor: child,
+                              column: column,
+                              span: span });
+        this.actor.connect('destroy', Lang.bind(this, function () { this.removeActor(child); }));
+        this.actor.add_actor(child);
+    },
+
+    removeActor: function(child) {
+        for (let i = 0; i < this._children.length; i++) {
+            if (this._children[i].actor == child) {
+                this._children.splice(i, 1);
+                this.actor.remove_actor(child);
+                return;
+            }
+        }
+    },
+
+    getColumnWidths: function() {
+        let widths = [];
+        for (let i = 0, col = 0; i < this._children.length; i++) {
+            let child = this._children[i];
+            let [min, natural] = child.actor.get_preferred_width(-1);
+            widths[col++] = natural;
+            if (child.span > 1) {
+                for (let j = 1; j < child.span; j++)
+                    widths[col++] = 0;
+            }
+        }
+        return widths;
+    },
+
+    setColumnWidths: function(widths) {
+        this._columnWidths = widths;
+    },
+
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        let width = 0;
+        if (this._columnWidths) {
+            for (let i = 0; i < this._columnWidths.length; i++) {
+                if (i > 0)
+                    width += this._spacing;
+                width += this._columnWidths[i];
+            }
+        } else {
+            for (let i = 0; i < this._children.length; i++) {
+                let child = this._children[i];
+                if (i > 0)
+                    width += this._spacing;
+                let [min, natural] = child.actor.get_preferred_width(forHeight);
+                width += natural;
+            }
+        }
+        alloc.min_size = alloc.natural_size = width;
+    },
+
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        let height = 0;
+        for (let i = 0; i < this._children.length; i++) {
+            let child = this._children[i];
+            let [min, natural] = child.actor.get_preferred_height(-1);
+            if (natural > height)
+                height = natural;
+        }
+        alloc.min_size = alloc.natural_size = height;
+    },
+
+    _allocate: function(actor, box, flags) {
+        let x = box.x1, height = box.y2 - box.y1;
+        for (let i = 0, col = 0; i < this._children.length; i++) {
+            let child = this._children[i];
+            let childBox = new Clutter.ActorBox();
+            childBox.x1 = x;
+            if (this._columnWidths) {
+                if (child.span == -1)
+                    childBox.x2 = box.x2;
+                else {
+                    childBox.x2 = x;
+                    for (let j = 0; j < child.span; j++)
+                        childBox.x2 += this._columnWidths[col++];
+                }
+            } else {
+                let [min, natural] = child.actor.get_preferred_width(-1);
+                childBox.x2 = x + natural;
+            }
+            let [min, natural] = child.actor.get_preferred_height(-1);
+            childBox.y1 = Math.round(box.y1 + (height - natural) / 2);
+            childBox.y2 = childBox.y1 + natural;
+            child.actor.allocate(childBox, flags);
+
+            x = childBox.x2 + this._spacing;
+        }
     }
 };
 Signals.addSignalMethods(PopupBaseMenuItem.prototype);
@@ -122,7 +241,7 @@ PopupMenuItem.prototype = {
         PopupBaseMenuItem.prototype._init.call(this);
 
         this.label = new St.Label({ text: text });
-        this.actor.set_child(this.label);
+        this.addActor(this.label);
     }
 };
 
@@ -137,7 +256,7 @@ PopupSeparatorMenuItem.prototype = {
         PopupBaseMenuItem.prototype._init.call(this, { reactive: false });
 
         this._drawingArea = new St.DrawingArea({ style_class: 'popup-separator-menu-item' });
-        this.actor.set_child(this._drawingArea);
+        this.addActor(this._drawingArea, 0, -1);
         this._drawingArea.connect('repaint', Lang.bind(this, this._onRepaint));
     },
 
@@ -180,7 +299,7 @@ PopupSliderMenuItem.prototype = {
         this._value = Math.max(Math.min(value, 1), 0);
 
         this._slider = new St.DrawingArea({ style_class: 'popup-slider-menu-item', reactive: true });
-        this.actor.set_child(this._slider);
+        this.addActor(this._slider, 0, -1);
         this._slider.connect('repaint', Lang.bind(this, this._sliderRepaint));
         this._slider.connect('button-press-event', Lang.bind(this, this._startDragging));
         this._slider.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
@@ -347,10 +466,8 @@ PopupSwitchMenuItem.prototype = {
         this.label = new St.Label({ text: text });
         this._switch = new Switch(this.active);
 
-        this._box = new St.BoxLayout({ style_class: 'popup-switch-menu-item' });
-        this._box.add(this.label, { expand: true, y_fill: false });
-        this._box.add(this._switch.actor, { y_fill: false });
-        this.actor.set_child(this._box);
+        this.addActor(this.label);
+        this.addActor(this._switch.actor);
 
         this.connect('activate', Lang.bind(this,function(from) {
             this.toggle();
@@ -384,12 +501,10 @@ PopupImageMenuItem.prototype = {
 
         this._size = 16;
 
-        let box = new St.BoxLayout({ style_class: 'popup-image-menu-item' });
-        this.actor.set_child(box);
         this.label = new St.Label({ text: text });
-        box.add(this.label, { expand: true });
+        this.addActor(this.label);
         this._imageBin = new St.Bin({ width: this._size, height: this._size });
-        box.add(this._imageBin, { y_fill: false });
+        this.addActor(this._imageBin);
 
         this.setIcon(iconName);
     },
@@ -442,13 +557,49 @@ PopupMenu.prototype = {
                                                        x_align: St.Align.START });
         this.actor = this._boxPointer.actor;
         this.actor.style_class = 'popup-menu-boxpointer';
+        this._boxWrapper = new Shell.GenericContainer();
+        this._boxWrapper.connect('get-preferred-width', Lang.bind(this, this._boxGetPreferredWidth));
+        this._boxWrapper.connect('get-preferred-height', Lang.bind(this, this._boxGetPreferredHeight));
+        this._boxWrapper.connect('allocate', Lang.bind(this, this._boxAllocate));
+        this._boxPointer.bin.set_child(this._boxWrapper);
+
         this._box = new St.BoxLayout({ style_class: 'popup-menu-content',
                                        vertical: true });
-        this._boxPointer.bin.set_child(this._box);
+        this._boxWrapper.add_actor(this._box);
         this.actor.add_style_class_name('popup-menu');
 
         this.isOpen = false;
         this._activeMenuItem = null;
+    },
+
+    _boxGetPreferredWidth: function (actor, forHeight, alloc) {
+        // Update the menuitem column widths
+        let columnWidths = [];
+        let items = this._box.get_children();
+        for (let i = 0; i < items.length; i++) {
+            if (items[i]._delegate instanceof PopupBaseMenuItem) {
+                let itemColumnWidths = items[i]._delegate.getColumnWidths();
+                for (let j = 0; j < itemColumnWidths.length; j++) {
+                    if (j >= columnWidths.length || itemColumnWidths[j] > columnWidths[j])
+                        columnWidths[j] = itemColumnWidths[j];
+                }
+            }
+        }
+        for (let i = 0; i < items.length; i++) {
+            if (items[i]._delegate instanceof PopupBaseMenuItem)
+                items[i]._delegate.setColumnWidths(columnWidths);
+        }
+
+        // Now they will request the right sizes
+        [alloc.min_size, alloc.natural_size] = this._box.get_preferred_width(forHeight);
+    },
+
+    _boxGetPreferredHeight: function (actor, forWidth, alloc) {
+        [alloc.min_size, alloc.natural_size] = this._box.get_preferred_height(forWidth);
+    },
+
+    _boxAllocate: function (actor, box, flags) {
+        this._box.allocate(box, flags);
     },
 
     addAction: function(title, callback) {
@@ -652,10 +803,8 @@ PopupSubMenuMenuItem.prototype = {
         this.actor.connect('enter-event', Lang.bind(this, this._mouseEnter));
 
         this.label = new St.Label({ text: text });
-        this._container = new St.BoxLayout();
-        this._container.add(this.label, { fill: true, expand: true });
-        this._container.add(new St.Label({ text: '>' }));
-        this.actor.set_child(this._container);
+        this.addActor(this.label);
+        this.addActor(new St.Label({ text: '>' }));
 
         this.menu = new PopupMenu(this.actor, St.Align.MIDDLE, St.Side.LEFT, 0, true);
         Main.chrome.addActor(this.menu.actor, { visibleInOverview: true,
