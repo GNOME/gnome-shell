@@ -1195,6 +1195,7 @@ echo "        Windowing system: ${CLUTTER_WINSYS} (WARNING: Experimental)"
 fi
 
 if test "x$SUPPORT_XLIB" = "x1"; then
+echo "        Enable XComposite: ${have_xcomposite}"
 echo "        Enable XInput 1.0: ${xinput}"
 echo "        Enable XKB: ${have_xkb}"
 echo "        Enable X11 tests: ${x11_tests}"
