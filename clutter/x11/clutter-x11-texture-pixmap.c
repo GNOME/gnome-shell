@@ -52,7 +52,10 @@
 #include "cogl/winsys/cogl-texture-pixmap-x11.h"
 
 #include <X11/extensions/Xdamage.h>
+
+#if HAVE_XCOMPOSITE
 #include <X11/extensions/Xcomposite.h>
+#endif
 
 enum
 {
@@ -920,7 +923,9 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
  * clutter_x11_texture_pixmap_set_pixmap().
  *
  * If you want to display a window in a #ClutterTexture, you probably want
- * this function, or its older sister, clutter_glx_texture_pixmap_set_window()
+ * this function, or its older sister, clutter_glx_texture_pixmap_set_window().
+ *
+ * This function has no effect unless the XComposite extension is available.
  *
  * Since: 0.8
  */
@@ -935,10 +940,11 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
 
   g_return_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture));
 
-  priv = texture->priv;
-
-  if (!clutter_x11_has_composite_extension())
+  if (!clutter_x11_has_composite_extension ())
     return;
+
+#if HAVE_XCOMPOSITE
+  priv = texture->priv;
 
   if (priv->window == window && automatic == priv->window_redirect_automatic)
     return;
@@ -1001,6 +1007,8 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
 
   clutter_x11_texture_pixmap_sync_window (texture);
   g_object_unref (texture);
+
+#endif /* HAVE_XCOMPOSITE */
 }
 
 /**

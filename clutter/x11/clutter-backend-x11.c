@@ -46,9 +46,11 @@
 
 #include "xsettings/xsettings-common.h"
 
+#if HAVE_XCOMPOSITE
 #include <X11/extensions/Xcomposite.h>
+#endif
 
-#ifdef HAVE_XINPUT
+#if HAVE_XINPUT
 #include <X11/extensions/XInput.h>
 #endif
 
@@ -940,6 +942,7 @@ clutter_x11_has_xinput (void)
 gboolean
 clutter_x11_has_composite_extension (void)
 {
+#if HAVE_XCOMPOSITE
   static gboolean have_composite = FALSE, done_check = FALSE;
   int error = 0, event = 0;
   Display *dpy;
@@ -968,6 +971,9 @@ clutter_x11_has_composite_extension (void)
   done_check = TRUE;
 
   return have_composite;
+#else
+  return FALSE;
+#endif /* HAVE_XCOMPOSITE */
 }
 
 /**
