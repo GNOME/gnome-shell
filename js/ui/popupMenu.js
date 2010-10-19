@@ -372,64 +372,34 @@ PopupSwitchMenuItem.prototype = {
 }
 
 
-function PopupImageMenuItem(text, iconName, alwaysShowImage) {
-    this._init(text, iconName, alwaysShowImage);
+function PopupImageMenuItem(text, iconName) {
+    this._init(text, iconName);
 }
-
-// We need to instantiate a GtkImageMenuItem so it
-// hooks up its properties on the GtkSettings
-var _gtkImageMenuItemCreated = false;
 
 PopupImageMenuItem.prototype = {
     __proto__: PopupBaseMenuItem.prototype,
 
-    _init: function (text, iconName, alwaysShowImage) {
+    _init: function (text, iconName) {
         PopupBaseMenuItem.prototype._init.call(this);
 
-        if (!_gtkImageMenuItemCreated) {
-            let menuItem = new Gtk.ImageMenuItem();
-            menuItem.destroy();
-            _gtkImageMenuItemCreated = true;
-        }
-
-        this._alwaysShowImage = alwaysShowImage;
-        this._iconName = iconName;
         this._size = 16;
 
         let box = new St.BoxLayout({ style_class: 'popup-image-menu-item' });
         this.actor.set_child(box);
-        this._imageBin = new St.Bin({ width: this._size, height: this._size });
-        box.add(this._imageBin, { y_fill: false });
         this.label = new St.Label({ text: text });
         box.add(this.label, { expand: true });
+        this._imageBin = new St.Bin({ width: this._size, height: this._size });
+        box.add(this._imageBin, { y_fill: false });
 
-        if (!alwaysShowImage) {
-            let settings = Gtk.Settings.get_default();
-            settings.connect('notify::gtk-menu-images', Lang.bind(this, this._onMenuImagesChanged));
-        }
-        this._onMenuImagesChanged();
+        this.setIcon(iconName);
     },
 
-    _onMenuImagesChanged: function() {
-        let show;
-        if (this._alwaysShowImage) {
-            show = true;
-        } else {
-            let settings = Gtk.Settings.get_default();
-            show = settings.gtk_menu_images;
-        }
-        if (!show) {
-            this._imageBin.hide();
-        } else {
-            let img = St.TextureCache.get_default().load_icon_name(this._iconName, St.IconType.SYMBOLIC, this._size);
-            this._imageBin.set_child(img);
-            this._imageBin.show();
-        }
-    },
-    
     setIcon: function(name) {
-        this._iconName = name;
-        this._onMenuImagesChanged();
+        if (this._imageBin.child)
+            this._imageBin.child.destroy();
+
+        let img = St.TextureCache.get_default().load_icon_name(name, St.IconType.SYMBOLIC, this._size);
+        this._imageBin.set_child(img);
     }
 };
 

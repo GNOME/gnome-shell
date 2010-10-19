@@ -109,31 +109,31 @@ StatusMenuButton.prototype = {
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupImageMenuItem(_("Account Information..."), 'user-info');
+        item = new PopupMenu.PopupMenuItem(_("Account Information..."));
         item.connect('activate', Lang.bind(this, this._onAccountInformationActivate));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupImageMenuItem(_("System Settings..."), 'preferences-desktop');
+        item = new PopupMenu.PopupMenuItem(_("System Settings..."));
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
         this.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupImageMenuItem(_("Lock Screen"), 'system-lock-screen');
+        item = new PopupMenu.PopupMenuItem(_("Lock Screen"));
         item.connect('activate', Lang.bind(this, this._onLockScreenActivate));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupImageMenuItem(_("Switch User"), 'system-users');
+        item = new PopupMenu.PopupMenuItem(_("Switch User"));
         item.connect('activate', Lang.bind(this, this._onLoginScreenActivate));
         this.menu.addMenuItem(item);
         this._loginScreenItem = item;
 
-        item = new PopupMenu.PopupImageMenuItem(_("Log Out..."), 'system-log-out');
+        item = new PopupMenu.PopupMenuItem(_("Log Out..."));
         item.connect('activate', Lang.bind(this, this._onQuitSessionActivate));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupImageMenuItem(_("Shut Down..."), 'system-shutdown');
+        item = new PopupMenu.PopupMenuItem(_("Shut Down..."));
         item.connect('activate', Lang.bind(this, this._onShutDownActivate));
         this.menu.addMenuItem(item);
     },
