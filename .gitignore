@@ -93,6 +93,8 @@ mkinstalldirs
 stamp-h1
 TAGS
 /tests/tools/disable-npots.sh
+/tests/conform/test-launcher.sh
+/tests/interactive/wrapper.sh
 /po/POTFILES
 /po/*.gmo
 /po/Makefile.in.in

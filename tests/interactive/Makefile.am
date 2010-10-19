@@ -72,7 +72,6 @@ stamp-test-interactive: Makefile test-interactive$(EXEEXT)
 	chmod +x $$wrapper && \
 	( echo "/stamp-test-interactive" ; \
 	  echo "/test-interactive" ; \
-	  echo "/wrapper.sh" ; \
 	  echo "*.o" ; \
 	  echo ".gitignore" ) > .gitignore ; \
 	for i in $(UNIT_TESTS); \

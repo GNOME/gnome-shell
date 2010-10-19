@@ -99,7 +99,6 @@ stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 	@chmod +x test-launcher.sh
 	@( echo "/stamp-test-conformance" ; \
 	   echo "/test-conformance" ; \
-	   echo "/test-launcher.sh" ; \
 	   echo "*.o" ; \
 	   echo "*.xml" ; \
 	   echo "*.html" ; \
