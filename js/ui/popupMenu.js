@@ -550,7 +550,6 @@ PopupMenu.prototype = {
 
         let [minWidth, minHeight, natWidth, natHeight] = this.actor.get_preferred_size();
 
-        let menuX, menuY;
         let menuWidth = natWidth, menuHeight = natHeight;
 
         // Position the non-pointing axis
@@ -573,68 +572,8 @@ PopupMenu.prototype = {
                     this._boxPointer._arrowSide = this._arrowSide = St.Side.LEFT;
             }
         }
-        switch (this._arrowSide) {
-        case St.Side.TOP:
-            menuY = sourceY + sourceHeight + this._gap;
-            break;
-        case St.Side.BOTTOM:
-            menuY = sourceY - menuHeight - this._gap;
-            break;
-        case St.Side.LEFT:
-            menuX = sourceX + sourceWidth + this._gap;
-            break;
-        case St.Side.RIGHT:
-            menuX = sourceX - menuWidth - this._gap;
-            break;
-        }
 
-        // Now align and position the pointing axis, making sure
-        // it fits on screen
-        switch (this._arrowSide) {
-        case St.Side.TOP:
-        case St.Side.BOTTOM:
-            switch (this._alignment) {
-            case St.Align.START:
-                menuX = sourceX;
-                break;
-            case St.Align.MIDDLE:
-                menuX = sourceX - Math.floor((menuWidth - sourceWidth) / 2);
-                break;
-            case St.Align.END:
-                menuX = sourceX - (menuWidth - sourceWidth);
-                break;
-            }
-
-            menuX = Math.min(menuX, primary.x + primary.width - menuWidth);
-            menuX = Math.max(menuX, primary.x);
-
-            this._boxPointer.setArrowOrigin((sourceX - menuX) + Math.floor(sourceWidth / 2));
-            break;
-
-        case St.Side.LEFT:
-        case St.Side.RIGHT:
-            switch (this._alignment) {
-            case St.Align.START:
-                menuY = sourceY;
-                break;
-            case St.Align.MIDDLE:
-                menuY = sourceY - Math.floor((menuHeight - sourceHeight) / 2);
-                break;
-            case St.Align.END:
-                menuY = sourceY - (menuHeight - sourceHeight);
-                break;
-            }
-
-            menuY = Math.min(menuY, primary.y + primary.height - menuHeight);
-            menuY = Math.max(menuY, primary.y);
-
-            this._boxPointer.setArrowOrigin((sourceY - menuY) + Math.floor(sourceHeight / 2));
-            break;
-        }
-
-        // Actually set the position
-        this.actor.x = Math.floor(menuX);
-        this.actor.y = Math.floor(menuY);
+        this._boxPointer.setPosition(this.sourceActor, this._gap, this._alignment);
 
         // Now show it
         this.actor.reactive = true;

@@ -264,6 +264,92 @@ BoxPointer.prototype = {
         cr.stroke();
     },
 
+    setPosition: function(sourceActor, gap, alignment) {
+        let primary = global.get_primary_monitor();
+
+        // We need to show it now to force an allocation,
+        // so that we can query the correct size.
+        this.actor.show();
+
+        // Position correctly relative to the sourceActor
+        let [sourceX, sourceY] = sourceActor.get_transformed_position();
+        let [sourceWidth, sourceHeight] = sourceActor.get_transformed_size();
+
+        let [minWidth, minHeight, natWidth, natHeight] = this.actor.get_preferred_size();
+
+        let resX, resY;
+
+        switch (this._arrowSide) {
+        case St.Side.TOP:
+            resY = sourceY + sourceHeight + gap;
+            break;
+        case St.Side.BOTTOM:
+            resY = sourceY - natHeight - gap;
+            break;
+        case St.Side.LEFT:
+            resX = sourceX + sourceWidth + gap;
+            break;
+        case St.Side.RIGHT:
+            resX = sourceX - natWidth - gap;
+            break;
+        }
+
+        // Now align and position the pointing axis, making sure
+        // it fits on screen
+        switch (this._arrowSide) {
+        case St.Side.TOP:
+        case St.Side.BOTTOM:
+            switch (alignment) {
+            case St.Align.START:
+                resX = sourceX;
+                break;
+            case St.Align.MIDDLE:
+                resX = sourceX - Math.floor((natWidth - sourceWidth) / 2);
+                break;
+            case St.Align.END:
+                resX = sourceX - (natWidth - sourceWidth);
+                break;
+            }
+
+            resX = Math.min(resX, primary.x + primary.width - natWidth);
+            resX = Math.max(resX, primary.x);
+
+            this.setArrowOrigin((sourceX - resX) + Math.floor(sourceWidth / 2));
+            break;
+
+        case St.Side.LEFT:
+        case St.Side.RIGHT:
+            switch (alignment) {
+            case St.Align.START:
+                resY = sourceY;
+                break;
+            case St.Align.MIDDLE:
+                resY = sourceY - Math.floor((natHeight - sourceHeight) / 2);
+                break;
+            case St.Align.END:
+                resY = sourceY - (natHeight - sourceHeight);
+                break;
+            }
+
+            resY = Math.min(resY, primary.y + primary.height - natHeight);
+            resY = Math.max(resY, primary.y);
+
+            this.setArrowOrigin((sourceY - resY) + Math.floor(sourceHeight / 2));
+            break;
+        }
+
+        let parent = this.actor.get_parent();
+        let success, x, y;
+        while (!success) {
+            [success, x, y] = parent.transform_stage_point(resX, resY);
+            parent = parent.get_parent();
+        }
+
+        // Actually set the position
+        this.actor.x = Math.floor(x);
+        this.actor.y = Math.floor(y);
+    },
+
     // @origin: Coordinate specifying middle of the arrow, along
     // the Y axis for St.Side.LEFT, St.Side.RIGHT from the top and X axis from
     // the left for St.Side.TOP and St.Side.BOTTOM.
