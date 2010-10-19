@@ -109,11 +109,11 @@ StatusMenuButton.prototype = {
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("Account Information..."));
-        item.connect('activate', Lang.bind(this, this._onAccountInformationActivate));
+        item = new PopupMenu.PopupMenuItem(_("My Account..."));
+        item.connect('activate', Lang.bind(this, this._onMyAccountActivate));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("System Settings..."));
+        item = new PopupMenu.PopupMenuItem(_("System Preferences..."));
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
         this.menu.addMenuItem(item);
 
@@ -133,6 +133,17 @@ StatusMenuButton.prototype = {
         item.connect('activate', Lang.bind(this, this._onQuitSessionActivate));
         this.menu.addMenuItem(item);
 
+        item = new PopupMenu.PopupSeparatorMenuItem();
+        this.menu.addMenuItem(item);
+
+        item = new PopupMenu.PopupMenuItem(_("Suspend"));
+        item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+        this.menu.addMenuItem(item);
+
+        item = new PopupMenu.PopupMenuItem(_("Restart..."));
+        item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+        this.menu.addMenuItem(item);
+
         item = new PopupMenu.PopupMenuItem(_("Shut Down..."));
         item.connect('activate', Lang.bind(this, this._onShutDownActivate));
         this.menu.addMenuItem(item);
@@ -142,7 +153,7 @@ StatusMenuButton.prototype = {
         this._presence.setStatus(status);
     },
 
-    _onAccountInformationActivate: function() {
+    _onMyAccountActivate: function() {
         Main.overview.hide();
         this._spawn(['gnome-about-me']);
     },
