@@ -117,9 +117,9 @@ Indicator.prototype = {
         // only show input widgets if any application is recording audio
         let showInput = false;
         let recordingApps = this._control.get_source_outputs();
-        if (this._source && recordingApps) {
-            for (let i = 0; i < recordingApp.length; i++) {
-                let outputStream = recordingApp[i];
+        if (this._input && recordingApps) {
+            for (let i = 0; i < recordingApps.length; i++) {
+                let outputStream = recordingApps[i];
                 let id = outputStream.get_application_id();
                 // but skip gnome-volume-control and pavucontrol
                 // (that appear as recording because they show the input level)
