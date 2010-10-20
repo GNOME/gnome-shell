@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Clutter = imports.gi.Clutter;
 const DBus = imports.dbus;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -15,6 +16,7 @@ const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const VOLUME_MAX = 65536.0; /* PA_VOLUME_NORM */
+const VOLUME_ADJUSTMENT_STEP = 0.05; /* Volume adjustment step in % */
 
 function Indicator() {
     this._init.apply(this, arguments);
@@ -64,7 +66,22 @@ Indicator.prototype = {
             p.run();
         });
 
+        this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
         this._control.open();
+    },
+
+    _onScrollEvent: function(actor, event) {
+        let direction = event.get_scroll_direction();
+        let currentVolume = this._output.volume;
+
+        if (direction == Clutter.ScrollDirection.DOWN) {
+            this._output.volume = Math.max(0, currentVolume - VOLUME_MAX * VOLUME_ADJUSTMENT_STEP);
+            this._output.push_volume();
+        }
+        else if (direction == Clutter.ScrollDirection.UP) {
+            this._output.volume = Math.min(VOLUME_MAX, currentVolume + VOLUME_MAX * VOLUME_ADJUSTMENT_STEP);
+            this._output.push_volume();
+        }
     },
 
     _onControlReady: function() {
