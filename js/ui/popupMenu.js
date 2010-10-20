@@ -16,6 +16,8 @@ const Tweener = imports.ui.tweener;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const SLIDER_SCROLL_STEP = 0.05; /* Slider scrolling step in % */
+
 function Switch() {
     this._init.apply(this, arguments);
 }
@@ -181,6 +183,7 @@ PopupSliderMenuItem.prototype = {
         this.actor.set_child(this._slider);
         this._slider.connect('repaint', Lang.bind(this, this._sliderRepaint));
         this._slider.connect('button-press-event', Lang.bind(this, this._startDragging));
+        this._slider.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 
         this._releaseId = this._motionId = 0;
         this._dragging = false;
@@ -268,6 +271,20 @@ PopupSliderMenuItem.prototype = {
             this.emit('drag-end');
         }
         return true;
+    },
+
+    _onScrollEvent: function (actor, event) {
+        let direction = event.get_scroll_direction();
+
+        if (direction == Clutter.ScrollDirection.DOWN) {
+            this._value = Math.max(0, this._value - SLIDER_SCROLL_STEP);
+        }
+        else if (direction == Clutter.ScrollDirection.UP) {
+            this._value = Math.min(1, this._value + SLIDER_SCROLL_STEP);
+        }
+
+        this._slider.queue_repaint();
+        this.emit('value-changed', this._value);
     },
 
     _motionEvent: function(actor, event) {
