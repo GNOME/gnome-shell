@@ -369,6 +369,7 @@ function _findModal(actor) {
 /**
  * pushModal:
  * @actor: #ClutterActor which will be given keyboard focus
+ * @timestamp: optional timestamp
  *
  * Ensure we are in a mode where all keyboard and mouse input goes to
  * the stage, and focus @actor. Multiple calls to this function act in
@@ -379,11 +380,19 @@ function _findModal(actor) {
  * modal stack returns to this actor, reset the focus to the actor
  * which was focused at the time pushModal() was invoked.
  *
+ * @timestamp is optionally used to associate the call with a specific user
+ * initiated event.  If not provided then the value of
+ * global.get_current_time() is assumed.
+ *
  * Returns: true iff we successfully acquired a grab or already had one
  */
-function pushModal(actor) {
+function pushModal(actor, timestamp) {
+
+    if (timestamp == undefined)
+        timestamp = global.get_current_time();
+
     if (modalCount == 0) {
-        if (!global.begin_modal(global.get_current_time())) {
+        if (!global.begin_modal(timestamp)) {
             log('pushModal: invocation of begin_modal failed');
             return false;
         }
@@ -414,12 +423,21 @@ function pushModal(actor) {
 /**
  * popModal:
  * @actor: #ClutterActor passed to original invocation of pushModal().
+ * @timestamp: optional timestamp
  *
  * Reverse the effect of pushModal().  If this invocation is undoing
  * the topmost invocation, then the focus will be restored to the
  * previous focus at the time when pushModal() was invoked.
+ *
+ * @timestamp is optionally used to associate the call with a specific user
+ * initiated event.  If not provided then the value of
+ * global.get_current_time() is assumed.
  */
-function popModal(actor) {
+function popModal(actor, timestamp) {
+
+    if (timestamp == undefined)
+        timestamp = global.get_current_time();
+
     modalCount -= 1;
     let focusIndex = _findModal(actor);
     if (focusIndex >= 0) {
@@ -438,7 +456,7 @@ function popModal(actor) {
         return;
 
     global.stage.set_key_focus(null);
-    global.end_modal(global.get_current_time());
+    global.end_modal(timestamp);
     global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
 }
 
