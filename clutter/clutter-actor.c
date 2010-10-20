@@ -1441,11 +1441,6 @@ clutter_actor_real_unrealize (ClutterActor *self)
 {
   /* we must be unmapped (implying our children are also unmapped) */
   g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
-
-  if (CLUTTER_IS_CONTAINER (self))
-    clutter_container_foreach_with_internals (CLUTTER_CONTAINER (self),
-                                              CLUTTER_CALLBACK (clutter_actor_unrealize_not_hiding),
-                                              NULL);
 }
 
 /**
@@ -1499,6 +1494,34 @@ clutter_actor_unrealize (ClutterActor *self)
   clutter_actor_unrealize_not_hiding (self);
 }
 
+static ClutterActorTraverseVisitFlags
+unrealize_actor_before_children_cb (ClutterActor *self,
+                                    int depth,
+                                    void *user_data)
+{
+  /* If an actor is already unrealized we know its children have also
+   * already been unrealized... */
+  if (!CLUTTER_ACTOR_IS_REALIZED (self))
+    return CLUTTER_ACTOR_TRAVERSE_VISIT_SKIP_CHILDREN;
+
+  g_signal_emit (self, actor_signals[UNREALIZE], 0);
+
+  return CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE;
+}
+
+static ClutterActorTraverseVisitFlags
+unrealize_actor_after_children_cb (ClutterActor *self,
+                                   int depth,
+                                   void *user_data)
+{
+  /* We want to unset the realized flag only _after_
+   * child actors are unrealized, to maintain invariants.
+   */
+  CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_REALIZED]);
+  return CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE;
+}
+
 /*
  * clutter_actor_unrealize_not_hiding:
  * @self: A #ClutterActor
@@ -1526,25 +1549,11 @@ clutter_actor_unrealize (ClutterActor *self)
 static void
 clutter_actor_unrealize_not_hiding (ClutterActor *self)
 {
-  /* All callers of clutter_actor_unrealize_not_hiding() should have
-   * taken care of unmapping the actor first. This means
-   * all our children should also be unmapped.
-   */
-  g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
-
-  if (!CLUTTER_ACTOR_IS_REALIZED (self))
-    return;
-
-  /* The default handler for the signal should recursively unrealize
-   * child actors. We want to unset the realized flag only _after_
-   * child actors are unrealized, to maintain invariants.
-   */
-
-  g_signal_emit (self, actor_signals[UNREALIZE], 0);
-
-  CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
-
-  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_REALIZED]);
+  _clutter_actor_traverse (self,
+                           CLUTTER_ACTOR_TRAVERSE_DEPTH_FIRST,
+                           unrealize_actor_before_children_cb,
+                           unrealize_actor_after_children_cb,
+                           NULL);
 }
 
 /*
