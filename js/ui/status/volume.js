@@ -60,7 +60,7 @@ Indicator.prototype = {
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addAction(_("Sound Preferences"), function() {
-            let p = new Shell.Process({ args: ['gnome-control-center', 'volume'] });
+            let p = new Shell.Process({ args: ['gnome-control-center', 'sound'] });
             p.run();
         });
 
