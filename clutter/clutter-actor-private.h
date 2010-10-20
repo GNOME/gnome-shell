@@ -44,14 +44,54 @@ typedef enum
 } ClutterRedrawFlags;
 
 /* ClutterActorTraverseFlags:
+ * CLUTTER_ACTOR_TRAVERSE_DEPTH_FIRST: Traverse the graph in
+ *   a depth first order.
+ * CLUTTER_ACTOR_TRAVERSE_BREADTH_FIRST: Traverse the graph in a
+ *   breadth first order.
  *
  * Controls some options for how clutter_actor_traverse() iterates
  * through the graph.
  */
 typedef enum _ClutterActorTraverseFlags
 {
-  CLUTTER_ACTOR_TRAVERSE_PLACE_HOLDER  = 1L<<0
+  CLUTTER_ACTOR_TRAVERSE_DEPTH_FIRST   = 1L<<0,
+  CLUTTER_ACTOR_TRAVERSE_BREADTH_FIRST = 1L<<1
 } ClutterActorTraverseFlags;
+
+/**
+ * ClutterActorTraverseVisitFlags:
+ * CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE: Continue traversing as
+ *   normal
+ * CLUTTER_ACTOR_TRAVERSE_VISIT_SKIP_CHILDREN: Don't traverse the
+ *   children of the last visited actor. (Not applicable when using
+ *   CLUTTER_ACTOR_TRAVERSE_DEPTH_FIRST_POST_ORDER since the children
+ *   are visited before having an opportunity to bail out)
+ * CLUTTER_ACTOR_TRAVERSE_VISIT_BREAK: Immediately bail out without
+ *   visiting any more actors.
+ *
+ * Each time an actor is visited during a scenegraph traversal the
+ * ClutterTraverseCallback can return a set of flags that may affect
+ * the continuing traversal. It may stop traversal completely, just
+ * skip over children for the current actor or continue as normal.
+ */
+typedef enum _ClutterActorTraverseVisitFlags
+{
+  CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE       = 1L<<0,
+  CLUTTER_ACTOR_TRAVERSE_VISIT_SKIP_CHILDREN  = 1L<<1,
+  CLUTTER_ACTOR_TRAVERSE_VISIT_BREAK          = 1L<<2
+} ClutterActorTraverseVisitFlags;
+
+/**
+ * ClutterTraverseCallback:
+ *
+ * The callback prototype used with clutter_actor_traverse. The
+ * returned flags can be used to affect the continuing traversal
+ * either by continuing as normal, skipping over children of an
+ * actor or bailing out completely.
+ */
+typedef ClutterActorTraverseVisitFlags (*ClutterTraverseCallback) (ClutterActor *actor,
+                                                                   int depth,
+                                                                   void *user_data);
 
 /* ClutterForeachCallback:
  * @actor: The actor being iterated
@@ -72,9 +112,10 @@ gint          _clutter_actor_get_n_children             (ClutterActor *self);
 gboolean      _clutter_actor_foreach_child              (ClutterActor *self,
                                                          ClutterForeachCallback callback,
                                                          void *user_data);
-gboolean      _clutter_actor_traverse                   (ClutterActor *actor,
+void          _clutter_actor_traverse                   (ClutterActor *actor,
                                                          ClutterActorTraverseFlags flags,
-                                                         ClutterForeachCallback callback,
+                                                         ClutterTraverseCallback before_children_callback,
+                                                         ClutterTraverseCallback after_children_callback,
                                                          void *user_data);
 ClutterActor *_clutter_actor_get_stage_internal         (ClutterActor *actor);
 

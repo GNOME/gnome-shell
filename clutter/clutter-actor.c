@@ -7664,8 +7664,9 @@ clutter_actor_get_paint_visibility (ClutterActor *actor)
   return CLUTTER_ACTOR_IS_MAPPED (actor);
 }
 
-static gboolean
+static ClutterActorTraverseVisitFlags
 invalidate_queue_redraw_entry (ClutterActor *self,
+                               int           depth,
                                gpointer      user_data)
 {
   ClutterActorPrivate *priv = self->priv;
@@ -7676,7 +7677,7 @@ invalidate_queue_redraw_entry (ClutterActor *self,
       priv->queue_redraw_entry = NULL;
     }
 
-  return TRUE;
+  return CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE;
 }
 
 /**
@@ -7712,6 +7713,7 @@ clutter_actor_unparent (ClutterActor *self)
   _clutter_actor_traverse (self,
                            0,
                            invalidate_queue_redraw_entry,
+                           NULL,
                            NULL);
 
   was_mapped = CLUTTER_ACTOR_IS_MAPPED (self);
@@ -11840,42 +11842,132 @@ _clutter_actor_foreach_child (ClutterActor *self,
   return cont;
 }
 
+/* For debugging purposes this gives us a simple way to print out
+ * the scenegraph e.g in gdb using:
+ * [|
+ *   _clutter_actor_traverse (clutter_stage_get_default (),
+ *                            0,
+ *                            _clutter_debug_print_actor_cb,
+ *                            NULL,
+ *                            NULL);
+ * |]
+ */
+ClutterActorTraverseVisitFlags
+_clutter_debug_print_actor_cb (ClutterActor *actor,
+                               int depth,
+                               void *user_data)
+{
+  g_print ("%*s%s:%p\n", depth * 2, "", G_OBJECT_TYPE_NAME (actor), actor);
+  return CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE;
+}
+
+static void
+_clutter_actor_traverse_breadth (ClutterActor           *actor,
+                                 ClutterTraverseCallback callback,
+                                 gpointer                user_data)
+{
+  GQueue *queue = g_queue_new ();
+  ClutterActor dummy;
+  int current_depth = 0;
+
+  g_queue_push_tail (queue, actor);
+  g_queue_push_tail (queue, &dummy); /* use to delimit depth changes */
+
+  while ((actor = g_queue_pop_head (queue)))
+    {
+      ClutterActorTraverseVisitFlags flags;
+
+      if (actor == &dummy)
+        {
+          current_depth++;
+          g_queue_push_tail (queue, &dummy);
+          continue;
+        }
+
+      flags = callback (actor, current_depth, user_data);
+      if (flags & CLUTTER_ACTOR_TRAVERSE_VISIT_BREAK)
+        break;
+      else if (!(flags & CLUTTER_ACTOR_TRAVERSE_VISIT_SKIP_CHILDREN))
+        {
+          GList *l;
+          for (l = actor->priv->children; l; l = l->next)
+            g_queue_push_tail (queue, l->data);
+        }
+    }
+
+  g_queue_free (queue);
+}
+
+static ClutterActorTraverseVisitFlags
+_clutter_actor_traverse_depth (ClutterActor           *actor,
+                               ClutterTraverseCallback before_children_callback,
+                               ClutterTraverseCallback after_children_callback,
+                               int                     current_depth,
+                               gpointer                user_data)
+{
+  ClutterActorTraverseVisitFlags flags;
+
+  flags = before_children_callback (actor, current_depth, user_data);
+  if (flags & CLUTTER_ACTOR_TRAVERSE_VISIT_BREAK)
+    return CLUTTER_ACTOR_TRAVERSE_VISIT_BREAK;
+
+  if (!(flags & CLUTTER_ACTOR_TRAVERSE_VISIT_SKIP_CHILDREN))
+    {
+      GList *l;
+      for (l = actor->priv->children; l; l = l->next)
+        {
+          flags = _clutter_actor_traverse_depth (l->data,
+                                                 before_children_callback,
+                                                 after_children_callback,
+                                                 current_depth + 1,
+                                                 user_data);
+          if (flags & CLUTTER_ACTOR_TRAVERSE_VISIT_BREAK)
+            return CLUTTER_ACTOR_TRAVERSE_VISIT_BREAK;
+        }
+    }
+
+  if (after_children_callback)
+    return after_children_callback (actor, current_depth, user_data);
+  else
+    return CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE;
+}
+
 /* _clutter_actor_traverse:
  * @actor: The actor to start traversing the graph from
  * @flags: These flags may affect how the traversal is done
- * @callback: The function to call for each actor traversed
- * @user_data: The private data to pass to the @callback
+ * @before_children_callback: A function to call before visiting the
+ *   children of the current actor.
+ * @after_children_callback: A function to call after visiting the
+ *   children of the current actor. (Ignored if
+ *   %CLUTTER_ACTOR_TRAVERSE_BREADTH_FIRST is passed to @flags.)
+ * @user_data: The private data to pass to the callbacks
  *
  * Traverses the scenegraph starting at the specified @actor and
  * descending through all its children and its children's children.
- * For each actor traversed @callback is called with the specified
- * @user_data.
+ * For each actor traversed @before_children_callback and
+ * @after_children_callback are called with the specified
+ * @user_data, before and after visiting that actor's children.
  *
- * If @callback ever returns %FALSE then no more actors will be
- * traversed.
- *
- * Return value: %TRUE if @actor and all its descendants were
- *   traversed or %FALSE if the @callback returned %FALSE to stop
- *   traversal early.
+ * The callbacks can return flags that affect the ongoing traversal
+ * such as by skipping over an actors children or bailing out of
+ * any further traversing.
  */
-gboolean
+void
 _clutter_actor_traverse (ClutterActor              *actor,
                          ClutterActorTraverseFlags  flags,
-                         ClutterForeachCallback     callback,
+                         ClutterTraverseCallback    before_children_callback,
+                         ClutterTraverseCallback    after_children_callback,
                          gpointer                   user_data)
 {
-  ClutterActorPrivate *priv;
-  GList *l;
-  gboolean cont;
-
-  if (!callback (actor, user_data))
-    return FALSE;
-
-  priv = actor->priv;
-
-  for (cont = TRUE, l = priv->children; cont && l; l = l->next)
-    cont = _clutter_actor_traverse (l->data, flags, callback, user_data);
-
-  return cont;
+  if (flags & CLUTTER_ACTOR_TRAVERSE_BREADTH_FIRST)
+    _clutter_actor_traverse_breadth (actor,
+                                     before_children_callback,
+                                     user_data);
+  else /* DEPTH_FIRST */
+    _clutter_actor_traverse_depth (actor,
+                                   before_children_callback,
+                                   after_children_callback,
+                                   0, /* start depth */
+                                   user_data);
 }
 
