@@ -66,6 +66,7 @@ PopupBaseMenuItem.prototype = {
         this.actor._delegate = this;
 
         this._children = [];
+        this._dot = null;
         this._columnWidths = null;
         this._spacing = 0;
         this.active = false;
@@ -152,6 +153,38 @@ PopupBaseMenuItem.prototype = {
         }
     },
 
+    setShowDot: function(show) {
+        if (show) {
+            if (this._dot)
+                return;
+
+            this._dot = new St.DrawingArea({ style_class: 'popup-menu-item-dot' });
+            this._dot.connect('repaint', Lang.bind(this, this._onRepaintDot));
+            this.actor.add_actor(this._dot);
+        } else {
+            if (!this._dot)
+                return;
+
+            this._dot.destroy();
+            this._dot = null;
+        }
+    },
+
+    _onRepaintDot: function(area) {
+        let cr = area.get_context();
+        let [width, height] = area.get_surface_size();
+        let color = new Clutter.Color();
+        area.get_theme_node().get_foreground_color(color);
+
+        cr.setSourceRGBA (
+            color.red / 255,
+            color.green / 255,
+            color.blue / 255,
+            color.alpha / 255);
+        cr.arc(width / 2, height / 2, width / 3, 0, 2 * Math.PI);
+        cr.fill();
+    },
+
     getColumnWidths: function() {
         let widths = [];
         for (let i = 0, col = 0; i < this._children.length; i++) {
@@ -202,7 +235,20 @@ PopupBaseMenuItem.prototype = {
     },
 
     _allocate: function(actor, box, flags) {
-        let x = box.x1, height = box.y2 - box.y1;
+        let height = box.y2 - box.y1;
+
+        if (this._dot) {
+            let dotBox = new Clutter.ActorBox();
+            let dotWidth = Math.round(box.x1 / 2);
+
+            dotBox.x1 = Math.round(box.x1 / 4);
+            dotBox.x2 = dotBox.x1 + dotWidth;
+            dotBox.y1 = Math.round(box.y1 + (height - dotWidth) / 2);
+            dotBox.y2 = dotBox.y1 + dotWidth;
+            this._dot.allocate(dotBox, flags);
+        }
+
+        let x = box.x1;
         for (let i = 0, col = 0; i < this._children.length; i++) {
             let child = this._children[i];
             let childBox = new Clutter.ActorBox();

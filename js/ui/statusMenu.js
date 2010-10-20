@@ -35,6 +35,7 @@ StatusMenuButton.prototype = {
 
         this._user = this._gdm.get_user(GLib.get_user_name());
         this._presence = new GnomeSession.Presence();
+        this._presenceItems = {};
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
@@ -89,6 +90,9 @@ StatusMenuButton.prototype = {
             this._iconBox.child = this._invisibleIcon;
         else
             this._iconBox.child = this._idleIcon;
+
+        for (let itemStatus in this._presenceItems)
+            this._presenceItems[itemStatus].setShowDot(itemStatus == status);
     },
 
     _createSubMenu: function() {
@@ -97,14 +101,17 @@ StatusMenuButton.prototype = {
         item = new PopupMenu.PopupImageMenuItem(_("Available"), 'user-available', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.AVAILABLE));
         this.menu.addMenuItem(item);
+        this._presenceItems[GnomeSession.PresenceStatus.AVAILABLE] = item;
 
         item = new PopupMenu.PopupImageMenuItem(_("Busy"), 'user-busy', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.BUSY));
         this.menu.addMenuItem(item);
+        this._presenceItems[GnomeSession.PresenceStatus.BUSY] = item;
 
         item = new PopupMenu.PopupImageMenuItem(_("Invisible"), 'user-invisible', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.INVISIBLE));
         this.menu.addMenuItem(item);
+        this._presenceItems[GnomeSession.PresenceStatus.INVISIBLE] = item;
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
