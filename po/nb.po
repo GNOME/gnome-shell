@@ -1,15 +1,15 @@
 # Norwegian bokmål translation of gnome-shell.
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Kjartan Maraas <kmaraas@broadpark.no>, 2009-2010.
+# Kjartan Maraas <kmaraas@gnome.org>, 2009-2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.31.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-06 16:05+0200\n"
-"PO-Revision-Date: 2010-10-06 16:07+0200\n"
-"Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
+"POT-Creation-Date: 2010-10-16 21:23+0200\n"
+"PO-Revision-Date: 2010-10-16 21:24+0200\n"
+"Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -37,9 +37,7 @@ msgstr "Tilpass klokken på panelet"
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"Tillat tilgang til interne feilsøkings og overvåkingsverktøy ved å bruke Alt-"
-"F2-dialogen."
+msgstr "Tillat tilgang til interne feilsøkings og overvåkingsverktøy ved å bruke Alt-F2-dialogen."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Custom format of the clock"
@@ -427,58 +425,58 @@ msgid "Undo"
 msgstr "Angre"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:461
+#: ../js/ui/panel.js:468
 #, c-format
 msgid "Quit %s"
 msgstr "Avslutt %s"
 
-#: ../js/ui/panel.js:486
+#: ../js/ui/panel.js:493
 msgid "Preferences"
 msgstr "Brukervalg"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:572
+#: ../js/ui/panel.js:579
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R.%S"
 
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:580
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:577
+#: ../js/ui/panel.js:584
 msgid "%a %R:%S"
 msgstr "%a %R.%S"
 
-#: ../js/ui/panel.js:578
+#: ../js/ui/panel.js:585
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:592
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %p"
 
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:593
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:590
+#: ../js/ui/panel.js:597
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %p"
 
-#: ../js/ui/panel.js:591
+#: ../js/ui/panel.js:598
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:736
+#: ../js/ui/panel.js:743
 msgid "Activities"
 msgstr "Aktiviteter"
 
@@ -513,39 +511,39 @@ msgstr "Oppgi en kommando:"
 msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
 
-#: ../js/ui/statusMenu.js:91
+#: ../js/ui/statusMenu.js:97
 msgid "Available"
 msgstr "Tilgjengelig"
 
-#: ../js/ui/statusMenu.js:95
+#: ../js/ui/statusMenu.js:101
 msgid "Busy"
 msgstr "Opptatt"
 
-#: ../js/ui/statusMenu.js:99
+#: ../js/ui/statusMenu.js:105
 msgid "Invisible"
 msgstr "Usynlig"
 
-#: ../js/ui/statusMenu.js:106
+#: ../js/ui/statusMenu.js:112
 msgid "Account Information..."
 msgstr "Kontoinformasjon..."
 
-#: ../js/ui/statusMenu.js:110
+#: ../js/ui/statusMenu.js:116
 msgid "System Settings..."
 msgstr "Innstillinger for systemet..."
 
-#: ../js/ui/statusMenu.js:117
+#: ../js/ui/statusMenu.js:123
 msgid "Lock Screen"
 msgstr "Lås skjerm"
 
-#: ../js/ui/statusMenu.js:121
+#: ../js/ui/statusMenu.js:127
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:132
 msgid "Log Out..."
 msgstr "Logg ut..."
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:136
 msgid "Shut Down..."
 msgstr "Avslutt..."
 

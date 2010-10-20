@@ -135,9 +135,12 @@ function IconGrid(params) {
 
 IconGrid.prototype = {
     _init: function(params) {
-        params = Params.parse(params, { rowLimit: null, columnLimit: null });
+        params = Params.parse(params, { rowLimit: null,
+                                        columnLimit: null,
+                                        xAlign: St.Align.MIDDLE });
         this._rowLimit = params.rowLimit;
         this._colLimit = params.columnLimit;
+        this._xAlign = params.xAlign;
 
         this.actor = new St.BoxLayout({ style_class: 'icon-grid',
                                         vertical: true });
@@ -189,9 +192,19 @@ IconGrid.prototype = {
 
         let [nColumns, usedWidth] = this._computeLayout(availWidth);
 
-        let overallPaddingX = Math.floor((availWidth - usedWidth) / 2);
+        let leftPadding;
+        switch(this._xAlign) {
+            case St.Align.START:
+                leftPadding = 0;
+                break;
+            case St.Align.MIDDLE:
+                leftPadding = Math.floor((availWidth - usedWidth) / 2);
+                break;
+            case St.Align.END:
+                leftPadding = availWidth - usedWidth;
+        }
 
-        let x = box.x1 + overallPaddingX;
+        let x = box.x1 + leftPadding;
         let y = box.y1;
         let columnIndex = 0;
         let rowIndex = 0;
@@ -231,7 +244,7 @@ IconGrid.prototype = {
 
             if (columnIndex == 0) {
                 y += this._item_size + this._spacing;
-                x = box.x1 + overallPaddingX;
+                x = box.x1 + leftPadding;
             } else {
                 x += this._item_size + this._spacing;
             }

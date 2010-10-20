@@ -5,6 +5,7 @@ gdmuser_cflags =				\
 	-DDATADIR=\""$(datadir)"\"		\
 	-DG_DISABLE_DEPRECATED			\
 	-DG_LOG_DOMAIN=\"GdmUser\"		\
+	-DGDM_CACHE_DIR=\""$(localstatedir)/cache/gdm"\"	\
 	$(GDMUSER_CFLAGS)			\
 	$(NULL)
 

@@ -18,8 +18,8 @@
  *
  */
 
-#ifndef __GDM_USER_MANAGER_H
-#define __GDM_USER_MANAGER_H
+#ifndef __GDM_USER_MANAGER_H__
+#define __GDM_USER_MANAGER_H__
 
 #include <glib-object.h>
 
@@ -35,34 +35,35 @@ G_BEGIN_DECLS
 #define GDM_USER_MANAGER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GDM_TYPE_USER_MANAGER, GdmUserManagerClass))
 
 typedef struct GdmUserManagerPrivate GdmUserManagerPrivate;
+typedef struct GdmUserManager GdmUserManager;
+typedef struct GdmUserManagerClass GdmUserManagerClass;
+typedef enum GdmUserManagerError GdmUserManagerError;
 
-typedef struct
+struct GdmUserManager
 {
         GObject                parent;
         GdmUserManagerPrivate *priv;
-} GdmUserManager;
+};
 
-typedef struct
+struct GdmUserManagerClass
 {
         GObjectClass   parent_class;
 
-        void          (* loading_users)             (GdmUserManager *user_manager);
-        void          (* users_loaded)              (GdmUserManager *user_manager);
         void          (* user_added)                (GdmUserManager *user_manager,
                                                      GdmUser        *user);
         void          (* user_removed)              (GdmUserManager *user_manager,
                                                      GdmUser        *user);
         void          (* user_is_logged_in_changed) (GdmUserManager *user_manager,
                                                      GdmUser        *user);
-        void          (* user_login_frequency_changed) (GdmUserManager *user_manager,
-                                                        GdmUser        *user);
-} GdmUserManagerClass;
+        void          (* user_changed)              (GdmUserManager *user_manager,
+                                                     GdmUser        *user);
+};
 
-typedef enum
+enum GdmUserManagerError
 {
         GDM_USER_MANAGER_ERROR_GENERAL,
         GDM_USER_MANAGER_ERROR_KEY_NOT_FOUND
-} GdmUserManagerError;
+};
 
 #define GDM_USER_MANAGER_ERROR gdm_user_manager_error_quark ()
 
@@ -71,6 +72,7 @@ GType               gdm_user_manager_get_type              (void);
 
 GdmUserManager *    gdm_user_manager_ref_default           (void);
 
+void                gdm_user_manager_queue_load            (GdmUserManager *manager);
 GSList *            gdm_user_manager_list_users            (GdmUserManager *manager);
 GdmUser *           gdm_user_manager_get_user              (GdmUserManager *manager,
                                                             const char     *username);
@@ -79,6 +81,8 @@ GdmUser *           gdm_user_manager_get_user_by_uid       (GdmUserManager *mana
 
 gboolean            gdm_user_manager_activate_user_session (GdmUserManager *manager,
                                                             GdmUser        *user);
+
+gboolean            gdm_user_manager_can_switch            (GdmUserManager *manager);
 
 gboolean            gdm_user_manager_goto_login_session    (GdmUserManager *manager);
 

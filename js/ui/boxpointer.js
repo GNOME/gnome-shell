@@ -5,6 +5,10 @@ const Lang = imports.lang;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
+const Tweener = imports.ui.tweener;
+
+const POPUP_ANIMATION_TIME = 0.15;
+
 /**
  * BoxPointer:
  * @side: A St.Side type; currently only St.Side.TOP is implemented
@@ -36,6 +40,80 @@ BoxPointer.prototype = {
         this._border.connect('repaint', Lang.bind(this, this._drawBorder));
         this._container.add_actor(this._border);
         this.bin.raise(this._border);
+    },
+
+    animateAppear: function(onComplete) {
+        let x = this.actor.x;
+        let y = this.actor.y;
+        let themeNode = this.actor.get_theme_node();
+        let [found, rise] = themeNode.get_length('-arrow-rise', false);
+        if (!found)
+            rise = 0;
+
+        this.actor.opacity = 0;
+        this.actor.show();
+
+        switch (this._arrowSide) {
+            case St.Side.TOP:
+                this.actor.y -= rise;
+                break;
+            case St.Side.BOTTOM:
+                this.actor.y += rise;
+                break;
+            case St.Side.LEFT:
+                this.actor.x -= rise;
+                break;
+            case St.Side.RIGHT:
+                this.actor.x += rise;
+                break;
+        }
+
+        Tweener.addTween(this.actor, { opacity: 255,
+                                       x: x,
+                                       y: y,
+                                       transition: "linear",
+                                       onComplete: onComplete,
+                                       time: POPUP_ANIMATION_TIME });
+    },
+
+    animateDisappear: function(onComplete) {
+        let x = this.actor.x;
+        let y = this.actor.y;
+        let originalX = this.actor.x;
+        let originalY = this.actor.y;
+        let themeNode = this.actor.get_theme_node();
+        let [found, rise] = themeNode.get_length('-arrow-rise', false);
+        if (!found)
+            rise = 0;
+
+        switch (this._arrowSide) {
+            case St.Side.TOP:
+                y += rise;
+                break;
+            case St.Side.BOTTOM:
+                y -= rise;
+                break;
+            case St.Side.LEFT:
+                x += rise;
+                break;
+            case St.Side.RIGHT:
+                x -= rise;
+                break;
+        }
+
+        Tweener.addTween(this.actor, { opacity: 0,
+                                       x: x,
+                                       y: y,
+                                       transition: "linear",
+                                       time: POPUP_ANIMATION_TIME,
+                                       onComplete: Lang.bind(this, function () {
+                                           this.actor.hide();
+                                           this.actor.x = originalX;
+                                           this.actor.y = originalY;
+                                           if (onComplete)
+                                               onComplete();
+                                       })
+                                     });
     },
 
     _adjustAllocationForArrow: function(isWidth, alloc) {
@@ -184,6 +262,92 @@ BoxPointer.prototype = {
         Clutter.cairo_set_source_color(cr, borderColor);
         cr.setLineWidth(borderWidth);
         cr.stroke();
+    },
+
+    setPosition: function(sourceActor, gap, alignment) {
+        let primary = global.get_primary_monitor();
+
+        // We need to show it now to force an allocation,
+        // so that we can query the correct size.
+        this.actor.show();
+
+        // Position correctly relative to the sourceActor
+        let [sourceX, sourceY] = sourceActor.get_transformed_position();
+        let [sourceWidth, sourceHeight] = sourceActor.get_transformed_size();
+
+        let [minWidth, minHeight, natWidth, natHeight] = this.actor.get_preferred_size();
+
+        let resX, resY;
+
+        switch (this._arrowSide) {
+        case St.Side.TOP:
+            resY = sourceY + sourceHeight + gap;
+            break;
+        case St.Side.BOTTOM:
+            resY = sourceY - natHeight - gap;
+            break;
+        case St.Side.LEFT:
+            resX = sourceX + sourceWidth + gap;
+            break;
+        case St.Side.RIGHT:
+            resX = sourceX - natWidth - gap;
+            break;
+        }
+
+        // Now align and position the pointing axis, making sure
+        // it fits on screen
+        switch (this._arrowSide) {
+        case St.Side.TOP:
+        case St.Side.BOTTOM:
+            switch (alignment) {
+            case St.Align.START:
+                resX = sourceX;
+                break;
+            case St.Align.MIDDLE:
+                resX = sourceX - Math.floor((natWidth - sourceWidth) / 2);
+                break;
+            case St.Align.END:
+                resX = sourceX - (natWidth - sourceWidth);
+                break;
+            }
+
+            resX = Math.min(resX, primary.x + primary.width - natWidth);
+            resX = Math.max(resX, primary.x);
+
+            this.setArrowOrigin((sourceX - resX) + Math.floor(sourceWidth / 2));
+            break;
+
+        case St.Side.LEFT:
+        case St.Side.RIGHT:
+            switch (alignment) {
+            case St.Align.START:
+                resY = sourceY;
+                break;
+            case St.Align.MIDDLE:
+                resY = sourceY - Math.floor((natHeight - sourceHeight) / 2);
+                break;
+            case St.Align.END:
+                resY = sourceY - (natHeight - sourceHeight);
+                break;
+            }
+
+            resY = Math.min(resY, primary.y + primary.height - natHeight);
+            resY = Math.max(resY, primary.y);
+
+            this.setArrowOrigin((sourceY - resY) + Math.floor(sourceHeight / 2));
+            break;
+        }
+
+        let parent = this.actor.get_parent();
+        let success, x, y;
+        while (!success) {
+            [success, x, y] = parent.transform_stage_point(resX, resY);
+            parent = parent.get_parent();
+        }
+
+        // Actually set the position
+        this.actor.x = Math.floor(x);
+        this.actor.y = Math.floor(y);
     },
 
     // @origin: Coordinate specifying middle of the arrow, along

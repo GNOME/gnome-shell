@@ -130,6 +130,9 @@ void shell_global_run_at_leisure (ShellGlobal         *global,
                                   gpointer             user_data,
                                   GDestroyNotify       notify);
 
+void shell_global_play_theme_sound (ShellGlobal       *global,
+                                    const char        *name);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */

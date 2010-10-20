@@ -16,8 +16,6 @@ const Tweener = imports.ui.tweener;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
-const POPUP_ANIMATION_TIME = 0.1;
-
 function Switch() {
     this._init.apply(this, arguments);
 }
@@ -178,7 +176,7 @@ PopupSliderMenuItem.prototype = {
         if (isNaN(value))
             // Avoid spreading NaNs around
             throw TypeError('The slider value must be a number');
-        this._displayValue = this._value = Math.max(Math.min(value, 1), 0);
+        this._value = Math.max(Math.min(value, 1), 0);
 
         this._slider = new St.DrawingArea({ style_class: 'popup-slider-menu-item', reactive: true });
         this.actor.set_child(this._slider);
@@ -193,7 +191,7 @@ PopupSliderMenuItem.prototype = {
         if (isNaN(value))
             throw TypeError('The slider value must be a number');
 
-        this._displayValue = this._value = Math.max(Math.min(value, 1), 0);
+        this._value = Math.max(Math.min(value, 1), 0);
         this._slider.queue_repaint();
     },
 
@@ -233,7 +231,7 @@ PopupSliderMenuItem.prototype = {
         cr.stroke();
 
         let handleY = height / 2;
-        let handleX = handleRadius + (width - 2 * handleRadius) * this._displayValue;
+        let handleX = handleRadius + (width - 2 * handleRadius) * this._value;
 
         let color = new Clutter.Color();
         themeNode.get_foreground_color(color);
@@ -271,8 +269,7 @@ PopupSliderMenuItem.prototype = {
             Clutter.ungrab_pointer();
             this._dragging = false;
 
-            this._value = this._displayValue;
-            this.emit('value-changed', this._value);
+            this.emit('drag-end');
         }
         return true;
     },
@@ -301,8 +298,9 @@ PopupSliderMenuItem.prototype = {
             newvalue = 1;
         else
             newvalue = (relX - handleRadius) / (width - 2 * handleRadius);
-        this._displayValue = newvalue;
+        this._value = newvalue;
         this._slider.queue_repaint();
+        this.emit('value-changed', this._value);
     },
 
     get value() {
@@ -313,9 +311,10 @@ PopupSliderMenuItem.prototype = {
         let key = event.get_key_symbol();
         if (key == Clutter.Right || key == Clutter.Left) {
             let delta = key == Clutter.Right ? 0.1 : -0.1;
-            this._value = this._displayValue = Math.max(0, Math.min(this._value + delta, 1));
+            this._value = Math.max(0, Math.min(this._value + delta, 1));
             this._slider.queue_repaint();
             this.emit('value-changed', this._value);
+            this.emit('drag-end');
             return true;
         }
         return false;
@@ -552,7 +551,6 @@ PopupMenu.prototype = {
 
         let [minWidth, minHeight, natWidth, natHeight] = this.actor.get_preferred_size();
 
-        let menuX, menuY;
         let menuWidth = natWidth, menuHeight = natHeight;
 
         // Position the non-pointing axis
@@ -575,75 +573,12 @@ PopupMenu.prototype = {
                     this._boxPointer._arrowSide = this._arrowSide = St.Side.LEFT;
             }
         }
-        switch (this._arrowSide) {
-        case St.Side.TOP:
-            menuY = sourceY + sourceHeight + this._gap;
-            break;
-        case St.Side.BOTTOM:
-            menuY = sourceY - menuHeight - this._gap;
-            break;
-        case St.Side.LEFT:
-            menuX = sourceX + sourceWidth + this._gap;
-            break;
-        case St.Side.RIGHT:
-            menuX = sourceX - menuWidth - this._gap;
-            break;
-        }
 
-        // Now align and position the pointing axis, making sure
-        // it fits on screen
-        switch (this._arrowSide) {
-        case St.Side.TOP:
-        case St.Side.BOTTOM:
-            switch (this._alignment) {
-            case St.Align.START:
-                menuX = sourceX;
-                break;
-            case St.Align.MIDDLE:
-                menuX = sourceX - Math.floor((menuWidth - sourceWidth) / 2);
-                break;
-            case St.Align.END:
-                menuX = sourceX - (menuWidth - sourceWidth);
-                break;
-            }
-
-            menuX = Math.min(menuX, primary.x + primary.width - menuWidth);
-            menuX = Math.max(menuX, primary.x);
-
-            this._boxPointer.setArrowOrigin((sourceX - menuX) + Math.floor(sourceWidth / 2));
-            break;
-
-        case St.Side.LEFT:
-        case St.Side.RIGHT:
-            switch (this._alignment) {
-            case St.Align.START:
-                menuY = sourceY;
-                break;
-            case St.Align.MIDDLE:
-                menuY = sourceY - Math.floor((menuHeight - sourceHeight) / 2);
-                break;
-            case St.Align.END:
-                menuY = sourceY - (menuHeight - sourceHeight);
-                break;
-            }
-
-            menuY = Math.min(menuY, primary.y + primary.height - menuHeight);
-            menuY = Math.max(menuY, primary.y);
-
-            this._boxPointer.setArrowOrigin((sourceY - menuY) + Math.floor(sourceHeight / 2));
-            break;
-        }
-
-        // Actually set the position
-        this.actor.x = Math.floor(menuX);
-        this.actor.y = Math.floor(menuY);
+        this._boxPointer.setPosition(this.sourceActor, this._gap, this._alignment);
 
         // Now show it
-        this.actor.opacity = 0;
         this.actor.reactive = true;
-        Tweener.addTween(this.actor, { opacity: 255,
-                                       transition: "easeOutQuad",
-                                       time: POPUP_ANIMATION_TIME });
+        this._boxPointer.animateAppear();
         this.isOpen = true;
         this.emit('open-state-changed', true);
     },
@@ -657,11 +592,7 @@ PopupMenu.prototype = {
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
         this.actor.reactive = false;
-        Tweener.addTween(this.actor, { opacity: 0,
-                                       transition: "easeOutQuad",
-                                       time: POPUP_ANIMATION_TIME,
-                                       onComplete: Lang.bind(this, function () { this.actor.hide(); })});
-
+        this._boxPointer.animateDisappear();
         this.isOpen = false;
         this.emit('open-state-changed', false);
     },

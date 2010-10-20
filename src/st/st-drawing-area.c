@@ -115,6 +115,7 @@ st_drawing_area_paint (ClutterActor *self)
           surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
           priv->context = cairo_create (surface);
           priv->in_repaint = TRUE;
+          priv->needs_repaint = FALSE;
 
           g_signal_emit ((GObject*)area, st_drawing_area_signals[REPAINT], 0);
 

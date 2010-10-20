@@ -21,8 +21,8 @@
  * Private interfaces to the GdmUser object
  */
 
-#ifndef __GDM_USER_PRIVATE_H
-#define __GDM_USER_PRIVATE_H
+#ifndef __GDM_USER_PRIVATE_H_
+#define __GDM_USER_PRIVATE_H_
 
 #include <pwd.h>
 
@@ -30,15 +30,20 @@
 
 G_BEGIN_DECLS
 
-void _gdm_user_update           (GdmUser             *user,
-                                 const struct passwd *pwent);
+void _gdm_user_update_from_object_path (GdmUser    *user,
+                                        const char *object_path);
+
+void _gdm_user_update_from_pwent (GdmUser             *user,
+                                  const struct passwd *pwent);
+
+void _gdm_user_update_login_frequency (GdmUser *user,
+                                       guint64  login_frequency);
+
 void _gdm_user_add_session      (GdmUser             *user,
                                  const char          *session_id);
 void _gdm_user_remove_session   (GdmUser             *user,
                                  const char          *session_id);
 
-void _gdm_user_icon_changed     (GdmUser             *user);
-
 G_END_DECLS
 
-#endif /* !__GDM_USER_PRIVATE_H */
+#endif /* !__GDM_USER_PRIVATE__ */

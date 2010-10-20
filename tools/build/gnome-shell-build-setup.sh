@@ -58,7 +58,7 @@ fi
 #
 # Devel packages needed by gnome-shell and its deps:
 # dbus-glib, GL, gnome-menus, gstreamer, libffi,
-# libjasper, libjpeg, libpng, libtiff, libwnck,
+# libjasper, libjpeg, libpng, libpulse, libtiff, libwnck,
 # libxml2, ORBit2, python, readline,
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification
 # xdamage, icon-naming-utils
@@ -83,7 +83,7 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     gvfs gvfs-backends icon-naming-utils \
     libdbus-glib-1-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev \
     libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev \
-    libwnck-dev libgl1-mesa-dev liborbit2-dev libreadline5-dev libxml2-dev \
+    libwnck-dev libgl1-mesa-dev liborbit2-dev libpulse-dev libreadline5-dev libxml2-dev \
     mesa-common-dev mesa-utils python-dev python-gconf python-gobject \
     xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev \
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
@@ -105,8 +105,8 @@ if test "x$system" = xFedora ; then
     automake bison flex gettext git gnome-common gnome-doc-utils gvfs intltool
     libtool pkgconfig dbus-glib-devel gnome-desktop-devel gnome-menus-devel
     gnome-python2-gconf jasper-devel libffi-devel libjpeg-devel libpng-devel
-    libtiff-devel libwnck-devel mesa-libGL-devel ORBit2-devel python-devel
-    pygobject2 readline-devel xulrunner-devel libXdamage-devel libcroco-devel
+    libtiff-devel libwnck-devel mesa-libGL-devel ORBit2-devel pulseaudio-libs-devel
+    python-devel pygobject2 readline-devel xulrunner-devel libXdamage-devel libcroco-devel
     libxml2-devel gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good
     glx-utils startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
     icon-naming-utils
@@ -132,7 +132,7 @@ if test "x$system" = xSUSE -o "x$system" = "xSUSE LINUX" ; then
     curl \
     bison flex gtk-doc gnome-common gnome-doc-utils-devel \
     gnome-desktop-devel gnome-menus-devel icon-naming-utils \
-    libtiff-devel cups-devel libffi-devel \
+    libpulse-devel libtiff-devel cups-devel libffi-devel \
     orbit2-devel libwnck-devel xorg-x11-proto-devel readline-devel \
     mozilla-xulrunner191-devel libcroco-devel \
     xorg-x11-devel xorg-x11 xorg-x11-server-extra \
