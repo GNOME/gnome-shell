@@ -67,6 +67,15 @@ DateMenuButton.prototype = {
         this._calendar = new Calendar.Calendar();
         this.menu._box.add(this._calendar.actor);
 
+        this._taskList = new Calendar.EventsList();
+        this.menu.connect('opening', Lang.bind(this, function() {
+            this._calendar.clearButtonsState();
+            this._taskList.update();
+        }));
+        this._calendar.connect('activate', Lang.bind(this, function(obj, day) {
+            this._taskList.showDay(day);
+        }));
+
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
@@ -89,7 +98,15 @@ DateMenuButton.prototype = {
         hbox = new St.BoxLayout();
         hbox.add(orig_menu_box);
         hbox.add(this._vertSep);
-        hbox.add(new St.Label({text: "foo0"}));
+
+        let calendarButton = new St.Button({ label: _("Open Calendar"),
+                                             style_class: 'open-calendar',
+                                             x_align: St.Align.START });
+        let box = new St.BoxLayout({ vertical: true });
+        box.add(this._taskList.actor, { expand: true, x_fill: true, y_fill: true });
+        box.add(calendarButton);
+
+        hbox.add(box);
         this.menu._boxPointer.bin.set_child(hbox);
         this.menu._box = hbox;
 

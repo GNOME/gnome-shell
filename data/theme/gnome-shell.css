@@ -843,6 +843,10 @@ StTooltip {
     text-align: center;
 }
 
+.calendar-day-base:active {
+    background: #666;
+}
+
 .calendar-day-heading {
     color: #666666;
 }
@@ -874,6 +878,60 @@ StTooltip {
 
 .calendar-other-month-day {
     color: #333333;
+}
+
+.events-header {
+    height: 40px;
+}
+
+.events-day-header {
+    padding-left: 20px;
+    padding-right: 40px;
+    font-weight: bold;
+    font-size: 14px;
+    color: rgba(153, 153, 153, 1.0);
+}
+
+.events-day-time {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.events-day-task {
+    font-weight: bold;
+    font-size: 14px;
+    color: rgba(153, 153, 153, 1.0);
+}
+
+.events-day-name-box {
+    width: 50px;
+}
+
+.events-time-box {
+    width: 70px;
+}
+
+.events-event-box {
+    width: 300px;
+}
+
+.events-no-events {
+    font-weight: bold;
+    padding-left: 40px;
+    padding-right: 40px;
+    font-size: 14px;
+    color: rgba(153, 153, 153, 1.0);
+}
+
+.open-calendar {
+    padding-bottom: 12px;
+    padding-left: 12px;
+    height: 40px;
+}
+
+.open-calendar:hover {
+    background: #666;
 }
 
 /* Message Tray */

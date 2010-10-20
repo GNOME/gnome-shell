@@ -63,6 +63,7 @@ GJS_MIN_VERSION=0.7
 MUTTER_MIN_VERSION=2.91.0
 GTK_MIN_VERSION=2.91.0
 GIO_MIN_VERSION=2.25.9
+LIBICAL_MIN_VERSION=0.43
 
 # Collect more than 20 libraries for a prize!
 PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
@@ -70,6 +71,7 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
                                  gtk+-3.0 >= $GTK_MIN_VERSION
                                  mutter-plugins >= $MUTTER_MIN_VERSION
                                  gjs-gi-1.0 >= $GJS_MIN_VERSION
+                                 libical >= $LIBICAL_MIN_VERSION
 				 libgnome-menu $recorder_modules gconf-2.0
                                  gdk-x11-3.0
 				 clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
