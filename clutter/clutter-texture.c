@@ -54,6 +54,7 @@
 #include "clutter-debug.h"
 #include "clutter-fixed.h"
 #include "clutter-enum-types.h"
+#include "clutter-stage-private.h"
 
 #include "cogl/cogl.h"
 

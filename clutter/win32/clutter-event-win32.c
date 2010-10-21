@@ -34,6 +34,7 @@
 #include "clutter-keysyms.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
+#include "clutter-stage-private.h"
 
 #include <string.h>
 #include <glib.h>

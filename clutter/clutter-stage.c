@@ -65,12 +65,12 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 #include "clutter-stage-manager-private.h"
-#include "clutter-stage-window.h"
 #include "clutter-version.h" 	/* For flavour */
 #include "clutter-id-pool.h"
 #include "clutter-container.h"
 #include "clutter-profile.h"
 #include "clutter-device-manager-private.h"
+#include "clutter-stage-private.h"
 
 #include "cogl/cogl.h"
 

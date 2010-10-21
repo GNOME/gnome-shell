@@ -104,7 +104,7 @@
 #include "clutter-master-clock.h"
 #include "clutter-feature.h"
 #include "clutter-actor.h"
-#include "clutter-stage.h"
+#include "clutter-stage-private.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
 #include "clutter-version.h" 	/* For flavour define */

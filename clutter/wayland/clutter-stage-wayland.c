@@ -33,21 +33,17 @@
 #include <wayland-client.h>
 #include <xf86drm.h>
 
-#include "../clutter-main.h"
-#include "../clutter-feature.h"
-#include "../clutter-color.h"
-#include "../clutter-util.h"
-#include "../clutter-event.h"
-#include "../clutter-enum-types.h"
-#include "../clutter-private.h"
-#include "../clutter-debug.h"
-#include "../clutter-units.h"
-#include "../clutter-stage.h"
-#include "../clutter-stage-window.h"
-
 #include "clutter-stage-wayland.h"
 #include "clutter-wayland.h"
 #include "clutter-backend-wayland.h"
+
+#include "clutter-main.h"
+#include "clutter-feature.h"
+#include "clutter-event.h"
+#include "clutter-enum-types.h"
+#include "clutter-private.h"
+#include "clutter-debug.h"
+#include "clutter-stage-private.h"
 
 #include "cogl/cogl-framebuffer-private.h"
 

@@ -24,10 +24,12 @@
 #include "clutter-osx.h"
 #include "clutter-stage-osx.h"
 #include "clutter-backend-osx.h"
-#import <AppKit/AppKit.h>
 
-#include <clutter/clutter-debug.h>
-#include <clutter/clutter-private.h>
+#include "clutter-debug.h"
+#include "clutter-private.h"
+#include "clutter-stage-private.h"
+
+#import <AppKit/AppKit.h>
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 

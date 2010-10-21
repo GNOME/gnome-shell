@@ -40,6 +40,7 @@
 #include "clutter-enum-types.h"
 #include "clutter-input-device.h"
 #include "clutter-private.h"
+#include "clutter-stage-private.h"
 
 enum
 {

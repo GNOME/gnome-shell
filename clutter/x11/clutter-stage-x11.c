@@ -31,16 +31,13 @@
 #include "clutter-stage-x11.h"
 #include "clutter-x11.h"
 
-#include "../clutter-stage-window.h"
-#include "../clutter-main.h"
-#include "../clutter-feature.h"
-#include "../clutter-color.h"
-#include "../clutter-util.h"
-#include "../clutter-event.h"
-#include "../clutter-enum-types.h"
-#include "../clutter-private.h"
-#include "../clutter-debug.h"
-#include "../clutter-units.h"
+#include "clutter-debug.h"
+#include "clutter-main.h"
+#include "clutter-feature.h"
+#include "clutter-event.h"
+#include "clutter-enum-types.h"
+#include "clutter-private.h"
+#include "clutter-stage-private.h"
 
 #include "cogl/cogl.h"
 

@@ -71,6 +71,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-private.h"
+#include "clutter-stage-private.h"
 
 struct _ClutterOffscreenEffectPrivate
 {

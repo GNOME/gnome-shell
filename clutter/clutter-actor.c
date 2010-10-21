@@ -303,7 +303,7 @@
 #include "clutter-profile.h"
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
-#include "clutter-stage.h"
+#include "clutter-stage-private.h"
 #include "clutter-units.h"
 
 typedef struct _ShaderData ShaderData;

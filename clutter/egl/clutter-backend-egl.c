@@ -40,10 +40,11 @@
 #include "clutter-stage-egl.h"
 #include "clutter-egl.h"
 
-#include "../clutter-private.h"
-#include "../clutter-main.h"
-#include "../clutter-debug.h"
-#include "../clutter-version.h"
+#include "clutter-debug.h"
+#include "clutter-private.h"
+#include "clutter-main.h"
+#include "clutter-stage-private.h"
+#include "clutter-version.h"
 
 static ClutterBackendEGL *backend_singleton = NULL;
 

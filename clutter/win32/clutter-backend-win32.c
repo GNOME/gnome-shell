@@ -30,12 +30,13 @@
 #include "clutter-win32.h"
 #include "clutter-device-manager-win32.h"
 
-#include "../clutter-event.h"
-#include "../clutter-main.h"
-#include "../clutter-input-device.h"
-#include "../clutter-debug.h"
-#include "../clutter-private.h"
-#include "../clutter-version.h"
+#include "clutter-event.h"
+#include "clutter-main.h"
+#include "clutter-device-manager-private.h"
+#include "clutter-debug.h"
+#include "clutter-private.h"
+#include "clutter-stage-private.h"
+#include "clutter-version.h"
 
 #include "cogl/cogl.h"
 
