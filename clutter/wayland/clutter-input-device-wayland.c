@@ -34,9 +34,10 @@
 
 #include <X11/extensions/XKBcommon.h>
 
-#include "../clutter-debug.h"
-#include "../clutter-private.h"
-#include "../clutter-keysyms.h"
+#include "clutter-debug.h"
+#include "clutter-device-manager-private.h"
+#include "clutter-private.h"
+#include "clutter-keysyms.h"
 
 #include "clutter-stage-wayland.h"
 

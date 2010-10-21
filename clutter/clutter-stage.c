@@ -70,7 +70,7 @@
 #include "clutter-id-pool.h"
 #include "clutter-container.h"
 #include "clutter-profile.h"
-#include "clutter-input-device.h"
+#include "clutter-device-manager-private.h"
 
 #include "cogl/cogl.h"
 

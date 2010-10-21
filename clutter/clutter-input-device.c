@@ -36,6 +36,7 @@
 #endif
 
 #include "clutter-debug.h"
+#include "clutter-device-manager-private.h"
 #include "clutter-enum-types.h"
 #include "clutter-input-device.h"
 #include "clutter-private.h"

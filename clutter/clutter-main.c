@@ -110,6 +110,7 @@
 #include "clutter-version.h" 	/* For flavour define */
 #include "clutter-frame-source.h"
 #include "clutter-profile.h"
+#include "clutter-device-manager-private.h"
 
 #include "cogl/cogl.h"
 #include "pango/cogl-pango.h"

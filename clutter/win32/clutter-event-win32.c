@@ -27,12 +27,13 @@
 #include "clutter-backend-win32.h"
 #include "clutter-win32.h"
 
-#include "../clutter-backend.h"
-#include "../clutter-event.h"
-#include "../clutter-private.h"
-#include "../clutter-debug.h"
-#include "../clutter-main.h"
-#include "../clutter-keysyms.h"
+#include "clutter-backend.h"
+#include "clutter-debug.h"
+#include "clutter-device-manager-private.h"
+#include "clutter-event.h"
+#include "clutter-keysyms.h"
+#include "clutter-main.h"
+#include "clutter-private.h"
 
 #include <string.h>
 #include <glib.h>
