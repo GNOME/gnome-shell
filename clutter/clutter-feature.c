@@ -45,6 +45,7 @@
 #include <string.h>
 #include <sys/types.h>
 
+#include "clutter-backend-private.h"
 #include "clutter-feature.h"
 #include "clutter-main.h"
 #include "clutter-private.h"

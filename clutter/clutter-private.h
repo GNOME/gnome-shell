@@ -298,41 +298,6 @@ PangoContext *_clutter_context_get_pango_context    (ClutterMainContext *self);
 
 G_CONST_RETURN gchar *_clutter_gettext (const gchar *str);
 
-/* vfuncs implemented by backend */
-GType         _clutter_backend_impl_get_type  (void);
-
-void          _clutter_backend_redraw         (ClutterBackend  *backend,
-                                               ClutterStage    *stage);
-ClutterStageWindow *_clutter_backend_create_stage   (ClutterBackend  *backend,
-                                               ClutterStage    *wrapper,
-                                               GError         **error);
-void          _clutter_backend_ensure_context (ClutterBackend  *backend,
-                                               ClutterStage    *stage);
-void          _clutter_backend_ensure_context_internal
-                                              (ClutterBackend  *backend,
-                                               ClutterStage    *stage);
-gboolean      _clutter_backend_create_context (ClutterBackend  *backend,
-                                               GError         **error);
-
-void          _clutter_backend_add_options    (ClutterBackend  *backend,
-                                               GOptionGroup    *group);
-gboolean      _clutter_backend_pre_parse      (ClutterBackend  *backend,
-                                               GError         **error);
-gboolean      _clutter_backend_post_parse     (ClutterBackend  *backend,
-                                               GError         **error);
-void          _clutter_backend_init_events    (ClutterBackend  *backend);
-
-void          _clutter_backend_copy_event_data (ClutterBackend     *backend,
-                                                const ClutterEvent *src,
-                                                ClutterEvent       *dest);
-void          _clutter_backend_free_event_data (ClutterBackend     *backend,
-                                                ClutterEvent       *event);
-
-ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
-
-gfloat        _clutter_backend_get_units_per_em   (ClutterBackend       *backend,
-                                                   PangoFontDescription *font_desc);
-
 gboolean      _clutter_feature_init (GError **error);
 
 /* Reinjecting queued events for processing */
@@ -402,8 +367,6 @@ void _clutter_actor_finish_queue_redraw       (ClutterActor             *self,
                                                ClutterPaintVolume       *clip);
 
 void _clutter_run_repaint_functions (void);
-
-gint32 _clutter_backend_get_units_serial (ClutterBackend *backend);
 
 gboolean _clutter_effect_pre_paint        (ClutterEffect      *effect);
 void     _clutter_effect_post_paint       (ClutterEffect      *effect);

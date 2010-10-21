@@ -29,12 +29,13 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-event.h>
-#include <clutter/clutter-backend.h>
 
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 
 #include "clutter-wayland.h"
+
+#include "clutter-backend-private.h"
 
 G_BEGIN_DECLS
 

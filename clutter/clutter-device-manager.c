@@ -40,6 +40,7 @@
 #include "config.h"
 #endif
 
+#include "clutter-backend-private.h"
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
 #include "clutter-enum-types.h"

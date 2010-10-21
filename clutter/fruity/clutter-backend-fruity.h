@@ -32,8 +32,9 @@
 #include <GLES/egl.h>
 
 #include <glib-object.h>
-#include <clutter/clutter-backend.h>
-#include <clutter/clutter-private.h>
+
+#include "clutter-backend-private.h"
+
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_BACKEND_FRUITY             (clutter_backend_egl_get_type ())

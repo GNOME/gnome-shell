@@ -27,11 +27,12 @@
 #include "config.h"
 #endif
 
+#include "clutter-backend-private.h"
+#include "clutter-debug.h"
+#include "clutter-event.h"
 #include "clutter-keysyms.h"
 #include "clutter-keysyms-table.h"
-#include "clutter-event.h"
 #include "clutter-private.h"
-#include "clutter-debug.h"
 
 /**
  * SECTION:clutter-event

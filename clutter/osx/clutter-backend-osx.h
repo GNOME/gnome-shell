@@ -22,7 +22,7 @@
 #ifndef __CLUTTER_BACKEND_OSX_H__
 #define __CLUTTER_BACKEND_OSX_H__
 
-#include <clutter/clutter-backend.h>
+#include "clutter-backend-private.h"
 
 @class NSOpenGLPixelFormat, NSOpenGLContext;
 

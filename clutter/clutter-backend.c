@@ -42,7 +42,7 @@
 #include "config.h"
 #endif
 
-#include "clutter-backend.h"
+#include "clutter-backend-private.h"
 #include "clutter-debug.h"
 #include "clutter-fixed.h"
 #include "clutter-marshal.h"
