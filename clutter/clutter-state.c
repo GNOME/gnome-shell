@@ -468,9 +468,20 @@ clutter_state_change (ClutterState *state,
   GList               *k;
 
   g_return_val_if_fail (CLUTTER_IS_STATE (state), NULL);
-  g_return_val_if_fail (target_state_name != NULL, NULL);
 
   priv = state->priv;
+
+  /* If we've been asked to change state to NULL, reset the
+   * ClutterState to its initial state, but leave the keys
+   * alone.
+   */
+  if (!target_state_name)
+    {
+      priv->source_state_name = priv->target_state_name = NULL;
+      clutter_timeline_stop (priv->timeline);
+      clutter_timeline_rewind (priv->timeline);
+      return NULL;
+    }
 
   if (target_state_name != NULL)
     target_state_name = g_intern_string (target_state_name);
@@ -567,10 +578,13 @@ clutter_state_change (ClutterState *state,
  * @state: a #ClutterState
  * @target_state_name: the state to transition to
  *
- * Change the current state of #ClutterState to @target_state_name
+ * Change the current state of #ClutterState to @target_state_name.
  *
  * The state will animate during its transition, see
  * #clutter_state_warp_to_state for animation-free state switching.
+ *
+ * Setting a %NULL state will stop the current animation and unset
+ * the current state, but keys will be left intact.
  *
  * Return value: (transfer none): the #ClutterTimeline that drives the
  *   state transition. The returned timeline is owned by the #ClutterState
@@ -590,9 +604,9 @@ clutter_state_set_state (ClutterState *state,
  * @state: a #ClutterState
  * @target_state_name: the state to transition to
  *
- * Change the current state of #ClutterState to @target_state_name
- *
  * Change to the specified target state immediately with no animation.
+ *
+ * See clutter_state_set_state().
  *
  * Return value: (transfer none): the #ClutterTimeline that drives the
  *   state transition. The returned timeline is owned by the #ClutterState
