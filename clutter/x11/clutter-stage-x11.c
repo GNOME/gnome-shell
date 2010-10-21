@@ -31,6 +31,7 @@
 #include "clutter-stage-x11.h"
 #include "clutter-x11.h"
 
+#include "clutter-actor-private.h"
 #include "clutter-debug.h"
 #include "clutter-main.h"
 #include "clutter-feature.h"

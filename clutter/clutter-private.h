@@ -26,12 +26,6 @@
 #ifndef __CLUTTER_PRIVATE_H__
 #define __CLUTTER_PRIVATE_H__
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-#include <math.h>
-
 #include <glib.h>
 
 #include <glib/gi18n-lib.h>
@@ -39,7 +33,6 @@
 #include "pango/cogl-pango.h"
 
 #include "clutter-backend.h"
-#include "clutter-device-manager.h"
 #include "clutter-effect.h"
 #include "clutter-event.h"
 #include "clutter-feature.h"
@@ -47,10 +40,7 @@
 #include "clutter-layout-manager.h"
 #include "clutter-master-clock.h"
 #include "clutter-settings.h"
-#include "clutter-stage-manager.h"
-#include "clutter-stage-window.h"
 #include "clutter-stage.h"
-#include "clutter-timeline.h"
 
 G_BEGIN_DECLS
 
@@ -109,23 +99,6 @@ typedef enum {
   CLUTTER_INTERNAL_CHILD = 1 << 6
 } ClutterPrivateFlags;
 
-/*
- * ClutterRedrawFlags:
- * @CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION: Tells clutter the maximum
- *   extents of what needs to be redrawn lies within the actors
- *   current allocation. (Only use this for 2D actors though because
- *   any actor with depth may be projected outside of its allocation)
- *
- * Flags passed to the clutter_actor_queue_redraw_with_clip ()
- * function
- *
- * Since: 1.6
- */
-typedef enum
-{
-  CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION  = 1 << 0
-} ClutterRedrawFlags;
-
 struct _ClutterMainContext
 {
   ClutterBackend  *backend;            /* holds a pointer to the windowing
@@ -175,31 +148,6 @@ struct _ClutterMainContext
 
   ClutterSettings *settings;
 };
-
-/* ClutterActorTraverseFlags:
- *
- * Controls some options for how clutter_actor_traverse() iterates
- * through the graph.
- */
-typedef enum _ClutterActorTraverseFlags
-{
-  CLUTTER_ACTOR_TRAVERSE_PLACE_HOLDER  = 1L<<0
-} ClutterActorTraverseFlags;
-
-/* ClutterForeachCallback:
- * @actor: The actor being iterated
- * @user_data: The private data specified when starting the iteration
- *
- * A generic callback for iterating over actor, such as with
- * _clutter_actor_foreach_child. The difference when compared to
- * #ClutterCallback is that it returns a boolean so it is possible to break
- * out of an iteration early.
- *
- * Return value: %TRUE to continue iterating or %FALSE to break iteration
- * early.
- */
-typedef gboolean (*ClutterForeachCallback) (ClutterActor *actor,
-                                            void *user_data);
 
 #define CLUTTER_CONTEXT()	(_clutter_context_get_default ())
 ClutterMainContext *_clutter_context_get_default (void);
@@ -252,47 +200,6 @@ gboolean _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
                                                const GValue          *handler_return,
                                                gpointer               dummy);
 
-gint          _clutter_actor_get_n_children             (ClutterActor *self);
-gboolean      _clutter_actor_foreach_child              (ClutterActor *self,
-                                                         ClutterForeachCallback callback,
-                                                         void *user_data);
-gboolean      _clutter_actor_traverse                   (ClutterActor *actor,
-                                                         ClutterActorTraverseFlags flags,
-                                                         ClutterForeachCallback callback,
-                                                         void *user_data);
-ClutterActor *_clutter_actor_get_stage_internal         (ClutterActor *actor);
-
-void _clutter_actor_apply_modelview_transform           (ClutterActor *self,
-                                                         CoglMatrix *matrix);
-void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
-						         ClutterActor *ancestor,
-                                                         CoglMatrix *matrix);
-
-void _clutter_actor_rerealize           (ClutterActor    *self,
-                                         ClutterCallback  callback,
-                                         void            *data);
-
-void _clutter_actor_set_opacity_parent (ClutterActor *self,
-                                        ClutterActor *parent);
-
-void _clutter_actor_set_enable_model_view_transform (ClutterActor *self,
-                                                     gboolean      enable);
-
-void _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
-                                               gboolean      enable);
-
-void _clutter_actor_set_has_pointer (ClutterActor *self,
-                                     gboolean      has_pointer);
-
-void _clutter_actor_queue_redraw_with_clip   (ClutterActor              *self,
-                                              ClutterRedrawFlags         flags,
-                                              ClutterPaintVolume        *clip_volume);
-const ClutterPaintVolume *_clutter_actor_get_queue_redraw_clip (ClutterActor *self);
-void _clutter_actor_set_queue_redraw_clip     (ClutterActor             *self,
-                                               const ClutterPaintVolume *clip_volume);
-void _clutter_actor_finish_queue_redraw       (ClutterActor             *self,
-                                               ClutterPaintVolume       *clip);
-
 void _clutter_run_repaint_functions (void);
 
 gboolean _clutter_effect_pre_paint        (ClutterEffect      *effect);
@@ -310,9 +217,6 @@ void     _clutter_event_set_platform_data (ClutterEvent       *event,
                                            gpointer            data);
 gpointer _clutter_event_get_platform_data (const ClutterEvent *event);
 
-
-
-
 void                _clutter_util_fully_transform_vertices (const CoglMatrix *modelview,
                                                             const CoglMatrix *projection,
                                                             const int *viewport,
@@ -320,10 +224,6 @@ void                _clutter_util_fully_transform_vertices (const CoglMatrix *mo
                                                             ClutterVertex *vertices_out,
                                                             int n_vertices);
 
-gboolean           _clutter_actor_set_default_paint_volume (ClutterActor *self,
-                                                            GType         check_gtype,
-                                                            ClutterPaintVolume *volume);
-
 G_END_DECLS
 
-#endif /* _HAVE_CLUTTER_PRIVATE_H */
+#endif /* __CLUTTER_PRIVATE_H__ */

@@ -33,7 +33,8 @@
 #include "clutter-keymap-x11.h"
 #include "clutter-x11.h"
 
-#include "clutter-backend.h"
+#include "clutter-actor-private.h"
+#include "clutter-backend-private.h"
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
 #include "clutter-event.h"

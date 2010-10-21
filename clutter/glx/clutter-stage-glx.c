@@ -28,6 +28,7 @@
 #include "clutter-glx.h"
 #include "clutter-profile.h"
 
+#include "clutter-actor-private.h"
 #include "clutter-debug.h"
 #include "clutter-event.h"
 #include "clutter-enum-types.h"

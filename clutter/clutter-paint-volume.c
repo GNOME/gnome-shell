@@ -32,6 +32,7 @@
 
 #include <glib-object.h>
 
+#include "clutter-actor-private.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 

@@ -43,6 +43,8 @@
 #include "config.h"
 #endif
 
+#include <math.h>
+
 #include "clutter-desaturate-effect.h"
 
 #include "cogl/cogl.h"

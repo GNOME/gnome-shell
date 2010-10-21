@@ -55,6 +55,7 @@
 
 #include "clutter-stage.h"
 
+#include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
 #include "clutter-color.h"
 #include "clutter-container.h"

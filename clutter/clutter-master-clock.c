@@ -39,6 +39,7 @@
 #include "clutter-debug.h"
 #include "clutter-private.h"
 #include "clutter-profile.h"
+#include "clutter-stage-manager-private.h"
 #include "clutter-stage-private.h"
 
 #define CLUTTER_MASTER_CLOCK_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_MASTER_CLOCK, ClutterMasterClockClass))

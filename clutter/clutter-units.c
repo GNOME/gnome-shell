@@ -66,6 +66,8 @@
 #include "config.h"
 #endif
 
+#include <stdlib.h>
+
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 

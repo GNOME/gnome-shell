@@ -46,6 +46,7 @@
 #include "clutter-x11.h"
 #include "clutter-backend-x11.h"
 
+#include "clutter-actor-private.h"
 #include "clutter-marshal.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"

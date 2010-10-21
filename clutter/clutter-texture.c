@@ -44,6 +44,7 @@
 #include "config.h"
 #endif
 
+#include "clutter-actor-private.h"
 #include "clutter-texture.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"

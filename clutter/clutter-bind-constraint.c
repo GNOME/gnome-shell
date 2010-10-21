@@ -84,6 +84,8 @@
 #include "config.h"
 #endif
 
+#include <math.h>
+
 #include "clutter-bind-constraint.h"
 
 #include "clutter-constraint.h"

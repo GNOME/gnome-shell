@@ -78,9 +78,10 @@
 #include "config.h"
 #endif
 
-#include <glib-object.h>
 #include <string.h>
 #include <stdarg.h>
+#include <math.h>
+#include <glib-object.h>
 
 #include "clutter-path.h"
 #include "clutter-types.h"

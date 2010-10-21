@@ -2,6 +2,8 @@
 #include "config.h"
 #endif
 
+#include <math.h>
+
 #include "clutter-types.h"
 #include "clutter-interval.h"
 #include "clutter-private.h"

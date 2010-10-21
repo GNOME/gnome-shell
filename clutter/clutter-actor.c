@@ -286,7 +286,7 @@
 
 #include "cogl/cogl.h"
 
-#include "clutter-actor.h"
+#include "clutter-actor-private.h"
 
 #include "clutter-action.h"
 #include "clutter-actor-meta-private.h"

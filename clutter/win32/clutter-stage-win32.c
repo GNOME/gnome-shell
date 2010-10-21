@@ -27,6 +27,7 @@
 #include "clutter-stage-win32.h"
 #include "clutter-win32.h"
 
+#include "clutter-actor-private.h"
 #include "clutter-main.h"
 #include "clutter-feature.h"
 #include "clutter-event.h"

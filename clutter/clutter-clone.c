@@ -41,6 +41,7 @@
 #include "config.h"
 #endif
 
+#include "clutter-actor-private.h"
 #include "clutter-clone.h"
 #include "clutter-debug.h"
 #include "clutter-main.h"

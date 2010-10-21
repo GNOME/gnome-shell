@@ -42,15 +42,15 @@
 #include "config.h"
 #endif
 
+#include <math.h>
+#include <stdlib.h>
+
 #include "clutter-fixed.h"
 #include "clutter-marshal.h"
 #include "clutter-behaviour-ellipse.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
-
-#include <stdlib.h>
-#include <memory.h>
 
 G_DEFINE_TYPE (ClutterBehaviourEllipse,
                clutter_behaviour_ellipse,

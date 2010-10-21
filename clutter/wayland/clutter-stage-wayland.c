@@ -37,12 +37,13 @@
 #include "clutter-wayland.h"
 #include "clutter-backend-wayland.h"
 
-#include "clutter-main.h"
-#include "clutter-feature.h"
+#include "clutter-actor-private.h"
+#include "clutter-debug.h"
 #include "clutter-event.h"
 #include "clutter-enum-types.h"
+#include "clutter-feature.h"
+#include "clutter-main.h"
 #include "clutter-private.h"
-#include "clutter-debug.h"
 #include "clutter-stage-private.h"
 
 #include "cogl/cogl-framebuffer-private.h"
