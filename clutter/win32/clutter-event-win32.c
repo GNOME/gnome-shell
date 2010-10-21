@@ -237,26 +237,6 @@ make_button_event (const MSG *msg,
   take_and_queue_event (event);
 }
 
-/**
- * clutter_win32_disable_event_retrieval
- *
- * Disables retrieval of Windows messages in the main loop. Use to
- * create event-less canvas.
- *
- * This function can only be called before calling clutter_init().
- *
- * Since: 0.8
- */
-void
-clutter_win32_disable_event_retrieval (void)
-{
-  ClutterBackendWin32 *backend;
-
-  backend = CLUTTER_BACKEND_WIN32 (clutter_get_default_backend ());
-
-  backend->no_event_retrieval = TRUE;
-}
-
 static gboolean
 clutter_event_prepare (GSource *source,
                        gint    *timeout)

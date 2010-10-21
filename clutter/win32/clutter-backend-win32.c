@@ -51,6 +51,9 @@ static gchar *clutter_vblank_name = NULL;
 
 static HINSTANCE clutter_hinst = NULL;
 
+/* various flags corresponding to pre init setup calls */
+static gboolean _no_event_retrieval = FALSE;
+
 gboolean
 clutter_backend_win32_pre_parse (ClutterBackend  *backend,
 				 GError         **error)
@@ -75,7 +78,8 @@ clutter_backend_win32_init_events (ClutterBackend *backend)
                   "backend", backend_win32,
                   NULL);
 
-  _clutter_backend_win32_events_init (backend);
+  if (!_no_event_retrieval)
+    _clutter_backend_win32_events_init (backend);
 }
 
 HCURSOR
@@ -539,6 +543,29 @@ clutter_backend_win32_get_device_manager (ClutterBackend *backend)
   return backend_win32->device_manager;
 }
 
+/**
+ * clutter_win32_disable_event_retrieval
+ *
+ * Disables retrieval of Windows messages in the main loop. Use to
+ * create event-less canvas.
+ *
+ * This function can only be called before calling clutter_init().
+ *
+ * Since: 0.8
+ */
+void
+clutter_win32_disable_event_retrieval (void)
+{
+  if (_clutter_context_is_initialized ())
+    {
+      g_warning ("clutter_win32_disable_event_retrieval() can only be "
+                 "called before clutter_init()");
+      return;
+    }
+
+  _no_event_retrieval = TRUE;
+}
+
 static void
 clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
 {
@@ -566,7 +593,6 @@ clutter_backend_win32_init (ClutterBackendWin32 *backend_win32)
   ClutterBackend *backend = CLUTTER_BACKEND (backend_win32);
 
   backend_win32->gl_context         = NULL;
-  backend_win32->no_event_retrieval = FALSE;
   backend_win32->invisible_cursor   = NULL;
 
   /* FIXME: get from GetSystemMetric?
