@@ -28,8 +28,11 @@
 #include "config.h"
 #endif
 
+#include <string.h>
+
 #include <glib-object.h>
 
+#include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 
 G_DEFINE_BOXED_TYPE (ClutterPaintVolume, clutter_paint_volume,

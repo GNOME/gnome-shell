@@ -299,6 +299,7 @@
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
+#include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 #include "clutter-profile.h"
 #include "clutter-scriptable.h"

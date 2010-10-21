@@ -38,6 +38,7 @@
 #include "clutter-device-manager-private.h"
 #include "clutter-event.h"
 #include "clutter-main.h"
+#include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
