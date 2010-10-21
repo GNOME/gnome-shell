@@ -23,7 +23,7 @@
 #include <gio/gio.h>
 #include <math.h>
 #include <X11/extensions/Xfixes.h>
-#include <gjs/gjs.h>
+#include <gjs/gjs-module.h>
 #include <canberra.h>
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
