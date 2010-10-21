@@ -307,14 +307,6 @@ PangoContext *_clutter_context_get_pango_context    (ClutterMainContext *self);
 
 G_CONST_RETURN gchar *_clutter_gettext (const gchar *str);
 
-/* stage manager */
-void _clutter_stage_manager_add_stage         (ClutterStageManager *stage_manager,
-                                               ClutterStage        *stage);
-void _clutter_stage_manager_remove_stage      (ClutterStageManager *stage_manager,
-                                               ClutterStage        *stage);
-void _clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
-                                               ClutterStage        *stage);
-
 /* stage */
 void                _clutter_stage_do_paint             (ClutterStage *stage,
                                                          const ClutterGeometry *clip);

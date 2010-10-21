@@ -40,12 +40,12 @@
 #include "config.h"
 #endif
 
+#include "clutter-stage-manager-private.h"
 
 #include "clutter-marshal.h"
 #include "clutter-debug.h"
 #include "clutter-private.h"
 #include "clutter-version.h"  
-#include "clutter-stage-manager.h"
 
 enum
 {
@@ -87,19 +87,10 @@ static void
 clutter_stage_manager_dispose (GObject *gobject)
 {
   ClutterStageManager *stage_manager;
-  GSList *l, *next;
 
   stage_manager = CLUTTER_STAGE_MANAGER (gobject);
 
-  for (l = stage_manager->stages; l; l = next)
-    {
-      ClutterActor *stage = l->data;
-      next = l->next;
-
-      if (stage)
-        clutter_actor_destroy (stage);
-    }
-
+  g_slist_foreach (stage_manager->stages, (GFunc) clutter_actor_destroy, NULL);
   g_slist_free (stage_manager->stages);
   stage_manager->stages = NULL;
 

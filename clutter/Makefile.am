@@ -230,6 +230,7 @@ source_h_priv = \
 	$(srcdir)/clutter-private.h 			\
 	$(srcdir)/clutter-profile.h			\
 	$(srcdir)/clutter-script-private.h		\
+	$(srcdir)/clutter-stage-manager-private.h	\
 	$(srcdir)/clutter-timeout-interval.h    	\
 	$(NULL)
 

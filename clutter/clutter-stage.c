@@ -64,7 +64,7 @@
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
-#include "clutter-stage-manager.h"
+#include "clutter-stage-manager-private.h"
 #include "clutter-stage-window.h"
 #include "clutter-version.h" 	/* For flavour */
 #include "clutter-id-pool.h"
