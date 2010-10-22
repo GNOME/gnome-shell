@@ -507,8 +507,12 @@ clutter_state_change (ClutterState *state,
 
   if (target_state_name == priv->target_state_name)
     {
-      /* Avoid transitioning if the desired state is already current */
-      return priv->timeline;
+      /* Avoid transitioning if the desired state is already current,
+       * unless we're warping to it and the state transition is in
+       * progress (in that case, immediately warp to the state).
+       */
+      if (!clutter_timeline_is_playing (priv->timeline) || animate)
+        return priv->timeline;
     }
 
   if (priv->current_animator != NULL)
