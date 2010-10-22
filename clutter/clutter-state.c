@@ -719,9 +719,9 @@ get_property_from_object (GObject     *gobject,
  *
  * |[
  *   clutter_state_set (state, NULL, "hover",
- *                      button, "opacity", 255, CLUTTER_LINEAR,
- *                      button, "scale-x", 1.2, CLUTTER_EASE_OUT_CUBIC,
- *                      button, "scale-y", 1.2, CLUTTER_EASE_OUT_CUBIC,
+ *                      button, "opacity", CLUTTER_LINEAR, 255,
+ *                      button, "scale-x", CLUTTER_EASE_OUT_CUBIC, 1.2,
+ *                      button, "scale-y", CLUTTER_EASE_OUT_CUBIC, 1.2,
  *                      NULL);
  * ]|
  *
@@ -732,10 +732,10 @@ get_property_from_object (GObject     *gobject,
  * mode, and the #ClutterActor:scale-x and #ClutterActor:scale-y properties
  * animated to a value of 1.2 using %CLUTTER_EASE_OUT_CUBIC as the animation
  * mode. To change the state (and start the transition) you can use the
- * clutter_state_change() function:
+ * clutter_state_set_state() function:
  *
  * |[
- *   clutter_state_change (state, "hover", TRUE);
+ *   clutter_state_set_state (state, "hover");
  * ]|
  *
  * If a given object, state_name, property tuple already exist in the
@@ -749,8 +749,8 @@ get_property_from_object (GObject     *gobject,
  *
  * |[
  *   clutter_state_set (state, "hover", "toggled",
- *                      button, "delayed::scale-x", 1.0, 0.2, 0.2,
- *                      button, "delayed::scale-y", 1.0, 0.2, 0.2,
+ *                      button, "delayed::scale-x", CLUTTER_LINEAR, 1.0, 0.2, 0.2,
+ *                      button, "delayed::scale-y", CLUTTER_LINEAR, 1.0, 0.2, 0.2,
  *                      NULL);
  * ]|
  *
@@ -1242,7 +1242,8 @@ clutter_state_class_init (ClutterStateClass *klass)
    * @state: the #ClutterState that emitted the signal
    *
    * The ::completed signal is emitted when a #ClutterState reaches
-   * the target state specified by clutter_state_change()
+   * the target state specified by clutter_state_set_state() or
+   * clutter_state_warp_to_state().
    *
    * Since: 1.4
    */
@@ -1260,8 +1261,8 @@ clutter_state_class_init (ClutterStateClass *klass)
    *
    * The currently set target state, setting it causes the
    * state machine to transition to the new state, use
-   * clutter_state_change() with a final FALSE argument to
-   * change state without a transition.
+   * clutter_state_warp_to_state() to change state without
+   * a transition.
    */
   pspec = g_param_spec_string ("state",
                                P_("State"),
