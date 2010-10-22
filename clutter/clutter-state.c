@@ -100,6 +100,9 @@ typedef struct _ClutterStateKey
   GValue           value;        /* target value */
   gdouble          pre_delay;    /* fraction of duration to delay before
                                     starting */
+  gdouble          pre_pre_delay;/* fraction of duration to add to
+                                    pre_delay. This is used to set keys
+                                    during transitions. */
   gdouble          post_delay;   /* fraction of duration to be done in */
 
   State           *source_state; /* source state */
@@ -433,9 +436,10 @@ clutter_state_new_frame (ClutterTimeline *timeline,
           if (found_specific || key->source_state == NULL)
             {
               const GValue *value;
+              gdouble pre_delay = key->pre_delay + key->pre_pre_delay;
 
-              sub_progress = (progress - key->pre_delay) /
-                             (1.0 - (key->pre_delay + key->post_delay));
+              sub_progress = (progress - pre_delay) /
+                             (1.0 - (pre_delay + key->post_delay));
 
               if (sub_progress >= 0.0)
                 {
@@ -481,14 +485,25 @@ clutter_state_change (ClutterState *state,
    */
   if (!target_state_name)
     {
+      if (!priv->target_state)
+        return NULL;
+
       priv->source_state_name = priv->target_state_name = NULL;
+      priv->source_state = priv->target_state = NULL;
+
       clutter_timeline_stop (priv->timeline);
       clutter_timeline_rewind (priv->timeline);
+
+      if (priv->current_animator)
+        {
+          clutter_animator_set_timeline (priv->current_animator, NULL);
+          priv->current_animator = NULL;
+        }
+
       return NULL;
     }
 
-  if (target_state_name != NULL)
-    target_state_name = g_intern_string (target_state_name);
+  target_state_name = g_intern_string (target_state_name);
 
   if (target_state_name == priv->target_state_name)
     {
@@ -541,6 +556,11 @@ clutter_state_change (ClutterState *state,
         {
           ClutterStateKey *key = k->data;
           GValue initial = { 0, };
+
+          /* Reset the pre-pre-delay - this is only used for setting keys
+           * during transitions.
+           */
+          key->pre_pre_delay = 0;
 
           g_value_init (&initial, clutter_interval_get_value_type (key->interval));
           g_object_get_property (key->object, key->property_name, &initial);
@@ -833,6 +853,7 @@ static void
 clutter_state_set_key_internal (ClutterState    *state,
                                 ClutterStateKey *key)
 {
+  ClutterStatePrivate *priv = state->priv;
   State *target_state = key->target_state;
   GList *old_item = NULL;
 
@@ -849,6 +870,50 @@ clutter_state_set_key_internal (ClutterState    *state,
   target_state->keys = g_list_insert_sorted (target_state->keys,
                                              key,
                                              sort_props_func);
+
+  /* If the current target state is modified, we have some work to do.
+   *
+   * If the animation is running, we add a key to the current animation
+   * with a delay of the current duration so that the new animation will
+   * animate into place.
+   *
+   * If the animation isn't running, but the state is set, we immediately
+   * warp to that state.
+   */
+  if (key->target_state == priv->target_state)
+    {
+      if (!clutter_timeline_is_playing (priv->timeline))
+        {
+          /* We can warp to the state by setting a NULL state, then setting
+           * the target state again.
+           */
+          clutter_state_change (state, NULL, FALSE);
+          clutter_state_change (state, target_state->name, FALSE);
+        }
+      else
+        {
+          /* Set the ClutterInterval associated with the state */
+          GValue initial = { 0, };
+          gdouble progress = clutter_timeline_get_progress (priv->timeline);
+
+          g_value_init (&initial,
+                        clutter_interval_get_value_type (key->interval));
+          g_object_get_property (key->object, key->property_name, &initial);
+
+          if (clutter_alpha_get_mode (key->alpha) != key->mode)
+            clutter_alpha_set_mode (key->alpha, key->mode);
+
+          clutter_interval_set_initial_value (key->interval, &initial);
+          clutter_interval_set_final_value (key->interval, &key->value);
+
+          g_value_unset (&initial);
+
+          /* Set the delay as if the interval had just begun */
+          if (progress > key->pre_delay)
+            key->pre_pre_delay = MIN (progress - key->pre_delay,
+                                      1.0 - key->post_delay);
+        }
+    }
 }
 
 /*
