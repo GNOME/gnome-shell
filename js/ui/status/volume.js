@@ -102,7 +102,6 @@ Indicator.prototype = {
             this._outputVolumeId = this._output.connect('notify::volume', Lang.bind(this, this._volumeChanged, '_output'));
             this._mutedChanged (null, null, '_output');
             this._volumeChanged (null, null, '_output');
-            this.setIcon(this._volumeToIcon(this._output.volume));
         } else {
             this._outputSwitch.label.text = _("Output: Muted");
             this._outputSwitch.setToggleState(false);
@@ -208,7 +207,7 @@ Indicator.prototype = {
     _volumeChanged: function(object, param_spec, property) {
         this[property+'Slider'].setValue(this[property].volume / VOLUME_MAX);
         this._updateLabel(property);
-        if (property == '_output')
+        if (property == '_output' && !this._output.is_muted)
             this.setIcon(this._volumeToIcon(this._output.volume));
     },
 
