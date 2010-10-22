@@ -302,6 +302,10 @@ again_for_target_state:
                   /* no more keys with transitions to this target_state*/
                   if (target_state->keys == NULL)
                     {
+                      /* If this state is the current state, unset the state */
+                      if (target_state == this->priv->target_state)
+                        clutter_state_set_state (this, NULL);
+
                       /* remove any keys that exist that uses this state as a source */
                       clutter_state_remove_key (this, s->data, NULL, NULL, NULL);
 
