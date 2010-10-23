@@ -1821,8 +1821,8 @@ check_needs_pixmap (MetaWindowActor *self)
        * do it here.
        * See: http://bugzilla.clutter-project.org/show_bug.cgi?id=2236
        */
-      if (!clutter_glx_texture_pixmap_using_extension (
-                                  CLUTTER_GLX_TEXTURE_PIXMAP (priv->actor)))
+      if (G_UNLIKELY (!clutter_glx_texture_pixmap_using_extension (
+                                  CLUTTER_GLX_TEXTURE_PIXMAP (priv->actor))))
         g_warning ("NOTE: Not using GLX TFP!\n");
 
       g_object_get (priv->actor,
