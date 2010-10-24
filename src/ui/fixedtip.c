@@ -55,21 +55,24 @@ static int screen_bottom_edge = 0;
 #ifdef USE_GTK3
 static gboolean
 draw_handler (GtkWidget *tooltips,
-              cairo_t   *cr)
+              cairo_t   *cr,
+              gpointer   user_data)
 {
   gtk_paint_flat_box (gtk_widget_get_style (tip),
                       cr,
                       GTK_STATE_NORMAL, GTK_SHADOW_OUT, 
                       tip, "tooltip",
                       0, 0,
-                      gtk_widget_get_allocated_width (tooltips),
-                      gtk_widget_get_allocated_height (tooltips));
+                      gtk_widget_get_allocated_width (tip),
+                      gtk_widget_get_allocated_height (tip));
 
   return FALSE;
 }
 #else /* !USE_GTK3 */
 static gint
-expose_handler (GtkWidget *tooltips)
+expose_handler (GtkWidget      *tooltips,
+                GdkEventExpose *event,
+                gpointer        user_data)
 {
   gtk_paint_flat_box (gtk_widget_get_style (tip),
                       gtk_widget_get_window (tip),
@@ -114,11 +117,11 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
       gtk_container_set_border_width (GTK_CONTAINER (tip), 4);
 
 #ifdef USE_GTK3
-      g_signal_connect_swapped (tip, "draw",
-				 G_CALLBACK (draw_handler), NULL);
+      g_signal_connect (tip, "draw",
+                        G_CALLBACK (draw_handler), NULL);
 #else
-      g_signal_connect_swapped (tip, "expose_event",
-				 G_CALLBACK (expose_handler), NULL);
+      g_signal_connect (tip, "expose_event",
+                        G_CALLBACK (expose_handler), NULL);
 #endif
 
       label = gtk_label_new (NULL);
