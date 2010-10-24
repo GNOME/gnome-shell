@@ -60,11 +60,13 @@ free_tray_icon (gpointer data)
 {
   ShellTrayManagerChild *child = data;
 
-  gtk_widget_hide (child->window);
   gtk_widget_destroy (child->window);
-  g_signal_handlers_disconnect_matched (child->actor, G_SIGNAL_MATCH_DATA,
-                                        0, 0, NULL, NULL, child);
-  g_object_unref (child->actor);
+  if (child->actor)
+    {
+      g_signal_handlers_disconnect_matched (child->actor, G_SIGNAL_MATCH_DATA,
+                                            0, 0, NULL, NULL, child);
+      g_object_unref (child->actor);
+    }
   g_slice_free (ShellTrayManagerChild, child);
 }
 
@@ -314,8 +316,14 @@ na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *socket,
   child = g_hash_table_lookup (manager->priv->icons, socket);
   g_return_if_fail (child != NULL);
 
-  g_signal_emit (manager,
-                 shell_tray_manager_signals[TRAY_ICON_REMOVED], 0,
-                 child->actor);
+  if (child->actor != NULL)
+    {
+      /* Only emit signal if a corresponding tray-icon-added signal was emitted,
+         that is, if embedding did not fail and we got a plug-added
+      */
+      g_signal_emit (manager,
+                     shell_tray_manager_signals[TRAY_ICON_REMOVED], 0,
+                     child->actor);
+    }
   g_hash_table_remove (manager->priv->icons, socket);
 }
