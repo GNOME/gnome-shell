@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-07 13:04+0200\n"
-"PO-Revision-Date: 2010-10-07 13:20+0200\n"
+"POT-Creation-Date: 2010-10-25 00:55+0200\n"
+"PO-Revision-Date: 2010-10-25 01:02+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -250,6 +250,15 @@ msgid ""
 "push: when the magnified mouse intersects a boundary of the zoom region, the "
 "contents are scrolled into view."
 msgstr ""
+"Determina a posición da imaxe magnificada do rato dentro da vista "
+"magnificada e como reacciona ao movemento do rato do sistema. Os valores son "
+"«none» (ningún): sen seguimento do rato; «centered» (centrado): a imaxe do "
+"rato móstrase no centro da rexión ampliada (que tamén representa o punto "
+"baixo o rato do sistema) e o contido magnificado deslízase segundo se move o "
+"rato do sistema; «proporcional»: a posición do rato magnificado na rexión de "
+"ampliación é proporcionalmente a mesma que a posición do rato do sistema na "
+"pantalla; «push» (empurrar): cando o rato magnificado cruza un límite da "
+"rexión de ampliación, o contido deslízase na vista."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
 msgid ""
@@ -265,11 +274,13 @@ msgid ""
 "are clipped such that the ends of the horizontal and vertical lines surround "
 "the mouse image."
 msgstr ""
+"Determina se as cruces cruzan o «sprite» magnificado do rato ou fíxanse de "
+"tal forma que os finais das liñas horizontais e verticais rodean a imaxe do "
+"rato."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-#, fuzzy
 msgid "Enable lens mode"
-msgstr "Activado"
+msgstr "Activar o modo lente"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
 msgid ""
@@ -285,6 +296,9 @@ msgid ""
 "of the screen, the magnified contents continue to scroll such that the "
 "screen edge moves into the magnified view."
 msgstr ""
+"Para o seguimento do centro do rato, cando o punteiro do sistema está preto "
+"do bordo da pantalla, o contido magnificado continúa desprazándose de tal "
+"forma que o bordo da pantalla móvese dentro da vista magnificada."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
 msgid "Length of the crosshairs"
@@ -482,58 +496,58 @@ msgid "Undo"
 msgstr "Desfacer"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:468
+#: ../js/ui/panel.js:469
 #, c-format
 msgid "Quit %s"
 msgstr "Saír de %s"
 
-#: ../js/ui/panel.js:493
+#: ../js/ui/panel.js:494
 msgid "Preferences"
 msgstr "Preferencias"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:579
+#: ../js/ui/panel.js:580
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e de %b, %R:%S"
 
-#: ../js/ui/panel.js:580
+#: ../js/ui/panel.js:581
 msgid "%a %b %e, %R"
 msgstr "%a %e de %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:584
+#: ../js/ui/panel.js:585
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:586
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:592
+#: ../js/ui/panel.js:593
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e de %b, %H:%M:%S"
 
-#: ../js/ui/panel.js:593
+#: ../js/ui/panel.js:594
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e de %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:597
+#: ../js/ui/panel.js:598
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:599
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:743
+#: ../js/ui/panel.js:744
 msgid "Activities"
 msgstr "Actividades"
 
@@ -568,41 +582,85 @@ msgstr "Insira unha orde:"
 msgid "Execution of '%s' failed:"
 msgstr "Produciuse un fallo na execución de %s"
 
-#: ../js/ui/statusMenu.js:91
+#: ../js/ui/statusMenu.js:97
 msgid "Available"
 msgstr "Dispoñíbel"
 
-#: ../js/ui/statusMenu.js:95
+#: ../js/ui/statusMenu.js:101
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/statusMenu.js:99
+#: ../js/ui/statusMenu.js:105
 msgid "Invisible"
 msgstr "Invisíbel"
 
-#: ../js/ui/statusMenu.js:106
+#: ../js/ui/statusMenu.js:112
 msgid "Account Information..."
 msgstr "Información da conta..."
 
-#: ../js/ui/statusMenu.js:110
+#: ../js/ui/statusMenu.js:116
 msgid "System Settings..."
 msgstr "Configuracións do sistema..."
 
-#: ../js/ui/statusMenu.js:117
+#: ../js/ui/statusMenu.js:123
 msgid "Lock Screen"
 msgstr "Bloquear pantalla"
 
-#: ../js/ui/statusMenu.js:121
+#: ../js/ui/statusMenu.js:127
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:132
 msgid "Log Out..."
 msgstr "Saír da sesión..."
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:136
 msgid "Shut Down..."
 msgstr "Apagar..."
+
+#: ../js/ui/status/accessibility.js:88
+msgid "Screen Reader"
+msgstr "Lector de pantalla"
+
+#: ../js/ui/status/accessibility.js:91
+msgid "Screen Keyboard"
+msgstr "Teclado en pantalla"
+
+#: ../js/ui/status/accessibility.js:94
+msgid "Visual Alerts"
+msgstr "Alertas visuais"
+
+#: ../js/ui/status/accessibility.js:97
+msgid "Sticky Keys"
+msgstr "Teclas persistentes"
+
+#: ../js/ui/status/accessibility.js:100
+msgid "Slow Keys"
+msgstr "Teclas lentas"
+
+#: ../js/ui/status/accessibility.js:103
+msgid "Bounce Keys"
+msgstr "Rebote das teclas"
+
+#: ../js/ui/status/accessibility.js:106
+msgid "Mouse Keys"
+msgstr "Teclas do Rato"
+
+#: ../js/ui/status/accessibility.js:110
+msgid "Universal Access Settings"
+msgstr "Configuracións de acceso universal"
+
+#: ../js/ui/status/accessibility.js:163
+msgid "High Contrast"
+msgstr "Alto contraste"
+
+#: ../js/ui/status/accessibility.js:202
+msgid "Large Text"
+msgstr "Texto máis grande"
+
+#: ../js/ui/status/accessibility.js:223
+msgid "Zoom"
+msgstr "Ampliación"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -614,43 +672,43 @@ msgstr "%s rematou de iniarse"
 msgid "'%s' is ready"
 msgstr "«%s» está preparado"
 
-#: ../js/ui/workspacesView.js:230
+#: ../js/ui/workspacesView.js:229
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr ""
 "Non é posíbel engadir unha área de traballo nova porque chegouse ao límite "
 "de áreas de traballo."
 
-#: ../js/ui/workspacesView.js:247
+#: ../js/ui/workspacesView.js:246
 msgid "Can't remove the first workspace."
 msgstr "Non é posíbel quitar a primeira área de traballo."
 
-#: ../src/shell-global.c:1196
+#: ../src/shell-global.c:1204
 msgid "Less than a minute ago"
 msgstr "Hai menos dun minuto"
 
-#: ../src/shell-global.c:1200
+#: ../src/shell-global.c:1208
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "hai %d minuto"
 msgstr[1] "hai %d minutos"
 
-#: ../src/shell-global.c:1205
+#: ../src/shell-global.c:1213
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "hai %d hora"
 msgstr[1] "hai %d horas"
 
-#: ../src/shell-global.c:1210
+#: ../src/shell-global.c:1218
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "hai %d día"
 msgstr[1] "hai %d días"
 
-#: ../src/shell-global.c:1215
+#: ../src/shell-global.c:1223
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
