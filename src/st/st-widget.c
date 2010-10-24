@@ -594,7 +594,7 @@ st_widget_leave (ClutterActor         *actor,
 
   if (priv->track_hover)
     {
-      if (!clutter_actor_contains (actor, event->related))
+      if (!event->related || !clutter_actor_contains (actor, event->related))
         st_widget_set_hover (ST_WIDGET (actor), FALSE);
     }
 
