@@ -86,6 +86,9 @@ _Draggable.prototype = {
                                Lang.bind(this, this._onButtonPress));
 
         this.actor.connect('destroy', Lang.bind(this, function() {
+            this._actorDestroyed = true;
+            if (this._dragInProgress)
+                this._cancelDrag(global.get_current_time());
             this.disconnectAll();
         }));
         this._onEventId = null;
@@ -417,6 +420,8 @@ _Draggable.prototype = {
                                                 targX,
                                                 targY,
                                                 event.get_time())) {
+                    if (this._actorDestroyed)
+                        return true;
                     // If it accepted the drop without taking the actor,
                     // handle it ourselves.
                     if (this._dragActor.get_parent() == this._dragActor.get_stage()) {
@@ -457,6 +462,12 @@ _Draggable.prototype = {
     _cancelDrag: function(eventTime) {
         this._dragInProgress = false;
         let [snapBackX, snapBackY] = this._getRestoreLocation();
+
+        if (this._actorDestroyed) {
+            global.unset_cursor();
+            this.emit('drag-end', eventTime, false);
+            return;
+        }
 
         this._animationInProgress = true;
         // No target, so snap back
