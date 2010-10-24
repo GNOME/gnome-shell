@@ -133,6 +133,10 @@ clutter_clone_apply_transform (ClutterActor *self, CoglMatrix *matrix)
   CLUTTER_ACTOR_CLASS (clutter_clone_parent_class)->apply_transform (self,
                                                                      matrix);
 
+  /* if we don't have a source, nothing else to do */
+  if (priv->clone_source == NULL)
+    return;
+
   /* get our allocated size */
   clutter_actor_get_allocation_geometry (self, &geom);
 
