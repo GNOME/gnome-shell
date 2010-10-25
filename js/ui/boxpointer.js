@@ -258,8 +258,6 @@ BoxPointer.prototype = {
     },
 
     setPosition: function(sourceActor, gap, alignment) {
-        let primary = global.get_primary_monitor();
-
         // We need to show it now to force an allocation,
         // so that we can query the correct size.
         this.actor.show();
@@ -269,6 +267,12 @@ BoxPointer.prototype = {
         let [sourceWidth, sourceHeight] = sourceActor.get_transformed_size();
 
         let [minWidth, minHeight, natWidth, natHeight] = this.actor.get_preferred_size();
+
+        // We also want to keep it onscreen, and separated from the
+        // edge by the same distance as the main part of the box is
+        // separated from its sourceActor
+        let primary = global.get_primary_monitor();
+        let arrowRise = this.actor.get_theme_node().get_length('-arrow-rise');
 
         let resX, resY;
 
@@ -304,7 +308,7 @@ BoxPointer.prototype = {
                 break;
             }
 
-            resX = Math.min(resX, primary.x + primary.width - natWidth);
+            resX = Math.min(resX, primary.x + primary.width - natWidth - arrowRise - gap);
             resX = Math.max(resX, primary.x);
 
             this.setArrowOrigin((sourceX - resX) + Math.floor(sourceWidth / 2));
@@ -324,7 +328,7 @@ BoxPointer.prototype = {
                 break;
             }
 
-            resY = Math.min(resY, primary.y + primary.height - natHeight);
+            resY = Math.min(resY, primary.y + primary.height - natHeight - arrowRise - gap);
             resY = Math.max(resY, primary.y);
 
             this.setArrowOrigin((sourceY - resY) + Math.floor(sourceHeight / 2));
