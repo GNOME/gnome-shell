@@ -1047,7 +1047,6 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
   CoglFramebuffer *framebuffer;
   int        viewport[4];
   CoglBitmap *alpha_bmp;
-  CoglHandle prev_source;
   CoglMatrixStack *projection_stack;
   CoglMatrixStack *modelview_stack;
   int target_width = _cogl_bitmap_get_width (target_bmp);
@@ -1093,8 +1092,7 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
                                NULL);
     }
 
-  prev_source = cogl_handle_ref (ctx->source_material);
-  cogl_set_source (ctx->texture_download_material);
+  cogl_push_source (ctx->texture_download_material);
 
   cogl_material_set_layer (ctx->texture_download_material, 0, handle);
 
@@ -1178,8 +1176,7 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
   _cogl_matrix_stack_pop (projection_stack);
 
   /* restore the original material */
-  cogl_set_source (prev_source);
-  cogl_handle_unref (prev_source);
+  cogl_pop_source ();
 
   return TRUE;
 }

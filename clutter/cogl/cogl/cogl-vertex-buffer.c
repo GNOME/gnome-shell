@@ -1524,11 +1524,12 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   int          i;
   gboolean     skip_gl_color = FALSE;
   CoglMaterialFlushOptions options;
-  CoglHandle   source;
+  CoglMaterial *source;
+  CoglMaterial *copy = NULL;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
-  source = ctx->source_material;
+  source = cogl_get_source ();
 
   if (buffer->new_attributes)
     cogl_vertex_buffer_submit_real (buffer);
@@ -1592,12 +1593,13 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 				  attribute->stride,
 				  pointer));
 
-              if (!_cogl_material_get_real_blend_enabled (ctx->source_material))
+              if (!_cogl_material_get_real_blend_enabled (source))
                 {
                   CoglMaterialBlendEnable blend_enable =
                     COGL_MATERIAL_BLEND_ENABLE_ENABLED;
-                  source = cogl_material_copy (ctx->source_material);
-                  _cogl_material_set_blend_enabled (source, blend_enable);
+                  copy = cogl_material_copy (source);
+                  _cogl_material_set_blend_enabled (copy, blend_enable);
+                  source = copy;
                   skip_gl_color = TRUE;
                 }
 	      break;
@@ -1745,9 +1747,12 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   if (G_UNLIKELY (options.flags))
     {
       /* If we haven't already created a derived material... */
-      if (source == ctx->source_material)
-        source = cogl_material_copy (ctx->source_material);
-      _cogl_material_apply_overrides (source, &options);
+      if (!copy)
+        {
+          copy = cogl_material_copy (source);
+          source = copy;
+        }
+      _cogl_material_apply_overrides (copy, &options);
 
       /* TODO:
        * overrides = cogl_material_get_data (material,
@@ -1770,7 +1775,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
        *   {
        *     overrides = g_slice_new (Overrides);
        *     overrides->weak_material =
-       *       cogl_material_weak_copy (ctx->source_material);
+       *       cogl_material_weak_copy (source);
        *     _cogl_material_apply_overrides (overrides->weak_material,
        *                                     &options);
        *
@@ -1786,9 +1791,12 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   if (G_UNLIKELY (ctx->legacy_state_set))
     {
       /* If we haven't already created a derived material... */
-      if (source == ctx->source_material)
-        source = cogl_material_copy (ctx->source_material);
-      _cogl_material_apply_legacy_state (source);
+      if (!copy)
+        {
+          copy = cogl_material_copy (source);
+          source = copy;
+        }
+      _cogl_material_apply_legacy_state (copy);
     }
 
   _cogl_material_flush_gl_state (source, skip_gl_color);
@@ -1804,7 +1812,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 
 static void
 disable_state_for_drawing_buffer (CoglVertexBuffer *buffer,
-                                  CoglHandle source)
+                                  CoglMaterial *source)
 {
   GList *tmp;
   GLenum gl_type;
@@ -1814,8 +1822,8 @@ disable_state_for_drawing_buffer (CoglVertexBuffer *buffer,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (G_UNLIKELY (source != ctx->source_material))
-    cogl_handle_unref (source);
+  if (G_UNLIKELY (source != cogl_get_source ()))
+    cogl_object_unref (source);
 
   /* Disable all the client state that cogl doesn't currently know
    * about:

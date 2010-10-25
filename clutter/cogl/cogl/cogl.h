@@ -574,19 +574,61 @@ cogl_clear (const CoglColor *color,
 
 /**
  * cogl_set_source:
- * @material: A #CoglHandle for a material
+ * @material: A #CoglMaterial
  *
- * This function sets the source material that will be used to fill subsequent
- * geometry emitted via the cogl API.
- *
- * <note>In the future we may add the ability to set a front facing material,
- * and a back facing material, in which case this function will set both to the
- * same.</note>
+ * This function changes the material at the top of the source stack.
+ * The material at the top of this stack defines the GPU state used to
+ * process subsequent primitives, such as rectangles drawn with
+ * cogl_rectangle() or vertices drawn using cogl_vertex_buffer_draw().
  *
  * Since: 1.0
  */
 void
-cogl_set_source (CoglHandle material);
+cogl_set_source (CoglMaterial *material);
+
+/**
+ * cogl_get_source:
+ *
+ * Returns the current source material as previously set using
+ * cogl_set_source().
+ *
+ * <note>You should typically consider the returned material immutable
+ * and not try to change any of its properties unless you own a
+ * reference to that material. At times you may be able to get a
+ * reference to an internally managed materials and the result of
+ * modifying such materials is undefined.</note>
+ *
+ * Return value: The current source material.
+ *
+ * Since: 1.6
+ */
+CoglMaterial *
+cogl_get_source (void);
+
+/**
+ * cogl_push_source:
+ * @material: A #CoglMaterial
+ *
+ * Pushes the given @material to the top of the source stack. The
+ * material at the top of this stack defines the GPU state used to
+ * process later primitives as defined by cogl_set_source().
+ *
+ * Since: 1.6
+ */
+void
+cogl_push_source (CoglMaterial *material);
+
+/**
+ * cogl_pop_source:
+ *
+ * Removes the material at the top of the source stack. The material
+ * at the top of this stack defines the GPU state used to process
+ * later primitives as defined by cogl_set_source().
+ *
+ * Since: 1.6
+ */
+void
+cogl_pop_source (void);
 
 /**
  * cogl_set_source_color:

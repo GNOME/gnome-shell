@@ -61,6 +61,9 @@ cogl_set_source_color
 cogl_set_source_color4ub
 cogl_set_source_color4f
 cogl_set_source_texture
+cogl_get_source
+cogl_push_source
+cogl_pop_source
 
 <SUBSECTION>
 CoglReadPixelsFlags

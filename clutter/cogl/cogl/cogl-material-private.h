@@ -919,5 +919,8 @@ _cogl_material_get_layer_combine_constant (CoglMaterial *material,
                                            int layer_index,
                                            float *constant);
 
+void
+_cogl_material_prune_to_n_layers (CoglMaterial *material, int n);
+
 #endif /* __COGL_MATERIAL_PRIVATE_H */
 
