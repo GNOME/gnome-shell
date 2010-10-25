@@ -60,7 +60,13 @@
 static const CoglFeatureData cogl_winsys_feature_data[] =
   {
 #include "cogl-winsys-feature-functions.h"
+
+    /* This stub is just here so that if the header is empty then we
+       won't end up declaring an empty array */
+    { 0, }
   };
+
+#define COGL_WINSYS_N_FEATURES (G_N_ELEMENTS (cogl_winsys_feature_data) - 1)
 
 static const char *
 _cogl_get_winsys_extensions (void)
@@ -81,7 +87,7 @@ _cogl_winsys_features_init (CoglContext *context)
   const char *extensions = _cogl_get_winsys_extensions ();
   int i;
 
-  for (i = 0; i < G_N_ELEMENTS (cogl_winsys_feature_data); i++)
+  for (i = 0; i < COGL_WINSYS_N_FEATURES; i++)
     if (_cogl_feature_check ("GLX", cogl_winsys_feature_data + i, 0, 0,
                              extensions))
       flags |= cogl_winsys_feature_data[i].feature_flags;
