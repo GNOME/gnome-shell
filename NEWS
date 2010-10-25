@@ -1,3 +1,42 @@
+Clutter 1.5.4
+===============================================================================
+
+  • List of changes since Clutter 1.5.2
+
+    » Add a backend for Wayland.
+
+    » Depend on GLib ≥ 2.26, Cairo ≥ 1.10.
+
+    » Do not generate the conformance tests list using the test-conformance
+      binary.
+
+    » Implement interval progress functions for ActorBox, Vertex, Geometry,
+      Color and Units.
+
+    » Allow overriding the surface creation in Clutter.CairoTexture.
+
+    » Add interpolate() method to Clutter.Color.
+
+    » Plug some memory leaks.
+
+    » Fix build of the CEx100 and EGL backends.
+
+    » Fixes for the OSX backend.
+
+    » Documentation consistency and spell checking fixes.
+
+    » Build fixes.
+
+Translation updates:
+
+  Andika Triwidada (id), Damien Lespiau (fr), Piotr Drąg (po)
+
+Many thanks to:
+
+  Damien Lespiau, Neil Roberts, Kristian Høgsberg, Andika Triwidada,
+  Ole André Vadla Ravnås, Robert Bragg, Owen W. Taylor, Piotr Drąg,
+  Roland Peffer
+
 Clutter 1.5.2  (04/10/2010)
 ===============================================================================
 
