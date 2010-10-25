@@ -347,7 +347,7 @@ sn_error_trap_pop (SnDisplay *sn_display,
   MetaDisplay *display;
   display = meta_display_for_x_display (xdisplay);
   if (display != NULL)
-    meta_error_trap_pop (display, FALSE);
+    meta_error_trap_pop (display);
 }
 #endif
 
@@ -890,7 +890,7 @@ meta_display_open (void)
                                                   timestamp);
       }
 
-    meta_error_trap_pop (the_display, FALSE);
+    meta_error_trap_pop (the_display);
   }
   
   meta_display_ungrab (the_display);  
@@ -1099,7 +1099,7 @@ meta_display_screen_for_xwindow (MetaDisplay *display,
   meta_error_trap_push (display);
   attr.screen = NULL;
   result = XGetWindowAttributes (display->xdisplay, xwindow, &attr);
-  meta_error_trap_pop (display, TRUE);
+  meta_error_trap_pop (display);
 
   /* Note, XGetWindowAttributes is on all kinds of crack
    * and returns 1 on success 0 on failure, rather than Success
@@ -1492,7 +1492,7 @@ window_raise_with_delay_callback (void *data)
 				   window->xwindow,
 				   &root, &child,
 				   &root_x, &root_y, &x, &y, &mask);
-      meta_error_trap_pop (window->display, TRUE);
+      meta_error_trap_pop (window->display);
 
       point_in_window = 
         (window->frame && POINT_IN_RECT (root_x, root_y, window->frame->rect)) ||
@@ -2208,7 +2208,7 @@ event_callback (XEvent   *event,
                             window->frame->xwindow);
               meta_error_trap_push (display);
               meta_window_destroy_frame (window->frame->window);
-              meta_error_trap_pop (display, FALSE);
+              meta_error_trap_pop (display);
             }
           else
             {
@@ -2377,7 +2377,7 @@ event_callback (XEvent   *event,
           meta_error_trap_push (display);
           XConfigureWindow (display->xdisplay, event->xconfigurerequest.window,
                             xwcm, &xwc);
-          meta_error_trap_pop (display, FALSE);
+          meta_error_trap_pop (display);
         }
       else
         {
@@ -3148,7 +3148,7 @@ meta_spew_event (MetaDisplay *display,
         meta_error_trap_push (display);
         str = XGetAtomName (display->xdisplay,
                             event->xproperty.atom);
-        meta_error_trap_pop (display, TRUE);
+        meta_error_trap_pop (display);
 
         if (event->xproperty.state == PropertyNewValue)
           state = "PropertyNewValue";
@@ -3182,7 +3182,7 @@ meta_spew_event (MetaDisplay *display,
         meta_error_trap_push (display);
         str = XGetAtomName (display->xdisplay,
                             event->xclient.message_type);
-        meta_error_trap_pop (display, TRUE);
+        meta_error_trap_pop (display);
         extra = g_strdup_printf ("type: %s format: %d\n",
                                  str ? str : "(unknown atom)",
                                  event->xclient.format);
@@ -3460,7 +3460,7 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Changed pointer with XChangeActivePointerGrab()\n");
 
-      if (meta_error_trap_pop_with_return (display, FALSE) != Success)
+      if (meta_error_trap_pop_with_return (display) != Success)
         {
           meta_topic (META_DEBUG_WINDOW_OPS,
                       "Error trapped from XChangeActivePointerGrab()\n");
@@ -3493,7 +3493,7 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
                       "XGrabPointer() failed time %u\n",
                       timestamp);
         }
-      meta_error_trap_pop (display, TRUE);
+      meta_error_trap_pop (display);
     }
 
 #undef GRAB_MASK
@@ -3669,7 +3669,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
                                                          XSyncCAEvents,
                                                          &values);
 
-          if (meta_error_trap_pop_with_return (display, FALSE) != Success)
+          if (meta_error_trap_pop_with_return (display) != Success)
 	    display->grab_sync_request_alarm = None;
 
           meta_topic (META_DEBUG_RESIZING,
@@ -3888,7 +3888,7 @@ meta_change_button_grab (MetaDisplay *display,
         {
           int result;
           
-          result = meta_error_trap_pop_with_return (display, FALSE);
+          result = meta_error_trap_pop_with_return (display);
           
           if (result != Success)
             meta_verbose ("Failed to %s button %d with mask 0x%x for window 0x%lx error code %d\n",
@@ -3899,7 +3899,7 @@ meta_change_button_grab (MetaDisplay *display,
       ++ignored_mask;
     }
 
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 }
 
 void
@@ -4083,7 +4083,7 @@ meta_display_update_active_window_hint (MetaDisplay *display)
                        XA_WINDOW,
                        32, PropModeReplace, (guchar*) data, 1);
 
-      meta_error_trap_pop (display, FALSE);
+      meta_error_trap_pop (display);
 
       tmp = tmp->next;
     }
@@ -4363,7 +4363,7 @@ process_request_frame_extents (MetaDisplay    *display,
                    display->atom__NET_FRAME_EXTENTS,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 4);
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 
   meta_XFree (hints);
 }
@@ -4841,11 +4841,11 @@ convert_property (MetaDisplay *display,
 		     (unsigned char *)icccm_version, 2);
   else
     {
-      meta_error_trap_pop_with_return (display, FALSE);
+      meta_error_trap_pop_with_return (display);
       return FALSE;
     }
   
-  if (meta_error_trap_pop_with_return (display, FALSE) != Success)
+  if (meta_error_trap_pop_with_return (display) != Success)
     return FALSE;
 
   /* Be sure the PropertyNotify has arrived so we
@@ -4877,7 +4877,7 @@ process_selection_request (MetaDisplay   *display,
       meta_error_trap_push (display);
       str = XGetAtomName (display->xdisplay,
                           event->xselectionrequest.selection);
-      meta_error_trap_pop (display, TRUE);
+      meta_error_trap_pop (display);
       
       meta_verbose ("Selection request with selection %s window 0x%lx not a WM_Sn selection we recognize\n",
                     str ? str : "(bad atom)", event->xselectionrequest.owner);
@@ -4911,11 +4911,11 @@ process_selection_request (MetaDisplay   *display,
                                   display->atom_ATOM_PAIR,
                                   &type, &format, &num, &rest, &data) != Success)
             {
-              meta_error_trap_pop_with_return (display, TRUE);
+              meta_error_trap_pop_with_return (display);
               return;
             }
           
-          if (meta_error_trap_pop_with_return (display, TRUE) == Success)
+          if (meta_error_trap_pop_with_return (display) == Success)
             {              
               /* FIXME: to be 100% correct, should deal with rest > 0,
                * but since we have 4 possible targets, we will hardly ever
@@ -4938,7 +4938,7 @@ process_selection_request (MetaDisplay   *display,
                                event->xselectionrequest.property,
                                display->atom_ATOM_PAIR,
                                32, PropModeReplace, data, num);
-              meta_error_trap_pop (display, FALSE);
+              meta_error_trap_pop (display);
               meta_XFree (data);
             }
         }
@@ -4994,7 +4994,7 @@ process_selection_clear (MetaDisplay   *display,
     meta_error_trap_push (display);
     str = XGetAtomName (display->xdisplay,
                         event->xselectionclear.selection);
-    meta_error_trap_pop (display, TRUE);
+    meta_error_trap_pop (display);
 
     meta_verbose ("Selection clear with selection %s window 0x%lx not a WM_Sn selection we recognize\n",
                   str ? str : "(bad atom)", event->xselectionclear.window);
@@ -5366,7 +5366,7 @@ meta_display_set_input_focus_window (MetaDisplay *display,
                   focus_frame ? window->frame->xwindow : window->xwindow,
                   RevertToPointerRoot,
                   timestamp);
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 
   display->expected_focus_window = window;
   display->last_focus_time = timestamp;

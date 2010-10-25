@@ -35,10 +35,6 @@
 #include "prefs.h"
 #include "ui.h"
 
-#include "gdk2-drawing-utils.h"
-#include "gtk-compat.h"
-#include "gdk-compat.h"
-
 #include <cairo-xlib.h>
 
 #ifdef HAVE_SHAPE
@@ -47,11 +43,7 @@
 
 #define DEFAULT_INNER_BUTTON_BORDER 3
 
-#ifdef USE_GTK3
 static void meta_frames_destroy    (GtkWidget       *object);
-#else
-static void meta_frames_destroy    (GtkObject       *object);
-#endif
 static void meta_frames_finalize   (GObject         *object);
 static void meta_frames_style_set  (GtkWidget       *widget,
                                     GtkStyle        *prev_style);
@@ -69,13 +61,8 @@ static gboolean meta_frames_motion_notify_event   (GtkWidget           *widget,
                                                    GdkEventMotion      *event);
 static gboolean meta_frames_destroy_event         (GtkWidget           *widget,
                                                    GdkEventAny         *event);
-#ifdef USE_GTK3
 static gboolean meta_frames_draw                  (GtkWidget           *widget,
                                                    cairo_t             *cr);
-#else
-static gboolean meta_frames_expose_event          (GtkWidget           *widget,
-                                                   GdkEventExpose      *event);
-#endif
 static gboolean meta_frames_enter_notify_event    (GtkWidget           *widget,
                                                    GdkEventCrossing    *event);
 static gboolean meta_frames_leave_notify_event    (GtkWidget           *widget,
@@ -148,22 +135,14 @@ meta_frames_class_init (MetaFramesClass *class)
   gobject_class->constructor = meta_frames_constructor;
   gobject_class->finalize = meta_frames_finalize;
 
-#ifdef USE_GTK3
   widget_class->destroy = meta_frames_destroy;
-#else
-  GTK_OBJECT_CLASS (class)->destroy = meta_frames_destroy;
-#endif
 
   widget_class->style_set = meta_frames_style_set;
 
   widget_class->map = meta_frames_map;
   widget_class->unmap = meta_frames_unmap;
   
-#ifdef USE_GTK3
   widget_class->draw = meta_frames_draw;
-#else
-  widget_class->expose_event = meta_frames_expose_event;
-#endif
   widget_class->destroy_event = meta_frames_destroy_event;  
   widget_class->button_press_event = meta_frames_button_press_event;
   widget_class->button_release_event = meta_frames_button_release_event;
@@ -238,13 +217,8 @@ listify_func (gpointer key, gpointer value, gpointer data)
   *listp = g_slist_prepend (*listp, value);
 }
 
-#ifdef USE_GTK3
 static void
 meta_frames_destroy (GtkWidget *object)
-#else
-static void
-meta_frames_destroy (GtkObject *object)
-#endif
 {
   GSList *winlist;
   GSList *tmp;
@@ -268,11 +242,7 @@ meta_frames_destroy (GtkObject *object)
     }
   g_slist_free (winlist);
 
-#ifdef USE_GTK3
   GTK_WIDGET_CLASS (meta_frames_parent_class)->destroy (object);
-#else
-  GTK_OBJECT_CLASS (meta_frames_parent_class)->destroy (object);
-#endif
 }
 
 static void
@@ -300,7 +270,7 @@ meta_frames_finalize (GObject *object)
 typedef struct
 {
   cairo_rectangle_int_t rect;
-  MetaPixmap *pixmap;
+  cairo_surface_t *pixmap;
 } CachedFramePiece;
 
 typedef struct
@@ -337,7 +307,7 @@ invalidate_cache (MetaFrames *frames,
   
   for (i = 0; i < 4; i++)
     if (pixels->piece[i].pixmap)
-      meta_pixmap_free (pixels->piece[i].pixmap);
+      cairo_surface_destroy (pixels->piece[i].pixmap);
   
   g_free (pixels);
   g_hash_table_remove (frames->cache, frame);
@@ -2036,53 +2006,6 @@ meta_frames_destroy_event           (GtkWidget           *widget,
   return TRUE;
 }
 
-#if !GTK_CHECK_VERSION(2,21,6)
-/* Copied from GDK */
-static cairo_surface_t *
-_gdk_drawable_ref_cairo_surface (GdkDrawable *drawable)
-{
-  g_return_val_if_fail (GDK_IS_DRAWABLE (drawable), NULL);
-
-  return GDK_DRAWABLE_GET_CLASS (drawable)->ref_cairo_surface (drawable);
-}
-
-static cairo_pattern_t *
-gdk_window_get_background_pattern (GdkWindow *window)
-{
-  GdkWindowObject *private = (GdkWindowObject *) window;
-  cairo_pattern_t *pattern;
-
-  g_return_val_if_fail (GDK_IS_WINDOW (window), NULL);
-
-  if (private->bg_pixmap == GDK_PARENT_RELATIVE_BG)
-    pattern = NULL;
-  else if (private->bg_pixmap != GDK_NO_BG &&
-           private->bg_pixmap != NULL)
-    {
-      static cairo_user_data_key_t key;
-      cairo_surface_t *surface;
-
-      surface = _gdk_drawable_ref_cairo_surface (private->bg_pixmap);
-      pattern = cairo_pattern_create_for_surface (surface);
-      cairo_surface_destroy (surface);
-
-      cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REPEAT);
-      cairo_pattern_set_user_data (pattern,
-                                   &key,
-                                   g_object_ref (private->bg_pixmap),
-                                   g_object_unref);
-    }
-  else
-    {
-      pattern =
-        cairo_pattern_create_rgb (private->bg_color.red   / 65535.,
-                                  private->bg_color.green / 65535.,
-                                  private->bg_color.blue / 65535.);
-    }
-
-  return pattern;
-}
-#endif
 
 static void
 setup_bg_cr (cairo_t *cr, GdkWindow *window, int x_offset, int y_offset)
@@ -2109,22 +2032,23 @@ setup_bg_cr (cairo_t *cr, GdkWindow *window, int x_offset, int y_offset)
 /* Returns a pixmap with a piece of the windows frame painted on it.
 */
 
-static MetaPixmap *
+static cairo_surface_t *
 generate_pixmap (MetaFrames            *frames,
                  MetaUIFrame           *frame,
                  cairo_rectangle_int_t *rect)
 {
-  MetaPixmap *result;
+  cairo_surface_t *result;
   cairo_t *cr;
 
   /* do not create a pixmap for nonexisting areas */
   if (rect->width <= 0 || rect->height <= 0)
     return NULL;
 
-  result = meta_pixmap_new (frame->window,
-                            rect->width, rect->height);
+  result = gdk_window_create_similar_surface (frame->window,
+                                              CAIRO_CONTENT_COLOR,
+                                              rect->width, rect->height);
   
-  cr = meta_pixmap_cairo_create (result);
+  cr = cairo_create (result);
   cairo_translate (cr, -rect->x, -rect->y);
 
   setup_bg_cr (cr, frame->window, 0, 0);
@@ -2295,8 +2219,8 @@ cached_pixels_draw (CachedPixels   *pixels,
       
       if (piece->pixmap)
         {
-          meta_cairo_set_source_pixmap (cr, piece->pixmap,
-                                        piece->rect.x, piece->rect.y);
+          cairo_set_source_surface (cr, piece->pixmap,
+                                    piece->rect.x, piece->rect.y);
           cairo_paint (cr);
           
           region_piece = cairo_region_create_rectangle (&piece->rect);
@@ -2306,7 +2230,6 @@ cached_pixels_draw (CachedPixels   *pixels,
     }
 }
 
-#ifdef USE_GTK3
 static gboolean
 meta_frames_draw (GtkWidget *widget,
                   cairo_t   *cr)
@@ -2373,75 +2296,6 @@ meta_frames_draw (GtkWidget *widget,
   
   return TRUE;
 }
-#else /* !USE_GTK3 */
-static gboolean
-meta_frames_expose_event (GtkWidget           *widget,
-                          GdkEventExpose      *event)
-{
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-  CachedPixels *pixels;
-  cairo_region_t *region;
-  int i, n_areas;
-  GdkRectangle *event_rectangles;
-  int n_event_rectangles;
-  cairo_t *cr;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
-
-  if (frames->expose_delay_count > 0)
-    {
-      /* Redraw this entire frame later */
-      frame->expose_delayed = TRUE;
-      return TRUE;
-    }
-
-  populate_cache (frames, frame);
-
-  /* Count on GdkRectangle and cairo_rectangle_int_t being identical */
-  gdk_region_get_rectangles (event->region, &event_rectangles, &n_event_rectangles);
-  region = cairo_region_create_rectangles ((cairo_rectangle_int_t *)event_rectangles,
-                                           n_event_rectangles);
-  g_free (event_rectangles);
-  
-  pixels = get_cache (frames, frame);
-
-  cr = gdk_cairo_create (event->window);
-  cached_pixels_draw (pixels, cr, region);
-  cairo_destroy (cr);
-  
-  clip_to_screen (region, frame);
-  subtract_client_area (region, frame);
-
-  n_areas = cairo_region_num_rectangles (region);
-
-  for (i = 0; i < n_areas; i++)
-    {
-      GdkRectangle area;
-
-      /* Count on GdkRectangle and cairo_rectangle_int_t being identical */
-      cairo_region_get_rectangle (region, i, (cairo_rectangle_int_t *)&area);
-
-      gdk_window_begin_paint_rect (event->window, &area);
-      cr = gdk_cairo_create (event->window);
-      /* no need to clip, begin_paint_region ensures the pixmap
-       * is only as big as the rect we use. */
-
-      meta_frames_paint (frames, frame, cr);
-
-      cairo_destroy (cr);
-      gdk_window_end_paint (event->window);
-    }
-
-  cairo_region_destroy (region);
-  
-  return TRUE;
-}
-#endif /* !USE_GTK3 */
 
 static void
 meta_frames_paint (MetaFrames   *frames,

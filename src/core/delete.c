@@ -136,7 +136,7 @@ meta_window_delete (MetaWindow  *window,
                   window->desc);
       XKillClient (window->display->xdisplay, window->xwindow);
     }
-  meta_error_trap_pop (window->display, FALSE);
+  meta_error_trap_pop (window->display);
 
   meta_display_ping_window (window->display,
                             window,
@@ -200,7 +200,7 @@ meta_window_kill (MetaWindow *window)
               window->desc);
   meta_error_trap_push (window->display);
   XKillClient (window->display->xdisplay, window->xwindow);
-  meta_error_trap_pop (window->display, FALSE);
+  meta_error_trap_pop (window->display);
 }
 
 void

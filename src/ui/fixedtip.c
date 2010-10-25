@@ -25,8 +25,6 @@
 #include "fixedtip.h"
 #include "ui.h"
 
-#include "gdk2-drawing-utils.h"
-
 /**
  * The floating rectangle.  This is a GtkWindow, and it contains
  * the "label" widget, below.
@@ -52,7 +50,6 @@ static int screen_right_edge = 0;
  */
 static int screen_bottom_edge = 0;
 
-#ifdef USE_GTK3
 static gboolean
 draw_handler (GtkWidget *tooltips,
               cairo_t   *cr,
@@ -68,21 +65,6 @@ draw_handler (GtkWidget *tooltips,
 
   return FALSE;
 }
-#else /* !USE_GTK3 */
-static gint
-expose_handler (GtkWidget      *tooltips,
-                GdkEventExpose *event,
-                gpointer        user_data)
-{
-  gtk_paint_flat_box (gtk_widget_get_style (tip),
-                      gtk_widget_get_window (tip),
-                      GTK_STATE_NORMAL, GTK_SHADOW_OUT, 
-                      NULL, tip, "tooltip",
-                      0, 0, -1, -1);
-
-  return FALSE;
-}
-#endif /* !USE_GTK3 */
 
 void
 meta_fixed_tip_show (Display *xdisplay, int screen_number,
@@ -116,13 +98,8 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
       gtk_widget_set_name (tip, "gtk-tooltips");
       gtk_container_set_border_width (GTK_CONTAINER (tip), 4);
 
-#ifdef USE_GTK3
       g_signal_connect (tip, "draw",
                         G_CALLBACK (draw_handler), NULL);
-#else
-      g_signal_connect (tip, "expose_event",
-                        G_CALLBACK (expose_handler), NULL);
-#endif
 
       label = gtk_label_new (NULL);
       gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);

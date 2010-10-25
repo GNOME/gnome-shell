@@ -127,35 +127,11 @@ if test "$enable_compile_warnings" != no ; then
 fi
 changequote([,])dnl
 
-AC_MSG_CHECKING([which gtk+ version to compile against])
-AC_ARG_WITH([gtk],
-  AC_HELP_STRING([--with-gtk=3.0|2.0],
-                 [which gtk+ version to compile against (default: 3.0)]),
-  [case "$with_gtk" in
-      2.0|3.0) ;;
-      *) AC_MSG_ERROR([invalid gtk+ version specified]);;
-  esac],
-  [with_gtk=3.0])
-AC_MSG_RESULT([$with_gtk])
+GTK_MIN_VERSION=2.90.7
+CANBERRA_GTK=libcanberra-gtk3
+CANBERRA_GTK_VERSION=0.26
 
-case "$with_gtk" in
-  2.0) GTK_API_VERSION=2.0
-       GTK_MIN_VERSION=2.18
-       CANBERRA_GTK=libcanberra-gtk
-       CANBERRA_GTK_VERSION=0.24
-       ;;
-  3.0) GTK_API_VERSION=3.0
-       GTK_MIN_VERSION=2.90.7
-       CANBERRA_GTK=libcanberra-gtk3
-       CANBERRA_GTK_VERSION=0.26
-       AC_DEFINE(USE_CAIRO_REGION, 1, [Use cairo_region_t instead of GdkRegion])
-       ;;
-esac
-
-AM_CONDITIONAL(INSTALL_LIBMUTTER_PRIVATE, test "$with_gtk" = "3.0")
-
-MUTTER_PC_MODULES="gtk+-$GTK_API_VERSION >= $GTK_MIN_VERSION pango >= 1.2.0 cairo >= 1.10.0"
-AC_SUBST(GTK_API_VERSION)
+MUTTER_PC_MODULES="gtk+-3.0 >= $GTK_MIN_VERSION pango >= 1.2.0 cairo >= 1.10.0"
 
 AC_ARG_ENABLE(gconf,
   AC_HELP_STRING([--disable-gconf],
@@ -215,8 +191,8 @@ AM_GLIB_GNU_GETTEXT
 # GRegex requires Glib-2.14.0
 PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.14.0)
 # gtk_window_set_icon_name requires gtk2+-2.6.0
-PKG_CHECK_MODULES(MUTTER_MESSAGE, gtk+-$GTK_API_VERSION >= $GTK_MIN_VERSION)
-PKG_CHECK_MODULES(MUTTER_WINDOW_DEMO, gtk+-$GTK_API_VERSION >= $GTK_MIN_VERSION)
+PKG_CHECK_MODULES(MUTTER_MESSAGE, gtk+-3.0 >= $GTK_MIN_VERSION)
+PKG_CHECK_MODULES(MUTTER_WINDOW_DEMO, gtk+-3.0 >= $GTK_MIN_VERSION)
 
 # Unconditionally use this dir to avoid a circular dep with gnomecc
 GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
@@ -574,7 +550,7 @@ fi
 
 dnl ==========================================================================
 echo "
-mutter-$VERSION (using gtk+-${GTK_API_VERSION}):
+mutter-$VERSION
 
 	prefix:                   ${prefix}
 	source code location:	  ${srcdir}

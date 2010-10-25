@@ -601,7 +601,7 @@ meta_screen_new (MetaDisplay *display,
       attrs.event_mask = StructureNotifyMask;
       XChangeWindowAttributes (xdisplay,
                                current_wm_sn_owner, CWEventMask, &attrs);
-      if (meta_error_trap_pop_with_return (display, FALSE) != Success)
+      if (meta_error_trap_pop_with_return (display) != Success)
         current_wm_sn_owner = None; /* don't wait for it to die later on */
     }
 
@@ -670,7 +670,7 @@ meta_screen_new (MetaDisplay *display,
                 KeyPressMask | KeyReleaseMask |
                 FocusChangeMask | StructureNotifyMask |
                 ExposureMask | attr.your_event_mask);
-  if (meta_error_trap_pop_with_return (display, FALSE) != Success)
+  if (meta_error_trap_pop_with_return (display) != Success)
     {
       meta_warning (_("Screen %d on display \"%s\" already has a window manager\n"),
                     number, display->name);
@@ -856,7 +856,7 @@ meta_screen_free (MetaScreen *screen,
 
   meta_error_trap_push_with_return (screen->display);
   XSelectInput (screen->display->xdisplay, screen->xroot, 0);
-  if (meta_error_trap_pop_with_return (screen->display, FALSE) != Success)
+  if (meta_error_trap_pop_with_return (screen->display) != Success)
     meta_warning (_("Could not release screen %d on display \"%s\"\n"),
                   screen->number, screen->display->name);
 
@@ -913,7 +913,7 @@ list_windows (MetaScreen *screen)
       XGetWindowAttributes (screen->display->xdisplay,
                             children[i], &info->attrs);
 
-      if (meta_error_trap_pop_with_return (screen->display, TRUE))
+      if (meta_error_trap_pop_with_return (screen->display))
 	{
           meta_verbose ("Failed to get attributes for window 0x%lx\n",
                         children[i]);
@@ -1220,7 +1220,7 @@ set_number_of_spaces_hint (MetaScreen *screen,
                    screen->display->atom__NET_NUMBER_OF_DESKTOPS,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (screen->display, FALSE);
+  meta_error_trap_pop (screen->display);
 }
 
 static void
@@ -1241,7 +1241,7 @@ set_desktop_geometry_hint (MetaScreen *screen)
                    screen->display->atom__NET_DESKTOP_GEOMETRY,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 2);
-  meta_error_trap_pop (screen->display, FALSE);
+  meta_error_trap_pop (screen->display);
 }
 
 static void
@@ -1265,7 +1265,7 @@ set_desktop_viewport_hint (MetaScreen *screen)
                    screen->display->atom__NET_DESKTOP_VIEWPORT,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 2);
-  meta_error_trap_pop (screen->display, FALSE);
+  meta_error_trap_pop (screen->display);
 }
 
 void
@@ -1839,7 +1839,7 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
                  &win_x_return,
                  &win_y_return,
                  &mask_return);
-  meta_error_trap_pop (screen->display, TRUE);
+  meta_error_trap_pop (screen->display);
 
   window = meta_stack_get_default_focus_window_at_point (screen->stack,
                                                          screen->active_workspace,
@@ -2242,7 +2242,7 @@ set_workspace_names (MetaScreen *screen)
 		   screen->display->atom_UTF8_STRING,
                    8, PropModeReplace,
 		   (unsigned char *)flattened->str, flattened->len);
-  meta_error_trap_pop (screen->display, FALSE);
+  meta_error_trap_pop (screen->display);
   
   g_string_free (flattened, TRUE);
 }
@@ -2346,7 +2346,7 @@ set_work_area_hint (MetaScreen *screen)
 		   XA_CARDINAL, 32, PropModeReplace,
 		   (guchar*) data, num_workspaces*4);
   g_free (data);
-  meta_error_trap_pop (screen->display, FALSE);
+  meta_error_trap_pop (screen->display);
 
   g_signal_emit (screen, screen_signals[WORKAREAS_CHANGED], 0);
 }
@@ -2721,7 +2721,7 @@ meta_screen_update_showing_desktop_hint (MetaScreen *screen)
                    screen->display->atom__NET_SHOWING_DESKTOP,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (screen->display, FALSE);
+  meta_error_trap_pop (screen->display);
 }
 
 static void

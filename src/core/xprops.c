@@ -126,7 +126,7 @@ validate_or_free_results (GetPropertyResults *results,
   type_name = XGetAtomName (results->display->xdisplay, results->type);
   expected_name = XGetAtomName (results->display->xdisplay, expected_type);
   prop_name = XGetAtomName (results->display->xdisplay, results->xatom);
-  meta_error_trap_pop (results->display, TRUE);
+  meta_error_trap_pop (results->display);
 
   w = meta_display_lookup_x_window (results->display, results->xwindow);
 
@@ -204,11 +204,11 @@ get_property (MetaDisplay        *display,
     {
       if (results->prop)
         XFree (results->prop);
-      meta_error_trap_pop_with_return (display, TRUE);
+      meta_error_trap_pop_with_return (display);
       return FALSE;
     }
 
-  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
+  if (meta_error_trap_pop_with_return (display) != Success)
     {
       if (results->prop)
         XFree (results->prop);
@@ -490,7 +490,7 @@ utf8_list_from_results (GetPropertyResults *results,
 
           meta_error_trap_push (results->display);
           name = XGetAtomName (results->display->xdisplay, results->xatom);
-          meta_error_trap_pop (results->display, TRUE);
+          meta_error_trap_pop (results->display);
           meta_warning (_("Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"),
                         name, results->xwindow, i);
           meta_XFree (name);
@@ -547,7 +547,7 @@ meta_prop_set_utf8_string_hint (MetaDisplay *display,
                    xwindow, atom,
                    display->atom_UTF8_STRING, 
                    8, PropModeReplace, (guchar*) val, strlen (val));
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 }
 
 static gboolean

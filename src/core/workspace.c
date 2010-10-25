@@ -765,7 +765,7 @@ set_active_space_hint (MetaScreen *screen)
                    screen->display->atom__NET_CURRENT_DESKTOP,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (screen->display, FALSE);
+  meta_error_trap_pop (screen->display);
 }
 
 void

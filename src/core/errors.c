@@ -28,7 +28,6 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <gdk/gdk.h>
-#include <gtk/gtk.h> /* Only for GTK_CHECK_VERSION */
 
 /* In GTK+-3.0, the error trapping code was significantly rewritten. The new code
  * has some neat features (like knowing automatically if a sync is needed or not
@@ -41,26 +40,6 @@
  * use the GTK+ handling straight-up.
  * (See https://bugzilla.gnome.org/show_bug.cgi?id=630216 for restoring logging.)
  */
-#if GTK_CHECK_VERSION(2, 90, 0)
-#define USE_GDK_ERROR_HANDLERS 1
-#endif
-
-#ifndef USE_GDK_ERROR_HANDLERS
-static int x_error_handler    (Display     *display,
-                               XErrorEvent *error);
-static int x_io_error_handler (Display     *display);
-#endif
-
-void
-meta_errors_init (void)
-{
-#ifndef USE_GDK_ERROR_HANDLERS
-  XSetErrorHandler (x_error_handler);
-  XSetIOErrorHandler (x_io_error_handler);
-#endif
-}
-
-#ifdef USE_GDK_ERROR_HANDLERS
 
 void
 meta_error_trap_push (MetaDisplay *display)
@@ -69,8 +48,7 @@ meta_error_trap_push (MetaDisplay *display)
 }
 
 void
-meta_error_trap_pop (MetaDisplay *display,
-                     gboolean     last_request_was_roundtrip)
+meta_error_trap_pop (MetaDisplay *display)
 {
   gdk_error_trap_pop_ignored ();
 }
@@ -82,220 +60,7 @@ meta_error_trap_push_with_return (MetaDisplay *display)
 }
 
 int
-meta_error_trap_pop_with_return  (MetaDisplay *display,
-                                  gboolean     last_request_was_roundtrip)
+meta_error_trap_pop_with_return  (MetaDisplay *display)
 {
   return gdk_error_trap_pop ();
 }
-
-#else /* !USE_GDK_ERROR_HANDLERS */
-
-static void
-meta_error_trap_push_internal (MetaDisplay *display,
-                               gboolean     need_sync)
-{
-  /* GDK resets the error handler on each push */
-  int (* old_error_handler) (Display     *,
-                             XErrorEvent *);
-
-  if (need_sync)
-    {
-      XSync (display->xdisplay, False);
-    }
-  
-  gdk_error_trap_push ();
-
-  /* old_error_handler will just be equal to x_error_handler
-   * for nested traps
-   */
-  old_error_handler = XSetErrorHandler (x_error_handler);
-  
-  /* Replace GDK handler, but save it so we can chain up */
-  if (display->error_trap_handler == NULL)
-    {
-      g_assert (display->error_traps == 0);
-      display->error_trap_handler = old_error_handler;
-      g_assert (display->error_trap_handler != x_error_handler);
-    }
-
-  display->error_traps += 1;
-
-  meta_topic (META_DEBUG_ERRORS, "%d traps remain\n", display->error_traps);
-}
-
-static int
-meta_error_trap_pop_internal  (MetaDisplay *display,
-                               gboolean     need_sync)
-{
-  int result;
-
-  g_assert (display->error_traps > 0);
-
-  if (need_sync)
-    {
-      XSync (display->xdisplay, False);
-    }
-
-  result = gdk_error_trap_pop ();
-
-  display->error_traps -= 1;
-  
-  if (display->error_traps == 0)
-    {
-      /* check that GDK put our handler back; this
-       * assumes that there are no pending GDK traps from GDK itself
-       */
-      
-      int (* restored_error_handler) (Display     *,
-                                      XErrorEvent *);
-
-      restored_error_handler = XSetErrorHandler (x_error_handler);
-
-      /* remove this */
-      display->error_trap_handler = NULL;
-    }
-
-  meta_topic (META_DEBUG_ERRORS, "%d traps\n", display->error_traps);
-  
-  return result;
-}
-
-void
-meta_error_trap_push (MetaDisplay *display)
-{
-  meta_error_trap_push_internal (display, FALSE);
-}
-
-void
-meta_error_trap_pop (MetaDisplay *display,
-                     gboolean     last_request_was_roundtrip)
-{
-  gboolean need_sync;
-
-  /* we only have to sync when popping the outermost trap */
-  need_sync = (display->error_traps == 1 && !last_request_was_roundtrip);
-
-  if (need_sync)
-    meta_topic (META_DEBUG_SYNC, "Syncing on error_trap_pop, traps = %d, roundtrip = %d\n",
-                display->error_traps, last_request_was_roundtrip);
-
-  display->error_trap_synced_at_last_pop = need_sync || last_request_was_roundtrip;
-  
-  meta_error_trap_pop_internal (display, need_sync);
-}
-
-void
-meta_error_trap_push_with_return (MetaDisplay *display)
-{
-  gboolean need_sync;
-
-  /* We don't sync on push_with_return if there are no traps
-   * currently, because we assume that any errors were either covered
-   * by a previous pop, or were fatal.
-   *
-   * More generally, we don't sync if we were synchronized last time
-   * we popped. This is known to be the case if there are no traps,
-   * but we also keep a flag so we know whether it's the case otherwise.
-   */
-
-  if (!display->error_trap_synced_at_last_pop)
-    need_sync = TRUE;
-  else
-    need_sync = FALSE;
-
-  if (need_sync)
-    meta_topic (META_DEBUG_SYNC, "Syncing on error_trap_push_with_return, traps = %d\n",
-                display->error_traps);
-  
-  meta_error_trap_push_internal (display, FALSE);
-}
-
-int
-meta_error_trap_pop_with_return  (MetaDisplay *display,
-                                  gboolean     last_request_was_roundtrip)
-{
-  if (!last_request_was_roundtrip)
-    meta_topic (META_DEBUG_SYNC, "Syncing on error_trap_pop_with_return, traps = %d, roundtrip = %d\n",
-                display->error_traps, last_request_was_roundtrip);
-
-  display->error_trap_synced_at_last_pop = TRUE;
-  
-  return meta_error_trap_pop_internal (display,
-                                       !last_request_was_roundtrip);
-}
-
-static int
-x_error_handler (Display     *xdisplay,
-                 XErrorEvent *error)
-{
-  int retval;
-  gchar buf[64];
-  MetaDisplay *display;
-
-  XGetErrorText (xdisplay, error->error_code, buf, 63);  
-
-  display = meta_display_for_x_display (xdisplay);
-
-  /* Display can be NULL here Xlib only has one global error handler; and
-   * there might be other displays open in the process.
-   */
-  if (display && display->error_traps > 0)
-    {
-      /* we're in an error trap, chain to the trap handler
-       * saved from GDK
-       */
-      meta_verbose ("X error: %s serial %ld error_code %d request_code %d minor_code %d)\n",
-                    buf,
-                    error->serial, 
-                    error->error_code, 
-                    error->request_code,
-                    error->minor_code);
-
-      g_assert (display->error_trap_handler != NULL);
-      g_assert (display->error_trap_handler != x_error_handler);
-      
-      retval = (* display->error_trap_handler) (xdisplay, error);
-    }
-  else
-    {
-      meta_bug ("Unexpected X error: %s serial %ld error_code %d request_code %d minor_code %d)\n",
-                buf,
-                error->serial, 
-                error->error_code, 
-                error->request_code,
-                error->minor_code);
-
-      retval = 1; /* compiler warning */
-    }
-
-  return retval;
-}
-
-static int
-x_io_error_handler (Display *xdisplay)
-{
-  MetaDisplay *display;
-
-  display = meta_display_for_x_display (xdisplay);
-
-  if (errno == EPIPE)
-    {
-      meta_warning (_("Lost connection to the display '%s';\n"
-                      "most likely the X server was shut down or you killed/destroyed\n"
-                      "the window manager.\n"),
-                    display ? display->name : DisplayString (xdisplay));
-    }
-  else
-    {
-      meta_warning (_("Fatal IO error %d (%s) on display '%s'.\n"),
-                    errno, g_strerror (errno),
-                    display ? display->name : DisplayString (xdisplay));
-    }
-
-  /* Xlib would force an exit anyhow */
-  exit (1);
-  
-  return 0;
-}
-
-#endif /* USE_GDK_ERROR_HANDLERS */

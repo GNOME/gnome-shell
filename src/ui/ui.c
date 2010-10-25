@@ -32,8 +32,6 @@
 #include "theme-private.h"
 
 #include "inlinepixbufs.h"
-#include "gdk-compat.h"
-#include "gdk2-drawing-utils.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -174,9 +172,6 @@ meta_ui_create_frame_window (MetaUI *ui,
   gint attributes_mask;
   GdkWindow *window;
   GdkVisual *visual;
-#ifndef USE_GTK3
-  GdkColormap *cmap = gdk_screen_get_default_colormap (screen);
-#endif
   
   /* Default depth/visual handles clients with weird visuals; they can
    * always be children of the root depth/visual obviously, but
@@ -189,9 +184,6 @@ meta_ui_create_frame_window (MetaUI *ui,
     {
       visual = gdk_x11_screen_lookup_visual (screen,
                                              XVisualIDFromVisual (xvisual));
-#ifndef USE_GTK3
-      cmap = gdk_colormap_new (visual, FALSE);
-#endif
     }
 
   attrs.title = NULL;
@@ -207,9 +199,6 @@ meta_ui_create_frame_window (MetaUI *ui,
   attrs.y = y;
   attrs.wclass = GDK_INPUT_OUTPUT;
   attrs.visual = visual;
-#ifndef USE_GTK3
-  attrs.colormap = cmap;
-#endif
   attrs.window_type = GDK_WINDOW_CHILD;
   attrs.cursor = NULL;
   attrs.wmclass_name = NULL;
@@ -219,11 +208,7 @@ meta_ui_create_frame_window (MetaUI *ui,
   attrs.width  = width;
   attrs.height = height;
 
-#ifdef USE_GTK3
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL;
-#else
-  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-#endif
 
   /* We make an assumption that gdk_window_new() is going to call
    * XCreateWindow as it's first operation; this seems to be true currently
@@ -370,7 +355,6 @@ meta_ui_window_menu_free (MetaWindowMenu *menu)
   meta_window_menu_free (menu);
 }
 
-#ifdef USE_GTK3
 GdkPixbuf*
 meta_gdk_pixbuf_get_from_pixmap (Pixmap       xpixmap,
                                  int          src_x,
@@ -420,84 +404,6 @@ meta_gdk_pixbuf_get_from_pixmap (Pixmap       xpixmap,
 
   return retval;
 }
-#else /* !USE_GTK3 */
-static GdkColormap*
-get_cmap (GdkPixmap *pixmap)
-{
-  GdkColormap *cmap;
-
-  cmap = gdk_drawable_get_colormap (pixmap);
-  if (cmap)
-    g_object_ref (G_OBJECT (cmap));
-
-  if (cmap == NULL)
-    {
-      if (gdk_drawable_get_depth (pixmap) == 1)
-        {
-          meta_verbose ("Using NULL colormap for snapshotting bitmap\n");
-          cmap = NULL;
-        }
-      else
-        {
-          meta_verbose ("Using system cmap to snapshot pixmap\n");
-          cmap = gdk_screen_get_system_colormap (gdk_drawable_get_screen (pixmap));
-
-          g_object_ref (G_OBJECT (cmap));
-        }
-    }
-
-  /* Be sure we aren't going to blow up due to visual mismatch */
-  if (cmap &&
-      (gdk_visual_get_depth (gdk_colormap_get_visual (cmap)) !=
-       gdk_drawable_get_depth (pixmap)))
-    {
-      cmap = NULL;
-      meta_verbose ("Switching back to NULL cmap because of depth mismatch\n");
-    }
-  
-  return cmap;
-}
-
-GdkPixbuf*
-meta_gdk_pixbuf_get_from_pixmap (Pixmap       xpixmap,
-                                 int          src_x,
-                                 int          src_y,
-                                 int          width,
-                                 int          height)
-{
-  GdkDrawable *drawable;
-  GdkPixbuf *retval;
-  GdkColormap *cmap;
-  
-  retval = NULL;
-  cmap = NULL;
-  
-  drawable = gdk_xid_table_lookup (xpixmap);
-
-  if (drawable)
-    g_object_ref (G_OBJECT (drawable));
-  else
-    drawable = gdk_pixmap_foreign_new (xpixmap);
-
-  if (drawable)
-    {
-      cmap = get_cmap (drawable);
-  
-      retval = gdk_pixbuf_get_from_drawable (NULL,
-                                             drawable,
-                                             cmap,
-                                             src_x, src_y,
-                                             0, 0,
-                                             width, height);
-    }
-  if (cmap)
-    g_object_unref (G_OBJECT (cmap));
-  if (drawable)
-    g_object_unref (G_OBJECT (drawable));
-
-  return retval;
-}
-#endif /* !USE_GTK3 */
 
 void
 meta_ui_push_delay_exposes (MetaUI *ui)

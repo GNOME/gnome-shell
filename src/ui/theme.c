@@ -61,10 +61,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "gtk-compat.h"
-#include "gdk-compat.h"
-#include "gdk2-drawing-utils.h"
-
 #define GDK_COLOR_RGBA(color)                                           \
                          ((guint32) (0xff                         |     \
                                      (((color).red / 256) << 24)   |    \
@@ -3712,7 +3708,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.gtk_arrow.width, env);
         rheight = parse_size_unchecked (op->data.gtk_arrow.height, env);
 
-        meta_paint_arrow (style_gtk,
+        gtk_paint_arrow (style_gtk,
                          cr,
                          op->data.gtk_arrow.state,
                          op->data.gtk_arrow.shadow,
@@ -3733,7 +3729,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.gtk_box.width, env);
         rheight = parse_size_unchecked (op->data.gtk_box.height, env);
 
-        meta_paint_box (style_gtk,
+        gtk_paint_box (style_gtk,
                        cr,
                        op->data.gtk_box.state,
                        op->data.gtk_box.shadow,
@@ -3751,7 +3747,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         ry1 = parse_y_position_unchecked (op->data.gtk_vline.y1, env);
         ry2 = parse_y_position_unchecked (op->data.gtk_vline.y2, env);
         
-        meta_paint_vline (style_gtk,
+        gtk_paint_vline (style_gtk,
                           cr,
                           op->data.gtk_vline.state,
                           widget,

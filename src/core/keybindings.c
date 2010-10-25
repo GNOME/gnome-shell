@@ -470,7 +470,7 @@ regrab_key_bindings (MetaDisplay *display)
       
       tmp = tmp->next;
     }
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 
   g_slist_free (windows);
 }
@@ -700,7 +700,7 @@ meta_change_keygrab (MetaDisplay *display,
         {
           int result;
           
-          result = meta_error_trap_pop_with_return (display, FALSE);
+          result = meta_error_trap_pop_with_return (display);
           
           if (grab && result != Success)
             {      
@@ -716,7 +716,7 @@ meta_change_keygrab (MetaDisplay *display,
       ++ignored_mask;
     }
 
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 }
 
 static void
@@ -758,7 +758,7 @@ grab_keys (MetaKeyBinding *bindings,
       ++i;
     }
 
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 }
 
 static void
@@ -777,14 +777,14 @@ ungrab_all_keys (MetaDisplay *display,
     {
       int result;
       
-      result = meta_error_trap_pop_with_return (display, FALSE);
+      result = meta_error_trap_pop_with_return (display);
       
       if (result != Success)    
         meta_topic (META_DEBUG_KEYBINDINGS,
                     "Ungrabbing all keys on 0x%lx failed\n", xwindow);
     }
   else
-    meta_error_trap_pop (display, FALSE);
+    meta_error_trap_pop (display);
 }
 
 void
@@ -916,7 +916,7 @@ grab_keyboard (MetaDisplay *display,
   
   if (grab_status != GrabSuccess)
     {
-      meta_error_trap_pop_with_return (display, TRUE);
+      meta_error_trap_pop_with_return (display);
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "XGrabKeyboard() returned failure status %s time %u\n",
                   grab_status_to_string (grab_status),
@@ -925,7 +925,7 @@ grab_keyboard (MetaDisplay *display,
     }
   else
     {
-      result = meta_error_trap_pop_with_return (display, TRUE);
+      result = meta_error_trap_pop_with_return (display);
       if (result != Success)
         {
           meta_topic (META_DEBUG_KEYBINDINGS,
@@ -948,7 +948,7 @@ ungrab_keyboard (MetaDisplay *display, guint32 timestamp)
               "Ungrabbing keyboard with timestamp %u\n",
               timestamp);
   XUngrabKeyboard (display->xdisplay, timestamp);
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 }
 
 gboolean
@@ -2899,7 +2899,7 @@ handle_panel (MetaDisplay    *display,
 	      StructureNotifyMask,
 	      (XEvent*) &ev);
 
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 }
 
 static void

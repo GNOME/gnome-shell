@@ -34,8 +34,6 @@
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x
 
-#include "gdk2-drawing-utils.h"
-
 /* We need to compute all different button arrangements
  * in terms of button location. We don't care about
  * different arrangements in terms of button function.
@@ -942,7 +940,7 @@ static void
 run_theme_benchmark (void)
 {
   GtkWidget* widget;
-  MetaPixmap *pixmap;
+  cairo_surface_t *pixmap;
   int top_height, bottom_height, left_width, right_width;
   MetaButtonState button_states[META_BUTTON_TYPE_LAST] =
   {
@@ -1006,11 +1004,12 @@ run_theme_benchmark (void)
       /* Creating the pixmap in the loop is right, since
        * GDK does the same with its double buffering.
        */
-      pixmap = meta_pixmap_new (gtk_widget_get_window (widget),
-                                client_width + left_width + right_width,
-                                client_height + top_height + bottom_height);
+      pixmap = gdk_window_create_similar_surface (gtk_widget_get_window (widget),
+                                                  CAIRO_CONTENT_COLOR,
+                                                  client_width + left_width + right_width,
+                                                  client_height + top_height + bottom_height);
 
-      cr = meta_pixmap_cairo_create (pixmap);
+      cr = cairo_create (pixmap);
 
       meta_theme_draw_frame (global_theme,
                              widget,
@@ -1026,7 +1025,7 @@ run_theme_benchmark (void)
                              meta_preview_get_icon ());
 
       cairo_destroy (cr);
-      meta_pixmap_free (pixmap);
+      cairo_surface_destroy (pixmap);
       
       ++i;
       client_width += inc;

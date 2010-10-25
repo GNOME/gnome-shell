@@ -442,7 +442,7 @@ set_title_text (MetaWindow  *window,
       XDeleteProperty (window->display->xdisplay,
                        window->xwindow,
                        atom);
-      meta_error_trap_pop (window->display, FALSE);
+      meta_error_trap_pop (window->display);
     }
 
   return modified;

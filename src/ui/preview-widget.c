@@ -28,19 +28,12 @@
 #include <gtk/gtk.h>
 #include "preview-widget.h"
 
-#include "gdk2-drawing-utils.h"
-
 static void     meta_preview_size_request  (GtkWidget        *widget,
                                             GtkRequisition   *req);
 static void     meta_preview_size_allocate (GtkWidget        *widget,
                                             GtkAllocation    *allocation);
-#ifdef USE_GTK3
 static gboolean meta_preview_draw          (GtkWidget        *widget,
                                             cairo_t          *cr);
-#else
-static gboolean meta_preview_expose        (GtkWidget        *widget,
-                                            GdkEventExpose   *event);
-#endif
 static void     meta_preview_finalize      (GObject          *object);
 
 G_DEFINE_TYPE (MetaPreview, meta_preview, GTK_TYPE_BIN);
@@ -55,11 +48,7 @@ meta_preview_class_init (MetaPreviewClass *class)
 
   gobject_class->finalize = meta_preview_finalize;
 
-#ifdef USE_GTK3
   widget_class->draw = meta_preview_draw;
-#else
-  widget_class->expose_event = meta_preview_expose;
-#endif
   widget_class->size_request = meta_preview_size_request;
   widget_class->size_allocate = meta_preview_size_allocate;
 }
@@ -194,7 +183,6 @@ ensure_info (MetaPreview *preview)
     }
 }
 
-#ifdef USE_GTK3
 static gboolean
 meta_preview_draw (GtkWidget *widget,
                    cairo_t   *cr)
@@ -203,21 +191,6 @@ meta_preview_draw (GtkWidget *widget,
   GtkAllocation allocation;
 
   gtk_widget_get_allocation (widget, &allocation);
-#else
-static gboolean
-meta_preview_expose (GtkWidget      *widget,
-                     GdkEventExpose *event)
-{
-  cairo_t *cr = meta_cairo_create (gtk_widget_get_window (widget));
-  MetaPreview *preview = META_PREVIEW (widget);
-  GtkAllocation allocation;
-
-  gdk_cairo_region (cr, event->region);
-  cairo_clip (cr);
-
-  gtk_widget_get_allocation (widget, &allocation);
-  cairo_translate (cr, allocation.x, allocation.y);
-#endif
 
   if (preview->theme)
     {
@@ -262,15 +235,8 @@ meta_preview_expose (GtkWidget      *widget,
       cairo_restore (cr);
     }
 
-#ifdef USE_GTK3
   /* draw child */
   return GTK_WIDGET_CLASS (meta_preview_parent_class)->draw (widget, cr);
-#else
-  cairo_destroy (cr);
-
-  /* draw child */
-  return GTK_WIDGET_CLASS (meta_preview_parent_class)->expose_event (widget, event);
-#endif
 }
 
 static void

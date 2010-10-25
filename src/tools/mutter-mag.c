@@ -29,8 +29,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "gdk-compat.h"
-
 static GtkWidget *grab_widget = NULL;
 static GtkWidget *display_window = NULL;
 static int last_grab_x = 0;

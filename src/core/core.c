@@ -348,7 +348,7 @@ meta_core_lower_beneath_focus_window (Display *xdisplay,
                     xwindow,
                     CWSibling | CWStackMode,
                     &changes);
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 }
 
 void

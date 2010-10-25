@@ -33,8 +33,6 @@
 #include "metaaccellabel.h"
 #include "ui.h"
 
-#include "gdk-compat.h"
-
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
 

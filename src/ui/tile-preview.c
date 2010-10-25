@@ -29,8 +29,6 @@
 #include "tile-preview.h"
 #include "core.h"
 
-#include "gdk2-drawing-utils.h"
-
 #define OUTLINE_WIDTH 5  /* frame width in non-composite case */
 
 
@@ -46,20 +44,11 @@ struct _MetaTilePreview {
   gboolean       has_alpha: 1;
 };
 
-#ifdef USE_GTK3
 static gboolean
 meta_tile_preview_draw (GtkWidget *widget,
                         cairo_t   *cr,
                         gpointer   user_data)
 {
-#else
-static gboolean
-meta_tile_preview_expose (GtkWidget      *widget,
-                          GdkEventExpose *event,
-                          gpointer        user_data)
-{
-  cairo_t *cr = gdk_cairo_create (event->window);
-#endif
   MetaTilePreview *preview = user_data;
 
   cairo_set_line_width (cr, 1.0);
@@ -97,10 +86,6 @@ meta_tile_preview_expose (GtkWidget      *widget,
                    preview->tile_rect.width - 1,
                    preview->tile_rect.height - 1);
   cairo_stroke (cr);
-
-#ifndef USE_GTK3
-  cairo_destroy (cr);
-#endif
 
   return FALSE;
 }
@@ -163,13 +148,8 @@ meta_tile_preview_new (int      screen_number,
 
   if (preview->has_alpha)
     {
-#ifdef USE_GTK3
       gtk_widget_set_visual (preview->preview_window,
                              gdk_screen_get_rgba_visual (screen));
-#else
-      gtk_widget_set_colormap (preview->preview_window,
-                               gdk_screen_get_rgba_colormap (screen));
-#endif
 
       g_signal_connect (preview->preview_window, "style-set",
                         G_CALLBACK (on_preview_window_style_set), preview);
@@ -181,15 +161,8 @@ meta_tile_preview_new (int      screen_number,
    */
   preview->create_serial = XNextRequest (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
   gtk_widget_realize (preview->preview_window);
-#ifdef USE_GTK3
   g_signal_connect (preview->preview_window, "draw",
                     G_CALLBACK (meta_tile_preview_draw), preview);
-#else
-  gdk_window_set_back_pixmap (gtk_widget_get_window (preview->preview_window),
-                              NULL, FALSE);
-  g_signal_connect (preview->preview_window, "expose-event",
-                    G_CALLBACK (meta_tile_preview_expose), preview);
-#endif
 
   return preview;
 }
@@ -239,6 +212,7 @@ meta_tile_preview_show (MetaTilePreview *preview,
 
   if (!preview->has_alpha)
     {
+      cairo_region_t *outer_region, *inner_region;
       GdkRectangle outer_rect, inner_rect;
       GdkColor black;
 
@@ -254,33 +228,14 @@ meta_tile_preview_show (MetaTilePreview *preview,
       inner_rect.width = outer_rect.width - 2 * OUTLINE_WIDTH;
       inner_rect.height = outer_rect.height - 2 * OUTLINE_WIDTH;
 
-#if GTK_CHECK_VERSION (2, 90, 8) /* gtk3 */
-      {
-        cairo_region_t *outer_region, *inner_region;
+      outer_region = cairo_region_create_rectangle (&outer_rect);
+      inner_region = cairo_region_create_rectangle (&inner_rect);
 
-        outer_region = cairo_region_create_rectangle (&outer_rect);
-        inner_region = cairo_region_create_rectangle (&inner_rect);
+      cairo_region_subtract (outer_region, inner_region);
+      cairo_region_destroy (inner_region);
 
-        cairo_region_subtract (outer_region, inner_region);
-        cairo_region_destroy (inner_region);
-
-        gdk_window_shape_combine_region (window, outer_region, 0, 0);
-        cairo_region_destroy (outer_region);
-      }
-#else /* gtk2 */
-      {
-        GdkRegion *outer_region, *inner_region;
-
-        outer_region = gdk_region_rectangle (&outer_rect);
-        inner_region = gdk_region_rectangle (&inner_rect);
-
-        gdk_region_subtract (outer_region, inner_region);
-        gdk_region_destroy (inner_region);
-
-        gdk_window_shape_combine_region (window, outer_region, 0, 0);
-        gdk_region_destroy (outer_region);
-      }
-#endif /* gtk2 */
+      gdk_window_shape_combine_region (window, outer_region, 0, 0);
+      cairo_region_destroy (outer_region);
     }
 }
 

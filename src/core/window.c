@@ -484,11 +484,11 @@ meta_window_new (MetaDisplay *display,
 
   if (XGetWindowAttributes (display->xdisplay,xwindow, &attrs))
    {
-      if(meta_error_trap_pop_with_return (display, TRUE) != Success)
+      if(meta_error_trap_pop_with_return (display) != Success)
        {
           meta_verbose ("Failed to get attributes for window 0x%lx\n",
                         xwindow);
-          meta_error_trap_pop (display, TRUE);
+          meta_error_trap_pop (display);
           meta_display_ungrab (display);
           return NULL;
        }
@@ -499,16 +499,16 @@ meta_window_new (MetaDisplay *display,
    }
   else
    {
-         meta_error_trap_pop_with_return (display, TRUE);
+         meta_error_trap_pop_with_return (display);
          meta_verbose ("Failed to get attributes for window 0x%lx\n",
                         xwindow);
-         meta_error_trap_pop (display, TRUE);
+         meta_error_trap_pop (display);
          meta_display_ungrab (display);
          return NULL;
    }
 
 
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
   meta_display_ungrab (display);
 
   return window;
@@ -607,7 +607,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
             (state == IconicState || state == NormalState)))
         {
           meta_verbose ("Deciding not to manage unmapped or unviewable window 0x%lx\n", xwindow);
-          meta_error_trap_pop (display, TRUE);
+          meta_error_trap_pop (display);
           meta_display_ungrab (display);
           return NULL;
         }
@@ -629,7 +629,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
    */
   meta_error_trap_push_with_return (display);
   XAddToSaveSet (display->xdisplay, xwindow);
-  meta_error_trap_pop_with_return (display, FALSE);
+  meta_error_trap_pop_with_return (display);
 
   event_mask =
     PropertyChangeMask | EnterWindowMask | LeaveWindowMask |
@@ -685,11 +685,11 @@ meta_window_new_with_attrs (MetaDisplay       *display,
                                &set_attrs);
     }
 
-  if (meta_error_trap_pop_with_return (display, FALSE) != Success)
+  if (meta_error_trap_pop_with_return (display) != Success)
     {
       meta_verbose ("Window 0x%lx disappeared just as we tried to manage it\n",
                     xwindow);
-      meta_error_trap_pop (display, FALSE);
+      meta_error_trap_pop (display);
       meta_display_ungrab (display);
       return NULL;
     }
@@ -1162,7 +1162,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
       !window->initially_iconic)
     unminimize_window_and_all_transient_parents (window);
 
-  meta_error_trap_pop (display, FALSE); /* pop the XSync()-reducing trap */
+  meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
   meta_display_ungrab (display);
 
   window->constructing = FALSE;
@@ -1482,7 +1482,7 @@ meta_window_unmanage (MetaWindow  *window,
                        window->xwindow,
                        window->display->atom__NET_WM_FULLSCREEN_MONITORS);
       set_wm_state (window, WithdrawnState);
-      meta_error_trap_pop (window->display, FALSE);
+      meta_error_trap_pop (window->display);
     }
   else
     {
@@ -1493,7 +1493,7 @@ meta_window_unmanage (MetaWindow  *window,
         {
           meta_error_trap_push (window->display);
           set_wm_state (window, NormalState);
-          meta_error_trap_pop (window->display, FALSE);
+          meta_error_trap_pop (window->display);
         }
 
       /* And we need to be sure the window is mapped so other WMs
@@ -1502,7 +1502,7 @@ meta_window_unmanage (MetaWindow  *window,
       meta_error_trap_push (window->display);
       XMapWindow (window->display->xdisplay,
                   window->xwindow);
-      meta_error_trap_pop (window->display, FALSE);
+      meta_error_trap_pop (window->display);
     }
 
   meta_window_ungrab_keys (window);
@@ -1550,7 +1550,7 @@ meta_window_unmanage (MetaWindow  *window,
     XShapeSelectInput (window->display->xdisplay, window->xwindow, NoEventMask);
 #endif
 
-  meta_error_trap_pop (window->display, FALSE);
+  meta_error_trap_pop (window->display);
 
   g_signal_emit (window, window_signals[UNMANAGED], 0);
 
@@ -1577,7 +1577,7 @@ set_wm_state (MetaWindow *window,
                    window->display->atom_WM_STATE,
                    window->display->atom_WM_STATE,
                    32, PropModeReplace, (guchar*) data, 2);
-  meta_error_trap_pop (window->display, FALSE);
+  meta_error_trap_pop (window->display);
 }
 
 static void
@@ -1655,7 +1655,7 @@ set_net_wm_state (MetaWindow *window)
                    window->display->atom__NET_WM_STATE,
                    XA_ATOM,
                    32, PropModeReplace, (guchar*) data, i);
-  meta_error_trap_pop (window->display, FALSE);
+  meta_error_trap_pop (window->display);
 
   if (window->fullscreen)
     {
@@ -1671,7 +1671,7 @@ set_net_wm_state (MetaWindow *window)
                        window->display->atom__NET_WM_FULLSCREEN_MONITORS,
                        XA_CARDINAL, 32, PropModeReplace,
                        (guchar*) data, 4);
-      meta_error_trap_pop (window->display, FALSE);
+      meta_error_trap_pop (window->display);
     }
 }
 
@@ -2414,7 +2414,7 @@ map_client_window (MetaWindow *window)
       window->mapped = TRUE;
       meta_error_trap_push (window->display);
       XMapWindow (window->display->xdisplay, window->xwindow);
-      meta_error_trap_pop (window->display, FALSE);
+      meta_error_trap_pop (window->display);
 
       return TRUE;
     }
@@ -2438,7 +2438,7 @@ unmap_client_window (MetaWindow *window,
       window->unmaps_pending += 1;
       meta_error_trap_push (window->display);
       XUnmapWindow (window->display->xdisplay, window->xwindow);
-      meta_error_trap_pop (window->display, FALSE);
+      meta_error_trap_pop (window->display);
 
       return TRUE;
     }
@@ -4323,7 +4323,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
                         mask,
                         &values);
 
-      meta_error_trap_pop (window->display, FALSE);
+      meta_error_trap_pop (window->display);
     }
 
   if (!configure_frame_first && window->frame)
@@ -5026,7 +5026,7 @@ update_net_frame_extents (MetaWindow *window)
                    window->display->atom__NET_FRAME_EXTENTS,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 4);
-  meta_error_trap_pop (window->display, FALSE);
+  meta_error_trap_pop (window->display);
 }
 
 void
@@ -5053,7 +5053,7 @@ meta_window_set_current_workspace_hint (MetaWindow *window)
                    window->display->atom__NET_WM_DESKTOP,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (window->display, FALSE);
+  meta_error_trap_pop (window->display);
 }
 
 static gboolean
@@ -5178,7 +5178,7 @@ meta_window_send_icccm_message (MetaWindow *window,
     meta_error_trap_push (window->display);
     XSendEvent (window->display->xdisplay,
                 window->xwindow, False, 0, (XEvent*) &ev);
-    meta_error_trap_pop (window->display, FALSE);
+    meta_error_trap_pop (window->display);
 }
 
 void
@@ -5583,12 +5583,12 @@ meta_window_client_message (MetaWindow *window,
 
           meta_error_trap_push_with_return (display);
           str1 = XGetAtomName (display->xdisplay, first);
-          if (meta_error_trap_pop_with_return (display, TRUE) != Success)
+          if (meta_error_trap_pop_with_return (display) != Success)
             str1 = NULL;
 
           meta_error_trap_push_with_return (display);
           str2 = XGetAtomName (display->xdisplay, second);
-          if (meta_error_trap_pop_with_return (display, TRUE) != Success)
+          if (meta_error_trap_pop_with_return (display) != Success)
             str2 = NULL;
 
           meta_verbose ("Request to change _NET_WM_STATE action %lu atom1: %s atom2: %s\n",
@@ -5876,7 +5876,7 @@ meta_window_client_message (MetaWindow *window,
                              &query_root_x, &query_root_y,
                              &x, &y,
                              &mask);
-              meta_error_trap_pop (window->display, TRUE);
+              meta_error_trap_pop (window->display);
 
               if (mask & Button1Mask)
                 button = 1;
@@ -6112,7 +6112,7 @@ meta_window_notify_focus (MetaWindow *window,
           meta_error_trap_push (window->display);
           XInstallColormap (window->display->xdisplay,
                             window->colormap);
-          meta_error_trap_pop (window->display, FALSE);
+          meta_error_trap_pop (window->display);
 
           /* move into FOCUSED_WINDOW layer */
           meta_window_update_layer (window);
@@ -6175,7 +6175,7 @@ meta_window_notify_focus (MetaWindow *window,
           meta_error_trap_push (window->display);
           XUninstallColormap (window->display->xdisplay,
                               window->colormap);
-          meta_error_trap_pop (window->display, FALSE);
+          meta_error_trap_pop (window->display);
 
           /* move out of FOCUSED_WINDOW layer */
           meta_window_update_layer (window);
@@ -6266,7 +6266,7 @@ send_configure_notify (MetaWindow *window)
   XSendEvent (window->display->xdisplay,
               window->xwindow,
               False, StructureNotifyMask, &event);
-  meta_error_trap_pop (window->display, FALSE);
+  meta_error_trap_pop (window->display);
 }
 
 /* FIXME: @rect should be marked (out), but gjs doesn't currently support
@@ -6502,7 +6502,7 @@ meta_window_update_net_wm_type (MetaWindow *window)
         {
           meta_error_trap_push (window->display);
           str = XGetAtomName (window->display->xdisplay, window->type_atom);
-          meta_error_trap_pop (window->display, TRUE);
+          meta_error_trap_pop (window->display);
         }
 
       meta_verbose ("Window %s type atom %s\n", window->desc,
@@ -6863,7 +6863,7 @@ recalc_window_type (MetaWindow *window)
           meta_error_trap_push (window->display);
           atom_name = XGetAtomName (window->display->xdisplay,
                                     window->type_atom);
-          meta_error_trap_pop (window->display, TRUE);
+          meta_error_trap_pop (window->display);
 
           meta_warning ("Unrecognized type atom [%s] set for %s \n",
                         atom_name ? atom_name : "unknown",
@@ -7021,7 +7021,7 @@ set_allowed_actions_hint (MetaWindow *window)
                    window->display->atom__NET_WM_ALLOWED_ACTIONS,
                    XA_ATOM,
                    32, PropModeReplace, (guchar*) data, i);
-  meta_error_trap_pop (window->display, FALSE);
+  meta_error_trap_pop (window->display);
 #undef MAX_N_ACTIONS
 }
 
@@ -8493,7 +8493,7 @@ meta_window_set_gravity (MetaWindow *window,
                            CWWinGravity,
                            &attrs);
 
-  meta_error_trap_pop (window->display, FALSE);
+  meta_error_trap_pop (window->display);
 }
 
 static void
@@ -8937,7 +8937,7 @@ warp_grab_pointer (MetaWindow          *window,
                 0, 0, 0, 0,
                 *x, *y);
 
-  if (meta_error_trap_pop_with_return (display, FALSE) != Success)
+  if (meta_error_trap_pop_with_return (display) != Success)
     {
       meta_verbose ("Failed to warp pointer for window %s\n",
                     window->desc);

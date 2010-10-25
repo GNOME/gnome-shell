@@ -241,7 +241,7 @@ read_rgb_icon (MetaDisplay   *display,
 			       0, G_MAXLONG,
 			       False, XA_CARDINAL, &type, &format, &nitems,
 			       &bytes_after, &data);
-  err = meta_error_trap_pop_with_return (display, TRUE);
+  err = meta_error_trap_pop_with_return (display);
 
   if (err != Success ||
       result != Success)
@@ -406,7 +406,7 @@ try_pixmap_and_mask (MetaDisplay *display,
                                               w, h);
     }
 
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 
   if (mask)
     {
@@ -482,7 +482,7 @@ get_kwm_win_icon (MetaDisplay *display,
 			       &bytes_after, &data);
   icons = (Pixmap *)data;
 
-  err = meta_error_trap_pop_with_return (display, TRUE);
+  err = meta_error_trap_pop_with_return (display);
   if (err != Success ||
       result != Success)
     return;

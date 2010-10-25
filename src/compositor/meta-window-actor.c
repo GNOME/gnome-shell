@@ -272,7 +272,7 @@ window_decorated_notify (MetaWindow *mw,
     {
       meta_error_trap_push (display);
       XDamageDestroy (xdisplay, priv->damage);
-      meta_error_trap_pop (display, FALSE);
+      meta_error_trap_pop (display);
       priv->damage = None;
     }
 
@@ -411,7 +411,7 @@ meta_window_actor_dispose (GObject *object)
     {
       meta_error_trap_push (display);
       XDamageDestroy (xdisplay, priv->damage);
-      meta_error_trap_pop (display, FALSE);
+      meta_error_trap_pop (display);
 
       priv->damage = None;
     }
@@ -1582,7 +1582,7 @@ check_needs_pixmap (MetaWindowActor *self)
 
       priv->back_pixmap = XCompositeNameWindowPixmap (xdisplay, xwindow);
 
-      if (meta_error_trap_pop_with_return (display, FALSE) != Success)
+      if (meta_error_trap_pop_with_return (display) != Success)
         {
           /* Probably a BadMatch if the window isn't viewable; we could
            * GrabServer/GetWindowAttributes/NameWindowPixmap/UngrabServer/Sync
@@ -1630,7 +1630,7 @@ check_needs_pixmap (MetaWindowActor *self)
       full = TRUE;
     }
 
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 
   priv->needs_pixmap = FALSE;
 }
@@ -1718,7 +1718,7 @@ check_needs_reshape (MetaWindowActor *self)
                                    ShapeBounding,
                                    &n_rects,
                                    &ordering);
-      meta_error_trap_pop (display, TRUE);
+      meta_error_trap_pop (display);
 
       if (rects)
         {
@@ -1766,7 +1766,7 @@ meta_window_actor_pre_paint (MetaWindowActor *self)
     {
       meta_error_trap_push (display);
       XDamageSubtract (xdisplay, priv->damage, None, None);
-      meta_error_trap_pop (display, FALSE);
+      meta_error_trap_pop (display);
       priv->received_damage = FALSE;
     }
 

@@ -1026,7 +1026,7 @@ raise_window_relative_to_managed_windows (MetaScreen *screen,
                                 xwindow,
                                 CWSibling | CWStackMode,
                                 &changes);
-              meta_error_trap_pop (screen->display, FALSE);
+              meta_error_trap_pop (screen->display);
 
               break;
             }
@@ -1046,7 +1046,7 @@ raise_window_relative_to_managed_windows (MetaScreen *screen,
                                        XNextRequest (screen->display->xdisplay));
       XLowerWindow (screen->display->xdisplay,
                     xwindow);
-      meta_error_trap_pop (screen->display, FALSE);
+      meta_error_trap_pop (screen->display);
     }
 }
 
@@ -1267,7 +1267,7 @@ stack_sync_to_server (MetaStack *stack)
 		   all_hidden->len);
   g_array_free (all_hidden, TRUE);
 
-  meta_error_trap_pop (stack->screen->display, FALSE);
+  meta_error_trap_pop (stack->screen->display);
   /* on error, a window was destroyed; it should eventually
    * get removed from the stacking list when we unmanage it
    * and we'll fix stacking at that time.

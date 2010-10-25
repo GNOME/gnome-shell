@@ -1,11 +1,7 @@
 # Flag build for parallelism; see https://savannah.gnu.org/patch/?6905
 .AUTOPARALLEL:
 
-if INSTALL_LIBMUTTER_PRIVATE
 lib_LTLIBRARIES = libmutter-private.la
-else
-noinst_LTLIBRARIES = libmutter-private.la
-endif
 
 SUBDIRS=wm-tester tools compositor/plugins
 
@@ -44,10 +40,6 @@ mutter_SOURCES= 				\
 	compositor/shadow.h			\
 	compositor/tidy/tidy-texture-frame.c	\
 	compositor/tidy/tidy-texture-frame.h	\
-	gdk-compat.h				\
-	gtk-compat.h				\
-	gdk2-drawing-utils.c			\
-	gdk2-drawing-utils.h			\
 	include/compositor.h			\
 	include/meta-plugin.h			\
 	include/meta-window-actor.h		\
@@ -147,8 +139,6 @@ libmutter_private_la_SOURCES=			\
 	include/common.h			\
 	ui/preview-widget.c			\
 	ui/preview-widget.h			\
-	gdk2-drawing-utils.c			\
-	gdk2-drawing-utils.h			\
 	ui/theme-parser.c			\
 	ui/theme.c				\
 	ui/theme.h
@@ -186,17 +176,11 @@ libmutterinclude_extra_headers =		\
 	ui/preview-widget.h			\
 	include/atomnames.h
 
-if INSTALL_LIBMUTTER_PRIVATE
 libmutterincludedir = $(includedir)/mutter/mutter-private
 
 libmutterinclude_HEADERS =			\
 	$(libmutterinclude_base_headers)	\
 	$(libmutterinclude_extra_headers)
-else
-noinst_HEADERS =				\
-	$(libmutterinclude_base_headers)	\
-	$(libmutterinclude_extra_headers)
-endif
 
 mutter_theme_viewer_SOURCES=  \
 	ui/theme-viewer.c
@@ -226,11 +210,11 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mu
 		--warn-all				\
 		--warn-error				\
 		--include=GObject-2.0			\
-		--include=Gdk-@GTK_API_VERSION@		\
-		--include=Gtk-@GTK_API_VERSION@		\
+		--include=Gdk-3.0			\
+		--include=Gtk-3.0			\
 		--include=Clutter-1.0			\
 		--pkg=clutter-1.0			\
-		--pkg=gtk+-@GTK_API_VERSION@		\
+		--pkg=gtk+-3.0				\
 		--include=xlib-2.0			\
 		--include=xfixes-4.0			\
 		--program=$$pwd/mutter			\
@@ -305,11 +289,9 @@ CLEANFILES =					\
 inlinepixbufs.h: $(IMAGES)
 	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
 
-if INSTALL_LIBMUTTER_PRIVATE
 pkgconfigdir = $(libdir)/pkgconfig
 
 pkgconfig_DATA = libmutter-private.pc mutter-plugins.pc
-endif
 
 EXTRA_DIST=$(desktopfiles_files) 	\
 	$(wmproperties_files)		\

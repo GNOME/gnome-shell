@@ -444,7 +444,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   XCompositeRedirectSubwindows (xdisplay, xroot, CompositeRedirectManual);
   XSync (xdisplay, FALSE);
 
-  if (meta_error_trap_pop_with_return (display, FALSE))
+  if (meta_error_trap_pop_with_return (display))
     {
       g_warning ("Another compositing manager is running on screen %i",
                  screen_number);
@@ -568,7 +568,7 @@ meta_compositor_add_window (MetaCompositor    *compositor,
 
   add_win (window);
 
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 }
 
 void
