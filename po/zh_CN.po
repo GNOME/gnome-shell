@@ -9,393 +9,394 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2010-09-15 15:43+0100\n"
+"POT-Creation-Date: 2010-10-25 17:23+0100\n"
 "PO-Revision-Date: 2010-09-30 15:09+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: clutter/clutter-actor.c:3247
+#: clutter/clutter-actor.c:3444
 msgid "X coordinate"
 msgstr "X 坐标"
 
-#: clutter/clutter-actor.c:3248
+#: clutter/clutter-actor.c:3445
 msgid "X coordinate of the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3263
+#: clutter/clutter-actor.c:3460
 msgid "Y coordinate"
 msgstr "Y 坐标"
 
-#: clutter/clutter-actor.c:3264
+#: clutter/clutter-actor.c:3461
 msgid "Y coordinate of the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3279 clutter/clutter-behaviour-ellipse.c:473
+#: clutter/clutter-actor.c:3476 clutter/clutter-behaviour-ellipse.c:473
 msgid "Width"
 msgstr "宽度"
 
-#: clutter/clutter-actor.c:3280
+#: clutter/clutter-actor.c:3477
 msgid "Width of the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3294 clutter/clutter-behaviour-ellipse.c:489
+#: clutter/clutter-actor.c:3491 clutter/clutter-behaviour-ellipse.c:489
 msgid "Height"
 msgstr "高度"
 
-#: clutter/clutter-actor.c:3295
+#: clutter/clutter-actor.c:3492
 msgid "Height of the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3313
+#: clutter/clutter-actor.c:3510
 msgid "Fixed X"
 msgstr "固定 X 坐标"
 
-#: clutter/clutter-actor.c:3314
+#: clutter/clutter-actor.c:3511
 msgid "Forced X position of the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3332
+#: clutter/clutter-actor.c:3529
 msgid "Fixed Y"
 msgstr "固定 Y 坐标"
 
-#: clutter/clutter-actor.c:3333
+#: clutter/clutter-actor.c:3530
 msgid "Forced Y position of the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3349
+#: clutter/clutter-actor.c:3546
 msgid "Fixed position set"
 msgstr ""
 
-#: clutter/clutter-actor.c:3350
+#: clutter/clutter-actor.c:3547
 msgid "Whether to use fixed positioning for the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3372
+#: clutter/clutter-actor.c:3569
 msgid "Min Width"
 msgstr "最小宽度"
 
-#: clutter/clutter-actor.c:3373
+#: clutter/clutter-actor.c:3570
 msgid "Forced minimum width request for the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3392
+#: clutter/clutter-actor.c:3589
 msgid "Min Height"
 msgstr "最小高度"
 
-#: clutter/clutter-actor.c:3393
+#: clutter/clutter-actor.c:3590
 msgid "Forced minimum height request for the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3412
+#: clutter/clutter-actor.c:3609
 msgid "Natural Width"
 msgstr ""
 
-#: clutter/clutter-actor.c:3413
+#: clutter/clutter-actor.c:3610
 msgid "Forced natural width request for the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3432
+#: clutter/clutter-actor.c:3629
 msgid "Natural Height"
 msgstr ""
 
-#: clutter/clutter-actor.c:3433
+#: clutter/clutter-actor.c:3630
 msgid "Forced natural height request for the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3449
+#: clutter/clutter-actor.c:3646
 msgid "Minimum width set"
 msgstr ""
 
-#: clutter/clutter-actor.c:3450
+#: clutter/clutter-actor.c:3647
 msgid "Whether to use the min-width property"
 msgstr ""
 
-#: clutter/clutter-actor.c:3465
+#: clutter/clutter-actor.c:3662
 msgid "Minimum height set"
 msgstr ""
 
-#: clutter/clutter-actor.c:3466
+#: clutter/clutter-actor.c:3663
 msgid "Whether to use the min-height property"
 msgstr ""
 
-#: clutter/clutter-actor.c:3481
+#: clutter/clutter-actor.c:3678
 msgid "Natural width set"
 msgstr ""
 
-#: clutter/clutter-actor.c:3482
+#: clutter/clutter-actor.c:3679
 msgid "Whether to use the natural-width property"
 msgstr ""
 
-#: clutter/clutter-actor.c:3499
+#: clutter/clutter-actor.c:3696
 msgid "Natural height set"
 msgstr ""
 
-#: clutter/clutter-actor.c:3500
+#: clutter/clutter-actor.c:3697
 msgid "Whether to use the natural-height property"
 msgstr ""
 
-#: clutter/clutter-actor.c:3519
+#: clutter/clutter-actor.c:3716
 msgid "Allocation"
 msgstr "分配"
 
-#: clutter/clutter-actor.c:3520
+#: clutter/clutter-actor.c:3717
 msgid "The actor's allocation"
 msgstr ""
 
-#: clutter/clutter-actor.c:3576
+#: clutter/clutter-actor.c:3773
 msgid "Request Mode"
 msgstr "请求模式"
 
-#: clutter/clutter-actor.c:3577
+#: clutter/clutter-actor.c:3774
 msgid "The actor's request mode"
 msgstr ""
 
-#: clutter/clutter-actor.c:3592
+#: clutter/clutter-actor.c:3789
 msgid "Depth"
 msgstr "色深"
 
-#: clutter/clutter-actor.c:3593
+#: clutter/clutter-actor.c:3790
 msgid "Position on the Z axis"
 msgstr ""
 
-#: clutter/clutter-actor.c:3607
+#: clutter/clutter-actor.c:3804
 msgid "Opacity"
 msgstr "透明度"
 
-#: clutter/clutter-actor.c:3608
+#: clutter/clutter-actor.c:3805
 msgid "Opacity of an actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3623
+#: clutter/clutter-actor.c:3820
 msgid "Visible"
 msgstr "可见性"
 
-#: clutter/clutter-actor.c:3624
+#: clutter/clutter-actor.c:3821
 msgid "Whether the actor is visible or not"
 msgstr ""
 
-#: clutter/clutter-actor.c:3639
+#: clutter/clutter-actor.c:3836
 msgid "Mapped"
 msgstr ""
 
-#: clutter/clutter-actor.c:3640
+#: clutter/clutter-actor.c:3837
 msgid "Whether the actor will be painted"
 msgstr ""
 
-#: clutter/clutter-actor.c:3654
+#: clutter/clutter-actor.c:3851
 msgid "Realized"
 msgstr ""
 
-#: clutter/clutter-actor.c:3655
+#: clutter/clutter-actor.c:3852
 msgid "Whether the actor has been realized"
 msgstr ""
 
-#: clutter/clutter-actor.c:3671
+#: clutter/clutter-actor.c:3868
 msgid "Reactive"
 msgstr "重新激活"
 
-#: clutter/clutter-actor.c:3672
+#: clutter/clutter-actor.c:3869
 msgid "Whether the actor is reactive to events"
 msgstr ""
 
-#: clutter/clutter-actor.c:3684
+#: clutter/clutter-actor.c:3881
 msgid "Has Clip"
 msgstr ""
 
-#: clutter/clutter-actor.c:3685
+#: clutter/clutter-actor.c:3882
 msgid "Whether the actor has a clip set"
 msgstr ""
 
-#: clutter/clutter-actor.c:3700
+#: clutter/clutter-actor.c:3897
 msgid "Clip"
 msgstr ""
 
-#: clutter/clutter-actor.c:3701
+#: clutter/clutter-actor.c:3898
 #, fuzzy
 msgid "The clip region for the actor"
 msgstr "文本方向"
 
-#: clutter/clutter-actor.c:3715 clutter/clutter-actor-meta.c:179
+#: clutter/clutter-actor.c:3912 clutter/clutter-actor-meta.c:178
 #: clutter/clutter-binding-pool.c:320 clutter/clutter-input-device.c:148
 msgid "Name"
 msgstr "名称"
 
-#: clutter/clutter-actor.c:3716
+#: clutter/clutter-actor.c:3913
 msgid "Name of the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:3730
+#: clutter/clutter-actor.c:3927
 msgid "Scale X"
 msgstr "缩放 X 坐标"
 
-#: clutter/clutter-actor.c:3731
+#: clutter/clutter-actor.c:3928
 msgid "Scale factor on the X axis"
 msgstr ""
 
-#: clutter/clutter-actor.c:3746
+#: clutter/clutter-actor.c:3943
 msgid "Scale Y"
 msgstr "缩放 Y 坐标"
 
-#: clutter/clutter-actor.c:3747
+#: clutter/clutter-actor.c:3944
 msgid "Scale factor on the Y axis"
 msgstr ""
 
-#: clutter/clutter-actor.c:3762
+#: clutter/clutter-actor.c:3959
 msgid "Scale Center X"
 msgstr ""
 
-#: clutter/clutter-actor.c:3763
+#: clutter/clutter-actor.c:3960
 msgid "Horizontal scale center"
 msgstr ""
 
-#: clutter/clutter-actor.c:3778
+#: clutter/clutter-actor.c:3975
 msgid "Scale Center Y"
 msgstr ""
 
-#: clutter/clutter-actor.c:3779
+#: clutter/clutter-actor.c:3976
 msgid "Vertical scale center"
 msgstr ""
 
-#: clutter/clutter-actor.c:3794
+#: clutter/clutter-actor.c:3991
 msgid "Scale Gravity"
 msgstr ""
 
-#: clutter/clutter-actor.c:3795
+#: clutter/clutter-actor.c:3992
 msgid "The center of scaling"
 msgstr ""
 
-#: clutter/clutter-actor.c:3812
+#: clutter/clutter-actor.c:4009
 msgid "Rotation Angle X"
 msgstr ""
 
-#: clutter/clutter-actor.c:3813
+#: clutter/clutter-actor.c:4010
 msgid "The rotation angle on the X axis"
 msgstr ""
 
-#: clutter/clutter-actor.c:3828
+#: clutter/clutter-actor.c:4025
 msgid "Rotation Angle Y"
 msgstr ""
 
-#: clutter/clutter-actor.c:3829
+#: clutter/clutter-actor.c:4026
 msgid "The rotation angle on the Y axis"
 msgstr ""
 
-#: clutter/clutter-actor.c:3844
+#: clutter/clutter-actor.c:4041
 msgid "Rotation Angle Z"
 msgstr ""
 
-#: clutter/clutter-actor.c:3845
+#: clutter/clutter-actor.c:4042
 msgid "The rotation angle on the Z axis"
 msgstr ""
 
-#: clutter/clutter-actor.c:3860
+#: clutter/clutter-actor.c:4057
 msgid "Rotation Center X"
 msgstr ""
 
-#: clutter/clutter-actor.c:3861
+#: clutter/clutter-actor.c:4058
 msgid "The rotation center on the X axis"
 msgstr ""
 
-#: clutter/clutter-actor.c:3877
+#: clutter/clutter-actor.c:4074
 msgid "Rotation Center Y"
 msgstr ""
 
-#: clutter/clutter-actor.c:3878
+#: clutter/clutter-actor.c:4075
 msgid "The rotation center on the Y axis"
 msgstr ""
 
-#: clutter/clutter-actor.c:3894
+#: clutter/clutter-actor.c:4091
 msgid "Rotation Center Z"
 msgstr ""
 
-#: clutter/clutter-actor.c:3895
+#: clutter/clutter-actor.c:4092
 msgid "The rotation center on the Z axis"
 msgstr ""
 
-#: clutter/clutter-actor.c:3911
+#: clutter/clutter-actor.c:4108
 msgid "Rotation Center Z Gravity"
 msgstr ""
 
-#: clutter/clutter-actor.c:3912
+#: clutter/clutter-actor.c:4109
 msgid "Center point for rotation around the Z axis"
 msgstr ""
 
-#: clutter/clutter-actor.c:3930
+#: clutter/clutter-actor.c:4127
 msgid "Anchor X"
 msgstr ""
 
-#: clutter/clutter-actor.c:3931
+#: clutter/clutter-actor.c:4128
 msgid "X coordinate of the anchor point"
 msgstr ""
 
-#: clutter/clutter-actor.c:3947
+#: clutter/clutter-actor.c:4144
 msgid "Anchor Y"
 msgstr ""
 
-#: clutter/clutter-actor.c:3948
+#: clutter/clutter-actor.c:4145
 msgid "Y coordinate of the anchor point"
 msgstr ""
 
-#: clutter/clutter-actor.c:3963
+#: clutter/clutter-actor.c:4160
 msgid "Anchor Gravity"
 msgstr ""
 
-#: clutter/clutter-actor.c:3964
+#: clutter/clutter-actor.c:4161
 msgid "The anchor point as a ClutterGravity"
 msgstr ""
 
-#: clutter/clutter-actor.c:3983
+#: clutter/clutter-actor.c:4180
 msgid "Show on set parent"
 msgstr ""
 
-#: clutter/clutter-actor.c:3984
+#: clutter/clutter-actor.c:4181
 msgid "Whether the actor is shown when parented"
 msgstr ""
 
-#: clutter/clutter-actor.c:4004
+#: clutter/clutter-actor.c:4201
 msgid "Clip to Allocation"
 msgstr ""
 
-#: clutter/clutter-actor.c:4005
+#: clutter/clutter-actor.c:4202
 msgid "Sets the clip region to track the actor's allocation"
 msgstr ""
 
-#: clutter/clutter-actor.c:4015
+#: clutter/clutter-actor.c:4212
 msgid "Text Direction"
 msgstr "文本方向"
 
-#: clutter/clutter-actor.c:4016
+#: clutter/clutter-actor.c:4213
 msgid "Direction of the text"
 msgstr "文本的方向"
 
-#: clutter/clutter-actor.c:4034
+#: clutter/clutter-actor.c:4231
 msgid "Has Pointer"
 msgstr ""
 
-#: clutter/clutter-actor.c:4035
+#: clutter/clutter-actor.c:4232
 msgid "Whether the actor contains the pointer of an input device"
 msgstr ""
 
-#: clutter/clutter-actor.c:4052
+#: clutter/clutter-actor.c:4249
 msgid "Actions"
 msgstr "动作"
 
-#: clutter/clutter-actor.c:4053
+#: clutter/clutter-actor.c:4250
 msgid "Adds an action to the actor"
 msgstr ""
 
-#: clutter/clutter-actor.c:4067
+#: clutter/clutter-actor.c:4264
 msgid "Constraints"
 msgstr ""
 
-#: clutter/clutter-actor.c:4068
+#: clutter/clutter-actor.c:4265
 msgid "Adds a constraint to the actor"
 msgstr ""
 
-#: clutter/clutter-actor-meta.c:164 clutter/clutter-child-meta.c:143
+#: clutter/clutter-actor-meta.c:164 clutter/clutter-child-meta.c:142
 msgid "Actor"
 msgstr ""
 
@@ -403,46 +404,46 @@ msgstr ""
 msgid "The actor attached to the meta"
 msgstr ""
 
-#: clutter/clutter-actor-meta.c:180
+#: clutter/clutter-actor-meta.c:179
 msgid "The name of the meta"
 msgstr ""
 
-#: clutter/clutter-actor-meta.c:194 clutter/clutter-shader.c:261
+#: clutter/clutter-actor-meta.c:192 clutter/clutter-shader.c:261
 msgid "Enabled"
 msgstr "启用"
 
-#: clutter/clutter-actor-meta.c:195
+#: clutter/clutter-actor-meta.c:193
 msgid "Whether the meta is enabled"
 msgstr ""
 
-#: clutter/clutter-align-constraint.c:213
-#: clutter/clutter-bind-constraint.c:274 clutter/clutter-clone.c:292
+#: clutter/clutter-align-constraint.c:231
+#: clutter/clutter-bind-constraint.c:284 clutter/clutter-clone.c:319
 msgid "Source"
 msgstr "来源"
 
-#: clutter/clutter-align-constraint.c:214
+#: clutter/clutter-align-constraint.c:232
 msgid "The source of the alignment"
 msgstr ""
 
-#: clutter/clutter-align-constraint.c:229
+#: clutter/clutter-align-constraint.c:245
 msgid "Align Axis"
 msgstr ""
 
-#: clutter/clutter-align-constraint.c:230
+#: clutter/clutter-align-constraint.c:246
 msgid "The axis to align the position to"
 msgstr ""
 
-#: clutter/clutter-align-constraint.c:251
-#: clutter/clutter-desaturate-effect.c:311
+#: clutter/clutter-align-constraint.c:265
+#: clutter/clutter-desaturate-effect.c:308
 msgid "Factor"
 msgstr ""
 
-#: clutter/clutter-align-constraint.c:252
+#: clutter/clutter-align-constraint.c:266
 msgid "The alignment factor, between 0.0 and 1.0"
 msgstr ""
 
-#: clutter/clutter-alpha.c:339 clutter/clutter-animation.c:526
-#: clutter/clutter-animator.c:1804
+#: clutter/clutter-alpha.c:339 clutter/clutter-animation.c:523
+#: clutter/clutter-animator.c:1799
 msgid "Timeline"
 msgstr "时间轴"
 
@@ -450,19 +451,19 @@ msgstr "时间轴"
 msgid "Timeline used by the alpha"
 msgstr "Alpha 使用的时间轴"
 
-#: clutter/clutter-alpha.c:356
+#: clutter/clutter-alpha.c:355
 msgid "Alpha value"
 msgstr "Alpha 值"
 
-#: clutter/clutter-alpha.c:357
+#: clutter/clutter-alpha.c:356
 msgid "Alpha value as computed by the alpha"
 msgstr ""
 
-#: clutter/clutter-alpha.c:378 clutter/clutter-animation.c:480
+#: clutter/clutter-alpha.c:376 clutter/clutter-animation.c:479
 msgid "Mode"
 msgstr "模式"
 
-#: clutter/clutter-alpha.c:379
+#: clutter/clutter-alpha.c:377
 msgid "Progress mode"
 msgstr "进度模式"
 
@@ -474,48 +475,48 @@ msgstr "对象"
 msgid "Object to which the animation applies"
 msgstr "应用动画的对象"
 
-#: clutter/clutter-animation.c:481
+#: clutter/clutter-animation.c:480
 msgid "The mode of the animation"
 msgstr "动画的模式"
 
-#: clutter/clutter-animation.c:496 clutter/clutter-animator.c:1787
-#: clutter/clutter-media.c:196 clutter/clutter-state.c:1195
+#: clutter/clutter-animation.c:494 clutter/clutter-animator.c:1783
+#: clutter/clutter-media.c:194 clutter/clutter-state.c:1194
 msgid "Duration"
 msgstr "时长"
 
-#: clutter/clutter-animation.c:497
+#: clutter/clutter-animation.c:495
 msgid "Duration of the animation, in milliseconds"
 msgstr "动画时长，以毫秒计"
 
-#: clutter/clutter-animation.c:511
+#: clutter/clutter-animation.c:509
 msgid "Loop"
 msgstr "循环"
 
-#: clutter/clutter-animation.c:512
+#: clutter/clutter-animation.c:510
 msgid "Whether the animation should loop"
 msgstr "动画是否循环"
 
-#: clutter/clutter-animation.c:527
+#: clutter/clutter-animation.c:524
 msgid "The timeline used by the animation"
 msgstr "动画使用的时间轴"
 
-#: clutter/clutter-animation.c:541 clutter/clutter-behaviour.c:308
+#: clutter/clutter-animation.c:537 clutter/clutter-behaviour.c:296
 msgid "Alpha"
 msgstr "Alpha"
 
-#: clutter/clutter-animation.c:542
+#: clutter/clutter-animation.c:538
 msgid "The alpha used by the animation"
 msgstr "动画使用的 alpha"
 
-#: clutter/clutter-animator.c:1788
+#: clutter/clutter-animator.c:1784
 msgid "The duration of the animation"
 msgstr "动画的时长"
 
-#: clutter/clutter-animator.c:1805
+#: clutter/clutter-animator.c:1800
 msgid "The timeline of the animation"
 msgstr "动画的时间轴"
 
-#: clutter/clutter-behaviour.c:309
+#: clutter/clutter-behaviour.c:297
 msgid "Alpha Object to drive the behaviour"
 msgstr ""
 
@@ -700,49 +701,49 @@ msgstr ""
 msgid "Final scale on the Y axis"
 msgstr ""
 
-#: clutter/clutter-bind-constraint.c:275
+#: clutter/clutter-bind-constraint.c:285
 msgid "The source of the binding"
 msgstr ""
 
-#: clutter/clutter-bind-constraint.c:290
+#: clutter/clutter-bind-constraint.c:298
 msgid "Coordinate"
 msgstr ""
 
-#: clutter/clutter-bind-constraint.c:291
+#: clutter/clutter-bind-constraint.c:299
 msgid "The coordinate to bind"
 msgstr ""
 
-#: clutter/clutter-bind-constraint.c:307
+#: clutter/clutter-bind-constraint.c:313
 msgid "Offset"
 msgstr "偏移"
 
-#: clutter/clutter-bind-constraint.c:308
+#: clutter/clutter-bind-constraint.c:314
 msgid "The offset in pixels to apply to the binding"
 msgstr ""
 
-#: clutter/clutter-bin-layout.c:258 clutter/clutter-bin-layout.c:583
-#: clutter/clutter-box-layout.c:409
+#: clutter/clutter-bin-layout.c:261 clutter/clutter-bin-layout.c:580
+#: clutter/clutter-box-layout.c:395
 msgid "Horizontal Alignment"
 msgstr ""
 
-#: clutter/clutter-bin-layout.c:259
-msgid "Horizontal alignment for the actor inside the layer"
+#: clutter/clutter-bin-layout.c:262
+msgid "Horizontal alignment for the actor inside the layout manager"
 msgstr ""
 
-#: clutter/clutter-bin-layout.c:270 clutter/clutter-bin-layout.c:601
-#: clutter/clutter-box-layout.c:418
+#: clutter/clutter-bin-layout.c:270 clutter/clutter-bin-layout.c:597
+#: clutter/clutter-box-layout.c:404
 msgid "Vertical Alignment"
 msgstr ""
 
 #: clutter/clutter-bin-layout.c:271
-msgid "Vertical alignment for the actor inside the layer manager"
+msgid "Vertical alignment for the actor inside the layout manager"
 msgstr ""
 
-#: clutter/clutter-bin-layout.c:584
+#: clutter/clutter-bin-layout.c:581
 msgid "Default horizontal alignment for the actors inside the layout manager"
 msgstr ""
 
-#: clutter/clutter-bin-layout.c:602
+#: clutter/clutter-bin-layout.c:598
 msgid "Default vertical alignment for the actors inside the layout manager"
 msgstr ""
 
@@ -758,8 +759,8 @@ msgstr "样式管理器"
 msgid "The layout manager used by the box"
 msgstr ""
 
-#: clutter/clutter-box.c:514 clutter/clutter-rectangle.c:247
-#: clutter/clutter-stage.c:1160
+#: clutter/clutter-box.c:514 clutter/clutter-rectangle.c:257
+#: clutter/clutter-stage.c:1290
 msgid "Color"
 msgstr "色彩"
 
@@ -775,112 +776,112 @@ msgstr ""
 msgid "Whether the background color is set"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:384
+#: clutter/clutter-box-layout.c:370
 msgid "Expand"
 msgstr "展开"
 
-#: clutter/clutter-box-layout.c:385
+#: clutter/clutter-box-layout.c:371
 msgid "Allocate extra space for the child"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:391
+#: clutter/clutter-box-layout.c:377
 msgid "Horizontal Fill"
 msgstr "水平填充"
 
-#: clutter/clutter-box-layout.c:392
+#: clutter/clutter-box-layout.c:378
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the horizontal axis"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:400
+#: clutter/clutter-box-layout.c:386
 msgid "Vertical Fill"
 msgstr "竖直填充"
 
-#: clutter/clutter-box-layout.c:401
+#: clutter/clutter-box-layout.c:387
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the vertical axis"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:410
+#: clutter/clutter-box-layout.c:396
 msgid "Horizontal alignment of the actor within the cell"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:419
+#: clutter/clutter-box-layout.c:405
 msgid "Vertical alignment of the actor within the cell"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1089
+#: clutter/clutter-box-layout.c:1077
 msgid "Vertical"
 msgstr "竖直"
 
-#: clutter/clutter-box-layout.c:1090
-msgid "Whether the layout should be vertical, ratherthan horizontal"
+#: clutter/clutter-box-layout.c:1078
+msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1105 clutter/clutter-flow-layout.c:878
+#: clutter/clutter-box-layout.c:1093 clutter/clutter-flow-layout.c:898
 msgid "Homogeneous"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1106
+#: clutter/clutter-box-layout.c:1094
 msgid ""
-"Whether the layout should be homogeneous, i.e.all childs get the same size"
+"Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1121
+#: clutter/clutter-box-layout.c:1109
 msgid "Pack Start"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1122
+#: clutter/clutter-box-layout.c:1110
 msgid "Whether to pack items at the start of the box"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1135
+#: clutter/clutter-box-layout.c:1123
 msgid "Spacing"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1136
+#: clutter/clutter-box-layout.c:1124
 msgid "Spacing between children"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1150
+#: clutter/clutter-box-layout.c:1138
 msgid "Use Animations"
 msgstr "使用动画"
 
-#: clutter/clutter-box-layout.c:1151
+#: clutter/clutter-box-layout.c:1139
 msgid "Whether layout changes should be animated"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1172
+#: clutter/clutter-box-layout.c:1160
 msgid "Easing Mode"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1173
+#: clutter/clutter-box-layout.c:1161
 msgid "The easing mode of the animations"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1190
+#: clutter/clutter-box-layout.c:1178
 msgid "Easing Duration"
 msgstr ""
 
-#: clutter/clutter-box-layout.c:1191
+#: clutter/clutter-box-layout.c:1179
 msgid "The duration of the animations"
 msgstr ""
 
-#: clutter/clutter-cairo-texture.c:397
+#: clutter/clutter-cairo-texture.c:412
 msgid "Surface Width"
 msgstr "表明宽度"
 
-#: clutter/clutter-cairo-texture.c:398
+#: clutter/clutter-cairo-texture.c:413
 msgid "The width of the Cairo surface"
 msgstr "Cairo 表明的宽度"
 
-#: clutter/clutter-cairo-texture.c:415
+#: clutter/clutter-cairo-texture.c:427
 msgid "Surface Height"
 msgstr "表明高度"
 
-#: clutter/clutter-cairo-texture.c:416
+#: clutter/clutter-cairo-texture.c:428
 msgid "The height of the Cairo surface"
 msgstr "Cairo 表明的高度"
 
@@ -892,7 +893,7 @@ msgstr "容器"
 msgid "The container that created this data"
 msgstr ""
 
-#: clutter/clutter-child-meta.c:144
+#: clutter/clutter-child-meta.c:143
 msgid "The actor wrapped by this data"
 msgstr ""
 
@@ -904,151 +905,152 @@ msgstr "按下时"
 msgid "Whether the clickable should be in pressed state"
 msgstr ""
 
-#: clutter/clutter-click-action.c:255
+#: clutter/clutter-click-action.c:254
 msgid "Held"
 msgstr "保持时"
 
-#: clutter/clutter-click-action.c:256
+#: clutter/clutter-click-action.c:255
 msgid "Whether the clickable has a grab"
 msgstr ""
 
-#: clutter/clutter-clone.c:293
+#: clutter/clutter-clone.c:320
 msgid "Specifies the actor to be cloned"
 msgstr ""
 
-#: clutter/clutter-colorize-effect.c:309
+#: clutter/clutter-colorize-effect.c:310
 msgid "Tint"
 msgstr ""
 
-#: clutter/clutter-colorize-effect.c:310
+#: clutter/clutter-colorize-effect.c:311
 msgid "The tint to apply"
 msgstr ""
 
-#: clutter/clutter-deform-effect.c:525
-msgid "Horiontal Tiles"
-msgstr ""
+#: clutter/clutter-deform-effect.c:521
+#, fuzzy
+msgid "Horizontal Tiles"
+msgstr "水平填充"
 
-#: clutter/clutter-deform-effect.c:526
+#: clutter/clutter-deform-effect.c:522
 msgid "The number of horizontal tiles"
 msgstr ""
 
-#: clutter/clutter-deform-effect.c:542
+#: clutter/clutter-deform-effect.c:537
 msgid "Vertical Tiles"
 msgstr ""
 
-#: clutter/clutter-deform-effect.c:543
+#: clutter/clutter-deform-effect.c:538
 msgid "The number of vertical tiles"
 msgstr ""
 
-#: clutter/clutter-deform-effect.c:561
+#: clutter/clutter-deform-effect.c:555
 msgid "Back Material"
 msgstr ""
 
-#: clutter/clutter-deform-effect.c:562
+#: clutter/clutter-deform-effect.c:556
 msgid "The material to be used when painting the back of the actor"
 msgstr ""
 
-#: clutter/clutter-desaturate-effect.c:312
+#: clutter/clutter-desaturate-effect.c:309
 msgid "The desaturation factor"
 msgstr ""
 
-#: clutter/clutter-device-manager.c:132
+#: clutter/clutter-device-manager.c:129
 msgid "Backend"
 msgstr "后端"
 
-#: clutter/clutter-device-manager.c:133
+#: clutter/clutter-device-manager.c:130
 msgid "The ClutterBackend of the device manager"
 msgstr ""
 
-#: clutter/clutter-drag-action.c:494
+#: clutter/clutter-drag-action.c:490
 msgid "Horizontal Drag Threshold"
 msgstr ""
 
-#: clutter/clutter-drag-action.c:495
+#: clutter/clutter-drag-action.c:491
 msgid "The horizontal amount of pixels required to start dragging"
 msgstr ""
 
-#: clutter/clutter-drag-action.c:515
+#: clutter/clutter-drag-action.c:510
 msgid "Vertical Drag Threshold"
 msgstr ""
 
-#: clutter/clutter-drag-action.c:516
+#: clutter/clutter-drag-action.c:511
 msgid "The vertical amount of pixels required to start dragging"
 msgstr ""
 
-#: clutter/clutter-drag-action.c:538
+#: clutter/clutter-drag-action.c:532
 msgid "Drag Handle"
 msgstr ""
 
-#: clutter/clutter-drag-action.c:539
+#: clutter/clutter-drag-action.c:533
 msgid "The actor that is being dragged"
 msgstr ""
 
-#: clutter/clutter-drag-action.c:553
+#: clutter/clutter-drag-action.c:546
 msgid "Drag Axis"
 msgstr ""
 
-#: clutter/clutter-drag-action.c:554
+#: clutter/clutter-drag-action.c:547
 msgid "Constraints the dragging to an axis"
 msgstr ""
 
-#: clutter/clutter-flow-layout.c:861
+#: clutter/clutter-flow-layout.c:882
 msgid "Orientation"
 msgstr ""
 
-#: clutter/clutter-flow-layout.c:862
+#: clutter/clutter-flow-layout.c:883
 msgid "The orientation of the layout"
 msgstr ""
 
-#: clutter/clutter-flow-layout.c:879
+#: clutter/clutter-flow-layout.c:899
 msgid "Whether each item should receive the same allocation"
 msgstr ""
 
-#: clutter/clutter-flow-layout.c:894
+#: clutter/clutter-flow-layout.c:914
 msgid "Column Spacing"
 msgstr ""
 
-#: clutter/clutter-flow-layout.c:895
+#: clutter/clutter-flow-layout.c:915
 msgid "The spacing between columns"
 msgstr ""
 
-#: clutter/clutter-flow-layout.c:913
+#: clutter/clutter-flow-layout.c:931
 msgid "Row Spacing"
 msgstr ""
 
-#: clutter/clutter-flow-layout.c:914
+#: clutter/clutter-flow-layout.c:932
 msgid "The spacing between rows"
 msgstr ""
 
-#: clutter/clutter-flow-layout.c:930
+#: clutter/clutter-flow-layout.c:946
 msgid "Minimum Column Width"
 msgstr "最小列宽"
 
-#: clutter/clutter-flow-layout.c:931
+#: clutter/clutter-flow-layout.c:947
 msgid "Minimum width for each column"
 msgstr "每列的最小宽度"
 
-#: clutter/clutter-flow-layout.c:948
+#: clutter/clutter-flow-layout.c:962
 msgid "Maximum Column Width"
 msgstr "最大列宽"
 
-#: clutter/clutter-flow-layout.c:949
+#: clutter/clutter-flow-layout.c:963
 msgid "Maximum width for each column"
 msgstr "每列的最大宽度"
 
-#: clutter/clutter-flow-layout.c:965
+#: clutter/clutter-flow-layout.c:977
 msgid "Minimum Row Height"
 msgstr "最小行高"
 
-#: clutter/clutter-flow-layout.c:966
+#: clutter/clutter-flow-layout.c:978
 msgid "Minimum height for each row"
 msgstr "每行的最小高度"
 
-#: clutter/clutter-flow-layout.c:983
+#: clutter/clutter-flow-layout.c:993
 msgid "Maximum Row Height"
 msgstr "最大行高"
 
-#: clutter/clutter-flow-layout.c:984
+#: clutter/clutter-flow-layout.c:994
 msgid "Maximum height for each row"
 msgstr "每行的最大高度"
 
@@ -1072,11 +1074,11 @@ msgstr "设备类型"
 msgid "The type of the device"
 msgstr "设备的类型"
 
-#: clutter/clutter-interval.c:412
+#: clutter/clutter-interval.c:397
 msgid "Value Type"
 msgstr "值类型"
 
-#: clutter/clutter-interval.c:413
+#: clutter/clutter-interval.c:398
 msgid "The type of the values in the interval"
 msgstr ""
 
@@ -1088,171 +1090,171 @@ msgstr "管理器"
 msgid "The manager that created this data"
 msgstr "创建此数据的管理器"
 
-#: clutter/clutter-main.c:779
+#: clutter/clutter-main.c:753
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: clutter/clutter-main.c:1674
+#: clutter/clutter-main.c:1644
 msgid "Show frames per second"
 msgstr "显示帧速率"
 
-#: clutter/clutter-main.c:1676
+#: clutter/clutter-main.c:1646
 msgid "Default frame rate"
 msgstr "默认帧率"
 
-#: clutter/clutter-main.c:1678
+#: clutter/clutter-main.c:1648
 msgid "Make all warnings fatal"
 msgstr "视所有警告为致命错误"
 
-#: clutter/clutter-main.c:1681
+#: clutter/clutter-main.c:1651
 msgid "Direction for the text"
 msgstr "文本方向"
 
-#: clutter/clutter-main.c:1684
+#: clutter/clutter-main.c:1654
 msgid "Disable mipmapping on text"
 msgstr "在文本上禁用 MIP 映射"
 
-#: clutter/clutter-main.c:1687
+#: clutter/clutter-main.c:1657
 msgid "Use 'fuzzy' picking"
 msgstr "使用模糊选取"
 
-#: clutter/clutter-main.c:1690
+#: clutter/clutter-main.c:1660
 msgid "Clutter debugging flags to set"
 msgstr "要设置的 Clutter 调试标志"
 
-#: clutter/clutter-main.c:1692
+#: clutter/clutter-main.c:1662
 msgid "Clutter debugging flags to unset"
 msgstr "要取消设置的 Clutter 调试标志"
 
-#: clutter/clutter-main.c:1696
+#: clutter/clutter-main.c:1666
 msgid "Clutter profiling flags to set"
 msgstr "要设置的 Clutter 性能分析标志"
 
-#: clutter/clutter-main.c:1698
+#: clutter/clutter-main.c:1668
 msgid "Clutter profiling flags to unset"
 msgstr "要取消设置的 Clutter 性能分析标志"
 
-#: clutter/clutter-main.c:1701
+#: clutter/clutter-main.c:1671
 msgid "Enable accessibility"
 msgstr "启用辅助功能"
 
-#: clutter/clutter-main.c:1888
+#: clutter/clutter-main.c:1858
 msgid "Clutter Options"
 msgstr "Clutter 选项"
 
-#: clutter/clutter-main.c:1889
+#: clutter/clutter-main.c:1859
 msgid "Show Clutter Options"
 msgstr "显示 Clutter 选项"
 
-#: clutter/clutter-media.c:79
+#: clutter/clutter-media.c:77
 msgid "URI"
 msgstr "URI"
 
-#: clutter/clutter-media.c:80
+#: clutter/clutter-media.c:78
 msgid "URI of a media file"
 msgstr "媒体文件的 URI"
 
-#: clutter/clutter-media.c:93
+#: clutter/clutter-media.c:91
 msgid "Playing"
 msgstr "正在播放"
 
-#: clutter/clutter-media.c:94
+#: clutter/clutter-media.c:92
 msgid "Wheter the actor is playing"
 msgstr ""
 
-#: clutter/clutter-media.c:108
+#: clutter/clutter-media.c:106
 msgid "Progress"
 msgstr "进度"
 
-#: clutter/clutter-media.c:109
+#: clutter/clutter-media.c:107
 msgid "Current progress of the playback"
 msgstr ""
 
-#: clutter/clutter-media.c:122
+#: clutter/clutter-media.c:120
 msgid "Subtitle URI"
 msgstr "字幕 URI"
 
-#: clutter/clutter-media.c:123
+#: clutter/clutter-media.c:121
 msgid "URI of a subtitle file"
 msgstr "字幕文件的 URI"
 
-#: clutter/clutter-media.c:138
+#: clutter/clutter-media.c:136
 msgid "Subtitle Font Name"
 msgstr "字幕字体名称"
 
-#: clutter/clutter-media.c:139
+#: clutter/clutter-media.c:137
 msgid "The font used to display subtitles"
 msgstr "显示字幕时使用的字体"
 
-#: clutter/clutter-media.c:153
+#: clutter/clutter-media.c:151
 msgid "Audio Volume"
 msgstr "音频音量"
 
-#: clutter/clutter-media.c:154
+#: clutter/clutter-media.c:152
 msgid "The volume of the audio"
 msgstr "音频的音量"
 
-#: clutter/clutter-media.c:167
+#: clutter/clutter-media.c:165
 msgid "Can Seek"
 msgstr ""
 
-#: clutter/clutter-media.c:168
+#: clutter/clutter-media.c:166
 msgid "Whether the current stream is seekable"
 msgstr ""
 
-#: clutter/clutter-media.c:182
+#: clutter/clutter-media.c:180
 msgid "Buffer Fill"
 msgstr ""
 
-#: clutter/clutter-media.c:183
+#: clutter/clutter-media.c:181
 msgid "The fill level of the buffer"
 msgstr ""
 
-#: clutter/clutter-media.c:197
+#: clutter/clutter-media.c:195
 msgid "The duration of the stream, in seconds"
 msgstr ""
 
-#: clutter/clutter-rectangle.c:248
+#: clutter/clutter-rectangle.c:258
 msgid "The color of the rectangle"
 msgstr ""
 
-#: clutter/clutter-rectangle.c:261
+#: clutter/clutter-rectangle.c:271
 msgid "Border Color"
 msgstr "边界色彩"
 
-#: clutter/clutter-rectangle.c:262
+#: clutter/clutter-rectangle.c:272
 msgid "The color of the border of the rectangle"
 msgstr ""
 
-#: clutter/clutter-rectangle.c:277
+#: clutter/clutter-rectangle.c:287
 msgid "Border Width"
 msgstr "边界宽度"
 
-#: clutter/clutter-rectangle.c:278
+#: clutter/clutter-rectangle.c:288
 msgid "The width of the border of the rectangle"
 msgstr ""
 
-#: clutter/clutter-rectangle.c:292
+#: clutter/clutter-rectangle.c:302
 msgid "Has Border"
 msgstr "带有边界"
 
-#: clutter/clutter-rectangle.c:293
+#: clutter/clutter-rectangle.c:303
 msgid "Whether the rectangle should have a border"
 msgstr ""
 
-#: clutter/clutter-script.c:404
+#: clutter/clutter-script.c:389
 msgid "Filename Set"
 msgstr ""
 
-#: clutter/clutter-script.c:405
+#: clutter/clutter-script.c:390
 msgid "Whether the :filename property is set"
 msgstr ""
 
-#: clutter/clutter-script.c:420 clutter/clutter-texture.c:1048
+#: clutter/clutter-script.c:404 clutter/clutter-texture.c:1070
 msgid "Filename"
 msgstr "文件名"
 
-#: clutter/clutter-script.c:421
+#: clutter/clutter-script.c:405
 msgid "The path of the currently parsed file"
 msgstr ""
 
@@ -1301,419 +1303,420 @@ msgstr "顶点着色引擎"
 msgid "Fragment shader"
 msgstr "片段着色引擎"
 
-#: clutter/clutter-shader-effect.c:452
+#: clutter/clutter-shader-effect.c:449
 msgid "Shader Type"
 msgstr "着色引擎类型"
 
-#: clutter/clutter-shader-effect.c:453
+#: clutter/clutter-shader-effect.c:450
 msgid "The type of shader used"
 msgstr "使用的着色引擎类型"
 
-#: clutter/clutter-stage.c:1102
+#: clutter/clutter-stage.c:1232
 msgid "Fullscreen Set"
 msgstr ""
 
-#: clutter/clutter-stage.c:1103
+#: clutter/clutter-stage.c:1233
 msgid "Whether the main stage is fullscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1119
+#: clutter/clutter-stage.c:1249
 msgid "Offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1120
+#: clutter/clutter-stage.c:1250
 msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1132 clutter/clutter-text.c:2627
+#: clutter/clutter-stage.c:1262 clutter/clutter-text.c:2637
 msgid "Cursor Visible"
 msgstr ""
 
-#: clutter/clutter-stage.c:1133
+#: clutter/clutter-stage.c:1263
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr ""
 
-#: clutter/clutter-stage.c:1147
+#: clutter/clutter-stage.c:1277
 msgid "User Resizable"
 msgstr "用户可改变大小"
 
-#: clutter/clutter-stage.c:1148
+#: clutter/clutter-stage.c:1278
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr ""
 
-#: clutter/clutter-stage.c:1161
+#: clutter/clutter-stage.c:1291
 msgid "The color of the stage"
 msgstr ""
 
-#: clutter/clutter-stage.c:1175
+#: clutter/clutter-stage.c:1305
 msgid "Perspective"
 msgstr ""
 
-#: clutter/clutter-stage.c:1176
+#: clutter/clutter-stage.c:1306
 msgid "Perspective projection parameters"
 msgstr ""
 
-#: clutter/clutter-stage.c:1191
+#: clutter/clutter-stage.c:1321
 msgid "Title"
 msgstr "标题"
 
-#: clutter/clutter-stage.c:1192
+#: clutter/clutter-stage.c:1322
 msgid "Stage Title"
 msgstr ""
 
-#: clutter/clutter-stage.c:1207
+#: clutter/clutter-stage.c:1337
 msgid "Use Fog"
 msgstr ""
 
-#: clutter/clutter-stage.c:1208
+#: clutter/clutter-stage.c:1338
 msgid "Whether to enable depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1222
+#: clutter/clutter-stage.c:1352
 msgid "Fog"
 msgstr ""
 
-#: clutter/clutter-stage.c:1223
+#: clutter/clutter-stage.c:1353
 msgid "Settings for the depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1239
+#: clutter/clutter-stage.c:1369
 msgid "Use Alpha"
 msgstr "使用 Alpha"
 
-#: clutter/clutter-stage.c:1240
+#: clutter/clutter-stage.c:1370
 msgid "Whether to honour the alpha component of the stage color"
 msgstr ""
 
-#: clutter/clutter-stage.c:1256
+#: clutter/clutter-stage.c:1386
 msgid "Key Focus"
 msgstr ""
 
-#: clutter/clutter-stage.c:1257
+#: clutter/clutter-stage.c:1387
 msgid "The currently key focused actor"
 msgstr ""
 
-#: clutter/clutter-stage.c:1273
+#: clutter/clutter-stage.c:1403
 msgid "No Clear Hint"
 msgstr ""
 
-#: clutter/clutter-stage.c:1274
+#: clutter/clutter-stage.c:1404
 msgid "Whether the stage should clear its contents"
 msgstr ""
 
-#: clutter/clutter-state.c:1181
+#: clutter/clutter-state.c:1180
 msgid "State"
 msgstr ""
 
-#: clutter/clutter-state.c:1182
+#: clutter/clutter-state.c:1181
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr ""
 
-#: clutter/clutter-state.c:1196
+#: clutter/clutter-state.c:1195
 #, fuzzy
 msgid "Default transition duration"
 msgstr "默认帧率"
 
-#: clutter/clutter-text.c:2514
+#: clutter/clutter-text.c:2524
 msgid "Font Name"
 msgstr "字体名称"
 
-#: clutter/clutter-text.c:2515
+#: clutter/clutter-text.c:2525
 msgid "The font to be used by the text"
 msgstr "文本使用的字体"
 
-#: clutter/clutter-text.c:2532
+#: clutter/clutter-text.c:2542
 msgid "Font Description"
 msgstr "字体描述"
 
-#: clutter/clutter-text.c:2533
+#: clutter/clutter-text.c:2543
 msgid "The font description to be used"
 msgstr "使用的字体描述"
 
-#: clutter/clutter-text.c:2549
+#: clutter/clutter-text.c:2559
 msgid "Text"
 msgstr "文本"
 
-#: clutter/clutter-text.c:2550
+#: clutter/clutter-text.c:2560
 msgid "The text to render"
 msgstr "要渲染的文本"
 
-#: clutter/clutter-text.c:2564
+#: clutter/clutter-text.c:2574
 msgid "Font Color"
 msgstr "字体颜色"
 
-#: clutter/clutter-text.c:2565
+#: clutter/clutter-text.c:2575
 msgid "Color of the font used by the text"
 msgstr "文本字体使用的颜色"
 
-#: clutter/clutter-text.c:2579
+#: clutter/clutter-text.c:2589
 msgid "Editable"
 msgstr "可编辑"
 
-#: clutter/clutter-text.c:2580
+#: clutter/clutter-text.c:2590
 msgid "Whether the text is editable"
 msgstr "文本是否可以编辑"
 
-#: clutter/clutter-text.c:2595
+#: clutter/clutter-text.c:2605
 msgid "Selectable"
 msgstr "可选择"
 
-#: clutter/clutter-text.c:2596
+#: clutter/clutter-text.c:2606
 msgid "Whether the text is selectable"
 msgstr "文本是否可以选择"
 
-#: clutter/clutter-text.c:2610
+#: clutter/clutter-text.c:2620
 msgid "Activatable"
 msgstr "可激活"
 
-#: clutter/clutter-text.c:2611
+#: clutter/clutter-text.c:2621
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr ""
 
-#: clutter/clutter-text.c:2628
+#: clutter/clutter-text.c:2638
 msgid "Whether the input cursor is visible"
 msgstr ""
 
-#: clutter/clutter-text.c:2642 clutter/clutter-text.c:2643
+#: clutter/clutter-text.c:2652 clutter/clutter-text.c:2653
 msgid "Cursor Color"
 msgstr "指针颜色"
 
-#: clutter/clutter-text.c:2657
+#: clutter/clutter-text.c:2667
 msgid "Cursor Color Set"
 msgstr ""
 
-#: clutter/clutter-text.c:2658
+#: clutter/clutter-text.c:2668
 msgid "Whether the cursor color has been set"
 msgstr ""
 
-#: clutter/clutter-text.c:2673
+#: clutter/clutter-text.c:2683
 msgid "Cursor Size"
 msgstr "指针大小"
 
-#: clutter/clutter-text.c:2674
+#: clutter/clutter-text.c:2684
 msgid "The width of the cursor, in pixels"
 msgstr "指针的宽度，以像素计"
 
-#: clutter/clutter-text.c:2688
-msgid "Position"
-msgstr "位置"
+#: clutter/clutter-text.c:2698
+#, fuzzy
+msgid "Cursor Position"
+msgstr "指针位置"
 
-#: clutter/clutter-text.c:2689
+#: clutter/clutter-text.c:2699
 msgid "The cursor position"
 msgstr "指针位置"
 
-#: clutter/clutter-text.c:2704
+#: clutter/clutter-text.c:2714
 msgid "Selection-bound"
 msgstr "选区边界"
 
-#: clutter/clutter-text.c:2705
+#: clutter/clutter-text.c:2715
 msgid "The cursor position of the other end of the selection"
 msgstr ""
 
-#: clutter/clutter-text.c:2720 clutter/clutter-text.c:2721
+#: clutter/clutter-text.c:2730 clutter/clutter-text.c:2731
 msgid "Selection Color"
 msgstr "选区颜色"
 
-#: clutter/clutter-text.c:2735
+#: clutter/clutter-text.c:2745
 msgid "Selection Color Set"
 msgstr ""
 
-#: clutter/clutter-text.c:2736
+#: clutter/clutter-text.c:2746
 msgid "Whether the selection color has been set"
 msgstr ""
 
-#: clutter/clutter-text.c:2751
+#: clutter/clutter-text.c:2761
 msgid "Attributes"
 msgstr "属性"
 
-#: clutter/clutter-text.c:2752
+#: clutter/clutter-text.c:2762
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr ""
 
-#: clutter/clutter-text.c:2774
+#: clutter/clutter-text.c:2784
 msgid "Use markup"
 msgstr "使用标记"
 
-#: clutter/clutter-text.c:2775
+#: clutter/clutter-text.c:2785
 msgid "Whether or not the text includes Pango markup"
 msgstr ""
 
-#: clutter/clutter-text.c:2791
+#: clutter/clutter-text.c:2801
 msgid "Line wrap"
 msgstr "换行"
 
-#: clutter/clutter-text.c:2792
+#: clutter/clutter-text.c:2802
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr ""
 
-#: clutter/clutter-text.c:2807
+#: clutter/clutter-text.c:2817
 msgid "Line wrap mode"
 msgstr "换行模式"
 
-#: clutter/clutter-text.c:2808
+#: clutter/clutter-text.c:2818
 msgid "Control how line-wrapping is done"
 msgstr "控制换行行为"
 
-#: clutter/clutter-text.c:2823
+#: clutter/clutter-text.c:2833
 msgid "Ellipsize"
 msgstr ""
 
-#: clutter/clutter-text.c:2824
+#: clutter/clutter-text.c:2834
 msgid "The preferred place to ellipsize the string"
 msgstr ""
 
-#: clutter/clutter-text.c:2840
+#: clutter/clutter-text.c:2850
 msgid "Line Alignment"
 msgstr ""
 
-#: clutter/clutter-text.c:2841
+#: clutter/clutter-text.c:2851
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr ""
 
-#: clutter/clutter-text.c:2857
+#: clutter/clutter-text.c:2867
 msgid "Justify"
 msgstr ""
 
-#: clutter/clutter-text.c:2858
+#: clutter/clutter-text.c:2868
 msgid "Whether the text should be justified"
 msgstr ""
 
-#: clutter/clutter-text.c:2873
+#: clutter/clutter-text.c:2883
 msgid "Password Character"
 msgstr "密码字符"
 
-#: clutter/clutter-text.c:2874
+#: clutter/clutter-text.c:2884
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr ""
 
-#: clutter/clutter-text.c:2888
+#: clutter/clutter-text.c:2898
 msgid "Max Length"
 msgstr "最大长度"
 
-#: clutter/clutter-text.c:2889
+#: clutter/clutter-text.c:2899
 msgid "Maximum length of the text inside the actor"
 msgstr ""
 
-#: clutter/clutter-text.c:2912
+#: clutter/clutter-text.c:2922
 msgid "Single Line Mode"
 msgstr "单行模式"
 
-#: clutter/clutter-text.c:2913
+#: clutter/clutter-text.c:2923
 msgid "Whether the text should be a single line"
 msgstr "文本是否只应使用一行"
 
-#: clutter/clutter-texture.c:963
+#: clutter/clutter-texture.c:984
 msgid "Sync size of actor"
 msgstr ""
 
-#: clutter/clutter-texture.c:964
+#: clutter/clutter-texture.c:985
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
 msgstr ""
 
-#: clutter/clutter-texture.c:971
+#: clutter/clutter-texture.c:992
 msgid "Disable Slicing"
 msgstr ""
 
-#: clutter/clutter-texture.c:972
+#: clutter/clutter-texture.c:993
 msgid ""
-"Forces the underlying texture to be singlular and not made of of smaller "
-"space saving inidivual textures."
+"Forces the underlying texture to be singular and not made of smaller space "
+"saving individual textures"
 msgstr ""
 
-#: clutter/clutter-texture.c:980
+#: clutter/clutter-texture.c:1002
 msgid "Tile Waste"
 msgstr ""
 
-#: clutter/clutter-texture.c:981
+#: clutter/clutter-texture.c:1003
 msgid "Maximum waste area of a sliced texture"
 msgstr ""
 
-#: clutter/clutter-texture.c:989
+#: clutter/clutter-texture.c:1011
 msgid "Horizontal repeat"
 msgstr ""
 
-#: clutter/clutter-texture.c:990
-msgid "Repeat the contents rather than scaling them horizontally."
+#: clutter/clutter-texture.c:1012
+msgid "Repeat the contents rather than scaling them horizontally"
 msgstr ""
 
-#: clutter/clutter-texture.c:997
+#: clutter/clutter-texture.c:1019
 msgid "Vertical repeat"
 msgstr ""
 
-#: clutter/clutter-texture.c:998
-msgid "Repeat the contents rather than scaling them vertically."
+#: clutter/clutter-texture.c:1020
+msgid "Repeat the contents rather than scaling them vertically"
 msgstr ""
 
-#: clutter/clutter-texture.c:1005
+#: clutter/clutter-texture.c:1027
 msgid "Filter Quality"
 msgstr "过滤器质量"
 
-#: clutter/clutter-texture.c:1006
-msgid "Rendering quality used when drawing the texture."
+#: clutter/clutter-texture.c:1028
+msgid "Rendering quality used when drawing the texture"
 msgstr ""
 
-#: clutter/clutter-texture.c:1014
+#: clutter/clutter-texture.c:1036
 msgid "Pixel Format"
 msgstr "像素格式"
 
-#: clutter/clutter-texture.c:1015
-msgid "The Cogl pixel format to use."
+#: clutter/clutter-texture.c:1037
+msgid "The Cogl pixel format to use"
 msgstr ""
 
-#: clutter/clutter-texture.c:1023
-msgid "COGL Texture"
+#: clutter/clutter-texture.c:1045
+msgid "Cogl Texture"
 msgstr ""
 
-#: clutter/clutter-texture.c:1024
-msgid "The underlying COGL texture handle used to draw this actor"
+#: clutter/clutter-texture.c:1046
+msgid "The underlying Cogl texture handle used to draw this actor"
 msgstr ""
 
-#: clutter/clutter-texture.c:1031
-msgid "COGL Material"
+#: clutter/clutter-texture.c:1053
+msgid "Cogl Material"
 msgstr ""
 
-#: clutter/clutter-texture.c:1032
-msgid "The underlying COGL material handle used to draw this actor"
+#: clutter/clutter-texture.c:1054
+msgid "The underlying Cogl material handle used to draw this actor"
 msgstr ""
 
-#: clutter/clutter-texture.c:1049
+#: clutter/clutter-texture.c:1071
 msgid "The path of the file containing the image data"
 msgstr ""
 
-#: clutter/clutter-texture.c:1056
+#: clutter/clutter-texture.c:1078
 msgid "Keep Aspect Ratio"
 msgstr ""
 
-#: clutter/clutter-texture.c:1057
+#: clutter/clutter-texture.c:1079
 msgid ""
 "Keep the aspect ratio of the texture when requesting the preferred width or "
 "height"
 msgstr ""
 
-#: clutter/clutter-texture.c:1083
+#: clutter/clutter-texture.c:1105
 msgid "Load asynchronously"
 msgstr "同步加载"
 
-#: clutter/clutter-texture.c:1084
+#: clutter/clutter-texture.c:1106
 msgid ""
-"Load files inside a thread to avoid blocking when loading images from disk."
+"Load files inside a thread to avoid blocking when loading images from disk"
 msgstr ""
 
-#: clutter/clutter-texture.c:1100
+#: clutter/clutter-texture.c:1122
 msgid "Load data asynchronously"
 msgstr "同步加载数据"
 
-#: clutter/clutter-texture.c:1101
+#: clutter/clutter-texture.c:1123
 msgid ""
 "Decode image data files inside a thread to reduce blocking when loading "
-"images from disk."
+"images from disk"
 msgstr ""
 
-#: clutter/clutter-texture.c:1125
+#: clutter/clutter-texture.c:1147
 msgid "Pick With Alpha"
 msgstr ""
 
-#: clutter/clutter-texture.c:1126
+#: clutter/clutter-texture.c:1148
 msgid "Shape actor with alpha channel when picking"
 msgstr ""
 
@@ -1721,114 +1724,117 @@ msgstr ""
 msgid "VBlank method to be used (none, dri or glx)"
 msgstr "要使用的 VBlank 方式(none、dir 或 glx)"
 
-#: clutter/x11/clutter-backend-x11.c:385
+#: clutter/x11/clutter-backend-x11.c:391
 msgid "X display to use"
 msgstr "要使用的 X 显示"
 
-#: clutter/x11/clutter-backend-x11.c:391
+#: clutter/x11/clutter-backend-x11.c:397
 msgid "X screen to use"
 msgstr "要使用的 X 屏幕"
 
-#: clutter/x11/clutter-backend-x11.c:396
+#: clutter/x11/clutter-backend-x11.c:402
 msgid "Make X calls synchronous"
 msgstr "使 X 调用同步"
 
-#: clutter/x11/clutter-backend-x11.c:403
+#: clutter/x11/clutter-backend-x11.c:409
 msgid "Enable XInput support"
 msgstr "启用 XInput 支持"
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:510
+#: clutter/x11/clutter-x11-texture-pixmap.c:527
 msgid "Pixmap"
 msgstr "位图"
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:511
+#: clutter/x11/clutter-x11-texture-pixmap.c:528
 msgid "The X11 Pixmap to be bound"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:519
+#: clutter/x11/clutter-x11-texture-pixmap.c:536
 msgid "Pixmap width"
 msgstr "位图宽度"
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:520
+#: clutter/x11/clutter-x11-texture-pixmap.c:537
 msgid "The width of the pixmap bound to this texture"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:528
+#: clutter/x11/clutter-x11-texture-pixmap.c:545
 msgid "Pixmap height"
 msgstr "位图高度"
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:529
+#: clutter/x11/clutter-x11-texture-pixmap.c:546
 msgid "The height of the pixmap bound to this texture"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:537
+#: clutter/x11/clutter-x11-texture-pixmap.c:554
 msgid "Pixmap Depth"
 msgstr "位图色深"
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:538
+#: clutter/x11/clutter-x11-texture-pixmap.c:555
 msgid "The depth (in number of bits) of the pixmap bound to this texture"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:546
+#: clutter/x11/clutter-x11-texture-pixmap.c:563
 msgid "Automatic Updates"
 msgstr "自动更新"
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:547
+#: clutter/x11/clutter-x11-texture-pixmap.c:564
 msgid "If the texture should be kept in sync with any pixmap changes."
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:555
+#: clutter/x11/clutter-x11-texture-pixmap.c:572
 msgid "Window"
 msgstr "窗口"
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:556
+#: clutter/x11/clutter-x11-texture-pixmap.c:573
 msgid "The X11 Window to be bound"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:564
+#: clutter/x11/clutter-x11-texture-pixmap.c:581
 msgid "Window Redirect Automatic"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:565
+#: clutter/x11/clutter-x11-texture-pixmap.c:582
 msgid "If composite window redirects are set to Automatic (or Manual if false)"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:575
+#: clutter/x11/clutter-x11-texture-pixmap.c:592
 msgid "Window Mapped"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:576
+#: clutter/x11/clutter-x11-texture-pixmap.c:593
 msgid "If window is mapped"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:585
+#: clutter/x11/clutter-x11-texture-pixmap.c:602
 msgid "Destroyed"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:586
+#: clutter/x11/clutter-x11-texture-pixmap.c:603
 msgid "If window has been destroyed"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:594
+#: clutter/x11/clutter-x11-texture-pixmap.c:611
 msgid "Window X"
 msgstr "窗口 X 坐标"
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:595
+#: clutter/x11/clutter-x11-texture-pixmap.c:612
 msgid "X position of window on screen according to X11"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:603
+#: clutter/x11/clutter-x11-texture-pixmap.c:620
 msgid "Window Y"
 msgstr "窗口 Y 坐标"
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:604
+#: clutter/x11/clutter-x11-texture-pixmap.c:621
 msgid "Y position of window on screen according to X11"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:611
+#: clutter/x11/clutter-x11-texture-pixmap.c:628
 msgid "Window Override Redirect"
 msgstr ""
 
-#: clutter/x11/clutter-x11-texture-pixmap.c:612
+#: clutter/x11/clutter-x11-texture-pixmap.c:629
 msgid "If this is an override-redirect window"
 msgstr ""
+
+#~ msgid "Position"
+#~ msgstr "位置"
