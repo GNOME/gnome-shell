@@ -5,6 +5,7 @@
         <Menuname>Tools</Menuname>
     </DefaultLayout>
 	<Name>Applications</Name>
+	<AppDir>/usr/local/share/applications</AppDir>
 	<DefaultAppDirs/>
 	<Menu>
 		<Name>Games</Name>
