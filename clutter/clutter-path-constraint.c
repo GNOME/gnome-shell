@@ -22,6 +22,20 @@
  *   Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
+/**
+ * SECTION:clutter-path-constraint
+ * @Title: ClutterPathConstraint
+ * @Short_Description: A constraint that follows a path
+ *
+ * #ClutterPathConstraint is a simple constraint that modifies the allocation
+ * of the #ClutterActor to which it has been applied using a #ClutterPath.
+ *
+ * By setting the #ClutterPathConstraint:offset property it is possible to
+ * control how far along the path the #ClutterActor should be.
+ *
+ * ClutterPathConstraint is available since Clutter 1.6.
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -216,6 +230,17 @@ clutter_path_constraint_init (ClutterPathConstraint *self)
   self->offset = 0.0f;
 }
 
+/**
+ * clutter_path_constraint_new:
+ * @path: (allow-none): a #ClutterPath, or %NULL
+ * @offset: the offset along the #ClutterPath
+ *
+ * Creates a new #ClutterPathConstraint with the given @path and @offset
+ *
+ * Return value: (transfer full): the newly created #ClutterPathConstraint
+ *
+ * Since: 1.6
+ */
 ClutterConstraint *
 clutter_path_constraint_new (ClutterPath *path,
                              gfloat       offset)
@@ -228,6 +253,18 @@ clutter_path_constraint_new (ClutterPath *path,
                        NULL);
 }
 
+/**
+ * clutter_path_constraint_set_path:
+ * @constraint: a #ClutterPathConstraint
+ * @path: (allow-none): a #ClutterPath
+ *
+ * Sets the @path to be followed by the #ClutterPathConstraint.
+ *
+ * The @constraint will take ownership of the #ClutterPath passed to this
+ * function.
+ *
+ * Since: 1.6
+ */
 void
 clutter_path_constraint_set_path (ClutterPathConstraint *constraint,
                                   ClutterPath           *path)
@@ -253,6 +290,18 @@ clutter_path_constraint_set_path (ClutterPathConstraint *constraint,
   _clutter_notify_by_pspec (G_OBJECT (constraint), path_properties[PROP_PATH]);
 }
 
+/**
+ * clutter_path_constraint_get_path:
+ * @constraint: a #ClutterPathConstraint
+ *
+ * Retrieves a pointer to the #ClutterPath used by @constraint.
+ *
+ * Return value: (transfer none): the #ClutterPath used by the
+ *   #ClutterPathConstraint, or %NULL. The returned #ClutterPath is owned
+ *   by the constraint and it should not be unreferenced
+ *
+ * Since: 1.6
+ */
 ClutterPath *
 clutter_path_constraint_get_path (ClutterPathConstraint *constraint)
 {
@@ -261,6 +310,15 @@ clutter_path_constraint_get_path (ClutterPathConstraint *constraint)
   return constraint->path;
 }
 
+/**
+ * clutter_path_constraint_set_offset:
+ * @constraint: a #ClutterPathConstraint
+ * @offset: the offset along the path
+ *
+ * Sets the offset along the #ClutterPath used by @constraint.
+ *
+ * Since: 1.6
+ */
 void
 clutter_path_constraint_set_offset (ClutterPathConstraint *constraint,
                                     gfloat                 offset)
@@ -278,6 +336,16 @@ clutter_path_constraint_set_offset (ClutterPathConstraint *constraint,
   _clutter_notify_by_pspec (G_OBJECT (constraint), path_properties[PROP_OFFSET]);
 }
 
+/**
+ * clutter_path_constraint_get_offset:
+ * @constraint: a #ClutterPathConstraint
+ *
+ * Retrieves the offset along the #ClutterPath used by @constraint.
+ *
+ * Return value: the offset
+ *
+ * Since: 1.6
+ */
 gfloat
 clutter_path_constraint_get_offset (ClutterPathConstraint *constraint)
 {

@@ -2556,3 +2556,19 @@ CLUTTER_IS_SETTINGS
 <SUBSECTION Private>
 clutter_settings_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-path-constraint</FILE>
+ClutterPathConstraint
+clutter_path_constraint_new
+clutter_path_constraint_set_path
+clutter_path_constraint_get_path
+clutter_path_constraint_set_offset
+clutter_path_constraint_get_offset
+<SUBSECTION Standard>
+CLUTTER_PATH_CONSTRAINT
+CLUTTER_IS_PATH_CONSTRAINT
+CLUTTER_TYPE_PATH_CONSTRAINT
+<SUBSECTION Private>
+clutter_path_constraint_get_type
+</SECTION>
