@@ -17,6 +17,9 @@ Clutter 1.5.4
 
     » Add interpolate() method to Clutter.Color.
 
+    » Add ClutterPathConstraint, a simple constraint that sets the origin
+      of an actor's allocation to follow a ClutterPath.
+
     » Plug some memory leaks.
 
     » Fix build of the CEx100 and EGL backends.
