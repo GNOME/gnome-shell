@@ -82,6 +82,7 @@
 #include "clutter-model.h"
 #include "clutter-offscreen-effect.h"
 #include "clutter-page-turn-effect.h"
+#include "clutter-path-constraint.h"
 #include "clutter-path.h"
 #include "clutter-rectangle.h"
 #include "clutter-score.h"
