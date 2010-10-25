@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&component=general\n"
-"POT-Creation-Date: 2010-07-21 12:36+0000\n"
-"PO-Revision-Date: 2010-07-24 18:36+0800\n"
+"POT-Creation-Date: 2010-10-23 20:18+0000\n"
+"PO-Revision-Date: 2010-10-20 17:32+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Bell event"
 msgstr "响铃事件"
 
-#: ../src/core/core.c:213
+#: ../src/core/core.c:214
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "未知的窗口信息请求：%d"
@@ -60,7 +60,7 @@ msgstr "缺少复合效果所需的 %s 扩展"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "无法打开 X Window System 显示“%s”\n"
 
-#: ../src/core/errors.c:233
+#: ../src/core/errors.c:283
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -71,7 +71,7 @@ msgstr ""
 "可能是 X 服务器已关闭或者您杀死/摧毁了\n"
 "窗口管理器。\n"
 
-#: ../src/core/errors.c:240
+#: ../src/core/errors.c:290
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "严重的 IO 错误 %d (%s) 出现在显示“%s”上。\n"
@@ -86,7 +86,7 @@ msgstr "某个其它程序已经将按键 %s 和修饰键 %x 配合使用作为�
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2399
+#: ../src/core/keybindings.c:2409
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -97,12 +97,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2489
+#: ../src/core/keybindings.c:2499
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "命令 %d 尚未定义。\n"
 
-#: ../src/core/keybindings.c:3502
+#: ../src/core/keybindings.c:3512
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "终端命令尚未定义。\n"
@@ -201,89 +201,89 @@ msgstr "无法重启动：%s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:536 ../src/core/prefs.c:697
+#: ../src/core/prefs.c:548 ../src/core/prefs.c:709
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf 关键字“%s”被设置为无效值\n"
 
-#: ../src/core/prefs.c:623 ../src/core/prefs.c:866
+#: ../src/core/prefs.c:635 ../src/core/prefs.c:878
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "存储在 GConf 关键字 %2$s 中的值 %1$d 超出了 %3$d 到 %4$d 的范围\n"
 
-#: ../src/core/prefs.c:667 ../src/core/prefs.c:744 ../src/core/prefs.c:792
-#: ../src/core/prefs.c:856 ../src/core/prefs.c:1323 ../src/core/prefs.c:1339
-#: ../src/core/prefs.c:1356 ../src/core/prefs.c:1372
+#: ../src/core/prefs.c:679 ../src/core/prefs.c:756 ../src/core/prefs.c:804
+#: ../src/core/prefs.c:868 ../src/core/prefs.c:1343 ../src/core/prefs.c:1359
+#: ../src/core/prefs.c:1376 ../src/core/prefs.c:1392
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf 关键字“%s”被设置为无效的类型\n"
 
-#: ../src/core/prefs.c:1202
+#: ../src/core/prefs.c:1222
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
 msgstr "GConf 键 %s 已经使用，不能用于替代 %s\n"
 
-#: ../src/core/prefs.c:1261
+#: ../src/core/prefs.c:1281
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
 msgstr "无法替代 GConf 键，未找到 %s \n"
 
-#: ../src/core/prefs.c:1463
+#: ../src/core/prefs.c:1483
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr "有缺陷的应用程序的工作区已禁用。某些应用程序可能无法正常运行。\n"
 
-#: ../src/core/prefs.c:1534
+#: ../src/core/prefs.c:1560
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "无法解析字体说明“%s”(来自 GConf 关键字 %s)\n"
 
-#: ../src/core/prefs.c:1596
+#: ../src/core/prefs.c:1622
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "在配置数据库中找到的“%s”不是鼠标按钮修饰键的有效值\n"
 
-#: ../src/core/prefs.c:2023
+#: ../src/core/prefs.c:2055
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "将工作区数量设置为 %d 时出错：%s\n"
 
-#: ../src/core/prefs.c:2205 ../src/core/prefs.c:2707
+#: ../src/core/prefs.c:2239 ../src/core/prefs.c:2741
 #, c-format
 msgid "Workspace %d"
 msgstr "工作区 %d"
 
-#: ../src/core/prefs.c:2237 ../src/core/prefs.c:2415
+#: ../src/core/prefs.c:2271 ../src/core/prefs.c:2449
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "在配置数据库中找到的“%s”不是按键组合“%s”的有效值\n"
 
-#: ../src/core/prefs.c:2788
+#: ../src/core/prefs.c:2822
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "将工作区 %d 的名称设置为“%s”时出错：%s\n"
 
-#: ../src/core/prefs.c:2992
+#: ../src/core/prefs.c:3032
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "设置复合管理器状态时出错：%s\n"
 
-#: ../src/core/prefs.c:3021
+#: ../src/core/prefs.c:3066
 #, c-format
 msgid "Error setting clutter plugin list: %s\n"
 msgstr "设置clutter插件列表时出错：%s\n"
 
-#: ../src/core/prefs.c:3065
+#: ../src/core/prefs.c:3110
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "设置实时隐藏窗口状态时出错：%s\n"
 
-#: ../src/core/prefs.c:3093
+#: ../src/core/prefs.c:3138
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr "设置无标签页弹出状态时出错：%s\n"
@@ -313,7 +313,7 @@ msgstr "无法获得显示“%2$s”上的屏幕 %1$d 的窗口管理器选定�
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "在显示“%2$s”上的 %1$d 屏幕已经有一个窗口管理器\n"
 
-#: ../src/core/screen.c:857
+#: ../src/core/screen.c:860
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "无法释放显示“%2$s”上的屏幕 %1$d\n"
@@ -388,7 +388,7 @@ msgstr "无法对日志文件 %s 进行 fdopen() 操作：%s\n"
 msgid "Opened log file %s\n"
 msgstr "打开的日志文件 %s\n"
 
-#: ../src/core/util.c:146 ../src/tools/mutter-message.c:176
+#: ../src/core/util.c:146 ../src/tools/mutter-message.c:179
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter 编译的时候没有加入详细模式的支持\n"
@@ -417,7 +417,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6228
+#: ../src/core/window.c:6412
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -433,7 +433,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6891
+#: ../src/core/window.c:7075
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -792,28 +792,32 @@ msgid "Move window to center of screen"
 msgstr "将窗口移到屏幕中心"
 
 #: ../src/mutter.schemas.in.h:1
+msgid "Attach modal dialogs"
+msgstr "依附模态对话框"
+
+#: ../src/mutter.schemas.in.h:2
 msgid "Clutter Plugins"
 msgstr "Clutter 插件"
 
-#: ../src/mutter.schemas.in.h:2
+#: ../src/mutter.schemas.in.h:3
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
 msgstr "判断是否隐藏的窗口(比如，最小化窗口和其他工作区的窗口)应该保持状态。"
 
-#: ../src/mutter.schemas.in.h:3
+#: ../src/mutter.schemas.in.h:4
 msgid "Live Hidden Windows"
 msgstr "实时隐藏窗口"
 
-#: ../src/mutter.schemas.in.h:4
+#: ../src/mutter.schemas.in.h:5
 msgid "Modifier to use for extended window management operations"
 msgstr "用于修改窗口点击动作的修饰键 met"
 
-#: ../src/mutter.schemas.in.h:5
+#: ../src/mutter.schemas.in.h:6
 msgid "Plugins to load for the Clutter-based compositing manager."
 msgstr "插件载入到基于 Clutter 的混合管理器。"
 
-#: ../src/mutter.schemas.in.h:6
+#: ../src/mutter.schemas.in.h:7
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -823,153 +827,162 @@ msgstr ""
 "这个键指出的“覆盖”是一种混合窗口概述和应用程序运行的系统。默认要求使用 "
 "“Super 键”。可能使用默认或者空白。"
 
-#: ../src/tools/mutter-message.c:150
+#: ../src/mutter.schemas.in.h:8
+msgid ""
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
+msgstr ""
+"当为 true 时，模态对话框会依附在父窗口的标题栏出现，并随父窗口移动，而不使用"
+"单独的标题栏。"
+
+#: ../src/tools/mutter-message.c:151
 #, c-format
 msgid "Usage: %s\n"
 msgstr "用法：%s\n"
 
-#: ../src/ui/frames.c:1112
+#: ../src/ui/frames.c:1134
 msgid "Close Window"
 msgstr "关闭窗口"
 
-#: ../src/ui/frames.c:1115
+#: ../src/ui/frames.c:1137
 msgid "Window Menu"
 msgstr "窗口菜单"
 
-#: ../src/ui/frames.c:1118
+#: ../src/ui/frames.c:1140
 msgid "Minimize Window"
 msgstr "最小化窗口"
 
-#: ../src/ui/frames.c:1121
+#: ../src/ui/frames.c:1143
 msgid "Maximize Window"
 msgstr "最大化窗口"
 
-#: ../src/ui/frames.c:1124
+#: ../src/ui/frames.c:1146
 msgid "Restore Window"
 msgstr "恢复窗口"
 
-#: ../src/ui/frames.c:1127
+#: ../src/ui/frames.c:1149
 msgid "Roll Up Window"
 msgstr "卷起窗口"
 
-#: ../src/ui/frames.c:1130
+#: ../src/ui/frames.c:1152
 msgid "Unroll Window"
 msgstr "展开窗口"
 
-#: ../src/ui/frames.c:1133
+#: ../src/ui/frames.c:1155
 msgid "Keep Window On Top"
 msgstr "窗口常居顶端"
 
-#: ../src/ui/frames.c:1136
+#: ../src/ui/frames.c:1158
 msgid "Remove Window From Top"
 msgstr "取消窗口常居顶端"
 
-#: ../src/ui/frames.c:1139
+#: ../src/ui/frames.c:1161
 msgid "Always On Visible Workspace"
 msgstr "总在可见工作区"
 
-#: ../src/ui/frames.c:1142
+#: ../src/ui/frames.c:1164
 msgid "Put Window On Only One Workspace"
 msgstr "只将窗口放在一个工作区"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:70
+#: ../src/ui/menu.c:71
 msgid "Mi_nimize"
 msgstr "最小化(_N)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:72
+#: ../src/ui/menu.c:73
 msgid "Ma_ximize"
 msgstr "最大化(_X)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:74
+#: ../src/ui/menu.c:75
 msgid "Unma_ximize"
 msgstr "取消最大化(_X)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:76
+#: ../src/ui/menu.c:77
 msgid "Roll _Up"
 msgstr "卷起(_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:78
+#: ../src/ui/menu.c:79
 msgid "_Unroll"
 msgstr "展开(_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:80
+#: ../src/ui/menu.c:81
 msgid "_Move"
 msgstr "移动(_M)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:82
+#: ../src/ui/menu.c:83
 msgid "_Resize"
 msgstr "改变大小(_R)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:84
+#: ../src/ui/menu.c:85
 msgid "Move Titlebar On_screen"
 msgstr "将标题栏上移动到屏幕上(_S)"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
+#: ../src/ui/menu.c:88 ../src/ui/menu.c:90
 msgid "Always on _Top"
 msgstr "常居顶端(_T)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:91
+#: ../src/ui/menu.c:92
 msgid "_Always on Visible Workspace"
 msgstr "总在可见工作区(_A)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:93
+#: ../src/ui/menu.c:94
 msgid "_Only on This Workspace"
 msgstr "只在此工作区(_O)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:95
+#: ../src/ui/menu.c:96
 msgid "Move to Workspace _Left"
 msgstr "移动到左侧工作区(_L)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:97
+#: ../src/ui/menu.c:98
 msgid "Move to Workspace R_ight"
 msgstr "移动到右侧工作区(_I)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:99
+#: ../src/ui/menu.c:100
 msgid "Move to Workspace _Up"
 msgstr "移动到上侧工作区(_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:101
+#: ../src/ui/menu.c:102
 msgid "Move to Workspace _Down"
 msgstr "移动到下侧工作区(_D)"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:105
+#: ../src/ui/menu.c:106
 msgid "_Close"
 msgstr "关闭(_C)"
 
-#: ../src/ui/menu.c:203
+#: ../src/ui/menu.c:206
 #, c-format
 msgid "Workspace %d%n"
 msgstr "工作区 %d%n"
 
-#: ../src/ui/menu.c:213
+#: ../src/ui/menu.c:216
 #, c-format
 msgid "Workspace 1_0"
 msgstr "工作区 1_0"
 
-#: ../src/ui/menu.c:215
+#: ../src/ui/menu.c:218
 #, c-format
 msgid "Workspace %s%d"
 msgstr "工作区 %s%d"
 
-#: ../src/ui/menu.c:396
+#: ../src/ui/menu.c:399
 msgid "Move to Another _Workspace"
 msgstr "移动到另外的工作区(_W)"
 
@@ -978,7 +991,7 @@ msgstr "移动到另外的工作区(_W)"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:75
+#: ../src/ui/metaaccellabel.c:92
 msgid "Shift"
 msgstr "Shift"
 
@@ -987,7 +1000,7 @@ msgstr "Shift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:81
+#: ../src/ui/metaaccellabel.c:98
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -996,7 +1009,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:87
+#: ../src/ui/metaaccellabel.c:104
 msgid "Alt"
 msgstr "Alt"
 
@@ -1005,7 +1018,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:93
+#: ../src/ui/metaaccellabel.c:110
 msgid "Meta"
 msgstr "Meta"
 
@@ -1014,7 +1027,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:99
+#: ../src/ui/metaaccellabel.c:116
 msgid "Super"
 msgstr "Super"
 
@@ -1023,7 +1036,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:105
+#: ../src/ui/metaaccellabel.c:122
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -1032,7 +1045,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:111
+#: ../src/ui/metaaccellabel.c:128
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -1041,7 +1054,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:117
+#: ../src/ui/metaaccellabel.c:134
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -1050,7 +1063,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:123
+#: ../src/ui/metaaccellabel.c:140
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -1059,7 +1072,7 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:129
+#: ../src/ui/metaaccellabel.c:146
 msgid "Mod5"
 msgstr "Mod5"
 
@@ -1071,48 +1084,48 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:256
+#: ../src/ui/theme.c:259
 msgid "top"
 msgstr "上"
 
-#: ../src/ui/theme.c:258
+#: ../src/ui/theme.c:261
 msgid "bottom"
 msgstr "下"
 
-#: ../src/ui/theme.c:260
+#: ../src/ui/theme.c:263
 msgid "left"
 msgstr "左"
 
-#: ../src/ui/theme.c:262
+#: ../src/ui/theme.c:265
 msgid "right"
 msgstr "右"
 
-#: ../src/ui/theme.c:289
+#: ../src/ui/theme.c:292
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "框架几何布局没有指定“%s”尺寸"
 
-#: ../src/ui/theme.c:308
+#: ../src/ui/theme.c:311
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "框架几何布局没有指定“%s”尺寸(该尺寸是为边框“%s”指定的)"
 
-#: ../src/ui/theme.c:345
+#: ../src/ui/theme.c:348
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "按钮长宽比 %g 不合理"
 
-#: ../src/ui/theme.c:357
+#: ../src/ui/theme.c:360
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "框架几何布局没有指定按钮大小"
 
-#: ../src/ui/theme.c:1022
+#: ../src/ui/theme.c:1026
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "渐变应至少有两种颜色"
 
-#: ../src/ui/theme.c:1148
+#: ../src/ui/theme.c:1164
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1121,7 +1134,7 @@ msgstr ""
 "GTK 颜色规范必须将状态包含在方括号中，例如 gtk:fg[NORMAL]其中 NORMAL 是状态；"
 "无法解析“%s”"
 
-#: ../src/ui/theme.c:1162
+#: ../src/ui/theme.c:1178
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1130,148 +1143,148 @@ msgstr ""
 "GTK 颜色规范必须在状态后有一个闭方括号，例如 gtk:fg[NORMAL]，其中 NORMAL 是状"
 "态；无法解析“%s”"
 
-#: ../src/ui/theme.c:1173
+#: ../src/ui/theme.c:1189
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "不理解颜色规范中的状态“%s”"
 
-#: ../src/ui/theme.c:1186
+#: ../src/ui/theme.c:1202
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "不理解颜色规范中的颜色组成部分“%s”"
 
-#: ../src/ui/theme.c:1216
+#: ../src/ui/theme.c:1232
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr "混合格式为“blend/bg_color/fg_color/alpha”，“%s”不符合该格式"
 
-#: ../src/ui/theme.c:1227
+#: ../src/ui/theme.c:1243
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "无法解析混合色中的 Alpha 值“%s”"
 
-#: ../src/ui/theme.c:1237
+#: ../src/ui/theme.c:1253
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "混合色中的 Alpha 值“%s”不在 0.0 到 1.0 之间"
 
-#: ../src/ui/theme.c:1284
+#: ../src/ui/theme.c:1300
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "阴影格式为“shade/base_color/factor”，“%s”不符合该格式"
 
-#: ../src/ui/theme.c:1295
+#: ../src/ui/theme.c:1311
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "无法解析阴影色中的阴影因子“%s”"
 
-#: ../src/ui/theme.c:1305
+#: ../src/ui/theme.c:1321
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "阴影色中的阴影因子“%s”为负数"
 
-#: ../src/ui/theme.c:1334
+#: ../src/ui/theme.c:1350
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "无法解析颜色“%s”"
 
-#: ../src/ui/theme.c:1588
+#: ../src/ui/theme.c:1608
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "坐标表达式包含不允许的字符“%s”"
 
-#: ../src/ui/theme.c:1615
+#: ../src/ui/theme.c:1635
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "坐标表达式包含无法解析的浮点数“%s”"
 
-#: ../src/ui/theme.c:1629
+#: ../src/ui/theme.c:1649
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "坐标表达式包含无法解析的整数“%s”"
 
-#: ../src/ui/theme.c:1751
+#: ../src/ui/theme.c:1771
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "坐标表达式在该文本开始处包含未知的运算符：“%s”"
 
-#: ../src/ui/theme.c:1808
+#: ../src/ui/theme.c:1828
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "坐标表达式为空或无法理解"
 
-#: ../src/ui/theme.c:1919 ../src/ui/theme.c:1929 ../src/ui/theme.c:1963
+#: ../src/ui/theme.c:1939 ../src/ui/theme.c:1949 ../src/ui/theme.c:1983
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "坐标表达式用零做除数"
 
-#: ../src/ui/theme.c:1971
+#: ../src/ui/theme.c:1991
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "坐标表达式试图对浮点数使用 mod 运算符"
 
-#: ../src/ui/theme.c:2027
+#: ../src/ui/theme.c:2047
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "坐标表达式的运算符“%s”应该是一个操作数"
 
-#: ../src/ui/theme.c:2036
+#: ../src/ui/theme.c:2056
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "坐标表达式的某个操作数应该是运算符"
 
-#: ../src/ui/theme.c:2044
+#: ../src/ui/theme.c:2064
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "坐标表达式以运算符结尾，而不是以操作数结尾"
 
-#: ../src/ui/theme.c:2054
+#: ../src/ui/theme.c:2074
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr "坐标表达式的运算符“%c”后面跟着运算符“%c”，之间没有操作数"
 
-#: ../src/ui/theme.c:2205 ../src/ui/theme.c:2250
+#: ../src/ui/theme.c:2225 ../src/ui/theme.c:2270
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "坐标表达式有未知的变量或常数“%s”"
 
-#: ../src/ui/theme.c:2304
+#: ../src/ui/theme.c:2324
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "坐标表达式溢出了其缓冲区。"
 
-#: ../src/ui/theme.c:2333
+#: ../src/ui/theme.c:2353
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "坐标表达式有一个闭括号，而没有开括号"
 
-#: ../src/ui/theme.c:2397
+#: ../src/ui/theme.c:2417
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "坐标表达式有一个开括号，而没有闭括号"
 
-#: ../src/ui/theme.c:2408
+#: ../src/ui/theme.c:2428
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "坐标表达式似乎没有任何运算符或操作数"
 
-#: ../src/ui/theme.c:2610 ../src/ui/theme.c:2630 ../src/ui/theme.c:2650
+#: ../src/ui/theme.c:2638 ../src/ui/theme.c:2658 ../src/ui/theme.c:2678
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "主题包含的一个表达式产生错误：%s\n"
 
-#: ../src/ui/theme.c:4261
+#: ../src/ui/theme.c:4268
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1280,25 +1293,25 @@ msgstr ""
 "必须为该框架风格指定<button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/>"
 
-#: ../src/ui/theme.c:4769 ../src/ui/theme.c:4794
+#: ../src/ui/theme.c:4757 ../src/ui/theme.c:4782
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "缺少 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:4838
+#: ../src/ui/theme.c:4830
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "无法载入主题“%s”：%s\n"
 
-#: ../src/ui/theme.c:4970 ../src/ui/theme.c:4977 ../src/ui/theme.c:4984
-#: ../src/ui/theme.c:4991 ../src/ui/theme.c:4998
+#: ../src/ui/theme.c:4966 ../src/ui/theme.c:4973 ../src/ui/theme.c:4980
+#: ../src/ui/theme.c:4987 ../src/ui/theme.c:4994
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "没有为主题“%2$s”设置 <%1$s>"
 
-#: ../src/ui/theme.c:5006
+#: ../src/ui/theme.c:5002
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1307,13 +1320,13 @@ msgstr ""
 "没有为窗口类型“%s”(在主题“%s”中)设置框架风格，请添加一个 <window type=\"%s\" "
 "style_set=\"whatever\"/> 元素"
 
-#: ../src/ui/theme.c:5449 ../src/ui/theme.c:5511 ../src/ui/theme.c:5574
+#: ../src/ui/theme.c:5436 ../src/ui/theme.c:5498 ../src/ui/theme.c:5561
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "用户定义的常数必须以大写字母开头；而“%s”却不必"
 
-#: ../src/ui/theme.c:5457 ../src/ui/theme.c:5519 ../src/ui/theme.c:5582
+#: ../src/ui/theme.c:5444 ../src/ui/theme.c:5506 ../src/ui/theme.c:5569
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "常数“%s”已被定义"
@@ -1369,7 +1382,7 @@ msgstr "无法将“%s”解析为浮点数"
 #: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "布尔值必须为“真”或“假”，不能为“%s”"
+msgstr "布尔值必须为“true”或“false”，不能为“%s”"
 
 #: ../src/ui/theme-parser.c:735
 #, c-format
@@ -1390,204 +1403,204 @@ msgstr ""
 "无效的标题比例“%s”(必须是 xx-small、x-small、small、medium、large、x-large、"
 "xx-large 中的一个)\n"
 
-#: ../src/ui/theme-parser.c:1008 ../src/ui/theme-parser.c:1071
-#: ../src/ui/theme-parser.c:1105 ../src/ui/theme-parser.c:1208
+#: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
+#: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "再次使用了 <%s> 名称“%s”"
 
-#: ../src/ui/theme-parser.c:1020 ../src/ui/theme-parser.c:1117
-#: ../src/ui/theme-parser.c:1220
+#: ../src/ui/theme-parser.c:1031 ../src/ui/theme-parser.c:1128
+#: ../src/ui/theme-parser.c:1231
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s> 父级“%s”尚未定义"
 
-#: ../src/ui/theme-parser.c:1130
+#: ../src/ui/theme-parser.c:1141
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "<%s> 几何布局“%s”尚未定义"
 
-#: ../src/ui/theme-parser.c:1143
+#: ../src/ui/theme-parser.c:1154
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "<%s> 必须指定一个几何布局或者一个带有几何布局的父级"
 
-#: ../src/ui/theme-parser.c:1185
+#: ../src/ui/theme-parser.c:1196
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "要让 alpha 值有意义，您必须指定背景"
 
-#: ../src/ui/theme-parser.c:1252
+#: ../src/ui/theme-parser.c:1263
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "未知的类型“%s”在元素 <%s> 上"
 
-#: ../src/ui/theme-parser.c:1263
+#: ../src/ui/theme-parser.c:1274
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "未知的 style_set“%s”在元素 <%s> 上"
 
-#: ../src/ui/theme-parser.c:1271
+#: ../src/ui/theme-parser.c:1282
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "已经为窗口类型“%s”指定了一种风格设置"
 
-#: ../src/ui/theme-parser.c:1301 ../src/ui/theme-parser.c:1365
-#: ../src/ui/theme-parser.c:1591 ../src/ui/theme-parser.c:2826
-#: ../src/ui/theme-parser.c:2872 ../src/ui/theme-parser.c:3020
-#: ../src/ui/theme-parser.c:3212 ../src/ui/theme-parser.c:3250
-#: ../src/ui/theme-parser.c:3288 ../src/ui/theme-parser.c:3326
+#: ../src/ui/theme-parser.c:1312 ../src/ui/theme-parser.c:1376
+#: ../src/ui/theme-parser.c:1602 ../src/ui/theme-parser.c:2837
+#: ../src/ui/theme-parser.c:2883 ../src/ui/theme-parser.c:3031
+#: ../src/ui/theme-parser.c:3223 ../src/ui/theme-parser.c:3261
+#: ../src/ui/theme-parser.c:3299 ../src/ui/theme-parser.c:3337
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "不允许元素 <%s> 在 <%s> 下方"
 
-#: ../src/ui/theme-parser.c:1415 ../src/ui/theme-parser.c:1429
-#: ../src/ui/theme-parser.c:1474
+#: ../src/ui/theme-parser.c:1426 ../src/ui/theme-parser.c:1440
+#: ../src/ui/theme-parser.c:1485
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
 msgstr ""
 "不能同时指定按钮的 \"button_width\"/\"button_height\" 和 \"aspect_ratio\""
 
-#: ../src/ui/theme-parser.c:1438
+#: ../src/ui/theme-parser.c:1449
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "距离“%s”未知"
 
-#: ../src/ui/theme-parser.c:1483
+#: ../src/ui/theme-parser.c:1494
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "长宽比“%s”未知"
 
-#: ../src/ui/theme-parser.c:1545
+#: ../src/ui/theme-parser.c:1556
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "边框“%s”未知"
 
-#: ../src/ui/theme-parser.c:1856
+#: ../src/ui/theme-parser.c:1867
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“start_angle”或“from”属性"
 
-#: ../src/ui/theme-parser.c:1863
+#: ../src/ui/theme-parser.c:1874
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“extent_angle”或“to”属性"
 
-#: ../src/ui/theme-parser.c:2103
+#: ../src/ui/theme-parser.c:2114
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "不理解梯度类型的值“%s”"
 
-#: ../src/ui/theme-parser.c:2181 ../src/ui/theme-parser.c:2556
+#: ../src/ui/theme-parser.c:2192 ../src/ui/theme-parser.c:2567
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "不理解填充类型“%s”(用于 <%s> 元素)"
 
-#: ../src/ui/theme-parser.c:2348 ../src/ui/theme-parser.c:2431
-#: ../src/ui/theme-parser.c:2494
+#: ../src/ui/theme-parser.c:2359 ../src/ui/theme-parser.c:2442
+#: ../src/ui/theme-parser.c:2505
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "不理解状态“%s”(用于 <%s> 元素)"
 
-#: ../src/ui/theme-parser.c:2358 ../src/ui/theme-parser.c:2441
+#: ../src/ui/theme-parser.c:2369 ../src/ui/theme-parser.c:2452
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "不理解阴影“%s”(用于 <%s> 元素)"
 
-#: ../src/ui/theme-parser.c:2368
+#: ../src/ui/theme-parser.c:2379
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "不理解箭头“%s”(用于 <%s> 元素)"
 
-#: ../src/ui/theme-parser.c:2682 ../src/ui/theme-parser.c:2778
+#: ../src/ui/theme-parser.c:2693 ../src/ui/theme-parser.c:2789
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "尚未定义名为“%s”的 <draw_ops>"
 
-#: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
+#: ../src/ui/theme-parser.c:2705 ../src/ui/theme-parser.c:2801
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "此处包括 draw_ops“%s”将创建一个循环引用"
 
-#: ../src/ui/theme-parser.c:2905
+#: ../src/ui/theme-parser.c:2916
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "框架段的位置“%s”未知"
 
-#: ../src/ui/theme-parser.c:2913
+#: ../src/ui/theme-parser.c:2924
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "在位置 %s 处已经有一段框架风格"
 
-#: ../src/ui/theme-parser.c:2930 ../src/ui/theme-parser.c:3005
+#: ../src/ui/theme-parser.c:2941 ../src/ui/theme-parser.c:3016
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "尚未定义名为“%s”的 <draw_ops>"
 
-#: ../src/ui/theme-parser.c:2959
+#: ../src/ui/theme-parser.c:2970
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "按钮的函数“%s”未知"
 
-#: ../src/ui/theme-parser.c:2968
+#: ../src/ui/theme-parser.c:2979
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "按钮函数“%s”在此版本(%d，需要的是 %d)中不存在"
 
-#: ../src/ui/theme-parser.c:2980
+#: ../src/ui/theme-parser.c:2991
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "按钮的状态“%s”未知"
 
-#: ../src/ui/theme-parser.c:2988
+#: ../src/ui/theme-parser.c:2999
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "框架风格已经有一个函数为 %s、状态为 %s 的按钮"
 
-#: ../src/ui/theme-parser.c:3059
+#: ../src/ui/theme-parser.c:3070
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "“%s”不是 focus 属性的有效值"
 
-#: ../src/ui/theme-parser.c:3068
+#: ../src/ui/theme-parser.c:3079
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "“%s”不是 state 属性的有效值"
 
-#: ../src/ui/theme-parser.c:3078
+#: ../src/ui/theme-parser.c:3089
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "尚未定义名为“%s”的风格"
 
-#: ../src/ui/theme-parser.c:3099 ../src/ui/theme-parser.c:3122
+#: ../src/ui/theme-parser.c:3110 ../src/ui/theme-parser.c:3133
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "“%s”不是 resize 属性的有效值"
 
-#: ../src/ui/theme-parser.c:3133
+#: ../src/ui/theme-parser.c:3144
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr "状态为 maximized/shaded 的 <%s> 元素不应有“resize”属性"
 
-#: ../src/ui/theme-parser.c:3147
+#: ../src/ui/theme-parser.c:3158
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr "状态为 maximized 的 <%s> 元素不应有“resize”属性"
 
-#: ../src/ui/theme-parser.c:3161 ../src/ui/theme-parser.c:3183
+#: ../src/ui/theme-parser.c:3172 ../src/ui/theme-parser.c:3194
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "已经为 state 属性 %s、resize 属性 %s、focus 属性 %s 指定了风格"
 
-#: ../src/ui/theme-parser.c:3172 ../src/ui/theme-parser.c:3194
+#: ../src/ui/theme-parser.c:3183 ../src/ui/theme-parser.c:3205
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "已经为 state 属性 %s、focus 属性 %s 指定了风格"
 
-#: ../src/ui/theme-parser.c:3233
+#: ../src/ui/theme-parser.c:3244
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1595,7 +1608,7 @@ msgstr ""
 "一个 <piece> 元素不能有两个 draw_ops(主题指定了一个 draw_ops属性和一个 "
 "<draw_ops> 元素，或者指定了两个元素)"
 
-#: ../src/ui/theme-parser.c:3271
+#: ../src/ui/theme-parser.c:3282
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1603,7 +1616,7 @@ msgstr ""
 "一个 <button> 元素不能有两个 draw_ops(主题指定了一个 draw_ops属性和一个 "
 "<draw_ops> 元素，或者指定了两个元素)"
 
-#: ../src/ui/theme-parser.c:3309
+#: ../src/ui/theme-parser.c:3320
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -1611,227 +1624,227 @@ msgstr ""
 "一个 <menu_icon> 元素不能有两个 draw_ops(主题指定了一个draw_ops 属性和一个 "
 "<draw_ops> 元素，或者指定了两个元素)"
 
-#: ../src/ui/theme-parser.c:3373
+#: ../src/ui/theme-parser.c:3384
 #, c-format
 msgid "Bad version specification '%s'"
 msgstr "版本描述 %s 不正确"
 
-#: ../src/ui/theme-parser.c:3446
+#: ../src/ui/theme-parser.c:3457
 msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
 msgstr "“version”属性不能用于 metacity-theme-1.xml 和 metacity-theme-2.xml"
 
-#: ../src/ui/theme-parser.c:3469
+#: ../src/ui/theme-parser.c:3480
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
 msgstr "主题要求版本为 %s，但所支持的主题版本最新为 %d.%d"
 
-#: ../src/ui/theme-parser.c:3501
+#: ../src/ui/theme-parser.c:3512
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "主题中最外面的元素必须是 <metacity_theme>，而不能是 <%s>"
 
-#: ../src/ui/theme-parser.c:3521
+#: ../src/ui/theme-parser.c:3532
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "name/author/date/description 元素中不允许有元素 <%s>"
 
-#: ../src/ui/theme-parser.c:3526
+#: ../src/ui/theme-parser.c:3537
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "<constant> 元素中不允许有元素 <%s>"
 
-#: ../src/ui/theme-parser.c:3538
+#: ../src/ui/theme-parser.c:3549
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "distance/border/aspect_ratio 元素中不允许有元素 <%s>"
 
-#: ../src/ui/theme-parser.c:3560
+#: ../src/ui/theme-parser.c:3571
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "draw operation 元素中不允许有元素 <%s>"
 
-#: ../src/ui/theme-parser.c:3570 ../src/ui/theme-parser.c:3600
-#: ../src/ui/theme-parser.c:3605 ../src/ui/theme-parser.c:3610
+#: ../src/ui/theme-parser.c:3581 ../src/ui/theme-parser.c:3611
+#: ../src/ui/theme-parser.c:3616 ../src/ui/theme-parser.c:3621
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "元素 <%s> 不允许出现在 <%s> 元素内"
 
-#: ../src/ui/theme-parser.c:3838
+#: ../src/ui/theme-parser.c:3849
 msgid "No draw_ops provided for frame piece"
 msgstr "没有为框架段提供 draw_ops"
 
-#: ../src/ui/theme-parser.c:3853
+#: ../src/ui/theme-parser.c:3864
 msgid "No draw_ops provided for button"
 msgstr "没有为按钮提供 draw_ops"
 
-#: ../src/ui/theme-parser.c:3907
+#: ../src/ui/theme-parser.c:3918
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "元素 <%s> 中不允许有文本"
 
-#: ../src/ui/theme-parser.c:3965 ../src/ui/theme-parser.c:3977
-#: ../src/ui/theme-parser.c:3989 ../src/ui/theme-parser.c:4001
-#: ../src/ui/theme-parser.c:4013
+#: ../src/ui/theme-parser.c:3976 ../src/ui/theme-parser.c:3988
+#: ../src/ui/theme-parser.c:4000 ../src/ui/theme-parser.c:4012
+#: ../src/ui/theme-parser.c:4024
 #, c-format
 msgid "<%s> specified twice for this theme"
 msgstr "为此主题指定了两次 <%s>"
 
-#: ../src/ui/theme-parser.c:4283
+#: ../src/ui/theme-parser.c:4298
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "找不到主题 %s 的有效文件\n"
 
-#: ../src/ui/theme-viewer.c:99
+#: ../src/ui/theme-viewer.c:100
 msgid "_Windows"
 msgstr "窗口(_W)"
 
-#: ../src/ui/theme-viewer.c:100
+#: ../src/ui/theme-viewer.c:101
 msgid "_Dialog"
 msgstr "对话框(_D)"
 
-#: ../src/ui/theme-viewer.c:101
+#: ../src/ui/theme-viewer.c:102
 msgid "_Modal dialog"
 msgstr "模态对话框(_M)"
 
-#: ../src/ui/theme-viewer.c:102
+#: ../src/ui/theme-viewer.c:103
 msgid "_Utility"
 msgstr "工具(_U)"
 
-#: ../src/ui/theme-viewer.c:103
+#: ../src/ui/theme-viewer.c:104
 msgid "_Splashscreen"
 msgstr "启动屏幕(_S)"
 
-#: ../src/ui/theme-viewer.c:104
+#: ../src/ui/theme-viewer.c:105
 msgid "_Top dock"
 msgstr "上侧停靠(_T)"
 
-#: ../src/ui/theme-viewer.c:105
+#: ../src/ui/theme-viewer.c:106
 msgid "_Bottom dock"
 msgstr "下侧停靠(_B)"
 
-#: ../src/ui/theme-viewer.c:106
+#: ../src/ui/theme-viewer.c:107
 msgid "_Left dock"
 msgstr "左侧停靠(_L)"
 
-#: ../src/ui/theme-viewer.c:107
+#: ../src/ui/theme-viewer.c:108
 msgid "_Right dock"
 msgstr "右侧停靠(_R)"
 
-#: ../src/ui/theme-viewer.c:108
+#: ../src/ui/theme-viewer.c:109
 msgid "_All docks"
 msgstr "全部停靠点(_A)"
 
-#: ../src/ui/theme-viewer.c:109
+#: ../src/ui/theme-viewer.c:110
 msgid "Des_ktop"
 msgstr "桌面(_K)"
 
-#: ../src/ui/theme-viewer.c:115
+#: ../src/ui/theme-viewer.c:116
 msgid "Open another one of these windows"
 msgstr "打开这些窗口中的另外一个"
 
-#: ../src/ui/theme-viewer.c:117
+#: ../src/ui/theme-viewer.c:118
 msgid "This is a demo button with an 'open' icon"
 msgstr "这是一个演示按钮，带有“打开”图标"
 
-#: ../src/ui/theme-viewer.c:119
+#: ../src/ui/theme-viewer.c:120
 msgid "This is a demo button with a 'quit' icon"
 msgstr "这是一个演示按钮，带有“退出”图标"
 
-#: ../src/ui/theme-viewer.c:253
+#: ../src/ui/theme-viewer.c:254
 msgid "This is a sample message in a sample dialog"
 msgstr "这是示例对话框中的示例消息"
 
-#: ../src/ui/theme-viewer.c:336
+#: ../src/ui/theme-viewer.c:337
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "虚假菜单项 %d\n"
 
-#: ../src/ui/theme-viewer.c:370
+#: ../src/ui/theme-viewer.c:371
 msgid "Border-only window"
 msgstr "只有边框的窗口"
 
-#: ../src/ui/theme-viewer.c:372
+#: ../src/ui/theme-viewer.c:373
 msgid "Bar"
 msgstr "栏"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:390
 msgid "Normal Application Window"
 msgstr "普通的应用程序窗口"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:394
 msgid "Dialog Box"
 msgstr "对话框"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:398
 msgid "Modal Dialog Box"
 msgstr "模态对话框"
 
-#: ../src/ui/theme-viewer.c:401
+#: ../src/ui/theme-viewer.c:402
 msgid "Utility Palette"
 msgstr "工具盘"
 
-#: ../src/ui/theme-viewer.c:405
+#: ../src/ui/theme-viewer.c:406
 msgid "Torn-off Menu"
 msgstr "撕下的菜单"
 
-#: ../src/ui/theme-viewer.c:409
+#: ../src/ui/theme-viewer.c:410
 msgid "Border"
 msgstr "边框"
 
-#: ../src/ui/theme-viewer.c:737
+#: ../src/ui/theme-viewer.c:738
 #, c-format
 msgid "Button layout test %d"
 msgstr "按钮布局测试 %d"
 
-#: ../src/ui/theme-viewer.c:766
+#: ../src/ui/theme-viewer.c:767
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g 毫秒用来绘制一个窗口框架"
 
-#: ../src/ui/theme-viewer.c:810
+#: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "用法：metacity-theme-viewer [主题名称]\n"
 
-#: ../src/ui/theme-viewer.c:817
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "载入主题出错：%s\n"
 
-#: ../src/ui/theme-viewer.c:823
+#: ../src/ui/theme-viewer.c:824
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "在 %2$g 秒内载入主题“%1$s”\n"
 
-#: ../src/ui/theme-viewer.c:866
+#: ../src/ui/theme-viewer.c:867
 msgid "Normal Title Font"
 msgstr "普通标题字体"
 
-#: ../src/ui/theme-viewer.c:872
+#: ../src/ui/theme-viewer.c:873
 msgid "Small Title Font"
 msgstr "小标题字体"
 
-#: ../src/ui/theme-viewer.c:878
+#: ../src/ui/theme-viewer.c:879
 msgid "Large Title Font"
 msgstr "大标题字体"
 
-#: ../src/ui/theme-viewer.c:883
+#: ../src/ui/theme-viewer.c:884
 msgid "Button Layouts"
 msgstr "按钮布局"
 
-#: ../src/ui/theme-viewer.c:888
+#: ../src/ui/theme-viewer.c:889
 msgid "Benchmark"
 msgstr "基准"
 
-#: ../src/ui/theme-viewer.c:935
+#: ../src/ui/theme-viewer.c:936
 msgid "Window Title Goes Here"
 msgstr "窗口标题在这里"
 
-#: ../src/ui/theme-viewer.c:1039
+#: ../src/ui/theme-viewer.c:1041
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1841,39 +1854,39 @@ msgstr ""
 "在 %2$g 的客户端秒(每帧 %3$g 毫秒)和包括 X 服务器资源在内的 %4$g 秒时钟时间"
 "(每帧 %5$g 毫秒)内绘制 %1$d 帧\n"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1260
 msgid "position expression test returned TRUE but set error"
 msgstr "位置表达式测试返回了 TRUE 但设置错误"
 
-#: ../src/ui/theme-viewer.c:1260
+#: ../src/ui/theme-viewer.c:1262
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "位置表达式测试返回了 FALSE 但并没有设置错误"
 
-#: ../src/ui/theme-viewer.c:1264
+#: ../src/ui/theme-viewer.c:1266
 msgid "Error was expected but none given"
 msgstr "期待错误但没有给出错误"
 
-#: ../src/ui/theme-viewer.c:1266
+#: ../src/ui/theme-viewer.c:1268
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "期待错误 %d，但给出了 %d"
 
-#: ../src/ui/theme-viewer.c:1272
+#: ../src/ui/theme-viewer.c:1274
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "未期待错误，但返回了错误：%s"
 
-#: ../src/ui/theme-viewer.c:1276
+#: ../src/ui/theme-viewer.c:1278
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x 值为 %d，但应该为 %d"
 
-#: ../src/ui/theme-viewer.c:1279
+#: ../src/ui/theme-viewer.c:1281
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y 值为 %d，但应该为 %d "
 
-#: ../src/ui/theme-viewer.c:1344
+#: ../src/ui/theme-viewer.c:1346
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
