@@ -189,6 +189,13 @@ void             clutter_actor_box_union          (const ClutterActorBox *a,
                                                    const ClutterActorBox *b,
                                                    ClutterActorBox       *result);
 
+void             clutter_actor_box_set_origin     (ClutterActorBox       *box,
+                                                   gfloat                 x,
+                                                   gfloat                 y);
+void             clutter_actor_box_set_size       (ClutterActorBox       *box,
+                                                   gfloat                 width,
+                                                   gfloat                 height);
+
 /**
  * ClutterGeometry:
  * @x: X coordinate of the top left corner of an actor

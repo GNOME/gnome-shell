@@ -420,6 +420,55 @@ clutter_actor_box_progress (const GValue *a,
   return TRUE;
 }
 
+/**
+ * clutter_actor_box_set_origin:
+ * @box: a #ClutterActorBox
+ * @x: the X coordinate of the new origin
+ * @y: the Y coordinate of the new origin
+ *
+ * Changes the origin of @box, maintaining the size of the #ClutterActorBox.
+ *
+ * Since: 1.6
+ */
+void
+clutter_actor_box_set_origin (ClutterActorBox *box,
+                              gfloat           x,
+                              gfloat           y)
+{
+  gfloat width, height;
+
+  g_return_if_fail (box != NULL);
+
+  width = box->x2 - box->x1;
+  height = box->y2 - box->y1;
+
+  box->x1 = x;
+  box->y1 = y;
+  box->x2 = box->x1 + width;
+  box->y2 = box->y1 + height;
+}
+
+/**
+ * clutter_actor_box_set_size:
+ * @box: a #ClutterActorBox
+ * @width: the new width
+ * @height: the new height
+ *
+ * Sets the size of @box, maintaining the origin of the #ClutterActorBox.
+ *
+ * Since: 1.6
+ */
+void
+clutter_actor_box_set_size (ClutterActorBox *box,
+                            gfloat           width,
+                            gfloat           height)
+{
+  g_return_if_fail (box != NULL);
+
+  box->x2 = box->x1 + width;
+  box->y2 = box->y1 + height;
+}
+
 G_DEFINE_BOXED_TYPE_WITH_CODE (ClutterActorBox, clutter_actor_box,
                                clutter_actor_box_copy,
                                clutter_actor_box_free,

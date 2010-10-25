@@ -451,7 +451,9 @@ clutter_actor_box_get_x
 clutter_actor_box_get_y
 clutter_actor_box_get_width
 clutter_actor_box_get_height
+clutter_actor_box_set_origin
 clutter_actor_box_get_origin
+clutter_actor_box_set_size
 clutter_actor_box_get_size
 clutter_actor_box_get_area
 clutter_actor_box_contains
