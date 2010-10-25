@@ -919,37 +919,43 @@ _get_top_level_origin (ClutterActor *actor,
   *y = 0;
 
 #ifdef HAVE_CLUTTER_GLX
-  ClutterActor *stage      = NULL;
-  Display      *display    = NULL;
-  Window        root_window;
-  Window        stage_window;
-  Window        child;
-  gint          return_val = 0;
+  {
+    ClutterActor *stage      = NULL;
+    Display      *display    = NULL;
+    Window        root_window;
+    Window        stage_window;
+    Window        child;
+    gint          return_val = 0;
 
-  stage = clutter_actor_get_stage (actor);
+    stage = clutter_actor_get_stage (actor);
 
-  display = clutter_x11_get_default_display (); /* FIXME: what happens if you use another
-                                                   display with clutter_backend_x11_set_display ?*/
-  root_window = clutter_x11_get_root_window ();
-  stage_window = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+    /* FIXME: what happens if you use another display with
+       clutter_backend_x11_set_display ?*/
+    display = clutter_x11_get_default_display ();
+    root_window = clutter_x11_get_root_window ();
+    stage_window = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
-  return_val = XTranslateCoordinates (display, stage_window, root_window,
-                                      0, 0, x, y,
-                                      &child);
+    return_val = XTranslateCoordinates (display, stage_window, root_window,
+                                        0, 0, x, y,
+                                        &child);
 
-  if (!return_val)
-    g_warning ("[x11] We were not able to get proper absolute position of the stage");
+    if (!return_val)
+      g_warning ("[x11] We were not able to get proper absolute "
+                 "position of the stage");
+  }
 #else
-  static gboolean yet_warned = FALSE;
+  {
+    static gboolean yet_warned = FALSE;
 
-  if (!yet_warned)
-    {
-      yet_warned = TRUE;
+    if (!yet_warned)
+      {
+        yet_warned = TRUE;
 
-      g_warning ("Using a clutter backend not supported. "
-                 "atk_component_get_extents using ATK_XY_SCREEN could return a wrong screen position");
-    }
-
+        g_warning ("Using a clutter backend not supported. "
+                   "atk_component_get_extents using ATK_XY_SCREEN "
+                   "could return a wrong screen position");
+      }
+  }
 #endif
 }
 

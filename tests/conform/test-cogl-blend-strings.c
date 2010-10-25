@@ -14,10 +14,10 @@ static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 #define BLUE 2
 #define ALPHA 3
 
-#define MASK_RED(COLOR)   ((COLOR & 0xff000000) >> 24);
-#define MASK_GREEN(COLOR) ((COLOR & 0xff0000) >> 16);
-#define MASK_BLUE(COLOR)  ((COLOR & 0xff00) >> 8);
-#define MASK_ALPHA(COLOR) (COLOR & 0xff);
+#define MASK_RED(COLOR)   ((COLOR & 0xff000000) >> 24)
+#define MASK_GREEN(COLOR) ((COLOR & 0xff0000) >> 16)
+#define MASK_BLUE(COLOR)  ((COLOR & 0xff00) >> 8)
+#define MASK_ALPHA(COLOR) (COLOR & 0xff)
 
 #define BLEND_CONSTANT_UNUSED 0xDEADBEEF
 #define TEX_CONSTANT_UNUSED   0xDEADBEEF

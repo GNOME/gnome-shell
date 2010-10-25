@@ -734,11 +734,12 @@ event_translate (ClutterBackend *backend,
 
     case Expose:
       {
-        CLUTTER_NOTE (MULTISTAGE, "expose for stage: %p, redrawing", stage);
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
         XExposeEvent *expose = (XExposeEvent *)xevent;
         ClutterPaintVolume clip;
         ClutterVertex origin;
+
+        CLUTTER_NOTE (MULTISTAGE, "expose for stage: %p, redrawing", stage);
+        clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
         CLUTTER_NOTE (MULTISTAGE,
                       "expose for stage: %p, "

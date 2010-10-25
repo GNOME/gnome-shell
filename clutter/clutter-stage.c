@@ -3258,12 +3258,13 @@ _clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage)
       for (l = stolen_list; l; l = l->next)
         {
           ClutterStageQueueRedrawEntry *entry = l->data;
+          ClutterPaintVolume *clip;
 
           /* NB: Entries may be invalidated if the actor gets destroyed */
           if (G_UNLIKELY (entry->actor == NULL))
             continue;
 
-          ClutterPaintVolume *clip = entry->has_clip ? &entry->clip : NULL;
+          clip = entry->has_clip ? &entry->clip : NULL;
 
           _clutter_actor_finish_queue_redraw (entry->actor, clip);
           free_queue_redraw_entry (entry);

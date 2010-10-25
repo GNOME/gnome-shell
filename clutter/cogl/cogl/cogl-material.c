@@ -5578,8 +5578,10 @@ dump_material_cb (CoglMaterialNode *node, void *user_data)
 
   if (material->differences & COGL_MATERIAL_STATE_BLEND)
     {
-      changes = TRUE;
       const char *blend_enable_name;
+
+      changes = TRUE;
+
       switch (material->blend_enable)
         {
         case COGL_MATERIAL_BLEND_ENABLE_AUTOMATIC:
