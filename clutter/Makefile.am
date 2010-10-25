@@ -114,6 +114,7 @@ source_h =					\
 	$(srcdir)/clutter-model.h		\
 	$(srcdir)/clutter-offscreen-effect.h	\
 	$(srcdir)/clutter-page-turn-effect.h	\
+	$(srcdir)/clutter-path-constraint.h	\
 	$(srcdir)/clutter-path.h		\
 	$(srcdir)/clutter-rectangle.h		\
 	$(srcdir)/clutter-score.h 		\
@@ -193,6 +194,7 @@ source_c = \
 	$(srcdir)/clutter-model.c		\
 	$(srcdir)/clutter-offscreen-effect.c	\
 	$(srcdir)/clutter-page-turn-effect.c	\
+	$(srcdir)/clutter-path-constraint.c	\
 	$(srcdir)/clutter-path.c		\
 	$(srcdir)/clutter-rectangle.c 		\
 	$(srcdir)/clutter-score.c 		\
