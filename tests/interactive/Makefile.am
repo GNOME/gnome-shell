@@ -57,7 +57,8 @@ UNIT_TESTS = \
 	test-scrolling.c \
 	test-bind.c \
 	test-cogl-point-sprites.c \
-	test-table-layout.c
+	test-table-layout.c \
+	test-path-constraint.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
