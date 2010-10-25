@@ -42,11 +42,12 @@
 #include "clutter-glx.h"
 #include "clutter-profile.h"
 
-#include "../clutter-event.h"
-#include "../clutter-main.h"
-#include "../clutter-debug.h"
-#include "../clutter-private.h"
-#include "../clutter-version.h"
+#include "clutter-debug.h"
+#include "clutter-event.h"
+#include "clutter-main.h"
+#include "clutter-private.h"
+#include "clutter-stage-private.h"
+#include "clutter-version.h"
 
 #include "cogl/cogl.h"
 

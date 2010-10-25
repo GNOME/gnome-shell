@@ -24,12 +24,11 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-event.h>
-#include <clutter/clutter-backend.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
 #include "clutter-x11.h"
-
+#include "clutter-backend-private.h"
 #include "clutter-keymap-x11.h"
 #include "xsettings/xsettings-client.h"
 

@@ -28,7 +28,9 @@
 #include "clutter-backend-x11.h"
 #include "clutter-stage-glx.h"
 #include "clutter-backend-glx.h"
+
 #include "clutter-private.h"
+#include "clutter-stage-private.h"
 
 #include <clutter/clutter-backend.h>
 #include <clutter/clutter-stage-manager.h>

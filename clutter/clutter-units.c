@@ -66,12 +66,15 @@
 #include "config.h"
 #endif
 
+#include <stdlib.h>
+
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
-#include "clutter-units.h"
-#include "clutter-private.h"
+#include "clutter-backend-private.h"
 #include "clutter-interval.h"
+#include "clutter-private.h"
+#include "clutter-units.h"
 
 #define DPI_FALLBACK    (96.0)
 

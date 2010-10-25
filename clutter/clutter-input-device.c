@@ -35,10 +35,13 @@
 #include "config.h"
 #endif
 
+#include "clutter-actor-private.h"
 #include "clutter-debug.h"
+#include "clutter-device-manager-private.h"
 #include "clutter-enum-types.h"
 #include "clutter-input-device.h"
 #include "clutter-private.h"
+#include "clutter-stage-private.h"
 
 enum
 {

@@ -55,22 +55,24 @@
 
 #include "clutter-stage.h"
 
-#include "clutter-backend.h"
-#include "clutter-main.h"
+#include "clutter-actor-private.h"
+#include "clutter-backend-private.h"
 #include "clutter-color.h"
-#include "clutter-util.h"
+#include "clutter-container.h"
+#include "clutter-debug.h"
+#include "clutter-device-manager-private.h"
+#include "clutter-enum-types.h"
+#include "clutter-id-pool.h"
+#include "clutter-main.h"
 #include "clutter-marshal.h"
 #include "clutter-master-clock.h"
-#include "clutter-enum-types.h"
+#include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
-#include "clutter-debug.h"
-#include "clutter-stage-manager.h"
-#include "clutter-stage-window.h"
-#include "clutter-version.h" 	/* For flavour */
-#include "clutter-id-pool.h"
-#include "clutter-container.h"
 #include "clutter-profile.h"
-#include "clutter-input-device.h"
+#include "clutter-stage-manager-private.h"
+#include "clutter-stage-private.h"
+#include "clutter-util.h"
+#include "clutter-version.h" 	/* For flavour */
 
 #include "cogl/cogl.h"
 

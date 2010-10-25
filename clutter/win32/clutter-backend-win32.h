@@ -24,8 +24,9 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-event.h>
-#include <clutter/clutter-backend.h>
 #include <windows.h>
+
+#include "clutter-backend-private.h"
 
 #include "clutter-win32.h"
 

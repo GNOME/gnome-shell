@@ -125,6 +125,8 @@
 #endif
 
 #include <string.h>
+#include <math.h>
+
 #include <gobject/gvaluecollector.h>
 
 #include "clutter-animator.h"

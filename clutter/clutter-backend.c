@@ -42,12 +42,14 @@
 #include "config.h"
 #endif
 
-#include "clutter-backend.h"
+#include "clutter-backend-private.h"
 #include "clutter-debug.h"
 #include "clutter-fixed.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-profile.h"
+#include "clutter-stage-manager-private.h"
+#include "clutter-stage-private.h"
 
 #include <cogl/cogl.h>
 

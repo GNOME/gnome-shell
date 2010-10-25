@@ -27,11 +27,12 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-event.h>
-#include <clutter/clutter-backend.h>
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #endif
+
+#include "clutter-backend-private.h"
 
 #include "clutter-egl-headers.h"
 

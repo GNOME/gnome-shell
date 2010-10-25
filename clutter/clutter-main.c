@@ -98,18 +98,19 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #endif
 
+#include "clutter-actor.h"
+#include "clutter-backend-private.h"
+#include "clutter-debug.h"
+#include "clutter-device-manager-private.h"
 #include "clutter-event.h"
-#include "clutter-backend.h"
+#include "clutter-feature.h"
+#include "clutter-frame-source.h"
 #include "clutter-main.h"
 #include "clutter-master-clock.h"
-#include "clutter-feature.h"
-#include "clutter-actor.h"
-#include "clutter-stage.h"
 #include "clutter-private.h"
-#include "clutter-debug.h"
-#include "clutter-version.h" 	/* For flavour define */
-#include "clutter-frame-source.h"
 #include "clutter-profile.h"
+#include "clutter-stage-private.h"
+#include "clutter-version.h" 	/* For flavour define */
 
 #include "cogl/cogl.h"
 #include "pango/cogl-pango.h"

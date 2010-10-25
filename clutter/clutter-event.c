@@ -27,11 +27,12 @@
 #include "config.h"
 #endif
 
+#include "clutter-backend-private.h"
+#include "clutter-debug.h"
+#include "clutter-event.h"
 #include "clutter-keysyms.h"
 #include "clutter-keysyms-table.h"
-#include "clutter-event.h"
 #include "clutter-private.h"
-#include "clutter-debug.h"
 
 /**
  * SECTION:clutter-event
@@ -520,7 +521,7 @@ clutter_event_get_device_id (const ClutterEvent *event)
     }
 
   if (device != NULL)
-    return device->id;
+    return clutter_input_device_get_device_id (device);
   else
     return -1;
 }
@@ -574,7 +575,7 @@ clutter_event_get_device_type (const ClutterEvent *event)
     }
 
   if (device != NULL)
-    return device->device_type;
+    return clutter_input_device_get_device_type (device);
   else
     return CLUTTER_POINTER_DEVICE;
 }

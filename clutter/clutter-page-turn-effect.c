@@ -39,6 +39,8 @@
 #include "config.h"
 #endif
 
+#include <math.h>
+
 #include "clutter-page-turn-effect.h"
 
 #include "clutter-debug.h"

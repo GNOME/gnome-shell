@@ -44,58 +44,8 @@ G_BEGIN_DECLS
 #define CLUTTER_TYPE_BACKEND            (clutter_backend_get_type ())
 #define CLUTTER_BACKEND(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND, ClutterBackend))
 #define CLUTTER_IS_BACKEND(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND))
-#define CLUTTER_BACKEND_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND, ClutterBackendClass))
-#define CLUTTER_IS_BACKEND_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_BACKEND))
-#define CLUTTER_BACKEND_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BACKEND, ClutterBackendClass))
 
 typedef struct _ClutterBackend          ClutterBackend;
-typedef struct _ClutterBackendPrivate   ClutterBackendPrivate;
-typedef struct _ClutterBackendClass     ClutterBackendClass;
-
-struct _ClutterBackend
-{
-  /*< private >*/
-  GObject                parent_instance;
-  ClutterBackendPrivate *priv;
-};
-
-struct _ClutterBackendClass
-{
-  /*< private >*/
-  GObjectClass parent_class;
-
-  /* vfuncs */
-  gboolean              (* pre_parse)          (ClutterBackend  *backend,
-                                                GError         **error);
-  gboolean              (* post_parse)         (ClutterBackend  *backend,
-                                                GError         **error);
-  ClutterStageWindow *  (* create_stage)       (ClutterBackend  *backend,
-                                                ClutterStage    *wrapper,
-                                                GError         **error);
-  void                  (* init_events)        (ClutterBackend  *backend);
-  void                  (* init_features)      (ClutterBackend  *backend);
-  void                  (* add_options)        (ClutterBackend  *backend,
-                                                GOptionGroup    *group);
-  ClutterFeatureFlags   (* get_features)       (ClutterBackend  *backend);
-  void                  (* redraw)             (ClutterBackend  *backend,
-                                                ClutterStage    *stage);
-  gboolean              (* create_context)     (ClutterBackend  *backend,
-                                                GError         **error);
-  void                  (* ensure_context)     (ClutterBackend  *backend,
-                                                ClutterStage    *stage);
-  ClutterDeviceManager *(* get_device_manager) (ClutterBackend  *backend);
-
-  void                  (* copy_event_data)    (ClutterBackend     *backend,
-                                                const ClutterEvent *src,
-                                                ClutterEvent       *dest);
-  void                  (* free_event_data)    (ClutterBackend     *backend,
-                                                ClutterEvent       *event);
-
-  /* signals */
-  void (* resolution_changed) (ClutterBackend *backend);
-  void (* font_changed)       (ClutterBackend *backend);
-  void (* settings_changed)   (ClutterBackend *backend);
-};
 
 GType clutter_backend_get_type    (void) G_GNUC_CONST;
 

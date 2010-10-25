@@ -41,10 +41,11 @@
 #include "config.h"
 #endif
 
-#include "clutter-color.h"
+#include "clutter-actor-private.h"
 #include "clutter-clone.h"
 #include "clutter-debug.h"
 #include "clutter-main.h"
+#include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 
 #include "cogl/cogl.h"

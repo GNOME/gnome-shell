@@ -45,9 +45,11 @@
 #endif
 
 #include <string.h>
+#include <math.h>
 
 #include "clutter-text.h"
 
+#include "clutter-actor-private.h"
 #include "clutter-binding-pool.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"

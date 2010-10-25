@@ -39,14 +39,15 @@
 #include <wayland-client.h>
 #include <xf86drm.h>
 
-#include "../clutter-private.h"
-#include "../clutter-main.h"
-#include "../clutter-debug.h"
-#include "../clutter-version.h"
-
 #include "clutter-backend-wayland.h"
 #include "clutter-stage-wayland.h"
 #include "clutter-wayland.h"
+
+#include "clutter-debug.h"
+#include "clutter-main.h"
+#include "clutter-private.h"
+#include "clutter-stage-private.h"
+#include "clutter-version.h"
 
 static ClutterBackendWayland *backend_singleton = NULL;
 

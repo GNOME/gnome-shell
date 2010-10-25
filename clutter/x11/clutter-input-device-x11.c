@@ -3,8 +3,10 @@
 #endif
 
 #include "clutter-input-device-x11.h"
-#include "../clutter-debug.h"
-#include "../clutter-private.h"
+
+#include "clutter-debug.h"
+#include "clutter-device-manager-private.h"
+#include "clutter-private.h"
 
 #ifdef HAVE_XINPUT
 #include <X11/extensions/XInput.h>

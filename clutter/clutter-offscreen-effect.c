@@ -69,8 +69,10 @@
 
 #include "cogl/cogl.h"
 
+#include "clutter-actor-private.h"
 #include "clutter-debug.h"
 #include "clutter-private.h"
+#include "clutter-stage-private.h"
 
 struct _ClutterOffscreenEffectPrivate
 {

@@ -286,7 +286,7 @@
 
 #include "cogl/cogl.h"
 
-#include "clutter-actor.h"
+#include "clutter-actor-private.h"
 
 #include "clutter-action.h"
 #include "clutter-actor-meta-private.h"
@@ -299,11 +299,12 @@
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
+#include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 #include "clutter-profile.h"
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
-#include "clutter-stage.h"
+#include "clutter-stage-private.h"
 #include "clutter-units.h"
 
 typedef struct _ShaderData ShaderData;

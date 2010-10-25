@@ -24,10 +24,13 @@
 #include "clutter-osx.h"
 #include "clutter-backend-osx.h"
 #include "clutter-stage-osx.h"
-#include "../clutter-private.h"
+
+#include "clutter-debug.h"
+#include "clutter-private.h"
+#include "clutter-stage-private.h"
+
 #include "cogl/cogl.h"
 
-#include <clutter/clutter-debug.h>
 #import <AppKit/AppKit.h>
 
 G_DEFINE_TYPE (ClutterBackendOSX, clutter_backend_osx, CLUTTER_TYPE_BACKEND)

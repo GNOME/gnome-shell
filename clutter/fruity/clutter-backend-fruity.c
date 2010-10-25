@@ -4,9 +4,11 @@
 
 #include "clutter-backend-fruity.h"
 #include "clutter-stage-fruity.h"
-#include "../clutter-private.h"
-#include "../clutter-main.h"
-#include "../clutter-debug.h"
+
+#include "clutter-debug.h"
+#include "clutter-main.h"
+#include "clutter-stage-private.h"
+#include "clutter-private.h"
 
 static ClutterBackendEGL *backend_singleton = NULL;
 

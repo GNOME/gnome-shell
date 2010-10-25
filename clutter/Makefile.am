@@ -221,17 +221,23 @@ source_c = \
 
 # private headers; these should not be distributed or introspected
 source_h_priv = \
-	$(srcdir)/clutter-actor-meta-private.h	\
-	$(srcdir)/clutter-bezier.h		\
-	$(srcdir)/clutter-debug.h 		\
-	$(srcdir)/clutter-id-pool.h 		\
-	$(srcdir)/clutter-keysyms-table.h	\
-	$(srcdir)/clutter-master-clock.h	\
-	$(srcdir)/clutter-model-private.h	\
-	$(srcdir)/clutter-private.h 		\
-	$(srcdir)/clutter-profile.h		\
-	$(srcdir)/clutter-script-private.h	\
-	$(srcdir)/clutter-timeout-interval.h    \
+	$(srcdir)/clutter-actor-meta-private.h		\
+	$(srcdir)/clutter-actor-private.h		\
+	$(srcdir)/clutter-backend-private.h		\
+	$(srcdir)/clutter-bezier.h			\
+	$(srcdir)/clutter-debug.h 			\
+	$(srcdir)/clutter-device-manager-private.h	\
+	$(srcdir)/clutter-id-pool.h 			\
+	$(srcdir)/clutter-keysyms-table.h		\
+	$(srcdir)/clutter-master-clock.h		\
+	$(srcdir)/clutter-model-private.h		\
+	$(srcdir)/clutter-paint-volume-private.h	\
+	$(srcdir)/clutter-private.h 			\
+	$(srcdir)/clutter-profile.h			\
+	$(srcdir)/clutter-script-private.h		\
+	$(srcdir)/clutter-stage-manager-private.h	\
+	$(srcdir)/clutter-stage-private.h		\
+	$(srcdir)/clutter-timeout-interval.h    	\
 	$(NULL)
 
 # private source code; these should not be introspected
