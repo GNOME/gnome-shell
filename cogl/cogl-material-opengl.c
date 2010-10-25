@@ -290,11 +290,13 @@ void
 _cogl_gl_use_program_wrapper (CoglHandle program_handle)
 {
 #ifdef COGL_MATERIAL_BACKEND_GLSL
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
 #ifndef HAVE_COGL_GLES2
+
   CoglProgram *program = (CoglProgram *)program_handle;
   GLuint gl_program;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (program_handle != COGL_INVALID_HANDLE)
     gl_program = program->gl_handle;
@@ -322,9 +324,14 @@ _cogl_gl_use_program_wrapper (CoglHandle program_handle)
     GE (glUseProgram (0));
 
   ctx->current_gl_program = gl_program;
+
 #else /* HAVE_COGL_GLES2 */
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   ctx->drv.gles2.settings.user_program = program_handle;
   ctx->drv.gles2.settings_dirty = TRUE;
+
 #endif /* HAVE_COGL_GLES2 */
 
 #endif
