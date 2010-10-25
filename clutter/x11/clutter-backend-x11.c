@@ -84,7 +84,7 @@ static const gchar *atom_names[] = {
   "UTF8_STRING",
 };
 
-static const guint n_atom_names = G_N_ELEMENTS (atom_names);
+#define N_ATOM_NAMES G_N_ELEMENTS (atom_names)
 
 /* singleton object */
 static ClutterBackendX11 *backend_singleton = NULL;
@@ -289,7 +289,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
   if (backend_x11->xdpy)
     {
       ClutterSettings *settings;
-      Atom atoms[n_atom_names];
+      Atom atoms[N_ATOM_NAMES];
       double dpi;
 
       CLUTTER_NOTE (BACKEND, "Getting the X screen");
@@ -343,7 +343,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
         XSynchronize (backend_x11->xdpy, True);
 
       XInternAtoms (backend_x11->xdpy,
-                    (char **) atom_names, n_atom_names,
+                    (char **) atom_names, N_ATOM_NAMES,
                     False, atoms);
 
       backend_x11->atom_NET_WM_PID = atoms[0];
