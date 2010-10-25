@@ -495,17 +495,17 @@ _cogl_rectangles_with_multitexture_coords (
                                         struct _CoglMutiTexturedRect *rects,
                                         int                           n_rects)
 {
-  CoglHandle	 material;
-  const GList	*layers;
-  int		 n_layers;
-  const GList	*tmp;
-  guint32        fallback_layers = 0;
-  gboolean	 all_use_sliced_quad_fallback = FALSE;
-  int		 i;
+  CoglMaterial *material;
+  const GList *layers;
+  int n_layers;
+  const GList *tmp;
+  guint32 fallback_layers = 0;
+  gboolean all_use_sliced_quad_fallback = FALSE;
+  int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  material = ctx->source_material;
+  material = cogl_get_source ();
 
   layers = cogl_material_get_layers (material);
   n_layers = cogl_material_get_n_layers (material);
@@ -839,7 +839,7 @@ draw_polygon_sub_texture_cb (CoglHandle tex_handle,
   float virtual_origin_y;
   float v_to_s_scale_x;
   float v_to_s_scale_y;
-  CoglHandle source;
+  CoglMaterial *source;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -868,13 +868,10 @@ draw_polygon_sub_texture_cb (CoglHandle tex_handle,
       v += state->stride;
     }
 
+  source = cogl_material_copy (cogl_get_source ());
+
   if (G_UNLIKELY (ctx->legacy_state_set))
-    {
-      source = cogl_material_copy (ctx->source_material);
-      _cogl_material_apply_legacy_state (source);
-    }
-  else
-    source = ctx->source_material;
+    _cogl_material_apply_legacy_state (source);
 
   options.flags =
     COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE |
@@ -904,16 +901,13 @@ draw_polygon_sub_texture_cb (CoglHandle tex_handle,
     }
 
   /* If we haven't already created a derived material... */
-  if (source == ctx->source_material)
-    source = cogl_material_copy (ctx->source_material);
   _cogl_material_apply_overrides (source, &options);
 
   _cogl_material_flush_gl_state (source, FALSE);
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, state->n_vertices));
 
-  if (G_UNLIKELY (source != ctx->source_material))
-    cogl_handle_unref (source);
+  cogl_handle_unref (source);
 }
 
 /* handles 2d-sliced textures with > 1 slice */
@@ -934,7 +928,7 @@ _cogl_texture_polygon_multiple_primitives (const CoglTextureVertex *vertices,
 
   /* We can assume in this case that we have at least one layer in the
    * material that corresponds to a sliced cogl texture */
-  layers = cogl_material_get_layers (ctx->source_material);
+  layers = cogl_material_get_layers (cogl_get_source ());
   layer0 = (CoglHandle)layers->data;
   tex_handle = cogl_material_layer_get_texture (layer0);
 
@@ -986,11 +980,12 @@ _cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
   GList               *tmp;
   GLfloat             *v;
   CoglMaterialFlushOptions options;
-  CoglHandle           source;
+  CoglMaterial        *copy = NULL;
+  CoglMaterial        *source;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  material = ctx->source_material;
+  material = cogl_get_source ();
   layers = cogl_material_get_layers (material);
 
   /* Convert the vertices into an array of GLfloats ready to pass to
@@ -1045,11 +1040,12 @@ _cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
 
   if (G_UNLIKELY (ctx->legacy_state_set))
     {
-      source = cogl_material_copy (ctx->source_material);
-      _cogl_material_apply_legacy_state (source);
+      copy = cogl_material_copy (cogl_get_source ());
+      _cogl_material_apply_legacy_state (copy);
+      source = copy;
     }
   else
-    source = ctx->source_material;
+    source = cogl_get_source ();
 
   options.flags = 0;
 
@@ -1066,17 +1062,20 @@ _cogl_multitexture_polygon_single_primitive (const CoglTextureVertex *vertices,
   if (options.flags)
     {
       /* If we haven't already created a derived material... */
-      if (source == ctx->source_material)
-        source = cogl_material_copy (ctx->source_material);
-      _cogl_material_apply_overrides (source, &options);
+      if (!copy)
+        {
+          copy = cogl_material_copy (source);
+          source = copy;
+        }
+      _cogl_material_apply_overrides (copy, &options);
     }
 
   _cogl_material_flush_gl_state (source, use_color);
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices));
 
-  if (G_UNLIKELY (source != ctx->source_material))
-    cogl_handle_unref (source);
+  if (G_UNLIKELY (copy))
+    cogl_handle_unref (copy);
 }
 
 void
@@ -1084,7 +1083,8 @@ cogl_polygon (const CoglTextureVertex *vertices,
               unsigned int             n_vertices,
 	      gboolean                 use_color)
 {
-  CoglHandle           material;
+  CoglMaterial        *material;
+  CoglMaterial        *copy = NULL;
   const GList         *layers, *tmp;
   int                  n_layers;
   gboolean	       use_sliced_polygon_fallback = FALSE;
@@ -1096,8 +1096,6 @@ cogl_polygon (const CoglTextureVertex *vertices,
   GLfloat             *v;
   CoglMaterialWrapModeOverrides wrap_mode_overrides;
   CoglMaterialWrapModeOverrides *wrap_mode_overrides_p = NULL;
-  CoglHandle           original_source_material = NULL;
-  gboolean             overrode_material = FALSE;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1108,8 +1106,8 @@ cogl_polygon (const CoglTextureVertex *vertices,
    * always be done first when preparing to draw. */
   _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
-  material = ctx->source_material;
-  layers = cogl_material_get_layers (ctx->source_material);
+  material = cogl_get_source ();
+  layers = cogl_material_get_layers (material);
   n_layers = g_list_length ((GList *)layers);
 
   memset (&wrap_mode_overrides, 0, sizeof (wrap_mode_overrides));
@@ -1237,24 +1235,19 @@ cogl_polygon (const CoglTextureVertex *vertices,
 
   if (use_color)
     {
-      CoglHandle override;
       enable_flags |= COGL_ENABLE_COLOR_ARRAY;
       GE( glColorPointer (4, GL_UNSIGNED_BYTE,
                           stride_bytes,
                           /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
                           v + 3 + 2 * n_layers) );
 
-      if (!_cogl_material_get_real_blend_enabled (ctx->source_material))
+      if (!_cogl_material_get_real_blend_enabled (material))
         {
           CoglMaterialBlendEnable blend_enabled =
             COGL_MATERIAL_BLEND_ENABLE_ENABLED;
-          original_source_material = ctx->source_material;
-          override = cogl_material_copy (original_source_material);
-          _cogl_material_set_blend_enabled (override, blend_enabled);
-
-          /* XXX: cogl_push_source () */
-          overrode_material = TRUE;
-          ctx->source_material = override;
+          copy = cogl_material_copy (material);
+          _cogl_material_set_blend_enabled (copy, blend_enabled);
+          material = copy;
         }
     }
 
@@ -1277,6 +1270,8 @@ cogl_polygon (const CoglTextureVertex *vertices,
   _cogl_bitmask_set_range (&ctx->temp_bitmask, n_layers, TRUE);
   _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
 
+  cogl_push_source (material);
+
   if (use_sliced_polygon_fallback)
     _cogl_texture_polygon_multiple_primitives (vertices,
                                                n_vertices,
@@ -1291,15 +1286,13 @@ cogl_polygon (const CoglTextureVertex *vertices,
                                                  fallback_layers,
                                                  wrap_mode_overrides_p);
 
-  /* XXX: cogl_pop_source () */
-  if (overrode_material)
-    {
-      cogl_handle_unref (ctx->source_material);
-      ctx->source_material = original_source_material;
-      /* XXX: when we have weak materials then any override material
-       * should get associated with the original material so we don't
-       * create lots of one-shot materials! */
-    }
+  cogl_pop_source ();
+
+  if (copy)
+    cogl_object_unref (copy);
+  /* XXX: when we have weak materials then any override material
+   * should get associated with the original material so we don't
+   * create lots of one-shot materials! */
 
   /* Reset the size of the logged vertex array because rendering
      rectangles expects it to start at 0 */

@@ -298,7 +298,6 @@ add_stencil_clip_rectangle (float x_1,
                             float y_2,
                             gboolean first)
 {
-  CoglHandle current_source;
   CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -310,8 +309,7 @@ add_stencil_clip_rectangle (float x_1,
   _cogl_framebuffer_flush_state (framebuffer, 0);
 
   /* temporarily swap in our special stenciling material */
-  current_source = cogl_object_ref (ctx->source_material);
-  cogl_set_source (ctx->stencil_material);
+  cogl_push_source (ctx->stencil_material);
 
   if (first)
     {
@@ -370,8 +368,7 @@ add_stencil_clip_rectangle (float x_1,
   GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
 
   /* restore the original source material */
-  cogl_set_source (current_source);
-  cogl_object_unref (current_source);
+  cogl_pop_source ();
 }
 
 static void

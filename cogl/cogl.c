@@ -756,7 +756,7 @@ cogl_begin_gl (void)
    * A user should instead call cogl_set_source_color4ub() before
    * cogl_begin_gl() to simplify the state flushed.
    */
-  _cogl_material_flush_gl_state (ctx->source_material, FALSE);
+  _cogl_material_flush_gl_state (cogl_get_source (), FALSE);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
@@ -946,22 +946,113 @@ _cogl_driver_error_quark (void)
   return g_quark_from_static_string ("cogl-driver-error-quark");
 }
 
-void
-cogl_set_source (CoglHandle material_handle)
+typedef struct _CoglSourceState
 {
+  CoglMaterial *material;
+  int push_count;
+} CoglSourceState;
+
+static void
+_push_source_real (CoglMaterial *material)
+{
+  CoglSourceState *top = g_slice_new (CoglSourceState);
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (cogl_is_material (material_handle));
+  top->material = cogl_object_ref (material);
+  top->push_count = 1;
 
-  if (ctx->source_material == material_handle)
+  ctx->source_stack = g_list_prepend (ctx->source_stack, top);
+}
+
+/* FIXME: This should take a context pointer for Cogl 2.0 Technically
+ * we could make it so we can retrieve a context reference from the
+ * material, but this would not by symmetric with cogl_pop_source. */
+void
+cogl_push_source (CoglMaterial *material)
+{
+  CoglSourceState *top;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_return_if_fail (cogl_is_material (material));
+
+  if (ctx->source_stack)
+    {
+      top = ctx->source_stack->data;
+      if (top->material == material)
+        {
+          top->push_count++;
+          return;
+        }
+      else
+        _push_source_real (material);
+    }
+  else
+    _push_source_real (material);
+}
+
+/* FIXME: This needs to take a context pointer for Cogl 2.0 */
+void
+cogl_pop_source (void)
+{
+  CoglSourceState *top;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_return_if_fail (ctx->source_stack);
+
+  top = ctx->source_stack->data;
+  top->push_count--;
+  if (top->push_count == 0)
+    {
+      cogl_object_unref (top->material);
+      g_slice_free (CoglSourceState, top);
+      ctx->source_stack = g_list_delete_link (ctx->source_stack,
+                                              ctx->source_stack);
+    }
+}
+
+/* FIXME: This needs to take a context pointer for Cogl 2.0 */
+CoglMaterial *
+cogl_get_source (void)
+{
+  CoglSourceState *top;
+
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  g_return_val_if_fail (ctx->source_stack, NULL);
+
+  top = ctx->source_stack->data;
+  return top->material;
+}
+
+void
+cogl_set_source (CoglMaterial *material)
+{
+  CoglSourceState *top;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (ctx->source_stack);
+
+  top = ctx->source_stack->data;
+  if (top->material == material)
     return;
 
-  cogl_handle_ref (material_handle);
-
-  if (ctx->source_material)
-    cogl_handle_unref (ctx->source_material);
-
-  ctx->source_material = material_handle;
+  if (top->push_count == 1)
+    {
+      /* NB: top->material may be only thing keeping material
+       * alive currently so ref material first... */
+      cogl_object_ref (material);
+      cogl_object_unref (top->material);
+      top->material = material;
+    }
+  else
+    {
+      top->push_count--;
+      cogl_push_source (material);
+    }
 }
 
 void

@@ -181,7 +181,8 @@ _cogl_path_stroke_nodes (void)
   unsigned int   path_start = 0;
   unsigned long  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
   CoglPathData  *data;
-  CoglHandle     source;
+  CoglMaterial *copy = NULL;
+  CoglMaterial *source;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -198,24 +199,24 @@ _cogl_path_stroke_nodes (void)
 
   if (G_UNLIKELY (ctx->legacy_state_set))
     {
-      source = cogl_material_copy (ctx->source_material);
-      _cogl_material_apply_legacy_state (source);
+      CoglMaterial *users_source = cogl_get_source ();
+      copy = cogl_material_copy (users_source);
+      _cogl_material_apply_legacy_state (copy);
+      source = copy;
     }
   else
-    source = ctx->source_material;
+    source = cogl_get_source ();
 
   if (cogl_material_get_n_layers (source) != 0)
     {
-      CoglMaterialFlushOptions options;
-      options.flags = COGL_MATERIAL_FLUSH_DISABLE_MASK;
-      /* disable all texture layers */
-      options.disable_layers = (guint32)~0;
-
-      /* If we haven't already created a derived material... */
-      if (source == ctx->source_material)
-        source = cogl_material_copy (ctx->source_material);
-      _cogl_material_apply_overrides (source, &options);
+      /* If we haven't already created a derivative material... */
+      if (!copy)
+        copy = cogl_material_copy (source);
+      _cogl_material_prune_to_n_layers (copy, 0);
+      source = copy;
     }
+
+  cogl_push_source (source);
 
   _cogl_material_flush_gl_state (source, FALSE);
 
@@ -234,8 +235,7 @@ _cogl_path_stroke_nodes (void)
       path_start += node->path_size;
     }
 
-  if (G_UNLIKELY (source != ctx->source_material))
-    cogl_handle_unref (source);
+  cogl_pop_source ();
 }
 
 void
@@ -308,7 +308,7 @@ _cogl_path_fill_nodes (CoglPath *path)
      textures or textures with waste then it won't work to draw the
      path directly. Instead we can use draw the texture as a quad
      clipped to the stencil buffer. */
-  for (l = cogl_material_get_layers (ctx->source_material); l; l = l->next)
+  for (l = cogl_material_get_layers (cogl_get_source ()); l; l = l->next)
     {
       CoglHandle layer = l->data;
       CoglHandle texture = cogl_material_layer_get_texture (layer);
@@ -352,7 +352,6 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
 {
   CoglPathData    *data = path->data;
   unsigned long    enable_flags = COGL_ENABLE_VERTEX_ARRAY;
-  CoglHandle       prev_source;
   CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
@@ -371,10 +370,9 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
   _cogl_framebuffer_flush_state (framebuffer, 0);
 
   /* Just setup a simple material that doesn't use texturing... */
-  prev_source = cogl_object_ref (ctx->source_material);
-  cogl_set_source (ctx->stencil_material);
+  cogl_push_source (ctx->stencil_material);
 
-  _cogl_material_flush_gl_state (ctx->source_material, FALSE);
+  _cogl_material_flush_gl_state (ctx->stencil_material, FALSE);
 
   _cogl_enable (enable_flags);
 
@@ -464,8 +462,7 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
   GE (glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP));
 
   /* restore the original material */
-  cogl_set_source (prev_source);
-  cogl_object_unref (prev_source);
+  cogl_pop_source ();
 }
 
 void

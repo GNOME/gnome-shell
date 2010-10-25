@@ -84,8 +84,8 @@ typedef struct
 
   /* Materials */
   CoglMaterial     *simple_material;
-  CoglMaterial     *source_material;
   GString          *arbfp_source_buffer;
+  GList            *source_stack;
 
   int               legacy_state_set;
 

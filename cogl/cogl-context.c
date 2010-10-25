@@ -130,8 +130,8 @@ cogl_create_context (void)
   _context->legacy_fog_state.enabled = FALSE;
 
   _context->simple_material = cogl_material_new ();
-  _context->source_material = NULL;
   _context->arbfp_source_buffer = g_string_new ("");
+  _context->source_stack = NULL;
 
   _context->legacy_state_set = 0;
 
@@ -226,8 +226,8 @@ cogl_create_context (void)
                                 0, /* auto calc row stride */
                                 default_texture_data);
 
-  cogl_set_source (_context->simple_material);
-  _cogl_material_flush_gl_state (_context->source_material, FALSE);
+  cogl_push_source (_context->simple_material);
+  _cogl_material_flush_gl_state (_context->simple_material, FALSE);
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
