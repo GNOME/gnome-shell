@@ -141,6 +141,8 @@ cogl_create_context (void)
 
   _context->journal = g_array_new (FALSE, FALSE, sizeof (CoglJournalEntry));
   _context->logged_vertices = g_array_new (FALSE, FALSE, sizeof (GLfloat));
+  _context->journal_flush_attributes_array =
+    g_array_new (TRUE, FALSE, sizeof (CoglVertexAttribute *));
 
   _context->current_material = NULL;
   _context->current_material_changes_since_flush = 0;
@@ -280,6 +282,8 @@ _cogl_destroy_context (void)
     g_array_free (_context->journal, TRUE);
   if (_context->logged_vertices)
     g_array_free (_context->logged_vertices, TRUE);
+  if (_context->journal_flush_attributes_array)
+    g_array_free (_context->journal_flush_attributes_array, TRUE);
 
   if (_context->quad_buffer_indices_byte)
     cogl_handle_unref (_context->quad_buffer_indices_byte);

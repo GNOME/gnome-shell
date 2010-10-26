@@ -101,6 +101,7 @@ typedef struct
   GArray           *journal;
   GArray           *logged_vertices;
   GArray           *polygon_vertices;
+  GArray           *journal_flush_attributes_array;
 
   /* Some simple caching, to minimize state changes... */
   CoglMaterial     *current_material;
