@@ -93,6 +93,8 @@ struct _CoglBuffer
                                       * the CoglBuffer is a VBO, PBO, ... or
                                       * points to allocated memory in the
                                       * fallback paths */
+
+  guint                   store_created:1;
 };
 
 /* This is used to register a type to the list of handle types that
