@@ -86,9 +86,8 @@ cogl_object_unref (void *object)
                   if (entry->destroy)
                     entry->destroy (entry->user_data);
                 }
+              g_array_free (obj->user_data_array, TRUE);
             }
-
-          g_array_free (obj->user_data_array, TRUE);
         }
 
       COGL_OBJECT_DEBUG_FREE (obj);
