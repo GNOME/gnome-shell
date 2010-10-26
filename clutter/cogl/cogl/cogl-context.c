@@ -195,10 +195,6 @@ cogl_create_context (void)
 
   _context->in_begin_gl_block = FALSE;
 
-  _context->quad_indices_byte = COGL_INVALID_HANDLE;
-  _context->quad_indices_short = COGL_INVALID_HANDLE;
-  _context->quad_indices_short_len = 0;
-
   _context->quad_buffer_indices_byte = COGL_INVALID_HANDLE;
   _context->quad_buffer_indices = COGL_INVALID_HANDLE;
   _context->quad_buffer_indices_len = 0;
@@ -284,11 +280,6 @@ _cogl_destroy_context (void)
     g_array_free (_context->journal, TRUE);
   if (_context->logged_vertices)
     g_array_free (_context->logged_vertices, TRUE);
-
-  if (_context->quad_indices_byte)
-    cogl_handle_unref (_context->quad_indices_byte);
-  if (_context->quad_indices_short)
-    cogl_handle_unref (_context->quad_indices_short);
 
   if (_context->quad_buffer_indices_byte)
     cogl_handle_unref (_context->quad_buffer_indices_byte);
