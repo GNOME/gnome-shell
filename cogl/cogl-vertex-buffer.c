@@ -1535,16 +1535,24 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
   update_primitive_and_draw (buffer, mode, first, count, NULL);
 }
 
+static CoglHandle
+_cogl_vertex_buffer_indices_new_real (CoglIndices *indices)
+{
+  CoglVertexBufferIndices *buffer_indices =
+    g_slice_alloc (sizeof (CoglVertexBufferIndices));
+  buffer_indices->indices = indices;
+
+  return _cogl_vertex_buffer_indices_handle_new (buffer_indices);
+}
+
 CoglHandle
 cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
                                 const void      *indices_array,
                                 int              indices_len)
 {
-  CoglVertexBufferIndices *buffer_indices =
-    g_slice_alloc (sizeof (CoglVertexBufferIndices));
-  buffer_indices->indices =
+  CoglIndices *indices =
     cogl_indices_new (indices_type, indices_array, indices_len);
-  return _cogl_vertex_buffer_indices_handle_new (buffer_indices);
+  return _cogl_vertex_buffer_indices_new_real (indices);
 }
 
 CoglIndicesType
@@ -1619,78 +1627,41 @@ cogl_vertex_buffer_indices_get_for_quads (unsigned int n_indices)
 {
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
-  /* Check if the indices would fit in a byte array */
   if (n_indices <= 256 / 4 * 6)
     {
-      /* Generate the byte array if we haven't already */
-      if (ctx->quad_indices_byte == COGL_INVALID_HANDLE)
+      if (ctx->quad_buffer_indices_byte == COGL_INVALID_HANDLE)
         {
-          guint8 *byte_array = g_malloc (256 / 4 * 6 * sizeof (guint8));
-          guint8 *p = byte_array;
-          int i, vert_num = 0;
-
-          for (i = 0; i < 256 / 4; i++)
-            {
-              *(p++) = vert_num + 0;
-              *(p++) = vert_num + 1;
-              *(p++) = vert_num + 2;
-              *(p++) = vert_num + 0;
-              *(p++) = vert_num + 2;
-              *(p++) = vert_num + 3;
-              vert_num += 4;
-            }
-
-          ctx->quad_indices_byte
-            = cogl_vertex_buffer_indices_new (COGL_INDICES_TYPE_UNSIGNED_BYTE,
-                                              byte_array,
-                                              256 / 4 * 6);
-
-          g_free (byte_array);
+          /* NB: cogl_get_quad_indices takes n_quads not n_indices... */
+          CoglIndices *indices = cogl_get_rectangle_indices (256 / 4);
+          cogl_object_ref (indices);
+          ctx->quad_buffer_indices_byte =
+            _cogl_vertex_buffer_indices_new_real (indices);
         }
 
-      return ctx->quad_indices_byte;
+      return ctx->quad_buffer_indices_byte;
     }
   else
     {
-      if (ctx->quad_indices_short_len < n_indices)
+      if (ctx->quad_buffer_indices_len < n_indices)
         {
-          guint16 *short_array;
-          guint16 *p;
-          int i, vert_num = 0;
-
-          if (ctx->quad_indices_short != COGL_INVALID_HANDLE)
-            cogl_handle_unref (ctx->quad_indices_short);
-          /* Pick a power of two >= MAX (512, n_indices) */
-          if (ctx->quad_indices_short_len == 0)
-            ctx->quad_indices_short_len = 512;
-          while (ctx->quad_indices_short_len < n_indices)
-            ctx->quad_indices_short_len *= 2;
-
-          /* Over-allocate to generate a whole number of quads */
-          p = short_array = g_malloc ((ctx->quad_indices_short_len
-                                       + 5) / 6 * 6
-                                      * sizeof (guint16));
-
-          /* Fill in the complete quads */
-          for (i = 0; i < ctx->quad_indices_short_len; i += 6)
-            {
-              *(p++) = vert_num + 0;
-              *(p++) = vert_num + 1;
-              *(p++) = vert_num + 2;
-              *(p++) = vert_num + 0;
-              *(p++) = vert_num + 2;
-              *(p++) = vert_num + 3;
-              vert_num += 4;
-            }
-
-          ctx->quad_indices_short
-            = cogl_vertex_buffer_indices_new (COGL_INDICES_TYPE_UNSIGNED_SHORT,
-                                              short_array,
-                                              ctx->quad_indices_short_len);
-
-          g_free (short_array);
+          cogl_handle_unref (ctx->quad_buffer_indices);
+          ctx->quad_buffer_indices = COGL_INVALID_HANDLE;
         }
 
-      return ctx->quad_indices_short;
+      if (ctx->quad_buffer_indices == COGL_INVALID_HANDLE)
+        {
+          /* NB: cogl_get_quad_indices takes n_quads not n_indices... */
+          CoglIndices *indices = cogl_get_rectangle_indices (n_indices / 6);
+          cogl_object_ref (indices);
+          ctx->quad_buffer_indices =
+            _cogl_vertex_buffer_indices_new_real (indices);
+        }
+
+      ctx->quad_buffer_indices_len = n_indices;
+
+      return ctx->quad_buffer_indices;
     }
+
+  g_return_val_if_reached (NULL);
 }
+
