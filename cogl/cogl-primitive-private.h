@@ -40,7 +40,15 @@ struct _CoglPrimitive
   int n_vertices;
   CoglIndices *indices;
   GArray *attributes;
+
+  int immutable_ref;
 };
+
+CoglPrimitive *
+_cogl_primitive_immutable_ref (CoglPrimitive *primitive);
+
+void
+_cogl_primitive_immutable_unref (CoglPrimitive *primitive);
 
 #endif /* __COGL_PRIMITIVE_PRIVATE_H */
 
