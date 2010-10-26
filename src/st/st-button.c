@@ -109,7 +109,7 @@ st_button_style_changed (StWidget *widget)
   ST_WIDGET_CLASS (st_button_parent_class)->style_changed (widget);
 
   spacing = 6;
-  st_theme_node_get_length (theme_node, "border-spacing", FALSE, &spacing);
+  st_theme_node_lookup_length (theme_node, "border-spacing", FALSE, &spacing);
   priv->spacing = (int)(0.5 + spacing);
 
   /* update the label styling */

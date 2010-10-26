@@ -253,11 +253,11 @@ function _relayout() {
 // metacity-clutter currently uses the same prefs as plain metacity,
 // which probably means we'll be starting out with multiple workspaces;
 // remove any unused ones. (We do this from an idle handler, because
-// global.get_windows() still returns NULL at the point when start()
+// global.get_window_actors() still returns NULL at the point when start()
 // is called.)
 function _removeUnusedWorkspaces() {
 
-    let windows = global.get_windows();
+    let windows = global.get_window_actors();
     let maxWorkspace = 0;
     for (let i = 0; i < windows.length; i++) {
         let win = windows[i];
@@ -292,13 +292,30 @@ function _removeUnusedWorkspaces() {
 function _globalKeyPressHandler(actor, event) {
     if (modalCount == 0)
         return false;
+    if (event.type() != Clutter.EventType.KEY_RELEASE)
+        return false;
 
-    let type = event.type();
+    let symbol = event.get_key_symbol();
+    let keyCode = event.get_key_code();
+    let modifierState = Shell.get_event_state(event);
+    // Check the overview key first, this isn't a Meta.KeyBindingAction yet
+    if (symbol == Clutter.Super_L || symbol == Clutter.Super_R) {
+        // The super key is the default for triggering the overview, and should
+        // get us out of the overview when we are already in it.
+        if (overview.visible)
+            overview.hide();
 
-    if (type == Clutter.EventType.KEY_PRESS) {
-        let symbol = event.get_key_symbol();
-        if (symbol == Clutter.Print) {
-            // We want to be able to take screenshots of the shell at all times
+        return true;
+    }
+
+    // Whitelist some of the Metacity actions
+    let display = global.screen.get_display();
+    let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+
+    // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
+    let action = display.get_keybinding_action(keyCode, modifierState);
+    switch (action) {
+        case Meta.KeyBindingAction.COMMAND_SCREENSHOT:
             let gconf = GConf.Client.get_default();
             let command = gconf.get_string('/apps/metacity/keybinding_commands/command_screenshot');
             if (command != null && command != '') {
@@ -306,41 +323,17 @@ function _globalKeyPressHandler(actor, event) {
                 let p = new Shell.Process({'args' : args});
                 p.run();
             }
-
             return true;
-        }
-    } else if (type == Clutter.EventType.KEY_RELEASE) {
-        let symbol = event.get_key_symbol();
-        let keyCode = event.get_key_code();
-        let modifierState = Shell.get_event_state(event);
-        // Check the overview key first, this isn't a Meta.KeyBindingAction yet
-        if (symbol == Clutter.Super_L || symbol == Clutter.Super_R) {
-            // The super key is the default for triggering the overview, and should
-            // get us out of the overview when we are already in it.
-            if (overview.visible)
-                overview.hide();
-
+        case Meta.KeyBindingAction.WORKSPACE_LEFT:
+            wm.actionMoveWorkspaceLeft();
             return true;
-        }
-
-        // Whitelist some of the Metacity actions
-        let display = global.screen.get_display();
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-
-        // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
-        let action = display.get_keybinding_action(symbol, keyCode, modifierState);
-        switch (action) {
-            case Meta.KeyBindingAction.WORKSPACE_LEFT:
-                wm.actionMoveWorkspaceLeft();
-                return true;
-            case Meta.KeyBindingAction.WORKSPACE_RIGHT:
-                wm.actionMoveWorkspaceRight();
-                return true;
-            case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
-            case Meta.KeyBindingAction.COMMAND_2:
-                getRunDialog().open();
-                return true;
-        }
+        case Meta.KeyBindingAction.WORKSPACE_RIGHT:
+            wm.actionMoveWorkspaceRight();
+            return true;
+        case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
+        case Meta.KeyBindingAction.COMMAND_2:
+            getRunDialog().open();
+            return true;
     }
 
     return false;

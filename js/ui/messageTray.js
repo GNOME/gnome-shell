@@ -360,8 +360,7 @@ Notification.prototype = {
     },
 
     _styleChanged: function() {
-        let [hasSpacing, spacing] = this.actor.get_theme_node().get_length('spacing-columns', false);
-        this._spacing = hasSpacing ? spacing : 0;
+        this._spacing = this.actor.get_theme_node().get_length('spacing-columns');
     },
 
     _bannerBoxGetPreferredWidth: function(actor, forHeight, alloc) {

@@ -35,6 +35,7 @@ StatusMenuButton.prototype = {
 
         this._user = this._gdm.get_user(GLib.get_user_name());
         this._presence = new GnomeSession.Presence();
+        this._presenceItems = {};
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
@@ -89,6 +90,9 @@ StatusMenuButton.prototype = {
             this._iconBox.child = this._invisibleIcon;
         else
             this._iconBox.child = this._idleIcon;
+
+        for (let itemStatus in this._presenceItems)
+            this._presenceItems[itemStatus].setShowDot(itemStatus == status);
     },
 
     _createSubMenu: function() {
@@ -97,43 +101,57 @@ StatusMenuButton.prototype = {
         item = new PopupMenu.PopupImageMenuItem(_("Available"), 'user-available', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.AVAILABLE));
         this.menu.addMenuItem(item);
+        this._presenceItems[GnomeSession.PresenceStatus.AVAILABLE] = item;
 
         item = new PopupMenu.PopupImageMenuItem(_("Busy"), 'user-busy', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.BUSY));
         this.menu.addMenuItem(item);
+        this._presenceItems[GnomeSession.PresenceStatus.BUSY] = item;
 
         item = new PopupMenu.PopupImageMenuItem(_("Invisible"), 'user-invisible', true);
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.INVISIBLE));
         this.menu.addMenuItem(item);
+        this._presenceItems[GnomeSession.PresenceStatus.INVISIBLE] = item;
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupImageMenuItem(_("Account Information..."), 'user-info');
-        item.connect('activate', Lang.bind(this, this._onAccountInformationActivate));
+        item = new PopupMenu.PopupMenuItem(_("My Account..."));
+        item.connect('activate', Lang.bind(this, this._onMyAccountActivate));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupImageMenuItem(_("System Settings..."), 'preferences-desktop');
+        item = new PopupMenu.PopupMenuItem(_("System Preferences..."));
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
         this.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupImageMenuItem(_("Lock Screen"), 'system-lock-screen');
+        item = new PopupMenu.PopupMenuItem(_("Lock Screen"));
         item.connect('activate', Lang.bind(this, this._onLockScreenActivate));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupImageMenuItem(_("Switch User"), 'system-users');
+        item = new PopupMenu.PopupMenuItem(_("Switch User"));
         item.connect('activate', Lang.bind(this, this._onLoginScreenActivate));
         this.menu.addMenuItem(item);
         this._loginScreenItem = item;
 
-        item = new PopupMenu.PopupImageMenuItem(_("Log Out..."), 'system-log-out');
+        item = new PopupMenu.PopupMenuItem(_("Log Out..."));
         item.connect('activate', Lang.bind(this, this._onQuitSessionActivate));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupImageMenuItem(_("Shut Down..."), 'system-shutdown');
+        item = new PopupMenu.PopupSeparatorMenuItem();
+        this.menu.addMenuItem(item);
+
+        item = new PopupMenu.PopupMenuItem(_("Suspend"));
+        item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+        this.menu.addMenuItem(item);
+
+        item = new PopupMenu.PopupMenuItem(_("Restart..."));
+        item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+        this.menu.addMenuItem(item);
+
+        item = new PopupMenu.PopupMenuItem(_("Shut Down..."));
         item.connect('activate', Lang.bind(this, this._onShutDownActivate));
         this.menu.addMenuItem(item);
     },
@@ -142,7 +160,7 @@ StatusMenuButton.prototype = {
         this._presence.setStatus(status);
     },
 
-    _onAccountInformationActivate: function() {
+    _onMyAccountActivate: function() {
         Main.overview.hide();
         this._spawn(['gnome-about-me']);
     },

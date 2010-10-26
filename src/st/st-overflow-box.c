@@ -369,9 +369,9 @@ st_overflow_box_style_changed (StWidget *self)
   StOverflowBoxPrivate *priv = ST_OVERFLOW_BOX (self)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (self);
   int old_spacing = priv->spacing;
-  double spacing = 0;
+  double spacing;
 
-  st_theme_node_get_length (theme_node, "spacing", FALSE, &spacing);
+  spacing = st_theme_node_get_length (theme_node, "spacing");
   priv->spacing = (int)(spacing + 0.5);
   if (priv->spacing != old_spacing)
     clutter_actor_queue_relayout (CLUTTER_ACTOR (self));

@@ -300,8 +300,8 @@ na_tray_manager_handle_dock_request (NaTrayManager       *manager,
   if (!gtk_socket_get_plug_window (GTK_SOCKET (child)))
     {
       /* Embedding failed, we won't get a plug-removed signal */
+      /* This signal destroys the socket */
       g_signal_emit (manager, manager_signals[TRAY_ICON_REMOVED], 0, child);
-      gtk_widget_destroy (child);
       return;
     }
 

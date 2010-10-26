@@ -13,7 +13,7 @@
 struct _ShellWM {
   GObject parent;
 
-  MutterPlugin *plugin;
+  MetaPlugin *plugin;
 };
 
 /* Signals */
@@ -63,7 +63,7 @@ shell_wm_class_init (ShellWMClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
-                  MUTTER_TYPE_COMP_WINDOW);
+                  META_TYPE_WINDOW_ACTOR);
   shell_wm_signals[MAXIMIZE] =
     g_signal_new ("maximize",
                   G_TYPE_FROM_CLASS (klass),
@@ -72,7 +72,7 @@ shell_wm_class_init (ShellWMClass *klass)
                   NULL, NULL,
                   _shell_marshal_VOID__OBJECT_INT_INT_INT_INT,
                   G_TYPE_NONE, 5,
-                  MUTTER_TYPE_COMP_WINDOW, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
+                  META_TYPE_WINDOW_ACTOR, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
   shell_wm_signals[UNMAXIMIZE] =
     g_signal_new ("unmaximize",
                   G_TYPE_FROM_CLASS (klass),
@@ -81,7 +81,7 @@ shell_wm_class_init (ShellWMClass *klass)
                   NULL, NULL,
                   _shell_marshal_VOID__OBJECT_INT_INT_INT_INT,
                   G_TYPE_NONE, 1,
-                  MUTTER_TYPE_COMP_WINDOW, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
+                  META_TYPE_WINDOW_ACTOR, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
   shell_wm_signals[MAP] =
     g_signal_new ("map",
                   G_TYPE_FROM_CLASS (klass),
@@ -90,7 +90,7 @@ shell_wm_class_init (ShellWMClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
-                  MUTTER_TYPE_COMP_WINDOW);
+                  META_TYPE_WINDOW_ACTOR);
   shell_wm_signals[DESTROY] =
     g_signal_new ("destroy",
                   G_TYPE_FROM_CLASS (klass),
@@ -99,7 +99,7 @@ shell_wm_class_init (ShellWMClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
-                  MUTTER_TYPE_COMP_WINDOW);
+                  META_TYPE_WINDOW_ACTOR);
   shell_wm_signals[SWITCH_WORKSPACE] =
     g_signal_new ("switch-workspace",
 		  G_TYPE_FROM_CLASS (klass),
@@ -125,7 +125,7 @@ shell_wm_class_init (ShellWMClass *klass)
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
-		  MUTTER_TYPE_COMP_WINDOW);
+		  META_TYPE_WINDOW_ACTOR);
 
   /**
    * ShellWM::keybinding:
@@ -174,77 +174,77 @@ _shell_wm_switch_workspace (ShellWM      *wm,
 void
 shell_wm_completed_switch_workspace (ShellWM *wm)
 {
-  mutter_plugin_switch_workspace_completed (wm->plugin);
+  meta_plugin_switch_workspace_completed (wm->plugin);
 }
 
 /**
  * shell_wm_completed_minimize
  * @wm: the ShellWM
- * @actor: the MutterWindow actor
+ * @actor: the MetaWindowActor actor
  *
  * The plugin must call this when it has completed a window minimize effect.
  **/
 void
-shell_wm_completed_minimize (ShellWM      *wm,
-                             MutterWindow *actor)
+shell_wm_completed_minimize (ShellWM         *wm,
+                             MetaWindowActor *actor)
 {
-  mutter_plugin_minimize_completed (wm->plugin, actor);
+  meta_plugin_minimize_completed (wm->plugin, actor);
 }
 
 /**
  * shell_wm_completed_maximize
  * @wm: the ShellWM
- * @actor: the MutterWindow actor
+ * @actor: the MetaWindowActor actor
  *
  * The plugin must call this when it has completed a window maximize effect.
  **/
 void
-shell_wm_completed_maximize (ShellWM      *wm,
-                             MutterWindow *actor)
+shell_wm_completed_maximize (ShellWM         *wm,
+                             MetaWindowActor *actor)
 {
-  mutter_plugin_maximize_completed (wm->plugin, actor);
+  meta_plugin_maximize_completed (wm->plugin, actor);
 }
 
 /**
  * shell_wm_completed_unmaximize
  * @wm: the ShellWM
- * @actor: the MutterWindow actor
+ * @actor: the MetaWindowActor actor
  *
  * The plugin must call this when it has completed a window unmaximize effect.
  **/
 void
-shell_wm_completed_unmaximize (ShellWM      *wm,
-                               MutterWindow *actor)
+shell_wm_completed_unmaximize (ShellWM         *wm,
+                               MetaWindowActor *actor)
 {
-  mutter_plugin_unmaximize_completed (wm->plugin, actor);
+  meta_plugin_unmaximize_completed (wm->plugin, actor);
 }
 
 /**
  * shell_wm_completed_map
  * @wm: the ShellWM
- * @actor: the MutterWindow actor
+ * @actor: the MetaWindowActor actor
  *
  * The plugin must call this when it has completed a window map effect.
  **/
 void
-shell_wm_completed_map (ShellWM      *wm,
-                        MutterWindow *actor)
+shell_wm_completed_map (ShellWM         *wm,
+                        MetaWindowActor *actor)
 {
-  mutter_plugin_map_completed (wm->plugin, actor);
+  meta_plugin_map_completed (wm->plugin, actor);
 }
 
 /**
  * shell_wm_completed_destroy
  * @wm: the ShellWM
- * @actor: the MutterWindow actor
+ * @actor: the MetaWindowActor actor
  *
  * The plugin must call this when it has completed a window destroy effect.
  **/
 void
-shell_wm_completed_destroy (ShellWM      *wm,
-                            MutterWindow *actor)
+shell_wm_completed_destroy (ShellWM         *wm,
+                            MetaWindowActor *actor)
 {
-  mutter_plugin_destroy_completed (wm->plugin, actor);
+  meta_plugin_destroy_completed (wm->plugin, actor);
 }
 
 void
@@ -254,66 +254,66 @@ _shell_wm_kill_switch_workspace (ShellWM      *wm)
 }
 
 void
-_shell_wm_kill_window_effects (ShellWM      *wm,
-                               MutterWindow *actor)
+_shell_wm_kill_window_effects (ShellWM         *wm,
+                               MetaWindowActor *actor)
 {
   g_signal_emit (wm, shell_wm_signals[KILL_WINDOW_EFFECTS], 0, actor);
 }
 
 
 void
-_shell_wm_minimize (ShellWM      *wm,
-                    MutterWindow *actor)
+_shell_wm_minimize (ShellWM         *wm,
+                    MetaWindowActor *actor)
 {
   g_signal_emit (wm, shell_wm_signals[MINIMIZE], 0, actor);
 }
 
 void
-_shell_wm_maximize (ShellWM      *wm,
-                    MutterWindow *actor,
-                    int           target_x,
-                    int           target_y,
-                    int           target_width,
-                    int           target_height)
+_shell_wm_maximize (ShellWM         *wm,
+                    MetaWindowActor *actor,
+                    int              target_x,
+                    int              target_y,
+                    int              target_width,
+                    int              target_height)
 {
   g_signal_emit (wm, shell_wm_signals[MAXIMIZE], 0, actor, target_x, target_y, target_width, target_height);
 }
 
 void
-_shell_wm_unmaximize (ShellWM      *wm,
-                      MutterWindow *actor,
-                      int           target_x,
-                      int           target_y,
-                      int           target_width,
-                      int           target_height)
+_shell_wm_unmaximize (ShellWM         *wm,
+                      MetaWindowActor *actor,
+                      int              target_x,
+                      int              target_y,
+                      int              target_width,
+                      int              target_height)
 {
   g_signal_emit (wm, shell_wm_signals[UNMAXIMIZE], 0, actor, target_x, target_y, target_width, target_height);
 }
 
 void
-_shell_wm_map (ShellWM      *wm,
-               MutterWindow *actor)
+_shell_wm_map (ShellWM         *wm,
+               MetaWindowActor *actor)
 {
   g_signal_emit (wm, shell_wm_signals[MAP], 0, actor);
 }
 
 void
-_shell_wm_destroy (ShellWM      *wm,
-                   MutterWindow *actor)
+_shell_wm_destroy (ShellWM         *wm,
+                   MetaWindowActor *actor)
 {
   g_signal_emit (wm, shell_wm_signals[DESTROY], 0, actor);
 }
 
 /**
  * shell_wm_new:
- * @plugin: the #MutterPlugin
+ * @plugin: the #MetaPlugin
  *
  * Creates a new window management interface by hooking into @plugin.
  *
  * Return value: the new window-management interface
  **/
 ShellWM *
-shell_wm_new (MutterPlugin *plugin)
+shell_wm_new (MetaPlugin *plugin)
 {
   ShellWM *wm;
 
@@ -342,7 +342,7 @@ shell_wm_key_handler (MetaDisplay    *display,
 /**
  * shell_wm_takeover_keybinding:
  * @wm: the #ShellWM
- * @binding_name: a mutter keybinding name
+ * @binding_name: a meta keybinding name
  *
  * Tells mutter to forward keypresses for @binding_name to the shell
  * rather than processing them internally. This will cause a

@@ -23,7 +23,7 @@
 #include <gio/gio.h>
 #include <math.h>
 #include <X11/extensions/Xfixes.h>
-#include <gjs/gjs.h>
+#include <gjs/gjs-module.h>
 #include <canberra.h>
 #include <libical/ical.h>
 #ifdef HAVE_SYS_RESOURCE_H
@@ -53,7 +53,7 @@ struct _ShellGlobal {
   XserverRegion input_region;
 
   GjsContext *js_context;
-  MutterPlugin *plugin;
+  MetaPlugin *plugin;
   ShellWM *wm;
   GSettings *settings;
   const char *datadir;
@@ -125,7 +125,7 @@ shell_global_get_property(GObject         *object,
   switch (prop_id)
     {
     case PROP_OVERLAY_GROUP:
-      g_value_set_object (value, mutter_plugin_get_overlay_group (global->plugin));
+      g_value_set_object (value, meta_plugin_get_overlay_group (global->plugin));
       break;
     case PROP_SCREEN:
       g_value_set_object (value, shell_global_get_screen (global));
@@ -137,7 +137,7 @@ shell_global_get_property(GObject         *object,
       {
         int width, height;
 
-        mutter_plugin_query_screen_size (global->plugin, &width, &height);
+        meta_plugin_query_screen_size (global->plugin, &width, &height);
         g_value_set_int (value, width);
       }
       break;
@@ -145,18 +145,18 @@ shell_global_get_property(GObject         *object,
       {
         int width, height;
 
-        mutter_plugin_query_screen_size (global->plugin, &width, &height);
+        meta_plugin_query_screen_size (global->plugin, &width, &height);
         g_value_set_int (value, height);
       }
       break;
     case PROP_STAGE:
-      g_value_set_object (value, mutter_plugin_get_stage (global->plugin));
+      g_value_set_object (value, meta_plugin_get_stage (global->plugin));
       break;
     case PROP_STAGE_INPUT_MODE:
       g_value_set_enum (value, global->input_mode);
       break;
     case PROP_WINDOW_GROUP:
-      g_value_set_object (value, mutter_plugin_get_window_group (global->plugin));
+      g_value_set_object (value, meta_plugin_get_window_group (global->plugin));
       break;
     case PROP_WINDOW_MANAGER:
       g_value_set_object (value, global->wm);
@@ -392,9 +392,9 @@ shell_global_focus_stage (ShellGlobal *global)
   ClutterActor *stage;
   Window xstage;
 
-  stage = mutter_plugin_get_stage (global->plugin);
+  stage = meta_plugin_get_stage (global->plugin);
   xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-  xdpy = mutter_plugin_get_xdisplay (global->plugin);
+  xdpy = meta_plugin_get_xdisplay (global->plugin);
   XSetInputFocus (xdpy, xstage, RevertToPointerRoot,
                   shell_global_get_current_time (global));
 }
@@ -431,11 +431,11 @@ shell_global_set_stage_input_mode (ShellGlobal         *global,
   g_return_if_fail (SHELL_IS_GLOBAL (global));
 
   if (mode == SHELL_STAGE_INPUT_MODE_NONREACTIVE || global->gtk_grab_active)
-    mutter_plugin_set_stage_reactive (global->plugin, FALSE);
+    meta_plugin_set_stage_reactive (global->plugin, FALSE);
   else if (mode == SHELL_STAGE_INPUT_MODE_FULLSCREEN || !global->input_region)
-    mutter_plugin_set_stage_reactive (global->plugin, TRUE);
+    meta_plugin_set_stage_reactive (global->plugin, TRUE);
   else
-    mutter_plugin_set_stage_input_region (global->plugin, global->input_region);
+    meta_plugin_set_stage_input_region (global->plugin, global->input_region);
 
   if (mode == SHELL_STAGE_INPUT_MODE_FOCUSED)
     shell_global_focus_stage (global);
@@ -515,7 +515,7 @@ shell_global_set_cursor (ShellGlobal *global,
     }
   if (!global->stage_window)
     {
-      ClutterStage *stage = CLUTTER_STAGE (mutter_plugin_get_stage (global->plugin));
+      ClutterStage *stage = CLUTTER_STAGE (meta_plugin_get_stage (global->plugin));
 
       global->stage_window = gdk_window_foreign_new (clutter_x11_get_stage_window (stage));
     }
@@ -554,7 +554,7 @@ void
 shell_global_set_stage_input_region (ShellGlobal *global,
                                      GSList      *rectangles)
 {
-  MetaScreen *screen = mutter_plugin_get_screen (global->plugin);
+  MetaScreen *screen = meta_plugin_get_screen (global->plugin);
   MetaDisplay *display = meta_screen_get_display (screen);
   Display *xdpy = meta_display_get_xdisplay (display);
   MetaRectangle *rect;
@@ -595,7 +595,7 @@ shell_global_set_stage_input_region (ShellGlobal *global,
 MetaScreen *
 shell_global_get_screen (ShellGlobal  *global)
 {
-  return mutter_plugin_get_screen (global->plugin);
+  return meta_plugin_get_screen (global->plugin);
 }
 
 /**
@@ -612,18 +612,18 @@ shell_global_get_gdk_screen (ShellGlobal *global)
 }
 
 /**
- * shell_global_get_windows:
+ * shell_global_get_window_actors:
  *
- * Gets the list of MutterWindows for the plugin's screen
+ * Gets the list of #MetaWindowActor for the plugin's screen
  *
- * Return value: (element-type Meta.MutterWindow) (transfer none): the list of windows
+ * Return value: (element-type Meta.WindowActor) (transfer none): the list of windows
  */
 GList *
-shell_global_get_windows (ShellGlobal *global)
+shell_global_get_window_actors (ShellGlobal *global)
 {
   g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
 
-  return mutter_plugin_get_windows (global->plugin);
+  return meta_plugin_get_window_actors (global->plugin);
 }
 
 static gboolean
@@ -632,7 +632,7 @@ update_screen_size (gpointer data)
   int width, height;
   ShellGlobal *global = SHELL_GLOBAL (data);
 
-  mutter_plugin_query_screen_size (global->plugin, &width, &height);
+  meta_plugin_query_screen_size (global->plugin, &width, &height);
 
   if (global->last_change_screen_width == width && global->last_change_screen_height == height)
     return FALSE;
@@ -695,8 +695,8 @@ global_stage_after_paint (ClutterStage *stage,
 }
 
 void
-_shell_global_set_plugin (ShellGlobal  *global,
-                          MutterPlugin *plugin)
+_shell_global_set_plugin (ShellGlobal *global,
+                          MetaPlugin  *plugin)
 {
   ClutterActor *stage;
   MetaScreen *screen;
@@ -708,7 +708,7 @@ _shell_global_set_plugin (ShellGlobal  *global,
   global->plugin = plugin;
   global->wm = shell_wm_new (plugin);
 
-  stage = mutter_plugin_get_stage (plugin);
+  stage = meta_plugin_get_stage (plugin);
 
   g_signal_connect (stage, "notify::width",
                     G_CALLBACK (global_stage_notify_width), global);
@@ -730,7 +730,7 @@ _shell_global_set_plugin (ShellGlobal  *global,
                                "End of stage page repaint",
                                "");
 
-  screen = mutter_plugin_get_screen (global->plugin);
+  screen = meta_plugin_get_screen (global->plugin);
   display = meta_screen_get_display (screen);
   g_signal_connect (display, "notify::focus-window",
                     G_CALLBACK (focus_window_changed), global);
@@ -763,10 +763,10 @@ gboolean
 shell_global_begin_modal (ShellGlobal *global,
                           guint32      timestamp)
 {
-  ClutterStage *stage = CLUTTER_STAGE (mutter_plugin_get_stage (global->plugin));
+  ClutterStage *stage = CLUTTER_STAGE (meta_plugin_get_stage (global->plugin));
   Window stagewin = clutter_x11_get_stage_window (stage);
 
-  return mutter_plugin_begin_modal (global->plugin, stagewin, None, 0, timestamp);
+  return meta_plugin_begin_modal (global->plugin, stagewin, None, 0, timestamp);
 }
 
 /**
@@ -779,7 +779,7 @@ void
 shell_global_end_modal (ShellGlobal *global,
                         guint32      timestamp)
 {
-  mutter_plugin_end_modal (global->plugin, timestamp);
+  meta_plugin_end_modal (global->plugin, timestamp);
 }
 
 /**
@@ -800,7 +800,7 @@ shell_global_end_modal (ShellGlobal *global,
 gboolean
 shell_global_display_is_grabbed (ShellGlobal *global)
 {
-  MetaScreen *screen = mutter_plugin_get_screen (global->plugin);
+  MetaScreen *screen = meta_plugin_get_screen (global->plugin);
   MetaDisplay *display = meta_screen_get_display (screen);
 
   return meta_display_get_grab_op (display) != META_GRAB_OP_NONE;
@@ -1274,7 +1274,7 @@ shell_global_create_root_pixmap_actor (ShellGlobal *global)
       /* Initialize to the stage color, since that's what will be seen
        * in the main view if there's no actual background window.
        */
-      stage = mutter_plugin_get_stage (global->plugin);
+      stage = meta_plugin_get_stage (global->plugin);
       clutter_stage_get_color (CLUTTER_STAGE (stage), &stage_color);
       clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (global->root_pixmap),
                                          /* ClutterColor has the same layout

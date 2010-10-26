@@ -121,11 +121,12 @@ StTooltip {
  * override .popup-menu.font-size, everything else will scale with it.
  */
 .popup-menu-content {
-    padding: 1em .5em;
+    padding: 1em 0em;
 }
 
 .popup-menu-item {
-    padding: .4em 1.25em;
+    padding: .4em 1.75em;
+    spacing: 1em;
 }
 
 .popup-menu-item:active {
@@ -133,11 +134,6 @@ StTooltip {
 }
 
 .popup-image-menu-item {
-    spacing: .75em;
-}
-
-.popup-switch-menu-item {
-    spacing: 2em;
 }
 
 .popup-separator-menu-item {

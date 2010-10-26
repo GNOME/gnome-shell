@@ -33,8 +33,7 @@ WorkspaceSwitcherPopup.prototype = {
         this._list = new Shell.GenericContainer({ style_class: 'workspace-switcher' });
         this._itemSpacing = 0;
         this._list.connect('style-changed', Lang.bind(this, function() {
-                                                        let [found, spacing] = this._list.get_theme_node().get_length('spacing', false);
-                                                        this._itemSpacing = (found) ? spacing : 0;
+                                                        this._itemSpacing = this._list.get_theme_node().get_length('spacing');
                                                      }));
 
         this._list.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));

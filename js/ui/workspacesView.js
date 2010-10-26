@@ -43,8 +43,7 @@ GenericWorkspacesView.prototype = {
         this.actor.connect('style-changed', Lang.bind(this,
             function() {
                 let node = this.actor.get_theme_node();
-                let [a, spacing] = node.get_length('spacing', false);
-                this._spacing = spacing;
+                this._spacing = node.get_length('spacing');
                 if (Main.overview.animationInProgress)
                     this._computeWorkspacePositions();
                 else
@@ -191,7 +190,7 @@ GenericWorkspacesView.prototype = {
     },
 
     _onRestacked: function() {
-        let stack = global.get_windows();
+        let stack = global.get_window_actors();
         let stackIndices = {};
 
         for (let i = 0; i < stack.length; i++) {
@@ -609,7 +608,7 @@ WorkspaceIndicator.prototype = {
 
         this._indicatorsPanel.add_actor(actor);
 
-        let [a, spacing] = actor.get_theme_node().get_length('border-spacing', false);
+        let spacing = actor.get_theme_node().get_length('border-spacing');
         actor.x = spacing * i + actor.width * i;
     },
 

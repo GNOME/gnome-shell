@@ -372,7 +372,7 @@ NotificationDaemon.prototype = {
     _onTrayIconAdded: function(o, icon) {
         let source = this._sources[icon.pid];
         if (!source)
-            source = this._newSource(icon.title, icon.pid);
+            source = this._newSource(icon.title || icon.wm_class || _("Unknown"), icon.pid);
         source.setTrayIcon(icon);
     },
 

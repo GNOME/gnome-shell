@@ -16,6 +16,8 @@ const Tweener = imports.ui.tweener;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const SLIDER_SCROLL_STEP = 0.05; /* Slider scrolling step in % */
+
 function Switch() {
     this._init.apply(this, arguments);
 }
@@ -54,13 +56,19 @@ PopupBaseMenuItem.prototype = {
         params = Params.parse (params, { reactive: true,
                                          activate: true,
                                          hover: true });
-        this.actor = new St.Bin({ style_class: 'popup-menu-item',
-                                  reactive: params.reactive,
-                                  track_hover: params.reactive,
-                                  x_fill: true,
-                                  y_fill: true,
-                                  x_align: St.Align.START });
+        this.actor = new Shell.GenericContainer({ style_class: 'popup-menu-item',
+                                                  reactive: params.reactive,
+                                                  track_hover: params.reactive });
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
         this.actor._delegate = this;
+
+        this._children = [];
+        this._dot = null;
+        this._columnWidths = null;
+        this._spacing = 0;
         this.active = false;
 
         if (params.reactive && params.activate) {
@@ -70,6 +78,12 @@ PopupBaseMenuItem.prototype = {
         }
         if (params.reactive && params.hover)
             this.actor.connect('notify::hover', Lang.bind(this, this._hoverChanged));
+    },
+
+    _onStyleChanged: function (actor) {
+        let themeNode = actor.get_theme_node();
+        let [found, spacing] = themeNode.get_length('spacing', false);
+        this._spacing = found ? spacing : 0;
     },
 
     _hoverChanged: function (actor) {
@@ -105,6 +119,159 @@ PopupBaseMenuItem.prototype = {
     // true if non descendant content includes @actor
     contains: function(actor) {
         return false;
+    },
+
+    // adds an actor to the menu item; @column defaults to the next
+    // open column, @span defaults to 1. If @span is -1, the actor
+    // will span the width of the menu item. Children are not
+    // allowed to overlap each other.
+    addActor: function(child, column, span) {
+        if (column == null) {
+            if (this._children.length) {
+                let lastChild = this._children[this._children.length - 1];
+                column = lastChild.column + lastChild.span;
+            } else
+                column = 0;
+            span = 1;
+        } else if (span == null)
+            span = 1;
+
+        this._children.push({ actor: child,
+                              column: column,
+                              span: span });
+        this.actor.connect('destroy', Lang.bind(this, function () { this.removeActor(child); }));
+        this.actor.add_actor(child);
+    },
+
+    removeActor: function(child) {
+        for (let i = 0; i < this._children.length; i++) {
+            if (this._children[i].actor == child) {
+                this._children.splice(i, 1);
+                this.actor.remove_actor(child);
+                return;
+            }
+        }
+    },
+
+    setShowDot: function(show) {
+        if (show) {
+            if (this._dot)
+                return;
+
+            this._dot = new St.DrawingArea({ style_class: 'popup-menu-item-dot' });
+            this._dot.connect('repaint', Lang.bind(this, this._onRepaintDot));
+            this.actor.add_actor(this._dot);
+        } else {
+            if (!this._dot)
+                return;
+
+            this._dot.destroy();
+            this._dot = null;
+        }
+    },
+
+    _onRepaintDot: function(area) {
+        let cr = area.get_context();
+        let [width, height] = area.get_surface_size();
+        let color = new Clutter.Color();
+        area.get_theme_node().get_foreground_color(color);
+
+        cr.setSourceRGBA (
+            color.red / 255,
+            color.green / 255,
+            color.blue / 255,
+            color.alpha / 255);
+        cr.arc(width / 2, height / 2, width / 3, 0, 2 * Math.PI);
+        cr.fill();
+    },
+
+    getColumnWidths: function() {
+        let widths = [];
+        for (let i = 0, col = 0; i < this._children.length; i++) {
+            let child = this._children[i];
+            let [min, natural] = child.actor.get_preferred_width(-1);
+            widths[col++] = natural;
+            if (child.span > 1) {
+                for (let j = 1; j < child.span; j++)
+                    widths[col++] = 0;
+            }
+        }
+        return widths;
+    },
+
+    setColumnWidths: function(widths) {
+        this._columnWidths = widths;
+    },
+
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        let width = 0;
+        if (this._columnWidths) {
+            for (let i = 0; i < this._columnWidths.length; i++) {
+                if (i > 0)
+                    width += this._spacing;
+                width += this._columnWidths[i];
+            }
+        } else {
+            for (let i = 0; i < this._children.length; i++) {
+                let child = this._children[i];
+                if (i > 0)
+                    width += this._spacing;
+                let [min, natural] = child.actor.get_preferred_width(forHeight);
+                width += natural;
+            }
+        }
+        alloc.min_size = alloc.natural_size = width;
+    },
+
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        let height = 0;
+        for (let i = 0; i < this._children.length; i++) {
+            let child = this._children[i];
+            let [min, natural] = child.actor.get_preferred_height(-1);
+            if (natural > height)
+                height = natural;
+        }
+        alloc.min_size = alloc.natural_size = height;
+    },
+
+    _allocate: function(actor, box, flags) {
+        let height = box.y2 - box.y1;
+
+        if (this._dot) {
+            let dotBox = new Clutter.ActorBox();
+            let dotWidth = Math.round(box.x1 / 2);
+
+            dotBox.x1 = Math.round(box.x1 / 4);
+            dotBox.x2 = dotBox.x1 + dotWidth;
+            dotBox.y1 = Math.round(box.y1 + (height - dotWidth) / 2);
+            dotBox.y2 = dotBox.y1 + dotWidth;
+            this._dot.allocate(dotBox, flags);
+        }
+
+        let x = box.x1;
+        for (let i = 0, col = 0; i < this._children.length; i++) {
+            let child = this._children[i];
+            let childBox = new Clutter.ActorBox();
+            childBox.x1 = x;
+            if (this._columnWidths) {
+                if (child.span == -1)
+                    childBox.x2 = box.x2;
+                else {
+                    childBox.x2 = x;
+                    for (let j = 0; j < child.span; j++)
+                        childBox.x2 += this._columnWidths[col++];
+                }
+            } else {
+                let [min, natural] = child.actor.get_preferred_width(-1);
+                childBox.x2 = x + natural;
+            }
+            let [min, natural] = child.actor.get_preferred_height(-1);
+            childBox.y1 = Math.round(box.y1 + (height - natural) / 2);
+            childBox.y2 = childBox.y1 + natural;
+            child.actor.allocate(childBox, flags);
+
+            x = childBox.x2 + this._spacing;
+        }
     }
 };
 Signals.addSignalMethods(PopupBaseMenuItem.prototype);
@@ -120,7 +287,7 @@ PopupMenuItem.prototype = {
         PopupBaseMenuItem.prototype._init.call(this);
 
         this.label = new St.Label({ text: text });
-        this.actor.set_child(this.label);
+        this.addActor(this.label);
     }
 };
 
@@ -135,7 +302,7 @@ PopupSeparatorMenuItem.prototype = {
         PopupBaseMenuItem.prototype._init.call(this, { reactive: false });
 
         this._drawingArea = new St.DrawingArea({ style_class: 'popup-separator-menu-item' });
-        this.actor.set_child(this._drawingArea);
+        this.addActor(this._drawingArea, 0, -1);
         this._drawingArea.connect('repaint', Lang.bind(this, this._onRepaint));
     },
 
@@ -143,13 +310,12 @@ PopupSeparatorMenuItem.prototype = {
         let cr = area.get_context();
         let themeNode = area.get_theme_node();
         let [width, height] = area.get_surface_size();
-        let found, margin, gradientHeight;
-        [found, margin] = themeNode.get_length('-margin-horizontal', false);
-        [found, gradientHeight] = themeNode.get_length('-gradient-height', false);
+        let margin = themeNode.get_length('-margin-horizontal');
+        let gradientHeight = themeNode.get_length('-gradient-height');
         let startColor = new Clutter.Color();
-        themeNode.get_color('-gradient-start', false, startColor);
+        themeNode.get_color('-gradient-start', startColor);
         let endColor = new Clutter.Color();
-        themeNode.get_color('-gradient-end', false, endColor);
+        themeNode.get_color('-gradient-end', endColor);
 
         let gradientWidth = (width - margin * 2);
         let gradientOffset = (height - gradientHeight) / 2;
@@ -179,9 +345,10 @@ PopupSliderMenuItem.prototype = {
         this._value = Math.max(Math.min(value, 1), 0);
 
         this._slider = new St.DrawingArea({ style_class: 'popup-slider-menu-item', reactive: true });
-        this.actor.set_child(this._slider);
+        this.addActor(this._slider, 0, -1);
         this._slider.connect('repaint', Lang.bind(this, this._sliderRepaint));
         this._slider.connect('button-press-event', Lang.bind(this, this._startDragging));
+        this._slider.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 
         this._releaseId = this._motionId = 0;
         this._dragging = false;
@@ -200,20 +367,17 @@ PopupSliderMenuItem.prototype = {
         let themeNode = area.get_theme_node();
         let [width, height] = area.get_surface_size();
 
-        let found, handleRadius;
-        [found, handleRadius] = themeNode.get_length('-slider-handle-radius', false);
+        let handleRadius = themeNode.get_length('-slider-handle-radius');
 
         let sliderWidth = width - 2 * handleRadius;
-        let sliderHeight;
-        [found, sliderHeight] = themeNode.get_length('-slider-height', false);
+        let sliderHeight = themeNode.get_length('-slider-height');
 
-        let sliderBorderWidth;
-        [found, sliderBorderWidth] = themeNode.get_length('-slider-border-width', false);
+        let sliderBorderWidth = themeNode.get_length('-slider-border-width');
 
         let sliderBorderColor = new Clutter.Color();
-        themeNode.get_color('-slider-border-color', false, sliderBorderColor);
+        themeNode.get_color('-slider-border-color', sliderBorderColor);
         let sliderColor = new Clutter.Color();
-        themeNode.get_color('-slider-background-color', false, sliderColor);
+        themeNode.get_color('-slider-background-color', sliderColor);
 
         cr.setSourceRGBA (
             sliderColor.red / 255,
@@ -274,6 +438,20 @@ PopupSliderMenuItem.prototype = {
         return true;
     },
 
+    _onScrollEvent: function (actor, event) {
+        let direction = event.get_scroll_direction();
+
+        if (direction == Clutter.ScrollDirection.DOWN) {
+            this._value = Math.max(0, this._value - SLIDER_SCROLL_STEP);
+        }
+        else if (direction == Clutter.ScrollDirection.UP) {
+            this._value = Math.min(1, this._value + SLIDER_SCROLL_STEP);
+        }
+
+        this._slider.queue_repaint();
+        this.emit('value-changed', this._value);
+    },
+
     _motionEvent: function(actor, event) {
         let absX, absY;
         [absX, absY] = event.get_coords();
@@ -288,8 +466,7 @@ PopupSliderMenuItem.prototype = {
         relY = absY - sliderY;
 
         let width = this._slider.width;
-        let found, handleRadius;
-        [found, handleRadius] = this._slider.get_theme_node().get_length('-slider-handle-radius', false);
+        let handleRadius = this._slider.get_theme_node().get_length('-slider-handle-radius');
 
         let newvalue;
         if (relX < handleRadius)
@@ -331,14 +508,11 @@ PopupSwitchMenuItem.prototype = {
     _init: function(text, active) {
         PopupBaseMenuItem.prototype._init.call(this);
 
-        this.active = !!active;
         this.label = new St.Label({ text: text });
-        this._switch = new Switch(this.active);
+        this._switch = new Switch(active);
 
-        this._box = new St.BoxLayout({ style_class: 'popup-switch-menu-item' });
-        this._box.add(this.label, { expand: true, y_fill: false });
-        this._box.add(this._switch.actor, { y_fill: false });
-        this.actor.set_child(this._box);
+        this.addActor(this.label);
+        this.addActor(this._switch.actor);
 
         this.connect('activate', Lang.bind(this,function(from) {
             this.toggle();
@@ -360,64 +534,32 @@ PopupSwitchMenuItem.prototype = {
 }
 
 
-function PopupImageMenuItem(text, iconName, alwaysShowImage) {
-    this._init(text, iconName, alwaysShowImage);
+function PopupImageMenuItem(text, iconName) {
+    this._init(text, iconName);
 }
-
-// We need to instantiate a GtkImageMenuItem so it
-// hooks up its properties on the GtkSettings
-var _gtkImageMenuItemCreated = false;
 
 PopupImageMenuItem.prototype = {
     __proto__: PopupBaseMenuItem.prototype,
 
-    _init: function (text, iconName, alwaysShowImage) {
+    _init: function (text, iconName) {
         PopupBaseMenuItem.prototype._init.call(this);
 
-        if (!_gtkImageMenuItemCreated) {
-            let menuItem = new Gtk.ImageMenuItem();
-            menuItem.destroy();
-            _gtkImageMenuItemCreated = true;
-        }
-
-        this._alwaysShowImage = alwaysShowImage;
-        this._iconName = iconName;
         this._size = 16;
 
-        let box = new St.BoxLayout({ style_class: 'popup-image-menu-item' });
-        this.actor.set_child(box);
-        this._imageBin = new St.Bin({ width: this._size, height: this._size });
-        box.add(this._imageBin, { y_fill: false });
         this.label = new St.Label({ text: text });
-        box.add(this.label, { expand: true });
+        this.addActor(this.label);
+        this._imageBin = new St.Bin({ width: this._size, height: this._size });
+        this.addActor(this._imageBin);
 
-        if (!alwaysShowImage) {
-            let settings = Gtk.Settings.get_default();
-            settings.connect('notify::gtk-menu-images', Lang.bind(this, this._onMenuImagesChanged));
-        }
-        this._onMenuImagesChanged();
+        this.setIcon(iconName);
     },
 
-    _onMenuImagesChanged: function() {
-        let show;
-        if (this._alwaysShowImage) {
-            show = true;
-        } else {
-            let settings = Gtk.Settings.get_default();
-            show = settings.gtk_menu_images;
-        }
-        if (!show) {
-            this._imageBin.hide();
-        } else {
-            let img = St.TextureCache.get_default().load_icon_name(this._iconName, St.IconType.SYMBOLIC, this._size);
-            this._imageBin.set_child(img);
-            this._imageBin.show();
-        }
-    },
-    
     setIcon: function(name) {
-        this._iconName = name;
-        this._onMenuImagesChanged();
+        if (this._imageBin.child)
+            this._imageBin.child.destroy();
+
+        let img = St.TextureCache.get_default().load_icon_name(name, St.IconType.SYMBOLIC, this._size);
+        this._imageBin.set_child(img);
     }
 };
 
@@ -460,13 +602,49 @@ PopupMenu.prototype = {
                                                        x_align: St.Align.START });
         this.actor = this._boxPointer.actor;
         this.actor.style_class = 'popup-menu-boxpointer';
+        this._boxWrapper = new Shell.GenericContainer();
+        this._boxWrapper.connect('get-preferred-width', Lang.bind(this, this._boxGetPreferredWidth));
+        this._boxWrapper.connect('get-preferred-height', Lang.bind(this, this._boxGetPreferredHeight));
+        this._boxWrapper.connect('allocate', Lang.bind(this, this._boxAllocate));
+        this._boxPointer.bin.set_child(this._boxWrapper);
+
         this._box = new St.BoxLayout({ style_class: 'popup-menu-content',
                                        vertical: true });
-        this._boxPointer.bin.set_child(this._box);
+        this._boxWrapper.add_actor(this._box);
         this.actor.add_style_class_name('popup-menu');
 
         this.isOpen = false;
         this._activeMenuItem = null;
+    },
+
+    _boxGetPreferredWidth: function (actor, forHeight, alloc) {
+        // Update the menuitem column widths
+        let columnWidths = [];
+        let items = this._box.get_children();
+        for (let i = 0; i < items.length; i++) {
+            if (items[i]._delegate instanceof PopupBaseMenuItem) {
+                let itemColumnWidths = items[i]._delegate.getColumnWidths();
+                for (let j = 0; j < itemColumnWidths.length; j++) {
+                    if (j >= columnWidths.length || itemColumnWidths[j] > columnWidths[j])
+                        columnWidths[j] = itemColumnWidths[j];
+                }
+            }
+        }
+        for (let i = 0; i < items.length; i++) {
+            if (items[i]._delegate instanceof PopupBaseMenuItem)
+                items[i]._delegate.setColumnWidths(columnWidths);
+        }
+
+        // Now they will request the right sizes
+        [alloc.min_size, alloc.natural_size] = this._box.get_preferred_width(forHeight);
+    },
+
+    _boxGetPreferredHeight: function (actor, forWidth, alloc) {
+        [alloc.min_size, alloc.natural_size] = this._box.get_preferred_height(forWidth);
+    },
+
+    _boxAllocate: function (actor, box, flags) {
+        this._box.allocate(box, flags);
     },
 
     addAction: function(title, callback) {
@@ -670,10 +848,8 @@ PopupSubMenuMenuItem.prototype = {
         this.actor.connect('enter-event', Lang.bind(this, this._mouseEnter));
 
         this.label = new St.Label({ text: text });
-        this._container = new St.BoxLayout();
-        this._container.add(this.label, { fill: true, expand: true });
-        this._container.add(new St.Label({ text: '>' }));
-        this.actor.set_child(this._container);
+        this.addActor(this.label);
+        this.addActor(new St.Label({ text: '>' }));
 
         this.menu = new PopupMenu(this.actor, St.Align.MIDDLE, St.Side.LEFT, 0, true);
         Main.chrome.addActor(this.menu.actor, { visibleInOverview: true,

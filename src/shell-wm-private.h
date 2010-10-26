@@ -8,32 +8,32 @@ G_BEGIN_DECLS
 
 /* These forward along the different effects from GnomeShellPlugin */
 
-void _shell_wm_minimize   (ShellWM      *wm,
-			   MutterWindow *actor);
-void _shell_wm_maximize   (ShellWM      *wm,
-			   MutterWindow *actor,
-			   gint          x,
-			   gint          y,
-			   gint          width,
-			   gint          height);
-void _shell_wm_unmaximize (ShellWM      *wm,
-			   MutterWindow *actor,
-			   gint          x,
-			   gint          y,
-			   gint          width,
-			   gint          height);
-void _shell_wm_map        (ShellWM      *wm,
-			   MutterWindow *actor);
-void _shell_wm_destroy    (ShellWM      *wm,
-			   MutterWindow *actor);
+void _shell_wm_minimize   (ShellWM         *wm,
+                           MetaWindowActor *actor);
+void _shell_wm_maximize   (ShellWM         *wm,
+                           MetaWindowActor *actor,
+                           gint             x,
+                           gint             y,
+                           gint             width,
+                           gint             height);
+void _shell_wm_unmaximize (ShellWM         *wm,
+                           MetaWindowActor *actor,
+                           gint             x,
+                           gint             y,
+                           gint             width,
+                           gint             height);
+void _shell_wm_map        (ShellWM         *wm,
+                           MetaWindowActor *actor);
+void _shell_wm_destroy    (ShellWM         *wm,
+                           MetaWindowActor *actor);
 
-void _shell_wm_switch_workspace (ShellWM              *wm,
-				 gint                  from,
-				 gint                  to,
-				 MetaMotionDirection   direction);
-void _shell_wm_kill_window_effects  (ShellWM              *wm,
-				     MutterWindow         *actor);
-void _shell_wm_kill_switch_workspace (ShellWM              *wm);
+void _shell_wm_switch_workspace      (ShellWM             *wm,
+                                      gint                 from,
+                                      gint                 to,
+                                      MetaMotionDirection  direction);
+void _shell_wm_kill_window_effects   (ShellWM             *wm,
+                                      MetaWindowActor     *actor);
+void _shell_wm_kill_switch_workspace (ShellWM             *wm);
 
 G_END_DECLS
 

@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Clutter = imports.gi.Clutter;
 const DBus = imports.dbus;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -15,6 +16,7 @@ const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const VOLUME_MAX = 65536.0; /* PA_VOLUME_NORM */
+const VOLUME_ADJUSTMENT_STEP = 0.05; /* Volume adjustment step in % */
 
 function Indicator() {
     this._init.apply(this, arguments);
@@ -60,11 +62,26 @@ Indicator.prototype = {
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addAction(_("Sound Preferences"), function() {
-            let p = new Shell.Process({ args: ['gnome-control-center', 'volume'] });
+            let p = new Shell.Process({ args: ['gnome-control-center', 'sound'] });
             p.run();
         });
 
+        this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
         this._control.open();
+    },
+
+    _onScrollEvent: function(actor, event) {
+        let direction = event.get_scroll_direction();
+        let currentVolume = this._output.volume;
+
+        if (direction == Clutter.ScrollDirection.DOWN) {
+            this._output.volume = Math.max(0, currentVolume - VOLUME_MAX * VOLUME_ADJUSTMENT_STEP);
+            this._output.push_volume();
+        }
+        else if (direction == Clutter.ScrollDirection.UP) {
+            this._output.volume = Math.min(VOLUME_MAX, currentVolume + VOLUME_MAX * VOLUME_ADJUSTMENT_STEP);
+            this._output.push_volume();
+        }
     },
 
     _onControlReady: function() {
@@ -85,7 +102,6 @@ Indicator.prototype = {
             this._outputVolumeId = this._output.connect('notify::volume', Lang.bind(this, this._volumeChanged, '_output'));
             this._mutedChanged (null, null, '_output');
             this._volumeChanged (null, null, '_output');
-            this.setIcon(this._volumeToIcon(this._output.volume));
         } else {
             this._outputSwitch.label.text = _("Output: Muted");
             this._outputSwitch.setToggleState(false);
@@ -117,9 +133,9 @@ Indicator.prototype = {
         // only show input widgets if any application is recording audio
         let showInput = false;
         let recordingApps = this._control.get_source_outputs();
-        if (this._source && recordingApps) {
-            for (let i = 0; i < recordingApp.length; i++) {
-                let outputStream = recordingApp[i];
+        if (this._input && recordingApps) {
+            for (let i = 0; i < recordingApps.length; i++) {
+                let outputStream = recordingApps[i];
                 let id = outputStream.get_application_id();
                 // but skip gnome-volume-control and pavucontrol
                 // (that appear as recording because they show the input level)
@@ -191,7 +207,7 @@ Indicator.prototype = {
     _volumeChanged: function(object, param_spec, property) {
         this[property+'Slider'].setValue(this[property].volume / VOLUME_MAX);
         this._updateLabel(property);
-        if (property == '_output')
+        if (property == '_output' && !this._output.is_muted)
             this.setIcon(this._volumeToIcon(this._output.volume));
     },
 

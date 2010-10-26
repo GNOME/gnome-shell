@@ -2,7 +2,7 @@
 #ifndef __SHELL_GLOBAL_H__
 #define __SHELL_GLOBAL_H__
 
-#include "mutter-plugin.h"
+#include "meta-plugin.h"
 #include <clutter/clutter.h>
 #include <glib-object.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -70,7 +70,7 @@ void shell_global_set_stage_input_mode   (ShellGlobal         *global,
 void shell_global_set_stage_input_region (ShellGlobal         *global,
 					  GSList              *rectangles);
 
-GList *shell_global_get_windows (ShellGlobal *global);
+GList *shell_global_get_window_actors (ShellGlobal *global);
 
 gboolean shell_global_begin_modal (ShellGlobal *global,
 				   guint32      timestamp);

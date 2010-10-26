@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-06 02:19+0200\n"
-"PO-Revision-Date: 2010-10-06 02:28+0200\n"
+"POT-Creation-Date: 2010-10-26 08:20+0200\n"
+"PO-Revision-Date: 2010-10-26 08:20+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -494,58 +494,58 @@ msgid "Undo"
 msgstr "ביטול"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:461
+#: ../js/ui/panel.js:469
 #, c-format
 msgid "Quit %s"
 msgstr "יציאה מ־%s"
 
-#: ../js/ui/panel.js:486
+#: ../js/ui/panel.js:494
 msgid "Preferences"
 msgstr "העדפות"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:572
+#: ../js/ui/panel.js:580
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:581
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:577
+#: ../js/ui/panel.js:585
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:578
+#: ../js/ui/panel.js:586
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:593
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:594
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:590
+#: ../js/ui/panel.js:598
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:591
+#: ../js/ui/panel.js:599
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:736
+#: ../js/ui/panel.js:744
 msgid "Activities"
 msgstr "פעילויות"
 
@@ -580,41 +580,93 @@ msgstr "נא להזין פקודה:"
 msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
 
-#: ../js/ui/statusMenu.js:91
+#: ../js/ui/statusMenu.js:101
 msgid "Available"
 msgstr "זמין"
 
-#: ../js/ui/statusMenu.js:95
+#: ../js/ui/statusMenu.js:106
 msgid "Busy"
 msgstr "עסוק"
 
-#: ../js/ui/statusMenu.js:99
+#: ../js/ui/statusMenu.js:111
 msgid "Invisible"
 msgstr "בלתי נראה"
 
-#: ../js/ui/statusMenu.js:106
-msgid "Account Information..."
-msgstr "פרטי המשתמש..."
+#: ../js/ui/statusMenu.js:119
+msgid "My Account..."
+msgstr "החשבון שלי..."
 
-#: ../js/ui/statusMenu.js:110
-msgid "System Settings..."
-msgstr "הגדרות מערכת..."
+#: ../js/ui/statusMenu.js:123
+msgid "System Preferences..."
+msgstr "העדפות המערכת..."
 
-#: ../js/ui/statusMenu.js:117
+#: ../js/ui/statusMenu.js:130
 msgid "Lock Screen"
 msgstr "נעילת המסך"
 
-#: ../js/ui/statusMenu.js:121
+#: ../js/ui/statusMenu.js:134
 msgid "Switch User"
 msgstr "החלפת משתמש"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:139
 msgid "Log Out..."
 msgstr "ניתוק..."
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:146
+msgid "Suspend"
+msgstr "השהיה"
+
+#: ../js/ui/statusMenu.js:150
+msgid "Restart..."
+msgstr "הפעלה מחדש..."
+
+#: ../js/ui/statusMenu.js:154
 msgid "Shut Down..."
 msgstr "כיבוי..."
+
+#: ../js/ui/status/accessibility.js:88
+msgid "Screen Reader"
+msgstr "מקריא מסך"
+
+#: ../js/ui/status/accessibility.js:91
+msgid "Screen Keyboard"
+msgstr "מקלדת מסך"
+
+#: ../js/ui/status/accessibility.js:94
+msgid "Visual Alerts"
+msgstr "התראות חזותיות"
+
+#: ../js/ui/status/accessibility.js:97
+msgid "Sticky Keys"
+msgstr "מקשים דביקים"
+
+#: ../js/ui/status/accessibility.js:100
+msgid "Slow Keys"
+msgstr "מקשים אטיים"
+
+#: ../js/ui/status/accessibility.js:103
+msgid "Bounce Keys"
+msgstr "מקשים קופצים"
+
+#: ../js/ui/status/accessibility.js:106
+msgid "Mouse Keys"
+msgstr "מקשי עכבר"
+
+#: ../js/ui/status/accessibility.js:110
+msgid "Universal Access Settings"
+msgstr "הגדרות גישה אוניברסלית"
+
+#: ../js/ui/status/accessibility.js:163
+msgid "High Contrast"
+msgstr "ניגודיות גבוהה"
+
+#: ../js/ui/status/accessibility.js:202
+msgid "Large Text"
+msgstr "טקסט גדול"
+
+#: ../js/ui/status/accessibility.js:223
+msgid "Zoom"
+msgstr "תקריב"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -626,20 +678,20 @@ msgstr "%s סיים את תהליך ההתחלה"
 msgid "'%s' is ready"
 msgstr "'%s' מוכן"
 
-#: ../js/ui/workspacesView.js:230
+#: ../js/ui/workspacesView.js:229
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "לא ניתן להוסיף מרחבי עבודה כיוון שהם ממלאים את המכסה המרבית."
 
-#: ../js/ui/workspacesView.js:247
+#: ../js/ui/workspacesView.js:246
 msgid "Can't remove the first workspace."
 msgstr "לא ניתן להסיר את מרחב העבודה הראשון."
 
-#: ../src/shell-global.c:1196
+#: ../src/shell-global.c:1204
 msgid "Less than a minute ago"
 msgstr "לפני פחות מדקה"
 
-#: ../src/shell-global.c:1200
+#: ../src/shell-global.c:1208
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -647,7 +699,7 @@ msgstr[0] "לפני דקה"
 msgstr[1] "לפני %d דקות"
 msgstr[2] "לפני 2 דקות"
 
-#: ../src/shell-global.c:1205
+#: ../src/shell-global.c:1213
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -655,7 +707,7 @@ msgstr[0] "לפני שעה"
 msgstr[1] "לפני %d שעות"
 msgstr[2] "לפני שעתיים"
 
-#: ../src/shell-global.c:1210
+#: ../src/shell-global.c:1218
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -663,7 +715,7 @@ msgstr[0] "לפני יום"
 msgstr[1] "לפני %d ימים"
 msgstr[2] "לפני יומיים"
 
-#: ../src/shell-global.c:1215
+#: ../src/shell-global.c:1223
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -694,6 +746,12 @@ msgstr "חיפוש"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Account Information..."
+#~ msgstr "פרטי המשתמש..."
+
+#~ msgid "System Settings..."
+#~ msgstr "הגדרות מערכת..."
 
 #~ msgid "ON"
 #~ msgstr "1"

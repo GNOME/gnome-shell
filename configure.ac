@@ -70,7 +70,7 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
                                  gio-unix-2.0 dbus-glib-1
                                  gtk+-3.0 >= $GTK_MIN_VERSION
                                  mutter-plugins >= $MUTTER_MIN_VERSION
-                                 gjs-gi-1.0 >= $GJS_MIN_VERSION
+                                 gjs-internals-1.0 >= $GJS_MIN_VERSION
                                  libical >= $LIBICAL_MIN_VERSION
 				 libgnome-menu $recorder_modules gconf-2.0
                                  gdk-x11-3.0

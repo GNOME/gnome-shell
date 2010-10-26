@@ -102,9 +102,7 @@ AltTabPopup.prototype = {
                 childBox.x1 = Math.max(primary.x + leftPadding, childBox.x1 - offset - hPadding);
             }
 
-            let [found, spacing] = this.actor.get_theme_node().get_length('spacing', false);
-            if (!found)
-                spacing = 0;
+            let spacing = this.actor.get_theme_node().get_length('spacing');
 
             childBox.x2 = childBox.x1 +  childNaturalWidth;
             if (childBox.x2 > primary.x + primary.width - rightPadding)
@@ -501,8 +499,7 @@ SwitcherList.prototype = {
         this._list = new Shell.GenericContainer({ style_class: 'switcher-list-item-container' });
         this._list.spacing = 0;
         this._list.connect('style-changed', Lang.bind(this, function() {
-                                                        let [found, spacing] = this._list.get_theme_node().get_length('spacing', false);
-                                                        this._list.spacing = (found) ? spacing : 0;
+                                                        this._list.spacing = this._list.get_theme_node().get_length('spacing');
                                                      }));
 
         this._list.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
@@ -1035,9 +1032,7 @@ ThumbnailList.prototype = {
         let totalPadding = this._items[0].get_theme_node().get_horizontal_padding() + this._items[0].get_theme_node().get_vertical_padding();
         totalPadding += this.actor.get_theme_node().get_horizontal_padding() + this.actor.get_theme_node().get_vertical_padding();
         let [labelMinHeight, labelNaturalHeight] = this._labels[0].get_preferred_height(-1);
-        let [found, spacing] = this._items[0].child.get_theme_node().get_length('spacing', false);
-        if (!found)
-            spacing = 0;
+        let spacing = this._items[0].child.get_theme_node().get_length('spacing');
 
         availHeight = Math.min(availHeight - labelNaturalHeight - totalPadding - spacing, THUMBNAIL_DEFAULT_SIZE);
         let binHeight = availHeight + this._items[0].get_theme_node().get_vertical_padding() + this.actor.get_theme_node().get_vertical_padding() - spacing;

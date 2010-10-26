@@ -988,11 +988,11 @@ st_table_style_changed (StWidget *self)
   StThemeNode *theme_node = st_widget_get_theme_node (self);
   int old_row_spacing = priv->row_spacing;
   int old_col_spacing = priv->col_spacing;
-  double row_spacing = 0., col_spacing = 0.;
+  double row_spacing, col_spacing;
 
-  st_theme_node_get_length (theme_node, "spacing-rows", FALSE, &row_spacing);
+  row_spacing = st_theme_node_get_length (theme_node, "spacing-rows");
   priv->row_spacing = (int)(row_spacing + 0.5);
-  st_theme_node_get_length (theme_node, "spacing-columns", FALSE, &col_spacing);
+  col_spacing = st_theme_node_get_length (theme_node, "spacing-columns");
   priv->col_spacing = (int)(col_spacing + 0.5);
 
   if (priv->row_spacing != old_row_spacing ||

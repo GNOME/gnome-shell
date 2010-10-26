@@ -3,7 +3,7 @@
 #define __SHELL_WM_H__
 
 #include <glib-object.h>
-#include <mutter-plugin.h>
+#include <meta-plugin.h>
 
 G_BEGIN_DECLS
 
@@ -25,19 +25,19 @@ struct _ShellWMClass
 
 GType    shell_wm_get_type                    (void) G_GNUC_CONST;
 
-ShellWM *shell_wm_new                         (MutterPlugin *plugin);
+ShellWM *shell_wm_new                        (MetaPlugin      *plugin);
 
-void     shell_wm_completed_minimize          (ShellWM      *wm,
-                                               MutterWindow *actor);
-void     shell_wm_completed_maximize          (ShellWM      *wm,
-                                               MutterWindow *actor);
-void     shell_wm_completed_unmaximize        (ShellWM      *wm,
-                                               MutterWindow *actor);
-void     shell_wm_completed_map               (ShellWM      *wm,
-                                               MutterWindow *actor);
-void     shell_wm_completed_destroy           (ShellWM      *wm,
-                                               MutterWindow *actor);
-void     shell_wm_completed_switch_workspace  (ShellWM      *wm);
+void     shell_wm_completed_minimize         (ShellWM         *wm,
+                                              MetaWindowActor *actor);
+void     shell_wm_completed_maximize         (ShellWM         *wm,
+                                              MetaWindowActor *actor);
+void     shell_wm_completed_unmaximize       (ShellWM         *wm,
+                                              MetaWindowActor *actor);
+void     shell_wm_completed_map              (ShellWM         *wm,
+                                              MetaWindowActor *actor);
+void     shell_wm_completed_destroy          (ShellWM         *wm,
+                                              MetaWindowActor *actor);
+void     shell_wm_completed_switch_workspace (ShellWM         *wm);
 
 /* Keybinding stuff */
 void shell_wm_takeover_keybinding (ShellWM    *wm,
