@@ -1040,7 +1040,7 @@ _cogl_material_flush_gl_state (CoglMaterial *material,
 {
   unsigned long    materials_difference;
   int              n_layers;
-  unsigned long   *layer_differences = NULL;
+  unsigned long   *layer_differences;
   int              i;
   CoglTextureUnit *unit1;
 
@@ -1055,7 +1055,14 @@ _cogl_material_flush_gl_state (CoglMaterial *material,
   COGL_TIMER_START (_cogl_uprof_context, material_flush_timer);
 
   if (ctx->current_material == material)
-    materials_difference = ctx->current_material_changes_since_flush;
+    {
+      /* Bail out asap if we've been asked to re-flush the already current
+       * material and we can see the material hasn't changed */
+      if (ctx->current_material_age == material->age)
+        goto done;
+
+      materials_difference = ctx->current_material_changes_since_flush;
+    }
   else if (ctx->current_material)
     {
       materials_difference = ctx->current_material_changes_since_flush;
@@ -1079,6 +1086,8 @@ _cogl_material_flush_gl_state (CoglMaterial *material,
                                              compare_layer_differences_cb,
                                              &state);
     }
+  else
+    layer_differences = NULL;
 
   /* First flush everything that's the same regardless of which
    * material backend is being used...
@@ -1174,6 +1183,9 @@ _cogl_material_flush_gl_state (CoglMaterial *material,
   ctx->current_material = material;
   ctx->current_material_changes_since_flush = 0;
   ctx->current_material_skip_gl_color = skip_gl_color;
+  ctx->current_material_age = material->age;
+
+done:
 
   /* Handle the fact that OpenGL associates texture filter and wrap
    * modes with the texture objects not the texture units... */
