@@ -275,6 +275,7 @@ _cogl_buffer_initialize (CoglBuffer           *buffer,
   buffer->usage_hint    = usage_hint;
   buffer->update_hint   = update_hint;
   buffer->data          = NULL;
+  buffer->immutable_ref = 0;
 
   if (use_malloc)
     {
@@ -299,6 +300,7 @@ void
 _cogl_buffer_fini (CoglBuffer *buffer)
 {
   g_return_if_fail (!(buffer->flags & COGL_BUFFER_FLAG_MAPPED));
+  g_return_if_fail (buffer->immutable_ref == 0);
 }
 
 /* OpenGL ES 1.1 and 2 have a GL_OES_mapbuffer extension that is able to map
@@ -428,13 +430,27 @@ cogl_buffer_get_update_hint (CoglBuffer *buffer)
   return buffer->update_hint;
 }
 
+static void
+warn_about_midscene_changes (void)
+{
+  static gboolean seen = FALSE;
+  if (!seen)
+    {
+      g_warning ("Mid-scene modification of buffers has "
+                 "undefined results\n");
+      seen = TRUE;
+    }
+}
+
 guint8 *
 cogl_buffer_map (CoglBuffer        *buffer,
                  CoglBufferAccess   access,
                  CoglBufferMapHint  hints)
 {
-  if (!cogl_is_buffer (buffer))
-    return NULL;
+  g_return_val_if_fail (cogl_is_buffer (buffer), NULL);
+
+  if (G_UNLIKELY (buffer->immutable_ref))
+    warn_about_midscene_changes ();
 
   if (buffer->flags & COGL_BUFFER_FLAG_MAPPED)
     return buffer->data;
@@ -464,5 +480,27 @@ cogl_buffer_set_data (CoglBuffer   *buffer,
   g_return_val_if_fail (cogl_is_buffer (buffer), FALSE);
   g_return_val_if_fail ((offset + size) <= buffer->size, FALSE);
 
+  if (G_UNLIKELY (buffer->immutable_ref))
+    warn_about_midscene_changes ();
+
   return buffer->vtable.set_data (buffer, offset, data, size);
 }
+
+CoglBuffer *
+_cogl_buffer_immutable_ref (CoglBuffer *buffer)
+{
+  g_return_val_if_fail (cogl_is_buffer (buffer), NULL);
+
+  buffer->immutable_ref++;
+  return buffer;
+}
+
+void
+_cogl_buffer_immutable_unref (CoglBuffer *buffer)
+{
+  g_return_if_fail (cogl_is_buffer (buffer));
+  g_return_if_fail (buffer->immutable_ref > 0);
+
+  buffer->immutable_ref--;
+}
+
