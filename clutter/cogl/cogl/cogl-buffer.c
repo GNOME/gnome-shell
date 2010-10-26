@@ -136,8 +136,6 @@ bo_map (CoglBuffer       *buffer,
         CoglBufferMapHint hints)
 {
 #ifndef COGL_HAS_GLES
-
-  CoglPixelArray *pixel_array = COGL_PIXEL_ARRAY (buffer);
   guint8 *data;
   CoglBufferBindTarget target;
   GLenum gl_target;
@@ -152,15 +150,14 @@ bo_map (CoglBuffer       *buffer,
   /* create an empty store if we don't have one yet. creating the store
    * lazily allows the user of the CoglBuffer to set a hint before the
    * store is created. */
-  if (!COGL_PIXEL_ARRAY_FLAG_IS_SET (pixel_array, STORE_CREATED) ||
-      (hints & COGL_BUFFER_MAP_HINT_DISCARD))
+  if (!buffer->store_created || (hints & COGL_BUFFER_MAP_HINT_DISCARD))
     {
       GE( glBufferData (gl_target,
                         buffer->size,
                         NULL,
                         _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
                                                        buffer->update_hint)) );
-      COGL_PIXEL_ARRAY_SET_FLAG (pixel_array, STORE_CREATED);
+      buffer->store_created = TRUE;
     }
 
   GE_RET( data, glMapBuffer (gl_target,
@@ -202,7 +199,6 @@ bo_set_data (CoglBuffer   *buffer,
              const guint8 *data,
              unsigned int  size)
 {
-  CoglPixelArray *pixel_array = COGL_PIXEL_ARRAY (buffer);
   CoglBufferBindTarget target;
   GLenum gl_target;
 
@@ -216,14 +212,14 @@ bo_set_data (CoglBuffer   *buffer,
   /* create an empty store if we don't have one yet. creating the store
    * lazily allows the user of the CoglBuffer to set a hint before the
    * store is created. */
-  if (!COGL_PIXEL_ARRAY_FLAG_IS_SET (pixel_array, STORE_CREATED))
+  if (!buffer->store_created)
     {
       GE( glBufferData (gl_target,
                         buffer->size,
                         NULL,
                         _cogl_buffer_hints_to_gl_enum (buffer->usage_hint,
                                                        buffer->update_hint)) );
-      COGL_PIXEL_ARRAY_SET_FLAG (pixel_array, STORE_CREATED);
+      buffer->store_created = TRUE;
     }
 
   GE( glBufferSubData (gl_target, offset, size, data) );
@@ -272,12 +268,13 @@ _cogl_buffer_initialize (CoglBuffer           *buffer,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  buffer->flags       = COGL_BUFFER_FLAG_NONE;
-  buffer->size        = size;
-  buffer->last_target = default_target;
-  buffer->usage_hint  = usage_hint;
-  buffer->update_hint = update_hint;
-  buffer->data        = NULL;
+  buffer->flags         = COGL_BUFFER_FLAG_NONE;
+  buffer->store_created = FALSE;
+  buffer->size          = size;
+  buffer->last_target   = default_target;
+  buffer->usage_hint    = usage_hint;
+  buffer->update_hint   = update_hint;
+  buffer->data          = NULL;
 
   if (use_malloc)
     {
