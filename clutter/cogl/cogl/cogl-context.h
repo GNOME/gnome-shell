@@ -106,6 +106,7 @@ typedef struct
   CoglMaterial     *current_material;
   unsigned long     current_material_changes_since_flush;
   gboolean          current_material_skip_gl_color;
+  unsigned long     current_material_age;
 
   GArray           *material0_nodes;
   GArray           *material1_nodes;
