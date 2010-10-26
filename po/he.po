@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-20 23:49+0200\n"
-"PO-Revision-Date: 2010-10-20 23:50+0200\n"
+"POT-Creation-Date: 2010-10-26 08:20+0200\n"
+"PO-Revision-Date: 2010-10-26 08:20+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -567,7 +567,7 @@ msgstr "התחברות אל..."
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:31
+#: ../js/ui/popupMenu.js:33
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -580,39 +580,47 @@ msgstr "נא להזין פקודה:"
 msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
 
-#: ../js/ui/statusMenu.js:97
+#: ../js/ui/statusMenu.js:101
 msgid "Available"
 msgstr "זמין"
 
-#: ../js/ui/statusMenu.js:101
+#: ../js/ui/statusMenu.js:106
 msgid "Busy"
 msgstr "עסוק"
 
-#: ../js/ui/statusMenu.js:105
+#: ../js/ui/statusMenu.js:111
 msgid "Invisible"
 msgstr "בלתי נראה"
 
-#: ../js/ui/statusMenu.js:112
-msgid "Account Information..."
-msgstr "פרטי המשתמש..."
-
-#: ../js/ui/statusMenu.js:116
-msgid "System Settings..."
-msgstr "הגדרות מערכת..."
+#: ../js/ui/statusMenu.js:119
+msgid "My Account..."
+msgstr "החשבון שלי..."
 
 #: ../js/ui/statusMenu.js:123
+msgid "System Preferences..."
+msgstr "העדפות המערכת..."
+
+#: ../js/ui/statusMenu.js:130
 msgid "Lock Screen"
 msgstr "נעילת המסך"
 
-#: ../js/ui/statusMenu.js:127
+#: ../js/ui/statusMenu.js:134
 msgid "Switch User"
 msgstr "החלפת משתמש"
 
-#: ../js/ui/statusMenu.js:132
+#: ../js/ui/statusMenu.js:139
 msgid "Log Out..."
 msgstr "ניתוק..."
 
-#: ../js/ui/statusMenu.js:136
+#: ../js/ui/statusMenu.js:146
+msgid "Suspend"
+msgstr "השהיה"
+
+#: ../js/ui/statusMenu.js:150
+msgid "Restart..."
+msgstr "הפעלה מחדש..."
+
+#: ../js/ui/statusMenu.js:154
 msgid "Shut Down..."
 msgstr "כיבוי..."
 
@@ -670,12 +678,12 @@ msgstr "%s סיים את תהליך ההתחלה"
 msgid "'%s' is ready"
 msgstr "'%s' מוכן"
 
-#: ../js/ui/workspacesView.js:230
+#: ../js/ui/workspacesView.js:229
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "לא ניתן להוסיף מרחבי עבודה כיוון שהם ממלאים את המכסה המרבית."
 
-#: ../js/ui/workspacesView.js:247
+#: ../js/ui/workspacesView.js:246
 msgid "Can't remove the first workspace."
 msgstr "לא ניתן להסיר את מרחב העבודה הראשון."
 
@@ -738,6 +746,12 @@ msgstr "חיפוש"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Account Information..."
+#~ msgstr "פרטי המשתמש..."
+
+#~ msgid "System Settings..."
+#~ msgstr "הגדרות מערכת..."
 
 #~ msgid "ON"
 #~ msgstr "1"
