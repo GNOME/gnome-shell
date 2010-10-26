@@ -127,6 +127,7 @@ _cogl_material_node_set_parent_real (CoglMaterialNode *node,
     }
 
   node->parent = parent;
+  node->has_parent_reference = take_strong_reference;
 
   /* Now that there is a consistent parent->child link we can remove
    * the parent reference if no reference was requested. If it turns
@@ -160,7 +161,8 @@ _cogl_material_node_unparent_real (CoglMaterialNode *node)
   else
     parent->children = g_list_remove (parent->children, node);
 
-  cogl_object_unref (parent);
+  if (node->has_parent_reference)
+    cogl_object_unref (parent);
 
   node->parent = NULL;
 }

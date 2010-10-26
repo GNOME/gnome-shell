@@ -138,6 +138,10 @@ struct _CoglMaterialNode
   /* The parent material/layer */
   CoglMaterialNode *parent;
 
+  /* TRUE if the node took a strong reference on its parent. Weak
+   * materials for instance don't take a reference on their parent. */
+  gboolean has_parent_reference;
+
   /* As an optimization for creating leaf node materials/layers (the
    * most common) we don't require any list node allocations to link
    * to a single descendant. */
