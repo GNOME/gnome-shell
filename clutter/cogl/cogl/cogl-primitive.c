@@ -32,6 +32,7 @@
 #include "cogl-object-private.h"
 #include "cogl-primitive.h"
 #include "cogl-primitive-private.h"
+#include "cogl-vertex-attribute-private.h"
 
 #include <stdarg.h>
 
@@ -54,6 +55,7 @@ cogl_primitive_new_with_attributes_array (CoglVerticesMode mode,
   primitive->indices = NULL;
   primitive->attributes =
     g_array_new (TRUE, FALSE, sizeof (CoglVertexAttribute *));
+  primitive->immutable_ref = 0;
 
   for (i = 0; attributes[i]; i++)
     {
@@ -366,11 +368,31 @@ _cogl_primitive_free (CoglPrimitive *primitive)
   g_slice_free (CoglPrimitive, primitive);
 }
 
+static void
+warn_about_midscene_changes (void)
+{
+  static gboolean seen = FALSE;
+  if (!seen)
+    {
+      g_warning ("Mid-scene modification of buffers has "
+                 "undefined results\n");
+      seen = TRUE;
+    }
+}
+
 void
 cogl_primitive_set_attributes (CoglPrimitive *primitive,
                                CoglVertexAttribute **attributes)
 {
   int i;
+
+  g_return_if_fail (cogl_is_primitive (primitive));
+
+  if (G_UNLIKELY (primitive->immutable_ref))
+    {
+      warn_about_midscene_changes ();
+      return;
+    }
 
   free_attributes_list (primitive);
 
@@ -396,6 +418,12 @@ cogl_primitive_set_first_vertex (CoglPrimitive *primitive,
                                  int first_vertex)
 {
   g_return_if_fail (cogl_is_primitive (primitive));
+
+  if (G_UNLIKELY (primitive->immutable_ref))
+    {
+      warn_about_midscene_changes ();
+      return;
+    }
 
   primitive->first_vertex = first_vertex;
 }
@@ -431,6 +459,12 @@ cogl_primitive_set_mode (CoglPrimitive *primitive,
 {
   g_return_if_fail (cogl_is_primitive (primitive));
 
+  if (G_UNLIKELY (primitive->immutable_ref))
+    {
+      warn_about_midscene_changes ();
+      return;
+    }
+
   primitive->mode = mode;
 }
 
@@ -440,11 +474,54 @@ cogl_primitive_set_indices (CoglPrimitive *primitive,
 {
   g_return_if_fail (cogl_is_primitive (primitive));
 
+  if (G_UNLIKELY (primitive->immutable_ref))
+    {
+      warn_about_midscene_changes ();
+      return;
+    }
+
   if (indices)
     cogl_object_ref (indices);
   if (primitive->indices)
     cogl_object_unref (primitive->indices);
   primitive->indices = indices;
+}
+
+CoglPrimitive *
+_cogl_primitive_immutable_ref (CoglPrimitive *primitive)
+{
+  int i;
+
+  g_return_val_if_fail (cogl_is_primitive (primitive), NULL);
+
+  primitive->immutable_ref++;
+
+  for (i = 0; i < primitive->attributes->len; i++)
+    {
+      CoglVertexAttribute *attribute =
+        g_array_index (primitive->attributes, CoglVertexAttribute *, i);
+      _cogl_vertex_attribute_immutable_ref (attribute);
+    }
+
+  return primitive;
+}
+
+void
+_cogl_primitive_immutable_unref (CoglPrimitive *primitive)
+{
+  int i;
+
+  g_return_if_fail (cogl_is_primitive (primitive));
+  g_return_if_fail (primitive->immutable_ref > 0);
+
+  primitive->immutable_ref--;
+
+  for (i = 0; i < primitive->attributes->len; i++)
+    {
+      CoglVertexAttribute *attribute =
+        g_array_index (primitive->attributes, CoglVertexAttribute *, i);
+      _cogl_vertex_attribute_immutable_unref (attribute);
+    }
 }
 
 /* XXX: cogl_draw_primitive() ? */
