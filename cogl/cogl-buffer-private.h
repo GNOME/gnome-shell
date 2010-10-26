@@ -95,6 +95,8 @@ struct _CoglBuffer
                                       * points to allocated memory in the
                                       * fallback paths */
 
+  int                     immutable_ref;
+
   guint                   store_created:1;
 };
 
@@ -136,6 +138,12 @@ _cogl_buffer_access_to_gl_enum (CoglBufferAccess access);
 GLenum
 _cogl_buffer_hints_to_gl_enum (CoglBufferUsageHint  usage_hint,
                                CoglBufferUpdateHint update_hint);
+
+CoglBuffer *
+_cogl_buffer_immutable_ref (CoglBuffer *buffer);
+
+void
+_cogl_buffer_immutable_unref (CoglBuffer *buffer);
 
 G_END_DECLS
 
