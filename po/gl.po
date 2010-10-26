@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-25 00:55+0200\n"
-"PO-Revision-Date: 2010-10-25 01:02+0200\n"
+"POT-Creation-Date: 2010-10-26 16:28+0200\n"
+"PO-Revision-Date: 2010-10-26 16:36+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -43,7 +43,7 @@ msgid ""
 "dialog."
 msgstr ""
 "Permite o acceso ás ferramentas de depuración e monitorización internas "
-"usando o diálogo Alt-F2"
+"usando o diálogo Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Custom format of the clock"
@@ -84,7 +84,7 @@ msgid ""
 "If true and format is either \"12-hour\" or \"24-hour\", display date in the "
 "clock, in addition to time."
 msgstr ""
-"Se é verdadeiro e o formato é \"12-hour\" ou \"24-hour\" móstrase a data no "
+"Se é verdadeiro e o formato é «12-hour» ou «24-hour» móstrase a data no "
 "reloxo, ademais da hora."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
@@ -92,8 +92,8 @@ msgid ""
 "If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
 "time."
 msgstr ""
-"Se é verdadeiro e o formato é \"12-hour\" ou \"24-hour\" móstranse os "
-"segundos na hora."
+"Se é verdadeiro e o formato é «12-hour» ou «24-hour» móstranse os segundos "
+"na hora."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "If true, display the ISO week date in the calendar."
@@ -118,10 +118,15 @@ msgid ""
 "to an empty value, the default pipeline will be used. This is currently "
 "'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
 msgstr ""
-"Estabelece a tubería do GStreamer usada para codificar as gravacións. Segue "
-"a sintaxe usada por gst-launch. A tubería debe ter un desprazamento de "
-"sumideiro non conectado cando o vídeo gravado estea gravado. Normalmente "
-"terá un ......."
+"Estabelece a tubería GStreamer usada para codificar gravacións. Segue a "
+"sintaxe usada para gst-launch. A tubería debería ter un sumideiro («sink») "
+"de ensamblaxe/desensamblaxe onde o vídeo que se está gravando grávase. "
+"Xeralmente terá unha orixe de ensamblado/desensamblado; a saída dese punto "
+"escribirase no ficheiro de saída. Porén, a tubería tamén pode tomar parte na "
+"súa propia saída; isto pódese usar para enviar a saída a un servidor "
+"«icecast» a través de shout2send ou similar. Cando non está estabelecido ou "
+"está a un valor baleiro, usarase a tubería predeterminada. Actualmente é "
+"«videorate ! theoraenc ! oggmux» e grava en Ogg Theora."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show date in clock"
@@ -207,12 +212,12 @@ msgid ""
 "the show_date and show_seconds keys are ignored."
 msgstr ""
 "Esta chave especifica o formato de hora usado polo reloxo do panel. Os "
-"posíbeis valores son \"12-hour\", \"24-hour\", \"unix\"e \"custom\". Se está "
-"estabelecido a \"unix\", o reloxo mostrará a hora en segundos desde Epoch, p."
-"ex. 01-01-1970. Se está estabelecido a \"custom\", o reloxo mostrará a hora "
+"posíbeis valores son «12-hour», «24-hour», «unix» e «custom». Se está "
+"estabelecido a «unix», o reloxo mostrará a hora en segundos desde Epoch, p."
+"ex. 01-01-1970. Se está estabelecido a «custom», o reloxo mostrará a hora "
 "segundo o formato especificado na chave custom_format. Teña en conta que se "
-"está estabelecido a \"unix\" ou \"custom\", as chaves show_date e "
-"show_seconds ignoraranse."
+"está estabelecido a «unix» ou «custom», as chaves show_date e show_seconds "
+"ignoraranse."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "Uuids of extensions to disable"
@@ -220,7 +225,7 @@ msgstr "Os Uuid das extensións a desactivar"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:27
 msgid "Whether to collect stats about applications usage"
-msgstr "Indica se recoller estatísticas sobre o uso dos aplicativos ou non."
+msgstr "Indica se recoller estatísticas sobre o uso dos aplicativos"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
 msgid "Clip the crosshairs at the center"
@@ -288,7 +293,7 @@ msgid ""
 "sprite."
 msgstr ""
 "Activa/desactiva a visualización do punto de mira centrada no mapa de bits "
-"de magnificación do rato"
+"de magnificación do rato."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
 msgid ""
@@ -456,7 +461,7 @@ msgstr "Non hai resultados que coincidan."
 #. network locations, etc.
 #: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
 msgid "PLACES & DEVICES"
-msgstr "LUGARES e DISPOSITIVOS"
+msgstr "LUGARES E DISPOSITIVOS"
 
 #. **** Documents ****
 #: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
@@ -580,41 +585,49 @@ msgstr "Insira unha orde:"
 #: ../js/ui/runDialog.js:378
 #, c-format
 msgid "Execution of '%s' failed:"
-msgstr "Produciuse un fallo na execución de %s"
+msgstr "Produciuse un fallo na execución de «%s»:"
 
-#: ../js/ui/statusMenu.js:97
+#: ../js/ui/statusMenu.js:101
 msgid "Available"
 msgstr "Dispoñíbel"
 
-#: ../js/ui/statusMenu.js:101
+#: ../js/ui/statusMenu.js:106
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/statusMenu.js:105
+#: ../js/ui/statusMenu.js:111
 msgid "Invisible"
 msgstr "Invisíbel"
 
-#: ../js/ui/statusMenu.js:112
-msgid "Account Information..."
-msgstr "Información da conta..."
-
-#: ../js/ui/statusMenu.js:116
-msgid "System Settings..."
-msgstr "Configuracións do sistema..."
+#: ../js/ui/statusMenu.js:119
+msgid "My Account..."
+msgstr "A miña conta..."
 
 #: ../js/ui/statusMenu.js:123
+msgid "System Preferences..."
+msgstr "Preferencias do sistema..."
+
+#: ../js/ui/statusMenu.js:130
 msgid "Lock Screen"
 msgstr "Bloquear pantalla"
 
-#: ../js/ui/statusMenu.js:127
+#: ../js/ui/statusMenu.js:134
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/statusMenu.js:132
+#: ../js/ui/statusMenu.js:139
 msgid "Log Out..."
 msgstr "Saír da sesión..."
 
-#: ../js/ui/statusMenu.js:136
+#: ../js/ui/statusMenu.js:146
+msgid "Suspend"
+msgstr "Suspender"
+
+#: ../js/ui/statusMenu.js:150
+msgid "Restart..."
+msgstr "Reiniciar..."
+
+#: ../js/ui/statusMenu.js:154
 msgid "Shut Down..."
 msgstr "Apagar..."
 
@@ -738,6 +751,12 @@ msgstr "Buscar"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Account Information..."
+#~ msgstr "Información da conta..."
+
+#~ msgid "System Settings..."
+#~ msgstr "Configuracións do sistema..."
 
 #~ msgid "ON"
 #~ msgstr "⚫"
