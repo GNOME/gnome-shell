@@ -1031,6 +1031,8 @@ clutter_actor_update_map_state (ClutterActor  *self,
 static void
 clutter_actor_real_map (ClutterActor *self)
 {
+  GList *c;
+
   g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
 
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
@@ -1040,10 +1042,11 @@ clutter_actor_real_map (ClutterActor *self)
    */
   _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_MAPPED]);
 
-  if (CLUTTER_IS_CONTAINER (self))
-    clutter_container_foreach_with_internals (CLUTTER_CONTAINER (self),
-                                              CLUTTER_CALLBACK (clutter_actor_map),
-                                              NULL);
+  for (c = self->priv->children; c; c = c->next)
+    {
+      ClutterActor *child = c->data;
+      clutter_actor_map (child);
+    }
 }
 
 /**
@@ -1082,12 +1085,15 @@ clutter_actor_map (ClutterActor *self)
 static void
 clutter_actor_real_unmap (ClutterActor *self)
 {
+  GList *c;
+
   g_assert (CLUTTER_ACTOR_IS_MAPPED (self));
 
-  if (CLUTTER_IS_CONTAINER (self))
-    clutter_container_foreach_with_internals (CLUTTER_CONTAINER (self),
-                                              CLUTTER_CALLBACK (clutter_actor_unmap),
-                                              NULL);
+  for (c = self->priv->children; c; c = c->next)
+    {
+      ClutterActor *child = c->data;
+      clutter_actor_unmap (child);
+    }
 
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
 
