@@ -243,11 +243,11 @@ typedef enum { /*< prefix=COGL_PIXEL_FORMAT >*/
  *     %COGL_FEATURE_TEXTURE_NPOT_MIPMAP and %COGL_FEATURE_TEXTURE_NPOT_REPEAT
  *     features to know if the hardware supports npot texture mipmaps
  *     or repeat modes other than
- *     %COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE respectively.
+ *     %COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE respectively.
  * @COGL_FEATURE_TEXTURE_NPOT_MIPMAP: Mipmapping is supported in
  *     conjuntion with non power of two textures.
  * @COGL_FEATURE_TEXTURE_NPOT_REPEAT: Repeat modes other than
- *     %COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE are supported by the
+ *     %COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE are supported by the
  *     hardware.
  * @COGL_FEATURE_POINT_SPRITE: Whether
  *     cogl_material_set_layer_point_sprite_coords_enabled() is supported.
@@ -448,7 +448,7 @@ cogl_blend_string_error_quark (void);
  *   %COGL_FEATURE_TEXTURE_NPOT is not advertised.</para></listitem>
  *  <listitem><para>The GPU can not handle the configuration you have
  *   requested. An example might be if you try to use too many texture
- *   layers in a single #CoglMaterial</para></listitem>
+ *   layers in a single #CoglPipeline</para></listitem>
  *  <listitem><para>The driver does not support some
  *   configuration.</para></listiem>
  * </itemizedlist>
@@ -511,6 +511,52 @@ typedef enum {
   COGL_VERTICES_MODE_TRIANGLE_FAN = 0x0006
 } CoglVerticesMode;
 
+/* NB: The above definitions are taken from gl.h equivalents */
+
+
+/* XXX: should this be CoglMaterialDepthTestFunction?
+ * It makes it very verbose but would be consistent with
+ * CoglMaterialWrapMode */
+
+/**
+ * CoglDepthTestFunction:
+ * @COGL_DEPTH_TEST_FUNCTION_NEVER: Never passes.
+ * @COGL_DEPTH_TEST_FUNCTION_LESS: Passes if the fragment's depth
+ * value is less than the value currently in the depth buffer.
+ * @COGL_DEPTH_TEST_FUNCTION_EQUAL: Passes if the fragment's depth
+ * value is equal to the value currently in the depth buffer.
+ * @COGL_DEPTH_TEST_FUNCTION_LEQUAL: Passes if the fragment's depth
+ * value is less or equal to the value currently in the depth buffer.
+ * @COGL_DEPTH_TEST_FUNCTION_GREATER: Passes if the fragment's depth
+ * value is greater than the value currently in the depth buffer.
+ * @COGL_DEPTH_TEST_FUNCTION_NOTEQUAL: Passes if the fragment's depth
+ * value is not equal to the value currently in the depth buffer.
+ * @COGL_DEPTH_TEST_FUNCTION_GEQUAL: Passes if the fragment's depth
+ * value greater than or equal to the value currently in the depth buffer.
+ * @COGL_DEPTH_TEST_FUNCTION_ALWAYS: Always passes.
+ *
+ * When using depth testing one of these functions is used to compare
+ * the depth of an incoming fragment against the depth value currently
+ * stored in the depth buffer. The function is changed using
+ * cogl_material_set_depth_test_function().
+ *
+ * The test is only done when depth testing is explicitly enabled. (See
+ * cogl_material_set_depth_test_enabled())
+ */
+typedef enum
+{
+  COGL_DEPTH_TEST_FUNCTION_NEVER    = 0x0200,
+  COGL_DEPTH_TEST_FUNCTION_LESS     = 0x0201,
+  COGL_DEPTH_TEST_FUNCTION_EQUAL    = 0x0202,
+  COGL_DEPTH_TEST_FUNCTION_LEQUAL   = 0x0203,
+  COGL_DEPTH_TEST_FUNCTION_GREATER  = 0x0204,
+  COGL_DEPTH_TEST_FUNCTION_NOTEQUAL = 0x0205,
+  COGL_DEPTH_TEST_FUNCTION_GEQUAL   = 0x0206,
+  COGL_DEPTH_TEST_FUNCTION_ALWAYS   = 0x0207
+} CoglDepthTestFunction;
+/* XXX: Note these types are only referenced by experimental API so
+ * although they aren't explicitly guarded they are implicitly
+ * experimental too. */
 /* NB: The above definitions are taken from gl.h equivalents */
 
 G_END_DECLS

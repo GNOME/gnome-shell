@@ -60,7 +60,8 @@ cogl_public_h = \
 	$(srcdir)/cogl-buffer.h 		\
 	$(srcdir)/cogl-color.h 			\
 	$(srcdir)/cogl-fixed.h 			\
-	$(srcdir)/cogl-material.h 		\
+	$(srcdir)/cogl-material-compat.h 	\
+	$(srcdir)/cogl-pipeline.h 		\
 	$(srcdir)/cogl-vector.h 		\
 	$(srcdir)/cogl-matrix.h 		\
 	$(srcdir)/cogl-offscreen.h 		\
@@ -225,16 +226,17 @@ cogl_sources_c = \
 	$(srcdir)/cogl-matrix-private.h			\
 	$(srcdir)/cogl-matrix-stack.c			\
 	$(srcdir)/cogl-matrix-stack.h			\
-	$(srcdir)/cogl-material.c			\
-	$(srcdir)/cogl-material-private.h		\
-	$(srcdir)/cogl-material-opengl.c		\
-	$(srcdir)/cogl-material-opengl-private.h	\
-	$(srcdir)/cogl-material-glsl.c			\
-	$(srcdir)/cogl-material-glsl-private.h		\
-	$(srcdir)/cogl-material-arbfp.c			\
-	$(srcdir)/cogl-material-arbfp-private.h		\
-	$(srcdir)/cogl-material-fixed.c			\
-	$(srcdir)/cogl-material-fixed-private.h		\
+	$(srcdir)/cogl-pipeline.c			\
+	$(srcdir)/cogl-pipeline-private.h		\
+	$(srcdir)/cogl-pipeline-opengl.c		\
+	$(srcdir)/cogl-pipeline-opengl-private.h	\
+	$(srcdir)/cogl-pipeline-glsl.c			\
+	$(srcdir)/cogl-pipeline-glsl-private.h		\
+	$(srcdir)/cogl-pipeline-arbfp.c			\
+	$(srcdir)/cogl-pipeline-arbfp-private.h		\
+	$(srcdir)/cogl-pipeline-fixed.c			\
+	$(srcdir)/cogl-pipeline-fixed-private.h		\
+	$(srcdir)/cogl-material-compat.c		\
 	$(srcdir)/cogl-program.c			\
 	$(srcdir)/cogl-program-private.h		\
 	$(srcdir)/cogl-blend-string.c			\

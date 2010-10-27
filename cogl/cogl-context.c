@@ -32,8 +32,8 @@
 #include "cogl-context.h"
 #include "cogl-journal-private.h"
 #include "cogl-texture-private.h"
-#include "cogl-material-private.h"
-#include "cogl-material-opengl-private.h"
+#include "cogl-pipeline-private.h"
+#include "cogl-pipeline-opengl-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-path-private.h"
 
@@ -103,8 +103,8 @@ cogl_create_context (void)
 
   _cogl_create_context_winsys (_context);
 
-  _cogl_material_init_default_material ();
-  _cogl_material_init_default_layers ();
+  _cogl_pipeline_init_default_pipeline ();
+  _cogl_pipeline_init_default_layers ();
 
   _context->enable_flags = 0;
 
@@ -122,15 +122,15 @@ cogl_create_context (void)
   _context->texture_units =
     g_array_new (FALSE, FALSE, sizeof (CoglTextureUnit));
 
-  /* See cogl-material.c for more details about why we leave texture unit 1
+  /* See cogl-pipeline.c for more details about why we leave texture unit 1
    * active by default... */
   _context->active_texture_unit = 1;
   GE (glActiveTexture (GL_TEXTURE1));
 
   _context->legacy_fog_state.enabled = FALSE;
 
-  _context->simple_material = cogl_material_new ();
-  _context->texture_material = cogl_material_new ();
+  _context->simple_pipeline = cogl_pipeline_new ();
+  _context->texture_pipeline = cogl_pipeline_new ();
   _context->arbfp_source_buffer = g_string_new ("");
   _context->source_stack = NULL;
 
@@ -146,13 +146,13 @@ cogl_create_context (void)
 
   _context->polygon_vertices = g_array_new (FALSE, FALSE, sizeof (float));
 
-  _context->current_material = NULL;
-  _context->current_material_changes_since_flush = 0;
-  _context->current_material_skip_gl_color = FALSE;
+  _context->current_pipeline = NULL;
+  _context->current_pipeline_changes_since_flush = 0;
+  _context->current_pipeline_skip_gl_color = FALSE;
 
-  _context->material0_nodes =
+  _context->pipeline0_nodes =
     g_array_sized_new (FALSE, FALSE, sizeof (CoglHandle), 20);
-  _context->material1_nodes =
+  _context->pipeline1_nodes =
     g_array_sized_new (FALSE, FALSE, sizeof (CoglHandle), 20);
 
   _cogl_bitmask_init (&_context->texcoord_arrays_enabled);
@@ -165,7 +165,7 @@ cogl_create_context (void)
 
   _context->current_program = COGL_INVALID_HANDLE;
 
-  _context->current_use_program_type = COGL_MATERIAL_PROGRAM_TYPE_FIXED;
+  _context->current_use_program_type = COGL_PIPELINE_PROGRAM_TYPE_FIXED;
   _context->current_gl_program = 0;
 
   _context->gl_blend_enable_cache = FALSE;
@@ -195,7 +195,7 @@ cogl_create_context (void)
   _context->dirty_gl_viewport = TRUE;
 
   _context->current_path = _cogl_path_new ();
-  _context->stencil_material = cogl_material_new ();
+  _context->stencil_pipeline = cogl_pipeline_new ();
 
   _context->in_begin_gl_block = FALSE;
 
@@ -207,7 +207,7 @@ cogl_create_context (void)
   _context->rectangle_short_indices = NULL;
   _context->rectangle_short_indices_len = 0;
 
-  _context->texture_download_material = COGL_INVALID_HANDLE;
+  _context->texture_download_pipeline = COGL_INVALID_HANDLE;
 
   /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
    * the test being disabled therefore we assume that for all drivers there
@@ -235,8 +235,8 @@ cogl_create_context (void)
                                 0, /* auto calc row stride */
                                 default_texture_data);
 
-  cogl_push_source (_context->simple_material);
-  _cogl_material_flush_gl_state (_context->simple_material, FALSE);
+  cogl_push_source (_context->simple_pipeline);
+  _cogl_pipeline_flush_gl_state (_context->simple_pipeline, FALSE);
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
@@ -246,7 +246,7 @@ cogl_create_context (void)
      unless GL_COORD_REPLACE is enabled for an individual
      layer. Therefore it seems like it should be ok to just leave it
      enabled all the time instead of having to have a set property on
-     each material to track whether any layers have point sprite
+     each pipeline to track whether any layers have point sprite
      coords enabled */
   if (cogl_features_available (COGL_FEATURE_POINT_SPRITE))
     GE (glEnable (GL_POINT_SPRITE));
@@ -275,10 +275,10 @@ _cogl_destroy_context (void)
   if (_context->default_gl_texture_rect_tex)
     cogl_handle_unref (_context->default_gl_texture_rect_tex);
 
-  if (_context->simple_material)
-    cogl_handle_unref (_context->simple_material);
-  if (_context->texture_material)
-    cogl_handle_unref (_context->texture_material);
+  if (_context->simple_pipeline)
+    cogl_handle_unref (_context->simple_pipeline);
+  if (_context->texture_pipeline)
+    cogl_handle_unref (_context->texture_pipeline);
 
   if (_context->journal)
     g_array_free (_context->journal, TRUE);
@@ -300,8 +300,8 @@ _cogl_destroy_context (void)
   if (_context->rectangle_short_indices)
     cogl_object_unref (_context->rectangle_short_indices);
 
-  if (_context->default_material)
-    cogl_handle_unref (_context->default_material);
+  if (_context->default_pipeline)
+    cogl_handle_unref (_context->default_pipeline);
 
   if (_context->dummy_layer_dependant)
     cogl_handle_unref (_context->dummy_layer_dependant);

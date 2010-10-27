@@ -31,8 +31,8 @@
 #include "cogl-context.h"
 #include "cogl-journal-private.h"
 #include "cogl-texture-private.h"
-#include "cogl-material-private.h"
-#include "cogl-material-opengl-private.h"
+#include "cogl-pipeline-private.h"
+#include "cogl-pipeline-opengl-private.h"
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-vertex-attribute-private.h"
@@ -49,7 +49,7 @@
 
 typedef struct _TextureSlicedQuadState
 {
-  CoglHandle material;
+  CoglPipeline *pipeline;
   float tex_virtual_origin_x;
   float tex_virtual_origin_y;
   float quad_origin_x;
@@ -60,7 +60,7 @@ typedef struct _TextureSlicedQuadState
   float quad_len_y;
   gboolean flipped_x;
   gboolean flipped_y;
-  CoglMaterialWrapModeOverrides *wrap_mode_overrides;
+  CoglPipelineWrapModeOverrides *wrap_mode_overrides;
 } TextureSlicedQuadState;
 
 typedef struct _TextureSlicedPolygonState
@@ -114,10 +114,10 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
              subtexture_coords[0], subtexture_coords[1],
              subtexture_coords[2], subtexture_coords[3]);
 
-  /* FIXME: when the wrap mode becomes part of the material we need to
+  /* FIXME: when the wrap mode becomes part of the pipeline we need to
    * be able to override the wrap mode when logging a quad. */
   _cogl_journal_log_quad (quad_coords,
-                          state->material,
+                          state->pipeline,
                           1, /* one layer */
                           0, /* don't need to use fallbacks */
                           gl_handle, /* replace the layer0 texture */
@@ -141,18 +141,18 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
  */
 /* TODO: support multitexturing */
 static void
-_cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
-                                        CoglHandle   material,
-                                        gboolean     clamp_s,
-                                        gboolean     clamp_t,
-                                        const float *position,
-                                        float        tx_1,
-                                        float        ty_1,
-                                        float        tx_2,
-                                        float        ty_2)
+_cogl_texture_quad_multiple_primitives (CoglHandle    tex_handle,
+                                        CoglPipeline *pipeline,
+                                        gboolean      clamp_s,
+                                        gboolean      clamp_t,
+                                        const float  *position,
+                                        float         tx_1,
+                                        float         ty_1,
+                                        float         tx_2,
+                                        float         ty_2)
 {
   TextureSlicedQuadState state;
-  CoglMaterialWrapModeOverrides wrap_mode_overrides;
+  CoglPipelineWrapModeOverrides wrap_mode_overrides;
   gboolean tex_virtual_flipped_x;
   gboolean tex_virtual_flipped_y;
   gboolean quad_flipped_x;
@@ -182,7 +182,7 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
                (position[2] - position[0]) *
                (tx_1 - old_tx_1) / (old_tx_2 - old_tx_1)),
               position[3] };
-          _cogl_texture_quad_multiple_primitives (tex_handle, material,
+          _cogl_texture_quad_multiple_primitives (tex_handle, pipeline,
                                                   FALSE, clamp_t,
                                                   tmp_position,
                                                   tx_1, ty_1, tx_1, ty_2);
@@ -197,7 +197,7 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
                (position[2] - position[0]) *
                (tx_2 - old_tx_1) / (old_tx_2 - old_tx_1)),
               position[1], position[2], position[3] };
-          _cogl_texture_quad_multiple_primitives (tex_handle, material,
+          _cogl_texture_quad_multiple_primitives (tex_handle, pipeline,
                                                   FALSE, clamp_t,
                                                   tmp_position,
                                                   tx_2, ty_1, tx_2, ty_2);
@@ -229,7 +229,7 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
               (position[1] +
                (position[3] - position[1]) *
                (ty_1 - old_ty_1) / (old_ty_2 - old_ty_1)) };
-          _cogl_texture_quad_multiple_primitives (tex_handle, material,
+          _cogl_texture_quad_multiple_primitives (tex_handle, pipeline,
                                                   clamp_s, FALSE,
                                                   tmp_position,
                                                   tx_1, ty_1, tx_2, ty_1);
@@ -245,7 +245,7 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
                (position[3] - position[1]) *
                (ty_2 - old_ty_1) / (old_ty_2 - old_ty_1)),
               position[2], position[3] };
-          _cogl_texture_quad_multiple_primitives (tex_handle, material,
+          _cogl_texture_quad_multiple_primitives (tex_handle, pipeline,
                                                   clamp_s, FALSE,
                                                   tmp_position,
                                                   tx_1, ty_2, tx_2, ty_2);
@@ -266,23 +266,23 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
      otherwise it might pull in edge pixels from the other side. By
      default WRAP_MODE_AUTOMATIC becomes CLAMP_TO_EDGE so we only need
      to override if the wrap mode is repeat */
-  first_layer = cogl_material_get_layers (material)->data;
-  if (cogl_material_layer_get_wrap_mode_s (first_layer) ==
-      COGL_MATERIAL_WRAP_MODE_REPEAT)
+  first_layer = _cogl_pipeline_get_layers (pipeline)->data;
+  if (_cogl_pipeline_layer_get_wrap_mode_s (first_layer) ==
+      COGL_PIPELINE_WRAP_MODE_REPEAT)
     {
       state.wrap_mode_overrides = &wrap_mode_overrides;
       wrap_mode_overrides.values[0].s =
-        COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
+        COGL_PIPELINE_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
     }
-  if (cogl_material_layer_get_wrap_mode_t (first_layer) ==
-      COGL_MATERIAL_WRAP_MODE_REPEAT)
+  if (_cogl_pipeline_layer_get_wrap_mode_t (first_layer) ==
+      COGL_PIPELINE_WRAP_MODE_REPEAT)
     {
       state.wrap_mode_overrides = &wrap_mode_overrides;
       wrap_mode_overrides.values[0].t =
-        COGL_MATERIAL_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
+        COGL_PIPELINE_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
     }
 
-  state.material = material;
+  state.pipeline = pipeline;
 
   /* Get together the data we need to transform the virtual texture
    * coordinates of each slice into quad coordinates...
@@ -348,21 +348,21 @@ _cogl_texture_quad_multiple_primitives (CoglHandle   tex_handle,
  *   require repeating.
  */
 static gboolean
-_cogl_multitexture_quad_single_primitive (const float *position,
-                                          CoglHandle   material,
-                                          guint32      fallback_layers,
-                                          const float *user_tex_coords,
-                                          int          user_tex_coords_len)
+_cogl_multitexture_quad_single_primitive (const float  *position,
+                                          CoglPipeline *pipeline,
+                                          guint32       fallback_layers,
+                                          const float  *user_tex_coords,
+                                          int           user_tex_coords_len)
 {
-  int          n_layers = cogl_material_get_n_layers (material);
+  int          n_layers = cogl_pipeline_get_n_layers (pipeline);
   float       *final_tex_coords = alloca (sizeof (float) * 4 * n_layers);
   const GList *layers;
   GList       *tmp;
   int          i;
-  CoglMaterialWrapModeOverrides wrap_mode_overrides;
+  CoglPipelineWrapModeOverrides wrap_mode_overrides;
   /* This will be set to point to wrap_mode_overrides when an override
      is needed */
-  CoglMaterialWrapModeOverrides *wrap_mode_overrides_p = NULL;
+  CoglPipelineWrapModeOverrides *wrap_mode_overrides_p = NULL;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -371,7 +371,7 @@ _cogl_multitexture_quad_single_primitive (const float *position,
   /*
    * Validate the texture coordinates for this rectangle.
    */
-  layers = cogl_material_get_layers (material);
+  layers = _cogl_pipeline_get_layers (pipeline);
   for (tmp = (GList *)layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
     {
       CoglHandle          layer = (CoglHandle)tmp->data;
@@ -381,10 +381,10 @@ _cogl_multitexture_quad_single_primitive (const float *position,
       float               default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
       CoglTransformResult transform_result;
 
-      tex_handle = cogl_material_layer_get_texture (layer);
+      tex_handle = _cogl_pipeline_layer_get_texture (layer);
 
       /* COGL_INVALID_HANDLE textures are handled by
-       * _cogl_material_flush_gl_state */
+       * _cogl_pipeline_flush_gl_state */
       if (tex_handle == COGL_INVALID_HANDLE)
         continue;
 
@@ -456,25 +456,25 @@ _cogl_multitexture_quad_single_primitive (const float *position,
          the full texture is drawn with GL_LINEAR filter mode */
       if (transform_result == COGL_TRANSFORM_HARDWARE_REPEAT)
         {
-          if (cogl_material_layer_get_wrap_mode_s (layer) ==
-              COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+          if (_cogl_pipeline_layer_get_wrap_mode_s (layer) ==
+              COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
             {
               wrap_mode_overrides.values[i].s
-                = COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
+                = COGL_PIPELINE_WRAP_MODE_OVERRIDE_REPEAT;
               wrap_mode_overrides_p = &wrap_mode_overrides;
             }
-          if (cogl_material_layer_get_wrap_mode_t (layer) ==
-              COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+          if (_cogl_pipeline_layer_get_wrap_mode_t (layer) ==
+              COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
             {
               wrap_mode_overrides.values[i].t
-                = COGL_MATERIAL_WRAP_MODE_OVERRIDE_REPEAT;
+                = COGL_PIPELINE_WRAP_MODE_OVERRIDE_REPEAT;
               wrap_mode_overrides_p = &wrap_mode_overrides;
             }
         }
     }
 
   _cogl_journal_log_quad (position,
-                          material,
+                          pipeline,
                           n_layers,
                           fallback_layers,
                           0, /* don't replace the layer0 texture */
@@ -497,7 +497,7 @@ _cogl_rectangles_with_multitexture_coords (
                                         struct _CoglMutiTexturedRect *rects,
                                         int                           n_rects)
 {
-  CoglMaterial *material;
+  CoglPipeline *pipeline;
   const GList *layers;
   int n_layers;
   const GList *tmp;
@@ -507,23 +507,19 @@ _cogl_rectangles_with_multitexture_coords (
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  material = cogl_get_source ();
+  pipeline = cogl_get_source ();
 
-  layers = cogl_material_get_layers (material);
-  n_layers = cogl_material_get_n_layers (material);
+  layers = _cogl_pipeline_get_layers (pipeline);
+  n_layers = cogl_pipeline_get_n_layers (pipeline);
 
   /*
-   * Validate all the layers of the current source material...
+   * Validate all the layers of the current source pipeline...
    */
 
   for (tmp = layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
     {
       CoglHandle     layer = tmp->data;
       CoglHandle     tex_handle;
-
-      if (cogl_material_layer_get_type (layer)
-	  != COGL_MATERIAL_LAYER_TYPE_TEXTURE)
-	continue;
 
       /* We need to ensure the mipmaps are ready before deciding
        * anything else about the texture because the texture storage
@@ -535,42 +531,42 @@ _cogl_rectangles_with_multitexture_coords (
        * underlying texture storage. We could add two mechanisms to
        * generalize this a bit...
        *
-       * 1) add a _cogl_material_layer_update_storage() function that
+       * 1) add a _cogl_pipeline_layer_update_storage() function that
        * would for instance consider if mipmapping is necessary and
        * potentially migrate the texture from an atlas.
        *
-       * 2) allow setting of transient primitive-flags on a material
+       * 2) allow setting of transient primitive-flags on a pipeline
        * that may affect the outcome of _update_storage(). One flag
        * could indicate that we expect to sample beyond the bounds of
        * the texture border.
        *
-       *   flags = COGL_MATERIAL_PRIMITIVE_FLAG_VALID_BORDERS;
-       *   _cogl_material_layer_assert_primitive_flags (layer, flags)
-       *   _cogl_material_layer_update_storage (layer)
+       *   flags = COGL_PIPELINE_PRIMITIVE_FLAG_VALID_BORDERS;
+       *   _cogl_pipeline_layer_assert_primitive_flags (layer, flags)
+       *   _cogl_pipeline_layer_update_storage (layer)
        *   enqueue primitive in journal
        *
        *   when the primitive is dequeued and drawn we should:
-       *   _cogl_material_flush_gl_state (material)
+       *   _cogl_pipeline_flush_gl_state (pipeline)
        *   draw primitive
-       *   _cogl_material_unassert_primitive_flags (layer, flags);
+       *   _cogl_pipeline_unassert_primitive_flags (layer, flags);
        *
-       * _cogl_material_layer_update_storage should take into
+       * _cogl_pipeline_layer_update_storage should take into
        * consideration all the asserted primitive requirements.  (E.g.
        * there could be multiple primitives in the journal - or in a
        * renderlist in the future - that need mipmaps or that need
        * valid contents beyond their borders (for cogl_polygon)
        * meaning they can't work with textures in an atas, so
-       * _cogl_material_layer_update_storage would pass on these
+       * _cogl_pipeline_layer_update_storage would pass on these
        * requirements to the texture atlas backend which would make
        * sure the referenced texture is migrated out of the atlas and
        * mipmaps are generated.)
        */
-      _cogl_material_layer_pre_paint (layer);
+      _cogl_pipeline_layer_pre_paint (layer);
 
-      tex_handle = cogl_material_layer_get_texture (layer);
+      tex_handle = _cogl_pipeline_layer_get_texture (layer);
 
       /* COGL_INVALID_HANDLE textures are handled by
-       * _cogl_material_flush_gl_state */
+       * _cogl_pipeline_flush_gl_state */
       if (tex_handle == COGL_INVALID_HANDLE)
         continue;
 
@@ -593,7 +589,7 @@ _cogl_rectangles_with_multitexture_coords (
                 {
                   static gboolean warning_seen = FALSE;
                   if (!warning_seen)
-                    g_warning ("Skipping layers 1..n of your material since "
+                    g_warning ("Skipping layers 1..n of your pipeline since "
                                "the first layer is sliced. We don't currently "
                                "support any multi-texturing with sliced "
                                "textures but assume layer 0 is the most "
@@ -606,7 +602,7 @@ _cogl_rectangles_with_multitexture_coords (
             {
               static gboolean warning_seen = FALSE;
               if (!warning_seen)
-                g_warning ("Skipping layer %d of your material consisting of "
+                g_warning ("Skipping layer %d of your pipeline consisting of "
                            "a sliced texture (unsuported for multi texturing)",
                            i);
               warning_seen = TRUE;
@@ -622,12 +618,12 @@ _cogl_rectangles_with_multitexture_coords (
        * waste or if using GL_TEXTURE_RECTANGLE_ARB) then we don't support
        * multi texturing since we don't know if the result will end up trying
        * to texture from the waste area. */
-      if (_cogl_material_layer_has_user_matrix (layer)
+      if (_cogl_pipeline_layer_has_user_matrix (layer)
           && !_cogl_texture_can_hardware_repeat (tex_handle))
         {
           static gboolean warning_seen = FALSE;
           if (!warning_seen)
-            g_warning ("Skipping layer %d of your material since a custom "
+            g_warning ("Skipping layer %d of your pipeline since a custom "
                        "texture matrix was given for a texture that can't be "
                        "repeated using the GPU and the result may try to "
                        "sample beyond the bounds of the texture ",
@@ -656,7 +652,7 @@ _cogl_rectangles_with_multitexture_coords (
         {
           gboolean success =
             _cogl_multitexture_quad_single_primitive (rects[i].position,
-                                                      material,
+                                                      pipeline,
                                                       fallback_layers,
                                                       rects[i].tex_coords,
                                                       rects[i].tex_coords_len);
@@ -671,25 +667,25 @@ _cogl_rectangles_with_multitexture_coords (
 
       /* If multitexturing failed or we are drawing with a sliced texture
        * then we only support a single layer so we pluck out the texture
-       * from the first material layer... */
-      layers = cogl_material_get_layers (material);
+       * from the first pipeline layer... */
+      layers = _cogl_pipeline_get_layers (pipeline);
       first_layer = layers->data;
-      tex_handle = cogl_material_layer_get_texture (first_layer);
+      tex_handle = _cogl_pipeline_layer_get_texture (first_layer);
 
       if (rects[i].tex_coords)
         tex_coords = rects[i].tex_coords;
       else
         tex_coords = default_tex_coords;
 
-      clamp_s = (cogl_material_layer_get_wrap_mode_s (first_layer) ==
-                 COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
-      clamp_t = (cogl_material_layer_get_wrap_mode_t (first_layer) ==
-                 COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
+      clamp_s = (_cogl_pipeline_layer_get_wrap_mode_s (first_layer) ==
+                 COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
+      clamp_t = (_cogl_pipeline_layer_get_wrap_mode_t (first_layer) ==
+                 COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
 
       COGL_NOTE (DRAW, "Drawing Tex Quad (Multi-Prim Mode)");
 
       _cogl_texture_quad_multiple_primitives (tex_handle,
-                                              material,
+                                              pipeline,
                                               clamp_s, clamp_t,
                                               rects[i].position,
                                               tex_coords[0],
@@ -832,7 +828,7 @@ typedef struct _AppendTexCoordsState
 } AppendTexCoordsState;
 
 gboolean
-append_tex_coord_attributes_cb (CoglMaterial *material,
+append_tex_coord_attributes_cb (CoglPipeline *pipeline,
                                 int layer_index,
                                 void *user_data)
 {
@@ -845,9 +841,9 @@ append_tex_coord_attributes_cb (CoglMaterial *material,
   ty = state->vertices_in[state->vertex].ty;
 
   /* COGL_INVALID_HANDLE textures will be handled in
-   * _cogl_material_flush_layers_gl_state but there is no need to worry
+   * _cogl_pipeline_flush_layers_gl_state but there is no need to worry
    * about scaling texture coordinates in this case */
-  tex_handle = _cogl_material_get_layer_texture (material, layer_index);
+  tex_handle = _cogl_pipeline_get_layer_texture (pipeline, layer_index);
   if (tex_handle != COGL_INVALID_HANDLE)
     _cogl_texture_transform_coords_to_gl (tex_handle, &tx, &ty);
 
@@ -863,40 +859,40 @@ append_tex_coord_attributes_cb (CoglMaterial *material,
 
 typedef struct _ValidateState
 {
-  CoglMaterial *original_material;
-  CoglMaterial *material;
+  CoglPipeline *original_pipeline;
+  CoglPipeline *pipeline;
 } ValidateState;
 
 gboolean
-validate_layer_cb (CoglMaterial *material,
+validate_layer_cb (CoglPipeline *pipeline,
                    int layer_index,
                    void *user_data)
 {
   ValidateState *state = user_data;
 
-  /* By default COGL_MATERIAL_WRAP_MODE_AUTOMATIC becomes
+  /* By default COGL_PIPELINE_WRAP_MODE_AUTOMATIC becomes
    * GL_CLAMP_TO_EDGE but we want the polygon API to use GL_REPEAT to
    * maintain compatibility with previous releases
    */
 
-  if (cogl_material_get_layer_wrap_mode_s (material, layer_index) ==
-      COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+  if (cogl_pipeline_get_layer_wrap_mode_s (pipeline, layer_index) ==
+      COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
     {
-      if (state->original_material == state->material)
-        state->material = cogl_material_copy (material);
+      if (state->original_pipeline == state->pipeline)
+        state->pipeline = cogl_pipeline_copy (pipeline);
 
-      cogl_material_set_layer_wrap_mode_s (state->material, layer_index,
-                                           COGL_MATERIAL_WRAP_MODE_REPEAT);
+      cogl_pipeline_set_layer_wrap_mode_s (state->pipeline, layer_index,
+                                           COGL_PIPELINE_WRAP_MODE_REPEAT);
     }
 
-  if (cogl_material_get_layer_wrap_mode_t (material, layer_index) ==
-      COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+  if (cogl_pipeline_get_layer_wrap_mode_t (pipeline, layer_index) ==
+      COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
     {
-      if (state->original_material == state->material)
-        state->material = cogl_material_copy (material);
+      if (state->original_pipeline == state->pipeline)
+        state->pipeline = cogl_pipeline_copy (pipeline);
 
-      cogl_material_set_layer_wrap_mode_t (state->material, layer_index,
-                                           COGL_MATERIAL_WRAP_MODE_REPEAT);
+      cogl_pipeline_set_layer_wrap_mode_t (state->pipeline, layer_index,
+                                           COGL_PIPELINE_WRAP_MODE_REPEAT);
     }
 
   return TRUE;
@@ -907,7 +903,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
               unsigned int n_vertices,
 	      gboolean use_color)
 {
-  CoglMaterial *material;
+  CoglPipeline *pipeline;
   ValidateState validate_state;
   int n_layers;
   int n_attributes;
@@ -920,16 +916,16 @@ cogl_polygon (const CoglTextureVertex *vertices,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  material = cogl_get_source ();
+  pipeline = cogl_get_source ();
 
-  validate_state.original_material = material;
-  validate_state.material = material;
-  cogl_material_foreach_layer (material,
+  validate_state.original_pipeline = pipeline;
+  validate_state.pipeline = pipeline;
+  cogl_pipeline_foreach_layer (pipeline,
                                validate_layer_cb,
                                &validate_state);
-  material = validate_state.material;
+  pipeline = validate_state.pipeline;
 
-  n_layers = cogl_material_get_n_layers (material);
+  n_layers = cogl_pipeline_get_n_layers (pipeline);
 
   n_attributes = 1 + n_layers + (use_color ? 1 : 0);
   attributes = g_alloca (sizeof (CoglVertexAttribute *) * (n_attributes + 1));
@@ -1008,7 +1004,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
       append_tex_coords_state.vertex = i;
       append_tex_coords_state.layer = 0;
       append_tex_coords_state.vertices_out = v;
-      cogl_material_foreach_layer (material,
+      cogl_pipeline_foreach_layer (pipeline,
                                    append_tex_coord_attributes_cb,
                                    &append_tex_coords_state);
 
@@ -1031,7 +1027,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
                         (const guint8 *)v,
                         ctx->polygon_vertices->len * sizeof (float));
 
-  cogl_push_source (material);
+  cogl_push_source (pipeline);
 
   cogl_draw_vertex_attributes_array (COGL_VERTICES_MODE_TRIANGLE_FAN,
                                      0, n_vertices,

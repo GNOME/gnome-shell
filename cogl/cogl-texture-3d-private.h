@@ -26,7 +26,7 @@
 #define __COGL_TEXTURE_3D_PRIVATE_H
 
 #include "cogl-handle.h"
-#include "cogl-material-private.h"
+#include "cogl-pipeline-private.h"
 #include "cogl-texture-private.h"
 
 #define COGL_TEXTURE_3D(tex) ((CoglTexture3D *) tex)
@@ -73,7 +73,7 @@ _cogl_handle_texture_3d_get_type (void);
  *    be used. The default blending equations of Cogl expect premultiplied
  *    color data; the main use of passing a non-premultiplied format here
  *    is if you have non-premultiplied source data and are going to adjust
- *    the blend mode (see cogl_material_set_blend()) or use the data for
+ *    the blend mode (see cogl_pipeline_set_blend()) or use the data for
  *    something other than straight blending.
  * @error: A GError return location.
  *

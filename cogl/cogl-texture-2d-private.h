@@ -25,7 +25,7 @@
 #define __COGL_TEXTURE_2D_H
 
 #include "cogl-handle.h"
-#include "cogl-material-private.h"
+#include "cogl-pipeline-private.h"
 #include "cogl-texture-private.h"
 
 #define COGL_TEXTURE_2D(tex) ((CoglTexture2D *) tex)

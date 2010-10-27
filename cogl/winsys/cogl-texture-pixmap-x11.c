@@ -43,7 +43,7 @@
 #include "cogl-context.h"
 #include "cogl-handle.h"
 #include "cogl-xlib.h"
-#include "cogl-material-opengl-private.h"
+#include "cogl-pipeline-opengl-private.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -1066,10 +1066,10 @@ _cogl_texture_pixmap_x11_set_use_glx_texture (CoglTexturePixmapX11 *tex_pixmap,
 {
   if (tex_pixmap->use_glx_texture != new_value)
     {
-      /* Notify cogl-material.c that the texture's underlying GL texture
+      /* Notify cogl-pipeline.c that the texture's underlying GL texture
        * storage is changing so it knows it may need to bind a new texture
        * if the CoglTexture is reused with the same texture unit. */
-      _cogl_material_texture_storage_change_notify (tex_pixmap);
+      _cogl_pipeline_texture_storage_change_notify (tex_pixmap);
 
       tex_pixmap->use_glx_texture = new_value;
     }

@@ -41,7 +41,7 @@
 #include "cogl-texture-driver.h"
 #include "cogl-rectangle-map.h"
 #include "cogl-journal-private.h"
-#include "cogl-material-opengl-private.h"
+#include "cogl-pipeline-opengl-private.h"
 #include "cogl-atlas.h"
 
 #include <stdlib.h>
@@ -87,17 +87,17 @@ _cogl_atlas_texture_reorganize_foreach_cb (const CoglRectangleMapEntry *entry,
                                            void *rectangle_data,
                                            void *user_data)
 {
-  /* Notify cogl-material.c that the texture's underlying GL texture
+  /* Notify cogl-pipeline.c that the texture's underlying GL texture
    * storage is changing so it knows it may need to bind a new texture
    * if the CoglTexture is reused with the same texture unit. */
-  _cogl_material_texture_storage_change_notify (rectangle_data);
+  _cogl_pipeline_texture_storage_change_notify (rectangle_data);
 }
 
 static void
 _cogl_atlas_texture_reorganize_cb (void *data)
 {
   CoglAtlas *atlas;
-  /* We don't know if any materials may currently be referenced in
+  /* We don't know if any pipelines may currently be referenced in
    * the journal that depend on the current underlying GL texture
    * storage so we flush the journal before migrating.
    *
@@ -274,7 +274,7 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
     {
       COGL_NOTE (ATLAS, "Migrating texture out of the atlas");
 
-      /* We don't know if any materials may currently be referenced in
+      /* We don't know if any pipelines may currently be referenced in
        * the journal that depend on the current underlying GL texture
        * storage so we flush the journal before migrating.
        *
@@ -283,10 +283,10 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
        */
       _cogl_journal_flush ();
 
-      /* Notify cogl-material.c that the texture's underlying GL texture
+      /* Notify cogl-pipeline.c that the texture's underlying GL texture
        * storage is changing so it knows it may need to bind a new texture
        * if the CoglTexture is reused with the same texture unit. */
-      _cogl_material_texture_storage_change_notify (atlas_tex);
+      _cogl_pipeline_texture_storage_change_notify (atlas_tex);
 
       cogl_handle_unref (atlas_tex->sub_texture);
 

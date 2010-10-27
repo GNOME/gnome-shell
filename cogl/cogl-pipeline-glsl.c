@@ -29,10 +29,10 @@
 #include "config.h"
 #endif
 
-#include "cogl-material-private.h"
+#include "cogl-pipeline-private.h"
 #include "cogl-shader-private.h"
 
-#ifdef COGL_MATERIAL_BACKEND_GLSL
+#ifdef COGL_PIPELINE_BACKEND_GLSL
 
 #include "cogl.h"
 #include "cogl-internal.h"
@@ -56,7 +56,7 @@
 #include <glib.h>
 
 /*
- * GL/GLES compatability defines for material thingies:
+ * GL/GLES compatability defines for pipeline thingies:
  */
 
 #ifdef HAVE_COGL_GLES2
@@ -87,15 +87,15 @@ typedef struct _GlslProgramState
 #endif
 } GlslProgramState;
 
-typedef struct _CoglMaterialBackendGlslPrivate
+typedef struct _CoglPipelineBackendGlslPrivate
 {
   GlslProgramState *glsl_program_state;
-} CoglMaterialBackendGlslPrivate;
+} CoglPipelineBackendGlslPrivate;
 
-const CoglMaterialBackend _cogl_material_glsl_backend;
+const CoglPipelineBackend _cogl_pipeline_glsl_backend;
 
 static int
-_cogl_material_backend_glsl_get_max_texture_units (void)
+_cogl_pipeline_backend_glsl_get_max_texture_units (void)
 {
   return _cogl_get_max_texture_image_units ();
 }
@@ -152,56 +152,56 @@ glsl_program_state_unref (GlslProgramState *state)
 }
 
 /* This tries to find the oldest ancestor whos state would generate
- * the same glsl program as the current material. This is a simple
+ * the same glsl program as the current pipeline. This is a simple
  * mechanism for reducing the number of glsl programs we have to
  * generate.
  */
-static CoglMaterial *
-find_glsl_authority (CoglMaterial *material, CoglHandle user_program)
+static CoglPipeline *
+find_glsl_authority (CoglPipeline *pipeline, CoglHandle user_program)
 {
-  /* Find the first material that modifies the user shader */
-  return _cogl_material_get_authority (material,
-                                       COGL_MATERIAL_STATE_USER_SHADER);
+  /* Find the first pipeline that modifies the user shader */
+  return _cogl_pipeline_get_authority (pipeline,
+                                       COGL_PIPELINE_STATE_USER_SHADER);
 }
 
-static CoglMaterialBackendGlslPrivate *
-get_glsl_priv (CoglMaterial *material)
+static CoglPipelineBackendGlslPrivate *
+get_glsl_priv (CoglPipeline *pipeline)
 {
-  if (!(material->backend_priv_set_mask & COGL_MATERIAL_BACKEND_GLSL_MASK))
+  if (!(pipeline->backend_priv_set_mask & COGL_PIPELINE_BACKEND_GLSL_MASK))
     return NULL;
 
-  return material->backend_privs[COGL_MATERIAL_BACKEND_GLSL];
+  return pipeline->backend_privs[COGL_PIPELINE_BACKEND_GLSL];
 }
 
 static void
-set_glsl_priv (CoglMaterial *material, CoglMaterialBackendGlslPrivate *priv)
+set_glsl_priv (CoglPipeline *pipeline, CoglPipelineBackendGlslPrivate *priv)
 {
   if (priv)
     {
-      material->backend_privs[COGL_MATERIAL_BACKEND_GLSL] = priv;
-      material->backend_priv_set_mask |= COGL_MATERIAL_BACKEND_GLSL_MASK;
+      pipeline->backend_privs[COGL_PIPELINE_BACKEND_GLSL] = priv;
+      pipeline->backend_priv_set_mask |= COGL_PIPELINE_BACKEND_GLSL_MASK;
     }
   else
-    material->backend_priv_set_mask &= ~COGL_MATERIAL_BACKEND_GLSL_MASK;
+    pipeline->backend_priv_set_mask &= ~COGL_PIPELINE_BACKEND_GLSL_MASK;
 }
 
 static GlslProgramState *
-get_glsl_program_state (CoglMaterial *material)
+get_glsl_program_state (CoglPipeline *pipeline)
 {
-  CoglMaterialBackendGlslPrivate *priv = get_glsl_priv (material);
+  CoglPipelineBackendGlslPrivate *priv = get_glsl_priv (pipeline);
   if (!priv)
     return NULL;
   return priv->glsl_program_state;
 }
 
 static void
-dirty_glsl_program_state (CoglMaterial *material)
+dirty_glsl_program_state (CoglPipeline *pipeline)
 {
-  CoglMaterialBackendGlslPrivate *priv;
+  CoglPipelineBackendGlslPrivate *priv;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  priv = get_glsl_priv (material);
+  priv = get_glsl_priv (pipeline);
   if (!priv)
     return;
 
@@ -250,13 +250,13 @@ link_program (GLint gl_program)
 }
 
 static gboolean
-_cogl_material_backend_glsl_start (CoglMaterial *material,
+_cogl_pipeline_backend_glsl_start (CoglPipeline *pipeline,
                                    int n_layers,
-                                   unsigned long materials_difference)
+                                   unsigned long pipelines_difference)
 {
-  CoglMaterialBackendGlslPrivate *priv;
-  CoglMaterial *authority;
-  CoglMaterialBackendGlslPrivate *authority_priv;
+  CoglPipelineBackendGlslPrivate *priv;
+  CoglPipeline *authority;
+  CoglPipelineBackendGlslPrivate *authority_priv;
   CoglProgram *user_program;
   GLuint gl_program;
   GSList *l;
@@ -266,18 +266,18 @@ _cogl_material_backend_glsl_start (CoglMaterial *material,
   if (!cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
     return FALSE;
 
-  user_program = cogl_material_get_user_program (material);
+  user_program = cogl_pipeline_get_user_program (pipeline);
   if (user_program == COGL_INVALID_HANDLE ||
       _cogl_program_get_language (user_program) != COGL_SHADER_LANGUAGE_GLSL)
     return FALSE; /* XXX: change me when we support code generation here */
 
   /* Now lookup our glsl backend private state (allocating if
    * necessary) */
-  priv = get_glsl_priv (material);
+  priv = get_glsl_priv (pipeline);
   if (!priv)
     {
-      priv = g_slice_new0 (CoglMaterialBackendGlslPrivate);
-      set_glsl_priv (material, priv);
+      priv = g_slice_new0 (CoglPipelineBackendGlslPrivate);
+      set_glsl_priv (pipeline, priv);
     }
 
   /* If we already have a valid GLSL program then we don't need to
@@ -299,17 +299,17 @@ _cogl_material_backend_glsl_start (CoglMaterial *material,
     {
       /* If we don't have an associated glsl program yet then find the
        * glsl-authority (the oldest ancestor whose state will result in
-       * the same program being generated as for this material).
+       * the same program being generated as for this pipeline).
        *
        * We always make sure to associate new programs with the
-       * glsl-authority to maximize the chance that other materials can
+       * glsl-authority to maximize the chance that other pipelines can
        * share it.
        */
-      authority = find_glsl_authority (material, user_program);
+      authority = find_glsl_authority (pipeline, user_program);
       authority_priv = get_glsl_priv (authority);
       if (!authority_priv)
         {
-          authority_priv = g_slice_new0 (CoglMaterialBackendGlslPrivate);
+          authority_priv = g_slice_new0 (CoglPipelineBackendGlslPrivate);
           set_glsl_priv (authority, authority_priv);
         }
 
@@ -322,10 +322,10 @@ _cogl_material_backend_glsl_start (CoglMaterial *material,
             glsl_program_state_new (n_layers);
           authority_priv->glsl_program_state = glsl_program_state;
 
-          /* If the material isn't actually its own glsl-authority
+          /* If the pipeline isn't actually its own glsl-authority
            * then take a reference to the program state associated
            * with the glsl-authority... */
-          if (authority != material)
+          if (authority != pipeline)
             priv->glsl_program_state =
               glsl_program_state_ref (authority_priv->glsl_program_state);
         }
@@ -359,24 +359,24 @@ _cogl_material_backend_glsl_start (CoglMaterial *material,
 }
 
 gboolean
-_cogl_material_backend_glsl_add_layer (CoglMaterial *material,
-                                       CoglMaterialLayer *layer,
+_cogl_pipeline_backend_glsl_add_layer (CoglPipeline *pipeline,
+                                       CoglPipelineLayer *layer,
                                        unsigned long layers_difference)
 {
   return TRUE;
 }
 
 gboolean
-_cogl_material_backend_glsl_passthrough (CoglMaterial *material)
+_cogl_pipeline_backend_glsl_passthrough (CoglPipeline *pipeline)
 {
   return TRUE;
 }
 
 gboolean
-_cogl_material_backend_glsl_end (CoglMaterial *material,
-                                 unsigned long materials_difference)
+_cogl_pipeline_backend_glsl_end (CoglPipeline *pipeline,
+                                 unsigned long pipelines_difference)
 {
-  GlslProgramState *glsl_program_state = get_glsl_program_state (material);
+  GlslProgramState *glsl_program_state = get_glsl_program_state (pipeline);
   GLuint gl_program;
   gboolean gl_program_changed;
 
@@ -396,10 +396,10 @@ _cogl_material_backend_glsl_end (CoglMaterial *material,
       gl_program_changed = TRUE;
     }
 #else
-  _cogl_use_program (gl_program, COGL_MATERIAL_PROGRAM_TYPE_GLSL);
+  _cogl_use_program (gl_program, COGL_PIPELINE_PROGRAM_TYPE_GLSL);
 #endif
 
-  _cogl_program_flush_uniforms (cogl_material_get_user_program (material),
+  _cogl_program_flush_uniforms (cogl_pipeline_get_user_program (pipeline),
                                 gl_program, gl_program_changed);
 
   glsl_program_state->gl_program_changed = FALSE;
@@ -408,45 +408,45 @@ _cogl_material_backend_glsl_end (CoglMaterial *material,
 }
 
 static void
-_cogl_material_backend_glsl_pre_change_notify (CoglMaterial *material,
-                                               CoglMaterialState change,
+_cogl_pipeline_backend_glsl_pre_change_notify (CoglPipeline *pipeline,
+                                               CoglPipelineState change,
                                                const CoglColor *new_color)
 {
   static const unsigned long glsl_op_changes =
-    COGL_MATERIAL_STATE_USER_SHADER;
+    COGL_PIPELINE_STATE_USER_SHADER;
 
   if (!(change & glsl_op_changes))
     return;
 
-  dirty_glsl_program_state (material);
+  dirty_glsl_program_state (pipeline);
 }
 
 static void
-_cogl_material_backend_glsl_free_priv (CoglMaterial *material)
+_cogl_pipeline_backend_glsl_free_priv (CoglPipeline *pipeline)
 {
-  CoglMaterialBackendGlslPrivate *priv = get_glsl_priv (material);
+  CoglPipelineBackendGlslPrivate *priv = get_glsl_priv (pipeline);
   if (priv)
     {
       if (priv->glsl_program_state)
         glsl_program_state_unref (priv->glsl_program_state);
-      g_slice_free (CoglMaterialBackendGlslPrivate, priv);
-      set_glsl_priv (material, NULL);
+      g_slice_free (CoglPipelineBackendGlslPrivate, priv);
+      set_glsl_priv (pipeline, NULL);
     }
 }
 
-const CoglMaterialBackend _cogl_material_glsl_backend =
+const CoglPipelineBackend _cogl_pipeline_glsl_backend =
 {
-  _cogl_material_backend_glsl_get_max_texture_units,
-  _cogl_material_backend_glsl_start,
-  _cogl_material_backend_glsl_add_layer,
-  _cogl_material_backend_glsl_passthrough,
-  _cogl_material_backend_glsl_end,
-  _cogl_material_backend_glsl_pre_change_notify,
-  NULL, /* material_set_parent_notify */
+  _cogl_pipeline_backend_glsl_get_max_texture_units,
+  _cogl_pipeline_backend_glsl_start,
+  _cogl_pipeline_backend_glsl_add_layer,
+  _cogl_pipeline_backend_glsl_passthrough,
+  _cogl_pipeline_backend_glsl_end,
+  _cogl_pipeline_backend_glsl_pre_change_notify,
+  NULL, /* pipeline_set_parent_notify */
   NULL, /* layer_pre_change_notify */
-  _cogl_material_backend_glsl_free_priv,
+  _cogl_pipeline_backend_glsl_free_priv,
   NULL /* free_layer_priv */
 };
 
-#endif /* COGL_MATERIAL_BACKEND_GLSL */
+#endif /* COGL_PIPELINE_BACKEND_GLSL */
 

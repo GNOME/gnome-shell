@@ -470,7 +470,7 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
    * To avoid an error with drivers that do consider this a problem we
    * explicitly set non mipmapped filters here. These will later be reset when
    * the texture is actually used for rendering according to the filters set on
-   * the corresponding CoglMaterial.
+   * the corresponding CoglPipeline.
    */
   _cogl_texture_set_filters (texhandle, GL_NEAREST, GL_NEAREST);
 

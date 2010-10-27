@@ -29,10 +29,10 @@
 #include "config.h"
 #endif
 
-#include "cogl-material-private.h"
-#include "cogl-material-opengl-private.h"
+#include "cogl-pipeline-private.h"
+#include "cogl-pipeline-opengl-private.h"
 
-#ifdef COGL_MATERIAL_BACKEND_FIXED
+#ifdef COGL_PIPELINE_BACKEND_FIXED
 
 #include "cogl.h"
 #include "cogl-internal.h"
@@ -51,10 +51,10 @@
 #include "../gles/cogl-gles2-wrapper.h"
 #endif
 
-const CoglMaterialBackend _cogl_material_fixed_backend;
+const CoglPipelineBackend _cogl_pipeline_fixed_backend;
 
 static int
-_cogl_material_backend_fixed_get_max_texture_units (void)
+_cogl_pipeline_backend_fixed_get_max_texture_units (void)
 {
   _COGL_GET_CONTEXT (ctx, 0);
 
@@ -71,21 +71,21 @@ _cogl_material_backend_fixed_get_max_texture_units (void)
 }
 
 static gboolean
-_cogl_material_backend_fixed_start (CoglMaterial *material,
+_cogl_pipeline_backend_fixed_start (CoglPipeline *pipeline,
                                     int n_layers,
-                                    unsigned long materials_difference)
+                                    unsigned long pipelines_difference)
 {
-  _cogl_use_program (0, COGL_MATERIAL_PROGRAM_TYPE_FIXED);
+  _cogl_use_program (0, COGL_PIPELINE_PROGRAM_TYPE_FIXED);
   return TRUE;
 }
 
 static gboolean
-_cogl_material_backend_fixed_add_layer (CoglMaterial *material,
-                                        CoglMaterialLayer *layer,
+_cogl_pipeline_backend_fixed_add_layer (CoglPipeline *pipeline,
+                                        CoglPipelineLayer *layer,
                                         unsigned long layers_difference)
 {
   CoglTextureUnit *unit =
-    _cogl_get_texture_unit (_cogl_material_layer_get_unit_index (layer));
+    _cogl_get_texture_unit (_cogl_pipeline_layer_get_unit_index (layer));
   int unit_index = unit->index;
   int n_rgb_func_args;
   int n_alpha_func_args;
@@ -100,12 +100,12 @@ _cogl_material_backend_fixed_add_layer (CoglMaterial *material,
    */
   _cogl_set_active_texture_unit (unit_index);
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_COMBINE)
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_COMBINE)
     {
-      CoglMaterialLayer *authority =
-        _cogl_material_layer_get_authority (layer,
-                                            COGL_MATERIAL_LAYER_STATE_COMBINE);
-      CoglMaterialLayerBigState *big_state = authority->big_state;
+      CoglPipelineLayer *authority =
+        _cogl_pipeline_layer_get_authority (layer,
+                                            COGL_PIPELINE_LAYER_STATE_COMBINE);
+      CoglPipelineLayerBigState *big_state = authority->big_state;
 
       GE (glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE));
 
@@ -168,12 +168,12 @@ _cogl_material_backend_fixed_add_layer (CoglMaterial *material,
         }
     }
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_COMBINE)
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_COMBINE)
     {
-      CoglMaterialLayer *authority =
-        _cogl_material_layer_get_authority (layer,
-                                            COGL_MATERIAL_LAYER_STATE_COMBINE);
-      CoglMaterialLayerBigState *big_state = authority->big_state;
+      CoglPipelineLayer *authority =
+        _cogl_pipeline_layer_get_authority (layer,
+                                            COGL_PIPELINE_LAYER_STATE_COMBINE);
+      CoglPipelineLayerBigState *big_state = authority->big_state;
 
       GE (glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR,
                       big_state->texture_combine_constant));
@@ -183,14 +183,14 @@ _cogl_material_backend_fixed_add_layer (CoglMaterial *material,
 }
 
 static gboolean
-_cogl_material_backend_fixed_end (CoglMaterial *material,
-                                  unsigned long materials_difference)
+_cogl_pipeline_backend_fixed_end (CoglPipeline *pipeline,
+                                  unsigned long pipelines_difference)
 {
-  if (materials_difference & COGL_MATERIAL_STATE_FOG)
+  if (pipelines_difference & COGL_PIPELINE_STATE_FOG)
     {
-      CoglMaterial *authority =
-        _cogl_material_get_authority (material, COGL_MATERIAL_STATE_FOG);
-      CoglMaterialFogState *fog_state = &authority->big_state->fog_state;
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_FOG);
+      CoglPipelineFogState *fog_state = &authority->big_state->fog_state;
 
       if (fog_state->enabled)
         {
@@ -244,18 +244,18 @@ _cogl_material_backend_fixed_end (CoglMaterial *material,
   return TRUE;
 }
 
-const CoglMaterialBackend _cogl_material_fixed_backend =
+const CoglPipelineBackend _cogl_pipeline_fixed_backend =
 {
-  _cogl_material_backend_fixed_get_max_texture_units,
-  _cogl_material_backend_fixed_start,
-  _cogl_material_backend_fixed_add_layer,
+  _cogl_pipeline_backend_fixed_get_max_texture_units,
+  _cogl_pipeline_backend_fixed_start,
+  _cogl_pipeline_backend_fixed_add_layer,
   NULL, /* passthrough */
-  _cogl_material_backend_fixed_end,
-  NULL, /* material_change_notify */
-  NULL, /* material_set_parent_notify */
+  _cogl_pipeline_backend_fixed_end,
+  NULL, /* pipeline_change_notify */
+  NULL, /* pipeline_set_parent_notify */
   NULL, /* layer_change_notify */
   NULL /* free_priv */
 };
 
-#endif /* COGL_MATERIAL_BACKEND_FIXED */
+#endif /* COGL_PIPELINE_BACKEND_FIXED */
 

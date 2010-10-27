@@ -35,7 +35,7 @@
 #include <cogl/cogl-bitmap.h>
 #include <cogl/cogl-color.h>
 #include <cogl/cogl-fixed.h>
-#include <cogl/cogl-material.h>
+#include <cogl/cogl-material-compat.h>
 #include <cogl/cogl-matrix.h>
 #include <cogl/cogl-offscreen.h>
 #include <cogl/cogl-primitives.h>
@@ -59,6 +59,7 @@
 #include <cogl/cogl-indices.h>
 #include <cogl/cogl-vertex-attribute.h>
 #include <cogl/cogl-primitive.h>
+#include <cogl/cogl-pipeline.h>
 #endif
 
 G_BEGIN_DECLS
@@ -589,7 +590,7 @@ cogl_clear (const CoglColor *color,
  * Since: 1.0
  */
 void
-cogl_set_source (CoglMaterial *material);
+cogl_set_source (void *material);
 
 /**
  * cogl_get_source:
@@ -607,7 +608,7 @@ cogl_set_source (CoglMaterial *material);
  *
  * Since: 1.6
  */
-CoglMaterial *
+void *
 cogl_get_source (void);
 
 /**
@@ -621,7 +622,7 @@ cogl_get_source (void);
  * Since: 1.6
  */
 void
-cogl_push_source (CoglMaterial *material);
+cogl_push_source (void *material);
 
 /**
  * cogl_pop_source:

@@ -103,8 +103,8 @@
 #include "cogl-handle.h"
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-texture-private.h"
-#include "cogl-material.h"
-#include "cogl-material-private.h"
+#include "cogl-pipeline.h"
+#include "cogl-pipeline-private.h"
 #include "cogl-primitives.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-journal-private.h"
@@ -114,7 +114,7 @@
 
 static void _cogl_vertex_buffer_free (CoglVertexBuffer *buffer);
 static void _cogl_vertex_buffer_indices_free (CoglVertexBufferIndices *buffer_indices);
-static CoglUserDataKey _cogl_vertex_buffer_material_priv_key;
+static CoglUserDataKey _cogl_vertex_buffer_pipeline_priv_key;
 
 COGL_HANDLE_DEFINE (VertexBuffer, vertex_buffer);
 COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (vertex_buffer);
@@ -1392,70 +1392,70 @@ cogl_vertex_buffer_submit (CoglHandle handle)
 
 typedef struct
 {
-  CoglMaterial *real_source;
+  CoglPipeline *real_source;
 } VertexBufferMaterialPrivate;
 
 static void
-weak_override_source_destroyed_cb (CoglMaterial *material,
+weak_override_source_destroyed_cb (CoglPipeline *pipeline,
                  void *user_data)
 {
-  VertexBufferMaterialPrivate *material_priv = user_data;
-  material_priv->real_source = NULL;
+  VertexBufferMaterialPrivate *pipeline_priv = user_data;
+  pipeline_priv->real_source = NULL;
 }
 
 static gboolean
-validate_layer_cb (CoglMaterial *material,
+validate_layer_cb (CoglPipeline *pipeline,
                    int layer_index,
                    void *user_data)
 {
-  VertexBufferMaterialPrivate *material_priv = user_data;
-  CoglMaterial *source = material_priv->real_source;
+  VertexBufferMaterialPrivate *pipeline_priv = user_data;
+  CoglPipeline *source = pipeline_priv->real_source;
 
-  if (!cogl_material_get_layer_point_sprite_coords_enabled (source,
+  if (!cogl_pipeline_get_layer_point_sprite_coords_enabled (source,
                                                             layer_index))
     {
-      CoglMaterialWrapMode wrap_s;
-      CoglMaterialWrapMode wrap_t;
-      CoglMaterialWrapMode wrap_p;
+      CoglPipelineWrapMode wrap_s;
+      CoglPipelineWrapMode wrap_t;
+      CoglPipelineWrapMode wrap_p;
       gboolean need_override_source = FALSE;
 
-      /* By default COGL_MATERIAL_WRAP_MODE_AUTOMATIC becomes
+      /* By default COGL_PIPELINE_WRAP_MODE_AUTOMATIC becomes
        * GL_CLAMP_TO_EDGE but we want GL_REPEAT to maintain
        * compatibility with older versions of Cogl so we'll override
        * it. We don't want to do this for point sprites because in
        * that case the whole texture is drawn so you would usually
        * want clamp-to-edge.
        */
-      wrap_s = cogl_material_get_layer_wrap_mode_s (source, layer_index);
-      if (wrap_s == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+      wrap_s = cogl_pipeline_get_layer_wrap_mode_s (source, layer_index);
+      if (wrap_s == COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
         {
           need_override_source = TRUE;
-          wrap_s = COGL_MATERIAL_WRAP_MODE_REPEAT;
+          wrap_s = COGL_PIPELINE_WRAP_MODE_REPEAT;
         }
-      wrap_t = cogl_material_get_layer_wrap_mode_t (source, layer_index);
-      if (wrap_t == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+      wrap_t = cogl_pipeline_get_layer_wrap_mode_t (source, layer_index);
+      if (wrap_t == COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
         {
           need_override_source = TRUE;
-          wrap_t = COGL_MATERIAL_WRAP_MODE_REPEAT;
+          wrap_t = COGL_PIPELINE_WRAP_MODE_REPEAT;
         }
-      wrap_p = cogl_material_get_layer_wrap_mode_p (source, layer_index);
-      if (wrap_p == COGL_MATERIAL_WRAP_MODE_AUTOMATIC)
+      wrap_p = cogl_pipeline_get_layer_wrap_mode_p (source, layer_index);
+      if (wrap_p == COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
         {
           need_override_source = TRUE;
-          wrap_p = COGL_MATERIAL_WRAP_MODE_REPEAT;
+          wrap_p = COGL_PIPELINE_WRAP_MODE_REPEAT;
         }
 
       if (need_override_source)
         {
-          if (material_priv->real_source == material)
-            material_priv->real_source = source =
-              _cogl_material_weak_copy (material,
+          if (pipeline_priv->real_source == pipeline)
+            pipeline_priv->real_source = source =
+              _cogl_pipeline_weak_copy (pipeline,
                                         weak_override_source_destroyed_cb,
-                                        material_priv);
+                                        pipeline_priv);
 
-          cogl_material_set_layer_wrap_mode_s (source, layer_index, wrap_s);
-          cogl_material_set_layer_wrap_mode_t (source, layer_index, wrap_t);
-          cogl_material_set_layer_wrap_mode_p (source, layer_index, wrap_p);
+          cogl_pipeline_set_layer_wrap_mode_s (source, layer_index, wrap_s);
+          cogl_pipeline_set_layer_wrap_mode_t (source, layer_index, wrap_t);
+          cogl_pipeline_set_layer_wrap_mode_p (source, layer_index, wrap_p);
         }
     }
 
@@ -1463,7 +1463,7 @@ validate_layer_cb (CoglMaterial *material,
 }
 
 static void
-destroy_material_priv_cb (void *user_data)
+destroy_pipeline_priv_cb (void *user_data)
 {
   g_slice_free (VertexBufferMaterialPrivate, user_data);
 }
@@ -1475,8 +1475,8 @@ update_primitive_and_draw (CoglVertexBuffer *buffer,
                            int count,
                            CoglVertexBufferIndices *buffer_indices)
 {
-  VertexBufferMaterialPrivate *material_priv;
-  CoglMaterial *users_source;
+  VertexBufferMaterialPrivate *pipeline_priv;
+  CoglPipeline *users_source;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1492,27 +1492,27 @@ update_primitive_and_draw (CoglVertexBuffer *buffer,
   cogl_vertex_buffer_submit_real (buffer);
 
   users_source = cogl_get_source ();
-  material_priv =
+  pipeline_priv =
     cogl_object_get_user_data (COGL_OBJECT (users_source),
-                               &_cogl_vertex_buffer_material_priv_key);
-  if (G_UNLIKELY (!material_priv))
+                               &_cogl_vertex_buffer_pipeline_priv_key);
+  if (G_UNLIKELY (!pipeline_priv))
     {
-      material_priv = g_slice_new0 (VertexBufferMaterialPrivate);
+      pipeline_priv = g_slice_new0 (VertexBufferMaterialPrivate);
       cogl_object_set_user_data (COGL_OBJECT (users_source),
-                                 &_cogl_vertex_buffer_material_priv_key,
-                                 material_priv,
-                                 destroy_material_priv_cb);
+                                 &_cogl_vertex_buffer_pipeline_priv_key,
+                                 pipeline_priv,
+                                 destroy_pipeline_priv_cb);
     }
 
-  if (G_UNLIKELY (!material_priv->real_source))
+  if (G_UNLIKELY (!pipeline_priv->real_source))
     {
-      material_priv->real_source = users_source;
-      cogl_material_foreach_layer (material_priv->real_source,
+      pipeline_priv->real_source = users_source;
+      cogl_pipeline_foreach_layer (pipeline_priv->real_source,
                                    validate_layer_cb,
-                                   material_priv);
+                                   pipeline_priv);
     }
 
-  cogl_push_source (material_priv->real_source);
+  cogl_push_source (pipeline_priv->real_source);
 
   cogl_primitive_draw (buffer->primitive);
 

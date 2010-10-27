@@ -34,9 +34,9 @@
 #include "cogl-journal-private.h"
 #include "cogl-vertex-attribute.h"
 #include "cogl-vertex-attribute-private.h"
-#include "cogl-material.h"
-#include "cogl-material-private.h"
-#include "cogl-material-opengl-private.h"
+#include "cogl-pipeline.h"
+#include "cogl-pipeline-private.h"
+#include "cogl-pipeline-opengl-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-indices-private.h"
@@ -365,22 +365,22 @@ _cogl_vertex_attribute_free (CoglVertexAttribute *attribute)
 typedef struct
 {
   int unit;
-  CoglMaterialFlushOptions options;
+  CoglPipelineFlushOptions options;
   guint32 fallback_layers;
 } ValidateLayerState;
 
 static gboolean
-validate_layer_cb (CoglMaterial *material,
+validate_layer_cb (CoglPipeline *pipeline,
                    int layer_index,
                    void *user_data)
 {
   CoglHandle texture =
-    _cogl_material_get_layer_texture (material, layer_index);
+    _cogl_pipeline_get_layer_texture (pipeline, layer_index);
   ValidateLayerState *state = user_data;
   gboolean status = TRUE;
 
   /* invalid textures will be handled correctly in
-   * _cogl_material_flush_layers_gl_state */
+   * _cogl_pipeline_flush_layers_gl_state */
   if (texture == COGL_INVALID_HANDLE)
     goto validated;
 
@@ -394,7 +394,7 @@ validate_layer_cb (CoglMaterial *material,
    * could completely change if it needs to be migrated out of the
    * atlas and will affect how we validate the layer.
    */
-  _cogl_material_pre_paint_for_layer (material, layer_index);
+  _cogl_pipeline_pre_paint_for_layer (pipeline, layer_index);
 
   if (!_cogl_texture_can_hardware_repeat (texture))
     {
@@ -415,7 +415,7 @@ validate_layer_cb (CoglMaterial *material,
        * matrix.
        */
       state->fallback_layers |= (1 << state->unit);
-      state->options.flags |= COGL_MATERIAL_FLUSH_FALLBACK_MASK;
+      state->options.flags |= COGL_PIPELINE_FLUSH_FALLBACK_MASK;
     }
 
 validated:
@@ -433,13 +433,13 @@ enable_gl_state (CoglVertexAttribute **attributes,
 #endif
   unsigned long enable_flags = 0;
   gboolean skip_gl_color = FALSE;
-  CoglMaterial *source;
-  CoglMaterial *copy = NULL;
+  CoglPipeline *source;
+  CoglPipeline *copy = NULL;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
   /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the material state) when flushing the clip stack, so should
+   * as the pipeline state) when flushing the clip stack, so should
    * always be done first when preparing to draw. We need to do this
    * before setting up the array pointers because setting up the clip
    * stack can cause some drawing which would change the array
@@ -471,12 +471,12 @@ enable_gl_state (CoglVertexAttribute **attributes,
                               attribute->stride,
                               base + attribute->offset));
 
-          if (!_cogl_material_get_real_blend_enabled (source))
+          if (!_cogl_pipeline_get_real_blend_enabled (source))
             {
-              CoglMaterialBlendEnable blend_enable =
-                COGL_MATERIAL_BLEND_ENABLE_ENABLED;
-              copy = cogl_material_copy (source);
-              _cogl_material_set_blend_enabled (copy, blend_enable);
+              CoglPipelineBlendEnable blend_enable =
+                COGL_PIPELINE_BLEND_ENABLE_ENABLED;
+              copy = cogl_pipeline_copy (source);
+              _cogl_pipeline_set_blend_enabled (copy, blend_enable);
               source = copy;
             }
           skip_gl_color = TRUE;
@@ -533,27 +533,27 @@ enable_gl_state (CoglVertexAttribute **attributes,
 
   if (G_UNLIKELY (state->options.flags))
     {
-      /* If we haven't already created a derived material... */
+      /* If we haven't already created a derived pipeline... */
       if (!copy)
         {
-          copy = cogl_material_copy (source);
+          copy = cogl_pipeline_copy (source);
           source = copy;
         }
-      _cogl_material_apply_overrides (source, &state->options);
+      _cogl_pipeline_apply_overrides (source, &state->options);
 
       /* TODO:
-       * overrides = cogl_material_get_data (material,
+       * overrides = cogl_pipeline_get_data (pipeline,
        *                                     last_overrides_key);
        * if (overrides)
        *   {
-       *     age = cogl_material_get_age (material);
+       *     age = cogl_pipeline_get_age (pipeline);
        *     XXX: actually we also need to check for legacy_state
        *     and blending overrides for use of glColorPointer...
        *     if (overrides->ags != age ||
        *         memcmp (&overrides->options, &options,
        *                 sizeof (options) != 0)
        *       {
-       *         cogl_object_unref (overrides->weak_material);
+       *         cogl_object_unref (overrides->weak_pipeline);
        *         g_slice_free (Overrides, overrides);
        *         overrides = NULL;
        *       }
@@ -561,32 +561,32 @@ enable_gl_state (CoglVertexAttribute **attributes,
        * if (!overrides)
        *   {
        *     overrides = g_slice_new (Overrides);
-       *     overrides->weak_material =
-       *       cogl_material_weak_copy (cogl_get_source ());
-       *     _cogl_material_apply_overrides (overrides->weak_material,
+       *     overrides->weak_pipeline =
+       *       cogl_pipeline_weak_copy (cogl_get_source ());
+       *     _cogl_pipeline_apply_overrides (overrides->weak_pipeline,
        *                                     &options);
        *
-       *     cogl_material_set_data (material, last_overrides_key,
+       *     cogl_pipeline_set_data (pipeline, last_overrides_key,
        *                             weak_overrides,
        *                             free_overrides_cb,
        *                             NULL);
        *   }
-       * source = overrides->weak_material;
+       * source = overrides->weak_pipeline;
        */
     }
 
   if (G_UNLIKELY (ctx->legacy_state_set))
     {
-      /* If we haven't already created a derived material... */
+      /* If we haven't already created a derived pipeline... */
       if (!copy)
         {
-          copy = cogl_material_copy (source);
+          copy = cogl_pipeline_copy (source);
           source = copy;
         }
-      _cogl_material_apply_legacy_state (source);
+      _cogl_pipeline_apply_legacy_state (source);
     }
 
-  _cogl_material_flush_gl_state (source, skip_gl_color);
+  _cogl_pipeline_flush_gl_state (source, skip_gl_color);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
@@ -601,7 +601,7 @@ enable_gl_state (CoglVertexAttribute **attributes,
  * just disable the things not needed after enabling state. */
 static void
 disable_gl_state (CoglVertexAttribute **attributes,
-                  CoglMaterial *source)
+                  CoglPipeline *source)
 {
 #ifdef MAY_HAVE_PROGRAMABLE_GL
   GLuint generic_index = 0;
@@ -655,7 +655,7 @@ _cogl_draw_vertex_attributes_array_real (CoglVerticesMode mode,
                                          CoglVertexAttribute **attributes,
                                          ValidateLayerState *state)
 {
-  CoglMaterial *source = enable_gl_state (attributes, state);
+  CoglPipeline *source = enable_gl_state (attributes, state);
 
   GE (glDrawArrays ((GLenum)mode, first_vertex, n_vertices));
 
@@ -665,7 +665,7 @@ _cogl_draw_vertex_attributes_array_real (CoglVerticesMode mode,
 }
 
 /* This can be used by the CoglJournal to draw attributes skiping
- * the implicit journal flush and material validation. */
+ * the implicit journal flush and pipeline validation. */
 void
 _cogl_draw_vertex_attributes_array (CoglVerticesMode mode,
                                     int first_vertex,
@@ -698,7 +698,7 @@ cogl_draw_vertex_attributes_array (CoglVerticesMode mode,
   state.options.flags = 0;
   state.fallback_layers = 0;
 
-  cogl_material_foreach_layer (cogl_get_source (),
+  cogl_pipeline_foreach_layer (cogl_get_source (),
                                validate_layer_cb,
                                &state);
 
@@ -758,7 +758,7 @@ _cogl_draw_indexed_vertex_attributes_array_real (CoglVerticesMode mode,
                                                  CoglVertexAttribute **attributes,
                                                  ValidateLayerState *state)
 {
-  CoglMaterial *source = enable_gl_state (attributes, state);
+  CoglPipeline *source = enable_gl_state (attributes, state);
   CoglBuffer *buffer;
   void *base;
   size_t array_offset;
@@ -834,7 +834,7 @@ cogl_draw_indexed_vertex_attributes_array (CoglVerticesMode mode,
   state.options.flags = 0;
   state.fallback_layers = 0;
 
-  cogl_material_foreach_layer (cogl_get_source (),
+  cogl_pipeline_foreach_layer (cogl_get_source (),
                                validate_layer_cb,
                                &state);
 
