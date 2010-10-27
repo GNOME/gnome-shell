@@ -236,7 +236,7 @@ _clutter_do_redraw (ClutterStage *stage)
 
   ctx = _clutter_context_get_default ();
 
-  _clutter_stage_set_pick_buffer_valid (stage, FALSE);
+  _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
   _clutter_stage_reset_picks_per_frame_counter (stage);
 
   _clutter_backend_ensure_context (ctx->backend, stage);
@@ -576,7 +576,7 @@ _clutter_do_pick (ClutterStage   *stage,
   /* It's possible that we currently have a static scene and have renderered a
    * full, unclipped pick buffer. If so we can simply continue to read from
    * this cached buffer until the scene next changes. */
-  if (_clutter_stage_get_pick_buffer_valid (stage))
+  if (_clutter_stage_get_pick_buffer_valid (stage, mode))
     {
       CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
       cogl_read_pixels (x, y, 1, 1,
@@ -653,9 +653,11 @@ _clutter_do_pick (ClutterStage   *stage,
       if (G_LIKELY (!(clutter_pick_debug_flags &
                       CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
         cogl_clip_pop ();
+
+      _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
     }
   else
-    _clutter_stage_set_pick_buffer_valid (stage, TRUE);
+    _clutter_stage_set_pick_buffer_valid (stage, TRUE, mode);
 
   /* Make sure Cogl flushes any batched geometry to the GPU driver */
   cogl_flush ();

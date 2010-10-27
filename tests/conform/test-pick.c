@@ -25,6 +25,15 @@ on_timeout (State *state)
   int y, x;
   ClutterActor *over_actor = NULL;
 
+  /* This will cause an unclipped pick redraw that will get buffered.
+     We'll check below that this buffer is discarded because we also need
+     to pick non-reactive actors */
+  clutter_stage_get_actor_at_pos (CLUTTER_STAGE (state->stage),
+                                  CLUTTER_PICK_REACTIVE, 10, 10);
+
+  clutter_stage_get_actor_at_pos (CLUTTER_STAGE (state->stage),
+                                  CLUTTER_PICK_REACTIVE, 10, 10);
+
   for (test_num = 0; test_num < 3; test_num++)
     {
       if (test_num == 0)
