@@ -130,6 +130,7 @@ cogl_create_context (void)
   _context->legacy_fog_state.enabled = FALSE;
 
   _context->simple_material = cogl_material_new ();
+  _context->texture_material = cogl_material_new ();
   _context->arbfp_source_buffer = g_string_new ("");
   _context->source_stack = NULL;
 
@@ -268,6 +269,8 @@ _cogl_destroy_context (void)
 
   if (_context->simple_material)
     cogl_handle_unref (_context->simple_material);
+  if (_context->texture_material)
+    cogl_handle_unref (_context->texture_material);
 
   if (_context->journal)
     g_array_free (_context->journal, TRUE);

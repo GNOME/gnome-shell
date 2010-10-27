@@ -373,9 +373,6 @@ cogl_set_source_color (const CoglColor *color)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* In case cogl_set_source_texture was previously used... */
-  cogl_material_remove_layer (ctx->simple_material, 0);
-
   premultiplied = *color;
   cogl_color_premultiply (&premultiplied);
   cogl_material_set_color (ctx->simple_material, &premultiplied);
@@ -1058,16 +1055,12 @@ cogl_set_source (CoglMaterial *material)
 void
 cogl_set_source_texture (CoglHandle texture_handle)
 {
-  CoglColor white;
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   g_return_if_fail (texture_handle != NULL);
 
-  cogl_material_set_layer (ctx->simple_material, 0, texture_handle);
-  cogl_color_init_from_4ub (&white, 0xff, 0xff, 0xff, 0xff);
-  cogl_material_set_color (ctx->simple_material, &white);
-  cogl_set_source (ctx->simple_material);
+  cogl_material_set_layer (ctx->texture_material, 0, texture_handle);
+  cogl_set_source (ctx->texture_material);
 }
 
 void
