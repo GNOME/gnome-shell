@@ -44,9 +44,9 @@ struct _CoglPangoRenderer
   PangoRenderer parent_instance;
 
   /* The material used to texture from the glyph cache with */
-  CoglHandle glyph_material;
+  CoglMaterial *glyph_material;
   /* The material used for solid fills. (boxes, rectangles + trapezoids) */
-  CoglHandle solid_material;
+  CoglMaterial *solid_material;
 
   /* Caches of glyphs as textures */
   CoglPangoGlyphCache *glyph_cache;
