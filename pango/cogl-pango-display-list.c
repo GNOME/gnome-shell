@@ -309,7 +309,7 @@ emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
 }
 
 static void
-_cogl_pango_display_list_render_texture (CoglHandle material,
+_cogl_pango_display_list_render_texture (CoglMaterial *material,
                                          const CoglColor *color,
                                          CoglPangoDisplayListNode *node)
 {
@@ -336,8 +336,8 @@ _cogl_pango_display_list_render_texture (CoglHandle material,
 void
 _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
                                  const CoglColor *color,
-                                 CoglHandle glyph_material,
-                                 CoglHandle solid_material)
+                                 CoglMaterial *glyph_material,
+                                 CoglMaterial *solid_material)
 {
   GSList *l;
 

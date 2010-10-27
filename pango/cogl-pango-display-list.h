@@ -58,8 +58,8 @@ void _cogl_pango_display_list_add_trapezoid (CoglPangoDisplayList *dl,
 
 void _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
                                       const CoglColor *color,
-                                      CoglHandle glyph_material,
-                                      CoglHandle solid_material);
+                                      CoglMaterial *glyph_material,
+                                      CoglMaterial *solid_material);
 
 void _cogl_pango_display_list_clear (CoglPangoDisplayList *dl);
 
