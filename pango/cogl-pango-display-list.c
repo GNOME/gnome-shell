@@ -234,40 +234,27 @@ _cogl_pango_display_list_add_trapezoid (CoglPangoDisplayList *dl,
 }
 
 static void
-_cogl_pango_display_list_render_texture (CoglHandle material,
-                                         const CoglColor *color,
-                                         CoglPangoDisplayListNode *node)
+emit_rectangles_through_journal (CoglPangoDisplayListNode *node)
 {
-  CoglColor premult_color = *color;
-  cogl_material_set_layer (material, 0, node->d.texture.texture);
-  cogl_material_set_color (material, &premult_color);
-  cogl_set_source (material);
+  int i;
 
-  /* For small runs of text like icon labels, we can get better performance
-   * going through the Cogl journal since text may then be batched together
-   * with other geometry. */
-  /* FIXME: 100 is a number I plucked out of thin air; it would be good
-   * to determine this empirically! */
-  if (node->d.texture.verts->len < 100)
+  for (i = 0; i < node->d.texture.verts->len; i += 4)
     {
-      int i;
-
-      for (i = 0; i < node->d.texture.verts->len; i += 4)
-        {
-          CoglPangoDisplayListVertex *v0 =
-            &g_array_index (node->d.texture.verts,
-                            CoglPangoDisplayListVertex, i);
-          CoglPangoDisplayListVertex *v1 =
-            &g_array_index (node->d.texture.verts,
-                            CoglPangoDisplayListVertex, i + 2);
-          cogl_rectangle_with_texture_coords (v0->x, v0->y, v1->x, v1->y,
-                                              v0->t_x, v0->t_y,
-                                              v1->t_x, v1->t_y);
-        }
-
-      return;
+      CoglPangoDisplayListVertex *v0 =
+        &g_array_index (node->d.texture.verts,
+                        CoglPangoDisplayListVertex, i);
+      CoglPangoDisplayListVertex *v1 =
+        &g_array_index (node->d.texture.verts,
+                        CoglPangoDisplayListVertex, i + 2);
+      cogl_rectangle_with_texture_coords (v0->x, v0->y, v1->x, v1->y,
+                                          v0->t_x, v0->t_y,
+                                          v1->t_x, v1->t_y);
     }
+}
 
+static void
+emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
+{
   /* It's expensive to go through the Cogl journal for large runs
    * of text in part because the journal transforms the quads in software
    * to avoid changing the modelview matrix. So for larger runs of text
@@ -321,6 +308,31 @@ _cogl_pango_display_list_render_texture (CoglHandle material,
 #endif /* CLUTTER_COGL_HAS_GL */
 }
 
+static void
+_cogl_pango_display_list_render_texture (CoglHandle material,
+                                         const CoglColor *color,
+                                         CoglPangoDisplayListNode *node)
+{
+  CoglColor premult_color = *color;
+
+  cogl_material_set_layer (material, 0, node->d.texture.texture);
+  cogl_material_set_color (material, &premult_color);
+
+  cogl_push_source (material);
+
+  /* For small runs of text like icon labels, we can get better performance
+   * going through the Cogl journal since text may then be batched together
+   * with other geometry. */
+  /* FIXME: 100 is a number I plucked out of thin air; it would be good
+   * to determine this empirically! */
+  if (node->d.texture.verts->len < 100)
+    emit_rectangles_through_journal (node);
+  else
+    emit_vertex_buffer_geometry (node);
+
+  cogl_pop_source ();
+}
+
 void
 _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
                                  const CoglColor *color,
@@ -355,11 +367,12 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
 
         case COGL_PANGO_DISPLAY_LIST_RECTANGLE:
           cogl_material_set_color (solid_material, &draw_color);
-          cogl_set_source (solid_material);
+          cogl_push_source (solid_material);
           cogl_rectangle (node->d.rectangle.x_1,
                           node->d.rectangle.y_1,
                           node->d.rectangle.x_2,
                           node->d.rectangle.y_2);
+          cogl_pop_source ();
           break;
 
         case COGL_PANGO_DISPLAY_LIST_TRAPEZOID:
@@ -376,9 +389,10 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
             points[7] =  node->d.trapezoid.y_1;
 
             cogl_material_set_color (solid_material, &draw_color);
-            cogl_set_source (solid_material);
+            cogl_push_source (solid_material);
             cogl_path_polygon (points, 4);
             cogl_path_fill ();
+            cogl_pop_source ();
           }
           break;
         }
