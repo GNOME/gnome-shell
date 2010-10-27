@@ -32,26 +32,26 @@
 #include "cogl.h"
 
 #include "cogl-debug.h"
-#include "cogl-material-opengl-private.h"
-#include "cogl-material-private.h"
+#include "cogl-pipeline-opengl-private.h"
+#include "cogl-pipeline-private.h"
 #include "cogl-context.h"
 #include "cogl-texture-private.h"
 
-#ifdef COGL_MATERIAL_BACKEND_GLSL
-#include "cogl-material-glsl-private.h"
+#ifdef COGL_PIPELINE_BACKEND_GLSL
+#include "cogl-pipeline-glsl-private.h"
 #endif
-#ifdef COGL_MATERIAL_BACKEND_ARBFP
-#include "cogl-material-arbfp-private.h"
+#ifdef COGL_PIPELINE_BACKEND_ARBFP
+#include "cogl-pipeline-arbfp-private.h"
 #endif
-#ifdef COGL_MATERIAL_BACKEND_FIXED
-#include "cogl-material-fixed-private.h"
+#ifdef COGL_PIPELINE_BACKEND_FIXED
+#include "cogl-pipeline-fixed-private.h"
 #endif
 
 #include <glib.h>
 #include <string.h>
 
 /*
- * GL/GLES compatability defines for material thingies:
+ * GL/GLES compatability defines for pipeline thingies:
  */
 
 #ifdef HAVE_COGL_GLES2
@@ -258,7 +258,7 @@ _cogl_delete_gl_texture (GLuint gl_texture)
  * if it is reused again with the same texture unit.
  */
 void
-_cogl_material_texture_storage_change_notify (CoglHandle texture)
+_cogl_pipeline_texture_storage_change_notify (CoglHandle texture)
 {
   int i;
 
@@ -270,7 +270,7 @@ _cogl_material_texture_storage_change_notify (CoglHandle texture)
         &g_array_index (ctx->texture_units, CoglTextureUnit, i);
 
       if (unit->layer &&
-          _cogl_material_layer_get_texture (unit->layer) == texture)
+          _cogl_pipeline_layer_get_texture (unit->layer) == texture)
         unit->texture_storage_changed = TRUE;
 
       /* NB: the texture may be bound to multiple texture units so
@@ -279,7 +279,7 @@ _cogl_material_texture_storage_change_notify (CoglHandle texture)
 }
 
 void
-_cogl_use_program (GLuint gl_program, CoglMaterialProgramType type)
+_cogl_use_program (GLuint gl_program, CoglPipelineProgramType type)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -289,18 +289,18 @@ _cogl_use_program (GLuint gl_program, CoglMaterialProgramType type)
       /* ... disable the old type */
       switch (ctx->current_use_program_type)
         {
-        case COGL_MATERIAL_PROGRAM_TYPE_GLSL:
+        case COGL_PIPELINE_PROGRAM_TYPE_GLSL:
           GE( glUseProgram (0) );
           ctx->current_gl_program = 0;
           break;
 
-        case COGL_MATERIAL_PROGRAM_TYPE_ARBFP:
+        case COGL_PIPELINE_PROGRAM_TYPE_ARBFP:
 #ifdef HAVE_COGL_GL
           GE( glDisable (GL_FRAGMENT_PROGRAM_ARB) );
 #endif
           break;
 
-        case COGL_MATERIAL_PROGRAM_TYPE_FIXED:
+        case COGL_PIPELINE_PROGRAM_TYPE_FIXED:
           /* don't need to to anything */
           break;
         }
@@ -308,22 +308,22 @@ _cogl_use_program (GLuint gl_program, CoglMaterialProgramType type)
       /* ... and enable the new type */
       switch (type)
         {
-        case COGL_MATERIAL_PROGRAM_TYPE_ARBFP:
+        case COGL_PIPELINE_PROGRAM_TYPE_ARBFP:
 #ifdef HAVE_COGL_GL
           GE( glEnable (GL_FRAGMENT_PROGRAM_ARB) );
 #endif
           break;
 
-        case COGL_MATERIAL_PROGRAM_TYPE_GLSL:
-        case COGL_MATERIAL_PROGRAM_TYPE_FIXED:
+        case COGL_PIPELINE_PROGRAM_TYPE_GLSL:
+        case COGL_PIPELINE_PROGRAM_TYPE_FIXED:
           /* don't need to to anything */
           break;
         }
     }
 
-  if (type == COGL_MATERIAL_PROGRAM_TYPE_GLSL)
+  if (type == COGL_PIPELINE_PROGRAM_TYPE_GLSL)
     {
-#ifdef COGL_MATERIAL_BACKEND_GLSL
+#ifdef COGL_PIPELINE_BACKEND_GLSL
 
       if (ctx->current_gl_program != gl_program)
         {
@@ -345,18 +345,18 @@ _cogl_use_program (GLuint gl_program, CoglMaterialProgramType type)
 
       g_warning ("Unexpected use of GLSL backend!");
 
-#endif /* COGL_MATERIAL_BACKEND_GLSL */
+#endif /* COGL_PIPELINE_BACKEND_GLSL */
     }
-#ifndef COGL_MATERIAL_BACKEND_ARBFP
-  else if (type == COGL_MATERIAL_PROGRAM_TYPE_ARBFP)
+#ifndef COGL_PIPELINE_BACKEND_ARBFP
+  else if (type == COGL_PIPELINE_PROGRAM_TYPE_ARBFP)
       g_warning ("Unexpected use of ARBFP backend!");
-#endif /* COGL_MATERIAL_BACKEND_ARBFP */
+#endif /* COGL_PIPELINE_BACKEND_ARBFP */
 
   ctx->current_use_program_type = type;
 }
 
-#if defined (COGL_MATERIAL_BACKEND_GLSL) || \
-    defined (COGL_MATERIAL_BACKEND_ARBFP)
+#if defined (COGL_PIPELINE_BACKEND_GLSL) || \
+    defined (COGL_PIPELINE_BACKEND_ARBFP)
 int
 _cogl_get_max_texture_image_units (void)
 {
@@ -376,7 +376,7 @@ _cogl_get_max_texture_image_units (void)
 #endif
 
 static void
-_cogl_material_layer_get_texture_info (CoglMaterialLayer *layer,
+_cogl_pipeline_layer_get_texture_info (CoglPipelineLayer *layer,
                                        CoglHandle *texture,
                                        GLuint *gl_texture,
                                        GLuint *gl_target)
@@ -409,7 +409,7 @@ blend_factor_uses_constant (GLenum blend_factor)
 #endif
 
 static void
-flush_depth_state (CoglMaterialDepthState *depth_state)
+flush_depth_state (CoglPipelineDepthState *depth_state)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -444,22 +444,22 @@ flush_depth_state (CoglMaterialDepthState *depth_state)
 }
 
 static void
-_cogl_material_flush_color_blend_alpha_depth_state (
-                                            CoglMaterial *material,
-                                            unsigned long materials_difference,
+_cogl_pipeline_flush_color_blend_alpha_depth_state (
+                                            CoglPipeline *pipeline,
+                                            unsigned long pipelines_difference,
                                             gboolean      skip_gl_color)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (!skip_gl_color)
     {
-      if ((materials_difference & COGL_MATERIAL_STATE_COLOR) ||
+      if ((pipelines_difference & COGL_PIPELINE_STATE_COLOR) ||
           /* Assume if we were previously told to skip the color, then
            * the current color needs updating... */
-          ctx->current_material_skip_gl_color)
+          ctx->current_pipeline_skip_gl_color)
         {
-          CoglMaterial *authority =
-            _cogl_material_get_authority (material, COGL_MATERIAL_STATE_COLOR);
+          CoglPipeline *authority =
+            _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_COLOR);
           GE (glColor4ub (cogl_color_get_red_byte (&authority->color),
                           cogl_color_get_green_byte (&authority->color),
                           cogl_color_get_blue_byte (&authority->color),
@@ -467,11 +467,11 @@ _cogl_material_flush_color_blend_alpha_depth_state (
         }
     }
 
-  if (materials_difference & COGL_MATERIAL_STATE_LIGHTING)
+  if (pipelines_difference & COGL_PIPELINE_STATE_LIGHTING)
     {
-      CoglMaterial *authority =
-        _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LIGHTING);
-      CoglMaterialLightingState *lighting_state =
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LIGHTING);
+      CoglPipelineLightingState *lighting_state =
         &authority->big_state->lighting_state;
 
       GE (glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, lighting_state->ambient));
@@ -482,11 +482,11 @@ _cogl_material_flush_color_blend_alpha_depth_state (
                         &lighting_state->shininess));
     }
 
-  if (materials_difference & COGL_MATERIAL_STATE_BLEND)
+  if (pipelines_difference & COGL_PIPELINE_STATE_BLEND)
     {
-      CoglMaterial *authority =
-        _cogl_material_get_authority (material, COGL_MATERIAL_STATE_BLEND);
-      CoglMaterialBlendState *blend_state =
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_BLEND);
+      CoglPipelineBlendState *blend_state =
         &authority->big_state->blend_state;
 
 #if defined (HAVE_COGL_GLES2)
@@ -541,11 +541,11 @@ _cogl_material_flush_color_blend_alpha_depth_state (
                          blend_state->blend_dst_factor_rgb));
     }
 
-  if (materials_difference & COGL_MATERIAL_STATE_ALPHA_FUNC)
+  if (pipelines_difference & COGL_PIPELINE_STATE_ALPHA_FUNC)
     {
-      CoglMaterial *authority =
-        _cogl_material_get_authority (material, COGL_MATERIAL_STATE_ALPHA_FUNC);
-      CoglMaterialAlphaFuncState *alpha_state =
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_ALPHA_FUNC);
+      CoglPipelineAlphaFuncState *alpha_state =
         &authority->big_state->alpha_state;
 
       /* NB: Currently the Cogl defines are compatible with the GL ones: */
@@ -553,11 +553,11 @@ _cogl_material_flush_color_blend_alpha_depth_state (
                        alpha_state->alpha_func_reference));
     }
 
-  if (materials_difference & COGL_MATERIAL_STATE_DEPTH)
+  if (pipelines_difference & COGL_PIPELINE_STATE_DEPTH)
     {
-      CoglMaterial *authority =
-        _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
-      CoglMaterialDepthState *depth_state = &authority->big_state->depth_state;
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_DEPTH);
+      CoglPipelineDepthState *depth_state = &authority->big_state->depth_state;
 
       if (depth_state->depth_test_enabled)
         {
@@ -575,10 +575,10 @@ _cogl_material_flush_color_blend_alpha_depth_state (
         }
     }
 
-  if (materials_difference & COGL_MATERIAL_STATE_POINT_SIZE)
+  if (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE)
     {
-      CoglMaterial *authority =
-        _cogl_material_get_authority (material, COGL_MATERIAL_STATE_POINT_SIZE);
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_POINT_SIZE);
 
       if (ctx->point_size_cache != authority->big_state->point_size)
         {
@@ -587,15 +587,15 @@ _cogl_material_flush_color_blend_alpha_depth_state (
         }
     }
 
-  if (material->real_blend_enable != ctx->gl_blend_enable_cache)
+  if (pipeline->real_blend_enable != ctx->gl_blend_enable_cache)
     {
-      if (material->real_blend_enable)
+      if (pipeline->real_blend_enable)
         GE (glEnable (GL_BLEND));
       else
         GE (glDisable (GL_BLEND));
       /* XXX: we shouldn't update any other blend state if blending
        * is disabled! */
-      ctx->gl_blend_enable_cache = material->real_blend_enable;
+      ctx->gl_blend_enable_cache = pipeline->real_blend_enable;
     }
 }
 
@@ -627,12 +627,12 @@ typedef struct
 {
   int i;
   unsigned long *layer_differences;
-} CoglMaterialFlushLayerState;
+} CoglPipelineFlushLayerState;
 
 static gboolean
-flush_layers_common_gl_state_cb (CoglMaterialLayer *layer, void *user_data)
+flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
 {
-  CoglMaterialFlushLayerState *flush_state = user_data;
+  CoglPipelineFlushLayerState *flush_state = user_data;
   int                          unit_index = flush_state->i;
   CoglTextureUnit             *unit = _cogl_get_texture_unit (unit_index);
   unsigned long                layers_difference =
@@ -654,16 +654,16 @@ flush_layers_common_gl_state_cb (CoglMaterialLayer *layer, void *user_data)
       return FALSE;
     }
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_TEXTURE)
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE)
     {
-      CoglMaterialLayer *authority =
-        _cogl_material_layer_get_authority (layer,
-                                            COGL_MATERIAL_LAYER_STATE_TEXTURE);
+      CoglPipelineLayer *authority =
+        _cogl_pipeline_layer_get_authority (layer,
+                                            COGL_PIPELINE_LAYER_STATE_TEXTURE);
       CoglHandle texture = NULL;
       GLuint     gl_texture;
       GLenum     gl_target;
 
-      _cogl_material_layer_get_texture_info (authority,
+      _cogl_pipeline_layer_get_texture_info (authority,
                                              &texture,
                                              &gl_texture,
                                              &gl_target);
@@ -679,7 +679,7 @@ flush_layers_common_gl_state_cb (CoglMaterialLayer *layer, void *user_data)
        *
        * Because texture unit 1 is a bit special we actually defer any
        * necessary glBindTexture for it until the end of
-       * _cogl_material_flush_gl_state().
+       * _cogl_pipeline_flush_gl_state().
        *
        * NB: we get notified whenever glDeleteTextures is used (see
        * _cogl_delete_gl_texture()) where we invalidate
@@ -740,11 +740,11 @@ flush_layers_common_gl_state_cb (CoglMaterialLayer *layer, void *user_data)
         }
     }
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_USER_MATRIX)
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_USER_MATRIX)
     {
-      CoglMaterialLayerState state = COGL_MATERIAL_LAYER_STATE_USER_MATRIX;
-      CoglMaterialLayer *authority =
-        _cogl_material_layer_get_authority (layer, state);
+      CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_USER_MATRIX;
+      CoglPipelineLayer *authority =
+        _cogl_pipeline_layer_get_authority (layer, state);
 
       _cogl_matrix_stack_set (unit->matrix_stack,
                               &authority->big_state->matrix);
@@ -752,12 +752,12 @@ flush_layers_common_gl_state_cb (CoglMaterialLayer *layer, void *user_data)
       _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
     }
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS)
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS)
     {
-      CoglMaterialState change = COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS;
-      CoglMaterialLayer *authority =
-        _cogl_material_layer_get_authority (layer, change);
-      CoglMaterialLayerBigState *big_state = authority->big_state;
+      CoglPipelineState change = COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS;
+      CoglPipelineLayer *authority =
+        _cogl_pipeline_layer_get_authority (layer, change);
+      CoglPipelineLayerBigState *big_state = authority->big_state;
 
       _cogl_set_active_texture_unit (unit_index);
 
@@ -778,22 +778,22 @@ flush_layers_common_gl_state_cb (CoglMaterialLayer *layer, void *user_data)
 }
 
 static void
-_cogl_material_flush_common_gl_state (CoglMaterial  *material,
-                                      unsigned long  materials_difference,
+_cogl_pipeline_flush_common_gl_state (CoglPipeline  *pipeline,
+                                      unsigned long  pipelines_difference,
                                       unsigned long *layer_differences,
                                       gboolean       skip_gl_color)
 {
-  CoglMaterialFlushLayerState state;
+  CoglPipelineFlushLayerState state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  _cogl_material_flush_color_blend_alpha_depth_state (material,
-                                                      materials_difference,
+  _cogl_pipeline_flush_color_blend_alpha_depth_state (pipeline,
+                                                      pipelines_difference,
                                                       skip_gl_color);
 
   state.i = 0;
   state.layer_differences = layer_differences;
-  _cogl_material_foreach_layer_internal (material,
+  _cogl_pipeline_foreach_layer_internal (pipeline,
                                          flush_layers_common_gl_state_cb,
                                          &state);
 
@@ -808,16 +808,16 @@ _cogl_material_flush_common_gl_state (CoglMaterial  *material,
  * since the actual texture being used may have been overridden.
  */
 static void
-_cogl_material_layer_forward_wrap_modes (CoglMaterialLayer *layer,
+_cogl_pipeline_layer_forward_wrap_modes (CoglPipelineLayer *layer,
                                          CoglHandle texture)
 {
-  CoglMaterialWrapModeInternal wrap_mode_s, wrap_mode_t, wrap_mode_p;
+  CoglPipelineWrapModeInternal wrap_mode_s, wrap_mode_t, wrap_mode_p;
   GLenum gl_wrap_mode_s, gl_wrap_mode_t, gl_wrap_mode_p;
 
   if (texture == COGL_INVALID_HANDLE)
     return;
 
-  _cogl_material_layer_get_wrap_modes (layer,
+  _cogl_pipeline_layer_get_wrap_modes (layer,
                                        &wrap_mode_s,
                                        &wrap_mode_t,
                                        &wrap_mode_p);
@@ -833,17 +833,17 @@ _cogl_material_layer_forward_wrap_modes (CoglMaterialLayer *layer,
      will break if the application tries to use different modes in
      different layers using the same texture. */
 
-  if (wrap_mode_s == COGL_MATERIAL_WRAP_MODE_INTERNAL_AUTOMATIC)
+  if (wrap_mode_s == COGL_PIPELINE_WRAP_MODE_INTERNAL_AUTOMATIC)
     gl_wrap_mode_s = GL_CLAMP_TO_EDGE;
   else
     gl_wrap_mode_s = wrap_mode_s;
 
-  if (wrap_mode_t == COGL_MATERIAL_WRAP_MODE_INTERNAL_AUTOMATIC)
+  if (wrap_mode_t == COGL_PIPELINE_WRAP_MODE_INTERNAL_AUTOMATIC)
     gl_wrap_mode_t = GL_CLAMP_TO_EDGE;
   else
     gl_wrap_mode_t = wrap_mode_t;
 
-  if (wrap_mode_p == COGL_MATERIAL_WRAP_MODE_INTERNAL_AUTOMATIC)
+  if (wrap_mode_p == COGL_PIPELINE_WRAP_MODE_INTERNAL_AUTOMATIC)
     gl_wrap_mode_p = GL_CLAMP_TO_EDGE;
   else
     gl_wrap_mode_p = wrap_mode_p;
@@ -857,7 +857,7 @@ _cogl_material_layer_forward_wrap_modes (CoglMaterialLayer *layer,
 /* OpenGL associates the min/mag filters and repeat modes with the
  * texture object not the texture unit so we always have to re-assert
  * the filter and repeat modes whenever we use a texture since it may
- * be referenced by multiple materials with different modes.
+ * be referenced by multiple pipelines with different modes.
  *
  * XXX: GL_ARB_sampler_objects fixes this in OpenGL so we should
  * eventually look at using this extension when available.
@@ -879,14 +879,14 @@ foreach_texture_unit_update_filter_and_wrap_modes (void)
 
       if (unit->layer)
         {
-          CoglHandle texture = _cogl_material_layer_get_texture (unit->layer);
-          CoglMaterialFilter min;
-          CoglMaterialFilter mag;
+          CoglHandle texture = _cogl_pipeline_layer_get_texture (unit->layer);
+          CoglPipelineFilter min;
+          CoglPipelineFilter mag;
 
-          _cogl_material_layer_get_filters (unit->layer, &min, &mag);
+          _cogl_pipeline_layer_get_filters (unit->layer, &min, &mag);
           _cogl_texture_set_filters (texture, min, mag);
 
-          _cogl_material_layer_forward_wrap_modes (unit->layer, texture);
+          _cogl_pipeline_layer_forward_wrap_modes (unit->layer, texture);
         }
     }
 }
@@ -895,12 +895,12 @@ typedef struct
 {
   int i;
   unsigned long *layer_differences;
-} CoglMaterialCompareLayersState;
+} CoglPipelineCompareLayersState;
 
 static gboolean
-compare_layer_differences_cb (CoglMaterialLayer *layer, void *user_data)
+compare_layer_differences_cb (CoglPipelineLayer *layer, void *user_data)
 {
-  CoglMaterialCompareLayersState *state = user_data;
+  CoglPipelineCompareLayersState *state = user_data;
   CoglTextureUnit *unit = _cogl_get_texture_unit (state->i);
 
   if (unit->layer == layer)
@@ -909,21 +909,21 @@ compare_layer_differences_cb (CoglMaterialLayer *layer, void *user_data)
     {
       state->layer_differences[state->i] = unit->layer_changes_since_flush;
       state->layer_differences[state->i] |=
-        _cogl_material_layer_compare_differences (layer, unit->layer);
+        _cogl_pipeline_layer_compare_differences (layer, unit->layer);
     }
   else
-    state->layer_differences[state->i] = COGL_MATERIAL_LAYER_STATE_ALL_SPARSE;
+    state->layer_differences[state->i] = COGL_PIPELINE_LAYER_STATE_ALL_SPARSE;
 
   /* XXX: There is always a possibility that a CoglTexture's
    * underlying GL texture storage has been changed since it was last
    * bound to a texture unit which is why we have a callback into
-   * _cogl_material_texture_storage_change_notify whenever a textures
+   * _cogl_pipeline_texture_storage_change_notify whenever a textures
    * underlying GL texture storage changes which will set the
    * unit->texture_intern_changed flag. If we see that's been set here
    * then we force an update of the texture state...
    */
   if (unit->texture_storage_changed)
-    state->layer_differences[state->i] |= COGL_MATERIAL_LAYER_STATE_TEXTURE;
+    state->layer_differences[state->i] |= COGL_PIPELINE_LAYER_STATE_TEXTURE;
 
   state->i++;
 
@@ -932,22 +932,22 @@ compare_layer_differences_cb (CoglMaterialLayer *layer, void *user_data)
 
 typedef struct
 {
-  const CoglMaterialBackend *backend;
-  CoglMaterial *material;
+  const CoglPipelineBackend *backend;
+  CoglPipeline *pipeline;
   unsigned long *layer_differences;
   gboolean error_adding_layer;
   gboolean added_layer;
-} CoglMaterialBackendAddLayerState;
+} CoglPipelineBackendAddLayerState;
 
 
 static gboolean
-backend_add_layer_cb (CoglMaterialLayer *layer,
+backend_add_layer_cb (CoglPipelineLayer *layer,
                       void *user_data)
 {
-  CoglMaterialBackendAddLayerState *state = user_data;
-  const CoglMaterialBackend *backend = state->backend;
-  CoglMaterial *material = state->material;
-  int unit_index = _cogl_material_layer_get_unit_index (layer);
+  CoglPipelineBackendAddLayerState *state = user_data;
+  const CoglPipelineBackend *backend = state->backend;
+  CoglPipeline *pipeline = state->pipeline;
+  int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
   CoglTextureUnit *unit = _cogl_get_texture_unit (unit_index);
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -971,7 +971,7 @@ backend_add_layer_cb (CoglMaterialLayer *layer,
 
   /* Either generate per layer code snippets or setup the
    * fixed function glTexEnv for each layer... */
-  if (G_LIKELY (backend->add_layer (material,
+  if (G_LIKELY (backend->add_layer (pipeline,
                                     layer,
                                     state->layer_differences[unit_index])))
     state->added_layer = TRUE;
@@ -985,10 +985,10 @@ backend_add_layer_cb (CoglMaterialLayer *layer,
 }
 
 /*
- * _cogl_material_flush_gl_state:
+ * _cogl_pipeline_flush_gl_state:
  *
  * Details of override options:
- * ->fallback_mask: is a bitmask of the material layers that need to be
+ * ->fallback_mask: is a bitmask of the pipeline layers that need to be
  *    replaced with the default, fallback textures. The fallback textures are
  *    fully transparent textures so they hopefully wont contribute to the
  *    texture combining.
@@ -999,7 +999,7 @@ backend_add_layer_cb (CoglMaterialLayer *layer,
  *    have a fighting chance of looking close to their originally intended
  *    result.
  *
- * ->disable_mask: is a bitmask of the material layers that will simply have
+ * ->disable_mask: is a bitmask of the pipeline layers that will simply have
  *    texturing disabled. It's only really intended for disabling all layers
  *    > X; i.e. we'd expect to see a contiguous run of 0 starting from the LSB
  *    and at some point the remaining bits flip to 1. It might work to disable
@@ -1016,7 +1016,7 @@ backend_add_layer_cb (CoglMaterialLayer *layer,
  *    0.
  *
  *    The intention of this is for any primitives that supports sliced textures.
- *    The code will can iterate each of the slices and re-flush the material
+ *    The code will can iterate each of the slices and re-flush the pipeline
  *    forcing the GL texture of each slice in turn.
  *
  * ->wrap_mode_overrides: overrides the wrap modes set on each
@@ -1035,16 +1035,16 @@ backend_add_layer_cb (CoglMaterialLayer *layer,
  *    isn't ideal, and can't be used with CoglVertexBuffers.
  */
 void
-_cogl_material_flush_gl_state (CoglMaterial *material,
+_cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
                                gboolean skip_gl_color)
 {
-  unsigned long    materials_difference;
+  unsigned long    pipelines_difference;
   int              n_layers;
   unsigned long   *layer_differences;
   int              i;
   CoglTextureUnit *unit1;
 
-  COGL_STATIC_TIMER (material_flush_timer,
+  COGL_STATIC_TIMER (pipeline_flush_timer,
                      "Mainloop", /* parent */
                      "Material Flush",
                      "The time spent flushing material state",
@@ -1052,37 +1052,37 @@ _cogl_material_flush_gl_state (CoglMaterial *material,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  COGL_TIMER_START (_cogl_uprof_context, material_flush_timer);
+  COGL_TIMER_START (_cogl_uprof_context, pipeline_flush_timer);
 
-  if (ctx->current_material == material)
+  if (ctx->current_pipeline == pipeline)
     {
       /* Bail out asap if we've been asked to re-flush the already current
-       * material and we can see the material hasn't changed */
-      if (ctx->current_material_age == material->age)
+       * pipeline and we can see the pipeline hasn't changed */
+      if (ctx->current_pipeline_age == pipeline->age)
         goto done;
 
-      materials_difference = ctx->current_material_changes_since_flush;
+      pipelines_difference = ctx->current_pipeline_changes_since_flush;
     }
-  else if (ctx->current_material)
+  else if (ctx->current_pipeline)
     {
-      materials_difference = ctx->current_material_changes_since_flush;
-      materials_difference |=
-        _cogl_material_compare_differences (ctx->current_material,
-                                            material);
+      pipelines_difference = ctx->current_pipeline_changes_since_flush;
+      pipelines_difference |=
+        _cogl_pipeline_compare_differences (ctx->current_pipeline,
+                                            pipeline);
     }
   else
-    materials_difference = COGL_MATERIAL_STATE_ALL_SPARSE;
+    pipelines_difference = COGL_PIPELINE_STATE_ALL_SPARSE;
 
   /* Get a layer_differences mask for each layer to be flushed */
-  n_layers = cogl_material_get_n_layers (material);
+  n_layers = cogl_pipeline_get_n_layers (pipeline);
   if (n_layers)
     {
-      CoglMaterialCompareLayersState state;
+      CoglPipelineCompareLayersState state;
       layer_differences = g_alloca (sizeof (unsigned long *) * n_layers);
       memset (layer_differences, 0, sizeof (layer_differences));
       state.i = 0;
       state.layer_differences = layer_differences;
-      _cogl_material_foreach_layer_internal (material,
+      _cogl_pipeline_foreach_layer_internal (pipeline,
                                              compare_layer_differences_cb,
                                              &state);
     }
@@ -1090,7 +1090,7 @@ _cogl_material_flush_gl_state (CoglMaterial *material,
     layer_differences = NULL;
 
   /* First flush everything that's the same regardless of which
-   * material backend is being used...
+   * pipeline backend is being used...
    *
    * 1) top level state:
    *  glColor (or skip if a vertex attribute is being used for color)
@@ -1103,51 +1103,51 @@ _cogl_material_flush_gl_state (CoglMaterial *material,
    *  enable/disable target
    *  flush user matrix
    *
-   *  Note: After _cogl_material_flush_common_gl_state you can expect
+   *  Note: After _cogl_pipeline_flush_common_gl_state you can expect
    *  all state of the layers corresponding texture unit to be
    *  updated.
    */
-  _cogl_material_flush_common_gl_state (material,
-                                        materials_difference,
+  _cogl_pipeline_flush_common_gl_state (pipeline,
+                                        pipelines_difference,
                                         layer_differences,
                                         skip_gl_color);
 
   /* Now flush the fragment processing state according to the current
    * fragment processing backend.
    *
-   * Note: Some of the backends may not support the current material
+   * Note: Some of the backends may not support the current pipeline
    * configuration and in that case it will report an error and we
    * will fallback to a different backend.
    *
-   * NB: if material->backend != COGL_MATERIAL_BACKEND_UNDEFINED then
-   * we have previously managed to successfully flush this material
+   * NB: if pipeline->backend != COGL_PIPELINE_BACKEND_UNDEFINED then
+   * we have previously managed to successfully flush this pipeline
    * with the given backend so we will simply use that to avoid
    * fallback code paths.
    */
 
-  if (material->backend == COGL_MATERIAL_BACKEND_UNDEFINED)
-    _cogl_material_set_backend (material, COGL_MATERIAL_BACKEND_DEFAULT);
+  if (pipeline->backend == COGL_PIPELINE_BACKEND_UNDEFINED)
+    _cogl_pipeline_set_backend (pipeline, COGL_PIPELINE_BACKEND_DEFAULT);
 
-  for (i = material->backend;
-       i < G_N_ELEMENTS (_cogl_material_backends);
-       i++, _cogl_material_set_backend (material, i))
+  for (i = pipeline->backend;
+       i < G_N_ELEMENTS (_cogl_pipeline_backends);
+       i++, _cogl_pipeline_set_backend (pipeline, i))
     {
-      const CoglMaterialBackend *backend = _cogl_material_backends[i];
-      CoglMaterialBackendAddLayerState state;
+      const CoglPipelineBackend *backend = _cogl_pipeline_backends[i];
+      CoglPipelineBackendAddLayerState state;
 
       /* E.g. For backends generating code they can setup their
        * scratch buffers here... */
-      if (G_UNLIKELY (!backend->start (material,
+      if (G_UNLIKELY (!backend->start (pipeline,
                                        n_layers,
-                                       materials_difference)))
+                                       pipelines_difference)))
         continue;
 
       state.backend = backend;
-      state.material = material;
+      state.pipeline = pipeline;
       state.layer_differences = layer_differences;
       state.error_adding_layer = FALSE;
       state.added_layer = FALSE;
-      _cogl_material_foreach_layer_internal (material,
+      _cogl_pipeline_foreach_layer_internal (pipeline,
                                              backend_add_layer_cb,
                                              &state);
 
@@ -1156,34 +1156,34 @@ _cogl_material_flush_gl_state (CoglMaterial *material,
 
       if (!state.added_layer &&
           backend->passthrough &&
-          G_UNLIKELY (!backend->passthrough (material)))
+          G_UNLIKELY (!backend->passthrough (pipeline)))
         continue;
 
       /* For backends generating code they may compile and link their
        * programs here, update any uniforms and tell OpenGL to use
        * that program.
        */
-      if (G_UNLIKELY (!backend->end (material, materials_difference)))
+      if (G_UNLIKELY (!backend->end (pipeline, pipelines_difference)))
         continue;
 
       break;
     }
 
   /* FIXME: This reference is actually resulting in lots of
-   * copy-on-write reparenting because one-shot materials end up
+   * copy-on-write reparenting because one-shot pipelines end up
    * living for longer than necessary and so any later modification of
    * the parent will cause a copy-on-write.
    *
    * XXX: The issue should largely go away when we switch to using
-   * weak materials for overrides.
+   * weak pipelines for overrides.
    */
-  cogl_object_ref (material);
-  if (ctx->current_material != NULL)
-    cogl_object_unref (ctx->current_material);
-  ctx->current_material = material;
-  ctx->current_material_changes_since_flush = 0;
-  ctx->current_material_skip_gl_color = skip_gl_color;
-  ctx->current_material_age = material->age;
+  cogl_object_ref (pipeline);
+  if (ctx->current_pipeline != NULL)
+    cogl_object_unref (ctx->current_pipeline);
+  ctx->current_pipeline = pipeline;
+  ctx->current_pipeline_changes_since_flush = 0;
+  ctx->current_pipeline_skip_gl_color = skip_gl_color;
+  ctx->current_pipeline_age = pipeline->age;
 
 done:
 
@@ -1191,12 +1191,12 @@ done:
    * modes with the texture objects not the texture units... */
   foreach_texture_unit_update_filter_and_wrap_modes ();
 
-  /* If this material has more than one layer then we always need
+  /* If this pipeline has more than one layer then we always need
    * to make sure we rebind the texture for unit 1.
    *
    * NB: various components of Cogl may temporarily bind arbitrary
    * textures to texture unit 1 so they can query and modify texture
-   * object parameters. cogl-material.c (See
+   * object parameters. cogl-pipeline.c (See
    * _cogl_bind_gl_texture_transient)
    */
   unit1 = _cogl_get_texture_unit (1);
@@ -1207,6 +1207,6 @@ done:
       unit1->dirty_gl_texture = FALSE;
     }
 
-  COGL_TIMER_STOP (_cogl_uprof_context, material_flush_timer);
+  COGL_TIMER_STOP (_cogl_uprof_context, pipeline_flush_timer);
 }
 

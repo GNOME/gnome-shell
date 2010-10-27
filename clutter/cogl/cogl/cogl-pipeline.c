@@ -35,8 +35,8 @@
 #include "cogl-context.h"
 #include "cogl-object.h"
 
-#include "cogl-material-private.h"
-#include "cogl-material-opengl-private.h"
+#include "cogl-pipeline-private.h"
+#include "cogl-pipeline-opengl-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-blend-string.h"
 #include "cogl-journal-private.h"
@@ -47,60 +47,57 @@
 #include <glib/gprintf.h>
 #include <string.h>
 
-#define COGL_MATERIAL_LAYER(X) ((CoglMaterialLayer *)(X))
+typedef gboolean (*CoglPipelineStateComparitor) (CoglPipeline *authority0,
+                                                 CoglPipeline *authority1);
 
-typedef gboolean (*CoglMaterialStateComparitor) (CoglMaterial *authority0,
-                                                 CoglMaterial *authority1);
+static CoglPipelineLayer *_cogl_pipeline_layer_copy (CoglPipelineLayer *layer);
 
-static CoglMaterialLayer *_cogl_material_layer_copy (CoglMaterialLayer *layer);
-
-static void _cogl_material_free (CoglMaterial *tex);
-static void _cogl_material_layer_free (CoglMaterialLayer *layer);
-static void _cogl_material_add_layer_difference (CoglMaterial *material,
-                                                 CoglMaterialLayer *layer,
+static void _cogl_pipeline_free (CoglPipeline *tex);
+static void _cogl_pipeline_layer_free (CoglPipelineLayer *layer);
+static void _cogl_pipeline_add_layer_difference (CoglPipeline *pipeline,
+                                                 CoglPipelineLayer *layer,
                                                  gboolean inc_n_layers);
-static void handle_automatic_blend_enable (CoglMaterial *material,
-                                           CoglMaterialState changes);
-static void recursively_free_layer_caches (CoglMaterial *material);
-static gboolean _cogl_material_is_weak (CoglMaterial *material);
+static void handle_automatic_blend_enable (CoglPipeline *pipeline,
+                                           CoglPipelineState changes);
+static void recursively_free_layer_caches (CoglPipeline *pipeline);
+static gboolean _cogl_pipeline_is_weak (CoglPipeline *pipeline);
 
-const CoglMaterialBackend *_cogl_material_backends[COGL_MATERIAL_N_BACKENDS];
+const CoglPipelineBackend *_cogl_pipeline_backends[COGL_PIPELINE_N_BACKENDS];
 
-#ifdef COGL_MATERIAL_BACKEND_GLSL
-#include "cogl-material-glsl-private.h"
+#ifdef COGL_PIPELINE_BACKEND_GLSL
+#include "cogl-pipeline-glsl-private.h"
 #endif
-#ifdef COGL_MATERIAL_BACKEND_ARBFP
-#include "cogl-material-arbfp-private.h"
+#ifdef COGL_PIPELINE_BACKEND_ARBFP
+#include "cogl-pipeline-arbfp-private.h"
 #endif
-#ifdef COGL_MATERIAL_BACKEND_FIXED
-#include "cogl-material-fixed-private.h"
+#ifdef COGL_PIPELINE_BACKEND_FIXED
+#include "cogl-pipeline-fixed-private.h"
 #endif
 
-COGL_OBJECT_DEFINE (Material, material);
-COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (material);
-/* This type was made deprecated before the cogl_is_material_layer
+COGL_OBJECT_DEFINE (Pipeline, pipeline);
+/* This type was made deprecated before the cogl_is_pipeline_layer
    function was ever exposed in the public headers so there's no need
-   to make the cogl_is_material_layer function public. We use INTERNAL
+   to make the cogl_is_pipeline_layer function public. We use INTERNAL
    so that the cogl_is_* function won't get defined */
-COGL_OBJECT_INTERNAL_DEFINE (MaterialLayer, material_layer);
+COGL_OBJECT_INTERNAL_DEFINE (PipelineLayer, pipeline_layer);
 
 GQuark
-_cogl_material_error_quark (void)
+_cogl_pipeline_error_quark (void)
 {
-  return g_quark_from_static_string ("cogl-material-error-quark");
+  return g_quark_from_static_string ("cogl-pipeline-error-quark");
 }
 
 static void
-_cogl_material_node_init (CoglMaterialNode *node)
+_cogl_pipeline_node_init (CoglPipelineNode *node)
 {
   node->parent = NULL;
   node->has_children = FALSE;
 }
 
 static void
-_cogl_material_node_set_parent_real (CoglMaterialNode *node,
-                                     CoglMaterialNode *parent,
-                                     CoglMaterialNodeUnparentVFunc unparent,
+_cogl_pipeline_node_set_parent_real (CoglPipelineNode *node,
+                                     CoglPipelineNode *parent,
+                                     CoglPipelineNodeUnparentVFunc unparent,
                                      gboolean take_strong_reference)
 {
   /* NB: the old parent may indirectly be keeping the new parent alive
@@ -138,9 +135,9 @@ _cogl_material_node_set_parent_real (CoglMaterialNode *node,
 }
 
 static void
-_cogl_material_node_unparent_real (CoglMaterialNode *node)
+_cogl_pipeline_node_unparent_real (CoglPipelineNode *node)
 {
-  CoglMaterialNode *parent = node->parent;
+  CoglPipelineNode *parent = node->parent;
 
   if (parent == NULL)
     return;
@@ -168,8 +165,8 @@ _cogl_material_node_unparent_real (CoglMaterialNode *node)
 }
 
 void
-_cogl_material_node_foreach_child (CoglMaterialNode *node,
-                                   CoglMaterialNodeChildCallback callback,
+_cogl_pipeline_node_foreach_child (CoglPipelineNode *node,
+                                   CoglPipelineNodeChildCallback callback,
                                    void *user_data)
 {
   if (node->has_children)
@@ -180,62 +177,62 @@ _cogl_material_node_foreach_child (CoglMaterialNode *node,
 }
 
 /*
- * This initializes the first material owned by the Cogl context. All
- * subsequently instantiated materials created via the cogl_material_new()
- * API will initially be a copy of this material.
+ * This initializes the first pipeline owned by the Cogl context. All
+ * subsequently instantiated pipelines created via the cogl_pipeline_new()
+ * API will initially be a copy of this pipeline.
  *
- * The default material is the topmost ancester for all materials.
+ * The default pipeline is the topmost ancester for all pipelines.
  */
 void
-_cogl_material_init_default_material (void)
+_cogl_pipeline_init_default_pipeline (void)
 {
-  /* Create new - blank - material */
-  CoglMaterial *material = g_slice_new0 (CoglMaterial);
-  CoglMaterialBigState *big_state = g_slice_new0 (CoglMaterialBigState);
-  CoglMaterialLightingState *lighting_state = &big_state->lighting_state;
-  CoglMaterialAlphaFuncState *alpha_state = &big_state->alpha_state;
-  CoglMaterialBlendState *blend_state = &big_state->blend_state;
-  CoglMaterialDepthState *depth_state = &big_state->depth_state;
+  /* Create new - blank - pipeline */
+  CoglPipeline *pipeline = g_slice_new0 (CoglPipeline);
+  CoglPipelineBigState *big_state = g_slice_new0 (CoglPipelineBigState);
+  CoglPipelineLightingState *lighting_state = &big_state->lighting_state;
+  CoglPipelineAlphaFuncState *alpha_state = &big_state->alpha_state;
+  CoglPipelineBlendState *blend_state = &big_state->blend_state;
+  CoglPipelineDepthState *depth_state = &big_state->depth_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Take this opportunity to setup the fragment processing backends... */
-#ifdef COGL_MATERIAL_BACKEND_GLSL
-  _cogl_material_backends[COGL_MATERIAL_BACKEND_GLSL] =
-    &_cogl_material_glsl_backend;
+#ifdef COGL_PIPELINE_BACKEND_GLSL
+  _cogl_pipeline_backends[COGL_PIPELINE_BACKEND_GLSL] =
+    &_cogl_pipeline_glsl_backend;
 #endif
-#ifdef COGL_MATERIAL_BACKEND_ARBFP
-  _cogl_material_backends[COGL_MATERIAL_BACKEND_ARBFP] =
-    &_cogl_material_arbfp_backend;
+#ifdef COGL_PIPELINE_BACKEND_ARBFP
+  _cogl_pipeline_backends[COGL_PIPELINE_BACKEND_ARBFP] =
+    &_cogl_pipeline_arbfp_backend;
 #endif
-#ifdef COGL_MATERIAL_BACKEND_FIXED
-  _cogl_material_backends[COGL_MATERIAL_BACKEND_FIXED] =
-    &_cogl_material_fixed_backend;
+#ifdef COGL_PIPELINE_BACKEND_FIXED
+  _cogl_pipeline_backends[COGL_PIPELINE_BACKEND_FIXED] =
+    &_cogl_pipeline_fixed_backend;
 #endif
 
-  _cogl_material_node_init (COGL_MATERIAL_NODE (material));
+  _cogl_pipeline_node_init (COGL_PIPELINE_NODE (pipeline));
 
-  material->is_weak = FALSE;
-  material->journal_ref_count = 0;
-  material->backend = COGL_MATERIAL_BACKEND_UNDEFINED;
-  material->differences = COGL_MATERIAL_STATE_ALL_SPARSE;
+  pipeline->is_weak = FALSE;
+  pipeline->journal_ref_count = 0;
+  pipeline->backend = COGL_PIPELINE_BACKEND_UNDEFINED;
+  pipeline->differences = COGL_PIPELINE_STATE_ALL_SPARSE;
 
-  material->real_blend_enable = FALSE;
+  pipeline->real_blend_enable = FALSE;
 
-  material->blend_enable = COGL_MATERIAL_BLEND_ENABLE_AUTOMATIC;
-  material->layer_differences = NULL;
-  material->n_layers = 0;
+  pipeline->blend_enable = COGL_PIPELINE_BLEND_ENABLE_AUTOMATIC;
+  pipeline->layer_differences = NULL;
+  pipeline->n_layers = 0;
 
-  material->big_state = big_state;
-  material->has_big_state = TRUE;
+  pipeline->big_state = big_state;
+  pipeline->has_big_state = TRUE;
 
-  material->static_breadcrumb = "default material";
-  material->has_static_breadcrumb = TRUE;
+  pipeline->static_breadcrumb = "default pipeline";
+  pipeline->has_static_breadcrumb = TRUE;
 
-  material->age = 0;
+  pipeline->age = 0;
 
   /* Use the same defaults as the GL spec... */
-  cogl_color_init_from_4ub (&material->color, 0xff, 0xff, 0xff, 0xff);
+  cogl_color_init_from_4ub (&pipeline->color, 0xff, 0xff, 0xff, 0xff);
 
   /* Use the same defaults as the GL spec... */
   lighting_state->ambient[0] = 0.2;
@@ -261,7 +258,7 @@ _cogl_material_init_default_material (void)
   lighting_state->shininess = 0.0f;
 
   /* Use the same defaults as the GL spec... */
-  alpha_state->alpha_func = COGL_MATERIAL_ALPHA_FUNC_ALWAYS;
+  alpha_state->alpha_func = COGL_PIPELINE_ALPHA_FUNC_ALWAYS;
   alpha_state->alpha_func_reference = 0.0;
 
   /* Not the same as the GL default, but seems saner... */
@@ -287,387 +284,387 @@ _cogl_material_init_default_material (void)
 
   big_state->point_size = 1.0f;
 
-  ctx->default_material = _cogl_material_object_new (material);
+  ctx->default_pipeline = _cogl_pipeline_object_new (pipeline);
 }
 
 static void
-_cogl_material_unparent (CoglMaterialNode *material)
+_cogl_pipeline_unparent (CoglPipelineNode *pipeline)
 {
   /* Chain up */
-  _cogl_material_node_unparent_real (material);
+  _cogl_pipeline_node_unparent_real (pipeline);
 }
 
 static gboolean
-recursively_free_layer_caches_cb (CoglMaterialNode *node,
+recursively_free_layer_caches_cb (CoglPipelineNode *node,
                                   void *user_data)
 {
-  recursively_free_layer_caches (COGL_MATERIAL (node));
+  recursively_free_layer_caches (COGL_PIPELINE (node));
   return TRUE;
 }
 
-/* This recursively frees the layers_cache of a material and all of
+/* This recursively frees the layers_cache of a pipeline and all of
  * its descendants.
  *
- * For instance if we change a materials ->layer_differences list
- * then that material and all of its descendants may now have
+ * For instance if we change a pipelines ->layer_differences list
+ * then that pipeline and all of its descendants may now have
  * incorrect layer caches. */
 static void
-recursively_free_layer_caches (CoglMaterial *material)
+recursively_free_layer_caches (CoglPipeline *pipeline)
 {
-  /* Note: we maintain the invariable that if a material already has a
+  /* Note: we maintain the invariable that if a pipeline already has a
    * dirty layers_cache then so do all of its descendants. */
-  if (material->layers_cache_dirty)
+  if (pipeline->layers_cache_dirty)
     return;
 
-  if (G_UNLIKELY (material->layers_cache != material->short_layers_cache))
-    g_slice_free1 (sizeof (CoglMaterialLayer *) * material->n_layers,
-                   material->layers_cache);
-  material->layers_cache_dirty = TRUE;
+  if (G_UNLIKELY (pipeline->layers_cache != pipeline->short_layers_cache))
+    g_slice_free1 (sizeof (CoglPipelineLayer *) * pipeline->n_layers,
+                   pipeline->layers_cache);
+  pipeline->layers_cache_dirty = TRUE;
 
-  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+  _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
                                      recursively_free_layer_caches_cb,
                                      NULL);
 }
 
 static void
-_cogl_material_set_parent (CoglMaterial *material,
-                           CoglMaterial *parent,
+_cogl_pipeline_set_parent (CoglPipeline *pipeline,
+                           CoglPipeline *parent,
                            gboolean take_strong_reference)
 {
   /* Chain up */
-  _cogl_material_node_set_parent_real (COGL_MATERIAL_NODE (material),
-                                       COGL_MATERIAL_NODE (parent),
-                                       _cogl_material_unparent,
+  _cogl_pipeline_node_set_parent_real (COGL_PIPELINE_NODE (pipeline),
+                                       COGL_PIPELINE_NODE (parent),
+                                       _cogl_pipeline_unparent,
                                        take_strong_reference);
 
-  /* Since we just changed the ancestry of the material its cache of
+  /* Since we just changed the ancestry of the pipeline its cache of
    * layers could now be invalid so free it... */
-  if (material->differences & COGL_MATERIAL_STATE_LAYERS)
-    recursively_free_layer_caches (material);
+  if (pipeline->differences & COGL_PIPELINE_STATE_LAYERS)
+    recursively_free_layer_caches (pipeline);
 
   /* If the fragment processing backend is also caching state along
-   * with the material that depends on the material's ancestry then it
+   * with the pipeline that depends on the pipeline's ancestry then it
    * may be notified here...
    */
-  if (material->backend != COGL_MATERIAL_BACKEND_UNDEFINED &&
-      _cogl_material_backends[material->backend]->material_set_parent_notify)
+  if (pipeline->backend != COGL_PIPELINE_BACKEND_UNDEFINED &&
+      _cogl_pipeline_backends[pipeline->backend]->pipeline_set_parent_notify)
     {
-      const CoglMaterialBackend *backend =
-        _cogl_material_backends[material->backend];
-      backend->material_set_parent_notify (material);
+      const CoglPipelineBackend *backend =
+        _cogl_pipeline_backends[pipeline->backend];
+      backend->pipeline_set_parent_notify (pipeline);
     }
 }
 
 static void
-_cogl_material_promote_weak_ancestors (CoglMaterial *strong)
+_cogl_pipeline_promote_weak_ancestors (CoglPipeline *strong)
 {
-  CoglMaterialNode *n;
+  CoglPipelineNode *n;
 
   g_return_if_fail (!strong->is_weak);
 
-  for (n = COGL_MATERIAL_NODE (strong)->parent; n; n = n->parent)
+  for (n = COGL_PIPELINE_NODE (strong)->parent; n; n = n->parent)
     {
-      CoglMaterial *material = COGL_MATERIAL (n);
+      CoglPipeline *pipeline = COGL_PIPELINE (n);
 
-      cogl_object_ref (material);
+      cogl_object_ref (pipeline);
 
-      if (!material->is_weak)
+      if (!pipeline->is_weak)
         return;
     }
 }
 
 static void
-_cogl_material_revert_weak_ancestors (CoglMaterial *strong)
+_cogl_pipeline_revert_weak_ancestors (CoglPipeline *strong)
 {
-  CoglMaterial *parent = _cogl_material_get_parent (strong);
-  CoglMaterialNode *n;
+  CoglPipeline *parent = _cogl_pipeline_get_parent (strong);
+  CoglPipelineNode *n;
 
   g_return_if_fail (!strong->is_weak);
 
   if (!parent || !parent->is_weak)
     return;
 
-  for (n = COGL_MATERIAL_NODE (strong)->parent; n; n = n->parent)
+  for (n = COGL_PIPELINE_NODE (strong)->parent; n; n = n->parent)
     {
-      CoglMaterial *material = COGL_MATERIAL (n);
+      CoglPipeline *pipeline = COGL_PIPELINE (n);
 
-      cogl_object_unref (material);
+      cogl_object_unref (pipeline);
 
-      if (!material->is_weak)
+      if (!pipeline->is_weak)
         return;
     }
 }
 
 /* XXX: Always have an eye out for opportunities to lower the cost of
- * cogl_material_copy. */
-static CoglMaterial *
-_cogl_material_copy (CoglMaterial *src, gboolean is_weak)
+ * cogl_pipeline_copy. */
+static CoglPipeline *
+_cogl_pipeline_copy (CoglPipeline *src, gboolean is_weak)
 {
-  CoglMaterial *material = g_slice_new (CoglMaterial);
+  CoglPipeline *pipeline = g_slice_new (CoglPipeline);
 
-  _cogl_material_node_init (COGL_MATERIAL_NODE (material));
+  _cogl_pipeline_node_init (COGL_PIPELINE_NODE (pipeline));
 
-  material->is_weak = is_weak;
+  pipeline->is_weak = is_weak;
 
-  material->journal_ref_count = 0;
+  pipeline->journal_ref_count = 0;
 
-  material->differences = 0;
+  pipeline->differences = 0;
 
-  material->has_big_state = FALSE;
+  pipeline->has_big_state = FALSE;
 
   /* NB: real_blend_enable isn't a sparse property, it's valid for
-   * every material node so we have fast access to it. */
-  material->real_blend_enable = src->real_blend_enable;
+   * every pipeline node so we have fast access to it. */
+  pipeline->real_blend_enable = src->real_blend_enable;
 
   /* XXX:
    * consider generalizing the idea of "cached" properties. These
    * would still have an authority like other sparse properties but
    * you wouldn't have to walk up the ancestry to find the authority
-   * because the value would be cached directly in each material.
+   * because the value would be cached directly in each pipeline.
    */
 
-  material->layers_cache_dirty = TRUE;
-  material->deprecated_get_layers_list_dirty = TRUE;
+  pipeline->layers_cache_dirty = TRUE;
+  pipeline->deprecated_get_layers_list_dirty = TRUE;
 
-  material->backend = src->backend;
-  material->backend_priv_set_mask = 0;
+  pipeline->backend = src->backend;
+  pipeline->backend_priv_set_mask = 0;
 
-  material->has_static_breadcrumb = FALSE;
+  pipeline->has_static_breadcrumb = FALSE;
 
-  material->age = 0;
+  pipeline->age = 0;
 
-  _cogl_material_set_parent (material, src, !is_weak);
+  _cogl_pipeline_set_parent (pipeline, src, !is_weak);
 
-  /* The semantics for copying a weak material are that we promote all
-   * weak ancestors to temporarily become strong materials until the
+  /* The semantics for copying a weak pipeline are that we promote all
+   * weak ancestors to temporarily become strong pipelines until the
    * copy is freed. */
   if (!is_weak)
-    _cogl_material_promote_weak_ancestors (material);
+    _cogl_pipeline_promote_weak_ancestors (pipeline);
 
-  return _cogl_material_object_new (material);
+  return _cogl_pipeline_object_new (pipeline);
 }
 
-CoglMaterial *
-cogl_material_copy (CoglMaterial *src)
+CoglPipeline *
+cogl_pipeline_copy (CoglPipeline *src)
 {
-  return _cogl_material_copy (src, FALSE);
+  return _cogl_pipeline_copy (src, FALSE);
 }
 
-CoglMaterial *
-_cogl_material_weak_copy (CoglMaterial *material,
-                          CoglMaterialDestroyCallback callback,
+CoglPipeline *
+_cogl_pipeline_weak_copy (CoglPipeline *pipeline,
+                          CoglPipelineDestroyCallback callback,
                           void *user_data)
 {
-  CoglMaterial *copy;
-  CoglMaterial *copy_material;
+  CoglPipeline *copy;
+  CoglPipeline *copy_pipeline;
 
-  copy = _cogl_material_copy (material, TRUE);
-  copy_material = COGL_MATERIAL (copy);
-  copy_material->destroy_callback = callback;
-  copy_material->destroy_data = user_data;
+  copy = _cogl_pipeline_copy (pipeline, TRUE);
+  copy_pipeline = COGL_PIPELINE (copy);
+  copy_pipeline->destroy_callback = callback;
+  copy_pipeline->destroy_data = user_data;
 
   return copy;
 }
 
-CoglMaterial *
-cogl_material_new (void)
+CoglPipeline *
+cogl_pipeline_new (void)
 {
-  CoglMaterial *new;
+  CoglPipeline *new;
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  new = cogl_material_copy (ctx->default_material);
-  _cogl_material_set_static_breadcrumb (new, "new");
+  new = cogl_pipeline_copy (ctx->default_pipeline);
+  _cogl_pipeline_set_static_breadcrumb (new, "new");
   return new;
 }
 
 static void
-_cogl_material_backend_free_priv (CoglMaterial *material)
+_cogl_pipeline_backend_free_priv (CoglPipeline *pipeline)
 {
-  if (material->backend != COGL_MATERIAL_BACKEND_UNDEFINED &&
-      _cogl_material_backends[material->backend]->free_priv)
+  if (pipeline->backend != COGL_PIPELINE_BACKEND_UNDEFINED &&
+      _cogl_pipeline_backends[pipeline->backend]->free_priv)
     {
-      const CoglMaterialBackend *backend =
-        _cogl_material_backends[material->backend];
-      backend->free_priv (material);
+      const CoglPipelineBackend *backend =
+        _cogl_pipeline_backends[pipeline->backend];
+      backend->free_priv (pipeline);
     }
 }
 
 static gboolean
-destroy_weak_children_cb (CoglMaterialNode *node,
+destroy_weak_children_cb (CoglPipelineNode *node,
                           void *user_data)
 {
-  CoglMaterial *material = COGL_MATERIAL (node);
+  CoglPipeline *pipeline = COGL_PIPELINE (node);
 
-  if (_cogl_material_is_weak (material))
+  if (_cogl_pipeline_is_weak (pipeline))
     {
-      _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+      _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
                                          destroy_weak_children_cb,
                                          NULL);
 
-      material->destroy_callback (material, material->destroy_data);
-      _cogl_material_unparent (COGL_MATERIAL_NODE (material));
+      pipeline->destroy_callback (pipeline, pipeline->destroy_data);
+      _cogl_pipeline_unparent (COGL_PIPELINE_NODE (pipeline));
     }
 
   return TRUE;
 }
 
 static void
-_cogl_material_free (CoglMaterial *material)
+_cogl_pipeline_free (CoglPipeline *pipeline)
 {
-  if (!material->is_weak)
-    _cogl_material_revert_weak_ancestors (material);
+  if (!pipeline->is_weak)
+    _cogl_pipeline_revert_weak_ancestors (pipeline);
 
-  /* Weak materials don't take a reference on their parent */
-  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+  /* Weak pipelines don't take a reference on their parent */
+  _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
                                      destroy_weak_children_cb,
                                      NULL);
 
-  g_assert (!COGL_MATERIAL_NODE (material)->has_children);
+  g_assert (!COGL_PIPELINE_NODE (pipeline)->has_children);
 
-  _cogl_material_backend_free_priv (material);
+  _cogl_pipeline_backend_free_priv (pipeline);
 
-  _cogl_material_unparent (COGL_MATERIAL_NODE (material));
+  _cogl_pipeline_unparent (COGL_PIPELINE_NODE (pipeline));
 
-  if (material->differences & COGL_MATERIAL_STATE_USER_SHADER &&
-      material->big_state->user_program)
-    cogl_handle_unref (material->big_state->user_program);
+  if (pipeline->differences & COGL_PIPELINE_STATE_USER_SHADER &&
+      pipeline->big_state->user_program)
+    cogl_handle_unref (pipeline->big_state->user_program);
 
-  if (material->differences & COGL_MATERIAL_STATE_NEEDS_BIG_STATE)
-    g_slice_free (CoglMaterialBigState, material->big_state);
+  if (pipeline->differences & COGL_PIPELINE_STATE_NEEDS_BIG_STATE)
+    g_slice_free (CoglPipelineBigState, pipeline->big_state);
 
-  if (material->differences & COGL_MATERIAL_STATE_LAYERS)
+  if (pipeline->differences & COGL_PIPELINE_STATE_LAYERS)
     {
-      g_list_foreach (material->layer_differences,
+      g_list_foreach (pipeline->layer_differences,
                       (GFunc)cogl_object_unref, NULL);
-      g_list_free (material->layer_differences);
+      g_list_free (pipeline->layer_differences);
     }
 
-  g_slice_free (CoglMaterial, material);
+  g_slice_free (CoglPipeline, pipeline);
 }
 
 gboolean
-_cogl_material_get_real_blend_enabled (CoglMaterial *material)
+_cogl_pipeline_get_real_blend_enabled (CoglPipeline *pipeline)
 {
-  g_return_val_if_fail (cogl_is_material (material), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
 
-  return material->real_blend_enable;
+  return pipeline->real_blend_enable;
 }
 
-inline CoglMaterial *
-_cogl_material_get_parent (CoglMaterial *material)
+inline CoglPipeline *
+_cogl_pipeline_get_parent (CoglPipeline *pipeline)
 {
-  CoglMaterialNode *parent_node = COGL_MATERIAL_NODE (material)->parent;
-  return COGL_MATERIAL (parent_node);
+  CoglPipelineNode *parent_node = COGL_PIPELINE_NODE (pipeline)->parent;
+  return COGL_PIPELINE (parent_node);
 }
 
-CoglMaterial *
-_cogl_material_get_authority (CoglMaterial *material,
+CoglPipeline *
+_cogl_pipeline_get_authority (CoglPipeline *pipeline,
                               unsigned long difference)
 {
-  CoglMaterial *authority = material;
+  CoglPipeline *authority = pipeline;
   while (!(authority->differences & difference))
-    authority = _cogl_material_get_parent (authority);
+    authority = _cogl_pipeline_get_parent (authority);
   return authority;
 }
 
 /* XXX: Think twice before making this non static since it is used
  * heavily and we expect the compiler to inline it...
  */
-static CoglMaterialLayer *
-_cogl_material_layer_get_parent (CoglMaterialLayer *layer)
+static CoglPipelineLayer *
+_cogl_pipeline_layer_get_parent (CoglPipelineLayer *layer)
 {
-  CoglMaterialNode *parent_node = COGL_MATERIAL_NODE (layer)->parent;
-  return COGL_MATERIAL_LAYER (parent_node);
+  CoglPipelineNode *parent_node = COGL_PIPELINE_NODE (layer)->parent;
+  return COGL_PIPELINE_LAYER (parent_node);
 }
 
-CoglMaterialLayer *
-_cogl_material_layer_get_authority (CoglMaterialLayer *layer,
+CoglPipelineLayer *
+_cogl_pipeline_layer_get_authority (CoglPipelineLayer *layer,
                                     unsigned long difference)
 {
-  CoglMaterialLayer *authority = layer;
+  CoglPipelineLayer *authority = layer;
   while (!(authority->differences & difference))
-    authority = _cogl_material_layer_get_parent (authority);
+    authority = _cogl_pipeline_layer_get_parent (authority);
   return authority;
 }
 
 int
-_cogl_material_layer_get_unit_index (CoglMaterialLayer *layer)
+_cogl_pipeline_layer_get_unit_index (CoglPipelineLayer *layer)
 {
-  CoglMaterialLayer *authority =
-    _cogl_material_layer_get_authority (layer, COGL_MATERIAL_LAYER_STATE_UNIT);
+  CoglPipelineLayer *authority =
+    _cogl_pipeline_layer_get_authority (layer, COGL_PIPELINE_LAYER_STATE_UNIT);
   return authority->unit_index;
 }
 
 static void
-_cogl_material_update_layers_cache (CoglMaterial *material)
+_cogl_pipeline_update_layers_cache (CoglPipeline *pipeline)
 {
-  /* Note: we assume this material is a _LAYERS authority */
+  /* Note: we assume this pipeline is a _LAYERS authority */
   int n_layers;
-  CoglMaterial *current;
+  CoglPipeline *current;
   int layers_found;
 
-  if (G_LIKELY (!material->layers_cache_dirty) ||
-      material->n_layers == 0)
+  if (G_LIKELY (!pipeline->layers_cache_dirty) ||
+      pipeline->n_layers == 0)
     return;
 
-  material->layers_cache_dirty = FALSE;
+  pipeline->layers_cache_dirty = FALSE;
 
-  n_layers = material->n_layers;
-  if (G_LIKELY (n_layers < G_N_ELEMENTS (material->short_layers_cache)))
+  n_layers = pipeline->n_layers;
+  if (G_LIKELY (n_layers < G_N_ELEMENTS (pipeline->short_layers_cache)))
     {
-      material->layers_cache = material->short_layers_cache;
-      memset (material->layers_cache, 0,
-              sizeof (CoglMaterialLayer *) *
-              G_N_ELEMENTS (material->short_layers_cache));
+      pipeline->layers_cache = pipeline->short_layers_cache;
+      memset (pipeline->layers_cache, 0,
+              sizeof (CoglPipelineLayer *) *
+              G_N_ELEMENTS (pipeline->short_layers_cache));
     }
   else
     {
-      material->layers_cache =
-        g_slice_alloc0 (sizeof (CoglMaterialLayer *) * n_layers);
+      pipeline->layers_cache =
+        g_slice_alloc0 (sizeof (CoglPipelineLayer *) * n_layers);
     }
 
   /* Notes:
    *
-   * Each material doesn't have to contain a complete list of the layers
+   * Each pipeline doesn't have to contain a complete list of the layers
    * it depends on, some of them are indirectly referenced through the
-   * material's ancestors.
+   * pipeline's ancestors.
    *
-   * material->layer_differences only contains a list of layers that
+   * pipeline->layer_differences only contains a list of layers that
    * have changed in relation to its parent.
    *
-   * material->layer_differences is not maintained sorted, but it
+   * pipeline->layer_differences is not maintained sorted, but it
    * won't contain multiple layers corresponding to a particular
    * ->unit_index.
    *
-   * Some of the ancestor materials may reference layers with
+   * Some of the ancestor pipelines may reference layers with
    * ->unit_index values >= n_layers so we ignore them.
    *
    * As we ascend through the ancestors we are searching for any
-   * CoglMaterialLayers corresponding to the texture ->unit_index
+   * CoglPipelineLayers corresponding to the texture ->unit_index
    * values in the range [0,n_layers-1]. As soon as a pointer is found
    * we ignore layers of further ancestors with the same ->unit_index
    * values.
    */
 
   layers_found = 0;
-  for (current = material;
-       _cogl_material_get_parent (current);
-       current = _cogl_material_get_parent (current))
+  for (current = pipeline;
+       _cogl_pipeline_get_parent (current);
+       current = _cogl_pipeline_get_parent (current))
     {
       GList *l;
 
-      if (!(current->differences & COGL_MATERIAL_STATE_LAYERS))
+      if (!(current->differences & COGL_PIPELINE_STATE_LAYERS))
         continue;
 
       for (l = current->layer_differences; l; l = l->next)
         {
-          CoglMaterialLayer *layer = l->data;
-          int unit_index = _cogl_material_layer_get_unit_index (layer);
+          CoglPipelineLayer *layer = l->data;
+          int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
 
-          if (unit_index < n_layers && !material->layers_cache[unit_index])
+          if (unit_index < n_layers && !pipeline->layers_cache[unit_index])
             {
-              material->layers_cache[unit_index] = layer;
+              pipeline->layers_cache[unit_index] = layer;
               layers_found++;
               if (layers_found == n_layers)
                 return;
@@ -681,12 +678,12 @@ _cogl_material_update_layers_cache (CoglMaterial *material)
 /* XXX: Be carefull when using this API that the callback given doesn't result
  * in the layer cache being invalidated during the iteration! */
 void
-_cogl_material_foreach_layer_internal (CoglMaterial *material,
-                                       CoglMaterialInternalLayerCallback callback,
+_cogl_pipeline_foreach_layer_internal (CoglPipeline *pipeline,
+                                       CoglPipelineInternalLayerCallback callback,
                                        void *user_data)
 {
-  CoglMaterial *authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LAYERS);
+  CoglPipeline *authority =
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LAYERS);
   int n_layers;
   int i;
   gboolean cont;
@@ -695,7 +692,7 @@ _cogl_material_foreach_layer_internal (CoglMaterial *material,
   if (n_layers == 0)
     return;
 
-  _cogl_material_update_layers_cache (authority);
+  _cogl_pipeline_update_layers_cache (authority);
 
   for (i = 0, cont = TRUE; i < n_layers && cont == TRUE; i++)
     {
@@ -711,7 +708,7 @@ typedef struct
 } AppendLayerIndexState;
 
 static gboolean
-append_layer_index_cb (CoglMaterialLayer *layer,
+append_layer_index_cb (CoglPipelineLayer *layer,
                        void *user_data)
 {
   AppendLayerIndexState *state = user_data;
@@ -720,41 +717,41 @@ append_layer_index_cb (CoglMaterialLayer *layer,
 }
 
 void
-cogl_material_foreach_layer (CoglMaterial *material,
-                             CoglMaterialLayerCallback callback,
+cogl_pipeline_foreach_layer (CoglPipeline *pipeline,
+                             CoglPipelineLayerCallback callback,
                              void *user_data)
 {
-  CoglMaterial *authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LAYERS);
+  CoglPipeline *authority =
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LAYERS);
   AppendLayerIndexState state;
   gboolean cont;
   int i;
 
   /* XXX: We don't know what the user is going to want to do to the layers
    * but any modification of layers can result in the layer graph changing
-   * which could confuse _cogl_material_foreach_layer_internal(). We first
+   * which could confuse _cogl_pipeline_foreach_layer_internal(). We first
    * get a list of layer indices which will remain valid so long as the
    * user doesn't remove layers. */
 
   state.i = 0;
   state.indices = g_alloca (authority->n_layers * sizeof (int));
 
-  _cogl_material_foreach_layer_internal (material,
+  _cogl_pipeline_foreach_layer_internal (pipeline,
                                          append_layer_index_cb,
                                          &state);
 
   for (i = 0, cont = TRUE; i < authority->n_layers && cont; i++)
-    cont = callback (material, state.indices[i], user_data);
+    cont = callback (pipeline, state.indices[i], user_data);
 }
 
 static gboolean
-layer_has_alpha_cb (CoglMaterialLayer *layer, void *data)
+layer_has_alpha_cb (CoglPipelineLayer *layer, void *data)
 {
-  CoglMaterialLayer *combine_authority =
-    _cogl_material_layer_get_authority (layer,
-                                        COGL_MATERIAL_LAYER_STATE_COMBINE);
-  CoglMaterialLayerBigState *big_state = combine_authority->big_state;
-  CoglMaterialLayer *tex_authority;
+  CoglPipelineLayer *combine_authority =
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_COMBINE);
+  CoglPipelineLayerBigState *big_state = combine_authority->big_state;
+  CoglPipelineLayer *tex_authority;
   gboolean *has_alpha = data;
 
   /* has_alpha maintains the alpha status for the GL_PREVIOUS layer */
@@ -779,8 +776,8 @@ layer_has_alpha_cb (CoglMaterialLayer *layer, void *data)
    * to the default texture which doesn't have an alpha component
    */
   tex_authority =
-    _cogl_material_layer_get_authority (layer,
-                                        COGL_MATERIAL_LAYER_STATE_TEXTURE);
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_TEXTURE);
   if (tex_authority->texture &&
       cogl_texture_get_format (tex_authority->texture) & COGL_A_BIT)
     {
@@ -794,42 +791,42 @@ layer_has_alpha_cb (CoglMaterialLayer *layer, void *data)
   return TRUE;
 }
 
-static CoglMaterial *
-_cogl_material_get_user_program (CoglMaterial *material)
+static CoglPipeline *
+_cogl_pipeline_get_user_program (CoglPipeline *pipeline)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_val_if_fail (cogl_is_material (material), NULL);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), NULL);
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_USER_SHADER);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_USER_SHADER);
 
   return authority->big_state->user_program;
 }
 
 static gboolean
-_cogl_material_needs_blending_enabled (CoglMaterial    *material,
+_cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
                                        unsigned long    changes,
                                        const CoglColor *override_color)
 {
-  CoglMaterial *enable_authority;
-  CoglMaterial *blend_authority;
-  CoglMaterialBlendState *blend_state;
-  CoglMaterialBlendEnable enabled;
+  CoglPipeline *enable_authority;
+  CoglPipeline *blend_authority;
+  CoglPipelineBlendState *blend_state;
+  CoglPipelineBlendEnable enabled;
   unsigned long other_state;
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_BLENDING))
     return FALSE;
 
   enable_authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_BLEND_ENABLE);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_BLEND_ENABLE);
 
   enabled = enable_authority->blend_enable;
-  if (enabled != COGL_MATERIAL_BLEND_ENABLE_AUTOMATIC)
-    return enabled == COGL_MATERIAL_BLEND_ENABLE_ENABLED ? TRUE : FALSE;
+  if (enabled != COGL_PIPELINE_BLEND_ENABLE_AUTOMATIC)
+    return enabled == COGL_PIPELINE_BLEND_ENABLE_ENABLED ? TRUE : FALSE;
 
   blend_authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_BLEND);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_BLEND);
 
   blend_state = &blend_authority->big_state->blend_state;
 
@@ -864,19 +861,19 @@ _cogl_material_needs_blending_enabled (CoglMaterial    *material,
   /* In the case of a layer state change we need to check everything
    * else first since they contribute to the has_alpha status of the
    * GL_PREVIOUS layer. */
-  if (changes & COGL_MATERIAL_STATE_LAYERS)
-    changes = COGL_MATERIAL_STATE_AFFECTS_BLENDING;
+  if (changes & COGL_PIPELINE_STATE_LAYERS)
+    changes = COGL_PIPELINE_STATE_AFFECTS_BLENDING;
 
   /* XXX: we don't currently handle specific changes in an optimal way*/
-  changes = COGL_MATERIAL_STATE_AFFECTS_BLENDING;
+  changes = COGL_PIPELINE_STATE_AFFECTS_BLENDING;
 
   if ((override_color && cogl_color_get_alpha_byte (override_color) != 0xff))
     return TRUE;
 
-  if (changes & COGL_MATERIAL_STATE_COLOR)
+  if (changes & COGL_PIPELINE_STATE_COLOR)
     {
       CoglColor tmp;
-      cogl_material_get_color (material, &tmp);
+      cogl_pipeline_get_color (pipeline, &tmp);
       if (cogl_color_get_alpha_byte (&tmp) != 0xff)
         return TRUE;
     }
@@ -886,39 +883,39 @@ _cogl_material_needs_blending_enabled (CoglMaterial    *material,
    *
    * TODO: check that it isn't just a vertex shader!
    */
-  if (changes & COGL_MATERIAL_STATE_USER_SHADER)
+  if (changes & COGL_PIPELINE_STATE_USER_SHADER)
     {
-      if (_cogl_material_get_user_program (material) != COGL_INVALID_HANDLE)
+      if (_cogl_pipeline_get_user_program (pipeline) != COGL_INVALID_HANDLE)
         return TRUE;
     }
 
   /* XXX: we should only need to look at these if lighting is enabled
    */
-  if (changes & COGL_MATERIAL_STATE_LIGHTING)
+  if (changes & COGL_PIPELINE_STATE_LIGHTING)
     {
       CoglColor tmp;
 
-      cogl_material_get_ambient (material, &tmp);
+      cogl_pipeline_get_ambient (pipeline, &tmp);
       if (cogl_color_get_alpha_byte (&tmp) != 0xff)
         return TRUE;
-      cogl_material_get_diffuse (material, &tmp);
+      cogl_pipeline_get_diffuse (pipeline, &tmp);
       if (cogl_color_get_alpha_byte (&tmp) != 0xff)
         return TRUE;
-      cogl_material_get_specular (material, &tmp);
+      cogl_pipeline_get_specular (pipeline, &tmp);
       if (cogl_color_get_alpha_byte (&tmp) != 0xff)
         return TRUE;
-      cogl_material_get_emission (material, &tmp);
+      cogl_pipeline_get_emission (pipeline, &tmp);
       if (cogl_color_get_alpha_byte (&tmp) != 0xff)
         return TRUE;
     }
 
-  if (changes & COGL_MATERIAL_STATE_LAYERS)
+  if (changes & COGL_PIPELINE_STATE_LAYERS)
     {
       /* has_alpha tracks the alpha status of the GL_PREVIOUS layer.
-       * To start with that's defined by the material color which
+       * To start with that's defined by the pipeline color which
        * must be fully opaque if we got this far. */
       gboolean has_alpha = FALSE;
-      _cogl_material_foreach_layer_internal (material,
+      _cogl_pipeline_foreach_layer_internal (pipeline,
                                              layer_has_alpha_cb,
                                              &has_alpha);
       if (has_alpha)
@@ -927,9 +924,9 @@ _cogl_material_needs_blending_enabled (CoglMaterial    *material,
 
   /* So far we have only checked the property that has been changed so
    * we now need to check all the other properties too. */
-  other_state = COGL_MATERIAL_STATE_AFFECTS_BLENDING & ~changes;
+  other_state = COGL_PIPELINE_STATE_AFFECTS_BLENDING & ~changes;
   if (other_state &&
-      _cogl_material_needs_blending_enabled (material,
+      _cogl_pipeline_needs_blending_enabled (pipeline,
                                              other_state,
                                              NULL))
     return TRUE;
@@ -938,30 +935,30 @@ _cogl_material_needs_blending_enabled (CoglMaterial    *material,
 }
 
 void
-_cogl_material_set_backend (CoglMaterial *material, int backend)
+_cogl_pipeline_set_backend (CoglPipeline *pipeline, int backend)
 {
-  _cogl_material_backend_free_priv (material);
-  material->backend = backend;
+  _cogl_pipeline_backend_free_priv (pipeline);
+  pipeline->backend = backend;
 }
 
 static void
-_cogl_material_copy_differences (CoglMaterial *dest,
-                                 CoglMaterial *src,
+_cogl_pipeline_copy_differences (CoglPipeline *dest,
+                                 CoglPipeline *src,
                                  unsigned long differences)
 {
-  CoglMaterialBigState *big_state;
+  CoglPipelineBigState *big_state;
 
-  if (differences & COGL_MATERIAL_STATE_COLOR)
+  if (differences & COGL_PIPELINE_STATE_COLOR)
     dest->color = src->color;
 
-  if (differences & COGL_MATERIAL_STATE_BLEND_ENABLE)
+  if (differences & COGL_PIPELINE_STATE_BLEND_ENABLE)
     dest->blend_enable = src->blend_enable;
 
-  if (differences & COGL_MATERIAL_STATE_LAYERS)
+  if (differences & COGL_PIPELINE_STATE_LAYERS)
     {
       GList *l;
 
-      if (dest->differences & COGL_MATERIAL_STATE_LAYERS &&
+      if (dest->differences & COGL_PIPELINE_STATE_LAYERS &&
           dest->layer_differences)
         {
           g_list_foreach (dest->layer_differences,
@@ -976,8 +973,8 @@ _cogl_material_copy_differences (CoglMaterial *dest,
            * simply take a references on each of the original
            * layer_differences, we have to derive new layers from the
            * originals instead. */
-          CoglMaterialLayer *copy = _cogl_material_layer_copy (l->data);
-          _cogl_material_add_layer_difference (dest, copy, FALSE);
+          CoglPipelineLayer *copy = _cogl_pipeline_layer_copy (l->data);
+          _cogl_pipeline_add_layer_difference (dest, copy, FALSE);
           cogl_object_unref (copy);
         }
 
@@ -987,11 +984,11 @@ _cogl_material_copy_differences (CoglMaterial *dest,
       dest->n_layers = src->n_layers;
     }
 
-  if (differences & COGL_MATERIAL_STATE_NEEDS_BIG_STATE)
+  if (differences & COGL_PIPELINE_STATE_NEEDS_BIG_STATE)
     {
       if (!dest->has_big_state)
         {
-          dest->big_state = g_slice_new (CoglMaterialBigState);
+          dest->big_state = g_slice_new (CoglPipelineBigState);
           dest->has_big_state = TRUE;
         }
       big_state = dest->big_state;
@@ -999,28 +996,28 @@ _cogl_material_copy_differences (CoglMaterial *dest,
   else
     goto check_for_blending_change;
 
-  if (differences & COGL_MATERIAL_STATE_LIGHTING)
+  if (differences & COGL_PIPELINE_STATE_LIGHTING)
     {
       memcpy (&big_state->lighting_state,
               &src->big_state->lighting_state,
-              sizeof (CoglMaterialLightingState));
+              sizeof (CoglPipelineLightingState));
     }
 
-  if (differences & COGL_MATERIAL_STATE_ALPHA_FUNC)
+  if (differences & COGL_PIPELINE_STATE_ALPHA_FUNC)
     {
       memcpy (&big_state->alpha_state,
               &src->big_state->alpha_state,
-              sizeof (CoglMaterialAlphaFuncState));
+              sizeof (CoglPipelineAlphaFuncState));
     }
 
-  if (differences & COGL_MATERIAL_STATE_BLEND)
+  if (differences & COGL_PIPELINE_STATE_BLEND)
     {
       memcpy (&big_state->blend_state,
               &src->big_state->blend_state,
-              sizeof (CoglMaterialBlendState));
+              sizeof (CoglPipelineBlendState));
     }
 
-  if (differences & COGL_MATERIAL_STATE_USER_SHADER)
+  if (differences & COGL_PIPELINE_STATE_USER_SHADER)
     {
       if (src->big_state->user_program)
         big_state->user_program =
@@ -1029,47 +1026,47 @@ _cogl_material_copy_differences (CoglMaterial *dest,
         big_state->user_program = COGL_INVALID_HANDLE;
     }
 
-  if (differences & COGL_MATERIAL_STATE_DEPTH)
+  if (differences & COGL_PIPELINE_STATE_DEPTH)
     {
       memcpy (&big_state->depth_state,
               &src->big_state->depth_state,
-              sizeof (CoglMaterialDepthState));
+              sizeof (CoglPipelineDepthState));
     }
 
-  if (differences & COGL_MATERIAL_STATE_FOG)
+  if (differences & COGL_PIPELINE_STATE_FOG)
     {
       memcpy (&big_state->fog_state,
               &src->big_state->fog_state,
-              sizeof (CoglMaterialFogState));
+              sizeof (CoglPipelineFogState));
     }
 
-  if (differences & COGL_MATERIAL_STATE_POINT_SIZE)
+  if (differences & COGL_PIPELINE_STATE_POINT_SIZE)
     big_state->point_size = src->big_state->point_size;
 
   /* XXX: we shouldn't bother doing this in most cases since
-   * _copy_differences is typically used to initialize material state
+   * _copy_differences is typically used to initialize pipeline state
    * by copying it from the current authority, so it's not actually
    * *changing* anything.
    */
 check_for_blending_change:
-  if (differences & COGL_MATERIAL_STATE_AFFECTS_BLENDING)
+  if (differences & COGL_PIPELINE_STATE_AFFECTS_BLENDING)
     handle_automatic_blend_enable (dest, differences);
 
   dest->differences |= differences;
 }
 
 static void
-_cogl_material_initialize_sparse_state (CoglMaterial *dest,
-                                        CoglMaterial *src,
-                                        CoglMaterialState state)
+_cogl_pipeline_initialize_sparse_state (CoglPipeline *dest,
+                                        CoglPipeline *src,
+                                        CoglPipelineState state)
 {
   if (dest == src)
     return;
 
-  g_return_if_fail (state & COGL_MATERIAL_STATE_ALL_SPARSE);
+  g_return_if_fail (state & COGL_PIPELINE_STATE_ALL_SPARSE);
 
-  if (state != COGL_MATERIAL_STATE_LAYERS)
-    _cogl_material_copy_differences (dest, src, state);
+  if (state != COGL_PIPELINE_STATE_LAYERS)
+    _cogl_pipeline_copy_differences (dest, src, state);
   else
     {
       dest->n_layers = src->n_layers;
@@ -1078,12 +1075,12 @@ _cogl_material_initialize_sparse_state (CoglMaterial *dest,
 }
 
 static gboolean
-check_if_strong_cb (CoglMaterialNode *node, void *user_data)
+check_if_strong_cb (CoglPipelineNode *node, void *user_data)
 {
-  CoglMaterial *material = COGL_MATERIAL (node);
+  CoglPipeline *pipeline = COGL_PIPELINE (node);
   gboolean *has_strong_child = user_data;
 
-  if (!_cogl_material_is_weak (material))
+  if (!_cogl_pipeline_is_weak (pipeline))
     {
       *has_strong_child = TRUE;
       return FALSE;
@@ -1093,64 +1090,64 @@ check_if_strong_cb (CoglMaterialNode *node, void *user_data)
 }
 
 static gboolean
-has_strong_children (CoglMaterial *material)
+has_strong_children (CoglPipeline *pipeline)
 {
   gboolean has_strong_child = FALSE;
-  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+  _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
                                      check_if_strong_cb,
                                      &has_strong_child);
   return has_strong_child;
 }
 
 static gboolean
-_cogl_material_is_weak (CoglMaterial *material)
+_cogl_pipeline_is_weak (CoglPipeline *pipeline)
 {
-  if (material->is_weak && !has_strong_children (material))
+  if (pipeline->is_weak && !has_strong_children (pipeline))
     return TRUE;
   else
     return FALSE;
 }
 
 static gboolean
-reparent_children_cb (CoglMaterialNode *node,
+reparent_children_cb (CoglPipelineNode *node,
                       void *user_data)
 {
-  CoglMaterial *material = COGL_MATERIAL (node);
-  CoglMaterial *parent = user_data;
+  CoglPipeline *pipeline = COGL_PIPELINE (node);
+  CoglPipeline *parent = user_data;
 
-  _cogl_material_set_parent (material, parent, TRUE);
+  _cogl_pipeline_set_parent (pipeline, parent, TRUE);
 
   return TRUE;
 }
 
 static void
-_cogl_material_pre_change_notify (CoglMaterial     *material,
-                                  CoglMaterialState change,
+_cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
+                                  CoglPipelineState change,
                                   const CoglColor  *new_color,
                                   gboolean          from_layer_change)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* If primitives have been logged in the journal referencing the
-   * current state of this material we need to flush the journal
+   * current state of this pipeline we need to flush the journal
    * before we can modify it... */
-  if (material->journal_ref_count)
+  if (pipeline->journal_ref_count)
     {
       gboolean skip_journal_flush = FALSE;
 
       /* XXX: We don't usually need to flush the journal just due to
-       * color changes since material colors are logged in the
+       * color changes since pipeline colors are logged in the
        * journal's vertex buffer. The exception is when the change in
        * color enables or disables the need for blending. */
-      if (change == COGL_MATERIAL_STATE_COLOR)
+      if (change == COGL_PIPELINE_STATE_COLOR)
         {
           gboolean will_need_blending =
-            _cogl_material_needs_blending_enabled (material,
+            _cogl_pipeline_needs_blending_enabled (pipeline,
                                                    change,
                                                    new_color);
-          gboolean blend_enable = material->real_blend_enable ? TRUE : FALSE;
+          gboolean blend_enable = pipeline->real_blend_enable ? TRUE : FALSE;
 
           if (will_need_blending == blend_enable)
             skip_journal_flush = TRUE;
@@ -1161,22 +1158,22 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
     }
 
   /* The fixed function backend has no private state and can't
-   * do anything special to handle small material changes so we may as
-   * well try to find a better backend whenever the material changes.
+   * do anything special to handle small pipeline changes so we may as
+   * well try to find a better backend whenever the pipeline changes.
    *
    * The programmable backends may be able to cache a lot of the code
    * they generate and only need to update a small section of that
-   * code in response to a material change therefore we don't want to
-   * try searching for another backend when the material changes.
+   * code in response to a pipeline change therefore we don't want to
+   * try searching for another backend when the pipeline changes.
    */
-  if (material->backend == COGL_MATERIAL_BACKEND_FIXED)
-    _cogl_material_set_backend (material, COGL_MATERIAL_BACKEND_UNDEFINED);
+  if (pipeline->backend == COGL_PIPELINE_BACKEND_FIXED)
+    _cogl_pipeline_set_backend (pipeline, COGL_PIPELINE_BACKEND_UNDEFINED);
 
-  if (material->backend != COGL_MATERIAL_BACKEND_UNDEFINED &&
-      _cogl_material_backends[material->backend]->material_pre_change_notify)
+  if (pipeline->backend != COGL_PIPELINE_BACKEND_UNDEFINED &&
+      _cogl_pipeline_backends[pipeline->backend]->pipeline_pre_change_notify)
     {
-      const CoglMaterialBackend *backend =
-        _cogl_material_backends[material->backend];
+      const CoglPipelineBackend *backend =
+        _cogl_pipeline_backends[pipeline->backend];
 
       /* To simplify things for the backends we are careful about how
        * we report STATE_LAYERS changes.
@@ -1186,76 +1183,76 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
        * backends that perform code generation for fragment processing
        * they typically need to understand the details of how layers
        * get changed to determine if they need to repeat codegen. It
-       * doesn't help them to report a material STATE_LAYERS change
+       * doesn't help them to report a pipeline STATE_LAYERS change
        * for all layer changes since it's so broad, they really need
        * to wait for the layer change to be notified.  What does help
        * though is to report a STATE_LAYERS change for a change in
        * ->n_layers because they typically do need to repeat codegen
        *  in that case.
        *
-       * This just ensures backends only get a single material or
+       * This just ensures backends only get a single pipeline or
        * layer pre-change notification for any particular change.
        */
       if (!from_layer_change)
-        backend->material_pre_change_notify (material, change, new_color);
+        backend->pipeline_pre_change_notify (pipeline, change, new_color);
     }
 
-  /* There may be an arbitrary tree of descendants of this material;
-   * any of which may indirectly depend on this material as the
+  /* There may be an arbitrary tree of descendants of this pipeline;
+   * any of which may indirectly depend on this pipeline as the
    * authority for some set of properties. (Meaning for example that
    * one of its descendants derives its color or blending state from
-   * this material.)
+   * this pipeline.)
    *
-   * We can't modify any property that this material is the authority
-   * for unless we create another material to take its place first and
-   * make sure descendants reference this new material instead.
+   * We can't modify any property that this pipeline is the authority
+   * for unless we create another pipeline to take its place first and
+   * make sure descendants reference this new pipeline instead.
    */
 
-  /* The simplest descendants to handle are weak materials; we simply
-   * destroy them if we are modifying a material they depend on. This
-   * means weak materials never cause us to do a copy-on-write. */
-  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+  /* The simplest descendants to handle are weak pipelines; we simply
+   * destroy them if we are modifying a pipeline they depend on. This
+   * means weak pipelines never cause us to do a copy-on-write. */
+  _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
                                      destroy_weak_children_cb,
                                      NULL);
 
   /* If there are still children remaining though we'll need to
    * perform a copy-on-write and reparent the dependants as children
    * of the copy. */
-  if (COGL_MATERIAL_NODE (material)->has_children)
+  if (COGL_PIPELINE_NODE (pipeline)->has_children)
     {
-      CoglMaterial *new_authority;
+      CoglPipeline *new_authority;
 
-      COGL_STATIC_COUNTER (material_copy_on_write_counter,
-                           "material copy on write counter",
-                           "Increments each time a material "
+      COGL_STATIC_COUNTER (pipeline_copy_on_write_counter,
+                           "pipeline copy on write counter",
+                           "Increments each time a pipeline "
                            "must be copied to allow modification",
                            0 /* no application private data */);
 
-      COGL_COUNTER_INC (_cogl_uprof_context, material_copy_on_write_counter);
+      COGL_COUNTER_INC (_cogl_uprof_context, pipeline_copy_on_write_counter);
 
       new_authority =
-        cogl_material_copy (_cogl_material_get_parent (material));
-      _cogl_material_set_static_breadcrumb (new_authority,
+        cogl_pipeline_copy (_cogl_pipeline_get_parent (pipeline));
+      _cogl_pipeline_set_static_breadcrumb (new_authority,
                                             "pre_change_notify:copy-on-write");
 
       /* We could explicitly walk the descendants, OR together the set
-       * of differences that we determine this material is the
+       * of differences that we determine this pipeline is the
        * authority on and only copy those differences copied across.
        *
        * Or, if we don't explicitly walk the descendants we at least
-       * know that material->differences represents the largest set of
-       * differences that this material could possibly be an authority
+       * know that pipeline->differences represents the largest set of
+       * differences that this pipeline could possibly be an authority
        * on.
        *
        * We do the later just because it's simplest, but we might need
        * to come back to this later...
        */
-      _cogl_material_copy_differences (new_authority, material,
-                                       material->differences);
+      _cogl_pipeline_copy_differences (new_authority, pipeline,
+                                       pipeline->differences);
 
-      /* Reparent the dependants of material to be children of
+      /* Reparent the dependants of pipeline to be children of
        * new_authority instead... */
-      _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
+      _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
                                          reparent_children_cb,
                                          new_authority);
 
@@ -1264,106 +1261,106 @@ _cogl_material_pre_change_notify (CoglMaterial     *material,
       cogl_object_unref (new_authority);
     }
 
-  /* At this point we know we have a material with no strong
+  /* At this point we know we have a pipeline with no strong
    * dependants (though we may have some weak children) so we are now
-   * free to modify the material. */
+   * free to modify the pipeline. */
 
-  material->age++;
+  pipeline->age++;
 
-  /* If changing a sparse property and if the material isn't already an
+  /* If changing a sparse property and if the pipeline isn't already an
    * authority for the state group being modified then we need to
    * initialize the corresponding state. */
-  if (change & COGL_MATERIAL_STATE_ALL_SPARSE &&
-      !(material->differences & change))
+  if (change & COGL_PIPELINE_STATE_ALL_SPARSE &&
+      !(pipeline->differences & change))
     {
-      authority = _cogl_material_get_authority (material, change);
-      _cogl_material_initialize_sparse_state (material, authority, change);
+      authority = _cogl_pipeline_get_authority (pipeline, change);
+      _cogl_pipeline_initialize_sparse_state (pipeline, authority, change);
     }
 
-  /* Each material has a sorted cache of the layers it depends on
-   * which will need updating via _cogl_material_update_layers_cache
-   * if a material's layers are changed. */
-  if (change == COGL_MATERIAL_STATE_LAYERS)
-    recursively_free_layer_caches (material);
+  /* Each pipeline has a sorted cache of the layers it depends on
+   * which will need updating via _cogl_pipeline_update_layers_cache
+   * if a pipeline's layers are changed. */
+  if (change == COGL_PIPELINE_STATE_LAYERS)
+    recursively_free_layer_caches (pipeline);
 
-  /* If the material being changed is the same as the last material we
+  /* If the pipeline being changed is the same as the last pipeline we
    * flushed then we keep a track of the changes so we can try to
-   * minimize redundant OpenGL calls if the same material is flushed
+   * minimize redundant OpenGL calls if the same pipeline is flushed
    * again.
    */
-  if (ctx->current_material == material)
-    ctx->current_material_changes_since_flush |= change;
+  if (ctx->current_pipeline == pipeline)
+    ctx->current_pipeline_changes_since_flush |= change;
 }
 
 
 static void
-_cogl_material_add_layer_difference (CoglMaterial *material,
-                                     CoglMaterialLayer *layer,
+_cogl_pipeline_add_layer_difference (CoglPipeline *pipeline,
+                                     CoglPipelineLayer *layer,
                                      gboolean inc_n_layers)
 {
   g_return_if_fail (layer->owner == NULL);
 
-  layer->owner = material;
+  layer->owner = pipeline;
   cogl_object_ref (layer);
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material,
-                                    COGL_MATERIAL_STATE_LAYERS,
+  _cogl_pipeline_pre_change_notify (pipeline,
+                                    COGL_PIPELINE_STATE_LAYERS,
                                     NULL,
                                     FALSE);
 
-  material->differences |= COGL_MATERIAL_STATE_LAYERS;
+  pipeline->differences |= COGL_PIPELINE_STATE_LAYERS;
 
-  material->layer_differences =
-    g_list_prepend (material->layer_differences, layer);
+  pipeline->layer_differences =
+    g_list_prepend (pipeline->layer_differences, layer);
 
   if (inc_n_layers)
-    material->n_layers++;
+    pipeline->n_layers++;
 }
 
 /* NB: If you are calling this it's your responsibility to have
  * already called:
- *   _cogl_material_pre_change_notify (m, _CHANGE_LAYERS, NULL);
+ *   _cogl_pipeline_pre_change_notify (m, _CHANGE_LAYERS, NULL);
  */
 static void
-_cogl_material_remove_layer_difference (CoglMaterial *material,
-                                        CoglMaterialLayer *layer,
+_cogl_pipeline_remove_layer_difference (CoglPipeline *pipeline,
+                                        CoglPipelineLayer *layer,
                                         gboolean dec_n_layers)
 {
-  g_return_if_fail (layer->owner == material);
+  g_return_if_fail (layer->owner == pipeline);
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material,
-                                    COGL_MATERIAL_STATE_LAYERS,
+  _cogl_pipeline_pre_change_notify (pipeline,
+                                    COGL_PIPELINE_STATE_LAYERS,
                                     NULL,
                                     FALSE);
 
   layer->owner = NULL;
   cogl_object_unref (layer);
 
-  material->differences |= COGL_MATERIAL_STATE_LAYERS;
+  pipeline->differences |= COGL_PIPELINE_STATE_LAYERS;
 
-  material->layer_differences =
-    g_list_remove (material->layer_differences, layer);
+  pipeline->layer_differences =
+    g_list_remove (pipeline->layer_differences, layer);
 
   if (dec_n_layers)
-    material->n_layers--;
+    pipeline->n_layers--;
 }
 
 static void
-_cogl_material_try_reverting_layers_authority (CoglMaterial *authority,
-                                               CoglMaterial *old_authority)
+_cogl_pipeline_try_reverting_layers_authority (CoglPipeline *authority,
+                                               CoglPipeline *old_authority)
 {
   if (authority->layer_differences == NULL &&
-      _cogl_material_get_parent (authority))
+      _cogl_pipeline_get_parent (authority))
     {
       /* If the previous _STATE_LAYERS authority has the same
        * ->n_layers then we can revert to that being the authority
@@ -1371,37 +1368,37 @@ _cogl_material_try_reverting_layers_authority (CoglMaterial *authority,
       if (!old_authority)
         {
           old_authority =
-            _cogl_material_get_authority (_cogl_material_get_parent (authority),
-                                          COGL_MATERIAL_STATE_LAYERS);
+            _cogl_pipeline_get_authority (_cogl_pipeline_get_parent (authority),
+                                          COGL_PIPELINE_STATE_LAYERS);
         }
 
       if (old_authority->n_layers == authority->n_layers)
-        authority->differences &= ~COGL_MATERIAL_STATE_LAYERS;
+        authority->differences &= ~COGL_PIPELINE_STATE_LAYERS;
     }
 }
 
 
 static void
-handle_automatic_blend_enable (CoglMaterial *material,
-                               CoglMaterialState change)
+handle_automatic_blend_enable (CoglPipeline *pipeline,
+                               CoglPipelineState change)
 {
   gboolean blend_enable =
-    _cogl_material_needs_blending_enabled (material, change, NULL);
+    _cogl_pipeline_needs_blending_enabled (pipeline, change, NULL);
 
-  if (blend_enable != material->real_blend_enable)
+  if (blend_enable != pipeline->real_blend_enable)
     {
       /* - Flush journal primitives referencing the current state.
-       * - Make sure the material has no dependants so it may be
+       * - Make sure the pipeline has no dependants so it may be
        *   modified.
-       * - If the material isn't currently an authority for the state
+       * - If the pipeline isn't currently an authority for the state
        *   being changed, then initialize that state from the current
        *   authority.
        */
-      _cogl_material_pre_change_notify (material,
-                                        COGL_MATERIAL_STATE_REAL_BLEND_ENABLE,
+      _cogl_pipeline_pre_change_notify (pipeline,
+                                        COGL_PIPELINE_STATE_REAL_BLEND_ENABLE,
                                         NULL,
                                         FALSE);
-      material->real_blend_enable = blend_enable;
+      pipeline->real_blend_enable = blend_enable;
     }
 }
 
@@ -1411,12 +1408,12 @@ typedef struct
   int current_pos;
   gboolean needs_pruning;
   int first_index_to_prune;
-} CoglMaterialPruneLayersInfo;
+} CoglPipelinePruneLayersInfo;
 
 static gboolean
-update_prune_layers_info_cb (CoglMaterialLayer *layer, void *user_data)
+update_prune_layers_info_cb (CoglPipelineLayer *layer, void *user_data)
 {
-  CoglMaterialPruneLayersInfo *state = user_data;
+  CoglPipelinePruneLayersInfo *state = user_data;
 
   if (state->current_pos == state->keep_n)
     {
@@ -1429,9 +1426,9 @@ update_prune_layers_info_cb (CoglMaterialLayer *layer, void *user_data)
 }
 
 void
-_cogl_material_prune_to_n_layers (CoglMaterial *material, int n)
+_cogl_pipeline_prune_to_n_layers (CoglPipeline *pipeline, int n)
 {
-  CoglMaterialPruneLayersInfo state;
+  CoglPipelinePruneLayersInfo state;
   gboolean notified_change = TRUE;
   GList *l;
   GList *next;
@@ -1439,23 +1436,23 @@ _cogl_material_prune_to_n_layers (CoglMaterial *material, int n)
   state.keep_n = n;
   state.current_pos = 0;
   state.needs_pruning = FALSE;
-  _cogl_material_foreach_layer_internal (material,
+  _cogl_pipeline_foreach_layer_internal (pipeline,
                                          update_prune_layers_info_cb,
                                          &state);
 
-  material->n_layers = n;
+  pipeline->n_layers = n;
 
   if (!state.needs_pruning)
     return;
 
-  if (!(material->differences & COGL_MATERIAL_STATE_LAYERS))
+  if (!(pipeline->differences & COGL_PIPELINE_STATE_LAYERS))
     return;
 
-  /* It's possible that this material owns some of the layers being
+  /* It's possible that this pipeline owns some of the layers being
    * discarded, so we'll need to unlink them... */
-  for (l = material->layer_differences; l; l = next)
+  for (l = pipeline->layer_differences; l; l = next)
     {
-      CoglMaterialLayer *layer = l->data;
+      CoglPipelineLayer *layer = l->data;
       next = l->next; /* we're modifying the list we're iterating */
 
       if (layer->index > state.first_index_to_prune)
@@ -1464,42 +1461,42 @@ _cogl_material_prune_to_n_layers (CoglMaterial *material, int n)
             {
               /* - Flush journal primitives referencing the current
                *   state.
-               * - Make sure the material has no dependants so it may
+               * - Make sure the pipeline has no dependants so it may
                *   be modified.
-               * - If the material isn't currently an authority for
+               * - If the pipeline isn't currently an authority for
                *   the state being changed, then initialize that state
                *   from the current authority.
                */
-              _cogl_material_pre_change_notify (material,
-                                                COGL_MATERIAL_STATE_LAYERS,
+              _cogl_pipeline_pre_change_notify (pipeline,
+                                                COGL_PIPELINE_STATE_LAYERS,
                                                 NULL,
                                                 FALSE);
               notified_change = TRUE;
             }
 
-          material->layer_differences =
-            g_list_delete_link (material->layer_differences, l);
+          pipeline->layer_differences =
+            g_list_delete_link (pipeline->layer_differences, l);
         }
     }
 }
 
 static void
-_cogl_material_backend_layer_change_notify (CoglMaterial *owner,
-                                            CoglMaterialLayer *layer,
-                                            CoglMaterialLayerState change)
+_cogl_pipeline_backend_layer_change_notify (CoglPipeline *owner,
+                                            CoglPipelineLayer *layer,
+                                            CoglPipelineLayerState change)
 {
   int i;
 
-  /* NB: layers may be used by multiple materials which may be using
+  /* NB: layers may be used by multiple pipelines which may be using
    * different backends, therefore we determine which backends to
    * notify based on the private state pointers for each backend...
    */
-  for (i = 0; i < COGL_MATERIAL_N_BACKENDS; i++)
+  for (i = 0; i < COGL_PIPELINE_N_BACKENDS; i++)
     {
       if (layer->backend_priv[i] &&
-          _cogl_material_backends[i]->layer_pre_change_notify)
+          _cogl_pipeline_backends[i]->layer_pre_change_notify)
         {
-          const CoglMaterialBackend *backend = _cogl_material_backends[i];
+          const CoglPipelineBackend *backend = _cogl_pipeline_backends[i];
           backend->layer_pre_change_notify (owner, layer, change);
         }
     }
@@ -1526,38 +1523,38 @@ _cogl_get_n_args_for_combine_func (GLint func)
 }
 
 static void
-_cogl_material_layer_initialize_state (CoglMaterialLayer *dest,
-                                       CoglMaterialLayer *src,
+_cogl_pipeline_layer_initialize_state (CoglPipelineLayer *dest,
+                                       CoglPipelineLayer *src,
                                        unsigned long differences)
 {
-  CoglMaterialLayerBigState *big_state;
+  CoglPipelineLayerBigState *big_state;
 
   dest->differences |= differences;
 
-  if (differences & COGL_MATERIAL_LAYER_STATE_UNIT)
+  if (differences & COGL_PIPELINE_LAYER_STATE_UNIT)
     dest->unit_index = src->unit_index;
 
-  if (differences & COGL_MATERIAL_LAYER_STATE_TEXTURE)
+  if (differences & COGL_PIPELINE_LAYER_STATE_TEXTURE)
     dest->texture = src->texture;
 
-  if (differences & COGL_MATERIAL_LAYER_STATE_FILTERS)
+  if (differences & COGL_PIPELINE_LAYER_STATE_FILTERS)
     {
       dest->min_filter = src->min_filter;
       dest->mag_filter = src->mag_filter;
     }
 
-  if (differences & COGL_MATERIAL_LAYER_STATE_WRAP_MODES)
+  if (differences & COGL_PIPELINE_LAYER_STATE_WRAP_MODES)
     {
       dest->wrap_mode_s = src->wrap_mode_s;
       dest->wrap_mode_t = src->wrap_mode_t;
       dest->wrap_mode_p = src->wrap_mode_p;
     }
 
-  if (differences & COGL_MATERIAL_LAYER_STATE_NEEDS_BIG_STATE)
+  if (differences & COGL_PIPELINE_LAYER_STATE_NEEDS_BIG_STATE)
     {
       if (!dest->has_big_state)
         {
-          dest->big_state = g_slice_new (CoglMaterialLayerBigState);
+          dest->big_state = g_slice_new (CoglPipelineLayerBigState);
           dest->has_big_state = TRUE;
         }
       big_state = dest->big_state;
@@ -1565,7 +1562,7 @@ _cogl_material_layer_initialize_state (CoglMaterialLayer *dest,
   else
     return;
 
-  if (differences & COGL_MATERIAL_LAYER_STATE_COMBINE)
+  if (differences & COGL_PIPELINE_LAYER_STATE_COMBINE)
     {
       int n_args;
       int i;
@@ -1592,15 +1589,15 @@ _cogl_material_layer_initialize_state (CoglMaterialLayer *dest,
         }
     }
 
-  if (differences & COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT)
+  if (differences & COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT)
     memcpy (dest->big_state->texture_combine_constant,
             src->big_state->texture_combine_constant,
             sizeof (float) * 4);
 
-  if (differences & COGL_MATERIAL_LAYER_STATE_USER_MATRIX)
+  if (differences & COGL_PIPELINE_LAYER_STATE_USER_MATRIX)
     dest->big_state->matrix = src->big_state->matrix;
 
-  if (differences & COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS)
+  if (differences & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS)
     dest->big_state->point_sprite_coords = src->big_state->point_sprite_coords;
 }
 
@@ -1613,17 +1610,17 @@ _cogl_material_layer_initialize_state (CoglMaterialLayer *dest,
  * required_owner can only by NULL for new, currently unowned layers
  * with no dependants.
  */
-static CoglMaterialLayer *
-_cogl_material_layer_pre_change_notify (CoglMaterial *required_owner,
-                                        CoglMaterialLayer *layer,
-                                        CoglMaterialLayerState change)
+static CoglPipelineLayer *
+_cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
+                                        CoglPipelineLayer *layer,
+                                        CoglPipelineLayerState change)
 {
   CoglTextureUnit *unit;
-  CoglMaterialLayer *authority;
+  CoglPipelineLayer *authority;
 
   /* Identify the case where the layer is new with no owner or
    * dependants and so we don't need to do anything. */
-  if (COGL_MATERIAL_NODE (layer)->has_children == FALSE &&
+  if (COGL_PIPELINE_NODE (layer)->has_children == FALSE &&
       layer->owner == NULL)
     goto init_layer_state;
 
@@ -1636,39 +1633,39 @@ _cogl_material_layer_pre_change_notify (CoglMaterial *required_owner,
    * references to the current owner state and if necessary perform
    * a copy-on-write for the required_owner if it has dependants.
    */
-  _cogl_material_pre_change_notify (required_owner,
-                                    COGL_MATERIAL_STATE_LAYERS,
+  _cogl_pipeline_pre_change_notify (required_owner,
+                                    COGL_PIPELINE_STATE_LAYERS,
                                     NULL,
                                     TRUE);
 
-  /* Unlike materials; layers are simply considered immutable once
+  /* Unlike pipelines; layers are simply considered immutable once
    * they have dependants - either direct children, or another
-   * material as an owner.
+   * pipeline as an owner.
    */
-  if (COGL_MATERIAL_NODE (layer)->has_children ||
+  if (COGL_PIPELINE_NODE (layer)->has_children ||
       layer->owner != required_owner)
     {
-      CoglMaterialLayer *new = _cogl_material_layer_copy (layer);
+      CoglPipelineLayer *new = _cogl_pipeline_layer_copy (layer);
       if (layer->owner == required_owner)
-        _cogl_material_remove_layer_difference (required_owner, layer, FALSE);
-      _cogl_material_add_layer_difference (required_owner, new, FALSE);
+        _cogl_pipeline_remove_layer_difference (required_owner, layer, FALSE);
+      _cogl_pipeline_add_layer_difference (required_owner, new, FALSE);
       cogl_object_unref (new);
       layer = new;
       goto init_layer_state;
     }
 
-  /* Note: At this point we know there is only one material dependant on
+  /* Note: At this point we know there is only one pipeline dependant on
    * this layer (required_owner), and there are no other layers
    * dependant on this layer so it's ok to modify it. */
 
-  _cogl_material_backend_layer_change_notify (required_owner, layer, change);
+  _cogl_pipeline_backend_layer_change_notify (required_owner, layer, change);
 
   /* If the layer being changed is the same as the last layer we
    * flushed to the corresponding texture unit then we keep a track of
    * the changes so we can try to minimize redundant OpenGL calls if
    * the same layer is flushed again.
    */
-  unit = _cogl_get_texture_unit (_cogl_material_layer_get_unit_index (layer));
+  unit = _cogl_get_texture_unit (_cogl_pipeline_layer_get_unit_index (layer));
   if (unit->layer == layer)
     unit->layer_changes_since_flush |= change;
 
@@ -1677,49 +1674,49 @@ init_layer_state:
   if (required_owner)
     required_owner->age++;
 
-  /* If the material isn't already an authority for the state group
+  /* If the pipeline isn't already an authority for the state group
    * being modified then we need to initialize the corresponding
    * state. */
-  authority = _cogl_material_layer_get_authority (layer, change);
-  _cogl_material_layer_initialize_state (layer, authority, change);
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
+  _cogl_pipeline_layer_initialize_state (layer, authority, change);
 
   return layer;
 }
 
 static void
-_cogl_material_layer_unparent (CoglMaterialNode *layer)
+_cogl_pipeline_layer_unparent (CoglPipelineNode *layer)
 {
   /* Chain up */
-  _cogl_material_node_unparent_real (layer);
+  _cogl_pipeline_node_unparent_real (layer);
 }
 
 static void
-_cogl_material_layer_set_parent (CoglMaterialLayer *layer,
-                                 CoglMaterialLayer *parent)
+_cogl_pipeline_layer_set_parent (CoglPipelineLayer *layer,
+                                 CoglPipelineLayer *parent)
 {
   /* Chain up */
-  _cogl_material_node_set_parent_real (COGL_MATERIAL_NODE (layer),
-                                       COGL_MATERIAL_NODE (parent),
-                                       _cogl_material_layer_unparent,
+  _cogl_pipeline_node_set_parent_real (COGL_PIPELINE_NODE (layer),
+                                       COGL_PIPELINE_NODE (parent),
+                                       _cogl_pipeline_layer_unparent,
                                        TRUE);
 }
 
 /* XXX: This is duplicated logic; the same as for
- * _cogl_material_prune_redundant_ancestry it would be nice to find a
+ * _cogl_pipeline_prune_redundant_ancestry it would be nice to find a
  * way to consolidate these functions! */
 static void
-_cogl_material_layer_prune_redundant_ancestry (CoglMaterialLayer *layer)
+_cogl_pipeline_layer_prune_redundant_ancestry (CoglPipelineLayer *layer)
 {
-  CoglMaterialLayer *new_parent = _cogl_material_layer_get_parent (layer);
+  CoglPipelineLayer *new_parent = _cogl_pipeline_layer_get_parent (layer);
 
   /* walk up past ancestors that are now redundant and potentially
    * reparent the layer. */
-  while (_cogl_material_layer_get_parent (new_parent) &&
+  while (_cogl_pipeline_layer_get_parent (new_parent) &&
          (new_parent->differences | layer->differences) ==
          layer->differences)
-    new_parent = _cogl_material_layer_get_parent (new_parent);
+    new_parent = _cogl_pipeline_layer_get_parent (new_parent);
 
-  _cogl_material_layer_set_parent (layer, new_parent);
+  _cogl_pipeline_layer_set_parent (layer, new_parent);
 }
 
 /*
@@ -1727,28 +1724,28 @@ _cogl_material_layer_prune_redundant_ancestry (CoglMaterialLayer *layer)
  * property so instead we can assume it's valid for all layer
  * instances.
  * - We would need to initialize ->unit_index in
- *   _cogl_material_layer_copy ().
+ *   _cogl_pipeline_layer_copy ().
  *
  * XXX: If you use this API you should consider that the given layer
  * might not be writeable and so a new derived layer will be allocated
  * and modified instead. The layer modified will be returned so you
  * can identify when this happens.
  */
-static CoglMaterialLayer *
-_cogl_material_set_layer_unit (CoglMaterial *required_owner,
-                               CoglMaterialLayer *layer,
+static CoglPipelineLayer *
+_cogl_pipeline_set_layer_unit (CoglPipeline *required_owner,
+                               CoglPipelineLayer *layer,
                                int unit_index)
 {
-  CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_UNIT;
-  CoglMaterialLayer *authority =
-    _cogl_material_layer_get_authority (layer, change);
-  CoglMaterialLayer *new;
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_UNIT;
+  CoglPipelineLayer *authority =
+    _cogl_pipeline_layer_get_authority (layer, change);
+  CoglPipelineLayer *new;
 
   if (authority->unit_index == unit_index)
     return layer;
 
   new =
-    _cogl_material_layer_pre_change_notify (required_owner,
+    _cogl_pipeline_layer_pre_change_notify (required_owner,
                                             layer,
                                             change);
   if (new != layer)
@@ -1759,12 +1756,12 @@ _cogl_material_set_layer_unit (CoglMaterial *required_owner,
        * we are changing see if we can revert to one of our ancestors
        * being the authority. */
       if (layer == authority &&
-          _cogl_material_layer_get_parent (authority) != NULL)
+          _cogl_pipeline_layer_get_parent (authority) != NULL)
         {
-          CoglMaterialLayer *parent =
-            _cogl_material_layer_get_parent (authority);
-          CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (parent, change);
+          CoglPipelineLayer *parent =
+            _cogl_pipeline_layer_get_parent (authority);
+          CoglPipelineLayer *old_authority =
+            _cogl_pipeline_layer_get_authority (parent, change);
 
           if (old_authority->unit_index == unit_index)
             {
@@ -1783,7 +1780,7 @@ _cogl_material_set_layer_unit (CoglMaterial *required_owner,
   if (layer != authority)
     {
       layer->differences |= change;
-      _cogl_material_layer_prune_redundant_ancestry (layer);
+      _cogl_pipeline_layer_prune_redundant_ancestry (layer);
     }
 
   return layer;
@@ -1795,7 +1792,7 @@ typedef struct
   int                         layer_index;
 
   /* The layer we find or untouched if not found */
-  CoglMaterialLayer          *layer;
+  CoglPipelineLayer          *layer;
 
   /* If the layer can't be found then a new layer should be
    * inserted after this texture unit index... */
@@ -1806,7 +1803,7 @@ typedef struct
    * layers to shift down.
    *
    * Note: the list isn't sorted */
-  CoglMaterialLayer         **layers_to_shift;
+  CoglPipelineLayer         **layers_to_shift;
   int                         n_layers_to_shift;
 
   /* When adding a layer we don't need a complete list of
@@ -1814,12 +1811,12 @@ typedef struct
    * layer_index.  */
   gboolean                    ignore_shift_layers_if_found;
 
-} CoglMaterialLayerInfo;
+} CoglPipelineLayerInfo;
 
 /* Returns TRUE once we know there is nothing more to update */
 static gboolean
-update_layer_info (CoglMaterialLayer *layer,
-                   CoglMaterialLayerInfo *layer_info)
+update_layer_info (CoglPipelineLayer *layer,
+                   CoglPipelineLayerInfo *layer_info)
 {
   if (layer->index == layer_info->layer_index)
     {
@@ -1829,7 +1826,7 @@ update_layer_info (CoglMaterialLayer *layer,
     }
   else if (layer->index < layer_info->layer_index)
     {
-      int unit_index = _cogl_material_layer_get_unit_index (layer);
+      int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
       layer_info->insert_after = unit_index;
     }
   else
@@ -1841,10 +1838,10 @@ update_layer_info (CoglMaterialLayer *layer,
 
 /* Returns FALSE to break out of a _foreach_layer () iteration */
 static gboolean
-update_layer_info_cb (CoglMaterialLayer *layer,
+update_layer_info_cb (CoglPipelineLayer *layer,
                       void *user_data)
 {
-  CoglMaterialLayerInfo *layer_info = user_data;
+  CoglPipelineLayerInfo *layer_info = user_data;
 
   if (update_layer_info (layer, layer_info))
     return FALSE; /* break */
@@ -1853,50 +1850,50 @@ update_layer_info_cb (CoglMaterialLayer *layer,
 }
 
 static void
-_cogl_material_get_layer_info (CoglMaterial *material,
-                               CoglMaterialLayerInfo *layer_info)
+_cogl_pipeline_get_layer_info (CoglPipeline *pipeline,
+                               CoglPipelineLayerInfo *layer_info)
 {
-  /* Note: we are assuming this material is a _STATE_LAYERS authority */
-  int n_layers = material->n_layers;
+  /* Note: we are assuming this pipeline is a _STATE_LAYERS authority */
+  int n_layers = pipeline->n_layers;
   int i;
 
-  /* FIXME: _cogl_material_foreach_layer_internal now calls
-   * _cogl_material_update_layers_cache anyway so this codepath is
+  /* FIXME: _cogl_pipeline_foreach_layer_internal now calls
+   * _cogl_pipeline_update_layers_cache anyway so this codepath is
    * pointless! */
   if (layer_info->ignore_shift_layers_if_found &&
-      material->layers_cache_dirty)
+      pipeline->layers_cache_dirty)
     {
       /* The expectation is that callers of
-       * _cogl_material_get_layer_info are likely to be modifying the
-       * list of layers associated with a material so in this case
+       * _cogl_pipeline_get_layer_info are likely to be modifying the
+       * list of layers associated with a pipeline so in this case
        * where we don't have a cache of the layers and we don't
-       * necessarily have to iterate all the layers of the material we
+       * necessarily have to iterate all the layers of the pipeline we
        * use a foreach_layer callback instead of updating the cache
        * and iterating that as below. */
-      _cogl_material_foreach_layer_internal (material,
+      _cogl_pipeline_foreach_layer_internal (pipeline,
                                              update_layer_info_cb,
                                              layer_info);
       return;
     }
 
-  _cogl_material_update_layers_cache (material);
+  _cogl_pipeline_update_layers_cache (pipeline);
   for (i = 0; i < n_layers; i++)
     {
-      CoglMaterialLayer *layer = material->layers_cache[i];
+      CoglPipelineLayer *layer = pipeline->layers_cache[i];
 
       if (update_layer_info (layer, layer_info))
         return;
     }
 }
 
-static CoglMaterialLayer *
-_cogl_material_get_layer (CoglMaterial *material,
+static CoglPipelineLayer *
+_cogl_pipeline_get_layer (CoglPipeline *pipeline,
                           int layer_index)
 {
-  CoglMaterial *authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LAYERS);
-  CoglMaterialLayerInfo layer_info;
-  CoglMaterialLayer *layer;
+  CoglPipeline *authority =
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LAYERS);
+  CoglPipelineLayerInfo layer_info;
+  CoglPipelineLayer *layer;
   int unit_index;
   int i;
 
@@ -1917,26 +1914,26 @@ _cogl_material_get_layer (CoglMaterial *material,
    * and bump up the texture unit for all layers with an index
    * > layer_index. */
   layer_info.layers_to_shift =
-    g_alloca (sizeof (CoglMaterialLayer *) * authority->n_layers);
+    g_alloca (sizeof (CoglPipelineLayer *) * authority->n_layers);
   layer_info.n_layers_to_shift = 0;
 
   /* If an exact match is found though we don't need a complete
    * list of layers with indices > layer_index... */
   layer_info.ignore_shift_layers_if_found = TRUE;
 
-  _cogl_material_get_layer_info (authority, &layer_info);
+  _cogl_pipeline_get_layer_info (authority, &layer_info);
 
   if (layer_info.layer)
     return layer_info.layer;
 
   unit_index = layer_info.insert_after + 1;
   if (unit_index == 0)
-    layer = _cogl_material_layer_copy (ctx->default_layer_0);
+    layer = _cogl_pipeline_layer_copy (ctx->default_layer_0);
   else
     {
-      CoglMaterialLayer *new;
-      layer = _cogl_material_layer_copy (ctx->default_layer_n);
-      new = _cogl_material_set_layer_unit (NULL, layer, unit_index);
+      CoglPipelineLayer *new;
+      layer = _cogl_pipeline_layer_copy (ctx->default_layer_n);
+      new = _cogl_pipeline_set_layer_unit (NULL, layer, unit_index);
       /* Since we passed a newly allocated layer we wouldn't expect
        * _set_layer_unit() to have to allocate *another* layer. */
       g_assert (new == layer);
@@ -1945,17 +1942,17 @@ _cogl_material_get_layer (CoglMaterial *material,
 
   for (i = 0; i < layer_info.n_layers_to_shift; i++)
     {
-      CoglMaterialLayer *shift_layer = layer_info.layers_to_shift[i];
+      CoglPipelineLayer *shift_layer = layer_info.layers_to_shift[i];
 
-      unit_index = _cogl_material_layer_get_unit_index (shift_layer);
-      _cogl_material_set_layer_unit (material, shift_layer, unit_index + 1);
+      unit_index = _cogl_pipeline_layer_get_unit_index (shift_layer);
+      _cogl_pipeline_set_layer_unit (pipeline, shift_layer, unit_index + 1);
       /* NB: shift_layer may not be writeable so _set_layer_unit()
        * will allocate a derived layer internally which will become
-       * owned by material. Check the return value if we need to do
+       * owned by pipeline. Check the return value if we need to do
        * anything else with this layer. */
     }
 
-  _cogl_material_add_layer_difference (material, layer, TRUE);
+  _cogl_pipeline_add_layer_difference (pipeline, layer, TRUE);
 
   cogl_object_unref (layer);
 
@@ -1963,34 +1960,34 @@ _cogl_material_get_layer (CoglMaterial *material,
 }
 
 CoglHandle
-_cogl_material_layer_get_texture (CoglMaterialLayer *layer)
+_cogl_pipeline_layer_get_texture_real (CoglPipelineLayer *layer)
 {
-  CoglMaterialLayer *authority =
-    _cogl_material_layer_get_authority (layer,
-                                        COGL_MATERIAL_LAYER_STATE_TEXTURE);
+  CoglPipelineLayer *authority =
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_TEXTURE);
 
   return authority->texture;
 }
 
 CoglHandle
-_cogl_material_get_layer_texture (CoglMaterial *material,
+_cogl_pipeline_get_layer_texture (CoglPipeline *pipeline,
                                   int layer_index)
 {
-  CoglMaterialLayer *layer =
-    _cogl_material_get_layer (material, layer_index);
-  return _cogl_material_layer_get_texture (layer);
+  CoglPipelineLayer *layer =
+    _cogl_pipeline_get_layer (pipeline, layer_index);
+  return _cogl_pipeline_layer_get_texture (layer);
 }
 
 static void
-_cogl_material_prune_empty_layer_difference (CoglMaterial *layers_authority,
-                                             CoglMaterialLayer *layer)
+_cogl_pipeline_prune_empty_layer_difference (CoglPipeline *layers_authority,
+                                             CoglPipelineLayer *layer)
 {
   /* Find the GList link that references the empty layer */
   GList *link = g_list_find (layers_authority->layer_differences, layer);
-  /* No material directly owns the root node layer so this is safe... */
-  CoglMaterialLayer *layer_parent = _cogl_material_layer_get_parent (layer);
-  CoglMaterialLayerInfo layer_info;
-  CoglMaterial *old_layers_authority;
+  /* No pipeline directly owns the root node layer so this is safe... */
+  CoglPipelineLayer *layer_parent = _cogl_pipeline_layer_get_parent (layer);
+  CoglPipelineLayerInfo layer_info;
+  CoglPipeline *old_layers_authority;
 
   g_return_if_fail (link != NULL);
 
@@ -2001,7 +1998,7 @@ _cogl_material_prune_empty_layer_difference (CoglMaterial *layers_authority,
   if (layer_parent->index == layer->index && layer_parent->owner == NULL)
     {
       cogl_object_ref (layer_parent);
-      link->data = _cogl_material_layer_get_parent (layer);
+      link->data = _cogl_pipeline_layer_get_parent (layer);
       cogl_object_unref (layer);
       recursively_free_layer_caches (layers_authority);
       return;
@@ -2023,22 +2020,22 @@ _cogl_material_prune_empty_layer_difference (CoglMaterial *layers_authority,
    * and bump up the texture unit for all layers with an index
    * > layer_index. */
   layer_info.layers_to_shift =
-    g_alloca (sizeof (CoglMaterialLayer *) * layers_authority->n_layers);
+    g_alloca (sizeof (CoglPipelineLayer *) * layers_authority->n_layers);
   layer_info.n_layers_to_shift = 0;
 
   /* If an exact match is found though we don't need a complete
    * list of layers with indices > layer_index... */
   layer_info.ignore_shift_layers_if_found = TRUE;
 
-  /* We know the default/root material isn't a LAYERS authority so it's
-   * safe to use the result of _cogl_material_get_parent (layers_authority)
+  /* We know the default/root pipeline isn't a LAYERS authority so it's
+   * safe to use the result of _cogl_pipeline_get_parent (layers_authority)
    * without checking it.
    */
   old_layers_authority =
-    _cogl_material_get_authority (_cogl_material_get_parent (layers_authority),
-                                  COGL_MATERIAL_STATE_LAYERS);
+    _cogl_pipeline_get_authority (_cogl_pipeline_get_parent (layers_authority),
+                                  COGL_PIPELINE_STATE_LAYERS);
 
-  _cogl_material_get_layer_info (old_layers_authority, &layer_info);
+  _cogl_pipeline_get_layer_info (old_layers_authority, &layer_info);
 
   /* If layer is the defining layer for the corresponding ->index then
    * we can't get rid of it. */
@@ -2046,40 +2043,40 @@ _cogl_material_prune_empty_layer_difference (CoglMaterial *layers_authority,
     return;
 
   /* If the layer that would become the authority for layer->index is
-   * _cogl_material_layer_get_parent (layer) then we can simply remove the
+   * _cogl_pipeline_layer_get_parent (layer) then we can simply remove the
    * layer difference. */
-  if (layer_info.layer == _cogl_material_layer_get_parent (layer))
+  if (layer_info.layer == _cogl_pipeline_layer_get_parent (layer))
     {
-      _cogl_material_remove_layer_difference (layers_authority, layer, FALSE);
-      _cogl_material_try_reverting_layers_authority (layers_authority,
+      _cogl_pipeline_remove_layer_difference (layers_authority, layer, FALSE);
+      _cogl_pipeline_try_reverting_layers_authority (layers_authority,
                                                      old_layers_authority);
     }
 }
 
 static void
-_cogl_material_set_layer_texture (CoglMaterial *material,
+_cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
                                   int layer_index,
                                   CoglHandle texture,
                                   gboolean overriden,
                                   GLuint slice_gl_texture,
                                   GLenum slice_gl_target)
 {
-  CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_TEXTURE;
-  CoglMaterialLayer *layer;
-  CoglMaterialLayer *authority;
-  CoglMaterialLayer *new;
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_TEXTURE;
+  CoglPipelineLayer *layer;
+  CoglPipelineLayer *authority;
+  CoglPipelineLayer *new;
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, change);
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
 
   if (authority->texture_overridden == overriden &&
       authority->texture == texture &&
@@ -2088,7 +2085,7 @@ _cogl_material_set_layer_texture (CoglMaterial *material,
         authority->slice_gl_target == slice_gl_target)))
     return;
 
-  new = _cogl_material_layer_pre_change_notify (material, layer, change);
+  new = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, change);
   if (new != layer)
     layer = new;
   else
@@ -2097,12 +2094,12 @@ _cogl_material_set_layer_texture (CoglMaterial *material,
        * the state we are changing see if we can revert to one of our
        * ancestors being the authority. */
       if (layer == authority &&
-          _cogl_material_layer_get_parent (authority) != NULL)
+          _cogl_pipeline_layer_get_parent (authority) != NULL)
         {
-          CoglMaterialLayer *parent =
-            _cogl_material_layer_get_parent (authority);
-          CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (parent, change);
+          CoglPipelineLayer *parent =
+            _cogl_pipeline_layer_get_parent (authority);
+          CoglPipelineLayer *old_authority =
+            _cogl_pipeline_layer_get_authority (parent, change);
 
           if (old_authority->texture_overridden == overriden &&
               old_authority->texture == texture &&
@@ -2115,9 +2112,9 @@ _cogl_material_set_layer_texture (CoglMaterial *material,
               if (layer->texture != COGL_INVALID_HANDLE)
                 cogl_handle_unref (layer->texture);
 
-              g_assert (layer->owner == material);
+              g_assert (layer->owner == pipeline);
               if (layer->differences == 0)
-                _cogl_material_prune_empty_layer_difference (material,
+                _cogl_pipeline_prune_empty_layer_difference (pipeline,
                                                              layer);
               goto changed;
             }
@@ -2141,27 +2138,27 @@ _cogl_material_set_layer_texture (CoglMaterial *material,
   if (layer != authority)
     {
       layer->differences |= change;
-      _cogl_material_layer_prune_redundant_ancestry (layer);
+      _cogl_pipeline_layer_prune_redundant_ancestry (layer);
     }
 
 changed:
 
-  handle_automatic_blend_enable (material, COGL_MATERIAL_STATE_LAYERS);
+  handle_automatic_blend_enable (pipeline, COGL_PIPELINE_STATE_LAYERS);
 }
 
 static void
-_cogl_material_set_layer_gl_texture_slice (CoglMaterial *material,
+_cogl_pipeline_set_layer_gl_texture_slice (CoglPipeline *pipeline,
                                            int layer_index,
                                            CoglHandle texture,
                                            GLuint slice_gl_texture,
                                            GLenum slice_gl_target)
 {
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
   /* GL texture overrides can only be set in association with a parent
    * CoglTexture */
   g_return_if_fail (cogl_is_texture (texture));
 
-  _cogl_material_set_layer_texture (material,
+  _cogl_pipeline_set_layer_texture (pipeline,
                                     layer_index,
                                     texture,
                                     TRUE, /* slice override */
@@ -2169,23 +2166,16 @@ _cogl_material_set_layer_gl_texture_slice (CoglMaterial *material,
                                     slice_gl_target);
 }
 
-/* XXX: deprecate and replace with cogl_material_set_layer_texture?
- *
- * Originally I was planning on allowing users to set shaders somehow
- * on layers (thus the ambiguous name), but now I wonder if we will do
- * that with a more explicit "snippets" API and materials will have
- * hooks defined to receive these snippets.
- */
 void
-cogl_material_set_layer (CoglMaterial *material,
-			 int layer_index,
-			 CoglHandle texture)
+cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
+                                 int layer_index,
+                                 CoglHandle texture)
 {
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
   g_return_if_fail (texture == COGL_INVALID_HANDLE ||
                     cogl_is_texture (texture));
 
-  _cogl_material_set_layer_texture (material,
+  _cogl_pipeline_set_layer_texture (pipeline,
                                     layer_index,
                                     texture,
                                     FALSE, /* slice override */
@@ -2196,16 +2186,16 @@ cogl_material_set_layer (CoglMaterial *material,
 typedef struct
 {
   int i;
-  CoglMaterial *material;
+  CoglPipeline *pipeline;
   unsigned long fallback_layers;
-} CoglMaterialFallbackState;
+} CoglPipelineFallbackState;
 
 static gboolean
-fallback_layer_cb (CoglMaterialLayer *layer, void *user_data)
+fallback_layer_cb (CoglPipelineLayer *layer, void *user_data)
 {
-  CoglMaterialFallbackState *state = user_data;
-  CoglMaterial *material = state->material;
-  CoglHandle texture = _cogl_material_layer_get_texture (layer);
+  CoglPipelineFallbackState *state = user_data;
+  CoglPipeline *pipeline = state->pipeline;
+  CoglHandle texture = _cogl_pipeline_layer_get_texture (layer);
   GLenum gl_target;
   COGL_STATIC_COUNTER (layer_fallback_counter,
                        "layer fallback counter",
@@ -2234,13 +2224,13 @@ fallback_layer_cb (CoglMaterialLayer *layer, void *user_data)
   else
     {
       g_warning ("We don't have a fallback texture we can use to fill "
-                 "in for an invalid material layer, since it was "
+                 "in for an invalid pipeline layer, since it was "
                  "using an unsupported texture target ");
       /* might get away with this... */
       texture = ctx->default_gl_texture_2d_tex;
     }
 
-  cogl_material_set_layer (material, layer->index, texture);
+  cogl_pipeline_set_layer_texture (pipeline, layer->index, texture);
 
   state->i++;
 
@@ -2248,22 +2238,22 @@ fallback_layer_cb (CoglMaterialLayer *layer, void *user_data)
 }
 
 void
-_cogl_material_set_layer_wrap_modes (CoglMaterial        *material,
-                                     CoglMaterialLayer   *layer,
-                                     CoglMaterialLayer   *authority,
-                                     CoglMaterialWrapModeInternal wrap_mode_s,
-                                     CoglMaterialWrapModeInternal wrap_mode_t,
-                                     CoglMaterialWrapModeInternal wrap_mode_p)
+_cogl_pipeline_set_layer_wrap_modes (CoglPipeline        *pipeline,
+                                     CoglPipelineLayer   *layer,
+                                     CoglPipelineLayer   *authority,
+                                     CoglPipelineWrapModeInternal wrap_mode_s,
+                                     CoglPipelineWrapModeInternal wrap_mode_t,
+                                     CoglPipelineWrapModeInternal wrap_mode_p)
 {
-  CoglMaterialLayer     *new;
-  CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayer     *new;
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
 
   if (authority->wrap_mode_s == wrap_mode_s &&
       authority->wrap_mode_t == wrap_mode_t &&
       authority->wrap_mode_p == wrap_mode_p)
     return;
 
-  new = _cogl_material_layer_pre_change_notify (material, layer, change);
+  new = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, change);
   if (new != layer)
     layer = new;
   else
@@ -2272,12 +2262,12 @@ _cogl_material_set_layer_wrap_modes (CoglMaterial        *material,
        * the state we are changing see if we can revert to one of our
        * ancestors being the authority. */
       if (layer == authority &&
-          _cogl_material_layer_get_parent (authority) != NULL)
+          _cogl_pipeline_layer_get_parent (authority) != NULL)
         {
-          CoglMaterialLayer *parent =
-            _cogl_material_layer_get_parent (authority);
-          CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (parent, change);
+          CoglPipelineLayer *parent =
+            _cogl_pipeline_layer_get_parent (authority);
+          CoglPipelineLayer *old_authority =
+            _cogl_pipeline_layer_get_authority (parent, change);
 
           if (old_authority->wrap_mode_s == wrap_mode_s &&
               old_authority->wrap_mode_t == wrap_mode_t &&
@@ -2285,9 +2275,9 @@ _cogl_material_set_layer_wrap_modes (CoglMaterial        *material,
             {
               layer->differences &= ~change;
 
-              g_assert (layer->owner == material);
+              g_assert (layer->owner == pipeline);
               if (layer->differences == 0)
-                _cogl_material_prune_empty_layer_difference (material,
+                _cogl_pipeline_prune_empty_layer_difference (pipeline,
                                                              layer);
               return;
             }
@@ -2305,82 +2295,82 @@ _cogl_material_set_layer_wrap_modes (CoglMaterial        *material,
   if (layer != authority)
     {
       layer->differences |= change;
-      _cogl_material_layer_prune_redundant_ancestry (layer);
+      _cogl_pipeline_layer_prune_redundant_ancestry (layer);
     }
 }
 
-static CoglMaterialWrapModeInternal
-public_to_internal_wrap_mode (CoglMaterialWrapMode mode)
+static CoglPipelineWrapModeInternal
+public_to_internal_wrap_mode (CoglPipelineWrapMode mode)
 {
-  return (CoglMaterialWrapModeInternal)mode;
+  return (CoglPipelineWrapModeInternal)mode;
 }
 
-static CoglMaterialWrapMode
-internal_to_public_wrap_mode (CoglMaterialWrapModeInternal internal_mode)
+static CoglPipelineWrapMode
+internal_to_public_wrap_mode (CoglPipelineWrapModeInternal internal_mode)
 {
   g_return_val_if_fail (internal_mode !=
-                        COGL_MATERIAL_WRAP_MODE_INTERNAL_CLAMP_TO_BORDER,
-                        COGL_MATERIAL_WRAP_MODE_AUTOMATIC);
-  return (CoglMaterialWrapMode)internal_mode;
+                        COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_BORDER,
+                        COGL_PIPELINE_WRAP_MODE_AUTOMATIC);
+  return (CoglPipelineWrapMode)internal_mode;
 }
 
 void
-cogl_material_set_layer_wrap_mode_s (CoglMaterial *material,
+cogl_pipeline_set_layer_wrap_mode_s (CoglPipeline *pipeline,
                                      int layer_index,
-                                     CoglMaterialWrapMode mode)
+                                     CoglPipelineWrapMode mode)
 {
-  CoglMaterialLayerState       change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
-  CoglMaterialLayer           *layer;
-  CoglMaterialLayer           *authority;
-  CoglMaterialWrapModeInternal internal_mode =
+  CoglPipelineLayerState       change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayer           *layer;
+  CoglPipelineLayer           *authority;
+  CoglPipelineWrapModeInternal internal_mode =
     public_to_internal_wrap_mode (mode);
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, change);
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
 
-  _cogl_material_set_layer_wrap_modes (material, layer, authority,
+  _cogl_pipeline_set_layer_wrap_modes (pipeline, layer, authority,
                                        internal_mode,
                                        authority->wrap_mode_t,
                                        authority->wrap_mode_p);
 }
 
 void
-cogl_material_set_layer_wrap_mode_t (CoglMaterial        *material,
+cogl_pipeline_set_layer_wrap_mode_t (CoglPipeline        *pipeline,
                                      int                  layer_index,
-                                     CoglMaterialWrapMode mode)
+                                     CoglPipelineWrapMode mode)
 {
-  CoglMaterialLayerState       change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
-  CoglMaterialLayer           *layer;
-  CoglMaterialLayer           *authority;
-  CoglMaterialWrapModeInternal internal_mode =
+  CoglPipelineLayerState       change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayer           *layer;
+  CoglPipelineLayer           *authority;
+  CoglPipelineWrapModeInternal internal_mode =
     public_to_internal_wrap_mode (mode);
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, change);
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
 
-  _cogl_material_set_layer_wrap_modes (material, layer, authority,
+  _cogl_pipeline_set_layer_wrap_modes (pipeline, layer, authority,
                                        authority->wrap_mode_s,
                                        internal_mode,
                                        authority->wrap_mode_p);
@@ -2399,62 +2389,62 @@ cogl_material_set_layer_wrap_mode_t (CoglMaterial        *material,
    the w component conflicts with the w component of a position
    vertex.  */
 void
-cogl_material_set_layer_wrap_mode_p (CoglMaterial        *material,
+cogl_pipeline_set_layer_wrap_mode_p (CoglPipeline        *pipeline,
                                      int                  layer_index,
-                                     CoglMaterialWrapMode mode)
+                                     CoglPipelineWrapMode mode)
 {
-  CoglMaterialLayerState       change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
-  CoglMaterialLayer           *layer;
-  CoglMaterialLayer           *authority;
-  CoglMaterialWrapModeInternal internal_mode =
+  CoglPipelineLayerState       change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayer           *layer;
+  CoglPipelineLayer           *authority;
+  CoglPipelineWrapModeInternal internal_mode =
     public_to_internal_wrap_mode (mode);
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, change);
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
 
-  _cogl_material_set_layer_wrap_modes (material, layer, authority,
+  _cogl_pipeline_set_layer_wrap_modes (pipeline, layer, authority,
                                        authority->wrap_mode_s,
                                        authority->wrap_mode_t,
                                        internal_mode);
 }
 
 void
-cogl_material_set_layer_wrap_mode (CoglMaterial        *material,
+cogl_pipeline_set_layer_wrap_mode (CoglPipeline        *pipeline,
                                    int                  layer_index,
-                                   CoglMaterialWrapMode mode)
+                                   CoglPipelineWrapMode mode)
 {
-  CoglMaterialLayerState       change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
-  CoglMaterialLayer           *layer;
-  CoglMaterialLayer           *authority;
-  CoglMaterialWrapModeInternal internal_mode =
+  CoglPipelineLayerState       change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayer           *layer;
+  CoglPipelineLayer           *authority;
+  CoglPipelineWrapModeInternal internal_mode =
     public_to_internal_wrap_mode (mode);
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, change);
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
 
-  _cogl_material_set_layer_wrap_modes (material, layer, authority,
+  _cogl_pipeline_set_layer_wrap_modes (pipeline, layer, authority,
                                        internal_mode,
                                        internal_mode,
                                        internal_mode);
@@ -2463,112 +2453,112 @@ cogl_material_set_layer_wrap_mode (CoglMaterial        *material,
 }
 
 /* FIXME: deprecate this API */
-CoglMaterialWrapMode
-cogl_material_layer_get_wrap_mode_s (CoglMaterialLayer *layer)
+CoglPipelineWrapMode
+_cogl_pipeline_layer_get_wrap_mode_s (CoglPipelineLayer *layer)
 {
-  CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
-  CoglMaterialLayer     *authority;
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayer     *authority;
 
-  g_return_val_if_fail (_cogl_is_material_layer (layer), FALSE);
+  g_return_val_if_fail (_cogl_is_pipeline_layer (layer), FALSE);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, change);
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
 
   return internal_to_public_wrap_mode (authority->wrap_mode_s);
 }
 
-CoglMaterialWrapMode
-cogl_material_get_layer_wrap_mode_s (CoglMaterial *material, int layer_index)
+CoglPipelineWrapMode
+cogl_pipeline_get_layer_wrap_mode_s (CoglPipeline *pipeline, int layer_index)
 {
-  CoglMaterialLayer *layer;
+  CoglPipelineLayer *layer;
 
-  g_return_val_if_fail (cogl_is_material (material), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
   /* FIXME: we shouldn't ever construct a layer in a getter function */
 
-  return cogl_material_layer_get_wrap_mode_s (layer);
+  return _cogl_pipeline_layer_get_wrap_mode_s (layer);
 }
 
 /* FIXME: deprecate this API */
-CoglMaterialWrapMode
-cogl_material_layer_get_wrap_mode_t (CoglMaterialLayer *layer)
+CoglPipelineWrapMode
+_cogl_pipeline_layer_get_wrap_mode_t (CoglPipelineLayer *layer)
 {
-  CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
-  CoglMaterialLayer     *authority;
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayer     *authority;
 
-  g_return_val_if_fail (_cogl_is_material_layer (layer), FALSE);
+  g_return_val_if_fail (_cogl_is_pipeline_layer (layer), FALSE);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, change);
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
 
   return internal_to_public_wrap_mode (authority->wrap_mode_t);
 }
 
-CoglMaterialWrapMode
-cogl_material_get_layer_wrap_mode_t (CoglMaterial *material, int layer_index)
+CoglPipelineWrapMode
+cogl_pipeline_get_layer_wrap_mode_t (CoglPipeline *pipeline, int layer_index)
 {
-  CoglMaterialLayer *layer;
+  CoglPipelineLayer *layer;
 
-  g_return_val_if_fail (cogl_is_material (material), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
   /* FIXME: we shouldn't ever construct a layer in a getter function */
 
-  return cogl_material_layer_get_wrap_mode_t (layer);
+  return _cogl_pipeline_layer_get_wrap_mode_t (layer);
 }
 
-CoglMaterialWrapMode
-cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer)
+CoglPipelineWrapMode
+_cogl_pipeline_layer_get_wrap_mode_p (CoglPipelineLayer *layer)
 {
-  CoglMaterialLayerState change = COGL_MATERIAL_LAYER_STATE_WRAP_MODES;
-  CoglMaterialLayer     *authority =
-    _cogl_material_layer_get_authority (layer, change);
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_WRAP_MODES;
+  CoglPipelineLayer     *authority =
+    _cogl_pipeline_layer_get_authority (layer, change);
 
   return internal_to_public_wrap_mode (authority->wrap_mode_p);
 }
 
-CoglMaterialWrapMode
-cogl_material_get_layer_wrap_mode_p (CoglMaterial *material, int layer_index)
+CoglPipelineWrapMode
+cogl_pipeline_get_layer_wrap_mode_p (CoglPipeline *pipeline, int layer_index)
 {
-  CoglMaterialLayer *layer;
+  CoglPipelineLayer *layer;
 
-  g_return_val_if_fail (cogl_is_material (material), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
-  return cogl_material_layer_get_wrap_mode_p (layer);
+  return _cogl_pipeline_layer_get_wrap_mode_p (layer);
 }
 
 void
-_cogl_material_layer_get_wrap_modes (CoglMaterialLayer *layer,
-                                     CoglMaterialWrapModeInternal *wrap_mode_s,
-                                     CoglMaterialWrapModeInternal *wrap_mode_t,
-                                     CoglMaterialWrapModeInternal *wrap_mode_p)
+_cogl_pipeline_layer_get_wrap_modes (CoglPipelineLayer *layer,
+                                     CoglPipelineWrapModeInternal *wrap_mode_s,
+                                     CoglPipelineWrapModeInternal *wrap_mode_t,
+                                     CoglPipelineWrapModeInternal *wrap_mode_p)
 {
-  CoglMaterialLayer *authority =
-    _cogl_material_layer_get_authority (layer,
-                                        COGL_MATERIAL_LAYER_STATE_WRAP_MODES);
+  CoglPipelineLayer *authority =
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_WRAP_MODES);
 
   *wrap_mode_s = authority->wrap_mode_s;
   *wrap_mode_t = authority->wrap_mode_t;
@@ -2576,18 +2566,18 @@ _cogl_material_layer_get_wrap_modes (CoglMaterialLayer *layer,
 }
 
 gboolean
-cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
+cogl_pipeline_set_layer_point_sprite_coords_enabled (CoglPipeline *pipeline,
                                                      int layer_index,
                                                      gboolean enable,
                                                      GError **error)
 {
-  CoglMaterialLayerState       change =
-    COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS;
-  CoglMaterialLayer           *layer;
-  CoglMaterialLayer           *new;
-  CoglMaterialLayer           *authority;
+  CoglPipelineLayerState       change =
+    COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS;
+  CoglPipelineLayer           *layer;
+  CoglPipelineLayer           *new;
+  CoglPipelineLayer           *authority;
 
-  g_return_val_if_fail (cogl_is_material (material), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
 
   /* Don't allow point sprite coordinates to be enabled if the driver
      doesn't support it */
@@ -2615,18 +2605,18 @@ cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, change);
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
 
   if (authority->big_state->point_sprite_coords == enable)
     return TRUE;
 
-  new = _cogl_material_layer_pre_change_notify (material, layer, change);
+  new = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, change);
   if (new != layer)
     layer = new;
   else
@@ -2635,20 +2625,20 @@ cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
        * the state we are changing see if we can revert to one of our
        * ancestors being the authority. */
       if (layer == authority &&
-          _cogl_material_layer_get_parent (authority) != NULL)
+          _cogl_pipeline_layer_get_parent (authority) != NULL)
         {
-          CoglMaterialLayer *parent =
-            _cogl_material_layer_get_parent (authority);
-          CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (parent, change);
+          CoglPipelineLayer *parent =
+            _cogl_pipeline_layer_get_parent (authority);
+          CoglPipelineLayer *old_authority =
+            _cogl_pipeline_layer_get_authority (parent, change);
 
           if (old_authority->big_state->point_sprite_coords == enable)
             {
               layer->differences &= ~change;
 
-              g_assert (layer->owner == material);
+              g_assert (layer->owner == pipeline);
               if (layer->differences == 0)
-                _cogl_material_prune_empty_layer_difference (material,
+                _cogl_pipeline_prune_empty_layer_difference (pipeline,
                                                              layer);
               return TRUE;
             }
@@ -2664,69 +2654,69 @@ cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
   if (layer != authority)
     {
       layer->differences |= change;
-      _cogl_material_layer_prune_redundant_ancestry (layer);
+      _cogl_pipeline_layer_prune_redundant_ancestry (layer);
     }
 
   return TRUE;
 }
 
 gboolean
-cogl_material_get_layer_point_sprite_coords_enabled (CoglMaterial *material,
+cogl_pipeline_get_layer_point_sprite_coords_enabled (CoglPipeline *pipeline,
                                                      int layer_index)
 {
-  CoglMaterialLayerState       change =
-    COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS;
-  CoglMaterialLayer *layer;
-  CoglMaterialLayer *authority;
+  CoglPipelineLayerState       change =
+    COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS;
+  CoglPipelineLayer *layer;
+  CoglPipelineLayer *authority;
 
-  g_return_val_if_fail (cogl_is_material (material), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
   /* FIXME: we shouldn't ever construct a layer in a getter function */
 
-  authority = _cogl_material_layer_get_authority (layer, change);
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
 
   return authority->big_state->point_sprite_coords;
 }
 
 typedef struct
 {
-  CoglMaterial *material;
-  CoglMaterialWrapModeOverrides *wrap_mode_overrides;
+  CoglPipeline *pipeline;
+  CoglPipelineWrapModeOverrides *wrap_mode_overrides;
   int i;
-} CoglMaterialWrapModeOverridesState;
+} CoglPipelineWrapModeOverridesState;
 
 static gboolean
-apply_wrap_mode_overrides_cb (CoglMaterialLayer *layer,
+apply_wrap_mode_overrides_cb (CoglPipelineLayer *layer,
                               void *user_data)
 {
-  CoglMaterialWrapModeOverridesState *state = user_data;
-  CoglMaterialLayer *authority =
-    _cogl_material_layer_get_authority (layer,
-                                        COGL_MATERIAL_LAYER_STATE_WRAP_MODES);
-  CoglMaterialWrapModeInternal wrap_mode_s;
-  CoglMaterialWrapModeInternal wrap_mode_t;
-  CoglMaterialWrapModeInternal wrap_mode_p;
+  CoglPipelineWrapModeOverridesState *state = user_data;
+  CoglPipelineLayer *authority =
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_WRAP_MODES);
+  CoglPipelineWrapModeInternal wrap_mode_s;
+  CoglPipelineWrapModeInternal wrap_mode_t;
+  CoglPipelineWrapModeInternal wrap_mode_p;
 
   g_return_val_if_fail (state->i < 32, FALSE);
 
   wrap_mode_s = state->wrap_mode_overrides->values[state->i].s;
-  if (wrap_mode_s == COGL_MATERIAL_WRAP_MODE_OVERRIDE_NONE)
-    wrap_mode_s = (CoglMaterialWrapModeInternal)authority->wrap_mode_s;
+  if (wrap_mode_s == COGL_PIPELINE_WRAP_MODE_OVERRIDE_NONE)
+    wrap_mode_s = (CoglPipelineWrapModeInternal)authority->wrap_mode_s;
   wrap_mode_t = state->wrap_mode_overrides->values[state->i].t;
-  if (wrap_mode_t == COGL_MATERIAL_WRAP_MODE_OVERRIDE_NONE)
-    wrap_mode_t = (CoglMaterialWrapModeInternal)authority->wrap_mode_t;
+  if (wrap_mode_t == COGL_PIPELINE_WRAP_MODE_OVERRIDE_NONE)
+    wrap_mode_t = (CoglPipelineWrapModeInternal)authority->wrap_mode_t;
   wrap_mode_p = state->wrap_mode_overrides->values[state->i].p;
-  if (wrap_mode_p == COGL_MATERIAL_WRAP_MODE_OVERRIDE_NONE)
-    wrap_mode_p = (CoglMaterialWrapModeInternal)authority->wrap_mode_p;
+  if (wrap_mode_p == COGL_PIPELINE_WRAP_MODE_OVERRIDE_NONE)
+    wrap_mode_p = (CoglPipelineWrapModeInternal)authority->wrap_mode_p;
 
-  _cogl_material_set_layer_wrap_modes (state->material,
+  _cogl_pipeline_set_layer_wrap_modes (state->pipeline,
                                        layer,
                                        authority,
                                        wrap_mode_s,
@@ -2740,25 +2730,25 @@ apply_wrap_mode_overrides_cb (CoglMaterialLayer *layer,
 
 typedef struct
 {
-  CoglMaterial *material;
+  CoglPipeline *pipeline;
   GLuint gl_texture;
-} CoglMaterialOverrideLayerState;
+} CoglPipelineOverrideLayerState;
 
 static gboolean
-override_layer_texture_cb (CoglMaterialLayer *layer, void *user_data)
+override_layer_texture_cb (CoglPipelineLayer *layer, void *user_data)
 {
-  CoglMaterialOverrideLayerState *state = user_data;
+  CoglPipelineOverrideLayerState *state = user_data;
   CoglHandle texture;
   GLenum gl_target;
 
-  texture = _cogl_material_layer_get_texture (layer);
+  texture = _cogl_pipeline_layer_get_texture (layer);
 
   if (texture != COGL_INVALID_HANDLE)
     cogl_texture_get_gl_texture (texture, NULL, &gl_target);
   else
     gl_target = GL_TEXTURE_2D;
 
-  _cogl_material_set_layer_gl_texture_slice (state->material,
+  _cogl_pipeline_set_layer_gl_texture_slice (state->pipeline,
                                              layer->index,
                                              texture,
                                              state->gl_texture,
@@ -2767,18 +2757,18 @@ override_layer_texture_cb (CoglMaterialLayer *layer, void *user_data)
 }
 
 void
-_cogl_material_apply_overrides (CoglMaterial *material,
-                                CoglMaterialFlushOptions *options)
+_cogl_pipeline_apply_overrides (CoglPipeline *pipeline,
+                                CoglPipelineFlushOptions *options)
 {
   COGL_STATIC_COUNTER (apply_overrides_counter,
-                       "material overrides counter",
+                       "pipeline overrides counter",
                        "Increments each time we have to apply "
-                       "override options to a material",
+                       "override options to a pipeline",
                        0 /* no application private data */);
 
   COGL_COUNTER_INC (_cogl_uprof_context, apply_overrides_counter);
 
-  if (options->flags & COGL_MATERIAL_FLUSH_DISABLE_MASK)
+  if (options->flags & COGL_PIPELINE_FLUSH_DISABLE_MASK)
     {
       int i;
 
@@ -2787,55 +2777,55 @@ _cogl_material_apply_overrides (CoglMaterial *material,
       for (i = 0; i < 32 && options->disable_layers & (1<<i); i++)
         ;
 
-      _cogl_material_prune_to_n_layers (material, i);
+      _cogl_pipeline_prune_to_n_layers (pipeline, i);
     }
 
-  if (options->flags & COGL_MATERIAL_FLUSH_FALLBACK_MASK)
+  if (options->flags & COGL_PIPELINE_FLUSH_FALLBACK_MASK)
     {
-      CoglMaterialFallbackState state;
+      CoglPipelineFallbackState state;
 
       state.i = 0;
-      state.material = material;
+      state.pipeline = pipeline;
       state.fallback_layers = options->fallback_layers;
 
-      _cogl_material_foreach_layer_internal (material,
+      _cogl_pipeline_foreach_layer_internal (pipeline,
                                              fallback_layer_cb,
                                              &state);
     }
 
-  if (options->flags & COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE)
+  if (options->flags & COGL_PIPELINE_FLUSH_LAYER0_OVERRIDE)
     {
-      CoglMaterialOverrideLayerState state;
+      CoglPipelineOverrideLayerState state;
 
-      _cogl_material_prune_to_n_layers (material, 1);
+      _cogl_pipeline_prune_to_n_layers (pipeline, 1);
 
       /* NB: we are overriding the first layer, but we don't know
        * the user's given layer_index, which is why we use
-       * _cogl_material_foreach_layer_internal() here even though we know
+       * _cogl_pipeline_foreach_layer_internal() here even though we know
        * there's only one layer. */
-      state.material = material;
+      state.pipeline = pipeline;
       state.gl_texture = options->layer0_override_texture;
-      _cogl_material_foreach_layer_internal (material,
+      _cogl_pipeline_foreach_layer_internal (pipeline,
                                              override_layer_texture_cb,
                                              &state);
     }
 
-  if (options->flags & COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES)
+  if (options->flags & COGL_PIPELINE_FLUSH_WRAP_MODE_OVERRIDES)
     {
-      CoglMaterialWrapModeOverridesState state;
+      CoglPipelineWrapModeOverridesState state;
 
-      state.material = material;
+      state.pipeline = pipeline;
       state.wrap_mode_overrides = &options->wrap_mode_overrides;
       state.i = 0;
-      _cogl_material_foreach_layer_internal (material,
+      _cogl_pipeline_foreach_layer_internal (pipeline,
                                              apply_wrap_mode_overrides_cb,
                                              &state);
     }
 }
 
 static gboolean
-_cogl_material_layer_texture_equal (CoglMaterialLayer *authority0,
-                                    CoglMaterialLayer *authority1)
+_cogl_pipeline_layer_texture_equal (CoglPipelineLayer *authority0,
+                                    CoglPipelineLayer *authority1)
 {
   GLuint gl_handle0, gl_handle1;
   GLenum gl_target0, gl_target1;
@@ -2861,23 +2851,23 @@ _cogl_material_layer_texture_equal (CoglMaterialLayer *authority0,
 
 /* Determine the mask of differences between two layers.
  *
- * XXX: If layers and materials could both be cast to a common Tree
+ * XXX: If layers and pipelines could both be cast to a common Tree
  * type of some kind then we could have a unified
  * compare_differences() function.
  */
 unsigned long
-_cogl_material_layer_compare_differences (CoglMaterialLayer *layer0,
-                                          CoglMaterialLayer *layer1)
+_cogl_pipeline_layer_compare_differences (CoglPipelineLayer *layer0,
+                                          CoglPipelineLayer *layer1)
 {
-  CoglMaterialLayer *node0;
-  CoglMaterialLayer *node1;
+  CoglPipelineLayer *node0;
+  CoglPipelineLayer *node1;
   int len0;
   int len1;
   int len0_index;
   int len1_index;
   int count;
   int i;
-  CoglMaterialLayer *common_ancestor = NULL;
+  CoglPipelineLayer *common_ancestor = NULL;
   unsigned long layers_difference = 0;
 
   _COGL_GET_CONTEXT (ctx, 0);
@@ -2886,25 +2876,25 @@ _cogl_material_layer_compare_differences (CoglMaterialLayer *layer0,
    *
    * 1) Walk the ancestors of each layer to the root node, adding a
    *    pointer to each ancester node to two GArrays:
-   *    ctx->material0_nodes, and ctx->material1_nodes.
+   *    ctx->pipeline0_nodes, and ctx->pipeline1_nodes.
    *
    * 2) Compare the arrays to find the nodes where they stop to
    *    differ.
    *
    * 3) For each array now iterate from index 0 to the first node of
    *    difference ORing that nodes ->difference mask into the final
-   *    material_differences mask.
+   *    pipeline_differences mask.
    */
 
-  g_array_set_size (ctx->material0_nodes, 0);
-  g_array_set_size (ctx->material1_nodes, 0);
-  for (node0 = layer0; node0; node0 = _cogl_material_layer_get_parent (node0))
-    g_array_append_vals (ctx->material0_nodes, &node0, 1);
-  for (node1 = layer1; node1; node1 = _cogl_material_layer_get_parent (node1))
-    g_array_append_vals (ctx->material1_nodes, &node1, 1);
+  g_array_set_size (ctx->pipeline0_nodes, 0);
+  g_array_set_size (ctx->pipeline1_nodes, 0);
+  for (node0 = layer0; node0; node0 = _cogl_pipeline_layer_get_parent (node0))
+    g_array_append_vals (ctx->pipeline0_nodes, &node0, 1);
+  for (node1 = layer1; node1; node1 = _cogl_pipeline_layer_get_parent (node1))
+    g_array_append_vals (ctx->pipeline1_nodes, &node1, 1);
 
-  len0 = ctx->material0_nodes->len;
-  len1 = ctx->material1_nodes->len;
+  len0 = ctx->pipeline0_nodes->len;
+  len1 = ctx->pipeline1_nodes->len;
   /* There's no point looking at the last entries since we know both
    * layers must have the same default layer as their root node. */
   len0_index = len0 - 2;
@@ -2912,19 +2902,19 @@ _cogl_material_layer_compare_differences (CoglMaterialLayer *layer0,
   count = MIN (len0, len1) - 1;
   for (i = 0; i < count; i++)
     {
-      node0 = g_array_index (ctx->material0_nodes,
-                             CoglMaterialLayer *, len0_index--);
-      node1 = g_array_index (ctx->material1_nodes,
-                             CoglMaterialLayer *, len1_index--);
+      node0 = g_array_index (ctx->pipeline0_nodes,
+                             CoglPipelineLayer *, len0_index--);
+      node1 = g_array_index (ctx->pipeline1_nodes,
+                             CoglPipelineLayer *, len1_index--);
       if (node0 != node1)
         {
-          common_ancestor = _cogl_material_layer_get_parent (node0);
+          common_ancestor = _cogl_pipeline_layer_get_parent (node0);
           break;
         }
     }
 
   /* If we didn't already find the first the common_ancestor ancestor
-   * that's because one material is a direct descendant of the other
+   * that's because one pipeline is a direct descendant of the other
    * and in this case the first common ancestor is the last node we
    * looked at. */
   if (!common_ancestor)
@@ -2933,7 +2923,7 @@ _cogl_material_layer_compare_differences (CoglMaterialLayer *layer0,
   count = len0 - 1;
   for (i = 0; i < count; i++)
     {
-      node0 = g_array_index (ctx->material0_nodes, CoglMaterialLayer *, i);
+      node0 = g_array_index (ctx->pipeline0_nodes, CoglPipelineLayer *, i);
       if (node0 == common_ancestor)
         break;
       layers_difference |= node0->differences;
@@ -2942,7 +2932,7 @@ _cogl_material_layer_compare_differences (CoglMaterialLayer *layer0,
   count = len1 - 1;
   for (i = 0; i < count; i++)
     {
-      node1 = g_array_index (ctx->material1_nodes, CoglMaterialLayer *, i);
+      node1 = g_array_index (ctx->pipeline1_nodes, CoglPipelineLayer *, i);
       if (node1 == common_ancestor)
         break;
       layers_difference |= node1->differences;
@@ -2952,11 +2942,11 @@ _cogl_material_layer_compare_differences (CoglMaterialLayer *layer0,
 }
 
 static gboolean
-_cogl_material_layer_combine_state_equal (CoglMaterialLayer *authority0,
-                                          CoglMaterialLayer *authority1)
+_cogl_pipeline_layer_combine_state_equal (CoglPipelineLayer *authority0,
+                                          CoglPipelineLayer *authority1)
 {
-  CoglMaterialLayerBigState *big_state0 = authority0->big_state;
-  CoglMaterialLayerBigState *big_state1 = authority1->big_state;
+  CoglPipelineLayerBigState *big_state0 = authority0->big_state;
+  CoglPipelineLayerBigState *big_state1 = authority1->big_state;
   int n_args;
   int i;
 
@@ -2994,8 +2984,8 @@ _cogl_material_layer_combine_state_equal (CoglMaterialLayer *authority0,
 }
 
 static gboolean
-_cogl_material_layer_combine_constant_equal (CoglMaterialLayer *authority0,
-                                             CoglMaterialLayer *authority1)
+_cogl_pipeline_layer_combine_constant_equal (CoglPipelineLayer *authority0,
+                                             CoglPipelineLayer *authority1)
 {
   return memcmp (authority0->big_state->texture_combine_constant,
                  authority1->big_state->texture_combine_constant,
@@ -3003,8 +2993,8 @@ _cogl_material_layer_combine_constant_equal (CoglMaterialLayer *authority0,
 }
 
 static gboolean
-_cogl_material_layer_filters_equal (CoglMaterialLayer *authority0,
-                                    CoglMaterialLayer *authority1)
+_cogl_pipeline_layer_filters_equal (CoglPipelineLayer *authority0,
+                                    CoglPipelineLayer *authority1)
 {
   if (authority0->mag_filter != authority1->mag_filter)
     return FALSE;
@@ -3015,8 +3005,8 @@ _cogl_material_layer_filters_equal (CoglMaterialLayer *authority0,
 }
 
 static gboolean
-_cogl_material_layer_wrap_modes_equal (CoglMaterialLayer *authority0,
-                                       CoglMaterialLayer *authority1)
+_cogl_pipeline_layer_wrap_modes_equal (CoglPipelineLayer *authority0,
+                                       CoglPipelineLayer *authority1)
 {
   if (authority0->wrap_mode_s != authority1->wrap_mode_s ||
       authority0->wrap_mode_t != authority1->wrap_mode_t ||
@@ -3027,11 +3017,11 @@ _cogl_material_layer_wrap_modes_equal (CoglMaterialLayer *authority0,
 }
 
 static gboolean
-_cogl_material_layer_user_matrix_equal (CoglMaterialLayer *authority0,
-                                        CoglMaterialLayer *authority1)
+_cogl_pipeline_layer_user_matrix_equal (CoglPipelineLayer *authority0,
+                                        CoglPipelineLayer *authority1)
 {
-  CoglMaterialLayerBigState *big_state0 = authority0->big_state;
-  CoglMaterialLayerBigState *big_state1 = authority1->big_state;
+  CoglPipelineLayerBigState *big_state0 = authority0->big_state;
+  CoglPipelineLayerBigState *big_state1 = authority1->big_state;
 
   if (!cogl_matrix_equal (&big_state0->matrix, &big_state1->matrix))
     return FALSE;
@@ -3040,36 +3030,36 @@ _cogl_material_layer_user_matrix_equal (CoglMaterialLayer *authority0,
 }
 
 static gboolean
-_cogl_material_layer_point_sprite_coords_equal (CoglMaterialLayer *authority0,
-                                                CoglMaterialLayer *authority1)
+_cogl_pipeline_layer_point_sprite_coords_equal (CoglPipelineLayer *authority0,
+                                                CoglPipelineLayer *authority1)
 {
-  CoglMaterialLayerBigState *big_state0 = authority0->big_state;
-  CoglMaterialLayerBigState *big_state1 = authority1->big_state;
+  CoglPipelineLayerBigState *big_state0 = authority0->big_state;
+  CoglPipelineLayerBigState *big_state1 = authority1->big_state;
 
   return big_state0->point_sprite_coords == big_state1->point_sprite_coords;
 }
 
 typedef gboolean
-(*CoglMaterialLayerStateComparitor) (CoglMaterialLayer *authority0,
-                                     CoglMaterialLayer *authority1);
+(*CoglPipelineLayerStateComparitor) (CoglPipelineLayer *authority0,
+                                     CoglPipelineLayer *authority1);
 
 static gboolean
-layer_state_equal (CoglMaterialLayerState state,
-                   CoglMaterialLayer *layer0,
-                   CoglMaterialLayer *layer1,
-                   CoglMaterialLayerStateComparitor comparitor)
+layer_state_equal (CoglPipelineLayerState state,
+                   CoglPipelineLayer *layer0,
+                   CoglPipelineLayer *layer1,
+                   CoglPipelineLayerStateComparitor comparitor)
 {
-  CoglMaterialLayer *authority0 =
-    _cogl_material_layer_get_authority (layer0, state);
-  CoglMaterialLayer *authority1 =
-    _cogl_material_layer_get_authority (layer1, state);
+  CoglPipelineLayer *authority0 =
+    _cogl_pipeline_layer_get_authority (layer0, state);
+  CoglPipelineLayer *authority1 =
+    _cogl_pipeline_layer_get_authority (layer1, state);
 
   return comparitor (authority0, authority1);
 }
 
 static gboolean
-_cogl_material_layer_equal (CoglMaterialLayer *layer0,
-                            CoglMaterialLayer *layer1)
+_cogl_pipeline_layer_equal (CoglPipelineLayer *layer0,
+                            CoglPipelineLayer *layer1)
 {
   unsigned long layers_difference;
 
@@ -3077,66 +3067,66 @@ _cogl_material_layer_equal (CoglMaterialLayer *layer0,
     return TRUE;
 
   layers_difference =
-    _cogl_material_layer_compare_differences (layer0, layer1);
+    _cogl_pipeline_layer_compare_differences (layer0, layer1);
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_TEXTURE &&
-      !layer_state_equal (COGL_MATERIAL_LAYER_STATE_TEXTURE,
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE &&
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_TEXTURE,
                           layer0, layer1,
-                          _cogl_material_layer_texture_equal))
+                          _cogl_pipeline_layer_texture_equal))
     return FALSE;
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_COMBINE &&
-      !layer_state_equal (COGL_MATERIAL_LAYER_STATE_COMBINE,
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_COMBINE &&
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_COMBINE,
                           layer0, layer1,
-                          _cogl_material_layer_combine_state_equal))
+                          _cogl_pipeline_layer_combine_state_equal))
     return FALSE;
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT &&
-      !layer_state_equal (COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT,
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT &&
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT,
                           layer0, layer1,
-                          _cogl_material_layer_combine_constant_equal))
+                          _cogl_pipeline_layer_combine_constant_equal))
     return FALSE;
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_FILTERS &&
-      !layer_state_equal (COGL_MATERIAL_LAYER_STATE_FILTERS,
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_FILTERS &&
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_FILTERS,
                           layer0, layer1,
-                          _cogl_material_layer_filters_equal))
+                          _cogl_pipeline_layer_filters_equal))
     return FALSE;
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_WRAP_MODES &&
-      !layer_state_equal (COGL_MATERIAL_LAYER_STATE_WRAP_MODES,
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_WRAP_MODES &&
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_WRAP_MODES,
                           layer0, layer1,
-                          _cogl_material_layer_wrap_modes_equal))
+                          _cogl_pipeline_layer_wrap_modes_equal))
     return FALSE;
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_USER_MATRIX &&
-      !layer_state_equal (COGL_MATERIAL_LAYER_STATE_USER_MATRIX,
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_USER_MATRIX &&
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_USER_MATRIX,
                           layer0, layer1,
-                          _cogl_material_layer_user_matrix_equal))
+                          _cogl_pipeline_layer_user_matrix_equal))
     return FALSE;
 
-  if (layers_difference & COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS &&
-      !layer_state_equal (COGL_MATERIAL_LAYER_STATE_POINT_SPRITE_COORDS,
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS &&
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS,
                           layer0, layer1,
-                          _cogl_material_layer_point_sprite_coords_equal))
+                          _cogl_pipeline_layer_point_sprite_coords_equal))
     return FALSE;
 
   return TRUE;
 }
 
 static gboolean
-_cogl_material_color_equal (CoglMaterial *authority0,
-                            CoglMaterial *authority1)
+_cogl_pipeline_color_equal (CoglPipeline *authority0,
+                            CoglPipeline *authority1)
 {
   return cogl_color_equal (&authority0->color, &authority1->color);
 }
 
 static gboolean
-_cogl_material_lighting_state_equal (CoglMaterial *authority0,
-                                     CoglMaterial *authority1)
+_cogl_pipeline_lighting_state_equal (CoglPipeline *authority0,
+                                     CoglPipeline *authority1)
 {
-  CoglMaterialLightingState *state0 = &authority0->big_state->lighting_state;
-  CoglMaterialLightingState *state1 = &authority1->big_state->lighting_state;
+  CoglPipelineLightingState *state0 = &authority0->big_state->lighting_state;
+  CoglPipelineLightingState *state1 = &authority1->big_state->lighting_state;
 
   if (memcmp (state0->ambient, state1->ambient, sizeof (float) * 4) != 0)
     return FALSE;
@@ -3153,12 +3143,12 @@ _cogl_material_lighting_state_equal (CoglMaterial *authority0,
 }
 
 static gboolean
-_cogl_material_alpha_state_equal (CoglMaterial *authority0,
-                                  CoglMaterial *authority1)
+_cogl_pipeline_alpha_state_equal (CoglPipeline *authority0,
+                                  CoglPipeline *authority1)
 {
-  CoglMaterialAlphaFuncState *alpha_state0 =
+  CoglPipelineAlphaFuncState *alpha_state0 =
     &authority0->big_state->alpha_state;
-  CoglMaterialAlphaFuncState *alpha_state1 =
+  CoglPipelineAlphaFuncState *alpha_state1 =
     &authority1->big_state->alpha_state;
 
   if (alpha_state0->alpha_func != alpha_state1->alpha_func ||
@@ -3169,11 +3159,11 @@ _cogl_material_alpha_state_equal (CoglMaterial *authority0,
 }
 
 static gboolean
-_cogl_material_blend_state_equal (CoglMaterial *authority0,
-                                  CoglMaterial *authority1)
+_cogl_pipeline_blend_state_equal (CoglPipeline *authority0,
+                                  CoglPipeline *authority1)
 {
-  CoglMaterialBlendState *blend_state0 = &authority0->big_state->blend_state;
-  CoglMaterialBlendState *blend_state1 = &authority1->big_state->blend_state;
+  CoglPipelineBlendState *blend_state0 = &authority0->big_state->blend_state;
+  CoglPipelineBlendState *blend_state1 = &authority1->big_state->blend_state;
 
 #ifndef HAVE_COGL_GLES
   if (blend_state0->blend_equation_rgb != blend_state1->blend_equation_rgb)
@@ -3204,8 +3194,8 @@ _cogl_material_blend_state_equal (CoglMaterial *authority0,
 }
 
 static gboolean
-_cogl_material_depth_state_equal (CoglMaterial *authority0,
-                                  CoglMaterial *authority1)
+_cogl_pipeline_depth_state_equal (CoglPipeline *authority0,
+                                  CoglPipeline *authority1)
 {
   if (authority0->big_state->depth_state.depth_test_enabled == FALSE &&
       authority1->big_state->depth_state.depth_test_enabled == FALSE)
@@ -3213,15 +3203,15 @@ _cogl_material_depth_state_equal (CoglMaterial *authority0,
   else
     return memcmp (&authority0->big_state->depth_state,
                    &authority1->big_state->depth_state,
-                   sizeof (CoglMaterialDepthState)) == 0;
+                   sizeof (CoglPipelineDepthState)) == 0;
 }
 
 static gboolean
-_cogl_material_fog_state_equal (CoglMaterial *authority0,
-                                CoglMaterial *authority1)
+_cogl_pipeline_fog_state_equal (CoglPipeline *authority0,
+                                CoglPipeline *authority1)
 {
-  CoglMaterialFogState *fog_state0 = &authority0->big_state->fog_state;
-  CoglMaterialFogState *fog_state1 = &authority1->big_state->fog_state;
+  CoglPipelineFogState *fog_state0 = &authority0->big_state->fog_state;
+  CoglPipelineFogState *fog_state1 = &authority1->big_state->fog_state;
 
   if (fog_state0->enabled == fog_state1->enabled &&
       cogl_color_equal (&fog_state0->color, &fog_state1->color) &&
@@ -3235,56 +3225,56 @@ _cogl_material_fog_state_equal (CoglMaterial *authority0,
 }
 
 static gboolean
-_cogl_material_point_size_equal (CoglMaterial *authority0,
-                                 CoglMaterial *authority1)
+_cogl_pipeline_point_size_equal (CoglPipeline *authority0,
+                                 CoglPipeline *authority1)
 {
   return authority0->big_state->point_size == authority1->big_state->point_size;
 }
 
 static gboolean
-_cogl_material_user_shader_equal (CoglMaterial *authority0,
-                                  CoglMaterial *authority1)
+_cogl_pipeline_user_shader_equal (CoglPipeline *authority0,
+                                  CoglPipeline *authority1)
 {
   return (authority0->big_state->user_program ==
           authority1->big_state->user_program);
 }
 
 static gboolean
-_cogl_material_layers_equal (CoglMaterial *authority0,
-                             CoglMaterial *authority1)
+_cogl_pipeline_layers_equal (CoglPipeline *authority0,
+                             CoglPipeline *authority1)
 {
   int i;
 
   if (authority0->n_layers != authority1->n_layers)
     return FALSE;
 
-  _cogl_material_update_layers_cache (authority0);
-  _cogl_material_update_layers_cache (authority1);
+  _cogl_pipeline_update_layers_cache (authority0);
+  _cogl_pipeline_update_layers_cache (authority1);
 
   for (i = 0; i < authority0->n_layers; i++)
     {
-      if (!_cogl_material_layer_equal (authority0->layers_cache[i],
+      if (!_cogl_pipeline_layer_equal (authority0->layers_cache[i],
                                        authority1->layers_cache[i]))
         return FALSE;
     }
   return TRUE;
 }
 
-/* Determine the mask of differences between two materials */
+/* Determine the mask of differences between two pipelines */
 unsigned long
-_cogl_material_compare_differences (CoglMaterial *material0,
-                                    CoglMaterial *material1)
+_cogl_pipeline_compare_differences (CoglPipeline *pipeline0,
+                                    CoglPipeline *pipeline1)
 {
-  CoglMaterial *node0;
-  CoglMaterial *node1;
+  CoglPipeline *node0;
+  CoglPipeline *node1;
   int len0;
   int len1;
   int len0_index;
   int len1_index;
   int count;
   int i;
-  CoglMaterial *common_ancestor = NULL;
-  unsigned long materials_difference = 0;
+  CoglPipeline *common_ancestor = NULL;
+  unsigned long pipelines_difference = 0;
 
   _COGL_GET_CONTEXT (ctx, 0);
 
@@ -3292,25 +3282,25 @@ _cogl_material_compare_differences (CoglMaterial *material0,
    *
    * 1) Walk the ancestors of each layer to the root node, adding a
    *    pointer to each ancester node to two GArrays:
-   *    ctx->material0_nodes, and ctx->material1_nodes.
+   *    ctx->pipeline0_nodes, and ctx->pipeline1_nodes.
    *
    * 2) Compare the arrays to find the nodes where they stop to
    *    differ.
    *
    * 3) For each array now iterate from index 0 to the first node of
    *    difference ORing that nodes ->difference mask into the final
-   *    material_differences mask.
+   *    pipeline_differences mask.
    */
 
-  g_array_set_size (ctx->material0_nodes, 0);
-  g_array_set_size (ctx->material1_nodes, 0);
-  for (node0 = material0; node0; node0 = _cogl_material_get_parent (node0))
-    g_array_append_vals (ctx->material0_nodes, &node0, 1);
-  for (node1 = material1; node1; node1 = _cogl_material_get_parent (node1))
-    g_array_append_vals (ctx->material1_nodes, &node1, 1);
+  g_array_set_size (ctx->pipeline0_nodes, 0);
+  g_array_set_size (ctx->pipeline1_nodes, 0);
+  for (node0 = pipeline0; node0; node0 = _cogl_pipeline_get_parent (node0))
+    g_array_append_vals (ctx->pipeline0_nodes, &node0, 1);
+  for (node1 = pipeline1; node1; node1 = _cogl_pipeline_get_parent (node1))
+    g_array_append_vals (ctx->pipeline1_nodes, &node1, 1);
 
-  len0 = ctx->material0_nodes->len;
-  len1 = ctx->material1_nodes->len;
+  len0 = ctx->pipeline0_nodes->len;
+  len1 = ctx->pipeline1_nodes->len;
   /* There's no point looking at the last entries since we know both
    * layers must have the same default layer as their root node. */
   len0_index = len0 - 2;
@@ -3318,19 +3308,19 @@ _cogl_material_compare_differences (CoglMaterial *material0,
   count = MIN (len0, len1) - 1;
   for (i = 0; i < count; i++)
     {
-      node0 = g_array_index (ctx->material0_nodes,
-                             CoglMaterial *, len0_index--);
-      node1 = g_array_index (ctx->material1_nodes,
-                             CoglMaterial *, len1_index--);
+      node0 = g_array_index (ctx->pipeline0_nodes,
+                             CoglPipeline *, len0_index--);
+      node1 = g_array_index (ctx->pipeline1_nodes,
+                             CoglPipeline *, len1_index--);
       if (node0 != node1)
         {
-          common_ancestor = _cogl_material_get_parent (node0);
+          common_ancestor = _cogl_pipeline_get_parent (node0);
           break;
         }
     }
 
   /* If we didn't already find the first the common_ancestor ancestor
-   * that's because one material is a direct descendant of the other
+   * that's because one pipeline is a direct descendant of the other
    * and in this case the first common ancestor is the last node we
    * looked at. */
   if (!common_ancestor)
@@ -3339,82 +3329,82 @@ _cogl_material_compare_differences (CoglMaterial *material0,
   count = len0 - 1;
   for (i = 0; i < count; i++)
     {
-      node0 = g_array_index (ctx->material0_nodes, CoglMaterial *, i);
+      node0 = g_array_index (ctx->pipeline0_nodes, CoglPipeline *, i);
       if (node0 == common_ancestor)
         break;
-      materials_difference |= node0->differences;
+      pipelines_difference |= node0->differences;
     }
 
   count = len1 - 1;
   for (i = 0; i < count; i++)
     {
-      node1 = g_array_index (ctx->material1_nodes, CoglMaterial *, i);
+      node1 = g_array_index (ctx->pipeline1_nodes, CoglPipeline *, i);
       if (node1 == common_ancestor)
         break;
-      materials_difference |= node1->differences;
+      pipelines_difference |= node1->differences;
     }
 
-  return materials_difference;
+  return pipelines_difference;
 
 }
 
 static gboolean
-simple_property_equal (CoglMaterial *material0,
-                       CoglMaterial *material1,
-                       unsigned long materials_difference,
-                       CoglMaterialState state,
-                       CoglMaterialStateComparitor comparitor)
+simple_property_equal (CoglPipeline *pipeline0,
+                       CoglPipeline *pipeline1,
+                       unsigned long pipelines_difference,
+                       CoglPipelineState state,
+                       CoglPipelineStateComparitor comparitor)
 {
-  if (materials_difference & state)
+  if (pipelines_difference & state)
     {
-      if (!comparitor (_cogl_material_get_authority (material0, state),
-                       _cogl_material_get_authority (material1, state)))
+      if (!comparitor (_cogl_pipeline_get_authority (pipeline0, state),
+                       _cogl_pipeline_get_authority (pipeline1, state)))
         return FALSE;
     }
   return TRUE;
 }
 
-/* Comparison of two arbitrary materials is done by:
- * 1) walking up the parents of each material until a common
+/* Comparison of two arbitrary pipelines is done by:
+ * 1) walking up the parents of each pipeline until a common
  *    ancestor is found, and at each step ORing together the
  *    difference masks.
  *
  * 2) using the final difference mask to determine which state
  *    groups to compare.
  *
- * This is used by the Cogl journal to compare materials so that it
+ * This is used by the Cogl journal to compare pipelines so that it
  * can split up geometry that needs different OpenGL state.
  *
  * It is acceptable to have false negatives - although they will result
  * in redundant OpenGL calls that try and update the state.
  *
- * When comparing texture layers, _cogl_material_equal will actually
+ * When comparing texture layers, _cogl_pipeline_equal will actually
  * compare the underlying GL texture handle that the Cogl texture uses
  * so that atlas textures and sub textures will be considered equal if
  * they point to the same texture. This is useful for comparing
- * materials in the journal but it means that _cogl_material_equal
- * doesn't strictly compare whether the materials are the same. If we
+ * pipelines in the journal but it means that _cogl_pipeline_equal
+ * doesn't strictly compare whether the pipelines are the same. If we
  * needed those semantics we could perhaps add another function or
  * some flags to control the behaviour.
  *
  * False positives aren't allowed.
  */
 gboolean
-_cogl_material_equal (CoglMaterial *material0,
-                      CoglMaterial *material1,
+_cogl_pipeline_equal (CoglPipeline *pipeline0,
+                      CoglPipeline *pipeline1,
                       gboolean skip_gl_color)
 {
-  unsigned long  materials_difference;
+  unsigned long  pipelines_difference;
   gboolean ret;
-  COGL_STATIC_TIMER (material_equal_timer,
+  COGL_STATIC_TIMER (pipeline_equal_timer,
                      "Mainloop", /* parent */
-                     "_cogl_material_equal",
-                     "The time spent comparing cogl materials",
+                     "_cogl_pipeline_equal",
+                     "The time spent comparing cogl pipelines",
                      0 /* no application private data */);
 
-  COGL_TIMER_START (_cogl_uprof_context, material_equal_timer);
+  COGL_TIMER_START (_cogl_uprof_context, pipeline_equal_timer);
 
-  if (material0 == material1)
+  if (pipeline0 == pipeline1)
     {
       ret = TRUE;
       goto done;
@@ -3424,225 +3414,225 @@ _cogl_material_equal (CoglMaterial *material0,
 
   /* First check non-sparse properties */
 
-  if (material0->real_blend_enable != material1->real_blend_enable)
+  if (pipeline0->real_blend_enable != pipeline1->real_blend_enable)
     goto done;
 
   /* Then check sparse properties */
 
-  materials_difference =
-    _cogl_material_compare_differences (material0, material1);
+  pipelines_difference =
+    _cogl_pipeline_compare_differences (pipeline0, pipeline1);
 
-  if (materials_difference & COGL_MATERIAL_STATE_COLOR &&
+  if (pipelines_difference & COGL_PIPELINE_STATE_COLOR &&
       !skip_gl_color)
     {
-      CoglMaterialState state = COGL_MATERIAL_STATE_COLOR;
-      CoglMaterial *authority0 =
-        _cogl_material_get_authority (material0, state);
-      CoglMaterial *authority1 =
-        _cogl_material_get_authority (material1, state);
+      CoglPipelineState state = COGL_PIPELINE_STATE_COLOR;
+      CoglPipeline *authority0 =
+        _cogl_pipeline_get_authority (pipeline0, state);
+      CoglPipeline *authority1 =
+        _cogl_pipeline_get_authority (pipeline1, state);
 
       if (!cogl_color_equal (&authority0->color, &authority1->color))
         goto done;
     }
 
-  if (!simple_property_equal (material0, material1,
-                              materials_difference,
-                              COGL_MATERIAL_STATE_LIGHTING,
-                              _cogl_material_lighting_state_equal))
+  if (!simple_property_equal (pipeline0, pipeline1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_LIGHTING,
+                              _cogl_pipeline_lighting_state_equal))
     goto done;
 
-  if (!simple_property_equal (material0, material1,
-                              materials_difference,
-                              COGL_MATERIAL_STATE_ALPHA_FUNC,
-                              _cogl_material_alpha_state_equal))
+  if (!simple_property_equal (pipeline0, pipeline1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_ALPHA_FUNC,
+                              _cogl_pipeline_alpha_state_equal))
     goto done;
 
   /* We don't need to compare the detailed blending state if we know
-   * blending is disabled for both materials. */
-  if (material0->real_blend_enable &&
-      materials_difference & COGL_MATERIAL_STATE_BLEND)
+   * blending is disabled for both pipelines. */
+  if (pipeline0->real_blend_enable &&
+      pipelines_difference & COGL_PIPELINE_STATE_BLEND)
     {
-      CoglMaterialState state = COGL_MATERIAL_STATE_BLEND;
-      CoglMaterial *authority0 =
-        _cogl_material_get_authority (material0, state);
-      CoglMaterial *authority1 =
-        _cogl_material_get_authority (material1, state);
+      CoglPipelineState state = COGL_PIPELINE_STATE_BLEND;
+      CoglPipeline *authority0 =
+        _cogl_pipeline_get_authority (pipeline0, state);
+      CoglPipeline *authority1 =
+        _cogl_pipeline_get_authority (pipeline1, state);
 
-      if (!_cogl_material_blend_state_equal (authority0, authority1))
+      if (!_cogl_pipeline_blend_state_equal (authority0, authority1))
         goto done;
     }
 
   /* XXX: we don't need to compare the BLEND_ENABLE state because it's
    * already reflected in ->real_blend_enable */
 #if 0
-  if (!simple_property_equal (material0, material1,
-                              materials_difference,
-                              COGL_MATERIAL_STATE_BLEND,
-                              _cogl_material_blend_enable_equal))
+  if (!simple_property_equal (pipeline0, pipeline1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_BLEND,
+                              _cogl_pipeline_blend_enable_equal))
     return FALSE;
 #endif
 
-  if (!simple_property_equal (material0, material1,
-                              materials_difference,
-                              COGL_MATERIAL_STATE_DEPTH,
-                              _cogl_material_depth_state_equal))
+  if (!simple_property_equal (pipeline0, pipeline1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_DEPTH,
+                              _cogl_pipeline_depth_state_equal))
     goto done;
 
-  if (!simple_property_equal (material0, material1,
-                              materials_difference,
-                              COGL_MATERIAL_STATE_FOG,
-                              _cogl_material_fog_state_equal))
+  if (!simple_property_equal (pipeline0, pipeline1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_FOG,
+                              _cogl_pipeline_fog_state_equal))
     goto done;
 
-  if (!simple_property_equal (material0, material1,
-                              materials_difference,
-                              COGL_MATERIAL_STATE_POINT_SIZE,
-                              _cogl_material_point_size_equal))
+  if (!simple_property_equal (pipeline0, pipeline1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_POINT_SIZE,
+                              _cogl_pipeline_point_size_equal))
     goto done;
 
-  if (!simple_property_equal (material0, material1,
-                              materials_difference,
-                              COGL_MATERIAL_STATE_USER_SHADER,
-                              _cogl_material_user_shader_equal))
+  if (!simple_property_equal (pipeline0, pipeline1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_USER_SHADER,
+                              _cogl_pipeline_user_shader_equal))
     goto done;
 
-  if (!simple_property_equal (material0, material1,
-                              materials_difference,
-                              COGL_MATERIAL_STATE_LAYERS,
-                              _cogl_material_layers_equal))
+  if (!simple_property_equal (pipeline0, pipeline1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_LAYERS,
+                              _cogl_pipeline_layers_equal))
     goto done;
 
   ret = TRUE;
 done:
-  COGL_TIMER_STOP (_cogl_uprof_context, material_equal_timer);
+  COGL_TIMER_STOP (_cogl_uprof_context, pipeline_equal_timer);
   return ret;
 }
 
 void
-cogl_material_get_color (CoglMaterial *material,
+cogl_pipeline_get_color (CoglPipeline *pipeline,
                          CoglColor    *color)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_COLOR);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_COLOR);
 
   *color = authority->color;
 }
 
 /* This is used heavily by the cogl journal when logging quads */
 void
-_cogl_material_get_colorubv (CoglMaterial *material,
+_cogl_pipeline_get_colorubv (CoglPipeline *pipeline,
                              guint8       *color)
 {
-  CoglMaterial *authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_COLOR);
+  CoglPipeline *authority =
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_COLOR);
 
   _cogl_color_get_rgba_4ubv (&authority->color, color);
 }
 
 static void
-_cogl_material_prune_redundant_ancestry (CoglMaterial *material)
+_cogl_pipeline_prune_redundant_ancestry (CoglPipeline *pipeline)
 {
-  CoglMaterial *new_parent = _cogl_material_get_parent (material);
+  CoglPipeline *new_parent = _cogl_pipeline_get_parent (pipeline);
 
   /* Before considering pruning redundant ancestry we check if this
-   * material is an authority for layer state and if so only consider
+   * pipeline is an authority for layer state and if so only consider
    * reparenting if it *owns* all the layers it depends on. NB: A
-   * material can be be a STATE_LAYERS authority but it may still
+   * pipeline can be be a STATE_LAYERS authority but it may still
    * defer to its ancestors to define the state for some of its
    * layers.
    *
-   * For example a material that derives from a parent with 5 layers
+   * For example a pipeline that derives from a parent with 5 layers
    * can become a STATE_LAYERS authority by simply changing it's
    * ->n_layers count to 4 and in that case it can still defer to its
    * ancestors to define the state of those 4 layers.
    *
-   * If a material depends on any ancestors for layer state then we
+   * If a pipeline depends on any ancestors for layer state then we
    * immediatly bail out.
    */
-  if (material->differences & COGL_MATERIAL_STATE_LAYERS)
+  if (pipeline->differences & COGL_PIPELINE_STATE_LAYERS)
     {
-      if (material->n_layers != g_list_length (material->layer_differences))
+      if (pipeline->n_layers != g_list_length (pipeline->layer_differences))
         return;
     }
 
   /* walk up past ancestors that are now redundant and potentially
-   * reparent the material. */
-  while (_cogl_material_get_parent (new_parent) &&
-         (new_parent->differences | material->differences) ==
-          material->differences)
-    new_parent = _cogl_material_get_parent (new_parent);
+   * reparent the pipeline. */
+  while (_cogl_pipeline_get_parent (new_parent) &&
+         (new_parent->differences | pipeline->differences) ==
+          pipeline->differences)
+    new_parent = _cogl_pipeline_get_parent (new_parent);
 
-  if (new_parent != _cogl_material_get_parent (material))
+  if (new_parent != _cogl_pipeline_get_parent (pipeline))
     {
-      gboolean is_weak = _cogl_material_is_weak (material);
-      _cogl_material_set_parent (material, new_parent, is_weak ? FALSE : TRUE);
+      gboolean is_weak = _cogl_pipeline_is_weak (pipeline);
+      _cogl_pipeline_set_parent (pipeline, new_parent, is_weak ? FALSE : TRUE);
     }
 }
 
 static void
-_cogl_material_update_authority (CoglMaterial *material,
-                                 CoglMaterial *authority,
-                                 CoglMaterialState state,
-                                 CoglMaterialStateComparitor comparitor)
+_cogl_pipeline_update_authority (CoglPipeline *pipeline,
+                                 CoglPipeline *authority,
+                                 CoglPipelineState state,
+                                 CoglPipelineStateComparitor comparitor)
 {
   /* If we are the current authority see if we can revert to one of
    * our ancestors being the authority */
-  if (material == authority &&
-      _cogl_material_get_parent (authority) != NULL)
+  if (pipeline == authority &&
+      _cogl_pipeline_get_parent (authority) != NULL)
     {
-      CoglMaterial *parent = _cogl_material_get_parent (authority);
-      CoglMaterial *old_authority =
-        _cogl_material_get_authority (parent, state);
+      CoglPipeline *parent = _cogl_pipeline_get_parent (authority);
+      CoglPipeline *old_authority =
+        _cogl_pipeline_get_authority (parent, state);
 
       if (comparitor (authority, old_authority))
-        material->differences &= ~state;
+        pipeline->differences &= ~state;
     }
-  else if (material != authority)
+  else if (pipeline != authority)
     {
       /* If we weren't previously the authority on this state then we
        * need to extended our differences mask and so it's possible
        * that some of our ancestry will now become redundant, so we
        * aim to reparent ourselves if that's true... */
-      material->differences |= state;
-      _cogl_material_prune_redundant_ancestry (material);
+      pipeline->differences |= state;
+      _cogl_pipeline_prune_redundant_ancestry (pipeline);
     }
 }
 
 void
-cogl_material_set_color (CoglMaterial    *material,
+cogl_pipeline_set_color (CoglPipeline    *pipeline,
 			 const CoglColor *color)
 {
-  CoglMaterialState state = COGL_MATERIAL_STATE_COLOR;
-  CoglMaterial *authority;
+  CoglPipelineState state = COGL_PIPELINE_STATE_COLOR;
+  CoglPipeline *authority;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   if (cogl_color_equal (color, &authority->color))
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, color, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, color, FALSE);
 
-  material->color = *color;
+  pipeline->color = *color;
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_color_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_color_equal);
 
-  handle_automatic_blend_enable (material, state);
+  handle_automatic_blend_enable (pipeline, state);
 }
 
 void
-cogl_material_set_color4ub (CoglMaterial *material,
+cogl_pipeline_set_color4ub (CoglPipeline *pipeline,
 			    guint8 red,
                             guint8 green,
                             guint8 blue,
@@ -3650,11 +3640,11 @@ cogl_material_set_color4ub (CoglMaterial *material,
 {
   CoglColor color;
   cogl_color_init_from_4ub (&color, red, green, blue, alpha);
-  cogl_material_set_color (material, &color);
+  cogl_pipeline_set_color (pipeline, &color);
 }
 
 void
-cogl_material_set_color4f (CoglMaterial *material,
+cogl_pipeline_set_color4f (CoglPipeline *pipeline,
 			   float red,
                            float green,
                            float blue,
@@ -3662,248 +3652,248 @@ cogl_material_set_color4f (CoglMaterial *material,
 {
   CoglColor color;
   cogl_color_init_from_4f (&color, red, green, blue, alpha);
-  cogl_material_set_color (material, &color);
+  cogl_pipeline_set_color (pipeline, &color);
 }
 
-CoglMaterialBlendEnable
-_cogl_material_get_blend_enabled (CoglMaterial *material)
+CoglPipelineBlendEnable
+_cogl_pipeline_get_blend_enabled (CoglPipeline *pipeline)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_val_if_fail (cogl_is_material (material), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_BLEND_ENABLE);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_BLEND_ENABLE);
   return authority->blend_enable;
 }
 
 static gboolean
-_cogl_material_blend_enable_equal (CoglMaterial *authority0,
-                                   CoglMaterial *authority1)
+_cogl_pipeline_blend_enable_equal (CoglPipeline *authority0,
+                                   CoglPipeline *authority1)
 {
   return authority0->blend_enable == authority1->blend_enable ? TRUE : FALSE;
 }
 
 void
-_cogl_material_set_blend_enabled (CoglMaterial *material,
-                                  CoglMaterialBlendEnable enable)
+_cogl_pipeline_set_blend_enabled (CoglPipeline *pipeline,
+                                  CoglPipelineBlendEnable enable)
 {
-  CoglMaterialState state = COGL_MATERIAL_STATE_BLEND_ENABLE;
-  CoglMaterial *authority;
+  CoglPipelineState state = COGL_PIPELINE_STATE_BLEND_ENABLE;
+  CoglPipeline *authority;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
   g_return_if_fail (enable > 1 &&
                     "don't pass TRUE or FALSE to _set_blend_enabled!");
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   if (authority->blend_enable == enable)
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  material->blend_enable = enable;
+  pipeline->blend_enable = enable;
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_blend_enable_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_blend_enable_equal);
 
-  handle_automatic_blend_enable (material, state);
+  handle_automatic_blend_enable (pipeline, state);
 }
 
 void
-cogl_material_get_ambient (CoglMaterial *material,
+cogl_pipeline_get_ambient (CoglPipeline *pipeline,
                            CoglColor    *ambient)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LIGHTING);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LIGHTING);
 
   cogl_color_init_from_4fv (ambient,
                             authority->big_state->lighting_state.ambient);
 }
 
 void
-cogl_material_set_ambient (CoglMaterial *material,
+cogl_pipeline_set_ambient (CoglPipeline *pipeline,
 			   const CoglColor *ambient)
 {
-  CoglMaterialState state = COGL_MATERIAL_STATE_LIGHTING;
-  CoglMaterial *authority;
-  CoglMaterialLightingState *lighting_state;
+  CoglPipelineState state = COGL_PIPELINE_STATE_LIGHTING;
+  CoglPipeline *authority;
+  CoglPipelineLightingState *lighting_state;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   lighting_state = &authority->big_state->lighting_state;
   if (cogl_color_equal (ambient, &lighting_state->ambient))
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  lighting_state = &material->big_state->lighting_state;
+  lighting_state = &pipeline->big_state->lighting_state;
   lighting_state->ambient[0] = cogl_color_get_red_float (ambient);
   lighting_state->ambient[1] = cogl_color_get_green_float (ambient);
   lighting_state->ambient[2] = cogl_color_get_blue_float (ambient);
   lighting_state->ambient[3] = cogl_color_get_alpha_float (ambient);
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_lighting_state_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_lighting_state_equal);
 
-  handle_automatic_blend_enable (material, state);
+  handle_automatic_blend_enable (pipeline, state);
 }
 
 void
-cogl_material_get_diffuse (CoglMaterial *material,
+cogl_pipeline_get_diffuse (CoglPipeline *pipeline,
                            CoglColor    *diffuse)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LIGHTING);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LIGHTING);
 
   cogl_color_init_from_4fv (diffuse,
                             authority->big_state->lighting_state.diffuse);
 }
 
 void
-cogl_material_set_diffuse (CoglMaterial *material,
+cogl_pipeline_set_diffuse (CoglPipeline *pipeline,
 			   const CoglColor *diffuse)
 {
-  CoglMaterialState state = COGL_MATERIAL_STATE_LIGHTING;
-  CoglMaterial *authority;
-  CoglMaterialLightingState *lighting_state;
+  CoglPipelineState state = COGL_PIPELINE_STATE_LIGHTING;
+  CoglPipeline *authority;
+  CoglPipelineLightingState *lighting_state;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   lighting_state = &authority->big_state->lighting_state;
   if (cogl_color_equal (diffuse, &lighting_state->diffuse))
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  lighting_state = &material->big_state->lighting_state;
+  lighting_state = &pipeline->big_state->lighting_state;
   lighting_state->diffuse[0] = cogl_color_get_red_float (diffuse);
   lighting_state->diffuse[1] = cogl_color_get_green_float (diffuse);
   lighting_state->diffuse[2] = cogl_color_get_blue_float (diffuse);
   lighting_state->diffuse[3] = cogl_color_get_alpha_float (diffuse);
 
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_lighting_state_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_lighting_state_equal);
 
-  handle_automatic_blend_enable (material, state);
+  handle_automatic_blend_enable (pipeline, state);
 }
 
 void
-cogl_material_set_ambient_and_diffuse (CoglMaterial *material,
+cogl_pipeline_set_ambient_and_diffuse (CoglPipeline *pipeline,
 				       const CoglColor *color)
 {
-  cogl_material_set_ambient (material, color);
-  cogl_material_set_diffuse (material, color);
+  cogl_pipeline_set_ambient (pipeline, color);
+  cogl_pipeline_set_diffuse (pipeline, color);
 }
 
 void
-cogl_material_get_specular (CoglMaterial *material,
+cogl_pipeline_get_specular (CoglPipeline *pipeline,
                             CoglColor    *specular)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LIGHTING);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LIGHTING);
 
   cogl_color_init_from_4fv (specular,
                             authority->big_state->lighting_state.specular);
 }
 
 void
-cogl_material_set_specular (CoglMaterial *material, const CoglColor *specular)
+cogl_pipeline_set_specular (CoglPipeline *pipeline, const CoglColor *specular)
 {
-  CoglMaterial *authority;
-  CoglMaterialState state = COGL_MATERIAL_STATE_LIGHTING;
-  CoglMaterialLightingState *lighting_state;
+  CoglPipeline *authority;
+  CoglPipelineState state = COGL_PIPELINE_STATE_LIGHTING;
+  CoglPipelineLightingState *lighting_state;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   lighting_state = &authority->big_state->lighting_state;
   if (cogl_color_equal (specular, &lighting_state->specular))
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  lighting_state = &material->big_state->lighting_state;
+  lighting_state = &pipeline->big_state->lighting_state;
   lighting_state->specular[0] = cogl_color_get_red_float (specular);
   lighting_state->specular[1] = cogl_color_get_green_float (specular);
   lighting_state->specular[2] = cogl_color_get_blue_float (specular);
   lighting_state->specular[3] = cogl_color_get_alpha_float (specular);
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_lighting_state_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_lighting_state_equal);
 
-  handle_automatic_blend_enable (material, state);
+  handle_automatic_blend_enable (pipeline, state);
 }
 
 float
-cogl_material_get_shininess (CoglMaterial *material)
+cogl_pipeline_get_shininess (CoglPipeline *pipeline)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_val_if_fail (cogl_is_material (material), 0);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), 0);
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LIGHTING);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LIGHTING);
 
   return authority->big_state->lighting_state.shininess;
 }
 
 void
-cogl_material_set_shininess (CoglMaterial *material,
+cogl_pipeline_set_shininess (CoglPipeline *pipeline,
 			     float shininess)
 {
-  CoglMaterial *authority;
-  CoglMaterialState state = COGL_MATERIAL_STATE_LIGHTING;
-  CoglMaterialLightingState *lighting_state;
+  CoglPipeline *authority;
+  CoglPipelineState state = COGL_PIPELINE_STATE_LIGHTING;
+  CoglPipelineLightingState *lighting_state;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   if (shininess < 0.0)
     {
-      g_warning ("Out of range shininess %f supplied for material\n",
+      g_warning ("Out of range shininess %f supplied for pipeline\n",
                  shininess);
       return;
     }
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   lighting_state = &authority->big_state->lighting_state;
 
@@ -3911,80 +3901,80 @@ cogl_material_set_shininess (CoglMaterial *material,
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  lighting_state = &material->big_state->lighting_state;
+  lighting_state = &pipeline->big_state->lighting_state;
   lighting_state->shininess = shininess;
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_lighting_state_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_lighting_state_equal);
 }
 
 void
-cogl_material_get_emission (CoglMaterial *material,
+cogl_pipeline_get_emission (CoglPipeline *pipeline,
                             CoglColor    *emission)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LIGHTING);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LIGHTING);
 
   cogl_color_init_from_4fv (emission,
                             authority->big_state->lighting_state.emission);
 }
 
 void
-cogl_material_set_emission (CoglMaterial *material, const CoglColor *emission)
+cogl_pipeline_set_emission (CoglPipeline *pipeline, const CoglColor *emission)
 {
-  CoglMaterial *authority;
-  CoglMaterialState state = COGL_MATERIAL_STATE_LIGHTING;
-  CoglMaterialLightingState *lighting_state;
+  CoglPipeline *authority;
+  CoglPipelineState state = COGL_PIPELINE_STATE_LIGHTING;
+  CoglPipelineLightingState *lighting_state;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   lighting_state = &authority->big_state->lighting_state;
   if (cogl_color_equal (emission, &lighting_state->emission))
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  lighting_state = &material->big_state->lighting_state;
+  lighting_state = &pipeline->big_state->lighting_state;
   lighting_state->emission[0] = cogl_color_get_red_float (emission);
   lighting_state->emission[1] = cogl_color_get_green_float (emission);
   lighting_state->emission[2] = cogl_color_get_blue_float (emission);
   lighting_state->emission[3] = cogl_color_get_alpha_float (emission);
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_lighting_state_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_lighting_state_equal);
 
-  handle_automatic_blend_enable (material, state);
+  handle_automatic_blend_enable (pipeline, state);
 }
 
 void
-cogl_material_set_alpha_test_function (CoglMaterial *material,
-				       CoglMaterialAlphaFunc alpha_func,
+cogl_pipeline_set_alpha_test_function (CoglPipeline *pipeline,
+				       CoglPipelineAlphaFunc alpha_func,
 				       float alpha_reference)
 {
-  CoglMaterialState state = COGL_MATERIAL_STATE_ALPHA_FUNC;
-  CoglMaterial *authority;
-  CoglMaterialAlphaFuncState *alpha_state;
+  CoglPipelineState state = COGL_PIPELINE_STATE_ALPHA_FUNC;
+  CoglPipeline *authority;
+  CoglPipelineAlphaFuncState *alpha_state;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   alpha_state = &authority->big_state->alpha_state;
   if (alpha_state->alpha_func == alpha_func &&
@@ -3992,18 +3982,18 @@ cogl_material_set_alpha_test_function (CoglMaterial *material,
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  alpha_state = &material->big_state->alpha_state;
+  alpha_state = &pipeline->big_state->alpha_state;
   alpha_state->alpha_func = alpha_func;
   alpha_state->alpha_func_reference = alpha_reference;
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_alpha_state_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_alpha_state_equal);
 }
 
 GLenum
@@ -4100,20 +4090,20 @@ setup_blend_state (CoglBlendStringStatement *statement,
 }
 
 gboolean
-cogl_material_set_blend (CoglMaterial *material,
+cogl_pipeline_set_blend (CoglPipeline *pipeline,
                          const char *blend_description,
                          GError **error)
 {
-  CoglMaterialState state = COGL_MATERIAL_STATE_BLEND;
-  CoglMaterial *authority;
+  CoglPipelineState state = COGL_PIPELINE_STATE_BLEND;
+  CoglPipeline *authority;
   CoglBlendStringStatement statements[2];
   CoglBlendStringStatement *rgb;
   CoglBlendStringStatement *a;
   GError *internal_error = NULL;
   int count;
-  CoglMaterialBlendState *blend_state;
+  CoglPipelineBlendState *blend_state;
 
-  g_return_val_if_fail (cogl_is_material (material), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
 
   count =
     _cogl_blend_string_compile (blend_description,
@@ -4142,16 +4132,16 @@ cogl_material_set_blend (CoglMaterial *material,
     }
 
   authority =
-    _cogl_material_get_authority (material, state);
+    _cogl_pipeline_get_authority (pipeline, state);
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  blend_state = &material->big_state->blend_state;
+  blend_state = &pipeline->big_state->blend_state;
 #ifndef HAVE_COGL_GLES
   setup_blend_state (rgb,
                      &blend_state->blend_equation_rgb,
@@ -4170,75 +4160,75 @@ cogl_material_set_blend (CoglMaterial *material,
 
   /* If we are the current authority see if we can revert to one of our
    * ancestors being the authority */
-  if (material == authority &&
-      _cogl_material_get_parent (authority) != NULL)
+  if (pipeline == authority &&
+      _cogl_pipeline_get_parent (authority) != NULL)
     {
-      CoglMaterial *parent = _cogl_material_get_parent (authority);
-      CoglMaterial *old_authority =
-        _cogl_material_get_authority (parent, state);
+      CoglPipeline *parent = _cogl_pipeline_get_parent (authority);
+      CoglPipeline *old_authority =
+        _cogl_pipeline_get_authority (parent, state);
 
-      if (_cogl_material_blend_state_equal (authority, old_authority))
-        material->differences &= ~state;
+      if (_cogl_pipeline_blend_state_equal (authority, old_authority))
+        pipeline->differences &= ~state;
     }
 
   /* If we weren't previously the authority on this state then we need
    * to extended our differences mask and so it's possible that some
    * of our ancestry will now become redundant, so we aim to reparent
    * ourselves if that's true... */
-  if (material != authority)
+  if (pipeline != authority)
     {
-      material->differences |= state;
-      _cogl_material_prune_redundant_ancestry (material);
+      pipeline->differences |= state;
+      _cogl_pipeline_prune_redundant_ancestry (pipeline);
     }
 
-  handle_automatic_blend_enable (material, state);
+  handle_automatic_blend_enable (pipeline, state);
 
   return TRUE;
 }
 
 void
-cogl_material_set_blend_constant (CoglMaterial *material,
+cogl_pipeline_set_blend_constant (CoglPipeline *pipeline,
                                   const CoglColor *constant_color)
 {
 #ifndef HAVE_COGL_GLES
-  CoglMaterialState state = COGL_MATERIAL_STATE_BLEND;
-  CoglMaterial *authority;
-  CoglMaterialBlendState *blend_state;
+  CoglPipelineState state = COGL_PIPELINE_STATE_BLEND;
+  CoglPipeline *authority;
+  CoglPipelineBlendState *blend_state;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   blend_state = &authority->big_state->blend_state;
   if (cogl_color_equal (constant_color, &blend_state->blend_constant))
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  blend_state = &material->big_state->blend_state;
+  blend_state = &pipeline->big_state->blend_state;
   blend_state->blend_constant = *constant_color;
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_blend_state_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_blend_state_equal);
 
-  handle_automatic_blend_enable (material, state);
+  handle_automatic_blend_enable (pipeline, state);
 #endif
 }
 
 CoglHandle
-cogl_material_get_user_program (CoglMaterial *material)
+cogl_pipeline_get_user_program (CoglPipeline *pipeline)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_val_if_fail (cogl_is_material (material), COGL_INVALID_HANDLE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), COGL_INVALID_HANDLE);
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_USER_SHADER);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_USER_SHADER);
 
   return authority->big_state->user_program;
 }
@@ -4250,203 +4240,203 @@ cogl_material_get_user_program (CoglMaterial *material)
  * processing.
  */
 void
-cogl_material_set_user_program (CoglMaterial *material,
+cogl_pipeline_set_user_program (CoglPipeline *pipeline,
                                 CoglHandle program)
 {
-  CoglMaterialState state = COGL_MATERIAL_STATE_USER_SHADER;
-  CoglMaterial *authority;
+  CoglPipelineState state = COGL_PIPELINE_STATE_USER_SHADER;
+  CoglPipeline *authority;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   if (authority->big_state->user_program == program)
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
   if (program != COGL_INVALID_HANDLE)
-    _cogl_material_set_backend (material, COGL_MATERIAL_BACKEND_DEFAULT);
+    _cogl_pipeline_set_backend (pipeline, COGL_PIPELINE_BACKEND_DEFAULT);
 
   /* If we are the current authority see if we can revert to one of our
    * ancestors being the authority */
-  if (material == authority &&
-      _cogl_material_get_parent (authority) != NULL)
+  if (pipeline == authority &&
+      _cogl_pipeline_get_parent (authority) != NULL)
     {
-      CoglMaterial *parent = _cogl_material_get_parent (authority);
-      CoglMaterial *old_authority =
-        _cogl_material_get_authority (parent, state);
+      CoglPipeline *parent = _cogl_pipeline_get_parent (authority);
+      CoglPipeline *old_authority =
+        _cogl_pipeline_get_authority (parent, state);
 
       if (old_authority->big_state->user_program == program)
-        material->differences &= ~state;
+        pipeline->differences &= ~state;
     }
-  else if (material != authority)
+  else if (pipeline != authority)
     {
       /* If we weren't previously the authority on this state then we
        * need to extended our differences mask and so it's possible
        * that some of our ancestry will now become redundant, so we
        * aim to reparent ourselves if that's true... */
-      material->differences |= state;
-      _cogl_material_prune_redundant_ancestry (material);
+      pipeline->differences |= state;
+      _cogl_pipeline_prune_redundant_ancestry (pipeline);
     }
 
   if (program != COGL_INVALID_HANDLE)
     cogl_handle_ref (program);
-  if (authority == material &&
-      material->big_state->user_program != COGL_INVALID_HANDLE)
-    cogl_handle_unref (material->big_state->user_program);
-  material->big_state->user_program = program;
+  if (authority == pipeline &&
+      pipeline->big_state->user_program != COGL_INVALID_HANDLE)
+    cogl_handle_unref (pipeline->big_state->user_program);
+  pipeline->big_state->user_program = program;
 
-  handle_automatic_blend_enable (material, state);
+  handle_automatic_blend_enable (pipeline, state);
 }
 
 void
-cogl_material_set_depth_test_enabled (CoglMaterial *material,
+cogl_pipeline_set_depth_test_enabled (CoglPipeline *pipeline,
                                       gboolean enable)
 {
-  CoglMaterialState state = COGL_MATERIAL_STATE_DEPTH;
-  CoglMaterial *authority;
-  CoglMaterialDepthState *depth_state;
+  CoglPipelineState state = COGL_PIPELINE_STATE_DEPTH;
+  CoglPipeline *authority;
+  CoglPipelineDepthState *depth_state;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   depth_state = &authority->big_state->depth_state;
   if (depth_state->depth_test_enabled == enable)
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  material->big_state->depth_state.depth_test_enabled = enable;
+  pipeline->big_state->depth_state.depth_test_enabled = enable;
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_depth_state_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_depth_state_equal);
 }
 
 gboolean
-cogl_material_get_depth_test_enabled (CoglMaterial *material)
+cogl_pipeline_get_depth_test_enabled (CoglPipeline *pipeline)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_val_if_fail (cogl_is_material (material), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_DEPTH);
 
   return authority->big_state->depth_state.depth_test_enabled;
 }
 
 void
-cogl_material_set_depth_writing_enabled (CoglMaterial *material,
+cogl_pipeline_set_depth_writing_enabled (CoglPipeline *pipeline,
                                          gboolean enable)
 {
-  CoglMaterialState state = COGL_MATERIAL_STATE_DEPTH;
-  CoglMaterial *authority;
-  CoglMaterialDepthState *depth_state;
+  CoglPipelineState state = COGL_PIPELINE_STATE_DEPTH;
+  CoglPipeline *authority;
+  CoglPipelineDepthState *depth_state;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   depth_state = &authority->big_state->depth_state;
   if (depth_state->depth_writing_enabled == enable)
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  material->big_state->depth_state.depth_writing_enabled = enable;
+  pipeline->big_state->depth_state.depth_writing_enabled = enable;
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_depth_state_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_depth_state_equal);
 }
 
 gboolean
-cogl_material_get_depth_writing_enabled (CoglMaterial *material)
+cogl_pipeline_get_depth_writing_enabled (CoglPipeline *pipeline)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_val_if_fail (cogl_is_material (material), TRUE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), TRUE);
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_DEPTH);
 
   return authority->big_state->depth_state.depth_writing_enabled;
 }
 
 void
-cogl_material_set_depth_test_function (CoglMaterial *material,
+cogl_pipeline_set_depth_test_function (CoglPipeline *pipeline,
                                        CoglDepthTestFunction function)
 {
-  CoglMaterialState state = COGL_MATERIAL_STATE_DEPTH;
-  CoglMaterial *authority;
-  CoglMaterialDepthState *depth_state;
+  CoglPipelineState state = COGL_PIPELINE_STATE_DEPTH;
+  CoglPipeline *authority;
+  CoglPipelineDepthState *depth_state;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   depth_state = &authority->big_state->depth_state;
   if (depth_state->depth_test_function == function)
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  material->big_state->depth_state.depth_test_function = function;
+  pipeline->big_state->depth_state.depth_test_function = function;
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_depth_state_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_depth_state_equal);
 }
 
 CoglDepthTestFunction
-cogl_material_get_depth_test_function (CoglMaterial *material)
+cogl_pipeline_get_depth_test_function (CoglPipeline *pipeline)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_val_if_fail (cogl_is_material (material),
+  g_return_val_if_fail (cogl_is_pipeline (pipeline),
                         COGL_DEPTH_TEST_FUNCTION_LESS);
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_DEPTH);
 
   return authority->big_state->depth_state.depth_test_function;
 }
 
 
 gboolean
-cogl_material_set_depth_range (CoglMaterial *material,
+cogl_pipeline_set_depth_range (CoglPipeline *pipeline,
                                float near_val,
                                float far_val,
                                GError **error)
 {
 #ifndef COGL_HAS_GLES
-  CoglMaterialState state = COGL_MATERIAL_STATE_DEPTH;
-  CoglMaterial *authority;
-  CoglMaterialDepthState *depth_state;
+  CoglPipelineState state = COGL_PIPELINE_STATE_DEPTH;
+  CoglPipeline *authority;
+  CoglPipelineDepthState *depth_state;
 
-  g_return_val_if_fail (cogl_is_material (material), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   depth_state = &authority->big_state->depth_state;
   if (depth_state->depth_range_near == near_val &&
@@ -4454,17 +4444,17 @@ cogl_material_set_depth_range (CoglMaterial *material,
     return TRUE;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  material->big_state->depth_state.depth_range_near = near_val;
-  material->big_state->depth_state.depth_range_far = far_val;
+  pipeline->big_state->depth_state.depth_range_near = near_val;
+  pipeline->big_state->depth_state.depth_range_far = far_val;
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_depth_state_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_depth_state_equal);
   return TRUE;
 #else
   g_set_error (error,
@@ -4476,32 +4466,32 @@ cogl_material_set_depth_range (CoglMaterial *material,
 }
 
 void
-cogl_material_get_depth_range (CoglMaterial *material,
+cogl_pipeline_get_depth_range (CoglPipeline *pipeline,
                                float *near_val,
                                float *far_val)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_DEPTH);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_DEPTH);
 
   *near_val = authority->big_state->depth_state.depth_range_near;
   *far_val = authority->big_state->depth_state.depth_range_far;
 }
 
 static void
-_cogl_material_set_fog_state (CoglMaterial *material,
-                              const CoglMaterialFogState *fog_state)
+_cogl_pipeline_set_fog_state (CoglPipeline *pipeline,
+                              const CoglPipelineFogState *fog_state)
 {
-  CoglMaterialState state = COGL_MATERIAL_STATE_FOG;
-  CoglMaterial *authority;
-  CoglMaterialFogState *current_fog_state;
+  CoglPipelineState state = COGL_PIPELINE_STATE_FOG;
+  CoglPipeline *authority;
+  CoglPipelineFogState *current_fog_state;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   current_fog_state = &authority->big_state->fog_state;
 
@@ -4514,76 +4504,76 @@ _cogl_material_set_fog_state (CoglMaterial *material,
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  material->big_state->fog_state = *fog_state;
+  pipeline->big_state->fog_state = *fog_state;
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_fog_state_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_fog_state_equal);
 }
 
 unsigned long
-_cogl_material_get_age (CoglMaterial *material)
+_cogl_pipeline_get_age (CoglPipeline *pipeline)
 {
-  g_return_val_if_fail (cogl_is_material (material), 0);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), 0);
 
-  return material->age;
+  return pipeline->age;
 }
 
-static CoglMaterialLayer *
-_cogl_material_layer_copy (CoglMaterialLayer *src)
+static CoglPipelineLayer *
+_cogl_pipeline_layer_copy (CoglPipelineLayer *src)
 {
-  CoglMaterialLayer *layer = g_slice_new (CoglMaterialLayer);
+  CoglPipelineLayer *layer = g_slice_new (CoglPipelineLayer);
   int i;
 
-  _cogl_material_node_init (COGL_MATERIAL_NODE (layer));
+  _cogl_pipeline_node_init (COGL_PIPELINE_NODE (layer));
 
   layer->owner = NULL;
   layer->index = src->index;
   layer->differences = 0;
   layer->has_big_state = FALSE;
 
-  for (i = 0; i < COGL_MATERIAL_N_BACKENDS; i++)
+  for (i = 0; i < COGL_PIPELINE_N_BACKENDS; i++)
     layer->backend_priv[i] = NULL;
 
-  _cogl_material_layer_set_parent (layer, src);
+  _cogl_pipeline_layer_set_parent (layer, src);
 
-  return _cogl_material_layer_object_new (layer);
+  return _cogl_pipeline_layer_object_new (layer);
 }
 
 static void
-_cogl_material_layer_free (CoglMaterialLayer *layer)
+_cogl_pipeline_layer_free (CoglPipelineLayer *layer)
 {
   int i;
 
-  _cogl_material_layer_unparent (COGL_MATERIAL_NODE (layer));
+  _cogl_pipeline_layer_unparent (COGL_PIPELINE_NODE (layer));
 
-  /* NB: layers may be used by multiple materials which may be using
+  /* NB: layers may be used by multiple pipelines which may be using
    * different backends, therefore we determine which backends to
    * notify based on the private state pointers for each backend...
    */
-  for (i = 0; i < COGL_MATERIAL_N_BACKENDS; i++)
+  for (i = 0; i < COGL_PIPELINE_N_BACKENDS; i++)
     {
       if (layer->backend_priv[i] &&
-          _cogl_material_backends[i]->free_layer_priv)
+          _cogl_pipeline_backends[i]->free_layer_priv)
         {
-          const CoglMaterialBackend *backend = _cogl_material_backends[i];
+          const CoglPipelineBackend *backend = _cogl_pipeline_backends[i];
           backend->free_layer_priv (layer);
         }
     }
 
-  if (layer->differences & COGL_MATERIAL_LAYER_STATE_TEXTURE &&
+  if (layer->differences & COGL_PIPELINE_LAYER_STATE_TEXTURE &&
       layer->texture != COGL_INVALID_HANDLE)
     cogl_handle_unref (layer->texture);
 
-  if (layer->differences & COGL_MATERIAL_LAYER_STATE_NEEDS_BIG_STATE)
-    g_slice_free (CoglMaterialLayerBigState, layer->big_state);
+  if (layer->differences & COGL_PIPELINE_LAYER_STATE_NEEDS_BIG_STATE)
+    g_slice_free (CoglPipelineLayerBigState, layer->big_state);
 
-  g_slice_free (CoglMaterialLayer, layer);
+  g_slice_free (CoglPipelineLayer, layer);
 }
 
   /* If a layer has descendants we can't modify it freely
@@ -4615,36 +4605,36 @@ _cogl_material_layer_free (CoglMaterialLayer *layer)
    */
 
 void
-_cogl_material_init_default_layers (void)
+_cogl_pipeline_init_default_layers (void)
 {
-  CoglMaterialLayer *layer = g_slice_new0 (CoglMaterialLayer);
-  CoglMaterialLayerBigState *big_state =
-    g_slice_new0 (CoglMaterialLayerBigState);
-  CoglMaterialLayer *new;
+  CoglPipelineLayer *layer = g_slice_new0 (CoglPipelineLayer);
+  CoglPipelineLayerBigState *big_state =
+    g_slice_new0 (CoglPipelineLayerBigState);
+  CoglPipelineLayer *new;
   int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  _cogl_material_node_init (COGL_MATERIAL_NODE (layer));
+  _cogl_pipeline_node_init (COGL_PIPELINE_NODE (layer));
 
   layer->index = 0;
 
-  for (i = 0; i < COGL_MATERIAL_N_BACKENDS; i++)
+  for (i = 0; i < COGL_PIPELINE_N_BACKENDS; i++)
     layer->backend_priv[i] = NULL;
 
-  layer->differences = COGL_MATERIAL_LAYER_STATE_ALL_SPARSE;
+  layer->differences = COGL_PIPELINE_LAYER_STATE_ALL_SPARSE;
 
   layer->unit_index = 0;
 
   layer->texture = COGL_INVALID_HANDLE;
   layer->texture_overridden = FALSE;
 
-  layer->mag_filter = COGL_MATERIAL_FILTER_LINEAR;
-  layer->min_filter = COGL_MATERIAL_FILTER_LINEAR;
+  layer->mag_filter = COGL_PIPELINE_FILTER_LINEAR;
+  layer->min_filter = COGL_PIPELINE_FILTER_LINEAR;
 
-  layer->wrap_mode_s = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
-  layer->wrap_mode_t = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
-  layer->wrap_mode_p = COGL_MATERIAL_WRAP_MODE_AUTOMATIC;
+  layer->wrap_mode_s = COGL_PIPELINE_WRAP_MODE_AUTOMATIC;
+  layer->wrap_mode_t = COGL_PIPELINE_WRAP_MODE_AUTOMATIC;
+  layer->wrap_mode_p = COGL_PIPELINE_WRAP_MODE_AUTOMATIC;
 
   layer->big_state = big_state;
   layer->has_big_state = TRUE;
@@ -4666,7 +4656,7 @@ _cogl_material_init_default_layers (void)
 
   cogl_matrix_init_identity (&big_state->matrix);
 
-  ctx->default_layer_0 = _cogl_material_layer_object_new (layer);
+  ctx->default_layer_0 = _cogl_pipeline_layer_object_new (layer);
 
   /* TODO: we should make default_layer_n comprise of two
    * descendants of default_layer_0:
@@ -4686,8 +4676,8 @@ _cogl_material_init_default_layers (void)
    * optimizations for flattening the ancestry when we make
    * the second descendant which reverts the state.
    */
-  ctx->default_layer_n = _cogl_material_layer_copy (layer);
-  new = _cogl_material_set_layer_unit (NULL, ctx->default_layer_n, 1);
+  ctx->default_layer_n = _cogl_pipeline_layer_copy (layer);
+  new = _cogl_pipeline_set_layer_unit (NULL, ctx->default_layer_n, 1);
   g_assert (new == ctx->default_layer_n);
   /* Since we passed a newly allocated layer we don't expect that
    * _set_layer_unit() will have to allocate *another* layer. */
@@ -4697,7 +4687,7 @@ _cogl_material_init_default_layers (void)
    * remain immutable.
    */
   ctx->dummy_layer_dependant =
-    _cogl_material_layer_copy (ctx->default_layer_n);
+    _cogl_pipeline_layer_copy (ctx->default_layer_n);
 }
 
 static void
@@ -4781,14 +4771,14 @@ setup_texture_combine_state (CoglBlendStringStatement *statement,
 }
 
 gboolean
-cogl_material_set_layer_combine (CoglMaterial *material,
+cogl_pipeline_set_layer_combine (CoglPipeline *pipeline,
 				 int layer_index,
 				 const char *combine_description,
                                  GError **error)
 {
-  CoglMaterialLayerState state = COGL_MATERIAL_LAYER_STATE_COMBINE;
-  CoglMaterialLayer *authority;
-  CoglMaterialLayer *layer;
+  CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_COMBINE;
+  CoglPipelineLayer *authority;
+  CoglPipelineLayer *layer;
   CoglBlendStringStatement statements[2];
   CoglBlendStringStatement split[2];
   CoglBlendStringStatement *rgb;
@@ -4796,19 +4786,19 @@ cogl_material_set_layer_combine (CoglMaterial *material,
   GError *internal_error = NULL;
   int count;
 
-  g_return_val_if_fail (cogl_is_material (material), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, state);
+  authority = _cogl_pipeline_layer_get_authority (layer, state);
 
   count =
     _cogl_blend_string_compile (combine_description,
@@ -4844,7 +4834,7 @@ cogl_material_set_layer_combine (CoglMaterial *material,
   /* FIXME: compare the new state with the current state! */
 
   /* possibly flush primitives referencing the current state... */
-  layer = _cogl_material_layer_pre_change_notify (material, layer, state);
+  layer = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, state);
 
   setup_texture_combine_state (rgb,
                                &layer->big_state->texture_combine_rgb_func,
@@ -4860,20 +4850,20 @@ cogl_material_set_layer_combine (CoglMaterial *material,
    * the state we are changing see if we can revert to one of our
    * ancestors being the authority. */
   if (layer == authority &&
-      _cogl_material_layer_get_parent (authority) != NULL)
+      _cogl_pipeline_layer_get_parent (authority) != NULL)
     {
-      CoglMaterialLayer *parent = _cogl_material_layer_get_parent (authority);
-      CoglMaterialLayer *old_authority =
-        _cogl_material_layer_get_authority (parent, state);
+      CoglPipelineLayer *parent = _cogl_pipeline_layer_get_parent (authority);
+      CoglPipelineLayer *old_authority =
+        _cogl_pipeline_layer_get_authority (parent, state);
 
-      if (_cogl_material_layer_combine_state_equal (authority,
+      if (_cogl_pipeline_layer_combine_state_equal (authority,
                                                     old_authority))
         {
           layer->differences &= ~state;
 
-          g_assert (layer->owner == material);
+          g_assert (layer->owner == pipeline);
           if (layer->differences == 0)
-            _cogl_material_prune_empty_layer_difference (material,
+            _cogl_pipeline_prune_empty_layer_difference (pipeline,
                                                          layer);
           goto changed;
         }
@@ -4886,44 +4876,44 @@ cogl_material_set_layer_combine (CoglMaterial *material,
   if (layer != authority)
     {
       layer->differences |= state;
-      _cogl_material_layer_prune_redundant_ancestry (layer);
+      _cogl_pipeline_layer_prune_redundant_ancestry (layer);
     }
 
 changed:
 
-  handle_automatic_blend_enable (material, COGL_MATERIAL_STATE_LAYERS);
+  handle_automatic_blend_enable (pipeline, COGL_PIPELINE_STATE_LAYERS);
   return TRUE;
 }
 
 void
-cogl_material_set_layer_combine_constant (CoglMaterial *material,
+cogl_pipeline_set_layer_combine_constant (CoglPipeline *pipeline,
 				          int layer_index,
                                           const CoglColor *constant_color)
 {
-  CoglMaterialLayerState state = COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT;
-  CoglMaterialLayer     *layer;
-  CoglMaterialLayer     *authority;
-  CoglMaterialLayer     *new;
+  CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT;
+  CoglPipelineLayer     *layer;
+  CoglPipelineLayer     *authority;
+  CoglPipelineLayer     *new;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, state);
+  authority = _cogl_pipeline_layer_get_authority (layer, state);
 
   if (memcmp (authority->big_state->texture_combine_constant,
               constant_color, sizeof (float) * 4) == 0)
     return;
 
-  new = _cogl_material_layer_pre_change_notify (material, layer, state);
+  new = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, state);
   if (new != layer)
     layer = new;
   else
@@ -4932,22 +4922,22 @@ cogl_material_set_layer_combine_constant (CoglMaterial *material,
        * the state we are changing see if we can revert to one of our
        * ancestors being the authority. */
       if (layer == authority &&
-          _cogl_material_layer_get_parent (authority) != NULL)
+          _cogl_pipeline_layer_get_parent (authority) != NULL)
         {
-          CoglMaterialLayer *parent =
-            _cogl_material_layer_get_parent (authority);
-          CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (parent, state);
-          CoglMaterialLayerBigState *old_big_state = old_authority->big_state;
+          CoglPipelineLayer *parent =
+            _cogl_pipeline_layer_get_parent (authority);
+          CoglPipelineLayer *old_authority =
+            _cogl_pipeline_layer_get_authority (parent, state);
+          CoglPipelineLayerBigState *old_big_state = old_authority->big_state;
 
           if (memcmp (old_big_state->texture_combine_constant,
                       constant_color, sizeof (float) * 4) == 0)
             {
               layer->differences &= ~state;
 
-              g_assert (layer->owner == material);
+              g_assert (layer->owner == pipeline);
               if (layer->differences == 0)
-                _cogl_material_prune_empty_layer_difference (material,
+                _cogl_pipeline_prune_empty_layer_difference (pipeline,
                                                              layer);
               goto changed;
             }
@@ -4970,68 +4960,68 @@ cogl_material_set_layer_combine_constant (CoglMaterial *material,
   if (layer != authority)
     {
       layer->differences |= state;
-      _cogl_material_layer_prune_redundant_ancestry (layer);
+      _cogl_pipeline_layer_prune_redundant_ancestry (layer);
     }
 
 changed:
 
-  handle_automatic_blend_enable (material, COGL_MATERIAL_STATE_LAYERS);
+  handle_automatic_blend_enable (pipeline, COGL_PIPELINE_STATE_LAYERS);
 }
 
 void
-_cogl_material_get_layer_combine_constant (CoglMaterial *material,
+_cogl_pipeline_get_layer_combine_constant (CoglPipeline *pipeline,
                                            int layer_index,
                                            float *constant)
 {
-  CoglMaterialLayerState       change =
-    COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT;
-  CoglMaterialLayer *layer;
-  CoglMaterialLayer *authority;
+  CoglPipelineLayerState       change =
+    COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT;
+  CoglPipelineLayer *layer;
+  CoglPipelineLayer *authority;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
   /* FIXME: we shouldn't ever construct a layer in a getter function */
 
-  authority = _cogl_material_layer_get_authority (layer, change);
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
   memcpy (constant, authority->big_state->texture_combine_constant,
           sizeof (float) * 4);
 }
 
 void
-cogl_material_set_layer_matrix (CoglMaterial *material,
+cogl_pipeline_set_layer_matrix (CoglPipeline *pipeline,
 				int layer_index,
                                 const CoglMatrix *matrix)
 {
-  CoglMaterialLayerState state = COGL_MATERIAL_LAYER_STATE_USER_MATRIX;
-  CoglMaterialLayer     *layer;
-  CoglMaterialLayer     *authority;
-  CoglMaterialLayer     *new;
+  CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_USER_MATRIX;
+  CoglPipelineLayer     *layer;
+  CoglPipelineLayer     *authority;
+  CoglPipelineLayer     *new;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, state);
+  authority = _cogl_pipeline_layer_get_authority (layer, state);
 
   if (cogl_matrix_equal (matrix, &authority->big_state->matrix))
     return;
 
-  new = _cogl_material_layer_pre_change_notify (material, layer, state);
+  new = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, state);
   if (new != layer)
     layer = new;
   else
@@ -5040,20 +5030,20 @@ cogl_material_set_layer_matrix (CoglMaterial *material,
        * the state we are changing see if we can revert to one of our
        * ancestors being the authority. */
       if (layer == authority &&
-          _cogl_material_layer_get_parent (authority) != NULL)
+          _cogl_pipeline_layer_get_parent (authority) != NULL)
         {
-          CoglMaterialLayer *parent =
-            _cogl_material_layer_get_parent (authority);
-          CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (parent, state);
+          CoglPipelineLayer *parent =
+            _cogl_pipeline_layer_get_parent (authority);
+          CoglPipelineLayer *old_authority =
+            _cogl_pipeline_layer_get_authority (parent, state);
 
           if (cogl_matrix_equal (matrix, &old_authority->big_state->matrix))
             {
               layer->differences &= ~state;
 
-              g_assert (layer->owner == material);
+              g_assert (layer->owner == pipeline);
               if (layer->differences == 0)
-                _cogl_material_prune_empty_layer_difference (material,
+                _cogl_pipeline_prune_empty_layer_difference (pipeline,
                                                              layer);
               return;
             }
@@ -5069,21 +5059,21 @@ cogl_material_set_layer_matrix (CoglMaterial *material,
   if (layer != authority)
     {
       layer->differences |= state;
-      _cogl_material_layer_prune_redundant_ancestry (layer);
+      _cogl_pipeline_layer_prune_redundant_ancestry (layer);
     }
 }
 
 void
-cogl_material_remove_layer (CoglMaterial *material, int layer_index)
+cogl_pipeline_remove_layer (CoglPipeline *pipeline, int layer_index)
 {
-  CoglMaterial         *authority;
-  CoglMaterialLayerInfo layer_info;
+  CoglPipeline         *authority;
+  CoglPipelineLayerInfo layer_info;
   int                   i;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LAYERS);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LAYERS);
 
   /* The layer index of the layer we want info about */
   layer_info.layer_index = layer_index;
@@ -5096,37 +5086,37 @@ cogl_material_remove_layer (CoglMaterial *material, int layer_index)
    * dropped down to a lower texture unit to fill the gap of the
    * removed layer. */
   layer_info.layers_to_shift =
-    g_alloca (sizeof (CoglMaterialLayer *) * authority->n_layers);
+    g_alloca (sizeof (CoglPipelineLayer *) * authority->n_layers);
   layer_info.n_layers_to_shift = 0;
 
   /* Unlike when we query layer info when adding a layer we must
    * always have a complete layers_to_shift list... */
   layer_info.ignore_shift_layers_if_found = FALSE;
 
-  _cogl_material_get_layer_info (authority, &layer_info);
+  _cogl_pipeline_get_layer_info (authority, &layer_info);
 
   if (layer_info.layer == NULL)
     return;
 
   for (i = 0; i < layer_info.n_layers_to_shift; i++)
     {
-      CoglMaterialLayer *shift_layer = layer_info.layers_to_shift[i];
-      int unit_index = _cogl_material_layer_get_unit_index (shift_layer);
-      _cogl_material_set_layer_unit (material, shift_layer, unit_index - 1);
+      CoglPipelineLayer *shift_layer = layer_info.layers_to_shift[i];
+      int unit_index = _cogl_pipeline_layer_get_unit_index (shift_layer);
+      _cogl_pipeline_set_layer_unit (pipeline, shift_layer, unit_index - 1);
       /* NB: shift_layer may not be writeable so _set_layer_unit()
        * will allocate a derived layer internally which will become
-       * owned by material. Check the return value if we need to do
+       * owned by pipeline. Check the return value if we need to do
        * anything else with this layer. */
     }
 
-  _cogl_material_remove_layer_difference (material, layer_info.layer, TRUE);
-  _cogl_material_try_reverting_layers_authority (material, NULL);
+  _cogl_pipeline_remove_layer_difference (pipeline, layer_info.layer, TRUE);
+  _cogl_pipeline_try_reverting_layers_authority (pipeline, NULL);
 
-  handle_automatic_blend_enable (material, COGL_MATERIAL_STATE_LAYERS);
+  handle_automatic_blend_enable (pipeline, COGL_PIPELINE_STATE_LAYERS);
 }
 
 static gboolean
-prepend_layer_to_list_cb (CoglMaterialLayer *layer,
+prepend_layer_to_list_cb (CoglPipelineLayer *layer,
                           void *user_data)
 {
   GList **layers = user_data;
@@ -5136,157 +5126,149 @@ prepend_layer_to_list_cb (CoglMaterialLayer *layer,
 }
 
 /* TODO: deprecate this API and replace it with
- * cogl_material_foreach_layer
+ * cogl_pipeline_foreach_layer
  * TODO: update the docs to note that if the user modifies any layers
  * then the list may become invalid.
  */
 const GList *
-cogl_material_get_layers (CoglMaterial *material)
+_cogl_pipeline_get_layers (CoglPipeline *pipeline)
 {
-  g_return_val_if_fail (cogl_is_material (material), NULL);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), NULL);
 
-  if (!material->deprecated_get_layers_list_dirty)
-    g_list_free (material->deprecated_get_layers_list);
+  if (!pipeline->deprecated_get_layers_list_dirty)
+    g_list_free (pipeline->deprecated_get_layers_list);
 
-  material->deprecated_get_layers_list = NULL;
+  pipeline->deprecated_get_layers_list = NULL;
 
-  _cogl_material_foreach_layer_internal (material,
+  _cogl_pipeline_foreach_layer_internal (pipeline,
                                          prepend_layer_to_list_cb,
-                                         &material->deprecated_get_layers_list);
-  material->deprecated_get_layers_list =
-    g_list_reverse (material->deprecated_get_layers_list);
+                                         &pipeline->deprecated_get_layers_list);
+  pipeline->deprecated_get_layers_list =
+    g_list_reverse (pipeline->deprecated_get_layers_list);
 
-  material->deprecated_get_layers_list_dirty = 0;
+  pipeline->deprecated_get_layers_list_dirty = 0;
 
-  return material->deprecated_get_layers_list;
+  return pipeline->deprecated_get_layers_list;
 }
 
 int
-cogl_material_get_n_layers (CoglMaterial *material)
+cogl_pipeline_get_n_layers (CoglPipeline *pipeline)
 {
-  CoglMaterial *authority;
+  CoglPipeline *authority;
 
-  g_return_val_if_fail (cogl_is_material (material), 0);
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), 0);
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_LAYERS);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LAYERS);
 
   return authority->n_layers;
 }
 
 /* FIXME: deprecate and replace with
- * cogl_material_get_layer_type() instead. */
-CoglMaterialLayerType
-cogl_material_layer_get_type (CoglMaterialLayer *layer)
-{
-  return COGL_MATERIAL_LAYER_TYPE_TEXTURE;
-}
-
-/* FIXME: deprecate and replace with
- * cogl_material_get_layer_texture() instead. */
+ * cogl_pipeline_get_layer_texture() instead. */
 CoglHandle
-cogl_material_layer_get_texture (CoglMaterialLayer *layer)
+_cogl_pipeline_layer_get_texture (CoglPipelineLayer *layer)
 {
-  g_return_val_if_fail (_cogl_is_material_layer (layer),
+  g_return_val_if_fail (_cogl_is_pipeline_layer (layer),
 			COGL_INVALID_HANDLE);
 
-  return _cogl_material_layer_get_texture (layer);
+  return _cogl_pipeline_layer_get_texture_real (layer);
 }
 
 gboolean
-_cogl_material_layer_has_user_matrix (CoglMaterialLayer *layer)
+_cogl_pipeline_layer_has_user_matrix (CoglPipelineLayer *layer)
 {
-  CoglMaterialLayer *authority;
+  CoglPipelineLayer *authority;
 
-  g_return_val_if_fail (_cogl_is_material_layer (layer), FALSE);
+  g_return_val_if_fail (_cogl_is_pipeline_layer (layer), FALSE);
 
   authority =
-    _cogl_material_layer_get_authority (layer,
-                                        COGL_MATERIAL_LAYER_STATE_USER_MATRIX);
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_USER_MATRIX);
 
-  /* If the authority is the default material then no, otherwise yes */
-  return _cogl_material_layer_get_parent (authority) ? TRUE : FALSE;
+  /* If the authority is the default pipeline then no, otherwise yes */
+  return _cogl_pipeline_layer_get_parent (authority) ? TRUE : FALSE;
 }
 
 void
-_cogl_material_layer_get_filters (CoglMaterialLayer *layer,
-                                  CoglMaterialFilter *min_filter,
-                                  CoglMaterialFilter *mag_filter)
+_cogl_pipeline_layer_get_filters (CoglPipelineLayer *layer,
+                                  CoglPipelineFilter *min_filter,
+                                  CoglPipelineFilter *mag_filter)
 {
-  CoglMaterialLayer *authority =
-    _cogl_material_layer_get_authority (layer,
-                                        COGL_MATERIAL_LAYER_STATE_FILTERS);
+  CoglPipelineLayer *authority =
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_FILTERS);
 
   *min_filter = authority->min_filter;
   *mag_filter = authority->mag_filter;
 }
 
 void
-_cogl_material_get_layer_filters (CoglMaterial *material,
+_cogl_pipeline_get_layer_filters (CoglPipeline *pipeline,
                                   int layer_index,
-                                  CoglMaterialFilter *min_filter,
-                                  CoglMaterialFilter *mag_filter)
+                                  CoglPipelineFilter *min_filter,
+                                  CoglPipelineFilter *mag_filter)
 {
-  CoglMaterialLayer *layer;
-  CoglMaterialLayer *authority;
+  CoglPipelineLayer *layer;
+  CoglPipelineLayer *authority;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
-  layer = _cogl_material_get_layer (material, layer_index);
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
   authority =
-    _cogl_material_layer_get_authority (layer,
-                                        COGL_MATERIAL_LAYER_STATE_FILTERS);
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_FILTERS);
 
   *min_filter = authority->min_filter;
   *mag_filter = authority->mag_filter;
 }
 
-CoglMaterialFilter
-_cogl_material_get_layer_min_filter (CoglMaterial *material,
+CoglPipelineFilter
+_cogl_pipeline_get_layer_min_filter (CoglPipeline *pipeline,
                                      int layer_index)
 {
-  CoglMaterialFilter min_filter;
-  CoglMaterialFilter mag_filter;
+  CoglPipelineFilter min_filter;
+  CoglPipelineFilter mag_filter;
 
-  _cogl_material_get_layer_filters (material, layer_index,
+  _cogl_pipeline_get_layer_filters (pipeline, layer_index,
                                     &min_filter, &mag_filter);
   return min_filter;
 }
 
-CoglMaterialFilter
-_cogl_material_get_layer_mag_filter (CoglMaterial *material,
+CoglPipelineFilter
+_cogl_pipeline_get_layer_mag_filter (CoglPipeline *pipeline,
                                      int layer_index)
 {
-  CoglMaterialFilter min_filter;
-  CoglMaterialFilter mag_filter;
+  CoglPipelineFilter min_filter;
+  CoglPipelineFilter mag_filter;
 
-  _cogl_material_get_layer_filters (material, layer_index,
+  _cogl_pipeline_get_layer_filters (pipeline, layer_index,
                                     &min_filter, &mag_filter);
   return mag_filter;
 }
 
 void
-_cogl_material_layer_pre_paint (CoglMaterialLayer *layer)
+_cogl_pipeline_layer_pre_paint (CoglPipelineLayer *layer)
 {
-  CoglMaterialLayer *texture_authority;
+  CoglPipelineLayer *texture_authority;
 
   texture_authority =
-    _cogl_material_layer_get_authority (layer,
-                                        COGL_MATERIAL_LAYER_STATE_TEXTURE);
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_TEXTURE);
 
   if (texture_authority->texture != COGL_INVALID_HANDLE)
     {
       CoglTexturePrePaintFlags flags = 0;
-      CoglMaterialFilter min_filter;
-      CoglMaterialFilter mag_filter;
+      CoglPipelineFilter min_filter;
+      CoglPipelineFilter mag_filter;
 
-      _cogl_material_layer_get_filters (layer, &min_filter, &mag_filter);
+      _cogl_pipeline_layer_get_filters (layer, &min_filter, &mag_filter);
 
-      if (min_filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST
-          || min_filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST
-          || min_filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR
-          || min_filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR)
+      if (min_filter == COGL_PIPELINE_FILTER_NEAREST_MIPMAP_NEAREST
+          || min_filter == COGL_PIPELINE_FILTER_LINEAR_MIPMAP_NEAREST
+          || min_filter == COGL_PIPELINE_FILTER_NEAREST_MIPMAP_LINEAR
+          || min_filter == COGL_PIPELINE_FILTER_LINEAR_MIPMAP_LINEAR)
         flags |= COGL_TEXTURE_NEEDS_MIPMAP;
 
       _cogl_texture_pre_paint (texture_authority->texture, flags);
@@ -5294,71 +5276,71 @@ _cogl_material_layer_pre_paint (CoglMaterialLayer *layer)
 }
 
 void
-_cogl_material_pre_paint_for_layer (CoglMaterial *material,
+_cogl_pipeline_pre_paint_for_layer (CoglPipeline *pipeline,
                                     int layer_id)
 {
-  CoglMaterialLayer *layer = _cogl_material_get_layer (material, layer_id);
-  _cogl_material_layer_pre_paint (layer);
+  CoglPipelineLayer *layer = _cogl_pipeline_get_layer (pipeline, layer_id);
+  _cogl_pipeline_layer_pre_paint (layer);
 }
 
-CoglMaterialFilter
-cogl_material_layer_get_min_filter (CoglMaterialLayer *layer)
+CoglPipelineFilter
+_cogl_pipeline_layer_get_min_filter (CoglPipelineLayer *layer)
 {
-  CoglMaterialLayer *authority;
+  CoglPipelineLayer *authority;
 
-  g_return_val_if_fail (_cogl_is_material_layer (layer), 0);
+  g_return_val_if_fail (_cogl_is_pipeline_layer (layer), 0);
 
   authority =
-    _cogl_material_layer_get_authority (layer,
-                                        COGL_MATERIAL_LAYER_STATE_FILTERS);
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_FILTERS);
 
   return authority->min_filter;
 }
 
-CoglMaterialFilter
-cogl_material_layer_get_mag_filter (CoglMaterialLayer *layer)
+CoglPipelineFilter
+_cogl_pipeline_layer_get_mag_filter (CoglPipelineLayer *layer)
 {
-  CoglMaterialLayer *authority;
+  CoglPipelineLayer *authority;
 
-  g_return_val_if_fail (_cogl_is_material_layer (layer), 0);
+  g_return_val_if_fail (_cogl_is_pipeline_layer (layer), 0);
 
   authority =
-    _cogl_material_layer_get_authority (layer,
-                                        COGL_MATERIAL_LAYER_STATE_FILTERS);
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_FILTERS);
 
   return authority->mag_filter;
 }
 
 void
-cogl_material_set_layer_filters (CoglMaterial      *material,
+cogl_pipeline_set_layer_filters (CoglPipeline      *pipeline,
                                  int                layer_index,
-                                 CoglMaterialFilter min_filter,
-                                 CoglMaterialFilter mag_filter)
+                                 CoglPipelineFilter min_filter,
+                                 CoglPipelineFilter mag_filter)
 {
-  CoglMaterialLayerState state = COGL_MATERIAL_LAYER_STATE_FILTERS;
-  CoglMaterialLayer     *layer;
-  CoglMaterialLayer     *authority;
-  CoglMaterialLayer     *new;
+  CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_FILTERS;
+  CoglPipelineLayer     *layer;
+  CoglPipelineLayer     *authority;
+  CoglPipelineLayer     *new;
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *
    * Note: If the layer already existed it's possibly owned by another
-   * material. If the layer is created then it will be owned by
-   * material. */
-  layer = _cogl_material_get_layer (material, layer_index);
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
   /* Now find the ancestor of the layer that is the authority for the
    * state we want to change */
-  authority = _cogl_material_layer_get_authority (layer, state);
+  authority = _cogl_pipeline_layer_get_authority (layer, state);
 
   if (authority->min_filter == min_filter &&
       authority->mag_filter == mag_filter)
     return;
 
-  new = _cogl_material_layer_pre_change_notify (material, layer, state);
+  new = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, state);
   if (new != layer)
     layer = new;
   else
@@ -5367,21 +5349,21 @@ cogl_material_set_layer_filters (CoglMaterial      *material,
        * the state we are changing see if we can revert to one of our
        * ancestors being the authority. */
       if (layer == authority &&
-          _cogl_material_layer_get_parent (authority) != NULL)
+          _cogl_pipeline_layer_get_parent (authority) != NULL)
         {
-          CoglMaterialLayer *parent =
-            _cogl_material_layer_get_parent (authority);
-          CoglMaterialLayer *old_authority =
-            _cogl_material_layer_get_authority (parent, state);
+          CoglPipelineLayer *parent =
+            _cogl_pipeline_layer_get_parent (authority);
+          CoglPipelineLayer *old_authority =
+            _cogl_pipeline_layer_get_authority (parent, state);
 
           if (old_authority->min_filter == min_filter &&
               old_authority->mag_filter == mag_filter)
             {
               layer->differences &= ~state;
 
-              g_assert (layer->owner == material);
+              g_assert (layer->owner == pipeline);
               if (layer->differences == 0)
-                _cogl_material_prune_empty_layer_difference (material,
+                _cogl_pipeline_prune_empty_layer_difference (pipeline,
                                                              layer);
               return;
             }
@@ -5398,71 +5380,71 @@ cogl_material_set_layer_filters (CoglMaterial      *material,
   if (layer != authority)
     {
       layer->differences |= state;
-      _cogl_material_layer_prune_redundant_ancestry (layer);
+      _cogl_pipeline_layer_prune_redundant_ancestry (layer);
     }
 }
 
 float
-cogl_material_get_point_size (CoglHandle  handle)
+cogl_pipeline_get_point_size (CoglHandle  handle)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
-  CoglMaterial *authority;
+  CoglPipeline *pipeline = COGL_PIPELINE (handle);
+  CoglPipeline *authority;
 
-  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+  g_return_val_if_fail (cogl_is_pipeline (handle), FALSE);
 
   authority =
-    _cogl_material_get_authority (material, COGL_MATERIAL_STATE_POINT_SIZE);
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_POINT_SIZE);
 
   return authority->big_state->point_size;
 }
 
 void
-cogl_material_set_point_size (CoglHandle handle,
+cogl_pipeline_set_point_size (CoglHandle handle,
                               float      point_size)
 {
-  CoglMaterial *material = COGL_MATERIAL (handle);
-  CoglMaterialState state = COGL_MATERIAL_STATE_POINT_SIZE;
-  CoglMaterial *authority;
+  CoglPipeline *pipeline = COGL_PIPELINE (handle);
+  CoglPipelineState state = COGL_PIPELINE_STATE_POINT_SIZE;
+  CoglPipeline *authority;
 
-  g_return_if_fail (cogl_is_material (handle));
+  g_return_if_fail (cogl_is_pipeline (handle));
 
-  authority = _cogl_material_get_authority (material, state);
+  authority = _cogl_pipeline_get_authority (pipeline, state);
 
   if (authority->big_state->point_size == point_size)
     return;
 
   /* - Flush journal primitives referencing the current state.
-   * - Make sure the material has no dependants so it may be modified.
-   * - If the material isn't currently an authority for the state being
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
    *   changed, then initialize that state from the current authority.
    */
-  _cogl_material_pre_change_notify (material, state, NULL, FALSE);
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
-  material->big_state->point_size = point_size;
+  pipeline->big_state->point_size = point_size;
 
-  _cogl_material_update_authority (material, authority, state,
-                                   _cogl_material_point_size_equal);
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_point_size_equal);
 }
 
-/* While a material is referenced by the Cogl journal we can not allow
+/* While a pipeline is referenced by the Cogl journal we can not allow
  * modifications, so this gives us a mechanism to track journal
  * references separately */
-CoglMaterial *
-_cogl_material_journal_ref (CoglMaterial *material)
+CoglPipeline *
+_cogl_pipeline_journal_ref (CoglPipeline *pipeline)
 {
-  material->journal_ref_count++;
-  return cogl_object_ref (material);
+  pipeline->journal_ref_count++;
+  return cogl_object_ref (pipeline);
 }
 
 void
-_cogl_material_journal_unref (CoglMaterial *material)
+_cogl_pipeline_journal_unref (CoglPipeline *pipeline)
 {
-  material->journal_ref_count--;
-  cogl_object_unref (material);
+  pipeline->journal_ref_count--;
+  cogl_object_unref (pipeline);
 }
 
 void
-_cogl_material_apply_legacy_state (CoglMaterial *material)
+_cogl_pipeline_apply_legacy_state (CoglPipeline *pipeline)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -5470,28 +5452,28 @@ _cogl_material_apply_legacy_state (CoglMaterial *material)
    * associating these things directly with the context when we
    * originally wrote Cogl. Until the corresponding deprecated APIs
    * can be removed though we now shoehorn the state changes through
-   * the cogl_material API instead.
+   * the cogl_pipeline API instead.
    */
 
-  /* A program explicitly set on the material has higher precedence than
+  /* A program explicitly set on the pipeline has higher precedence than
    * one associated with the context using cogl_program_use() */
   if (ctx->current_program &&
-      cogl_material_get_user_program (material) == COGL_INVALID_HANDLE)
-    cogl_material_set_user_program (material, ctx->current_program);
+      cogl_pipeline_get_user_program (pipeline) == COGL_INVALID_HANDLE)
+    cogl_pipeline_set_user_program (pipeline, ctx->current_program);
 
   if (ctx->legacy_depth_test_enabled)
-    cogl_material_set_depth_test_enabled (material, TRUE);
+    cogl_pipeline_set_depth_test_enabled (pipeline, TRUE);
 
   if (ctx->legacy_fog_state.enabled)
-    _cogl_material_set_fog_state (material, &ctx->legacy_fog_state);
+    _cogl_pipeline_set_fog_state (pipeline, &ctx->legacy_fog_state);
 }
 
 void
-_cogl_material_set_static_breadcrumb (CoglMaterial *material,
+_cogl_pipeline_set_static_breadcrumb (CoglPipeline *pipeline,
                                       const char *breadcrumb)
 {
-  material->has_static_breadcrumb = TRUE;
-  material->static_breadcrumb = breadcrumb;
+  pipeline->has_static_breadcrumb = TRUE;
+  pipeline->static_breadcrumb = breadcrumb;
 }
 
 typedef struct
@@ -5503,9 +5485,9 @@ typedef struct
 } PrintDebugState;
 
 static gboolean
-dump_layer_cb (CoglMaterialNode *node, void *user_data)
+dump_layer_cb (CoglPipelineNode *node, void *user_data)
 {
-  CoglMaterialLayer *layer = COGL_MATERIAL_LAYER (node);
+  CoglPipelineLayer *layer = COGL_PIPELINE_LAYER (node);
   PrintDebugState *state = user_data;
   int layer_id = *state->node_id_ptr;
   PrintDebugState state_out;
@@ -5537,7 +5519,7 @@ dump_layer_cb (CoglMaterialNode *node, void *user_data)
                           state->indent, "",
                           layer_id);
 
-  if (layer->differences & COGL_MATERIAL_LAYER_STATE_UNIT)
+  if (layer->differences & COGL_PIPELINE_LAYER_STATE_UNIT)
     {
       changes = TRUE;
       g_string_append_printf (changes_label,
@@ -5545,7 +5527,7 @@ dump_layer_cb (CoglMaterialNode *node, void *user_data)
                               layer->unit_index);
     }
 
-  if (layer->differences & COGL_MATERIAL_LAYER_STATE_TEXTURE)
+  if (layer->differences & COGL_PIPELINE_LAYER_STATE_TEXTURE)
     {
       changes = TRUE;
       g_string_append_printf (changes_label,
@@ -5568,7 +5550,7 @@ dump_layer_cb (CoglMaterialNode *node, void *user_data)
   state_out.graph = state->graph;
   state_out.indent = state->indent + 2;
 
-  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (layer),
+  _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (layer),
                                      dump_layer_cb,
                                      &state_out);
 
@@ -5576,85 +5558,85 @@ dump_layer_cb (CoglMaterialNode *node, void *user_data)
 }
 
 static gboolean
-dump_layer_ref_cb (CoglMaterialLayer *layer, void *data)
+dump_layer_ref_cb (CoglPipelineLayer *layer, void *data)
 {
   PrintDebugState *state = data;
-  int material_id = *state->node_id_ptr;
+  int pipeline_id = *state->node_id_ptr;
 
   g_string_append_printf (state->graph,
-                          "%*smaterial_state%d -> layer%p;\n",
+                          "%*spipeline_state%d -> layer%p;\n",
                           state->indent, "",
-                          material_id,
+                          pipeline_id,
                           layer);
 
   return TRUE;
 }
 
 static gboolean
-dump_material_cb (CoglMaterialNode *node, void *user_data)
+dump_pipeline_cb (CoglPipelineNode *node, void *user_data)
 {
-  CoglMaterial *material = COGL_MATERIAL (node);
+  CoglPipeline *pipeline = COGL_PIPELINE (node);
   PrintDebugState *state = user_data;
-  int material_id = *state->node_id_ptr;
+  int pipeline_id = *state->node_id_ptr;
   PrintDebugState state_out;
   GString *changes_label;
   gboolean changes = FALSE;
   gboolean layers = FALSE;
 
   if (state->parent_id >= 0)
-    g_string_append_printf (state->graph, "%*smaterial%d -> material%d;\n",
+    g_string_append_printf (state->graph, "%*spipeline%d -> pipeline%d;\n",
                             state->indent, "",
                             state->parent_id,
-                            material_id);
+                            pipeline_id);
 
   g_string_append_printf (state->graph,
-                          "%*smaterial%d [label=\"material=0x%p\\n"
+                          "%*spipeline%d [label=\"pipeline=0x%p\\n"
                           "ref count=%d\\n"
                           "breadcrumb=\\\"%s\\\"\" color=\"red\"];\n",
                           state->indent, "",
-                          material_id,
-                          material,
-                          COGL_OBJECT (material)->ref_count,
-                          material->has_static_breadcrumb ?
-                          material->static_breadcrumb : "NULL");
+                          pipeline_id,
+                          pipeline,
+                          COGL_OBJECT (pipeline)->ref_count,
+                          pipeline->has_static_breadcrumb ?
+                          pipeline->static_breadcrumb : "NULL");
 
   changes_label = g_string_new ("");
   g_string_append_printf (changes_label,
-                          "%*smaterial%d -> material_state%d [weight=100];\n"
-                          "%*smaterial_state%d [shape=box label=\"",
+                          "%*spipeline%d -> pipeline_state%d [weight=100];\n"
+                          "%*spipeline_state%d [shape=box label=\"",
                           state->indent, "",
-                          material_id,
-                          material_id,
+                          pipeline_id,
+                          pipeline_id,
                           state->indent, "",
-                          material_id);
+                          pipeline_id);
 
 
-  if (material->differences & COGL_MATERIAL_STATE_COLOR)
+  if (pipeline->differences & COGL_PIPELINE_STATE_COLOR)
     {
       changes = TRUE;
       g_string_append_printf (changes_label,
                               "\\lcolor=0x%02X%02X%02X%02X\\n",
-                              cogl_color_get_red_byte (&material->color),
-                              cogl_color_get_green_byte (&material->color),
-                              cogl_color_get_blue_byte (&material->color),
-                              cogl_color_get_alpha_byte (&material->color));
+                              cogl_color_get_red_byte (&pipeline->color),
+                              cogl_color_get_green_byte (&pipeline->color),
+                              cogl_color_get_blue_byte (&pipeline->color),
+                              cogl_color_get_alpha_byte (&pipeline->color));
     }
 
-  if (material->differences & COGL_MATERIAL_STATE_BLEND)
+  if (pipeline->differences & COGL_PIPELINE_STATE_BLEND)
     {
       const char *blend_enable_name;
 
       changes = TRUE;
 
-      switch (material->blend_enable)
+      switch (pipeline->blend_enable)
         {
-        case COGL_MATERIAL_BLEND_ENABLE_AUTOMATIC:
+        case COGL_PIPELINE_BLEND_ENABLE_AUTOMATIC:
           blend_enable_name = "AUTO";
           break;
-        case COGL_MATERIAL_BLEND_ENABLE_ENABLED:
+        case COGL_PIPELINE_BLEND_ENABLE_ENABLED:
           blend_enable_name = "ENABLED";
           break;
-        case COGL_MATERIAL_BLEND_ENABLE_DISABLED:
+        case COGL_PIPELINE_BLEND_ENABLE_DISABLED:
           blend_enable_name = "DISABLED";
           break;
         default:
@@ -5665,12 +5647,12 @@ dump_material_cb (CoglMaterialNode *node, void *user_data)
                               blend_enable_name);
     }
 
-  if (material->differences & COGL_MATERIAL_STATE_LAYERS)
+  if (pipeline->differences & COGL_PIPELINE_STATE_LAYERS)
     {
       changes = TRUE;
       layers = TRUE;
       g_string_append_printf (changes_label, "\\ln_layers=%d\\n",
-                              material->n_layers);
+                              pipeline->n_layers);
     }
 
   if (changes)
@@ -5682,12 +5664,12 @@ dump_material_cb (CoglMaterialNode *node, void *user_data)
 
   if (layers)
     {
-      g_list_foreach (material->layer_differences,
+      g_list_foreach (pipeline->layer_differences,
                       (GFunc)dump_layer_ref_cb,
                       state);
     }
 
-  state_out.parent_id = material_id;
+  state_out.parent_id = pipeline_id;
 
   state_out.node_id_ptr = state->node_id_ptr;
   (*state_out.node_id_ptr)++;
@@ -5695,25 +5677,25 @@ dump_material_cb (CoglMaterialNode *node, void *user_data)
   state_out.graph = state->graph;
   state_out.indent = state->indent + 2;
 
-  _cogl_material_node_foreach_child (COGL_MATERIAL_NODE (material),
-                                     dump_material_cb,
+  _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
+                                     dump_pipeline_cb,
                                      &state_out);
 
   return TRUE;
 }
 
 void
-_cogl_debug_dump_materials_dot_file (const char *filename)
+_cogl_debug_dump_pipelines_dot_file (const char *filename)
 {
   GString *graph;
   PrintDebugState layer_state;
-  PrintDebugState material_state;
+  PrintDebugState pipeline_state;
   int layer_id = 0;
-  int material_id = 0;
+  int pipeline_id = 0;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (!ctx->default_material)
+  if (!ctx->default_pipeline)
     return;
 
   graph = g_string_new ("");
@@ -5725,11 +5707,11 @@ _cogl_debug_dump_materials_dot_file (const char *filename)
   layer_state.indent = 0;
   dump_layer_cb (ctx->default_layer_0, &layer_state);
 
-  material_state.graph = graph;
-  material_state.parent_id = -1;
-  material_state.node_id_ptr = &material_id;
-  material_state.indent = 0;
-  dump_material_cb (ctx->default_material, &material_state);
+  pipeline_state.graph = graph;
+  pipeline_state.parent_id = -1;
+  pipeline_state.node_id_ptr = &pipeline_id;
+  pipeline_state.indent = 0;
+  dump_pipeline_cb (ctx->default_pipeline, &pipeline_state);
 
   g_string_append_printf (graph, "}\n");
 

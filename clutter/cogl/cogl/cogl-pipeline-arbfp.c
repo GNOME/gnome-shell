@@ -30,9 +30,9 @@
 #endif
 
 #include "cogl-debug.h"
-#include "cogl-material-private.h"
+#include "cogl-pipeline-private.h"
 
-#ifdef COGL_MATERIAL_BACKEND_ARBFP
+#ifdef COGL_PIPELINE_BACKEND_ARBFP
 
 #include "cogl.h"
 #include "cogl-internal.h"
@@ -51,7 +51,7 @@
 #include <string.h>
 
 /*
- * GL/GLES compatability defines for material thingies:
+ * GL/GLES compatability defines for pipeline thingies:
  */
 
 #ifdef HAVE_COGL_GLES2
@@ -94,17 +94,17 @@ typedef struct _ArbfpProgramState
      is used to detect when we need to flush all of the uniforms */
   unsigned int user_program_age;
 
-  /* We need to track the last material that an ARBfp program was used
+  /* We need to track the last pipeline that an ARBfp program was used
    * with so know if we need to update any program.local parameters. */
-  CoglMaterial *last_used_for_material;
+  CoglPipeline *last_used_for_pipeline;
 } ArbfpProgramState;
 
-typedef struct _CoglMaterialBackendARBfpPrivate
+typedef struct _CoglPipelineBackendARBfpPrivate
 {
   ArbfpProgramState *arbfp_program_state;
-} CoglMaterialBackendARBfpPrivate;
+} CoglPipelineBackendARBfpPrivate;
 
-const CoglMaterialBackend _cogl_material_arbfp_backend;
+const CoglPipelineBackend _cogl_pipeline_arbfp_backend;
 
 
 static ArbfpProgramState *
@@ -146,7 +146,7 @@ arbfp_program_state_unref (ArbfpProgramState *state)
 }
 
 static int
-_cogl_material_backend_arbfp_get_max_texture_units (void)
+_cogl_pipeline_backend_arbfp_get_max_texture_units (void)
 {
   return _cogl_get_max_texture_image_units ();
 }
@@ -154,11 +154,11 @@ _cogl_material_backend_arbfp_get_max_texture_units (void)
 typedef struct
 {
   int i;
-  CoglMaterialLayer **layers;
+  CoglPipelineLayer **layers;
 } AddLayersToArrayState;
 
 static gboolean
-add_layer_to_array_cb (CoglMaterialLayer *layer,
+add_layer_to_array_cb (CoglPipelineLayer *layer,
                        void *user_data)
 {
   AddLayersToArrayState *state = user_data;
@@ -167,36 +167,36 @@ add_layer_to_array_cb (CoglMaterialLayer *layer,
 }
 
 static gboolean
-layers_arbfp_would_differ (CoglMaterialLayer **material0_layers,
-                           CoglMaterialLayer **material1_layers,
+layers_arbfp_would_differ (CoglPipelineLayer **pipeline0_layers,
+                           CoglPipelineLayer **pipeline1_layers,
                            int n_layers)
 {
   int i;
   /* The layer state that affects arbfp codegen... */
   unsigned long arbfp_codegen_modifiers =
-    COGL_MATERIAL_LAYER_STATE_COMBINE |
-    COGL_MATERIAL_LAYER_STATE_UNIT;
+    COGL_PIPELINE_LAYER_STATE_COMBINE |
+    COGL_PIPELINE_LAYER_STATE_UNIT;
 
   for (i = 0; i < n_layers; i++)
     {
-      CoglMaterialLayer *layer0 = material0_layers[i];
-      CoglMaterialLayer *layer1 = material1_layers[i];
+      CoglPipelineLayer *layer0 = pipeline0_layers[i];
+      CoglPipelineLayer *layer1 = pipeline1_layers[i];
       unsigned long layer_differences;
 
       if (layer0 == layer1)
         continue;
 
       layer_differences =
-        _cogl_material_layer_compare_differences (layer0, layer1);
+        _cogl_pipeline_layer_compare_differences (layer0, layer1);
 
       if (layer_differences & arbfp_codegen_modifiers)
         {
           /* When it comes to texture differences the only thing that
            * affects the arbfp is the target enum... */
-          if (layer_differences == COGL_MATERIAL_LAYER_STATE_TEXTURE)
+          if (layer_differences == COGL_PIPELINE_LAYER_STATE_TEXTURE)
             {
-              CoglHandle tex0 = _cogl_material_layer_get_texture (layer0);
-              CoglHandle tex1 = _cogl_material_layer_get_texture (layer1);
+              CoglHandle tex0 = _cogl_pipeline_layer_get_texture (layer0);
+              CoglHandle tex1 = _cogl_pipeline_layer_get_texture (layer1);
               GLenum gl_target0;
               GLenum gl_target1;
 
@@ -213,37 +213,37 @@ layers_arbfp_would_differ (CoglMaterialLayer **material0_layers,
 }
 
 /* This tries to find the oldest ancestor whos state would generate
- * the same arbfp program as the current material. This is a simple
+ * the same arbfp program as the current pipeline. This is a simple
  * mechanism for reducing the number of arbfp programs we have to
  * generate.
  */
-static CoglMaterial *
-find_arbfp_authority (CoglMaterial *material, CoglHandle user_program)
+static CoglPipeline *
+find_arbfp_authority (CoglPipeline *pipeline, CoglHandle user_program)
 {
-  CoglMaterial *authority0;
-  CoglMaterial *authority1;
+  CoglPipeline *authority0;
+  CoglPipeline *authority1;
   int n_layers;
-  CoglMaterialLayer **authority0_layers;
-  CoglMaterialLayer **authority1_layers;
+  CoglPipelineLayer **authority0_layers;
+  CoglPipelineLayer **authority1_layers;
 
   /* XXX: we'll need to update this when we add fog support to the
    * arbfp codegen */
 
   if (user_program != COGL_INVALID_HANDLE)
-    return material;
+    return pipeline;
 
-  /* Find the first material that modifies state that affects the
+  /* Find the first pipeline that modifies state that affects the
    * arbfp codegen... */
-  authority0 = _cogl_material_get_authority (material,
-                                             COGL_MATERIAL_STATE_LAYERS);
+  authority0 = _cogl_pipeline_get_authority (pipeline,
+                                             COGL_PIPELINE_STATE_LAYERS);
 
   /* Find the next ancestor after that, that also modifies state
    * affecting arbfp codegen... */
-  if (_cogl_material_get_parent (authority0))
+  if (_cogl_pipeline_get_parent (authority0))
     {
       authority1 =
-        _cogl_material_get_authority (_cogl_material_get_parent (authority0),
-                                      COGL_MATERIAL_STATE_LAYERS);
+        _cogl_pipeline_get_authority (_cogl_pipeline_get_parent (authority0),
+                                      COGL_PIPELINE_STATE_LAYERS);
     }
   else
     return authority0;
@@ -258,18 +258,18 @@ find_arbfp_authority (CoglMaterial *material, CoglHandle user_program)
         return authority0;
 
       authority0_layers =
-        g_alloca (sizeof (CoglMaterialLayer *) * n_layers);
+        g_alloca (sizeof (CoglPipelineLayer *) * n_layers);
       state.i = 0;
       state.layers = authority0_layers;
-      _cogl_material_foreach_layer_internal (authority0,
+      _cogl_pipeline_foreach_layer_internal (authority0,
                                              add_layer_to_array_cb,
                                              &state);
 
       authority1_layers =
-        g_alloca (sizeof (CoglMaterialLayer *) * n_layers);
+        g_alloca (sizeof (CoglPipelineLayer *) * n_layers);
       state.i = 0;
       state.layers = authority1_layers;
-      _cogl_material_foreach_layer_internal (authority1,
+      _cogl_pipeline_foreach_layer_internal (authority1,
                                              add_layer_to_array_cb,
                                              &state);
 
@@ -280,13 +280,13 @@ find_arbfp_authority (CoglMaterial *material, CoglHandle user_program)
       /* Find the next ancestor after that, that also modifies state
        * affecting arbfp codegen... */
 
-      if (!_cogl_material_get_parent (authority1))
+      if (!_cogl_pipeline_get_parent (authority1))
         break;
 
       authority0 = authority1;
       authority1 =
-        _cogl_material_get_authority (_cogl_material_get_parent (authority1),
-                                      COGL_MATERIAL_STATE_LAYERS);
+        _cogl_pipeline_get_authority (_cogl_pipeline_get_parent (authority1),
+                                      COGL_PIPELINE_STATE_LAYERS);
       if (authority1 == authority0)
         break;
     }
@@ -294,44 +294,44 @@ find_arbfp_authority (CoglMaterial *material, CoglHandle user_program)
   return authority1;
 }
 
-static CoglMaterialBackendARBfpPrivate *
-get_arbfp_priv (CoglMaterial *material)
+static CoglPipelineBackendARBfpPrivate *
+get_arbfp_priv (CoglPipeline *pipeline)
 {
-  if (!(material->backend_priv_set_mask & COGL_MATERIAL_BACKEND_ARBFP_MASK))
+  if (!(pipeline->backend_priv_set_mask & COGL_PIPELINE_BACKEND_ARBFP_MASK))
     return NULL;
 
-  return material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP];
+  return pipeline->backend_privs[COGL_PIPELINE_BACKEND_ARBFP];
 }
 
 static void
-set_arbfp_priv (CoglMaterial *material, CoglMaterialBackendARBfpPrivate *priv)
+set_arbfp_priv (CoglPipeline *pipeline, CoglPipelineBackendARBfpPrivate *priv)
 {
   if (priv)
     {
-      material->backend_privs[COGL_MATERIAL_BACKEND_ARBFP] = priv;
-      material->backend_priv_set_mask |= COGL_MATERIAL_BACKEND_ARBFP_MASK;
+      pipeline->backend_privs[COGL_PIPELINE_BACKEND_ARBFP] = priv;
+      pipeline->backend_priv_set_mask |= COGL_PIPELINE_BACKEND_ARBFP_MASK;
     }
   else
-    material->backend_priv_set_mask &= ~COGL_MATERIAL_BACKEND_ARBFP_MASK;
+    pipeline->backend_priv_set_mask &= ~COGL_PIPELINE_BACKEND_ARBFP_MASK;
 }
 
 static ArbfpProgramState *
-get_arbfp_program_state (CoglMaterial *material)
+get_arbfp_program_state (CoglPipeline *pipeline)
 {
-  CoglMaterialBackendARBfpPrivate *priv = get_arbfp_priv (material);
+  CoglPipelineBackendARBfpPrivate *priv = get_arbfp_priv (pipeline);
   if (!priv)
     return NULL;
   return priv->arbfp_program_state;
 }
 
 static gboolean
-_cogl_material_backend_arbfp_start (CoglMaterial *material,
+_cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
                                     int n_layers,
-                                    unsigned long materials_difference)
+                                    unsigned long pipelines_difference)
 {
-  CoglMaterialBackendARBfpPrivate *priv;
-  CoglMaterial *authority;
-  CoglMaterialBackendARBfpPrivate *authority_priv;
+  CoglPipelineBackendARBfpPrivate *priv;
+  CoglPipeline *authority;
+  CoglPipelineBackendARBfpPrivate *authority_priv;
   CoglHandle user_program;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -346,18 +346,18 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
   if (ctx->legacy_fog_state.enabled)
     return FALSE;
 
-  user_program = cogl_material_get_user_program (material);
+  user_program = cogl_pipeline_get_user_program (pipeline);
   if (user_program != COGL_INVALID_HANDLE &&
       _cogl_program_get_language (user_program) != COGL_SHADER_LANGUAGE_ARBFP)
     return FALSE;
 
   /* Now lookup our ARBfp backend private state (allocating if
    * necessary) */
-  priv = get_arbfp_priv (material);
+  priv = get_arbfp_priv (pipeline);
   if (!priv)
     {
-      priv = g_slice_new0 (CoglMaterialBackendARBfpPrivate);
-      set_arbfp_priv (material, priv);
+      priv = g_slice_new0 (CoglPipelineBackendARBfpPrivate);
+      set_arbfp_priv (pipeline, priv);
     }
 
   /* If we have a valid arbfp_program_state pointer then we are all
@@ -367,17 +367,17 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
 
   /* If we don't have an associated arbfp program yet then find the
    * arbfp-authority (the oldest ancestor whose state will result in
-   * the same program being generated as for this material).
+   * the same program being generated as for this pipeline).
    *
    * We always make sure to associate new programs with the
-   * arbfp-authority to maximize the chance that other materials can
+   * arbfp-authority to maximize the chance that other pipelines can
    * share it.
    */
-  authority = find_arbfp_authority (material, user_program);
+  authority = find_arbfp_authority (pipeline, user_program);
   authority_priv = get_arbfp_priv (authority);
   if (!authority_priv)
     {
-      authority_priv = g_slice_new0 (CoglMaterialBackendARBfpPrivate);
+      authority_priv = g_slice_new0 (CoglPipelineBackendARBfpPrivate);
       set_arbfp_priv (authority, authority_priv);
     }
 
@@ -416,10 +416,10 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
         }
     }
 
-  /* Finally, if the material isn't actually its own arbfp-authority
+  /* Finally, if the pipeline isn't actually its own arbfp-authority
    * then steal a reference to the program state associated with the
    * arbfp-authority... */
-  if (authority != material)
+  if (authority != pipeline)
     priv->arbfp_program_state =
       arbfp_program_state_ref (authority_priv->arbfp_program_state);
 
@@ -431,9 +431,9 @@ _cogl_material_backend_arbfp_start (CoglMaterial *material,
  * with the same arguments...
  */
 static gboolean
-need_texture_combine_separate (CoglMaterialLayer *combine_authority)
+need_texture_combine_separate (CoglPipelineLayer *combine_authority)
 {
-  CoglMaterialLayerBigState *big_state = combine_authority->big_state;
+  CoglPipelineLayerBigState *big_state = combine_authority->big_state;
   int n_args;
   int i;
 
@@ -539,18 +539,18 @@ setup_texture_source (ArbfpProgramState *arbfp_program_state,
     }
 }
 
-typedef enum _CoglMaterialBackendARBfpArgType
+typedef enum _CoglPipelineBackendARBfpArgType
 {
-  COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE,
-  COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_CONSTANT,
-  COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_TEXTURE
-} CoglMaterialBackendARBfpArgType;
+  COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_SIMPLE,
+  COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_CONSTANT,
+  COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_TEXTURE
+} CoglPipelineBackendARBfpArgType;
 
-typedef struct _CoglMaterialBackendARBfpArg
+typedef struct _CoglPipelineBackendARBfpArg
 {
   const char *name;
 
-  CoglMaterialBackendARBfpArgType type;
+  CoglPipelineBackendARBfpArgType type;
 
   /* for type = TEXTURE */
   int texture_unit;
@@ -561,22 +561,22 @@ typedef struct _CoglMaterialBackendARBfpArg
 
   const char *swizzle;
 
-} CoglMaterialBackendARBfpArg;
+} CoglPipelineBackendARBfpArg;
 
 static void
-append_arg (GString *source, const CoglMaterialBackendARBfpArg *arg)
+append_arg (GString *source, const CoglPipelineBackendARBfpArg *arg)
 {
   switch (arg->type)
     {
-    case COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_TEXTURE:
+    case COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_TEXTURE:
       g_string_append_printf (source, "texel%d%s",
                               arg->texture_unit, arg->swizzle);
       break;
-    case COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_CONSTANT:
+    case COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_CONSTANT:
       g_string_append_printf (source, "program.local[%d]%s",
                               arg->constant_id, arg->swizzle);
       break;
-    case COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE:
+    case COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_SIMPLE:
       g_string_append_printf (source, "%s%s",
                               arg->name, arg->swizzle);
       break;
@@ -585,17 +585,17 @@ append_arg (GString *source, const CoglMaterialBackendARBfpArg *arg)
 
 /* Note: we are trying to avoid duplicating strings during codegen
  * which is why we have the slightly awkward
- * CoglMaterialBackendARBfpArg mechanism. */
+ * CoglPipelineBackendARBfpArg mechanism. */
 static void
-setup_arg (CoglMaterial *material,
-           CoglMaterialLayer *layer,
+setup_arg (CoglPipeline *pipeline,
+           CoglPipelineLayer *layer,
            CoglBlendStringChannelMask mask,
            int arg_index,
            GLint src,
            GLint op,
-           CoglMaterialBackendARBfpArg *arg)
+           CoglPipelineBackendARBfpArg *arg)
 {
-  ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (material);
+  ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (pipeline);
   static const char *tmp_name[3] = { "tmp0", "tmp1", "tmp2" };
   GLenum gl_target;
   CoglHandle texture;
@@ -603,42 +603,42 @@ setup_arg (CoglMaterial *material,
   switch (src)
     {
     case GL_TEXTURE:
-      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_TEXTURE;
+      arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_TEXTURE;
       arg->name = "texel%d";
-      arg->texture_unit = _cogl_material_layer_get_unit_index (layer);
-      texture = _cogl_material_layer_get_texture (layer);
+      arg->texture_unit = _cogl_pipeline_layer_get_unit_index (layer);
+      texture = _cogl_pipeline_layer_get_texture (layer);
       cogl_texture_get_gl_texture (texture, NULL, &gl_target);
       setup_texture_source (arbfp_program_state, arg->texture_unit, gl_target);
       break;
     case GL_CONSTANT:
       {
-        int unit_index = _cogl_material_layer_get_unit_index (layer);
+        int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
         UnitState *unit_state = &arbfp_program_state->unit_state[unit_index];
 
         unit_state->constant_id = arbfp_program_state->next_constant_id++;
         unit_state->dirty_combine_constant = TRUE;
 
-        arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_CONSTANT;
+        arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_CONSTANT;
         arg->name = "program.local[%d]";
         arg->constant_id = unit_state->constant_id;
         break;
       }
     case GL_PRIMARY_COLOR:
-      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
+      arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
       arg->name = "fragment.color.primary";
       break;
     case GL_PREVIOUS:
-      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
-      if (_cogl_material_layer_get_unit_index (layer) == 0)
+      arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
+      if (_cogl_pipeline_layer_get_unit_index (layer) == 0)
         arg->name = "fragment.color.primary";
       else
         arg->name = "output";
       break;
     default: /* GL_TEXTURE0..N */
-      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_TEXTURE;
+      arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_TEXTURE;
       arg->name = "texture[%d]";
       arg->texture_unit = src - GL_TEXTURE0;
-      texture = _cogl_material_layer_get_texture (layer);
+      texture = _cogl_pipeline_layer_get_texture (layer);
       cogl_texture_get_gl_texture (texture, NULL, &gl_target);
       setup_texture_source (arbfp_program_state, arg->texture_unit, gl_target);
     }
@@ -655,7 +655,7 @@ setup_arg (CoglMaterial *material,
                               arg_index);
       append_arg (arbfp_program_state->source, arg);
       g_string_append_printf (arbfp_program_state->source, ";\n");
-      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
+      arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
       arg->name = tmp_name[arg_index];
       arg->swizzle = "";
       break;
@@ -676,7 +676,7 @@ setup_arg (CoglMaterial *material,
         g_string_append_printf (arbfp_program_state->source, ".a;\n");
       else
         g_string_append_printf (arbfp_program_state->source, ";\n");
-      arg->type = COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
+      arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
       arg->name = tmp_name[arg_index];
       break;
     default:
@@ -686,8 +686,8 @@ setup_arg (CoglMaterial *material,
 }
 
 static gboolean
-backend_arbfp_args_equal (CoglMaterialBackendARBfpArg *arg0,
-                          CoglMaterialBackendARBfpArg *arg1)
+backend_arbfp_args_equal (CoglPipelineBackendARBfpArg *arg0,
+                          CoglPipelineBackendARBfpArg *arg1)
 {
   if (arg0->type != arg1->type)
     return FALSE;
@@ -696,13 +696,13 @@ backend_arbfp_args_equal (CoglMaterialBackendARBfpArg *arg0,
       strcmp (arg0->name, arg1->name) != 0)
     return FALSE;
 
-  if (arg0->type == COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_TEXTURE &&
+  if (arg0->type == COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_TEXTURE &&
       arg0->texture_unit != arg1->texture_unit)
     return FALSE;
   /* Note we don't have to check the target; a texture unit can only
    * have one target enabled at a time. */
 
-  if (arg0->type == COGL_MATERIAL_BACKEND_ARBFP_ARG_TYPE_CONSTANT &&
+  if (arg0->type == COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_CONSTANT &&
       arg0->constant_id != arg0->constant_id)
     return FALSE;
 
@@ -714,13 +714,13 @@ backend_arbfp_args_equal (CoglMaterialBackendARBfpArg *arg0,
 }
 
 static void
-append_function (CoglMaterial *material,
+append_function (CoglPipeline *pipeline,
                  CoglBlendStringChannelMask mask,
                  GLint function,
-                 CoglMaterialBackendARBfpArg *args,
+                 CoglPipelineBackendARBfpArg *args,
                  int n_args)
 {
-  ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (material);
+  ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (pipeline);
   const char *mask_name;
 
   switch (mask)
@@ -852,8 +852,8 @@ append_function (CoglMaterial *material,
 }
 
 static void
-append_masked_combine (CoglMaterial *arbfp_authority,
-                       CoglMaterialLayer *layer,
+append_masked_combine (CoglPipeline *arbfp_authority,
+                       CoglPipelineLayer *layer,
                        CoglBlendStringChannelMask mask,
                        GLint function,
                        GLint *src,
@@ -861,7 +861,7 @@ append_masked_combine (CoglMaterial *arbfp_authority,
 {
   int i;
   int n_args;
-  CoglMaterialBackendARBfpArg args[3];
+  CoglPipelineBackendARBfpArg args[3];
 
   n_args = _cogl_get_n_args_for_combine_func (function);
 
@@ -884,15 +884,15 @@ append_masked_combine (CoglMaterial *arbfp_authority,
 }
 
 static gboolean
-_cogl_material_backend_arbfp_add_layer (CoglMaterial *material,
-                                        CoglMaterialLayer *layer,
+_cogl_pipeline_backend_arbfp_add_layer (CoglPipeline *pipeline,
+                                        CoglPipelineLayer *layer,
                                         unsigned long layers_difference)
 {
-  ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (material);
-  CoglMaterialLayer *combine_authority =
-    _cogl_material_layer_get_authority (layer,
-                                        COGL_MATERIAL_LAYER_STATE_COMBINE);
-  CoglMaterialLayerBigState *big_state = combine_authority->big_state;
+  ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (pipeline);
+  CoglPipelineLayer *combine_authority =
+    _cogl_pipeline_layer_get_authority (layer,
+                                        COGL_PIPELINE_LAYER_STATE_COMBINE);
+  CoglPipelineLayerBigState *big_state = combine_authority->big_state;
 
   /* Notes...
    *
@@ -928,7 +928,7 @@ _cogl_material_backend_arbfp_add_layer (CoglMaterial *material,
 
   if (!need_texture_combine_separate (combine_authority))
     {
-      append_masked_combine (material,
+      append_masked_combine (pipeline,
                              layer,
                              COGL_BLEND_STRING_CHANNEL_MASK_RGBA,
                              big_state->texture_combine_rgb_func,
@@ -940,7 +940,7 @@ _cogl_material_backend_arbfp_add_layer (CoglMaterial *material,
       /* GL_DOT3_RGBA Is a bit weird as a GL_COMBINE_RGB function
        * since if you use it, it overrides your ALPHA function...
        */
-      append_masked_combine (material,
+      append_masked_combine (pipeline,
                              layer,
                              COGL_BLEND_STRING_CHANNEL_MASK_RGBA,
                              big_state->texture_combine_rgb_func,
@@ -949,13 +949,13 @@ _cogl_material_backend_arbfp_add_layer (CoglMaterial *material,
     }
   else
     {
-      append_masked_combine (material,
+      append_masked_combine (pipeline,
                              layer,
                              COGL_BLEND_STRING_CHANNEL_MASK_RGB,
                              big_state->texture_combine_rgb_func,
                              big_state->texture_combine_rgb_src,
                              big_state->texture_combine_rgb_op);
-      append_masked_combine (material,
+      append_masked_combine (pipeline,
                              layer,
                              COGL_BLEND_STRING_CHANNEL_MASK_ALPHA,
                              big_state->texture_combine_alpha_func,
@@ -967,9 +967,9 @@ _cogl_material_backend_arbfp_add_layer (CoglMaterial *material,
 }
 
 gboolean
-_cogl_material_backend_arbfp_passthrough (CoglMaterial *material)
+_cogl_pipeline_backend_arbfp_passthrough (CoglPipeline *pipeline)
 {
-  ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (material);
+  ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (pipeline);
 
   if (!arbfp_program_state->source)
     return TRUE;
@@ -987,7 +987,7 @@ typedef struct _UpdateConstantsState
 } UpdateConstantsState;
 
 static gboolean
-update_constants_cb (CoglMaterial *material,
+update_constants_cb (CoglPipeline *pipeline,
                      int layer_index,
                      void *user_data)
 {
@@ -1000,7 +1000,7 @@ update_constants_cb (CoglMaterial *material,
   if (state->update_all || unit_state->dirty_combine_constant)
     {
       float constant[4];
-      _cogl_material_get_layer_combine_constant (material,
+      _cogl_pipeline_get_layer_combine_constant (pipeline,
                                                  layer_index,
                                                  constant);
       GE (glProgramLocalParameter4fv (GL_FRAGMENT_PROGRAM_ARB,
@@ -1012,10 +1012,10 @@ update_constants_cb (CoglMaterial *material,
 }
 
 static gboolean
-_cogl_material_backend_arbfp_end (CoglMaterial *material,
-                                  unsigned long materials_difference)
+_cogl_pipeline_backend_arbfp_end (CoglPipeline *pipeline,
+                                  unsigned long pipelines_difference)
 {
-  ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (material);
+  ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (pipeline);
   GLuint gl_program;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -1036,7 +1036,7 @@ _cogl_material_backend_arbfp_end (CoglMaterial *material,
       g_string_append (arbfp_program_state->source, "END\n");
 
       if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_SHOW_SOURCE))
-        g_message ("material program:\n%s", arbfp_program_state->source->str);
+        g_message ("pipeline program:\n%s", arbfp_program_state->source->str);
 
       GE (glGenPrograms (1, &arbfp_program_state->gl_program));
 
@@ -1072,18 +1072,18 @@ _cogl_material_backend_arbfp_end (CoglMaterial *material,
     gl_program = arbfp_program_state->gl_program;
 
   GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, gl_program));
-  _cogl_use_program (0, COGL_MATERIAL_PROGRAM_TYPE_ARBFP);
+  _cogl_use_program (0, COGL_PIPELINE_PROGRAM_TYPE_ARBFP);
 
   if (arbfp_program_state->user_program == COGL_INVALID_HANDLE)
     {
       UpdateConstantsState state;
       state.unit = 0;
       state.arbfp_program_state = arbfp_program_state;
-      /* If this arbfp program was last used with a different material
+      /* If this arbfp program was last used with a different pipeline
        * then we need to ensure we update all program.local params */
       state.update_all =
-        material != arbfp_program_state->last_used_for_material;
-      cogl_material_foreach_layer (material,
+        pipeline != arbfp_program_state->last_used_for_pipeline;
+      cogl_pipeline_foreach_layer (pipeline,
                                    update_constants_cb,
                                    &state);
     }
@@ -1101,22 +1101,22 @@ _cogl_material_backend_arbfp_end (CoglMaterial *material,
       arbfp_program_state->user_program_age = program->age;
     }
 
-  /* We need to track what material used this arbfp program last since
+  /* We need to track what pipeline used this arbfp program last since
    * we will need to update program.local params when switching
-   * between different materials. */
-  arbfp_program_state->last_used_for_material = material;
+   * between different pipelines. */
+  arbfp_program_state->last_used_for_pipeline = pipeline;
 
   return TRUE;
 }
 
 static void
-dirty_arbfp_program_state (CoglMaterial *material)
+dirty_arbfp_program_state (CoglPipeline *pipeline)
 {
-  CoglMaterialBackendARBfpPrivate *priv;
+  CoglPipelineBackendARBfpPrivate *priv;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  priv = get_arbfp_priv (material);
+  priv = get_arbfp_priv (pipeline);
   if (!priv)
     return;
 
@@ -1128,40 +1128,40 @@ dirty_arbfp_program_state (CoglMaterial *material)
 }
 
 static void
-_cogl_material_backend_arbfp_material_pre_change_notify (
-                                                   CoglMaterial *material,
-                                                   CoglMaterialState change,
+_cogl_pipeline_backend_arbfp_pipeline_pre_change_notify (
+                                                   CoglPipeline *pipeline,
+                                                   CoglPipelineState change,
                                                    const CoglColor *new_color)
 {
   static const unsigned long fragment_op_changes =
-    COGL_MATERIAL_STATE_LAYERS |
-    COGL_MATERIAL_STATE_USER_SHADER;
-    /* TODO: COGL_MATERIAL_STATE_FOG */
+    COGL_PIPELINE_STATE_LAYERS |
+    COGL_PIPELINE_STATE_USER_SHADER;
+    /* TODO: COGL_PIPELINE_STATE_FOG */
 
   if (!(change & fragment_op_changes))
     return;
 
-  dirty_arbfp_program_state (material);
+  dirty_arbfp_program_state (pipeline);
 }
 
 /* NB: layers are considered immutable once they have any dependants
- * so although multiple materials can end up depending on a single
+ * so although multiple pipelines can end up depending on a single
  * static layer, we can guarantee that if a layer is being *changed*
- * then it can only have one material depending on it.
+ * then it can only have one pipeline depending on it.
  *
  * XXX: Don't forget this is *pre* change, we can't read the new value
  * yet!
  */
 static void
-_cogl_material_backend_arbfp_layer_pre_change_notify (
-                                                CoglMaterial *owner,
-                                                CoglMaterialLayer *layer,
-                                                CoglMaterialLayerState change)
+_cogl_pipeline_backend_arbfp_layer_pre_change_notify (
+                                                CoglPipeline *owner,
+                                                CoglPipelineLayer *layer,
+                                                CoglPipelineLayerState change)
 {
-  CoglMaterialBackendARBfpPrivate *priv;
+  CoglPipelineBackendARBfpPrivate *priv;
   static const unsigned long not_fragment_op_changes =
-    COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT |
-    COGL_MATERIAL_LAYER_STATE_TEXTURE;
+    COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT |
+    COGL_PIPELINE_LAYER_STATE_TEXTURE;
 
   priv = get_arbfp_priv (owner);
   if (!priv)
@@ -1173,11 +1173,11 @@ _cogl_material_backend_arbfp_layer_pre_change_notify (
       return;
     }
 
-  if (change & COGL_MATERIAL_LAYER_STATE_COMBINE_CONSTANT)
+  if (change & COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT)
     {
       ArbfpProgramState *arbfp_program_state =
         get_arbfp_program_state (owner);
-      int unit_index = _cogl_material_layer_get_unit_index (layer);
+      int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
       arbfp_program_state->unit_state[unit_index].dirty_combine_constant = TRUE;
     }
 
@@ -1188,31 +1188,31 @@ _cogl_material_backend_arbfp_layer_pre_change_notify (
 }
 
 static void
-_cogl_material_backend_arbfp_free_priv (CoglMaterial *material)
+_cogl_pipeline_backend_arbfp_free_priv (CoglPipeline *pipeline)
 {
-  CoglMaterialBackendARBfpPrivate *priv = get_arbfp_priv (material);
+  CoglPipelineBackendARBfpPrivate *priv = get_arbfp_priv (pipeline);
   if (priv)
     {
       if (priv->arbfp_program_state)
         arbfp_program_state_unref (priv->arbfp_program_state);
-      g_slice_free (CoglMaterialBackendARBfpPrivate, priv);
-      set_arbfp_priv (material, NULL);
+      g_slice_free (CoglPipelineBackendARBfpPrivate, priv);
+      set_arbfp_priv (pipeline, NULL);
     }
 }
 
-const CoglMaterialBackend _cogl_material_arbfp_backend =
+const CoglPipelineBackend _cogl_pipeline_arbfp_backend =
 {
-  _cogl_material_backend_arbfp_get_max_texture_units,
-  _cogl_material_backend_arbfp_start,
-  _cogl_material_backend_arbfp_add_layer,
-  _cogl_material_backend_arbfp_passthrough,
-  _cogl_material_backend_arbfp_end,
-  _cogl_material_backend_arbfp_material_pre_change_notify,
+  _cogl_pipeline_backend_arbfp_get_max_texture_units,
+  _cogl_pipeline_backend_arbfp_start,
+  _cogl_pipeline_backend_arbfp_add_layer,
+  _cogl_pipeline_backend_arbfp_passthrough,
+  _cogl_pipeline_backend_arbfp_end,
+  _cogl_pipeline_backend_arbfp_pipeline_pre_change_notify,
   NULL,
-  _cogl_material_backend_arbfp_layer_pre_change_notify,
-  _cogl_material_backend_arbfp_free_priv,
+  _cogl_pipeline_backend_arbfp_layer_pre_change_notify,
+  _cogl_pipeline_backend_arbfp_free_priv,
   NULL
 };
 
-#endif /* COGL_MATERIAL_BACKEND_ARBFP */
+#endif /* COGL_PIPELINE_BACKEND_ARBFP */
 

@@ -26,7 +26,7 @@
 
 #include "cogl-bitmap-private.h"
 #include "cogl-handle.h"
-#include "cogl-material-private.h"
+#include "cogl-pipeline-private.h"
 #include "cogl-texture-private.h"
 
 #define COGL_TEXTURE_2D_SLICED(tex) ((CoglTexture2DSliced *)tex)

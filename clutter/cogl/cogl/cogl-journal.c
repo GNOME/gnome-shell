@@ -31,8 +31,8 @@
 #include "cogl-context.h"
 #include "cogl-journal-private.h"
 #include "cogl-texture-private.h"
-#include "cogl-material-private.h"
-#include "cogl-material-opengl-private.h"
+#include "cogl-pipeline-private.h"
+#include "cogl-pipeline-opengl-private.h"
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-profile.h"
@@ -49,7 +49,7 @@
  *    4 RGBA GLubytes,
  *    2 GLfloats per tex coord * n_layers
  *
- * Where n_layers corresponds to the number of material layers enabled
+ * Where n_layers corresponds to the number of pipeline layers enabled
  *
  * To avoid frequent changes in the stride of our vertex data we always pad
  * n_layers to be >= 2
@@ -85,7 +85,7 @@ typedef struct _CoglJournalFlushState
 #endif
   CoglMatrixStack     *modelview_stack;
 
-  CoglMaterial        *source;
+  CoglPipeline        *source;
 } CoglJournalFlushState;
 
 typedef void (*CoglJournalBatchCallback) (CoglJournalEntry *start,
@@ -184,7 +184,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
   CoglJournalFlushState *state = data;
   CoglVertexAttribute **attributes;
   COGL_STATIC_TIMER (time_flush_modelview_and_entries,
-                     "flush: material+entries", /* parent */
+                     "flush: pipeline+entries", /* parent */
                      "flush: modelview+entries",
                      "The time spent flushing modelview + entries",
                      0 /* no application private data */);
@@ -239,15 +239,15 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
    */
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_RECTANGLES))
     {
-      static CoglHandle outline = COGL_INVALID_HANDLE;
+      static CoglPipeline *outline = NULL;
       guint8 color_intensity;
       int i;
       CoglVertexAttribute *loop_attributes[2];
 
       _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
 
-      if (outline == COGL_INVALID_HANDLE)
-        outline = cogl_material_new ();
+      if (outline == NULL)
+        outline = cogl_pipeline_new ();
 
       /* The least significant three bits represent the three
          components so that the order of colours goes red, green,
@@ -257,7 +257,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
          of 24 colours. If there are more than 24 batches on the stage
          then it will wrap around */
       color_intensity = 0xff - 0x33 * (ctxt->journal_rectangles_color >> 3);
-      cogl_material_set_color4ub (outline,
+      cogl_pipeline_set_color4ub (outline,
                                   (ctxt->journal_rectangles_color & 1) ?
                                   color_intensity : 0,
                                   (ctxt->journal_rectangles_color & 2) ?
@@ -313,27 +313,27 @@ compare_entry_modelviews (CoglJournalEntry *entry0,
 }
 
 /* At this point we have a run of quads that we know have compatible
- * materials, but they may not all have the same modelview matrix */
+ * pipelines, but they may not all have the same modelview matrix */
 static void
-_cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
+_cogl_journal_flush_pipeline_and_entries (CoglJournalEntry *batch_start,
                                           int               batch_len,
                                           void             *data)
 {
   CoglJournalFlushState *state = data;
-  COGL_STATIC_TIMER (time_flush_material_entries,
-                     "flush: texcoords+material+entries", /* parent */
-                     "flush: material+entries",
-                     "The time spent flushing material + entries",
+  COGL_STATIC_TIMER (time_flush_pipeline_entries,
+                     "flush: texcoords+pipeline+entries", /* parent */
+                     "flush: pipeline+entries",
+                     "The time spent flushing pipeline + entries",
                      0 /* no application private data */);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  COGL_TIMER_START (_cogl_uprof_context, time_flush_material_entries);
+  COGL_TIMER_START (_cogl_uprof_context, time_flush_pipeline_entries);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
-    g_print ("BATCHING:   material batch len = %d\n", batch_len);
+    g_print ("BATCHING:   pipeline batch len = %d\n", batch_len);
 
-  state->source = batch_start->material;
+  state->source = batch_start->pipeline;
 
   /* If we haven't transformed the quads in software then we need to also break
    * up batches according to changes in the modelview matrix... */
@@ -348,20 +348,20 @@ _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
   else
     _cogl_journal_flush_modelview_and_entries (batch_start, batch_len, data);
 
-  COGL_TIMER_STOP (_cogl_uprof_context, time_flush_material_entries);
+  COGL_TIMER_STOP (_cogl_uprof_context, time_flush_pipeline_entries);
 }
 
 static gboolean
-compare_entry_materials (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
+compare_entry_pipelines (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
 {
-  /* batch rectangles using compatible materials */
+  /* batch rectangles using compatible pipelines */
 
-  /* XXX: _cogl_material_equal may give false negatives since it avoids
+  /* XXX: _cogl_pipeline_equal may give false negatives since it avoids
    * deep comparisons as an optimization. It aims to compare enough so
    * that we that we are able to batch the 90% common cases, but may not
    * look at less common differences. */
-  if (_cogl_material_equal (entry0->material,
-                            entry1->material,
+  if (_cogl_pipeline_equal (entry0->pipeline,
+                            entry1->pipeline,
                             TRUE))
     return TRUE;
   else
@@ -379,16 +379,16 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
 {
   CoglJournalFlushState *state = data;
   int                    i;
-  COGL_STATIC_TIMER (time_flush_texcoord_material_entries,
-                     "flush: vbo+texcoords+material+entries", /* parent */
-                     "flush: texcoords+material+entries",
-                     "The time spent flushing texcoord offsets + material "
+  COGL_STATIC_TIMER (time_flush_texcoord_pipeline_entries,
+                     "flush: vbo+texcoords+pipeline+entries", /* parent */
+                     "flush: texcoords+pipeline+entries",
+                     "The time spent flushing texcoord offsets + pipeline "
                      "+ entries",
                      0 /* no application private data */);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  COGL_TIMER_START (_cogl_uprof_context, time_flush_texcoord_material_entries);
+  COGL_TIMER_START (_cogl_uprof_context, time_flush_texcoord_pipeline_entries);
 
   /* NB: attributes 0 and 1 are position and color */
 
@@ -444,10 +444,10 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
 
   batch_and_call (batch_start,
                   batch_len,
-                  compare_entry_materials,
-                  _cogl_journal_flush_material_and_entries,
+                  compare_entry_pipelines,
+                  _cogl_journal_flush_pipeline_and_entries,
                   data);
-  COGL_TIMER_STOP (_cogl_uprof_context, time_flush_texcoord_material_entries);
+  COGL_TIMER_STOP (_cogl_uprof_context, time_flush_texcoord_pipeline_entries);
 }
 
 static gboolean
@@ -470,17 +470,17 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
   gsize                    stride;
   int                      i;
   CoglVertexAttribute    **attribute_entry;
-  COGL_STATIC_TIMER (time_flush_vbo_texcoord_material_entries,
+  COGL_STATIC_TIMER (time_flush_vbo_texcoord_pipeline_entries,
                      "Journal Flush", /* parent */
-                     "flush: vbo+texcoords+material+entries",
+                     "flush: vbo+texcoords+pipeline+entries",
                      "The time spent flushing vbo + texcoord offsets + "
-                     "material + entries",
+                     "pipeline + entries",
                      0 /* no application private data */);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   COGL_TIMER_START (_cogl_uprof_context,
-                    time_flush_vbo_texcoord_material_entries);
+                    time_flush_vbo_texcoord_pipeline_entries);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING:  vbo offset batch len = %d\n", batch_len);
@@ -529,7 +529,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
 #endif
 
   /* We only create new VertexAttributes when the stride within the
-   * VertexArray changes. (due to a change in the number of material layers)
+   * VertexArray changes. (due to a change in the number of pipeline layers)
    * While the stride remains constant we walk forward through the above
    * VertexArray using a vertex offset passed to cogl_draw_vertex_attributes
    */
@@ -561,14 +561,14 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
     g_print ("new vbo offset = %lu\n", (unsigned long)state->array_offset);
 
   COGL_TIMER_STOP (_cogl_uprof_context,
-                   time_flush_vbo_texcoord_material_entries);
+                   time_flush_vbo_texcoord_pipeline_entries);
 }
 
 static gboolean
 compare_entry_strides (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
 {
   /* Currently the only thing that affects the stride for our vertex arrays
-   * is the number of material layers. We need to update our VBO offsets
+   * is the number of pipeline layers. We need to update our VBO offsets
    * whenever the stride changes. */
   /* TODO: We should be padding the n_layers == 1 case as if it were
    * n_layers == 2 so we can reduce the need to split batches. */
@@ -605,7 +605,7 @@ upload_vertices (GArray *vertices, CoglJournalFlushState *state)
 }
 
 /* XXX NB: When _cogl_journal_flush() returns all state relating
- * to materials, all glEnable flags and current matrix state
+ * to pipelines, all glEnable flags and current matrix state
  * is undefined.
  */
 void
@@ -659,14 +659,14 @@ _cogl_journal_flush (void)
    *      Each time the stride of our vertex data changes we need to call
    *      gl{Vertex,Color}Pointer to inform GL of new VBO offsets.
    *      Currently the only thing that affects the stride of our vertex data
-   *      is the number of material layers.
-   * 2) We split the entries explicitly by the number of material layers:
+   *      is the number of pipeline layers.
+   * 2) We split the entries explicitly by the number of pipeline layers:
    *      We pad our vertex data when the number of layers is < 2 so that we
    *      can minimize changes in stride. Each time the number of layers
    *      changes we need to call glTexCoordPointer to inform GL of new VBO
    *      offsets.
-   * 3) We then split according to compatible Cogl materials:
-   *      This is where we flush material state
+   * 3) We then split according to compatible Cogl pipelines:
+   *      This is where we flush pipeline state
    * 4) Finally we split according to modelview matrix changes:
    *      This is when we finally tell GL to draw something.
    *      Note: Splitting by modelview changes is skipped when are doing the
@@ -684,7 +684,7 @@ _cogl_journal_flush (void)
     {
       CoglJournalEntry *entry =
         &g_array_index (ctx->journal, CoglJournalEntry, i);
-      _cogl_material_journal_unref (entry->material);
+      _cogl_pipeline_journal_unref (entry->pipeline);
     }
 
   g_array_set_size (ctx->journal, 0);
@@ -707,11 +707,11 @@ _cogl_journal_init (void)
 
 void
 _cogl_journal_log_quad (const float  *position,
-                        CoglHandle    material,
+                        CoglPipeline *pipeline,
                         int           n_layers,
                         guint32       fallback_layers,
                         GLuint        layer0_override_texture,
-                        const CoglMaterialWrapModeOverrides *
+                        const CoglPipelineWrapModeOverrides *
                                       wrap_mode_overrides,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len)
@@ -726,8 +726,8 @@ _cogl_journal_log_quad (const float  *position,
   int               next_entry;
   guint32           disable_layers;
   CoglJournalEntry *entry;
-  CoglHandle        source;
-  CoglMaterialFlushOptions flush_options;
+  CoglPipeline     *source;
+  CoglPipelineFlushOptions flush_options;
   COGL_STATIC_TIMER (log_timer,
                      "Mainloop", /* parent */
                      "Journal Log",
@@ -764,7 +764,7 @@ _cogl_journal_log_quad (const float  *position,
 
   /* FIXME: This is a hacky optimization, since it will break if we
    * change the definition of CoglColor: */
-  _cogl_material_get_colorubv (material, c);
+  _cogl_pipeline_get_colorubv (pipeline, c);
   src_c = c;
   for (i = 0; i < 3; i++)
     {
@@ -846,49 +846,49 @@ _cogl_journal_log_quad (const float  *position,
 
   entry->n_layers = n_layers;
 
-  source = material;
+  source = pipeline;
 
   if (G_UNLIKELY (ctx->legacy_state_set))
     {
-      source = cogl_material_copy (material);
-      _cogl_material_apply_legacy_state (source);
+      source = cogl_pipeline_copy (pipeline);
+      _cogl_pipeline_apply_legacy_state (source);
     }
 
   flush_options.flags = 0;
-  if (G_UNLIKELY (cogl_material_get_n_layers (material) != n_layers))
+  if (G_UNLIKELY (cogl_pipeline_get_n_layers (pipeline) != n_layers))
     {
       disable_layers = (1 << n_layers) - 1;
       disable_layers = ~disable_layers;
       flush_options.disable_layers = disable_layers;
-      flush_options.flags |= COGL_MATERIAL_FLUSH_DISABLE_MASK;
+      flush_options.flags |= COGL_PIPELINE_FLUSH_DISABLE_MASK;
     }
   if (G_UNLIKELY (fallback_layers))
     {
       flush_options.fallback_layers = fallback_layers;
-      flush_options.flags |= COGL_MATERIAL_FLUSH_FALLBACK_MASK;
+      flush_options.flags |= COGL_PIPELINE_FLUSH_FALLBACK_MASK;
     }
   if (G_UNLIKELY (layer0_override_texture))
     {
-      flush_options.flags |= COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE;
+      flush_options.flags |= COGL_PIPELINE_FLUSH_LAYER0_OVERRIDE;
       flush_options.layer0_override_texture = layer0_override_texture;
     }
   if (wrap_mode_overrides)
     {
-      flush_options.flags |= COGL_MATERIAL_FLUSH_WRAP_MODE_OVERRIDES;
+      flush_options.flags |= COGL_PIPELINE_FLUSH_WRAP_MODE_OVERRIDES;
       flush_options.wrap_mode_overrides = *wrap_mode_overrides;
     }
 
   if (G_UNLIKELY (flush_options.flags))
     {
-      /* If we haven't already created a derived material... */
-      if (source == material)
-        source = cogl_material_copy (material);
-      _cogl_material_apply_overrides (source, &flush_options);
+      /* If we haven't already created a derived pipeline... */
+      if (source == pipeline)
+        source = cogl_pipeline_copy (pipeline);
+      _cogl_pipeline_apply_overrides (source, &flush_options);
     }
 
-  entry->material = _cogl_material_journal_ref (source);
+  entry->pipeline = _cogl_pipeline_journal_ref (source);
 
-  if (G_UNLIKELY (source != material))
+  if (G_UNLIKELY (source != pipeline))
     cogl_handle_unref (source);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))

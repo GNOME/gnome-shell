@@ -31,7 +31,7 @@
 #include <glib.h>
 
 #include "cogl.h"
-#include "cogl-object.h"
+#include "cogl-object-private.h"
 #include "cogl-buffer.h"
 
 G_BEGIN_DECLS

@@ -31,21 +31,21 @@
  * later flush the journal we aim to batch data, and gl draw calls. */
 typedef struct _CoglJournalEntry
 {
-  CoglHandle               material;
+  CoglPipeline            *pipeline;
   int                      n_layers;
   CoglMatrix               model_view;
   /* XXX: These entries are pretty big now considering the padding in
-   * CoglMaterialFlushOptions and CoglMatrix, so we might need to optimize this
+   * CoglPipelineFlushOptions and CoglMatrix, so we might need to optimize this
    * later. */
 } CoglJournalEntry;
 
 void
 _cogl_journal_log_quad (const float  *position,
-                        CoglHandle    material,
+                        CoglPipeline *pipeline,
                         int           n_layers,
                         guint32       fallback_layers,
                         GLuint        layer0_override_texture,
-                        const CoglMaterialWrapModeOverrides *
+                        const CoglPipelineWrapModeOverrides *
                                       wrap_mode_overrides,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len);

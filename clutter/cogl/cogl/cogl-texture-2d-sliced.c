@@ -44,7 +44,7 @@
 #include "cogl-handle.h"
 #include "cogl-spans.h"
 #include "cogl-journal-private.h"
-#include "cogl-material-opengl-private.h"
+#include "cogl-pipeline-opengl-private.h"
 
 #include <string.h>
 #include <stdlib.h>

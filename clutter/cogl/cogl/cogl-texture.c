@@ -44,7 +44,7 @@
 #include "cogl-texture-rectangle-private.h"
 #include "cogl-sub-texture-private.h"
 #include "cogl-atlas-texture-private.h"
-#include "cogl-material.h"
+#include "cogl-pipeline.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
 #include "cogl-primitives.h"
@@ -276,7 +276,7 @@ _cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride)
     GE( glPixelStorei (GL_PACK_ALIGNMENT, 1) );
 }
 
-/* FIXME: wrap modes should be set on materials not textures */
+/* FIXME: wrap modes should be set on pipelines not textures */
 void
 _cogl_texture_set_wrap_mode_parameters (CoglHandle handle,
                                         GLenum wrap_mode_s,
@@ -1084,26 +1084,26 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
 
   /* Direct copy operation */
 
-  if (ctx->texture_download_material == COGL_INVALID_HANDLE)
+  if (ctx->texture_download_pipeline == COGL_INVALID_HANDLE)
     {
-      ctx->texture_download_material = cogl_material_new ();
-      cogl_material_set_blend (ctx->texture_download_material,
+      ctx->texture_download_pipeline = cogl_pipeline_new ();
+      cogl_pipeline_set_blend (ctx->texture_download_pipeline,
                                "RGBA = ADD (SRC_COLOR, 0)",
                                NULL);
     }
 
-  cogl_push_source (ctx->texture_download_material);
+  cogl_push_source (ctx->texture_download_pipeline);
 
-  cogl_material_set_layer (ctx->texture_download_material, 0, handle);
+  cogl_pipeline_set_layer_texture (ctx->texture_download_pipeline, 0, handle);
 
-  cogl_material_set_layer_combine (ctx->texture_download_material,
+  cogl_pipeline_set_layer_combine (ctx->texture_download_pipeline,
                                    0, /* layer */
                                    "RGBA = REPLACE (TEXTURE)",
                                    NULL);
 
-  cogl_material_set_layer_filters (ctx->texture_download_material, 0,
-                                   COGL_MATERIAL_FILTER_NEAREST,
-                                   COGL_MATERIAL_FILTER_NEAREST);
+  cogl_pipeline_set_layer_filters (ctx->texture_download_pipeline, 0,
+                                   COGL_PIPELINE_FILTER_NEAREST,
+                                   COGL_PIPELINE_FILTER_NEAREST);
 
   do_texture_draw_and_read (handle, target_bmp, viewport);
 
@@ -1145,7 +1145,7 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
                                               NULL);
 
       /* Draw alpha values into RGB channels */
-      cogl_material_set_layer_combine (ctx->texture_download_material,
+      cogl_pipeline_set_layer_combine (ctx->texture_download_pipeline,
                                        0, /* layer */
                                        "RGBA = REPLACE (TEXTURE[A])",
                                        NULL);
@@ -1175,7 +1175,7 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
   _cogl_matrix_stack_pop (modelview_stack);
   _cogl_matrix_stack_pop (projection_stack);
 
-  /* restore the original material */
+  /* restore the original pipeline */
   cogl_pop_source ();
 
   return TRUE;

@@ -30,8 +30,8 @@
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-journal-private.h"
-#include "cogl-material-private.h"
-#include "cogl-material-opengl-private.h"
+#include "cogl-pipeline-private.h"
+#include "cogl-pipeline-opengl-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-path-private.h"
 #include "cogl-texture-private.h"
@@ -181,8 +181,8 @@ _cogl_path_stroke_nodes (void)
   unsigned int   path_start = 0;
   unsigned long  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
   CoglPathData  *data;
-  CoglMaterial *copy = NULL;
-  CoglMaterial *source;
+  CoglPipeline *copy = NULL;
+  CoglPipeline *source;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -191,7 +191,7 @@ _cogl_path_stroke_nodes (void)
   _cogl_journal_flush ();
 
   /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the material state) when flushing the clip stack, so should
+   * as the pipeline state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
   _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
@@ -199,26 +199,26 @@ _cogl_path_stroke_nodes (void)
 
   if (G_UNLIKELY (ctx->legacy_state_set))
     {
-      CoglMaterial *users_source = cogl_get_source ();
-      copy = cogl_material_copy (users_source);
-      _cogl_material_apply_legacy_state (copy);
+      CoglPipeline *users_source = cogl_get_source ();
+      copy = cogl_pipeline_copy (users_source);
+      _cogl_pipeline_apply_legacy_state (copy);
       source = copy;
     }
   else
     source = cogl_get_source ();
 
-  if (cogl_material_get_n_layers (source) != 0)
+  if (cogl_pipeline_get_n_layers (source) != 0)
     {
-      /* If we haven't already created a derivative material... */
+      /* If we haven't already created a derivative pipeline... */
       if (!copy)
-        copy = cogl_material_copy (source);
-      _cogl_material_prune_to_n_layers (copy, 0);
+        copy = cogl_pipeline_copy (source);
+      _cogl_pipeline_prune_to_n_layers (copy, 0);
       source = copy;
     }
 
   cogl_push_source (source);
 
-  _cogl_material_flush_gl_state (source, FALSE);
+  _cogl_pipeline_flush_gl_state (source, FALSE);
 
   /* Disable all client texture coordinate arrays */
   _cogl_bitmask_clear_all (&ctx->temp_bitmask);
@@ -304,14 +304,14 @@ _cogl_path_fill_nodes (CoglPath *path)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* If any of the layers of the current material contain sliced
+  /* If any of the layers of the current pipeline contain sliced
      textures or textures with waste then it won't work to draw the
      path directly. Instead we can use draw the texture as a quad
      clipped to the stencil buffer. */
-  for (l = cogl_material_get_layers (cogl_get_source ()); l; l = l->next)
+  for (l = _cogl_pipeline_get_layers (cogl_get_source ()); l; l = l->next)
     {
       CoglHandle layer = l->data;
-      CoglHandle texture = cogl_material_layer_get_texture (layer);
+      CoglHandle texture = _cogl_pipeline_layer_get_texture (layer);
 
       if (texture != COGL_INVALID_HANDLE &&
           (cogl_texture_is_sliced (texture) ||
@@ -365,14 +365,14 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
   _cogl_journal_flush ();
 
   /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the material state) when flushing the clip stack, so should
+   * as the pipeline state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
   _cogl_framebuffer_flush_state (framebuffer, 0);
 
-  /* Just setup a simple material that doesn't use texturing... */
-  cogl_push_source (ctx->stencil_material);
+  /* Just setup a simple pipeline that doesn't use texturing... */
+  cogl_push_source (ctx->stencil_pipeline);
 
-  _cogl_material_flush_gl_state (ctx->stencil_material, FALSE);
+  _cogl_pipeline_flush_gl_state (ctx->stencil_pipeline, FALSE);
 
   _cogl_enable (enable_flags);
 
@@ -461,7 +461,7 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
   GE (glStencilFunc (GL_EQUAL, 0x1, 0x1));
   GE (glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP));
 
-  /* restore the original material */
+  /* restore the original pipeline */
   cogl_pop_source ();
 }
 

@@ -26,7 +26,7 @@
 
 #include "cogl-bitmap-private.h"
 #include "cogl-handle.h"
-#include "cogl-material-private.h"
+#include "cogl-pipeline-private.h"
 
 #define COGL_TEXTURE(tex) ((CoglTexture *)(tex))
 
@@ -145,7 +145,7 @@ typedef enum _CoglTextureChangeFlags
   /* Whenever the internals of a texture are changed such that the
    * underlying GL textures that represent the CoglTexture change then
    * we notify cogl-material.c via
-   * _cogl_material_texture_pre_change_notify
+   * _cogl_pipeline_texture_pre_change_notify
    */
   COGL_TEXTURE_CHANGE_GL_TEXTURES
 

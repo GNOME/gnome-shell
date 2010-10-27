@@ -36,8 +36,8 @@
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context.h"
-#include "cogl-material-private.h"
-#include "cogl-material-opengl-private.h"
+#include "cogl-pipeline-private.h"
+#include "cogl-pipeline-opengl-private.h"
 #include "cogl-winsys.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-matrix-private.h"
@@ -158,7 +158,7 @@ cogl_clear (const CoglColor *color, unsigned long buffers)
   _cogl_journal_flush ();
 
   /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the material state) when flushing the clip stack, so should
+   * as the pipeline state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
   _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
@@ -375,9 +375,9 @@ cogl_set_source_color (const CoglColor *color)
 
   premultiplied = *color;
   cogl_color_premultiply (&premultiplied);
-  cogl_material_set_color (ctx->simple_material, &premultiplied);
+  cogl_pipeline_set_color (ctx->simple_pipeline, &premultiplied);
 
-  cogl_set_source (ctx->simple_material);
+  cogl_set_source (ctx->simple_pipeline);
 }
 
 void
@@ -585,7 +585,7 @@ cogl_read_pixels (int x,
          result of the default blending operations for Cogl ends up
          with premultiplied data in the framebuffer. However it is
          possible for the framebuffer to be in whatever format
-         depending on what CoglMaterial is used to render to
+         depending on what CoglPipeline is used to render to
          it. Eventually we may want to add a way for an application to
          inform Cogl that the framebuffer is not premultiplied in case
          it is being used for some special purpose. */
@@ -740,20 +740,20 @@ cogl_begin_gl (void)
    * projection matrix state
    *
    * NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the material state) when flushing the clip stack, so should
+   * as the pipeline state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
   _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
-  /* Setup the state for the current material */
+  /* Setup the state for the current pipeline */
 
-  /* We considered flushing a specific, minimal material here to try and
+  /* We considered flushing a specific, minimal pipeline here to try and
    * simplify the GL state, but decided to avoid special cases and second
    * guessing what would be actually helpful.
    *
    * A user should instead call cogl_set_source_color4ub() before
    * cogl_begin_gl() to simplify the state flushed.
    */
-  _cogl_material_flush_gl_state (cogl_get_source (), FALSE);
+  _cogl_pipeline_flush_gl_state (cogl_get_source (), FALSE);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
@@ -945,17 +945,17 @@ _cogl_driver_error_quark (void)
 
 typedef struct _CoglSourceState
 {
-  CoglMaterial *material;
+  CoglPipeline *pipeline;
   int push_count;
 } CoglSourceState;
 
 static void
-_push_source_real (CoglMaterial *material)
+_push_source_real (CoglPipeline *pipeline)
 {
   CoglSourceState *top = g_slice_new (CoglSourceState);
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  top->material = cogl_object_ref (material);
+  top->pipeline = cogl_object_ref (pipeline);
   top->push_count = 1;
 
   ctx->source_stack = g_list_prepend (ctx->source_stack, top);
@@ -963,29 +963,30 @@ _push_source_real (CoglMaterial *material)
 
 /* FIXME: This should take a context pointer for Cogl 2.0 Technically
  * we could make it so we can retrieve a context reference from the
- * material, but this would not by symmetric with cogl_pop_source. */
+ * pipeline, but this would not by symmetric with cogl_pop_source. */
 void
-cogl_push_source (CoglMaterial *material)
+cogl_push_source (void *material_or_pipeline)
 {
   CoglSourceState *top;
+  CoglPipeline *pipeline = COGL_PIPELINE (material_or_pipeline);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
 
   if (ctx->source_stack)
     {
       top = ctx->source_stack->data;
-      if (top->material == material)
+      if (top->pipeline == pipeline)
         {
           top->push_count++;
           return;
         }
       else
-        _push_source_real (material);
+        _push_source_real (pipeline);
     }
   else
-    _push_source_real (material);
+    _push_source_real (pipeline);
 }
 
 /* FIXME: This needs to take a context pointer for Cogl 2.0 */
@@ -1002,7 +1003,7 @@ cogl_pop_source (void)
   top->push_count--;
   if (top->push_count == 0)
     {
-      cogl_object_unref (top->material);
+      cogl_object_unref (top->pipeline);
       g_slice_free (CoglSourceState, top);
       ctx->source_stack = g_list_delete_link (ctx->source_stack,
                                               ctx->source_stack);
@@ -1010,7 +1011,7 @@ cogl_pop_source (void)
 }
 
 /* FIXME: This needs to take a context pointer for Cogl 2.0 */
-CoglMaterial *
+void *
 cogl_get_source (void)
 {
   CoglSourceState *top;
@@ -1020,35 +1021,36 @@ cogl_get_source (void)
   g_return_val_if_fail (ctx->source_stack, NULL);
 
   top = ctx->source_stack->data;
-  return top->material;
+  return top->pipeline;
 }
 
 void
-cogl_set_source (CoglMaterial *material)
+cogl_set_source (void *material_or_pipeline)
 {
   CoglSourceState *top;
+  CoglPipeline *pipeline = COGL_PIPELINE (material_or_pipeline);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (cogl_is_material (material));
+  g_return_if_fail (cogl_is_pipeline (pipeline));
   g_return_if_fail (ctx->source_stack);
 
   top = ctx->source_stack->data;
-  if (top->material == material)
+  if (top->pipeline == pipeline)
     return;
 
   if (top->push_count == 1)
     {
-      /* NB: top->material may be only thing keeping material
-       * alive currently so ref material first... */
-      cogl_object_ref (material);
-      cogl_object_unref (top->material);
-      top->material = material;
+      /* NB: top->pipeline may be only thing keeping pipeline
+       * alive currently so ref pipeline first... */
+      cogl_object_ref (pipeline);
+      cogl_object_unref (top->pipeline);
+      top->pipeline = pipeline;
     }
   else
     {
       top->push_count--;
-      cogl_push_source (material);
+      cogl_push_source (pipeline);
     }
 }
 
@@ -1059,8 +1061,8 @@ cogl_set_source_texture (CoglHandle texture_handle)
 
   g_return_if_fail (texture_handle != NULL);
 
-  cogl_material_set_layer (ctx->texture_material, 0, texture_handle);
-  cogl_set_source (ctx->texture_material);
+  cogl_pipeline_set_layer_texture (ctx->texture_pipeline, 0, texture_handle);
+  cogl_set_source (ctx->texture_pipeline);
 }
 
 void

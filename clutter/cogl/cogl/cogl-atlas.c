@@ -35,7 +35,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-texture-2d-private.h"
 #include "cogl-texture-driver.h"
-#include "cogl-material-opengl-private.h"
+#include "cogl-pipeline-opengl-private.h"
 #include "cogl-debug.h"
 
 #include <stdlib.h>

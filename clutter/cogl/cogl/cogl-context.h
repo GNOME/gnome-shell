@@ -38,7 +38,7 @@
 #include "cogl-primitives.h"
 #include "cogl-clip-stack.h"
 #include "cogl-matrix-stack.h"
-#include "cogl-material-private.h"
+#include "cogl-pipeline-private.h"
 #include "cogl-buffer-private.h"
 #include "cogl-bitmask.h"
 #include "cogl-atlas.h"
@@ -57,7 +57,7 @@ typedef struct
   CoglFeatureFlagsPrivate feature_flags_private;
   gboolean                features_cached;
 
-  CoglHandle        default_material;
+  CoglHandle        default_pipeline;
   CoglHandle        default_layer_0;
   CoglHandle        default_layer_n;
   CoglHandle        dummy_layer_dependant;
@@ -80,11 +80,11 @@ typedef struct
   GArray           *texture_units;
   int               active_texture_unit;
 
-  CoglMaterialFogState legacy_fog_state;
+  CoglPipelineFogState legacy_fog_state;
 
   /* Materials */
-  CoglMaterial     *simple_material; /* used for set_source_color */
-  CoglMaterial     *texture_material; /* used for set_source_texture */
+  CoglPipeline     *simple_pipeline; /* used for set_source_color */
+  CoglPipeline     *texture_pipeline; /* used for set_source_texture */
   GString          *arbfp_source_buffer;
   GList            *source_stack;
 
@@ -105,13 +105,13 @@ typedef struct
   GArray           *polygon_vertices;
 
   /* Some simple caching, to minimize state changes... */
-  CoglMaterial     *current_material;
-  unsigned long     current_material_changes_since_flush;
-  gboolean          current_material_skip_gl_color;
-  unsigned long     current_material_age;
+  CoglPipeline     *current_pipeline;
+  unsigned long     current_pipeline_changes_since_flush;
+  gboolean          current_pipeline_skip_gl_color;
+  unsigned long     current_pipeline_age;
 
-  GArray           *material0_nodes;
-  GArray           *material1_nodes;
+  GArray           *pipeline0_nodes;
+  GArray           *pipeline1_nodes;
 
   /* Bitmask of texture coordinates arrays that are enabled */
   CoglBitmask       texcoord_arrays_enabled;
@@ -143,7 +143,7 @@ typedef struct
 
   /* Primitives */
   CoglHandle        current_path;
-  CoglMaterial     *stencil_material;
+  CoglPipeline     *stencil_pipeline;
 
   /* Pre-generated VBOs containing indices to generate GL_TRIANGLES
      out of a vertex array of quads */
@@ -157,7 +157,7 @@ typedef struct
 
   gboolean          in_begin_gl_block;
 
-  CoglMaterial     *texture_download_material;
+  CoglPipeline     *texture_download_pipeline;
 
   CoglAtlas        *atlas;
 
@@ -176,7 +176,7 @@ typedef struct
   /* Fragment processing programs */
   CoglHandle              current_program;
 
-  CoglMaterialProgramType current_use_program_type;
+  CoglPipelineProgramType current_use_program_type;
   GLuint                  current_gl_program;
 
   /* List of types that will be considered a subclass of CoglTexture in

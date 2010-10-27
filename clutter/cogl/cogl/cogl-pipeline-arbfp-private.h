@@ -25,12 +25,12 @@
  *   Robert Bragg <robert@linux.intel.com>
  */
 
-#ifndef __COGL_MATERIAL_GLSL_PRIVATE_H
-#define __COGL_MATERIAL_GLSL_PRIVATE_H
+#ifndef __COGL_PIPELINE_ARBFP_PRIVATE_H
+#define __COGL_PIPELINE_ARBFP_PRIVATE_H
 
-#include "cogl-material-private.h"
+#include "cogl-pipeline-private.h"
 
-extern const CoglMaterialBackend _cogl_material_glsl_backend;
+extern const CoglPipelineBackend _cogl_pipeline_arbfp_backend;
 
-#endif /* __COGL_MATERIAL_GLSL_PRIVATE_H */
+#endif /* __COGL_PIPELINE_ARBFP_PRIVATE_H */
 

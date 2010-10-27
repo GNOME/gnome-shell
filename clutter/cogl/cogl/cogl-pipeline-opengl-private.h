@@ -25,15 +25,16 @@
  *   Robert Bragg <robert@linux.intel.com>
  */
 
-#ifndef __COGL_MATERIAL_OPENGL_PRIVATE_H
-#define __COGL_MATERIAL_OPENGL_PRIVATE_H
+#ifndef __COGL_PIPELINE_OPENGL_PRIVATE_H
+#define __COGL_PIPELINE_OPENGL_PRIVATE_H
 
 #include "cogl.h"
 
+#include "cogl-pipeline-private.h"
 #include "cogl-matrix-stack.h"
 
 /*
- * cogl-material.c owns the GPU's texture unit state so we have some
+ * cogl-pipeline.c owns the GPU's texture unit state so we have some
  * private structures for describing the current state of a texture
  * unit that we track in a per context array (ctx->texture_units) that
  * grows according to the largest texture unit used so far...
@@ -41,7 +42,7 @@
  * Roughly speaking the members in this structure are of two kinds:
  * either they are a low level reflection of the state we send to
  * OpenGL or they are for high level meta data assoicated with the
- * texture unit when flushing CoglMaterialLayers that is typically
+ * texture unit when flushing CoglPipelineLayers that is typically
  * used to optimize subsequent re-flushing of the same layer.
  *
  * The low level members are at the top, and the high level members
@@ -79,7 +80,7 @@ typedef struct _CoglTextureUnit
    * to track when the unit->gl_texture state is out of sync with the GL
    * texture object really bound too (GL_TEXTURE0+unit->index).
    *
-   * XXX: as a further optimization cogl-material.c uses a convention
+   * XXX: as a further optimization cogl-pipeline.c uses a convention
    * of always using texture unit 1 for these transient bindings so we
    * can assume this is only ever TRUE for unit 1.
    */
@@ -93,14 +94,14 @@ typedef struct _CoglTextureUnit
    * Higher level layer state associated with the unit...
    */
 
-  /* The CoglMaterialLayer whos state was flushed to update this
+  /* The CoglPipelineLayer whos state was flushed to update this
    * texture unit last.
    *
    * This will be set to NULL if the layer is modified or freed which
    * means when we come to flush a layer; if this pointer is still
    * valid and == to the layer being flushed we don't need to update
    * any texture unit state. */
-  CoglMaterialLayer *layer;
+  CoglPipelineLayer *layer;
 
   /* To help minimize the state changes required we track the
    * difference flags associated with the layer whos state was last
@@ -114,12 +115,12 @@ typedef struct _CoglTextureUnit
   unsigned long      layer_changes_since_flush;
 
   /* Whenever a CoglTexture's internal GL texture storage changes
-   * cogl-material.c is notified with a call to
-   * _cogl_material_texture_storage_change_notify which inturn sets
+   * cogl-pipeline.c is notified with a call to
+   * _cogl_pipeline_texture_storage_change_notify which inturn sets
    * this to TRUE for each texture unit that it is currently bound
-   * too. When we later come to flush some material state then we will
+   * too. When we later come to flush some pipeline state then we will
    * always check this to potentially force an update of the texture
-   * state even if the material hasn't changed. */
+   * state even if the pipeline hasn't changed. */
   gboolean           texture_storage_changed;
 
 } CoglTextureUnit;
@@ -148,8 +149,8 @@ void
 _cogl_gl_use_program_wrapper (CoglHandle program);
 
 void
-_cogl_material_flush_gl_state (CoglMaterial *material,
+_cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
                                gboolean skip_gl_state);
 
-#endif /* __COGL_MATERIAL_OPENGL_PRIVATE_H */
+#endif /* __COGL_PIPELINE_OPENGL_PRIVATE_H */
 
