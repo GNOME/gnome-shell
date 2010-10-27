@@ -324,6 +324,49 @@ _st_set_text_from_style (ClutterText *text,
   }
 }
 
+/**
+ * _st_create_texture_material:
+ * @src_texture: The CoglTexture for the material
+ *
+ * Creates a simple material which contains the given texture as a
+ * single layer.
+ */
+CoglHandle
+_st_create_texture_material (CoglHandle src_texture)
+{
+  static CoglHandle texture_material_template = COGL_INVALID_HANDLE;
+  CoglHandle material;
+
+  g_return_val_if_fail (src_texture != COGL_INVALID_HANDLE,
+                        COGL_INVALID_HANDLE);
+
+  /* We use a material that has a dummy texture as a base for all
+     texture materials. The idea is that only the Cogl texture object
+     would be different in the children so it is likely that Cogl will
+     be able to share GL programs between all the textures. */
+  if (G_UNLIKELY (texture_material_template == COGL_INVALID_HANDLE))
+    {
+      static const guint8 white_pixel[] = { 0xff, 0xff, 0xff, 0xff };
+      CoglHandle dummy_texture;
+
+      dummy_texture =
+        cogl_texture_new_from_data (1, 1,
+                                    COGL_TEXTURE_NONE,
+                                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                    COGL_PIXEL_FORMAT_ANY,
+                                    4, white_pixel);
+
+      texture_material_template = cogl_material_new ();
+      cogl_material_set_layer (texture_material_template, 0, dummy_texture);
+      cogl_handle_unref (dummy_texture);
+    }
+
+  material = cogl_material_copy (texture_material_template);
+
+  cogl_material_set_layer (material, 0, src_texture);
+
+  return material;
+}
 
 /*****
  * Shadows

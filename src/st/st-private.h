@@ -73,6 +73,8 @@ void _st_allocate_fill (StWidget        *parent,
 void _st_set_text_from_style (ClutterText *text,
                               StThemeNode *theme_node);
 
+CoglHandle _st_create_texture_material (CoglHandle src_texture);
+
 /* Helper for widgets which need to draw additional shadows */
 CoglHandle _st_create_shadow_material (StShadow   *shadow_spec,
                                        CoglHandle  src_texture);
