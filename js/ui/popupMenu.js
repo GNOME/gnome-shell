@@ -81,9 +81,7 @@ PopupBaseMenuItem.prototype = {
     },
 
     _onStyleChanged: function (actor) {
-        let themeNode = actor.get_theme_node();
-        let [found, spacing] = themeNode.get_length('spacing', false);
-        this._spacing = found ? spacing : 0;
+        this._spacing = actor.get_theme_node().get_length('spacing');
     },
 
     _hoverChanged: function (actor) {
