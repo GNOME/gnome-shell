@@ -155,18 +155,22 @@ PopupBaseMenuItem.prototype = {
         this._children.push({ actor: child,
                               column: column,
                               span: span });
-        this.actor.connect('destroy', Lang.bind(this, function () { this.removeActor(child); }));
+        this.actor.connect('destroy', Lang.bind(this, function () { this._removeChild(child); }));
         this.actor.add_actor(child);
     },
 
-    removeActor: function(child) {
+    _removeChild: function(child) {
         for (let i = 0; i < this._children.length; i++) {
             if (this._children[i].actor == child) {
                 this._children.splice(i, 1);
-                this.actor.remove_actor(child);
                 return;
             }
         }
+    },
+
+    removeActor: function(child) {
+        this.actor.remove_actor(child);
+        this._removeChild(child);
     },
 
     setShowDot: function(show) {
