@@ -31,12 +31,12 @@ function on_vert_sep_repaint (area)
     let themeNode = area.get_theme_node();
     let [width, height] = area.get_surface_size();
     let found, margin, gradientHeight;
-    [found, margin] = themeNode.get_length('-margin-vertical', false);
-    [found, gradientWidth] = themeNode.get_length('-gradient-width', false);
+    [found, margin] = themeNode.lookup_length('-margin-vertical', false);
+    [found, gradientWidth] = themeNode.lookup_length('-gradient-width', false);
     let startColor = new Clutter.Color();
-    themeNode.get_color('-gradient-start', false, startColor);
+    themeNode.lookup_color('-gradient-start', false, startColor);
     let endColor = new Clutter.Color();
-    themeNode.get_color('-gradient-end', false, endColor);
+    themeNode.lookup_color('-gradient-end', false, endColor);
 
     let gradientHeight = (height - margin * 2);
     let gradientOffset = (width - gradientWidth) / 2;
@@ -54,61 +54,75 @@ DateMenuButton.prototype = {
 
     _init: function() {
         let item;
+        let hbox;
+        let vbox;
 
         PanelMenu.Button.prototype._init.call(this, St.Align.START);
 
         this._clock = new St.Label();
         this.actor.set_child(this._clock);
 
+        hbox = new St.BoxLayout({name: 'calendarHBox'});
+        this.menu.addActor(hbox);
+
+        // Fill up the first column
+        //
+        vbox = new St.BoxLayout({vertical: true});
+        hbox.add(vbox);
+
+        // Date
         this._date = new St.Label();
         this._date.style_class = 'datemenu-date-label';
-        this.menu._box.add(this._date);
+        vbox.add(this._date);
 
+        // Calendar
         this._calendar = new Calendar.Calendar();
-        this.menu._box.add(this._calendar.actor);
+        vbox.add(this._calendar.actor);
 
+        // Add vertical separator
+        //
+        item = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
+                                    pseudo_class: 'highlighted' });
+        item.set_width(25); // TODO: don't hard-code the width
+        item.connect('repaint', Lang.bind(this, on_vert_sep_repaint));
+        hbox.add(item);
+
+        // Fill up the second column
+        //
+        vbox = new St.BoxLayout({vertical: true});
+        hbox.add(vbox);
+
+        // Event list
         this._taskList = new Calendar.EventsList();
+        this._taskList.actor.set_width(300); // TODO: Don't hardcode the width of the list
+        vbox.add(this._taskList.actor, { x_fill: true,
+                                         y_fill: true });
+        // Update event list when opening the menu ..
         this.menu.connect('opening', Lang.bind(this, function() {
             this._calendar.clearButtonsState();
             this._taskList.update();
         }));
+        // .. and also update when selecting a new day
         this._calendar.connect('activate', Lang.bind(this, function(obj, day) {
             this._taskList.showDay(day);
         }));
+        // .. TODO: and also update when changing the month
 
+        // Done with hbox for calendar and event list
+        //
+
+        // Add separator
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
+        // Add button to get to the Date and Time settings
         item = new PopupMenu.PopupImageMenuItem(_("Date and Time Settings"), 'gnome-shell-clock-preferences');
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
         this.menu.addMenuItem(item);
 
+        // Track changes to clock settings
         this._clockSettings = new Gio.Settings({ schema: 'org.gnome.shell.clock' });
         this._clockSettings.connect('changed', Lang.bind(this, this._clockSettingsChanged));
-
-        this._vertSep = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
-                                             pseudo_class: 'highlighted' });
-        //this._vertSep.set_width (25);
-        this._vertSep.connect('repaint', Lang.bind(this, on_vert_sep_repaint));
-
-        let hbox;
-        let orig_menu_box;
-        orig_menu_box = this.menu._box;
-        this.menu._boxPointer.bin.remove_actor(orig_menu_box);
-        hbox = new St.BoxLayout();
-        hbox.add(orig_menu_box);
-        hbox.add(this._vertSep);
-
-        let calendarButton = new St.Button({ label: _("Open Calendar"),
-                                             style_class: 'open-calendar',
-                                             x_align: St.Align.START });
-        let box = new St.BoxLayout({ vertical: true });
-        box.add(this._taskList.actor, { expand: true, x_fill: true, y_fill: true });
-        box.add(calendarButton);
-
-        hbox.add(box);
-        this.menu._boxPointer.bin.set_child(hbox);
-        this.menu._box = hbox;
 
         // Start the clock
         this._updateClockAndDate();

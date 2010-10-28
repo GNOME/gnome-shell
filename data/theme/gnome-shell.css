@@ -806,6 +806,10 @@ StTooltip {
     padding: 10px;
 }
 
+#calendarHBox {
+    padding: 20px;
+}
+
 .calendar {
     spacing-rows: 0px;
     spacing-columns: 0px;
