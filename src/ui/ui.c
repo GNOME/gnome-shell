@@ -92,7 +92,7 @@ maybe_redirect_mouse_event (XEvent *xevent)
 {
   GdkDisplay *gdisplay;
   MetaUI *ui;
-  GdkEvent gevent;
+  GdkEvent *gevent;
   GdkWindow *gdk_window;
   Window window;
 
@@ -129,8 +129,6 @@ maybe_redirect_mouse_event (XEvent *xevent)
   if (gdk_display_pointer_is_grabbed (gdisplay))
     return FALSE;
 
-  memset (&gevent, 0, sizeof (gevent));
-
   switch (xevent->type)
     {
     case ButtonPress:
@@ -152,13 +150,13 @@ maybe_redirect_mouse_event (XEvent *xevent)
               ABS (xevent->xbutton.x - ui->button_click_x) <= double_click_distance &&
               ABS (xevent->xbutton.y - ui->button_click_y) <= double_click_distance)
             {
-              gevent.button.type = GDK_2BUTTON_PRESS;
+              gevent = gdk_event_new (GDK_2BUTTON_PRESS);
 
               ui->button_click_number = 0;
             }
           else
             {
-              gevent.button.type = GDK_BUTTON_PRESS;
+              gevent = gdk_event_new (GDK_BUTTON_PRESS);
               ui->button_click_number = xevent->xbutton.button;
               ui->button_click_window = xevent->xbutton.window;
               ui->button_click_time = xevent->xbutton.time;
@@ -168,36 +166,39 @@ maybe_redirect_mouse_event (XEvent *xevent)
         }
       else
         {
-          gevent.button.type = GDK_BUTTON_RELEASE;
+          gevent = gdk_event_new (GDK_BUTTON_RELEASE);
         }
 
-      gevent.button.window = gdk_window;
-      gevent.button.button = xevent->xbutton.button;
-      gevent.button.time = xevent->xbutton.time;
-      gevent.button.x = xevent->xbutton.x;
-      gevent.button.y = xevent->xbutton.y;
-      gevent.button.x_root = xevent->xbutton.x_root;
-      gevent.button.y_root = xevent->xbutton.y_root;
+      gevent->button.window = g_object_ref (gdk_window);
+      gevent->button.button = xevent->xbutton.button;
+      gevent->button.time = xevent->xbutton.time;
+      gevent->button.x = xevent->xbutton.x;
+      gevent->button.y = xevent->xbutton.y;
+      gevent->button.x_root = xevent->xbutton.x_root;
+      gevent->button.y_root = xevent->xbutton.y_root;
 
       break;
     case MotionNotify:
-      gevent.motion.type = GDK_MOTION_NOTIFY;
-      gevent.motion.window = gdk_window;
+      gevent = gdk_event_new (GDK_MOTION_NOTIFY);
+      gevent->motion.type = GDK_MOTION_NOTIFY;
+      gevent->motion.window = g_object_ref (gdk_window);
       break;
     case EnterNotify:
     case LeaveNotify:
-      gevent.crossing.type = xevent->type == EnterNotify ? GDK_ENTER_NOTIFY : GDK_LEAVE_NOTIFY;
-      gevent.crossing.window = gdk_window;
-      gevent.crossing.x = xevent->xcrossing.x;
-      gevent.crossing.y = xevent->xcrossing.y;
+      gevent = gdk_event_new (xevent->type == EnterNotify ? GDK_ENTER_NOTIFY : GDK_LEAVE_NOTIFY);
+      gevent->crossing.window = g_object_ref (gdk_window);
+      gevent->crossing.x = xevent->xcrossing.x;
+      gevent->crossing.y = xevent->xcrossing.y;
       break;
     default:
       g_assert_not_reached ();
       break;
     }
 
-  /* If we've gotten here, we've filled in the gdk_event and should send it on */
-  gtk_main_do_event (&gevent);
+  /* If we've gotten here, we've created the gdk_event and should send it on */
+  gdk_event_set_device (gevent, gdk_display_get_core_pointer (gdisplay));
+  gtk_main_do_event (gevent);
+  gdk_event_free (gevent);
 
   return TRUE;
 }
