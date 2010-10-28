@@ -903,7 +903,8 @@ Panel.prototype = {
     },
 
     _onTrayIconRemoved: function(o, icon) {
-        this._trayBox.remove_actor(icon);
+        if (icon.get_parent() != null)
+            this._trayBox.remove_actor(icon);
     },
 
     _addRipple : function(delay, time, startScale, startOpacity, finalScale, finalOpacity) {
