@@ -509,6 +509,8 @@ _st_theme_node_free_drawing_state (StThemeNode  *node)
 
   if (node->background_texture != COGL_INVALID_HANDLE)
     cogl_handle_unref (node->background_texture);
+  if (node->background_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->background_material);
   if (node->background_shadow_material != COGL_INVALID_HANDLE)
     cogl_handle_unref (node->background_shadow_material);
   if (node->border_texture != COGL_INVALID_HANDLE)
@@ -531,6 +533,7 @@ _st_theme_node_init_drawing_state (StThemeNode *node)
   int corner_id;
 
   node->background_texture = COGL_INVALID_HANDLE;
+  node->background_material = COGL_INVALID_HANDLE;
   node->background_shadow_material = COGL_INVALID_HANDLE;
   node->border_shadow_material = COGL_INVALID_HANDLE;
   node->border_texture = COGL_INVALID_HANDLE;
@@ -632,6 +635,7 @@ st_theme_node_render_resources (StThemeNode   *node,
     {
 
       node->background_texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, background_image);
+      node->background_material = _st_create_texture_material (node->background_texture);
 
       if (shadow_spec)
         {
@@ -1120,7 +1124,7 @@ st_theme_node_paint (StThemeNode           *node,
                                        &background_box,
                                        paint_opacity);
 
-      paint_material_with_opacity (node->border_material, &background_box, paint_opacity);
+      paint_material_with_opacity (node->background_material, &background_box, paint_opacity);
     }
 }
 
@@ -1157,6 +1161,8 @@ st_theme_node_copy_cached_paint_state (StThemeNode *node,
     node->border_shadow_material = cogl_handle_ref (other->border_shadow_material);
   if (other->background_texture)
     node->background_texture = cogl_handle_ref (other->background_texture);
+  if (other->background_material)
+    node->background_material = cogl_handle_ref (other->background_material);
   if (other->border_texture)
     node->border_texture = cogl_handle_ref (other->border_texture);
   if (other->border_material)

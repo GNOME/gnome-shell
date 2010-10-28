@@ -77,6 +77,7 @@ struct _StThemeNode {
   CoglHandle background_shadow_material;
   CoglHandle border_shadow_material;
   CoglHandle background_texture;
+  CoglHandle background_material;
   CoglHandle border_texture;
   CoglHandle border_material;
   CoglHandle corner_material[4];
