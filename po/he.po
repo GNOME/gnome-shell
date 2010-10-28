@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-26 08:20+0200\n"
-"PO-Revision-Date: 2010-10-26 08:20+0200\n"
+"POT-Creation-Date: 2010-10-28 08:56+0200\n"
+"PO-Revision-Date: 2010-10-28 08:58+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -469,7 +469,9 @@ msgstr "לא מותקנות הרחבות"
 msgid "Enabled"
 msgstr "פעיל"
 
-#: ../js/ui/lookingGlass.js:591
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:591 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "מנוטרל"
 
@@ -687,6 +689,30 @@ msgstr "לא ניתן להוסיף מרחבי עבודה כיוון שהם ממ�
 msgid "Can't remove the first workspace."
 msgstr "לא ניתן להסיר את מרחב העבודה הראשון."
 
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1094
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "פלט אחד"
+msgstr[1] "%u פלטים"
+msgstr[2] "2 פלטים"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1104
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "קלט אחד"
+msgstr[1] "%u קלטים"
+msgstr[2] "2 קלטים"
+
+#: ../src/gvc/gvc-mixer-control.c:1402
+msgid "System Sounds"
+msgstr "צלילי מערכת"
+
 #: ../src/shell-global.c:1204
 msgid "Less than a minute ago"
 msgstr "לפני פחות מדקה"
@@ -749,9 +775,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Account Information..."
 #~ msgstr "פרטי המשתמש..."
-
-#~ msgid "System Settings..."
-#~ msgstr "הגדרות מערכת..."
 
 #~ msgid "ON"
 #~ msgstr "1"
