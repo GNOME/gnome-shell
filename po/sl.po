@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-10-11 18:48+0000\n"
-"PO-Revision-Date: 2010-10-12 19:57+0100\n"
+"POT-Creation-Date: 2010-10-26 14:37+0000\n"
+"PO-Revision-Date: 2010-10-26 19:29+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -147,7 +147,7 @@ msgstr "Ali naj se beleži statistika uporabe programov"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
 msgid "Clip the crosshairs at the center"
-msgstr ""
+msgstr "Ali merek prekriva kazalko miške v središču"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
 msgid "Color of the crosshairs"
@@ -364,58 +364,58 @@ msgid "Undo"
 msgstr "Razveljavi"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:468
+#: ../js/ui/panel.js:469
 #, c-format
 msgid "Quit %s"
 msgstr "Končaj %s"
 
-#: ../js/ui/panel.js:493
+#: ../js/ui/panel.js:494
 msgid "Preferences"
 msgstr "Možnosti"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:579
+#: ../js/ui/panel.js:580
 msgid "%a %b %e, %R:%S"
 msgstr "%a. %e. %b., %R:%S"
 
-#: ../js/ui/panel.js:580
+#: ../js/ui/panel.js:581
 msgid "%a %b %e, %R"
 msgstr "%a, %e. %b., %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:584
+#: ../js/ui/panel.js:585
 msgid "%a %R:%S"
 msgstr "%a. %R:%S"
 
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:586
 msgid "%a %R"
 msgstr "%a. %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:592
+#: ../js/ui/panel.js:593
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a. %e. %b., %H:%M:%S"
 
-#: ../js/ui/panel.js:593
+#: ../js/ui/panel.js:594
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a. %e. %b., %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:597
+#: ../js/ui/panel.js:598
 msgid "%a %l:%M:%S %p"
 msgstr "%a, %H:%M:%S"
 
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:599
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:743
+#: ../js/ui/panel.js:744
 msgid "Activities"
 msgstr "Dejavnosti"
 
@@ -450,41 +450,93 @@ msgstr "Vnos ukaza:"
 msgid "Execution of '%s' failed:"
 msgstr "Izvedba '%s' je spodletela:"
 
-#: ../js/ui/statusMenu.js:91
+#: ../js/ui/statusMenu.js:101
 msgid "Available"
 msgstr "Na voljo"
 
-#: ../js/ui/statusMenu.js:95
+#: ../js/ui/statusMenu.js:106
 msgid "Busy"
 msgstr "Zaposleno"
 
-#: ../js/ui/statusMenu.js:99
+#: ../js/ui/statusMenu.js:111
 msgid "Invisible"
 msgstr "Nevidno"
 
-#: ../js/ui/statusMenu.js:106
-msgid "Account Information..."
-msgstr "Podrobnosti računa ..."
+#: ../js/ui/statusMenu.js:119
+msgid "My Account..."
+msgstr "Račun ..."
 
-#: ../js/ui/statusMenu.js:110
-msgid "System Settings..."
-msgstr "Sistemske nastavitve ..."
+#: ../js/ui/statusMenu.js:123
+msgid "System Preferences..."
+msgstr "Sistemske možnosti ..."
 
-#: ../js/ui/statusMenu.js:117
+#: ../js/ui/statusMenu.js:130
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
-#: ../js/ui/statusMenu.js:121
+#: ../js/ui/statusMenu.js:134
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:139
 msgid "Log Out..."
 msgstr "Odjava ..."
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:146
+msgid "Suspend"
+msgstr "V mirovanje"
+
+#: ../js/ui/statusMenu.js:150
+msgid "Restart..."
+msgstr "Ponoven zagon ..."
+
+#: ../js/ui/statusMenu.js:154
 msgid "Shut Down..."
 msgstr "Izklopi ..."
+
+#: ../js/ui/status/accessibility.js:88
+msgid "Screen Reader"
+msgstr "Zaslonski bralnik"
+
+#: ../js/ui/status/accessibility.js:91
+msgid "Screen Keyboard"
+msgstr "Zaslonska tipkovnica"
+
+#: ../js/ui/status/accessibility.js:94
+msgid "Visual Alerts"
+msgstr "Vidna opozorila"
+
+#: ../js/ui/status/accessibility.js:97
+msgid "Sticky Keys"
+msgstr "Lepljive tipke"
+
+#: ../js/ui/status/accessibility.js:100
+msgid "Slow Keys"
+msgstr "Počasne tipke"
+
+#: ../js/ui/status/accessibility.js:103
+msgid "Bounce Keys"
+msgstr "Odskočne tipke"
+
+#: ../js/ui/status/accessibility.js:106
+msgid "Mouse Keys"
+msgstr "Miškine tipke"
+
+#: ../js/ui/status/accessibility.js:110
+msgid "Universal Access Settings"
+msgstr "Splošne nastavitve dostopa"
+
+#: ../js/ui/status/accessibility.js:163
+msgid "High Contrast"
+msgstr "Visok kontrast"
+
+#: ../js/ui/status/accessibility.js:202
+msgid "Large Text"
+msgstr "Veliko besedilo"
+
+#: ../js/ui/status/accessibility.js:223
+msgid "Zoom"
+msgstr "Približanje"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -496,19 +548,19 @@ msgstr "%s je končal začenjanje"
 msgid "'%s' is ready"
 msgstr "'%s' storitev je pripravljena"
 
-#: ../js/ui/workspacesView.js:230
+#: ../js/ui/workspacesView.js:229
 msgid "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "Ni mogoče dodati nove delovne površine, ker je doseženo njihovo največje dovoljeno število."
 
-#: ../js/ui/workspacesView.js:247
+#: ../js/ui/workspacesView.js:246
 msgid "Can't remove the first workspace."
 msgstr "Ni mogoče odstraniti prve delovne površine."
 
-#: ../src/shell-global.c:1196
+#: ../src/shell-global.c:1204
 msgid "Less than a minute ago"
 msgstr "Pred manj kot eno minuto"
 
-#: ../src/shell-global.c:1200
+#: ../src/shell-global.c:1208
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -517,7 +569,7 @@ msgstr[1] "Pred %d minuto"
 msgstr[2] "Pred %d minutama"
 msgstr[3] "Pred %d minutami"
 
-#: ../src/shell-global.c:1205
+#: ../src/shell-global.c:1213
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -526,7 +578,7 @@ msgstr[1] "Pred %d uro"
 msgstr[2] "Pred %d urama"
 msgstr[3] "Pred %d urami"
 
-#: ../src/shell-global.c:1210
+#: ../src/shell-global.c:1218
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -535,7 +587,7 @@ msgstr[1] "Pred %d dnevom"
 msgstr[2] "Pred %d dnevoma"
 msgstr[3] "Pred %d dnevi"
 
-#: ../src/shell-global.c:1215
+#: ../src/shell-global.c:1223
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -568,6 +620,10 @@ msgstr "Poišči"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Account Information..."
+#~ msgstr "Podrobnosti računa ..."
+#~ msgid "System Settings..."
+#~ msgstr "Sistemske nastavitve ..."
 #~ msgid "ON"
 #~ msgstr "⚪"
 #~ msgid "OFF"

@@ -135,7 +135,7 @@
     </dependencies>
   </autotools>
 
-  <autotools id="mutter" autogenargs="--with-gtk=3.0">
+  <autotools id="mutter">
     <branch repo="git.gnome.org" module="mutter"/>
     <dependencies>
       <dep package="clutter"/>
