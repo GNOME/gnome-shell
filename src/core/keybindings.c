@@ -1373,8 +1373,7 @@ meta_display_process_key_event (MetaDisplay *display,
     return FALSE; /* event window is destroyed */
   
   /* ignore key events on popup menus and such. */
-  if (window == NULL &&
-      meta_ui_window_is_widget (screen->ui, event->xany.window))
+  if (meta_ui_window_is_widget (screen->ui, event->xany.window))
     return FALSE;
   
   /* window may be NULL */
