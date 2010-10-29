@@ -390,6 +390,7 @@ function pushModal(actor) {
     }
     modalActorFocusStack.push([actor, curFocus]);
 
+    global.stage.set_key_focus(null);
     return true;
 }
 
