@@ -2,20 +2,7 @@
 
 const DBus = imports.dbus;
 
-// D-Bus utils; should eventually move to gjs.
-// https://bugzilla.gnome.org/show_bug.cgi?id=610859
-
-function makeProxyClass(iface) {
-    let constructor = function() { this._init.apply(this, arguments); };
-
-    constructor.prototype._init = function(bus, name, path) {
-        bus.proxifyObject(this, name, path);
-    };
-
-    DBus.proxifyPrototype(constructor.prototype, iface);
-    return constructor;
-}
-
+// D-Bus utils
 function nameToPath(name) {
     return '/' + name.replace(/\./g, '/');
 };
@@ -118,7 +105,7 @@ const ChannelDispatchOperationIface = {
           outSignature: '' }
     ]
 };
-let ChannelDispatchOperation = makeProxyClass(ChannelDispatchOperationIface);
+let ChannelDispatchOperation = DBus.makeProxyClass(ChannelDispatchOperationIface);
 
 const CONNECTION_NAME = TELEPATHY + '.Connection';
 const ConnectionIface = {
@@ -128,7 +115,7 @@ const ConnectionIface = {
           inSignature: 'uu' }
     ]
 };
-let Connection = makeProxyClass(ConnectionIface);
+let Connection = DBus.makeProxyClass(ConnectionIface);
 
 const ConnectionStatus = {
     CONNECTED:    0,
@@ -150,7 +137,7 @@ const ConnectionAliasingIface = {
           inSignature: 'a(us)' }
     ]
 };
-let ConnectionAliasing = makeProxyClass(ConnectionAliasingIface);
+let ConnectionAliasing = DBus.makeProxyClass(ConnectionAliasingIface);
 
 const CONNECTION_AVATARS_NAME = CONNECTION_NAME + '.Interface.Avatars';
 const ConnectionAvatarsIface = {
@@ -174,7 +161,7 @@ const ConnectionAvatarsIface = {
         }
     ]
 };
-let ConnectionAvatars = makeProxyClass(ConnectionAvatarsIface);
+let ConnectionAvatars = DBus.makeProxyClass(ConnectionAvatarsIface);
 
 const CONNECTION_CONTACTS_NAME = CONNECTION_NAME + '.Interface.Contacts';
 const ConnectionContactsIface = {
@@ -186,7 +173,7 @@ const ConnectionContactsIface = {
         }
     ]
 };
-let ConnectionContacts = makeProxyClass(ConnectionContactsIface);
+let ConnectionContacts = DBus.makeProxyClass(ConnectionContactsIface);
 
 const CONNECTION_REQUESTS_NAME = CONNECTION_NAME + '.Interface.Requests';
 const ConnectionRequestsIface = {
@@ -215,7 +202,7 @@ const ConnectionRequestsIface = {
         }
     ]
 };
-let ConnectionRequests = makeProxyClass(ConnectionRequestsIface);
+let ConnectionRequests = DBus.makeProxyClass(ConnectionRequestsIface);
 
 const CONNECTION_SIMPLE_PRESENCE_NAME = CONNECTION_NAME + '.Interface.SimplePresence';
 const ConnectionSimplePresenceIface = {
@@ -234,7 +221,7 @@ const ConnectionSimplePresenceIface = {
           inSignature: 'a{u(uss)}' }
     ]
 };
-let ConnectionSimplePresence = makeProxyClass(ConnectionSimplePresenceIface);
+let ConnectionSimplePresence = DBus.makeProxyClass(ConnectionSimplePresenceIface);
 
 const ConnectionPresenceType = {
     UNSET:         0,
@@ -264,7 +251,7 @@ const ChannelIface = {
           inSignature: '' }
     ]
 };
-let Channel = makeProxyClass(ChannelIface);
+let Channel = DBus.makeProxyClass(ChannelIface);
 
 const CHANNEL_TEXT_NAME = CHANNEL_NAME + '.Type.Text';
 const ChannelTextIface = {
@@ -288,7 +275,7 @@ const ChannelTextIface = {
           inSignature: 'uuuuus' }
     ]
 };
-let ChannelText = makeProxyClass(ChannelTextIface);
+let ChannelText = DBus.makeProxyClass(ChannelTextIface);
 
 const ChannelTextMessageType = {
     NORMAL: 0,
@@ -315,7 +302,7 @@ const ChannelGroupIface = {
           inSignature: 'sauauauauuu' }
     ]
 };
-let ChannelGroup = makeProxyClass(ChannelGroupIface);
+let ChannelGroup = DBus.makeProxyClass(ChannelGroupIface);
 
 const ACCOUNT_MANAGER_NAME = TELEPATHY + '.AccountManager';
 const AccountManagerIface = {
@@ -330,7 +317,7 @@ const AccountManagerIface = {
           inSignature: 'ob' }
     ]
 };
-let AccountManager = makeProxyClass(AccountManagerIface);
+let AccountManager = DBus.makeProxyClass(AccountManagerIface);
 
 const ACCOUNT_NAME = TELEPATHY + '.Account';
 const AccountIface = {
@@ -341,7 +328,7 @@ const AccountIface = {
           access: 'read' }
     ]
 };
-let Account = makeProxyClass(AccountIface);
+let Account = DBus.makeProxyClass(AccountIface);
 
 const CHANNEL_DISPATCHER_NAME = TELEPATHY + '.ChannelDispatcher';
 const ChannelDispatcherIface = {
@@ -352,7 +339,7 @@ const ChannelDispatcherIface = {
           outSignature: 'o' }
     ]
 };
-let ChannelDispatcher = makeProxyClass(ChannelDispatcherIface);
+let ChannelDispatcher = DBus.makeProxyClass(ChannelDispatcherIface);
 
 const CHANNEL_REQUEST_NAME = TELEPATHY + '.ChannelRequest';
 const ChannelRequestIface = {
@@ -369,4 +356,4 @@ const ChannelRequestIface = {
           signature: '' }
     ]
 };
-let ChannelRequest = makeProxyClass(ChannelRequestIface);
+let ChannelRequest = DBus.makeProxyClass(ChannelRequestIface);
