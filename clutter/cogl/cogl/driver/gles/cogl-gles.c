@@ -105,7 +105,12 @@ _cogl_features_init (void)
   flags |= COGL_FEATURE_TEXTURE_NPOT_BASIC;
 #endif
 
+  /* FIXME: HACK: We are in the process of overhauling the GLES 2 backend
+   * and consolidating with a CoglMaterial GLSL backend. Currently though
+   * use of CoglBuffers with GLES 2 is broken. */
+#ifndef HAVE_COGL_GLES2
   flags |= COGL_FEATURE_VBOS;
+#endif
 
   /* Both GLES 1.1 and GLES 2.0 support point sprites in core */
   flags |= COGL_FEATURE_POINT_SPRITE;
