@@ -294,6 +294,7 @@ NotificationDaemon.prototype = {
         }
 
         if (actions.length) {
+            notification.setUseActionIcons(hints['action-icons'] == true);
             for (let i = 0; i < actions.length - 1; i += 2)
                 notification.addButton(actions[i], actions[i + 1]);
         }
@@ -317,6 +318,7 @@ NotificationDaemon.prototype = {
     GetCapabilities: function() {
         return [
             'actions',
+            'action-icons',
             'body',
             // 'body-hyperlinks',
             // 'body-images',
@@ -325,7 +327,6 @@ NotificationDaemon.prototype = {
             'icon-static',
             'persistence',
             // 'sound',
-            'x-gnome-icon-buttons'
         ];
     },
 

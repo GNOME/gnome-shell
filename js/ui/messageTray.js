@@ -102,6 +102,7 @@ Notification.prototype = {
         this.source = source;
         this.urgent = false;
         this.expanded = false;
+        this._useActionIcons = false;
         this._customContent = false;
         this._bannerBodyText = null;
         this._titleFitsInBannerMode = true;
@@ -346,7 +347,7 @@ Notification.prototype = {
 
         let button = new St.Button();
 
-        if (Gtk.IconTheme.get_default().has_icon(id)) {
+        if (this._useActionIcons && Gtk.IconTheme.get_default().has_icon(id)) {
             button.add_style_class_name('notification-icon-button');
             button.child = St.TextureCache.get_default().load_icon_name(id, St.IconType.SYMBOLIC, BUTTON_ICON_SIZE);
         } else {
@@ -361,6 +362,10 @@ Notification.prototype = {
 
     setUrgent: function(urgent) {
         this.urgent = urgent;
+    },
+
+    setUseActionIcons: function(useIcons) {
+        this._useActionIcons = useIcons;
     },
 
     _styleChanged: function() {
