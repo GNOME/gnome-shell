@@ -195,11 +195,40 @@ xfixes_cursor_reset_image (ShellXFixesCursor *xfixes_cursor)
 {
   XFixesCursorImage *cursor_image;
   CoglHandle sprite = COGL_INVALID_HANDLE;
+  guint8 *cursor_data;
+  gboolean free_cursor_data;
 
   if (!xfixes_cursor->have_xfixes)
     return;
 
   cursor_image = XFixesGetCursorImage (clutter_x11_get_default_display ());
+
+  /* Like all X APIs, XFixesGetCursorImage() returns arrays of 32-bit
+   * quantities as arrays of long; we need to convert on 64 bit */
+  if (sizeof(long) == 4)
+    {
+      cursor_data = (guint8 *)cursor_image->pixels;
+      free_cursor_data = FALSE;
+    }
+  else
+    {
+      int i, j;
+      guint32 *cursor_words;
+      gulong *p;
+      guint32 *q;
+
+      cursor_words = g_new (guint32, cursor_image->width * cursor_image->height);
+      cursor_data = (guint8 *)cursor_words;
+
+      p = cursor_image->pixels;
+      q = cursor_words;
+      for (j = 0; j < cursor_image->height; j++)
+        for (i = 0; i < cursor_image->width; i++)
+          *(q++) = *(p++);
+
+      free_cursor_data = TRUE;
+    }
+
   sprite = cogl_texture_new_from_data (cursor_image->width,
                                        cursor_image->height,
                                        COGL_TEXTURE_NONE,
@@ -210,7 +239,11 @@ xfixes_cursor_reset_image (ShellXFixesCursor *xfixes_cursor)
 #endif
                                        COGL_PIXEL_FORMAT_ANY,
                                        cursor_image->width * 4, /* stride */
-                                       (const guint8 *) cursor_image->pixels);
+                                       cursor_data);
+
+  if (free_cursor_data)
+    g_free (cursor_data);
+
   if (sprite != COGL_INVALID_HANDLE)
     {
       if (xfixes_cursor->cursor_sprite != NULL)
