@@ -7654,7 +7654,10 @@ invalidate_queue_redraw_entry (ClutterActor *self,
   ClutterActorPrivate *priv = self->priv;
 
   if (priv->queue_redraw_entry != NULL)
-    _clutter_stage_queue_redraw_entry_invalidate (priv->queue_redraw_entry);
+    {
+      _clutter_stage_queue_redraw_entry_invalidate (priv->queue_redraw_entry);
+      priv->queue_redraw_entry = NULL;
+    }
 
   return TRUE;
 }

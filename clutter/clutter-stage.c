@@ -3217,7 +3217,8 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
 static void
 free_queue_redraw_entry (ClutterStageQueueRedrawEntry *entry)
 {
-  g_object_unref (entry->actor);
+  if (entry->actor)
+    g_object_unref (entry->actor);
   if (entry->has_clip)
     clutter_paint_volume_free (&entry->clip);
   g_slice_free (ClutterStageQueueRedrawEntry, entry);
@@ -3267,12 +3268,13 @@ _clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage)
           ClutterPaintVolume *clip;
 
           /* NB: Entries may be invalidated if the actor gets destroyed */
-          if (G_UNLIKELY (entry->actor == NULL))
-            continue;
+          if (G_LIKELY (entry->actor != NULL))
+	    {
+	      clip = entry->has_clip ? &entry->clip : NULL;
 
-          clip = entry->has_clip ? &entry->clip : NULL;
+	      _clutter_actor_finish_queue_redraw (entry->actor, clip);
+	    }
 
-          _clutter_actor_finish_queue_redraw (entry->actor, clip);
           free_queue_redraw_entry (entry);
         }
       g_list_free (stolen_list);
