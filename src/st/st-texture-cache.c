@@ -1505,11 +1505,13 @@ st_texture_cache_load_from_raw (StTextureCache    *cache,
   texture = create_default_texture (cache);
   clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
 
-  /* In theory, two images of different size could have the same
-   * pixel data. We ignore that theory.
+  /* In theory, two images of with different width and height could have the same
+   * pixel data and thus hash the same. (Say, a 16x16 and a 8x32 blank image.)
+   * We ignore this for now. If anybody hits this problem they should use
+   * GChecksum directly to compute a checksum including the width and height.
    */
   checksum = g_compute_checksum_for_data (G_CHECKSUM_SHA1, data, len);
-  key = g_strdup_printf (CACHE_PREFIX_RAW_CHECKSUM "checksum=%s,size=%d", checksum, size);
+  key = g_strdup_printf (CACHE_PREFIX_RAW_CHECKSUM "checksum=%s", checksum);
   g_free (checksum);
 
   texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
