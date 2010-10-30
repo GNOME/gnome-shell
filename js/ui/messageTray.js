@@ -26,6 +26,10 @@ const BUTTON_ICON_SIZE = 36;
 
 const MAX_SOURCE_TITLE_WIDTH = 180;
 
+// We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
+// range from the point where it left the tray.
+const MOUSE_LEFT_ACTOR_THRESHOLD = 20;
+
 const State = {
     HIDDEN:  0,
     SHOWING: 1,
@@ -1146,6 +1150,8 @@ MessageTray.prototype = {
             if (this._trayLeftTimeoutId) {
                 Mainloop.source_remove(this._trayLeftTimeoutId);
                 this._trayLeftTimeoutId = 0;
+                this._trayLeftMouseX = -1;
+                this._trayLeftMouseY = -1;
                 return;
             }
 
@@ -1167,6 +1173,14 @@ MessageTray.prototype = {
             this._pointerInTray = true;
             this._updateState();
         } else {
+            // We record the position of the mouse the moment it leaves the tray. These coordinates are used in
+            // this._onTrayLeftTimeout() to determine if the mouse has moved far enough during the initial timeout for us
+            // to consider that the user intended to leave the tray and therefore hide the tray. If the mouse is still
+            // close to its previous position, we extend the timeout once.
+            let [x, y, mods] = global.get_pointer();
+            this._trayLeftMouseX = x;
+            this._trayLeftMouseY = y;
+
             // We wait just a little before hiding the message tray in case the user quickly moves the mouse back into it.
             // We wait for a longer period if the notification popped up where the mouse pointer was already positioned.
             // That gives the user more time to mouse away from the notification and mouse back in in order to expand it.
@@ -1176,12 +1190,25 @@ MessageTray.prototype = {
     },
 
     _onTrayLeftTimeout: function() {
-        this._useLongerTrayLeftTimeout = false;
-        this._trayLeftTimeoutId = 0;
-        this._pointerInTray = false;
-        this._pointerInSummary = false;
-        this._updateNotificationTimeout(0);
-        this._updateState();
+        let [x, y, mods] = global.get_pointer();
+        // We extend the timeout once if the mouse moved no further than MOUSE_LEFT_ACTOR_THRESHOLD to either side or up.
+        // We don't check how far down the mouse moved because any point above the tray, but below the exit coordinate,
+        // is close to the tray.
+        if (this._trayLeftMouseX > -1 &&
+            y > this._trayLeftMouseY - MOUSE_LEFT_ACTOR_THRESHOLD &&
+            x < this._trayLeftMouseX + MOUSE_LEFT_ACTOR_THRESHOLD &&
+            x > this._trayLeftMouseX - MOUSE_LEFT_ACTOR_THRESHOLD) {
+            this._trayLeftMouseX = -1;
+            this._trayLeftTimeoutId = Mainloop.timeout_add(LONGER_HIDE_TIMEOUT * 1000,
+                                                             Lang.bind(this, this._onTrayLeftTimeout));
+        } else {
+            this._trayLeftTimeoutId = 0;
+            this._useLongerTrayLeftTimeout = false;
+            this._pointerInTray = false;
+            this._pointerInSummary = false;
+            this._updateNotificationTimeout(0);
+            this._updateState();
+        }
         return false;
     },
 
