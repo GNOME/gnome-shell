@@ -66,11 +66,14 @@ Magnifier.prototype = {
 
         // Create the first ZoomRegion and initialize it according to the
         // magnification settings.
-        let [xMouse, yMouse, mask] = global.get_pointer();
+
+        let mask;
+        [this.xMouse, this.yMouse, mask] = global.get_pointer();
+
         let aZoomRegion = new ZoomRegion(this, this._cursorRoot);
         this._zoomRegions.push(aZoomRegion);
         let showAtLaunch = this._settingsInit(aZoomRegion);
-        aZoomRegion.scrollContentsTo(xMouse, yMouse);
+        aZoomRegion.scrollContentsTo(this.xMouse, this.yMouse);
 
         xfixesCursor.connect('cursor-change', Lang.bind(this, this._updateMouseSprite));
         this._xfixesCursor = xfixesCursor;
@@ -138,12 +141,10 @@ Magnifier.prototype = {
      * Turn on mouse tracking, if not already doing so.
      */
     startTrackingMouse: function() {
-        // initialize previous mouse coord to undefined.
-        let prevCoord = { x: NaN, y: NaN };
         if (!this._mouseTrackingId)
             this._mouseTrackingId = Mainloop.timeout_add(
                 MOUSE_POLL_FREQUENCY,
-                Lang.bind(this, this.scrollToMousePos, prevCoord)
+                Lang.bind(this, this.scrollToMousePos)
             );
     },
 
@@ -170,14 +171,15 @@ Magnifier.prototype = {
      * scrollToMousePos:
      * Position all zoom regions' ROI relative to the current location of the
      * system pointer.
-     * @prevCoord:  The previous mouse coordinates.  Used to stop scrolling if
-     *              the new position is the same as the last one (optional).
      * @return      true.
      */
-    scrollToMousePos: function(prevCoord) {
+    scrollToMousePos: function() {
         let [xMouse, yMouse, mask] = global.get_pointer();
 
-        if (!prevCoord || prevCoord.x != xMouse || prevCoord.y != yMouse) {
+        if (xMouse != this.xMouse || yMouse != this.yMouse) {
+            this.xMouse = xMouse;
+            this.yMouse = yMouse;
+
             let sysMouseOverAny = false;
             this._zoomRegions.forEach(function(zoomRegion, index, array) {
                 if (zoomRegion.scrollToMousePos())
@@ -187,11 +189,6 @@ Magnifier.prototype = {
                 this.hideSystemCursor();
             else
                 this.showSystemCursor();
-
-            if (prevCoord) {
-                prevCoord.x = xMouse;
-                prevCoord.y = yMouse;
-            }
         }
         return true;
     },
@@ -1018,16 +1015,14 @@ ZoomRegion.prototype = {
         this._updateMousePosition();
     },
 
-    _isMouseOverRegion: function(xMouse, yMouse) {
+    _isMouseOverRegion: function() {
         // Return whether the system mouse sprite is over this ZoomRegion.  If the
         // mouse's position is not given, then it is fetched.
         let mouseIsOver = false;
         if (this.isActive()) {
-            if (xMouse == null || yMouse == null) {
-                let [x, y, mask] = global.get_pointer();
-                xMouse = x;
-                yMouse = y;
-            }
+            let xMouse = this._magnifier.xMouse;
+            let yMouse = this._magnifier.yMouse;
+
             mouseIsOver = (
                 xMouse >= this._viewPortX && xMouse < (this._viewPortX + this._viewPortWidth) &&
                 yMouse >= this._viewPortY && yMouse < (this._viewPortY + this._viewPortHeight)
@@ -1053,7 +1048,8 @@ ZoomRegion.prototype = {
         // Determines where the center should be given the current cursor
         // position and mouse tracking mode
 
-        let [xMouse, yMouse, mask] = global.get_pointer();
+        let xMouse = this._magnifier.xMouse;
+        let yMouse = this._magnifier.yMouse;
 
         if (this._mouseTrackingMode == MouseTrackingMode.PROPORTIONAL) {
             return this._centerFromMouseProportional(xMouse, yMouse);
@@ -1147,8 +1143,8 @@ ZoomRegion.prototype = {
         if (!this.isActive())
             return;
 
-        let [xMouse, yMouse, mask] = global.get_pointer();
-        let [xMagMouse, yMagMouse] = this._screenToViewPort(xMouse, yMouse);
+        let [xMagMouse, yMagMouse] = this._screenToViewPort(this._magnifier.xMouse,
+                                                            this._magnifier.yMouse);
 
         xMagMouse = Math.round(xMagMouse);
         yMagMouse = Math.round(yMagMouse);
