@@ -120,7 +120,7 @@ StatusMenuButton.prototype = {
         item.connect('activate', Lang.bind(this, this._onMyAccountActivate));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("System Preferences..."));
+        item = new PopupMenu.PopupMenuItem(_("System Settings..."));
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
         this.menu.addMenuItem(item);
 
