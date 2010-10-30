@@ -10,6 +10,7 @@ const Signals = imports.signals;
 
 const Main = imports.ui.main;
 const MagnifierDBus = imports.ui.magnifierDBus;
+const Params = imports.misc.params;
 
 // Keep enums in sync with GSettings schemas
 const MouseTrackingMode = {
@@ -212,9 +213,14 @@ Magnifier.prototype = {
      */
     createZoomRegion: function(xMagFactor, yMagFactor, roi, viewPort) {
         let zoomRegion = new ZoomRegion(this, this._cursorRoot);
-        zoomRegion.setMagFactor(xMagFactor, yMagFactor);
         zoomRegion.setViewPort(viewPort);
-        zoomRegion.setROI(roi);
+
+        // We ignore the redundant width/height on the ROI
+        let fixedROI = new Object(roi);
+        fixedROI.width = viewPort.width / xMagFactor;
+        fixedROI.height = viewPort.height / yMagFactor;
+        zoomRegion.setROI(fixedROI);
+
         zoomRegion.addCrosshairs(this._crossHairs);
         return zoomRegion;
     },
@@ -247,22 +253,9 @@ Magnifier.prototype = {
      * Remove all the zoom regions from this Magnfier's ZoomRegion list.
      */
     clearAllZoomRegions: function() {
-        // First ZoomRegion is special since its magnified mouse and crosshairs
-        // are the original -- all the others are Clutter.Clone's.  Deal with
-        // all but first zoom region.
-        for (let i = 1; i < this._zoomRegions.length; i++) {
+        for (let i = 0; i < this._zoomRegions.length; i++)
             this._zoomRegions[i].setActive(false);
-            this._zoomRegions[i].removeFromStage();
-        }
-        this._zoomRegions[0].setActive(false);
 
-        // Detach the (original) magnified mouse and cross hair for later reuse
-        // before removing ZoomRegion from the stage.
-        this._cursorRoot.get_parent().remove_actor(this._cursorRoot);
-        if (this._crossHairs)
-            this._crossHairs.removeFromParent();
-
-        this._zoomRegions[0].removeFromStage();
         this._zoomRegions.length = 0;
         this.stopTrackingMouse();
         this.showSystemCursor();
@@ -567,44 +560,35 @@ Magnifier.prototype = {
 };
 Signals.addSignalMethods(Magnifier.prototype);
 
-function ZoomRegion(magnifier, mouseRoot) {
-    this._init(magnifier, mouseRoot);
+function ZoomRegion(magnifier, mouseSourceActor) {
+    this._init(magnifier, mouseSourceActor);
 }
 
 ZoomRegion.prototype = {
-    _init: function(magnifier, mouseRoot) {
+    _init: function(magnifier, mouseSourceActor) {
         this._magnifier = magnifier;
 
-        // The root actor for the zoom region
-        this._magView = new St.Bin({ style_class: 'magnifier-zoom-region', x_fill: true, y_fill: true });
-        global.stage.add_actor(this._magView);
-        this._magView.hide();
+        this._mouseTrackingMode = MouseTrackingMode.NONE;
+        this._clampScrollingAtEdges = false;
+        this._lensMode = false;
+        this._screenPosition = ScreenPosition.FULL_SCREEN;
 
-        // Append a Clutter.Group to clip the contents of the magnified view.
-        this._mainGroup = new Clutter.Group({ clip_to_allocation: true });
-        this._magView.set_child(this._mainGroup);
-
-        // Add a background for when the magnified uiGroup is scrolled
-        // out of view (don't want to see desktop showing through).
-        let background = new Clutter.Rectangle({ color: Main.DEFAULT_BACKGROUND_COLOR });
-        this._mainGroup.add_actor(background);
-
-        // Clone the group that contains all of UI on the screen.  This is the
-        // chrome, the windows, etc.
-        this._uiGroupClone = new Clutter.Clone({ source: Main.uiGroup });
-        this._mainGroup.add_actor(this._uiGroupClone);
-        Main.uiGroup.set_size(global.screen_width, global.screen_height);
-        background.set_size(global.screen_width, global.screen_height);
-        this._uiGroupClone.set_size(global.screen_width, global.screen_height);
-
-        // Add either the given mouseRoot to the ZoomRegion, or a clone of
-        // it.
-        if (mouseRoot.get_parent() != null)
-            this._mouseRoot = new Clutter.Clone({ source: mouseRoot });
-        else
-            this._mouseRoot = mouseRoot;
-        this._mainGroup.add_actor(this._mouseRoot);
+        this._magView = null;
+        this._uiGroupClone = null;
+        this._mouseSourceActor = mouseSourceActor;
+        this._mouseActor  = null;
         this._crossHairs = null;
+        this._crossHairsActor = null;
+
+        this._viewPortX = 0;
+        this._viewPortY = 0;
+        this._viewPortWidth = global.screen_width;
+        this._viewPortWidth = global.screen_height;
+        this._xCenter = this._viewPortWidth / 2;
+        this._yCenter = this._viewPortHeight / 2;
+        this._xMagFactor = 1;
+        this._yMagFactor = 1;
+        this._followingCursor = false;
     },
 
     /**
@@ -612,14 +596,16 @@ ZoomRegion.prototype = {
      * @activate:   Boolean to show/hide the ZoomRegion.
      */
     setActive: function(activate) {
-        if (activate) {
-            this._magView.show();
-            if (this.isMouseOverRegion())
+        if (activate && !this.isActive()) {
+            this._createActors();
+            if (this._isMouseOverRegion())
                 this._magnifier.hideSystemCursor();
-            this._updateMousePosition(false /* mouse didn't move */);
+            this._updateMagViewGeometry();
+            this._updateCloneGeometry();
+            this._updateMousePosition();
+        } else if (!activate && this.isActive()) {
+            this._destroyActors();
         }
-        else
-            this._magView.hide();
     },
 
     /**
@@ -627,18 +613,7 @@ ZoomRegion.prototype = {
      * @return  Whether this ZoomRegion is active (boolean).
      */
     isActive: function() {
-        return this._magView.visible;
-    },
-
-    /**
-     * removeFromStage:
-     * Remove the magnified view from the stage.
-     */
-    removeFromStage: function() {
-        global.stage.remove_actor(this._magView);
-        this._mouseRoot = null;
-        this._uiGroupClone = null;
-        this._magView = null;
+        return this._magView != null;
     },
 
     /**
@@ -650,19 +625,9 @@ ZoomRegion.prototype = {
      *                  of the magnified view.
      */
     setMagFactor: function(xMagFactor, yMagFactor) {
-        if (xMagFactor > 0 && yMagFactor > 0) {
-            // Changing the mag factor moves the pixels along the axes of
-            // magnification.  Set the view back to the point that was at the centre
-            // of the region of interest.
-            let [x, y, width, height] = this.getROI();
-            let xCentre = x + width / 2;
-            let yCentre = y + height / 2;
-            this._uiGroupClone.set_scale(xMagFactor, yMagFactor);
-            this._mouseRoot.set_scale(xMagFactor, yMagFactor);
-            this._calcRightBottomStops();
-            this._scrollToPosition(xCentre, yCentre);
-            this._updateMousePosition(false /* mouse didn't move */);
-        }
+        this._changeROI({ xMagFactor: xMagFactor,
+                          yMagFactor: yMagFactor,
+                          redoCursorTracking: this._followingCursor });
     },
 
     /**
@@ -673,7 +638,7 @@ ZoomRegion.prototype = {
      *          in size, and so on.
      */
     getMagFactor: function() {
-        return this._uiGroupClone.get_scale();
+        return [this._xMagFactor, this._yMagFactor];
     },
 
     /**
@@ -696,29 +661,12 @@ ZoomRegion.prototype = {
     /**
      * setViewPort
      * Sets the position and size of the ZoomRegion on screen.
-     * @viewPort:   Object defining the position and size of the view port.  It
-     *              has the form { x, y, width, height }.  The values are in
+     * @viewPort:   Object defining the position and size of the view port.
+     *              It has members x, y, width, height.  The values are in
      *              stage coordinate space.
      */
     setViewPort: function(viewPort) {
-        let [xRoi, yRoi, wRoi, hRoi] = this.getROI();
-
-        // Remove border if the view port is the entire screen.  Otherwise,
-        // ensure that the border is there.
-        if (viewPort.x == 0 && viewPort.y == 0 && viewPort.width == global.screen_width && viewPort.height == global.screen_height)
-            this._magView.add_style_class_name('full-screen');
-        else
-            this._magView.remove_style_class_name('full-screen');
-
-        this.setSize(viewPort.width, viewPort.height);
-        this.setPosition(viewPort.x, viewPort.y);
-        if (this._crossHairs)
-            this._crossHairs.reCenter();
-
-        this.scrollContentsTo(xRoi + wRoi / 2, yRoi + hRoi / 2);
-        if (this.isMouseOverRegion())
-            this._magnifier.hideSystemCursor();
-
+        this._setViewPort(viewPort);
         this._screenPosition = ScreenPosition.NONE;
     },
 
@@ -726,88 +674,18 @@ ZoomRegion.prototype = {
      * setROI
      * Sets the "region of interest" that the ZoomRegion is magnifying.
      * @roi:    Object that defines the region of the screen to magnify.  It
-     *          has the form { x, y, width, height }.  The values are in
+     *          has members x, y, width, height.  The values are in
      *          screen (unmagnified) coordinate space.
      */
     setROI: function(roi) {
-        let xRoiCenter = roi.x + roi.width  / 2;
-        let yRoiCenter = roi.y + roi.height / 2;
-        this.scrollContentsTo(xRoiCenter, yRoiCenter);
-    },
+        if (roi.width <= 0 || roi.height <= 0)
+            return;
 
-    /**
-     * setSize:
-     * @width:    The width to set the magnified view to.
-     * @height:   The height to set the magnified view to.
-     */
-    setSize: function(width, height) {
-        this._magView.set_size(width, height);
-        this._calcRightBottomStops();
-    },
-
-    /**
-     * getSize:
-     * @return  an array, [width, height], that specifies the size of the
-     *          magnified view.
-     */
-    getSize: function() {
-        return this._magView.get_size();
-    },
-
-    /**
-     * setPosition:
-     * Position the magnified view at the given coordinates.
-     * @x:    The x-coord of the new position.
-     * @y:    The y-coord of the new position.
-     */
-    setPosition: function(x, y) {
-        let [width, height] = this._magView.get_size();
-        if (this._clampScrollingAtEdges) {
-            // Restrict positioning so view doesn't go beyond any edge of the
-            // screen.
-            if (x < 0)
-                x = 0;
-            if (x + width > global.screen_width)
-                x = global.screen_width - width;
-            if (y < 0)
-                y = 0;
-            if (y + height > global.screen_height)
-                y = global.screen_height - height;
-        }
-        this._magView.set_position(x, y);
-    },
-
-    /**
-     * getPosition:
-     * @return  an array, [x, y], that gives the position of the
-     *          magnified view on screen.
-     */
-    getPosition: function() {
-        return this._magView.get_position();
-    },
-
-    /**
-     * getCenter:
-     * @return  an array, [x, y], that is half the width and height of the
-     *          magnified view (the center of the magnified view).
-     */
-    getCenter: function() {
-        let [width, height] = this._magView.get_size();
-        return [width / 2, height / 2];
-    },
-
-    /**
-     * isFullScreenMode:
-     * Does the magnified view occupy the whole screen?
-     */
-    isFullScreenMode: function() {
-        let [x, y] = this._magView.get_position();
-        if (x != 0 || y != 0)
-            return false;
-        [width, height] = this._magView.get_size();
-        if (width != global.screen_width || height != global.screen_height)
-            return false;
-        return true;
+        this._followingCursor = false;
+        this._changeROI({ xMagFactor: this._viewPortWidth / roi.width,
+                          yMagFactor: this._viewPortHeight / roi.height,
+                          xCenter: roi.x + roi.width  / 2,
+                          yCenter: roi.y + roi.height / 2 });
     },
 
     /**
@@ -819,24 +697,23 @@ ZoomRegion.prototype = {
      *          rectangle of what is shown in the magnified view.
      */
     getROI: function() {
-        let [xMagnified, yMagnified] = this._uiGroupClone.get_position();
-        let [xMagFactor, yMagFactor] = this.getMagFactor();
-        let [width, height] = this.getSize();
-        let x = (0 - xMagnified) / xMagFactor;
-        let y = (0 - yMagnified) / yMagFactor;
-        return [x, y, width / xMagFactor, height / yMagFactor];
+        let roiWidth = this._viewPortWidth / this._xMagFactor;
+        let roiHeight = this._viewPortHeight / this._yMagFactor;
+
+        return [this._xCenter - roiWidth / 2,
+                this._yCenter - roiHeight / 2,
+                roiWidth, roiHeight];
     },
 
     /**
      * setLensMode:
-     * Turn lens mode on/off.  In full screen mode, lens mode is alway off since
+     * Turn lens mode on/off.  In full screen mode, lens mode does nothing since
      * a lens the size of the screen is pointless.
      * @lensMode:   A boolean to set the sense of lens mode.
      */
     setLensMode: function(lensMode) {
-        let fullScreen = this.isFullScreenMode();
-        this._lensMode = (lensMode && !fullScreen);
-        if (!this._lensMode && !fullScreen)
+        this._lensMode = lensMode;
+        if (!this._lensMode)
             this.setScreenPosition (this._screenPosition);
     },
 
@@ -857,6 +734,8 @@ ZoomRegion.prototype = {
      */
     setClampScrollingAtEdges: function(clamp) {
         this._clampScrollingAtEdges = clamp;
+        if (clamp)
+            this._changeROI();
     },
 
     /**
@@ -869,7 +748,7 @@ ZoomRegion.prototype = {
         viewPort.y = 0;
         viewPort.width = global.screen_width;
         viewPort.height = global.screen_height/2;
-        this.setViewPort(viewPort);
+        this._setViewPort(viewPort);
         this._screenPosition = ScreenPosition.TOP_HALF;
     },
 
@@ -883,7 +762,7 @@ ZoomRegion.prototype = {
         viewPort.y = global.screen_height/2;
         viewPort.width = global.screen_width;
         viewPort.height = global.screen_height/2;
-        this.setViewPort(viewPort);
+        this._setViewPort(viewPort);
         this._screenPosition = ScreenPosition.BOTTOM_HALF;
     },
 
@@ -897,7 +776,7 @@ ZoomRegion.prototype = {
         viewPort.y = 0;
         viewPort.width = global.screen_width/2;
         viewPort.height = global.screen_height;
-        this.setViewPort(viewPort);
+        this._setViewPort(viewPort);
         this._screenPosition = ScreenPosition.LEFT_HALF;
     },
 
@@ -911,41 +790,8 @@ ZoomRegion.prototype = {
         viewPort.y = 0;
         viewPort.width = global.screen_width/2;
         viewPort.height = global.screen_height;
-        this.setViewPort(viewPort);
+        this._setViewPort(viewPort);
         this._screenPosition = ScreenPosition.RIGHT_HALF;
-    },
-
-    /**
-     * getScreenPosition:
-     * Tell the outside world what the current mode is -- magnifiying the
-     * top half, bottom half, etc.
-     * @return:  the current mode.
-     */
-    getScreenPosition: function() {
-        return this._screenPosition;
-    },
-
-    /**
-     * scrollToMousePos:
-     * Set the region of interest based on the position of the system pointer.
-     * @return:     Whether the system mouse pointer is over the magnified view.
-     */
-    scrollToMousePos: function() {
-        let [xMouse, yMouse, mask] = global.get_pointer();
-
-        if (this._mouseTrackingMode == MouseTrackingMode.PROPORTIONAL) {
-            this._setROIProportional(xMouse, yMouse);
-        }
-        else if (this._mouseTrackingMode == MouseTrackingMode.PUSH) {
-            this._setROIPush(xMouse, yMouse);
-        }
-        else if (this._mouseTrackingMode == MouseTrackingMode.CENTERED) {
-            this._setROICentered(xMouse, yMouse);
-        }
-        this._updateMousePosition(true);
-
-        // Determine whether the system mouse pointer is over this zoom region.
-        return this.isMouseOverRegion(xMouse, yMouse);
     },
 
     /**
@@ -954,19 +800,14 @@ ZoomRegion.prototype = {
      * Note:  disallows lens mode.
      */
     setFullScreenMode: function() {
-        if (!this.isFullScreenMode()) {
-            let viewPort = {};
-            viewPort.x = 0;
-            viewPort.y = 0;
-            viewPort.width = global.screen_width;
-            viewPort.height = global.screen_height;
-            this.setViewPort(viewPort);
-            this.setLensMode(false);
-            if (this.isActive())
-                this._magnifier.hideSystemCursor();
+        let viewPort = {};
+        viewPort.x = 0;
+        viewPort.y = 0;
+        viewPort.width = global.screen_width;
+        viewPort.height = global.screen_height;
+        this.setViewPort(viewPort);
 
-            this._screenPosition = ScreenPosition.FULL_SCREEN;
-        }
+        this._screenPosition = ScreenPosition.FULL_SCREEN;
     },
 
     /**
@@ -998,110 +839,238 @@ ZoomRegion.prototype = {
     },
 
     /**
+     * getScreenPosition:
+     * Tell the outside world what the current mode is -- magnifiying the
+     * top half, bottom half, etc.
+     * @return:  the current mode.
+     */
+    getScreenPosition: function() {
+        return this._screenPosition;
+    },
+
+    /**
+     * scrollToMousePos:
+     * Set the region of interest based on the position of the system pointer.
+     * @return:     Whether the system mouse pointer is over the magnified view.
+     */
+    scrollToMousePos: function() {
+        this._followingCursor = true;
+        if (this._mouseTrackingMode != MouseTrackingMode.NONE)
+            this._changeROI({ redoCursorTracking: true });
+        else
+            this._updateMousePosition();
+
+        // Determine whether the system mouse pointer is over this zoom region.
+        return this._isMouseOverRegion();
+    },
+
+    /**
      * scrollContentsTo:
      * Shift the contents of the magnified view such it is centered on the given
-     * coordinate.  Also, update the position of the magnified mouse image after
-     * the shift.
+     * coordinate.
      * @x:      The x-coord of the point to center on.
      * @y:      The y-coord of the point to center on.
      */
     scrollContentsTo: function(x, y) {
-        this._scrollToPosition(x, y);
-        this._updateMousePosition(false /* mouse didn't move */);
-    },
-
-    /**
-     * isMouseOverRegion:
-     * Return whether the system mouse sprite is over this ZoomRegion.  If the
-     * mouse's position is not given, then it is fetched.
-     * @xMouse:     The system mouse's x-coord.  Optional.
-     * @yMouse:     The system mouse's y-coord.  Optional.
-     * @return:     Boolean:  true if the mouse is over the zoom region; false
-     *              otherwise.
-     */
-    isMouseOverRegion: function(xMouse, yMouse) {
-        let mouseIsOver = false;
-        if (this.isActive()) {
-            if (!xMouse || !yMouse) {
-                let [x, y, mask] = global.get_pointer();
-                xMouse = x;
-                yMouse = y;
-            }
-            let [x, y] = this.getPosition();
-            let [width, height] = this.getSize();
-            mouseIsOver = (
-                xMouse >= x && xMouse < (x + width) &&
-                yMouse >= y && yMouse < (y + height)
-            );
-        }
-        return mouseIsOver;
+        this._followingCursor = false;
+        this._changeROI({ xCenter: x,
+                          yCenter: y });
     },
 
     /**
      * addCrosshairs:
      * Add crosshairs centered on the magnified mouse.
-     * @crossHairs  Clutter.Group that contains the actors for the crosshairs.
+     * @crossHairs: Crosshairs instance
      */
     addCrosshairs: function(crossHairs) {
+        this._crossHairs = crossHairs;
+
         // If the crossHairs is not already within a larger container, add it
         // to this zoom region.  Otherwise, add a clone.
-        if (crossHairs) {
-            this._crosshairsActor = crossHairs.addToZoomRegion(this, this._mouseRoot);
-            this._crossHairs = crossHairs;
+        if (crossHairs && this.isActive()) {
+            this._crossHairsActor = crossHairs.addToZoomRegion(this, this._mouseActor);
         }
     },
 
     //// Private methods ////
 
-    _scrollToPosition: function(x, y) {
-        // Given the point (x, y) in non-magnified coordinates, scroll the
-        // magnified contenst such that the point is at the centre of the
-        // magnified view.
-        let [xMagFactor, yMagFactor] = this.getMagFactor();
-        let xMagnified = x * xMagFactor;
-        let yMagnified = y * yMagFactor;
+    _createActors: function() {
+        // The root actor for the zoom region
+        this._magView = new St.Bin({ style_class: 'magnifier-zoom-region', x_fill: true, y_fill: true });
+        global.stage.add_actor(this._magView);
 
-        let [xCenterMagView, yCenterMagView] = this.getCenter();
-        let newX = xCenterMagView - xMagnified;
-        let newY = yCenterMagView - yMagnified;
+        // Append a Clutter.Group to clip the contents of the magnified view.
+        let mainGroup = new Clutter.Group({ clip_to_allocation: true });
+        this._magView.set_child(mainGroup);
+
+        // Add a background for when the magnified uiGroup is scrolled
+        // out of view (don't want to see desktop showing through).
+        let background = new Clutter.Rectangle({ color: Main.DEFAULT_BACKGROUND_COLOR });
+        mainGroup.add_actor(background);
+
+        // Clone the group that contains all of UI on the screen.  This is the
+        // chrome, the windows, etc.
+        this._uiGroupClone = new Clutter.Clone({ source: Main.uiGroup });
+        mainGroup.add_actor(this._uiGroupClone);
+        Main.uiGroup.set_size(global.screen_width, global.screen_height);
+        background.set_size(global.screen_width, global.screen_height);
+
+        // Add either the given mouseSourceActor to the ZoomRegion, or a clone of
+        // it.
+        if (this._mouseSourceActor.get_parent() != null)
+            this._mouseActor = new Clutter.Clone({ source: this._mouseSourceActor });
+        else
+            this._mouseActor = this._mouseSourceActor;
+        mainGroup.add_actor(this._mouseActor);
+
+        if (this._crossHairs)
+            this._crossHairsActor = this._crossHairs.addToZoomRegion(this, this._mouseActor);
+        else
+            this._crossHairsActor = null;
+    },
+
+    _destroyActors: function() {
+        if (this._mouseActor == this._mouseSourceActor)
+            this._mouseActor.get_parent().remove_actor (this._mouseActor);
+        if (this._crossHairs)
+            this._crossHairs.removeFromParent(this._crossHairsActor);
+
+        this._magView.destroy();
+        this._magView = null;
+        this._uiGroupClone = null;
+        this._mouseActor = null;
+        this._crossHairsActor = null;
+    },
+
+    _setViewPort: function(viewPort, fromROIUpdate) {
+        // Sets the position of the zoom region on the screen
+
+        let width = Math.round(Math.min(viewPort.width, global.screen_width));
+        let height = Math.round(Math.min(viewPort.height, global.screen_height));
+        let x = Math.max(viewPort.x, 0);
+        let y = Math.max(viewPort.y, 0);
+
+        x = Math.round(Math.min(x, global.screen_width - width));
+        y = Math.round(Math.min(y, global.screen_height - height));
+
+        this._viewPortX = x;
+        this._viewPortY = y;
+        this._viewPortWidth = width;
+        this._viewPortHeight = height;
+
+        this._updateMagViewGeometry();
+
+        if (!fromROIUpdate)
+            this._changeROI({ redoCursorTracking: this._followingCursor }); // will update mouse
+
+        if (this.isActive() && this._isMouseOverRegion())
+            this._magnifier.hideSystemCursor();
+    },
+
+    _changeROI: function(params) {
+        // Updates the area we are viewing; the magnification factors
+        // and center can be set explicitly, or we can recompute
+        // the position based on the mouse cursor position
+
+        params = Params.parse(params, { xMagFactor: this._xMagFactor,
+                                        yMagFactor: this._yMagFactor,
+                                        xCenter: this._xCenter,
+                                        yCenter: this._yCenter,
+                                        redoCursorTracking: false });
+
+        if (params.xMagFactor <= 0)
+            params.xMagFactor = this._xMagFactor;
+        if (params.yMagFactor <= 0)
+            params.yMagFactor = this._yMagFactor;
+
+        this._xMagFactor = params.xMagFactor;
+        this._yMagFactor = params.yMagFactor;
+
+        if (params.redoCursorTracking &&
+            this._mouseTrackingMode != MouseTrackingMode.NONE) {
+            // This depends on this.xMagFactor/yMagFactor already being updated
+            [params.xCenter, params.yCenter] = this._centerFromMousePosition();
+        }
 
         if (this._clampScrollingAtEdges) {
-            if (newX > 0)
-                newX = 0;
-            else if (newX < this._rightStop)
-                newX = this._rightStop;
-            if (newY > 0)
-                newY = 0;
-            else if (newY < this._bottomStop)
-                newY = this._bottomStop;
-            this._uiGroupClone.set_position(newX, newY);
+            let roiWidth = this._viewPortWidth / this._xMagFactor;
+            let roiHeight = this._viewPortHeight / this._yMagFactor;
+
+            params.xCenter = Math.min(params.xCenter, global.screen_width - roiWidth / 2);
+            params.xCenter = Math.max(params.xCenter, roiWidth / 2);
+            params.yCenter = Math.min(params.yCenter, global.screen_height - roiHeight / 2);
+            params.yCenter = Math.max(params.yCenter, roiHeight / 2);
         }
-        else
-            this._uiGroupClone.set_position(newX, newY);
+
+        this._xCenter = params.xCenter;
+        this._yCenter = params.yCenter;
 
         // If in lens mode, move the magnified view such that it is centered
         // over the actual mouse. However, in full screen mode, the "lens" is
         // the size of the screen -- pointless to move such a large lens around.
-        if (this._lensMode && !this.isFullScreenMode())
-            this.setPosition(x - xCenterMagView, y - yCenterMagView);
+        if (this._lensMode && !this._isFullScreen())
+            this._setViewPort({ x: this._xCenter - this._viewPortWidth / 2,
+                                y: this._yCenter - this._viewPortHeight / 2,
+                                width: this._viewPortWidth,
+                                height: this._viewPortHeight }, true);
+
+        this._updateCloneGeometry();
+        this._updateMousePosition();
     },
 
-    _calcRightBottomStops: function() {
-        // Calculate the location of the top-left corner of _uiGroupClone
-        // when its right and bottom edges are coincident with the right and
-        // bottom edges of the _magView.
-        let [contentWidth, contentHeight] = this._uiGroupClone.get_size();
-        let [viewWidth, viewHeight] = this.getSize();
-        let [xMagFactor, yMagFactor] = this.getMagFactor();
-        let rightStop = viewWidth - (contentWidth * xMagFactor);
-        let bottomStop = viewHeight - (contentHeight * yMagFactor);
-        this._rightStop = parseInt(rightStop.toFixed(1));
-        this._bottomStop = parseInt(bottomStop.toFixed(1));
+    _isMouseOverRegion: function(xMouse, yMouse) {
+        // Return whether the system mouse sprite is over this ZoomRegion.  If the
+        // mouse's position is not given, then it is fetched.
+        let mouseIsOver = false;
+        if (this.isActive()) {
+            if (xMouse == null || yMouse == null) {
+                let [x, y, mask] = global.get_pointer();
+                xMouse = x;
+                yMouse = y;
+            }
+            mouseIsOver = (
+                xMouse >= this._viewPortX && xMouse < (this._viewPortX + this._viewPortWidth) &&
+                yMouse >= this._viewPortY && yMouse < (this._viewPortY + this._viewPortHeight)
+            );
+        }
+        return mouseIsOver;
     },
 
-    _setROIPush: function(xMouse, yMouse) {
+    _isFullScreen: function() {
+        // Does the magnified view occupy the whole screen? Note that this
+        // doesn't necessarily imply
+        // this._screenPosition = ScreenPosition.FULL_SCREEN;
+
+        if (this._viewPortX != 0 || this._viewPortY != 0)
+            return false;
+        if (this._viewPortWidth != global.screen_width ||
+            this._viewPortHeight != global.screen_height)
+            return false;
+        return true;
+    },
+
+    _centerFromMousePosition: function() {
+        // Determines where the center should be given the current cursor
+        // position and mouse tracking mode
+
+        let [xMouse, yMouse, mask] = global.get_pointer();
+
+        if (this._mouseTrackingMode == MouseTrackingMode.PROPORTIONAL) {
+            return this._centerFromMouseProportional(xMouse, yMouse);
+        }
+        else if (this._mouseTrackingMode == MouseTrackingMode.PUSH) {
+            return this._centerFromMousePush(xMouse, yMouse);
+        }
+        else if (this._mouseTrackingMode == MouseTrackingMode.CENTERED) {
+            return this._centerFromMouseCentered(xMouse, yMouse);
+        }
+
+        return null; // Should never be hit
+    },
+
+    _centerFromMousePush: function(xMouse, yMouse) {
         let [xRoi, yRoi, widthRoi, heightRoi] = this.getROI();
-        let [cursorWidth, cursorHeight] = this._mouseRoot.get_size();
+        let [cursorWidth, cursorHeight] = this._mouseSourceActor.get_size();
         let xPos = xRoi + widthRoi / 2;
         let yPos = yRoi + heightRoi / 2;
         let xRoiRight = xRoi + widthRoi - cursorWidth;
@@ -1117,10 +1086,10 @@ ZoomRegion.prototype = {
         else if (yMouse > yRoiBottom)
             yPos += (yMouse - yRoiBottom);
 
-        this._scrollToPosition(xPos, yPos);
+        return [xPos, yPos];
     },
 
-    _setROIProportional: function(xMouse, yMouse) {
+    _centerFromMouseProportional: function(xMouse, yMouse) {
         let [xRoi, yRoi, widthRoi, heightRoi] = this.getROI();
         let halfScreenWidth = global.screen_width / 2;
         let halfScreenHeight = global.screen_height / 2;
@@ -1129,46 +1098,62 @@ ZoomRegion.prototype = {
         let xPos = xMouse + xProportion * widthRoi / 2;
         let yPos = yMouse + yProportion * heightRoi / 2;
 
-        this._scrollToPosition(xPos, yPos);
+        return [xPos, yPos];
     },
 
-    _setROICentered: function(xMouse, yMouse) {
-        this._scrollToPosition(xMouse, yMouse);
+    _centerFromMouseCentered: function(xMouse, yMouse) {
+        return [xMouse, yMouse];
     },
 
-    _updateMousePosition: function(mouseMoved) {
-        let [x, y] = this._uiGroupClone.get_position();
-        x = parseInt(x.toFixed(1));
-        y = parseInt(y.toFixed(1));
-        let [xCenterMagView, yCenterMagView] = this.getCenter();
+    _screenToViewPort: function(screenX, screenY) {
+        // Converts coordinates relative to the (unmagnified) screen to coordinates
+        // relative to the origin of this._magView
+        return [this._viewPortWidth / 2 + (screenX - this._xCenter) * this._xMagFactor,
+                this._viewPortHeight / 2 + (screenY - this._yCenter) * this._yMagFactor];
+    },
+
+    _updateMagViewGeometry: function() {
+        if (!this.isActive())
+            return;
+
+        if (this._isFullScreen())
+            this._magView.add_style_class_name('full-screen');
+        else
+            this._magView.remove_style_class_name('full-screen');
+
+        this._magView.set_size(this._viewPortWidth, this._viewPortHeight);
+        this._magView.set_position(this._viewPortX, this._viewPortY);
+    },
+
+    _updateCloneGeometry: function() {
+        if (!this.isActive())
+            return;
+
+        this._uiGroupClone.set_scale(this._xMagFactor, this._yMagFactor);
+        this._mouseActor.set_scale(this._xMagFactor, this._yMagFactor);
+
+        let [x, y] = this._screenToViewPort(0, 0);
+        this._uiGroupClone.set_position(x, y);
+
+        this._updateMousePosition();
+    },
+
+    _updateMousePosition: function() {
+        if (!this.isActive())
+            return;
+
         let [xMouse, yMouse, mask] = global.get_pointer();
-        let [xMagFactor, yMagFactor] = this.getMagFactor();
+        let [xMagMouse, yMagMouse] = this._screenToViewPort(xMouse, yMouse);
 
-        let xMagMouse = xMouse * xMagFactor + x;
-        let yMagMouse = yMouse * yMagFactor + y;
-        if (mouseMoved) {
-            if (x == 0)
-                xMagMouse = xMouse * xMagFactor;
-            else if (x == this._rightStop)
-                xMagMouse = (xMouse * xMagFactor) + this._rightStop;
-            else if (this._mouseTrackingMode == MouseTrackingMode.CENTERED)
-                xMagMouse = xCenterMagView;
+        xMagMouse = Math.round(xMagMouse);
+        yMagMouse = Math.round(yMagMouse);
 
-            if (y == 0)
-                yMagMouse = yMouse * yMagFactor;
-            else if (y == this._bottomStop)
-                yMagMouse = (yMouse * yMagFactor) + this._bottomStop;
-            else if (this._mouseTrackingMode == MouseTrackingMode.CENTERED)
-                yMagMouse = yCenterMagView;
-        }
-        this._mouseRoot.set_position(xMagMouse, yMagMouse);
-        this._updateCrosshairsPosition(xMagMouse, yMagMouse);
-    },
+        this._mouseActor.set_position(xMagMouse, yMagMouse);
 
-    _updateCrosshairsPosition: function(x, y) {
-        if (this._crosshairsActor) {
-            let [groupWidth, groupHeight] = this._crosshairsActor.get_size();
-            this._crosshairsActor.set_position(x - groupWidth / 2, y - groupHeight / 2);
+        if (this._crossHairsActor) {
+            let [groupWidth, groupHeight] = this._crossHairsActor.get_size();
+            this._crossHairsActor.set_position(xMagMouse - groupWidth / 2,
+                                               yMagMouse - groupHeight / 2);
         }
     }
 };
@@ -1243,10 +1228,15 @@ Crosshairs.prototype = {
 
     /**
      * removeFromParent:
-     * Remove the crosshairs actor from its parent container.
+     * @childActor: the actor returned from addToZoomRegion
+     * Remove the crosshairs actor from its parent container, or destroy the
+     * child actor if it was just a clone of the crosshairs actor.
      */
-    removeFromParent: function() {
-        this._actor.get_parent().remove_actor(this._actor);
+    removeFromParent: function(childActor) {
+        if (childActor == this._actor)
+            childActor.get_parent().remove_actor(childActor);
+        else
+            childActor.destroy();
     },
 
     /**

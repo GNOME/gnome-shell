@@ -112,6 +112,11 @@ ShellMagnifier.prototype = {
      *                  [left, top, right, bottom].
      * @viewPort        Array of integers, [left, top, right, bottom] that defines
      *                  the position of the ZoomRegion on screen.
+     *
+     * FIXME: The arguments here are redundant, since the width and height of
+     *   the ROI are determined by the viewport and magnification factors.
+     *   We ignore the passed in width and height.
+     *
      * @return          The newly created ZoomRegion.
      */
     createZoomRegion: function(xMagFactor, yMagFactor, roi, viewPort) {
