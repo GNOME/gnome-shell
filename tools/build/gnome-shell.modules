@@ -87,14 +87,14 @@
   </autotools>
 
   <autotools id="gtk-theme-engine-clearlooks">
-    <branch/>
+    <branch repo="git.gnome.org" module="gtk-theme-engine-clearlooks"/>
     <dependencies>
       <dep package="gtk3"/>
     </dependencies>
   </autotools>
 
   <autotools id="gnome-themes-standard">
-    <branch/>
+    <branch repo="git.gnome.org" module="gnome-themes-standard"/>
     <dependencies>
       <dep package="gtk-theme-engine-clearlooks"/>
     </dependencies>
