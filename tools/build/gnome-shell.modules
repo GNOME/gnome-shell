@@ -86,10 +86,17 @@
     </dependencies>
   </autotools>
 
-  <autotools id="gtk-engines-3">
-    <branch repo="git.gnome.org" module="gtk-engines"/>
+  <autotools id="gtk-theme-engine-clearlooks">
+    <branch/>
     <dependencies>
       <dep package="gtk3"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gnome-themes-standard">
+    <branch/>
+    <dependencies>
+      <dep package="gtk-theme-engine-clearlooks"/>
     </dependencies>
   </autotools>
 
@@ -194,7 +201,7 @@
   <metamodule id="gnome-shell-using-gir-repository">
     <dependencies>
       <dep package="librsvg"/>
-      <dep package="gtk-engines-3"/>
+      <dep package="gnome-themes-standard"/>
       <dep package="gnome-shell"/>
     </dependencies>
   </metamodule>
@@ -202,7 +209,7 @@
   <metamodule id="gnome-shell-full">
     <dependencies>
       <dep package="librsvg"/>
-      <dep package="gtk-engines-3"/>
+      <dep package="gnome-themes-standard"/>
       <dep package="gnome-shell"/>
     </dependencies>
   </metamodule>
