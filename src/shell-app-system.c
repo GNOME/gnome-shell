@@ -13,8 +13,8 @@
 
 #include "shell-app-private.h"
 #include "shell-global.h"
-#include "st/st-texture-cache.h"
 #include "display.h"
+#include "st.h"
 
 #define GMENU_I_KNOW_THIS_IS_UNSTABLE
 #include <gmenu-tree.h>

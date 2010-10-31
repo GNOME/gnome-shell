@@ -22,10 +22,16 @@
 #ifndef __ST_TEXTURE_CACHE_H__
 #define __ST_TEXTURE_CACHE_H__
 
+#if !defined(ST_H_INSIDE) && !defined(ST_COMPILATION)
+#error "Only <st/st.h> can be included directly.h"
+#endif
+
 #include <gio/gio.h>
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter.h>
+
+#include <st/st-types.h>
 
 #define ST_TYPE_TEXTURE_CACHE                 (st_texture_cache_get_type ())
 #define ST_TEXTURE_CACHE(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_TEXTURE_CACHE, StTextureCache))
@@ -51,13 +57,6 @@ struct _StTextureCacheClass
   GObjectClass parent_class;
 
 };
-
-typedef enum {
-  ST_ICON_SYMBOLIC,
-  ST_ICON_FULLCOLOR,
-  ST_ICON_APPLICATION,
-  ST_ICON_DOCUMENT
-} StIconType;
 
 typedef enum {
   ST_TEXTURE_CACHE_POLICY_NONE,

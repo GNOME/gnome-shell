@@ -42,6 +42,13 @@ typedef enum {
   ST_ALIGN_END
 } StAlign;
 
+typedef enum {
+  ST_ICON_SYMBOLIC,
+  ST_ICON_FULLCOLOR,
+  ST_ICON_APPLICATION,
+  ST_ICON_DOCUMENT
+} StIconType;
+
 G_END_DECLS
 
 #endif /* __ST_TYPES_H__ */
