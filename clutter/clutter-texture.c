@@ -1230,7 +1230,10 @@ clutter_texture_set_custom_property (ClutterScriptable *scriptable,
 
       path = clutter_script_lookup_filename (script, str);
       if (G_UNLIKELY (!path))
-        return;
+        {
+          g_warning ("Unable to find image %s", str);
+          return;
+        }
 
       error = NULL;
       clutter_texture_set_from_file (texture, path, &error);
