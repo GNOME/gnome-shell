@@ -373,12 +373,7 @@ static void
 clutter_clone_set_source_internal (ClutterClone *clone,
 				   ClutterActor *source)
 {
-  ClutterClonePrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_CLONE (clone));
-  g_return_if_fail (source == NULL || CLUTTER_IS_ACTOR (source));
-
-  priv = clone->priv;
+  ClutterClonePrivate *priv = clone->priv;
 
   if (priv->clone_source)
     {
