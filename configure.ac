@@ -93,6 +93,8 @@ PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-3.0)
 PKG_CHECK_MODULES(TRAY, gtk+-3.0)
 PKG_CHECK_MODULES(GVC, libpulse libpulse-mainloop-glib gobject-2.0)
 
+PKG_CHECK_MODULES(JS_TEST, clutter-x11-1.0 gjs-1.0 gobject-introspection-1.0 gtk+-3.0)
+
 MUTTER_BIN_DIR=`$PKG_CONFIG --variable=exec_prefix mutter-plugins`/bin
 # FIXME: metacity-plugins.pc should point directly to its .gir file
 MUTTER_LIB_DIR=`$PKG_CONFIG --variable=libdir mutter-plugins`
