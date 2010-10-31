@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-10-27 23:15+0000\n"
-"PO-Revision-Date: 2010-10-28 01:42+0200\n"
+"POT-Creation-Date: 2010-10-30 17:51+0000\n"
+"PO-Revision-Date: 2010-10-31 21:36+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -420,19 +420,19 @@ msgstr "APLICACIONES"
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:648
+#: ../js/ui/appDisplay.js:647
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:651
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:652
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: ../js/ui/appDisplay.js:830
+#: ../js/ui/appDisplay.js:829
 msgid "Drag here to add favorites"
 msgstr "Arrastrar aquí para añadir a los favoritos"
 
@@ -608,8 +608,9 @@ msgid "My Account..."
 msgstr "Mi cuenta…"
 
 #: ../js/ui/statusMenu.js:123
-msgid "System Preferences..."
-msgstr "Preferencias del sistema…"
+#| msgid "System Preferences..."
+msgid "System Settings..."
+msgstr "Ajustes del sistema…"
 
 #: ../js/ui/statusMenu.js:130
 msgid "Lock Screen"
@@ -719,36 +720,35 @@ msgstr[0] "%u entrada"
 msgstr[1] "%u entradas"
 
 #: ../src/gvc/gvc-mixer-control.c:1402
-#| msgid "System Settings..."
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
-#: ../src/shell-global.c:1204
+#: ../src/shell-global.c:1219
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:1208
+#: ../src/shell-global.c:1223
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:1213
+#: ../src/shell-global.c:1228
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:1218
+#: ../src/shell-global.c:1233
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:1223
+#: ../src/shell-global.c:1238
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
