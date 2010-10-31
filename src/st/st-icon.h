@@ -29,7 +29,9 @@
 #define _ST_ICON
 
 #include <glib-object.h>
-#include "st-widget.h"
+#include <st/st-widget.h>
+
+#include <st/st-types.h>
 
 G_BEGIN_DECLS
 
@@ -84,6 +86,9 @@ ClutterActor* st_icon_new (void);
 
 const gchar *st_icon_get_icon_name (StIcon *icon);
 void         st_icon_set_icon_name (StIcon *icon, const gchar *icon_name);
+
+void         st_icon_set_icon_type (StIcon *icon, StIconType icon_type);
+StIconType   st_icon_get_icon_type (StIcon *icon);
 
 gint         st_icon_get_icon_size (StIcon *icon);
 void         st_icon_set_icon_size (StIcon *icon, gint size);
