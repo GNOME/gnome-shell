@@ -51,7 +51,6 @@ G_DEFINE_TYPE_WITH_CODE (StIcon, st_icon, ST_TYPE_WIDGET,
 struct _StIconPrivate
 {
   ClutterActor *icon_texture;
-  gboolean      is_content_image;
 
   gchar        *icon_name;
   gint          icon_size;
@@ -69,13 +68,6 @@ st_stylable_iface_init (StStylableIface *iface)
       GParamSpec *pspec;
 
       is_initialized = TRUE;
-
-      pspec = g_param_spec_boxed ("x-st-content-image",
-                                   "Content Image",
-                                   "Image used as the button",
-                                   ST_TYPE_BORDER_IMAGE,
-                                   G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_ICON, pspec);
 
       pspec = g_param_spec_string ("x-st-icon-name",
                                    "Icon name",
@@ -189,15 +181,10 @@ st_icon_get_preferred_height (ClutterActor *actor,
                                      &width,
                                      &height);
 
-      if (!priv->is_content_image)
-        {
-          if (width <= height)
-            pref_height = priv->icon_size;
-          else
-            pref_height = height / (gfloat)width * priv->icon_size;
-        }
+      if (width <= height)
+        pref_height = priv->icon_size;
       else
-        pref_height = height;
+        pref_height = height / (gfloat)width * priv->icon_size;
     }
   else
     pref_height = 0;
@@ -230,15 +217,10 @@ st_icon_get_preferred_width (ClutterActor *actor,
                                      &width,
                                      &height);
 
-      if (!priv->is_content_image)
-        {
-          if (height <= width)
-            pref_width = priv->icon_size;
-          else
-            pref_width = width / (gfloat)height * priv->icon_size;
-        }
+      if (height <= width)
+        pref_width = priv->icon_size;
       else
-        pref_width = width;
+        pref_width = width / (gfloat)height * priv->icon_size;
     }
   else
     pref_width = 0;
@@ -283,8 +265,7 @@ st_icon_paint (ClutterActor *actor)
   StIconPrivate *priv = ST_ICON (actor)->priv;
 
   /* Chain up to paint background */
-  if (!priv->is_content_image)
-    CLUTTER_ACTOR_CLASS (st_icon_parent_class)->paint (actor);
+  CLUTTER_ACTOR_CLASS (st_icon_parent_class)->paint (actor);
 
   if (priv->icon_texture)
     clutter_actor_paint (priv->icon_texture);
@@ -352,13 +333,6 @@ st_icon_update (StIcon *icon)
 {
   StIconPrivate *priv = icon->priv;
 
-  if (priv->is_content_image)
-    {
-      priv->is_content_image = FALSE;
-      g_signal_connect (st_icon_theme_get_default (), "notify::theme-name",
-                        G_CALLBACK (st_icon_notify_theme_name_cb), icon);
-    }
-
   /* Get rid of the old one */
   if (priv->icon_texture)
     {
@@ -393,48 +367,14 @@ st_icon_style_changed_cb (StWidget *widget)
   StIcon *self = ST_ICON (widget);
   StIconPrivate *priv = self->priv;
 
-  StBorderImage *content_image = NULL;
   gboolean changed = FALSE;
   gchar *icon_name = NULL;
   gint icon_size = -1;
 
   st_stylable_get (ST_STYLABLE (widget),
-                   "x-st-content-image", &content_image,
                    "x-st-icon-name", &icon_name,
                    "x-st-icon-size", &icon_size,
                    NULL);
-
-  /* Content-image overrides drawing of the icon, so
-   * don't bother reading those properties if it's set.
-   */
-  if (content_image)
-    {
-      GError *error = NULL;
-
-      priv->is_content_image = TRUE;
-      g_signal_handlers_disconnect_by_func (st_icon_theme_get_default (),
-                                            st_icon_notify_theme_name_cb,
-                                            self);
-
-      if (priv->icon_texture)
-        clutter_actor_destroy (priv->icon_texture);
-
-      priv->icon_texture = clutter_texture_new_from_file (content_image->uri,
-                                                          &error);
-      if (priv->icon_texture)
-        clutter_actor_set_parent (priv->icon_texture, CLUTTER_ACTOR (widget));
-
-      if (error)
-        {
-          g_warning ("Could not load content image: %s", error->message);
-          g_error_free (error);
-        }
-
-      g_boxed_free (ST_TYPE_BORDER_IMAGE, content_image);
-      g_free (icon_name);
-
-      return;
-    }
 
   if (icon_name && (!priv->icon_name ||
                     !g_str_equal (icon_name, priv->icon_name)))
