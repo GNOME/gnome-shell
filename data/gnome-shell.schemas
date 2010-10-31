@@ -62,5 +62,23 @@
         </locale>
       </schema>
 
+      <schema>
+        <key>/schemas/desktop/gnome/shell/windows/theme</key>
+        <applyto>/desktop/gnome/shell/windows/theme</applyto>
+        <owner>gnome-shell</owner>
+        <type>string</type>
+        <default>Adwaita</default>
+        <locale name="C">
+          <short>Current theme</short>
+          <long>
+            The theme determines the appearance of window borders,
+            titlebar, and so forth.
+
+            This key overrides /apps/metacity/general/theme when
+            running GNOME Shell.
+          </long>
+        </locale>
+      </schema>
+
   </schemalist>
 </gconfschemafile>
