@@ -60,7 +60,6 @@ typedef struct _TextureSlicedQuadState
   float quad_len_y;
   gboolean flipped_x;
   gboolean flipped_y;
-  CoglPipelineWrapModeOverrides *wrap_mode_overrides;
 } TextureSlicedQuadState;
 
 typedef struct _TextureSlicedPolygonState
@@ -114,16 +113,53 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
              subtexture_coords[0], subtexture_coords[1],
              subtexture_coords[2], subtexture_coords[3]);
 
-  /* FIXME: when the wrap mode becomes part of the pipeline we need to
-   * be able to override the wrap mode when logging a quad. */
   _cogl_journal_log_quad (quad_coords,
                           state->pipeline,
                           1, /* one layer */
                           0, /* don't need to use fallbacks */
                           gl_handle, /* replace the layer0 texture */
-                          state->wrap_mode_overrides, /* use GL_CLAMP_TO_EDGE */
+                          NULL, /* we never use wrap mode overrides */
                           subtexture_coords,
                           4);
+}
+
+typedef struct _ValidateFirstLayerState
+{
+  CoglPipeline *override_pipeline;
+} ValidateFirstLayerState;
+
+static gboolean
+validate_first_layer_cb (CoglPipeline *pipeline,
+                         int layer_index,
+                         void *user_data)
+{
+  ValidateFirstLayerState *state = user_data;
+  CoglPipelineWrapMode clamp_to_edge =
+    COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
+
+  /* We can't use hardware repeat so we need to set clamp to edge
+   * otherwise it might pull in edge pixels from the other side. By
+   * default WRAP_MODE_AUTOMATIC becomes CLAMP_TO_EDGE so we only need
+   * to override if the wrap mode is repeat.
+   */
+  if (cogl_pipeline_get_layer_wrap_mode_s (pipeline, layer_index) ==
+      COGL_PIPELINE_WRAP_MODE_REPEAT)
+    {
+      if (!state->override_pipeline)
+        state->override_pipeline = cogl_pipeline_copy (pipeline);
+      cogl_pipeline_set_layer_wrap_mode_s (pipeline, layer_index,
+                                           clamp_to_edge);
+    }
+  if (cogl_pipeline_get_layer_wrap_mode_t (pipeline, layer_index) ==
+      COGL_PIPELINE_WRAP_MODE_REPEAT)
+    {
+      if (!state->override_pipeline)
+        state->override_pipeline = cogl_pipeline_copy (pipeline);
+      cogl_pipeline_set_layer_wrap_mode_t (pipeline, layer_index,
+                                           clamp_to_edge);
+    }
+
+  return FALSE;
 }
 
 /* This path doesn't currently support multitexturing but is used for
@@ -152,12 +188,11 @@ _cogl_texture_quad_multiple_primitives (CoglHandle    tex_handle,
                                         float         ty_2)
 {
   TextureSlicedQuadState state;
-  CoglPipelineWrapModeOverrides wrap_mode_overrides;
   gboolean tex_virtual_flipped_x;
   gboolean tex_virtual_flipped_y;
   gboolean quad_flipped_x;
   gboolean quad_flipped_y;
-  CoglHandle first_layer;
+  ValidateFirstLayerState validate_first_layer_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -259,30 +294,15 @@ _cogl_texture_quad_multiple_primitives (CoglHandle    tex_handle,
       position = replacement_position;
     }
 
-  state.wrap_mode_overrides = NULL;
-  memset (&wrap_mode_overrides, 0, sizeof (wrap_mode_overrides));
+  validate_first_layer_state.override_pipeline = NULL;
+  cogl_pipeline_foreach_layer (pipeline,
+                               validate_first_layer_cb,
+                               &validate_first_layer_state);
 
-  /* We can't use hardware repeat so we need to set clamp to edge
-     otherwise it might pull in edge pixels from the other side. By
-     default WRAP_MODE_AUTOMATIC becomes CLAMP_TO_EDGE so we only need
-     to override if the wrap mode is repeat */
-  first_layer = _cogl_pipeline_get_layers (pipeline)->data;
-  if (_cogl_pipeline_layer_get_wrap_mode_s (first_layer) ==
-      COGL_PIPELINE_WRAP_MODE_REPEAT)
-    {
-      state.wrap_mode_overrides = &wrap_mode_overrides;
-      wrap_mode_overrides.values[0].s =
-        COGL_PIPELINE_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
-    }
-  if (_cogl_pipeline_layer_get_wrap_mode_t (first_layer) ==
-      COGL_PIPELINE_WRAP_MODE_REPEAT)
-    {
-      state.wrap_mode_overrides = &wrap_mode_overrides;
-      wrap_mode_overrides.values[0].t =
-        COGL_PIPELINE_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE;
-    }
-
-  state.pipeline = pipeline;
+  if (validate_first_layer_state.override_pipeline)
+    state.pipeline = validate_first_layer_state.override_pipeline;
+  else
+    state.pipeline = pipeline;
 
   /* Get together the data we need to transform the virtual texture
    * coordinates of each slice into quad coordinates...
@@ -329,6 +349,9 @@ _cogl_texture_quad_multiple_primitives (CoglHandle    tex_handle,
                                                tx_1, ty_1, tx_2, ty_2,
                                                log_quad_sub_textures_cb,
                                                &state);
+
+  if (validate_first_layer_state.override_pipeline)
+    cogl_object_unref (validate_first_layer_state.override_pipeline);
 }
 
 typedef struct _ValidateTexCoordsState
@@ -518,6 +541,9 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
                           NULL, /* we never use wrap mode overrides */
                           final_tex_coords,
                           n_layers * 4);
+
+  if (state.override_pipeline)
+    cogl_object_unref (state.override_pipeline);
 
   return TRUE;
 }
