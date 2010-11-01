@@ -105,6 +105,10 @@ StTooltip StLabel {
     min-width: 200px;
 }
 
+.popup-sub-menu {
+    background-color: #606060;
+}
+
 /* The remaining popup-menu sizing is all done in ems, so that if you
  * override .popup-menu.font-size, everything else will scale with it.
  */
