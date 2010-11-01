@@ -40,6 +40,7 @@
 #include <glib.h>
 #include <windows.h>
 #include <windowsx.h>
+#include <stdlib.h>
 
 typedef struct _ClutterEventSource      ClutterEventSource;
 

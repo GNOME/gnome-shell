@@ -586,8 +586,6 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
 static void
 clutter_backend_win32_init (ClutterBackendWin32 *backend_win32)
 {
-  ClutterBackend *backend = CLUTTER_BACKEND (backend_win32);
-
   backend_win32->gl_context         = NULL;
   backend_win32->invisible_cursor   = NULL;
 
