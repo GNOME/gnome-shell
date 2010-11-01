@@ -67,6 +67,7 @@ struct _StThemeNode {
   StBorderImage *border_image;
   StShadow *shadow;
   StShadow *text_shadow;
+  StIconColors *icon_colors;
 
   GType element_type;
   char *element_id;

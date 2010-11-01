@@ -80,6 +80,7 @@ st_source_h =					\
 	st/st-focus-manager.h			\
 	st/st-group.h				\
 	st/st-icon.h				\
+	st/st-icon-colors.h			\
 	st/st-im-text.h				\
 	st/st-label.h				\
 	st/st-overflow-box.h			\
@@ -130,6 +131,7 @@ st_source_c =					\
 	st/st-focus-manager.c			\
 	st/st-group.c				\
 	st/st-icon.c				\
+	st/st-icon-colors.c			\
 	st/st-im-text.c				\
 	st/st-label.c				\
 	st/st-overflow-box.c			\
