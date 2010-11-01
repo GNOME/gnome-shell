@@ -53,7 +53,7 @@ typedef struct {
  */
 struct _CoglMatrixStack
 {
-  GSList *stack;
+  GArray *stack;
 
   /* which state does GL have, NULL if unknown */
   CoglMatrixState *flushed_state;
@@ -61,28 +61,17 @@ struct _CoglMatrixStack
 };
 
 /* XXX: this doesn't initialize the matrix! */
-static CoglMatrixState*
-_cogl_matrix_state_new (void)
+static void
+_cogl_matrix_state_init (CoglMatrixState *state)
 {
-  CoglMatrixState *state;
-
-  state = g_slice_new (CoglMatrixState);
   state->push_count = 0;
   state->is_identity = FALSE;
-
-  return state;
 }
 
-static void
-_cogl_matrix_state_destroy (CoglMatrixState *state)
-{
-  g_slice_free (CoglMatrixState, state);
-}
-
-static CoglMatrixState*
+static CoglMatrixState *
 _cogl_matrix_stack_top (CoglMatrixStack *stack)
 {
-  return stack->stack->data;
+  return &g_array_index (stack->stack, CoglMatrixState, stack->stack->len - 1);
 }
 
 /* XXX:
@@ -115,7 +104,10 @@ _cogl_matrix_stack_top_mutable (CoglMatrixStack *stack,
 
   state->push_count -= 1;
 
-  new_top = _cogl_matrix_state_new ();
+  g_array_set_size (stack->stack, stack->stack->len + 1);
+  new_top = &g_array_index (stack->stack, CoglMatrixState,
+                            stack->stack->len - 1);
+  _cogl_matrix_state_init (new_top);
 
   if (initialize)
     {
@@ -128,8 +120,6 @@ _cogl_matrix_stack_top_mutable (CoglMatrixStack *stack,
         stack->flushed_state = new_top;
     }
 
-  stack->stack = g_slist_prepend (stack->stack, new_top);
-
   return new_top;
 }
 
@@ -141,10 +131,12 @@ _cogl_matrix_stack_new (void)
 
   stack = g_slice_new0 (CoglMatrixStack);
 
-  state = _cogl_matrix_state_new ();
+  stack->stack = g_array_sized_new (FALSE, FALSE,
+                                    sizeof (CoglMatrixState), 10);
+  g_array_set_size (stack->stack, 1);
+  state = &g_array_index (stack->stack, CoglMatrixState, 0);
+  _cogl_matrix_state_init (state);
   state->is_identity = TRUE;
-
-  stack->stack = g_slist_prepend (stack->stack, state);
 
   return stack;
 }
@@ -152,17 +144,7 @@ _cogl_matrix_stack_new (void)
 void
 _cogl_matrix_stack_destroy (CoglMatrixStack *stack)
 {
-  while (stack->stack)
-    {
-      CoglMatrixState *state;
-
-      state = stack->stack->data;
-      _cogl_matrix_state_destroy (state);
-      stack->stack =
-        g_slist_delete_link (stack->stack,
-                             stack->stack);
-    }
-
+  g_array_free (stack->stack, TRUE);
   g_slice_free (CoglMatrixStack, stack);
 }
 
@@ -192,7 +174,7 @@ _cogl_matrix_stack_pop (CoglMatrixStack *stack)
     }
   else
     {
-      if (stack->stack->next == NULL)
+      if (stack->stack->len == 1)
         {
           g_warning ("Too many matrix pops");
           return;
@@ -203,10 +185,7 @@ _cogl_matrix_stack_pop (CoglMatrixStack *stack)
           stack->flushed_state = NULL;
         }
 
-      stack->stack =
-        g_slist_delete_link (stack->stack,
-                             stack->stack);
-      _cogl_matrix_state_destroy (state);
+      g_array_set_size (stack->stack, stack->stack->len - 1);
     }
 }
 
