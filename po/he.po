@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-28 08:56+0200\n"
-"PO-Revision-Date: 2010-10-28 08:58+0200\n"
+"POT-Creation-Date: 2010-11-01 07:47+0200\n"
+"PO-Revision-Date: 2010-11-01 07:48+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -411,19 +411,19 @@ msgstr "יישומים"
 msgid "PREFERENCES"
 msgstr "העדפות"
 
-#: ../js/ui/appDisplay.js:648
+#: ../js/ui/appDisplay.js:647
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:651
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:652
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
-#: ../js/ui/appDisplay.js:830
+#: ../js/ui/appDisplay.js:829
 msgid "Drag here to add favorites"
 msgstr "יש לגרור פריטים לכאן כדי להוסיף מועדפים"
 
@@ -599,8 +599,8 @@ msgid "My Account..."
 msgstr "החשבון שלי..."
 
 #: ../js/ui/statusMenu.js:123
-msgid "System Preferences..."
-msgstr "העדפות המערכת..."
+msgid "System Settings..."
+msgstr "הגדרות המערכת..."
 
 #: ../js/ui/statusMenu.js:130
 msgid "Lock Screen"
@@ -713,11 +713,11 @@ msgstr[2] "2 קלטים"
 msgid "System Sounds"
 msgstr "צלילי מערכת"
 
-#: ../src/shell-global.c:1204
+#: ../src/shell-global.c:1219
 msgid "Less than a minute ago"
 msgstr "לפני פחות מדקה"
 
-#: ../src/shell-global.c:1208
+#: ../src/shell-global.c:1223
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -725,7 +725,7 @@ msgstr[0] "לפני דקה"
 msgstr[1] "לפני %d דקות"
 msgstr[2] "לפני 2 דקות"
 
-#: ../src/shell-global.c:1213
+#: ../src/shell-global.c:1228
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -733,7 +733,7 @@ msgstr[0] "לפני שעה"
 msgstr[1] "לפני %d שעות"
 msgstr[2] "לפני שעתיים"
 
-#: ../src/shell-global.c:1218
+#: ../src/shell-global.c:1233
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -741,7 +741,7 @@ msgstr[0] "לפני יום"
 msgstr[1] "לפני %d ימים"
 msgstr[2] "לפני יומיים"
 
-#: ../src/shell-global.c:1223
+#: ../src/shell-global.c:1238
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
