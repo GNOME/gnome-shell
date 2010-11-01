@@ -24,19 +24,24 @@
 #ifndef __COGL_CLIP_STACK_H
 #define __COGL_CLIP_STACK_H
 
+/* The clip stack works like a GSList where only a pointer to the top
+   of the stack is stored. The empty clip stack is represented simply
+   by the NULL pointer. When an entry is added to or removed from the
+   stack the new top of the stack is returned. When an entry is pushed
+   a new clip stack entry is created which effectively takes ownership
+   of the reference on the old entry. Therefore unrefing the top entry
+   effectively loses ownership of all entries in the stack */
+
 typedef struct _CoglClipStack CoglClipStack;
 
 CoglClipStack *
-_cogl_clip_stack_new (void);
-
-void
 _cogl_clip_stack_push_window_rectangle (CoglClipStack *stack,
                                         int x_offset,
                                         int y_offset,
                                         int width,
                                         int height);
 
-void
+CoglClipStack *
 _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
                                  float x_1,
                                  float y_1,
@@ -44,34 +49,21 @@ _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
                                  float y_2,
                                  const CoglMatrix *modelview_matrix);
 
-void
+CoglClipStack *
 _cogl_clip_stack_push_from_path (CoglClipStack *stack,
                                  CoglPath *path,
                                  const CoglMatrix *modelview_matrix);
-void
+CoglClipStack *
 _cogl_clip_stack_pop (CoglClipStack *stack);
 
 void
 _cogl_clip_stack_flush (CoglClipStack *stack,
                         gboolean *stencil_used_p);
 
-
-/* TODO: we may want to make this function public because it can be
- * used to implement a better API than cogl_clip_stack_save() and
- * cogl_clip_stack_restore().
- */
-/*
- * _cogl_clip_stack_copy:
- * @stack: A #CoglClipStack
- *
- * Creates a copy of the given clip stack and returns a new pointer to
- * it. The data from the original stack is shared with the new stack
- * so making copies is relatively cheap. Modifying the original stack
- * does not affect the new stack.
- *
- * Return value: a new clip stack with the same data as @stack
- */
 CoglClipStack *
-_cogl_clip_stack_copy (CoglClipStack *stack);
+_cogl_clip_stack_ref (CoglClipStack *stack);
+
+void
+_cogl_clip_stack_unref (CoglClipStack *stack);
 
 #endif /* __COGL_CLIP_STACK_H */
