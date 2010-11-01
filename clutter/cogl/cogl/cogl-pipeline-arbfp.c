@@ -396,9 +396,9 @@ _cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
         {
           int i;
 
-          /* We reuse a single grow-only GString for ARBfp code-gen */
-          g_string_set_size (ctx->arbfp_source_buffer, 0);
-          arbfp_program_state->source = ctx->arbfp_source_buffer;
+          /* We reuse a single grow-only GString for code-gen */
+          g_string_set_size (ctx->fragment_source_buffer, 0);
+          arbfp_program_state->source = ctx->fragment_source_buffer;
           g_string_append (arbfp_program_state->source,
                            "!!ARBfp1.0\n"
                            "TEMP output;\n"
