@@ -82,8 +82,9 @@ typedef struct
 
   CoglPipelineFogState legacy_fog_state;
 
-  /* Materials */
-  CoglPipeline     *simple_pipeline; /* used for set_source_color */
+  /* Pipelines */
+  CoglPipeline     *opaque_color_pipeline; /* used for set_source_color */
+  CoglPipeline     *blended_color_pipeline; /* used for set_source_color */
   CoglPipeline     *texture_pipeline; /* used for set_source_texture */
   GString          *arbfp_source_buffer;
   GList            *source_stack;

@@ -379,15 +379,24 @@ _cogl_flush_face_winding (void)
 void
 cogl_set_source_color (const CoglColor *color)
 {
-  CoglColor premultiplied;
+  CoglPipeline *pipeline;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  premultiplied = *color;
-  cogl_color_premultiply (&premultiplied);
-  cogl_pipeline_set_color (ctx->simple_pipeline, &premultiplied);
+  if (cogl_color_get_alpha_byte (color) == 0xff)
+    {
+      cogl_pipeline_set_color (ctx->opaque_color_pipeline, color);
+      pipeline = ctx->opaque_color_pipeline;
+    }
+  else
+    {
+      CoglColor premultiplied = *color;
+      cogl_color_premultiply (&premultiplied);
+      cogl_pipeline_set_color (ctx->blended_color_pipeline, &premultiplied);
+      pipeline = ctx->blended_color_pipeline;
+    }
 
-  cogl_set_source (ctx->simple_pipeline);
+  cogl_set_source (pipeline);
 }
 
 void
