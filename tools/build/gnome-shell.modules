@@ -11,6 +11,8 @@
       href="git://git.moblin.org"/>
   <repository type="tarball" name="cairo.org"
       href="http://cairographics.org/"/>
+  <repository type="tarball" name="0pointer.de"
+    href="http://0pointer.de/lennart/projects/"/>
 
   <autotools id="gobject-introspection">
     <branch repo="git.gnome.org" module="gobject-introspection"/>
@@ -179,6 +181,15 @@
     <branch repo="git.gnome.org" module="gnome-icon-theme-symbolic" />
   </autotools>
 
+  <autotools id="libcanberra" autogen-sh="configure">
+    <branch repo="0pointer.de" module="libcanberra/libcanberra-0.26.tar.gz" version="0.26"
+            hash="sha256:4b5d8d2c2835133620adbc53745dd107b6e58b9a2963059e8f457143fee00982"
+            md5sum="ee2c66ada7c851a4e7b6eb1682285a24" size="463209" />
+    <dependencies>
+      <dep package="gtk3"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gnome-shell">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
@@ -192,6 +203,7 @@
         <dep package="gsettings-desktop-schemas"/>
         <dep package="gnome-icon-theme"/>
         <dep package="gnome-icon-theme-symbolic"/>
+        <dep package="libcanberra"/>
     </dependencies>
   </autotools>
 
