@@ -331,6 +331,138 @@ _cogl_texture_quad_multiple_primitives (CoglHandle    tex_handle,
                                                &state);
 }
 
+typedef struct _ValidateTexCoordsState
+{
+  int i;
+  int n_layers;
+  const float *user_tex_coords;
+  int user_tex_coords_len;
+  float *final_tex_coords;
+  CoglPipeline *override_pipeline;
+  gboolean needs_multiple_primitives;
+} ValidateTexCoordsState;
+
+/*
+ * Validate the texture coordinates for this rectangle.
+ */
+static gboolean
+validate_tex_coords_cb (CoglPipeline *pipeline,
+                        int layer_index,
+                        void *user_data)
+{
+  ValidateTexCoordsState *state = user_data;
+  CoglHandle texture;
+  const float *in_tex_coords;
+  float *out_tex_coords;
+  float default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
+  CoglTransformResult transform_result;
+
+  state->i++;
+
+  texture = _cogl_pipeline_get_layer_texture (pipeline, layer_index);
+
+  /* NB: NULL textures are handled by _cogl_pipeline_flush_gl_state */
+  if (!texture)
+    return TRUE;
+
+  /* FIXME: we should be able to avoid this copying when no
+   * transform is required by the texture backend and the user
+   * has supplied enough coordinates for all the layers.
+   */
+
+  /* If the user didn't supply texture coordinates for this layer
+     then use the default coords */
+  if (state->i >= state->user_tex_coords_len / 4)
+    in_tex_coords = default_tex_coords;
+  else
+    in_tex_coords = &state->user_tex_coords[state->i * 4];
+
+  out_tex_coords = &state->final_tex_coords[state->i * 4];
+
+  memcpy (out_tex_coords, in_tex_coords, sizeof (float) * 4);
+
+  /* Convert the texture coordinates to GL.
+   */
+  transform_result =
+    _cogl_texture_transform_quad_coords_to_gl (texture,
+                                               out_tex_coords);
+  /* If the texture has waste or we are using GL_TEXTURE_RECT we
+   * can't handle texture repeating so we can't use the layer if
+   * repeating is required.
+   *
+   * NB: We already know that no texture matrix is being used if the
+   * texture doesn't support hardware repeat.
+   */
+  if (transform_result == COGL_TRANSFORM_SOFTWARE_REPEAT)
+    {
+      if (state->i == 0)
+        {
+          if (state->n_layers > 1)
+            {
+              static gboolean warning_seen = FALSE;
+              if (!warning_seen)
+                g_warning ("Skipping layers 1..n of your material since "
+                           "the first layer doesn't support hardware "
+                           "repeat (e.g. because of waste or use of "
+                           "GL_TEXTURE_RECTANGLE_ARB) and you supplied "
+                           "texture coordinates outside the range [0,1]."
+                           "Falling back to software repeat assuming "
+                           "layer 0 is the most important one keep");
+              warning_seen = TRUE;
+            }
+
+          if (state->override_pipeline)
+            cogl_object_unref (state->override_pipeline);
+          state->needs_multiple_primitives = TRUE;
+          return FALSE;
+        }
+      else
+        {
+          static gboolean warning_seen = FALSE;
+          if (!warning_seen)
+            g_warning ("Skipping layer %d of your material "
+                       "since you have supplied texture coords "
+                       "outside the range [0,1] but the texture "
+                       "doesn't support hardware repeat (e.g. "
+                       "because of waste or use of "
+                       "GL_TEXTURE_RECTANGLE_ARB). This isn't "
+                       "supported with multi-texturing.", state->i);
+          warning_seen = TRUE;
+
+          cogl_pipeline_set_layer_texture (texture, layer_index, NULL);
+        }
+    }
+
+  /* By default WRAP_MODE_AUTOMATIC becomes to CLAMP_TO_EDGE. If
+     the texture coordinates need repeating then we'll override
+     this to GL_REPEAT. Otherwise we'll leave it at CLAMP_TO_EDGE
+     so that it won't blend in pixels from the opposite side when
+     the full texture is drawn with GL_LINEAR filter mode */
+  if (transform_result == COGL_TRANSFORM_HARDWARE_REPEAT)
+    {
+      if (cogl_pipeline_get_layer_wrap_mode_s (pipeline, layer_index) ==
+          COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
+        {
+          if (!state->override_pipeline)
+            state->override_pipeline = cogl_pipeline_copy (pipeline);
+          cogl_pipeline_set_layer_wrap_mode_s (state->override_pipeline,
+                                               layer_index,
+                                               COGL_PIPELINE_WRAP_MODE_REPEAT);
+        }
+      if (cogl_pipeline_get_layer_wrap_mode_t (pipeline, layer_index) ==
+          COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
+        {
+          if (!state->override_pipeline)
+            state->override_pipeline = cogl_pipeline_copy (pipeline);
+          cogl_pipeline_set_layer_wrap_mode_t (state->override_pipeline,
+                                               layer_index,
+                                               COGL_PIPELINE_WRAP_MODE_REPEAT);
+        }
+    }
+
+  return TRUE;
+}
+
 /* This path supports multitexturing but only when each of the layers is
  * handled with a single GL texture. Also if repeating is necessary then
  * _cogl_texture_can_hardware_repeat() must return TRUE.
@@ -354,131 +486,36 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
                                           const float  *user_tex_coords,
                                           int           user_tex_coords_len)
 {
-  int          n_layers = cogl_pipeline_get_n_layers (pipeline);
-  float       *final_tex_coords = alloca (sizeof (float) * 4 * n_layers);
-  const GList *layers;
-  GList       *tmp;
-  int          i;
-  CoglPipelineWrapModeOverrides wrap_mode_overrides;
-  /* This will be set to point to wrap_mode_overrides when an override
-     is needed */
-  CoglPipelineWrapModeOverrides *wrap_mode_overrides_p = NULL;
+  int n_layers = cogl_pipeline_get_n_layers (pipeline);
+  ValidateTexCoordsState state;
+  float *final_tex_coords = alloca (sizeof (float) * 4 * n_layers);
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  memset (&wrap_mode_overrides, 0, sizeof (wrap_mode_overrides));
+  state.i = -1;
+  state.n_layers = n_layers;
+  state.user_tex_coords = user_tex_coords;
+  state.user_tex_coords_len = user_tex_coords_len;
+  state.final_tex_coords = final_tex_coords;
+  state.override_pipeline = NULL;
+  state.needs_multiple_primitives = FALSE;
 
-  /*
-   * Validate the texture coordinates for this rectangle.
-   */
-  layers = _cogl_pipeline_get_layers (pipeline);
-  for (tmp = (GList *)layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
-    {
-      CoglHandle          layer = (CoglHandle)tmp->data;
-      CoglHandle          tex_handle;
-      const float        *in_tex_coords;
-      float              *out_tex_coords;
-      float               default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
-      CoglTransformResult transform_result;
+  cogl_pipeline_foreach_layer (pipeline,
+                               validate_tex_coords_cb,
+                               &state);
 
-      tex_handle = _cogl_pipeline_layer_get_texture (layer);
+  if (state.needs_multiple_primitives)
+    return FALSE;
 
-      /* COGL_INVALID_HANDLE textures are handled by
-       * _cogl_pipeline_flush_gl_state */
-      if (tex_handle == COGL_INVALID_HANDLE)
-        continue;
-
-      /* If the user didn't supply texture coordinates for this layer
-         then use the default coords */
-      if (i >= user_tex_coords_len / 4)
-        in_tex_coords = default_tex_coords;
-      else
-        in_tex_coords = &user_tex_coords[i * 4];
-
-      out_tex_coords = &final_tex_coords[i * 4];
-
-      memcpy (out_tex_coords, in_tex_coords, sizeof (GLfloat) * 4);
-
-      /* Convert the texture coordinates to GL.
-       */
-      transform_result =
-        _cogl_texture_transform_quad_coords_to_gl (tex_handle,
-                                                   out_tex_coords);
-      /* If the texture has waste or we are using GL_TEXTURE_RECT we
-       * can't handle texture repeating so we can't use the layer if
-       * repeating is required.
-       *
-       * NB: We already know that no texture matrix is being used if the
-       * texture doesn't support hardware repeat.
-       */
-      if (transform_result == COGL_TRANSFORM_SOFTWARE_REPEAT)
-        {
-          if (i == 0)
-            {
-              if (n_layers > 1)
-                {
-                  static gboolean warning_seen = FALSE;
-                  if (!warning_seen)
-                    g_warning ("Skipping layers 1..n of your material since "
-                               "the first layer doesn't support hardware "
-                               "repeat (e.g. because of waste or use of "
-                               "GL_TEXTURE_RECTANGLE_ARB) and you supplied "
-                               "texture coordinates outside the range [0,1]."
-                               "Falling back to software repeat assuming "
-                               "layer 0 is the most important one keep");
-                  warning_seen = TRUE;
-                }
-              return FALSE;
-            }
-          else
-            {
-              static gboolean warning_seen = FALSE;
-              if (!warning_seen)
-                g_warning ("Skipping layer %d of your material "
-                           "since you have supplied texture coords "
-                           "outside the range [0,1] but the texture "
-                           "doesn't support hardware repeat (e.g. "
-                           "because of waste or use of "
-                           "GL_TEXTURE_RECTANGLE_ARB). This isn't "
-                           "supported with multi-texturing.", i);
-              warning_seen = TRUE;
-
-              /* NB: marking for fallback will replace the layer with
-               * a default transparent texture */
-              fallback_layers |= (1 << i);
-            }
-        }
-
-      /* By default WRAP_MODE_AUTOMATIC becomes to CLAMP_TO_EDGE. If
-         the texture coordinates need repeating then we'll override
-         this to GL_REPEAT. Otherwise we'll leave it at CLAMP_TO_EDGE
-         so that it won't blend in pixels from the opposite side when
-         the full texture is drawn with GL_LINEAR filter mode */
-      if (transform_result == COGL_TRANSFORM_HARDWARE_REPEAT)
-        {
-          if (_cogl_pipeline_layer_get_wrap_mode_s (layer) ==
-              COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
-            {
-              wrap_mode_overrides.values[i].s
-                = COGL_PIPELINE_WRAP_MODE_OVERRIDE_REPEAT;
-              wrap_mode_overrides_p = &wrap_mode_overrides;
-            }
-          if (_cogl_pipeline_layer_get_wrap_mode_t (layer) ==
-              COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
-            {
-              wrap_mode_overrides.values[i].t
-                = COGL_PIPELINE_WRAP_MODE_OVERRIDE_REPEAT;
-              wrap_mode_overrides_p = &wrap_mode_overrides;
-            }
-        }
-    }
+  if (state.override_pipeline)
+    pipeline = state.override_pipeline;
 
   _cogl_journal_log_quad (position,
                           pipeline,
                           n_layers,
-                          fallback_layers,
+                          0, /* we don't need fallback layers */
                           0, /* don't replace the layer0 texture */
-                          wrap_mode_overrides_p,
+                          NULL, /* we never use wrap mode overrides */
                           final_tex_coords,
                           n_layers * 4);
 
