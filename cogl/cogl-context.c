@@ -129,7 +129,8 @@ cogl_create_context (void)
 
   _context->legacy_fog_state.enabled = FALSE;
 
-  _context->simple_pipeline = cogl_pipeline_new ();
+  _context->opaque_color_pipeline = cogl_pipeline_new ();
+  _context->blended_color_pipeline = cogl_pipeline_new ();
   _context->texture_pipeline = cogl_pipeline_new ();
   _context->arbfp_source_buffer = g_string_new ("");
   _context->source_stack = NULL;
@@ -237,8 +238,8 @@ cogl_create_context (void)
                                 0, /* auto calc row stride */
                                 default_texture_data);
 
-  cogl_push_source (_context->simple_pipeline);
-  _cogl_pipeline_flush_gl_state (_context->simple_pipeline, FALSE);
+  cogl_push_source (_context->opaque_color_pipeline);
+  _cogl_pipeline_flush_gl_state (_context->opaque_color_pipeline, FALSE);
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
@@ -277,8 +278,10 @@ _cogl_destroy_context (void)
   if (_context->default_gl_texture_rect_tex)
     cogl_handle_unref (_context->default_gl_texture_rect_tex);
 
-  if (_context->simple_pipeline)
-    cogl_handle_unref (_context->simple_pipeline);
+  if (_context->opaque_color_pipeline)
+    cogl_handle_unref (_context->opaque_color_pipeline);
+  if (_context->blended_color_pipeline)
+    cogl_handle_unref (_context->blended_color_pipeline);
   if (_context->texture_pipeline)
     cogl_handle_unref (_context->texture_pipeline);
 
