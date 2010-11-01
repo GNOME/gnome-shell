@@ -4,7 +4,8 @@ noinst_PROGRAMS = \
 	test-text \
 	test-picking \
 	test-text-perf \
-	test-random-text
+	test-random-text \
+	test-cogl-perf
 
 INCLUDES = \
 	-I$(top_srcdir)/ \
@@ -25,5 +26,6 @@ test_text_SOURCES = test-text.c
 test_picking_SOURCES = test-picking.c
 test_text_perf_SOURCES = test-text-perf.c
 test_random_text_SOURCES = test-random-text.c
+test_cogl_perf_SOURCES = test-cogl-perf.c
 
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore
