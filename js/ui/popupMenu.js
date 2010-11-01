@@ -370,7 +370,7 @@ PopupSliderMenuItem.prototype = {
         this.addActor(this._slider, 0, -1);
         this._slider.connect('repaint', Lang.bind(this, this._sliderRepaint));
         this._slider.connect('button-press-event', Lang.bind(this, this._startDragging));
-        this._slider.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
+        this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 
         this._releaseId = this._motionId = 0;
         this._dragging = false;
