@@ -864,9 +864,6 @@ _cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
   if (changes & COGL_PIPELINE_STATE_LAYERS)
     changes = COGL_PIPELINE_STATE_AFFECTS_BLENDING;
 
-  /* XXX: we don't currently handle specific changes in an optimal way*/
-  changes = COGL_PIPELINE_STATE_AFFECTS_BLENDING;
-
   if ((override_color && cogl_color_get_alpha_byte (override_color) != 0xff))
     return TRUE;
 
@@ -878,13 +875,13 @@ _cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
         return TRUE;
     }
 
-  /* We can't make any assumptions about the alpha channel if the user
-   * is using an unknown fragment shader.
-   *
-   * TODO: check that it isn't just a vertex shader!
-   */
   if (changes & COGL_PIPELINE_STATE_USER_SHADER)
     {
+      /* We can't make any assumptions about the alpha channel if the user
+       * is using an unknown fragment shader.
+       *
+       * TODO: check that it isn't just a vertex shader!
+       */
       if (_cogl_pipeline_get_user_program (pipeline) != COGL_INVALID_HANDLE)
         return TRUE;
     }
@@ -893,8 +890,13 @@ _cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
    */
   if (changes & COGL_PIPELINE_STATE_LIGHTING)
     {
+      /* XXX: This stuff is showing up in sysprof reports which is
+       * silly because lighting isn't currently actually supported
+       * by Cogl except for these token properties. When we actually
+       * expose lighting support we can avoid these checks when
+       * lighting is disabled. */
+#if 0
       CoglColor tmp;
-
       cogl_pipeline_get_ambient (pipeline, &tmp);
       if (cogl_color_get_alpha_byte (&tmp) != 0xff)
         return TRUE;
@@ -907,6 +909,7 @@ _cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
       cogl_pipeline_get_emission (pipeline, &tmp);
       if (cogl_color_get_alpha_byte (&tmp) != 0xff)
         return TRUE;
+#endif
     }
 
   if (changes & COGL_PIPELINE_STATE_LAYERS)
@@ -921,15 +924,18 @@ _cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
       if (has_alpha)
         return TRUE;
     }
-
-  /* So far we have only checked the property that has been changed so
-   * we now need to check all the other properties too. */
-  other_state = COGL_PIPELINE_STATE_AFFECTS_BLENDING & ~changes;
-  if (other_state &&
-      _cogl_pipeline_needs_blending_enabled (pipeline,
-                                             other_state,
-                                             NULL))
-    return TRUE;
+  else
+    {
+      /* In this case we have so far only checked the property that
+       * has been changed so we now need to check all the other
+       * properties too. */
+      other_state = COGL_PIPELINE_STATE_AFFECTS_BLENDING & ~changes;
+      if (other_state &&
+          _cogl_pipeline_needs_blending_enabled (pipeline,
+                                                 other_state,
+                                                 NULL))
+        return TRUE;
+    }
 
   return FALSE;
 }
