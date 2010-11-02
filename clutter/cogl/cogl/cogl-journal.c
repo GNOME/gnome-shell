@@ -84,6 +84,7 @@ typedef struct _CoglJournalFlushState
   gsize                indices_type_size;
 #endif
   CoglMatrixStack     *modelview_stack;
+  CoglMatrixStack     *projection_stack;
 
   CoglPipeline        *source;
 } CoglJournalFlushState;
@@ -194,7 +195,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
   COGL_TIMER_START (_cogl_uprof_context, time_flush_modelview_and_entries);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
-    g_print ("BATCHING:    modelview batch len = %d\n", batch_len);
+    g_print ("BATCHING:     modelview batch len = %d\n", batch_len);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
     {
@@ -331,7 +332,7 @@ _cogl_journal_flush_pipeline_and_entries (CoglJournalEntry *batch_start,
   COGL_TIMER_START (_cogl_uprof_context, time_flush_pipeline_entries);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
-    g_print ("BATCHING:   pipeline batch len = %d\n", batch_len);
+    g_print ("BATCHING:    pipeline batch len = %d\n", batch_len);
 
   state->source = batch_start->pipeline;
 
@@ -471,7 +472,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
   int                      i;
   CoglVertexAttribute    **attribute_entry;
   COGL_STATIC_TIMER (time_flush_vbo_texcoord_pipeline_entries,
-                     "Journal Flush", /* parent */
+                     "flush: clip+vbo+texcoords+pipeline+entries", /* parent */
                      "flush: vbo+texcoords+pipeline+entries",
                      "The time spent flushing vbo + texcoord offsets + "
                      "pipeline + entries",
@@ -483,7 +484,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                     time_flush_vbo_texcoord_pipeline_entries);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
-    g_print ("BATCHING:  vbo offset batch len = %d\n", batch_len);
+    g_print ("BATCHING:   vbo offset batch len = %d\n", batch_len);
 
   /* XXX NB:
    * Our journal's vertex data is arranged as follows:
@@ -580,6 +581,68 @@ compare_entry_strides (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
     return FALSE;
 }
 
+/* At this point we know the batch has a unique clip stack */
+static void
+_cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
+                                             int               batch_len,
+                                             void             *data)
+{
+  CoglJournalFlushState *state = data;
+
+  COGL_STATIC_TIMER (time_flush_clip_stack_pipeline_entries,
+                     "Journal Flush", /* parent */
+                     "flush: clip+vbo+texcoords+pipeline+entries",
+                     "The time spent flushing clip + vbo + texcoord offsets + "
+                     "pipeline + entries",
+                     0 /* no application private data */);
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  COGL_TIMER_START (_cogl_uprof_context,
+                    time_flush_clip_stack_pipeline_entries);
+
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
+    g_print ("BATCHING:  clip stack batch len = %d\n", batch_len);
+
+  _cogl_clip_stack_flush (batch_start->clip_stack);
+
+  _cogl_matrix_stack_push (state->modelview_stack);
+
+  /* If we have transformed all our quads at log time then we ensure
+   * no further model transform is applied by loading the identity
+   * matrix here. We need to do this after flushing the clip stack
+   * because the clip stack flushing code can modify the matrix */
+  if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)))
+    {
+      _cogl_matrix_stack_load_identity (state->modelview_stack);
+      _cogl_matrix_stack_flush_to_gl (state->modelview_stack,
+                                      COGL_MATRIX_MODELVIEW);
+    }
+
+  /* Setting up the clip state can sometimes also flush the projection
+     matrix so we should flush it again. This will be a no-op if the
+     clip code didn't modify the projection */
+  _cogl_matrix_stack_flush_to_gl (state->projection_stack,
+                                  COGL_MATRIX_PROJECTION);
+
+  batch_and_call (batch_start,
+                  batch_len,
+                  compare_entry_strides,
+                  _cogl_journal_flush_vbo_offsets_and_entries, /* callback */
+                  data);
+
+  _cogl_matrix_stack_pop (state->modelview_stack);
+
+  COGL_TIMER_STOP (_cogl_uprof_context,
+                   time_flush_clip_stack_pipeline_entries);
+}
+
+static gboolean
+compare_entry_clip_stacks (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
+{
+  return entry0->clip_stack == entry1->clip_stack;
+}
+
 static CoglVertexArray *
 upload_vertices (GArray *vertices, CoglJournalFlushState *state)
 {
@@ -638,53 +701,43 @@ _cogl_journal_flush (void)
   framebuffer = _cogl_get_framebuffer ();
   modelview_stack = _cogl_framebuffer_get_modelview_stack (framebuffer);
   state.modelview_stack = modelview_stack;
-
-  _cogl_matrix_stack_push (modelview_stack);
-
-  /* If we have transformed all our quads at log time then we ensure no
-   * further model transform is applied by loading the identity matrix
-   * here... */
-  if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)))
-    {
-      _cogl_matrix_stack_load_identity (modelview_stack);
-      _cogl_matrix_stack_flush_to_gl (modelview_stack, COGL_MATRIX_MODELVIEW);
-    }
+  state.projection_stack = _cogl_framebuffer_get_projection_stack (framebuffer);
 
   /* batch_and_call() batches a list of journal entries according to some
    * given criteria and calls a callback once for each determined batch.
    *
    * The process of flushing the journal is staggered to reduce the amount
    * of driver/GPU state changes necessary:
-   * 1) We split the entries according to the stride of the vertices:
+   * 1) We split the entries according to the clip state.
+   * 2) We split the entries according to the stride of the vertices:
    *      Each time the stride of our vertex data changes we need to call
    *      gl{Vertex,Color}Pointer to inform GL of new VBO offsets.
    *      Currently the only thing that affects the stride of our vertex data
    *      is the number of pipeline layers.
-   * 2) We split the entries explicitly by the number of pipeline layers:
+   * 3) We split the entries explicitly by the number of pipeline layers:
    *      We pad our vertex data when the number of layers is < 2 so that we
    *      can minimize changes in stride. Each time the number of layers
    *      changes we need to call glTexCoordPointer to inform GL of new VBO
    *      offsets.
-   * 3) We then split according to compatible Cogl pipelines:
+   * 4) We then split according to compatible Cogl pipelines:
    *      This is where we flush pipeline state
-   * 4) Finally we split according to modelview matrix changes:
+   * 5) Finally we split according to modelview matrix changes:
    *      This is when we finally tell GL to draw something.
    *      Note: Splitting by modelview changes is skipped when are doing the
    *      vertex transformation in software at log time.
    */
   batch_and_call ((CoglJournalEntry *)ctx->journal->data, /* first entry */
                   ctx->journal->len, /* max number of entries to consider */
-                  compare_entry_strides,
-                  _cogl_journal_flush_vbo_offsets_and_entries, /* callback */
+                  compare_entry_clip_stacks,
+                  _cogl_journal_flush_clip_stacks_and_entries, /* callback */
                   &state); /* data */
-
-  _cogl_matrix_stack_pop (modelview_stack);
 
   for (i = 0; i < ctx->journal->len; i++)
     {
       CoglJournalEntry *entry =
         &g_array_index (ctx->journal, CoglJournalEntry, i);
       _cogl_pipeline_journal_unref (entry->pipeline);
+      _cogl_clip_stack_unref (entry->clip_stack);
     }
 
   g_array_set_size (ctx->journal, 0);
@@ -700,9 +753,11 @@ _cogl_journal_init (void)
    * next the the journal is flushed. Note: This lets up flush things
    * that themselves depend on the journal, such as clip state. */
 
-  /* NB: the journal deals with flushing the modelview stack manually */
+  /* NB: the journal deals with flushing the modelview stack and clip
+     state manually */
   _cogl_framebuffer_flush_state (_cogl_get_framebuffer (),
-                                 COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW);
+                                 COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW |
+                                 COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE);
 }
 
 void
@@ -887,6 +942,7 @@ _cogl_journal_log_quad (const float  *position,
     }
 
   entry->pipeline = _cogl_pipeline_journal_ref (source);
+  entry->clip_stack = _cogl_clip_stack_ref (_cogl_get_clip_stack ());
 
   if (G_UNLIKELY (source != pipeline))
     cogl_handle_unref (source);

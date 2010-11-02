@@ -25,6 +25,7 @@
 #define __COGL_JOURNAL_PRIVATE_H
 
 #include "cogl-handle.h"
+#include "cogl-clip-stack.h"
 
 /* To improve batching of geometry when submitting vertices to OpenGL we
  * log the texture rectangles we want to draw to a journal, so when we
@@ -34,6 +35,7 @@ typedef struct _CoglJournalEntry
   CoglPipeline            *pipeline;
   int                      n_layers;
   CoglMatrix               model_view;
+  CoglClipStack           *clip_stack;
   /* XXX: These entries are pretty big now considering the padding in
    * CoglPipelineFlushOptions and CoglMatrix, so we might need to optimize this
    * later. */

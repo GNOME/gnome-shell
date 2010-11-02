@@ -51,10 +51,6 @@ cogl_clip_push_window_rectangle (int x_offset,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* We don't log clip stack changes in the journal so we must flush
-   * it before making modifications */
-  _cogl_journal_flush ();
-
   framebuffer = _cogl_get_framebuffer ();
   clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
@@ -136,10 +132,6 @@ cogl_clip_push_rectangle (float x_1,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* We don't log clip stack changes in the journal so we must flush
-   * it before making modifications */
-  _cogl_journal_flush ();
-
   /* Try and catch window space rectangles so we can redirect to
    * cogl_clip_push_window_rect which will use scissoring. */
   if (try_pushing_rect_as_window_rect (x_1, y_1, x_2, y_2))
@@ -178,10 +170,6 @@ cogl_clip_push_from_path_preserve (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* We don't log clip stack changes in the journal so we must flush
-   * it before making modifications */
-  _cogl_journal_flush ();
-
   framebuffer = _cogl_get_framebuffer ();
   clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
@@ -203,10 +191,6 @@ cogl_clip_push_from_path (void)
 static void
 _cogl_clip_pop_real (CoglClipState *clip_state)
 {
-  /* We don't log clip stack changes in the journal so we must flush
-   * it before making modifications */
-  _cogl_journal_flush ();
-
   clip_state->stacks->data = _cogl_clip_stack_pop (clip_state->stacks->data);
 }
 
@@ -250,10 +234,6 @@ cogl_clip_ensure (void)
 static void
 _cogl_clip_stack_save_real (CoglClipState *clip_state)
 {
-  /* We don't log clip stack changes in the journal so we must flush
-   * it before making modifications */
-  _cogl_journal_flush ();
-
   clip_state->stacks = g_slist_prepend (clip_state->stacks, NULL);
 }
 
@@ -277,10 +257,6 @@ _cogl_clip_stack_restore_real (CoglClipState *clip_state)
   CoglHandle stack;
 
   g_return_if_fail (clip_state->stacks != NULL);
-
-  /* We don't log clip stack changes in the journal so we must flush
-   * it before making modifications */
-  _cogl_journal_flush ();
 
   stack = clip_state->stacks->data;
 
