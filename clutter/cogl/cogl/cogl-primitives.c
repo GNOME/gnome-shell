@@ -819,6 +819,46 @@ cogl_rectangle (float x_1,
   _cogl_rectangles_with_multitexture_coords (&rect, 1);
 }
 
+void
+_cogl_rectangle_immediate (float x_1,
+                           float y_1,
+                           float x_2,
+                           float y_2)
+{
+  /* Draw a rectangle using the vertex array API to avoid going
+     through the journal. This should only be used in cases where the
+     code might be called while the journal is already being flushed
+     such as when flushing the clip state */
+  float vertices[8] =
+    {
+      x_1, y_1,
+      x_1, y_2,
+      x_2, y_1,
+      x_2, y_2
+    };
+  CoglVertexArray *vertex_array;
+  CoglVertexAttribute *attributes[2];
+
+  vertex_array = cogl_vertex_array_new (sizeof (vertices));
+  cogl_buffer_set_data (COGL_BUFFER (vertex_array), 0,
+                        (guint8 *) vertices, sizeof (vertices));
+  attributes[0] = cogl_vertex_attribute_new (vertex_array,
+                                             "cogl_position_in",
+                                             sizeof (float) * 2, /* stride */
+                                             0, /* offset */
+                                             2, /* n_components */
+                                             COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[1] = NULL;
+
+  _cogl_draw_vertex_attributes_array (COGL_VERTICES_MODE_TRIANGLE_STRIP,
+                                      0, /* first_index */
+                                      4, /* n_vertices */
+                                      attributes);
+
+  cogl_object_unref (attributes[0]);
+  cogl_object_unref (vertex_array);
+}
+
 typedef struct _AppendTexCoordsState
 {
   const CoglTextureVertex *vertices_in;

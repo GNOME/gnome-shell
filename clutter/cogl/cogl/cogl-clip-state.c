@@ -239,6 +239,11 @@ cogl_clip_ensure (void)
   CoglClipState *clip_state;
 
   clip_state = _cogl_framebuffer_get_clip_state (_cogl_get_framebuffer ());
+  /* Flushing the clip state doesn't cause the journal to be
+     flushed. This function may be being called by an external
+     application however so it makes sense to flush the journal
+     here */
+  _cogl_journal_flush ();
   _cogl_clip_state_flush (clip_state);
 }
 

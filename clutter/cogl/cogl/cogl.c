@@ -148,19 +148,14 @@ cogl_check_extension (const char *name, const char *ext)
   return _cogl_check_extension (name, ext);
 }
 
+/* This version of cogl_clear can be used internally as an alternative
+   to avoid flushing the journal or the framebuffer state. This is
+   needed when doing operations that may be called whiling flushing
+   the journal */
 void
-cogl_clear (const CoglColor *color, unsigned long buffers)
+_cogl_clear (const CoglColor *color, unsigned long buffers)
 {
   GLbitfield gl_buffers = 0;
-
-  COGL_NOTE (DRAW, "Clear begin");
-
-  _cogl_journal_flush ();
-
-  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the pipeline state) when flushing the clip stack, so should
-   * always be done first when preparing to draw. */
-  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   if (buffers & COGL_BUFFER_BIT_COLOR)
     {
@@ -201,6 +196,21 @@ cogl_clear (const CoglColor *color, unsigned long buffers)
       _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
       ctxt->journal_rectangles_color = 1;
     }
+}
+
+void
+cogl_clear (const CoglColor *color, unsigned long buffers)
+{
+  COGL_NOTE (DRAW, "Clear begin");
+
+  _cogl_journal_flush ();
+
+  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
+   * as the pipeline state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. */
+  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
+
+  _cogl_clear (color, buffers);;
 
   COGL_NOTE (DRAW, "Clear end");
 }

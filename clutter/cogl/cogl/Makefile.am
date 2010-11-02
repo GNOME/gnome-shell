@@ -175,6 +175,7 @@ cogl_sources_c = \
 	$(cogl_driver_sources)				\
 	$(cogl_winsys_common_sources)			\
 	$(cogl_tesselator_sources)			\
+	$(srcdir)/cogl-private.h			\
 	$(srcdir)/cogl-debug.h 				\
 	$(srcdir)/cogl-debug-options.h			\
 	$(srcdir)/cogl-handle.h 			\
@@ -190,6 +191,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-bitmap-private.h 		\
 	$(srcdir)/cogl-bitmap.c 			\
 	$(srcdir)/cogl-bitmap-fallback.c 		\
+	$(srcdir)/cogl-primitives-private.h 		\
 	$(srcdir)/cogl-primitives.h 			\
 	$(srcdir)/cogl-primitives.c 			\
 	$(srcdir)/cogl-path-private.h                   \
