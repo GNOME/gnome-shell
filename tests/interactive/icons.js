@@ -8,6 +8,9 @@ const UI = imports.testcommon.ui;
 UI.init();
 let stage = Clutter.Stage.get_default();
 
+stage.width = 400;
+stage.height = 700;
+
 let b = new St.BoxLayout({ vertical: true,
                            width: stage.width,
                            height: stage.height });
@@ -26,28 +29,59 @@ function addTest(label, icon_props) {
 }
 
 addTest("Symbolic",
-        { icon_name: 'zoom-in',
+        { icon_name: 'battery-full',
           icon_type: St.IconType.SYMBOLIC,
           icon_size: 48 });
 addTest("Full color",
-        { icon_name: 'zoom-in',
+        { icon_name: 'battery-full',
           icon_type: St.IconType.FULLCOLOR,
           icon_size: 48 });
 addTest("Default size",
-        { icon_name: 'zoom-in',
+        { icon_name: 'battery-full',
           icon_type: St.IconType.SYMBOLIC });
 addTest("Size set by property",
-        { icon_name: 'zoom-in',
+        { icon_name: 'battery-full',
           icon_type: St.IconType.SYMBOLIC,
           icon_size: 32 });
 addTest("Size set by style",
-        { icon_name: 'zoom-in',
+        { icon_name: 'battery-full',
           icon_type: St.IconType.SYMBOLIC,
           style: 'icon-size: 1em;' });
 addTest("16px icon in 48px icon widget",
-        { icon_name: 'zoom-in',
+        { icon_name: 'battery-full',
           icon_type: St.IconType.SYMBOLIC,
           style: 'icon-size: 16px; width: 48px; height: 48px;' });
+
+function iconRow(icons, box_style) {
+    let hb = new St.BoxLayout({ vertical: false, style: box_style });
+
+    for each (let iconName in icons) {
+        hb.add(new St.Icon({ icon_name: iconName,
+                             icon_type: St.IconType.SYMBOLIC,
+                             icon_size: 48 }));
+    }
+
+    b.add(hb);
+}
+
+let normalCss = 'background: white; color: black; padding: 10px 10px;';
+let reversedCss = 'background: black; color: white; warning-color: #ffcc00; error-color: #ff0000; padding: 10px 10px;';
+
+let batteryIcons = ['battery-full-charging',
+                    'battery-full',
+                    'battery-good',
+                    'battery-low',
+                    'battery-caution' ];
+
+let volumeIcons = ['audio-volume-high',
+                   'audio-volume-medium',
+                   'audio-volume-low',
+                   'audio-volume-muted' ];
+
+iconRow(batteryIcons, normalCss);
+iconRow(batteryIcons, reversedCss);
+iconRow(volumeIcons, normalCss);
+iconRow(volumeIcons, reversedCss);
 
 stage.show();
 Clutter.main();

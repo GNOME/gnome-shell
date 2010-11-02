@@ -56,8 +56,8 @@ struct _StIconPrivate
   gint          icon_size;       /* icon size we are using */
 };
 
-static void st_icon_update           (StIcon *icon);
-static void st_icon_update_icon_size (StIcon *icon);
+static void st_icon_update               (StIcon *icon);
+static gboolean st_icon_update_icon_size (StIcon *icon);
 
 #define DEFAULT_ICON_SIZE 48
 #define DEFAULT_ICON_TYPE ST_ICON_SYMBOLIC
@@ -245,6 +245,7 @@ st_icon_style_changed (StWidget *widget)
 
   priv->theme_icon_size = st_theme_node_get_length (theme_node, "icon-size");
   st_icon_update_icon_size (self);
+  st_icon_update (self);
 }
 
 static void
@@ -318,19 +319,24 @@ st_icon_update (StIcon *icon)
   /* Try to lookup the new one */
   if (priv->icon_name)
     {
-      StTextureCache *cache = st_texture_cache_get_default ();
+      StThemeNode *theme_node = st_widget_peek_theme_node (ST_WIDGET (icon));
 
-      priv->icon_texture = st_texture_cache_load_icon_name (cache,
-                                                            priv->icon_name,
-                                                            priv->icon_type,
-                                                            priv->icon_size);
+      if (theme_node)
+        {
+          StTextureCache *cache = st_texture_cache_get_default ();
+          priv->icon_texture = st_texture_cache_load_icon_name_for_theme (cache,
+                                                                          theme_node,
+                                                                          priv->icon_name,
+                                                                          priv->icon_type,
+                                                                          priv->icon_size);
 
-      if (priv->icon_texture)
-        clutter_actor_set_parent (priv->icon_texture, CLUTTER_ACTOR (icon));
+          if (priv->icon_texture)
+            clutter_actor_set_parent (priv->icon_texture, CLUTTER_ACTOR (icon));
+        }
     }
 }
 
-static void
+static gboolean
 st_icon_update_icon_size (StIcon *icon)
 {
   StIconPrivate *priv = icon->priv;
@@ -347,8 +353,10 @@ st_icon_update_icon_size (StIcon *icon)
     {
       clutter_actor_queue_relayout (CLUTTER_ACTOR (icon));
       priv->icon_size = new_size;
-      st_icon_update (icon);
+      return TRUE;
     }
+  else
+    return FALSE;
 }
 
 /**
@@ -477,8 +485,8 @@ st_icon_set_icon_size (StIcon *icon,
   if (priv->prop_icon_size != size)
     {
       priv->prop_icon_size = size;
-      st_icon_update_icon_size (icon);
-
+      if (st_icon_update_icon_size (icon))
+        st_icon_update (icon);
       g_object_notify (G_OBJECT (icon), "icon-size");
     }
 }
