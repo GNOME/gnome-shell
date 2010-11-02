@@ -57,13 +57,15 @@ CoglClipStack *
 _cogl_clip_stack_pop (CoglClipStack *stack);
 
 void
-_cogl_clip_stack_flush (CoglClipStack *stack,
-                        gboolean *stencil_used_p);
+_cogl_clip_stack_flush (CoglClipStack *stack);
 
 CoglClipStack *
 _cogl_clip_stack_ref (CoglClipStack *stack);
 
 void
 _cogl_clip_stack_unref (CoglClipStack *stack);
+
+void
+_cogl_clip_stack_dirty (void);
 
 #endif /* __COGL_CLIP_STACK_H */

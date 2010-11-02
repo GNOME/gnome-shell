@@ -582,8 +582,7 @@ _cogl_clip_stack_pop (CoglClipStack *stack)
 }
 
 void
-_cogl_clip_stack_flush (CoglClipStack *stack,
-                        gboolean *stencil_used_p)
+_cogl_clip_stack_flush (CoglClipStack *stack)
 {
   int has_clip_planes;
   gboolean using_clip_planes = FALSE;
@@ -592,10 +591,31 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
   int scissor_y0 = 0;
   int scissor_x1 = G_MAXINT;
   int scissor_y1 = G_MAXINT;
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
+  CoglMatrixStack *modelview_stack;
   CoglClipStack *entry;
   int scissor_y_start;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* If we have already flushed this state then we don't need to do
+     anything */
+  if (ctx->current_clip_stack_valid)
+    {
+      if (ctx->current_clip_stack == stack)
+        return;
+
+      _cogl_clip_stack_unref (ctx->current_clip_stack);
+    }
+
+  ctx->current_clip_stack_valid = TRUE;
+  ctx->current_clip_stack = _cogl_clip_stack_ref (stack);
+
+  /* The current primitive journal does not support tracking changes to the
+   * clip stack...  */
+  _cogl_journal_flush ();
+
+  modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
 
   has_clip_planes = cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES);
 
@@ -606,7 +626,7 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
   /* If the stack is empty then there's nothing else to do */
   if (stack == NULL)
     {
-      *stencil_used_p = FALSE;
+      ctx->current_clip_stack_uses_stencil = FALSE;
       GE (glDisable (GL_SCISSOR_TEST));
       return;
     }
@@ -718,5 +738,17 @@ _cogl_clip_stack_flush (CoglClipStack *stack,
   if (using_clip_planes)
     enable_clip_planes ();
 
-  *stencil_used_p = using_stencil_buffer;
+  ctx->current_clip_stack_uses_stencil = using_stencil_buffer;
+}
+
+void
+_cogl_clip_stack_dirty (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->current_clip_stack_valid)
+    {
+      ctx->current_clip_stack_valid = FALSE;
+      _cogl_clip_stack_unref (ctx->current_clip_stack);
+    }
 }

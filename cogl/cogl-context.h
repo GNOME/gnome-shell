@@ -187,6 +187,28 @@ typedef struct
      cogl_is_buffer */
   GSList           *buffer_types;
 
+  /* Clipping */
+  /* TRUE if we have a valid clipping stack flushed. In that case
+     current_clip_stack will describe what the current state is. If
+     this is FALSE then the current clip stack is completely unknown
+     so it will need to be reflushed. In that case current_clip_stack
+     doesn't need to be a valid pointer. We can't just use NULL in
+     current_clip_stack to mark a dirty state because NULL is a valid
+     stack (meaning no clipping) */
+  gboolean          current_clip_stack_valid;
+  /* The clip state that was flushed. This isn't intended to be used
+     as a stack to push and pop new entries. Instead the current stack
+     that the user wants is part of the framebuffer state. This is
+     just used to record the flush state so we can avoid flushing the
+     same state multiple times. When the clip state is flushed this
+     will hold a reference */
+  CoglClipStack    *current_clip_stack;
+  /* Whether the stencil buffer was used as part of the current clip
+     state. If TRUE then any further use of the stencil buffer (such
+     as for drawing paths) would need to be merged with the existing
+     stencil buffer */
+  gboolean          current_clip_stack_uses_stencil;
+
   CoglContextDriver drv;
   CoglContextWinsys winsys;
 } CoglContext;
