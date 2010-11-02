@@ -32,6 +32,7 @@
 #include <clutter/clutter.h>
 
 #include <st/st-types.h>
+#include <st/st-theme-node.h>
 
 #define ST_TYPE_TEXTURE_CACHE                 (st_texture_cache_get_type ())
 #define ST_TEXTURE_CACHE(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_TEXTURE_CACHE, StTextureCache))
@@ -81,6 +82,12 @@ ClutterActor *st_texture_cache_load_icon_name (StTextureCache *cache,
                                                const char     *name,
                                                StIconType      icon_type,
                                                gint            size);
+
+ClutterActor *st_texture_cache_load_icon_name_for_theme (StTextureCache *cache,
+                                                         StThemeNode    *theme_node,
+                                                         const char     *name,
+                                                         StIconType      icon_type,
+                                                         gint            size);
 
 ClutterActor *st_texture_cache_load_gicon (StTextureCache *cache,
                                            GIcon          *icon,

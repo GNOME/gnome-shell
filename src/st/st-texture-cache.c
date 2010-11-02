@@ -127,6 +127,7 @@ typedef struct {
   GtkIconInfo *icon_info;
   gint width;
   gint height;
+  StIconColors *colors;
   gpointer user_data;
 } AsyncIconLookupData;
 
@@ -181,15 +182,48 @@ compute_pixbuf_scale (gint      width,
   return FALSE;
 }
 
+static void
+rgba_from_clutter (GdkRGBA      *rgba,
+                   ClutterColor *color)
+{
+  rgba->red = color->red / 255.;
+  rgba->green = color->green / 255.;
+  rgba->blue = color->blue / 255.;
+  rgba->alpha = color->alpha / 255.;
+}
+
 static GdkPixbuf *
-impl_load_pixbuf_gicon (GIcon       *icon,
-                        GtkIconInfo *info,
-                        int          size,
-                        GError     **error)
+impl_load_pixbuf_gicon (GIcon        *icon,
+                        GtkIconInfo  *info,
+                        int           size,
+                        StIconColors *colors,
+                        GError      **error)
 {
   int scaled_width, scaled_height;
-  GdkPixbuf *pixbuf = gtk_icon_info_load_icon (info, error);
+  GdkPixbuf *pixbuf;
   int width, height;
+
+  if (colors)
+    {
+      GdkRGBA foreground_color;
+      GdkRGBA success_color;
+      GdkRGBA warning_color;
+      GdkRGBA error_color;
+
+      rgba_from_clutter (&foreground_color, &colors->foreground);
+      rgba_from_clutter (&success_color, &colors->success);
+      rgba_from_clutter (&warning_color, &colors->warning);
+      rgba_from_clutter (&error_color, &colors->error);
+
+      pixbuf = gtk_icon_info_load_symbolic (info,
+                                            &foreground_color, &success_color,
+                                            &warning_color, &error_color,
+                                            NULL, error);
+    }
+  else
+    {
+      pixbuf = gtk_icon_info_load_icon (info, error);
+    }
 
   if (!pixbuf)
     return NULL;
@@ -231,6 +265,8 @@ icon_lookup_data_destroy (gpointer p)
     g_free (data->mimetype);
   if (data->recent_info)
     gtk_recent_info_unref (data->recent_info);
+  if (data->colors)
+    st_icon_colors_unref (data->colors);
 
   g_free (data);
 }
@@ -464,7 +500,7 @@ load_pixbuf_thread (GSimpleAsyncResult *result,
   else if (data->uri)
     pixbuf = impl_load_pixbuf_file (data->uri, data->width, data->height, &error);
   else if (data->icon)
-    pixbuf = impl_load_pixbuf_gicon (data->icon, data->icon_info, data->width, &error);
+    pixbuf = impl_load_pixbuf_gicon (data->icon, data->icon_info, data->width, data->colors, &error);
   else
     g_assert_not_reached ();
 
@@ -490,6 +526,7 @@ load_icon_pixbuf_async (StTextureCache       *cache,
                         GIcon                *icon,
                         GtkIconInfo          *icon_info,
                         gint                  size,
+                        StIconColors         *colors,
                         GCancellable         *cancellable,
                         GAsyncReadyCallback   callback,
                         gpointer              user_data)
@@ -502,6 +539,10 @@ load_icon_pixbuf_async (StTextureCache       *cache,
   data->icon = g_object_ref (icon);
   data->icon_info = gtk_icon_info_copy (icon_info);
   data->width = data->height = size;
+  if (colors)
+    data->colors = st_icon_colors_ref (colors);
+  else
+    data->colors = NULL;
   data->user_data = user_data;
 
   result = g_simple_async_result_new (G_OBJECT (cache), callback, user_data, load_icon_pixbuf_async);
@@ -944,25 +985,11 @@ create_texture_and_ensure_request (StTextureCache        *cache,
   return had_pending;
 }
 
-/**
- * st_texture_cache_load_gicon:
- * @cache: The texture cache instance
- * @icon: the #GIcon to load
- * @size: Size of themed
- *
- * This method returns a new #ClutterActor for a given #GIcon. If the
- * icon isn't loaded already, the texture will be filled
- * asynchronously.
- *
- * This will load @icon as a full-color icon; if you want a symbolic
- * icon, you must use st_texture_cache_load_icon_name().
- *
- * Return Value: (transfer none): A new #ClutterActor for the icon
- */
-ClutterActor *
-st_texture_cache_load_gicon (StTextureCache    *cache,
-                             GIcon             *icon,
-                             gint               size)
+static ClutterActor *
+load_gicon_with_colors (StTextureCache    *cache,
+                        GIcon             *icon,
+                        gint               size,
+                        StIconColors      *colors)
 {
   AsyncTextureLoadData *request;
   ClutterActor *texture;
@@ -972,7 +999,21 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   GtkIconInfo *info;
 
   gicon_string = g_icon_to_string (icon);
-  key = g_strdup_printf (CACHE_PREFIX_GICON "icon=%s,size=%d", gicon_string, size);
+  if (colors)
+    {
+      /* This raises some doubts about the practice of using string keys */
+      key = g_strdup_printf (CACHE_PREFIX_GICON "icon=%s,size=%d,colors=%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x",
+                             gicon_string, size,
+                             colors->foreground.red, colors->foreground.blue, colors->foreground.green, colors->foreground.alpha,
+                             colors->warning.red, colors->warning.blue, colors->warning.green, colors->warning.alpha,
+                             colors->error.red, colors->error.blue, colors->error.green, colors->error.alpha,
+                             colors->success.red, colors->success.blue, colors->success.green, colors->success.alpha);
+    }
+  else
+    {
+      key = g_strdup_printf (CACHE_PREFIX_GICON "icon=%s,size=%d",
+                             gicon_string, size);
+    }
   g_free (gicon_string);
 
   if (create_texture_and_ensure_request (cache, key, size, &request, &texture))
@@ -995,7 +1036,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
       request->icon_info = info;
       request->width = request->height = size;
 
-      load_icon_pixbuf_async (cache, icon, info, size, NULL, on_pixbuf_loaded, request);
+      load_icon_pixbuf_async (cache, icon, info, size, colors, NULL, on_pixbuf_loaded, request);
     }
   else
     {
@@ -1010,6 +1051,29 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
 
   g_free (key);
   return CLUTTER_ACTOR (texture);
+}
+
+/**
+ * st_texture_cache_load_gicon:
+ * @cache: The texture cache instance
+ * @icon: the #GIcon to load
+ * @size: Size of themed
+ *
+ * This method returns a new #ClutterActor for a given #GIcon. If the
+ * icon isn't loaded already, the texture will be filled
+ * asynchronously.
+ *
+ * This will load @icon as a full-color icon; if you want a symbolic
+ * icon, you must use st_texture_cache_load_icon_name().
+ *
+ * Return Value: (transfer none): A new #ClutterActor for the icon
+ */
+ClutterActor *
+st_texture_cache_load_gicon (StTextureCache    *cache,
+                             GIcon             *icon,
+                             gint               size)
+{
+  return load_gicon_with_colors (cache, icon, size, NULL);
 }
 
 typedef struct {
@@ -1171,22 +1235,25 @@ st_texture_cache_load_sliced_image (StTextureCache    *cache,
  */
 
 /**
- * st_texture_cache_load_icon_name:
+ * st_texture_cache_load_icon_name_for_theme:
  * @cache: The texture cache instance
+ * @theme_node: a #StThemeNode
  * @name: Name of a themed icon
  * @icon_type: the type of icon to load
  * @size: Size of themed
  *
  * Load a themed icon into a texture. See the #StIconType documentation
- * for an explanation of how @icon_type affects the returned icon.
+ * for an explanation of how @icon_type affects the returned icon. The
+ * colors used for symbolic icons are derived from @theme_node.
  *
  * Return Value: (transfer none): A new #ClutterTexture for the icon
  */
 ClutterActor *
-st_texture_cache_load_icon_name (StTextureCache    *cache,
-                                 const char        *name,
-                                 StIconType         icon_type,
-                                 gint               size)
+st_texture_cache_load_icon_name_for_theme (StTextureCache    *cache,
+                                           StThemeNode       *theme_node,
+                                           const char        *name,
+                                           StIconType         icon_type,
+                                           gint               size)
 {
   ClutterActor *texture;
   GIcon *themed;
@@ -1206,7 +1273,12 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
       symbolic = g_strconcat (name, "-symbolic", NULL);
       themed = g_themed_icon_new_with_default_fallbacks ((const gchar*)symbolic);
       g_free (symbolic);
-      texture = st_texture_cache_load_gicon (cache, themed, size);
+      if (theme_node)
+        texture = load_gicon_with_colors (cache, themed, size,
+                                          st_theme_node_get_icon_colors (theme_node));
+      else
+        texture = st_texture_cache_load_gicon (cache, themed, size);
+
       g_object_unref (themed);
 
       return CLUTTER_ACTOR (texture);
@@ -1220,6 +1292,27 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
     default:
       g_assert_not_reached ();
     }
+}
+
+/**
+ * st_texture_cache_load_icon_name:
+ * @cache: The texture cache instance
+ * @name: Name of a themed icon
+ * @icon_type: the type of icon to load
+ * @size: Size of themed
+ *
+ * Load a themed icon into a texture. See the #StIconType documentation
+ * for an explanation of how @icon_type affects the returned icon.
+ *
+ * Return Value: (transfer none): A new #ClutterTexture for the icon
+ */
+ClutterActor *
+st_texture_cache_load_icon_name (StTextureCache    *cache,
+                                 const char        *name,
+                                 StIconType         icon_type,
+                                 gint               size)
+{
+  return st_texture_cache_load_icon_name_for_theme (cache, NULL, name, icon_type, size);
 }
 
 /**
