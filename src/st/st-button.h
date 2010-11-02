@@ -66,8 +66,6 @@ struct _StButtonClass
   StBinClass parent_class;
 
   /* vfuncs, not signals */
-  void (* pressed)    (StButton     *button);
-  void (* released)   (StButton     *button);
   void (* transition) (StButton     *button);
 
   /* signals */

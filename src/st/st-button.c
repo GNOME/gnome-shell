@@ -72,9 +72,9 @@ struct _StButtonPrivate
   gchar            *text;
 
   guint             is_pressed : 1;
-  guint             is_hover : 1;
   guint             is_checked : 1;
   guint             is_toggle : 1;
+  guint             has_grab : 1;
 
   gint              spacing;
 };
@@ -123,15 +123,32 @@ st_button_style_changed (StWidget *widget)
 }
 
 static void
-st_button_real_pressed (StButton *button)
+st_button_press (StButton *button)
 {
+  if (button->priv->is_pressed)
+    return;
+
+  button->priv->is_pressed = TRUE;
   st_widget_add_style_pseudo_class (ST_WIDGET (button), "active");
 }
 
 static void
-st_button_real_released (StButton *button)
+st_button_release (StButton *button,
+                   gboolean  clicked)
 {
+  if (!button->priv->is_pressed)
+    return;
+
+  button->priv->is_pressed = FALSE;
   st_widget_remove_style_pseudo_class (ST_WIDGET (button), "active");
+
+  if (clicked)
+    {
+      if (button->priv->is_toggle)
+        st_button_set_checked (button, !button->priv->is_checked);
+
+      g_signal_emit (button, button_signals[CLICKED], 0);
+    }
 }
 
 static gboolean
@@ -143,14 +160,10 @@ st_button_button_press (ClutterActor       *actor,
   if (event->button == 1)
     {
       StButton *button = ST_BUTTON (actor);
-      StButtonClass *klass = ST_BUTTON_GET_CLASS (button);
-
-      button->priv->is_pressed = TRUE;
 
       clutter_grab_pointer (actor);
-
-      if (klass->pressed)
-        klass->pressed (button);
+      button->priv->has_grab = TRUE;
+      st_button_press (button);
 
       return TRUE;
     }
@@ -165,24 +178,16 @@ st_button_button_release (ClutterActor       *actor,
   if (event->button == 1)
     {
       StButton *button = ST_BUTTON (actor);
-      StButtonClass *klass = ST_BUTTON_GET_CLASS (button);
+      gboolean is_click;
 
-      if (!button->priv->is_pressed)
-        return FALSE;
+      is_click = button->priv->has_grab && st_widget_get_hover (ST_WIDGET (button));
+      st_button_release (button, is_click);
 
-      clutter_ungrab_pointer ();
-
-      if (button->priv->is_toggle)
+      if (button->priv->has_grab)
         {
-          st_button_set_checked (button, !button->priv->is_checked);
+          button->priv->has_grab = FALSE;
+          clutter_ungrab_pointer ();
         }
-
-      button->priv->is_pressed = FALSE;
-
-      if (klass->released)
-        klass->released (button);
-
-      g_signal_emit (button, button_signals[CLICKED], 0);
 
       return TRUE;
     }
@@ -195,12 +200,19 @@ st_button_enter (ClutterActor         *actor,
                  ClutterCrossingEvent *event)
 {
   StButton *button = ST_BUTTON (actor);
+  gboolean ret;
 
-  st_widget_add_style_pseudo_class (ST_WIDGET (button), "hover");
+  ret = CLUTTER_ACTOR_CLASS (st_button_parent_class)->enter_event (actor, event);
 
-  button->priv->is_hover = TRUE;
+  if (button->priv->has_grab)
+    {
+      if (st_widget_get_hover (ST_WIDGET (button)))
+        st_button_press (button);
+      else
+        st_button_release (button, FALSE);
+    }
 
-  return CLUTTER_ACTOR_CLASS (st_button_parent_class)->enter_event (actor, event);
+  return ret;
 }
 
 static gboolean
@@ -208,24 +220,19 @@ st_button_leave (ClutterActor         *actor,
                  ClutterCrossingEvent *event)
 {
   StButton *button = ST_BUTTON (actor);
+  gboolean ret;
 
-  button->priv->is_hover = FALSE;
+  ret = CLUTTER_ACTOR_CLASS (st_button_parent_class)->leave_event (actor, event);
 
-  if (button->priv->is_pressed)
+  if (button->priv->has_grab)
     {
-      StButtonClass *klass = ST_BUTTON_GET_CLASS (button);
-
-      clutter_ungrab_pointer ();
-
-      button->priv->is_pressed = FALSE;
-
-      if (klass->released)
-        klass->released (button);
+      if (st_widget_get_hover (ST_WIDGET (button)))
+        st_button_press (button);
+      else
+        st_button_release (button, FALSE);
     }
 
-  st_widget_remove_style_pseudo_class (ST_WIDGET (button), "hover");
-
-  return CLUTTER_ACTOR_CLASS (st_button_parent_class)->leave_event (actor, event);
+  return ret;
 }
 
 static void
@@ -302,9 +309,6 @@ st_button_class_init (StButtonClass *klass)
 
   g_type_class_add_private (klass, sizeof (StButtonPrivate));
 
-  klass->pressed = st_button_real_pressed;
-  klass->released = st_button_real_released;
-
   gobject_class->set_property = st_button_set_property;
   gobject_class->get_property = st_button_get_property;
   gobject_class->finalize = st_button_finalize;
@@ -361,6 +365,7 @@ st_button_init (StButton *button)
   button->priv->spacing = 6;
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (button), TRUE);
+  st_widget_set_track_hover (ST_WIDGET (button), TRUE);
 }
 
 /**
