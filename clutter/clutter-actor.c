@@ -474,8 +474,6 @@ struct _ClutterActorPrivate
   gboolean last_paint_box_valid;
   ClutterActorBox last_paint_box;
 
-  gboolean paint_volume_disabled;
-
   ClutterStageQueueRedrawEntry *queue_redraw_entry;
 };
 
@@ -2578,42 +2576,10 @@ clutter_actor_paint (ClutterActor *self)
 
       CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
 
-      /* Check if there are any handlers connected to the paint
-       * signal. If there are then all bets are off for what the paint
-       * volume for this actor might possibly be!
-       *
-       * Actually it's a bit late to find this out because the redraw
-       * may have already had a scissor set on the stage based on the
-       * projected paint volume of this actor, but since glib doesn't
-       * provide a mechanism to notify when signal handlers are
-       * connected and removed for a signal we don't have many options
-       * and being able to clip redraws is a crucial optimization.
-       *
-       * If we ever find that a handler is connected we simply mark
-       * self->priv->paint_volume_disabled = TRUE which will mean the
-       * actor will always report a NULL (un-determined) paint volume.
-       * We also queue another redraw of this actor which will result
-       * in a full stage redraw. The status is never reverted to FALSE
-       * because we don't want to end up in a situation where we see
-       * lots of artefacts caused by intermittent periods with no
-       * handlers followed by periods with handlers that paint outside
-       * the paint volume.
-       */
-      if (g_signal_has_handler_pending (self,
-                                        actor_signals[PAINT],
-                                        0,
-                                        TRUE))
-        {
-          priv->paint_volume_disabled = TRUE;
-          clutter_actor_queue_redraw (self);
-          priv->last_paint_box_valid = FALSE;
-        }
-
-      if (G_UNLIKELY (priv->paint_volume_disabled ||
-                      (clutter_paint_debug_flags &
-                       CLUTTER_DEBUG_DISABLE_CULLING &&
-                       clutter_paint_debug_flags &
-                       CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
+      if (G_UNLIKELY (clutter_paint_debug_flags &
+                      CLUTTER_DEBUG_DISABLE_CULLING &&
+                      clutter_paint_debug_flags &
+                      CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS))
         need_paint_box = FALSE;
       else
         need_paint_box = TRUE;
@@ -11537,12 +11503,42 @@ _clutter_actor_get_paint_volume_mutable (ClutterActor *self)
       priv->paint_volume_valid = FALSE;
     }
 
-  if (G_UNLIKELY (priv->paint_volume_disabled))
-    return NULL;
-
   /* Actors are only expected to report a valid paint volume
    * while they have a valid allocation. */
   if (G_UNLIKELY (priv->needs_allocation))
+    return NULL;
+
+  /* Check if there are any handlers connected to the paint
+   * signal. If there are then all bets are off for what the paint
+   * volume for this actor might possibly be!
+   *
+   * XXX: It's expected that this is going to end up being quite a
+   * costly check to have to do here, but we haven't come up with
+   * another solution that can reliably catch paint signal handlers at
+   * the right time to either avoid artefacts due to invalid stage
+   * clipping or due to incorrect culling.
+   *
+   * Previously we checked in clutter_actor_paint(), but at that time
+   * we may already be using a stage clip that could be derived from
+   * an invalid paint-volume. We used to try and handle that by
+   * queuing a follow up, unclipped, redraw but still the previous
+   * checking wasn't enough to catch invalid volumes involved in
+   * culling (considering that containers may derive their volume from
+   * children that haven't yet been painted)
+   *
+   * Longer term, improved solutions could be:
+   * - Disallow painting in the paint signal, only allow using it
+   *   for tracking when paints happen. We can add another API that
+   *   allows monkey patching the paint of arbitrary actors but in a
+   *   more controlled way and that also supports modifying the
+   *   paint-volume.
+   * - If we could be notified somehow when signal handlers are
+   *   connected we wouldn't have to poll for handlers like this.
+   */
+  if (g_signal_has_handler_pending (self,
+                                    actor_signals[PAINT],
+                                    0,
+                                    TRUE))
     return NULL;
 
   pv = &priv->paint_volume;
