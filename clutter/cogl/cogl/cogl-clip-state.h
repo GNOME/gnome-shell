@@ -30,9 +30,6 @@ struct _CoglClipState
 {
   /* Stack of CoglClipStacks */
   GSList *stacks;
-
-  gboolean stack_dirty;
-  gboolean stencil_used;
 };
 
 void
@@ -40,9 +37,6 @@ _cogl_clip_state_init (CoglClipState *state);
 
 void
 _cogl_clip_state_destroy (CoglClipState *state);
-
-void
-_cogl_clip_state_dirty (CoglClipState *state);
 
 void
 _cogl_clip_state_flush (CoglClipState *clip_state);

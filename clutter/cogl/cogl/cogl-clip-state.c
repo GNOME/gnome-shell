@@ -62,8 +62,6 @@ cogl_clip_push_window_rectangle (int x_offset,
     _cogl_clip_stack_push_window_rectangle (clip_state->stacks->data,
                                             x_offset, y_offset,
                                             width, height);
-
-  clip_state->stack_dirty = TRUE;
 }
 
 /* XXX: This is deprecated API */
@@ -156,8 +154,6 @@ cogl_clip_push_rectangle (float x_1,
     _cogl_clip_stack_push_rectangle (clip_state->stacks->data,
                                      x_1, y_1, x_2, y_2,
                                      &modelview_matrix);
-
-  clip_state->stack_dirty = TRUE;
 }
 
 /* XXX: Deprecated API */
@@ -194,8 +190,6 @@ cogl_clip_push_from_path_preserve (void)
   clip_state->stacks->data =
     _cogl_clip_stack_push_from_path (clip_state->stacks->data, cogl_get_path (),
                                      &modelview_matrix);
-
-  clip_state->stack_dirty = TRUE;
 }
 
 void
@@ -214,8 +208,6 @@ _cogl_clip_pop_real (CoglClipState *clip_state)
   _cogl_journal_flush ();
 
   clip_state->stacks->data = _cogl_clip_stack_pop (clip_state->stacks->data);
-
-  clip_state->stack_dirty = TRUE;
 }
 
 void
@@ -235,25 +227,9 @@ cogl_clip_pop (void)
 void
 _cogl_clip_state_flush (CoglClipState *clip_state)
 {
-  CoglClipStack *stack;
-
-  if (!clip_state->stack_dirty)
-    return;
-
-  /* The current primitive journal does not support tracking changes to the
-   * clip stack...  */
-  _cogl_journal_flush ();
-
-  /* XXX: the handling of clipping is quite complex. It may involve use of
-   * the Cogl Journal or other Cogl APIs which may end up recursively
-   * wanting to ensure the clip state is flushed. We need to ensure we
-   * don't recurse infinitely...
-   */
-  clip_state->stack_dirty = FALSE;
-
-  stack = clip_state->stacks->data;
-
-  _cogl_clip_stack_flush (stack, &clip_state->stencil_used);
+  /* Flush the topmost stack. The clip stack code will bail out early
+     if this is already flushed */
+  _cogl_clip_stack_flush (clip_state->stacks->data);
 }
 
 /* XXX: This should never have been made public API! */
@@ -274,7 +250,6 @@ _cogl_clip_stack_save_real (CoglClipState *clip_state)
   _cogl_journal_flush ();
 
   clip_state->stacks = g_slist_prepend (clip_state->stacks, NULL);
-  clip_state->stack_dirty = TRUE;
 }
 
 void
@@ -309,8 +284,6 @@ _cogl_clip_stack_restore_real (CoglClipState *clip_state)
   /* Revert to an old stack */
   clip_state->stacks = g_slist_delete_link (clip_state->stacks,
                                             clip_state->stacks);
-
-  clip_state->stack_dirty = TRUE;
 }
 
 void
@@ -333,7 +306,6 @@ _cogl_clip_state_init (CoglClipState *clip_state)
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   clip_state->stacks = NULL;
-  clip_state->stack_dirty = TRUE;
 
   /* Add an intial stack */
   _cogl_clip_stack_save_real (clip_state);
@@ -345,12 +317,6 @@ _cogl_clip_state_destroy (CoglClipState *clip_state)
   /* Destroy all of the stacks */
   while (clip_state->stacks)
     _cogl_clip_stack_restore_real (clip_state);
-}
-
-void
-_cogl_clip_state_dirty (CoglClipState *clip_state)
-{
-  clip_state->stack_dirty = TRUE;
 }
 
 CoglClipStack *

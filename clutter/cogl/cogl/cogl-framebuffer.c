@@ -636,7 +636,7 @@ _cogl_set_framebuffer_real (CoglFramebuffer *framebuffer)
    * we flush */
   _cogl_matrix_stack_dirty (framebuffer->modelview_stack);
   _cogl_matrix_stack_dirty (framebuffer->projection_stack);
-  _cogl_clip_state_dirty (&framebuffer->clip_state);
+  _cogl_clip_stack_dirty ();
 }
 
 void

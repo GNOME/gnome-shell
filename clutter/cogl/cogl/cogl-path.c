@@ -266,18 +266,14 @@ _cogl_path_get_bounds (CoglPath *path,
 static void
 _cogl_path_fill_nodes_with_stencil_buffer (CoglPath *path)
 {
-  CoglFramebuffer *framebuffer;
-  CoglClipState *clip_state;
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   _cogl_journal_flush ();
 
-  framebuffer = _cogl_get_framebuffer ();
-  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+  g_assert (ctx->current_clip_stack_valid);
 
   _cogl_add_path_to_stencil_buffer (path,
-                                    clip_state->stencil_used,
+                                    ctx->current_clip_stack_uses_stencil,
                                     FALSE);
 
   cogl_rectangle (path->data->path_nodes_min.x,
@@ -294,7 +290,7 @@ _cogl_path_fill_nodes_with_stencil_buffer (CoglPath *path)
    * we call cogl_flush() to emtpy the journal.
    */
   cogl_flush ();
-  _cogl_clip_state_dirty (clip_state);
+  _cogl_clip_stack_dirty ();
 }
 
 static void

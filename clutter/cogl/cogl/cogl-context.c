@@ -209,6 +209,8 @@ cogl_create_context (void)
 
   _context->texture_download_pipeline = COGL_INVALID_HANDLE;
 
+  _context->current_clip_stack_valid = FALSE;
+
   /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
    * the test being disabled therefore we assume that for all drivers there
    * will be no performance impact if we always leave the test enabled which
@@ -309,6 +311,9 @@ _cogl_destroy_context (void)
     cogl_handle_unref (_context->default_layer_n);
   if (_context->default_layer_0)
     cogl_handle_unref (_context->default_layer_0);
+
+  if (_context->current_clip_stack_valid)
+    _cogl_clip_stack_unref (_context->current_clip_stack);
 
   if (_context->atlas)
     _cogl_atlas_free (_context->atlas);
