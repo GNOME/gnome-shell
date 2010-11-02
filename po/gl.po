@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-26 16:28+0200\n"
-"PO-Revision-Date: 2010-10-26 16:36+0200\n"
+"POT-Creation-Date: 2010-11-03 00:26+0100\n"
+"PO-Revision-Date: 2010-11-03 00:28+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -61,7 +61,7 @@ msgstr "Extensión de ficheiro usada para o almacenamento da screencast"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid "Framerate used for recording screencasts."
-msgstr "Taxa de marcos usada para gravar as capturas de pantalla"
+msgstr "Taxa de marcos usada para gravar as capturas de pantalla."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid ""
@@ -73,7 +73,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
-msgstr "Hitorial do diálogo de orde (Alt-F)"
+msgstr "Hitorial do diálogo de orde (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "Hour format"
@@ -418,19 +418,19 @@ msgstr "APLICATIVOS"
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:648
+#: ../js/ui/appDisplay.js:647
 msgid "New Window"
 msgstr "Xanela nova"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:651
 msgid "Remove from Favorites"
 msgstr "Eliminar dos favoritos"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:652
 msgid "Add to Favorites"
 msgstr "Engadir aos favoritos"
 
-#: ../js/ui/appDisplay.js:830
+#: ../js/ui/appDisplay.js:829
 msgid "Drag here to add favorites"
 msgstr "Arrastre aquí para engadir aos favoritos"
 
@@ -476,7 +476,9 @@ msgstr "Non hai ningunha extensión instalada"
 msgid "Enabled"
 msgstr "Activado"
 
-#: ../js/ui/lookingGlass.js:591
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:591 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "Desactivado"
 
@@ -559,7 +561,7 @@ msgstr "Actividades"
 #: ../js/ui/placeDisplay.js:111
 #, c-format
 msgid "Failed to unmount '%s'"
-msgstr "Produciuse un fallo ao montar «%s»"
+msgstr "Produciuse un fallo ao desmontar «%s»"
 
 #: ../js/ui/placeDisplay.js:114
 msgid "Retry"
@@ -604,8 +606,8 @@ msgid "My Account..."
 msgstr "A miña conta..."
 
 #: ../js/ui/statusMenu.js:123
-msgid "System Preferences..."
-msgstr "Preferencias do sistema..."
+msgid "System Settings..."
+msgstr "Configuracións do sistema..."
 
 #: ../js/ui/statusMenu.js:130
 msgid "Lock Screen"
@@ -696,32 +698,54 @@ msgstr ""
 msgid "Can't remove the first workspace."
 msgstr "Non é posíbel quitar a primeira área de traballo."
 
-#: ../src/shell-global.c:1204
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1094
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u saída"
+msgstr[1] "%u saídas"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1104
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u entrada"
+msgstr[1] "%u entradas"
+
+#: ../src/gvc/gvc-mixer-control.c:1402
+msgid "System Sounds"
+msgstr "Sons do sistema"
+
+#: ../src/shell-global.c:1219
 msgid "Less than a minute ago"
 msgstr "Hai menos dun minuto"
 
-#: ../src/shell-global.c:1208
+#: ../src/shell-global.c:1223
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "hai %d minuto"
 msgstr[1] "hai %d minutos"
 
-#: ../src/shell-global.c:1213
+#: ../src/shell-global.c:1228
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "hai %d hora"
 msgstr[1] "hai %d horas"
 
-#: ../src/shell-global.c:1218
+#: ../src/shell-global.c:1233
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "hai %d día"
 msgstr[1] "hai %d días"
 
-#: ../src/shell-global.c:1223
+#: ../src/shell-global.c:1238
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -752,11 +776,11 @@ msgstr "Buscar"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "System Preferences..."
+#~ msgstr "Preferencias do sistema..."
+
 #~ msgid "Account Information..."
 #~ msgstr "Información da conta..."
-
-#~ msgid "System Settings..."
-#~ msgstr "Configuracións do sistema..."
 
 #~ msgid "ON"
 #~ msgstr "⚫"
