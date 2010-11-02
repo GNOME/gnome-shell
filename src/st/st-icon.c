@@ -183,6 +183,21 @@ st_icon_allocate (ClutterActor           *actor,
       ClutterActorBox content_box;
 
       st_theme_node_get_content_box (theme_node, box, &content_box);
+
+      /* Center the texture in the allocation; scaling up the icon from the size
+       * we loaded it at is just a bad idea and probably accidental. Main downside
+       * of doing this is that it may not be obvious that they have to turn off
+       * fill to align the icon non-centered in the parent container.
+       *
+       * We don't use _st_allocate_fill() for a bit of efficiency and because we
+       * expect to get rid of the child actor in favor of a CoglTexture in the
+       * future.
+       */
+      content_box.x1 = (int)(0.5 + content_box.x1 + (content_box.x2 - content_box.x1 - priv->icon_size) / 2.);
+      content_box.x2 = content_box.x1 + priv->icon_size;
+      content_box.y1 = (int)(0.5 + content_box.y1 + (content_box.y2 - content_box.y1 - priv->icon_size) / 2.);
+      content_box.y2 = content_box.y1 + priv->icon_size;
+
       clutter_actor_allocate (priv->icon_texture, &content_box, flags);
     }
 }
