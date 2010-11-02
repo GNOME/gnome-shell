@@ -122,6 +122,9 @@ typedef enum _CoglFramebufferFlushFlags
    * be called for framebuffer->modelview_stack, and the modelview_stack will
    * also be marked as dirty. */
   COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW =     1L<<0,
+  /* Similarly this flag implies you are going to flush the clip state
+     yourself */
+  COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE =    1L<<1
 } CoglFramebufferFlushFlags;
 
 void

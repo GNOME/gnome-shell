@@ -783,7 +783,8 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *framebuffer,
   /* XXX: Flushing clip state may trash the modelview and projection
    * matrices so we must do it before flushing the matrices...
    */
-  _cogl_clip_state_flush (&framebuffer->clip_state);
+  if (!(flags & COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE))
+    _cogl_clip_state_flush (&framebuffer->clip_state);
 
   if (!(flags & COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW))
     _cogl_matrix_stack_flush_to_gl (framebuffer->modelview_stack,
