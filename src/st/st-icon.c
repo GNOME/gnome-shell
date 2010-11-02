@@ -140,28 +140,12 @@ st_icon_get_preferred_height (ClutterActor *actor,
 {
   StIconPrivate *priv = ST_ICON (actor)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  gfloat pref_height;
-
-  if (priv->icon_texture)
-    {
-      gint width, height;
-      clutter_texture_get_base_size (CLUTTER_TEXTURE (priv->icon_texture),
-                                     &width,
-                                     &height);
-
-      if (width <= height)
-        pref_height = priv->icon_size;
-      else
-        pref_height = height / (gfloat)width * priv->icon_size;
-    }
-  else
-    pref_height = 0;
 
   if (min_height_p)
-    *min_height_p = pref_height;
+    *min_height_p = priv->icon_size;
 
   if (nat_height_p)
-    *nat_height_p = pref_height;
+    *nat_height_p = priv->icon_size;
 
   st_theme_node_adjust_preferred_height (theme_node, min_height_p, nat_height_p);
 }
@@ -174,28 +158,12 @@ st_icon_get_preferred_width (ClutterActor *actor,
 {
   StIconPrivate *priv = ST_ICON (actor)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  gfloat pref_width;
-
-  if (priv->icon_texture)
-    {
-      gint width, height;
-      clutter_texture_get_base_size (CLUTTER_TEXTURE (priv->icon_texture),
-                                     &width,
-                                     &height);
-
-      if (height <= width)
-        pref_width = priv->icon_size;
-      else
-        pref_width = width / (gfloat)height * priv->icon_size;
-    }
-  else
-    pref_width = 0;
 
   if (min_width_p)
-    *min_width_p = pref_width;
+    *min_width_p = priv->icon_size;
 
   if (nat_width_p)
-    *nat_width_p = pref_width;
+    *nat_width_p = priv->icon_size;
 
   st_theme_node_adjust_preferred_width (theme_node, min_width_p, nat_width_p);
 }
@@ -345,8 +313,6 @@ st_icon_update (StIcon *icon)
       if (priv->icon_texture)
         clutter_actor_set_parent (priv->icon_texture, CLUTTER_ACTOR (icon));
     }
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (icon));
 }
 
 static void
@@ -364,6 +330,7 @@ st_icon_update_icon_size (StIcon *icon)
 
   if (new_size != priv->icon_size)
     {
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (icon));
       priv->icon_size = new_size;
       st_icon_update (icon);
     }
