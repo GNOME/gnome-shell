@@ -35,6 +35,10 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-path-private.h"
 #include "cogl-texture-private.h"
+#include "cogl-primitives-private.h"
+#include "cogl-path.h"
+#include "cogl-private.h"
+#include "cogl-vertex-attribute-private.h"
 #include "tesselator/tesselator.h"
 
 #include <string.h>
@@ -276,18 +280,16 @@ _cogl_path_fill_nodes_with_stencil_buffer (CoglPath *path)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  _cogl_journal_flush ();
-
   g_assert (ctx->current_clip_stack_valid);
 
   _cogl_add_path_to_stencil_buffer (path,
                                     ctx->current_clip_stack_uses_stencil,
                                     FALSE);
 
-  cogl_rectangle (path->data->path_nodes_min.x,
-                  path->data->path_nodes_min.y,
-                  path->data->path_nodes_max.x,
-                  path->data->path_nodes_max.y);
+  _cogl_rectangle_immediate (path->data->path_nodes_min.x,
+                             path->data->path_nodes_min.y,
+                             path->data->path_nodes_max.x,
+                             path->data->path_nodes_max.y);
 
   /* The stencil buffer now contains garbage so the clip area needs to
    * be rebuilt.
@@ -297,7 +299,6 @@ _cogl_path_fill_nodes_with_stencil_buffer (CoglPath *path)
    * only called when the journal first gets something logged in it; so
    * we call cogl_flush() to emtpy the journal.
    */
-  cogl_flush ();
   _cogl_clip_stack_dirty ();
 }
 
@@ -342,11 +343,11 @@ _cogl_path_fill_nodes (CoglPath *path)
 
   _cogl_path_build_vbo (path);
 
-  cogl_draw_indexed_vertex_attributes_array (COGL_VERTICES_MODE_TRIANGLES,
-                                             0, /* first_vertex */
-                                             path->data->vbo_n_indices,
-                                             path->data->vbo_indices,
-                                             path->data->vbo_attributes);
+  _cogl_draw_indexed_vertex_attributes_array (COGL_VERTICES_MODE_TRIANGLES,
+                                              0, /* first_vertex */
+                                              path->data->vbo_n_indices,
+                                              path->data->vbo_indices,
+                                              path->data->vbo_attributes);
 }
 
 void
@@ -364,14 +365,13 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* We don't track changes to the stencil buffer in the journal
-   * so we need to flush any batched geometry first */
-  _cogl_journal_flush ();
-
-  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the pipeline state) when flushing the clip stack, so should
-   * always be done first when preparing to draw. */
-  _cogl_framebuffer_flush_state (framebuffer, 0);
+  /* This can be called from the clip stack code which doesn't flush
+     the matrix stacks between calls so we need to ensure they're
+     flushed now */
+  _cogl_matrix_stack_flush_to_gl (modelview_stack,
+                                  COGL_MATRIX_MODELVIEW);
+  _cogl_matrix_stack_flush_to_gl (projection_stack,
+                                  COGL_MATRIX_PROJECTION);
 
   /* Just setup a simple pipeline that doesn't use texturing... */
   cogl_push_source (ctx->stencil_pipeline);
@@ -399,24 +399,20 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
         /* If this is being called from the clip stack code then it
            will have set up a scissor for the minimum bounding box of
            all of the clips. That box will likely mean that this
-           cogl_clear won't need to clear the entire buffer */
-        cogl_clear (NULL, COGL_BUFFER_BIT_STENCIL);
+           _cogl_clear won't need to clear the entire
+           buffer. _cogl_clear is used instead of cogl_clear because
+           it won't try to flush the journal */
+        _cogl_clear (NULL, COGL_BUFFER_BIT_STENCIL);
       else
         {
           /* Just clear the bounding box */
           GE( glStencilMask (~(GLuint) 0) );
           GE( glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
-          cogl_rectangle (data->path_nodes_min.x,
-                          data->path_nodes_min.y,
-                          data->path_nodes_max.x,
-                          data->path_nodes_max.y);
-          /* Make sure the rectangle hits the stencil buffer before
-           * directly changing other GL state. */
-          _cogl_journal_flush ();
-          /* NB: The journal flushing may trash the modelview state and
-           * enable flags */
-          _cogl_matrix_stack_flush_to_gl (modelview_stack,
-                                          COGL_MATRIX_MODELVIEW);
+          _cogl_rectangle_immediate (data->path_nodes_min.x,
+                                     data->path_nodes_min.y,
+                                     data->path_nodes_max.x,
+                                     data->path_nodes_max.y);
+          /* NB: The rectangle may trash the enable flags */
           _cogl_enable (enable_flags);
         }
       GE (glStencilMask (1));
@@ -448,11 +444,8 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
       _cogl_matrix_stack_flush_to_gl (modelview_stack,
                                       COGL_MATRIX_MODELVIEW);
 
-      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
-      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
-      /* Make sure these rectangles hit the stencil buffer before we
-       * restore the stencil op/func. */
-      _cogl_journal_flush ();
+      _cogl_rectangle_immediate (-1.0, -1.0, 1.0, 1.0);
+      _cogl_rectangle_immediate (-1.0, -1.0, 1.0, 1.0);
 
       _cogl_matrix_stack_pop (modelview_stack);
       _cogl_matrix_stack_pop (projection_stack);
@@ -488,6 +481,13 @@ cogl_path_fill_preserve (void)
 
   if (path->data->path_nodes->len == 0)
     return;
+
+  _cogl_journal_flush ();
+
+  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
+   * as the pipeline state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. */
+  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   _cogl_path_fill_nodes (path);
 }

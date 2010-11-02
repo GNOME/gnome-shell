@@ -40,6 +40,7 @@
 #include "cogl-util.h"
 #include "cogl-path-private.h"
 #include "cogl-matrix-private.h"
+#include "cogl-primitives-private.h"
 
 typedef struct _CoglClipStackRect CoglClipStackRect;
 typedef struct _CoglClipStackWindowRect CoglClipStackWindowRect;
@@ -283,14 +284,12 @@ add_stencil_clip_rectangle (float x_1,
                             gboolean first)
 {
   CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  CoglMatrixStack *projection_stack =
+    _cogl_framebuffer_get_projection_stack (framebuffer);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* We don't log changes to the stencil buffer so need to flush any
-   * batched geometry before we start... */
-  _cogl_journal_flush ();
-
-  _cogl_framebuffer_flush_state (framebuffer, 0);
 
   /* temporarily swap in our special stenciling pipeline */
   cogl_push_source (ctx->stencil_pipeline);
@@ -307,24 +306,23 @@ add_stencil_clip_rectangle (float x_1,
       GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
       GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
 
-      cogl_rectangle (x_1, y_1, x_2, y_2);
+      /* This can be called from the journal code which doesn't flush
+         the matrix stacks between calls so we need to ensure they're
+         flushed now */
+      _cogl_matrix_stack_flush_to_gl (modelview_stack,
+                                      COGL_MATRIX_MODELVIEW);
+      _cogl_matrix_stack_flush_to_gl (projection_stack,
+                                      COGL_MATRIX_PROJECTION);
+
+      _cogl_rectangle_immediate (x_1, y_1, x_2, y_2);
     }
   else
     {
-      CoglMatrixStack *modelview_stack =
-        _cogl_framebuffer_get_modelview_stack (framebuffer);
-      CoglMatrixStack *projection_stack =
-        _cogl_framebuffer_get_projection_stack (framebuffer);
-
       /* Add one to every pixel of the stencil buffer in the
 	 rectangle */
       GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
       GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
-      cogl_rectangle (x_1, y_1, x_2, y_2);
-
-      /* make sure our rectangle hits the stencil buffer before we
-       * change the stencil operation */
-      _cogl_journal_flush ();
+      _cogl_rectangle_immediate (x_1, y_1, x_2, y_2);
 
       /* Subtract one from all pixels in the stencil buffer so that
 	 only pixels where both the original stencil buffer and the
@@ -337,15 +335,16 @@ add_stencil_clip_rectangle (float x_1,
       _cogl_matrix_stack_push (modelview_stack);
       _cogl_matrix_stack_load_identity (modelview_stack);
 
-      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
+      _cogl_matrix_stack_flush_to_gl (modelview_stack,
+                                      COGL_MATRIX_MODELVIEW);
+      _cogl_matrix_stack_flush_to_gl (projection_stack,
+                                      COGL_MATRIX_PROJECTION);
+
+      _cogl_rectangle_immediate (-1.0, -1.0, 1.0, 1.0);
 
       _cogl_matrix_stack_pop (modelview_stack);
       _cogl_matrix_stack_pop (projection_stack);
     }
-
-  /* make sure our rectangles hit the stencil buffer before we restore
-   * the stencil function / operation */
-  _cogl_journal_flush ();
 
   /* Restore the stencil mode */
   GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
@@ -609,10 +608,6 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
 
   ctx->current_clip_stack_valid = TRUE;
   ctx->current_clip_stack = _cogl_clip_stack_ref (stack);
-
-  /* The current primitive journal does not support tracking changes to the
-   * clip stack...  */
-  _cogl_journal_flush ();
 
   modelview_stack =
     _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
