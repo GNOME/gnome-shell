@@ -150,7 +150,9 @@ NotificationDaemon.prototype = {
                 let uri = GLib.filename_to_uri(icon, null);
                 return textureCache.load_uri_async(uri, size, size);
             } else
-                return textureCache.load_icon_name(icon, St.IconType.FULLCOLOR, size);
+                return new St.Icon({ icon_name: icon,
+                                     icon_type: St.IconType.FULLCOLOR,
+                                     icon_size: size });
         } else if (hints.icon_data) {
             let [width, height, rowStride, hasAlpha,
                  bitsPerSample, nChannels, data] = hints.icon_data;
@@ -167,7 +169,9 @@ NotificationDaemon.prototype = {
                     stockIcon = 'gtk-dialog-error';
                     break;
             }
-            return textureCache.load_icon_name(stockIcon, St.IconType.FULLCOLOR, size);
+            return new St.Icon({ icon_name: stockIcon,
+                                 icon_type: St.IconType.FULLCOLOR,
+                                 icon_size: size });
         }
     },
 

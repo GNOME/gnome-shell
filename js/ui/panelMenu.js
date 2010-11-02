@@ -81,7 +81,8 @@ SystemStatusButton.prototype = {
         this._iconName = iconName;
         if (this._iconActor)
             this._iconActor.destroy();
-        this._iconActor = St.TextureCache.get_default().load_icon_name(this._iconName, St.IconType.SYMBOLIC, 24);
+        this._iconActor = new St.Icon({ icon_name: this._iconName,
+                                        style_class: 'system-status-icon' });
         this.actor.set_child(this._iconActor);
     },
 

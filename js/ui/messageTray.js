@@ -22,8 +22,6 @@ const SUMMARY_TIMEOUT = 1;
 const HIDE_TIMEOUT = 0.2;
 const LONGER_HIDE_TIMEOUT = 0.6;
 
-const BUTTON_ICON_SIZE = 36;
-
 const MAX_SOURCE_TITLE_WIDTH = 180;
 
 // We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
@@ -349,7 +347,7 @@ Notification.prototype = {
 
         if (this._useActionIcons && Gtk.IconTheme.get_default().has_icon(id)) {
             button.add_style_class_name('notification-icon-button');
-            button.child = St.TextureCache.get_default().load_icon_name(id, St.IconType.SYMBOLIC, BUTTON_ICON_SIZE);
+            button.child = new St.Icon({ icon_name: id });
         } else {
             button.add_style_class_name('notification-button');
             button.label = label;

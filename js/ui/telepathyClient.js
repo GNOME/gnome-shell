@@ -347,7 +347,9 @@ ContactManager.prototype = {
             let uri = GLib.filename_to_uri(file, null);
             iconBox.child = textureCache.load_uri_async(uri, iconBox._size, iconBox._size);
         } else {
-            iconBox.child = textureCache.load_icon_name('stock_person', St.IconType.FULLCOLOR, iconBox._size);
+            iconBox.child = St.Icon({ icon_name: 'stock_person',
+                                      icon_type: St.IconType.FULLCOLOR,
+                                      icon_size: iconBox._size });
         }
     },
 

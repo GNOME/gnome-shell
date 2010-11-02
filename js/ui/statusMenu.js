@@ -43,10 +43,10 @@ StatusMenuButton.prototype = {
         box.add(this._iconBox, { y_align: St.Align.MIDDLE, y_fill: false });
 
         let textureCache = St.TextureCache.get_default();
-        this._availableIcon = textureCache.load_icon_name('user-available', St.IconType.SYMBOLIC, 16);
-        this._busyIcon = textureCache.load_icon_name('user-busy', St.IconType.SYMBOLIC, 16);
-        this._invisibleIcon = textureCache.load_icon_name('user-invisible', St.IconType.SYMBOLIC, 16);
-        this._idleIcon = textureCache.load_icon_name('user-idle', St.IconType.SYMBOLIC, 16);
+        this._availableIcon = new St.Icon({ icon_name: 'user-available', style_class: 'popup-menu-icon' });
+        this._busyIcon = new St.Icon({ icon_name: 'user-busy', style_class: 'popup-menu-icon' });
+        this._invisibleIcon = new St.Icon({ icon_name: 'user-invisible', style_class: 'popup-menu-icon' });
+        this._idleIcon = new St.Icon({ icon_name: 'user-idle', style_class: 'popup-menu-icon' });
 
         this._presence.connect('StatusChanged', Lang.bind(this, this._updatePresenceIcon));
         this._presence.getStatus(Lang.bind(this, this._updatePresenceIcon));

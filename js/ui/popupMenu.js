@@ -566,22 +566,16 @@ PopupImageMenuItem.prototype = {
     _init: function (text, iconName) {
         PopupBaseMenuItem.prototype._init.call(this);
 
-        this._size = 16;
-
         this.label = new St.Label({ text: text });
         this.addActor(this.label);
-        this._imageBin = new St.Bin({ width: this._size, height: this._size });
-        this.addActor(this._imageBin);
+        this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
+        this.addActor(this._icon);
 
         this.setIcon(iconName);
     },
 
     setIcon: function(name) {
-        if (this._imageBin.child)
-            this._imageBin.child.destroy();
-
-        let img = St.TextureCache.get_default().load_icon_name(name, St.IconType.SYMBOLIC, this._size);
-        this._imageBin.set_child(img);
+        this._icon.icon_name = name;
     }
 };
 
