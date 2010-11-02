@@ -88,13 +88,13 @@ st_button_update_label_style (StButton *button)
 {
   ClutterActor *label;
 
-  label = st_bin_get_child ((StBin*) button);
+  label = st_bin_get_child (ST_BIN (button));
 
   /* check the child is really a label */
   if (!CLUTTER_IS_TEXT (label))
     return;
 
-  _st_set_text_from_style ((ClutterText*) label, st_widget_get_theme_node (ST_WIDGET (button)));
+  _st_set_text_from_style (CLUTTER_TEXT (label), st_widget_get_theme_node (ST_WIDGET (button)));
 }
 
 static void
@@ -125,13 +125,13 @@ st_button_style_changed (StWidget *widget)
 static void
 st_button_real_pressed (StButton *button)
 {
-  st_widget_add_style_pseudo_class ((StWidget*) button, "active");
+  st_widget_add_style_pseudo_class (ST_WIDGET (button), "active");
 }
 
 static void
 st_button_real_released (StButton *button)
 {
-  st_widget_remove_style_pseudo_class ((StWidget*) button, "active");
+  st_widget_remove_style_pseudo_class (ST_WIDGET (button), "active");
 }
 
 static gboolean
@@ -196,9 +196,9 @@ st_button_enter (ClutterActor         *actor,
 {
   StButton *button = ST_BUTTON (actor);
 
-  st_widget_add_style_pseudo_class ((StWidget*) button, "hover");
+  st_widget_add_style_pseudo_class (ST_WIDGET (button), "hover");
 
-  button->priv->is_hover = 1;
+  button->priv->is_hover = TRUE;
 
   return CLUTTER_ACTOR_CLASS (st_button_parent_class)->enter_event (actor, event);
 }
@@ -209,7 +209,7 @@ st_button_leave (ClutterActor         *actor,
 {
   StButton *button = ST_BUTTON (actor);
 
-  button->priv->is_hover = 0;
+  button->priv->is_hover = FALSE;
 
   if (button->priv->is_pressed)
     {
@@ -223,7 +223,7 @@ st_button_leave (ClutterActor         *actor,
         klass->released (button);
     }
 
-  st_widget_remove_style_pseudo_class ((StWidget*) button, "hover");
+  st_widget_remove_style_pseudo_class (ST_WIDGET (button), "hover");
 
   return CLUTTER_ACTOR_CLASS (st_button_parent_class)->leave_event (actor, event);
 }
@@ -360,7 +360,7 @@ st_button_init (StButton *button)
   button->priv = ST_BUTTON_GET_PRIVATE (button);
   button->priv->spacing = 6;
 
-  clutter_actor_set_reactive ((ClutterActor *) button, TRUE);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (button), TRUE);
 }
 
 /**
@@ -431,7 +431,7 @@ st_button_set_label (StButton    *button,
   else
     priv->text = g_strdup ("");
 
-  label = st_bin_get_child ((StBin*) button);
+  label = st_bin_get_child (ST_BIN (button));
 
   if (label && CLUTTER_IS_TEXT (label))
     {
@@ -445,7 +445,7 @@ st_button_set_label (StButton    *button,
                             "ellipsize", PANGO_ELLIPSIZE_END,
                             "use-markup", TRUE,
                             NULL);
-      st_bin_set_child ((StBin*) button, label);
+      st_bin_set_child (ST_BIN (button), label);
     }
 
   /* Fake a style change so that we reset the style properties on the label */
@@ -524,9 +524,9 @@ st_button_set_checked (StButton *button,
       button->priv->is_checked = checked;
 
       if (checked)
-        st_widget_add_style_pseudo_class ((StWidget*) button, "checked");
+        st_widget_add_style_pseudo_class (ST_WIDGET (button), "checked");
       else
-        st_widget_remove_style_pseudo_class ((StWidget*) button, "checked");
+        st_widget_remove_style_pseudo_class (ST_WIDGET (button), "checked");
     }
 
   g_object_notify (G_OBJECT (button), "checked");
