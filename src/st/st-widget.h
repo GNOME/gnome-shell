@@ -151,6 +151,7 @@ gboolean              st_widget_navigate_focus            (StWidget        *widg
 /* Only to be used by sub-classes of StWidget */
 void                  st_widget_style_changed             (StWidget        *widget);
 StThemeNode *         st_widget_get_theme_node            (StWidget        *widget);
+StThemeNode *         st_widget_peek_theme_node           (StWidget        *widget);
 
 /* debug methods */
 char  *st_describe_actor       (ClutterActor *actor);

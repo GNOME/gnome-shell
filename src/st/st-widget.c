@@ -522,6 +522,9 @@ get_root_theme_node (ClutterStage *stage)
  * The theme node is used to access standard and custom CSS
  * properties of the widget.
  *
+ * Note: it is a fatal error to call this on a widget that is
+ *  not been added to a stage.
+ *
  * Return value: (transfer none): the theme node for the widget.
  *   This is owned by the widget. When attributes of the widget
  *   or the environment that affect the styling change (for example
@@ -566,6 +569,29 @@ st_widget_get_theme_node (StWidget *widget)
                                             priv->pseudo_class,
                                             priv->inline_style);
     }
+
+  return priv->theme_node;
+}
+
+/**
+ * st_widget_peek_theme_node:
+ * @widget: a #StWidget
+ *
+ * Returns the theme node for the widget if it has already been
+ * computed, %NULL if the widget hasn't been added to a  stage or the theme
+ * node hasn't been computed. If %NULL is returned, then ::style-changed
+ * will be reliably emitted before the widget is allocated or painted.
+ *
+ * Return value: (transfer none): the theme node for the widget.
+ *   This is owned by the widget. When attributes of the widget
+ *   or the environment that affect the styling change (for example
+ *   the style_class property of the widget), it will be recreated,
+ *   and the ::style-changed signal will be emitted on the widget.
+ */
+StThemeNode *
+st_widget_peek_theme_node (StWidget *widget)
+{
+  StWidgetPrivate *priv = widget->priv;
 
   return priv->theme_node;
 }
