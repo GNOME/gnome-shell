@@ -61,8 +61,13 @@ _cogl_path_data_unref (CoglPathData *data)
 
       if (data->vbo)
         {
-          cogl_handle_unref (data->vbo);
-          cogl_handle_unref (data->vbo_indices);
+          int i;
+
+          cogl_object_unref (data->vbo);
+          cogl_object_unref (data->vbo_indices);
+
+          for (i = 0; i < COGL_PATH_N_ATTRIBUTES; i++)
+            cogl_object_unref (data->vbo_attributes[i]);
         }
 
       g_slice_free (CoglPathData, data);
@@ -89,7 +94,6 @@ _cogl_path_modify (CoglPath *path)
                            old_data->path_nodes->len);
 
       path->data->vbo = COGL_INVALID_HANDLE;
-      path->data->vbo_indices = COGL_INVALID_HANDLE;
       path->data->ref_count = 1;
 
       _cogl_path_data_unref (old_data);
@@ -97,10 +101,14 @@ _cogl_path_modify (CoglPath *path)
   /* The path is altered so the vbo will now be invalid */
   else if (path->data->vbo)
     {
-      cogl_handle_unref (path->data->vbo);
-      cogl_handle_unref (path->data->vbo_indices);
+      int i;
+
+      cogl_object_unref (path->data->vbo);
+      cogl_object_unref (path->data->vbo_indices);
+      for (i = 0; i < COGL_PATH_N_ATTRIBUTES; i++)
+        cogl_object_unref (path->data->vbo_attributes[i]);
+
       path->data->vbo = COGL_INVALID_HANDLE;
-      path->data->vbo_indices = COGL_INVALID_HANDLE;
     }
 }
 
@@ -334,11 +342,11 @@ _cogl_path_fill_nodes (CoglPath *path)
 
   _cogl_path_build_vbo (path);
 
-  cogl_vertex_buffer_draw_elements (path->data->vbo,
-                                    COGL_VERTICES_MODE_TRIANGLES,
-                                    path->data->vbo_indices,
-                                    0, path->data->vbo_n_vertices - 1,
-                                    0, path->data->vbo_n_indices);
+  cogl_draw_indexed_vertex_attributes_array (COGL_VERTICES_MODE_TRIANGLES,
+                                             0, /* first_vertex */
+                                             path->data->vbo_n_indices,
+                                             path->data->vbo_indices,
+                                             path->data->vbo_attributes);
 }
 
 void
@@ -972,7 +980,6 @@ _cogl_path_new (void)
   data->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
   data->last_path = 0;
   data->vbo = COGL_INVALID_HANDLE;
-  data->vbo_indices = COGL_INVALID_HANDLE;
 
   return _cogl_path_object_new (path);
 }
@@ -1469,30 +1476,34 @@ _cogl_path_build_vbo (CoglPath *path)
 
   gluDeleteTess (tess.glu_tess);
 
-  data->vbo = cogl_vertex_buffer_new (tess.vertices->len);
-  cogl_vertex_buffer_add (data->vbo,
-                          "gl_Vertex",
-                          2, COGL_ATTRIBUTE_TYPE_FLOAT,
-                          FALSE,
-                          sizeof (CoglPathTesselatorVertex),
-                          &g_array_index (tess.vertices,
-                                          CoglPathTesselatorVertex,
-                                          0).x);
-  cogl_vertex_buffer_add (data->vbo,
-                          "gl_MultiTexCoord0",
-                          2, COGL_ATTRIBUTE_TYPE_FLOAT,
-                          FALSE,
-                          sizeof (CoglPathTesselatorVertex),
-                          &g_array_index (tess.vertices,
-                                          CoglPathTesselatorVertex,
-                                          0).s);
-  cogl_vertex_buffer_submit (data->vbo);
-  data->vbo_n_vertices = tess.vertices->len;
-  data->vbo_indices =
-    cogl_vertex_buffer_indices_new (tess.indices_type,
-                                    tess.indices->data,
-                                    tess.indices->len);
+  data->vbo = cogl_vertex_array_new (sizeof (CoglPathTesselatorVertex) *
+                                     tess.vertices->len);
+  data->vbo_attributes[0] =
+    cogl_vertex_attribute_new (data->vbo,
+                               "cogl_position_in",
+                               sizeof (CoglPathTesselatorVertex),
+                               G_STRUCT_OFFSET (CoglPathTesselatorVertex, x),
+                               2, /* n_components */
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  data->vbo_attributes[1] =
+    cogl_vertex_attribute_new (data->vbo,
+                               "cogl_tex_coord0_in",
+                               sizeof (CoglPathTesselatorVertex),
+                               G_STRUCT_OFFSET (CoglPathTesselatorVertex, s),
+                               2, /* n_components */
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  /* NULL terminator */
+  data->vbo_attributes[2] = NULL;
+
+  data->vbo_indices = cogl_indices_new (tess.indices_type,
+                                        tess.indices->data,
+                                        tess.indices->len);
   data->vbo_n_indices = tess.indices->len;
+
+  cogl_buffer_set_data (COGL_BUFFER (data->vbo),
+                        0, /* offset */
+                        tess.vertices->data,
+                        sizeof (CoglPathTesselatorVertex) * tess.vertices->len);
 
   g_array_free (tess.vertices, TRUE);
   g_array_free (tess.indices, TRUE);

@@ -66,24 +66,26 @@ struct _CoglPath
   CoglPathData     *data;
 };
 
+#define COGL_PATH_N_ATTRIBUTES 2
+
 struct _CoglPathData
 {
-  unsigned int      ref_count;
+  unsigned int         ref_count;
 
-  CoglPathFillRule  fill_rule;
+  CoglPathFillRule     fill_rule;
 
-  GArray           *path_nodes;
+  GArray              *path_nodes;
 
-  floatVec2         path_start;
-  floatVec2         path_pen;
-  unsigned int      last_path;
-  floatVec2         path_nodes_min;
-  floatVec2         path_nodes_max;
+  floatVec2            path_start;
+  floatVec2            path_pen;
+  unsigned int         last_path;
+  floatVec2            path_nodes_min;
+  floatVec2            path_nodes_max;
 
-  CoglHandle        vbo;
-  unsigned int      vbo_n_vertices;
-  CoglHandle        vbo_indices;
-  unsigned int      vbo_n_indices;
+  CoglVertexArray     *vbo;
+  CoglIndices         *vbo_indices;
+  unsigned int         vbo_n_indices;
+  CoglVertexAttribute *vbo_attributes[COGL_PATH_N_ATTRIBUTES + 1];
 };
 
 /* This is an internal version of cogl_path_new that doesn't affect
