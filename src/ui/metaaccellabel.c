@@ -39,8 +39,12 @@
 
 static void     meta_accel_label_destroy      (GtkWidget           *object);
 static void     meta_accel_label_finalize     (GObject             *object);
-static void     meta_accel_label_size_request (GtkWidget           *widget,
-                                               GtkRequisition      *requisition);
+static void     meta_accel_label_get_preferred_width  (GtkWidget *widget,
+                                                       gint      *minimum,
+                                                       gint      *natural);
+static void     meta_accel_label_get_preferred_height (GtkWidget *widget,
+                                                       gint      *minimum,
+                                                       gint      *natural);
 static gboolean meta_accel_label_draw         (GtkWidget           *widget,
                                                cairo_t             *cr);
 
@@ -59,7 +63,8 @@ meta_accel_label_class_init (MetaAccelLabelClass *class)
 
   widget_class->destroy = meta_accel_label_destroy;
 
-  widget_class->size_request = meta_accel_label_size_request;
+  widget_class->get_preferred_width = meta_accel_label_get_preferred_width;
+  widget_class->get_preferred_height = meta_accel_label_get_preferred_height;
   widget_class->draw = meta_accel_label_draw;
 
   class->signal_quote1 = g_strdup ("<:");
@@ -205,21 +210,29 @@ meta_accel_label_get_accel_width (MetaAccelLabel *accel_label)
 }
 
 static void
-meta_accel_label_size_request (GtkWidget	     *widget,
-			      GtkRequisition *requisition)
+meta_accel_label_get_preferred_width (GtkWidget *widget,
+                                      gint      *minimum,
+                                      gint      *natural)
 {
   MetaAccelLabel *accel_label = META_ACCEL_LABEL (widget);
   PangoLayout *layout;
   gint width;
 
-  if (GTK_WIDGET_CLASS (meta_accel_label_parent_class)->size_request)
-    GTK_WIDGET_CLASS (meta_accel_label_parent_class)->size_request (widget, requisition);
+  GTK_WIDGET_CLASS (meta_accel_label_parent_class)->get_preferred_width (widget, minimum, natural);
 
   layout = gtk_widget_create_pango_layout (widget, accel_label->accel_string);
   pango_layout_get_pixel_size (layout, &width, NULL);
   accel_label->accel_string_width = width;
 
   g_object_unref (G_OBJECT (layout));
+}
+
+static void
+meta_accel_label_get_preferred_height (GtkWidget *widget,
+                                       gint      *minimum,
+                                       gint      *natural)
+{
+  GTK_WIDGET_CLASS (meta_accel_label_parent_class)->get_preferred_height (widget, minimum, natural);
 }
 
 /* Mostly taken from GTK3. */
