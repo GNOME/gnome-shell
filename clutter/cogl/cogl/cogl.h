@@ -29,6 +29,10 @@
 
 #define __COGL_H_INSIDE__
 
+#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
+#define COGL_ENABLE_EXPERIMENTAL_API
+#endif
+
 #include <cogl/cogl-defines.h>
 
 #include <cogl/cogl-object.h>
