@@ -421,7 +421,7 @@ _cogl_add_path_to_stencil_buffer (CoglPath  *path,
 
   GE (glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
 
-  if (path->data->path_nodes->len > 0)
+  if (path->data->path_nodes->len >= 3)
     _cogl_path_fill_nodes (path);
 
   if (merge)
@@ -479,7 +479,7 @@ cogl_path_fill_preserve (void)
 
   path = COGL_PATH (ctx->current_path);
 
-  if (path->data->path_nodes->len == 0)
+  if (path->data->path_nodes->len < 3)
     return;
 
   _cogl_journal_flush ();
