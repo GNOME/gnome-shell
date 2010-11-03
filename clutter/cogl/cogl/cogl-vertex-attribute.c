@@ -438,14 +438,6 @@ enable_gl_state (CoglVertexAttribute **attributes,
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
-  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the pipeline state) when flushing the clip stack, so should
-   * always be done first when preparing to draw. We need to do this
-   * before setting up the array pointers because setting up the clip
-   * stack can cause some drawing which would change the array
-   * pointers. */
-  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
-
   source = cogl_get_source ();
 
   _cogl_bitmask_clear_all (&ctx->temp_bitmask);
@@ -664,8 +656,9 @@ _cogl_draw_vertex_attributes_array_real (CoglVerticesMode mode,
   disable_gl_state (attributes, source);
 }
 
-/* This can be used by the CoglJournal to draw attributes skiping
- * the implicit journal flush and pipeline validation. */
+/* This can be used by the CoglJournal to draw attributes skipping the
+ * implicit journal flush, the framebuffer flush and pipeline
+ * validation. */
 void
 _cogl_draw_vertex_attributes_array (CoglVerticesMode mode,
                                     int first_vertex,
@@ -701,6 +694,14 @@ cogl_draw_vertex_attributes_array (CoglVerticesMode mode,
   cogl_pipeline_foreach_layer (cogl_get_source (),
                                validate_layer_cb,
                                &state);
+
+  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
+   * as the pipeline state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. We need to do this
+   * before setting up the array pointers because setting up the clip
+   * stack can cause some drawing which would change the array
+   * pointers. */
+  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   _cogl_draw_vertex_attributes_array_real (mode, first_vertex, n_vertices,
                                            attributes, &state);
@@ -837,6 +838,14 @@ cogl_draw_indexed_vertex_attributes_array (CoglVerticesMode mode,
   cogl_pipeline_foreach_layer (cogl_get_source (),
                                validate_layer_cb,
                                &state);
+
+  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
+   * as the pipeline state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. We need to do this
+   * before setting up the array pointers because setting up the clip
+   * stack can cause some drawing which would change the array
+   * pointers. */
+  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
 
   _cogl_draw_indexed_vertex_attributes_array_real (mode,
                                                    first_vertex,
