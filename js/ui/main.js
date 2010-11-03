@@ -350,13 +350,13 @@ function _findModal(actor) {
  * @actor: #ClutterActor which will be given keyboard focus
  *
  * Ensure we are in a mode where all keyboard and mouse input goes to
- * the stage.  Multiple calls to this function act in a stacking fashion;
- * the effect will be undone when an equal number of popModal() invocations
- * have been made.
+ * the stage, and focus @actor. Multiple calls to this function act in
+ * a stacking fashion; the effect will be undone when an equal number
+ * of popModal() invocations have been made.
  *
- * Next, record the current Clutter keyboard focus on a stack.  If the modal stack
- * returns to this actor, reset the focus to the actor which was focused
- * at the time pushModal() was invoked.
+ * Next, record the current Clutter keyboard focus on a stack. If the
+ * modal stack returns to this actor, reset the focus to the actor
+ * which was focused at the time pushModal() was invoked.
  *
  * Returns: true iff we successfully acquired a grab or already had one
  */
@@ -386,7 +386,7 @@ function pushModal(actor) {
     }
     modalActorFocusStack.push([actor, curFocus]);
 
-    global.stage.set_key_focus(null);
+    global.stage.set_key_focus(actor);
     return true;
 }
 
@@ -416,6 +416,7 @@ function popModal(actor) {
     if (modalCount > 0)
         return;
 
+    global.stage.set_key_focus(null);
     global.end_modal(global.get_current_time());
     global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
 }

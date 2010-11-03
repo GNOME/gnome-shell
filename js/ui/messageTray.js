@@ -245,7 +245,6 @@ Notification.prototype = {
         this._prevFocusedWindow = null;
         this._prevKeyFocusActor = null;
 
-        this._focusWindowChangedId = 0;
         this._focusActorChangedId = 0;
         this._stageInputModeChangedId = 0;
         this._capturedEventId = 0;
@@ -624,47 +623,21 @@ Notification.prototype = {
         let metaDisplay = global.screen.get_display();
 
         this._prevFocusedWindow = metaDisplay.focus_window;
-        this._prevKeyFocus = global.stage.get_key_focus();
+        this._prevKeyFocusActor = global.stage.get_key_focus();
 
-        // We need to use the captured event in the overview, because we don't want to change the stage input mode to
-        // FOCUSED there. On the other hand, using the captured event doesn't work correctly in the main view because
-        // it doesn't allow focusing the windows again correctly. So we are using the FOCUSED stage input mode in the
-        // main view.
-        if (Main.overview.visible) {
-            if (!Main.pushModal(this.actor))
-                return;
-            this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
-        } else {
+        if (!Main.overview.visible)
             global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
 
-            this._focusWindowChangedId = metaDisplay.connect('notify::focus-window', Lang.bind(this, this._focusWindowChanged));
-            this._stageInputModeChangedId = global.connect('notify::stage-input-mode', Lang.bind(this, this._stageInputModeChanged));
+        // Use captured-event to notice clicks outside the notification
+        // without consuming them.
+        this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
 
-            this._keyPressId = global.stage.connect('key-press-event', Lang.bind(this, this._onKeyPress));
-        }
-
-        // We need to listen to this signal in the overview, as well as in the main view, to make the key bindings such as
-        // Alt+F2 work. When a notification has key focus, which is the case with chat notifications, all captured KEY_PRESS
-        // events have the actor with the key focus as their source. This makes it impossible to distinguish between the chat
-        // window input and the key bindings based solely on the KEY_PRESS event.
+        this._stageInputModeChangedId = global.connect('notify::stage-input-mode', Lang.bind(this, this._stageInputModeChanged));
         this._focusActorChangedId = global.stage.connect('notify::key-focus', Lang.bind(this, this._focusActorChanged));
 
         this._hasFocus = true;
         if (lockTray)
             Main.messageTray.lock();
-    },
-
-    _focusWindowChanged: function() {
-        let metaDisplay = global.screen.get_display();
-        // this._focusWindowChanged() will be called when we call
-        // global.set_stage_input_mode(Shell.StageInputMode.FOCUSED) ,
-        // however metaDisplay.focus_window will be null in that case. We only
-        // want to ungrab focus if the focus has been moved to an application
-        // window.
-        if (metaDisplay.focus_window) {
-            this._prevFocusedWindow = null;
-            this.ungrabFocus();
-        }
     },
 
     _focusActorChanged: function() {
@@ -676,15 +649,6 @@ Notification.prototype = {
     },
 
     _stageInputModeChanged: function() {
-        let focusedActor = global.stage.get_key_focus();
-        // TODO: We need to set this._prevFocusedWindow to null in order to
-        // get the cursor in the run dialog. However, that also means it's
-        // set to null when the application menu is activated, which defeats
-        // the point of keeping the name of the previously focused application
-        // in the panel. It'd be good to be able to distinguish between these
-        // two cases.
-        this._prevFocusedWindow = null;
-        this._prevKeyFocusActor = null;
         this.ungrabFocus();
     },
 
@@ -743,10 +707,6 @@ Notification.prototype = {
             return;
 
         let metaDisplay = global.screen.get_display();
-        if (this._focusWindowChangedId > 0) {
-            metaDisplay.disconnect(this._focusWindowChangedId);
-            this._focusWindowChangedId = 0;
-        }
 
         if (this._focusActorChangedId > 0) {
             global.stage.disconnect(this._focusActorChangedId);
@@ -759,20 +719,14 @@ Notification.prototype = {
         }
 
         if (this._capturedEventId > 0) {
-            Main.popModal(this.actor);
             global.stage.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
-        }
-
-        if (this._keyPressId > 0) {
-            global.stage.disconnect(this._keyPressId);
-            this._keyPressId = 0;
         }
 
         this._hasFocus = false;
         Main.messageTray.unlock();
 
-        if (this._prevFocusedWindow) {
+        if (this._prevFocusedWindow && !metaDisplay.focus_window) {
             metaDisplay.set_input_focus_window(this._prevFocusedWindow, false, global.get_current_time());
             this._prevFocusedWindow = null;
         }

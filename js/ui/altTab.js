@@ -126,8 +126,8 @@ AltTabPopup.prototype = {
             return false;
         this._haveModal = true;
 
-        this._keyPressEventId = global.stage.connect('key-press-event', Lang.bind(this, this._keyPressEvent));
-        this._keyReleaseEventId = global.stage.connect('key-release-event', Lang.bind(this, this._keyReleaseEvent));
+        this.actor.connect('key-press-event', Lang.bind(this, this._keyPressEvent));
+        this.actor.connect('key-release-event', Lang.bind(this, this._keyReleaseEvent));
 
         this.actor.connect('button-press-event', Lang.bind(this, this._clickedOutside));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScroll));
@@ -382,11 +382,6 @@ AltTabPopup.prototype = {
 
         if (this._thumbnails)
             this._destroyThumbnails();
-
-        if (this._keyPressEventId)
-            global.stage.disconnect(this._keyPressEventId);
-        if (this._keyReleaseEventId)
-            global.stage.disconnect(this._keyReleaseEventId);
 
         if (this._motionTimeoutId != 0)
             Mainloop.source_remove(this._motionTimeoutId);

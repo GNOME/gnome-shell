@@ -663,7 +663,7 @@ LookingGlass.prototype = {
                                         style_class: 'lg-dialog',
                                         vertical: true,
                                         visible: false });
-
+        this.actor.connect('key-press-event', Lang.bind(this, this._globalKeyPressEvent));
 
         this._interfaceSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
         this._interfaceSettings.connect('changed::monospace-font-name',
@@ -924,19 +924,14 @@ LookingGlass.prototype = {
         if (this._open)
             return;
 
-        if (!Main.pushModal(this.actor))
+        if (!Main.pushModal(this._entry))
             return;
-
-        this._keyPressEventId = global.stage.connect('key-press-event',
-            Lang.bind(this, this._globalKeyPressEvent));
 
         this.actor.show();
         this.actor.lower(Main.chrome.actor);
         this._open = true;
 
         Tweener.removeTweens(this.actor);
-
-        global.stage.set_key_focus(this._entry);
 
         // We inverse compensate for the slow-down so you can change the factor
         // through LookingGlass without long waits.
@@ -950,9 +945,6 @@ LookingGlass.prototype = {
         if (!this._open)
             return;
 
-        if (this._keyPressEventId)
-            global.stage.disconnect(this._keyPressEventId);
-
         this._objInspector.actor.hide();
 
         this._historyNavIndex = -1;
@@ -965,7 +957,7 @@ LookingGlass.prototype = {
             this._borderPaintTarget = null;
         }
 
-        Main.popModal(this.actor);
+        Main.popModal(this._entry);
 
         Tweener.addTween(this.actor, { time: 0.5 / St.get_slow_down_factor(),
                                        transition: 'easeOutQuad',

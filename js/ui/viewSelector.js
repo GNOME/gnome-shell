@@ -16,12 +16,12 @@ const SearchDisplay = imports.ui.searchDisplay;
 const Tweener = imports.ui.tweener;
 
 
-function SearchEntry() {
-    this._init();
+function SearchEntry(focusBase) {
+    this._init(focusBase);
 }
 
 SearchEntry.prototype = {
-    _init : function() {
+    _init : function(focusBase) {
         this.actor = new St.Entry({ name: 'searchEntry',
                                     hint_text: _("Search your computer") });
         this.entry = this.actor.clutter_text;
@@ -45,11 +45,12 @@ SearchEntry.prototype = {
         this.pane = null;
 
         this._capturedEventId = 0;
+        this._focusBase = focusBase;
     },
 
     _updateCursorVisibility: function() {
         let focus = global.stage.get_key_focus();
-        if (focus == global.stage || focus == this.entry)
+        if (focus == this._focusBase || focus == this.entry)
             this.entry.set_cursor_visible(true);
         else
             this.entry.set_cursor_visible(false);
@@ -81,8 +82,8 @@ SearchEntry.prototype = {
 
         this.entry.text = '';
 
-        // Return focus to the stage
-        global.stage.set_key_focus(null);
+        // Return focus to the viewSelector
+        global.stage.set_key_focus(this._focusBase);
 
         this.entry.set_cursor_visible(true);
         this.entry.set_selection(0, 0);
@@ -117,11 +118,11 @@ SearchEntry.prototype = {
                 }
                 return false;
             case Clutter.EventType.KEY_PRESS:
-                // If neither the stage nor our entry have key focus, some
-                // "special" actor grabbed the focus (run dialog, looking
-                // glass); we don't want to interfere with that
+                // If some "special" actor grabbed the focus (run
+                // dialog, looking glass); we don't want to interfere
+                // with that
                 let focus = global.stage.get_key_focus();
-                if (focus != global.stage && focus != this.entry)
+                if (focus != this._focusBase && focus != this.entry)
                     return false;
 
                 let sym = event.get_key_symbol();
@@ -231,22 +232,23 @@ ViewTab.prototype = {
 };
 
 
-function SearchTab() {
-    this._init();
+function SearchTab(focusBase) {
+    this._init(focusBase);
 }
 
 SearchTab.prototype = {
     __proto__: BaseTab.prototype,
 
-    _init: function() {
+    _init: function(focusBase) {
         this._searchActive = false;
         this._searchPending = false;
         this._keyPressId = 0;
         this._searchTimeoutId = 0;
+        this._focusBase = focusBase;
 
         this._searchSystem = new Search.SearchSystem();
 
-        this._searchEntry = new SearchEntry();
+        this._searchEntry = new SearchEntry(focusBase);
         this._searchResults = new SearchDisplay.SearchResults(this._searchSystem);
         BaseTab.prototype._init.call(this,
                                      this._searchEntry.actor,
@@ -274,15 +276,15 @@ SearchTab.prototype = {
         BaseTab.prototype.show.call(this);
 
         if (this._keyPressId == 0)
-            this._keyPressId = global.stage.connect('key-press-event',
-                                                    Lang.bind(this, this._onKeyPress));
+            this._keyPressId = this._searchEntry.entry.connect('key-press-event',
+                                                               Lang.bind(this, this._onKeyPress));
     },
 
     hide: function() {
         BaseTab.prototype.hide.call(this);
 
         if (this._keyPressId > 0) {
-            global.stage.disconnect(this._keyPressId);
+            this._searchEntry.entry.disconnect(this._keyPressId);
             this._keyPressId = 0;
         }
         this._searchEntry.reset();
@@ -317,14 +319,7 @@ SearchTab.prototype = {
         this._searchTimeoutId = Mainloop.timeout_add(150, Lang.bind(this, this._doSearch));
     },
 
-    _onKeyPress: function(stage, event) {
-        // If neither the stage nor the search entry have key focus, some
-        // "special" actor grabbed the focus (run dialog, looking glass);
-        // we don't want to interfere with that
-        let focus = stage.get_key_focus();
-        if (focus != stage && focus != this._searchEntry.entry)
-            return false;
-
+    _onKeyPress: function(entry, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.Up) {
             if (!this._searchActive)
@@ -393,7 +388,7 @@ ViewSelector.prototype = {
         this._tabs = [];
         this._activeTab = null;
 
-        this._searchTab = new SearchTab();
+        this._searchTab = new SearchTab(this.actor);
         this._searchArea.set_child(this._searchTab.title);
         this._addTab(this._searchTab);
 
@@ -559,14 +554,7 @@ ViewSelector.prototype = {
             }));
     },
 
-    _onKeyPress: function(stage, event) {
-        // Only process events if the stage has key focus - search is handled
-        // by the search tab, and we do not want to interfere with "special"
-        // actors grabbing focus (run dialog, looking glass, notifications).
-        let focus = stage.get_key_focus();
-        if (focus != stage)
-            return false;
-
+    _onKeyPress: function(actor, event) {
         let modifiers = Shell.get_event_state(event);
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.Escape) {
@@ -600,8 +588,8 @@ ViewSelector.prototype = {
             this._overviewHidingId = Main.overview.connect('hiding',
                                                            Lang.bind(this, this._switchDefaultTab));
         if (this._keyPressId == 0)
-            this._keyPressId = global.stage.connect('key-press-event',
-                                                    Lang.bind(this, this._onKeyPress));
+            this._keyPressId = this.actor.connect('key-press-event',
+                                                  Lang.bind(this, this._onKeyPress));
 
         this._switchDefaultTab();
     },
@@ -610,7 +598,7 @@ ViewSelector.prototype = {
         this._searchTab.setFindAsYouType(false);
 
         if (this._keyPressId > 0) {
-            global.stage.disconnect(this._keyPressId);
+            this.actor.disconnect(this._keyPressId);
             this._keyPressId = 0;
         }
 
