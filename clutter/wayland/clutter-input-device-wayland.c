@@ -32,12 +32,11 @@
 #include <wayland-util.h>
 #include <wayland-client.h>
 
-#include <X11/extensions/XKBcommon.h>
-
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
 #include "clutter-private.h"
 #include "clutter-keysyms.h"
+#include "clutter-xkb-utils.h"
 
 #include "clutter-stage-wayland.h"
 
@@ -147,33 +146,12 @@ clutter_backend_wayland_handle_key (void *data,
   ClutterStageWayland       *stage_wayland = device->keyboard_focus;
   ClutterMainContext        *clutter_context;
   ClutterEvent              *event;
-  uint32_t                   code, sym, level;
 
-  if (state)
-    event = clutter_event_new (CLUTTER_KEY_PRESS);
-  else
-    event = clutter_event_new (CLUTTER_KEY_RELEASE);
-
-  code = key + device->xkb->min_key_code;
-  level = 0;
-
-  if (device->modifier_state & CLUTTER_SHIFT_MASK &&
-      XkbKeyGroupWidth (device->xkb, code, 0) > 1)
-    level = 1;
-
-  sym = XkbKeySymEntry (device->xkb, code, level, 0);
-  if (state)
-    device->modifier_state |= device->xkb->map->modmap[code];
-  else
-    device->modifier_state &= ~device->xkb->map->modmap[code];
-
-  event->key.device = CLUTTER_INPUT_DEVICE (device);
-  event->key.stage = stage_wayland->wrapper;
-  event->key.time = _time;
-  event->key.modifier_state = device->modifier_state;
-  event->key.hardware_keycode = key;
-  event->key.keyval = sym;
-  event->key.unicode_value = sym;
+  event = _clutter_key_event_new_from_evdev ((ClutterInputDevice *) device,
+                                             stage_wayland->wrapper,
+                                             device->xkb,
+                                             _time, key, state
+                                             &device->modifier_state);
 
   clutter_context = _clutter_context_get_default ();
   g_queue_push_head (clutter_context->events_queue, event);
@@ -315,7 +293,6 @@ _clutter_backend_add_input_device (ClutterBackendWayland *backend_wayland,
 				   uint32_t id)
 {
   ClutterInputDeviceWayland *device;
-  struct xkb_rule_names names;
 
   device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_WAYLAND,
 			 "id", id,
@@ -329,13 +306,10 @@ _clutter_backend_add_input_device (ClutterBackendWayland *backend_wayland,
 				&input_device_listener, device);
   wl_input_device_set_user_data (device->input_device, device);
 
-  names.rules = "evdev";
-  names.model = "pc105";
-  names.layout = option_xkb_layout;
-  names.variant = option_xkb_variant;
-  names.options = option_xkb_options;
-
-  device->xkb = xkb_compile_keymap_from_rules (&names);
+  device->xkb = _clutter_xkb_desc_new (NULL,
+                                       option_xkb_layout,
+                                       option_xkb_variant,
+                                       option_xkb_options);
   if (!device->xkb)
     CLUTTER_NOTE (BACKEND, "Failed to compile keymap");
 }

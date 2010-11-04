@@ -22,6 +22,7 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter/$(CLUTTER_WINSYS)	\
 	-I$(top_srcdir)/clutter/$(CLUTTER_WINSYS_BASE)	\
 	-I$(top_srcdir)/clutter/cally			\
+	-I$(top_srcdir)/clutter/evdev			\
 	-I$(top_builddir)				\
 	-I$(top_builddir)/clutter			\
 	-I$(top_builddir)/clutter/cogl			\
@@ -513,13 +514,15 @@ backend_source_h += \
 	$(srcdir)/wayland/clutter-wayland.h
 
 backend_source_h_priv += \
-	$(srcdir)/wayland/clutter-backend-wayland.h \
+	$(srcdir)/evdev/clutter-xkb-utils.h 		\
+	$(srcdir)/wayland/clutter-backend-wayland.h 	\
 	$(srcdir)/wayland/clutter-stage-wayland.h
 
 backend_source_c += \
-	$(srcdir)/wayland/clutter-backend-wayland.c \
-	$(srcdir)/wayland/clutter-stage-wayland.c \
-	$(srcdir)/wayland/clutter-event-wayland.c \
+	$(srcdir)/evdev/clutter-xkb-utils.c 		\
+	$(srcdir)/wayland/clutter-backend-wayland.c 	\
+	$(srcdir)/wayland/clutter-stage-wayland.c 	\
+	$(srcdir)/wayland/clutter-event-wayland.c 	\
 	$(srcdir)/wayland/clutter-input-device-wayland.c
 
 clutterwayland_includedir = $(clutter_includedir)/wayland
