@@ -40,7 +40,7 @@
 #include "cogl-texture-2d-private.h"
 #include "cogl-texture-2d-sliced-private.h"
 #include "cogl-texture-driver.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-handle.h"
 #include "cogl-spans.h"
 #include "cogl-journal-private.h"

@@ -29,7 +29,7 @@
 #include "cogl-shader-private.h"
 #include "cogl-shader-boilerplate.h"
 #include "cogl-internal.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-handle.h"
 
 #include <glib.h>

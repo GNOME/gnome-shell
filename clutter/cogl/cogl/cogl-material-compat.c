@@ -32,7 +32,7 @@
 #include <cogl-pipeline-private.h>
 #include <cogl-types.h>
 #include <cogl-matrix.h>
-#include <cogl-context.h>
+#include <cogl-context-private.h>
 
 CoglMaterial *
 cogl_material_new (void)

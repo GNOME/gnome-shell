@@ -29,7 +29,7 @@
 #include "config.h"
 #endif
 
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-object-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-attribute.h"

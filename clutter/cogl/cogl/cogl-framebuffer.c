@@ -28,7 +28,7 @@
 #include "cogl.h"
 #include "cogl-debug.h"
 #include "cogl-internal.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-handle.h"
 #include "cogl-object-private.h"
 #include "cogl-util.h"

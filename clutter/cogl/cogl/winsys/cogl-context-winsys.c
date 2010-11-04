@@ -29,7 +29,7 @@
 #include <GL/glx.h>
 #endif
 
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-feature-private.h"
 
 /* Define a set of arrays containing the functions required from GL

@@ -161,7 +161,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-debug.h 				\
 	$(srcdir)/cogl-debug-options.h			\
 	$(srcdir)/cogl-handle.h 			\
-	$(srcdir)/cogl-context.h			\
+	$(srcdir)/cogl-context-private.h		\
 	$(srcdir)/cogl-context.c			\
 	$(srcdir)/cogl-internal.h			\
 	$(srcdir)/cogl.c				\

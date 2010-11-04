@@ -30,7 +30,7 @@
 #include "cogl.h"
 
 #include "cogl-internal.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-feature-private.h"
 
 #ifdef HAVE_CLUTTER_OSX

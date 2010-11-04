@@ -41,7 +41,7 @@
 #include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-handle.h"
 #include "cogl-pixel-array-private.h"
 

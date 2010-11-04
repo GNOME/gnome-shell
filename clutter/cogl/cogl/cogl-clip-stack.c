@@ -33,7 +33,7 @@
 #include "cogl.h"
 #include "cogl-clip-stack.h"
 #include "cogl-primitives.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-internal.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-journal-private.h"

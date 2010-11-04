@@ -34,7 +34,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-texture-rectangle-private.h"
 #include "cogl-texture-driver.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-handle.h"
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
