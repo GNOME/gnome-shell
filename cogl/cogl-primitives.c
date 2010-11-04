@@ -1024,7 +1024,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
   v = (float *)ctx->polygon_vertices->data;
   cogl_buffer_set_data (COGL_BUFFER (vertex_array),
                         0,
-                        (const guint8 *)v,
+                        v,
                         ctx->polygon_vertices->len * sizeof (float));
 
   cogl_push_source (pipeline);
