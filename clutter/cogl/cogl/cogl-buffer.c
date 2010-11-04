@@ -130,7 +130,7 @@ convert_bind_target_to_gl_target (CoglBufferBindTarget target)
     }
 }
 
-static guint8 *
+static void *
 bo_map (CoglBuffer       *buffer,
         CoglBufferAccess  access,
         CoglBufferMapHint hints)
@@ -196,7 +196,7 @@ bo_unmap (CoglBuffer *buffer)
 static gboolean
 bo_set_data (CoglBuffer   *buffer,
              unsigned int  offset,
-             const guint8 *data,
+             const void   *data,
              unsigned int  size)
 {
   CoglBufferBindTarget target;
@@ -233,7 +233,7 @@ bo_set_data (CoglBuffer   *buffer,
  * Fallback path, buffer->data points to a malloc'ed buffer.
  */
 
-static guint8 *
+static void *
 malloc_map (CoglBuffer       *buffer,
             CoglBufferAccess  access,
             CoglBufferMapHint hints)
@@ -251,7 +251,7 @@ malloc_unmap (CoglBuffer *buffer)
 static gboolean
 malloc_set_data (CoglBuffer   *buffer,
                  unsigned int  offset,
-                 const guint8 *data,
+                 const void   *data,
                  unsigned int  size)
 {
   memcpy (buffer->data + offset, data, size);
@@ -442,7 +442,7 @@ warn_about_midscene_changes (void)
     }
 }
 
-guint8 *
+void *
 cogl_buffer_map (CoglBuffer        *buffer,
                  CoglBufferAccess   access,
                  CoglBufferMapHint  hints)
@@ -474,7 +474,7 @@ cogl_buffer_unmap (CoglBuffer *buffer)
 gboolean
 cogl_buffer_set_data (CoglBuffer   *buffer,
                       gsize         offset,
-                      const guint8 *data,
+                      const void   *data,
                       gsize         size)
 {
   g_return_val_if_fail (cogl_is_buffer (buffer), FALSE);

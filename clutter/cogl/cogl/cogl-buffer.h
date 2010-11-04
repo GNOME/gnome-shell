@@ -198,7 +198,7 @@ typedef enum { /*< prefix=COGL_BUFFER_MAP_HINT >*/
  * Since: 1.2
  * Stability: Unstable
  */
-guint8 *
+void *
 cogl_buffer_map (CoglBuffer        *buffer,
                  CoglBufferAccess   access,
                  CoglBufferMapHint  hints);
@@ -234,7 +234,7 @@ cogl_buffer_unmap (CoglBuffer *buffer);
 gboolean
 cogl_buffer_set_data (CoglBuffer  *buffer,
                       gsize        offset,
-                      const guint8 *data,
+                      const void  *data,
                       gsize        size);
 
 G_END_DECLS

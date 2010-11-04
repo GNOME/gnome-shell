@@ -42,15 +42,15 @@ typedef struct _CoglBufferVtable CoglBufferVtable;
 
 struct _CoglBufferVtable
 {
-  guint8 * (* map) (CoglBuffer       *buffer,
-                    CoglBufferAccess  access,
-                    CoglBufferMapHint hints);
+  void * (* map) (CoglBuffer       *buffer,
+                  CoglBufferAccess  access,
+                  CoglBufferMapHint hints);
 
   void (* unmap) (CoglBuffer *buffer);
 
   gboolean (* set_data) (CoglBuffer   *buffer,
                          unsigned int  offset,
-                         const guint8 *data,
+                         const void   *data,
                          unsigned int  size);
 };
 

@@ -595,7 +595,7 @@ upload_vertices (GArray *vertices, CoglJournalFlushState *state)
   array = cogl_vertex_array_new (needed_vbo_len);
   buffer = COGL_BUFFER (array);
   cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_STATIC);
-  cogl_buffer_set_data (buffer, 0, (guint8 *)vertices->data, needed_vbo_len);
+  cogl_buffer_set_data (buffer, 0, vertices->data, needed_vbo_len);
 
   /* As we flush the journal entries in batches we walk forward through the
    * above VBO starting at offset 0... */
