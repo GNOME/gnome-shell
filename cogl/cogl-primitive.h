@@ -238,6 +238,50 @@ cogl_primitive_new_with_attributes_array (CoglVerticesMode mode,
                                           CoglVertexAttribute **attributes);
 
 /**
+ * cogl_primitive_new_p2:
+ * @mode: A #CoglVerticesMode defining how to draw the vertices
+ * @n_vertices: The number of vertices to process when drawing
+ * @data: An array of #CoglP2Vertex vertices
+ *
+ * Provides a convenient way to describe a primitive, such as a single
+ * triangle strip or a triangle fan, that will internally allocate the
+ * necessary #CoglVertexArray storage, describe the position
+ * attribute with a #CoglVertexAttribute and upload your data.
+ *
+ * For example to draw a convex polygon you can do:
+ * |[
+ * CoglP2Vertex triangle[] =
+ * {
+ *   { 0,   300 },
+ *   { 150, 0,  },
+ *   { 300, 300 }
+ * };
+ * prim = cogl_primitive_new_p2 (COGL_VERTICES_MODE_TRIANGLE_FAN,
+ *                               3, triangle);
+ * cogl_primitive_draw (prim);
+ * ]|
+ *
+ * <note>The primitive API doesn't support drawing with sliced
+ * textures (since switching between slices implies changing state and
+ * so that implies multiple primitives need to be submitted). You
+ * should pass the %COGL_TEXTURE_NO_SLICING flag to all textures that
+ * might be used while drawing with this API. If your hardware doesn't
+ * support non-power of two textures (For example you are using GLES
+ * 1.1) then you will need to make sure your assets are resized to a
+ * power-of-two size (though they don't have to be square)</note>
+ *
+ * Return value: A newly allocated #CoglPrimitive with a reference of
+ * 1. This can be freed using cogl_object_unref().
+ *
+ * Since: 1.6
+ * Stability: Unstable
+ */
+CoglPrimitive *
+cogl_primitive_new_p2 (CoglVerticesMode mode,
+                       int n_vertices,
+                       const CoglP2Vertex *data);
+
+/**
  * cogl_primitive_new_p3:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to process when drawing

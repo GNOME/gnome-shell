@@ -121,6 +121,33 @@ cogl_primitive_new (CoglVerticesMode mode,
 }
 
 CoglPrimitive *
+cogl_primitive_new_p2 (CoglVerticesMode mode,
+                       int n_vertices,
+                       const CoglP2Vertex *data)
+{
+  CoglVertexArray *array =
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP2Vertex));
+  CoglBuffer *buffer = COGL_BUFFER (array);
+  CoglVertexAttribute *attributes[2];
+
+  cogl_buffer_set_data (buffer, 0, (guint8 *)data,
+                        n_vertices * sizeof (CoglP2Vertex));
+  attributes[0] =
+    cogl_vertex_attribute_new (array,
+                               "cogl_position_in",
+                               sizeof (CoglP2Vertex),
+                               offsetof (CoglP2Vertex, x),
+                               2,
+                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attributes[1] = NULL;
+
+  cogl_object_unref (array);
+
+  return _cogl_primitive_new_with_attributes_array_unref (mode, n_vertices,
+                                                          attributes);
+}
+
+CoglPrimitive *
 cogl_primitive_new_p3 (CoglVerticesMode mode,
                        int n_vertices,
                        const CoglP3Vertex *data)
