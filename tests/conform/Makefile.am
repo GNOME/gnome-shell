@@ -51,6 +51,7 @@ units_sources += \
 	test-cogl-vertex-buffer-interleved.c 	\
 	test-cogl-vertex-buffer-mutability.c 	\
 	test-cogl-wrap-modes.c          	\
+	test-cogl-primitive.c			\
 	$(NULL)
 
 # actors tests

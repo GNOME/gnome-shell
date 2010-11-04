@@ -234,6 +234,8 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);
   TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_mutability);
 
+  TEST_CONFORM_SIMPLE ("/cogl/vertex-array", test_cogl_primitive);
+
   /* left to the end because they aren't currently very orthogonal and tend to
    * break subsequent tests! */
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_viewport);
