@@ -27,6 +27,9 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-event.h>
+#include <clutter/clutter-backend.h>
+#include <clutter/clutter-device-manager.h>
+
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -102,6 +105,9 @@ struct _ClutterBackendEGL
 
   /* main stage singleton */
   ClutterStageWindow *stage;
+
+  /* device manager (ie evdev) */
+  ClutterDeviceManager *device_manager;
 
   /* event source */
   GSource *event_source;

@@ -40,6 +40,11 @@
 #include "clutter-stage-egl.h"
 #include "clutter-egl.h"
 
+#ifdef HAVE_EVDEV
+#include "clutter-device-manager-evdev.h"
+#include "clutter-event-evdev.h"
+#endif
+
 #include "clutter-debug.h"
 #include "clutter-private.h"
 #include "clutter-main.h"
@@ -516,14 +521,35 @@ clutter_backend_egl_redraw (ClutterBackend *backend,
   _clutter_stage_egl_redraw (CLUTTER_STAGE_EGL (impl), stage);
 }
 
-#ifdef HAVE_TSLIB
+static ClutterDeviceManager *
+clutter_backend_egl_get_device_manager (ClutterBackend *backend)
+{
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
+
+  if (G_UNLIKELY (backend_egl->device_manager == NULL))
+    {
+#ifdef HAVE_EVDEV
+      backend_egl->device_manager =
+	g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_EVDEV,
+		      "backend", backend_egl,
+		      NULL);
+#endif
+    }
+
+  return backend_egl->device_manager;
+}
+
 static void
 clutter_backend_egl_init_events (ClutterBackend *backend)
 {
+#ifdef HAVE_TSLIB
   /* XXX: This should be renamed to _clutter_events_tslib_init */
   _clutter_events_egl_init (CLUTTER_BACKEND_EGL (backend));
-}
 #endif
+#ifdef HAVE_EVDEV
+  _clutter_events_evdev_init (CLUTTER_BACKEND (backend));
+#endif
+}
 
 static void
 clutter_backend_egl_finalize (GObject *gobject)
@@ -827,16 +853,15 @@ _clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
   gobject_class->dispose     = clutter_backend_egl_dispose;
   gobject_class->finalize    = clutter_backend_egl_finalize;
 
-  backend_class->pre_parse        = clutter_backend_egl_pre_parse;
-  backend_class->post_parse       = clutter_backend_egl_post_parse;
-  backend_class->get_features     = clutter_backend_egl_get_features;
-#ifdef HAVE_TSLIB
-  backend_class->init_events      = clutter_backend_egl_init_events;
-#endif
-  backend_class->create_stage     = clutter_backend_egl_create_stage;
-  backend_class->create_context   = clutter_backend_egl_create_context;
-  backend_class->ensure_context   = clutter_backend_egl_ensure_context;
-  backend_class->redraw           = clutter_backend_egl_redraw;
+  backend_class->pre_parse          = clutter_backend_egl_pre_parse;
+  backend_class->post_parse         = clutter_backend_egl_post_parse;
+  backend_class->get_features       = clutter_backend_egl_get_features;
+  backend_class->get_device_manager = clutter_backend_egl_get_device_manager;
+  backend_class->init_events        = clutter_backend_egl_init_events;
+  backend_class->create_stage       = clutter_backend_egl_create_stage;
+  backend_class->create_context     = clutter_backend_egl_create_context;
+  backend_class->ensure_context     = clutter_backend_egl_ensure_context;
+  backend_class->redraw             = clutter_backend_egl_redraw;
 
 #ifdef COGL_HAS_XLIB_SUPPORT
   backendx11_class->get_visual_info = clutter_backend_egl_get_visual_info;

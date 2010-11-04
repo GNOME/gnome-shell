@@ -53,6 +53,10 @@ typedef struct _ClutterInputDeviceClass ClutterInputDeviceClass;
  * @CLUTTER_POINTER_DEVICE: A pointer device
  * @CLUTTER_KEYBOARD_DEVICE: A keyboard device
  * @CLUTTER_EXTENSION_DEVICE: A generic extension device
+ * @CLUTTER_JOYSTICK_DEVICE: A joystick device
+ * @CLUTTER_TABLET_DEVICE: A tablet device
+ * @CLUTTER_TOUCHPAD_DEVICE: A touchpad device
+ * @CLUTTER_TOUCHSCREEN_DEVICE: A touch screen device
  * @CLUTTER_N_DEVICE_TYPES: The number of device types
  *
  * The types of input devices available.
@@ -66,6 +70,10 @@ typedef enum {
   CLUTTER_POINTER_DEVICE,
   CLUTTER_KEYBOARD_DEVICE,
   CLUTTER_EXTENSION_DEVICE,
+  CLUTTER_JOYSTICK_DEVICE,
+  CLUTTER_TABLET_DEVICE,
+  CLUTTER_TOUCHPAD_DEVICE,
+  CLUTTER_TOUCHSCREEN_DEVICE,
 
   CLUTTER_N_DEVICE_TYPES
 } ClutterInputDeviceType;

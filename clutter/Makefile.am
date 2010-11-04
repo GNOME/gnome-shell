@@ -433,14 +433,34 @@ egl_source_c_priv =
 
 egl_tslib_c = $(srcdir)/egl/clutter-event-tslib.c
 
+evdev_c_priv = \
+	$(srcdir)/evdev/clutter-xkb-utils.c 		\
+	$(srcdir)/evdev/clutter-device-manager-evdev.c	\
+	$(srcdir)/evdev/clutter-input-device-evdev.c	\
+	$(srcdir)/evdev/clutter-event-evdev.c		\
+	$(NULL)
+evdev_h_priv = \
+	$(srcdir)/evdev/clutter-xkb-utils.h 		\
+	$(srcdir)/evdev/clutter-device-manager-evdev.h	\
+	$(srcdir)/evdev/clutter-input-device-evdev.h	\
+	$(srcdir)/evdev/clutter-event-evdev.h		\
+	$(NULL)
+
 egl_cex_c_priv = $(srcdir)/egl/clutter-backend-cex100.c
 egl_cex_h_priv = $(srcdir)/egl/clutter-backend-cex100.h
 egl_cex_h = $(srcdir)/egl/clutter-cex100.h
 
 if SUPPORT_EGL
+
 if USE_TSLIB
 egl_source_c_priv += $(egl_tslib_c)
 endif # SUPPORT_TSLIB
+
+if SUPPORT_EVDEV
+egl_source_c_priv += $(evdev_c_priv)
+egl_source_h_priv += $(evdev_h_priv)
+endif # SUPPORT_EVDEV
+
 if SUPPORT_CEX100
 egl_source_c_priv += $(egl_cex_c_priv)
 egl_source_h_priv += $(egl_cex_h_priv)

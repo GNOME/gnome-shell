@@ -26,6 +26,7 @@
 #define __CLUTTER_DEVICE_MANAGER_PRIVATE_H__
 
 #include <clutter/clutter-device-manager.h>
+#include <clutter/clutter-event.h>
 
 G_BEGIN_DECLS
 

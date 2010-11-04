@@ -315,7 +315,16 @@ AS_CASE([$CLUTTER_FLAVOUR],
 
           AS_IF([test x"$found_gdl" = "xno"], [AC_MSG_ERROR([libgdl.h not found])])
 
-          FLAVOUR_LIBS="$FLAVOUR_LIBS -lgdl"
+          # evdev
+          PKG_CHECK_MODULES(EVDEV, [gudev-1.0 xkbcommon],
+                            [have_evdev=yes], [have_evdev=no])
+          AS_IF([test "x$have_evdev" = "xyes"],
+                [AC_DEFINE([HAVE_EVDEV], 1,
+                           [Have evdev support for input handling])]
+          )
+
+          FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $EVDEV_CFLAGS"
+          FLAVOUR_LIBS="$FLAVOUR_LIBS -lgdl $EVDEV_LIBS"
         ],
 
         [fruity],
@@ -580,6 +589,7 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
 )
 
 AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
+AM_CONDITIONAL(SUPPORT_EVDEV, [test "x$have_evdev" = "xyes"])
 
 AM_CONDITIONAL(USE_GLES2_WRAPPER, [test "x$use_gles2_wrapper" = "xyes"])
 
