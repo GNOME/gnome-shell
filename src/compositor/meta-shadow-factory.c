@@ -84,10 +84,19 @@ struct _MetaShadow
 
 struct _MetaShadowFactory
 {
+  GObject parent_instance;
+
   /* MetaShadowCacheKey => MetaShadow; the shadows are not referenced
    * by the factory, they are simply removed from the table when freed */
   GHashTable *shadows;
 };
+
+struct _MetaShadowFactoryClass
+{
+  GObjectClass parent_class;
+};
+
+G_DEFINE_TYPE (MetaShadowFactory, meta_shadow_factory, G_TYPE_OBJECT);
 
 static guint
 meta_shadow_cache_key_hash (gconstpointer val)
@@ -253,27 +262,22 @@ meta_shadow_get_bounds  (MetaShadow            *shadow,
   bounds->height = window_height + shadow->outer_border_top + shadow->outer_border_bottom;
 }
 
-MetaShadowFactory *
-meta_shadow_factory_new (void)
+static void
+meta_shadow_factory_init (MetaShadowFactory *factory)
 {
-  MetaShadowFactory *factory;
-
-  factory = g_slice_new0 (MetaShadowFactory);
-
   factory->shadows = g_hash_table_new (meta_shadow_cache_key_hash,
                                        meta_shadow_cache_key_equal);
-
-  return factory;
 }
 
-void
-meta_shadow_factory_free (MetaShadowFactory *factory)
+static void
+meta_shadow_factory_finalize (GObject *object)
 {
+  MetaShadowFactory *factory = META_SHADOW_FACTORY (object);
   GHashTableIter iter;
   gpointer key, value;
 
   /* Detach from the shadows in the table so we won't try to
-   * remove them when they freed. */
+   * remove them when they're freed. */
   g_hash_table_iter_init (&iter, factory->shadows);
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
@@ -283,7 +287,21 @@ meta_shadow_factory_free (MetaShadowFactory *factory)
 
   g_hash_table_destroy (factory->shadows);
 
-  g_slice_free (MetaShadowFactory, factory);
+  G_OBJECT_CLASS (meta_shadow_factory_parent_class)->finalize (object);
+}
+
+static void
+meta_shadow_factory_class_init (MetaShadowFactoryClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_shadow_factory_finalize;
+}
+
+MetaShadowFactory *
+meta_shadow_factory_new (void)
+{
+  return g_object_new (META_TYPE_SHADOW_FACTORY, NULL);
 }
 
 MetaShadowFactory *
@@ -671,6 +689,9 @@ meta_shadow_factory_get_shadow (MetaShadowFactory  *factory,
   gboolean scale_width, scale_height;
   gboolean cacheable;
   int center_width, center_height;
+
+  g_return_val_if_fail (META_IS_SHADOW_FACTORY (factory), NULL);
+  g_return_val_if_fail (shape != NULL, NULL);
 
   /* Using a single shadow texture for different window sizes only works
    * when there is a central scaled area that is greater than twice
