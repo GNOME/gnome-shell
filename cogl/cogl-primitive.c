@@ -70,6 +70,28 @@ cogl_primitive_new_with_attributes_array (CoglVerticesMode mode,
   return _cogl_primitive_object_new (primitive);
 }
 
+/* This is just an internal convenience wrapper around
+   new_with_attributes that also unrefs the attributes. It is just
+   used for the builtin struct constructors */
+static CoglPrimitive *
+_cogl_primitive_new_with_attributes_array_unref
+                               (CoglVerticesMode mode,
+                                int n_vertices,
+                                CoglVertexAttribute **attributes)
+{
+  CoglPrimitive *primitive;
+  int i;
+
+  primitive = cogl_primitive_new_with_attributes_array (mode,
+                                                        n_vertices,
+                                                        attributes);
+
+  for (i = 0; attributes[i]; i++)
+    cogl_object_unref (attributes[i]);
+
+  return primitive;
+}
+
 CoglPrimitive *
 cogl_primitive_new (CoglVerticesMode mode,
                     int n_vertices,
@@ -107,7 +129,6 @@ cogl_primitive_new_p3 (CoglVerticesMode mode,
     cogl_vertex_array_new (n_vertices * sizeof (CoglP3Vertex));
   CoglBuffer *buffer = COGL_BUFFER (array);
   CoglVertexAttribute *attributes[2];
-  CoglPrimitive *prim;
 
   cogl_buffer_set_data (buffer, 0, (guint8 *)data,
                         n_vertices * sizeof (CoglP3Vertex));
@@ -119,10 +140,11 @@ cogl_primitive_new_p3 (CoglVerticesMode mode,
                                3,
                                COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
   attributes[1] = NULL;
-  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
-                                                   attributes);
-  cogl_object_unref (prim);
-  return prim;
+
+  cogl_object_unref (array);
+
+  return _cogl_primitive_new_with_attributes_array_unref (mode, n_vertices,
+                                                          attributes);
 }
 
 CoglPrimitive *
@@ -134,7 +156,6 @@ cogl_primitive_new_p2c4 (CoglVerticesMode mode,
     cogl_vertex_array_new (n_vertices * sizeof (CoglP2C4Vertex));
   CoglBuffer *buffer = COGL_BUFFER (array);
   CoglVertexAttribute *attributes[3];
-  CoglPrimitive *prim;
 
   cogl_buffer_set_data (buffer, 0, (guint8 *)data,
                         n_vertices * sizeof (CoglP2C4Vertex));
@@ -153,10 +174,11 @@ cogl_primitive_new_p2c4 (CoglVerticesMode mode,
                                4,
                                COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
   attributes[2] = NULL;
-  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
-                                                   attributes);
-  cogl_object_unref (prim);
-  return prim;
+
+  cogl_object_unref (array);
+
+  return _cogl_primitive_new_with_attributes_array_unref (mode, n_vertices,
+                                                          attributes);
 }
 
 CoglPrimitive *
@@ -168,7 +190,6 @@ cogl_primitive_new_p3c4 (CoglVerticesMode mode,
     cogl_vertex_array_new (n_vertices * sizeof (CoglP3C4Vertex));
   CoglBuffer *buffer = COGL_BUFFER (array);
   CoglVertexAttribute *attributes[3];
-  CoglPrimitive *prim;
 
   cogl_buffer_set_data (buffer, 0, (guint8 *)data,
                         n_vertices * sizeof (CoglP3C4Vertex));
@@ -187,10 +208,11 @@ cogl_primitive_new_p3c4 (CoglVerticesMode mode,
                                4,
                                COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
   attributes[2] = NULL;
-  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
-                                                   attributes);
-  cogl_object_unref (prim);
-  return prim;
+
+  cogl_object_unref (array);
+
+  return _cogl_primitive_new_with_attributes_array_unref (mode, n_vertices,
+                                                          attributes);
 }
 
 CoglPrimitive *
@@ -202,7 +224,6 @@ cogl_primitive_new_p2t2 (CoglVerticesMode mode,
     cogl_vertex_array_new (n_vertices * sizeof (CoglP2T2Vertex));
   CoglBuffer *buffer = COGL_BUFFER (array);
   CoglVertexAttribute *attributes[3];
-  CoglPrimitive *prim;
 
   cogl_buffer_set_data (buffer, 0, (guint8 *)data,
                         n_vertices * sizeof (CoglP2T2Vertex));
@@ -221,10 +242,11 @@ cogl_primitive_new_p2t2 (CoglVerticesMode mode,
                                2,
                                COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
   attributes[2] = NULL;
-  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
-                                                   attributes);
+
   cogl_object_unref (array);
-  return prim;
+
+  return _cogl_primitive_new_with_attributes_array_unref (mode, n_vertices,
+                                                          attributes);
 }
 
 CoglPrimitive *
@@ -236,7 +258,6 @@ cogl_primitive_new_p3t2 (CoglVerticesMode mode,
     cogl_vertex_array_new (n_vertices * sizeof (CoglP3T2Vertex));
   CoglBuffer *buffer = COGL_BUFFER (array);
   CoglVertexAttribute *attributes[3];
-  CoglPrimitive *prim;
 
   cogl_buffer_set_data (buffer, 0, (guint8 *)data,
                         n_vertices * sizeof (CoglP3T2Vertex));
@@ -255,11 +276,11 @@ cogl_primitive_new_p3t2 (CoglVerticesMode mode,
                                2,
                                COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
   attributes[2] = NULL;
-  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
-                                                   attributes);
-  cogl_object_unref (prim);
-  return prim;
 
+  cogl_object_unref (array);
+
+  return _cogl_primitive_new_with_attributes_array_unref (mode, n_vertices,
+                                                          attributes);
 }
 
 CoglPrimitive *
@@ -271,7 +292,6 @@ cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
     cogl_vertex_array_new (n_vertices * sizeof (CoglP2T2C4Vertex));
   CoglBuffer *buffer = COGL_BUFFER (array);
   CoglVertexAttribute *attributes[4];
-  CoglPrimitive *prim;
 
   cogl_buffer_set_data (buffer, 0, (guint8 *)data,
                         n_vertices * sizeof (CoglP2T2C4Vertex));
@@ -297,10 +317,11 @@ cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
                                4,
                                COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
   attributes[3] = NULL;
-  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
-                                                   attributes);
-  cogl_object_unref (prim);
-  return prim;
+
+  cogl_object_unref (array);
+
+  return _cogl_primitive_new_with_attributes_array_unref (mode, n_vertices,
+                                                          attributes);
 }
 
 CoglPrimitive *
@@ -312,7 +333,6 @@ cogl_primitive_new_p3t2c4 (CoglVerticesMode mode,
     cogl_vertex_array_new (n_vertices * sizeof (CoglP3T2C4Vertex));
   CoglBuffer *buffer = COGL_BUFFER (array);
   CoglVertexAttribute *attributes[4];
-  CoglPrimitive *prim;
 
   cogl_buffer_set_data (buffer, 0, (guint8 *)data,
                         n_vertices * sizeof (CoglP3T2C4Vertex));
@@ -338,10 +358,11 @@ cogl_primitive_new_p3t2c4 (CoglVerticesMode mode,
                                4,
                                COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
   attributes[3] = NULL;
-  prim = cogl_primitive_new_with_attributes_array (mode, n_vertices,
-                                                   attributes);
-  cogl_object_unref (prim);
-  return prim;
+
+  cogl_object_unref (array);
+
+  return _cogl_primitive_new_with_attributes_array_unref (mode, n_vertices,
+                                                          attributes);
 }
 
 static void
