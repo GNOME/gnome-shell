@@ -265,7 +265,7 @@ cogl_primitive_new_p2t2 (CoglVerticesMode mode,
     cogl_vertex_attribute_new (array,
                                "cogl_tex_coord0_in",
                                sizeof (CoglP2T2Vertex),
-                               offsetof (CoglP2T2Vertex, x),
+                               offsetof (CoglP2T2Vertex, s),
                                2,
                                COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
   attributes[2] = NULL;
@@ -299,7 +299,7 @@ cogl_primitive_new_p3t2 (CoglVerticesMode mode,
     cogl_vertex_attribute_new (array,
                                "cogl_tex_coord0_in",
                                sizeof (CoglP3T2Vertex),
-                               offsetof (CoglP3T2Vertex, x),
+                               offsetof (CoglP3T2Vertex, s),
                                2,
                                COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
   attributes[2] = NULL;
@@ -333,7 +333,7 @@ cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
     cogl_vertex_attribute_new (array,
                                "cogl_tex_coord0_in",
                                sizeof (CoglP2T2C4Vertex),
-                               offsetof (CoglP2T2C4Vertex, x),
+                               offsetof (CoglP2T2C4Vertex, s),
                                2,
                                COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
   attributes[2] =
@@ -374,7 +374,7 @@ cogl_primitive_new_p3t2c4 (CoglVerticesMode mode,
     cogl_vertex_attribute_new (array,
                                "cogl_tex_coord0_in",
                                sizeof (CoglP3T2C4Vertex),
-                               offsetof (CoglP3T2C4Vertex, x),
+                               offsetof (CoglP3T2C4Vertex, s),
                                2,
                                COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
   attributes[2] =
