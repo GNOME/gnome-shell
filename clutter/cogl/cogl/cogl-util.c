@@ -208,4 +208,13 @@ cogl_fixed_get_type (void)
   return _cogl_fixed_type;
 }
 
+unsigned int
+_cogl_util_one_at_a_time_mix (unsigned int hash)
+{
+  hash += ( hash << 3 );
+  hash ^= ( hash >> 11 );
+  hash += ( hash << 15 );
+
+  return hash;
+}
 

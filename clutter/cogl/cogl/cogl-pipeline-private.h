@@ -390,7 +390,7 @@ typedef struct
 {
   /* Determines what fragments are discarded based on their alpha */
   CoglPipelineAlphaFunc alpha_func;
-  GLfloat		alpha_func_reference;
+  float		        alpha_func_reference;
 } CoglPipelineAlphaFuncState;
 
 typedef enum _CoglPipelineBlendEnable
@@ -886,6 +886,10 @@ void
 _cogl_pipeline_get_colorubv (CoglPipeline *pipeline,
                              guint8       *color);
 
+/* XXX: At some point it could be good for this to accept a mask of
+ * the state groups we are interested in comparing since we can
+ * probably use that information in a number situations to reduce
+ * the work we do. */
 unsigned long
 _cogl_pipeline_compare_differences (CoglPipeline *pipeline0,
                                     CoglPipeline *pipeline1);
@@ -907,6 +911,12 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
                       unsigned long differences,
                       unsigned long layer_differences,
                       CoglPipelineEvalFlags flags);
+
+unsigned int
+_cogl_pipeline_hash (CoglPipeline *pipeline,
+                     unsigned long differences,
+                     unsigned long layer_differences,
+                     CoglPipelineEvalFlags flags);
 
 CoglPipeline *
 _cogl_pipeline_journal_ref (CoglPipeline *pipeline);
@@ -1041,6 +1051,12 @@ _cogl_pipeline_need_texture_combine_separate
 CoglPipeline *
 _cogl_pipeline_find_codegen_authority (CoglPipeline *pipeline,
                                        CoglHandle user_program);
+
+void
+_cogl_pipeline_init_state_hash_functions (void);
+
+void
+_cogl_pipeline_init_layer_state_hash_functions (void);
 
 #endif /* __COGL_PIPELINE_PRIVATE_H */
 

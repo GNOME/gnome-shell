@@ -41,6 +41,7 @@
 #include "cogl-blend-string.h"
 #include "cogl-journal-private.h"
 #include "cogl-color-private.h"
+#include "cogl-util.h"
 #include "cogl-profile.h"
 
 #include <glib.h>
@@ -188,6 +189,8 @@ _cogl_pipeline_init_default_pipeline (void)
 {
   /* Create new - blank - pipeline */
   CoglPipeline *pipeline = g_slice_new0 (CoglPipeline);
+  /* XXX: NB: It's important that we zero this to avoid polluting
+   * pipeline hash values with un-initialized data */
   CoglPipelineBigState *big_state = g_slice_new0 (CoglPipelineBigState);
   CoglPipelineLightingState *lighting_state = &big_state->lighting_state;
   CoglPipelineAlphaFuncState *alpha_state = &big_state->alpha_state;
@@ -5506,6 +5509,523 @@ _cogl_pipeline_set_static_breadcrumb (CoglPipeline *pipeline,
 {
   pipeline->has_static_breadcrumb = TRUE;
   pipeline->static_breadcrumb = breadcrumb;
+}
+
+typedef struct _HashState
+{
+  unsigned long pipeline_differences;
+  unsigned long layer_differences;
+  CoglPipelineEvalFlags flags;
+  unsigned int hash;
+} HashState;
+
+static void
+_cogl_pipeline_layer_hash_unit_state (CoglPipelineLayer *authority,
+                                      CoglPipelineLayer **authorities,
+                                      HashState *state)
+{
+  int unit = authority->unit_index;
+  state->hash =
+    _cogl_util_one_at_a_time_hash (state->hash, &unit, sizeof (unit));
+}
+
+static void
+_cogl_pipeline_layer_hash_texture_state (CoglPipelineLayer *authority,
+                                         CoglPipelineLayer **authorities,
+                                         HashState *state)
+{
+  GLuint gl_handle;
+  GLenum gl_target;
+  unsigned long hash = state->hash;
+
+  cogl_texture_get_gl_texture (authority->texture, &gl_handle, &gl_target);
+
+  hash = _cogl_util_one_at_a_time_hash (hash, &gl_target, sizeof (gl_target));
+
+  if (!(state->flags & COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA))
+    hash = _cogl_util_one_at_a_time_hash (hash, &gl_handle, sizeof (gl_handle));
+
+  state->hash = hash;
+}
+
+static void
+_cogl_pipeline_layer_hash_filters_state (CoglPipelineLayer *authority,
+                                         CoglPipelineLayer **authorities,
+                                         HashState *state)
+{
+  unsigned int hash = state->hash;
+  hash = _cogl_util_one_at_a_time_hash (hash, &authority->mag_filter,
+                                        sizeof (authority->mag_filter));
+  hash = _cogl_util_one_at_a_time_hash (hash, &authority->min_filter,
+                                        sizeof (authority->min_filter));
+  state->hash = hash;
+}
+
+static void
+_cogl_pipeline_layer_hash_wrap_modes_state (CoglPipelineLayer *authority,
+                                            CoglPipelineLayer **authorities,
+                                            HashState *state)
+{
+  unsigned int hash = state->hash;
+  hash = _cogl_util_one_at_a_time_hash (hash, &authority->wrap_mode_s,
+                                        sizeof (authority->wrap_mode_s));
+  hash = _cogl_util_one_at_a_time_hash (hash, &authority->wrap_mode_t,
+                                        sizeof (authority->wrap_mode_t));
+  hash = _cogl_util_one_at_a_time_hash (hash, &authority->wrap_mode_p,
+                                        sizeof (authority->wrap_mode_p));
+  state->hash = hash;
+}
+
+static void
+_cogl_pipeline_layer_hash_combine_state (CoglPipelineLayer *authority,
+                                         CoglPipelineLayer **authorities,
+                                         HashState *state)
+{
+  unsigned int hash = state->hash;
+  CoglPipelineLayerBigState *b = authority->big_state;
+  int n_args;
+  int i;
+
+  hash = _cogl_util_one_at_a_time_hash (hash, &b->texture_combine_rgb_func,
+                                        sizeof (b->texture_combine_rgb_func));
+  n_args = _cogl_get_n_args_for_combine_func (b->texture_combine_rgb_func);
+  for (i = 0; i < n_args; i++)
+    {
+      hash =
+        _cogl_util_one_at_a_time_hash (hash, &b->texture_combine_rgb_src[i],
+                                       sizeof (b->texture_combine_rgb_src[i]));
+      hash =
+        _cogl_util_one_at_a_time_hash (hash, &b->texture_combine_rgb_op[i],
+                                       sizeof (b->texture_combine_rgb_op[i]));
+    }
+
+  hash = _cogl_util_one_at_a_time_hash (hash, &b->texture_combine_alpha_func,
+                                        sizeof (b->texture_combine_alpha_func));
+  n_args = _cogl_get_n_args_for_combine_func (b->texture_combine_alpha_func);
+  for (i = 0; i < n_args; i++)
+    {
+      hash =
+        _cogl_util_one_at_a_time_hash (hash, &b->texture_combine_alpha_src[i],
+                                       sizeof (b->texture_combine_alpha_src[i]));
+      hash =
+        _cogl_util_one_at_a_time_hash (hash, &b->texture_combine_alpha_op[i],
+                                       sizeof (b->texture_combine_alpha_op[i]));
+    }
+
+  state->hash = hash;
+}
+
+static void
+_cogl_pipeline_layer_hash_combine_constant_state (CoglPipelineLayer *authority,
+                                                  CoglPipelineLayer **authorities,
+                                                  HashState *state)
+{
+  CoglPipelineLayerBigState *b = authority->big_state;
+  gboolean need_hash = FALSE;
+  int n_args;
+  int i;
+
+  /* XXX: If the user also asked to hash the ALPHA_FUNC_STATE then it
+   * would be nice if we could combine the n_args loops in this
+   * function and _cogl_pipeline_layer_hash_combine_state.
+   */
+
+  n_args = _cogl_get_n_args_for_combine_func (b->texture_combine_rgb_func);
+  for (i = 0; i < n_args; i++)
+    {
+      if (b->texture_combine_rgb_src[i] == GL_CONSTANT_COLOR ||
+          b->texture_combine_rgb_src[i] == GL_CONSTANT_ALPHA)
+        {
+          /* XXX: should we be careful to only hash the alpha
+           * component in the GL_CONSTANT_ALPHA case? */
+          need_hash = TRUE;
+          goto done;
+        }
+    }
+
+  n_args = _cogl_get_n_args_for_combine_func (b->texture_combine_alpha_func);
+  for (i = 0; i < n_args; i++)
+    {
+      if (b->texture_combine_alpha_src[i] == GL_CONSTANT_COLOR ||
+          b->texture_combine_alpha_src[i] == GL_CONSTANT_ALPHA)
+        {
+          /* XXX: should we be careful to only hash the alpha
+           * component in the GL_CONSTANT_ALPHA case? */
+          need_hash = TRUE;
+          goto done;
+        }
+    }
+
+done:
+  if (need_hash)
+    {
+      float *constant = b->texture_combine_constant;
+      state->hash = _cogl_util_one_at_a_time_hash (state->hash, constant,
+                                                   sizeof (float) * 4);
+    }
+}
+
+static void
+_cogl_pipeline_layer_hash_user_matrix_state (CoglPipelineLayer *authority,
+                                             CoglPipelineLayer **authorities,
+                                             HashState *state)
+{
+  CoglPipelineLayerBigState *big_state = authority->big_state;
+  state->hash = _cogl_util_one_at_a_time_hash (state->hash, &big_state->matrix,
+                                               sizeof (float) * 16);
+}
+
+static void
+_cogl_pipeline_layer_hash_point_sprite_state (CoglPipelineLayer *authority,
+                                              CoglPipelineLayer **authorities,
+                                              HashState *state)
+{
+  CoglPipelineLayerBigState *big_state = authority->big_state;
+  state->hash =
+    _cogl_util_one_at_a_time_hash (state->hash, &big_state->point_sprite_coords,
+                                   sizeof (big_state->point_sprite_coords));
+}
+
+typedef void (*LayerStateHashFunction) (CoglPipelineLayer *authority,
+                                        CoglPipelineLayer **authorities,
+                                        HashState *state);
+
+static LayerStateHashFunction
+layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT];
+
+/* XXX: We don't statically initialize the array of hash functions, so
+ * we won't get caught out by later re-indexing the groups for some
+ * reason. */
+void
+_cogl_pipeline_init_layer_state_hash_functions (void)
+{
+  CoglPipelineLayerStateIndex _index;
+  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_UNIT_INDEX] =
+    _cogl_pipeline_layer_hash_unit_state;
+  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_TEXTURE_INDEX] =
+    _cogl_pipeline_layer_hash_texture_state;
+  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX] =
+    _cogl_pipeline_layer_hash_filters_state;
+  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_WRAP_MODES_INDEX] =
+    _cogl_pipeline_layer_hash_wrap_modes_state;
+  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_COMBINE_INDEX] =
+    _cogl_pipeline_layer_hash_combine_state;
+  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT_INDEX] =
+    _cogl_pipeline_layer_hash_combine_constant_state;
+  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_USER_MATRIX_INDEX] =
+    _cogl_pipeline_layer_hash_user_matrix_state;
+  _index = COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS_INDEX;
+  layer_state_hash_functions[_index] =
+    _cogl_pipeline_layer_hash_point_sprite_state;
+
+  /* So we get a big error if we forget to update this code! */
+  g_assert (COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT == 8);
+}
+
+static gboolean
+_cogl_pipeline_hash_layer_cb (CoglPipelineLayer *layer,
+                              void *user_data)
+{
+  HashState *state = user_data;
+  unsigned long differences = state->layer_differences;
+  CoglPipelineLayer *authorities[COGL_PIPELINE_LAYER_STATE_COUNT];
+  unsigned long mask;
+  int i;
+
+  /* Theoretically we would hash non-sparse layer state here but
+   * currently layers don't have any. */
+
+  /* XXX: we resolve all the authorities here - not just those
+   * corresponding to hash_state->layer_differences - because
+   * the hashing of some state groups actually depends on the values
+   * in other groups. For example we don't hash layer combine
+   * constants if they are aren't referenced by the current layer
+   * combine function.
+   */
+  mask = COGL_PIPELINE_LAYER_STATE_ALL_SPARSE;
+  _cogl_pipeline_layer_resolve_authorities (layer,
+                                            mask,
+                                            authorities);
+
+  /* So we go right ahead and hash the sparse state... */
+  for (i = 0; i < COGL_PIPELINE_LAYER_STATE_COUNT; i++)
+    {
+      unsigned long current_state = (1L<<i);
+
+      /* XXX: we are hashing the un-mixed hash values of all the
+       * individual state groups; we should provide a means to test
+       * the quality of the final hash values we are getting with this
+       * approach... */
+      if (differences & current_state)
+        {
+          CoglPipelineLayer *authority = authorities[i];
+          layer_state_hash_functions[i] (authority, authorities, state);
+        }
+
+      if (current_state > differences)
+        break;
+    }
+
+  return TRUE;
+}
+
+static void
+_cogl_pipeline_hash_color_state (CoglPipeline *authority,
+                                 HashState *state)
+{
+  state->hash = _cogl_util_one_at_a_time_hash (state->hash, &authority->color,
+                                               _COGL_COLOR_DATA_SIZE);
+}
+
+static void
+_cogl_pipeline_hash_blend_enable_state (CoglPipeline *authority,
+                                        HashState *state)
+{
+  guint8 blend_enable = authority->blend_enable;
+  state->hash = _cogl_util_one_at_a_time_hash (state->hash, &blend_enable, 1);
+}
+
+static void
+_cogl_pipeline_hash_layers_state (CoglPipeline *authority,
+                                  HashState *state)
+{
+  state->hash =
+    _cogl_util_one_at_a_time_hash (state->hash, &authority->n_layers,
+                                   sizeof (authority->n_layers));
+  _cogl_pipeline_foreach_layer_internal (authority,
+                                         _cogl_pipeline_hash_layer_cb,
+                                         state);
+}
+
+static void
+_cogl_pipeline_hash_lighting_state (CoglPipeline *authority,
+                                    HashState *state)
+{
+  CoglPipelineLightingState *lighting_state =
+    &authority->big_state->lighting_state;
+  state->hash =
+    _cogl_util_one_at_a_time_hash (state->hash, lighting_state,
+                                   sizeof (CoglPipelineLightingState));
+}
+
+static void
+_cogl_pipeline_hash_alpha_func_state (CoglPipeline *authority,
+                                      HashState *state)
+{
+  CoglPipelineAlphaFuncState *alpha_state = &authority->big_state->alpha_state;
+  state->hash =
+    _cogl_util_one_at_a_time_hash (state->hash, &alpha_state->alpha_func,
+                                   sizeof (alpha_state->alpha_func));
+}
+
+static void
+_cogl_pipeline_hash_alpha_func_reference_state (CoglPipeline *authority,
+                                                HashState *state)
+{
+  CoglPipelineAlphaFuncState *alpha_state = &authority->big_state->alpha_state;
+  float ref = alpha_state->alpha_func_reference;
+  state->hash =
+    _cogl_util_one_at_a_time_hash (state->hash, &ref, sizeof (float));
+}
+
+static void
+_cogl_pipeline_hash_blend_state (CoglPipeline *authority,
+                                 HashState *state)
+{
+  CoglPipelineBlendState *blend_state = &authority->big_state->blend_state;
+  unsigned int hash;
+
+  if (!authority->real_blend_enable)
+    return;
+
+  hash = state->hash;
+
+#ifndef HAVE_COGL_GLES
+  hash =
+    _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_equation_rgb,
+                                   sizeof (blend_state->blend_equation_rgb));
+  hash =
+    _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_equation_alpha,
+                                   sizeof (blend_state->blend_equation_alpha));
+  hash =
+    _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_src_factor_alpha,
+                                   sizeof (blend_state->blend_src_factor_alpha));
+  hash =
+    _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_dst_factor_alpha,
+                                   sizeof (blend_state->blend_dst_factor_alpha));
+
+  if (blend_state->blend_src_factor_rgb == GL_ONE_MINUS_CONSTANT_COLOR ||
+      blend_state->blend_src_factor_rgb == GL_CONSTANT_COLOR ||
+      blend_state->blend_dst_factor_rgb == GL_ONE_MINUS_CONSTANT_COLOR ||
+      blend_state->blend_dst_factor_rgb == GL_CONSTANT_COLOR)
+    {
+      hash =
+        _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_constant,
+                                       sizeof (blend_state->blend_constant));
+    }
+#endif
+
+  hash =
+    _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_src_factor_rgb,
+                                   sizeof (blend_state->blend_src_factor_rgb));
+  hash =
+    _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_dst_factor_rgb,
+                                   sizeof (blend_state->blend_dst_factor_rgb));
+
+  state->hash = hash;
+}
+
+static void
+_cogl_pipeline_hash_user_shader_state (CoglPipeline *authority,
+                                       HashState *state)
+{
+  CoglHandle user_program = authority->big_state->user_program;
+  state->hash = _cogl_util_one_at_a_time_hash (state->hash, &user_program,
+                                               sizeof (user_program));
+}
+
+static void
+_cogl_pipeline_hash_depth_state (CoglPipeline *authority,
+                                 HashState *state)
+{
+  CoglPipelineDepthState *depth_state = &authority->big_state->depth_state;
+  unsigned int hash = state->hash;
+
+  if (depth_state->depth_test_enabled)
+    {
+      guint8 enabled = depth_state->depth_test_enabled;
+      CoglDepthTestFunction function = depth_state->depth_test_function;
+      hash = _cogl_util_one_at_a_time_hash (hash, &enabled, sizeof (enabled));
+      hash = _cogl_util_one_at_a_time_hash (hash, &function, sizeof (function));
+    }
+
+  if (depth_state->depth_writing_enabled)
+    {
+      guint8 enabled = depth_state->depth_writing_enabled;
+      float near = depth_state->depth_range_near;
+      float far = depth_state->depth_range_far;
+      hash = _cogl_util_one_at_a_time_hash (hash, &enabled, sizeof (enabled));
+      hash = _cogl_util_one_at_a_time_hash (hash, &near, sizeof (near));
+      hash = _cogl_util_one_at_a_time_hash (hash, &far, sizeof (far));
+    }
+
+  state->hash = hash;
+}
+
+static void
+_cogl_pipeline_hash_fog_state (CoglPipeline *authority,
+                               HashState *state)
+{
+  CoglPipelineFogState *fog_state = &authority->big_state->fog_state;
+  unsigned long hash = state->hash;
+
+  if (!fog_state->enabled)
+    hash = _cogl_util_one_at_a_time_hash (hash, &fog_state->enabled,
+                                          sizeof (fog_state->enabled));
+  else
+    hash = _cogl_util_one_at_a_time_hash (hash, &fog_state,
+                                          sizeof (CoglPipelineFogState));
+
+  state->hash = hash;
+}
+
+static void
+_cogl_pipeline_hash_point_size_state (CoglPipeline *authority,
+                                      HashState *state)
+{
+  float point_size = authority->big_state->point_size;
+  state->hash = _cogl_util_one_at_a_time_hash (state->hash, &point_size,
+                                               sizeof (point_size));
+}
+
+typedef void (*StateHashFunction) (CoglPipeline *authority, HashState *state);
+
+static StateHashFunction
+state_hash_functions[COGL_PIPELINE_STATE_SPARSE_COUNT];
+
+/* We don't statically initialize the array of hash functions
+ * so we won't get caught out by later re-indexing the groups for
+ * some reason. */
+void
+_cogl_pipeline_init_state_hash_functions (void)
+{
+  state_hash_functions[COGL_PIPELINE_STATE_COLOR_INDEX] =
+    _cogl_pipeline_hash_color_state;
+  state_hash_functions[COGL_PIPELINE_STATE_BLEND_ENABLE_INDEX] =
+    _cogl_pipeline_hash_blend_enable_state;
+  state_hash_functions[COGL_PIPELINE_STATE_LAYERS_INDEX] =
+    _cogl_pipeline_hash_layers_state;
+  state_hash_functions[COGL_PIPELINE_STATE_LIGHTING_INDEX] =
+    _cogl_pipeline_hash_lighting_state;
+  state_hash_functions[COGL_PIPELINE_STATE_ALPHA_FUNC_INDEX] =
+    _cogl_pipeline_hash_alpha_func_state;
+  state_hash_functions[COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE_INDEX] =
+    _cogl_pipeline_hash_alpha_func_reference_state;
+  state_hash_functions[COGL_PIPELINE_STATE_BLEND_INDEX] =
+    _cogl_pipeline_hash_blend_state;
+  state_hash_functions[COGL_PIPELINE_STATE_USER_SHADER_INDEX] =
+    _cogl_pipeline_hash_user_shader_state;
+  state_hash_functions[COGL_PIPELINE_STATE_DEPTH_INDEX] =
+    _cogl_pipeline_hash_depth_state;
+  state_hash_functions[COGL_PIPELINE_STATE_FOG_INDEX] =
+    _cogl_pipeline_hash_fog_state;
+  state_hash_functions[COGL_PIPELINE_STATE_POINT_SIZE_INDEX] =
+    _cogl_pipeline_hash_point_size_state;
+
+  /* So we get a big error if we forget to update this code! */
+  g_assert (COGL_PIPELINE_STATE_SPARSE_COUNT == 11);
+}
+
+unsigned int
+_cogl_pipeline_hash (CoglPipeline *pipeline,
+                     unsigned long differences,
+                     unsigned long layer_differences,
+                     CoglPipelineEvalFlags flags)
+{
+  CoglPipeline *authorities[COGL_PIPELINE_STATE_SPARSE_COUNT];
+  unsigned long mask;
+  int i;
+  HashState state;
+  unsigned int final_hash = 0;
+
+  state.hash = 0;
+  state.layer_differences = layer_differences;
+
+  /* hash non-sparse state */
+
+  if (differences & COGL_PIPELINE_STATE_REAL_BLEND_ENABLE)
+    {
+      gboolean enable = pipeline->real_blend_enable;
+      state.hash =
+        _cogl_util_one_at_a_time_hash (state.hash, &enable, sizeof (enable));
+    }
+
+  /* hash sparse state */
+
+  mask = differences & COGL_PIPELINE_STATE_ALL_SPARSE;
+  _cogl_pipeline_resolve_authorities (pipeline, mask, authorities);
+
+  for (i = 0; i < COGL_PIPELINE_STATE_SPARSE_COUNT; i++)
+    {
+      unsigned long current_state = (1L<<i);
+
+      /* XXX: we are hashing the un-mixed hash values of all the
+       * individual state groups; we should provide a means to test
+       * the quality of the final hash values we are getting with this
+       * approach... */
+      if (differences & current_state)
+        {
+          CoglPipeline *authority = authorities[i];
+          state_hash_functions[i] (authority, &state);
+          final_hash = _cogl_util_one_at_a_time_hash (final_hash, &state.hash,
+                                                      sizeof (state.hash));
+        }
+
+      if (current_state > differences)
+        break;
+    }
+
+  return _cogl_util_one_at_a_time_mix (final_hash);
 }
 
 typedef struct

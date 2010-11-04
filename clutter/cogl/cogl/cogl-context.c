@@ -127,6 +127,8 @@ cogl_create_context (void)
 
   _cogl_pipeline_init_default_pipeline ();
   _cogl_pipeline_init_default_layers ();
+  _cogl_pipeline_init_state_hash_functions ();
+  _cogl_pipeline_init_layer_state_hash_functions ();
 
   _context->enable_flags = 0;
 

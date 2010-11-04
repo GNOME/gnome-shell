@@ -32,6 +32,11 @@
 
 #include <glib.h>
 
+/* cogl-pipeline.c wants to be able to hash CoglColor data so it needs
+ * the exact data size to be able to avoid reading the padding bytes.
+ */
+#define _COGL_COLOR_DATA_SIZE 4
+
 void
 _cogl_color_get_rgba_4ubv (const CoglColor *color,
                            guint8 *dest);
