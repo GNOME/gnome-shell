@@ -62,7 +62,7 @@ cogl_primitive_new_with_attributes_array (CoglVerticesMode mode,
       CoglVertexAttribute *attribute = attributes[i];
       cogl_object_ref (attribute);
 
-      g_return_val_if_fail (cogl_is_vertex_attribute (attributes), NULL);
+      g_return_val_if_fail (cogl_is_vertex_attribute (attribute), NULL);
 
       g_array_append_val (primitive->attributes, attribute);
     }
