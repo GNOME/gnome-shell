@@ -34,7 +34,7 @@
 #include "cogl-debug.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-pipeline-private.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-texture-private.h"
 
 /* This is needed to set the color attribute on GLES2 */

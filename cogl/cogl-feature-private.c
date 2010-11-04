@@ -28,7 +28,7 @@
 #include <string.h>
 
 #include "cogl.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 
 #include "cogl-feature-private.h"
 

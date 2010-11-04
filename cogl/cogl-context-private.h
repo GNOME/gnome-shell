@@ -21,8 +21,8 @@
  *
  */
 
-#ifndef __COGL_CONTEXT_H
-#define __COGL_CONTEXT_H
+#ifndef __COGL_CONTEXT_PRIVATE_H
+#define __COGL_CONTEXT_PRIVATE_H
 
 #include "cogl-internal.h"
 
@@ -248,4 +248,4 @@ if (ctxvar == NULL) return retval;
 
 #define NO_RETVAL
 
-#endif /* __COGL_CONTEXT_H */
+#endif /* __COGL_CONTEXT_PRIVATE_H */

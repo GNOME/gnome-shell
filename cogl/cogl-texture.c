@@ -47,7 +47,7 @@
 #include "cogl-sub-texture-private.h"
 #include "cogl-atlas-texture-private.h"
 #include "cogl-pipeline.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-handle.h"
 #include "cogl-object-private.h"
 #include "cogl-primitives.h"

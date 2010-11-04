@@ -25,7 +25,7 @@
 #include "config.h"
 #endif
 
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 
 #define COGL_FEATURE_BEGIN(a, b, c, d, e, f, g)
 #define COGL_FEATURE_FUNCTION(ret, name, args) \

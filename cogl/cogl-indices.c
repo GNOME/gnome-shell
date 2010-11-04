@@ -31,7 +31,7 @@
 #endif
 
 #include "cogl-object-private.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-indices.h"
 #include "cogl-indices-private.h"
 #include "cogl-index-array.h"

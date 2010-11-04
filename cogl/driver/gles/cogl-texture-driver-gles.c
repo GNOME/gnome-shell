@@ -38,7 +38,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-pipeline.h"
 #include "cogl-pipeline-opengl-private.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-handle.h"
 #include "cogl-primitives.h"
 

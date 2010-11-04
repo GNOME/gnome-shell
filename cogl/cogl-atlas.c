@@ -31,7 +31,7 @@
 #include "cogl.h"
 #include "cogl-atlas.h"
 #include "cogl-rectangle-map.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-2d-private.h"
 #include "cogl-texture-driver.h"

@@ -33,7 +33,7 @@
 #include "cogl-util.h"
 #include "cogl-texture-private.h"
 #include "cogl-sub-texture-private.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-handle.h"
 #include "cogl-texture-driver.h"
 

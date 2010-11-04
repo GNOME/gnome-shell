@@ -32,7 +32,7 @@
 
 #include "cogl.h"
 #include "cogl-blit.h"
-#include "cogl-context.h"
+#include "cogl-context-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-texture-2d-private.h"
 
