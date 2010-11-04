@@ -637,6 +637,14 @@ AC_SUBST(COGL_GL_HEADER_INCLUDES)
 AM_CONDITIONAL([COGL_DRIVER_GLES], [test "x$COGL_DRIVER" = "xgles"])
 AM_CONDITIONAL([COGL_DRIVER_GL],   [test "x$COGL_DRIVER" = "xgl"])
 
+dnl Instead of using AM_CFLAGS to ensure
+dnl COGL_ENABLE_EXPERIMENTAL_2_0_API is defined while compiling clutter
+dnl and cogl code we use a define in config.h instead. This helps ensure
+dnl other tools such as glib-mkenums and gir-scanner don't end up
+dnl using the define also.
+AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1],
+          [Can use Cogl 2.0 API internally])
+
 dnl === Clutter substitutions =================================================
 # Eventually the idea of a winsys should be hidden from Clutter and moved
 # into Cogl, but for now we have CLUTTER_WINSYS...
