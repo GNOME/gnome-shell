@@ -30,7 +30,9 @@
 #define __COGL_H_INSIDE__
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
+#ifndef COGL_ENABLE_EXPERIMENTAL_API
 #define COGL_ENABLE_EXPERIMENTAL_API
+#endif
 #endif
 
 #include <cogl/cogl-defines.h>
@@ -43,7 +45,11 @@
 #include <cogl/cogl-matrix.h>
 #include <cogl/cogl-offscreen.h>
 #include <cogl/cogl-primitives.h>
+#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
+#include <cogl/cogl2-path.h>
+#else
 #include <cogl/cogl-path.h>
+#endif
 #include <cogl/cogl-shader.h>
 #include <cogl/cogl-texture.h>
 #include <cogl/cogl-types.h>

@@ -378,6 +378,7 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
         case COGL_PANGO_DISPLAY_LIST_TRAPEZOID:
           {
             float points[8];
+            CoglPath *path;
 
             points[0] =  node->d.trapezoid.x_11;
             points[1] =  node->d.trapezoid.y_1;
@@ -390,8 +391,10 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
 
             cogl_material_set_color (solid_material, &draw_color);
             cogl_push_source (solid_material);
-            cogl_path_polygon (points, 4);
-            cogl_path_fill ();
+            path = cogl_path_new ();
+            cogl_path_polygon (path, points, 4);
+            cogl_path_fill (path);
+            cogl_object_unref (path);
             cogl_pop_source ();
           }
           break;
