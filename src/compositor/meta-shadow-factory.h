@@ -68,6 +68,7 @@ MetaShadow *       meta_shadow_factory_get_shadow (MetaShadowFactory *factory,
                                                    MetaWindowShape   *shape,
                                                    int                width,
                                                    int                height,
-                                                   int                radius);
+                                                   int                radius,
+                                                   int                top_fade);
 
 #endif /* __META_SHADOW_FACTORY_H__ */

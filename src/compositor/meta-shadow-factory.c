@@ -54,6 +54,7 @@ struct _MetaShadowCacheKey
 {
   MetaWindowShape *shape;
   int radius;
+  int top_fade;
 };
 
 struct _MetaShadow
@@ -65,11 +66,20 @@ struct _MetaShadow
   CoglHandle texture;
   CoglHandle material;
 
-  int spread;
-  int border_top;
-  int border_right;
-  int border_bottom;
-  int border_left;
+  /* The outer order is the distance the shadow extends outside the window
+   * shape; the inner border is the unscaled portion inside the window
+   * shape */
+  int outer_border_top;
+  int inner_border_top;
+  int outer_border_right;
+  int inner_border_right;
+  int outer_border_bottom;
+  int inner_border_bottom;
+  int outer_border_left;
+  int inner_border_left;
+
+  guint scale_width : 1;
+  guint scale_height : 1;
 };
 
 struct _MetaShadowFactory
@@ -84,7 +94,7 @@ meta_shadow_cache_key_hash (gconstpointer val)
 {
   const MetaShadowCacheKey *key = val;
 
-  return 59 * key->radius + 67 * meta_window_shape_hash (key->shape);
+  return 59 * key->radius + 67 * key->top_fade + 73 * meta_window_shape_hash (key->shape);
 }
 
 static gboolean
@@ -94,7 +104,7 @@ meta_shadow_cache_key_equal (gconstpointer a,
   const MetaShadowCacheKey *key_a = a;
   const MetaShadowCacheKey *key_b = b;
 
-  return (key_a->radius == key_b->radius &&
+  return (key_a->radius == key_b->radius && key_a->top_fade == key_b->top_fade &&
           meta_window_shape_equal (key_a->shape, key_b->shape));
 }
 
@@ -149,56 +159,73 @@ meta_shadow_paint (MetaShadow *shadow,
   float texture_width = cogl_texture_get_width (shadow->texture);
   float texture_height = cogl_texture_get_height (shadow->texture);
   int i, j;
+  float src_x[4];
+  float src_y[4];
+  float dest_x[4];
+  float dest_y[4];
+  int n_x, n_y;
 
   cogl_material_set_color4ub (shadow->material,
                               opacity, opacity, opacity, opacity);
 
   cogl_set_source (shadow->material);
 
-  if (window_width + 2 * shadow->spread == shadow->border_left &&
-      window_height + 2 * shadow->spread == shadow->border_top)
+  if (shadow->scale_width)
     {
-      /* The non-scaled case - paint with a single rectangle */
-      cogl_rectangle_with_texture_coords (window_x - shadow->spread,
-                                          window_y - shadow->spread,
-                                          window_x + window_width + shadow->spread,
-                                          window_y + window_height + shadow->spread,
-                                          0.0, 0.0, 1.0, 1.0);
+      n_x = 3;
+
+      src_x[0] = 0.0;
+      src_x[1] = (shadow->inner_border_left + shadow->outer_border_left) / texture_width;
+      src_x[2] = (texture_width - (shadow->inner_border_right + shadow->outer_border_right)) / texture_width;
+      src_x[3] = 1.0;
+
+      dest_x[0] = window_x - shadow->outer_border_left;
+      dest_x[1] = window_x + shadow->inner_border_left;
+      dest_x[2] = window_x + window_width - shadow->inner_border_right;
+      dest_x[3] = window_x + window_width + shadow->outer_border_right;
     }
   else
     {
-      float src_x[4];
-      float src_y[4];
-      float dest_x[4];
-      float dest_y[4];
+      n_x = 1;
 
       src_x[0] = 0.0;
-      src_x[1] = shadow->border_left / texture_width;
-      src_x[2] = (texture_width - shadow->border_right) / texture_width;
-      src_x[3] = 1.0;
+      src_x[1] = 1.0;
+
+      dest_x[0] = window_x - shadow->outer_border_left;
+      dest_x[1] = window_x + window_width + shadow->outer_border_right;
+    }
+
+  if (shadow->scale_height)
+    {
+      n_y = 3;
 
       src_y[0] = 0.0;
-      src_y[1] = shadow->border_top / texture_height;
-      src_y[2] = (texture_height - shadow->border_bottom) / texture_height;
+      src_y[1] = (shadow->inner_border_top + shadow->outer_border_top) / texture_height;
+      src_y[2] = (texture_height - (shadow->inner_border_bottom + shadow->outer_border_bottom)) / texture_height;
       src_y[3] = 1.0;
 
-      dest_x[0] = window_x - shadow->spread;
-      dest_x[1] = window_x - shadow->spread + shadow->border_left;
-      dest_x[2] = window_x + window_width + shadow->spread - shadow->border_right;
-      dest_x[3] = window_x + window_width + shadow->spread;
-
-      dest_y[0] = window_y - shadow->spread;
-      dest_y[1] = window_y - shadow->spread + shadow->border_top;
-      dest_y[2] = window_y + window_height + shadow->spread - shadow->border_bottom;
-      dest_y[3] = window_y + window_height + shadow->spread;
-
-      for (j = 0; j < 3; j++)
-        for (i = 0; i < 3; i++)
-          cogl_rectangle_with_texture_coords (dest_x[i], dest_y[j],
-                                              dest_x[i + 1], dest_y[j + 1],
-                                              src_x[i], src_y[j],
-                                              src_x[i + 1], src_y[j + 1]);
+      dest_y[0] = window_y - shadow->outer_border_top;
+      dest_y[1] = window_y + shadow->inner_border_top;
+      dest_y[2] = window_y + window_height - shadow->inner_border_bottom;
+      dest_y[3] = window_y + window_height + shadow->outer_border_bottom;
     }
+  else
+    {
+      n_y = 1;
+
+      src_y[0] = 0.0;
+      src_y[1] = 1.0;
+
+      dest_y[0] = window_y - shadow->outer_border_top;
+      dest_y[1] = window_y + window_height + shadow->outer_border_bottom;
+    }
+
+  for (j = 0; j < n_y; j++)
+    for (i = 0; i < n_x; i++)
+      cogl_rectangle_with_texture_coords (dest_x[i], dest_y[j],
+                                          dest_x[i + 1], dest_y[j + 1],
+                                          src_x[i], src_y[j],
+                                          src_x[i + 1], src_y[j + 1]);
 }
 
 /**
@@ -220,10 +247,10 @@ meta_shadow_get_bounds  (MetaShadow            *shadow,
                          int                    window_height,
                          cairo_rectangle_int_t *bounds)
 {
-  bounds->x = window_x - shadow->spread;
-  bounds->y = window_x - shadow->spread;
-  bounds->width = window_width + 2 * shadow->spread;
-  bounds->height = window_width + 2 * shadow->spread;
+  bounds->x = window_x - shadow->outer_border_left;
+  bounds->y = window_x - shadow->outer_border_top;
+  bounds->width = window_width + shadow->outer_border_left + shadow->outer_border_right;
+  bounds->height = window_height + shadow->outer_border_top + shadow->outer_border_bottom;
 }
 
 MetaShadowFactory *
@@ -411,6 +438,19 @@ blur_rows (cairo_region_t   *convolve_region,
   g_free (tmp_buffer);
 }
 
+static void
+fade_bytes (guchar *bytes,
+            int     width,
+            int     distance,
+            int     total)
+{
+  guint32 multiplier = (distance * 0x10000 + 0x8000) / total;
+  int i;
+
+  for (i = 0; i < width; i++)
+    bytes[i] = (bytes[i] * multiplier) >> 16;
+}
+
 /* Swaps width and height. Either swaps in-place and returns the original
  * buffer or allocates a new buffer, frees the original buffer and returns
  * the new buffer.
@@ -483,25 +523,35 @@ flip_buffer (guchar *buffer,
 #undef BLOCK_SIZE
 }
 
-static CoglHandle
-make_shadow (cairo_region_t *region,
-             int             radius)
+static void
+make_shadow (MetaShadow     *shadow,
+             cairo_region_t *region)
 {
-  int d = get_box_filter_size (radius);
-  int spread = get_shadow_spread (radius);
-  CoglHandle result;
+  int d = get_box_filter_size (shadow->key.radius);
+  int spread = get_shadow_spread (shadow->key.radius);
   cairo_rectangle_int_t extents;
   cairo_region_t *row_convolve_region;
   cairo_region_t *column_convolve_region;
   guchar *buffer;
   int buffer_width;
   int buffer_height;
+  int x_offset;
+  int y_offset;
   int n_rectangles, j, k;
 
   cairo_region_get_extents (region, &extents);
 
-  buffer_width = extents.width +  2 * spread;
-  buffer_height = extents.height +  2 * spread;
+  /* In the case where top_fade >= 0 and the portion above the top
+   * edge of the shape will be cropped, it seems like we could create
+   * a smaller buffer and omit the top portion, but actually, in our
+   * multi-pass blur algorithm, the blur into the area above the window
+   * in the first pass will contribute back to the final pixel values
+   * for the top pixels, so we create a buffer as if we weren't cropping
+   * and only crop when creating the CoglTexture.
+   */
+
+  buffer_width = extents.width + 2 * spread;
+  buffer_height = extents.height + 2 * spread;
 
   /* Round up so we have aligned rows/columns */
   buffer_width = (buffer_width + 3) & ~3;
@@ -521,8 +571,12 @@ make_shadow (cairo_region_t *region,
    * large shadow sizes) we can improve efficiency by restricting the blur
    * to the region that actually needs to be blurred.
    */
-  row_convolve_region = meta_make_border_region (region, spread, 0, FALSE);
-  column_convolve_region = meta_make_border_region (region, spread, spread, TRUE);
+  row_convolve_region = meta_make_border_region (region, spread, spread, FALSE);
+  column_convolve_region = meta_make_border_region (region, 0, spread, TRUE);
+
+  /* Offsets between coordinates of the regions and coordinates in the buffer */
+  x_offset = spread;
+  y_offset = spread;
 
   /* Step 1: unblurred image */
   n_rectangles = cairo_region_num_rectangles (region);
@@ -531,35 +585,53 @@ make_shadow (cairo_region_t *region,
       cairo_rectangle_int_t rect;
 
       cairo_region_get_rectangle (region, k, &rect);
-      for (j = spread + rect.y; j < spread + rect.y + rect.height; j++)
-	memset (buffer + buffer_width * j + spread + rect.x, 255, rect.width);
+      for (j = y_offset + rect.y; j < y_offset + rect.y + rect.height; j++)
+	memset (buffer + buffer_width * j + x_offset + rect.x, 255, rect.width);
     }
-
-  /* Step 2: blur rows */
-  blur_rows (row_convolve_region, spread, spread, buffer, buffer_width, buffer_height, d);
 
   /* Step 2: swap rows and columns */
   buffer = flip_buffer (buffer, buffer_width, buffer_height);
 
   /* Step 3: blur rows (really columns) */
-  blur_rows (column_convolve_region, spread, spread, buffer, buffer_height, buffer_width, d);
+  blur_rows (column_convolve_region, y_offset, x_offset,
+             buffer, buffer_height, buffer_width,
+             d);
 
-  /* Step 3: swap rows and columns */
+  /* Step 4: swap rows and columns */
   buffer = flip_buffer (buffer, buffer_height, buffer_width);
 
-  result = cogl_texture_new_from_data (extents.width +  2 * spread,
-				       extents.height +  2 * spread,
-				       COGL_TEXTURE_NONE,
-				       COGL_PIXEL_FORMAT_A_8,
-				       COGL_PIXEL_FORMAT_ANY,
-				       buffer_width,
-				       buffer);
+  /* Step 5: blur rows */
+  blur_rows (row_convolve_region, x_offset, y_offset,
+             buffer, buffer_width, buffer_height,
+             d);
+
+  /* Step 6: fade out the top, if applicable */
+  if (shadow->key.top_fade >= 0)
+    {
+      for (j = y_offset; j < y_offset + MIN (shadow->key.top_fade, extents.height + shadow->outer_border_bottom); j++)
+        fade_bytes(buffer + j * buffer_width, buffer_width, j - y_offset, shadow->key.top_fade);
+    }
+
+  /* We offset the passed in pixels to crop off the extra area we allocated at the top
+   * in the case of top_fade >= 0. We also account for padding at the left for symmetry
+   * though that doesn't currently occur.
+   */
+  shadow->texture = cogl_texture_new_from_data (shadow->outer_border_left + extents.width + shadow->outer_border_right,
+                                                shadow->outer_border_top + extents.height + shadow->outer_border_bottom,
+                                                COGL_TEXTURE_NONE,
+                                                COGL_PIXEL_FORMAT_A_8,
+                                                COGL_PIXEL_FORMAT_ANY,
+                                                buffer_width,
+                                                (buffer +
+                                                 (y_offset - shadow->outer_border_top) * buffer_width +
+                                                 (x_offset - shadow->outer_border_left)));
 
   cairo_region_destroy (row_convolve_region);
   cairo_region_destroy (column_convolve_region);
   g_free (buffer);
 
-  return result;
+  shadow->material = cogl_material_new ();
+  cogl_material_set_layer (shadow->material, 0, shadow->texture);
 }
 
 /**
@@ -569,6 +641,8 @@ make_shadow (cairo_region_t *region,
  * @width: the actual width of the window's region
  * @width: the actual height of the window's region
  * @radius: the radius (gaussian standard deviation) of the shadow
+ * @top_fade: if >= 0, the shadow doesn't extend above the top
+ *   of the shape, and fades out over the given number of pixels
  *
  * Gets the appropriate shadow object for drawing shadows for the
  * specified window shape. The region that we are shadowing is specified
@@ -584,14 +658,19 @@ meta_shadow_factory_get_shadow (MetaShadowFactory  *factory,
                                 MetaWindowShape    *shape,
                                 int                 width,
                                 int                 height,
-                                int                 radius)
+                                int                 radius,
+                                int                 top_fade)
 {
   MetaShadowCacheKey key;
   MetaShadow *shadow;
   cairo_region_t *region;
   int spread;
-  int border_top, border_right, border_bottom, border_left;
+  int shape_border_top, shape_border_right, shape_border_bottom, shape_border_left;
+  int inner_border_top, inner_border_right, inner_border_bottom, inner_border_left;
+  int outer_border_top, outer_border_right, outer_border_bottom, outer_border_left;
+  gboolean scale_width, scale_height;
   gboolean cacheable;
+  int center_width, center_height;
 
   /* Using a single shadow texture for different window sizes only works
    * when there is a central scaled area that is greater than twice
@@ -612,21 +691,35 @@ meta_shadow_factory_get_shadow (MetaShadowFactory  *factory,
    * policy is to only keep around referenced shadows, there wouldn't
    * be any harm in caching them, it would just make the book-keeping
    * a bit tricker.)
+   *
+   * In the case where we are fading a the top, that also has to fit
+   * within the top unscaled border.
    */
   spread = get_shadow_spread (radius);
   meta_window_shape_get_borders (shape,
-                                 &border_top,
-                                 &border_right,
-                                 &border_bottom,
-                                 &border_left);
+                                 &shape_border_top,
+                                 &shape_border_right,
+                                 &shape_border_bottom,
+                                 &shape_border_left);
 
-  cacheable = (border_top + 2 * spread + border_bottom <= height &&
-               border_left + 2 * spread + border_right <= width);
+  inner_border_top = MAX (shape_border_top + spread, top_fade);
+  outer_border_top = top_fade >= 0 ? 0 : spread;
+  inner_border_right = shape_border_right + spread;
+  outer_border_right = spread;
+  inner_border_bottom = shape_border_bottom + spread;
+  outer_border_bottom = spread;
+  inner_border_left = shape_border_left + spread;
+  outer_border_left = spread;
+
+  scale_width = inner_border_left + inner_border_right <= width;
+  scale_height = inner_border_top + inner_border_bottom <= height;
+  cacheable = scale_width && scale_height;
 
   if (cacheable)
     {
       key.shape = shape;
       key.radius = radius;
+      key.top_fade = top_fade;
 
       shadow = g_hash_table_lookup (factory->shadows, &key);
       if (shadow)
@@ -639,35 +732,34 @@ meta_shadow_factory_get_shadow (MetaShadowFactory  *factory,
   shadow->factory = factory;
   shadow->key.shape = meta_window_shape_ref (shape);
   shadow->key.radius = radius;
+  shadow->key.top_fade = top_fade;
 
-  shadow->spread = spread;
+  shadow->outer_border_top = outer_border_top;
+  shadow->inner_border_top = inner_border_top;
+  shadow->outer_border_right = outer_border_right;
+  shadow->inner_border_right = inner_border_right;
+  shadow->outer_border_bottom = outer_border_bottom;
+  shadow->inner_border_bottom = inner_border_bottom;
+  shadow->outer_border_left = outer_border_left;
+  shadow->inner_border_left = inner_border_left;
 
-  if (cacheable)
-    {
-      shadow->border_top = border_top + 2 * spread;
-      shadow->border_right += border_right + 2 * spread;
-      shadow->border_bottom += border_bottom + 2 * spread;
-      shadow->border_left += border_left + 2 * spread;
-
-      region = meta_window_shape_to_region (shape, 2 * spread, 2 * spread);
-    }
+  shadow->scale_width = scale_width;
+  if (scale_width)
+    center_width = inner_border_left + inner_border_right - (shape_border_left + shape_border_right);
   else
-    {
-      /* In the non-scaled case, we put the entire shadow into the
-       * upper-left-hand corner of the 9-slice */
-      shadow->border_top = height + 2 * spread;
-      shadow->border_right = 0;
-      shadow->border_bottom = 0;
-      shadow->border_left = width + 2 * spread;
+    center_width = width - (shape_border_left + shape_border_right);
 
-      region = meta_window_shape_to_region (shape,
-                                              width - border_left - border_right,
-                                              height - border_top - border_bottom);
-    }
+  shadow->scale_height = scale_height;
+  if (scale_height)
+    center_height = inner_border_top + inner_border_bottom - (shape_border_top + shape_border_bottom);
+  else
+    center_height = height - (shape_border_top + shape_border_bottom);
 
-  shadow->texture = make_shadow (region, radius);
-  shadow->material = cogl_material_new ();
-  cogl_material_set_layer (shadow->material, 0, shadow->texture);
+  g_assert (center_width >= 0 && center_height >= 0);
+
+  region = meta_window_shape_to_region (shape, center_width, center_height);
+  make_shadow (shadow, region);
+
   cairo_region_destroy (region);
 
   if (cacheable)

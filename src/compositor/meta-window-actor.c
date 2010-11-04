@@ -52,6 +52,7 @@ struct _MetaWindowActorPrivate
   gint              freeze_count;
 
   gint              shadow_radius;
+  gint              shadow_top_fade;
   gint              shadow_x_offset;
   gint              shadow_y_offset;
 
@@ -97,6 +98,7 @@ enum
   PROP_X_WINDOW_ATTRIBUTES,
   PROP_NO_SHADOW,
   PROP_SHADOW_RADIUS,
+  PROP_SHADOW_TOP_FADE,
   PROP_SHADOW_X_OFFSET,
   PROP_SHADOW_Y_OFFSET,
   PROP_SHADOW_OPACITY
@@ -254,6 +256,17 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
                                    PROP_SHADOW_RADIUS,
                                    pspec);
 
+  pspec = g_param_spec_int ("shadow-top-fade",
+                            "Shadow Top Fade",
+                            "If >= 0, the shadow doesn't extend above the top "
+                            "of the window, and fades out over the given number of pixels",
+                            -1, G_MAXINT, -1,
+                            G_PARAM_READWRITE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_SHADOW_TOP_FADE,
+                                   pspec);
+
   pspec = g_param_spec_int ("shadow-x-offset",
                             "Shadow X Offset",
                             "Distance shadow is offset in the horizontal direction in pixels",
@@ -296,6 +309,7 @@ meta_window_actor_init (MetaWindowActor *self)
 						   MetaWindowActorPrivate);
   priv->opacity = 0xff;
   priv->shadow_radius = DEFAULT_SHADOW_RADIUS;
+  priv->shadow_top_fade = -1;
   priv->shadow_x_offset = DEFAULT_SHADOW_X_OFFSET;
   priv->shadow_y_offset = DEFAULT_SHADOW_Y_OFFSET;
   priv->shadow_opacity = 0xff;
@@ -547,6 +561,18 @@ meta_window_actor_set_property (GObject      *object,
         clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
       }
       break;
+    case PROP_SHADOW_TOP_FADE:
+      {
+        gint newv = g_value_get_int (value);
+
+        if (newv == priv->shadow_top_fade)
+          return;
+
+        priv->shadow_top_fade = newv;
+        priv->recompute_shadow = TRUE;
+        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+      }
+      break;
     case PROP_SHADOW_X_OFFSET:
       {
         gint newv = g_value_get_int (value);
@@ -613,6 +639,9 @@ meta_window_actor_get_property (GObject      *object,
       break;
     case PROP_SHADOW_RADIUS:
       g_value_set_int (value, priv->shadow_radius);
+      break;
+    case PROP_SHADOW_TOP_FADE:
+      g_value_set_int (value, priv->shadow_top_fade);
       break;
     case PROP_SHADOW_X_OFFSET:
       g_value_set_int (value, priv->shadow_x_offset);
@@ -1813,7 +1842,7 @@ check_needs_shadow (MetaWindowActor *self)
       priv->shadow = meta_shadow_factory_get_shadow (factory,
                                                      priv->shadow_shape,
                                                      shape_bounds.width, shape_bounds.height,
-                                                     priv->shadow_radius);
+                                                     priv->shadow_radius, priv->shadow_top_fade);
     }
 
   if (old_shadow != NULL)
