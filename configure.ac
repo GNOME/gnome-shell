@@ -1121,6 +1121,8 @@ AC_CONFIG_FILES([
 	doc/reference/clutter/clutter-docs.xml
 	doc/reference/cogl/Makefile
 	doc/reference/cogl/cogl-docs.xml
+	doc/reference/cogl-2.0/Makefile
+	doc/reference/cogl-2.0/cogl-docs.xml
 	doc/reference/cally/Makefile
 	doc/reference/cally/cally-docs.xml
 	doc/common/Makefile
