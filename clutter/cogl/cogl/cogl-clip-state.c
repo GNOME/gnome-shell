@@ -176,16 +176,20 @@ cogl_clip_push_from_path_preserve (void)
   cogl_get_modelview_matrix (&modelview_matrix);
 
   clip_state->stacks->data =
-    _cogl_clip_stack_push_from_path (clip_state->stacks->data, cogl_get_path (),
+    _cogl_clip_stack_push_from_path (clip_state->stacks->data,
+                                     ctx->current_path,
                                      &modelview_matrix);
 }
 
 void
 cogl_clip_push_from_path (void)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   cogl_clip_push_from_path_preserve ();
 
-  cogl_path_new ();
+  cogl_object_unref (ctx->current_path);
+  ctx->current_path = cogl2_path_new ();
 }
 
 static void

@@ -28,7 +28,6 @@ AM_CPPFLAGS = \
 	-DG_DISABLE_DEPRECATED			\
 	-DG_LOG_DOMAIN=\"Cogl-$(COGL_WINSYS)\" 	\
 	-DCLUTTER_COMPILATION			\
-	-DCOGL_ENABLE_EXPERIMENTAL_API		\
 	$(COGL_DEBUG_CFLAGS) 			\
 	$(CLUTTER_DEBUG_CFLAGS) 		\
 	$(NULL)
@@ -79,6 +78,10 @@ cogl_public_h = \
 	$(srcdir)/cogl-vertex-attribute.h 	\
 	$(srcdir)/cogl-primitive.h 		\
 	$(srcdir)/cogl.h			\
+	$(NULL)
+
+cogl_experimental_h = \
+	$(srcdir)/cogl2-path.h 			\
 	$(NULL)
 
 # driver sources
@@ -194,9 +197,11 @@ cogl_sources_c = \
 	$(srcdir)/cogl-primitives-private.h 		\
 	$(srcdir)/cogl-primitives.h 			\
 	$(srcdir)/cogl-primitives.c 			\
-	$(srcdir)/cogl-path-private.h                   \
 	$(srcdir)/cogl-path.h 				\
 	$(srcdir)/cogl-path.c 				\
+	$(srcdir)/cogl2-path-private.h                  \
+	$(srcdir)/cogl2-path.h 				\
+	$(srcdir)/cogl2-path.c 				\
 	$(srcdir)/cogl-bitmap-pixbuf.c 			\
 	$(srcdir)/cogl-clip-stack.h 			\
 	$(srcdir)/cogl-clip-stack.c			\
@@ -282,7 +287,7 @@ cogl_sources_c = \
 	$(NULL)
 
 if SUPPORT_XLIB
-cogl_public_h += \
+cogl_experimental_h += \
        $(srcdir)/winsys/cogl-texture-pixmap-x11.h
 
 cogl_sources_c += \
@@ -338,14 +343,14 @@ libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS)
 libclutter_cogl_la_SOURCES = $(cogl_sources_c)
 nodist_libclutter_cogl_la_SOURCES = $(BUILT_SOURCES)
 
-# COGL installed headers
+# Cogl installed headers
 cogl_headers = \
 	$(cogl_public_h) \
 	$(srcdir)/cogl-deprecated.h \
 	$(NULL)
 
 coglincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
-coglinclude_HEADERS = $(cogl_headers)
+coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)
 nodist_coglinclude_HEADERS = cogl-defines.h cogl-enum-types.h
 
 -include $(INTROSPECTION_MAKEFILE)

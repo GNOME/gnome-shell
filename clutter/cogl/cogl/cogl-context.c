@@ -35,7 +35,7 @@
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-framebuffer-private.h"
-#include "cogl-path-private.h"
+#include "cogl2-path.h"
 
 #include <string.h>
 
@@ -197,7 +197,7 @@ cogl_create_context (void)
   _context->dirty_bound_framebuffer = TRUE;
   _context->dirty_gl_viewport = TRUE;
 
-  _context->current_path = _cogl_path_new ();
+  _context->current_path = cogl2_path_new ();
   _context->stencil_pipeline = cogl_pipeline_new ();
 
   _context->in_begin_gl_block = FALSE;

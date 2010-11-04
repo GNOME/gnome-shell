@@ -24,10 +24,7 @@
 #ifndef __COGL_PATH_PRIVATE_H
 #define __COGL_PATH_PRIVATE_H
 
-#include "cogl-handle.h"
-#include "cogl-path.h"
-
-#define COGL_PATH(tex) ((CoglPath *)(tex))
+#include "cogl-object.h"
 
 typedef struct _floatVec2
 {
@@ -61,9 +58,9 @@ typedef struct _CoglPathData CoglPathData;
 
 struct _CoglPath
 {
-  CoglHandleObject  _parent;
+  CoglObject _parent;
 
-  CoglPathData     *data;
+  CoglPathData *data;
 };
 
 #define COGL_PATH_N_ATTRIBUTES 2
@@ -87,11 +84,6 @@ struct _CoglPathData
   unsigned int         vbo_n_indices;
   CoglVertexAttribute *vbo_attributes[COGL_PATH_N_ATTRIBUTES + 1];
 };
-
-/* This is an internal version of cogl_path_new that doesn't affect
-   the current path and just creates a new handle */
-CoglPath *
-_cogl_path_new (void);
 
 void
 _cogl_add_path_to_stencil_buffer (CoglPath  *path,

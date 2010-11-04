@@ -143,7 +143,7 @@ typedef struct
   gboolean          dirty_gl_viewport;
 
   /* Primitives */
-  CoglHandle        current_path;
+  CoglPath         *current_path;
   CoglPipeline     *stencil_pipeline;
 
   /* Pre-generated VBOs containing indices to generate GL_TRIANGLES
