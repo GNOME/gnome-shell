@@ -1126,7 +1126,7 @@ _cogl_wrap_prepare_for_draw (void)
      again in the _start function. This should go away once the GLSL
      code is generated in the GLSL material backend so it's probably
      not worth worrying about now */
-  _cogl_use_program (program->program, COGL_MATERIAL_PROGRAM_TYPE_GLSL);
+  _cogl_use_program (program->program, COGL_PIPELINE_PROGRAM_TYPE_GLSL);
 
   /* Make sure all of the uniforms are up to date */
   if (w->dirty_uniforms)
