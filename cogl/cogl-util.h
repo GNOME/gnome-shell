@@ -68,4 +68,31 @@ _cogl_util_is_pot (unsigned int num)
   return (num & (num - 1)) == 0;
 }
 
+/* Split Bob Jenkins' One-at-a-Time hash
+ *
+ * This uses the One-at-a-Time hash algorithm designed by Bob Jenkins
+ * but the mixing step is split out so the function can be used in a
+ * more incremental fashion.
+ */
+static inline unsigned int
+_cogl_util_one_at_a_time_hash (unsigned int hash,
+                               void *key,
+                               size_t bytes)
+{
+  unsigned char *p = key;
+  int i;
+
+  for (i = 0; i < bytes; i++)
+    {
+      hash += p[i];
+      hash += (hash << 10);
+      hash ^= (hash >> 6);
+    }
+
+  return hash;
+}
+
+unsigned int
+_cogl_util_one_at_a_time_mix (unsigned int hash);
+
 #endif /* __COGL_UTIL_H */
