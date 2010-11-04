@@ -131,7 +131,11 @@ meta_core_get (Display *xdisplay,
               break;
 
             case META_WINDOW_MODAL_DIALOG:
-              base_type = META_FRAME_TYPE_MODAL_DIALOG;
+              if (meta_prefs_get_attach_modal_dialogs () &&
+                  meta_window_get_transient_for (window) != NULL)
+                base_type = META_FRAME_TYPE_ATTACHED;
+              else
+                base_type = META_FRAME_TYPE_MODAL_DIALOG;
               break;
 
             case META_WINDOW_MENU:
@@ -164,7 +168,7 @@ meta_core_get (Display *xdisplay,
               /* can't add border if undecorated */
               *((MetaFrameType*)answer) = META_FRAME_TYPE_LAST; 
             }
-          else if (window->border_only)
+          else if (window->border_only && base_type != META_FRAME_TYPE_ATTACHED)
             {
               /* override base frame type */
               *((MetaFrameType*)answer) = META_FRAME_TYPE_BORDER; 

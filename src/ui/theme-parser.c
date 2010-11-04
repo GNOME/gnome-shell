@@ -38,7 +38,7 @@
  * look out for.
  */
 #define THEME_MAJOR_VERSION 3
-#define THEME_MINOR_VERSION 1
+#define THEME_MINOR_VERSION 2
 #define THEME_VERSION (1000 * THEME_MAJOR_VERSION + THEME_MINOR_VERSION)
 
 #define METACITY_THEME_FILENAME_FORMAT "metacity-theme-%d.xml"
@@ -1257,7 +1257,8 @@ parse_toplevel_element (GMarkupParseContext  *context,
 
       type = meta_frame_type_from_string (type_name);
 
-      if (type == META_FRAME_TYPE_LAST)
+      if (type == META_FRAME_TYPE_LAST ||
+          (type == META_FRAME_TYPE_ATTACHED && peek_required_version (info) < 3002))
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
                      _("Unknown type \"%s\" on <%s> element"),

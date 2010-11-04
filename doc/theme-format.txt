@@ -22,6 +22,14 @@ This document has separate sections for each format version. You may
 want to read the document in reverse order, since the base features
 are discussed under version 1.
 
+New Features in Theme Format Version 3.2
+========================================
+
+A new window type 'attached' is added for modal dialogs which are
+attached to their parent window. (When the attach_modal_dialogs preference
+is turned on.) If no style is defined for the 'attached' window type,
+the 'border' window type will be used instead.
+
 New Features in Theme Format Version 3.1
 ========================================
 
