@@ -127,6 +127,12 @@ OPT (DISABLE_BLENDING,
      "disable-blending",
      "Disable blending",
      "Disable use of blending")
+OPT (DISABLE_NPOT_TEXTURES,
+     "Root Cause",
+     "disable-npot-textures",
+     "Disable non-power-of-two textures",
+     "Makes Cogl think that the GL driver doesn't support NPOT textures "
+     "so that it will create sliced textures or textures with waste instead.")
 OPT (SHOW_SOURCE,
      "Cogl Tracing",
      "show-source",
