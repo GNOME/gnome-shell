@@ -82,6 +82,7 @@ cogl_public_h = \
 	$(NULL)
 
 cogl_experimental_h = \
+	$(srcdir)/cogl-context.h 		\
 	$(srcdir)/cogl2-path.h 			\
 	$(srcdir)/cogl2-clip-state.h		\
 	$(NULL)

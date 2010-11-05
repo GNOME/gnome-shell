@@ -68,6 +68,7 @@
 #include <cogl/cogl-deprecated.h>
 
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
+#include <cogl/cogl-context.h>
 #include <cogl/cogl-buffer.h>
 #include <cogl/cogl-pixel-array.h>
 #include <cogl/cogl-vector.h>
