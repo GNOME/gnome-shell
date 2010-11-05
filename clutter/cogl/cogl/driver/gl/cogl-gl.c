@@ -173,25 +173,39 @@ static const CoglFeatureData cogl_feature_data[] =
 #include "cogl-feature-functions-gl.h"
   };
 
-void
-_cogl_features_init (void)
-{
-  CoglFeatureFlags         flags = 0;
-  CoglFeatureFlagsPrivate  flags_private = 0;
-  const char              *gl_extensions;
-  GLint                    max_clip_planes = 0;
-  GLint                    num_stencil_bits = 0;
-  int                      gl_major = 0, gl_minor = 0;
-  int                      i;
+#undef COGL_FEATURE_BEGIN
+#define COGL_FEATURE_BEGIN(a, b, c, d, e, f, g)
+#undef COGL_FEATURE_FUNCTION
+#define COGL_FEATURE_FUNCTION(ret, name, args) \
+  context->drv.pf_ ## name = NULL;
+#undef COGL_FEATURE_END
+#define COGL_FEATURE_END()
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+static void
+initialize_context_driver (CoglContext *context)
+{
+  #include "cogl-feature-functions-gl.h"
+}
+
+void
+_cogl_gl_context_init (CoglContext *context)
+{
+  CoglFeatureFlags flags = 0;
+  CoglFeatureFlagsPrivate  flags_private = 0;
+  const char *gl_extensions;
+  int max_clip_planes = 0;
+  int num_stencil_bits = 0;
+  int gl_major = 0, gl_minor = 0;
+  int i;
+
+  initialize_context_driver (context);
 
   _cogl_get_gl_version (&gl_major, &gl_minor);
 
   flags = (COGL_FEATURE_TEXTURE_READ_PIXELS
            | COGL_FEATURE_UNSIGNED_INT_INDICES);
 
-  gl_extensions = (const char*) glGetString (GL_EXTENSIONS);
+  gl_extensions = (const char *)glGetString (GL_EXTENSIONS);
 
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0) ||
       _cogl_check_extension ("GL_ARB_texture_non_power_of_two", gl_extensions))
@@ -231,6 +245,6 @@ _cogl_features_init (void)
       }
 
   /* Cache features */
-  ctx->feature_flags = flags;
-  ctx->feature_flags_private = flags_private;
+  context->feature_flags = flags;
+  context->feature_flags_private = flags_private;
 }
