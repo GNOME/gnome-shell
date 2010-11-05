@@ -444,6 +444,12 @@ cogl_get_features (void)
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_GLSL))
     ctx->feature_flags &= ~COGL_FEATURE_SHADERS_GLSL;
 
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_NPOT_TEXTURES))
+    ctx->feature_flags &= ~(COGL_FEATURE_TEXTURE_NPOT |
+                            COGL_FEATURE_TEXTURE_NPOT_BASIC |
+                            COGL_FEATURE_TEXTURE_NPOT_MIPMAP |
+                            COGL_FEATURE_TEXTURE_NPOT_REPEAT);
+
   return ctx->feature_flags;
 }
 

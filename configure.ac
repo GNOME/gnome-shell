@@ -165,10 +165,6 @@ AC_ARG_WITH([gles],
 # backend specific pkg-config files
 BACKEND_PC_FILES=""
 
-# This is only used to decide whether to build tests/tools/disable-npots.la
-AC_CHECK_LIB(dl, [dlopen], [HAVE_LIBDL=yes], [HAVE_LIBDL=no])
-AM_CONDITIONAL(HAVE_LIBDL, [test "x$HAVE_LIBDL" = "xyes"])
-
 dnl === Clutter windowing system backend ======================================
 
 AS_CASE([$CLUTTER_FLAVOUR],
@@ -1110,7 +1106,6 @@ AC_CONFIG_FILES([
 	tests/interactive/Makefile
 	tests/interactive/wrapper.sh
 	tests/micro-bench/Makefile
-	tests/tools/Makefile
 
 	doc/Makefile
 	doc/reference/Makefile

@@ -215,7 +215,7 @@ test-report perf-report full-report:	${TEST_PROGS}
 # two textures
 test-report-npot perf-report-npot full-report-npot:	${TEST_PROGS}
 	@test -z "${TEST_PROGS}" || { \
-	  $(top_srcdir)/tests/tools/disable-npots.sh ; \
+	  export COGL_DEBUG="$COGL_DEBUG,disable-npot-textures"; \
 	  export GTESTER_LOGDIR=`mktemp -d "$(srcdir)/.testlogs-XXXXXX"` ; \
 	  if test -d "$(top_srcdir)/.git"; then \
 	    export REVISION="`git describe`" ;  \
