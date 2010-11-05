@@ -59,10 +59,8 @@ static const CoglTextureVtable cogl_texture_2d_sliced_vtable;
 typedef struct
 {
   CoglTexture2DSliced *tex;
-  float x_intersect_start;
-  float x_intersect_end;
-  float y_intersect_start;
-  float y_intersect_end;
+  CoglSpan *x_span;
+  CoglSpan *y_span;
 
   CoglTextureSliceCallback callback;
   void *user_data;
@@ -81,18 +79,14 @@ _cogl_texture_2d_sliced_foreach_cb (CoglHandle handle,
 
   /* Convert the virtual coordinates of the texture slice back to
      coordinates in the space of the outer texture */
-  virtual_coords_out[0] = (virtual_coords_in[0] *
-                           (data->x_intersect_end - data->x_intersect_start) +
-                           data->x_intersect_start) / data->tex->width;
-  virtual_coords_out[1] = (virtual_coords_in[1] *
-                           (data->y_intersect_end - data->y_intersect_start) +
-                           data->y_intersect_start) / data->tex->height;
-  virtual_coords_out[2] = (virtual_coords_in[2] *
-                           (data->x_intersect_end - data->x_intersect_start) +
-                           data->x_intersect_start) / data->tex->width;
-  virtual_coords_out[3] = (virtual_coords_in[3] *
-                           (data->y_intersect_end - data->y_intersect_start) +
-                           data->y_intersect_start) / data->tex->height;
+  virtual_coords_out[0] = (virtual_coords_in[0] * data->x_span->size +
+                           data->x_span->start) / data->tex->width;
+  virtual_coords_out[1] = (virtual_coords_in[1] * data->y_span->size +
+                           data->y_span->start) / data->tex->height;
+  virtual_coords_out[2] = (virtual_coords_in[2] * data->x_span->size +
+                           data->x_span->start) / data->tex->width;
+  virtual_coords_out[3] = (virtual_coords_in[3] * data->y_span->size +
+                           data->y_span->start) / data->tex->height;
 
   data->callback (data->tex,
                   gl_handle,
@@ -151,11 +145,10 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
        !_cogl_span_iter_end (&iter_y);
        _cogl_span_iter_next (&iter_y))
     {
+      float y_intersect_start = iter_y.intersect_start;
+      float y_intersect_end = iter_y.intersect_end;
       float slice_ty1;
       float slice_ty2;
-
-      data.y_intersect_start = iter_y.intersect_start;
-      data.y_intersect_end = iter_y.intersect_end;
 
       /* Discard slices out of rectangle early */
       if (!iter_y.intersects)
@@ -163,17 +156,19 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
 
       if (iter_y.flipped)
         {
-          data.y_intersect_start = iter_y.intersect_end;
-          data.y_intersect_end = iter_y.intersect_start;
+          y_intersect_start = iter_y.intersect_end;
+          y_intersect_end = iter_y.intersect_start;
         }
 
       /* Localize slice texture coordinates */
-      slice_ty1 = data.y_intersect_start - iter_y.pos;
-      slice_ty2 = data.y_intersect_end - iter_y.pos;
+      slice_ty1 = y_intersect_start - iter_y.pos;
+      slice_ty2 = y_intersect_end - iter_y.pos;
 
       /* Normalize slice texture coordinates */
       slice_ty1 /= iter_y.span->size;
       slice_ty2 /= iter_y.span->size;
+
+      data.y_span = iter_y.span;
 
       /* Iterate the x axis of the virtual rectangle */
       for (_cogl_span_iter_begin (&iter_x,
@@ -184,12 +179,11 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
 	   !_cogl_span_iter_end (&iter_x);
 	   _cogl_span_iter_next (&iter_x))
         {
+          float x_intersect_start = iter_x.intersect_start;
+          float x_intersect_end = iter_x.intersect_end;
           float slice_tx1;
           float slice_tx2;
           CoglHandle slice_tex;
-
-          data.x_intersect_start = iter_x.intersect_start;
-          data.x_intersect_end = iter_x.intersect_end;
 
 	  /* Discard slices out of rectangle early */
 	  if (!iter_x.intersects)
@@ -197,17 +191,19 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
 
           if (iter_x.flipped)
             {
-              data.x_intersect_start = iter_x.intersect_end;
-              data.x_intersect_end = iter_x.intersect_start;
+              x_intersect_start = iter_x.intersect_end;
+              x_intersect_end = iter_x.intersect_start;
             }
 
 	  /* Localize slice texture coordinates */
-          slice_tx1 = data.x_intersect_start - iter_x.pos;
-          slice_tx2 = data.x_intersect_end - iter_x.pos;
+          slice_tx1 = x_intersect_start - iter_x.pos;
+          slice_tx2 = x_intersect_end - iter_x.pos;
 
           /* Normalize slice texture coordinates */
           slice_tx1 /= iter_x.span->size;
           slice_tx2 /= iter_x.span->size;
+
+          data.x_span = iter_x.span;
 
 	  /* Pluck out the cogl texture for this slice */
           slice_tex = g_array_index (tex_2ds->slice_textures, CoglHandle,
