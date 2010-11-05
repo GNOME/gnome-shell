@@ -54,7 +54,12 @@ typedef struct _CoglContext	      CoglContext;
 #define cogl_context_new cogl_context_new_EXP
 
 CoglContext *
-cogl_context_new (CoglDisplay *display);
+cogl_context_new (CoglDisplay *display,
+                  GError **error);
+
+#define cogl_set_default_context cogl_set_default_context_EXP
+void
+cogl_set_default_context (CoglContext *context);
 
 G_END_DECLS
 

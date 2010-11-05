@@ -50,8 +50,9 @@ struct _ClutterStageGLX
 
   gint pending_swaps;
 
-  GLXPixmap glxpixmap;
-  GLXWindow glxwin;
+  CoglOnscreen *onscreen;
+
+  unsigned int swap_callback_id;
 
   /* We only enable clipped redraws after 2 frames, since we've seen
    * a lot of drivers can struggle to get going and may output some

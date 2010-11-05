@@ -26,6 +26,11 @@
 
 #include "cogl-internal.h"
 #include "cogl-context.h"
+#include "cogl-winsys-private.h"
+
+#ifdef COGL_HAS_XLIB_SUPPORT
+#include "cogl-xlib-private.h"
+#endif
 
 #if HAVE_COGL_GL
 #include "cogl-context-driver-gl.h"
@@ -35,7 +40,7 @@
 #include "cogl-context-driver-gles.h"
 #endif
 
-#include "cogl-context-winsys.h"
+#include "cogl-display-private.h"
 #include "cogl-primitives.h"
 #include "cogl-clip-stack.h"
 #include "cogl-matrix-stack.h"
@@ -55,9 +60,10 @@ struct _CoglContext
 {
   CoglObject _parent;
 
+  CoglDisplay *display;
+
   /* Features cache */
-  CoglFeatureFlags        feature_flags;
-  CoglFeatureFlagsPrivate feature_flags_private;
+  CoglFeatureFlags feature_flags;
 
   CoglHandle        default_pipeline;
   CoglHandle        default_layer_0;
@@ -69,8 +75,6 @@ struct _CoglContext
 
   gboolean          enable_backface_culling;
   CoglFrontWinding  flushed_front_winding;
-
-  gboolean          indirect;
 
   /* A few handy matrix constants */
   CoglMatrix        identity_matrix;
@@ -237,8 +241,26 @@ struct _CoglContext
   GByteArray       *buffer_map_fallback_array;
   gboolean          buffer_map_fallback_in_use;
 
+  CoglWinsysRectangleState rectangle_state;
+
+  /* FIXME: remove these when we remove the last xlib based clutter
+   * backend. they should be tracked as part of the renderer but e.g.
+   * the eglx backend doesn't yet have a corresponding Cogl winsys
+   * and so we wont have a renderer in that case. */
+#ifdef COGL_HAS_XLIB_SUPPORT
+  int damage_base;
+  /* List of callback functions that will be given every Xlib event */
+  GSList *event_filters;
+  /* Current top of the XError trap state stack. The actual memory for
+     these is expected to be allocated on the stack by the caller */
+  CoglXlibTrapState *trap_state;
+#endif
+
   CoglContextDriver drv;
-  CoglContextWinsys winsys;
+
+  CoglBitmask winsys_features;
+  void *winsys;
+  gboolean stub_winsys;
 };
 
 CoglContext *

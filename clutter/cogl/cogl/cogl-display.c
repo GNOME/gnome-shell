@@ -100,6 +100,11 @@ cogl_display_setup (CoglDisplay *display,
   if (display->setup)
     return TRUE;
 
+#ifdef COGL_HAS_FULL_WINSYS
+  if (!_cogl_winsys_display_setup (display, error))
+    return FALSE;
+#endif
+
   display->setup = TRUE;
 
   return TRUE;

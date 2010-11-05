@@ -37,7 +37,8 @@ _cogl_feature_check (const char *driver_prefix,
                      const CoglFeatureData *data,
                      unsigned int gl_major,
                      unsigned int gl_minor,
-                     const char *extensions_string)
+                     const char *extensions_string,
+                     void *function_table)
 
 {
   const char *suffix = NULL;
@@ -123,7 +124,7 @@ _cogl_feature_check (const char *driver_prefix,
         break;
 
       /* Set the function pointer in the context */
-      *(void **) ((guint8 *) ctx +
+      *(void **) ((guint8 *) function_table +
                   data->functions[func_num].pointer_offset) = func;
     }
 

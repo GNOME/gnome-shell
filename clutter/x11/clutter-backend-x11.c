@@ -134,7 +134,7 @@ cogl_xlib_filter (XEvent       *xevent,
   ClutterX11FilterReturn retval;
   CoglXlibFilterReturn ret;
 
-  ret = _cogl_xlib_handle_event (xevent);
+  ret = cogl_xlib_handle_event (xevent);
   switch (ret)
     {
     case COGL_XLIB_FILTER_REMOVE:
@@ -390,7 +390,7 @@ _clutter_backend_x11_post_parse (ClutterBackend  *backend,
 
       /* Cogl needs to know the Xlib display connection for
          CoglTexturePixmapX11 */
-      _cogl_xlib_set_display (backend_x11->xdpy);
+      cogl_xlib_set_display (backend_x11->xdpy);
 
       /* add event filter for Cogl events */
       clutter_x11_add_filter (cogl_xlib_filter, NULL);

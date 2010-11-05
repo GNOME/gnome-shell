@@ -28,6 +28,8 @@
 #include "cogl.h"
 #include "cogl-object.h"
 #include "cogl-internal.h"
+#include "cogl-private.h"
+#include "cogl-winsys-private.h"
 #include "cogl-profile.h"
 #include "cogl-util.h"
 #include "cogl-context-private.h"
@@ -56,13 +58,8 @@ COGL_OBJECT_DEFINE (Context, context);
 
 extern void
 _cogl_create_context_driver (CoglContext *context);
-extern void
-_cogl_create_context_winsys (CoglContext *context);
-extern void
-_cogl_destroy_context_winsys (CoglContext *context);
 
 static CoglContext *_context = NULL;
-static gboolean gl_is_indirect = FALSE;
 
 static void
 _cogl_init_feature_overrides (CoglContext *ctx)
@@ -102,14 +99,7 @@ cogl_context_new (CoglDisplay *display,
   CoglContext *context;
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
   unsigned long enable_flags = 0;
-  CoglHandle window_buffer;
   int i;
-
-  /* A NULL display means "please just do something sensible"
-   * and since we haven't implemented anything for CoglDisplay
-   * yet that's the only kind of context construction we allow
-   * for now. */
-  g_return_val_if_fail (display == NULL, NULL);
 
 #ifdef CLUTTER_ENABLE_PROFILE
   /* We need to be absolutely sure that uprof has been initialized
@@ -135,18 +125,21 @@ cogl_context_new (CoglDisplay *display,
    * context which it can access via _COGL_GET_CONTEXT() including
    * code used to construct a CoglContext. Until all of that code
    * has been updated to take an explicit context argument we have
-   * to immediatly make our pointer the default context.
+   * to immediately make our pointer the default context.
    */
   _context = context;
 
   /* Init default values */
-  _context->feature_flags = 0;
-  _context->feature_flags_private = 0;
+  context->feature_flags = 0;
 
   context->texture_types = NULL;
   context->buffer_types = NULL;
 
-    if (!display)
+  context->rectangle_state = COGL_WINSYS_RECTANGLE_STATE_UNKNOWN;
+
+  _cogl_bitmask_init (&context->winsys_features);
+
+  if (!display)
     display = cogl_display_new (NULL, NULL);
   else
     cogl_object_ref (display);
@@ -158,11 +151,32 @@ cogl_context_new (CoglDisplay *display,
       return NULL;
     }
 
-  /* Initialise the driver specific state */
-  _cogl_gl_context_init (context);
-  _cogl_init_feature_overrides (context);
+  context->display = display;
 
-  _cogl_create_context_winsys (context);
+#ifdef COGL_HAS_FULL_WINSYS
+  if (!_cogl_winsys_context_init (context, error))
+    {
+      cogl_object_unref (display);
+      g_free (context);
+      return NULL;
+    }
+#else
+  /* In this case Clutter is still responsible for creating a GL
+   * context. */
+  context->stub_winsys = TRUE;
+  if (!_cogl_gl_check_version (error))
+    {
+      g_free (context);
+      return NULL;
+    }
+  _cogl_gl_update_features (context);
+#ifdef COGL_HAS_XLIB_SUPPORT
+  _cogl_xlib_query_damage_extension ();
+#endif
+#endif
+
+  /* Initialise the driver specific state */
+  _cogl_init_feature_overrides (context);
 
   _cogl_pipeline_init_default_pipeline ();
   _cogl_pipeline_init_default_layers ();
@@ -173,8 +187,6 @@ cogl_context_new (CoglDisplay *display,
 
   context->enable_backface_culling = FALSE;
   context->flushed_front_winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
-
-  context->indirect = gl_is_indirect;
 
   cogl_matrix_init_identity (&context->identity_matrix);
   cogl_matrix_init_identity (&context->y_flip_matrix);
@@ -257,13 +269,18 @@ cogl_context_new (CoglDisplay *display,
 
   context->framebuffer_stack = _cogl_create_framebuffer_stack ();
 
-  _context->current_clip_stack_valid = FALSE;
+  /* XXX: In this case the Clutter backend is still responsible for
+   * the OpenGL binding API and for creating onscreen framebuffers and
+   * so we have to add a dummy framebuffer to represent the backend
+   * owned window... */
+  if (context->stub_winsys)
+    {
+      CoglOnscreen *window = _cogl_onscreen_new ();
+      cogl_set_framebuffer (COGL_FRAMEBUFFER (window));
+      cogl_object_unref (COGL_FRAMEBUFFER (window));
+    }
 
-  window_buffer = _cogl_onscreen_new ();
-  cogl_set_framebuffer (window_buffer);
-  /* XXX: the deprecated _cogl_set_draw_buffer API expects to
-   * find the window buffer here... */
-  context->window_buffer = window_buffer;
+  _context->current_clip_stack_valid = FALSE;
 
   context->dirty_bound_framebuffer = TRUE;
   context->dirty_gl_viewport = TRUE;
@@ -347,7 +364,7 @@ cogl_context_new (CoglDisplay *display,
 static void
 _cogl_context_free (CoglContext *context)
 {
-  _cogl_destroy_context_winsys (context);
+  _cogl_winsys_context_deinit (context);
 
   _cogl_destroy_texture_units ();
 
@@ -424,6 +441,8 @@ _cogl_context_free (CoglContext *context)
 
   g_byte_array_free (context->buffer_map_fallback_array, TRUE);
 
+  _cogl_bitmask_destroy (&context->winsys_features);
+
   cogl_object_unref (context->display);
 
   g_free (context);
@@ -448,31 +467,12 @@ _cogl_context_get_default (void)
   return _context;
 }
 
-/**
- * _cogl_set_indirect_context:
- * @indirect: TRUE if GL context is indirect
- *
- * Advises COGL that the GL context is indirect (commands are sent
- * over a socket). COGL uses this information to try to avoid
- * round-trips in its use of GL, for example.
- *
- * This function cannot be called "on the fly," only before COGL
- * initializes.
- */
 void
-_cogl_set_indirect_context (gboolean indirect)
+cogl_set_default_context (CoglContext *context)
 {
-  /* we get called multiple times if someone creates
-   * more than the default stage
-   */
-  if (_context != NULL)
-    {
-      if (indirect != _context->indirect)
-        g_warning ("Right now all stages will be treated as "
-                   "either direct or indirect, ignoring attempt "
-                   "to change to indirect=%d", indirect);
-      return;
-    }
+  cogl_object_ref (context);
 
-  gl_is_indirect = indirect;
+  if (_context)
+    cogl_object_unref (_context);
+  _context = context;
 }

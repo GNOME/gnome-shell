@@ -37,7 +37,6 @@
 #include "cogl-shader.h"
 #include "cogl-texture.h"
 #include "cogl-types.h"
-#include "cogl-handle.h"
 #include "cogl-util.h"
 
 /*

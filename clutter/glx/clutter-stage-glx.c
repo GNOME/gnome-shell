@@ -53,10 +53,8 @@
 #endif
 
 static void clutter_stage_window_iface_init     (ClutterStageWindowIface     *iface);
-static void clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface);
 
 static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
-static ClutterEventTranslatorIface *clutter_event_translator_parent_iface = NULL;
 
 #define clutter_stage_glx_get_type      _clutter_stage_glx_get_type
 
@@ -64,33 +62,37 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageGLX,
                          clutter_stage_glx,
                          CLUTTER_TYPE_STAGE_X11,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
-                                                clutter_stage_window_iface_init)
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_EVENT_TRANSLATOR,
-                                                clutter_event_translator_iface_init));
+                                                clutter_stage_window_iface_init));
 
 static void
 clutter_stage_glx_unrealize (ClutterStageWindow *stage_window)
 {
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
-  ClutterBackendX11 *backend_x11 = stage_x11->backend;
 
   /* Note unrealize should free up any backend stage related resources */
   CLUTTER_NOTE (BACKEND, "Unrealizing GLX stage [%p]", stage_glx);
 
-  clutter_x11_trap_x_errors ();
+  cogl_object_unref (stage_glx->onscreen);
+  stage_glx->onscreen = NULL;
+}
 
-  if (stage_glx->glxwin != None)
-    {
-      glXDestroyWindow (backend_x11->xdpy, stage_glx->glxwin);
-      stage_glx->glxwin = None;
-    }
+static void
+handle_swap_complete_cb (CoglFramebuffer *framebuffer,
+                         void *user_data)
+{
+  ClutterStageGLX *stage_glx = user_data;
 
-  _clutter_stage_x11_destroy_window_untrapped (stage_x11);
-
-  XSync (backend_x11->xdpy, False);
-
-  clutter_x11_untrap_x_errors ();
+  /* Early versions of the swap_event implementation in Mesa
+   * deliver BufferSwapComplete event when not selected for,
+   * so if we get a swap event we aren't expecting, just ignore it.
+   *
+   * https://bugs.freedesktop.org/show_bug.cgi?id=27962
+   *
+   * FIXME: This issue can be hidden inside Cogl so we shouldn't
+   * need to care about this bug here.
+   */
+  if (stage_glx->pending_swaps > 0)
+    stage_glx->pending_swaps--;
 }
 
 static gboolean
@@ -98,56 +100,53 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
-  ClutterBackendX11 *backend_x11;
+  ClutterBackend *backend;
   ClutterBackendGLX *backend_glx;
+  CoglFramebuffer *framebuffer;
+  GError *error = NULL;
+  gfloat width;
+  gfloat height;
+  const char *clutter_vblank;
 
   CLUTTER_NOTE (ACTOR, "Realizing stage '%s' [%p]",
                 G_OBJECT_TYPE_NAME (stage_window),
                 stage_window);
 
-  if (!_clutter_stage_x11_create_window (stage_x11))
-    return FALSE;
+  backend = CLUTTER_BACKEND (stage_x11->backend);
+  backend_glx = CLUTTER_BACKEND_GLX (stage_x11->backend);
 
-  backend_x11 = stage_x11->backend;
-  backend_glx = CLUTTER_BACKEND_GLX (backend_x11);
+  clutter_actor_get_size (CLUTTER_ACTOR (stage_x11->wrapper), &width, &height);
 
-  if (stage_glx->glxwin == None)
+  stage_glx->onscreen = cogl_onscreen_new (backend->cogl_context,
+                                           width, height);
+  if (stage_x11->xwin != None)
+    cogl_onscreen_x11_set_foreign_window_xid (stage_glx->onscreen,
+                                              stage_x11->xwin);
+
+  clutter_vblank = _clutter_backend_glx_get_vblank ();
+  if (clutter_vblank && strcmp (clutter_vblank, "none") == 0)
+    cogl_onscreen_set_swap_throttled (stage_glx->onscreen, FALSE);
+
+  framebuffer = COGL_FRAMEBUFFER (stage_glx->onscreen);
+  if (!cogl_framebuffer_allocate (framebuffer, &error))
     {
-      int major;
-      int minor;
-      GLXFBConfig config;
-
-      /* Try and create a GLXWindow to use with extensions dependent on
-       * GLX versions >= 1.3 that don't accept regular X Windows as GLX
-       * drawables.
-       */
-      if (glXQueryVersion (backend_x11->xdpy, &major, &minor) &&
-          major == 1 && minor >= 3 &&
-          _clutter_backend_glx_get_fbconfig (backend_glx, &config))
-        {
-          stage_glx->glxwin = glXCreateWindow (backend_x11->xdpy,
-                                               config,
-                                               stage_x11->xwin,
-                                               NULL);
-        }
+      g_warning ("Failed to allocate stage: %s", error->message);
+      g_error_free (error);
+      cogl_object_unref (stage_glx->onscreen);
+      stage_glx->onscreen = NULL;
+      return FALSE;
     }
 
-#ifdef GLX_INTEL_swap_event
-  if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
-    {
-      GLXDrawable drawable = stage_glx->glxwin
-                           ? stage_glx->glxwin
-                           : stage_x11->xwin;
+  if (stage_x11->xwin == None)
+    stage_x11->xwin = cogl_onscreen_x11_get_window_xid (stage_glx->onscreen);
 
-      /* we unconditionally select this event because we rely on it to
-       * advance the master clock, and drive redraw/relayout, animations
-       * and event handling.
-       */
-      glXSelectEvent (backend_x11->xdpy,
-                      drawable,
-                      GLX_BUFFER_SWAP_COMPLETE_INTEL_MASK);
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT))
+    {
+      stage_glx->swap_callback_id =
+        cogl_framebuffer_add_swap_buffers_callback (framebuffer,
+                                                    handle_swap_complete_cb,
+                                                    stage_glx);
     }
-#endif /* GLX_INTEL_swap_event */
 
   /* chain up to the StageX11 implementation */
   return clutter_stage_window_parent_iface->realize (stage_window);
@@ -311,65 +310,12 @@ clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
   stage_glx->initialized_redraw_clip = TRUE;
 }
 
-#ifdef HAVE_DRM
-static int
-drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
-{
-    int ret, rc;
-
-    do
-      {
-        ret = ioctl(fd, DRM_IOCTL_WAIT_VBLANK, vbl);
-        vbl->request.type &= ~_DRM_VBLANK_RELATIVE;
-        rc = errno;
-      }
-    while (ret && rc == EINTR);
-
-    return rc;
-}
-#endif /* HAVE_DRM */
-
-static void
-wait_for_vblank (ClutterBackendGLX *backend_glx)
-{
-  if (backend_glx->vblank_type == CLUTTER_VBLANK_NONE)
-    return;
-
-  if (backend_glx->wait_video_sync)
-    {
-      unsigned int retraceCount;
-
-      CLUTTER_NOTE (BACKEND, "Waiting for vblank (wait_video_sync)");
-      backend_glx->get_video_sync (&retraceCount);
-      backend_glx->wait_video_sync (2,
-                                    (retraceCount + 1) % 2,
-                                    &retraceCount);
-    }
-  else
-    {
-#ifdef HAVE_DRM
-      drm_wait_vblank_t blank;
-
-      CLUTTER_NOTE (BACKEND, "Waiting for vblank (drm)");
-      blank.request.type     = _DRM_VBLANK_RELATIVE;
-      blank.request.sequence = 1;
-      blank.request.signal   = 0;
-      drm_wait_vblank (backend_glx->dri_fd, &blank);
-#else
-      CLUTTER_NOTE (BACKEND, "No vblank mechanism found");
-#endif /* HAVE_DRM */
-    }
-}
-
 static void
 clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
 {
-  ClutterBackendX11 *backend_x11;
   ClutterBackendGLX *backend_glx;
   ClutterStageX11 *stage_x11;
   ClutterStageGLX *stage_glx;
-  GLXDrawable drawable;
-  unsigned int video_sync_count;
   gboolean may_use_clipped_redraw;
   gboolean use_clipped_redraw;
 
@@ -395,8 +341,7 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
 
   stage_glx = CLUTTER_STAGE_GLX (stage_window);
 
-  backend_x11 = stage_x11->backend;
-  backend_glx = CLUTTER_BACKEND_GLX (backend_x11);
+  backend_glx = CLUTTER_BACKEND_GLX (stage_x11->backend);
 
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
 
@@ -502,171 +447,73 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
       cogl_object_unref (vbo);
     }
 
-  cogl_flush ();
   CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);
-
-  drawable = stage_glx->glxwin
-           ? stage_glx->glxwin
-           : stage_x11->xwin;
-
-  /* If we might ever use _clutter_backend_glx_blit_sub_buffer then we
-   * always need to keep track of the video_sync_count so that we can
-   * throttle blits.
-   *
-   * Note: we get the count *before* we issue any glXCopySubBuffer or
-   * blit_sub_buffer request in case the count would go up before
-   * returning control to us.
-   */
-  if (backend_glx->can_blit_sub_buffer && backend_glx->get_video_sync)
-    backend_glx->get_video_sync (&video_sync_count);
 
   /* push on the screen */
   if (use_clipped_redraw)
     {
       ClutterGeometry *clip = &stage_glx->bounding_redraw_clip;
-      ClutterGeometry copy_area;
+      int copy_area[4];
       ClutterActor *actor;
 
-      CLUTTER_NOTE (BACKEND,
-                    "_glx_blit_sub_buffer (window: 0x%lx, "
-                                          "x: %d, y: %d, "
-                                          "width: %d, height: %d)",
-                    (unsigned long) drawable,
-                    stage_glx->bounding_redraw_clip.x,
-                    stage_glx->bounding_redraw_clip.y,
-                    stage_glx->bounding_redraw_clip.width,
-                    stage_glx->bounding_redraw_clip.height);
-
       /* XXX: It seems there will be a race here in that the stage
-       * window may be resized before glXCopySubBufferMESA is handled
-       * and so we may copy the wrong region. I can't really see how
-       * we can handle this with the current state of X but at least
-       * in this case a full redraw should be queued by the resize
-       * anyway so it should only exhibit temporary artefacts.
+       * window may be resized before the cogl_framebuffer_swap_region
+       * is handled and so we may copy the wrong region. I can't
+       * really see how we can handle this with the current state of X
+       * but at least in this case a full redraw should be queued by
+       * the resize anyway so it should only exhibit temporary
+       * artefacts.
        */
+
       actor = CLUTTER_ACTOR (stage_x11->wrapper);
-      copy_area.y = clutter_actor_get_height (actor)
-                  - clip->y
-                  - clip->height;
-      copy_area.x = clip->x;
-      copy_area.width = clip->width;
-      copy_area.height = clip->height;
 
-      /* We need to ensure that all the rendering is done, otherwise
-       * redraw operations that are slower than the framerate can
-       * queue up in the pipeline during a heavy animation, causing a
-       * larger and larger backlog of rendering visible as lag to the
-       * user.
-       *
-       * Note: since calling glFinish() and sycnrhonizing the CPU with
-       * the GPU is far from ideal, we hope that this is only a short
-       * term solution.
-       * - One idea is to using sync objects to track render
-       *   completion so we can throttle the backlog (ideally with an
-       *   additional extension that lets us get notifications in our
-       *   mainloop instead of having to busy wait for the
-       *   completion.)
-       * - Another option is to support clipped redraws by reusing the
-       *   contents of old back buffers such that we can flip instead
-       *   of using a blit and then we can use GLX_INTEL_swap_events
-       *   to throttle. For this though we would still probably want an
-       *   additional extension so we can report the limited region of
-       *   the window damage to X/compositors.
-       */
-      glFinish ();
+      copy_area[0] = clip->x;
+      copy_area[1] = clutter_actor_get_height (actor) - clip->y - clip->height;
+      copy_area[2] = clip->width;
+      copy_area[3] = clip->height;
 
-      /* glXCopySubBufferMESA and glBlitFramebuffer are not integrated
-       * with the glXSwapIntervalSGI mechanism which we usually use to
-       * throttle the Clutter framerate to the vertical refresh and so
-       * we have to manually wait for the vblank period...
-       */
-
-      /* Here 'is_synchronized' only means that the blit won't cause a
-       * tear, ie it won't prevent multiple blits per retrace if they
-       * can all be performed in the blanking period. If that's the
-       * case then we still want to use the vblank sync menchanism but
-       * we only need it to throttle redraws.
-       */
-      if (!backend_glx->blit_sub_buffer_is_synchronized)
-        {
-          /* XXX: note that glXCopySubBuffer, at least for Intel, is
-           * synchronized with the vblank but glBlitFramebuffer may
-           * not be so we use the same scheme we do when calling
-           * glXSwapBuffers without the swap_control extension and
-           * call glFinish () before waiting for the vblank period.
-           *
-           * See where we call glXSwapBuffers for more details.
-           */
-          wait_for_vblank (backend_glx);
-        }
-      else if (backend_glx->get_video_sync)
-        {
-          /* If we have the GLX_SGI_video_sync extension then we can
-           * be a bit smarter about how we throttle blits by avoiding
-           * any waits if we can see that the video sync count has
-           * already progressed. */
-          if (backend_glx->last_video_sync_count == video_sync_count)
-            wait_for_vblank (backend_glx);
-        }
-      else
-        wait_for_vblank (backend_glx);
+      CLUTTER_NOTE (BACKEND,
+                    "cogl_framebuffer_swap_region (onscreen: %p, "
+                                                  "x: %d, y: %d, "
+                                                  "width: %d, height: %d)",
+                    stage_glx->onscreen,
+                    copy_area[0], copy_area[1], copy_area[2], copy_area[3]);
 
       CLUTTER_TIMER_START (_clutter_uprof_context, blit_sub_buffer_timer);
-      _clutter_backend_glx_blit_sub_buffer (backend_glx,
-                                            drawable,
-                                            copy_area.x,
-                                            copy_area.y,
-                                            copy_area.width,
-                                            copy_area.height);
+
+      cogl_framebuffer_swap_region (COGL_FRAMEBUFFER (stage_glx->onscreen),
+                                    copy_area, 1);
+
       CLUTTER_TIMER_STOP (_clutter_uprof_context, blit_sub_buffer_timer);
     }
   else
     {
-      CLUTTER_NOTE (BACKEND, "glXSwapBuffers (display: %p, window: 0x%lx)",
-                    backend_x11->xdpy,
-                    (unsigned long) drawable);
+      CLUTTER_NOTE (BACKEND, "cogl_framebuffer_swap_buffers (onscreen: %p)",
+                    stage_glx->onscreen);
 
-      /* If we have GLX swap buffer events then glXSwapBuffers will return
-       * immediately and we need to track that there is a swap in
-       * progress... */
+      /* If we have swap buffer events then
+       * cogl_framebuffer_swap_buffers will return immediately and we
+       * need to track that there is a swap in progress... */
       if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
         stage_glx->pending_swaps++;
 
-      if (backend_glx->vblank_type != CLUTTER_VBLANK_GLX_SWAP &&
-          backend_glx->vblank_type != CLUTTER_VBLANK_NONE)
-        {
-          /* If we are going to wait for VBLANK manually, we not only
-           * need to flush out pending drawing to the GPU before we
-           * sleep, we need to wait for it to finish. Otherwise, we
-           * may end up with the situation:
-           *
-           *        - We finish drawing      - GPU drawing continues
-           *        - We go to sleep         - GPU drawing continues
-           * VBLANK - We call glXSwapBuffers - GPU drawing continues
-           *                                 - GPU drawing continues
-           *                                 - Swap buffers happens
-           *
-           * Producing a tear. Calling glFinish() first will cause us
-           * to properly wait for the next VBLANK before we swap. This
-           * obviously does not happen when we use _GLX_SWAP and let
-           * the driver do the right thing
-           */
-          glFinish ();
-
-          wait_for_vblank (backend_glx);
-        }
-
       CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
-      glXSwapBuffers (backend_x11->xdpy, drawable);
+      cogl_framebuffer_swap_buffers (COGL_FRAMEBUFFER (stage_glx->onscreen));
       CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
     }
-
-  backend_glx->last_video_sync_count = video_sync_count;
 
   /* reset the redraw clipping for the next paint... */
   stage_glx->initialized_redraw_clip = FALSE;
 
   stage_glx->frame_count++;
+}
+
+static CoglFramebuffer *
+clutter_stage_glx_get_active_framebuffer (ClutterStageWindow *stage_window)
+{
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
+
+  return COGL_FRAMEBUFFER (stage_glx->onscreen);
 }
 
 static void
@@ -682,55 +529,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->has_redraw_clips = clutter_stage_glx_has_redraw_clips;
   iface->ignoring_redraw_clips = clutter_stage_glx_ignoring_redraw_clips;
   iface->redraw = clutter_stage_glx_redraw;
+  iface->get_active_framebuffer = clutter_stage_glx_get_active_framebuffer;
 
   /* the rest is inherited from ClutterStageX11 */
-}
-
-static ClutterTranslateReturn
-clutter_stage_glx_translate_event (ClutterEventTranslator *translator,
-                                   gpointer                native,
-                                   ClutterEvent           *event)
-{
-#ifdef GLX_INTEL_swap_event
-  ClutterBackendGLX *backend_glx;
-  XEvent *xevent = native;
-
-  backend_glx = CLUTTER_BACKEND_GLX (clutter_get_default_backend ());
-
-  if (xevent->type == (backend_glx->event_base + GLX_BufferSwapComplete))
-    {
-      ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (translator);
-      ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (translator);
-      GLXBufferSwapComplete *swap_complete_event;
-
-      swap_complete_event = (GLXBufferSwapComplete *) xevent;
-
-      if (stage_x11->xwin == swap_complete_event->drawable)
-        {
-	  /* Early versions of the swap_event implementation in Mesa
-	   * deliver BufferSwapComplete event when not selected for,
-	   * so if we get a swap event we aren't expecting, just ignore it.
-	   *
-	   * https://bugs.freedesktop.org/show_bug.cgi?id=27962
-	   */
-          if (stage_glx->pending_swaps > 0)
-            stage_glx->pending_swaps--;
-
-          return CLUTTER_TRANSLATE_REMOVE;
-        }
-    }
-#endif
-
-  /* chain up to the common X11 implementation */
-  return clutter_event_translator_parent_iface->translate_event (translator,
-                                                                 native,
-                                                                 event);
-}
-
-static void
-clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface)
-{
-  clutter_event_translator_parent_iface = g_type_interface_peek_parent (iface);
-
-  iface->translate_event = clutter_stage_glx_translate_event;
 }

@@ -49,6 +49,7 @@
 #include "clutter-stage-private.h"
 
 #include "cogl/cogl.h"
+#include "cogl/cogl-internal.h"
 
 #define clutter_backend_glx_get_type    _clutter_backend_glx_get_type
 
@@ -57,12 +58,15 @@ G_DEFINE_TYPE (ClutterBackendGLX, clutter_backend_glx, CLUTTER_TYPE_BACKEND_X11)
 /* singleton object */
 static ClutterBackendGLX *backend_singleton = NULL;
 
-static gchar    *clutter_vblank_name = NULL;
+static gchar *clutter_vblank = NULL;
 
 G_CONST_RETURN gchar*
-_clutter_backend_glx_get_vblank_method (void)
+_clutter_backend_glx_get_vblank (void)
 {
-  return clutter_vblank_name;
+  if (clutter_vblank && strcmp (clutter_vblank, "0") == 0)
+    return "none";
+  else
+    return clutter_vblank;
 }
 
 static gboolean
@@ -76,7 +80,7 @@ clutter_backend_glx_pre_parse (ClutterBackend  *backend,
   env_string = g_getenv ("CLUTTER_VBLANK");
   if (env_string)
     {
-      clutter_vblank_name = g_strdup (env_string);
+      clutter_vblank = g_strdup (env_string);
       env_string = NULL;
     }
 
@@ -87,41 +91,11 @@ static gboolean
 clutter_backend_glx_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
   ClutterBackendClass *parent_class =
     CLUTTER_BACKEND_CLASS (clutter_backend_glx_parent_class);
-  int glx_major, glx_minor;
 
   if (!parent_class->post_parse (backend, error))
     return FALSE;
-
-  if (!glXQueryExtension (backend_x11->xdpy,
-                          &backend_glx->error_base,
-                          &backend_glx->event_base))
-    {
-      g_set_error_literal (error, CLUTTER_INIT_ERROR,
-                           CLUTTER_INIT_ERROR_BACKEND,
-                           "XServer appears to lack the required GLX support");
-
-      return FALSE;
-    }
-
-  /* XXX: Technically we should require >= GLX 1.3 support but for a long
-   * time Mesa has exported a hybrid GLX, exporting extensions specified
-   * to require GLX 1.3, but still reporting 1.2 via glXQueryVersion. */
-  glx_major = 1;
-  glx_minor = 2;
-  if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor) ||
-      !(glx_major == 1 && glx_minor >= 2))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "XServer appears to lack the required GLX "
-                   "1.2 support (%d.%d reported)",
-                   glx_major, glx_minor);
-      return FALSE;
-    }
 
   return TRUE;
 }
@@ -130,8 +104,9 @@ static const GOptionEntry entries[] =
 {
   { "vblank", 0,
     0,
-    G_OPTION_ARG_STRING, &clutter_vblank_name,
-    N_("VBlank method to be used (none, dri or glx)"), "METHOD"
+    G_OPTION_ARG_STRING, &clutter_vblank,
+    N_("Set to 'none' or '0' to disable throttling "
+       "framerate to vblank"), "OPTION"
   },
   { NULL }
 };
@@ -160,32 +135,20 @@ clutter_backend_glx_finalize (GObject *gobject)
 static void
 clutter_backend_glx_dispose (GObject *gobject)
 {
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (gobject);
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (gobject);
+  ClutterBackend *backend = CLUTTER_BACKEND (gobject);
 
   /* Unrealize all shaders, since the GL context is going away */
+  /* XXX: Why isn't this done in
+   * clutter-backend.c:clutter_backend_dispose ?
+   */
   _clutter_shader_release_all ();
 
-  if (backend_glx->gl_context)
-    {
-      glXMakeContextCurrent (backend_x11->xdpy, None, None, NULL);
-      glXDestroyContext (backend_x11->xdpy, backend_glx->gl_context);
-      backend_glx->gl_context = NULL;
-    }
-
-  if (backend_glx->dummy_glxwin)
-    {
-      glXDestroyWindow (backend_x11->xdpy, backend_glx->dummy_glxwin);
-      backend_glx->dummy_glxwin = None;
-    }
-
-  if (backend_glx->dummy_xwin)
-    {
-      XDestroyWindow (backend_x11->xdpy, backend_glx->dummy_xwin);
-      backend_glx->dummy_xwin = None;
-    }
-
+  /* We chain up before disposing our CoglContext so that we will
+   * destroy all of the stages first. Otherwise the actors may try to
+   * make Cogl calls during destruction which would cause a crash */
   G_OBJECT_CLASS (clutter_backend_glx_parent_class)->dispose (gobject);
+
+  cogl_object_unref (backend->cogl_context);
 }
 
 static GObject *
@@ -212,197 +175,46 @@ clutter_backend_glx_constructor (GType                  gtype,
   return g_object_ref (backend_singleton);
 }
 
-static gboolean
-check_vblank_env (const char *name)
-{
-  if (clutter_vblank_name && !g_ascii_strcasecmp (clutter_vblank_name, name))
-    return TRUE;
-
-  return FALSE;
-}
-
 static ClutterFeatureFlags
 clutter_backend_glx_get_features (ClutterBackend *backend)
 {
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
   ClutterBackendClass *parent_class;
-  const gchar *glx_extensions = NULL;
-  const gchar *gl_extensions = NULL;
   ClutterFeatureFlags flags;
-  gboolean use_dri = FALSE;
 
   parent_class = CLUTTER_BACKEND_CLASS (clutter_backend_glx_parent_class);
 
   flags = parent_class->get_features (backend);
-  flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
 
-  /* this will make sure that the GL context exists */
-  g_assert (backend_glx->gl_context != NULL);
-  g_assert (glXGetCurrentDrawable () != None);
-
-  CLUTTER_NOTE (BACKEND,
-                "Checking features\n"
-                "  GL_VENDOR: %s\n"
-                "  GL_RENDERER: %s\n"
-                "  GL_VERSION: %s\n"
-                "  GL_EXTENSIONS: %s",
-                glGetString (GL_VENDOR),
-                glGetString (GL_RENDERER),
-                glGetString (GL_VERSION),
-                glGetString (GL_EXTENSIONS));
-
-  glx_extensions =
-    glXQueryExtensionsString (clutter_x11_get_default_display (),
-                              clutter_x11_get_default_screen ());
-
-  CLUTTER_NOTE (BACKEND, "  GLX Extensions: %s", glx_extensions);
-
-  gl_extensions = (const gchar *)glGetString (GL_EXTENSIONS);
-
-  /* When using glBlitFramebuffer or glXCopySubBufferMESA for sub stage
-   * redraws, we cannot rely on glXSwapIntervalSGI to throttle the blits
-   * so we need to resort to manually synchronizing with the vblank so we
-   * always check for the video_sync extension...
-   */
-  if (_cogl_check_extension ("GLX_SGI_video_sync", glx_extensions) &&
-      /* Note: the GLX_SGI_video_sync spec explicitly states this extension
-       * only works for direct contexts. */
-      glXIsDirect (clutter_x11_get_default_display (),
-                   backend_glx->gl_context))
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN))
     {
-      backend_glx->get_video_sync =
-        (GetVideoSyncProc) cogl_get_proc_address ("glXGetVideoSyncSGI");
-
-      backend_glx->wait_video_sync =
-        (WaitVideoSyncProc) cogl_get_proc_address ("glXWaitVideoSyncSGI");
+      CLUTTER_NOTE (BACKEND, "Cogl supports multiple onscreen framebuffers");
+      flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
+    }
+  else
+    {
+      CLUTTER_NOTE (BACKEND, "Cogl only supports one onscreen framebuffer");
+      flags |= CLUTTER_FEATURE_STAGE_STATIC;
     }
 
-  use_dri = check_vblank_env ("dri");
-
-  /* First check for explicit disabling or it set elsewhere (eg NVIDIA) */
-  if (check_vblank_env ("none"))
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_THROTTLE))
     {
-      CLUTTER_NOTE (BACKEND, "vblank sync: disabled at user request");
-      goto vblank_setup_done;
-    }
-
-  if (g_getenv ("__GL_SYNC_TO_VBLANK") != NULL)
-    {
-      backend_glx->vblank_type = CLUTTER_VBLANK_GLX_SWAP;
+      CLUTTER_NOTE (BACKEND, "Cogl supports swap buffers throttling");
       flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
+    }
+  else
+    CLUTTER_NOTE (BACKEND, "Cogl doesn't support swap buffers throttling");
 
-      CLUTTER_NOTE (BACKEND, "Using __GL_SYNC_TO_VBLANK hint");
-      goto vblank_setup_done;
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT))
+    {
+      CLUTTER_NOTE (BACKEND, "Cogl supports swap buffers complete events");
+      flags |= CLUTTER_FEATURE_SWAP_EVENTS;
     }
 
-  /* We try two GL vblank syncing mechanisms.
-   * glXSwapIntervalSGI is tried first, then glXGetVideoSyncSGI.
-   *
-   * glXSwapIntervalSGI is known to work with Mesa and in particular
-   * the Intel drivers. glXGetVideoSyncSGI has serious problems with
-   * Intel drivers causing terrible frame rate so it only tried as a
-   * fallback.
-   *
-   * How well glXGetVideoSyncSGI works with other driver (ATI etc) needs
-   * to be investigated. glXGetVideoSyncSGI on ATI at least seems to have
-   * no effect.
-   */
-  if (!use_dri &&
-      _cogl_check_extension ("GLX_SGI_swap_control", glx_extensions))
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION))
     {
-      backend_glx->swap_interval =
-        (SwapIntervalProc) cogl_get_proc_address ("glXSwapIntervalSGI");
-
-      CLUTTER_NOTE (BACKEND, "attempting glXSwapIntervalSGI vblank setup");
-
-      if (backend_glx->swap_interval != NULL &&
-          backend_glx->swap_interval (1) == 0)
-        {
-          backend_glx->vblank_type = CLUTTER_VBLANK_GLX_SWAP;
-          flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-
-          CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI setup success");
-
-#ifdef GLX_INTEL_swap_event
-          /* GLX_INTEL_swap_event allows us to avoid blocking the CPU
-           * while we wait for glXSwapBuffers to complete, and instead
-           * we get an X event notifying us of completion...
-           */
-          if (!(clutter_paint_debug_flags & CLUTTER_DEBUG_DISABLE_SWAP_EVENTS) &&
-              _cogl_check_extension ("GLX_INTEL_swap_event", glx_extensions))
-            {
-              flags |= CLUTTER_FEATURE_SWAP_EVENTS;
-            }
-#endif /* GLX_INTEL_swap_event */
-
-          goto vblank_setup_done;
-        }
-
-      CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI vblank setup failed");
-    }
-
-  if (!use_dri &&
-      !(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK) &&
-      _cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
-    {
-      CLUTTER_NOTE (BACKEND, "attempting glXGetVideoSyncSGI vblank setup");
-
-      if ((backend_glx->get_video_sync != NULL) &&
-          (backend_glx->wait_video_sync != NULL))
-        {
-          CLUTTER_NOTE (BACKEND, "glXGetVideoSyncSGI vblank setup success");
-
-          backend_glx->vblank_type = CLUTTER_VBLANK_GLX;
-          flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-
-          goto vblank_setup_done;
-        }
-
-      CLUTTER_NOTE (BACKEND, "glXGetVideoSyncSGI vblank setup failed");
-    }
-
-#ifdef __linux__
-  /*
-   * DRI is really an extreme fallback -rumoured to work with Via chipsets
-   */
-  if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-    {
-      CLUTTER_NOTE (BACKEND, "attempting DRI vblank setup");
-
-      backend_glx->dri_fd = open("/dev/dri/card0", O_RDWR);
-      if (backend_glx->dri_fd >= 0)
-        {
-          CLUTTER_NOTE (BACKEND, "DRI vblank setup success");
-
-          backend_glx->vblank_type = CLUTTER_VBLANK_DRI;
-          flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-
-          goto vblank_setup_done;
-        }
-
-      CLUTTER_NOTE (BACKEND, "DRI vblank setup failed");
-    }
-#endif /* __linux__ */
-
-  CLUTTER_NOTE (BACKEND, "no use-able vblank mechanism found");
-
-vblank_setup_done:
-
-  if (_cogl_check_extension ("GLX_MESA_copy_sub_buffer", glx_extensions))
-    {
-      backend_glx->copy_sub_buffer =
-        (CopySubBufferProc) cogl_get_proc_address ("glXCopySubBufferMESA");
+      CLUTTER_NOTE (BACKEND, "Cogl supports swapping buffer regions");
       backend_glx->can_blit_sub_buffer = TRUE;
-      backend_glx->blit_sub_buffer_is_synchronized = TRUE;
-    }
-  else if (_cogl_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))
-    {
-      CLUTTER_NOTE (BACKEND,
-                    "Using glBlitFramebuffer fallback for sub_buffer copies");
-      backend_glx->blit_framebuffer =
-        (BlitFramebufferProc) cogl_get_proc_address ("glBlitFramebuffer");
-      backend_glx->can_blit_sub_buffer = TRUE;
-      backend_glx->blit_sub_buffer_is_synchronized = FALSE;
     }
 
   CLUTTER_NOTE (BACKEND, "backend features checked");
@@ -410,375 +222,77 @@ vblank_setup_done:
   return flags;
 }
 
-/* It seems the GLX spec never defined an invalid GLXFBConfig that
- * we could overload as an indication of error, so we have to return
- * an explicit boolean status. */
-gboolean
-_clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
-                                   GLXFBConfig       *config)
-{
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend_glx);
-  GLXFBConfig *configs = NULL;
-  gboolean use_argb = clutter_x11_get_use_argb_visual ();
-  int n_configs, i;
-  static const int attributes[] = {
-    GLX_DRAWABLE_TYPE,    GLX_WINDOW_BIT,
-    GLX_RENDER_TYPE,      GLX_RGBA_BIT,
-    GLX_DOUBLEBUFFER,     GL_TRUE,
-    GLX_RED_SIZE,         1,
-    GLX_GREEN_SIZE,       1,
-    GLX_BLUE_SIZE,        1,
-    GLX_ALPHA_SIZE,       1,
-    GLX_DEPTH_SIZE,       1,
-    GLX_STENCIL_SIZE,     1,
-    None
-  };
-
-  if (backend_x11->xdpy == NULL || backend_x11->xscreen == NULL)
-    return FALSE;
-
-  /* If we don't already have a cached config then try to get one */
-  if (!backend_glx->found_fbconfig)
-    {
-      CLUTTER_NOTE (BACKEND,
-                    "Retrieving GL fbconfig, dpy: %p, xscreen; %p (%d)",
-                    backend_x11->xdpy,
-                    backend_x11->xscreen,
-                    backend_x11->xscreen_num);
-
-      configs = glXChooseFBConfig (backend_x11->xdpy,
-                                   backend_x11->xscreen_num,
-                                   attributes,
-                                   &n_configs);
-      if (configs)
-        {
-          if (use_argb)
-            {
-              for (i = 0; i < n_configs; i++)
-                {
-                  XVisualInfo *vinfo;
-
-                  vinfo = glXGetVisualFromFBConfig (backend_x11->xdpy,
-                                                    configs[i]);
-                  if (vinfo == NULL)
-                    continue;
-
-                  if (vinfo->depth == 32 &&
-                      (vinfo->red_mask   == 0xff0000 &&
-                       vinfo->green_mask == 0x00ff00 &&
-                       vinfo->blue_mask  == 0x0000ff))
-                    {
-                      CLUTTER_NOTE (BACKEND,
-                                    "Found an ARGB FBConfig [index:%d]",
-                                    i);
-
-                      backend_glx->found_fbconfig = TRUE;
-                      backend_glx->fbconfig = configs[i];
-
-                      goto out;
-                    }
-                }
-
-              /* If we make it here then we didn't find an RGBA config so
-                 we'll fall back to using an RGB config */
-              CLUTTER_NOTE (BACKEND, "ARGB visual requested, but none found");
-            }
-
-          if (n_configs >= 1)
-            {
-              CLUTTER_NOTE (BACKEND, "Using the first available FBConfig");
-              backend_glx->found_fbconfig = TRUE;
-              backend_glx->fbconfig = configs[0];
-            }
-
-        out:
-          XFree (configs);
-        }
-    }
-
-  if (G_LIKELY (backend_glx->found_fbconfig))
-    {
-      *config = backend_glx->fbconfig;
-
-      return TRUE;
-    }
-
-  return FALSE;
-}
-
-void
-_clutter_backend_glx_blit_sub_buffer (ClutterBackendGLX *backend_glx,
-                                      GLXDrawable        drawable,
-                                      int                x,
-                                      int                y,
-                                      int                width,
-                                      int                height)
-{
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend_glx);
-
-  if (backend_glx->copy_sub_buffer)
-    {
-      backend_glx->copy_sub_buffer (backend_x11->xdpy, drawable,
-                                    x, y, width, height);
-    }
-  else if (backend_glx->blit_framebuffer)
-    {
-      glDrawBuffer (GL_FRONT);
-      backend_glx->blit_framebuffer (x, y, x + width, y + height,
-                                     x, y, x + width, y + height,
-                                     GL_COLOR_BUFFER_BIT, GL_NEAREST);
-      glDrawBuffer (GL_BACK);
-    }
-
-  /* NB: unlike glXSwapBuffers, glXCopySubBuffer and
-   * glBlitFramebuffer don't issue an implicit glFlush() so we
-   * have to flush ourselves if we want the request to complete in
-   * finite amount of time since otherwise the driver can batch
-   * the command indefinitely. */
-  glFlush();
-}
-
 static XVisualInfo *
 clutter_backend_glx_get_visual_info (ClutterBackendX11 *backend_x11)
 {
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend_x11);
-  GLXFBConfig config;
-
-  if (!_clutter_backend_glx_get_fbconfig (backend_glx, &config))
-    return NULL;
-
-  return glXGetVisualFromFBConfig (backend_x11->xdpy, config);
+  return cogl_clutter_winsys_xlib_get_visual_info ();
 }
 
 static gboolean
 clutter_backend_glx_create_context (ClutterBackend  *backend,
                                     GError         **error)
 {
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  GLXFBConfig config;
-  gboolean is_direct;
-  Window root_xwin;
-  XSetWindowAttributes attrs;
-  XVisualInfo *xvisinfo;
-  Display *xdisplay;
-  int major;
-  int minor;
-  GLXDrawable dummy_drawable;
+  CoglSwapChain *swap_chain = NULL;
+  CoglOnscreenTemplate *onscreen_template = NULL;
 
-  if (backend_glx->gl_context != NULL)
+  if (backend->cogl_context)
     return TRUE;
 
-  xdisplay = clutter_x11_get_default_display ();
-  root_xwin = clutter_x11_get_root_window ();
+  backend->cogl_renderer = cogl_renderer_new ();
+  cogl_renderer_xlib_set_foreign_display (backend->cogl_renderer,
+                                          backend_x11->xdpy);
+  if (!cogl_renderer_connect (backend->cogl_renderer, error))
+    goto error;
 
-  if (!_clutter_backend_glx_get_fbconfig (backend_glx, &config))
-    {
-      g_set_error_literal (error, CLUTTER_INIT_ERROR,
-                           CLUTTER_INIT_ERROR_BACKEND,
-                           "Unable to find suitable fbconfig for the GLX context");
-      return FALSE;
-    }
+  swap_chain = cogl_swap_chain_new ();
+  cogl_swap_chain_set_has_alpha (swap_chain,
+                                 clutter_x11_get_use_argb_visual ());
 
-  CLUTTER_NOTE (BACKEND, "Creating GLX Context (display: %p)", xdisplay);
+  onscreen_template = cogl_onscreen_template_new (swap_chain);
+  cogl_object_unref (swap_chain);
 
-  backend_glx->gl_context = glXCreateNewContext (xdisplay,
-                                                 config,
-                                                 GLX_RGBA_TYPE,
-                                                 NULL,
-                                                 True);
-  if (backend_glx->gl_context == NULL)
-    {
-      g_set_error_literal (error, CLUTTER_INIT_ERROR,
-                           CLUTTER_INIT_ERROR_BACKEND,
-                           "Unable to create suitable GL context");
-      return FALSE;
-    }
+  if (!cogl_renderer_check_onscreen_template (backend->cogl_renderer,
+                                              onscreen_template,
+                                              error))
+    goto error;
 
-  is_direct = glXIsDirect (xdisplay, backend_glx->gl_context);
+  backend->cogl_display = cogl_display_new (backend->cogl_renderer,
+                                            onscreen_template);
+  cogl_object_unref (backend->cogl_renderer);
+  cogl_object_unref (onscreen_template);
 
-  CLUTTER_NOTE (GL, "Setting %s context",
-                is_direct ? "direct"
-                          : "indirect");
-  _cogl_set_indirect_context (!is_direct);
+  if (!cogl_display_setup (backend->cogl_display, error))
+    goto error;
 
-  /* COGL assumes that there is always a GL context selected; in order
-   * to make sure that a GLX context exists and is made current, we use
-   * a dummy, offscreen override-redirect window to which we can always
-   * fall back if no stage is available
-   *
-   * XXX - we need to do this dance because GLX does not allow creating
-   * a context and querying it for basic information (even the function
-   * pointers) unless it's made current to a real Drawable. it should be
-   * possible to avoid this in future releases of Mesa and X11, but right
-   * now this is the best solution available.
-   */
-  xvisinfo = glXGetVisualFromFBConfig (xdisplay, config);
-  if (xvisinfo == NULL)
-    {
-      g_set_error_literal (error, CLUTTER_INIT_ERROR,
-                           CLUTTER_INIT_ERROR_BACKEND,
-                           "Unable to retrieve the X11 visual");
-      return FALSE;
-    }
+  backend->cogl_context = cogl_context_new (backend->cogl_display, error);
+  if (!backend->cogl_context)
+    goto error;
 
-  clutter_x11_trap_x_errors ();
-
-  attrs.override_redirect = True;
-  attrs.colormap = XCreateColormap (xdisplay,
-                                    root_xwin,
-                                    xvisinfo->visual,
-                                    AllocNone);
-  attrs.border_pixel = 0;
-
-  backend_glx->dummy_xwin = XCreateWindow (xdisplay, root_xwin,
-                                           -100, -100, 1, 1,
-                                           0,
-                                           xvisinfo->depth,
-                                           CopyFromParent,
-                                           xvisinfo->visual,
-                                           CWOverrideRedirect | CWColormap | CWBorderPixel,
-                                           &attrs);
-
-  /* Try and create a GLXWindow to use with extensions dependent on
-   * GLX versions >= 1.3 that don't accept regular X Windows as GLX
-   * drawables. */
-  if (glXQueryVersion (backend_x11->xdpy, &major, &minor) &&
-      major == 1 && minor >= 3)
-    {
-      backend_glx->dummy_glxwin = glXCreateWindow (backend_x11->xdpy,
-                                                   config,
-                                                   backend_glx->dummy_xwin,
-                                                   NULL);
-    }
-
-  if (backend_glx->dummy_glxwin)
-    dummy_drawable = backend_glx->dummy_glxwin;
-  else
-    dummy_drawable = backend_glx->dummy_xwin;
-
-  CLUTTER_NOTE (BACKEND, "Selecting dummy 0x%x for the GLX context",
-                (unsigned int) dummy_drawable);
-
-  glXMakeContextCurrent (xdisplay,
-                         dummy_drawable,
-                         dummy_drawable,
-                         backend_glx->gl_context);
-
-  XFree (xvisinfo);
-
-  if (clutter_x11_untrap_x_errors ())
-    {
-      g_set_error_literal (error, CLUTTER_INIT_ERROR,
-                           CLUTTER_INIT_ERROR_BACKEND,
-                           "Unable to select the newly created GLX context");
-      return FALSE;
-    }
+  /* XXX: eventually this should go away but a lot of Cogl code still
+   * depends on a global default context. */
+  cogl_set_default_context (backend->cogl_context);
 
   return TRUE;
-}
 
-/* TODO: remove this interface in favour of
- * _clutter_stage_window_make_current () */
-static void
-clutter_backend_glx_ensure_context (ClutterBackend *backend,
-                                    ClutterStage   *stage)
-{
-  ClutterStageWindow *impl;
-
-  /* if there is no stage, the stage is being destroyed or it has no
-   * implementation attached to it then we clear the GL context
-   */
-  if (stage == NULL ||
-      CLUTTER_ACTOR_IN_DESTRUCTION (stage) ||
-      ((impl = _clutter_stage_get_window (stage)) == NULL))
+error:
+  if (backend->cogl_display)
     {
-      ClutterBackendX11 *backend_x11;
-
-      backend_x11 = CLUTTER_BACKEND_X11 (backend);
-      CLUTTER_NOTE (MULTISTAGE, "Clearing all context");
-
-      glXMakeContextCurrent (backend_x11->xdpy, None, None, NULL);
+      cogl_object_unref (backend->cogl_display);
+      backend->cogl_display = NULL;
     }
-  else
+
+  if (onscreen_template)
+    cogl_object_unref (onscreen_template);
+  if (swap_chain)
+    cogl_object_unref (swap_chain);
+
+  if (backend->cogl_renderer)
     {
-      ClutterBackendGLX *backend_glx;
-      ClutterBackendX11 *backend_x11;
-      ClutterStageGLX   *stage_glx;
-      ClutterStageX11   *stage_x11;
-      GLXDrawable        drawable;
-
-      g_assert (impl != NULL);
-
-      stage_glx = CLUTTER_STAGE_GLX (impl);
-      stage_x11 = CLUTTER_STAGE_X11 (impl);
-      backend_glx = CLUTTER_BACKEND_GLX (backend);
-      backend_x11 = CLUTTER_BACKEND_X11 (backend);
-
-      drawable = stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
-
-      CLUTTER_NOTE (BACKEND,
-                    "Setting context for stage of type %s, window: 0x%x",
-                    G_OBJECT_TYPE_NAME (impl),
-                    (unsigned int) drawable);
-
-      /* no GL context to set */
-      if (backend_glx->gl_context == NULL)
-        return;
-
-      clutter_x11_trap_x_errors ();
-
-      /* we might get here inside the final dispose cycle, so we
-       * need to handle this gracefully
-       */
-      if (drawable == None)
-        {
-          GLXDrawable dummy_drawable;
-
-          CLUTTER_NOTE (BACKEND,
-                        "Received a stale stage, clearing all context");
-
-          if (backend_glx->dummy_glxwin)
-            dummy_drawable = backend_glx->dummy_glxwin;
-          else
-            dummy_drawable = backend_glx->dummy_xwin;
-
-          if (dummy_drawable == None)
-            glXMakeContextCurrent (backend_x11->xdpy, None, None, NULL);
-          else
-            {
-              glXMakeContextCurrent (backend_x11->xdpy,
-                                     dummy_drawable,
-                                     dummy_drawable,
-                                     backend_glx->gl_context);
-            }
-        }
-      else
-        {
-          CLUTTER_NOTE (BACKEND,
-                        "MakeContextCurrent dpy: %p, window: 0x%x (%s), context: %p",
-                        backend_x11->xdpy,
-                        (unsigned int) drawable,
-                        stage_x11->is_foreign_xwin ? "foreign" : "native",
-                        backend_glx->gl_context);
-
-          glXMakeContextCurrent (backend_x11->xdpy,
-                                 drawable,
-                                 drawable,
-                                 backend_glx->gl_context);
-          /*
-           * In case we are using GLX_SGI_swap_control for vblank syncing we need call
-           * glXSwapIntervalSGI here to make sure that it affects the current drawable.
-           */
-          if (backend_glx->vblank_type == CLUTTER_VBLANK_GLX_SWAP && backend_glx->swap_interval != NULL)
-            backend_glx->swap_interval (1);
-        }
-
-      if (clutter_x11_untrap_x_errors ())
-        g_critical ("Unable to make the stage window 0x%x the current "
-                    "GLX drawable",
-                    (unsigned int) drawable);
+      cogl_object_unref (backend->cogl_renderer);
+      backend->cogl_renderer = NULL;
     }
+  return FALSE;
 }
 
 static ClutterStageWindow *
@@ -810,6 +324,16 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
                 wrapper);
 
   return stage_window;
+}
+
+static void
+clutter_backend_glx_ensure_context (ClutterBackend *backend,
+                                    ClutterStage   *stage)
+{
+  ClutterStageGLX *stage_glx =
+    CLUTTER_STAGE_GLX (_clutter_stage_get_window (stage));
+
+  cogl_set_framebuffer (COGL_FRAMEBUFFER (stage_glx->onscreen));
 }
 
 static void

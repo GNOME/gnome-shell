@@ -38,7 +38,7 @@
 #include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-opengl-private.h"
-#include "cogl-winsys.h"
+#include "cogl-winsys-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-matrix-private.h"
 #include "cogl-journal-private.h"
@@ -392,14 +392,6 @@ cogl_features_available (CoglFeatureFlags features)
   _COGL_GET_CONTEXT (ctx, 0);
 
   return (ctx->feature_flags & features) == features;
-}
-
-gboolean
-_cogl_features_available_private (CoglFeatureFlagsPrivate features)
-{
-  _COGL_GET_CONTEXT (ctx, 0);
-
-  return (ctx->feature_flags_private & features) == features;
 }
 
 /* XXX: This function should either be replaced with one returning

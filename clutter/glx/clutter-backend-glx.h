@@ -47,29 +47,10 @@ typedef struct _ClutterBackendGLXClass  ClutterBackendGLXClass;
 
 typedef enum ClutterGLXVBlankType {
   CLUTTER_VBLANK_NONE = 0,
-  CLUTTER_VBLANK_GLX_SWAP,
-  CLUTTER_VBLANK_GLX,
-  CLUTTER_VBLANK_DRI
+  CLUTTER_VBLANK_AUTOMATIC_THROTTLE,
+  CLUTTER_VBLANK_VBLANK_COUNTER,
+  CLUTTER_VBLANK_MANUAL_WAIT
 } ClutterGLXVBlankType;
-
-typedef int (*GetVideoSyncProc)  (unsigned int *count);
-typedef int (*WaitVideoSyncProc) (int           divisor,
-                                  int           remainder,
-                                  unsigned int *count);
-typedef int (*SwapIntervalProc)  (int           interval);
-typedef void (*CopySubBufferProc)(Display *dpy,
-                                  GLXDrawable drawable,
-                                  int x, int y, int width, int height);
-typedef void (*BlitFramebufferProc) (GLint      srcX0,
-                                     GLint      srcY0,
-                                     GLint      srcX1,
-                                     GLint      srcY1,
-                                     GLint      dstX0,
-                                     GLint      dstY0,
-                                     GLint      dstX1,
-                                     GLint      dstY1,
-                                     GLbitfield mask,
-                                     GLenum     filter);
 
 struct _ClutterBackendGLX
 {
@@ -78,25 +59,13 @@ struct _ClutterBackendGLX
   int                    error_base;
   int                    event_base;
 
-  /* Single context for all wins */
-  gboolean               found_fbconfig;
-  GLXFBConfig            fbconfig;
-  GLXContext             gl_context;
-  Window                 dummy_xwin;
-  GLXWindow              dummy_glxwin;
+  CoglContext           *cogl_context;
 
   /* Vblank stuff */
-  GetVideoSyncProc       get_video_sync;
-  WaitVideoSyncProc      wait_video_sync;
-  SwapIntervalProc       swap_interval;
-  gint                   dri_fd;
   ClutterGLXVBlankType   vblank_type;
   unsigned int           last_video_sync_count;
 
   gboolean               can_blit_sub_buffer;
-  CopySubBufferProc      copy_sub_buffer;
-  BlitFramebufferProc    blit_framebuffer;
-  gboolean               blit_sub_buffer_is_synchronized;
 
   /* props */
   Atom atom_WM_STATE;
@@ -110,14 +79,8 @@ struct _ClutterBackendGLXClass
 
 GType _clutter_backend_glx_get_type (void) G_GNUC_CONST;
 
-gboolean
-_clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_x11,
-                                   GLXFBConfig       *config);
-
-void
-_clutter_backend_glx_blit_sub_buffer (ClutterBackendGLX *backend_glx,
-                                      GLXDrawable drawable,
-                                      int x, int y, int width, int height);
+G_CONST_RETURN gchar*
+_clutter_backend_glx_get_vblank (void);
 
 G_END_DECLS
 

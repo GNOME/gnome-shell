@@ -30,6 +30,11 @@
 
 #include <glib-object.h>
 
+#include <cogl/cogl-defines.h>
+#ifdef COGL_HAS_XLIB
+#include <X11/Xlib.h>
+#endif
+
 G_BEGIN_DECLS
 
 /* Some structures are meant to be opaque but they have public
@@ -284,7 +289,8 @@ typedef enum
   COGL_FEATURE_TEXTURE_3D             = (1 << 19),
   COGL_FEATURE_SHADERS_ARBFP          = (1 << 20),
   COGL_FEATURE_MAP_BUFFER_FOR_READ    = (1 << 21),
-  COGL_FEATURE_MAP_BUFFER_FOR_WRITE   = (1 << 22)
+  COGL_FEATURE_MAP_BUFFER_FOR_WRITE   = (1 << 22),
+  COGL_FEATURE_ONSCREEN_MULTIPLE      = (1 << 23)
 } CoglFeatureFlags;
 
 /**
@@ -582,10 +588,83 @@ typedef enum
   COGL_DEPTH_TEST_FUNCTION_GEQUAL   = 0x0206,
   COGL_DEPTH_TEST_FUNCTION_ALWAYS   = 0x0207
 } CoglDepthTestFunction;
-/* XXX: Note these types are only referenced by experimental API so
- * although they aren't explicitly guarded they are implicitly
- * experimental too. */
 /* NB: The above definitions are taken from gl.h equivalents */
+
+typedef enum { /*< prefix=COGL_RENDERER_ERROR >*/
+  COGL_RENDERER_ERROR_NOT_FOUND,
+  COGL_RENDERER_ERROR_XLIB_DISPLAY_OPEN
+} CoglRendererError;
+
+/*
+ * CoglXlibFilterReturn:
+ * @COGL_XLIB_FILTER_CONTINUE: The event was not handled, continues the
+ *                            processing
+ * @COGL_XLIB_FILTER_REMOVE: Remove the event, stops the processing
+ *
+ * Return values for the #CoglXlibFilterFunc function.
+ *
+ * Stability: Unstable
+ */
+typedef enum _CoglXlibFilterReturn { /*< prefix=COGL_XLIB_FILTER >*/
+  COGL_XLIB_FILTER_CONTINUE,
+  COGL_XLIB_FILTER_REMOVE
+} CoglXlibFilterReturn;
+
+typedef enum _CoglWinsysFeature
+{
+  COGL_WINSYS_FEATURE_NONE,
+
+  /* Available if the window system can support multiple onscreen
+   * framebuffers at the same time. */
+  COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
+
+  /* Available if onscreen framebuffer swaps can be automatically
+   * throttled to the vblank frequency. */
+  COGL_WINSYS_FEATURE_SWAP_THROTTLE,
+
+  /* Available if its possible to query a counter that
+   * increments at each vblank. */
+  COGL_WINSYS_FEATURE_VBLANK_COUNTER,
+
+  /* Available if its possible to wait until the next vertical
+   * blank period */
+  COGL_WINSYS_FEATURE_VBLANK_WAIT,
+
+  /* Available if the window system supports mapping native
+   * pixmaps to textures. */
+  COGL_WINSYS_FEATURE_TEXTURE_FROM_PIXMAP,
+
+  /* Available if the window system supports reporting an event
+   * for swap buffer completions. */
+  COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT,
+
+  /* Available if it's possible to swap a list of sub rectangles
+   * from the back buffer to the front buffer */
+  COGL_WINSYS_FEATURE_SWAP_REGION,
+
+  /* Available if swap_region requests can be automatically throttled
+   * to the vblank frequency. */
+  COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE
+} CoglWinsysFeature;
+
+/* XXX: Note these enum types are only referenced by experimental API
+ * so although they aren't explicitly guarded they are implicitly
+ * experimental too. */
+
+#ifdef COGL_HAS_XLIB
+
+/*
+ * CoglXlibFilterFunc:
+ *
+ * A callback function that can be registered with
+ * _cogl_xlib_add_filter. The function should return
+ * %COGL_XLIB_FILTER_REMOVE if it wants to prevent further processing
+ * or %COGL_XLIB_FILTER_CONTINUE otherwise.
+ */
+typedef CoglXlibFilterReturn (* CoglXlibFilterFunc) (XEvent *xevent,
+                                                     void *data);
+
+#endif /* COGL_HAS_XLIB */
 
 G_END_DECLS
 

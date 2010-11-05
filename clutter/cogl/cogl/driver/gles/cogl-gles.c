@@ -33,7 +33,7 @@
 #include "cogl-feature-private.h"
 
 gboolean
-_cogl_check_driver_valid (GError **error)
+_cogl_gl_check_version (GError **error)
 {
   /* The GLES backend doesn't have any particular version requirements */
   return TRUE;
@@ -58,8 +58,8 @@ _cogl_check_driver_valid (GError **error)
                            namespaces, extension_names,                 \
                            feature_flags, feature_flags_private)        \
   { min_gl_major, min_gl_minor, namespaces,                             \
-      extension_names, feature_flags, feature_flags_private,            \
-      cogl_feature_ ## name ## _funcs },
+    extension_names, feature_flags, feature_flags_private, 0,           \
+    cogl_feature_ ## name ## _funcs },
 #undef COGL_FEATURE_FUNCTION
 #define COGL_FEATURE_FUNCTION(ret, name, args)
 #undef COGL_FEATURE_END
@@ -74,36 +74,44 @@ static const CoglFeatureData cogl_feature_data[] =
 #define COGL_FEATURE_BEGIN(a, b, c, d, e, f, g)
 #undef COGL_FEATURE_FUNCTION
 #define COGL_FEATURE_FUNCTION(ret, name, args) \
-  _context->drv.pf_ ## name = NULL;
+  context->drv.pf_ ## name = NULL;
 #undef COGL_FEATURE_END
 #define COGL_FEATURE_END()
 
 static void
-initialize_context_driver (CoglContext *context)
+initialize_function_table (CoglContext *context)
 {
   #include "cogl-feature-functions-gles.h"
 }
 
+/* Query the GL extensions and lookup the corresponding function
+ * pointers. Theoretically the list of extensions can change for
+ * different GL contexts so it is the winsys backend's responsiblity
+ * to know when to re-query the GL extensions. */
 void
-_cogl_gl_context_init (CoglContext *context)
+_cogl_gl_update_features (CoglContext *context)
 {
   CoglFeatureFlags flags = 0;
+  const char *gl_extensions;
 #ifndef HAVE_COGL_GLES2
   int max_clip_planes = 0;
 #endif
   int num_stencil_bits = 0;
-  const char *gl_extensions;
   int i;
 
-  initialize_context_driver (context);
+  COGL_NOTE (WINSYS,
+             "Checking features\n"
+             "  GL_VENDOR: %s\n"
+             "  GL_RENDERER: %s\n"
+             "  GL_VERSION: %s\n"
+             "  GL_EXTENSIONS: %s",
+             glGetString (GL_VENDOR),
+             glGetString (GL_RENDERER),
+             glGetString (GL_VERSION),
+             glGetString (GL_EXTENSIONS));
 
   gl_extensions = (const char*) glGetString (GL_EXTENSIONS);
 
-  for (i = 0; i < G_N_ELEMENTS (cogl_feature_data); i++)
-    if (_cogl_feature_check ("GL", cogl_feature_data + i,
-                             0, 0,
-                             gl_extensions))
-        flags |= cogl_feature_data[i].feature_flags;
 
   GE( glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
   /* We need at least three stencil bits to combine clips */
@@ -128,7 +136,15 @@ _cogl_gl_context_init (CoglContext *context)
   /* Both GLES 1.1 and GLES 2.0 support point sprites in core */
   flags |= COGL_FEATURE_POINT_SPRITE;
 
-  /* Cache features */
-  context->feature_flags = flags;
-}
+  initialize_function_table (context);
 
+  for (i = 0; i < G_N_ELEMENTS (cogl_feature_data); i++)
+    if (_cogl_feature_check ("GL", cogl_feature_data + i,
+                             0, 0,
+                             gl_extensions,
+                             context))
+      flags |= cogl_feature_data[i].feature_flags;
+
+  /* Cache features */
+  context->feature_flags |= flags;
+}

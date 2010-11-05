@@ -37,6 +37,11 @@ struct _ClutterBackend
 {
   /*< private >*/
   GObject                parent_instance;
+
+  CoglRenderer          *cogl_renderer;
+  CoglDisplay           *cogl_display;
+  CoglContext           *cogl_context;
+
   ClutterBackendPrivate *priv;
 };
 

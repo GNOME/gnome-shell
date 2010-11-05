@@ -672,7 +672,6 @@ clutter_stage_realize (ClutterActor *self)
   if (is_realized)
     {
       ClutterBackend *backend = clutter_get_default_backend ();
-      GError *error = NULL;
 
       /* We want to select the context without calling
          clutter_backend_ensure_context so that it doesn't call any
@@ -680,17 +679,6 @@ clutter_stage_realize (ClutterActor *self)
          before we get a chance to check whether the GL version is
          valid */
       _clutter_backend_ensure_context_internal (backend, CLUTTER_STAGE (self));
-
-      /* Make sure Cogl can support the driver */
-      if (!_cogl_check_driver_valid (&error))
-        {
-          g_critical ("The GL driver is not supported: %s",
-                      error->message);
-          g_clear_error (&error);
-          CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
-        }
-      else
-        CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
     }
   else
     CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);

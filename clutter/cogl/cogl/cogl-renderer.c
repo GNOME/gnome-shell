@@ -50,6 +50,9 @@ cogl_renderer_error_quark (void)
 static void
 _cogl_renderer_free (CoglRenderer *renderer)
 {
+#ifdef COGL_HAS_FULL_WINSYS
+  _cogl_winsys_renderer_disconnect (renderer);
+#endif
   g_free (renderer);
 }
 
@@ -90,6 +93,21 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
                                        CoglOnscreenTemplate *onscreen_template,
                                        GError **error)
 {
+#ifdef COGL_HAS_FULL_WINSYS
+  CoglDisplay *display;
+
+  if (!_cogl_winsys_renderer_connect (renderer, error))
+    return FALSE;
+
+  display = cogl_display_new (renderer, onscreen_template);
+  if (!cogl_display_setup (display, error))
+    {
+      cogl_object_unref (display);
+      return FALSE;
+    }
+
+  cogl_object_unref (display);
+#endif
   return TRUE;
 }
 
@@ -100,6 +118,11 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
 {
   if (renderer->connected)
     return TRUE;
+
+#ifdef COGL_HAS_FULL_WINSYS
+  if (!_cogl_winsys_renderer_connect (renderer, error))
+    return FALSE;
+#endif
 
   renderer->connected = TRUE;
   return TRUE;

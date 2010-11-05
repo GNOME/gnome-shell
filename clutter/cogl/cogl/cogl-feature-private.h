@@ -26,6 +26,8 @@
 
 #include <glib.h>
 
+#include "cogl-internal.h"
+
 #define COGL_CHECK_GL_VERSION(driver_major, driver_minor, \
                               target_major, target_minor) \
   ((driver_major) > (target_major) || \
@@ -59,17 +61,21 @@ struct _CoglFeatureData
   const char *extension_names;
   /* A set of feature flags to enable if the extension is available */
   CoglFeatureFlags feature_flags;
-  /* A set of private feature flags to enable if the extension is available
-   * and for internal use only */
-  CoglFeatureFlagsPrivate feature_flags_private;
+  /* FIXME: This is now unused */
+  int padding_feature_flags_private;
+  /* An optional corresponding winsys feature. */
+  CoglWinsysFeature winsys_feature;
   /* A list of functions required for this feature. Terminated with a
      NULL name */
   const CoglFeatureFunction *functions;
 };
 
-gboolean _cogl_feature_check (const char *driver_prefix,
-                              const CoglFeatureData *data,
-                              unsigned int gl_major, unsigned int gl_minor,
-                              const char *extensions_string);
+gboolean
+_cogl_feature_check (const char *driver_prefix,
+                     const CoglFeatureData *data,
+                     unsigned int gl_major,
+                     unsigned int gl_minor,
+                     const char *extensions_string,
+                     void *function_table);
 
 #endif /* __COGL_FEATURE_PRIVATE_H */

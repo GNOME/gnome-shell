@@ -31,6 +31,9 @@
 #ifndef __COGL_DISPLAY_H__
 #define __COGL_DISPLAY_H__
 
+#include <cogl/cogl-renderer.h>
+#include <cogl/cogl-onscreen-template.h>
+
 G_BEGIN_DECLS
 
 /**
@@ -69,8 +72,15 @@ typedef struct _CoglDisplay	      CoglDisplay;
 
 #define COGL_DISPLAY(OBJECT) ((CoglDisplay *)OBJECT)
 
+#define cogl_display_new cogl_display_new_EXP
 CoglDisplay *
-cogl_display_new (CoglDisplay *display);
+cogl_display_new (CoglRenderer *renderer,
+                  CoglOnscreenTemplate *onscreen_template);
+
+#define cogl_display_setup cogl_display_setup_EXP
+gboolean
+cogl_display_setup (CoglDisplay *display,
+                    GError **error);
 
 G_END_DECLS
 

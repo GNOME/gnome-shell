@@ -42,7 +42,11 @@
 #include "cogl-texture-rectangle-private.h"
 #include "cogl-context-private.h"
 #include "cogl-handle.h"
-#include "cogl-winsys-xlib.h"
+#if COGL_HAS_GLX_SUPPORT
+#include "cogl-display-glx-private.h"
+#include "cogl-renderer-private.h"
+#include "cogl-renderer-glx-private.h"
+#endif
 #include "cogl-pipeline-opengl-private.h"
 
 #include <X11/Xlib.h>
@@ -54,9 +58,6 @@
 
 #include <string.h>
 #include <math.h>
-
-#define glXBindTexImage ctx->winsys.pf_glXBindTexImage
-#define glXReleaseTexImage ctx->winsys.pf_glXReleaseTexImage
 
 static void _cogl_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap);
 
@@ -112,7 +113,7 @@ process_damage_event (CoglTexturePixmapX11 *tex_pixmap,
 
   _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
 
-  display = _cogl_xlib_get_display ();
+  display = cogl_xlib_get_display ();
 
   COGL_NOTE (TEXTURE_PIXMAP, "Damage event received for %p", tex_pixmap);
 
@@ -206,10 +207,12 @@ static CoglXlibFilterReturn
 _cogl_texture_pixmap_x11_filter (XEvent *event, gpointer data)
 {
   CoglTexturePixmapX11 *tex_pixmap = data;
+  int damage_base;
 
   _COGL_GET_CONTEXT (ctxt, COGL_XLIB_FILTER_CONTINUE);
 
-  if (event->type == ctxt->winsys.damage_base + XDamageNotify)
+  damage_base = _cogl_xlib_get_damage_base ();
+  if (event->type == damage_base + XDamageNotify)
     {
       XDamageNotifyEvent *damage_event = (XDamageNotifyEvent *) event;
 
@@ -228,26 +231,28 @@ get_fbconfig_for_depth (unsigned int depth,
                         gboolean *can_mipmap_ret)
 {
   GLXFBConfig *fbconfigs;
-  int          n_elements, i;
-  Display     *dpy;
-  int          db, stencil, alpha, mipmap, rgba, value;
-  int          spare_cache_slot = 0;
-  gboolean     found = FALSE;
+  int n_elements, i;
+  Display *dpy;
+  int db, stencil, alpha, mipmap, rgba, value;
+  int spare_cache_slot = 0;
+  gboolean found = FALSE;
+  CoglDisplayGLX *glx_display;
 
   _COGL_GET_CONTEXT (ctxt, FALSE);
+  glx_display = ctxt->display->winsys;
 
   /* Check if we've already got a cached config for this depth */
-  for (i = 0; i < COGL_WINSYS_N_CACHED_CONFIGS; i++)
-    if (ctxt->winsys.glx_cached_configs[i].depth == -1)
+  for (i = 0; i < COGL_GLX_N_CACHED_CONFIGS; i++)
+    if (glx_display->glx_cached_configs[i].depth == -1)
       spare_cache_slot = i;
-    else if (ctxt->winsys.glx_cached_configs[i].depth == depth)
+    else if (glx_display->glx_cached_configs[i].depth == depth)
       {
-        *fbconfig_ret = ctxt->winsys.glx_cached_configs[i].fb_config;
-        *can_mipmap_ret = ctxt->winsys.glx_cached_configs[i].can_mipmap;
-        return ctxt->winsys.glx_cached_configs[i].found;
+        *fbconfig_ret = glx_display->glx_cached_configs[i].fb_config;
+        *can_mipmap_ret = glx_display->glx_cached_configs[i].can_mipmap;
+        return glx_display->glx_cached_configs[i].found;
       }
 
-  dpy = _cogl_xlib_get_display ();
+  dpy = cogl_xlib_get_display ();
 
   fbconfigs = glXGetFBConfigs (dpy, DefaultScreen (dpy),
                                &n_elements);
@@ -349,10 +354,10 @@ get_fbconfig_for_depth (unsigned int depth,
   if (n_elements)
     XFree (fbconfigs);
 
-  ctxt->winsys.glx_cached_configs[spare_cache_slot].depth = depth;
-  ctxt->winsys.glx_cached_configs[spare_cache_slot].found = found;
-  ctxt->winsys.glx_cached_configs[spare_cache_slot].fb_config = *fbconfig_ret;
-  ctxt->winsys.glx_cached_configs[spare_cache_slot].can_mipmap = mipmap;
+  glx_display->glx_cached_configs[spare_cache_slot].depth = depth;
+  glx_display->glx_cached_configs[spare_cache_slot].found = found;
+  glx_display->glx_cached_configs[spare_cache_slot].fb_config = *fbconfig_ret;
+  glx_display->glx_cached_configs[spare_cache_slot].can_mipmap = mipmap;
 
   return found;
 }
@@ -362,7 +367,7 @@ should_use_rectangle (void)
 {
   _COGL_GET_CONTEXT (ctxt, FALSE);
 
-  if (ctxt->winsys.rectangle_state == COGL_WINSYS_RECTANGLE_STATE_UNKNOWN)
+  if (ctxt->rectangle_state == COGL_WINSYS_RECTANGLE_STATE_UNKNOWN)
     {
       if (cogl_features_available (COGL_FEATURE_TEXTURE_RECTANGLE))
         {
@@ -378,7 +383,7 @@ should_use_rectangle (void)
              the env var is set to 'allow' or not set and NPOTs textures
              are not available */
 
-          ctxt->winsys.rectangle_state =
+          ctxt->rectangle_state =
             cogl_features_available (COGL_FEATURE_TEXTURE_NPOT) ?
             COGL_WINSYS_RECTANGLE_STATE_DISABLE :
             COGL_WINSYS_RECTANGLE_STATE_ENABLE;
@@ -389,10 +394,10 @@ should_use_rectangle (void)
               (rect_env = g_getenv ("CLUTTER_PIXMAP_TEXTURE_RECTANGLE")))
             {
               if (g_ascii_strcasecmp (rect_env, "force") == 0)
-                ctxt->winsys.rectangle_state =
+                ctxt->rectangle_state =
                   COGL_WINSYS_RECTANGLE_STATE_ENABLE;
               else if (g_ascii_strcasecmp (rect_env, "disable") == 0)
-                ctxt->winsys.rectangle_state =
+                ctxt->rectangle_state =
                   COGL_WINSYS_RECTANGLE_STATE_DISABLE;
               else if (g_ascii_strcasecmp (rect_env, "allow"))
                 g_warning ("Unknown value for COGL_PIXMAP_TEXTURE_RECTANGLE, "
@@ -400,10 +405,10 @@ should_use_rectangle (void)
             }
         }
       else
-        ctxt->winsys.rectangle_state = COGL_WINSYS_RECTANGLE_STATE_DISABLE;
+        ctxt->rectangle_state = COGL_WINSYS_RECTANGLE_STATE_DISABLE;
     }
 
-  return ctxt->winsys.rectangle_state == COGL_WINSYS_RECTANGLE_STATE_ENABLE;
+  return ctxt->rectangle_state == COGL_WINSYS_RECTANGLE_STATE_ENABLE;
 }
 
 static void
@@ -425,11 +430,10 @@ try_create_glx_pixmap (CoglTexturePixmapX11 *tex_pixmap,
   tex_pixmap->pixmap_bound = FALSE;
   tex_pixmap->glx_pixmap = None;
 
-  if ((ctxt->winsys.feature_flags &
-       COGL_WINSYS_FEATURE_TEXTURE_FROM_PIXMAP) == 0)
+  if (!_cogl_winsys_has_feature (COGL_WINSYS_FEATURE_TEXTURE_FROM_PIXMAP))
     return;
 
-  dpy = _cogl_xlib_get_display ();
+  dpy = cogl_xlib_get_display ();
 
   if (!get_fbconfig_for_depth (tex_pixmap->depth, &fb_config,
                                &tex_pixmap->glx_can_mipmap))
@@ -507,7 +511,7 @@ set_damage_object_internal (CoglTexturePixmapX11 *tex_pixmap,
 
       if (tex_pixmap->damage_owned)
         {
-          XDamageDestroy (_cogl_xlib_get_display (), tex_pixmap->damage);
+          XDamageDestroy (cogl_xlib_get_display (), tex_pixmap->damage);
           tex_pixmap->damage_owned = FALSE;
         }
     }
@@ -524,12 +528,13 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
                              gboolean automatic_updates)
 {
   CoglTexturePixmapX11 *tex_pixmap = g_new (CoglTexturePixmapX11, 1);
-  Display *display = _cogl_xlib_get_display ();
+  Display *display = cogl_xlib_get_display ();
   Window pixmap_root_window;
   int pixmap_x, pixmap_y;
   unsigned int pixmap_border_width;
   CoglTexture *tex = COGL_TEXTURE (tex_pixmap);
   XWindowAttributes window_attributes;
+  int damage_base;
 
   _COGL_GET_CONTEXT (ctxt, COGL_INVALID_HANDLE);
 
@@ -565,7 +570,8 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
   /* If automatic updates are requested and the Xlib connection
      supports damage events then we'll register a damage object on the
      pixmap */
-  if (automatic_updates && ctxt->winsys.damage_base >= 0)
+  damage_base = _cogl_xlib_get_damage_base ();
+  if (automatic_updates && damage_base >= 0)
     {
       Damage damage = XDamageCreate (display,
                                      pixmap,
@@ -601,7 +607,7 @@ try_alloc_shm (CoglTexturePixmapX11 *tex_pixmap)
   XImage *dummy_image;
   Display *display;
 
-  display = _cogl_xlib_get_display ();
+  display = cogl_xlib_get_display ();
 
   if (!XShmQueryExtension (display))
     return;
@@ -709,13 +715,15 @@ cogl_texture_pixmap_x11_set_damage_object (CoglHandle handle,
                                                                   report_level)
 {
   CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (handle);
+  int damage_base;
 
   _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
 
   if (!cogl_is_texture_pixmap_x11 (tex_pixmap))
     return;
 
-  if (ctxt->winsys.damage_base >= 0)
+  damage_base = _cogl_xlib_get_damage_base ();
+  if (damage_base >= 0)
     set_damage_object_internal (tex_pixmap, damage, report_level);
 }
 
@@ -728,7 +736,7 @@ _cogl_texture_pixmap_x11_update_image_texture (CoglTexturePixmapX11 *tex_pixmap)
   int src_x, src_y;
   int x, y, width, height;
 
-  display = _cogl_xlib_get_display ();
+  display = cogl_xlib_get_display ();
 
   /* If the damage region is empty then there's nothing to do */
   if (tex_pixmap->damage_rect.x2 == tex_pixmap->damage_rect.x1)
@@ -889,12 +897,15 @@ _cogl_texture_pixmap_x11_free_glx_pixmap (CoglTexturePixmapX11 *tex_pixmap)
   if (tex_pixmap->glx_pixmap)
     {
       CoglXlibTrapState trap_state;
+      CoglRendererGLX *glx_renderer;
 
       _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+      glx_renderer = ctx->display->renderer->winsys;
 
       if (tex_pixmap->pixmap_bound)
-        glXReleaseTexImage (_cogl_xlib_get_display (), tex_pixmap->glx_pixmap,
-                            GLX_FRONT_LEFT_EXT);
+        glx_renderer->pf_glXReleaseTexImage (cogl_xlib_get_display (),
+                                             tex_pixmap->glx_pixmap,
+                                             GLX_FRONT_LEFT_EXT);
 
       /* FIXME - we need to trap errors and synchronize here because
        * of ordering issues between the XPixmap destruction and the
@@ -913,8 +924,8 @@ _cogl_texture_pixmap_x11_free_glx_pixmap (CoglTexturePixmapX11 *tex_pixmap)
        *   http://bugzilla.clutter-project.org/show_bug.cgi?id=2324
        */
       _cogl_xlib_trap_errors (&trap_state);
-      glXDestroyPixmap (_cogl_xlib_get_display (), tex_pixmap->glx_pixmap);
-      XSync (_cogl_xlib_get_display (), False);
+      glXDestroyPixmap (cogl_xlib_get_display (), tex_pixmap->glx_pixmap);
+      XSync (cogl_xlib_get_display (), False);
       _cogl_xlib_untrap_errors (&trap_state);
 
       tex_pixmap->glx_pixmap = None;
@@ -927,8 +938,10 @@ _cogl_texture_pixmap_x11_update_glx_texture (CoglTexturePixmapX11 *tex_pixmap,
                                              gboolean needs_mipmap)
 {
   gboolean ret = TRUE;
+  CoglRendererGLX *glx_renderer;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
+  glx_renderer = ctx->display->renderer->winsys;
 
   /* If we don't have a GLX pixmap then fallback */
   if (tex_pixmap->glx_pixmap == None)
@@ -1031,14 +1044,14 @@ _cogl_texture_pixmap_x11_update_glx_texture (CoglTexturePixmapX11 *tex_pixmap,
           GE( _cogl_bind_gl_texture_transient (gl_target, gl_handle, FALSE) );
 
           if (tex_pixmap->pixmap_bound)
-            glXReleaseTexImage (_cogl_xlib_get_display (),
-                                tex_pixmap->glx_pixmap,
-                                GLX_FRONT_LEFT_EXT);
+            glx_renderer->pf_glXReleaseTexImage (cogl_xlib_get_display (),
+                                                 tex_pixmap->glx_pixmap,
+                                                 GLX_FRONT_LEFT_EXT);
 
-          glXBindTexImage (_cogl_xlib_get_display (),
-                           tex_pixmap->glx_pixmap,
-                           GLX_FRONT_LEFT_EXT,
-                           NULL);
+          glx_renderer->pf_glXBindTexImage (cogl_xlib_get_display (),
+                                            tex_pixmap->glx_pixmap,
+                                            GLX_FRONT_LEFT_EXT,
+                                            NULL);
 
           /* According to the recommended usage in the spec for
              GLX_EXT_texture_pixmap we should release the texture after
@@ -1373,7 +1386,7 @@ _cogl_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
 
   if (tex_pixmap->shm_info.shmid != -1)
     {
-      XShmDetach (_cogl_xlib_get_display (), &tex_pixmap->shm_info);
+      XShmDetach (cogl_xlib_get_display (), &tex_pixmap->shm_info);
       shmdt (tex_pixmap->shm_info.shmaddr);
       shmctl (tex_pixmap->shm_info.shmid, IPC_RMID, 0);
     }

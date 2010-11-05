@@ -379,6 +379,13 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
   ClutterDeviceManager *device_manager;
   int event_flags;
 
+  if (clutter_stages_by_xid == NULL)
+    clutter_stages_by_xid = g_hash_table_new (NULL, NULL);
+
+  g_hash_table_insert (clutter_stages_by_xid,
+                       GINT_TO_POINTER (stage_x11->xwin),
+                       stage_x11);
+
   set_wm_pid (stage_x11);
   set_wm_title (stage_x11);
   set_cursor_visible (stage_x11);
@@ -1435,13 +1442,6 @@ _clutter_stage_x11_create_window (ClutterStageX11 *stage_x11)
                 stage_x11->xwin_height);
 
   XFree (xvisinfo);
-
-  if (clutter_stages_by_xid == NULL)
-    clutter_stages_by_xid = g_hash_table_new (NULL, NULL);
-
-  g_hash_table_insert (clutter_stages_by_xid,
-                       GINT_TO_POINTER (stage_x11->xwin),
-                       stage_x11);
 
   return TRUE;
 }

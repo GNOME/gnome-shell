@@ -447,6 +447,8 @@ AS_IF([test "x$SUPPORT_GLX" = "x1"],
       [
         AC_DEFINE([COGL_HAS_GLX_SUPPORT], [1], [Cogl supports OpenGL using the GLX API])
 
+        AC_DEFINE([COGL_HAS_FULL_WINSYS], [1], [Cogl can create its own OpenGL context])
+
         AC_DEFINE([HAVE_CLUTTER_GLX], [1], [Have the GLX backend])
 
         AC_CHECK_HEADERS([GL/glx.h],
