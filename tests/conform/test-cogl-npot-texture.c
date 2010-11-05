@@ -7,7 +7,7 @@
 static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
 /* Non-power-of-two sized texture that should cause slicing */
-#define TEXTURE_SIZE        257
+#define TEXTURE_SIZE        384
 /* Number of times to split the texture up on each axis */
 #define PARTS               2
 /* The texture is split into four parts, each with a different colour */
@@ -18,7 +18,7 @@ static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 #define TEST_INSET          4
 
 /* Size to actually render the texture at */
-#define TEXTURE_RENDER_SIZE 128
+#define TEXTURE_RENDER_SIZE TEXTURE_SIZE
 /* The size of a part once rendered */
 #define PART_RENDER_SIZE    (TEXTURE_RENDER_SIZE / PARTS)
 
@@ -90,10 +90,21 @@ static void
 on_paint (ClutterActor *actor, TestState *state)
 {
   int frame_num;
+  int y, x;
 
   /* Just render the texture in the top left corner */
   cogl_set_source_texture (state->texture);
-  cogl_rectangle (0, 0, TEXTURE_RENDER_SIZE, TEXTURE_RENDER_SIZE);
+  /* Render the texture using four separate rectangles */
+  for (y = 0; y < 2; y++)
+    for (x = 0; x < 2; x++)
+      cogl_rectangle_with_texture_coords (x * TEXTURE_RENDER_SIZE / 2,
+                                          y * TEXTURE_RENDER_SIZE / 2,
+                                          (x + 1) * TEXTURE_RENDER_SIZE / 2,
+                                          (y + 1) * TEXTURE_RENDER_SIZE / 2,
+                                          x / 2.0f,
+                                          y / 2.0f,
+                                          (x + 1) / 2.0f,
+                                          (y + 1) / 2.0f);
 
   /* XXX: validate_result calls clutter_stage_read_pixels which will result in
    * another paint run so to avoid infinite recursion we only aim to validate
