@@ -186,6 +186,8 @@ cogl_create_context (void)
 
   _context->framebuffer_stack = _cogl_create_framebuffer_stack ();
 
+  _context->current_clip_stack_valid = FALSE;
+
   window_buffer = _cogl_onscreen_new ();
   cogl_set_framebuffer (window_buffer);
   /* XXX: the deprecated _cogl_set_draw_buffer API expects to
@@ -209,8 +211,6 @@ cogl_create_context (void)
   _context->rectangle_short_indices_len = 0;
 
   _context->texture_download_pipeline = COGL_INVALID_HANDLE;
-
-  _context->current_clip_stack_valid = FALSE;
 
   /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
    * the test being disabled therefore we assume that for all drivers there
