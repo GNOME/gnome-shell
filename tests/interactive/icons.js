@@ -20,9 +20,10 @@ function addTest(label, icon_props) {
     if (b.get_children().length > 0)
         b.add (new St.BoxLayout({ style: 'background: #cccccc; border: 10px transparent white; height: 1px; ' }));
 
-    let hb = new St.BoxLayout({ vertical: false });
+    let hb = new St.BoxLayout({ vertical: false,
+                                style: 'spacing: 10px;' });
 
-    hb.add(new St.Label({ text: label }));
+    hb.add(new St.Label({ text: label }), { y_fill: false });
     hb.add(new St.Icon(icon_props));
 
     b.add(hb);
@@ -50,7 +51,7 @@ addTest("Size set by style",
 addTest("16px icon in 48px icon widget",
         { icon_name: 'battery-full',
           icon_type: St.IconType.SYMBOLIC,
-          style: 'icon-size: 16px; width: 48px; height: 48px;' });
+          style: 'icon-size: 16px; width: 48px; height: 48px; border: 1px solid black;' });
 
 function iconRow(icons, box_style) {
     let hb = new St.BoxLayout({ vertical: false, style: box_style });
