@@ -25,6 +25,7 @@
 #define __COGL_CONTEXT_PRIVATE_H
 
 #include "cogl-internal.h"
+#include "cogl-context.h"
 
 #if HAVE_COGL_GL
 #include "cogl-context-driver-gl.h"
@@ -50,8 +51,10 @@ typedef struct
   GLubyte c[4];
 } CoglTextureGLVertex;
 
-typedef struct
+struct _CoglContext
 {
+  CoglObject _parent;
+
   /* Features cache */
   CoglFeatureFlags        feature_flags;
   CoglFeatureFlagsPrivate feature_flags_private;
@@ -236,7 +239,7 @@ typedef struct
 
   CoglContextDriver drv;
   CoglContextWinsys winsys;
-} CoglContext;
+};
 
 CoglContext *
 _cogl_context_get_default ();

@@ -26,6 +26,7 @@
 #endif
 
 #include "cogl.h"
+#include "cogl-object.h"
 #include "cogl-internal.h"
 #include "cogl-profile.h"
 #include "cogl-util.h"
@@ -48,6 +49,10 @@
 #ifndef GL_POINT_SPRITE
 #define GL_POINT_SPRITE 0x8861
 #endif
+
+static void _cogl_context_free (CoglContext *context);
+
+COGL_OBJECT_DEFINE (Context, context);
 
 extern void
 _cogl_create_context_driver (CoglContext *context);
@@ -81,16 +86,29 @@ _cogl_init_feature_overrides (CoglContext *ctx)
                             COGL_FEATURE_TEXTURE_NPOT_REPEAT);
 }
 
-static gboolean
-cogl_create_context (void)
+/* FIXME: We don't report a GError here should we? With non NULL
+ * displays then there should basically be no risk of error I think,
+ * but NULL just says "please do the right thing" and we could hit any
+ * number of problems that should be reported back to the caller!
+ *
+ * Also is it acceptable for construction to report an error
+ * or should there be a separate cogl_context_check_status()
+ * API of some kind?
+ */
+CoglContext *
+cogl_context_new (CoglDisplay *display)
 {
+  CoglContext *context;
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
-  unsigned long  enable_flags = 0;
+  unsigned long enable_flags = 0;
   CoglHandle window_buffer;
   int i;
 
-  if (_context != NULL)
-    return FALSE;
+  /* A NULL display means "please just do something sensible"
+   * and since we haven't implemented anything for CoglDisplay
+   * yet that's the only kind of context construction we allow
+   * for now. */
+  g_return_val_if_fail (display == NULL, NULL);
 
 #ifdef CLUTTER_ENABLE_PROFILE
   /* We need to be absolutely sure that uprof has been initialized
@@ -109,105 +127,114 @@ cogl_create_context (void)
 #endif
 
   /* Allocate context memory */
-  _context = (CoglContext*) g_malloc (sizeof (CoglContext));
+  context = g_malloc (sizeof (CoglContext));
+
+  /* XXX: Gross hack!
+   * Currently everything in Cogl just assumes there is a default
+   * context which it can access via _COGL_GET_CONTEXT() including
+   * code used to construct a CoglContext. Until all of that code
+   * has been updated to take an explicit context argument we have
+   * to immediatly make our pointer the default context.
+   */
+  _context = context;
 
   /* Init default values */
   _context->feature_flags = 0;
   _context->feature_flags_private = 0;
 
-  _context->texture_types = NULL;
-  _context->buffer_types = NULL;
+  context->texture_types = NULL;
+  context->buffer_types = NULL;
 
   /* Initialise the driver specific state */
   /* TODO: combine these two into one function */
-  _cogl_create_context_driver (_context);
+  _cogl_create_context_driver (context);
   _cogl_features_init ();
   _cogl_init_feature_overrides (_context);
 
-  _cogl_create_context_winsys (_context);
+  _cogl_create_context_winsys (context);
 
   _cogl_pipeline_init_default_pipeline ();
   _cogl_pipeline_init_default_layers ();
   _cogl_pipeline_init_state_hash_functions ();
   _cogl_pipeline_init_layer_state_hash_functions ();
 
-  _context->enable_flags = 0;
+  context->enable_flags = 0;
 
-  _context->enable_backface_culling = FALSE;
-  _context->flushed_front_winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
+  context->enable_backface_culling = FALSE;
+  context->flushed_front_winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
 
-  _context->indirect = gl_is_indirect;
+  context->indirect = gl_is_indirect;
 
-  cogl_matrix_init_identity (&_context->identity_matrix);
-  cogl_matrix_init_identity (&_context->y_flip_matrix);
-  cogl_matrix_scale (&_context->y_flip_matrix, 1, -1, 1);
+  cogl_matrix_init_identity (&context->identity_matrix);
+  cogl_matrix_init_identity (&context->y_flip_matrix);
+  cogl_matrix_scale (&context->y_flip_matrix, 1, -1, 1);
 
-  _context->flushed_matrix_mode = COGL_MATRIX_MODELVIEW;
+  context->flushed_matrix_mode = COGL_MATRIX_MODELVIEW;
 
-  _context->texture_units =
+  context->texture_units =
     g_array_new (FALSE, FALSE, sizeof (CoglTextureUnit));
 
   /* See cogl-pipeline.c for more details about why we leave texture unit 1
    * active by default... */
-  _context->active_texture_unit = 1;
+  context->active_texture_unit = 1;
   GE (glActiveTexture (GL_TEXTURE1));
 
-  _context->legacy_fog_state.enabled = FALSE;
+  context->legacy_fog_state.enabled = FALSE;
 
-  _context->opaque_color_pipeline = cogl_pipeline_new ();
-  _context->blended_color_pipeline = cogl_pipeline_new ();
-  _context->texture_pipeline = cogl_pipeline_new ();
-  _context->codegen_header_buffer = g_string_new ("");
-  _context->codegen_source_buffer = g_string_new ("");
-  _context->source_stack = NULL;
+  context->opaque_color_pipeline = cogl_pipeline_new ();
+  context->blended_color_pipeline = cogl_pipeline_new ();
+  context->texture_pipeline = cogl_pipeline_new ();
+  context->codegen_header_buffer = g_string_new ("");
+  context->codegen_source_buffer = g_string_new ("");
+  context->source_stack = NULL;
 
-  _context->legacy_state_set = 0;
+  context->legacy_state_set = 0;
 
-  _context->default_gl_texture_2d_tex = COGL_INVALID_HANDLE;
-  _context->default_gl_texture_rect_tex = COGL_INVALID_HANDLE;
+  context->default_gl_texture_2d_tex = COGL_INVALID_HANDLE;
+  context->default_gl_texture_rect_tex = COGL_INVALID_HANDLE;
 
-  _context->framebuffers = NULL;
+  context->framebuffers = NULL;
 
-  _context->journal_flush_attributes_array =
+  context->journal_flush_attributes_array =
     g_array_new (TRUE, FALSE, sizeof (CoglAttribute *));
-  _context->journal_clip_bounds = NULL;
+  context->journal_clip_bounds = NULL;
 
-  _context->polygon_vertices = g_array_new (FALSE, FALSE, sizeof (float));
+  context->polygon_vertices = g_array_new (FALSE, FALSE, sizeof (float));
 
-  _context->current_pipeline = NULL;
-  _context->current_pipeline_changes_since_flush = 0;
-  _context->current_pipeline_skip_gl_color = FALSE;
+  context->current_pipeline = NULL;
+  context->current_pipeline_changes_since_flush = 0;
+  context->current_pipeline_skip_gl_color = FALSE;
 
-  _context->pipeline0_nodes =
+  context->pipeline0_nodes =
     g_array_sized_new (FALSE, FALSE, sizeof (CoglHandle), 20);
-  _context->pipeline1_nodes =
+  context->pipeline1_nodes =
     g_array_sized_new (FALSE, FALSE, sizeof (CoglHandle), 20);
 
-  _cogl_bitmask_init (&_context->arrays_enabled);
-  _cogl_bitmask_init (&_context->temp_bitmask);
-  _cogl_bitmask_init (&_context->arrays_to_change);
+  _cogl_bitmask_init (&context->arrays_enabled);
+  _cogl_bitmask_init (&context->temp_bitmask);
+  _cogl_bitmask_init (&context->arrays_to_change);
 
-  _context->max_texture_units = -1;
-  _context->max_texture_image_units = -1;
-  _context->max_activateable_texture_units = -1;
+  context->max_texture_units = -1;
+  context->max_texture_image_units = -1;
+  context->max_activateable_texture_units = -1;
 
-  _context->current_program = COGL_INVALID_HANDLE;
+  context->current_program = COGL_INVALID_HANDLE;
 
-  _context->current_fragment_program_type = COGL_PIPELINE_PROGRAM_TYPE_FIXED;
-  _context->current_vertex_program_type = COGL_PIPELINE_PROGRAM_TYPE_FIXED;
-  _context->current_gl_program = 0;
+  context->current_fragment_program_type = COGL_PIPELINE_PROGRAM_TYPE_FIXED;
+  context->current_vertex_program_type = COGL_PIPELINE_PROGRAM_TYPE_FIXED;
+  context->current_gl_program = 0;
 
-  _context->gl_blend_enable_cache = FALSE;
+  context->gl_blend_enable_cache = FALSE;
 
-  _context->depth_test_enabled_cache = FALSE;
-  _context->depth_test_function_cache = COGL_DEPTH_TEST_FUNCTION_LESS;
-  _context->depth_writing_enabled_cache = TRUE;
-  _context->depth_range_near_cache = 0;
-  _context->depth_range_far_cache = 1;
+  context->depth_test_enabled_cache = FALSE;
+  context->depth_test_function_cache = COGL_DEPTH_TEST_FUNCTION_LESS;
+  context->depth_writing_enabled_cache = TRUE;
+  context->depth_range_near_cache = 0;
+  context->depth_range_far_cache = 1;
 
-  _context->point_size_cache = 1.0f;
+  context->point_size_cache = 1.0f;
 
-  _context->legacy_depth_test_enabled = FALSE;
+  context->legacy_depth_test_enabled = FALSE;
 
 #ifdef HAVE_COGL_GL
   _context->arbfp_cache = g_hash_table_new (_cogl_pipeline_fragend_arbfp_hash,
@@ -215,9 +242,9 @@ cogl_create_context (void)
 #endif
 
   for (i = 0; i < COGL_BUFFER_BIND_TARGET_COUNT; i++)
-    _context->current_buffer[i] = NULL;
+    context->current_buffer[i] = NULL;
 
-  _context->framebuffer_stack = _cogl_create_framebuffer_stack ();
+  context->framebuffer_stack = _cogl_create_framebuffer_stack ();
 
   _context->current_clip_stack_valid = FALSE;
 
@@ -225,26 +252,26 @@ cogl_create_context (void)
   cogl_set_framebuffer (window_buffer);
   /* XXX: the deprecated _cogl_set_draw_buffer API expects to
    * find the window buffer here... */
-  _context->window_buffer = window_buffer;
+  context->window_buffer = window_buffer;
 
-  _context->dirty_bound_framebuffer = TRUE;
-  _context->dirty_gl_viewport = TRUE;
+  context->dirty_bound_framebuffer = TRUE;
+  context->dirty_gl_viewport = TRUE;
 
-  _context->current_path = cogl2_path_new ();
-  _context->stencil_pipeline = cogl_pipeline_new ();
+  context->current_path = cogl2_path_new ();
+  context->stencil_pipeline = cogl_pipeline_new ();
 
-  _context->in_begin_gl_block = FALSE;
+  context->in_begin_gl_block = FALSE;
 
-  _context->quad_buffer_indices_byte = COGL_INVALID_HANDLE;
-  _context->quad_buffer_indices = COGL_INVALID_HANDLE;
-  _context->quad_buffer_indices_len = 0;
+  context->quad_buffer_indices_byte = COGL_INVALID_HANDLE;
+  context->quad_buffer_indices = COGL_INVALID_HANDLE;
+  context->quad_buffer_indices_len = 0;
 
-  _context->rectangle_byte_indices = NULL;
-  _context->rectangle_short_indices = NULL;
-  _context->rectangle_short_indices_len = 0;
+  context->rectangle_byte_indices = NULL;
+  context->rectangle_short_indices = NULL;
+  context->rectangle_short_indices_len = 0;
 
-  _context->texture_download_pipeline = COGL_INVALID_HANDLE;
-  _context->blit_texture_pipeline = COGL_INVALID_HANDLE;
+  context->texture_download_pipeline = COGL_INVALID_HANDLE;
+  context->blit_texture_pipeline = COGL_INVALID_HANDLE;
 
 #ifndef HAVE_COGL_GLES2
   /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
@@ -262,7 +289,7 @@ cogl_create_context (void)
 #endif
 
   /* Create default textures used for fall backs */
-  _context->default_gl_texture_2d_tex =
+  context->default_gl_texture_2d_tex =
     cogl_texture_new_from_data (1, /* width */
                                 1, /* height */
                                 COGL_TEXTURE_NO_SLICING,
@@ -271,7 +298,7 @@ cogl_create_context (void)
                                 COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                 0, /* auto calc row stride */
                                 default_texture_data);
-  _context->default_gl_texture_rect_tex =
+  context->default_gl_texture_rect_tex =
     cogl_texture_new_from_data (1, /* width */
                                 1, /* height */
                                 COGL_TEXTURE_NO_SLICING,
@@ -281,12 +308,12 @@ cogl_create_context (void)
                                 0, /* auto calc row stride */
                                 default_texture_data);
 
-  cogl_push_source (_context->opaque_color_pipeline);
-  _cogl_pipeline_flush_gl_state (_context->opaque_color_pipeline, FALSE, 0);
+  cogl_push_source (context->opaque_color_pipeline);
+  _cogl_pipeline_flush_gl_state (context->opaque_color_pipeline, FALSE, 0);
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
-  _context->atlases = NULL;
+  context->atlases = NULL;
 
   _context->buffer_map_fallback_array = g_byte_array_new ();
   _context->buffer_map_fallback_in_use = FALSE;
@@ -303,79 +330,75 @@ cogl_create_context (void)
     GE (glEnable (GL_POINT_SPRITE));
 #endif
 
-  return TRUE;
+  return _cogl_context_object_new (context);
 }
 
-void
-_cogl_destroy_context (void)
+static void
+_cogl_context_free (CoglContext *context)
 {
-
-  if (_context == NULL)
-    return;
-
-  _cogl_destroy_context_winsys (_context);
+  _cogl_destroy_context_winsys (context);
 
   _cogl_destroy_texture_units ();
 
-  _cogl_free_framebuffer_stack (_context->framebuffer_stack);
+  _cogl_free_framebuffer_stack (context->framebuffer_stack);
 
-  if (_context->current_path)
-    cogl_handle_unref (_context->current_path);
+  if (context->current_path)
+    cogl_handle_unref (context->current_path);
 
-  if (_context->default_gl_texture_2d_tex)
-    cogl_handle_unref (_context->default_gl_texture_2d_tex);
-  if (_context->default_gl_texture_rect_tex)
-    cogl_handle_unref (_context->default_gl_texture_rect_tex);
+  if (context->default_gl_texture_2d_tex)
+    cogl_handle_unref (context->default_gl_texture_2d_tex);
+  if (context->default_gl_texture_rect_tex)
+    cogl_handle_unref (context->default_gl_texture_rect_tex);
 
-  if (_context->opaque_color_pipeline)
-    cogl_handle_unref (_context->opaque_color_pipeline);
-  if (_context->blended_color_pipeline)
-    cogl_handle_unref (_context->blended_color_pipeline);
-  if (_context->texture_pipeline)
-    cogl_handle_unref (_context->texture_pipeline);
+  if (context->opaque_color_pipeline)
+    cogl_handle_unref (context->opaque_color_pipeline);
+  if (context->blended_color_pipeline)
+    cogl_handle_unref (context->blended_color_pipeline);
+  if (context->texture_pipeline)
+    cogl_handle_unref (context->texture_pipeline);
 
-  if (_context->blit_texture_pipeline)
-    cogl_handle_unref (_context->blit_texture_pipeline);
+  if (context->blit_texture_pipeline)
+    cogl_handle_unref (context->blit_texture_pipeline);
 
-  if (_context->journal_flush_attributes_array)
-    g_array_free (_context->journal_flush_attributes_array, TRUE);
-  if (_context->journal_clip_bounds)
-    g_array_free (_context->journal_clip_bounds, TRUE);
+  if (context->journal_flush_attributes_array)
+    g_array_free (context->journal_flush_attributes_array, TRUE);
+  if (context->journal_clip_bounds)
+    g_array_free (context->journal_clip_bounds, TRUE);
 
-  if (_context->polygon_vertices)
-    g_array_free (_context->polygon_vertices, TRUE);
+  if (context->polygon_vertices)
+    g_array_free (context->polygon_vertices, TRUE);
 
-  if (_context->quad_buffer_indices_byte)
-    cogl_handle_unref (_context->quad_buffer_indices_byte);
-  if (_context->quad_buffer_indices)
-    cogl_handle_unref (_context->quad_buffer_indices);
+  if (context->quad_buffer_indices_byte)
+    cogl_handle_unref (context->quad_buffer_indices_byte);
+  if (context->quad_buffer_indices)
+    cogl_handle_unref (context->quad_buffer_indices);
 
-  if (_context->rectangle_byte_indices)
-    cogl_object_unref (_context->rectangle_byte_indices);
-  if (_context->rectangle_short_indices)
-    cogl_object_unref (_context->rectangle_short_indices);
+  if (context->rectangle_byte_indices)
+    cogl_object_unref (context->rectangle_byte_indices);
+  if (context->rectangle_short_indices)
+    cogl_object_unref (context->rectangle_short_indices);
 
-  if (_context->default_pipeline)
-    cogl_handle_unref (_context->default_pipeline);
+  if (context->default_pipeline)
+    cogl_handle_unref (context->default_pipeline);
 
-  if (_context->dummy_layer_dependant)
-    cogl_handle_unref (_context->dummy_layer_dependant);
-  if (_context->default_layer_n)
-    cogl_handle_unref (_context->default_layer_n);
-  if (_context->default_layer_0)
-    cogl_handle_unref (_context->default_layer_0);
+  if (context->dummy_layer_dependant)
+    cogl_handle_unref (context->dummy_layer_dependant);
+  if (context->default_layer_n)
+    cogl_handle_unref (context->default_layer_n);
+  if (context->default_layer_0)
+    cogl_handle_unref (context->default_layer_0);
 
-  if (_context->current_clip_stack_valid)
-    _cogl_clip_stack_unref (_context->current_clip_stack);
+  if (context->current_clip_stack_valid)
+    _cogl_clip_stack_unref (context->current_clip_stack);
 
-  g_slist_free (_context->atlases);
+  g_slist_free (context->atlases);
 
-  _cogl_bitmask_destroy (&_context->arrays_enabled);
-  _cogl_bitmask_destroy (&_context->temp_bitmask);
-  _cogl_bitmask_destroy (&_context->arrays_to_change);
+  _cogl_bitmask_destroy (&context->arrays_enabled);
+  _cogl_bitmask_destroy (&context->temp_bitmask);
+  _cogl_bitmask_destroy (&context->arrays_to_change);
 
-  g_slist_free (_context->texture_types);
-  g_slist_free (_context->buffer_types);
+  g_slist_free (context->texture_types);
+  g_slist_free (context->buffer_types);
 
 #ifdef HAVE_COGL_GLES2
   if (_context->flushed_modelview_stack)
@@ -385,12 +408,12 @@ _cogl_destroy_context (void)
 #endif
 
 #ifdef HAVE_COGL_GL
-  g_hash_table_unref (_context->arbfp_cache);
+  g_hash_table_unref (context->arbfp_cache);
 #endif
 
-  g_byte_array_free (_context->buffer_map_fallback_array, TRUE);
+  g_byte_array_free (context->buffer_map_fallback_array, TRUE);
 
-  g_free (_context);
+  g_free (context);
 }
 
 CoglContext *
@@ -398,7 +421,7 @@ _cogl_context_get_default (void)
 {
   /* Create if doesn't exist yet */
   if (_context == NULL)
-    cogl_create_context ();
+    _context = cogl_context_new (NULL);
 
   return _context;
 }
