@@ -38,9 +38,19 @@ G_BEGIN_DECLS
 gboolean
 cogl_clutter_check_extension (const char *name, const char *ext);
 
+#define cogl_clutter_winsys_has_feature cogl_clutter_winsys_has_feature_CLUTTER
+gboolean
+cogl_clutter_winsys_has_feature (CoglWinsysFeature feature);
+
 #define cogl_onscreen_clutter_backend_set_size cogl_onscreen_clutter_backend_set_size_CLUTTER
 void
 cogl_onscreen_clutter_backend_set_size (int width, int height);
+
+#ifdef COGL_HAS_XLIB
+#define cogl_clutter_winsys_xlib_get_visual_info cogl_clutter_winsys_xlib_get_visual_info_CLUTTER
+XVisualInfo *
+cogl_clutter_winsys_xlib_get_visual_info (void);
+#endif
 
 G_END_DECLS
 

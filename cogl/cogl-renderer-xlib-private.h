@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2010 Intel Corporation.
+ * Copyright (C) 2011 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,30 +15,40 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library. If not, see <http://www.gnu.org/licenses/>.
  *
  *
  */
 
-#ifndef __COGL_XLIB_H
-#define __COGL_XLIB_H
+#ifndef __COGL_RENDERER_XLIB_PRIVATE_H
+#define __COGL_RENDERER_XLIB_PRIVATE_H
 
-#include "cogl.h"
-#include "cogl-context-winsys.h"
+#include "cogl-object-private.h"
+#include "cogl-xlib-private.h"
+#include "cogl-renderer-x11-private.h"
 
-#include <X11/Xlib.h>
-
-typedef struct _CoglXlibFilterClosure CoglXlibFilterClosure;
-
-struct _CoglXlibFilterClosure
+typedef struct _CoglRendererXlib
 {
-  CoglXlibFilterFunc func;
-  gpointer data;
-};
+  CoglRendererX11 _parent;
+
+  Display *xdpy;
+
+  /* List of callback functions that will be given every Xlib event */
+  GSList *event_filters;
+  /* Current top of the XError trap state stack. The actual memory for
+     these is expected to be allocated on the stack by the caller */
+  CoglXlibTrapState *trap_state;
+} CoglRendererXlib;
+
+gboolean
+_cogl_renderer_xlib_connect (CoglRenderer *renderer, GError **error);
+
+void
+_cogl_renderer_xlib_disconnect (CoglRenderer *renderer);
 
 /*
- * _cogl_xlib_trap_errors:
+ * cogl_renderer_xlib_trap_errors:
  * @state: A temporary place to store data for the trap.
  *
  * Traps every X error until _cogl_xlib_untrap_errors() called. You
@@ -50,10 +60,11 @@ struct _CoglXlibFilterClosure
  * pointers in reverse order.
  */
 void
-_cogl_xlib_trap_errors (CoglXlibTrapState *state);
+_cogl_renderer_xlib_trap_errors (CoglRenderer *renderer,
+                                 CoglXlibTrapState *state);
 
 /*
- * _cogl_xlib_untrap_errors:
+ * cogl_renderer_xlib_untrap_errors:
  * @state: The state that was passed to _cogl_xlib_trap_errors().
  *
  * Removes the X error trap and returns the current status.
@@ -61,6 +72,7 @@ _cogl_xlib_trap_errors (CoglXlibTrapState *state);
  * Return value: the trapped error code, or 0 for success
  */
 int
-_cogl_xlib_untrap_errors (CoglXlibTrapState *state);
+_cogl_renderer_xlib_untrap_errors (CoglRenderer *renderer,
+                                   CoglXlibTrapState *state);
 
-#endif /* __COGL_XLIB_H */
+#endif /* __COGL_RENDERER_XLIB_PRIVATE_H */

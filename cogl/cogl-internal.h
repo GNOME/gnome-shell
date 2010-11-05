@@ -29,7 +29,7 @@
 #include "cogl-bitmask.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT
-#include <X11/Xlib.h>
+#include <X11/Xutil.h>
 #endif
 
 typedef enum
@@ -119,99 +119,17 @@ _cogl_transform_point (const CoglMatrix *matrix_mv,
                        float *x,
                        float *y);
 
-#ifdef COGL_HAS_XLIB_SUPPORT
+#define COGL_DRIVER_ERROR (_cogl_driver_error_quark ())
 
-/*
- * CoglX11FilterReturn:
- * @COGL_XLIB_FILTER_CONTINUE: The event was not handled, continues the
- *                            processing
- * @COGL_XLIB_FILTER_REMOVE: Remove the event, stops the processing
- *
- * Return values for the #CoglX11FilterFunc function.
- */
-typedef enum _CoglXlibFilterReturn {
-  COGL_XLIB_FILTER_CONTINUE,
-  COGL_XLIB_FILTER_REMOVE
-} CoglXlibFilterReturn;
-
-/*
- * CoglXlibFilterFunc:
- *
- * A callback function that can be registered with
- * _cogl_xlib_add_filter. The function should return
- * %COGL_XLIB_FILTER_REMOVE if it wants to prevent further processing
- * or %COGL_XLIB_FILTER_CONTINUE otherwise.
- */
-typedef CoglXlibFilterReturn (* CoglXlibFilterFunc) (XEvent *xevent,
-                                                     gpointer data);
-
-/*
- * cogl_xlib_handle_event:
- * @xevent: pointer to XEvent structure
- *
- * This function processes a single X event; it can be used to hook
- * into external X event retrieval (for example that done by Clutter
- * or GDK).
- *
- * Return value: #CoglXlibFilterReturn. %COGL_XLIB_FILTER_REMOVE
- * indicates that Cogl has internally handled the event and the
- * caller should do no further processing. %COGL_XLIB_FILTER_CONTINUE
- * indicates that Cogl is either not interested in the event,
- * or has used the event to update internal state without taking
- * any exclusive action.
- */
-CoglXlibFilterReturn
-_cogl_xlib_handle_event (XEvent *xevent);
-
-/*
- * _cogl_xlib_get_display:
- *
- * Return value: the Xlib display that will be used by the Xlib winsys
- * backend. The display needs to be set with _cogl_xlib_set_display()
- * before this function is called.
- */
-Display *
-_cogl_xlib_get_display (void);
-
-/*
- * cogl_xlib_set_display:
- *
- * Sets the Xlib display that Cogl will use for the Xlib winsys
- * backend. This function should eventually go away when Cogl gains a
- * more complete winsys abstraction.
- */
-void
-_cogl_xlib_set_display (Display *display);
-
-/*
- * _cogl_xlib_add_filter:
- *
- * Adds a callback function that will receive all X11 events. The
- * function can stop further processing of the event by return
- * %COGL_XLIB_FILTER_REMOVE.
- */
-void
-_cogl_xlib_add_filter (CoglXlibFilterFunc func,
-                       gpointer data);
-
-/*
- * _cogl_xlib_remove_filter:
- *
- * Removes a callback that was previously added with
- * _cogl_xlib_add_filter().
- */
-void
-_cogl_xlib_remove_filter (CoglXlibFilterFunc func,
-                          gpointer data);
-
-#endif /* COGL_HAS_XLIB_SUPPORT */
-
-typedef enum _CoglFeatureFlagsPrivate
-{
-  COGL_FEATURE_PRIVATE_PLACE_HOLDER = (1 << 0)
-} CoglFeatureFlagsPrivate;
+typedef enum { /*< prefix=COGL_DRIVER_ERROR >*/
+  COGL_DRIVER_ERROR_UNKNOWN_VERSION,
+  COGL_DRIVER_ERROR_INVALID_VERSION
+} CoglDriverError;
 
 gboolean
-_cogl_features_available_private (CoglFeatureFlagsPrivate features);
+_cogl_check_extension (const char *name, const char *ext);
+
+GQuark
+_cogl_driver_error_quark (void);
 
 #endif /* __COGL_INTERNAL_H */

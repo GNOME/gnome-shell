@@ -67,7 +67,12 @@
 
 #include <cogl/cogl-deprecated.h>
 
+typedef struct _CoglFramebuffer CoglFramebuffer;
+
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
+#include <cogl/cogl-swap-chain.h>
+#include <cogl/cogl-renderer.h>
+#include <cogl/cogl-display.h>
 #include <cogl/cogl-context.h>
 #include <cogl/cogl-buffer.h>
 #include <cogl/cogl-pixel-array.h>
@@ -79,6 +84,13 @@
 #include <cogl/cogl-attribute.h>
 #include <cogl/cogl-primitive.h>
 #include <cogl/cogl-pipeline.h>
+#include <cogl/cogl-framebuffer.h>
+#ifdef COGL_HAS_XLIB
+#include <cogl/cogl-xlib.h>
+#endif
+/* XXX: This will definitly go away once all the Clutter winsys
+ * code has been migrated down into Cogl! */
+#include <cogl/cogl-clutter.h>
 #endif
 
 G_BEGIN_DECLS
@@ -89,8 +101,6 @@ G_BEGIN_DECLS
  *
  * General utility functions for COGL.
  */
-
-typedef struct _CoglFramebuffer CoglFramebuffer;
 
 /**
  * cogl_get_option_group:
@@ -1244,44 +1254,6 @@ cogl_begin_gl (void);
  */
 void
 cogl_end_gl (void);
-
-/*
- * Internal API available only to Clutter.
- *
- * These are typically only to deal with the poor seperation of
- * responsabilities that currently exists between Clutter and Cogl.
- * Eventually a lot of the backend code currently in Clutter will
- * move down into Cogl and these functions will be removed.
- */
-
-void
-_cogl_destroy_context (void);
-
-/*< private >*/
-#define COGL_DRIVER_ERROR (_cogl_driver_error_quark ())
-
-typedef enum { /*< prefix=COGL_DRIVER_ERROR >*/
-  COGL_DRIVER_ERROR_UNKNOWN_VERSION,
-  COGL_DRIVER_ERROR_INVALID_VERSION
-} CoglDriverError;
-
-gboolean
-_cogl_check_extension (const char *name, const char *ext);
-
-void
-_cogl_set_indirect_context  (gboolean indirect);
-
-gboolean
-_cogl_check_driver_valid (GError **error);
-
-GQuark
-_cogl_driver_error_quark (void);
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
-#define cogl_get_draw_framebuffer cogl_get_draw_framebuffer_EXP
-CoglFramebuffer *
-cogl_get_draw_framebuffer (void);
-#endif
 
 G_END_DECLS
 

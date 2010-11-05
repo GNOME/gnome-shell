@@ -43,6 +43,12 @@ cogl_clutter_check_extension (const char *name, const char *ext)
   return _cogl_check_extension (name, ext);
 }
 
+gboolean
+cogl_clutter_winsys_has_feature (CoglWinsysFeature feature)
+{
+  return _cogl_winsys_has_feature (feature);
+}
+
 void
 cogl_onscreen_clutter_backend_set_size (int width, int height)
 {
@@ -57,3 +63,11 @@ cogl_onscreen_clutter_backend_set_size (int width, int height)
 
   _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
 }
+
+#ifdef COGL_HAS_XLIB_SUPPORT
+XVisualInfo *
+cogl_clutter_winsys_xlib_get_visual_info (void)
+{
+  return _cogl_winsys_xlib_get_visual_info ();
+}
+#endif

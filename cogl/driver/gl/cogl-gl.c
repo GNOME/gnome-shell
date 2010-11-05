@@ -29,6 +29,7 @@
 
 #include "cogl.h"
 
+#include "cogl-private.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-feature-private.h"
@@ -95,7 +96,7 @@ _cogl_get_gl_version (int *major_out, int *minor_out)
 }
 
 gboolean
-_cogl_check_driver_valid (GError **error)
+_cogl_gl_check_version (GError **error)
 {
   int major, minor;
   const char *gl_extensions;
@@ -161,8 +162,8 @@ _cogl_check_driver_valid (GError **error)
                            namespaces, extension_names,                 \
                            feature_flags, feature_flags_private)        \
   { min_gl_major, min_gl_minor, namespaces,                             \
-      extension_names, feature_flags, feature_flags_private,             \
-      cogl_feature_ ## name ## _funcs },
+    extension_names, feature_flags, feature_flags_private, 0,           \
+    cogl_feature_ ## name ## _funcs },
 #undef COGL_FEATURE_FUNCTION
 #define COGL_FEATURE_FUNCTION(ret, name, args)
 #undef COGL_FEATURE_END
@@ -182,23 +183,35 @@ static const CoglFeatureData cogl_feature_data[] =
 #define COGL_FEATURE_END()
 
 static void
-initialize_context_driver (CoglContext *context)
+initialize_function_table (CoglContext *context)
 {
   #include "cogl-feature-functions-gl.h"
 }
 
+/* Query the GL extensions and lookup the corresponding function
+ * pointers. Theoretically the list of extensions can change for
+ * different GL contexts so it is the winsys backend's responsiblity
+ * to know when to re-query the GL extensions. */
 void
-_cogl_gl_context_init (CoglContext *context)
+_cogl_gl_update_features (CoglContext *context)
 {
   CoglFeatureFlags flags = 0;
-  CoglFeatureFlagsPrivate  flags_private = 0;
   const char *gl_extensions;
   int max_clip_planes = 0;
   int num_stencil_bits = 0;
   int gl_major = 0, gl_minor = 0;
   int i;
 
-  initialize_context_driver (context);
+  COGL_NOTE (WINSYS,
+             "Checking features\n"
+             "  GL_VENDOR: %s\n"
+             "  GL_RENDERER: %s\n"
+             "  GL_VERSION: %s\n"
+             "  GL_EXTENSIONS: %s",
+             glGetString (GL_VENDOR),
+             glGetString (GL_RENDERER),
+             glGetString (GL_VERSION),
+             glGetString (GL_EXTENSIONS));
 
   _cogl_get_gl_version (&gl_major, &gl_minor);
 
@@ -235,16 +248,15 @@ _cogl_gl_context_init (CoglContext *context)
   if (max_clip_planes >= 4)
     flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
 
+  initialize_function_table (context);
+
   for (i = 0; i < G_N_ELEMENTS (cogl_feature_data); i++)
     if (_cogl_feature_check ("GL", cogl_feature_data + i,
                              gl_major, gl_minor,
-                             gl_extensions))
-      {
-        flags |= cogl_feature_data[i].feature_flags;
-        flags_private |= cogl_feature_data[i].feature_flags_private;
-      }
+                             gl_extensions,
+                             context))
+      flags |= cogl_feature_data[i].feature_flags;
 
   /* Cache features */
-  context->feature_flags = flags;
-  context->feature_flags_private = flags_private;
+  context->feature_flags |= flags;
 }

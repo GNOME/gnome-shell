@@ -24,6 +24,7 @@
 #ifndef __COGL_JOURNAL_PRIVATE_H
 #define __COGL_JOURNAL_PRIVATE_H
 
+#include "cogl.h"
 #include "cogl-handle.h"
 #include "cogl-clip-stack.h"
 

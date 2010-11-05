@@ -78,6 +78,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-attribute.h 		\
 	$(srcdir)/cogl-primitive.h 		\
 	$(srcdir)/cogl-clip-state.h		\
+	$(srcdir)/cogl-framebuffer.h		\
 	$(srcdir)/cogl-clutter.h       		\
 	$(srcdir)/cogl.h			\
 	$(NULL)
@@ -114,10 +115,8 @@ endif # COGL_DRIVER_GLES
 
 # winsys sources, common to all backends
 cogl_winsys_common_sources = \
-	$(srcdir)/winsys/cogl-winsys-private.h			\
-	$(srcdir)/winsys/cogl-context-winsys.h          	\
-	$(srcdir)/winsys/cogl-context-winsys.c          	\
-	$(srcdir)/winsys/cogl-winsys-feature-functions.h	\
+	$(srcdir)/winsys/cogl-winsys-private.h \
+	$(srcdir)/winsys/cogl-winsys.c \
 	$(NULL)
 
 # tesselator sources
@@ -295,29 +294,39 @@ cogl_sources_c = \
 
 if SUPPORT_XLIB
 cogl_experimental_h += \
-       $(srcdir)/winsys/cogl-texture-pixmap-x11.h
+       $(srcdir)/winsys/cogl-texture-pixmap-x11.h \
+       $(srcdir)/cogl-xlib.h
 
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-xlib.h \
-       $(srcdir)/winsys/cogl-winsys-xlib.c \
-       $(srcdir)/winsys/cogl-texture-pixmap-x11.c \
-       $(srcdir)/winsys/cogl-texture-pixmap-x11-private.h
+	$(srcdir)/cogl-renderer-x11-private.h \
+	$(srcdir)/cogl-renderer-xlib-private.h \
+	$(srcdir)/cogl-renderer-xlib.c \
+	$(srcdir)/cogl-display-xlib-private.h \
+	$(srcdir)/cogl-xlib.c \
+	$(srcdir)/winsys/cogl-texture-pixmap-x11.c \
+	$(srcdir)/winsys/cogl-texture-pixmap-x11-private.h
 endif
 if SUPPORT_GLX
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-glx.c
+	$(srcdir)/cogl-renderer-glx-private.h \
+	$(srcdir)/cogl-display-glx-private.h \
+	$(srcdir)/winsys/cogl-winsys-glx-feature-functions.h \
+	$(srcdir)/winsys/cogl-winsys-glx.c
 endif
 if SUPPORT_EGL_PLATFORM_POWERVR_X11
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c
+	$(srcdir)/winsys/cogl-winsys-egl.c \
+	$(srcdir)/winsys/cogl-winsys-stub.c
 endif
 if SUPPORT_EGL_PLATFORM_POWERVR_NULL
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c
+       $(srcdir)/winsys/cogl-winsys-egl.c \
+       $(srcdir)/winsys/cogl-winsys-stub.c
 endif
 if SUPPORT_EGL_PLATFORM_POWERVR_GDL
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c
+       $(srcdir)/winsys/cogl-winsys-egl.c \
+       $(srcdir)/winsys/cogl-winsys-stub.c
 endif
 if SUPPORT_EGL_PLATFORM_FRUITY
 cogl_sources_c += \
@@ -325,15 +334,18 @@ cogl_sources_c += \
 endif
 if SUPPORT_EGL_PLATFORM_DRM_SURFACELESS
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c
+       $(srcdir)/winsys/cogl-winsys-egl.c \
+       $(srcdir)/winsys/cogl-winsys-stub.c
 endif
 if SUPPORT_WIN32
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-win32.c
+       $(srcdir)/winsys/cogl-winsys-win32.c \
+       $(srcdir)/winsys/cogl-winsys-stub.c
 endif
 if SUPPORT_OSX
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-osx.c
+       $(srcdir)/winsys/cogl-winsys-osx.c \
+       $(srcdir)/winsys/cogl-winsys-stub.c
 endif
 
 EXTRA_DIST += stb_image.c

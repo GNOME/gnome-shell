@@ -24,10 +24,19 @@
 #ifndef __COGL_FRAMEBUFFER_PRIVATE_H
 #define __COGL_FRAMEBUFFER_PRIVATE_H
 
-#include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-matrix-stack.h"
 #include "cogl-clip-state-private.h"
 #include "cogl-journal-private.h"
+
+#ifdef COGL_HAS_XLIB_SUPPORT
+#include <X11/Xlib.h>
+#endif
+
+#ifdef COGL_HAS_GLX_SUPPORT
+#include <GL/glx.h>
+#include <GL/glxext.h>
+#endif
 
 typedef enum _CoglFramebufferType {
   COGL_FRAMEBUFFER_TYPE_ONSCREEN,
@@ -37,12 +46,14 @@ typedef enum _CoglFramebufferType {
 struct _CoglFramebuffer
 {
   CoglObject          _parent;
+  CoglContext        *context;
   CoglFramebufferType  type;
   int                 width;
   int                 height;
   /* Format of the pixels in the framebuffer (including the expected
      premult state) */
   CoglPixelFormat     format;
+  gboolean            allocated;
 
   CoglMatrixStack    *modelview_stack;
   CoglMatrixStack    *projection_stack;
@@ -85,8 +96,6 @@ struct _CoglFramebuffer
   gboolean            clear_clip_dirty;
 };
 
-#define COGL_FRAMEBUFFER(X) ((CoglFramebuffer *)(X))
-
 typedef struct _CoglOffscreen
 {
   CoglFramebuffer  _parent;
@@ -103,12 +112,18 @@ typedef enum
 
 #define COGL_OFFSCREEN(X) ((CoglOffscreen *)(X))
 
-typedef struct _CoglOnscreen
+struct _CoglOnscreen
 {
   CoglFramebuffer  _parent;
-} CoglOnscreen;
 
-#define COGL_ONSCREEN(X) ((CoglOnscreen *)(X))
+#ifdef COGL_HAS_X11_SUPPORT
+  guint32 foreign_xid;
+#endif
+
+  gboolean swap_throttled;
+
+  void *winsys;
+};
 
 void
 _cogl_framebuffer_state_init (void);
@@ -233,16 +248,17 @@ typedef enum _CoglFramebufferFlushFlags
   COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW =     1L<<0,
   /* Similarly this flag implies you are going to flush the clip state
      yourself */
-  COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE =    1L<<1
+  COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE =    1L<<1,
+  /* When using this all that will be updated is the glBindFramebuffer
+   * state and corresponding winsys state to make the framebuffer
+   * current if it is a CoglOnscreen framebuffer. */
+  COGL_FRAMEBUFFER_FLUSH_BIND_ONLY =          1L<<2
 } CoglFramebufferFlushFlags;
 
 void
 _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
                                CoglFramebuffer *read_buffer,
                                CoglFramebufferFlushFlags flags);
-
-CoglHandle
-_cogl_onscreen_new (void);
 
 CoglFramebuffer *
 _cogl_get_read_framebuffer (void);
@@ -338,6 +354,9 @@ _cogl_blit_framebuffer (unsigned int src_x,
                         unsigned int dst_y,
                         unsigned int width,
                         unsigned int height);
+
+CoglOnscreen *
+_cogl_onscreen_new (void);
 
 #endif /* __COGL_FRAMEBUFFER_PRIVATE_H */
 
