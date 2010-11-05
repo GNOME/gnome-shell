@@ -9,6 +9,7 @@
 #include <gio/gdesktopappinfo.h>
 #include <gtk/gtk.h>
 #include <clutter/clutter.h>
+#include <glib/gi18n.h>
 
 #include "shell-app-private.h"
 #include "shell-global.h"
@@ -1004,11 +1005,12 @@ shell_app_info_get_name (ShellAppInfo *info)
       return g_key_file_get_locale_string (info->keyfile, DESKTOP_ENTRY_GROUP, "Name", NULL, NULL);
     case SHELL_APP_INFO_TYPE_WINDOW:
       {
-        char *title;
-        g_object_get (info->window, "title", &title, NULL);
-        if (!title)
-          title = g_strdup ("");
-        return title;
+        const char *name;
+
+        name = meta_window_get_wm_class (info->window);
+        if (!name)
+          name = _("Unknown");
+        return g_strdup (name);
       }
   }
   g_assert_not_reached ();
