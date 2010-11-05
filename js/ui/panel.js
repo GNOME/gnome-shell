@@ -408,9 +408,9 @@ AppMenuButton.prototype = {
     },
 
     _onQuit: function() {
-        if (this._focusedApp == null)
+        if (this._targetApp == null)
             return;
-        this._focusedApp.request_quit();
+        this._targetApp.request_quit();
     },
 
     _onAppStateChanged: function(tracker, app) {
