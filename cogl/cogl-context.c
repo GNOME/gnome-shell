@@ -146,10 +146,8 @@ cogl_context_new (CoglDisplay *display)
   context->buffer_types = NULL;
 
   /* Initialise the driver specific state */
-  /* TODO: combine these two into one function */
-  _cogl_create_context_driver (context);
-  _cogl_features_init ();
-  _cogl_init_feature_overrides (_context);
+  _cogl_gl_context_init (context);
+  _cogl_init_feature_overrides (context);
 
   _cogl_create_context_winsys (context);
 

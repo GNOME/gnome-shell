@@ -70,18 +70,32 @@ static const CoglFeatureData cogl_feature_data[] =
 #include "cogl-feature-functions-gles.h"
   };
 
+#undef COGL_FEATURE_BEGIN
+#define COGL_FEATURE_BEGIN(a, b, c, d, e, f, g)
+#undef COGL_FEATURE_FUNCTION
+#define COGL_FEATURE_FUNCTION(ret, name, args) \
+  _context->drv.pf_ ## name = NULL;
+#undef COGL_FEATURE_END
+#define COGL_FEATURE_END()
+
+static void
+initialize_context_driver (CoglContext *context)
+{
+  #include "cogl-feature-functions-gles.h"
+}
+
 void
-_cogl_features_init (void)
+_cogl_gl_context_init (CoglContext *context)
 {
   CoglFeatureFlags flags = 0;
 #ifndef HAVE_COGL_GLES2
-  int              max_clip_planes = 0;
+  int max_clip_planes = 0;
 #endif
-  GLint            num_stencil_bits = 0;
-  const char      *gl_extensions;
-  int              i;
+  int num_stencil_bits = 0;
+  const char *gl_extensions;
+  int i;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  initialize_context_driver (context);
 
   gl_extensions = (const char*) glGetString (GL_EXTENSIONS);
 
@@ -115,6 +129,6 @@ _cogl_features_init (void)
   flags |= COGL_FEATURE_POINT_SPRITE;
 
   /* Cache features */
-  ctx->feature_flags = flags;
+  context->feature_flags = flags;
 }
 
