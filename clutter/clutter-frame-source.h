@@ -32,6 +32,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
 guint clutter_frame_source_add (guint          fps,
 				GSourceFunc    func,
 				gpointer       data);
@@ -41,6 +43,8 @@ guint clutter_frame_source_add_full (gint           priority,
 				     GSourceFunc    func,
 				     gpointer       data,
 				     GDestroyNotify notify);
+
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

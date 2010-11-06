@@ -149,6 +149,17 @@ struct _ClutterMainContext
   ClutterSettings *settings;
 };
 
+/* shared between clutter-main.c and clutter-frame-source.c */
+typedef struct
+{
+  GSourceFunc func;
+  gpointer data;
+  GDestroyNotify notify;
+} ClutterThreadsDispatch;
+
+gboolean _clutter_threads_dispatch      (gpointer data);
+void     _clutter_threads_dispatch_free (gpointer data);
+
 #define CLUTTER_CONTEXT()	(_clutter_context_get_default ())
 ClutterMainContext *_clutter_context_get_default (void);
 gboolean            _clutter_context_is_initialized (void);

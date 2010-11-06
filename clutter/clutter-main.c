@@ -1046,15 +1046,8 @@ clutter_threads_set_lock_functions (GCallback enter_fn,
   clutter_threads_unlock = leave_fn;
 }
 
-typedef struct
-{
-  GSourceFunc func;
-  gpointer data;
-  GDestroyNotify notify;
-} ClutterThreadsDispatch;
-
-static gboolean
-clutter_threads_dispatch (gpointer data)
+gboolean
+_clutter_threads_dispatch (gpointer data)
 {
   ClutterThreadsDispatch *dispatch = data;
   gboolean ret = FALSE;
@@ -1069,8 +1062,8 @@ clutter_threads_dispatch (gpointer data)
   return ret;
 }
 
-static void
-clutter_threads_dispatch_free (gpointer data)
+void
+_clutter_threads_dispatch_free (gpointer data)
 {
   ClutterThreadsDispatch *dispatch = data;
 
@@ -1197,8 +1190,8 @@ clutter_threads_add_idle_full (gint           priority,
   dispatch->notify = notify;
 
   return g_idle_add_full (priority,
-                          clutter_threads_dispatch, dispatch,
-                          clutter_threads_dispatch_free);
+                          _clutter_threads_dispatch, dispatch,
+                          _clutter_threads_dispatch_free);
 }
 
 /**
@@ -1273,8 +1266,8 @@ clutter_threads_add_timeout_full (gint           priority,
 
   return g_timeout_add_full (priority,
                              interval,
-                             clutter_threads_dispatch, dispatch,
-                             clutter_threads_dispatch_free);
+                             _clutter_threads_dispatch, dispatch,
+                             _clutter_threads_dispatch_free);
 }
 
 /**
@@ -1300,86 +1293,6 @@ clutter_threads_add_timeout (guint       interval,
                                            interval,
                                            func, data,
                                            NULL);
-}
-
-/**
- * clutter_threads_add_frame_source_full:
- * @priority: the priority of the frame source. Typically this will be in the
- *            range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
- * @fps: the number of times per second to call the function
- * @func: function to call
- * @data: data to pass to the function
- * @notify: function to call when the timeout source is removed
- *
- * Sets a function to be called at regular intervals holding the Clutter
- * threads lock, with the given priority. The function is called repeatedly
- * until it returns %FALSE, at which point the timeout is automatically
- * removed and the function will not be called again. The @notify function
- * is called when the timeout is removed.
- *
- * This function is similar to clutter_threads_add_timeout_full()
- * except that it will try to compensate for delays. For example, if
- * @func takes half the interval time to execute then the function
- * will be called again half the interval time after it finished. In
- * contrast clutter_threads_add_timeout_full() would not fire until a
- * full interval after the function completes so the delay between
- * calls would be @interval * 1.5. This function does not however try
- * to invoke the function multiple times to catch up missing frames if
- * @func takes more than @interval ms to execute.
- *
- * See also clutter_threads_add_idle_full().
- *
- * Rename to: clutter_threads_add_frame_source
- *
- * Return value: the ID (greater than 0) of the event source.
- *
- * Since: 0.8
- */
-guint
-clutter_threads_add_frame_source_full (gint           priority,
-				       guint          fps,
-				       GSourceFunc    func,
-				       gpointer       data,
-				       GDestroyNotify notify)
-{
-  ClutterThreadsDispatch *dispatch;
-
-  g_return_val_if_fail (func != NULL, 0);
-
-  dispatch = g_slice_new (ClutterThreadsDispatch);
-  dispatch->func = func;
-  dispatch->data = data;
-  dispatch->notify = notify;
-
-  return clutter_frame_source_add_full (priority,
-					fps,
-					clutter_threads_dispatch, dispatch,
-					clutter_threads_dispatch_free);
-}
-
-/**
- * clutter_threads_add_frame_source: (skip)
- * @fps: the number of times per second to call the function
- * @func: function to call
- * @data: data to pass to the function
- *
- * Simple wrapper around clutter_threads_add_frame_source_full().
- *
- * Return value: the ID (greater than 0) of the event source.
- *
- * Since: 0.8
- */
-guint
-clutter_threads_add_frame_source (guint       fps,
-				  GSourceFunc func,
-				  gpointer    data)
-{
-  g_return_val_if_fail (func != NULL, 0);
-
-  return clutter_threads_add_frame_source_full (G_PRIORITY_DEFAULT,
-						fps,
-						func, data,
-						NULL);
 }
 
 /**
