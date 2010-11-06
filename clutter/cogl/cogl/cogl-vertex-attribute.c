@@ -764,7 +764,7 @@ _cogl_draw_indexed_vertex_attributes_array_real (CoglVerticesMode mode,
   void *base;
   size_t array_offset;
   size_t index_size;
-  GLenum indices_gl_type;
+  GLenum indices_gl_type = 0;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -785,6 +785,7 @@ _cogl_draw_indexed_vertex_attributes_array_real (CoglVerticesMode mode,
       indices_gl_type = GL_UNSIGNED_INT;
       break;
     }
+
   GE (glDrawElements ((GLenum)mode,
                       n_vertices,
                       indices_gl_type,
