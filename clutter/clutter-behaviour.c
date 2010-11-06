@@ -23,7 +23,9 @@
 
 /**
  * SECTION:clutter-behaviour
+ * @Title: ClutterBehaviour
  * @short_description: Class for providing behaviours to actors
+ * @Deprecated: 1.6: Use the implicit animation API instead.
  *
  * #ClutterBehaviour is the base class for implementing behaviours.  A
  * behaviour is a controller object for #ClutterActor<!-- -->s; you can
@@ -62,15 +64,16 @@
  * instance bound to the behaviour and apply it to the desiderd property
  * (or properties) of every actor controlled by the behaviour.
  *
- * #ClutterBehaviour is available since Clutter 0.2
+ * #ClutterBehaviour is available since Clutter 0.2.
  */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "clutter-actor.h"
+#undef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-behaviour.h"
+
 #include "clutter-debug.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"

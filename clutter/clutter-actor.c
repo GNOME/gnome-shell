@@ -291,7 +291,6 @@
 #include "clutter-action.h"
 #include "clutter-actor-meta-private.h"
 #include "clutter-animatable.h"
-#include "clutter-behaviour.h"
 #include "clutter-constraint.h"
 #include "clutter-container.h"
 #include "clutter-debug.h"
@@ -306,6 +305,9 @@
 #include "clutter-script-private.h"
 #include "clutter-stage-private.h"
 #include "clutter-units.h"
+
+#undef CLUTTER_DISABLE_DEPRECATED
+#include "clutter-behaviour.h"
 
 typedef struct _ShaderData ShaderData;
 typedef struct _AnchorCoord AnchorCoord;

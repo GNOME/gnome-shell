@@ -34,6 +34,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
 #define CLUTTER_TYPE_BEHAVIOUR_SCALE            (clutter_behaviour_scale_get_type ())
 #define CLUTTER_BEHAVIOUR_SCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScale))
 #define CLUTTER_BEHAVIOUR_SCALE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScaleClass))
@@ -52,6 +54,9 @@ typedef struct _ClutterBehaviourScaleClass      ClutterBehaviourScaleClass;
  * should be accessed using the provided API
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6: Use clutter_actor_animate() with #ClutterActor:x-scale
+ *   and #ClutterActor:y-scale instead.
  */
 struct _ClutterBehaviourScale
 {
@@ -67,6 +72,8 @@ struct _ClutterBehaviourScale
  * The #ClutterBehaviourScaleClass struct contains only private data
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 struct _ClutterBehaviourScaleClass
 {
@@ -91,6 +98,8 @@ void              clutter_behaviour_scale_get_bounds (ClutterBehaviourScale *sca
                                                       gdouble               *y_scale_start,
                                                       gdouble               *x_scale_end,
                                                       gdouble               *y_scale_end);
+
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

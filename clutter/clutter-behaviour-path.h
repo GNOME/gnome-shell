@@ -36,6 +36,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
 #define CLUTTER_TYPE_BEHAVIOUR_PATH (clutter_behaviour_path_get_type ())
 
 #define CLUTTER_BEHAVIOUR_PATH(obj) \
@@ -69,6 +71,9 @@ typedef struct _ClutterBehaviourPathClass   ClutterBehaviourPathClass;
  * and should be accessed using the provided API
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6: Use #ClutterPathConstraint and clutter_actor_animate()
+ *   instead.
  */
 struct _ClutterBehaviourPath
 {
@@ -85,6 +90,8 @@ struct _ClutterBehaviourPath
  * The #ClutterBehaviourPathClass struct contains only private data
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 struct _ClutterBehaviourPathClass
 {
@@ -120,6 +127,8 @@ void              clutter_behaviour_path_set_path     (ClutterBehaviourPath *pat
                                                        ClutterPath          *path);
 
 ClutterPath *     clutter_behaviour_path_get_path     (ClutterBehaviourPath *pathb);
+
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

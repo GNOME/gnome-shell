@@ -26,7 +26,9 @@
 
 /**
  * SECTION:clutter-behaviour-ellipse
+ * @Title: ClutterBehaviourEllipse
  * @short_description: A behaviour interpolating position along an ellipse
+ * @Deprecated: 1.6: Use clutter_actor_animate() instead
  *
  * #ClutterBehaviourEllipse interpolates actors along a path defined by
  *  an ellipse.
@@ -45,9 +47,9 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "clutter-fixed.h"
-#include "clutter-marshal.h"
+#undef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-behaviour-ellipse.h"
+
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-private.h"

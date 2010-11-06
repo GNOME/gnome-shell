@@ -23,25 +23,26 @@
 
 /**
  * SECTION:clutter-behaviour-scale
+ * @Title: ClutterBehaviourScale
  * @short_description: A behaviour controlling scale
+ * @Deprecated: 1.6: Use clutter_actor_animate() with #ClutterActor:x-scale
+ *   and #ClutterActor:y-scale instead.
  *
  * A #ClutterBehaviourScale interpolates actors size between two values.
- *
  */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "clutter-actor.h"
-#include "clutter-behaviour.h"
-#include "clutter-enum-types.h"
-#include "clutter-main.h"
-#include "clutter-behaviour-scale.h"
-#include "clutter-private.h"
-#include "clutter-debug.h"
-
 #include <math.h>
+
+#undef CLUTTER_DISABLE_DEPRECATED
+#include "clutter-behaviour-scale.h"
+
+#include "clutter-debug.h"
+#include "clutter-main.h"
+#include "clutter-private.h"
 
 G_DEFINE_TYPE (ClutterBehaviourScale,
                clutter_behaviour_scale,
@@ -211,6 +212,8 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    * The initial scaling factor on the X axis for the actors.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.6
    */
   pspec = g_param_spec_double ("x-scale-start",
                                P_("X Start Scale"),
@@ -228,6 +231,8 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    * The final scaling factor on the X axis for the actors.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.6
    */
   pspec = g_param_spec_double ("x-scale-end",
                                P_("X End Scale"),
@@ -245,6 +250,8 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    * The initial scaling factor on the Y axis for the actors.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.6
    */
   pspec = g_param_spec_double ("y-scale-start",
                                P_("Y Start Scale"),
@@ -262,6 +269,8 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    * The final scaling factor on the Y axis for the actors.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.6
    */
   pspec = g_param_spec_double ("y-scale-end",
                                P_("Y End Scale"),
@@ -302,9 +311,11 @@ clutter_behaviour_scale_init (ClutterBehaviourScale *self)
  * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
  * it can be set later with clutter_behaviour_set_alpha().
  *
- * Return value: the newly created #ClutterBehaviourScale
+ * Return value: (transfer full): the newly created #ClutterBehaviourScale
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 ClutterBehaviour *
 clutter_behaviour_scale_new (ClutterAlpha   *alpha,
@@ -335,6 +346,8 @@ clutter_behaviour_scale_new (ClutterAlpha   *alpha,
  * Sets the bounds used by scale behaviour.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_behaviour_scale_set_bounds (ClutterBehaviourScale *scale,
@@ -393,6 +406,8 @@ clutter_behaviour_scale_set_bounds (ClutterBehaviourScale *scale,
  * Retrieves the bounds used by scale behaviour.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_behaviour_scale_get_bounds (ClutterBehaviourScale *scale,

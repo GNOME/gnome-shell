@@ -34,6 +34,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
 #define CLUTTER_TYPE_BEHAVIOUR_ROTATE            (clutter_behaviour_rotate_get_type ())
 #define CLUTTER_BEHAVIOUR_ROTATE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BEHAVIOUR_ROTATE, ClutterBehaviourRotate))
 #define CLUTTER_IS_BEHAVIOUR_ROTATE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BEHAVIOUR_ROTATE))
@@ -52,6 +54,8 @@ typedef struct _ClutterBehaviourRotateClass     ClutterBehaviourRotateClass;
  * should be accessed using the provided API
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.6: Use clutter_actor_animate() instead.
  */
 struct _ClutterBehaviourRotate
 {
@@ -67,6 +71,8 @@ struct _ClutterBehaviourRotate
  * The #ClutterBehaviourRotateClass struct contains only private data
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.6
  */
 struct _ClutterBehaviourRotateClass
 {
@@ -101,6 +107,8 @@ void                   clutter_behaviour_rotate_get_bounds    (ClutterBehaviourR
 void                   clutter_behaviour_rotate_set_bounds    (ClutterBehaviourRotate *rotate,
                                                                gdouble                 angle_start,
                                                                gdouble                 angle_end);
+
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

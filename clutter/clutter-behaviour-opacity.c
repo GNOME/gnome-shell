@@ -23,34 +23,26 @@
 
 /**
  * SECTION:clutter-behaviour-opacity
+ * @Title: ClutterBehaviourOpacity
  * @short_description: A behaviour controlling opacity
+ * @Deprecated: 1.6: Use clutter_actor_animate() instead.
  *
- * #ClutterBehaviourPath interpolates actors opacity between two values.
+ * #ClutterBehaviourOpacity controls the opacity of a set of actors.
  *
+ * Since: 0.2
  */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "clutter-actor.h"
-#include "clutter-behaviour.h"
-#include "clutter-behaviour-opacity.h"
-#include "clutter-enum-types.h"
-#include "clutter-main.h"
-#include "clutter-private.h"
-#include "clutter-debug.h"
-
 #include <math.h>
 
-/**
- * SECTION:clutter-behaviour-opacity
- * @short_description: Behaviour controlling the opacity
- *
- * #ClutterBehaviourOpacity controls the opacity of a set of actors.
- *
- * Since: 0.2
- */
+#undef CLUTTER_DISABLE_DEPRECATED
+#include "clutter-behaviour-opacity.h"
+
+#include "clutter-private.h"
+#include "clutter-debug.h"
 
 G_DEFINE_TYPE (ClutterBehaviourOpacity,
                clutter_behaviour_opacity,
@@ -179,6 +171,8 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
    * Initial opacity level of the behaviour.
    *
    * Since: 0.2
+   *
+   * Deprecated: 1.6
    */
   pspec = g_param_spec_uint ("opacity-start",
                              P_("Opacity Start"),
@@ -195,6 +189,8 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
    * Final opacity level of the behaviour.
    *
    * Since: 0.2
+   *
+   * Deprecated: 1.6
    */
   pspec = g_param_spec_uint ("opacity-end",
                              P_("Opacity End"),
@@ -234,6 +230,8 @@ clutter_behaviour_opacity_init (ClutterBehaviourOpacity *self)
  * Return value: the newly created #ClutterBehaviourOpacity
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 ClutterBehaviour *
 clutter_behaviour_opacity_new (ClutterAlpha *alpha,
@@ -257,6 +255,8 @@ clutter_behaviour_opacity_new (ClutterAlpha *alpha,
  * on each actor it controls.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_behaviour_opacity_set_bounds (ClutterBehaviourOpacity *behaviour,
@@ -298,6 +298,8 @@ clutter_behaviour_opacity_set_bounds (ClutterBehaviourOpacity *behaviour,
  * on each actor it controls.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_behaviour_opacity_get_bounds (ClutterBehaviourOpacity *behaviour,

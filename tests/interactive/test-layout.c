@@ -3,6 +3,8 @@
 
 #include <gmodule.h>
 #include <cogl/cogl.h>
+
+#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 /* layout actor, by Lucas Rocha */

@@ -35,16 +35,15 @@
 #include "config.h"
 #endif
 
-#include "clutter-actor.h"
-#include "clutter-behaviour.h"
-#include "clutter-main.h"
-#include "clutter-fixed.h"
+#undef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-behaviour-rotate.h"
-#include "clutter-enum-types.h"
-#include "clutter-private.h"
-#include "clutter-debug.h"
 
 #include <math.h>
+
+#include "clutter-debug.h"
+#include "clutter-enum-types.h"
+#include "clutter-main.h"
+#include "clutter-private.h"
 
 G_DEFINE_TYPE (ClutterBehaviourRotate,
                clutter_behaviour_rotate,

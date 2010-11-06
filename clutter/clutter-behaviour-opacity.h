@@ -35,6 +35,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
 #define CLUTTER_TYPE_BEHAVIOUR_OPACITY (clutter_behaviour_opacity_get_type ())
 
 #define CLUTTER_BEHAVIOUR_OPACITY(obj) \
@@ -68,6 +70,9 @@ typedef struct _ClutterBehaviourOpacityClass   ClutterBehaviourOpacityClass;
  * should be accessed using the provided API
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6: Use clutter_actor_animate() and #ClutterActor:opacity
+ *   instead.
  */
 struct _ClutterBehaviourOpacity
 {
@@ -82,6 +87,8 @@ struct _ClutterBehaviourOpacity
  * The #ClutterBehaviourOpacityClass structure contains only private data
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 struct _ClutterBehaviourOpacityClass
 {
@@ -102,7 +109,8 @@ void clutter_behaviour_opacity_get_bounds (ClutterBehaviourOpacity *behaviour,
                                            guint8                  *opacity_start,
                                            guint8                  *opacity_end);
 
-G_END_DECLS
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
+G_END_DECLS
 
 #endif /* __CLUTTER_BEHAVIOUR_OPACITY_H__ */

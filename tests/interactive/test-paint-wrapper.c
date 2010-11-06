@@ -3,6 +3,8 @@
 #endif
 
 #include <gmodule.h>
+
+#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 #if defined (_MSC_VER) && !defined (_USE_MATH_DEFINES)

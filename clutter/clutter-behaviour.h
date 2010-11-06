@@ -36,6 +36,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
 #define CLUTTER_TYPE_BEHAVIOUR clutter_behaviour_get_type()
 
 #define CLUTTER_BEHAVIOUR(obj) \
@@ -72,6 +74,8 @@ typedef struct _ClutterBehaviourClass   ClutterBehaviourClass;
  * will be called for each actor driven by @behaviour.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 typedef void (*ClutterBehaviourForeachFunc) (ClutterBehaviour *behaviour,
                                              ClutterActor     *actor,
@@ -84,6 +88,8 @@ typedef void (*ClutterBehaviourForeachFunc) (ClutterBehaviour *behaviour,
  * be accessed with the functions below.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 struct _ClutterBehaviour
 {
@@ -104,6 +110,8 @@ struct _ClutterBehaviour
  * Base class for behaviours.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 struct _ClutterBehaviourClass
 {
@@ -151,6 +159,8 @@ void          clutter_behaviour_set_alpha      (ClutterBehaviour            *beh
 gboolean      clutter_behaviour_is_applied     (ClutterBehaviour            *behave,
 						ClutterActor                *actor);
 
+#endif /* CLUTTER_DISABLE_DEPRECATED */
+
 G_END_DECLS
 
-#endif
+#endif /* __CLUTTER_BEHAVIOUR_H__ */

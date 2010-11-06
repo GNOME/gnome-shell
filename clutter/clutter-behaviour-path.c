@@ -26,7 +26,10 @@
 
 /**
  * SECTION:clutter-behaviour-path
+ * @Title: ClutterBehaviourPath
  * @short_description: A behaviour for moving actors along a #ClutterPath
+ * @Deprecated: 1.6: Use #ClutterPathConstraint and clutter_actor_animate()
+ *   with the #ClutterPathConstraint:offset property instead.
  *
  * #ClutterBehaviourPath interpolates actors along a defined path.
  *
@@ -61,9 +64,9 @@
 #include "config.h"
 #endif
 
-#include "clutter-actor.h"
-#include "clutter-behaviour.h"
+#undef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-behaviour-path.h"
+
 #include "clutter-bezier.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
@@ -231,6 +234,8 @@ clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
    * is reached.
    *
    * Since: 0.2
+   *
+   * Deprecated: 1.6
    */
   path_signals[KNOT_REACHED] =
     g_signal_new ("knot-reached",
@@ -323,9 +328,11 @@ clutter_behaviour_path_init (ClutterBehaviourPath *self)
  * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
  * it can be set later with clutter_behaviour_set_alpha().
  *
- * Return value: a #ClutterBehaviour
+ * Return value: (transfer full): a #ClutterBehaviour
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 ClutterBehaviour *
 clutter_behaviour_path_new (ClutterAlpha *alpha,
@@ -349,9 +356,11 @@ clutter_behaviour_path_new (ClutterAlpha *alpha,
  * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
  * it can be set later with clutter_behaviour_set_alpha().
  *
- * Return value: a #ClutterBehaviour
+ * Return value: (transfer full): a #ClutterBehaviour
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.6
  */
 ClutterBehaviour *
 clutter_behaviour_path_new_with_description (ClutterAlpha *alpha,
@@ -380,9 +389,11 @@ clutter_behaviour_path_new_with_description (ClutterAlpha *alpha,
  * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
  * it can be set later with clutter_behaviour_set_alpha().
  *
- * Return value: a #ClutterBehaviour
+ * Return value: (transfer full): a #ClutterBehaviour
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.6
  */
 ClutterBehaviour *
 clutter_behaviour_path_new_with_knots (ClutterAlpha      *alpha,
@@ -416,6 +427,8 @@ clutter_behaviour_path_new_with_knots (ClutterAlpha      *alpha,
  * it.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_behaviour_path_set_path (ClutterBehaviourPath *pathb,
@@ -447,6 +460,8 @@ clutter_behaviour_path_set_path (ClutterBehaviourPath *pathb,
  * Return value: (transfer none): the path
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.6
  */
 ClutterPath *
 clutter_behaviour_path_get_path (ClutterBehaviourPath *pathb)

@@ -1,4 +1,6 @@
 #include <gmodule.h>
+
+#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 static gint n_stages = 1;

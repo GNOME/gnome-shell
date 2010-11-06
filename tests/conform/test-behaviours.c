@@ -1,4 +1,6 @@
 #include <glib.h>
+
+#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 #include "test-conform-common.h"

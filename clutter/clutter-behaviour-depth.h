@@ -35,6 +35,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
 #define CLUTTER_TYPE_BEHAVIOUR_DEPTH            (clutter_behaviour_depth_get_type ())
 #define CLUTTER_BEHAVIOUR_DEPTH(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BEHAVIOUR_DEPTH, ClutterBehaviourDepth))
 #define CLUTTER_IS_BEHAVIOUR_DEPTH(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BEHAVIOUR_DEPTH))
@@ -53,6 +55,9 @@ typedef struct _ClutterBehaviourDepthClass      ClutterBehaviourDepthClass;
  * and should be accessed using the provided API
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6: Use clutter_actor_animate() with #ClutterActor:depth
+ *   instead.
  */
 struct _ClutterBehaviourDepth
 {
@@ -68,6 +73,8 @@ struct _ClutterBehaviourDepth
  * The #ClutterBehaviourDepthClass structure contains only private data
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.6
  */
 struct _ClutterBehaviourDepthClass
 {
@@ -86,6 +93,8 @@ void clutter_behaviour_depth_set_bounds (ClutterBehaviourDepth *behaviour,
 void clutter_behaviour_depth_get_bounds (ClutterBehaviourDepth *behaviour,
                                          gint                  *depth_start,
                                          gint                  *depth_end);
+
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

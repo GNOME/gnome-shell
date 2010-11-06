@@ -4,9 +4,11 @@
 #include <string.h>
 #include <gmodule.h>
 
+#undef CLUTTER_DISABLE_DEPRECATED
+#include <clutter/clutter.h>
+
 #if HAVE_CLUTTER_GLX
 
-#include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <clutter/x11/clutter-x11-texture-pixmap.h>
 

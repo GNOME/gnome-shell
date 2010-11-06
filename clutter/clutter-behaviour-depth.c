@@ -27,6 +27,7 @@
 #include "config.h"
 #endif
 
+#undef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-behaviour-depth.h"
 
 #include "clutter-enum-types.h"
@@ -36,7 +37,9 @@
 
 /**
  * SECTION:clutter-behaviour-depth
+ * @Title: ClutterBehaviourDepth
  * @short_description: A behaviour controlling the Z position
+ * @Deprecated: 1.6: Use clutter_actor_animate() instead
  *
  * #ClutterBehaviourDepth is a simple #ClutterBehaviour controlling the
  * depth of a set of actors between a start and end depth.
@@ -163,6 +166,8 @@ clutter_behaviour_depth_class_init (ClutterBehaviourDepthClass *klass)
    * Start depth level to apply to the actors.
    *
    * Since: 0.4
+   *
+   * Deprecated: 1.6
    */
   g_object_class_install_property (gobject_class,
                                    PROP_DEPTH_START,
@@ -177,6 +182,8 @@ clutter_behaviour_depth_class_init (ClutterBehaviourDepthClass *klass)
    * End depth level to apply to the actors.
    *
    * Since: 0.4
+   *
+   * Deprecated: 1.6
    */
   g_object_class_install_property (gobject_class,
                                    PROP_DEPTH_END,
@@ -208,9 +215,11 @@ clutter_behaviour_depth_init (ClutterBehaviourDepth *depth)
  * of the #ClutterAlpha instance. In the case when @alpha is %NULL,
  * it can be set later with clutter_behaviour_set_alpha().
  *
- * Return value: the newly created behaviour
+ * Return value: (transfer full): the newly created behaviour
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.6
  */
 ClutterBehaviour *
 clutter_behaviour_depth_new (ClutterAlpha *alpha,
@@ -235,6 +244,8 @@ clutter_behaviour_depth_new (ClutterAlpha *alpha,
  * Sets the boundaries of the @behaviour.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_behaviour_depth_set_bounds (ClutterBehaviourDepth *behaviour,
@@ -273,6 +284,8 @@ clutter_behaviour_depth_set_bounds (ClutterBehaviourDepth *behaviour,
  * Gets the boundaries of the @behaviour
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_behaviour_depth_get_bounds (ClutterBehaviourDepth *behaviour,

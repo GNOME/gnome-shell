@@ -35,6 +35,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
 #define CLUTTER_TYPE_BEHAVIOUR_ELLIPSE (clutter_behaviour_ellipse_get_type ())
 
 #define CLUTTER_BEHAVIOUR_ELLIPSE(obj) \
@@ -68,6 +70,8 @@ typedef struct _ClutterBehaviourEllipseClass   ClutterBehaviourEllipseClass;
  * and should be accessed using the provided API
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.6
  */
 struct _ClutterBehaviourEllipse
 {
@@ -82,6 +86,8 @@ struct _ClutterBehaviourEllipse
  * The #ClutterBehaviourEllipseClass struct contains only private data
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.6
  */
 struct _ClutterBehaviourEllipseClass
 {
@@ -133,6 +139,8 @@ void                   clutter_behaviour_ellipse_get_tilt        (ClutterBehavio
 ClutterRotateDirection clutter_behaviour_ellipse_get_direction   (ClutterBehaviourEllipse *self);
 void                   clutter_behaviour_ellipse_set_direction   (ClutterBehaviourEllipse *self,
 								  ClutterRotateDirection   direction);
+
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
