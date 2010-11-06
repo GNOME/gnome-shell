@@ -46,8 +46,12 @@ G_BEGIN_DECLS
  * whose members cannot be directly accessed.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.6
  */
 typedef struct _ClutterTimeoutPool    ClutterTimeoutPool;
+
+#ifndef CLUTTER_DISABLE_DEPRECATED
 
 ClutterTimeoutPool *clutter_timeout_pool_new    (gint                priority);
 guint               clutter_timeout_pool_add    (ClutterTimeoutPool *pool,
@@ -57,6 +61,8 @@ guint               clutter_timeout_pool_add    (ClutterTimeoutPool *pool,
                                                  GDestroyNotify      notify);
 void                clutter_timeout_pool_remove (ClutterTimeoutPool *pool,
                                                  guint               id);
+
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

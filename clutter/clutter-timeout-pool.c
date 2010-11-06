@@ -365,6 +365,8 @@ clutter_timeout_pool_finalize (GSource *source)
  *   the destruction of the timeout pool using g_source_destroy()
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.6
  */
 ClutterTimeoutPool *
 clutter_timeout_pool_new (gint priority)
@@ -421,6 +423,8 @@ clutter_timeout_pool_new (gint priority)
  *   Use clutter_timeout_pool_remove() to stop the timeout.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.6
  */
 guint
 clutter_timeout_pool_add (ClutterTimeoutPool *pool,
@@ -456,6 +460,8 @@ clutter_timeout_pool_add (ClutterTimeoutPool *pool,
  * clutter_timeout_pool_add().
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.6
  */
 void
 clutter_timeout_pool_remove (ClutterTimeoutPool *pool,
