@@ -40,6 +40,7 @@ AM_CPPFLAGS = \
 	-DG_DISABLE_SINGLE_INCLUDES		\
 	-DG_LOG_DOMAIN=\"Clutter\" 		\
 	$(CLUTTER_DEBUG_CFLAGS)			\
+	$(CLUTTER_PROFILE_CFLAGS)		\
 	$(NULL)
 
 AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS) $(GCOV_CFLAGS)
@@ -594,6 +595,7 @@ lib_LTLIBRARIES += libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 
 libclutter_@CLUTTER_SONAME_INFIX@_@CLUTTER_API_VERSION@_la_LIBADD = \
 	$(CLUTTER_LIBS) \
+	$(CLUTTER_PROFILE_LIBS) \
 	$(top_builddir)/clutter/cogl/cogl/libclutter-cogl.la \
 	$(top_builddir)/clutter/cogl/pango/libcoglpango.la
 

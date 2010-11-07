@@ -924,8 +924,8 @@ AS_CASE([$enable_profile],
           AS_IF([test "x$GCC" = "xyes"],
                 [
                   PKG_CHECK_MODULES([PROFILE_DEP], [uprof-0.3])
-                  CLUTTER_PROFILE_CFLAGS=" -DCLUTTER_ENABLE_PROFILE -DCOGL_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
-                  CLUTTER_PROFILE_LDFLAGS=" $PROFILE_DEP_LIBS"
+                  CLUTTER_PROFILE_CFLAGS="-DCLUTTER_ENABLE_PROFILE -DCOGL_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
+                  CLUTTER_PROFILE_LDFLAGS="$PROFILE_DEP_LIBS"
 
                   AS_IF([test "x$enable_debug" = "xyes"], [CLUTTER_PROFILE_CFLAGS+=" -DUPROF_DEBUG"])
                 ],
