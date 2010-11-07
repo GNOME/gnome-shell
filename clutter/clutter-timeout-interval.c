@@ -34,12 +34,17 @@ void
 _clutter_timeout_interval_init (ClutterTimeoutInterval *interval,
                                 guint                   fps)
 {
-  GTimeVal start_time;
+#if GLIB_CHECK_VERSION (2, 27, 3)
+  interval->start_time = g_get_monotonic_time () / 1000;
+#else
+  {
+    GTimeVal start_time;
+    g_get_current_time (&start_time);
+    interval->start_time = start_time.tv_sec * 1000
+                         + start_time.tv_usec / 1000;
+  }
+#endif
 
-  g_get_current_time (&start_time);
-
-  interval->start_time = start_time.tv_sec * 1000
-                       + start_time.tv_usec / 1000;
   interval->fps = fps;
   interval->frame_count = 0;
 }

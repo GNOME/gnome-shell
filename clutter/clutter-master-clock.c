@@ -170,7 +170,6 @@ master_clock_is_running (ClutterMasterClock *master_clock)
 static gint
 master_clock_next_frame_delay (ClutterMasterClock *master_clock)
 {
-  GTimeVal source_time;
   gint64 now, next;
 
   if (!master_clock_is_running (master_clock))
@@ -207,8 +206,16 @@ master_clock_next_frame_delay (ClutterMasterClock *master_clock)
   /* Otherwise, wait at least 1/frame_rate seconds since we last
    * started a frame
    */
-  g_source_get_current_time (master_clock->source, &source_time);
-  now = source_time.tv_sec * 1000000L + source_time.tv_usec;
+#if GLIB_CHECK_VERSION (2, 27, 3)
+  now = g_source_get_time (master_clock->source);
+#else
+  {
+    GTimeVal source_time;
+    g_source_get_current_time (master_clock->source, &source_time);
+    now = source_time.tv_sec * 1000000L + source_time.tv_usec;
+  }
+#endif
+
   next = master_clock->prev_tick;
 
   /* If time has gone backwards then there's no way of knowing how
@@ -301,7 +308,6 @@ clutter_clock_dispatch (GSource     *source,
   ClutterMasterClock *master_clock = clock_source->master_clock;
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
   gboolean stages_updated = FALSE;
-  GTimeVal source_time;
   GSList *stages, *l;
 
   CLUTTER_STATIC_TIMER (master_dispatch_timer,
@@ -322,9 +328,16 @@ clutter_clock_dispatch (GSource     *source,
   clutter_threads_enter ();
 
   /* Get the time to use for this frame */
-  g_source_get_current_time (source, &source_time);
-  master_clock->cur_tick = source_time.tv_sec * 1000000L
-                         + source_time.tv_usec;
+#if GLIB_CHECK_VERSION (2, 27, 3)
+  master_clock->cur_tick = g_source_get_time (source);
+#else
+  {
+    GTimeVal source_time;
+    g_source_get_current_time (source, &source_time);
+    master_clock->cur_tick = source_time.tv_sec * 1000000L
+                           + source_time.tv_usec;
+  }
+#endif
 
   /* We need to protect ourselves against stages being destroyed during
    * event handling

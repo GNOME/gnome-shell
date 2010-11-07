@@ -136,11 +136,18 @@ clutter_timeout_prepare (ClutterTimeoutPool *pool,
                          ClutterTimeout     *timeout,
                          gint               *next_timeout)
 {
-  GTimeVal source_time;
+  GSource *source = (GSource *) pool;
   gint64 now;
 
-  g_source_get_current_time (&pool->source, &source_time);
-  now = source_time.tv_sec * 1000 + source_time.tv_usec / 1000;
+#if GLIB_CHECK_VERSION (2, 27, 3)
+  now = g_source_get_time (source) / 1000;
+#else
+  {
+    GTimeVal source_time;
+    g_source_get_current_time (source, &source_time);
+    now = source_time.tv_sec * 1000 + source_time.tv_usec / 1000;
+  }
+#endif
 
   return _clutter_timeout_interval_prepare (now,
                                             &timeout->interval,
