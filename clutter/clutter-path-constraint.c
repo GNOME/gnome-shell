@@ -43,6 +43,7 @@
 #include "clutter-path-constraint.h"
 
 #include "clutter-debug.h"
+#include "clutter-marshal.h"
 #include "clutter-private.h"
 
 #define CLUTTER_PATH_CONSTRAINT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_PATH_CONSTRAINT, ClutterPathConstraintClass))
@@ -60,6 +61,8 @@ struct _ClutterPathConstraint
   gfloat offset;
 
   ClutterActor *actor;
+
+  guint current_node;
 };
 
 struct _ClutterPathConstraintClass
@@ -77,9 +80,17 @@ enum
   LAST_PROPERTY
 };
 
+enum
+{
+  NODE_REACHED,
+
+  LAST_SIGNAL
+};
+
 G_DEFINE_TYPE (ClutterPathConstraint, clutter_path_constraint, CLUTTER_TYPE_CONSTRAINT);
 
 static GParamSpec *path_properties[LAST_PROPERTY] = { NULL, };
+static guint path_signals[LAST_SIGNAL] = { 0, };
 
 static void
 clutter_path_constraint_update_allocation (ClutterConstraint *constraint,
@@ -100,6 +111,14 @@ clutter_path_constraint_update_allocation (ClutterConstraint *constraint,
   allocation->y1 = position.y;
   allocation->x2 = allocation->x1 + width;
   allocation->y2 = allocation->y1 + height;
+
+  if (knot_id != self->current_node)
+    {
+      self->current_node = knot_id;
+      g_signal_emit (self, path_signals[NODE_REACHED], 0,
+                     self->actor,
+                     self->current_node);
+    }
 }
 
 static void
@@ -222,12 +241,36 @@ clutter_path_constraint_class_init (ClutterPathConstraintClass *klass)
   meta_class->set_actor = clutter_path_constraint_set_actor;
 
   constraint_class->update_allocation = clutter_path_constraint_update_allocation;
+
+  /**
+   * ClutterPathConstraint::node-reached:
+   * @constraint: the #ClutterPathConstraint that emitted the signal
+   * @actor: the #ClutterActor using the @constraint
+   * @index: the index of the node that has been reached
+   *
+   * The ::node-reached signal is emitted each time a
+   * #ClutterPathConstraint:offset value results in the actor
+   * passing a #ClutterPathNode
+   *
+   * Since: 1.6
+   */
+  path_signals[NODE_REACHED] =
+    g_signal_new (I_("node-reached"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  _clutter_marshal_VOID__OBJECT_UINT,
+                  G_TYPE_NONE, 2,
+                  CLUTTER_TYPE_ACTOR,
+                  G_TYPE_UINT);
 }
 
 static void
 clutter_path_constraint_init (ClutterPathConstraint *self)
 {
   self->offset = 0.0f;
+  self->current_node = G_MAXUINT;
 }
 
 /**
