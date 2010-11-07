@@ -56,21 +56,18 @@ struct _ClutterMasterClock
   /* the list of timelines handled by the clock */
   GSList *timelines;
 
-  /* the current state of the clock
-   */
-  GTimeVal cur_tick;
+  /* the current state of the clock, in usecs */
+  gint64 cur_tick;
 
-  /* the previous state of the clock, used to compute
-   * the delta
-   */
-  GTimeVal prev_tick;
+  /* the previous state of the clock, in usecs, used to compute the delta */
+  gint64 prev_tick;
 
   /* an idle source, used by the Master Clock to queue
    * a redraw on the stage and drive the animations
    */
   GSource *source;
 
-  /* If the master clock is idle that means it's
+  /* If the master clock is idle that means it has
    * fallen back to idle polling for timeline
    * progressions and it may have been some time since
    * the last real stage update.
@@ -173,8 +170,8 @@ master_clock_is_running (ClutterMasterClock *master_clock)
 static gint
 master_clock_next_frame_delay (ClutterMasterClock *master_clock)
 {
-  GTimeVal now;
-  GTimeVal next;
+  GTimeVal source_time;
+  gint64 now, next;
 
   if (!master_clock_is_running (master_clock))
     return -1;
@@ -198,7 +195,7 @@ master_clock_next_frame_delay (ClutterMasterClock *master_clock)
       return 0;
     }
 
-  if (master_clock->prev_tick.tv_sec == 0)
+  if (master_clock->prev_tick == 0)
     {
       /* If we weren't previously running, then draw the next frame
        * immediately
@@ -210,24 +207,22 @@ master_clock_next_frame_delay (ClutterMasterClock *master_clock)
   /* Otherwise, wait at least 1/frame_rate seconds since we last
    * started a frame
    */
-  g_source_get_current_time (master_clock->source, &now);
-
+  g_source_get_current_time (master_clock->source, &source_time);
+  now = source_time.tv_sec * 1000000L + source_time.tv_usec;
   next = master_clock->prev_tick;
 
   /* If time has gone backwards then there's no way of knowing how
      long we should wait so let's just dispatch immediately */
-  if (now.tv_sec < next.tv_sec ||
-      (now.tv_sec == next.tv_sec && now.tv_usec <= next.tv_usec))
+  if (now <= next)
     {
       CLUTTER_NOTE (SCHEDULER, "Time has gone backwards");
 
       return 0;
     }
 
-  g_time_val_add (&next, 1000000L / (gulong) clutter_get_default_frame_rate ());
+  next += (1000000L / clutter_get_default_frame_rate ());
 
-  if (next.tv_sec < now.tv_sec ||
-      (next.tv_sec == now.tv_sec && next.tv_usec <= now.tv_usec))
+  if (next <= now)
     {
       CLUTTER_NOTE (SCHEDULER, "Less than %lu microsecs",
                     1000000L / (gulong) clutter_get_default_frame_rate ());
@@ -236,12 +231,10 @@ master_clock_next_frame_delay (ClutterMasterClock *master_clock)
     }
   else
     {
-      CLUTTER_NOTE (SCHEDULER, "Waiting %lu msecs",
-                    (next.tv_sec - now.tv_sec) * 1000 +
-                    (next.tv_usec - now.tv_usec) / 1000);
+      CLUTTER_NOTE (SCHEDULER, "Waiting %" G_GINT64_FORMAT " msecs",
+                   (next - now) / 1000);
 
-      return ((next.tv_sec  - now.tv_sec)  * 1000 +
-              (next.tv_usec - now.tv_usec) / 1000);
+      return (next - now) / 1000;
     }
 }
 
@@ -307,8 +300,9 @@ clutter_clock_dispatch (GSource     *source,
   ClutterClockSource *clock_source = (ClutterClockSource *) source;
   ClutterMasterClock *master_clock = clock_source->master_clock;
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
-  GSList *stages, *l;
   gboolean stages_updated = FALSE;
+  GTimeVal source_time;
+  GSList *stages, *l;
 
   CLUTTER_STATIC_TIMER (master_dispatch_timer,
                         "Mainloop",
@@ -327,9 +321,10 @@ clutter_clock_dispatch (GSource     *source,
 
   clutter_threads_enter ();
 
-  /* Get the time to use for this frame.
-   */
-  g_source_get_current_time (source, &master_clock->cur_tick);
+  /* Get the time to use for this frame */
+  g_source_get_current_time (source, &source_time);
+  master_clock->cur_tick = source_time.tv_sec * 1000000L
+                         + source_time.tv_usec;
 
   /* We need to protect ourselves against stages being destroyed during
    * event handling
@@ -552,7 +547,7 @@ _clutter_master_clock_advance (ClutterMasterClock *master_clock)
   g_slist_foreach (timelines, (GFunc) g_object_ref, NULL);
 
   for (l = timelines; l != NULL; l = l->next)
-    clutter_timeline_do_tick (l->data, &master_clock->cur_tick);
+    _clutter_timeline_do_tick (l->data, master_clock->cur_tick / 1000);
 
   g_slist_foreach (timelines, (GFunc) g_object_unref, NULL);
   g_slist_free (timelines);

@@ -34,30 +34,32 @@ void
 _clutter_timeout_interval_init (ClutterTimeoutInterval *interval,
                                 guint                   fps)
 {
-  g_get_current_time (&interval->start_time);
+  GTimeVal start_time;
+
+  g_get_current_time (&start_time);
+
+  interval->start_time = start_time.tv_sec * 1000
+                       + start_time.tv_usec / 1000;
   interval->fps = fps;
   interval->frame_count = 0;
 }
 
-static guint
-_clutter_timeout_interval_get_ticks (const GTimeVal         *current_time,
+static gint64
+_clutter_timeout_interval_get_ticks (gint64                  current_time,
                                      ClutterTimeoutInterval *interval)
 {
-  return ((current_time->tv_sec - interval->start_time.tv_sec) * 1000
-        + (current_time->tv_usec - interval->start_time.tv_usec) / 1000);
+  return MAX (current_time - interval->start_time, 0);
 }
 
 gboolean
-_clutter_timeout_interval_prepare (const GTimeVal         *current_time,
+_clutter_timeout_interval_prepare (gint64                  current_time,
                                    ClutterTimeoutInterval *interval,
                                    gint                   *delay)
 {
-  guint elapsed_time, new_frame_num;
+  gint elapsed_time, new_frame_num;
 
-  elapsed_time = _clutter_timeout_interval_get_ticks (current_time,
-                                                      interval);
-  new_frame_num = elapsed_time * interval->fps
-                / 1000;
+  elapsed_time = _clutter_timeout_interval_get_ticks (current_time, interval);
+  new_frame_num = elapsed_time * interval->fps / 1000;
 
   /* If time has gone backwards or the time since the last frame is
      greater than the two frames worth then reset the time and do a
@@ -69,10 +71,10 @@ _clutter_timeout_interval_prepare (const GTimeVal         *current_time,
       guint frame_time = (1000 + interval->fps - 1) / interval->fps;
 
       /* Reset the start time */
-      interval->start_time = *current_time;
+      interval->start_time = current_time;
 
       /* Move the start time as if one whole frame has elapsed */
-      g_time_val_add (&interval->start_time, -(gint) frame_time * 1000);
+      interval->start_time -= frame_time;
 
       interval->frame_count = 0;
 
@@ -119,11 +121,10 @@ _clutter_timeout_interval_compare_expiration (const ClutterTimeoutInterval *a,
 {
   guint a_delay = 1000 / a->fps;
   guint b_delay = 1000 / b->fps;
-  glong b_difference;
+  gint64 b_difference;
   gint comparison;
 
-  b_difference = ((a->start_time.tv_sec - b->start_time.tv_sec) * 1000
-               + (a->start_time.tv_usec - b->start_time.tv_usec) / 1000);
+  b_difference = a->start_time - b->start_time;
 
   comparison = ((gint) ((a->frame_count + 1) * a_delay)
              - (gint) ((b->frame_count + 1) * b_delay + b_difference));

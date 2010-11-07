@@ -65,8 +65,9 @@ struct _ClutterTimeoutPool
 
   guint next_id;
 
-  GTimeVal start_time;
-  GList *timeouts, *dispatched_timeouts;
+  GList *timeouts;
+  GList *dispatched_timeouts;
+
   gint ready;
 
   guint id;
@@ -135,11 +136,14 @@ clutter_timeout_prepare (ClutterTimeoutPool *pool,
                          ClutterTimeout     *timeout,
                          gint               *next_timeout)
 {
-  GTimeVal now;
+  GTimeVal source_time;
+  gint64 now;
 
-  g_source_get_current_time (&pool->source, &now);
+  g_source_get_current_time (&pool->source, &source_time);
+  now = source_time.tv_sec * 1000 + source_time.tv_usec / 1000;
 
-  return _clutter_timeout_interval_prepare (&now, &timeout->interval,
+  return _clutter_timeout_interval_prepare (now,
+                                            &timeout->interval,
                                             next_timeout);
 }
 
@@ -387,8 +391,6 @@ clutter_timeout_pool_new (gint priority)
     g_source_set_priority (source, priority);
 
   pool = (ClutterTimeoutPool *) source;
-
-  g_get_current_time (&pool->start_time);
   pool->next_id = 1;
   pool->id = g_source_attach (source, NULL);
 

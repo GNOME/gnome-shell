@@ -64,7 +64,7 @@ struct _ClutterTimelinePrivate
   GHashTable *markers_by_name;
 
   /* Time we last advanced the elapsed time and showed a frame */
-  GTimeVal last_frame_time;
+  gint64 last_frame_time;
 
   guint loop       : 1;
   guint is_playing : 1;
@@ -1205,14 +1205,14 @@ clutter_timeline_get_delta (ClutterTimeline *timeline)
  * @timeline: a #ClutterTimeline
  * @tick_time: time of advance
  *
- * Advances @timeline based on the time passed in @msecs. This
+ * Advances @timeline based on the time passed in @tick_time. This
  * function is called by the master clock. The @timeline will use this
  * interval to emit the #ClutterTimeline::new-frame signal and
  * eventually skip frames.
  */
 void
-clutter_timeline_do_tick (ClutterTimeline *timeline,
-			  GTimeVal        *tick_time)
+_clutter_timeline_do_tick (ClutterTimeline *timeline,
+                           gint64           tick_time)
 {
   ClutterTimelinePrivate *priv;
 
@@ -1222,15 +1222,14 @@ clutter_timeline_do_tick (ClutterTimeline *timeline,
 
   if (priv->waiting_first_tick)
     {
-      priv->last_frame_time = *tick_time;
+      priv->last_frame_time = tick_time;
       priv->waiting_first_tick = FALSE;
     }
   else
     {
       gint64 msecs;
 
-      msecs = (tick_time->tv_sec - priv->last_frame_time.tv_sec) * 1000
-            + (tick_time->tv_usec - priv->last_frame_time.tv_usec) / 1000;
+      msecs = tick_time - priv->last_frame_time;
 
       /* if the clock rolled back between ticks we need to
        * account for it; the best course of action, since the
@@ -1239,14 +1238,14 @@ clutter_timeline_do_tick (ClutterTimeline *timeline,
        */
       if (msecs < 0)
         {
-          priv->last_frame_time = *tick_time;
+          priv->last_frame_time = tick_time;
           return;
         }
 
       if (msecs != 0)
 	{
 	  /* Avoid accumulating error */
-	  g_time_val_add (&priv->last_frame_time, msecs * 1000L);
+          priv->last_frame_time += msecs;
 	  priv->msecs_delta = msecs;
 	  clutter_timeline_do_frame (timeline);
 	}

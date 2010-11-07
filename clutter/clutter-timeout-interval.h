@@ -32,24 +32,26 @@ typedef struct _ClutterTimeoutInterval ClutterTimeoutInterval;
 
 struct _ClutterTimeoutInterval
 {
-  GTimeVal start_time;
-  guint frame_count, fps;
+  /* milliseconds */
+  gint64 start_time;
+
+  guint frame_count;
+  guint fps;
 };
 
-void _clutter_timeout_interval_init (ClutterTimeoutInterval *interval,
-                                     guint fps);
+void     _clutter_timeout_interval_init               (ClutterTimeoutInterval       *interval,
+                                                       guint                         fps);
 
-gboolean _clutter_timeout_interval_prepare (const GTimeVal *current_time,
-                                            ClutterTimeoutInterval *interval,
-                                            gint *delay);
+gboolean _clutter_timeout_interval_prepare            (gint64 current_time,
+                                                       ClutterTimeoutInterval       *interval,
+                                                       gint                         *delay);
 
-gboolean _clutter_timeout_interval_dispatch (ClutterTimeoutInterval *interval,
-                                             GSourceFunc     callback,
-                                             gpointer        user_data);
+gboolean _clutter_timeout_interval_dispatch           (ClutterTimeoutInterval       *interval,
+                                                       GSourceFunc                   callback,
+                                                       gpointer                      user_data);
 
-gint _clutter_timeout_interval_compare_expiration
-                                              (const ClutterTimeoutInterval *a,
-                                               const ClutterTimeoutInterval *b);
+gint     _clutter_timeout_interval_compare_expiration (const ClutterTimeoutInterval *a,
+                                                       const ClutterTimeoutInterval *b);
 
 G_END_DECLS
 

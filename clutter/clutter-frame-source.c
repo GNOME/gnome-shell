@@ -144,11 +144,13 @@ clutter_frame_source_prepare (GSource *source,
                               gint    *delay)
 {
   ClutterFrameSource *frame_source = (ClutterFrameSource *) source;
-  GTimeVal current_time;
+  GTimeVal source_time;
+  gint64 current_time;
 
-  g_source_get_current_time (source, &current_time);
+  g_source_get_current_time (source, &source_time);
+  current_time = source_time.tv_sec * 1000 + source_time.tv_usec / 1000;
 
-  return _clutter_timeout_interval_prepare (&current_time,
+  return _clutter_timeout_interval_prepare (current_time,
                                             &frame_source->timeout,
                                             delay);
 }

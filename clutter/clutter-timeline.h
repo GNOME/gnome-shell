@@ -154,8 +154,8 @@ void             clutter_timeline_advance_to_marker     (ClutterTimeline *timeli
                                                          const gchar     *marker_name);
 
 /*< private >*/
-void             clutter_timeline_do_tick               (ClutterTimeline *timeline,
-							 GTimeVal        *tick_time);
+void             _clutter_timeline_do_tick              (ClutterTimeline *timeline,
+                                                         gint64           tick_time);
 
 G_END_DECLS
 
