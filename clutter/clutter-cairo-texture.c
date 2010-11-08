@@ -436,7 +436,7 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
                                             obj_props);
 
   /**
-   * ClutterCairoTexture::create_surface:
+   * ClutterCairoTexture::create-surface:
    * @texture: the #ClutterCairoTexture that emitted the signal
    * @width: the width of the surface to create
    * @height: the height of the surface to create

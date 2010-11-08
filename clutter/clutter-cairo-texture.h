@@ -65,6 +65,8 @@ struct _ClutterCairoTexture
 
 /**
  * ClutterCairoTextureClass:
+ * @create_surface: class handler for the #ClutterCairoTexture::create-surface
+ *   signal
  *
  * The #ClutterCairoTextureClass struct contains only private data.
  *

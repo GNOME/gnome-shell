@@ -66,9 +66,12 @@ CFILE_GLOB=$(top_srcdir)/clutter/*.c \
 IGNORE_HFILES=\
 	clutter.h 			\
 	clutter-actor-meta-private.h	\
+	clutter-actor-private.h		\
+	clutter-backend-private.h	\
         clutter-bezier.h 		\
 	clutter-debug.h 		\
 	clutter-deprecated.h 		\
+	clutter-device-manager-private.h	\
 	clutter-enum-types.h 		\
 	clutter-id-pool.h 		\
 	clutter-keysyms.h 		\
@@ -77,9 +80,12 @@ IGNORE_HFILES=\
 	clutter-marshal.h 		\
 	clutter-master-clock.h 		\
 	clutter-model-private.h 	\
+	clutter-paint-volume-private.h	\
 	clutter-private.h 		\
 	clutter-profile.h		\
 	clutter-script-private.h 	\
+	clutter-stage-manager-private.h	\
+	clutter-stage-private.h		\
 	clutter-stage-window.h 		\
 	clutter-timeout-interval.h 	\
 	cally				\
@@ -89,6 +95,7 @@ IGNORE_HFILES=\
 	glx 				\
 	osx 				\
 	x11 				\
+	wayland				\
 	win32
 
 EXTRA_HFILES=\
