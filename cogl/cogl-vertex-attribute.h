@@ -81,7 +81,7 @@ typedef enum {
  *          <pre>offsetof (MyVertex, component0)</pre>
  * @components: The number of components (e.g. 4 for an rgba color or
  *              3 for and (x,y,z) position)
- * @type:
+ * @type: FIXME
  *
  * Describes the layout for a list of vertex attribute values (For
  * example, a list of texture coordinates or colors).
