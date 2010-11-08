@@ -383,6 +383,11 @@ StTooltip StLabel {
     border-radius: 0px 9px 9px 0px;
 }
 
+.dash-placeholder {
+    background-image: url("dash-placeholder.svg");
+    height: 27px;
+}
+
 #viewSelector {
     spacing: 16px;
 }
@@ -544,7 +549,16 @@ StTooltip StLabel {
     padding: 6px 12px;
 }
 
+.remove-favorite-icon {
+    color: #a0a0a0;
+}
+
+.remove-favorite-icon:hover {
+    color: white;
+}
+
 .app-well-app > .overview-icon,
+.remove-favorite > .overview-icon,
 .search-result-content > .overview-icon {
     border-radius: 4px;
     padding: 4px;
@@ -565,6 +579,7 @@ StTooltip StLabel {
 }
 
 .app-well-app:hover > .overview-icon,
+.remove-favorite:hover > .overview-icon,
 .search-result-content:hover > .overview-icon {
     background: rgba(255,255,255,0.33);
     text-shadow: black 0px 2px 2px;
