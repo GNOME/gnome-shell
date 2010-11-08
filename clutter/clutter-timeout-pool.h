@@ -39,6 +39,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
 /**
  * ClutterTimeoutPool: (skip)
  *
@@ -50,8 +52,6 @@ G_BEGIN_DECLS
  * Deprecated: 1.6
  */
 typedef struct _ClutterTimeoutPool    ClutterTimeoutPool;
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 
 ClutterTimeoutPool *clutter_timeout_pool_new    (gint                priority);
 guint               clutter_timeout_pool_add    (ClutterTimeoutPool *pool,

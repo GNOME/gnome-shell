@@ -34,8 +34,10 @@
 #include "config.h"
 #endif
 
-#include "clutter-debug.h"
+#undef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-timeout-pool.h"
+
+#include "clutter-debug.h"
 #include "clutter-timeout-interval.h"
 
 typedef struct _ClutterTimeout  ClutterTimeout;
