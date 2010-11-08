@@ -59,6 +59,19 @@ struct _ClutterDeviceManagerEvdevPrivate
 
 static const gchar *subsystems[] = { "input", NULL };
 
+static gboolean
+is_evdev (const gchar *sysfs_path)
+{
+  GRegex *regex;
+  gboolean match;
+
+  regex = g_regex_new ("/input[0-9]+/event[0-9]+$", 0, 0, NULL);
+  match = g_regex_match (regex, sysfs_path, 0, NULL);
+
+  g_regex_unref (regex);
+  return match;
+}
+
 static void
 evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
                   GUdevDevice               *udev_device)
@@ -66,17 +79,24 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
   ClutterDeviceManager *manager = (ClutterDeviceManager *) manager_evdev;
   ClutterInputDeviceType type = CLUTTER_EXTENSION_DEVICE;
   ClutterInputDevice *device;
-  const gchar *dev_file;
+  const gchar *device_file, *sysfs_path;
   const gchar * const *keys;
   guint i;
 
-  dev_file = g_udev_device_get_device_file (udev_device);
+  device_file = g_udev_device_get_device_file (udev_device);
+  sysfs_path = g_udev_device_get_sysfs_path (udev_device);
+
+  if (device_file == NULL || sysfs_path == NULL)
+    return;
 
   if (g_udev_device_get_property (udev_device, "ID_INPUT") == NULL)
-    {
-      CLUTTER_NOTE (EVENT, "Ignoring device %s without ID_INPUT set", dev_file);
-      return;
-    }
+    return;
+
+  /* Make sure to only add evdev devices, ie the device with a sysfs path that
+   * finishes by input%d/event%d (We don't rely on the node name as this
+   * policy is enforced by udev rules Vs API/ABI guarantees of sysfs) */
+  if (!is_evdev (sysfs_path))
+    return;
 
   keys = g_udev_device_get_property_keys (udev_device);
   for (i = 0; keys[i]; i++)
@@ -106,7 +126,8 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
                          NULL);
   _clutter_device_manager_add_device (manager, device);
 
-  CLUTTER_NOTE (EVENT, "Added device %s, type %d", dev_file, type);
+  CLUTTER_NOTE (EVENT, "Added device %s, type %d, sysfs %s",
+                device_file, type, sysfs_path);
 }
 
 /*
