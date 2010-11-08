@@ -104,6 +104,7 @@ EXTRA_HFILES=\
 	$(top_srcdir)/clutter/glx/clutter-glx-texture-pixmap.h \
 	$(top_srcdir)/clutter/egl/clutter-egl.h \
 	$(top_srcdir)/clutter/egl/clutter-cex100.h \
+	$(top_srcdir)/clutter/wayland/clutter-wayland.h \
 	$(top_srcdir)/clutter/win32/clutter-win32.h
 
 # Images to copy into HTML directory.
