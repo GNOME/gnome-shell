@@ -258,6 +258,7 @@ set_shader_num (int new_no)
 
   shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
   cogl_shader_source (shader, shaders[new_no].source);
+  cogl_shader_compile (shader);
 
   program = cogl_create_program ();
   cogl_program_attach_shader (program, shader);
