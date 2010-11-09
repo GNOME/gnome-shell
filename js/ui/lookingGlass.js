@@ -940,7 +940,9 @@ LookingGlass.prototype = {
 
         global.stage.set_key_focus(this._entry);
 
-        Tweener.addTween(this.actor, { time: 0.5,
+        // We inverse compensate for the slow-down so you can change the factor
+        // through LookingGlass without long waits.
+        Tweener.addTween(this.actor, { time: 0.5 / St.get_slow_down_factor(),
                                        transition: 'easeOutQuad',
                                        y: this._targetY
                                      });
@@ -967,7 +969,7 @@ LookingGlass.prototype = {
 
         Main.popModal(this.actor);
 
-        Tweener.addTween(this.actor, { time: 0.5,
+        Tweener.addTween(this.actor, { time: 0.5 / St.get_slow_down_factor(),
                                        transition: 'easeOutQuad',
                                        y: this._hiddenY,
                                        onComplete: Lang.bind(this, function () {
