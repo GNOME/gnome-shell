@@ -122,6 +122,16 @@ struct _CoglClipStackRect
   float                  x1;
   float                  y1;
 
+  /* If this is true then the clip for this rectangle is entirely
+     described by the scissor bounds. This implies that the rectangle
+     is screen aligned and we don't need to use the stencil buffer to
+     set the clip. We keep the entry as a rect entry rather than a
+     window rect entry so that it will be easier to detect if the
+     modelview matrix is that same as when a rectangle is added to the
+     journal. In that case we can use the original clip coordinates
+     and modify the rectangle instead. */
+  gboolean               can_be_scissor;
+
   /* The matrix that was current when the clip was set */
   CoglMatrix             matrix;
 };
@@ -470,6 +480,8 @@ _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
                                  const CoglMatrix *modelview_matrix)
 {
   CoglClipStackRect *entry;
+  CoglMatrix matrix_p;
+  float v[4];
 
   /* Make a new entry */
   entry = _cogl_clip_stack_push_entry (stack,
@@ -483,8 +495,48 @@ _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
 
   entry->matrix = *modelview_matrix;
 
-  _cogl_clip_stack_entry_set_bounds ((CoglClipStack *) entry,
-                                     x_1, y_1, x_2, y_2, modelview_matrix);
+  /* If the modelview meets these constraints then a transformed rectangle
+   * should still be a rectangle when it reaches screen coordinates.
+   *
+   * FIXME: we are are making certain assumptions about the projection
+   * matrix a.t.m and should really be looking at the combined modelview
+   * and projection matrix.
+   * FIXME: we don't consider rotations that are a multiple of 90 degrees
+   * which could be quite common.
+   */
+  if (modelview_matrix->xy != 0 || modelview_matrix->xz != 0 ||
+      modelview_matrix->yx != 0 || modelview_matrix->yz != 0 ||
+      modelview_matrix->zx != 0 || modelview_matrix->zy != 0)
+    {
+      entry->can_be_scissor = FALSE;
+      _cogl_clip_stack_entry_set_bounds ((CoglClipStack *) entry,
+                                         x_1, y_1, x_2, y_2, modelview_matrix);
+    }
+  else
+    {
+      CoglClipStack *base_entry = (CoglClipStack *) entry;
+
+      cogl_get_projection_matrix (&matrix_p);
+      cogl_get_viewport (v);
+
+      _cogl_transform_point (modelview_matrix, &matrix_p, v, &x_1, &y_1);
+      _cogl_transform_point (modelview_matrix, &matrix_p, v, &x_2, &y_2);
+
+      /* Consider that the modelview matrix may flip the rectangle
+       * along the x or y axis... */
+#define SWAP(A,B) do { float tmp = B; B = A; A = tmp; } while (0)
+      if (x_1 > x_2)
+        SWAP (x_1, x_2);
+      if (y_1 > y_2)
+        SWAP (y_1, y_2);
+#undef SWAP
+
+      base_entry->bounds_x0 = COGL_UTIL_NEARBYINT (x_1);
+      base_entry->bounds_y0 = COGL_UTIL_NEARBYINT (y_1);
+      base_entry->bounds_x1 = COGL_UTIL_NEARBYINT (x_2);
+      base_entry->bounds_y1 = COGL_UTIL_NEARBYINT (y_2);
+      entry->can_be_scissor = TRUE;
+    }
 
   return (CoglClipStack *) entry;
 }
@@ -696,32 +748,37 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
         {
           CoglClipStackRect *rect = (CoglClipStackRect *) entry;
 
-          _cogl_matrix_stack_push (modelview_stack);
-          _cogl_matrix_stack_set (modelview_stack, &rect->matrix);
-
-          /* If we support clip planes and we haven't already used
-             them then use that instead */
-          if (has_clip_planes)
+          /* We don't need to do anything extra if the clip for this
+             rectangle was entirely described by its scissor bounds */
+          if (!rect->can_be_scissor)
             {
-              set_clip_planes (rect->x0,
-                               rect->y0,
-                               rect->x1,
-                               rect->y1);
-              using_clip_planes = TRUE;
-              /* We can't use clip planes a second time */
-              has_clip_planes = FALSE;
-            }
-          else
-            {
-              add_stencil_clip_rectangle (rect->x0,
-                                          rect->y0,
-                                          rect->x1,
-                                          rect->y1,
-                                          !using_stencil_buffer);
-              using_stencil_buffer = TRUE;
-            }
+              _cogl_matrix_stack_push (modelview_stack);
+              _cogl_matrix_stack_set (modelview_stack, &rect->matrix);
 
-          _cogl_matrix_stack_pop (modelview_stack);
+              /* If we support clip planes and we haven't already used
+                 them then use that instead */
+              if (has_clip_planes)
+                {
+                  set_clip_planes (rect->x0,
+                                   rect->y0,
+                                   rect->x1,
+                                   rect->y1);
+                  using_clip_planes = TRUE;
+                  /* We can't use clip planes a second time */
+                  has_clip_planes = FALSE;
+                }
+              else
+                {
+                  add_stencil_clip_rectangle (rect->x0,
+                                              rect->y0,
+                                              rect->x1,
+                                              rect->y1,
+                                              !using_stencil_buffer);
+                  using_stencil_buffer = TRUE;
+                }
+
+              _cogl_matrix_stack_pop (modelview_stack);
+            }
         }
       /* We don't need to do anything for window space rectangles
          because their functionality is entirely implemented by the
