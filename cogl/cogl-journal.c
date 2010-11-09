@@ -85,6 +85,11 @@
   (POS_STRIDE + COLOR_STRIDE + \
    TEX_STRIDE * (N_LAYERS < MIN_LAYER_PADING ? MIN_LAYER_PADING : N_LAYERS))
 
+/* If a batch is longer than this threshold then we'll assume it's not
+   worth doing software clipping and it's cheaper to program the GPU
+   to do the clip */
+#define COGL_JOURNAL_HARDWARE_CLIP_THRESHOLD 8
+
 typedef struct _CoglJournalFlushState
 {
   CoglVertexArray     *vertex_array;
@@ -686,6 +691,337 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
 }
 
 static gboolean
+calculate_translation (const CoglMatrix *a,
+                       const CoglMatrix *b,
+                       float *tx_p,
+                       float *ty_p)
+{
+  float tx, ty;
+  int x, y;
+
+  /* Assuming we had the original matrix in this form:
+   *
+   *      [ a₁₁, a₁₂, a₁₃, a₁₄ ]
+   *      [ a₂₁, a₂₂, a₂₃, a₂₄ ]
+   *  a = [ a₃₁, a₃₂, a₃₃, a₃₄ ]
+   *      [ a₄₁, a₄₂, a₄₃, a₄₄ ]
+   *
+   * then a translation of that matrix would be a multiplication by a
+   * matrix of this form:
+   *
+   *      [ 1, 0, 0, x ]
+   *      [ 0, 1, 0, y ]
+   *  t = [ 0, 0, 1, 0 ]
+   *      [ 0, 0, 0, 1 ]
+   *
+   * That would give us a matrix of this form.
+   *
+   *              [ a₁₁, a₁₂, a₁₃, a₁₁ x + a₁₂ y + a₁₄ ]
+   *              [ a₂₁, a₂₂, a₂₃, a₂₁ x + a₂₂ y + a₂₄ ]
+   *  b = a ⋅ t = [ a₃₁, a₃₂, a₃₃, a₃₁ x + a₃₂ y + a₃₄ ]
+   *              [ a₄₁, a₄₂, a₄₃, a₄₁ x + a₄₂ y + a₄₄ ]
+   *
+   * We can use the two equations from the top left of the matrix to
+   * work out the x and y translation given the two matrices:
+   *
+   *  b₁₄ = a₁₁x + a₁₂y + a₁₄
+   *  b₂₄ = a₂₁x + a₂₂y + a₂₄
+   *
+   * Rearranging gives us:
+   *
+   *        a₁₂ b₂₄ - a₂₄ a₁₂
+   *        -----------------  +  a₁₄ - b₁₄
+   *              a₂₂
+   *  x =  ---------------------------------
+   *                a₁₂ a₂₁
+   *                -------  -  a₁₁
+   *                  a₂₂
+   *
+   *      b₂₄ - a₂₁x - a₂₄
+   *  y = ----------------
+   *            a₂₂
+   *
+   * Once we've worked out what x and y would be if this was a valid
+   * translation then we can simply verify that the rest of the matrix
+   * matches up.
+   */
+
+  /* The leftmost 3x4 part of the matrix shouldn't change by a
+     translation so we can just compare it directly */
+  for (y = 0; y < 4; y++)
+    for (x = 0; x < 3; x++)
+      if ((&a->xx)[x * 4 + y] != (&b->xx)[x * 4 + y])
+        return FALSE;
+
+  tx = (((a->xy * b->yw - a->yw * a->xy) / a->yy + a->xw - b->xw) /
+        ((a->xy * a->yx) / a->yy - a->xx));
+  ty = (b->yw - a->yx * tx - a->yw) / a->yy;
+
+#define APPROX_EQUAL(a, b) (fabsf ((a) - (b)) < 1e-6f)
+
+  /* Check whether the 4th column of the matrices match up to the
+     calculation */
+  if (!APPROX_EQUAL (b->xw, a->xx * tx + a->xy * ty + a->xw) ||
+      !APPROX_EQUAL (b->yw, a->yx * tx + a->yy * ty + a->yw) ||
+      !APPROX_EQUAL (b->zw, a->zx * tx + a->zy * ty + a->zw) ||
+      !APPROX_EQUAL (b->ww, a->wx * tx + a->wy * ty + a->ww))
+    return FALSE;
+
+#undef APPROX_EQUAL
+
+  *tx_p = tx;
+  *ty_p = ty;
+
+  return TRUE;
+}
+
+typedef struct
+{
+  float x_1, y_1;
+  float x_2, y_2;
+} ClipBounds;
+
+static void
+check_software_clip_for_batch (CoglJournalEntry      *batch_start,
+                               int                    batch_len,
+                               CoglJournalFlushState *state)
+{
+  CoglClipStack *clip_stack, *clip_entry;
+  int entry_num;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* This tries to find cases where the entry is logged with a clip
+     but it would be faster to modify the vertex and texture
+     coordinates rather than flush the clip so that it can batch
+     better */
+
+  /* If the batch is reasonably long then it's worthwhile programming
+     the GPU to do the clip */
+  if (batch_len >= COGL_JOURNAL_HARDWARE_CLIP_THRESHOLD)
+    return;
+
+  clip_stack = batch_start->clip_stack;
+
+  if (clip_stack == NULL)
+    return;
+
+  /* Verify that all of the clip stack entries are a simple rectangle
+     clip */
+  for (clip_entry = clip_stack; clip_entry; clip_entry = clip_entry->parent)
+    if (clip_entry->type != COGL_CLIP_STACK_RECT)
+      return;
+
+  /* This scratch buffer is used to store the translation for each
+     entry in the journal. We store it in a separate buffer because
+     it's expensive to calculate but at this point we still don't know
+     whether we can clip all of the entries so we don't want to do the
+     rest of the dependant calculations until we're sure we can. */
+  if (ctx->journal_clip_bounds == NULL)
+    ctx->journal_clip_bounds = g_array_new (FALSE, FALSE, sizeof (ClipBounds));
+  g_array_set_size (ctx->journal_clip_bounds, batch_len);
+
+  for (entry_num = 0; entry_num < batch_len; entry_num++)
+    {
+      CoglJournalEntry *journal_entry = batch_start + entry_num;
+      CoglPipeline *pipeline = journal_entry->pipeline;
+      ClipBounds *clip_bounds = &g_array_index (ctx->journal_clip_bounds,
+                                                ClipBounds, entry_num);
+      int layer_num;
+
+      clip_bounds->x_1 = -G_MAXFLOAT;
+      clip_bounds->y_1 = -G_MAXFLOAT;
+      clip_bounds->x_2 = G_MAXFLOAT;
+      clip_bounds->y_2 = G_MAXFLOAT;
+
+      /* Check the pipeline is usable. We can short-cut here for
+         entries using the same pipeline as the previous entry */
+      if (entry_num == 0 || pipeline != batch_start[entry_num - 1].pipeline)
+        {
+          /* If the pipeline has a user program then we can't reliably modify
+             the texture coordinates */
+          if (cogl_pipeline_get_user_program (pipeline))
+            return;
+
+          /* If any of the pipeline layers have a texture matrix then we can't
+             reliably modify the texture coordinates */
+          for (layer_num = cogl_pipeline_get_n_layers (pipeline) - 1;
+               layer_num >= 0;
+               layer_num--)
+            if (_cogl_pipeline_layer_has_user_matrix (pipeline, layer_num))
+              return;
+        }
+
+      /* Now we need to verify that each clip entry's matrix is just a
+         translation of the journal entry's modelview matrix. We can
+         also work out the bounds of the clip in modelview space using
+         this translation */
+      for (clip_entry = clip_stack; clip_entry; clip_entry = clip_entry->parent)
+        {
+          float rect_x1, rect_y1, rect_x2, rect_y2;
+          CoglClipStackRect *clip_rect;
+          float tx, ty;
+
+          clip_rect = (CoglClipStackRect *) clip_entry;
+
+          if (!calculate_translation (&clip_rect->matrix,
+                                      &journal_entry->model_view,
+                                      &tx, &ty))
+            return;
+
+          if (clip_rect->x0 < clip_rect->x1)
+            {
+              rect_x1 = clip_rect->x0;
+              rect_x2 = clip_rect->x1;
+            }
+          else
+            {
+              rect_x1 = clip_rect->x1;
+              rect_x2 = clip_rect->x0;
+            }
+          if (clip_rect->y0 < clip_rect->y1)
+            {
+              rect_y1 = clip_rect->y0;
+              rect_y2 = clip_rect->y1;
+            }
+          else
+            {
+              rect_y1 = clip_rect->y1;
+              rect_y2 = clip_rect->y0;
+            }
+
+          clip_bounds->x_1 = MAX (clip_bounds->x_1, rect_x1 - tx);
+          clip_bounds->y_1 = MAX (clip_bounds->y_1, rect_y1 - ty);
+          clip_bounds->x_2 = MIN (clip_bounds->x_2, rect_x2 - tx);
+          clip_bounds->y_2 = MIN (clip_bounds->y_2, rect_y2 - ty);
+        }
+    }
+
+  /* If we make it here then we know we can software clip the entire batch */
+
+  for (entry_num = 0; entry_num < batch_len; entry_num++)
+    {
+      CoglJournalEntry *journal_entry = batch_start + entry_num;
+      float *verts = &g_array_index (ctx->logged_vertices, float,
+                                     journal_entry->array_offset + 1);
+      ClipBounds *clip_bounds = &g_array_index (ctx->journal_clip_bounds,
+                                                ClipBounds, entry_num);
+
+      size_t stride =
+        GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS (journal_entry->n_layers);
+      float rx1, ry1, rx2, ry2;
+      float vx1, vy1, vx2, vy2;
+      int layer_num;
+
+      /* Remove the clip on the entry */
+      _cogl_clip_stack_unref (journal_entry->clip_stack);
+      journal_entry->clip_stack = NULL;
+
+      vx1 = verts[0];
+      vy1 = verts[1];
+      vx2 = verts[stride];
+      vy2 = verts[stride + 1];
+
+      if (vx1 < vx2)
+        {
+          rx1 = vx1;
+          rx2 = vx2;
+        }
+      else
+        {
+          rx1 = vx2;
+          rx2 = vx1;
+        }
+      if (vy1 < vy2)
+        {
+          ry1 = vy1;
+          ry2 = vy2;
+        }
+      else
+        {
+          ry1 = vy2;
+          ry2 = vy1;
+        }
+
+      rx1 = CLAMP (rx1, clip_bounds->x_1, clip_bounds->x_2);
+      ry1 = CLAMP (ry1, clip_bounds->y_1, clip_bounds->y_2);
+      rx2 = CLAMP (rx2, clip_bounds->x_1, clip_bounds->x_2);
+      ry2 = CLAMP (ry2, clip_bounds->y_1, clip_bounds->y_2);
+
+      /* Check if the rectangle intersects the clip at all */
+      if (rx1 == rx2 || ry1 == ry2)
+        /* Will set all of the vertex data to 0 in the hope that this
+           will create a degenerate rectangle and the GL driver will
+           be able to clip it quickly */
+        memset (verts, 0, sizeof (float) * stride * 2);
+      else
+        {
+          if (vx1 > vx2)
+            {
+              float t = rx1;
+              rx1 = rx2;
+              rx2 = t;
+            }
+          if (vy1 > vy2)
+            {
+              float t = ry1;
+              ry1 = ry2;
+              ry2 = t;
+            }
+
+          verts[0] = rx1;
+          verts[1] = ry1;
+          verts[stride] = rx2;
+          verts[stride + 1] = ry2;
+
+          /* Convert the rectangle coordinates to a fraction of the original
+             rectangle */
+          rx1 = (rx1 - vx1) / (vx2 - vx1);
+          ry1 = (ry1 - vy1) / (vy2 - vy1);
+          rx2 = (rx2 - vx1) / (vx2 - vx1);
+          ry2 = (ry2 - vy1) / (vy2 - vy1);
+
+          for (layer_num = 0; layer_num < journal_entry->n_layers; layer_num++)
+            {
+              float *t = verts + 2 + 2 * layer_num;
+              float tx1 = t[0], ty1 = t[1];
+              float tx2 = t[stride], ty2 = t[stride + 1];
+              t[0] = rx1 * (tx2 - tx1) + tx1;
+              t[1] = ry1 * (ty2 - ty1) + ty1;
+              t[stride] = rx2 * (tx2 - tx1) + tx1;
+              t[stride + 1] = ry2 * (ty2 - ty1) + ty1;
+            }
+        }
+    }
+
+  return;
+}
+
+static void
+_cogl_journal_check_software_clip (CoglJournalEntry *batch_start,
+                                   int               batch_len,
+                                   void             *data)
+{
+  CoglJournalFlushState *state = data;
+
+  COGL_STATIC_TIMER (time_check_software_clip,
+                     "Journal Flush", /* parent */
+                     "flush: check software clip",
+                     "Time spent checking for software clip",
+                     0 /* no application private data */);
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  COGL_TIMER_START (_cogl_uprof_context,
+                    time_check_software_clip);
+
+  check_software_clip_for_batch (batch_start, batch_len, state);
+
+  COGL_TIMER_STOP (_cogl_uprof_context,
+                   time_check_software_clip);
+}
+
+static gboolean
 compare_entry_clip_stacks (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
 {
   return entry0->clip_stack == entry1->clip_stack;
@@ -812,18 +1148,32 @@ _cogl_journal_flush (void)
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING: journal len = %d\n", ctx->journal->len);
 
-  state.vertex_array = upload_vertices (&g_array_index (ctx->journal,
-                                                        CoglJournalEntry, 0),
-                                        ctx->journal->len,
-                                        ctx->journal_needed_vbo_len,
-                                        ctx->logged_vertices);
   state.attributes = ctx->journal_flush_attributes_array;
-  state.array_offset = 0;
 
   framebuffer = _cogl_get_framebuffer ();
   modelview_stack = _cogl_framebuffer_get_modelview_stack (framebuffer);
   state.modelview_stack = modelview_stack;
   state.projection_stack = _cogl_framebuffer_get_projection_stack (framebuffer);
+
+  /* We do an initial walk of the journal to analyse the clip stack
+     batches to see if we can do software clipping. We do this as a
+     separate walk of the journal because we can modify entries and
+     this may end up joining together clip stack batches in the next
+     iteration. */
+  batch_and_call ((CoglJournalEntry *)ctx->journal->data, /* first entry */
+                  ctx->journal->len, /* max number of entries to consider */
+                  compare_entry_clip_stacks,
+                  _cogl_journal_check_software_clip, /* callback */
+                  &state); /* data */
+
+  /* We upload the vertices after the clip stack pass in case it
+     modifies the entries */
+  state.vertex_array = upload_vertices (&g_array_index (ctx->journal,
+                                                        CoglJournalEntry, 0),
+                                        ctx->journal->len,
+                                        ctx->journal_needed_vbo_len,
+                                        ctx->logged_vertices);
+  state.array_offset = 0;
 
   /* batch_and_call() batches a list of journal entries according to some
    * given criteria and calls a callback once for each determined batch.
@@ -975,6 +1325,7 @@ _cogl_journal_log_quad (const float  *position,
   entry = &g_array_index (ctx->journal, CoglJournalEntry, next_entry);
 
   entry->n_layers = n_layers;
+  entry->array_offset = next_vert;
 
   source = pipeline;
 

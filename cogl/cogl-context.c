@@ -167,6 +167,7 @@ cogl_create_context (void)
   _context->logged_vertices = g_array_new (FALSE, FALSE, sizeof (GLfloat));
   _context->journal_flush_attributes_array =
     g_array_new (TRUE, FALSE, sizeof (CoglVertexAttribute *));
+  _context->journal_clip_bounds = NULL;
 
   _context->polygon_vertices = g_array_new (FALSE, FALSE, sizeof (float));
 
@@ -314,6 +315,8 @@ _cogl_destroy_context (void)
     g_array_free (_context->logged_vertices, TRUE);
   if (_context->journal_flush_attributes_array)
     g_array_free (_context->journal_flush_attributes_array, TRUE);
+  if (_context->journal_clip_bounds)
+    g_array_free (_context->journal_clip_bounds, TRUE);
 
   if (_context->polygon_vertices)
     g_array_free (_context->polygon_vertices, TRUE);
