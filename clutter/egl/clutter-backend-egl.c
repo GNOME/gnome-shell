@@ -42,7 +42,6 @@
 
 #ifdef HAVE_EVDEV
 #include "clutter-device-manager-evdev.h"
-#include "clutter-event-evdev.h"
 #endif
 
 #include "clutter-debug.h"

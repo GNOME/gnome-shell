@@ -437,13 +437,11 @@ evdev_c_priv = \
 	$(srcdir)/evdev/clutter-xkb-utils.c 		\
 	$(srcdir)/evdev/clutter-device-manager-evdev.c	\
 	$(srcdir)/evdev/clutter-input-device-evdev.c	\
-	$(srcdir)/evdev/clutter-event-evdev.c		\
 	$(NULL)
 evdev_h_priv = \
 	$(srcdir)/evdev/clutter-xkb-utils.h 		\
 	$(srcdir)/evdev/clutter-device-manager-evdev.h	\
 	$(srcdir)/evdev/clutter-input-device-evdev.h	\
-	$(srcdir)/evdev/clutter-event-evdev.h		\
 	$(NULL)
 
 egl_cex_c_priv = $(srcdir)/egl/clutter-backend-cex100.c
