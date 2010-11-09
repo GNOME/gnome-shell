@@ -196,12 +196,15 @@ clutter_event_dispatch (GSource     *g_source,
                  if (e->value == 2)
                    continue;
 
-               event =
-                 _clutter_key_event_new_from_evdev (input_device,
-                                                    stage,
-                                                    source->xkb,
-                                                    _time, e->code, e->value,
-                                                    &source->modifier_state);
+               /* if we have a mapping for that device, use it to generate
+                * the event */
+               if (source->xkb)
+                 event =
+                   _clutter_key_event_new_from_evdev (input_device,
+                                                      stage,
+                                                      source->xkb,
+                                                      _time, e->code, e->value,
+                                                      &source->modifier_state);
 
                break;
              case EV_SYN:
@@ -252,6 +255,7 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
 {
   GSource *source = g_source_new (&event_funcs, sizeof (ClutterEventSource));
   ClutterEventSource *event_source = (ClutterEventSource *) source;
+  ClutterInputDeviceType type;
   const gchar *node_path;
   gint fd;
 
@@ -272,18 +276,24 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
   event_source->event_poll_fd.fd = fd;
   event_source->event_poll_fd.events = G_IO_IN;
 
-  /* create the xkb description */
-  event_source->xkb = _clutter_xkb_desc_new (NULL,
-                                             option_xkb_layout,
-                                             option_xkb_variant,
-                                             option_xkb_options);
-  if (G_UNLIKELY (event_source->xkb == NULL))
+  type =
+    clutter_input_device_get_device_type (CLUTTER_INPUT_DEVICE (input_device));
+
+  if (type == CLUTTER_KEYBOARD_DEVICE)
     {
-      g_warning ("Could not compile keymap %s:%s:%s", option_xkb_layout,
-                 option_xkb_variant, option_xkb_options);
-      close (fd);
-      g_source_unref (source);
-      return NULL;
+      /* create the xkb description */
+      event_source->xkb = _clutter_xkb_desc_new (NULL,
+                                                 option_xkb_layout,
+                                                 option_xkb_variant,
+                                                 option_xkb_options);
+      if (G_UNLIKELY (event_source->xkb == NULL))
+        {
+          g_warning ("Could not compile keymap %s:%s:%s", option_xkb_layout,
+                     option_xkb_variant, option_xkb_options);
+          close (fd);
+          g_source_unref (source);
+          return NULL;
+        }
     }
 
   /* and finally configure and attach the GSource */
