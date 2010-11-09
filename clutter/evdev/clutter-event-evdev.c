@@ -282,6 +282,49 @@ _clutter_event_evdev_remove_source (ClutterEventSource *source)
   event_sources = g_slist_remove (event_sources, source);
 }
 
+static void
+on_device_added (ClutterDeviceManager *manager,
+                 ClutterInputDevice   *device,
+                 gpointer              data)
+{
+  ClutterInputDeviceEvdev *input_device = CLUTTER_INPUT_DEVICE_EVDEV (device);
+
+  _clutter_event_evdev_add_source (input_device);
+}
+
+static ClutterEventSource *
+find_source_by_device (ClutterInputDevice *device)
+{
+  GSList *l;
+
+  for (l = event_sources; l; l = g_slist_next (l))
+    {
+      ClutterEventSource *source = l->data;
+
+      if (source->device == (ClutterInputDeviceEvdev *) device)
+        return source;
+    }
+
+  return NULL;
+}
+
+static void
+on_device_removed (ClutterDeviceManager *manager,
+                   ClutterInputDevice   *device,
+                   gpointer              data)
+{
+  ClutterEventSource *source;
+
+  source = find_source_by_device (device);
+  if (G_UNLIKELY (source == NULL))
+    {
+      g_warning ("Trying to remove a device without a source installed ?!");
+      return;
+    }
+
+  _clutter_event_evdev_remove_source (source);
+}
+
 void
 _clutter_events_evdev_init (ClutterBackend *backend)
 {
@@ -301,6 +344,12 @@ _clutter_events_evdev_init (ClutterBackend *backend)
 
       _clutter_event_evdev_add_source (input_device);
     }
+
+  /* make sure to add/remove sources when devices are added/removed */
+  g_signal_connect (device_manager, "device-added",
+                    G_CALLBACK (on_device_added), NULL);
+  g_signal_connect (device_manager, "device-removed",
+                    G_CALLBACK (on_device_removed), NULL);
 }
 
 void

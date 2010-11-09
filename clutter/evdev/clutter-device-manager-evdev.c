@@ -130,6 +130,65 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
                 device_file, type, sysfs_path);
 }
 
+static ClutterInputDeviceEvdev *
+find_device_by_udev_device (ClutterDeviceManagerEvdev *manager_evdev,
+                            GUdevDevice               *udev_device)
+{
+  ClutterDeviceManagerEvdevPrivate *priv = manager_evdev->priv;
+  GSList *l;
+  const gchar *sysfs_path;
+
+  sysfs_path = g_udev_device_get_sysfs_path (udev_device);
+  if (sysfs_path == NULL)
+    {
+      g_message ("device file is NULL");
+      return NULL;
+    }
+
+  for (l = priv->devices; l; l = g_slist_next (l))
+    {
+      ClutterInputDeviceEvdev *device = l->data;
+
+      if (strcmp (sysfs_path,
+                  _clutter_input_device_evdev_get_sysfs_path (device)) == 0)
+        {
+          return device;
+        }
+    }
+
+  return NULL;
+}
+
+static void
+evdev_remove_device (ClutterDeviceManagerEvdev *manager_evdev,
+                     GUdevDevice               *device)
+{
+  ClutterDeviceManager *manager = CLUTTER_DEVICE_MANAGER (manager_evdev);
+  ClutterInputDeviceEvdev *device_evdev;
+  ClutterInputDevice *input_device;
+
+  device_evdev = find_device_by_udev_device (manager_evdev, device);
+  if (device_evdev == NULL)
+      return;
+
+  input_device = CLUTTER_INPUT_DEVICE (device_evdev);
+  _clutter_device_manager_remove_device (manager, input_device);
+}
+
+static void
+on_uevent (GUdevClient *client,
+           gchar       *action,
+           GUdevDevice *device,
+           gpointer     data)
+{
+  ClutterDeviceManagerEvdev *manager = CLUTTER_DEVICE_MANAGER_EVDEV (data);
+
+  if (g_strcmp0 (action, "add") == 0)
+    evdev_add_device (manager, device);
+  else if (g_strcmp0 (action, "remove") == 0)
+    evdev_remove_device (manager, device);
+}
+
 /*
  * ClutterDeviceManager implementation
  */
