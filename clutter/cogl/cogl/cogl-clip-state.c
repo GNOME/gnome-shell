@@ -70,56 +70,6 @@ cogl_clip_push_window_rect (float x_offset,
   cogl_clip_push_window_rectangle (x_offset, y_offset, width, height);
 }
 
-/* Try to push a rectangle given in object coordinates as a rectangle in window
- * coordinates instead of object coordinates */
-static gboolean
-try_pushing_rect_as_window_rect (float x_1,
-                                 float y_1,
-                                 float x_2,
-                                 float y_2)
-{
-  CoglMatrix matrix;
-  CoglMatrix matrix_p;
-  float v[4];
-
-  cogl_get_modelview_matrix (&matrix);
-
-  /* If the modelview meets these constraints then a transformed rectangle
-   * should still be a rectangle when it reaches screen coordinates.
-   *
-   * FIXME: we are are making certain assumptions about the projection
-   * matrix a.t.m and should really be looking at the combined modelview
-   * and projection matrix.
-   * FIXME: we don't consider rotations that are a multiple of 90 degrees
-   * which could be quite common.
-   */
-  if (matrix.xy != 0 || matrix.xz != 0 ||
-      matrix.yx != 0 || matrix.yz != 0 ||
-      matrix.zx != 0 || matrix.zy != 0)
-    return FALSE;
-
-  cogl_get_projection_matrix (&matrix_p);
-  cogl_get_viewport (v);
-
-  _cogl_transform_point (&matrix, &matrix_p, v, &x_1, &y_1);
-  _cogl_transform_point (&matrix, &matrix_p, v, &x_2, &y_2);
-
-  /* Consider that the modelview matrix may flip the rectangle
-   * along the x or y axis... */
-#define SWAP(A,B) do { float tmp = B; B = A; A = tmp; } while (0)
-  if (x_1 > x_2)
-    SWAP (x_1, x_2);
-  if (y_1 > y_2)
-    SWAP (y_1, y_2);
-#undef SWAP
-
-  cogl_clip_push_window_rectangle (COGL_UTIL_NEARBYINT (x_1),
-                                   COGL_UTIL_NEARBYINT (y_1),
-                                   COGL_UTIL_NEARBYINT (x_2 - x_1),
-                                   COGL_UTIL_NEARBYINT (y_2 - y_1));
-  return TRUE;
-}
-
 void
 cogl_clip_push_rectangle (float x_1,
                           float y_1,
@@ -131,11 +81,6 @@ cogl_clip_push_rectangle (float x_1,
   CoglMatrix modelview_matrix;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* Try and catch window space rectangles so we can redirect to
-   * cogl_clip_push_window_rect which will use scissoring. */
-  if (try_pushing_rect_as_window_rect (x_1, y_1, x_2, y_2))
-    return;
 
   framebuffer = _cogl_get_framebuffer ();
   clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
