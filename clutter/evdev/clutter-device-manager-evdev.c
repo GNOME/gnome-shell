@@ -157,7 +157,25 @@ clutter_event_dispatch (GSource     *g_source,
        {
          if (errno != EAGAIN)
            {
-             g_warning ("Could not read device (%d)", errno);
+             ClutterDeviceManager *manager;
+             ClutterInputDevice *device;
+             const gchar *device_path;
+
+             device = CLUTTER_INPUT_DEVICE (source->device);
+
+             if (CLUTTER_HAS_DEBUG (EVENT))
+               {
+                 device_path =
+                   _clutter_input_device_evdev_get_device_path (source->device);
+
+                 CLUTTER_NOTE (EVENT, "Could not read device (%s), removing.",
+                               device_path);
+               }
+
+             /* remove the faulty device */
+             manager = clutter_device_manager_get_default ();
+             _clutter_device_manager_remove_device (manager, device);
+
            }
          goto out;
        }
