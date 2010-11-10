@@ -38,7 +38,7 @@ Indicator.prototype = {
         this._output = null;
         this._outputVolumeId = 0;
         this._outputMutedId = 0;
-        this._outputSwitch = new PopupMenu.PopupSwitchMenuItem(_("Output: Muted"), false);
+        this._outputSwitch = new PopupMenu.PopupSwitchMenuItem(_("Volume: Muted"), false);
         this._outputSwitch.connect('toggled', Lang.bind(this, this._switchToggled, '_output'));
         this._outputSlider = new PopupMenu.PopupSliderMenuItem(0);
         this._outputSlider.connect('value-changed', Lang.bind(this, this._sliderChanged, '_output'));
@@ -52,7 +52,7 @@ Indicator.prototype = {
         this._input = null;
         this._inputVolumeId = 0;
         this._inputMutedId = 0;
-        this._inputSwitch = new PopupMenu.PopupSwitchMenuItem(_("Input: Muted"), false);
+        this._inputSwitch = new PopupMenu.PopupSwitchMenuItem(_("Microphone: Muted"), false);
         this._inputSwitch.connect('toggled', Lang.bind(this, this._switchToggled, '_input'));
         this._inputSlider = new PopupMenu.PopupSliderMenuItem(0);
         this._inputSlider.connect('value-changed', Lang.bind(this, this._sliderChanged, '_input'));
@@ -103,7 +103,7 @@ Indicator.prototype = {
             this._mutedChanged (null, null, '_output');
             this._volumeChanged (null, null, '_output');
         } else {
-            this._outputSwitch.label.text = _("Output: Muted");
+            this._outputSwitch.label.text = _("Volume: Muted");
             this._outputSwitch.setToggleState(false);
             this.setIcon('audio-volume-muted-symbolic');
         }
@@ -214,9 +214,9 @@ Indicator.prototype = {
     _updateLabel: function(property) {
         let label;
         if (this[property].is_muted)
-            label = (property == '_output' ? _("Output: Muted") : _("Input: Muted"));
+            label = (property == '_output' ? _("Volume: Muted") : _("Microphone: Muted"));
         else
-            label = (property == '_output' ? _("Output: %3.0f%%") : _("Input: %3.0f%%")).format(this[property].volume / VOLUME_MAX * 100);
+            label = (property == '_output' ? _("Volume: %3.0f%%") : _("Microphone: %3.0f%%")).format(this[property].volume / VOLUME_MAX * 100);
         this[property+'Switch'].label.text = label;
     }
 };
