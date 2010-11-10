@@ -1,9 +1,9 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
- * Portions derived from st-box-layout.c, which is
- *   Copyright 2009 Intel Corporation.
- * Modified into -overflow-box, by Colin Walters <walters@verbum.org>, which is
- *   Copyright 2009 Red Hat, Inc.
+ * st-overflow-box.c: A vertical box which paints as many actors as it can fit
+ *
+ * Copyright 2009, 2010 Red Hat, Inc.
+ * Copyright 2009 Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -15,9 +15,7 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
- *
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**

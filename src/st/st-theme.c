@@ -1,6 +1,23 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-
-/* This file started as a cut-and-paste of cr-sel-eng.c from libcroco.
+/*
+ * st-theme.c: A set of CSS stylesheets used for rule matching
+ *
+ * Copyright 2003-2004 Dodji Seketeli
+ * Copyright 2008, 2009 Red Hat, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU Lesser General Public License,
+ * version 2.1, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * This file started as a cut-and-paste of cr-sel-eng.c from libcroco.
  *
  * In moving it to hippo-canvas:
  * - Reformatted and otherwise edited to match our coding style
@@ -17,27 +34,6 @@
  *  - Removed notion of "theme engine" from hippo-canvas
  *  - pseudo-class matching changed from link enum to strings
  *  - Some code simplification
- */
-
-/*
- * This file is part of The Croco Library
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of version 2.1 of the GNU Lesser General Public
- * License as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser
- * General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
- * USA
- *
- * Copyright (C) 2003-2004 Dodji Seketeli.  All Rights Reserved.
  */
 
 

@@ -1,6 +1,8 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
- * st-group.h: A fixed layout container based on ClutterGroup
+ * st-group.c: A fixed layout container based on ClutterGroup
+ *
+ * Copyright 2010 Florian Müllner
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -12,9 +14,7 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
- *
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**

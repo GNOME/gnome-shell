@@ -1,6 +1,8 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
- * st-imtext.h
+ * st-im-text.h: Text widget with input method support
+ *
+ * Copyright 2009 Red Hat, Inc.
  *
  * This is a copy of ClutterIMText converted to use GtkIMContext rather
  * than ClutterIMContext. Original code:
@@ -18,10 +20,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #if !defined(ST_H_INSIDE) && !defined(ST_COMPILATION)
