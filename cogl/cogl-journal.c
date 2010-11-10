@@ -1155,16 +1155,19 @@ _cogl_journal_flush (void)
   state.modelview_stack = modelview_stack;
   state.projection_stack = _cogl_framebuffer_get_projection_stack (framebuffer);
 
-  /* We do an initial walk of the journal to analyse the clip stack
-     batches to see if we can do software clipping. We do this as a
-     separate walk of the journal because we can modify entries and
-     this may end up joining together clip stack batches in the next
-     iteration. */
-  batch_and_call ((CoglJournalEntry *)ctx->journal->data, /* first entry */
-                  ctx->journal->len, /* max number of entries to consider */
-                  compare_entry_clip_stacks,
-                  _cogl_journal_check_software_clip, /* callback */
-                  &state); /* data */
+  if (G_UNLIKELY ((cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_CLIP) == 0))
+    {
+      /* We do an initial walk of the journal to analyse the clip stack
+         batches to see if we can do software clipping. We do this as a
+         separate walk of the journal because we can modify entries and
+         this may end up joining together clip stack batches in the next
+         iteration. */
+      batch_and_call ((CoglJournalEntry *)ctx->journal->data, /* first entry */
+                      ctx->journal->len, /* max number of entries to consider */
+                      compare_entry_clip_stacks,
+                      _cogl_journal_check_software_clip, /* callback */
+                      &state); /* data */
+    }
 
   /* We upload the vertices after the clip stack pass in case it
      modifies the entries */

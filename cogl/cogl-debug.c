@@ -72,7 +72,8 @@ static const GDebugKey cogl_behavioural_debug_keys[] = {
   { "disable-glsl", COGL_DEBUG_DISABLE_GLSL},
   { "disable-blending", COGL_DEBUG_DISABLE_BLENDING},
   { "disable-npot-textures", COGL_DEBUG_DISABLE_NPOT_TEXTURES},
-  { "wireframe", COGL_DEBUG_WIREFRAME}
+  { "wireframe", COGL_DEBUG_WIREFRAME},
+  { "disable-software-clip", COGL_DEBUG_DISABLE_SOFTWARE_CLIP}
 };
 static const int n_cogl_behavioural_debug_keys =
   G_N_ELEMENTS (cogl_behavioural_debug_keys);
