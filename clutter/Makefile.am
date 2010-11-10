@@ -126,6 +126,7 @@ source_h =					\
 	$(srcdir)/clutter-shader.h		\
 	$(srcdir)/clutter-shader-effect.h	\
 	$(srcdir)/clutter-shader-types.h	\
+	$(srcdir)/clutter-snap-constraint.h	\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-stage-manager.h	\
 	$(srcdir)/clutter-stage-window.h	\
@@ -207,6 +208,7 @@ source_c = \
 	$(srcdir)/clutter-shader.c		\
 	$(srcdir)/clutter-shader-effect.c	\
 	$(srcdir)/clutter-shader-types.c	\
+	$(srcdir)/clutter-snap-constraint.c	\
 	$(srcdir)/clutter-stage.c		\
 	$(srcdir)/clutter-stage-manager.c	\
 	$(srcdir)/clutter-stage-window.c	\

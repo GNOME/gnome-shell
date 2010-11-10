@@ -94,21 +94,31 @@
     </chapter>
 
     <chapter>
-      <title>Actions, Constraints and Effects</title>
+      <title>Actions</title>
 
       <xi:include href="xml/clutter-click-action.xml"/>
       <xi:include href="xml/clutter-drag-action.xml"/>
+    </chapter>
 
-      <xi:include href="xml/clutter-bind-constraint.xml"/>
+    <chapter>
+      <title>Constraints</title>
+
       <xi:include href="xml/clutter-align-constraint.xml"/>
+      <xi:include href="xml/clutter-bind-constraint.xml"/>
       <xi:include href="xml/clutter-path-constraint.xml"/>
+      <xi:include href="xml/clutter-snap-constraint.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Effects</title>
 
       <xi:include href="xml/clutter-offscreen-effect.xml"/>
       <xi:include href="xml/clutter-shader-effect.xml"/>
+      <xi:include href="xml/clutter-deform-effect.xml"/>
+
       <xi:include href="xml/clutter-blur-effect.xml"/>
       <xi:include href="xml/clutter-colorize-effect.xml"/>
       <xi:include href="xml/clutter-desaturate-effect.xml"/>
-      <xi:include href="xml/clutter-deform-effect.xml"/>
       <xi:include href="xml/clutter-page-turn-effect.xml"/>
     </chapter>
 

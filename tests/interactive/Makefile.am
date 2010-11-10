@@ -58,11 +58,11 @@ UNIT_TESTS = \
 	test-bind.c \
 	test-cogl-point-sprites.c \
 	test-table-layout.c \
-	test-path-constraint.c
+	test-path-constraint.c \
+	test-snap-constraint.c
 
 if X11_TESTS
-UNIT_TESTS += test-pixmap.c
-UNIT_TESTS += test-devices.c
+UNIT_TESTS += test-pixmap.c test-devices.c
 endif
 
 # For convenience, this provides a way to easily run individual unit tests:

@@ -54,6 +54,7 @@ clutter_script_get_type
 clutter_settings_get_type
 clutter_shader_get_type
 clutter_shader_effect_get_type
+clutter_snap_constraint_get_type
 clutter_stage_get_type
 clutter_stage_manager_get_type
 clutter_state_get_type
