@@ -16,6 +16,18 @@ test $TEST_TYPE $FILE || {
 	exit 1
 }
 
+if automake-1.11 --version < /dev/null > /dev/null 2>&1 ; then
+    AUTOMAKE=automake-1.11
+    ACLOCAL=aclocal-1.11
+else
+        echo
+        echo "You must have automake 1.11.x installed to compile $PROJECT
+ECT."
+        echo "Install the appropriate package for your distribution,"
+        echo "or get the source tarball at http://ftp.gnu.org/gnu/automake/"
+        exit 1
+fi
+
 (gtkdocize --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "You must have gtk-doc installed to compile $PROJECT."
@@ -32,10 +44,26 @@ if test -z "$NOCONFIGURE"; then
         fi
 fi
 
+if test -z "$ACLOCAL_FLAGS"; then
+        acdir=`$ACLOCAL --print-ac-dir`
+        m4list="glib-2.0.m4"
+        for file in $m4list; do
+                if [ ! -f "$acdir/$file" ]; then
+                        echo "WARNING: aclocal's directory is $acdir, but..."
+                        echo "         no file $acdir/$file"
+                        echo "         You may see fatal macro warnings below."
+                        echo "         If these files are installed in /some/dir, set the ACLOCAL_FLAGS "
+                        echo "         environment variable to \"-I /some/dir\", or install"
+                        echo "         $acdir/$file."
+                        echo ""
+                fi
+        done
+fi
+
 rm -rf autom4te.cache
 
 gtkdocize || exit $?
-autoreconf -vfi || exit $?
+autoreconf ${ACLOCAL_FLAGS} -vfi || exit $?
 cd $ORIGDIR || exit $?
 
 if test -z "$NOCONFIGURE"; then
