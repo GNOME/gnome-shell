@@ -63,7 +63,7 @@ fi
 rm -rf autom4te.cache
 
 gtkdocize || exit $?
-autoreconf ${ACLOCAL_FLAGS} -vfi || exit $?
+autoreconf -vfi -I $srcdir/build/autotools ${ACLOCAL_FLAGS} || exit $?
 cd $ORIGDIR || exit $?
 
 if test -z "$NOCONFIGURE"; then
