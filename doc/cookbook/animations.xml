@@ -2305,4 +2305,59 @@ clutter_animator_start (animator);
 
   </section>
 
+  <section id="animations-looping">
+    <title>Looping an animation</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>...</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>...</para>
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>...</para>
+    </section>
+
+    <section id="animations-looping-examples">
+      <title>Full examples</title>
+
+      <example id="animations-looping-example-1">
+        <title>Looping an implicit animation</title>
+        <programlisting>
+<xi:include href="examples/animations-looping-implicit.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="animations-looping-example-2">
+        <title>Looping a <type>ClutterAnimator</type> animation</title>
+        <programlisting>
+<xi:include href="examples/animations-looping-animator.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="animations-looping-example-3">
+        <title>Looping a <type>ClutterState</type> animation</title>
+        <programlisting>
+<xi:include href="examples/animations-looping-state.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+    </section>
+
+  </section>
+
 </chapter>
