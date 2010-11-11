@@ -772,8 +772,6 @@ _cogl_journal_log_quad (const float  *position,
                         int           n_layers,
                         guint32       fallback_layers,
                         CoglHandle    layer0_override_texture,
-                        const CoglPipelineWrapModeOverrides *
-                                      wrap_mode_overrides,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len)
 {
@@ -932,11 +930,6 @@ _cogl_journal_log_quad (const float  *position,
     {
       flush_options.flags |= COGL_PIPELINE_FLUSH_LAYER0_OVERRIDE;
       flush_options.layer0_override_texture = layer0_override_texture;
-    }
-  if (wrap_mode_overrides)
-    {
-      flush_options.flags |= COGL_PIPELINE_FLUSH_WRAP_MODE_OVERRIDES;
-      flush_options.wrap_mode_overrides = *wrap_mode_overrides;
     }
 
   if (G_UNLIKELY (flush_options.flags))

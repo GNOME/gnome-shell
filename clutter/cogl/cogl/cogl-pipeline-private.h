@@ -635,17 +635,13 @@ _cogl_pipeline_pre_paint_for_layer (CoglPipeline *pipeline,
  *      not passing the option at all.
  * @COGL_PIPELINE_FLUSH_SKIP_GL_COLOR: When flushing the GL state for the
  *      pipeline don't call glColor.
- * @COGL_PIPELINE_FLUSH_WRAP_MODE_OVERRIDES: Specifies that a bitmask
- *      of overrides for the wrap modes for some or all layers is
- *      given.
  */
 typedef enum _CoglPipelineFlushFlag
 {
   COGL_PIPELINE_FLUSH_FALLBACK_MASK       = 1L<<0,
   COGL_PIPELINE_FLUSH_DISABLE_MASK        = 1L<<1,
   COGL_PIPELINE_FLUSH_LAYER0_OVERRIDE     = 1L<<2,
-  COGL_PIPELINE_FLUSH_SKIP_GL_COLOR       = 1L<<3,
-  COGL_PIPELINE_FLUSH_WRAP_MODE_OVERRIDES = 1L<<4
+  COGL_PIPELINE_FLUSH_SKIP_GL_COLOR       = 1L<<3
 } CoglPipelineFlushFlag;
 
 /* This isn't defined in the GLES headers */
@@ -667,31 +663,6 @@ typedef enum _CoglPipelineWrapModeInternal
   COGL_PIPELINE_WRAP_MODE_INTERNAL_AUTOMATIC = GL_ALWAYS
 } CoglPipelineWrapModeInternal;
 
-typedef enum _CoglPipelineWrapModeOverride
-{
-  COGL_PIPELINE_WRAP_MODE_OVERRIDE_NONE = 0,
-  COGL_PIPELINE_WRAP_MODE_OVERRIDE_REPEAT =
-    COGL_PIPELINE_WRAP_MODE_INTERNAL_REPEAT,
-  COGL_PIPELINE_WRAP_MODE_OVERRIDE_CLAMP_TO_EDGE =
-    COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_EDGE,
-  COGL_PIPELINE_WRAP_MODE_OVERRIDE_CLAMP_TO_BORDER =
-    COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_BORDER,
-} CoglPipelineWrapModeOverride;
-
-/* There can't be more than 32 layers because we need to fit a bitmask
-   of the layers into a guint32 */
-#define COGL_PIPELINE_MAX_LAYERS 32
-
-typedef struct _CoglPipelineWrapModeOverrides
-{
-  struct
-  {
-    CoglPipelineWrapModeOverride s;
-    CoglPipelineWrapModeOverride t;
-    CoglPipelineWrapModeOverride p;
-  } values[COGL_PIPELINE_MAX_LAYERS];
-} CoglPipelineWrapModeOverrides;
-
 /*
  * CoglPipelineFlushOptions:
  *
@@ -703,7 +674,6 @@ typedef struct _CoglPipelineFlushOptions
   guint32                       fallback_layers;
   guint32                       disable_layers;
   CoglHandle                    layer0_override_texture;
-  CoglPipelineWrapModeOverrides wrap_mode_overrides;
 } CoglPipelineFlushOptions;
 
 
