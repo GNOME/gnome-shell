@@ -22,20 +22,15 @@ on_button_press (ClutterActor *actor,
   ClutterActor *label, *tex;
   gint width, height;
   gchar *stage_label, *win_title;
-  ClutterColor color = { 0xdd, 0x33, 0xdd, 0xff };
-  ClutterColor white = { 0x99, 0x99, 0x99, 0xff };
   ClutterTimeline  *timeline;
   ClutterAlpha     *alpha;
   ClutterBehaviour *r_behave;
 
   new_stage = clutter_stage_new ();
-  if (!new_stage)
+  if (new_stage == NULL)
     return FALSE;
 
-  /* FIXME: below should really be automatic */
-  /* clutter_stage_ensure_cogl_context (CLUTTER_STAGE(new_stage)); */
-
-  clutter_stage_set_color (CLUTTER_STAGE (new_stage), &color);
+  clutter_stage_set_color (CLUTTER_STAGE (new_stage), CLUTTER_COLOR_DarkScarletRed);
   clutter_actor_set_size (new_stage, 320, 240);
 
   tex = clutter_texture_new_from_file (TESTS_DATADIR
@@ -55,7 +50,7 @@ on_button_press (ClutterActor *actor,
   stage_label = g_strdup_printf ("<b>Stage: %d</b>", ++n_stages); 
   label = clutter_text_new_with_text ("Mono 12", stage_label);
 
-  clutter_text_set_color (CLUTTER_TEXT (label), &white);
+  clutter_text_set_color (CLUTTER_TEXT (label), CLUTTER_COLOR_White);
   clutter_text_set_use_markup (CLUTTER_TEXT (label), TRUE);
   width = (clutter_actor_get_width (new_stage) 
            - clutter_actor_get_width (label)) / 2;

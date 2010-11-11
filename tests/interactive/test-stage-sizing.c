@@ -39,7 +39,6 @@ G_MODULE_EXPORT int
 test_stage_sizing_main (int argc, char *argv[])
 {
   gfloat width;
-  ClutterColor color;
   ClutterActor *stage, *rect, *label;
 
   clutter_init (&argc, &argv);
@@ -47,8 +46,7 @@ test_stage_sizing_main (int argc, char *argv[])
   stage = clutter_stage_get_default ();
 
   label = clutter_text_new_with_text ("Sans 16", "Toggle fullscreen");
-  clutter_color_from_string (&color, "light red");
-  rect = clutter_rectangle_new_with_color (&color);
+  rect = clutter_rectangle_new_with_color (CLUTTER_COLOR_LightScarletRed);
   clutter_actor_set_size (rect,
                           clutter_actor_get_width (label) + 20,
                           clutter_actor_get_height (label) + 20);
@@ -60,8 +58,7 @@ test_stage_sizing_main (int argc, char *argv[])
   width = clutter_actor_get_width (rect);
 
   label = clutter_text_new_with_text ("Sans 16", "Toggle resizable");
-  clutter_color_from_string (&color, "light green");
-  rect = clutter_rectangle_new_with_color (&color);
+  rect = clutter_rectangle_new_with_color (CLUTTER_COLOR_Chameleon);
   clutter_actor_set_size (rect,
                           clutter_actor_get_width (label) + 20,
                           clutter_actor_get_height (label) + 20);
@@ -74,8 +71,7 @@ test_stage_sizing_main (int argc, char *argv[])
   width += clutter_actor_get_width (rect);
 
   label = clutter_text_new_with_text ("Sans 16", "Shrink");
-  clutter_color_from_string (&color, "light blue");
-  rect = clutter_rectangle_new_with_color (&color);
+  rect = clutter_rectangle_new_with_color (CLUTTER_COLOR_SkyBlue);
   clutter_actor_set_size (rect,
                           clutter_actor_get_width (label) + 20,
                           clutter_actor_get_height (label) + 20);
@@ -88,8 +84,7 @@ test_stage_sizing_main (int argc, char *argv[])
   width += clutter_actor_get_width (rect);
 
   label = clutter_text_new_with_text ("Sans 16", "Expand");
-  clutter_color_from_string (&color, "light yellow");
-  rect = clutter_rectangle_new_with_color (&color);
+  rect = clutter_rectangle_new_with_color (CLUTTER_COLOR_Butter);
   clutter_actor_set_size (rect,
                           clutter_actor_get_width (label) + 20,
                           clutter_actor_get_height (label) + 20);

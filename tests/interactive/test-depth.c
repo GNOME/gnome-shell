@@ -75,19 +75,16 @@ static ClutterActor *
 janus_group (const gchar *front_text,
              const gchar *back_text)
 {
-  ClutterColor  slide_color = {0x00, 0x00, 0x00, 0xff};
-  ClutterColor  red = {0xff, 0x00, 0x00, 0xff};
-  ClutterColor  green = {0x00, 0xff, 0x00, 0xff};
   ClutterActor *group, *rectangle, *front, *back;
   gfloat width, height;
   gfloat width2, height2;
 
   group = clutter_group_new ();
-  rectangle = clutter_rectangle_new_with_color (&slide_color);
+  rectangle = clutter_rectangle_new_with_color (CLUTTER_COLOR_White);
   front = clutter_text_new_with_text ("Sans 50px", front_text);
   back = clutter_text_new_with_text ("Sans 50px", back_text);
-  clutter_text_set_color (CLUTTER_TEXT (front), &red);
-  clutter_text_set_color (CLUTTER_TEXT (back), &green);
+  clutter_text_set_color (CLUTTER_TEXT (front), CLUTTER_COLOR_Red);
+  clutter_text_set_color (CLUTTER_TEXT (back), CLUTTER_COLOR_Green);
 
   clutter_actor_get_size (front, &width, &height);
   clutter_actor_get_size (back, &width2, &height2);
@@ -117,22 +114,22 @@ test_depth_main (int argc, char *argv[])
   ClutterBehaviour *r_behave;
   ClutterActor     *stage;
   ClutterActor     *group, *hand, *label, *rect, *janus, *box;
-  ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
-  ClutterColor      rect_color  = { 0, 0, 0, 0x88 };
   GError           *error;
 
   clutter_init (&argc, &argv);
 
-  stage = clutter_stage_get_default ();
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Depth Test");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Aluminium2);
+  g_signal_connect (stage,
+                    "destroy", G_CALLBACK (clutter_main_quit),
+                    NULL);
   g_signal_connect (stage,
                     "button-press-event", G_CALLBACK (clutter_main_quit),
                     NULL);
 
   group = clutter_group_new ();
-  clutter_stage_add (stage, group);
-  clutter_actor_show (group);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
 
   label = clutter_text_new_with_text ("Mono 26", "Clutter");
   clutter_actor_set_position (label, 120, 200);
@@ -148,9 +145,10 @@ test_depth_main (int argc, char *argv[])
   clutter_actor_set_position (hand, 240, 100);
   clutter_actor_show (hand);
 
-  rect = clutter_rectangle_new_with_color (&rect_color);
+  rect = clutter_rectangle_new_with_color (CLUTTER_COLOR_Black);
   clutter_actor_set_position (rect, 340, 100);
   clutter_actor_set_size (rect, 200, 200);
+  clutter_actor_set_opacity (rect, 128);
   clutter_actor_show (rect);
 
   clutter_container_add (CLUTTER_CONTAINER (group), hand, rect, NULL);

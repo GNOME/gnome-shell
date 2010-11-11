@@ -179,9 +179,6 @@ test_threads_main (int argc, char *argv[])
 {
   ClutterActor *stage;
   ClutterActor *rect;
-  ClutterColor stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
-  ClutterColor rect_color = { 0xee, 0x55, 0x55, 0x99 };
-  ClutterColor progress_color = { 0x55, 0xee, 0x55, 0xbb };
   ClutterBehaviour *r_behaviour, *p_behaviour;
   ClutterAlpha *alpha;
   const ClutterKnot knots[] = {
@@ -193,9 +190,11 @@ test_threads_main (int argc, char *argv[])
   clutter_threads_init ();
   clutter_init (&argc, &argv);
 
-  stage = clutter_stage_get_default ();
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Threading");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Aluminium3);
   clutter_actor_set_size (stage, 600, 300);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   
   count_label = clutter_text_new_with_text ("Mono 12", "Counter");
   clutter_actor_set_position (count_label, 350, 50);
@@ -203,12 +202,13 @@ test_threads_main (int argc, char *argv[])
   help_label = clutter_text_new_with_text ("Mono 12", "Press 's' to start");
   clutter_actor_set_position (help_label, 50, 50);
 
-  rect = clutter_rectangle_new_with_color (&rect_color);
+  rect = clutter_rectangle_new_with_color (CLUTTER_COLOR_LightScarletRed);
   clutter_actor_set_position (rect, 75, 150);
   clutter_actor_set_size (rect, 50, 50);
   clutter_actor_set_anchor_point (rect, 25, 25);
+  clutter_actor_set_opacity (rect, 224);
 
-  progress_rect = clutter_rectangle_new_with_color (&progress_color);
+  progress_rect = clutter_rectangle_new_with_color (CLUTTER_COLOR_DarkChameleon);
   clutter_actor_set_position (progress_rect, 50, 225);
   clutter_actor_set_size (progress_rect, 350, 50);
 

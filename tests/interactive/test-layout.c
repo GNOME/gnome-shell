@@ -566,8 +566,6 @@ static ClutterActor *icon             = NULL;
 static ClutterTimeline *main_timeline = NULL;
 static ClutterBehaviour *behaviour    = NULL;
 
-static ClutterColor bg_color;
-
 static void
 toggle_property_value (ClutterActor *actor,
                        const gchar  *property_name)
@@ -751,8 +749,6 @@ test_layout_main (int argc, char *argv[])
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 800, 600);
-
-  clutter_color_from_string (&bg_color, "Red");
 
   main_timeline = clutter_timeline_new (2000);
   clutter_timeline_set_loop (main_timeline, TRUE);

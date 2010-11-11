@@ -73,9 +73,6 @@ test_behave_main (int argc, char *argv[])
   ClutterBehaviour *o_behave, *p_behave;
   ClutterActor     *stage;
   ClutterActor     *group, *rect, *hand;
-  ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
-  ClutterColor      rect_bg_color = { 0x33, 0x22, 0x22, 0xff };
-  ClutterColor      rect_border_color = { 0, 0, 0, 0 };
   gchar            *file;
   int               i;
   path_t            path_type = PATH_POLY;
@@ -119,9 +116,11 @@ test_behave_main (int argc, char *argv[])
   
   clutter_init (&argc, &argv);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Behaviours");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Aluminium2);
   clutter_stage_hide_cursor (CLUTTER_STAGE (stage));
-
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   g_signal_connect (stage, "button-press-event",
                     G_CALLBACK (button_press_cb),
                     NULL);
@@ -131,9 +130,6 @@ test_behave_main (int argc, char *argv[])
   g_signal_connect (stage, "key-press-event",
                     G_CALLBACK (clutter_main_quit),
                     NULL);
-
-  clutter_stage_set_color (CLUTTER_STAGE (stage),
-		           &stage_color);
 
   /* Make a hand */
   group = clutter_group_new ();
@@ -155,12 +151,10 @@ test_behave_main (int argc, char *argv[])
   clutter_actor_set_size (rect,
                           clutter_actor_get_width (hand),
 			  clutter_actor_get_height (hand));
-  clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect),
-                               &rect_bg_color);
+  clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), CLUTTER_COLOR_Transparent);
   clutter_rectangle_set_border_width (CLUTTER_RECTANGLE (rect), 10);
-  clutter_color_from_string (&rect_border_color, "DarkSlateGray");
   clutter_rectangle_set_border_color (CLUTTER_RECTANGLE (rect),
-                                      &rect_border_color);
+                                      CLUTTER_COLOR_Chameleon);
   clutter_actor_show (rect);
   
   clutter_container_add (CLUTTER_CONTAINER (group), rect, hand, NULL);

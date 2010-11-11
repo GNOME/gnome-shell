@@ -245,9 +245,6 @@ G_MODULE_EXPORT int
 test_binding_pool_main (int argc, char *argv[])
 {
   ClutterActor *stage, *key_group;
-  ClutterColor red_color   = { 255,   0,   0, 255 };
-  ClutterColor green_color = {   0, 255,   0, 255 };
-  ClutterColor blue_color  = {   0,   0, 255, 255 };
   gint group_x, group_y;
 
   clutter_init (&argc, &argv);
@@ -263,21 +260,21 @@ test_binding_pool_main (int argc, char *argv[])
   /* add three rectangles to the key group */
   clutter_container_add (CLUTTER_CONTAINER (key_group),
                          g_object_new (CLUTTER_TYPE_RECTANGLE,
-                                       "color", &red_color,
+                                       "color", CLUTTER_COLOR_Red,
                                        "width", 50.0,
                                        "height", 50.0,
                                        "x", 0.0,
                                        "y", 0.0,
                                        NULL),
                          g_object_new (CLUTTER_TYPE_RECTANGLE,
-                                       "color", &green_color,
+                                       "color", CLUTTER_COLOR_Green,
                                        "width", 50.0,
                                        "height", 50.0,
                                        "x", 75.0,
                                        "y", 0.0,
                                        NULL),
                          g_object_new (CLUTTER_TYPE_RECTANGLE,
-                                       "color", &blue_color,
+                                       "color", CLUTTER_COLOR_Blue,
                                        "width", 50.0,
                                        "height", 50.0,
                                        "x", 150.0,

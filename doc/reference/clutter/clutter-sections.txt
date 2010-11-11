@@ -960,6 +960,8 @@ clutter_color_copy
 clutter_color_free
 clutter_color_equal
 clutter_color_hash
+ClutterStaticColor
+clutter_color_get_static
 
 <SUBSECTION>
 clutter_color_from_string

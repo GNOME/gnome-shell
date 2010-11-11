@@ -15,8 +15,6 @@ test_rotate_main (int argc, char *argv[])
   ClutterBehaviour *r_behave;
   ClutterActor     *stage;
   ClutterActor     *hand, *label, *rect;
-  ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
-  ClutterColor      rect_color;
   gchar            *file;
 
   clutter_init (&argc, &argv);
@@ -25,10 +23,10 @@ test_rotate_main (int argc, char *argv[])
   timeline = clutter_timeline_new (7692);
   clutter_timeline_set_loop (timeline, TRUE);
 
-  stage = clutter_stage_get_default ();
-
-  clutter_stage_set_color (CLUTTER_STAGE (stage),
-		           &stage_color);
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Rotations");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_Aluminium3);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   /* Make a hand */
   file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
@@ -38,8 +36,7 @@ test_rotate_main (int argc, char *argv[])
 
   g_free (file);
 
-  clutter_color_from_string (&rect_color, "#ce5c00ff");
-  rect = clutter_rectangle_new_with_color (&rect_color);
+  rect = clutter_rectangle_new_with_color (CLUTTER_COLOR_DarkOrange);
   clutter_actor_add_effect_with_name (rect, "blur", clutter_blur_effect_new ());
   clutter_actor_set_position (rect, 340, 140);
   clutter_actor_set_size (rect, 150, 150);

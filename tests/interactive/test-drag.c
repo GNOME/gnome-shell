@@ -37,13 +37,12 @@ on_drag_begin (ClutterDragAction   *action,
   if (is_copy)
     {
       ClutterActor *stage = clutter_actor_get_stage (actor);
-      ClutterColor handle_color;
 
       drag_handle = clutter_rectangle_new ();
       clutter_actor_set_size (drag_handle, 48, 48);
 
-      clutter_color_from_string (&handle_color, "#204a87aa");
-      clutter_rectangle_set_color (CLUTTER_RECTANGLE (drag_handle), &handle_color);
+      clutter_rectangle_set_color (CLUTTER_RECTANGLE (drag_handle),
+                                   CLUTTER_COLOR_DarkSkyBlue);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), drag_handle);
       clutter_actor_set_position (drag_handle, event_x, event_y);
@@ -154,7 +153,6 @@ test_drag_main (int argc, char *argv[])
 {
   ClutterActor *stage, *handle;
   ClutterAction *action;
-  ClutterColor handle_color;
   GError *error;
 
   error = NULL;
@@ -176,10 +174,9 @@ test_drag_main (int argc, char *argv[])
   clutter_actor_set_size (stage, 800, 600);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  clutter_color_from_string (&handle_color, "#729fcfff");
-
   handle = clutter_rectangle_new ();
-  clutter_rectangle_set_color (CLUTTER_RECTANGLE (handle), &handle_color);
+  clutter_rectangle_set_color (CLUTTER_RECTANGLE (handle),
+                               CLUTTER_COLOR_SkyBlue);
   clutter_actor_set_size (handle, 128, 128);
   clutter_actor_set_position (handle, (800 - 128) / 2, (600 - 128) / 2);
   clutter_actor_set_reactive (handle, TRUE);

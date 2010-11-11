@@ -86,6 +86,7 @@ source_h =					\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-click-action.h	\
 	$(srcdir)/clutter-clone.h		\
+	$(srcdir)/clutter-color-static.h	\
 	$(srcdir)/clutter-color.h		\
 	$(srcdir)/clutter-colorize-effect.h	\
 	$(srcdir)/clutter-constraint.h		\
