@@ -120,6 +120,9 @@ void     meta_window_foreach_ancestor         (MetaWindow            *window,
                                                MetaWindowForeachFunc  func,
                                                void                  *user_data);
 
+MetaMaximizeFlags meta_window_get_maximized (MetaWindow *window);
+gboolean          meta_window_is_fullscreen (MetaWindow *window);
+
 gboolean meta_window_is_mapped (MetaWindow  *window);
 gboolean meta_window_toplevel_is_mapped (MetaWindow  *window);
 gboolean meta_window_get_icon_geometry (MetaWindow    *window,

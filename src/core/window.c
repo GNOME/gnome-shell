@@ -3158,6 +3158,32 @@ meta_window_maximize (MetaWindow        *window,
     }
 }
 
+/**
+ * meta_window_get_maximized:
+ *
+ * Gets the current maximization state of the window, as combination
+ * of the %META_MAXIMIZE_HORIZONTAL and %META_MAXIMIZE_VERTICAL flags;
+ *
+ * Return value: current maximization state
+ */
+MetaMaximizeFlags
+meta_window_get_maximized (MetaWindow *window)
+{
+  return ((window->maximized_horizontally ? META_MAXIMIZE_HORIZONTAL : 0) |
+          (window->maximized_vertically ? META_MAXIMIZE_VERTICAL : 0));
+}
+
+/**
+ * meta_window_is_fullscreen:
+ *
+ * Return value: %TRUE if the window is currently fullscreen
+ */
+gboolean
+meta_window_is_fullscreen (MetaWindow *window)
+{
+  return window->fullscreen;
+}
+
 static void
 meta_window_tile (MetaWindow *window)
 {
