@@ -69,6 +69,7 @@ GType meta_window_get_type (void);
 
 MetaFrame *meta_window_get_frame (MetaWindow *window);
 gboolean meta_window_has_focus (MetaWindow *window);
+gboolean meta_window_appears_focused (MetaWindow *window);
 gboolean meta_window_is_shaded (MetaWindow *window);
 gboolean meta_window_is_override_redirect (MetaWindow *window);
 gboolean meta_window_is_skip_taskbar (MetaWindow *window);

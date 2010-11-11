@@ -461,8 +461,6 @@ void        meta_window_update_fullscreen_monitors (MetaWindow    *window,
                                                     unsigned long  left,
                                                     unsigned long  right);
 
-gboolean meta_window_appears_focused (MetaWindow *window);
-
 /* args to move are window pos, not frame pos */
 void        meta_window_move               (MetaWindow  *window,
                                             gboolean     user_op,

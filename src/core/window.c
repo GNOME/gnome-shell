@@ -9275,9 +9275,22 @@ transient_has_focus (MetaWindow *window,
   return FALSE;
 }
 
+/**
+ * meta_window_appears_focused:
+ * @window: a #MetaWindow
+ *
+ * Determines if the window should be drawn with a focused appearance. This is
+ * true for focused windows but also true for windows with a focused modal
+ * dialog attached.
+ *
+ * Return value: %TRUE if the window should be drawn with a focused frame
+ */
 gboolean
 meta_window_appears_focused (MetaWindow *window)
 {
+  /* FIXME: meta_window_foreach_transient() iterates over all windows; we
+   *  should eat the complexity to cache a bit for this.
+   */
   if (!window->has_focus && meta_prefs_get_attach_modal_dialogs ())
     {
       gboolean focus = FALSE;
