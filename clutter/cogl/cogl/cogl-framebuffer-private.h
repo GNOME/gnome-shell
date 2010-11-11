@@ -66,6 +66,12 @@ typedef struct _CoglOffscreen
   CoglHandle      texture;
 } CoglOffscreen;
 
+/* Flags to pass to _cogl_offscreen_new_to_texture_full */
+typedef enum
+{
+  COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL = 1
+} CoglOffscreenFlags;
+
 #define COGL_OFFSCREEN(X) ((CoglOffscreen *)(X))
 
 typedef struct _CoglOnscreen
@@ -142,6 +148,24 @@ _cogl_create_framebuffer_stack (void);
 
 void
 _cogl_free_framebuffer_stack (GSList *stack);
+
+/*
+ * _cogl_offscreen_new_to_texture_full:
+ * @texhandle: A handle to the texture to target
+ * @create_flags: Flags specifying how to create the FBO
+ * @level: The mipmap level within the texture to target
+ *
+ * Creates a new offscreen buffer which will target the given
+ * texture. By default the buffer will have a depth and stencil
+ * buffer. This can be disabled by passing
+ * %COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL in @create_flags.
+ *
+ * Return value: the new CoglOffscreen object.
+ */
+CoglHandle
+_cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
+                                     CoglOffscreenFlags create_flags,
+                                     unsigned int level);
 
 #endif /* __COGL_FRAMEBUFFER_PRIVATE_H */
 
