@@ -61,7 +61,10 @@
 
 struct _ClutterClickActionPrivate
 {
+  ClutterActor *stage;
+
   guint event_id;
+  gulong capture_id;
 
   guint press_button;
 
@@ -92,6 +95,11 @@ static guint click_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (ClutterClickAction, clutter_click_action, CLUTTER_TYPE_ACTION);
 
+/* forward declaration */
+static gboolean on_captured_event (ClutterActor       *stage,
+                                   ClutterEvent       *event,
+                                   ClutterClickAction *action);
+
 static inline void
 click_action_set_pressed (ClutterClickAction *action,
                           gboolean            is_pressed)
@@ -111,7 +119,6 @@ on_event (ClutterActor       *actor,
           ClutterClickAction *action)
 {
   ClutterClickActionPrivate *priv = action->priv;
-  gboolean res = FALSE;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (action)))
     return FALSE;
@@ -130,29 +137,15 @@ on_event (ClutterActor       *actor,
 
       priv->is_held = TRUE;
       priv->press_button = clutter_event_get_button (event);
-      clutter_grab_pointer (actor);
+
+      if (priv->stage == NULL)
+        priv->stage = clutter_actor_get_stage (actor);
+
+      priv->capture_id = g_signal_connect_after (priv->stage, "captured-event",
+                                                 G_CALLBACK (on_captured_event),
+                                                 action);
 
       click_action_set_pressed (action, TRUE);
-      res = TRUE;
-      break;
-
-    case CLUTTER_BUTTON_RELEASE:
-      if (clutter_event_get_button (event) != priv->press_button ||
-          clutter_event_get_click_count (event) != 1)
-        return FALSE;
-
-      if (!priv->is_held)
-        return TRUE;
-
-      priv->is_held = FALSE;
-      clutter_ungrab_pointer ();
-
-      if (!clutter_actor_contains (actor, clutter_event_get_source (event)))
-        return FALSE;
-
-      click_action_set_pressed (action, FALSE);
-      g_signal_emit (action, click_signals[CLICKED], 0, actor);
-      res = TRUE;
       break;
 
     case CLUTTER_ENTER:
@@ -167,7 +160,50 @@ on_event (ClutterActor       *actor,
       break;
     }
 
-  return res;
+  return FALSE;
+}
+
+static gboolean
+on_captured_event (ClutterActor       *stage,
+                   ClutterEvent       *event,
+                   ClutterClickAction *action)
+{
+  ClutterClickActionPrivate *priv = action->priv;
+  ClutterActor *actor;
+
+  actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
+
+  switch (clutter_event_type (event))
+    {
+    case CLUTTER_BUTTON_RELEASE:
+      if (!priv->is_held)
+        return TRUE;
+
+      if (clutter_event_get_button (event) != priv->press_button ||
+          clutter_event_get_click_count (event) != 1)
+        return FALSE;
+
+      priv->is_held = FALSE;
+
+      /* disconnect the capture */
+      if (priv->capture_id != 0)
+        {
+          g_signal_handler_disconnect (priv->stage, priv->capture_id);
+          priv->capture_id = 0;
+        }
+
+      if (!clutter_actor_contains (actor, clutter_event_get_source (event)))
+        return FALSE;
+
+      click_action_set_pressed (action, FALSE);
+      g_signal_emit (action, click_signals[CLICKED], 0, actor);
+      break;
+
+    default:
+      break;
+    }
+
+  return FALSE;
 }
 
 static void
@@ -182,6 +218,13 @@ clutter_click_action_set_actor (ClutterActorMeta *meta,
 
       g_signal_handler_disconnect (old_actor, priv->event_id);
       priv->event_id = 0;
+    }
+
+  if (priv->capture_id != 0)
+    {
+      g_signal_handler_disconnect (priv->stage, priv->capture_id);
+      priv->capture_id = 0;
+      priv->stage = NULL;
     }
 
   if (actor != NULL)
@@ -329,7 +372,13 @@ clutter_click_action_release (ClutterClickAction *action)
     return;
 
   priv->is_held = FALSE;
-  clutter_ungrab_pointer ();
+
+  /* disconnect the capture */
+  if (priv->capture_id != 0)
+    {
+      g_signal_handler_disconnect (priv->stage, priv->capture_id);
+      priv->capture_id = 0;
+    }
 
   click_action_set_pressed (action, FALSE);
 }
