@@ -324,10 +324,18 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
   framebuffer->dirty_bitmasks = FALSE;
 }
 
+typedef struct
+{
+  CoglHandle texture;
+  unsigned int level;
+  unsigned int level_width;
+  unsigned int level_height;
+} CoglFramebufferTryFBOData;
+
 static gboolean
 try_creating_fbo (CoglOffscreen *offscreen,
                   TryFBOFlags flags,
-                  CoglHandle texture)
+                  CoglFramebufferTryFBOData *data)
 {
   GLuint gl_depth_stencil_handle;
   GLuint gl_depth_handle;
@@ -339,7 +347,8 @@ try_creating_fbo (CoglOffscreen *offscreen,
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  if (!cogl_texture_get_gl_texture (texture, &tex_gl_handle, &tex_gl_target))
+  if (!cogl_texture_get_gl_texture (data->texture,
+                                    &tex_gl_handle, &tex_gl_target))
     return FALSE;
 
   if (tex_gl_target != GL_TEXTURE_2D
@@ -362,7 +371,7 @@ try_creating_fbo (CoglOffscreen *offscreen,
   offscreen->fbo_handle = fbo_gl_handle;
 
   GE (glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-			      tex_gl_target, tex_gl_handle, 0));
+                              tex_gl_target, tex_gl_handle, data->level));
 
   if (flags & _TRY_DEPTH_STENCIL)
     {
@@ -370,8 +379,8 @@ try_creating_fbo (CoglOffscreen *offscreen,
       GE (glGenRenderbuffers (1, &gl_depth_stencil_handle));
       GE (glBindRenderbuffer (GL_RENDERBUFFER, gl_depth_stencil_handle));
       GE (glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_STENCIL,
-                                 cogl_texture_get_width (texture),
-                                 cogl_texture_get_height (texture)));
+                                 data->level_width,
+                                 data->level_height));
       GE (glBindRenderbuffer (GL_RENDERBUFFER, 0));
       GE (glFramebufferRenderbuffer (GL_FRAMEBUFFER,
                                      GL_STENCIL_ATTACHMENT,
@@ -391,8 +400,8 @@ try_creating_fbo (CoglOffscreen *offscreen,
       /* For now we just ask for GL_DEPTH_COMPONENT16 since this is all that's
        * available under GLES */
       GE (glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT16,
-                                 cogl_texture_get_width (texture),
-                                 cogl_texture_get_height (texture)));
+                                 data->level_width,
+                                 data->level_height));
       GE (glBindRenderbuffer (GL_RENDERBUFFER, 0));
       GE (glFramebufferRenderbuffer (GL_FRAMEBUFFER,
                                      GL_DEPTH_ATTACHMENT,
@@ -407,8 +416,8 @@ try_creating_fbo (CoglOffscreen *offscreen,
       GE (glGenRenderbuffers (1, &gl_stencil_handle));
       GE (glBindRenderbuffer (GL_RENDERBUFFER, gl_stencil_handle));
       GE (glRenderbufferStorage (GL_RENDERBUFFER, GL_STENCIL_INDEX8,
-                                 cogl_texture_get_width (texture),
-                                 cogl_texture_get_height (texture)));
+                                 data->level_width,
+                                 data->level_height));
       GE (glBindRenderbuffer (GL_RENDERBUFFER, 0));
       GE (glFramebufferRenderbuffer (GL_FRAMEBUFFER,
                                      GL_STENCIL_ATTACHMENT,
@@ -443,11 +452,16 @@ try_creating_fbo (CoglOffscreen *offscreen,
 }
 
 CoglHandle
-cogl_offscreen_new_to_texture (CoglHandle texhandle)
+_cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
+                                     CoglOffscreenFlags create_flags,
+                                     unsigned int level)
 {
   CoglOffscreen      *offscreen;
   static TryFBOFlags  flags;
   static gboolean     have_working_flags = FALSE;
+  unsigned int        i;
+  CoglFramebufferTryFBOData data;
+  gboolean            fbo_created;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
@@ -461,6 +475,27 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   /* The texture must not be sliced */
   if (cogl_texture_is_sliced (texhandle))
     return COGL_INVALID_HANDLE;
+
+  data.texture = texhandle;
+  data.level = level;
+
+  /* Calculate the size of the texture at this mipmap level to ensure
+     that it's a valid level */
+  data.level_width = cogl_texture_get_width (texhandle);
+  data.level_height = cogl_texture_get_height (texhandle);
+
+  for (i = 0; i < level; i++)
+    {
+      /* If neither dimension can be further divided then the level is
+         invalid */
+      if (data.level_width == 1 && data.level_height == 1)
+        return COGL_INVALID_HANDLE;
+
+      if (data.level_width > 1)
+        data.level_width >>= 1;
+      if (data.level_height > 1)
+        data.level_height >>= 1;
+    }
 
   /* XXX: The framebuffer_object spec isn't clear in defining whether attaching
    * a texture as a renderbuffer with mipmap filtering enabled while the
@@ -477,25 +512,36 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   offscreen = g_new0 (CoglOffscreen, 1);
   offscreen->texture = cogl_handle_ref (texhandle);
 
-  if ((have_working_flags &&
-       try_creating_fbo (offscreen, flags, texhandle)) ||
-#ifdef HAVE_COGL_GL
-      try_creating_fbo (offscreen, flags = _TRY_DEPTH_STENCIL, texhandle) ||
-#endif
-      try_creating_fbo (offscreen, flags = _TRY_DEPTH | _TRY_STENCIL,
-                        texhandle) ||
-      try_creating_fbo (offscreen, flags = _TRY_STENCIL, texhandle) ||
-      try_creating_fbo (offscreen, flags = _TRY_DEPTH, texhandle) ||
-      try_creating_fbo (offscreen, flags = 0, texhandle))
+  if ((create_flags & COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL))
+    fbo_created = try_creating_fbo (offscreen, 0, &data);
+  else
     {
-      /* Record that the last set of flags succeeded so that we can
-         try that set first next time */
-      have_working_flags = TRUE;
+      if ((have_working_flags &&
+           try_creating_fbo (offscreen, flags, &data)) ||
+#ifdef HAVE_COGL_GL
+          try_creating_fbo (offscreen, flags = _TRY_DEPTH_STENCIL, &data) ||
+#endif
+          try_creating_fbo (offscreen, flags = _TRY_DEPTH | _TRY_STENCIL,
+                            &data) ||
+          try_creating_fbo (offscreen, flags = _TRY_STENCIL, &data) ||
+          try_creating_fbo (offscreen, flags = _TRY_DEPTH, &data) ||
+          try_creating_fbo (offscreen, flags = 0, &data))
+        {
+          /* Record that the last set of flags succeeded so that we can
+             try that set first next time */
+          have_working_flags = TRUE;
+          fbo_created = TRUE;
+        }
+      else
+        fbo_created = FALSE;
+    }
 
+  if (fbo_created)
+    {
       _cogl_framebuffer_init (COGL_FRAMEBUFFER (offscreen),
                               COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
-                              cogl_texture_get_width (texhandle),
-                              cogl_texture_get_height (texhandle));
+                              data.level_width,
+                              data.level_height);
 
       return _cogl_offscreen_object_new (offscreen);
     }
@@ -506,6 +552,12 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
       g_warning ("%s: Failed to create an OpenGL framebuffer", G_STRLOC);
       return COGL_INVALID_HANDLE;
     }
+}
+
+CoglHandle
+cogl_offscreen_new_to_texture (CoglHandle texhandle)
+{
+  return _cogl_offscreen_new_to_texture_full (texhandle, 0, 0);
 }
 
 static void
