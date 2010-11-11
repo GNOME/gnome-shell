@@ -9668,3 +9668,74 @@ meta_window_get_mutter_hints (MetaWindow *window)
 
   return window->mutter_hints;
 }
+
+/**
+ * meta_window_get_frame_type:
+ * @window: a #MetaWindow
+ *
+ * Gets the type of window decorations that should be used for this window.
+ *
+ * Return value: the frame type
+ */
+MetaFrameType
+meta_window_get_frame_type (MetaWindow *window)
+{
+  MetaFrameType base_type = META_FRAME_TYPE_LAST;
+
+  switch (window->type)
+    {
+    case META_WINDOW_NORMAL:
+      base_type = META_FRAME_TYPE_NORMAL;
+      break;
+
+    case META_WINDOW_DIALOG:
+      base_type = META_FRAME_TYPE_DIALOG;
+      break;
+
+    case META_WINDOW_MODAL_DIALOG:
+      if (meta_prefs_get_attach_modal_dialogs () &&
+          meta_window_get_transient_for (window) != NULL)
+        base_type = META_FRAME_TYPE_ATTACHED;
+      else
+        base_type = META_FRAME_TYPE_MODAL_DIALOG;
+      break;
+
+    case META_WINDOW_MENU:
+      base_type = META_FRAME_TYPE_MENU;
+      break;
+
+    case META_WINDOW_UTILITY:
+      base_type = META_FRAME_TYPE_UTILITY;
+      break;
+
+    case META_WINDOW_DESKTOP:
+    case META_WINDOW_DOCK:
+    case META_WINDOW_TOOLBAR:
+    case META_WINDOW_SPLASHSCREEN:
+    case META_WINDOW_DROPDOWN_MENU:
+    case META_WINDOW_POPUP_MENU:
+    case META_WINDOW_TOOLTIP:
+    case META_WINDOW_NOTIFICATION:
+    case META_WINDOW_COMBO:
+    case META_WINDOW_DND:
+    case META_WINDOW_OVERRIDE_OTHER:
+      /* No frame */
+      base_type = META_FRAME_TYPE_LAST;
+      break;
+    }
+
+  if (base_type == META_FRAME_TYPE_LAST)
+    {
+      /* can't add border if undecorated */
+      return META_FRAME_TYPE_LAST;
+    }
+  else if (window->border_only && base_type != META_FRAME_TYPE_ATTACHED)
+    {
+      /* override base frame type */
+      return META_FRAME_TYPE_BORDER;
+    }
+  else
+    {
+      return base_type;
+    }
+}
