@@ -5,7 +5,7 @@
 #include "st-texture-cache.h"
 #include <gtk/gtk.h>
 #define GNOME_DESKTOP_USE_UNSTABLE_API
-#include <libgnomeui/gnome-desktop-thumbnail.h>
+#include <libgnome-desktop/gnome-desktop-thumbnail.h>
 #include <string.h>
 #include <glib.h>
 
