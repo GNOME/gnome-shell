@@ -1189,7 +1189,6 @@ const char*           meta_frame_resize_to_string      (MetaFrameResize        r
 MetaFrameFocus        meta_frame_focus_from_string     (const char            *str);
 const char*           meta_frame_focus_to_string       (MetaFrameFocus         focus);
 MetaFrameType         meta_frame_type_from_string      (const char            *str);
-const char*           meta_frame_type_to_string        (MetaFrameType          type);
 MetaGradientType      meta_gradient_type_from_string   (const char            *str);
 const char*           meta_gradient_type_to_string     (MetaGradientType       type);
 GtkStateType          meta_gtk_state_from_string       (const char            *str);

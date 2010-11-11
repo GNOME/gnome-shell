@@ -28,6 +28,8 @@
 #include <glib.h>
 #include <glib-object.h>
 
+#include "common.h"
+
 gboolean meta_is_verbose  (void);
 void     meta_set_verbose (gboolean setting);
 gboolean meta_is_debugging (void);
@@ -91,6 +93,7 @@ guint meta_unsigned_long_hash  (gconstpointer v);
 
 void meta_print_backtrace (void);
 
+const char* meta_frame_type_to_string (MetaFrameType type);
 const char* meta_gravity_to_string (int gravity);
 
 #include <libintl.h>

@@ -6017,6 +6017,14 @@ meta_frame_type_from_string (const char *str)
     return META_FRAME_TYPE_LAST;
 }
 
+/**
+ * meta_frame_type_to_string:
+ *
+ * Converts a frame type enum value to the name string that would
+ * appear in the theme definition file.
+ *
+ * Return value: the string value
+ */
 const char*
 meta_frame_type_to_string (MetaFrameType type)
 {
