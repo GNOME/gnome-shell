@@ -4,7 +4,8 @@
  *
  * Create and cache shadow textures for abritrary window shapes
  *
- * Copyright (C) 2010 Red Hat, Inc.
+ * Copyright 2010 Red Hat, Inc.
+ * Copyright 2010 Intel Corporation
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -617,6 +618,49 @@ flip_buffer (guchar *buffer,
 #undef BLOCK_SIZE
 }
 
+/* Creates a material with a single layer. Using a common template
+ * allows sharing a shader between all shadows. To share the same
+ * shader with all other materials that are just texture plus
+ * opacity would require cogl fixes. Based on
+ * gnome-shell/src/st/_st_create_texture_material.c
+ */
+static CoglHandle
+create_texture_material (CoglHandle src_texture)
+{
+  static CoglHandle texture_material_template = COGL_INVALID_HANDLE;
+  CoglHandle material;
+
+  g_return_val_if_fail (src_texture != COGL_INVALID_HANDLE,
+                        COGL_INVALID_HANDLE);
+
+  /* We use a material that has a dummy texture as a base for all
+     texture materials. The idea is that only the Cogl texture object
+     would be different in the children so it is likely that Cogl will
+     be able to share GL programs between all the textures. */
+  if (G_UNLIKELY (texture_material_template == COGL_INVALID_HANDLE))
+    {
+      static const guint8 white_pixel[] = { 0xff, 0xff, 0xff, 0xff };
+      CoglHandle dummy_texture;
+
+      dummy_texture =
+        cogl_texture_new_from_data (1, 1,
+                                    COGL_TEXTURE_NONE,
+                                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                    COGL_PIXEL_FORMAT_ANY,
+                                    4, white_pixel);
+
+      texture_material_template = cogl_material_new ();
+      cogl_material_set_layer (texture_material_template, 0, dummy_texture);
+      cogl_handle_unref (dummy_texture);
+    }
+
+  material = cogl_material_copy (texture_material_template);
+
+  cogl_material_set_layer (material, 0, src_texture);
+
+  return material;
+}
+
 static void
 make_shadow (MetaShadow     *shadow,
              cairo_region_t *region)
@@ -724,8 +768,7 @@ make_shadow (MetaShadow     *shadow,
   cairo_region_destroy (column_convolve_region);
   g_free (buffer);
 
-  shadow->material = cogl_material_new ();
-  cogl_material_set_layer (shadow->material, 0, shadow->texture);
+  shadow->material = create_texture_material (shadow->texture);
 }
 
 static MetaShadowParams *
