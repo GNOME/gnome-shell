@@ -214,6 +214,9 @@ Overview.prototype = {
         let contentY = Panel.PANEL_HEIGHT;
         let contentHeight = primary.height - contentY - Main.messageTray.actor.height;
 
+        this._group.set_position(primary.x, primary.y);
+        this._group.set_size(primary.width, primary.height);
+
         this._coverPane.set_position(0, contentY);
         this._coverPane.set_size(primary.width, contentHeight);
 
@@ -272,12 +275,12 @@ Overview.prototype = {
 
     // Returns the current scale of the Overview.
     getScale : function() {
-        return this._group.scaleX;
+        return this.workspaces.actor.scaleX;
     },
 
     // Returns the current position of the Overview.
     getPosition : function() {
-        return [this._group.x, this._group.y];
+        return [this.workspaces.actor.x, this.workspaces.actor.y];
     },
 
     show : function() {
@@ -305,7 +308,7 @@ Overview.prototype = {
         this._dash.show();
 
         this.workspaces = this._workspacesDisplay.workspacesView;
-        this._group.add_actor(this.workspaces.actor);
+        global.overlay_group.add_actor(this.workspaces.actor);
 
         if (!this._desktopFade.child)
             this._desktopFade.child = this._getDesktopClone();
@@ -320,16 +323,16 @@ Overview.prototype = {
                              });
         }
 
-        // Create a zoom out effect. First scale the Overview group up and
+        // Create a zoom out effect. First scale the workspaces view up and
         // position it so that the active workspace fills up the whole screen,
-        // then transform the group to its normal dimensions and position.
+        // then transform it to its normal dimensions and position.
         // The opposite transition is used in hide().
-        this._group.scaleX = this._group.scaleY = this.getZoomedInScale();
-        [this._group.x, this._group.y] = this.getZoomedInPosition();
+        this.workspaces.actor.scaleX = this.workspaces.actor.scaleY = this.getZoomedInScale();
+        [this.workspaces.actor.x, this.workspaces.actor.y] = this.getZoomedInPosition();
         let primary = global.get_primary_monitor();
-        Tweener.addTween(this._group,
-                         { x: primary.x,
-                           y: primary.y,
+        Tweener.addTween(this.workspaces.actor,
+                         { x: primary.x - this._group.x,
+                           y: primary.y - this._group.y,
                            scaleX: 1,
                            scaleY: 1,
                            transition: 'easeOutQuad',
@@ -338,9 +341,9 @@ Overview.prototype = {
                            onCompleteScope: this
                           });
 
-        // Make Dash fade in so that it doesn't appear too big.
-        this._dash.actor.opacity = 0;
-        Tweener.addTween(this._dash.actor,
+        // Make the other elements fade in.
+        this._group.opacity = 0;
+        Tweener.addTween(this._group,
                          { opacity: 255,
                            transition: 'easeOutQuad',
                            time: ANIMATION_TIME
@@ -368,12 +371,12 @@ Overview.prototype = {
 
         this.workspaces.hide();
 
-        // Create a zoom in effect by transforming the Overview group so that
+        // Create a zoom in effect by transforming the workspaces view so that
         // the active workspace fills up the whole screen. The opposite
         // transition is used in show().
         let scale = this.getZoomedInScale();
         let [posX, posY] = this.getZoomedInPosition();
-        Tweener.addTween(this._group,
+        Tweener.addTween(this.workspaces.actor,
                          { x: posX,
                            y: posY,
                            scaleX: scale,
@@ -384,8 +387,8 @@ Overview.prototype = {
                            onCompleteScope: this
                           });
 
-        // Make Dash fade out so that it doesn't appear to big.
-        Tweener.addTween(this._dash.actor,
+        // Make other elements fade out.
+        Tweener.addTween(this._group,
                          { opacity: 0,
                            transition: 'easeOutQuad',
                            time: ANIMATION_TIME
@@ -440,14 +443,6 @@ Overview.prototype = {
         this._desktopFade.hide();
         this._background.hide();
         this._group.hide();
-
-        // Reset the overview actor's scale/position, so that other elements
-        // can calculate their position correctly the next time the overview
-        // is shown
-        let primary = global.get_primary_monitor();
-        this._group.set_scale(1, 1);
-        this._group.set_position(primary.x, primary.y);
-        this._group.set_size(primary.width, primary.height);
 
         this.visible = false;
         this.animationInProgress = false;
