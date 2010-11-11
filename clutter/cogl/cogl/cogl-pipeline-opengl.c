@@ -375,26 +375,6 @@ _cogl_get_max_texture_image_units (void)
 }
 #endif
 
-static void
-_cogl_pipeline_layer_get_texture_info (CoglPipelineLayer *layer,
-                                       CoglHandle *texture,
-                                       GLuint *gl_texture,
-                                       GLuint *gl_target)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  *texture = layer->texture;
-  if (G_UNLIKELY (*texture == COGL_INVALID_HANDLE))
-    *texture = ctx->default_gl_texture_2d_tex;
-  if (layer->texture_overridden)
-    {
-      *gl_texture = layer->slice_gl_texture;
-      *gl_target = layer->slice_gl_target;
-    }
-  else
-    cogl_texture_get_gl_texture (*texture, gl_texture, gl_target);
-}
-
 #ifndef HAVE_COGL_GLES
 
 static gboolean
@@ -638,6 +618,8 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
   unsigned long                layers_difference =
     flush_state->layer_differences[unit_index];
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   /* There may not be enough texture units so we can bail out if
    * that's the case...
    */
@@ -659,14 +641,17 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
       CoglPipelineLayer *authority =
         _cogl_pipeline_layer_get_authority (layer,
                                             COGL_PIPELINE_LAYER_STATE_TEXTURE);
-      CoglHandle texture = NULL;
+      CoglHandle texture;
       GLuint     gl_texture;
       GLenum     gl_target;
 
-      _cogl_pipeline_layer_get_texture_info (authority,
-                                             &texture,
-                                             &gl_texture,
-                                             &gl_target);
+      texture = (authority->texture == COGL_INVALID_HANDLE ?
+                 ctx->default_gl_texture_2d_tex :
+                 authority->texture);
+
+      cogl_texture_get_gl_texture (texture,
+                                   &gl_texture,
+                                   &gl_target);
 
       _cogl_set_active_texture_unit (unit_index);
 

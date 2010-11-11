@@ -230,11 +230,6 @@ struct _CoglPipelineLayer
   /* The texture for this layer, or COGL_INVALID_HANDLE for an empty
    * layer */
   CoglHandle                 texture;
-  gboolean                   texture_overridden;
-  /* If ->texture_overridden == TRUE then the texture is instead
-   * defined by these... */
-  GLuint                     slice_gl_texture;
-  GLenum                     slice_gl_target;
 
   CoglPipelineFilter         mag_filter;
   CoglPipelineFilter         min_filter;
@@ -707,7 +702,7 @@ typedef struct _CoglPipelineFlushOptions
 
   guint32                       fallback_layers;
   guint32                       disable_layers;
-  GLuint                        layer0_override_texture;
+  CoglHandle                    layer0_override_texture;
   CoglPipelineWrapModeOverrides wrap_mode_overrides;
 } CoglPipelineFlushOptions;
 

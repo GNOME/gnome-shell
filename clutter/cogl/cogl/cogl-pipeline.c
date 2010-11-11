@@ -2059,13 +2059,10 @@ _cogl_pipeline_prune_empty_layer_difference (CoglPipeline *layers_authority,
     }
 }
 
-static void
-_cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
-                                  int layer_index,
-                                  CoglHandle texture,
-                                  gboolean overriden,
-                                  GLuint slice_gl_texture,
-                                  GLenum slice_gl_target)
+void
+cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
+                                 int layer_index,
+                                 CoglHandle texture)
 {
   CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_TEXTURE;
   CoglPipelineLayer *layer;
@@ -2084,11 +2081,7 @@ _cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
    * state we want to change */
   authority = _cogl_pipeline_layer_get_authority (layer, change);
 
-  if (authority->texture_overridden == overriden &&
-      authority->texture == texture &&
-      (authority->texture_overridden == FALSE ||
-       (authority->slice_gl_texture == slice_gl_texture &&
-        authority->slice_gl_target == slice_gl_target)))
+  if (authority->texture == texture)
     return;
 
   new = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, change);
@@ -2107,11 +2100,7 @@ _cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
           CoglPipelineLayer *old_authority =
             _cogl_pipeline_layer_get_authority (parent, change);
 
-          if (old_authority->texture_overridden == overriden &&
-              old_authority->texture == texture &&
-              (old_authority->texture_overridden == FALSE ||
-               (old_authority->slice_gl_texture == slice_gl_texture &&
-                old_authority->slice_gl_target == slice_gl_target)))
+          if (old_authority->texture == texture)
             {
               layer->differences &= ~change;
 
@@ -2133,9 +2122,6 @@ _cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
       layer->texture != COGL_INVALID_HANDLE)
     cogl_handle_unref (layer->texture);
   layer->texture = texture;
-  layer->texture_overridden = overriden;
-  layer->slice_gl_texture = slice_gl_texture;
-  layer->slice_gl_target = slice_gl_target;
 
   /* If we weren't previously the authority on this state then we need
    * to extended our differences mask and so it's possible that some
@@ -2150,43 +2136,6 @@ _cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
 changed:
 
   handle_automatic_blend_enable (pipeline, COGL_PIPELINE_STATE_LAYERS);
-}
-
-static void
-_cogl_pipeline_set_layer_gl_texture_slice (CoglPipeline *pipeline,
-                                           int layer_index,
-                                           CoglHandle texture,
-                                           GLuint slice_gl_texture,
-                                           GLenum slice_gl_target)
-{
-  g_return_if_fail (cogl_is_pipeline (pipeline));
-  /* GL texture overrides can only be set in association with a parent
-   * CoglTexture */
-  g_return_if_fail (cogl_is_texture (texture));
-
-  _cogl_pipeline_set_layer_texture (pipeline,
-                                    layer_index,
-                                    texture,
-                                    TRUE, /* slice override */
-                                    slice_gl_texture,
-                                    slice_gl_target);
-}
-
-void
-cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
-                                 int layer_index,
-                                 CoglHandle texture)
-{
-  g_return_if_fail (cogl_is_pipeline (pipeline));
-  g_return_if_fail (texture == COGL_INVALID_HANDLE ||
-                    cogl_is_texture (texture));
-
-  _cogl_pipeline_set_layer_texture (pipeline,
-                                    layer_index,
-                                    texture,
-                                    FALSE, /* slice override */
-                                    0, /* slice_gl_texture */
-                                    0); /* slice_gl_target */
 }
 
 typedef struct
@@ -2737,28 +2686,18 @@ apply_wrap_mode_overrides_cb (CoglPipelineLayer *layer,
 typedef struct
 {
   CoglPipeline *pipeline;
-  GLuint gl_texture;
+  CoglHandle texture;
 } CoglPipelineOverrideLayerState;
 
 static gboolean
 override_layer_texture_cb (CoglPipelineLayer *layer, void *user_data)
 {
   CoglPipelineOverrideLayerState *state = user_data;
-  CoglHandle texture;
-  GLenum gl_target;
 
-  texture = _cogl_pipeline_layer_get_texture (layer);
+  cogl_pipeline_set_layer_texture (state->pipeline,
+                                   layer->index,
+                                   state->texture);
 
-  if (texture != COGL_INVALID_HANDLE)
-    cogl_texture_get_gl_texture (texture, NULL, &gl_target);
-  else
-    gl_target = GL_TEXTURE_2D;
-
-  _cogl_pipeline_set_layer_gl_texture_slice (state->pipeline,
-                                             layer->index,
-                                             texture,
-                                             state->gl_texture,
-                                             gl_target);
   return TRUE;
 }
 
@@ -2810,7 +2749,7 @@ _cogl_pipeline_apply_overrides (CoglPipeline *pipeline,
        * _cogl_pipeline_foreach_layer_internal() here even though we know
        * there's only one layer. */
       state.pipeline = pipeline;
-      state.gl_texture = options->layer0_override_texture;
+      state.texture = options->layer0_override_texture;
       _cogl_pipeline_foreach_layer_internal (pipeline,
                                              override_layer_texture_cb,
                                              &state);
@@ -2833,26 +2772,7 @@ static gboolean
 _cogl_pipeline_layer_texture_equal (CoglPipelineLayer *authority0,
                                     CoglPipelineLayer *authority1)
 {
-  GLuint gl_handle0, gl_handle1;
-  GLenum gl_target0, gl_target1;
-
-  if (authority0->texture_overridden)
-    {
-      gl_handle0 = authority0->slice_gl_texture;
-      gl_target0 = authority0->slice_gl_target;
-    }
-  else
-    cogl_texture_get_gl_texture (authority0->texture, &gl_handle0, &gl_target0);
-
-  if (authority1->texture_overridden)
-    {
-      gl_handle1 = authority1->slice_gl_texture;
-      gl_target1 = authority1->slice_gl_target;
-    }
-  else
-    cogl_texture_get_gl_texture (authority1->texture, &gl_handle1, &gl_target1);
-
-  return gl_handle0 == gl_handle1 && gl_target0 == gl_target1;
+  return authority0->texture == authority1->texture;
 }
 
 /* Determine the mask of differences between two layers.
@@ -4633,7 +4553,6 @@ _cogl_pipeline_init_default_layers (void)
   layer->unit_index = 0;
 
   layer->texture = COGL_INVALID_HANDLE;
-  layer->texture_overridden = FALSE;
 
   layer->mag_filter = COGL_PIPELINE_FILTER_LINEAR;
   layer->min_filter = COGL_PIPELINE_FILTER_LINEAR;

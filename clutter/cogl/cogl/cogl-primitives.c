@@ -50,6 +50,7 @@
 typedef struct _TextureSlicedQuadState
 {
   CoglPipeline *pipeline;
+  CoglHandle main_texture;
   float tex_virtual_origin_x;
   float tex_virtual_origin_y;
   float quad_origin_x;
@@ -79,6 +80,7 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
                           void *user_data)
 {
   TextureSlicedQuadState *state = user_data;
+  CoglHandle texture_override;
   float quad_coords[4];
 
 #define TEX_VIRTUAL_TO_QUAD(V, Q, AXIS) \
@@ -113,11 +115,18 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
              subtexture_coords[0], subtexture_coords[1],
              subtexture_coords[2], subtexture_coords[3]);
 
+  /* We only need to override the texture if it's different from the
+     main texture */
+  if (texture_handle == state->main_texture)
+    texture_override = COGL_INVALID_HANDLE;
+  else
+    texture_override = texture_handle;
+
   _cogl_journal_log_quad (quad_coords,
                           state->pipeline,
                           1, /* one layer */
                           0, /* don't need to use fallbacks */
-                          gl_handle, /* replace the layer0 texture */
+                          texture_override, /* replace the layer0 texture */
                           NULL, /* we never use wrap mode overrides */
                           subtexture_coords,
                           4);
@@ -298,6 +307,8 @@ _cogl_texture_quad_multiple_primitives (CoglHandle    tex_handle,
   cogl_pipeline_foreach_layer (pipeline,
                                validate_first_layer_cb,
                                &validate_first_layer_state);
+
+  state.main_texture = tex_handle;
 
   if (validate_first_layer_state.override_pipeline)
     state.pipeline = validate_first_layer_state.override_pipeline;
@@ -537,7 +548,7 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
                           pipeline,
                           n_layers,
                           0, /* we don't need fallback layers */
-                          0, /* don't replace the layer0 texture */
+                          COGL_INVALID_HANDLE, /* no texture override */
                           NULL, /* we never use wrap mode overrides */
                           final_tex_coords,
                           n_layers * 4);
