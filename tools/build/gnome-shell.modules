@@ -160,17 +160,18 @@
     </dependencies>
   </autotools>
 
+  <autotools id="gsettings-desktop-schemas">
+    <branch repo="git.gnome.org" module="gsettings-desktop-schemas" />
+  </autotools>
+
   <autotools id="gnome-desktop-3">
     <branch repo="git.gnome.org" checkoutdir="gnome-desktop-3" module="gnome-desktop"/>
     <dependencies>
       <dep package="glib"/>
       <dep package="gtk3"/>
       <dep package="gconf"/>
+      <dep package="gsettings-desktop-schemas"/>
     </dependencies>
-  </autotools>
-
-  <autotools id="gsettings-desktop-schemas">
-    <branch repo="git.gnome.org" module="gsettings-desktop-schemas" />
   </autotools>
 
   <autotools id="gnome-icon-theme">
