@@ -599,7 +599,8 @@ gboolean
 _cogl_pipeline_get_real_blend_enabled (CoglPipeline *pipeline);
 
 gboolean
-_cogl_pipeline_layer_has_user_matrix (CoglPipelineLayer *layer);
+_cogl_pipeline_layer_has_user_matrix (CoglPipeline *pipeline,
+                                      int layer_index);
 
 /*
  * Calls the pre_paint method on the layer texture if there is

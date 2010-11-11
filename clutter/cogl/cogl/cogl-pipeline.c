@@ -5046,11 +5046,13 @@ _cogl_pipeline_layer_get_texture (CoglPipelineLayer *layer)
 }
 
 gboolean
-_cogl_pipeline_layer_has_user_matrix (CoglPipelineLayer *layer)
+_cogl_pipeline_layer_has_user_matrix (CoglPipeline *pipeline,
+                                      int layer_index)
 {
+  CoglPipelineLayer *layer;
   CoglPipelineLayer *authority;
 
-  g_return_val_if_fail (_cogl_is_pipeline_layer (layer), FALSE);
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
 
   authority =
     _cogl_pipeline_layer_get_authority (layer,
