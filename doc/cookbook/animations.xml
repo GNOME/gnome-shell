@@ -2311,19 +2311,94 @@ clutter_animator_start (animator);
     <section>
       <title>Problem</title>
 
-      <para>...</para>
+      <para>You want to loop an animation so it repeats indefinitely.</para>
     </section>
 
     <section>
-      <title>Solution</title>
+      <title>Solutions</title>
 
-      <para>...</para>
+      <para>Each <link linkend="animations-introduction-api">animation
+      approach</link> can be used to create a looping animation. The
+      approach for each is covered below.</para>
+
+      <para>The animation implemented in each case is a simple repeated
+      movement of a rectangle from the right to the left of the state,
+      then back, like this:</para>
+
+      <inlinemediaobject>
+        <videoobject>
+          <videodata fileref="videos/animations-looping.ogv"/>
+        </videoobject>
+        <alt>
+          <para>Video showing simple looped movement of an actor</para>
+        </alt>
+      </inlinemediaobject>
+
+      <section>
+        <title>Solution 1: looping an implicit animation</title>
+
+        <para>Implicit animations (started using
+        <function>clutter_actor_animate()</function>) can be looped via
+        their associated <type>ClutterTimeline</type>.</para>
+
+        <para>First, create a <type>ClutterTimeline</type> which is
+        set to loop:</para>
+
+        <informalexample>
+          <programlisting>
+???
+          </programlisting>
+        </informalexample>
+
+        <para>Use this timeline when starting the animation on an
+        actor:</para>
+
+        <informalexample>
+          <programlisting>
+???
+          </programlisting>
+        </informalexample>
+
+        <para>NB at the end of the timeline, before the next iteration
+        of the loop, the actor will "jump" back
+        to where it was when the animation started. To prevent this
+        happening, you can invert the direction of the timeline
+        each time an iteration completes. This will then make the
+        animation run "backwards" on the next iteration.
+        <link linkend="animations-looping-example-1">This example</link>
+        demonstrates how to do run an animation forwards and backwards
+        on a loop. See <link linkend="animations-inversion">this recipe</link>
+        for more details.</para>
+      </section>
+
+      <section>
+        <title>Solution 2: looping with <type>ClutterAnimator</type></title>
+
+        <para>???</para>
+      </section>
+
+      <section>
+        <title>Solution 3: looping with <type>ClutterState</type></title>
+
+        <para>you could use an looping timeline to cycle a ClutterState;
+        but you don't need to because ClutterState has implicit timelines you
+        don't need to interact with directly (for this case)???</para>
+
+        <para>You can loop <type>ClutterState</type> animations by
+        creating a cycle of states which
+        <ulink url="http://en.wikipedia.org/wiki/Ouroboros">"swallows
+        its own tail"</ulink>: i.e. goes from a start state, through
+        intermediate state(s), back to the start state, then again
+        through the intermediate states(s), back to the start state,
+        ad infinitum.</para>
+      </section>
+
     </section>
 
     <section>
       <title>Discussion</title>
 
-      <para>...</para>
+      <para>interrupting a looped animation???</para>
     </section>
 
     <section id="animations-looping-examples">
@@ -2339,7 +2414,7 @@ clutter_animator_start (animator);
       </example>
 
       <example id="animations-looping-example-2">
-        <title>Looping a <type>ClutterAnimator</type> animation</title>
+        <title>Looping with <type>ClutterAnimator</type></title>
         <programlisting>
 <xi:include href="examples/animations-looping-animator.c" parse="text">
   <xi:fallback>a code sample should be here... but isn't</xi:fallback>
@@ -2348,7 +2423,7 @@ clutter_animator_start (animator);
       </example>
 
       <example id="animations-looping-example-3">
-        <title>Looping a <type>ClutterState</type> animation</title>
+        <title>Looping with <type>ClutterState</type></title>
         <programlisting>
 <xi:include href="examples/animations-looping-state.c" parse="text">
   <xi:fallback>a code sample should be here... but isn't</xi:fallback>
