@@ -234,7 +234,7 @@ dialog_contents (void)
   
   vbox = gtk_vbox_new (FALSE, 0);
 
-  action_area = gtk_hbutton_box_new ();
+  action_area = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
 
   gtk_button_box_set_layout (GTK_BUTTON_BOX (action_area),
                              GTK_BUTTONBOX_END);  
