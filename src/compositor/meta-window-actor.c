@@ -17,7 +17,7 @@
 #include "xprops.h"
 
 #include "compositor-private.h"
-#include "meta-shadow-factory.h"
+#include "meta-shadow-factory-private.h"
 #include "meta-shaped-texture.h"
 #include "meta-window-actor-private.h"
 

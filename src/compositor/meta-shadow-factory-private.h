@@ -22,18 +22,13 @@
  * 02111-1307, USA.
  */
 
-#ifndef __META_SHADOW_FACTORY_H__
-#define __META_SHADOW_FACTORY_H__
+#ifndef __META_SHADOW_FACTORY_PRIVATE_H__
+#define __META_SHADOW_FACTORY_PRIVATE_H__
 
+#include <cairo.h>
 #include <clutter/clutter.h>
 #include "meta-window-shape.h"
-
-#define META_TYPE_SHADOW_FACTORY            (meta_shadow_factory_get_type ())
-#define META_SHADOW_FACTORY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_SHADOW_FACTORY, MetaShadowFactory))
-#define META_SHADOW_FACTORY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_SHADOW_FACTORY, MetaShadowFactoryClass))
-#define META_IS_SHADOW_FACTORY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_SHADOW_FACTORY))
-#define META_IS_SHADOW_FACTORY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_SHADOW_FACTORY))
-#define META_SHADOW_FACTORY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_SHADOW_FACTORY, MetaShadowFactoryClass))
+#include "meta-shadow-factory.h"
 
 /**
  * MetaShadow:
@@ -59,20 +54,8 @@ void        meta_shadow_get_bounds  (MetaShadow            *shadow,
                                      int                    window_height,
                                      cairo_rectangle_int_t *bounds);
 
-/**
- * MetaShadowFactory:
- * #MetaShadowFactory is used to create window shadows. It caches shadows internally
- * so that multiple shadows created for the same shape with the same radius will
- * share the same MetaShadow.
- */
-typedef struct _MetaShadowFactory      MetaShadowFactory;
-typedef struct _MetaShadowFactoryClass MetaShadowFactoryClass;
+MetaShadowFactory *meta_shadow_factory_new (void);
 
-MetaShadowFactory *meta_shadow_factory_get_default (void);
-
-GType meta_shadow_factory_get_type (void);
-
-MetaShadowFactory *meta_shadow_factory_new        (void);
 MetaShadow *       meta_shadow_factory_get_shadow (MetaShadowFactory *factory,
                                                    MetaWindowShape   *shape,
                                                    int                width,
@@ -80,4 +63,4 @@ MetaShadow *       meta_shadow_factory_get_shadow (MetaShadowFactory *factory,
                                                    int                radius,
                                                    int                top_fade);
 
-#endif /* __META_SHADOW_FACTORY_H__ */
+#endif /* __META_SHADOW_FACTORY_PRIVATE_H__ */

@@ -25,7 +25,7 @@
 #include <math.h>
 #include <string.h>
 
-#include "meta-shadow-factory.h"
+#include "meta-shadow-factory-private.h"
 #include "region-utils.h"
 
 /* This file implements blurring the shape of a window to produce a
@@ -304,6 +304,11 @@ meta_shadow_factory_new (void)
   return g_object_new (META_TYPE_SHADOW_FACTORY, NULL);
 }
 
+/**
+ * meta_shadow_factory_get_default:
+ *
+ * Return value: (transfer none): the global singleton shadow factory
+ */
 MetaShadowFactory *
 meta_shadow_factory_get_default (void)
 {

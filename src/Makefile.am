@@ -29,7 +29,7 @@ mutter_SOURCES= 				\
 	compositor/meta-plugin-manager.c	\
 	compositor/meta-plugin-manager.h	\
 	compositor/meta-shadow-factory.c	\
-	compositor/meta-shadow-factory.h	\
+	compositor/meta-shadow-factory-private.h	\
 	compositor/meta-shaped-texture.c	\
 	compositor/meta-shaped-texture.h	\
 	compositor/meta-texture-tower.c		\
@@ -44,6 +44,7 @@ mutter_SOURCES= 				\
 	compositor/region-utils.h		\
 	include/compositor.h			\
 	include/meta-plugin.h			\
+	include/meta-shadow-factory.h		\
 	include/meta-window-actor.h		\
 	include/compositor-mutter.h 		\
 	core/constraints.c			\
@@ -169,6 +170,7 @@ libmutterinclude_base_headers =		\
 	include/group.h				\
 	include/keybindings.h			\
 	include/meta-plugin.h			\
+	include/meta-shadow-factory.h		\
 	include/meta-window-actor.h
 
 # Excluded from scanning for introspection but installed
