@@ -68,8 +68,6 @@ typedef struct
 
 static void
 _cogl_texture_2d_sliced_foreach_cb (CoglHandle handle,
-                                    GLuint gl_handle,
-                                    GLenum gl_target,
                                     const float *slice_coords,
                                     const float *virtual_coords_in,
                                     void *user_data)
@@ -89,8 +87,6 @@ _cogl_texture_2d_sliced_foreach_cb (CoglHandle handle,
                            data->y_span->start) / data->tex->height;
 
   data->callback (handle,
-                  gl_handle,
-                  gl_target,
                   slice_coords,
                   virtual_coords_out,
                   data->user_data);

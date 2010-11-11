@@ -34,8 +34,6 @@ typedef struct _CoglTexture           CoglTexture;
 typedef struct _CoglTextureVtable     CoglTextureVtable;
 
 typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
-                                          GLuint gl_handle,
-                                          GLenum gl_target,
                                           const float *slice_coords,
                                           const float *virtual_coords,
                                           void *user_data);

@@ -91,8 +91,6 @@ _cogl_texture_2d_manual_repeat_cb (const float *coords,
                                 slice_coords + 1, slice_coords + 3);
 
   data->callback (COGL_TEXTURE (data->tex_2d),
-                  data->tex_2d->gl_texture,
-                  GL_TEXTURE_2D,
                   slice_coords,
                   coords,
                   data->user_data);

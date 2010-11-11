@@ -73,8 +73,6 @@ typedef struct _TextureSlicedPolygonState
 
 static void
 log_quad_sub_textures_cb (CoglHandle texture_handle,
-                          GLuint gl_handle,
-                          GLenum gl_target,
                           const float *subtexture_coords,
                           const float *virtual_coords,
                           void *user_data)
