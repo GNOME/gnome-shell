@@ -284,7 +284,7 @@ st_scroll_view_dispose (GObject *object)
     {
       g_object_run_dispose (G_OBJECT (priv->vadjustment));
       g_object_unref (priv->vadjustment);
-      priv->hadjustment = NULL;
+      priv->vadjustment = NULL;
     }
 
   /* since it's impossible to get a handle to these actors, we can
