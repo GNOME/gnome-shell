@@ -88,7 +88,7 @@ _cogl_texture_2d_sliced_foreach_cb (CoglHandle handle,
   virtual_coords_out[3] = (virtual_coords_in[3] * data->y_span->size +
                            data->y_span->start) / data->tex->height;
 
-  data->callback (data->tex,
+  data->callback (handle,
                   gl_handle,
                   gl_target,
                   slice_coords,
