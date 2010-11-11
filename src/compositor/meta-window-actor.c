@@ -762,6 +762,13 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
   if (priv->no_shadow)
     return FALSE;
 
+  /* Leaving out shadows for maximized and fullscreen windows is an effeciency
+   * win and also prevents the unsightly effect of the shadow of maximized
+   * window appearing on an adjacent window */
+  if ((meta_window_get_maximized (priv->window) == (META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL)) ||
+      meta_window_is_fullscreen (priv->window))
+    return FALSE;
+
   /*
    * Always put a shadow around windows with a frame - This should override
    * the restriction about not putting a shadow around ARGB windows.
