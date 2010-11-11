@@ -27,6 +27,31 @@
 
 #include <glib-object.h>
 
+/**
+ * MetaShadowParams:
+ * The #MetaShadowParams structure holds information about how to draw
+ * a particular style of shadow.
+ * @radius: the radius (gaussian standard deviation) of the shadow
+ * @top_fade: if >= 0, the shadow doesn't extend above the top
+ *  of the shape, and fades out over the given number of pixels
+ * @x_offset: horizontal offset of the shadow with respect to the
+ *  shape being shadowed, in pixels
+ * @y_offset: vertical offset of the shadow with respect to the
+ *  shape being shadowed, in pixels
+ * @opacity: opacity of the shadow, from 0 to 255
+ */
+
+typedef struct _MetaShadowParams MetaShadowParams;
+
+struct _MetaShadowParams
+{
+  int radius;
+  int top_fade;
+  int x_offset;
+  int y_offset;
+  guint8 opacity;
+};
+
 #define META_TYPE_SHADOW_FACTORY            (meta_shadow_factory_get_type ())
 #define META_SHADOW_FACTORY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_SHADOW_FACTORY, MetaShadowFactory))
 #define META_SHADOW_FACTORY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_SHADOW_FACTORY, MetaShadowFactoryClass))
@@ -46,5 +71,14 @@ typedef struct _MetaShadowFactoryClass MetaShadowFactoryClass;
 MetaShadowFactory *meta_shadow_factory_get_default (void);
 
 GType meta_shadow_factory_get_type (void);
+
+void meta_shadow_factory_set_params (MetaShadowFactory *factory,
+                                     const char        *class_name,
+                                     gboolean           focused,
+                                     MetaShadowParams  *params);
+void meta_shadow_factory_get_params (MetaShadowFactory *factory,
+                                     const char        *class_name,
+                                     gboolean           focused,
+                                     MetaShadowParams  *params);
 
 #endif /* __META_SHADOW_FACTORY_H__ */

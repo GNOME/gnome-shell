@@ -30,7 +30,21 @@ struct _MetaWindowActorPrivate
   MetaScreen       *screen;
 
   ClutterActor     *actor;
-  MetaShadow       *shadow;
+
+  /* MetaShadowFactory only caches shadows that are actually in use;
+   * to avoid unnecessary recomputation we do two things: 1) we store
+   * both a focused and unfocused shadow for the window. If the window
+   * doesn't have different focused and unfocused shadow parameters,
+   * these will be the same. 2) when the shadow potentially changes we
+   * don't immediately unreference the old shadow, we just flag it as
+   * dirty and recompute it when we next need it (recompute_focused_shadow,
+   * recompute_unfocused_shadow.) Because of our extraction of
+   * size-invariant window shape, we'll often find that the new shadow
+   * is the same as the old shadow.
+   */
+  MetaShadow       *focused_shadow;
+  MetaShadow       *unfocused_shadow;
+
   Pixmap            back_pixmap;
 
   Damage            damage;
@@ -51,10 +65,7 @@ struct _MetaWindowActorPrivate
 
   gint              freeze_count;
 
-  gint              shadow_radius;
-  gint              shadow_top_fade;
-  gint              shadow_x_offset;
-  gint              shadow_y_offset;
+  char *            shadow_class;
 
   /*
    * These need to be counters rather than flags, since more plugins
@@ -79,7 +90,8 @@ struct _MetaWindowActorPrivate
 
   guint		    needs_pixmap           : 1;
   guint             needs_reshape          : 1;
-  guint             recompute_shadow       : 1;
+  guint             recompute_focused_shadow   : 1;
+  guint             recompute_unfocused_shadow : 1;
   guint             paint_shadow           : 1;
   guint		    size_changed           : 1;
 
@@ -97,11 +109,7 @@ enum
   PROP_X_WINDOW,
   PROP_X_WINDOW_ATTRIBUTES,
   PROP_NO_SHADOW,
-  PROP_SHADOW_RADIUS,
-  PROP_SHADOW_TOP_FADE,
-  PROP_SHADOW_X_OFFSET,
-  PROP_SHADOW_Y_OFFSET,
-  PROP_SHADOW_OPACITY
+  PROP_SHADOW_CLASS
 };
 
 #define DEFAULT_SHADOW_RADIUS 12
@@ -246,56 +254,14 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
                                    PROP_NO_SHADOW,
                                    pspec);
 
-  pspec = g_param_spec_int ("shadow-radius",
-                            "Shadow Radius",
-                            "Radius (standard deviation of gaussian blur) of window's shadow",
-                            0, 128, DEFAULT_SHADOW_RADIUS,
-                            G_PARAM_READWRITE);
+  pspec = g_param_spec_string ("shadow-class",
+                               "Name of the shadow class for this window.",
+                               "NULL means to use the default shadow class for this window type",
+                               NULL,
+                               G_PARAM_READWRITE);
 
   g_object_class_install_property (object_class,
-                                   PROP_SHADOW_RADIUS,
-                                   pspec);
-
-  pspec = g_param_spec_int ("shadow-top-fade",
-                            "Shadow Top Fade",
-                            "If >= 0, the shadow doesn't extend above the top "
-                            "of the window, and fades out over the given number of pixels",
-                            -1, G_MAXINT, -1,
-                            G_PARAM_READWRITE);
-
-  g_object_class_install_property (object_class,
-                                   PROP_SHADOW_TOP_FADE,
-                                   pspec);
-
-  pspec = g_param_spec_int ("shadow-x-offset",
-                            "Shadow X Offset",
-                            "Distance shadow is offset in the horizontal direction in pixels",
-                            G_MININT, G_MAXINT, DEFAULT_SHADOW_X_OFFSET,
-                            G_PARAM_READWRITE);
-
-  g_object_class_install_property (object_class,
-                                   PROP_SHADOW_X_OFFSET,
-                                   pspec);
-
-  pspec = g_param_spec_int ("shadow-y-offset",
-                            "Shadow Y Offset",
-                            "Distance shadow is offset in the vertical direction in piyels",
-                            G_MININT, G_MAXINT, DEFAULT_SHADOW_Y_OFFSET,
-                            G_PARAM_READWRITE);
-
-  g_object_class_install_property (object_class,
-                                   PROP_SHADOW_Y_OFFSET,
-                                   pspec);
-
-  pspec = g_param_spec_uint ("shadow-opacity",
-                             "Shadow Opacity",
-                             "Opacity of the window's shadow",
-                             0, 255,
-                             255,
-                             G_PARAM_READWRITE);
-
-  g_object_class_install_property (object_class,
-                                   PROP_SHADOW_OPACITY,
+                                   PROP_SHADOW_CLASS,
                                    pspec);
 }
 
@@ -308,11 +274,7 @@ meta_window_actor_init (MetaWindowActor *self)
 						   META_TYPE_WINDOW_ACTOR,
 						   MetaWindowActorPrivate);
   priv->opacity = 0xff;
-  priv->shadow_radius = DEFAULT_SHADOW_RADIUS;
-  priv->shadow_top_fade = -1;
-  priv->shadow_x_offset = DEFAULT_SHADOW_X_OFFSET;
-  priv->shadow_y_offset = DEFAULT_SHADOW_Y_OFFSET;
-  priv->shadow_opacity = 0xff;
+  priv->shadow_class = NULL;
   priv->paint_shadow = TRUE;
 }
 
@@ -470,10 +432,22 @@ meta_window_actor_dispose (GObject *object)
   meta_window_actor_clear_shape_region (self);
   meta_window_actor_clear_bounding_region (self);
 
-  if (priv->shadow != NULL)
+  if (priv->shadow_class != NULL)
     {
-      meta_shadow_unref (priv->shadow);
-      priv->shadow = NULL;
+      g_free (priv->shadow_class);
+      priv->shadow_class = NULL;
+    }
+
+  if (priv->focused_shadow != NULL)
+    {
+      meta_shadow_unref (priv->focused_shadow);
+      priv->focused_shadow = NULL;
+    }
+
+  if (priv->unfocused_shadow != NULL)
+    {
+      meta_shadow_unref (priv->unfocused_shadow);
+      priv->unfocused_shadow = NULL;
     }
 
   if (priv->shadow_shape != NULL)
@@ -545,65 +519,20 @@ meta_window_actor_set_property (GObject      *object,
 
         priv->no_shadow = newv;
 
-        priv->recompute_shadow = TRUE;
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+        meta_window_actor_invalidate_shadow (self);
       }
       break;
-    case PROP_SHADOW_RADIUS:
+    case PROP_SHADOW_CLASS:
       {
-        gint newv = g_value_get_int (value);
+        const char *newv = g_value_get_string (value);
 
-        if (newv == priv->shadow_radius)
+        if (g_strcmp0 (newv, priv->shadow_class) == 0)
           return;
 
-        priv->shadow_radius = newv;
-        priv->recompute_shadow = TRUE;
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
-      }
-      break;
-    case PROP_SHADOW_TOP_FADE:
-      {
-        gint newv = g_value_get_int (value);
+        g_free (priv->shadow_class);
+        priv->shadow_class = g_strdup (newv);
 
-        if (newv == priv->shadow_top_fade)
-          return;
-
-        priv->shadow_top_fade = newv;
-        priv->recompute_shadow = TRUE;
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
-      }
-      break;
-    case PROP_SHADOW_X_OFFSET:
-      {
-        gint newv = g_value_get_int (value);
-
-        if (newv == priv->shadow_x_offset)
-          return;
-
-        priv->shadow_x_offset = newv;
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
-      }
-      break;
-    case PROP_SHADOW_Y_OFFSET:
-      {
-        gint newv = g_value_get_int (value);
-
-        if (newv == priv->shadow_y_offset)
-          return;
-
-        priv->shadow_y_offset = newv;
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
-      }
-      break;
-    case PROP_SHADOW_OPACITY:
-      {
-        guint newv = g_value_get_uint (value);
-
-        if (newv == priv->shadow_opacity)
-          return;
-
-        priv->shadow_opacity = newv;
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+        meta_window_actor_invalidate_shadow (self);
       }
       break;
     default:
@@ -637,24 +566,51 @@ meta_window_actor_get_property (GObject      *object,
     case PROP_NO_SHADOW:
       g_value_set_boolean (value, priv->no_shadow);
       break;
-    case PROP_SHADOW_RADIUS:
-      g_value_set_int (value, priv->shadow_radius);
+    case PROP_SHADOW_CLASS:
+      g_value_set_string (value, priv->shadow_class);
       break;
-    case PROP_SHADOW_TOP_FADE:
-      g_value_set_int (value, priv->shadow_top_fade);
-      break;
-    case PROP_SHADOW_X_OFFSET:
-      g_value_set_int (value, priv->shadow_x_offset);
-      break;
-    case PROP_SHADOW_Y_OFFSET:
-      g_value_set_int (value, priv->shadow_y_offset);
-      break;
-    case PROP_SHADOW_OPACITY:
-      g_value_set_uint (value, priv->shadow_opacity);
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
+}
+
+static const char *
+meta_window_actor_get_shadow_class (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+
+  if (priv->shadow_class != NULL)
+    return priv->shadow_class;
+  else
+    {
+      MetaWindowType window_type = meta_window_get_window_type (priv->window);
+
+      switch (window_type)
+        {
+        case META_WINDOW_DROPDOWN_MENU:
+          return "dropdown-menu";
+        case META_WINDOW_POPUP_MENU:
+          return "popup-menu";
+        default:
+          {
+            MetaFrameType frame_type = meta_window_get_frame_type (priv->window);
+            return meta_frame_type_to_string (frame_type);
+          }
+        }
+    }
+}
+
+static void
+meta_window_actor_get_shadow_params (MetaWindowActor  *self,
+                                     gboolean          appears_focused,
+                                     MetaShadowParams *params)
+{
+  const char *shadow_class = meta_window_actor_get_shadow_class (self);
+
+  meta_shadow_factory_get_params (meta_shadow_factory_get_default (),
+                                  shadow_class, appears_focused,
+                                  params);
 }
 
 static void
@@ -675,17 +631,26 @@ meta_window_actor_paint (ClutterActor *actor)
   MetaWindowActor *self = META_WINDOW_ACTOR (actor);
   MetaWindowActorPrivate *priv = self->priv;
 
-  if (priv->shadow != NULL && priv->paint_shadow)
+  if (priv->paint_shadow)
     {
-      cairo_rectangle_int_t shape_bounds;
-      meta_window_actor_get_shape_bounds (self, &shape_bounds);
+      gboolean appears_focused = meta_window_appears_focused (priv->window);
+      MetaShadow *shadow = appears_focused ? priv->focused_shadow : priv->unfocused_shadow;
 
-      meta_shadow_paint (priv->shadow,
-                         priv->shadow_x_offset + shape_bounds.x,
-                         priv->shadow_y_offset + shape_bounds.y,
-                         shape_bounds.width,
-                         shape_bounds.height,
-                         (clutter_actor_get_paint_opacity (actor) * priv->shadow_opacity) / 255);
+      if (shadow != NULL)
+        {
+          MetaShadowParams params;
+          cairo_rectangle_int_t shape_bounds;
+
+          meta_window_actor_get_shape_bounds (self, &shape_bounds);
+          meta_window_actor_get_shadow_params (self, appears_focused, &params);
+
+          meta_shadow_paint (shadow,
+                             params.x_offset + shape_bounds.x,
+                             params.y_offset + shape_bounds.y,
+                             shape_bounds.width,
+                             shape_bounds.height,
+                             (clutter_actor_get_paint_opacity (actor) * params.opacity) / 255);
+        }
     }
 
   CLUTTER_ACTOR_CLASS (meta_window_actor_parent_class)->paint (actor);
@@ -717,9 +682,6 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
   MetaWindowType window_type = meta_window_get_window_type (priv->window);
 
   if (priv->no_shadow)
-    return FALSE;
-
-  if (priv->shadow_radius == 0)
     return FALSE;
 
   /*
@@ -1536,7 +1498,7 @@ meta_window_actor_update_bounding_region (MetaWindowActor *self,
    * the shadow when the size changes.
    */
   if (!priv->shaped)
-    priv->recompute_shadow = TRUE;
+    meta_window_actor_invalidate_shadow (self);
 }
 
 static void
@@ -1666,8 +1628,10 @@ meta_window_actor_set_visible_region_beneath (MetaWindowActor *self,
 {
   MetaWindowActorPrivate *priv = self->priv;
 
-  if (priv->shadow)
+  if (priv->focused_shadow)
     {
+      gboolean appears_focused = meta_window_appears_focused (priv->window);
+      MetaShadowParams params;
       cairo_rectangle_int_t shape_bounds;
       cairo_rectangle_int_t shadow_bounds;
       cairo_region_overlap_t overlap;
@@ -1679,10 +1643,11 @@ meta_window_actor_set_visible_region_beneath (MetaWindowActor *self,
        * at all.
        */
       meta_window_actor_get_shape_bounds (self, &shape_bounds);
+      meta_window_actor_get_shadow_params (self, appears_focused, &params);
 
-      meta_shadow_get_bounds (priv->shadow,
-                              priv->shadow_x_offset + shape_bounds.x,
-                              priv->shadow_y_offset + shape_bounds.y,
+      meta_shadow_get_bounds (appears_focused ? priv->focused_shadow : priv->unfocused_shadow,
+                              params.x_offset + shape_bounds.x,
+                              params.y_offset + shape_bounds.y,
                               shape_bounds.width,
                               shape_bounds.height,
                               &shadow_bounds);
@@ -1804,7 +1769,10 @@ check_needs_shadow (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaShadow *old_shadow = NULL;
+  MetaShadow **shadow_location;
+  gboolean recompute_shadow;
   gboolean should_have_shadow;
+  gboolean appears_focused;
 
   if (!priv->mapped)
     return;
@@ -1817,16 +1785,34 @@ check_needs_shadow (MetaWindowActor *self)
    */
 
   should_have_shadow = meta_window_actor_has_shadow (self);
+  appears_focused = meta_window_appears_focused (priv->window);
 
-  if (priv->shadow != NULL && (!should_have_shadow || priv->recompute_shadow))
+  if (appears_focused)
     {
-      old_shadow = priv->shadow;
-      priv->shadow = NULL;
+      recompute_shadow = priv->recompute_focused_shadow;
+      priv->recompute_focused_shadow = FALSE;
+      shadow_location = &priv->focused_shadow;
+    }
+  else
+    {
+      recompute_shadow = priv->recompute_unfocused_shadow;
+      priv->recompute_unfocused_shadow = FALSE;
+      shadow_location = &priv->unfocused_shadow;
     }
 
-  if (priv->shadow == NULL && should_have_shadow)
+  if (!should_have_shadow || recompute_shadow)
+    {
+      if (*shadow_location != NULL)
+        {
+          old_shadow = *shadow_location;
+          *shadow_location = NULL;
+        }
+    }
+
+  if (*shadow_location == NULL && should_have_shadow)
     {
       MetaShadowFactory *factory = meta_shadow_factory_get_default ();
+      const char *shadow_class = meta_window_actor_get_shadow_class (self);
       cairo_rectangle_int_t shape_bounds;
 
       if (priv->shadow_shape == NULL)
@@ -1839,16 +1825,14 @@ check_needs_shadow (MetaWindowActor *self)
 
       meta_window_actor_get_shape_bounds (self, &shape_bounds);
 
-      priv->shadow = meta_shadow_factory_get_shadow (factory,
-                                                     priv->shadow_shape,
-                                                     shape_bounds.width, shape_bounds.height,
-                                                     priv->shadow_radius, priv->shadow_top_fade);
+      *shadow_location = meta_shadow_factory_get_shadow (factory,
+                                                         priv->shadow_shape,
+                                                         shape_bounds.width, shape_bounds.height,
+                                                         shadow_class, appears_focused);
     }
 
   if (old_shadow != NULL)
     meta_shadow_unref (old_shadow);
-
-  priv->recompute_shadow = FALSE;
 }
 
 static gboolean
@@ -1949,7 +1933,7 @@ check_needs_reshape (MetaWindowActor *self)
 #endif
 
   priv->needs_reshape = FALSE;
-  priv->recompute_shadow = TRUE;
+  meta_window_actor_invalidate_shadow (self);
 }
 
 void
@@ -1995,6 +1979,16 @@ meta_window_actor_pre_paint (MetaWindowActor *self)
   check_needs_pixmap (self);
   check_needs_reshape (self);
   check_needs_shadow (self);
+}
+
+void
+meta_window_actor_invalidate_shadow (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+
+  priv->recompute_focused_shadow = TRUE;
+  priv->recompute_unfocused_shadow = TRUE;
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 }
 
 void

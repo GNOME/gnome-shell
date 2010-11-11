@@ -11,6 +11,7 @@
 #include "compositor-mutter.h"
 #include "xprops.h"
 #include "prefs.h"
+#include "meta-shadow-factory.h"
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
 #include "../core/window-private.h" /* to check window->hidden */
@@ -1017,6 +1018,26 @@ meta_repaint_func (gpointer data)
   return TRUE;
 }
 
+static void
+on_shadow_factory_changed (MetaShadowFactory *factory,
+                           MetaCompositor    *compositor)
+{
+  GSList *screens = meta_display_get_screens (compositor->display);
+  GList *l;
+  GSList *sl;
+
+  for (sl = screens; sl; sl = sl->next)
+    {
+      MetaScreen *screen = sl->data;
+      MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+      if (!info)
+        continue;
+
+      for (l = info->windows; l; l = l->next)
+        meta_window_actor_invalidate_shadow (l->data);
+    }
+}
+
 /**
  * meta_compositor_new: (skip)
  *
@@ -1046,6 +1067,11 @@ meta_compositor_new (MetaDisplay *display)
   meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
   XInternAtoms (xdisplay, atom_names, G_N_ELEMENTS (atom_names),
                 False, atoms);
+
+  g_signal_connect (meta_shadow_factory_get_default (),
+                    "changed",
+                    G_CALLBACK (on_shadow_factory_changed),
+                    compositor);
 
   compositor->atom_x_root_pixmap = atoms[0];
   compositor->atom_x_set_root = atoms[1];

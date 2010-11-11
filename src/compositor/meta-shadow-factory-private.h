@@ -56,11 +56,11 @@ void        meta_shadow_get_bounds  (MetaShadow            *shadow,
 
 MetaShadowFactory *meta_shadow_factory_new (void);
 
-MetaShadow *       meta_shadow_factory_get_shadow (MetaShadowFactory *factory,
-                                                   MetaWindowShape   *shape,
-                                                   int                width,
-                                                   int                height,
-                                                   int                radius,
-                                                   int                top_fade);
+MetaShadow *meta_shadow_factory_get_shadow (MetaShadowFactory *factory,
+                                            MetaWindowShape   *shape,
+                                            int                width,
+                                            int                height,
+                                            const char        *class_name,
+                                            gboolean           focused);
 
 #endif /* __META_SHADOW_FACTORY_PRIVATE_H__ */

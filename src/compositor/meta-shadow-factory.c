@@ -48,7 +48,8 @@
  * - We approximate the 1D gaussian blur as 3 successive box filters.
  */
 
-typedef struct _MetaShadowCacheKey MetaShadowCacheKey;
+typedef struct _MetaShadowCacheKey  MetaShadowCacheKey;
+typedef struct _MetaShadowClassInfo MetaShadowClassInfo;
 
 struct _MetaShadowCacheKey
 {
@@ -82,6 +83,13 @@ struct _MetaShadow
   guint scale_height : 1;
 };
 
+struct _MetaShadowClassInfo
+{
+  const char *name; /* const so we can reuse for static definitions */
+  MetaShadowParams focused;
+  MetaShadowParams unfocused;
+};
+
 struct _MetaShadowFactory
 {
   GObject parent_instance;
@@ -89,11 +97,39 @@ struct _MetaShadowFactory
   /* MetaShadowCacheKey => MetaShadow; the shadows are not referenced
    * by the factory, they are simply removed from the table when freed */
   GHashTable *shadows;
+
+  /* class name => MetaShadowClassInfo */
+  GHashTable *shadow_classes;
 };
 
 struct _MetaShadowFactoryClass
 {
   GObjectClass parent_class;
+};
+
+enum
+{
+  CHANGED,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
+/* The first element in this array also defines the default parameters
+ * for newly created classes */
+MetaShadowClassInfo default_shadow_classes[] = {
+  { "normal",       { 12, -1, 0, 8, 255 }, { 6, -1, 0, 4, 255 } },
+  { "dialog",       { 12, -1, 0, 8, 255 }, { 6, -1, 0, 4, 255 } },
+  { "modal_dialog", { 12, -1, 0, 8, 255 }, { 6, -1, 0, 4, 255 } },
+  { "utility",      { 12, -1, 0, 8, 255 }, { 6, -1, 0, 4, 255 } },
+  { "border",       { 12, -1, 0, 8, 255 }, { 6, -1, 0, 4, 255 } },
+  { "menu",         { 12, -1, 0, 8, 255 }, { 6, -1, 0, 4, 255 } },
+
+  { "popup-menu",    { 6, -1, 0, 4, 255 }, { 6, -1, 0, 4, 255 } },
+
+  { "dropdown-menu", { 6, 25, 0, 4, 255 }, { 6, 100, 0, 4, 255 } },
+  { "attached",      { 6, 25, 0, 4, 255 }, { 6, 100, 0, 4, 255 } }
 };
 
 G_DEFINE_TYPE (MetaShadowFactory, meta_shadow_factory, G_TYPE_OBJECT);
@@ -263,10 +299,35 @@ meta_shadow_get_bounds  (MetaShadow            *shadow,
 }
 
 static void
+meta_shadow_class_info_free (MetaShadowClassInfo *class_info)
+{
+  g_free ((char *)class_info->name);
+  g_slice_free (MetaShadowClassInfo, class_info);
+}
+
+static void
 meta_shadow_factory_init (MetaShadowFactory *factory)
 {
+  guint i;
+
   factory->shadows = g_hash_table_new (meta_shadow_cache_key_hash,
                                        meta_shadow_cache_key_equal);
+
+  factory->shadow_classes = g_hash_table_new_full (g_str_hash,
+                                                   g_str_equal,
+                                                   NULL,
+                                                   (GDestroyNotify)meta_shadow_class_info_free);
+
+  for (i = 0; i < G_N_ELEMENTS (default_shadow_classes); i++)
+    {
+      MetaShadowClassInfo *class_info = g_slice_new (MetaShadowClassInfo);
+
+      *class_info = default_shadow_classes[i];
+      class_info->name = g_strdup (class_info->name);
+
+      g_hash_table_insert (factory->shadow_classes,
+                           (char *)class_info->name, class_info);
+    }
 }
 
 static void
@@ -286,6 +347,7 @@ meta_shadow_factory_finalize (GObject *object)
     }
 
   g_hash_table_destroy (factory->shadows);
+  g_hash_table_destroy (factory->shadow_classes);
 
   G_OBJECT_CLASS (meta_shadow_factory_parent_class)->finalize (object);
 }
@@ -296,6 +358,15 @@ meta_shadow_factory_class_init (MetaShadowFactoryClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = meta_shadow_factory_finalize;
+
+  signals[CHANGED] =
+    g_signal_new ("changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 MetaShadowFactory *
@@ -657,15 +728,45 @@ make_shadow (MetaShadow     *shadow,
   cogl_material_set_layer (shadow->material, 0, shadow->texture);
 }
 
+static MetaShadowParams *
+get_shadow_params (MetaShadowFactory *factory,
+                   const char        *class_name,
+                   gboolean           focused,
+                   gboolean           create)
+{
+  MetaShadowClassInfo *class_info = g_hash_table_lookup (factory->shadow_classes,
+                                                         class_name);
+  if (class_info == NULL)
+    {
+      if (create)
+        {
+          class_info = g_slice_new0 (MetaShadowClassInfo);
+          *class_info = default_shadow_classes[0];
+          class_info->name = g_strdup (class_info->name);
+
+          g_hash_table_insert (factory->shadow_classes,
+                               (char *)class_info->name, class_info);
+        }
+      else
+        {
+          class_info = &default_shadow_classes[0];
+        }
+    }
+
+  if (focused)
+    return &class_info->focused;
+  else
+    return &class_info->unfocused;
+}
+
 /**
  * meta_shadow_factory_get_shadow:
  * @factory: a #MetaShadowFactory
  * @shape: the size-invariant shape of the window's region
  * @width: the actual width of the window's region
- * @width: the actual height of the window's region
- * @radius: the radius (gaussian standard deviation) of the shadow
- * @top_fade: if >= 0, the shadow doesn't extend above the top
- *   of the shape, and fades out over the given number of pixels
+ * @height: the actual height of the window's region
+ * @class_name: name of the class of window shadows
+ * @focused: whether the shadow is for a focused window
  *
  * Gets the appropriate shadow object for drawing shadows for the
  * specified window shape. The region that we are shadowing is specified
@@ -677,13 +778,14 @@ make_shadow (MetaShadow     *shadow,
  *  meta_shadow_unref()
  */
 MetaShadow *
-meta_shadow_factory_get_shadow (MetaShadowFactory  *factory,
-                                MetaWindowShape    *shape,
-                                int                 width,
-                                int                 height,
-                                int                 radius,
-                                int                 top_fade)
+meta_shadow_factory_get_shadow (MetaShadowFactory *factory,
+                                MetaWindowShape   *shape,
+                                int                width,
+                                int                height,
+                                const char        *class_name,
+                                gboolean           focused)
 {
+  MetaShadowParams *params;
   MetaShadowCacheKey key;
   MetaShadow *shadow;
   cairo_region_t *region;
@@ -721,15 +823,18 @@ meta_shadow_factory_get_shadow (MetaShadowFactory  *factory,
    * In the case where we are fading a the top, that also has to fit
    * within the top unscaled border.
    */
-  spread = get_shadow_spread (radius);
+
+  params = get_shadow_params (factory, class_name, focused, FALSE);
+
+  spread = get_shadow_spread (params->radius);
   meta_window_shape_get_borders (shape,
                                  &shape_border_top,
                                  &shape_border_right,
                                  &shape_border_bottom,
                                  &shape_border_left);
 
-  inner_border_top = MAX (shape_border_top + spread, top_fade);
-  outer_border_top = top_fade >= 0 ? 0 : spread;
+  inner_border_top = MAX (shape_border_top + spread, params->top_fade);
+  outer_border_top = params->top_fade >= 0 ? 0 : spread;
   inner_border_right = shape_border_right + spread;
   outer_border_right = spread;
   inner_border_bottom = shape_border_bottom + spread;
@@ -744,8 +849,8 @@ meta_shadow_factory_get_shadow (MetaShadowFactory  *factory,
   if (cacheable)
     {
       key.shape = shape;
-      key.radius = radius;
-      key.top_fade = top_fade;
+      key.radius = params->radius;
+      key.top_fade = params->top_fade;
 
       shadow = g_hash_table_lookup (factory->shadows, &key);
       if (shadow)
@@ -757,8 +862,8 @@ meta_shadow_factory_get_shadow (MetaShadowFactory  *factory,
   shadow->ref_count = 1;
   shadow->factory = factory;
   shadow->key.shape = meta_window_shape_ref (shape);
-  shadow->key.radius = radius;
-  shadow->key.top_fade = top_fade;
+  shadow->key.radius = params->radius;
+  shadow->key.top_fade = params->top_fade;
 
   shadow->outer_border_top = outer_border_top;
   shadow->inner_border_top = inner_border_top;
@@ -792,4 +897,70 @@ meta_shadow_factory_get_shadow (MetaShadowFactory  *factory,
     g_hash_table_insert (factory->shadows, &shadow->key, shadow);
 
   return shadow;
+}
+
+/**
+ * meta_shadow_factory_set_params:
+ * @factory: a #MetaShadowFactory
+ * @class_name: name of the class of shadow to set the params for.
+ *  the default shadow classes are the names of the different
+ *  theme frame types (normal, dialog, modal_dialog, utility,
+ *  border, menu, attached) and in addition, popup-menu
+ *  and dropdown-menu.
+ * @focused: whether the shadow is for a focused window
+ * @params: new parameter values
+ *
+ * Updates the shadow parameters for a particular class of shadows
+ * for either the focused or unfocused state. If the class name
+ * does not name an existing class, a new class will be created
+ * (the other focus state for that class will have default values
+ * assigned to it.)
+ */
+void
+meta_shadow_factory_set_params (MetaShadowFactory *factory,
+                                const char        *class_name,
+                                gboolean           focused,
+                                MetaShadowParams  *params)
+{
+  MetaShadowParams *stored_params;
+
+  g_return_if_fail (META_IS_SHADOW_FACTORY (factory));
+  g_return_if_fail (class_name != NULL);
+  g_return_if_fail (params != NULL);
+  g_return_if_fail (params->radius >= 0);
+
+  stored_params = get_shadow_params (factory, class_name, focused, TRUE);
+
+  *stored_params = *params;
+
+  g_signal_emit (factory, signals[CHANGED], 0);
+}
+
+/**
+ * meta_shadow_factory_get_params:
+ * @factory: a #MetaShadowFactory
+ * @class_name: name of the class of shadow to get the params for
+ * @focused: whether the shadow is for a focused window
+ * @params: (out caller-allocates): location to store the current parameter values
+ *
+ * Gets the shadow parameters for a particular class of shadows
+ * for either the focused or unfocused state. If the class name
+ * does not name an existing class, default values will be returned
+ * without printing an error.
+ */
+void
+meta_shadow_factory_get_params (MetaShadowFactory *factory,
+                                const char        *class_name,
+                                gboolean           focused,
+                                MetaShadowParams  *params)
+{
+  MetaShadowParams *stored_params;
+
+  g_return_if_fail (META_IS_SHADOW_FACTORY (factory));
+  g_return_if_fail (class_name != NULL);
+
+  stored_params = get_shadow_params (factory, class_name, focused, FALSE);
+
+  if (params)
+    *params = *stored_params;
 }
