@@ -513,7 +513,6 @@ validate_tex_coords_cb (CoglPipeline *pipeline,
 static gboolean
 _cogl_multitexture_quad_single_primitive (const float  *position,
                                           CoglPipeline *pipeline,
-                                          guint32       fallback_layers,
                                           const float  *user_tex_coords,
                                           int           user_tex_coords_len)
 {
@@ -555,6 +554,153 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
   return TRUE;
 }
 
+typedef struct _ValidateLayerState
+{
+  int i;
+  int first_layer;
+  CoglPipeline *override_source;
+  gboolean all_use_sliced_quad_fallback;
+} ValidateLayerState;
+
+static gboolean
+_cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
+                                    int layer_index,
+                                    void *user_data)
+{
+  ValidateLayerState *state = user_data;
+  CoglHandle texture;
+
+  state->i++;
+
+  /* We need to ensure the mipmaps are ready before deciding
+   * anything else about the texture because the texture storage
+   * could completely change if it needs to be migrated out of the
+   * atlas and will affect how we validate the layer.
+   *
+   * FIXME: this needs to be generalized. There could be any
+   * number of things that might require a shuffling of the
+   * underlying texture storage. We could add two mechanisms to
+   * generalize this a bit...
+   *
+   * 1) add a _cogl_pipeline_layer_update_storage() function that
+   * would for instance consider if mipmapping is necessary and
+   * potentially migrate the texture from an atlas.
+   *
+   * 2) allow setting of transient primitive-flags on a pipeline
+   * that may affect the outcome of _update_storage(). One flag
+   * could indicate that we expect to sample beyond the bounds of
+   * the texture border.
+   *
+   *   flags = COGL_PIPELINE_PRIMITIVE_FLAG_VALID_BORDERS;
+   *   _cogl_pipeline_layer_assert_primitive_flags (layer, flags)
+   *   _cogl_pipeline_layer_update_storage (layer)
+   *   enqueue primitive in journal
+   *
+   *   when the primitive is dequeued and drawn we should:
+   *   _cogl_pipeline_flush_gl_state (pipeline)
+   *   draw primitive
+   *   _cogl_pipeline_unassert_primitive_flags (layer, flags);
+   *
+   * _cogl_pipeline_layer_update_storage should take into
+   * consideration all the asserted primitive requirements.  (E.g.
+   * there could be multiple primitives in the journal - or in a
+   * renderlist in the future - that need mipmaps or that need
+   * valid contents beyond their borders (for cogl_polygon)
+   * meaning they can't work with textures in an atas, so
+   * _cogl_pipeline_layer_update_storage would pass on these
+   * requirements to the texture atlas backend which would make
+   * sure the referenced texture is migrated out of the atlas and
+   * mipmaps are generated.)
+   */
+  _cogl_pipeline_pre_paint_for_layer (pipeline, layer_index);
+
+  texture = _cogl_pipeline_get_layer_texture (pipeline, layer_index);
+
+  /* COGL_INVALID_HANDLE textures are handled by
+   * _cogl_pipeline_flush_gl_state */
+  if (texture == COGL_INVALID_HANDLE)
+    return TRUE;
+
+  if (state->i == 0)
+    state->first_layer = layer_index;
+
+  /* XXX:
+   * For now, if the first layer is sliced then all other layers are
+   * ignored since we currently don't support multi-texturing with
+   * sliced textures. If the first layer is not sliced then any other
+   * layers found to be sliced will be skipped. (with a warning)
+   *
+   * TODO: Add support for multi-texturing rectangles with sliced
+   * textures if no texture matrices are in use.
+   */
+  if (cogl_texture_is_sliced (texture))
+    {
+      if (state->i == 0)
+        {
+          static gboolean warning_seen = FALSE;
+
+          if (!state->override_source)
+            state->override_source = cogl_pipeline_copy (pipeline);
+          _cogl_pipeline_prune_to_n_layers (state->override_source, 1);
+          state->all_use_sliced_quad_fallback = TRUE;
+
+          if (!warning_seen)
+            g_warning ("Skipping layers 1..n of your pipeline since "
+                       "the first layer is sliced. We don't currently "
+                       "support any multi-texturing with sliced "
+                       "textures but assume layer 0 is the most "
+                       "important to keep");
+          warning_seen = TRUE;
+
+          return FALSE;
+        }
+      else
+        {
+          static gboolean warning_seen = FALSE;
+
+          _COGL_GET_CONTEXT (ctx, FALSE);
+
+          if (!warning_seen)
+            g_warning ("Skipping layer %d of your pipeline consisting of "
+                       "a sliced texture (unsuported for multi texturing)",
+                       state->i);
+          warning_seen = TRUE;
+
+          /* Note: currently only 2D textures can be sliced. */
+          cogl_pipeline_set_layer_texture (pipeline, layer_index,
+                                           ctx->default_gl_texture_2d_tex);
+          return TRUE;
+        }
+    }
+
+#ifdef COGL_ENABLE_DEBUG
+  /* If the texture can't be repeated with the GPU (e.g. because it has
+   * waste or if using GL_TEXTURE_RECTANGLE_ARB) then if a texture matrix
+   * is also in use we don't know if the result will end up trying
+   * to texture from the waste area.
+   *
+   * Note: we check can_hardware_repeat() first since it's cheaper.
+   *
+   * Note: cases where the texture coordinates will require repeating
+   * will be caught by later validation.
+   */
+  if (!_cogl_texture_can_hardware_repeat (texture) &&
+      _cogl_pipeline_layer_has_user_matrix (pipeline, layer_index))
+    {
+      static gboolean warning_seen = FALSE;
+      if (!warning_seen)
+        g_warning ("layer %d of your pipeline uses a custom "
+                   "texture matrix but because the texture doesn't "
+                   "support hardware repeating you may see artefacts "
+                   "due to sampling beyond the texture's bounds.",
+                   state->i);
+      warning_seen = TRUE;
+    }
+#endif
+
+  return TRUE;
+}
+
 struct _CoglMutiTexturedRect
 {
   const float *position; /* x0,y0,x1,y1 */
@@ -568,144 +714,26 @@ _cogl_rectangles_with_multitexture_coords (
                                         int                           n_rects)
 {
   CoglPipeline *pipeline;
-  const GList *layers;
-  int n_layers;
-  const GList *tmp;
-  guint32 fallback_layers = 0;
-  gboolean all_use_sliced_quad_fallback = FALSE;
+  ValidateLayerState state;
   int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   pipeline = cogl_get_source ();
 
-  layers = _cogl_pipeline_get_layers (pipeline);
-  n_layers = cogl_pipeline_get_n_layers (pipeline);
-
   /*
    * Validate all the layers of the current source pipeline...
    */
+  state.i = -1;
+  state.first_layer = 0;
+  state.override_source = NULL;
+  state.all_use_sliced_quad_fallback = FALSE;
+  cogl_pipeline_foreach_layer (pipeline,
+                               _cogl_rectangles_validate_layer_cb,
+                               &state);
 
-  for (tmp = layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
-    {
-      CoglHandle     layer = tmp->data;
-      CoglHandle     tex_handle;
-
-      /* We need to ensure the mipmaps are ready before deciding
-       * anything else about the texture because the texture storage
-       * could completely change if it needs to be migrated out of the
-       * atlas and will affect how we validate the layer.
-       *
-       * FIXME: this needs to be generalized. There could be any
-       * number of things that might require a shuffling of the
-       * underlying texture storage. We could add two mechanisms to
-       * generalize this a bit...
-       *
-       * 1) add a _cogl_pipeline_layer_update_storage() function that
-       * would for instance consider if mipmapping is necessary and
-       * potentially migrate the texture from an atlas.
-       *
-       * 2) allow setting of transient primitive-flags on a pipeline
-       * that may affect the outcome of _update_storage(). One flag
-       * could indicate that we expect to sample beyond the bounds of
-       * the texture border.
-       *
-       *   flags = COGL_PIPELINE_PRIMITIVE_FLAG_VALID_BORDERS;
-       *   _cogl_pipeline_layer_assert_primitive_flags (layer, flags)
-       *   _cogl_pipeline_layer_update_storage (layer)
-       *   enqueue primitive in journal
-       *
-       *   when the primitive is dequeued and drawn we should:
-       *   _cogl_pipeline_flush_gl_state (pipeline)
-       *   draw primitive
-       *   _cogl_pipeline_unassert_primitive_flags (layer, flags);
-       *
-       * _cogl_pipeline_layer_update_storage should take into
-       * consideration all the asserted primitive requirements.  (E.g.
-       * there could be multiple primitives in the journal - or in a
-       * renderlist in the future - that need mipmaps or that need
-       * valid contents beyond their borders (for cogl_polygon)
-       * meaning they can't work with textures in an atas, so
-       * _cogl_pipeline_layer_update_storage would pass on these
-       * requirements to the texture atlas backend which would make
-       * sure the referenced texture is migrated out of the atlas and
-       * mipmaps are generated.)
-       */
-      _cogl_pipeline_layer_pre_paint (layer);
-
-      tex_handle = _cogl_pipeline_layer_get_texture (layer);
-
-      /* COGL_INVALID_HANDLE textures are handled by
-       * _cogl_pipeline_flush_gl_state */
-      if (tex_handle == COGL_INVALID_HANDLE)
-        continue;
-
-      /* XXX:
-       * For now, if the first layer is sliced then all other layers are
-       * ignored since we currently don't support multi-texturing with
-       * sliced textures. If the first layer is not sliced then any other
-       * layers found to be sliced will be skipped. (with a warning)
-       *
-       * TODO: Add support for multi-texturing rectangles with sliced
-       * textures if no texture matrices are in use.
-       */
-      if (cogl_texture_is_sliced (tex_handle))
-	{
-	  if (i == 0)
-	    {
-              fallback_layers = ~1; /* fallback all except the first layer */
-	      all_use_sliced_quad_fallback = TRUE;
-              if (tmp->next)
-                {
-                  static gboolean warning_seen = FALSE;
-                  if (!warning_seen)
-                    g_warning ("Skipping layers 1..n of your pipeline since "
-                               "the first layer is sliced. We don't currently "
-                               "support any multi-texturing with sliced "
-                               "textures but assume layer 0 is the most "
-                               "important to keep");
-                  warning_seen = TRUE;
-                }
-	      break;
-	    }
-          else
-            {
-              static gboolean warning_seen = FALSE;
-              if (!warning_seen)
-                g_warning ("Skipping layer %d of your pipeline consisting of "
-                           "a sliced texture (unsuported for multi texturing)",
-                           i);
-              warning_seen = TRUE;
-
-              /* NB: marking for fallback will replace the layer with
-               * a default transparent texture */
-              fallback_layers |= (1 << i);
-	      continue;
-            }
-	}
-
-      /* If the texture can't be repeated with the GPU (e.g. because it has
-       * waste or if using GL_TEXTURE_RECTANGLE_ARB) then we don't support
-       * multi texturing since we don't know if the result will end up trying
-       * to texture from the waste area. */
-      if (_cogl_pipeline_layer_has_user_matrix (layer)
-          && !_cogl_texture_can_hardware_repeat (tex_handle))
-        {
-          static gboolean warning_seen = FALSE;
-          if (!warning_seen)
-            g_warning ("Skipping layer %d of your pipeline since a custom "
-                       "texture matrix was given for a texture that can't be "
-                       "repeated using the GPU and the result may try to "
-                       "sample beyond the bounds of the texture ",
-                       i);
-          warning_seen = TRUE;
-
-          /* NB: marking for fallback will replace the layer with
-           * a default transparent texture */
-          fallback_layers |= (1 << i);
-          continue;
-        }
-    }
+  if (state.override_source)
+    pipeline = state.override_source;
 
   /*
    * Emit geometry for each of the rectangles...
@@ -713,17 +741,16 @@ _cogl_rectangles_with_multitexture_coords (
 
   for (i = 0; i < n_rects; i++)
     {
-      CoglHandle   first_layer, tex_handle;
-      const float  default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
+      CoglHandle texture;
+      const float default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
       const float *tex_coords;
-      gboolean     clamp_s, clamp_t;
+      gboolean clamp_s, clamp_t;
 
-      if (!all_use_sliced_quad_fallback)
+      if (!state.all_use_sliced_quad_fallback)
         {
           gboolean success =
             _cogl_multitexture_quad_single_primitive (rects[i].position,
                                                       pipeline,
-                                                      fallback_layers,
                                                       rects[i].tex_coords,
                                                       rects[i].tex_coords_len);
 
@@ -738,23 +765,23 @@ _cogl_rectangles_with_multitexture_coords (
       /* If multitexturing failed or we are drawing with a sliced texture
        * then we only support a single layer so we pluck out the texture
        * from the first pipeline layer... */
-      layers = _cogl_pipeline_get_layers (pipeline);
-      first_layer = layers->data;
-      tex_handle = _cogl_pipeline_layer_get_texture (first_layer);
+      texture = _cogl_pipeline_get_layer_texture (pipeline, state.first_layer);
 
       if (rects[i].tex_coords)
         tex_coords = rects[i].tex_coords;
       else
         tex_coords = default_tex_coords;
 
-      clamp_s = (_cogl_pipeline_layer_get_wrap_mode_s (first_layer) ==
+      clamp_s = (cogl_pipeline_get_layer_wrap_mode_s (pipeline,
+                                                      state.first_layer) ==
                  COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
-      clamp_t = (_cogl_pipeline_layer_get_wrap_mode_t (first_layer) ==
+      clamp_t = (cogl_pipeline_get_layer_wrap_mode_t (pipeline,
+                                                      state.first_layer) ==
                  COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
 
       COGL_NOTE (DRAW, "Drawing Tex Quad (Multi-Prim Mode)");
 
-      _cogl_texture_quad_multiple_primitives (tex_handle,
+      _cogl_texture_quad_multiple_primitives (texture,
                                               pipeline,
                                               clamp_s, clamp_t,
                                               rects[i].position,
@@ -764,11 +791,8 @@ _cogl_rectangles_with_multitexture_coords (
                                               tex_coords[3]);
     }
 
-#if 0
-  /* XXX: The current journal doesn't handle changes to the model view matrix
-   * so for now we force a flush at the end of every primitive. */
-  _cogl_journal_flush ();
-#endif
+  if (state.override_source)
+    cogl_object_unref (pipeline);
 }
 
 void
@@ -971,10 +995,10 @@ typedef struct _ValidateState
   CoglPipeline *pipeline;
 } ValidateState;
 
-gboolean
-validate_layer_cb (CoglPipeline *pipeline,
-                   int layer_index,
-                   void *user_data)
+static gboolean
+_cogl_polygon_validate_layer_cb (CoglPipeline *pipeline,
+                                 int layer_index,
+                                 void *user_data)
 {
   ValidateState *state = user_data;
 
@@ -1029,7 +1053,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
   validate_state.original_pipeline = pipeline;
   validate_state.pipeline = pipeline;
   cogl_pipeline_foreach_layer (pipeline,
-                               validate_layer_cb,
+                               _cogl_polygon_validate_layer_cb,
                                &validate_state);
   pipeline = validate_state.pipeline;
 
