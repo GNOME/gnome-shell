@@ -156,8 +156,6 @@ typedef struct _CoglSubTextureForeachData
 
 static void
 _cogl_sub_texture_foreach_cb (CoglHandle handle,
-                              GLuint gl_handle,
-                              GLenum gl_target,
                               const float *slice_coords,
                               const float *full_virtual_coords,
                               void *user_data)
@@ -175,7 +173,7 @@ _cogl_sub_texture_foreach_cb (CoglHandle handle,
                                   &virtual_coords[2],
                                   &virtual_coords[3]);
 
-  data->callback (handle, gl_handle, gl_target,
+  data->callback (handle,
                   slice_coords, virtual_coords,
                   data->user_data);
 }
