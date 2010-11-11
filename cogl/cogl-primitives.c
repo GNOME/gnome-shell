@@ -125,7 +125,6 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
                           1, /* one layer */
                           0, /* don't need to use fallbacks */
                           texture_override, /* replace the layer0 texture */
-                          NULL, /* we never use wrap mode overrides */
                           subtexture_coords,
                           4);
 }
@@ -547,7 +546,6 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
                           n_layers,
                           0, /* we don't need fallback layers */
                           COGL_INVALID_HANDLE, /* no texture override */
-                          NULL, /* we never use wrap mode overrides */
                           final_tex_coords,
                           n_layers * 4);
 

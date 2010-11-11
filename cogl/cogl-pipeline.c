@@ -2643,49 +2643,6 @@ cogl_pipeline_get_layer_point_sprite_coords_enabled (CoglPipeline *pipeline,
 typedef struct
 {
   CoglPipeline *pipeline;
-  CoglPipelineWrapModeOverrides *wrap_mode_overrides;
-  int i;
-} CoglPipelineWrapModeOverridesState;
-
-static gboolean
-apply_wrap_mode_overrides_cb (CoglPipelineLayer *layer,
-                              void *user_data)
-{
-  CoglPipelineWrapModeOverridesState *state = user_data;
-  CoglPipelineLayer *authority =
-    _cogl_pipeline_layer_get_authority (layer,
-                                        COGL_PIPELINE_LAYER_STATE_WRAP_MODES);
-  CoglPipelineWrapModeInternal wrap_mode_s;
-  CoglPipelineWrapModeInternal wrap_mode_t;
-  CoglPipelineWrapModeInternal wrap_mode_p;
-
-  g_return_val_if_fail (state->i < 32, FALSE);
-
-  wrap_mode_s = state->wrap_mode_overrides->values[state->i].s;
-  if (wrap_mode_s == COGL_PIPELINE_WRAP_MODE_OVERRIDE_NONE)
-    wrap_mode_s = (CoglPipelineWrapModeInternal)authority->wrap_mode_s;
-  wrap_mode_t = state->wrap_mode_overrides->values[state->i].t;
-  if (wrap_mode_t == COGL_PIPELINE_WRAP_MODE_OVERRIDE_NONE)
-    wrap_mode_t = (CoglPipelineWrapModeInternal)authority->wrap_mode_t;
-  wrap_mode_p = state->wrap_mode_overrides->values[state->i].p;
-  if (wrap_mode_p == COGL_PIPELINE_WRAP_MODE_OVERRIDE_NONE)
-    wrap_mode_p = (CoglPipelineWrapModeInternal)authority->wrap_mode_p;
-
-  _cogl_pipeline_set_layer_wrap_modes (state->pipeline,
-                                       layer,
-                                       authority,
-                                       wrap_mode_s,
-                                       wrap_mode_t,
-                                       wrap_mode_p);
-
-  state->i++;
-
-  return TRUE;
-}
-
-typedef struct
-{
-  CoglPipeline *pipeline;
   CoglHandle texture;
 } CoglPipelineOverrideLayerState;
 
@@ -2752,18 +2709,6 @@ _cogl_pipeline_apply_overrides (CoglPipeline *pipeline,
       state.texture = options->layer0_override_texture;
       _cogl_pipeline_foreach_layer_internal (pipeline,
                                              override_layer_texture_cb,
-                                             &state);
-    }
-
-  if (options->flags & COGL_PIPELINE_FLUSH_WRAP_MODE_OVERRIDES)
-    {
-      CoglPipelineWrapModeOverridesState state;
-
-      state.pipeline = pipeline;
-      state.wrap_mode_overrides = &options->wrap_mode_overrides;
-      state.i = 0;
-      _cogl_pipeline_foreach_layer_internal (pipeline,
-                                             apply_wrap_mode_overrides_cb,
                                              &state);
     }
 }
