@@ -188,6 +188,9 @@ meta_shadow_unref (MetaShadow *shadow)
  * @window_y: y position of the region to paint a shadow for
  * @window_width: actual width of the region to paint a shadow for
  * @window_height: actual height of the region to paint a shadow for
+ * @clip: (allow-none): if non-%NULL specifies the visible portion
+ *   of the shadow. Drawing won't be strictly clipped to this region
+ *   but it will be used to optimize what is drawn.
  *
  * Paints the shadow at the given position, for the specified actual
  * size of the region. (Since a #MetaShadow can be shared between
@@ -195,20 +198,21 @@ meta_shadow_unref (MetaShadow *shadow)
  * size needs to be passed in here.)
  */
 void
-meta_shadow_paint (MetaShadow *shadow,
-                   int         window_x,
-                   int         window_y,
-                   int         window_width,
-                   int         window_height,
-                   guint8      opacity)
+meta_shadow_paint (MetaShadow     *shadow,
+                   int             window_x,
+                   int             window_y,
+                   int             window_width,
+                   int             window_height,
+                   guint8          opacity,
+                   cairo_region_t *clip)
 {
   float texture_width = cogl_texture_get_width (shadow->texture);
   float texture_height = cogl_texture_get_height (shadow->texture);
   int i, j;
   float src_x[4];
   float src_y[4];
-  float dest_x[4];
-  float dest_y[4];
+  int dest_x[4];
+  int dest_y[4];
   int n_x, n_y;
 
   cogl_material_set_color4ub (shadow->material,
@@ -267,11 +271,30 @@ meta_shadow_paint (MetaShadow *shadow,
     }
 
   for (j = 0; j < n_y; j++)
-    for (i = 0; i < n_x; i++)
-      cogl_rectangle_with_texture_coords (dest_x[i], dest_y[j],
-                                          dest_x[i + 1], dest_y[j + 1],
-                                          src_x[i], src_y[j],
-                                          src_x[i + 1], src_y[j + 1]);
+    {
+      cairo_rectangle_int_t dest_rect;
+      dest_rect.y = dest_y[j];
+      dest_rect.height = dest_y[j + 1] - dest_y[j];
+
+      for (i = 0; i < n_x; i++)
+        {
+          cairo_region_overlap_t overlap;
+
+          dest_rect.x = dest_x[i];
+          dest_rect.width = dest_x[i + 1] - dest_x[i];
+
+          if (clip)
+            overlap = cairo_region_contains_rectangle (clip, &dest_rect);
+          else
+            overlap = CAIRO_REGION_OVERLAP_PART;
+
+          if (overlap != CAIRO_REGION_OVERLAP_OUT)
+            cogl_rectangle_with_texture_coords (dest_x[i], dest_y[j],
+                                                dest_x[i + 1], dest_y[j + 1],
+                                                src_x[i], src_y[j],
+                                                src_x[i + 1], src_y[j + 1]);
+        }
+    }
 }
 
 /**

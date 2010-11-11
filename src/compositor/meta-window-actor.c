@@ -60,6 +60,8 @@ struct _MetaWindowActorPrivate
   /* A rectangular region with the unshaped extends of the window
    * texture */
   cairo_region_t   *bounding_region;
+  /* The region we should clip to when painting the shadow */
+  cairo_region_t   *shadow_clip;
 
   /* Extracted size-invariant shape used for shadows */
   MetaWindowShape  *shadow_shape;
@@ -93,7 +95,6 @@ struct _MetaWindowActorPrivate
   guint             needs_reshape          : 1;
   guint             recompute_focused_shadow   : 1;
   guint             recompute_unfocused_shadow : 1;
-  guint             paint_shadow           : 1;
   guint		    size_changed           : 1;
 
   guint		    needs_destroy	   : 1;
@@ -140,6 +141,7 @@ static gboolean meta_window_actor_has_shadow (MetaWindowActor *self);
 
 static void meta_window_actor_clear_shape_region    (MetaWindowActor *self);
 static void meta_window_actor_clear_bounding_region (MetaWindowActor *self);
+static void meta_window_actor_clear_shadow_clip     (MetaWindowActor *self);
 
 static gboolean is_shaped                (MetaDisplay  *display,
                                           Window        xwindow);
@@ -283,7 +285,6 @@ meta_window_actor_init (MetaWindowActor *self)
 						   MetaWindowActorPrivate);
   priv->opacity = 0xff;
   priv->shadow_class = NULL;
-  priv->paint_shadow = TRUE;
 }
 
 static void
@@ -439,6 +440,7 @@ meta_window_actor_dispose (GObject *object)
 
   meta_window_actor_clear_shape_region (self);
   meta_window_actor_clear_bounding_region (self);
+  meta_window_actor_clear_shadow_clip (self);
 
   if (priv->shadow_class != NULL)
     {
@@ -665,27 +667,24 @@ meta_window_actor_paint (ClutterActor *actor)
 {
   MetaWindowActor *self = META_WINDOW_ACTOR (actor);
   MetaWindowActorPrivate *priv = self->priv;
+  gboolean appears_focused = meta_window_appears_focused (priv->window);
+  MetaShadow *shadow = appears_focused ? priv->focused_shadow : priv->unfocused_shadow;
 
-  if (priv->paint_shadow)
+  if (shadow != NULL)
     {
-      gboolean appears_focused = meta_window_appears_focused (priv->window);
-      MetaShadow *shadow = appears_focused ? priv->focused_shadow : priv->unfocused_shadow;
+      MetaShadowParams params;
+      cairo_rectangle_int_t shape_bounds;
 
-      if (shadow != NULL)
-        {
-          MetaShadowParams params;
-          cairo_rectangle_int_t shape_bounds;
+      meta_window_actor_get_shape_bounds (self, &shape_bounds);
+      meta_window_actor_get_shadow_params (self, appears_focused, &params);
 
-          meta_window_actor_get_shape_bounds (self, &shape_bounds);
-          meta_window_actor_get_shadow_params (self, appears_focused, &params);
-
-          meta_shadow_paint (shadow,
-                             params.x_offset + shape_bounds.x,
-                             params.y_offset + shape_bounds.y,
-                             shape_bounds.width,
-                             shape_bounds.height,
-                             (clutter_actor_get_paint_opacity (actor) * params.opacity) / 255);
-        }
+      meta_shadow_paint (shadow,
+                         params.x_offset + shape_bounds.x,
+                         params.y_offset + shape_bounds.y,
+                         shape_bounds.width,
+                         shape_bounds.height,
+                         (clutter_actor_get_paint_opacity (actor) * params.opacity) / 255,
+                         priv->shadow_clip);
     }
 
   CLUTTER_ACTOR_CLASS (meta_window_actor_parent_class)->paint (actor);
@@ -1551,6 +1550,18 @@ meta_window_actor_clear_bounding_region (MetaWindowActor *self)
 }
 
 static void
+meta_window_actor_clear_shadow_clip (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+
+  if (priv->shadow_clip)
+    {
+      cairo_region_destroy (priv->shadow_clip);
+      priv->shadow_clip = NULL;
+    }
+}
+
+static void
 meta_window_actor_update_bounding_region (MetaWindowActor *self,
                                           int              width,
                                           int              height)
@@ -1710,18 +1721,8 @@ meta_window_actor_set_visible_region_beneath (MetaWindowActor *self,
 
   if (appears_focused ? priv->focused_shadow : priv->unfocused_shadow)
     {
-      cairo_rectangle_int_t shadow_bounds;
-      cairo_region_overlap_t overlap;
-
-      /* We could compute an full clip region as we do for the window
-       * texture, but the shadow is relatively cheap to draw, and
-       * a little more complex to clip, so we just catch the case where
-       * the shadow is completely obscured and doesn't need to be drawn
-       * at all.
-       */
-      meta_window_actor_get_shadow_bounds (self, appears_focused, &shadow_bounds);
-      overlap = cairo_region_contains_rectangle (beneath_region, &shadow_bounds);
-      priv->paint_shadow = overlap != CAIRO_REGION_OVERLAP_OUT;
+      meta_window_actor_clear_shadow_clip (self);
+      priv->shadow_clip = cairo_region_copy (beneath_region);
     }
 }
 
@@ -1739,7 +1740,7 @@ meta_window_actor_reset_visible_regions (MetaWindowActor *self)
 
   meta_shaped_texture_set_clip_region (META_SHAPED_TEXTURE (priv->actor),
                                        NULL);
-  priv->paint_shadow = TRUE;
+  meta_window_actor_clear_shadow_clip (self);
 }
 
 static void
