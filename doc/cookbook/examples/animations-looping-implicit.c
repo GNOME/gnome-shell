@@ -69,6 +69,10 @@ main (int   argc,
                     G_CALLBACK (key_pressed_cb),
                     state);
 
+  /* the animation will not emit a "completed" signal,
+   * as it is set to loop; but the timeline emits "completed"
+   * at the end of each iteration of the loop
+   */
   g_signal_connect (state->timeline,
                     "completed",
                     G_CALLBACK (invert_timeline_cb),
