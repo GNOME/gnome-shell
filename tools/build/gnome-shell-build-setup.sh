@@ -59,7 +59,7 @@ fi
 # Devel packages needed by gnome-shell and its deps:
 # dbus-glib, GL, gnome-menus, gstreamer, libffi,
 # libjasper, libjpeg, libpng, libpulse, libtiff, libwnck,
-# libxml2, ORBit2, python, readline,
+# libxml2, ORBit2, pam, python, readline,
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification
 # xdamage, icon-naming-utils, libtool-ltdl, libvorbis
 #
@@ -84,7 +84,7 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     libdbus-glib-1-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev \
     libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev \
     libwnck-dev libgl1-mesa-dev liborbit2-dev libpulse-dev libreadline5-dev libxml2-dev \
-    mesa-common-dev mesa-utils python-dev python-gconf python-gobject \
+    mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject \
     xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev \
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
     libltdl-dev libvorbis-dev \
@@ -106,10 +106,11 @@ if test "x$system" = xFedora ; then
     automake bison flex gettext git gnome-common gnome-doc-utils gvfs intltool
     libtool pkgconfig dbus-glib-devel gnome-desktop-devel gnome-menus-devel
     gnome-python2-gconf jasper-devel libffi-devel libjpeg-devel libpng-devel
-    libtiff-devel libwnck-devel mesa-libGL-devel ORBit2-devel pulseaudio-libs-devel
-    python-devel pygobject2 readline-devel xulrunner-devel libXdamage-devel libcroco-devel
-    libxml2-devel gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good
-    glx-utils startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
+    libtiff-devel libwnck-devel mesa-libGL-devel ORBit2-devel pam-devel
+    pulseaudio-libs-devel python-devel pygobject2 readline-devel xulrunner-devel
+    libXdamage-devel libcroco-devel libxml2-devel gstreamer-devel
+    gstreamer-plugins-base gstreamer-plugins-good glx-utils
+    startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
     icon-naming-utils libtool-ltdl-devel libvorbis-devel
     "
 
