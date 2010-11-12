@@ -431,8 +431,13 @@ WorkspacesView.prototype = {
             workspace.opacity = (this._inDrag && w != active) ? 200 : 255;
 
             workspace.scale = scale;
-            workspace.x = this._x + this._activeWorkspaceX
-                          + (w - active) * (_width + this._spacing);
+            if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
+                workspace.x = this._x + this._activeWorkspaceX
+                              - (w - active) * (_width + this._spacing);
+            } else {
+                workspace.x = this._x + this._activeWorkspaceX
+                              + (w - active) * (_width + this._spacing);
+            }
             workspace.y = this._y + this._activeWorkspaceY;
         }
     },
@@ -522,15 +527,18 @@ WorkspacesView.prototype = {
                 // by releasing during the drag.
                 let noStop = Math.abs(activate - this._scrollAdjustment.value) > 0.5;
 
+                let difference = stageX > this._dragStartX ? -1 : 1;
+                if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+                    difference *= -1;
+
                 // We detect if the user is stopped by comparing the timestamp of the button
                 // release with the timestamp of the last motion. Experimentally, a difference
                 // of 0 or 1 millisecond indicates that the mouse is in motion, a larger
                 // difference indicates that the mouse is stopped.
                 if ((this._lastMotionTime > 0 && this._lastMotionTime > event.get_time() - 2) || noStop) {
-                    if (stageX > this._dragStartX && activate > 0)
-                        activate--;
-                    else if (stageX < this._dragStartX && activate < last)
-                        activate++;
+                    if (activate + difference >= 0 &&
+                        activate + difference <= last)
+                        activate += difference;
                 }
 
                 if (activate != active) {
@@ -551,7 +559,10 @@ WorkspacesView.prototype = {
                 let dx = this._dragX - stageX;
                 let primary = global.get_primary_monitor();
 
-                this._scrollAdjustment.value += (dx / primary.width);
+                if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+                    this._scrollAdjustment.value -= (dx / primary.width);
+                else
+                    this._scrollAdjustment.value += (dx / primary.width);
                 this._dragX = stageX;
                 this._lastMotionTime = event.get_time();
 
@@ -770,8 +781,14 @@ WorkspacesView.prototype = {
         let primary = global.get_primary_monitor();
 
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        let leftWorkspace  = this._workspaces[activeWorkspaceIndex - 1];
-        let rightWorkspace = this._workspaces[activeWorkspaceIndex + 1];
+        let leftWorkspace, rightWorkspace;
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
+            leftWorkspace  = this._workspaces[activeWorkspaceIndex + 1];
+            rightWorkspace = this._workspaces[activeWorkspaceIndex - 1];
+        } else {
+            leftWorkspace  = this._workspaces[activeWorkspaceIndex - 1];
+            rightWorkspace = this._workspaces[activeWorkspaceIndex + 1];
+        }
         let hoverWorkspace = null;
 
         // reactive monitor edges
@@ -892,10 +909,13 @@ WorkspacesView.prototype = {
         let current = global.screen.get_active_workspace_index();
         let last = global.screen.n_workspaces - 1;
         let activate = current;
-        if (direction == Clutter.ScrollDirection.DOWN && current < last)
-            activate++;
-        else if (direction == Clutter.ScrollDirection.UP && current > 0)
-            activate--;
+
+        let difference = direction == Clutter.ScrollDirection.UP ? -1 : 1;
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+            difference *= -1;
+
+        if (activate + difference >= 0 && activate + difference <= last)
+            activate += difference;
 
         if (activate != current) {
             let metaWorkspace = this._workspaces[activate].metaWorkspace;
