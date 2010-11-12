@@ -74,7 +74,7 @@ main (int argc, char *argv[])
   clutter_actor_set_size (r3, 150, 150);
   clutter_actor_add_constraint (r3, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.75));
   clutter_actor_add_constraint (r3, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.75));
-  clutter_actor_set_opacity (r3, 125.5);
+  clutter_actor_set_opacity (r3, 125);
   clutter_actor_set_name (r3, "blue");
 
   clutter_container_add (CLUTTER_CONTAINER (stage), r1, r2, r3, NULL);
