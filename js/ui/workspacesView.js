@@ -25,6 +25,8 @@ const WORKSPACE_DRAGGING_SCALE = 0.85;
 const CONTROLS_POP_IN_FRACTION = 0.8;
 const CONTROLS_POP_IN_TIME = 0.1;
 
+const INDICATOR_HOVER_SCALE = 1.1;
+
 
 function WorkspacesView(width, height, x, y, workspaces) {
     this._init(width, height, x, y, workspaces);
@@ -810,12 +812,13 @@ WorkspaceIndicatorPanel.prototype = {
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
         let [minWidth, natWidth] = this._box.get_preferred_width(-1);
+        let [minHeight, natHeight] = this._box.get_preferred_height(-1);
 
         let childBox = new Clutter.ActorBox();
         childBox.x1 = Math.floor((availWidth - natWidth) / 2);
         childBox.x2 = childBox.x1 + natWidth;
-        childBox.y1 = 0;
-        childBox.y2 = availHeight;
+        childBox.y1 = Math.floor((availHeight - natHeight) / 2);
+        childBox.y2 = childBox.y2 + natHeight;
 
         this._box.allocate(childBox, flags);
     },
@@ -828,8 +831,8 @@ WorkspaceIndicatorPanel.prototype = {
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
         let [minHeight, natHeight] = this._box.get_preferred_height(-1);
-        alloc.min_size = minHeight;
-        alloc.natural_size = natHeight;
+        alloc.min_size = minHeight * INDICATOR_HOVER_SCALE;
+        alloc.natural_size = natHeight * INDICATOR_HOVER_SCALE;
     },
 
     updateWorkspaces: function(workspaces) {
@@ -837,12 +840,21 @@ WorkspaceIndicatorPanel.prototype = {
 
         this._box.remove_all();
         for (let i = 0; i < this._workspaces.length; i++) {
-            let actor = new St.Button({ style_class: 'workspace-indicator' });
+            let actor = new St.Button({ style_class: 'workspace-indicator',
+                                        track_hover: true });
             let workspace = this._workspaces[i];
             let metaWorkspace = this._workspaces[i].metaWorkspace;
 
             actor.connect('clicked', Lang.bind(this, function() {
                 metaWorkspace.activate(global.get_current_time());
+            }));
+            actor.connect('notify::hover', Lang.bind(this, function() {
+                if (actor.hover)
+                    actor.set_scale_with_gravity(INDICATOR_HOVER_SCALE,
+                                                 INDICATOR_HOVER_SCALE,
+                                                 Clutter.Gravity.CENTER);
+                else
+                    actor.set_scale(1.0, 1.0);
             }));
 
             actor._delegate = {
