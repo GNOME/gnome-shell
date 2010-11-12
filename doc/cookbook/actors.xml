@@ -276,10 +276,10 @@ on_paint (ClutterActor *actor)
       <informalexample>
         <programlisting>
 /* 25% transparency */
-clutter_actor_set_opacity (actor, 191.25);
+clutter_actor_set_opacity (actor, 191);
 
 /* 50% transparency */
-clutter_actor_set_opacity (actor, 122.5);
+clutter_actor_set_opacity (actor, 122);
 
 /* completely transparent */
 clutter_actor_set_opacity (actor, 0);
@@ -325,13 +325,13 @@ clutter_actor_set_opacity (actor, 0);
           <para>top-left: <code>255</code> (0% transparency)</para>
         </listitem>
         <listitem>
-          <para>top-right: <code>191.25</code> (25% transparency)</para>
+          <para>top-right: <code>191</code> (25% transparency)</para>
         </listitem>
         <listitem>
-          <para>bottom-right: <code>122.5</code> (50% transparency)</para>
+          <para>bottom-right: <code>122</code> (50% transparency)</para>
         </listitem>
         <listitem>
-          <para>bottom-left: <code>61.25</code> (75% transparency)</para>
+          <para>bottom-left: <code>61</code> (75% transparency)</para>
         </listitem>
       </itemizedlist>
 
@@ -350,10 +350,10 @@ clutter_actor_set_opacity (actor, 0);
 
         <para>If a container has its opacity set, any children of the
         container have their opacity combined with their parent's opacity.
-        For example, if a parent has an opacity of <code>122.5</code>
+        For example, if a parent has an opacity of <code>122</code>
         (50% transparent) and the child also has an opacity of
-        <code>122.5</code>, the child's <emphasis>effective</emphasis>
-        opacity is 25% (<code>opacity = 61.25</code>, and it is
+        <code>122</code>, the child's <emphasis>effective</emphasis>
+        opacity is 25% (<code>opacity = 61</code>, and it is
         75% transparent).</para>
 
         <para>To demonstrate the visual effect of this, here are
@@ -382,14 +382,14 @@ clutter_actor_set_opacity (actor, 0);
           <listitem>
             <para>The middle rectangle has <code>opacity = 255</code>
             and is in a <type>ClutterGroup</type> with
-            <code>opacity = 122.5</code>. Notice that the parent opacity
+            <code>opacity = 122</code>. Notice that the parent opacity
             makes the rectangle appear darker, as the stage colour is showing
             through from behind.</para>
           </listitem>
           <listitem>
-            <para>The right-hand rectangle has <code>opacity = 122.5</code>
+            <para>The right-hand rectangle has <code>opacity = 122</code>
             and is in a <type>ClutterGroup</type> with
-            <code>opacity = 122.5</code>. Notice that the rectangle appears
+            <code>opacity = 122</code>. Notice that the rectangle appears
             to be even darker, as the stage colour is showing
             through both the rectangle and its parent.</para>
           </listitem>
@@ -405,12 +405,12 @@ clutter_actor_set_opacity (actor, 0);
           <programlisting>
 <![CDATA[
 /* color with 50% transparency */
-ClutterColor half_transparent_color = { 255, 0, 0, 122.5 };
+ClutterColor half_transparent_color = { 255, 0, 0, 122 };
 
 ClutterRectangle *actor = clutter_rectangle_new ();
 
 /* set actor's transparency to 50% */
-clutter_actor_set_opacity (actor, 122.5);
+clutter_actor_set_opacity (actor, 122);
 
 /* rectangle will be 25% opaque/75% transparent */
 clutter_rectangle_set_color (CLUTTER_RECTANGLE (actor),
