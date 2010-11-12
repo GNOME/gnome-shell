@@ -693,7 +693,6 @@ _clutter_paint_volume_transform (ClutterPaintVolume *pv,
                                  const CoglMatrix *matrix)
 {
   int transform_count;
-  int i;
 
   if (pv->is_empty)
     {
@@ -718,16 +717,13 @@ _clutter_paint_volume_transform (ClutterPaintVolume *pv,
   else
     transform_count = 8;
 
-
-  for (i = 0; i < transform_count; i++)
-    {
-      gfloat w = 1;
-      cogl_matrix_transform_point (matrix,
-                                   &pv->vertices[i].x,
-                                   &pv->vertices[i].y,
-                                   &pv->vertices[i].z,
-                                   &w);
-    }
+  cogl_matrix_transform_points (matrix,
+                                3,
+                                sizeof (ClutterVertex),
+                                pv->vertices,
+                                sizeof (ClutterVertex),
+                                pv->vertices,
+                                transform_count);
 
   pv->is_axis_aligned = FALSE;
 }

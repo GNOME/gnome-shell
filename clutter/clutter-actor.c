@@ -2115,7 +2115,6 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
   ClutterActorBox box;
   ClutterVertex vertices[4];
   CoglMatrix modelview;
-  float w;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (ancestor == NULL || CLUTTER_IS_ACTOR (ancestor));
@@ -2163,19 +2162,13 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
 
   _clutter_actor_get_relative_modelview (self, ancestor, &modelview);
 
-  w = 1;
-  cogl_matrix_transform_point (&modelview,
-                               &vertices[0].x, &vertices[0].y, &vertices[0].z,
-                               &w);
-  cogl_matrix_transform_point (&modelview,
-                               &vertices[1].x, &vertices[1].y, &vertices[1].z,
-                               &w);
-  cogl_matrix_transform_point (&modelview,
-                               &vertices[2].x, &vertices[2].y, &vertices[2].z,
-                               &w);
-  cogl_matrix_transform_point (&modelview,
-                               &vertices[3].x, &vertices[3].y, &vertices[3].z,
-                               &w);
+  cogl_matrix_transform_points (&modelview,
+                                3,
+                                sizeof (ClutterVertex),
+                                vertices,
+                                sizeof (ClutterVertex),
+                                vertices,
+                                4);
 }
 
 /**
@@ -8862,7 +8855,7 @@ clutter_actor_find_property (ClutterAnimatable *animatable,
   if (meta != NULL)
     {
       klass = G_OBJECT_GET_CLASS (meta);
-  
+
       pspec = g_object_class_find_property (klass, p_name);
 
       g_free (p_name);
