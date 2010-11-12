@@ -436,7 +436,6 @@ cogl_matrix_init_identity
 cogl_matrix_frustum
 cogl_matrix_ortho
 cogl_matrix_perspective
-cogl_matrix_transform_point
 cogl_matrix_multiply
 cogl_matrix_rotate
 cogl_matrix_translate
@@ -444,6 +443,7 @@ cogl_matrix_scale
 cogl_matrix_init_from_array
 cogl_matrix_get_array
 cogl_matrix_get_inverse
+cogl_matrix_transform_point
 </SECTION>
 
 <SECTION>

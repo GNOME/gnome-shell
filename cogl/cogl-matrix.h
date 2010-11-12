@@ -316,6 +316,10 @@ gboolean
 cogl_matrix_get_inverse (const CoglMatrix *matrix,
                          CoglMatrix *inverse);
 
+/* FIXME: to be consistent with cogl_matrix_{transform,project}_points
+ * this could be renamed to cogl_matrix_project_point for Cogl 2.0...
+ */
+
 /**
  * cogl_matrix_transform_point:
  * @matrix: A 4x4 transformation matrix
@@ -333,6 +337,125 @@ cogl_matrix_transform_point (const CoglMatrix *matrix,
                              float *y,
                              float *z,
                              float *w);
+
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+#define cogl_matrix_transform_points cogl_matrix_transform_points_EXP
+#define cogl_matrix_project_points cogl_matrix_project_points_EXP
+
+/**
+ * cogl_matrix_transform_points:
+ * @matrix: A transformation matrix
+ * @n_components: The number of position components for each input point.
+ *                (either 2 or 3)
+ * @stride_in: The stride in bytes between input points.
+ * @points_in: A pointer to the first component of the first input point.
+ * @stride_out: The stride in bytes between output points.
+ * @points_out: A pointer to the first component of the first output point.
+ * @n_points: The number of points to transform.
+ *
+ * Transforms an array of input points and writes the result to
+ * another array of output points. The input points can either have 2
+ * or 3 components each. The output points always have 3 components.
+ * The output array can simply point to the input array to do the
+ * transform in-place.
+ *
+ * If you need to transform 4 component points see
+ * cogl_matrix_project_points().
+ *
+ * Here's an example with differing input/output strides:
+ * |[
+ * typedef struct {
+ *   float x,y;
+ *   guint8 r,g,b,a;
+ *   float s,t,p;
+ * } MyInVertex;
+ * typedef struct {
+ *   guint8 r,g,b,a;
+ *   float x,y,z;
+ * } MyOutVertex;
+ * MyInVertex vertices[N_VERTICES];
+ * MyOutVertex results[N_VERTICES];
+ * CoglMatrix matrix;
+ *
+ * my_load_vertices (vertices);
+ * my_get_matrix (&matrix);
+ *
+ * cogl_matrix_transform_points (&matrix,
+ *                               2,
+ *                               sizeof (MyInVertex),
+ *                               &vertices[0].x,
+ *                               sizeof (MyOutVertex),
+ *                               &results[0].x,
+ *                               N_VERTICES);
+ * ]|
+ *
+ * Stability: Unstable
+ */
+void
+cogl_matrix_transform_points (const CoglMatrix *matrix,
+                              int n_components,
+                              size_t stride_in,
+                              void *points_in,
+                              size_t stride_out,
+                              void *points_out,
+                              int n_points);
+
+/**
+ * cogl_matrix_project_points:
+ * @matrix: A projection matrix
+ * @n_components: The number of position components for each input point.
+ *                (either 2, 3 or 4)
+ * @stride_in: The stride in bytes between input points.
+ * @points_in: A pointer to the first component of the first input point.
+ * @stride_out: The stride in bytes between output points.
+ * @points_out: A pointer to the first component of the first output point.
+ * @n_points: The number of points to transform.
+ *
+ * Projects an array of input points and writes the result to another
+ * array of output points. The input points can either have 2, 3 or 4
+ * components each. The output points always have 4 components (known
+ * as homogenous coordinates). The output array can simply point to
+ * the input array to do the transform in-place.
+ *
+ * Here's an example with differing input/output strides:
+ * |[
+ * typedef struct {
+ *   float x,y;
+ *   guint8 r,g,b,a;
+ *   float s,t,p;
+ * } MyInVertex;
+ * typedef struct {
+ *   guint8 r,g,b,a;
+ *   float x,y,z;
+ * } MyOutVertex;
+ * MyInVertex vertices[N_VERTICES];
+ * MyOutVertex results[N_VERTICES];
+ * CoglMatrix matrix;
+ *
+ * my_load_vertices (vertices);
+ * my_get_matrix (&matrix);
+ *
+ * cogl_matrix_project_points (&matrix,
+ *                             2,
+ *                             sizeof (MyInVertex),
+ *                             &vertices[0].x,
+ *                             sizeof (MyOutVertex),
+ *                             &results[0].x,
+ *                             N_VERTICES);
+ * ]|
+ *
+ * Stability: Unstable
+ */
+void
+cogl_matrix_project_points (const CoglMatrix *matrix,
+                            int n_components,
+                            size_t stride_in,
+                            void *points_in,
+                            size_t stride_out,
+                            void *points_out,
+                            int n_points);
+
+#endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 G_END_DECLS
 
