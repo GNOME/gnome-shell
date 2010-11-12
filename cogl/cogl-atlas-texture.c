@@ -439,21 +439,6 @@ _cogl_atlas_texture_set_region (CoglTexture    *tex,
                                                  bmp);
 }
 
-static gboolean
-_cogl_atlas_texture_get_data (CoglTexture     *tex,
-                              CoglPixelFormat  format,
-                              unsigned int     rowstride,
-                              guint8          *data)
-{
-  CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
-
-  /* Forward on to the sub texture */
-  return cogl_texture_get_data (atlas_tex->sub_texture,
-                                format,
-                                rowstride,
-                                data);
-}
-
 static CoglPixelFormat
 _cogl_atlas_texture_get_format (CoglTexture *tex)
 {
@@ -632,7 +617,7 @@ static const CoglTextureVtable
 cogl_atlas_texture_vtable =
   {
     _cogl_atlas_texture_set_region,
-    _cogl_atlas_texture_get_data,
+    NULL, /* get_data */
     _cogl_atlas_texture_foreach_sub_texture_in_region,
     _cogl_atlas_texture_get_max_waste,
     _cogl_atlas_texture_is_sliced,

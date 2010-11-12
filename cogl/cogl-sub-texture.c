@@ -416,74 +416,6 @@ _cogl_sub_texture_set_region (CoglTexture    *tex,
                                                bmp);
 }
 
-static void
-_cogl_sub_texture_copy_region (guint8 *dst,
-                               const guint8 *src,
-                               int dst_x, int dst_y,
-                               int src_x, int src_y,
-                               int width, int height,
-                               int dst_rowstride,
-                               int src_rowstride,
-                               int bpp)
-{
-  int y;
-
-  dst += dst_x * bpp + dst_y * dst_rowstride;
-  src += src_x * bpp + src_y * src_rowstride;
-
-  for (y = 0; y < height; y++)
-    {
-      memcpy (dst, src, bpp * width);
-      dst += dst_rowstride;
-      src += src_rowstride;
-    }
-}
-
-static gboolean
-_cogl_sub_texture_get_data (CoglTexture     *tex,
-                            CoglPixelFormat  format,
-                            unsigned int     rowstride,
-                            guint8          *data)
-{
-  CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
-  unsigned int full_rowstride;
-  guint8 *full_data;
-  gboolean ret = TRUE;
-  int bpp;
-  int full_tex_width, full_tex_height;
-
-  /* FIXME: This gets the full data from the full texture and then
-     copies a subregion of that. It would be better if there was a
-     texture_get_sub_data virtual and it can just munge the texture
-     coordinates */
-
-  full_tex_width = cogl_texture_get_width (sub_tex->full_texture);
-  full_tex_height = cogl_texture_get_height (sub_tex->full_texture);
-
-  bpp = _cogl_get_format_bpp (format);
-
-  full_rowstride = _cogl_get_format_bpp (format) * full_tex_width;
-  full_data = g_malloc (full_rowstride * full_tex_height);
-
-  if (cogl_texture_get_data (sub_tex->full_texture, format,
-                             full_rowstride, full_data))
-    _cogl_sub_texture_copy_region (data, full_data,
-                                   0, 0,
-                                   sub_tex->sub_x,
-                                   sub_tex->sub_y,
-                                   sub_tex->sub_width,
-                                   sub_tex->sub_height,
-                                   rowstride,
-                                   full_rowstride,
-                                   bpp);
-  else
-    ret = FALSE;
-
-  g_free (full_data);
-
-  return ret;
-}
-
 static CoglPixelFormat
 _cogl_sub_texture_get_format (CoglTexture *tex)
 {
@@ -520,7 +452,7 @@ static const CoglTextureVtable
 cogl_sub_texture_vtable =
   {
     _cogl_sub_texture_set_region,
-    _cogl_sub_texture_get_data,
+    NULL, /* get_data */
     _cogl_sub_texture_foreach_sub_texture_in_region,
     _cogl_sub_texture_get_max_waste,
     _cogl_sub_texture_is_sliced,

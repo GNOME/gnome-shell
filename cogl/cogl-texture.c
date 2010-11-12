@@ -4,6 +4,7 @@
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
  * Copyright (C) 2007,2008,2009 Intel Corporation.
+ * Copyright (C) 2010 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,6 +38,7 @@
 #include "cogl-bitmap-private.h"
 #include "cogl-buffer-private.h"
 #include "cogl-pixel-array-private.h"
+#include "cogl-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-driver.h"
 #include "cogl-texture-2d-sliced-private.h"
@@ -1181,6 +1183,169 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
   return TRUE;
 }
 
+static gboolean
+get_texture_bits_via_offscreen (CoglHandle      texture_handle,
+                                int             x,
+                                int             y,
+                                int             width,
+                                int             height,
+                                guint8         *dst_bits,
+                                unsigned int    dst_rowstride,
+                                CoglPixelFormat dst_format)
+{
+  CoglFramebuffer *framebuffer;
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
+    return FALSE;
+
+  framebuffer = _cogl_offscreen_new_to_texture_full
+                                      (texture_handle,
+                                       COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL,
+                                       0);
+
+  if (framebuffer == NULL)
+    return FALSE;
+
+  cogl_push_framebuffer (framebuffer);
+
+  _cogl_read_pixels_with_rowstride (x, y, width, height,
+                                    COGL_READ_PIXELS_COLOR_BUFFER,
+                                    dst_format, dst_bits, dst_rowstride);
+
+  cogl_pop_framebuffer ();
+
+  cogl_object_unref (framebuffer);
+
+  return TRUE;
+}
+
+static gboolean
+get_texture_bits_via_copy (CoglHandle      texture_handle,
+                           int             x,
+                           int             y,
+                           int             width,
+                           int             height,
+                           guint8         *dst_bits,
+                           unsigned int    dst_rowstride,
+                           CoglPixelFormat dst_format)
+{
+  CoglTexture *tex = COGL_TEXTURE (texture_handle);
+  unsigned int full_rowstride;
+  guint8 *full_bits;
+  gboolean ret = TRUE;
+  int bpp;
+  int full_tex_width, full_tex_height;
+
+  full_tex_width = cogl_texture_get_width (texture_handle);
+  full_tex_height = cogl_texture_get_height (texture_handle);
+
+  bpp = _cogl_get_format_bpp (dst_format);
+
+  full_rowstride = bpp * full_tex_width;
+  full_bits = g_malloc (full_rowstride * full_tex_height);
+
+  if (tex->vtable->get_data (tex,
+                             dst_format,
+                             full_rowstride,
+                             full_bits))
+    {
+      guint8 *dst = dst_bits;
+      guint8 *src = full_bits + x * bpp + y * full_rowstride;
+      int i;
+
+      for (i = 0; i < height; i++)
+        {
+          memcpy (dst, src, bpp * width);
+          dst += dst_rowstride;
+          src += full_rowstride;
+        }
+    }
+  else
+    ret = FALSE;
+
+  g_free (full_bits);
+
+  return ret;
+}
+
+typedef struct
+{
+  int         orig_width;
+  int         orig_height;
+  CoglBitmap *target_bmp;
+  guint8     *target_bits;
+  gboolean    success;
+} CoglTextureGetData;
+
+static void
+texture_get_cb (CoglHandle   texture_handle,
+                const float *subtexture_coords,
+                const float *virtual_coords,
+                void        *user_data)
+{
+  CoglTexture *tex = COGL_TEXTURE (texture_handle);
+  CoglTextureGetData *tg_data = user_data;
+  CoglPixelFormat format = _cogl_bitmap_get_format (tg_data->target_bmp);
+  int bpp = _cogl_get_format_bpp (format);
+  unsigned int rowstride = _cogl_bitmap_get_rowstride (tg_data->target_bmp);
+  int subtexture_width = cogl_texture_get_width (texture_handle);
+  int subtexture_height = cogl_texture_get_height (texture_handle);
+
+  int x_in_subtexture = (int) (0.5 + subtexture_width * subtexture_coords[0]);
+  int y_in_subtexture = (int) (0.5 + subtexture_height * subtexture_coords[1]);
+  int width = ((int) (0.5 + subtexture_width * subtexture_coords[2])
+               - x_in_subtexture);
+  int height = ((int) (0.5 + subtexture_height * subtexture_coords[3])
+                - y_in_subtexture);
+  int x_in_bitmap = (int) (0.5 + tg_data->orig_width * virtual_coords[0]);
+  int y_in_bitmap = (int) (0.5 + tg_data->orig_height * virtual_coords[1]);
+
+  guint8 *dst_bits;
+
+  if (!tg_data->success)
+    return;
+
+  dst_bits = tg_data->target_bits + x_in_bitmap * bpp + y_in_bitmap * rowstride;
+
+  /* If we can read everything as a single slice, then go ahead and do that
+   * to avoid allocating an FBO. We'll leave it up to the GL implementation to
+   * do glGetTexImage as efficiently as possible. (GLES doesn't have that,
+   * so we'll fall through) */
+  if (x_in_subtexture == 0 && y_in_subtexture == 0 &&
+      width == subtexture_width && height == subtexture_height)
+    {
+      if (tex->vtable->get_data (tex,
+                                 format,
+                                 rowstride,
+                                 dst_bits))
+        return;
+    }
+
+  /* Next best option is a FBO and glReadPixels */
+  if (get_texture_bits_via_offscreen (texture_handle,
+                                      x_in_subtexture, y_in_subtexture,
+                                      width, height,
+                                      dst_bits,
+                                      rowstride,
+                                      format))
+    return;
+
+  /* Getting ugly: read the entire texture, copy out the part we want */
+  if (get_texture_bits_via_copy (texture_handle,
+                                 x_in_subtexture, y_in_subtexture,
+                                 width, height,
+                                 dst_bits,
+                                 rowstride,
+                                 format))
+    return;
+
+  /* No luck, the caller will fall back to the draw-to-backbuffer and
+   * read implementation */
+  tg_data->success = FALSE;
+}
+
 int
 cogl_texture_get_data (CoglHandle       handle,
 		       CoglPixelFormat  format,
@@ -1196,12 +1361,13 @@ cogl_texture_get_data (CoglHandle       handle,
   GLenum           closest_gl_type;
   CoglBitmap      *target_bmp;
   CoglBitmap      *new_bmp;
-  gboolean         success;
   guint8          *src;
   guint8          *dst;
   int              y;
   int              tex_width;
   int              tex_height;
+
+  CoglTextureGetData tg_data;
 
   if (!cogl_is_texture (handle))
     return 0;
@@ -1253,17 +1419,26 @@ cogl_texture_get_data (CoglHandle       handle,
                                                NULL);
     }
 
-  if ((dst = _cogl_bitmap_map (target_bmp, COGL_BUFFER_ACCESS_WRITE,
-                               COGL_BUFFER_MAP_HINT_DISCARD)) == NULL)
+  tg_data.orig_width = tex_width;
+  tg_data.orig_height = tex_height;
+  tg_data.target_bmp = target_bmp;
+  tg_data.target_bits = _cogl_bitmap_map (target_bmp, COGL_BUFFER_ACCESS_WRITE,
+                                          COGL_BUFFER_MAP_HINT_DISCARD);
+  if (tg_data.target_bits == NULL)
     {
       cogl_object_unref (target_bmp);
       return 0;
     }
+  tg_data.success = TRUE;
 
-  success = tex->vtable->get_data (tex,
-                                   closest_format,
-                                   rowstride,
-                                   dst);
+  /* Iterating through the subtextures allows piecing together
+   * the data for a sliced texture, and allows us to do the
+   * read-from-framebuffer logic here in a simple fashion rather than
+   * passing offsets down through the code. */
+  _cogl_texture_foreach_sub_texture_in_region (handle,
+                                               0, 0, 1, 1,
+                                               texture_get_cb,
+                                               &tg_data);
 
   _cogl_bitmap_unmap (target_bmp);
 
@@ -1271,7 +1446,7 @@ cogl_texture_get_data (CoglHandle       handle,
    * to read back the texture data; such as for GLES which doesn't
    * support glGetTexImage, so here we fallback to drawing the
    * texture and reading the pixels from the framebuffer. */
-  if (!success)
+  if (!tg_data.success)
     _cogl_texture_draw_and_read (tex, target_bmp,
                                  closest_gl_format,
                                  closest_gl_type);
