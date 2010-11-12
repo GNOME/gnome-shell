@@ -187,8 +187,12 @@ input_cb (ClutterActor *actor,
               keybuf);
       break;
     case CLUTTER_MOTION:
-      g_print ("[%s] MOTION",
-               clutter_actor_get_name (source_actor));
+      {
+        ClutterMotionEvent *motion = (ClutterMotionEvent *) event;
+
+        g_print ("[%s] MOTION (%.02f,%.02f)",
+                 clutter_actor_get_name (source_actor), motion->x, motion->y);
+      }
       break;
     case CLUTTER_ENTER:
       g_print ("[%s] ENTER (from:%s)",

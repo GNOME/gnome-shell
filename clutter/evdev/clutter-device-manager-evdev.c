@@ -96,6 +96,7 @@ struct _ClutterEventSource
   GPollFD event_poll_fd;              /* file descriptor of the /dev node */
   struct xkb_desc *xkb;               /* compiled xkb keymap */
   uint32_t modifier_state;            /* remember the modifier state */
+  gint x, y;                          /* last x, y position for pointers */
 };
 
 static gboolean
@@ -130,23 +131,143 @@ clutter_event_check (GSource *source)
   return retval;
 }
 
+static void
+queue_event (ClutterEvent *event)
+{
+  ClutterMainContext *context;
+
+  if (event == NULL)
+    return;
+
+  context = _clutter_context_get_default ();
+  g_queue_push_head (context->events_queue, event);
+}
+
+static void
+notify_key (ClutterEventSource *source,
+            guint32             time_,
+            guint32             key,
+            guint32             state)
+{
+  ClutterEvent *event = NULL;
+  ClutterActor *stage;
+
+  stage = clutter_stage_get_default ();
+
+  /* if we have a mapping for that device, use it to generate the event */
+  if (source->xkb)
+    event =
+      _clutter_key_event_new_from_evdev ((ClutterInputDevice *) source->device,
+                                         CLUTTER_STAGE (stage),
+                                         source->xkb,
+                                         time_, key, state,
+                                         &source->modifier_state);
+
+  queue_event (event);
+}
+
+
+static void
+notify_motion (ClutterEventSource *source,
+               guint32             time_,
+               gint                x,
+               gint                y)
+{
+  gfloat stage_width, stage_height, new_x, new_y;
+  ClutterEvent *event;
+  ClutterActor *stage;
+
+  stage = clutter_stage_get_default ();
+  stage_width = clutter_actor_get_width (stage);
+  stage_height = clutter_actor_get_height (stage);
+
+  event = clutter_event_new (CLUTTER_MOTION);
+
+  if (x < 0)
+    new_x = 0.f;
+  else if (x >= stage_width)
+    new_x = stage_width - 1;
+  else
+    new_x = x;
+
+  if (y < 0)
+    new_y = 0.f;
+  else if (y >= stage_height)
+    new_y = stage_height - 1;
+  else
+    new_y = y;
+
+  source->x = new_x;
+  source->y = new_y;
+
+  event->motion.time = time_;
+  event->motion.stage = CLUTTER_STAGE (stage);
+  event->motion.device = (ClutterInputDevice *) source->device;
+  event->motion.modifier_state = source->modifier_state;
+  event->motion.x = new_x;
+  event->motion.y = new_y;
+
+  queue_event (event);
+}
+
+static void
+notify_button (ClutterEventSource *source,
+               guint32             time_,
+               guint32             button,
+               guint32             state)
+{
+  ClutterEvent *event;
+  ClutterActor *stage;
+  gint button_nr;
+  static gint maskmap[5] =
+    {
+      CLUTTER_BUTTON1_MASK, CLUTTER_BUTTON2_MASK, CLUTTER_BUTTON3_MASK,
+      CLUTTER_BUTTON4_MASK, CLUTTER_BUTTON5_MASK
+    };
+
+  stage = clutter_stage_get_default ();
+
+  button_nr = button - BTN_LEFT + 1;
+  if (G_UNLIKELY (button_nr < 1 || button_nr > 8))
+    {
+      g_warning ("Unhandled button event 0x%x", button);
+      return;
+    }
+
+  if (state)
+    event = clutter_event_new (CLUTTER_BUTTON_PRESS);
+  else
+    event = clutter_event_new (CLUTTER_BUTTON_RELEASE);
+
+  /* Update the modfiers */
+  if (state)
+    source->modifier_state |= maskmap[button - BTN_LEFT];
+  else
+    source->modifier_state &= ~maskmap[button - BTN_LEFT];
+
+  event->button.time = time_;
+  event->button.stage = CLUTTER_STAGE (stage);
+  event->button.device = (ClutterInputDevice *) source->device;
+  event->button.modifier_state = source->modifier_state;
+  event->button.button = button_nr;
+  event->button.x = source->x;
+  event->button.y = source->y;
+
+  queue_event (event);
+}
+
 static gboolean
 clutter_event_dispatch (GSource     *g_source,
                         GSourceFunc  callback,
                         gpointer     user_data)
 {
   ClutterEventSource *source = (ClutterEventSource *) g_source;
-  ClutterInputDevice *input_device = (ClutterInputDevice *) source->device;
-  ClutterMainContext *clutter_context;
   struct input_event ev[8];
-  ClutterEvent *event = NULL;
-  ClutterStage *stage;
-  gint len, i;
+  ClutterEvent *event;
+  gint len, i, dx = 0, dy = 0;
+  uint32_t _time;
 
   clutter_threads_enter ();
-
-  clutter_context = _clutter_context_get_default ();
-  stage = CLUTTER_STAGE (clutter_stage_get_default ());
 
   /* Don't queue more events if we haven't finished handling the previous batch
    */
@@ -183,9 +304,9 @@ clutter_event_dispatch (GSource     *g_source,
        for (i = 0; i < len / sizeof (ev[0]); i++)
          {
            struct input_event *e = &ev[i];
-           uint32_t _time;
 
            _time = e->time.tv_sec * 1000 + e->time.tv_usec / 1000;
+           event = NULL;
 
            switch (e->type)
              {
@@ -196,36 +317,68 @@ clutter_event_dispatch (GSource     *g_source,
                  if (e->value == 2)
                    continue;
 
-               /* if we have a mapping for that device, use it to generate
-                * the event */
-               if (source->xkb)
-                 event =
-                   _clutter_key_event_new_from_evdev (input_device,
-                                                      stage,
-                                                      source->xkb,
-                                                      _time, e->code, e->value,
-                                                      &source->modifier_state);
+               switch (e->code)
+                 {
+                 case BTN_TOUCH:
+                 case BTN_TOOL_PEN:
+                 case BTN_TOOL_RUBBER:
+                 case BTN_TOOL_BRUSH:
+                 case BTN_TOOL_PENCIL:
+                 case BTN_TOOL_AIRBRUSH:
+                 case BTN_TOOL_FINGER:
+                 case BTN_TOOL_MOUSE:
+                 case BTN_TOOL_LENS:
+                   break;
 
+                 case BTN_LEFT:
+                 case BTN_RIGHT:
+                 case BTN_MIDDLE:
+                 case BTN_SIDE:
+                 case BTN_EXTRA:
+                 case BTN_FORWARD:
+                 case BTN_BACK:
+                 case BTN_TASK:
+                   notify_button(source, _time, e->code, e->value);
+                   break;
+
+                 default:
+                   notify_key (source, _time, e->code, e->value);
+                 break;
+                 }
                break;
+
              case EV_SYN:
                /* Nothing to do here? */
                break;
+
              case EV_MSC:
                /* Nothing to do here? */
                break;
-             case EV_ABS:
+
              case EV_REL:
+               /* compress the EV_REL events in dx/dy */
+               switch (e->code)
+                 {
+                 case REL_X:
+                   dx += e->value;
+                   break;
+                 case REL_Y:
+                   dy += e->value;
+                   break;
+                 }
+               break;
+
+             case EV_ABS:
              default:
                g_warning ("Unhandled event of type %d", e->type);
                break;
              }
 
-           if (event)
-             {
-               g_queue_push_head (clutter_context->events_queue, event);
-               event = NULL;
-             }
+           queue_event (event);
          }
+
+       if (dx != 0 || dy != 0)
+         notify_motion (source, _time, source->x + dx, source->y + dy);
     }
 
   /* Pop an event off the queue if any */
@@ -295,6 +448,20 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
           return NULL;
         }
     }
+  else if (type == CLUTTER_POINTER_DEVICE)
+    {
+      /* initialize the pointer position to the center of the default stage */
+      ClutterActor *stage;
+      gfloat stage_width, stage_height;
+
+      stage = clutter_stage_get_default ();
+
+      stage_width = clutter_actor_get_width (stage);
+      stage_height = clutter_actor_get_height (stage);
+
+      event_source->x = (gint) stage_width / 2;
+      event_source->y = (gint) stage_height / 2;
+    }
 
   /* and finally configure and attach the GSource */
   g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
@@ -361,6 +528,7 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
   ClutterDeviceManager *manager = (ClutterDeviceManager *) manager_evdev;
   ClutterInputDeviceType type = CLUTTER_EXTENSION_DEVICE;
   ClutterInputDevice *device;
+  ClutterActor *stage;
   const gchar *device_file, *sysfs_path;
   const gchar * const *keys;
   guint i;
@@ -406,6 +574,11 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
                          "sysfs-path", sysfs_path,
                          "device-path", device_file,
                          NULL);
+
+  /* Always associate the device to the default stage */
+  stage = clutter_stage_get_default ();
+  _clutter_input_device_set_stage (device, CLUTTER_STAGE (stage));
+
   _clutter_device_manager_add_device (manager, device);
 
   CLUTTER_NOTE (EVENT, "Added device %s, type %d, sysfs %s",
