@@ -41,18 +41,6 @@
       <default>[]</default>
       <_summary>History for command (Alt-F2) dialog</_summary>
     </key>
-    <key name="workspaces-view" type="s">
-      <default>'single'</default>
-      <_summary>Overview workspace view mode</_summary>
-      <_description>
-        The selected workspace view mode in the overview.
-        Supported values are "single" and "grid".
-      </_description>
-      <choices>
-        <choice value="single"/>
-        <choice value="grid"/>
-      </choices>
-    </key>
     <child name="clock" schema="org.gnome.shell.clock"/>
     <child name="calendar" schema="org.gnome.shell.calendar"/>
     <child name="recorder" schema="org.gnome.shell.recorder"/>
