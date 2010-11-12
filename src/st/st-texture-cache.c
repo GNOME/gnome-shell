@@ -1235,9 +1235,9 @@ st_texture_cache_load_sliced_image (StTextureCache    *cache,
  */
 
 /**
- * st_texture_cache_load_icon_name_for_theme:
+ * st_texture_cache_load_icon_name:
  * @cache: The texture cache instance
- * @theme_node: a #StThemeNode
+ * @theme_node: (allow-none): a #StThemeNode
  * @name: Name of a themed icon
  * @icon_type: the type of icon to load
  * @size: Size of themed
@@ -1249,15 +1249,17 @@ st_texture_cache_load_sliced_image (StTextureCache    *cache,
  * Return Value: (transfer none): A new #ClutterTexture for the icon
  */
 ClutterActor *
-st_texture_cache_load_icon_name_for_theme (StTextureCache    *cache,
-                                           StThemeNode       *theme_node,
-                                           const char        *name,
-                                           StIconType         icon_type,
-                                           gint               size)
+st_texture_cache_load_icon_name (StTextureCache    *cache,
+                                 StThemeNode       *theme_node,
+                                 const char        *name,
+                                 StIconType         icon_type,
+                                 gint               size)
 {
   ClutterActor *texture;
   GIcon *themed;
   char *symbolic;
+
+  g_return_val_if_fail (!(icon_type == ST_ICON_SYMBOLIC && theme_node == NULL), NULL);
 
   switch (icon_type)
     {
@@ -1273,12 +1275,8 @@ st_texture_cache_load_icon_name_for_theme (StTextureCache    *cache,
       symbolic = g_strconcat (name, "-symbolic", NULL);
       themed = g_themed_icon_new_with_default_fallbacks ((const gchar*)symbolic);
       g_free (symbolic);
-      if (theme_node)
-        texture = load_gicon_with_colors (cache, themed, size,
-                                          st_theme_node_get_icon_colors (theme_node));
-      else
-        texture = st_texture_cache_load_gicon (cache, themed, size);
-
+      texture = load_gicon_with_colors (cache, themed, size,
+                                        st_theme_node_get_icon_colors (theme_node));
       g_object_unref (themed);
 
       return CLUTTER_ACTOR (texture);
@@ -1292,27 +1290,6 @@ st_texture_cache_load_icon_name_for_theme (StTextureCache    *cache,
     default:
       g_assert_not_reached ();
     }
-}
-
-/**
- * st_texture_cache_load_icon_name:
- * @cache: The texture cache instance
- * @name: Name of a themed icon
- * @icon_type: the type of icon to load
- * @size: Size of themed
- *
- * Load a themed icon into a texture. See the #StIconType documentation
- * for an explanation of how @icon_type affects the returned icon.
- *
- * Return Value: (transfer none): A new #ClutterTexture for the icon
- */
-ClutterActor *
-st_texture_cache_load_icon_name (StTextureCache    *cache,
-                                 const char        *name,
-                                 StIconType         icon_type,
-                                 gint               size)
-{
-  return st_texture_cache_load_icon_name_for_theme (cache, NULL, name, icon_type, size);
 }
 
 /**

@@ -324,11 +324,11 @@ st_icon_update (StIcon *icon)
       if (theme_node)
         {
           StTextureCache *cache = st_texture_cache_get_default ();
-          priv->icon_texture = st_texture_cache_load_icon_name_for_theme (cache,
-                                                                          theme_node,
-                                                                          priv->icon_name,
-                                                                          priv->icon_type,
-                                                                          priv->icon_size);
+          priv->icon_texture = st_texture_cache_load_icon_name (cache,
+                                                                theme_node,
+                                                                priv->icon_name,
+                                                                priv->icon_type,
+                                                                priv->icon_size);
 
           if (priv->icon_texture)
             clutter_actor_set_parent (priv->icon_texture, CLUTTER_ACTOR (icon));
