@@ -20,9 +20,6 @@ const FOCUS_ANIMATION_TIME = 0.15;
 
 const WINDOW_DND_SIZE = 256;
 
-const FRAME_COLOR = new Clutter.Color();
-FRAME_COLOR.from_pixel(0xffffffff);
-
 const SCROLL_SCALE_AMOUNT = 100 / 5;
 
 const LIGHTBOX_FADE_TIME = 0.1;
@@ -54,11 +51,6 @@ function _clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
 
-// Spacing between workspaces. At the moment, the same spacing is used
-// in both zoomed-in and zoomed-out views; this is slightly
-// metaphor-breaking, but the alternatives are also weird.
-const GRID_SPACING = 15;
-const FRAME_SIZE = GRID_SPACING / 3;
 
 function ScaledPoint(x, y, scaleX, scaleY) {
     [this.x, this.y, this.scaleX, this.scaleY] = arguments;
@@ -576,8 +568,6 @@ Workspace.prototype = {
 
         this._visible = false;
 
-        this._frame = null;
-
         this.leavingOverview = false;
     },
 
@@ -639,9 +629,6 @@ Workspace.prototype = {
             this._lightbox.show();
         else
             this._lightbox.hide();
-
-        if (this._frame)
-            this._frame.set_opacity(showLightbox ? 150 : 255);
     },
 
     /**
@@ -662,32 +649,6 @@ Workspace.prototype = {
         this._lightbox.highlight(actor);
     },
 
-    // Mark the workspace selected/not-selected
-    setSelected : function(selected) {
-        // Don't draw a frame if we only have one workspace
-        if (selected && global.screen.n_workspaces > 1) {
-            if (this._frame)
-                return;
-
-            // FIXME: do something cooler-looking using clutter-cairo
-            this._frame = new Clutter.Rectangle({ color: FRAME_COLOR });
-            this.actor.add_actor(this._frame);
-            this._frame.set_position(- FRAME_SIZE / this.actor.scale_x,
-                                     - FRAME_SIZE / this.actor.scale_y);
-            this._frame.set_size(this.actor.width + 2 * FRAME_SIZE / this.actor.scale_x,
-                                 this.actor.height + 2 * FRAME_SIZE / this.actor.scale_y);
-            this._frame.lower_bottom();
-
-            this._framePosHandler = this.actor.connect('notify::scale-x', Lang.bind(this, this._updateFramePosition));
-        } else {
-            if (!this._frame)
-                return;
-            this.actor.disconnect(this._framePosHandler);
-            this._frame.destroy();
-            this._frame = null;
-        }
-    },
-
     /**
      * setReactive:
      * @reactive: %true iff the workspace should be reactive
@@ -696,13 +657,6 @@ Workspace.prototype = {
      **/
     setReactive: function(reactive) {
         this.actor.reactive = reactive;
-    },
-
-    _updateFramePosition : function() {
-        this._frame.set_position(- FRAME_SIZE / this.actor.scale_x,
-                                 - FRAME_SIZE / this.actor.scale_y);
-        this._frame.set_size(this.actor.width + 2 * FRAME_SIZE / this.actor.scale_x,
-                             this.actor.height + 2 * FRAME_SIZE / this.actor.scale_y);
     },
 
     _isCloneVisible: function(clone) {
@@ -1080,8 +1034,8 @@ Workspace.prototype = {
         // be after the workspace animation finishes.
         let [cloneX, cloneY] = clone.actor.get_position();
         let [cloneWidth, cloneHeight] = clone.actor.get_size();
-        cloneX = this.gridX + this.scale * cloneX;
-        cloneY = this.gridY + this.scale * cloneY;
+        cloneX = this.x + this.scale * cloneX;
+        cloneY = this.y + this.scale * cloneY;
         cloneWidth = this.scale * clone.actor.scale_x * cloneWidth;
         cloneHeight = this.scale * clone.actor.scale_y * cloneHeight;
 
@@ -1120,8 +1074,8 @@ Workspace.prototype = {
         let wsHeight = this.actor.height * this.scale;
 
         let pointerHasMoved = (this._cursorX != x && this._cursorY != y);
-        let inWorkspace = (this.gridX < x && x < this.gridX + wsWidth &&
-                           this.gridY < y && y < this.gridY + wsHeight);
+        let inWorkspace = (this.x < x && x < this.x + wsWidth &&
+                           this.y < y && y < this.y + wsHeight);
 
         if (pointerHasMoved && inWorkspace) {
             // store current cursor position
@@ -1245,7 +1199,7 @@ Workspace.prototype = {
 
     // Animate the full-screen to Overview transition.
     zoomToOverview : function() {
-        this.actor.set_position(this.gridX, this.gridY);
+        this.actor.set_position(this.x, this.y);
         this.actor.set_scale(this.scale, this.scale);
 
         // Position and scale the windows.
@@ -1301,69 +1255,6 @@ Workspace.prototype = {
         }
 
         this._visible = false;
-    },
-
-    // Animates grid shrinking/expanding when a row or column
-    // of workspaces is added or removed
-    resizeToGrid : function (oldScale) {
-        this._hideAllOverlays();
-        Tweener.addTween(this.actor,
-                         { x: this.gridX,
-                           y: this.gridY,
-                           scale_x: this.scale,
-                           scale_y: this.scale,
-                           time: Overview.ANIMATION_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, this._fadeInAllOverlays)
-                         });
-    },
-
-    // Animates the addition of a new (empty) workspace
-    slideIn : function(oldScale) {
-        if (this.gridCol > this.gridRow) {
-            this.actor.set_position(global.screen_width, this.gridY);
-            this.actor.set_scale(oldScale, oldScale);
-        } else {
-            this.actor.set_position(this.gridX, global.screen_height);
-            this.actor.set_scale(this.scale, this.scale);
-        }
-        Tweener.addTween(this.actor,
-                         { x: this.gridX,
-                           y: this.gridY,
-                           scale_x: this.scale,
-                           scale_y: this.scale,
-                           time: Overview.ANIMATION_TIME,
-                           transition: 'easeOutQuad'
-                         });
-
-        this._visible = true;
-    },
-
-    // Animates the removal of a workspace
-    slideOut : function(onComplete) {
-        let destX = this.actor.x, destY = this.actor.y;
-
-        this._hideAllOverlays();
-
-        if (this.gridCol > this.gridRow)
-            destX = global.screen_width;
-        else
-            destY = global.screen_height;
-        Tweener.addTween(this.actor,
-                         { x: destX,
-                           y: destY,
-                           scale_x: this.scale,
-                           scale_y: this.scale,
-                           time: Overview.ANIMATION_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: onComplete
-                         });
-
-        this._visible = false;
-
-        // Don't let the user try to select this workspace as it's
-        // making its exit.
-        this.actor.reactive = false;
     },
 
     destroy : function() {
@@ -1555,11 +1446,11 @@ function _workspaceRelativeModifier(workspace) {
     }
 
     return [ { name: 'x',
-               parameters: { workspacePos: workspace.gridX,
+               parameters: { workspacePos: workspace.x,
                              overviewPos: overviewPosX,
                              overviewScale: overviewScale } },
              { name: 'y',
-               parameters: { workspacePos: workspace.gridY,
+               parameters: { workspacePos: workspace.y,
                              overviewPos: overviewPosY,
                              overviewScale: overviewScale } }
            ];

@@ -257,16 +257,9 @@ StTooltip StLabel {
 
 /* Overview */
 
-.workspaces {
+.workspaces-view {
     color: white;
-}
-
-.workspaces.single {
     spacing: 25px;
-}
-
-.workspaces.mosaic {
-    spacing: 15px;
 }
 
 .workspaces-bar {
