@@ -82,7 +82,7 @@ ATIndicator.prototype = {
         let magnifier = this._buildMagItem();
         this.menu.addMenuItem(magnifier);
 
-        let textZoom = this._buildFontItem(client);
+        let textZoom = this._buildFontItem();
         this.menu.addMenuItem(textZoom);
 
         let screenReader = this._buildItem(_("Screen Reader"), AT_SCREEN_READER_SCHEMA, 'startup');
@@ -189,7 +189,7 @@ ATIndicator.prototype = {
         return highContrast;
     },
 
-    _buildFontItem: function(client) {
+    _buildFontItem: function() {
         let settings = new Gio.Settings({ schema: XSETTINGS_SCHEMA });
 
         // we assume this never changes (which is not true if resolution
@@ -207,9 +207,9 @@ ATIndicator.prototype = {
             settings.is_writable(KEY_DPI),
             function (enabled) {
                 if (enabled)
-                    client.set_float(KEY_DPI, DPI_FACTOR_LARGE * default_value);
+                    settings.set_double(KEY_DPI, DPI_FACTOR_LARGE * default_value);
                 else
-                    client.set_float(KEY_DPI, default_value);
+                    settings.set_double(KEY_DPI, default_value);
             });
         settings.connect('changed::' + KEY_DPI, function() {
             let active = on_get();
