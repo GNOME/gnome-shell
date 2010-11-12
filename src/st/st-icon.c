@@ -509,9 +509,7 @@ st_icon_set_icon_name (StIcon      *icon,
   priv = icon->priv;
 
   /* Check if there's no change */
-  if ((!priv->icon_name && !icon_name) ||
-      (priv->icon_name && icon_name &&
-       g_str_equal (priv->icon_name, icon_name)))
+  if (g_strcmp0 (priv->icon_name, icon_name) == 0)
     return;
 
   g_free (priv->icon_name);
