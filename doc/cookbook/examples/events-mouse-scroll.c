@@ -13,14 +13,15 @@ _scroll_event_cb (ClutterActor *viewport,
 
   gfloat viewport_height = clutter_actor_get_height (viewport);
   gfloat scrollable_height = clutter_actor_get_height (scrollable);
+  gfloat y;
+  ClutterScrollDirection direction;
 
   /* no need to scroll if the scrollable is shorter than the viewport */
   if (scrollable_height < viewport_height)
     return TRUE;
 
-  gfloat y = clutter_actor_get_y (scrollable);
+  y = clutter_actor_get_y (scrollable);
 
-  ClutterScrollDirection direction;
   direction = clutter_event_get_scroll_direction (event);
 
   switch (direction)
@@ -63,16 +64,16 @@ _scroll_event_cb (ClutterActor *viewport,
 int
 main (int argc, char *argv[])
 {
+  ClutterActor *stage;
+  ClutterActor *viewport;
+  ClutterActor *texture;
+
   gchar *image_file_path = TESTS_DATA_DIR "/redhand.png";
 
   if (argc > 1)
     {
       image_file_path = argv[1];
     }
-
-  ClutterActor *stage;
-  ClutterActor *viewport;
-  ClutterActor *texture;
 
   clutter_init (&argc, &argv);
 

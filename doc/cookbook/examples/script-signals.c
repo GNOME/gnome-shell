@@ -22,6 +22,8 @@ foo_button_clicked_cb (ClutterClickAction *action,
                        ClutterActor       *actor,
                        gpointer            user_data)
 {
+  gfloat z_angle;
+
   /* get the UI definition passed to the handler */
   ClutterScript *ui = CLUTTER_SCRIPT (user_data);
 
@@ -36,7 +38,6 @@ foo_button_clicked_cb (ClutterClickAction *action,
     return;
 
   /* get the current rotation and increment it */
-  gfloat z_angle;
   z_angle = clutter_actor_get_rotation (rectangle,
                                         CLUTTER_Z_AXIS,
                                         NULL, NULL, NULL);
@@ -54,12 +55,15 @@ foo_button_clicked_cb (ClutterClickAction *action,
 int
 main (int argc, char *argv[])
 {
-  clutter_init (&argc, &argv);
-
-  ClutterScript *ui = clutter_script_new ();
+  ClutterActor *stage;
+  ClutterScript *ui;
 
   gchar *filename = "script-signals.json";
   GError *error = NULL;
+
+  clutter_init (&argc, &argv);
+
+  ui = clutter_script_new ();
 
   clutter_script_load_from_file (ui, filename, &error);
 
@@ -70,7 +74,6 @@ main (int argc, char *argv[])
       exit (EXIT_FAILURE);
     }
 
-  ClutterActor *stage;
   clutter_script_get_objects (ui,
                               "stage", &stage,
                               NULL);

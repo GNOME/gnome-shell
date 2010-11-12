@@ -65,16 +65,15 @@ int
 main (int   argc,
       char *argv[])
 {
-  /* seed random number generator */
-  srand ((unsigned int) time (NULL));
-
-  State *state = g_new0 (State, 1);
-
   ClutterActor *red;
   ClutterActor *green;
   ClutterActor *blue;
+  State *state = g_new0 (State, 1);
 
-  clutter_init (&argc, &argv);
+  /* seed random number generator */
+  srand ((unsigned int) time (NULL));
+
+clutter_init (&argc, &argv);
 
   state->animator = clutter_animator_new ();
   clutter_animator_set_duration (state->animator, 500);

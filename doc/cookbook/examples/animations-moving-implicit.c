@@ -17,10 +17,12 @@ button_pressed_cb (ClutterActor *actor,
                    ClutterEvent *event,
                    gpointer      user_data)
 {
+  AnimationSpec *animation_spec;
+
   if (clutter_actor_get_animation (actor) != NULL)
     return TRUE;
 
-  AnimationSpec *animation_spec = (AnimationSpec *) user_data;
+  animation_spec = (AnimationSpec *) user_data;
 
   clutter_actor_animate (actor, CLUTTER_LINEAR, 500,
                          animation_spec->axis, animation_spec->target,

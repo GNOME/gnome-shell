@@ -71,16 +71,17 @@ out:
 int
 main (int argc, char *argv[])
 {
-  clutter_init (&argc, &argv);
-
   ClutterActor *stage;
+  ClutterActor *texture;
+  GError *error = NULL;
+  ClutterActor *clone;
+  gfloat y_offset;
+
+  clutter_init (&argc, &argv);
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Reflection");
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
-
-  ClutterActor *texture;
-  GError *error = NULL;
 
   texture = clutter_texture_new ();
   clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
@@ -89,8 +90,7 @@ main (int argc, char *argv[])
   clutter_actor_add_constraint (texture, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5));
   clutter_actor_add_constraint (texture, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.2));
 
-  ClutterActor *clone;
-  gfloat y_offset = clutter_actor_get_height (texture) + V_PADDING;
+  y_offset = clutter_actor_get_height (texture) + V_PADDING;
 
   clone = clutter_clone_new (texture);
   clutter_actor_add_constraint (clone, clutter_bind_constraint_new (texture, CLUTTER_BIND_X, 0.0));

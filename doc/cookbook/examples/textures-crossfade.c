@@ -61,6 +61,15 @@ load_image (ClutterTexture *texture,
 int
 main (int argc, char *argv[])
 {
+  GError *error = NULL;
+
+  /* UI */
+  ClutterActor *stage;
+  ClutterLayoutManager *layout;
+  ClutterActor *box;
+  ClutterActor *top, *bottom;
+  ClutterState *transitions;
+
   clutter_init_with_args (&argc, &argv,
                           " - cross-fade", entries,
                           NULL,
@@ -71,15 +80,6 @@ main (int argc, char *argv[])
       g_print ("Usage: %s -s <source> -t <target> [-d <duration>]\n", argv[0]);
       exit (EXIT_FAILURE);
     }
-
-  GError *error = NULL;
-
-  /* UI */
-  ClutterActor *stage;
-  ClutterLayoutManager *layout;
-  ClutterActor *box;
-  ClutterActor *top, *bottom;
-  ClutterState *transitions;
 
   clutter_init (&argc, &argv);
 

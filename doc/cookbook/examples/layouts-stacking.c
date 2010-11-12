@@ -12,11 +12,6 @@ static const ClutterColor box_color = { 0x33, 0x33, 0x55, 0xff };
 int
 main (int argc, char *argv[])
 {
-  gchar *filename = TESTS_DATA_DIR "/redhand.png";
-
-  if (argc > 1)
-    filename = argv[1];
-
   ClutterLayoutManager *layout;
   ClutterActor *box;
   ClutterActor *stage;
@@ -24,6 +19,11 @@ main (int argc, char *argv[])
   CoglHandle *cogl_texture;
   GError *error = NULL;
   gfloat width;
+
+  gchar *filename = TESTS_DATA_DIR "/redhand.png";
+
+  if (argc > 1)
+    filename = argv[1];
 
   clutter_init (&argc, &argv);
 

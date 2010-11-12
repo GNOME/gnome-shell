@@ -26,6 +26,11 @@ typedef struct {
 static gboolean
 load_next_image (State *app)
 {
+  gpointer next;
+  gchar *image_path;
+  CoglHandle *cogl_texture;
+  GError *error = NULL;
+
   /* don't do anything if already animating */
   ClutterTimeline *timeline = clutter_state_get_timeline (app->transitions);
 
@@ -38,16 +43,15 @@ load_next_image (State *app)
   if (!app->next_image_index)
       app->next_image_index = 0;
 
-  gpointer next = g_slist_nth_data (app->image_paths, app->next_image_index);
+  next = g_slist_nth_data (app->image_paths, app->next_image_index);
 
   if (next == NULL)
     return FALSE;
 
-  gchar *image_path = (gchar *)next;
+  image_path = (gchar *)next;
 
   g_debug ("Loading %s", image_path);
 
-  CoglHandle *cogl_texture;
   cogl_texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (app->top));
 
   if (cogl_texture != NULL)
@@ -60,7 +64,6 @@ load_next_image (State *app)
     }
 
   /* load the next image into the top */
-  GError *error = NULL;
   clutter_texture_set_from_file (CLUTTER_TEXTURE (app->top),
                                  image_path,
                                  &error);
@@ -95,29 +98,29 @@ _key_pressed_cb (ClutterActor *actor,
 int
 main (int argc, char *argv[])
 {
-  if (argc < 2)
-    {
-      g_print ("Usage: %s <image paths to load>\n", argv[0]);
-      exit (EXIT_FAILURE);
-    }
-
   State *app = g_new0 (State, 1);
-  app->image_paths = NULL;
-
-  /*
-   * NB if your shell globs arguments to this program so argv
-   * includes non-image files, they will fail to load and throw errors
-   */
   guint i;
-  for (i = 1; i < argc; i++)
-    app->image_paths = g_slist_append (app->image_paths, argv[i]);
-
   GError *error = NULL;
 
   /* UI */
   ClutterActor *stage;
   ClutterLayoutManager *layout;
   ClutterActor *box;
+
+  if (argc < 2)
+    {
+      g_print ("Usage: %s <image paths to load>\n", argv[0]);
+      exit (EXIT_FAILURE);
+    }
+
+  app->image_paths = NULL;
+
+  /*
+   * NB if your shell globs arguments to this program so argv
+   * includes non-image files, they will fail to load and throw errors
+   */
+  for (i = 1; i < argc; i++)
+    app->image_paths = g_slist_append (app->image_paths, argv[i]);
 
   clutter_init (&argc, &argv);
 

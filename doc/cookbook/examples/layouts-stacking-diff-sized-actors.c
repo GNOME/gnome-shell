@@ -11,6 +11,8 @@ main (int argc, char *argv[])
   ClutterActor *box;
   ClutterActor *rect1, *rect2;
   guint align_x, align_y, diff_x, diff_y;
+  ClutterColor *color;
+  ClutterActor *rect;
 
   clutter_init (&argc, &argv);
 
@@ -54,11 +56,11 @@ main (int argc, char *argv[])
           else if (align_y == 4)
             diff_y = 2;
 
-          ClutterColor *color = clutter_color_new (255 - diff_x * 50,
+          color = clutter_color_new (255 - diff_x * 50,
                                                    100 + diff_y * 50,
                                                    0,
                                                    255);
-          ClutterActor *rect = clutter_rectangle_new_with_color (color);
+          rect = clutter_rectangle_new_with_color (color);
           clutter_actor_set_size (rect, 100, 100);
           clutter_bin_layout_set_alignment (CLUTTER_BIN_LAYOUT (layout),
                                             rect,
