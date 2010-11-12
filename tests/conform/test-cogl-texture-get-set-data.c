@@ -101,6 +101,8 @@ paint_cb (void)
   /* Try with a really big texture in the hope that it will end up
      sliced. */
   check_texture (4, 5128, COGL_TEXTURE_NO_ATLAS);
+  /* And in the other direction. */
+  check_texture (5128, 4, COGL_TEXTURE_NO_ATLAS);
 
   clutter_main_quit ();
 }
