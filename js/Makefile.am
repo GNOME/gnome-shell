@@ -49,6 +49,7 @@ nobase_dist_js_DATA = 	\
 	ui/status/volume.js	\
 	ui/telepathyClient.js	\
 	ui/tweener.js		\
+	ui/viewSelector.js	\
 	ui/windowAttentionHandler.js	\
 	ui/windowManager.js	\
 	ui/workspace.js		\

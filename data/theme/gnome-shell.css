@@ -355,90 +355,92 @@ StTooltip StLabel {
     spacing: 12px;
 }
 
+#viewSelector {
+    spacing: 16px;
+}
+
+#searchArea {
+    padding: 0px 12px;
+}
+
 #searchEntry {
-    padding: 4px;
-    border-radius: 4px;
-    color: #a8a8a8;
-    border: 1px solid #565656;
-    background-color: #404040;
-    caret-color: #fff;
+    padding: 4px 8px;
+    border-radius: 12px;
+    color: rgb(128, 128, 128);
+    border: 2px solid rgba(128, 128, 128, 0.4);
+    background-gradient-start: rgba(0, 0, 0, 0.2);
+    background-gradient-end: rgba(128, 128, 128, 0.2);
+    background-gradient-direction: vertical;
+    caret-color: rgb(128, 128, 128);
     caret-size: 1px;
     height: 16px;
+    width: 250px;
     transition-duration: 300;
 }
 
 #searchEntry:focus {
-    color: #545454;
-    border: 1px solid #3a3a3a;
-    background-color: #e8e8e8;
-    caret-color: #545454;
+    border: 2px solid #ffffff;
+    background-gradient-start: rgba(0, 0, 0, 0.2);
+    background-gradient-end: #ffffff;
+    background-gradient-direction: vertical;
+    color: rgb(64, 64, 64);
+    font-weight: bold;
     -st-shadow: 0px 0px 6px 2px rgba(255,255,255,0.9);
     transition-duration: 0;
 }
 
 #searchEntry:hover {
-    color: #a8a8a8;
-    border: 1px solid #4d4d4d;
-    background-color: #e8e8e8;
+    border: 2px solid #e8e8e8;
     caret-color: #545454;
     transition-duration: 500;
 }
 
-.dash-section {
+.view-tab-title {
+    color: #888a85;
+    font-weight: bold;
+    padding: 0px 12px;
+}
+
+.view-tab-title:selected {
+    color: white;
+}
+
+.view-tab-boxpointer {
+    -arrow-border-radius: 9px;
+    -arrow-background-color: rgba(0,0,0,0.5);
+    -arrow-border-width: 2px;
+    -arrow-border-color: rgba(255,255,255,0.5);
+    -arrow-base: 30px;
+    -arrow-rise: 15px;
+}
+
+#searchResults {
+    padding: 20px 10px 10px 10px;
+}
+
+#searchResultsContent {
+    padding: 0 10px;
     spacing: 8px;
-}
-
-.section-header {
-}
-
-.section-header-inner {
-    spacing: 4px;
-}
-
-.section-text-content {
-    padding: 4px 0px;
-}
-
-.dash-section-content {
-    color: #ffffff;
-    spacing: 8px;
-}
-
-.more-link {
-}
-
-.more-link-expander {
-    background-image: url("section-more.svg");
-    width: 9px;
-    height: 9px;
-}
-
-.more-link-expander.open {
-    background-image: url("section-more-open.svg");
-    width: 9px;
-    height: 9px;
-}
-
-.dash-pane {
-    border-radius: 10px;
-    background-color: #111111;
-    border: 2px solid #868686;
-    color: #ffffff;
-    padding: 30px 10px 10px 20px;
-}
-
-#dashAppSearchResults {
-    padding: 8px 0px;
 }
 
 .search-statustext,
 .search-section-header {
-    padding: 4px 0px;
+    padding: 4px 12px;
     spacing: 4px;
+    color: #6f6f6f;
+}
+
+.search-section {
+    background-color: rgba(128, 128, 128, .1);
+    border: 1px solid rgba(50, 50, 50, .4);
+    border-radius: 10px;
 }
 
 .search-section-results {
     color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid rgba(50, 50, 50, .4);
+    padding: 6px;
 }
 
 .search-section-list-results {
@@ -446,17 +448,15 @@ StTooltip StLabel {
 }
 
 .search-result-content {
-    padding: 3px;
+    padding: 4px;
 }
 
 .search-result-content:selected {
-    padding: 2px;
-    border: 1px solid #5c5c5c;
-    border-radius: 2px;
-    background-color: #1e1e1e;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.33);
 }
 
-.dash-results-container {
+.results-container {
     spacing: 4px;
 }
 
