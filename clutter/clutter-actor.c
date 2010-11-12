@@ -1865,7 +1865,7 @@ clutter_actor_real_queue_relayout (ClutterActor *self)
           N_CACHED_SIZE_REQUESTS * sizeof (SizeRequest));
 
   /* We need to go all the way up the hierarchy */
-  if (priv->parent_actor)
+  if (priv->parent_actor != NULL)
     _clutter_actor_queue_only_relayout (priv->parent_actor);
 }
 
@@ -5188,11 +5188,10 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
 static void
 _clutter_actor_queue_only_relayout (ClutterActor *self)
 {
-  ClutterActorPrivate *priv;
+  ClutterActorPrivate *priv = self->priv;
 
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  priv = self->priv;
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
+    return;
 
   if (priv->needs_width_request &&
       priv->needs_height_request &&
