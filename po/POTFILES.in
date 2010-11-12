@@ -15,6 +15,7 @@ js/ui/popupMenu.js
 js/ui/runDialog.js
 js/ui/statusMenu.js
 js/ui/status/accessibility.js
+js/ui/viewSelector.js
 js/ui/windowAttentionHandler.js
 js/ui/workspacesView.js
 src/gvc/gvc-mixer-control.c
