@@ -513,8 +513,12 @@ _clutter_input_device_update (ClutterInputDevice *device)
   g_return_val_if_fail (device->device_type == CLUTTER_POINTER_DEVICE, NULL);
 
   stage = device->stage;
-  if (stage == NULL)
-    return NULL;
+  if (G_UNLIKELY (stage == NULL))
+    {
+      g_warning ("No stage defined for device '%s'",
+                 clutter_input_device_get_device_name (device));
+      return NULL;
+    }
 
   clutter_input_device_get_device_coords (device, &x, &y);
 
