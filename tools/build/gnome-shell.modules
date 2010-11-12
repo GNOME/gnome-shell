@@ -205,6 +205,7 @@
         <dep package="gnome-icon-theme"/>
         <dep package="gnome-icon-theme-symbolic"/>
         <dep package="libcanberra"/>
+	<dep package="gnome-settings-daemon"/>
     </dependencies>
   </autotools>
 
@@ -227,4 +228,33 @@
     </dependencies>
   </metamodule>
 
+  <tarball id="polkit" version="0.99">
+    <source href="http://hal.freedesktop.org/releases/polkit-0.99.tar.gz"
+            hash="sha256:f612c7c26ec822f67751420057a4ae113fc50ab51070758faacf2ad30bb3583f"
+            md5sum="fcc4d7b19c08ad54d3ce0eae0ab12398" size="1042461"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+    <suggests>
+      <dep package="gobject-introspection"/>
+    </suggests>
+  </tarball>
+
+  <autotools id="gnome-settings-daemon">
+    <branch repo="git.gnome.org" module="gnome-settings-daemon"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gtk3"/>
+      <dep package="gnome-desktop-3"/>
+      <dep package="libgnomekbd"/>
+      <dep package="polkit"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libgnomekbd">
+    <branch repo="git.gnome.org" module="libgnomekbd"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+  </autotools>
 </moduleset>
