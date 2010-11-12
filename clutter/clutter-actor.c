@@ -675,8 +675,8 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                   G_IMPLEMENT_INTERFACE (ATK_TYPE_IMPLEMENTOR,
                                                          atk_implementor_iface_init));
 
-static const gchar *
-get_actor_debug_name (ClutterActor *actor)
+G_CONST_RETURN gchar *
+_clutter_actor_get_debug_name (ClutterActor *actor)
 {
   return actor->priv->name != NULL ? actor->priv->name
                                    : G_OBJECT_TYPE_NAME (actor);
@@ -707,13 +707,13 @@ clutter_actor_verify_map_state (ClutterActor *self)
               else
                 g_warning ("Realized non-toplevel actor '%s' should "
                            "have a parent",
-                           get_actor_debug_name (self));
+                           _clutter_actor_get_debug_name (self));
             }
           else if (!CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
             {
               g_warning ("Realized actor %s has an unrealized parent %s",
-                         get_actor_debug_name (self),
-                         get_actor_debug_name (priv->parent_actor));
+                         _clutter_actor_get_debug_name (self),
+                         _clutter_actor_get_debug_name (priv->parent_actor));
             }
         }
     }
@@ -722,7 +722,7 @@ clutter_actor_verify_map_state (ClutterActor *self)
     {
       if (!CLUTTER_ACTOR_IS_REALIZED (self))
         g_warning ("Actor '%s' is mapped but not realized",
-                   get_actor_debug_name (self));
+                   _clutter_actor_get_debug_name (self));
 
       /* remaining bets are off during reparent when we're potentially
        * mapped, but should not be according to invariants
@@ -738,13 +738,13 @@ clutter_actor_verify_map_state (ClutterActor *self)
                     {
                       g_warning ("Toplevel actor '%s' is mapped "
                                  "but not visible",
-                                 get_actor_debug_name (self));
+                                 _clutter_actor_get_debug_name (self));
                     }
                 }
               else
                 {
                   g_warning ("Mapped actor '%s' should have a parent",
-                             get_actor_debug_name (self));
+                             _clutter_actor_get_debug_name (self));
                 }
             }
           else
@@ -768,16 +768,16 @@ clutter_actor_verify_map_state (ClutterActor *self)
                 {
                   g_warning ("Actor '%s' should not be mapped if parent '%s'"
                              "is not visible",
-                             get_actor_debug_name (self),
-                             get_actor_debug_name (priv->parent_actor));
+                             _clutter_actor_get_debug_name (self),
+                             _clutter_actor_get_debug_name (priv->parent_actor));
                 }
 
               if (!CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
                 {
                   g_warning ("Actor '%s' should not be mapped if parent '%s'"
                              "is not realized",
-                             get_actor_debug_name (self),
-                             get_actor_debug_name (priv->parent_actor));
+                             _clutter_actor_get_debug_name (self),
+                             _clutter_actor_get_debug_name (priv->parent_actor));
                 }
 
               if (!CLUTTER_ACTOR_IS_TOPLEVEL (priv->parent_actor))
@@ -785,8 +785,8 @@ clutter_actor_verify_map_state (ClutterActor *self)
                   if (!CLUTTER_ACTOR_IS_MAPPED (priv->parent_actor))
                     g_warning ("Actor '%s' is mapped but its non-toplevel "
                                "parent '%s' is not mapped",
-                               get_actor_debug_name (self),
-                               get_actor_debug_name (priv->parent_actor));
+                               _clutter_actor_get_debug_name (self),
+                               _clutter_actor_get_debug_name (priv->parent_actor));
                 }
             }
         }
@@ -955,7 +955,7 @@ clutter_actor_update_map_state (ClutterActor  *self,
             {
               if (priv->parent_actor == NULL)
                 g_warning ("Attempting to map an unparented actor '%s'",
-                           get_actor_debug_name (self));
+                           _clutter_actor_get_debug_name (self));
 
               should_be_mapped = TRUE;
               must_be_realized = TRUE;
@@ -971,13 +971,13 @@ clutter_actor_update_map_state (ClutterActor  *self,
             g_warning ("Attempting to map a child that does not "
                        "meet the necessary invariants: the actor '%s' "
                        "has no parent",
-                       get_actor_debug_name (self));
+                       _clutter_actor_get_debug_name (self));
           else
             g_warning ("Attempting to map a child that does not "
                        "meet the necessary invariants: the actor '%s' "
                        "is parented to an unmapped actor '%s'",
-                       get_actor_debug_name (self),
-                       get_actor_debug_name (priv->parent_actor));
+                       _clutter_actor_get_debug_name (self),
+                       _clutter_actor_get_debug_name (priv->parent_actor));
         }
 
       /* If in reparent, we temporarily suspend unmap and unrealize.
@@ -1006,7 +1006,7 @@ clutter_actor_update_map_state (ClutterActor  *self,
           if (!must_be_realized)
             g_warning ("Somehow we think actor '%s' should be mapped but "
                        "not realized, which isn't allowed",
-                       get_actor_debug_name (self));
+                       _clutter_actor_get_debug_name (self));
 
           /* realization is allowed to fail (though I don't know what
            * an app is supposed to do about that - shouldn't it just
@@ -1386,7 +1386,7 @@ clutter_actor_realize (ClutterActor *self)
         return;
     }
 
-  CLUTTER_NOTE (ACTOR, "Realizing actor '%s'", get_actor_debug_name (self));
+  CLUTTER_NOTE (ACTOR, "Realizing actor '%s'", _clutter_actor_get_debug_name (self));
 
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
   _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_REALIZED]);
@@ -1761,7 +1761,7 @@ clutter_actor_real_allocate (ClutterActor           *self,
   if (x1_changed || y1_changed || x2_changed || y2_changed || flags_changed)
     {
       CLUTTER_NOTE (LAYOUT, "Allocation for '%s' changed",
-                    get_actor_debug_name (self));
+                    _clutter_actor_get_debug_name (self));
 
       _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ALLOCATION]);
 
@@ -1802,8 +1802,8 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
   ClutterActor *parent;
 
   CLUTTER_NOTE (PAINT, "Redraw queued on '%s' (from: '%s')",
-                get_actor_debug_name (self),
-                origin != NULL ? get_actor_debug_name (origin)
+                _clutter_actor_get_debug_name (self),
+                origin != NULL ? _clutter_actor_get_debug_name (origin)
                                : "same actor");
 
   /* no point in queuing a redraw on a destroyed actor */
@@ -5205,7 +5205,7 @@ _clutter_actor_queue_only_relayout (ClutterActor *self)
       g_warning ("The actor '%s' is currently inside an allocation "
                  "cycle; calling clutter_actor_queue_relayout() is "
                  "not recommended",
-                 get_actor_debug_name (self));
+                 _clutter_actor_get_debug_name (self));
     }
 #endif /* CLUTTER_ENABLE_DEBUG */
 
@@ -5227,8 +5227,9 @@ _clutter_actor_queue_only_relayout (ClutterActor *self)
 void
 clutter_actor_queue_relayout (ClutterActor *self)
 {
-  _clutter_actor_queue_only_relayout (self);
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  _clutter_actor_queue_only_relayout (self);
   clutter_actor_queue_redraw (self);
 }
 
@@ -7828,7 +7829,7 @@ clutter_actor_raise (ClutterActor *self,
     {
       g_warning ("%s: Actor '%s' is not inside a container",
                  G_STRFUNC,
-                 get_actor_debug_name (self));
+                 _clutter_actor_get_debug_name (self));
       return;
     }
 
@@ -7839,8 +7840,8 @@ clutter_actor_raise (ClutterActor *self,
           g_warning ("%s Actor '%s' is not in the same container as "
                      "actor '%s'",
                      G_STRFUNC,
-                     get_actor_debug_name (self),
-                     get_actor_debug_name (below));
+                     _clutter_actor_get_debug_name (self),
+                     _clutter_actor_get_debug_name (below));
           return;
         }
     }
@@ -7873,7 +7874,7 @@ clutter_actor_lower (ClutterActor *self,
     {
       g_warning ("%s: Actor of type %s is not inside a container",
                  G_STRFUNC,
-                 get_actor_debug_name (self));
+                 _clutter_actor_get_debug_name (self));
       return;
     }
 
@@ -7884,8 +7885,8 @@ clutter_actor_lower (ClutterActor *self,
           g_warning ("%s: Actor '%s' is not in the same container as "
                      "actor '%s'",
                      G_STRFUNC,
-                     get_actor_debug_name (self),
-                     get_actor_debug_name (above));
+                     _clutter_actor_get_debug_name (self),
+                     _clutter_actor_get_debug_name (above));
           return;
         }
     }

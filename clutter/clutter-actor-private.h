@@ -113,6 +113,8 @@ gboolean           _clutter_actor_set_default_paint_volume (ClutterActor *self,
                                                             GType         check_gtype,
                                                             ClutterPaintVolume *volume);
 
+G_CONST_RETURN gchar *_clutter_actor_get_debug_name (ClutterActor *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_PRIVATE_H__ */
