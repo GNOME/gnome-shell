@@ -739,6 +739,9 @@ _shell_app_add_window (ShellApp        *app,
 
   g_object_freeze_notify (G_OBJECT (app));
 
+  if (app->state != SHELL_APP_STATE_STARTING)
+    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
+
   if (!app->running_state)
       create_running_state (app);
 
@@ -750,9 +753,6 @@ _shell_app_add_window (ShellApp        *app,
   user_time = meta_window_get_user_time (window);
   if (user_time > app->running_state->last_user_time)
     app->running_state->last_user_time = user_time;
-
-  if (app->state != SHELL_APP_STATE_STARTING && app->state != SHELL_APP_STATE_RUNNING)
-    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
 
   g_object_thaw_notify (G_OBJECT (app));
 
