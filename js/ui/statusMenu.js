@@ -108,11 +108,6 @@ StatusMenuButton.prototype = {
         this.menu.addMenuItem(item);
         this._presenceItems[GnomeSession.PresenceStatus.BUSY] = item;
 
-        item = new PopupMenu.PopupImageMenuItem(_("Invisible"), 'user-invisible', true);
-        item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.INVISIBLE));
-        this.menu.addMenuItem(item);
-        this._presenceItems[GnomeSession.PresenceStatus.INVISIBLE] = item;
-
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
