@@ -262,6 +262,11 @@ st_theme_node_lookup_corner (StThemeNode    *node,
         break;
     }
 
+  if (corner.color.alpha == 0 &&
+      corner.border_color_1.alpha == 0 &&
+      corner.border_color_2.alpha == 0)
+    return COGL_INVALID_HANDLE;
+
   key = corner_to_string (&corner);
 
   data.node = node;
@@ -676,6 +681,7 @@ st_theme_node_paint_borders (StThemeNode           *node,
   int max_width_radius[4];
   int corner_id;
   ClutterColor border_color;
+  guint8 alpha;
 
   width = box->x2 - box->x1;
   height = box->y2 - box->y1;
@@ -697,58 +703,62 @@ st_theme_node_paint_borders (StThemeNode           *node,
       float x1, y1, x2, y2;
 
       over (&border_color, &node->background_color, &effective_border);
+      alpha = paint_opacity * effective_border.alpha / 255;
 
-      cogl_set_source_color4ub (effective_border.red,
-                                effective_border.green,
-                                effective_border.blue,
-                                paint_opacity * effective_border.alpha / 255);
+      if (alpha > 0)
+        {
+          cogl_set_source_color4ub (effective_border.red,
+                                    effective_border.green,
+                                    effective_border.blue,
+                                    alpha);
 
-      /* NORTH */
-      skip_corner_1 = node->border_radius[ST_CORNER_TOPLEFT] > 0;
-      skip_corner_2 = node->border_radius[ST_CORNER_TOPRIGHT] > 0;
+          /* NORTH */
+          skip_corner_1 = node->border_radius[ST_CORNER_TOPLEFT] > 0;
+          skip_corner_2 = node->border_radius[ST_CORNER_TOPRIGHT] > 0;
 
-      x1 = skip_corner_1 ? max_width_radius[ST_CORNER_TOPLEFT] : 0;
-      y1 = 0;
-      x2 = skip_corner_2 ? width - max_width_radius[ST_CORNER_TOPRIGHT] : width;
-      y2 = border_width;
-      cogl_rectangle (x1, y1, x2, y2);
+          x1 = skip_corner_1 ? max_width_radius[ST_CORNER_TOPLEFT] : 0;
+          y1 = 0;
+          x2 = skip_corner_2 ? width - max_width_radius[ST_CORNER_TOPRIGHT] : width;
+          y2 = border_width;
+          cogl_rectangle (x1, y1, x2, y2);
 
-      /* EAST */
-      skip_corner_1 = node->border_radius[ST_CORNER_TOPRIGHT] > 0;
-      skip_corner_2 = node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0;
+          /* EAST */
+          skip_corner_1 = node->border_radius[ST_CORNER_TOPRIGHT] > 0;
+          skip_corner_2 = node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0;
 
-      x1 = width - border_width;
-      y1 = skip_corner_1 ? max_width_radius[ST_CORNER_TOPRIGHT] : border_width;
-      x2 = width;
-      y2 = skip_corner_2 ? height - max_width_radius[ST_CORNER_BOTTOMRIGHT]
-                         : height - border_width;
-      cogl_rectangle (x1, y1, x2, y2);
+          x1 = width - border_width;
+          y1 = skip_corner_1 ? max_width_radius[ST_CORNER_TOPRIGHT] : border_width;
+          x2 = width;
+          y2 = skip_corner_2 ? height - max_width_radius[ST_CORNER_BOTTOMRIGHT]
+                             : height - border_width;
+          cogl_rectangle (x1, y1, x2, y2);
 
-      /* SOUTH */
-      skip_corner_1 = node->border_radius[ST_CORNER_BOTTOMLEFT] > 0;
-      skip_corner_2 = node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0;
+          /* SOUTH */
+          skip_corner_1 = node->border_radius[ST_CORNER_BOTTOMLEFT] > 0;
+          skip_corner_2 = node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0;
 
-      x1 = skip_corner_1 ? max_width_radius[ST_CORNER_BOTTOMLEFT] : 0;
-      y1 = height - border_width;
-      x2 = skip_corner_2 ? width - max_width_radius[ST_CORNER_BOTTOMRIGHT]
-                         : width;
-      y2 = height;
-      cogl_rectangle (x1, y1, x2, y2);
+          x1 = skip_corner_1 ? max_width_radius[ST_CORNER_BOTTOMLEFT] : 0;
+          y1 = height - border_width;
+          x2 = skip_corner_2 ? width - max_width_radius[ST_CORNER_BOTTOMRIGHT]
+                             : width;
+          y2 = height;
+          cogl_rectangle (x1, y1, x2, y2);
 
-      /* WEST */
-      skip_corner_1 = node->border_radius[ST_CORNER_TOPLEFT] > 0;
-      skip_corner_2 = node->border_radius[ST_CORNER_BOTTOMLEFT] > 0;
+          /* WEST */
+          skip_corner_1 = node->border_radius[ST_CORNER_TOPLEFT] > 0;
+          skip_corner_2 = node->border_radius[ST_CORNER_BOTTOMLEFT] > 0;
 
-      x1 = 0;
-      y1 = skip_corner_1 ? max_width_radius[ST_CORNER_TOPLEFT] : border_width;
-      x2 = border_width;
-      y2 = skip_corner_2 ? height - max_width_radius[ST_CORNER_BOTTOMLEFT]
-                         : height - border_width;
-      cogl_rectangle (x1, y1, x2, y2);
+          x1 = 0;
+          y1 = skip_corner_1 ? max_width_radius[ST_CORNER_TOPLEFT] : border_width;
+          x2 = border_width;
+          y2 = skip_corner_2 ? height - max_width_radius[ST_CORNER_BOTTOMLEFT]
+                             : height - border_width;
+          cogl_rectangle (x1, y1, x2, y2);
+        }
     }
 
   /* corners */
-  if (max_border_radius > 0)
+  if (max_border_radius > 0 && paint_opacity > 0)
     {
       for (corner_id = 0; corner_id < 4; corner_id++)
         {
@@ -787,105 +797,109 @@ st_theme_node_paint_borders (StThemeNode           *node,
     }
 
   /* background color */
-  cogl_set_source_color4ub (node->background_color.red,
-                            node->background_color.green,
-                            node->background_color.blue,
-                            paint_opacity * node->background_color.alpha / 255);
-
-  /* We add padding to each corner, so that all corners end up as if they
-   * had a border-radius of max_border_radius, which allows us to treat
-   * corners as uniform further on.
-   */
-  for (corner_id = 0; corner_id < 4; corner_id++)
+  alpha = paint_opacity * node->background_color.alpha / 255;
+  if (alpha > 0)
     {
-      float verts[8];
-      int n_rects;
+      cogl_set_source_color4ub (node->background_color.red,
+                                node->background_color.green,
+                                node->background_color.blue,
+                                alpha);
 
-      /* corner texture does not need padding */
-      if (max_border_radius == node->border_radius[corner_id])
-        continue;
-
-      n_rects = node->border_radius[corner_id] == 0 ? 1 : 2;
-
-      switch (corner_id)
-        {
-          case ST_CORNER_TOPLEFT:
-            verts[0] = border_width;
-            verts[1] = max_width_radius[ST_CORNER_TOPLEFT];
-            verts[2] = max_border_radius;
-            verts[3] = max_border_radius;
-            if (n_rects == 2)
-              {
-                verts[4] = max_width_radius[ST_CORNER_TOPLEFT];
-                verts[5] = border_width;
-                verts[6] = max_border_radius;
-                verts[7] = max_width_radius[ST_CORNER_TOPLEFT];
-              }
-            break;
-          case ST_CORNER_TOPRIGHT:
-            verts[0] = width - max_border_radius;
-            verts[1] = max_width_radius[ST_CORNER_TOPRIGHT];
-            verts[2] = width - border_width;
-            verts[3] = max_border_radius;
-            if (n_rects == 2)
-              {
-                verts[4] = width - max_border_radius;
-                verts[5] = border_width;
-                verts[6] = width - max_width_radius[ST_CORNER_TOPRIGHT];
-                verts[7] = max_width_radius[ST_CORNER_TOPRIGHT];
-              }
-            break;
-          case ST_CORNER_BOTTOMRIGHT:
-            verts[0] = width - max_border_radius;
-            verts[1] = height - max_border_radius;
-            verts[2] = width - border_width;
-            verts[3] = height - max_width_radius[ST_CORNER_BOTTOMRIGHT];
-            if (n_rects == 2)
-              {
-                verts[4] = width - max_border_radius;
-                verts[5] = height - max_width_radius[ST_CORNER_BOTTOMRIGHT];
-                verts[6] = width - max_width_radius[ST_CORNER_BOTTOMRIGHT];
-                verts[7] = height - border_width;
-              }
-            break;
-          case ST_CORNER_BOTTOMLEFT:
-            verts[0] = border_width;
-            verts[1] = height - max_border_radius;
-            verts[2] = max_border_radius;
-            verts[3] = height - max_width_radius[ST_CORNER_BOTTOMLEFT];
-            if (n_rects == 2)
-              {
-                verts[4] = max_width_radius[ST_CORNER_BOTTOMLEFT];
-                verts[5] = height - max_width_radius[ST_CORNER_BOTTOMLEFT];
-                verts[6] = max_border_radius;
-                verts[7] = height - border_width;
-              }
-            break;
-        }
-      cogl_rectangles (verts, n_rects);
-    }
-
-  if (max_border_radius > border_width)
-    {
-      /* Once we've drawn the borders and corners, if the corners are bigger
-       * the the border width, the remaining area is shaped like
-       *
-       *  ########
-       * ##########
-       * ##########
-       *  ########
-       *
-       * We draw it in 3 pieces - first the top and bottom, then the main
-       * rectangle
+      /* We add padding to each corner, so that all corners end up as if they
+       * had a border-radius of max_border_radius, which allows us to treat
+       * corners as uniform further on.
        */
-      cogl_rectangle (max_border_radius, border_width,
-                      width - max_border_radius, max_border_radius);
-      cogl_rectangle (max_border_radius, height - max_border_radius,
-                      width - max_border_radius, height - border_width);
-    }
+      for (corner_id = 0; corner_id < 4; corner_id++)
+        {
+          float verts[8];
+          int n_rects;
 
-  cogl_rectangle (border_width, MAX(border_width, max_border_radius),
-                  width - border_width, height - MAX(border_width, max_border_radius));
+          /* corner texture does not need padding */
+          if (max_border_radius == node->border_radius[corner_id])
+            continue;
+
+          n_rects = node->border_radius[corner_id] == 0 ? 1 : 2;
+
+          switch (corner_id)
+            {
+              case ST_CORNER_TOPLEFT:
+                verts[0] = border_width;
+                verts[1] = max_width_radius[ST_CORNER_TOPLEFT];
+                verts[2] = max_border_radius;
+                verts[3] = max_border_radius;
+                if (n_rects == 2)
+                  {
+                    verts[4] = max_width_radius[ST_CORNER_TOPLEFT];
+                    verts[5] = border_width;
+                    verts[6] = max_border_radius;
+                    verts[7] = max_width_radius[ST_CORNER_TOPLEFT];
+                  }
+                break;
+              case ST_CORNER_TOPRIGHT:
+                verts[0] = width - max_border_radius;
+                verts[1] = max_width_radius[ST_CORNER_TOPRIGHT];
+                verts[2] = width - border_width;
+                verts[3] = max_border_radius;
+                if (n_rects == 2)
+                  {
+                    verts[4] = width - max_border_radius;
+                    verts[5] = border_width;
+                    verts[6] = width - max_width_radius[ST_CORNER_TOPRIGHT];
+                    verts[7] = max_width_radius[ST_CORNER_TOPRIGHT];
+                  }
+                break;
+              case ST_CORNER_BOTTOMRIGHT:
+                verts[0] = width - max_border_radius;
+                verts[1] = height - max_border_radius;
+                verts[2] = width - border_width;
+                verts[3] = height - max_width_radius[ST_CORNER_BOTTOMRIGHT];
+                if (n_rects == 2)
+                  {
+                    verts[4] = width - max_border_radius;
+                    verts[5] = height - max_width_radius[ST_CORNER_BOTTOMRIGHT];
+                    verts[6] = width - max_width_radius[ST_CORNER_BOTTOMRIGHT];
+                    verts[7] = height - border_width;
+                  }
+                break;
+              case ST_CORNER_BOTTOMLEFT:
+                verts[0] = border_width;
+                verts[1] = height - max_border_radius;
+                verts[2] = max_border_radius;
+                verts[3] = height - max_width_radius[ST_CORNER_BOTTOMLEFT];
+                if (n_rects == 2)
+                  {
+                    verts[4] = max_width_radius[ST_CORNER_BOTTOMLEFT];
+                    verts[5] = height - max_width_radius[ST_CORNER_BOTTOMLEFT];
+                    verts[6] = max_border_radius;
+                    verts[7] = height - border_width;
+                  }
+                break;
+            }
+          cogl_rectangles (verts, n_rects);
+        }
+
+      if (max_border_radius > border_width)
+        {
+          /* Once we've drawn the borders and corners, if the corners are bigger
+           * the the border width, the remaining area is shaped like
+           *
+           *  ########
+           * ##########
+           * ##########
+           *  ########
+           *
+           * We draw it in 3 pieces - first the top and bottom, then the main
+           * rectangle
+           */
+          cogl_rectangle (max_border_radius, border_width,
+                          width - max_border_radius, max_border_radius);
+          cogl_rectangle (max_border_radius, height - max_border_radius,
+                          width - max_border_radius, height - border_width);
+        }
+
+      cogl_rectangle (border_width, MAX(border_width, max_border_radius),
+                      width - border_width, height - MAX(border_width, max_border_radius));
+    }
 }
 
 static void
