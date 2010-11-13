@@ -163,7 +163,7 @@ libjs_test_la_SOURCES = 		\
 noinst_PROGRAMS += run-js-test
 
 run_js_test_CPPFLAGS = $(JS_TEST_CFLAGS)
-run_js_test_LDADD = $(EST_UI_LIBS) libjs-test.la
+run_js_test_LDADD = $(JS_TEST_LIBS) libjs-test.la
 run_js_test_LDFLAGS = -export-dynamic
 
 run_js_test_SOURCES =			\
