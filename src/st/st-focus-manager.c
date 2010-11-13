@@ -70,8 +70,7 @@ static void
 st_focus_manager_init (StFocusManager *manager)
 {
   manager->priv = ST_FOCUS_MANAGER_GET_PRIVATE (manager);
-  manager->priv->groups = g_hash_table_new_full (NULL, NULL,
-                                                 g_object_unref, NULL);
+  manager->priv->groups = g_hash_table_new (NULL, NULL);
 }
 
 static gboolean
