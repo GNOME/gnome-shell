@@ -147,10 +147,6 @@ StatusMenuButton.prototype = {
         item.connect('activate', Lang.bind(this, this._onShutDownActivate));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("Restart..."));
-        item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-        this.menu.addMenuItem(item);
-
         item = new PopupMenu.PopupMenuItem(_("Shut Down..."));
         item.connect('activate', Lang.bind(this, this._onShutDownActivate));
         this.menu.addMenuItem(item);
