@@ -5,6 +5,8 @@
 #define _ISOC99_SOURCE /* for roundf */
 #include <math.h>
 
+#include <gdk/gdk.h> /* for gdk_rectangle_intersect() */
+
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
 
@@ -102,7 +104,9 @@ meta_window_group_paint (ClutterActor *actor)
 {
   MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
   cairo_region_t *visible_region;
+  GLboolean scissor_test;
   cairo_rectangle_int_t screen_rect = { 0 };
+  cairo_rectangle_int_t scissor_rect;
   GList *children, *l;
 
   /* We walk the list from top to bottom (opposite of painting order),
@@ -118,7 +122,33 @@ meta_window_group_paint (ClutterActor *actor)
    * optimization, however.)
    */
   meta_screen_get_size (window_group->screen, &screen_rect.width, &screen_rect.height);
-  visible_region = cairo_region_create_rectangle (&screen_rect);
+
+  /* When doing a partial stage paint, Clutter will set the GL scissor
+   * box to the clip rectangle for the partial repaint. We combine the screen
+   * rectangle with the scissor box to get the region we need to
+   * paint. (Strangely, the scissor box sometimes seems to be bigger
+   * than the stage ... Clutter should probably be clampimg)
+   */
+  glGetBooleanv (GL_SCISSOR_TEST, &scissor_test);
+
+  if (scissor_test)
+    {
+      GLint scissor_box[4];
+      glGetIntegerv (GL_SCISSOR_BOX, scissor_box);
+
+      scissor_rect.x = scissor_box[0];
+      scissor_rect.y = screen_rect.height - (scissor_box[1] + scissor_box[3]);
+      scissor_rect.width = scissor_box[2];
+      scissor_rect.height = scissor_box[3];
+
+      gdk_rectangle_intersect (&scissor_rect, &screen_rect, &scissor_rect);
+    }
+  else
+    {
+      scissor_rect = screen_rect;
+    }
+
+  visible_region = cairo_region_create_rectangle (&scissor_rect);
 
   for (l = children; l; l = l->next)
     {
