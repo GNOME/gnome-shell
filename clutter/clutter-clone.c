@@ -184,7 +184,9 @@ clutter_clone_paint (ClutterActor *self)
       was_unmapped = TRUE;
     }
 
+  _clutter_actor_push_clone_paint ();
   clutter_actor_paint (priv->clone_source);
+  _clutter_actor_pop_clone_paint ();
 
   if (was_unmapped)
     _clutter_actor_set_enable_paint_unmapped (priv->clone_source, FALSE);

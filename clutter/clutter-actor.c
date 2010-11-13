@@ -2465,6 +2465,26 @@ _clutter_actor_draw_paint_volume (ClutterActor *self)
     clutter_paint_volume_free (&fake_pv);
 }
 
+static int clone_paint_level = 0;
+
+void
+_clutter_actor_push_clone_paint (void)
+{
+  clone_paint_level++;
+}
+
+void
+_clutter_actor_pop_clone_paint (void)
+{
+  clone_paint_level--;
+}
+
+static gboolean
+in_clone_paint (void)
+{
+  return clone_paint_level > 0;
+}
+
 /* Returns TRUE if the actor can be ignored */
 static gboolean
 cull_actor (ClutterActor *self)
@@ -2619,6 +2639,11 @@ clutter_actor_paint (ClutterActor *self)
        * We also fetch the current paint box to perform culling so we
        * can avoid painting actors outside the current clip region.
        *
+       * If we are painting inside a clone, we should neither update
+       * the paint box or use it to cull painting, since the paint
+       * box represents the location of the source actor on the
+       * screen.
+       *
        * XXX: We are starting to do a lot of vertex transforms on
        * the CPU in a typical paint, so at some point we should
        * audit these and consider caching some things.
@@ -2636,14 +2661,17 @@ clutter_actor_paint (ClutterActor *self)
        *   or we'd need to be able to invalidate paint-volumes on
        *   projection changes.
        */
-      if (G_LIKELY (need_paint_box) &&
-          clutter_actor_get_paint_box (self, &priv->last_paint_box))
-        priv->last_paint_box_valid = TRUE;
-      else
-        priv->last_paint_box_valid = FALSE;
+      if (!in_clone_paint ())
+	{
+          if (G_LIKELY (need_paint_box) &&
+              clutter_actor_get_paint_box (self, &priv->last_paint_box))
+            priv->last_paint_box_valid = TRUE;
+          else
+            priv->last_paint_box_valid = FALSE;
 
-      if (cull_actor (self))
-        goto done;
+	  if (cull_actor (self))
+	    goto done;
+	}
 
       if (priv->effects != NULL)
         effect_painted = _clutter_actor_effects_pre_paint (self);
