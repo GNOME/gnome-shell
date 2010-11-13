@@ -21,6 +21,7 @@
 
 #include <config.h>
 
+#include "st-texture-cache.h"
 #include "st-theme.h"
 #include "st-theme-context.h"
 
@@ -51,10 +52,17 @@ static guint signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (StThemeContext, st_theme_context, G_TYPE_OBJECT)
 
+static void on_icon_theme_changed (StTextureCache *cache,
+                                   StThemeContext *context);
+
 static void
 st_theme_context_finalize (GObject *object)
 {
   StThemeContext *context = ST_THEME_CONTEXT (object);
+
+  g_signal_handlers_disconnect_by_func (st_texture_cache_get_default (),
+                                       (gpointer) on_icon_theme_changed,
+                                       context);
 
   if (context->root_node)
     g_object_unref (context->root_node);
@@ -88,6 +96,11 @@ st_theme_context_init (StThemeContext *context)
 {
   context->resolution = DEFAULT_RESOLUTION;
   context->font = pango_font_description_from_string (DEFAULT_FONT);
+
+  g_signal_connect (st_texture_cache_get_default (),
+                    "icon-theme-changed",
+                    G_CALLBACK (on_icon_theme_changed),
+                    context);
 }
 
 /**
@@ -127,6 +140,17 @@ st_theme_context_changed (StThemeContext *context)
 
   if (old_root)
     g_object_unref (old_root);
+}
+
+static void
+on_icon_theme_changed (StTextureCache *cache,
+                       StThemeContext *context)
+{
+  /* Note that an icon theme change isn't really a change of the StThemeContext;
+   * the style information has changed. But since the style factors into the
+   * icon_name => icon lookup, faking a theme context change is a good way
+   * to force users such as StIcon to look up icons again */
+  st_theme_context_changed (context);
 }
 
 /**

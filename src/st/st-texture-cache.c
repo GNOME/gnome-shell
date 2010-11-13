@@ -36,6 +36,8 @@
 
 struct _StTextureCachePrivate
 {
+  GtkIconTheme *icon_theme;
+
   /* Things that were loaded with a cache policy != NONE */
   GHashTable *keyed_cache; /* char * -> CoglTexture* */
   /* Presently this is used to de-duplicate requests for GIcons,
@@ -49,6 +51,14 @@ struct _StTextureCachePrivate
 static void st_texture_cache_dispose (GObject *object);
 static void st_texture_cache_finalize (GObject *object);
 
+enum
+{
+  ICON_THEME_CHANGED,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0, };
 G_DEFINE_TYPE(StTextureCache, st_texture_cache, G_TYPE_OBJECT);
 
 /* We want to preserve the aspect ratio by default, also the default
@@ -78,12 +88,56 @@ st_texture_cache_class_init (StTextureCacheClass *klass)
 
   gobject_class->dispose = st_texture_cache_dispose;
   gobject_class->finalize = st_texture_cache_finalize;
+
+  signals[ICON_THEME_CHANGED] =
+    g_signal_new ("icon-theme-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, /* no default handler slot */
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+}
+
+/* Evicts all cached textures for named icons */
+static void
+st_texture_cache_evict_icons (StTextureCache *cache)
+{
+  GHashTableIter iter;
+  gpointer key;
+  gpointer value;
+
+  g_hash_table_iter_init (&iter, cache->priv->keyed_cache);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      const char *cache_key = key;
+
+      /* This is too conservative - it takes out all cached textures
+       * for GIcons even when they aren't named icons, but it's not
+       * worth the complexity of parsing the key and calling
+       * g_icon_new_for_string(); icon theme changes aren't normal */
+      if (g_str_has_prefix (cache_key, "gicon:"))
+        g_hash_table_iter_remove (&iter);
+    }
+}
+
+static void
+on_icon_theme_changed (GtkIconTheme   *icon_theme,
+                       StTextureCache *cache)
+{
+  st_texture_cache_evict_icons (cache);
+  g_signal_emit (cache, signals[ICON_THEME_CHANGED], 0);
 }
 
 static void
 st_texture_cache_init (StTextureCache *self)
 {
   self->priv = g_new0 (StTextureCachePrivate, 1);
+
+  self->priv->icon_theme = gtk_icon_theme_get_default ();
+  g_signal_connect (self->priv->icon_theme, "changed",
+                    G_CALLBACK (on_icon_theme_changed), self);
+
   self->priv->keyed_cache = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                    g_free, cogl_handle_unref);
   self->priv->outstanding_requests = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -95,6 +149,14 @@ static void
 st_texture_cache_dispose (GObject *object)
 {
   StTextureCache *self = (StTextureCache*)object;
+
+  if (self->priv->icon_theme)
+    {
+      g_signal_handlers_disconnect_by_func (self->priv->icon_theme,
+                                            (gpointer) on_icon_theme_changed,
+                                            self);
+      self->priv->icon_theme = NULL;
+    }
 
   if (self->priv->keyed_cache)
     g_hash_table_destroy (self->priv->keyed_cache);
@@ -1023,7 +1085,7 @@ load_gicon_with_colors (StTextureCache    *cache,
     }
 
   /* Do theme lookups in the main thread to avoid thread-unsafety */
-  theme = gtk_icon_theme_get_default ();
+  theme = cache->priv->icon_theme;
 
   info = gtk_icon_theme_lookup_by_gicon (theme, icon, size, GTK_ICON_LOOKUP_USE_BUILTIN);
   if (info != NULL)
