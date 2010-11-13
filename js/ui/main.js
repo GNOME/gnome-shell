@@ -97,10 +97,11 @@ function start() {
     Shell.WindowTracker.get_default();
     Shell.AppUsage.get_default();
 
-    // The background color really only matters if there is no desktop
-    // window (say, nautilus) running. We set it mostly so things look good
-    // when we are running inside Xephyr.
+    // The stage is always covered so Clutter doesn't need to clear it; however
+    // the color is used as the default contents for the actor created by
+    // global.create_root_pixmap_actor() so we set it anyways.
     global.stage.color = DEFAULT_BACKGROUND_COLOR;
+    global.stage.no_clear_hint = true;
 
     let themeContext = St.ThemeContext.get_for_stage (global.stage);
     let stylesheetPath = global.datadir + '/theme/gnome-shell.css';
