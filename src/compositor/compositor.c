@@ -34,7 +34,7 @@ composite_at_least_version (MetaDisplay *display, int maj, int min)
   return (major > maj || (major == maj && minor >= min));
 }
 
-static void sync_actor_stacking (GList *windows);
+static void sync_actor_stacking (MetaCompScreen *info);
 
 static void
 meta_finish_workspace_switch (MetaCompScreen *info)
@@ -48,7 +48,7 @@ meta_finish_workspace_switch (MetaCompScreen *info)
   /*
    * Fix up stacking order in case the plugin messed it up.
    */
-  sync_actor_stacking (info->windows);
+  sync_actor_stacking (info);
 
 /*   printf ("... FINISHED DESKTOP SWITCH\n"); */
 
@@ -87,7 +87,7 @@ add_win (MetaWindow *window)
 
   meta_window_actor_new (window);
 
-  sync_actor_stacking (info->windows);
+  sync_actor_stacking (info);
 }
 
 static void
@@ -827,13 +827,48 @@ meta_compositor_switch_workspace (MetaCompositor     *compositor,
 }
 
 static void
-sync_actor_stacking (GList *windows)
+sync_actor_stacking (MetaCompScreen *info)
 {
+  GList *children;
   GList *tmp;
+  GList *old;
+  gboolean reordered;
 
-  /* NB: The first entry in the list is stacked the lowest */
+  /* NB: The first entries in the lists are stacked the lowest */
 
-  for (tmp = g_list_last (windows); tmp != NULL; tmp = tmp->prev)
+  /* Restacking will trigger full screen redraws, so it's worth a
+   * little effort to make sure we actually need to restack before
+   * we go ahead and do it */
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (info->window_group));
+  reordered = FALSE;
+
+  old = children;
+  for (tmp = info->windows; tmp != NULL; tmp = tmp->next)
+    {
+      while (old && !META_IS_WINDOW_ACTOR (old->data))
+        old = old->next;
+
+      /* old == NULL: someone reparented a window out of the window group,
+       * order undefined, always restack */
+      if (old == NULL || old->data != tmp->data)
+        {
+          reordered = TRUE;
+          break;
+        }
+
+      old = old->next;
+    }
+
+  if (old != NULL) /* An extra MetaWindowActor??? .... restack */
+    reordered = TRUE;
+
+  g_list_free (children);
+
+  if (!reordered)
+    return;
+
+  for (tmp = g_list_last (info->windows); tmp != NULL; tmp = tmp->prev)
     {
       MetaWindowActor *window_actor = tmp->data;
 
@@ -927,7 +962,7 @@ meta_compositor_sync_stack (MetaCompositor  *compositor,
       old_stack = g_list_remove (old_stack, actor);
     }
 
-  sync_actor_stacking (info->windows);
+  sync_actor_stacking (info);
 }
 
 void
