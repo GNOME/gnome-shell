@@ -1093,10 +1093,15 @@ ZoomRegion.prototype = {
         let [xRoi, yRoi, widthRoi, heightRoi] = this.getROI();
         let halfScreenWidth = global.screen_width / 2;
         let halfScreenHeight = global.screen_height / 2;
-        let xProportion = (halfScreenWidth - xMouse) / halfScreenWidth;
-        let yProportion = (halfScreenHeight - yMouse) / halfScreenHeight;
-        let xPos = xMouse + xProportion * widthRoi / 2;
-        let yPos = yMouse + yProportion * heightRoi / 2;
+        // We want to pad with a constant distance after zooming, so divide
+        // by the magnification factor.
+        let unscaledPadding = Math.min(this._viewPortWidth, this._viewPortHeight) / 5;
+        let xPadding = unscaledPadding / this._xMagFactor;
+        let yPadding = unscaledPadding / this._yMagFactor;
+        let xProportion = (xMouse - halfScreenWidth) / halfScreenWidth;   // -1 ... 1
+        let yProportion = (yMouse - halfScreenHeight) / halfScreenHeight; // -1 ... 1
+        let xPos = xMouse - xProportion * (widthRoi / 2 - xPadding);
+        let yPos = yMouse - yProportion * (heightRoi /2 - yPadding);
 
         return [xPos, yPos];
     },
