@@ -3864,13 +3864,21 @@ clutter_text_set_font_name (ClutterText *self,
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
   /* get the default font name from the backend */
-  if (!font_name || font_name[0] == '\0')
+  if (font_name == NULL || font_name[0] == '\0')
     {
       ClutterSettings *settings = clutter_settings_get_default ();
       gchar *default_font_name = NULL;
 
-      g_object_get (settings, "font-name", default_font_name, NULL);
-      font_name = default_font_name;
+      g_object_get (settings, "font-name", &default_font_name, NULL);
+
+      if (default_font_name != NULL)
+        font_name = default_font_name;
+      else
+        {
+          /* last fallback */
+          default_font_name = g_strdup ("Sans 12");
+        }
+
       is_default_font = TRUE;
     }
   else
@@ -3878,7 +3886,7 @@ clutter_text_set_font_name (ClutterText *self,
 
   priv = self->priv;
 
-  if (priv->font_name && strcmp (priv->font_name, font_name) == 0)
+  if (g_strcmp0 (priv->font_name, font_name) == 0)
     goto out;
 
   desc = pango_font_description_from_string (font_name);
