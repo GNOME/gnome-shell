@@ -35,6 +35,7 @@ struct _MetaCompScreen
   MetaScreen            *screen;
 
   ClutterActor          *stage, *window_group, *overlay_group;
+  ClutterActor          *background_actor;
   ClutterActor		*hidden_group;
   GList                 *windows;
   GHashTable            *windows_by_xid;

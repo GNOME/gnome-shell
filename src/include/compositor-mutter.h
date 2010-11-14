@@ -39,4 +39,6 @@ Window        meta_get_overlay_window           (MetaScreen *screen);
 GList        *meta_get_window_actors            (MetaScreen *screen);
 ClutterActor *meta_get_window_group_for_screen  (MetaScreen *screen);
 
+ClutterActor *meta_get_background_actor_for_screen (MetaScreen *screen);
+
 #endif

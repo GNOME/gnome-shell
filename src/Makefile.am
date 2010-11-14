@@ -25,6 +25,8 @@ mutter_SOURCES= 				\
 	compositor/cogl-utils.h			\
 	compositor/compositor.c			\
 	compositor/compositor-private.h		\
+	compositor/meta-background-actor.c	\
+	compositor/meta-background-actor.h	\
 	compositor/meta-module.c		\
 	compositor/meta-module.h		\
 	compositor/meta-plugin.c		\

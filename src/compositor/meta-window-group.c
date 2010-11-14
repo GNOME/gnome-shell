@@ -9,6 +9,7 @@
 
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
+#include "meta-background-actor.h"
 
 struct _MetaWindowGroupClass
 {
@@ -152,31 +153,37 @@ meta_window_group_paint (ClutterActor *actor)
 
   for (l = children; l; l = l->next)
     {
-      MetaWindowActor *window_actor;
-      gboolean x, y;
-
-      if (!META_IS_WINDOW_ACTOR (l->data) || !CLUTTER_ACTOR_IS_VISIBLE (l->data))
+      if (!CLUTTER_ACTOR_IS_VISIBLE (l->data))
         continue;
 
-      window_actor = l->data;
-
-      if (!actor_is_untransformed (CLUTTER_ACTOR (window_actor), &x, &y))
-        continue;
-
-      /* Temporarily move to the coordinate system of the actor */
-      cairo_region_translate (visible_region, - x, - y);
-
-      meta_window_actor_set_visible_region (window_actor, visible_region);
-
-      if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (window_actor)) == 0xff)
+      if (META_IS_WINDOW_ACTOR (l->data))
         {
-          cairo_region_t *obscured_region = meta_window_actor_get_obscured_region (window_actor);
-          if (obscured_region)
-            cairo_region_subtract (visible_region, obscured_region);
-        }
+          MetaWindowActor *window_actor = l->data;
+          gboolean x, y;
 
-      meta_window_actor_set_visible_region_beneath (window_actor, visible_region);
-      cairo_region_translate (visible_region, x, y);
+          if (!actor_is_untransformed (CLUTTER_ACTOR (window_actor), &x, &y))
+            continue;
+
+          /* Temporarily move to the coordinate system of the actor */
+          cairo_region_translate (visible_region, - x, - y);
+
+          meta_window_actor_set_visible_region (window_actor, visible_region);
+
+          if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (window_actor)) == 0xff)
+            {
+              cairo_region_t *obscured_region = meta_window_actor_get_obscured_region (window_actor);
+              if (obscured_region)
+                cairo_region_subtract (visible_region, obscured_region);
+            }
+
+          meta_window_actor_set_visible_region_beneath (window_actor, visible_region);
+          cairo_region_translate (visible_region, x, y);
+        }
+      else if (META_IS_BACKGROUND_ACTOR (l->data))
+        {
+          MetaBackgroundActor *background_actor = l->data;
+          meta_background_actor_set_visible_region (background_actor, visible_region);
+        }
     }
 
   cairo_region_destroy (visible_region);
@@ -188,13 +195,17 @@ meta_window_group_paint (ClutterActor *actor)
    */
   for (l = children; l; l = l->next)
     {
-      MetaWindowActor *window_actor;
-
-      if (!META_IS_WINDOW_ACTOR (l->data))
-        continue;
-
-      window_actor = l->data;
-      meta_window_actor_reset_visible_regions (window_actor);
+      if (META_IS_WINDOW_ACTOR (l->data))
+        {
+          MetaWindowActor *window_actor = l->data;
+          window_actor = l->data;
+          meta_window_actor_reset_visible_regions (window_actor);
+        }
+      else if (META_IS_BACKGROUND_ACTOR (l->data))
+        {
+          MetaBackgroundActor *background_actor = l->data;
+          meta_background_actor_set_visible_region (background_actor, NULL);
+        }
     }
 
   g_list_free (children);

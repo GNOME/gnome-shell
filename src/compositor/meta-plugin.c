@@ -351,6 +351,14 @@ meta_plugin_get_window_group (MetaPlugin *plugin)
   return meta_get_window_group_for_screen (priv->screen);
 }
 
+ClutterActor *
+meta_plugin_get_background_actor (MetaPlugin *plugin)
+{
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
+
+  return meta_get_background_actor_for_screen (priv->screen);
+}
+
 /**
  * _meta_plugin_effect_started:
  * @plugin: the plugin

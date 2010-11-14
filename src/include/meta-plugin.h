@@ -250,6 +250,9 @@ ClutterActor *
 meta_plugin_get_window_group (MetaPlugin *plugin);
 
 ClutterActor *
+meta_plugin_get_background_actor (MetaPlugin *plugin);
+
+ClutterActor *
 meta_plugin_get_stage (MetaPlugin *plugin);
 
 void

@@ -14,6 +14,7 @@
 #include "meta-shadow-factory.h"
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
+#include "meta-background-actor.h"
 #include "../core/window-private.h" /* to check window->hidden */
 #include "../core/display-private.h" /* for meta_display_lookup_x_window() */
 #include <X11/extensions/shape.h>
@@ -136,6 +137,22 @@ process_property_notify (MetaCompositor	*compositor,
 {
   MetaWindowActor *window_actor;
 
+  if (event->atom == compositor->atom_x_root_pixmap)
+    {
+      GSList *l;
+
+      for (l = meta_display_get_screens (compositor->display); l; l = l->next)
+        {
+	  MetaScreen  *screen = l->data;
+          if (event->window == meta_screen_get_xroot (screen))
+            {
+              MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+              meta_background_actor_update (META_BACKGROUND_ACTOR (info->background_actor));
+              return;
+            }
+        }
+    }
+
   if (window == NULL)
     return;
 
@@ -234,6 +251,27 @@ meta_get_window_group_for_screen (MetaScreen *screen)
     return NULL;
 
   return info->window_group;
+}
+
+/**
+ * meta_get_background_actor_for_screen:
+ * @screen: a #MetaScreen
+ *
+ * Gets the actor that draws the root window background under the windows.
+ * The root window background automatically tracks the image or color set
+ * by the environment.
+ *
+ * Returns: (transfer none): The background actor corresponding to @screen
+ */
+ClutterActor *
+meta_get_background_actor_for_screen (MetaScreen *screen)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+  if (!info)
+    return NULL;
+
+  return info->background_actor;
 }
 
 /**
@@ -494,8 +532,13 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   XSelectInput (xdisplay, xwin, event_mask);
 
   info->window_group = meta_window_group_new (screen);
+  info->background_actor = meta_background_actor_new (screen);
   info->overlay_group = clutter_group_new ();
   info->hidden_group = clutter_group_new ();
+
+  clutter_container_add (CLUTTER_CONTAINER (info->window_group),
+                         info->background_actor,
+                         NULL);
 
   clutter_container_add (CLUTTER_CONTAINER (info->stage),
                          info->window_group,
@@ -844,6 +887,25 @@ sync_actor_stacking (MetaCompScreen *info)
   reordered = FALSE;
 
   old = children;
+
+  /* We allow for actors in the window group other than the actors we
+   * know about, but it's up to a plugin to try and keep them stacked correctly
+   * (we really need extra API to make that reliable.)
+   */
+
+  /* Of the actors we know, the bottom actor should be the background actor */
+
+  while (old && old->data != info->background_actor && !META_IS_WINDOW_ACTOR (old->data))
+    old = old->next;
+  if (old == NULL || old->data != info->background_actor)
+    {
+      reordered = TRUE;
+      goto done_with_check;
+    }
+
+  /* Then the window actors should follow in sequence */
+
+  old = old->next;
   for (tmp = info->windows; tmp != NULL; tmp = tmp->next)
     {
       while (old && !META_IS_WINDOW_ACTOR (old->data))
@@ -854,14 +916,13 @@ sync_actor_stacking (MetaCompScreen *info)
       if (old == NULL || old->data != tmp->data)
         {
           reordered = TRUE;
-          break;
+          goto done_with_check;
         }
 
       old = old->next;
     }
 
-  if (old != NULL) /* An extra MetaWindowActor??? .... restack */
-    reordered = TRUE;
+ done_with_check:
 
   g_list_free (children);
 
@@ -874,6 +935,8 @@ sync_actor_stacking (MetaCompScreen *info)
 
       clutter_actor_lower_bottom (CLUTTER_ACTOR (window_actor));
     }
+
+  clutter_actor_lower_bottom (info->background_actor);
 }
 
 void
@@ -1018,6 +1081,8 @@ meta_compositor_sync_screen_size (MetaCompositor  *compositor,
   g_return_if_fail (info);
 
   clutter_actor_set_size (info->stage, width, height);
+  /* Background actor always requests the screen size */
+  clutter_actor_queue_relayout (info->background_actor);
 
   meta_verbose ("Changed size for stage on screen %d to %dx%d\n",
 		meta_screen_get_screen_number (screen),
