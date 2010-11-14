@@ -718,7 +718,7 @@ get_length_from_term (StThemeNode *node,
   if (term->type != TERM_NUMBER)
     {
       g_warning ("Ignoring length property that isn't a number");
-      return FALSE;
+      return VALUE_NOT_FOUND;
     }
 
   num = term->content.num;
@@ -859,7 +859,7 @@ get_length_from_term_int (StThemeNode *node,
   GetFromTermResult result;
 
   result = get_length_from_term (node, term, use_parent_font, &value);
-  if (result != VALUE_NOT_FOUND)
+  if (result == VALUE_FOUND)
     *length = (int) (0.5 + value);
   return result;
 }
@@ -1053,7 +1053,7 @@ do_border_property (StThemeNode   *node,
   StSide side = (StSide)-1;
   ClutterColor color;
   gboolean color_set = FALSE;
-  int width;
+  int width = 0; /* suppress warning */
   gboolean width_set = FALSE;
   int j;
 
@@ -1098,7 +1098,8 @@ do_border_property (StThemeNode   *node,
               const char *ident = term->content.str->stryng->str;
               if (strcmp (ident, "none") == 0 || strcmp (ident, "hidden") == 0)
                 {
-                  width = 0.;
+                  width = 0;
+                  width_set = TRUE;
                   continue;
                 }
               else if (strcmp (ident, "solid") == 0)
@@ -1185,7 +1186,7 @@ do_outline_property (StThemeNode   *node,
   const char *property_name = decl->property->stryng->str + 7; /* Skip 'outline' */
   ClutterColor color;
   gboolean color_set = FALSE;
-  int width;
+  int width = 0; /* suppress warning */
   gboolean width_set = FALSE;
 
   if (strcmp (property_name, "") == 0)
@@ -1202,7 +1203,8 @@ do_outline_property (StThemeNode   *node,
               const char *ident = term->content.str->stryng->str;
               if (strcmp (ident, "none") == 0 || strcmp (ident, "hidden") == 0)
                 {
-                  width = 0.;
+                  width = 0;
+                  width_set = TRUE;
                   continue;
                 }
               else if (strcmp (ident, "solid") == 0)
@@ -2234,17 +2236,19 @@ font_variant_from_term (CRTerm       *term,
 const PangoFontDescription *
 st_theme_node_get_font (StThemeNode *node)
 {
-  PangoStyle font_style;
+  /* Initialized despite _set flags to suppress compiler warnings */
+  PangoStyle font_style = PANGO_STYLE_NORMAL;
   gboolean font_style_set = FALSE;
-  PangoVariant variant;
+  PangoVariant variant = PANGO_VARIANT_NORMAL;
   gboolean variant_set = FALSE;
-  PangoWeight weight;
-  gboolean weight_absolute;
+  PangoWeight weight = PANGO_WEIGHT_NORMAL;
+  gboolean weight_absolute = TRUE;
   gboolean weight_set = FALSE;
-  double parent_size;
-  double size = 0.; /* Suppress warning */
+  double size = 0.;
   gboolean size_set = FALSE;
+
   char *family = NULL;
+  double parent_size;
   int i;
 
   if (node->font_desc)
