@@ -21,6 +21,8 @@ mutter_SOURCES= 				\
 	core/boxes.c				\
 	core/boxes-private.h			\
 	include/boxes.h				\
+	compositor/cogl-utils.c			\
+	compositor/cogl-utils.h			\
 	compositor/compositor.c			\
 	compositor/compositor-private.h		\
 	compositor/meta-module.c		\
