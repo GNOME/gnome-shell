@@ -301,7 +301,7 @@ DesktopClone.prototype = {
     _init : function(window) {
         this.actor = new Clutter.Group({ reactive: true });
 
-        let background = new Clutter.Clone({ source: Main.background.source });
+        let background = new Clutter.Clone({ source: global.background_actor });
         this.actor.add_actor(background);
 
         if (window) {

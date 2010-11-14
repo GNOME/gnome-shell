@@ -98,8 +98,8 @@ function start() {
     Shell.AppUsage.get_default();
 
     // The stage is always covered so Clutter doesn't need to clear it; however
-    // the color is used as the default contents for the actor created by
-    // global.create_root_pixmap_actor() so we set it anyways.
+    // the color is used as the default contents for the Mutter root background
+    // actor so set it anyways.
     global.stage.color = DEFAULT_BACKGROUND_COLOR;
     global.stage.no_clear_hint = true;
 
@@ -161,10 +161,6 @@ function start() {
             recorder.record();
         }
     });
-
-    background = global.create_root_pixmap_actor();
-    global.stage.add_actor(background);
-    background.lower_bottom();
 
     global.gdk_screen.connect('monitors-changed', _relayout);
 
@@ -240,8 +236,6 @@ function _relayout() {
     panel.actor.set_position(primary.x, primary.y);
     panel.actor.set_size(primary.width, Panel.PANEL_HEIGHT);
     overview.relayout();
-
-    background.set_size(global.screen_width, global.screen_height);
 
     // To avoid updating the position and size of the workspaces
     // in the overview, we just hide the overview. The positions
