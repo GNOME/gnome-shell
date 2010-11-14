@@ -154,7 +154,7 @@ settings_update_font_options (ClutterSettings *self)
                 self->font_name != NULL ? self->font_name : DEFAULT_FONT_NAME,
                 self->xft_antialias,
                 self->xft_hinting,
-                self->xft_hint_style != NULL ? self->font_name : "<null>",
+                self->xft_hint_style != NULL ? self->xft_hint_style : "<null>",
                 self->xft_rgba != NULL ? self->xft_rgba : "<null>",
                 self->resolution);
 
