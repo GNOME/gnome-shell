@@ -8,13 +8,13 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
 "POT-Creation-Date: 2010-11-15 13:50+0000\n"
-"PO-Revision-Date: 2010-11-15 21:58+0300\n"
-"Last-Translator: Daniel Șerbănescu <cyber19rider@gmail.com>\n"
+"PO-Revision-Date: 2010-11-15 22:20+0300\n"
+"Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
 "Language-Team: Romanian Gnome Team <gnomero-list@lists.sourceforge.net>\n"
+"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ro\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);;\n"
 "X-Generator: Virtaal 0.6.1\n"
@@ -229,18 +229,19 @@ msgstr "Dacă să se colecteze statistici despre utilizarea aplicațiilor"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
 msgid "Clip the crosshairs at the center"
-msgstr "Prinde cursoarele în centru"
+msgstr "Prinde reticulele în centru"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
 msgid "Color of the crosshairs"
-msgstr "Culoarea cursoarelor"
+msgstr "Culoarea reticulelor"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
 msgid ""
 "Determines the length of the vertical and horizontal lines that make up the "
 "crosshairs."
 msgstr ""
-"Determină lungimea liniilor verticale și orizontale care alcătuiesc cursorul."
+"Determină lungimea liniilor verticale și orizontale care alcătuiesc "
+"reticulele."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
 msgid ""
@@ -268,7 +269,7 @@ msgid ""
 "Determines the transparency of the crosshairs, from fully opaque to fully "
 "transparent."
 msgstr ""
-"Determină transparența cursoarelor, de la complet opac la deplin "
+"Determină transparența reticulelor, de la complet opac la deplin "
 "transparente."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
@@ -277,7 +278,7 @@ msgid ""
 "are clipped such that the ends of the horizontal and vertical lines surround "
 "the mouse image."
 msgstr ""
-"Determină dacă cursoarele intersectează umbra mausului mărit, sau sunt "
+"Determină dacă reticulele intersectează umbra mausului mărit, sau sunt "
 "prinse astfel încât capetele liniilor orizontale și verticale înconjoară "
 "imaginea mausului."
 
@@ -290,7 +291,8 @@ msgid ""
 "Enables/disables display of crosshairs centered on the magnified mouse "
 "sprite."
 msgstr ""
-"Activează/dezactivează afișarea cursoarelor centrate pe umbra mausului mărit."
+"Activează/dezactivează afișarea reticulelor centrate pe umbra mausului "
+"mărit."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
 msgid ""
@@ -304,7 +306,7 @@ msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
 msgid "Length of the crosshairs"
-msgstr "Lungimea cursoarelor"
+msgstr "Lungimea reticulelor"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:11
 msgid "Magnification factor"
@@ -316,7 +318,7 @@ msgstr "Mod Urmărire maus"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:13
 msgid "Opacity of the crosshairs"
-msgstr "Opacitatea cursoarelor"
+msgstr "Opacitatea reticulelor"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
 msgid "Screen position"
@@ -328,7 +330,7 @@ msgstr "Derulează conținutul mărit în afara marginilor ecranului"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
 msgid "Show or hide crosshairs"
-msgstr "Arată sau ascunde cursoarele"
+msgstr "Arată sau ascunde reticulele"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
 msgid "Show or hide the magnifier"
@@ -342,7 +344,7 @@ msgstr "Arată sau ascunde lupa și toate regiunile ei de zoom."
 msgid ""
 "The color of the the vertical and horizontal lines that make up the "
 "crosshairs."
-msgstr "Culoarea liniilor verticale și orizontale ce compun cursorul."
+msgstr "Culoarea liniilor verticale și orizontale ce compun reticul."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
 msgid ""
@@ -363,7 +365,7 @@ msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
 msgid "Thickness of the crosshairs"
-msgstr "Grosimea cursoarelor"
+msgstr "Grosimea reticulelor"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
 msgid ""
@@ -375,7 +377,7 @@ msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
 msgid "Width of the vertical and horizontal lines that make up the crosshairs."
-msgstr "Lățimea liniilor verticale și orizontale ce compun cursoarele."
+msgstr "Lățimea liniilor verticale și orizontale ce compun reticulele."
 
 #: ../data/clock-preferences.ui.h:1
 msgid "Clock Format"
