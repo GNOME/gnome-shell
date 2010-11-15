@@ -696,7 +696,6 @@ _cogl_journal_flush (void)
 
   state.vertex_array = upload_vertices (ctx->logged_vertices, &state);
   state.attributes = ctx->journal_flush_attributes_array;
-  g_array_set_size (ctx->journal_flush_attributes_array, 0);
 
   framebuffer = _cogl_get_framebuffer ();
   modelview_stack = _cogl_framebuffer_get_modelview_stack (framebuffer);
@@ -731,6 +730,13 @@ _cogl_journal_flush (void)
                   compare_entry_clip_stacks,
                   _cogl_journal_flush_clip_stacks_and_entries, /* callback */
                   &state); /* data */
+
+  for (i = 0; i < state.attributes->len; i++)
+    cogl_object_unref (g_array_index (state.attributes,
+                                      CoglVertexAttribute *, i));
+  g_array_set_size (state.attributes, 0);
+
+  cogl_object_unref (state.vertex_array);
 
   for (i = 0; i < ctx->journal->len; i++)
     {
