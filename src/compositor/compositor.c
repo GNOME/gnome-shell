@@ -1081,8 +1081,8 @@ meta_compositor_sync_screen_size (MetaCompositor  *compositor,
   g_return_if_fail (info);
 
   clutter_actor_set_size (info->stage, width, height);
-  /* Background actor always requests the screen size */
-  clutter_actor_queue_relayout (info->background_actor);
+
+  meta_background_actor_screen_size_changed (META_BACKGROUND_ACTOR (info->background_actor));
 
   meta_verbose ("Changed size for stage on screen %d to %dx%d\n",
 		meta_screen_get_screen_number (screen),

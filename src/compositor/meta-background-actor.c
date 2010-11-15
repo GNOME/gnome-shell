@@ -56,6 +56,26 @@ struct _MetaBackgroundActor
 G_DEFINE_TYPE (MetaBackgroundActor, meta_background_actor, CLUTTER_TYPE_ACTOR);
 
 static void
+update_wrap_mode (MetaBackgroundActor *self)
+{
+  int width, height;
+  CoglMaterialWrapMode wrap_mode;
+
+  meta_screen_get_size (self->screen, &width, &height);
+
+  /* We turn off repeating when we have a full-screen pixmap to keep from
+   * getting artifacts from one side of the image sneaking into the other
+   * side of the image via bilinear filtering.
+   */
+  if (width == self->texture_width && height == self->texture_height)
+    wrap_mode = COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
+  else
+    wrap_mode = COGL_PIPELINE_WRAP_MODE_REPEAT;
+
+  cogl_material_set_layer_wrap_mode (self->material, 0, wrap_mode);
+}
+
+static void
 set_texture (MetaBackgroundActor *self,
              CoglHandle           texture)
 {
@@ -72,6 +92,8 @@ set_texture (MetaBackgroundActor *self,
 
   self->texture_width = cogl_texture_get_width (texture);
   self->texture_height = cogl_texture_get_height (texture);
+
+  update_wrap_mode (self);
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 }
@@ -378,3 +400,15 @@ meta_background_actor_set_visible_region (MetaBackgroundActor *self,
     }
 }
 
+/**
+ * meta_background_actor_screen_size_changed:
+ * @self: a #MetaBackgroundActor
+ *
+ * Called by the compositor when the size of the #MetaScreen changes
+ */
+void
+meta_background_actor_screen_size_changed (MetaBackgroundActor *self)
+{
+  update_wrap_mode (self);
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+}
