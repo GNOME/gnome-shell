@@ -9,7 +9,9 @@ const NotificationDaemon = imports.ui.notificationDaemon;
 
 const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'bluetooth-applet': 'bluetooth',
-    'gnome-volume-control-applet': 'volume',
+    'gnome-volume-control-applet': 'volume', // renamed to gnome-sound-applet
+                                             // when moved to control center
+    'gnome-sound-applet': 'volume',
     'nm-applet': 'network',
     'gnome-power-manager': 'battery',
     'keyboard': 'keyboard',
