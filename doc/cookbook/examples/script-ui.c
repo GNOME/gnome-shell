@@ -4,12 +4,15 @@
 int
 main (int argc, char *argv[])
 {
-  clutter_init (&argc, &argv);
-
-  ClutterScript *ui = clutter_script_new ();
+  ClutterActor *stage;
+  ClutterScript *ui;
 
   gchar *filename = "script-ui.json";
   GError *error = NULL;
+
+  clutter_init (&argc, &argv);
+
+  ui = clutter_script_new ();
 
   /* load a JSON file into the script */
   clutter_script_load_from_file (ui, filename, &error);
@@ -22,8 +25,6 @@ main (int argc, char *argv[])
     }
 
   /* retrieve objects from the script */
-  ClutterActor *stage;
-
   clutter_script_get_objects (ui,
                               "stage", &stage,
                               NULL);

@@ -33,7 +33,12 @@ _update_progress_cb (ClutterTimeline *timeline,
                      guint            elapsed_msecs,
                      ClutterTexture  *texture)
 {
+  CoglHandle copy;
+  gdouble progress;
+  CoglColor constant;
+
   CoglHandle material = clutter_texture_get_cogl_material (texture);
+
   if (material == COGL_INVALID_HANDLE)
     return;
 
@@ -41,15 +46,14 @@ _update_progress_cb (ClutterTimeline *timeline,
    * its creation; if you need to modify it later you should use a copy
    * instead. Cogl makes copying materials reasonably cheap
    */
-  CoglHandle copy = cogl_material_copy (material);
+  copy = cogl_material_copy (material);
 
-  gdouble progress = clutter_timeline_get_progress (timeline);
+  progress = clutter_timeline_get_progress (timeline);
 
   /* Create the constant color to be used when combining the two
    * material layers; we use a black color with an alpha component
    * depending on the current progress of the timeline
    */
-  CoglColor constant;
   cogl_color_init_from_4ub (&constant, 0x00, 0x00, 0x00, 0xff * progress);
 
   /* This sets the value of the constant color we use when combining
@@ -95,6 +99,13 @@ print_usage_and_exit (const char *exec_name,
 int
 main (int argc, char *argv[])
 {
+  CoglHandle texture_1;
+  CoglHandle texture_2;
+  CoglHandle material;
+  ClutterActor *stage;
+  ClutterActor *texture;
+  ClutterTimeline *timeline;
+
   clutter_init_with_args (&argc, &argv,
                           " - Crossfade", entries,
                           NULL,
@@ -106,13 +117,13 @@ main (int argc, char *argv[])
   /* Load the source and target images using Cogl, because we need
    * to combine them into the same ClutterTexture.
    */
-  CoglHandle texture_1 = load_cogl_texture ("source", source);
-  CoglHandle texture_2 = load_cogl_texture ("target", target);
+  texture_1 = load_cogl_texture ("source", source);
+  texture_2 = load_cogl_texture ("target", target);
 
   /* Create a new Cogl material holding the two textures inside two
    * separate layers.
    */
-  CoglHandle material = cogl_material_new ();
+  material = cogl_material_new ();
   cogl_material_set_layer (material, 1, texture_1);
   cogl_material_set_layer (material, 0, texture_2);
 
@@ -137,13 +148,13 @@ main (int argc, char *argv[])
    * assign the material we created earlier to the Texture for painting
    * it
    */
-  ClutterActor *stage = clutter_stage_get_default ();
+  stage = clutter_stage_get_default ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "cross-fade");
   clutter_actor_set_size (stage, 400, 300);
   clutter_actor_show (stage);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  ClutterActor *texture = clutter_texture_new ();
+  texture = clutter_texture_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), texture);
   clutter_texture_set_cogl_material (CLUTTER_TEXTURE (texture), material);
   clutter_actor_add_constraint (texture, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5));
@@ -151,7 +162,7 @@ main (int argc, char *argv[])
   cogl_handle_unref (material);
 
   /* The timeline will drive the cross-fading */
-  ClutterTimeline *timeline = clutter_timeline_new (duration);
+  timeline = clutter_timeline_new (duration);
   g_signal_connect (timeline, "new-frame", G_CALLBACK (_update_progress_cb), texture);
   clutter_timeline_start (timeline);
 

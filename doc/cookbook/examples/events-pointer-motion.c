@@ -9,9 +9,10 @@ _pointer_motion_cb (ClutterActor *actor,
                     gpointer      user_data)
 {
   gfloat stage_x, stage_y;
+  gfloat actor_x, actor_y;
+
   clutter_event_get_coords (event, &stage_x, &stage_y);
 
-  gfloat actor_x, actor_y;
   clutter_actor_transform_stage_point (actor,
                                        stage_x, stage_y,
                                        &actor_x, &actor_y);

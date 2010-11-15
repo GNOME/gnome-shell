@@ -115,12 +115,12 @@ int
 main (int   argc,
       char *argv[])
 {
-  /* seed random number generator */
-  srand ((unsigned int) time (NULL));
-
   Lasso *lasso = g_new0 (Lasso, 1);
 
   ClutterActor *stage;
+
+  /* seed random number generator */
+  srand ((unsigned int) time (NULL));
 
   clutter_init (&argc, &argv);
 

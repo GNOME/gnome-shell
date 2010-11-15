@@ -16,9 +16,9 @@ static void
 _convert_clutter_path_node_to_cogl_path (const ClutterPathNode *node,
                                          gpointer               data)
 {
-  g_return_if_fail (node != NULL);
-
   ClutterKnot knot;
+
+  g_return_if_fail (node != NULL);
 
   switch (node->type)
     {

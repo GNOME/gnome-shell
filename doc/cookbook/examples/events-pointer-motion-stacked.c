@@ -22,8 +22,10 @@ _pointer_motion_cb (ClutterActor *actor,
                     ClutterEvent *event,
                     gpointer      user_data)
 {
-  /* get the coordinates where the pointer crossed into the actor */
   gfloat stage_x, stage_y;
+  gfloat actor_x, actor_y;
+
+  /* get the coordinates where the pointer crossed into the actor */
   clutter_event_get_coords (event, &stage_x, &stage_y);
 
   /*
@@ -31,7 +33,6 @@ _pointer_motion_cb (ClutterActor *actor,
    * the actor which emitted the signal, it can be useful to
    * transform them to actor-relative coordinates
    */
-  gfloat actor_x, actor_y;
   clutter_actor_transform_stage_point (actor,
                                        stage_x, stage_y,
                                        &actor_x, &actor_y);

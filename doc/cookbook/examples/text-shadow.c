@@ -9,24 +9,24 @@
 static void
 _text_paint_cb (ClutterActor *actor)
 {
+  PangoLayout *layout;
+  guint8 real_opacity;
+  CoglColor color;
   ClutterText *text = CLUTTER_TEXT (actor);
+  ClutterColor text_color = { 0, };
 
   /* Get the PangoLayout that the Text actor is going to paint */
-  PangoLayout *layout;
   layout = clutter_text_get_layout (text);
 
   /* Get the color of the text, to extract the alpha component */
-  ClutterColor text_color = { 0, };
   clutter_text_get_color (text, &text_color);
 
   /* Composite the opacity so that the shadow is correctly blended */
-  guint8 real_opacity;
   real_opacity = clutter_actor_get_paint_opacity (actor)
                * text_color.alpha
                / 255;
 
   /* Create a #ccc color and premultiply it */
-  CoglColor color;
   cogl_color_init_from_4ub (&color, 0xcc, 0xcc, 0xcc, real_opacity);
   cogl_color_premultiply (&color);
 
@@ -37,15 +37,15 @@ _text_paint_cb (ClutterActor *actor)
 int
 main (int argc, char *argv[])
 {
-  clutter_init (&argc, &argv);
-
   ClutterActor *stage;
+  ClutterActor *text;
+
+  clutter_init (&argc, &argv);
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Text shadow");
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  ClutterActor *text;
   text = clutter_text_new ();
   clutter_text_set_text (CLUTTER_TEXT (text), "Hello, World!");
   clutter_text_set_font_name (CLUTTER_TEXT (text), "Sans 64px");
