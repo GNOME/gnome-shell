@@ -71,30 +71,36 @@ fi
 # (*) only needed for --xephyr
 
 if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint ; then
-  reqd=""
+  reqd="
+    build-essential curl
+    automake bison flex gettext git-core gnome-common gtk-doc-tools
+    gvfs gvfs-backends icon-naming-utils
+    libdbus-glib-1-dev libexpat-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev
+    libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev
+    libwnck-dev libgl1-mesa-dev liborbit2-dev libpulse-dev libreadline5-dev libxml2-dev
+    mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject
+    xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev
+    libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good
+    libltdl-dev libvorbis-dev libxklavier-dev
+    "
+
+  if apt-cache show autopoint > /dev/null 2> /dev/null; then
+    reqd="$reqd autopoint"
+  fi
+
   if [ ! -x /usr/bin/dpkg-checkbuilddeps ]; then
     echo "Please run 'sudo apt-get install dpkg-dev' and try again."
     echo
     exit 1
   fi
-  for pkg in \
-    build-essential curl \
-    automake bison flex gettext git-core gnome-common gtk-doc-tools \
-    gvfs gvfs-backends icon-naming-utils \
-    libdbus-glib-1-dev libexpat-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev \
-    libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev \
-    libwnck-dev libgl1-mesa-dev liborbit2-dev libpulse-dev libreadline5-dev libxml2-dev \
-    mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject \
-    xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev \
-    libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
-    libltdl-dev libvorbis-dev libxklavier-dev \
-    ; do
+
+  for pkg in $reqd ; do
       if ! dpkg-checkbuilddeps -d $pkg /dev/null 2> /dev/null; then
-        reqd="$pkg $reqd"
+        missing="$pkg $missing"
       fi
   done
-  if test ! "x$reqd" = x; then
-    echo "Please run 'sudo apt-get install $reqd' and try again."
+  if test ! "x$missing" = x; then
+    echo "Please run 'sudo apt-get install $missing' and try again."
     echo
     exit 1
   fi
