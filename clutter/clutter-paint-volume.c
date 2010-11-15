@@ -49,7 +49,7 @@ G_DEFINE_BOXED_TYPE (ClutterPaintVolume, clutter_paint_volume,
  * Return value: the newly allocated #ClutterPaintVolume. Use
  *   clutter_paint_volume_free() to free the resources it uses
  *
- * Since: 1.4
+ * Since: 1.6
  */
 ClutterPaintVolume *
 _clutter_paint_volume_new (ClutterActor *actor)
@@ -126,7 +126,7 @@ _clutter_paint_volume_copy_static (const ClutterPaintVolume *src_pv,
  *
  * Return value: a newly allocated copy of a #ClutterPaintVolume
  *
- * Since: 1.4
+ * Since: 1.6
  */
 ClutterPaintVolume *
 clutter_paint_volume_copy (const ClutterPaintVolume *pv)
@@ -162,7 +162,7 @@ _clutter_paint_volume_set_from_volume (ClutterPaintVolume       *pv,
  *
  * Frees the resources allocated by @pv
  *
- * Since: 1.4
+ * Since: 1.6
  */
 void
 clutter_paint_volume_free (ClutterPaintVolume *pv)
@@ -189,7 +189,7 @@ clutter_paint_volume_free (ClutterPaintVolume *pv)
  *
  * The default is origin is assumed at: (0, 0, 0)
  *
- * Since: 1.4
+ * Since: 1.6
  */
 void
 clutter_paint_volume_set_origin (ClutterPaintVolume  *pv,
@@ -225,7 +225,7 @@ clutter_paint_volume_set_origin (ClutterPaintVolume  *pv,
  *
  * Retrieves the origin of the #ClutterPaintVolume.
  *
- * Since: 1.4
+ * Since: 1.6
  */
 void
 clutter_paint_volume_get_origin (const ClutterPaintVolume *pv,
@@ -255,7 +255,7 @@ _clutter_paint_volume_update_is_empty (ClutterPaintVolume *pv)
  *
  * Sets the width of the paint volume.
  *
- * Since: 1.4
+ * Since: 1.6
  */
 void
 clutter_paint_volume_set_width (ClutterPaintVolume *pv,
@@ -294,7 +294,7 @@ clutter_paint_volume_set_width (ClutterPaintVolume *pv,
  *
  * Return value: the width, in pixels
  *
- * Since: 1.4
+ * Since: 1.6
  */
 gfloat
 clutter_paint_volume_get_width (const ClutterPaintVolume *pv)
@@ -315,7 +315,7 @@ clutter_paint_volume_get_width (const ClutterPaintVolume *pv)
  *
  * Sets the height of the paint volume.
  *
- * Since: 1.4
+ * Since: 1.6
  */
 void
 clutter_paint_volume_set_height (ClutterPaintVolume *pv,
@@ -354,7 +354,7 @@ clutter_paint_volume_set_height (ClutterPaintVolume *pv,
  *
  * Return value: the height of the paint volume, in pixels
  *
- * Since: 1.4
+ * Since: 1.6
  */
 gfloat
 clutter_paint_volume_get_height (const ClutterPaintVolume *pv)
@@ -375,7 +375,7 @@ clutter_paint_volume_get_height (const ClutterPaintVolume *pv)
  *
  * Sets the depth of the paint volume.
  *
- * Since: 1.4
+ * Since: 1.6
  */
 void
 clutter_paint_volume_set_depth (ClutterPaintVolume *pv,
@@ -415,7 +415,7 @@ clutter_paint_volume_set_depth (ClutterPaintVolume *pv,
  *
  * Return value: the depth
  *
- * Since: 1.4
+ * Since: 1.6
  */
 gfloat
 clutter_paint_volume_get_depth (const ClutterPaintVolume *pv)
@@ -438,7 +438,7 @@ clutter_paint_volume_get_depth (const ClutterPaintVolume *pv)
  * Updates the geometry of @pv to be the union bounding box that
  * encompases @pv and @another_pv.
  *
- * Since: 1.4
+ * Since: 1.6
  */
 void
 clutter_paint_volume_union (ClutterPaintVolume *pv,
@@ -602,7 +602,7 @@ _clutter_paint_volume_complete (ClutterPaintVolume *pv)
  * integer pixel values, if you need them to be clamped you can use
  * clutter_actor_box_clamp_to_pixel()</note>
  *
- * Since: 1.4
+ * Since: 1.6
  */
 void
 _clutter_paint_volume_get_bounding_box (ClutterPaintVolume *pv,
@@ -895,7 +895,7 @@ _clutter_actor_set_default_paint_volume (ClutterActor       *self,
  * Return value: %TRUE if the paint volume was successfully set, and %FALSE
  *   otherwise
  *
- * Since: 1.4
+ * Since: 1.6
  */
 gboolean
 clutter_paint_volume_set_from_allocation (ClutterPaintVolume *pv,
