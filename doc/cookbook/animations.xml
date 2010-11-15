@@ -2311,19 +2311,20 @@ clutter_animator_start (animator);
     <section>
       <title>Problem</title>
 
-      <para>You want to loop an animation so it repeats indefinitely.</para>
+      <para>You want to loop an animation so it plays multiple times.</para>
     </section>
 
     <section>
       <title>Solutions</title>
 
       <para>Each <link linkend="animations-introduction-api">animation
-      approach</link> can be used to create a looping animation. The
-      approach for each is covered below.</para>
+      approach</link> can be used to create a looping animation, as
+      described in the following sections.</para>
 
       <para>The animation implemented in each case is a simple repeated
-      movement of a rectangle from the right to the left of the state,
-      then back, like this:</para>
+      movement of a rectangle from the right (<code>x = 150.0</code>)
+      to the left (<code>x = 50.0</code>) of the stage, and back again,
+      looped; like this (just a few iterations):</para>
 
       <inlinemediaobject>
         <videoobject>
@@ -2334,55 +2335,124 @@ clutter_animator_start (animator);
         </alt>
       </inlinemediaobject>
 
-      <section>
+      <section id="animations-looping-solutions-implicit">
         <title>Solution 1: looping an implicit animation</title>
 
-        <para>Implicit animations (started using
-        <function>clutter_actor_animate()</function>) can be looped via
+        <para>Implicit animations, started using
+        <function>clutter_actor_animate()</function>, can be looped via
         their associated <type>ClutterTimeline</type>.</para>
 
-        <para>First, create a <type>ClutterTimeline</type> which is
+        <para>Create a <type>ClutterTimeline</type> which is
         set to loop:</para>
 
         <informalexample>
           <programlisting>
-???
+ClutterTimeline *timeline = clutter_timeline_new (1000);
+clutter_timeline_set_loop (timeline, TRUE);
           </programlisting>
         </informalexample>
 
-        <para>Use this timeline when starting the animation on an
-        actor:</para>
+        <para>Use this timeline when starting an implicit animation on an
+        actor; in this case, to animate the actor's <varname>x</varname>
+        coordinate from its initial value to <code>50.0</code>:</para>
 
         <informalexample>
           <programlisting>
-???
+/* assume <varname>actor</varname> is a <type>ClutterActor</type> instance */
+
+/* actor's initial x value is 150.0 */
+clutter_actor_set_x (actor, 150.0);
+
+/* animate the actor (starting the timeline is implicit) */
+clutter_actor_animate_with_timeline (actor,
+                                     CLUTTER_LINEAR,
+                                     timeline,
+                                     "x", 50.0,
+                                     NULL);
           </programlisting>
         </informalexample>
 
-        <para>NB at the end of the timeline, before the next iteration
-        of the loop, the actor will "jump" back
-        to where it was when the animation started. To prevent this
-        happening, you can invert the direction of the timeline
-        each time an iteration completes. This will then make the
-        animation run "backwards" on the next iteration.
-        <link linkend="animations-looping-example-1">This example</link>
-        demonstrates how to do run an animation forwards and backwards
-        on a loop. See <link linkend="animations-inversion">this recipe</link>
-        for more details.</para>
+        <para>One further technique is to swop the timeline's
+        direction to create a "closed loop" animation (one which returns
+        to its origin at the end of each iteration). See
+        <link linkend="animations-looping-discussion-closed-loop">this
+        section</link> for details.</para>
+
+        <para><link linkend="animations-looping-example-1">The full
+        code example</link> shows how to run an implicit animation on
+        a loop.</para>
       </section>
 
       <section>
         <title>Solution 2: looping with <type>ClutterAnimator</type></title>
 
-        <para>???</para>
+        <para>A <type>ClutterAnimator</type> animation can also be looped
+        via its <type>ClutterTimeline</type>. However, as
+        <type>ClutterAnimator</type> enables more complex animations,
+        you don't have to manually invert the timeline at the
+        end of each iteration. Instead, you can animate
+        an actor's properties back to their initial values
+        at the end of each iteration of the loop.</para>
+
+        <para>Creating the timeline and setting it to loop is the same
+        as for implicit animations:</para>
+
+        <informalexample>
+          <programlisting>
+ClutterTimeline *timeline = clutter_timeline_new (2000);
+clutter_timeline_set_loop (timeline, TRUE);
+          </programlisting>
+        </informalexample>
+
+        <para>Note that the timeline is twice the length of the one for
+        the implicit animation: this is because, unlike the implicit
+        animation, the movement from right to left and back again
+        is a <emphasis>single</emphasis> animation. By contrast, in the
+        implicit animation, the timeline runs forward, for the right to
+        left movement; and then backwards, for the left to right
+        movement. So rather than a 1000ms timeline running twice (once
+        forward,  once backward for the implicit animation),
+        we have a 2000ms timeline running once (for
+        <type>ClutterAnimator</type>).</para>
+
+        <para>Next, create a <type>ClutterAnimator</type> which animates
+        the actor from right to left, then left to right:</para>
+
+        <informalexample>
+          <programlisting>
+/* assume <varname>actor</varname> is a <type>ClutterActor</type> instance */
+ClutterAnimator *animator = clutter_animator_new ();
+
+/* use the looping timeline as the timeline for the animator */
+clutter_animator_set_timeline (animator, timeline);
+
+/* set positions for the actor at various points through the animation:
+ * at progress 0.0, x = 150.0 (right of the stage)
+ * at progress 0.5, x = 50.0 (left of the stage)
+ * at progress 1.0, x = 150.0 again (back to the right)
+ */
+clutter_animator_set (animator,
+                      actor, "x", CLUTTER_LINEAR, 0.0, 150.0,
+                      actor, "x", CLUTTER_LINEAR, 0.5, 50.0,
+                      actor, "x", CLUTTER_LINEAR, 1.0, 150.0,
+                      NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>Finally, start the animation:</para>
+
+        <informalexample>
+          <programlisting>
+clutter_animator_start (animator);
+          </programlisting>
+        </informalexample>
+
+        <para>See <link linkend="animations-looping-example-2">the full
+        example</link> for more details.</para>
       </section>
 
       <section>
         <title>Solution 3: looping with <type>ClutterState</type></title>
-
-        <para>you could use an looping timeline to cycle a ClutterState;
-        but you don't need to because ClutterState has implicit timelines you
-        don't need to interact with directly (for this case)???</para>
 
         <para>You can loop <type>ClutterState</type> animations by
         creating a cycle of states which
@@ -2390,7 +2460,90 @@ clutter_animator_start (animator);
         its own tail"</ulink>: i.e. goes from a start state, through
         intermediate state(s), back to the start state, then again
         through the intermediate states(s), back to the start state,
-        ad infinitum.</para>
+        etc., ad infinitum.</para>
+
+        <para>For the animation we're implementing, there are two states
+        the actor transitions between:</para>
+
+        <orderedlist>
+          <listitem>
+            <para>The actor's <varname>x</varname> value
+            is <code>150.0</code> (the start/end state, on the right
+            of the stage).</para>
+          </listitem>
+          <listitem>
+            <para>The actor's <varname>x</varname> value is
+            <code>50.0</code> (the intermediate state, on the left
+            of the stage).</para>
+          </listitem>
+        </orderedlist>
+
+        <para>Here is how to add those states to a
+        <type>ClutterState</type> instance:</para>
+
+        <informalexample>
+          <programlisting>
+ClutterState *transitions = clutter_state_new ();
+
+/* the duration for a transition from any state to any other is 1 second */
+clutter_state_set_duration (transitions, NULL, NULL, 1000);
+
+clutter_state_set (transitions, NULL, "right",
+                   actor, "x", CLUTTER_LINEAR, 150.0,
+                   NULL);
+
+clutter_state_set (transitions, NULL, "left",
+                   actor, "x", CLUTTER_LINEAR, 50.0,
+                   NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>You also need a handler to move the <type>ClutterState</type>
+        to its next state, called each time a state transition
+        is completed:</para>
+
+        <informalexample>
+          <programlisting>
+/* handler to move the <type>ClutterState</type> to its next state */
+static void
+next_state (ClutterState *transitions,
+            gpointer      user_data)
+{
+  const gchar *state = clutter_state_get_state (transitions);
+
+  if (g_strcmp0 (state, "right") == 0)
+    clutter_state_set_state (transitions, "left");
+  else
+    clutter_state_set_state (transitions, "right");
+}
+          </programlisting>
+        </informalexample>
+
+        <para>Then connect the <type>ClutterState's</type>
+        <code>completed</code> signal to the handler, so that each time
+        a state is reached, the transition to the next state begins:</para>
+
+        <informalexample>
+          <programlisting>
+/* connect the <type>ClutterState</type> <code>completed</code> signal to the handler */
+g_signal_connect (transitions,
+                  "completed",
+                  G_CALLBACK (next_state),
+                  NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>Finally, put the <type>ClutterState</type> into the start
+        state to begin the animation:</para>
+
+        <informalexample>
+          <programlisting>
+clutter_state_warp_to_state (transitions, "right");
+          </programlisting>
+        </informalexample>
+
+        <para>See <link linkend="animations-looping-example-3">the full
+        example</link> for more details.</para>
       </section>
 
     </section>
@@ -2398,7 +2551,122 @@ clutter_animator_start (animator);
     <section>
       <title>Discussion</title>
 
-      <para>interrupting a looped animation???</para>
+      <para>We use two different approaches to looping in the solutions:</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Setting the <type>ClutterTimeline</type> to loop
+          (via <function>clutter_timeline_set_loop()</function>). This
+          is the best approach where the timeline is explicit (for
+          <type>ClutterAnimator</type> and implicit animations).</para>
+        </listitem>
+        <listitem>
+          <para>Cycling through states in a <type>ClutterState</type>. In
+          this case, the timeline is implicit and we don't need to
+          manually control it: the loop is a consequence of cycling
+          repeatedly through a series of states.</para>
+        </listitem>
+      </orderedlist>
+
+      <para>The following sections cover some other aspects of looping
+      animations.</para>
+
+      <section>
+        <title>Looping a fixed number of times</title>
+
+        <para><type>ClutterTimeline</type> doesn't have any built-in
+        functionality to support looping a certain number of times. But
+        it is reasonably easy to count the number of iterations completed and
+        stop the animation when some limit is reached.</para>
+
+        <para>For example, you could use a static counter to keep track
+        of the iteration count:</para>
+
+        <informalexample>
+          <programlisting>
+static guint counter = 0;
+          </programlisting>
+        </informalexample>
+
+        <para>Implement the looping behaviour as in the above solutions,
+        but use a callback function to set/reset the counter each time
+        the timeline completes. For example, for the
+        <type>ClutterAnimator</type> solution, you would connect the
+        <code>completed</code> signal of the timeline
+        to a callback function:</para>
+
+        <informalexample>
+          <programlisting>
+g_signal_connect (timeline,
+                  "completed",
+                  G_CALLBACK (timeline_completed_cb),
+                  NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>And implement a callback function which resets the counter and
+        stops the timeline if more than two iterations have been counted:</para>
+
+        <informalexample>
+          <programlisting>
+static void
+timeline_completed_cb (ClutterTimeline *timeline,
+                       gpointer         user_data)
+{
+  counter++;
+
+  if (counter &gt; 2)
+    {
+      counter = 0;
+      clutter_timeline_stop (timeline);
+    }
+}
+          </programlisting>
+        </informalexample>
+
+        <para>Note that it's simple to count iterations and
+        control the timeline using <type>ClutterAnimator</type> or
+        <type>ClutterState</type>, as the whole animation (right to left
+        and back) is a discrete unit. Doing the same with implicit
+        animations is possible (one forward + one backward run along the
+        timeline is one iteration). But you will be really stretching the
+        implicit animation API beyond its intended use cases.</para>
+      </section>
+
+      <section id="animations-looping-discussion-closed-loop">
+        <title>Creating a "closed loop" with an implicit animation</title>
+
+        <para>When using implicit animations, at the end of the timeline
+        (before the next iteration of the loop), an actor's properties
+        "jump" back to their initial values (as they were when the timeline
+        started). For example, in the
+        <link linkend="animations-looping-solutions-implicit">earlier
+        solution</link>, the actor's initial <varname>x</varname> value was
+        <code>150.0</code>; so the default behaviour on each iteration
+        of the loop would be to animate the actor to <code>x = 50.0</code>
+        then jump it immediately back to <code>x = 150.0</code>, before
+        continuing the loop.</para>
+
+        <para>To prevent this happening, you can create a "closed" loop:
+        animate the actor's properties away from their initial values, then
+        back again.</para>
+
+        <para>This could be done manually, by creating two separate
+        animations, one the inverse of the other, and chaining them together.</para>
+
+        <para>However, a simpler solution is to run forward through the timeline
+        once; then invert its direction when the end of timeline is reached.
+        The animation continues, but in reverse. Once the backward iteration
+        completes, set the timeline to run forward again. Keep changing the
+        timeline's direction each time it completes. This
+        is the approach used in <link linkend="animations-looping-example-1">the
+        example</link>, which results in a smooth, repeated right to left,
+        left to right motion.</para>
+
+        <para>See <link linkend="animations-inversion">this
+        recipe</link> for more details about inverting a timeline.</para>
+      </section>
+
     </section>
 
     <section id="animations-looping-examples">
