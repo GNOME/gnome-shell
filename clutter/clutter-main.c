@@ -135,7 +135,7 @@ static gboolean clutter_enable_accessibility = TRUE;
 
 static guint clutter_default_fps             = 60;
 
-static PangoDirection clutter_text_direction = CLUTTER_TEXT_DIRECTION_LTR;
+static ClutterTextDirection clutter_text_direction = CLUTTER_TEXT_DIRECTION_LTR;
 
 static guint clutter_main_loop_level         = 0;
 static GSList *main_loops                    = NULL;
