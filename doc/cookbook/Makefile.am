@@ -64,6 +64,7 @@ VIDEO_FILES = \
 	videos/animations-reuse.ogv \
 	videos/animations-moving-anchors.ogv \
 	videos/animations-moving-depth.ogv \
+	videos/animations-looping.ogv \
 	$(NULL)
 
 EXTRA_DIST = \

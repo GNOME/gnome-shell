@@ -4,6 +4,9 @@ NULL =
 
 noinst_PROGRAMS = \
 	animations-complex	\
+	animations-looping-animator	\
+	animations-looping-implicit	\
+	animations-looping-state	\
 	animations-moving-animator	\
 	animations-moving-implicit	\
 	animations-moving-state	\
@@ -55,6 +58,9 @@ AM_CFLAGS = \
 AM_LDFLAGS = $(CLUTTER_LIBS) -export-dynamic
 
 animations_complex_SOURCES                 = animations-complex.c
+animations_looping_animator_SOURCES        = animations-looping-animator.c
+animations_looping_implicit_SOURCES        = animations-looping-implicit.c
+animations_looping_state_SOURCES           = animations-looping-state.c
 animations_moving_animator_SOURCES         = animations-moving-animator.c
 animations_moving_implicit_SOURCES         = animations-moving-implicit.c
 animations_moving_state_SOURCES            = animations-moving-state.c
