@@ -115,6 +115,7 @@ HTML_IMAGES=\
 	animator-key-frames.png \
 	bin-layout.png \
 	box-layout.png \
+	constraints-example.png \
         easing-modes.png \
 	event-flow.png \
 	flow-layout-horizontal.png \
@@ -168,6 +169,7 @@ EXTRA_DIST += \
 	animator-key-frames.svg \
 	bin-layout.png \
 	box-layout.png \
+	constraints-example.png \
         easing-modes.png \
         easing-modes.svg \
 	event-flow.png \

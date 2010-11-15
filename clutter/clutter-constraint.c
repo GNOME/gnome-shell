@@ -13,8 +13,65 @@
  * allocation of the actor to which they are applied by overriding the
  * <function>update_allocation()</function> virtual function.
  *
+ * <refsect2 id="ClutterConstraint-usage">
+ *   <title>Using Constraints</title>
+ *   <para>Constraints can be used with fixed layout managers, like
+ *   #ClutterFixedLayout, or with actors implicitly using a fixed layout
+ *   manager, like #ClutterGroup and #ClutterStage.</para>
+ *   <para>Constraints provide a way to build user interfaces by using
+ *   relations between #ClutterActor<!-- -->s, without explicit fixed
+ *   positioning and sizing, similarly to how fluid layout managers like
+ *   #ClutterBoxLayout and #ClutterTableLayout lay out their children.</para>
+ *   <para>Constraints are attached to a #ClutterActor, and are available
+ *   for inspection using clutter_actor_get_constraints().</para>
+ *   <para>Clutter provides different implementation of the #ClutterConstraint
+ *   abstract class, for instance:</para>
+ *   <variablelist>
+ *     <varlistentry>
+ *       <term>#ClutterAlignConstraint</term>
+ *       <listitem><simpara>this constraint can be used to align an actor
+ *       to another one, on either the horizontal or the vertical axis; the
+ *       #ClutterAlignConstraint uses a normalized offset between 0.0 (the
+ *       top or the left of the source actor, depending on the axis) and
+ *       1.0 (the bottom or the right of the source actor, depending on the
+ *       axis).</simpara></listitem>
+ *     </varlistentry>
+ *     <varlistentry>
+ *       <term>#ClutterBindConstraint</term>
+ *       <listitem><simpara>this constraint binds the X, Y, width or height
+ *       of an actor to the corresponding position or size of a source
+ *       actor; it can also apply an offset.</simpara></listitem>
+ *     </varlistentry>
+ *     <varlistentry>
+ *       <term>#ClutterSnapConstraint</term>
+ *       <listitem><simpara>this constraint "snaps" together the edges of
+ *       two #ClutterActor<!-- -->s; if an actor uses two constraints on
+ *       both its horizontal or vertical edges then it can also expand to
+ *       fit the empty space.</simpara></listitem>
+ *     </varlistentry>
+ *   </variablelist>
+ *   <example id="ClutterConstraint-usage-example">
+ *     <title>Usage of constraints</title>
+ *     <para>The example below uses various #ClutterConstraint<!-- -->s to
+ *     lay out three actors on a resizable stage. Only the central actor has
+ *     an explicit size, and no actor has an explicit position.</para>
+ *     <programlisting>
+ *       <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../../../../tests/interactive/test-snap-constraint.c" parse="text"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>
+ *     </programlisting>
+ *     <figure id="constraints-example">
+ *       <title>Constraints</title>
+ *       <graphic fileref="constraints-example.png" format="PNG"/>
+ *     </figure>
+ *   </example>
+ *   <warning><para>It's important to note that Clutter does not avoid loops
+ *   or competing constraints; if two or more #ClutterConstraint<!-- -->s
+ *   are operating on the same positional or dimensional attributes of an
+ *   actor, or if the constraints on two different actors depend on each
+ *   other, then the behavior is undefined.</para></warning>
+ * </refsect2>
+ *
  * <refsect2 id="ClutterConstraint-implementation">
- *   <title>Implemting a ClutterConstraint</title>
+ *   <title>Implementing a ClutterConstraint</title>
  *   <para>Creating a sub-class of #ClutterConstraint requires the
  *   implementation of the <function>update_allocation()</function>
  *   virtual function.</para>
