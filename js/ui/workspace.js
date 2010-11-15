@@ -1309,12 +1309,12 @@ Workspace.prototype = {
                       Lang.bind(this, this._onCloneSelected));
         clone.connect('drag-begin',
                       Lang.bind(this, function(clone) {
-                          this.emit('window-drag-begin', clone.actor);
+                          Main.overview.beginWindowDrag();
                           overlay.hide();
                       }));
         clone.connect('drag-end',
                       Lang.bind(this, function(clone) {
-                          this.emit('window-drag-end', clone.actor);
+                          Main.overview.endWindowDrag();
                           overlay.show();
                       }));
         clone.connect('zoom-start',

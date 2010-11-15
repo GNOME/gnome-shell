@@ -247,6 +247,14 @@ Overview.prototype = {
         this.emit('item-drag-end');
     },
 
+    beginWindowDrag: function(source) {
+        this.emit('window-drag-begin');
+    },
+
+    endWindowDrag: function(source) {
+        this.emit('window-drag-end');
+    },
+
     // Returns the scale the Overview has when we just start zooming out
     // to overview mode. That is, when just the active workspace is showing.
     getZoomedInScale : function() {

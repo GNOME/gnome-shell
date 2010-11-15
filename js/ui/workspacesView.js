@@ -62,15 +62,8 @@ WorkspacesView.prototype = {
         this._workspaces = workspaces;
 
         // Add workspace actors
-        for (let w = 0; w < global.screen.n_workspaces; w++) {
+        for (let w = 0; w < global.screen.n_workspaces; w++)
             this._workspaces[w].actor.reparent(this.actor);
-            this._workspaces[w]._windowDragBeginId =
-                this._workspaces[w].connect('window-drag-begin',
-                                            Lang.bind(this, this._dragBegin));
-            this._workspaces[w]._windowDragEndId =
-                this._workspaces[w].connect('window-drag-end',
-                                            Lang.bind(this, this._dragEnd));
-        }
         this._workspaces[activeWorkspaceIndex].actor.raise_top();
 
         // Position/scale the desktop windows and their children after the
@@ -114,6 +107,10 @@ WorkspacesView.prototype = {
                                                       Lang.bind(this, this._dragBegin));
         this._itemDragEndId = Main.overview.connect('item-drag-end',
                                                      Lang.bind(this, this._dragEnd));
+        this._windowDragBeginId = Main.overview.connect('window-drag-begin',
+                                                        Lang.bind(this, this._dragBegin));
+        this._windowDragEndId = Main.overview.connect('window-drag-end',
+                                                      Lang.bind(this, this._dragEnd));
     },
 
     _lookupWorkspaceForMetaWindow: function (metaWindow) {
@@ -583,13 +580,8 @@ WorkspacesView.prototype = {
                          });
 
         if (newNumWorkspaces > oldNumWorkspaces) {
-            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
+            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++)
                 this.actor.add_actor(this._workspaces[w].actor);
-                this._workspaces[w]._windowDragBeginId = this._workspaces[w].connect('window-drag-begin',
-                                                                                     Lang.bind(this, this._dragBegin));
-                this._workspaces[w]._windowDragEndId = this._workspaces[w].connect('window-drag-end',
-                                                                                   Lang.bind(this, this._dragEnd));
-            }
 
             this._computeWorkspacePositions();
             this._updateWorkspaceActors(false);
@@ -625,15 +617,13 @@ WorkspacesView.prototype = {
             Main.overview.disconnect(this._itemDragEndId);
             this._itemDragEndId = 0;
         }
-        for (let w = 0; w < this._workspaces.length; w++) {
-            if (this._workspaces[w]._windowDragBeginId) {
-                this._workspaces[w].disconnect(this._workspaces[w]._windowDragBeginId);
-                this._workspaces[w]._windowDragBeginId = 0;
-            }
-            if (this._workspaces[w]._windowDragEndId) {
-                this._workspaces[w].disconnect(this._workspaces[w]._windowDragEndId);
-                this._workspaces[w]._windowDragEndId = 0;
-            }
+        if (this._windowDragBeginId > 0) {
+            Main.overview.disconnect(this._windowDragBeginId);
+            this._windowDragBeginId = 0;
+        }
+        if (this._windowDragEndId > 0) {
+            Main.overview.disconnect(this._windowDragEndId);
+            this._windowDragEndId = 0;
         }
     },
 
@@ -649,8 +639,6 @@ WorkspacesView.prototype = {
             dragMotion: Lang.bind(this, this._onDragMotion)
         };
         DND.addDragMonitor(this._dragMonitor);
-
-        this.emit('window-drag-begin');
     },
 
     _onDragMotion: function(dragEvent) {
@@ -741,8 +729,6 @@ WorkspacesView.prototype = {
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setReservedSlot(null);
-
-        this.emit('window-drag-end');
     },
 
     // sync the workspaces' positions to the value of the scroll adjustment
@@ -948,6 +934,8 @@ WorkspaceControlsContainer.prototype = {
 
         this._itemDragBeginId = 0;
         this._itemDragEndId = 0;
+        this._windowDragBeginId = 0;
+        this._windowDragEndId = 0;
     },
 
     show: function() {
@@ -957,6 +945,12 @@ WorkspaceControlsContainer.prototype = {
         if (this._itemDragEndId == 0)
             this._itemDragEndId = Main.overview.connect('item-drag-end',
                                                         Lang.bind(this, this.popIn));
+        if (this._windowDragBeginId == 0)
+            this._windowDragBeginId = Main.overview.connect('window-drag-begin',
+                                                            Lang.bind(this, this.popOut));
+        if (this._windowDragEndId == 0)
+            this._windowDragEndId = Main.overview.connect('window-drag-end',
+                                                          Lang.bind(this, this.popIn));
         this._controls.x = this._poppedInX();
     },
 
@@ -968,6 +962,14 @@ WorkspaceControlsContainer.prototype = {
         if (this._itemEndBeginId > 0) {
             Main.overview.disconnect(this._itemDragEndId);
             this._itemDragEndId = 0;
+        }
+        if (this._windowDragBeginId > 0) {
+            Main.overview.disconnect(this._windowDragBeginId);
+            this._windowDragBeginId = 0;
+        }
+        if (this._windowDragEndId > 0) {
+            Main.overview.disconnect(this._windowDragEndId);
+            this._windowDragEndId = 0;
         }
     },
 
@@ -1119,15 +1121,6 @@ WorkspacesDisplay.prototype = {
         if (this.workspacesView)
             this.workspacesView.destroy();
         this.workspacesView = newView;
-
-        this.workspacesView.connect('window-drag-begin', Lang.bind(this,
-            function() {
-                this._controlsContainer.popOut();
-            }));
-        this.workspacesView.connect('window-drag-end', Lang.bind(this,
-            function() {
-                this._controlsContainer.popIn();
-            }));
 
         this._workspaceIndicatorPanel.updateWorkspaces(this._workspaces);
 
