@@ -717,6 +717,7 @@ function main() {
 ''')
     f.close()
 
+    print "Created extension in %r" % (extension_path, )
     subprocess.Popen(['gnome-open', extensionjs_path])
     sys.exit(0)
 
