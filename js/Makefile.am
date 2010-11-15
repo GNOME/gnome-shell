@@ -43,6 +43,7 @@ nobase_dist_js_DATA = 	\
 	ui/statusIconDispatcher.js	\
 	ui/statusMenu.js	\
 	ui/status/accessibility.js	\
+	ui/status/power.js	\
 	ui/status/volume.js	\
 	ui/telepathyClient.js	\
 	ui/tweener.js		\

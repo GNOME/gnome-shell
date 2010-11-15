@@ -191,6 +191,59 @@
     </dependencies>
   </autotools>
 
+  <autotools id="gnome-keyring">
+    <branch repo="git.gnome.org" module="gnome-keyring"/>
+    <dependencies>
+       <dep package="glib"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libnotify">
+    <branch repo="git.gnome.org" module="libnotify"/>
+    <dependencies>
+      <dep package="gtk3"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libgnomekbd">
+    <branch repo="git.gnome.org" module="libgnomekbd"/>
+    <dependencies>
+      <dep package="gtk3"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gnome-settings-daemon">
+    <branch repo="git.gnome.org" module="gnome-settings-daemon"/>
+    <dependencies>
+      <dep package="libnotify"/>
+      <dep package="gnome-desktop-3"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gnome-control-center">
+    <branch repo="git.gnome.org" module="gnome-control-center"/>
+    <dependencies>
+      <dep package="gtk3"/>
+      <dep package="libcanberra"/>
+      <dep package="gnome-desktop-3"/>
+      <dep package="gnome-settings-daemon"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gnome-power-manager">
+    <branch repo="git.gnome.org" module="gnome-power-manager" />
+    <dependencies>
+        <dep package="gtk3"/>
+        <dep package="glib"/>
+        <dep package="gconf"/>
+        <dep package="cairo"/>
+        <dep package="libnotify"/>
+        <dep package="gnome-keyring"/>
+        <dep package="libcanberra"/>
+	<dep package="gnome-control-center"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gnome-shell">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
@@ -214,9 +267,7 @@
        change their ~/.jhbuildrc -->
   <metamodule id="gnome-shell-using-gir-repository">
     <dependencies>
-      <dep package="librsvg"/>
-      <dep package="gnome-themes-standard"/>
-      <dep package="gnome-shell"/>
+      <dep package="gnome-shell-full"/>
     </dependencies>
   </metamodule>
 
@@ -225,6 +276,7 @@
       <dep package="librsvg"/>
       <dep package="gnome-themes-standard"/>
       <dep package="gnome-shell"/>
+      <dep package="gnome-power-manager"/>
     </dependencies>
   </metamodule>
 

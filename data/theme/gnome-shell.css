@@ -156,6 +156,10 @@ StTooltip StLabel {
     -slider-handle-radius: 0.5em;
 }
 
+.popup-device-menu-item {
+    spacing: .5em;
+}
+
 .popup-menu-icon {
     icon-size: 1em;
 }

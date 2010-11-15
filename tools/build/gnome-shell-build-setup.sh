@@ -61,7 +61,7 @@ fi
 # libjasper, libjpeg, libpng, libpulse, libtiff, libwnck,
 # libxklavier, libxml2, ORBit2, pam, python, readline,
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification
-# xdamage, icon-naming-utils, libtool-ltdl, libvorbis
+# xdamage, icon-naming-utils, upower, libtool-ltdl, libvorbis
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
@@ -117,7 +117,8 @@ if test "x$system" = xFedora ; then
     libXdamage-devel libcroco-devel libxml2-devel gstreamer-devel
     gstreamer-plugins-base gstreamer-plugins-good glx-utils expat-devel
     startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
-    icon-naming-utils libtool-ltdl-devel libvorbis-devel libxklavier-devel
+    icon-naming-utils upower-devel libtool-ltdl-devel libvorbis-devel
+    libxklavier-devel
     "
 
   if expr $version \>= 14 > /dev/null ; then

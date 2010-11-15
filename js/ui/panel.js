@@ -33,6 +33,7 @@ const STANDARD_TRAY_ICON_ORDER = ['a11y', 'display', 'keyboard', 'volume', 'blue
 const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'volume': imports.ui.status.volume.Indicator,
+    'battery': imports.ui.status.power.Indicator
 };
 
 const CLOCK_FORMAT_KEY        = 'format';
