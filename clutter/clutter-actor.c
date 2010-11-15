@@ -1170,6 +1170,25 @@ clutter_actor_real_show (ClutterActor *self)
     }
 }
 
+static inline void
+set_show_on_set_parent (ClutterActor *self,
+                        gboolean      set_show)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  set_show = !!set_show;
+
+  if (priv->show_on_set_parent == set_show)
+    return;
+
+  if (priv->parent_actor == NULL)
+    {
+      priv->show_on_set_parent = set_show;
+      _clutter_notify_by_pspec (G_OBJECT (self),
+                                obj_props[PROP_SHOW_ON_SET_PARENT]);
+    }
+}
+
 /**
  * clutter_actor_show:
  * @self: A #ClutterActor
@@ -1190,6 +1209,16 @@ clutter_actor_show (ClutterActor *self)
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  /* simple optimization */
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    {
+      /* we still need to set the :show-on-set-parent property, in
+       * case show() is called on an unparented actor
+       */
+      set_show_on_set_parent (self, TRUE);
+      return;
+    }
+
 #ifdef CLUTTER_ENABLE_DEBUG
   clutter_actor_verify_map_state (self);
 #endif
@@ -1198,17 +1227,10 @@ clutter_actor_show (ClutterActor *self)
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  if (!priv->show_on_set_parent && !priv->parent_actor)
-    {
-      priv->show_on_set_parent = TRUE;
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SHOW_ON_SET_PARENT]);
-    }
+  set_show_on_set_parent (self, TRUE);
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
-    {
-      g_signal_emit (self, actor_signals[SHOW], 0);
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
-    }
+  g_signal_emit (self, actor_signals[SHOW], 0);
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
 
   if (priv->parent_actor)
     clutter_actor_queue_redraw (priv->parent_actor);
@@ -1280,6 +1302,16 @@ clutter_actor_hide (ClutterActor *self)
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  /* simple optimization */
+  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+    {
+      /* we still need to set the :show-on-set-parent property, in
+       * case hide() is called on an unparented actor
+       */
+      set_show_on_set_parent (self, FALSE);
+      return;
+    }
+
 #ifdef CLUTTER_ENABLE_DEBUG
   clutter_actor_verify_map_state (self);
 #endif
@@ -1288,17 +1320,10 @@ clutter_actor_hide (ClutterActor *self)
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  if (priv->show_on_set_parent && !priv->parent_actor)
-    {
-      priv->show_on_set_parent = FALSE;
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SHOW_ON_SET_PARENT]);
-    }
+  set_show_on_set_parent (self, FALSE);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    {
-      g_signal_emit (self, actor_signals[HIDE], 0);
-      _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
-    }
+  g_signal_emit (self, actor_signals[HIDE], 0);
+  _clutter_notify_by_pspec (G_OBJECT (self), obj_props[PROP_VISIBLE]);
 
   if (priv->parent_actor)
     clutter_actor_queue_redraw (priv->parent_actor);
