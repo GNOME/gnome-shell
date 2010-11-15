@@ -299,8 +299,15 @@ _cogl_buffer_initialize (CoglBuffer           *buffer,
 void
 _cogl_buffer_fini (CoglBuffer *buffer)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   g_return_if_fail (!(buffer->flags & COGL_BUFFER_FLAG_MAPPED));
   g_return_if_fail (buffer->immutable_ref == 0);
+
+  if (buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT)
+    GE( glDeleteBuffers (1, &buffer->gl_handle) );
+  else
+    g_free (buffer->data);
 }
 
 /* OpenGL ES 1.1 and 2 have a GL_OES_mapbuffer extension that is able to map

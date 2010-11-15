@@ -147,8 +147,6 @@ _cogl_pixel_array_free (CoglPixelArray *buffer)
   /* parent's destructor */
   _cogl_buffer_fini (COGL_BUFFER (buffer));
 
-  GE( glDeleteBuffers (1, &(COGL_BUFFER (buffer)->gl_handle)) );
-
   g_slice_free (CoglPixelArray, buffer);
 }
 
