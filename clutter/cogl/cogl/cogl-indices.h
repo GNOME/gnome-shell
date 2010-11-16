@@ -55,6 +55,9 @@ cogl_indices_new_for_array (CoglIndicesType type,
                             CoglIndexArray *array,
                             gsize offset);
 
+CoglIndexArray *
+cogl_indices_get_array (CoglIndices *indices);
+
 CoglIndicesType
 cogl_indices_get_type (CoglIndices *indices);
 

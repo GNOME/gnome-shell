@@ -770,7 +770,7 @@ _cogl_draw_indexed_vertex_attributes_array_real (CoglVerticesMode mode,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  buffer = COGL_BUFFER (_cogl_indices_get_array (indices));
+  buffer = COGL_BUFFER (cogl_indices_get_array (indices));
   base = _cogl_buffer_bind (buffer, COGL_BUFFER_BIND_TARGET_INDEX_ARRAY);
   array_offset = cogl_indices_get_offset (indices);
   index_size = sizeof_index_type (cogl_indices_get_type (indices));

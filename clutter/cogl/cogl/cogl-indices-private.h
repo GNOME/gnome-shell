@@ -44,9 +44,6 @@ struct _CoglIndices
   int immutable_ref;
 };
 
-CoglIndexArray *
-_cogl_indices_get_array (CoglIndices *indices);
-
 CoglIndices *
 _cogl_indices_immutable_ref (CoglIndices *indices);
 
