@@ -77,6 +77,11 @@ OPT (RECTANGLES,
      "rectangles",
      "Outline rectangles",
      "Add wire outlines for all rectangular geometry")
+OPT (WIREFRAME,
+     "Visualize",
+     "wireframe",
+     "Show wireframes",
+     "Add wire outlines for all geometry")
 OPT (DISABLE_BATCHING,
      "Root Cause",
      "disable-batching",
