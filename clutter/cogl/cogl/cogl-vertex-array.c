@@ -38,7 +38,7 @@ static void _cogl_vertex_array_free (CoglVertexArray *array);
 COGL_BUFFER_DEFINE (VertexArray, vertex_array);
 
 CoglVertexArray *
-cogl_vertex_array_new (gsize bytes)
+cogl_vertex_array_new (gsize bytes, const void *data)
 {
   CoglVertexArray *array = g_slice_new (CoglVertexArray);
   gboolean use_malloc;
@@ -56,7 +56,14 @@ cogl_vertex_array_new (gsize bytes)
                            COGL_BUFFER_USAGE_HINT_VERTEX_ARRAY,
                            COGL_BUFFER_UPDATE_HINT_STATIC);
 
-  return _cogl_vertex_array_object_new (array);
+  _cogl_vertex_array_object_new (array);
+
+  if (data)
+    cogl_buffer_set_data (COGL_BUFFER (array),
+                          0,
+                          data,
+                          bytes);
+  return array;
 }
 
 static void

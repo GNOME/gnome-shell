@@ -1132,7 +1132,8 @@ cogl_vertex_buffer_vbo_resolve (CoglVertexBuffer *buffer,
 
   if (!found_target_vbo)
     {
-      new_cogl_vbo->array = cogl_vertex_array_new (new_cogl_vbo->array_bytes);
+      new_cogl_vbo->array = cogl_vertex_array_new (new_cogl_vbo->array_bytes,
+                                                   NULL);
 
       upload_attributes (new_cogl_vbo);
       *final_vbos = g_list_prepend (*final_vbos, new_cogl_vbo);

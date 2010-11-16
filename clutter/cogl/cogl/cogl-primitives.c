@@ -911,9 +911,7 @@ _cogl_rectangle_immediate (float x_1,
   CoglVertexArray *vertex_array;
   CoglVertexAttribute *attributes[2];
 
-  vertex_array = cogl_vertex_array_new (sizeof (vertices));
-  cogl_buffer_set_data (COGL_BUFFER (vertex_array), 0,
-                        (guint8 *) vertices, sizeof (vertices));
+  vertex_array = cogl_vertex_array_new (sizeof (vertices), vertices);
   attributes[0] = cogl_vertex_attribute_new (vertex_array,
                                              "cogl_position_in",
                                              sizeof (float) * 2, /* stride */
@@ -1053,7 +1051,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
    * but still support any number of vertices */
   g_array_set_size (ctx->polygon_vertices, n_vertices * stride);
 
-  vertex_array = cogl_vertex_array_new (n_vertices * stride_bytes);
+  vertex_array = cogl_vertex_array_new (n_vertices * stride_bytes, NULL);
 
   attributes[0] =
     cogl_vertex_attribute_new (vertex_array,
