@@ -48,6 +48,14 @@ struct _ClutterStageEGL
   ClutterBackendEGL *backend;
 
 #endif
+
+  /* We only enable clipped redraws after 2 frames, since we've seen
+   * a lot of drivers can struggle to get going and may output some
+   * junk frames to start with. */
+  unsigned long frame_count;
+
+  gboolean initialized_redraw_clip;
+  ClutterGeometry bounding_redraw_clip;
 };
 
 struct _ClutterStageEGLClass

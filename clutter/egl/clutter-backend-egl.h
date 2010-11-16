@@ -54,6 +54,26 @@ G_BEGIN_DECLS
 typedef struct _ClutterBackendEGL       ClutterBackendEGL;
 typedef struct _ClutterBackendEGLClass  ClutterBackendEGLClass;
 
+typedef enum ClutterEGLVBlankType {
+  CLUTTER_VBLANK_NONE = 0,
+  CLUTTER_VBLANK_SWAP_INTERVAL
+} ClutterEGLVBlankType;
+
+typedef void (*BlitFramebufferProc) (GLint      srcX0,
+                                     GLint      srcY0,
+                                     GLint      srcX1,
+                                     GLint      srcY1,
+                                     GLint      dstX0,
+                                     GLint      dstY0,
+                                     GLint      dstX1,
+                                     GLint      dstY1,
+                                     GLbitfield mask,
+                                     GLenum     filter);
+
+typedef EGLBoolean (*SwapBuffersRegionProc) (EGLDisplay dpy,
+                                             EGLSurface surface,
+                                             EGLint numRects,
+                                             const EGLint *rects);
 struct _ClutterBackendEGL
 {
 #ifdef COGL_HAS_XLIB_SUPPORT
@@ -96,6 +116,13 @@ struct _ClutterBackendEGL
 
   gint egl_version_major;
   gint egl_version_minor;
+
+  ClutterEGLVBlankType vblank_type;
+
+  gboolean              can_blit_sub_buffer;
+  BlitFramebufferProc   blit_framebuffer;
+  SwapBuffersRegionProc swap_buffers_region;
+  gboolean              blit_sub_buffer_is_synchronized;
 };
 
 struct _ClutterBackendEGLClass
@@ -111,6 +138,11 @@ GType _clutter_backend_egl_get_type (void) G_GNUC_CONST;
 
 void _clutter_events_egl_init   (ClutterBackendEGL *backend);
 void _clutter_events_egl_uninit (ClutterBackendEGL *backend);
+
+void
+_clutter_backend_egl_blit_sub_buffer (ClutterBackendEGL *backend_egl,
+                                      EGLSurface drawable,
+                                      int x, int y, int width, int height);
 
 G_END_DECLS
 

@@ -50,6 +50,8 @@ static ClutterBackendEGL *backend_singleton = NULL;
 
 static const gchar *clutter_fb_device = NULL;
 
+static gchar *clutter_vblank_name = NULL;
+
 #ifdef COGL_HAS_X11_SUPPORT
 G_DEFINE_TYPE (ClutterBackendEGL, _clutter_backend_egl, CLUTTER_TYPE_BACKEND_X11);
 #else
@@ -75,6 +77,13 @@ clutter_backend_egl_pre_parse (ClutterBackend  *backend,
   if (!backend_x11_class->pre_parse (backend, error))
     return FALSE;
 #endif
+
+  env_string = g_getenv ("CLUTTER_VBLANK");
+  if (env_string)
+    {
+      clutter_vblank_name = g_strdup (env_string);
+      env_string = NULL;
+    }
 
   env_string = g_getenv ("CLUTTER_FB_DEVICE");
   if (env_string != NULL && env_string[0] != '\0')
@@ -131,6 +140,34 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
 		backend_egl->egl_version_minor);
 
   return TRUE;
+}
+
+void
+_clutter_backend_egl_blit_sub_buffer (ClutterBackendEGL *backend_egl,
+                                      EGLSurface drawable,
+                                      int x, int y, int width, int height)
+{
+  if (backend_egl->swap_buffers_region)
+    {
+      EGLint rect[4] = {
+          x, y, width, height
+      };
+      backend_egl->swap_buffers_region (backend_egl->edpy,
+                                        drawable,
+                                        1,
+                                        rect);
+    }
+#if 0 /* XXX need GL_ARB_draw_buffers */
+  else if (backend_egl->blit_framebuffer)
+    {
+      glDrawBuffer (GL_FRONT);
+      backend_egl->blit_framebuffer (x, y, x + width, y + height,
+                                     x, y, x + width, y + height,
+                                     GL_COLOR_BUFFER_BIT, GL_NEAREST);
+      glDrawBuffer (GL_BACK);
+      glFlush();
+    }
+#endif
 }
 
 static gboolean
@@ -598,10 +635,21 @@ clutter_backend_egl_constructor (GType                  gtype,
   return g_object_ref (backend_singleton);
 }
 
+static gboolean
+check_vblank_env (const char *name)
+{
+  if (clutter_vblank_name && !g_ascii_strcasecmp (clutter_vblank_name, name))
+    return TRUE;
+
+  return FALSE;
+}
+
 static ClutterFeatureFlags
 clutter_backend_egl_get_features (ClutterBackend *backend)
 {
   ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  const gchar *egl_extensions = NULL;
+  const gchar *gl_extensions = NULL;
   ClutterFeatureFlags flags;
 
   g_assert (backend_egl->egl_context != NULL);
@@ -611,6 +659,39 @@ clutter_backend_egl_get_features (ClutterBackend *backend)
   flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
 #else
   flags = CLUTTER_FEATURE_STAGE_STATIC;
+#endif
+
+  /* First check for explicit disabling or it set elsewhere (eg NVIDIA) */
+  if (check_vblank_env ("none"))
+    backend_egl->vblank_type = CLUTTER_VBLANK_NONE;
+  else
+    backend_egl->vblank_type = CLUTTER_VBLANK_SWAP_INTERVAL;
+
+  egl_extensions = eglQueryString (backend_egl->edpy, EGL_EXTENSIONS);
+
+  if (_cogl_check_extension ("EGL_NOK_swap_region", egl_extensions))
+    {
+      CLUTTER_NOTE (BACKEND,
+                    "Using EGL_NOK_swap_region for sub_buffer copies");
+      backend_egl->swap_buffers_region =
+        (void *)cogl_get_proc_address ("eglSwapBuffersRegionNOK");
+      backend_egl->can_blit_sub_buffer = TRUE;
+      backend_egl->blit_sub_buffer_is_synchronized = TRUE;
+    }
+
+  gl_extensions = (const gchar *)glGetString (GL_EXTENSIONS);
+
+#if 0 /* XXX need GL_ARB_draw_buffers */
+  if (!backend_egl->swap_buffers_region &&
+      _cogl_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))
+    {
+      CLUTTER_NOTE (BACKEND,
+                    "Using glBlitFramebuffer fallback for sub_buffer copies");
+      backend_egl->blit_framebuffer =
+        (BlitFramebufferProc) cogl_get_proc_address ("glBlitFramebuffer");
+      backend_egl->can_blit_sub_buffer = TRUE;
+      backend_egl->blit_sub_buffer_is_synchronized = FALSE;
+    }
 #endif
 
   CLUTTER_NOTE (BACKEND, "Checking features\n"
