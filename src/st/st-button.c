@@ -4,6 +4,7 @@
  *
  * Copyright 2007 OpenedHand
  * Copyright 2008, 2009 Intel Corporation.
+ * Copyright 2009, 2010 Red Hat, Inc.
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -15,12 +16,7 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
- *
- * Written by: Emmanuele Bassi <ebassi@openedhand.com>
- *             Thomas Wood <thomas@linux.intel.com>
- *
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -72,9 +68,9 @@ struct _StButtonPrivate
   gchar            *text;
 
   guint             is_pressed : 1;
-  guint             is_hover : 1;
   guint             is_checked : 1;
   guint             is_toggle : 1;
+  guint             has_grab : 1;
 
   gint              spacing;
 };
@@ -88,13 +84,13 @@ st_button_update_label_style (StButton *button)
 {
   ClutterActor *label;
 
-  label = st_bin_get_child ((StBin*) button);
+  label = st_bin_get_child (ST_BIN (button));
 
   /* check the child is really a label */
   if (!CLUTTER_IS_TEXT (label))
     return;
 
-  _st_set_text_from_style ((ClutterText*) label, st_widget_get_theme_node (ST_WIDGET (button)));
+  _st_set_text_from_style (CLUTTER_TEXT (label), st_widget_get_theme_node (ST_WIDGET (button)));
 }
 
 static void
@@ -123,15 +119,32 @@ st_button_style_changed (StWidget *widget)
 }
 
 static void
-st_button_real_pressed (StButton *button)
+st_button_press (StButton *button)
 {
-  st_widget_add_style_pseudo_class ((StWidget*) button, "active");
+  if (button->priv->is_pressed)
+    return;
+
+  button->priv->is_pressed = TRUE;
+  st_widget_add_style_pseudo_class (ST_WIDGET (button), "active");
 }
 
 static void
-st_button_real_released (StButton *button)
+st_button_release (StButton *button,
+                   gboolean  clicked)
 {
-  st_widget_remove_style_pseudo_class ((StWidget*) button, "active");
+  if (!button->priv->is_pressed)
+    return;
+
+  button->priv->is_pressed = FALSE;
+  st_widget_remove_style_pseudo_class (ST_WIDGET (button), "active");
+
+  if (clicked)
+    {
+      if (button->priv->is_toggle)
+        st_button_set_checked (button, !button->priv->is_checked);
+
+      g_signal_emit (button, button_signals[CLICKED], 0);
+    }
 }
 
 static gboolean
@@ -143,14 +156,10 @@ st_button_button_press (ClutterActor       *actor,
   if (event->button == 1)
     {
       StButton *button = ST_BUTTON (actor);
-      StButtonClass *klass = ST_BUTTON_GET_CLASS (button);
-
-      button->priv->is_pressed = TRUE;
 
       clutter_grab_pointer (actor);
-
-      if (klass->pressed)
-        klass->pressed (button);
+      button->priv->has_grab = TRUE;
+      st_button_press (button);
 
       return TRUE;
     }
@@ -165,25 +174,47 @@ st_button_button_release (ClutterActor       *actor,
   if (event->button == 1)
     {
       StButton *button = ST_BUTTON (actor);
-      StButtonClass *klass = ST_BUTTON_GET_CLASS (button);
+      gboolean is_click;
 
-      if (!button->priv->is_pressed)
-        return FALSE;
+      is_click = button->priv->has_grab && st_widget_get_hover (ST_WIDGET (button));
+      st_button_release (button, is_click);
 
-      clutter_ungrab_pointer ();
-
-      if (button->priv->is_toggle)
+      if (button->priv->has_grab)
         {
-          st_button_set_checked (button, !button->priv->is_checked);
+          button->priv->has_grab = FALSE;
+          clutter_ungrab_pointer ();
         }
 
-      button->priv->is_pressed = FALSE;
+      return TRUE;
+    }
 
-      if (klass->released)
-        klass->released (button);
+  return FALSE;
+}
 
-      g_signal_emit (button, button_signals[CLICKED], 0);
+static gboolean
+st_button_key_press (ClutterActor    *actor,
+                     ClutterKeyEvent *event)
+{
+  st_widget_hide_tooltip (ST_WIDGET (actor));
 
+  if (event->keyval == CLUTTER_KEY_space ||
+      event->keyval == CLUTTER_KEY_Return)
+    {
+      st_button_press (ST_BUTTON (actor));
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+st_button_key_release (ClutterActor    *actor,
+                       ClutterKeyEvent *event)
+{
+  if (event->keyval == CLUTTER_KEY_space ||
+      event->keyval == CLUTTER_KEY_Return)
+    {
+      st_button_release (ST_BUTTON (actor), TRUE);
       return TRUE;
     }
 
@@ -195,12 +226,19 @@ st_button_enter (ClutterActor         *actor,
                  ClutterCrossingEvent *event)
 {
   StButton *button = ST_BUTTON (actor);
+  gboolean ret;
 
-  st_widget_add_style_pseudo_class ((StWidget*) button, "hover");
+  ret = CLUTTER_ACTOR_CLASS (st_button_parent_class)->enter_event (actor, event);
 
-  button->priv->is_hover = 1;
+  if (button->priv->has_grab)
+    {
+      if (st_widget_get_hover (ST_WIDGET (button)))
+        st_button_press (button);
+      else
+        st_button_release (button, FALSE);
+    }
 
-  return CLUTTER_ACTOR_CLASS (st_button_parent_class)->enter_event (actor, event);
+  return ret;
 }
 
 static gboolean
@@ -208,24 +246,19 @@ st_button_leave (ClutterActor         *actor,
                  ClutterCrossingEvent *event)
 {
   StButton *button = ST_BUTTON (actor);
+  gboolean ret;
 
-  button->priv->is_hover = 0;
+  ret = CLUTTER_ACTOR_CLASS (st_button_parent_class)->leave_event (actor, event);
 
-  if (button->priv->is_pressed)
+  if (button->priv->has_grab)
     {
-      StButtonClass *klass = ST_BUTTON_GET_CLASS (button);
-
-      clutter_ungrab_pointer ();
-
-      button->priv->is_pressed = FALSE;
-
-      if (klass->released)
-        klass->released (button);
+      if (st_widget_get_hover (ST_WIDGET (button)))
+        st_button_press (button);
+      else
+        st_button_release (button, FALSE);
     }
 
-  st_widget_remove_style_pseudo_class ((StWidget*) button, "hover");
-
-  return CLUTTER_ACTOR_CLASS (st_button_parent_class)->leave_event (actor, event);
+  return ret;
 }
 
 static void
@@ -302,15 +335,14 @@ st_button_class_init (StButtonClass *klass)
 
   g_type_class_add_private (klass, sizeof (StButtonPrivate));
 
-  klass->pressed = st_button_real_pressed;
-  klass->released = st_button_real_released;
-
   gobject_class->set_property = st_button_set_property;
   gobject_class->get_property = st_button_get_property;
   gobject_class->finalize = st_button_finalize;
 
   actor_class->button_press_event = st_button_button_press;
   actor_class->button_release_event = st_button_button_release;
+  actor_class->key_press_event = st_button_key_press;
+  actor_class->key_release_event = st_button_key_release;
   actor_class->enter_event = st_button_enter;
   actor_class->leave_event = st_button_leave;
 
@@ -360,7 +392,8 @@ st_button_init (StButton *button)
   button->priv = ST_BUTTON_GET_PRIVATE (button);
   button->priv->spacing = 6;
 
-  clutter_actor_set_reactive ((ClutterActor *) button, TRUE);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (button), TRUE);
+  st_widget_set_track_hover (ST_WIDGET (button), TRUE);
 }
 
 /**
@@ -431,7 +464,7 @@ st_button_set_label (StButton    *button,
   else
     priv->text = g_strdup ("");
 
-  label = st_bin_get_child ((StBin*) button);
+  label = st_bin_get_child (ST_BIN (button));
 
   if (label && CLUTTER_IS_TEXT (label))
     {
@@ -445,7 +478,7 @@ st_button_set_label (StButton    *button,
                             "ellipsize", PANGO_ELLIPSIZE_END,
                             "use-markup", TRUE,
                             NULL);
-      st_bin_set_child ((StBin*) button, label);
+      st_bin_set_child (ST_BIN (button), label);
     }
 
   /* Fake a style change so that we reset the style properties on the label */
@@ -524,9 +557,9 @@ st_button_set_checked (StButton *button,
       button->priv->is_checked = checked;
 
       if (checked)
-        st_widget_add_style_pseudo_class ((StWidget*) button, "checked");
+        st_widget_add_style_pseudo_class (ST_WIDGET (button), "checked");
       else
-        st_widget_remove_style_pseudo_class ((StWidget*) button, "checked");
+        st_widget_remove_style_pseudo_class (ST_WIDGET (button), "checked");
     }
 
   g_object_notify (G_OBJECT (button), "checked");

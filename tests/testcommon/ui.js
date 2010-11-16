@@ -8,7 +8,6 @@ const Shell = imports.gi.Shell;
 const Environment = imports.ui.environment;
 
 function init() {
-    Clutter.init(null, null);
     Environment.init();
 
     let stage = Clutter.Stage.get_default();

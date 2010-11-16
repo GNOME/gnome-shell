@@ -162,6 +162,25 @@ shell_generic_container_pick (ClutterActor        *actor,
     }
 }
 
+static GList *
+shell_generic_container_get_focus_chain (StContainer *container)
+{
+  ShellGenericContainer *self = SHELL_GENERIC_CONTAINER (container);
+  GList *children, *focus_chain;
+
+  focus_chain = NULL;
+  for (children = st_container_get_children_list (container); children; children = children->next)
+    {
+      ClutterActor *child = children->data;
+
+      if (CLUTTER_ACTOR_IS_VISIBLE (child) &&
+          !shell_generic_container_get_skip_paint (self, child))
+        focus_chain = g_list_prepend (focus_chain, child);
+    }
+
+  return g_list_reverse (focus_chain);
+}
+
 /**
  * shell_generic_container_get_n_skip_paint:
  * @self:  A #ShellGenericContainer
@@ -231,6 +250,7 @@ shell_generic_container_class_init (ShellGenericContainerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  StContainerClass *container_class = ST_CONTAINER_CLASS (klass);
 
   gobject_class->finalize = shell_generic_container_finalize;
 
@@ -239,6 +259,8 @@ shell_generic_container_class_init (ShellGenericContainerClass *klass)
   actor_class->allocate = shell_generic_container_allocate;
   actor_class->paint = shell_generic_container_paint;
   actor_class->pick = shell_generic_container_pick;
+
+  container_class->get_focus_chain = shell_generic_container_get_focus_chain;
 
   shell_generic_container_signals[GET_PREFERRED_WIDTH] =
     g_signal_new ("get-preferred-width",

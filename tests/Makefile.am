@@ -8,6 +8,7 @@ TEST_JS =					\
 	interactive/calendar.js			\
 	interactive/css-fonts.js		\
 	interactive/entry.js			\
+	interactive/icons.js			\
 	interactive/inline-style.js		\
 	interactive/scrolling.js		\
 	interactive/scroll-view-sizing.js	\

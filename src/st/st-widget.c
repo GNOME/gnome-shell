@@ -4,6 +4,9 @@
  *
  * Copyright 2007 OpenedHand
  * Copyright 2008, 2009 Intel Corporation.
+ * Copyright 2009, 2010 Red Hat, Inc.
+ * Copyright 2009 Abderrahim Kitouni
+ * Copyright 2009, 2010 Florian Müllner
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -15,13 +18,7 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
- * Boston, MA 02111-1307, USA.
- *
- * Written by: Emmanuele Bassi <ebassi@openedhand.com>
- *             Thomas Wood <thomas@linux.intel.com>
- *
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -64,6 +61,7 @@ struct _StWidgetPrivate
   gboolean      draw_border_internal : 1;
   gboolean      track_hover : 1;
   gboolean      hover : 1;
+  gboolean      can_focus : 1;
 
   StTooltip    *tooltip;
 
@@ -93,7 +91,8 @@ enum
   PROP_HAS_TOOLTIP,
   PROP_TOOLTIP_TEXT,
   PROP_TRACK_HOVER,
-  PROP_HOVER
+  PROP_HOVER,
+  PROP_CAN_FOCUS
 };
 
 enum
@@ -113,6 +112,9 @@ G_DEFINE_ABSTRACT_TYPE (StWidget, st_widget, CLUTTER_TYPE_ACTOR);
 
 static void st_widget_recompute_style (StWidget    *widget,
                                        StThemeNode *old_theme_node);
+static gboolean st_widget_real_navigate_focus (StWidget         *widget,
+                                               ClutterActor     *from,
+                                               GtkDirectionType  direction);
 
 static void
 st_widget_set_property (GObject      *gobject,
@@ -162,6 +164,10 @@ st_widget_set_property (GObject      *gobject,
 
     case PROP_HOVER:
       st_widget_set_hover (actor, g_value_get_boolean (value));
+      break;
+
+    case PROP_CAN_FOCUS:
+      st_widget_set_can_focus (actor, g_value_get_boolean (value));
       break;
 
     default:
@@ -215,6 +221,10 @@ st_widget_get_property (GObject    *gobject,
 
     case PROP_HOVER:
       g_value_set_boolean (value, priv->hover);
+      break;
+
+    case PROP_CAN_FOCUS:
+      g_value_set_boolean (value, priv->can_focus);
       break;
 
     default:
@@ -512,6 +522,9 @@ get_root_theme_node (ClutterStage *stage)
  * The theme node is used to access standard and custom CSS
  * properties of the widget.
  *
+ * Note: it is a fatal error to call this on a widget that is
+ *  not been added to a stage.
+ *
  * Return value: (transfer none): the theme node for the widget.
  *   This is owned by the widget. When attributes of the widget
  *   or the environment that affect the styling change (for example
@@ -556,6 +569,29 @@ st_widget_get_theme_node (StWidget *widget)
                                             priv->pseudo_class,
                                             priv->inline_style);
     }
+
+  return priv->theme_node;
+}
+
+/**
+ * st_widget_peek_theme_node:
+ * @widget: a #StWidget
+ *
+ * Returns the theme node for the widget if it has already been
+ * computed, %NULL if the widget hasn't been added to a  stage or the theme
+ * node hasn't been computed. If %NULL is returned, then ::style-changed
+ * will be reliably emitted before the widget is allocated or painted.
+ *
+ * Return value: (transfer none): the theme node for the widget.
+ *   This is owned by the widget. When attributes of the widget
+ *   or the environment that affect the styling change (for example
+ *   the style_class property of the widget), it will be recreated,
+ *   and the ::style-changed signal will be emitted on the widget.
+ */
+StThemeNode *
+st_widget_peek_theme_node (StWidget *widget)
+{
+  StWidgetPrivate *priv = widget->priv;
 
   return priv->theme_node;
 }
@@ -605,6 +641,22 @@ st_widget_leave (ClutterActor         *actor,
 }
 
 static void
+st_widget_key_focus_in (ClutterActor *actor)
+{
+  StWidget *widget = ST_WIDGET (actor);
+
+  st_widget_add_style_pseudo_class (widget, "focus");
+}
+
+static void
+st_widget_key_focus_out (ClutterActor *actor)
+{
+  StWidget *widget = ST_WIDGET (actor);
+
+  st_widget_remove_style_pseudo_class (widget, "focus");
+}
+
+static void
 st_widget_hide (ClutterActor *actor)
 {
   StWidget *widget = (StWidget *) actor;
@@ -642,9 +694,12 @@ st_widget_class_init (StWidgetClass *klass)
 
   actor_class->enter_event = st_widget_enter;
   actor_class->leave_event = st_widget_leave;
+  actor_class->key_focus_in = st_widget_key_focus_in;
+  actor_class->key_focus_out = st_widget_key_focus_out;
   actor_class->hide = st_widget_hide;
 
   klass->style_changed = st_widget_real_style_changed;
+  klass->navigate_focus = st_widget_real_navigate_focus;
 
   /**
    * StWidget:pseudo-class:
@@ -775,6 +830,20 @@ st_widget_class_init (StWidgetClass *klass)
                                 ST_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
                                    PROP_HOVER,
+                                   pspec);
+
+  /**
+   * StWidget:can-focus:
+   *
+   * Whether or not the widget can be focused via keyboard navigation.
+   */
+  pspec = g_param_spec_boolean ("can-focus",
+                                "Can focus",
+                                "Whether the widget can be focused via keyboard navigation",
+                                FALSE,
+                                ST_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_CAN_FOCUS,
                                    pspec);
 
   /**
@@ -1622,6 +1691,113 @@ st_widget_get_hover (StWidget *widget)
   g_return_val_if_fail (ST_IS_WIDGET (widget), FALSE);
 
   return widget->priv->hover;
+}
+
+/**
+ * st_widget_set_can_focus:
+ * @widget: A #StWidget
+ * @can_focus: %TRUE if the widget can receive keyboard focus
+ *   via keyboard navigation
+ *
+ * Marks @widget as being able to receive keyboard focus via
+ * keyboard navigation.
+ */
+void
+st_widget_set_can_focus (StWidget *widget,
+                         gboolean  can_focus)
+{
+  StWidgetPrivate *priv;
+
+  g_return_if_fail (ST_IS_WIDGET (widget));
+
+  priv = widget->priv;
+
+  if (priv->can_focus != can_focus)
+    {
+      priv->can_focus = can_focus;
+      g_object_notify (G_OBJECT (widget), "can-focus");
+    }
+}
+
+/**
+ * st_widget_get_can_focus:
+ * @widget: A #StWidget
+ *
+ * Returns the current value of the can-focus property. See
+ * st_widget_set_can_focus() for more information.
+ *
+ * Returns: current value of can-focus on @widget
+ */
+gboolean
+st_widget_get_can_focus (StWidget *widget)
+{
+  g_return_val_if_fail (ST_IS_WIDGET (widget), FALSE);
+
+  return widget->priv->can_focus;
+}
+
+static gboolean
+st_widget_real_navigate_focus (StWidget         *widget,
+                               ClutterActor     *from,
+                               GtkDirectionType  direction)
+{
+  if (widget->priv->can_focus &&
+      CLUTTER_ACTOR (widget) != from)
+    {
+      clutter_actor_grab_key_focus (CLUTTER_ACTOR (widget));
+      return TRUE;
+    }
+  return FALSE;
+}
+
+/**
+ * st_widget_navigate_focus:
+ * @widget: the "top level" container
+ * @from: (allow-none): the actor that the focus is coming from
+ * @direction: the direction focus is moving in
+ * @wrap_around: whether focus should wrap around
+ *
+ * Tries to update the keyboard focus within @widget in response to a
+ * keyboard event.
+ *
+ * If @from is a descendant of @widget, this attempts to move the
+ * keyboard focus to the next descendant of @widget (in the order
+ * implied by @direction) that has the #StWidget:can-focus property
+ * set. If @from is %NULL, or outside of @widget, this attempts to
+ * focus either @widget itself, or its first descendant in the order
+ * implied by @direction.
+ *
+ * If a container type is marked #StWidget:can-focus, the expected
+ * behavior is that it will only take up a single slot on the focus
+ * chain as a whole, rather than allowing navigation between its child
+ * actors (or having a distinction between itself being focused and
+ * one of its children being focused).
+ *
+ * Some widget classes might have slightly different behavior from the
+ * above, where that would make more sense.
+ *
+ * If @wrap_around is %TRUE and @from is a child of @widget, but the
+ * widget has no further children that can accept the focus in the
+ * given direction, then st_widget_navigate_focus() will try a second
+ * time, using a %NULL @from, which should cause it to reset the focus
+ * to the first available widget in the given direction.
+ *
+ * Return value: %TRUE if clutter_actor_grab_key_focus() has been
+ * called on an actor. %FALSE if not.
+ */
+gboolean
+st_widget_navigate_focus (StWidget         *widget,
+                          ClutterActor     *from,
+                          GtkDirectionType  direction,
+                          gboolean          wrap_around)
+{
+  g_return_val_if_fail (ST_IS_WIDGET (widget), FALSE);
+
+  if (ST_WIDGET_GET_CLASS (widget)->navigate_focus (widget, from, direction))
+    return TRUE;
+  if (wrap_around && from && clutter_actor_contains (CLUTTER_ACTOR (widget), from))
+    return ST_WIDGET_GET_CLASS (widget)->navigate_focus (widget, NULL, direction);
+  return FALSE;
 }
 
 static gboolean

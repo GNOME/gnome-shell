@@ -3,6 +3,8 @@
  * st-entry.c: Plain entry actor
  *
  * Copyright 2008, 2009 Intel Corporation
+ * Copyright 2009, 2010 Red Hat, Inc.
+ * Copyright 2010 Florian Müllner
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -14,11 +16,7 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
- *
- * Written by: Thomas Wood <thomas.wood@intel.com>
- *
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -217,6 +215,29 @@ st_entry_style_changed (StWidget *self)
   g_free (font_string);
 
   ST_WIDGET_CLASS (st_entry_parent_class)->style_changed (self);
+}
+
+static gboolean
+st_entry_navigate_focus (StWidget         *widget,
+                         ClutterActor     *from,
+                         GtkDirectionType  direction)
+{
+  StEntryPrivate *priv = ST_ENTRY_PRIV (widget);
+
+  /* This is basically the same as st_widget_real_navigate_focus(),
+   * except that widget is behaving as a proxy for priv->entry (which
+   * isn't an StWidget and so has no can-focus flag of its own).
+   */
+
+  if (from == priv->entry)
+    return FALSE;
+  else if (st_widget_get_can_focus (widget))
+    {
+      clutter_actor_grab_key_focus (priv->entry);
+      return TRUE;
+    }
+  else
+    return FALSE;
 }
 
 static void
@@ -632,6 +653,7 @@ st_entry_class_init (StEntryClass *klass)
   actor_class->leave_event = st_entry_leave_event;
 
   widget_class->style_changed = st_entry_style_changed;
+  widget_class->navigate_focus = st_entry_navigate_focus;
 
   pspec = g_param_spec_object ("clutter-text",
 			       "Clutter Text",

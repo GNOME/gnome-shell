@@ -117,6 +117,8 @@ libgnome_shell_la_SOURCES =		\
 libgnome_shell_la_gir_sources = \
 	$(filter-out %-private.h $(shell_recorder_non_gir_sources), $(shell_public_headers_h) $(libgnome_shell_la_SOURCES))
 
+########################################
+
 shell_recorder_sources =        \
 	shell-recorder.c	\
 	shell-recorder.h
@@ -139,6 +141,35 @@ test_recorder_SOURCES =     \
 	test-recorder.c
 endif BUILD_RECORDER
 
+########################################
+
+# In order to run the interactive tests for GUI components, we need to have
+# an executable that exports the St components. Libtool doesn't have a way
+# to include all the symbols from a convenience library into a executable
+# so what we do is build a small uninstalled library that pulls in the
+# St convenience library and link the test running program to that.
+
+noinst_LTLIBRARIES += libjs-test.la
+
+libjs_test_la_LDFLAGS = -rpath $(libdir)
+libjs_test_la_CPPFLAGS = $(JS_TEST_CFLAGS)
+libjs_test_la_LIBADD = $(JS_TEST_LIBS) libst-1.0.la
+
+# The tests use or reference a couple of Shell classes
+libjs_test_la_SOURCES = 		\
+	shell-generic-container.c	\
+	shell-perf-log.c
+
+noinst_PROGRAMS += run-js-test
+
+run_js_test_CPPFLAGS = $(JS_TEST_CFLAGS)
+run_js_test_LDADD = $(JS_TEST_LIBS) libjs-test.la
+run_js_test_LDFLAGS = -export-dynamic
+
+run_js_test_SOURCES =			\
+	run-js-test.c
+
+########################################
 
 shell-marshal.h: stamp-shell-marshal.h
 	@true

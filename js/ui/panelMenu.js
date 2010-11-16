@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
 const Lang = imports.lang;
 const PopupMenu = imports.ui.popupMenu;
@@ -13,11 +14,13 @@ Button.prototype = {
     _init: function(menuAlignment) {
         this.actor = new St.Bin({ style_class: 'panel-button',
                                   reactive: true,
+                                  can_focus: true,
                                   x_fill: true,
                                   y_fill: false,
                                   track_hover: true });
         this.actor._delegate = this;
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
+        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
         this.menu = new PopupMenu.PopupMenu(this.actor, menuAlignment, St.Side.TOP, /* FIXME */ 0);
         this.menu.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
         Main.chrome.addActor(this.menu.actor, { visibleInOverview: true,
@@ -29,10 +32,27 @@ Button.prototype = {
         this.menu.toggle();
     },
 
+    _onKeyPress: function(actor, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
+            this.menu.toggle();
+            return true;
+        } else if (symbol == Clutter.KEY_Down) {
+            if (!this.menu.isOpen)
+                this.menu.toggle();
+            this.menu.activateFirst();
+            return true;
+        } else
+            return false;
+    },
+
     _onOpenStateChanged: function(menu, open) {
-        if (open)
+        if (open) {
             this.actor.add_style_pseudo_class('pressed');
-        else
+            let focus = global.stage.get_key_focus();
+            if (!focus || (focus != this.actor && !menu.contains(focus)))
+                this.actor.grab_key_focus();
+        } else
             this.actor.remove_style_pseudo_class('pressed');
     }
 };
@@ -61,7 +81,8 @@ SystemStatusButton.prototype = {
         this._iconName = iconName;
         if (this._iconActor)
             this._iconActor.destroy();
-        this._iconActor = St.TextureCache.get_default().load_icon_name(this._iconName, St.IconType.SYMBOLIC, 24);
+        this._iconActor = new St.Icon({ icon_name: this._iconName,
+                                        style_class: 'system-status-icon' });
         this.actor.set_child(this._iconActor);
     },
 

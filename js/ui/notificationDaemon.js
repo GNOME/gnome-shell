@@ -150,7 +150,9 @@ NotificationDaemon.prototype = {
                 let uri = GLib.filename_to_uri(icon, null);
                 return textureCache.load_uri_async(uri, size, size);
             } else
-                return textureCache.load_icon_name(icon, St.IconType.FULLCOLOR, size);
+                return new St.Icon({ icon_name: icon,
+                                     icon_type: St.IconType.FULLCOLOR,
+                                     icon_size: size });
         } else if (hints.icon_data) {
             let [width, height, rowStride, hasAlpha,
                  bitsPerSample, nChannels, data] = hints.icon_data;
@@ -167,7 +169,9 @@ NotificationDaemon.prototype = {
                     stockIcon = 'gtk-dialog-error';
                     break;
             }
-            return textureCache.load_icon_name(stockIcon, St.IconType.FULLCOLOR, size);
+            return new St.Icon({ icon_name: stockIcon,
+                                 icon_type: St.IconType.FULLCOLOR,
+                                 icon_size: size });
         }
     },
 
@@ -294,6 +298,7 @@ NotificationDaemon.prototype = {
         }
 
         if (actions.length) {
+            notification.setUseActionIcons(hints['action-icons'] == true);
             for (let i = 0; i < actions.length - 1; i += 2)
                 notification.addButton(actions[i], actions[i + 1]);
         }
@@ -317,6 +322,7 @@ NotificationDaemon.prototype = {
     GetCapabilities: function() {
         return [
             'actions',
+            'action-icons',
             'body',
             // 'body-hyperlinks',
             // 'body-images',
@@ -325,7 +331,6 @@ NotificationDaemon.prototype = {
             'icon-static',
             'persistence',
             // 'sound',
-            'x-gnome-icon-buttons'
         ];
     },
 

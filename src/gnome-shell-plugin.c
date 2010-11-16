@@ -161,6 +161,8 @@ gnome_shell_plugin_init (GnomeShellPlugin *shell_plugin)
                                            "/desktop/gnome/shell/windows/button_layout");
   meta_prefs_override_preference_location ("/apps/metacity/general/side_by_side_tiling",
                                            "/desktop/gnome/shell/windows/side_by_side_tiling");
+  meta_prefs_override_preference_location ("/apps/metacity/general/theme",
+                                           "/desktop/gnome/shell/windows/theme");
 }
 
 static void

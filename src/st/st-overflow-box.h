@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
- * st-overflow-box.h: box which hides actors that don't fit
+ * st-overflow-box.h: A vertical box which paints as many actors as it can fit
  *
  * Copyright 2009 Red Hat, Inc.
  *
@@ -14,9 +14,7 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
- *
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #if !defined(ST_H_INSIDE) && !defined(ST_COMPILATION)

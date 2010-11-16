@@ -15,10 +15,7 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
- * Boston, MA 02111-1307, USA.
- *
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #if !defined(ST_H_INSIDE) && !defined(ST_COMPILATION)
@@ -50,6 +47,8 @@ struct _StContainer {
 
 struct _StContainerClass {
   StWidgetClass parent_class;
+
+  GList * (*get_focus_chain) (StContainer *container);
 };
 
 GType   st_container_get_type             (void) G_GNUC_CONST;
@@ -57,11 +56,13 @@ GType   st_container_get_type             (void) G_GNUC_CONST;
 void    st_container_remove_all           (StContainer *container);
 void    st_container_destroy_children     (StContainer *container);
 
+GList * st_container_get_focus_chain      (StContainer *container);
+
 /* Only to be used by subclasses of StContainer */
 void    st_container_move_child           (StContainer  *container,
                                            ClutterActor *actor,
                                            int           pos);
-GList *st_container_get_children_list     (StContainer *container);
+GList * st_container_get_children_list    (StContainer *container);
 
 G_END_DECLS
 

@@ -404,9 +404,9 @@ AppMenuButton.prototype = {
     },
 
     _onQuit: function() {
-        if (this._focusedApp == null)
+        if (this._targetApp == null)
             return;
-        this._focusedApp.request_quit();
+        this._targetApp.request_quit();
     },
 
     _onAppStateChanged: function(tracker, app) {
@@ -739,8 +739,9 @@ Panel.prototype = {
         /* Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview". */
         let label = new St.Label({ text: _("Activities") });
         this.button = new St.Clickable({ name: 'panelActivities',
-                                          style_class: 'panel-button',
-                                          reactive: true });
+                                         style_class: 'panel-button',
+                                         reactive: true,
+                                         can_focus: true });
         this.button.set_child(label);
 
         this._leftBox.add(this.button);
@@ -892,7 +893,8 @@ Panel.prototype = {
     },
 
     _onTrayIconRemoved: function(o, icon) {
-        this._trayBox.remove_actor(icon);
+        if (icon.get_parent() != null)
+            this._trayBox.remove_actor(icon);
     },
 
     _addRipple : function(delay, time, startScale, startOpacity, finalScale, finalOpacity) {

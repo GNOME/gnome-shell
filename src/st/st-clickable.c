@@ -1,4 +1,22 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+/*
+ * st-clickable.h: A bin with methods and properties useful for implementing buttons
+ *
+ * Copyright 2009, 2010 Red Hat, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /**
  * SECTION:st-clickable
@@ -158,6 +176,37 @@ st_clickable_button_release_event (ClutterActor       *actor,
   return TRUE;
 }
 
+static gboolean
+st_clickable_key_press_event (ClutterActor    *actor,
+                              ClutterKeyEvent *event)
+{
+  StClickable *self = ST_CLICKABLE (actor);
+
+  if (event->keyval == CLUTTER_KEY_space ||
+      event->keyval == CLUTTER_KEY_Return)
+    {
+      set_pressed (self, TRUE);
+      return TRUE;
+    }
+  return FALSE;
+}
+
+static gboolean
+st_clickable_key_release_event (ClutterActor    *actor,
+                                ClutterKeyEvent *event)
+{
+  StClickable *self = ST_CLICKABLE (actor);
+
+  if (event->keyval != CLUTTER_KEY_space &&
+      event->keyval != CLUTTER_KEY_Return)
+    return FALSE;
+
+  set_pressed (self, FALSE);
+
+  g_signal_emit (G_OBJECT (self), st_clickable_signals[CLICKED], 0, event);
+  return TRUE;
+}
+
 /**
  * st_clickable_fake_release:
  * @box:
@@ -240,6 +289,8 @@ st_clickable_class_init (StClickableClass *klass)
   actor_class->leave_event = st_clickable_leave_event;
   actor_class->button_press_event = st_clickable_button_press_event;
   actor_class->button_release_event = st_clickable_button_release_event;
+  actor_class->key_press_event = st_clickable_key_press_event;
+  actor_class->key_release_event = st_clickable_key_release_event;
 
   /**
    * StClickable::clicked

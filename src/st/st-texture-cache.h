@@ -1,11 +1,38 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+/*
+ * st-texture-cache.h: Object for loading and caching images as textures
+ *
+ * Copyright 2009, 2010 Red Hat, Inc.
+ * Copyright 2010, Maxim Ermilov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef __ST_TEXTURE_CACHE_H__
 #define __ST_TEXTURE_CACHE_H__
+
+#if !defined(ST_H_INSIDE) && !defined(ST_COMPILATION)
+#error "Only <st/st.h> can be included directly.h"
+#endif
 
 #include <gio/gio.h>
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter.h>
+
+#include <st/st-types.h>
+#include <st/st-theme-node.h>
 
 #define ST_TYPE_TEXTURE_CACHE                 (st_texture_cache_get_type ())
 #define ST_TEXTURE_CACHE(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_TEXTURE_CACHE, StTextureCache))
@@ -33,13 +60,6 @@ struct _StTextureCacheClass
 };
 
 typedef enum {
-  ST_ICON_SYMBOLIC,
-  ST_ICON_FULLCOLOR,
-  ST_ICON_APPLICATION,
-  ST_ICON_DOCUMENT
-} StIconType;
-
-typedef enum {
   ST_TEXTURE_CACHE_POLICY_NONE,
   ST_TEXTURE_CACHE_POLICY_FOREVER
 } StTextureCachePolicy;
@@ -59,6 +79,7 @@ ClutterActor *st_texture_cache_bind_pixbuf_property (StTextureCache    *cache,
                                                      const char        *property_name);
 
 ClutterActor *st_texture_cache_load_icon_name (StTextureCache *cache,
+                                               StThemeNode    *theme_node,
                                                const char     *name,
                                                StIconType      icon_type,
                                                gint            size);

@@ -57,11 +57,11 @@ fi
 # libtool, pkgconfig
 #
 # Devel packages needed by gnome-shell and its deps:
-# dbus-glib, GL, gnome-menus, gstreamer, libffi,
+# dbus-glib, expat, GL, gnome-menus, gstreamer, libffi,
 # libjasper, libjpeg, libpng, libpulse, libtiff, libwnck,
-# libxml2, ORBit2, python, readline,
+# libxklavier, libxml2, ORBit2, pam, python, readline,
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification
-# xdamage, icon-naming-utils
+# xdamage, icon-naming-utils, libtool-ltdl, libvorbis
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
@@ -71,29 +71,36 @@ fi
 # (*) only needed for --xephyr
 
 if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint ; then
-  reqd=""
+  reqd="
+    build-essential curl
+    automake bison flex gettext git-core gnome-common gtk-doc-tools
+    gvfs gvfs-backends icon-naming-utils
+    libdbus-glib-1-dev libexpat-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev
+    libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev
+    libwnck-dev libgl1-mesa-dev liborbit2-dev libpulse-dev libreadline5-dev libxml2-dev
+    mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject
+    xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev
+    libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good
+    libltdl-dev libvorbis-dev libxklavier-dev
+    "
+
+  if apt-cache show autopoint > /dev/null 2> /dev/null; then
+    reqd="$reqd autopoint"
+  fi
+
   if [ ! -x /usr/bin/dpkg-checkbuilddeps ]; then
     echo "Please run 'sudo apt-get install dpkg-dev' and try again."
     echo
     exit 1
   fi
-  for pkg in \
-    build-essential curl \
-    automake bison flex gettext git-core gnome-common gtk-doc-tools \
-    gvfs gvfs-backends icon-naming-utils \
-    libdbus-glib-1-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev \
-    libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev \
-    libwnck-dev libgl1-mesa-dev liborbit2-dev libpulse-dev libreadline5-dev libxml2-dev \
-    mesa-common-dev mesa-utils python-dev python-gconf python-gobject \
-    xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev \
-    libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
-    ; do
+
+  for pkg in $reqd ; do
       if ! dpkg-checkbuilddeps -d $pkg /dev/null 2> /dev/null; then
-        reqd="$pkg $reqd"
+        missing="$pkg $missing"
       fi
   done
-  if test ! "x$reqd" = x; then
-    echo "Please run 'sudo apt-get install $reqd' and try again."
+  if test ! "x$missing" = x; then
+    echo "Please run 'sudo apt-get install $missing' and try again."
     echo
     exit 1
   fi
@@ -105,11 +112,12 @@ if test "x$system" = xFedora ; then
     automake bison flex gettext git gnome-common gnome-doc-utils gvfs intltool
     libtool pkgconfig dbus-glib-devel gnome-desktop-devel gnome-menus-devel
     gnome-python2-gconf jasper-devel libffi-devel libjpeg-devel libpng-devel
-    libtiff-devel libwnck-devel mesa-libGL-devel ORBit2-devel pulseaudio-libs-devel
-    python-devel pygobject2 readline-devel xulrunner-devel libXdamage-devel libcroco-devel
-    libxml2-devel gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good
-    glx-utils startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
-    icon-naming-utils
+    libtiff-devel libwnck-devel mesa-libGL-devel ORBit2-devel pam-devel
+    pulseaudio-libs-devel python-devel pygobject2 readline-devel xulrunner-devel
+    libXdamage-devel libcroco-devel libxml2-devel gstreamer-devel
+    gstreamer-plugins-base gstreamer-plugins-good glx-utils expat-devel
+    startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
+    icon-naming-utils libtool-ltdl-devel libvorbis-devel libxklavier-devel
     "
 
   if expr $version \>= 14 > /dev/null ; then

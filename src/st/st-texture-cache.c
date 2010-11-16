@@ -1,11 +1,30 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+/*
+ * st-texture-cache.h: Object for loading and caching images as textures
+ *
+ * Copyright 2009, 2010 Red Hat, Inc.
+ * Copyright 2010, Maxim Ermilov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "config.h"
 
 #include "st-texture-cache.h"
 #include <gtk/gtk.h>
 #define GNOME_DESKTOP_USE_UNSTABLE_API
-#include <libgnomeui/gnome-desktop-thumbnail.h>
+#include <libgnome-desktop/gnome-desktop-thumbnail.h>
 #include <string.h>
 #include <glib.h>
 
@@ -17,6 +36,8 @@
 
 struct _StTextureCachePrivate
 {
+  GtkIconTheme *icon_theme;
+
   /* Things that were loaded with a cache policy != NONE */
   GHashTable *keyed_cache; /* char * -> CoglTexture* */
   /* Presently this is used to de-duplicate requests for GIcons,
@@ -30,6 +51,14 @@ struct _StTextureCachePrivate
 static void st_texture_cache_dispose (GObject *object);
 static void st_texture_cache_finalize (GObject *object);
 
+enum
+{
+  ICON_THEME_CHANGED,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0, };
 G_DEFINE_TYPE(StTextureCache, st_texture_cache, G_TYPE_OBJECT);
 
 /* We want to preserve the aspect ratio by default, also the default
@@ -59,12 +88,56 @@ st_texture_cache_class_init (StTextureCacheClass *klass)
 
   gobject_class->dispose = st_texture_cache_dispose;
   gobject_class->finalize = st_texture_cache_finalize;
+
+  signals[ICON_THEME_CHANGED] =
+    g_signal_new ("icon-theme-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, /* no default handler slot */
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+}
+
+/* Evicts all cached textures for named icons */
+static void
+st_texture_cache_evict_icons (StTextureCache *cache)
+{
+  GHashTableIter iter;
+  gpointer key;
+  gpointer value;
+
+  g_hash_table_iter_init (&iter, cache->priv->keyed_cache);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      const char *cache_key = key;
+
+      /* This is too conservative - it takes out all cached textures
+       * for GIcons even when they aren't named icons, but it's not
+       * worth the complexity of parsing the key and calling
+       * g_icon_new_for_string(); icon theme changes aren't normal */
+      if (g_str_has_prefix (cache_key, "gicon:"))
+        g_hash_table_iter_remove (&iter);
+    }
+}
+
+static void
+on_icon_theme_changed (GtkIconTheme   *icon_theme,
+                       StTextureCache *cache)
+{
+  st_texture_cache_evict_icons (cache);
+  g_signal_emit (cache, signals[ICON_THEME_CHANGED], 0);
 }
 
 static void
 st_texture_cache_init (StTextureCache *self)
 {
   self->priv = g_new0 (StTextureCachePrivate, 1);
+
+  self->priv->icon_theme = gtk_icon_theme_get_default ();
+  g_signal_connect (self->priv->icon_theme, "changed",
+                    G_CALLBACK (on_icon_theme_changed), self);
+
   self->priv->keyed_cache = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                    g_free, cogl_handle_unref);
   self->priv->outstanding_requests = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -76,6 +149,14 @@ static void
 st_texture_cache_dispose (GObject *object)
 {
   StTextureCache *self = (StTextureCache*)object;
+
+  if (self->priv->icon_theme)
+    {
+      g_signal_handlers_disconnect_by_func (self->priv->icon_theme,
+                                            (gpointer) on_icon_theme_changed,
+                                            self);
+      self->priv->icon_theme = NULL;
+    }
 
   if (self->priv->keyed_cache)
     g_hash_table_destroy (self->priv->keyed_cache);
@@ -108,6 +189,7 @@ typedef struct {
   GtkIconInfo *icon_info;
   gint width;
   gint height;
+  StIconColors *colors;
   gpointer user_data;
 } AsyncIconLookupData;
 
@@ -162,15 +244,48 @@ compute_pixbuf_scale (gint      width,
   return FALSE;
 }
 
+static void
+rgba_from_clutter (GdkRGBA      *rgba,
+                   ClutterColor *color)
+{
+  rgba->red = color->red / 255.;
+  rgba->green = color->green / 255.;
+  rgba->blue = color->blue / 255.;
+  rgba->alpha = color->alpha / 255.;
+}
+
 static GdkPixbuf *
-impl_load_pixbuf_gicon (GIcon       *icon,
-                        GtkIconInfo *info,
-                        int          size,
-                        GError     **error)
+impl_load_pixbuf_gicon (GIcon        *icon,
+                        GtkIconInfo  *info,
+                        int           size,
+                        StIconColors *colors,
+                        GError      **error)
 {
   int scaled_width, scaled_height;
-  GdkPixbuf *pixbuf = gtk_icon_info_load_icon (info, error);
+  GdkPixbuf *pixbuf;
   int width, height;
+
+  if (colors)
+    {
+      GdkRGBA foreground_color;
+      GdkRGBA success_color;
+      GdkRGBA warning_color;
+      GdkRGBA error_color;
+
+      rgba_from_clutter (&foreground_color, &colors->foreground);
+      rgba_from_clutter (&success_color, &colors->success);
+      rgba_from_clutter (&warning_color, &colors->warning);
+      rgba_from_clutter (&error_color, &colors->error);
+
+      pixbuf = gtk_icon_info_load_symbolic (info,
+                                            &foreground_color, &success_color,
+                                            &warning_color, &error_color,
+                                            NULL, error);
+    }
+  else
+    {
+      pixbuf = gtk_icon_info_load_icon (info, error);
+    }
 
   if (!pixbuf)
     return NULL;
@@ -212,6 +327,8 @@ icon_lookup_data_destroy (gpointer p)
     g_free (data->mimetype);
   if (data->recent_info)
     gtk_recent_info_unref (data->recent_info);
+  if (data->colors)
+    st_icon_colors_unref (data->colors);
 
   g_free (data);
 }
@@ -445,7 +562,7 @@ load_pixbuf_thread (GSimpleAsyncResult *result,
   else if (data->uri)
     pixbuf = impl_load_pixbuf_file (data->uri, data->width, data->height, &error);
   else if (data->icon)
-    pixbuf = impl_load_pixbuf_gicon (data->icon, data->icon_info, data->width, &error);
+    pixbuf = impl_load_pixbuf_gicon (data->icon, data->icon_info, data->width, data->colors, &error);
   else
     g_assert_not_reached ();
 
@@ -471,6 +588,7 @@ load_icon_pixbuf_async (StTextureCache       *cache,
                         GIcon                *icon,
                         GtkIconInfo          *icon_info,
                         gint                  size,
+                        StIconColors         *colors,
                         GCancellable         *cancellable,
                         GAsyncReadyCallback   callback,
                         gpointer              user_data)
@@ -483,6 +601,10 @@ load_icon_pixbuf_async (StTextureCache       *cache,
   data->icon = g_object_ref (icon);
   data->icon_info = gtk_icon_info_copy (icon_info);
   data->width = data->height = size;
+  if (colors)
+    data->colors = st_icon_colors_ref (colors);
+  else
+    data->colors = NULL;
   data->user_data = user_data;
 
   result = g_simple_async_result_new (G_OBJECT (cache), callback, user_data, load_icon_pixbuf_async);
@@ -925,6 +1047,74 @@ create_texture_and_ensure_request (StTextureCache        *cache,
   return had_pending;
 }
 
+static ClutterActor *
+load_gicon_with_colors (StTextureCache    *cache,
+                        GIcon             *icon,
+                        gint               size,
+                        StIconColors      *colors)
+{
+  AsyncTextureLoadData *request;
+  ClutterActor *texture;
+  char *gicon_string;
+  char *key;
+  GtkIconTheme *theme;
+  GtkIconInfo *info;
+
+  gicon_string = g_icon_to_string (icon);
+  if (colors)
+    {
+      /* This raises some doubts about the practice of using string keys */
+      key = g_strdup_printf (CACHE_PREFIX_GICON "icon=%s,size=%d,colors=%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x",
+                             gicon_string, size,
+                             colors->foreground.red, colors->foreground.blue, colors->foreground.green, colors->foreground.alpha,
+                             colors->warning.red, colors->warning.blue, colors->warning.green, colors->warning.alpha,
+                             colors->error.red, colors->error.blue, colors->error.green, colors->error.alpha,
+                             colors->success.red, colors->success.blue, colors->success.green, colors->success.alpha);
+    }
+  else
+    {
+      key = g_strdup_printf (CACHE_PREFIX_GICON "icon=%s,size=%d",
+                             gicon_string, size);
+    }
+  g_free (gicon_string);
+
+  if (create_texture_and_ensure_request (cache, key, size, &request, &texture))
+    {
+      g_free (key);
+      return texture;
+    }
+
+  /* Do theme lookups in the main thread to avoid thread-unsafety */
+  theme = cache->priv->icon_theme;
+
+  info = gtk_icon_theme_lookup_by_gicon (theme, icon, size, GTK_ICON_LOOKUP_USE_BUILTIN);
+  if (info != NULL)
+    {
+      /* hardcoded here for now; we should actually blow this away on
+       * icon theme changes probably */
+      request->key = g_strdup (key);
+      request->policy = ST_TEXTURE_CACHE_POLICY_FOREVER;
+      request->icon = g_object_ref (icon);
+      request->icon_info = info;
+      request->width = request->height = size;
+
+      load_icon_pixbuf_async (cache, icon, info, size, colors, NULL, on_pixbuf_loaded, request);
+    }
+  else
+    {
+      /* Blah; we failed to find the icon, but we've added our texture to the outstanding
+       * requests.  In that case, just undo what create_texture_lookup_status did.
+       */
+       g_slist_foreach (request->textures, (GFunc) g_object_unref, NULL);
+       g_slist_free (request->textures);
+       g_free (request);
+       g_hash_table_remove (cache->priv->outstanding_requests, key);
+    }
+
+  g_free (key);
+  return CLUTTER_ACTOR (texture);
+}
+
 /**
  * st_texture_cache_load_gicon:
  * @cache: The texture cache instance
@@ -945,52 +1135,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
                              GIcon             *icon,
                              gint               size)
 {
-  AsyncTextureLoadData *request;
-  ClutterActor *texture;
-  char *gicon_string;
-  char *key;
-  GtkIconTheme *theme;
-  GtkIconInfo *info;
-
-  gicon_string = g_icon_to_string (icon);
-  key = g_strdup_printf (CACHE_PREFIX_GICON "icon=%s,size=%d", gicon_string, size);
-  g_free (gicon_string);
-
-  if (create_texture_and_ensure_request (cache, key, size, &request, &texture))
-    {
-      g_free (key);
-      return texture;
-    }
-
-  /* Do theme lookups in the main thread to avoid thread-unsafety */
-  theme = gtk_icon_theme_get_default ();
-
-  info = gtk_icon_theme_lookup_by_gicon (theme, icon, size, GTK_ICON_LOOKUP_USE_BUILTIN);
-  if (info != NULL)
-    {
-      /* hardcoded here for now; we should actually blow this away on
-       * icon theme changes probably */
-      request->key = g_strdup (key);
-      request->policy = ST_TEXTURE_CACHE_POLICY_FOREVER;
-      request->icon = g_object_ref (icon);
-      request->icon_info = info;
-      request->width = request->height = size;
-
-      load_icon_pixbuf_async (cache, icon, info, size, NULL, on_pixbuf_loaded, request);
-    }
-  else
-    {
-      /* Blah; we failed to find the icon, but we've added our texture to the outstanding
-       * requests.  In that case, just undo what create_texture_lookup_status did.
-       */
-       g_slist_foreach (request->textures, (GFunc) g_object_unref, NULL);
-       g_slist_free (request->textures);
-       g_free (request);
-       g_hash_table_remove (cache->priv->outstanding_requests, key);
-    }
-
-  g_free (key);
-  return CLUTTER_ACTOR (texture);
+  return load_gicon_with_colors (cache, icon, size, NULL);
 }
 
 typedef struct {
@@ -1154,17 +1299,20 @@ st_texture_cache_load_sliced_image (StTextureCache    *cache,
 /**
  * st_texture_cache_load_icon_name:
  * @cache: The texture cache instance
+ * @theme_node: (allow-none): a #StThemeNode
  * @name: Name of a themed icon
  * @icon_type: the type of icon to load
  * @size: Size of themed
  *
  * Load a themed icon into a texture. See the #StIconType documentation
- * for an explanation of how @icon_type affects the returned icon.
+ * for an explanation of how @icon_type affects the returned icon. The
+ * colors used for symbolic icons are derived from @theme_node.
  *
  * Return Value: (transfer none): A new #ClutterTexture for the icon
  */
 ClutterActor *
 st_texture_cache_load_icon_name (StTextureCache    *cache,
+                                 StThemeNode       *theme_node,
                                  const char        *name,
                                  StIconType         icon_type,
                                  gint               size)
@@ -1172,6 +1320,8 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
   ClutterActor *texture;
   GIcon *themed;
   char *symbolic;
+
+  g_return_val_if_fail (!(icon_type == ST_ICON_SYMBOLIC && theme_node == NULL), NULL);
 
   switch (icon_type)
     {
@@ -1187,7 +1337,8 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
       symbolic = g_strconcat (name, "-symbolic", NULL);
       themed = g_themed_icon_new_with_default_fallbacks ((const gchar*)symbolic);
       g_free (symbolic);
-      texture = st_texture_cache_load_gicon (cache, themed, size);
+      texture = load_gicon_with_colors (cache, themed, size,
+                                        st_theme_node_get_icon_colors (theme_node));
       g_object_unref (themed);
 
       return CLUTTER_ACTOR (texture);
@@ -1486,11 +1637,13 @@ st_texture_cache_load_from_raw (StTextureCache    *cache,
   texture = create_default_texture (cache);
   clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
 
-  /* In theory, two images of different size could have the same
-   * pixel data. We ignore that theory.
+  /* In theory, two images of with different width and height could have the same
+   * pixel data and thus hash the same. (Say, a 16x16 and a 8x32 blank image.)
+   * We ignore this for now. If anybody hits this problem they should use
+   * GChecksum directly to compute a checksum including the width and height.
    */
   checksum = g_compute_checksum_for_data (G_CHECKSUM_SHA1, data, len);
-  key = g_strdup_printf (CACHE_PREFIX_RAW_CHECKSUM "checksum=%s,size=%d", checksum, size);
+  key = g_strdup_printf (CACHE_PREFIX_RAW_CHECKSUM "checksum=%s", checksum);
   g_free (checksum);
 
   texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);

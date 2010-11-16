@@ -27,7 +27,7 @@
       </_description>
     </key>
     <key name="mouse-tracking" enum="MouseTrackingMode">
-      <default>'centered'</default>
+      <default>'proportional'</default>
       <_summary>Mouse Tracking Mode</_summary>
       <_description>
         Determines the position of the magnified mouse image within the
@@ -45,7 +45,7 @@
       </_description>
     </key>
     <key name="screen-position" enum="ScreenPosition">
-      <default>'bottom-half'</default>
+      <default>'full-screen'</default>
       <_summary>Screen position</_summary>
       <_description>
         The magnified view either fills the entire screen, or occupies the

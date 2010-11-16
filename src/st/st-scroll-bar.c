@@ -3,7 +3,9 @@
  * st-scroll-bar.c: Scroll bar actor
  *
  * Copyright 2008 OpenedHand
- * Copyright 2009 Intel Corporation.
+ * Copyright 2008, 2009 Intel Corporation.
+ * Copyright 2009, 2010 Red Hat, Inc.
+ * Copyright 2010 Maxim Ermilov
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -15,12 +17,7 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
- *
- * Written by: Chris Lord <chris@openedhand.com>
- * Port to St by: Robert Staudinger <robsta@openedhand.com>
- *
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**

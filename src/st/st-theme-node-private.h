@@ -1,4 +1,23 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+/*
+ * st-theme-node-private.h: private structures and functions for StThemeNode
+ *
+ * Copyright 2009, 2010 Red Hat, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef __ST_THEME_NODE_PRIVATE_H__
 #define __ST_THEME_NODE_PRIVATE_H__
 
@@ -48,6 +67,7 @@ struct _StThemeNode {
   StBorderImage *border_image;
   StShadow *shadow;
   StShadow *text_shadow;
+  StIconColors *icon_colors;
 
   GType element_type;
   char *element_id;
@@ -77,8 +97,10 @@ struct _StThemeNode {
   CoglHandle background_shadow_material;
   CoglHandle border_shadow_material;
   CoglHandle background_texture;
+  CoglHandle background_material;
   CoglHandle border_texture;
-  CoglHandle corner_texture[4];
+  CoglHandle border_material;
+  CoglHandle corner_material[4];
 };
 
 struct _StThemeNodeClass {

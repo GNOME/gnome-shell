@@ -678,9 +678,8 @@ LookingGlass.prototype = {
 
         let toolbar = new St.BoxLayout({ name: 'Toolbar' });
         this.actor.add_actor(toolbar);
-        let inspectIcon = St.TextureCache.get_default().load_icon_name('gtk-color-picker',
-                                                                       St.IconType.SYMBOLIC,
-                                                                       24);
+        let inspectIcon = new St.Icon({ icon_name: 'gtk-color-picker',
+                                        icon_size: 24 });
         toolbar.add_actor(inspectIcon);
         inspectIcon.reactive = true;
         inspectIcon.connect('button-press-event', Lang.bind(this, function () {
@@ -940,7 +939,9 @@ LookingGlass.prototype = {
 
         global.stage.set_key_focus(this._entry);
 
-        Tweener.addTween(this.actor, { time: 0.5,
+        // We inverse compensate for the slow-down so you can change the factor
+        // through LookingGlass without long waits.
+        Tweener.addTween(this.actor, { time: 0.5 / St.get_slow_down_factor(),
                                        transition: 'easeOutQuad',
                                        y: this._targetY
                                      });
@@ -967,7 +968,7 @@ LookingGlass.prototype = {
 
         Main.popModal(this.actor);
 
-        Tweener.addTween(this.actor, { time: 0.5,
+        Tweener.addTween(this.actor, { time: 0.5 / St.get_slow_down_factor(),
                                        transition: 'easeOutQuad',
                                        y: this._hiddenY,
                                        onComplete: Lang.bind(this, function () {

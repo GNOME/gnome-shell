@@ -2,7 +2,8 @@
 /*
  * st-bin.c: Basic container actor
  *
- * Copyright (c) 2009 Intel Corporation.
+ * Copyright 2009 Intel Corporation.
+ * Copyright 2009, 2010 Red Hat, Inc.
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -14,11 +15,7 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
- *
- * Written by: Emmanuele Bassi <ebassi@linux.intel.com>
- *
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -226,6 +223,28 @@ st_bin_dispose (GObject *gobject)
   G_OBJECT_CLASS (st_bin_parent_class)->dispose (gobject);
 }
 
+static gboolean
+st_bin_navigate_focus (StWidget         *widget,
+                       ClutterActor     *from,
+                       GtkDirectionType  direction)
+{
+  StBinPrivate *priv = ST_BIN (widget)->priv;
+  ClutterActor *bin_actor = CLUTTER_ACTOR (widget);
+
+  if (st_widget_get_can_focus (widget))
+    {
+      if (from && clutter_actor_contains (bin_actor, from))
+        return FALSE;
+
+      clutter_actor_grab_key_focus (bin_actor);
+      return TRUE;
+    }
+  else if (priv->child && ST_IS_WIDGET (priv->child))
+    return st_widget_navigate_focus (ST_WIDGET (priv->child), from, direction, FALSE);
+  else
+    return FALSE;
+}
+
 static void
 st_bin_set_property (GObject      *gobject,
                      guint         prop_id,
@@ -309,6 +328,7 @@ st_bin_class_init (StBinClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (StBinPrivate));
@@ -322,6 +342,8 @@ st_bin_class_init (StBinClass *klass)
   actor_class->allocate = st_bin_allocate;
   actor_class->paint = st_bin_paint;
   actor_class->pick = st_bin_pick;
+
+  widget_class->navigate_focus = st_bin_navigate_focus;
 
   /**
    * StBin:child:

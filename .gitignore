@@ -46,6 +46,7 @@ src/Makefile.in
 src/gnomeshell-taskpanel
 src/gnome-shell
 src/gnome-shell-clock-preferences
+src/run-js-test
 src/test-recorder
 src/test-recorder.ogg
 src/test-theme

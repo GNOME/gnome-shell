@@ -1,9 +1,9 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
- * Portions derived from st-box-layout.c, which is
- *   Copyright 2009 Intel Corporation.
- * Modified into -overflow-box, by Colin Walters <walters@verbum.org>, which is
- *   Copyright 2009 Red Hat, Inc.
+ * st-overflow-box.c: A vertical box which paints as many actors as it can fit
+ *
+ * Copyright 2009, 2010 Red Hat, Inc.
+ * Copyright 2009 Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -15,9 +15,7 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
- *
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -314,27 +312,36 @@ st_overflow_box_allocate (ClutterActor          *actor,
 }
 
 static void
-st_overflow_box_internal_paint (StOverflowBox *box)
+visible_children_iter_init (StOverflowBox  *box,
+                            GList         **iter,
+                            int            *n)
+{
+  *iter = st_container_get_children_list (ST_CONTAINER (box));
+  *n = 0;
+}
+
+static ClutterActor *
+visible_children_iter (StOverflowBox  *box,
+                       GList         **iter,
+                       int            *n)
 {
   StOverflowBoxPrivate *priv = box->priv;
-  GList *l, *children;
-  int i;
+  GList *l;
 
-  i = 0;
-  children = st_container_get_children_list (ST_CONTAINER (box));
-  for (l = children; i < priv->n_visible && l; l = l->next)
+  for (l = *iter; *n < priv->n_visible && l; l = l->next)
     {
       ClutterActor *child = (ClutterActor*) l->data;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
       if (!clutter_actor_get_fixed_position_set (child))
-        i++;
+        (*n)++;
 
-      clutter_actor_paint (child);
+      *iter = l->next;
+      return child;
     }
 
-  for (;l; l = l->next)
+  for (; l; l = l->next)
     {
       ClutterActor *child = (ClutterActor*) l->data;
 
@@ -342,8 +349,25 @@ st_overflow_box_internal_paint (StOverflowBox *box)
         continue;
 
       if (clutter_actor_get_fixed_position_set (child))
-        clutter_actor_paint (child);
+        {
+          *iter = l->next;
+          return child;
+        }
     }
+
+  return NULL;
+}
+
+static void
+st_overflow_box_internal_paint (StOverflowBox *box)
+{
+  ClutterActor *child;
+  GList *children;
+  int n;
+
+  visible_children_iter_init (box, &children, &n);
+  while ((child = visible_children_iter (box, &children, &n)))
+    clutter_actor_paint (child);
 }
 
 static void
@@ -379,12 +403,29 @@ st_overflow_box_style_changed (StWidget *self)
   ST_WIDGET_CLASS (st_overflow_box_parent_class)->style_changed (self);
 }
 
+static GList *
+st_overflow_box_get_focus_chain (StContainer *container)
+{
+  StOverflowBox *box = ST_OVERFLOW_BOX (container);
+  ClutterActor *child;
+  GList *children, *focus_chain;
+  int n;
+
+  focus_chain = NULL;
+  visible_children_iter_init (box, &children, &n);
+  while ((child = visible_children_iter (box, &children, &n)))
+    focus_chain = g_list_prepend (focus_chain, child);
+
+  return g_list_reverse (focus_chain);
+}
+
 static void
 st_overflow_box_class_init (StOverflowBoxClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
+  StContainerClass *container_class = ST_CONTAINER_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (StOverflowBoxPrivate));
@@ -399,6 +440,8 @@ st_overflow_box_class_init (StOverflowBoxClass *klass)
   actor_class->pick = st_overflow_box_pick;
 
   widget_class->style_changed = st_overflow_box_style_changed;
+
+  container_class->get_focus_chain = st_overflow_box_get_focus_chain;
 
   pspec = g_param_spec_uint ("min-children",
                              "Min Children",

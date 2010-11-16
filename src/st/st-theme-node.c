@@ -1,4 +1,26 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+/*
+ * st-theme-node.c: style information for one node in a tree of themed objects
+ *
+ * Copyright 2008-2010 Red Hat, Inc.
+ * Copyright 2009 Steve Frécinaux
+ * Copyright 2009, 2010 Florian Müllner
+ * Copyright 2010 Adel Gadllah
+ * Copyright 2010 Giovanni Campagna
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <stdlib.h>
 #include <string.h>
@@ -14,6 +36,9 @@ static void st_theme_node_finalize           (GObject                 *object);
 
 static const ClutterColor BLACK_COLOR = { 0, 0, 0, 0xff };
 static const ClutterColor TRANSPARENT_COLOR = { 0, 0, 0, 0 };
+static const ClutterColor DEFAULT_SUCCESS_COLOR = { 0x4e, 0x9a, 0x06, 0xff };
+static const ClutterColor DEFAULT_WARNING_COLOR = { 0xf5, 0x79, 0x3e, 0xff };
+static const ClutterColor DEFAULT_ERROR_COLOR = { 0xcc, 0x00, 0x00, 0xff };
 
 extern gfloat st_slow_down_factor;
 
@@ -2724,6 +2749,125 @@ st_theme_node_get_text_shadow (StThemeNode *node)
   node->text_shadow_computed = TRUE;
 
   return result;
+}
+
+/**
+ * st_theme_node_get_icon_colors:
+ * @node: a #StThemeNode
+ *
+ * Gets the colors that should be used for colorizing symbolic icons according
+ * the style of this node.
+ *
+ * Return value: (transfer none): the icon colors to use for this theme node
+ */
+StIconColors *
+st_theme_node_get_icon_colors (StThemeNode *node)
+{
+  /* Foreground here will always be the same as st_theme_node_get_foreground_color(),
+   * but there's a loss of symmetry and little efficiency win if we try to exploit
+   * that. */
+
+  enum {
+    FOREGROUND = 1 << 0,
+    WARNING = 1 << 1,
+    ERROR = 1 << 2,
+    SUCCESS = 1 << 3
+  };
+
+  gboolean shared_with_parent;
+  int i;
+  ClutterColor color = { 0, };
+
+  guint still_need = FOREGROUND | WARNING | ERROR | SUCCESS;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
+
+  if (node->icon_colors)
+    return node->icon_colors;
+
+  if (node->parent_node)
+    {
+      node->icon_colors = st_theme_node_get_icon_colors (node->parent_node);
+      shared_with_parent = TRUE;
+    }
+  else
+    {
+      node->icon_colors = st_icon_colors_new ();
+      node->icon_colors->foreground = BLACK_COLOR;
+      node->icon_colors->warning = DEFAULT_WARNING_COLOR;
+      node->icon_colors->error = DEFAULT_ERROR_COLOR;
+      node->icon_colors->success = DEFAULT_SUCCESS_COLOR;
+      shared_with_parent = FALSE;
+    }
+
+  ensure_properties (node);
+
+  for (i = node->n_properties - 1; i >= 0 && still_need != 0; i--)
+    {
+      CRDeclaration *decl = node->properties[i];
+      GetFromTermResult result = VALUE_NOT_FOUND;
+      guint found = 0;
+
+      if ((still_need & FOREGROUND) != 0 &&
+          strcmp (decl->property->stryng->str, "color") == 0)
+        {
+          found = FOREGROUND;
+          result = get_color_from_term (node, decl->value, &color);
+        }
+      else if ((still_need & WARNING) != 0 &&
+               strcmp (decl->property->stryng->str, "warning-color") == 0)
+        {
+          found = WARNING;
+          result = get_color_from_term (node, decl->value, &color);
+        }
+      else if ((still_need & ERROR) != 0 &&
+               strcmp (decl->property->stryng->str, "error-color") == 0)
+        {
+          found = ERROR;
+          result = get_color_from_term (node, decl->value, &color);
+        }
+      else if ((still_need & SUCCESS) != 0 &&
+               strcmp (decl->property->stryng->str, "success-color") == 0)
+        {
+          found = SUCCESS;
+          result = get_color_from_term (node, decl->value, &color);
+        }
+
+      if (result == VALUE_INHERIT)
+        {
+          still_need &= ~found;
+        }
+      else if (result == VALUE_FOUND)
+        {
+          still_need &= ~found;
+          if (shared_with_parent)
+            {
+              node->icon_colors = st_icon_colors_copy (node->icon_colors);
+              shared_with_parent = FALSE;
+            }
+
+          switch (found)
+            {
+            case FOREGROUND:
+              node->icon_colors->foreground = color;
+              break;
+            case WARNING:
+              node->icon_colors->warning = color;
+              break;
+            case ERROR:
+              node->icon_colors->error = color;
+              break;
+            case SUCCESS:
+              node->icon_colors->success = color;
+              break;
+            }
+        }
+    }
+
+  if (shared_with_parent)
+    st_icon_colors_ref (node->icon_colors);
+
+  return node->icon_colors;
 }
 
 static float

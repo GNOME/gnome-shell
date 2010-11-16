@@ -11,7 +11,7 @@ debug=
 for arg in $@ ; do
     case $arg in
 	-g|--debug)
-	    debug="gdb --args"
+	    debug="libtool --mode=execute gdb --args"
 	    ;;
 	-v|--verbose)
 	    verbose=true
@@ -34,15 +34,14 @@ GI_TYPELIB_PATH="@MUTTER_LIB_DIR@/mutter:$builddir/../src"
 GJS_DEBUG_OUTPUT=stderr
 $verbose || GJS_DEBUG_TOPICS="JS ERROR;JS LOG"
 GNOME_SHELL_TESTSDIR="$srcdir/"
-LD_PRELOAD="$builddir/../src/.libs/libgnome-shell.so"
 
 export GI_TYPELIB_PATH GJS_DEBUG_OUTPUT GJS_DEBUG_TOPICS GNOME_SHELL_JS GNOME_SHELL_TESTSDIR LD_PRELOAD
 
-gjs_args=
+run_js_test_args=
 for i in $srcdir $srcdir/../js @GJS_JS_DIR@ @GJS_JS_NATIVE_DIR@ ; do
-    gjs_args="$gjs_args -I $i"
+    run_js_test_args="$run_js_test_args -I $i"
 done
 
 for test in $tests ; do
-    $debug gjs-console $gjs_args $test || exit $?
+    $debug $builddir/../src/run-js-test $run_js_test_args $test || exit $?
 done

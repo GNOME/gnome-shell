@@ -1,5 +1,5 @@
 AC_PREREQ(2.63)
-AC_INIT([gnome-shell],[2.91.1],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
+AC_INIT([gnome-shell],[2.91.2],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/shell-global.c])
@@ -94,6 +94,8 @@ PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 gnome-desktop-3.0 >= 2.9
 PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-3.0)
 PKG_CHECK_MODULES(TRAY, gtk+-3.0)
 PKG_CHECK_MODULES(GVC, libpulse libpulse-mainloop-glib gobject-2.0)
+
+PKG_CHECK_MODULES(JS_TEST, clutter-x11-1.0 gjs-1.0 gobject-introspection-1.0 gtk+-3.0)
 
 MUTTER_BIN_DIR=`$PKG_CONFIG --variable=exec_prefix mutter-plugins`/bin
 # FIXME: metacity-plugins.pc should point directly to its .gir file

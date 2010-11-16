@@ -1,9 +1,31 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+/*
+ * st-theme-node.h: style information for one node in a tree of themed objects
+ *
+ * Copyright 2008-2010 Red Hat, Inc.
+ * Copyright 2009, 2010 Florian Müllner
+ * Copyright 2010 Giovanni Campagna
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef __ST_THEME_NODE_H__
 #define __ST_THEME_NODE_H__
 
 #include <clutter/clutter.h>
 #include "st-border-image.h"
+#include "st-icon-colors.h"
 #include "st-shadow.h"
 
 G_BEGIN_DECLS
@@ -175,6 +197,8 @@ const PangoFontDescription *st_theme_node_get_font (StThemeNode *node);
 StBorderImage *st_theme_node_get_border_image (StThemeNode *node);
 StShadow      *st_theme_node_get_shadow       (StThemeNode *node);
 StShadow      *st_theme_node_get_text_shadow  (StThemeNode *node);
+
+StIconColors  *st_theme_node_get_icon_colors  (StThemeNode *node);
 
 /* Helpers for get_preferred_width()/get_preferred_height() ClutterActor vfuncs */
 void st_theme_node_adjust_for_height       (StThemeNode  *node,

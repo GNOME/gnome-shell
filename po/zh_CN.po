@@ -3,21 +3,22 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Ray Wang <raywang@gnome.org>, 2009.
 # jiero <lililjlj@gmail.com>, 2010.
-# YunQiang Su <wzssyqa@gmail.com>, 2010.
 # Aron Xu <aronxu@gnome.org>, 2010.
 # Jessica Ban <bancage@gmail.com>, 2010.
+# YunQiang Su <wzssyqa@gmail.com>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-10-25 21:45+0000\n"
-"PO-Revision-Date: 2010-10-28 00:26+0800\n"
-"Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
+"POT-Creation-Date: 2010-10-30 17:51+0000\n"
+"PO-Revision-Date: 2010-10-28 01:24+0800\n"
+"Last-Translator: YunQiang Su <wzssyqa@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -206,17 +207,17 @@ msgstr "是否收集应用程序的使用情况"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
 msgid "Clip the crosshairs at the center"
-msgstr ""
+msgstr "将十字夹在中间"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
 msgid "Color of the crosshairs"
-msgstr ""
+msgstr "十字的颜色"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
 msgid ""
 "Determines the length of the vertical and horizontal lines that make up the "
 "crosshairs."
-msgstr ""
+msgstr "确定组成十字的水平线和竖直线的长度。"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
 msgid ""
@@ -230,30 +231,35 @@ msgid ""
 "push: when the magnified mouse intersects a boundary of the zoom region, the "
 "contents are scrolled into view."
 msgstr ""
+"确定放大了的鼠标图像在放大了的视图中的的位置，以及如何对系统鼠标的移动做出反"
+"馈。可用的值有 - none：鼠标不跟踪；- centered：鼠标图像显示在放大区域的中心"
+"(这也表示系统鼠标下的点)，而且放大的内容也随着系统鼠标的移动而滚动；- "
+"proportional：放大区域中，放大的鼠标的位置和系统鼠标在屏幕上的位置成比例相同"
+"(数学上的“相似”)；- push：当放大的鼠标与放大区域的边界相交时，将内容滚动进视"
+"图。"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
 msgid ""
 "Determines the transparency of the crosshairs, from fully opaque to fully "
 "transparent."
-msgstr ""
+msgstr "确定十字线的透明度，从全遮蔽到全透明。"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
 msgid ""
 "Determines whether the crosshairs intersect the magnified mouse sprite, or "
 "are clipped such that the ends of the horizontal and vertical lines surround "
 "the mouse image."
-msgstr ""
+msgstr "确定十字是和放大的光标精灵交叉，还是固定来让水平和竖直线环绕鼠标形象。"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-#, fuzzy
 msgid "Enable lens mode"
-msgstr "启用"
+msgstr "启用透镜模式"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
 msgid ""
 "Enables/disables display of crosshairs centered on the magnified mouse "
 "sprite."
-msgstr ""
+msgstr "启用或禁用穿过放大的鼠标精灵的十字。"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
 msgid ""
@@ -261,22 +267,24 @@ msgid ""
 "of the screen, the magnified contents continue to scroll such that the "
 "screen edge moves into the magnified view."
 msgstr ""
+"对于居中的鼠标跟踪，当系统指针位于或者接近屏幕的边缘时，放大的内容继续滚动，"
+"以便让屏幕边缘移动到放大的视图。"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
 msgid "Length of the crosshairs"
-msgstr ""
+msgstr "十字长度"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:11
 msgid "Magnification factor"
-msgstr ""
+msgstr "放大因子"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:12
 msgid "Mouse Tracking Mode"
-msgstr ""
+msgstr "鼠标跟随模式"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:13
 msgid "Opacity of the crosshairs"
-msgstr ""
+msgstr "十字的不透明度"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
 msgid "Screen position"
@@ -284,51 +292,51 @@ msgstr "屏幕位置"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
 msgid "Scroll magnified contents beyond the edges of the desktop"
-msgstr ""
+msgstr "在桌面边界以外滚动放大内容"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
 msgid "Show or hide crosshairs"
-msgstr ""
+msgstr "显示或隐藏十字线"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
 msgid "Show or hide the magnifier"
-msgstr ""
+msgstr "显示或隐藏放大镜"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
 msgid "Show or hide the magnifier and all of its zoom regions."
-msgstr ""
+msgstr "显示或隐藏放大镜及其全部放大区域。"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
 msgid ""
 "The color of the the vertical and horizontal lines that make up the "
 "crosshairs."
-msgstr ""
+msgstr "组成十字的水平线和竖直线的颜色。"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
 msgid ""
 "The magnified view either fills the entire screen, or occupies the top-half, "
 "bottom-half, left-half, or right-half of the screen."
-msgstr ""
+msgstr "放大的视图是充满整个屏幕还是占据屏幕的顶半部、底半部、左半部或右半部。"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
 msgid ""
 "The power of the magnification. A value of 1.0 means no magnification. A "
 "value of 2.0 doubles the size."
-msgstr ""
+msgstr "边长的放大倍数。1.0 表示不放大，2.0 表示将长度增倍。"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
 msgid "Thickness of the crosshairs"
-msgstr ""
+msgstr "十字的厚度"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
 msgid ""
 "Whether the magnified view should be centered over the location of the "
 "system mouse and move with it."
-msgstr ""
+msgstr "放大的视图是否以系统鼠标为中心放置并且随之移动。"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
 msgid "Width of the vertical and horizontal lines that make up the crosshairs."
-msgstr ""
+msgstr "组成十字的水平和竖直线的宽度。"
 
 #: ../data/clock-preferences.ui.h:1
 msgid "Clock Format"
@@ -367,19 +375,19 @@ msgstr "应用程序"
 msgid "PREFERENCES"
 msgstr "首选项"
 
-#: ../js/ui/appDisplay.js:648
+#: ../js/ui/appDisplay.js:647
 msgid "New Window"
 msgstr "新窗口"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:651
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:652
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
-#: ../js/ui/appDisplay.js:830
+#: ../js/ui/appDisplay.js:829
 msgid "Drag here to add favorites"
 msgstr "拖到这里加入收藏夹"
 
@@ -425,7 +433,9 @@ msgstr "未安装扩展"
 msgid "Enabled"
 msgstr "启用"
 
-#: ../js/ui/lookingGlass.js:591
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:591 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "禁用"
 
@@ -525,7 +535,7 @@ msgstr "连接到..."
 #. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:33
 msgid "toggle-switch-us"
-msgstr ""
+msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
@@ -553,7 +563,9 @@ msgid "My Account..."
 msgstr "我的帐户..."
 
 #: ../js/ui/statusMenu.js:123
-msgid "System Preferences..."
+#, fuzzy
+#| msgid "System Preferences..."
+msgid "System Settings..."
 msgstr "系统首选项..."
 
 #: ../js/ui/statusMenu.js:130
@@ -582,7 +594,7 @@ msgstr "关机..."
 
 #: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
-msgstr ""
+msgstr "屏幕阅读器"
 
 #: ../js/ui/status/accessibility.js:91
 msgid "Screen Keyboard"
@@ -602,15 +614,15 @@ msgstr "慢速键"
 
 #: ../js/ui/status/accessibility.js:103
 msgid "Bounce Keys"
-msgstr ""
+msgstr "筛选键"
 
 #: ../js/ui/status/accessibility.js:106
 msgid "Mouse Keys"
-msgstr ""
+msgstr "鼠标按键"
 
 #: ../js/ui/status/accessibility.js:110
 msgid "Universal Access Settings"
-msgstr ""
+msgstr "通用访问设置"
 
 #: ../js/ui/status/accessibility.js:163
 msgid "High Contrast"
@@ -643,29 +655,49 @@ msgstr "无法添加新工作区，因为已经达到了工作区数量限制。
 msgid "Can't remove the first workspace."
 msgstr "不能移除第一个工作区。"
 
-#: ../src/shell-global.c:1204
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1094
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] ""
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1104
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] ""
+
+#: ../src/gvc/gvc-mixer-control.c:1402
+msgid "System Sounds"
+msgstr ""
+
+#: ../src/shell-global.c:1219
 msgid "Less than a minute ago"
 msgstr "少于一分钟前"
 
-#: ../src/shell-global.c:1208
+#: ../src/shell-global.c:1223
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分钟前"
 
-#: ../src/shell-global.c:1213
+#: ../src/shell-global.c:1228
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小时前"
 
-#: ../src/shell-global.c:1218
+#: ../src/shell-global.c:1233
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d 天前"
 
-#: ../src/shell-global.c:1223
+#: ../src/shell-global.c:1238
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"

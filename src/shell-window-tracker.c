@@ -16,9 +16,9 @@
 #include "shell-window-tracker-private.h"
 #include "shell-app-system.h"
 #include "shell-app-private.h"
-#include "st/st-texture-cache.h"
 #include "shell-global.h"
 #include "shell-marshal.h"
+#include "st.h"
 
 #include "display.h"
 #include "window.h"

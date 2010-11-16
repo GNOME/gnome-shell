@@ -7,6 +7,7 @@
 #include "shell-perf-log.h"
 #include "shell-window-tracker.h"
 #include "shell-wm.h"
+#include "st.h"
 
 #include "display.h"
 #include "util.h"
@@ -59,6 +60,7 @@ struct _ShellGlobal {
   const char *datadir;
   const char *imagedir;
   const char *userdatadir;
+  StFocusManager *focus_manager;
 
   /* Displays the root window; see shell_global_create_root_pixmap_actor() */
   ClutterActor *root_pixmap;
@@ -90,6 +92,7 @@ enum {
   PROP_DATADIR,
   PROP_IMAGEDIR,
   PROP_USERDATADIR,
+  PROP_FOCUS_MANAGER,
 };
 
 G_DEFINE_TYPE(ShellGlobal, shell_global, G_TYPE_OBJECT);
@@ -172,6 +175,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_USERDATADIR:
       g_value_set_string (value, global->userdatadir);
+      break;
+    case PROP_FOCUS_MANAGER:
+      g_value_set_object (value, global->focus_manager);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -327,6 +333,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "User data directory",
                                                         "Directory containing gnome-shell user data",
                                                         NULL,
+                                                        G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_FOCUS_MANAGER,
+                                   g_param_spec_object ("focus-manager",
+                                                        "Focus manager",
+                                                        "The shell's StFocusManager",
+                                                        ST_TYPE_FOCUS_MANAGER,
                                                         G_PARAM_READABLE));
 }
 
@@ -734,6 +747,8 @@ _shell_global_set_plugin (ShellGlobal *global,
   display = meta_screen_get_display (screen);
   g_signal_connect (display, "notify::focus-window",
                     G_CALLBACK (focus_window_changed), global);
+
+  global->focus_manager = st_focus_manager_get_for_stage (CLUTTER_STAGE (stage));
 }
 
 void

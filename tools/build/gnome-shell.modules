@@ -11,6 +11,8 @@
       href="git://git.moblin.org"/>
   <repository type="tarball" name="cairo.org"
       href="http://cairographics.org/"/>
+  <repository type="tarball" name="0pointer.de"
+    href="http://0pointer.de/lennart/projects/"/>
 
   <autotools id="gobject-introspection">
     <branch repo="git.gnome.org" module="gobject-introspection"/>
@@ -86,10 +88,17 @@
     </dependencies>
   </autotools>
 
-  <autotools id="gtk-engines-3">
-    <branch repo="git.gnome.org" module="gtk-engines"/>
+  <autotools id="gtk-theme-engine-clearlooks">
+    <branch repo="git.gnome.org" module="gtk-theme-engine-clearlooks"/>
     <dependencies>
       <dep package="gtk3"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gnome-themes-standard">
+    <branch repo="git.gnome.org" module="gnome-themes-standard"/>
+    <dependencies>
+      <dep package="gtk-theme-engine-clearlooks"/>
     </dependencies>
   </autotools>
 
@@ -151,17 +160,18 @@
     </dependencies>
   </autotools>
 
+  <autotools id="gsettings-desktop-schemas">
+    <branch repo="git.gnome.org" module="gsettings-desktop-schemas" />
+  </autotools>
+
   <autotools id="gnome-desktop-3">
     <branch repo="git.gnome.org" checkoutdir="gnome-desktop-3" module="gnome-desktop"/>
     <dependencies>
       <dep package="glib"/>
       <dep package="gtk3"/>
       <dep package="gconf"/>
+      <dep package="gsettings-desktop-schemas"/>
     </dependencies>
-  </autotools>
-
-  <autotools id="gsettings-desktop-schemas">
-    <branch repo="git.gnome.org" module="gsettings-desktop-schemas" />
   </autotools>
 
   <autotools id="gnome-icon-theme">
@@ -170,6 +180,15 @@
 
   <autotools id="gnome-icon-theme-symbolic">
     <branch repo="git.gnome.org" module="gnome-icon-theme-symbolic" />
+  </autotools>
+
+  <autotools id="libcanberra" autogen-sh="configure">
+    <branch repo="0pointer.de" module="libcanberra/libcanberra-0.26.tar.gz" version="0.26"
+            hash="sha256:4b5d8d2c2835133620adbc53745dd107b6e58b9a2963059e8f457143fee00982"
+            md5sum="ee2c66ada7c851a4e7b6eb1682285a24" size="463209" />
+    <dependencies>
+      <dep package="gtk3"/>
+    </dependencies>
   </autotools>
 
   <autotools id="gnome-shell">
@@ -185,6 +204,8 @@
         <dep package="gsettings-desktop-schemas"/>
         <dep package="gnome-icon-theme"/>
         <dep package="gnome-icon-theme-symbolic"/>
+        <dep package="libcanberra"/>
+	<dep package="gnome-settings-daemon"/>
     </dependencies>
   </autotools>
 
@@ -194,7 +215,7 @@
   <metamodule id="gnome-shell-using-gir-repository">
     <dependencies>
       <dep package="librsvg"/>
-      <dep package="gtk-engines-3"/>
+      <dep package="gnome-themes-standard"/>
       <dep package="gnome-shell"/>
     </dependencies>
   </metamodule>
@@ -202,9 +223,38 @@
   <metamodule id="gnome-shell-full">
     <dependencies>
       <dep package="librsvg"/>
-      <dep package="gtk-engines-3"/>
+      <dep package="gnome-themes-standard"/>
       <dep package="gnome-shell"/>
     </dependencies>
   </metamodule>
 
+  <tarball id="polkit" version="0.99">
+    <source href="http://hal.freedesktop.org/releases/polkit-0.99.tar.gz"
+            hash="sha256:f612c7c26ec822f67751420057a4ae113fc50ab51070758faacf2ad30bb3583f"
+            md5sum="fcc4d7b19c08ad54d3ce0eae0ab12398" size="1042461"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+    <suggests>
+      <dep package="gobject-introspection"/>
+    </suggests>
+  </tarball>
+
+  <autotools id="gnome-settings-daemon">
+    <branch repo="git.gnome.org" module="gnome-settings-daemon"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gtk3"/>
+      <dep package="gnome-desktop-3"/>
+      <dep package="libgnomekbd"/>
+      <dep package="polkit"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libgnomekbd">
+    <branch repo="git.gnome.org" module="libgnomekbd"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+  </autotools>
 </moduleset>

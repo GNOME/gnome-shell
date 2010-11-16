@@ -4,6 +4,9 @@
  *
  * Copyright 2007 OpenedHand
  * Copyright 2008, 2009 Intel Corporation.
+ * Copyright 2009, 2010 Red Hat, Inc.
+ * Copyright 2009 Abderrahim Kitouni
+ * Copyright 2010 Florian Müllner
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -15,10 +18,7 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
- * Boston, MA 02111-1307, USA.
- *
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #if !defined(ST_H_INSIDE) && !defined(ST_COMPILATION)
@@ -78,7 +78,10 @@ struct _StWidgetClass
   ClutterActorClass parent_class;
 
   /* vfuncs */
-  void (* style_changed)   (StWidget *self);
+  void     (* style_changed)   (StWidget         *self);
+  gboolean (* navigate_focus)  (StWidget         *self,
+                                ClutterActor     *from,
+                                GtkDirectionType  direction);
 };
 
 GType st_widget_get_type (void) G_GNUC_CONST;
@@ -137,9 +140,18 @@ StTextDirection       st_widget_get_direction             (StWidget        *self
 void                  st_widget_set_direction             (StWidget        *self,
                                                            StTextDirection  dir);
 
+void                  st_widget_set_can_focus             (StWidget        *widget,
+                                                           gboolean         can_focus);
+gboolean              st_widget_get_can_focus             (StWidget        *widget);
+gboolean              st_widget_navigate_focus            (StWidget        *widget,
+                                                           ClutterActor    *from,
+                                                           GtkDirectionType direction,
+                                                           gboolean         wrap_around);
+
 /* Only to be used by sub-classes of StWidget */
 void                  st_widget_style_changed             (StWidget        *widget);
 StThemeNode *         st_widget_get_theme_node            (StWidget        *widget);
+StThemeNode *         st_widget_peek_theme_node           (StWidget        *widget);
 
 /* debug methods */
 char  *st_describe_actor       (ClutterActor *actor);

@@ -17,16 +17,18 @@ const PopupMenu = imports.ui.popupMenu;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
-const KEY_A11Y_DIR            = "/desktop/gnome/accessibility";
-const KEY_STICKY_KEYS_ENABLED = KEY_A11Y_DIR + "/keyboard/stickykeys_enable";
-const KEY_BOUNCE_KEYS_ENABLED = KEY_A11Y_DIR + "/keyboard/bouncekeys_enable";
-const KEY_SLOW_KEYS_ENABLED   = KEY_A11Y_DIR + "/keyboard/slowkeys_enable";
-const KEY_MOUSE_KEYS_ENABLED  = KEY_A11Y_DIR + "/keyboard/mousekeys_enable";
+const A11Y_SCHEMA = "org.gnome.desktop.a11y.keyboard";
+const KEY_STICKY_KEYS_ENABLED = "stickykeys-enable";
+const KEY_BOUNCE_KEYS_ENABLED = "bouncekeys-enable";
+const KEY_SLOW_KEYS_ENABLED   = "slowkeys-enable";
+const KEY_MOUSE_KEYS_ENABLED  = "mousekeys-enable";
 
 const AT_SCREEN_KEYBOARD_SCHEMA = "org.gnome.desktop.default-applications.at.mobility";
 const AT_SCREEN_READER_SCHEMA   = "org.gnome.desktop.default-applications.at.visual";
 
-const KEY_FONT_DPI    = "/desktop/gnome/font_rendering/dpi";
+const XSETTINGS_SCHEMA = "org.gnome.settings-daemon.plugins.xsettings";
+const KEY_DPI = "dpi";
+
 const DPI_LOW_REASONABLE_VALUE  = 50;
 const DPI_HIGH_REASONABLE_VALUE = 500;
 
@@ -71,8 +73,6 @@ ATIndicator.prototype = {
         PanelMenu.SystemStatusButton.prototype._init.call(this, 'preferences-desktop-accessibility', null);
 
         let client = GConf.Client.get_default();
-        client.add_dir(KEY_A11Y_DIR, GConf.ClientPreloadType.PRELOAD_ONELEVEL, null);
-        client.notify_add(KEY_A11Y_DIR, Lang.bind(this, this._keyChanged), null, null);
         client.add_dir(KEY_META_DIR, GConf.ClientPreloadType.PRELOAD_ONELEVEL, null);
         client.notify_add(KEY_META_DIR, Lang.bind(this, this._keyChanged), null, null);
 
@@ -82,7 +82,7 @@ ATIndicator.prototype = {
         let magnifier = this._buildMagItem();
         this.menu.addMenuItem(magnifier);
 
-        let textZoom = this._buildFontItem(client);
+        let textZoom = this._buildFontItem();
         this.menu.addMenuItem(textZoom);
 
         let screenReader = this._buildItem(_("Screen Reader"), AT_SCREEN_READER_SCHEMA, 'startup');
@@ -94,16 +94,16 @@ ATIndicator.prototype = {
         let visualBell = this._buildItemGConf(_("Visual Alerts"), client, KEY_VISUAL_BELL);
         this.menu.addMenuItem(visualBell);
 
-        let stickyKeys = this._buildItemGConf(_("Sticky Keys"), client, KEY_STICKY_KEYS_ENABLED);
+        let stickyKeys = this._buildItem(_("Sticky Keys"), A11Y_SCHEMA, KEY_STICKY_KEYS_ENABLED);
         this.menu.addMenuItem(stickyKeys);
 
-        let slowKeys = this._buildItemGConf(_("Slow Keys"), client, KEY_SLOW_KEYS_ENABLED);
+        let slowKeys = this._buildItem(_("Slow Keys"), A11Y_SCHEMA, KEY_SLOW_KEYS_ENABLED);
         this.menu.addMenuItem(slowKeys);
 
-        let bounceKeys = this._buildItemGConf(_("Bounce Keys"), client, KEY_BOUNCE_KEYS_ENABLED);
+        let bounceKeys = this._buildItem(_("Bounce Keys"), A11Y_SCHEMA, KEY_BOUNCE_KEYS_ENABLED);
         this.menu.addMenuItem(bounceKeys);
 
-        let mouseKeys = this._buildItemGConf(_("Mouse Keys"), client, KEY_MOUSE_KEYS_ENABLED);
+        let mouseKeys = this._buildItem(_("Mouse Keys"), A11Y_SCHEMA, KEY_MOUSE_KEYS_ENABLED);
         this.menu.addMenuItem(mouseKeys);
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -189,31 +189,32 @@ ATIndicator.prototype = {
         return highContrast;
     },
 
-    _buildFontItem: function(client) {
-        let first_gconf_value = client.get_without_default(KEY_FONT_DPI);
-        let default_value = getDPIFromX();
-        let first_value = first_gconf_value ? first_gconf_value.get_float() : default_value;
+    _buildFontItem: function() {
+        let settings = new Gio.Settings({ schema: XSETTINGS_SCHEMA });
+
+        // we assume this never changes (which is not true if resolution
+        // is changed, but we would need XRandR events for that)
+        let x_value = getDPIFromX();
+        let user_value;
         function on_get() {
-            let u_dpi = client.get_float(KEY_FONT_DPI);
-            let x_dpi = getDPIFromX();
-            return (u_dpi - (DPI_FACTOR_LARGE * x_dpi) > -1);
+            user_value = settings.get_double(KEY_DPI);
+            return (user_value - (DPI_FACTOR_LARGE * x_value) > -1);
         }
         let initial_setting = on_get();
+        let default_value = initial_setting ? x_value : user_value;
         let widget = this._buildItemExtended(_("Large Text"),
             initial_setting,
-            client.key_is_writable(KEY_FONT_DPI),
+            settings.is_writable(KEY_DPI),
             function (enabled) {
                 if (enabled)
-                    client.set_float(KEY_FONT_DPI, DPI_FACTOR_LARGE * getDPIFromX());
+                    settings.set_double(KEY_DPI, DPI_FACTOR_LARGE * default_value);
                 else
-                    client.set_float(KEY_FONT_DPI, (first_value && !initial_setting) ? first_value : default_value);
+                    settings.set_double(KEY_DPI, default_value);
             });
-        this.connect('gconf-changed', function() {
+        settings.connect('changed::' + KEY_DPI, function() {
             let active = on_get();
-            if (!active)
-                // setting was modified manually, update it
-                first_value = client.get_float(KEY_FONT_DPI);
-            widget.setToggleState(on_get());
+            default_value = active ? x_value : user_value;
+            widget.setToggleState(active);
         });
         return widget;
     },
