@@ -96,7 +96,7 @@ cogl_indices_new (CoglIndicesType type,
 }
 
 CoglIndexArray *
-_cogl_indices_get_array (CoglIndices *indices)
+cogl_indices_get_array (CoglIndices *indices)
 {
   return indices->array;
 }
