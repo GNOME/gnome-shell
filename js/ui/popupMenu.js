@@ -296,15 +296,15 @@ PopupBaseMenuItem.prototype = {
 };
 Signals.addSignalMethods(PopupBaseMenuItem.prototype);
 
-function PopupMenuItem(text) {
-    this._init(text);
+function PopupMenuItem() {
+    this._init.apply(this, arguments);
 }
 
 PopupMenuItem.prototype = {
     __proto__: PopupBaseMenuItem.prototype,
 
-    _init: function (text) {
-        PopupBaseMenuItem.prototype._init.call(this);
+    _init: function (text, params) {
+        PopupBaseMenuItem.prototype._init.call(this, params);
 
         this.label = new St.Label({ text: text });
         this.addActor(this.label);
