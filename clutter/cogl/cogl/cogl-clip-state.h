@@ -24,6 +24,8 @@
 #ifndef __COGL_CLIP_STATE_H
 #define __COGL_CLIP_STATE_H
 
+#include "cogl-clip-stack.h"
+
 typedef struct _CoglClipState CoglClipState;
 
 struct _CoglClipState
