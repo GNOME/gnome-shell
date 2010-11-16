@@ -240,6 +240,14 @@
     </suggests>
   </tarball>
 
+  <autotools id="libnotify">
+    <branch repo="git.gnome.org" module="libnotify"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gtk3"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gnome-settings-daemon">
     <branch repo="git.gnome.org" module="gnome-settings-daemon"/>
     <dependencies>
@@ -247,6 +255,7 @@
       <dep package="gtk3"/>
       <dep package="gnome-desktop-3"/>
       <dep package="libgnomekbd"/>
+      <dep package="libnotify" />
       <dep package="polkit"/>
     </dependencies>
   </autotools>
