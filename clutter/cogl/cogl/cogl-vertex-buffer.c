@@ -1725,7 +1725,8 @@ cogl_vertex_buffer_indices_get_for_quads (unsigned int n_indices)
     }
   else
     {
-      if (ctx->quad_buffer_indices_len < n_indices)
+      if (ctx->quad_buffer_indices &&
+          ctx->quad_buffer_indices_len < n_indices)
         {
           cogl_handle_unref (ctx->quad_buffer_indices);
           ctx->quad_buffer_indices = COGL_INVALID_HANDLE;
