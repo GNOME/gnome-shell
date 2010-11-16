@@ -55,6 +55,37 @@
  *     <para>The example below uses various #ClutterConstraint<!-- -->s to
  *     lay out three actors on a resizable stage. Only the central actor has
  *     an explicit size, and no actor has an explicit position.</para>
+ *     <orderedlist>
+ *       <listitem><simpara>The #ClutterRectangle with #ClutterActor:name
+ *       <emphasis>layerA</emphasis> is explicitly sized to 100 pixels by 25
+ *       pixels, and it's added to the #ClutterStage;</simpara></listitem>
+ *       <listitem><simpara>two #ClutterAlignConstraint<!-- -->s are used
+ *       to anchor <emphasis>layerA</emphasis> to the center of the stage,
+ *       by using 0.5 as the alignment #ClutterAlignConstraint:factor on
+ *       both the X and Y axis.</simpara></listitem>
+ *       <listitem><simpara>the #ClutterRectangle with #ClutterActor:name
+ *       <emphasis>layerB</emphasis> is added to the #ClutterStage with
+ *       no explicit size;</simpara></listitem>
+ *       <listitem><simpara>the #ClutterActor:x and #ClutterActor:width
+ *       of <emphasis>layerB</emphasis> are bound to the same properties
+ *       of <emphasis>layerA</emphasis> using two #ClutterBindConstraint
+ *       objects, thus keeping <emphasis>layerB</emphasis> aligned to
+ *       <emphasis>layerA</emphasis>;</simpara></listitem>
+ *       <listitem><simpara>the top edge of <emphasis>layerB</emphasis> is
+ *       snapped together with the bottom edge of <emphasis>layerA</emphasis>;
+ *       the bottom edge of <emphasis>layerB</emphasis> is also snapped
+ *       together with the bottom edge of the #ClutterStage; an offset is
+ *       given to the two #ClutterSnapConstraint<!-- -->s to allow for some
+ *       padding; since <emphasis>layerB</emphasis> is snapped between two
+ *       different #ClutterActor<!-- -->s, its height is stretched to match
+ *       the gap;</simpara></listitem>
+ *       <listitem><simpara>the #ClutterRectangle with #ClutterActor:name
+ *       <emphasis>layerC</emphasis> mirrors <emphasis>layerB</emphasis>,
+ *       snapping the top edge of the #ClutterStage to the top edge of
+ *       <emphasis>layerC</emphasis> and the top edge of
+ *       <emphasis>layerA</emphasis> to the bottom edge of
+ *       <emphasis>layerC</emphasis>;/simpara></listitem>
+ *     </orderedlist>
  *     <programlisting>
  *       <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../../../../tests/interactive/test-snap-constraint.c" parse="text"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>
  *     </programlisting>
@@ -62,6 +93,9 @@
  *       <title>Constraints</title>
  *       <graphic fileref="constraints-example.png" format="PNG"/>
  *     </figure>
+ *     <para>You can try resizing interactively the #ClutterStage and verify
+ *     that the three #ClutterActor<!-- -->s maintain the same position and
+ *     size relative to each other, and to the #CLutterStage.</para>
  *   </example>
  *   <warning><para>It's important to note that Clutter does not avoid loops
  *   or competing constraints; if two or more #ClutterConstraint<!-- -->s
