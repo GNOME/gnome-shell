@@ -35,7 +35,7 @@ G_BEGIN_DECLS
 
 /**
  * SECTION:cogl-vertex-array
- * @short_description: Fuctions for creating and manipulating vertex arrays
+ * @short_description: Functions for creating and manipulating vertex arrays
  *
  * FIXME
  */
@@ -45,16 +45,21 @@ typedef struct _CoglVertexArray	      CoglVertexArray;
 /**
  * cogl_vertex_array_new:
  * @size: The number of bytes to allocate for vertex attribute data.
+ * @data: An optional pointer to vertex data to upload immediately.
  *
  * Declares a new #CoglVertexArray of @size bytes to contain arrays of vertex
  * attribute data. Once declared, data can be set using cogl_buffer_set_data()
  * or by mapping it into the application's address space using cogl_buffer_map().
  *
+ * If @data isn't %NULL then @size bytes will be read from @data and
+ * immediately copied into the new buffer.
+ *
  * Since: 1.4
  * Stability: Unstable
  */
 CoglVertexArray *
-cogl_vertex_array_new (gsize bytes);
+cogl_vertex_array_new (gsize bytes,
+                       const void *data);
 
 /**
  * cogl_is_vertex_array:

@@ -126,12 +126,9 @@ cogl_primitive_new_p2 (CoglVerticesMode mode,
                        const CoglP2Vertex *data)
 {
   CoglVertexArray *array =
-    cogl_vertex_array_new (n_vertices * sizeof (CoglP2Vertex));
-  CoglBuffer *buffer = COGL_BUFFER (array);
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP2Vertex), data);
   CoglVertexAttribute *attributes[2];
 
-  cogl_buffer_set_data (buffer, 0, data,
-                        n_vertices * sizeof (CoglP2Vertex));
   attributes[0] =
     cogl_vertex_attribute_new (array,
                                "cogl_position_in",
@@ -153,12 +150,9 @@ cogl_primitive_new_p3 (CoglVerticesMode mode,
                        const CoglP3Vertex *data)
 {
   CoglVertexArray *array =
-    cogl_vertex_array_new (n_vertices * sizeof (CoglP3Vertex));
-  CoglBuffer *buffer = COGL_BUFFER (array);
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP3Vertex), data);
   CoglVertexAttribute *attributes[2];
 
-  cogl_buffer_set_data (buffer, 0, data,
-                        n_vertices * sizeof (CoglP3Vertex));
   attributes[0] =
     cogl_vertex_attribute_new (array,
                                "cogl_position_in",
@@ -180,12 +174,9 @@ cogl_primitive_new_p2c4 (CoglVerticesMode mode,
                          const CoglP2C4Vertex *data)
 {
   CoglVertexArray *array =
-    cogl_vertex_array_new (n_vertices * sizeof (CoglP2C4Vertex));
-  CoglBuffer *buffer = COGL_BUFFER (array);
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP2C4Vertex), data);
   CoglVertexAttribute *attributes[3];
 
-  cogl_buffer_set_data (buffer, 0, data,
-                        n_vertices * sizeof (CoglP2C4Vertex));
   attributes[0] =
     cogl_vertex_attribute_new (array,
                                "cogl_position_in",
@@ -214,12 +205,9 @@ cogl_primitive_new_p3c4 (CoglVerticesMode mode,
                          const CoglP3C4Vertex *data)
 {
   CoglVertexArray *array =
-    cogl_vertex_array_new (n_vertices * sizeof (CoglP3C4Vertex));
-  CoglBuffer *buffer = COGL_BUFFER (array);
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP3C4Vertex), data);
   CoglVertexAttribute *attributes[3];
 
-  cogl_buffer_set_data (buffer, 0, data,
-                        n_vertices * sizeof (CoglP3C4Vertex));
   attributes[0] =
     cogl_vertex_attribute_new (array,
                                "cogl_position_in",
@@ -248,12 +236,9 @@ cogl_primitive_new_p2t2 (CoglVerticesMode mode,
                          const CoglP2T2Vertex *data)
 {
   CoglVertexArray *array =
-    cogl_vertex_array_new (n_vertices * sizeof (CoglP2T2Vertex));
-  CoglBuffer *buffer = COGL_BUFFER (array);
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP2T2Vertex), data);
   CoglVertexAttribute *attributes[3];
 
-  cogl_buffer_set_data (buffer, 0, data,
-                        n_vertices * sizeof (CoglP2T2Vertex));
   attributes[0] =
     cogl_vertex_attribute_new (array,
                                "cogl_position_in",
@@ -282,12 +267,9 @@ cogl_primitive_new_p3t2 (CoglVerticesMode mode,
                          const CoglP3T2Vertex *data)
 {
   CoglVertexArray *array =
-    cogl_vertex_array_new (n_vertices * sizeof (CoglP3T2Vertex));
-  CoglBuffer *buffer = COGL_BUFFER (array);
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP3T2Vertex), data);
   CoglVertexAttribute *attributes[3];
 
-  cogl_buffer_set_data (buffer, 0, data,
-                        n_vertices * sizeof (CoglP3T2Vertex));
   attributes[0] =
     cogl_vertex_attribute_new (array,
                                "cogl_position_in",
@@ -316,12 +298,9 @@ cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
                            const CoglP2T2C4Vertex *data)
 {
   CoglVertexArray *array =
-    cogl_vertex_array_new (n_vertices * sizeof (CoglP2T2C4Vertex));
-  CoglBuffer *buffer = COGL_BUFFER (array);
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP2T2C4Vertex), data);
   CoglVertexAttribute *attributes[4];
 
-  cogl_buffer_set_data (buffer, 0, data,
-                        n_vertices * sizeof (CoglP2T2C4Vertex));
   attributes[0] =
     cogl_vertex_attribute_new (array,
                                "cogl_position_in",
@@ -357,12 +336,9 @@ cogl_primitive_new_p3t2c4 (CoglVerticesMode mode,
                            const CoglP3T2C4Vertex *data)
 {
   CoglVertexArray *array =
-    cogl_vertex_array_new (n_vertices * sizeof (CoglP3T2C4Vertex));
-  CoglBuffer *buffer = COGL_BUFFER (array);
+    cogl_vertex_array_new (n_vertices * sizeof (CoglP3T2C4Vertex), data);
   CoglVertexAttribute *attributes[4];
 
-  cogl_buffer_set_data (buffer, 0, data,
-                        n_vertices * sizeof (CoglP3T2C4Vertex));
   attributes[0] =
     cogl_vertex_attribute_new (array,
                                "cogl_position_in",

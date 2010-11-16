@@ -1432,7 +1432,10 @@ _cogl_path_build_vbo (CoglPath *path)
   gluDeleteTess (tess.glu_tess);
 
   data->vbo = cogl_vertex_array_new (sizeof (CoglPathTesselatorVertex) *
-                                     tess.vertices->len);
+                                     tess.vertices->len,
+                                     tess.vertices->data);
+  g_array_free (tess.vertices, TRUE);
+
   data->vbo_attributes[0] =
     cogl_vertex_attribute_new (data->vbo,
                                "cogl_position_in",
@@ -1454,13 +1457,6 @@ _cogl_path_build_vbo (CoglPath *path)
                                         tess.indices->data,
                                         tess.indices->len);
   data->vbo_n_indices = tess.indices->len;
-
-  cogl_buffer_set_data (COGL_BUFFER (data->vbo),
-                        0, /* offset */
-                        tess.vertices->data,
-                        sizeof (CoglPathTesselatorVertex) * tess.vertices->len);
-
-  g_array_free (tess.vertices, TRUE);
   g_array_free (tess.indices, TRUE);
 }
 

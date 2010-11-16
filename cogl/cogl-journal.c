@@ -655,7 +655,7 @@ upload_vertices (GArray *vertices, CoglJournalFlushState *state)
   needed_vbo_len = vertices->len * sizeof (float);
   g_assert (needed_vbo_len);
 
-  array = cogl_vertex_array_new (needed_vbo_len);
+  array = cogl_vertex_array_new (needed_vbo_len, NULL);
   buffer = COGL_BUFFER (array);
   cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_STATIC);
   cogl_buffer_set_data (buffer, 0, vertices->data, needed_vbo_len);
