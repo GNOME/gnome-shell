@@ -39,6 +39,9 @@ struct _CoglFramebuffer
   CoglFramebufferType  type;
   int                 width;
   int                 height;
+  /* Format of the pixels in the framebuffer (including the expected
+     premult state) */
+  CoglPixelFormat     format;
 
   CoglMatrixStack    *modelview_stack;
   CoglMatrixStack    *projection_stack;

@@ -139,12 +139,14 @@ _cogl_is_framebuffer (void *object)
 static void
 _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
                         CoglFramebufferType type,
+                        CoglPixelFormat format,
                         int width,
                         int height)
 {
   framebuffer->type             = type;
   framebuffer->width            = width;
   framebuffer->height           = height;
+  framebuffer->format           = format;
   framebuffer->viewport_x       = 0;
   framebuffer->viewport_y       = 0;
   framebuffer->viewport_width   = width;
@@ -540,6 +542,7 @@ _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
     {
       _cogl_framebuffer_init (COGL_FRAMEBUFFER (offscreen),
                               COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
+                              cogl_texture_get_format (texhandle),
                               data.level_width,
                               data.level_height);
 
@@ -594,9 +597,21 @@ _cogl_onscreen_new (void)
    * implement CoglOnscreen framebuffers, since we can't, e.g. keep track of
    * the window size. */
 
+  /* FIXME: We are assuming onscreen buffers will always be
+     premultiplied so we'll set the premult flag on the bitmap
+     format. This will usually be correct because the result of the
+     default blending operations for Cogl ends up with premultiplied
+     data in the framebuffer. However it is possible for the
+     framebuffer to be in whatever format depending on what
+     CoglPipeline is used to render to it. Eventually we may want to
+     add a way for an application to inform Cogl that the framebuffer
+     is not premultiplied in case it is being used for some special
+     purpose. */
+
   onscreen = g_new0 (CoglOnscreen, 1);
   _cogl_framebuffer_init (COGL_FRAMEBUFFER (onscreen),
                           COGL_FRAMEBUFFER_TYPE_ONSCREEN,
+                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                           0xdeadbeef, /* width */
                           0xdeadbeef); /* height */
 
