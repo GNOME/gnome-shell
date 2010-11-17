@@ -29,6 +29,16 @@ G_BEGIN_DECLS
 void
 _cogl_clear (const CoglColor *color, unsigned long buffers);
 
+void
+_cogl_read_pixels_with_rowstride (int x,
+                                  int y,
+                                  int width,
+                                  int height,
+                                  CoglReadPixelsFlags source,
+                                  CoglPixelFormat format,
+                                  guint8 *pixels,
+                                  int rowstride);
+
 G_END_DECLS
 
 #endif /* __COGL_PRIVATE_H__ */
