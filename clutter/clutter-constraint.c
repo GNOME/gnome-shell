@@ -84,7 +84,7 @@
  *       snapping the top edge of the #ClutterStage to the top edge of
  *       <emphasis>layerC</emphasis> and the top edge of
  *       <emphasis>layerA</emphasis> to the bottom edge of
- *       <emphasis>layerC</emphasis>;/simpara></listitem>
+ *       <emphasis>layerC</emphasis>;</simpara></listitem>
  *     </orderedlist>
  *     <programlisting>
  *       <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../../../../tests/interactive/test-snap-constraint.c" parse="text"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>
