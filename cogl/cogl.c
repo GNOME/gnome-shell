@@ -603,17 +603,14 @@ _cogl_read_pixels_with_rowstride (int x,
 
   if ((format & COGL_A_BIT))
     {
-      /* FIXME: We are assuming glReadPixels will always give us
-         premultiplied data so we'll set the premult flag on the
-         bitmap format. This will usually be correct because the
-         result of the default blending operations for Cogl ends up
-         with premultiplied data in the framebuffer. However it is
-         possible for the framebuffer to be in whatever format
-         depending on what CoglPipeline is used to render to
-         it. Eventually we may want to add a way for an application to
-         inform Cogl that the framebuffer is not premultiplied in case
-         it is being used for some special purpose. */
-      bmp_format |= COGL_PREMULT_BIT;
+      /* We match the premultiplied state of the target buffer to the
+       * premultiplied state of the framebuffer so that it will get
+       * converted to the right format below */
+
+      if ((framebuffer->format & COGL_PREMULT_BIT))
+        bmp_format |= COGL_PREMULT_BIT;
+      else
+        bmp_format &= ~COGL_PREMULT_BIT;
     }
 
   bmp = _cogl_bitmap_new_from_data (pixels,
@@ -640,7 +637,8 @@ _cogl_read_pixels_with_rowstride (int x,
       guint8 *tmp_data = g_malloc (width * height * 4);
 
       tmp_bmp = _cogl_bitmap_new_from_data (tmp_data,
-                                            COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                            COGL_PIXEL_FORMAT_RGBA_8888 |
+                                            (bmp_format & COGL_PREMULT_BIT),
                                             width, height, 4 * width,
                                             (CoglBitmapDestroyNotify) g_free,
                                             NULL);
