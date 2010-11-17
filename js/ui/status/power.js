@@ -207,7 +207,7 @@ DeviceItem.prototype = {
         this.addActor(this._box);
 
         let percentBin = new St.Bin({ x_align: St.Align.END });
-        let percentLabel = new St.Label({ text: '%d%%'.format(percentage) });
+        let percentLabel = new St.Label({ text: '%d%%'.format(Math.round(percentage)) });
         percentBin.child = percentLabel;
         this.addActor(percentBin);
     },
