@@ -399,3 +399,43 @@ shell_util_icon_from_string (const char *string, GError **error)
 {
   return g_icon_new_for_string (string, error);
 }
+
+static void
+stop_pick (ClutterActor       *actor,
+           const ClutterColor *color)
+{
+  g_signal_stop_emission_by_name (actor, "pick");
+}
+
+/**
+ * shell_util_set_hidden_from_pick:
+ * @actor: A #ClutterActor
+ * @hidden: Whether @actor should be hidden from pick
+ *
+ * If @hidden is %TRUE, hide @actor from pick even with a mode of
+ * %CLUTTER_PICK_ALL; if @hidden is %FALSE, unhide @actor.
+ */
+void
+shell_util_set_hidden_from_pick (ClutterActor *actor,
+                                 gboolean      hidden)
+{
+  gpointer existing_handler_data;
+
+  existing_handler_data = g_object_get_data (G_OBJECT (actor),
+                                             "shell-stop-pick");
+  if (hidden)
+    {
+      if (existing_handler_data != NULL)
+        return;
+      g_signal_connect (actor, "pick", G_CALLBACK (stop_pick), NULL);
+      g_object_set_data (G_OBJECT (actor),
+                         "shell-stop-pick", GUINT_TO_POINTER (1));
+    }
+  else
+    {
+      if (existing_handler_data == NULL)
+        return;
+      g_signal_handlers_disconnect_by_func (actor, stop_pick, NULL);
+      g_object_set_data (G_OBJECT (actor), "shell-stop-pick", NULL);
+    }
+}
