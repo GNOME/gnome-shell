@@ -655,7 +655,7 @@ _cogl_read_pixels_with_rowstride (int x,
          allocating its own buffer so we have to copy the data
          again */
       if ((dst_bmp = _cogl_bitmap_convert_format_and_premult (tmp_bmp,
-                                                              bmp_format)))
+                                                              format)))
         {
           _cogl_bitmap_copy_subregion (dst_bmp,
                                        bmp,
