@@ -106,8 +106,7 @@ URLHighlighter.prototype = {
                     return true;
                 } catch (e) {
                     // TODO: remove this after gnome 3 release
-                    let p = new Shell.Process({ 'args' : ['gvfs-open', url] });
-                    p.run();
+                    Util.spawn(['gvfs-open', url]);
                     return true;
                 }
             }

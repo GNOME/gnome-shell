@@ -14,6 +14,7 @@ const _ = Gettext.gettext;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
+const Util = imports.misc.util;
 
 const MAX_FILE_DELETED_BEFORE_INVALID = 10;
 
@@ -354,9 +355,7 @@ RunDialog.prototype = {
             try {
                 if (inTerminal)
                     command = 'gnome-terminal -x ' + input;
-                let [ok, len, args] = GLib.shell_parse_argv(command);
-                let p = new Shell.Process({ 'args' : args });
-                p.run();
+                Util.trySpawnCommandLine(command);
             } catch (e) {
                 // Mmmh, that failed - see if @input matches an existing file
                 let path = null;
@@ -374,13 +373,8 @@ RunDialog.prototype = {
                                                         global.create_app_launch_context());
                 } else {
                     this._commandError = true;
-                    // The exception contains an error string like:
-                    // Error invoking Shell.run: Failed to execute child
-                    // process "foo" (No such file or directory)
-                    // We are only interested in the actual error, so parse
-                    //that out.
-                    let m = /.+\((.+)\)/.exec(e);
-                    let errorStr = _("Execution of '%s' failed:").format(command) + '\n' + m[1];
+
+                    let errorStr = _("Execution of '%s' failed:").format(command) + '\n' + e.message;
                     this._errorMessage.set_text(errorStr);
 
                     this._errorBox.show();

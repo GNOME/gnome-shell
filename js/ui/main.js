@@ -39,6 +39,7 @@ const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
 const XdndHandler = imports.ui.xdndHandler;
 const StatusIconDispatcher = imports.ui.statusIconDispatcher;
+const Util = imports.misc.util;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
 DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
@@ -317,11 +318,8 @@ function _globalKeyPressHandler(actor, event) {
     if (action == Meta.KeyBindingAction.COMMAND_SCREENSHOT) {
         let gconf = GConf.Client.get_default();
         let command = gconf.get_string('/apps/metacity/keybinding_commands/command_screenshot');
-        if (command != null && command != '') {
-            let [ok, len, args] = GLib.shell_parse_argv(command);
-            let p = new Shell.Process({'args' : args});
-            p.run();
-        }
+        if (command != null && command != '')
+            Util.spawnCommandLine(command);
         return true;
     }
 

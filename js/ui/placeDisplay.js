@@ -14,6 +14,7 @@ const _ = Gettext.gettext;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Search = imports.ui.search;
+const Util = imports.misc.util;
 
 const NAUTILUS_PREFS_DIR = '/apps/nautilus/preferences';
 const DESKTOP_IS_HOME_KEY = NAUTILUS_PREFS_DIR + '/desktop_is_home_dir';
@@ -163,7 +164,7 @@ PlacesManager.prototype = {
                                      icon_size: size });
             },
             function () {
-                new Shell.Process({ args: ['nautilus-connect-server'] }).run();
+                Util.spawn(['nautilus-connect-server']);
             });
 
         let networkApp = null;
