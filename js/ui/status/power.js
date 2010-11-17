@@ -50,7 +50,6 @@ const PowerManagerInterface = {
         ],
     properties: [
         { name: 'Icon', signature: 's', access: 'read' },
-        { name: 'Tooltip', signature: 's', access: 'read' },
         ]
 };
 let PowerManagerProxy = DBus.makeProxyClass(PowerManagerInterface);
@@ -158,9 +157,6 @@ Indicator.prototype = {
                 this.menu.close();
                 this.actor.hide();
             }
-        }));
-        this._proxy.GetRemote('Tooltip', Lang.bind(this, function(tooltip) {
-            this.setTooltip(tooltip);
         }));
         this._readPrimaryDevice();
         this._readOtherDevices();
