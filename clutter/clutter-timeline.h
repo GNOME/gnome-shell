@@ -127,6 +127,9 @@ void             clutter_timeline_stop                  (ClutterTimeline *timeli
 void             clutter_timeline_set_loop              (ClutterTimeline *timeline,
                                                          gboolean         loop);
 gboolean         clutter_timeline_get_loop              (ClutterTimeline *timeline);
+void             clutter_timeline_set_reverse           (ClutterTimeline *timeline,
+                                                         gboolean         reverse);
+gboolean         clutter_timeline_get_reverse           (ClutterTimeline *timeline);
 void             clutter_timeline_rewind                (ClutterTimeline *timeline);
 void             clutter_timeline_skip                  (ClutterTimeline *timeline,
                                                          guint            msecs);

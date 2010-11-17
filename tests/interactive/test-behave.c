@@ -44,21 +44,6 @@ scroll_event_cb (ClutterStage       *stage,
   return FALSE;
 }
 
-static void
-timeline_completed (ClutterTimeline *timeline)
-{
-  ClutterTimelineDirection direction;
-
-  direction = clutter_timeline_get_direction (timeline);
-
-  if (direction == CLUTTER_TIMELINE_FORWARD)
-    direction = CLUTTER_TIMELINE_BACKWARD;
-  else
-    direction = CLUTTER_TIMELINE_FORWARD;
-
-  clutter_timeline_set_direction (timeline, direction);
-}
-
 typedef enum {
     PATH_POLY,
     PATH_ELLIPSE,
@@ -160,11 +145,9 @@ test_behave_main (int argc, char *argv[])
   clutter_container_add (CLUTTER_CONTAINER (group), rect, hand, NULL);
   
   /* Make a timeline */
-  timeline = clutter_timeline_new (4000); /* num frames, fps */
+  timeline = clutter_timeline_new (4000);
   clutter_timeline_set_loop (timeline, TRUE);
-  g_signal_connect (timeline,
-                    "completed", G_CALLBACK (timeline_completed),
-                    NULL);
+  clutter_timeline_set_reverse (timeline, TRUE);
 
   /* Set an alpha func to power behaviour - ramp is constant rise */
   alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
