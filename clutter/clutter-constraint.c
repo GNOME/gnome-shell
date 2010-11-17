@@ -86,13 +86,13 @@
  *       <emphasis>layerA</emphasis> to the bottom edge of
  *       <emphasis>layerC</emphasis>;</simpara></listitem>
  *     </orderedlist>
- *     <programlisting>
- *       <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../../../../tests/interactive/test-snap-constraint.c" parse="text"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>
- *     </programlisting>
  *     <figure id="constraints-example">
  *       <title>Constraints</title>
  *       <graphic fileref="constraints-example.png" format="PNG"/>
  *     </figure>
+ *     <programlisting>
+ *       <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../../../../tests/interactive/test-snap-constraint.c" parse="text"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>
+ *     </programlisting>
  *     <para>You can try resizing interactively the #ClutterStage and verify
  *     that the three #ClutterActor<!-- -->s maintain the same position and
  *     size relative to each other, and to the #CLutterStage.</para>
