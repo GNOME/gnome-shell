@@ -556,13 +556,14 @@ cogl_flush (void)
 }
 
 void
-cogl_read_pixels (int x,
-                  int y,
-                  int width,
-                  int height,
-                  CoglReadPixelsFlags source,
-                  CoglPixelFormat format,
-                  guint8 *pixels)
+_cogl_read_pixels_with_rowstride (int x,
+                                  int y,
+                                  int width,
+                                  int height,
+                                  CoglReadPixelsFlags source,
+                                  CoglPixelFormat format,
+                                  guint8 *pixels,
+                                  int rowstride)
 {
   CoglFramebuffer *framebuffer;
   int              framebuffer_height;
@@ -572,7 +573,6 @@ cogl_read_pixels (int x,
   GLenum           gl_format;
   GLenum           gl_type;
   CoglPixelFormat  bmp_format;
-  int              rowstride;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -599,7 +599,6 @@ cogl_read_pixels (int x,
 
   /* Initialise the CoglBitmap */
   bpp = _cogl_get_format_bpp (format);
-  rowstride = bpp * width;
   bmp_format = format;
 
   if ((format & COGL_A_BIT))
@@ -630,9 +629,12 @@ cogl_read_pixels (int x,
      to be more clever and check if the requested type matches that
      but we would need some reliable functions to convert from GL
      types to Cogl types. For now, lets just always read in
-     GL_RGBA/GL_UNSIGNED_BYTE and convert if necessary */
+     GL_RGBA/GL_UNSIGNED_BYTE and convert if necessary. We also need
+     to use this intermediate buffer if the rowstride has padding
+     because GLES does not support setting GL_ROW_LENGTH */
 #ifndef COGL_HAS_GL
-  if (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE)
+  if (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE ||
+      rowstride != 4 * width)
     {
       CoglBitmap *tmp_bmp, *dst_bmp;
       guint8 *tmp_data = g_malloc (width * height * 4);
@@ -709,6 +711,21 @@ cogl_read_pixels (int x,
     }
 
   cogl_object_unref (bmp);
+}
+
+void
+cogl_read_pixels (int x,
+                  int y,
+                  int width,
+                  int height,
+                  CoglReadPixelsFlags source,
+                  CoglPixelFormat format,
+                  guint8 *pixels)
+{
+  _cogl_read_pixels_with_rowstride (x, y, width, height,
+                                    source, format, pixels,
+                                    /* rowstride */
+                                    _cogl_get_format_bpp (format) * width);
 }
 
 static void
