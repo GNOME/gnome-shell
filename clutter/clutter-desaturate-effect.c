@@ -100,7 +100,7 @@ static const gchar *desaturate_glsl_shader =
 "\n"
 "void main ()\n"
 "{\n"
-"  vec4 color = cogl_color_in * texture2D (tex, vec2 (cogl_tex_coord[0].xy));\n"
+"  vec4 color = cogl_color_in * texture2D (tex, vec2 (cogl_tex_coord_in[0].xy));\n"
 "  color.rgb = desaturate (color.rgb, factor);\n"
 "  cogl_color_out = color;\n"
 "}\n";
