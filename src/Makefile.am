@@ -59,7 +59,6 @@ shell_public_headers_h =		\
 	shell-embedded-window.h		\
 	shell-generic-container.h	\
 	shell-gtk-embed.h		\
-	shell-process.h			\
 	shell-global.h			\
 	shell-perf-log.h		\
 	shell-slicer.h			\
@@ -90,7 +89,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-embedded-window.c		\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
-	shell-process.c			\
 	shell-global.c			\
 	shell-perf-log.c		\
 	shell-slicer.c			\
