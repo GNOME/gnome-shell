@@ -74,9 +74,7 @@ Indicator.prototype = {
 
         this._batteryItem = new PopupMenu.PopupMenuItem('');
         this._primaryPercentage = new St.Label();
-        let percentBin = new St.Bin();
-        percentBin.set_child(this._primaryPercentage, { x_align: St.Align.END });
-        this._batteryItem.addActor(percentBin);
+        this._batteryItem.addActor(this._primaryPercentage, { align: St.Align.END });
         this.menu.addMenuItem(this._batteryItem);
 
         this._deviceSep = new PopupMenu.PopupSeparatorMenuItem();
@@ -232,10 +230,8 @@ DeviceItem.prototype = {
         this._box.add_actor(this._label);
         this.addActor(this._box);
 
-        let percentBin = new St.Bin({ x_align: St.Align.END });
         let percentLabel = new St.Label({ text: '%d%%'.format(Math.round(percentage)) });
-        percentBin.child = percentLabel;
-        this.addActor(percentBin);
+        this.addActor(percentLabel, { align: St.Align.END });
     },
 
     _deviceTypeToString: function(type) {

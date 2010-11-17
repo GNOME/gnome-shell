@@ -137,24 +137,16 @@ PopupBaseMenuItem.prototype = {
         return false;
     },
 
-    // adds an actor to the menu item; @column defaults to the next
-    // open column, @span defaults to 1. If @span is -1, the actor
-    // will span the width of the menu item. Children are not
-    // allowed to overlap each other.
-    addActor: function(child, column, span) {
-        if (column == null) {
-            if (this._children.length) {
-                let lastChild = this._children[this._children.length - 1];
-                column = lastChild.column + lastChild.span;
-            } else
-                column = 0;
-            span = 1;
-        } else if (span == null)
-            span = 1;
-
-        this._children.push({ actor: child,
-                              column: column,
-                              span: span });
+    // adds an actor to the menu item; @params can contain %span
+    // (column span; defaults to 1, -1 means "all the remaining width"),
+    // %expand (defaults to #false), and %align (defaults to
+    // #St.Align.START)
+    addActor: function(child, params) {
+        params = Params.parse(params, { span: 1,
+                                        expand: false,
+                                        align: St.Align.START });
+        params.actor = child;
+        this._children.push(params);
         this.actor.connect('destroy', Lang.bind(this, function () { this._removeChild(child); }));
         this.actor.add_actor(child);
     },
@@ -272,25 +264,44 @@ PopupBaseMenuItem.prototype = {
         for (let i = 0, col = 0; i < this._children.length; i++) {
             let child = this._children[i];
             let childBox = new Clutter.ActorBox();
-            childBox.x1 = x;
+
+            let [minWidth, naturalWidth] = child.actor.get_preferred_width(-1);
+            let availWidth, extraWidth;
             if (this._columnWidths) {
                 if (child.span == -1)
-                    childBox.x2 = box.x2;
+                    availWidth = box.x2 - x;
                 else {
-                    childBox.x2 = x;
+                    availWidth = 0;
                     for (let j = 0; j < child.span; j++)
-                        childBox.x2 += this._columnWidths[col++];
+                        availWidth += this._columnWidths[col++];
                 }
+                extraWidth = availWidth - naturalWidth;
             } else {
-                let [min, natural] = child.actor.get_preferred_width(-1);
-                childBox.x2 = x + natural;
+                availWidth = naturalWidth;
+                extraWidth = 0;
             }
-            let [min, natural] = child.actor.get_preferred_height(-1);
-            childBox.y1 = Math.round(box.y1 + (height - natural) / 2);
-            childBox.y2 = childBox.y1 + natural;
+
+            if (child.expand) {
+                childBox.x1 = x;
+                childBox.x2 = x + availWidth;
+            } else if (child.align === St.Align.CENTER) {
+                childBox.x1 = x + Math.round(extraWidth / 2);
+                childBox.x2 = childBox.x1 + naturalWidth;
+            } else if (child.align === St.Align.END) {
+                childBox.x2 = x + availWidth;
+                childBox.x1 = childBox.x2 - naturalWidth;
+            } else {
+                childBox.x1 = x;
+                childBox.x2 = x + naturalWidth;
+            }
+
+            let [minHeight, naturalHeight] = child.actor.get_preferred_height(-1);
+            childBox.y1 = Math.round(box.y1 + (height - naturalHeight) / 2);
+            childBox.y2 = childBox.y1 + naturalHeight;
+
             child.actor.allocate(childBox, flags);
 
-            x = childBox.x2 + this._spacing;
+            x += availWidth + this._spacing;
         }
     }
 };
@@ -322,7 +333,7 @@ PopupSeparatorMenuItem.prototype = {
         PopupBaseMenuItem.prototype._init.call(this, { reactive: false });
 
         this._drawingArea = new St.DrawingArea({ style_class: 'popup-separator-menu-item' });
-        this.addActor(this._drawingArea, 0, -1);
+        this.addActor(this._drawingArea, { span: -1, expand: true });
         this._drawingArea.connect('repaint', Lang.bind(this, this._onRepaint));
     },
 
@@ -367,7 +378,7 @@ PopupSliderMenuItem.prototype = {
         this._value = Math.max(Math.min(value, 1), 0);
 
         this._slider = new St.DrawingArea({ style_class: 'popup-slider-menu-item', reactive: true });
-        this.addActor(this._slider, 0, -1);
+        this.addActor(this._slider, { span: -1, expand: true });
         this._slider.connect('repaint', Lang.bind(this, this._sliderRepaint));
         this._slider.connect('button-press-event', Lang.bind(this, this._startDragging));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
@@ -534,7 +545,7 @@ PopupSwitchMenuItem.prototype = {
         this._switch = new Switch(active);
 
         this.addActor(this.label);
-        this.addActor(this._switch.actor);
+        this.addActor(this._switch.actor, { align: St.Align.END });
 
         this.connect('activate', Lang.bind(this,function(from) {
             this.toggle();
@@ -569,7 +580,7 @@ PopupImageMenuItem.prototype = {
         this.label = new St.Label({ text: text });
         this.addActor(this.label);
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
-        this.addActor(this._icon);
+        this.addActor(this._icon, { align: St.Align.END });
 
         this.setIcon(iconName);
     },
@@ -723,10 +734,6 @@ PopupMenu.prototype = {
         }
     },
 
-    setArrowOrigin: function(origin) {
-        this._boxPointer.setArrowOrigin(origin);
-    },
-
     activateFirst: function() {
         let children = this._box.get_children();
         for (let i = 0; i < children.length; i++) {
@@ -852,7 +859,7 @@ PopupSubMenuMenuItem.prototype = {
 
         this.label = new St.Label({ text: text });
         this.addActor(this.label);
-        this.addActor(new St.Label({ text: '>' }));
+        this.addActor(new St.Label({ text: '>' }), { align: St.Align.END });
 
         this.menu = new PopupMenu(this.actor, St.Align.MIDDLE, St.Side.LEFT, 0, true);
         Main.chrome.addActor(this.menu.actor, { visibleInOverview: true,
