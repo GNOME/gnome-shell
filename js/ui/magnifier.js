@@ -896,6 +896,9 @@ ZoomRegion.prototype = {
         this._magView = new St.Bin({ style_class: 'magnifier-zoom-region', x_fill: true, y_fill: true });
         global.stage.add_actor(this._magView);
 
+        // hide the magnified region from CLUTTER_PICK_ALL
+        Shell.util_set_hidden_from_pick (this._magView, true);
+
         // Append a Clutter.Group to clip the contents of the magnified view.
         let mainGroup = new Clutter.Group({ clip_to_allocation: true });
         this._magView.set_child(mainGroup);
