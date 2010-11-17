@@ -4,7 +4,6 @@
 #include <gmodule.h>
 #include <cogl/cogl.h>
 
-#undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
 /* layout actor, by Lucas Rocha */
@@ -566,7 +565,6 @@ my_thing_new (gfloat padding,
 static ClutterActor *box              = NULL;
 static ClutterActor *icon             = NULL;
 static ClutterTimeline *main_timeline = NULL;
-static ClutterBehaviour *behaviour    = NULL;
 
 static void
 toggle_property_value (ClutterActor *actor,
@@ -627,8 +625,12 @@ create_item (void)
   gint32 size = g_random_int_range (MIN_SIZE, MAX_SIZE);
   
   clutter_actor_set_size (clone, size, size);
-
-  clutter_behaviour_apply (behaviour, clone);
+  clutter_actor_animate_with_timeline (clone, CLUTTER_EASE_OUT_CUBIC,
+                                       main_timeline,
+                                       "scale-x", 2.0,
+                                       "scale-y", 2.0,
+                                       "fixed::scale-gravity", CLUTTER_GRAVITY_CENTER,
+                                       NULL);
 
   return clone;
 }
@@ -743,7 +745,6 @@ G_MODULE_EXPORT int
 test_layout_main (int argc, char *argv[])
 {
   ClutterActor *stage, *instructions;
-  ClutterAlpha *alpha;
   gint i, size;
   GError *error = NULL;
 
@@ -754,12 +755,11 @@ test_layout_main (int argc, char *argv[])
 
   main_timeline = clutter_timeline_new (2000);
   clutter_timeline_set_loop (main_timeline, TRUE);
+  clutter_timeline_set_reverse (main_timeline, TRUE);
   g_signal_connect (main_timeline, "new-frame",
                     G_CALLBACK (relayout_on_frame),
                     NULL);
 
-  alpha = clutter_alpha_new_full (main_timeline, CLUTTER_LINEAR);
-  behaviour = clutter_behaviour_scale_new (alpha, 1.0, 1.0, 2.0, 2.0);
 
   box = my_thing_new (10, 10);
 
@@ -775,8 +775,13 @@ test_layout_main (int argc, char *argv[])
 
   size = g_random_int_range (MIN_SIZE, MAX_SIZE);
   clutter_actor_set_size (icon, size, size);
-  clutter_behaviour_apply (behaviour, icon);
   clutter_container_add_actor (CLUTTER_CONTAINER (box), icon);
+  clutter_actor_animate_with_timeline (icon, CLUTTER_EASE_OUT_CUBIC,
+                                       main_timeline,
+                                       "scale-x", 2.0,
+                                       "scale-y", 2.0,
+                                       "fixed::scale-gravity", CLUTTER_GRAVITY_CENTER,
+                                       NULL);
 
   for (i = 1; i < 33; i++)
     {
@@ -807,12 +812,13 @@ test_layout_main (int argc, char *argv[])
 		    G_CALLBACK (keypress_cb),
 		    NULL);
 
+  clutter_timeline_stop (main_timeline);
+
   clutter_actor_show (stage);
 
   clutter_main ();
 
   g_object_unref (main_timeline);
-  g_object_unref (behaviour);
 
   return EXIT_SUCCESS;
 }
