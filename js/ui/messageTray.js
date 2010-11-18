@@ -1676,7 +1676,7 @@ MessageTray.prototype = {
         this._adjustNotificationBoxPointerPosition();
 
         this._summaryNotificationState = State.SHOWING;
-        this._summaryNotificationBoxPointer.animateAppear(Lang.bind(this, function() {
+        this._summaryNotificationBoxPointer.show(true, Lang.bind(this, function() {
             this._summaryNotificationState = State.SHOWN;
         }));
     },
@@ -1715,7 +1715,7 @@ MessageTray.prototype = {
 
         this._summaryNotification.ungrabFocus();
         this._summaryNotificationState = State.HIDING;
-        this._summaryNotificationBoxPointer.animateDisappear(Lang.bind(this, this._hideSummaryNotificationCompleted));
+        this._summaryNotificationBoxPointer.hide(true, Lang.bind(this, this._hideSummaryNotificationCompleted));
     },
 
     _hideSummaryNotificationCompleted: function() {

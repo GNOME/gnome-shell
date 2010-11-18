@@ -642,7 +642,7 @@ PopupMenuBase.prototype = {
                 this.box.insert_actor(menuItem.menu.actor, position + 1);
             menuItem._subMenuActivateId = menuItem.menu.connect('activate', Lang.bind(this, function() {
                 this.emit('activate');
-                this.close();
+                this.close(true);
             }));
             menuItem._subMenuActiveChangeId = menuItem.menu.connect('active-changed', Lang.bind(this, function(submenu, submenuItem) {
                 if (this._activeMenuItem && this._activeMenuItem != submenuItem)
@@ -652,7 +652,7 @@ PopupMenuBase.prototype = {
             }));
             menuItem._closingId = this.connect('open-state-changed', function(self, open) {
                 if (!open)
-                    menuItem.menu.immediateClose();
+                    menuItem.menu.close(false);
             });
         }
         menuItem._activeChangeId = menuItem.connect('active-changed', Lang.bind(this, function (menuItem, active) {
@@ -668,7 +668,7 @@ PopupMenuBase.prototype = {
         }));
         menuItem._activateId = menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
             this.emit('activate', menuItem);
-            this.close();
+            this.close(true);
         }));
         menuItem.connect('destroy', Lang.bind(this, function(emitter) {
             menuItem.disconnect(menuItem._activateId);
@@ -735,9 +735,9 @@ PopupMenuBase.prototype = {
 
     toggle: function() {
         if (this.isOpen)
-            this.close();
+            this.close(true);
         else
-            this.open();
+            this.open(true);
     },
 
     destroy: function() {
@@ -802,26 +802,26 @@ PopupMenu.prototype = {
         this._boxPointer.setArrowOrigin(origin);
     },
 
-    open: function() {
+    open: function(animate) {
         if (this.isOpen)
             return;
 
         this.isOpen = true;
 
         this._boxPointer.setPosition(this.sourceActor, this._gap, this._alignment);
-        this._boxPointer.animateAppear();
+        this._boxPointer.show(animate);
 
         this.emit('open-state-changed', true);
     },
 
-    close: function() {
+    close: function(animate) {
         if (!this.isOpen)
             return;
 
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
 
-        this._boxPointer.animateDisappear();
+        this._boxPointer.hide(animate);
 
         this.isOpen = false;
         this.emit('open-state-changed', false);
@@ -848,11 +848,14 @@ PopupSubMenu.prototype = {
         this.actor.hide();
     },
 
-    open: function() {
+    open: function(animate) {
         if (this.isOpen)
             return;
 
         this.isOpen = true;
+
+        // we don't implement the !animate case because that doesn't
+        // currently get used...
 
         let [naturalHeight, minHeight] = this.actor.get_preferred_height(-1);
         this.actor.height = 0;
@@ -874,7 +877,7 @@ PopupSubMenu.prototype = {
                          });
     },
 
-    close: function() {
+    close: function(animate) {
         if (!this.isOpen)
             return;
 
@@ -883,44 +886,38 @@ PopupSubMenu.prototype = {
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
 
-        this.actor._arrow_rotation = this._arrow.rotation_angle_z;
-        Tweener.addTween(this.actor,
-                         { _arrow_rotation: 0,
-                           height: 0,
-                           time: 0.25,
-                           onCompleteScope: this,
-                           onComplete: function() {
-                               this.actor.hide();
-                               this.actor.set_height(-1);
+        if (animate) {
+            this.actor._arrow_rotation = this._arrow.rotation_angle_z;
+            Tweener.addTween(this.actor,
+                             { _arrow_rotation: 0,
+                               height: 0,
+                               time: 0.25,
+                               onCompleteScope: this,
+                               onComplete: function() {
+                                   this.actor.hide();
+                                   this.actor.set_height(-1);
 
-                               this.emit('open-state-changed', false);
-                           },
-                           onUpdateScope: this,
-                           onUpdate: function() {
-                               this._arrow.rotation_angle_z = this.actor._arrow_rotation;
-                           }
-                         });
-    },
+                                   this.emit('open-state-changed', false);
+                               },
+                               onUpdateScope: this,
+                               onUpdate: function() {
+                                   this._arrow.rotation_angle_z = this.actor._arrow_rotation;
+                               }
+                             });
+            } else {
+                this._arrow.rotation_angle_z = 0;
+                this.actor.hide();
 
-    immediateClose: function() {
-        if (!this.isOpen)
-            return;
-
-        if (this._activeMenuItem)
-            this._activeMenuItem.setActive(false);
-
-        this._arrow.rotation_angle_z = 0;
-        this.actor.hide();
-
-        this.isOpen = false;
-        this.emit('open-state-changed', false);
+                this.isOpen = false;
+                this.emit('open-state-changed', false);
+            }
     },
 
     _onKeyPressEvent: function(actor, event) {
         // Move focus back to parent menu if the user types Left.
 
         if (this.isOpen && event.get_key_symbol() == Clutter.KEY_Left) {
-            this.close();
+            this.close(true);
             this.sourceActor._delegate.setActive(true);
             return true;
         }
@@ -964,7 +961,7 @@ PopupSubMenuMenuItem.prototype = {
 
     _onKeyPressEvent: function(actor, event) {
         if (event.get_key_symbol() == Clutter.KEY_Right) {
-            this.menu.open();
+            this.menu.open(true);
             this.menu.activateFirst();
             return true;
         }
@@ -972,7 +969,7 @@ PopupSubMenuMenuItem.prototype = {
     },
 
     activate: function(event) {
-        this.menu.open();
+        this.menu.open(true);
     },
 
     _onButtonReleaseEvent: function(actor) {
@@ -1118,9 +1115,10 @@ PopupMenuManager.prototype = {
             // before closing it to keep that from happening
             let oldMenu = this._activeMenu;
             this._activeMenu = null;
-            oldMenu.close();
-        }
-        newMenu.open();
+            oldMenu.close(false);
+            newMenu.open(false);
+        } else
+            newMenu.open(true);
     },
 
     _onMenuSourceEnter: function(menu) {
@@ -1152,7 +1150,7 @@ PopupMenuManager.prototype = {
                     return;
                 if (focus._delegate && this._findMenu(focus._delegate.menu) != -1)
                     return;
-                menu.close();
+                menu.close(true);
             }));
     },
 
@@ -1240,6 +1238,6 @@ PopupMenuManager.prototype = {
 
     _closeMenu: function() {
         if (this._activeMenu != null)
-            this._activeMenu.close();
+            this._activeMenu.close(true);
     }
 };
