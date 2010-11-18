@@ -750,7 +750,7 @@ clutter_drag_action_get_drag_threshold (ClutterDragAction *action,
 
 /**
  * clutter_drag_action_set_drag_handle:
- * @action: a #ClutterDragHandle
+ * @action: a #ClutterDragAction
  * @handle: a #ClutterActor
  *
  * Sets the actor to be used as the drag handle

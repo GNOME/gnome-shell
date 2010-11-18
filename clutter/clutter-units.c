@@ -767,7 +767,7 @@ clutter_value_set_units (GValue             *value,
  * clutter_value_get_units:
  * @value: a #GValue initialized to #CLUTTER_TYPE_UNIT
  *
- * Gets the #ClutterUnit<!-- -->s contained in @value.
+ * Gets the #ClutterUnits contained in @value.
  *
  * Return value: the units inside the passed #GValue
  *

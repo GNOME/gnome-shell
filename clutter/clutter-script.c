@@ -512,7 +512,7 @@ clutter_script_load_from_file (ClutterScript  *script,
  *
  * Return value: on error, zero is returned and @error is set
  *   accordingly. On success, the merge id for the UI definitions is
- *   returned. You can use the merge id with clutter_script_unmerge().
+ *   returned. You can use the merge id with clutter_script_unmerge_objects().
  *
  * Since: 0.6
  */

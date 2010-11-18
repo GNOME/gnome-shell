@@ -25,8 +25,8 @@
  * SECTION:clutter-behaviour-scale
  * @Title: ClutterBehaviourScale
  * @short_description: A behaviour controlling scale
- * @Deprecated: 1.6: Use clutter_actor_animate() with #ClutterActor:x-scale
- *   and #ClutterActor:y-scale instead.
+ * @Deprecated: 1.6: Use clutter_actor_animate() with #ClutterActor:scale-x
+ *   and #ClutterActor:scale-y instead.
  *
  * A #ClutterBehaviourScale interpolates actors size between two values.
  */

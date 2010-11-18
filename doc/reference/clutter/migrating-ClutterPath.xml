@@ -26,7 +26,7 @@
 
   <para>The class that replaced the path description and manipulation
   functionality is called #ClutterPath. A #ClutterPath allows
-  describing a path using a sequence of #ClutterPahtNode<!-- -->s or
+  describing a path using a sequence of #ClutterPathNode<!-- -->s or
   using a subset of the SVG path description syntax. A Path instance
   also allows describing complex paths, with linear and Bezier segments
   and with gaps.</para>

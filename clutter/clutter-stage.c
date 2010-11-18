@@ -2586,7 +2586,7 @@ G_DEFINE_BOXED_TYPE (ClutterFog, clutter_fog, clutter_fog_copy, clutter_fog_free
  * top-level actor which can be used as another container. It works
  * exactly like the default stage, but while clutter_stage_get_default()
  * will always return the same instance, you will have to keep a pointer
- * to any #ClutterStage returned by clutter_stage_create().
+ * to any #ClutterStage returned by clutter_stage_new().
  *
  * The ability to support multiple stages depends on the current
  * backend. Use clutter_feature_available() and

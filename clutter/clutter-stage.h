@@ -113,7 +113,7 @@ struct _ClutterStage
  * @fullscreen: handler for the #ClutterStage::fullscreen signal
  * @unfullscreen: handler for the #ClutterStage::unfullscreen signal
  * @activate: handler for the #ClutterStage::activate signal
- * @deactivate: handler for the #ClutterStage::deactive signal
+ * @deactivate: handler for the #ClutterStage::deactivate signal
  * @delete_event: handler for the #ClutterStage::delete-event signal
  *
  * The #ClutterStageClass structure contains only private data

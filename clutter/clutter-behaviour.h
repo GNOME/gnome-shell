@@ -70,7 +70,7 @@ typedef struct _ClutterBehaviourClass   ClutterBehaviourClass;
  * @actor: an actor driven by @behaviour
  * @data: optional data passed to the function
  *
- * This function is passed to clutter_behaviour_foreach_actor() and
+ * This function is passed to clutter_behaviour_actors_foreach() and
  * will be called for each actor driven by @behaviour.
  *
  * Since: 0.2

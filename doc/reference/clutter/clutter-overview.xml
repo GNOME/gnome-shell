@@ -35,7 +35,7 @@
     <para>#ClutterStage is the top level #ClutterActor - it's the
     representation of a window, or framebuffer. It is created automatically
     when Clutter is initialised. #ClutterStage is a #ClutterGroup, a class
-    implementing the #ClutterCointainer interface.</para>
+    implementing the #ClutterContainer interface.</para>
 
     <para>Clutter allows explicit positioning and sizing through the
     #ClutterFixedLayout layout manager; and implicit positioning and sizing

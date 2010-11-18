@@ -2520,8 +2520,8 @@ fbo_source_queue_relayout_cb (ClutterActor *source,
  *   </listitem>
  *   <listitem>
  *     <para>Uploading pixel data to the texture (e.g by using
- *     clutter_actor_set_from_file()) will destroy the offscreen texture data
- *     and end redirection.</para>
+ *     clutter_texture_set_from_file()) will destroy the offscreen texture
+ *     data and end redirection.</para>
  *   </listitem>
  *   <listitem>
  *     <para>cogl_texture_get_data() with the handle returned by

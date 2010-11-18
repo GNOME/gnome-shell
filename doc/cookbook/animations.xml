@@ -1069,7 +1069,7 @@ clutter_actor_set_z_rotation_from_gravity (actor,
 
       <note>
         <para>The core to understanding this example is understanding
-        how to define keys for a <type>CutterAnimator</type>. As
+        how to define keys for a <type>ClutterAnimator</type>. As
         this is an involved topic, further explanation
         is given in <link linkend="animations-complex-discussion-keys">the
         Discussion section</link>.</para>
