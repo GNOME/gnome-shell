@@ -60,7 +60,7 @@ _clutter_paint_volume_new (ClutterActor *actor)
 
   pv = g_slice_new (ClutterPaintVolume);
 
-  pv->actor = g_object_ref (actor);
+  pv->actor = actor;
 
   memset (pv->vertices, 0, 8 * sizeof (ClutterVertex));
 
@@ -95,7 +95,7 @@ _clutter_paint_volume_init_static (ClutterActor *actor,
 {
   g_return_if_fail (actor != NULL);
 
-  pv->actor = g_object_ref (actor);
+  pv->actor = actor;
 
   memset (pv->vertices, 0, 8 * sizeof (ClutterVertex));
 
@@ -114,7 +114,6 @@ _clutter_paint_volume_copy_static (const ClutterPaintVolume *src_pv,
   g_return_if_fail (src_pv != NULL && dst_pv != NULL);
 
   memcpy (dst_pv, src_pv, sizeof (ClutterPaintVolume));
-  g_object_ref (dst_pv->actor);
   dst_pv->is_static = TRUE;
 }
 
@@ -136,9 +135,6 @@ clutter_paint_volume_copy (const ClutterPaintVolume *pv)
   g_return_val_if_fail (pv != NULL, NULL);
 
   copy = g_slice_dup (ClutterPaintVolume, pv);
-  if (copy->actor)
-    g_object_ref (copy->actor);
-
   copy->is_static = FALSE;
 
   return copy;
@@ -148,11 +144,6 @@ void
 _clutter_paint_volume_set_from_volume (ClutterPaintVolume       *pv,
                                        const ClutterPaintVolume *src)
 {
-  if (src->actor != pv->actor)
-    {
-      g_object_unref (pv->actor);
-      g_object_ref (src->actor);
-    }
   memcpy (pv, src, sizeof (ClutterPaintVolume));
 }
 
@@ -168,8 +159,6 @@ void
 clutter_paint_volume_free (ClutterPaintVolume *pv)
 {
   g_return_if_fail (pv != NULL);
-
-  g_object_unref (pv->actor);
 
   if (G_LIKELY (pv->is_static))
     return;
@@ -918,6 +907,5 @@ _clutter_paint_volume_set_reference_actor (ClutterPaintVolume *pv,
 {
   g_return_if_fail (pv != NULL);
 
-  g_object_unref (pv->actor);
-  pv->actor = g_object_ref (actor);
+  pv->actor = actor;
 }

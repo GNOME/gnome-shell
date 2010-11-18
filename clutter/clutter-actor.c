@@ -2694,7 +2694,6 @@ clutter_actor_set_rotation_internal (ClutterActor      *self,
 {
   ClutterActorPrivate *priv = self->priv;
 
-  g_object_ref (self);
   g_object_freeze_notify (G_OBJECT (self));
 
   switch (axis)
@@ -2716,7 +2715,6 @@ clutter_actor_set_rotation_internal (ClutterActor      *self,
     }
 
   g_object_thaw_notify (G_OBJECT (self));
-  g_object_unref (self);
 
   clutter_actor_queue_redraw (self);
 }
@@ -11692,7 +11690,7 @@ clutter_actor_get_transformed_paint_volume (ClutterActor *self,
     return NULL;
 
   volume = clutter_actor_get_paint_volume (self);
-  if (!volume)
+  if (volume == NULL)
     return NULL;
 
   _clutter_actor_get_relative_modelview (self, relative_to_ancestor, &matrix);
@@ -11702,8 +11700,8 @@ clutter_actor_get_transformed_paint_volume (ClutterActor *self,
   _clutter_paint_volume_copy_static (volume, transformed_volume);
   _clutter_paint_volume_transform (transformed_volume, &matrix);
   _clutter_paint_volume_axis_align (transformed_volume);
-  g_object_unref (transformed_volume->actor);
-  transformed_volume->actor = g_object_ref (relative_to_ancestor);
+  _clutter_paint_volume_set_reference_actor (transformed_volume,
+                                             relative_to_ancestor);
 
   return transformed_volume;
 }
