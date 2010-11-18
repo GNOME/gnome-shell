@@ -264,6 +264,8 @@ on_plug_added (GtkSocket        *socket,
   child = g_hash_table_lookup (manager->priv->icons, socket);
 
   child->actor = shell_tray_icon_new (SHELL_EMBEDDED_WINDOW (child->window));
+  g_object_ref_sink (child->actor);
+
   g_signal_emit (manager, shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
                  child->actor);
 }
