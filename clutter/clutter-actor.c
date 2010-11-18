@@ -409,6 +409,8 @@ struct _ClutterActorPrivate
   guint enable_paint_unmapped       : 1;
   guint has_pointer                 : 1;
   guint propagated_one_redraw       : 1;
+  guint paint_volume_valid          : 1;
+  guint last_paint_box_valid        : 1;
 
   gfloat clip[4];
 
@@ -466,12 +468,11 @@ struct _ClutterActorPrivate
   ClutterMetaGroup *constraints;
   ClutterMetaGroup *effects;
 
+  /* used when painting, to update the paint volume */
   ClutterActorMeta *current_effect;
 
-  gboolean paint_volume_valid;
   ClutterPaintVolume paint_volume;
 
-  gboolean last_paint_box_valid;
   ClutterActorBox last_paint_box;
 
   ClutterStageQueueRedrawEntry *queue_redraw_entry;
