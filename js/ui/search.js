@@ -182,7 +182,7 @@ SearchProvider.prototype = {
      * implementation will show the icon next to the name.
      *
      * The actor should be an instance of St.Widget, with the style class
-     * 'dash-search-result-content'.
+     * 'search-result-content'.
      */
     createResultActor: function(resultMeta, terms) {
         return null;

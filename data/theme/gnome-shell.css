@@ -431,25 +431,25 @@ StTooltip StLabel {
     padding: 8px 0px;
 }
 
-.dash-search-statustext,
-.dash-search-section-header {
+.search-statustext,
+.search-section-header {
     padding: 4px 0px;
     spacing: 4px;
 }
 
-.dash-search-section-results {
+.search-section-results {
     color: #ffffff;
 }
 
-.dash-search-section-list-results {
+.search-section-list-results {
     spacing: 4px;
 }
 
-.dash-search-result-content {
+.search-result-content {
     padding: 3px;
 }
 
-.dash-search-result-content:selected {
+.search-result-content:selected {
     padding: 2px;
     border: 1px solid #5c5c5c;
     border-radius: 2px;

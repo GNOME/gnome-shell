@@ -40,6 +40,7 @@ nobase_dist_js_DATA = 	\
 	ui/runDialog.js		\
 	ui/scripting.js		\
 	ui/search.js		\
+	ui/searchDisplay.js	\
 	ui/shellDBus.js		\
 	ui/statusIconDispatcher.js	\
 	ui/statusMenu.js	\
