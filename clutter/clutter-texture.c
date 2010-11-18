@@ -44,20 +44,19 @@
 #include "config.h"
 #endif
 
-#include "clutter-actor-private.h"
 #include "clutter-texture.h"
+
+#include "clutter-actor-private.h"
+#include "clutter-debug.h"
+#include "clutter-enum-types.h"
+#include "clutter-feature.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
-#include "clutter-feature.h"
-#include "clutter-util.h"
 #include "clutter-private.h"
 #include "clutter-scriptable.h"
-#include "clutter-debug.h"
-#include "clutter-fixed.h"
-#include "clutter-enum-types.h"
+#include "clutter-shader.h"
 #include "clutter-stage-private.h"
-
-#include "cogl/cogl.h"
+#include "clutter-util.h"
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 

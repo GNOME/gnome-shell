@@ -28,8 +28,8 @@
 #ifndef __CLUTTER_TEXTURE_H__
 #define __CLUTTER_TEXTURE_H__
 
-#include <clutter/clutter-actor.h>
 #include <cogl/cogl.h>
+#include <clutter/clutter-actor.h>
 
 G_BEGIN_DECLS
 

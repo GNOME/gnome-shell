@@ -303,6 +303,7 @@
 #include "clutter-profile.h"
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
+#include "clutter-shader.h"
 #include "clutter-stage-private.h"
 #include "clutter-units.h"
 

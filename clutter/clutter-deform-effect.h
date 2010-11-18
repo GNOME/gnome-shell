@@ -29,7 +29,7 @@
 #ifndef __CLUTTER_DEFORM_EFFECT_H__
 #define __CLUTTER_DEFORM_EFFECT_H__
 
-#include <clutter/clutter-color.h>
+#include <cogl/cogl.h>
 #include <clutter/clutter-offscreen-effect.h>
 
 G_BEGIN_DECLS

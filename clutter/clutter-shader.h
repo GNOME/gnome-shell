@@ -65,7 +65,6 @@ typedef enum {
   CLUTTER_SHADER_ERROR_COMPILE
 } ClutterShaderError;
 
-typedef struct _ClutterShader        ClutterShader;
 typedef struct _ClutterShaderPrivate ClutterShaderPrivate;
 typedef struct _ClutterShaderClass   ClutterShaderClass;
 

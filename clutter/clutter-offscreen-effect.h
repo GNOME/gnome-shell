@@ -29,6 +29,7 @@
 #ifndef __CLUTTER_OFFSCREEN_EFFECT_H__
 #define __CLUTTER_OFFSCREEN_EFFECT_H__
 
+#include <cogl/cogl.h>
 #include <clutter/clutter-effect.h>
 
 G_BEGIN_DECLS

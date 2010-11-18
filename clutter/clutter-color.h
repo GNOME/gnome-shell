@@ -30,14 +30,11 @@
 #ifndef __CLUTTER_COLOR_H__
 #define __CLUTTER_COLOR_H__
 
-#include <glib-object.h>
-#include <clutter/clutter-fixed.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_COLOR	(clutter_color_get_type ())
-
-typedef struct _ClutterColor ClutterColor;
 
 /**
  * ClutterColor:

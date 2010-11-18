@@ -29,7 +29,6 @@
 #define __CLUTTER_TYPES_H__
 
 #include <glib-object.h>
-#include <clutter/clutter-units.h>
 
 G_BEGIN_DECLS
 
@@ -52,6 +51,11 @@ typedef struct _ClutterAnimator         ClutterAnimator;
 
 typedef struct _ClutterAction           ClutterAction;
 typedef struct _ClutterConstraint       ClutterConstraint;
+typedef struct _ClutterEffect           ClutterEffect;
+
+typedef struct _ClutterShader           ClutterShader;
+
+typedef struct _ClutterColor            ClutterColor;
 
 typedef union _ClutterEvent             ClutterEvent;
 
