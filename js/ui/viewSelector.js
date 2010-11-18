@@ -64,8 +64,6 @@ SearchEntry.prototype = {
     },
 
     hide: function() {
-        if (this.isActive())
-            this.reset();
         if (this._capturedEventId > 0) {
             global.stage.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
@@ -82,6 +80,10 @@ SearchEntry.prototype = {
         this.actor.set_hover(hovered);
 
         this.entry.text = '';
+
+        // Return focus to the stage
+        global.stage.set_key_focus(null);
+
         this.entry.set_cursor_visible(true);
         this.entry.set_selection(0, 0);
     },
@@ -217,7 +219,7 @@ function ViewTab(label, pageActor) {
 }
 
 ViewTab.prototype = {
-    __proto__: BaseTab.prototype;
+    __proto__: BaseTab.prototype,
 
     _init: function(label, pageActor) {
         let titleActor = new St.Button({ label: label,
@@ -229,12 +231,124 @@ ViewTab.prototype = {
 };
 
 
-function SearchTab(entryActor, pageActor) {
-    this._init(entryActor, pageActor);
+function SearchTab() {
+    this._init();
 }
 
 SearchTab.prototype = {
-    __proto__: BaseTab.prototype
+    __proto__: BaseTab.prototype,
+
+    _init: function() {
+        this._searchActive = false;
+        this._searchPending = false;
+        this._keyPressId = 0;
+        this._searchTimeoutId = 0;
+
+        this._searchSystem = new Search.SearchSystem();
+
+        this._searchEntry = new SearchEntry();
+        this._searchResults = new SearchDisplay.SearchResults(this._searchSystem);
+        BaseTab.prototype._init.call(this,
+                                     this._searchEntry.actor,
+                                     this._searchResults.actor);
+        this._searchEntry.entry.connect('text-changed',
+                                        Lang.bind(this, this._onTextChanged));
+        this._searchEntry.entry.connect('activate', Lang.bind(this, function (se) {
+            if (this._searchTimeoutId > 0) {
+                Mainloop.source_remove(this._searchTimeoutId);
+                this._doSearch();
+            }
+            this._searchResults.activateSelected();
+            return true;
+        }));
+    },
+
+    setFindAsYouType: function(enabled) {
+        if (enabled)
+            this._searchEntry.show();
+        else
+            this._searchEntry.hide();
+    },
+
+    show: function() {
+        BaseTab.prototype.show.call(this);
+
+        if (this._keyPressId == 0)
+            this._keyPressId = global.stage.connect('key-press-event',
+                                                    Lang.bind(this, this._onKeyPress));
+    },
+
+    hide: function() {
+        BaseTab.prototype.hide.call(this);
+
+        if (this._keyPressId > 0) {
+            global.stage.disconnect(this._keyPressId);
+            this._keyPressId = 0;
+        }
+        this._searchEntry.reset();
+    },
+
+    addSearchProvider: function(provider) {
+        this._searchSystem.registerProvider(provider);
+        this._searchResults.createProviderMeta(provider);
+    },
+
+    _onTextChanged: function (se, prop) {
+        let searchPreviouslyActive = this._searchActive;
+        this._searchActive = this._searchEntry.isActive();
+        this._searchPending = this._searchActive && !searchPreviouslyActive;
+        if (this._searchPending) {
+            this._searchResults.startingSearch();
+        }
+        if (this._searchActive) {
+            this._activate();
+        } else {
+            this.emit('search-cancelled');
+        }
+        if (!this._searchActive) {
+            if (this._searchTimeoutId > 0) {
+                Mainloop.source_remove(this._searchTimeoutId);
+                this._searchTimeoutId = 0;
+            }
+            return;
+        }
+        if (this._searchTimeoutId > 0)
+            return;
+        this._searchTimeoutId = Mainloop.timeout_add(150, Lang.bind(this, this._doSearch));
+    },
+
+    _onKeyPress: function(stage, event) {
+        // If neither the stage nor the search entry have key focus, some
+        // "special" actor grabbed the focus (run dialog, looking glass);
+        // we don't want to interfere with that
+        let focus = stage.get_key_focus();
+        if (focus != stage && focus != this._searchEntry.entry)
+            return false;
+
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.Up) {
+            if (!this._searchActive)
+                return true;
+            this._searchResults.selectUp(false);
+
+            return true;
+        } else if (symbol == Clutter.Down) {
+            if (!this._searchActive)
+                return true;
+
+            this._searchResults.selectDown(false);
+            return true;
+        }
+        return false;
+    },
+
+    _doSearch: function () {
+        this._searchTimeoutId = 0;
+        let text = this._searchEntry.getText();
+        this._searchResults.updateSearch(text);
+
+        return false;
+    }
 };
 
 
@@ -279,6 +393,16 @@ ViewSelector.prototype = {
         this._tabs = [];
         this._activeTab = null;
 
+        this._searchTab = new SearchTab();
+        this._searchArea.set_child(this._searchTab.title);
+        this._addTab(this._searchTab);
+
+        this._searchTab.connect('search-cancelled', Lang.bind(this,
+            function() {
+                this._switchTab(this._activeTab);
+            }));
+
+        this._keyPressId = 0;
         this._itemDragBeginId = 0;
         this._overviewHidingId = 0;
 
@@ -294,53 +418,13 @@ ViewSelector.prototype = {
                                                        coordinate: Clutter.BindCoordinate.Y });
         this.constrainHeight = new Clutter.BindConstraint({ source: this._pageArea,
                                                             coordinate: Clutter.BindCoordinate.HEIGHT });
+    },
 
-        /***** Search *****/
-        this._searchActive = false;
-        this._searchPending = false;
-        this._searchEntry = new SearchEntry();
-        this._searchArea.set_child(this._searchEntry.actor);
-
-        this._searchSystem = new Search.SearchSystem();
-
-        this.searchResults = new SearchDisplay.SearchResults(this._searchSystem);
-        this._searchTab = new SearchTab(this._searchArea,
-                                        this.searchResults.actor);
-        this._pageArea.add_actor(this._searchTab.page);
-        this._searchTab.hide();
-
-        this._keyPressId = 0;
-        this._searchTimeoutId = 0;
-        this._searchEntry.entry.connect('text-changed', Lang.bind(this, function (se, prop) {
-            let searchPreviouslyActive = this._searchActive;
-            this._searchActive = this._searchEntry.isActive();
-            this._searchPending = this._searchActive && !searchPreviouslyActive;
-            if (this._searchPending) {
-                this.searchResults.startingSearch();
-            }
-            if (this._searchActive) {
-                this._switchTab(this._searchTab);
-            } else {
-                this._switchTab(this._activeTab);
-            }
-            if (!this._searchActive) {
-                if (this._searchTimeoutId > 0) {
-                    Mainloop.source_remove(this._searchTimeoutId);
-                    this._searchTimeoutId = 0;
-                }
-                return;
-            }
-            if (this._searchTimeoutId > 0)
-                return;
-            this._searchTimeoutId = Mainloop.timeout_add(150, Lang.bind(this, this._doSearch));
-        }));
-        this._searchEntry.entry.connect('activate', Lang.bind(this, function (se) {
-            if (this._searchTimeoutId > 0) {
-                Mainloop.source_remove(this._searchTimeoutId);
-                this._doSearch();
-            }
-            this.searchResults.activateSelected();
-            return true;
+    _addTab: function(tab) {
+        tab.page.hide();
+        this._pageArea.add_actor(tab.page);
+        tab.connect('activated', Lang.bind(this, function(tab) {
+            this._switchTab(tab);
         }));
     },
 
@@ -348,13 +432,7 @@ ViewSelector.prototype = {
         let viewTab = new ViewTab(title, pageActor);
         this._tabs.push(viewTab);
         this._tabBox.add(viewTab.title);
-        this._pageArea.add_actor(viewTab.page);
-        viewTab.page.hide();
-
-        viewTab.connect('activated', Lang.bind(this,
-            function(tab) {
-                this._switchTab(tab);
-            }));
+        this._addTab(viewTab);
     },
 
     _switchTab: function(tab) {
@@ -370,7 +448,6 @@ ViewSelector.prototype = {
             this._activeTab = tab;
             if (this._searchTab.visible) {
                 this._searchTab.hide();
-                this._searchEntry.reset();
             }
         }
 
@@ -437,49 +514,27 @@ ViewSelector.prototype = {
     },
 
     _onKeyPress: function(stage, event) {
-        // If neither the stage nor the search entry have key focus, some
-        // "special" actor grabbed the focus (run dialog, looking glass);
-        // we don't want to interfere with that
+        // Only process events if the stage has key focus - search is handled
+        // by the search tab, and we do not want to interfere with "special"
+        // actors grabbing focus (run dialog, looking glass, notifications).
         let focus = stage.get_key_focus();
-        if (focus != stage && focus != this._searchEntry.entry)
+        if (focus != stage)
             return false;
 
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.Escape) {
-                Main.overview.hide();
-            return true;
-        } else if (symbol == Clutter.Up) {
-            if (!this._searchActive)
-                return true;
-            this.searchResults.selectUp(false);
-
-            return true;
-        } else if (symbol == Clutter.Down) {
-            if (!this._searchActive)
-                return true;
-
-            this.searchResults.selectDown(false);
+            Main.overview.hide();
             return true;
         }
         return false;
     },
 
-    _doSearch: function () {
-        this._searchTimeoutId = 0;
-        let text = this._searchEntry.getText();
-        this.searchResults.updateSearch(text);
-
-        return false;
-    },
-
     addSearchProvider: function(provider) {
-        this._searchSystem.registerProvider(provider);
-        this.searchResults.createProviderMeta(provider);
+        this._searchTab.addSearchProvider(provider);
     },
 
     show: function() {
-        // Connect type-as-you-find listener
-        this._searchEntry.show();
+        this._searchTab.setFindAsYouType(true);
 
         if (this._itemDragBeginId == 0)
             this._itemDragBeginId = Main.overview.connect('item-drag-begin',
@@ -495,8 +550,7 @@ ViewSelector.prototype = {
     },
 
     hide: function() {
-        // Disconnect type-as-you-find listener
-        this._searchEntry.hide();
+        this._searchTab.setFindAsYouType(false);
 
         if (this._keyPressId > 0) {
             global.stage.disconnect(this._keyPressId);
