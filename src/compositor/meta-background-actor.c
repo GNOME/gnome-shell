@@ -68,9 +68,9 @@ update_wrap_mode (MetaBackgroundActor *self)
    * side of the image via bilinear filtering.
    */
   if (width == self->texture_width && height == self->texture_height)
-    wrap_mode = COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
+    wrap_mode = COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE;
   else
-    wrap_mode = COGL_PIPELINE_WRAP_MODE_REPEAT;
+    wrap_mode = COGL_MATERIAL_WRAP_MODE_REPEAT;
 
   cogl_material_set_layer_wrap_mode (self->material, 0, wrap_mode);
 }
