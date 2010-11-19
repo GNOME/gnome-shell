@@ -705,8 +705,6 @@ cogl_read_pixels (int x,
 static void
 _cogl_disable_other_texcoord_arrays_cb (int texcoord_array_num, gpointer data)
 {
-  CoglContext *ctx = data;
-
   GE (glClientActiveTexture (GL_TEXTURE0 + texcoord_array_num));
   GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
 }
