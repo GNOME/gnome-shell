@@ -1,3 +1,66 @@
+Clutter 1.5.6                                                        2010-11-19
+===============================================================================
+
+  • List of changes since Clutter 1.5.4
+
+    » Deprecate ClutterBehaviour and its sub-classes: the same functionality
+      is available using the animation framework.
+
+    » Add ClutterSnapConstraint, a constraint implementation that snaps
+      together the edges of two actors.
+
+    » Add ClutterPathConstraint::node-reached.
+
+    » Deprecate ClutterTimeoutPool and ClutterFrameSource: this API is
+      not used internally any more, and since it's not integrated with
+      the master clock it's of relative use.
+
+    » Add a named, global color palette.
+
+    » Add the ClutterTimeline:reverse property, for automatically
+      reversing the direction of a timeline after the emission of
+      the ::completed signal.
+
+    » Performance improvements in the clip stack.
+
+    » Do not use pointer grabs in ClutterClickAction.
+
+    » Improve the internally used Cogl API for primitives, paths and
+      buffers; this is the first step towards Cogl 2.0.
+
+    » Allow using the COGL_DEBUG environment variable to disable the
+      NPOTs support.
+
+    » Plug a nasty infinite loop in the XSETTINGS implementation.
+
+    » Internally rename CoglMaterial to CoglPipeline; this should make
+      it clearer that the API refers to the state of the GPU pipeline.
+
+    » Add support for clipped redraws on EGL using the NOK_swap_region
+      extension.
+
+    » Build fixes.
+
+    » Use the monotonic clock API if compiling against GLib ≥ 2.27.3.
+
+    » Update examples in the Cookbook.
+
+    » Add a Cookbook recipe for looping animations.
+
+    » Add more documentation on Constraints.
+
+    » Documentation fixes.
+
+Translation updates:
+
+  Italian, Polish
+
+Many thanks to:
+
+  Robert Bragg, Neil Roberts, Elliot Smith, Owen W. Taylor,
+  Damien Lespiau, Lucas Rocha, Maxim Ermilov, Piotr Drąg,
+  Tomeu Vizoso, muflone
+
 Clutter 1.5.4
 ===============================================================================
 
