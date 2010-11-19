@@ -278,10 +278,23 @@ AS_CASE([$CLUTTER_FLAVOUR],
                 [AC_DEFINE([HAVE_TSLIB], [1], [Have tslib for touchscreen handling])]
           )
 
+          # evdev
+          PKG_CHECK_MODULES(EVDEV, [gudev-1.0 xkbcommon],
+                            [have_evdev=yes], [have_evdev=no])
+          AS_IF([test "x$have_evdev" = "xyes"],
+                [AC_DEFINE([HAVE_EVDEV], 1,
+                           [Have evdev support for input handling])]
+          )
+
+          # Make sure we don't enable tslib and evdev at the same time, we
+          # don't support multiple event backends yet.
+          AS_IF([test "x$have_tslib" = "xyes" -a "x$have_evdev" = "xyes"],
+                [AC_MSG_ERROR([Can't enable both tslib and evdev events])])
+
           COGL_DRIVER="gles"
 
-          FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS"
-          FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS"
+          FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS $EVDEV_LIBS"
+          FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS $EVDEV_CFLAGS"
 
           CLUTTER_WINSYS=egl
           CLUTTER_SONAME_INFIX=eglnative
