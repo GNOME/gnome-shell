@@ -12,6 +12,7 @@ noinst_PROGRAMS = \
 	animations-moving-state	\
 	animations-reuse	\
 	animations-rotating	\
+	animations-scaling	\
 	text-shadow		\
 	textures-reflection	\
 	textures-split-go	\
@@ -66,6 +67,7 @@ animations_moving_implicit_SOURCES         = animations-moving-implicit.c
 animations_moving_state_SOURCES            = animations-moving-state.c
 animations_reuse_SOURCES                   = animations-reuse.c
 animations_rotating_SOURCES                = animations-rotating.c
+animations_scaling_SOURCES                 = animations-scaling.c
 text_shadow_SOURCES                        = text-shadow.c
 textures_reflection_SOURCES                = textures-reflection.c
 textures_split_go_SOURCES                  = textures-split-go.c
