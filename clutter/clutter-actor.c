@@ -1091,6 +1091,12 @@ clutter_actor_real_unmap (ClutterActor *self)
 
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
 
+  /* unset the contents of the last paint box, so that hiding + moving +
+   * showing will not result in the wrong area being repainted
+   */
+  memset (&self->priv->last_paint_box, 0, sizeof (ClutterActorBox));
+  self->priv->last_paint_box_valid = TRUE;
+
   /* notify on parent mapped after potentially unmapping
    * children, so apps see a bottom-up notification.
    */
@@ -4854,10 +4860,7 @@ clutter_actor_init (ClutterActor *self)
   priv->enable_model_view_transform = TRUE;
 
   /* Initialize an empty paint box to start with */
-  priv->last_paint_box.x1 = 0;
-  priv->last_paint_box.y1 = 0;
-  priv->last_paint_box.x2 = 0;
-  priv->last_paint_box.y2 = 0;
+  memset (&priv->last_paint_box, 0, sizeof (ClutterActorBox));
   priv->last_paint_box_valid = TRUE;
 
   memset (priv->clip, 0, sizeof (gfloat) * 4);
