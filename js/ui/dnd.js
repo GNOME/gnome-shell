@@ -440,21 +440,39 @@ _Draggable.prototype = {
         return true;
     },
 
-    // Get position of the drag actor's source if the source is still around,
-    // or return the original location if the actor itself was being dragged
-    // or the source is no longer around.
     _getRestoreLocation: function() {
-        let locX = this._snapBackX;
-        let locY = this._snapBackY;
+        let x, y, scale;
 
-        if (this._dragActorSource && this._dragActorSource.visible)
-            [locX, locY] = this._dragActorSource.get_transformed_position();
-        return [locX, locY];
+        if (this._dragActorSource && this._dragActorSource.visible) {
+            // Snap the clone back to its source
+            [x, y] = this._dragActorSource.get_transformed_position();
+            let [sourceScaledWidth, sourceScaledHeight] = this._dragActorSource.get_transformed_size();
+            scale = this._dragActor.width / sourceScaledWidth;
+        } else if (this._dragOrigParent) {
+            // Snap the actor back to its original position within
+            // its parent, adjusting for the fact that the parent
+            // may have been moved or scaled
+            let [parentX, parentY] = this._dragOrigParent.get_transformed_position();
+            x = parentX + this._dragOrigParent.scale_x * this._dragOrigX;
+            y = parentY + this._dragOrigParent.scale_y * this._dragOrigY;
+
+            let [parentWidth, parentHeight] = this._dragOrigParent.get_size();
+            let [parentScaledWidth, parentScaledHeight] = this._dragOrigParent.get_transformed_size();
+            let parentScale = parentScaledWidth / parentWidth;
+            scale = this._dragOrigScale * parentScale;
+        } else {
+            // Snap back actor to its original stage position
+            x = this._snapBackX;
+            y = this._snapBackY;
+            scale = this._snapBackScale;
+        }
+
+        return [x, y, scale];
     },
 
     _cancelDrag: function(eventTime) {
         this._dragInProgress = false;
-        let [snapBackX, snapBackY] = this._getRestoreLocation();
+        let [snapBackX, snapBackY, snapBackScale] = this._getRestoreLocation();
 
         if (this._actorDestroyed) {
             global.unset_cursor();
@@ -467,8 +485,8 @@ _Draggable.prototype = {
         Tweener.addTween(this._dragActor,
                          { x: snapBackX,
                            y: snapBackY,
-                           scale_x: this._snapBackScale,
-                           scale_y: this._snapBackScale,
+                           scale_x: snapBackScale,
+                           scale_y: snapBackScale,
                            opacity: this._dragOrigOpacity,
                            time: SNAP_BACK_ANIMATION_TIME,
                            transition: 'easeOutQuad',
@@ -480,11 +498,11 @@ _Draggable.prototype = {
 
     _restoreDragActor: function(eventTime) {
         this._dragInProgress = false;
-        [restoreX, restoreY] = this._getRestoreLocation();
+        [restoreX, restoreY, restoreScale] = this._getRestoreLocation();
 
         // fade the actor back in at its original location
         this._dragActor.set_position(restoreX, restoreY);
-        this._dragActor.set_scale(this._snapBackScale, this._snapBackScale);
+        this._dragActor.set_scale(restoreScale, restoreScale);
         this._dragActor.opacity = 0;
 
         this._animationInProgress = true;
