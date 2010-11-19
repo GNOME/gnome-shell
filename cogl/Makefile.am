@@ -197,6 +197,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-primitives-private.h 		\
 	$(srcdir)/cogl-primitives.h 			\
 	$(srcdir)/cogl-primitives.c 			\
+	$(srcdir)/cogl-path-private.h 			\
 	$(srcdir)/cogl-path.h 				\
 	$(srcdir)/cogl-path.c 				\
 	$(srcdir)/cogl2-path.h 				\
