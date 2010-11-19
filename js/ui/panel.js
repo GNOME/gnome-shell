@@ -512,11 +512,14 @@ ClockButton.prototype = {
 
     _onButtonPress: function(actor, event) {
         let button = event.get_button();
-        if (button == 3 &&
-            (!this._calendarPopup || !this._calendarPopup.isOpen))
+        let menuShowing = this.menu.isOpen;
+        let calendarShowing = this._calendarPopup && this._calendarPopup.isOpen;
+
+        if (menuShowing || (button == 3 && !calendarShowing))
             this.menu.toggle();
         else
             this._toggleCalendar();
+        return true;
     },
 
     closeCalendar: function() {
@@ -525,15 +528,12 @@ ClockButton.prototype = {
 
         this._calendarPopup.hide();
 
-        this.menu.isOpen = false;
         this.actor.remove_style_pseudo_class('pressed');
     },
 
     openCalendar: function() {
         this._calendarPopup.show();
 
-        // simulate an open menu, so it won't appear beneath the calendar
-        this.menu.isOpen = true;
         this.actor.add_style_pseudo_class('pressed');
     },
 
@@ -803,7 +803,8 @@ Panel.prototype = {
         this._clockButton = new ClockButton();
         this._centerBox.add(this._clockButton.actor, { y_fill: true });
 
-        this._menus.addMenu(this._clockButton.menu);
+        let clockMenuManager = new PopupMenu.PopupMenuManager(this);
+        clockMenuManager.addMenu(this._clockButton.menu);
 
         /* right */
 
