@@ -219,10 +219,10 @@ notify_button (ClutterEventSource *source,
   ClutterEvent *event;
   ClutterActor *stage;
   gint button_nr;
-  static gint maskmap[5] =
+  static gint maskmap[8] =
     {
       CLUTTER_BUTTON1_MASK, CLUTTER_BUTTON2_MASK, CLUTTER_BUTTON3_MASK,
-      CLUTTER_BUTTON4_MASK, CLUTTER_BUTTON5_MASK
+      CLUTTER_BUTTON4_MASK, CLUTTER_BUTTON5_MASK, 0, 0, 0
     };
 
   stage = clutter_stage_get_default ();
