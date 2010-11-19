@@ -199,7 +199,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-primitives.c 			\
 	$(srcdir)/cogl-path.h 				\
 	$(srcdir)/cogl-path.c 				\
-	$(srcdir)/cogl2-path-private.h                  \
 	$(srcdir)/cogl2-path.h 				\
 	$(srcdir)/cogl2-path.c 				\
 	$(srcdir)/cogl-bitmap-pixbuf.c 			\
