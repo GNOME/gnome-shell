@@ -956,5 +956,9 @@ _cogl_pipeline_foreach_layer_internal (CoglPipeline *pipeline,
 int
 _cogl_pipeline_layer_get_unit_index (CoglPipelineLayer *layer);
 
+CoglPipeline *
+_cogl_pipeline_find_codegen_authority (CoglPipeline *pipeline,
+                                       CoglHandle user_program);
+
 #endif /* __COGL_PIPELINE_PRIVATE_H */
 
