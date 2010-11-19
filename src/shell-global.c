@@ -36,7 +36,6 @@
 #define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
 
 static void grab_notify (GtkWidget *widget, gboolean is_grab, gpointer user_data);
-static void update_root_window_pixmap (ShellGlobal *global);
 
 struct _ShellGlobal {
   GObject parent;
@@ -87,6 +86,7 @@ enum {
   PROP_STAGE,
   PROP_STAGE_INPUT_MODE,
   PROP_WINDOW_GROUP,
+  PROP_BACKGROUND_ACTOR,
   PROP_WINDOW_MANAGER,
   PROP_SETTINGS,
   PROP_DATADIR,
@@ -160,6 +160,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_WINDOW_GROUP:
       g_value_set_object (value, meta_plugin_get_window_group (global->plugin));
+      break;
+    case PROP_BACKGROUND_ACTOR:
+      g_value_set_object (value, meta_plugin_get_background_actor (global->plugin));
       break;
     case PROP_WINDOW_MANAGER:
       g_value_set_object (value, global->wm);
@@ -297,6 +300,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                    g_param_spec_object ("window-group",
                                                         "Window Group",
                                                         "Actor holding window actors",
+                                                        CLUTTER_TYPE_ACTOR,
+                                                        G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_BACKGROUND_ACTOR,
+                                   g_param_spec_object ("background-actor",
+                                                        "Background Actor",
+                                                        "Actor drawing root window background",
                                                         CLUTTER_TYPE_ACTOR,
                                                         G_PARAM_READABLE));
   g_object_class_install_property (gobject_class,
@@ -1134,77 +1144,6 @@ grab_notify (GtkWidget *widget, gboolean was_grabbed, gpointer user_data)
   shell_global_set_stage_input_mode (global, global->input_mode);
 }
 
-/*
- * Updates the global->root_pixmap actor with the root window's pixmap or fails
- * with a warning.
- */
-static void
-update_root_window_pixmap (ShellGlobal *global)
-{
-  Atom type;
-  int format;
-  gulong nitems;
-  gulong bytes_after;
-  guchar *data;
-  Pixmap root_pixmap_id = None;
-
-  if (!XGetWindowProperty (gdk_x11_get_default_xdisplay (),
-                           gdk_x11_get_default_root_xwindow (),
-                           gdk_x11_get_xatom_by_name ("_XROOTPMAP_ID"),
-                           0, LONG_MAX,
-                           False,
-                           AnyPropertyType,
-                           &type, &format, &nitems, &bytes_after, &data) &&
-      type != None)
-  {
-     /* Got a property. */
-     if (type == XA_PIXMAP && format == 32 && nitems == 1)
-       {
-         /* Was what we expected. */
-         root_pixmap_id = *(Pixmap *)data;
-       }
-     else
-       {
-         g_warning ("Could not get the root window pixmap");
-       }
-
-     XFree(data);
-  }
-
-  clutter_x11_texture_pixmap_set_pixmap (CLUTTER_X11_TEXTURE_PIXMAP (global->root_pixmap),
-                                         root_pixmap_id);
-}
-
-/*
- * Called when the X server emits a root window change event. If the event is
- * about a new pixmap, update the global->root_pixmap actor.
- */
-static GdkFilterReturn
-root_window_filter (GdkXEvent *native, GdkEvent *event, gpointer data)
-{
-  XEvent *xevent = (XEvent *)native;
-
-  if ((xevent->type == PropertyNotify) &&
-      (xevent->xproperty.window == gdk_x11_get_default_root_xwindow ()) &&
-      (xevent->xproperty.atom == gdk_x11_get_xatom_by_name ("_XROOTPMAP_ID")))
-    update_root_window_pixmap (SHELL_GLOBAL (data));
-
-  return GDK_FILTER_CONTINUE;
-}
-
-/*
- * Called when the root window pixmap actor is destroyed.
- */
-static void
-root_pixmap_destroy (GObject *sender, gpointer data)
-{
-  ShellGlobal *global = SHELL_GLOBAL (data);
-
-  gdk_window_remove_filter (gdk_get_default_root_window (),
-                            root_window_filter, global);
-  global->root_pixmap = NULL;
-}
-
 /**
  * shell_global_format_time_relative_pretty:
  * @global:
@@ -1251,80 +1190,6 @@ shell_global_format_time_relative_pretty (ShellGlobal *global,
                                          delta / WEEK), delta / WEEK);
      *next_update = WEEK - (delta % WEEK);
    }
-}
-
-/**
- * shell_global_create_root_pixmap_actor:
- * @global: a #ShellGlobal
- *
- * Creates an actor showing the root window pixmap.
- *
- * Return value: (transfer none): a #ClutterActor with the root window pixmap.
- *               The actor is floating, hence (transfer none).
- */
-ClutterActor *
-shell_global_create_root_pixmap_actor (ShellGlobal *global)
-{
-  GdkWindow *window;
-  ClutterActor *stage;
-  ClutterColor stage_color;
-
-  /* The actor created is actually a ClutterClone of global->root_pixmap. */
-
-  if (global->root_pixmap == NULL)
-    {
-      global->root_pixmap = clutter_glx_texture_pixmap_new ();
-
-      clutter_actor_set_size (CLUTTER_ACTOR (global->root_pixmap),
-                              global->last_change_screen_width,
-                              global->last_change_screen_height);
-
-      clutter_texture_set_repeat (CLUTTER_TEXTURE (global->root_pixmap),
-                                  TRUE, TRUE);
-
-      /* The low and medium quality filters give nearest-neighbor resizing. */
-      clutter_texture_set_filter_quality (CLUTTER_TEXTURE (global->root_pixmap),
-                                          CLUTTER_TEXTURE_QUALITY_HIGH);
-
-      /* Initialize to the stage color, since that's what will be seen
-       * in the main view if there's no actual background window.
-       */
-      stage = meta_plugin_get_stage (global->plugin);
-      clutter_stage_get_color (CLUTTER_STAGE (stage), &stage_color);
-      clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (global->root_pixmap),
-                                         /* ClutterColor has the same layout
-                                          * as one pixel of RGB(A) data.
-                                          */
-                                         (const guchar *)&stage_color, FALSE,
-                                         /* w, h, rowstride, bpp, flags */
-                                         1, 1, 3, 3, 0, NULL);
-
-      /* We can only clone an actor within a stage, so we hide the source
-       * texture then add it to the stage */
-      clutter_actor_hide (global->root_pixmap);
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                                   global->root_pixmap);
-
-      /* This really should never happen; but just in case... */
-      g_signal_connect (global->root_pixmap, "destroy",
-                        G_CALLBACK (root_pixmap_destroy), global);
-
-      /* Metacity handles changes to some root window properties in its global
-       * event filter, though not _XROOTPMAP_ID. For all root window property
-       * changes, the global filter returns GDK_FILTER_CONTINUE, so our
-       * window specific filter will be called after the global one.
-       *
-       * Because Metacity is already handling root window property updates,
-       * we don't have to worry about adding the PropertyChange mask to the
-       * root window to get PropertyNotify events.
-       */
-      window = gdk_get_default_root_window ();
-      gdk_window_add_filter (window, root_window_filter, global);
-
-      update_root_window_pixmap (global);
-    }
-
-  return clutter_clone_new (global->root_pixmap);
 }
 
 /**

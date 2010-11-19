@@ -663,7 +663,7 @@ st_widget_hide (ClutterActor *actor)
 
   /* hide the tooltip, if there is one */
   if (widget->priv->tooltip)
-    st_tooltip_hide (ST_TOOLTIP (widget->priv->tooltip));
+    clutter_actor_hide (CLUTTER_ACTOR (widget->priv->tooltip));
 
   CLUTTER_ACTOR_CLASS (st_widget_parent_class)->hide (actor);
 }
@@ -1534,7 +1534,7 @@ st_widget_show_tooltip (StWidget *widget)
   if (widget->priv->tooltip)
     {
       st_tooltip_set_tip_area (widget->priv->tooltip, &area);
-      st_tooltip_show (widget->priv->tooltip);
+      clutter_actor_show_all (CLUTTER_ACTOR (widget->priv->tooltip));
     }
 }
 
@@ -1551,7 +1551,7 @@ st_widget_hide_tooltip (StWidget *widget)
   g_return_if_fail (ST_IS_WIDGET (widget));
 
   if (widget->priv->tooltip)
-    st_tooltip_hide (widget->priv->tooltip);
+    clutter_actor_hide (CLUTTER_ACTOR (widget->priv->tooltip));
 }
 
 /**

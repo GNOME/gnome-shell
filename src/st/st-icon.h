@@ -29,6 +29,7 @@
 #define _ST_ICON
 
 #include <glib-object.h>
+#include <gio/gio.h>
 #include <st/st-widget.h>
 
 #include <st/st-types.h>
@@ -93,6 +94,8 @@ StIconType   st_icon_get_icon_type (StIcon *icon);
 gint         st_icon_get_icon_size (StIcon *icon);
 void         st_icon_set_icon_size (StIcon *icon, gint size);
 
+void         st_icon_set_gicon (StIcon *icon, GIcon *gicon);
+GIcon       *st_icon_get_gicon (StIcon *icon);
 
 G_END_DECLS
 

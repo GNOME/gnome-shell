@@ -267,6 +267,7 @@ _Draggable.prototype = {
 
         this._dragActor.reparent(this.actor.get_stage());
         this._dragActor.raise_top();
+        Shell.util_set_hidden_from_pick(this._dragActor, true);
 
         this._dragOrigOpacity = this._dragActor.opacity;
         if (this._dragActorOpacity != undefined)
@@ -332,12 +333,8 @@ _Draggable.prototype = {
             this._dragActor.set_position(stageX + this._dragOffsetX,
                                          stageY + this._dragOffsetY);
 
-            // Because we want to find out what other actor is located at the current position of this._dragActor,
-            // we have to temporarily hide this._dragActor.
-            this._dragActor.hide();
             let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
                                                                       stageX, stageY);
-            this._dragActor.show();
 
             // We call observers only once per motion with the innermost
             // target actor. If necessary, the observer can walk the
@@ -384,13 +381,9 @@ _Draggable.prototype = {
     },
 
     _dragActorDropped: function(event) {
-        // Find a drop target. Because we want to find out what other actor is located at
-        // the current position of this._dragActor, we have to temporarily hide this._dragActor.
-        this._dragActor.hide();
         let [dropX, dropY] = event.get_coords();
         let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
                                                                   dropX, dropY);
-        this._dragActor.show();
 
         // We call observers only once per motion with the innermost
         // target actor. If necessary, the observer can walk the
@@ -522,6 +515,8 @@ _Draggable.prototype = {
     },
 
     _dragComplete: function() {
+        Shell.util_set_hidden_from_pick(this._dragActor, false);
+
         this._dragActor = undefined;
         currentDraggable = null;
         this._ungrabEvents();

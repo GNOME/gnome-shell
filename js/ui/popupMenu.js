@@ -679,8 +679,11 @@ PopupMenu.prototype = {
         }));
     },
 
-    addMenuItem: function(menuItem) {
-        this._box.add(menuItem.actor);
+    addMenuItem: function(menuItem, position) {
+        if (position == undefined)
+            this._box.add(menuItem.actor);
+        else
+            this._box.insert_actor(menuItem.actor, position);
         menuItem._activeChangeId = menuItem.connect('active-changed', Lang.bind(this, function (menuItem, active) {
             if (active && this._activeMenuItem != menuItem) {
                 if (this._activeMenuItem)
