@@ -62,7 +62,7 @@ fi
 # libxklavier, libxml2, ORBit2, pam, python, readline,
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification,
 # xdamage, icon-naming-utils, upower, libtool-ltdl, libvorbis,
-# libgcrypt, libtasn1
+# libgcrypt, libtasn1, libgnome-keyring
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
@@ -120,6 +120,7 @@ if test "x$system" = xFedora ; then
     startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
     icon-naming-utils upower-devel libtool-ltdl-devel libvorbis-devel
     libxklavier-devel libgcrypt-devel libtasn1-devel libtasn1-tools
+    libgnome-keyring-devel
     "
 
   if expr $version \>= 14 > /dev/null ; then
