@@ -5656,6 +5656,80 @@ layers_codegen_would_differ (CoglPipelineLayer **pipeline0_layers,
   return FALSE;
 }
 
+/* Determines if we need to handle the RGB and A texture combining
+ * separately or is the same function used for both channel masks and
+ * with the same arguments...
+ */
+gboolean
+_cogl_pipeline_need_texture_combine_separate
+                                       (CoglPipelineLayer *combine_authority)
+{
+  CoglPipelineLayerBigState *big_state = combine_authority->big_state;
+  int n_args;
+  int i;
+
+  if (big_state->texture_combine_rgb_func !=
+      big_state->texture_combine_alpha_func)
+    return TRUE;
+
+  n_args = _cogl_get_n_args_for_combine_func (big_state->texture_combine_rgb_func);
+
+  for (i = 0; i < n_args; i++)
+    {
+      if (big_state->texture_combine_rgb_src[i] !=
+          big_state->texture_combine_alpha_src[i])
+        return TRUE;
+
+      /*
+       * We can allow some variation of the source operands without
+       * needing a separation...
+       *
+       * "A = REPLACE (CONSTANT[A])" + either of the following...
+       * "RGB = REPLACE (CONSTANT[RGB])"
+       * "RGB = REPLACE (CONSTANT[A])"
+       *
+       * can be combined as:
+       * "RGBA = REPLACE (CONSTANT)" or
+       * "RGBA = REPLACE (CONSTANT[A])" or
+       *
+       * And "A = REPLACE (1-CONSTANT[A])" + either of the following...
+       * "RGB = REPLACE (1-CONSTANT)" or
+       * "RGB = REPLACE (1-CONSTANT[A])"
+       *
+       * can be combined as:
+       * "RGBA = REPLACE (1-CONSTANT)" or
+       * "RGBA = REPLACE (1-CONSTANT[A])"
+       */
+      switch (big_state->texture_combine_alpha_op[i])
+        {
+        case GL_SRC_ALPHA:
+          switch (big_state->texture_combine_rgb_op[i])
+            {
+            case GL_SRC_COLOR:
+            case GL_SRC_ALPHA:
+              break;
+            default:
+              return FALSE;
+            }
+          break;
+        case GL_ONE_MINUS_SRC_ALPHA:
+          switch (big_state->texture_combine_rgb_op[i])
+            {
+            case GL_ONE_MINUS_SRC_COLOR:
+            case GL_ONE_MINUS_SRC_ALPHA:
+              break;
+            default:
+              return FALSE;
+            }
+          break;
+        default:
+          return FALSE;	/* impossible */
+        }
+    }
+
+   return FALSE;
+}
+
 /* This tries to find the oldest ancestor whos state would generate
  * the same shader program as the current pipeline. This is a simple
  * mechanism for reducing the number of programs we have to generate.
