@@ -100,6 +100,8 @@ _Draggable.prototype = {
         this._buttonDown = false; // The mouse button has been pressed and has not yet been released.
         this._dragInProgress = false; // The drag has been started, and has not been dropped or cancelled yet.
         this._animationInProgress = false; // The drag is over and the item is in the process of animating to its original position (snapping back or reverting).
+
+        this._eventsGrabbed = false;
     },
 
     _onButtonPress : function (actor, event) {
@@ -147,13 +149,19 @@ _Draggable.prototype = {
     },
 
     _grabEvents: function() {
-        Clutter.grab_pointer(_getEventHandlerActor());
-        Clutter.grab_keyboard(_getEventHandlerActor());
+        if (!this._eventsGrabbed) {
+            Clutter.grab_pointer(_getEventHandlerActor());
+            Clutter.grab_keyboard(_getEventHandlerActor());
+            this._eventsGrabbed = true;
+        }
     },
 
     _ungrabEvents: function() {
-        Clutter.ungrab_pointer();
-        Clutter.ungrab_keyboard();
+        if (this._eventsGrabbed) {
+            Clutter.ungrab_pointer();
+            Clutter.ungrab_keyboard();
+            this._eventsGrabbed = false;
+        }
     },
 
     _onEvent: function(actor, event) {
@@ -476,6 +484,8 @@ _Draggable.prototype = {
 
         if (this._actorDestroyed) {
             global.unset_cursor();
+            if (!this._buttonDown)
+                this._ungrabEvents();
             this.emit('drag-end', eventTime, false);
             return;
         }
