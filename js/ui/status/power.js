@@ -26,7 +26,10 @@ const UPDeviceType = {
     MOUSE: 5,
     KEYBOARD: 6,
     PDA: 7,
-    PHONE: 8
+    PHONE: 8,
+    MEDIA_PLAYER: 9,
+    TABLET: 10,
+    COMPUTER: 11
 };
 
 const UPDeviceState = {
@@ -181,24 +184,12 @@ DeviceItem.prototype = {
     _init: function(device) {
         PopupMenu.PopupBaseMenuItem.prototype._init.call(this);
 
-        let [device_id, device_type, summary, percentage, state, time] = device;
+        let [device_id, device_type, icon, percentage, state, time] = device;
 
         this._box = new St.BoxLayout({ style_class: 'popup-device-menu-item' });
-        this._label = new St.Label({ text: summary });
+        this._label = new St.Label({ text: this._deviceTypeToString(device_type) });
 
-        let icon;
-        switch (state) {
-        case UPDeviceState.FULLY_CHARGED:
-            icon = 'battery-full-charged';
-            break;
-        case UPDeviceState.UNKNOWN:
-            icon = 'battery-missing';
-            break;
-        default:
-            icon = this._percentageToIcon(percentage) + (state == UPDeviceState.CHARGING ? '-charging' : '');
-        }
-
-        this._icon = new St.Icon({ icon_name: icon,
+        this._icon = new St.Icon({ gicon: Shell.util_icon_from_string(icon),
                                    icon_type: St.IconType.SYMBOLIC,
                                    style_class: 'popup-menu-icon' });
 
@@ -212,15 +203,32 @@ DeviceItem.prototype = {
         this.addActor(percentBin);
     },
 
-    _percentageToIcon: function(p) {
-        if (p > 60)
-            return 'battery-full';
-        if (p > 30)
-            return 'battery-good';
-        if (p > 10)
-            return 'battery-low';
-        if (p > 0)
-            return 'battery-caution';
-        return 'battery-empty';
+    _deviceTypeToString: function(type) {
+	switch (type) {
+	case UPDeviceType.AC_POWER:
+            return _("AC adapter");
+        case UPDeviceType.BATTERY:
+            return _("Laptop battery");
+        case UPDeviceType.UPS:
+            return _("UPS");
+        case UPDeviceType.MONITOR:
+            return _("Monitor");
+        case UPDeviceType.MOUSE:
+            return _("Mouse");
+        case UPDeviceType.KEYBOARD:
+            return _("Keyboard");
+        case UPDeviceType.PDA:
+            return _("PDA");
+        case UPDeviceType.PHONE:
+            return _("Cell phone");
+        case UPDeviceType.MEDIA_PLAYER:
+            return _("Media player");
+        case UPDeviceType.TABLET:
+            return _("Tablet");
+        case UPDeviceType.COMPUTER:
+            return _("Computer");
+        default:
+            return _("Unknown");
+        }
     }
 }
