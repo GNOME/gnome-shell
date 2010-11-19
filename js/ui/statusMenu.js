@@ -153,7 +153,7 @@ StatusMenuButton.prototype = {
 
     _onMyAccountActivate: function() {
         Main.overview.hide();
-        this._spawn(['gnome-control-center user-accounts']);
+        this._spawn(['gnome-control-center', 'user-accounts']);
     },
 
     _onPreferencesActivate: function() {
