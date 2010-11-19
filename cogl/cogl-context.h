@@ -86,6 +86,7 @@ typedef struct
   CoglPipeline     *opaque_color_pipeline; /* used for set_source_color */
   CoglPipeline     *blended_color_pipeline; /* used for set_source_color */
   CoglPipeline     *texture_pipeline; /* used for set_source_texture */
+  GString          *fragment_header_buffer;
   GString          *fragment_source_buffer;
   GList            *source_stack;
 
