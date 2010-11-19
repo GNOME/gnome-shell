@@ -2703,4 +2703,136 @@ timeline_completed_cb (ClutterTimeline *timeline,
 
   </section>
 
+  <section id="animations-scaling">
+    <title>Animated scaling</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to animate scaling of an actor.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Animate the actor's <varname>scale-x</varname> and
+      <varname>scale-y</varname> properties to change the scaling on
+      the x and y axes respectively.</para>
+
+      <para>For example, to animate an actor to twice its initial scale
+      with implicit animations:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+/* get the actor's current scale */
+gdouble scale_x;
+gdouble scale_y;
+
+clutter_actor_get_scale (actor, &scale_x, &scale_y);
+
+/* animate to twice current scale on both axes */
+clutter_actor_animate (actor, CLUTTER_LINEAR, 1000,
+                       "scale-x", scale_x * 2,
+                       "scale-y", scale_y * 2);
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>Alternatively, <type>ClutterAnimator</type> or
+      <type>ClutterState</type> can be used to animate an actor's scale
+      properties. See <link linkend="animations-scaling-example-1">this
+      example</link> for details.</para>
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+<!--
+      <para>The scale value is a double. Values less than 1.0 will reduce the apparent size of the actor; values greater than 1.0 will increase the apparent size.</para>
+
+When you scale an actor, you aren't changing the actor's real size: you are applying a transform which changes its <emphasis>apparent</emphasis> size. Changing the scale will also transform the actor's position (i.e. it will appear to be at a different position within its container, although it will actually report its original position if you call clutter_actor_get_position(), clutter_actor_get_x() or clutter_actor_get_y()).
+
+
+You can get the transformed (apparent) position and size for an actor with <function>clutter_actor_get_transformed_position()</function> and <function>clutter_actor_get_transformed_size()</function> respectively.
+
+Because an actor is at a different apparent size when scaled, mouse clicks need translating into actor coordinates before you can use them.
+
+
+
+You can scale on both axes by the same amount (uniform scaling), or by a different amount on each axis (differential scaling).
+
+clutter_actor_is_scaled() tells you whether scaling has been applied to the actor: it returns FALSE if both scale-x and scale-y are 1.0.
+
+
+
+
+Scaling a container scales all actors inside the container.
+
+-->
+
+      <section>
+        <title>Setting the scale center</title>
+
+<!--
+You can change the center of the scaling, using either gravity or actor-relative coordinates. Note that setting the scale gravity on an actor sets the scale-center-x and scale-center-y values behind the scenes.
+
+
+
+
+When you scale the actor, it will "shrink" into (if scale < 1.0) or "expand" out of (if scale > 1.0) the center.
+
+You can't really change the scaling center as part of the animation: you should do it before scaling an actor with an animation.
+
+Once you've scaled an actor, it's not a great idea to change the scale center: if you do, it probably won't do what you expect.
+
+
+
+animations-scaling.c shows all the scale gravities
+
+
+
+
+What if you set scale centers and scale gravity? which gets precedence - I think scale center
+
+
+
+
+For example, you have a square actor size 200x200 at x=100, y=100.
+
+You scale it to half scale, setting the scale center to x=100, y=0 (middle of the top of the square)
+(the scale center is relative to the actor)
+
+The center of the top of the square stays where it is
+The part of the line either side of the center "shrinks" in towards the center of the line
+The top of the square stays still; the rest of the square "shrinks" up towards the top
+
+The square now appears at half its original size, and with an _transformed_ position of x=150, y=0
+
+
+
+
+
+Note that the scale center is relative to the actor's actual size, not its transformed size.
+-->
+      </section>
+
+    </section>
+
+    <section id="animations-scaling-examples">
+      <title>Full examples</title>
+
+      <example id="animations-scaling-example-1">
+        <title>Animated scaling of an actor using each of the
+        scale gravities. Press any key to start the animation.</title>
+        <programlisting>
+<xi:include href="examples/animations-scaling.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+    </section>
+
+  </section>
+
 </chapter>
