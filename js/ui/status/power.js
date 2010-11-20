@@ -71,12 +71,19 @@ Indicator.prototype = {
         this._deviceItems = [ ];
         this._hasPrimary = false;
         this._primaryDeviceId = null;
+
         this._batteryItem = new PopupMenu.PopupMenuItem('');
+        this._primaryPercentage = new St.Label();
+        let percentBin = new St.Bin();
+        percentBin.set_child(this._primaryPercentage, { x_align: St.Align.END });
+        this._batteryItem.addActor(percentBin);
         this.menu.addMenuItem(this._batteryItem);
+
         this._deviceSep = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(this._deviceSep);
         this._otherDevicePosition = 2;
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
         this.menu.addAction(_("What's using power..."),function() {
             GLib.spawn_command_line_async('gnome-power-statistics --device wakeups');
         });
@@ -98,10 +105,12 @@ Indicator.prototype = {
                 this._deviceSep.actor.hide();
                 return;
             }
-            let [device_id, device_type, summary, percentage, state, time] = device;
+            let [device_id, device_type, icon, percentage, state, time] = device;
             if (device_type == UPDeviceType.BATTERY) {
                 this._hasPrimary = true;
-                this._batteryItem.label.text = summary;
+                let minutes = Math.floor(time / 60);
+                this._batteryItem.label.text = Gettext.ngettext("%d minute remaining", "%d minutes remaining", minutes).format(minutes);
+                this._primaryPercentage.text = '%d%%'.format(Math.round(percentage));
                 this._batteryItem.actor.show();
                 if (this._deviceItems.length > 0)
                     this._deviceSep.actor.show();
