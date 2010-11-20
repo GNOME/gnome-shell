@@ -13,8 +13,6 @@ bin_SCRIPTS = gnome-shell gnome-shell-clock-preferences
 gnome-shell: gnome-shell.in
 	$(AM_V_GEN) sed -e "s|@MUTTER_BIN_DIR[@]|$(MUTTER_BIN_DIR)|" \
 	    -e "s|@datadir[@]|$(datadir)|" \
-	    -e "s|@GJS_JS_DIR[@]|$(GJS_JS_DIR)|" \
-	    -e "s|@GJS_JS_NATIVE_DIR[@]|$(GJS_JS_NATIVE_DIR)|" \
 	    -e "s|@libexecdir[@]|$(libexecdir)|" \
 	    -e "s|@libdir[@]|$(libdir)|" \
 	    -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \

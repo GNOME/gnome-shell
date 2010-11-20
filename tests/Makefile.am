@@ -24,8 +24,6 @@ EXTRA_DIST += $(TEST_MISC)
 
 run-test.sh: run-test.sh.in
 	$(AM_V_GEN) sed \
-	    -e "s|@GJS_JS_DIR[@]|$(GJS_JS_DIR)|" \
-	    -e "s|@GJS_JS_NATIVE_DIR[@]|$(GJS_JS_NATIVE_DIR)|" \
 	    -e "s|@MUTTER_LIB_DIR[@]|$(MUTTER_LIB_DIR)|" \
 	    -e "s|@srcdir[@]|$(srcdir)|" \
 	    $< > $@ && chmod a+x $@
