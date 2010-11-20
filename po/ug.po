@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&component=general\n"
-"POT-Creation-Date: 2010-11-11 00:26+0000\n"
+"POT-Creation-Date: 2010-11-18 14:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Gheyret Kenji<gheyret@yahoo.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Bell event"
 msgstr "قوڭغۇراق ھادىسىسى"
 
-#: ../src/core/core.c:214
+#: ../src/core/core.c:157
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "نامەلۇم كۆزنەك ئۇچۇرى ئىلتىماسى：%d"
@@ -393,7 +393,7 @@ msgid "Mutter"
 msgstr ""
 
 #. first time through
-#: ../src/core/window.c:6412
+#: ../src/core/window.c:6438
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -407,7 +407,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7075
+#: ../src/core/window.c:7101
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -581,7 +581,7 @@ msgstr ""
 
 #: ../src/include/all-keybindings.h:252
 msgid "Take a screenshot"
-msgstr "رەسىمگە ئالماق"
+msgstr "ئېكران كۆرۈنۈشىنى رەسىمگە ئالىدۇ"
 
 #: ../src/include/all-keybindings.h:254
 msgid "Take a screenshot of a window"
@@ -1275,13 +1275,13 @@ msgid ""
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
 
-#: ../src/ui/theme.c:5432 ../src/ui/theme.c:5494 ../src/ui/theme.c:5557
+#: ../src/ui/theme.c:5435 ../src/ui/theme.c:5497 ../src/ui/theme.c:5560
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 
-#: ../src/ui/theme.c:5440 ../src/ui/theme.c:5502 ../src/ui/theme.c:5565
+#: ../src/ui/theme.c:5443 ../src/ui/theme.c:5505 ../src/ui/theme.c:5568
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "تۇراقلىق سان “%s” غا ئېنىقلىما بېرىلگەن"
@@ -1382,264 +1382,264 @@ msgstr ""
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr ""
 
-#: ../src/ui/theme-parser.c:1263
+#: ../src/ui/theme-parser.c:1264
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "<%2$s> ئېلېمېنتتا نامەلۇم تىپ \"%1$s\" بار"
 
-#: ../src/ui/theme-parser.c:1274
+#: ../src/ui/theme-parser.c:1275
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "<%2$s> ئېلېمېنتتا نامەلۇم style_set \"%1$s\" بار"
 
-#: ../src/ui/theme-parser.c:1282
+#: ../src/ui/theme-parser.c:1283
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr ""
 
-#: ../src/ui/theme-parser.c:1312 ../src/ui/theme-parser.c:1376
-#: ../src/ui/theme-parser.c:1602 ../src/ui/theme-parser.c:2837
-#: ../src/ui/theme-parser.c:2883 ../src/ui/theme-parser.c:3031
-#: ../src/ui/theme-parser.c:3223 ../src/ui/theme-parser.c:3261
-#: ../src/ui/theme-parser.c:3299 ../src/ui/theme-parser.c:3337
+#: ../src/ui/theme-parser.c:1313 ../src/ui/theme-parser.c:1377
+#: ../src/ui/theme-parser.c:1603 ../src/ui/theme-parser.c:2838
+#: ../src/ui/theme-parser.c:2884 ../src/ui/theme-parser.c:3032
+#: ../src/ui/theme-parser.c:3224 ../src/ui/theme-parser.c:3262
+#: ../src/ui/theme-parser.c:3300 ../src/ui/theme-parser.c:3338
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "<%s> ئېلېمېنت <%s> ئاستىدا بولۇشقا يول قويۇلمايدۇ"
 
-#: ../src/ui/theme-parser.c:1426 ../src/ui/theme-parser.c:1440
-#: ../src/ui/theme-parser.c:1485
+#: ../src/ui/theme-parser.c:1427 ../src/ui/theme-parser.c:1441
+#: ../src/ui/theme-parser.c:1486
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
 msgstr "بىر قانچە توپچىغا \"button_width\"/\"button_height\" ۋە \"aspect_ratio\" دېگەن ئىككى خاسلىقنى قوشۇشقا بولمايدۇ"
 
-#: ../src/ui/theme-parser.c:1449
+#: ../src/ui/theme-parser.c:1450
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "ئارىلىق “%s”  نامەلۇم"
 
-#: ../src/ui/theme-parser.c:1494
+#: ../src/ui/theme-parser.c:1495
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "تەرەپلەر نىسبىتى \"%s\" نامەلۇم"
 
-#: ../src/ui/theme-parser.c:1556
+#: ../src/ui/theme-parser.c:1557
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "گىرۋەك \"%s\" نامەلۇم"
 
-#: ../src/ui/theme-parser.c:1867
+#: ../src/ui/theme-parser.c:1868
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "ئېلېمېنت <%s> نىڭ \"start_angle\" ياكى \"from\" دەيدىغان خاسلىقى يوق"
 
-#: ../src/ui/theme-parser.c:1874
+#: ../src/ui/theme-parser.c:1875
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "ئېلېمېنت <%s> نىڭ \"extent_angle\" ياكى \"to\" دەيدىغان خاسلىقى يوق"
 
-#: ../src/ui/theme-parser.c:2114
+#: ../src/ui/theme-parser.c:2115
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "كونۇسلۇق دەرىجىسىنىڭ تىپىنى چۈشەنگىلى  بولمايدىغان قىممەت “%s”"
 
-#: ../src/ui/theme-parser.c:2192 ../src/ui/theme-parser.c:2567
+#: ../src/ui/theme-parser.c:2193 ../src/ui/theme-parser.c:2568
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "<%2$s>ئېلېمېنتتىكى تولدۇرۇش تىپى \"%1$s\" نى چۈشەنگىلى بولمىدى"
 
-#: ../src/ui/theme-parser.c:2359 ../src/ui/theme-parser.c:2442
-#: ../src/ui/theme-parser.c:2505
+#: ../src/ui/theme-parser.c:2360 ../src/ui/theme-parser.c:2443
+#: ../src/ui/theme-parser.c:2506
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "<%2$s> ئېلېمېنتتىكى  ھالەت \"%1$s\" نى چۈشەنگىلى بولمىدى"
 
-#: ../src/ui/theme-parser.c:2369 ../src/ui/theme-parser.c:2452
+#: ../src/ui/theme-parser.c:2370 ../src/ui/theme-parser.c:2453
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "<%2$s> ئېلېمېنتتىكى سايە \"%1$s\" نى چۈشەنگىلى بولمىدى"
 
-#: ../src/ui/theme-parser.c:2379
+#: ../src/ui/theme-parser.c:2380
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "<%2$s> ئېلېمېنتتىكى ياق ئوق بەلگىسى \"%1$s\" نى چۈشەنگىلى بولمىدى"
 
-#: ../src/ui/theme-parser.c:2693 ../src/ui/theme-parser.c:2789
+#: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "\"%s\" دېگەن <draw_ops> بېكىتىلمىگەن"
 
-#: ../src/ui/theme-parser.c:2705 ../src/ui/theme-parser.c:2801
+#: ../src/ui/theme-parser.c:2706 ../src/ui/theme-parser.c:2802
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr ""
 
-#: ../src/ui/theme-parser.c:2916
+#: ../src/ui/theme-parser.c:2917
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "كاندۇك ئورنى  “%s” نامەلۇم"
 
-#: ../src/ui/theme-parser.c:2924
+#: ../src/ui/theme-parser.c:2925
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr ""
 
-#: ../src/ui/theme-parser.c:2941 ../src/ui/theme-parser.c:3016
+#: ../src/ui/theme-parser.c:2942 ../src/ui/theme-parser.c:3017
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "ئاتى  \"%s\" بولغان <draw_ops> بېكىتىلمىگەن"
 
-#: ../src/ui/theme-parser.c:2970
+#: ../src/ui/theme-parser.c:2971
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "كۇنۇپكىنىڭ فۇنكسىيىسى  “%s” نامەلۇم"
 
-#: ../src/ui/theme-parser.c:2979
+#: ../src/ui/theme-parser.c:2980
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "بۇ نەشرىدە \"%s\" دېگەن توپچىنىڭ ئىقتىدارى يوق (ھازىر %d،  زۆرۈر %d)"
 
-#: ../src/ui/theme-parser.c:2991
+#: ../src/ui/theme-parser.c:2992
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "توپچىنىڭ ھالىتى \"%s\" نامەلۇم"
 
-#: ../src/ui/theme-parser.c:2999
+#: ../src/ui/theme-parser.c:3000
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr ""
 
-#: ../src/ui/theme-parser.c:3070
+#: ../src/ui/theme-parser.c:3071
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" توغرا بولغان فوكۇس خاسلىق قىممىتى ئەمەس"
 
-#: ../src/ui/theme-parser.c:3079
+#: ../src/ui/theme-parser.c:3080
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" توغرا بولغان ھالەت خاسلىق قىممىتى ئەمەس"
 
-#: ../src/ui/theme-parser.c:3089
+#: ../src/ui/theme-parser.c:3090
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "\"%s\" دېگەن ئۇسلۇب بېكىتىلمىگەن"
 
-#: ../src/ui/theme-parser.c:3110 ../src/ui/theme-parser.c:3133
+#: ../src/ui/theme-parser.c:3111 ../src/ui/theme-parser.c:3134
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" توغرا بولغان resize خاسلىق قىممىتى ئەمەس"
 
-#: ../src/ui/theme-parser.c:3144
+#: ../src/ui/theme-parser.c:3145
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
 
-#: ../src/ui/theme-parser.c:3158
+#: ../src/ui/theme-parser.c:3159
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 
-#: ../src/ui/theme-parser.c:3172 ../src/ui/theme-parser.c:3194
+#: ../src/ui/theme-parser.c:3173 ../src/ui/theme-parser.c:3195
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
 
-#: ../src/ui/theme-parser.c:3183 ../src/ui/theme-parser.c:3205
+#: ../src/ui/theme-parser.c:3184 ../src/ui/theme-parser.c:3206
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr ""
 
-#: ../src/ui/theme-parser.c:3244
+#: ../src/ui/theme-parser.c:3245
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "<piece> ئېلېمېنتىدا draw_ops بولسا بولمايدۇ (ئۇسۇلۇپتا draw_ops خاسلىق بىلەن <draw_ops> ئېلېمېنتى كۆرسىتىلگەن،  ياكى ئىككى دانە ئېلېمېنت كۆرسىتىلگەن)"
 
-#: ../src/ui/theme-parser.c:3282
+#: ../src/ui/theme-parser.c:3283
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "<button> ئېلېمېنتىدا draw_ops بولسا بولمايدۇ (ئۇسۇلۇپتا draw_ops خاسلىق بىلەن <draw_ops> ئېلېمېنتى كۆرسىتىلگەن،  ياكى ئىككى دانە ئېلېمېنت كۆرسىتىلگەن)"
 
-#: ../src/ui/theme-parser.c:3320
+#: ../src/ui/theme-parser.c:3321
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "<menu_icon> ئېلېمېنتىدا draw_ops بولسا بولمايدۇ (ئۇسۇلۇپتا draw_ops خاسلىق بىلەن <draw_ops> ئېلېمېنتى كۆرسىتىلگەن،  ياكى ئىككى دانە ئېلېمېنت كۆرسىتىلگەن)"
 
-#: ../src/ui/theme-parser.c:3384
+#: ../src/ui/theme-parser.c:3385
 #, c-format
 msgid "Bad version specification '%s'"
 msgstr ""
 
-#: ../src/ui/theme-parser.c:3457
+#: ../src/ui/theme-parser.c:3458
 msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
 msgstr "\"version\" خاسلىقىنى metacity-theme-1.xml ياكى metacity-theme-2.xml دا ئىشلەتكىلى بولمايدۇ"
 
-#: ../src/ui/theme-parser.c:3480
+#: ../src/ui/theme-parser.c:3481
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
 msgstr ""
 
-#: ../src/ui/theme-parser.c:3512
+#: ../src/ui/theme-parser.c:3513
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "ئۇسلۇبنىڭ ئەڭ سىرتىدىكى ئېلېمېنت چوقۇم <metacity_theme> بولۇشى كېرەك، <%s> بولسا بولمايدۇ"
 
-#: ../src/ui/theme-parser.c:3532
+#: ../src/ui/theme-parser.c:3533
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "ئېلېمېنت <%s> نى ئېلېمېنت name/author/date/description لارنىڭ ئارىسىدا ئىشلىتىشكە بولمايدۇ"
 
-#: ../src/ui/theme-parser.c:3537
+#: ../src/ui/theme-parser.c:3538
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "ئېلېمېنت <%s> نى ئېلېمېنت <constant> نىڭ ئارىسىدا ئىشلىتىشكە بولمايدۇ"
 
-#: ../src/ui/theme-parser.c:3549
+#: ../src/ui/theme-parser.c:3550
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "ئېلېمېنت <%s> نى ئېلېمېنت distance/border/aspect_ratio لارنىڭ ئارىسىدا ئىشلىتىشكە بولمايدۇ"
 
-#: ../src/ui/theme-parser.c:3571
+#: ../src/ui/theme-parser.c:3572
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "ئېلېمېنت <%s> نى سىزىش مەشغۇلاتى ئېلىپ بارىدىغان ئېلېمېنتنىڭ ئارىسىدا ئىشلىتىشكە بولمايدۇ"
 
-#: ../src/ui/theme-parser.c:3581 ../src/ui/theme-parser.c:3611
-#: ../src/ui/theme-parser.c:3616 ../src/ui/theme-parser.c:3621
+#: ../src/ui/theme-parser.c:3582 ../src/ui/theme-parser.c:3612
+#: ../src/ui/theme-parser.c:3617 ../src/ui/theme-parser.c:3622
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "ئېلېمېنت <%s> نى ئېلېمېنت <%s> نىڭ ئارىسىدا ئىشلىتىشكە بولمايدۇ"
 
-#: ../src/ui/theme-parser.c:3849
+#: ../src/ui/theme-parser.c:3850
 msgid "No draw_ops provided for frame piece"
 msgstr "كاندۇكقا draw_ops تەمىنلەنمىگەن"
 
-#: ../src/ui/theme-parser.c:3864
+#: ../src/ui/theme-parser.c:3865
 msgid "No draw_ops provided for button"
 msgstr "كۇنۇپكىغا draw_ops تەمىنلەنمىگەن"
 
-#: ../src/ui/theme-parser.c:3918
+#: ../src/ui/theme-parser.c:3919
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "ئېلېمېنت <%s> نىڭ ئىچىدە تېكىست بولسا بولمايدۇ"
 
-#: ../src/ui/theme-parser.c:3976 ../src/ui/theme-parser.c:3988
-#: ../src/ui/theme-parser.c:4000 ../src/ui/theme-parser.c:4012
-#: ../src/ui/theme-parser.c:4024
+#: ../src/ui/theme-parser.c:3977 ../src/ui/theme-parser.c:3989
+#: ../src/ui/theme-parser.c:4001 ../src/ui/theme-parser.c:4013
+#: ../src/ui/theme-parser.c:4025
 #, c-format
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> بۇ ئۇسلۇب ئۈچۈن ئىككى قېتىم بەلگىلەنگەن"
 
-#: ../src/ui/theme-parser.c:4298
+#: ../src/ui/theme-parser.c:4299
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "تېما %s  دا ئۈنۈملۈك \n"
@@ -1742,56 +1742,61 @@ msgstr "بۆلىۋالغان تىزىملىك"
 msgid "Border"
 msgstr "گىرۋەك"
 
-#: ../src/ui/theme-viewer.c:736
+#: ../src/ui/theme-viewer.c:412
+#| msgid "Modal Dialog Box"
+msgid "Attached Modal Dialog"
+msgstr ""
+
+#: ../src/ui/theme-viewer.c:743
 #, c-format
 msgid "Button layout test %d"
 msgstr "كۇنۇپكا ئورۇنلاشتۇرۇلۇشىنى سىناش %d"
 
-#: ../src/ui/theme-viewer.c:765
+#: ../src/ui/theme-viewer.c:772
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g مىللىسېكۇنت(بىر كۆزنەك كاندۇكىنى سىزىشقا كەتكەن ۋاقىت)"
 
-#: ../src/ui/theme-viewer.c:809
+#: ../src/ui/theme-viewer.c:816
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "ئىشلىتىش ئۇسۇلى: metacity-theme-viewer [ئۇسلۇب ئاتى]\n"
 
-#: ../src/ui/theme-viewer.c:816
+#: ../src/ui/theme-viewer.c:823
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "تېما قاچىلاشتا خاتالىق كۆرۈلدى：%s\n"
 
-#: ../src/ui/theme-viewer.c:822
+#: ../src/ui/theme-viewer.c:829
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "\"%s\" دېگەن ئۇسلۇبنى %g سېكۇنتتا ئوقۇدى\n"
 
-#: ../src/ui/theme-viewer.c:865
+#: ../src/ui/theme-viewer.c:872
 msgid "Normal Title Font"
 msgstr "ئادەتتىكى ماۋزۇ خەت نۇسخىسى"
 
-#: ../src/ui/theme-viewer.c:871
+#: ../src/ui/theme-viewer.c:878
 msgid "Small Title Font"
 msgstr "تارماق ماۋزۇ خەت نۇسخىسى"
 
-#: ../src/ui/theme-viewer.c:877
+#: ../src/ui/theme-viewer.c:884
 msgid "Large Title Font"
 msgstr "ماۋزۇ خەت نۇسخىسى"
 
-#: ../src/ui/theme-viewer.c:882
+#: ../src/ui/theme-viewer.c:889
 msgid "Button Layouts"
 msgstr "كۇنۇپكا ئورۇنلاشتۇرۇلۇشى"
 
-#: ../src/ui/theme-viewer.c:887
+#: ../src/ui/theme-viewer.c:894
 msgid "Benchmark"
 msgstr "ئاساسىي ئۆلچەم"
 
-#: ../src/ui/theme-viewer.c:934
+#: ../src/ui/theme-viewer.c:941
 msgid "Window Title Goes Here"
 msgstr "بۇ يەردە كۆزنەك ماۋزۇسى كۆرسىتىلىدۇ"
 
-#: ../src/ui/theme-viewer.c:1040
+#: ../src/ui/theme-viewer.c:1047
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1799,39 +1804,39 @@ msgid ""
 "frame)\n"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1259
+#: ../src/ui/theme-viewer.c:1266
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1261
+#: ../src/ui/theme-viewer.c:1268
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1272
 msgid "Error was expected but none given"
 msgstr "خاتالىق چىقىدىغان يەردە خاتالىق چىقمىدى"
 
-#: ../src/ui/theme-viewer.c:1267
+#: ../src/ui/theme-viewer.c:1274
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "خاتالىق %d چىقىدىغان يەردە %d چىقتى"
 
-#: ../src/ui/theme-viewer.c:1273
+#: ../src/ui/theme-viewer.c:1280
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "خاتالىق چىقمايدىغان يەردە بىر خاتالىق چىقىپ قالدى: %s"
 
-#: ../src/ui/theme-viewer.c:1277
+#: ../src/ui/theme-viewer.c:1284
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr ""
 
-#: ../src/ui/theme-viewer.c:1345
+#: ../src/ui/theme-viewer.c:1352
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d كوئوردېنات ئىپادىسى %g سېكۇنتتا تەھلىل قىلىندى(%g ئوتتۇرىچە سېكۇنت)\n"
