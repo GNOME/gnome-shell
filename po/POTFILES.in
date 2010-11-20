@@ -19,5 +19,7 @@ js/ui/windowAttentionHandler.js
 js/ui/workspacesView.js
 src/gvc/gvc-mixer-control.c
 src/gdmuser/gdm-user.c
+src/shell-app-system.c
 src/shell-global.c
-src/shell-uri-util.c
+src/shell-util.c
+
