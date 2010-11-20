@@ -368,6 +368,7 @@ Cogl_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-cogl.la
 Cogl_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cogl_headers) cogl-enum-types.h
 Cogl_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS)
 Cogl_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0
+Cogl_@CLUTTER_API_VERSION_AM@_gir_EXPORT_PACKAGES = cogl-1.0
 Cogl_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'
 
 INTROSPECTION_GIRS += Cogl-@CLUTTER_API_VERSION@.gir
