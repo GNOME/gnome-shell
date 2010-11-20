@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-11-11 00:43+0000\n"
+"POT-Creation-Date: 2010-11-13 23:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Gheyret Kenji<gheyret@yahoo.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -384,7 +384,7 @@ msgstr "ماس كېلىدىغان نەتىجە يوق."
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
+#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:558
 msgid "PLACES & DEVICES"
 msgstr "ئورۇن ۋە ئۈسكۈنىلەر"
 
@@ -522,39 +522,31 @@ msgstr "ئىشلىتىلىشچان"
 msgid "Busy"
 msgstr "ئالدىراش"
 
-#: ../js/ui/statusMenu.js:111
-msgid "Invisible"
-msgstr "يوشۇرۇن"
-
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:114
 msgid "My Account..."
 msgstr ""
 
-#: ../js/ui/statusMenu.js:123
+#: ../js/ui/statusMenu.js:118
 msgid "System Settings..."
 msgstr "سىستېما تەڭشەكلىرى"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:125
 msgid "Lock Screen"
 msgstr "ئېكراننى قۇلۇپلا"
 
-#: ../js/ui/statusMenu.js:134
+#: ../js/ui/statusMenu.js:129
 msgid "Switch User"
 msgstr "ئىشلەتكۈچى ئالماشتۇر"
 
-#: ../js/ui/statusMenu.js:139
+#: ../js/ui/statusMenu.js:134
 msgid "Log Out..."
 msgstr "تىزىمدىن چىق…"
 
-#: ../js/ui/statusMenu.js:146
+#: ../js/ui/statusMenu.js:141
 msgid "Suspend"
 msgstr "ۋاقىتلىق توختىتىش"
 
-#: ../js/ui/statusMenu.js:150
-msgid "Restart..."
-msgstr ""
-
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
 msgstr "تاقا…"
 
@@ -594,11 +586,11 @@ msgstr "ھەممىباب زىيارەت تەڭشىكى"
 msgid "High Contrast"
 msgstr "يۇقىرى ئاق-قارىلىقى"
 
-#: ../js/ui/status/accessibility.js:202
+#: ../js/ui/status/accessibility.js:205
 msgid "Large Text"
 msgstr "چوڭ تېكىست"
 
-#: ../js/ui/status/accessibility.js:223
+#: ../js/ui/status/accessibility.js:224
 msgid "Zoom"
 msgstr "كېڭەيت تارايت"
 
@@ -692,3 +684,6 @@ msgstr "ئىزدە"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Invisible"
+#~ msgstr "يوشۇرۇن"
