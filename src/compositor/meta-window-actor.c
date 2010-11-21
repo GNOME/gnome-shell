@@ -1887,24 +1887,26 @@ check_needs_shadow (MetaWindowActor *self)
 
   if (*shadow_location == NULL && should_have_shadow)
     {
-      MetaShadowFactory *factory = meta_shadow_factory_get_default ();
-      const char *shadow_class = meta_window_actor_get_shadow_class (self);
-      cairo_rectangle_int_t shape_bounds;
-
       if (priv->shadow_shape == NULL)
         {
-          if (priv->shaped)
+          if (priv->shaped && priv->shape_region)
             priv->shadow_shape = meta_window_shape_new (priv->shape_region);
-          else
+          else if (priv->bounding_region)
             priv->shadow_shape = meta_window_shape_new (priv->bounding_region);
         }
 
-      meta_window_actor_get_shape_bounds (self, &shape_bounds);
+      if (priv->shadow_shape != NULL)
+        {
+          MetaShadowFactory *factory = meta_shadow_factory_get_default ();
+          const char *shadow_class = meta_window_actor_get_shadow_class (self);
+          cairo_rectangle_int_t shape_bounds;
 
-      *shadow_location = meta_shadow_factory_get_shadow (factory,
-                                                         priv->shadow_shape,
-                                                         shape_bounds.width, shape_bounds.height,
-                                                         shadow_class, appears_focused);
+          meta_window_actor_get_shape_bounds (self, &shape_bounds);
+          *shadow_location = meta_shadow_factory_get_shadow (factory,
+                                                             priv->shadow_shape,
+                                                             shape_bounds.width, shape_bounds.height,
+                                                             shadow_class, appears_focused);
+        }
     }
 
   if (old_shadow != NULL)
