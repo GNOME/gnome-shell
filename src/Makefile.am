@@ -51,6 +51,7 @@ mutter_SOURCES= 				\
 	include/meta-shadow-factory.h		\
 	include/meta-window-actor.h		\
 	include/compositor-mutter.h 		\
+	core/above-tab-keycode.c		\
 	core/constraints.c			\
 	core/constraints.h			\
 	core/core.c				\

@@ -117,6 +117,10 @@ reload_keymap (MetaDisplay *display)
   if (display->keymap)
     meta_XFree (display->keymap);
 
+  /* This is expensive to compute, so we'll lazily load if and when we first
+   * need it */
+  display->above_tab_keycode = 0;
+
   display->keymap = XGetKeyboardMapping (display->xdisplay,
                                          display->min_keycode,
                                          display->max_keycode -
@@ -228,6 +232,16 @@ reload_modmap (MetaDisplay *display)
               display->meta_mask);
 }
 
+static guint
+keysym_to_keycode (MetaDisplay *display,
+                   guint        keysym)
+{
+  if (keysym == META_KEY_ABOVE_TAB)
+    return meta_display_get_above_tab_keycode (display);
+  else
+    return XKeysymToKeycode (display->xdisplay, keysym);
+}
+
 static void
 reload_keycodes (MetaDisplay *display)
 {
@@ -236,8 +250,8 @@ reload_keycodes (MetaDisplay *display)
 
   if (display->overlay_key_combo.keysym != 0)
     {
-      display->overlay_key_combo.keycode = XKeysymToKeycode (
-          display->xdisplay, display->overlay_key_combo.keysym);
+      display->overlay_key_combo.keycode =
+        keysym_to_keycode (display, display->overlay_key_combo.keysym);
     }
   
   if (display->key_bindings)
@@ -249,8 +263,8 @@ reload_keycodes (MetaDisplay *display)
         {
           if (display->key_bindings[i].keysym != 0)
             {
-              display->key_bindings[i].keycode = XKeysymToKeycode (
-                      display->xdisplay, display->key_bindings[i].keysym);
+              display->key_bindings[i].keycode =
+                keysym_to_keycode (display, display->key_bindings[i].keysym);
             }
           
           ++i;
