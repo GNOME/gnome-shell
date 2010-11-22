@@ -770,7 +770,6 @@ void
 _cogl_journal_log_quad (const float  *position,
                         CoglPipeline *pipeline,
                         int           n_layers,
-                        guint32       fallback_layers,
                         CoglHandle    layer0_override_texture,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len)
@@ -920,11 +919,6 @@ _cogl_journal_log_quad (const float  *position,
       disable_layers = ~disable_layers;
       flush_options.disable_layers = disable_layers;
       flush_options.flags |= COGL_PIPELINE_FLUSH_DISABLE_MASK;
-    }
-  if (G_UNLIKELY (fallback_layers))
-    {
-      flush_options.fallback_layers = fallback_layers;
-      flush_options.flags |= COGL_PIPELINE_FLUSH_FALLBACK_MASK;
     }
   if (G_UNLIKELY (layer0_override_texture))
     {
