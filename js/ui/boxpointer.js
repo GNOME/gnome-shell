@@ -11,7 +11,7 @@ const POPUP_ANIMATION_TIME = 0.15;
 
 /**
  * BoxPointer:
- * @side: A St.Side type; currently only St.Side.TOP is implemented
+ * @side: side to draw the arrow on
  * @binProperties: Properties to set on contained bin
  *
  * An actor which displays a triangle "arrow" pointing to a given
@@ -272,7 +272,9 @@ BoxPointer.prototype = {
         // edge by the same distance as the main part of the box is
         // separated from its sourceActor
         let primary = global.get_primary_monitor();
-        let arrowRise = this.actor.get_theme_node().get_length('-arrow-rise');
+        let themeNode = this.actor.get_theme_node();
+        let arrowRise = themeNode.get_length('-arrow-rise');
+        let borderRadius = themeNode.get_length('-arrow-border-radius');
 
         let resX, resY;
 
@@ -298,13 +300,13 @@ BoxPointer.prototype = {
         case St.Side.BOTTOM:
             switch (alignment) {
             case St.Align.START:
-                resX = sourceX;
+                resX = sourceX - 2 * borderRadius;
                 break;
             case St.Align.MIDDLE:
                 resX = sourceX - Math.floor((natWidth - sourceWidth) / 2);
                 break;
             case St.Align.END:
-                resX = sourceX - (natWidth - sourceWidth);
+                resX = sourceX - (natWidth - sourceWidth) + 2 * borderRadius;
                 break;
             }
 
@@ -318,13 +320,13 @@ BoxPointer.prototype = {
         case St.Side.RIGHT:
             switch (alignment) {
             case St.Align.START:
-                resY = sourceY;
+                resY = sourceY - 2 * borderRadius;
                 break;
             case St.Align.MIDDLE:
                 resY = sourceY - Math.floor((natHeight - sourceHeight) / 2);
                 break;
             case St.Align.END:
-                resY = sourceY - (natHeight - sourceHeight);
+                resY = sourceY - (natHeight - sourceHeight) + 2 * borderRadius;
                 break;
             }
 
