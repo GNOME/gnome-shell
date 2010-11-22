@@ -149,6 +149,7 @@ StTooltip StLabel {
 
 .popup-slider-menu-item {
     height: 1em;
+    min-width: 15em;
     -slider-height: 0.3em;
     -slider-background-color: #333333;
     -slider-border-color: #5f5f5f;
