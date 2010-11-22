@@ -123,7 +123,6 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
   _cogl_journal_log_quad (quad_coords,
                           state->pipeline,
                           1, /* one layer */
-                          0, /* don't need to use fallbacks */
                           texture_override, /* replace the layer0 texture */
                           subtexture_coords,
                           4);
@@ -543,7 +542,6 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
   _cogl_journal_log_quad (position,
                           pipeline,
                           n_layers,
-                          0, /* we don't need fallback layers */
                           COGL_INVALID_HANDLE, /* no texture override */
                           final_tex_coords,
                           n_layers * 4);
