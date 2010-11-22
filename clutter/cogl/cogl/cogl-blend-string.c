@@ -185,16 +185,6 @@ validate_tex_combine_statements (CoglBlendStringStatement *statements,
                              "not texture combining";
               goto error;
             }
-#ifdef HAVE_COGL_GLES2
-          if (arg->source.info->type == COGL_BLEND_STRING_COLOR_SOURCE_CONSTANT)
-            {
-              error_string = "Using a constant for texture combining isn't "
-                             "currently supported with GLES 2 "
-                             "(TODO: glTexEnvf)";
-              detail = COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR;
-              goto error;
-            }
-#endif
         }
     }
 
