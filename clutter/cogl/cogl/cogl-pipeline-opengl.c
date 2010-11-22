@@ -521,7 +521,8 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
                          blend_state->blend_dst_factor_rgb));
     }
 
-  if (pipelines_difference & COGL_PIPELINE_STATE_ALPHA_FUNC)
+  if (pipelines_difference & (COGL_PIPELINE_STATE_ALPHA_FUNC |
+                              COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE))
     {
       CoglPipeline *authority =
         _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_ALPHA_FUNC);
