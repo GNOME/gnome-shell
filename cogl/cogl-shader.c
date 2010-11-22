@@ -184,6 +184,72 @@ cogl_shader_compile (CoglHandle handle)
 }
 
 void
+_cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
+                                          GLenum shader_gl_type,
+                                          int n_tex_coord_attribs,
+                                          GLsizei count_in,
+                                          const char **strings_in,
+                                          const GLint *lengths_in)
+{
+  static const char common_boilerplate[] = _COGL_COMMON_SHADER_BOILERPLATE;
+  static const char vertex_boilerplate[] = _COGL_VERTEX_SHADER_BOILERPLATE;
+  static const char fragment_boilerplate[] = _COGL_FRAGMENT_SHADER_BOILERPLATE;
+
+  const char **strings = g_alloca (sizeof (char *) * (count_in + 3));
+  GLint *lengths = g_alloca (sizeof (GLint) * (count_in + 3));
+  int count = 0;
+#ifdef HAVE_COGL_GLES2
+  char *tex_coords_declaration = NULL;
+#endif
+
+  GET_CONTEXT (ctx, NO_RETVAL);
+
+  strings[count] = common_boilerplate;
+  lengths[count++] = sizeof (common_boilerplate) - 1;
+
+  if (shader_gl_type == GL_VERTEX_SHADER)
+    {
+      strings[count] = vertex_boilerplate;
+      lengths[count++] = sizeof (vertex_boilerplate) - 1;
+    }
+  else if (shader_gl_type == GL_FRAGMENT_SHADER)
+    {
+      strings[count] = fragment_boilerplate;
+      lengths[count++] = sizeof (fragment_boilerplate) - 1;
+    }
+
+#ifdef HAVE_COGL_GLES2
+  if (n_tex_coord_attribs)
+    {
+      tex_coords_declaration =
+        g_strdup_printf ("varying vec2 _cogl_tex_coord[%d];\n",
+                         n_tex_coord_attribs);
+      strings[count] = tex_coords_declaration;
+      lengths[count++] = -1; /* null terminated */
+    }
+#endif
+
+  memcpy (strings + count, strings_in, sizeof (char *) * count_in);
+  if (lengths_in)
+    memcpy (lengths + count, lengths_in, sizeof (GLint) * count_in);
+  else
+    {
+      int i;
+
+      for (i = 0; i < count_in; i++)
+        lengths[count + i] = -1; /* null terminated */
+    }
+  count += count_in;
+
+  GE( glShaderSource (shader_gl_handle, count,
+                      (const char **) strings, lengths) );
+
+#ifdef HAVE_COGL_GLES2
+  g_free (tex_coords_declaration);
+#endif
+}
+
+void
 _cogl_shader_compile_real (CoglHandle handle,
                            int n_tex_coord_attribs)
 {
@@ -228,8 +294,6 @@ _cogl_shader_compile_real (CoglHandle handle,
   else
 #endif
     {
-      char *sourcev[4];
-      int count = 0;
       GLenum gl_type;
 
       if (shader->gl_handle
@@ -257,30 +321,18 @@ _cogl_shader_compile_real (CoglHandle handle,
 
       shader->gl_handle = glCreateShader (gl_type);
 
-      sourcev[count++] = _COGL_COMMON_SHADER_BOILERPLATE;
-      if (shader->type == COGL_SHADER_TYPE_VERTEX)
-        sourcev[count++] = _COGL_VERTEX_SHADER_BOILERPLATE;
-      else
-        sourcev[count++] = _COGL_FRAGMENT_SHADER_BOILERPLATE;
-
-#ifdef HAVE_COGL_GLES2
-      if (n_tex_coord_attribs)
-        sourcev[count++] =
-          g_strdup_printf ("varying vec2 _cogl_tex_coord[%d];\n",
-                           n_tex_coord_attribs);
-      shader->n_tex_coord_attribs = n_tex_coord_attribs;
-#endif
-
-      sourcev[count++] = shader->source;
-
-      glShaderSource (shader->gl_handle, count, (const char **)sourcev, NULL);
-
-#ifdef HAVE_COGL_GLES2
-      if (count == 4)
-        g_free (sourcev[2]);
-#endif
+      _cogl_shader_set_source_with_boilerplate (shader->gl_handle,
+                                                gl_type,
+                                                n_tex_coord_attribs,
+                                                1,
+                                                (const char **) &shader->source,
+                                                NULL);
 
       GE (glCompileShader (shader->gl_handle));
+
+#ifdef HAVE_COGL_GLES2
+      shader->n_tex_coord_attribs = n_tex_coord_attribs;
+#endif
 
 #ifdef COGL_GL_DEBUG
       if (!cogl_shader_is_compiled (handle))
