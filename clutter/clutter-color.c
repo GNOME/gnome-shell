@@ -535,8 +535,9 @@ parse_rgba (ClutterColor *color,
 }
 
 static gboolean
-parse_hsl (ClutterColor *color,
-           gchar        *str)
+parse_hsla (ClutterColor *color,
+            gchar        *str,
+            gboolean      has_alpha)
 {
   gdouble number;
   gdouble h, l, s;
@@ -588,6 +589,28 @@ parse_hsl (ClutterColor *color,
   str += 1;
 
   l = CLAMP (number / 100.0, 0.0, 1.0);
+
+  /* alpha (optional); since the alpha channel value can only
+   * be between 0 and 1 we don't use the parse_rgb_value()
+   * function
+   */
+  if (has_alpha)
+    {
+      gdouble number;
+
+      if (*str != ',')
+        return FALSE;
+
+      str += 1;
+
+      skip_whitespace (&str);
+      number = g_ascii_strtod (str, &str);
+
+      color->alpha = CLAMP (number * 255.0, 0, 255);
+    }
+  else
+    color->alpha = 255;
+
   skip_whitespace (&str);
   if (*str != ')')
     return FALSE;
@@ -661,8 +684,14 @@ clutter_color_from_string (ClutterColor *color,
   if (strncmp (str, "hsl", 3) == 0)
     {
       gchar *s = (gchar *) str;
+      gboolean res;
 
-      return parse_hsl (color, s + 3);
+      if (strncmp (str, "hsla", 4) == 0)
+        res = parse_hsla (color, s + 4, TRUE);
+      else
+        res = parse_hsla (color, s + 3, FALSE);
+
+      return res;
     }
 
   /* if the string contains a color encoded using the hexadecimal
