@@ -1,8 +1,8 @@
 Clutter - README
 ===============================================================================
 
-Clutter is an open source software library for creating portable, fast,
-visually rich and animated graphical user interfaces.
+Clutter is an open source software library for creating fast, compellin,
+portable, and dynamic graphical user interfaces.
 
 REQUIREMENTS
 -------------------------------------------------------------------------------
@@ -48,6 +48,10 @@ If you are building the additional documentation you will also need:
 If you are building the Introspection data you will also need:
 
   • GObject-Introspection >= 0.9.5
+
+GObject-Introspection is available from:
+
+  git://git.gnome.org/gobject-introspection
 
 If you want support for profiling Clutter you will also need:
 
@@ -233,9 +237,9 @@ only used on the Git repository.
 HACKING
 -------------------------------------------------------------------------------
 
-If you want to hack on and improve Clutter, check the contained TODO file for
-pending tasks, the HACKING file for general implementation guidelines, and the
-HACKING.backends for backend-specific implementation issues.
+If you want to hack on and improve Clutter check the HACKING file for
+general implementation guidelines, and the HACKING.backends for
+backend-specific implementation issues.
 
 The CODING_STYLE file contains the rules for writing code conformant to the
 style guidelines used throughout Clutter. Remember: the coding style is
@@ -298,6 +302,21 @@ RELEASE NOTES
 Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
 features).
+
+Release Notes for Clutter 1.6
+-------------------------------------------------------------------------------
+
+• The internal copy of JSON-GLib has been removed: Clutter now strictly
+  depends on the installed copy of this library. The --with-json configure
+  switch has been removed.
+
+• The ClutterBehaviour class and its sub-classes have been deprecated; the
+  Clutter API reference contains a migration guide to port code based on
+  behaviours to the implicit animations framework.
+
+• The ClutterTimeoutPool and clutter_frame_source_* API have been deprecated;
+  both API are not integrated in the Clutter main loop, and are not used
+  internally any longer, so they are of relative use.
 
 Release Notes for Clutter 1.4
 -------------------------------------------------------------------------------
