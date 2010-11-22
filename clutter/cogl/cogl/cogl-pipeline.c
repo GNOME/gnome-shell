@@ -3920,6 +3920,31 @@ cogl_pipeline_set_alpha_test_function (CoglPipeline *pipeline,
   _cogl_pipeline_set_alpha_test_function_reference (pipeline, alpha_reference);
 }
 
+CoglPipelineAlphaFunc
+cogl_pipeline_get_alpha_test_function (CoglPipeline *pipeline)
+{
+  CoglPipeline *authority;
+
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), 0);
+
+  authority =
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_ALPHA_FUNC);
+
+  return authority->big_state->alpha_state.alpha_func;
+}
+
+float
+cogl_pipeline_get_alpha_test_reference (CoglPipeline *pipeline)
+{
+  CoglPipeline *authority;
+
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), 0.0f);
+
+  authority =
+    _cogl_pipeline_get_authority (pipeline,
+                                  COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE);
+
+  return authority->big_state->alpha_state.alpha_func_reference;
 }
 
 GLenum
