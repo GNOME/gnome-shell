@@ -898,7 +898,6 @@ StTooltip StLabel {
     background-color: #404040;
     caret-color: #ffffff;
     caret-size: 1px;
-    height: 18px;
 }
 
 .chat-response:focus {
