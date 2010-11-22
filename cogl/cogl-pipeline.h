@@ -476,6 +476,28 @@ cogl_pipeline_set_alpha_test_function (CoglPipeline         *pipeline,
 				       float                 alpha_reference);
 
 /**
+ * cogl_pipeline_get_alpha_test_function:
+ * @pipeline: A #CoglPipeline object
+ *
+ * Return value: The alpha test function of @pipeline.
+ *
+ * Since: 2.0
+ */
+CoglPipelineAlphaFunc
+cogl_pipeline_get_alpha_test_function (CoglPipeline *pipeline);
+
+/**
+ * cogl_pipeline_get_alpha_test_reference:
+ * @pipeline: A #CoglPipeline object
+ *
+ * Return value: The alpha test reference value of @pipeline.
+ *
+ * Since: 2.0
+ */
+float
+cogl_pipeline_get_alpha_test_reference (CoglPipeline *pipeline);
+
+/**
  * cogl_pipeline_set_blend:
  * @pipeline: A #CoglPipeline object
  * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
