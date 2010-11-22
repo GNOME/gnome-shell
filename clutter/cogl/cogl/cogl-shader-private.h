@@ -54,4 +54,12 @@ _cogl_shader_compile_real (CoglHandle handle, int n_tex_coord_attribs);
 CoglShaderLanguage
 _cogl_program_get_language (CoglHandle handle);
 
+void
+_cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
+                                          GLenum shader_gl_type,
+                                          int n_tex_coord_attribs,
+                                          GLsizei count_in,
+                                          const char **strings_in,
+                                          const GLint *lengths_in);
+
 #endif /* __COGL_SHADER_H */
