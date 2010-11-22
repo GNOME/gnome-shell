@@ -596,8 +596,6 @@ parse_hsla (ClutterColor *color,
    */
   if (has_alpha)
     {
-      gdouble number;
-
       if (*str != ',')
         return FALSE;
 
