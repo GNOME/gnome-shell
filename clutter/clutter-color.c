@@ -534,6 +534,69 @@ parse_rgba (ClutterColor *color,
   return TRUE;
 }
 
+static gboolean
+parse_hsl (ClutterColor *color,
+           gchar        *str)
+{
+  gdouble number;
+  gdouble h, l, s;
+
+  skip_whitespace (&str);
+
+  if (*str != '(')
+    return FALSE;
+
+  str += 1;
+
+  /* hue */
+  skip_whitespace (&str);
+  /* we don't do any angle normalization here because
+   * clutter_color_from_hls() will do it for us
+   */
+  number = g_ascii_strtod (str, &str);
+  skip_whitespace (&str);
+  if (*str != ',')
+    return FALSE;
+
+  h = number;
+
+  str += 1;
+
+  /* saturation */
+  skip_whitespace (&str);
+  number = g_ascii_strtod (str, &str);
+  skip_whitespace (&str);
+  if (*str != '%')
+    return FALSE;
+
+  str += 1;
+
+  s = CLAMP (number / 100.0, 0.0, 1.0);
+  skip_whitespace (&str);
+  if (*str != ',')
+    return FALSE;
+
+  str += 1;
+
+  /* luminance */
+  skip_whitespace (&str);
+  number = g_ascii_strtod (str, &str);
+  skip_whitespace (&str);
+  if (*str != '%')
+    return FALSE;
+
+  str += 1;
+
+  l = CLAMP (number / 100.0, 0.0, 1.0);
+  skip_whitespace (&str);
+  if (*str != ')')
+    return FALSE;
+
+  clutter_color_from_hls (color, h, l, s);
+
+  return TRUE;
+}
+
 /**
  * clutter_color_from_string:
  * @color: (out caller-allocates): return location for a #ClutterColor
@@ -593,6 +656,13 @@ clutter_color_from_string (ClutterColor *color,
         res = parse_rgba (color, s + 3, FALSE);
 
       return res;
+    }
+
+  if (strncmp (str, "hsl", 3) == 0)
+    {
+      gchar *s = (gchar *) str;
+
+      return parse_hsl (color, s + 3);
     }
 
   /* if the string contains a color encoded using the hexadecimal
