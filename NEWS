@@ -1,3 +1,16 @@
+Clutter 1.5.8                                                        2010-xx-xx
+===============================================================================
+
+  • List of changes since Clutter 1.5.6
+
+    » Add a migration guide for code using Behaviours.
+
+    » Allow parsing rgb(), rgba(), hls() and hlsa() color definitions.
+
+Many thanks to:
+
+
+
 Clutter 1.5.6                                                        2010-11-19
 ===============================================================================
 
