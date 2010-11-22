@@ -441,6 +441,99 @@ clutter_color_from_pixel (ClutterColor *color,
   color->alpha =  pixel        & 0xff;
 }
 
+static inline void
+skip_whitespace (gchar **str)
+{
+  while (g_ascii_isspace (**str))
+    *str += 1;
+}
+
+static inline void
+parse_rgb_value (gchar   *str,
+                 guint8  *color,
+                 gchar  **endp)
+{
+  gdouble number;
+  gchar *p;
+
+  skip_whitespace (&str);
+
+  number = g_ascii_strtod (str, endp);
+
+  p = *endp;
+
+  skip_whitespace (&p);
+
+  if (*p == '%')
+    {
+      *endp = (gchar *) (p + 1);
+
+      *color = CLAMP (number / 100.0, 0.0, 1.0) * 255;
+    }
+  else
+    *color = CLAMP (number, 0, 255);
+}
+
+static gboolean
+parse_rgba (ClutterColor *color,
+            gchar        *str,
+            gboolean      has_alpha)
+{
+  skip_whitespace (&str);
+
+  if (*str != '(')
+    return FALSE;
+
+  str += 1;
+
+  /* red */
+  parse_rgb_value (str, &color->red, &str);
+  skip_whitespace (&str);
+  if (*str != ',')
+    return FALSE;
+
+  str += 1;
+
+  /* green */
+  parse_rgb_value (str, &color->green, &str);
+  skip_whitespace (&str);
+  if (*str != ',')
+    return FALSE;
+
+  str += 1;
+
+  /* blue */
+  parse_rgb_value (str, &color->blue, &str);
+  skip_whitespace (&str);
+
+  /* alpha (optional); since the alpha channel value can only
+   * be between 0 and 1 we don't use the parse_rgb_value()
+   * function
+   */
+  if (has_alpha)
+    {
+      gdouble number;
+
+      if (*str != ',')
+        return FALSE;
+
+      str += 1;
+
+      skip_whitespace (&str);
+      number = g_ascii_strtod (str, &str);
+
+      color->alpha = CLAMP (number * 255.0, 0, 255);
+    }
+  else
+    color->alpha = 255;
+
+  skip_whitespace (&str);
+  if (*str != ')')
+    return FALSE;
+
+  return TRUE;
+}
+
 /**
  * clutter_color_from_string:
  * @color: (out caller-allocates): return location for a #ClutterColor
@@ -453,11 +546,28 @@ clutter_color_from_pixel (ClutterColor *color,
  *
  * The @color is not allocated.
  *
- * The color may be defined by any of the formats understood by
- * pango_color_from_string(); these include literal color names, like
- * <literal>Red</literal> or <literal>DarkSlateGray</literal>, or
- * hexadecimal specifications like <literal>&num;3050b2</literal> or
- * <literal>&num;333</literal>.
+ * The format of @str can be either one of:
+ * <itemizedlist>
+ * <listitem><para>a standard name (taken from the X11 rgb.txt
+ * file");</para></listitem>
+ * <listitem><para>an hexadecimal value in the form: '#rgb', '#rrggbb',
+ * '#rgba' or '#rrggbbaa';</para></listitem>
+ * <listitem><para>a RGB color in the form 'rgb(r, g, b)';</para></listitem>
+ * <listitem><para>a RGBA color in the form 'rgba(r, g, b,
+ * a)';</para></listitem>
+ *
+ * where 'r', 'g', 'b' and 'a' are (respectively) the red, green, blue and
+ * alpha color values.
+ *
+ * In the last two cases, the 'r', 'g', and 'b' values are either integers
+ * between 0 and 255, or percentage values in the range between 0% and 100%;
+ * the percentages require the '%' character. The 'a' value, if specified,
+ * can only be a floating point value between 0.0 and 1.0.
+ *
+ * Whitespace is ignored.
+ *
+ * If the alpha component is not specified then it is assumed to be set to
+ * be fully opaque.
  *
  * Return value: %TRUE if parsing succeeded.
  *
@@ -471,6 +581,19 @@ clutter_color_from_string (ClutterColor *color,
 
   g_return_val_if_fail (color != NULL, FALSE);
   g_return_val_if_fail (str != NULL, FALSE);
+
+  if (strncmp (str, "rgb", 3) == 0)
+    {
+      gchar *s = (gchar *) str;
+      gboolean res;
+
+      if (strncmp (str, "rgba", 4) == 0)
+        res = parse_rgba (color, s + 4, TRUE);
+      else
+        res = parse_rgba (color, s + 3, FALSE);
+
+      return res;
+    }
 
   /* if the string contains a color encoded using the hexadecimal
    * notations (#rrggbbaa or #rgba) we attempt a rough pass at
@@ -537,7 +660,7 @@ clutter_color_from_string (ClutterColor *color,
             }
         }
     }
-  
+
   /* Fall back to pango for named colors */
   if (pango_color_parse (&pango_color, str))
     {

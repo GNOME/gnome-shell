@@ -78,7 +78,7 @@ test_color_from_string (TestConformSimpleFixture *fixture,
 {
   ClutterColor color;
 
-  clutter_color_from_string (&color, "#ff0000ff");
+  g_assert (clutter_color_from_string (&color, "#ff0000ff"));
   if (g_test_verbose ())
     {
       g_print ("color = { %x, %x, %x, %x }, expected = { 0xff, 0, 0, 0xff }\n",
@@ -92,7 +92,7 @@ test_color_from_string (TestConformSimpleFixture *fixture,
   g_assert (color.blue  == 0);
   g_assert (color.alpha == 0xff);
 
-  clutter_color_from_string (&color, "#0f0f");
+  g_assert (clutter_color_from_string (&color, "#0f0f"));
   if (g_test_verbose ())
     {
       g_print ("color = { %x, %x, %x, %x }, expected = { 0, 0xff, 0, 0xff }\n",
@@ -106,7 +106,7 @@ test_color_from_string (TestConformSimpleFixture *fixture,
   g_assert (color.blue  == 0);
   g_assert (color.alpha == 0xff);
 
-  clutter_color_from_string (&color, "#0000ff");
+  g_assert (clutter_color_from_string (&color, "#0000ff"));
   if (g_test_verbose ())
     {
       g_print ("color = { %x, %x, %x, %x }, expected = { 0, 0, 0xff, 0xff }\n",
@@ -120,7 +120,7 @@ test_color_from_string (TestConformSimpleFixture *fixture,
   g_assert (color.blue  == 0xff);
   g_assert (color.alpha == 0xff);
 
-  clutter_color_from_string (&color, "#abc");
+  g_assert (clutter_color_from_string (&color, "#abc"));
   if (g_test_verbose ())
     {
       g_print ("color = { %x, %x, %x, %x }, expected = { 0xaa, 0xbb, 0xcc, 0xff }\n",
@@ -134,7 +134,7 @@ test_color_from_string (TestConformSimpleFixture *fixture,
   g_assert (color.blue  == 0xcc);
   g_assert (color.alpha == 0xff);
 
-  clutter_color_from_string (&color, "#123abc");
+  g_assert (clutter_color_from_string (&color, "#123abc"));
   if (g_test_verbose ())
     {
       g_print ("color = { %x, %x, %x, %x }, expected = { 0x12, 0x3a, 0xbc, 0xff }\n",
@@ -147,6 +147,50 @@ test_color_from_string (TestConformSimpleFixture *fixture,
   g_assert (color.green == 0x3a);
   g_assert (color.blue  == 0xbc);
   g_assert (color.alpha == 0xff);
+
+  g_assert (clutter_color_from_string (&color, "rgb(255, 128, 64)"));
+  if (g_test_verbose ())
+    {
+      g_print ("color = { %x, %x, %x, %x }, expected = { 255, 128, 64, 255 }\n",
+               color.red,
+               color.green,
+               color.blue,
+               color.alpha);
+    }
+  g_assert_cmpint (color.red, ==, 255);
+  g_assert_cmpint (color.green, ==, 128);
+  g_assert_cmpint (color.blue, ==, 64);
+  g_assert_cmpint (color.alpha, ==, 255);
+
+  g_assert (clutter_color_from_string (&color, "rgba ( 30%, 0,    25%,  0.5 )   "));
+  if (g_test_verbose ())
+    {
+      g_print ("color = { %x, %x, %x, %x }, expected = { %.1f, 0, %.1f, 128 }\n",
+               color.red,
+               color.green,
+               color.blue,
+               color.alpha,
+               CLAMP (255.0 / 100.0 * 30.0, 0, 255),
+               CLAMP (255.0 / 100.0 * 25.0, 0, 255));
+    }
+  g_assert_cmpint (color.red, ==, (255.0 / 100.0 * 30.0));
+  g_assert_cmpint (color.green, ==, 0);
+  g_assert_cmpint (color.blue, ==, (255.0 / 100.0 * 25.0));
+  g_assert_cmpint (color.alpha, ==, 127);
+
+  g_assert (clutter_color_from_string (&color, "rgb( 50%, -50%, 150% )"));
+  if (g_test_verbose ())
+    {
+      g_print ("color = { %x, %x, %x, %x }, expected = { 127, 0, 255, 255 }\n",
+               color.red,
+               color.green,
+               color.blue,
+               color.alpha);
+    }
+  g_assert_cmpint (color.red, ==, 127);
+  g_assert_cmpint (color.green, ==, 0);
+  g_assert_cmpint (color.blue, ==, 255);
+  g_assert_cmpint (color.alpha, ==, 255);
 }
 
 void
