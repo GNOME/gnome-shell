@@ -233,9 +233,8 @@ reload_keycodes (MetaDisplay *display)
 {
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Reloading keycodes for binding tables\n");
-  
-  if (display->overlay_key_combo.keysym 
-      && display->overlay_key_combo.keycode == 0)
+
+  if (display->overlay_key_combo.keysym != 0)
     {
       display->overlay_key_combo.keycode = XKeysymToKeycode (
           display->xdisplay, display->overlay_key_combo.keysym);
