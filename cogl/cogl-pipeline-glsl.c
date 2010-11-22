@@ -61,6 +61,7 @@
 #define glDeleteShader       ctx->drv.pf_glDeleteShader
 #define glGetUniformLocation ctx->drv.pf_glGetUniformLocation
 #define glUniform1i          ctx->drv.pf_glUniform1i
+#define glUniform1f          ctx->drv.pf_glUniform1f
 #define glUniform4fv         ctx->drv.pf_glUniform4fv
 
 #endif /* HAVE_COGL_GLES2 */
@@ -117,6 +118,12 @@ typedef struct _GlslProgramState
      custom uniforms. This is a massive hack but it can go away once
      this GLSL backend starts generating its own shaders */
   GLuint gles2_program;
+
+  /* Under GLES2 the alpha test is implemented in the shader. We need
+     a uniform for the reference value */
+  gboolean alpha_test_reference_used;
+  gboolean dirty_alpha_test_reference;
+  GLint alpha_test_reference_uniform;
 #endif
 
   /* We need to track the last pipeline that the program was used with
@@ -415,6 +422,12 @@ _cogl_pipeline_backend_glsl_start (CoglPipeline *pipeline,
                    "void\n"
                    "main ()\n"
                    "{\n");
+
+#ifdef HAVE_COGL_GLES2
+  priv->glsl_program_state->alpha_test_reference_uniform = -1;
+  priv->glsl_program_state->alpha_test_reference_used = FALSE;
+  priv->glsl_program_state->dirty_alpha_test_reference = FALSE;
+#endif
 
   for (i = 0; i < n_layers; i++)
     {
@@ -878,6 +891,103 @@ update_constants_cb (CoglPipeline *pipeline,
   return TRUE;
 }
 
+/* GLES2 doesn't have alpha testing so we need to implement it in the
+   shader */
+
+#ifdef HAVE_COGL_GLES2
+
+static void
+add_alpha_test_snippet (CoglPipeline *pipeline,
+                        GlslProgramState *glsl_program_state)
+{
+  CoglPipelineAlphaFunc alpha_func;
+
+  alpha_func = cogl_pipeline_get_alpha_test_function (pipeline);
+
+  if (alpha_func == COGL_PIPELINE_ALPHA_FUNC_ALWAYS)
+    /* Do nothing */
+    return;
+
+  if (alpha_func == COGL_PIPELINE_ALPHA_FUNC_NEVER)
+    {
+      /* Always discard the fragment */
+      g_string_append (glsl_program_state->source,
+                       "  discard;\n");
+      return;
+    }
+
+  /* For all of the other alpha functions we need a uniform for the
+     reference */
+
+  glsl_program_state->alpha_test_reference_used = TRUE;
+  glsl_program_state->dirty_alpha_test_reference = TRUE;
+
+  g_string_append (glsl_program_state->header,
+                   "uniform float _cogl_alpha_test_ref;\n");
+
+  g_string_append (glsl_program_state->source,
+                   "  if (cogl_color_out.a ");
+
+  switch (alpha_func)
+    {
+    case COGL_PIPELINE_ALPHA_FUNC_LESS:
+      g_string_append (glsl_program_state->source, ">=");
+      break;
+    case COGL_PIPELINE_ALPHA_FUNC_EQUAL:
+      g_string_append (glsl_program_state->source, "!=");
+      break;
+    case COGL_PIPELINE_ALPHA_FUNC_LEQUAL:
+      g_string_append (glsl_program_state->source, ">");
+      break;
+    case COGL_PIPELINE_ALPHA_FUNC_GREATER:
+      g_string_append (glsl_program_state->source, "<=");
+      break;
+    case COGL_PIPELINE_ALPHA_FUNC_NOTEQUAL:
+      g_string_append (glsl_program_state->source, "==");
+      break;
+    case COGL_PIPELINE_ALPHA_FUNC_GEQUAL:
+      g_string_append (glsl_program_state->source, "< ");
+      break;
+
+    case COGL_PIPELINE_ALPHA_FUNC_ALWAYS:
+    case COGL_PIPELINE_ALPHA_FUNC_NEVER:
+      g_assert_not_reached ();
+      break;
+    }
+
+  g_string_append (glsl_program_state->source,
+                   " _cogl_alpha_test_ref)\n    discard;\n");
+}
+
+static void
+update_alpha_test_reference (CoglPipeline *pipeline,
+                             GLuint gl_program,
+                             GlslProgramState *glsl_program_state)
+{
+  float alpha_reference;
+
+  if (glsl_program_state->dirty_alpha_test_reference)
+    {
+      if (glsl_program_state->alpha_test_reference_uniform == -1)
+        {
+          GE_RET( glsl_program_state->alpha_test_reference_uniform,
+                  glGetUniformLocation (gl_program,
+                                        "_cogl_alpha_test_ref") );
+          g_return_if_fail (glsl_program_state->
+                            alpha_test_reference_uniform != -1);
+        }
+
+      alpha_reference = cogl_pipeline_get_alpha_test_reference (pipeline);
+
+      GE( glUniform1f (glsl_program_state->alpha_test_reference_uniform,
+                       alpha_reference) );
+
+      glsl_program_state->dirty_alpha_test_reference = FALSE;
+    }
+}
+
+#endif /*  HAVE_COGL_GLES2 */
+
 gboolean
 _cogl_pipeline_backend_glsl_end (CoglPipeline *pipeline,
                                  unsigned long pipelines_difference)
@@ -933,6 +1043,10 @@ _cogl_pipeline_backend_glsl_end (CoglPipeline *pipeline,
                                "program is compiled",
                                0 /* no application private data */);
           COGL_COUNTER_INC (_cogl_uprof_context, backend_glsl_compile_counter);
+
+#ifdef HAVE_COGL_GLES2
+          add_alpha_test_snippet (pipeline, glsl_program_state);
+#endif
 
           g_string_append (glsl_program_state->source, "}\n");
 
@@ -1016,6 +1130,19 @@ _cogl_pipeline_backend_glsl_end (CoglPipeline *pipeline,
                                update_constants_cb,
                                &state);
 
+#ifdef HAVE_COGL_GLES2
+  if (glsl_program_state->alpha_test_reference_used)
+    {
+      if (gl_program_changed)
+        glsl_program_state->alpha_test_reference_uniform = -1;
+      if (gl_program_changed ||
+          glsl_program_state->last_used_for_pipeline != pipeline)
+        glsl_program_state->dirty_alpha_test_reference = TRUE;
+
+      update_alpha_test_reference (pipeline, gl_program, glsl_program_state);
+    }
+#endif
+
   if (user_program)
     _cogl_program_flush_uniforms (user_program,
                                   gl_program,
@@ -1035,13 +1162,22 @@ _cogl_pipeline_backend_glsl_pre_change_notify (CoglPipeline *pipeline,
 {
   static const unsigned long fragment_op_changes =
     COGL_PIPELINE_STATE_LAYERS |
+#ifdef COGL_HAS_GLES2
+    COGL_PIPELINE_STATE_ALPHA_FUNC |
+#endif
     COGL_PIPELINE_STATE_USER_SHADER;
     /* TODO: COGL_PIPELINE_STATE_FOG */
 
-  if (!(change & fragment_op_changes))
-    return;
-
-  dirty_glsl_program_state (pipeline);
+  if ((change & fragment_op_changes))
+    dirty_glsl_program_state (pipeline);
+#ifdef COGL_HAS_GLES2
+  else if ((change & COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE))
+    {
+      GlslProgramState *glsl_program_state =
+        get_glsl_program_state (pipeline);
+      glsl_program_state->dirty_alpha_test_reference = TRUE;
+    }
+#endif
 }
 
 /* NB: layers are considered immutable once they have any dependants
