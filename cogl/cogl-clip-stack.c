@@ -145,20 +145,15 @@ struct _CoglClipStackPath
 };
 
 static void
-project_vertex (const CoglMatrix *modelview_matrix,
-		const CoglMatrix *projection_matrix,
+project_vertex (const CoglMatrix *modelview_projection,
 		float *vertex)
 {
   int i;
 
-  /* Apply the modelview matrix */
-  cogl_matrix_transform_point (modelview_matrix,
+  cogl_matrix_transform_point (modelview_projection,
                                &vertex[0], &vertex[1],
                                &vertex[2], &vertex[3]);
-  /* Apply the projection matrix */
-  cogl_matrix_transform_point (projection_matrix,
-                               &vertex[0], &vertex[1],
-                               &vertex[2], &vertex[3]);
+
   /* Convert from homogenized coordinates */
   for (i = 0; i < 4; i++)
     vertex[i] /= vertex[3];
@@ -234,6 +229,7 @@ set_clip_planes (float x_1,
   CoglMatrixStack *projection_stack =
     _cogl_framebuffer_get_projection_stack (framebuffer);
   CoglMatrix projection_matrix;
+  CoglMatrix modelview_projection;
   float signed_area;
 
   float vertex_tl[4] = { x_1, y_1, 0, 1.0 };
@@ -244,10 +240,14 @@ set_clip_planes (float x_1,
   _cogl_matrix_stack_get (projection_stack, &projection_matrix);
   _cogl_matrix_stack_get (modelview_stack, &modelview_matrix);
 
-  project_vertex (&modelview_matrix, &projection_matrix, vertex_tl);
-  project_vertex (&modelview_matrix, &projection_matrix, vertex_tr);
-  project_vertex (&modelview_matrix, &projection_matrix, vertex_bl);
-  project_vertex (&modelview_matrix, &projection_matrix, vertex_br);
+  cogl_matrix_multiply (&modelview_projection,
+                        &projection_matrix,
+                        &modelview_matrix);
+
+  project_vertex (&modelview_projection, vertex_tl);
+  project_vertex (&modelview_projection, vertex_tr);
+  project_vertex (&modelview_projection, vertex_bl);
+  project_vertex (&modelview_projection, vertex_br);
 
   /* Calculate the signed area of the polygon formed by the four
      vertices so that we can know its orientation */
