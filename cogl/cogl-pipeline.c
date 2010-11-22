@@ -1010,11 +1010,12 @@ _cogl_pipeline_copy_differences (CoglPipeline *dest,
     }
 
   if (differences & COGL_PIPELINE_STATE_ALPHA_FUNC)
-    {
-      memcpy (&big_state->alpha_state,
-              &src->big_state->alpha_state,
-              sizeof (CoglPipelineAlphaFuncState));
-    }
+    big_state->alpha_state.alpha_func =
+      src->big_state->alpha_state.alpha_func;
+
+  if (differences & COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE)
+    big_state->alpha_state.alpha_func_reference =
+      src->big_state->alpha_state.alpha_func_reference;
 
   if (differences & COGL_PIPELINE_STATE_BLEND)
     {
@@ -3014,19 +3015,28 @@ _cogl_pipeline_lighting_state_equal (CoglPipeline *authority0,
 }
 
 static gboolean
-_cogl_pipeline_alpha_state_equal (CoglPipeline *authority0,
-                                  CoglPipeline *authority1)
+_cogl_pipeline_alpha_func_state_equal (CoglPipeline *authority0,
+                                       CoglPipeline *authority1)
 {
   CoglPipelineAlphaFuncState *alpha_state0 =
     &authority0->big_state->alpha_state;
   CoglPipelineAlphaFuncState *alpha_state1 =
     &authority1->big_state->alpha_state;
 
-  if (alpha_state0->alpha_func != alpha_state1->alpha_func ||
-      alpha_state0->alpha_func_reference != alpha_state1->alpha_func_reference)
-    return FALSE;
-  else
-    return TRUE;
+  return alpha_state0->alpha_func == alpha_state1->alpha_func;
+}
+
+static gboolean
+_cogl_pipeline_alpha_func_reference_state_equal (CoglPipeline *authority0,
+                                                 CoglPipeline *authority1)
+{
+  CoglPipelineAlphaFuncState *alpha_state0 =
+    &authority0->big_state->alpha_state;
+  CoglPipelineAlphaFuncState *alpha_state1 =
+    &authority1->big_state->alpha_state;
+
+  return (alpha_state0->alpha_func_reference ==
+          alpha_state1->alpha_func_reference);
 }
 
 static gboolean
@@ -3315,7 +3325,13 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
   if (!simple_property_equal (pipeline0, pipeline1,
                               pipelines_difference,
                               COGL_PIPELINE_STATE_ALPHA_FUNC,
-                              _cogl_pipeline_alpha_state_equal))
+                              _cogl_pipeline_alpha_func_state_equal))
+    goto done;
+
+  if (!simple_property_equal (pipeline0, pipeline1,
+                              pipelines_difference,
+                              COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE,
+                              _cogl_pipeline_alpha_func_reference_state_equal))
     goto done;
 
   /* We don't need to compare the detailed blending state if we know
@@ -3834,10 +3850,9 @@ cogl_pipeline_set_emission (CoglPipeline *pipeline, const CoglColor *emission)
   handle_automatic_blend_enable (pipeline, state);
 }
 
-void
-cogl_pipeline_set_alpha_test_function (CoglPipeline *pipeline,
-				       CoglPipelineAlphaFunc alpha_func,
-				       float alpha_reference)
+static void
+_cogl_pipeline_set_alpha_test_function (CoglPipeline *pipeline,
+                                        CoglPipelineAlphaFunc alpha_func)
 {
   CoglPipelineState state = COGL_PIPELINE_STATE_ALPHA_FUNC;
   CoglPipeline *authority;
@@ -3848,8 +3863,7 @@ cogl_pipeline_set_alpha_test_function (CoglPipeline *pipeline,
   authority = _cogl_pipeline_get_authority (pipeline, state);
 
   alpha_state = &authority->big_state->alpha_state;
-  if (alpha_state->alpha_func == alpha_func &&
-      alpha_state->alpha_func_reference == alpha_reference)
+  if (alpha_state->alpha_func == alpha_func)
     return;
 
   /* - Flush journal primitives referencing the current state.
@@ -3861,10 +3875,51 @@ cogl_pipeline_set_alpha_test_function (CoglPipeline *pipeline,
 
   alpha_state = &pipeline->big_state->alpha_state;
   alpha_state->alpha_func = alpha_func;
-  alpha_state->alpha_func_reference = alpha_reference;
 
   _cogl_pipeline_update_authority (pipeline, authority, state,
-                                   _cogl_pipeline_alpha_state_equal);
+                                   _cogl_pipeline_alpha_func_state_equal);
+}
+
+static void
+_cogl_pipeline_set_alpha_test_function_reference (CoglPipeline *pipeline,
+                                                  float alpha_reference)
+{
+  CoglPipelineState state = COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE;
+  CoglPipeline *authority;
+  CoglPipelineAlphaFuncState *alpha_state;
+
+  g_return_if_fail (cogl_is_pipeline (pipeline));
+
+  authority = _cogl_pipeline_get_authority (pipeline, state);
+
+  alpha_state = &authority->big_state->alpha_state;
+  if (alpha_state->alpha_func_reference == alpha_reference)
+    return;
+
+  /* - Flush journal primitives referencing the current state.
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
+   *   changed, then initialize that state from the current authority.
+   */
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
+
+  alpha_state = &pipeline->big_state->alpha_state;
+  alpha_state->alpha_func_reference = alpha_reference;
+
+  _cogl_pipeline_update_authority
+    (pipeline, authority, state,
+     _cogl_pipeline_alpha_func_reference_state_equal);
+}
+
+void
+cogl_pipeline_set_alpha_test_function (CoglPipeline *pipeline,
+				       CoglPipelineAlphaFunc alpha_func,
+				       float alpha_reference)
+{
+  _cogl_pipeline_set_alpha_test_function (pipeline, alpha_func);
+  _cogl_pipeline_set_alpha_test_function_reference (pipeline, alpha_reference);
+}
+
 }
 
 GLenum
@@ -5743,6 +5798,13 @@ _cogl_pipeline_find_codegen_authority (CoglPipeline *pipeline,
   int n_layers;
   CoglPipelineLayer **authority0_layers;
   CoglPipelineLayer **authority1_layers;
+  /* Under GLES2 the alpha func becomes part of the fragment program
+     so we can't share programs there */
+  const int codegen_state = (COGL_PIPELINE_STATE_LAYERS
+#ifdef HAVE_COGL_GLES2
+                             | COGL_PIPELINE_STATE_ALPHA_FUNC
+#endif
+                             );
 
   /* XXX: we'll need to update this when we add fog support to the
    * codegen */
@@ -5753,7 +5815,7 @@ _cogl_pipeline_find_codegen_authority (CoglPipeline *pipeline,
   /* Find the first pipeline that modifies state that affects the
    * codegen... */
   authority0 = _cogl_pipeline_get_authority (pipeline,
-                                             COGL_PIPELINE_STATE_LAYERS);
+                                             codegen_state);
 
   /* Find the next ancestor after that, that also modifies state
    * affecting codegen... */
@@ -5761,7 +5823,7 @@ _cogl_pipeline_find_codegen_authority (CoglPipeline *pipeline,
     {
       authority1 =
         _cogl_pipeline_get_authority (_cogl_pipeline_get_parent (authority0),
-                                      COGL_PIPELINE_STATE_LAYERS);
+                                      codegen_state);
     }
   else
     return authority0;
@@ -5804,7 +5866,7 @@ _cogl_pipeline_find_codegen_authority (CoglPipeline *pipeline,
       authority0 = authority1;
       authority1 =
         _cogl_pipeline_get_authority (_cogl_pipeline_get_parent (authority1),
-                                      COGL_PIPELINE_STATE_LAYERS);
+                                      codegen_state);
       if (authority1 == authority0)
         break;
     }
