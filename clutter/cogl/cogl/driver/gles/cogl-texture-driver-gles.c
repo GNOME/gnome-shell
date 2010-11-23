@@ -285,7 +285,7 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                                        0, image_height * i,
                                        0, 0,
                                        bmp_width,
-                                       bmp_height);
+                                       height);
 
           data = _cogl_bitmap_bind (bmp,
                                     COGL_BUFFER_ACCESS_READ, 0);
