@@ -641,6 +641,7 @@ meta_window_actor_get_shape_bounds (MetaWindowActor       *self,
     bounds->x = bounds->y = bounds->width = bounds->height = 0;
 }
 
+#if CLUTTER_CHECK_VERSION(1, 5, 2)
 static void
 meta_window_actor_get_shadow_bounds (MetaWindowActor       *self,
                                      gboolean               appears_focused,
@@ -661,6 +662,7 @@ meta_window_actor_get_shadow_bounds (MetaWindowActor       *self,
                           shape_bounds.height,
                           bounds);
 }
+#endif
 
 static void
 meta_window_actor_paint (ClutterActor *actor)
