@@ -847,6 +847,10 @@ StTooltip StLabel {
     color: #cccccc;
 }
 
+.url-highlighter {
+    link-color: #ccccff;
+}
+
 /* Message Tray */
 #message-tray {
     background-gradient-direction: vertical;

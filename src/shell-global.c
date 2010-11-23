@@ -497,6 +497,9 @@ shell_global_set_cursor (ShellGlobal *global,
     case SHELL_CURSOR_DND_UNSUPPORTED_TARGET:
       name = "dnd-none";
       break;
+    case SHELL_CURSOR_POINTING_HAND:
+      name = "hand";
+      break;
     default:
       g_return_if_reached ();
     }
@@ -516,6 +519,8 @@ shell_global_set_cursor (ShellGlobal *global,
         case SHELL_CURSOR_DND_COPY:
           cursor_type = GDK_PLUS;
           break;
+        case SHELL_CURSOR_POINTING_HAND:
+          cursor_type = GDK_HAND2;
         case SHELL_CURSOR_DND_UNSUPPORTED_TARGET:
           cursor_type = GDK_X_CURSOR;
           break;

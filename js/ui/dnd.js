@@ -26,9 +26,9 @@ const DragMotionResult = {
 };
 
 const DRAG_CURSOR_MAP = {
-    0: Shell.Cursor.UNSUPPORTED_TARGET,
-    1: Shell.Cursor.COPY,
-    2: Shell.Cursor.MOVE
+    0: Shell.Cursor.DND_UNSUPPORTED_TARGET,
+    1: Shell.Cursor.DND_COPY,
+    2: Shell.Cursor.DND_MOVE
 };
 
 const DragDropResult = {
@@ -221,7 +221,7 @@ _Draggable.prototype = {
         if (this._onEventId)
             this._ungrabActor();
         this._grabEvents();
-        global.set_cursor(Shell.Cursor.IN_DRAG);
+        global.set_cursor(Shell.Cursor.DND_IN_DRAG);
 
         this._dragX = this._dragStartX = stageX;
         this._dragY = this._dragStartY = stageY;
@@ -382,7 +382,7 @@ _Draggable.prototype = {
                 }
                 target = target.get_parent();
             }
-            global.set_cursor(Shell.Cursor.IN_DRAG);
+            global.set_cursor(Shell.Cursor.DND_IN_DRAG);
         }
 
         return true;

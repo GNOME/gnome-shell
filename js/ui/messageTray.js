@@ -1,6 +1,8 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -14,6 +16,7 @@ const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 const BoxPointer = imports.ui.boxpointer;
 const Params = imports.misc.params;
+const Utils = imports.misc.utils;
 
 const ANIMATION_TIME = 0.2;
 const NOTIFICATION_TIMEOUT = 4;
@@ -43,6 +46,117 @@ function _cleanMarkup(text) {
     // so it displays as raw markup.
     return _text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, '&lt;$1');
 }
+
+function URLHighlighter(text, lineWrap) {
+    this._init(text, lineWrap);
+}
+
+URLHighlighter.prototype = {
+    _init: function(text, lineWrap) {
+        if (!text)
+            text = '';
+        this.actor = new St.Label({ reactive: true, style_class: 'url-highlighter' });
+        this._linkColor = '#ccccff';
+        this.actor.connect('style-changed', Lang.bind(this, function() {
+            let color = new Clutter.Color();
+            let hasColor = this.actor.get_theme_node().get_color('link-color', color);
+            if (hasColor) {
+                let linkColor = color.to_string().substr(0, 7);
+                if (linkColor != this._linkColor) {
+                    this._linkColor = linkColor;
+                    this._highlightUrls();
+                }
+            }
+        }));
+        if (lineWrap) {
+            this.actor.clutter_text.line_wrap = true;
+            this.actor.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
+            this.actor.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        }
+
+        this.setMarkup(text);
+        this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
+            let urlId = this._findUrlAtPos(event);
+            if (urlId != -1) {
+                let url = this._urls[urlId].url;
+                if (url.indexOf(':') == -1)
+                    url = 'http://' + url;
+                try {
+                    Gio.app_info_launch_default_for_uri(url, global.create_app_launch_context());
+                    return true;
+                } catch (e) {
+                    // TODO: remove this after gnome 3 release
+                    let p = new Shell.Process({ 'args' : ['gvfs-open', url] });
+                    p.run();
+                    return true;
+                }
+            }
+            return false;
+        }));
+        this.actor.connect('motion-event', Lang.bind(this, function(actor, event) {
+            let urlId = this._findUrlAtPos(event);
+            if (urlId != -1 && !this._cursorChanged) {
+                global.set_cursor(Shell.Cursor.POINTING_HAND);
+                this._cursorChanged = true;
+            } else if (urlId == -1) {
+                global.unset_cursor();
+                this._cursorChanged = false;
+            }
+            return false;
+        }));
+        this.actor.connect('leave-event', Lang.bind(this, function() {
+            if (this._cursorChanged) {
+                this._cursorChanged = false;
+                global.unset_cursor();
+            }
+        }));
+    },
+
+    setMarkup: function(text) {
+        text = text ? _cleanMarkup(text) : '';
+        this._text = text;
+
+        this.actor.clutter_text.set_markup(text);
+        /* clutter_text.text contain text without markup */
+        this._urls = Utils.findUrls(this.actor.clutter_text.text);
+        this._highlightUrls();
+    },
+
+    _highlightUrls: function() {
+        // text here contain markup
+        let urls = Utils.findUrls(this._text);
+        let markup = '';
+        let pos = 0;
+        for (let i = 0; i < urls.length; i++) {
+            let url = urls[i];
+            let str = this._text.substr(pos, url.pos - pos);
+            markup += str + '<span foreground="' + this._linkColor + '"><u>' + url.url + '</u></span>';
+            pos = url.pos + url.url.length;
+        }
+        markup += this._text.substr(pos);
+        this.actor.clutter_text.set_markup(markup);
+    },
+
+    _findUrlAtPos: function(event) {
+        let success;
+        let [x, y] = event.get_coords();
+        [success, x, y] = this.actor.transform_stage_point(x, y);
+        let find_pos = -1;
+        for (let i = 0; i < this.actor.clutter_text.text.length; i++) {
+            let [success, px, py, line_height] = this.actor.clutter_text.position_to_coords(i);
+            if (py > y || py + line_height < y || x < px)
+                continue;
+            find_pos = i;
+        }
+        if (find_pos != -1) {
+            for (let i = 0; i < this._urls.length; i++)
+            if (find_pos >= this._urls[i].pos &&
+                this._urls[i].pos + this._urls[i].url.length > find_pos)
+                return i;
+        }
+        return -1;
+    }
+};
 
 // Notification:
 // @source: the notification's Source
@@ -148,7 +262,8 @@ Notification.prototype = {
 
         this._titleLabel = new St.Label();
         this._bannerBox.add_actor(this._titleLabel);
-        this._bannerLabel = new St.Label();
+        this._bannerUrlHighlighter = new URLHighlighter();
+        this._bannerLabel = this._bannerUrlHighlighter.actor;
         this._bannerBox.add_actor(this._bannerLabel);
 
         this.update(title, banner, params);
@@ -214,8 +329,9 @@ Notification.prototype = {
         // not fitting fully in the single-line mode.
         this._bannerBodyText = this._customContent ? null : banner;
 
-        banner = banner ? _cleanMarkup(banner.replace(/\n/g, '  ')) : '';
-        this._bannerLabel.clutter_text.set_markup(banner);
+        banner = banner ? banner.replace(/\n/g, '  ') : '';
+
+        this._bannerUrlHighlighter.setMarkup(banner);
         this._bannerLabel.queue_relayout();
 
         // Add the bannerBody now if we know for sure we'll need it
@@ -259,16 +375,10 @@ Notification.prototype = {
     //
     // Return value: the newly-added label
     addBody: function(text) {
-        let body = new St.Label();
-        body.clutter_text.line_wrap = true;
-        body.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
-        body.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        let label = new URLHighlighter(text, true);
 
-        text = text ? _cleanMarkup(text) : '';
-        body.clutter_text.set_markup(text);
-
-        this.addActor(body);
-        return body;
+        this.addActor(label.actor);
+        return label.actor;
     },
 
     _addBannerBody: function() {
