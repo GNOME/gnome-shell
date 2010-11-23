@@ -743,8 +743,6 @@ event_translate (ClutterBackend *backend,
         ClutterVertex origin;
 
         CLUTTER_NOTE (MULTISTAGE, "expose for stage: %p, redrawing", stage);
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-
         CLUTTER_NOTE (MULTISTAGE,
                       "expose for stage: %p, "
                       "redrawing (x=%d, y=%d, width=%d, height=%d)",
