@@ -205,8 +205,6 @@ NotificationDaemon.prototype = {
             return id;
         }
 
-        summary = GLib.markup_escape_text(summary, -1);
-
         let rewrites = rewriteRules[appName];
         if (rewrites) {
             for (let i = 0; i < rewrites.length; i++) {
@@ -281,7 +279,9 @@ NotificationDaemon.prototype = {
         let iconActor = this._iconForNotificationData(icon, hints, source.ICON_SIZE);
 
         if (notification == null) {
-            notification = new MessageTray.Notification(source, summary, body, { icon: iconActor });
+            notification = new MessageTray.Notification(source, summary, body,
+                                                        { icon: iconActor,
+                                                          bannerMarkup: true });
             ndata.notification = notification;
             notification.connect('clicked', Lang.bind(this,
                 function(n) {
@@ -294,6 +294,7 @@ NotificationDaemon.prototype = {
             notification.connect('action-invoked', Lang.bind(this, this._actionInvoked, source, id));
         } else {
             notification.update(summary, body, { icon: iconActor,
+                                                 bannerMarkup: true,
                                                  clear: true });
         }
 

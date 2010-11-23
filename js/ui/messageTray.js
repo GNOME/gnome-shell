@@ -38,21 +38,27 @@ const State = {
     HIDING:  3
 };
 
-function _cleanMarkup(text) {
-    // Support &amp;, &quot;, &apos;, &lt; and &gt;, escape all other
-    // occurrences of '&'.
-    let _text = text.replace(/&(?!amp;|quot;|apos;|lt;|gt;)/g, '&amp;');
-    // Support <b>, <i>, and <u>, escape anything else
-    // so it displays as raw markup.
-    return _text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, '&lt;$1');
+function _fixMarkup(text, allowMarkup) {
+    if (allowMarkup) {
+        // Support &amp;, &quot;, &apos;, &lt; and &gt;, escape all other
+        // occurrences of '&'.
+        let _text = text.replace(/&(?!amp;|quot;|apos;|lt;|gt;)/g, '&amp;');
+        // Support <b>, <i>, and <u>, escape anything else
+        // so it displays as raw markup.
+        return _text.replace(/<(\/?[^biu]>|[^>\/][^>])/g, '&lt;$1');
+    } else {
+        // Escape everything
+        let _text = text.replace(/&/g, '&amp;');
+        return _text.replace(/</g, '&lt;');
+    }
 }
 
-function URLHighlighter(text, lineWrap) {
-    this._init(text, lineWrap);
+function URLHighlighter(text, lineWrap, allowMarkup) {
+    this._init(text, lineWrap, allowMarkup);
 }
 
 URLHighlighter.prototype = {
-    _init: function(text, lineWrap) {
+    _init: function(text, lineWrap, allowMarkup) {
         if (!text)
             text = '';
         this.actor = new St.Label({ reactive: true, style_class: 'url-highlighter' });
@@ -74,7 +80,7 @@ URLHighlighter.prototype = {
             this.actor.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         }
 
-        this.setMarkup(text);
+        this.setMarkup(text, allowMarkup);
         this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
             let urlId = this._findUrlAtPos(event);
             if (urlId != -1) {
@@ -112,8 +118,8 @@ URLHighlighter.prototype = {
         }));
     },
 
-    setMarkup: function(text) {
-        text = text ? _cleanMarkup(text) : '';
+    setMarkup: function(text, allowMarkup) {
+        text = text ? _fixMarkup(text, allowMarkup) : '';
         this._text = text;
 
         this.actor.clutter_text.set_markup(text);
@@ -187,7 +193,8 @@ URLHighlighter.prototype = {
 // area.
 //
 // @params can contain values for 'customContent', 'body', 'icon',
-// and 'clear' parameters.
+// 'titleMarkup', 'bannerMarkup', 'bodyMarkup', and 'clear'
+// parameters.
 //
 // If @params contains a 'customContent' parameter with the value %true,
 // then @banner will not be shown in the body of the notification when the
@@ -200,6 +207,12 @@ URLHighlighter.prototype = {
 // By default, the icon shown is created by calling
 // source.createNotificationIcon(). However, if @params contains an 'icon'
 // parameter, the passed in icon will be used.
+//
+// If @params contains a 'titleMarkup', 'bannerMarkup', or
+// 'bodyMarkup' parameter with the value %true, then the corresponding
+// element is assumed to use pango markup. If the parameter is not
+// present for an element, then anything that looks like markup in
+// that element will appear literally in the output.
 //
 // If @params contains a 'clear' parameter with the value %true, then
 // the content and the action area of the notification will be cleared.
@@ -217,6 +230,7 @@ Notification.prototype = {
         this._useActionIcons = false;
         this._customContent = false;
         this._bannerBodyText = null;
+        this._bannerBodyMarkup = false;
         this._titleFitsInBannerMode = true;
         this._spacing = 0;
 
@@ -290,6 +304,9 @@ Notification.prototype = {
         params = Params.parse(params, { customContent: false,
                                         body: null,
                                         icon: null,
+                                        titleMarkup: false,
+                                        bannerMarkup: false,
+                                        bodyMarkup: false,
                                         clear: false });
 
         this._customContent = params.customContent;
@@ -320,7 +337,7 @@ Notification.prototype = {
                                      y_fill: false,
                                      y_align: St.Align.START });
 
-        title = title ? _cleanMarkup(title.replace(/\n/g, ' ')) : '';
+        title = title ? _fixMarkup(title.replace(/\n/g, ' '), params.titleMarkup) : '';
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
 
         // Unless the notification has custom content, we save this._bannerBodyText
@@ -328,10 +345,11 @@ Notification.prototype = {
         // expandable due to other elements in its content area or due to the banner
         // not fitting fully in the single-line mode.
         this._bannerBodyText = this._customContent ? null : banner;
+        this._bannerBodyMarkup = params.bannerMarkup;
 
         banner = banner ? banner.replace(/\n/g, '  ') : '';
 
-        this._bannerUrlHighlighter.setMarkup(banner);
+        this._bannerUrlHighlighter.setMarkup(banner, params.bannerMarkup);
         this._bannerLabel.queue_relayout();
 
         // Add the bannerBody now if we know for sure we'll need it
@@ -339,7 +357,7 @@ Notification.prototype = {
             this._addBannerBody();
 
         if (params.body)
-            this.addBody(params.body);
+            this.addBody(params.body, params.bodyMarkup);
         this._updated();
     },
 
@@ -370,12 +388,13 @@ Notification.prototype = {
 
     // addBody:
     // @text: the text
+    // @markup: %true if @text contains pango markup
     //
     // Adds a multi-line label containing @text to the notification.
     //
     // Return value: the newly-added label
-    addBody: function(text) {
-        let label = new URLHighlighter(text, true);
+    addBody: function(text, markup) {
+        let label = new URLHighlighter(text, true, markup);
 
         this.addActor(label.actor);
         return label.actor;
@@ -385,7 +404,7 @@ Notification.prototype = {
         if (this._bannerBodyText) {
             let text = this._bannerBodyText;
             this._bannerBodyText = null;
-            this.addBody(text);
+            this.addBody(text, this._bannerBodyMarkup);
         }
     },
 
