@@ -24,15 +24,14 @@
 
 /**
  * SECTION:clutter-shader-effect
- * @short_description: Base class for fragment shader effects
+ * @short_description: Base class for shader effects
  * @See_Also: #ClutterEffect, #ClutterOffscreenEffect
  *
  * #ClutterShaderEffect is an abstract class that implements all the
- * plumbing for creating #ClutterEffect<!-- -->s using GLSL fragment
- * shaders.
+ * plumbing for creating #ClutterEffect<!-- -->s using GLSL shaders.
  *
  * #ClutterShaderEffect creates an offscreen buffer and then applies the GLSL
- * fragment shader (after checking whether the compilation and linking were
+ * shader (after checking whether the compilation and linking were
  * successfull) to the buffer before painting it on screen.
  *
  * <refsect2 id="ClutterShaderEffect-implementing">
