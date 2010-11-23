@@ -114,9 +114,7 @@ cogl_driver_sources += \
 
 BUILT_SOURCES += \
 	cogl-fixed-vertex-shader.h \
-	cogl-fixed-vertex-shader.c \
-	cogl-fixed-fragment-shader.h \
-	cogl-fixed-fragment-shader.c
+	cogl-fixed-vertex-shader.c
 
 %.h: $(srcdir)/driver/gles/%.glsl
 	/bin/sh $(top_srcdir)/build/stringify.sh -h $< > $@
@@ -128,7 +126,6 @@ endif # COGL_DRIVER_GLES
 
 EXTRA_DIST += \
 	$(srcdir)/driver/gles/cogl-fixed-vertex-shader.glsl 	\
-	$(srcdir)/driver/gles/cogl-fixed-fragment-shader.glsl	\
 	$(NULL)
 
 # winsys sources, common to all backends

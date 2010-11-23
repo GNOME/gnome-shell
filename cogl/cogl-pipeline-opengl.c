@@ -521,6 +521,9 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
                          blend_state->blend_dst_factor_rgb));
     }
 
+  /* Under GLES2 the alpha function is implemented as part of the
+     fragment shader */
+#ifndef HAVE_COGL_GLES2
   if (pipelines_difference & (COGL_PIPELINE_STATE_ALPHA_FUNC |
                               COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE))
     {
@@ -533,6 +536,7 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
       GE (glAlphaFunc (alpha_state->alpha_func,
                        alpha_state->alpha_func_reference));
     }
+#endif /* HAVE_COGL_GLES2 */
 
   if (pipelines_difference & COGL_PIPELINE_STATE_DEPTH)
     {
@@ -738,6 +742,9 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
       _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
     }
 
+  /* Under GLES2 the fragment shader will use gl_PointCoord instead of
+     replacing the texture coordinates */
+#ifndef HAVE_COGL_GLES2
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS)
     {
       CoglPipelineState change = COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS;
@@ -750,6 +757,7 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
       GE (glTexEnvi (GL_POINT_SPRITE, GL_COORD_REPLACE,
                      big_state->point_sprite_coords));
     }
+#endif /* HAVE_COGL_GLES2 */
 
   cogl_handle_ref (layer);
   if (unit->layer != COGL_INVALID_HANDLE)

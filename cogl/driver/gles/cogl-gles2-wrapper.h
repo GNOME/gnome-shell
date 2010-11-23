@@ -37,7 +37,6 @@ typedef struct _CoglGles2WrapperTextureUnit
 
 typedef struct _CoglGles2WrapperAttributes  CoglGles2WrapperAttributes;
 typedef struct _CoglGles2WrapperUniforms  CoglGles2WrapperUniforms;
-typedef struct _CoglGles2WrapperTexEnv    CoglGles2WrapperTexEnv;
 typedef struct _CoglGles2WrapperTextureUnitSettings
 					  CoglGles2WrapperTextureUnitSettings;
 typedef struct _CoglGles2WrapperSettings  CoglGles2WrapperSettings;
@@ -65,15 +64,9 @@ enum
     COGL_GLES2_DIRTY_MVP_MATRIX       = 1 << 0,
     COGL_GLES2_DIRTY_MODELVIEW_MATRIX = 1 << 1,
     COGL_GLES2_DIRTY_TEXTURE_MATRICES = 1 << 2,
-    COGL_GLES2_DIRTY_FOG_DENSITY      = 1 << 3,
-    COGL_GLES2_DIRTY_FOG_START        = 1 << 4,
-    COGL_GLES2_DIRTY_FOG_END          = 1 << 5,
-    COGL_GLES2_DIRTY_FOG_COLOR        = 1 << 6,
-    COGL_GLES2_DIRTY_ALPHA_TEST_REF   = 1 << 7,
-    COGL_GLES2_DIRTY_TEXTURE_UNITS    = 1 << 8,
-    COGL_GLES2_DIRTY_POINT_SIZE       = 1 << 9,
+    COGL_GLES2_DIRTY_POINT_SIZE       = 1 << 3,
 
-    COGL_GLES2_DIRTY_ALL              = (1 << 10) - 1
+    COGL_GLES2_DIRTY_ALL              = (1 << 4) - 1
   };
 
 /* Dirty flags for shader vertex attribute pointers */
@@ -98,37 +91,8 @@ struct _CoglGles2WrapperUniforms
   GLint      mvp_matrix_uniform;
   GLint      modelview_matrix_uniform;
   GLint      texture_matrix_uniforms[COGL_GLES2_MAX_TEXTURE_UNITS];
-  GLint      texture_sampler_uniforms[COGL_GLES2_MAX_TEXTURE_UNITS];
-
-  GLint      fog_density_uniform;
-  GLint      fog_start_uniform;
-  GLint      fog_end_uniform;
-  GLint      fog_color_uniform;
-
-  GLint      alpha_test_ref_uniform;
-
-  GLint      texture_unit_uniform;
 
   GLint      point_size_uniform;
-};
-
-struct _CoglGles2WrapperTexEnv
-{
-  GLenum    texture_combine_rgb_func;
-  GLenum    texture_combine_rgb_src[3];
-  GLenum    texture_combine_rgb_op[3];
-
-  GLenum    texture_combine_alpha_func;
-  GLenum    texture_combine_alpha_src[3];
-  GLenum    texture_combine_alpha_op[3];
-
-  GLfloat   texture_combine_constant[4];
-
-  GLboolean point_sprite_coords;
-
-  /* Texture target that was last enabled for this unit. This assumes
-     that there can only be one target enabled per unit */
-  GLenum    texture_target;
 };
 
 /* NB: We get a copy of this for each fragment/vertex
@@ -138,16 +102,8 @@ struct _CoglGles2WrapperSettings
 {
   guint32  texture_units;
 
-  GLint    alpha_test_func;
-  GLint    fog_mode;
-
   /* The current in-use user program */
   GLuint   user_program;
-
-  unsigned int alpha_test_enabled:1;
-  unsigned int fog_enabled:1;
-
-  CoglGles2WrapperTexEnv tex_env[COGL_GLES2_MAX_TEXTURE_UNITS];
 };
 
 struct _CoglGles2WrapperTextureUnit
@@ -201,15 +157,7 @@ struct _CoglGles2Wrapper
   /* List of all compiled vertex shaders */
   GSList *compiled_vertex_shaders;
 
-  /* List of all compiled fragment shaders */
-  GSList *compiled_fragment_shaders;
-
   /* Values for the uniforms */
-  GLfloat alpha_test_ref;
-  GLfloat fog_density;
-  GLfloat fog_start;
-  GLfloat fog_end;
-  GLfloat fog_color[4];
   GLfloat point_size;
 };
 
@@ -356,16 +304,11 @@ void _cogl_wrap_glColorPointer (GLint size, GLenum type, GLsizei stride,
 void _cogl_wrap_glNormalPointer (GLenum type, GLsizei stride,
                                  const GLvoid *pointer);
 
-void _cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param);
-void _cogl_wrap_glTexEnvfv (GLenum target, GLenum pname, const GLfloat *params);
-
 void _cogl_wrap_glClientActiveTexture (GLenum texture);
 void _cogl_wrap_glActiveTexture (GLenum texture);
 
 void _cogl_wrap_glEnableClientState (GLenum array);
 void _cogl_wrap_glDisableClientState (GLenum array);
-
-void _cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref);
 
 void _cogl_wrap_glColor4f (GLclampf r, GLclampf g, GLclampf b, GLclampf a);
 void _cogl_wrap_glColor4ub (GLubyte r, GLubyte g, GLubyte b, GLubyte a);
@@ -374,9 +317,6 @@ void _cogl_wrap_glClipPlanef (GLenum plane, GLfloat *equation);
 
 void _cogl_wrap_glGetIntegerv (GLenum pname, GLint *params);
 void _cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params);
-
-void _cogl_wrap_glFogf (GLenum pname, GLfloat param);
-void _cogl_wrap_glFogfv (GLenum pname, const GLfloat *params);
 
 void _cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count);
 void _cogl_wrap_glDrawElements (GLenum mode, GLsizei count, GLenum type,
@@ -420,14 +360,11 @@ void _cogl_gles2_clear_cache_for_program (GLuint gl_program);
 #define glClientActiveTexture        _cogl_wrap_glClientActiveTexture
 #define glEnableClientState          _cogl_wrap_glEnableClientState
 #define glDisableClientState         _cogl_wrap_glDisableClientState
-#define glAlphaFunc                  _cogl_wrap_glAlphaFunc
 #define glColor4f                    _cogl_wrap_glColor4f
 #define glColor4ub                   _cogl_wrap_glColor4ub
 #define glClipPlanef                 _cogl_wrap_glClipPlanef
 #define glGetIntegerv                _cogl_wrap_glGetIntegerv
 #define glGetFloatv                  _cogl_wrap_glGetFloatv
-#define glFogf                       _cogl_wrap_glFogf
-#define glFogfv                      _cogl_wrap_glFogfv
 #define glTexParameteri              _cogl_wrap_glTexParameteri
 #define glMaterialfv                 _cogl_wrap_glMaterialfv
 #define glPointSize                  _cogl_wrap_glPointSize
