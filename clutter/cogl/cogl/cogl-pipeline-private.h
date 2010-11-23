@@ -56,10 +56,8 @@ typedef struct _CoglPipelineLayer     CoglPipelineLayer;
 
 #define COGL_PIPELINE_BACKEND_GLSL       0
 #define COGL_PIPELINE_BACKEND_GLSL_MASK  (1L<<0)
-#define COGL_PIPELINE_BACKEND_FIXED      1
-#define COGL_PIPELINE_BACKEND_FIXED_MASK (1L<<1)
 
-#define COGL_PIPELINE_N_BACKENDS         2
+#define COGL_PIPELINE_N_BACKENDS         1
 
 #else /* HAVE_COGL_GLES */
 

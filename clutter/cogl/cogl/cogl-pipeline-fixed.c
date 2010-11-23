@@ -47,10 +47,6 @@
 #include <glib/gprintf.h>
 #include <string.h>
 
-#ifdef HAVE_COGL_GLES2
-#include "../gles/cogl-gles2-wrapper.h"
-#endif
-
 const CoglPipelineBackend _cogl_pipeline_fixed_backend;
 
 static int
@@ -234,13 +230,6 @@ _cogl_pipeline_backend_fixed_end (CoglPipeline *pipeline,
       else
         GE (glDisable (GL_FOG));
     }
-
-#ifdef HAVE_COGL_GLES2
-  /* Let the GLES2 backend know that we're not using a user shader
-     anymore. This is a massive hack but it will go away once the GLSL
-     backend replaces the GLES2 wrapper */
-  _cogl_gles2_use_program (0);
-#endif
 
   return TRUE;
 }

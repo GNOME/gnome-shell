@@ -1173,8 +1173,10 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
    * code in response to a pipeline change therefore we don't want to
    * try searching for another backend when the pipeline changes.
    */
+#ifdef COGL_PIPELINE_BACKEND_FIXED
   if (pipeline->backend == COGL_PIPELINE_BACKEND_FIXED)
     _cogl_pipeline_set_backend (pipeline, COGL_PIPELINE_BACKEND_UNDEFINED);
+#endif
 
   if (pipeline->backend != COGL_PIPELINE_BACKEND_UNDEFINED &&
       _cogl_pipeline_backends[pipeline->backend]->pipeline_pre_change_notify)
