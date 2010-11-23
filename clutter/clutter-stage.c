@@ -455,6 +455,15 @@ clutter_stage_pick (ClutterActor       *self,
                              NULL);
 }
 
+static gboolean
+clutter_stage_get_paint_volume (ClutterActor *self,
+                                ClutterPaintVolume *volume)
+{
+  /* Returning False effectively means Clutter has to assume it covers
+   * everything... */
+  return FALSE;
+}
+
 static void
 clutter_stage_realize (ClutterActor *self)
 {
@@ -1211,6 +1220,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   actor_class->get_preferred_height = clutter_stage_get_preferred_height;
   actor_class->paint = clutter_stage_paint;
   actor_class->pick = clutter_stage_pick;
+  actor_class->get_paint_volume = clutter_stage_get_paint_volume;
   actor_class->realize = clutter_stage_realize;
   actor_class->unrealize = clutter_stage_unrealize;
   actor_class->show = clutter_stage_show;
