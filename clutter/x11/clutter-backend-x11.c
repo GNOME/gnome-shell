@@ -132,6 +132,9 @@ clutter_backend_x11_xsettings_notify (const char       *name,
   if (name == NULL || *name == '\0')
     return;
 
+  if (setting == NULL)
+    return;
+
   g_object_freeze_notify (G_OBJECT (settings));
 
   for (i = 0; i < _n_clutter_settings_map; i++)
