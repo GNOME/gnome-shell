@@ -124,6 +124,14 @@ _clutter_stage_window_add_redraw_clip (ClutterStageWindow *window,
     iface->add_redraw_clip (window, stage_clip);
 }
 
+/* Determines if the backend will clip the rendering of the next
+ * frame.
+ *
+ * Note: at the start of each new frame there is an implied clip that
+ * clips everything (i.e. nothing would be drawn) so this function
+ * will return True at the start of a new frame if the backend
+ * supports clipped redraws.
+ */
 gboolean
 _clutter_stage_window_has_redraw_clips (ClutterStageWindow *window)
 {
@@ -138,6 +146,14 @@ _clutter_stage_window_has_redraw_clips (ClutterStageWindow *window)
   return FALSE;
 }
 
+/* Determines if the backend will discard any additional redraw clips
+ * and instead promote them to a full stage redraw.
+ *
+ * The ideas is that backend may have some heuristics that cause it to
+ * give up tracking redraw clips so this can be used to avoid the cost
+ * of calculating a redraw clip when we know it's going to be ignored
+ * anyway.
+ */
 gboolean
 _clutter_stage_window_ignoring_redraw_clips (ClutterStageWindow *window)
 {

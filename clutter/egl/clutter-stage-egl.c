@@ -278,9 +278,16 @@ clutter_stage_egl_has_redraw_clips (ClutterStageWindow *stage_window)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage_window);
 
-  /* NB: a degenerate clip means a full stage redraw is required */
-  if (stage_egl->initialized_redraw_clip &&
-      stage_egl->bounding_redraw_clip.width != 0)
+  /* NB: at the start of each new frame there is an implied clip that
+   * clips everything (i.e. nothing would be drawn) so we need to make
+   * sure we return True in the un-initialized case here.
+   *
+   * NB: a clip width of 0 means a full stage redraw has been queued
+   * so we effectively don't have any redraw clips in that case.
+   */
+  if (!stage_egl->initialized_redraw_clip ||
+      (stage_egl->initialized_redraw_clip &&
+       stage_egl->bounding_redraw_clip.width != 0))
     return TRUE;
   else
     return FALSE;
@@ -291,7 +298,7 @@ clutter_stage_egl_ignoring_redraw_clips (ClutterStageWindow *stage_window)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage_window);
 
-  /* NB: a degenerate clip means a full stage redraw is required */
+  /* NB: a clip width of 0 means a full stage redraw is required */
   if (stage_egl->initialized_redraw_clip &&
       stage_egl->bounding_redraw_clip.width == 0)
     return TRUE;
@@ -324,7 +331,7 @@ clutter_stage_egl_add_redraw_clip (ClutterStageWindow *stage_window,
     return;
 
   /* A NULL stage clip means a full stage redraw has been queued and
-   * we keep track of this by setting a degenerate
+   * we keep track of this by setting a zero width
    * stage_egl->bounding_redraw_clip */
   if (stage_clip == NULL)
     {
@@ -444,7 +451,7 @@ _clutter_stage_egl_redraw (ClutterStageEGL *stage_egl,
 #endif
 
   if (G_LIKELY (backend_egl->can_blit_sub_buffer) &&
-      /* NB: a degenerate redraw clip width == full stage redraw */
+      /* NB: a zero width clip == full stage redraw */
       stage_egl->bounding_redraw_clip.width != 0 &&
       /* some drivers struggle to get going and produce some junk
        * frames when starting up... */

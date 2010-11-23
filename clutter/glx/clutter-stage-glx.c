@@ -291,9 +291,16 @@ clutter_stage_glx_has_redraw_clips (ClutterStageWindow *stage_window)
 {
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
 
-  /* NB: a degenerate clip means a full stage redraw is required */
-  if (stage_glx->initialized_redraw_clip &&
-      stage_glx->bounding_redraw_clip.width != 0)
+  /* NB: at the start of each new frame there is an implied clip that
+   * clips everything (i.e. nothing would be drawn) so we need to make
+   * sure we return True in the un-initialized case here.
+   *
+   * NB: a clip width of 0 means a full stage redraw has been queued
+   * so we effectively don't have any redraw clips in that case.
+   */
+  if (!stage_glx->initialized_redraw_clip ||
+      (stage_glx->initialized_redraw_clip &&
+       stage_glx->bounding_redraw_clip.width != 0))
     return TRUE;
   else
     return FALSE;
@@ -304,7 +311,7 @@ clutter_stage_glx_ignoring_redraw_clips (ClutterStageWindow *stage_window)
 {
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
 
-  /* NB: a degenerate clip means a full stage redraw is required */
+  /* NB: a clip width of 0 means a full stage redraw is required */
   if (stage_glx->initialized_redraw_clip &&
       stage_glx->bounding_redraw_clip.width == 0)
     return TRUE;
@@ -369,7 +376,7 @@ clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
     return;
 
   /* A NULL stage clip means a full stage redraw has been queued and
-   * we keep track of this by setting a degenerate
+   * we keep track of this by setting a zero width
    * stage_glx->bounding_redraw_clip */
   if (stage_clip == NULL)
     {
@@ -408,7 +415,7 @@ clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
   if (redraw_area > (stage_area * 0.7f))
     {
       g_print ("DEBUG: clipped redraw too big, forcing full redraw\n");
-      /* Set a degenerate clip to force a full redraw */
+      /* Set a zero width clip to force a full redraw */
       stage_glx->bounding_redraw_clip.width = 0;
     }
 #endif
@@ -519,7 +526,7 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
 
   if (G_LIKELY (backend_glx->can_blit_sub_buffer) &&
-      /* NB: a degenerate redraw clip width == full stage redraw */
+      /* NB: a zero width redraw clip == full stage redraw */
       stage_glx->bounding_redraw_clip.width != 0 &&
       /* some drivers struggle to get going and produce some junk
        * frames when starting up... */
