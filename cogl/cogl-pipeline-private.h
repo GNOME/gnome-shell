@@ -173,6 +173,25 @@ _cogl_pipeline_node_foreach_child (CoglPipelineNode *node,
                                    CoglPipelineNodeChildCallback callback,
                                    void *user_data);
 
+/* This isn't defined in the GLES headers */
+#ifndef GL_CLAMP_TO_BORDER
+#define GL_CLAMP_TO_BORDER 0x812d
+#endif
+
+/* GL_ALWAYS is just used here as a value that is known not to clash
+ * with any valid GL wrap modes.
+ *
+ * XXX: keep the values in sync with the CoglPipelineWrapMode enum
+ * so no conversion is actually needed.
+ */
+typedef enum _CoglPipelineWrapModeInternal
+{
+  COGL_PIPELINE_WRAP_MODE_INTERNAL_REPEAT = GL_REPEAT,
+  COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE,
+  COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER,
+  COGL_PIPELINE_WRAP_MODE_INTERNAL_AUTOMATIC = GL_ALWAYS
+} CoglPipelineWrapModeInternal;
+
 struct _CoglPipelineLayer
 {
   /* XXX: Please think twice about adding members that *have* be
@@ -234,9 +253,9 @@ struct _CoglPipelineLayer
   CoglPipelineFilter         mag_filter;
   CoglPipelineFilter         min_filter;
 
-  CoglPipelineWrapMode       wrap_mode_s;
-  CoglPipelineWrapMode       wrap_mode_t;
-  CoglPipelineWrapMode       wrap_mode_p;
+  CoglPipelineWrapModeInternal wrap_mode_s;
+  CoglPipelineWrapModeInternal wrap_mode_t;
+  CoglPipelineWrapModeInternal wrap_mode_p;
 
   /* Infrequent differences aren't currently tracked in
    * a separate, dynamically allocated structure as they are
@@ -644,25 +663,6 @@ typedef enum _CoglPipelineFlushFlag
   COGL_PIPELINE_FLUSH_LAYER0_OVERRIDE     = 1L<<2,
   COGL_PIPELINE_FLUSH_SKIP_GL_COLOR       = 1L<<3
 } CoglPipelineFlushFlag;
-
-/* This isn't defined in the GLES headers */
-#ifndef GL_CLAMP_TO_BORDER
-#define GL_CLAMP_TO_BORDER 0x812d
-#endif
-
-/* GL_ALWAYS is just used here as a value that is known not to clash
- * with any valid GL wrap modes.
- *
- * XXX: keep the values in sync with the CoglPipelineWrapMode enum
- * so no conversion is actually needed.
- */
-typedef enum _CoglPipelineWrapModeInternal
-{
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_REPEAT = GL_REPEAT,
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE,
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER,
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_AUTOMATIC = GL_ALWAYS
-} CoglPipelineWrapModeInternal;
 
 /*
  * CoglPipelineFlushOptions:
