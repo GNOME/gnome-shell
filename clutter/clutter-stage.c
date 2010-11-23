@@ -876,7 +876,10 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
     return;
 
   if (_clutter_stage_window_ignoring_redraw_clips (stage_window))
-    return;
+    {
+      _clutter_stage_window_add_redraw_clip (stage_window, NULL);
+      return;
+    }
 
   /* Convert the clip volume (which is in leaf actor coordinates) into stage
    * coordinates and then into an axis aligned stage coordinates bounding
