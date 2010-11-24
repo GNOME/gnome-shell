@@ -432,24 +432,6 @@ cogl_get_features (void)
 {
   _COGL_GET_CONTEXT (ctx, 0);
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_VBOS))
-    ctx->feature_flags &= ~COGL_FEATURE_VBOS;
-
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_PBOS))
-    ctx->feature_flags &= ~COGL_FEATURE_PBOS;
-
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_ARBFP))
-    ctx->feature_flags &= ~COGL_FEATURE_SHADERS_ARBFP;
-
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_GLSL))
-    ctx->feature_flags &= ~COGL_FEATURE_SHADERS_GLSL;
-
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_NPOT_TEXTURES))
-    ctx->feature_flags &= ~(COGL_FEATURE_TEXTURE_NPOT |
-                            COGL_FEATURE_TEXTURE_NPOT_BASIC |
-                            COGL_FEATURE_TEXTURE_NPOT_MIPMAP |
-                            COGL_FEATURE_TEXTURE_NPOT_REPEAT);
-
   return ctx->feature_flags;
 }
 
@@ -458,9 +440,6 @@ cogl_features_available (CoglFeatureFlags features)
 {
   _COGL_GET_CONTEXT (ctx, 0);
 
-  if (!ctx->features_cached)
-    _cogl_features_init ();
-
   return (ctx->feature_flags & features) == features;
 }
 
@@ -468,9 +447,6 @@ gboolean
 _cogl_features_available_private (CoglFeatureFlagsPrivate features)
 {
   _COGL_GET_CONTEXT (ctx, 0);
-
-  if (!ctx->features_cached)
-    _cogl_features_init ();
 
   return (ctx->feature_flags_private & features) == features;
 }

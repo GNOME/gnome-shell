@@ -117,6 +117,5 @@ _cogl_features_init (void)
 
   /* Cache features */
   ctx->feature_flags = flags;
-  ctx->features_cached = TRUE;
 }
 
