@@ -43,12 +43,12 @@ typedef struct _CoglPipelineLayer     CoglPipelineLayer;
 #if defined (HAVE_COGL_GL)
 
 /* NB: pipeline->backend is currently a 3bit unsigned int bitfield */
-#define COGL_PIPELINE_BACKEND_GLSL       0
-#define COGL_PIPELINE_BACKEND_GLSL_MASK  (1L<<0)
-#define COGL_PIPELINE_BACKEND_ARBFP      1
-#define COGL_PIPELINE_BACKEND_ARBFP_MASK (1L<<1)
-#define COGL_PIPELINE_BACKEND_FIXED      2
-#define COGL_PIPELINE_BACKEND_FIXED_MASK (1L<<2)
+#define COGL_PIPELINE_BACKEND_ARBFP      0
+#define COGL_PIPELINE_BACKEND_ARBFP_MASK (1L<<0)
+#define COGL_PIPELINE_BACKEND_FIXED      1
+#define COGL_PIPELINE_BACKEND_FIXED_MASK (1L<<1)
+#define COGL_PIPELINE_BACKEND_GLSL       2
+#define COGL_PIPELINE_BACKEND_GLSL_MASK  (1L<<2)
 
 #define COGL_PIPELINE_N_BACKENDS         3
 
