@@ -534,12 +534,10 @@ WindowOverlay.prototype = {
 
     _idleToggleCloseButton: function() {
         this._idleToggleCloseId = 0;
-        let [x, y, mask] = global.get_pointer();
-        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
-                                                  x, y);
-        if (actor != this._windowClone.actor && actor != this.closeButton) {
+        if (!this._windowClone.actor.has_pointer &&
+            !this.closeButton.has_pointer)
             this.closeButton.hide();
-        }
+
         return false;
     },
 
