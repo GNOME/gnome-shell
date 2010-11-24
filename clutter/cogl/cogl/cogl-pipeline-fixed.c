@@ -72,6 +72,12 @@ _cogl_pipeline_backend_fixed_start (CoglPipeline *pipeline,
                                     unsigned long pipelines_difference,
                                     int n_tex_coord_attribs)
 {
+  CoglHandle user_program;
+
+  user_program = cogl_pipeline_get_user_program (pipeline);
+  if (user_program != COGL_INVALID_HANDLE)
+    return FALSE;
+
   _cogl_use_program (0, COGL_PIPELINE_PROGRAM_TYPE_FIXED);
   return TRUE;
 }
