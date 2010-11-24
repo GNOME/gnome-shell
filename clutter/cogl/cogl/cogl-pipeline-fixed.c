@@ -74,6 +74,9 @@ _cogl_pipeline_backend_fixed_start (CoglPipeline *pipeline,
 {
   CoglHandle user_program;
 
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_FIXED))
+    return FALSE;
+
   user_program = cogl_pipeline_get_user_program (pipeline);
   if (user_program != COGL_INVALID_HANDLE)
     return FALSE;
