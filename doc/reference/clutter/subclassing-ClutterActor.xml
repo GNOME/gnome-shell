@@ -80,15 +80,7 @@ foo_actor_init (FooActor *actor)
         <listitem><para>used by containers and composite actors to
         determine whether their children should allocate (and deallocate)
         specific resources associated with being added to the #ClutterStage,
-        and whether their children should be painted or not. A
-        #ClutterContainer implementation should not care about overriding
-        the <classname>ClutterActor</classname>::realize(),
-        <classname>ClutterActor</classname>::unrealize(),
-        <classname>ClutterActor</classname>::map() and
-        <classname>ClutterActor</classname>::unmap() virtual functions, but
-        composite actors with private children MUST implement at least
-        <classname>ClutterActor</classname>::map() and
-        <classname>ClutterActor</classname>::unmap().</para></listitem>
+        and whether their children should be painted or not.</para></listitem>
       </varlistentry>
 
     </variablelist>
