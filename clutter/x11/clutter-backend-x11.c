@@ -968,7 +968,7 @@ clutter_x11_has_composite_extension (void)
 void
 clutter_x11_set_use_argb_visual (gboolean use_argb)
 {
-  if (backend_singleton != NULL)
+  if (_clutter_context_is_initialized ())
     {
       g_warning ("%s() can only be used before calling clutter_init()",
                  G_STRFUNC);
