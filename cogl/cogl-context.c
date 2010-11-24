@@ -58,6 +58,28 @@ _cogl_destroy_context_winsys (CoglContext *context);
 static CoglContext *_context = NULL;
 static gboolean gl_is_indirect = FALSE;
 
+static void
+_cogl_init_feature_overrides (CoglContext *ctx)
+{
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_VBOS))
+    ctx->feature_flags &= ~COGL_FEATURE_VBOS;
+
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_PBOS))
+    ctx->feature_flags &= ~COGL_FEATURE_PBOS;
+
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_ARBFP))
+    ctx->feature_flags &= ~COGL_FEATURE_SHADERS_ARBFP;
+
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_GLSL))
+    ctx->feature_flags &= ~COGL_FEATURE_SHADERS_GLSL;
+
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_NPOT_TEXTURES))
+    ctx->feature_flags &= ~(COGL_FEATURE_TEXTURE_NPOT |
+                            COGL_FEATURE_TEXTURE_NPOT_BASIC |
+                            COGL_FEATURE_TEXTURE_NPOT_MIPMAP |
+                            COGL_FEATURE_TEXTURE_NPOT_REPEAT);
+}
+
 static gboolean
 cogl_create_context (void)
 {
@@ -91,7 +113,6 @@ cogl_create_context (void)
   /* Init default values */
   _context->feature_flags = 0;
   _context->feature_flags_private = 0;
-  _context->features_cached = FALSE;
 
   _context->texture_types = NULL;
   _context->buffer_types = NULL;
@@ -100,6 +121,7 @@ cogl_create_context (void)
   /* TODO: combine these two into one function */
   _cogl_create_context_driver (_context);
   _cogl_features_init ();
+  _cogl_init_feature_overrides (_context);
 
   _cogl_create_context_winsys (_context);
 

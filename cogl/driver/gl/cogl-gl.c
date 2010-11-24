@@ -233,5 +233,4 @@ _cogl_features_init (void)
   /* Cache features */
   ctx->feature_flags = flags;
   ctx->feature_flags_private = flags_private;
-  ctx->features_cached = TRUE;
 }
