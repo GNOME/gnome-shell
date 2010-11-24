@@ -122,6 +122,11 @@ OPT (DISABLE_ARBFP,
      "disable-arbfp",
      "Disable arbfp",
      "Disable use of ARB fragment programs")
+OPT (DISABLE_FIXED,
+     "Root Cause",
+     "disable-fixed",
+     "Disable fixed",
+     "Disable use of the fixed function pipeline backend")
 OPT (DISABLE_GLSL,
      "Root Cause",
      "disable-glsl",
