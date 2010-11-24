@@ -533,13 +533,20 @@ add_texture_lookup (GlslProgramState *glsl_program_state,
 
   /* If point sprite coord generation is being used then divert to the
      built-in varying var for that instead of the texture
-     coordinates */
+     coordinates. We don't want to do this under GL because in that
+     case we will instead use glTexEnv(GL_COORD_REPLACE) to replace
+     the texture coords with the point sprite coords. Although GL also
+     supports the gl_PointCoord variable, it requires GLSL 1.2 which
+     would mean we would have to declare the GLSL version and check
+     for it */
+#ifdef HAVE_COGL_GLES2
   if (cogl_pipeline_get_layer_point_sprite_coords_enabled (pipeline,
                                                            layer->index))
     g_string_append_printf (glsl_program_state->source,
                             "gl_PointCoord.%s",
                             tex_coord_swizzle);
   else
+#endif
     g_string_append_printf (glsl_program_state->source,
                             "cogl_tex_coord_in[%d].%s",
                             unit_index, tex_coord_swizzle);
