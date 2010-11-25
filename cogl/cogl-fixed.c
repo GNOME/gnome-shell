@@ -893,7 +893,7 @@ unsigned int
 cogl_fixed_pow2 (CoglFixed x)
 {
   /* Note: we could easily have a version that produces CoglFixed result,
-   *       but the the range would be limited to x < 15, and the int precision
+   *       but the range would be limited to x < 15, and the int precision
    *       is enough for the current purposes.
    */
 
