@@ -43,7 +43,20 @@
 #include <math.h>
 
 /* XXX NB:
- * Our journal's vertex data is arranged as follows:
+ * The data logged in logged_vertices is formatted as follows:
+ *
+ * Per entry:
+ *   4 RGBA GLubytes for the color
+ *   2 floats for the top left position
+ *   2 * n_layers floats for the top left texture coordinates
+ *   2 floats for the bottom right position
+ *   2 * n_layers floats for the bottom right texture coordinates
+ */
+#define GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS(N_LAYERS) \
+  (N_LAYERS * 2 + 2)
+
+/* XXX NB:
+ * Once in the vertex array, the journal's vertex data is arranged as follows:
  * 4 vertices per quad:
  *    2 or 3 GLfloats per position (3 when doing software transforms)
  *    4 RGBA GLubytes,
@@ -53,6 +66,8 @@
  *
  * To avoid frequent changes in the stride of our vertex data we always pad
  * n_layers to be >= 2
+ *
+ * There will be four vertices per quad in the vertex array
  *
  * When we are transforming quads in software we need to also track the z
  * coordinate of transformed vertices.
@@ -95,7 +110,36 @@ typedef void (*CoglJournalBatchCallback) (CoglJournalEntry *start,
 typedef gboolean (*CoglJournalBatchTest) (CoglJournalEntry *entry0,
                                           CoglJournalEntry *entry1);
 
-void
+static void
+_cogl_journal_dump_logged_quad (guint8 *data, int n_layers)
+{
+  gsize stride = GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS (n_layers);
+  int i;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_print ("n_layers = %d; rgba=0x%02X%02X%02X%02X\n",
+           n_layers, data[0], data[1], data[2], data[3]);
+
+  data += 4;
+
+  for (i = 0; i < 2; i++)
+    {
+      float *v = (float *)data + (i * stride);
+      int j;
+
+      g_print ("v%d: x = %f, y = %f", i, v[0], v[1]);
+
+      for (j = 0; j < n_layers; j++)
+        {
+          float *t = v + 2 + TEX_STRIDE * j;
+          g_print (", tx%d = %f, ty%d = %f", j, t[0], j, t[1]);
+        }
+      g_print ("\n");
+    }
+}
+
+static void
 _cogl_journal_dump_quad_vertices (guint8 *data, int n_layers)
 {
   gsize stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers);
@@ -130,7 +174,7 @@ _cogl_journal_dump_quad_vertices (guint8 *data, int n_layers)
     }
 }
 
-void
+static void
 _cogl_journal_dump_quad_batch (guint8 *data, int n_layers, int n_quads)
 {
   gsize byte_stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers) * 4;
@@ -139,7 +183,7 @@ _cogl_journal_dump_quad_batch (guint8 *data, int n_layers, int n_quads)
   g_print ("_cogl_journal_dump_quad_batch: n_layers = %d, n_quads = %d\n",
            n_layers, n_quads);
   for (i = 0; i < n_quads; i++)
-    _cogl_journal_dump_quad_vertices (data + byte_stride * 4 * i, n_layers);
+    _cogl_journal_dump_quad_vertices (data + byte_stride * 2 * i, n_layers);
 }
 
 static void
@@ -540,14 +584,18 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
     {
       guint8 *verts;
 
-      if (cogl_get_features () & COGL_FEATURE_VBOS)
-        verts = ((guint8 *)ctx->logged_vertices->data) +
-          (size_t)state->array_offset;
-      else
-        verts = (guint8 *)state->array_offset;
+      /* Mapping a buffer for read is probably a really bad thing to
+         do but this will only happen during debugging so it probably
+         doesn't matter */
+      verts = (cogl_buffer_map (COGL_BUFFER (state->vertex_array),
+                                COGL_BUFFER_ACCESS_READ, 0) +
+               state->array_offset);
+
       _cogl_journal_dump_quad_batch (verts,
                                      batch_start->n_layers,
                                      batch_len);
+
+      cogl_buffer_unmap (COGL_BUFFER (state->vertex_array));
     }
 
   batch_and_call (batch_start,
@@ -644,25 +692,95 @@ compare_entry_clip_stacks (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
 }
 
 static CoglVertexArray *
-upload_vertices (GArray *vertices, CoglJournalFlushState *state)
+upload_vertices (const CoglJournalEntry *entries,
+                 int                     n_entries,
+                 size_t                  needed_vbo_len,
+                 GArray                 *vertices)
 {
-  gsize needed_vbo_len;
   CoglVertexArray *array;
   CoglBuffer *buffer;
+  const float *vin;
+  float *vout;
+  int entry_num;
+  int i;
 
-  _COGL_GET_CONTEXT (ctx, 0);
-
-  needed_vbo_len = vertices->len * sizeof (float);
   g_assert (needed_vbo_len);
 
-  array = cogl_vertex_array_new (needed_vbo_len, NULL);
+  array = cogl_vertex_array_new (needed_vbo_len * 4, NULL);
   buffer = COGL_BUFFER (array);
   cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_STATIC);
-  cogl_buffer_set_data (buffer, 0, vertices->data, needed_vbo_len);
 
-  /* As we flush the journal entries in batches we walk forward through the
-   * above VBO starting at offset 0... */
-  state->array_offset = 0;
+  vout = cogl_buffer_map (buffer, COGL_BUFFER_ACCESS_WRITE,
+                          COGL_BUFFER_MAP_HINT_DISCARD);
+  vin = &g_array_index (vertices, float, 0);
+
+  /* Expand the number of vertices from 2 to 4 while uploading */
+  for (entry_num = 0; entry_num < n_entries; entry_num++)
+    {
+      const CoglJournalEntry *entry = entries + entry_num;
+      size_t vb_stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (entry->n_layers);
+      size_t array_stride =
+        GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS (entry->n_layers);
+
+      /* Copy the color to all four of the vertices */
+      for (i = 0; i < 4; i++)
+        memcpy (vout + vb_stride * i + POS_STRIDE, vin, 4);
+      vin++;
+
+      if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
+        {
+          vout[vb_stride * 0] = vin[0];
+          vout[vb_stride * 0 + 1] = vin[1];
+          vout[vb_stride * 1] = vin[0];
+          vout[vb_stride * 1 + 1] = vin[array_stride + 1];
+          vout[vb_stride * 2] = vin[array_stride];
+          vout[vb_stride * 2 + 1] = vin[array_stride + 1];
+          vout[vb_stride * 3] = vin[array_stride];
+          vout[vb_stride * 3 + 1] = vin[1];
+        }
+      else
+        {
+          float v[8];
+
+          v[0] = vin[0];
+          v[1] = vin[1];
+          v[2] = vin[0];
+          v[3] = vin[array_stride + 1];
+          v[4] = vin[array_stride];
+          v[5] = vin[array_stride + 1];
+          v[6] = vin[array_stride];
+          v[7] = vin[1];
+
+          cogl_matrix_transform_points (&entry->model_view,
+                                        2, /* n_components */
+                                        sizeof (float) * 2, /* stride_in */
+                                        v, /* points_in */
+                                        /* strideout */
+                                        vb_stride * sizeof (float),
+                                        vout, /* points_out */
+                                        4 /* n_points */);
+        }
+
+      for (i = 0; i < entry->n_layers; i++)
+        {
+          const float *tin = vin + 2;
+          float *tout = vout + POS_STRIDE + COLOR_STRIDE;
+
+          tout[vb_stride * 0 + i * 2] = tin[i * 2];
+          tout[vb_stride * 0 + 1 + i * 2] = tin[i * 2 + 1];
+          tout[vb_stride * 1 + i * 2] = tin[i * 2];
+          tout[vb_stride * 1 + 1 + i * 2] = tin[array_stride + i * 2 + 1];
+          tout[vb_stride * 2 + i * 2] = tin[array_stride + i * 2];
+          tout[vb_stride * 2 + 1 + i * 2] = tin[array_stride + i * 2 + 1];
+          tout[vb_stride * 3 + i * 2] = tin[array_stride + i * 2];
+          tout[vb_stride * 3 + 1 + i * 2] = tin[i * 2 + 1];
+        }
+
+      vin += array_stride * 2;
+      vout += vb_stride * 4;
+    }
+
+  cogl_buffer_unmap (buffer);
 
   return array;
 }
@@ -694,8 +812,13 @@ _cogl_journal_flush (void)
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING: journal len = %d\n", ctx->journal->len);
 
-  state.vertex_array = upload_vertices (ctx->logged_vertices, &state);
+  state.vertex_array = upload_vertices (&g_array_index (ctx->journal,
+                                                        CoglJournalEntry, 0),
+                                        ctx->journal->len,
+                                        ctx->journal_needed_vbo_len,
+                                        ctx->logged_vertices);
   state.attributes = ctx->journal_flush_attributes_array;
+  state.array_offset = 0;
 
   framebuffer = _cogl_get_framebuffer ();
   modelview_stack = _cogl_framebuffer_get_modelview_stack (framebuffer);
@@ -755,6 +878,8 @@ _cogl_journal_flush (void)
 static void
 _cogl_journal_init (void)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   /* Here we flush anything that we know must remain constant until the
    * next the the journal is flushed. Note: This lets up flush things
    * that themselves depend on the journal, such as clip state. */
@@ -764,6 +889,8 @@ _cogl_journal_init (void)
   _cogl_framebuffer_flush_state (_cogl_get_framebuffer (),
                                  COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW |
                                  COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE);
+
+  ctx->journal_needed_vbo_len = 0;
 }
 
 void
@@ -775,11 +902,8 @@ _cogl_journal_log_quad (const float  *position,
                         unsigned int  tex_coords_len)
 {
   gsize            stride;
-  gsize            byte_stride;
   int               next_vert;
   GLfloat          *v;
-  GLubyte          *c;
-  GLubyte          *src_c;
   int               i;
   int               next_entry;
   guint32           disable_layers;
@@ -799,103 +923,51 @@ _cogl_journal_log_quad (const float  *position,
   if (ctx->logged_vertices->len == 0)
     _cogl_journal_init ();
 
-  /* The vertex data is logged into a separate array in a layout that can be
-   * directly passed to OpenGL
-   */
+  /* The vertex data is logged into a separate array. The data needs
+     to be copied into a vertex array before it's given to GL so we
+     only store two vertices per quad and expand it to four while
+     uploading. */
 
-  /* XXX: See definition of GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS for details
+  /* XXX: See definition of GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS for details
    * about how we pack our vertex data */
-  stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers);
-  /* NB: stride is in 32bit words */
-  byte_stride = stride * 4;
+  stride = GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS (n_layers);
 
   next_vert = ctx->logged_vertices->len;
-  g_array_set_size (ctx->logged_vertices, next_vert + 4 * stride);
+  g_array_set_size (ctx->logged_vertices, next_vert + 2 * stride + 1);
   v = &g_array_index (ctx->logged_vertices, GLfloat, next_vert);
-  c = (GLubyte *)(v + POS_STRIDE);
+
+  /* We calculate the needed size of the vbo as we go because it
+     depends on the number of layers in each entry and it's not easy
+     calculate based on the length of the logged vertices array */
+  ctx->journal_needed_vbo_len +=
+    GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers) * 4;
 
   /* XXX: All the jumping around to fill in this strided buffer doesn't
    * seem ideal. */
 
-  /* XXX: we could defer expanding the vertex data for GL until we come
-   * to flushing the journal. */
-
   /* FIXME: This is a hacky optimization, since it will break if we
    * change the definition of CoglColor: */
-  _cogl_pipeline_get_colorubv (pipeline, c);
-  src_c = c;
-  for (i = 0; i < 3; i++)
-    {
-      c += byte_stride;
-      memcpy (c, src_c, 4);
-    }
+  _cogl_pipeline_get_colorubv (pipeline, (guint8 *) v);
+  v++;
 
-#define X0 0
-#define Y0 1
-#define X1 2
-#define Y1 3
-
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
-    {
-      v[0] = position[X0]; v[1] = position[Y0];
-      v += stride;
-      v[0] = position[X0]; v[1] = position[Y1];
-      v += stride;
-      v[0] = position[X1]; v[1] = position[Y1];
-      v += stride;
-      v[0] = position[X1]; v[1] = position[Y0];
-    }
-  else
-    {
-      CoglMatrix  mv;
-      float       x, y, z, w;
-
-      cogl_get_modelview_matrix (&mv);
-
-      x = position[X0], y = position[Y0], z = 0; w = 1;
-      cogl_matrix_transform_point (&mv, &x, &y, &z, &w);
-      v[0] = x; v[1] = y; v[2] = z;
-      v += stride;
-      x = position[X0], y = position[Y1], z = 0; w = 1;
-      cogl_matrix_transform_point (&mv, &x, &y, &z, &w);
-      v[0] = x; v[1] = y; v[2] = z;
-      v += stride;
-      x = position[X1], y = position[Y1], z = 0; w = 1;
-      cogl_matrix_transform_point (&mv, &x, &y, &z, &w);
-      v[0] = x; v[1] = y; v[2] = z;
-      v += stride;
-      x = position[X1], y = position[Y0], z = 0; w = 1;
-      cogl_matrix_transform_point (&mv, &x, &y, &z, &w);
-      v[0] = x; v[1] = y; v[2] = z;
-    }
-
-#undef X0
-#undef Y0
-#undef X1
-#undef Y1
+  memcpy (v, position, sizeof (float) * 2);
+  memcpy (v + stride, position + 2, sizeof (float) * 2);
 
   for (i = 0; i < n_layers; i++)
     {
-      /* XXX: See definition of GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS for details
-       * about how we pack our vertex data */
-      GLfloat *t = &g_array_index (ctx->logged_vertices, GLfloat,
-                                   next_vert +  POS_STRIDE +
-                                   COLOR_STRIDE + TEX_STRIDE * i);
+      /* XXX: See definition of GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS
+       * for details about how we pack our vertex data */
+      GLfloat *t = v + 2 + i * 2;
 
-      t[0] = tex_coords[i * 4 + 0]; t[1] = tex_coords[i * 4 + 1];
-      t += stride;
-      t[0] = tex_coords[i * 4 + 0]; t[1] = tex_coords[i * 4 + 3];
-      t += stride;
-      t[0] = tex_coords[i * 4 + 2]; t[1] = tex_coords[i * 4 + 3];
-      t += stride;
-      t[0] = tex_coords[i * 4 + 2]; t[1] = tex_coords[i * 4 + 1];
+      memcpy (t, tex_coords + i * 4, sizeof (float) * 2);
+      memcpy (t + stride, tex_coords + i * 4 + 2, sizeof (float) * 2);
     }
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_JOURNAL))
     {
       g_print ("Logged new quad:\n");
       v = &g_array_index (ctx->logged_vertices, GLfloat, next_vert);
-      _cogl_journal_dump_quad_vertices ((guint8 *)v, n_layers);
+      _cogl_journal_dump_logged_quad ((guint8 *)v, n_layers);
     }
 
   next_entry = ctx->journal->len;
@@ -940,8 +1012,7 @@ _cogl_journal_log_quad (const float  *position,
   if (G_UNLIKELY (source != pipeline))
     cogl_handle_unref (source);
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
-    cogl_get_modelview_matrix (&entry->model_view);
+  cogl_get_modelview_matrix (&entry->model_view);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_BATCHING))
     _cogl_journal_flush ();

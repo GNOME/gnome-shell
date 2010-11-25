@@ -102,6 +102,7 @@ typedef struct
   GArray           *journal;
   GArray           *logged_vertices;
   GArray           *journal_flush_attributes_array;
+  size_t            journal_needed_vbo_len;
 
   GArray           *polygon_vertices;
 
