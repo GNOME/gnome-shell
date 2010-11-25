@@ -1164,5 +1164,8 @@ cogl_polygon (const CoglTextureVertex *vertices,
                                      attributes);
 
   cogl_pop_source ();
+
+  if (pipeline != validate_state.original_pipeline)
+    cogl_object_unref (pipeline);
 }
 
