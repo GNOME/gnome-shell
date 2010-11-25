@@ -957,6 +957,13 @@ StTooltip StLabel {
     border-radius: 4px;
 }
 
+.chat-meta-message {
+    padding-left: 4px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #bbbbbb;
+}
+
 .chat-response {
     padding: 4px;
     border-radius: 4px;

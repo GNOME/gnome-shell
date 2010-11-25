@@ -365,7 +365,7 @@ Notification.prototype = {
     // @actor: actor to add to the body of the notification
     //
     // Appends @actor to the notification's body
-    addActor: function(actor) {
+    addActor: function(actor, style) {
         if (!this._scrollArea) {
             this.actor.add_style_class_name('multi-line-notification');
             this._scrollArea = new St.ScrollView({ name: 'notification-scrollview',
@@ -382,21 +382,22 @@ Notification.prototype = {
             this._addBannerBody();
         }
 
-        this._contentArea.add(actor);
+        this._contentArea.add(actor, style ? style : {});
         this._updated();
     },
 
     // addBody:
     // @text: the text
     // @markup: %true if @text contains pango markup
+    // @style: style to use when adding the actor containing the text
     //
     // Adds a multi-line label containing @text to the notification.
     //
     // Return value: the newly-added label
-    addBody: function(text, markup) {
+    addBody: function(text, markup, style) {
         let label = new URLHighlighter(text, true, markup);
 
-        this.addActor(label.actor);
+        this.addActor(label.actor, style);
         return label.actor;
     },
 
