@@ -1494,20 +1494,18 @@ _cogl_pipeline_backend_layer_change_notify (CoglPipeline *owner,
                                             CoglPipelineLayer *layer,
                                             CoglPipelineLayerState change)
 {
-  int i;
-
-  /* NB: layers may be used by multiple pipelines which may be using
-   * different backends, therefore we determine which backends to
-   * notify based on the private state pointers for each backend...
+  /* NB: Although layers can have private state associated with them
+   * by multiple backends we know that a layer can't be *changed* if
+   * it has multiple dependants so if we reach here we know we only
+   * have a single owner and can only be associated with a single
+   * backend that needs to be notified of the layer change...
    */
-  for (i = 0; i < COGL_PIPELINE_N_BACKENDS; i++)
+  if (owner->backend != COGL_PIPELINE_BACKEND_UNDEFINED &&
+      _cogl_pipeline_backends[owner->backend]->layer_pre_change_notify)
     {
-      if (layer->backend_priv[i] &&
-          _cogl_pipeline_backends[i]->layer_pre_change_notify)
-        {
-          const CoglPipelineBackend *backend = _cogl_pipeline_backends[i];
-          backend->layer_pre_change_notify (owner, layer, change);
-        }
+      const CoglPipelineBackend *backend =
+        _cogl_pipeline_backends[owner->backend];
+      backend->layer_pre_change_notify (owner, layer, change);
     }
 }
 
