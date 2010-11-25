@@ -82,7 +82,7 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject
     xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good
-    libltdl-dev libvorbis-dev libxklavier-dev
+    libltdl-dev libvorbis-dev libxklavier-dev libgnome-keyring-dev libupower-glib-dev
     "
 
   if apt-cache show autopoint > /dev/null 2> /dev/null; then
