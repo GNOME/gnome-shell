@@ -823,6 +823,10 @@ StTooltip StLabel {
     height: 1em;
 }
 
+#notification-scrollview > StScrollBar {
+    padding-left: 6px;
+}
+
 #notification-body {
     spacing: 5px;
 }
