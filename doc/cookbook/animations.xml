@@ -2082,7 +2082,7 @@ clutter_actor_set_anchor_point (actor, 50.0, 0.0);
         <para> A <type>ClutterAnimator</type> is
         used to move each of the rectangles to <code>x = 225.0</code>.
         Although the three rectangles move to the same position on the
-        <varname>x</varname> axis, it's actually the the anchor points
+        <varname>x</varname> axis, it's actually the anchor points
         which are at the same position. These all align on the
         <varname>x</varname> axis with the left-hand edge of the green
         rectangle.</para>

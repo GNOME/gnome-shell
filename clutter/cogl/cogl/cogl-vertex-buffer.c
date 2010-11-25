@@ -740,7 +740,7 @@ filter_already_submitted_attribute (CoglVertexBufferAttrib *attribute,
 
       /* Mark all but the matched attribute as UNUSED, so that when we
        * finish filtering all our attributes any attrributes still
-       * marked as UNUSED can be removed from the their cogl_vbo */
+       * marked as UNUSED can be removed from their cogl_vbo */
       for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
 	{
 	  CoglVertexBufferAttrib *vbo_attribute = tmp2->data;

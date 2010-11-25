@@ -4987,7 +4987,7 @@ clutter_text_get_chars (ClutterText *self,
  * mode.
  *
  * A text actor in single line mode will not wrap text and will clip
- * the the visible area to the predefined size. The contents of the
+ * the visible area to the predefined size. The contents of the
  * text actor will scroll to display the end of the text if its length
  * is bigger than the allocated width.
  *

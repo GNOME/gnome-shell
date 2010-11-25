@@ -39,7 +39,7 @@
       the source of the event;</para></listitem>
       <listitem><para>the <emphasis>bubble</emphasis> phase, which consists
       in an emission of the <emphasis>event</emphasis> signal starting from
-      the the source of the event to, following the parent-child
+      the source of the event to, following the parent-child
       relationship, the stage.</para></listitem>
     </orderedlist>
 

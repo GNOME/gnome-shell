@@ -2409,7 +2409,7 @@ clutter_stage_get_key_focus (ClutterStage *stage)
  *
  * Gets whether the depth cueing effect is enabled on @stage.
  *
- * Return value: %TRUE if the the depth cueing effect is enabled
+ * Return value: %TRUE if the depth cueing effect is enabled
  *
  * Since: 0.6
  */

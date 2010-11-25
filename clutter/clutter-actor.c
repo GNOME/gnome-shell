@@ -164,7 +164,7 @@
  *   <para>In order to access a specific #ClutterAction or a #ClutterConstraint
  *   property it is necessary to set the #ClutterActorMeta:name property on the
  *   given action or constraint.</para>
- *   <para>The property can be accessed using the the following syntax:</para>
+ *   <para>The property can be accessed using the following syntax:</para>
  *   <informalexample>
  *     <programlisting>
  * @&lt;section&gt;.&lt;meta-name&gt;.&lt;property-name&gt;
@@ -7205,7 +7205,7 @@ clutter_actor_set_depth (ClutterActor *self,
           /* We need to resort the container stacking order as to
            * correctly render alpha values.
            *
-           * FIXME: This is sub-optimal. maybe queue the the sort
+           * FIXME: This is sub-optimal. maybe queue the sort
            *        before stacking
            */
           parent = CLUTTER_CONTAINER (priv->parent_actor);
@@ -10787,7 +10787,7 @@ clutter_actor_pop_internal (ClutterActor *self)
  * clutter_actor_has_pointer:
  * @self: a #ClutterActor
  *
- * Checks whether an actor contains the the pointer of a
+ * Checks whether an actor contains the pointer of a
  * #ClutterInputDevice
  *
  * Return value: %TRUE if the actor contains the pointer, and
