@@ -121,6 +121,18 @@ Indicator.prototype = {
             }
 
             this._primaryDeviceId = device_id;
+            if (this._primaryDeviceId) {
+                this._batteryItem.actor.reactive = true;
+                this._batteryItem.actor.can_focus = true;
+                this._batteryItem.connect('activate', function(item) {
+                    let p = new Shell.Process({ args: ['gnome-power-statistics', '--device', device_id] });
+                    p.run();
+                });
+            } else {
+                // virtual device
+                this._batteryItem.actor.reactive = false;
+                this._batteryItem.actor.can_focus = false;
+            }
         }));
     },
 
