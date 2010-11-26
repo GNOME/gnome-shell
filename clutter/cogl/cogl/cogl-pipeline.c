@@ -2718,7 +2718,14 @@ static gboolean
 _cogl_pipeline_layer_texture_equal (CoglPipelineLayer *authority0,
                                     CoglPipelineLayer *authority1)
 {
-  return authority0->texture == authority1->texture;
+  GLuint gl_handle0, gl_handle1;
+  GLenum gl_target0, gl_target1;
+
+  cogl_texture_get_gl_texture (authority0->texture, &gl_handle0, &gl_target0);
+  cogl_texture_get_gl_texture (authority1->texture, &gl_handle1, &gl_target1);
+
+  return (gl_handle0 == gl_handle1 &&
+          gl_target0 == gl_target1);
 }
 
 /* Determine the mask of differences between two layers.
