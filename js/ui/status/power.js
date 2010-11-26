@@ -105,12 +105,26 @@ Indicator.prototype = {
                 this._deviceSep.actor.hide();
                 return;
             }
-            let [device_id, device_type, icon, percentage, state, time] = device;
+            let [device_id, device_type, icon, percentage, state, seconds] = device;
             if (device_type == UPDeviceType.BATTERY) {
                 this._hasPrimary = true;
-                let minutes = Math.floor(time / 60);
-                this._batteryItem.label.text = Gettext.ngettext("%d minute remaining", "%d minutes remaining", minutes).format(minutes);
-                this._primaryPercentage.text = '%d%%'.format(Math.round(percentage));
+                let time = Math.round(seconds / 60);
+                let minutes = time % 60;
+                let hours = Math.floor(time / 60);
+                let timestring;
+                if (time > 60) {
+                    if (minutes == 0) {
+                        timestring = Gettext.ngettext("%d hour remaining", "%d hours remaining", hours).format(hours);
+                    } else {
+                        /* TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining" */
+                        let template = _("%d %s %d %s remaining");
+
+                        timestring = template.format (hours, Gettext.ngettext("hour", "hours", hours), minutes, Gettext.ngettext("minute", "minutes", minutes));
+                    }
+                } else
+                    timestring = Gettext.ngettext("%d minute remaining", "%d minutes remaining", minutes);
+                this._batteryItem.label.text = timestring;
+                this._primaryPercentage.text = Math.round(percentage) + '%';
                 this._batteryItem.actor.show();
                 if (this._deviceItems.length > 0)
                     this._deviceSep.actor.show();
