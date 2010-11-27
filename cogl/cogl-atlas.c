@@ -63,6 +63,10 @@
 #define GL_FRAMEBUFFER_COMPLETE 0x8CD5
 #endif
 
+static void _cogl_atlas_free (CoglAtlas *atlas);
+
+COGL_OBJECT_INTERNAL_DEFINE (Atlas, atlas);
+
 /* If we want to do mulitple blits from a texture (such as when
    reorganizing the atlas) then it's quicker to download all of the
    data once and upload multiple times from that. This struct is used
@@ -209,12 +213,14 @@ _cogl_atlas_new (CoglPixelFormat texture_format,
   atlas->texture_format = texture_format;
   _cogl_callback_list_init (&atlas->reorganize_callbacks);
 
-  return atlas;
+  return _cogl_atlas_object_new (atlas);
 }
 
-void
+static void
 _cogl_atlas_free (CoglAtlas *atlas)
 {
+  COGL_NOTE (ATLAS, "%p: Atlas destroyed", atlas);
+
   if (atlas->texture)
     cogl_handle_unref (atlas->texture);
   if (atlas->map)
