@@ -111,12 +111,6 @@ clutter_offscreen_effect_set_actor (ClutterActorMeta *meta,
       priv->offscreen = COGL_INVALID_HANDLE;
     }
 
-  if (priv->target != COGL_INVALID_HANDLE)
-    {
-      cogl_handle_unref (priv->target);
-      priv->target = COGL_INVALID_HANDLE;
-    }
-
   /* we keep a back pointer here, to avoid going through the ActorMeta */
   priv->actor = clutter_actor_meta_get_actor (meta);
 }
