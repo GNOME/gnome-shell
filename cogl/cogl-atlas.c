@@ -489,7 +489,8 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
         _cogl_rectangle_map_get_remaining_space (atlas->map) *
         100 / (_cogl_rectangle_map_get_width (atlas->map) *
                _cogl_rectangle_map_get_height (atlas->map));
-      COGL_NOTE (ATLAS, "Atlas is %ix%i, has %i textures and is %i%% waste",
+      COGL_NOTE (ATLAS, "%p: Atlas is %ix%i, has %i textures and is %i%% waste",
+                 atlas,
                  _cogl_rectangle_map_get_width (atlas->map),
                  _cogl_rectangle_map_get_height (atlas->map),
                  _cogl_rectangle_map_get_n_rectangles (atlas->map),
@@ -559,7 +560,7 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
   /* If we can't create a map with the texture then give up */
   if (new_map == NULL)
     {
-      COGL_NOTE (ATLAS, "Could not fit texture in the atlas");
+      COGL_NOTE (ATLAS, "%p: Could not fit texture in the atlas", atlas);
       ret = FALSE;
     }
   /* We need to migrate the existing textures into a new texture */
@@ -568,7 +569,7 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
              _cogl_rectangle_map_get_width (new_map),
              _cogl_rectangle_map_get_height (new_map))) == COGL_INVALID_HANDLE)
     {
-      COGL_NOTE (ATLAS, "Could not create a CoglTexture2D");
+      COGL_NOTE (ATLAS, "%p: Could not create a CoglTexture2D", atlas);
       _cogl_rectangle_map_free (new_map);
       ret = FALSE;
     }
@@ -579,7 +580,8 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
       _cogl_atlas_notify_reorganize (atlas);
 
       COGL_NOTE (ATLAS,
-                 "Atlas %s with size %ix%i",
+                 "%p: Atlas %s with size %ix%i",
+                 atlas,
                  atlas->map == NULL ||
                  _cogl_rectangle_map_get_width (atlas->map) !=
                  _cogl_rectangle_map_get_width (new_map) ||
@@ -616,7 +618,8 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
                100 / (_cogl_rectangle_map_get_width (atlas->map) *
                       _cogl_rectangle_map_get_height (atlas->map)));
 
-      COGL_NOTE (ATLAS, "Atlas is %ix%i, has %i textures and is %i%% waste",
+      COGL_NOTE (ATLAS, "%p: Atlas is %ix%i, has %i textures and is %i%% waste",
+                 atlas,
                  _cogl_rectangle_map_get_width (atlas->map),
                  _cogl_rectangle_map_get_height (atlas->map),
                  _cogl_rectangle_map_get_n_rectangles (atlas->map),
@@ -636,10 +639,12 @@ _cogl_atlas_remove (CoglAtlas *atlas,
 {
   _cogl_rectangle_map_remove (atlas->map, rectangle);
 
-  COGL_NOTE (ATLAS, "Removed rectangle sized %ix%i",
+  COGL_NOTE (ATLAS, "%p: Removed rectangle sized %ix%i",
+             atlas,
              rectangle->width,
              rectangle->height);
-  COGL_NOTE (ATLAS, "Atlas is %ix%i, has %i textures and is %i%% waste",
+  COGL_NOTE (ATLAS, "%p: Atlas is %ix%i, has %i textures and is %i%% waste",
+             atlas,
              _cogl_rectangle_map_get_width (atlas->map),
              _cogl_rectangle_map_get_height (atlas->map),
              _cogl_rectangle_map_get_n_rectangles (atlas->map),

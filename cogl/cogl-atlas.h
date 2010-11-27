@@ -82,9 +82,6 @@ _cogl_atlas_copy_rectangle (CoglAtlas        *atlas,
                             CoglTextureFlags  flags,
                             CoglPixelFormat   format);
 
-CoglAtlas *
-_cogl_atlas_get_default (void);
-
 void
 _cogl_atlas_add_reorganize_callback (CoglAtlas            *atlas,
                                      CoglCallbackListFunc  callback,

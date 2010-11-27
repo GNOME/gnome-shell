@@ -228,6 +228,7 @@ cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
           atlas = _cogl_atlas_new (COGL_PIXEL_FORMAT_A_8,
                                    TRUE,
                                    cogl_pango_glyph_cache_update_position_cb);
+          COGL_NOTE (ATLAS, "Created new atlas for glyphs: %p", atlas);
           /* If we still can't reserve space then something has gone
              seriously wrong so we'll just give up */
           if (!_cogl_atlas_reserve_space (atlas,

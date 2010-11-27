@@ -96,7 +96,8 @@ _cogl_atlas_texture_reorganize_foreach_cb (const CoglRectangleMapEntry *entry,
 static void
 _cogl_atlas_texture_reorganize_cb (void *data)
 {
-  CoglAtlas *atlas;
+  CoglAtlas *atlas = data;
+
   /* We don't know if any pipelines may currently be referenced in
    * the journal that depend on the current underlying GL texture
    * storage so we flush the journal before migrating.
@@ -106,31 +107,49 @@ _cogl_atlas_texture_reorganize_cb (void *data)
    */
   _cogl_journal_flush ();
 
-  atlas = _cogl_atlas_texture_get_atlas ();
-
   if (atlas->map)
     _cogl_rectangle_map_foreach (atlas->map,
                                  _cogl_atlas_texture_reorganize_foreach_cb,
                                  NULL);
 }
 
-CoglAtlas *
-_cogl_atlas_texture_get_atlas (void)
+static void
+_cogl_atlas_texture_atlas_destroyed_cb (void *user_data)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* Remove the atlas from the global list */
+  ctx->atlases = g_slist_remove (ctx->atlases, user_data);
+}
+
+static CoglAtlas *
+_cogl_atlas_texture_create_atlas (void)
+{
+  static CoglUserDataKey atlas_private_key;
+
+  CoglAtlas *atlas;
+
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
-  if (ctx->atlas == COGL_INVALID_HANDLE)
-    {
-      ctx->atlas = _cogl_atlas_new (COGL_PIXEL_FORMAT_RGBA_8888,
-                                    0,
-                                    _cogl_atlas_texture_update_position_cb);
+  atlas = _cogl_atlas_new (COGL_PIXEL_FORMAT_RGBA_8888,
+                           0,
+                           _cogl_atlas_texture_update_position_cb);
 
-      _cogl_atlas_add_reorganize_callback (ctx->atlas,
-                                           _cogl_atlas_texture_reorganize_cb,
-                                           NULL);
-    }
+  _cogl_atlas_add_reorganize_callback (atlas,
+                                       _cogl_atlas_texture_reorganize_cb,
+                                       atlas);
 
-  return ctx->atlas;
+  ctx->atlases = g_slist_prepend (ctx->atlases, atlas);
+
+  /* Set some data on the atlas so we can get notification when it is
+     destroyed in order to remove it from the list. ctx->atlases
+     effectively holds a weak reference. We don't need a strong
+     reference because the atlas textures take a reference on the
+     atlas so it will stay alive */
+  cogl_object_set_user_data (COGL_OBJECT (atlas), &atlas_private_key, atlas,
+                             _cogl_atlas_texture_atlas_destroyed_cb);
+
+  return atlas;
 }
 
 static void
@@ -173,12 +192,13 @@ _cogl_atlas_texture_set_wrap_mode_parameters (CoglTexture *tex,
 static void
 _cogl_atlas_texture_remove_from_atlas (CoglAtlasTexture *atlas_tex)
 {
-  if (atlas_tex->in_atlas)
+  if (atlas_tex->atlas)
     {
-      _cogl_atlas_remove (_cogl_atlas_texture_get_atlas (),
+      _cogl_atlas_remove (atlas_tex->atlas,
                           &atlas_tex->rectangle);
 
-      atlas_tex->in_atlas = FALSE;
+      cogl_object_unref (atlas_tex->atlas);
+      atlas_tex->atlas = NULL;
     }
 }
 
@@ -270,7 +290,7 @@ static void
 _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
 {
   /* Make sure this texture is not in the atlas */
-  if (atlas_tex->in_atlas)
+  if (atlas_tex->atlas)
     {
       COGL_NOTE (ATLAS, "Migrating texture out of the atlas");
 
@@ -291,7 +311,7 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
       cogl_handle_unref (atlas_tex->sub_texture);
 
       atlas_tex->sub_texture =
-        _cogl_atlas_copy_rectangle (_cogl_atlas_texture_get_atlas (),
+        _cogl_atlas_copy_rectangle (atlas_tex->atlas,
                                     atlas_tex->rectangle.x + 1,
                                     atlas_tex->rectangle.y + 1,
                                     atlas_tex->rectangle.width - 2,
@@ -340,7 +360,7 @@ _cogl_atlas_texture_set_region_with_border (CoglAtlasTexture *atlas_tex,
                                             unsigned int    dst_height,
                                             CoglBitmap     *bmp)
 {
-  CoglAtlas *atlas = _cogl_atlas_texture_get_atlas ();
+  CoglAtlas *atlas = atlas_tex->atlas;
 
   /* Copy the central data */
   if (!_cogl_texture_set_region_from_bitmap (atlas->texture,
@@ -408,7 +428,7 @@ _cogl_atlas_texture_set_region (CoglTexture    *tex,
 
   /* If the texture is in the atlas then we need to copy the edge
      pixels to the border */
-  if (atlas_tex->in_atlas)
+  if (atlas_tex->atlas)
     {
       gboolean ret;
 
@@ -505,6 +525,8 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
   int               bmp_width;
   int               bmp_height;
   CoglPixelFormat   bmp_format;
+  CoglAtlas        *atlas;
+  GSList           *l;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
@@ -557,14 +579,33 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
 
   atlas_tex->sub_texture = COGL_INVALID_HANDLE;
 
-  /* Try to make some space in the atlas for the texture */
-  if (!_cogl_atlas_reserve_space (_cogl_atlas_texture_get_atlas (),
-                                  /* Add two pixels for the border */
-                                  bmp_width + 2, bmp_height + 2,
-                                  atlas_tex))
+  /* Look for an existing atlas that can hold the texture */
+  for (l = ctx->atlases; l; l = l->next)
+    /* Try to make some space in the atlas for the texture */
+    if (_cogl_atlas_reserve_space (atlas = l->data,
+                                   /* Add two pixels for the border */
+                                   bmp_width + 2, bmp_height + 2,
+                                   atlas_tex))
+      {
+        cogl_object_ref (atlas);
+        break;
+      }
+
+  /* If we couldn't find a suitable atlas then start another */
+  if (l == NULL)
     {
-      g_free (atlas_tex);
-      return COGL_INVALID_HANDLE;
+      atlas = _cogl_atlas_texture_create_atlas ();
+      COGL_NOTE (ATLAS, "Created new atlas for textures: %p", atlas);
+      if (!_cogl_atlas_reserve_space (atlas,
+                                      /* Add two pixels for the border */
+                                      bmp_width + 2, bmp_height + 2,
+                                      atlas_tex))
+        {
+          /* Ok, this means we really can't add it to the atlas */
+          cogl_object_unref (atlas);
+          g_free (atlas_tex);
+          return COGL_INVALID_HANDLE;
+        }
     }
 
   dst_bmp = _cogl_texture_prepare_for_upload (bmp,
@@ -576,15 +617,15 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
 
   if (dst_bmp == NULL)
     {
-      _cogl_atlas_remove (_cogl_atlas_texture_get_atlas (),
-                          &atlas_tex->rectangle);
+      _cogl_atlas_remove (atlas, &atlas_tex->rectangle);
+      cogl_object_unref (atlas);
       g_free (atlas_tex);
       return COGL_INVALID_HANDLE;
     }
 
   atlas_tex->_parent.vtable = &cogl_atlas_texture_vtable;
   atlas_tex->format = internal_format;
-  atlas_tex->in_atlas = TRUE;
+  atlas_tex->atlas = atlas;
 
   /* Make another bitmap so that we can override the format */
   override_bmp = _cogl_bitmap_new_shared (dst_bmp,
