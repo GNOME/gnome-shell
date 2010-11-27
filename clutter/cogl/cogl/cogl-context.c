@@ -285,7 +285,7 @@ cogl_create_context (void)
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
-  _context->atlas = NULL;
+  _context->atlases = NULL;
 
   /* As far as I can tell, GL_POINT_SPRITE doesn't have any effect
      unless GL_COORD_REPLACE is enabled for an individual
@@ -362,8 +362,7 @@ _cogl_destroy_context (void)
   if (_context->current_clip_stack_valid)
     _cogl_clip_stack_unref (_context->current_clip_stack);
 
-  if (_context->atlas)
-    cogl_object_unref (_context->atlas);
+  g_slist_free (_context->atlases);
 
   _cogl_bitmask_destroy (&_context->arrays_enabled);
   _cogl_bitmask_destroy (&_context->temp_bitmask);

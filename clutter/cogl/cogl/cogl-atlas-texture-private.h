@@ -46,9 +46,10 @@ struct _CoglAtlasTexture
      atlas. This includes the 1-pixel border */
   CoglRectangleMapEntry rectangle;
 
-  /* The texture might need to be migrated out in which case this will
-     be set to TRUE and sub_texture will actually be a real texture */
-  gboolean              in_atlas;
+  /* The atlas that this texture is in. If the texture is no longer in
+     an atlas then this will be NULL. A reference is taken on the
+     atlas by the texture (but not vice versa so there is no cycle) */
+  CoglAtlas            *atlas;
 
   /* A CoglSubTexture representing the region for easy rendering */
   CoglHandle            sub_texture;
@@ -61,8 +62,5 @@ CoglHandle
 _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
                                      CoglTextureFlags flags,
                                      CoglPixelFormat  internal_format);
-
-CoglAtlas *
-_cogl_atlas_texture_get_atlas (void);
 
 #endif /* __COGL_ATLAS_TEXTURE_H */

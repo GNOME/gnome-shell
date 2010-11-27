@@ -178,7 +178,7 @@ typedef struct
 
   CoglPipeline     *texture_download_pipeline;
 
-  CoglAtlas        *atlas;
+  GSList           *atlases;
 
   /* This debugging variable is used to pick a colour for visually
      displaying the quad batches. It needs to be global so that it can
