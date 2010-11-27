@@ -203,7 +203,49 @@ Dash.prototype = {
                                    Lang.bind(this, function() {
                                        display.actor.opacity = 255;
                                    }));
+        display.icon.setIconSize(this._iconSize);
+
         this._box.add(display.actor);
+    },
+
+    _adjustIconSize: function() {
+        let children = this._box.get_children();
+        if (children.length == 0) {
+            this._box.add_style_pseudo_class('empty');
+            return;
+        }
+
+        this._box.remove_style_pseudo_class('empty');
+
+        if (this._maxHeight == -1)
+            return;
+
+        let iconChildren = children.filter(function(actor) {
+            return actor.visible && actor._delegate && actor._delegate.icon;
+        });
+
+        // Compute the amount of extra space (or missing space) we have
+        // per icon with the current icon size
+        let [minHeight, natHeight] = this.actor.get_preferred_height(-1);
+        let diff = (this._maxHeight - natHeight) / iconChildren.length;
+
+        let iconSizes = [ 16, 22, 24, 32, 48 ];
+
+        let newIconSize = 16;
+        for (let i = 0; i < iconSizes.length; i++) {
+            if (iconSizes[i] < this._iconSize + diff)
+                newIconSize = iconSizes[i];
+        }
+
+        if (newIconSize == this._iconSize)
+            return;
+
+        this._iconSize = newIconSize;
+
+        for (let i = 0; i < iconChildren.length; i++) {
+            let icon = iconChildren[i]._delegate.icon;
+            icon.setIconSize(this._iconSize);
+        }
     },
 
     _redisplay: function () {
@@ -229,29 +271,7 @@ Dash.prototype = {
             this._addApp(app);
         }
 
-        let children = this._box.get_children();
-        if (children.length == 0) {
-            this._box.add_style_pseudo_class('empty');
-        } else {
-            this._box.remove_style_pseudo_class('empty');
-
-            if (this._maxHeight > -1) {
-                let iconSizes = [ 48, 32, 24, 22, 16 ];
-
-                for (let i = 0; i < iconSizes.length; i++) {
-                    let minHeight, natHeight;
-
-                    this._iconSize = iconSizes[i];
-                    for (let j = 0; j < children.length; j++)
-                        children[j]._delegate.icon.setIconSize(this._iconSize);
-
-                    [minHeight, natHeight] = this.actor.get_preferred_height(-1);
-
-                    if (natHeight <= this._maxHeight)
-                        break;
-                }
-            }
-        }
+        this._adjustIconSize();
         this._box.show();
     },
 
