@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-03 00:26+0100\n"
-"PO-Revision-Date: 2010-11-03 00:28+0100\n"
+"POT-Creation-Date: 2010-11-27 01:42+0100\n"
+"PO-Revision-Date: 2010-11-27 01:43+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -459,7 +459,7 @@ msgstr "Non hai resultados que coincidan."
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
+#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:558
 msgid "PLACES & DEVICES"
 msgstr "LUGARES E DISPOSITIVOS"
 
@@ -503,58 +503,58 @@ msgid "Undo"
 msgstr "Desfacer"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:469
+#: ../js/ui/panel.js:470
 #, c-format
 msgid "Quit %s"
 msgstr "Saír de %s"
 
-#: ../js/ui/panel.js:494
+#: ../js/ui/panel.js:495
 msgid "Preferences"
 msgstr "Preferencias"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:580
+#: ../js/ui/panel.js:581
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e de %b, %R:%S"
 
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:582
 msgid "%a %b %e, %R"
 msgstr "%a %e de %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:586
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:587
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:593
+#: ../js/ui/panel.js:594
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e de %b, %H:%M:%S"
 
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:595
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e de %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:599
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:600
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:744
+#: ../js/ui/panel.js:745
 msgid "Activities"
 msgstr "Actividades"
 
@@ -597,39 +597,31 @@ msgstr "Dispoñíbel"
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/statusMenu.js:111
-msgid "Invisible"
-msgstr "Invisíbel"
+#: ../js/ui/statusMenu.js:114
+msgid "My Account"
+msgstr "A miña conta"
 
-#: ../js/ui/statusMenu.js:119
-msgid "My Account..."
-msgstr "A miña conta..."
+#: ../js/ui/statusMenu.js:118
+msgid "System Settings"
+msgstr "Configuracións do sistema"
 
-#: ../js/ui/statusMenu.js:123
-msgid "System Settings..."
-msgstr "Configuracións do sistema..."
-
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:125
 msgid "Lock Screen"
 msgstr "Bloquear pantalla"
 
-#: ../js/ui/statusMenu.js:134
+#: ../js/ui/statusMenu.js:129
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/statusMenu.js:139
+#: ../js/ui/statusMenu.js:134
 msgid "Log Out..."
 msgstr "Saír da sesión..."
 
-#: ../js/ui/statusMenu.js:146
-msgid "Suspend"
-msgstr "Suspender"
+#: ../js/ui/statusMenu.js:141
+msgid "Suspend..."
+msgstr "Suspender..."
 
-#: ../js/ui/statusMenu.js:150
-msgid "Restart..."
-msgstr "Reiniciar..."
-
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
 msgstr "Apagar..."
 
@@ -669,11 +661,11 @@ msgstr "Configuracións de acceso universal"
 msgid "High Contrast"
 msgstr "Alto contraste"
 
-#: ../js/ui/status/accessibility.js:202
+#: ../js/ui/status/accessibility.js:205
 msgid "Large Text"
 msgstr "Texto máis grande"
 
-#: ../js/ui/status/accessibility.js:223
+#: ../js/ui/status/accessibility.js:224
 msgid "Zoom"
 msgstr "Ampliación"
 
@@ -720,49 +712,53 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/shell-global.c:1219
+#: ../src/shell-app-system.c:1012
+msgid "Unknown"
+msgstr "Descoñecido"
+
+#: ../src/shell-global.c:1163
 msgid "Less than a minute ago"
 msgstr "Hai menos dun minuto"
 
-#: ../src/shell-global.c:1223
+#: ../src/shell-global.c:1167
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "hai %d minuto"
 msgstr[1] "hai %d minutos"
 
-#: ../src/shell-global.c:1228
+#: ../src/shell-global.c:1172
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "hai %d hora"
 msgstr[1] "hai %d horas"
 
-#: ../src/shell-global.c:1233
+#: ../src/shell-global.c:1177
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "hai %d día"
 msgstr[1] "hai %d días"
 
-#: ../src/shell-global.c:1238
+#: ../src/shell-global.c:1182
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "hai %d semana"
 msgstr[1] "hai %d semanas"
 
-#: ../src/shell-uri-util.c:89
+#: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "Cartafol persoal"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:104
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "Sistema de ficheiros"
 
-#: ../src/shell-uri-util.c:250
+#: ../src/shell-util.c:250
 msgid "Search"
 msgstr "Buscar"
 
@@ -771,10 +767,16 @@ msgstr "Buscar"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:300
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Invisible"
+#~ msgstr "Invisíbel"
+
+#~ msgid "Restart..."
+#~ msgstr "Reiniciar..."
 
 #~ msgid "System Preferences..."
 #~ msgstr "Preferencias do sistema..."
