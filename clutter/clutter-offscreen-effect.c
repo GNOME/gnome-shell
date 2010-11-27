@@ -149,7 +149,8 @@ update_fbo (ClutterEffect *effect, int fbo_width, int fbo_height)
     }
 
   if (priv->target_width == fbo_width &&
-      priv->target_height == fbo_height)
+      priv->target_height == fbo_height &&
+      priv->offscreen != COGL_INVALID_HANDLE)
     return TRUE;
 
   if (priv->target == COGL_INVALID_HANDLE)
