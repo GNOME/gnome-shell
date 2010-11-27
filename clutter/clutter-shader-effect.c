@@ -297,9 +297,6 @@ clutter_shader_effect_set_actor (ClutterActorMeta *meta,
       return;
     }
 
-  clutter_shader_effect_clear (self, FALSE);
-  clutter_shader_effect_reset_uniforms (self);
-
   parent = CLUTTER_ACTOR_META_CLASS (clutter_shader_effect_parent_class);
   parent->set_actor (meta, actor);
 
@@ -310,25 +307,6 @@ clutter_shader_effect_set_actor (ClutterActorMeta *meta,
 
   CLUTTER_NOTE (SHADER, "Preparing shader effect of type '%s'",
                 G_OBJECT_TYPE_NAME (meta));
-
-  priv->program = cogl_create_program ();
-
-  switch (priv->shader_type)
-    {
-    case CLUTTER_FRAGMENT_SHADER:
-      priv->shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
-      break;
-
-    case CLUTTER_VERTEX_SHADER:
-      priv->shader = cogl_create_shader (COGL_SHADER_TYPE_VERTEX);
-      break;
-
-    default:
-      priv->shader = COGL_INVALID_HANDLE;
-      break;
-    }
-
-  g_assert (priv->shader != COGL_INVALID_HANDLE);
 }
 
 static void
@@ -844,8 +822,26 @@ clutter_shader_effect_set_shader_source (ClutterShaderEffect *effect,
   if (priv->source_set)
     return TRUE;
 
+  if (priv->program == COGL_INVALID_HANDLE)
+    priv->program = cogl_create_program ();
+
   if (priv->shader == COGL_INVALID_HANDLE)
-    return FALSE;
+    switch (priv->shader_type)
+      {
+      case CLUTTER_FRAGMENT_SHADER:
+        priv->shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
+        break;
+
+      case CLUTTER_VERTEX_SHADER:
+        priv->shader = cogl_create_shader (COGL_SHADER_TYPE_VERTEX);
+        break;
+
+      default:
+        priv->shader = COGL_INVALID_HANDLE;
+        break;
+      }
+
+  g_assert (priv->shader != COGL_INVALID_HANDLE);
 
   cogl_shader_source (priv->shader, source);
 
