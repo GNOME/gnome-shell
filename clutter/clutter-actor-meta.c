@@ -92,7 +92,10 @@ clutter_actor_meta_real_set_actor (ClutterActorMeta *meta,
     return;
 
   if (meta->priv->destroy_id != 0)
-    g_signal_handler_disconnect (meta->priv->actor, meta->priv->destroy_id);
+    {
+      g_signal_handler_disconnect (meta->priv->actor, meta->priv->destroy_id);
+      meta->priv->destroy_id = 0;
+    }
 
   meta->priv->actor = actor;
 
