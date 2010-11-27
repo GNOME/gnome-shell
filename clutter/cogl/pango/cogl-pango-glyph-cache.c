@@ -125,7 +125,7 @@ cogl_pango_glyph_cache_new (void)
 void
 cogl_pango_glyph_cache_clear (CoglPangoGlyphCache *cache)
 {
-  g_slist_foreach (cache->atlases, (GFunc) _cogl_atlas_free, NULL);
+  g_slist_foreach (cache->atlases, (GFunc) cogl_object_unref, NULL);
   g_slist_free (cache->atlases);
   cache->atlases = NULL;
   cache->has_dirty_glyphs = FALSE;
@@ -234,7 +234,7 @@ cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
                                           ink_rect.width + 1,
                                           ink_rect.height + 1, value))
             {
-              _cogl_atlas_free (atlas);
+              cogl_object_unref (atlas);
               cogl_pango_glyph_cache_value_free (value);
               return NULL;
             }

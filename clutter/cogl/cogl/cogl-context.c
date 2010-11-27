@@ -363,7 +363,7 @@ _cogl_destroy_context (void)
     _cogl_clip_stack_unref (_context->current_clip_stack);
 
   if (_context->atlas)
-    _cogl_atlas_free (_context->atlas);
+    cogl_object_unref (_context->atlas);
 
   _cogl_bitmask_destroy (&_context->arrays_enabled);
   _cogl_bitmask_destroy (&_context->temp_bitmask);
