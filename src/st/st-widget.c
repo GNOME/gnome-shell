@@ -7,6 +7,7 @@
  * Copyright 2009, 2010 Red Hat, Inc.
  * Copyright 2009 Abderrahim Kitouni
  * Copyright 2009, 2010 Florian Müllner
+ * Copyright 2010 Adel Gadllah
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -668,6 +669,31 @@ st_widget_hide (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (st_widget_parent_class)->hide (actor);
 }
 
+static gboolean
+st_widget_get_paint_volume (ClutterActor *self, ClutterPaintVolume *volume)
+{
+  ClutterActorBox paint_box, alloc_box;
+  StThemeNode *theme_node;
+  ClutterVertex origin;
+
+  /* Setting the paint volume does not make sense when we don't have any allocation */
+  if (!clutter_actor_has_allocation (self))
+    return FALSE;
+
+  theme_node = st_widget_get_theme_node (ST_WIDGET(self));
+  clutter_actor_get_allocation_box (self, &alloc_box);
+  st_theme_node_get_paint_box (theme_node, &alloc_box, &paint_box);
+
+  origin.x = paint_box.x1 - alloc_box.x1;
+  origin.y = paint_box.y1 - alloc_box.y1;
+  origin.z = 0.0f;
+
+  clutter_paint_volume_set_origin (volume, &origin);
+  clutter_paint_volume_set_width (volume, paint_box.x2 - paint_box.x1);
+  clutter_paint_volume_set_height (volume, paint_box.y2 - paint_box.y1);
+
+  return TRUE;
+}
 
 
 static void
@@ -688,6 +714,7 @@ st_widget_class_init (StWidgetClass *klass)
   actor_class->get_preferred_height = st_widget_get_preferred_height;
   actor_class->allocate = st_widget_allocate;
   actor_class->paint = st_widget_paint;
+  actor_class->get_paint_volume = st_widget_get_paint_volume;
   actor_class->parent_set = st_widget_parent_set;
   actor_class->map = st_widget_map;
   actor_class->unmap = st_widget_unmap;
