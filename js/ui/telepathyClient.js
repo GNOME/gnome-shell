@@ -44,6 +44,10 @@ subscribedContactsChannel[Telepathy.CHANNEL_NAME + '.ChannelType'] = Telepathy.C
 subscribedContactsChannel[Telepathy.CHANNEL_NAME + '.TargetHandleType'] = Telepathy.HandleType.LIST;
 subscribedContactsChannel[Telepathy.CHANNEL_NAME + '.TargetID'] = 'subscribe';
 
+const NotificationDirection = {
+    SENT: 'chat-sent',
+    RECEIVED: 'chat-received'
+};
 
 // This is GNOME Shell's implementation of the Telepathy 'Client'
 // interface. Specifically, the shell is a Telepathy 'Observer', which
@@ -471,11 +475,14 @@ Source.prototype = {
                 }));
         }
 
+        this._notification = new Notification(this);
+
         // Since we only create sources when receiving a message, this
         // is a plausible default
         this._presence = Telepathy.ConnectionPresenceType.AVAILABLE;
 
         this._channelText = new Telepathy.ChannelText(DBus.session, connName, channelPath);
+        this._sentId = this._channelText.connect('Sent', Lang.bind(this, this._messageSent));
         this._receivedId = this._channelText.connect('Received', Lang.bind(this, this._messageReceived));
 
         this._channelText.ListPendingMessagesRemote(false, Lang.bind(this, this._gotPendingMessages));
@@ -519,22 +526,27 @@ Source.prototype = {
     _channelClosed: function() {
         this._channel.disconnect(this._closedId);
         this._channelText.disconnect(this._receivedId);
+        this._channelText.disconnect(this._sentId);
         this.destroy();
-    },
-
-    _ensureNotification: function() {
-        if (!Main.messageTray.contains(this))
-            Main.messageTray.add(this);
-
-        if (!this._notification)
-            this._notification = new Notification(this);
     },
 
     _messageReceived: function(channel, id, timestamp, sender,
                                type, flags, text) {
-        this._ensureNotification();
-        this._notification.appendMessage(text, timestamp);
-        this.notify(this._notification);
+        this._notification.appendMessage(text, timestamp, NotificationDirection.RECEIVED);
+        this.notify();
+    },
+
+    // This is called for both messages we send from
+    // our client and other clients as well.
+    _messageSent: function(channel, timestamp, type, text) {
+        this._notification.appendMessage(text, timestamp, NotificationDirection.SENT);
+    },
+
+    notify: function() {
+        if (!Main.messageTray.contains(this))
+            Main.messageTray.add(this);
+
+        MessageTray.Source.prototype.notify.call(this, this._notification);
     },
 
     respond: function(text) {
@@ -542,22 +554,22 @@ Source.prototype = {
     },
 
     setPresence: function(presence, message) {
-        let msg, notify;
+        let msg, shouldNotify;
 
         if (presence == Telepathy.ConnectionPresenceType.AVAILABLE) {
             msg = _("%s is online.").format(this.title);
-            notify = (this._presence == Telepathy.ConnectionPresenceType.OFFLINE);
+            shouldNotify = (this._presence == Telepathy.ConnectionPresenceType.OFFLINE);
         } else if (presence == Telepathy.ConnectionPresenceType.OFFLINE ||
                    presence == Telepathy.ConnectionPresenceType.EXTENDED_AWAY) {
             presence = Telepathy.ConnectionPresenceType.OFFLINE;
             msg = _("%s is offline.").format(this.title);
-            notify = (this._presence != Telepathy.ConnectionPresenceType.OFFLINE);
+            shouldNotify = (this._presence != Telepathy.ConnectionPresenceType.OFFLINE);
         } else if (presence == Telepathy.ConnectionPresenceType.AWAY) {
             msg = _("%s is away.").format(this.title);
-            notify = false;
+            shouldNotify = false;
         } else if (presence == Telepathy.ConnectionPresenceType.BUSY) {
             msg = _("%s is busy.").format(this.title);
-            notify = false;
+            shouldNotify = false;
         } else
             return;
 
@@ -566,10 +578,9 @@ Source.prototype = {
         if (message)
             msg += ' <i>(' + GLib.markup_escape_text(message, -1) + ')</i>';
 
-        this._ensureNotification();
-        this._notification.appendPresence(msg, notify);
-        if (notify)
-            this.notify(this._notification);
+        this._notification.appendPresence(msg, shouldNotify);
+        if (shouldNotify)
+            this.notify();
     }
 };
 
@@ -591,9 +602,9 @@ Notification.prototype = {
         this._timestampTimeoutId = 0;
     },
 
-    appendMessage: function(text, timestamp) {
+    appendMessage: function(text, timestamp, direction) {
         this.update(this.source.title, text, { customContent: true });
-        this._append(text, 'chat-received', timestamp);
+        this._append(text, direction, timestamp);
     },
 
     _append: function(text, style, timestamp) {
@@ -679,8 +690,9 @@ Notification.prototype = {
         if (text == '')
             return;
 
+        // Telepathy sends out the Sent signal for us.
+        // see Source._messageSent
         this._responseEntry.set_text('');
-        this._append(text, 'chat-sent');
         this.source.respond(text);
     }
 };
