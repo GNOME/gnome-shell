@@ -145,7 +145,6 @@ function start() {
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     telepathyClient = new TelepathyClient.Client();
 
-    panel.startStatusArea();
     statusIconDispatcher.start(messageTray.actor);
 
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
@@ -188,6 +187,7 @@ function start() {
     ExtensionSystem.init();
     ExtensionSystem.loadExtensions();
 
+    panel.startStatusArea();
     panel.startupAnimation();
 
     let display = global.screen.get_display();
