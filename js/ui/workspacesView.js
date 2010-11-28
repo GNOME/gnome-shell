@@ -14,6 +14,7 @@ const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
+const Search = imports.ui.search;
 
 const WORKSPACE_SWITCH_TIME = 0.25;
 // Note that mutter has a compile-time limit of 36
@@ -1152,3 +1153,77 @@ WorkspacesDisplay.prototype = {
     }
 };
 Signals.addSignalMethods(WorkspacesDisplay.prototype);
+
+
+function WindowSearchProvider() {
+    this._init();
+}
+
+WindowSearchProvider.prototype = {
+    __proto__: Search.SearchProvider.prototype,
+
+    _init: function() {
+        Search.SearchProvider.prototype._init.call(this, _("WINDOWS"));
+        this._tracker = Shell.WindowTracker.get_default();
+    },
+
+    _matchWindow: function(window, terms) {
+        let title = window.get_title().toLowerCase();
+        let mtype = Search.MatchType.NONE;
+        for (let i = 0; i < terms.length; i ++) {
+            let idx = title.indexOf(terms[i]);
+
+            if (idx < 0)
+                return Search.MatchType.NONE;
+            if (idx == 0)
+                return Search.MatchType.PREFIX;
+        }
+        return Search.MatchType.SUBSTRING;
+    },
+
+    _search: function(items, terms) {
+        let prefixMatches = [];
+        let substringMatches = [];
+        for (let i = 0; i < items.length; i ++) {
+            let item = items[i];
+            let match = this._matchWindow(item, terms);
+
+            if (match == Search.MatchType.PREFIX)
+                prefixMatches.push(item);
+            else if (match == Search.MatchType.SUBSTRING)
+                substringMatches.push(item);
+        }
+        return prefixMatches.concat(substringMatches);
+    },
+
+    getInitialResultSet: function(terms) {
+        let windows = global.get_window_actors();
+        windows = windows.map(function(w) { return w.metaWindow });
+        windows = windows.filter(this._tracker.is_window_interesting);
+
+        return this._search(windows, terms);
+    },
+
+    getSubsearchResultSet: function(previousResults, terms) {
+        return this._search(previousResults, terms);
+    },
+
+    // FIXME: resultId is the metaWindow because there's no obvious lookup ID
+    getResultMeta: function(resultId) {
+        if (!resultId)
+            return null;
+        let app = this._tracker.get_window_app(resultId);
+        return { 'id': resultId,
+                 'name': resultId.get_title(),
+                 'icon': app.create_icon_texture(Search.RESULT_ICON_SIZE) };
+    },
+
+    activateResult: function(resultId) {
+        Main.activateWindow(resultId);
+    },
+
+    expandSearch: function(resultId) {
+        if (Main.overview && Main.overview.viewSelector)
+            Main.overview.viewSelector._switchDefaultTab();
+    }
+};
