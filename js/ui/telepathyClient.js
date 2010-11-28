@@ -469,11 +469,15 @@ Source.prototype = {
                 }));
         }
 
+        this._notification = undefined;
+        this._sentMessages = [];
+
         // Since we only create sources when receiving a message, this
         // is a plausible default
         this._presence = Telepathy.ConnectionPresenceType.AVAILABLE;
 
         this._channelText = new Telepathy.ChannelText(DBus.session, connName, channelPath);
+        this._sentId = this._channelText.connect('Sent', Lang.bind(this, this._messageSent));
         this._receivedId = this._channelText.connect('Received', Lang.bind(this, this._messageReceived));
 
         this._channelText.ListPendingMessagesRemote(false, Lang.bind(this, this._gotPendingMessages));
@@ -517,6 +521,7 @@ Source.prototype = {
     _channelClosed: function() {
         this._channel.disconnect(this._closedId);
         this._channelText.disconnect(this._receivedId);
+        this._channelText.disconnect(this._sentId);
         this.destroy();
     },
 
@@ -524,15 +529,28 @@ Source.prototype = {
         if (!Main.messageTray.contains(this))
             Main.messageTray.add(this);
 
-        if (!this._notification)
+        if (!this._notification) {
             this._notification = new Notification(this);
+            for (let i = 0; i < this._sentMessages.length; i ++)
+                this._notification.appendMessage(this._sentMessages[i], false, true);
+            this._sentMessages = [];
+        }
     },
 
     _messageReceived: function(channel, id, timestamp, sender,
                                type, flags, text) {
         this._ensureNotification();
-        this._notification.appendMessage(text);
+        this._notification.appendMessage(text, false, false);
         this.notify(this._notification);
+    },
+
+    _messageSent: function(channel, timestamp, type, text) {
+        if (this._notification) {
+            this._notification.appendMessage(text, false, true);
+            this.notify(this._notification);
+        } else {
+            this._sentMessages.push(text);
+        }
     },
 
     respond: function(text) {
@@ -565,7 +583,7 @@ Source.prototype = {
             msg += ' <i>(' + GLib.markup_escape_text(message, -1) + ')</i>';
 
         this._ensureNotification();
-        this._notification.appendMessage(msg, true);
+        this._notification.appendMessage(msg, true, false);
         if (notify)
             this.notify(this._notification);
     }
@@ -588,12 +606,12 @@ Notification.prototype = {
         this._history = [];
     },
 
-    appendMessage: function(text, asTitle) {
+    appendMessage: function(text, asTitle, sent) {
         if (asTitle)
             this.update(text, null, { customContent: true });
         else
             this.update(this.source.title, text, { customContent: true });
-        this._append(text, 'chat-received');
+        this._append(text, sent ? 'chat-sent' : 'chat-received');
     },
 
     _append: function(text, style) {
@@ -635,7 +653,6 @@ Notification.prototype = {
             return;
 
         this._responseEntry.set_text('');
-        this._append(text, 'chat-sent');
         this.source.respond(text);
     }
 };

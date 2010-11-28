@@ -272,7 +272,9 @@ const ChannelTextIface = {
     ],
     signals: [
         { name: 'Received',
-          inSignature: 'uuuuus' }
+          inSignature: 'uuuuus' },
+        { name: 'Sent',
+          inSignature: 'uus' }
     ]
 };
 let ChannelText = DBus.makeProxyClass(ChannelTextIface);
