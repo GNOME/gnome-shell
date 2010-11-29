@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-27 01:42+0100\n"
-"PO-Revision-Date: 2010-11-27 01:43+0100\n"
+"POT-Creation-Date: 2010-11-29 17:32+0100\n"
+"PO-Revision-Date: 2010-11-29 17:33+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -104,10 +104,6 @@ msgid "List of desktop file IDs for favorite applications"
 msgstr "Mostra os ID de ficheiros desktop para os aplicativos preferidos"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "Overview workspace view mode"
-msgstr "Modo de visualización do espazo de traballo de vista previa"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -128,19 +124,19 @@ msgstr ""
 "está a un valor baleiro, usarase a tubería predeterminada. Actualmente é "
 "«videorate ! theoraenc ! oggmux» e grava en Ogg Theora."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Mostrar a data no reloxo"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Mostrar a data da semana no calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Mostrar a hora con segundos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -148,7 +144,7 @@ msgstr ""
 "Os aplicativos que corresponden a estes identificadores mostraranse na área "
 "de preferidos."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -158,7 +154,7 @@ msgstr ""
 "baseado na data actual e usa esta extensión. Debería cambiar ao grabar nun "
 "formato de contedor diferente."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -166,19 +162,11 @@ msgstr ""
 "A taxa de marcos do screencast resultante grabado polo grabador de "
 "screencasts de GNOME Shell en marcos-por-segundo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "A tubería de gstreamer usada para codificar o screencast"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"The selected workspace view mode in the overview. Supported values are "
-"\"single\" and \"grid\"."
-msgstr ""
-"O modo de visualización do espazo de traballo seleccionado na vista previa. "
-"Os valores admitidos son \"single\" e \"grid\"."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -190,7 +178,7 @@ msgstr ""
 "privados, vostede pode desactivar isto por motivos de privacidade. Teña en "
 "conta que facendo isto non eliminará os datos gardados."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid ""
 "This key specifies the format used by the panel clock when the format key is "
 "set to \"custom\". You can use conversion specifiers understood by strftime"
@@ -202,7 +190,7 @@ msgstr ""
 "de conversión que entende strftime() para obter un formato de hora "
 "especificado. Vexa o manual de strftime() para obter máis información."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid ""
 "This key specifies the hour format used by the panel clock. Possible values "
 "are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
@@ -219,11 +207,11 @@ msgstr ""
 "está estabelecido a «unix» ou «custom», as chaves show_date e show_seconds "
 "ignoraranse."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Uuids of extensions to disable"
 msgstr "Os Uuid das extensións a desactivar"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Whether to collect stats about applications usage"
 msgstr "Indica se recoller estatísticas sobre o uso dos aplicativos"
 
@@ -409,62 +397,41 @@ msgstr "Formato _12 horas"
 msgid "_24 hour format"
 msgstr "Formato _24 horas"
 
-#. **** Applications ****
-#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
+#: ../js/ui/appDisplay.js:215
 msgid "APPLICATIONS"
 msgstr "APLICATIVOS"
 
-#: ../js/ui/appDisplay.js:348
+#: ../js/ui/appDisplay.js:245
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:647
+#: ../js/ui/appDisplay.js:538
 msgid "New Window"
 msgstr "Xanela nova"
 
-#: ../js/ui/appDisplay.js:651
+#: ../js/ui/appDisplay.js:542
 msgid "Remove from Favorites"
 msgstr "Eliminar dos favoritos"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:543
 msgid "Add to Favorites"
 msgstr "Engadir aos favoritos"
 
-#: ../js/ui/appDisplay.js:829
-msgid "Drag here to add favorites"
-msgstr "Arrastre aquí para engadir aos favoritos"
-
-#: ../js/ui/appFavorites.js:88
+#: ../js/ui/appFavorites.js:91
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s foi engadido aos seus favoritos."
 
-#: ../js/ui/appFavorites.js:107
+#: ../js/ui/appFavorites.js:122
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s foi eliminado dos seus favoritos."
 
-#: ../js/ui/dash.js:142
-msgid "Find"
-msgstr "Buscar"
+#: ../js/ui/dash.js:27
+msgid "Remove"
+msgstr "Eliminar"
 
-#: ../js/ui/dash.js:473
-msgid "Searching..."
-msgstr "Buscando..."
-
-#: ../js/ui/dash.js:487
-msgid "No matching results."
-msgstr "Non hai resultados que coincidan."
-
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:558
-msgid "PLACES & DEVICES"
-msgstr "LUGARES E DISPOSITIVOS"
-
-#. **** Documents ****
-#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
+#: ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECENTES"
 
@@ -498,7 +465,7 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/overview.js:160
+#: ../js/ui/overview.js:112
 msgid "Undo"
 msgstr "Desfacer"
 
@@ -570,6 +537,10 @@ msgstr "Reintentar"
 #: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
 msgstr "Conectar con..."
+
+#: ../js/ui/placeDisplay.js:558
+msgid "PLACES & DEVICES"
+msgstr "LUGARES E DISPOSITIVOS"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -669,6 +640,10 @@ msgstr "Texto máis grande"
 msgid "Zoom"
 msgstr "Ampliación"
 
+#: ../js/ui/viewSelector.js:26
+msgid "Search your computer"
+msgstr "Buscar no seu computador"
+
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
 msgid "%s has finished starting"
@@ -679,14 +654,14 @@ msgstr "%s rematou de iniarse"
 msgid "'%s' is ready"
 msgstr "«%s» está preparado"
 
-#: ../js/ui/workspacesView.js:229
+#: ../js/ui/workspacesView.js:244
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr ""
 "Non é posíbel engadir unha área de traballo nova porque chegouse ao límite "
 "de áreas de traballo."
 
-#: ../js/ui/workspacesView.js:246
+#: ../js/ui/workspacesView.js:260
 msgid "Can't remove the first workspace."
 msgstr "Non é posíbel quitar a primeira área de traballo."
 
@@ -771,6 +746,28 @@ msgstr "Buscar"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Overview workspace view mode"
+#~ msgstr "Modo de visualización do espazo de traballo de vista previa"
+
+#~ msgid ""
+#~ "The selected workspace view mode in the overview. Supported values are "
+#~ "\"single\" and \"grid\"."
+#~ msgstr ""
+#~ "O modo de visualización do espazo de traballo seleccionado na vista "
+#~ "previa. Os valores admitidos son \"single\" e \"grid\"."
+
+#~ msgid "Drag here to add favorites"
+#~ msgstr "Arrastre aquí para engadir aos favoritos"
+
+#~ msgid "Find"
+#~ msgstr "Buscar"
+
+#~ msgid "Searching..."
+#~ msgstr "Buscando..."
+
+#~ msgid "No matching results."
+#~ msgstr "Non hai resultados que coincidan."
 
 #~ msgid "Invisible"
 #~ msgstr "Invisíbel"
