@@ -477,4 +477,8 @@ CoglBufferBit
 CoglAttributeType
 </SECTION>
 
-
+<SECTION>
+<FILE>cogl-gtype</FILE>
+<TITLE>GType Integration API</TITLE>
+cogl_gtype_matrix_get_type
+</SECTION>

@@ -282,6 +282,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-shader.c                        	\
 	$(srcdir)/cogl-callback-list.h                  \
 	$(srcdir)/cogl-callback-list.c                  \
+	$(srcdir)/cogl-gtype-private.h                  \
 	$(NULL)
 
 if SUPPORT_XLIB

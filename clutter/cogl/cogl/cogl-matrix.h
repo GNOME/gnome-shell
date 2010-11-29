@@ -484,6 +484,22 @@ cogl_matrix_project_points (const CoglMatrix *matrix,
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
+#ifdef _COGL_SUPPORTS_GTYPE_INTEGRATION
+
+#define COGL_GTYPE_TYPE_MATRIX (cogl_gtype_matrix_get_type ())
+
+/**
+ * cogl_gtype_matrix_get_type:
+ *
+ * Returns the GType for the registered "CoglMatrix" boxed type. This
+ * can be used for example to define GObject properties that accept a
+ * #CoglMatrix value.
+ */
+GType
+cogl_gtype_matrix_get_type (void);
+
+#endif /* _COGL_SUPPORTS_GTYPE_INTEGRATION */
+
 G_END_DECLS
 
 #endif /* __COGL_MATRIX_H */

@@ -113,6 +113,12 @@
       <xi:include href="xml/cogl-vector.xml"/>
       <xi:include href="xml/cogl-types.xml"/>
     </section>
+
+    <section id="cogl-integration">
+      <title>Binding and Integrating</title>
+      <xi:include href="xml/cogl-gtype.xml"/>
+    </section>
+
   </chapter>
 
   <chapter id="coglglossary">

@@ -555,6 +555,12 @@ cogl_vector3_distance
 </SECTION>
 
 <SECTION>
+<FILE>cogl-gtype</FILE>
+<TITLE>GType Integration API</TITLE>
+cogl_gtype_matrix_get_type
+</SECTION>
+
+<SECTION>
 <FILE>cogl-deprecated</FILE>
 <TITLE>General API (Deprecated)</TITLE>
 cogl_check_extension
