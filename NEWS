@@ -1,4 +1,4 @@
-Clutter 1.5.8                                                        2010-xx-xx
+Clutter 1.5.8                                                        2010-11-29
 ===============================================================================
 
   • List of changes since Clutter 1.5.6
@@ -7,9 +7,37 @@ Clutter 1.5.8                                                        2010-xx-xx
 
     » Allow parsing rgb(), rgba(), hls() and hlsa() color definitions.
 
+    » Performance improvements for the ClutterX11TexturePixmap.
+
+    » For caching purposes, do not discard the Material or the compiled
+      shaders for Offscreen and Shader effects.
+
+    » Fix image height in 3D Cogl textures.
+
+    » Create a GLSL generation backend for materials, similar to the
+      ARBfp one; this backend is the default for GLES2.
+
+    » Use FBOs and cogl_read_pixels() to efficiently read back partial
+      texture data.
+
+    » Various fixes in paint volumes computation and caching.
+
+    » Use the internal scene graph walk API to remove the map/unmap
+      implementation requirement for composite actors and for
+      containers with internal children.
+
+    » Simplify the backend notification of layer changes.
+
+    » Queue clipped redraws for Expose events on X11.
+
+    » Plug leaks.
+
+    » Include a porting guide from Behaviours.
+
 Many thanks to:
 
-
+  Neil Roberts, Robert Bragg, Owen W. Taylor, Tomeu Vizoso, Chris Lord,
+  Alexandre Quessy, Evan Nemerson
 
 Clutter 1.5.6                                                        2010-11-19
 ===============================================================================
