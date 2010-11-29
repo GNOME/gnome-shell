@@ -40,7 +40,7 @@
 #include <string.h>
 
 #ifdef HAVE_COGL_GL
-#include "cogl-pipeline-arbfp-private.h"
+#include "cogl-pipeline-fragend-arbfp-private.h"
 #define glActiveTexture _context->drv.pf_glActiveTexture
 #endif
 
@@ -209,8 +209,8 @@ cogl_create_context (void)
   _context->legacy_depth_test_enabled = FALSE;
 
 #ifdef HAVE_COGL_GL
-  _context->arbfp_cache = g_hash_table_new (_cogl_pipeline_arbfp_hash,
-                                            _cogl_pipeline_arbfp_equal);
+  _context->arbfp_cache = g_hash_table_new (_cogl_pipeline_fragend_arbfp_hash,
+                                            _cogl_pipeline_fragend_arbfp_equal);
 #endif
 
   for (i = 0; i < COGL_BUFFER_BIND_TARGET_COUNT; i++)

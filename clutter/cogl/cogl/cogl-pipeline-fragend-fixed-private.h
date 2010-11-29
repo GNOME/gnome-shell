@@ -25,12 +25,12 @@
  *   Robert Bragg <robert@linux.intel.com>
  */
 
-#ifndef __COGL_PIPELINE_FIXED_PRIVATE_H
-#define __COGL_PIPELINE_FIXED_PRIVATE_H
+#ifndef __COGL_PIPELINE_FRAGEND_FIXED_PRIVATE_H
+#define __COGL_PIPELINE_FRAGEND_FIXED_PRIVATE_H
 
 #include "cogl-pipeline-private.h"
 
-extern const CoglPipelineBackend _cogl_pipeline_fixed_backend;
+extern const CoglPipelineFragend _cogl_pipeline_fixed_fragend;
 
-#endif /* __COGL_PIPELINE_FIXED_PRIVATE_H */
+#endif /* __COGL_PIPELINE_FRAGEND_FIXED_PRIVATE_H */
 

@@ -32,7 +32,7 @@
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-opengl-private.h"
 
-#ifdef COGL_PIPELINE_BACKEND_FIXED
+#ifdef COGL_PIPELINE_FRAGEND_FIXED
 
 #include "cogl.h"
 #include "cogl-internal.h"
@@ -47,10 +47,10 @@
 #include <glib/gprintf.h>
 #include <string.h>
 
-const CoglPipelineBackend _cogl_pipeline_fixed_backend;
+const CoglPipelineFragend _cogl_pipeline_fixed_fragend;
 
 static int
-_cogl_pipeline_backend_fixed_get_max_texture_units (void)
+_cogl_pipeline_fragend_fixed_get_max_texture_units (void)
 {
   _COGL_GET_CONTEXT (ctx, 0);
 
@@ -67,7 +67,7 @@ _cogl_pipeline_backend_fixed_get_max_texture_units (void)
 }
 
 static gboolean
-_cogl_pipeline_backend_fixed_start (CoglPipeline *pipeline,
+_cogl_pipeline_fragend_fixed_start (CoglPipeline *pipeline,
                                     int n_layers,
                                     unsigned long pipelines_difference,
                                     int n_tex_coord_attribs)
@@ -86,7 +86,7 @@ _cogl_pipeline_backend_fixed_start (CoglPipeline *pipeline,
 }
 
 static gboolean
-_cogl_pipeline_backend_fixed_add_layer (CoglPipeline *pipeline,
+_cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
                                         CoglPipelineLayer *layer,
                                         unsigned long layers_difference)
 {
@@ -189,7 +189,7 @@ _cogl_pipeline_backend_fixed_add_layer (CoglPipeline *pipeline,
 }
 
 static gboolean
-_cogl_pipeline_backend_fixed_end (CoglPipeline *pipeline,
+_cogl_pipeline_fragend_fixed_end (CoglPipeline *pipeline,
                                   unsigned long pipelines_difference)
 {
   if (pipelines_difference & COGL_PIPELINE_STATE_FOG)
@@ -243,18 +243,18 @@ _cogl_pipeline_backend_fixed_end (CoglPipeline *pipeline,
   return TRUE;
 }
 
-const CoglPipelineBackend _cogl_pipeline_fixed_backend =
+const CoglPipelineFragend _cogl_pipeline_fixed_fragend =
 {
-  _cogl_pipeline_backend_fixed_get_max_texture_units,
-  _cogl_pipeline_backend_fixed_start,
-  _cogl_pipeline_backend_fixed_add_layer,
+  _cogl_pipeline_fragend_fixed_get_max_texture_units,
+  _cogl_pipeline_fragend_fixed_start,
+  _cogl_pipeline_fragend_fixed_add_layer,
   NULL, /* passthrough */
-  _cogl_pipeline_backend_fixed_end,
+  _cogl_pipeline_fragend_fixed_end,
   NULL, /* pipeline_change_notify */
   NULL, /* pipeline_set_parent_notify */
   NULL, /* layer_change_notify */
   NULL /* free_priv */
 };
 
-#endif /* COGL_PIPELINE_BACKEND_FIXED */
+#endif /* COGL_PIPELINE_FRAGEND_FIXED */
 

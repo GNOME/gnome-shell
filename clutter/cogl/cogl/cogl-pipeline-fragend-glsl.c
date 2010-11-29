@@ -35,7 +35,7 @@
 #include "cogl-shader-private.h"
 #include "cogl-blend-string.h"
 
-#ifdef COGL_PIPELINE_BACKEND_GLSL
+#ifdef COGL_PIPELINE_FRAGEND_GLSL
 
 #include "cogl.h"
 #include "cogl-internal.h"
@@ -131,15 +131,15 @@ typedef struct _GlslProgramState
   CoglPipeline *last_used_for_pipeline;
 } GlslProgramState;
 
-typedef struct _CoglPipelineBackendGlslPrivate
+typedef struct _CoglPipelineFragendGlslPrivate
 {
   GlslProgramState *glsl_program_state;
-} CoglPipelineBackendGlslPrivate;
+} CoglPipelineFragendGlslPrivate;
 
-const CoglPipelineBackend _cogl_pipeline_glsl_backend;
+const CoglPipelineFragend _cogl_pipeline_glsl_backend;
 
 static int
-_cogl_pipeline_backend_glsl_get_max_texture_units (void)
+_cogl_pipeline_fragend_glsl_get_max_texture_units (void)
 {
   return _cogl_get_max_texture_image_units ();
 }
@@ -198,31 +198,31 @@ glsl_program_state_unref (GlslProgramState *state)
     }
 }
 
-static CoglPipelineBackendGlslPrivate *
+static CoglPipelineFragendGlslPrivate *
 get_glsl_priv (CoglPipeline *pipeline)
 {
-  if (!(pipeline->backend_priv_set_mask & COGL_PIPELINE_BACKEND_GLSL_MASK))
+  if (!(pipeline->fragend_priv_set_mask & COGL_PIPELINE_FRAGEND_GLSL_MASK))
     return NULL;
 
-  return pipeline->backend_privs[COGL_PIPELINE_BACKEND_GLSL];
+  return pipeline->fragend_privs[COGL_PIPELINE_FRAGEND_GLSL];
 }
 
 static void
-set_glsl_priv (CoglPipeline *pipeline, CoglPipelineBackendGlslPrivate *priv)
+set_glsl_priv (CoglPipeline *pipeline, CoglPipelineFragendGlslPrivate *priv)
 {
   if (priv)
     {
-      pipeline->backend_privs[COGL_PIPELINE_BACKEND_GLSL] = priv;
-      pipeline->backend_priv_set_mask |= COGL_PIPELINE_BACKEND_GLSL_MASK;
+      pipeline->fragend_privs[COGL_PIPELINE_FRAGEND_GLSL] = priv;
+      pipeline->fragend_priv_set_mask |= COGL_PIPELINE_FRAGEND_GLSL_MASK;
     }
   else
-    pipeline->backend_priv_set_mask &= ~COGL_PIPELINE_BACKEND_GLSL_MASK;
+    pipeline->fragend_priv_set_mask &= ~COGL_PIPELINE_FRAGEND_GLSL_MASK;
 }
 
 static GlslProgramState *
 get_glsl_program_state (CoglPipeline *pipeline)
 {
-  CoglPipelineBackendGlslPrivate *priv = get_glsl_priv (pipeline);
+  CoglPipelineFragendGlslPrivate *priv = get_glsl_priv (pipeline);
   if (!priv)
     return NULL;
   return priv->glsl_program_state;
@@ -231,7 +231,7 @@ get_glsl_program_state (CoglPipeline *pipeline)
 static void
 dirty_glsl_program_state (CoglPipeline *pipeline)
 {
-  CoglPipelineBackendGlslPrivate *priv;
+  CoglPipelineFragendGlslPrivate *priv;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -284,14 +284,14 @@ link_program (GLint gl_program)
 }
 
 static gboolean
-_cogl_pipeline_backend_glsl_start (CoglPipeline *pipeline,
+_cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
                                    int n_layers,
                                    unsigned long pipelines_difference,
                                    int n_tex_coord_attribs)
 {
-  CoglPipelineBackendGlslPrivate *priv;
+  CoglPipelineFragendGlslPrivate *priv;
   CoglPipeline *authority;
-  CoglPipelineBackendGlslPrivate *authority_priv;
+  CoglPipelineFragendGlslPrivate *authority_priv;
   CoglProgram *user_program;
   GSList *l;
   int i;
@@ -311,7 +311,7 @@ _cogl_pipeline_backend_glsl_start (CoglPipeline *pipeline,
   priv = get_glsl_priv (pipeline);
   if (!priv)
     {
-      priv = g_slice_new0 (CoglPipelineBackendGlslPrivate);
+      priv = g_slice_new0 (CoglPipelineFragendGlslPrivate);
       set_glsl_priv (pipeline, priv);
     }
 
@@ -330,7 +330,7 @@ _cogl_pipeline_backend_glsl_start (CoglPipeline *pipeline,
       authority_priv = get_glsl_priv (authority);
       if (!authority_priv)
         {
-          authority_priv = g_slice_new0 (CoglPipelineBackendGlslPrivate);
+          authority_priv = g_slice_new0 (CoglPipelineFragendGlslPrivate);
           set_glsl_priv (authority, authority_priv);
         }
 
@@ -755,7 +755,7 @@ append_masked_combine (CoglPipeline *pipeline,
 }
 
 static gboolean
-_cogl_pipeline_backend_glsl_add_layer (CoglPipeline *pipeline,
+_cogl_pipeline_fragend_glsl_add_layer (CoglPipeline *pipeline,
                                         CoglPipelineLayer *layer,
                                         unsigned long layers_difference)
 {
@@ -799,7 +799,7 @@ _cogl_pipeline_backend_glsl_add_layer (CoglPipeline *pipeline,
 }
 
 gboolean
-_cogl_pipeline_backend_glsl_passthrough (CoglPipeline *pipeline)
+_cogl_pipeline_fragend_glsl_passthrough (CoglPipeline *pipeline)
 {
   GlslProgramState *glsl_program_state = get_glsl_program_state (pipeline);
 
@@ -996,7 +996,7 @@ update_alpha_test_reference (CoglPipeline *pipeline,
 #endif /*  HAVE_COGL_GLES2 */
 
 gboolean
-_cogl_pipeline_backend_glsl_end (CoglPipeline *pipeline,
+_cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
                                  unsigned long pipelines_difference)
 {
   GlslProgramState *glsl_program_state = get_glsl_program_state (pipeline);
@@ -1044,12 +1044,12 @@ _cogl_pipeline_backend_glsl_end (CoglPipeline *pipeline,
           GLint compile_status;
           GLuint shader;
 
-          COGL_STATIC_COUNTER (backend_glsl_compile_counter,
+          COGL_STATIC_COUNTER (fragend_glsl_compile_counter,
                                "glsl compile counter",
                                "Increments each time a new GLSL "
                                "program is compiled",
                                0 /* no application private data */);
-          COGL_COUNTER_INC (_cogl_uprof_context, backend_glsl_compile_counter);
+          COGL_COUNTER_INC (_cogl_uprof_context, fragend_glsl_compile_counter);
 
 #ifdef HAVE_COGL_GLES2
           add_alpha_test_snippet (pipeline, glsl_program_state);
@@ -1163,7 +1163,7 @@ _cogl_pipeline_backend_glsl_end (CoglPipeline *pipeline,
 }
 
 static void
-_cogl_pipeline_backend_glsl_pre_change_notify (CoglPipeline *pipeline,
+_cogl_pipeline_fragend_glsl_pre_change_notify (CoglPipeline *pipeline,
                                                CoglPipelineState change,
                                                const CoglColor *new_color)
 {
@@ -1196,12 +1196,12 @@ _cogl_pipeline_backend_glsl_pre_change_notify (CoglPipeline *pipeline,
  * yet!
  */
 static void
-_cogl_pipeline_backend_glsl_layer_pre_change_notify (
+_cogl_pipeline_fragend_glsl_layer_pre_change_notify (
                                                 CoglPipeline *owner,
                                                 CoglPipelineLayer *layer,
                                                 CoglPipelineLayerState change)
 {
-  CoglPipelineBackendGlslPrivate *priv;
+  CoglPipelineFragendGlslPrivate *priv;
   static const unsigned long not_fragment_op_changes =
     COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT |
     COGL_PIPELINE_LAYER_STATE_TEXTURE |
@@ -1234,30 +1234,30 @@ _cogl_pipeline_backend_glsl_layer_pre_change_notify (
 }
 
 static void
-_cogl_pipeline_backend_glsl_free_priv (CoglPipeline *pipeline)
+_cogl_pipeline_fragend_glsl_free_priv (CoglPipeline *pipeline)
 {
-  CoglPipelineBackendGlslPrivate *priv = get_glsl_priv (pipeline);
+  CoglPipelineFragendGlslPrivate *priv = get_glsl_priv (pipeline);
   if (priv)
     {
       if (priv->glsl_program_state)
         glsl_program_state_unref (priv->glsl_program_state);
-      g_slice_free (CoglPipelineBackendGlslPrivate, priv);
+      g_slice_free (CoglPipelineFragendGlslPrivate, priv);
       set_glsl_priv (pipeline, NULL);
     }
 }
 
-const CoglPipelineBackend _cogl_pipeline_glsl_backend =
+const CoglPipelineFragend _cogl_pipeline_glsl_fragend =
 {
-  _cogl_pipeline_backend_glsl_get_max_texture_units,
-  _cogl_pipeline_backend_glsl_start,
-  _cogl_pipeline_backend_glsl_add_layer,
-  _cogl_pipeline_backend_glsl_passthrough,
-  _cogl_pipeline_backend_glsl_end,
-  _cogl_pipeline_backend_glsl_pre_change_notify,
+  _cogl_pipeline_fragend_glsl_get_max_texture_units,
+  _cogl_pipeline_fragend_glsl_start,
+  _cogl_pipeline_fragend_glsl_add_layer,
+  _cogl_pipeline_fragend_glsl_passthrough,
+  _cogl_pipeline_fragend_glsl_end,
+  _cogl_pipeline_fragend_glsl_pre_change_notify,
   NULL, /* pipeline_set_parent_notify */
-  _cogl_pipeline_backend_glsl_layer_pre_change_notify,
-  _cogl_pipeline_backend_glsl_free_priv
+  _cogl_pipeline_fragend_glsl_layer_pre_change_notify,
+  _cogl_pipeline_fragend_glsl_free_priv,
 };
 
-#endif /* COGL_PIPELINE_BACKEND_GLSL */
+#endif /* COGL_PIPELINE_FRAGEND_GLSL */
 

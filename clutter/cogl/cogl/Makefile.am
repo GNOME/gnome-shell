@@ -234,12 +234,12 @@ cogl_sources_c = \
 	$(srcdir)/cogl-pipeline-private.h		\
 	$(srcdir)/cogl-pipeline-opengl.c		\
 	$(srcdir)/cogl-pipeline-opengl-private.h	\
-	$(srcdir)/cogl-pipeline-glsl.c			\
-	$(srcdir)/cogl-pipeline-glsl-private.h		\
-	$(srcdir)/cogl-pipeline-arbfp.c			\
-	$(srcdir)/cogl-pipeline-arbfp-private.h		\
-	$(srcdir)/cogl-pipeline-fixed.c			\
-	$(srcdir)/cogl-pipeline-fixed-private.h		\
+	$(srcdir)/cogl-pipeline-fragend-glsl.c		\
+	$(srcdir)/cogl-pipeline-fragend-glsl-private.h	\
+	$(srcdir)/cogl-pipeline-fragend-arbfp.c		\
+	$(srcdir)/cogl-pipeline-fragend-arbfp-private.h	\
+	$(srcdir)/cogl-pipeline-fragend-fixed.c		\
+	$(srcdir)/cogl-pipeline-fragend-fixed-private.h	\
 	$(srcdir)/cogl-material-compat.c		\
 	$(srcdir)/cogl-program.c			\
 	$(srcdir)/cogl-program-private.h		\

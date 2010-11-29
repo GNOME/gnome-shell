@@ -63,16 +63,16 @@ static void handle_automatic_blend_enable (CoglPipeline *pipeline,
 static void recursively_free_layer_caches (CoglPipeline *pipeline);
 static gboolean _cogl_pipeline_is_weak (CoglPipeline *pipeline);
 
-const CoglPipelineBackend *_cogl_pipeline_backends[COGL_PIPELINE_N_BACKENDS];
+const CoglPipelineFragend *_cogl_pipeline_fragends[COGL_PIPELINE_N_FRAGENDS];
 
-#ifdef COGL_PIPELINE_BACKEND_GLSL
-#include "cogl-pipeline-glsl-private.h"
+#ifdef COGL_PIPELINE_FRAGEND_GLSL
+#include "cogl-pipeline-fragend-glsl-private.h"
 #endif
-#ifdef COGL_PIPELINE_BACKEND_ARBFP
-#include "cogl-pipeline-arbfp-private.h"
+#ifdef COGL_PIPELINE_FRAGEND_ARBFP
+#include "cogl-pipeline-fragend-arbfp-private.h"
 #endif
-#ifdef COGL_PIPELINE_BACKEND_FIXED
-#include "cogl-pipeline-fixed-private.h"
+#ifdef COGL_PIPELINE_FRAGEND_FIXED
+#include "cogl-pipeline-fragend-fixed-private.h"
 #endif
 
 COGL_OBJECT_DEFINE (Pipeline, pipeline);
@@ -200,24 +200,24 @@ _cogl_pipeline_init_default_pipeline (void)
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Take this opportunity to setup the fragment processing backends... */
-#ifdef COGL_PIPELINE_BACKEND_GLSL
-  _cogl_pipeline_backends[COGL_PIPELINE_BACKEND_GLSL] =
-    &_cogl_pipeline_glsl_backend;
+#ifdef COGL_PIPELINE_FRAGEND_GLSL
+  _cogl_pipeline_fragends[COGL_PIPELINE_FRAGEND_GLSL] =
+    &_cogl_pipeline_glsl_fragend;
 #endif
-#ifdef COGL_PIPELINE_BACKEND_ARBFP
-  _cogl_pipeline_backends[COGL_PIPELINE_BACKEND_ARBFP] =
-    &_cogl_pipeline_arbfp_backend;
+#ifdef COGL_PIPELINE_FRAGEND_ARBFP
+  _cogl_pipeline_fragends[COGL_PIPELINE_FRAGEND_ARBFP] =
+    &_cogl_pipeline_arbfp_fragend;
 #endif
-#ifdef COGL_PIPELINE_BACKEND_FIXED
-  _cogl_pipeline_backends[COGL_PIPELINE_BACKEND_FIXED] =
-    &_cogl_pipeline_fixed_backend;
+#ifdef COGL_PIPELINE_FRAGEND_FIXED
+  _cogl_pipeline_fragends[COGL_PIPELINE_FRAGEND_FIXED] =
+    &_cogl_pipeline_fixed_fragend;
 #endif
 
   _cogl_pipeline_node_init (COGL_PIPELINE_NODE (pipeline));
 
   pipeline->is_weak = FALSE;
   pipeline->journal_ref_count = 0;
-  pipeline->backend = COGL_PIPELINE_BACKEND_UNDEFINED;
+  pipeline->fragend = COGL_PIPELINE_FRAGEND_UNDEFINED;
   pipeline->differences = COGL_PIPELINE_STATE_ALL_SPARSE;
 
   pipeline->real_blend_enable = FALSE;
@@ -349,12 +349,12 @@ _cogl_pipeline_set_parent (CoglPipeline *pipeline,
    * with the pipeline that depends on the pipeline's ancestry then it
    * may be notified here...
    */
-  if (pipeline->backend != COGL_PIPELINE_BACKEND_UNDEFINED &&
-      _cogl_pipeline_backends[pipeline->backend]->pipeline_set_parent_notify)
+  if (pipeline->fragend != COGL_PIPELINE_FRAGEND_UNDEFINED &&
+      _cogl_pipeline_fragends[pipeline->fragend]->pipeline_set_parent_notify)
     {
-      const CoglPipelineBackend *backend =
-        _cogl_pipeline_backends[pipeline->backend];
-      backend->pipeline_set_parent_notify (pipeline);
+      const CoglPipelineFragend *fragend =
+        _cogl_pipeline_fragends[pipeline->fragend];
+      fragend->pipeline_set_parent_notify (pipeline);
     }
 }
 
@@ -429,8 +429,8 @@ _cogl_pipeline_copy (CoglPipeline *src, gboolean is_weak)
   pipeline->layers_cache_dirty = TRUE;
   pipeline->deprecated_get_layers_list_dirty = TRUE;
 
-  pipeline->backend = src->backend;
-  pipeline->backend_priv_set_mask = 0;
+  pipeline->fragend = src->fragend;
+  pipeline->fragend_priv_set_mask = 0;
 
   pipeline->has_static_breadcrumb = FALSE;
 
@@ -482,14 +482,14 @@ cogl_pipeline_new (void)
 }
 
 static void
-_cogl_pipeline_backend_free_priv (CoglPipeline *pipeline)
+_cogl_pipeline_fragend_free_priv (CoglPipeline *pipeline)
 {
-  if (pipeline->backend != COGL_PIPELINE_BACKEND_UNDEFINED &&
-      _cogl_pipeline_backends[pipeline->backend]->free_priv)
+  if (pipeline->fragend != COGL_PIPELINE_FRAGEND_UNDEFINED &&
+      _cogl_pipeline_fragends[pipeline->fragend]->free_priv)
     {
-      const CoglPipelineBackend *backend =
-        _cogl_pipeline_backends[pipeline->backend];
-      backend->free_priv (pipeline);
+      const CoglPipelineFragend *fragend =
+        _cogl_pipeline_fragends[pipeline->fragend];
+      fragend->free_priv (pipeline);
     }
 }
 
@@ -525,7 +525,7 @@ _cogl_pipeline_free (CoglPipeline *pipeline)
 
   g_assert (!COGL_PIPELINE_NODE (pipeline)->has_children);
 
-  _cogl_pipeline_backend_free_priv (pipeline);
+  _cogl_pipeline_fragend_free_priv (pipeline);
 
   _cogl_pipeline_unparent (COGL_PIPELINE_NODE (pipeline));
 
@@ -936,10 +936,10 @@ _cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
 }
 
 void
-_cogl_pipeline_set_backend (CoglPipeline *pipeline, int backend)
+_cogl_pipeline_set_fragend (CoglPipeline *pipeline, int fragend)
 {
-  _cogl_pipeline_backend_free_priv (pipeline);
-  pipeline->backend = backend;
+  _cogl_pipeline_fragend_free_priv (pipeline);
+  pipeline->fragend = fragend;
 }
 
 static void
@@ -1168,16 +1168,16 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
    * code in response to a pipeline change therefore we don't want to
    * try searching for another backend when the pipeline changes.
    */
-#ifdef COGL_PIPELINE_BACKEND_FIXED
-  if (pipeline->backend == COGL_PIPELINE_BACKEND_FIXED)
-    _cogl_pipeline_set_backend (pipeline, COGL_PIPELINE_BACKEND_UNDEFINED);
+#ifdef COGL_PIPELINE_FRAGEND_FIXED
+  if (pipeline->fragend == COGL_PIPELINE_FRAGEND_FIXED)
+    _cogl_pipeline_set_fragend (pipeline, COGL_PIPELINE_FRAGEND_UNDEFINED);
 #endif
 
-  if (pipeline->backend != COGL_PIPELINE_BACKEND_UNDEFINED &&
-      _cogl_pipeline_backends[pipeline->backend]->pipeline_pre_change_notify)
+  if (pipeline->fragend != COGL_PIPELINE_FRAGEND_UNDEFINED &&
+      _cogl_pipeline_fragends[pipeline->fragend]->pipeline_pre_change_notify)
     {
-      const CoglPipelineBackend *backend =
-        _cogl_pipeline_backends[pipeline->backend];
+      const CoglPipelineFragend *fragend =
+        _cogl_pipeline_fragends[pipeline->fragend];
 
       /* To simplify things for the backends we are careful about how
        * we report STATE_LAYERS changes.
@@ -1198,7 +1198,7 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
        * layer pre-change notification for any particular change.
        */
       if (!from_layer_change)
-        backend->pipeline_pre_change_notify (pipeline, change, new_color);
+        fragend->pipeline_pre_change_notify (pipeline, change, new_color);
     }
 
   /* There may be an arbitrary tree of descendants of this pipeline;
@@ -1485,7 +1485,7 @@ _cogl_pipeline_prune_to_n_layers (CoglPipeline *pipeline, int n)
 }
 
 static void
-_cogl_pipeline_backend_layer_change_notify (CoglPipeline *owner,
+_cogl_pipeline_fragend_layer_change_notify (CoglPipeline *owner,
                                             CoglPipelineLayer *layer,
                                             CoglPipelineLayerState change)
 {
@@ -1495,12 +1495,12 @@ _cogl_pipeline_backend_layer_change_notify (CoglPipeline *owner,
    * have a single owner and can only be associated with a single
    * backend that needs to be notified of the layer change...
    */
-  if (owner->backend != COGL_PIPELINE_BACKEND_UNDEFINED &&
-      _cogl_pipeline_backends[owner->backend]->layer_pre_change_notify)
+  if (owner->fragend != COGL_PIPELINE_FRAGEND_UNDEFINED &&
+      _cogl_pipeline_fragends[owner->fragend]->layer_pre_change_notify)
     {
-      const CoglPipelineBackend *backend =
-        _cogl_pipeline_backends[owner->backend];
-      backend->layer_pre_change_notify (owner, layer, change);
+      const CoglPipelineFragend *fragend =
+        _cogl_pipeline_fragends[owner->fragend];
+      fragend->layer_pre_change_notify (owner, layer, change);
     }
 }
 
@@ -1660,7 +1660,7 @@ _cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
    * this layer (required_owner), and there are no other layers
    * dependant on this layer so it's ok to modify it. */
 
-  _cogl_pipeline_backend_layer_change_notify (required_owner, layer, change);
+  _cogl_pipeline_fragend_layer_change_notify (required_owner, layer, change);
 
   /* If the layer being changed is the same as the last layer we
    * flushed to the corresponding texture unit then we keep a track of
@@ -4319,7 +4319,7 @@ cogl_pipeline_set_user_program (CoglPipeline *pipeline,
   _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
   if (program != COGL_INVALID_HANDLE)
-    _cogl_pipeline_set_backend (pipeline, COGL_PIPELINE_BACKEND_DEFAULT);
+    _cogl_pipeline_set_fragend (pipeline, COGL_PIPELINE_FRAGEND_DEFAULT);
 
   /* If we are the current authority see if we can revert to one of our
    * ancestors being the authority */
