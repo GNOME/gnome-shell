@@ -421,21 +421,6 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
         }
     }
 
-  if (pipelines_difference & COGL_PIPELINE_STATE_LIGHTING)
-    {
-      CoglPipeline *authority =
-        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LIGHTING);
-      CoglPipelineLightingState *lighting_state =
-        &authority->big_state->lighting_state;
-
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, lighting_state->ambient));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, lighting_state->diffuse));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, lighting_state->specular));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION, lighting_state->emission));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS,
-                        &lighting_state->shininess));
-    }
-
   if (pipelines_difference & COGL_PIPELINE_STATE_BLEND)
     {
       CoglPipeline *authority =
@@ -678,18 +663,6 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
       unit->texture_storage_changed = FALSE;
     }
 
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_USER_MATRIX)
-    {
-      CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_USER_MATRIX;
-      CoglPipelineLayer *authority =
-        _cogl_pipeline_layer_get_authority (layer, state);
-
-      _cogl_matrix_stack_set (unit->matrix_stack,
-                              &authority->big_state->matrix);
-
-      _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
-    }
-
   /* Under GLES2 the fragment shader will use gl_PointCoord instead of
      replacing the texture coordinates */
 #ifndef HAVE_COGL_GLES2
@@ -905,6 +878,42 @@ fragend_add_layer_cb (CoglPipelineLayer *layer,
   return TRUE;
 }
 
+typedef struct
+{
+  const CoglPipelineVertend *vertend;
+  CoglPipeline *pipeline;
+  unsigned long *layer_differences;
+  gboolean error_adding_layer;
+  gboolean added_layer;
+} CoglPipelineVertendAddLayerState;
+
+
+static gboolean
+vertend_add_layer_cb (CoglPipelineLayer *layer,
+                      void *user_data)
+{
+  CoglPipelineVertendAddLayerState *state = user_data;
+  const CoglPipelineVertend *vertend = state->vertend;
+  CoglPipeline *pipeline = state->pipeline;
+  int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  /* Either enerate per layer code snippets or setup the
+   * fixed function matrix uniforms for each layer... */
+  if (G_LIKELY (vertend->add_layer (pipeline,
+                                    layer,
+                                    state->layer_differences[unit_index])))
+    state->added_layer = TRUE;
+  else
+    {
+      state->error_adding_layer = TRUE;
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 /*
  * _cogl_pipeline_flush_gl_state:
  *
@@ -1093,6 +1102,52 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
 
   if (G_UNLIKELY (i >= G_N_ELEMENTS (_cogl_pipeline_fragends)))
     g_warning ("No usable pipeline fragment backend was found!");
+
+  /* Now flush the vertex processing state according to the current
+   * vertex processing backend.
+   */
+
+  if (pipeline->vertend == COGL_PIPELINE_VERTEND_UNDEFINED)
+    _cogl_pipeline_set_vertend (pipeline, COGL_PIPELINE_VERTEND_DEFAULT);
+
+  for (i = pipeline->vertend;
+       i < G_N_ELEMENTS (_cogl_pipeline_vertends);
+       i++, _cogl_pipeline_set_vertend (pipeline, i))
+    {
+      const CoglPipelineVertend *vertend = _cogl_pipeline_vertends[i];
+      CoglPipelineVertendAddLayerState state;
+
+      /* E.g. For vertends generating code they can setup their
+       * scratch buffers here... */
+      if (G_UNLIKELY (!vertend->start (pipeline,
+                                       n_layers,
+                                       pipelines_difference)))
+        continue;
+
+      state.vertend = vertend;
+      state.pipeline = pipeline;
+      state.layer_differences = layer_differences;
+      state.error_adding_layer = FALSE;
+      state.added_layer = FALSE;
+      _cogl_pipeline_foreach_layer_internal (pipeline,
+                                             vertend_add_layer_cb,
+                                             &state);
+
+      if (G_UNLIKELY (state.error_adding_layer))
+        continue;
+
+      /* For vertends generating code they may compile and link their
+       * programs here, update any uniforms and tell OpenGL to use
+       * that program.
+       */
+      if (G_UNLIKELY (!vertend->end (pipeline, pipelines_difference)))
+        continue;
+
+      break;
+    }
+
+  if (G_UNLIKELY (i >= G_N_ELEMENTS (_cogl_pipeline_vertends)))
+    g_warning ("No usable pipeline vertex backend was found!");
 
   for (i = 0; i < COGL_PIPELINE_N_PROGENDS; i++)
     if (_cogl_pipeline_progends[i]->end)

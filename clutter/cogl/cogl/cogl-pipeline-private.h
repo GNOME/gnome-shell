@@ -71,6 +71,13 @@ typedef struct _CoglPipelineLayer     CoglPipelineLayer;
 #define COGL_PIPELINE_FRAGEND_DEFAULT    0
 #define COGL_PIPELINE_FRAGEND_UNDEFINED  3
 
+#define COGL_PIPELINE_VERTEND_FIXED      0
+
+#define COGL_PIPELINE_N_VERTENDS         1
+
+#define COGL_PIPELINE_VERTEND_DEFAULT    0
+#define COGL_PIPELINE_VERTEND_UNDEFINED  3
+
 /* If we have either of the GLSL backends then we also need a GLSL
    progend to combine the shaders generated into a single
    program. Currently there is only one progend but if we ever add
@@ -610,7 +617,7 @@ struct _CoglPipeline
    * state with the ancestors of other pipelines and those ancestors
    * could currently be associated with different backends.
    *
-   * Each set bit indicates if the correspondong ->backend_privs[]
+   * Each set bit indicates if the corresponding ->fragend_privs[]
    * entry is valid.
    */
   unsigned int          fragend_priv_set_mask:COGL_PIPELINE_N_FRAGENDS;
@@ -648,6 +655,7 @@ struct _CoglPipeline
    * the pipeline and any private state the backend has associated
    * with the pipeline. */
   unsigned int          fragend:3;
+  unsigned int          vertend:3;
 };
 
 typedef struct _CoglPipelineFragend
@@ -674,6 +682,25 @@ typedef struct _CoglPipelineFragend
   void (*free_priv) (CoglPipeline *pipeline);
 } CoglPipelineFragend;
 
+typedef struct _CoglPipelineVertend
+{
+  gboolean (*start) (CoglPipeline *pipeline,
+                     int n_layers,
+                     unsigned long pipelines_difference);
+  gboolean (*add_layer) (CoglPipeline *pipeline,
+                         CoglPipelineLayer *layer,
+                         unsigned long layers_difference);
+  gboolean (*end) (CoglPipeline *pipeline,
+                   unsigned long pipelines_difference);
+
+  void (*pipeline_pre_change_notify) (CoglPipeline *pipeline,
+                                      CoglPipelineState change,
+                                      const CoglColor *new_color);
+  void (*layer_pre_change_notify) (CoglPipeline *owner,
+                                   CoglPipelineLayer *layer,
+                                   CoglPipelineLayerState change);
+} CoglPipelineVertend;
+
 typedef struct
 {
   void (*end) (CoglPipeline *pipeline,
@@ -696,6 +723,8 @@ typedef enum
 
 extern const CoglPipelineFragend *
 _cogl_pipeline_fragends[COGL_PIPELINE_N_FRAGENDS];
+extern const CoglPipelineVertend *
+_cogl_pipeline_vertends[COGL_PIPELINE_N_VERTENDS];
 extern const CoglPipelineProgend *
 _cogl_pipeline_progends[];
 
@@ -932,6 +961,9 @@ _cogl_pipeline_weak_copy (CoglPipeline *pipeline,
 
 void
 _cogl_pipeline_set_fragend (CoglPipeline *pipeline, int fragend);
+
+void
+_cogl_pipeline_set_vertend (CoglPipeline *pipeline, int vertend);
 
 CoglPipeline *
 _cogl_pipeline_get_parent (CoglPipeline *pipeline);

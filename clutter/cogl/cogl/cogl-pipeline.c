@@ -64,6 +64,7 @@ static void recursively_free_layer_caches (CoglPipeline *pipeline);
 static gboolean _cogl_pipeline_is_weak (CoglPipeline *pipeline);
 
 const CoglPipelineFragend *_cogl_pipeline_fragends[COGL_PIPELINE_N_FRAGENDS];
+const CoglPipelineVertend *_cogl_pipeline_vertends[COGL_PIPELINE_N_VERTENDS];
 /* The 'MAX' here is so that we don't define an empty array when there
    are no progends */
 const CoglPipelineProgend *
@@ -80,6 +81,10 @@ _cogl_pipeline_progends[MAX (COGL_PIPELINE_N_PROGENDS, 1)];
 #endif
 #ifdef COGL_PIPELINE_PROGEND_GLSL
 #include "cogl-pipeline-progend-glsl-private.h"
+#endif
+
+#ifdef COGL_PIPELINE_VERTEND_FIXED
+#include "cogl-pipeline-vertend-fixed-private.h"
 #endif
 
 COGL_OBJECT_DEFINE (Pipeline, pipeline);
@@ -224,11 +229,17 @@ _cogl_pipeline_init_default_pipeline (void)
     &_cogl_pipeline_glsl_progend;
 #endif
 
+#ifdef COGL_PIPELINE_VERTEND_FIXED
+  _cogl_pipeline_vertends[COGL_PIPELINE_VERTEND_FIXED] =
+    &_cogl_pipeline_fixed_vertend;
+#endif
+
   _cogl_pipeline_node_init (COGL_PIPELINE_NODE (pipeline));
 
   pipeline->is_weak = FALSE;
   pipeline->journal_ref_count = 0;
   pipeline->fragend = COGL_PIPELINE_FRAGEND_UNDEFINED;
+  pipeline->vertend = COGL_PIPELINE_VERTEND_UNDEFINED;
   pipeline->differences = COGL_PIPELINE_STATE_ALL_SPARSE;
 
   pipeline->real_blend_enable = FALSE;
@@ -356,9 +367,9 @@ _cogl_pipeline_set_parent (CoglPipeline *pipeline,
   if (pipeline->differences & COGL_PIPELINE_STATE_LAYERS)
     recursively_free_layer_caches (pipeline);
 
-  /* If the fragment processing backend is also caching state along
-   * with the pipeline that depends on the pipeline's ancestry then it
-   * may be notified here...
+  /* If the backends are also caching state along with the pipeline
+   * that depends on the pipeline's ancestry then it may be notified
+   * here...
    */
   if (pipeline->fragend != COGL_PIPELINE_FRAGEND_UNDEFINED &&
       _cogl_pipeline_fragends[pipeline->fragend]->pipeline_set_parent_notify)
@@ -442,6 +453,8 @@ _cogl_pipeline_copy (CoglPipeline *src, gboolean is_weak)
 
   pipeline->fragend = src->fragend;
   pipeline->fragend_priv_set_mask = 0;
+
+  pipeline->vertend = src->vertend;
 
   pipeline->has_static_breadcrumb = FALSE;
 
@@ -953,6 +966,12 @@ _cogl_pipeline_set_fragend (CoglPipeline *pipeline, int fragend)
   pipeline->fragend = fragend;
 }
 
+void
+_cogl_pipeline_set_vertend (CoglPipeline *pipeline, int vertend)
+{
+  pipeline->vertend = vertend;
+}
+
 static void
 _cogl_pipeline_copy_differences (CoglPipeline *dest,
                                  CoglPipeline *src,
@@ -1184,12 +1203,44 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
   if (pipeline->fragend == COGL_PIPELINE_FRAGEND_FIXED)
     _cogl_pipeline_set_fragend (pipeline, COGL_PIPELINE_FRAGEND_UNDEFINED);
 #endif
+#ifdef COGL_PIPELINE_VERTEND_FIXED
+  if (pipeline->vertend == COGL_PIPELINE_VERTEND_FIXED)
+    _cogl_pipeline_set_vertend (pipeline, COGL_PIPELINE_VERTEND_UNDEFINED);
+#endif
 
+  /* To simplify things for the backends we are careful about how
+   * we report STATE_LAYERS changes.
+   *
+   * All STATE_LAYERS changes with the exception of ->n_layers
+   * will also result in layer_pre_change_notifications. For
+   * backends that perform code generation for fragment processing
+   * they typically need to understand the details of how layers
+   * get changed to determine if they need to repeat codegen. It
+   * doesn't help them to report a pipeline STATE_LAYERS change
+   * for all layer changes since it's so broad, they really need
+   * to wait for the layer change to be notified.  What does help
+   * though is to report a STATE_LAYERS change for a change in
+   * ->n_layers because they typically do need to repeat codegen
+   *  in that case.
+   *
+   * This just ensures backends only get a single pipeline or
+   * layer pre-change notification for any particular change.
+   */
   if (pipeline->fragend != COGL_PIPELINE_FRAGEND_UNDEFINED &&
       _cogl_pipeline_fragends[pipeline->fragend]->pipeline_pre_change_notify)
     {
       const CoglPipelineFragend *fragend =
         _cogl_pipeline_fragends[pipeline->fragend];
+
+      if (!from_layer_change)
+        fragend->pipeline_pre_change_notify (pipeline, change, new_color);
+    }
+
+  if (pipeline->vertend != COGL_PIPELINE_VERTEND_UNDEFINED &&
+      _cogl_pipeline_vertends[pipeline->vertend]->pipeline_pre_change_notify)
+    {
+      const CoglPipelineVertend *vertend =
+        _cogl_pipeline_vertends[pipeline->vertend];
 
       /* To simplify things for the backends we are careful about how
        * we report STATE_LAYERS changes.
@@ -1210,7 +1261,7 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
        * layer pre-change notification for any particular change.
        */
       if (!from_layer_change)
-        fragend->pipeline_pre_change_notify (pipeline, change, new_color);
+        vertend->pipeline_pre_change_notify (pipeline, change, new_color);
     }
 
   /* Notify all of the progends */
@@ -1525,6 +1576,21 @@ _cogl_pipeline_fragend_layer_change_notify (CoglPipeline *owner,
 }
 
 static void
+_cogl_pipeline_vertend_layer_change_notify (CoglPipeline *owner,
+                                            CoglPipelineLayer *layer,
+                                            CoglPipelineLayerState change)
+{
+  /* NB: The comment in fragend_layer_change_notify applies here too */
+  if (owner->vertend != COGL_PIPELINE_VERTEND_UNDEFINED &&
+      _cogl_pipeline_vertends[owner->vertend]->layer_pre_change_notify)
+    {
+      const CoglPipelineVertend *vertend =
+        _cogl_pipeline_vertends[owner->vertend];
+      vertend->layer_pre_change_notify (owner, layer, change);
+    }
+}
+
+static void
 _cogl_pipeline_progend_layer_change_notify (CoglPipeline *owner,
                                             CoglPipelineLayer *layer,
                                             CoglPipelineLayerState change)
@@ -1697,6 +1763,7 @@ _cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
    * dependant on this layer so it's ok to modify it. */
 
   _cogl_pipeline_fragend_layer_change_notify (required_owner, layer, change);
+  _cogl_pipeline_vertend_layer_change_notify (required_owner, layer, change);
   _cogl_pipeline_progend_layer_change_notify (required_owner, layer, change);
 
   /* If the layer being changed is the same as the last layer we
@@ -4356,7 +4423,10 @@ cogl_pipeline_set_user_program (CoglPipeline *pipeline,
   _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
   if (program != COGL_INVALID_HANDLE)
-    _cogl_pipeline_set_fragend (pipeline, COGL_PIPELINE_FRAGEND_DEFAULT);
+    {
+      _cogl_pipeline_set_fragend (pipeline, COGL_PIPELINE_FRAGEND_DEFAULT);
+      _cogl_pipeline_set_vertend (pipeline, COGL_PIPELINE_VERTEND_DEFAULT);
+    }
 
   /* If we are the current authority see if we can revert to one of our
    * ancestors being the authority */
