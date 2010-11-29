@@ -42,34 +42,34 @@ typedef struct _CoglPipelineLayer     CoglPipelineLayer;
 
 #if defined (HAVE_COGL_GL)
 
-/* NB: pipeline->backend is currently a 3bit unsigned int bitfield */
-#define COGL_PIPELINE_BACKEND_ARBFP      0
-#define COGL_PIPELINE_BACKEND_ARBFP_MASK (1L<<0)
-#define COGL_PIPELINE_BACKEND_FIXED      1
-#define COGL_PIPELINE_BACKEND_FIXED_MASK (1L<<1)
-#define COGL_PIPELINE_BACKEND_GLSL       2
-#define COGL_PIPELINE_BACKEND_GLSL_MASK  (1L<<2)
+/* NB: pipeline->fragend is currently a 3bit unsigned int bitfield */
+#define COGL_PIPELINE_FRAGEND_ARBFP      0
+#define COGL_PIPELINE_FRAGEND_ARBFP_MASK (1L<<0)
+#define COGL_PIPELINE_FRAGEND_FIXED      1
+#define COGL_PIPELINE_FRAGEND_FIXED_MASK (1L<<1)
+#define COGL_PIPELINE_FRAGEND_GLSL       2
+#define COGL_PIPELINE_FRAGEND_GLSL_MASK  (1L<<2)
 
-#define COGL_PIPELINE_N_BACKENDS         3
+#define COGL_PIPELINE_N_FRAGENDS         3
 
 #elif defined (HAVE_COGL_GLES2)
 
-#define COGL_PIPELINE_BACKEND_GLSL       0
-#define COGL_PIPELINE_BACKEND_GLSL_MASK  (1L<<0)
+#define COGL_PIPELINE_FRAGEND_GLSL       0
+#define COGL_PIPELINE_FRAGEND_GLSL_MASK  (1L<<0)
 
-#define COGL_PIPELINE_N_BACKENDS         1
+#define COGL_PIPELINE_N_FRAGENDS         1
 
 #else /* HAVE_COGL_GLES */
 
-#define COGL_PIPELINE_BACKEND_FIXED      0
-#define COGL_PIPELINE_BACKEND_FIXED_MASK (1L<<0)
+#define COGL_PIPELINE_FRAGEND_FIXED      0
+#define COGL_PIPELINE_FRAGEND_FIXED_MASK (1L<<0)
 
-#define COGL_PIPELINE_N_BACKENDS         1
+#define COGL_PIPELINE_N_FRAGENDS         1
 
 #endif
 
-#define COGL_PIPELINE_BACKEND_DEFAULT    0
-#define COGL_PIPELINE_BACKEND_UNDEFINED  3
+#define COGL_PIPELINE_FRAGEND_DEFAULT    0
+#define COGL_PIPELINE_FRAGEND_UNDEFINED  3
 
 /* XXX: should I rename these as
  * COGL_PIPELINE_LAYER_STATE_INDEX_XYZ... ?
@@ -510,7 +510,7 @@ struct _CoglPipeline
 
   /* The fragment processing backends can associate private data with a
    * pipeline. */
-  void		  *backend_privs[COGL_PIPELINE_N_BACKENDS];
+  void		  *fragend_privs[COGL_PIPELINE_N_FRAGENDS];
 
   /* Whenever a pipeline is modified we increment the age. There's no
    * guarantee that it won't wrap but it can nevertheless be a
@@ -572,7 +572,7 @@ struct _CoglPipeline
    * Each set bit indicates if the correspondong ->backend_privs[]
    * entry is valid.
    */
-  unsigned int          backend_priv_set_mask:COGL_PIPELINE_N_BACKENDS;
+  unsigned int          fragend_priv_set_mask:COGL_PIPELINE_N_FRAGENDS;
 
   /* Weak pipelines don't count as dependants on their parents which
    * means that the parent pipeline can be modified without
@@ -606,10 +606,10 @@ struct _CoglPipeline
    * glsl, arbfp and fixed. This identifies the backend being used for
    * the pipeline and any private state the backend has associated
    * with the pipeline. */
-  unsigned int          backend:3;
+  unsigned int          fragend:3;
 };
 
-typedef struct _CoglPipelineBackend
+typedef struct _CoglPipelineFragend
 {
   int (*get_max_texture_units) (void);
 
@@ -633,7 +633,7 @@ typedef struct _CoglPipelineBackend
                                    CoglPipelineLayerState change);
 
   void (*free_priv) (CoglPipeline *pipeline);
-} CoglPipelineBackend;
+} CoglPipelineFragend;
 
 typedef enum
 {
@@ -642,8 +642,8 @@ typedef enum
   COGL_PIPELINE_PROGRAM_TYPE_FIXED
 } CoglPipelineProgramType;
 
-extern const CoglPipelineBackend *
-_cogl_pipeline_backends[COGL_PIPELINE_N_BACKENDS];
+extern const CoglPipelineFragend *
+_cogl_pipeline_fragends[COGL_PIPELINE_N_FRAGENDS];
 
 void
 _cogl_pipeline_init_default_pipeline (void);
@@ -877,7 +877,7 @@ _cogl_pipeline_weak_copy (CoglPipeline *pipeline,
                           void *user_data);
 
 void
-_cogl_pipeline_set_backend (CoglPipeline *pipeline, int backend);
+_cogl_pipeline_set_fragend (CoglPipeline *pipeline, int fragend);
 
 CoglPipeline *
 _cogl_pipeline_get_parent (CoglPipeline *pipeline);

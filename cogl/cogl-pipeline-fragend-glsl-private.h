@@ -25,18 +25,12 @@
  *   Robert Bragg <robert@linux.intel.com>
  */
 
-#ifndef __COGL_PIPELINE_ARBFP_PRIVATE_H
-#define __COGL_PIPELINE_ARBFP_PRIVATE_H
+#ifndef __COGL_PIPELINE_FRAGEND_GLSL_PRIVATE_H
+#define __COGL_PIPELINE_FRAGEND_GLSL_PRIVATE_H
 
 #include "cogl-pipeline-private.h"
 
-extern const CoglPipelineBackend _cogl_pipeline_arbfp_backend;
+extern const CoglPipelineFragend _cogl_pipeline_glsl_fragend;
 
-unsigned int
-_cogl_pipeline_arbfp_hash (const void *pipeline);
-
-gboolean
-_cogl_pipeline_arbfp_equal (const void *pipeline0, const void *pipeline1);
-
-#endif /* __COGL_PIPELINE_ARBFP_PRIVATE_H */
+#endif /* __COGL_PIPELINE_FRAGEND_GLSL_PRIVATE_H */
 

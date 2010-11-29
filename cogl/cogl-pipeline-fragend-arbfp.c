@@ -32,7 +32,7 @@
 #include "cogl-debug.h"
 #include "cogl-pipeline-private.h"
 
-#ifdef COGL_PIPELINE_BACKEND_ARBFP
+#ifdef COGL_PIPELINE_FRAGEND_ARBFP
 
 #include "cogl.h"
 #include "cogl-internal.h"
@@ -79,18 +79,18 @@
  * code generation.
  */
 
-#define COGL_PIPELINE_ARBFP_FRAGMENT_STATE_MASK \
+#define COGL_PIPELINE_FRAGEND_ARBFP_FRAGMENT_STATE_MASK \
   (COGL_PIPELINE_STATE_LAYERS | \
    COGL_PIPELINE_STATE_USER_SHADER)
 
-#define COGL_PIPELINE_ARBFP_FRAGMENT_PROGRAM_STATE_MASK \
-  COGL_PIPELINE_ARBFP_FRAGMENT_STATE_MASK
+#define COGL_PIPELINE_FRAGEND_ARBFP_FRAGMENT_PROGRAM_STATE_MASK \
+  COGL_PIPELINE_FRAGEND_ARBFP_FRAGMENT_STATE_MASK
 
-#define COGL_PIPELINE_ARBFP_LAYER_FRAGMENT_STATE_MASK \
+#define COGL_PIPELINE_FRAGEND_ARBFP_LAYER_FRAGMENT_STATE_MASK \
   COGL_PIPELINE_LAYER_STATE_ALL
 
-#define COGL_PIPELINE_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK \
-  (COGL_PIPELINE_ARBFP_LAYER_FRAGMENT_STATE_MASK & \
+#define COGL_PIPELINE_FRAGEND_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK \
+  (COGL_PIPELINE_FRAGEND_ARBFP_LAYER_FRAGMENT_STATE_MASK & \
    ~(COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT | \
      COGL_PIPELINE_LAYER_STATE_FILTERS | \
      COGL_PIPELINE_LAYER_STATE_WRAP_MODES | \
@@ -127,12 +127,12 @@ typedef struct _ArbfpProgramState
   CoglPipeline *last_used_for_pipeline;
 } ArbfpProgramState;
 
-typedef struct _CoglPipelineBackendARBfpPrivate
+typedef struct _CoglPipelineFragendARBfpPrivate
 {
   ArbfpProgramState *arbfp_program_state;
-} CoglPipelineBackendARBfpPrivate;
+} CoglPipelineFragendARBfpPrivate;
 
-const CoglPipelineBackend _cogl_pipeline_arbfp_backend;
+const CoglPipelineFragend _cogl_pipeline_arbfp_fragend;
 
 
 static ArbfpProgramState *
@@ -174,50 +174,50 @@ arbfp_program_state_unref (ArbfpProgramState *state)
 }
 
 static int
-_cogl_pipeline_backend_arbfp_get_max_texture_units (void)
+_cogl_pipeline_fragend_arbfp_get_max_texture_units (void)
 {
   return _cogl_get_max_texture_image_units ();
 }
 
-static CoglPipelineBackendARBfpPrivate *
+static CoglPipelineFragendARBfpPrivate *
 get_arbfp_priv (CoglPipeline *pipeline)
 {
-  if (!(pipeline->backend_priv_set_mask & COGL_PIPELINE_BACKEND_ARBFP_MASK))
+  if (!(pipeline->fragend_priv_set_mask & COGL_PIPELINE_FRAGEND_ARBFP_MASK))
     return NULL;
 
-  return pipeline->backend_privs[COGL_PIPELINE_BACKEND_ARBFP];
+  return pipeline->fragend_privs[COGL_PIPELINE_FRAGEND_ARBFP];
 }
 
 static void
-set_arbfp_priv (CoglPipeline *pipeline, CoglPipelineBackendARBfpPrivate *priv)
+set_arbfp_priv (CoglPipeline *pipeline, CoglPipelineFragendARBfpPrivate *priv)
 {
   if (priv)
     {
-      pipeline->backend_privs[COGL_PIPELINE_BACKEND_ARBFP] = priv;
-      pipeline->backend_priv_set_mask |= COGL_PIPELINE_BACKEND_ARBFP_MASK;
+      pipeline->fragend_privs[COGL_PIPELINE_FRAGEND_ARBFP] = priv;
+      pipeline->fragend_priv_set_mask |= COGL_PIPELINE_FRAGEND_ARBFP_MASK;
     }
   else
-    pipeline->backend_priv_set_mask &= ~COGL_PIPELINE_BACKEND_ARBFP_MASK;
+    pipeline->fragend_priv_set_mask &= ~COGL_PIPELINE_FRAGEND_ARBFP_MASK;
 }
 
 static ArbfpProgramState *
 get_arbfp_program_state (CoglPipeline *pipeline)
 {
-  CoglPipelineBackendARBfpPrivate *priv = get_arbfp_priv (pipeline);
+  CoglPipelineFragendARBfpPrivate *priv = get_arbfp_priv (pipeline);
   if (!priv)
     return NULL;
   return priv->arbfp_program_state;
 }
 
 static gboolean
-_cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
+_cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
                                     int n_layers,
                                     unsigned long pipelines_difference,
                                     int n_tex_coord_attribs)
 {
-  CoglPipelineBackendARBfpPrivate *priv;
+  CoglPipelineFragendARBfpPrivate *priv;
   CoglPipeline *authority;
-  CoglPipelineBackendARBfpPrivate *authority_priv;
+  CoglPipelineFragendARBfpPrivate *authority_priv;
   ArbfpProgramState *arbfp_program_state;
   CoglHandle user_program;
 
@@ -243,7 +243,7 @@ _cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
   priv = get_arbfp_priv (pipeline);
   if (!priv)
     {
-      priv = g_slice_new0 (CoglPipelineBackendARBfpPrivate);
+      priv = g_slice_new0 (CoglPipelineFragendARBfpPrivate);
       set_arbfp_priv (pipeline, priv);
     }
 
@@ -275,7 +275,7 @@ _cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
 
   if (!authority_priv)
     {
-      authority_priv = g_slice_new0 (CoglPipelineBackendARBfpPrivate);
+      authority_priv = g_slice_new0 (CoglPipelineFragendARBfpPrivate);
       set_arbfp_priv (authority, authority_priv);
     }
 
@@ -349,12 +349,12 @@ _cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
 }
 
 unsigned int
-_cogl_pipeline_arbfp_hash (const void *data)
+_cogl_pipeline_fragend_arbfp_hash (const void *data)
 {
   unsigned long fragment_state =
-    COGL_PIPELINE_ARBFP_FRAGMENT_PROGRAM_STATE_MASK;
+    COGL_PIPELINE_FRAGEND_ARBFP_FRAGMENT_PROGRAM_STATE_MASK;
   unsigned long layer_fragment_state =
-    COGL_PIPELINE_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK;
+    COGL_PIPELINE_FRAGEND_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK;
   CoglPipelineEvalFlags flags = COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA;
 
   return _cogl_pipeline_hash ((CoglPipeline *)data,
@@ -363,12 +363,12 @@ _cogl_pipeline_arbfp_hash (const void *data)
 }
 
 gboolean
-_cogl_pipeline_arbfp_equal (const void *a, const void *b)
+_cogl_pipeline_fragend_arbfp_equal (const void *a, const void *b)
 {
   unsigned long fragment_state =
-    COGL_PIPELINE_ARBFP_FRAGMENT_PROGRAM_STATE_MASK;
+    COGL_PIPELINE_FRAGEND_ARBFP_FRAGMENT_PROGRAM_STATE_MASK;
   unsigned long layer_fragment_state =
-    COGL_PIPELINE_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK;
+    COGL_PIPELINE_FRAGEND_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK;
   CoglPipelineEvalFlags flags = COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA;
 
   return _cogl_pipeline_equal ((CoglPipeline *)a, (CoglPipeline *)b,
@@ -416,18 +416,18 @@ setup_texture_source (ArbfpProgramState *arbfp_program_state,
     }
 }
 
-typedef enum _CoglPipelineBackendARBfpArgType
+typedef enum _CoglPipelineFragendARBfpArgType
 {
-  COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_SIMPLE,
-  COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_CONSTANT,
-  COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_TEXTURE
-} CoglPipelineBackendARBfpArgType;
+  COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_SIMPLE,
+  COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_CONSTANT,
+  COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE
+} CoglPipelineFragendARBfpArgType;
 
-typedef struct _CoglPipelineBackendARBfpArg
+typedef struct _CoglPipelineFragendARBfpArg
 {
   const char *name;
 
-  CoglPipelineBackendARBfpArgType type;
+  CoglPipelineFragendARBfpArgType type;
 
   /* for type = TEXTURE */
   int texture_unit;
@@ -438,22 +438,22 @@ typedef struct _CoglPipelineBackendARBfpArg
 
   const char *swizzle;
 
-} CoglPipelineBackendARBfpArg;
+} CoglPipelineFragendARBfpArg;
 
 static void
-append_arg (GString *source, const CoglPipelineBackendARBfpArg *arg)
+append_arg (GString *source, const CoglPipelineFragendARBfpArg *arg)
 {
   switch (arg->type)
     {
-    case COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_TEXTURE:
+    case COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE:
       g_string_append_printf (source, "texel%d%s",
                               arg->texture_unit, arg->swizzle);
       break;
-    case COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_CONSTANT:
+    case COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_CONSTANT:
       g_string_append_printf (source, "program.local[%d]%s",
                               arg->constant_id, arg->swizzle);
       break;
-    case COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_SIMPLE:
+    case COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_SIMPLE:
       g_string_append_printf (source, "%s%s",
                               arg->name, arg->swizzle);
       break;
@@ -462,7 +462,7 @@ append_arg (GString *source, const CoglPipelineBackendARBfpArg *arg)
 
 /* Note: we are trying to avoid duplicating strings during codegen
  * which is why we have the slightly awkward
- * CoglPipelineBackendARBfpArg mechanism. */
+ * CoglPipelineFragendARBfpArg mechanism. */
 static void
 setup_arg (CoglPipeline *pipeline,
            CoglPipelineLayer *layer,
@@ -470,7 +470,7 @@ setup_arg (CoglPipeline *pipeline,
            int arg_index,
            GLint src,
            GLint op,
-           CoglPipelineBackendARBfpArg *arg)
+           CoglPipelineFragendARBfpArg *arg)
 {
   ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (pipeline);
   static const char *tmp_name[3] = { "tmp0", "tmp1", "tmp2" };
@@ -480,7 +480,7 @@ setup_arg (CoglPipeline *pipeline,
   switch (src)
     {
     case GL_TEXTURE:
-      arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_TEXTURE;
+      arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE;
       arg->name = "texel%d";
       arg->texture_unit = _cogl_pipeline_layer_get_unit_index (layer);
       texture = _cogl_pipeline_layer_get_texture (layer);
@@ -495,24 +495,24 @@ setup_arg (CoglPipeline *pipeline,
         unit_state->constant_id = arbfp_program_state->next_constant_id++;
         unit_state->dirty_combine_constant = TRUE;
 
-        arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_CONSTANT;
+        arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_CONSTANT;
         arg->name = "program.local[%d]";
         arg->constant_id = unit_state->constant_id;
         break;
       }
     case GL_PRIMARY_COLOR:
-      arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
+      arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_SIMPLE;
       arg->name = "fragment.color.primary";
       break;
     case GL_PREVIOUS:
-      arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
+      arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_SIMPLE;
       if (_cogl_pipeline_layer_get_unit_index (layer) == 0)
         arg->name = "fragment.color.primary";
       else
         arg->name = "output";
       break;
     default: /* GL_TEXTURE0..N */
-      arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_TEXTURE;
+      arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE;
       arg->name = "texture[%d]";
       arg->texture_unit = src - GL_TEXTURE0;
       texture = _cogl_pipeline_layer_get_texture (layer);
@@ -532,7 +532,7 @@ setup_arg (CoglPipeline *pipeline,
                               arg_index);
       append_arg (arbfp_program_state->source, arg);
       g_string_append_printf (arbfp_program_state->source, ";\n");
-      arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
+      arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_SIMPLE;
       arg->name = tmp_name[arg_index];
       arg->swizzle = "";
       break;
@@ -553,7 +553,7 @@ setup_arg (CoglPipeline *pipeline,
         g_string_append_printf (arbfp_program_state->source, ".a;\n");
       else
         g_string_append_printf (arbfp_program_state->source, ";\n");
-      arg->type = COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_SIMPLE;
+      arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_SIMPLE;
       arg->name = tmp_name[arg_index];
       break;
     default:
@@ -563,8 +563,8 @@ setup_arg (CoglPipeline *pipeline,
 }
 
 static gboolean
-backend_arbfp_args_equal (CoglPipelineBackendARBfpArg *arg0,
-                          CoglPipelineBackendARBfpArg *arg1)
+fragend_arbfp_args_equal (CoglPipelineFragendARBfpArg *arg0,
+                          CoglPipelineFragendARBfpArg *arg1)
 {
   if (arg0->type != arg1->type)
     return FALSE;
@@ -573,13 +573,13 @@ backend_arbfp_args_equal (CoglPipelineBackendARBfpArg *arg0,
       strcmp (arg0->name, arg1->name) != 0)
     return FALSE;
 
-  if (arg0->type == COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_TEXTURE &&
+  if (arg0->type == COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE &&
       arg0->texture_unit != arg1->texture_unit)
     return FALSE;
   /* Note we don't have to check the target; a texture unit can only
    * have one target enabled at a time. */
 
-  if (arg0->type == COGL_PIPELINE_BACKEND_ARBFP_ARG_TYPE_CONSTANT &&
+  if (arg0->type == COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_CONSTANT &&
       arg0->constant_id != arg0->constant_id)
     return FALSE;
 
@@ -594,7 +594,7 @@ static void
 append_function (CoglPipeline *pipeline,
                  CoglBlendStringChannelMask mask,
                  GLint function,
-                 CoglPipelineBackendARBfpArg *args,
+                 CoglPipelineFragendARBfpArg *args,
                  int n_args)
 {
   ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (pipeline);
@@ -680,7 +680,7 @@ append_function (CoglPipeline *pipeline,
         append_arg (arbfp_program_state->source, &args[0]);
         g_string_append (arbfp_program_state->source, ", minus_one;\n");
 
-        if (!backend_arbfp_args_equal (&args[0], &args[1]))
+        if (!fragend_arbfp_args_equal (&args[0], &args[1]))
           {
             g_string_append (arbfp_program_state->source, "MAD tmp4, two, ");
             append_arg (arbfp_program_state->source, &args[1]);
@@ -738,7 +738,7 @@ append_masked_combine (CoglPipeline *arbfp_authority,
 {
   int i;
   int n_args;
-  CoglPipelineBackendARBfpArg args[3];
+  CoglPipelineFragendARBfpArg args[3];
 
   n_args = _cogl_get_n_args_for_combine_func (function);
 
@@ -761,7 +761,7 @@ append_masked_combine (CoglPipeline *arbfp_authority,
 }
 
 static gboolean
-_cogl_pipeline_backend_arbfp_add_layer (CoglPipeline *pipeline,
+_cogl_pipeline_fragend_arbfp_add_layer (CoglPipeline *pipeline,
                                         CoglPipelineLayer *layer,
                                         unsigned long layers_difference)
 {
@@ -844,7 +844,7 @@ _cogl_pipeline_backend_arbfp_add_layer (CoglPipeline *pipeline,
 }
 
 gboolean
-_cogl_pipeline_backend_arbfp_passthrough (CoglPipeline *pipeline)
+_cogl_pipeline_fragend_arbfp_passthrough (CoglPipeline *pipeline)
 {
   ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (pipeline);
 
@@ -889,7 +889,7 @@ update_constants_cb (CoglPipeline *pipeline,
 }
 
 static gboolean
-_cogl_pipeline_backend_arbfp_end (CoglPipeline *pipeline,
+_cogl_pipeline_fragend_arbfp_end (CoglPipeline *pipeline,
                                   unsigned long pipelines_difference)
 {
   ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (pipeline);
@@ -900,13 +900,13 @@ _cogl_pipeline_backend_arbfp_end (CoglPipeline *pipeline,
   if (arbfp_program_state->source)
     {
       GLenum gl_error;
-      COGL_STATIC_COUNTER (backend_arbfp_compile_counter,
+      COGL_STATIC_COUNTER (fragend_arbfp_compile_counter,
                            "arbfp compile counter",
                            "Increments each time a new ARBfp "
                            "program is compiled",
                            0 /* no application private data */);
 
-      COGL_COUNTER_INC (_cogl_uprof_context, backend_arbfp_compile_counter);
+      COGL_COUNTER_INC (_cogl_uprof_context, fragend_arbfp_compile_counter);
 
       g_string_append (arbfp_program_state->source,
                        "MOV result.color,output;\n");
@@ -943,7 +943,7 @@ _cogl_pipeline_backend_arbfp_end (CoglPipeline *pipeline,
            * with a pre-calculated hash value since there is a cost to
            * calculating the hash of a CoglPipeline and in this case
            * we know we have already called _cogl_pipeline_hash during
-           * _cogl_pipeline_arbfp_backend_start so we could pass the
+           * _cogl_pipeline_fragend_arbfp_backend_start so we could pass the
            * value through to here to avoid hashing it again.
            */
 
@@ -1034,7 +1034,7 @@ _cogl_pipeline_backend_arbfp_end (CoglPipeline *pipeline,
 static void
 dirty_arbfp_program_state (CoglPipeline *pipeline)
 {
-  CoglPipelineBackendARBfpPrivate *priv;
+  CoglPipelineFragendARBfpPrivate *priv;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1050,12 +1050,12 @@ dirty_arbfp_program_state (CoglPipeline *pipeline)
 }
 
 static void
-_cogl_pipeline_backend_arbfp_pipeline_pre_change_notify (
+_cogl_pipeline_fragend_arbfp_pipeline_pre_change_notify (
                                                    CoglPipeline *pipeline,
                                                    CoglPipelineState change,
                                                    const CoglColor *new_color)
 {
-  if (!(change & COGL_PIPELINE_ARBFP_FRAGMENT_PROGRAM_STATE_MASK))
+  if (!(change & COGL_PIPELINE_FRAGEND_ARBFP_FRAGMENT_PROGRAM_STATE_MASK))
     return;
 
   dirty_arbfp_program_state (pipeline);
@@ -1070,16 +1070,16 @@ _cogl_pipeline_backend_arbfp_pipeline_pre_change_notify (
  * yet!
  */
 static void
-_cogl_pipeline_backend_arbfp_layer_pre_change_notify (
+_cogl_pipeline_fragend_arbfp_layer_pre_change_notify (
                                                 CoglPipeline *owner,
                                                 CoglPipelineLayer *layer,
                                                 CoglPipelineLayerState change)
 {
-  CoglPipelineBackendARBfpPrivate *priv = get_arbfp_priv (owner);
+  CoglPipelineFragendARBfpPrivate *priv = get_arbfp_priv (owner);
   if (!priv)
     return;
 
-  if (change & COGL_PIPELINE_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK)
+  if (change & COGL_PIPELINE_FRAGEND_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK)
     {
       dirty_arbfp_program_state (owner);
       return;
@@ -1104,30 +1104,30 @@ _cogl_pipeline_backend_arbfp_layer_pre_change_notify (
 }
 
 static void
-_cogl_pipeline_backend_arbfp_free_priv (CoglPipeline *pipeline)
+_cogl_pipeline_fragend_arbfp_free_priv (CoglPipeline *pipeline)
 {
-  CoglPipelineBackendARBfpPrivate *priv = get_arbfp_priv (pipeline);
+  CoglPipelineFragendARBfpPrivate *priv = get_arbfp_priv (pipeline);
   if (priv)
     {
       if (priv->arbfp_program_state)
         arbfp_program_state_unref (priv->arbfp_program_state);
-      g_slice_free (CoglPipelineBackendARBfpPrivate, priv);
+      g_slice_free (CoglPipelineFragendARBfpPrivate, priv);
       set_arbfp_priv (pipeline, NULL);
     }
 }
 
-const CoglPipelineBackend _cogl_pipeline_arbfp_backend =
+const CoglPipelineFragend _cogl_pipeline_arbfp_fragend =
 {
-  _cogl_pipeline_backend_arbfp_get_max_texture_units,
-  _cogl_pipeline_backend_arbfp_start,
-  _cogl_pipeline_backend_arbfp_add_layer,
-  _cogl_pipeline_backend_arbfp_passthrough,
-  _cogl_pipeline_backend_arbfp_end,
-  _cogl_pipeline_backend_arbfp_pipeline_pre_change_notify,
+  _cogl_pipeline_fragend_arbfp_get_max_texture_units,
+  _cogl_pipeline_fragend_arbfp_start,
+  _cogl_pipeline_fragend_arbfp_add_layer,
+  _cogl_pipeline_fragend_arbfp_passthrough,
+  _cogl_pipeline_fragend_arbfp_end,
+  _cogl_pipeline_fragend_arbfp_pipeline_pre_change_notify,
   NULL,
-  _cogl_pipeline_backend_arbfp_layer_pre_change_notify,
-  _cogl_pipeline_backend_arbfp_free_priv,
+  _cogl_pipeline_fragend_arbfp_layer_pre_change_notify,
+  _cogl_pipeline_fragend_arbfp_free_priv
 };
 
-#endif /* COGL_PIPELINE_BACKEND_ARBFP */
+#endif /* COGL_PIPELINE_FRAGEND_ARBFP */
 

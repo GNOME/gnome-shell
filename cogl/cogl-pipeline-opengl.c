@@ -313,7 +313,7 @@ _cogl_use_program (GLuint gl_program, CoglPipelineProgramType type)
 
   if (type == COGL_PIPELINE_PROGRAM_TYPE_GLSL)
     {
-#ifdef COGL_PIPELINE_BACKEND_GLSL
+#ifdef COGL_PIPELINE_FRAGEND_GLSL
 
       if (ctx->current_gl_program != gl_program)
         {
@@ -333,20 +333,20 @@ _cogl_use_program (GLuint gl_program, CoglPipelineProgramType type)
 
 #else
 
-      g_warning ("Unexpected use of GLSL backend!");
+      g_warning ("Unexpected use of GLSL fragend!");
 
-#endif /* COGL_PIPELINE_BACKEND_GLSL */
+#endif /* COGL_PIPELINE_FRAGEND_GLSL */
     }
-#ifndef COGL_PIPELINE_BACKEND_ARBFP
+#ifndef COGL_PIPELINE_FRAGEND_ARBFP
   else if (type == COGL_PIPELINE_PROGRAM_TYPE_ARBFP)
-      g_warning ("Unexpected use of ARBFP backend!");
-#endif /* COGL_PIPELINE_BACKEND_ARBFP */
+      g_warning ("Unexpected use of ARBFP fragend!");
+#endif /* COGL_PIPELINE_FRAGEND_ARBFP */
 
   ctx->current_use_program_type = type;
 }
 
-#if defined (COGL_PIPELINE_BACKEND_GLSL) || \
-    defined (COGL_PIPELINE_BACKEND_ARBFP)
+#if defined (COGL_PIPELINE_FRAGEND_GLSL) || \
+    defined (COGL_PIPELINE_FRAGEND_ARBFP)
 int
 _cogl_get_max_texture_image_units (void)
 {
@@ -917,20 +917,20 @@ compare_layer_differences_cb (CoglPipelineLayer *layer, void *user_data)
 
 typedef struct
 {
-  const CoglPipelineBackend *backend;
+  const CoglPipelineFragend *fragend;
   CoglPipeline *pipeline;
   unsigned long *layer_differences;
   gboolean error_adding_layer;
   gboolean added_layer;
-} CoglPipelineBackendAddLayerState;
+} CoglPipelineFragendAddLayerState;
 
 
 static gboolean
-backend_add_layer_cb (CoglPipelineLayer *layer,
+fragend_add_layer_cb (CoglPipelineLayer *layer,
                       void *user_data)
 {
-  CoglPipelineBackendAddLayerState *state = user_data;
-  const CoglPipelineBackend *backend = state->backend;
+  CoglPipelineFragendAddLayerState *state = user_data;
+  const CoglPipelineFragend *fragend = state->fragend;
   CoglPipeline *pipeline = state->pipeline;
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
   CoglTextureUnit *unit = _cogl_get_texture_unit (unit_index);
@@ -943,7 +943,7 @@ backend_add_layer_cb (CoglPipelineLayer *layer,
   if (!unit->enabled)
     return FALSE;
 
-  if (G_UNLIKELY (unit_index >= backend->get_max_texture_units ()))
+  if (G_UNLIKELY (unit_index >= fragend->get_max_texture_units ()))
     {
       int j;
       for (j = unit_index; j < ctx->texture_units->len; j++)
@@ -956,7 +956,7 @@ backend_add_layer_cb (CoglPipelineLayer *layer,
 
   /* Either generate per layer code snippets or setup the
    * fixed function glTexEnv for each layer... */
-  if (G_LIKELY (backend->add_layer (pipeline,
+  if (G_LIKELY (fragend->add_layer (pipeline,
                                     layer,
                                     state->layer_differences[unit_index])))
     state->added_layer = TRUE;
@@ -1105,59 +1105,59 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
    * configuration and in that case it will report an error and we
    * will fallback to a different backend.
    *
-   * NB: if pipeline->backend != COGL_PIPELINE_BACKEND_UNDEFINED then
+   * NB: if pipeline->backend != COGL_PIPELINE_FRAGEND_UNDEFINED then
    * we have previously managed to successfully flush this pipeline
    * with the given backend so we will simply use that to avoid
    * fallback code paths.
    */
 
-  if (pipeline->backend == COGL_PIPELINE_BACKEND_UNDEFINED)
-    _cogl_pipeline_set_backend (pipeline, COGL_PIPELINE_BACKEND_DEFAULT);
+  if (pipeline->fragend == COGL_PIPELINE_FRAGEND_UNDEFINED)
+    _cogl_pipeline_set_fragend (pipeline, COGL_PIPELINE_FRAGEND_DEFAULT);
 
-  for (i = pipeline->backend;
-       i < G_N_ELEMENTS (_cogl_pipeline_backends);
-       i++, _cogl_pipeline_set_backend (pipeline, i))
+  for (i = pipeline->fragend;
+       i < G_N_ELEMENTS (_cogl_pipeline_fragends);
+       i++, _cogl_pipeline_set_fragend (pipeline, i))
     {
-      const CoglPipelineBackend *backend = _cogl_pipeline_backends[i];
-      CoglPipelineBackendAddLayerState state;
+      const CoglPipelineFragend *fragend = _cogl_pipeline_fragends[i];
+      CoglPipelineFragendAddLayerState state;
 
-      /* E.g. For backends generating code they can setup their
+      /* E.g. For fragends generating code they can setup their
        * scratch buffers here... */
-      if (G_UNLIKELY (!backend->start (pipeline,
+      if (G_UNLIKELY (!fragend->start (pipeline,
                                        n_layers,
                                        pipelines_difference,
                                        n_tex_coord_attribs)))
         continue;
 
-      state.backend = backend;
+      state.fragend = fragend;
       state.pipeline = pipeline;
       state.layer_differences = layer_differences;
       state.error_adding_layer = FALSE;
       state.added_layer = FALSE;
       _cogl_pipeline_foreach_layer_internal (pipeline,
-                                             backend_add_layer_cb,
+                                             fragend_add_layer_cb,
                                              &state);
 
       if (G_UNLIKELY (state.error_adding_layer))
         continue;
 
       if (!state.added_layer &&
-          backend->passthrough &&
-          G_UNLIKELY (!backend->passthrough (pipeline)))
+          fragend->passthrough &&
+          G_UNLIKELY (!fragend->passthrough (pipeline)))
         continue;
 
-      /* For backends generating code they may compile and link their
+      /* For fragends generating code they may compile and link their
        * programs here, update any uniforms and tell OpenGL to use
        * that program.
        */
-      if (G_UNLIKELY (!backend->end (pipeline, pipelines_difference)))
+      if (G_UNLIKELY (!fragend->end (pipeline, pipelines_difference)))
         continue;
 
       break;
     }
 
-  if (G_UNLIKELY (i >= G_N_ELEMENTS (_cogl_pipeline_backends)))
-    g_warning ("No usable pipeline backend was found!");
+  if (G_UNLIKELY (i >= G_N_ELEMENTS (_cogl_pipeline_fragends)))
+    g_warning ("No usable pipeline fragment backend was found!");
 
   /* FIXME: This reference is actually resulting in lots of
    * copy-on-write reparenting because one-shot pipelines end up
