@@ -353,6 +353,21 @@ cogl_matrix_equal (gconstpointer v1, gconstpointer v2)
     return FALSE;
 }
 
+CoglMatrix *
+cogl_matrix_copy (const CoglMatrix *matrix)
+{
+  if (G_LIKELY (matrix))
+    return g_slice_dup (CoglMatrix, matrix);
+
+  return NULL;
+}
+
+void
+cogl_matrix_free (CoglMatrix *matrix)
+{
+  g_slice_free (CoglMatrix, matrix);
+}
+
 const float *
 cogl_matrix_get_array (const CoglMatrix *matrix)
 {

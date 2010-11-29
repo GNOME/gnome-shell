@@ -293,6 +293,33 @@ gboolean
 cogl_matrix_equal (gconstpointer v1, gconstpointer v2);
 
 /**
+ * cogl_matrix_copy:
+ * @matrix: A 4x4 transformation matrix you want to copy
+ *
+ * Allocates a new #CoglMatrix on the heap and initializes it with
+ * the same values as @matrix.
+ *
+ * Returns: A newly allocated #CoglMatrix which should be freed using
+ * cogl_matrix_free()
+ *
+ * Since: 1.6
+ */
+CoglMatrix *
+cogl_matrix_copy (const CoglMatrix *matrix);
+
+/**
+ * cogl_matrix_free:
+ * @matrix: A 4x4 transformation matrix you want to free
+ *
+ * Frees a #CoglMatrix that was previously allocated via a call to
+ * cogl_matrix_copy().
+ *
+ * Since: 1.6
+ */
+void
+cogl_matrix_free (CoglMatrix *matrix);
+
+/**
  * cogl_matrix_get_inverse:
  * @matrix: A 4x4 transformation matrix
  * @inverse: (out): The destination for a 4x4 inverse transformation matrix
