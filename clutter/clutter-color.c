@@ -631,6 +631,7 @@ parse_hsla (ClutterColor *color,
  * The @color is not allocated.
  *
  * The format of @str can be either one of:
+ *
  * <itemizedlist>
  * <listitem><para>a standard name (taken from the X11 rgb.txt
  * file");</para></listitem>
@@ -639,6 +640,7 @@ parse_hsla (ClutterColor *color,
  * <listitem><para>a RGB color in the form 'rgb(r, g, b)';</para></listitem>
  * <listitem><para>a RGBA color in the form 'rgba(r, g, b,
  * a)';</para></listitem>
+ * </itemizedlist>
  *
  * where 'r', 'g', 'b' and 'a' are (respectively) the red, green, blue and
  * alpha color values.
