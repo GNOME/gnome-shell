@@ -530,11 +530,10 @@ shader_uniform_new (const gchar  *name,
 {
   ShaderUniform *retval;
 
-  retval = g_slice_new (ShaderUniform);
+  retval = g_slice_new0 (ShaderUniform);
   retval->name = g_strdup (name);
   retval->type = G_VALUE_TYPE (value);
   retval->location = -1;
-  retval->value = (GValue){0};
 
   g_value_init (&retval->value, retval->type);
   g_value_copy (value, &retval->value);
