@@ -35,6 +35,12 @@
 #endif
 #endif
 
+/* We currently keep gtype integration delimited in case we eventually
+ * want to split it out into a separate utility library when Cogl
+ * becomes a standalone project. (like cairo-gobject.so)
+ */
+#define _COGL_SUPPORTS_GTYPE_INTEGRATION
+
 #include <cogl/cogl-defines.h>
 
 #include <cogl/cogl-object.h>
