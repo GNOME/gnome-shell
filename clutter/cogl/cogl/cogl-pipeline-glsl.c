@@ -1039,7 +1039,7 @@ _cogl_pipeline_backend_glsl_end (CoglPipeline *pipeline,
 
       if (glsl_program_state->source)
         {
-          const GLchar *source_strings[2];
+          const char *source_strings[2];
           GLint lengths[2];
           GLint compile_status;
           GLuint shader;
