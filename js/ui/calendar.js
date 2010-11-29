@@ -5,7 +5,7 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const St = imports.gi.St;
 const Pango = imports.gi.Pango;
-const Gettext_gtk20 = imports.gettext.domain('gtk20');
+const Gettext_gtk30 = imports.gettext.domain('gtk30');
 
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 const WEEKDATE_HEADER_WIDTH_DIGITS = 3;
@@ -60,7 +60,7 @@ Calendar.prototype = {
         this._settings.connect('changed::' + SHOW_WEEKDATE_KEY, Lang.bind(this, this._onSettingsChange));
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
 
-        let weekStartString = Gettext_gtk20.gettext('calendar:week_start:0');
+        let weekStartString = Gettext_gtk30.gettext('calendar:week_start:0');
         if (weekStartString.indexOf('calendar:week_start:') == 0) {
             this._weekStart = parseInt(weekStartString.substring(20));
         }
@@ -71,7 +71,7 @@ Calendar.prototype = {
         }
 
         // Find the ordering for month/year in the calendar heading
-        switch (Gettext_gtk20.gettext('calendar:MY')) {
+        switch (Gettext_gtk30.gettext('calendar:MY')) {
         case 'calendar:MY':
             this._headerFormat = '%B %Y';
             break;
