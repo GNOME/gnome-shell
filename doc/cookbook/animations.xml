@@ -2703,4 +2703,345 @@ timeline_completed_cb (ClutterTimeline *timeline,
 
   </section>
 
+  <section id="animations-scaling">
+    <title>Animated scaling</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to animate scaling of an actor. Example use
+      cases:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>To animate zooming in/out of a texture in an
+          image viewer application.</para>
+        </listitem>
+        <listitem>
+          <para>To add an animated "bounce" effect (quick scale up
+          followed by scale down) to a UI element
+          to indicate it has received focus.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Animate the actor's <varname>scale-x</varname> and
+      <varname>scale-y</varname> properties to change the scaling on
+      the <varname>x</varname> and <varname>y</varname> axes
+      respectively.</para>
+
+      <para>For example, to animate an actor to twice its current scale
+      with implicit animations:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+gdouble scale_x;
+gdouble scale_y;
+
+/* get the actor's current scale */
+clutter_actor_get_scale (actor, &scale_x, &scale_y);
+
+/* animate to twice current scale on both axes */
+clutter_actor_animate (actor, CLUTTER_LINEAR, 1000,
+                       "scale-x", scale_x * 2,
+                       "scale-y", scale_y * 2);
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>Alternatively, <type>ClutterAnimator</type> or
+      <type>ClutterState</type> can be used to animate an actor's scale
+      properties. See <link linkend="animations-scaling-example-1">this
+      example</link> which uses <type>ClutterState</type> to animate
+      scaling.</para>
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>Scaling an actor is done through its <varname>scale-x</varname>
+      and <varname>scale-y</varname> properties, each of which takes
+      a <code>double</code> value. A value of less than
+      <code>1.0</code> for an axis scales an actor down on that axis,
+      reducing its apparent size; values greater than <code>1.0</code>
+      scale an actor up, increasing its apparent size.</para>
+
+      <para>Why "apparent" size? Because scaling applies a transform
+      to an actor which changes how it appears on the
+      stage, without changing its "real" size. Similarly, scaling an
+      actor may transform its position: it could appear to move to a
+      different position within its container,
+      although it is "really" at its original position. Run
+      <link linkend="animations-scaling-example-1">the
+      example</link> to see how size and position are
+      transformed by scaling.</para>
+
+      <para>It can be useful to know an actor's
+      <emphasis>transformed</emphasis> position and size after scaling:
+      for example, if you were implementing a reflowing layout manager
+      which used scaling as part of its allocation algorithm.
+      Here's an example of how to get these properties for an
+      actor:</para>
+
+      <informalexample>
+        <programlisting>
+<![CDATA[
+gfloat transformed_x;
+gfloat transformed_y;
+
+gfloat transformed_width;
+gfloat transformed_height;
+
+clutter_actor_get_transformed_position (actor, &transformed_x, &transformed_y);
+clutter_actor_get_transformed_size (actor, &transformed_width, &transformed_height);
+]]>
+        </programlisting>
+      </informalexample>
+
+      <para>Note that you can scale an actor on both axes by the same
+      amount (uniform scaling), or by a different amount on each axis
+      (differential scaling).</para>
+
+      <para>Use <function>clutter_actor_is_scaled()</function> to determine
+      whether scaling has been applied to an actor: this function returns
+      <code>FALSE</code> if both <varname>scale-x</varname> and
+      <varname>scale-y</varname> are <code>1.0</code>; otherwise, it
+      returns <code>TRUE</code>.</para>
+
+      <section>
+        <title>Scaling vs. resizing</title>
+
+        <para>Scaling changes the <emphasis>apparent</emphasis> size
+        of an actor, while leaving its real size unchanged. By contrast,
+        resizing changes the <emphasis>real</emphasis> size of the actor,
+        by modifying its <varname>width</varname> and
+        <varname>height</varname> properties.</para>
+
+        <para>Resizing and scaling produce the same visual
+        effect, as both make an actor appear to be larger or
+        smaller. Therefore, for most purposes, they are interchangeable
+        if you just want to change an actor's apparent size.</para>
+
+        <para>So why would you scale an actor rather than resize it?</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>If you've scaled an actor, you can easily reset it
+            to its original size, by setting its
+            scale back to <code>1.0</code> on both axes. By contrast,
+            to reset a resized actor to its original size,
+            you would have to track the original size manually: the
+            actor doesn't make its original size accessible.</para>
+          </listitem>
+
+          <listitem>
+            <para>Scaling can easily change the apparent size
+            of multiple actors inside a container. For example, say you
+            wanted to shrink multiple actors inside a container
+            to half their original size. There are two ways you
+            could do this:</para>
+
+            <orderedlist>
+              <listitem>
+                <para>The hard way would be to resize
+                each actor individually. You couldn't just resize the container,
+                as resizing a container doesn't resize its children: usually
+                they will be clipped so that they are either partially or
+                wholly hidden.</para>
+              </listitem>
+
+              <listitem>
+                <para>The easy way would be to set the container's scale
+                to half its initial value: the actors
+                in the container would retain their original sizes, but would
+                appear at half size.</para>
+              </listitem>
+            </orderedlist>
+          </listitem>
+        </itemizedlist>
+
+      </section>
+
+      <section>
+        <title>Scaling, layouts and containers</title>
+
+        <para>It is possible to scale actors inside containers. For
+        example, if you were using a <type>ClutterBox</type>
+        which has a <type>ClutterBoxLayout</type> layout manager,
+        you could scale the children of that layout.</para>
+
+        <para>However, you should remain aware that layout managers
+        don't take account of the scale of their children, only their
+        size. So if you scale up an actor inside a layout manager,
+        it may overlap other actors in the layout: the size allocated
+        by the layout manager doesn't increase as an actor's scale
+        increases.</para>
+
+        <para>Similarly, scaling an actor down doesn't reduce the space
+        it will be allocated by a layout.</para>
+      </section>
+
+      <section>
+        <title>Setting the scale center</title>
+
+        <para>An actor's scale center is the point around which
+        scaling occurs: when you scale the actor, it will "shrink"
+        into (if scale &lt; 1.0) or "expand" out of (if scale &gt; 1.0)
+        its scale center.</para>
+
+        <para>You can change an actor's scale center using
+        either gravity (a named position on the actor; for example, the
+        middle of the top edge of the actor is
+        <constant>CLUTTER_GRAVITY_NORTH</constant>); or
+        x,y coordinates relative to the actor's anchor point (by default,
+        the anchor point for an actor is at <code>0,0</code>).</para>
+
+        <para>Setting scale gravity has the same consequences as
+        setting both the <varname>scale-center-x</varname> and
+        <varname>scale-center-y</varname> properties for an actor.
+        For example, <constant>CLUTTER_GRAVITY_NORTH_EAST</constant>
+        sets the scale center to <code>&lt;width of the actor&gt;, 0</code>,
+        relative to the actor's anchor point (defaults to the top-right
+        corner of the actor). However, the advantage of scale
+        gravities is that they change with the actor: so if the
+        actor is resized, you don't have to manually reset the scale
+        center. This means that <constant>CLUTTER_GRAVITY_NORTH_EAST</constant>
+        will always represent the top-right corner of the actor,
+        regardless of how it is scaled or resized. The same is true
+        of each of the other scale gravities.</para>
+
+        <para>If you're animating an actor's scale but want a different
+        scale center, set it before the animation begins. One way to
+        do this is to leave the actor's scale unchanged, but with
+        a different scale center:</para>
+
+        <informalexample>
+          <programlisting>
+<![CDATA[
+gdouble scale_x;
+gdouble scale_y;
+
+/* get the actor's current scale */
+clutter_actor_get_scale (actor, &scale_x, &scale_y);
+
+/* set scale center using x,y coordinates, leaving scale unchanged;
+ * the actor's size here is assumed to be 200x200
+ */
+clutter_actor_set_scale_full (actor,
+                              scale_x,
+                              scale_y,
+                              100.0,  /* center x */
+                              100.0   /* center y */);
+
+/* set scale center using gravity, leaving scale unchanged */
+clutter_actor_set_scale_with_gravity (actor,
+                                      scale_x,
+                                      scale_y,
+                                      CLUTTER_GRAVITY_CENTER);
+]]>
+          </programlisting>
+        </informalexample>
+
+        <para>Another approach is to set scale center properties
+        via GObject, which doesn't require you to figure out the
+        actor's scale first:</para>
+
+        <informalexample>
+          <programlisting>
+<![CDATA[
+/* set scale center using x,y coordinates */
+g_object_set (actor,
+              "scale-center-x", 100.0, /* center x */
+              "scale-center-y", 100.0, /* center y */
+              NULL);
+
+/* set scale center using gravity */
+g_object_set (actor,
+              "scale-gravity", CLUTTER_GRAVITY_CENTER,
+              NULL);
+]]>
+          </programlisting>
+        </informalexample>
+
+        <para>Once the scale center is set, you can animate the
+        scaling as per usual.</para>
+
+        <para>It is even possible to animate the
+        <varname>scale-center-*</varname> properties, which can
+        produce interesting, though slightly
+        unpredictable, effects. It's usually better to change the
+        scale center before the animation starts.</para>
+
+        <para><link linkend="animations-scaling-example-1">The
+        example</link> cycles through the available scale gravities,
+        showing the effect on the animation of each of the scale
+        centers.</para>
+
+        <para>The <link linkend="animations-scaling-example-2">second
+        example</link> shows how to combine scaling in and out on a
+        texture, in response to mouse button presses. In this case,
+        the scale gravity remains at <constant>CLUTTER_GRAVITY_NORTH_WEST</constant>
+        (i.e. at the anchor point of the actor). However, the anchor
+        point is moved to the coordinates of each double click on button 1
+        (usually the left mouse button) or button 3 (usually the right
+        mouse button); which in turn automatically moves the scale center
+        before the texture is scaled. As a result, the texture
+        "expands" or "contracts" around the clicked point,
+        while the point remains still.</para>
+
+        <warning>
+          <para>One final caveat about scale centers: if an actor is
+          already scaled, the scale center coordinates are relative to
+          the <emphasis>real size</emphasis> of the actor, rather than
+          its <emphasis>transformed</emphasis> size. This can result in
+          a "jumping" effect if you change the scale center on
+          a scaled actor.</para>
+
+          <para>For example, you might set the scale gravity of an actor
+          to <constant>CLUTTER_GRAVITY_WEST</constant>, then
+          scale the actor to <code>0.5</code> on both axes. Later, you
+          change the actor's scale gravity to
+          <constant>CLUTTER_GRAVITY_EAST</constant>. The effect of this
+          is to "jump" the actor to the right, so its right-hand edge
+          is aligned with where it was at scale <code>1.0</code>.</para>
+
+          <para>If this isn't desirable, you can just retain the scale
+          center on a scaled actor, and only change it when the actor
+          is unscaled.</para>
+        </warning>
+      </section>
+
+    </section>
+
+    <section id="animations-scaling-examples">
+      <title>Full examples</title>
+
+      <example id="animations-scaling-example-1">
+        <title>Animated scaling of an actor using each of the
+        scale gravities. Press any key to start the animation.</title>
+        <programlisting>
+<xi:include href="examples/animations-scaling.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="animations-scaling-example-2">
+        <title>Animated scaling (up and down) of a texture in response
+        to button presses. Call with the path to an image as the
+        first argument.</title>
+        <programlisting>
+<xi:include href="examples/animations-scaling-zoom.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+    </section>
+
+  </section>
+
 </chapter>
