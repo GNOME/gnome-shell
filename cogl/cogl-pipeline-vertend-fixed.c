@@ -1,0 +1,114 @@
+/*
+ * Cogl
+ *
+ * An object oriented GL/GLES Abstraction/Utility Layer
+ *
+ * Copyright (C) 2008,2009,2010 Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see
+ * <http://www.gnu.org/licenses/>.
+ *
+ *
+ *
+ * Authors:
+ *   Neil Roberts <neil@linux.intel.com>
+ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include "cogl-pipeline-private.h"
+#include "cogl-pipeline-opengl-private.h"
+
+#ifdef COGL_PIPELINE_VERTEND_FIXED
+
+#include "cogl.h"
+#include "cogl-internal.h"
+#include "cogl-context.h"
+#include "cogl-handle.h"
+
+const CoglPipelineVertend _cogl_pipeline_fixed_vertend;
+
+static gboolean
+_cogl_pipeline_vertend_fixed_start (CoglPipeline *pipeline,
+                                    int n_layers,
+                                    unsigned long pipelines_difference)
+{
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_FIXED))
+    return FALSE;
+
+  return TRUE;
+}
+
+static gboolean
+_cogl_pipeline_vertend_fixed_add_layer (CoglPipeline *pipeline,
+                                        CoglPipelineLayer *layer,
+                                        unsigned long layers_difference)
+{
+  int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
+  CoglTextureUnit *unit = _cogl_get_texture_unit (unit_index);
+
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_USER_MATRIX)
+    {
+      CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_USER_MATRIX;
+      CoglPipelineLayer *authority =
+        _cogl_pipeline_layer_get_authority (layer, state);
+
+      _cogl_matrix_stack_set (unit->matrix_stack,
+                              &authority->big_state->matrix);
+
+      _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
+    }
+
+  return TRUE;
+}
+
+static gboolean
+_cogl_pipeline_vertend_fixed_end (CoglPipeline *pipeline,
+                                  unsigned long pipelines_difference)
+{
+  if (pipelines_difference & COGL_PIPELINE_STATE_LIGHTING)
+    {
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LIGHTING);
+      CoglPipelineLightingState *lighting_state =
+        &authority->big_state->lighting_state;
+
+      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT,
+                        lighting_state->ambient));
+      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE,
+                        lighting_state->diffuse));
+      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR,
+                        lighting_state->specular));
+      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION,
+                        lighting_state->emission));
+      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS,
+                        &lighting_state->shininess));
+    }
+
+  return TRUE;
+}
+
+const CoglPipelineVertend _cogl_pipeline_fixed_vertend =
+{
+  _cogl_pipeline_vertend_fixed_start,
+  _cogl_pipeline_vertend_fixed_add_layer,
+  _cogl_pipeline_vertend_fixed_end,
+  NULL, /* pipeline_change_notify */
+  NULL /* layer_change_notify */
+};
+
+#endif /* COGL_PIPELINE_VERTEND_FIXED */
+
