@@ -347,12 +347,15 @@ StTooltip StLabel {
 }
 
 #viewSelector {
-    padding: 16px;
     spacing: 16px;
 }
 
+#viewSelectorTabBar {
+    padding: 16px;
+}
+
 #searchArea {
-    padding: 0px 12px;
+    padding: 0px 24px;
 }
 
 #searchEntry {
@@ -491,7 +494,7 @@ StTooltip StLabel {
 }
 
 .all-app {
-    padding: 36px 150px 10px 0px;
+    padding: 16px 250px 10px 16px;
 }
 
 .app-section-divider-container {
