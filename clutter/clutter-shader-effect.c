@@ -183,26 +183,6 @@ clutter_shader_effect_clear (ClutterShaderEffect *self,
 }
 
 static void
-clutter_shader_effect_reset_uniforms (ClutterShaderEffect *effect)
-{
-  ClutterShaderEffectPrivate *priv = effect->priv;
-  GHashTableIter iter;
-  gpointer key, value;
-
-  if (priv->uniforms == NULL)
-    return;
-
-  key = value = NULL;
-  g_hash_table_iter_init (&iter, priv->uniforms);
-  while (g_hash_table_iter_next (&iter, &key, &value))
-    {
-      ShaderUniform *uniform = value;
-
-      uniform->location = -1;
-    }
-}
-
-static void
 clutter_shader_effect_update_uniforms (ClutterShaderEffect *effect)
 {
   ClutterShaderEffectPrivate *priv = effect->priv;
@@ -826,20 +806,22 @@ clutter_shader_effect_set_shader_source (ClutterShaderEffect *effect,
     priv->program = cogl_create_program ();
 
   if (priv->shader == COGL_INVALID_HANDLE)
-    switch (priv->shader_type)
-      {
-      case CLUTTER_FRAGMENT_SHADER:
-        priv->shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
-        break;
+    {
+      switch (priv->shader_type)
+        {
+        case CLUTTER_FRAGMENT_SHADER:
+          priv->shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
+          break;
 
-      case CLUTTER_VERTEX_SHADER:
-        priv->shader = cogl_create_shader (COGL_SHADER_TYPE_VERTEX);
-        break;
+        case CLUTTER_VERTEX_SHADER:
+          priv->shader = cogl_create_shader (COGL_SHADER_TYPE_VERTEX);
+          break;
 
-      default:
-        priv->shader = COGL_INVALID_HANDLE;
-        break;
-      }
+        default:
+          priv->shader = COGL_INVALID_HANDLE;
+          break;
+        }
+    }
 
   g_assert (priv->shader != COGL_INVALID_HANDLE);
 
