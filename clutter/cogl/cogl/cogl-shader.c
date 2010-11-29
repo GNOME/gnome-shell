@@ -191,21 +191,17 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
                                           const char **strings_in,
                                           const GLint *lengths_in)
 {
-  static const char common_boilerplate[] = _COGL_COMMON_SHADER_BOILERPLATE;
   static const char vertex_boilerplate[] = _COGL_VERTEX_SHADER_BOILERPLATE;
   static const char fragment_boilerplate[] = _COGL_FRAGMENT_SHADER_BOILERPLATE;
 
-  const char **strings = g_alloca (sizeof (char *) * (count_in + 3));
-  GLint *lengths = g_alloca (sizeof (GLint) * (count_in + 3));
+  const char **strings = g_alloca (sizeof (char *) * (count_in + 2));
+  GLint *lengths = g_alloca (sizeof (GLint) * (count_in + 2));
   int count = 0;
 #ifdef HAVE_COGL_GLES2
   char *tex_coords_declaration = NULL;
 #endif
 
   GET_CONTEXT (ctx, NO_RETVAL);
-
-  strings[count] = common_boilerplate;
-  lengths[count++] = sizeof (common_boilerplate) - 1;
 
   if (shader_gl_type == GL_VERTEX_SHADER)
     {
