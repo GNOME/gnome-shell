@@ -75,11 +75,11 @@ const Urgency = {
 const rewriteRules = {
     'XChat': [
         { pattern:     /^XChat: Private message from: (\S*) \(.*\)$/,
-          replacement: '&lt;$1&gt;' },
+          replacement: '<$1>' },
         { pattern:     /^XChat: New public message from: (\S*) \((.*)\)$/,
-          replacement: '$2 &lt;$1&gt;' },
+          replacement: '$2 <$1>' },
         { pattern:     /^XChat: Highlighted message from: (\S*) \((.*)\)$/,
-          replacement: '$2 &lt;$1&gt;' }
+          replacement: '$2 <$1>' }
     ]
 };
 
