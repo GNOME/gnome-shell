@@ -30,7 +30,7 @@ function AlphabeticalView() {
 AlphabeticalView.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true });
-        this._grid = new IconGrid.IconGrid();
+        this._grid = new IconGrid.IconGrid({ xAlign: St.Align.START });
         this._appSystem = Shell.AppSystem.get_default();
         this.actor.add(this._grid.actor, { y_align: St.Align.START, expand: true });
     },

@@ -347,6 +347,7 @@ StTooltip StLabel {
 }
 
 #viewSelector {
+    padding: 16px;
     spacing: 16px;
 }
 
@@ -485,22 +486,21 @@ StTooltip StLabel {
 }
 
 .icon-grid {
-    spacing: 6px;
+    spacing: 36px;
     -shell-grid-item-size: 70px;
 }
 
 .all-app {
-    padding: 10px;
+    padding: 36px 150px 10px 0px;
 }
 
 .app-section-divider-container {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 36px;
+    padding-bottom: 36px;
 }
 
 .app-section-divider {
     height: 2px;
-    background-image: url("separator-white.png");
 }
 
 #dash > .app-well-app {
