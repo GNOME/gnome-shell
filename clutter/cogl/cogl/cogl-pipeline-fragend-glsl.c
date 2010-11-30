@@ -138,12 +138,6 @@ typedef struct _CoglPipelineFragendGlslPrivate
 
 const CoglPipelineFragend _cogl_pipeline_glsl_backend;
 
-static int
-_cogl_pipeline_fragend_glsl_get_max_texture_units (void)
-{
-  return _cogl_get_max_texture_image_units ();
-}
-
 static GlslProgramState *
 glsl_program_state_new (int n_layers)
 {
@@ -1248,7 +1242,6 @@ _cogl_pipeline_fragend_glsl_free_priv (CoglPipeline *pipeline)
 
 const CoglPipelineFragend _cogl_pipeline_glsl_fragend =
 {
-  _cogl_pipeline_fragend_glsl_get_max_texture_units,
   _cogl_pipeline_fragend_glsl_start,
   _cogl_pipeline_fragend_glsl_add_layer,
   _cogl_pipeline_fragend_glsl_passthrough,

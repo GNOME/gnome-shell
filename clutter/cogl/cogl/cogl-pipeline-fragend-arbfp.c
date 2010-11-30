@@ -173,12 +173,6 @@ arbfp_program_state_unref (ArbfpProgramState *state)
     }
 }
 
-static int
-_cogl_pipeline_fragend_arbfp_get_max_texture_units (void)
-{
-  return _cogl_get_max_texture_image_units ();
-}
-
 static CoglPipelineFragendARBfpPrivate *
 get_arbfp_priv (CoglPipeline *pipeline)
 {
@@ -1118,7 +1112,6 @@ _cogl_pipeline_fragend_arbfp_free_priv (CoglPipeline *pipeline)
 
 const CoglPipelineFragend _cogl_pipeline_arbfp_fragend =
 {
-  _cogl_pipeline_fragend_arbfp_get_max_texture_units,
   _cogl_pipeline_fragend_arbfp_start,
   _cogl_pipeline_fragend_arbfp_add_layer,
   _cogl_pipeline_fragend_arbfp_passthrough,

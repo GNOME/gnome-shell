@@ -611,8 +611,6 @@ struct _CoglPipeline
 
 typedef struct _CoglPipelineFragend
 {
-  int (*get_max_texture_units) (void);
-
   gboolean (*start) (CoglPipeline *pipeline,
                      int n_layers,
                      unsigned long pipelines_difference,

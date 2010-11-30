@@ -49,8 +49,25 @@
 
 const CoglPipelineFragend _cogl_pipeline_fixed_fragend;
 
+static void
+_cogl_disable_texture_unit (int unit_index)
+{
+  CoglTextureUnit *unit;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  unit = &g_array_index (ctx->texture_units, CoglTextureUnit, unit_index);
+
+  if (unit->enabled_gl_target)
+    {
+      _cogl_set_active_texture_unit (unit_index);
+      GE (glDisable (unit->enabled_gl_target));
+      unit->enabled_gl_target = 0;
+    }
+}
+
 static int
-_cogl_pipeline_fragend_fixed_get_max_texture_units (void)
+get_max_texture_units (void)
 {
   _COGL_GET_CONTEXT (ctx, 0);
 
@@ -105,6 +122,68 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
    * _cogl_bind_gl_texture_transient for more details.
    */
   _cogl_set_active_texture_unit (unit_index);
+
+  if (G_UNLIKELY (unit_index >= get_max_texture_units ()))
+    {
+      _cogl_disable_texture_unit (unit_index);
+      /* TODO: although this isn't considered an error that
+       * warrants falling back to a different backend we
+       * should print a warning here. */
+      return TRUE;
+    }
+
+  /* Handle enabling or disabling the right texture target */
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE)
+    {
+      CoglPipelineLayer *authority =
+        _cogl_pipeline_layer_get_authority (layer,
+                                            COGL_PIPELINE_LAYER_STATE_TEXTURE);
+      CoglHandle texture;
+      GLuint     gl_texture;
+      GLenum     gl_target;
+
+      texture = (authority->texture == COGL_INVALID_HANDLE ?
+                 ctx->default_gl_texture_2d_tex :
+                 authority->texture);
+
+      cogl_texture_get_gl_texture (texture,
+                                   &gl_texture,
+                                   &gl_target);
+
+      _cogl_set_active_texture_unit (unit_index);
+
+      /* The common GL code handles binding the right texture so we
+         just need to handle enabling and disabling it */
+
+      if (unit->enabled_gl_target != gl_target)
+        {
+          /* Disable the previous target if it's still enabled */
+          if (unit->enabled_gl_target)
+            GE (glDisable (unit->enabled_gl_target));
+
+          /* Enable the new target */
+          if (!G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_TEXTURING))
+            {
+              GE (glEnable (gl_target));
+              unit->enabled_gl_target = gl_target;
+            }
+        }
+    }
+  else
+    {
+      /* Even though there may be no difference between the last flushed
+       * texture state and the current layers texture state it may be that the
+       * texture unit has been disabled for some time so we need to assert that
+       * it's enabled now.
+       */
+      if (!G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_TEXTURING) &&
+          !unit->enabled_gl_target == 0)
+        {
+          _cogl_set_active_texture_unit (unit_index);
+          GE (glEnable (unit->gl_target));
+          unit->enabled_gl_target = unit->gl_target;
+        }
+    }
 
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_COMBINE)
     {
@@ -189,9 +268,34 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
 }
 
 static gboolean
+get_highest_unit_index_cb (CoglPipelineLayer *layer,
+                           void *user_data)
+{
+  int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
+  int *highest_index = user_data;
+
+  *highest_index = unit_index;
+
+  return TRUE;
+}
+
+static gboolean
 _cogl_pipeline_fragend_fixed_end (CoglPipeline *pipeline,
                                   unsigned long pipelines_difference)
 {
+  int highest_unit_index = -1;
+  int i;
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  _cogl_pipeline_foreach_layer_internal (pipeline,
+                                         get_highest_unit_index_cb,
+                                         &highest_unit_index);
+
+  /* Disable additional texture units that may have previously been in use.. */
+  for (i = highest_unit_index + 1; i < ctx->texture_units->len; i++)
+    _cogl_disable_texture_unit (i);
+
   if (pipelines_difference & COGL_PIPELINE_STATE_FOG)
     {
       CoglPipeline *authority =
@@ -245,7 +349,6 @@ _cogl_pipeline_fragend_fixed_end (CoglPipeline *pipeline,
 
 const CoglPipelineFragend _cogl_pipeline_fixed_fragend =
 {
-  _cogl_pipeline_fragend_fixed_get_max_texture_units,
   _cogl_pipeline_fragend_fixed_start,
   _cogl_pipeline_fragend_fixed_add_layer,
   NULL, /* passthrough */

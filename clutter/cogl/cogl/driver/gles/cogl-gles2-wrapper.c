@@ -269,25 +269,19 @@ cogl_gles2_wrapper_get_locations (GLuint program,
     = glGetUniformLocation (program, "cogl_modelview_matrix");
 
   for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
-    if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
-      {
-        char *matrix_var_name = g_strdup_printf ("cogl_texture_matrix[%d]", i);
-        char *tex_coord_var_name =
-          g_strdup_printf ("cogl_tex_coord%d_in", i);
+    {
+      char *matrix_var_name = g_strdup_printf ("cogl_texture_matrix[%d]", i);
+      char *tex_coord_var_name =
+        g_strdup_printf ("cogl_tex_coord%d_in", i);
 
-        uniforms->texture_matrix_uniforms[i]
-          = glGetUniformLocation (program, matrix_var_name);
-        attribs->multi_texture_coords[i]
-          = glGetAttribLocation (program, tex_coord_var_name);
+      uniforms->texture_matrix_uniforms[i]
+        = glGetUniformLocation (program, matrix_var_name);
+      attribs->multi_texture_coords[i]
+        = glGetAttribLocation (program, tex_coord_var_name);
 
-        g_free (tex_coord_var_name);
-        g_free (matrix_var_name);
-      }
-    else
-      {
-        uniforms->texture_matrix_uniforms[i] = -1;
-        attribs->multi_texture_coords[i] = -1;
-      }
+      g_free (tex_coord_var_name);
+      g_free (matrix_var_name);
+    }
 
   uniforms->point_size_uniform
     = glGetUniformLocation (program, "cogl_point_size_in");
@@ -648,26 +642,25 @@ _cogl_wrap_prepare_for_draw (void)
 
       /* TODO - coverage test */
       for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
-        if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (w->settings.texture_units, i))
-          {
-            GLint tex_coord_var_index;
-            CoglGles2WrapperTextureUnit *texture_unit;
+        {
+          GLint tex_coord_var_index;
+          CoglGles2WrapperTextureUnit *texture_unit;
 
-            texture_unit = w->texture_units + i;
-            if (!texture_unit->texture_coords_enabled)
-              continue;
+          texture_unit = w->texture_units + i;
+          if (!texture_unit->texture_coords_enabled)
+            continue;
 
-            /* TODO - we should probably have a per unit dirty flag too */
+          /* TODO - we should probably have a per unit dirty flag too */
 
-            /* TODO - coverage test */
-            tex_coord_var_index = program->attributes.multi_texture_coords[i];
-            glVertexAttribPointer (tex_coord_var_index,
-                                   texture_unit->texture_coords_size,
-                                   texture_unit->texture_coords_type,
-                                   GL_FALSE,
-                                   texture_unit->texture_coords_stride,
-                                   texture_unit->texture_coords_pointer);
-          }
+          /* TODO - coverage test */
+          tex_coord_var_index = program->attributes.multi_texture_coords[i];
+          glVertexAttribPointer (tex_coord_var_index,
+                                 texture_unit->texture_coords_size,
+                                 texture_unit->texture_coords_type,
+                                 GL_FALSE,
+                                 texture_unit->texture_coords_stride,
+                                 texture_unit->texture_coords_pointer);
+        }
     }
 
   if (w->dirty_vertex_attrib_enables)
