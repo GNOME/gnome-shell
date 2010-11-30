@@ -25,6 +25,7 @@ dist_theme_DATA =				\
 	theme/close-window.svg			\
 	theme/close.svg				\
 	theme/corner-ripple.png			\
+	theme/dash-placeholder.svg		\
 	theme/dialog-error.svg			\
 	theme/gnome-shell.css			\
 	theme/mosaic-view-active.svg		\
@@ -32,6 +33,7 @@ dist_theme_DATA =				\
 	theme/move-window-on-new.svg		\
 	theme/process-working.png		\
 	theme/remove-workspace.svg		\
+	theme/running-indicator.svg		\
 	theme/scroll-button-down-hover.png	\
 	theme/scroll-button-down.png		\
 	theme/scroll-button-up-hover.png	\

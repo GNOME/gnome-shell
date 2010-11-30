@@ -21,8 +21,6 @@ const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 const Params = imports.misc.params;
 
-const WELL_MAX_COLUMNS = 16;
-const WELL_MAX_SEARCH_ROWS = 1;
 const MENU_POPUP_TIMEOUT = 600;
 
 function AlphabeticalView() {
@@ -32,7 +30,7 @@ function AlphabeticalView() {
 AlphabeticalView.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true });
-        this._grid = new IconGrid.IconGrid();
+        this._grid = new IconGrid.IconGrid({ xAlign: St.Align.START });
         this._appSystem = Shell.AppSystem.get_default();
         this.actor.add(this._grid.actor, { y_align: St.Align.START, expand: true });
     },
@@ -148,22 +146,14 @@ AllAppDisplay.prototype = {
             Main.queueDeferredWork(this._workId);
         }));
 
-        let bin = new St.BoxLayout({ style_class: 'all-app-controls-panel',
-                                     reactive: true });
-        this.actor = new St.BoxLayout({ style_class: 'all-app', vertical: true });
-        this.actor.hide();
-
-        let view = new St.ScrollView({ x_fill: true,
-                                       y_fill: false,
-                                       style_class: 'all-app-scroll-view',
-                                       vshadows: true });
-        this._scrollView = view;
-        this.actor.add(bin);
-        this.actor.add(view, { expand: true, y_fill: false, y_align: St.Align.START });
+        this._scrollView = new St.ScrollView({ x_fill: true,
+                                               y_fill: false,
+                                               vshadows: true });
+        this.actor = new St.Bin({ style_class: 'all-app',
+                                  y_align: St.Align.START,
+                                  child: this._scrollView });
 
         this._appView = new ViewByCategories();
-        this._appView.connect('launching', Lang.bind(this, this.close));
-        this._appView.connect('drag-begin', Lang.bind(this, this.close));
         this._scrollView.add_actor(this._appView.actor);
 
         this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -177,101 +167,10 @@ AllAppDisplay.prototype = {
         });
 
         this._appView.refresh(apps);
-    },
-
-    toggle: function() {
-        if (this.actor.visible) {
-            Tweener.addTween(this.actor,
-                             { opacity: 0,
-                               time: Overview.PANE_FADE_TIME,
-                               transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this,
-                                   function() {
-                                       this.actor.hide();
-                                       this.emit('open-state-changed',
-                                                 this.actor.visible);
-                                   })
-                             });
-        } else {
-            this.actor.show();
-            this.emit('open-state-changed', this.actor.visible);
-            this.actor.opacity = 0;
-            Tweener.addTween(this.actor,
-                             { opacity: 255,
-                               time: Overview.PANE_FADE_TIME,
-                               transition: 'easeOutQuad'
-                             });
-        }
-    },
-
-    close: function() {
-        if (!this.actor.visible)
-            return;
-        this.toggle();
     }
 };
-
 Signals.addSignalMethods(AllAppDisplay.prototype);
 
-function AppSearchResultDisplay(provider) {
-    this._init(provider);
-}
-
-AppSearchResultDisplay.prototype = {
-    __proto__: Search.SearchResultDisplay.prototype,
-
-    _init: function (provider) {
-        Search.SearchResultDisplay.prototype._init.call(this, provider);
-        this._grid = new IconGrid.IconGrid({ rowLimit: WELL_MAX_SEARCH_ROWS });
-        this.actor = new St.Bin({ name: 'dashAppSearchResults',
-                                  x_align: St.Align.START });
-        this.actor.set_child(this._grid.actor);
-    },
-
-    renderResults: function(results, terms) {
-        let appSys = Shell.AppSystem.get_default();
-        let maxItems = WELL_MAX_SEARCH_ROWS * WELL_MAX_COLUMNS;
-        for (let i = 0; i < results.length && i < maxItems; i++) {
-            let result = results[i];
-            let app = appSys.get_app(result);
-            let display = new AppWellIcon(app);
-            this._grid.addItem(display.actor);
-        }
-    },
-
-    clear: function () {
-        this._grid.removeAll();
-        this.selectionIndex = -1;
-    },
-
-    getVisibleResultCount: function() {
-        return this._grid.visibleItemsCount();
-    },
-
-    selectIndex: function (index) {
-        let nVisible = this.getVisibleResultCount();
-        if (this.selectionIndex >= 0) {
-            let prevActor = this._grid.getItemAtIndex(this.selectionIndex);
-            prevActor._delegate.setSelected(false);
-        }
-        this.selectionIndex = -1;
-        if (index >= nVisible)
-            return false;
-        else if (index < 0)
-            return false;
-        let targetActor = this._grid.getItemAtIndex(index);
-        targetActor._delegate.setSelected(true);
-        this.selectionIndex = index;
-        return true;
-    },
-
-    activateSelected: function() {
-        if (this.selectionIndex < 0)
-            return;
-        let targetActor = this._grid.getItemAtIndex(this.selectionIndex);
-        this.provider.activateResult(targetActor._delegate.app.get_id());
-    }
-};
 
 function BaseAppSearchProvider() {
     this._init();
@@ -324,12 +223,10 @@ AppSearchProvider.prototype = {
         return this._appSys.subsearch(false, previousResults, terms);
     },
 
-    createResultContainerActor: function () {
-        return new AppSearchResultDisplay(this);
-    },
-
     createResultActor: function (resultMeta, terms) {
-        return new AppIcon(resultMeta.id);
+        let app = this._appSys.get_app(resultMeta['id']);
+        let icon = new AppWellIcon(app);
+        return icon.actor;
     },
 
     expandSearch: function(terms) {
@@ -375,7 +272,9 @@ AppIcon.prototype = {
 
         let label = this.app.get_name();
 
-        IconGrid.BaseIcon.prototype._init.call(this, label);
+        IconGrid.BaseIcon.prototype._init.call(this,
+                                               label,
+                                               { setSizeManually: true });
     },
 
     createIcon: function(iconSize) {
@@ -396,8 +295,8 @@ AppWellIcon.prototype = {
                                          y_fill: true });
         this.actor._delegate = this;
 
-        this._icon = new AppIcon(app);
-        this.actor.set_child(this._icon.actor);
+        this.icon = new AppIcon(app);
+        this.actor.set_child(this.icon.actor);
 
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
 
@@ -526,14 +425,6 @@ AppWellIcon.prototype = {
         }
     },
 
-    setSelected: function (isSelected) {
-        this._selected = isSelected;
-        if (this._selected)
-            this.actor.add_style_class_name('selected');
-        else
-            this.actor.remove_style_class_name('selected');
-    },
-
     _onMenuPoppedUp: function() {
         if (this._getRunning()) {
             Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(this.app.get_id());
@@ -581,13 +472,13 @@ AppWellIcon.prototype = {
     },
 
     getDragActor: function() {
-        return this.app.create_icon_texture(this._icon.iconSize);
+        return this.app.create_icon_texture(this.icon.iconSize);
     },
 
     // Returns the original actor that should align with the actor
     // we show as the item is being dragged.
     getDragActorSource: function() {
-        return this._icon.icon;
+        return this.icon.icon;
     }
 };
 Signals.addSignalMethods(AppWellIcon.prototype);
@@ -756,135 +647,3 @@ AppIconMenu.prototype = {
     }
 };
 Signals.addSignalMethods(AppIconMenu.prototype);
-
-function AppWell() {
-    this._init();
-}
-
-AppWell.prototype = {
-    _init : function() {
-        this._placeholderText = null;
-        this._menus = [];
-        this._menuDisplays = [];
-
-        this._favorites = [];
-
-        this._grid = new IconGrid.IconGrid();
-        this.actor = this._grid.actor;
-        this.actor._delegate = this;
-
-        this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
-
-        this._tracker = Shell.WindowTracker.get_default();
-        this._appSystem = Shell.AppSystem.get_default();
-
-        this._appSystem.connect('installed-changed', Lang.bind(this, this._queueRedisplay));
-        AppFavorites.getAppFavorites().connect('changed', Lang.bind(this, this._queueRedisplay));
-        this._tracker.connect('app-state-changed', Lang.bind(this, this._queueRedisplay));
-    },
-
-    _appIdListToHash: function(apps) {
-        let ids = {};
-        for (let i = 0; i < apps.length; i++)
-            ids[apps[i].get_id()] = apps[i];
-        return ids;
-    },
-
-    _queueRedisplay: function () {
-        Main.queueDeferredWork(this._workId);
-    },
-
-    _redisplay: function () {
-        this._grid.removeAll();
-
-        let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
-
-        /* hardcode here pending some design about how exactly desktop contexts behave */
-        let contextId = '';
-
-        let running = this._tracker.get_running_apps(contextId);
-        let runningIds = this._appIdListToHash(running);
-
-        let nFavorites = 0;
-        for (let id in favorites) {
-            let app = favorites[id];
-            let display = new AppWellIcon(app);
-            this._grid.addItem(display.actor);
-            nFavorites++;
-        }
-
-        for (let i = 0; i < running.length; i++) {
-            let app = running[i];
-            if (app.get_id() in favorites)
-                continue;
-            let display = new AppWellIcon(app);
-            this._grid.addItem(display.actor);
-        }
-        if (this._placeholderText) {
-            this._placeholderText.destroy();
-            this._placeholderText = null;
-        }
-
-        if (running.length == 0 && nFavorites == 0) {
-            this._placeholderText = new St.Label({ text: _("Drag here to add favorites") });
-            this.actor.add_actor(this._placeholderText);
-        }
-    },
-
-    handleDragOver : function(source, actor, x, y, time) {
-        let app = null;
-        if (source instanceof AppWellIcon)
-            app = this._appSystem.get_app(source.getId());
-        else if (source instanceof Workspace.WindowClone)
-            app = this._tracker.get_window_app(source.metaWindow);
-
-        // Don't allow favoriting of transient apps
-        if (app == null || app.is_transient())
-            return DND.DragMotionResult.NO_DROP;
-
-        let id = app.get_id();
-
-        let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
-
-        let srcIsFavorite = (id in favorites);
-
-        if (srcIsFavorite)
-            return DND.DragMotionResult.NO_DROP;
-
-        return DND.DragMotionResult.COPY_DROP;
-    },
-
-    // Draggable target interface
-    acceptDrop : function(source, actor, x, y, time) {
-        let app = null;
-        if (source instanceof AppWellIcon) {
-            app = this._appSystem.get_app(source.getId());
-        } else if (source instanceof Workspace.WindowClone) {
-            app = this._tracker.get_window_app(source.metaWindow);
-        }
-
-        // Don't allow favoriting of transient apps
-        if (app == null || app.is_transient()) {
-            return false;
-        }
-
-        let id = app.get_id();
-
-        let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
-
-        let srcIsFavorite = (id in favorites);
-
-        if (srcIsFavorite) {
-            return false;
-        } else {
-            Mainloop.idle_add(Lang.bind(this, function () {
-                AppFavorites.getAppFavorites().addFavorite(id);
-                return false;
-            }));
-        }
-
-        return true;
-    }
-};
-
-Signals.addSignalMethods(AppWell.prototype);

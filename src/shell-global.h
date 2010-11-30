@@ -38,7 +38,8 @@ typedef enum {
   SHELL_CURSOR_DND_IN_DRAG,
   SHELL_CURSOR_DND_UNSUPPORTED_TARGET,
   SHELL_CURSOR_DND_MOVE,
-  SHELL_CURSOR_DND_COPY
+  SHELL_CURSOR_DND_COPY,
+  SHELL_CURSOR_POINTING_HAND
 } ShellCursor;
 
 void shell_global_set_cursor (ShellGlobal *global,

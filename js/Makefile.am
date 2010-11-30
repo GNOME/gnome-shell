@@ -8,6 +8,7 @@ nobase_dist_js_DATA = 	\
 	misc/gnomeSession.js	\
 	misc/params.js		\
 	misc/telepathy.js	\
+	misc/utils.js		\
 	perf/core.js		\
 	prefs/clockPreferences.js \
 	ui/altTab.js		\
@@ -40,6 +41,7 @@ nobase_dist_js_DATA = 	\
 	ui/runDialog.js		\
 	ui/scripting.js		\
 	ui/search.js		\
+	ui/searchDisplay.js	\
 	ui/shellDBus.js		\
 	ui/statusIconDispatcher.js	\
 	ui/statusMenu.js	\
@@ -48,6 +50,7 @@ nobase_dist_js_DATA = 	\
 	ui/status/volume.js	\
 	ui/telepathyClient.js	\
 	ui/tweener.js		\
+	ui/viewSelector.js	\
 	ui/windowAttentionHandler.js	\
 	ui/windowManager.js	\
 	ui/workspace.js		\

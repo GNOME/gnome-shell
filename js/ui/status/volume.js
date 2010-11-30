@@ -38,12 +38,11 @@ Indicator.prototype = {
         this._output = null;
         this._outputVolumeId = 0;
         this._outputMutedId = 0;
-        this._outputSwitch = new PopupMenu.PopupSwitchMenuItem(_("Volume: Muted"), false);
-        this._outputSwitch.connect('toggled', Lang.bind(this, this._switchToggled, '_output'));
+        this._outputTitle = new PopupMenu.PopupMenuItem(_("Volume"), { reactive: false });
         this._outputSlider = new PopupMenu.PopupSliderMenuItem(0);
         this._outputSlider.connect('value-changed', Lang.bind(this, this._sliderChanged, '_output'));
         this._outputSlider.connect('drag-end', Lang.bind(this, this._notifyVolumeChange));
-        this.menu.addMenuItem(this._outputSwitch);
+        this.menu.addMenuItem(this._outputTitle);
         this.menu.addMenuItem(this._outputSlider);
 
         this._separator = new PopupMenu.PopupSeparatorMenuItem();
@@ -52,12 +51,11 @@ Indicator.prototype = {
         this._input = null;
         this._inputVolumeId = 0;
         this._inputMutedId = 0;
-        this._inputSwitch = new PopupMenu.PopupSwitchMenuItem(_("Microphone: Muted"), false);
-        this._inputSwitch.connect('toggled', Lang.bind(this, this._switchToggled, '_input'));
+        this._inputTitle = new PopupMenu.PopupMenuItem(_("Microphone"), { reactive: false });
         this._inputSlider = new PopupMenu.PopupSliderMenuItem(0);
         this._inputSlider.connect('value-changed', Lang.bind(this, this._sliderChanged, '_input'));
         this._inputSlider.connect('drag-end', Lang.bind(this, this._notifyVolumeChange));
-        this.menu.addMenuItem(this._inputSwitch);
+        this.menu.addMenuItem(this._inputTitle);
         this.menu.addMenuItem(this._inputSlider);
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -75,11 +73,18 @@ Indicator.prototype = {
         let currentVolume = this._output.volume;
 
         if (direction == Clutter.ScrollDirection.DOWN) {
+            let prev_muted = this._output.is_muted;
             this._output.volume = Math.max(0, currentVolume - VOLUME_MAX * VOLUME_ADJUSTMENT_STEP);
+            if (this._output.volume < 1) {
+                this._output.volume = 0;
+                if (!prev_muted)
+                    this._output.change_is_muted(true);
+            }
             this._output.push_volume();
         }
         else if (direction == Clutter.ScrollDirection.UP) {
             this._output.volume = Math.min(VOLUME_MAX, currentVolume + VOLUME_MAX * VOLUME_ADJUSTMENT_STEP);
+            this._output.change_is_muted(false);
             this._output.push_volume();
         }
     },
@@ -103,8 +108,7 @@ Indicator.prototype = {
             this._mutedChanged (null, null, '_output');
             this._volumeChanged (null, null, '_output');
         } else {
-            this._outputSwitch.label.text = _("Volume: Muted");
-            this._outputSwitch.setToggleState(false);
+            this._outputSlider.setValue(0);
             this.setIcon('audio-volume-muted-symbolic');
         }
     },
@@ -124,7 +128,7 @@ Indicator.prototype = {
             this._volumeChanged (null, null, '_input');
         } else {
             this._separator.actor.hide();
-            this._inputSwitch.actor.hide();
+            this._inputTitle.actor.hide();
             this._inputSlider.actor.hide();
         }
     },
@@ -147,11 +151,11 @@ Indicator.prototype = {
         }
         if (showInput) {
             this._separator.actor.show();
-            this._inputSwitch.actor.show();
+            this._inputTitle.actor.show();
             this._inputSlider.actor.show();
         } else {
             this._separator.actor.hide();
-            this._inputSwitch.actor.hide();
+            this._inputTitle.actor.hide();
             this._inputSlider.actor.hide();
         }
     },
@@ -174,7 +178,17 @@ Indicator.prototype = {
             log ('Volume slider changed for %s, but %s does not exist'.format(property, property));
             return;
         }
-        this[property].volume = value * VOLUME_MAX;
+        let volume = value * VOLUME_MAX;
+        let prev_muted = this[property].is_muted;
+        if (volume < 1) {
+            this[property].volume = 0;
+            if (!prev_muted)
+                this[property].change_is_muted(true);
+        } else {
+            this[property].volume = volume;
+            if (prev_muted)
+                this[property].change_is_muted(false);
+        }
         this[property].push_volume();
     },
 
@@ -182,20 +196,10 @@ Indicator.prototype = {
         global.play_theme_sound('audio-volume-change');
     },
 
-    _switchToggled: function(switchItem, state, property) {
-        if (this[property] == null) {
-            log ('Volume mute switch toggled for %s, but %s does not exist'.format(property, property));
-            return;
-        }
-        this[property].change_is_muted(!state);
-        this._notifyVolumeChange();
-    },
-
     _mutedChanged: function(object, param_spec, property) {
         let muted = this[property].is_muted;
-        let toggleSwitch = this[property+'Switch'];
-        toggleSwitch.setToggleState(!muted);
-        this._updateLabel(property);
+        let slider = this[property+'Slider'];
+        slider.setValue(muted ? 0 : (this[property].volume / VOLUME_MAX));
         if (property == '_output') {
             if (muted)
                 this.setIcon('audio-volume-muted');
@@ -206,17 +210,7 @@ Indicator.prototype = {
 
     _volumeChanged: function(object, param_spec, property) {
         this[property+'Slider'].setValue(this[property].volume / VOLUME_MAX);
-        this._updateLabel(property);
         if (property == '_output' && !this._output.is_muted)
             this.setIcon(this._volumeToIcon(this._output.volume));
-    },
-
-    _updateLabel: function(property) {
-        let label;
-        if (this[property].is_muted)
-            label = (property == '_output' ? _("Volume: Muted") : _("Microphone: Muted"));
-        else
-            label = (property == '_output' ? _("Volume: %3.0f%%") : _("Microphone: %3.0f%%")).format(this[property].volume / VOLUME_MAX * 100);
-        this[property+'Switch'].label.text = label;
     }
 };

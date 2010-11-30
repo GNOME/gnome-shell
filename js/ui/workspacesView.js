@@ -19,24 +19,23 @@ const WORKSPACE_SWITCH_TIME = 0.25;
 // Note that mutter has a compile-time limit of 36
 const MAX_WORKSPACES = 16;
 
-// The values here are also used for GSettings, and the key and value
-// names must match
-const WorkspacesViewType = {
-    SINGLE: 'single',
-    GRID:   'grid'
-};
-const WORKSPACES_VIEW_KEY = 'workspaces-view';
-
 const WORKSPACE_DRAGGING_SCALE = 0.85;
-const WORKSPACE_SHADOW_SCALE = (1 - WORKSPACE_DRAGGING_SCALE) / 2;
 
-function GenericWorkspacesView(width, height, x, y, workspaces) {
+
+const CONTROLS_POP_IN_FRACTION = 0.8;
+const CONTROLS_POP_IN_TIME = 0.1;
+
+const INDICATOR_HOVER_SCALE = 1.1;
+
+
+function WorkspacesView(width, height, x, y, workspaces) {
     this._init(width, height, x, y, workspaces);
 }
 
-GenericWorkspacesView.prototype = {
+WorkspacesView.prototype = {
     _init: function(width, height, x, y, workspaces) {
-        this.actor = new St.Group({ style_class: 'workspaces' });
+        this.actor = new St.Group({ style_class: 'workspaces-view' });
+        this.actor.set_clip(x, y, width, height);
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
@@ -44,10 +43,7 @@ GenericWorkspacesView.prototype = {
             function() {
                 let node = this.actor.get_theme_node();
                 this._spacing = node.get_length('spacing');
-                if (Main.overview.animationInProgress)
-                    this._computeWorkspacePositions();
-                else
-                    this._transitionWorkspaces();
+                this._computeWorkspacePositions();
             }));
 
         this._width = width;
@@ -55,9 +51,14 @@ GenericWorkspacesView.prototype = {
         this._x = x;
         this._y = y;
         this._spacing = 0;
-
-        this._windowSelectionAppId = null;
-        this._highlightWindow = null;
+        this._activeWorkspaceX = 0; // x offset of active ws while dragging
+        this._activeWorkspaceY = 0; // y offset of active ws while dragging
+        this._lostWorkspaces = [];
+        this._animating = false; // tweening
+        this._scrolling = false; // dragging desktop
+        this._animatingScroll = false; // programatically updating the adjustment
+        this._inDrag = false; // dragging a window
+        this._lastMotionTime = -1; // used to track "stopping" while dragging workspaces
 
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         this._workspaces = workspaces;
@@ -79,27 +80,45 @@ GenericWorkspacesView.prototype = {
                     this._workspaces[w].zoomToOverview();
         }));
 
+        this._scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
+                                                     lower: 0,
+                                                     page_increment: 1,
+                                                     page_size: 1,
+                                                     step_increment: 0,
+                                                     upper: this._workspaces.length });
+        this._scrollAdjustment.connect('notify::value',
+                                       Lang.bind(this, this._onScroll));
+
+        this._dragIndex = -1;
+
+        this._buttonPressId = 0;
+        this._capturedEventId = 0;
+        this._timeoutId = 0;
+
+        this._windowSelectionAppId = null;
+        this._highlightWindow = null;
+
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
         this._restackedNotifyId =
             global.screen.connect('restacked',
                                   Lang.bind(this, this._onRestacked));
+
+        this._itemDragBeginId = Main.overview.connect('item-drag-begin',
+                                                      Lang.bind(this, this._dragBegin));
+        this._itemDragEndId = Main.overview.connect('item-drag-end',
+                                                     Lang.bind(this, this._dragEnd));
+        this._windowDragBeginId = Main.overview.connect('window-drag-begin',
+                                                        Lang.bind(this, this._dragBegin));
+        this._windowDragEndId = Main.overview.connect('window-drag-end',
+                                                      Lang.bind(this, this._dragEnd));
     },
 
     _lookupWorkspaceForMetaWindow: function (metaWindow) {
         for (let i = 0; i < this._workspaces.length; i++) {
             if (this._workspaces[i].containsMetaWindow(metaWindow))
                 return this._workspaces[i];
-        }
-        return null;
-    },
-
-    _lookupCloneForMetaWindow: function (metaWindow) {
-        for (let i = 0; i < this._workspaces.length; i++) {
-            let clone = this._workspaces[i].lookupCloneForMetaWindow(metaWindow);
-            if (clone)
-                return clone;
         }
         return null;
     },
@@ -115,6 +134,11 @@ GenericWorkspacesView.prototype = {
             let workspace = this._lookupWorkspaceForMetaWindow(metaWindow);
             workspace.setHighlightWindow(metaWindow);
         }
+    },
+
+    getActiveWorkspace: function() {
+        let active = global.screen.get_active_workspace_index();
+        return this._workspaces[active];
     },
 
     _clearApplicationWindowSelection: function(reposition) {
@@ -179,12 +203,6 @@ GenericWorkspacesView.prototype = {
         this.actor.destroy();
     },
 
-    _onDestroy: function() {
-        Main.overview.disconnect(this._overviewShowingId);
-        global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-        global.screen.disconnect(this._restackedNotifyId);
-    },
-
     getScale: function() {
         return this._workspaces[0].scale;
     },
@@ -213,11 +231,7 @@ GenericWorkspacesView.prototype = {
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[activeWorkspaceIndex];
 
-        return [activeWorkspace.gridX, activeWorkspace.gridY];
-    },
-
-    createControllerBar: function() {
-        throw new Error('Not implemented');
+        return [activeWorkspace.x, activeWorkspace.y];
     },
 
     canAddWorkspace: function() {
@@ -225,16 +239,16 @@ GenericWorkspacesView.prototype = {
     },
 
     addWorkspace: function() {
+        let ws = null;
         if (!this.canAddWorkspace()) {
-            Main.overview.infoBar.setMessage(_("Can't add a new workspace because maximum workspaces limit has been reached."));
-            return null;
+            Main.overview.shellInfo.setMessage(_("Can't add a new workspace because maximum workspaces limit has been reached."));
+        } else {
+            let currentTime = global.get_current_time();
+            ws = global.screen.append_new_workspace(false, currentTime);
+            ws.activate(currentTime);
         }
 
-        return global.screen.append_new_workspace(false, global.get_current_time());
-    },
-
-    _getWorkspaceIndexToRemove: function() {
-        throw new Error('Not implemented');
+        return ws;
     },
 
     canRemoveWorkspace: function() {
@@ -243,29 +257,13 @@ GenericWorkspacesView.prototype = {
 
     removeWorkspace: function() {
         if (!this.canRemoveWorkspace()) {
-            Main.overview.infoBar.setMessage(_("Can't remove the first workspace."));
+            Main.overview.shellInfo.setMessage(_("Can't remove the first workspace."));
             return;
         }
         let index = this._getWorkspaceIndexToRemove();
         let metaWorkspace = this._workspaces[index].metaWorkspace;
         global.screen.remove_workspace(metaWorkspace,
                                        global.get_current_time());
-    },
-
-    updateWorkspaces: function() {
-        throw new Error('Not implemented');
-    },
-
-    _transitionWorkspaces: function() {
-        throw new Error('Not implemented');
-    },
-
-    _computeWorkspacePositions: function() {
-        throw new Error('Not implemented');
-    },
-
-    _activeWorkspaceChanged: function() {
-        throw new Error('Not implemented');
     },
 
     _handleDragOverNewWorkspace: function(source, dropActor, x, y, time) {
@@ -281,429 +279,6 @@ GenericWorkspacesView.prototype = {
         if (ws == null)
             return false;
         return this.acceptNewWorkspaceDrop(source, dropActor, x, y, time);
-    }
-};
-
-function MosaicView(width, height, x, y, workspaces) {
-    this._init(width, height, x, y, workspaces);
-}
-
-MosaicView.prototype = {
-    __proto__: GenericWorkspacesView.prototype,
-
-    _init: function(width, height, x, y, workspaces) {
-        GenericWorkspacesView.prototype._init.call(this, width, height, x, y, workspaces);
-
-        this.actor.add_style_class_name('mosaic');
-        this.actor.set_clip(x - Workspace.FRAME_SIZE,
-                            y - Workspace.FRAME_SIZE,
-                            width + 2 * Workspace.FRAME_SIZE,
-                            height + 2 * Workspace.FRAME_SIZE);
-        this._workspaces[global.screen.get_active_workspace_index()].setSelected(true);
-    },
-
-    // Assign grid positions to workspaces. We can't just do a simple
-    // row-major or column-major numbering, because we don't want the
-    // existing workspaces to get rearranged when we add a row or
-    // column. So we alternate between adding to rows and adding to
-    // columns. (So, eg, when going from a 2x2 grid of 4 workspaces to
-    // a 3x2 grid of 5 workspaces, the 4 existing workspaces stay
-    // where they are, and the 5th one is added to the end of the
-    // first row.)
-    //
-    // FIXME: need to make the metacity internal layout agree with this!
-    _computeWorkspacePositions: function() {
-        let gridWidth = Math.ceil(Math.sqrt(this._workspaces.length));
-        let gridHeight = Math.ceil(this._workspaces.length / gridWidth);
-
-        // adjust vertical spacing so workspaces can preserve their aspect
-        // ratio without exceeding this._height
-        let verticalSpacing = this._spacing * this._height / this._width;
-
-        let wsWidth = (this._width - (gridWidth - 1) * this._spacing) / gridWidth;
-        let wsHeight = (this._height - (gridHeight - 1) * verticalSpacing) / gridHeight;
-        let scale = wsWidth / global.screen_width;
-
-        let span = 1, n = 0, row = 0, col = 0, horiz = true;
-
-        for (let w = 0; w < this._workspaces.length; w++) {
-            let workspace = this._workspaces[w];
-
-            workspace.gridRow = row;
-            workspace.gridCol = col;
-
-            workspace.gridX = this._x + workspace.gridCol * (wsWidth + this._spacing);
-            workspace.gridY = this._y + workspace.gridRow * (wsHeight + verticalSpacing);
-            workspace.scale = scale;
-
-            if (horiz) {
-                col++;
-                if (col == span) {
-                    row = 0;
-                    horiz = false;
-                }
-            } else {
-                row++;
-                if (row == span) {
-                    col = 0;
-                    horiz = true;
-                    span++;
-                }
-            }
-        }
-    },
-
-    _transitionWorkspaces: function() {
-        // update workspace parameters
-        this._computeWorkspacePositions();
-
-        let active = global.screen.get_active_workspace_index();
-        let activeWorkspace = this._workspaces[active];
-        // scale is the factor needed to translate from the new scale
-        // (this view) to the currently active scale (previous view)
-        let scale = this._workspaces[0].actor.scale_x / activeWorkspace.scale;
-
-        for (let w = 0; w < this._workspaces.length; w++) {
-            let workspace = this._workspaces[w];
-            let originX, originY;
-            let dx, dy;
-
-            // The correct transition would be a straightforward animation
-            // of each workspace's old position/scale to the new one;
-            // however, this looks overly busy, so we only use a zoom effect.
-            // Unfortunately this implies that we cannot pretend to not knowing
-            // the other view's layout at this point:
-            // We position the workspaces in the grid, which we scale up so
-            // that the active workspace fills the viewport.
-            dx = workspace.gridX - activeWorkspace.gridX;
-            dy = workspace.gridY - activeWorkspace.gridY;
-            originX = this._x + scale * dx;
-            originY = this._y + scale * dy;
-
-            workspace.actor.set_position(originX, originY);
-
-            workspace.positionWindows(Workspace.WindowPositionFlags.ANIMATE);
-            workspace.setSelected(false);
-            workspace.hideWindowsOverlays();
-
-            Tweener.addTween(workspace.actor,
-                             { x: workspace.gridX,
-                               y: workspace.gridY,
-                               scale_x: workspace.scale,
-                               scale_y: workspace.scale,
-                               time: Overview.ANIMATION_TIME,
-                               transition: 'easeOutQuad',
-                               onComplete: function() {
-                                   workspace.zoomToOverview(false);
-                                   if (workspace.metaWorkspace.index() == active)
-                                       workspace.setSelected(true);
-                             }});
-        }
-    },
-
-    updateWorkspaces: function(oldNumWorkspaces, newNumWorkspaces, lostWorkspaces) {
-        let oldScale = this._workspaces[0].scale;
-        let oldGridWidth = Math.ceil(Math.sqrt(oldNumWorkspaces));
-        let oldGridHeight = Math.ceil(oldNumWorkspaces / oldGridWidth);
-
-        // Add actors
-        if (newNumWorkspaces > oldNumWorkspaces)
-            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++)
-                this.actor.add_actor(this._workspaces[w].actor);
-
-        // Figure out the new layout
-        this._computeWorkspacePositions();
-        let newScale = this._workspaces[0].scale;
-        let newGridWidth = Math.ceil(Math.sqrt(newNumWorkspaces));
-        let newGridHeight = Math.ceil(newNumWorkspaces / newGridWidth);
-
-        if (newGridWidth != oldGridWidth || newGridHeight != oldGridHeight) {
-            // We need to resize/move the existing workspaces/windows
-            let existingWorkspaces = Math.min(oldNumWorkspaces, newNumWorkspaces);
-            for (let w = 0; w < existingWorkspaces; w++)
-                this._workspaces[w].resizeToGrid(oldScale);
-        }
-
-        if (newScale != oldScale) {
-            // The workspace scale affects window size/positioning because we clamp
-            // window size to a 1:1 ratio and never scale them up
-            let existingWorkspaces = Math.min(oldNumWorkspaces, newNumWorkspaces);
-            for (let w = 0; w < existingWorkspaces; w++)
-                this._workspaces[w].positionWindows(Workspace.WindowPositionFlags.ANIMATE);
-        }
-
-        if (newNumWorkspaces > oldNumWorkspaces) {
-            // Slide new workspaces in from offscreen
-            // New workspaces can contain windows.
-            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
-                this._workspaces[w].positionWindows(0);
-                this._workspaces[w].slideIn(oldScale);
-            }
-        } else {
-            // Slide old workspaces out
-            for (let w = 0; w < lostWorkspaces.length; w++) {
-                let workspace = lostWorkspaces[w];
-                workspace.slideOut(function () { workspace.destroy(); });
-            }
-        }
-
-        // Reset the selection state; if we went from > 1 workspace to 1,
-        // this has the side effect of removing the frame border
-        let activeIndex = global.screen.get_active_workspace_index();
-        this._workspaces[activeIndex].setSelected(true);
-    },
-
-    _activeWorkspaceChanged: function(wm, from, to, direction) {
-        this._workspaces[from].setSelected(false);
-        this._workspaces[to].setSelected(true);
-    },
-
-    createControllerBar: function() {
-        return null;
-    },
-
-    _getWorkspaceIndexToRemove: function() {
-        return this._workspaces.length - 1;
-    }
-};
-
-function NewWorkspaceArea() {
-    this._init();
-}
-
-NewWorkspaceArea.prototype = {
-    _init: function() {
-        let width = Math.ceil(global.screen_width * WORKSPACE_SHADOW_SCALE);
-        this.actor = new Clutter.Group({ width: width,
-                                         height: global.screen_height,
-                                         x: global.screen_width });
-
-        this._child1 = new St.Bin({ style_class: 'new-workspace-area',
-                                    width: width,
-                                    height: global.screen_height });
-        this._child2 =  new St.Bin({ style_class: 'new-workspace-area-internal',
-                                     width: width,
-                                     height: global.screen_height,
-                                     reactive: true });
-        this.actor.add_actor(this._child1);
-        this.actor.add_actor(this._child2);
-    },
-
-    setStyle: function(isHover) {
-        this._child1.set_hover(isHover);
-    }
-};
-
-function WorkspaceIndicator(activateWorkspace, workspaceAcceptDrop, workspaceHandleDragOver, scrollEventCb) {
-    this._init(activateWorkspace, workspaceAcceptDrop, workspaceHandleDragOver, scrollEventCb);
-}
-
-WorkspaceIndicator.prototype = {
-    _init: function(activateWorkspace, workspaceAcceptDrop, workspaceHandleDragOver, scrollEventCb) {
-        this._activateWorkspace = activateWorkspace;
-        this._workspaceAcceptDrop = workspaceAcceptDrop;
-        this._workspaceHandleDragOver = workspaceHandleDragOver;
-        this._scrollEventCb = scrollEventCb;
-        let actor = new St.Bin({ style_class: 'panel-button' });
-
-        this._indicatorsPanel = new Shell.GenericContainer();
-        this._indicatorsPanel.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this._indicatorsPanel.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this._indicatorsPanel.connect('allocate', Lang.bind(this, this._allocate));
-        this._indicatorsPanel.clip_to_allocation = true;
-
-        actor.set_child(this._indicatorsPanel);
-        actor.set_alignment(St.Align.MIDDLE, St.Align.MIDDLE);
-        this._indicatorsPanel.hide();
-        actor.connect('destroy', Lang.bind(this, this._onDestroy));
-
-        let workId = Main.initializeDeferredWork(actor, Lang.bind(this, this._workspacesChanged));
-        this._nWorkspacesNotifyId =
-            global.screen.connect('notify::n-workspaces', function() {
-                Main.queueDeferredWork(workId);
-            });
-        this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace', function() {
-                Main.queueDeferredWork(workId);
-            });
-
-        this.actor = actor;
-    },
-
-    _workspacesChanged: function() {
-        let active = global.screen.get_active_workspace_index();
-        let n = global.screen.n_workspaces;
-        if (n > 1)
-            this._indicatorsPanel.show();
-        else
-            this._indicatorsPanel.hide();
-        this._fillPositionalIndicator();
-    },
-
-    _onDestroy: function() {
-        if (this._nWorkspacesNotifyId > 0)
-            global.screen.disconnect(this._nWorkspacesNotifyId);
-        this._nWorkspacesNotifyId = 0;
-        if (this._switchWorkspaceNotifyId > 0)
-            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-        this._switchWorkspaceNotifyId = 0;
-    },
-
-    _allocate: function(actor, box, flags) {
-        let children = actor.get_children();
-        let childBox = new Clutter.ActorBox();
-        for (let i = 0; i < children.length; i++) {
-            childBox.x1 = children[i].x;
-            childBox.y1 = 0;
-            childBox.x2 = children[i].x + children[i].width;
-            childBox.y2 = children[i].height;
-            children[i].allocate(childBox, flags);
-        }
-    },
-
-    _getPreferredWidth: function(actor, fh, alloc) {
-        let children = actor.get_children();
-        let width = 0;
-        for (let i = 0; i < children.length; i++) {
-            if (children[i].x + children[i].width <= width)
-                continue;
-            width = children[i].x + children[i].width;
-        }
-        alloc.min_size = 0;
-        alloc.natural_size = width;
-    },
-
-    _getPreferredHeight: function(actor, fw, alloc) {
-            let children = actor.get_children();
-            let height = 0;
-            if (children.length)
-                height = children[0].height;
-            alloc.min_size = height;
-            alloc.natural_size = height;
-    },
-
-    _addIndicatorClone: function(i, active) {
-        let actor = new St.Button({ style_class: 'workspace-indicator' });
-        if (active) {
-            actor.style_class = 'workspace-indicator active';
-        }
-        actor.connect('clicked', Lang.bind(this, function() {
-            this._activateWorkspace(i);
-        }));
-
-        actor._delegate = {};
-        actor._delegate.acceptDrop = Lang.bind(this, function(source, actor, x, y, time) {
-            if (this._workspaceAcceptDrop(i, source, actor, x, y, time)) {
-                this._activateWorkspace(i);
-                return true;
-            }
-            else
-                return false;
-        });
-        actor._delegate.handleDragOver = Lang.bind(this, function(source, actor, x, y, time) {
-            return this._workspaceHandleDragOver(i, source, actor, x, y, time);
-        });
-
-        actor.connect('scroll-event', this._scrollEventCb);
-
-        this._indicatorsPanel.add_actor(actor);
-
-        let spacing = actor.get_theme_node().get_length('border-spacing');
-        actor.x = spacing * i + actor.width * i;
-    },
-
-    _fillPositionalIndicator: function() {
-        this._indicatorsPanel.remove_all();
-
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        let n = global.screen.n_workspaces;
-        for (let i = 0; i < n; i++) {
-            this._addIndicatorClone(i, i == activeWorkspaceIndex);
-        }
-    }
-};
-
-function SingleView(width, height, x, y, workspaces) {
-    this._init(width, height, x, y, workspaces);
-}
-
-SingleView.prototype = {
-    __proto__: GenericWorkspacesView.prototype,
-
-    _init: function(width, height, x, y, workspaces) {
-        let shadowWidth = Math.ceil(global.screen_width * WORKSPACE_SHADOW_SCALE);
-
-        this._newWorkspaceArea = new NewWorkspaceArea();
-        this._newWorkspaceArea.actor._delegate = {
-            acceptDrop: Lang.bind(this, this._acceptNewWorkspaceDrop)
-        };
-        this._leftShadow = new St.Bin({ style_class: 'left-workspaces-shadow',
-                                        width: shadowWidth,
-                                        height: global.screen_height,
-                                        x: global.screen_width });
-        this._leftShadow._delegate = {
-            acceptDrop: Lang.bind(this, function(source, actor, x, y, time) {
-                let active = global.screen.get_active_workspace_index();
-                let leftWorkspace = this._workspaces[active - 1];
-                if (leftWorkspace &&
-                    leftWorkspace.acceptDrop(source, actor, x, y, time)) {
-                    leftWorkspace.metaWorkspace.activate(time);
-                    return true;
-                }
-                return false;
-            })
-        };
-        this._rightShadow = new St.Bin({ style_class: 'right-workspaces-shadow',
-                                         width: shadowWidth,
-                                         height: global.screen_height,
-                                         x: global.screen_width });
-        this._rightShadow._delegate = {
-            acceptDrop: Lang.bind(this, function(source, actor, x, y, time) {
-                let active = global.screen.get_active_workspace_index();
-                let rightWorkspace = this._workspaces[active + 1];
-                if (rightWorkspace &&
-                    rightWorkspace.acceptDrop(source, actor, x, y, time)) {
-                    rightWorkspace.metaWorkspace.activate(time);
-                    return true;
-                }
-                return false;
-            })
-        };
-
-        GenericWorkspacesView.prototype._init.call(this, width, height, x, y, workspaces);
-
-        this._itemDragBeginId = Main.overview.connect('item-drag-begin',
-                                                      Lang.bind(this, this._dragBegin));
-        this._itemDragEndId = Main.overview.connect('item-drag-end',
-                                                     Lang.bind(this, this._dragEnd));
-        for (let i = 0; i < this._workspaces.length; i++) {
-            this._workspaces[i]._windowDragBeginId = this._workspaces[i].connect('window-drag-begin',
-                                                                                 Lang.bind(this, this._dragBegin));
-            this._workspaces[i]._windowDragEndId = this._workspaces[i].connect('window-drag-end',
-                                                                               Lang.bind(this, this._dragEnd));
-        }
-
-        this.actor.add_actor(this._newWorkspaceArea.actor);
-        this.actor.add_actor(this._leftShadow);
-        this.actor.add_actor(this._rightShadow);
-
-        this.actor.add_style_class_name('single');
-        this.actor.set_clip(x, y, width, height);
-        this._activeWorkspaceX = 0; // x offset of active ws while dragging
-        this._activeWorkspaceY = 0; // y offset of active ws while dragging
-        this._scroll = null;
-        this._lostWorkspaces = [];
-        this._animating = false; // tweening
-        this._scrolling = false; // dragging scroll bar or desktop
-        this._animatingScroll = false; // programatically move the scroll bar
-        this._inDrag = false; // dragging a window
-        this._lastMotionTime = -1; // used to track "stopping" while dragging workspaces
-
-        this._dragIndex = -1;
-
-        this._buttonPressId = 0;
-        this._capturedEventId = 0;
-        this._timeoutId = 0;
     },
 
     // Compute the position, scale and opacity of the workspaces, but don't
@@ -728,70 +303,15 @@ SingleView.prototype = {
 
             workspace.opacity = (this._inDrag && w != active) ? 200 : 255;
 
-            workspace.gridRow = 0;
-            workspace.gridCol = 0;
-
             workspace.scale = scale;
-            workspace.gridX = this._x + this._activeWorkspaceX
+            if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
+                workspace.x = this._x + this._activeWorkspaceX
+                              - (w - active) * (_width + this._spacing);
+            } else {
+                workspace.x = this._x + this._activeWorkspaceX
                               + (w - active) * (_width + this._spacing);
-            workspace.gridY = this._y + this._activeWorkspaceY;
-
-            workspace.setSelected(false);
-        }
-
-        this._newWorkspaceArea.scale = scale;
-        this._newWorkspaceArea.gridX = this._x + this._activeWorkspaceX
-                                       + (this._workspaces.length - active) * (_width + this._spacing);
-        this._newWorkspaceArea.gridY = this._y + this._activeWorkspaceY;
-
-        this._leftShadow.scale = scale;
-        this._leftShadow.gridX = this._x + this._activeWorkspaceX
-                                 - (this._leftShadow.width * scale + this._spacing);
-        this._leftShadow.gridY = this._y + this._activeWorkspaceY;
-
-        this._rightShadow.scale = scale;
-        this._rightShadow.gridX = this._x + this._activeWorkspaceX
-                                  + (_width + this._spacing);
-        this._rightShadow.gridY = this._y + this._activeWorkspaceY;
-    },
-
-    _transitionWorkspaces: function() {
-        // update workspace parameters
-        this._computeWorkspacePositions();
-
-        let active = global.screen.get_active_workspace_index();
-        let activeActor = this._workspaces[active].actor;
-        // scale is the factor needed to translate from the currently
-        // active scale (previous view) to the new scale (this view)
-        let scale = this._workspaces[active].scale / activeActor.scale_x;
-
-        for (let w = 0; w < this._workspaces.length; w++) {
-            let workspace = this._workspaces[w];
-            let targetX, targetY;
-
-            // The correct transition would be a straightforward animation
-            // of each workspace's old position/scale to the new one;
-            // however, this looks overly busy, so we only use a zoom effect.
-            // Therefore we scale up each workspace's distance to the active
-            // workspace, so the latter fills the viewport while the other
-            // workspaces maintain their relative position
-            targetX = this._x + scale * (workspace.actor.x - activeActor.x);
-            targetY = this._y + scale * (workspace.actor.y - activeActor.y);
-
-            workspace.positionWindows(Workspace.WindowPositionFlags.ANIMATE);
-            workspace.setSelected(false);
-            workspace._hideAllOverlays();
-
-            Tweener.addTween(workspace.actor,
-                             { x: targetX,
-                               y: targetY,
-                               scale_x: workspace.scale,
-                               scale_y: workspace.scale,
-                               time: Overview.ANIMATION_TIME,
-                               transition: 'easeOutQuad',
-                               onComplete: function() {
-                                   workspace.zoomToOverview(false);
-                             }});
+            }
+            workspace.y = this._y + this._activeWorkspaceY;
         }
     },
 
@@ -800,7 +320,7 @@ SingleView.prototype = {
 
         this._computeWorkspacePositions();
         this._updateWorkspaceActors(showAnimation);
-        this._scrollScrollBarToIndex(active, showAnimation);
+        this._updateScrollAdjustment(active, showAnimation);
     },
 
     // _setWorkspaceDraggable:
@@ -817,7 +337,7 @@ SingleView.prototype = {
         if (index < 0 || index >= global.n_workspaces)
             return;
 
-        let dragActor = this._workspaces[index]._desktop.actor;
+        let dragActor = this._workspaces[index].actor;
 
         if (draggable) {
             this._workspaces[index].actor.reactive = true;
@@ -847,6 +367,9 @@ SingleView.prototype = {
 
     // start dragging the active workspace
     _onButtonPress: function(actor, event) {
+        if (actor != event.get_source())
+            return;
+
         if (this._dragIndex == -1)
             return;
 
@@ -875,17 +398,20 @@ SingleView.prototype = {
                 // If the user has moved more than half a workspace, we want to "settle"
                 // to the new workspace even if the user stops dragging rather "throws"
                 // by releasing during the drag.
-                let noStop = Math.abs(activate - this._scroll.adjustment.value) > 0.5;
+                let noStop = Math.abs(activate - this._scrollAdjustment.value) > 0.5;
+
+                let difference = stageX > this._dragStartX ? -1 : 1;
+                if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+                    difference *= -1;
 
                 // We detect if the user is stopped by comparing the timestamp of the button
                 // release with the timestamp of the last motion. Experimentally, a difference
                 // of 0 or 1 millisecond indicates that the mouse is in motion, a larger
                 // difference indicates that the mouse is stopped.
                 if ((this._lastMotionTime > 0 && this._lastMotionTime > event.get_time() - 2) || noStop) {
-                    if (stageX > this._dragStartX && activate > 0)
-                        activate--;
-                    else if (stageX < this._dragStartX && activate < last)
-                        activate++;
+                    if (activate + difference >= 0 &&
+                        activate + difference <= last)
+                        activate += difference;
                 }
 
                 if (activate != active) {
@@ -906,7 +432,10 @@ SingleView.prototype = {
                 let dx = this._dragX - stageX;
                 let primary = global.get_primary_monitor();
 
-                this._scroll.adjustment.value += (dx / primary.width);
+                if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+                    this._scrollAdjustment.value -= (dx / primary.width);
+                else
+                    this._scrollAdjustment.value += (dx / primary.width);
                 this._dragX = stageX;
                 this._lastMotionTime = event.get_time();
 
@@ -922,7 +451,7 @@ SingleView.prototype = {
     _updateWorkspaceActors: function(showAnimation) {
         let active = global.screen.get_active_workspace_index();
         let targetWorkspaceNewX = this._x + this._activeWorkspaceX;
-        let targetWorkspaceCurrentX = this._workspaces[active].gridX;
+        let targetWorkspaceCurrentX = this._workspaces[active].x;
         let dx = targetWorkspaceNewX - targetWorkspaceCurrentX;
 
         this._setWorkspaceDraggable(active, true);
@@ -933,22 +462,35 @@ SingleView.prototype = {
 
             Tweener.removeTweens(workspace.actor);
 
-            workspace.gridX += dx;
+            workspace.x += dx;
 
             if (showAnimation) {
-                Tweener.addTween(workspace.actor,
-                    { x: workspace.gridX,
-                      y: workspace.gridY,
-                      scale_x: workspace.scale,
-                      scale_y: workspace.scale,
-                      opacity: workspace.opacity,
-                      time: WORKSPACE_SWITCH_TIME,
-                      transition: 'easeOutQuad'
-                    });
+                let params = { x: workspace.x,
+                               y: workspace.y,
+                               scale_x: workspace.scale,
+                               scale_y: workspace.scale,
+                               opacity: workspace.opacity,
+                               time: WORKSPACE_SWITCH_TIME,
+                               transition: 'easeOutQuad'
+                             };
+                // we have to call _updateVisibility() once before the
+                // animation and once afterwards - it does not really
+                // matter which tween we use, so we pick the first one ...
+                if (w == 0) {
+                    this._updateVisibility();
+                    params.onComplete = Lang.bind(this,
+                        function() {
+                            this._animating = false;
+                            this._updateVisibility();
+                        });
+                }
+                Tweener.addTween(workspace.actor, params);
             } else {
                 workspace.actor.set_scale(workspace.scale, workspace.scale);
-                workspace.actor.set_position(workspace.gridX, workspace.gridY);
+                workspace.actor.set_position(workspace.x, workspace.y);
                 workspace.actor.opacity = workspace.opacity;
+                if (w == 0)
+                    this._updateVisibility();
             }
         }
 
@@ -957,13 +499,13 @@ SingleView.prototype = {
 
             Tweener.removeTweens(workspace.actor);
 
-            workspace.gridX += dx;
+            workspace.x += dx;
             workspace.actor.show();
             workspace.hideWindowsOverlays();
 
             if (showAnimation) {
                 Tweener.addTween(workspace.actor,
-                                 { x: workspace.gridX,
+                                 { x: workspace.x,
                                    time: WORKSPACE_SWITCH_TIME,
                                    transition: 'easeOutQuad',
                                    onComplete: Lang.bind(this,
@@ -972,61 +514,6 @@ SingleView.prototype = {
             } else {
                 this._cleanWorkspaces();
             }
-        }
-
-        Tweener.removeTweens(this._newWorkspaceArea.actor);
-        Tweener.removeTweens(this._leftShadow);
-        Tweener.removeTweens(this._rightShadow);
-
-        this._newWorkspaceArea.gridX += dx;
-        if (showAnimation) {
-            // we have to call _updateVisibility() once before the
-            // animation and once afterwards - it does not really
-            // matter which tween we use, as long as it's not inside
-            // a loop ...
-            this._updateVisibility();
-            Tweener.addTween(this._newWorkspaceArea.actor,
-                             { x: this._newWorkspaceArea.gridX,
-                               y: this._newWorkspaceArea.gridY,
-                               scale_x: this._newWorkspaceArea.scale,
-                               scale_y: this._newWorkspaceArea.scale,
-                               time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this, function() {
-                                   this._animating = false;
-                                   this._updateVisibility();
-                               })
-                             });
-            this._leftShadow.x = this._leftShadow.gridX;
-            Tweener.addTween(this._leftShadow,
-                             { y: this._leftShadow.gridY,
-                               scale_x: this._leftShadow.scale,
-                               scale_y: this._leftShadow.scale,
-                               time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad'
-                             });
-            this._rightShadow.x = this._rightShadow.gridX;
-            Tweener.addTween(this._rightShadow,
-                             { y: this._rightShadow.gridY,
-                               scale_x: this._rightShadow.scale,
-                               scale_y: this._rightShadow.scale,
-                               time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad'
-                             });
-        } else {
-            this._newWorkspaceArea.actor.set_scale(this._newWorkspaceArea.scale,
-                                                   this._newWorkspaceArea.scale);
-            this._newWorkspaceArea.actor.set_position(this._newWorkspaceArea.gridX,
-                                                      this._newWorkspaceArea.gridY);
-            this._leftShadow.set_scale(this._leftShadow.scale,
-                                       this._leftShadow.scale);
-            this._leftShadow.set_position(this._leftShadow.gridX,
-                                          this._leftShadow.gridY);
-            this._rightShadow.set_scale(this._rightShadow.scale,
-                                        this._rightShadow.scale);
-            this._rightShadow.set_position(this._rightShadow.gridX,
-                                           this._rightShadow.gridY);
-            this._updateVisibility();
         }
     },
 
@@ -1046,24 +533,6 @@ SingleView.prototype = {
                     workspace.actor.visible = (w == active);
             }
         }
-
-        if (this._inDrag) {
-            this._leftShadow.raise_top();
-            this._rightShadow.raise_top();
-
-            if (active > 0)
-                this._leftShadow.show();
-            else
-                this._leftShadow.hide();
-
-            if (active < this._workspaces.length - 1)
-                this._rightShadow.show();
-            else
-                this._rightShadow.hide();
-        } else {
-            this._leftShadow.hide();
-            this._rightShadow.hide();
-        }
     },
 
     _cleanWorkspaces: function() {
@@ -1078,14 +547,14 @@ SingleView.prototype = {
         this._updateWorkspaceActors(false);
     },
 
-    _scrollScrollBarToIndex: function(index, showAnimation) {
-        if (!this._scroll || this._scrolling)
+    _updateScrollAdjustment: function(index, showAnimation) {
+        if (this._scrolling)
             return;
 
         this._animatingScroll = true;
 
         if (showAnimation) {
-            Tweener.addTween(this._scroll.adjustment, {
+            Tweener.addTween(this._scrollAdjustment, {
                value: index,
                time: WORKSPACE_SWITCH_TIME,
                transition: 'easeOutQuad',
@@ -1095,7 +564,7 @@ SingleView.prototype = {
                    })
             });
         } else {
-            this._scroll.adjustment.value = index;
+            this._scrollAdjustment.value = index;
             this._animatingScroll = false;
         }
     },
@@ -1106,21 +575,15 @@ SingleView.prototype = {
         for (let l = 0; l < lostWorkspaces.length; l++)
             lostWorkspaces[l].disconnectAll();
 
-        if (this._scroll != null)
-            Tweener.addTween(this._scroll.adjustment,
-                             { upper: newNumWorkspaces,
-                               time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad'
-                             });
+        Tweener.addTween(this._scrollAdjustment,
+                         { upper: newNumWorkspaces,
+                           time: WORKSPACE_SWITCH_TIME,
+                           transition: 'easeOutQuad'
+                         });
 
         if (newNumWorkspaces > oldNumWorkspaces) {
-            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
+            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++)
                 this.actor.add_actor(this._workspaces[w].actor);
-                this._workspaces[w]._windowDragBeginId = this._workspaces[w].connect('window-drag-begin',
-                                                                                     Lang.bind(this, this._dragBegin));
-                this._workspaces[w]._windowDragEndId = this._workspaces[w].connect('window-drag-end',
-                                                                                   Lang.bind(this, this._dragEnd));
-            }
 
             this._computeWorkspacePositions();
             this._updateWorkspaceActors(false);
@@ -1129,12 +592,9 @@ SingleView.prototype = {
         }
 
         this._scrollToActive(true);
-        this._updatePanelVisibility();
     },
 
     _activeWorkspaceChanged: function(wm, from, to, direction) {
-        this._updatePanelVisibility();
-
         if (this._scrolling)
             return;
 
@@ -1142,7 +602,10 @@ SingleView.prototype = {
     },
 
     _onDestroy: function() {
-        GenericWorkspacesView.prototype._onDestroy.call(this);
+        Main.overview.disconnect(this._overviewShowingId);
+        global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+        global.screen.disconnect(this._restackedNotifyId);
+
         this._setWorkspaceDraggable(this._dragIndex, false);
         if (this._timeoutId) {
             Mainloop.source_remove(this._timeoutId);
@@ -1156,20 +619,18 @@ SingleView.prototype = {
             Main.overview.disconnect(this._itemDragEndId);
             this._itemDragEndId = 0;
         }
-        for (let w = 0; w < this._workspaces.length; w++) {
-            if (this._workspaces[w]._windowDragBeginId) {
-                this._workspaces[w].disconnect(this._workspaces[w]._windowDragBeginId);
-                this._workspaces[w]._windowDragBeginId = 0;
-            }
-            if (this._workspaces[w]._windowDragEndId) {
-                this._workspaces[w].disconnect(this._workspaces[w]._windowDragEndId);
-                this._workspaces[w]._windowDragEndId = 0;
-            }
+        if (this._windowDragBeginId > 0) {
+            Main.overview.disconnect(this._windowDragBeginId);
+            this._windowDragBeginId = 0;
+        }
+        if (this._windowDragEndId > 0) {
+            Main.overview.disconnect(this._windowDragEndId);
+            this._windowDragEndId = 0;
         }
     },
 
     _dragBegin: function() {
-        if (!this._scroll || this._scrolling)
+        if (this._scrolling)
             return;
 
         this._inDrag = true;
@@ -1186,8 +647,14 @@ SingleView.prototype = {
         let primary = global.get_primary_monitor();
 
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        let leftWorkspace  = this._workspaces[activeWorkspaceIndex - 1];
-        let rightWorkspace = this._workspaces[activeWorkspaceIndex + 1];
+        let leftWorkspace, rightWorkspace;
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
+            leftWorkspace  = this._workspaces[activeWorkspaceIndex + 1];
+            rightWorkspace = this._workspaces[activeWorkspaceIndex - 1];
+        } else {
+            leftWorkspace  = this._workspaces[activeWorkspaceIndex - 1];
+            rightWorkspace = this._workspaces[activeWorkspaceIndex + 1];
+        }
         let hoverWorkspace = null;
 
         // reactive monitor edges
@@ -1214,7 +681,7 @@ SingleView.prototype = {
 
         // check hover state of new workspace area / inactive workspaces
         if (leftWorkspace) {
-            if (dragEvent.targetActor == this._leftShadow) {
+            if (leftWorkspace.actor.contains(dragEvent.targetActor)) {
                 hoverWorkspace = leftWorkspace;
                 leftWorkspace.opacity = leftWorkspace.actor.opacity = 255;
                 result = leftWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
@@ -1224,20 +691,13 @@ SingleView.prototype = {
         }
 
         if (rightWorkspace) {
-            if (dragEvent.targetActor == this._rightShadow) {
+            if (rightWorkspace.actor.contains(dragEvent.targetActor)) {
                 hoverWorkspace = rightWorkspace;
                 rightWorkspace.opacity = rightWorkspace.actor.opacity = 255;
                 result = rightWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
             } else {
                 rightWorkspace.opacity = rightWorkspace.actor.opacity = 200;
             }
-        } else {
-            let targetParent = dragEvent.targetActor.get_parent();
-            if (targetParent == this._newWorkspaceArea.actor) {
-                this._newWorkspaceArea.setStyle(true);
-                result = this._handleDragOverNewWorkspace(dragEvent.source, dragEvent.dragActor);
-            } else
-                this._newWorkspaceArea.setStyle(false);
         }
 
         // handle delayed workspace switches
@@ -1273,8 +733,7 @@ SingleView.prototype = {
             this._workspaces[i].setReservedSlot(null);
     },
 
-    // handle changes to the scroll bar's adjustment:
-    // sync the workspaces' positions to the position of the scroll bar handle
+    // sync the workspaces' positions to the value of the scroll adjustment
     // and change the active workspace if appropriate
     _onScroll: function(adj) {
         if (this._animatingScroll)
@@ -1285,20 +744,7 @@ SingleView.prototype = {
 
         if (active != current) {
             let metaWorkspace = this._workspaces[current].metaWorkspace;
-
-            if (!this._scrolling) {
-                // This here is a little tricky - we get here when StScrollBar
-                // animates paging; we switch the active workspace, but
-                // leave out any extra animation (just like we would do when
-                // the handle was dragged)
-                // If StScrollBar emitted scroll-start before and scroll-stop
-                // after the animation, this would not be necessary
-                this._scrolling = true;
-                metaWorkspace.activate(global.get_current_time());
-                this._scrolling = false;
-            } else {
-                metaWorkspace.activate(global.get_current_time());
-            }
+            metaWorkspace.activate(global.get_current_time());
         }
 
         let last = this._workspaces.length - 1;
@@ -1306,8 +752,6 @@ SingleView.prototype = {
         let lastWorkspaceX = this._workspaces[last].actor.x;
         let workspacesWidth = lastWorkspaceX - firstWorkspaceX;
 
-        // The scrollbar is hidden when there is only one workspace, so
-        // adj.upper should at least be 2 - but better be safe than sorry
         if (adj.upper == 1)
             return;
 
@@ -1321,11 +765,137 @@ SingleView.prototype = {
             this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
             this._workspaces[i].actor.x += dx;
         }
+    },
 
-        if (!this._scrolling && active == adj.value) {
-            // Again, work around the paging in StScrollBar: simulate
-            // the effect of scroll-stop
-            this._updateWorkspaceActors(false);
+    _getWorkspaceIndexToRemove: function() {
+        return global.screen.get_active_workspace_index();
+    }
+};
+Signals.addSignalMethods(WorkspacesView.prototype);
+
+
+function WorkspaceIndicatorPanel() {
+    this._init();
+}
+
+WorkspaceIndicatorPanel.prototype = {
+    _init: function() {
+        this.actor = new Shell.GenericContainer({ clip_to_allocation: true });
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+
+        this._box = new St.BoxLayout({ style_class: 'workspace-indicator-panel' });
+        this.actor.add_actor(this._box);
+
+        this._switchWorkspaceNotifyId =
+            global.window_manager.connect('switch-workspace',
+                                          Lang.bind(this, this._updateActive));
+    },
+
+    _onDestroy: function() {
+        if (this._switchWorkspaceNotifyId > 0)
+            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+        this._switchWorkspaceNotifyId = 0;
+        this._workspaces = null;
+    },
+
+    // Allocate the box centered to the available area like StBin would do,
+    // except that the full height is used even if the box is not actually
+    // shown. This is a workaround, as the size of the workspace area is
+    // determined once when entering the overview, so if it would take up
+    // the indicator space in that case, it would overlap it later when
+    // additional workspaces were added.
+    _allocate: function(actor, box, flags) {
+        let children = this._box.get_children();
+
+        let availWidth = box.x2 - box.x1;
+        let availHeight = box.y2 - box.y1;
+        let [minWidth, natWidth] = this._box.get_preferred_width(-1);
+        let [minHeight, natHeight] = this._box.get_preferred_height(-1);
+
+        let childBox = new Clutter.ActorBox();
+        childBox.x1 = Math.floor((availWidth - natWidth) / 2);
+        childBox.x2 = childBox.x1 + natWidth;
+        childBox.y1 = Math.floor((availHeight - natHeight) / 2);
+        childBox.y2 = childBox.y2 + natHeight;
+
+        this._box.allocate(childBox, flags);
+    },
+
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        let [minWidth, natWidth] = this._box.get_preferred_width(-1);
+        alloc.min_size = 0;
+        alloc.natural_size = natWidth;
+    },
+
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        let [minHeight, natHeight] = this._box.get_preferred_height(-1);
+        alloc.min_size = minHeight * INDICATOR_HOVER_SCALE;
+        alloc.natural_size = natHeight * INDICATOR_HOVER_SCALE;
+    },
+
+    updateWorkspaces: function(workspaces) {
+        this._workspaces = workspaces;
+
+        // Do not display a single indicator
+        if (this._workspaces.length == 1)
+            this.actor.set_skip_paint(this._box, true);
+        else
+            this.actor.set_skip_paint(this._box, false);
+
+        this._box.remove_all();
+        for (let i = 0; i < this._workspaces.length; i++) {
+            let actor = new St.Button({ style_class: 'workspace-indicator',
+                                        track_hover: true });
+            let workspace = this._workspaces[i];
+            let metaWorkspace = this._workspaces[i].metaWorkspace;
+
+            actor.connect('clicked', Lang.bind(this, function() {
+                metaWorkspace.activate(global.get_current_time());
+            }));
+            actor.connect('notify::hover', Lang.bind(this, function() {
+                if (actor.hover)
+                    actor.set_scale_with_gravity(INDICATOR_HOVER_SCALE,
+                                                 INDICATOR_HOVER_SCALE,
+                                                 Clutter.Gravity.CENTER);
+                else
+                    actor.set_scale(1.0, 1.0);
+            }));
+
+            actor._delegate = {
+                acceptDrop: Lang.bind(this,
+                    function(source, actor, x, y, time) {
+                        if (workspace.acceptDrop(source, actor, x, y, time)) {
+                            metaWorkspace.activate(time);
+                            return true;
+                        }
+                        return false;
+                    }),
+                handleDragOver: Lang.bind(this,
+                    function(source, actor, x, y, time) {
+                        return workspace.handleDragOver(source, actor, x, y, time);
+                    })
+            };
+
+            actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
+
+            this._box.add(actor);
+        }
+
+        this._updateActive();
+    },
+
+    _updateActive: function() {
+        let children = this._box.get_children();
+        let activeIndex = global.screen.get_active_workspace_index();
+        for (let i = 0; i < children.length; i++) {
+            if (i == activeIndex)
+                children[i].add_style_class_name('active');
+            else
+                children[i].remove_style_class_name('active');
         }
     },
 
@@ -1337,312 +907,251 @@ SingleView.prototype = {
         let current = global.screen.get_active_workspace_index();
         let last = global.screen.n_workspaces - 1;
         let activate = current;
-        if (direction == Clutter.ScrollDirection.DOWN && current < last)
-            activate++;
-        else if (direction == Clutter.ScrollDirection.UP && current > 0)
-            activate--;
+
+        let difference = direction == Clutter.ScrollDirection.UP ? -1 : 1;
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+            difference *= -1;
+
+        if (activate + difference >= 0 && activate + difference <= last)
+            activate += difference;
 
         if (activate != current) {
             let metaWorkspace = this._workspaces[activate].metaWorkspace;
             metaWorkspace.activate(global.get_current_time());
         }
-    },
-
-    createControllerBar: function() {
-        let actor = new St.BoxLayout({ style_class: 'single-view-controls',
-                                       pack_start: true,
-                                       vertical: true });
-
-        let active = global.screen.get_active_workspace_index();
-        let adj = new St.Adjustment({ value: active,
-                                      lower: 0,
-                                      page_increment: 1,
-                                      page_size: 1,
-                                      step_increment: 0,
-                                      upper: this._workspaces.length });
-        this._scroll = new St.ScrollBar({ adjustment: adj,
-                                          vertical: false,
-                                          name: 'SwitchScroll' });
-
-        // we have set adj.step_increment to 0, so all scroll wheel events
-        // are processed with this handler - this allows us to animate the
-        // workspace switch
-        this._scroll.connect('scroll-event',
-            Lang.bind(this, this._onScrollEvent));
-
-        this._scroll.adjustment.connect('notify::value',
-            Lang.bind(this, this._onScroll));
-
-
-        this._scroll.connect('scroll-start', Lang.bind(this,
-            function() {
-                this._scrolling = true;
-            }));
-        this._scroll.connect('scroll-stop', Lang.bind(this,
-            function() {
-                this._scrolling = false;
-                this._scrollToActive(true);
-            }));
-
-        let indicator = new WorkspaceIndicator(Lang.bind(this, function(i) {
-            if (this._workspaces[i] != undefined)
-                this._workspaces[i].metaWorkspace.activate(global.get_current_time());
-        }), Lang.bind(this, function(i, source, actor, x, y, time) {
-            if (this._workspaces[i] != undefined)
-                return this._workspaces[i].acceptDrop(source, actor, x, y, time);
-            return false;
-        }), Lang.bind(this, function(i, source, actor, x, y, time) {
-            if (this._workspaces[i] != undefined)
-                return this._workspaces[i].handleDragOver(source, actor, x, y, time);
-            return DND.DragMotionResult.CONTINUE;
-        }), Lang.bind(this, this._onScrollEvent));
-
-        actor.add(indicator.actor, { expand: true, x_fill: true, y_fill: true });
-        actor.add(this._scroll, { expand: true,
-                                  x_fill: true,
-                                  y_fill: false,
-                                  y_align: St.Align.START });
-
-        this._updatePanelVisibility();
-
-        return actor;
-    },
-
-    _updatePanelVisibility: function() {
-        let showSwitches = (global.screen.n_workspaces > 1);
-        if (this._scroll != null) {
-            Tweener.addTween(this._scroll,
-                             { opacity: showSwitches ? 255 : 0,
-                               time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad' });
-        }
-    },
-
-    addWorkspace: function() {
-        let ws = GenericWorkspacesView.prototype.addWorkspace.call(this);
-        if (ws != null)
-            ws.activate(global.get_current_time());
-
-        return ws;
-    },
-
-    _getWorkspaceIndexToRemove: function() {
-        return global.screen.get_active_workspace_index();
     }
 };
 
-function WorkspacesControls() {
+
+function WorkspaceControlsContainer(controls) {
+    this._init(controls);
+}
+
+WorkspaceControlsContainer.prototype = {
+    _init: function(controls) {
+        this.actor = new Shell.GenericContainer({ clip_to_allocation: true });
+        this.actor.connect('get-preferred-width',
+                           Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height',
+                           Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+
+        this.actor.add_actor(controls);
+
+        this._controls = controls;
+        this._controls.reactive = true;
+        this._controls.track_hover = true;
+        this._controls.connect('notify::hover',
+                               Lang.bind(this, this._onHoverChanged));
+
+        this._itemDragBeginId = 0;
+        this._itemDragEndId = 0;
+        this._windowDragBeginId = 0;
+        this._windowDragEndId = 0;
+    },
+
+    show: function() {
+        if (this._itemDragBeginId == 0)
+            this._itemDragBeginId = Main.overview.connect('item-drag-begin',
+                                                          Lang.bind(this, this.popOut));
+        if (this._itemDragEndId == 0)
+            this._itemDragEndId = Main.overview.connect('item-drag-end',
+                                                        Lang.bind(this, this.popIn));
+        if (this._windowDragBeginId == 0)
+            this._windowDragBeginId = Main.overview.connect('window-drag-begin',
+                                                            Lang.bind(this, this.popOut));
+        if (this._windowDragEndId == 0)
+            this._windowDragEndId = Main.overview.connect('window-drag-end',
+                                                          Lang.bind(this, this.popIn));
+        this._controls.x = this._poppedInX();
+    },
+
+    hide: function() {
+        if (this._itemDragBeginId > 0) {
+            Main.overview.disconnect(this._itemDragBeginId);
+            this._itemDragBeginId = 0;
+        }
+        if (this._itemEndBeginId > 0) {
+            Main.overview.disconnect(this._itemDragEndId);
+            this._itemDragEndId = 0;
+        }
+        if (this._windowDragBeginId > 0) {
+            Main.overview.disconnect(this._windowDragBeginId);
+            this._windowDragBeginId = 0;
+        }
+        if (this._windowDragEndId > 0) {
+            Main.overview.disconnect(this._windowDragEndId);
+            this._windowDragEndId = 0;
+        }
+    },
+
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        let [minWidth, natWidth] = this._controls.get_preferred_width(-1);
+        alloc.min_size = minWidth;
+        alloc.natural_size = natWidth;
+    },
+
+    // Always request the full width ...
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        let [minHeight, natHeight] = this._controls.get_preferred_height(-1);
+        alloc.min_size = minHeight;
+        alloc.natural_size = natHeight;
+    },
+
+    // ... even when the controls are popped in, to keep the width constant.
+    // This is necessary as the workspace size is determined once before
+    // entering the overview, when the controls are popped in - if the width
+    // varied, the workspaces would be given too much width, and the controls
+    // would be overlapped by the workspaces when popped out, rendering them
+    // useless.
+    _allocate: function(actor, box, flags) {
+        let childBox = new Clutter.ActorBox();
+        childBox.x1 = this._controls.x;
+        childBox.x2 = this._controls.x + this._controls.width;
+        childBox.y1 = 0;
+        childBox.y2 = box.y2 - box.y1;
+        this._controls.allocate(childBox, flags);
+    },
+
+    _onHoverChanged: function() {
+        if (this._controls.hover)
+            this.popOut();
+        else
+            this.popIn();
+    },
+
+    _poppedInX: function() {
+        let x = CONTROLS_POP_IN_FRACTION * this._controls.width;
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+            return -x;
+        return x;
+    },
+
+    popOut: function() {
+        Tweener.addTween(this._controls,
+                         { x: 0,
+                           time: CONTROLS_POP_IN_TIME,
+                           transition: 'easeOutQuad' });
+    },
+
+    popIn: function() {
+        Tweener.addTween(this._controls,
+                         { x: this._poppedInX(),
+                           time: CONTROLS_POP_IN_TIME,
+                           transition: 'easeOutQuad' });
+    }
+};
+
+function WorkspacesDisplay() {
     this._init();
 }
 
-WorkspacesControls.prototype = {
+WorkspacesDisplay.prototype = {
     _init: function() {
-        this.actor = new St.BoxLayout({ style_class: 'workspaces-bar' });
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor = new St.BoxLayout();
 
-        let view = global.settings.get_string(WORKSPACES_VIEW_KEY).toUpperCase();
-        if (view in WorkspacesViewType)
-            this._currentViewType = WorkspacesViewType[view];
-        else
-            this._currentViewType = WorkspacesViewType.SINGLE;
+        let workspacesBox = new St.BoxLayout({ vertical: true });
+        this.actor.add(workspacesBox, { expand: true });
 
-        this._currentView = null;
+        // placeholder for window previews
+        this._workspacesBin = new St.Bin();
+        workspacesBox.add(this._workspacesBin, { expand: true });
 
-        // View switcher button
-        this._toggleViewButton = new St.Button();
-        this._updateToggleButtonStyle();
+        this._workspaceIndicatorPanel = new WorkspaceIndicatorPanel();
+        workspacesBox.add(this._workspaceIndicatorPanel.actor);
 
-        this._toggleViewButton.connect('clicked', Lang.bind(this, function() {
-            if (this._currentViewType == WorkspacesViewType.SINGLE)
-                this._setView(WorkspacesViewType.GRID);
-            else
-                this._setView(WorkspacesViewType.SINGLE);
-         }));
-
-        this.actor.add(this._toggleViewButton, { y_fill: false, y_align: St.Align.START });
-
-        // View specific controls
-        this._viewControls = new St.Bin({ x_fill: true, y_fill: true });
-        this.actor.add(this._viewControls, { expand: true, x_fill: true });
+        let controls = new St.BoxLayout({ vertical: true,
+                                          style_class: 'workspace-controls' });
+        this._controlsContainer = new WorkspaceControlsContainer(controls);
+        this.actor.add(this._controlsContainer.actor);
 
         // Add/remove workspace buttons
-        this._removeButton = new St.Button({ style_class: 'workspace-controls remove' });
+        this._removeButton = new St.Button({ label: '&#8211;', // n-dash
+                                             style_class: 'remove-workspace' });
         this._removeButton.connect('clicked', Lang.bind(this, function() {
-            this._currentView.removeWorkspace();
+            this.workspacesView.removeWorkspace();
         }));
-        this.actor.add(this._removeButton, { y_fill: false,
-                                             y_align: St.Align.START });
+        controls.add(this._removeButton);
 
-        this._addButton = new St.Button({ style_class: 'workspace-controls add' });
+        this._addButton = new St.Button({ label: '+',
+                                          style_class: 'add-workspace' });
         this._addButton.connect('clicked', Lang.bind(this, function() {
-            this._currentView.addWorkspace();
+            this.workspacesView.addWorkspace();
         }));
         this._addButton._delegate = this._addButton;
         this._addButton._delegate.acceptDrop = Lang.bind(this,
             function(source, actor, x, y, time) {
-                return this._currentView._acceptNewWorkspaceDrop(source, actor, x, y, time);
+                return this.workspacesView._acceptNewWorkspaceDrop(source, actor, x, y, time);
             });
         this._addButton._delegate.handleDragOver = Lang.bind(this,
             function(source, actor, x, y, time) {
-                return this._currentView._handleDragOverNewWorkspace(source, actor, x, y, time);
+                return this.workspacesView._handleDragOverNewWorkspace(source, actor, x, y, time);
             });
-        this.actor.add(this._addButton, { y_fill: false,
-                                          y_align: St.Align.START });
-
-        this._nWorkspacesNotifyId =
-            global.screen.connect('notify::n-workspaces',
-                                  Lang.bind(this, this._workspacesChanged));
-        this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace',
-                                          Lang.bind(this, this.updateControlsSensitivity));
-
-        this._workspacesChanged();
-    },
-
-    updateControls: function(view) {
-        this._currentView = view;
-
-        this.updateControlsSensitivity();
-
-        let newControls = this._currentView.createControllerBar();
-        if (newControls) {
-            this._viewControls.child = newControls;
-            this._viewControls.child.opacity = 0;
-            Tweener.addTween(this._viewControls.child,
-                             { opacity: 255,
-                               time: Overview.ANIMATION_TIME,
-                               transition: 'easeOutQuad' });
-        } else {
-            if (this._viewControls.child)
-                Tweener.addTween(this._viewControls.child,
-                                 { opacity: 0,
-                                   time: Overview.ANIMATION_TIME,
-                                   transition: 'easeOutQuad',
-                                   onComplete: Lang.bind(this, function() {
-                                       this._viewControls.child.destroy();
-                                 })});
-        }
-    },
-
-    _updateToggleButtonStyle: function() {
-       if (this._currentViewType == WorkspacesViewType.SINGLE)
-            this._toggleViewButton.set_style_class_name('workspace-controls switch-mosaic');
-        else
-            this._toggleViewButton.set_style_class_name('workspace-controls switch-single');
-    },
-
-    _setView: function(view) {
-        if (this._currentViewType == view)
-            return;
-
-        if (WorkspacesViewType.SINGLE == view)
-            this._toggleViewButton.set_style_class_name('workspace-controls switch-mosaic');
-        else
-            this._toggleViewButton.set_style_class_name('workspace-controls switch-single');
-
-        this._currentViewType = view;
-        global.settings.set_string(WORKSPACES_VIEW_KEY, view);
-    },
-
-    _onDestroy: function() {
-        if (this._nWorkspacesNotifyId > 0) {
-            global.screen.disconnect(this._nWorkspacesNotifyId);
-            this._nWorkspacesNotifyId = 0;
-        }
-        if (this._switchWorkspaceNotifyId > 0) {
-            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-            this._switchWorkspaceNotifyId = 0;
-        }
-    },
-
-    _setButtonSensitivity: function(button, sensitive) {
-        if (button == null)
-            return;
-        button.opacity = sensitive ? 255 : 85;
-    },
-
-    updateControlsSensitivity: function() {
-        if (this._currentView) {
-            this._setButtonSensitivity(this._removeButton, this._currentView.canRemoveWorkspace());
-            this._setButtonSensitivity(this._addButton, this._currentView.canAddWorkspace());
-        }
-    },
-
-    _workspacesChanged: function() {
-        let showToggleButton = (global.screen.n_workspaces > 1);
-        Tweener.addTween(this._toggleViewButton,
-                         { opacity: showToggleButton ? 255 : 0,
-                           time: WORKSPACE_SWITCH_TIME,
-                           transition: 'easeOutQuad' });
-        this.updateControlsSensitivity();
-    }
-};
-Signals.addSignalMethods(WorkspacesControls.prototype);
-
-function WorkspacesManager(width, height, x, y) {
-    this._init(width, height, x, y);
-}
-
-WorkspacesManager.prototype = {
-    _init: function(width, height, x, y) {
-        this._workspacesWidth = width;
-        this._workspacesHeight = height;
-        this._workspacesX = x;
-        this._workspacesY = y;
-
-        this._workspaces = [];
-        for (let w = 0; w < global.screen.n_workspaces; w++) {
-            let metaWorkspace = global.screen.get_workspace_by_index(w);
-            this._workspaces[w] = new Workspace.Workspace(metaWorkspace);
-        }
+        controls.add(this._addButton, { expand: true });
 
         this.workspacesView = null;
-        this.controlsBar = new WorkspacesControls();
-        this._updateView();
+        this._nWorkspacesNotifyId = 0;
+    },
 
-        this.controlsBar.actor.connect('destroy',
-                                       Lang.bind(this, this._onDestroy));
-        this._viewChangedId =
-            global.settings.connect('changed::' + WORKSPACES_VIEW_KEY,
-                                    Lang.bind(this, this._updateView));
+   show: function() {
+        this._controlsContainer.show();
+
+        this._workspaces = [];
+        for (let i = 0; i < global.screen.n_workspaces; i++) {
+            let metaWorkspace = global.screen.get_workspace_by_index(i);
+            this._workspaces[i] = new Workspace.Workspace(metaWorkspace);
+        }
+
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
                                   Lang.bind(this, this._workspacesChanged));
-    },
 
-    _updateView: function() {
-        let viewType, newView;
+        let binAllocation = this._workspacesBin.allocation;
+        let binWidth = binAllocation.x2 - binAllocation.x1;
+        let binHeight = binAllocation.y2 - binAllocation.y1;
 
-        let view = global.settings.get_string(WORKSPACES_VIEW_KEY).toUpperCase();
-        if (view in WorkspacesViewType)
-            viewType = WorkspacesViewType[view];
-        else
-            viewType = WorkspacesViewType.SINGLE;
-
-        switch (viewType) {
-            case WorkspacesViewType.SINGLE:
-                newView = new SingleView(this._workspacesWidth,
-                                         this._workspacesHeight,
-                                         this._workspacesX,
-                                         this._workspacesY,
-                                         this._workspaces);
-                break;
-            case WorkspacesViewType.GRID:
-            default:
-                newView = new MosaicView(this._workspacesWidth,
-                                         this._workspacesHeight,
-                                         this._workspacesX,
-                                         this._workspacesY,
-                                         this._workspaces);
-                break;
+        // Workspaces expect to have the same ratio as the screen, so take
+        // this into account when fitting the workspace into the bin
+        let width, height;
+        let binRatio = binWidth / binHeight;
+        let wsRatio = global.screen_width / global.screen_height;
+        if (wsRatio > binRatio) {
+            width = binWidth;
+            height = Math.floor(binWidth / wsRatio);
+        } else {
+            width = Math.floor(binHeight * wsRatio);
+            height = binHeight;
         }
+
+        // Position workspaces as if they were parented to this._workspacesBin
+        let [x, y] = this._workspacesBin.get_transformed_position();
+        x = Math.floor(x + Math.abs(binWidth - width) / 2);
+        y = Math.floor(y + Math.abs(binHeight - height) / 2);
+
+        let newView = new WorkspacesView(width, height, x, y, this._workspaces);
+
         if (this.workspacesView)
             this.workspacesView.destroy();
         this.workspacesView = newView;
 
-        this.controlsBar.updateControls(this.workspacesView);
+        this._workspaceIndicatorPanel.updateWorkspaces(this._workspaces);
 
-        this.emit('view-changed');
+        this._nWorkspacesNotifyId =
+            global.screen.connect('notify::n-workspaces',
+                                  Lang.bind(this, this._workspacesChanged));
+    },
+
+    hide: function() {
+        this._controlsContainer.hide();
+
+        if (this._nWorkspacesNotifyId > 0)
+            global.screen.disconnect(this._nWorkspacesNotifyId);
+        this.workspacesView.destroy();
+        this.workspacesView = null;
+        for (let w = 0; w < this._workspaces.length; w++) {
+            this._workspaces[w].disconnectAll();
+            this._workspaces[w].destroy();
+        }
     },
 
     _workspacesChanged: function() {
@@ -1685,17 +1194,7 @@ WorkspacesManager.prototype = {
         this.workspacesView.updateWorkspaces(oldNumWorkspaces,
                                              newNumWorkspaces,
                                              lostWorkspaces);
-    },
-
-    _onDestroy: function() {
-        if (this._nWorkspacesNotifyId > 0)
-            global.screen.disconnect(this._nWorkspacesNotifyId);
-        if (this._viewChangedId > 0)
-            global.settings.disconnect(this._viewChangedId);
-        for (let w = 0; w < this._workspaces.length; w++) {
-            this._workspaces[w].disconnectAll();
-            this._workspaces[w].destroy();
-        }
+        this._workspaceIndicatorPanel.updateWorkspaces(this._workspaces);
     }
 };
-Signals.addSignalMethods(WorkspacesManager.prototype);
+Signals.addSignalMethods(WorkspacesDisplay.prototype);

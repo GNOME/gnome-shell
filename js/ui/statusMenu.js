@@ -111,11 +111,11 @@ StatusMenuButton.prototype = {
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("My Account..."));
+        item = new PopupMenu.PopupMenuItem(_("My Account"));
         item.connect('activate', Lang.bind(this, this._onMyAccountActivate));
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("System Settings..."));
+        item = new PopupMenu.PopupMenuItem(_("System Settings"));
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
         this.menu.addMenuItem(item);
 
@@ -138,7 +138,7 @@ StatusMenuButton.prototype = {
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("Suspend"));
+        item = new PopupMenu.PopupMenuItem(_("Suspend..."));
         item.connect('activate', Lang.bind(this, this._onShutDownActivate));
         this.menu.addMenuItem(item);
 
@@ -153,7 +153,7 @@ StatusMenuButton.prototype = {
 
     _onMyAccountActivate: function() {
         Main.overview.hide();
-        this._spawn(['gnome-about-me']);
+        this._spawn(['gnome-control-center', 'user-accounts']);
     },
 
     _onPreferencesActivate: function() {

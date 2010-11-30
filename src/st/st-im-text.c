@@ -181,6 +181,13 @@ st_im_text_paint (ClutterActor *actor)
     update_im_cursor_location (self);
 }
 
+static gboolean
+st_im_text_get_paint_volume (ClutterActor       *self,
+                             ClutterPaintVolume *volume)
+{
+  return clutter_paint_volume_set_from_allocation (volume, self);
+}
+
 /* Returns a new reference to window */
 static GdkWindow *
 window_for_actor (ClutterActor *actor)
@@ -440,6 +447,7 @@ st_im_text_class_init (StIMTextClass *klass)
   object_class->dispose = st_im_text_dispose;
 
   actor_class->paint = st_im_text_paint;
+  actor_class->get_paint_volume = st_im_text_get_paint_volume;
   actor_class->realize = st_im_text_realize;
   actor_class->unrealize = st_im_text_unrealize;
 

@@ -26,7 +26,10 @@ const UPDeviceType = {
     MOUSE: 5,
     KEYBOARD: 6,
     PDA: 7,
-    PHONE: 8
+    PHONE: 8,
+    MEDIA_PLAYER: 9,
+    TABLET: 10,
+    COMPUTER: 11
 };
 
 const UPDeviceState = {
@@ -68,12 +71,19 @@ Indicator.prototype = {
         this._deviceItems = [ ];
         this._hasPrimary = false;
         this._primaryDeviceId = null;
+
         this._batteryItem = new PopupMenu.PopupMenuItem('');
+        this._primaryPercentage = new St.Label();
+        let percentBin = new St.Bin();
+        percentBin.set_child(this._primaryPercentage, { x_align: St.Align.END });
+        this._batteryItem.addActor(percentBin);
         this.menu.addMenuItem(this._batteryItem);
+
         this._deviceSep = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(this._deviceSep);
         this._otherDevicePosition = 2;
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
         this.menu.addAction(_("What's using power..."),function() {
             GLib.spawn_command_line_async('gnome-power-statistics --device wakeups');
         });
@@ -95,10 +105,12 @@ Indicator.prototype = {
                 this._deviceSep.actor.hide();
                 return;
             }
-            let [device_id, device_type, summary, percentage, state, time] = device;
+            let [device_id, device_type, icon, percentage, state, time] = device;
             if (device_type == UPDeviceType.BATTERY) {
                 this._hasPrimary = true;
-                this._batteryItem.label.text = summary;
+                let minutes = Math.floor(time / 60);
+                this._batteryItem.label.text = Gettext.ngettext("%d minute remaining", "%d minutes remaining", minutes).format(minutes);
+                this._primaryPercentage.text = '%d%%'.format(Math.round(percentage));
                 this._batteryItem.actor.show();
                 if (this._deviceItems.length > 0)
                     this._deviceSep.actor.show();
@@ -109,6 +121,18 @@ Indicator.prototype = {
             }
 
             this._primaryDeviceId = device_id;
+            if (this._primaryDeviceId) {
+                this._batteryItem.actor.reactive = true;
+                this._batteryItem.actor.can_focus = true;
+                this._batteryItem.connect('activate', function(item) {
+                    let p = new Shell.Process({ args: ['gnome-power-statistics', '--device', device_id] });
+                    p.run();
+                });
+            } else {
+                // virtual device
+                this._batteryItem.actor.reactive = false;
+                this._batteryItem.actor.can_focus = false;
+            }
         }));
     },
 
@@ -181,24 +205,12 @@ DeviceItem.prototype = {
     _init: function(device) {
         PopupMenu.PopupBaseMenuItem.prototype._init.call(this);
 
-        let [device_id, device_type, summary, percentage, state, time] = device;
+        let [device_id, device_type, icon, percentage, state, time] = device;
 
         this._box = new St.BoxLayout({ style_class: 'popup-device-menu-item' });
-        this._label = new St.Label({ text: summary });
+        this._label = new St.Label({ text: this._deviceTypeToString(device_type) });
 
-        let icon;
-        switch (state) {
-        case UPDeviceState.FULLY_CHARGED:
-            icon = 'battery-full-charged';
-            break;
-        case UPDeviceState.UNKNOWN:
-            icon = 'battery-missing';
-            break;
-        default:
-            icon = this._percentageToIcon(percentage) + (state == UPDeviceState.CHARGING ? '-charging' : '');
-        }
-
-        this._icon = new St.Icon({ icon_name: icon,
+        this._icon = new St.Icon({ gicon: Shell.util_icon_from_string(icon),
                                    icon_type: St.IconType.SYMBOLIC,
                                    style_class: 'popup-menu-icon' });
 
@@ -212,15 +224,32 @@ DeviceItem.prototype = {
         this.addActor(percentBin);
     },
 
-    _percentageToIcon: function(p) {
-        if (p > 60)
-            return 'battery-full';
-        if (p > 30)
-            return 'battery-good';
-        if (p > 10)
-            return 'battery-low';
-        if (p > 0)
-            return 'battery-caution';
-        return 'battery-empty';
+    _deviceTypeToString: function(type) {
+	switch (type) {
+	case UPDeviceType.AC_POWER:
+            return _("AC adapter");
+        case UPDeviceType.BATTERY:
+            return _("Laptop battery");
+        case UPDeviceType.UPS:
+            return _("UPS");
+        case UPDeviceType.MONITOR:
+            return _("Monitor");
+        case UPDeviceType.MOUSE:
+            return _("Mouse");
+        case UPDeviceType.KEYBOARD:
+            return _("Keyboard");
+        case UPDeviceType.PDA:
+            return _("PDA");
+        case UPDeviceType.PHONE:
+            return _("Cell phone");
+        case UPDeviceType.MEDIA_PLAYER:
+            return _("Media player");
+        case UPDeviceType.TABLET:
+            return _("Tablet");
+        case UPDeviceType.COMPUTER:
+            return _("Computer");
+        default:
+            return _("Unknown");
+        }
     }
 }

@@ -6,7 +6,7 @@ const Lang = imports.lang;
 const St = imports.gi.St;
 const Signals = imports.signals;
 const Pango = imports.gi.Pango;
-const Gettext_gtk20 = imports.gettext.domain('gtk20');
+const Gettext_gtk30 = imports.gettext.domain('gtk30');
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
@@ -115,7 +115,7 @@ Calendar.prototype = {
         this._settings.connect('changed::' + SHOW_WEEKDATE_KEY, Lang.bind(this, this._onSettingsChange));
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
 
-        let weekStartString = Gettext_gtk20.gettext('calendar:week_start:0');
+        let weekStartString = Gettext_gtk30.gettext('calendar:week_start:0');
         if (weekStartString.indexOf('calendar:week_start:') == 0) {
             this._weekStart = parseInt(weekStartString.substring(20));
         }
@@ -126,7 +126,7 @@ Calendar.prototype = {
         }
 
         // Find the ordering for month/year in the calendar heading
-        switch (Gettext_gtk20.gettext('calendar:MY')) {
+        switch (Gettext_gtk30.gettext('calendar:MY')) {
         case 'calendar:MY':
             this._headerFormat = '%B %Y';
             break;

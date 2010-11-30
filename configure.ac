@@ -1,5 +1,5 @@
 AC_PREREQ(2.63)
-AC_INIT([gnome-shell],[2.91.2],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
+AC_INIT([gnome-shell],[2.91.3],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/shell-global.c])
@@ -57,7 +57,7 @@ fi
 
 AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
 
-CLUTTER_MIN_VERSION=1.3.14
+CLUTTER_MIN_VERSION=1.5.8
 GOBJECT_INTROSPECTION_MIN_VERSION=0.6.11
 GJS_MIN_VERSION=0.7
 MUTTER_MIN_VERSION=2.91.0
@@ -105,11 +105,7 @@ AC_SUBST(MUTTER_BIN_DIR)
 AC_SUBST(MUTTER_LIB_DIR)
 AC_SUBST(MUTTER_PLUGIN_DIR)
 
-GJS_JS_DIR=`$PKG_CONFIG --variable=jsdir gjs-1.0`
-GJS_JS_NATIVE_DIR=`$PKG_CONFIG --variable=jsnativedir gjs-1.0`
 GJS_CONSOLE=`$PKG_CONFIG --variable=gjs_console gjs-1.0`
-AC_SUBST(GJS_JS_DIR)
-AC_SUBST(GJS_JS_NATIVE_DIR)
 AC_SUBST(GJS_CONSOLE)
 
 AC_CHECK_FUNCS(fdwalk)

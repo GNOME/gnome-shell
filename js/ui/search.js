@@ -2,7 +2,7 @@
 
 const Signals = imports.signals;
 
-const RESULT_ICON_SIZE = 24;
+const RESULT_ICON_SIZE = 48;
 
 // Not currently referenced by the search API, but
 // this enumeration can be useful for provider
@@ -182,7 +182,7 @@ SearchProvider.prototype = {
      * implementation will show the icon next to the name.
      *
      * The actor should be an instance of St.Widget, with the style class
-     * 'dash-search-result-content'.
+     * 'search-result-content'.
      */
     createResultActor: function(resultMeta, terms) {
         return null;

@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const Meta = imports.gi.Meta;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 const Lang = imports.lang;
@@ -8,104 +9,60 @@ const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const AppDisplay = imports.ui.appDisplay;
+const Dash = imports.ui.dash;
+const DocDisplay = imports.ui.docDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
+const MessageTray = imports.ui.messageTray;
 const Panel = imports.ui.panel;
-const Dash = imports.ui.dash;
+const PlaceDisplay = imports.ui.placeDisplay;
 const Tweener = imports.ui.tweener;
+const ViewSelector = imports.ui.viewSelector;
 const WorkspacesView = imports.ui.workspacesView;
 
 // Time for initial animation going into Overview mode
 const ANIMATION_TIME = 0.25;
 
-// Time for pane menus to fade in/out
-const PANE_FADE_TIME = 0.1;
+// We split the screen vertically between the dash and the view selector.
+const DASH_SPLIT_FRACTION = 0.1;
 
-// We divide the screen into a grid of rows and columns, which we use
-// to help us position the Overview components, such as the side panel
-// that lists applications and documents, the workspaces display, and 
-// the button for adding additional workspaces.
-// In the regular mode, the side panel takes up one column on the left,
-// and the workspaces display takes up the remaining columns.
-// In the expanded side panel display mode, the side panel takes up two
-// columns, and the workspaces display slides all the way to the right,
-// being visible only in the last quarter of the right-most column.
-// In the future, this mode will have more components, such as a display 
-// of documents which were recently opened with a given application, which 
-// will take up the remaining sections of the display.
+const SHELL_INFO_HIDE_TIMEOUT = 10;
 
-const WIDE_SCREEN_CUT_OFF_RATIO = 1.4;
-// A common netbook resolution is 1024x600, which trips the widescreen
-// ratio.  However that leaves way too few pixels for the dash.  So
-// just treat this as a regular screen.
-const WIDE_SCREEN_MINIMUM_HEIGHT = 768;
-
-const COLUMNS_REGULAR_SCREEN = 4;
-const ROWS_REGULAR_SCREEN = 8;
-const COLUMNS_WIDE_SCREEN = 5;
-const ROWS_WIDE_SCREEN = 10;
-
-const DEFAULT_PADDING = 4;
-
-// Padding around workspace grid / Spacing between Dash and Workspaces
-const WORKSPACE_GRID_PADDING = 12;
-
-const COLUMNS_FOR_WORKSPACES_REGULAR_SCREEN = 3;
-const ROWS_FOR_WORKSPACES_REGULAR_SCREEN = 6;
-
-const COLUMNS_FOR_WORKSPACES_WIDE_SCREEN = 4;
-const ROWS_FOR_WORKSPACES_WIDE_SCREEN = 8;
-
-// A multi-state; PENDING is used during animations
-const STATE_ACTIVE = true;
-const STATE_PENDING_INACTIVE = false;
-const STATE_INACTIVE = false;
-
-const SHADOW_COLOR = new Clutter.Color();
-SHADOW_COLOR.from_pixel(0x00000033);
-const TRANSPARENT_COLOR = new Clutter.Color();
-TRANSPARENT_COLOR.from_pixel(0x00000000);
-
-const SHADOW_WIDTH = 6;
-
-const NUMBER_OF_SECTIONS_IN_SEARCH = 2;
-
-const INFO_BAR_HIDE_TIMEOUT = 10;
-
-let wideScreen = false;
-let displayGridColumnWidth = null;
-let displayGridRowHeight = null;
-
-function InfoBar() {
+function Source() {
     this._init();
 }
 
-InfoBar.prototype = {
+Source.prototype = {
+    __proto__:  MessageTray.Source.prototype,
+
     _init: function() {
-        this.actor = new St.Bin({ style_class: 'info-bar-panel',
-                                  x_fill: true,
-                                  y_fill: false });
-        this._label = new St.Label();
-        this._undo = new St.Button({ style_class: 'info-bar-link-button' });
+        MessageTray.Source.prototype._init.call(this,
+                                                "System Information");
+        this._setSummaryIcon(this.createNotificationIcon());
+    },
 
-        let bin = new St.Bin({ x_fill: false,
-                               y_fill: false,
-                               x_align: St.Align.MIDDLE,
-                               y_align: St.Align.MIDDLE });
-        this.actor.set_child(bin);
+    createNotificationIcon: function() {
+        return new St.Icon({ icon_name: 'info',
+                             icon_type: St.IconType.FULLCOLOR,
+                             icon_size: this.ICON_SIZE });
+    },
 
-        let box = new St.BoxLayout({ style_class: 'info-bar' });
-        bin.set_child(box);
+    _notificationClicked: function() {
+        this.destroy();
+    }
+}
+
+function ShellInfo() {
+    this._init();
+}
+
+ShellInfo.prototype = {
+    _init: function() {
+        this._source = null;
         this._timeoutId = 0;
-
-        box.add(this._label, {'y-fill' : false, 'y-align' : St.Align.MIDDLE});
-        box.add(this._undo);
-
-        this.actor.set_opacity(0);
-
         this._undoCallback = null;
-        this._undo.connect('clicked', Lang.bind(this, this._onUndoClicked));
     },
 
     _onUndoClicked: function() {
@@ -114,27 +71,16 @@ InfoBar.prototype = {
 
         if (this._undoCallback)
             this._undoCallback();
-        this.actor.set_opacity(0);
         this._undoCallback = null;
-    },
 
-    _hideDone: function() {
-        this._undoCallback = null;
-    },
-
-    _hide: function() {
-        Tweener.addTween(this.actor,
-                         { opacity: 0,
-                           transition: 'easeOutQuad',
-                           time: ANIMATION_TIME,
-                           onComplete: this._hideDone,
-                           onCompleteScope: this
-                         });
+        if (this._source)
+            this._source.destroy();
     },
 
     _onTimeout: function() {
         this._timeoutId = 0;
-        this._hide();
+        if (this._source)
+            this._source.destroy();
         return false;
     },
 
@@ -142,28 +88,33 @@ InfoBar.prototype = {
         if (this._timeoutId)
             Mainloop.source_remove(this._timeoutId);
 
-        this._timeout = false;
+        this._timeoutId = Mainloop.timeout_add_seconds(SHELL_INFO_HIDE_TIMEOUT,
+                                                       Lang.bind(this, this._onTimeout));
 
-        this._label.text = text;
+        if (this._source == null) {
+            this._source = new Source();
+            this._source.connect('destroy', Lang.bind(this,
+                function() {
+                    this._source = null;
+                }));
+            Main.messageTray.add(this._source);
+        }
 
-        Tweener.addTween(this.actor,
-                         { opacity: 255,
-                           transition: 'easeOutQuad',
-                           time: ANIMATION_TIME
-                         });
-
-        this._timeoutId = Mainloop.timeout_add_seconds(INFO_BAR_HIDE_TIMEOUT, Lang.bind(this, this._onTimeout));
-
-        if (undoLabel)
-            this._undo.label = undoLabel;
+        let notification = this._source.notification;
+        if (notification == null)
+            notification = new MessageTray.Notification(this._source, text, null);
         else
-            this._undo.label = _("Undo");
+            notification.update(text, null, { clear: true });
 
         this._undoCallback = undoCallback;
-        if (undoCallback)
-            this._undo.show();
-        else
-            this._undo.hide();
+        if (undoCallback) {
+            notification.addButton('system-undo',
+                                   undoLabel ? undoLabel : _("Undo"));
+            notification.connect('action-invoked',
+                                 Lang.bind(this, this._onUndoClicked));
+        }
+
+        this._source.notify(notification);
     }
 };
 
@@ -173,29 +124,36 @@ function Overview() {
 
 Overview.prototype = {
     _init : function() {
-        this._group = new St.Group({ style_class: 'overview' });
+        // The actual global.background_actor is inside global.window_group,
+        // which is hidden when displaying the overview, so we display a clone.
+        this._background = new Clutter.Clone({ source: global.background_actor });
+        this._background.hide();
+        global.overlay_group.add_actor(this._background);
+
+        this._desktopFade = new St.Bin();
+        global.overlay_group.add_actor(this._desktopFade);
+
+        this._spacing = 0;
+
+        this._group = new St.Group({ name: 'overview' });
         this._group._delegate = this;
-        this._group.connect('destroy', Lang.bind(this,
-            function() {
-                if (this._lightbox) {
-                    this._lightbox.destroy();
-                    this._lightbox = null;
+        this._group.connect('style-changed',
+            Lang.bind(this, function() {
+                let node = this._group.get_theme_node();
+                let spacing = node.get_length('spacing');
+                if (spacing != this._spacing) {
+                    this._spacing = spacing;
+                    this.relayout();
                 }
             }));
 
-        this.infoBar = new InfoBar();
-        this._group.add_actor(this.infoBar.actor);
+        this.shellInfo = new ShellInfo();
 
-        this._workspacesManager = null;
-        this._lightbox = null;
+        this._workspacesDisplay = null;
 
         this.visible = false;
         this.animationInProgress = false;
         this._hideInProgress = false;
-
-        this._recalculateGridSizes();
-
-        this._activeDisplayPane = null;
 
         // During transitions, we raise this to the top to avoid having the overview
         // area be reactive; it causes too many issues such as double clicks on
@@ -205,201 +163,99 @@ Overview.prototype = {
         this._group.add_actor(this._coverPane);
         this._coverPane.connect('event', Lang.bind(this, function (actor, event) { return true; }));
 
-        // Similar to the cover pane but used for dialogs ("panes"); see the comments
-        // in addPane below.
-        this._transparentBackground = new Clutter.Rectangle({ opacity: 0,
-                                                              reactive: true });
-        this._group.add_actor(this._transparentBackground);
-
-        // Background color for the Overview
-        this._backOver = new St.Label();
-        this._group.add_actor(this._backOver);
 
         this._group.hide();
         global.overlay_group.add_actor(this._group);
 
+        this.viewSelector = new ViewSelector.ViewSelector();
+        this._group.add_actor(this.viewSelector.actor);
+
+        this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
+        this.viewSelector.addViewTab("Windows", this._workspacesDisplay.actor);
+
+        let appView = new AppDisplay.AllAppDisplay();
+        this.viewSelector.addViewTab("Applications", appView.actor);
+
+        // Default search providers
+        this.viewSelector.addSearchProvider(new AppDisplay.AppSearchProvider());
+        this.viewSelector.addSearchProvider(new AppDisplay.PrefsSearchProvider());
+        this.viewSelector.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
+        this.viewSelector.addSearchProvider(new DocDisplay.DocSearchProvider());
+
         // TODO - recalculate everything when desktop size changes
         this._dash = new Dash.Dash();
         this._group.add_actor(this._dash.actor);
-
-        // Container to hold popup pane chrome.
-        this._paneContainer = new St.BoxLayout({ style_class: 'overview-pane' });
-        // Note here we explicitly don't set the paneContainer to be reactive yet; that's done
-        // inside the notify::visible handler on panes.
-        this._paneContainer.connect('button-release-event', Lang.bind(this, function(background) {
-            this._activeDisplayPane.close();
-            return true;
-        }));
-        this._group.add_actor(this._paneContainer);
-
-        this._transparentBackground.lower_bottom();
-        this._paneContainer.hide();
+        this._dash.actor.add_constraint(this.viewSelector.constrainY);
+        this._dash.actor.add_constraint(this.viewSelector.constrainHeight);
 
         this._coverPane.lower_bottom();
 
         this.workspaces = null;
     },
 
-    _onViewChanged: function() {
-        if (!this.visible)
-            return;
+    _getDesktopClone: function() {
+        let windows = global.get_window_actors().filter(function(w) {
+            return w.meta_window.get_window_type() == Meta.WindowType.DESKTOP;
+        });
+        if (windows.length == 0)
+            return null;
 
-        this.workspaces = this._workspacesManager.workspacesView;
-
-        // Show new workspacesView
-        this._group.add_actor(this.workspaces.actor);
-        this._workspacesBar.raise(this.workspaces.actor);
-        this._dash.actor.raise(this.workspaces.actor);
-    },
-
-    _recalculateGridSizes: function () {
-        let primary = global.get_primary_monitor();
-        wideScreen = (primary.width/primary.height > WIDE_SCREEN_CUT_OFF_RATIO) &&
-                     (primary.height >= WIDE_SCREEN_MINIMUM_HEIGHT);
-
-        // We divide the screen into an imaginary grid which helps us determine the layout of
-        // different visual components.
-        if (wideScreen) {
-            displayGridColumnWidth = Math.floor(primary.width / COLUMNS_WIDE_SCREEN);
-            displayGridRowHeight = Math.floor(primary.height / ROWS_WIDE_SCREEN);
-        } else {
-            displayGridColumnWidth = Math.floor(primary.width / COLUMNS_REGULAR_SCREEN);
-            displayGridRowHeight = Math.floor(primary.height / ROWS_REGULAR_SCREEN);
-        }
+        let clone = new Clutter.Clone({ source: windows[0].get_texture() });
+        clone.source.connect('destroy', Lang.bind(this, function() {
+            clone.destroy();
+        }));
+        return clone;
     },
 
     relayout: function () {
         let primary = global.get_primary_monitor();
         let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
 
-        this._recalculateGridSizes();
+        let contentY = Panel.PANEL_HEIGHT;
+        let contentHeight = primary.height - contentY - Main.messageTray.actor.height;
 
         this._group.set_position(primary.x, primary.y);
         this._group.set_size(primary.width, primary.height);
 
-        let contentY = Panel.PANEL_HEIGHT;
-        let contentHeight = primary.height - contentY;
-
         this._coverPane.set_position(0, contentY);
         this._coverPane.set_size(primary.width, contentHeight);
 
-        let workspaceColumnsUsed = wideScreen ? COLUMNS_FOR_WORKSPACES_WIDE_SCREEN : COLUMNS_FOR_WORKSPACES_REGULAR_SCREEN;
-        let workspaceRowsUsed = wideScreen ? ROWS_FOR_WORKSPACES_WIDE_SCREEN : ROWS_FOR_WORKSPACES_REGULAR_SCREEN;
+        let viewWidth = (1.0 - DASH_SPLIT_FRACTION) * primary.width - this._spacing;
+        let viewHeight = contentHeight - 2 * this._spacing;
+        let viewY = contentY + this._spacing;
+        let viewX = rtl ? 0
+                        : Math.floor(DASH_SPLIT_FRACTION * primary.width) + this._spacing;
 
-        this._workspacesWidth = displayGridColumnWidth * workspaceColumnsUsed
-                                  - WORKSPACE_GRID_PADDING * 2;
-        // We scale the vertical padding by (primary.height / primary.width)
-        // so that the workspace preserves its aspect ratio.
-        this._workspacesHeight = Math.floor(displayGridRowHeight * workspaceRowsUsed
-                                   - WORKSPACE_GRID_PADDING * (primary.height / primary.width) * 2);
-
+        // Set the dash's x position - y is handled by a constraint
+        let dashX;
         if (rtl) {
-            this._workspacesX = WORKSPACE_GRID_PADDING;
+            this._dash.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
+            dashX = primary.width;
         } else {
-            this._workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
+            dashX = 0;
         }
-        this._workspacesY = Math.floor(displayGridRowHeight + WORKSPACE_GRID_PADDING * (primary.height / primary.width));
+        this._dash.actor.set_x(dashX);
 
-        if (rtl) {
-            this._dash.actor.set_position(primary.width - displayGridColumnWidth, contentY);
-        } else {
-            this._dash.actor.set_position(0, contentY);
-        }
-
-        this._dash.actor.set_size(displayGridColumnWidth, contentHeight);
-        this._dash.searchArea.height = this._workspacesY - contentY;
-        this._dash.sectionArea.height = this._workspacesHeight;
-        this._dash.searchResults.actor.height = this._workspacesHeight;
-
-        this.infoBar.actor.set_position(displayGridColumnWidth, Panel.PANEL_HEIGHT);
-        this.infoBar.actor.set_size(primary.width - displayGridColumnWidth, this._workspacesY - Panel.PANEL_HEIGHT);
-        this.infoBar.actor.raise_top();
-
-        // place the 'Add Workspace' button in the bottom row of the grid
-        this._workspacesBarX = this._workspacesX;
-        this._workspacesBarWidth = this._workspacesWidth;
-        this._workspacesBarY = primary.height - displayGridRowHeight;
-
-        // The parent (this._group) is positioned at the top left of the primary monitor
-        // while this._backOver occupies the entire screen.
-        this._backOver.set_position(- primary.x, - primary.y);
-        this._backOver.set_size(global.screen_width, global.screen_height);
-
-        this._paneContainer.set_position(this._dash.actor.x + this._dash.actor.width + DEFAULT_PADDING,
-                                         this._workspacesY);
-        // Dynamic width
-        this._paneContainer.height = this._workspacesHeight;
-        if (rtl) {
-            this._paneContainer.connect('notify::width', Lang.bind(this, function (paneContainer) {
-                paneContainer.x = this._dash.actor.x - (DEFAULT_PADDING + paneContainer.width);
-            }));
-        }
-
-        this._transparentBackground.set_position(primary.x, primary.y);
-        this._transparentBackground.set_size(primary.width, primary.height);
-
-    },
-
-    addPane: function (pane, align) {
-        pane.actor.height = .9 * this._workspacesHeight;
-        this._paneContainer.add(pane.actor, { expand: true,
-                                              y_fill: false,
-                                              y_align: align });
-        // When a pane is displayed, we raise the transparent background to the top
-        // and connect to button-release-event on it, then raise the pane above that.
-        // The idea here is that clicking anywhere outside the pane should close it.
-        // When the active pane is closed, undo the effect.
-        let backgroundEventId = null;
-        pane.connect('open-state-changed', Lang.bind(this, function (pane, isOpen) {
-            if (isOpen) {
-                this._activeDisplayPane = pane;
-                this._transparentBackground.raise_top();
-                this._paneContainer.raise_top();
-                this._paneContainer.show();
-                this._paneReady = false;
-                if (backgroundEventId != null)
-                    this._transparentBackground.disconnect(backgroundEventId);
-                backgroundEventId = this._transparentBackground.connect('captured-event', Lang.bind(this, function (actor, event) {
-                    if (event.get_source() != this._transparentBackground)
-                        return false;
-                    if (event.type() == Clutter.EventType.BUTTON_PRESS)
-                        this._paneReady = true;
-                    if (event.type() == Clutter.EventType.BUTTON_RELEASE
-                        && this._paneReady)
-                        this._activeDisplayPane.close();
-                    return true;
-                }));
-                if (!this._lightbox)
-                    this._lightbox = new Lightbox.Lightbox(this._group,
-                                                           { fadeTime: PANE_FADE_TIME });
-                this._lightbox.show();
-                this._lightbox.highlight(this._paneContainer);
-            } else if (pane == this._activeDisplayPane) {
-                this._activeDisplayPane = null;
-                if (backgroundEventId != null) {
-                    this._transparentBackground.disconnect(backgroundEventId);
-                    backgroundEventId = null;
-                }
-                this._transparentBackground.lower_bottom();
-                this._paneContainer.hide();
-                this._lightbox.hide();
-            }
-        }));
+        this.viewSelector.actor.set_position(viewX, viewY);
+        this.viewSelector.actor.set_size(viewWidth, viewHeight);
     },
 
     //// Public methods ////
 
     beginItemDrag: function(source) {
-        // Close any active panes if @source is a GenericDisplayItem.
-        // This allows the user to place the item on any workspace.
-        if (source instanceof GenericDisplay.GenericDisplayItem)
-            if (this._activeDisplayPane != null)
-                this._activeDisplayPane.close();
         this.emit('item-drag-begin');
     },
 
     endItemDrag: function(source) {
         this.emit('item-drag-end');
+    },
+
+    beginWindowDrag: function(source) {
+        this.emit('window-drag-begin');
+    },
+
+    endWindowDrag: function(source) {
+        this.emit('window-drag-end');
     },
 
     // Returns the scale the Overview has when we just start zooming out
@@ -419,48 +275,22 @@ Overview.prototype = {
 
     // Returns the current scale of the Overview.
     getScale : function() {
-        return this._group.scaleX;
+        return this.workspaces.actor.scaleX;
     },
 
     // Returns the current position of the Overview.
     getPosition : function() {
-        return [this._group.x, this._group.y];
+        return [this.workspaces.actor.x, this.workspaces.actor.y];
     },
 
     show : function() {
         if (this.visible)
             return;
-        if (!Main.pushModal(this._dash.actor))
+        if (!Main.pushModal(this.viewSelector.actor))
             return;
 
         this.visible = true;
         this.animationInProgress = true;
-
-        this._dash.show();
-
-        /* TODO: make this stuff dynamic */
-        this._workspacesManager =
-            new WorkspacesView.WorkspacesManager(this._workspacesWidth,
-                                                 this._workspacesHeight,
-                                                 this._workspacesX,
-                                                 this._workspacesY);
-        this._workspacesManager.connect('view-changed',
-                                        Lang.bind(this, this._onViewChanged));
-        this.workspaces = this._workspacesManager.workspacesView;
-        this._group.add_actor(this.workspaces.actor);
-
-        // The workspaces actor is as big as the screen, so we have to raise the dash above it
-        // for drag and drop to work.  In the future we should fix the workspaces to not
-        // be as big as the screen.
-        this._dash.actor.raise(this.workspaces.actor);
-
-        this._workspacesBar = this._workspacesManager.controlsBar.actor;
-        this._workspacesBar.set_position(this._workspacesBarX,
-                                         this._workspacesBarY);
-        this._workspacesBar.width = this._workspacesBarWidth;
-
-        this._group.add_actor(this._workspacesBar);
-        this._workspacesBar.raise(this.workspaces.actor);
 
         // All the the actors in the window group are completely obscured,
         // hiding the group holding them while the Overview is displayed greatly
@@ -471,17 +301,38 @@ Overview.prototype = {
         // clones of them, this would obviously no longer be necessary.
         global.window_group.hide();
         this._group.show();
+        this._background.show();
 
-        // Create a zoom out effect. First scale the Overview group up and
+        this.viewSelector.show();
+        this._workspacesDisplay.show();
+        this._dash.show();
+
+        this.workspaces = this._workspacesDisplay.workspacesView;
+        global.overlay_group.add_actor(this.workspaces.actor);
+
+        if (!this._desktopFade.child)
+            this._desktopFade.child = this._getDesktopClone();
+
+        if (!this.workspaces.getActiveWorkspace().hasMaximizedWindows()) {
+            this._desktopFade.opacity = 255;
+            this._desktopFade.show();
+            Tweener.addTween(this._desktopFade,
+                             { opacity: 0,
+                               time: ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
+        }
+
+        // Create a zoom out effect. First scale the workspaces view up and
         // position it so that the active workspace fills up the whole screen,
-        // then transform the group to its normal dimensions and position.
+        // then transform it to its normal dimensions and position.
         // The opposite transition is used in hide().
-        this._group.scaleX = this._group.scaleY = this.getZoomedInScale();
-        [this._group.x, this._group.y] = this.getZoomedInPosition();
+        this.workspaces.actor.scaleX = this.workspaces.actor.scaleY = this.getZoomedInScale();
+        [this.workspaces.actor.x, this.workspaces.actor.y] = this.getZoomedInPosition();
         let primary = global.get_primary_monitor();
-        Tweener.addTween(this._group,
-                         { x: primary.x,
-                           y: primary.y,
+        Tweener.addTween(this.workspaces.actor,
+                         { x: primary.x - this._group.x,
+                           y: primary.y - this._group.y,
                            scaleX: 1,
                            scaleY: 1,
                            transition: 'easeOutQuad',
@@ -490,9 +341,9 @@ Overview.prototype = {
                            onCompleteScope: this
                           });
 
-        // Make Dash fade in so that it doesn't appear too big.
-        this._dash.actor.opacity = 0;
-        Tweener.addTween(this._dash.actor,
+        // Make the other elements fade in.
+        this._group.opacity = 0;
+        Tweener.addTween(this._group,
                          { opacity: 255,
                            transition: 'easeOutQuad',
                            time: ANIMATION_TIME
@@ -508,16 +359,24 @@ Overview.prototype = {
 
         this.animationInProgress = true;
         this._hideInProgress = true;
-        if (this._activeDisplayPane != null)
-            this._activeDisplayPane.close();
+
+        if (!this.workspaces.getActiveWorkspace().hasMaximizedWindows()) {
+            this._desktopFade.opacity = 0;
+            this._desktopFade.show();
+            Tweener.addTween(this._desktopFade,
+                             { opacity: 255,
+                               time: ANIMATION_TIME,
+                               transition: 'easeOutQuad' });
+        }
+
         this.workspaces.hide();
 
-        // Create a zoom in effect by transforming the Overview group so that
+        // Create a zoom in effect by transforming the workspaces view so that
         // the active workspace fills up the whole screen. The opposite
         // transition is used in show().
         let scale = this.getZoomedInScale();
         let [posX, posY] = this.getZoomedInPosition();
-        Tweener.addTween(this._group,
+        Tweener.addTween(this.workspaces.actor,
                          { x: posX,
                            y: posY,
                            scaleX: scale,
@@ -528,8 +387,8 @@ Overview.prototype = {
                            onCompleteScope: this
                           });
 
-        // Make Dash fade out so that it doesn't appear to big.
-        Tweener.addTween(this._dash.actor,
+        // Make other elements fade out.
+        Tweener.addTween(this._group,
                          { opacity: 0,
                            transition: 'easeOutQuad',
                            time: ANIMATION_TIME
@@ -565,6 +424,7 @@ Overview.prototype = {
             return;
 
         this.animationInProgress = false;
+        this._desktopFade.hide();
         this._coverPane.lower_bottom();
 
         this.emit('shown');
@@ -576,12 +436,12 @@ Overview.prototype = {
         this.workspaces.destroy();
         this.workspaces = null;
 
-        this._workspacesBar.destroy();
-        this._workspacesBar = null;
-
-        this._workspacesManager = null;
-
+        this._workspacesDisplay.hide();
+        this.viewSelector.hide();
         this._dash.hide();
+
+        this._desktopFade.hide();
+        this._background.hide();
         this._group.hide();
 
         this.visible = false;
@@ -590,7 +450,7 @@ Overview.prototype = {
 
         this._coverPane.lower_bottom();
 
-        Main.popModal(this._dash.actor);
+        Main.popModal(this.viewSelector.actor);
         this.emit('hidden');
     }
 };

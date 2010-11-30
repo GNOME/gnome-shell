@@ -63,7 +63,7 @@ AppFavorites.prototype = {
         return appId in this._favorites;
     },
 
-    _addFavorite: function(appId) {
+    _addFavorite: function(appId, pos) {
         if (appId in this._favorites)
             return false;
 
@@ -73,21 +73,33 @@ AppFavorites.prototype = {
             return false;
 
         let ids = this._getIds();
-        ids.push(appId);
+        if (pos == -1)
+            ids.push(appId);
+        else
+            ids.splice(pos, 0, appId);
         global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
         this._favorites[appId] = app;
         return true;
     },
 
-    addFavorite: function(appId) {
-        if (!this._addFavorite(appId))
+    addFavoriteAtPos: function(appId, pos) {
+        if (!this._addFavorite(appId, pos))
             return;
 
         let app = Shell.AppSystem.get_default().get_app(appId);
 
-        Main.overview.infoBar.setMessage(_("%s has been added to your favorites.").format(app.get_name()), Lang.bind(this, function () {
+        Main.overview.shellInfo.setMessage(_("%s has been added to your favorites.").format(app.get_name()), Lang.bind(this, function () {
             this._removeFavorite(appId);
         }));
+    },
+
+    addFavorite: function(appId) {
+        this.addFavoriteAtPos(appId, -1);
+    },
+
+    moveFavoriteToPos: function(appId, pos) {
+        this._removeFavorite(appId);
+        this._addFavorite(appId, pos);
     },
 
     _removeFavorite: function(appId) {
@@ -100,13 +112,16 @@ AppFavorites.prototype = {
     },
 
     removeFavorite: function(appId) {
+        let ids = this._getIds();
+        let pos = ids.indexOf(appId);
+
         let app = this._favorites[appId];
         if (!this._removeFavorite(appId))
             return;
 
-        Main.overview.infoBar.setMessage(_("%s has been removed from your favorites.").format(app.get_name()),
+        Main.overview.shellInfo.setMessage(_("%s has been removed from your favorites.").format(app.get_name()),
                                          Lang.bind(this, function () {
-            this._addFavorite(appId);
+            this._addFavorite(appId, pos);
         }));
     }
 };

@@ -876,29 +876,39 @@ st_box_layout_apply_transform (ClutterActor *a,
   cogl_matrix_translate (m, (int) -x, (int) -y, 0);
 }
 
+/* If we are translated, then we need to translate back before chaining
+ * up or the background and borders will be drawn in the wrong place */
+static void
+get_border_paint_offsets (StBoxLayout *self,
+                          double      *x,
+                          double      *y)
+{
+  StBoxLayoutPrivate *priv = self->priv;
+
+  if (priv->hadjustment)
+    *x = st_adjustment_get_value (priv->hadjustment);
+  else
+    *x = 0;
+
+  if (priv->vadjustment)
+    *y = st_adjustment_get_value (priv->vadjustment);
+  else
+    *y = 0;
+}
+
 
 static void
 st_box_layout_paint (ClutterActor *actor)
 {
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (actor)->priv;
+  StBoxLayout *self = ST_BOX_LAYOUT (actor);
+  StBoxLayoutPrivate *priv = self->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   GList *l, *children;
   gdouble x, y;
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
 
-  if (priv->hadjustment)
-    x = st_adjustment_get_value (priv->hadjustment);
-  else
-    x = 0;
-
-  if (priv->vadjustment)
-    y = st_adjustment_get_value (priv->vadjustment);
-  else
-    y = 0;
-
-  /* If we are translated, then we need to translate back before chaining
-   * up or the background and borders will be drawn in the wrong place */
+  get_border_paint_offsets (self, &x, &y);
   if (x != 0 || y != 0)
     {
       cogl_push_matrix ();
@@ -950,23 +960,15 @@ static void
 st_box_layout_pick (ClutterActor       *actor,
                     const ClutterColor *color)
 {
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (actor)->priv;
+  StBoxLayout *self = ST_BOX_LAYOUT (actor);
+  StBoxLayoutPrivate *priv = self->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   GList *l, *children;
   gdouble x, y;
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
 
-  if (priv->hadjustment)
-    x = st_adjustment_get_value (priv->hadjustment);
-  else
-    x = 0;
-
-  if (priv->vadjustment)
-    y = st_adjustment_get_value (priv->vadjustment);
-  else
-    y = 0;
-
+  get_border_paint_offsets (self, &x, &y);
   if (x != 0 || y != 0)
     {
       cogl_push_matrix ();
@@ -1011,6 +1013,34 @@ st_box_layout_pick (ClutterActor       *actor,
     cogl_clip_pop ();
 }
 
+static gboolean
+st_box_layout_get_paint_volume (ClutterActor       *actor,
+                                ClutterPaintVolume *volume)
+{
+  StBoxLayout *self = ST_BOX_LAYOUT (actor);
+  gdouble x, y;
+
+  CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->get_paint_volume (actor, volume);
+
+  /* When scrolled, st_box_layout_apply_transform() includes the scroll offset
+   * and affects paint volumes. This is right for our children, but our paint volume
+   * is determined by our allocation and borders and doesn't scroll, so we need
+   * to reverse-compensate here, the same as we do when painting.
+   */
+  get_border_paint_offsets (self, &x, &y);
+  if (x != 0 || y != 0)
+    {
+      ClutterVertex origin;
+
+      clutter_paint_volume_get_origin (volume, &origin);
+      origin.x += x;
+      origin.y += y;
+      clutter_paint_volume_set_origin (volume, &origin);
+    }
+
+  return TRUE;
+}
+
 static void
 st_box_layout_style_changed (StWidget *self)
 {
@@ -1047,6 +1077,7 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
   actor_class->apply_transform = st_box_layout_apply_transform;
 
   actor_class->paint = st_box_layout_paint;
+  actor_class->get_paint_volume = st_box_layout_get_paint_volume;
   actor_class->pick = st_box_layout_pick;
 
   widget_class->style_changed = st_box_layout_style_changed;

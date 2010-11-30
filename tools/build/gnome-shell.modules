@@ -191,35 +191,6 @@
     </dependencies>
   </autotools>
 
-  <autotools id="gnome-keyring">
-    <branch repo="git.gnome.org" module="gnome-keyring"/>
-    <dependencies>
-       <dep package="glib"/>
-    </dependencies>
-  </autotools>
-
-  <autotools id="libnotify">
-    <branch repo="git.gnome.org" module="libnotify"/>
-    <dependencies>
-      <dep package="gtk3"/>
-    </dependencies>
-  </autotools>
-
-  <autotools id="libgnomekbd">
-    <branch repo="git.gnome.org" module="libgnomekbd"/>
-    <dependencies>
-      <dep package="gtk3"/>
-    </dependencies>
-  </autotools>
-
-  <autotools id="gnome-settings-daemon">
-    <branch repo="git.gnome.org" module="gnome-settings-daemon"/>
-    <dependencies>
-      <dep package="libnotify"/>
-      <dep package="gnome-desktop-3"/>
-    </dependencies>
-  </autotools>
-
   <autotools id="gnome-control-center">
     <branch repo="git.gnome.org" module="gnome-control-center"/>
     <dependencies>
@@ -238,7 +209,6 @@
         <dep package="gconf"/>
         <dep package="cairo"/>
         <dep package="libnotify"/>
-        <dep package="gnome-keyring"/>
         <dep package="libcanberra"/>
 	<dep package="gnome-control-center"/>
     </dependencies>

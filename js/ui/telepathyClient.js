@@ -3,6 +3,7 @@
 const DBus = imports.dbus;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
@@ -16,6 +17,7 @@ let contactManager;
 let channelDispatcher;
 
 // See Notification.appendMessage
+const SCROLLBACK_IMMEDIATE_TIME = 60; // 1 minute
 const SCROLLBACK_RECENT_TIME = 15 * 60; // 15 minutes
 const SCROLLBACK_RECENT_LENGTH = 20;
 const SCROLLBACK_IDLE_LENGTH = 5;
@@ -531,7 +533,7 @@ Source.prototype = {
     _messageReceived: function(channel, id, timestamp, sender,
                                type, flags, text) {
         this._ensureNotification();
-        this._notification.appendMessage(text);
+        this._notification.appendMessage(text, timestamp);
         this.notify(this._notification);
     },
 
@@ -565,7 +567,7 @@ Source.prototype = {
             msg += ' <i>(' + GLib.markup_escape_text(message, -1) + ')</i>';
 
         this._ensureNotification();
-        this._notification.appendMessage(msg, true);
+        this._notification.appendPresence(msg, notify);
         if (notify)
             this.notify(this._notification);
     }
@@ -586,23 +588,40 @@ Notification.prototype = {
         this.setActionArea(this._responseEntry);
 
         this._history = [];
+        this._timestampTimeoutId = 0;
     },
 
-    appendMessage: function(text, asTitle) {
-        if (asTitle)
-            this.update(text, null, { customContent: true });
-        else
-            this.update(this.source.title, text, { customContent: true });
-        this._append(text, 'chat-received');
+    appendMessage: function(text, timestamp) {
+        this.update(this.source.title, text, { customContent: true });
+        this._append(text, 'chat-received', timestamp);
     },
 
-    _append: function(text, style) {
+    _append: function(text, style, timestamp) {
+        let currentTime = (Date.now() / 1000);
+        if (!timestamp)
+            timestamp = currentTime;
+        let lastMessageTime = -1;
+        if (this._history.length > 0)
+            lastMessageTime = this._history[0].time;
+
+        // Reset the old message timeout
+        if (this._timestampTimeoutId)
+            Mainloop.source_remove(this._timestampTimeoutId);
+
         let body = this.addBody(text);
         body.add_style_class_name(style);
         this.scrollTo(St.Side.BOTTOM);
 
-        let now = new Date().getTime() / 1000;
-        this._history.unshift({ actor: body, time: now });
+        this._history.unshift({ actor: body, time: timestamp, realMessage: true });
+
+        if (timestamp < currentTime - SCROLLBACK_IMMEDIATE_TIME)
+            this._appendTimestamp();
+        else
+            // Schedule a new timestamp in SCROLLBACK_IMMEDIATE_TIME
+            // from the timestamp of the message.
+            this._timestampTimeoutId = Mainloop.timeout_add_seconds(
+                SCROLLBACK_IMMEDIATE_TIME - (currentTime - timestamp),
+                Lang.bind(this, this._appendTimestamp));
 
         if (this._history.length > 1) {
             // Keep the scrollback from growing too long. If the most
@@ -611,15 +630,41 @@ Notification.prototype = {
             // SCROLLBACK_RECENT_LENGTH previous messages. Otherwise
             // we'll keep SCROLLBACK_IDLE_LENGTH messages.
 
-            let lastMessageTime = this._history[1].time;
-            let maxLength = (lastMessageTime < now - SCROLLBACK_RECENT_TIME) ?
+            let maxLength = (lastMessageTime < currentTime - SCROLLBACK_RECENT_TIME) ?
                 SCROLLBACK_IDLE_LENGTH : SCROLLBACK_RECENT_LENGTH;
-            if (this._history.length > maxLength) {
-                let expired = this._history.splice(maxLength);
+            let filteredHistory = this._history.filter(function(item) { return item.realMessage });
+            if (filteredHistory.length > maxLength) {
+                let lastMessageToKeep = filteredHistory[maxLength];
+                let expired = this._history.splice(this._history.indexOf(lastMessageToKeep));
                 for (let i = 0; i < expired.length; i++)
                     expired[i].actor.destroy();
             }
         }
+    },
+
+    _appendTimestamp: function() {
+        let lastMessageTime = this._history[0].time;
+        let lastMessageDate = new Date(lastMessageTime * 1000);
+
+        /* Translators: this is a time format string followed by a date.
+           If applicable, replace %X with a strftime format valid for your
+           locale, without seconds. */
+        let timeLabel = this.addBody(lastMessageDate.toLocaleFormat(_("Sent at %X on %A")), false, { expand: true, x_fill: false, x_align: St.Align.END });
+        timeLabel.add_style_class_name('chat-meta-message');
+        this._history.unshift({ actor: timeLabel, time: lastMessageTime, realMessage: false });
+
+        this._timestampTimeoutId = 0;
+        return false;
+    },
+
+    appendPresence: function(text, asTitle) {
+        if (asTitle)
+            this.update(text, null, { customContent: true });
+        else
+            this.update(this.source.title, null, { customContent: true });
+        let label = this.addBody(text);
+        label.add_style_class_name('chat-meta-message');
+        this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false});
     },
 
     grabFocus: function(lockTray) {

@@ -109,7 +109,7 @@ PlaceDeviceInfo.prototype = {
                 this._mount.unmount_finish(res);
         } catch (e) {
             let message = _("Failed to unmount '%s'").format(o.get_name());
-            Main.overview.infoBar.setMessage(message,
+            Main.overview.shellInfo.setMessage(message,
                                              Lang.bind(this, this.remove),
                                              _("Retry"));
         }

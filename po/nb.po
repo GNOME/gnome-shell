@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell 2.31.x\n"
+"Project-Id-Version: gnome-shell 2.91.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-28 17:35+0200\n"
-"PO-Revision-Date: 2010-10-28 17:38+0200\n"
+"POT-Creation-Date: 2010-11-20 14:39+0100\n"
+"PO-Revision-Date: 2010-11-20 14:40+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -344,19 +344,19 @@ msgstr "PROGRAMMER"
 msgid "PREFERENCES"
 msgstr "BRUKERVALG"
 
-#: ../js/ui/appDisplay.js:648
+#: ../js/ui/appDisplay.js:647
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:651
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:652
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
-#: ../js/ui/appDisplay.js:830
+#: ../js/ui/appDisplay.js:829
 msgid "Drag here to add favorites"
 msgstr "Dra hit for å legge til favoritter"
 
@@ -385,7 +385,7 @@ msgstr "Ingen treff."
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
+#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:558
 msgid "PLACES & DEVICES"
 msgstr "STEDER & ENHETER"
 
@@ -429,58 +429,58 @@ msgid "Undo"
 msgstr "Angre"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:469
+#: ../js/ui/panel.js:470
 #, c-format
 msgid "Quit %s"
 msgstr "Avslutt %s"
 
-#: ../js/ui/panel.js:494
+#: ../js/ui/panel.js:495
 msgid "Preferences"
 msgstr "Brukervalg"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:580
+#: ../js/ui/panel.js:581
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R.%S"
 
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:582
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:586
 msgid "%a %R:%S"
 msgstr "%a %R.%S"
 
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:587
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:593
+#: ../js/ui/panel.js:594
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %p"
 
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:595
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:599
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %p"
 
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:600
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:744
+#: ../js/ui/panel.js:745
 msgid "Activities"
 msgstr "Aktiviteter"
 
@@ -523,39 +523,31 @@ msgstr "Tilgjengelig"
 msgid "Busy"
 msgstr "Opptatt"
 
-#: ../js/ui/statusMenu.js:111
-msgid "Invisible"
-msgstr "Usynlig"
-
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:114
 msgid "My Account..."
 msgstr "Min konto..."
 
-#: ../js/ui/statusMenu.js:123
-msgid "System Preferences..."
-msgstr "Brukervalg for systemet..."
+#: ../js/ui/statusMenu.js:118
+msgid "System Settings..."
+msgstr "Systeminnstillinger..."
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:125
 msgid "Lock Screen"
 msgstr "Lås skjerm"
 
-#: ../js/ui/statusMenu.js:134
+#: ../js/ui/statusMenu.js:129
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/statusMenu.js:139
+#: ../js/ui/statusMenu.js:134
 msgid "Log Out..."
 msgstr "Logg ut..."
 
-#: ../js/ui/statusMenu.js:146
+#: ../js/ui/statusMenu.js:141
 msgid "Suspend"
 msgstr "Hvilemodus"
 
-#: ../js/ui/statusMenu.js:150
-msgid "Restart..."
-msgstr "Start på nytt..."
-
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
 msgstr "Avslutt..."
 
@@ -595,11 +587,11 @@ msgstr "Innstillinger for tilgjengelighet"
 msgid "High Contrast"
 msgstr "Høy kontrast"
 
-#: ../js/ui/status/accessibility.js:202
+#: ../js/ui/status/accessibility.js:205
 msgid "Large Text"
 msgstr "Stor tekst"
 
-#: ../js/ui/status/accessibility.js:223
+#: ../js/ui/status/accessibility.js:224
 msgid "Zoom"
 msgstr "Zoom"
 
@@ -646,49 +638,53 @@ msgstr[1] "%u innganger"
 msgid "System Sounds"
 msgstr "Systemlyder"
 
-#: ../src/shell-global.c:1204
+#: ../src/shell-app-system.c:1012
+msgid "Unknown"
+msgstr "Ukjent"
+
+#: ../src/shell-global.c:1158
 msgid "Less than a minute ago"
 msgstr "Mindre enn ett minutt siden"
 
-#: ../src/shell-global.c:1208
+#: ../src/shell-global.c:1162
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minutt siden"
 msgstr[1] "%d minutter siden"
 
-#: ../src/shell-global.c:1213
+#: ../src/shell-global.c:1167
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d time siden"
 msgstr[1] "%d timer siden"
 
-#: ../src/shell-global.c:1218
+#: ../src/shell-global.c:1172
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag siden"
 msgstr[1] "%d dager siden"
 
-#: ../src/shell-global.c:1223
+#: ../src/shell-global.c:1177
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d uke siden"
 msgstr[1] "%d uker siden"
 
-#: ../src/shell-uri-util.c:89
+#: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "Hjemmemappe"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:104
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "Filsystem"
 
-#: ../src/shell-uri-util.c:250
+#: ../src/shell-util.c:250
 msgid "Search"
 msgstr "Søk"
 
@@ -697,7 +693,7 @@ msgstr "Søk"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:300
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
