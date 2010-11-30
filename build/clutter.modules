@@ -13,6 +13,8 @@
       href="git://git.moblin.org/"/>
   <repository type="git" name="github.com/rib"
       href="git://github.com/rib/"/>
+  <repository type="git" name="gstreamer.freedesktop.org"
+      href="git://anongit.freedesktop.org/gstreamer/"/>
 
   <!-- tarballs -->
   <repository type="tarball" name="cairo.org"
@@ -71,6 +73,12 @@
       <dep package="gtk+"/>
       <dep package="gdk-pixbuf"/>
     </after>
+  </tarball>
+
+  <tarball id="liboil" version="0.3.17">
+    <source href="http://liboil.freedesktop.org/download/liboil-0.3.17.tar.gz"
+            hash="sha256:105f02079b0b50034c759db34b473ecb5704ffa20a5486b60a8b7698128bfc69"
+            md5sum="47dc734f82faeb2964d97771cfd2e701" size="912563"/>
   </tarball>
 
 <!--
@@ -228,11 +236,29 @@
     </dependencies>
   </autotools>
 
+  <autotools id="gstreamer" autogenargs="-- --disable-tests" supports-non-srcdir-builds="no">
+    <branch repo="gstreamer.freedesktop.org" module="gstreamer"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gst-plugins-base" autogenargs="-- --disable-tests" supports-non-srcdir-builds="no">
+    <branch repo="gstreamer.freedesktop.org" module="gst-plugins-base"/>
+    <dependencies>
+      <dep package="gstreamer"/>
+      <dep package="gtk2"/>
+      <dep package="liboil"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="clutter-gst">
     <branch repo="git.clutter-project.org"
             module="clutter-gst"
             revision="master"/>
     <dependencies>
+      <dep package="gstreamer"/>
+      <dep package="gst-plugins-base"/>
       <dep package="clutter"/>
     </dependencies>
   </autotools>
