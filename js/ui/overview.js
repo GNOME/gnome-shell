@@ -44,8 +44,8 @@ Source.prototype = {
     },
 
     createNotificationIcon: function() {
-        return new St.Icon({ icon_name: 'info',
-                             icon_type: St.IconType.FULLCOLOR,
+        return new St.Icon({ icon_name: 'dialog-information',
+                             icon_type: St.IconType.SYMBOLIC,
                              icon_size: this.ICON_SIZE });
     },
 

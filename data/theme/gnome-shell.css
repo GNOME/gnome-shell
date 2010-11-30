@@ -935,6 +935,7 @@ StTooltip StLabel {
 }
 
 .summary-source {
+    color: white;
 }
 
 .summary-source-button {
@@ -949,7 +950,6 @@ StTooltip StLabel {
 .source-title {
     font: 12px sans-serif;
     font-weight: bold;
-    color: white;
     padding-left: 4px;
 }
 
