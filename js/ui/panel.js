@@ -706,6 +706,8 @@ HotCorner.prototype = {
                                         x: x,
                                         y: y });
         ripple._opacity =  startOpacity;
+        if (ripple.get_direction() == St.TextDirection.RTL)
+            ripple.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
         Tweener.addTween(ripple, { _opacity: finalOpacity,
                                    scale_x: finalScale,
                                    scale_y: finalScale,

@@ -1280,7 +1280,11 @@ StTooltip StLabel {
 .ripple-box {
     width: 52px;
     height: 52px;
-    background-image: url("corner-ripple.png");
+    background-image: url("corner-ripple-ltr.png");
+}
+
+.ripple-box:rtl {
+    background-image: url("corner-ripple-rtl.png");
 }
 
 .switcher-arrow {
