@@ -946,7 +946,10 @@ _cogl_pipeline_backend_arbfp_layer_pre_change_notify (
   CoglPipelineBackendARBfpPrivate *priv;
   static const unsigned long not_fragment_op_changes =
     COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT |
-    COGL_PIPELINE_LAYER_STATE_TEXTURE;
+    COGL_PIPELINE_LAYER_STATE_TEXTURE |
+    COGL_PIPELINE_LAYER_STATE_FILTERS |
+    COGL_PIPELINE_LAYER_STATE_WRAP_MODES |
+    COGL_PIPELINE_LAYER_STATE_USER_MATRIX;
 
   priv = get_arbfp_priv (owner);
   if (!priv)
