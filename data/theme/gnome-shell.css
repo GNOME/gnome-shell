@@ -825,27 +825,41 @@ StTooltip StLabel {
     color: #333333;
 }
 
+.calendar-day-with-events {
+    font-weight: bold;
+}
+
 .events-header {
     height: 40px;
 }
 
+.events-header-hbox {
+    spacing: 8px;
+}
+
 .events-day-header {
-    padding-left: 20px;
-    padding-right: 40px;
     font-weight: bold;
     font-size: 14px;
     color: rgba(153, 153, 153, 1.0);
 }
 
+.events-day-dayname {
+    font-size: 12px;
+    color: rgba(153, 153, 153, 1.0);
+    font-weight: bold;
+    text-align: left;
+}
+
 .events-day-time {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     color: #fff;
+    text-align: right;
 }
 
 .events-day-task {
     font-weight: bold;
-    font-size: 14px;
+    font-size: 12px;
     color: rgba(153, 153, 153, 1.0);
 }
 

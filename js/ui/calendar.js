@@ -54,13 +54,13 @@ function _getDigitWidth(actor){
     return width;
 }
 
-function _getCustomDayAbrreviation(day_number) {
+function _getCalendarDayAbrreviation(day_number) {
     let ret;
     switch (day_number) {
     case 0:
-        /* Translators: One-letter abbreaviation for Sunday - note:
-         * all one-letter abbreviations are always shown together and
-         * in order, e.g. "S M T W T F S"
+        /* Translators: One-letter calendar abbreviation for Sunday - note: all one-letter
+         * calendar abbreviations are always shown together and in order,
+         * e.g. "S M T W T F S"
          */
         ret = _("S");
         break;
@@ -98,12 +98,55 @@ function _getCustomDayAbrreviation(day_number) {
     return ret;
 }
 
-function Calendar() {
-    this._init();
+function _getEventDayAbrreviation(day_number) {
+    let ret;
+    switch (day_number) {
+    case 0:
+        /* Translators: Abbreviation used in event list for Sunday */
+        ret = _("Su");
+        break;
+
+    case 1:
+        /* Translators: Abbreviation used in event list for Monday */
+        ret = _("M");
+        break;
+
+    case 2:
+        /* Translators: Abbreviation used in event list for Tuesday */
+        ret = _("T");
+        break;
+
+    case 3:
+        /* Translators: Abbreviation used in event list for Wednesday */
+        ret = _("W");
+        break;
+
+    case 4:
+        /* Translators: Abbreviation used in event list for Thursday */
+        ret = _("Th");
+        break;
+
+    case 5:
+        /* Translators: Abbreviation used in event list for Friday */
+        ret = _("F");
+        break;
+
+    case 6:
+        /* Translators: Abbreviation used in event list for Saturday */
+        ret = _("S");
+        break;
+    }
+    return ret;
+}
+
+function Calendar(eventList) {
+    this._init(eventList);
 }
 
 Calendar.prototype = {
-    _init: function() {
+    _init: function(eventList) {
+        this._eventList = eventList;
+
         // FIXME: This is actually the fallback method for GTK+ for the week start;
         // GTK+ by preference uses nl_langinfo (NL_TIME_FIRST_WEEKDAY). We probably
         // should add a C function so we can do the full handling.
@@ -199,7 +242,7 @@ Calendar.prototype = {
         for (let i = 0; i < 7; i++) {
             // Could use iter.toLocaleFormat('%a') but that normally gives three characters
             // and we want, ideally, a single character for e.g. S M T W T F S
-            let custom_day_abbrev = _getCustomDayAbrreviation(iter.getDay());
+            let custom_day_abbrev = _getCalendarDayAbrreviation(iter.getDay());
             let label = new St.Label({ text: custom_day_abbrev });
             label.style_class = 'calendar-day-base calendar-day-heading';
             this.actor.add(label,
@@ -304,8 +347,10 @@ Calendar.prototype = {
                 }
                 button.add_style_pseudo_class('active');
             }));
-            let style_class;
 
+            let style_class;
+            let has_events;
+            has_events = this._eventList.hasEvents(iter);
             style_class = 'calendar-day-base calendar-day';
             if (_isWorkDay(iter))
                 style_class += ' calendar-work-day'
@@ -316,6 +361,9 @@ Calendar.prototype = {
                 style_class += ' calendar-today';
             else if (iter.getMonth() != this.date.getMonth())
                 style_class += ' calendar-other-month-day';
+
+            if (has_events)
+                style_class += ' calendar-day-with-events'
 
             button.style_class = style_class;
 
@@ -449,6 +497,17 @@ EvolutionEventsSource.prototype = {
     }
 };
 
+function CalendarTask(date, summary) {
+    this._init(date, summary);
+}
+
+CalendarTask.prototype = {
+    _init: function(date, summary) {
+        this.date = date;
+        this.summary = summary;
+    }
+};
+
 function EventsList() {
     this._init();
 }
@@ -458,68 +517,113 @@ EventsList.prototype = {
         this.actor = new St.BoxLayout({ vertical: true });
         // FIXME: Evolution backend is currently disabled
         // this.evolutionTasks = new EvolutionEventsSource();
+
+        this.tasks = [];
+
+        // Generate fake events
+        //
+        let now = new Date();
+        let summary = '';
+        now.setHours(0);
+        now.setMinutes(0);
+        now.setSeconds(0);
+
+        // '10-oclock pow-wow' is an event occuring IN THE PAST every four days at 10am
+        for(let n = 0; n < 10; n++) {
+            let t = new Date(now.getTime() - n*4*86400*1000);
+            t.setHours(10);
+            summary = '10-oclock pow-wow (n=' + n + ')';
+            this.tasks.push(new CalendarTask(t, summary));
+        }
+
+        // '11-oclock thing' is an event occuring every three days at 11am
+        for(let n = 0; n < 10; n++) {
+            let t = new Date(now.getTime() + n*3*86400*1000);
+            t.setHours(11);
+            summary = '11-oclock thing (n=' + n + ')';
+            this.tasks.push(new CalendarTask(t, summary));
+        }
+
+        // 'Weekly Meeting' is an event occuring every seven days at 1:45pm (two days displaced)
+        for(let n = 0; n < 5; n++) {
+            let t = new Date(now.getTime() + (n*7+2)*86400*1000);
+            t.setHours(13);
+            t.setMinutes(45);
+            summary = 'Weekly Meeting (n=' + n + ')';
+            this.tasks.push(new CalendarTask(t, summary));
+        }
+
+        // 'Get Married' is an event that actually reflects reality (Dec 4, 2010) :-)
+        this.tasks.push(new CalendarTask(new Date(2010,11,04,16,00), 'Get Married'));
+        // ditto for 'NE Patriots vs NY Jets'
+        this.tasks.push(new CalendarTask(new Date(2010,11,06,20,30), 'NE Patriots vs NY Jets'));
     },
 
-    _addEvent: function(timeBox, eventTitleBox, time, desc) {
-        eventTitleBox.add(new St.Label({ style_class: 'events-day-time', text: time}), { expand: false });
-        eventTitleBox.add(new St.Label({ style_class: 'events-day-task', text: desc}), { expand: false });
+    _getTasks: function(begin, end) {
+        let result = [];
+
+        log('begin:' + begin);
+        log('end:  ' + end);
+
+        for(let n = 0; n < this.tasks.length; n++) {
+            let task = this.tasks[n];
+            if (task.date >= begin && task.date <= end) {
+                result.push(task);
+            }
+            log('when:' + task.date + ' summary:' + task.summary);
+        }
+
+        return result;
     },
 
-    _addPeriod: function(header, begin, end, isDay) {
-        this.actor.add(new St.Label({ style_class: 'events-day-header',
-                                      text: header }));
-        let box = new St.BoxLayout();
+    _addEvent: function(dayNameBox, timeBox, eventTitleBox, includeDayName, day, time, desc) {
+        if (includeDayName) {
+            dayNameBox.add(new St.Label({ style_class: 'events-day-dayname', text: day}), {x_fill: false});
+        }
+        timeBox.add(new St.Label({ style_class: 'events-day-time', text: time}), {x_fill: false});
+        eventTitleBox.add(new St.Label({ style_class: 'events-day-task', text: desc}));
+    },
+
+    _addPeriod: function(header, begin, end, includeDayName) {
+        let tasks = this._getTasks(begin, end);
+
+        if (tasks.length == 0)
+            return;
+
+        this.actor.add(new St.Label({ style_class: 'events-day-header', text: header }));
+        let box = new St.BoxLayout({style_class: 'events-header-hbox'});
         let dayNameBox = new St.BoxLayout({ vertical: true, style_class: 'events-day-name-box' });
         let timeBox = new St.BoxLayout({ vertical: true, style_class: 'events-time-box' });
         let eventTitleBox = new St.BoxLayout({ vertical: true, style_class: 'events-event-box' });
-        box.add(dayNameBox);
-        box.add(timeBox);
-        box.add(eventTitleBox);
+        box.add(dayNameBox, {x_fill: false});
+        box.add(timeBox, {x_fill: false});
+        box.add(eventTitleBox, {expand: true});
+
         this.actor.add(box);
 
-        // FIXME: these are fake events
-        switch (begin.getDay()) {
-        case 1: // Monday
-            this._addEvent(timeBox, eventTitleBox, '10:00 AM', 'Write Status Report');
-            break;
-        case 2: // Tuesday
-            this._addEvent(timeBox, eventTitleBox, '3:00 PM', 'Fix bug #632109');
-            break;
-        case 4: // Thursday
-            this._addEvent(timeBox, eventTitleBox, '11:00 AM', 'Desktop Meeting');
-            this._addEvent(timeBox, eventTitleBox, '1:15 PM', 'Dentist');
-            break;
-        case 5: // Friday
-            this._addEvent(timeBox, eventTitleBox, '11:00 AM', 'Friday Meeting');
-            this._addEvent(timeBox, eventTitleBox, '4:00 PM', 'Tech Talk');
-            this._addEvent(timeBox, eventTitleBox, '7:00 PM', 'Wining & Dining');
-            break;
-        case 6: // Saturday
-            this._addEvent(timeBox, eventTitleBox, '10:00 AM', 'Mow the Lawn');
-            break;
+        for (let n = 0; n < tasks.length; n++) {
+            let task = tasks[n];
+            let dayString = _getEventDayAbrreviation(task.date.getDay());
+            let timeString = task.date.toLocaleFormat('%I:%M %p'); // TODO: locale considerations
+            let summaryString = task.summary;
+            this._addEvent(dayNameBox, timeBox, eventTitleBox, includeDayName, dayString, timeString, summaryString);
         }
+    },
 
-        // FIXME: Evolution backend is currently disabled
-        // this.evolutionTasks.getForInterval(begin, end, Lang.bind(this, function(tasks) {
-        //     log('blah ' + tasks.length);
+    hasEvents: function(day) {
+        let dayBegin = new Date(day.getTime());
+        let dayEnd = new Date(day.getTime());
+        dayBegin.setHours(0);
+        dayBegin.setMinutes(1);
+        dayEnd.setHours(23);
+        dayEnd.setMinutes(59);
 
-        //     if (!tasks.length) {
-        //         eventTitleBox.add(new St.Label({ style_class: 'events-no-events', text: _("No events") }));
-        //         return;
-        //     }
+        let tasks = this._getTasks(dayBegin, dayEnd);
 
-        //     for (let i = 0; i < tasks.length; i++) {
-        //         let time = tasks[i].time.getHours() + ':';
-        //         if (tasks[i].time.getMinutes() < 10)
-        //             time += '0';
-        //         time += tasks[i].time.getMinutes();
-        //         timeBox.add(new St.Label({ style_class: 'events-day-time', text: time }));
-        //         eventTitleBox.add(new St.Label({ style_class: 'events-day-task', text: tasks[i].title }), { expand: false });
-        //         if (!isDay)
-        //             continue;
-        //         dayNameBox.add(new St.Label({ text: tasks[i].time.toLocaleFormat("%a") }));
-        //     }
-        // }));
+        if (tasks.length == 0)
+            return false;
+
+        return true;
     },
 
     showDay: function(day) {
@@ -533,7 +637,7 @@ EventsList.prototype = {
         dayBegin.setMinutes(1);
         dayEnd.setHours(23);
         dayEnd.setMinutes(59);
-        this._addPeriod(day.toLocaleDateString(), dayBegin, dayEnd, false);
+        this._addPeriod(day.toLocaleFormat('%A, %B %d, %Y'), dayBegin, dayEnd, false);
     },
 
     update: function() {

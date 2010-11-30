@@ -75,8 +75,10 @@ DateMenuButton.prototype = {
         this._date.style_class = 'datemenu-date-label';
         vbox.add(this._date);
 
+        this._taskList = new Calendar.EventsList();
+
         // Calendar
-        this._calendar = new Calendar.Calendar();
+        this._calendar = new Calendar.Calendar(this._taskList);
         vbox.add(this._calendar.actor);
 
         // Add vertical separator
@@ -93,8 +95,7 @@ DateMenuButton.prototype = {
         hbox.add(vbox);
 
         // Event list
-        this._taskList = new Calendar.EventsList();
-        this._taskList.actor.set_width(300); // TODO: Don't hardcode the width of the list
+        this._taskList.actor.set_width(400); // TODO: Don't hardcode the width of the list
         vbox.add(this._taskList.actor, { x_fill: true,
                                          y_fill: true });
         // Update event list when opening the menu ..
