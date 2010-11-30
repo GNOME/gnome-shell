@@ -184,7 +184,7 @@
     <branch repo="git.gnome.org"
             module="gtk+"
             checkoutdir="gtk2"
-            revision="gtk-2-22"/>
+            revision="gtk-2-24"/>
     <dependencies>
       <dep package="glib"/>
       <dep package="gdk-pixbuf"/>
