@@ -74,7 +74,12 @@ static const gchar *subsystems[] = { "input", NULL };
  * ClutterEventSource management
  *
  * The device manager is responsible for managing the GSource when devices
- * appear and disappear from the system
+ * appear and disappear from the system.
+ *
+ * FIXME: For now, we associate a GSource with every single device. Starting
+ * from glib 2.28 we can use g_source_add_child_source() to have a single
+ * GSource for the device manager, each device becoming a child source. Revisit
+ * this once we depend on glib >= 2.28.
  */
 
 
