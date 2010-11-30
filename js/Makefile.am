@@ -9,7 +9,7 @@ nobase_dist_js_DATA = 	\
 	misc/gnomeSession.js	\
 	misc/params.js		\
 	misc/telepathy.js	\
-	misc/utils.js		\
+	misc/util.js		\
 	perf/core.js		\
 	ui/altTab.js		\
 	ui/appDisplay.js	\

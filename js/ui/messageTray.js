@@ -16,7 +16,7 @@ const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 const BoxPointer = imports.ui.boxpointer;
 const Params = imports.misc.params;
-const Utils = imports.misc.utils;
+const Util = imports.misc.util;
 
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
@@ -138,13 +138,13 @@ URLHighlighter.prototype = {
 
         this.actor.clutter_text.set_markup(text);
         /* clutter_text.text contain text without markup */
-        this._urls = Utils.findUrls(this.actor.clutter_text.text);
+        this._urls = Util.findUrls(this.actor.clutter_text.text);
         this._highlightUrls();
     },
 
     _highlightUrls: function() {
         // text here contain markup
-        let urls = Utils.findUrls(this._text);
+        let urls = Util.findUrls(this._text);
         let markup = '';
         let pos = 0;
         for (let i = 0; i < urls.length; i++) {
