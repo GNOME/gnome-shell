@@ -18,6 +18,9 @@ const BoxPointer = imports.ui.boxpointer;
 const Params = imports.misc.params;
 const Utils = imports.misc.utils;
 
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
+
 const ANIMATION_TIME = 0.2;
 const NOTIFICATION_TIMEOUT = 4;
 const SUMMARY_TIMEOUT = 1;
@@ -1741,5 +1744,29 @@ MessageTray.prototype = {
             this._onNotify(summaryNotification.source, summaryNotification);
             this._reNotifyWithSummaryNotificationAfterHide = false;
         }
+    }
+};
+
+function SystemNotificationSource() {
+    this._init();
+}
+
+SystemNotificationSource.prototype = {
+    __proto__:  Source.prototype,
+
+    _init: function() {
+        Source.prototype._init.call(this, _("System Information"));
+
+        this._setSummaryIcon(this.createNotificationIcon());
+    },
+
+    createNotificationIcon: function() {
+        return new St.Icon({ icon_name: 'dialog-information',
+                             icon_type: St.IconType.SYMBOLIC,
+                             icon_size: this.ICON_SIZE });
+    },
+
+    _notificationClicked: function() {
+        this.destroy();
     }
 };

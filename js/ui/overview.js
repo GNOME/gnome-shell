@@ -31,32 +31,7 @@ const ANIMATION_TIME = 0.25;
 // We split the screen vertically between the dash and the view selector.
 const DASH_SPLIT_FRACTION = 0.1;
 
-
 const DND_WINDOW_SWITCH_TIMEOUT = 1250;
-
-function Source() {
-    this._init();
-}
-
-Source.prototype = {
-    __proto__:  MessageTray.Source.prototype,
-
-    _init: function() {
-        MessageTray.Source.prototype._init.call(this,
-                                                "System Information");
-        this._setSummaryIcon(this.createNotificationIcon());
-    },
-
-    createNotificationIcon: function() {
-        return new St.Icon({ icon_name: 'dialog-information',
-                             icon_type: St.IconType.SYMBOLIC,
-                             icon_size: this.ICON_SIZE });
-    },
-
-    _notificationClicked: function() {
-        this.destroy();
-    }
-}
 
 function ShellInfo() {
     this._init();
@@ -79,7 +54,7 @@ ShellInfo.prototype = {
 
     setMessage: function(text, undoCallback, undoLabel) {
         if (this._source == null) {
-            this._source = new Source();
+            this._source = new MessageTray.SystemNotificationSource();
             this._source.connect('destroy', Lang.bind(this,
                 function() {
                     this._source = null;
