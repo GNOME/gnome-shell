@@ -54,17 +54,18 @@ typedef struct _CoglTextureUnit
    * glActiveTexture () */
   int                index;
 
-  /* Whether or not the corresponding gl_target has been glEnabled */
-  gboolean           enabled;
-
-  /* The GL target currently glEnabled or the target last enabled
-   * if .enabled == FALSE */
-  GLenum             current_gl_target;
+  /* The GL target currently glEnabled or 0 if nothing is
+   * enabled. This is only used by the fixed pipeline fragend */
+  GLenum             enabled_gl_target;
 
   /* The raw GL texture object name for which we called glBindTexture when
    * we flushed the last layer. (NB: The CoglTexture associated
    * with a layer may represent more than one GL texture) */
   GLuint             gl_texture;
+  /* The target of the GL texture object. This is just used so that we
+   * can quickly determine the intended target to flush when
+   * dirty_gl_texture == TRUE */
+  GLenum             gl_target;
 
   /* Foreign textures are those not created or deleted by Cogl. If we ever
    * call glBindTexture for a foreign texture then the next time we are
@@ -130,9 +131,6 @@ _cogl_get_texture_unit (int index_);
 
 void
 _cogl_destroy_texture_units (void);
-
-void
-_cogl_disable_texture_unit (int unit_index);
 
 void
 _cogl_set_active_texture_unit (int unit_index);

@@ -80,9 +80,9 @@ static void
 texture_unit_init (CoglTextureUnit *unit, int index_)
 {
   unit->index = index_;
-  unit->enabled = FALSE;
-  unit->current_gl_target = 0;
+  unit->enabled_gl_target = 0;
   unit->gl_texture = 0;
+  unit->gl_target = 0;
   unit->is_foreign = FALSE;
   unit->dirty_gl_texture = FALSE;
   unit->matrix_stack = _cogl_matrix_stack_new ();
@@ -147,23 +147,6 @@ _cogl_set_active_texture_unit (int unit_index)
     {
       GE (glActiveTexture (GL_TEXTURE0 + unit_index));
       ctx->active_texture_unit = unit_index;
-    }
-}
-
-void
-_cogl_disable_texture_unit (int unit_index)
-{
-  CoglTextureUnit *unit;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  unit = &g_array_index (ctx->texture_units, CoglTextureUnit, unit_index);
-
-  if (unit->enabled)
-    {
-      _cogl_set_active_texture_unit (unit_index);
-      GE (glDisable (unit->current_gl_target));
-      unit->enabled = FALSE;
     }
 }
 
@@ -235,6 +218,7 @@ _cogl_delete_gl_texture (GLuint gl_texture)
       if (unit->gl_texture == gl_texture)
         {
           unit->gl_texture = 0;
+          unit->gl_target = 0;
           unit->dirty_gl_texture = FALSE;
         }
     }
@@ -682,43 +666,16 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
           else
             GE (glBindTexture (gl_target, gl_texture));
           unit->gl_texture = gl_texture;
+          unit->gl_target = gl_target;
         }
 
       unit->is_foreign = _cogl_texture_is_foreign (texture);
-
-      /* Disable the previous target if it was different and it's
-       * still enabled */
-      if (unit->enabled && unit->current_gl_target != gl_target)
-        GE (glDisable (unit->current_gl_target));
-
-      if (!G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_TEXTURING) &&
-          (!unit->enabled || unit->current_gl_target != gl_target))
-        {
-          GE (glEnable (gl_target));
-          unit->enabled = TRUE;
-          unit->current_gl_target = gl_target;
-        }
 
       /* The texture_storage_changed boolean indicates if the
        * CoglTexture's underlying GL texture storage has changed since
        * it was flushed to the texture unit. We've just flushed the
        * latest state so we can reset this. */
       unit->texture_storage_changed = FALSE;
-    }
-  else
-    {
-      /* Even though there may be no difference between the last flushed
-       * texture state and the current layers texture state it may be that the
-       * texture unit has been disabled for some time so we need to assert that
-       * it's enabled now.
-       */
-      if (!G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_TEXTURING) &&
-          !unit->enabled)
-        {
-          _cogl_set_active_texture_unit (unit_index);
-          GE (glEnable (unit->current_gl_target));
-          unit->enabled = TRUE;
-        }
     }
 
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_USER_MATRIX)
@@ -781,10 +738,6 @@ _cogl_pipeline_flush_common_gl_state (CoglPipeline  *pipeline,
   _cogl_pipeline_foreach_layer_internal (pipeline,
                                          flush_layers_common_gl_state_cb,
                                          &state);
-
-  /* Disable additional texture units that may have previously been in use.. */
-  for (; state.i < ctx->texture_units->len; state.i++)
-    _cogl_disable_texture_unit (state.i);
 }
 
 /* Re-assert the layer's wrap modes on the given CoglTexture.
@@ -859,19 +812,20 @@ foreach_texture_unit_update_filter_and_wrap_modes (void)
       CoglTextureUnit *unit =
         &g_array_index (ctx->texture_units, CoglTextureUnit, i);
 
-      if (!unit->enabled)
-        break;
-
       if (unit->layer)
         {
           CoglHandle texture = _cogl_pipeline_layer_get_texture (unit->layer);
-          CoglPipelineFilter min;
-          CoglPipelineFilter mag;
 
-          _cogl_pipeline_layer_get_filters (unit->layer, &min, &mag);
-          _cogl_texture_set_filters (texture, min, mag);
+          if (texture != COGL_INVALID_HANDLE)
+            {
+              CoglPipelineFilter min;
+              CoglPipelineFilter mag;
 
-          _cogl_pipeline_layer_forward_wrap_modes (unit->layer, texture);
+              _cogl_pipeline_layer_get_filters (unit->layer, &min, &mag);
+              _cogl_texture_set_filters (texture, min, mag);
+
+              _cogl_pipeline_layer_forward_wrap_modes (unit->layer, texture);
+            }
         }
     }
 }
@@ -933,26 +887,8 @@ fragend_add_layer_cb (CoglPipelineLayer *layer,
   const CoglPipelineFragend *fragend = state->fragend;
   CoglPipeline *pipeline = state->pipeline;
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
-  CoglTextureUnit *unit = _cogl_get_texture_unit (unit_index);
 
   _COGL_GET_CONTEXT (ctx, FALSE);
-
-  /* NB: We don't support the random disabling of texture
-   * units, so as soon as we hit a disabled unit we know all
-   * subsequent units are also disabled */
-  if (!unit->enabled)
-    return FALSE;
-
-  if (G_UNLIKELY (unit_index >= fragend->get_max_texture_units ()))
-    {
-      int j;
-      for (j = unit_index; j < ctx->texture_units->len; j++)
-        _cogl_disable_texture_unit (j);
-      /* TODO: although this isn't considered an error that
-       * warrants falling back to a different backend we
-       * should print a warning here. */
-      return FALSE;
-    }
 
   /* Either generate per layer code snippets or setup the
    * fixed function glTexEnv for each layer... */
@@ -1086,7 +1022,6 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
    * 2) then foreach layer:
    *  determine gl_target/gl_texture
    *  bind texture
-   *  enable/disable target
    *  flush user matrix
    *
    *  Note: After _cogl_pipeline_flush_common_gl_state you can expect
@@ -1190,10 +1125,10 @@ done:
    * _cogl_bind_gl_texture_transient)
    */
   unit1 = _cogl_get_texture_unit (1);
-  if (unit1->enabled && unit1->dirty_gl_texture)
+  if (cogl_pipeline_get_n_layers (pipeline) > 1 && unit1->dirty_gl_texture)
     {
       _cogl_set_active_texture_unit (1);
-      GE (glBindTexture (unit1->current_gl_target, unit1->gl_texture));
+      GE (glBindTexture (unit1->gl_target, unit1->gl_texture));
       unit1->dirty_gl_texture = FALSE;
     }
 
