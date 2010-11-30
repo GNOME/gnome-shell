@@ -49,6 +49,8 @@ G_DEFINE_TYPE (StIcon, st_icon, ST_TYPE_WIDGET)
 struct _StIconPrivate
 {
   ClutterActor *icon_texture;
+  ClutterActor *pending_texture;
+  guint         opacity_handler_id;
 
   GIcon        *gicon;
   gchar        *icon_name;
@@ -140,6 +142,13 @@ st_icon_dispose (GObject *gobject)
   if (priv->icon_texture)
     {
       clutter_actor_destroy (priv->icon_texture);
+      priv->icon_texture = NULL;
+    }
+
+  if (priv->pending_texture)
+    {
+      clutter_actor_destroy (priv->pending_texture);
+      g_object_unref (priv->pending_texture);
       priv->icon_texture = NULL;
     }
 
@@ -401,20 +410,62 @@ on_pixbuf_changed (ClutterTexture *texture,
 }
 
 static void
-st_icon_update (StIcon *icon)
+st_icon_finish_update (StIcon *icon)
 {
   StIconPrivate *priv = icon->priv;
-  StThemeNode *theme_node;
-  StTextureCache *cache;
 
-  /* Get rid of the old one */
   if (priv->icon_texture)
     {
       clutter_actor_destroy (priv->icon_texture);
       priv->icon_texture = NULL;
     }
 
-  /* Try to lookup the new one */
+  if (priv->pending_texture)
+    {
+      priv->icon_texture = priv->pending_texture;
+      priv->pending_texture = NULL;
+      clutter_actor_set_parent (priv->icon_texture, CLUTTER_ACTOR (icon));
+
+      /* Remove the temporary ref we added */
+      g_object_unref (priv->icon_texture);
+
+      st_icon_update_shadow_material (icon);
+
+      /* "pixbuf-change" is actually a misnomer for "texture-changed" */
+      g_signal_connect (priv->icon_texture, "pixbuf-change",
+                        G_CALLBACK (on_pixbuf_changed), icon);
+    }
+}
+
+static void
+opacity_changed_cb (GObject *object,
+                    GParamSpec *pspec,
+                    gpointer user_data)
+{
+  StIcon *icon = user_data;
+  StIconPrivate *priv = icon->priv;
+
+  g_signal_handler_disconnect (priv->pending_texture, priv->opacity_handler_id);
+  priv->opacity_handler_id = 0;
+
+  st_icon_finish_update (icon);
+}
+
+static void
+st_icon_update (StIcon *icon)
+{
+  StIconPrivate *priv = icon->priv;
+  StThemeNode *theme_node;
+  StTextureCache *cache;
+
+  if (priv->pending_texture)
+    {
+      clutter_actor_destroy (priv->pending_texture);
+      g_object_unref (priv->pending_texture);
+      priv->pending_texture = NULL;
+      priv->opacity_handler_id = 0;
+    }
+
   theme_node = st_widget_peek_theme_node (ST_WIDGET (icon));
   if (theme_node == NULL)
     return;
@@ -422,29 +473,41 @@ st_icon_update (StIcon *icon)
   cache = st_texture_cache_get_default ();
   if (priv->gicon)
     {
-      priv->icon_texture = st_texture_cache_load_gicon (cache,
-                                                        (priv->icon_type != ST_ICON_APPLICATION &&
-                                                         priv->icon_type != ST_ICON_DOCUMENT) ?
-                                                        theme_node : NULL,
-                                                        priv->gicon,
-                                                        priv->icon_size);
+      priv->pending_texture = st_texture_cache_load_gicon (cache,
+                                                           (priv->icon_type != ST_ICON_APPLICATION &&
+                                                            priv->icon_type != ST_ICON_DOCUMENT) ?
+                                                           theme_node : NULL,
+                                                           priv->gicon,
+                                                           priv->icon_size);
     }
  else if (priv->icon_name)
     {
-      priv->icon_texture = st_texture_cache_load_icon_name (cache,
-                                                            theme_node,
-                                                            priv->icon_name,
-                                                            priv->icon_type,
-                                                            priv->icon_size);
+      priv->pending_texture = st_texture_cache_load_icon_name (cache,
+                                                               theme_node,
+                                                               priv->icon_name,
+                                                               priv->icon_type,
+                                                               priv->icon_size);
     }
-  if (priv->icon_texture)
-    {
-      st_icon_update_shadow_material (icon);
-      clutter_actor_set_parent (priv->icon_texture, CLUTTER_ACTOR (icon));
 
-      /* "pixbuf-change" is actually a misnomer for "texture-changed" */
-      g_signal_connect (priv->icon_texture, "pixbuf-change",
-                        G_CALLBACK (on_pixbuf_changed), icon);
+  if (priv->pending_texture)
+    {
+      g_object_ref_sink (priv->pending_texture);
+
+      if (clutter_actor_get_opacity (priv->pending_texture) != 0 || priv->icon_texture == NULL)
+        {
+          /* This icon is ready for showing, or nothing else is already showing */
+          st_icon_finish_update (icon);
+        }
+      else
+        {
+          /* Will be shown when fully loaded */
+          priv->opacity_handler_id = g_signal_connect (priv->pending_texture, "notify::opacity", G_CALLBACK (opacity_changed_cb), icon);
+        }
+    }
+  else if (priv->icon_texture)
+    {
+      clutter_actor_destroy (priv->icon_texture);
+      priv->icon_texture = NULL;
     }
 }
 
