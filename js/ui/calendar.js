@@ -456,7 +456,13 @@ function EventsList() {
 EventsList.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true });
-        this.evolutionTasks = new EvolutionEventsSource();
+        // FIXME: Evolution backend is currently disabled
+        // this.evolutionTasks = new EvolutionEventsSource();
+    },
+
+    _addEvent: function(timeBox, eventTitleBox, time, desc) {
+        eventTitleBox.add(new St.Label({ style_class: 'events-day-time', text: time}), { expand: false });
+        eventTitleBox.add(new St.Label({ style_class: 'events-day-task', text: desc}), { expand: false });
     },
 
     _addPeriod: function(header, begin, end, isDay) {
@@ -471,24 +477,49 @@ EventsList.prototype = {
         box.add(eventTitleBox);
         this.actor.add(box);
 
-        this.evolutionTasks.getForInterval(begin, end, Lang.bind(this, function(tasks) {
-            if (!tasks.length) {
-                eventTitleBox.add(new St.Label({ style_class: 'events-no-events', text: _("No events") }));
-                return;
-            }
+        // FIXME: these are fake events
+        switch (begin.getDay()) {
+        case 1: // Monday
+            this._addEvent(timeBox, eventTitleBox, '10:00 AM', 'Write Status Report');
+            break;
+        case 2: // Tuesday
+            this._addEvent(timeBox, eventTitleBox, '3:00 PM', 'Fix bug #632109');
+            break;
+        case 4: // Thursday
+            this._addEvent(timeBox, eventTitleBox, '11:00 AM', 'Desktop Meeting');
+            this._addEvent(timeBox, eventTitleBox, '1:15 PM', 'Dentist');
+            break;
+        case 5: // Friday
+            this._addEvent(timeBox, eventTitleBox, '11:00 AM', 'Friday Meeting');
+            this._addEvent(timeBox, eventTitleBox, '4:00 PM', 'Tech Talk');
+            this._addEvent(timeBox, eventTitleBox, '7:00 PM', 'Wining & Dining');
+            break;
+        case 6: // Saturday
+            this._addEvent(timeBox, eventTitleBox, '10:00 AM', 'Mow the Lawn');
+            break;
+        }
 
-            for (let i = 0; i < tasks.length; i++) {
-                let time = tasks[i].time.getHours() + ':';
-                if (tasks[i].time.getMinutes() < 10)
-                    time += '0';
-                time += tasks[i].time.getMinutes();
-                timeBox.add(new St.Label({ style_class: 'events-day-time', text: time }));
-                eventTitleBox.add(new St.Label({ style_class: 'events-day-task', text: tasks[i].title }), { expand: false });
-                if (!isDay)
-                    continue;
-                dayNameBox.add(new St.Label({ text: tasks[i].time.toLocaleFormat("%a") }));
-            }
-        }));
+        // FIXME: Evolution backend is currently disabled
+        // this.evolutionTasks.getForInterval(begin, end, Lang.bind(this, function(tasks) {
+        //     log('blah ' + tasks.length);
+
+        //     if (!tasks.length) {
+        //         eventTitleBox.add(new St.Label({ style_class: 'events-no-events', text: _("No events") }));
+        //         return;
+        //     }
+
+        //     for (let i = 0; i < tasks.length; i++) {
+        //         let time = tasks[i].time.getHours() + ':';
+        //         if (tasks[i].time.getMinutes() < 10)
+        //             time += '0';
+        //         time += tasks[i].time.getMinutes();
+        //         timeBox.add(new St.Label({ style_class: 'events-day-time', text: time }));
+        //         eventTitleBox.add(new St.Label({ style_class: 'events-day-task', text: tasks[i].title }), { expand: false });
+        //         if (!isDay)
+        //             continue;
+        //         dayNameBox.add(new St.Label({ text: tasks[i].time.toLocaleFormat("%a") }));
+        //     }
+        // }));
     },
 
     showDay: function(day) {

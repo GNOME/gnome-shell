@@ -98,13 +98,24 @@ DateMenuButton.prototype = {
         vbox.add(this._taskList.actor, { x_fill: true,
                                          y_fill: true });
         // Update event list when opening the menu ..
-        this.menu.connect('opening', Lang.bind(this, function() {
-            this._calendar.clearButtonsState();
-            this._taskList.update();
+        this.menu.connect('open-state-changed', Lang.bind(this, function(menu, is_open) {
+            if (is_open) {
+                this._calendar.clearButtonsState();
+                this._taskList.update();
+            }
         }));
         // .. and also update when selecting a new day
         this._calendar.connect('activate', Lang.bind(this, function(obj, day) {
-            this._taskList.showDay(day);
+            let now = new Date();
+            if (now.getDate() == day.getDate() &&
+                now.getMonth() == day.getMonth() &&
+                now.getFullYear() == day.getFullYear()) {
+                // Today - show: Today, Tomorrow and This Week
+                this._taskList.update();
+            } else {
+                // Not Today - show only events from that day
+                this._taskList.showDay(day);
+            }
         }));
         // .. TODO: and also update when changing the month
 
