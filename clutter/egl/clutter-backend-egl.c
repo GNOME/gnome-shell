@@ -520,6 +520,7 @@ clutter_backend_egl_redraw (ClutterBackend *backend,
   _clutter_stage_egl_redraw (CLUTTER_STAGE_EGL (impl), stage);
 }
 
+#ifndef COGL_HAS_XLIB_SUPPORT
 static ClutterDeviceManager *
 clutter_backend_egl_get_device_manager (ClutterBackend *backend)
 {
@@ -537,6 +538,7 @@ clutter_backend_egl_get_device_manager (ClutterBackend *backend)
 
   return backend_egl->device_manager;
 }
+#endif
 
 static void
 clutter_backend_egl_init_events (ClutterBackend *backend)
@@ -855,7 +857,9 @@ _clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
   backend_class->pre_parse          = clutter_backend_egl_pre_parse;
   backend_class->post_parse         = clutter_backend_egl_post_parse;
   backend_class->get_features       = clutter_backend_egl_get_features;
+#ifndef COGL_HAS_XLIB_SUPPORT
   backend_class->get_device_manager = clutter_backend_egl_get_device_manager;
+#endif
   backend_class->init_events        = clutter_backend_egl_init_events;
   backend_class->create_stage       = clutter_backend_egl_create_stage;
   backend_class->create_context     = clutter_backend_egl_create_context;
