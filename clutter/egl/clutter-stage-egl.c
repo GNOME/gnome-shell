@@ -455,11 +455,14 @@ _clutter_stage_egl_redraw (ClutterStageEGL *stage_egl,
       stage_egl->bounding_redraw_clip.width != 0 &&
       /* some drivers struggle to get going and produce some junk
        * frames when starting up... */
-      G_LIKELY (stage_egl->frame_count > 3) &&
+      G_LIKELY (stage_egl->frame_count > 3)
+#ifdef COGL_HAS_X11_SUPPORT
       /* While resizing a window clipped redraws are disabled to avoid
        * artefacts. See clutter-event-x11.c:event_translate for a
        * detailed explanation */
-      G_LIKELY (stage_x11->clipped_redraws_cool_off == 0))
+      && G_LIKELY (stage_x11->clipped_redraws_cool_off == 0)
+#endif
+      )
     may_use_clipped_redraw = TRUE;
   else
     may_use_clipped_redraw = FALSE;
