@@ -209,26 +209,6 @@ st_tooltip_paint (ClutterActor *self)
 }
 
 static void
-st_tooltip_map (ClutterActor *self)
-{
-  StTooltipPrivate *priv = ST_TOOLTIP (self)->priv;
-
-  CLUTTER_ACTOR_CLASS (st_tooltip_parent_class)->map (self);
-
-  clutter_actor_map (CLUTTER_ACTOR (priv->label));
-}
-
-static void
-st_tooltip_unmap (ClutterActor *self)
-{
-  StTooltipPrivate *priv = ST_TOOLTIP (self)->priv;
-
-  CLUTTER_ACTOR_CLASS (st_tooltip_parent_class)->unmap (self);
-
-  clutter_actor_unmap (CLUTTER_ACTOR (priv->label));
-}
-
-static void
 st_tooltip_dispose (GObject *self)
 {
   StTooltipPrivate *priv = ST_TOOLTIP (self)->priv;
@@ -259,8 +239,6 @@ st_tooltip_class_init (StTooltipClass *klass)
   actor_class->get_preferred_height = st_tooltip_get_preferred_height;
   actor_class->allocate = st_tooltip_allocate;
   actor_class->paint = st_tooltip_paint;
-  actor_class->map = st_tooltip_map;
-  actor_class->unmap = st_tooltip_unmap;
   actor_class->show = st_tooltip_show;
   actor_class->show_all = st_tooltip_show_all;
   actor_class->hide_all = st_tooltip_hide_all;
@@ -302,16 +280,13 @@ st_tooltip_update_position (StTooltip *tooltip)
   StTooltipPrivate *priv = tooltip->priv;
   ClutterGeometry *tip_area = tooltip->priv->tip_area;
   gfloat tooltip_w, tooltip_h, tooltip_x, tooltip_y;
-  gfloat stage_w, stage_h;
-  ClutterActor *stage;
-
-  /* ensure the tooltip with is not fixed size */
-  clutter_actor_set_size ((ClutterActor*) tooltip, -1, -1);
+  gfloat parent_w, parent_h;
+  ClutterActor *parent;
 
   /* if no area set, just position ourselves top left */
   if (!priv->tip_area)
     {
-      clutter_actor_set_position ((ClutterActor*) tooltip, 0, 0);
+      clutter_actor_set_anchor_point ((ClutterActor*) tooltip, 0, 0);
       return;
     }
 
@@ -326,36 +301,28 @@ st_tooltip_update_position (StTooltip *tooltip)
   tooltip_x = (int)(tip_area->x + (tip_area->width / 2) - (tooltip_w / 2));
   tooltip_y = (int)(tip_area->y + tip_area->height);
 
-  stage = clutter_actor_get_stage ((ClutterActor *) tooltip);
-  if (!stage)
+  parent = clutter_actor_get_parent ((ClutterActor *) tooltip);
+  if (!parent)
     {
+      g_critical ("StTooltip is not parented");
       return;
     }
-  clutter_actor_get_size (stage, &stage_w, &stage_h);
+  clutter_actor_get_size (parent, &parent_w, &parent_h);
 
   /* make sure the tooltip is not off screen vertically */
-  if (tooltip_w > stage_w)
-    {
-      tooltip_x = 0;
-      clutter_actor_set_width ((ClutterActor*) tooltip, stage_w);
-    }
-  else if (tooltip_x < 0)
+  if (tooltip_x < 0)
     {
       tooltip_x = 0;
     }
-  else if (tooltip_x + tooltip_w > stage_w)
+  else if (tooltip_x + tooltip_w > parent_w)
     {
-      tooltip_x = (int)(stage_w) - tooltip_w;
+      tooltip_x = (int)(parent_w) - tooltip_w;
     }
 
   /* make sure the tooltip is not off screen horizontally */
-  if (tooltip_y + tooltip_h > stage_h)
+  if (tooltip_y + tooltip_h > parent_h)
     {
       priv->actor_below = TRUE;
-
-      /* re-query size as may have changed */
-      clutter_actor_get_preferred_height ((ClutterActor*) tooltip,
-                                          -1, NULL, &tooltip_h);
       tooltip_y = tip_area->y - tooltip_h;
     }
   else
@@ -366,7 +333,12 @@ st_tooltip_update_position (StTooltip *tooltip)
   /* calculate the arrow offset */
   priv->arrow_offset = tip_area->x + tip_area->width / 2 - tooltip_x;
 
-  clutter_actor_set_position ((ClutterActor*) tooltip, tooltip_x, tooltip_y);
+  /* Since we are updating the position out of st_widget_allocate(), we can't
+   * call clutter_actor_set_position(), since that would trigger another
+   * allocation cycle. Instead, we adjust the anchor position which moves
+   * the tooltip actor on the screen without changing its allocation
+   */
+  clutter_actor_set_anchor_point ((ClutterActor*) tooltip, -tooltip_x, -tooltip_y);
 }
 
 /**
@@ -411,32 +383,6 @@ static void
 st_tooltip_show (ClutterActor *self)
 {
   StTooltip *tooltip = ST_TOOLTIP (self);
-  ClutterActor *parent;
-  ClutterActor *stage;
-
-  parent = clutter_actor_get_parent (self);
-  stage = clutter_actor_get_stage (self);
-
-  if (!stage)
-    {
-      g_warning ("StTooltip is not on any stage.");
-      return;
-    }
-
-  /* make sure we're parented on the stage */
-  if (G_UNLIKELY (parent != stage))
-    {
-      g_object_ref (self);
-      clutter_actor_unparent (self);
-      clutter_actor_set_parent (self, stage);
-      g_object_unref (self);
-      parent = stage;
-    }
-
-  /* raise the tooltip to the top */
-  clutter_container_raise_child (CLUTTER_CONTAINER (stage),
-                                 CLUTTER_ACTOR (tooltip),
-                                 NULL);
 
   st_tooltip_update_position (tooltip);
 
@@ -477,7 +423,8 @@ st_tooltip_set_tip_area (StTooltip             *tooltip,
     g_boxed_free (CLUTTER_TYPE_GEOMETRY, tooltip->priv->tip_area);
   tooltip->priv->tip_area = g_boxed_copy (CLUTTER_TYPE_GEOMETRY, area);
 
-  st_tooltip_update_position (tooltip);
+  if (clutter_actor_get_stage (CLUTTER_ACTOR (tooltip)))
+    st_tooltip_update_position (tooltip);
 }
 
 /**

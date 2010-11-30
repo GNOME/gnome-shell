@@ -59,6 +59,7 @@ struct _StWidgetPrivate
 
   gboolean      is_stylable : 1;
   gboolean      has_tooltip : 1;
+  gboolean      show_tooltip : 1;
   gboolean      is_style_dirty : 1;
   gboolean      draw_bg_color : 1;
   gboolean      draw_border_internal : 1;
@@ -123,6 +124,9 @@ static gboolean st_widget_real_navigate_focus (StWidget         *widget,
                                                GtkDirectionType  direction);
 
 static AtkObject * st_widget_get_accessible (ClutterActor *actor);
+
+static void st_widget_do_show_tooltip (StWidget *widget);
+static void st_widget_do_hide_tooltip (StWidget *widget);
 
 static void
 st_widget_set_property (GObject      *gobject,
@@ -275,16 +279,8 @@ st_widget_dispose (GObject *gobject)
 
   if (priv->tooltip)
     {
-      ClutterContainer *parent;
-      ClutterActor *tooltip = CLUTTER_ACTOR (priv->tooltip);
-
-      /* this is just a little bit awkward because the tooltip is parented
-       * on the stage, but we still want to "own" it */
-      parent = CLUTTER_CONTAINER (clutter_actor_get_parent (tooltip));
-
-      if (parent)
-        clutter_container_remove_actor (parent, tooltip);
-
+      clutter_actor_destroy (CLUTTER_ACTOR (priv->tooltip));
+      g_object_unref (priv->tooltip);
       priv->tooltip = NULL;
     }
 
@@ -426,28 +422,28 @@ st_widget_parent_set (ClutterActor *widget,
 static void
 st_widget_map (ClutterActor *actor)
 {
-  StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
+  StWidget *self = ST_WIDGET (actor);
 
   CLUTTER_ACTOR_CLASS (st_widget_parent_class)->map (actor);
 
-  st_widget_ensure_style ((StWidget*) actor);
+  st_widget_ensure_style (self);
 
-  if (priv->tooltip)
-    clutter_actor_map ((ClutterActor *) priv->tooltip);
+  if (self->priv->show_tooltip)
+    st_widget_do_show_tooltip (self);
 }
 
 static void
 st_widget_unmap (ClutterActor *actor)
 {
-  StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
+  StWidget *self = ST_WIDGET (actor);
+  StWidgetPrivate *priv = self->priv;
 
   CLUTTER_ACTOR_CLASS (st_widget_parent_class)->unmap (actor);
 
-  if (priv->tooltip)
-    clutter_actor_unmap ((ClutterActor *) priv->tooltip);
-
   if (priv->track_hover && priv->hover)
-    st_widget_set_hover (ST_WIDGET (actor), FALSE);
+    st_widget_set_hover (self, FALSE);
+
+  st_widget_do_hide_tooltip (self);
 }
 
 static void notify_children_of_style_change (ClutterContainer *container);
@@ -1502,6 +1498,29 @@ st_widget_set_direction (StWidget *self, StTextDirection dir)
     st_widget_style_changed (self);
 }
 
+static void
+st_widget_ensure_tooltip_parented (StWidget *widget, ClutterStage *stage)
+{
+  StWidgetPrivate *priv;
+  ClutterContainer *ui_root;
+  ClutterActor *tooltip, *parent;
+
+  priv = widget->priv;
+
+  ui_root = st_get_ui_root (stage);
+
+  tooltip = CLUTTER_ACTOR (priv->tooltip);
+  parent = clutter_actor_get_parent (tooltip);
+
+  if (G_UNLIKELY (parent != CLUTTER_ACTOR (ui_root)))
+    {
+      if (parent)
+        clutter_container_remove_actor (CLUTTER_CONTAINER (parent), tooltip);
+
+      clutter_container_add_actor (ui_root, tooltip);
+    }
+}
+
 /**
  * st_widget_set_has_tooltip:
  * @widget: A #StWidget
@@ -1519,6 +1538,7 @@ st_widget_set_has_tooltip (StWidget *widget,
                            gboolean  has_tooltip)
 {
   StWidgetPrivate *priv;
+  ClutterActor *stage;
 
   g_return_if_fail (ST_IS_WIDGET (widget));
 
@@ -1534,17 +1554,18 @@ st_widget_set_has_tooltip (StWidget *widget,
       if (!priv->tooltip)
         {
           priv->tooltip = g_object_new (ST_TYPE_TOOLTIP, NULL);
-          clutter_actor_set_parent ((ClutterActor *) priv->tooltip,
-                                    (ClutterActor *) widget);
+          g_object_ref_sink (priv->tooltip);
+
+          stage = clutter_actor_get_stage (CLUTTER_ACTOR (widget));
+          if (stage != NULL)
+            st_widget_ensure_tooltip_parented (widget, CLUTTER_STAGE (stage));
         }
     }
-  else
+  else if (priv->tooltip)
     {
-      if (priv->tooltip)
-        {
-          clutter_actor_unparent (CLUTTER_ACTOR (priv->tooltip));
-          priv->tooltip = NULL;
-        }
+      clutter_actor_destroy (CLUTTER_ACTOR (priv->tooltip));
+      g_object_unref (priv->tooltip);
+      priv->tooltip = NULL;
     }
 }
 
@@ -1587,9 +1608,10 @@ st_widget_set_tooltip_text (StWidget    *widget,
   if (text == NULL)
     st_widget_set_has_tooltip (widget, FALSE);
   else
-    st_widget_set_has_tooltip (widget, TRUE);
-
-  st_tooltip_set_label (priv->tooltip, text);
+    {
+      st_widget_set_has_tooltip (widget, TRUE);
+      st_tooltip_set_label (priv->tooltip, text);
+    }
 }
 
 /**
@@ -1618,34 +1640,33 @@ st_widget_get_tooltip_text (StWidget *widget)
  * st_widget_show_tooltip:
  * @widget: A #StWidget
  *
- * Show the tooltip for @widget
+ * Force the tooltip for @widget to be shown
  *
  */
 void
 st_widget_show_tooltip (StWidget *widget)
 {
-  gfloat x, y, width, height;
-  ClutterGeometry area;
-
   g_return_if_fail (ST_IS_WIDGET (widget));
 
-  /* XXX not necceary, but first allocate transform is wrong */
+  widget->priv->show_tooltip = TRUE;
+  if (CLUTTER_ACTOR_IS_MAPPED (widget))
+    st_widget_do_show_tooltip (widget);
+}
 
-  clutter_actor_get_transformed_position ((ClutterActor*) widget,
-                                          &x, &y);
+static void
+st_widget_do_show_tooltip (StWidget *widget)
+{
+  ClutterActor *stage, *tooltip;
 
-  clutter_actor_get_size ((ClutterActor*) widget, &width, &height);
-
-  area.x = x;
-  area.y = y;
-  area.width = width;
-  area.height = height;
-
+  stage = clutter_actor_get_stage (CLUTTER_ACTOR (widget));
+  g_return_if_fail (stage != NULL);
 
   if (widget->priv->tooltip)
     {
-      st_tooltip_set_tip_area (widget->priv->tooltip, &area);
-      clutter_actor_show_all (CLUTTER_ACTOR (widget->priv->tooltip));
+      tooltip = CLUTTER_ACTOR (widget->priv->tooltip);
+      st_widget_ensure_tooltip_parented (widget, CLUTTER_STAGE (stage));
+      clutter_actor_raise (tooltip, NULL);
+      clutter_actor_show_all (tooltip);
     }
 }
 
@@ -1661,6 +1682,14 @@ st_widget_hide_tooltip (StWidget *widget)
 {
   g_return_if_fail (ST_IS_WIDGET (widget));
 
+  widget->priv->show_tooltip = FALSE;
+  if (CLUTTER_ACTOR_IS_MAPPED (widget))
+    st_widget_do_hide_tooltip (widget);
+}
+
+static void
+st_widget_do_hide_tooltip (StWidget *widget)
+{
   if (widget->priv->tooltip)
     clutter_actor_hide (CLUTTER_ACTOR (widget->priv->tooltip));
 }
