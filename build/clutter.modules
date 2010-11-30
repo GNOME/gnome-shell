@@ -266,6 +266,7 @@
     </dependencies>
   </autotools>
 
+<!--
   <autotools id="cally">
     <branch repo="git.clutter-project.org"
             module="cally"
@@ -275,6 +276,7 @@
       <dep package="clutter"/>
     </dependencies>
   </autotools>
+-->
 
   <autotools id="cluttersmith">
     <branch repo="git.clutter-project.org"
