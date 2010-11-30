@@ -1659,7 +1659,7 @@ MessageTray.prototype = {
         this._summaryNotificationBoxPointer.actor.show();
         this._adjustNotificationBoxPointerPosition();
 
-        this._summaryNotificationState = State.SHOWNING;
+        this._summaryNotificationState = State.SHOWING;
         this._summaryNotificationBoxPointer.animateAppear(Lang.bind(this, function() {
             this._summaryNotificationState = State.SHOWN;
         }));
