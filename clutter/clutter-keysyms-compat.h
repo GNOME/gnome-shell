@@ -2188,6 +2188,8 @@
 #define CLUTTER_Suspend 0x1008ffa7
 #define CLUTTER_Hibernate 0x1008ffa8
 #define CLUTTER_TouchpadToggle 0x1008ffa9
+#define CLUTTER_TouchpadOn 0x1008ffb0
+#define CLUTTER_TouchpadOff 0x1008ffb1
 #define CLUTTER_Switch_VT_1 0x1008fe01
 #define CLUTTER_Switch_VT_2 0x1008fe02
 #define CLUTTER_Switch_VT_3 0x1008fe03
