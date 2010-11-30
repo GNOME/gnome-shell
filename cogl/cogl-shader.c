@@ -164,7 +164,9 @@ cogl_shader_source (CoglHandle   handle,
 void
 cogl_shader_compile (CoglHandle handle)
 {
+#ifdef HAVE_COGL_GL
   CoglShader *shader = handle;
+#endif
 
   if (!cogl_is_shader (handle))
     return;
