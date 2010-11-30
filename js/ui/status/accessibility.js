@@ -10,7 +10,6 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
-const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
@@ -23,6 +22,7 @@ const KEY_BOUNCE_KEYS_ENABLED = "bouncekeys-enable";
 const KEY_SLOW_KEYS_ENABLED   = "slowkeys-enable";
 const KEY_MOUSE_KEYS_ENABLED  = "mousekeys-enable";
 
+const MAGNIFIER_SCHEMA = 'org.gnome.accessibility.magnifier';
 const AT_SCREEN_KEYBOARD_SCHEMA = "org.gnome.desktop.default-applications.at.mobility";
 const AT_SCREEN_READER_SCHEMA   = "org.gnome.desktop.default-applications.at.visual";
 
@@ -79,7 +79,7 @@ ATIndicator.prototype = {
         let highContrast = this._buildHCItem();
         this.menu.addMenuItem(highContrast);
 
-        let magnifier = this._buildMagItem();
+        let magnifier = this._buildItem(_("Zoom"), MAGNIFIER_SCHEMA, 'show-magnifier');
         this.menu.addMenuItem(magnifier);
 
         let textZoom = this._buildFontItem();
@@ -214,18 +214,6 @@ ATIndicator.prototype = {
         settings.connect('changed::' + KEY_DPI, function() {
             let active = on_get();
             default_value = active ? x_value : user_value;
-            widget.setToggleState(active);
-        });
-        return widget;
-    },
-
-    _buildMagItem: function() {
-        let mag = Main.magnifier;
-        let widget = this._buildItemExtended(_("Zoom"),
-            mag.isActive(),
-            true,
-            Lang.bind(mag, mag.setActive));
-        mag.connect('active-changed', function(magnifier, active) {
             widget.setToggleState(active);
         });
         return widget;
