@@ -174,11 +174,11 @@ _cogl_pipeline_backend_fixed_add_layer (CoglPipeline *pipeline,
         }
     }
 
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_COMBINE)
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT)
     {
       CoglPipelineLayer *authority =
-        _cogl_pipeline_layer_get_authority (layer,
-                                            COGL_PIPELINE_LAYER_STATE_COMBINE);
+        _cogl_pipeline_layer_get_authority
+        (layer, COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT);
       CoglPipelineLayerBigState *big_state = authority->big_state;
 
       GE (glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR,
