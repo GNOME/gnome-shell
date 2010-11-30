@@ -10,20 +10,6 @@ typedef struct
   ClutterTimeline *timeline;
 } State;
 
-static void
-invert_timeline_cb (ClutterTimeline *timeline,
-                    gpointer         user_data)
-{
-  ClutterTimelineDirection direction = clutter_timeline_get_direction (timeline);
-
-  if (direction == CLUTTER_TIMELINE_FORWARD)
-    direction = CLUTTER_TIMELINE_BACKWARD;
-  else
-    direction = CLUTTER_TIMELINE_FORWARD;
-
-  clutter_timeline_set_direction (timeline, direction);
-}
-
 static gboolean
 key_pressed_cb (ClutterActor *actor,
                 ClutterEvent *event,
@@ -63,20 +49,12 @@ main (int   argc,
 
   state->timeline = clutter_timeline_new (1000);
   clutter_timeline_set_loop (state->timeline, TRUE);
+  clutter_timeline_set_reverse (state->timeline, TRUE);
 
   g_signal_connect (stage,
                     "key-press-event",
                     G_CALLBACK (key_pressed_cb),
                     state);
-
-  /* the animation will not emit a "completed" signal,
-   * as it is set to loop; but the timeline emits "completed"
-   * at the end of each iteration of the loop
-   */
-  g_signal_connect (state->timeline,
-                    "completed",
-                    G_CALLBACK (invert_timeline_cb),
-                    NULL);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), state->actor);
 

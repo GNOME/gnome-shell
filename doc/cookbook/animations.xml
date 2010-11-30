@@ -2372,7 +2372,7 @@ clutter_actor_animate_with_timeline (actor,
           </programlisting>
         </informalexample>
 
-        <para>One further technique is to swop the timeline's
+        <para>One further technique is to repeatedly reverse the timeline's
         direction to create a "closed loop" animation (one which returns
         to its origin at the end of each iteration). See
         <link linkend="animations-looping-discussion-closed-loop">this
@@ -2655,12 +2655,23 @@ timeline_completed_cb (ClutterTimeline *timeline,
         animations, one the inverse of the other, and chaining them together.</para>
 
         <para>However, a simpler solution is to run forward through the timeline
-        once; then invert its direction when the end of timeline is reached.
-        The animation continues, but in reverse. Once the backward iteration
-        completes, set the timeline to run forward again. Keep changing the
-        timeline's direction each time it completes. This
-        is the approach used in <link linkend="animations-looping-example-1">the
-        example</link>, which results in a smooth, repeated right to left,
+        once, and have the timeline invert itself when its end is reached.
+        The animation then continues, but in reverse. Once the backward iteration
+        completes, the timeline sets itself to run forward again, etc.</para>
+
+        <para>To make a timeline reverse its direction each time it
+        completes, use the <function>clutter_timeline_set_reverse()</function>
+        function:</para>
+
+        <informalexample>
+          <programlisting>
+clutter_timeline_set_reverse (timeline, TRUE);
+          </programlisting>
+        </informalexample>
+
+        <para>This is the approach used in
+        <link linkend="animations-looping-example-1">the example</link>,
+        which results in a smooth, repeated right to left,
         left to right motion.</para>
 
         <para>See <link linkend="animations-inversion">this
