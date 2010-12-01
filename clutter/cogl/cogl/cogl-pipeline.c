@@ -5859,13 +5859,20 @@ _cogl_pipeline_find_codegen_authority (CoglPipeline *pipeline,
   else
     return authority0;
 
-  n_layers = authority0->n_layers;
+  n_layers = cogl_pipeline_get_n_layers (authority0);
 
   for (;;)
     {
       AddLayersToArrayState state;
 
-      if (authority0->n_layers != authority1->n_layers)
+      if (n_layers != cogl_pipeline_get_n_layers (authority1))
+        return authority0;
+
+      /* If the programs differ by anything that isn't part of the
+         layer state then we can't continue */
+      if ((codegen_state & ~COGL_PIPELINE_STATE_LAYERS) &&
+          (_cogl_pipeline_compare_differences (authority0, authority1) &
+           (codegen_state & ~COGL_PIPELINE_STATE_LAYERS)))
         return authority0;
 
       authority0_layers =
