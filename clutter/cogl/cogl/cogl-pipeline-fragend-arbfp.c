@@ -72,30 +72,6 @@
 #define GL_TEXTURE_3D                           0x806F
 #endif
 
-/* When we add new pipeline or layer state groups we need to be careful to
- * update backends to understand if that new state is associated with vertex,
- * fragment or other processing. The idea here is to attribute which groups
- * affect fragment processing and more specifically which contribute to arbfp
- * code generation.
- */
-
-#define COGL_PIPELINE_FRAGEND_ARBFP_FRAGMENT_STATE_MASK \
-  (COGL_PIPELINE_STATE_LAYERS | \
-   COGL_PIPELINE_STATE_USER_SHADER)
-
-#define COGL_PIPELINE_FRAGEND_ARBFP_FRAGMENT_PROGRAM_STATE_MASK \
-  COGL_PIPELINE_FRAGEND_ARBFP_FRAGMENT_STATE_MASK
-
-#define COGL_PIPELINE_FRAGEND_ARBFP_LAYER_FRAGMENT_STATE_MASK \
-  COGL_PIPELINE_LAYER_STATE_ALL
-
-#define COGL_PIPELINE_FRAGEND_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK \
-  (COGL_PIPELINE_FRAGEND_ARBFP_LAYER_FRAGMENT_STATE_MASK & \
-   ~(COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT | \
-     COGL_PIPELINE_LAYER_STATE_FILTERS | \
-     COGL_PIPELINE_LAYER_STATE_WRAP_MODES | \
-     COGL_PIPELINE_LAYER_STATE_USER_MATRIX))
-
 typedef struct _UnitState
 {
   int constant_id; /* The program.local[] index */
@@ -254,7 +230,12 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
    * arbfp-authority to maximize the chance that other pipelines can
    * share it.
    */
-  authority = _cogl_pipeline_find_codegen_authority (pipeline, user_program);
+  authority = _cogl_pipeline_find_equivalent_parent
+    (pipeline,
+     COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN &
+     ~COGL_PIPELINE_STATE_LAYERS,
+     COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN,
+     COGL_PIPELINE_FIND_EQUIVALENT_COMPARE_TEXTURE_TARGET);
   authority_priv = get_arbfp_priv (authority);
   if (authority_priv &&
       authority_priv->arbfp_program_state)
@@ -346,9 +327,9 @@ unsigned int
 _cogl_pipeline_fragend_arbfp_hash (const void *data)
 {
   unsigned long fragment_state =
-    COGL_PIPELINE_FRAGEND_ARBFP_FRAGMENT_PROGRAM_STATE_MASK;
+    COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN;
   unsigned long layer_fragment_state =
-    COGL_PIPELINE_FRAGEND_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK;
+    COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN;
   CoglPipelineEvalFlags flags = COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA;
 
   return _cogl_pipeline_hash ((CoglPipeline *)data,
@@ -360,9 +341,9 @@ gboolean
 _cogl_pipeline_fragend_arbfp_equal (const void *a, const void *b)
 {
   unsigned long fragment_state =
-    COGL_PIPELINE_FRAGEND_ARBFP_FRAGMENT_PROGRAM_STATE_MASK;
+    COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN;
   unsigned long layer_fragment_state =
-    COGL_PIPELINE_FRAGEND_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK;
+    COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN;
   CoglPipelineEvalFlags flags = COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA;
 
   return _cogl_pipeline_equal ((CoglPipeline *)a, (CoglPipeline *)b,
@@ -1049,10 +1030,8 @@ _cogl_pipeline_fragend_arbfp_pipeline_pre_change_notify (
                                                    CoglPipelineState change,
                                                    const CoglColor *new_color)
 {
-  if (!(change & COGL_PIPELINE_FRAGEND_ARBFP_FRAGMENT_PROGRAM_STATE_MASK))
-    return;
-
-  dirty_arbfp_program_state (pipeline);
+  if ((change & COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN))
+    dirty_arbfp_program_state (pipeline);
 }
 
 /* NB: layers are considered immutable once they have any dependants
@@ -1073,7 +1052,7 @@ _cogl_pipeline_fragend_arbfp_layer_pre_change_notify (
   if (!priv)
     return;
 
-  if (change & COGL_PIPELINE_FRAGEND_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK)
+  if ((change & COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN))
     {
       dirty_arbfp_program_state (owner);
       return;

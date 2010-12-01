@@ -127,6 +127,18 @@ typedef enum
     COGL_PIPELINE_LAYER_STATE_USER_MATRIX |
     COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS,
 
+  COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN =
+    COGL_PIPELINE_LAYER_STATE_COMBINE |
+    /* FIXME: Only texture target changes should really affect the
+       codegen, but this is difficult to detect */
+    COGL_PIPELINE_LAYER_STATE_TEXTURE |
+    /* On GLES2 we need to use a different varying for the texture
+       lookups when point sprite coords are enabled */
+#ifdef HAVE_COGL_GLES2
+    COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS |
+#endif
+    COGL_PIPELINE_LAYER_STATE_UNIT
+
 } CoglPipelineLayerState;
 
 typedef struct
@@ -363,7 +375,16 @@ typedef enum _CoglPipelineState
     COGL_PIPELINE_STATE_USER_SHADER |
     COGL_PIPELINE_STATE_DEPTH |
     COGL_PIPELINE_STATE_FOG |
-    COGL_PIPELINE_STATE_POINT_SIZE
+    COGL_PIPELINE_STATE_POINT_SIZE,
+
+  COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN =
+    COGL_PIPELINE_STATE_LAYERS |
+#ifdef HAVE_COGL_GLES2
+  /* Under GLES2 the alpha func becomes part of the fragment program
+     so we can't share programs there */
+    COGL_PIPELINE_STATE_ALPHA_FUNC |
+#endif
+    COGL_PIPELINE_STATE_USER_SHADER
 
 } CoglPipelineState;
 
@@ -457,6 +478,12 @@ typedef struct
   CoglPipeline *owner;
   CoglPipelineLayer *layer;
 } CoglPipelineLayerCacheEntry;
+
+/* Flags used for _cogl_pipeline_find_equivalent_parent */
+typedef enum
+{
+  COGL_PIPELINE_FIND_EQUIVALENT_COMPARE_TEXTURE_TARGET = 1L<<0
+} CoglPipelineFindEquivalentFlags;
 
 /*
  * CoglPipelineDestroyCallback
@@ -958,6 +985,12 @@ CoglPipeline *
 _cogl_pipeline_get_authority (CoglPipeline *pipeline,
                               unsigned long difference);
 
+CoglPipeline *
+_cogl_pipeline_find_equivalent_parent (CoglPipeline *pipeline,
+                                       CoglPipelineState pipeline_state,
+                                       CoglPipelineLayerState layer_state,
+                                       CoglPipelineFindEquivalentFlags flags);
+
 CoglHandle
 _cogl_pipeline_get_layer_texture (CoglPipeline *pipeline,
                                   int layer_index);
@@ -1045,10 +1078,6 @@ _cogl_pipeline_layer_get_unit_index (CoglPipelineLayer *layer);
 gboolean
 _cogl_pipeline_need_texture_combine_separate
                                     (CoglPipelineLayer *combine_authority);
-
-CoglPipeline *
-_cogl_pipeline_find_codegen_authority (CoglPipeline *pipeline,
-                                       CoglHandle user_program);
 
 void
 _cogl_pipeline_init_state_hash_functions (void);

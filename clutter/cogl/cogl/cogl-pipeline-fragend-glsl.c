@@ -319,8 +319,13 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
        * glsl-authority to maximize the chance that other pipelines can
        * share it.
        */
-      authority =
-        _cogl_pipeline_find_codegen_authority (pipeline, user_program);
+      authority = _cogl_pipeline_find_equivalent_parent
+        (pipeline,
+         COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN &
+         ~COGL_PIPELINE_STATE_LAYERS,
+         COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN,
+         COGL_PIPELINE_FIND_EQUIVALENT_COMPARE_TEXTURE_TARGET);
+
       authority_priv = get_glsl_priv (authority);
       if (!authority_priv)
         {

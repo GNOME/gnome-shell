@@ -6290,51 +6290,6 @@ add_layer_to_array_cb (CoglPipelineLayer *layer,
   return TRUE;
 }
 
-static gboolean
-layers_codegen_would_differ (CoglPipelineLayer **pipeline0_layers,
-                             CoglPipelineLayer **pipeline1_layers,
-                             int n_layers)
-{
-  int i;
-  /* The layer state that affects codegen... */
-  unsigned long codegen_modifiers =
-    COGL_PIPELINE_LAYER_STATE_COMBINE |
-    COGL_PIPELINE_LAYER_STATE_UNIT;
-
-  for (i = 0; i < n_layers; i++)
-    {
-      CoglPipelineLayer *layer0 = pipeline0_layers[i];
-      CoglPipelineLayer *layer1 = pipeline1_layers[i];
-      unsigned long layer_differences;
-
-      if (layer0 == layer1)
-        continue;
-
-      layer_differences =
-        _cogl_pipeline_layer_compare_differences (layer0, layer1);
-
-      if (layer_differences & codegen_modifiers)
-        return TRUE;
-
-      /* When it comes to texture differences the only thing that
-       * affects the codegen is the target enum... */
-      if ((layer_differences & COGL_PIPELINE_LAYER_STATE_TEXTURE))
-        {
-          CoglHandle tex0 = _cogl_pipeline_layer_get_texture (layer0);
-          CoglHandle tex1 = _cogl_pipeline_layer_get_texture (layer1);
-          GLenum gl_target0;
-          GLenum gl_target1;
-
-          cogl_texture_get_gl_texture (tex0, NULL, &gl_target0);
-          cogl_texture_get_gl_texture (tex1, NULL, &gl_target1);
-          if (gl_target0 != gl_target1)
-            return TRUE;
-        }
-    }
-
-  return FALSE;
-}
-
 /* Determines if we need to handle the RGB and A texture combining
  * separately or is the same function used for both channel masks and
  * with the same arguments...
@@ -6409,45 +6364,73 @@ _cogl_pipeline_need_texture_combine_separate
    return FALSE;
 }
 
-/* This tries to find the oldest ancestor whos state would generate
- * the same shader program as the current pipeline. This is a simple
- * mechanism for reducing the number of programs we have to generate.
- */
+static gboolean
+layers_differ_for_find_equivalent (CoglPipelineLayerState layer_state,
+                                   CoglPipelineFindEquivalentFlags flags,
+                                   CoglPipelineLayer *layer0,
+                                   CoglPipelineLayer *layer1)
+{
+  unsigned long layer_differences;
+
+  if (layer0 == layer1)
+    return FALSE;
+
+  layer_differences =
+    _cogl_pipeline_layer_compare_differences (layer0, layer1);
+
+  if (layer_differences & layer_state)
+    return TRUE;
+
+  /* When generating a shader we need to detect when the texture
+     target changes but we don't care if the texture object
+     changes so we have a flag to handle this special case */
+  if ((flags & COGL_PIPELINE_FIND_EQUIVALENT_COMPARE_TEXTURE_TARGET) &&
+      (layer_differences & COGL_PIPELINE_LAYER_STATE_TEXTURE))
+    {
+      CoglHandle tex0 = _cogl_pipeline_layer_get_texture (layer0);
+      CoglHandle tex1 = _cogl_pipeline_layer_get_texture (layer1);
+      GLenum gl_target0;
+      GLenum gl_target1;
+
+      cogl_texture_get_gl_texture (tex0, NULL, &gl_target0);
+      cogl_texture_get_gl_texture (tex1, NULL, &gl_target1);
+      if (gl_target0 != gl_target1)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+/* This tries to find the oldest ancestor whose pipeline and layer
+   state matches the given flags. This is mostly used to detect code
+   gen authorities so that we can reduce the numer of programs
+   generated */
 CoglPipeline *
-_cogl_pipeline_find_codegen_authority (CoglPipeline *pipeline,
-                                       CoglHandle user_program)
+_cogl_pipeline_find_equivalent_parent (CoglPipeline *pipeline,
+                                       CoglPipelineState pipeline_state,
+                                       CoglPipelineLayerState layer_state,
+                                       CoglPipelineFindEquivalentFlags flags)
 {
   CoglPipeline *authority0;
   CoglPipeline *authority1;
   int n_layers;
   CoglPipelineLayer **authority0_layers;
   CoglPipelineLayer **authority1_layers;
-  /* Under GLES2 the alpha func becomes part of the fragment program
-     so we can't share programs there */
-  const int codegen_state = (COGL_PIPELINE_STATE_LAYERS
-#ifdef HAVE_COGL_GLES2
-                             | COGL_PIPELINE_STATE_ALPHA_FUNC
-#endif
-                             );
-
-  /* XXX: we'll need to update this when we add fog support to the
-   * codegen */
-
-  if (user_program != COGL_INVALID_HANDLE)
-    return pipeline;
 
   /* Find the first pipeline that modifies state that affects the
-   * codegen... */
+   * state or any layer state... */
   authority0 = _cogl_pipeline_get_authority (pipeline,
-                                             codegen_state);
+                                             pipeline_state |
+                                             COGL_PIPELINE_STATE_LAYERS);
 
-  /* Find the next ancestor after that, that also modifies state
-   * affecting codegen... */
+  /* Find the next ancestor after that, that also modifies the
+   * state... */
   if (_cogl_pipeline_get_parent (authority0))
     {
       authority1 =
         _cogl_pipeline_get_authority (_cogl_pipeline_get_parent (authority0),
-                                      codegen_state);
+                                      pipeline_state |
+                                      COGL_PIPELINE_STATE_LAYERS);
     }
   else
     return authority0;
@@ -6457,15 +6440,16 @@ _cogl_pipeline_find_codegen_authority (CoglPipeline *pipeline,
   for (;;)
     {
       AddLayersToArrayState state;
+      int i;
 
       if (n_layers != cogl_pipeline_get_n_layers (authority1))
         return authority0;
 
       /* If the programs differ by anything that isn't part of the
          layer state then we can't continue */
-      if ((codegen_state & ~COGL_PIPELINE_STATE_LAYERS) &&
+      if (pipeline_state &&
           (_cogl_pipeline_compare_differences (authority0, authority1) &
-           (codegen_state & ~COGL_PIPELINE_STATE_LAYERS)))
+           pipeline_state))
         return authority0;
 
       authority0_layers =
@@ -6484,9 +6468,11 @@ _cogl_pipeline_find_codegen_authority (CoglPipeline *pipeline,
                                              add_layer_to_array_cb,
                                              &state);
 
-      if (layers_codegen_would_differ (authority0_layers, authority1_layers,
-                                     n_layers))
-        return authority0;
+      for (i = 0; i < n_layers; i++)
+        if (layers_differ_for_find_equivalent (layer_state, flags,
+                                               authority0_layers[i],
+                                               authority1_layers[i]))
+          return authority0;
 
       /* Find the next ancestor after that, that also modifies state
        * affecting codegen... */
@@ -6497,7 +6483,8 @@ _cogl_pipeline_find_codegen_authority (CoglPipeline *pipeline,
       authority0 = authority1;
       authority1 =
         _cogl_pipeline_get_authority (_cogl_pipeline_get_parent (authority1),
-                                      codegen_state);
+                                      pipeline_state |
+                                      COGL_PIPELINE_STATE_LAYERS);
       if (authority1 == authority0)
         break;
     }
