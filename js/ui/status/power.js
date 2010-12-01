@@ -122,7 +122,7 @@ Indicator.prototype = {
                         timestring = template.format (hours, Gettext.ngettext("hour", "hours", hours), minutes, Gettext.ngettext("minute", "minutes", minutes));
                     }
                 } else
-                    timestring = Gettext.ngettext("%d minute remaining", "%d minutes remaining", minutes);
+                    timestring = Gettext.ngettext("%d minute remaining", "%d minutes remaining", minutes).format(minutes);
                 this._batteryItem.label.text = timestring;
                 this._primaryPercentage.text = Math.round(percentage) + '%';
                 this._batteryItem.actor.show();
