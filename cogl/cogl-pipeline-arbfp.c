@@ -999,7 +999,6 @@ const CoglPipelineBackend _cogl_pipeline_arbfp_backend =
   NULL,
   _cogl_pipeline_backend_arbfp_layer_pre_change_notify,
   _cogl_pipeline_backend_arbfp_free_priv,
-  NULL
 };
 
 #endif /* COGL_PIPELINE_BACKEND_ARBFP */
