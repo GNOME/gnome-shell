@@ -5721,22 +5721,21 @@ layers_codegen_would_differ (CoglPipelineLayer **pipeline0_layers,
         _cogl_pipeline_layer_compare_differences (layer0, layer1);
 
       if (layer_differences & codegen_modifiers)
-        {
-          /* When it comes to texture differences the only thing that
-           * affects the codegen is the target enum... */
-          if (layer_differences == COGL_PIPELINE_LAYER_STATE_TEXTURE)
-            {
-              CoglHandle tex0 = _cogl_pipeline_layer_get_texture (layer0);
-              CoglHandle tex1 = _cogl_pipeline_layer_get_texture (layer1);
-              GLenum gl_target0;
-              GLenum gl_target1;
+        return TRUE;
 
-              cogl_texture_get_gl_texture (tex0, NULL, &gl_target0);
-              cogl_texture_get_gl_texture (tex1, NULL, &gl_target1);
-              if (gl_target0 == gl_target1)
-                continue;
-            }
-          return TRUE;
+      /* When it comes to texture differences the only thing that
+       * affects the codegen is the target enum... */
+      if ((layer_differences & COGL_PIPELINE_LAYER_STATE_TEXTURE))
+        {
+          CoglHandle tex0 = _cogl_pipeline_layer_get_texture (layer0);
+          CoglHandle tex1 = _cogl_pipeline_layer_get_texture (layer1);
+          GLenum gl_target0;
+          GLenum gl_target1;
+
+          cogl_texture_get_gl_texture (tex0, NULL, &gl_target0);
+          cogl_texture_get_gl_texture (tex1, NULL, &gl_target1);
+          if (gl_target0 != gl_target1)
+            return TRUE;
         }
     }
 
