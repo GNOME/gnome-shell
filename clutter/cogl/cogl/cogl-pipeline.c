@@ -4478,7 +4478,6 @@ static CoglPipelineLayer *
 _cogl_pipeline_layer_copy (CoglPipelineLayer *src)
 {
   CoglPipelineLayer *layer = g_slice_new (CoglPipelineLayer);
-  int i;
 
   _cogl_pipeline_node_init (COGL_PIPELINE_NODE (layer));
 
@@ -4486,9 +4485,6 @@ _cogl_pipeline_layer_copy (CoglPipelineLayer *src)
   layer->index = src->index;
   layer->differences = 0;
   layer->has_big_state = FALSE;
-
-  for (i = 0; i < COGL_PIPELINE_N_BACKENDS; i++)
-    layer->backend_priv[i] = NULL;
 
   _cogl_pipeline_layer_set_parent (layer, src);
 
@@ -4498,23 +4494,7 @@ _cogl_pipeline_layer_copy (CoglPipelineLayer *src)
 static void
 _cogl_pipeline_layer_free (CoglPipelineLayer *layer)
 {
-  int i;
-
   _cogl_pipeline_layer_unparent (COGL_PIPELINE_NODE (layer));
-
-  /* NB: layers may be used by multiple pipelines which may be using
-   * different backends, therefore we determine which backends to
-   * notify based on the private state pointers for each backend...
-   */
-  for (i = 0; i < COGL_PIPELINE_N_BACKENDS; i++)
-    {
-      if (layer->backend_priv[i] &&
-          _cogl_pipeline_backends[i]->free_layer_priv)
-        {
-          const CoglPipelineBackend *backend = _cogl_pipeline_backends[i];
-          backend->free_layer_priv (layer);
-        }
-    }
 
   if (layer->differences & COGL_PIPELINE_LAYER_STATE_TEXTURE &&
       layer->texture != COGL_INVALID_HANDLE)
@@ -4561,16 +4541,12 @@ _cogl_pipeline_init_default_layers (void)
   CoglPipelineLayerBigState *big_state =
     g_slice_new0 (CoglPipelineLayerBigState);
   CoglPipelineLayer *new;
-  int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   _cogl_pipeline_node_init (COGL_PIPELINE_NODE (layer));
 
   layer->index = 0;
-
-  for (i = 0; i < COGL_PIPELINE_N_BACKENDS; i++)
-    layer->backend_priv[i] = NULL;
 
   layer->differences = COGL_PIPELINE_LAYER_STATE_ALL_SPARSE;
 

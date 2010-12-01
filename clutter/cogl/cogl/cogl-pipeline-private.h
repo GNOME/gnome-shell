@@ -221,14 +221,6 @@ struct _CoglPipelineLayer
   /* The lowest index is blended first then others on top */
   int	             index;
 
-  /* Different pipeline backends (GLSL/ARBfp/Fixed Function) may
-   * want to associate private data with a layer...
-   *
-   * NB: we have per backend pointers because a layer may be
-   * associated with multiple pipelines with different backends.
-   */
-  void              *backend_priv[COGL_PIPELINE_N_BACKENDS];
-
   /* A mask of which state groups are different in this layer
    * in comparison to its parent. */
   unsigned long             differences;
@@ -585,7 +577,6 @@ typedef struct _CoglPipelineBackend
                                    CoglPipelineLayerState change);
 
   void (*free_priv) (CoglPipeline *pipeline);
-  void (*free_layer_priv) (CoglPipelineLayer *layer);
 } CoglPipelineBackend;
 
 typedef enum

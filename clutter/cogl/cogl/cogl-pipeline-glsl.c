@@ -1256,8 +1256,7 @@ const CoglPipelineBackend _cogl_pipeline_glsl_backend =
   _cogl_pipeline_backend_glsl_pre_change_notify,
   NULL, /* pipeline_set_parent_notify */
   _cogl_pipeline_backend_glsl_layer_pre_change_notify,
-  _cogl_pipeline_backend_glsl_free_priv,
-  NULL /* free_layer_priv */
+  _cogl_pipeline_backend_glsl_free_priv
 };
 
 #endif /* COGL_PIPELINE_BACKEND_GLSL */
