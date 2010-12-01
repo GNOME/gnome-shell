@@ -103,7 +103,7 @@ cogl_handle_unref (CoglHandle handle)
 }
 
 GType
-cogl_object_get_type (void)
+cogl_handle_get_type (void)
 {
   static GType our_type = 0;
 
@@ -115,12 +115,6 @@ cogl_object_get_type (void)
                                              (GBoxedFreeFunc) cogl_object_unref);
 
   return our_type;
-}
-
-GType
-cogl_handle_get_type (void)
-{
-  return cogl_object_get_type ();
 }
 
 /* XXX: Unlike for cogl_object_get_user_data this code will return
