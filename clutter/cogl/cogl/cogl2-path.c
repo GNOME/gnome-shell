@@ -221,7 +221,7 @@ _cogl_path_stroke_nodes (CoglPath *path)
 
   cogl_push_source (source);
 
-  _cogl_pipeline_flush_gl_state (source, FALSE, 0);
+  _cogl_pipeline_flush_gl_state (source, FALSE);
 
   /* Disable all client texture coordinate arrays */
   _cogl_bitmask_clear_all (&ctx->temp_bitmask);
@@ -365,7 +365,7 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
   /* Just setup a simple pipeline that doesn't use texturing... */
   cogl_push_source (ctx->stencil_pipeline);
 
-  _cogl_pipeline_flush_gl_state (ctx->stencil_pipeline, FALSE, 0);
+  _cogl_pipeline_flush_gl_state (ctx->stencil_pipeline, FALSE);
 
   _cogl_enable (enable_flags);
 
