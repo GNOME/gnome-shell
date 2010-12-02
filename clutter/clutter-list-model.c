@@ -440,8 +440,10 @@ clutter_list_model_get_iter_at_row (ClutterModel *model,
 {
   ClutterListModel *model_default = CLUTTER_LIST_MODEL (model);
   GSequence *sequence = model_default->priv->sequence;
+  GSequenceIter *filter_next;
   gint seq_length = g_sequence_get_length (sequence);
   ClutterListModelIter *retval;
+  gint count = -1;
 
   if (row >= seq_length)
     return NULL;
@@ -459,55 +461,29 @@ clutter_list_model_get_iter_at_row (ClutterModel *model,
       return CLUTTER_MODEL_ITER (retval);
     }
 
-  if (row == 0)
+  filter_next = g_sequence_get_begin_iter (sequence);
+  g_assert (filter_next != NULL);
+
+  while (!g_sequence_iter_is_end (filter_next))
     {
-      GSequenceIter *filter_next;
-      gboolean row_found = FALSE;
+      retval->seq_iter = filter_next;
 
-      filter_next = g_sequence_get_begin_iter (sequence);
-      g_assert (filter_next != NULL);
-
-      while (!g_sequence_iter_is_end (filter_next))
+      if (clutter_model_filter_iter (model, CLUTTER_MODEL_ITER (retval)))
         {
-          retval->seq_iter = filter_next;
-
-          if (clutter_model_filter_iter (model, CLUTTER_MODEL_ITER (retval)))
-            {
-              /* We've found a row that is valid under the filter */
-              row_found = TRUE;
-              break;
-            }
-
-          filter_next = g_sequence_iter_next (filter_next);
-        }
-
-      /* Everything has been filtered -> there is no first row */
-      if (!row_found)
-        {
-          g_object_unref (retval);
-          return NULL;
-        }
-    }
-  else
-    {
-      GSequenceIter *filter_prev;
-
-      filter_prev = g_sequence_get_end_iter (sequence);
-      g_assert (filter_prev != NULL);
-
-      filter_prev = g_sequence_iter_prev (filter_prev);
-
-      while (!g_sequence_iter_is_begin (filter_prev))
-        {
-          retval->seq_iter = filter_prev;
-
-          if (clutter_model_filter_iter (model, CLUTTER_MODEL_ITER (retval)))
+          /* We've found a row that is valid under the filter */
+          count++;
+          if (count == row)
             break;
-
-          filter_prev = g_sequence_iter_prev (filter_prev);
         }
+
+      filter_next = g_sequence_iter_next (filter_next);
     }
 
+  if (count != row)
+    {
+      g_object_unref (retval);
+      return NULL;
+    }
   return CLUTTER_MODEL_ITER (retval);
 }
 
