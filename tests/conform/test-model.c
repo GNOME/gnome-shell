@@ -227,6 +227,23 @@ test_list_model_filter (TestConformSimpleFixture *fixture,
 
   g_object_unref (iter);
 
+  if (g_test_verbose ())
+    g_print ("get_iter_at_row...\n");
+
+  clutter_model_set_filter (test_data.model, filter_odd_rows, NULL, NULL);
+
+  for (i = 0; i < 5; i++)
+    {
+      iter = clutter_model_get_iter_at_row (test_data.model, i);
+      compare_iter (iter, i ,
+                    filter_odd[i].expected_foo,
+                    filter_odd[i].expected_bar);
+      g_object_unref (iter);
+    }
+
+  iter = clutter_model_get_iter_at_row (test_data.model, 5);
+  g_assert (iter == NULL);
+
   g_object_unref (test_data.model);
 }
 
