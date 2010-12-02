@@ -193,7 +193,8 @@ cogl_create_context (void)
 
   _context->current_program = COGL_INVALID_HANDLE;
 
-  _context->current_use_program_type = COGL_PIPELINE_PROGRAM_TYPE_FIXED;
+  _context->current_fragment_program_type = COGL_PIPELINE_PROGRAM_TYPE_FIXED;
+  _context->current_vertex_program_type = COGL_PIPELINE_PROGRAM_TYPE_FIXED;
   _context->current_gl_program = 0;
 
   _context->gl_blend_enable_cache = FALSE;

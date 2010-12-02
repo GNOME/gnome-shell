@@ -42,6 +42,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-blend-string.h"
 #include "cogl-profile.h"
+#include "cogl-program-private.h"
 
 #include <glib.h>
 #include <glib/gprintf.h>
@@ -94,11 +95,16 @@ _cogl_pipeline_fragend_fixed_start (CoglPipeline *pipeline,
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_FIXED))
     return FALSE;
 
+  /* If there is a user program with a fragment shader then the
+     appropriate backend for that language should handle it. We can
+     still use the fixed fragment backend if the program only contains
+     a vertex shader */
   user_program = cogl_pipeline_get_user_program (pipeline);
-  if (user_program != COGL_INVALID_HANDLE)
+  if (user_program != COGL_INVALID_HANDLE &&
+      _cogl_program_has_fragment_shader (user_program))
     return FALSE;
 
-  _cogl_use_program (0, COGL_PIPELINE_PROGRAM_TYPE_FIXED);
+  _cogl_use_fragment_program (0, COGL_PIPELINE_PROGRAM_TYPE_FIXED);
   return TRUE;
 }
 

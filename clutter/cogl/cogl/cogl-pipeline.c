@@ -83,6 +83,9 @@ _cogl_pipeline_progends[MAX (COGL_PIPELINE_N_PROGENDS, 1)];
 #include "cogl-pipeline-progend-glsl-private.h"
 #endif
 
+#ifdef COGL_PIPELINE_VERTEND_GLSL
+#include "cogl-pipeline-vertend-glsl-private.h"
+#endif
 #ifdef COGL_PIPELINE_VERTEND_FIXED
 #include "cogl-pipeline-vertend-fixed-private.h"
 #endif
@@ -229,6 +232,10 @@ _cogl_pipeline_init_default_pipeline (void)
     &_cogl_pipeline_glsl_progend;
 #endif
 
+#ifdef COGL_PIPELINE_VERTEND_GLSL
+  _cogl_pipeline_vertends[COGL_PIPELINE_VERTEND_GLSL] =
+    &_cogl_pipeline_glsl_vertend;
+#endif
 #ifdef COGL_PIPELINE_VERTEND_FIXED
   _cogl_pipeline_vertends[COGL_PIPELINE_VERTEND_FIXED] =
     &_cogl_pipeline_fixed_vertend;

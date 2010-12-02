@@ -38,6 +38,7 @@
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
+#include "cogl-program-private.h"
 
 const CoglPipelineVertend _cogl_pipeline_fixed_vertend;
 
@@ -46,8 +47,21 @@ _cogl_pipeline_vertend_fixed_start (CoglPipeline *pipeline,
                                     int n_layers,
                                     unsigned long pipelines_difference)
 {
+  CoglProgram *user_program;
+
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_FIXED))
     return FALSE;
+
+  /* If there is a user program with a vertex shader then the
+     appropriate backend for that language should handle it. We can
+     still use the fixed vertex backend if the program only contains
+     a fragment shader */
+  user_program = cogl_pipeline_get_user_program (pipeline);
+  if (user_program != COGL_INVALID_HANDLE &&
+      _cogl_program_has_vertex_shader (user_program))
+    return FALSE;
+
+  _cogl_use_vertex_program (0, COGL_PIPELINE_PROGRAM_TYPE_FIXED);
 
   return TRUE;
 }
@@ -79,6 +93,8 @@ static gboolean
 _cogl_pipeline_vertend_fixed_end (CoglPipeline *pipeline,
                                   unsigned long pipelines_difference)
 {
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   if (pipelines_difference & COGL_PIPELINE_STATE_LIGHTING)
     {
       CoglPipeline *authority =
@@ -96,6 +112,18 @@ _cogl_pipeline_vertend_fixed_end (CoglPipeline *pipeline,
                         lighting_state->emission));
       GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS,
                         &lighting_state->shininess));
+    }
+
+  if (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE)
+    {
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_POINT_SIZE);
+
+      if (ctx->point_size_cache != authority->big_state->point_size)
+        {
+          GE( glPointSize (authority->big_state->point_size) );
+          ctx->point_size_cache = authority->big_state->point_size;
+        }
     }
 
   return TRUE;

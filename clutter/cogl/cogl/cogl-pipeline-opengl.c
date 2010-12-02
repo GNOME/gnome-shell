@@ -251,21 +251,45 @@ _cogl_pipeline_texture_storage_change_notify (CoglHandle texture)
        * we continue to check the rest */
     }
 }
+static void
+set_glsl_program (GLuint gl_program)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->current_gl_program != gl_program)
+    {
+      GLenum gl_error;
+
+      while ((gl_error = glGetError ()) != GL_NO_ERROR)
+        ;
+      glUseProgram (gl_program);
+      if (glGetError () == GL_NO_ERROR)
+        ctx->current_gl_program = gl_program;
+      else
+        {
+          GE( glUseProgram (0) );
+          ctx->current_gl_program = 0;
+        }
+    }
+}
 
 void
-_cogl_use_program (GLuint gl_program, CoglPipelineProgramType type)
+_cogl_use_fragment_program (GLuint gl_program, CoglPipelineProgramType type)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* If we're changing program type... */
-  if (type != ctx->current_use_program_type)
+  if (type != ctx->current_fragment_program_type)
     {
       /* ... disable the old type */
-      switch (ctx->current_use_program_type)
+      switch (ctx->current_fragment_program_type)
         {
         case COGL_PIPELINE_PROGRAM_TYPE_GLSL:
-          GE( glUseProgram (0) );
-          ctx->current_gl_program = 0;
+          /* If the program contains a vertex shader then we shouldn't
+             disable it */
+          if (ctx->current_vertex_program_type !=
+              COGL_PIPELINE_PROGRAM_TYPE_GLSL)
+            set_glsl_program (0);
           break;
 
         case COGL_PIPELINE_PROGRAM_TYPE_ARBFP:
@@ -298,22 +322,7 @@ _cogl_use_program (GLuint gl_program, CoglPipelineProgramType type)
   if (type == COGL_PIPELINE_PROGRAM_TYPE_GLSL)
     {
 #ifdef COGL_PIPELINE_FRAGEND_GLSL
-
-      if (ctx->current_gl_program != gl_program)
-        {
-          GLenum gl_error;
-
-          while ((gl_error = glGetError ()) != GL_NO_ERROR)
-            ;
-          glUseProgram (gl_program);
-          if (glGetError () == GL_NO_ERROR)
-            ctx->current_gl_program = gl_program;
-          else
-            {
-              GE( glUseProgram (0) );
-              ctx->current_gl_program = 0;
-            }
-        }
+      set_glsl_program (gl_program);
 
 #else
 
@@ -323,10 +332,73 @@ _cogl_use_program (GLuint gl_program, CoglPipelineProgramType type)
     }
 #ifndef COGL_PIPELINE_FRAGEND_ARBFP
   else if (type == COGL_PIPELINE_PROGRAM_TYPE_ARBFP)
-      g_warning ("Unexpected use of ARBFP fragend!");
+    g_warning ("Unexpected use of ARBFP fragend!");
 #endif /* COGL_PIPELINE_FRAGEND_ARBFP */
 
-  ctx->current_use_program_type = type;
+  ctx->current_fragment_program_type = type;
+}
+
+void
+_cogl_use_vertex_program (GLuint gl_program, CoglPipelineProgramType type)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* If we're changing program type... */
+  if (type != ctx->current_vertex_program_type)
+    {
+      /* ... disable the old type */
+      switch (ctx->current_vertex_program_type)
+        {
+        case COGL_PIPELINE_PROGRAM_TYPE_GLSL:
+          /* If the program contains a fragment shader then we shouldn't
+             disable it */
+          if (ctx->current_fragment_program_type !=
+              COGL_PIPELINE_PROGRAM_TYPE_GLSL)
+            set_glsl_program (0);
+          break;
+
+        case COGL_PIPELINE_PROGRAM_TYPE_ARBFP:
+          /* It doesn't make sense to enable ARBfp for the vertex program */
+          g_assert_not_reached ();
+          break;
+
+        case COGL_PIPELINE_PROGRAM_TYPE_FIXED:
+          /* don't need to to anything */
+          break;
+        }
+
+      /* ... and enable the new type */
+      switch (type)
+        {
+        case COGL_PIPELINE_PROGRAM_TYPE_ARBFP:
+          /* It doesn't make sense to enable ARBfp for the vertex program */
+          g_assert_not_reached ();
+          break;
+
+        case COGL_PIPELINE_PROGRAM_TYPE_GLSL:
+        case COGL_PIPELINE_PROGRAM_TYPE_FIXED:
+          /* don't need to to anything */
+          break;
+        }
+    }
+
+  if (type == COGL_PIPELINE_PROGRAM_TYPE_GLSL)
+    {
+#ifdef COGL_PIPELINE_VERTEND_GLSL
+      set_glsl_program (gl_program);
+
+#else
+
+      g_warning ("Unexpected use of GLSL vertend!");
+
+#endif /* COGL_PIPELINE_VERTEND_GLSL */
+    }
+#ifndef COGL_PIPELINE_VERTEND_ARBFP
+  else if (type == COGL_PIPELINE_PROGRAM_TYPE_ARBFP)
+    g_warning ("Unexpected use of ARBFP vertend!");
+#endif /* COGL_PIPELINE_VERTEND_ARBFP */
+
+  ctx->current_vertex_program_type = type;
 }
 
 #if defined (COGL_PIPELINE_FRAGEND_GLSL) || \
@@ -516,18 +588,6 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
         {
           GE (glDisable (GL_DEPTH_TEST));
           ctx->depth_test_enabled_cache = depth_state->depth_test_enabled;
-        }
-    }
-
-  if (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE)
-    {
-      CoglPipeline *authority =
-        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_POINT_SIZE);
-
-      if (ctx->point_size_cache != authority->big_state->point_size)
-        {
-          GE( glPointSize (authority->big_state->point_size) );
-          ctx->point_size_cache = authority->big_state->point_size;
         }
     }
 
