@@ -257,6 +257,26 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
     }
   count += count_in;
 
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_SHOW_SOURCE))
+    {
+      GString *buf = g_string_new (NULL);
+      int i;
+
+      g_string_append_printf (buf,
+                              "%s shader:\n",
+                              shader_gl_type == GL_VERTEX_SHADER ?
+                              "vertex" : "fragment");
+      for (i = 0; i < count; i++)
+        if (lengths[i] != -1)
+          g_string_append_len (buf, strings[i], lengths[i]);
+        else
+          g_string_append (buf, strings[i]);
+
+      g_message ("%s", buf->str);
+
+      g_string_free (buf, TRUE);
+    }
+
   GE( glShaderSource (shader_gl_handle, count,
                       (const char **) strings, lengths) );
 
@@ -286,6 +306,9 @@ _cogl_shader_compile_real (CoglHandle handle,
       GE (glGenPrograms (1, &shader->gl_handle));
 
       GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, shader->gl_handle));
+
+      if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_SHOW_SOURCE))
+        g_message ("user ARBfp program:\n%s", shader->source);
 
 #ifdef COGL_GL_DEBUG
       while ((gl_error = glGetError ()) != GL_NO_ERROR)
