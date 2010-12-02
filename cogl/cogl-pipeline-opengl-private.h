@@ -150,8 +150,7 @@ _cogl_gl_use_program_wrapper (CoglHandle program);
 
 void
 _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
-                               gboolean skip_gl_state,
-                               int n_tex_coord_attribs);
+                               gboolean skip_gl_state);
 
 #endif /* __COGL_PIPELINE_OPENGL_PRIVATE_H */
 

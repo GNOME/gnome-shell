@@ -262,7 +262,7 @@ cogl_create_context (void)
                                 default_texture_data);
 
   cogl_push_source (_context->opaque_color_pipeline);
-  _cogl_pipeline_flush_gl_state (_context->opaque_color_pipeline, FALSE, 0);
+  _cogl_pipeline_flush_gl_state (_context->opaque_color_pipeline, FALSE);
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
