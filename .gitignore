@@ -18,8 +18,6 @@ config
 configure
 data/gnome-shell.desktop
 data/gnome-shell.desktop.in
-data/gnome-shell-clock-preferences.desktop
-data/gnome-shell-clock-preferences.desktop.in
 data/gschemas.compiled
 data/org.gnome.shell.gschema.xml
 data/org.gnome.shell.gschema.valid
@@ -46,7 +44,6 @@ src/Makefile
 src/Makefile.in
 src/gnomeshell-taskpanel
 src/gnome-shell
-src/gnome-shell-clock-preferences
 src/run-js-test
 src/test-recorder
 src/test-recorder.ogg

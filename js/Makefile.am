@@ -11,7 +11,6 @@ nobase_dist_js_DATA = 	\
 	misc/telepathy.js	\
 	misc/utils.js		\
 	perf/core.js		\
-	prefs/clockPreferences.js \
 	ui/altTab.js		\
 	ui/appDisplay.js	\
 	ui/appFavorites.js	\

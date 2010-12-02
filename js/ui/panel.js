@@ -40,8 +40,10 @@ const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
 if (Config.HAVE_BLUETOOTH)
     STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['bluetooth'] = imports.ui.status.bluetooth.Indicator;
 
-const CLOCK_FORMAT_KEY        = 'format';
-const CLOCK_CUSTOM_FORMAT_KEY = 'custom-format';
+// in org.gnome.desktop.interface
+const CLOCK_FORMAT_KEY        = 'clock-format';
+
+// in org.gnome.shell.clock
 const CLOCK_SHOW_DATE_KEY     = 'show-date';
 const CLOCK_SHOW_SECONDS_KEY  = 'show-seconds';
 
@@ -492,34 +494,30 @@ function ClockButton() {
 }
 
 ClockButton.prototype = {
-    __proto__: PanelMenu.Button.prototype,
-
     _init: function() {
-        PanelMenu.Button.prototype._init.call(this, St.Align.START);
-        this.menu.addAction(_("Preferences"), Lang.bind(this, this._onPrefs));
+        this.actor = new St.Bin({ style_class: 'panel-button',
+                                  reactive: true,
+                                  can_focus: true,
+                                  x_fill: true,
+                                  y_fill: false,
+                                  track_hover: true });
+        this.actor._delegate = this;
+        this.actor.connect('button-press-event',
+                           Lang.bind(this, this._toggleCalendar));
 
         this._clock = new St.Label();
         this.actor.set_child(this._clock);
 
         this._calendarPopup = null;
 
+        this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
         this._clockSettings = new Gio.Settings({ schema: 'org.gnome.shell.clock' });
+
+        this._desktopSettings.connect('changed', Lang.bind(this, this._updateClock));
         this._clockSettings.connect('changed', Lang.bind(this, this._updateClock));
 
         // Start the clock
         this._updateClock();
-    },
-
-    _onButtonPress: function(actor, event) {
-        let button = event.get_button();
-        let menuShowing = this.menu.isOpen;
-        let calendarShowing = this._calendarPopup && this._calendarPopup.isOpen;
-
-        if (menuShowing || (button == 3 && !calendarShowing))
-            this.menu.toggle();
-        else
-            this._toggleCalendar();
-        return true;
     },
 
     closeCalendar: function() {
@@ -537,22 +535,10 @@ ClockButton.prototype = {
         this.actor.add_style_pseudo_class('pressed');
     },
 
-    _onPrefs: function() {
-        let args = ['gnome-shell-clock-preferences'];
-        let p = new Shell.Process({ args: args });
-
-        p.run();
-    },
-
     _toggleCalendar: function() {
         if (this._calendarPopup == null) {
             this._calendarPopup = new CalendarPopup();
             this._calendarPopup.actor.hide();
-        }
-
-        if (this.menu.isOpen && !this._calendarPopup.isOpen) {
-            this.menu.close();
-            return;
         }
 
         if (!this._calendarPopup.isOpen)
@@ -562,23 +548,13 @@ ClockButton.prototype = {
     },
 
     _updateClock: function() {
-        let format = this._clockSettings.get_string(CLOCK_FORMAT_KEY);
+        let format = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);
         let showDate = this._clockSettings.get_boolean(CLOCK_SHOW_DATE_KEY);
         let showSeconds = this._clockSettings.get_boolean(CLOCK_SHOW_SECONDS_KEY);
 
         let clockFormat;
         switch (format) {
-            case 'unix':
-                // force updates every second
-                showSeconds = true;
-                clockFormat = '%s';
-                break;
-            case 'custom':
-                // force updates every second
-                showSeconds = true;
-                clockFormat = this._clockSettings.get_string(CLOCK_CUSTOM_FORMAT_KEY);
-                break;
-            case '24-hour':
+            case '24h':
                 if (showDate)
 	            /* Translators: This is the time format with date used
                        in 24-hour mode. */
@@ -590,7 +566,7 @@ ClockButton.prototype = {
                     clockFormat = showSeconds ? _("%a %R:%S")
                                               : _("%a %R");
                 break;
-            case '12-hour':
+            case '12h':
             default:
                 if (showDate)
 	            /* Translators: This is a time format with date used
@@ -802,9 +778,6 @@ Panel.prototype = {
 
         this._clockButton = new ClockButton();
         this._centerBox.add(this._clockButton.actor, { y_fill: true });
-
-        let clockMenuManager = new PopupMenu.PopupMenuManager(this);
-        clockMenuManager.addMenu(this._clockButton.menu);
 
         /* right */
 
