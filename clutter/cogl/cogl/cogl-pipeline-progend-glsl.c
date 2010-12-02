@@ -221,13 +221,13 @@ get_uniform_cb (CoglPipeline *pipeline,
 
   /* We can reuse the source buffer to create the uniform name because
      the program has now been linked */
-  g_string_set_size (ctx->fragment_source_buffer, 0);
-  g_string_append_printf (ctx->fragment_source_buffer,
+  g_string_set_size (ctx->codegen_source_buffer, 0);
+  g_string_append_printf (ctx->codegen_source_buffer,
                           "_cogl_sampler_%i", state->unit);
 
   GE_RET( uniform_location,
           glGetUniformLocation (state->gl_program,
-                                ctx->fragment_source_buffer->str) );
+                                ctx->codegen_source_buffer->str) );
 
   /* We can set the uniform immediately because the samplers are the
      unit index not the texture object number so it will never
@@ -236,13 +236,13 @@ get_uniform_cb (CoglPipeline *pipeline,
   if (uniform_location != -1)
     GE( glUniform1i (uniform_location, state->unit) );
 
-  g_string_set_size (ctx->fragment_source_buffer, 0);
-  g_string_append_printf (ctx->fragment_source_buffer,
+  g_string_set_size (ctx->codegen_source_buffer, 0);
+  g_string_append_printf (ctx->codegen_source_buffer,
                           "_cogl_layer_constant_%i", state->unit);
 
   GE_RET( uniform_location,
           glGetUniformLocation (state->gl_program,
-                                ctx->fragment_source_buffer->str) );
+                                ctx->codegen_source_buffer->str) );
 
   unit_state->combine_constant_uniform = uniform_location;
 

@@ -157,8 +157,8 @@ cogl_create_context (void)
   _context->opaque_color_pipeline = cogl_pipeline_new ();
   _context->blended_color_pipeline = cogl_pipeline_new ();
   _context->texture_pipeline = cogl_pipeline_new ();
-  _context->fragment_header_buffer = g_string_new ("");
-  _context->fragment_source_buffer = g_string_new ("");
+  _context->codegen_header_buffer = g_string_new ("");
+  _context->codegen_source_buffer = g_string_new ("");
   _context->source_stack = NULL;
 
   _context->legacy_state_set = 0;
