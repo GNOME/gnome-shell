@@ -1031,7 +1031,8 @@ backend_add_layer_cb (CoglPipelineLayer *layer,
  */
 void
 _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
-                               gboolean skip_gl_color)
+                               gboolean skip_gl_color,
+                               int n_tex_coord_attribs)
 {
   unsigned long    pipelines_difference;
   int              n_layers;
@@ -1134,7 +1135,8 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
        * scratch buffers here... */
       if (G_UNLIKELY (!backend->start (pipeline,
                                        n_layers,
-                                       pipelines_difference)))
+                                       pipelines_difference,
+                                       n_tex_coord_attribs)))
         continue;
 
       state.backend = backend;
