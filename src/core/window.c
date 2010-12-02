@@ -7877,8 +7877,11 @@ update_move (MetaWindow  *window,
     {
       double prop;
 
-      /* Shake loose */
-      window->shaken_loose = !META_WINDOW_TILED_SIDE_BY_SIDE (window);
+      /* Shake loose, so that the window snaps back to maximized
+       * when dragged near the top; do not snap back if tiling
+       * is enabled, as top edge tiling can be used in that case
+       */
+      window->shaken_loose = !meta_prefs_get_edge_tiling ();
       window->tile_mode = META_TILE_NONE;
 
       /* move the unmaximized window to the cursor */
