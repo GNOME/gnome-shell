@@ -1094,6 +1094,11 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
   if (G_UNLIKELY (i >= G_N_ELEMENTS (_cogl_pipeline_fragends)))
     g_warning ("No usable pipeline fragment backend was found!");
 
+  for (i = 0; i < COGL_PIPELINE_N_PROGENDS; i++)
+    if (_cogl_pipeline_progends[i]->end)
+      _cogl_pipeline_progends[i]->end (pipeline, pipelines_difference,
+                                       n_tex_coord_attribs);
+
   /* FIXME: This reference is actually resulting in lots of
    * copy-on-write reparenting because one-shot pipelines end up
    * living for longer than necessary and so any later modification of
