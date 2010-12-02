@@ -8,7 +8,7 @@
 TOR_URL="http://ftp.gnome.org/pub/gnome/binaries/win32";
 
 TOR_BINARIES=( \
-    glib/2.24/glib{-dev,}_2.24.0-2_win32.zip \
+    glib/2.26/glib{-dev,}_2.26.0-2_win32.zip \
     gtk+/2.16/gtk+{-dev,}_2.16.6-2_win32.zip \
     pango/1.28/pango{-dev,}_1.28.0-1_win32.zip \
     atk/1.30/atk{-dev,}_1.30.0-1_win32.zip );
@@ -16,7 +16,7 @@ TOR_BINARIES=( \
 TOR_DEP_URL="http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies";
 
 TOR_DEPS=( \
-    cairo{-dev,}_1.8.10-3_win32.zip \
+    cairo{-dev,}_1.10.0-2_win32.zip \
     gettext-runtime-{dev-,}0.17-1.zip \
     fontconfig{-dev,}_2.8.0-2_win32.zip \
     freetype{-dev,}_2.3.12-1_win32.zip \
