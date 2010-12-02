@@ -200,7 +200,7 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
   GLint *lengths = g_alloca (sizeof (GLint) * (count_in + 2));
   int count = 0;
 #ifdef HAVE_COGL_GLES2
-  char *tex_coords_declaration = NULL;
+  char *tex_coord_declarations = NULL;
 #endif
 
   GET_CONTEXT (ctx, NO_RETVAL);
@@ -219,10 +219,28 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
 #ifdef HAVE_COGL_GLES2
   if (n_tex_coord_attribs)
     {
-      tex_coords_declaration =
-        g_strdup_printf ("varying vec2 _cogl_tex_coord[%d];\n",
-                         n_tex_coord_attribs);
-      strings[count] = tex_coords_declaration;
+      GString *declarations = g_string_new (NULL);
+
+      g_string_append_printf (declarations,
+                              "varying vec4 _cogl_tex_coord[%d];\n",
+                              n_tex_coord_attribs);
+
+      if (shader_gl_type == GL_VERTEX_SHADER)
+        {
+          int i;
+
+          g_string_append_printf (declarations,
+                                  "uniform mat4 cogl_texture_matrix[%d];\n",
+                                  n_tex_coord_attribs);
+
+          for (i = 0; i < n_tex_coord_attribs; i++)
+            g_string_append_printf (declarations,
+                                    "attribute vec4 cogl_tex_coord%d_in;\n",
+                                    i);
+        }
+
+      tex_coord_declarations = g_string_free (declarations, FALSE);
+      strings[count] = tex_coord_declarations;
       lengths[count++] = -1; /* null terminated */
     }
 #endif
@@ -243,7 +261,7 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
                       (const char **) strings, lengths) );
 
 #ifdef HAVE_COGL_GLES2
-  g_free (tex_coords_declaration);
+  g_free (tex_coord_declarations);
 #endif
 }
 

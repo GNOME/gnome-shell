@@ -59,7 +59,7 @@
   "#define cogl_modelview_matrix gl_ModelViewMatrix\n" \
   "#define cogl_modelview_projection_matrix gl_ModelViewProjectionMatrix\n" \
   "#define cogl_projection_matrix gl_ProjectionMatrix\n" \
-  "#define cogl_texture_matrix gl_TextureMatrix\n" \
+  "#define cogl_texture_matrix gl_TextureMatrix\n"
 
 #define _COGL_FRAGMENT_SHADER_BOILERPLATE \
   _COGL_COMMON_SHADER_BOILERPLATE \
@@ -79,11 +79,28 @@
 
 #else /* HAVE_COGL_GLES2 */
 
+/* This declares all of the variables that we might need. This is
+   working on the assumption that the compiler will optimise them out
+   if they are not actually used. The GLSL spec for GLES at least
+   implies that this will happen for varyings but it doesn't
+   explicitly so for attributes */
 #define _COGL_VERTEX_SHADER_BOILERPLATE \
   _COGL_COMMON_SHADER_BOILERPLATE \
   "#define cogl_color_out _cogl_color\n" \
-  "#define cogl_point_coord_out _cogl_point_coord\n" \
-  "#define cogl_tex_coord_out _cogl_tex_coord\n"
+  "varying vec4 _cogl_color;\n" \
+  "#define cogl_tex_coord_out _cogl_tex_coord\n" \
+  "#define cogl_position_out gl_Position\n" \
+  "#define cogl_point_size_out gl_PointSize\n" \
+  "\n" \
+  "attribute vec4 cogl_position_in;\n" \
+  "attribute vec4 cogl_color_in;\n" \
+  "#define cogl_tex_coord_in cogl_tex_coord0_in;\n" \
+  "attribute vec3 cogl_normal_in;\n" \
+  "\n" \
+  "uniform mat4 cogl_modelview_matrix;\n" \
+  "uniform mat4 cogl_modelview_projection_matrix;\n"  \
+  "uniform mat4 cogl_projection_matrix;\n" \
+  "uniform float cogl_point_size_in;\n"
 
 #define _COGL_FRAGMENT_SHADER_BOILERPLATE \
   _COGL_COMMON_SHADER_BOILERPLATE \
