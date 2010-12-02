@@ -305,23 +305,7 @@ _cogl_pipeline_backend_glsl_start (CoglPipeline *pipeline,
       set_glsl_priv (pipeline, priv);
     }
 
-  /* If we already have a valid GLSL program then we don't need to
-     relink a new one */
-  if (priv->glsl_program_state)
-    {
-      /* However if the program has changed since the last link then we do
-       * need to relink */
-      if (user_program == NULL ||
-          (priv->glsl_program_state->user_program_age == user_program->age))
-        return TRUE;
-
-      /* Destroy the existing program. We can't just dirty the whole
-         glsl state because otherwise if we are not the authority on
-         the user program then we'll just find the same state again */
-      delete_program (priv->glsl_program_state->gl_program);
-      priv->glsl_program_state->gl_program = 0;
-    }
-  else
+  if (!priv->glsl_program_state)
     {
       /* If we don't have an associated glsl program yet then find the
        * glsl-authority (the oldest ancestor whose state will result in
@@ -356,6 +340,20 @@ _cogl_pipeline_backend_glsl_start (CoglPipeline *pipeline,
       if (authority != pipeline)
         priv->glsl_program_state =
           glsl_program_state_ref (authority_priv->glsl_program_state);
+    }
+
+  if (priv->glsl_program_state->gl_program)
+    {
+      /* If we already have a valid GLSL program then we don't need to
+         relink a new one. However if the program has changed since
+         the last link then we do need to relink */
+      if (user_program == NULL ||
+          (priv->glsl_program_state->user_program_age == user_program->age))
+        return TRUE;
+
+      /* We need to recreate the program so destroy the existing one */
+      delete_program (priv->glsl_program_state->gl_program);
+      priv->glsl_program_state->gl_program = 0;
     }
 
   /* If we make it here then we have a glsl_program_state struct
