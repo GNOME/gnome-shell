@@ -256,6 +256,11 @@ struct _MetaFrameGeometry
   GdkRectangle right_middle_backgrounds[MAX_MIDDLE_BACKGROUNDS];
   GdkRectangle right_right_background;
   /* End of button rects (if changed adjust memset hack) */
+
+  /* Saved button layout */
+  MetaButtonLayout button_layout;
+  int n_left_buttons;
+  int n_right_buttons;
   
   /* Round corners */
   guint top_left_corner_rounded_radius;

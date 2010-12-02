@@ -2398,20 +2398,6 @@ meta_frames_paint (MetaFrames   *frames,
     default:
       break;
     }
-
-  /* Map button function states to button position states */
-  button_states[META_BUTTON_TYPE_LEFT_LEFT_BACKGROUND] =
-    button_states[META_BUTTON_TYPE_MENU];
-  button_states[META_BUTTON_TYPE_LEFT_MIDDLE_BACKGROUND] =
-    META_BUTTON_STATE_NORMAL;
-  button_states[META_BUTTON_TYPE_LEFT_RIGHT_BACKGROUND] =
-    META_BUTTON_STATE_NORMAL;
-  button_states[META_BUTTON_TYPE_RIGHT_LEFT_BACKGROUND] =
-    button_states[META_BUTTON_TYPE_MINIMIZE];
-  button_states[META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND] =
-    button_states[META_BUTTON_TYPE_MAXIMIZE];
-  button_states[META_BUTTON_TYPE_RIGHT_RIGHT_BACKGROUND] =
-    button_states[META_BUTTON_TYPE_CLOSE];
   
   meta_core_get (display, frame->xwindow,
                  META_CORE_GET_FRAME_FLAGS, &flags,
