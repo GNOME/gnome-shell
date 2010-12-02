@@ -790,11 +790,6 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
 
       g_string_append (glsl_shader_state->source, "}\n");
 
-      if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_SHOW_SOURCE))
-        g_message ("pipeline fragment shader:\n%s%s",
-                   glsl_shader_state->header->str,
-                   glsl_shader_state->source->str);
-
       GE_RET( shader, glCreateShader (GL_FRAGMENT_SHADER) );
 
       lengths[0] = glsl_shader_state->header->len;

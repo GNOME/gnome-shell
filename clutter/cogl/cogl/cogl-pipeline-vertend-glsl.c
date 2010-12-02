@@ -303,11 +303,6 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
                        "  cogl_color_out = cogl_color_in;\n"
                        "}\n");
 
-      if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_SHOW_SOURCE))
-        g_message ("pipeline vertex shader:\n%s%s",
-                   priv->header->str,
-                   priv->source->str);
-
       GE_RET( shader, glCreateShader (GL_VERTEX_SHADER) );
 
       lengths[0] = priv->header->len;
