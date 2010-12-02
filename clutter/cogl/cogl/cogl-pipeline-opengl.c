@@ -37,16 +37,6 @@
 #include "cogl-context.h"
 #include "cogl-texture-private.h"
 
-#ifdef COGL_PIPELINE_BACKEND_GLSL
-#include "cogl-pipeline-glsl-private.h"
-#endif
-#ifdef COGL_PIPELINE_BACKEND_ARBFP
-#include "cogl-pipeline-arbfp-private.h"
-#endif
-#ifdef COGL_PIPELINE_BACKEND_FIXED
-#include "cogl-pipeline-fixed-private.h"
-#endif
-
 #include <glib.h>
 #include <string.h>
 
