@@ -64,6 +64,10 @@ static void recursively_free_layer_caches (CoglPipeline *pipeline);
 static gboolean _cogl_pipeline_is_weak (CoglPipeline *pipeline);
 
 const CoglPipelineFragend *_cogl_pipeline_fragends[COGL_PIPELINE_N_FRAGENDS];
+/* The 'MAX' here is so that we don't define an empty array when there
+   are no progends */
+const CoglPipelineProgend *
+_cogl_pipeline_progends[MAX (COGL_PIPELINE_N_PROGENDS, 1)];
 
 #ifdef COGL_PIPELINE_FRAGEND_GLSL
 #include "cogl-pipeline-fragend-glsl-private.h"
@@ -73,6 +77,9 @@ const CoglPipelineFragend *_cogl_pipeline_fragends[COGL_PIPELINE_N_FRAGENDS];
 #endif
 #ifdef COGL_PIPELINE_FRAGEND_FIXED
 #include "cogl-pipeline-fragend-fixed-private.h"
+#endif
+#ifdef COGL_PIPELINE_PROGEND_GLSL
+#include "cogl-pipeline-progend-glsl-private.h"
 #endif
 
 COGL_OBJECT_DEFINE (Pipeline, pipeline);
@@ -199,7 +206,7 @@ _cogl_pipeline_init_default_pipeline (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* Take this opportunity to setup the fragment processing backends... */
+  /* Take this opportunity to setup the backends... */
 #ifdef COGL_PIPELINE_FRAGEND_GLSL
   _cogl_pipeline_fragends[COGL_PIPELINE_FRAGEND_GLSL] =
     &_cogl_pipeline_glsl_fragend;
@@ -211,6 +218,10 @@ _cogl_pipeline_init_default_pipeline (void)
 #ifdef COGL_PIPELINE_FRAGEND_FIXED
   _cogl_pipeline_fragends[COGL_PIPELINE_FRAGEND_FIXED] =
     &_cogl_pipeline_fixed_fragend;
+#endif
+#ifdef COGL_PIPELINE_PROGEND_GLSL
+  _cogl_pipeline_progends[COGL_PIPELINE_PROGEND_GLSL] =
+    &_cogl_pipeline_glsl_progend;
 #endif
 
   _cogl_pipeline_node_init (COGL_PIPELINE_NODE (pipeline));
@@ -1129,6 +1140,7 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
                                   gboolean          from_layer_change)
 {
   CoglPipeline *authority;
+  int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1200,6 +1212,14 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
       if (!from_layer_change)
         fragend->pipeline_pre_change_notify (pipeline, change, new_color);
     }
+
+  /* Notify all of the progends */
+  if (!from_layer_change)
+    for (i = 0; i < COGL_PIPELINE_N_PROGENDS; i++)
+      if (_cogl_pipeline_progends[i]->pipeline_pre_change_notify)
+        _cogl_pipeline_progends[i]->pipeline_pre_change_notify (pipeline,
+                                                                change,
+                                                                new_color);
 
   /* There may be an arbitrary tree of descendants of this pipeline;
    * any of which may indirectly depend on this pipeline as the
@@ -1504,6 +1524,22 @@ _cogl_pipeline_fragend_layer_change_notify (CoglPipeline *owner,
     }
 }
 
+static void
+_cogl_pipeline_progend_layer_change_notify (CoglPipeline *owner,
+                                            CoglPipelineLayer *layer,
+                                            CoglPipelineLayerState change)
+{
+  int i;
+
+  /* Give all of the progends a chance to notice that the layer has
+     changed */
+  for (i = 0; i < COGL_PIPELINE_N_PROGENDS; i++)
+    if (_cogl_pipeline_progends[i]->layer_pre_change_notify)
+      _cogl_pipeline_progends[i]->layer_pre_change_notify (owner,
+                                                           layer,
+                                                           change);
+}
+
 unsigned int
 _cogl_get_n_args_for_combine_func (GLint func)
 {
@@ -1661,6 +1697,7 @@ _cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
    * dependant on this layer so it's ok to modify it. */
 
   _cogl_pipeline_fragend_layer_change_notify (required_owner, layer, change);
+  _cogl_pipeline_progend_layer_change_notify (required_owner, layer, change);
 
   /* If the layer being changed is the same as the last layer we
    * flushed to the corresponding texture unit then we keep a track of

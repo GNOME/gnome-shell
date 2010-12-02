@@ -22,18 +22,15 @@
  *
  *
  * Authors:
- *   Robert Bragg <robert@linux.intel.com>
+ *   Neil Roberts <neil@linux.intel.com>
  */
 
-#ifndef __COGL_PIPELINE_FRAGEND_GLSL_PRIVATE_H
-#define __COGL_PIPELINE_FRAGEND_GLSL_PRIVATE_H
+#ifndef __COGL_PIPELINE_PROGEND_GLSL_PRIVATE_H
+#define __COGL_PIPELINE_PROGEND_GLSL_PRIVATE_H
 
 #include "cogl-pipeline-private.h"
 
-extern const CoglPipelineFragend _cogl_pipeline_glsl_fragend;
+extern const CoglPipelineProgend _cogl_pipeline_glsl_progend;
 
-GLuint
-_cogl_pipeline_fragend_glsl_get_shader (CoglPipeline *pipeline);
-
-#endif /* __COGL_PIPELINE_FRAGEND_GLSL_PRIVATE_H */
+#endif /* __COGL_PIPELINE_PROGEND_GLSL_PRIVATE_H */
 

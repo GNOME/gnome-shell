@@ -71,6 +71,20 @@ typedef struct _CoglPipelineLayer     CoglPipelineLayer;
 #define COGL_PIPELINE_FRAGEND_DEFAULT    0
 #define COGL_PIPELINE_FRAGEND_UNDEFINED  3
 
+/* If we have either of the GLSL backends then we also need a GLSL
+   progend to combine the shaders generated into a single
+   program. Currently there is only one progend but if we ever add
+   other languages they would likely need their own progend too. The
+   progends are different from the other backends because there can be
+   more than one in use for each pipeline. All of the progends are
+   invoked whenever a pipeline is flushed. */
+#ifdef COGL_PIPELINE_FRAGEND_GLSL
+#define COGL_PIPELINE_PROGEND_GLSL       0
+#define COGL_PIPELINE_N_PROGENDS         1
+#else
+#define COGL_PIPELINE_N_PROGENDS         0
+#endif
+
 /* XXX: should I rename these as
  * COGL_PIPELINE_LAYER_STATE_INDEX_XYZ... ?
  */
@@ -660,6 +674,19 @@ typedef struct _CoglPipelineFragend
   void (*free_priv) (CoglPipeline *pipeline);
 } CoglPipelineFragend;
 
+typedef struct
+{
+  void (*end) (CoglPipeline *pipeline,
+               unsigned long pipelines_difference,
+               int n_tex_coord_attribs);
+  void (*pipeline_pre_change_notify) (CoglPipeline *pipeline,
+                                      CoglPipelineState change,
+                                      const CoglColor *new_color);
+  void (*layer_pre_change_notify) (CoglPipeline *owner,
+                                   CoglPipelineLayer *layer,
+                                   CoglPipelineLayerState change);
+} CoglPipelineProgend;
+
 typedef enum
 {
   COGL_PIPELINE_PROGRAM_TYPE_GLSL = 1,
@@ -669,6 +696,8 @@ typedef enum
 
 extern const CoglPipelineFragend *
 _cogl_pipeline_fragends[COGL_PIPELINE_N_FRAGENDS];
+extern const CoglPipelineProgend *
+_cogl_pipeline_progends[];
 
 void
 _cogl_pipeline_init_default_pipeline (void);
