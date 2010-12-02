@@ -214,9 +214,10 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
 
   user_program = cogl_pipeline_get_user_program (pipeline);
 
-  /* If the program isn't GLSL then we should let another backend
-     handle it */
+  /* If the user fragment shader isn't GLSL then we should let
+     another backend handle it */
   if (user_program &&
+      _cogl_program_has_fragment_shader (user_program) &&
       _cogl_program_get_language (user_program) != COGL_SHADER_LANGUAGE_GLSL)
     return FALSE;
 
@@ -609,7 +610,7 @@ append_masked_combine (CoglPipeline *pipeline,
 
     case GL_DOT3_RGB:
     case GL_DOT3_RGBA:
-      g_string_append (shader_source, "vec4(4 * ((");
+      g_string_append (shader_source, "vec4(4.0 * ((");
       add_arg (glsl_shader_state, pipeline, layer,
                src[0], op[0], "r");
       g_string_append (shader_source, " - 0.5) * (");
@@ -777,9 +778,9 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       int i, n_layers;
 
       COGL_STATIC_COUNTER (fragend_glsl_compile_counter,
-                           "glsl compile counter",
+                           "glsl fragment compile counter",
                            "Increments each time a new GLSL "
-                           "program is compiled",
+                           "fragment shader is compiled",
                            0 /* no application private data */);
       COGL_COUNTER_INC (_cogl_uprof_context, fragend_glsl_compile_counter);
 
@@ -790,7 +791,7 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       g_string_append (glsl_shader_state->source, "}\n");
 
       if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_SHOW_SOURCE))
-        g_message ("pipeline program:\n%s%s",
+        g_message ("pipeline fragment shader:\n%s%s",
                    glsl_shader_state->header->str,
                    glsl_shader_state->source->str);
 

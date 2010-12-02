@@ -345,9 +345,10 @@ cogl_gles2_wrapper_get_program (const CoglGles2WrapperSettings *settings)
         }
     }
 
-  /* We should always have a custom fragment shader because the
-     pipeline backend should create one for us */
+  /* We should always have a custom shaders because the pipeline
+     backend should create them for us */
   g_assert (custom_fragment_shader);
+  g_assert (custom_vertex_shader);
 
   /* Get or create the fixed functionality shaders for these settings
      if there is no custom replacement */
@@ -360,12 +361,9 @@ cogl_gles2_wrapper_get_program (const CoglGles2WrapperSettings *settings)
 
   program = g_slice_new (CoglGles2WrapperProgram);
 
-  program->program = glCreateProgram ();
+  program->program = settings->user_program;
   if (!custom_vertex_shader)
     glAttachShader (program->program, vertex_shader->shader);
-  /* Attach all the shaders stolen from the user program */
-  for (i = 0; i < n_shaders; i++)
-    glAttachShader (program->program, shaders[i]);
   cogl_gles2_wrapper_bind_attributes (program->program);
   glLinkProgram (program->program);
 
@@ -381,7 +379,6 @@ cogl_gles2_wrapper_get_program (const CoglGles2WrapperSettings *settings)
 
       g_critical ("%s", shader_log);
 
-      glDeleteProgram (program->program);
       g_slice_free (CoglGles2WrapperProgram, program);
 
       return NULL;
@@ -407,7 +404,6 @@ _cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper)
   for (node = wrapper->compiled_programs; node; node = next)
     {
       next = node->next;
-      glDeleteProgram (((CoglGles2WrapperProgram *) node->data)->program);
       g_slist_free1 (node);
     }
   wrapper->compiled_programs = NULL;
@@ -586,7 +582,10 @@ _cogl_wrap_prepare_for_draw (void)
      again in the _start function. This should go away once the GLSL
      code is generated in the GLSL material backend so it's probably
      not worth worrying about now */
-  _cogl_use_program (program->program, COGL_PIPELINE_PROGRAM_TYPE_GLSL);
+  _cogl_use_fragment_program (w->settings.user_program,
+                              COGL_PIPELINE_PROGRAM_TYPE_GLSL);
+  _cogl_use_vertex_program (w->settings.user_program,
+                            COGL_PIPELINE_PROGRAM_TYPE_GLSL);
 
   /* Make sure all of the uniforms are up to date */
   if (w->dirty_uniforms)
@@ -979,8 +978,6 @@ _cogl_gles2_clear_cache_for_program (GLuint gl_program)
 
       if (program->settings.user_program == gl_program)
 	{
-	  glDeleteProgram (program->program);
-
 	  if (last)
 	    last->next = next;
 	  else

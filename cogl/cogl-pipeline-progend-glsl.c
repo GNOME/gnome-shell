@@ -40,6 +40,7 @@
 #include "cogl-handle.h"
 #include "cogl-program-private.h"
 #include "cogl-pipeline-fragend-glsl-private.h"
+#include "cogl-pipeline-vertend-glsl-private.h"
 
 #ifndef HAVE_COGL_GLES2
 
@@ -86,17 +87,13 @@ typedef struct
   int n_tex_coord_attribs;
 
 #ifdef HAVE_COGL_GLES2
-  /* The GLES2 generated program that was generated from the user
-     program. This is used to detect when the GLES2 backend generates
-     a different program which would mean we need to flush all of the
-     custom uniforms. This is a massive hack but it can go away once
-     this GLSL backend starts generating its own shaders */
-  GLuint gles2_program;
-
   /* Under GLES2 the alpha test is implemented in the shader. We need
      a uniform for the reference value */
   gboolean dirty_alpha_test_reference;
   GLint alpha_test_reference_uniform;
+
+  gboolean dirty_point_size;
+  GLint point_size_uniform;
 #endif
 
   /* We need to track the last pipeline that the program was used with
@@ -297,6 +294,21 @@ update_alpha_test_reference (CoglPipeline *pipeline,
     }
 }
 
+static void
+update_point_size (CoglPipeline *pipeline,
+                   GLuint gl_program,
+                   CoglPipelineProgendPrivate *priv)
+{
+  if (priv->dirty_point_size && priv->point_size_uniform != -1)
+    {
+      float point_size = cogl_pipeline_get_point_size (pipeline);
+
+      GE( glUniform1f (priv->point_size_uniform, point_size) );
+
+      priv->dirty_point_size = FALSE;
+    }
+}
+
 #endif /* HAVE_COGL_GLES2 */
 
 static void
@@ -314,7 +326,8 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
 
   /* If neither of the glsl fragend or vertends are used then we don't
      need to do anything */
-  if (pipeline->fragend != COGL_PIPELINE_FRAGEND_GLSL)
+  if (pipeline->fragend != COGL_PIPELINE_FRAGEND_GLSL &&
+      pipeline->vertend != COGL_PIPELINE_VERTEND_GLSL)
     return;
 
   priv = get_glsl_priv (pipeline);
@@ -330,9 +343,11 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
          state */
       authority = _cogl_pipeline_find_equivalent_parent
         (pipeline,
-         COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN &
+         (COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN |
+          COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN) &
          ~COGL_PIPELINE_STATE_LAYERS,
-         COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN,
+         COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN |
+         COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN,
          COGL_PIPELINE_FIND_EQUIVALENT_COMPARE_TEXTURE_TARGET);
 
       priv = get_glsl_priv (authority);
@@ -345,9 +360,6 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
           priv->n_tex_coord_attribs = 0;
           priv->unit_state = g_new (UnitState,
                                     cogl_pipeline_get_n_layers (pipeline));
-#ifdef HAVE_COGL_GLES2
-          priv->gles2_program = 0;
-#endif
           set_glsl_priv (authority, priv);
         }
 
@@ -417,6 +429,9 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       if (pipeline->fragend == COGL_PIPELINE_FRAGEND_GLSL &&
           (backend_shader = _cogl_pipeline_fragend_glsl_get_shader (pipeline)))
         GE( glAttachShader (priv->program, backend_shader) );
+      if (pipeline->vertend == COGL_PIPELINE_VERTEND_GLSL &&
+          (backend_shader = _cogl_pipeline_vertend_glsl_get_shader (pipeline)))
+        GE( glAttachShader (priv->program, backend_shader) );
 
       link_program (priv->program);
 
@@ -432,16 +447,12 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
      work. It should only be neccessary until we move the GLSL vertex
      shader generation into a vertend instead of the GLES2 driver
      backend */
-  gl_program = _cogl_gles2_use_program (gl_program);
-  /* We need to detect when the GLES2 backend gives us a different
-     program from last time */
-  if (gl_program != priv->gles2_program)
-    {
-      priv->gles2_program = gl_program;
-      program_changed = TRUE;
-    }
+  _cogl_gles2_use_program (gl_program);
 #else
-  _cogl_use_program (gl_program, COGL_PIPELINE_PROGRAM_TYPE_GLSL);
+  if (pipeline->fragend == COGL_PIPELINE_FRAGEND_GLSL)
+    _cogl_use_fragment_program (gl_program, COGL_PIPELINE_PROGRAM_TYPE_GLSL);
+  if (pipeline->vertend == COGL_PIPELINE_VERTEND_GLSL)
+    _cogl_use_vertex_program (gl_program, COGL_PIPELINE_PROGRAM_TYPE_GLSL);
 #endif
 
   state.unit = 0;
@@ -463,14 +474,24 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
 
 #ifdef HAVE_COGL_GLES2
   if (program_changed)
-    GE_RET( priv->alpha_test_reference_uniform,
-            glGetUniformLocation (gl_program,
-                                  "_cogl_alpha_test_ref") );
+    {
+      GE_RET( priv->alpha_test_reference_uniform,
+              glGetUniformLocation (gl_program,
+                                    "_cogl_alpha_test_ref") );
+
+      GE_RET( priv->point_size_uniform,
+              glGetUniformLocation (gl_program,
+                                    "cogl_point_size_in") );
+    }
   if (program_changed ||
       priv->last_used_for_pipeline != pipeline)
-    priv->dirty_alpha_test_reference = TRUE;
+    {
+      priv->dirty_alpha_test_reference = TRUE;
+      priv->dirty_point_size = TRUE;
+    }
 
   update_alpha_test_reference (pipeline, gl_program, priv);
+  update_point_size (pipeline, gl_program, priv);
 #endif
 
   if (user_program)
@@ -490,14 +511,20 @@ _cogl_pipeline_progend_glsl_pre_change_notify (CoglPipeline *pipeline,
 {
   if ((change & COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN))
     dirty_glsl_program_state (pipeline);
-#ifdef COGL_HAS_GLES2
+#ifdef HAVE_COGL_GLES2
   else if ((change & COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE))
     {
       CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
       if (priv)
         priv->dirty_alpha_test_reference = TRUE;
     }
-#endif
+  else if ((change & COGL_PIPELINE_STATE_POINT_SIZE))
+    {
+      CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
+      if (priv)
+        priv->dirty_point_size = TRUE;
+    }
+#endif /* HAVE_COGL_GLES2 */
 }
 
 /* NB: layers are considered immutable once they have any dependants

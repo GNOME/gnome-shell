@@ -205,6 +205,7 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
 
   user_program = cogl_pipeline_get_user_program (pipeline);
   if (user_program != COGL_INVALID_HANDLE &&
+      _cogl_program_has_fragment_shader (user_program) &&
       _cogl_program_get_language (user_program) != COGL_SHADER_LANGUAGE_ARBFP)
     return FALSE;
 
@@ -969,7 +970,7 @@ _cogl_pipeline_fragend_arbfp_end (CoglPipeline *pipeline,
     gl_program = arbfp_program_state->gl_program;
 
   GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, gl_program));
-  _cogl_use_program (0, COGL_PIPELINE_PROGRAM_TYPE_ARBFP);
+  _cogl_use_fragment_program (0, COGL_PIPELINE_PROGRAM_TYPE_ARBFP);
 
   if (arbfp_program_state->user_program == COGL_INVALID_HANDLE)
     {

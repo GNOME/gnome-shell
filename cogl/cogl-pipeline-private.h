@@ -71,9 +71,26 @@ typedef struct _CoglPipelineLayer     CoglPipelineLayer;
 #define COGL_PIPELINE_FRAGEND_DEFAULT    0
 #define COGL_PIPELINE_FRAGEND_UNDEFINED  3
 
+#if defined (HAVE_COGL_GL)
+
+#define COGL_PIPELINE_VERTEND_FIXED      0
+#define COGL_PIPELINE_VERTEND_GLSL       1
+
+#define COGL_PIPELINE_N_VERTENDS         2
+
+#elif defined (HAVE_COGL_GLES2)
+
+#define COGL_PIPELINE_VERTEND_GLSL       0
+
+#define COGL_PIPELINE_N_VERTENDS         1
+
+#else /* HAVE_COGL_GLES */
+
 #define COGL_PIPELINE_VERTEND_FIXED      0
 
 #define COGL_PIPELINE_N_VERTENDS         1
+
+#endif
 
 #define COGL_PIPELINE_VERTEND_DEFAULT    0
 #define COGL_PIPELINE_VERTEND_UNDEFINED  3
@@ -158,7 +175,9 @@ typedef enum
 #ifdef HAVE_COGL_GLES2
     COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS |
 #endif
-    COGL_PIPELINE_LAYER_STATE_UNIT
+    COGL_PIPELINE_LAYER_STATE_UNIT,
+
+  COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN = 0
 
 } CoglPipelineLayerState;
 
@@ -405,6 +424,10 @@ typedef enum _CoglPipelineState
      so we can't share programs there */
     COGL_PIPELINE_STATE_ALPHA_FUNC |
 #endif
+    COGL_PIPELINE_STATE_USER_SHADER,
+
+  COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN =
+    COGL_PIPELINE_STATE_LAYERS |
     COGL_PIPELINE_STATE_USER_SHADER
 
 } CoglPipelineState;
@@ -831,7 +854,10 @@ _cogl_get_max_texture_image_units (void);
 
 
 void
-_cogl_use_program (GLuint gl_program, CoglPipelineProgramType type);
+_cogl_use_fragment_program (GLuint gl_program, CoglPipelineProgramType type);
+
+void
+_cogl_use_vertex_program (GLuint gl_program, CoglPipelineProgramType type);
 
 unsigned int
 _cogl_get_n_args_for_combine_func (GLint func);

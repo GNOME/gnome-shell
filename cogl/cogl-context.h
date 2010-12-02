@@ -183,7 +183,8 @@ typedef struct
   /* Fragment processing programs */
   CoglHandle              current_program;
 
-  CoglPipelineProgramType current_use_program_type;
+  CoglPipelineProgramType current_fragment_program_type;
+  CoglPipelineProgramType current_vertex_program_type;
   GLuint                  current_gl_program;
 
   /* List of types that will be considered a subclass of CoglTexture in
