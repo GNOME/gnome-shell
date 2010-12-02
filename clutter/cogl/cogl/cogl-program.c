@@ -681,3 +681,32 @@ _cogl_program_get_language (CoglHandle handle)
   else
     return COGL_SHADER_LANGUAGE_GLSL;
 }
+
+static gboolean
+_cogl_program_has_shader_type (CoglProgram *program,
+                               CoglShaderType type)
+{
+  GSList *l;
+
+  for (l = program->attached_shaders; l; l = l->next)
+    {
+      CoglShader *shader = l->data;
+
+      if (shader->type == type)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+gboolean
+_cogl_program_has_fragment_shader (CoglHandle handle)
+{
+  return _cogl_program_has_shader_type (handle, COGL_SHADER_TYPE_FRAGMENT);
+}
+
+gboolean
+_cogl_program_has_vertex_shader (CoglHandle handle)
+{
+  return _cogl_program_has_shader_type (handle, COGL_SHADER_TYPE_VERTEX);
+}

@@ -75,4 +75,10 @@ _cogl_program_flush_uniforms (CoglProgram *program,
 CoglShaderLanguage
 _cogl_program_get_language (CoglHandle handle);
 
+gboolean
+_cogl_program_has_fragment_shader (CoglHandle handle);
+
+gboolean
+_cogl_program_has_vertex_shader (CoglHandle handle);
+
 #endif /* __COGL_PROGRAM_H */
