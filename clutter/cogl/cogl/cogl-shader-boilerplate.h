@@ -92,7 +92,6 @@
   "#endif\n" \
   "\n" \
   "varying vec4 _cogl_color;\n" \
-  "varying vec4 _cogl_tex_coord[];\n" \
   "\n" \
   "#define cogl_color_in _cogl_color\n" \
   "#define cogl_tex_coord_in _cogl_tex_coord\n" \
