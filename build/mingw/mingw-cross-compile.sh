@@ -295,8 +295,8 @@ add_env CFLAGS "-I$ROOT_DIR/include -mno-cygwin -mms-bitfields -march=i686 \${CF
 add_env CXXFLAGS "-I$ROOT_DIR/include -mno-cygwin -mms-bitfields -march=i686 \${CFLAGS:-"-g"}"
 
 cat >> "$env_file" <<EOF
-ROOT_DIR="$ROOT_DIR";
-TARGET="$TARGET";
+export ROOT_DIR="$ROOT_DIR";
+export TARGET="$TARGET";
 
 function do_autogen()
 {
