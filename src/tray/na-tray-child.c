@@ -420,7 +420,7 @@ na_tray_child_force_redraw (NaTrayChild *child)
       gtk_widget_get_allocation (widget, &allocation);
 
       xev.xexpose.type = Expose;
-      xev.xexpose.window = GDK_WINDOW_XWINDOW (plug_window);
+      xev.xexpose.window = gdk_x11_window_get_xid (plug_window);
       xev.xexpose.x = 0;
       xev.xexpose.y = 0;
       xev.xexpose.width = allocation.width;

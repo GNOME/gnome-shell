@@ -106,7 +106,7 @@ shell_embedded_window_realize (GtkWidget *widget)
    * modifying the GDK hierarchy.
    */
   XReparentWindow (GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (widget)),
-                   GDK_WINDOW_XWINDOW (gtk_widget_get_window (widget)),
+                   gdk_x11_window_get_xid (gtk_widget_get_window (widget)),
                    window->priv->stage_xwindow,
                    window->priv->position.x, window->priv->position.y);
 }
