@@ -303,10 +303,10 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
      other contains the main function. We need two strings
      because we need to dynamically declare attributes as the
      add_layer callback is invoked */
-  g_string_set_size (ctx->fragment_header_buffer, 0);
-  g_string_set_size (ctx->fragment_source_buffer, 0);
-  priv->glsl_shader_state->header = ctx->fragment_header_buffer;
-  priv->glsl_shader_state->source = ctx->fragment_source_buffer;
+  g_string_set_size (ctx->codegen_header_buffer, 0);
+  g_string_set_size (ctx->codegen_source_buffer, 0);
+  priv->glsl_shader_state->header = ctx->codegen_header_buffer;
+  priv->glsl_shader_state->source = ctx->codegen_source_buffer;
 
   g_string_append (priv->glsl_shader_state->source,
                    "void\n"
