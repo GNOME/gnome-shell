@@ -195,7 +195,7 @@ meta_tile_preview_show (MetaTilePreview *preview,
   gtk_widget_show (preview->preview_window);
   window = gtk_widget_get_window (preview->preview_window);
   meta_core_lower_beneath_focus_window (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
-                                        GDK_WINDOW_XWINDOW (window),
+                                        GDK_WINDOW_XID (window),
                                         gtk_get_current_event_time ());
 
   old_rect.x = old_rect.y = 0;
@@ -254,5 +254,5 @@ meta_tile_preview_get_xwindow (MetaTilePreview *preview,
   if (create_serial)
     *create_serial = preview->create_serial;
 
-  return GDK_WINDOW_XWINDOW (window);
+  return GDK_WINDOW_XID (window);
 }

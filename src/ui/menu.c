@@ -401,10 +401,10 @@ meta_window_menu_new   (MetaFrames         *frames,
                       n_workspaces, active_workspace);
 
                   window = gtk_widget_get_window (GTK_WIDGET (frames));
-                  display = gdk_x11_drawable_get_xdisplay (window);
+                  display = GDK_WINDOW_XDISPLAY (window);
 
                   screen = gdk_window_get_screen (window);
-                  xroot = GDK_DRAWABLE_XID (gdk_screen_get_root_window (screen));
+                  xroot = GDK_WINDOW_XID (gdk_screen_get_root_window (screen));
 
                   submenu = gtk_menu_new ();
 
