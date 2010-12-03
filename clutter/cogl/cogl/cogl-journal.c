@@ -406,13 +406,12 @@ compare_entry_pipelines (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
 {
   /* batch rectangles using compatible pipelines */
 
-  /* XXX: _cogl_pipeline_equal may give false negatives since it avoids
-   * deep comparisons as an optimization. It aims to compare enough so
-   * that we that we are able to batch the 90% common cases, but may not
-   * look at less common differences. */
   if (_cogl_pipeline_equal (entry0->pipeline,
                             entry1->pipeline,
-                            TRUE))
+                            (COGL_PIPELINE_STATE_ALL &
+                             ~COGL_PIPELINE_STATE_COLOR),
+                            COGL_PIPELINE_LAYER_STATE_ALL,
+                            0))
     return TRUE;
   else
     return FALSE;
