@@ -551,23 +551,6 @@ _cogl_pipeline_get_real_blend_enabled (CoglPipeline *pipeline)
   return pipeline->real_blend_enable;
 }
 
-inline CoglPipeline *
-_cogl_pipeline_get_parent (CoglPipeline *pipeline)
-{
-  CoglPipelineNode *parent_node = COGL_PIPELINE_NODE (pipeline)->parent;
-  return COGL_PIPELINE (parent_node);
-}
-
-CoglPipeline *
-_cogl_pipeline_get_authority (CoglPipeline *pipeline,
-                              unsigned long difference)
-{
-  CoglPipeline *authority = pipeline;
-  while (!(authority->differences & difference))
-    authority = _cogl_pipeline_get_parent (authority);
-  return authority;
-}
-
 /* XXX: Think twice before making this non static since it is used
  * heavily and we expect the compiler to inline it...
  */
