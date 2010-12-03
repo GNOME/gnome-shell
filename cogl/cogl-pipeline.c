@@ -2708,7 +2708,8 @@ _cogl_pipeline_apply_overrides (CoglPipeline *pipeline,
 
 static gboolean
 _cogl_pipeline_layer_texture_equal (CoglPipelineLayer *authority0,
-                                    CoglPipelineLayer *authority1)
+                                    CoglPipelineLayer *authority1,
+                                    CoglPipelineEvalFlags flags)
 {
   GLuint gl_handle0, gl_handle1;
   GLenum gl_target0, gl_target1;
@@ -2716,8 +2717,10 @@ _cogl_pipeline_layer_texture_equal (CoglPipelineLayer *authority0,
   cogl_texture_get_gl_texture (authority0->texture, &gl_handle0, &gl_target0);
   cogl_texture_get_gl_texture (authority1->texture, &gl_handle1, &gl_target1);
 
-  return (gl_handle0 == gl_handle1 &&
-          gl_target0 == gl_target1);
+  if (flags & COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA)
+    return (gl_target0 == gl_target1);
+  else
+    return (gl_handle0 == gl_handle1 && gl_target0 == gl_target1);
 }
 
 /* Determine the mask of differences between two layers.
@@ -2915,24 +2918,58 @@ typedef gboolean
                                      CoglPipelineLayer *authority1);
 
 static gboolean
-layer_state_equal (CoglPipelineLayerState state,
-                   CoglPipelineLayer *layer0,
-                   CoglPipelineLayer *layer1,
+layer_state_equal (CoglPipelineLayerStateIndex state_index,
+                   CoglPipelineLayer **authorities0,
+                   CoglPipelineLayer **authorities1,
                    CoglPipelineLayerStateComparitor comparitor)
 {
-  CoglPipelineLayer *authority0 =
-    _cogl_pipeline_layer_get_authority (layer0, state);
-  CoglPipelineLayer *authority1 =
-    _cogl_pipeline_layer_get_authority (layer1, state);
+  return comparitor (authorities0[state_index], authorities1[state_index]);
+}
 
-  return comparitor (authority0, authority1);
+static void
+_cogl_pipeline_layer_resolve_authorities (CoglPipelineLayer *layer,
+                                          unsigned long differences,
+                                          CoglPipelineLayer **authorities)
+{
+  unsigned long remaining = differences;
+  CoglPipelineLayer *authority = layer;
+
+  do
+    {
+      unsigned long found = authority->differences & remaining;
+      int i;
+
+      if (found == 0)
+        continue;
+
+      for (i = 0; True; i++)
+        {
+          unsigned long state = (1L<<i);
+
+          if (state & found)
+            authorities[i] = authority;
+          else if (state > found)
+            break;
+        }
+
+      remaining &= ~found;
+      if (remaining == 0)
+        return;
+    }
+  while ((authority = _cogl_pipeline_layer_get_parent (authority)));
+
+  g_assert (remaining == 0);
 }
 
 static gboolean
 _cogl_pipeline_layer_equal (CoglPipelineLayer *layer0,
-                            CoglPipelineLayer *layer1)
+                            CoglPipelineLayer *layer1,
+                            unsigned long differences_mask,
+                            CoglPipelineEvalFlags flags)
 {
   unsigned long layers_difference;
+  CoglPipelineLayer *authorities0[COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT];
+  CoglPipelineLayer *authorities1[COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT];
 
   if (layer0 == layer1)
     return TRUE;
@@ -2940,45 +2977,59 @@ _cogl_pipeline_layer_equal (CoglPipelineLayer *layer0,
   layers_difference =
     _cogl_pipeline_layer_compare_differences (layer0, layer1);
 
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_TEXTURE,
-                          layer0, layer1,
-                          _cogl_pipeline_layer_texture_equal))
-    return FALSE;
+  /* Only compare the sparse state groups requested by the caller... */
+  layers_difference &= differences_mask;
+
+  _cogl_pipeline_layer_resolve_authorities (layer0,
+                                            layers_difference,
+                                            authorities0);
+  _cogl_pipeline_layer_resolve_authorities (layer1,
+                                            layers_difference,
+                                            authorities1);
+
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE)
+    {
+      CoglPipelineLayerStateIndex state_index =
+        COGL_PIPELINE_LAYER_STATE_TEXTURE_INDEX;
+      if (!_cogl_pipeline_layer_texture_equal (authorities0[state_index],
+                                               authorities1[state_index],
+                                               flags))
+        return FALSE;
+    }
 
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_COMBINE &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_COMBINE,
-                          layer0, layer1,
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_COMBINE_INDEX,
+                          authorities0, authorities1,
                           _cogl_pipeline_layer_combine_state_equal))
     return FALSE;
 
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT,
-                          layer0, layer1,
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT_INDEX,
+                          authorities0, authorities1,
                           _cogl_pipeline_layer_combine_constant_equal))
     return FALSE;
 
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_FILTERS &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_FILTERS,
-                          layer0, layer1,
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX,
+                          authorities0, authorities1,
                           _cogl_pipeline_layer_filters_equal))
     return FALSE;
 
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_WRAP_MODES &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_WRAP_MODES,
-                          layer0, layer1,
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_WRAP_MODES_INDEX,
+                          authorities0, authorities1,
                           _cogl_pipeline_layer_wrap_modes_equal))
     return FALSE;
 
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_USER_MATRIX &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_USER_MATRIX,
-                          layer0, layer1,
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_USER_MATRIX_INDEX,
+                          authorities0, authorities1,
                           _cogl_pipeline_layer_user_matrix_equal))
     return FALSE;
 
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS,
-                          layer0, layer1,
+      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS_INDEX,
+                          authorities0, authorities1,
                           _cogl_pipeline_layer_point_sprite_coords_equal))
     return FALSE;
 
@@ -3065,9 +3116,15 @@ _cogl_pipeline_blend_state_equal (CoglPipeline *authority0,
       blend_state1->blend_dst_factor_rgb)
     return FALSE;
 #ifndef HAVE_COGL_GLES
-  if (!cogl_color_equal (&blend_state0->blend_constant,
-                         &blend_state1->blend_constant))
-    return FALSE;
+  if (blend_state0->blend_src_factor_rgb == GL_ONE_MINUS_CONSTANT_COLOR ||
+      blend_state0->blend_src_factor_rgb == GL_CONSTANT_COLOR ||
+      blend_state0->blend_dst_factor_rgb == GL_ONE_MINUS_CONSTANT_COLOR ||
+      blend_state0->blend_dst_factor_rgb == GL_CONSTANT_COLOR)
+    {
+      if (!cogl_color_equal (&blend_state0->blend_constant,
+                             &blend_state1->blend_constant))
+        return FALSE;
+    }
 #endif
 
   return TRUE;
@@ -3121,7 +3178,9 @@ _cogl_pipeline_user_shader_equal (CoglPipeline *authority0,
 
 static gboolean
 _cogl_pipeline_layers_equal (CoglPipeline *authority0,
-                             CoglPipeline *authority1)
+                             CoglPipeline *authority1,
+                             unsigned long differences,
+                             CoglPipelineEvalFlags flags)
 {
   int i;
 
@@ -3134,7 +3193,9 @@ _cogl_pipeline_layers_equal (CoglPipeline *authority0,
   for (i = 0; i < authority0->n_layers; i++)
     {
       if (!_cogl_pipeline_layer_equal (authority0->layers_cache[i],
-                                       authority1->layers_cache[i]))
+                                       authority1->layers_cache[i],
+                                       differences,
+                                       flags))
         return FALSE;
     }
   return TRUE;
@@ -3229,19 +3290,53 @@ _cogl_pipeline_compare_differences (CoglPipeline *pipeline0,
 }
 
 static gboolean
-simple_property_equal (CoglPipeline *pipeline0,
-                       CoglPipeline *pipeline1,
+simple_property_equal (CoglPipeline **authorities0,
+                       CoglPipeline **authorities1,
                        unsigned long pipelines_difference,
-                       CoglPipelineState state,
+                       CoglPipelineStateIndex state_index,
                        CoglPipelineStateComparitor comparitor)
 {
-  if (pipelines_difference & state)
+  if (pipelines_difference & (1L<<state_index))
     {
-      if (!comparitor (_cogl_pipeline_get_authority (pipeline0, state),
-                       _cogl_pipeline_get_authority (pipeline1, state)))
+      if (!comparitor (authorities0[state_index], authorities1[state_index]))
         return FALSE;
     }
   return TRUE;
+}
+
+static void
+_cogl_pipeline_resolve_authorities (CoglPipeline *pipeline,
+                                    unsigned long differences,
+                                    CoglPipeline **authorities)
+{
+  unsigned long remaining = differences;
+  CoglPipeline *authority = pipeline;
+
+  do
+    {
+      unsigned long found = authority->differences & remaining;
+      int i;
+
+      if (found == 0)
+        continue;
+
+      for (i = 0; True; i++)
+        {
+          unsigned long state = (1L<<i);
+
+          if (state & found)
+            authorities[i] = authority;
+          else if (state > found)
+            break;
+        }
+
+      remaining &= ~found;
+      if (remaining == 0)
+        return;
+    }
+  while ((authority = _cogl_pipeline_get_parent (authority)));
+
+  g_assert (remaining == 0);
 }
 
 /* Comparison of two arbitrary pipelines is done by:
@@ -3252,30 +3347,29 @@ simple_property_equal (CoglPipeline *pipeline0,
  * 2) using the final difference mask to determine which state
  *    groups to compare.
  *
- * This is used by the Cogl journal to compare pipelines so that it
- * can split up geometry that needs different OpenGL state.
+ * This is used, for example, by the Cogl journal to compare pipelines so that
+ * it can split up geometry that needs different OpenGL state.
  *
- * It is acceptable to have false negatives - although they will result
- * in redundant OpenGL calls that try and update the state.
- *
- * When comparing texture layers, _cogl_pipeline_equal will actually
- * compare the underlying GL texture handle that the Cogl texture uses
- * so that atlas textures and sub textures will be considered equal if
- * they point to the same texture. This is useful for comparing
- * pipelines in the journal but it means that _cogl_pipeline_equal
- * doesn't strictly compare whether the pipelines are the same. If we
- * needed those semantics we could perhaps add another function or
- * some flags to control the behaviour.
- *
- * False positives aren't allowed.
+ * XXX: When comparing texture layers, _cogl_pipeline_equal will actually
+ * compare the underlying GL texture handle that the Cogl texture uses so that
+ * atlas textures and sub textures will be considered equal if they point to
+ * the same texture. This is useful for comparing pipelines in the journal but
+ * it means that _cogl_pipeline_equal doesn't strictly compare whether the
+ * pipelines are the same. If we needed those semantics we could perhaps add
+ * another function or some flags to control the behaviour.
  */
 gboolean
 _cogl_pipeline_equal (CoglPipeline *pipeline0,
                       CoglPipeline *pipeline1,
-                      gboolean skip_gl_color)
+                      unsigned long differences,
+                      unsigned long layer_differences,
+                      CoglPipelineEvalFlags flags)
 {
-  unsigned long  pipelines_difference;
+  unsigned long pipelines_difference;
+  CoglPipeline *authorities0[COGL_PIPELINE_STATE_SPARSE_COUNT];
+  CoglPipeline *authorities1[COGL_PIPELINE_STATE_SPARSE_COUNT];
   gboolean ret;
+
   COGL_STATIC_TIMER (pipeline_equal_timer,
                      "Mainloop", /* parent */
                      "_cogl_pipeline_equal",
@@ -3294,7 +3388,8 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
 
   /* First check non-sparse properties */
 
-  if (pipeline0->real_blend_enable != pipeline1->real_blend_enable)
+  if (differences & COGL_PIPELINE_STATE_REAL_BLEND_ENABLE &&
+      pipeline0->real_blend_enable != pipeline1->real_blend_enable)
     goto done;
 
   /* Then check sparse properties */
@@ -3302,34 +3397,43 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
   pipelines_difference =
     _cogl_pipeline_compare_differences (pipeline0, pipeline1);
 
-  if (pipelines_difference & COGL_PIPELINE_STATE_COLOR &&
-      !skip_gl_color)
+  /* Only compare the sparse state groups requested by the caller... */
+  pipelines_difference &= differences;
+
+  _cogl_pipeline_resolve_authorities (pipeline0,
+                                      pipelines_difference,
+                                      authorities0);
+  _cogl_pipeline_resolve_authorities (pipeline1,
+                                      pipelines_difference,
+                                      authorities1);
+
+  /* FIXME: we should resolve all the required authorities up front since
+   * that should reduce some repeat ancestor traversals. */
+
+  if (pipelines_difference & COGL_PIPELINE_STATE_COLOR)
     {
-      CoglPipelineState state = COGL_PIPELINE_STATE_COLOR;
-      CoglPipeline *authority0 =
-        _cogl_pipeline_get_authority (pipeline0, state);
-      CoglPipeline *authority1 =
-        _cogl_pipeline_get_authority (pipeline1, state);
+      CoglPipeline *authority0 = authorities0[COGL_PIPELINE_STATE_COLOR_INDEX];
+      CoglPipeline *authority1 = authorities1[COGL_PIPELINE_STATE_COLOR_INDEX];
 
       if (!cogl_color_equal (&authority0->color, &authority1->color))
         goto done;
     }
 
-  if (!simple_property_equal (pipeline0, pipeline1,
+  if (!simple_property_equal (authorities0, authorities1,
                               pipelines_difference,
-                              COGL_PIPELINE_STATE_LIGHTING,
+                              COGL_PIPELINE_STATE_LIGHTING_INDEX,
                               _cogl_pipeline_lighting_state_equal))
     goto done;
 
-  if (!simple_property_equal (pipeline0, pipeline1,
+  if (!simple_property_equal (authorities0, authorities1,
                               pipelines_difference,
-                              COGL_PIPELINE_STATE_ALPHA_FUNC,
+                              COGL_PIPELINE_STATE_ALPHA_FUNC_INDEX,
                               _cogl_pipeline_alpha_func_state_equal))
     goto done;
 
-  if (!simple_property_equal (pipeline0, pipeline1,
+  if (!simple_property_equal (authorities0, authorities1,
                               pipelines_difference,
-                              COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE,
+                              COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE_INDEX,
                               _cogl_pipeline_alpha_func_reference_state_equal))
     goto done;
 
@@ -3338,11 +3442,8 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
   if (pipeline0->real_blend_enable &&
       pipelines_difference & COGL_PIPELINE_STATE_BLEND)
     {
-      CoglPipelineState state = COGL_PIPELINE_STATE_BLEND;
-      CoglPipeline *authority0 =
-        _cogl_pipeline_get_authority (pipeline0, state);
-      CoglPipeline *authority1 =
-        _cogl_pipeline_get_authority (pipeline1, state);
+      CoglPipeline *authority0 = authorities0[COGL_PIPELINE_STATE_BLEND_INDEX];
+      CoglPipeline *authority1 = authorities1[COGL_PIPELINE_STATE_BLEND_INDEX];
 
       if (!_cogl_pipeline_blend_state_equal (authority0, authority1))
         goto done;
@@ -3351,42 +3452,46 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
   /* XXX: we don't need to compare the BLEND_ENABLE state because it's
    * already reflected in ->real_blend_enable */
 #if 0
-  if (!simple_property_equal (pipeline0, pipeline1,
+  if (!simple_property_equal (authorities0, authorities1,
                               pipelines_difference,
-                              COGL_PIPELINE_STATE_BLEND,
+                              COGL_PIPELINE_STATE_BLEND_INDEX,
                               _cogl_pipeline_blend_enable_equal))
     return FALSE;
 #endif
 
-  if (!simple_property_equal (pipeline0, pipeline1,
+  if (!simple_property_equal (authorities0, authorities1,
                               pipelines_difference,
-                              COGL_PIPELINE_STATE_DEPTH,
+                              COGL_PIPELINE_STATE_DEPTH_INDEX,
                               _cogl_pipeline_depth_state_equal))
     goto done;
 
-  if (!simple_property_equal (pipeline0, pipeline1,
+  if (!simple_property_equal (authorities0, authorities1,
                               pipelines_difference,
-                              COGL_PIPELINE_STATE_FOG,
+                              COGL_PIPELINE_STATE_FOG_INDEX,
                               _cogl_pipeline_fog_state_equal))
     goto done;
 
-  if (!simple_property_equal (pipeline0, pipeline1,
+  if (!simple_property_equal (authorities0, authorities1,
                               pipelines_difference,
-                              COGL_PIPELINE_STATE_POINT_SIZE,
+                              COGL_PIPELINE_STATE_POINT_SIZE_INDEX,
                               _cogl_pipeline_point_size_equal))
     goto done;
 
-  if (!simple_property_equal (pipeline0, pipeline1,
+  if (!simple_property_equal (authorities0, authorities1,
                               pipelines_difference,
-                              COGL_PIPELINE_STATE_USER_SHADER,
+                              COGL_PIPELINE_STATE_USER_SHADER_INDEX,
                               _cogl_pipeline_user_shader_equal))
     goto done;
 
-  if (!simple_property_equal (pipeline0, pipeline1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_LAYERS,
-                              _cogl_pipeline_layers_equal))
-    goto done;
+  if (pipelines_difference & COGL_PIPELINE_STATE_LAYERS)
+    {
+      CoglPipelineStateIndex state_index = COGL_PIPELINE_STATE_LAYERS_INDEX;
+      if (!_cogl_pipeline_layers_equal (authorities0[state_index],
+                                        authorities1[state_index],
+                                        layer_differences,
+                                        flags))
+        goto done;
+    }
 
   ret = TRUE;
 done:
