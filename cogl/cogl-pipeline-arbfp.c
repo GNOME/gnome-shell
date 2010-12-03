@@ -72,6 +72,30 @@
 #define GL_TEXTURE_3D                           0x806F
 #endif
 
+/* When we add new pipeline or layer state groups we need to be careful to
+ * update backends to understand if that new state is associated with vertex,
+ * fragment or other processing. The idea here is to attribute which groups
+ * affect fragment processing and more specifically which contribute to arbfp
+ * code generation.
+ */
+
+#define COGL_PIPELINE_ARBFP_FRAGMENT_STATE_MASK \
+  (COGL_PIPELINE_STATE_LAYERS | \
+   COGL_PIPELINE_STATE_USER_SHADER)
+
+#define COGL_PIPELINE_ARBFP_FRAGMENT_PROGRAM_STATE_MASK \
+  COGL_PIPELINE_ARBFP_FRAGMENT_STATE_MASK
+
+#define COGL_PIPELINE_ARBFP_LAYER_FRAGMENT_STATE_MASK \
+  COGL_PIPELINE_LAYER_STATE_ALL
+
+#define COGL_PIPELINE_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK \
+  (COGL_PIPELINE_ARBFP_LAYER_FRAGMENT_STATE_MASK & \
+   ~(COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT | \
+     COGL_PIPELINE_LAYER_STATE_FILTERS | \
+     COGL_PIPELINE_LAYER_STATE_WRAP_MODES | \
+     COGL_PIPELINE_LAYER_STATE_USER_MATRIX))
+
 typedef struct _UnitState
 {
   int constant_id; /* The program.local[] index */
@@ -239,15 +263,27 @@ _cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
       set_arbfp_priv (authority, authority_priv);
     }
 
-  /* If we don't have an existing program associated with the
-   * arbfp-authority then start generating code for a new program...
-   */
+  /* If we haven't yet found an existing program then before we resort to
+   * generating a new arbfp program we see if we can find a suitable
+   * program in the arbfp_cache. */
+  if (!authority_priv->arbfp_program_state &&
+      G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_DISABLE_PROGRAM_CACHES)))
+    {
+      authority_priv->arbfp_program_state =
+        g_hash_table_lookup (ctx->arbfp_cache, authority);
+      if (authority_priv->arbfp_program_state)
+        arbfp_program_state_ref (authority_priv->arbfp_program_state);
+    }
+
   if (!authority_priv->arbfp_program_state)
     {
       ArbfpProgramState *arbfp_program_state =
         arbfp_program_state_new (n_layers);
       authority_priv->arbfp_program_state = arbfp_program_state;
 
+      /* If we don't have an existing program associated with the
+       * arbfp-authority then start generating code for a new program...
+       */
       arbfp_program_state->user_program = user_program;
       if (user_program == COGL_INVALID_HANDLE)
         {
@@ -282,6 +318,34 @@ _cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
       arbfp_program_state_ref (authority_priv->arbfp_program_state);
 
   return TRUE;
+}
+
+unsigned int
+_cogl_pipeline_arbfp_hash (const void *data)
+{
+  unsigned long fragment_state =
+    COGL_PIPELINE_ARBFP_FRAGMENT_PROGRAM_STATE_MASK;
+  unsigned long layer_fragment_state =
+    COGL_PIPELINE_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK;
+  CoglPipelineEvalFlags flags = COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA;
+
+  return _cogl_pipeline_hash ((CoglPipeline *)data,
+                              fragment_state, layer_fragment_state,
+                              flags);
+}
+
+gboolean
+_cogl_pipeline_arbfp_equal (const void *a, const void *b)
+{
+  unsigned long fragment_state =
+    COGL_PIPELINE_ARBFP_FRAGMENT_PROGRAM_STATE_MASK;
+  unsigned long layer_fragment_state =
+    COGL_PIPELINE_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK;
+  CoglPipelineEvalFlags flags = COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA;
+
+  return _cogl_pipeline_equal ((CoglPipeline *)a, (CoglPipeline *)b,
+                               fragment_state, layer_fragment_state,
+                               flags);
 }
 
 static const char *
@@ -842,6 +906,28 @@ _cogl_pipeline_backend_arbfp_end (CoglPipeline *pipeline,
         }
 
       arbfp_program_state->source = NULL;
+
+      if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_DISABLE_PROGRAM_CACHES)))
+        {
+          /* XXX: I wish there was a way to insert into a GHashTable
+           * with a pre-calculated hash value since there is a cost to
+           * calculating the hash of a CoglPipeline and in this case
+           * we know we have already called _cogl_pipeline_hash during
+           * _cogl_pipeline_arbfp_backend_start so we could pass the
+           * value through to here to avoid hashing it again.
+           */
+          g_hash_table_insert (ctx->arbfp_cache, pipeline, arbfp_program_state);
+          arbfp_program_state_ref (arbfp_program_state);
+          if (G_UNLIKELY (g_hash_table_size (ctx->arbfp_cache) > 50))
+            {
+              static gboolean seen = FALSE;
+              if (!seen)
+                g_warning ("Over 50 separate ARBfp programs have been "
+                           "generated which is very unusual, so something "
+                           "is probably wrong!\n");
+              seen = TRUE;
+            }
+        }
     }
 
   if (arbfp_program_state->user_program != COGL_INVALID_HANDLE)
@@ -918,12 +1004,7 @@ _cogl_pipeline_backend_arbfp_pipeline_pre_change_notify (
                                                    CoglPipelineState change,
                                                    const CoglColor *new_color)
 {
-  static const unsigned long fragment_op_changes =
-    COGL_PIPELINE_STATE_LAYERS |
-    COGL_PIPELINE_STATE_USER_SHADER;
-    /* TODO: COGL_PIPELINE_STATE_FOG */
-
-  if (!(change & fragment_op_changes))
+  if (!(change & COGL_PIPELINE_ARBFP_FRAGMENT_PROGRAM_STATE_MASK))
     return;
 
   dirty_arbfp_program_state (pipeline);
@@ -943,19 +1024,11 @@ _cogl_pipeline_backend_arbfp_layer_pre_change_notify (
                                                 CoglPipelineLayer *layer,
                                                 CoglPipelineLayerState change)
 {
-  CoglPipelineBackendARBfpPrivate *priv;
-  static const unsigned long not_fragment_op_changes =
-    COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT |
-    COGL_PIPELINE_LAYER_STATE_TEXTURE |
-    COGL_PIPELINE_LAYER_STATE_FILTERS |
-    COGL_PIPELINE_LAYER_STATE_WRAP_MODES |
-    COGL_PIPELINE_LAYER_STATE_USER_MATRIX;
-
-  priv = get_arbfp_priv (owner);
+  CoglPipelineBackendARBfpPrivate *priv = get_arbfp_priv (owner);
   if (!priv)
     return;
 
-  if (!(change & not_fragment_op_changes))
+  if (change & COGL_PIPELINE_ARBFP_LAYER_FRAGMENT_PROGRAM_STATE_MASK)
     {
       dirty_arbfp_program_state (owner);
       return;

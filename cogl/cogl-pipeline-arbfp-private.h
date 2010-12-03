@@ -32,5 +32,11 @@
 
 extern const CoglPipelineBackend _cogl_pipeline_arbfp_backend;
 
+unsigned int
+_cogl_pipeline_arbfp_hash (const void *pipeline);
+
+gboolean
+_cogl_pipeline_arbfp_equal (const void *pipeline0, const void *pipeline1);
+
 #endif /* __COGL_PIPELINE_ARBFP_PRIVATE_H */
 
