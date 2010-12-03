@@ -120,12 +120,14 @@ typedef struct
   GArray           *pipeline0_nodes;
   GArray           *pipeline1_nodes;
 
-  /* Bitmask of texture coordinates arrays that are enabled */
-  CoglBitmask       texcoord_arrays_enabled;
+  /* Bitmask of attributes enabled. On GLES2 these are the vertex
+     attribute numbers and on regular GL these are only used for the
+     texture coordinate arrays */
+  CoglBitmask       arrays_enabled;
   /* These are temporary bitmasks that are used when disabling
      texcoord arrays. They are here just to avoid allocating new ones
      each time */
-  CoglBitmask       texcoord_arrays_to_disable;
+  CoglBitmask       arrays_to_change;
   CoglBitmask       temp_bitmask;
 
   gboolean          gl_blend_enable_cache;

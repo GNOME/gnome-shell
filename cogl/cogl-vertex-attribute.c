@@ -40,6 +40,9 @@
 #include "cogl-texture-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-indices-private.h"
+#ifdef HAVE_COGL_GLES2
+#include "cogl-pipeline-progend-glsl-private.h"
+#endif
 
 #include <string.h>
 #include <stdio.h>
@@ -423,6 +426,54 @@ validated:
   return status;
 }
 
+static void
+toggle_enabled_cb (int bit_num, void *user_data)
+{
+  const CoglBitmask *new_values = user_data;
+  gboolean enabled = _cogl_bitmask_get (new_values, bit_num);
+
+#ifdef HAVE_COGL_GLES2
+
+  if (enabled)
+    GE( glEnableVertexAttribArray (bit_num) );
+  else
+    GE( glDisableVertexAttribArray (bit_num) );
+
+#else /* HAVE_COGL_GLES2 */
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  GE( glClientActiveTexture (GL_TEXTURE0 + bit_num) );
+
+  if (enabled)
+    GE( glEnableClientState (GL_TEXTURE_COORD_ARRAY) );
+  else
+    GE( glDisableClientState (GL_TEXTURE_COORD_ARRAY) );
+
+#endif /* HAVE_COGL_GLES2 */
+}
+
+static void
+set_enabled_arrays (CoglBitmask *value_cache,
+                    const CoglBitmask *new_values)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* Get the list of bits that are different */
+  _cogl_bitmask_clear_all (&ctx->arrays_to_change);
+  _cogl_bitmask_set_bits (&ctx->arrays_to_change, value_cache);
+  _cogl_bitmask_xor_bits (&ctx->arrays_to_change, new_values);
+
+  /* Iterate over each bit to change */
+  _cogl_bitmask_foreach (&ctx->arrays_to_change,
+                         toggle_enabled_cb,
+                         (void *) new_values);
+
+  /* Store the new values */
+  _cogl_bitmask_clear_all (value_cache);
+  _cogl_bitmask_set_bits (value_cache, new_values);
+}
+
 static CoglHandle
 enable_gl_state (CoglVertexAttribute **attributes,
                  ValidateLayerState *state)
@@ -441,89 +492,31 @@ enable_gl_state (CoglVertexAttribute **attributes,
 
   source = cogl_get_source ();
 
-  _cogl_bitmask_clear_all (&ctx->temp_bitmask);
-
+  /* Iterate the attributes to work out whether blending needs to be
+     enabled and how many texture coords there are. We need to do this
+     before flushing the pipeline. */
   for (i = 0; attributes[i]; i++)
-    {
-      CoglVertexAttribute *attribute = attributes[i];
-      CoglVertexArray *vertex_array;
-      CoglBuffer *buffer;
-      void *base;
-
-      vertex_array = cogl_vertex_attribute_get_array (attribute);
-      buffer = COGL_BUFFER (vertex_array);
-      base = _cogl_buffer_bind (buffer, COGL_BUFFER_BIND_TARGET_VERTEX_ARRAY);
-
-      switch (attribute->name_id)
-        {
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
-          enable_flags |= COGL_ENABLE_COLOR_ARRAY;
-          /* GE (glEnableClientState (GL_COLOR_ARRAY)); */
-          GE (glColorPointer (attribute->n_components,
-                              attribute->type,
-                              attribute->stride,
-                              base + attribute->offset));
-
-          if (!_cogl_pipeline_get_real_blend_enabled (source))
-            {
-              CoglPipelineBlendEnable blend_enable =
-                COGL_PIPELINE_BLEND_ENABLE_ENABLED;
-              copy = cogl_pipeline_copy (source);
-              _cogl_pipeline_set_blend_enabled (copy, blend_enable);
-              source = copy;
-            }
-          skip_gl_color = TRUE;
-          break;
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_NORMAL_ARRAY:
-          /* FIXME: go through cogl cache to enable normal array */
-          GE (glEnableClientState (GL_NORMAL_ARRAY));
-          GE (glNormalPointer (attribute->type,
-                               attribute->stride,
-                               base + attribute->offset));
-          break;
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
-          GE (glClientActiveTexture (GL_TEXTURE0 +
-                                     attribute->texture_unit));
-          GE (glEnableClientState (GL_TEXTURE_COORD_ARRAY));
-          GE (glTexCoordPointer (attribute->n_components,
-                                 attribute->type,
-                                 attribute->stride,
-                                 base + attribute->offset));
-          _cogl_bitmask_set (&ctx->temp_bitmask,
-                             attribute->texture_unit, TRUE);
-          n_tex_coord_attribs++;
-          break;
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_POSITION_ARRAY:
-          enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
-          /* GE (glEnableClientState (GL_VERTEX_ARRAY)); */
-          GE (glVertexPointer (attribute->n_components,
-                               attribute->type,
-                               attribute->stride,
-                               base + attribute->offset));
-          break;
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY:
+    switch (attributes[i]->name_id)
+      {
+      case COGL_VERTEX_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
+        if (!_cogl_pipeline_get_real_blend_enabled (source))
           {
-#ifdef MAY_HAVE_PROGRAMABLE_GL
-            /* FIXME: go through cogl cache to enable generic array */
-            GE (glEnableVertexAttribArray (generic_index++));
-            GE (glVertexAttribPointer (generic_index,
-                                       attribute->n_components,
-                                       attribute->type,
-                                       attribute->normalized,
-                                       attribute->stride,
-                                       base + attribute->offset));
-#endif
+            CoglPipelineBlendEnable blend_enable =
+              COGL_PIPELINE_BLEND_ENABLE_ENABLED;
+            copy = cogl_pipeline_copy (source);
+            _cogl_pipeline_set_blend_enabled (copy, blend_enable);
+            source = copy;
           }
-          break;
-        default:
-          g_warning ("Unrecognised attribute type 0x%08x", attribute->type);
-        }
+        skip_gl_color = TRUE;
+        break;
 
-      _cogl_buffer_unbind (buffer);
-    }
+      case COGL_VERTEX_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
+        n_tex_coord_attribs++;
+        break;
 
-  /* Disable any tex coord arrays that we didn't use */
-  _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
+      default:
+        break;
+      }
 
   if (G_UNLIKELY (state->options.flags))
     {
@@ -585,10 +578,178 @@ enable_gl_state (CoglVertexAttribute **attributes,
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
 
+  _cogl_bitmask_clear_all (&ctx->temp_bitmask);
+
+  /* Bind the attribute pointers. We need to do this after the
+     pipeline is flushed because on GLES2 that is the only point when
+     we can determine the attribute locations */
+
+  for (i = 0; attributes[i]; i++)
+    {
+      CoglVertexAttribute *attribute = attributes[i];
+      CoglVertexArray *vertex_array;
+      CoglBuffer *buffer;
+      void *base;
+#ifdef HAVE_COGL_GLES2
+      int attrib_location;
+#endif
+
+      vertex_array = cogl_vertex_attribute_get_array (attribute);
+      buffer = COGL_BUFFER (vertex_array);
+      base = _cogl_buffer_bind (buffer, COGL_BUFFER_BIND_TARGET_VERTEX_ARRAY);
+
+      switch (attribute->name_id)
+        {
+        case COGL_VERTEX_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
+#ifdef HAVE_COGL_GLES2
+
+          attrib_location =
+            _cogl_pipeline_progend_glsl_get_color_attribute (source);
+          if (attrib_location != -1)
+            {
+              GE( glVertexAttribPointer (attrib_location,
+                                         attribute->n_components,
+                                         attribute->type,
+                                         TRUE, /* normalize */
+                                         attribute->stride,
+                                         base + attribute->offset) );
+
+              _cogl_bitmask_set (&ctx->temp_bitmask, attrib_location, TRUE);
+            }
+
+#else
+
+          enable_flags |= COGL_ENABLE_COLOR_ARRAY;
+          /* GE (glEnableClientState (GL_COLOR_ARRAY)); */
+          GE (glColorPointer (attribute->n_components,
+                              attribute->type,
+                              attribute->stride,
+                              base + attribute->offset));
+
+#endif
+
+          break;
+        case COGL_VERTEX_ATTRIBUTE_NAME_ID_NORMAL_ARRAY:
+#ifdef HAVE_COGL_GLES2
+
+          attrib_location =
+            _cogl_pipeline_progend_glsl_get_normal_attribute (source);
+          if (attrib_location != -1)
+            {
+              GE( glVertexAttribPointer (attrib_location,
+                                         attribute->n_components,
+                                         attribute->type,
+                                         TRUE, /* normalize */
+                                         attribute->stride,
+                                         base + attribute->offset) );
+              _cogl_bitmask_set (&ctx->temp_bitmask, attrib_location, TRUE);
+            }
+
+#else
+
+          /* FIXME: go through cogl cache to enable normal array */
+          GE (glEnableClientState (GL_NORMAL_ARRAY));
+          GE (glNormalPointer (attribute->type,
+                               attribute->stride,
+                               base + attribute->offset));
+
+#endif
+
+          break;
+        case COGL_VERTEX_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
+#ifdef HAVE_COGL_GLES2
+
+          attrib_location = _cogl_pipeline_progend_glsl_get_tex_coord_attribute
+                                             (source, attribute->texture_unit);
+          if (attrib_location != -1)
+            {
+              GE( glVertexAttribPointer (attrib_location,
+                                         attribute->n_components,
+                                         attribute->type,
+                                         FALSE, /* normalize */
+                                         attribute->stride,
+                                         base + attribute->offset) );
+              _cogl_bitmask_set (&ctx->temp_bitmask, attrib_location, TRUE);
+            }
+#else
+
+          GE (glClientActiveTexture (GL_TEXTURE0 +
+                                     attribute->texture_unit));
+          GE (glTexCoordPointer (attribute->n_components,
+                                 attribute->type,
+                                 attribute->stride,
+                                 base + attribute->offset));
+          _cogl_bitmask_set (&ctx->temp_bitmask,
+                             attribute->texture_unit, TRUE);
+
+#endif
+          break;
+        case COGL_VERTEX_ATTRIBUTE_NAME_ID_POSITION_ARRAY:
+#ifdef HAVE_COGL_GLES2
+
+          attrib_location =
+            _cogl_pipeline_progend_glsl_get_position_attribute (source);
+          if (attrib_location != -1)
+            {
+              GE( glVertexAttribPointer (attrib_location,
+                                         attribute->n_components,
+                                         attribute->type,
+                                         FALSE, /* normalize */
+                                         attribute->stride,
+                                         base + attribute->offset) );
+              _cogl_bitmask_set (&ctx->temp_bitmask, attrib_location, TRUE);
+            }
+
+#else
+
+          enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
+          /* GE (glEnableClientState (GL_VERTEX_ARRAY)); */
+          GE (glVertexPointer (attribute->n_components,
+                               attribute->type,
+                               attribute->stride,
+                               base + attribute->offset));
+
+#endif
+          break;
+        case COGL_VERTEX_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY:
+          {
+#ifdef MAY_HAVE_PROGRAMABLE_GL
+            /* FIXME: go through cogl cache to enable generic array. */
+            /* FIXME: this is going to end up just using the builtins
+               on GLES 2 */
+            GE (glEnableVertexAttribArray (generic_index++));
+            GE (glVertexAttribPointer (generic_index,
+                                       attribute->n_components,
+                                       attribute->type,
+                                       attribute->normalized,
+                                       attribute->stride,
+                                       base + attribute->offset));
+#endif
+          }
+          break;
+        default:
+          g_warning ("Unrecognised attribute type 0x%08x", attribute->type);
+        }
+
+      _cogl_buffer_unbind (buffer);
+    }
+
+  /* Flush the state of the attribute arrays */
+  set_enabled_arrays (&ctx->arrays_enabled, &ctx->temp_bitmask);
+
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
   return source;
+}
+
+void
+_cogl_vertex_attribute_disable_cached_arrays (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  _cogl_bitmask_clear_all (&ctx->temp_bitmask);
+  set_enabled_arrays (&ctx->arrays_enabled, &ctx->temp_bitmask);
 }
 
 /* FIXME: we shouldn't be disabling state after drawing we should
@@ -618,7 +779,9 @@ disable_gl_state (CoglVertexAttribute **attributes,
           break;
         case COGL_VERTEX_ATTRIBUTE_NAME_ID_NORMAL_ARRAY:
           /* FIXME: go through cogl cache to enable normal array */
+#ifndef HAVE_COGL_GLES2
           GE (glDisableClientState (GL_NORMAL_ARRAY));
+#endif
           break;
         case COGL_VERTEX_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
           /* The enabled state of the texture coord arrays is

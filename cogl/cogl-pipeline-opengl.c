@@ -37,6 +37,11 @@
 #include "cogl-context.h"
 #include "cogl-texture-private.h"
 
+/* This is needed to set the color attribute on GLES2 */
+#ifdef HAVE_COGL_GLES2
+#include "cogl-pipeline-progend-glsl-private.h"
+#endif
+
 #include <glib.h>
 #include <string.h>
 
@@ -477,6 +482,8 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  /* On GLES2 we'll flush the color later */
+#ifndef HAVE_COGL_GLES2
   if (!skip_gl_color)
     {
       if ((pipelines_difference & COGL_PIPELINE_STATE_COLOR) ||
@@ -492,6 +499,7 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
                           cogl_color_get_alpha_byte (&authority->color)));
         }
     }
+#endif
 
   if (pipelines_difference & COGL_PIPELINE_STATE_BLEND)
     {
@@ -1091,7 +1099,6 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
    * 2) then foreach layer:
    *  determine gl_target/gl_texture
    *  bind texture
-   *  flush user matrix
    *
    *  Note: After _cogl_pipeline_flush_common_gl_state you can expect
    *  all state of the layers corresponding texture unit to be
@@ -1231,6 +1238,27 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
   ctx->current_pipeline_age = pipeline->age;
 
 done:
+
+  /* We can't assume the color will be retained between flushes on
+     GLES2 because the generic attribute values are not stored as part
+     of the program object so they could be overridden by any
+     attribute changes in another program */
+#ifdef HAVE_COGL_GLES2
+  if (!skip_gl_color)
+    {
+      int attribute;
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_COLOR);
+
+      attribute = _cogl_pipeline_progend_glsl_get_color_attribute (pipeline);
+      if (attribute != -1)
+        GE (glVertexAttrib4f (attribute,
+                              cogl_color_get_red_float (&authority->color),
+                              cogl_color_get_green_float (&authority->color),
+                              cogl_color_get_blue_float (&authority->color),
+                              cogl_color_get_alpha_float (&authority->color)));
+    }
+#endif
 
   /* Handle the fact that OpenGL associates texture filter and wrap
    * modes with the texture objects not the texture units... */

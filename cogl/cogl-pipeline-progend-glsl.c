@@ -94,6 +94,18 @@ typedef struct
 
   gboolean dirty_point_size;
   GLint point_size_uniform;
+
+  /* Under GLES2 we can't use the builtin functions to set attribute
+     pointers such as the vertex position. Instead the vertex
+     attribute code needs to query the attribute numbers from the
+     progend backend */
+  int position_attribute_location;
+  int color_attribute_location;
+  int normal_attribute_location;
+  int tex_coord0_attribute_location;
+  /* We only allocate this array if more than one tex coord attribute
+     is requested because most pipelines will only use one layer */
+  GArray *tex_coord_attribute_locations;
 #endif
 
   /* We need to track the last pipeline that the program was used with
@@ -125,6 +137,124 @@ get_glsl_priv (CoglPipeline *pipeline)
   return cogl_object_get_user_data (COGL_OBJECT (pipeline), &glsl_priv_key);
 }
 
+#ifdef HAVE_COGL_GLES2
+
+#define ATTRIBUTE_LOCATION_UNKNOWN -2
+
+/* Under GLES2 the vertex attribute API needs to query the attribute
+   numbers because it can't used the fixed function API to set the
+   builtin attributes. We cache the attributes here because the
+   progend knows when the program is changed so it can clear the
+   cache. This should always be called after the pipeline is flushed
+   so they can assert that the gl program is valid */
+
+int
+_cogl_pipeline_progend_glsl_get_position_attribute (CoglPipeline *pipeline)
+{
+  CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
+
+  g_return_val_if_fail (priv != NULL, -1);
+  g_return_val_if_fail (priv->program != 0, -1);
+
+  if (priv->position_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
+    GE_RET( priv->position_attribute_location,
+            glGetAttribLocation (priv->program, "cogl_position_in") );
+
+  return priv->position_attribute_location;
+}
+
+int
+_cogl_pipeline_progend_glsl_get_color_attribute (CoglPipeline *pipeline)
+{
+  CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
+
+  g_return_val_if_fail (priv != NULL, -1);
+  g_return_val_if_fail (priv->program != 0, -1);
+
+  if (priv->color_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
+    GE_RET( priv->color_attribute_location,
+            glGetAttribLocation (priv->program, "cogl_color_in") );
+
+  return priv->color_attribute_location;
+}
+
+int
+_cogl_pipeline_progend_glsl_get_normal_attribute (CoglPipeline *pipeline)
+{
+  CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
+
+  g_return_val_if_fail (priv != NULL, -1);
+  g_return_val_if_fail (priv->program != 0, -1);
+
+  if (priv->normal_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
+    GE_RET( priv->normal_attribute_location,
+            glGetAttribLocation (priv->program, "cogl_normal_in") );
+
+  return priv->normal_attribute_location;
+}
+
+int
+_cogl_pipeline_progend_glsl_get_tex_coord_attribute (CoglPipeline *pipeline,
+                                                     int unit)
+{
+  CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
+
+  g_return_val_if_fail (priv != NULL, -1);
+  g_return_val_if_fail (priv->program != 0, -1);
+
+  if (unit == 0)
+    {
+      if (priv->tex_coord0_attribute_location == ATTRIBUTE_LOCATION_UNKNOWN)
+        GE_RET( priv->tex_coord0_attribute_location,
+                glGetAttribLocation (priv->program, "cogl_tex_coord0_in") );
+
+      return priv->tex_coord0_attribute_location;
+    }
+  else
+    {
+      char *name = g_strdup_printf ("cogl_tex_coord%i_in", unit);
+      int *locations;
+
+      if (priv->tex_coord_attribute_locations == NULL)
+        priv->tex_coord_attribute_locations = g_array_new (FALSE, FALSE,
+                                                           sizeof (int));
+      if (priv->tex_coord_attribute_locations->len <= unit - 1)
+        {
+          int i = priv->tex_coord_attribute_locations->len;
+          g_array_set_size (priv->tex_coord_attribute_locations, unit);
+          for (; i < unit; i++)
+            g_array_index (priv->tex_coord_attribute_locations, int, i) =
+              ATTRIBUTE_LOCATION_UNKNOWN;
+        }
+
+      locations = &g_array_index (priv->tex_coord_attribute_locations, int, 0);
+
+      if (locations[unit - 1] == ATTRIBUTE_LOCATION_UNKNOWN)
+        GE_RET( locations[unit - 1],
+                glGetAttribLocation (priv->program, name) );
+
+      g_free (name);
+
+      return locations[unit - 1];
+    }
+}
+
+static void
+clear_attribute_cache (CoglPipelineProgendPrivate *priv)
+{
+  priv->position_attribute_location = ATTRIBUTE_LOCATION_UNKNOWN;
+  priv->color_attribute_location = ATTRIBUTE_LOCATION_UNKNOWN;
+  priv->normal_attribute_location = ATTRIBUTE_LOCATION_UNKNOWN;
+  priv->tex_coord0_attribute_location = ATTRIBUTE_LOCATION_UNKNOWN;
+  if (priv->tex_coord_attribute_locations)
+    {
+      g_array_free (priv->tex_coord_attribute_locations, TRUE);
+      priv->tex_coord_attribute_locations = NULL;
+    }
+}
+
+#endif /* HAVE_COGL_GLES2 */
+
 static void
 destroy_glsl_priv (void *user_data)
 {
@@ -132,6 +262,10 @@ destroy_glsl_priv (void *user_data)
 
   if (--priv->ref_count == 0)
     {
+#ifdef HAVE_COGL_GLES2
+      clear_attribute_cache (priv);
+#endif
+
       if (priv->program)
         delete_program (priv->program);
 
@@ -360,6 +494,9 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
           priv->n_tex_coord_attribs = 0;
           priv->unit_state = g_new (UnitState,
                                     cogl_pipeline_get_n_layers (pipeline));
+#ifdef HAVE_COGL_GLES2
+          priv->tex_coord_attribute_locations = NULL;
+#endif
           set_glsl_priv (authority, priv);
         }
 
@@ -475,6 +612,8 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
 #ifdef HAVE_COGL_GLES2
   if (program_changed)
     {
+      clear_attribute_cache (priv);
+
       GE_RET( priv->alpha_test_reference_uniform,
               glGetUniformLocation (gl_program,
                                     "_cogl_alpha_test_ref") );

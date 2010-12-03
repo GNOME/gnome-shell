@@ -45,6 +45,7 @@
 #include "cogl-bitmap-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-driver.h"
+#include "cogl-vertex-attribute-private.h"
 
 #if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
 #include "cogl-gles2-wrapper.h"
@@ -702,36 +703,6 @@ cogl_read_pixels (int x,
                                     _cogl_get_format_bpp (format) * width);
 }
 
-static void
-_cogl_disable_other_texcoord_arrays_cb (int texcoord_array_num, gpointer data)
-{
-  CoglContext *ctx = data;
-
-  GE (glClientActiveTexture (GL_TEXTURE0 + texcoord_array_num));
-  GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
-}
-
-void
-_cogl_disable_other_texcoord_arrays (const CoglBitmask *mask)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* Set texcoord_arrays_to_disable to only contain the arrays we want
-     to disable */
-  _cogl_bitmask_clear_all (&ctx->texcoord_arrays_to_disable);
-  _cogl_bitmask_set_bits (&ctx->texcoord_arrays_to_disable,
-                          &ctx->texcoord_arrays_enabled);
-  _cogl_bitmask_clear_bits (&ctx->texcoord_arrays_to_disable, mask);
-
-  _cogl_bitmask_foreach (&ctx->texcoord_arrays_to_disable,
-                         _cogl_disable_other_texcoord_arrays_cb, ctx);
-
-  /* Update the mask of arrays that are enabled */
-  _cogl_bitmask_clear_bits (&ctx->texcoord_arrays_enabled,
-                            &ctx->texcoord_arrays_to_disable);
-  _cogl_bitmask_set_bits (&ctx->texcoord_arrays_enabled, mask);
-}
-
 void
 cogl_begin_gl (void)
 {
@@ -791,9 +762,8 @@ cogl_begin_gl (void)
   _cogl_enable (enable_flags);
   _cogl_flush_face_winding ();
 
-  /* Disable all client texture coordinate arrays */
-  _cogl_bitmask_clear_all (&ctx->temp_bitmask);
-  _cogl_disable_other_texcoord_arrays (&ctx->temp_bitmask);
+  /* Disable any cached vertex arrays */
+  _cogl_vertex_attribute_disable_cached_arrays ();
 }
 
 void
