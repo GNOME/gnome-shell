@@ -604,6 +604,23 @@ _cogl_pipeline_init_default_pipeline (void);
 void
 _cogl_pipeline_init_default_layers (void);
 
+static inline CoglPipeline *
+_cogl_pipeline_get_parent (CoglPipeline *pipeline)
+{
+  CoglPipelineNode *parent_node = COGL_PIPELINE_NODE (pipeline)->parent;
+  return COGL_PIPELINE (parent_node);
+}
+
+static inline CoglPipeline *
+_cogl_pipeline_get_authority (CoglPipeline *pipeline,
+                              unsigned long difference)
+{
+  CoglPipeline *authority = pipeline;
+  while (!(authority->differences & difference))
+    authority = _cogl_pipeline_get_parent (authority);
+  return authority;
+}
+
 /*
  * SECTION:cogl-pipeline-internals
  * @short_description: Functions for creating custom primitives that make use
