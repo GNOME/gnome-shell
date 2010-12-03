@@ -76,5 +76,8 @@ _cogl_draw_indexed_vertex_attributes_array (CoglVerticesMode mode,
                                             CoglIndices *indices,
                                             CoglVertexAttribute **attributes);
 
+void
+_cogl_vertex_attribute_disable_cached_arrays (void);
+
 #endif /* __COGL_VERTEX_ATTRIBUTE_PRIVATE_H */
 

@@ -183,9 +183,9 @@ cogl_create_context (void)
   _context->pipeline1_nodes =
     g_array_sized_new (FALSE, FALSE, sizeof (CoglHandle), 20);
 
-  _cogl_bitmask_init (&_context->texcoord_arrays_enabled);
+  _cogl_bitmask_init (&_context->arrays_enabled);
   _cogl_bitmask_init (&_context->temp_bitmask);
-  _cogl_bitmask_init (&_context->texcoord_arrays_to_disable);
+  _cogl_bitmask_init (&_context->arrays_to_change);
 
   _context->max_texture_units = -1;
   _context->max_texture_image_units = -1;
@@ -356,9 +356,9 @@ _cogl_destroy_context (void)
   if (_context->atlas)
     _cogl_atlas_free (_context->atlas);
 
-  _cogl_bitmask_destroy (&_context->texcoord_arrays_enabled);
+  _cogl_bitmask_destroy (&_context->arrays_enabled);
   _cogl_bitmask_destroy (&_context->temp_bitmask);
-  _cogl_bitmask_destroy (&_context->texcoord_arrays_to_disable);
+  _cogl_bitmask_destroy (&_context->arrays_to_change);
 
   g_slist_free (_context->texture_types);
   g_slist_free (_context->buffer_types);

@@ -172,8 +172,8 @@ _cogl_bitmask_set_range_in_array (CoglBitmask *bitmask,
 }
 
 void
-_cogl_bitmask_clear_bits (CoglBitmask *dst,
-                          const CoglBitmask *src)
+_cogl_bitmask_xor_bits (CoglBitmask *dst,
+                        const CoglBitmask *src)
 {
   if (_cogl_bitmask_has_array (src))
     {
@@ -190,8 +190,8 @@ _cogl_bitmask_clear_bits (CoglBitmask *dst,
         g_array_set_size (dst_array, src_array->len);
 
       for (i = 0; i < src_array->len; i++)
-        g_array_index (dst_array, unsigned int, i) &=
-          ~g_array_index (src_array, unsigned int, i);
+        g_array_index (dst_array, unsigned int, i) ^=
+          g_array_index (src_array, unsigned int, i);
     }
   else if (_cogl_bitmask_has_array (dst))
     {
@@ -199,12 +199,12 @@ _cogl_bitmask_clear_bits (CoglBitmask *dst,
 
       dst_array = (GArray *) *dst;
 
-      g_array_index (dst_array, unsigned int, 0) &=
-        ~(GPOINTER_TO_UINT (*src) >> 1);
+      g_array_index (dst_array, unsigned int, 0) ^=
+        (GPOINTER_TO_UINT (*src) >> 1);
     }
   else
-    *dst = GUINT_TO_POINTER ((GPOINTER_TO_UINT (*dst) &
-                              ~GPOINTER_TO_UINT (*src)) | 1);
+    *dst = GUINT_TO_POINTER ((GPOINTER_TO_UINT (*dst) ^
+                              GPOINTER_TO_UINT (*src)) | 1);
 }
 
 void

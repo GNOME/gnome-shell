@@ -99,16 +99,16 @@ _cogl_bitmask_set_bits (CoglBitmask *dst,
                         const CoglBitmask *src);
 
 /*
- * cogl_bitmask_clear_bits:
+ * cogl_bitmask_xor_bits:
  * @dst: The bitmask to modify
  * @src: The bitmask to copy bits from
  *
- * This makes sure that all of the bits that are set in @src are
- * cleared in @dst. Any unset bits in @src are left alone in @dst.
+ * For every bit that is set in src, the corresponding bit in dst is
+ * inverted.
  */
 void
-_cogl_bitmask_clear_bits (CoglBitmask *dst,
-                          const CoglBitmask *src);
+_cogl_bitmask_xor_bits (CoglBitmask *dst,
+                        const CoglBitmask *src);
 
 typedef void (* CoglBitmaskForeachFunc) (int bit_num, gpointer user_data);
 
