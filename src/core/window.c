@@ -7861,7 +7861,7 @@ update_move (MetaWindow  *window,
               x < (monitor->rect.x + monitor->rect.width))
             {
               /* check if cursor is on the top edge of the monitor*/
-              if (y >= monitor->rect.y && y < work_area.y)
+              if (y >= monitor->rect.y && y <= work_area.y)
                   window->tile_mode = META_TILE_MAXIMIZED;
             }
         }
