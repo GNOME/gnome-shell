@@ -907,11 +907,20 @@ _cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
       if (has_alpha)
         return TRUE;
     }
-  else
+
+  /* At this point, considering just the state that has changed it
+   * looks like blending isn't needed. If blending was previously
+   * enabled though it could be that some other state still requires
+   * that we have blending enabled. In this case we still need to
+   * go and check the other state...
+   *
+   * FIXME: We should explicitly keep track of the mask of state
+   * groups that are currently causing blending to be enabled so that
+   * we never have to resort to checking *all* the state and can
+   * instead always limit the check to those in the mask.
+   */
+  if (pipeline->real_blend_enable)
     {
-      /* In this case we have so far only checked the property that
-       * has been changed so we now need to check all the other
-       * properties too. */
       other_state = COGL_PIPELINE_STATE_AFFECTS_BLENDING & ~changes;
       if (other_state &&
           _cogl_pipeline_needs_blending_enabled (pipeline,
