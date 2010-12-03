@@ -32,8 +32,9 @@
 
 #ifdef COGL_ENABLE_DEBUG
 
-/* XXX: If you add a debug option, please also scroll down to
- * cogl_arg_debug_cb() and add a "help" description of the option too.
+/* XXX: If you add a debug option, please also add an option
+ * definition to cogl-debug-options.h. This will enable us - for
+ * example - to emit a "help" description for the option.
  */
 
 /* NB: Only these options get enabled if COGL_DEBUG=all is
@@ -73,7 +74,8 @@ static const GDebugKey cogl_behavioural_debug_keys[] = {
   { "disable-blending", COGL_DEBUG_DISABLE_BLENDING},
   { "disable-npot-textures", COGL_DEBUG_DISABLE_NPOT_TEXTURES},
   { "wireframe", COGL_DEBUG_WIREFRAME},
-  { "disable-software-clip", COGL_DEBUG_DISABLE_SOFTWARE_CLIP}
+  { "disable-software-clip", COGL_DEBUG_DISABLE_SOFTWARE_CLIP},
+  { "disable-program-caches", COGL_DEBUG_DISABLE_PROGRAM_CACHES}
 };
 static const int n_cogl_behavioural_debug_keys =
   G_N_ELEMENTS (cogl_behavioural_debug_keys);

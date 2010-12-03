@@ -163,4 +163,9 @@ OPT (OFFSCREEN,
      "offscreen",
      "Trace offscreen support",
      "Debug offscreen support")
+OPT (DISABLE_BLENDING,
+     "Root Cause",
+     "disable-program-caches",
+     "Disable program caches",
+     "Disable fallback caches for arbfp and glsl programs")
 
