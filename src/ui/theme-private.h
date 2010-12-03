@@ -234,7 +234,7 @@ struct _MetaFrameGeometry
 
   /* used for a memset hack */
 #define ADDRESS_OF_BUTTON_RECTS(fgeom) (((char*)(fgeom)) + G_STRUCT_OFFSET (MetaFrameGeometry, close_rect))
-#define LENGTH_OF_BUTTON_RECTS (G_STRUCT_OFFSET (MetaFrameGeometry, right_right_background) + sizeof (GdkRectangle) - G_STRUCT_OFFSET (MetaFrameGeometry, close_rect))
+#define LENGTH_OF_BUTTON_RECTS (G_STRUCT_OFFSET (MetaFrameGeometry, right_single_background) + sizeof (GdkRectangle) - G_STRUCT_OFFSET (MetaFrameGeometry, close_rect))
   
   /* The button rects (if changed adjust memset hack) */
   MetaButtonSpace close_rect;
@@ -252,9 +252,11 @@ struct _MetaFrameGeometry
   GdkRectangle left_left_background;
   GdkRectangle left_middle_backgrounds[MAX_MIDDLE_BACKGROUNDS];
   GdkRectangle left_right_background;
+  GdkRectangle left_single_background;
   GdkRectangle right_left_background;
   GdkRectangle right_middle_backgrounds[MAX_MIDDLE_BACKGROUNDS];
   GdkRectangle right_right_background;
+  GdkRectangle right_single_background;
   /* End of button rects (if changed adjust memset hack) */
 
   /* Saved button layout */
@@ -647,9 +649,11 @@ typedef enum
   META_BUTTON_TYPE_LEFT_LEFT_BACKGROUND,
   META_BUTTON_TYPE_LEFT_MIDDLE_BACKGROUND,
   META_BUTTON_TYPE_LEFT_RIGHT_BACKGROUND,
+  META_BUTTON_TYPE_LEFT_SINGLE_BACKGROUND,
   META_BUTTON_TYPE_RIGHT_LEFT_BACKGROUND,
   META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND,
   META_BUTTON_TYPE_RIGHT_RIGHT_BACKGROUND,
+  META_BUTTON_TYPE_RIGHT_SINGLE_BACKGROUND,
   META_BUTTON_TYPE_CLOSE,
   META_BUTTON_TYPE_MAXIMIZE,
   META_BUTTON_TYPE_MINIMIZE,

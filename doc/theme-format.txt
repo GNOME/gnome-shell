@@ -22,6 +22,12 @@ This document has separate sections for each format version. You may
 want to read the document in reverse order, since the base features
 are discussed under version 1.
 
+New Features in Theme Format Version 3.3
+========================================
+
+Add two additional button background functions - left_single_background and
+right_single_background - for button groups with just a single button.
+
 New Features in Theme Format Version 3.2
 ========================================
 
