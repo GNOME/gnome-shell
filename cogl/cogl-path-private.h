@@ -79,10 +79,14 @@ struct _CoglPathData
   floatVec2            path_nodes_min;
   floatVec2            path_nodes_max;
 
-  CoglVertexArray     *vbo;
-  CoglIndices         *vbo_indices;
-  unsigned int         vbo_n_indices;
-  CoglVertexAttribute *vbo_attributes[COGL_PATH_N_ATTRIBUTES + 1];
+  CoglVertexArray     *fill_vbo;
+  CoglIndices         *fill_vbo_indices;
+  unsigned int         fill_vbo_n_indices;
+  CoglVertexAttribute *fill_vbo_attributes[COGL_PATH_N_ATTRIBUTES + 1];
+
+  CoglVertexArray     *stroke_vbo;
+  CoglVertexAttribute **stroke_vbo_attributes;
+  unsigned int         stroke_vbo_n_attributes;
 };
 
 void
