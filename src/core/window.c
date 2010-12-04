@@ -3418,7 +3418,8 @@ meta_window_unmaximize (MetaWindow        *window,
                         MetaMaximizeFlags  directions)
 {
   /* Restore tiling if necessary */
-  if (window->tile_mode != META_TILE_NONE)
+  if (window->tile_mode == META_TILE_LEFT ||
+      window->tile_mode == META_TILE_RIGHT)
     {
       window->maximized_horizontally = FALSE;
       meta_window_tile (window);
