@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-01 07:47+0200\n"
-"PO-Revision-Date: 2010-11-01 07:48+0200\n"
+"POT-Creation-Date: 2010-12-05 01:39+0200\n"
+"PO-Revision-Date: 2010-12-05 01:42+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -98,10 +98,6 @@ msgid "List of desktop file IDs for favorite applications"
 msgstr "List of desktop file IDs for favorite applications"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "Overview workspace view mode"
-msgstr "Overview workspace view mode"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -121,101 +117,93 @@ msgstr ""
 "to an empty value, the default pipeline will be used. This is currently "
 "'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Show date in clock"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Show the week date in the calendar"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Show time with seconds"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
-"The filename for recorded screencasts will be a unique filename based on the "
-"current date, and use this extension. It should be changed when recording to "
-"a different container format."
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
 msgstr ""
-"The filename for recorded screencasts will be a unique filename based on the "
-"current date, and use this extension. It should be changed when recording to "
-"a different container format."
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "The gstreamer pipeline used to encode the screencast"
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid ""
-"The selected workspace view mode in the overview. Supported values are "
-"\"single\" and \"grid\"."
+"This key specifies the format used by the panel clock when the format key is "
+"set to \"custom\". You can use conversion specifiers understood by strftime"
+"() to obtain a specific format. See the strftime() manual for more "
+"information."
 msgstr ""
-"The selected workspace view mode in the overview. Supported values are "
-"\"single\" and \"grid\"."
+"This key specifies the format used by the panel clock when the format key is "
+"set to \"custom\". You can use conversion specifiers understood by strftime"
+"() to obtain a specific format. See the strftime() manual for more "
+"information."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
+"This key specifies the hour format used by the panel clock. Possible values "
+"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
+"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
+"to \"custom\", the clock will display time according to the format specified "
+"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
+"the show_date and show_seconds keys are ignored."
 msgstr ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
+"This key specifies the hour format used by the panel clock. Possible values "
+"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
+"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
+"to \"custom\", the clock will display time according to the format specified "
+"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
+"the show_date and show_seconds keys are ignored."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:24
-msgid ""
-"This key specifies the format used by the panel clock when the format key is "
-"set to \"custom\". You can use conversion specifiers understood by strftime"
-"() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr ""
-"This key specifies the format used by the panel clock when the format key is "
-"set to \"custom\". You can use conversion specifiers understood by strftime"
-"() to obtain a specific format. See the strftime() manual for more "
-"information."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
-msgid ""
-"This key specifies the hour format used by the panel clock. Possible values "
-"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
-"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
-"to \"custom\", the clock will display time according to the format specified "
-"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
-"the show_date and show_seconds keys are ignored."
-msgstr ""
-"This key specifies the hour format used by the panel clock. Possible values "
-"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
-"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
-"to \"custom\", the clock will display time according to the format specified "
-"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
-"the show_date and show_seconds keys are ignored."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "Uuids of extensions to disable"
 msgstr "Uuids of extensions to disable"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Whether to collect stats about applications usage"
 msgstr "Whether to collect stats about applications usage"
 
@@ -402,62 +390,41 @@ msgstr "מבנה _12 שעות"
 msgid "_24 hour format"
 msgstr "מבנה _24 שעות"
 
-#. **** Applications ****
-#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
+#: ../js/ui/appDisplay.js:215
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:348
+#: ../js/ui/appDisplay.js:245
 msgid "PREFERENCES"
 msgstr "העדפות"
 
-#: ../js/ui/appDisplay.js:647
+#: ../js/ui/appDisplay.js:542
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:651
+#: ../js/ui/appDisplay.js:546
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:547
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
-#: ../js/ui/appDisplay.js:829
-msgid "Drag here to add favorites"
-msgstr "יש לגרור פריטים לכאן כדי להוסיף מועדפים"
-
-#: ../js/ui/appFavorites.js:88
+#: ../js/ui/appFavorites.js:91
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s נוסף למועדפים שלך."
 
-#: ../js/ui/appFavorites.js:107
+#: ../js/ui/appFavorites.js:122
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s הוסר מהמועדפים שלך."
 
-#: ../js/ui/dash.js:142
-msgid "Find"
-msgstr "חיפוש"
+#: ../js/ui/dash.js:27
+msgid "Remove"
+msgstr "הסרה"
 
-#: ../js/ui/dash.js:473
-msgid "Searching..."
-msgstr "בחיפוש..."
-
-#: ../js/ui/dash.js:487
-msgid "No matching results."
-msgstr "אין תוצאות תואמות."
-
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
-msgid "PLACES & DEVICES"
-msgstr "מקומות והתקנים"
-
-#. **** Documents ****
-#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
+#: ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "פריטים אחרונים"
 
@@ -491,63 +458,63 @@ msgstr "צפייה במקור"
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/overview.js:160
+#: ../js/ui/overview.js:112
 msgid "Undo"
 msgstr "ביטול"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:469
+#: ../js/ui/panel.js:470
 #, c-format
 msgid "Quit %s"
 msgstr "יציאה מ־%s"
 
-#: ../js/ui/panel.js:494
+#: ../js/ui/panel.js:495
 msgid "Preferences"
 msgstr "העדפות"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:580
+#: ../js/ui/panel.js:581
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:582
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:586
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:587
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:593
+#: ../js/ui/panel.js:594
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:595
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:599
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:600
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:744
+#: ../js/ui/panel.js:745
 msgid "Activities"
 msgstr "פעילויות"
 
@@ -563,6 +530,10 @@ msgstr "ניסיון חוזר"
 #: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
 msgstr "התחברות אל..."
+
+#: ../js/ui/placeDisplay.js:558
+msgid "PLACES & DEVICES"
+msgstr "מקומות והתקנים"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -590,41 +561,37 @@ msgstr "זמין"
 msgid "Busy"
 msgstr "עסוק"
 
-#: ../js/ui/statusMenu.js:111
-msgid "Invisible"
-msgstr "בלתי נראה"
+#: ../js/ui/statusMenu.js:114
+msgid "My Account"
+msgstr "החשבון שלי"
 
-#: ../js/ui/statusMenu.js:119
-msgid "My Account..."
-msgstr "החשבון שלי..."
+#: ../js/ui/statusMenu.js:118
+msgid "System Settings"
+msgstr "הגדרות המערכת"
 
-#: ../js/ui/statusMenu.js:123
-msgid "System Settings..."
-msgstr "הגדרות המערכת..."
-
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:125
 msgid "Lock Screen"
 msgstr "נעילת המסך"
 
-#: ../js/ui/statusMenu.js:134
+#: ../js/ui/statusMenu.js:129
 msgid "Switch User"
 msgstr "החלפת משתמש"
 
-#: ../js/ui/statusMenu.js:139
+#: ../js/ui/statusMenu.js:134
 msgid "Log Out..."
 msgstr "ניתוק..."
 
-#: ../js/ui/statusMenu.js:146
-msgid "Suspend"
-msgstr "השהיה"
+#: ../js/ui/statusMenu.js:141
+msgid "Suspend..."
+msgstr "השהיה..."
 
-#: ../js/ui/statusMenu.js:150
-msgid "Restart..."
-msgstr "הפעלה מחדש..."
-
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
 msgstr "כיבוי..."
+
+#: ../js/ui/status/accessibility.js:82
+msgid "Zoom"
+msgstr "תקריב"
 
 #: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
@@ -662,13 +629,117 @@ msgstr "הגדרות גישה אוניברסלית"
 msgid "High Contrast"
 msgstr "ניגודיות גבוהה"
 
-#: ../js/ui/status/accessibility.js:202
+#: ../js/ui/status/accessibility.js:205
 msgid "Large Text"
 msgstr "טקסט גדול"
 
-#: ../js/ui/status/accessibility.js:223
-msgid "Zoom"
-msgstr "תקריב"
+#: ../js/ui/status/power.js:87
+msgid "What's using power..."
+msgstr "מה צורך חשמל..."
+
+#: ../js/ui/status/power.js:90
+msgid "Power Settings"
+msgstr "הגדרות צריכת החשמל"
+
+#: ../js/ui/status/power.js:117
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "נותרה שעה"
+msgstr[1] "נותרו %d שעות"
+msgstr[2] "נותרו שעתיים"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:120
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "%d %s %d %s נותרו"
+
+#: ../js/ui/status/power.js:122
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "שעה"
+msgstr[1] "שעות"
+msgstr[2] "שעתיים"
+
+#: ../js/ui/status/power.js:122
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "דקה"
+msgstr[1] "דקות"
+msgstr[2] "דקות"
+
+#: ../js/ui/status/power.js:125
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "דקה אחת נותרה"
+msgstr[1] "%d דקות נותרו"
+msgstr[2] "שתי דקות נותרו"
+
+#: ../js/ui/status/power.js:244
+msgid "AC adapter"
+msgstr "מתאם חשמל"
+
+#: ../js/ui/status/power.js:246
+msgid "Laptop battery"
+msgstr "סוללת נייד"
+
+#: ../js/ui/status/power.js:248
+msgid "UPS"
+msgstr "אל־פסק"
+
+#: ../js/ui/status/power.js:250
+msgid "Monitor"
+msgstr "צג"
+
+#: ../js/ui/status/power.js:252
+msgid "Mouse"
+msgstr "עכבר"
+
+#: ../js/ui/status/power.js:254
+msgid "Keyboard"
+msgstr "מקלדת"
+
+#: ../js/ui/status/power.js:256
+msgid "PDA"
+msgstr "מחשב כף יד"
+
+#: ../js/ui/status/power.js:258
+msgid "Cell phone"
+msgstr "טלפון סלולרי"
+
+#: ../js/ui/status/power.js:260
+msgid "Media player"
+msgstr "נגן מדיה"
+
+#: ../js/ui/status/power.js:262
+msgid "Tablet"
+msgstr "טבלת שליטה"
+
+#: ../js/ui/status/power.js:264
+msgid "Computer"
+msgstr "מחשב"
+
+#: ../js/ui/status/power.js:266 ../src/shell-app-system.c:1012
+msgid "Unknown"
+msgstr "לא ידוע"
+
+#: ../js/ui/status/volume.js:41
+msgid "Volume"
+msgstr "עצמה"
+
+#: ../js/ui/status/volume.js:54
+msgid "Microphone"
+msgstr "מיקרופון"
+
+#: ../js/ui/status/volume.js:62
+msgid "Sound Settings"
+msgstr "הגדרות שמע"
+
+#: ../js/ui/viewSelector.js:26
+msgid "Search your computer"
+msgstr "חיפוש במחשב שלך"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -680,12 +751,12 @@ msgstr "%s סיים את תהליך ההתחלה"
 msgid "'%s' is ready"
 msgstr "'%s' מוכן"
 
-#: ../js/ui/workspacesView.js:229
+#: ../js/ui/workspacesView.js:244
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "לא ניתן להוסיף מרחבי עבודה כיוון שהם ממלאים את המכסה המרבית."
 
-#: ../js/ui/workspacesView.js:246
+#: ../js/ui/workspacesView.js:260
 msgid "Can't remove the first workspace."
 msgstr "לא ניתן להסיר את מרחב העבודה הראשון."
 
@@ -713,11 +784,11 @@ msgstr[2] "2 קלטים"
 msgid "System Sounds"
 msgstr "צלילי מערכת"
 
-#: ../src/shell-global.c:1219
+#: ../src/shell-global.c:1163
 msgid "Less than a minute ago"
 msgstr "לפני פחות מדקה"
 
-#: ../src/shell-global.c:1223
+#: ../src/shell-global.c:1167
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -725,7 +796,7 @@ msgstr[0] "לפני דקה"
 msgstr[1] "לפני %d דקות"
 msgstr[2] "לפני 2 דקות"
 
-#: ../src/shell-global.c:1228
+#: ../src/shell-global.c:1172
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -733,7 +804,7 @@ msgstr[0] "לפני שעה"
 msgstr[1] "לפני %d שעות"
 msgstr[2] "לפני שעתיים"
 
-#: ../src/shell-global.c:1233
+#: ../src/shell-global.c:1177
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -741,7 +812,7 @@ msgstr[0] "לפני יום"
 msgstr[1] "לפני %d ימים"
 msgstr[2] "לפני יומיים"
 
-#: ../src/shell-global.c:1238
+#: ../src/shell-global.c:1182
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -749,17 +820,17 @@ msgstr[0] "לפני שבוע"
 msgstr[1] "לפני %d שבועות"
 msgstr[2] "לפני שבועיים"
 
-#: ../src/shell-uri-util.c:89
+#: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "תיקיית הבית"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:104
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "מערכת הקבצים"
 
-#: ../src/shell-uri-util.c:250
+#: ../src/shell-util.c:250
 msgid "Search"
 msgstr "חיפוש"
 
@@ -768,10 +839,38 @@ msgstr "חיפוש"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:300
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Overview workspace view mode"
+#~ msgstr "Overview workspace view mode"
+
+#~ msgid ""
+#~ "The selected workspace view mode in the overview. Supported values are "
+#~ "\"single\" and \"grid\"."
+#~ msgstr ""
+#~ "The selected workspace view mode in the overview. Supported values are "
+#~ "\"single\" and \"grid\"."
+
+#~ msgid "Drag here to add favorites"
+#~ msgstr "יש לגרור פריטים לכאן כדי להוסיף מועדפים"
+
+#~ msgid "Find"
+#~ msgstr "חיפוש"
+
+#~ msgid "Searching..."
+#~ msgstr "בחיפוש..."
+
+#~ msgid "No matching results."
+#~ msgstr "אין תוצאות תואמות."
+
+#~ msgid "Invisible"
+#~ msgstr "בלתי נראה"
+
+#~ msgid "Restart..."
+#~ msgstr "הפעלה מחדש..."
 
 #~ msgid "Account Information..."
 #~ msgstr "פרטי המשתמש..."
@@ -796,9 +895,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Recent Documents"
 #~ msgstr "מסמכים אחרונים"
-
-#~ msgid "Unknown"
-#~ msgstr "לא ידוע"
 
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "לא ניתן לנעול את המסך: %s"
