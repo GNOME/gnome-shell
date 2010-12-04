@@ -6089,16 +6089,20 @@ meta_gradient_type_to_string (MetaGradientType type)
 GtkStateType
 meta_gtk_state_from_string (const char *str)
 {
-  if (strcmp ("normal", str) == 0 || strcmp ("NORMAL", str) == 0)
+  if (g_ascii_strcasecmp ("normal", str) == 0)
     return GTK_STATE_NORMAL;
-  else if (strcmp ("prelight", str) == 0 || strcmp ("PRELIGHT", str) == 0)
+  else if (g_ascii_strcasecmp ("prelight", str) == 0)
     return GTK_STATE_PRELIGHT;
-  else if (strcmp ("active", str) == 0 || strcmp ("ACTIVE", str) == 0)
+  else if (g_ascii_strcasecmp ("active", str) == 0)
     return GTK_STATE_ACTIVE;
-  else if (strcmp ("selected", str) == 0 || strcmp ("SELECTED", str) == 0)
+  else if (g_ascii_strcasecmp ("selected", str) == 0)
     return GTK_STATE_SELECTED;
-  else if (strcmp ("insensitive", str) == 0 || strcmp ("INSENSITIVE", str) == 0)
+  else if (g_ascii_strcasecmp ("insensitive", str) == 0)
     return GTK_STATE_INSENSITIVE;
+  else if (g_ascii_strcasecmp ("inconsistent", str) == 0)
+    return GTK_STATE_INCONSISTENT;
+  else if (g_ascii_strcasecmp ("focused", str) == 0)
+    return GTK_STATE_FOCUSED;
   else
     return -1; /* hack */
 }
@@ -6118,6 +6122,10 @@ meta_gtk_state_to_string (GtkStateType state)
       return "SELECTED";
     case GTK_STATE_INSENSITIVE:
       return "INSENSITIVE";
+    case GTK_STATE_INCONSISTENT:
+      return "INCONSISTENT";
+    case GTK_STATE_FOCUSED:
+      return "FOCUSED";
     }
 
   return "<unknown>";
