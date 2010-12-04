@@ -8424,6 +8424,7 @@ update_tile_mode (MetaWindow *window)
       case META_TILE_RIGHT:
           if (!META_WINDOW_TILED_SIDE_BY_SIDE (window))
               window->tile_mode = META_TILE_NONE;
+          break;
       case META_TILE_MAXIMIZED:
           if (!META_WINDOW_MAXIMIZED (window))
               window->tile_mode = META_TILE_NONE;
