@@ -1183,9 +1183,7 @@ on_sliced_image_loaded (GObject *source_object,
     {
       ClutterActor *actor = load_from_pixbuf (GDK_PIXBUF (list->data));
       clutter_actor_hide (actor);
-
       clutter_container_add_actor (CLUTTER_CONTAINER (data->group), actor);
-      g_object_unref (list->data);
     }
 }
 
@@ -1196,6 +1194,17 @@ on_data_destroy (gpointer data)
   g_free (d->path);
   g_object_unref (d->group);
   g_free (d);
+}
+
+static void
+free_glist_unref_gobjects (gpointer p)
+{
+  GList *list = p;
+  GList *iter;
+
+  for (iter = list; iter; iter = iter->next)
+    g_object_unref (iter->data);
+  g_list_free (list);
 }
 
 static void
@@ -1223,17 +1232,14 @@ load_sliced_image (GSimpleAsyncResult *result,
       for (x = 0; x < width; x += data->grid_height)
         {
           GdkPixbuf *pixbuf = gdk_pixbuf_new_subpixbuf (pix, x, y, data->grid_width, data->grid_height);
-          if (!pixbuf)
-            {
-              g_simple_async_result_set_error (result, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-                                               "Has failed thumbnail");
-              break;
-            }
+          g_assert (pixbuf != NULL);
           res = g_list_append (res, pixbuf);
         }
     }
-  if (res)
-    g_simple_async_result_set_op_res_gpointer (result, res, (GDestroyNotify)g_list_free);
+  /* We don't need the original pixbuf anymore, though the subpixbufs
+     will hold a reference. */
+  g_object_unref (pix);
+  g_simple_async_result_set_op_res_gpointer (result, res, free_glist_unref_gobjects);
 }
 
 /**
