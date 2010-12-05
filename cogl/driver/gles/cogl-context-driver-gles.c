@@ -26,7 +26,6 @@
 #endif
 
 #include "cogl-context.h"
-#include "cogl-gles2-wrapper.h"
 
 #define COGL_FEATURE_BEGIN(a, b, c, d, e, f, g)
 #define COGL_FEATURE_FUNCTION(ret, name, args) \
@@ -37,10 +36,5 @@ void
 _cogl_create_context_driver (CoglContext *_context)
 {
   #include "cogl-feature-functions-gles.h"
-
-  /* Init the GLES2 wrapper */
-#ifdef HAVE_COGL_GLES2
-  _cogl_gles2_wrapper_init (&_context->drv.gles2);
-#endif
 }
 

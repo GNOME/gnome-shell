@@ -46,8 +46,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "cogl-gles2-wrapper.h"
-
 #define glTexImage3D ctx->drv.pf_glTexImage3D
 #define glTexSubImage3D ctx->drv.pf_glTexSubImage3D
 
@@ -485,7 +483,9 @@ _cogl_texture_driver_allows_foreign_gl_target (GLenum gl_target)
 void
 _cogl_texture_driver_gl_generate_mipmaps (GLenum gl_target)
 {
-  GE( _cogl_wrap_glGenerateMipmap (gl_target) );
+#ifdef HAVE_COGL_GLES2
+  GE( glGenerateMipmap (gl_target) );
+#endif
 }
 
 CoglPixelFormat

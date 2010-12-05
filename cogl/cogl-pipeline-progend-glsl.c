@@ -130,20 +130,6 @@ typedef struct
 
 static CoglUserDataKey glsl_priv_key;
 
-static void
-delete_program (GLuint program)
-{
-#ifdef HAVE_COGL_GLES2
-  /* This hack can go away once this GLSL backend replaces the GLES2
-     wrapper */
-  _cogl_gles2_clear_cache_for_program (program);
-#else
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-#endif
-
-  GE (glDeleteProgram (program));
-}
-
 static CoglPipelineProgendPrivate *
 get_glsl_priv (CoglPipeline *pipeline)
 {
@@ -289,6 +275,8 @@ destroy_glsl_priv (void *user_data)
 {
   CoglPipelineProgendPrivate *priv = user_data;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   if (--priv->ref_count == 0)
     {
 #ifdef HAVE_COGL_GLES2
@@ -297,7 +285,7 @@ destroy_glsl_priv (void *user_data)
 #endif
 
       if (priv->program)
-        delete_program (priv->program);
+        GE( glDeleteProgram (priv->program) );
 
       g_free (priv->unit_state);
 
@@ -326,10 +314,6 @@ dirty_glsl_program_state (CoglPipeline *pipeline)
 static void
 link_program (GLint gl_program)
 {
-  /* On GLES2 we'll let the backend link the program. This hack can go
-     away once this backend replaces the GLES2 wrapper */
-#ifndef HAVE_COGL_GLES2
-
   GLint link_status;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -356,8 +340,6 @@ link_program (GLint gl_program)
 
       g_free (log);
     }
-
-#endif /* HAVE_COGL_GLES2 */
 }
 
 typedef struct
@@ -582,7 +564,7 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       (user_program->age != priv->user_program_age ||
        n_tex_coord_attribs > priv->n_tex_coord_attribs))
     {
-      delete_program (priv->program);
+      GE( glDeleteProgram (priv->program) );
       priv->program = 0;
     }
 
@@ -644,18 +626,10 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
 
   gl_program = priv->program;
 
-#ifdef HAVE_COGL_GLES2
-  /* This function is a massive hack to get the GLES2 backend to
-     work. It should only be neccessary until we move the GLSL vertex
-     shader generation into a vertend instead of the GLES2 driver
-     backend */
-  _cogl_gles2_use_program (gl_program);
-#else
   if (pipeline->fragend == COGL_PIPELINE_FRAGEND_GLSL)
     _cogl_use_fragment_program (gl_program, COGL_PIPELINE_PROGRAM_TYPE_GLSL);
   if (pipeline->vertend == COGL_PIPELINE_VERTEND_GLSL)
     _cogl_use_vertex_program (gl_program, COGL_PIPELINE_PROGRAM_TYPE_GLSL);
-#endif
 
   state.unit = 0;
   state.gl_program = gl_program;

@@ -49,10 +49,6 @@
  * GL/GLES compatability defines for pipeline thingies:
  */
 
-#ifdef HAVE_COGL_GLES2
-#include "../gles/cogl-gles2-wrapper.h"
-#endif
-
 #ifdef HAVE_COGL_GL
 #define glActiveTexture ctx->drv.pf_glActiveTexture
 #define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
@@ -618,7 +614,7 @@ get_max_activateable_texture_units (void)
 
   if (G_UNLIKELY (ctx->max_activateable_texture_units == -1))
     {
-#ifdef HAVE_COGL_GL
+#if defined (HAVE_COGL_GL)
       GLint max_tex_coords;
       GLint max_combined_tex_units;
       GE (glGetIntegerv (GL_MAX_TEXTURE_COORDS, &max_tex_coords));
@@ -626,6 +622,16 @@ get_max_activateable_texture_units (void)
                          &max_combined_tex_units));
       ctx->max_activateable_texture_units =
         MAX (max_tex_coords - 1, max_combined_tex_units);
+#elif defined (HAVE_COGL_GLES2)
+      GLint max_vertex_attribs;
+      GLint max_combined_tex_units;
+      GE (glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, &max_vertex_attribs));
+      GE (glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+                         &max_combined_tex_units));
+      /* Two of the vertex attribs need to be used for the position
+         and color */
+      ctx->max_activateable_texture_units =
+        MAX (max_vertex_attribs - 2, max_combined_tex_units);
 #else
       GE (glGetIntegerv (GL_MAX_TEXTURE_UNITS,
                          &ctx->max_activateable_texture_units));

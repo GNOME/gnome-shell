@@ -69,10 +69,6 @@
 #define GL_PIXEL_PACK_BUFFER GL_PIXEL_PACK_BUFFER_ARB
 #endif
 
-#elif defined (HAVE_COGL_GLES2)
-
-#include "../gles/cogl-gles2-wrapper.h"
-
 #endif
 
 static void

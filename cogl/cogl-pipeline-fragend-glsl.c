@@ -62,10 +62,6 @@
  * GL/GLES compatability defines for pipeline thingies:
  */
 
-#ifdef HAVE_COGL_GLES2
-#include "../gles/cogl-gles2-wrapper.h"
-#endif
-
 /* This might not be defined on GLES */
 #ifndef GL_TEXTURE_3D
 #define GL_TEXTURE_3D                           0x806F

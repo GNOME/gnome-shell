@@ -25,7 +25,6 @@
 #define __COGL_CONTEXT_DRIVER_H
 
 #include "cogl.h"
-#include "cogl-gles2-wrapper.h"
 
 #ifndef APIENTRY
 #define APIENTRY
@@ -43,9 +42,6 @@ typedef struct _CoglContextDriver
   /* This defines a list of function pointers */
 #include "cogl-feature-functions-gles.h"
 
-#ifdef HAVE_COGL_GLES2
-  CoglGles2Wrapper  gles2;
-#endif
 } CoglContextDriver;
 
 #undef COGL_FEATURE_BEGIN

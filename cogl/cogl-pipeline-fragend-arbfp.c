@@ -54,10 +54,6 @@
  * GL/GLES compatability defines for pipeline thingies:
  */
 
-#ifdef HAVE_COGL_GLES2
-#include "../gles/cogl-gles2-wrapper.h"
-#endif
-
 #ifdef HAVE_COGL_GL
 #define glProgramString ctx->drv.pf_glProgramString
 #define glBindProgram ctx->drv.pf_glBindProgram

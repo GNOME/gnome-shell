@@ -37,11 +37,7 @@
 #include "cogl-clip-stack.h"
 #include "cogl-journal-private.h"
 
-#ifdef HAVE_COGL_GLES2
-
-#include "../gles/cogl-gles2-wrapper.h"
-
-#else
+#ifndef HAVE_COGL_GLES2
 
 #define glGenRenderbuffers                ctx->drv.pf_glGenRenderbuffers
 #define glDeleteRenderbuffers             ctx->drv.pf_glDeleteRenderbuffers

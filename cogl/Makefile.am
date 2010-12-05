@@ -106,27 +106,7 @@ cogl_driver_sources += \
 	$(srcdir)/driver/gles/cogl-texture-driver-gles.c	\
 	$(NULL)
 
-if USE_GLES2_WRAPPER
-cogl_driver_sources += \
-	$(srcdir)/driver/gles/cogl-gles2-wrapper.c	\
-	$(srcdir)/driver/gles/cogl-gles2-wrapper.h	\
-	$(NULL)
-
-BUILT_SOURCES += \
-	cogl-fixed-vertex-shader.h \
-	cogl-fixed-vertex-shader.c
-
-%.h: $(srcdir)/driver/gles/%.glsl
-	/bin/sh $(top_srcdir)/build/stringify.sh -h $< > $@
-%.c: $(srcdir)/driver/gles/%.glsl
-	/bin/sh $(top_srcdir)/build/stringify.sh $< > $@
-
-endif # USE_GLES2_WAPPER
 endif # COGL_DRIVER_GLES
-
-EXTRA_DIST += \
-	$(srcdir)/driver/gles/cogl-fixed-vertex-shader.glsl 	\
-	$(NULL)
 
 # winsys sources, common to all backends
 cogl_winsys_common_sources = \
