@@ -245,11 +245,15 @@ cogl_create_context (void)
 
   _context->texture_download_pipeline = COGL_INVALID_HANDLE;
 
+#ifndef HAVE_COGL_GLES2
   /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
    * the test being disabled therefore we assume that for all drivers there
    * will be no performance impact if we always leave the test enabled which
-   * makes things a bit simpler for us. */
+   * makes things a bit simpler for us. Under GLES2 the alpha test is
+   * implemented in the fragment shader so there is no enable for it
+   */
   GE (glEnable (GL_ALPHA_TEST));
+#endif
 
 #ifdef HAVE_COGL_GLES2
   _context->flushed_modelview_stack = NULL;

@@ -84,7 +84,6 @@
 
 #ifdef HAVE_COGL_GLES2
 
-#include "../gles/cogl-gles2-wrapper.h"
 #define MAY_HAVE_PROGRAMABLE_GL
 
 #endif /* HAVE_COGL_GLES2 */

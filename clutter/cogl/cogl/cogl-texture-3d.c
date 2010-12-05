@@ -571,6 +571,7 @@ _cogl_texture_3d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
          GL_GENERATE_MIPMAP and reuploading the first pixel */
       if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
         _cogl_texture_driver_gl_generate_mipmaps (GL_TEXTURE_3D);
+#ifndef HAVE_COGL_GLES2
       else
         {
           GE( glTexParameteri (GL_TEXTURE_3D,
@@ -591,6 +592,7 @@ _cogl_texture_3d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
                                GL_GENERATE_MIPMAP,
                                GL_FALSE) );
         }
+#endif
 
       tex_3d->mipmaps_dirty = FALSE;
     }

@@ -47,10 +47,6 @@
 #include "cogl-texture-driver.h"
 #include "cogl-vertex-attribute-private.h"
 
-#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
-#include "cogl-gles2-wrapper.h"
-#endif
-
 #ifdef HAVE_COGL_GL
 #define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
 #endif
@@ -243,6 +239,16 @@ toggle_flag (CoglContext *ctx,
   return FALSE;
 }
 
+#ifdef HAVE_COGL_GLES2
+
+/* Under GLES2 there are no builtin client flags so toggle_client_flag
+   should never be reached */
+
+#define toggle_client_flag(ctx, new_flags, flag, gl_flag) \
+  g_assert (((new_flags) & (flag)) == 0)
+
+#else /* HAVE_COGL_GLES2 */
+
 static gboolean
 toggle_client_flag (CoglContext *ctx,
 		    unsigned long new_flags,
@@ -269,6 +275,8 @@ toggle_client_flag (CoglContext *ctx,
 
   return FALSE;
 }
+
+#endif /* HAVE_COGL_GLES2 */
 
 void
 _cogl_enable (unsigned long flags)

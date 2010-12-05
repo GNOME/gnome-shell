@@ -40,11 +40,7 @@
 
 #include <stdlib.h>
 
-#ifdef HAVE_COGL_GLES2
-
-#include "../gles/cogl-gles2-wrapper.h"
-
-#else /* HAVE_COGL_GLES2 */
+#ifndef HAVE_COGL_GLES2
 
 #define glGenFramebuffers                 ctx->drv.pf_glGenFramebuffers
 #define glBindFramebuffer                 ctx->drv.pf_glBindFramebuffer

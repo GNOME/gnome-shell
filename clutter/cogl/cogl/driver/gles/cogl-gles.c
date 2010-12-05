@@ -74,7 +74,9 @@ void
 _cogl_features_init (void)
 {
   CoglFeatureFlags flags = 0;
+#ifndef HAVE_COGL_GLES2
   int              max_clip_planes = 0;
+#endif
   GLint            num_stencil_bits = 0;
   const char      *gl_extensions;
   int              i;
@@ -94,9 +96,11 @@ _cogl_features_init (void)
   if (num_stencil_bits > 2)
     flags |= COGL_FEATURE_STENCIL_BUFFER;
 
+#ifndef HAVE_COGL_GLES2
   GE( glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
   if (max_clip_planes >= 4)
     flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
+#endif
 
 #ifdef HAVE_COGL_GLES2
   flags |= COGL_FEATURE_SHADERS_GLSL | COGL_FEATURE_OFFSCREEN;

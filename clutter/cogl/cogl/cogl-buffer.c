@@ -60,10 +60,6 @@
 #define glMapBuffer ctx->drv.pf_glMapBuffer
 #define glUnmapBuffer ctx->drv.pf_glUnmapBuffer
 
-#elif defined (HAVE_COGL_GLES2)
-
-#include "../gles/cogl-gles2-wrapper.h"
-
 #endif
 
 #ifndef GL_PIXEL_PACK_BUFFER

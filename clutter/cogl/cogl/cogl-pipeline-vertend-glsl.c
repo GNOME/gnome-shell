@@ -218,6 +218,30 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
                    "main ()\n"
                    "{\n");
 
+#ifdef HAVE_COGL_GLES2
+
+  /* There is no builtin uniform for the pointsize on GLES2 so we need
+     to copy it from the custom uniform in the vertex shader */
+  g_string_append (priv->source,
+                   "  cogl_point_size_out = cogl_point_size_in;\n");
+
+#else /* HAVE_COGL_GLES2 */
+
+  /* On regular OpenGL we'll just flush the point size builtin */
+  if (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE)
+    {
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_POINT_SIZE);
+
+      if (ctx->point_size_cache != authority->big_state->point_size)
+        {
+          GE( glPointSize (authority->big_state->point_size) );
+          ctx->point_size_cache = authority->big_state->point_size;
+        }
+    }
+
+#endif /* HAVE_COGL_GLES2 */
+
   return TRUE;
 }
 

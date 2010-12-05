@@ -42,6 +42,15 @@
 #include "cogl-matrix-private.h"
 #include "cogl-primitives-private.h"
 
+#ifndef GL_CLIP_PLANE0
+#define GL_CLIP_PLANE0 0x3000
+#define GL_CLIP_PLANE1 0x3001
+#define GL_CLIP_PLANE2 0x3002
+#define GL_CLIP_PLANE3 0x3003
+#define GL_CLIP_PLANE4 0x3004
+#define GL_CLIP_PLANE5 0x3005
+#endif
+
 static void
 project_vertex (const CoglMatrix *modelview_projection,
 		float *vertex)
@@ -105,7 +114,9 @@ set_clip_plane (GLint plane_num,
   plane[1] = -1.0;
   plane[2] = 0;
   plane[3] = vertex_a[1];
-#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
+#if defined (HAVE_COGL_GLES2)
+  g_assert_not_reached ();
+#elif defined (HAVE_COGL_GLES)
   GE( glClipPlanef (plane_num, plane) );
 #else
   GE( glClipPlane (plane_num, plane) );
