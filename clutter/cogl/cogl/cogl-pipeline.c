@@ -777,11 +777,16 @@ layer_has_alpha_cb (CoglPipelineLayer *layer, void *data)
    * assume it may result in an alpha value < 1
    *
    * FIXME: we could do better than this. */
-  if (big_state->texture_combine_alpha_func != GL_MODULATE ||
-      big_state->texture_combine_alpha_src[0] != GL_PREVIOUS ||
-      big_state->texture_combine_alpha_op[0] != GL_SRC_ALPHA ||
-      big_state->texture_combine_alpha_src[1] != GL_TEXTURE ||
-      big_state->texture_combine_alpha_op[1] != GL_SRC_ALPHA)
+  if (big_state->texture_combine_alpha_func !=
+      COGL_PIPELINE_COMBINE_FUNC_MODULATE ||
+      big_state->texture_combine_alpha_src[0] !=
+      COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS ||
+      big_state->texture_combine_alpha_op[0] !=
+      COGL_PIPELINE_COMBINE_OP_SRC_ALPHA ||
+      big_state->texture_combine_alpha_src[1] !=
+      COGL_PIPELINE_COMBINE_SOURCE_TEXTURE ||
+      big_state->texture_combine_alpha_op[1] !=
+      COGL_PIPELINE_COMBINE_OP_SRC_ALPHA)
     {
       *has_alpha = TRUE;
       /* return FALSE to stop iterating layers... */
@@ -1614,20 +1619,20 @@ _cogl_pipeline_progend_layer_change_notify (CoglPipeline *owner,
 }
 
 unsigned int
-_cogl_get_n_args_for_combine_func (GLint func)
+_cogl_get_n_args_for_combine_func (CoglPipelineCombineFunc func)
 {
   switch (func)
     {
-    case GL_REPLACE:
+    case COGL_PIPELINE_COMBINE_FUNC_REPLACE:
       return 1;
-    case GL_MODULATE:
-    case GL_ADD:
-    case GL_ADD_SIGNED:
-    case GL_SUBTRACT:
-    case GL_DOT3_RGB:
-    case GL_DOT3_RGBA:
+    case COGL_PIPELINE_COMBINE_FUNC_MODULATE:
+    case COGL_PIPELINE_COMBINE_FUNC_ADD:
+    case COGL_PIPELINE_COMBINE_FUNC_ADD_SIGNED:
+    case COGL_PIPELINE_COMBINE_FUNC_SUBTRACT:
+    case COGL_PIPELINE_COMBINE_FUNC_DOT3_RGB:
+    case COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA:
       return 2;
-    case GL_INTERPOLATE:
+    case COGL_PIPELINE_COMBINE_FUNC_INTERPOLATE:
       return 3;
     }
   return 0;
@@ -4788,16 +4793,26 @@ _cogl_pipeline_init_default_layers (void)
 
   /* Choose the same default combine mode as OpenGL:
    * RGBA = MODULATE(PREVIOUS[RGBA],TEXTURE[RGBA]) */
-  big_state->texture_combine_rgb_func = GL_MODULATE;
-  big_state->texture_combine_rgb_src[0] = GL_PREVIOUS;
-  big_state->texture_combine_rgb_src[1] = GL_TEXTURE;
-  big_state->texture_combine_rgb_op[0] = GL_SRC_COLOR;
-  big_state->texture_combine_rgb_op[1] = GL_SRC_COLOR;
-  big_state->texture_combine_alpha_func = GL_MODULATE;
-  big_state->texture_combine_alpha_src[0] = GL_PREVIOUS;
-  big_state->texture_combine_alpha_src[1] = GL_TEXTURE;
-  big_state->texture_combine_alpha_op[0] = GL_SRC_ALPHA;
-  big_state->texture_combine_alpha_op[1] = GL_SRC_ALPHA;
+  big_state->texture_combine_rgb_func =
+    COGL_PIPELINE_COMBINE_FUNC_MODULATE;
+  big_state->texture_combine_rgb_src[0] =
+    COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS;
+  big_state->texture_combine_rgb_src[1] =
+    COGL_PIPELINE_COMBINE_SOURCE_TEXTURE;
+  big_state->texture_combine_rgb_op[0] =
+    COGL_PIPELINE_COMBINE_OP_SRC_COLOR;
+  big_state->texture_combine_rgb_op[1] =
+    COGL_PIPELINE_COMBINE_OP_SRC_COLOR;
+  big_state->texture_combine_alpha_func =
+    COGL_PIPELINE_COMBINE_FUNC_MODULATE;
+  big_state->texture_combine_alpha_src[0] =
+    COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS;
+  big_state->texture_combine_alpha_src[1] =
+    COGL_PIPELINE_COMBINE_SOURCE_TEXTURE;
+  big_state->texture_combine_alpha_op[0] =
+    COGL_PIPELINE_COMBINE_OP_SRC_ALPHA;
+  big_state->texture_combine_alpha_op[1] =
+    COGL_PIPELINE_COMBINE_OP_SRC_ALPHA;
 
   big_state->point_sprite_coords = FALSE;
 
@@ -4839,37 +4854,37 @@ _cogl_pipeline_init_default_layers (void)
 
 static void
 setup_texture_combine_state (CoglBlendStringStatement *statement,
-                             GLint *texture_combine_func,
-                             GLint *texture_combine_src,
-                             GLint *texture_combine_op)
+                             CoglPipelineCombineFunc *texture_combine_func,
+                             CoglPipelineCombineSource *texture_combine_src,
+                             CoglPipelineCombineOp *texture_combine_op)
 {
   int i;
 
   switch (statement->function->type)
     {
     case COGL_BLEND_STRING_FUNCTION_REPLACE:
-      *texture_combine_func = GL_REPLACE;
+      *texture_combine_func = COGL_PIPELINE_COMBINE_FUNC_REPLACE;
       break;
     case COGL_BLEND_STRING_FUNCTION_MODULATE:
-      *texture_combine_func = GL_MODULATE;
+      *texture_combine_func = COGL_PIPELINE_COMBINE_FUNC_MODULATE;
       break;
     case COGL_BLEND_STRING_FUNCTION_ADD:
-      *texture_combine_func = GL_ADD;
+      *texture_combine_func = COGL_PIPELINE_COMBINE_FUNC_ADD;
       break;
     case COGL_BLEND_STRING_FUNCTION_ADD_SIGNED:
-      *texture_combine_func = GL_ADD_SIGNED;
+      *texture_combine_func = COGL_PIPELINE_COMBINE_FUNC_ADD_SIGNED;
       break;
     case COGL_BLEND_STRING_FUNCTION_INTERPOLATE:
-      *texture_combine_func = GL_INTERPOLATE;
+      *texture_combine_func = COGL_PIPELINE_COMBINE_FUNC_INTERPOLATE;
       break;
     case COGL_BLEND_STRING_FUNCTION_SUBTRACT:
-      *texture_combine_func = GL_SUBTRACT;
+      *texture_combine_func = COGL_PIPELINE_COMBINE_FUNC_SUBTRACT;
       break;
     case COGL_BLEND_STRING_FUNCTION_DOT3_RGB:
-      *texture_combine_func = GL_DOT3_RGB;
+      *texture_combine_func = COGL_PIPELINE_COMBINE_FUNC_DOT3_RGB;
       break;
     case COGL_BLEND_STRING_FUNCTION_DOT3_RGBA:
-      *texture_combine_func = GL_DOT3_RGBA;
+      *texture_combine_func = COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA;
       break;
     }
 
@@ -4880,39 +4895,41 @@ setup_texture_combine_state (CoglBlendStringStatement *statement,
       switch (arg->source.info->type)
         {
         case COGL_BLEND_STRING_COLOR_SOURCE_CONSTANT:
-          texture_combine_src[i] = GL_CONSTANT;
+          texture_combine_src[i] = COGL_PIPELINE_COMBINE_SOURCE_CONSTANT;
           break;
         case COGL_BLEND_STRING_COLOR_SOURCE_TEXTURE:
-          texture_combine_src[i] = GL_TEXTURE;
+          texture_combine_src[i] = COGL_PIPELINE_COMBINE_SOURCE_TEXTURE;
           break;
         case COGL_BLEND_STRING_COLOR_SOURCE_TEXTURE_N:
           texture_combine_src[i] =
-            GL_TEXTURE0 + arg->source.texture;
+            COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 + arg->source.texture;
           break;
         case COGL_BLEND_STRING_COLOR_SOURCE_PRIMARY:
-          texture_combine_src[i] = GL_PRIMARY_COLOR;
+          texture_combine_src[i] = COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR;
           break;
         case COGL_BLEND_STRING_COLOR_SOURCE_PREVIOUS:
-          texture_combine_src[i] = GL_PREVIOUS;
+          texture_combine_src[i] = COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS;
           break;
         default:
           g_warning ("Unexpected texture combine source");
-          texture_combine_src[i] = GL_TEXTURE;
+          texture_combine_src[i] = COGL_PIPELINE_COMBINE_SOURCE_TEXTURE;
         }
 
       if (arg->source.mask == COGL_BLEND_STRING_CHANNEL_MASK_RGB)
         {
           if (statement->args[i].source.one_minus)
-            texture_combine_op[i] = GL_ONE_MINUS_SRC_COLOR;
+            texture_combine_op[i] =
+              COGL_PIPELINE_COMBINE_OP_ONE_MINUS_SRC_COLOR;
           else
-            texture_combine_op[i] = GL_SRC_COLOR;
+            texture_combine_op[i] = COGL_PIPELINE_COMBINE_OP_SRC_COLOR;
         }
       else
         {
           if (statement->args[i].source.one_minus)
-            texture_combine_op[i] = GL_ONE_MINUS_SRC_ALPHA;
+            texture_combine_op[i] =
+              COGL_PIPELINE_COMBINE_OP_ONE_MINUS_SRC_ALPHA;
           else
-            texture_combine_op[i] = GL_SRC_ALPHA;
+            texture_combine_op[i] = COGL_PIPELINE_COMBINE_OP_SRC_ALPHA;
         }
     }
 }

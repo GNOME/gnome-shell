@@ -455,7 +455,7 @@ setup_arg (CoglPipeline *pipeline,
 
   switch (src)
     {
-    case GL_TEXTURE:
+    case COGL_PIPELINE_COMBINE_SOURCE_TEXTURE:
       arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE;
       arg->name = "texel%d";
       arg->texture_unit = _cogl_pipeline_layer_get_unit_index (layer);
@@ -463,7 +463,7 @@ setup_arg (CoglPipeline *pipeline,
       cogl_texture_get_gl_texture (texture, NULL, &gl_target);
       setup_texture_source (arbfp_program_state, arg->texture_unit, gl_target);
       break;
-    case GL_CONSTANT:
+    case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
       {
         int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
         UnitState *unit_state = &arbfp_program_state->unit_state[unit_index];
@@ -476,11 +476,11 @@ setup_arg (CoglPipeline *pipeline,
         arg->constant_id = unit_state->constant_id;
         break;
       }
-    case GL_PRIMARY_COLOR:
+    case COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR:
       arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_SIMPLE;
       arg->name = "fragment.color.primary";
       break;
-    case GL_PREVIOUS:
+    case COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS:
       arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_SIMPLE;
       if (_cogl_pipeline_layer_get_unit_index (layer) == 0)
         arg->name = "fragment.color.primary";
@@ -500,9 +500,9 @@ setup_arg (CoglPipeline *pipeline,
 
   switch (op)
     {
-    case GL_SRC_COLOR:
+    case COGL_PIPELINE_COMBINE_OP_SRC_COLOR:
       break;
-    case GL_ONE_MINUS_SRC_COLOR:
+    case COGL_PIPELINE_COMBINE_OP_ONE_MINUS_SRC_COLOR:
       g_string_append_printf (arbfp_program_state->source,
                               "SUB tmp%d, one, ",
                               arg_index);
@@ -512,13 +512,13 @@ setup_arg (CoglPipeline *pipeline,
       arg->name = tmp_name[arg_index];
       arg->swizzle = "";
       break;
-    case GL_SRC_ALPHA:
+    case COGL_PIPELINE_COMBINE_OP_SRC_ALPHA:
       /* avoid a swizzle if we know RGB are going to be masked
        * in the end anyway */
       if (mask != COGL_BLEND_STRING_CHANNEL_MASK_ALPHA)
         arg->swizzle = ".a";
       break;
-    case GL_ONE_MINUS_SRC_ALPHA:
+    case COGL_PIPELINE_COMBINE_OP_ONE_MINUS_SRC_ALPHA:
       g_string_append_printf (arbfp_program_state->source,
                               "SUB tmp%d, one, ",
                               arg_index);
@@ -594,29 +594,29 @@ append_function (CoglPipeline *pipeline,
 
   switch (function)
     {
-    case GL_ADD:
+    case COGL_PIPELINE_COMBINE_FUNC_ADD:
       g_string_append_printf (arbfp_program_state->source,
                               "ADD_SAT output%s, ",
                               mask_name);
       break;
-    case GL_MODULATE:
+    case COGL_PIPELINE_COMBINE_FUNC_MODULATE:
       /* Note: no need to saturate since we can assume operands
        * have values in the range [0,1] */
       g_string_append_printf (arbfp_program_state->source, "MUL output%s, ",
                               mask_name);
       break;
-    case GL_REPLACE:
+    case COGL_PIPELINE_COMBINE_FUNC_REPLACE:
       /* Note: no need to saturate since we can assume operand
        * has a value in the range [0,1] */
       g_string_append_printf (arbfp_program_state->source, "MOV output%s, ",
                               mask_name);
       break;
-    case GL_SUBTRACT:
+    case COGL_PIPELINE_COMBINE_FUNC_SUBTRACT:
       g_string_append_printf (arbfp_program_state->source,
                               "SUB_SAT output%s, ",
                               mask_name);
       break;
-    case GL_ADD_SIGNED:
+    case COGL_PIPELINE_COMBINE_FUNC_ADD_SIGNED:
       g_string_append_printf (arbfp_program_state->source, "ADD tmp3%s, ",
                               mask_name);
       append_arg (arbfp_program_state->source, &args[0]);
@@ -628,7 +628,7 @@ append_function (CoglPipeline *pipeline,
                               mask_name);
       n_args = 0;
       break;
-    case GL_DOT3_RGB:
+    case COGL_PIPELINE_COMBINE_FUNC_DOT3_RGB:
     /* These functions are the same except that GL_DOT3_RGB never
      * updates the alpha channel.
      *
@@ -636,7 +636,7 @@ append_function (CoglPipeline *pipeline,
      * an RGBA mask and we end up ignoring any separate alpha channel
      * function.
      */
-    case GL_DOT3_RGBA:
+    case COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA:
       {
         const char *tmp4 = "tmp4";
 
@@ -671,7 +671,7 @@ append_function (CoglPipeline *pipeline,
         n_args = 0;
       }
       break;
-    case GL_INTERPOLATE:
+    case COGL_PIPELINE_COMBINE_FUNC_INTERPOLATE:
       /* Note: no need to saturate since we can assume operands
        * have values in the range [0,1] */
 
@@ -708,9 +708,9 @@ static void
 append_masked_combine (CoglPipeline *arbfp_authority,
                        CoglPipelineLayer *layer,
                        CoglBlendStringChannelMask mask,
-                       GLint function,
-                       GLint *src,
-                       GLint *op)
+                       CoglPipelineCombineFunc function,
+                       CoglPipelineCombineSource *src,
+                       CoglPipelineCombineOp *op)
 {
   int i;
   int n_args;
@@ -788,7 +788,8 @@ _cogl_pipeline_fragend_arbfp_add_layer (CoglPipeline *pipeline,
                              big_state->texture_combine_rgb_src,
                              big_state->texture_combine_rgb_op);
     }
-  else if (big_state->texture_combine_rgb_func == GL_DOT3_RGBA)
+  else if (big_state->texture_combine_rgb_func ==
+           COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA)
     {
       /* GL_DOT3_RGBA Is a bit weird as a GL_COMBINE_RGB function
        * since if you use it, it overrides your ALPHA function...

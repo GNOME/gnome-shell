@@ -463,8 +463,8 @@ static void
 add_arg (GlslShaderState *glsl_shader_state,
          CoglPipeline *pipeline,
          CoglPipelineLayer *layer,
-         GLint src,
-         GLenum operand,
+         CoglPipelineCombineSource src,
+         CoglPipelineCombineOp operand,
          const char *swizzle)
 {
   GString *shader_source = glsl_shader_state->source;
@@ -472,14 +472,16 @@ add_arg (GlslShaderState *glsl_shader_state,
 
   g_string_append_c (shader_source, '(');
 
-  if (operand == GL_ONE_MINUS_SRC_COLOR || operand == GL_ONE_MINUS_SRC_ALPHA)
+  if (operand == COGL_PIPELINE_COMBINE_OP_ONE_MINUS_SRC_COLOR ||
+      operand == COGL_PIPELINE_COMBINE_OP_ONE_MINUS_SRC_ALPHA)
     g_string_append_printf (shader_source,
                             "vec4(1.0, 1.0, 1.0, 1.0).%s - ",
                             swizzle);
 
   /* If the operand is reading from the alpha then replace the swizzle
      with the same number of copies of the alpha */
-  if (operand == GL_SRC_ALPHA || operand == GL_ONE_MINUS_SRC_ALPHA)
+  if (operand == COGL_PIPELINE_COMBINE_OP_SRC_ALPHA ||
+      operand == COGL_PIPELINE_COMBINE_OP_ONE_MINUS_SRC_ALPHA)
     {
       alpha_swizzle[strlen (swizzle)] = '\0';
       swizzle = alpha_swizzle;
@@ -487,37 +489,38 @@ add_arg (GlslShaderState *glsl_shader_state,
 
   switch (src)
     {
-    case GL_TEXTURE:
+    case COGL_PIPELINE_COMBINE_SOURCE_TEXTURE:
       add_texture_lookup (glsl_shader_state,
                           pipeline,
                           layer,
                           swizzle);
       break;
 
-    case GL_CONSTANT:
+    case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
       add_constant_lookup (glsl_shader_state,
                            pipeline,
                            layer,
                            swizzle);
       break;
 
-    case GL_PREVIOUS:
+    case COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS:
       if (_cogl_pipeline_layer_get_unit_index (layer) > 0)
         {
           g_string_append_printf (shader_source, "cogl_color_out.%s", swizzle);
           break;
         }
       /* flow through */
-    case GL_PRIMARY_COLOR:
+    case COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR:
       g_string_append_printf (shader_source, "cogl_color_in.%s", swizzle);
       break;
 
     default:
-      if (src >= GL_TEXTURE0 && src < GL_TEXTURE0 + 32)
+      if (src >= COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 &&
+          src < COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 + 32)
         {
           FindPipelineLayerData data;
 
-          data.unit_index = src - GL_TEXTURE0;
+          data.unit_index = src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0;
           data.layer = layer;
 
           _cogl_pipeline_foreach_layer_internal (pipeline,
@@ -539,9 +542,9 @@ static void
 append_masked_combine (CoglPipeline *pipeline,
                        CoglPipelineLayer *layer,
                        const char *swizzle,
-                       GLint function,
-                       GLint *src,
-                       GLint *op)
+                       CoglPipelineCombineFunc function,
+                       CoglPipelineCombineSource *src,
+                       CoglPipelineCombineOp *op)
 {
   GlslShaderState *glsl_shader_state = get_glsl_shader_state (pipeline);
   GString *shader_source = glsl_shader_state->source;
@@ -551,12 +554,12 @@ append_masked_combine (CoglPipeline *pipeline,
 
   switch (function)
     {
-    case GL_REPLACE:
+    case COGL_PIPELINE_COMBINE_FUNC_REPLACE:
       add_arg (glsl_shader_state, pipeline, layer,
                src[0], op[0], swizzle);
       break;
 
-    case GL_MODULATE:
+    case COGL_PIPELINE_COMBINE_FUNC_MODULATE:
       add_arg (glsl_shader_state, pipeline, layer,
                src[0], op[0], swizzle);
       g_string_append (shader_source, " * ");
@@ -564,7 +567,7 @@ append_masked_combine (CoglPipeline *pipeline,
                src[1], op[1], swizzle);
       break;
 
-    case GL_ADD:
+    case COGL_PIPELINE_COMBINE_FUNC_ADD:
       add_arg (glsl_shader_state, pipeline, layer,
                src[0], op[0], swizzle);
       g_string_append (shader_source, " + ");
@@ -572,7 +575,7 @@ append_masked_combine (CoglPipeline *pipeline,
                src[1], op[1], swizzle);
       break;
 
-    case GL_ADD_SIGNED:
+    case COGL_PIPELINE_COMBINE_FUNC_ADD_SIGNED:
       add_arg (glsl_shader_state, pipeline, layer,
                src[0], op[0], swizzle);
       g_string_append (shader_source, " + ");
@@ -583,7 +586,7 @@ append_masked_combine (CoglPipeline *pipeline,
                               swizzle);
       break;
 
-    case GL_SUBTRACT:
+    case COGL_PIPELINE_COMBINE_FUNC_SUBTRACT:
       add_arg (glsl_shader_state, pipeline, layer,
                src[0], op[0], swizzle);
       g_string_append (shader_source, " - ");
@@ -591,7 +594,7 @@ append_masked_combine (CoglPipeline *pipeline,
                src[1], op[1], swizzle);
       break;
 
-    case GL_INTERPOLATE:
+    case COGL_PIPELINE_COMBINE_FUNC_INTERPOLATE:
       add_arg (glsl_shader_state, pipeline, layer,
                src[0], op[0], swizzle);
       g_string_append (shader_source, " * ");
@@ -608,8 +611,8 @@ append_masked_combine (CoglPipeline *pipeline,
       g_string_append_c (shader_source, ')');
       break;
 
-    case GL_DOT3_RGB:
-    case GL_DOT3_RGBA:
+    case COGL_PIPELINE_COMBINE_FUNC_DOT3_RGB:
+    case COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA:
       g_string_append (shader_source, "vec4(4.0 * ((");
       add_arg (glsl_shader_state, pipeline, layer,
                src[0], op[0], "r");
@@ -653,7 +656,8 @@ _cogl_pipeline_fragend_glsl_add_layer (CoglPipeline *pipeline,
       /* GL_DOT3_RGBA Is a bit weird as a GL_COMBINE_RGB function
        * since if you use it, it overrides your ALPHA function...
        */
-      big_state->texture_combine_rgb_func == GL_DOT3_RGBA)
+      big_state->texture_combine_rgb_func ==
+      COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA)
     append_masked_combine (pipeline,
                            layer,
                            "rgba",
