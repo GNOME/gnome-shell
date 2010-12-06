@@ -21,6 +21,8 @@ const MAX_FILE_DELETED_BEFORE_INVALID = 10;
 const HISTORY_KEY = 'command-history';
 const HISTORY_LIMIT = 512;
 
+const DIALOG_GROW_TIME = 0.1;
+
 function CommandCompleter() {
     this._init();
 }
@@ -362,7 +364,21 @@ __proto__: ModalDialog.ModalDialog.prototype,
                     let errorStr = _("Execution of '%s' failed:").format(command) + '\n' + e.message;
                     this._errorMessage.set_text(errorStr);
 
-                    this._errorBox.show();
+                    if (!this._errorBox.visible) {
+                        let [errorBoxMinHeight, errorBoxNaturalHeight] = this._errorBox.get_preferred_height(-1);
+
+                        let parentActor = this._errorBox.get_parent();
+                        Tweener.addTween(parentActor,
+                                         { height: parentActor.height + errorBoxNaturalHeight,
+                                           time: DIALOG_GROW_TIME,
+                                           transition: 'easeOutQuad',
+                                           onComplete: Lang.bind(this,
+                                               function() {
+                                                    parentActor.set_height(-1);
+                                                    this._errorBox.show();
+                                               })
+                                         });
+                    }
                 }
             }
         }
