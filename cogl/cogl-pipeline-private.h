@@ -1044,6 +1044,10 @@ CoglPipelineFilter
 _cogl_pipeline_get_layer_mag_filter (CoglPipeline *pipeline,
                                      int layer_index);
 
+const CoglMatrix *
+_cogl_pipeline_get_layer_matrix (CoglPipeline *pipeline,
+                                 int layer_index);
+
 void
 _cogl_pipeline_texture_storage_change_notify (CoglHandle texture);
 
