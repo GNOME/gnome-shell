@@ -39,6 +39,10 @@ typedef enum {
   COGL_MATRIX_TEXTURE
 } CoglMatrixMode;
 
+typedef void (* CoglMatrixStackFlushFunc) (gboolean is_identity,
+                                           const CoglMatrix *matrix,
+                                           void *user_data);
+
 CoglMatrixStack *
 _cogl_matrix_stack_new (void);
 
@@ -116,5 +120,11 @@ _cogl_matrix_stack_get_age (CoglMatrixStack *stack);
    it. */
 gboolean
 _cogl_matrix_stack_has_identity_flag (CoglMatrixStack *stack);
+
+void
+_cogl_matrix_stack_prepare_for_flush (CoglMatrixStack *stack,
+                                      CoglMatrixMode mode,
+                                      CoglMatrixStackFlushFunc callback,
+                                      void *user_data);
 
 #endif /* __COGL_MATRIX_STACK_H */

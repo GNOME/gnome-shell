@@ -233,6 +233,8 @@ _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
 
   unit_index = _cogl_pipeline_layer_get_unit_index (layer);
 
+#ifndef HAVE_COGL_GLES2
+
   /* We are using the fixed function uniforms for the user matrices
      and the only way to set them is with the fixed function API so we
      still need to flush them here */
@@ -248,6 +250,8 @@ _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
 
       _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
     }
+
+#endif /* HAVE_COGL_GLES2 */
 
   if (priv->source == NULL)
     return TRUE;

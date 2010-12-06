@@ -63,8 +63,11 @@ const CoglPipelineProgend _cogl_pipeline_glsl_progend;
 typedef struct _UnitState
 {
   unsigned int dirty_combine_constant:1;
+  unsigned int dirty_texture_matrix:1;
 
   GLint combine_constant_uniform;
+
+  GLint texture_matrix_uniform;
 } UnitState;
 
 typedef struct
@@ -106,6 +109,16 @@ typedef struct
   /* We only allocate this array if more than one tex coord attribute
      is requested because most pipelines will only use one layer */
   GArray *tex_coord_attribute_locations;
+
+  GLint modelview_uniform;
+  GLint projection_uniform;
+  GLint mvp_uniform;
+
+  CoglMatrixStack *flushed_modelview_stack;
+  unsigned int flushed_modelview_stack_age;
+  gboolean flushed_modelview_is_identity;
+  CoglMatrixStack *flushed_projection_stack;
+  unsigned int flushed_projection_stack_age;
 #endif
 
   /* We need to track the last pipeline that the program was used with
@@ -253,6 +266,22 @@ clear_attribute_cache (CoglPipelineProgendPrivate *priv)
     }
 }
 
+static void
+clear_flushed_matrix_stacks (CoglPipelineProgendPrivate *priv)
+{
+  if (priv->flushed_modelview_stack)
+    {
+      cogl_object_unref (priv->flushed_modelview_stack);
+      priv->flushed_modelview_stack = NULL;
+    }
+  if (priv->flushed_projection_stack)
+    {
+      cogl_object_unref (priv->flushed_projection_stack);
+      priv->flushed_projection_stack = NULL;
+    }
+  priv->flushed_modelview_is_identity = FALSE;
+}
+
 #endif /* HAVE_COGL_GLES2 */
 
 static void
@@ -264,6 +293,7 @@ destroy_glsl_priv (void *user_data)
     {
 #ifdef HAVE_COGL_GLES2
       clear_attribute_cache (priv);
+      clear_flushed_matrix_stacks (priv);
 #endif
 
       if (priv->program)
@@ -377,6 +407,20 @@ get_uniform_cb (CoglPipeline *pipeline,
 
   unit_state->combine_constant_uniform = uniform_location;
 
+#ifdef HAVE_COGL_GLES2
+
+  g_string_set_size (ctx->codegen_source_buffer, 0);
+  g_string_append_printf (ctx->codegen_source_buffer,
+                          "cogl_texture_matrix[%i]", state->unit);
+
+  GE_RET( uniform_location,
+          glGetUniformLocation (state->gl_program,
+                                ctx->codegen_source_buffer->str) );
+
+  unit_state->texture_matrix_uniform = uniform_location;
+
+#endif
+
   state->unit++;
 
   return TRUE;
@@ -404,6 +448,24 @@ update_constants_cb (CoglPipeline *pipeline,
                         1, constant));
       unit_state->dirty_combine_constant = FALSE;
     }
+
+#ifdef HAVE_COGL_GLES2
+
+  if (unit_state->texture_matrix_uniform != -1 &&
+      (state->update_all || unit_state->dirty_texture_matrix))
+    {
+      const CoglMatrix *matrix;
+      const float *array;
+
+      matrix = _cogl_pipeline_get_layer_matrix (pipeline, layer_index);
+      array = cogl_matrix_get_array (matrix);
+      GE (glUniformMatrix4fv (unit_state->texture_matrix_uniform,
+                              1, FALSE, array));
+      unit_state->dirty_texture_matrix = FALSE;
+    }
+
+#endif /* HAVE_COGL_GLES2 */
+
   return TRUE;
 }
 
@@ -496,6 +558,9 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
                                     cogl_pipeline_get_n_layers (pipeline));
 #ifdef HAVE_COGL_GLES2
           priv->tex_coord_attribute_locations = NULL;
+          priv->flushed_modelview_stack = NULL;
+          priv->flushed_modelview_is_identity = FALSE;
+          priv->flushed_projection_stack = NULL;
 #endif
           set_glsl_priv (authority, priv);
         }
@@ -613,10 +678,23 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
   if (program_changed)
     {
       clear_attribute_cache (priv);
+      clear_flushed_matrix_stacks (priv);
 
       GE_RET( priv->alpha_test_reference_uniform,
               glGetUniformLocation (gl_program,
                                     "_cogl_alpha_test_ref") );
+
+      GE_RET( priv->modelview_uniform,
+              glGetUniformLocation (gl_program,
+                                    "cogl_modelview_matrix") );
+
+      GE_RET( priv->projection_uniform,
+              glGetUniformLocation (gl_program,
+                                    "cogl_projection_matrix") );
+
+      GE_RET( priv->mvp_uniform,
+              glGetUniformLocation (gl_program,
+                                    "cogl_modelview_projection_matrix") );
 
       GE_RET( priv->point_size_uniform,
               glGetUniformLocation (gl_program,
@@ -695,13 +773,183 @@ _cogl_pipeline_progend_glsl_layer_pre_change_notify (
           priv->unit_state[unit_index].dirty_combine_constant = TRUE;
         }
     }
+
+  if (change & COGL_PIPELINE_LAYER_STATE_USER_MATRIX)
+    {
+      CoglPipelineProgendPrivate *priv = get_glsl_priv (owner);
+      if (priv)
+        {
+          int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
+          priv->unit_state[unit_index].dirty_texture_matrix = TRUE;
+        }
+    }
 }
+
+#ifdef HAVE_COGL_GLES2
+
+static void
+flush_modelview_cb (gboolean is_identity,
+                    const CoglMatrix *matrix,
+                    void *user_data)
+{
+  CoglPipelineProgendPrivate *priv = user_data;
+
+  GE( glUniformMatrix4fv (priv->modelview_uniform, 1, FALSE,
+                          cogl_matrix_get_array (matrix)) );
+}
+
+static void
+flush_projection_cb (gboolean is_identity,
+                    const CoglMatrix *matrix,
+                    void *user_data)
+{
+  CoglPipelineProgendPrivate *priv = user_data;
+
+  GE( glUniformMatrix4fv (priv->projection_uniform, 1, FALSE,
+                          cogl_matrix_get_array (matrix)) );
+}
+
+typedef struct
+{
+  CoglPipelineProgendPrivate *priv;
+  const CoglMatrix *projection_matrix;
+} FlushCombinedData;
+
+static void
+flush_combined_step_two_cb (gboolean is_identity,
+                            const CoglMatrix *matrix,
+                            void *user_data)
+{
+  FlushCombinedData *data = user_data;
+  CoglMatrix mvp_matrix;
+
+  /* If the modelview is the identity then we can bypass the matrix
+     multiplication */
+  if (is_identity)
+    GE( glUniformMatrix4fv (data->priv->mvp_uniform, 1, FALSE,
+                            cogl_matrix_get_array (data->projection_matrix)) );
+  else
+    {
+      cogl_matrix_multiply (&mvp_matrix,
+                            data->projection_matrix,
+                            matrix);
+
+      GE( glUniformMatrix4fv (data->priv->mvp_uniform, 1, FALSE,
+                              cogl_matrix_get_array (&mvp_matrix)) );
+    }
+}
+
+static void
+flush_combined_step_one_cb (gboolean is_identity,
+                            const CoglMatrix *matrix,
+                            void *user_data)
+{
+  FlushCombinedData data;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  data.priv = user_data;
+  data.projection_matrix = matrix;
+
+  _cogl_matrix_stack_prepare_for_flush (ctx->flushed_modelview_stack,
+                                        COGL_MATRIX_MODELVIEW,
+                                        flush_combined_step_two_cb,
+                                        &data);
+}
+
+static void
+_cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
+{
+  CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
+  gboolean modelview_changed;
+  gboolean projection_changed;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* We only need to update the matrices if we're using the the GLSL
+     vertend, but this is a requirement on GLES2 anyway */
+  g_return_if_fail (pipeline->vertend == COGL_PIPELINE_VERTEND_GLSL);
+
+  priv = get_glsl_priv (pipeline);
+
+  /* An initial pipeline is flushed while creating the context. At
+     this point there are no matrices flushed so we can't do
+     anything */
+  if (ctx->flushed_modelview_stack == NULL ||
+      ctx->flushed_projection_stack == NULL)
+    return;
+
+  /* When flushing from the journal the modelview matrix is usually
+     the identity matrix so it makes sense to optimise this case by
+     specifically checking whether we already have the identity matrix
+     which will catch a lot of common cases of redundant flushing */
+  if (priv->flushed_modelview_is_identity &&
+      _cogl_matrix_stack_has_identity_flag (ctx->flushed_modelview_stack))
+    modelview_changed = FALSE;
+  else
+    modelview_changed =
+      priv->flushed_modelview_stack != ctx->flushed_modelview_stack ||
+      priv->flushed_modelview_stack_age !=
+      _cogl_matrix_stack_get_age (priv->flushed_modelview_stack);
+
+  projection_changed =
+    priv->flushed_projection_stack != ctx->flushed_projection_stack ||
+    priv->flushed_projection_stack_age !=
+    _cogl_matrix_stack_get_age (priv->flushed_projection_stack);
+
+  if (modelview_changed)
+    {
+      cogl_object_ref (ctx->flushed_modelview_stack);
+      if (priv->flushed_modelview_stack)
+        cogl_object_unref (priv->flushed_modelview_stack);
+      priv->flushed_modelview_stack = ctx->flushed_modelview_stack;
+      priv->flushed_modelview_stack_age =
+        _cogl_matrix_stack_get_age (ctx->flushed_modelview_stack);
+      priv->flushed_modelview_is_identity =
+        _cogl_matrix_stack_has_identity_flag (ctx->flushed_modelview_stack);
+
+      if (priv->modelview_uniform != -1)
+        _cogl_matrix_stack_prepare_for_flush (priv->flushed_modelview_stack,
+                                              COGL_MATRIX_MODELVIEW,
+                                              flush_modelview_cb,
+                                              priv);
+    }
+
+  if (projection_changed)
+    {
+      cogl_object_ref (ctx->flushed_projection_stack);
+      if (priv->flushed_projection_stack)
+        cogl_object_unref (priv->flushed_projection_stack);
+      priv->flushed_projection_stack = ctx->flushed_projection_stack;
+      priv->flushed_projection_stack_age =
+        _cogl_matrix_stack_get_age (ctx->flushed_projection_stack);
+
+      if (priv->projection_uniform != -1)
+        _cogl_matrix_stack_prepare_for_flush (priv->flushed_projection_stack,
+                                              COGL_MATRIX_PROJECTION,
+                                              flush_projection_cb,
+                                              priv);
+    }
+
+  if (priv->mvp_uniform != -1 && (modelview_changed || projection_changed))
+    _cogl_matrix_stack_prepare_for_flush (ctx->flushed_projection_stack,
+                                          COGL_MATRIX_PROJECTION,
+                                          flush_combined_step_one_cb,
+                                          priv);
+}
+
+#endif
 
 const CoglPipelineProgend _cogl_pipeline_glsl_progend =
   {
     _cogl_pipeline_progend_glsl_end,
     _cogl_pipeline_progend_glsl_pre_change_notify,
-    _cogl_pipeline_progend_glsl_layer_pre_change_notify
+    _cogl_pipeline_progend_glsl_layer_pre_change_notify,
+#ifdef HAVE_COGL_GLES2
+    _cogl_pipeline_progend_glsl_pre_paint
+#else
+    NULL
+#endif
   };
 
 #endif /* COGL_PIPELINE_PROGEND_GLSL */

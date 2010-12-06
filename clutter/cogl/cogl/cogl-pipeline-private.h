@@ -735,6 +735,10 @@ typedef struct
   void (*layer_pre_change_notify) (CoglPipeline *owner,
                                    CoglPipelineLayer *layer,
                                    CoglPipelineLayerState change);
+  /* This is called after all of the other functions whenever the
+     pipeline is flushed, even if the pipeline hasn't changed since
+     the last flush */
+  void (* pre_paint) (CoglPipeline *pipeline);
 } CoglPipelineProgend;
 
 typedef enum

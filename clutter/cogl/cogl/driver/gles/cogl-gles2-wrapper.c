@@ -590,6 +590,7 @@ _cogl_wrap_prepare_for_draw (void)
   /* Make sure all of the uniforms are up to date */
   if (w->dirty_uniforms)
     {
+#if 0 /* <-- this will all be removed when this wrapper is removed */
       if ((w->dirty_uniforms & (COGL_GLES2_DIRTY_MVP_MATRIX
 				| COGL_GLES2_DIRTY_MODELVIEW_MATRIX)))
 	{
@@ -626,6 +627,7 @@ _cogl_wrap_prepare_for_draw (void)
                                     (float *) &texture_unit->texture_matrix);
 	    }
 	}
+#endif /* commented out */
 
       if ((w->dirty_uniforms & COGL_GLES2_DIRTY_POINT_SIZE))
         glUniform1f (program->uniforms.point_size_uniform,

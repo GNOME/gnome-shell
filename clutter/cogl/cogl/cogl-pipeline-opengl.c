@@ -1260,6 +1260,13 @@ done:
     }
 #endif
 
+  /* Give any progends a chance to update any uniforms that might not
+     depend on the material state. This is used on GLES2 to update the
+     matrices */
+  for (i = 0; i < COGL_PIPELINE_N_PROGENDS; i++)
+    if (_cogl_pipeline_progends[i]->pre_paint)
+      _cogl_pipeline_progends[i]->pre_paint (pipeline);
+
   /* Handle the fact that OpenGL associates texture filter and wrap
    * modes with the texture objects not the texture units... */
   foreach_texture_unit_update_filter_and_wrap_modes ();
