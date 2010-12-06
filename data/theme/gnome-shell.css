@@ -1153,10 +1153,12 @@ StTooltip StLabel {
 }
 
 .run-dialog {
-    padding: 8px;
-    border: 1px solid rgba(128,128,128,0.40);
-    border-radius: 4px;
-    background: rgba(0,0,0,0.8);
+    border-radius: 16px;
+
+    padding-right: 21px;
+    padding-left: 21px;
+    padding-bottom: 15px;
+    padding-top: 15px;
 }
 
 .lightbox {
