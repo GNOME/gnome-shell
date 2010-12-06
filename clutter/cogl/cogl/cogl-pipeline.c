@@ -749,8 +749,8 @@ layer_has_alpha_cb (CoglPipelineLayer *layer, void *data)
   if (big_state->texture_combine_alpha_func != GL_MODULATE ||
       big_state->texture_combine_alpha_src[0] != GL_PREVIOUS ||
       big_state->texture_combine_alpha_op[0] != GL_SRC_ALPHA ||
-      big_state->texture_combine_alpha_src[0] != GL_TEXTURE ||
-      big_state->texture_combine_alpha_op[0] != GL_SRC_ALPHA)
+      big_state->texture_combine_alpha_src[1] != GL_TEXTURE ||
+      big_state->texture_combine_alpha_op[1] != GL_SRC_ALPHA)
     {
       *has_alpha = TRUE;
       /* return FALSE to stop iterating layers... */
