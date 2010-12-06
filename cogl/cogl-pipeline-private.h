@@ -181,17 +181,49 @@ typedef enum
 
 } CoglPipelineLayerState;
 
+typedef enum
+{
+  /* These are the same values as GL */
+  COGL_PIPELINE_COMBINE_FUNC_ADD         = 0x0104,
+  COGL_PIPELINE_COMBINE_FUNC_ADD_SIGNED  = 0x8574,
+  COGL_PIPELINE_COMBINE_FUNC_SUBTRACT    = 0x84E7,
+  COGL_PIPELINE_COMBINE_FUNC_INTERPOLATE = 0x8575,
+  COGL_PIPELINE_COMBINE_FUNC_REPLACE     = 0x1E01,
+  COGL_PIPELINE_COMBINE_FUNC_MODULATE    = 0x2100,
+  COGL_PIPELINE_COMBINE_FUNC_DOT3_RGB    = 0x86AE,
+  COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA   = 0x86AF
+} CoglPipelineCombineFunc;
+
+typedef enum
+{
+  /* These are the same values as GL */
+  COGL_PIPELINE_COMBINE_SOURCE_TEXTURE       = 0x1702,
+  COGL_PIPELINE_COMBINE_SOURCE_CONSTANT      = 0x8576,
+  COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR = 0x8577,
+  COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS      = 0x8578,
+  COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0      = 0x84C0
+} CoglPipelineCombineSource;
+
+typedef enum
+{
+  /* These are the same values as GL */
+  COGL_PIPELINE_COMBINE_OP_SRC_COLOR           = 0x0300,
+  COGL_PIPELINE_COMBINE_OP_ONE_MINUS_SRC_COLOR = 0x0301,
+  COGL_PIPELINE_COMBINE_OP_SRC_ALPHA           = 0x0302,
+  COGL_PIPELINE_COMBINE_OP_ONE_MINUS_SRC_ALPHA = 0x0303
+} CoglPipelineCombineOp;
+
 typedef struct
 {
   /* The texture combine state determines how the color of individual
    * texture fragments are calculated. */
-  GLint texture_combine_rgb_func;
-  GLint texture_combine_rgb_src[3];
-  GLint texture_combine_rgb_op[3];
+  CoglPipelineCombineFunc texture_combine_rgb_func;
+  CoglPipelineCombineSource texture_combine_rgb_src[3];
+  CoglPipelineCombineOp texture_combine_rgb_op[3];
 
-  GLint texture_combine_alpha_func;
-  GLint texture_combine_alpha_src[3];
-  GLint texture_combine_alpha_op[3];
+  CoglPipelineCombineFunc texture_combine_alpha_func;
+  CoglPipelineCombineSource texture_combine_alpha_src[3];
+  CoglPipelineCombineOp texture_combine_alpha_op[3];
 
   float texture_combine_constant[4];
 
@@ -864,7 +896,7 @@ void
 _cogl_use_vertex_program (GLuint gl_program, CoglPipelineProgramType type);
 
 unsigned int
-_cogl_get_n_args_for_combine_func (GLint func);
+_cogl_get_n_args_for_combine_func (CoglPipelineCombineFunc func);
 
 /*
  * _cogl_pipeline_weak_copy:
