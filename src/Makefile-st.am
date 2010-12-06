@@ -47,7 +47,7 @@ st-marshal.c: Makefile st/st-marshal.list
 
 st-enum-types.h: stamp-st-enum-types.h Makefile
 	@true
-stamp-st-enum-types.h: $(source_h) st/st-enum-types.h.in
+stamp-st-enum-types.h: $(source_h) st/st-enum-types.h.in $(st_source_h)
 	$(AM_V_GEN) ( cd $(srcdir) &&					\
 	  $(GLIB_MKENUMS)						\
 	    --template st/st-enum-types.h.in				\
