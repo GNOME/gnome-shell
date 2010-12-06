@@ -251,6 +251,11 @@ cogl_create_context (void)
    * makes things a bit simpler for us. */
   GE (glEnable (GL_ALPHA_TEST));
 
+#ifdef HAVE_COGL_GLES2
+  _context->flushed_modelview_stack = NULL;
+  _context->flushed_projection_stack = NULL;
+#endif
+
   /* Create default textures used for fall backs */
   _context->default_gl_texture_2d_tex =
     cogl_texture_new_from_data (1, /* width */
@@ -362,6 +367,13 @@ _cogl_destroy_context (void)
 
   g_slist_free (_context->texture_types);
   g_slist_free (_context->buffer_types);
+
+#ifdef HAVE_COGL_GLES2
+  if (_context->flushed_modelview_stack)
+    cogl_object_unref (_context->flushed_modelview_stack);
+  if (_context->flushed_projection_stack)
+    cogl_object_unref (_context->flushed_projection_stack);
+#endif
 
 #ifdef HAVE_COGL_GL
   g_hash_table_unref (_context->arbfp_cache);

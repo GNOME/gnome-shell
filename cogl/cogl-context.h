@@ -76,6 +76,16 @@ typedef struct
   /* Client-side matrix stack or NULL if none */
   CoglMatrixMode    flushed_matrix_mode;
 
+  /* On GLES2 we need to track the matrices separately because the are
+     stored in GLSL uniforms rather than using the fixed function
+     API. We keep track of the matrix stack that Cogl is trying to
+     flush so we can flush it later after the program is generated. A
+     reference is taken on the stacks. */
+#ifdef HAVE_COGL_GLES2
+  CoglMatrixStack  *flushed_modelview_stack;
+  CoglMatrixStack  *flushed_projection_stack;
+#endif /* HAVE_COGL_GLES2 */
+
   GArray           *texture_units;
   int               active_texture_unit;
 

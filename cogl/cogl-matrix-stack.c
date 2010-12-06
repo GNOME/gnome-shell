@@ -390,6 +390,64 @@ _cogl_matrix_stack_set (CoglMatrixStack  *stack,
   /* mark dirty */
   stack->flushed_state = NULL;
   state->is_identity = FALSE;
+  stack->age++;
+}
+
+#ifndef HAVE_COGL_GLES2
+
+static void
+flush_to_fixed_api_gl (gboolean is_identity,
+                       const CoglMatrix *matrix,
+                       void *user_data)
+{
+  CoglMatrixStack *stack = user_data;
+
+  if (is_identity)
+    {
+      if (!stack->flushed_identity)
+        GE (glLoadIdentity ());
+      stack->flushed_identity = TRUE;
+    }
+  else
+    {
+      GE (glLoadMatrixf (cogl_matrix_get_array (matrix)) );
+      stack->flushed_identity = FALSE;
+    }
+}
+
+#endif /* HAVE_COGL_GLES2 */
+
+void
+_cogl_matrix_stack_prepare_for_flush (CoglMatrixStack *stack,
+                                      CoglMatrixMode mode,
+                                      CoglMatrixStackFlushFunc callback,
+                                      void *user_data)
+{
+  CoglMatrixState *state;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  state = _cogl_matrix_stack_top (stack);
+
+  /* Because Cogl defines texture coordinates to have a top left origin and
+   * because offscreen framebuffers may be used for rendering to textures we
+   * always render upside down to offscreen buffers.
+   */
+  if (mode == COGL_MATRIX_PROJECTION &&
+      cogl_is_offscreen (_cogl_get_framebuffer ()))
+    {
+      CoglMatrix flipped_projection;
+      CoglMatrix *projection =
+        state->is_identity ? &ctx->identity_matrix : &state->matrix;
+
+      cogl_matrix_multiply (&flipped_projection,
+                            &ctx->y_flip_matrix, projection);
+      callback (FALSE, &flipped_projection, user_data);
+    }
+  else
+    callback (state->is_identity,
+              state->is_identity ? &ctx->identity_matrix : &state->matrix,
+              user_data);
 }
 
 void
@@ -401,6 +459,40 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   state = _cogl_matrix_stack_top (stack);
+
+#ifdef HAVE_COGL_GLES2
+
+  /* Under GLES2 we need to flush the matrices differently because
+     they are stored in uniforms attached to the program instead of
+     the global GL context state. At this point we can't be sure that
+     the right program will be generated so instead we'll just store a
+     reference to the matrix stack that is intended to be flushed and
+     update the uniform once the program is ready. */
+
+  switch (mode)
+    {
+    case COGL_MATRIX_MODELVIEW:
+      cogl_object_ref (stack);
+      if (ctx->flushed_modelview_stack)
+        cogl_object_unref (ctx->flushed_modelview_stack);
+      ctx->flushed_modelview_stack = stack;
+      break;
+
+    case COGL_MATRIX_PROJECTION:
+      cogl_object_ref (stack);
+      if (ctx->flushed_projection_stack)
+        cogl_object_unref (ctx->flushed_projection_stack);
+      ctx->flushed_projection_stack = stack;
+      break;
+
+    case COGL_MATRIX_TEXTURE:
+      /* This shouldn't happen because the texture matrices are
+         handled by the GLSL pipeline backend */
+      g_assert_not_reached ();
+      break;
+    }
+
+#else /* HAVE_COGL_GLES2 */
 
   if (stack->flushed_state == state)
     return;
@@ -428,36 +520,13 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
       ctx->flushed_matrix_mode = mode;
     }
 
-  /* Because Cogl defines texture coordinates to have a top left origin and
-   * because offscreen framebuffers may be used for rendering to textures we
-   * always render upside down to offscreen buffers.
-   */
-  if (mode == COGL_MATRIX_PROJECTION &&
-      cogl_is_offscreen (_cogl_get_framebuffer ()))
-    {
-      CoglMatrix flipped_projection;
-      CoglMatrix *projection =
-        state->is_identity ? &ctx->identity_matrix : &state->matrix;
+  _cogl_matrix_stack_prepare_for_flush (stack,
+                                        mode,
+                                        flush_to_fixed_api_gl,
+                                        stack);
 
-      cogl_matrix_multiply (&flipped_projection,
-                            &ctx->y_flip_matrix, projection);
-      GE (glLoadMatrixf (cogl_matrix_get_array (&flipped_projection)));
-      stack->flushed_identity = FALSE;
-    }
-  else
-    {
-      if (state->is_identity)
-        {
-          if (!stack->flushed_identity)
-            GE (glLoadIdentity ());
-          stack->flushed_identity = TRUE;
-        }
-      else
-        {
-            GE (glLoadMatrixf (cogl_matrix_get_array (&state->matrix)));
-          stack->flushed_identity = FALSE;
-        }
-    }
+#endif /* HAVE_COGL_GLES2 */
+
   stack->flushed_state = state;
 }
 
