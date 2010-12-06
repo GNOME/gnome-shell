@@ -5141,6 +5141,25 @@ _cogl_pipeline_get_layer_combine_constant (CoglPipeline *pipeline,
           sizeof (float) * 4);
 }
 
+/* We should probably make a public API version of this that has a
+   matrix out-param. For an internal API it's good to be able to avoid
+   copying the matrix */
+const CoglMatrix *
+_cogl_pipeline_get_layer_matrix (CoglPipeline *pipeline, int layer_index)
+{
+  CoglPipelineLayerState       change =
+    COGL_PIPELINE_LAYER_STATE_USER_MATRIX;
+  CoglPipelineLayer *layer;
+  CoglPipelineLayer *authority;
+
+  g_return_val_if_fail (cogl_is_pipeline (pipeline), NULL);
+
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
+
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
+  return &authority->big_state->matrix;
+}
+
 void
 cogl_pipeline_set_layer_matrix (CoglPipeline *pipeline,
 				int layer_index,
