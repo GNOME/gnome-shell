@@ -180,7 +180,7 @@ meta_region_iterator_next (MetaRegionIterator *iter)
   iter->rectangle = iter->next_rectangle;
   iter->line_start = iter->line_end;
 
-  if (iter->i < iter->n_rectangles)
+  if (iter->i + 1 < iter->n_rectangles)
     {
       cairo_region_get_rectangle (iter->region, iter->i + 1, &iter->next_rectangle);
       iter->line_end = iter->next_rectangle.y != iter->rectangle.y;
