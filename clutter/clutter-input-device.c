@@ -515,8 +515,8 @@ _clutter_input_device_update (ClutterInputDevice *device)
   stage = device->stage;
   if (G_UNLIKELY (stage == NULL))
     {
-      g_warning ("No stage defined for device '%s'",
-                 clutter_input_device_get_device_name (device));
+      CLUTTER_NOTE (EVENT, "No stage defined for device '%s'",
+                    clutter_input_device_get_device_name (device));
       return NULL;
     }
 
