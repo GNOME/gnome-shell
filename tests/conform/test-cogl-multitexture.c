@@ -40,8 +40,7 @@ assert_region_color (int x,
 #if 1
         g_assert (pixel[RED] == red &&
                   pixel[GREEN] == green &&
-                  pixel[BLUE] == blue &&
-                  pixel[ALPHA] == alpha);
+                  pixel[BLUE] == blue);
 #endif
       }
   g_free (data);
