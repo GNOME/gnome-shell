@@ -242,6 +242,15 @@ clutter_shader_effect_update_uniforms (ClutterShaderEffect *effect)
                                           1, 1,
                                           &float_val);
         }
+      else if (G_VALUE_HOLDS_DOUBLE (&uniform->value))
+        {
+          const GLfloat float_val =
+            (GLfloat) g_value_get_double (&uniform->value);
+
+          cogl_program_set_uniform_float (priv->program, uniform->location,
+                                          1, 1,
+                                          &float_val);
+        }
       else if (G_VALUE_HOLDS_INT (&uniform->value))
         {
           const GLint int_val = g_value_get_int (&uniform->value);
@@ -554,7 +563,8 @@ clutter_shader_effect_add_uniform (ClutterShaderEffect *effect,
  * %CLUTTER_TYPE_SHADER_INT, for an array of integer values;
  * %CLUTTER_TYPE_SHADER_FLOAT, for an array of floating point values;
  * and %CLUTTER_TYPE_SHADER_MATRIX, for a matrix of floating point
- * values
+ * values. It also accepts %G_TYPE_DOUBLE for compatibility with other
+ * languages than C.
  *
  * Since: 1.4
  */
