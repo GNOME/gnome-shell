@@ -208,8 +208,10 @@ cogl_create_context (void)
 
   _context->legacy_depth_test_enabled = FALSE;
 
+#ifdef HAVE_COGL_GL
   _context->arbfp_cache = g_hash_table_new (_cogl_pipeline_arbfp_hash,
                                             _cogl_pipeline_arbfp_equal);
+#endif
 
   for (i = 0; i < COGL_BUFFER_BIND_TARGET_COUNT; i++)
     _context->current_buffer[i] = NULL;
@@ -360,7 +362,9 @@ _cogl_destroy_context (void)
   g_slist_free (_context->texture_types);
   g_slist_free (_context->buffer_types);
 
+#ifdef HAVE_COGL_GL
   g_hash_table_unref (_context->arbfp_cache);
+#endif
 
   g_free (_context);
 }

@@ -91,7 +91,9 @@ typedef struct
 
   int               legacy_state_set;
 
+#ifdef HAVE_COGL_GL
   GHashTable       *arbfp_cache;
+#endif
 
   /* Textures */
   CoglHandle        default_gl_texture_2d_tex;
