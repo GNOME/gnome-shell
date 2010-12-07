@@ -92,8 +92,8 @@
   "#define cogl_position_out gl_Position\n" \
   "#define cogl_point_size_out gl_PointSize\n" \
   "\n" \
-  "attribute vec4 cogl_position_in;\n" \
   "attribute vec4 cogl_color_in;\n" \
+  "attribute vec4 cogl_position_in;\n" \
   "#define cogl_tex_coord_in cogl_tex_coord0_in;\n" \
   "attribute vec3 cogl_normal_in;\n" \
   "\n" \
