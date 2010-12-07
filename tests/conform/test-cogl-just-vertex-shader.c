@@ -36,8 +36,10 @@ draw_frame (void)
                       "void\n"
                       "main ()\n"
                       "{\n"
-                      "  gl_Position = ftransform ();\n"
-                      "  gl_FrontColor = gl_Color;\n"
+                      "  cogl_position_out = "
+                      "cogl_modelview_projection_matrix * "
+                      "cogl_position_in;\n"
+                      "  cogl_color_out = cogl_color_in;\n"
                       "}\n");
   cogl_shader_compile (shader);
   if (!cogl_shader_is_compiled (shader))
