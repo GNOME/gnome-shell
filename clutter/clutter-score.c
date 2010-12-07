@@ -990,6 +990,7 @@ clutter_score_append_at_marker (ClutterScore    *score,
   entry->marker = g_strdup (marker_name);
   entry->id = priv->last_id;
   entry->score = score;
+  entry->complete_id = 0;
 
   marker_reached_signal = g_strdup_printf ("marker-reached::%s", marker_name);
   entry->marker_id = g_signal_connect (entry->parent,
