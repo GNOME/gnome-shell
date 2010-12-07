@@ -196,14 +196,24 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
   static const char vertex_boilerplate[] = _COGL_VERTEX_SHADER_BOILERPLATE;
   static const char fragment_boilerplate[] = _COGL_FRAGMENT_SHADER_BOILERPLATE;
 
-  const char **strings = g_alloca (sizeof (char *) * (count_in + 2));
-  GLint *lengths = g_alloca (sizeof (GLint) * (count_in + 2));
+  const char **strings = g_alloca (sizeof (char *) * (count_in + 3));
+  GLint *lengths = g_alloca (sizeof (GLint) * (count_in + 3));
   int count = 0;
 #ifdef HAVE_COGL_GLES2
   char *tex_coord_declarations = NULL;
 #endif
 
   GET_CONTEXT (ctx, NO_RETVAL);
+
+#ifdef HAVE_COGL_GLES2
+  if (cogl_features_available (COGL_FEATURE_TEXTURE_3D))
+    {
+      static const char texture_3d_extension[] =
+        "#extension GL_OES_texture_3D : enable\n";
+      strings[count] = texture_3d_extension;
+      lengths[count++] = sizeof (texture_3d_extension) - 1;
+    }
+#endif
 
   if (shader_gl_type == GL_VERTEX_SHADER)
     {
