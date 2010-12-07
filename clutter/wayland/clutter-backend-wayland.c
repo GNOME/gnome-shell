@@ -90,12 +90,13 @@ static const struct wl_drm_listener drm_listener =
 static void
 display_handle_geometry (void *data,
 			 struct wl_output *output,
+			 int32_t x, int32_t y,
 			 int32_t width, int32_t height)
 {
   ClutterBackendWayland *backend_wayland = data;
 
-  backend_wayland->screen_allocation.x = 0;
-  backend_wayland->screen_allocation.y = 0;
+  backend_wayland->screen_allocation.x = x;
+  backend_wayland->screen_allocation.y = y;
   backend_wayland->screen_allocation.width = width;
   backend_wayland->screen_allocation.height = height;
 }
@@ -189,8 +190,7 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
   g_atexit (clutter_backend_at_exit);
 
   /* TODO: expose environment variable/commandline option for this... */
-  backend_wayland->wayland_display =
-    wl_display_create ("\0wayland", sizeof ("\0wayland"));
+  backend_wayland->wayland_display = wl_display_connect ("\0wayland");
   if (!backend_wayland->wayland_display)
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
