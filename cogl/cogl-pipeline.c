@@ -2945,7 +2945,7 @@ _cogl_pipeline_layer_resolve_authorities (CoglPipelineLayer *layer,
       if (found == 0)
         continue;
 
-      for (i = 0; True; i++)
+      for (i = 0; TRUE; i++)
         {
           unsigned long state = (1L<<i);
 
@@ -3323,7 +3323,7 @@ _cogl_pipeline_resolve_authorities (CoglPipeline *pipeline,
       if (found == 0)
         continue;
 
-      for (i = 0; True; i++)
+      for (i = 0; TRUE; i++)
         {
           unsigned long state = (1L<<i);
 
