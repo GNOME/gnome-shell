@@ -351,7 +351,6 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
                                   gboolean need_clear)
 {
   CoglPathData *data = path->data;
-  unsigned long enable_flags = COGL_ENABLE_VERTEX_ARRAY;
   CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
@@ -372,8 +371,6 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
   cogl_push_source (ctx->stencil_pipeline);
 
   _cogl_pipeline_flush_gl_state (ctx->stencil_pipeline, FALSE, 0);
-
-  _cogl_enable (enable_flags);
 
   GE( glEnable (GL_STENCIL_TEST) );
 
@@ -407,8 +404,6 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
                                      data->path_nodes_min.y,
                                      data->path_nodes_max.x,
                                      data->path_nodes_max.y);
-          /* NB: The rectangle may trash the enable flags */
-          _cogl_enable (enable_flags);
         }
       GE (glStencilMask (1));
       GE (glStencilFunc (GL_LEQUAL, 0x1, 0x3));
