@@ -150,7 +150,7 @@ clutter_backend_wayland_handle_key (void *data,
   event = _clutter_key_event_new_from_evdev ((ClutterInputDevice *) device,
                                              stage_wayland->wrapper,
                                              device->xkb,
-                                             _time, key, state
+                                             _time, key, state,
                                              &device->modifier_state);
 
   clutter_context = _clutter_context_get_default ();
