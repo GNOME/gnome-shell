@@ -550,6 +550,11 @@ clutter_backend_egl_init_events (ClutterBackend *backend)
 #ifdef HAVE_EVDEV
   _clutter_events_evdev_init (CLUTTER_BACKEND (backend));
 #endif
+#ifdef COGL_HAS_X11_SUPPORT
+  /* Chain up to the X11 backend */
+  CLUTTER_BACKEND_CLASS (_clutter_backend_egl_parent_class)->
+    init_events (backend);
+#endif
 }
 
 static void
