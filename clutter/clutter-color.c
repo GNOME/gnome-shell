@@ -621,41 +621,61 @@ parse_hsla (ClutterColor *color,
 /**
  * clutter_color_from_string:
  * @color: (out caller-allocates): return location for a #ClutterColor
- * @str: a string specifiying a color (named color or #RRGGBBAA)
+ * @str: a string specifiying a color
  *
  * Parses a string definition of a color, filling the
  * <structfield>red</structfield>, <structfield>green</structfield>, 
  * <structfield>blue</structfield> and <structfield>alpha</structfield> 
- * channels of @color. If alpha is not specified it will be set full opaque.
+ * channels of @color.
  *
  * The @color is not allocated.
  *
  * The format of @str can be either one of:
  *
  * <itemizedlist>
- * <listitem><para>a standard name (taken from the X11 rgb.txt
- * file");</para></listitem>
- * <listitem><para>an hexadecimal value in the form: '#rgb', '#rrggbb',
- * '#rgba' or '#rrggbbaa';</para></listitem>
- * <listitem><para>a RGB color in the form 'rgb(r, g, b)';</para></listitem>
- * <listitem><para>a RGBA color in the form 'rgba(r, g, b,
- * a)';</para></listitem>
+ * <listitem>
+ *   <para>a standard name (as taken from the X11 rgb.txt file)</para>
+ * </listitem>
+ * <listitem>
+ *   <para>an hexadecimal value in the form: <literal>&num;rgb</literal>,
+ *   <literal>&num;rrggbb</literal>, <literal>&num;rgba</literal> or
+ *   <literal>&num;rrggbbaa</literal></para>
+ * </listitem>
+ * <listitem>
+ *   <para>a RGB color in the form: <literal>rgb(r, g, b)</literal></para>
+ * </listitem>
+ * <listitem>
+ *   <para>a RGB color in the form: <literal>rgba(r, g, b, a)</literal></para>
+ * </listitem>
+ * <listitem>
+ *   <para>a HSL color in the form: <literal>hsl(h, s, l)</literal></para>
+ * </listitem>
+ * <litsitem>
+ *   <para>a HSL color in the form: <literal>hsla(h, s, l, a)</literal></para>
+ * </listitem>
  * </itemizedlist>
  *
- * where 'r', 'g', 'b' and 'a' are (respectively) the red, green, blue and
- * alpha color values.
+ * where 'r', 'g', 'b' and 'a' are (respectively) the red, green, blue color
+ * intensities and the opacity. The 'h', 's' and 'l' are (respectively) the
+ * hue, saturation and luminance values.
  *
- * In the last two cases, the 'r', 'g', and 'b' values are either integers
- * between 0 and 255, or percentage values in the range between 0% and 100%;
- * the percentages require the '%' character. The 'a' value, if specified,
+ * In the rgb() and rgba() formats, the 'r', 'g', and 'b' values are either
+ * integers between 0 and 255, or percentage values in the range between 0%
+ * and 100%; the percentages require the '%' character. The 'a' value, if
+ * specified, can only be a floating point value between 0.0 and 1.0.
+ *
+ * In the hls() and hlsa() formats, the 'h' value (hue) it's an angle between
+ * 0 and 360.0 degrees; the 'l' and 's' values (luminance and saturation) are
+ * a floating point value between 0.0 and 1.0. The 'a' value, if specified,
  * can only be a floating point value between 0.0 and 1.0.
  *
- * Whitespace is ignored.
+ * Whitespace inside the definitions is ignored; no leading whitespace
+ * is allowed.
  *
  * If the alpha component is not specified then it is assumed to be set to
  * be fully opaque.
  *
- * Return value: %TRUE if parsing succeeded.
+ * Return value: %TRUE if parsing succeeded, and %FALSE otherwise
  *
  * Since: 1.0
  */
@@ -782,7 +802,7 @@ clutter_color_from_string (ClutterColor *color,
  * Returns a textual specification of @color in the hexadecimal form
  * <literal>&num;rrggbbaa</literal>, where <literal>r</literal>,
  * <literal>g</literal>, <literal>b</literal> and <literal>a</literal> are
- * hex digits representing the red, green, blue and alpha components
+ * hexadecimal digits representing the red, green, blue and alpha components
  * respectively.
  *
  * Return value: (transfer full): a newly-allocated text string
