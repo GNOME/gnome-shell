@@ -214,6 +214,7 @@ _cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
   CoglPipelineBackendARBfpPrivate *priv;
   CoglPipeline *authority;
   CoglPipelineBackendARBfpPrivate *authority_priv;
+  ArbfpProgramState *arbfp_program_state;
   CoglHandle user_program;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -257,6 +258,17 @@ _cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
    */
   authority = _cogl_pipeline_find_codegen_authority (pipeline, user_program);
   authority_priv = get_arbfp_priv (authority);
+  if (authority_priv &&
+      authority_priv->arbfp_program_state)
+    {
+      /* If we are going to share our program state with an arbfp-authority
+       * then steal a reference to the program state associated with that
+       * arbfp-authority... */
+      priv->arbfp_program_state =
+        arbfp_program_state_ref (authority_priv->arbfp_program_state);
+      return TRUE;
+    }
+
   if (!authority_priv)
     {
       authority_priv = g_slice_new0 (CoglPipelineBackendARBfpPrivate);
@@ -266,56 +278,62 @@ _cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
   /* If we haven't yet found an existing program then before we resort to
    * generating a new arbfp program we see if we can find a suitable
    * program in the arbfp_cache. */
-  if (!authority_priv->arbfp_program_state &&
-      G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_DISABLE_PROGRAM_CACHES)))
+  if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_DISABLE_PROGRAM_CACHES)))
     {
-      authority_priv->arbfp_program_state =
-        g_hash_table_lookup (ctx->arbfp_cache, authority);
-      if (authority_priv->arbfp_program_state)
-        arbfp_program_state_ref (authority_priv->arbfp_program_state);
-    }
-
-  if (!authority_priv->arbfp_program_state)
-    {
-      ArbfpProgramState *arbfp_program_state =
-        arbfp_program_state_new (n_layers);
-      authority_priv->arbfp_program_state = arbfp_program_state;
-
-      /* If we don't have an existing program associated with the
-       * arbfp-authority then start generating code for a new program...
-       */
-      arbfp_program_state->user_program = user_program;
-      if (user_program == COGL_INVALID_HANDLE)
+      arbfp_program_state = g_hash_table_lookup (ctx->arbfp_cache, authority);
+      if (arbfp_program_state)
         {
-          int i;
+          priv->arbfp_program_state =
+            arbfp_program_state_ref (arbfp_program_state);
 
-          /* We reuse a single grow-only GString for code-gen */
-          g_string_set_size (ctx->fragment_source_buffer, 0);
-          arbfp_program_state->source = ctx->fragment_source_buffer;
-          g_string_append (arbfp_program_state->source,
-                           "!!ARBfp1.0\n"
-                           "TEMP output;\n"
-                           "TEMP tmp0, tmp1, tmp2, tmp3, tmp4;\n"
-                           "PARAM half = {.5, .5, .5, .5};\n"
-                           "PARAM one = {1, 1, 1, 1};\n"
-                           "PARAM two = {2, 2, 2, 2};\n"
-                           "PARAM minus_one = {-1, -1, -1, -1};\n");
-
-          for (i = 0; i < n_layers; i++)
-            {
-              arbfp_program_state->unit_state[i].sampled = FALSE;
-              arbfp_program_state->unit_state[i].dirty_combine_constant = FALSE;
-            }
-          arbfp_program_state->next_constant_id = 0;
+          /* Since we have already resolved the arbfp-authority at this point
+           * we might as well also associate any program we find from the cache
+           * with the authority too... */
+          if (authority_priv != priv)
+            authority_priv->arbfp_program_state =
+              arbfp_program_state_ref (arbfp_program_state);
+          return TRUE;
         }
     }
 
-  /* Finally, if the pipeline isn't actually its own arbfp-authority
-   * then steal a reference to the program state associated with the
-   * arbfp-authority... */
-  if (authority != pipeline)
-    priv->arbfp_program_state =
-      arbfp_program_state_ref (authority_priv->arbfp_program_state);
+  /* If we still haven't found an existing program then start
+   * generating code for a new program...
+   */
+
+  arbfp_program_state = arbfp_program_state_new (n_layers);
+
+  priv->arbfp_program_state = arbfp_program_state_ref (arbfp_program_state);
+
+  /* Since we have already resolved the arbfp-authority at this point we might
+   * as well also associate any program we generate with the authority too...
+   */
+  if (authority_priv != priv)
+    authority_priv->arbfp_program_state =
+      arbfp_program_state_ref (arbfp_program_state);
+
+  arbfp_program_state->user_program = user_program;
+  if (user_program == COGL_INVALID_HANDLE)
+    {
+      int i;
+
+      /* We reuse a single grow-only GString for code-gen */
+      g_string_set_size (ctx->fragment_source_buffer, 0);
+      arbfp_program_state->source = ctx->fragment_source_buffer;
+      g_string_append (arbfp_program_state->source,
+                       "!!ARBfp1.0\n"
+                       "TEMP output;\n"
+                       "TEMP tmp0, tmp1, tmp2, tmp3, tmp4;\n"
+                       "PARAM half = {.5, .5, .5, .5};\n"
+                       "PARAM one = {1, 1, 1, 1};\n"
+                       "PARAM two = {2, 2, 2, 2};\n"
+                       "PARAM minus_one = {-1, -1, -1, -1};\n");
+
+      for (i = 0; i < n_layers; i++)
+        {
+          arbfp_program_state->unit_state[i].sampled = FALSE;
+          arbfp_program_state->unit_state[i].dirty_combine_constant = FALSE;
+        }
+    }
 
   return TRUE;
 }
