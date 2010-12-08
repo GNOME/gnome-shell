@@ -5513,7 +5513,6 @@ _cogl_pipeline_set_static_breadcrumb (CoglPipeline *pipeline,
 
 typedef struct _HashState
 {
-  unsigned long pipeline_differences;
   unsigned long layer_differences;
   CoglPipelineEvalFlags flags;
   unsigned int hash;
