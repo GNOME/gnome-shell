@@ -391,6 +391,10 @@ StTooltip StLabel {
     height: 24px;
 }
 
+.view-tab-title:hover {
+    color: #bbb;
+}
+
 .view-tab-title:selected {
     color: #000000;
     background-color: #c2c7cd;
