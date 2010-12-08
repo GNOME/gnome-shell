@@ -1087,10 +1087,14 @@ _cogl_pipeline_backend_arbfp_layer_pre_change_notify (
 
   if (change & COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT)
     {
-      ArbfpProgramState *arbfp_program_state =
-        get_arbfp_program_state (owner);
-      int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
-      arbfp_program_state->unit_state[unit_index].dirty_combine_constant = TRUE;
+      ArbfpProgramState *arbfp_program_state = get_arbfp_program_state (owner);
+
+      if (arbfp_program_state)
+        {
+          int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
+          arbfp_program_state->unit_state[unit_index].dirty_combine_constant =
+            TRUE;
+        }
     }
 
   /* TODO: we could be saving snippets of texture combine code along
