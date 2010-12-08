@@ -5990,6 +5990,7 @@ _cogl_pipeline_hash (CoglPipeline *pipeline,
 
   state.hash = 0;
   state.layer_differences = layer_differences;
+  state.flags = flags;
 
   /* hash non-sparse state */
 
