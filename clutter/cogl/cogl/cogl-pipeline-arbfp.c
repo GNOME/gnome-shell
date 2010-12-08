@@ -108,7 +108,11 @@ typedef struct _ArbfpProgramState
 {
   int ref_count;
 
+  /* XXX: only valid during codegen */
+  CoglPipeline *arbfp_authority;
+
   CoglHandle user_program;
+  /* XXX: only valid during codegen */
   GString *source;
   GLuint gl_program;
   UnitState *unit_state;
@@ -327,6 +331,11 @@ _cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
                        "PARAM one = {1, 1, 1, 1};\n"
                        "PARAM two = {2, 2, 2, 2};\n"
                        "PARAM minus_one = {-1, -1, -1, -1};\n");
+
+      /* At the end of code-gen we'll add the program to a cache and
+       * we'll use the authority pipeline as the basis for key into
+       * that cache... */
+      arbfp_program_state->arbfp_authority = authority;
 
       for (i = 0; i < n_layers; i++)
         {
@@ -928,6 +937,8 @@ _cogl_pipeline_backend_arbfp_end (CoglPipeline *pipeline,
 
       if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_DISABLE_PROGRAM_CACHES)))
         {
+          CoglPipeline *key;
+
           /* XXX: I wish there was a way to insert into a GHashTable
            * with a pre-calculated hash value since there is a cost to
            * calculating the hash of a CoglPipeline and in this case
@@ -935,8 +946,24 @@ _cogl_pipeline_backend_arbfp_end (CoglPipeline *pipeline,
            * _cogl_pipeline_arbfp_backend_start so we could pass the
            * value through to here to avoid hashing it again.
            */
-          g_hash_table_insert (ctx->arbfp_cache, pipeline, arbfp_program_state);
+
+          /* XXX: Any keys referenced by the hash table need to remain
+           * valid all the while that there are corresponding values,
+           * so for now we simply make a copy of the current authority
+           * pipeline.
+           *
+           * FIXME: A problem with this is that our key into the cache
+           * may hold references to some arbitrary user textures which
+           * will now be kept alive indefinitly which is a shame. A
+           * better solution will be to derive a special "key
+           * pipeline" from the authority which derives from the base
+           * Cogl pipeline (to avoid affecting the lifetime of any
+           * other pipelines) and only takes a copy of the state that
+           * relates to the arbfp program and references small dummy
+           * textures instead of potentially large user textures. */
+          key = cogl_pipeline_copy (arbfp_program_state->arbfp_authority);
           arbfp_program_state_ref (arbfp_program_state);
+          g_hash_table_insert (ctx->arbfp_cache, key, arbfp_program_state);
           if (G_UNLIKELY (g_hash_table_size (ctx->arbfp_cache) > 50))
             {
               static gboolean seen = FALSE;
@@ -947,6 +974,11 @@ _cogl_pipeline_backend_arbfp_end (CoglPipeline *pipeline,
               seen = TRUE;
             }
         }
+
+      /* The authority is only valid during codegen since the program
+       * state may have a longer lifetime than the original authority
+       * it is created for. */
+      arbfp_program_state->arbfp_authority = NULL;
     }
 
   if (arbfp_program_state->user_program != COGL_INVALID_HANDLE)
