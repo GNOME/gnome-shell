@@ -333,6 +333,7 @@ _cogl_pipeline_backend_arbfp_start (CoglPipeline *pipeline,
           arbfp_program_state->unit_state[i].sampled = FALSE;
           arbfp_program_state->unit_state[i].dirty_combine_constant = FALSE;
         }
+      arbfp_program_state->next_constant_id = 0;
     }
 
   return TRUE;
