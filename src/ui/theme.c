@@ -873,7 +873,9 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
       rect->visible.width = button_width;
       rect->visible.height = button_height;
 
-      if (flags & META_FRAME_MAXIMIZED)
+      if (flags & META_FRAME_MAXIMIZED ||
+          flags & META_FRAME_TILED_LEFT ||
+          flags & META_FRAME_TILED_RIGHT)
         {
           rect->clickable.x = rect->visible.x;
           rect->clickable.y = 0;
@@ -4780,7 +4782,11 @@ meta_frame_style_set_unref (MetaFrameStyleSet *style_set)
         }
 
       free_focus_styles (style_set->maximized_styles);
+      free_focus_styles (style_set->tiled_left_styles);
+      free_focus_styles (style_set->tiled_right_styles);
       free_focus_styles (style_set->maximized_and_shaded_styles);
+      free_focus_styles (style_set->tiled_left_and_shaded_styles);
+      free_focus_styles (style_set->tiled_right_and_shaded_styles);
 
       if (style_set->parent)
         meta_frame_style_set_unref (style_set->parent);
@@ -4832,8 +4838,20 @@ get_style (MetaFrameStyleSet *style_set,
           case META_FRAME_STATE_MAXIMIZED:
             styles = style_set->maximized_styles;
             break;
+          case META_FRAME_STATE_TILED_LEFT:
+            styles = style_set->tiled_left_styles;
+            break;
+          case META_FRAME_STATE_TILED_RIGHT:
+            styles = style_set->tiled_right_styles;
+            break;
           case META_FRAME_STATE_MAXIMIZED_AND_SHADED:
             styles = style_set->maximized_and_shaded_styles;
+            break;
+          case META_FRAME_STATE_TILED_LEFT_AND_SHADED:
+            styles = style_set->tiled_left_and_shaded_styles;
+            break;
+          case META_FRAME_STATE_TILED_RIGHT_AND_SHADED:
+            styles = style_set->tiled_right_and_shaded_styles;
             break;
           case META_FRAME_STATE_NORMAL:
           case META_FRAME_STATE_SHADED:
@@ -4843,6 +4861,19 @@ get_style (MetaFrameStyleSet *style_set,
           }
 
         style = styles[focus];
+
+        /* Tiled states are optional, try falling back to non-tiled states */
+        if (style == NULL)
+          {
+            if (state == META_FRAME_STATE_TILED_LEFT ||
+                state == META_FRAME_STATE_TILED_RIGHT)
+              style = get_style (style_set, META_FRAME_STATE_NORMAL,
+                                 resize, focus);
+            else if (state == META_FRAME_STATE_TILED_LEFT_AND_SHADED ||
+                     state == META_FRAME_STATE_TILED_RIGHT_AND_SHADED)
+              style = get_style (style_set, META_FRAME_STATE_SHADED,
+                                 resize, focus);
+          }
 
         /* Try parent if we failed here */
         if (style == NULL && style_set->parent)
@@ -5206,7 +5237,8 @@ theme_get_style (MetaTheme     *theme,
   if (style_set == NULL)
     return NULL;
   
-  switch (flags & (META_FRAME_MAXIMIZED | META_FRAME_SHADED))
+  switch (flags & (META_FRAME_MAXIMIZED | META_FRAME_SHADED |
+                   META_FRAME_TILED_LEFT | META_FRAME_TILED_RIGHT))
     {
     case 0:
       state = META_FRAME_STATE_NORMAL;
@@ -5214,11 +5246,23 @@ theme_get_style (MetaTheme     *theme,
     case META_FRAME_MAXIMIZED:
       state = META_FRAME_STATE_MAXIMIZED;
       break;
+    case META_FRAME_TILED_LEFT:
+      state = META_FRAME_STATE_TILED_LEFT;
+      break;
+    case META_FRAME_TILED_RIGHT:
+      state = META_FRAME_STATE_TILED_RIGHT;
+      break;
     case META_FRAME_SHADED:
       state = META_FRAME_STATE_SHADED;
       break;
     case (META_FRAME_MAXIMIZED | META_FRAME_SHADED):
       state = META_FRAME_STATE_MAXIMIZED_AND_SHADED;
+      break;
+    case (META_FRAME_TILED_LEFT | META_FRAME_SHADED):
+      state = META_FRAME_STATE_TILED_LEFT_AND_SHADED;
+      break;
+    case (META_FRAME_TILED_RIGHT | META_FRAME_SHADED):
+      state = META_FRAME_STATE_TILED_RIGHT_AND_SHADED;
       break;
     default:
       g_assert_not_reached ();
@@ -6031,10 +6075,18 @@ meta_frame_state_from_string (const char *str)
     return META_FRAME_STATE_NORMAL;
   else if (strcmp ("maximized", str) == 0)
     return META_FRAME_STATE_MAXIMIZED;
+  else if (strcmp ("tiled_left", str) == 0)
+    return META_FRAME_STATE_TILED_LEFT;
+  else if (strcmp ("tiled_right", str) == 0)
+    return META_FRAME_STATE_TILED_RIGHT;
   else if (strcmp ("shaded", str) == 0)
     return META_FRAME_STATE_SHADED;
   else if (strcmp ("maximized_and_shaded", str) == 0)
     return META_FRAME_STATE_MAXIMIZED_AND_SHADED;
+  else if (strcmp ("tiled_left_and_shaded", str) == 0)
+    return META_FRAME_STATE_TILED_LEFT_AND_SHADED;
+  else if (strcmp ("tiled_right_and_shaded", str) == 0)
+    return META_FRAME_STATE_TILED_RIGHT_AND_SHADED;
   else
     return META_FRAME_STATE_LAST;
 }
@@ -6048,10 +6100,18 @@ meta_frame_state_to_string (MetaFrameState state)
       return "normal";
     case META_FRAME_STATE_MAXIMIZED:
       return "maximized";
+    case META_FRAME_STATE_TILED_LEFT:
+      return "tiled_left";
+    case META_FRAME_STATE_TILED_RIGHT:
+      return "tiled_right";
     case META_FRAME_STATE_SHADED:
       return "shaded";
     case META_FRAME_STATE_MAXIMIZED_AND_SHADED:
       return "maximized_and_shaded";
+    case META_FRAME_STATE_TILED_LEFT_AND_SHADED:
+      return "tiled_left_and_shaded";
+    case META_FRAME_STATE_TILED_RIGHT_AND_SHADED:
+      return "tiled_right_and_shaded";
     case META_FRAME_STATE_LAST:
       break;
     }

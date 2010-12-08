@@ -3190,6 +3190,31 @@ parse_style_set_element (GMarkupParseContext  *context,
           meta_frame_style_ref (frame_style);
           info->style_set->maximized_styles[frame_focus] = frame_style;
           break;
+        case META_FRAME_STATE_TILED_LEFT:
+          if (info->style_set->tiled_left_styles[frame_focus])
+            {
+              set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                         _("Style has already been specified for state %s focus %s"),
+                         state, focus);
+              return;
+            }
+          meta_frame_style_ref (frame_style);
+          info->style_set->tiled_left_styles[frame_focus] = frame_style;
+          break;
+        case META_FRAME_STATE_TILED_RIGHT:
+          if (info->style_set->tiled_right_styles[frame_focus])
+            {
+              set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                         _("Style has already been specified for state %s focus %s"),
+                         state, focus);
+              return;
+            }
+          meta_frame_style_ref (frame_style);
+          info->style_set->tiled_right_styles[frame_focus] = frame_style;
+          break;
+          meta_frame_style_ref (frame_style);
+          info->style_set->tiled_right_styles[frame_focus] = frame_style;
+          break;
         case META_FRAME_STATE_SHADED:
           if (info->style_set->shaded_styles[frame_resize][frame_focus])
             {
@@ -3211,6 +3236,28 @@ parse_style_set_element (GMarkupParseContext  *context,
             }
           meta_frame_style_ref (frame_style);
           info->style_set->maximized_and_shaded_styles[frame_focus] = frame_style;
+          break;
+        case META_FRAME_STATE_TILED_LEFT_AND_SHADED:
+          if (info->style_set->tiled_left_and_shaded_styles[frame_focus])
+            {
+              set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                         _("Style has already been specified for state %s focus %s"),
+                         state, focus);
+              return;
+            }
+          meta_frame_style_ref (frame_style);
+          info->style_set->tiled_left_and_shaded_styles[frame_focus] = frame_style;
+          break;
+        case META_FRAME_STATE_TILED_RIGHT_AND_SHADED:
+          if (info->style_set->tiled_right_and_shaded_styles[frame_focus])
+            {
+              set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                         _("Style has already been specified for state %s focus %s"),
+                         state, focus);
+              return;
+            }
+          meta_frame_style_ref (frame_style);
+          info->style_set->tiled_right_and_shaded_styles[frame_focus] = frame_style;
           break;
         case META_FRAME_STATE_LAST:
           g_assert_not_reached ();

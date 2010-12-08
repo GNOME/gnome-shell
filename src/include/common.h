@@ -47,7 +47,9 @@ typedef enum
   META_FRAME_ALLOWS_MOVE              = 1 << 11,
   META_FRAME_FULLSCREEN               = 1 << 12,
   META_FRAME_IS_FLASHING              = 1 << 13,
-  META_FRAME_ABOVE                    = 1 << 14
+  META_FRAME_ABOVE                    = 1 << 14,
+  META_FRAME_TILED_LEFT               = 1 << 15,
+  META_FRAME_TILED_RIGHT              = 1 << 16
 } MetaFrameFlags;
 
 typedef enum

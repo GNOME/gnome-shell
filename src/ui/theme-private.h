@@ -776,8 +776,12 @@ typedef enum
 {
   META_FRAME_STATE_NORMAL,
   META_FRAME_STATE_MAXIMIZED,
+  META_FRAME_STATE_TILED_LEFT,
+  META_FRAME_STATE_TILED_RIGHT,
   META_FRAME_STATE_SHADED,
   META_FRAME_STATE_MAXIMIZED_AND_SHADED,
+  META_FRAME_STATE_TILED_LEFT_AND_SHADED,
+  META_FRAME_STATE_TILED_RIGHT_AND_SHADED,
   META_FRAME_STATE_LAST
 } MetaFrameState;
 
@@ -814,8 +818,12 @@ struct _MetaFrameStyleSet
   MetaFrameStyleSet *parent;
   MetaFrameStyle *normal_styles[META_FRAME_RESIZE_LAST][META_FRAME_FOCUS_LAST];
   MetaFrameStyle *maximized_styles[META_FRAME_FOCUS_LAST];
+  MetaFrameStyle *tiled_left_styles[META_FRAME_FOCUS_LAST];
+  MetaFrameStyle *tiled_right_styles[META_FRAME_FOCUS_LAST];
   MetaFrameStyle *shaded_styles[META_FRAME_RESIZE_LAST][META_FRAME_FOCUS_LAST];
   MetaFrameStyle *maximized_and_shaded_styles[META_FRAME_FOCUS_LAST];
+  MetaFrameStyle *tiled_left_and_shaded_styles[META_FRAME_FOCUS_LAST];
+  MetaFrameStyle *tiled_right_and_shaded_styles[META_FRAME_FOCUS_LAST];
 };
 
 /**

@@ -28,6 +28,10 @@ New Features in Theme Format Version 3.3
 Add two additional button background functions - left_single_background and
 right_single_background - for button groups with just a single button.
 
+There are now additional frame states to style left/right tiled windows
+differently ("tiled_left", "tiled_right", "tiled_left_and_shaded",
+"tiled_right_and_shaded").
+
 New Features in Theme Format Version 3.2
 ========================================
 
