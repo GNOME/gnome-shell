@@ -5902,11 +5902,11 @@ _cogl_pipeline_hash_depth_state (CoglPipeline *authority,
   if (depth_state->depth_writing_enabled)
     {
       guint8 enabled = depth_state->depth_writing_enabled;
-      float near = depth_state->depth_range_near;
-      float far = depth_state->depth_range_far;
+      float near_val = depth_state->depth_range_near;
+      float far_val = depth_state->depth_range_far;
       hash = _cogl_util_one_at_a_time_hash (hash, &enabled, sizeof (enabled));
-      hash = _cogl_util_one_at_a_time_hash (hash, &near, sizeof (near));
-      hash = _cogl_util_one_at_a_time_hash (hash, &far, sizeof (far));
+      hash = _cogl_util_one_at_a_time_hash (hash, &near_val, sizeof (near_val));
+      hash = _cogl_util_one_at_a_time_hash (hash, &far_val, sizeof (far_val));
     }
 
   state->hash = hash;
