@@ -650,7 +650,7 @@ parse_hsla (ClutterColor *color,
  * <listitem>
  *   <para>a HSL color in the form: <literal>hsl(h, s, l)</literal></para>
  * </listitem>
- * <litsitem>
+ * <listitem>
  *   <para>a HSL color in the form: <literal>hsla(h, s, l, a)</literal></para>
  * </listitem>
  * </itemizedlist>
