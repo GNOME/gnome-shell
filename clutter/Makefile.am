@@ -672,7 +672,6 @@ Clutter_@CLUTTER_API_VERSION_AM@_gir_FILES = $(clutter_include_HEADERS) $(nodist
 Clutter_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED
 Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 Atk-1.0 Pango-1.0 PangoCairo-1.0 Json-1.0
 Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
-	--warn-all \
 	--c-include='clutter/clutter.h' \
 	--pkg-export=clutter-@CLUTTER_API_VERSION@ \
 	--include-uninstalled=$(top_builddir)/clutter/cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir
@@ -701,7 +700,6 @@ Cally_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_SONAME_INFIX@-@CLU
 Cally_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cally_sources_h) $(cally_sources_c)
 Cally_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS) -UCLUTTER_DISABLE_DEPRECATED
 Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
-	--warn-all \
 	--identifier-prefix=Cally \
 	--symbol-prefix=cally \
 	--c-include='cally/cally.h' \
@@ -715,7 +713,6 @@ if SUPPORT_X11
 ClutterX11-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir Cogl-@CLUTTER_API_VERSION@.gir
 
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
-	--warn-all \
 	--identifier-prefix=ClutterX11 \
 	--symbol-prefix=clutter_x11 \
 	--c-include='clutter/x11/clutter-x11.h' \
