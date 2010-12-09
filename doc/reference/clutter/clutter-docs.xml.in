@@ -320,6 +320,11 @@
     <xi:include href="xml/api-index-1.4.xml"><xi:fallback /></xi:include>
   </index>
 
+  <index role="1.6">
+    <title>Index of new symbols in 1.6</title>
+    <xi:include href="xml/api-index-1.6.xml"><xi:fallback /></xi:include>
+  </index>
+
   <appendix id="license">
     <title>License</title>
 
