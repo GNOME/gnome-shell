@@ -1796,7 +1796,7 @@ clutter_get_option_group (void)
  * calling g_option_context_parse() with the #GOptionGroup returned by this
  * function requires a subsequent explicit call to clutter_init(); use this
  * function when needing to set foreign display connection with
- * clutter_x11_set_display(), or with gtk_clutter_init().
+ * clutter_x11_set_display(), or with <function>gtk_clutter_init()</function>.
  *
  * Return value: (transfer full): a #GOptionGroup for the commandline arguments
  *   recognized by Clutter

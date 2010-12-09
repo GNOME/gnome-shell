@@ -747,7 +747,7 @@ G_DEFINE_BOXED_TYPE_WITH_CODE (ClutterUnits, clutter_units,
 
 /**
  * clutter_value_set_units:
- * @value: a #GValue initialized to #CLUTTER_TYPE_UNIT
+ * @value: a #GValue initialized to %CLUTTER_TYPE_UNITS
  * @units: the units to set
  *
  * Sets @value to @units
@@ -765,7 +765,7 @@ clutter_value_set_units (GValue             *value,
 
 /**
  * clutter_value_get_units:
- * @value: a #GValue initialized to #CLUTTER_TYPE_UNIT
+ * @value: a #GValue initialized to %CLUTTER_TYPE_UNITS
  *
  * Gets the #ClutterUnits contained in @value.
  *

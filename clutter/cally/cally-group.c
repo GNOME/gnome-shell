@@ -29,7 +29,7 @@
  * @short_description: Implementation of the ATK interfaces for a #ClutterGroup
  * @see_also: #ClutterGroup
  *
- * #CallyClutterGroup implements the required ATK interfaces of #ClutterGroup
+ * #CallyGroup implements the required ATK interfaces of #ClutterGroup
  * In particular it exposes:
  *
  * <itemizedlist>
