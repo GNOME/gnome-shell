@@ -378,7 +378,6 @@ st_theme_node_render_gradient (StThemeNode *node)
   cairo_t *cr;
   cairo_surface_t *surface;
   cairo_pattern_t *pattern;
-  gboolean round_border = FALSE;
   ClutterColor border_color;
   int border_width;
   guint rowstride;
@@ -397,11 +396,7 @@ st_theme_node_render_gradient (StThemeNode *node)
   get_arbitrary_border (node, &border_width, &border_color);
 
   for (i = 0; i < 4; i++)
-    {
-      radius[i] = st_theme_node_get_border_radius (node, i);
-      if (radius[i] > 0)
-        round_border = TRUE;
-    }
+    radius[i] = st_theme_node_get_border_radius (node, i);
 
   if (node->background_gradient_type == ST_GRADIENT_VERTICAL)
     pattern = cairo_pattern_create_linear (0, 0, 0, node->alloc_height);
@@ -427,43 +422,42 @@ st_theme_node_render_gradient (StThemeNode *node)
                                      node->background_gradient_end.blue / 255.,
                                      node->background_gradient_end.alpha / 255.);
 
-  if (round_border)
-    {
-      if (radius[ST_CORNER_TOPLEFT] > 0)
-        cairo_arc (cr,
-                   radius[ST_CORNER_TOPLEFT],
-                   radius[ST_CORNER_TOPLEFT],
-                   radius[ST_CORNER_TOPLEFT], M_PI, 3 * M_PI / 2);
-      else
-        cairo_move_to (cr, 0, 0);
-      cairo_line_to (cr, node->alloc_width - radius[ST_CORNER_TOPRIGHT], 0);
-      if (radius[ST_CORNER_TOPRIGHT] > 0)
-        cairo_arc (cr,
-                   node->alloc_width - radius[ST_CORNER_TOPRIGHT],
-                   radius[ST_CORNER_TOPRIGHT],
-                   radius[ST_CORNER_TOPRIGHT], 3 * M_PI / 2, 2 * M_PI);
-      cairo_line_to (cr, node->alloc_width, node->alloc_height - radius[ST_CORNER_BOTTOMRIGHT]);
-      if (radius[ST_CORNER_BOTTOMRIGHT])
-        cairo_arc (cr,
-                   node->alloc_width - radius[ST_CORNER_BOTTOMRIGHT],
-                   node->alloc_height - radius[ST_CORNER_BOTTOMRIGHT],
-                   radius[ST_CORNER_BOTTOMRIGHT], 0, M_PI / 2);
-      cairo_line_to (cr, radius[ST_CORNER_BOTTOMLEFT], node->alloc_height);
-      if (radius[ST_CORNER_BOTTOMLEFT])
-        cairo_arc (cr,
-                   radius[ST_CORNER_BOTTOMLEFT],
-                   node->alloc_height - radius[ST_CORNER_BOTTOMLEFT],
-                   radius[ST_CORNER_BOTTOMLEFT], M_PI / 2, M_PI);
-      cairo_close_path (cr);
-    }
+  /* Create a path for the background's outline first */
+  if (radius[ST_CORNER_TOPLEFT] > 0)
+    cairo_arc (cr,
+               radius[ST_CORNER_TOPLEFT],
+               radius[ST_CORNER_TOPLEFT],
+               radius[ST_CORNER_TOPLEFT], M_PI, 3 * M_PI / 2);
   else
-    cairo_rectangle (cr, 0, 0, node->alloc_width, node->alloc_height);
+    cairo_move_to (cr, 0, 0);
+  cairo_line_to (cr, node->alloc_width - radius[ST_CORNER_TOPRIGHT], 0);
+  if (radius[ST_CORNER_TOPRIGHT] > 0)
+    cairo_arc (cr,
+               node->alloc_width - radius[ST_CORNER_TOPRIGHT],
+               radius[ST_CORNER_TOPRIGHT],
+               radius[ST_CORNER_TOPRIGHT], 3 * M_PI / 2, 2 * M_PI);
+  cairo_line_to (cr, node->alloc_width, node->alloc_height - radius[ST_CORNER_BOTTOMRIGHT]);
+  if (radius[ST_CORNER_BOTTOMRIGHT])
+    cairo_arc (cr,
+               node->alloc_width - radius[ST_CORNER_BOTTOMRIGHT],
+               node->alloc_height - radius[ST_CORNER_BOTTOMRIGHT],
+               radius[ST_CORNER_BOTTOMRIGHT], 0, M_PI / 2);
+  cairo_line_to (cr, radius[ST_CORNER_BOTTOMLEFT], node->alloc_height);
+  if (radius[ST_CORNER_BOTTOMLEFT])
+    cairo_arc (cr,
+               radius[ST_CORNER_BOTTOMLEFT],
+               node->alloc_height - radius[ST_CORNER_BOTTOMLEFT],
+               radius[ST_CORNER_BOTTOMLEFT], M_PI / 2, M_PI);
+  cairo_close_path (cr);
 
+
+  /* If we have a border, we fill the outline with the border
+   * color and create the inline shape for the background gradient;
+   * otherwise the outline shape is filled with the background
+   * gradient directly
+   */
   if (border_width > 0)
     {
-      cairo_path_t *path;
-
-      path = cairo_copy_path (cr);
       cairo_set_source_rgba (cr,
                              border_color.red / 255.,
                              border_color.green / 255.,
@@ -471,12 +465,48 @@ st_theme_node_render_gradient (StThemeNode *node)
                              border_color.alpha / 255.);
       cairo_fill (cr);
 
-      cairo_translate (cr, border_width, border_width);
-      cairo_scale (cr,
-                   (gdouble)(node->alloc_width - 2 * border_width) / node->alloc_width,
-                   (gdouble)(node->alloc_height - 2 * border_width) / node->alloc_height);
-      cairo_append_path (cr, path);
-      cairo_path_destroy (path);
+      if (radius[ST_CORNER_TOPLEFT] > border_width)
+        cairo_arc (cr,
+                   radius[ST_CORNER_TOPLEFT],
+                   radius[ST_CORNER_TOPLEFT],
+                   radius[ST_CORNER_TOPLEFT] - border_width,
+                   M_PI, 3 * M_PI / 2);
+      else
+        cairo_move_to (cr, border_width, border_width);
+
+      cairo_line_to (cr,
+                     node->alloc_width - MAX(radius[ST_CORNER_TOPRIGHT], border_width),
+                     border_width);
+
+      if (radius[ST_CORNER_TOPRIGHT] > border_width)
+        cairo_arc (cr,
+                   node->alloc_width - radius[ST_CORNER_TOPRIGHT],
+                   radius[ST_CORNER_TOPRIGHT],
+                   radius[ST_CORNER_TOPRIGHT] - border_width,
+                   3 * M_PI / 2, 2 * M_PI);
+
+      cairo_line_to (cr,
+                     node->alloc_width - border_width,
+                     node->alloc_height - MAX(radius[ST_CORNER_BOTTOMRIGHT], border_width));
+
+      if (radius[ST_CORNER_BOTTOMRIGHT] > border_width)
+        cairo_arc (cr,
+                   node->alloc_width - radius[ST_CORNER_BOTTOMRIGHT],
+                   node->alloc_height - radius[ST_CORNER_BOTTOMRIGHT],
+                   radius[ST_CORNER_BOTTOMRIGHT] - border_width,
+                   0, M_PI / 2);
+
+      cairo_line_to (cr,
+                     MAX(radius[ST_CORNER_BOTTOMLEFT], border_width),
+                     node->alloc_height - border_width);
+
+      if (radius[ST_CORNER_BOTTOMLEFT] > border_width)
+        cairo_arc (cr,
+                   radius[ST_CORNER_BOTTOMLEFT],
+                   node->alloc_height - radius[ST_CORNER_BOTTOMLEFT],
+                   radius[ST_CORNER_BOTTOMLEFT] - border_width,
+                   M_PI / 2, M_PI);
+      cairo_close_path (cr);
     }
 
   cairo_set_source (cr, pattern);
