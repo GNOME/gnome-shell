@@ -1649,8 +1649,9 @@ clutter_text_button_press (ClutterActor       *actor,
   gfloat x, y;
   gint index_;
 
-  /* we'll steal keyfocus if we do not have it */
-  clutter_actor_grab_key_focus (actor);
+  /* we'll steal keyfocus if we need it */
+  if (priv->editable || priv->selectable)
+    clutter_actor_grab_key_focus (actor);
 
   /* if the actor is empty we just reset everything and not
    * set up the dragging of the selection since there's nothing
