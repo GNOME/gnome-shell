@@ -1,3 +1,30 @@
+Clutter 1.5.10
+===============================================================================
+
+  • List of changes since Clutter 1.5.8
+
+    » Add an evdev input backend; this adds support for input devices
+      on Linux when using the EGL-based backends.
+
+    » Update the build scripts for compiling the Windows backend.
+
+    » Updates for the Cookbook and the API references.
+
+    » Fix ClutterModel::get_iter_at_pos() for filtered ClutterListModels.
+
+    » Add code that tries to perform manual clipping to avoid breaking
+      up batches of primitives.
+
+    » Keep a cache of ARBfp programs indexed by the pipeline state that
+      led to their generation.
+
+    » Accept G_TYPE_DOUBLE values in ClutterShaderEffect uniforms.
+
+    » Update the Wayland client backend.
+
+Many thanks to:
+
+
 Clutter 1.5.8                                                        2010-11-29
 ===============================================================================
 
