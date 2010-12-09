@@ -40,8 +40,13 @@
 
 G_BEGIN_DECLS
 
-EGLDisplay clutter_egl_display (void);
-void       clutter_uikit_main  (void);
+#ifndef CLUTTER_DISABLE_DEPRECATED
+EGLDisplay      clutter_egl_display             (void);
+#endif
+
+EGLDisplay      clutter_fruity_get_egl_display  (void);
+
+void            clutter_uikit_main              (void);
 
 G_END_DECLS
 

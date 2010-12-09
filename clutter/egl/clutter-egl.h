@@ -49,19 +49,20 @@
 
 G_BEGIN_DECLS
 
-#ifdef COGL_HAS_XLIB_SUPPORT
+#ifndef CLUTTER_DISABLE_DEPRECATED
 /**
  * clutter_eglx_display:
  *
- * Retrieves the <structname>EGLDisplay</structname> used by Clutter
+ * Retrieves the <structname>EGLDisplay</structname> used by Clutter,
+ * if Clutter has been compiled with EGL and X11 support.
  *
  * Return value: the EGL display
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.6: Use clutter_egl_get_egl_display() instead
  */
-EGLDisplay
-clutter_eglx_display (void);
-#endif
+EGLDisplay      clutter_eglx_display            (void);
 
 /**
  * clutter_egl_display:
@@ -69,9 +70,22 @@ clutter_eglx_display (void);
  * Retrieves the <structname>EGLDisplay</structname> used by Clutter
  *
  * Return value: the EGL display
+ *
+ * Deprecated: 1.6: Use clutter_egl_get_egl_display() instead
  */
-EGLDisplay
-clutter_egl_display (void);
+EGLDisplay      clutter_egl_display             (void);
+#endif /* CLUTTER_DISABLE_DEPRECATED */
+
+/**
+ * clutter_egl_get_egl_display:
+ *
+ * Retrieves the  <structname>EGLDisplay</structname> used by Clutter.
+ *
+ * Return value: the EGL display
+ *
+ * Since: 1.6
+ */
+EGLDisplay      clutter_egl_get_egl_display     (void);
 
 G_END_DECLS
 

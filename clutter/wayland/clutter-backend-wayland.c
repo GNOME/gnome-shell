@@ -284,10 +284,7 @@ try_create_context (ClutterBackend  *backend,
                     GError **error)
 {
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
-  EGLDisplay edpy;
   const char *error_message;
-
-  edpy = clutter_egl_display ();
 
   eglBindAPI (EGL_OPENGL_API);
 
@@ -300,10 +297,11 @@ try_create_context (ClutterBackend  *backend,
       static const EGLint *attribs = NULL;
 #endif
 
-      backend_wayland->egl_context = eglCreateContext (edpy,
-                                                   NULL,
-                                                   EGL_NO_CONTEXT,
-                                                   attribs);
+      backend_wayland->egl_context =
+        eglCreateContext (backend_wayland->edpy,
+                          NULL,
+                          EGL_NO_CONTEXT,
+                          attribs);
       if (backend_wayland->egl_context == EGL_NO_CONTEXT)
         {
           error_message = "Unable to create a suitable EGL context";
@@ -313,7 +311,10 @@ try_create_context (ClutterBackend  *backend,
       CLUTTER_NOTE (GL, "Created EGL Context");
     }
 
-  if (!eglMakeCurrent (edpy, NULL, NULL, backend_wayland->egl_context))
+  if (!eglMakeCurrent (backend_wayland->edpy,
+                       NULL,
+                       NULL,
+                       backend_wayland->egl_context))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
@@ -338,7 +339,6 @@ clutter_backend_wayland_create_context (ClutterBackend  *backend,
 					GError         **error)
 {
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
-  EGLDisplay edpy;
   const gchar *egl_extensions = NULL;
   gboolean status;
   int retry_cookie;
@@ -348,9 +348,7 @@ clutter_backend_wayland_create_context (ClutterBackend  *backend,
   if (backend_wayland->egl_context != EGL_NO_CONTEXT)
     return TRUE;
 
-  edpy = clutter_egl_display ();
-
-  egl_extensions = eglQueryString (edpy, EGL_EXTENSIONS);
+  egl_extensions = eglQueryString (backend_wayland->edpy, EGL_EXTENSIONS);
 
   if (!_cogl_check_extension ("EGL_KHR_surfaceless_opengl", egl_extensions))
     {
@@ -555,7 +553,7 @@ _clutter_backend_impl_get_type (void)
 }
 
 EGLDisplay
-clutter_egl_display (void)
+clutter_wayland_get_egl_display (void)
 {
   return backend_singleton->edpy;
 }

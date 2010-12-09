@@ -65,7 +65,7 @@ wayland_create_buffer (ClutterStageWayland *stage_wayland,
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
-  EGLDisplay edpy = clutter_egl_display ();
+  EGLDisplay edpy = clutter_wayland_get_egl_display ();
   ClutterStageWaylandWaylandBuffer *buffer;
   EGLint image_attribs[] = {
       EGL_WIDTH, 0,
@@ -122,7 +122,7 @@ wayland_free_buffer (ClutterStageWaylandWaylandBuffer *buffer)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
-  EGLDisplay edpy = clutter_egl_display ();
+  EGLDisplay edpy = clutter_wayland_get_egl_display ();
 
   cogl_handle_unref (buffer->tex);
   wl_buffer_destroy (buffer->wayland_buffer);

@@ -222,7 +222,7 @@ clutter_backend_egl_create_context (ClutterBackend  *backend,
   if (backend_egl->egl_context != EGL_NO_CONTEXT)
     return TRUE;
 
-  edpy = clutter_egl_display ();
+  edpy = clutter_egl_get_egl_display ();
 
 /* XXX: we should get rid of this goto yukkyness, there is a fail:
  * goto at the end and this retry: goto at the top, but we should just
@@ -903,17 +903,26 @@ _clutter_backend_impl_get_type (void)
 }
 #endif
 
-#ifdef COGL_HAS_XLIB_SUPPORT
 EGLDisplay
 clutter_eglx_display (void)
 {
-  return backend_singleton->edpy;
+  return clutter_egl_get_egl_display ();
 }
-#endif /* COGL_HAS_XLIB_SUPPORT */
 
 EGLDisplay
 clutter_egl_display (void)
 {
-  return backend_singleton->edpy;
+  return clutter_egl_get_egl_display ();
 }
 
+EGLDisplay
+clutter_egl_get_egl_display (void)
+{
+  if (backend_singleton == NULL)
+    {
+      g_critical (G_STRFUNC " has been called before clutter_init()");
+      return 0;
+    }
+
+  return backend_singleton->edpy;
+}

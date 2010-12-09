@@ -46,14 +46,15 @@
 G_BEGIN_DECLS
 
 /**
- * clutter_egl_display:
+ * clutter_wayland_get_egl_display:
  *
  * Retrieves the <structname>EGLDisplay</structname> used by Clutter
  *
  * Return value: the EGL display
+ *
+ * Since: 1.6
  */
-EGLDisplay
-clutter_egl_display (void);
+EGLDisplay      clutter_wayland_get_egl_display         (void);
 
 G_END_DECLS
 

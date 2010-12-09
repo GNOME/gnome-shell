@@ -50,7 +50,8 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
 
   if (stage_egl->egl_surface)
     {
-      eglDestroySurface (clutter_egl_display (), stage_egl->egl_surface);
+      eglDestroySurface (clutter_fruity_get_egl_display (),
+                         stage_egl->egl_surface);
       stage_egl->egl_surface = EGL_NO_SURFACE;
     }
 }

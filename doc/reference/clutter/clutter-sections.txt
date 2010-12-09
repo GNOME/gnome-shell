@@ -1268,7 +1268,7 @@ clutter_win32_handle_event
 <SECTION>
 <FILE>clutter-wayland</FILE>
 <TITLE>Wayland Specific Support</TITLE>
-clutter_egl_display
+clutter_wayland_get_egl_display
 </SECTION>
 
 <SECTION>
@@ -1872,6 +1872,7 @@ ClutterGLXTexturePixmapPrivate
 <FILE>clutter-egl</FILE>
 clutter_egl_display
 clutter_eglx_display
+clutter_egl_get_egl_display
 </SECTION>
 
 <SECTION>

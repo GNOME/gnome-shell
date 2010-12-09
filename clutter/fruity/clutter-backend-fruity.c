@@ -253,9 +253,41 @@ _clutter_backend_impl_get_type (void)
   return clutter_backend_egl_get_type ();
 }
 
+/**
+ * clutter_egl_display:
+ *
+ * Retrieves the <structname>EGLDisplay</structname> used by Clutter.
+ *
+ * Return value: the EGL display
+ *
+ * Deprecated: 1.6: Use clutter_fruity_get_egl_display() instead
+ *
+ * Since: 0.6
+ */
 EGLDisplay
 clutter_egl_display (void)
 {
+  return backend_singleton->edpy;
+}
+
+/**
+ * clutter_fruity_egl_display:
+ *
+ * Retrieves the <structname>EGLDisplay</structname> used by Clutter.
+ *
+ * Return value: the EGL display
+ *
+ * Since: 1.6
+ */
+EGLDisplay
+clutter_fruity_get_egl_display (void)
+{
+  if (backend_singleton == NULL)
+    {
+      g_critical (G_STRFUNC " has been called before clutter_init()");
+      return 0;
+    }
+
   return backend_singleton->edpy;
 }
 
