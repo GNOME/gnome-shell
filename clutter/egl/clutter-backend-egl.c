@@ -920,7 +920,7 @@ clutter_egl_get_egl_display (void)
 {
   if (backend_singleton == NULL)
     {
-      g_critical (G_STRFUNC " has been called before clutter_init()");
+      g_critical ("%s has been called before clutter_init()", G_STRFUNC);
       return 0;
     }
 
