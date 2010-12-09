@@ -26,7 +26,7 @@
 
 G_BEGIN_DECLS
 
-/*
+/*< private >
  * ClutterRedrawFlags:
  * @CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION: Tells clutter the maximum
  *   extents of what needs to be redrawn lies within the actors
@@ -43,7 +43,8 @@ typedef enum
   CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION  = 1 << 0
 } ClutterRedrawFlags;
 
-/* ClutterActorTraverseFlags:
+/*< private >
+ * ClutterActorTraverseFlags:
  * CLUTTER_ACTOR_TRAVERSE_DEPTH_FIRST: Traverse the graph in
  *   a depth first order.
  * CLUTTER_ACTOR_TRAVERSE_BREADTH_FIRST: Traverse the graph in a
@@ -58,13 +59,13 @@ typedef enum _ClutterActorTraverseFlags
   CLUTTER_ACTOR_TRAVERSE_BREADTH_FIRST = 1L<<1
 } ClutterActorTraverseFlags;
 
-/**
+/*< private >
  * ClutterActorTraverseVisitFlags:
  * CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE: Continue traversing as
  *   normal
  * CLUTTER_ACTOR_TRAVERSE_VISIT_SKIP_CHILDREN: Don't traverse the
  *   children of the last visited actor. (Not applicable when using
- *   CLUTTER_ACTOR_TRAVERSE_DEPTH_FIRST_POST_ORDER since the children
+ *   %CLUTTER_ACTOR_TRAVERSE_DEPTH_FIRST_POST_ORDER since the children
  *   are visited before having an opportunity to bail out)
  * CLUTTER_ACTOR_TRAVERSE_VISIT_BREAK: Immediately bail out without
  *   visiting any more actors.
@@ -81,7 +82,7 @@ typedef enum _ClutterActorTraverseVisitFlags
   CLUTTER_ACTOR_TRAVERSE_VISIT_BREAK          = 1L<<2
 } ClutterActorTraverseVisitFlags;
 
-/**
+/*< private >
  * ClutterTraverseCallback:
  *
  * The callback prototype used with clutter_actor_traverse. The
@@ -90,10 +91,11 @@ typedef enum _ClutterActorTraverseVisitFlags
  * actor or bailing out completely.
  */
 typedef ClutterActorTraverseVisitFlags (*ClutterTraverseCallback) (ClutterActor *actor,
-                                                                   int depth,
-                                                                   void *user_data);
+                                                                   gint          depth,
+                                                                   gpointer      user_data);
 
-/* ClutterForeachCallback:
+/*< private >
+ * ClutterForeachCallback:
  * @actor: The actor being iterated
  * @user_data: The private data specified when starting the iteration
  *
@@ -106,17 +108,17 @@ typedef ClutterActorTraverseVisitFlags (*ClutterTraverseCallback) (ClutterActor 
  * early.
  */
 typedef gboolean (*ClutterForeachCallback) (ClutterActor *actor,
-                                            void *user_data);
+                                            gpointer      user_data);
 
 gint          _clutter_actor_get_n_children             (ClutterActor *self);
 gboolean      _clutter_actor_foreach_child              (ClutterActor *self,
                                                          ClutterForeachCallback callback,
-                                                         void *user_data);
+                                                         gpointer user_data);
 void          _clutter_actor_traverse                   (ClutterActor *actor,
                                                          ClutterActorTraverseFlags flags,
                                                          ClutterTraverseCallback before_children_callback,
                                                          ClutterTraverseCallback after_children_callback,
-                                                         void *user_data);
+                                                         gpointer user_data);
 ClutterActor *_clutter_actor_get_stage_internal         (ClutterActor *actor);
 
 void _clutter_actor_apply_modelview_transform           (ClutterActor *self,
@@ -125,9 +127,9 @@ void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
 						         ClutterActor *ancestor,
                                                          CoglMatrix *matrix);
 
-void _clutter_actor_rerealize           (ClutterActor    *self,
-                                         ClutterCallback  callback,
-                                         void            *data);
+void _clutter_actor_rerealize (ClutterActor    *self,
+                               ClutterCallback  callback,
+                               gpointer         data);
 
 void _clutter_actor_set_opacity_parent (ClutterActor *self,
                                         ClutterActor *parent);

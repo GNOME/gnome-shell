@@ -92,6 +92,7 @@ IGNORE_HFILES=\
 	cally				\
 	cogl 				\
 	egl 				\
+	evdev				\
 	fruity				\
 	glx 				\
 	osx 				\
