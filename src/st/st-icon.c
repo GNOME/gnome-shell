@@ -340,12 +340,11 @@ st_icon_init (StIcon *self)
 {
   self->priv = ST_ICON_GET_PRIVATE (self);
 
-  self->priv->gicon = NULL;
   self->priv->icon_size = DEFAULT_ICON_SIZE;
   self->priv->prop_icon_size = -1;
   self->priv->icon_type = DEFAULT_ICON_TYPE;
 
-  self->priv->icon_texture = COGL_INVALID_HANDLE;
+  self->priv->shadow_material = COGL_INVALID_HANDLE;
   self->priv->shadow_width = -1;
   self->priv->shadow_height = -1;
 }
