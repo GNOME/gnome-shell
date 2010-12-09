@@ -530,6 +530,9 @@ div.navfooter hr {
   font-weight: bold;
 }
 
+pre.programlisting .emphasis {
+  font-weight: normal !important;
+}
 
   /************* /
  / decorations  /
