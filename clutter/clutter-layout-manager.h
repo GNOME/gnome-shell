@@ -107,13 +107,13 @@ struct _ClutterLayoutManagerClass
   void               (* get_preferred_width)    (ClutterLayoutManager   *manager,
                                                  ClutterContainer       *container,
                                                  gfloat                  for_height,
-                                                 gfloat                 *minimum_width_p,
-                                                 gfloat                 *natural_width_p);
+                                                 gfloat                 *min_width_p,
+                                                 gfloat                 *nat_width_p);
   void               (* get_preferred_height)   (ClutterLayoutManager   *manager,
                                                  ClutterContainer       *container,
                                                  gfloat                  for_width,
-                                                 gfloat                 *minimum_height_p,
-                                                 gfloat                 *natural_height_p);
+                                                 gfloat                 *min_height_p,
+                                                 gfloat                 *nat_height_p);
   void               (* allocate)               (ClutterLayoutManager   *manager,
                                                  ClutterContainer       *container,
                                                  const ClutterActorBox  *allocation,

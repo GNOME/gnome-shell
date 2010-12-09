@@ -77,9 +77,9 @@ struct _ClutterOffscreenEffectClass
 
   /*< public >*/
   CoglHandle (* create_texture) (ClutterOffscreenEffect *effect,
-                                gfloat                  min_width,
-                                gfloat                  min_height);
-  void       (* paint_target)  (ClutterOffscreenEffect *effect);
+                                 gfloat                  width,
+                                 gfloat                  height);
+  void       (* paint_target)   (ClutterOffscreenEffect *effect);
 
   /*< private >*/
   void (* _clutter_offscreen1) (void);

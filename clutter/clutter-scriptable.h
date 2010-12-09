@@ -73,7 +73,7 @@ struct _ClutterScriptableIface
 
   /*< public >*/
   void         (* set_id)              (ClutterScriptable *scriptable,
-                                        const gchar       *name);
+                                        const gchar       *id);
   const gchar *(* get_id)              (ClutterScriptable *scriptable);
 
   gboolean     (* parse_custom_node)   (ClutterScriptable *scriptable,

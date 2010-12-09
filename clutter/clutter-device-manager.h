@@ -70,11 +70,11 @@ struct _ClutterDeviceManagerClass
   /*< private >*/
   GObjectClass parent_class;
 
-  const GSList *      (* get_devices)     (ClutterDeviceManager   *manager);
-  ClutterInputDevice *(* get_core_device) (ClutterDeviceManager   *manager,
-                                           ClutterInputDeviceType  type);
-  ClutterInputDevice *(* get_device)      (ClutterDeviceManager   *manager,
-                                           gint                    id);
+  const GSList *      (* get_devices)     (ClutterDeviceManager   *device_manager);
+  ClutterInputDevice *(* get_core_device) (ClutterDeviceManager   *device_manager,
+                                           ClutterInputDeviceType  device_type);
+  ClutterInputDevice *(* get_device)      (ClutterDeviceManager   *device_manager,
+                                           gint                    device_id);
 
   void                (* add_device)      (ClutterDeviceManager   *manager,
                                            ClutterInputDevice     *device);

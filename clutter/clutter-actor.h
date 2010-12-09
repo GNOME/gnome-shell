@@ -224,15 +224,15 @@ struct _ClutterActorClass
   GInitiallyUnownedClass parent_class;
 
   /*< public >*/
-  void (* show)                 (ClutterActor          *actor);
-  void (* show_all)             (ClutterActor          *actor);
-  void (* hide)                 (ClutterActor          *actor);
-  void (* hide_all)             (ClutterActor          *actor);
-  void (* realize)              (ClutterActor          *actor);
-  void (* unrealize)            (ClutterActor          *actor);
-  void (* map)                  (ClutterActor          *actor);
-  void (* unmap)                (ClutterActor          *actor);
-  void (* paint)                (ClutterActor          *actor);
+  void (* show)                 (ClutterActor          *self);
+  void (* show_all)             (ClutterActor          *self);
+  void (* hide)                 (ClutterActor          *self);
+  void (* hide_all)             (ClutterActor          *self);
+  void (* realize)              (ClutterActor          *self);
+  void (* unrealize)            (ClutterActor          *self);
+  void (* map)                  (ClutterActor          *self);
+  void (* unmap)                (ClutterActor          *self);
+  void (* paint)                (ClutterActor          *self);
   void (* parent_set)           (ClutterActor          *actor,
                                  ClutterActor          *old_parent);
 
@@ -244,15 +244,15 @@ struct _ClutterActorClass
                                  ClutterActor          *leaf_that_queued);
 
   /* size negotiation */
-  void (* get_preferred_width)  (ClutterActor           *actor,
+  void (* get_preferred_width)  (ClutterActor           *self,
                                  gfloat                  for_height,
                                  gfloat                 *min_width_p,
                                  gfloat                 *natural_width_p);
-  void (* get_preferred_height) (ClutterActor           *actor,
+  void (* get_preferred_height) (ClutterActor           *self,
                                  gfloat                  for_width,
                                  gfloat                 *min_height_p,
                                  gfloat                 *natural_height_p);
-  void (* allocate)             (ClutterActor           *actor,
+  void (* allocate)             (ClutterActor           *self,
                                  const ClutterActorBox  *box,
                                  ClutterAllocationFlags  flags);
 
@@ -287,7 +287,7 @@ struct _ClutterActorClass
   void     (* queue_relayout)       (ClutterActor         *actor);
 
   /* accessibility support */
-  AtkObject * (* get_accessible)    (ClutterActor         *actor);
+  AtkObject * (* get_accessible)    (ClutterActor         *self);
 
   gboolean    (* get_paint_volume)  (ClutterActor         *actor,
                                      ClutterPaintVolume   *volume);

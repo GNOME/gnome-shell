@@ -177,7 +177,7 @@ clutter_container_default_init (ClutterContainerInterface *iface)
 }
 
 /**
- * clutter_container_add:
+ * clutter_container_add: (skip)
  * @container: a #ClutterContainer
  * @first_actor: the first #ClutterActor to add
  * @Varargs: %NULL terminated list of actors to add
@@ -213,6 +213,8 @@ clutter_container_add (ClutterContainer *container,
  * "actor-added" signal. The actor should be parented to
  * @container. You cannot add a #ClutterActor to more than one
  * #ClutterContainer.
+ *
+ * Virtual: add
  *
  * Since: 0.4
  */
@@ -251,7 +253,7 @@ clutter_container_add_actor (ClutterContainer *container,
 }
 
 /**
- * clutter_container_add_valist:
+ * clutter_container_add_valist: (skip)
  * @container: a #ClutterContainer
  * @first_actor: the first #ClutterActor to add
  * @var_args: list of actors to add, followed by %NULL
@@ -279,7 +281,7 @@ clutter_container_add_valist (ClutterContainer *container,
 }
 
 /**
- * clutter_container_remove:
+ * clutter_container_remove: (skip)
  * @container: a #ClutterContainer
  * @first_actor: first #ClutterActor to remove
  * @Varargs: a %NULL-terminated list of actors to remove
@@ -317,6 +319,8 @@ clutter_container_remove (ClutterContainer *container,
  * yourself, using g_object_ref(). When the actor has been removed,
  * the "actor-removed" signal is emitted by @container.
  *
+ * Virtual: remove
+ *
  * Since: 0.4
  */
 void
@@ -353,7 +357,7 @@ clutter_container_remove_actor (ClutterContainer *container,
 }
 
 /**
- * clutter_container_remove_valist:
+ * clutter_container_remove_valist: (skip)
  * @container: a #ClutterContainer
  * @first_actor: the first #ClutterActor to add
  * @var_args: list of actors to remove, followed by %NULL
@@ -490,6 +494,8 @@ clutter_container_foreach_with_internals (ClutterContainer *container,
  *
  * Raises @actor to @sibling level, in the depth ordering.
  *
+ * Virtual: raise
+ *
  * Since: 0.6
  */
 void
@@ -542,6 +548,8 @@ clutter_container_raise_child (ClutterContainer *container,
  * @sibling: the sibling to lower to, or %NULL to lower to the bottom
  *
  * Lowers @actor to @sibling level, in the depth ordering.
+ *
+ * Virtual: lower
  *
  * Since: 0.6
  */

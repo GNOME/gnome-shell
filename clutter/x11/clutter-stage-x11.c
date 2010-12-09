@@ -741,7 +741,8 @@ clutter_x11_get_stage_window (ClutterStage *stage)
  *
  * Gets the stage for a particular X window.  
  *
- * Return value: The stage or NULL if a stage does not exist for the window.
+ * Return value: (transfer none): A #ClutterStage, or% NULL if a stage
+ *   does not exist for the window
  *
  * Since: 0.8
  */
@@ -782,8 +783,8 @@ clutter_x11_get_stage_from_window (Window win)
  * along the lines of clutter_backend_x11_get_foreign_visual () or perhaps
  * clutter_stage_x11_get_foreign_visual ()
  *
- * Return value: An XVisualInfo suitable for creating a foreign stage. Use
- *   XFree() to free the returned value instead
+ * Return value: (transfer full): An XVisualInfo suitable for creating a
+ *   foreign stage. Use XFree() to free the returned value instead
  *
  * Deprecated: 1.2: Use clutter_x11_get_visual_info() instead
  *

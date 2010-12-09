@@ -577,7 +577,7 @@ clutter_x11_untrap_x_errors (void)
  *
  * Retrieves the pointer to the default display.
  *
- * Return value: the default display
+ * Return value: (transfer none): the default display
  *
  * Since: 0.6
  */
@@ -861,9 +861,9 @@ _clutter_x11_get_device_for_xid (XID id)
  *
  * Since: 0.8
  *
- * Return value: a pointer to the internal list of input devices; the
- *   returned list is owned by Clutter and should not be modified or
- *   freed
+ * Return value: (transfer none) (element-type Clutter.InputDevice): a
+ *   pointer to the internal list of input devices; the returned list is
+ *   owned by Clutter and should not be modified or freed
  */
 G_CONST_RETURN GSList *
 clutter_x11_get_input_devices (void)
@@ -1016,7 +1016,7 @@ clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11)
  * Retrieves the <structname>XVisualInfo</structname> used by the Clutter X11
  * backend.
  *
- * Return value: a <structname>XVisualInfo</structname>, or
+ * Return value: (transfer full): a <structname>XVisualInfo</structname>, or
  *   <varname>None</varname>. The returned value should be freed using XFree()
  *   when done
  *
