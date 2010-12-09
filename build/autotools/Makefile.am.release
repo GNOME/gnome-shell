@@ -34,8 +34,17 @@ release-tag:
 	  fi \
 	fi
 
-release-check: release-verify-even-micro release-verify-sane-changelogs
+release-check: release-verify-even-micro release-verify-sane-changelogs release-verify-news
 	TAR_OPTIONS="$(TAR_OPTIONS)" $(MAKE) $(AM_MAKEFLAGS) distcheck
+
+release-verify-news:
+	@echo -n "Checking that the NEWS file has been updated..."
+	@if ! grep -q "$(CLUTTER_VERSION)" $(top_srcdir)/NEWS; then \
+	  (echo "Ouch." && \
+	   echo "The version in the NEWS file does not match $(CLUTTER_VERSION)." && \
+	   echo "This probably means you haven't updated the NEWS file." && \
+	   false); else :; fi
+	@echo "Good."
 
 release-verify-sane-changelogs: changelogs
 	@echo -n "Checking that the ChangeLog files are sane..."
