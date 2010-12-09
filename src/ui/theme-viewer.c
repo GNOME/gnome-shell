@@ -472,7 +472,7 @@ get_window_flags (MetaFrameType type)
 
 static GtkWidget*
 preview_collection (int font_size,
-                    PangoFontDescription *base_desc)
+                    const PangoFontDescription *base_desc)
 {
   GtkWidget *box;
   GtkWidget *sw;
@@ -780,7 +780,8 @@ benchmark_summary (void)
 int
 main (int argc, char **argv)
 {
-  GtkStyle *style;
+  GtkStyleContext *style;
+  const PangoFontDescription *font_desc;
   GtkWidget *window;
   GtkWidget *collection;
   GError *err;
@@ -857,28 +858,29 @@ main (int argc, char **argv)
                     G_CALLBACK (gtk_main_quit), NULL);
 
   gtk_widget_realize (window);
-  style = gtk_widget_get_style (window);
+  style = gtk_widget_get_style_context (window);
+  font_desc = gtk_style_context_get_font (style, 0);
 
   g_assert (style);
-  g_assert (style->font_desc);
+  g_assert (font_desc);
   
   notebook = gtk_notebook_new ();
   gtk_container_add (GTK_CONTAINER (window), notebook);
 
   collection = preview_collection (FONT_SIZE_NORMAL,
-                                   style->font_desc);
+                                   font_desc);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
                             collection,
                             gtk_label_new (_("Normal Title Font")));
   
   collection = preview_collection (FONT_SIZE_SMALL,
-                                   style->font_desc);
+                                   font_desc);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
                             collection,
                             gtk_label_new (_("Small Title Font")));
   
   collection = preview_collection (FONT_SIZE_LARGE,
-                                   style->font_desc);
+                                   font_desc);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
                             collection,
                             gtk_label_new (_("Large Title Font")));
@@ -929,7 +931,12 @@ get_flags (GtkWidget *widget)
 static int
 get_text_height (GtkWidget *widget)
 {
-  return meta_pango_font_desc_get_text_height (gtk_widget_get_style (widget)->font_desc,
+  GtkStyleContext *style;
+  const PangoFontDescription *font_desc;
+
+  style = gtk_widget_get_style_context (widget);
+  font_desc = gtk_style_context_get_font (style, 0);
+  return meta_pango_font_desc_get_text_height (font_desc,
                                                gtk_widget_get_pango_context (widget));
 }
 

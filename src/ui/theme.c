@@ -3472,6 +3472,30 @@ fill_env (MetaPositionExprEnv *env,
   env->theme = meta_current_theme;
 }
 
+static GtkStateFlags
+state_flags_from_gtk_state (GtkStateType state)
+{
+  switch (state)
+    {
+    case GTK_STATE_NORMAL:
+      return 0;
+    case GTK_STATE_PRELIGHT:
+      return GTK_STATE_FLAG_PRELIGHT;
+    case GTK_STATE_ACTIVE:
+      return GTK_STATE_FLAG_ACTIVE;
+    case GTK_STATE_SELECTED:
+      return GTK_STATE_FLAG_SELECTED;
+    case GTK_STATE_INSENSITIVE:
+      return GTK_STATE_FLAG_INSENSITIVE;
+    case GTK_STATE_INCONSISTENT:
+      return GTK_STATE_FLAG_INCONSISTENT;
+    case GTK_STATE_FOCUSED:
+      return GTK_STATE_FLAG_FOCUSED;
+    }
+  return 0;
+}
+
+
 /* This code was originally rendering anti-aliased using X primitives, and
  * now has been switched to draw anti-aliased using cairo. In general, the
  * closest correspondence between X rendering and cairo rendering is given
@@ -3485,7 +3509,7 @@ fill_env (MetaPositionExprEnv *env,
  */
 static void
 meta_draw_op_draw_with_env (const MetaDrawOp    *op,
-                            GtkStyle            *style_gtk,
+                            GtkStyleContext     *style_gtk,
                             GtkWidget           *widget,
                             cairo_t             *cr,
                             const MetaDrawInfo  *info,
@@ -3495,6 +3519,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
   GdkColor color;
 
   cairo_save (cr);
+  gtk_style_context_save (style_gtk);
 
   cairo_set_line_width (cr, 1.0);
 
@@ -3744,21 +3769,36 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
     case META_DRAW_GTK_ARROW:
       {
         int rx, ry, rwidth, rheight;
+        double angle = 0, size;
 
         rx = parse_x_position_unchecked (op->data.gtk_arrow.x, env);
         ry = parse_y_position_unchecked (op->data.gtk_arrow.y, env);
         rwidth = parse_size_unchecked (op->data.gtk_arrow.width, env);
         rheight = parse_size_unchecked (op->data.gtk_arrow.height, env);
 
-        gtk_paint_arrow (style_gtk,
-                         cr,
-                         op->data.gtk_arrow.state,
-                         op->data.gtk_arrow.shadow,
-                         widget,
-                         "metacity",
-                         op->data.gtk_arrow.arrow,
-                         op->data.gtk_arrow.filled,
-                         rx, ry, rwidth, rheight);
+        size = MAX(rwidth, rheight);
+
+        switch (op->data.gtk_arrow.arrow)
+          {
+          case GTK_ARROW_UP:
+            angle = 0;
+            break;
+          case GTK_ARROW_RIGHT:
+            angle = M_PI / 2;
+            break;
+          case GTK_ARROW_DOWN:
+            angle = M_PI;
+            break;
+          case GTK_ARROW_LEFT:
+            angle = 3 * M_PI / 2;
+            break;
+          case GTK_ARROW_NONE:
+            return;
+          }
+
+        gtk_style_context_set_state (style_gtk,
+                                     state_flags_from_gtk_state (op->data.gtk_arrow.state));
+        gtk_render_arrow (style_gtk, cr, angle, rx, ry, size);
       }
       break;
 
@@ -3771,13 +3811,10 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.gtk_box.width, env);
         rheight = parse_size_unchecked (op->data.gtk_box.height, env);
 
-        gtk_paint_box (style_gtk,
-                       cr,
-                       op->data.gtk_box.state,
-                       op->data.gtk_box.shadow,
-                       widget,
-                       "metacity",
-                       rx, ry, rwidth, rheight);
+        gtk_style_context_set_state (style_gtk,
+                                     state_flags_from_gtk_state (op->data.gtk_box.state));
+        gtk_render_background (style_gtk, cr, rx, ry, rwidth, rheight);
+        gtk_render_frame (style_gtk, cr, rx, ry, rwidth, rheight);
       }
       break;
 
@@ -3789,12 +3826,9 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         ry1 = parse_y_position_unchecked (op->data.gtk_vline.y1, env);
         ry2 = parse_y_position_unchecked (op->data.gtk_vline.y2, env);
         
-        gtk_paint_vline (style_gtk,
-                          cr,
-                          op->data.gtk_vline.state,
-                          widget,
-                          "metacity",
-                          ry1, ry2, rx);
+        gtk_style_context_set_state (style_gtk,
+                                     state_flags_from_gtk_state (op->data.gtk_vline.state));
+        gtk_render_line (style_gtk, cr, rx, ry1, rx, ry2);
       }
       break;
 
@@ -3939,15 +3973,16 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
     }
 
   cairo_restore (cr);
+  gtk_style_context_restore (style_gtk);
 }
 
 void
 meta_draw_op_draw_with_style (const MetaDrawOp    *op,
-                              GtkStyle            *style_gtk,
-                   GtkWidget           *widget,
-                   cairo_t             *cr,
-                   const MetaDrawInfo  *info,
-                   MetaRectangle        logical_region)
+                              GtkStyleContext     *style_gtk,
+                              GtkWidget           *widget,
+                              cairo_t             *cr,
+                              const MetaDrawInfo  *info,
+                              MetaRectangle        logical_region)
 {
   MetaPositionExprEnv env;
 
@@ -3966,8 +4001,8 @@ meta_draw_op_draw (const MetaDrawOp    *op,
                    const MetaDrawInfo  *info,
                    MetaRectangle        logical_region)
 {
-  meta_draw_op_draw_with_style (op, gtk_widget_get_style (widget), widget,
-                                cr, info, logical_region);
+  meta_draw_op_draw_with_style (op, gtk_widget_get_style_context (widget),
+                                widget, cr, info, logical_region);
 }
 
 /**
@@ -4023,11 +4058,11 @@ meta_draw_op_list_unref (MetaDrawOpList *op_list)
 
 void
 meta_draw_op_list_draw_with_style  (const MetaDrawOpList *op_list,
-                                    GtkStyle             *style_gtk,
-                         GtkWidget            *widget,
-                         cairo_t              *cr,
-                         const MetaDrawInfo   *info,
-                         MetaRectangle         rect)
+                                    GtkStyleContext      *style_gtk,
+                                    GtkWidget            *widget,
+                                    cairo_t              *cr,
+                                    const MetaDrawInfo   *info,
+                                    MetaRectangle         rect)
 {
   int i;
   MetaPositionExprEnv env;
@@ -4088,7 +4123,7 @@ meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
                          MetaRectangle         rect)
 
 {
-  meta_draw_op_list_draw_with_style (op_list, gtk_widget_get_style (widget), widget,
+  meta_draw_op_list_draw_with_style (op_list, gtk_widget_get_style_context (widget), widget,
                                      cr, info, rect);
 }
 
@@ -4472,17 +4507,17 @@ button_rect (MetaButtonType           type,
 
 void
 meta_frame_style_draw_with_style (MetaFrameStyle          *style,
-                                  GtkStyle                *style_gtk,
-                       GtkWidget               *widget,
-                       cairo_t                 *cr,
-                       const MetaFrameGeometry *fgeom,
-                       int                      client_width,
-                       int                      client_height,
-                       PangoLayout             *title_layout,
-                       int                      text_height,
-                       MetaButtonState          button_states[META_BUTTON_TYPE_LAST],
-                       GdkPixbuf               *mini_icon,
-                       GdkPixbuf               *icon)
+                                  GtkStyleContext         *style_gtk,
+                                  GtkWidget               *widget,
+                                  cairo_t                 *cr,
+                                  const MetaFrameGeometry *fgeom,
+                                  int                      client_width,
+                                  int                      client_height,
+                                  PangoLayout             *title_layout,
+                                  int                      text_height,
+                                  MetaButtonState          button_states[META_BUTTON_TYPE_LAST],
+                                  GdkPixbuf               *mini_icon,
+                                  GdkPixbuf               *icon)
 {
   int i, j;
   GdkRectangle titlebar_rect;
@@ -4640,10 +4675,10 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
               m_rect = meta_rect (rect.x, rect.y, rect.width, rect.height);
               meta_draw_op_list_draw_with_style (op_list,
                                                  style_gtk,
-                                      widget,
-                                      cr,
-                                      &draw_info,
-                                      m_rect);
+                                                 widget,
+                                                 cr,
+                                                 &draw_info,
+                                                 m_rect);
             }
         }
 
@@ -4723,7 +4758,7 @@ meta_frame_style_draw (MetaFrameStyle          *style,
                        GdkPixbuf               *mini_icon,
                        GdkPixbuf               *icon)
 {
-  meta_frame_style_draw_with_style (style, gtk_widget_get_style (widget), widget,
+  meta_frame_style_draw_with_style (style, gtk_widget_get_style_context (widget), widget,
                                     cr, fgeom, client_width, client_height,
                                     title_layout, text_height,
                                     button_states, mini_icon, icon);
@@ -5336,19 +5371,19 @@ meta_theme_get_title_scale (MetaTheme     *theme,
 
 void
 meta_theme_draw_frame_with_style (MetaTheme              *theme,
-                                  GtkStyle               *style_gtk,
-                       GtkWidget              *widget,
-                       cairo_t                *cr,
-                       MetaFrameType           type,
-                       MetaFrameFlags          flags,
-                       int                     client_width,
-                       int                     client_height,
-                       PangoLayout            *title_layout,
-                       int                     text_height,
-                       const MetaButtonLayout *button_layout,
-                       MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
-                       GdkPixbuf              *mini_icon,
-                       GdkPixbuf              *icon)
+                                  GtkStyleContext        *style_gtk,
+                                  GtkWidget              *widget,
+                                  cairo_t                *cr,
+                                  MetaFrameType           type,
+                                  MetaFrameFlags          flags,
+                                  int                     client_width,
+                                  int                     client_height,
+                                  PangoLayout            *title_layout,
+                                  int                     text_height,
+                                  const MetaButtonLayout *button_layout,
+                                  MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
+                                  GdkPixbuf              *mini_icon,
+                                  GdkPixbuf              *icon)
 {
   MetaFrameGeometry fgeom;
   MetaFrameStyle *style;
@@ -5396,7 +5431,7 @@ meta_theme_draw_frame (MetaTheme              *theme,
                        GdkPixbuf              *mini_icon,
                        GdkPixbuf              *icon)
 {
-  meta_theme_draw_frame_with_style (theme, gtk_widget_get_style (widget), widget,
+  meta_theme_draw_frame_with_style (theme, gtk_widget_get_style_context (widget), widget,
                                     cr, type,flags,
                                     client_width, client_height,
                                     title_layout, text_height,
@@ -5783,11 +5818,13 @@ meta_gtk_widget_get_font_desc (GtkWidget *widget,
                                double     scale,
 			       const PangoFontDescription *override)
 {
+  GtkStyleContext *style;
   PangoFontDescription *font_desc;
   
   g_return_val_if_fail (gtk_widget_get_realized (widget), NULL);
 
-  font_desc = pango_font_description_copy (gtk_widget_get_style (widget)->font_desc);
+  style = gtk_widget_get_style_context (widget);
+  font_desc = pango_font_description_copy (gtk_style_context_get_font (style, 0));
 
   if (override)
     pango_font_description_merge (font_desc, override, TRUE);

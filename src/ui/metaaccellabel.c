@@ -255,6 +255,7 @@ meta_accel_label_draw (GtkWidget *widget,
 
   if (allocation.width >= requisition.width + ac_width)
     {
+      GtkStyleContext *style;
       PangoLayout *label_layout;
       PangoLayout *accel_layout;
       GtkLabel *label = GTK_LABEL (widget);
@@ -302,14 +303,15 @@ meta_accel_label_draw (GtkWidget *widget,
 
       y = (allocation.height - (requisition.height - ypad * 2)) * yalign + 1.5;
 
-      gtk_paint_layout (gtk_widget_get_style (widget),
-                        cr,
-                        gtk_widget_get_state (widget),
-                        FALSE,
-                        widget,
-                        "accellabel",
-                        x, y,
-                        accel_layout);                            
+      style = gtk_widget_get_style_context (widget);
+      gtk_style_context_save (style);
+      gtk_style_context_set_state (style,
+                                   gtk_widget_get_state_flags (widget));
+      gtk_render_layout (gtk_widget_get_style_context (widget),
+                         cr,
+                         x, y,
+                         accel_layout);
+      gtk_style_context_restore (style);
 
       g_object_unref (accel_layout);
     }

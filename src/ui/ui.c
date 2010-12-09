@@ -713,9 +713,9 @@ meta_ui_theme_get_frame_borders (MetaUI *ui,
                                  int               *right_width)
 {
   int text_height;
+  GtkStyleContext *style = NULL;
   PangoContext *context;
   const PangoFontDescription *font_desc;
-  GtkStyle *default_style;
 
   if (meta_ui_have_a_theme ())
     {
@@ -724,8 +724,8 @@ meta_ui_theme_get_frame_borders (MetaUI *ui,
 
       if (!font_desc)
         {
-          default_style = gtk_widget_get_default_style ();
-          font_desc = default_style->font_desc;
+          style = gtk_style_context_new ();
+          font_desc = gtk_style_context_get_font (style, 0);
         }
 
       text_height = meta_pango_font_desc_get_text_height (font_desc, context);
@@ -739,6 +739,9 @@ meta_ui_theme_get_frame_borders (MetaUI *ui,
     {
       *top_height = *bottom_height = *left_width = *right_width = 0;
     }
+
+  if (style != NULL)
+    g_object_unref (style);
 }
 
 void

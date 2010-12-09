@@ -975,7 +975,7 @@ void           meta_draw_op_draw (const MetaDrawOp    *op,
                                   MetaRectangle        logical_region);
 
 void           meta_draw_op_draw_with_style (const MetaDrawOp    *op,
-                                             GtkStyle            *style_gtk,
+                                             GtkStyleContext     *style_gtk,
                                              GtkWidget           *widget,
                                              cairo_t             *cr,
                                              const MetaDrawInfo  *info,
@@ -991,7 +991,7 @@ void            meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
                                          const MetaDrawInfo   *info,
                                          MetaRectangle         rect);
 void            meta_draw_op_list_draw_with_style  (const MetaDrawOpList *op_list,
-                                                    GtkStyle             *style_gtk,
+                                                    GtkStyleContext      *style_gtk,
                                                     GtkWidget            *widget,
                                                     cairo_t              *cr,
                                                     const MetaDrawInfo   *info,
@@ -1035,7 +1035,7 @@ void meta_frame_style_draw (MetaFrameStyle          *style,
 
 
 void meta_frame_style_draw_with_style (MetaFrameStyle          *style,
-                                       GtkStyle                *style_gtk,
+                                       GtkStyleContext         *style_gtk,
                                        GtkWidget               *widget,
                                        cairo_t                 *cr,
                                        const MetaFrameGeometry *fgeom,
@@ -1101,7 +1101,7 @@ void meta_theme_draw_frame_by_name (MetaTheme              *theme,
                                     GdkPixbuf              *icon);
 
 void meta_theme_draw_frame_with_style (MetaTheme              *theme,
-                                       GtkStyle               *style_gtk,
+                                       GtkStyleContext        *style_gtk,
                                        GtkWidget              *widget,
                                        cairo_t                *cr,
                                        MetaFrameType           type,

@@ -224,11 +224,17 @@ draw_callback (GtkWidget *widget,
                gpointer   data)
 {
   RenderGradientFunc func = data;
-  GtkStyle *style;
+  GtkStyleContext *style;
+  GdkRGBA color;
 
-  style = gtk_widget_get_style (widget);
+  style = gtk_widget_get_style_context (widget);
 
-  gdk_cairo_set_source_color (cr, &style->fg[gtk_widget_get_state (widget)]);
+  gtk_style_context_save (style);
+  gtk_style_context_set_state (style, gtk_widget_get_state_flags (widget));
+  gtk_style_context_lookup_color (style, "foreground-color", &color);
+  gtk_style_context_restore (style);
+
+  cairo_set_source_rgba (cr, color.red, color.green, color.blue, color.alpha);
 
   (* func) (cr,
             gtk_widget_get_allocated_width (widget),

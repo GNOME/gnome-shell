@@ -36,8 +36,7 @@ struct _MetaTilePreview {
   GtkWidget     *preview_window;
   gulong         create_serial;
 
-  GdkColor      *preview_color;
-  guchar         preview_alpha;
+  GdkRGBA       *preview_color;
 
   MetaRectangle  tile_rect;
 
@@ -57,22 +56,23 @@ meta_tile_preview_draw (GtkWidget *widget,
     {
       /* Fill the preview area with a transparent color */
       cairo_set_source_rgba (cr,
-                             (double)preview->preview_color->red   / 0xFFFF,
-                             (double)preview->preview_color->green / 0xFFFF,
-                             (double)preview->preview_color->blue  / 0xFFFF,
-                             (double)preview->preview_alpha / 0xFF);
+                             preview->preview_color->red,
+                             preview->preview_color->green,
+                             preview->preview_color->blue,
+                             preview->preview_color->alpha);
 
       cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
       cairo_paint (cr);
 
       /* Use the opaque color for the border */
-      gdk_cairo_set_source_color (cr, preview->preview_color);
+      cairo_set_source_rgb (cr,
+                            preview->preview_color->red,
+                            preview->preview_color->green,
+                            preview->preview_color->blue);
     }
   else
     {
-      GtkStyle *style = gtk_widget_get_style (preview->preview_window);
-
-      gdk_cairo_set_source_color (cr, &style->white);
+      cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
 
       cairo_rectangle (cr,
                        OUTLINE_WIDTH - 0.5, OUTLINE_WIDTH - 0.5,
@@ -88,37 +88,6 @@ meta_tile_preview_draw (GtkWidget *widget,
   cairo_stroke (cr);
 
   return FALSE;
-}
-
-static void
-on_preview_window_style_set (GtkWidget *widget,
-                             GtkStyle  *previous,
-                             gpointer   user_data)
-{
-  MetaTilePreview *preview = user_data;
-  GtkStyle *style;
-
-  style = gtk_rc_get_style_by_paths (gtk_widget_get_settings (widget),
-                                     "GtkWindow.GtkIconView",
-                                     "GtkWindow.GtkIconView",
-                                     GTK_TYPE_ICON_VIEW);
-
-  if (style != NULL)
-    g_object_ref (style);
-  else
-    style = gtk_style_new ();
-
-  gtk_style_get (style, GTK_TYPE_ICON_VIEW,
-                 "selection-box-color", &preview->preview_color,
-                 "selection-box-alpha", &preview->preview_alpha,
-                 NULL);
-  if (!preview->preview_color)
-    {
-      GdkColor selection = style->base[GTK_STATE_SELECTED];
-      preview->preview_color = gdk_color_copy (&selection);
-    }
-
-  g_object_unref (style);
 }
 
 MetaTilePreview *
@@ -138,7 +107,6 @@ meta_tile_preview_new (int      screen_number,
   gtk_widget_set_app_paintable (preview->preview_window, TRUE);
 
   preview->preview_color = NULL;
-  preview->preview_alpha = 0xFF;
 
   preview->tile_rect.x = preview->tile_rect.y = 0;
   preview->tile_rect.width = preview->tile_rect.height = 0;
@@ -148,11 +116,38 @@ meta_tile_preview_new (int      screen_number,
 
   if (preview->has_alpha)
     {
+      GtkStyleContext *context;
+      GtkWidgetPath *path;
+      guchar selection_alpha = 0xFF;
+
       gtk_widget_set_visual (preview->preview_window,
                              gdk_screen_get_rgba_visual (screen));
 
-      g_signal_connect (preview->preview_window, "style-set",
-                        G_CALLBACK (on_preview_window_style_set), preview);
+      path = gtk_widget_path_new ();
+      gtk_widget_path_append_type (path, GTK_TYPE_ICON_VIEW);
+
+      context = gtk_style_context_new ();
+      gtk_style_context_set_path (context, path);
+      gtk_style_context_add_class (context,
+                                   GTK_STYLE_CLASS_RUBBERBAND);
+
+      gtk_widget_path_free (path);
+
+      gtk_style_context_get (context, GTK_STATE_FLAG_SELECTED,
+                             "background-color", &preview->preview_color,
+                             NULL);
+
+      /* The background-color for the .rubberband class should probably
+       * contain the correct alpha value - unfortunately, at least for now
+       * it doesn't. Hopefully the following workaround can be removed
+       * when GtkIconView gets ported to GtkStyleContext.
+       */
+      gtk_style_context_get_style (context,
+                                   "selection-box-alpha", &selection_alpha,
+                                   NULL);
+      preview->preview_color->alpha = (double)selection_alpha / 0xFF;
+
+      g_object_unref (context);
     }
 
   /* We make an assumption that XCreateWindow will be the first operation
@@ -173,7 +168,7 @@ meta_tile_preview_free (MetaTilePreview *preview)
   gtk_widget_destroy (preview->preview_window);
 
   if (preview->preview_color)
-    gdk_color_free (preview->preview_color);
+    gdk_rgba_free (preview->preview_color);
 
   g_free (preview);
 }
@@ -214,10 +209,9 @@ meta_tile_preview_show (MetaTilePreview *preview,
     {
       cairo_region_t *outer_region, *inner_region;
       GdkRectangle outer_rect, inner_rect;
-      GdkColor black;
+      GdkRGBA black = { 0.0, 0.0, 0.0, 1.0 };
 
-      black = gtk_widget_get_style (preview->preview_window)->black;
-      gdk_window_set_background (window, &black);
+      gdk_window_set_background_rgba (window, &black);
 
       outer_rect.x = outer_rect.y = 0;
       outer_rect.width = preview->tile_rect.width;

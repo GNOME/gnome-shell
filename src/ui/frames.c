@@ -43,12 +43,11 @@
 
 #define DEFAULT_INNER_BUTTON_BORDER 3
 
-static void meta_frames_destroy    (GtkWidget       *object);
-static void meta_frames_finalize   (GObject         *object);
-static void meta_frames_style_set  (GtkWidget       *widget,
-                                    GtkStyle        *prev_style);
-static void meta_frames_map        (GtkWidget       *widget);
-static void meta_frames_unmap      (GtkWidget       *widget);
+static void meta_frames_destroy       (GtkWidget       *object);
+static void meta_frames_finalize      (GObject         *object);
+static void meta_frames_style_updated (GtkWidget       *widget);
+static void meta_frames_map           (GtkWidget       *widget);
+static void meta_frames_unmap         (GtkWidget       *widget);
 
 static void meta_frames_update_prelit_control (MetaFrames      *frames,
                                                MetaUIFrame     *frame,
@@ -137,7 +136,7 @@ meta_frames_class_init (MetaFramesClass *class)
 
   widget_class->destroy = meta_frames_destroy;
 
-  widget_class->style_set = meta_frames_style_set;
+  widget_class->style_updated = meta_frames_style_updated;
 
   widget_class->map = meta_frames_map;
   widget_class->unmap = meta_frames_unmap;
@@ -422,8 +421,7 @@ reattach_style_func (gpointer key, gpointer value, gpointer data)
 }
 
 static void
-meta_frames_style_set  (GtkWidget *widget,
-                        GtkStyle  *prev_style)
+meta_frames_style_updated  (GtkWidget *widget)
 {
   MetaFrames *frames;
 
@@ -434,7 +432,7 @@ meta_frames_style_set  (GtkWidget *widget,
   g_hash_table_foreach (frames->frames,
                         reattach_style_func, frames);
 
-  GTK_WIDGET_CLASS (meta_frames_parent_class)->style_set (widget, prev_style);
+  GTK_WIDGET_CLASS (meta_frames_parent_class)->style_updated (widget);
 }
 
 static void
@@ -577,12 +575,9 @@ meta_frames_attach_style (MetaFrames  *frames,
                           MetaUIFrame *frame)
 {
   if (frame->style != NULL)
-    gtk_style_detach (frame->style);
+    g_object_unref (frame->style);
 
-  /* Weirdly, gtk_style_attach() steals a reference count from the style passed in */
-  g_object_ref (gtk_widget_get_style (GTK_WIDGET (frames)));
-  frame->style = gtk_style_attach (gtk_widget_get_style (GTK_WIDGET (frames)),
-                                   frame->window);
+  frame->style = g_object_ref (gtk_widget_get_style_context (GTK_WIDGET (frames)));
 }
 
 void
@@ -653,7 +648,7 @@ meta_frames_unmanage_window (MetaFrames *frames,
       
       g_hash_table_remove (frames->frames, &frame->xwindow);
 
-      gtk_style_detach (frame->style);
+      g_object_unref (frame->style);
 
       gdk_window_destroy (frame->window);
 
@@ -2469,8 +2464,7 @@ meta_frames_set_window_background (MetaFrames   *frames,
     }
   else
     {
-      gtk_style_set_background (frame->style,
-                                frame->window, GTK_STATE_NORMAL);
+      gtk_style_context_set_background (frame->style, frame->window);
     }
  }
 
