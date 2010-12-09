@@ -273,28 +273,6 @@ st_icon_paint (ClutterActor *actor)
 }
 
 static void
-st_icon_map (ClutterActor *actor)
-{
-  StIconPrivate *priv = ST_ICON (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (st_icon_parent_class)->map (actor);
-
-  if (priv->icon_texture)
-    clutter_actor_map (priv->icon_texture);
-}
-
-static void
-st_icon_unmap (ClutterActor *actor)
-{
-  StIconPrivate *priv = ST_ICON (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (st_icon_parent_class)->unmap (actor);
-
-  if (priv->icon_texture)
-    clutter_actor_unmap (priv->icon_texture);
-}
-
-static void
 st_icon_style_changed (StWidget *widget)
 {
   StIcon *self = ST_ICON (widget);
@@ -325,8 +303,6 @@ st_icon_class_init (StIconClass *klass)
   actor_class->get_preferred_width = st_icon_get_preferred_width;
   actor_class->allocate = st_icon_allocate;
   actor_class->paint = st_icon_paint;
-  actor_class->map = st_icon_map;
-  actor_class->unmap = st_icon_unmap;
 
   widget_class->style_changed = st_icon_style_changed;
 
