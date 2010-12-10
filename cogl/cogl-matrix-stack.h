@@ -110,4 +110,11 @@ _cogl_matrix_stack_dirty (CoglMatrixStack  *stack);
 unsigned int
 _cogl_matrix_stack_get_age (CoglMatrixStack *stack);
 
+/* If this returns TRUE then the top of the matrix is definitely the
+   identity matrix. If it returns FALSE it may or may not be the
+   identity matrix but no expensive comparison is performed to verify
+   it. */
+gboolean
+_cogl_matrix_stack_has_identity_flag (CoglMatrixStack *stack);
+
 #endif /* __COGL_MATRIX_STACK_H */
