@@ -58,6 +58,8 @@ struct _CoglMatrixStack
   /* which state does GL have, NULL if unknown */
   CoglMatrixState *flushed_state;
   gboolean flushed_identity;
+
+  unsigned int age;
 };
 
 /* XXX: this doesn't initialize the matrix! */
@@ -138,6 +140,8 @@ _cogl_matrix_stack_new (void)
   _cogl_matrix_state_init (state);
   state->is_identity = TRUE;
 
+  stack->age = 0;
+
   return stack;
 }
 
@@ -185,6 +189,7 @@ _cogl_matrix_stack_pop (CoglMatrixStack *stack)
           stack->flushed_state = NULL;
         }
 
+      stack->age++;
       g_array_set_size (stack->stack, stack->stack->len - 1);
     }
 }
@@ -209,6 +214,7 @@ _cogl_matrix_stack_load_identity (CoglMatrixStack *stack)
 
       /* mark dirty */
       stack->flushed_state = NULL;
+      stack->age++;
     }
 }
 
@@ -225,6 +231,7 @@ _cogl_matrix_stack_scale (CoglMatrixStack *stack,
   /* mark dirty */
   stack->flushed_state = NULL;
   state->is_identity = FALSE;
+  stack->age++;
 }
 
 void
@@ -240,6 +247,7 @@ _cogl_matrix_stack_translate (CoglMatrixStack *stack,
   /* mark dirty */
   stack->flushed_state = NULL;
   state->is_identity = FALSE;
+  stack->age++;
 }
 
 void
@@ -256,6 +264,7 @@ _cogl_matrix_stack_rotate (CoglMatrixStack *stack,
   /* mark dirty */
   stack->flushed_state = NULL;
   state->is_identity = FALSE;
+  stack->age++;
 }
 
 void
@@ -269,6 +278,7 @@ _cogl_matrix_stack_multiply (CoglMatrixStack  *stack,
   /* mark dirty */
   stack->flushed_state = NULL;
   state->is_identity = FALSE;
+  stack->age++;
 }
 
 void
@@ -289,6 +299,7 @@ _cogl_matrix_stack_frustum (CoglMatrixStack *stack,
   /* mark dirty */
   stack->flushed_state = NULL;
   state->is_identity = FALSE;
+  stack->age++;
 }
 
 void
@@ -306,6 +317,7 @@ _cogl_matrix_stack_perspective (CoglMatrixStack *stack,
   /* mark dirty */
   stack->flushed_state = NULL;
   state->is_identity = FALSE;
+  stack->age++;
 }
 
 void
@@ -325,6 +337,7 @@ _cogl_matrix_stack_ortho (CoglMatrixStack *stack,
   /* mark dirty */
   stack->flushed_state = NULL;
   state->is_identity = FALSE;
+  stack->age++;
 }
 
 gboolean
@@ -448,3 +461,8 @@ _cogl_matrix_stack_dirty (CoglMatrixStack *stack)
   stack->flushed_identity = FALSE;
 }
 
+unsigned int
+_cogl_matrix_stack_get_age (CoglMatrixStack *stack)
+{
+  return stack->age;
+}

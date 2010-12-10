@@ -87,4 +87,6 @@ void             _cogl_matrix_stack_flush_to_gl   (CoglMatrixStack  *stack,
                                                    CoglMatrixMode    mode);
 void             _cogl_matrix_stack_dirty         (CoglMatrixStack  *stack);
 
+unsigned int     _cogl_matrix_stack_get_age       (CoglMatrixStack *stack);
+
 #endif /* __COGL_MATRIX_STACK_H */
