@@ -34,6 +34,7 @@
 #include "cogl-internal.h"
 #include "cogl-matrix-stack.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-object-private.h"
 
 typedef struct {
   CoglMatrix matrix;
@@ -53,6 +54,8 @@ typedef struct {
  */
 struct _CoglMatrixStack
 {
+  CoglObject _parent;
+
   GArray *stack;
 
   /* which state does GL have, NULL if unknown */
@@ -61,6 +64,10 @@ struct _CoglMatrixStack
 
   unsigned int age;
 };
+
+static void _cogl_matrix_stack_free (CoglMatrixStack *stack);
+
+COGL_OBJECT_INTERNAL_DEFINE (MatrixStack, matrix_stack);
 
 /* XXX: this doesn't initialize the matrix! */
 static void
@@ -142,11 +149,11 @@ _cogl_matrix_stack_new (void)
 
   stack->age = 0;
 
-  return stack;
+  return _cogl_matrix_stack_object_new (stack);
 }
 
-void
-_cogl_matrix_stack_destroy (CoglMatrixStack *stack)
+static void
+_cogl_matrix_stack_free (CoglMatrixStack *stack)
 {
   g_array_free (stack->stack, TRUE);
   g_slice_free (CoglMatrixStack, stack);
