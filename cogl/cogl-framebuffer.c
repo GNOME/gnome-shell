@@ -166,10 +166,10 @@ _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
 {
   _cogl_clip_state_destroy (&framebuffer->clip_state);
 
-  _cogl_matrix_stack_destroy (framebuffer->modelview_stack);
+  cogl_object_unref (framebuffer->modelview_stack);
   framebuffer->modelview_stack = NULL;
 
-  _cogl_matrix_stack_destroy (framebuffer->projection_stack);
+  cogl_object_unref (framebuffer->projection_stack);
   framebuffer->projection_stack = NULL;
 }
 

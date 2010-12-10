@@ -43,9 +43,6 @@ CoglMatrixStack *
 _cogl_matrix_stack_new (void);
 
 void
-_cogl_matrix_stack_destroy (CoglMatrixStack *stack);
-
-void
 _cogl_matrix_stack_push (CoglMatrixStack *stack);
 
 void
