@@ -473,3 +473,9 @@ _cogl_matrix_stack_get_age (CoglMatrixStack *stack)
 {
   return stack->age;
 }
+
+gboolean
+_cogl_matrix_stack_has_identity_flag (CoglMatrixStack *stack)
+{
+  return _cogl_matrix_stack_top (stack)->is_identity;
+}
