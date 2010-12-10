@@ -53,8 +53,7 @@ typedef enum
  * Controls some options for how clutter_actor_traverse() iterates
  * through the graph.
  */
-typedef enum _ClutterActorTraverseFlags
-{
+typedef enum {
   CLUTTER_ACTOR_TRAVERSE_DEPTH_FIRST   = 1L<<0,
   CLUTTER_ACTOR_TRAVERSE_BREADTH_FIRST = 1L<<1
 } ClutterActorTraverseFlags;
@@ -75,8 +74,7 @@ typedef enum _ClutterActorTraverseFlags
  * the continuing traversal. It may stop traversal completely, just
  * skip over children for the current actor or continue as normal.
  */
-typedef enum _ClutterActorTraverseVisitFlags
-{
+typedef enum {
   CLUTTER_ACTOR_TRAVERSE_VISIT_CONTINUE       = 1L<<0,
   CLUTTER_ACTOR_TRAVERSE_VISIT_SKIP_CHILDREN  = 1L<<1,
   CLUTTER_ACTOR_TRAVERSE_VISIT_BREAK          = 1L<<2
