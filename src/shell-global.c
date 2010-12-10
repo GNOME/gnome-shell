@@ -60,8 +60,6 @@ struct _ShellGlobal {
   const char *userdatadir;
   StFocusManager *focus_manager;
 
-  /* Displays the root window; see shell_global_create_root_pixmap_actor() */
-  ClutterActor *root_pixmap;
   GdkWindow    *stage_window;
 
   gint last_change_screen_width, last_change_screen_height;
@@ -220,7 +218,6 @@ shell_global_init (ShellGlobal *global)
   g_signal_connect (global->grab_notifier, "grab-notify", G_CALLBACK (grab_notify), global);
   global->gtk_grab_active = FALSE;
 
-  global->root_pixmap = NULL;
   global->stage_window = NULL;
 
   global->input_mode = SHELL_STAGE_INPUT_MODE_NORMAL;
@@ -655,11 +652,6 @@ update_screen_size (gpointer data)
 
   global->last_change_screen_width = width;
   global->last_change_screen_height = height;
-
-  /* update size of background actor to fix tiled backgrounds */
-  if (global->root_pixmap)
-    clutter_actor_set_size (CLUTTER_ACTOR (global->root_pixmap),
-                            width, height);
 
   return FALSE;
 }
