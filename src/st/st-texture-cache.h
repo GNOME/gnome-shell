@@ -119,6 +119,9 @@ ClutterActor *st_texture_cache_load_uri_sync (StTextureCache       *cache,
 CoglHandle    st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
                                                           const gchar    *file_path);
 
+cairo_surface_t *st_texture_cache_load_file_to_cairo_surface (StTextureCache *cache,
+                                                              const gchar    *file_path);
+
 ClutterActor *st_texture_cache_load_file_simple (StTextureCache *cache,
                                                  const gchar    *file_path);
 
