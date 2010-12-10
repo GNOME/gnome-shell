@@ -51,7 +51,7 @@ G_BEGIN_DECLS
 typedef struct _ClutterParamSpecFixed   ClutterParamSpecFixed;
 
 /**
- * ClutterParamSpecFixed
+ * ClutterParamSpecFixed: (skip)
  * @minimum: lower boundary
  * @maximum: higher boundary
  * @default_value: default value

@@ -11,7 +11,7 @@ G_BEGIN_DECLS
 #define CLUTTER_STAGE_WINDOW_GET_IFACE(obj)     (G_TYPE_INSTANCE_GET_INTERFACE ((obj), CLUTTER_TYPE_STAGE_WINDOW, ClutterStageWindowIface))
 
 /**
- * ClutterStageWindow:
+ * ClutterStageWindow: (skip)
  *
  * <structname>ClutterStageWindow</structname> is an opaque structure
  * whose members should not be accessed directly
@@ -22,7 +22,7 @@ typedef struct _ClutterStageWindow      ClutterStageWindow; /* dummy */
 typedef struct _ClutterStageWindowIface ClutterStageWindowIface;
 
 /**
- * ClutterStageWindowIface:
+ * ClutterStageWindowIface: (skip)
  *
  * The interface implemented by backends for stage windows
  *

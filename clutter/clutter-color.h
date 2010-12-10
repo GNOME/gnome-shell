@@ -121,14 +121,14 @@ void          clutter_color_interpolate (const ClutterColor *initial,
 typedef struct _ClutterParamSpecColor  ClutterParamSpecColor;
 
 /**
-  * ClutterParamSpecColor:
-  * @default_value: default color value
-  *
-  * A #GParamSpec subclass for defining properties holding
-  * a #ClutterColor.
-  *
-  * Since: 1.0
-  */
+ * ClutterParamSpecColor: (skip)
+ * @default_value: default color value
+ *
+ * A #GParamSpec subclass for defining properties holding
+ * a #ClutterColor.
+ *
+ * Since: 1.0
+ */
 struct _ClutterParamSpecColor
 {
   /*< private >*/

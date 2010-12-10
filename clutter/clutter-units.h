@@ -145,7 +145,7 @@ gchar *         clutter_units_to_string        (const ClutterUnits *units);
 typedef struct _ClutterParamSpecUnits   ClutterParamSpecUnits;
 
 /**
- * ClutterParamSpecUnits:
+ * ClutterParamSpecUnits: (skip)
  * @default_type: default type
  * @default_value: default value
  * @minimum: lower boundary
