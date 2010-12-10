@@ -57,6 +57,20 @@ typedef struct _CallyActorPrivate    CallyActorPrivate;
 typedef void (* CallyActionFunc) (CallyActor *cally_actor);
 
 /**
+ * CallyActionCallback:
+ * @cally_actor: a #CallyActor
+ * @user_data: user data passed to the function
+ *
+ * Action function, to be used on #AtkAction implementations as
+ * an individual action. Unlike #CallyActionFunc, this function
+ * uses the @user_data argument passed to cally_actor_add_action_full().
+ *
+ * Since: 1.6
+ */
+typedef void (* CallyActionCallback) (CallyActor *cally_actor,
+                                      gpointer    user_data);
+
+/**
  * CallyActor:
  *
  * The <structname>CallyActor</structname> structure contains only private
@@ -116,19 +130,26 @@ struct _CallyActorClass
 
 GType      cally_actor_get_type              (void) G_GNUC_CONST;
 
-AtkObject* cally_actor_new                   (ClutterActor *actor);
-guint      cally_actor_add_action            (CallyActor   *cally_actor,
-                                              const gchar *action_name,
-                                              const gchar *action_description,
-                                              const gchar *action_keybinding,
-                                              CallyActionFunc action_func);
+AtkObject* cally_actor_new                   (ClutterActor        *actor);
 
-gboolean   cally_actor_remove_action         (CallyActor   *cally_actor,
-                                              gint         action_id);
+guint      cally_actor_add_action            (CallyActor          *cally_actor,
+                                              const gchar         *action_name,
+                                              const gchar         *action_description,
+                                              const gchar         *action_keybinding,
+                                              CallyActionFunc      action_func);
+guint      cally_actor_add_action_full       (CallyActor          *cally_actor,
+                                              const gchar         *action_name,
+                                              const gchar         *action_description,
+                                              const gchar         *action_keybinding,
+                                              CallyActionCallback  callback,
+                                              gpointer             user_data,
+                                              GDestroyNotify       notify);
 
-gboolean   cally_actor_remove_action_by_name (CallyActor   *cally_actor,
-                                              const gchar *action_name);
+gboolean   cally_actor_remove_action         (CallyActor          *cally_actor,
+                                              gint                 action_id);
 
+gboolean   cally_actor_remove_action_by_name (CallyActor          *cally_actor,
+                                              const gchar         *action_name);
 
 G_END_DECLS
 

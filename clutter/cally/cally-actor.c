@@ -121,16 +121,21 @@ typedef struct _CallyActorActionInfo CallyActorActionInfo;
  * @description: description of the action
  * @keybinding: keybinding related to the action
  * @do_action_func: callback
+ * @user_data: data to be passed to @do_action_func
+ * @notify: function to be called when removing the action
  *
  * Utility structure to maintain the different actions added to the
  * #CallyActor
  */
 struct _CallyActorActionInfo
 {
-  gchar       *name;
-  gchar       *description;
-  gchar       *keybinding;
-  CallyActionFunc  do_action_func;
+  gchar *name;
+  gchar *description;
+  gchar *keybinding;
+
+  CallyActionCallback do_action_func;
+  gpointer user_data;
+  GDestroyNotify notify;
 };
 
 static void cally_actor_class_init (CallyActorClass *klass);
@@ -1038,7 +1043,7 @@ idle_do_action (gpointer data)
 
       info = (CallyActorActionInfo *) g_queue_pop_head (priv->action_queue);
 
-      info->do_action_func (cally_actor);
+      info->do_action_func (cally_actor, info->user_data);
     }
 
   return FALSE;
@@ -1367,7 +1372,7 @@ _cally_actor_release_action (CallyActor *cally_actor)
 }
 
 /**
- * cally_actor_add_action:
+ * cally_actor_add_action: (skip)
  * @cally_actor: a #CallyActor
  * @action_name: the action name
  * @action_description: the action description
@@ -1376,7 +1381,7 @@ _cally_actor_release_action (CallyActor *cally_actor)
  *
  * Adds a new action to be accessed with the #AtkAction interface.
  *
- * Return value: added action id, or 0 if failure
+ * Return value: added action id, or -1 if failure
  *
  * Since: 1.4
  */
@@ -1387,34 +1392,58 @@ cally_actor_add_action (CallyActor      *cally_actor,
                         const gchar     *action_keybinding,
                         CallyActionFunc  action_func)
 {
+  return cally_actor_add_action_full (cally_actor,
+                                      action_name,
+                                      action_description,
+                                      action_keybinding,
+                                      (CallyActionCallback) action_func,
+                                      NULL, NULL);
+}
+
+/**
+ * cally_actor_add_action_full:
+ * @cally_actor: a #CallyActor
+ * @action_name: the action name
+ * @action_description: the action description
+ * @action_keybinding: the action keybinding
+ * @callback: (scope notified): the callback of the action
+ * @user_data: (closure): data to be passed to @callback
+ * @notify: function to be called when removing the action
+ *
+ * Adds a new action to be accessed with the #AtkAction interface.
+ *
+ * Return value: added action id, or -1 if failure
+ *
+ * Since: 1.6
+ *
+ * Rename to: cally_actor_add_action
+ */
+guint
+cally_actor_add_action_full (CallyActor          *cally_actor,
+                             const gchar         *action_name,
+                             const gchar         *action_description,
+                             const gchar         *action_keybinding,
+                             CallyActionCallback  callback,
+                             gpointer             user_data,
+                             GDestroyNotify       notify)
+{
   CallyActorActionInfo *info = NULL;
-  CallyActorPrivate    *priv = NULL;
+  CallyActorPrivate *priv = NULL;
 
   g_return_val_if_fail (CALLY_IS_ACTOR (cally_actor), -1);
-  g_return_val_if_fail (action_func != NULL, -1);
+  g_return_val_if_fail (callback != NULL, -1);
 
   priv = cally_actor->priv;
 
-  info = g_new (CallyActorActionInfo, 1);
+  info = g_slice_new (CallyActorActionInfo);
+  info->name = g_strdup (action_name);
+  info->description = g_strdup (action_description);
+  info->keybinding = g_strdup (action_keybinding);
+  info->do_action_func = callback;
+  info->user_data = user_data;
+  info->notify = notify;
 
-  if (action_name != NULL)
-    info->name = g_strdup (action_name);
-  else
-    info->name = NULL;
-
-  if (action_description != NULL)
-    info->description = g_strdup (action_description);
-  else
-    info->description = NULL;
-
-  if (action_keybinding != NULL)
-    info->keybinding = g_strdup (action_keybinding);
-  else
-    info->keybinding = NULL;
-
-  info->do_action_func = action_func;
-
-  priv->action_list = g_list_append (priv->action_list, (gpointer) info);
+  priv->action_list = g_list_append (priv->action_list, info);
 
   return g_list_length (priv->action_list);
 }
@@ -1498,9 +1527,9 @@ cally_actor_remove_action_by_name (CallyActor  *cally_actor,
 
 static void
 _cally_actor_destroy_action_info (gpointer action_info,
-                                 gpointer user_data)
+                                  gpointer user_data)
 {
-  CallyActorActionInfo *info = (CallyActorActionInfo *)action_info;
+  CallyActorActionInfo *info = action_info;
 
   g_assert (info != NULL);
 
@@ -1508,5 +1537,8 @@ _cally_actor_destroy_action_info (gpointer action_info,
   g_free (info->description);
   g_free (info->keybinding);
 
-  g_free (info);
+  if (info->notify)
+    info->notify (info->user_data);
+
+  g_slice_free (CallyActorActionInfo, info);
 }
