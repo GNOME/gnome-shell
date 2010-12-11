@@ -695,8 +695,9 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
 
   pspec_type = G_PARAM_SPEC_VALUE_TYPE (pspec);
 
-  if (!g_value_type_compatible (argtype, pspec_type) ||
-      !g_value_type_transformable (argtype, pspec_type))
+  if (g_value_type_transformable (argtype, pspec_type))
+    return pspec;
+  else
     {
       g_warning ("Cannot bind property '%s': the interval value of "
                  "type '%s' is not compatible with the property value "
@@ -706,8 +707,6 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
                  g_type_name (pspec_type));
       return NULL;
     }
-
-  return pspec;
 }
 
 /**
@@ -778,6 +777,7 @@ clutter_animation_bind (ClutterAnimation *animation,
   ClutterInterval *interval;
   GType type;
   GValue initial = { 0, };
+  GValue real_final = { 0, };
 
   g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), NULL);
   g_return_val_if_fail (property_name != NULL, NULL);
@@ -789,6 +789,20 @@ clutter_animation_bind (ClutterAnimation *animation,
   if (pspec == NULL)
     return NULL;
 
+  g_value_init (&real_final, G_PARAM_SPEC_VALUE_TYPE (pspec));
+  if (!g_value_transform (final, &real_final))
+    {
+      g_value_unset (&real_final);
+      g_warning ("Unable to transform the value of type '%s' to a value "
+                 "of '%s' compatible with the property '%s'of the object "
+                 "of type '%s'",
+                 g_type_name (type),
+                 g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)),
+                 property_name,
+                 G_OBJECT_TYPE_NAME (priv->object));
+      return NULL;
+    }
+
   g_value_init (&initial, G_PARAM_SPEC_VALUE_TYPE (pspec));
 
   if (CLUTTER_IS_ANIMATABLE (priv->object))
@@ -798,8 +812,12 @@ clutter_animation_bind (ClutterAnimation *animation,
   else
     g_object_get_property (priv->object, property_name, &initial);
 
-  interval = clutter_interval_new_with_values (type, &initial, final);
+  interval = clutter_interval_new_with_values (G_PARAM_SPEC_VALUE_TYPE (pspec),
+                                               &initial,
+                                               &real_final);
+
   g_value_unset (&initial);
+  g_value_unset (&real_final);
 
   clutter_animation_bind_property_internal (animation, property_name,
                                             pspec,
