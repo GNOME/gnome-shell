@@ -451,15 +451,54 @@ st_theme_node_has_visible_outline (StThemeNode *node)
   return FALSE;
 }
 
+static cairo_pattern_t *
+create_cairo_pattern_of_background_gradient (StThemeNode *node)
+{
+  cairo_pattern_t *pattern;
+
+  g_return_val_if_fail (node->background_gradient_type != ST_GRADIENT_NONE,
+                        NULL);
+
+  if (node->background_gradient_type == ST_GRADIENT_VERTICAL)
+    pattern = cairo_pattern_create_linear (0, 0, 0, node->alloc_height);
+  else if (node->background_gradient_type == ST_GRADIENT_HORIZONTAL)
+    pattern = cairo_pattern_create_linear (0, 0, node->alloc_width, 0);
+  else
+    {
+      gdouble cx, cy;
+
+      cx = node->alloc_width / 2.;
+      cy = node->alloc_height / 2.;
+      pattern = cairo_pattern_create_radial (cx, cy, 0, cx, cy, MIN (cx, cy));
+    }
+
+  cairo_pattern_add_color_stop_rgba (pattern, 0,
+                                     node->background_color.red / 255.,
+                                     node->background_color.green / 255.,
+                                     node->background_color.blue / 255.,
+                                     node->background_color.alpha / 255.);
+  cairo_pattern_add_color_stop_rgba (pattern, 1,
+                                     node->background_gradient_end.red / 255.,
+                                     node->background_gradient_end.green / 255.,
+                                     node->background_gradient_end.blue / 255.,
+                                     node->background_gradient_end.alpha / 255.);
+  return pattern;
+}
+
+/* In order for borders to be smoothly blended with non-solid backgrounds,
+ * we need to use cairo.  This function is a slow fallback path for those
+ * cases.  It currently only supports gradients, however.
+ */
 static CoglHandle
-st_theme_node_render_gradient (StThemeNode *node)
+st_theme_node_render_background_with_border (StThemeNode *node)
 {
   StBorderImage *border_image;
   CoglHandle texture;
   int radius[4], i;
   cairo_t *cr;
   cairo_surface_t *surface;
-  cairo_pattern_t *pattern;
+  cairo_pattern_t *pattern = NULL;
+  gboolean draw_solid_background;
   ClutterColor border_color;
   int border_width[4];
   guint rowstride;
@@ -486,29 +525,16 @@ st_theme_node_render_gradient (StThemeNode *node)
       radius[i] = st_theme_node_get_border_radius (node, i);
     }
 
-  if (node->background_gradient_type == ST_GRADIENT_VERTICAL)
-    pattern = cairo_pattern_create_linear (0, 0, 0, node->alloc_height);
-  else if (node->background_gradient_type == ST_GRADIENT_HORIZONTAL)
-    pattern = cairo_pattern_create_linear (0, 0, node->alloc_width, 0);
+  if (node->background_gradient_type != ST_GRADIENT_NONE)
+    {
+      pattern = create_cairo_pattern_of_background_gradient (node);
+      draw_solid_background = FALSE;
+    }
   else
     {
-      gdouble cx, cy;
-
-      cx = node->alloc_width / 2.;
-      cy = node->alloc_height / 2.;
-      pattern = cairo_pattern_create_radial (cx, cy, 0, cx, cy, MIN (cx, cy));
+      g_warning ("st_theme_node_render_background_with_border called with non-gradient background (which isn't yet supported). Falling back to solid background color.");
+      draw_solid_background = TRUE;
     }
-
-  cairo_pattern_add_color_stop_rgba (pattern, 0,
-                                     node->background_color.red / 255.,
-                                     node->background_color.green / 255.,
-                                     node->background_color.blue / 255.,
-                                     node->background_color.alpha / 255.);
-  cairo_pattern_add_color_stop_rgba (pattern, 1,
-                                     node->background_gradient_end.red / 255.,
-                                     node->background_gradient_end.green / 255.,
-                                     node->background_gradient_end.blue / 255.,
-                                     node->background_gradient_end.alpha / 255.);
 
   /* Create a path for the background's outline first */
   if (radius[ST_CORNER_TOPLEFT] > 0)
@@ -538,11 +564,10 @@ st_theme_node_render_gradient (StThemeNode *node)
                radius[ST_CORNER_BOTTOMLEFT], M_PI / 2, M_PI);
   cairo_close_path (cr);
 
-
-  /* If we have a solid border, we fill the outline with the border
-   * color and create the inline shape for the background gradient;
+  /* If we have a solid border, we fill the outline shape with the border
+   * color and create the inline shape for the background;
    * otherwise the outline shape is filled with the background
-   * gradient directly
+   * directly
    */
   if (border_image == NULL &&
       (border_width[ST_SIDE_TOP] > 0 ||
@@ -624,10 +649,22 @@ st_theme_node_render_gradient (StThemeNode *node)
       cairo_close_path (cr);
     }
 
-  cairo_set_source (cr, pattern);
-  cairo_fill (cr);
+  if (draw_solid_background)
+    {
+      cairo_set_source_rgba (cr,
+                             node->background_color.red / 255.,
+                             node->background_color.green / 255.,
+                             node->background_color.blue / 255.,
+                             node->background_color.alpha / 255.);
+      cairo_fill_preserve (cr);
+    }
 
-  cairo_pattern_destroy (pattern);
+  if (pattern != NULL)
+    {
+      cairo_set_source (cr, pattern);
+      cairo_fill (cr);
+      cairo_pattern_destroy (pattern);
+    }
 
   texture = cogl_texture_new_from_data (node->alloc_width, node->alloc_height,
                                         COGL_TEXTURE_NONE,
@@ -741,7 +778,7 @@ st_theme_node_render_resources (StThemeNode   *node,
     }
 
   if (node->background_gradient_type != ST_GRADIENT_NONE)
-    node->prerendered_texture = st_theme_node_render_gradient (node);
+    node->prerendered_texture = st_theme_node_render_background_with_border (node);
 
   if (node->border_slices_texture)
     node->border_slices_material = _st_create_texture_material (node->border_slices_texture);
