@@ -660,6 +660,7 @@ Notification.prototype = {
         /* Translators: this is a time format string followed by a date.
            If applicable, replace %X with a strftime format valid for your
            locale, without seconds. */
+        // xgettext:no-c-format
         let timeLabel = this.addBody(lastMessageDate.toLocaleFormat(_("Sent at %X on %A")), false, { expand: true, x_fill: false, x_align: St.Align.END });
         timeLabel.add_style_class_name('chat-meta-message');
         this._history.unshift({ actor: timeLabel, time: lastMessageTime, realMessage: false });
