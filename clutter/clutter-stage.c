@@ -2690,10 +2690,16 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
                          priv->viewport[2],
                          priv->viewport[3]);
 
+
+      priv->dirty_viewport = FALSE;
     }
 
   if (priv->dirty_projection)
-    cogl_set_projection_matrix (&priv->projection);
+    {
+      cogl_set_projection_matrix (&priv->projection);
+
+      priv->dirty_projection = FALSE;
+    }
 }
 
 /**
