@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Milo Casagrande <milo@ubuntu.com>, 2009, 2010.
-# Luca Ferretti <elle.uca@infinito.it>, 2010.
+# Luca Ferretti <lferrett@gnome.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-18 10:54+0200\n"
-"PO-Revision-Date: 2010-10-18 11:04+0200\n"
-"Last-Translator: Luca Ferretti <elle.uca@infinito.it>\n"
+"POT-Creation-Date: 2010-12-13 21:30+0100\n"
+"PO-Revision-Date: 2010-12-13 22:40+0100\n"
+"Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -99,12 +100,7 @@ msgstr "Se VERO, visualizza il giorno della settimana ISO nel calendario."
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Elenco di ID di file desktop per le applicazioni preferite"
 
-# (ndt) lunga, ma non è che l'originale aiuti molto...
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "Overview workspace view mode"
-msgstr "Modalità di visualizzazione degli spazi di lavoro nella panoramica"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -125,19 +121,19 @@ msgstr ""
 "alcun valore, viene usata la pipeline predefinita il cui valore è "
 "\"videorate ! theoraenc ! oggmux\" e che registra nel formato Ogg Theora."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Mostra la data nell'orologio"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Mostra il giorno della settimana nel calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Mostra l'ora con i secondi"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -145,7 +141,7 @@ msgstr ""
 "Le applicazioni che corrispondono a questi identificatori vengono "
 "visualizzate nell'area dei preferiti."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -155,7 +151,7 @@ msgstr ""
 "data corrente e utilizza questa estensione. Dovrebbe essere modificato "
 "quando si registra utilizzando un diverso formato contenitore."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -163,20 +159,12 @@ msgstr ""
 "Il framerate in fotogrammi al secondo dello screencast registrato attraverso "
 "il registratore della GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "La pipeline di gstreamer utilizzata per codificare lo screencast"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"The selected workspace view mode in the overview. Supported values are "
-"\"single\" and \"grid\"."
-msgstr ""
-"La modalità di visualizzazione degli spazi di lavoro nella panoramica. I "
-"valori supportati sono \"single\" e \"grid\"."
-
 # (ndt) quel "in launchers" non mi convince...
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -188,7 +176,7 @@ msgstr ""
 "disabilitare questa funzionalità per motivi di privacy. I dati già salvati "
 "non verranno comunque rimossi."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid ""
 "This key specifies the format used by the panel clock when the format key is "
 "set to \"custom\". You can use conversion specifiers understood by strftime"
@@ -200,7 +188,7 @@ msgstr ""
 "specificatori di formato compatibili con strftime(). Per maggiori "
 "informazioni, consultare il manuale di strftime()."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid ""
 "This key specifies the hour format used by the panel clock. Possible values "
 "are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
@@ -217,11 +205,11 @@ msgstr ""
 "impostata a \"unix\" o \"custom\", le chiavi show_date e show_seconds non "
 "vengono considerate."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Uuids of extensions to disable"
 msgstr "UUID delle estensioni da disabilitare"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 "Indica se raccogliere statistiche riguardo l'utilizzo delle applicazioni"
@@ -266,7 +254,6 @@ msgid ""
 "the mouse image."
 msgstr ""
 
-# (ndt) o abilitata?
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
 msgid "Enable lens mode"
 msgstr ""
@@ -380,64 +367,43 @@ msgstr "Formato _12 ore"
 msgid "_24 hour format"
 msgstr "Formato _24 ore"
 
-#. **** Applications ****
-#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
+#: ../js/ui/appDisplay.js:215
 msgid "APPLICATIONS"
 msgstr "Applicazioni"
 
-#: ../js/ui/appDisplay.js:348
+#: ../js/ui/appDisplay.js:245
 msgid "PREFERENCES"
 msgstr "Preferenze"
 
-#: ../js/ui/appDisplay.js:648
+#: ../js/ui/appDisplay.js:542
 msgid "New Window"
 msgstr "Nuova finestra"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:546
 msgid "Remove from Favorites"
 msgstr "Rimuovi dai preferiti"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:547
 msgid "Add to Favorites"
 msgstr "Aggiungi ai preferiti"
 
-#: ../js/ui/appDisplay.js:830
-msgid "Drag here to add favorites"
-msgstr "Trascinare qui per aggiungere ai preferiti"
-
 # (ndt) e usare:
 # L'elemento %s è stato rimosso... ?
-#: ../js/ui/appFavorites.js:88
+#: ../js/ui/appFavorites.js:91
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s è stato aggiunto ai preferiti."
 
-#: ../js/ui/appFavorites.js:107
+#: ../js/ui/appFavorites.js:122
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s è stato rimosso dai preferiti."
 
-#: ../js/ui/dash.js:142
-msgid "Find"
-msgstr "Trova"
+#: ../js/ui/dash.js:27
+msgid "Remove"
+msgstr "Rimuovi"
 
-#: ../js/ui/dash.js:473
-msgid "Searching..."
-msgstr "Ricerca..."
-
-#: ../js/ui/dash.js:487
-msgid "No matching results."
-msgstr "Nessun risultato."
-
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
-msgid "PLACES & DEVICES"
-msgstr "Risorse e dispositivi"
-
-#. **** Documents ****
-#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
+#: ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "Elementi recenti"
 
@@ -451,7 +417,9 @@ msgid "Enabled"
 msgstr "Abilitato"
 
 # (ndt) o disabilitata?
-#: ../js/ui/lookingGlass.js:591
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:591 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "Disabilitato"
 
@@ -471,64 +439,64 @@ msgstr "Visualizza sorgente"
 msgid "Web Page"
 msgstr "Pagina web"
 
-#: ../js/ui/overview.js:160
+#: ../js/ui/overview.js:112
 msgid "Undo"
 msgstr "Annulla"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:468
+#: ../js/ui/panel.js:470
 #, c-format
 msgid "Quit %s"
 msgstr "Chiudi %s"
 
-#: ../js/ui/panel.js:493
+#: ../js/ui/panel.js:495
 msgid "Preferences"
 msgstr "Preferenze"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:579
+#: ../js/ui/panel.js:581
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %k.%M.%S"
 
 # (ndt) proviamo col k, se non funge, sappiamo il perché...
-#: ../js/ui/panel.js:580
+#: ../js/ui/panel.js:582
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %k.%M"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:584
+#: ../js/ui/panel.js:586
 msgid "%a %R:%S"
 msgstr "%a %k.%M.%S"
 
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:587
 msgid "%a %R"
 msgstr "%a %k.%M"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:592
+#: ../js/ui/panel.js:594
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %P"
 
-#: ../js/ui/panel.js:593
+#: ../js/ui/panel.js:595
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %P"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:597
+#: ../js/ui/panel.js:599
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %P"
 
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:600
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %P"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:743
+#: ../js/ui/panel.js:745
 msgid "Activities"
 msgstr "Attività"
 
@@ -545,6 +513,10 @@ msgstr "Riprova"
 #: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
 msgstr "Connetti a..."
+
+#: ../js/ui/placeDisplay.js:558
+msgid "PLACES & DEVICES"
+msgstr "Risorse e dispositivi"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -564,41 +536,45 @@ msgstr "Inserire un comando:"
 msgid "Execution of '%s' failed:"
 msgstr "Esecuzione di «%s» non riuscita:"
 
-#: ../js/ui/statusMenu.js:97
+#: ../js/ui/statusMenu.js:101
 msgid "Available"
 msgstr "Disponibile"
 
-#: ../js/ui/statusMenu.js:101
+#: ../js/ui/statusMenu.js:106
 msgid "Busy"
 msgstr "Non disponibile"
 
-#: ../js/ui/statusMenu.js:105
-msgid "Invisible"
-msgstr "Invisibile"
+#: ../js/ui/statusMenu.js:114
+msgid "My Account"
+msgstr "Account personale"
 
-#: ../js/ui/statusMenu.js:112
-msgid "Account Information..."
-msgstr "Informazioni account..."
+#: ../js/ui/statusMenu.js:118
+msgid "System Settings"
+msgstr "Impostazioni di sistema"
 
-#: ../js/ui/statusMenu.js:116
-msgid "System Settings..."
-msgstr "Impostazioni di sistema..."
-
-#: ../js/ui/statusMenu.js:123
+#: ../js/ui/statusMenu.js:125
 msgid "Lock Screen"
 msgstr "Blocca schermo"
 
-#: ../js/ui/statusMenu.js:127
+#: ../js/ui/statusMenu.js:129
 msgid "Switch User"
 msgstr "Cambia utente"
 
-#: ../js/ui/statusMenu.js:132
+#: ../js/ui/statusMenu.js:134
 msgid "Log Out..."
 msgstr "Termina sessione..."
 
-#: ../js/ui/statusMenu.js:136
+#: ../js/ui/statusMenu.js:141
+msgid "Suspend..."
+msgstr "Sospendi..."
+
+#: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
 msgstr "Arresta..."
+
+#: ../js/ui/status/accessibility.js:82
+msgid "Zoom"
+msgstr "Ingrandimento"
 
 #: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
@@ -636,13 +612,145 @@ msgstr "Impostazioni accesso universale"
 msgid "High Contrast"
 msgstr "Contrasto elevato"
 
-#: ../js/ui/status/accessibility.js:202
+#: ../js/ui/status/accessibility.js:205
 msgid "Large Text"
 msgstr "Caratteri grandi"
 
-#: ../js/ui/status/accessibility.js:223
-msgid "Zoom"
-msgstr "Ingrandimento"
+# Sarebbe da vedere uhmmm...
+#: ../js/ui/status/power.js:87
+msgid "What's using power..."
+msgstr "Consumi energetici..."
+
+#: ../js/ui/status/power.js:90
+msgid "Power Settings"
+msgstr "Impostazioni alimentazione"
+
+#: ../js/ui/status/power.js:117
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "%d ora rimanente"
+msgstr[1] "%d ore rimanenti"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:120
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "%d %s e %d %s rimanenti"
+
+#: ../js/ui/status/power.js:122
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "ora"
+msgstr[1] "ore"
+
+#: ../js/ui/status/power.js:122
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "minuto"
+msgstr[1] "minuti"
+
+#: ../js/ui/status/power.js:125
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "%d minuto rimanente"
+msgstr[1] "%d minuti rimanenti"
+
+#: ../js/ui/status/power.js:244
+msgid "AC adapter"
+msgstr "Alimentatore di corrente"
+
+#: ../js/ui/status/power.js:246
+msgid "Laptop battery"
+msgstr "Batteria del portatile"
+
+#: ../js/ui/status/power.js:248
+msgid "UPS"
+msgstr "UPS"
+
+#: ../js/ui/status/power.js:250
+msgid "Monitor"
+msgstr "Monitor"
+
+#: ../js/ui/status/power.js:252
+msgid "Mouse"
+msgstr "Mouse"
+
+#: ../js/ui/status/power.js:254
+msgid "Keyboard"
+msgstr "Tastiera"
+
+#: ../js/ui/status/power.js:256
+msgid "PDA"
+msgstr "PDS"
+
+# c'era una discussione su tp...
+#: ../js/ui/status/power.js:258
+msgid "Cell phone"
+msgstr "Cellulare"
+
+#: ../js/ui/status/power.js:260
+msgid "Media player"
+msgstr "Lettore multimediale"
+
+#: ../js/ui/status/power.js:262
+msgid "Tablet"
+msgstr "Tablet"
+
+#: ../js/ui/status/power.js:264
+msgid "Computer"
+msgstr "Computer"
+
+#: ../js/ui/status/power.js:266 ../src/shell-app-system.c:1012
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+#: ../js/ui/status/volume.js:41
+msgid "Volume"
+msgstr "Volume"
+
+#: ../js/ui/status/volume.js:54
+msgid "Microphone"
+msgstr "Microfono"
+
+#: ../js/ui/status/volume.js:62
+msgid "Sound Settings"
+msgstr "Impostazioni audio"
+
+# FIXME ma ha senso in inglese???
+#: ../js/ui/viewSelector.js:26
+msgid "Search your computer"
+msgstr "Cerca nel computer"
+
+#: ../js/ui/telepathyClient.js:560
+#, c-format
+msgid "%s is online."
+msgstr "%s è disponibile."
+
+#: ../js/ui/telepathyClient.js:565
+#, c-format
+msgid "%s is offline."
+msgstr "%s è furi rete."
+
+#: ../js/ui/telepathyClient.js:568
+#, c-format
+msgid "%s is away."
+msgstr "%s è assente."
+
+#: ../js/ui/telepathyClient.js:571
+#, c-format
+msgid "%s is busy."
+msgstr "%s non è disponibile."
+
+# FIXME -- Da rifinire..
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:663
+#, c-format, fuzzy
+msgid "Sent at %X on %A"
+msgstr "Inviato alle %-H.%M.%S di %A"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -656,60 +764,82 @@ msgid "'%s' is ready"
 msgstr "«%s» è pronto"
 
 # (ndt) un po' liberetta...
-#: ../js/ui/workspacesView.js:230
+#: ../js/ui/workspacesView.js:244
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr ""
 "Impossibile aggiungere un nuovo spazio di lavoro: raggiunto il limite "
 "massimo consentito."
 
-#: ../js/ui/workspacesView.js:247
+#: ../js/ui/workspacesView.js:260
 msgid "Can't remove the first workspace."
 msgstr "Impossibile rimuovere il primo spazio di lavoro."
 
-#: ../src/shell-global.c:1196
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1094
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u uscita"
+msgstr[1] "%u uscite"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1104
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u ingresso"
+msgstr[1] "%u ingressi"
+
+#: ../src/gvc/gvc-mixer-control.c:1402
+msgid "System Sounds"
+msgstr "Audio di sistema"
+
+#: ../src/shell-global.c:1155
 msgid "Less than a minute ago"
 msgstr "Meno di un minuto fa"
 
-#: ../src/shell-global.c:1200
+#: ../src/shell-global.c:1159
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minuto fa"
 msgstr[1] "%d minuti fa"
 
-#: ../src/shell-global.c:1205
+#: ../src/shell-global.c:1164
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ora fa"
 msgstr[1] "%d ore fa"
 
-#: ../src/shell-global.c:1210
+#: ../src/shell-global.c:1169
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d giorno fa"
 msgstr[1] "%d giorni fa"
 
-#: ../src/shell-global.c:1215
+#: ../src/shell-global.c:1174
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d settimana fa"
 msgstr[1] "%d settimane fa"
 
-#: ../src/shell-uri-util.c:89
+#: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "Cartella home"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:104
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "File system"
 
-#: ../src/shell-uri-util.c:250
+#: ../src/shell-util.c:250
 msgid "Search"
 msgstr "Cerca"
 
@@ -719,13 +849,7 @@ msgstr "Cerca"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:300
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
-#~ msgid "ON"
-#~ msgstr "On"
-
-#~ msgid "OFF"
-#~ msgstr "Off"
