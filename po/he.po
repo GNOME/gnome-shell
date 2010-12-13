@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-05 01:39+0200\n"
-"PO-Revision-Date: 2010-12-05 01:42+0200\n"
+"POT-Creation-Date: 2010-12-13 23:50+0200\n"
+"PO-Revision-Date: 2010-12-13 23:52+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -737,6 +737,34 @@ msgstr "מיקרופון"
 msgid "Sound Settings"
 msgstr "הגדרות שמע"
 
+#: ../js/ui/telepathyClient.js:560
+#, c-format
+msgid "%s is online."
+msgstr "%s התחבר/ה."
+
+#: ../js/ui/telepathyClient.js:565
+#, c-format
+msgid "%s is offline."
+msgstr "%s התנתק/ה."
+
+#: ../js/ui/telepathyClient.js:568
+#, c-format
+msgid "%s is away."
+msgstr "'%s' מרוחק/ת."
+
+#: ../js/ui/telepathyClient.js:571
+#, c-format
+msgid "%s is busy."
+msgstr "%s עסוק/ה."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:663
+#, c-format
+msgid "Sent at %X on %A"
+msgstr "נשלח ב־%X בשעה %A"
+
 #: ../js/ui/viewSelector.js:26
 msgid "Search your computer"
 msgstr "חיפוש במחשב שלך"
@@ -784,11 +812,11 @@ msgstr[2] "2 קלטים"
 msgid "System Sounds"
 msgstr "צלילי מערכת"
 
-#: ../src/shell-global.c:1163
+#: ../src/shell-global.c:1155
 msgid "Less than a minute ago"
 msgstr "לפני פחות מדקה"
 
-#: ../src/shell-global.c:1167
+#: ../src/shell-global.c:1159
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -796,7 +824,7 @@ msgstr[0] "לפני דקה"
 msgstr[1] "לפני %d דקות"
 msgstr[2] "לפני 2 דקות"
 
-#: ../src/shell-global.c:1172
+#: ../src/shell-global.c:1164
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -804,7 +832,7 @@ msgstr[0] "לפני שעה"
 msgstr[1] "לפני %d שעות"
 msgstr[2] "לפני שעתיים"
 
-#: ../src/shell-global.c:1177
+#: ../src/shell-global.c:1169
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -812,7 +840,7 @@ msgstr[0] "לפני יום"
 msgstr[1] "לפני %d ימים"
 msgstr[2] "לפני יומיים"
 
-#: ../src/shell-global.c:1182
+#: ../src/shell-global.c:1174
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
