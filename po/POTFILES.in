@@ -17,6 +17,7 @@ js/ui/statusMenu.js
 js/ui/status/accessibility.js
 js/ui/status/power.js
 js/ui/status/volume.js
+js/ui/telepathyClient.js
 js/ui/viewSelector.js
 js/ui/windowAttentionHandler.js
 js/ui/workspacesView.js
