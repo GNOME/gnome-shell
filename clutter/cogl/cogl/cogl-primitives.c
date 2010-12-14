@@ -943,7 +943,11 @@ _cogl_rectangle_immediate (float x_1,
   _cogl_draw_vertex_attributes_array (COGL_VERTICES_MODE_TRIANGLE_STRIP,
                                       0, /* first_index */
                                       4, /* n_vertices */
-                                      attributes);
+                                      attributes,
+                                      COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                                      COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                                      COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+
 
   cogl_object_unref (attributes[0]);
   cogl_object_unref (vertex_array);

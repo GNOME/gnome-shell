@@ -233,6 +233,10 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
 {
   CoglJournalFlushState *state = data;
   CoglVertexAttribute **attributes;
+  static const CoglDrawFlags draw_flags = (COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                                           COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                                           COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+
   COGL_STATIC_TIMER (time_flush_modelview_and_entries,
                      "flush: pipeline+entries", /* parent */
                      "flush: modelview+entries",
@@ -262,7 +266,8 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
   /* XXX: it's rather evil that we sneak in the GL_QUADS enum here... */
   _cogl_draw_vertex_attributes_array (GL_QUADS,
                                       state->current_vertex, batch_len * 4,
-                                      attributes);
+                                      attributes,
+                                      draw_flags);
 
 #else /* HAVE_COGL_GL */
   if (batch_len > 1)
@@ -271,13 +276,16 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
                                                   state->current_vertex * 6 / 4,
                                                   batch_len * 6,
                                                   state->indices,
-                                                  attributes);
+                                                  attributes,
+                                                  draw_flags);
+
     }
   else
     {
       _cogl_draw_vertex_attributes_array (COGL_VERTICES_MODE_TRIANGLE_FAN,
                                           state->current_vertex, 4,
-                                          attributes);
+                                          attributes,
+                                          draw_flags);
     }
 #endif
 
@@ -322,7 +330,8 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
       for (i = 0; i < batch_len; i++)
         _cogl_draw_vertex_attributes_array (COGL_VERTICES_MODE_LINE_LOOP,
                                             4 * i + state->current_vertex, 4,
-                                            loop_attributes);
+                                            loop_attributes,
+                                            draw_flags);
 
       /* Go to the next color */
       do

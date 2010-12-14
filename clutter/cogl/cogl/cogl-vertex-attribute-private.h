@@ -57,6 +57,13 @@ struct _CoglVertexAttribute
   int immutable_ref;
 };
 
+typedef enum
+{
+  COGL_DRAW_SKIP_JOURNAL_FLUSH = 1 << 0,
+  COGL_DRAW_SKIP_PIPELINE_VALIDATION = 1 << 1,
+  COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH = 1 << 2
+} CoglDrawFlags;
+
 CoglVertexAttribute *
 _cogl_vertex_attribute_immutable_ref (CoglVertexAttribute *vertex_attribute);
 
@@ -67,14 +74,16 @@ void
 _cogl_draw_vertex_attributes_array (CoglVerticesMode mode,
                                     int first_vertex,
                                     int n_vertices,
-                                    CoglVertexAttribute **attributes);
+                                    CoglVertexAttribute **attributes,
+                                    CoglDrawFlags flags);
 
 void
 _cogl_draw_indexed_vertex_attributes_array (CoglVerticesMode mode,
                                             int first_vertex,
                                             int n_vertices,
                                             CoglIndices *indices,
-                                            CoglVertexAttribute **attributes);
+                                            CoglVertexAttribute **attributes,
+                                            CoglDrawFlags flags);
 
 void
 _cogl_vertex_attribute_disable_cached_arrays (void);
