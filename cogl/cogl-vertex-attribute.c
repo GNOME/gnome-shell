@@ -474,7 +474,8 @@ set_enabled_arrays (CoglBitmask *value_cache,
 }
 
 static CoglHandle
-enable_gl_state (CoglVertexAttribute **attributes,
+enable_gl_state (CoglDrawFlags flags,
+                 CoglVertexAttribute **attributes,
                  ValidateLayerState *state)
 {
   int i;
@@ -498,7 +499,8 @@ enable_gl_state (CoglVertexAttribute **attributes,
     switch (attributes[i]->name_id)
       {
       case COGL_VERTEX_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
-        if (!_cogl_pipeline_get_real_blend_enabled (source))
+        if ((flags & COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE) == 0 &&
+            !_cogl_pipeline_get_real_blend_enabled (source))
           {
             CoglPipelineBlendEnable blend_enable =
               COGL_PIPELINE_BLEND_ENABLE_ENABLED;
@@ -1082,7 +1084,7 @@ _cogl_draw_vertex_attributes_array (CoglVerticesMode mode,
 
   flush_state (flags, &state);
 
-  source = enable_gl_state (attributes, &state);
+  source = enable_gl_state (flags, attributes, &state);
 
   GE (glDrawArrays ((GLenum)mode, first_vertex, n_vertices));
 
@@ -1171,7 +1173,7 @@ _cogl_draw_indexed_vertex_attributes_array (CoglVerticesMode mode,
 
   flush_state (flags, &state);
 
-  source = enable_gl_state (attributes, &state);
+  source = enable_gl_state (flags, attributes, &state);
 
   buffer = COGL_BUFFER (cogl_indices_get_array (indices));
   base = _cogl_buffer_bind (buffer, COGL_BUFFER_BIND_TARGET_INDEX_ARRAY);

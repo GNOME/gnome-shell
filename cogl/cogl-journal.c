@@ -233,9 +233,9 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
 {
   CoglJournalFlushState *state = data;
   CoglVertexAttribute **attributes;
-  static const CoglDrawFlags draw_flags = (COGL_DRAW_SKIP_JOURNAL_FLUSH |
-                                           COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                                           COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+  CoglDrawFlags draw_flags = (COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                              COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                              COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
 
   COGL_STATIC_TIMER (time_flush_modelview_and_entries,
                      "flush: pipeline+entries", /* parent */
@@ -260,6 +260,9 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
 
   attributes = (CoglVertexAttribute **)state->attributes->data;
   cogl_push_source (state->source);
+
+  if (!_cogl_pipeline_get_real_blend_enabled (state->source))
+    draw_flags |= COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE;
 
 #ifdef HAVE_COGL_GL
 
