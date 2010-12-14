@@ -37,7 +37,7 @@
  *
  * #ClutterDeformEffect uses offscreen buffers to render the contents of
  * a #ClutterActor and then the Cogl vertex buffers API to submit the
- * geomtry to the GPU.
+ * geometry to the GPU.
  *
  * <refsect2>
  *   <title>Implementing ClutterDeformEffect</title>
