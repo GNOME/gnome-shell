@@ -338,11 +338,15 @@ _cogl_path_fill_nodes (CoglPath *path)
 
   _cogl_path_build_fill_vbo (path);
 
-  _cogl_draw_indexed_vertex_attributes_array (COGL_VERTICES_MODE_TRIANGLES,
-                                              0, /* first_vertex */
-                                              path->data->fill_vbo_n_indices,
-                                              path->data->fill_vbo_indices,
-                                              path->data->fill_vbo_attributes);
+  _cogl_draw_indexed_vertex_attributes_array
+                                 (COGL_VERTICES_MODE_TRIANGLES,
+                                  0, /* first_vertex */
+                                  path->data->fill_vbo_n_indices,
+                                  path->data->fill_vbo_indices,
+                                  path->data->fill_vbo_attributes,
+                                  COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                                  COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                                  COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
 }
 
 void
