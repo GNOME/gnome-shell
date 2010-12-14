@@ -17,6 +17,10 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+stage {
+    font-family: cantarell, sans-serif;
+}
+
 .shell-link {
     color: #0000ff;
     text-decoration: underline;
@@ -101,7 +105,7 @@ StTooltip StLabel {
 
 .popup-menu {
     color: #ffffff;
-    font-size: 16px;
+    font-size: 14px;
     min-width: 200px;
 }
 
@@ -151,7 +155,7 @@ StTooltip StLabel {
 }
 
 .popup-menu-icon {
-    icon-size: 1em;
+    icon-size: 1.14em;
 }
 
 /* Switches (to be used in menus) */
@@ -178,7 +182,6 @@ StTooltip StLabel {
 
 #panel {
     color: #ffffff;
-    font-size: 16px;
     background-color: black;
 }
 
@@ -209,7 +212,7 @@ StTooltip StLabel {
     border-radius: 5px;
     border-radius-bottomleft: 0px;
     border-radius-bottomright: 0px;
-    font: 16px sans-serif;
+    font-size: 14px;
     font-weight: bold;
     transition-duration: 100;
 }
@@ -242,7 +245,7 @@ StTooltip StLabel {
 }
 
 .system-status-icon {
-    icon-size: 1em;
+    icon-size: 1.14em;
 }
 
 /* Overview */
@@ -464,7 +467,7 @@ StTooltip StLabel {
 
 .dash-search-button-label {
     color: #cccccc;
-    font: 16px sans-serif;
+    font-size: 16px;
 }
 
 /* Apps */
@@ -883,7 +886,7 @@ StTooltip StLabel {
 }
 
 .source-title {
-    font: 12px sans-serif;
+    font-size: 12px;
     font-weight: bold;
     padding-left: 4px;
 }
@@ -904,7 +907,7 @@ StTooltip StLabel {
     border-radius: 24px;
     padding: 20px;
 
-    font: 12px sans-serif;
+    font-size: 12px;
     color: white;
 }
 
@@ -1021,7 +1024,7 @@ StTooltip StLabel {
 
 /* Modal Dialogs */
 .modal-dialog {
-    font: 12pt sans-serif;
+    font-size: 12pt;
     border-radius: 24px;
     background-color: rgba(0.0, 0.0, 0.0, 0.9);
     border: 2px solid #868686;
@@ -1036,7 +1039,7 @@ StTooltip StLabel {
 .modal-dialog-button {
     border: 1px solid #8b8b8b;
     border-radius: 18px;
-    font: 14px sans-serif;
+    font-size: 14px;
 
     margin-left: 10px;
     margin-right: 10px;
@@ -1069,7 +1072,7 @@ StTooltip StLabel {
 
 /* Run Dialog */
 .run-dialog-label {
-    font: 12px sans-serif;
+    font-size: 12px;
     color: white;
 }
 
@@ -1080,12 +1083,12 @@ StTooltip StLabel {
 }
 
 .run-dialog-error-label {
-    font: 16px sans-serif;
+    font-size: 16px;
     color: white;
 }
 
 .run-dialog-entry {
-    font: 14px sans-serif;
+    font-size: 14px;
     font-weight: bold;
     width: 320px;
     color: white;
@@ -1106,7 +1109,7 @@ StTooltip StLabel {
 
 /* End Session Dialog */
 .end-session-dialog-subject {
-    font: 12pt sans-serif;
+    font-size: 12pt;
     font-weight: bold;
     color: #666666;
     padding-top: 10px;
@@ -1115,7 +1118,7 @@ StTooltip StLabel {
 }
 
 .end-session-dialog-description {
-    font: 10pt sans-serif;
+    font-size: 10pt;
     color: white;
     padding-left: 17px;
     padding-right: 40px;
@@ -1135,7 +1138,7 @@ StTooltip StLabel {
 }
 
 .end-session-dialog-app-list {
-    font: 10pt sans-serif;
+    font-size: 10pt;
     max-height: 200px;
     padding-top: 42px;
     padding-bottom: 42px;
@@ -1152,11 +1155,11 @@ StTooltip StLabel {
 }
 
 .end-session-dialog-app-list-item-name {
-    font: 10pt sans-serif;
+    font-size: 10pt;
 }
 
 .end-session-dialog-app-list-item-description {
-    font: 8pt sans-serif;
+    font-size: 8pt;
     color: #444444;
 }
 
