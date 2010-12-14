@@ -200,10 +200,19 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
     return FALSE;
 
   user_program = cogl_pipeline_get_user_program (pipeline);
-  if (user_program != COGL_INVALID_HANDLE &&
-      _cogl_program_has_fragment_shader (user_program) &&
-      _cogl_program_get_language (user_program) != COGL_SHADER_LANGUAGE_ARBFP)
-    return FALSE;
+  if (user_program != COGL_INVALID_HANDLE)
+    {
+      /* If the program doesn't have a fragment shader then some other
+         vertend will handle the vertex shader state and we still need
+         to generate a fragment program */
+      if (!_cogl_program_has_fragment_shader (user_program))
+        user_program = COGL_INVALID_HANDLE;
+      /* If the user program does have a fragment shader then we can
+         only handle it if it's in ARBfp */
+      else if (_cogl_program_get_language (user_program) !=
+               COGL_SHADER_LANGUAGE_ARBFP)
+        return FALSE;
+    }
 
   /* Now lookup our ARBfp backend private state (allocating if
    * necessary) */
