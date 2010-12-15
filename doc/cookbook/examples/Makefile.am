@@ -21,6 +21,9 @@ noinst_PROGRAMS = \
 	layouts-bind-constraint-allocation	\
 	layouts-bind-constraint-overlay	\
 	layouts-bind-constraint-stage	\
+	layouts-box \
+	layouts-box-menu \
+	layouts-box-property-effects \
 	layouts-stacking \
 	layouts-stacking-diff-sized-actors	\
 	events-mouse-scroll \
@@ -77,6 +80,9 @@ textures_sub_texture_SOURCES               = textures-sub-texture.c
 layouts_bind_constraint_allocation_SOURCES = layouts-bind-constraint-allocation.c
 layouts_bind_constraint_overlay_SOURCES    = layouts-bind-constraint-overlay.c
 layouts_bind_constraint_stage_SOURCES      = layouts-bind-constraint-stage.c
+layouts_box_SOURCES                        = layouts-box.c
+layouts_box_menu_SOURCES                   = layouts-box-menu.c
+layouts_box_property_effects_SOURCES       = layouts-box-property-effects.c
 layouts_stacking_SOURCES                   = layouts-stacking.c
 layouts_stacking_diff_sized_actors_SOURCES = layouts-stacking-diff-sized-actors.c
 events_mouse_scroll_SOURCES                = events-mouse-scroll.c
