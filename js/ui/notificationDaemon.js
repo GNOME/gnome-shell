@@ -175,14 +175,43 @@ NotificationDaemon.prototype = {
         }
     },
 
-    _newSource: function(title, pid) {
-        let source = new Source(title, pid);
-        this._sources[pid] = source;
+    // Returns the source associated with ndata.notification if it is set.
+    // Otherwise, returns the source associated with the pid if one is
+    // stored in this._sources and the notification is not transient.
+    // Otherwise, creates a new source as long as pid is provided.
+    //
+    // Either a pid or ndata.notification is needed to retrieve or
+    // create a source.
+    _getSource: function(title, pid, ndata) {
+        if (!pid && !(ndata && ndata.notification))
+            return null;
 
-        source.connect('destroy', Lang.bind(this,
-            function() {
-                delete this._sources[pid];
-            }));
+        // We use notification's source for the notifications we still have
+        // around that are getting replaced because we don't keep sources
+        // for transient notifications in this._sources, but we still want
+        // the notification associated with them to get replaced correctly.
+        if (ndata && ndata.notification)
+            return ndata.notification.source;
+
+        let isForTransientNotification = (ndata && ndata.hints['transient'] == true);
+
+        // We don't want to override a persistent notification
+        // with a transient one from the same sender, so we
+        // always create a new source object for new transient notifications
+        // and never add it to this._sources .
+        if (!isForTransientNotification && this._sources[pid])
+            return this._sources[pid];
+
+        let source = new Source(title, pid);
+        source.setTransient(isForTransientNotification);
+
+        if (!isForTransientNotification) {
+            this._sources[pid] = source;
+            source.connect('destroy', Lang.bind(this,
+                function() {
+                    delete this._sources[pid];
+                }));
+        }
 
         Main.messageTray.add(source);
         return source;
@@ -234,7 +263,8 @@ NotificationDaemon.prototype = {
 
         let sender = DBus.getCurrentMessageContext().sender;
         let pid = this._senderToPid[sender];
-        let source = pid ? this._sources[pid] : null;
+
+        let source = this._getSource(appName, pid, ndata);
 
         if (source) {
             this._notifyForSource(source, ndata);
@@ -255,16 +285,23 @@ NotificationDaemon.prototype = {
                 if (!ndata)
                     return;
 
-                this._senderToPid[sender] = pid;
-                source = this._sources[pid];
+                source = this._getSource(appName, pid, ndata);
 
-                if (!source)
-                    source = this._newSource(appName, pid);
-                source.connect('destroy', Lang.bind(this,
-                    function() {
-                        delete this._senderToPid[sender];
-                    }));
-
+                // We only store sender-pid entries for persistent sources.
+                // Removing the entries once the source is destroyed
+                // would result in the entries associated with transient
+                // sources removed once the notification is shown anyway.
+                // However, keeping these pairs would mean that we would
+                // possibly remove an entry associated with a persistent
+                // source when a transient source for the same sender is
+                // distroyed.
+                if (!source.isTransient) {
+                    this._senderToPid[sender] = pid;
+                    source.connect('destroy', Lang.bind(this,
+                        function() {
+                            delete this._senderToPid[sender];
+                        }));
+                }
                 this._notifyForSource(source, ndata);
             }));
 
@@ -309,6 +346,9 @@ NotificationDaemon.prototype = {
 
         notification.setUrgent(hints.urgency == Urgency.CRITICAL);
         notification.setResident(hints.resident == true);
+        // 'transient' is a reserved keyword in JS, so we have to retrieve the value
+        // of the 'transient' hint with hints['transient'] rather than hints.transient
+        notification.setTransient(hints['transient'] == true);
 
         let sourceIconActor = source.useNotificationIcon ? this._iconForNotificationData(icon, hints, source.ICON_SIZE) : null;
         source.notify(notification, sourceIconActor);
@@ -378,9 +418,7 @@ NotificationDaemon.prototype = {
     },
 
     _onTrayIconAdded: function(o, icon) {
-        let source = this._sources[icon.pid];
-        if (!source)
-            source = this._newSource(icon.title || icon.wm_class || _("Unknown"), icon.pid);
+        let source = this._getSource(icon.title || icon.wm_class || _("Unknown"), icon.pid, null);
         source.setTrayIcon(icon);
     },
 

@@ -227,6 +227,8 @@ Notification.prototype = {
         this.source = source;
         this.urgent = false;
         this.resident = false;
+        // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
+        this.isTransient = false;
         this.expanded = false;
         this._useActionIcons = false;
         this._customContent = false;
@@ -495,6 +497,10 @@ Notification.prototype = {
 
     setResident: function(resident) {
         this.resident = resident;
+    },
+
+    setTransient: function(isTransient) {
+        this.isTransient = isTransient;
     },
 
     setUseActionIcons: function(useIcons) {
@@ -808,6 +814,11 @@ Source.prototype = {
         this.title = title;
         this._iconBin = new St.Bin({ width: this.ICON_SIZE,
                                      height: this.ICON_SIZE });
+        this.isTransient = false;
+    },
+
+    setTransient: function(isTransient) {
+        this.isTransient = isTransient;
     },
 
     // Called to create a new icon actor (of size this.ICON_SIZE).
@@ -1068,7 +1079,15 @@ MessageTray.prototype = {
         }
 
         this._summaryItems.push(summaryItem);
-        this._newSummaryItems.push(summaryItem);
+
+        // We keep this._newSummaryItems to track any new sources that were added to the
+        // summary and show the summary with them to the user for a short period of time
+        // after notifications are done showing. However, we don't want that to happen for
+        // transient sources, which are removed after the notification is shown, but are
+        // not removed fast enough because of the callbacks to avoid the summary popping up.
+        // So we just don't add transient sources to this._newSummaryItems .
+        if (!source.isTransient)
+            this._newSummaryItems.push(summaryItem);
 
         source.connect('notify', Lang.bind(this, this._onNotify));
 
@@ -1601,7 +1620,10 @@ MessageTray.prototype = {
         this._notification.collapseCompleted();
         this._notification.disconnect(this._notificationClickedId);
         this._notificationClickedId = 0;
+        let notification = this._notification;
         this._notification = null;
+        if (notification.isTransient)
+            notification.destroy();
     },
 
     _expandNotification: function(autoExpanding) {
@@ -1750,6 +1772,8 @@ MessageTray.prototype = {
         this._summaryNotificationClickedId = 0;
         let summaryNotification = this._summaryNotification;
         this._summaryNotification = null;
+        if (summaryNotification.isTransient && !this._reNotifyWithSummaryNotificationAfterHide)
+            summaryNotification.destroy();
         if (this._reNotifyWithSummaryNotificationAfterHide) {
             this._onNotify(summaryNotification.source, summaryNotification);
             this._reNotifyWithSummaryNotificationAfterHide = false;
