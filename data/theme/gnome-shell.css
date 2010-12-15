@@ -761,6 +761,34 @@ StTooltip StLabel {
     border-radius: 5px;
 }
 
+.calendar-change-month-back {
+    width: 20px;
+    height: 20px;
+    background-image: url("calendar-arrow-left.svg");
+}
+.calendar-change-month-back:hover {
+    background: #999999;
+    background-image: url("calendar-arrow-left.svg");
+}
+.calendar-change-month-back:active {
+    background: #aaaaaa;
+    background-image: url("calendar-arrow-left.svg");
+}
+
+.calendar-change-month-forward {
+    width: 20px;
+    height: 20px;
+    background-image: url("calendar-arrow-right.svg");
+}
+.calendar-change-month-forward:hover {
+    background: #999999;
+    background-image: url("calendar-arrow-right.svg");
+}
+.calendar-change-month-forward:active {
+    background: #aaaaaa;
+    background-image: url("calendar-arrow-right.svg");
+}
+
 .datemenu-date-label {
     font-size: 16px;
     font-weight: bold;

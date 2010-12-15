@@ -214,19 +214,15 @@ Calendar.prototype = {
                        { row: 0, col: 0, col_span: offsetCols + 7 });
 
         this.actor.connect('style-changed', Lang.bind(this, this._onStyleChange));
-        let [backlabel, forwardlabel] = ['&lt;', '&gt;'];
-        if (St.Widget.get_default_direction () == St.TextDirection.RTL) {
-            [backlabel, forwardlabel] = [forwardlabel, backlabel];
-        }
 
-        let back = new St.Button({ label: backlabel, style_class: 'calendar-change-month'  });
+        let back = new St.Button({ style_class: 'calendar-change-month-back' });
         this._topBox.add(back);
         back.connect('clicked', Lang.bind(this, this._prevMonth));
 
         this._dateLabel = new St.Label({style_class: 'calendar-change-month'});
         this._topBox.add(this._dateLabel, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
 
-        let forward = new St.Button({ label: forwardlabel, style_class: 'calendar-change-month' });
+        let forward = new St.Button({ style_class: 'calendar-change-month-forward' });
         this._topBox.add(forward);
         forward.connect('clicked', Lang.bind(this, this._nextMonth));
 
