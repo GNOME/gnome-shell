@@ -67,7 +67,7 @@ DateMenuButton.prototype = {
 
         // Fill up the first column
         //
-        vbox = new St.BoxLayout({vertical: true});
+        vbox = new St.BoxLayout({vertical: true, name: 'calendarVBox1'});
         hbox.add(vbox);
 
         // Date
@@ -91,13 +91,8 @@ DateMenuButton.prototype = {
 
         // Fill up the second column
         //
-        vbox = new St.BoxLayout({vertical: true});
-        hbox.add(vbox);
-
         // Event list
-        this._taskList.actor.set_width(400); // TODO: Don't hardcode the width of the list
-        vbox.add(this._taskList.actor, { x_fill: true,
-                                         y_fill: true });
+        hbox.add(this._taskList.actor);
         // Update event list when opening the menu ..
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, is_open) {
             if (is_open) {

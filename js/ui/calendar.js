@@ -510,7 +510,7 @@ function EventsList() {
 
 EventsList.prototype = {
     _init: function() {
-        this.actor = new St.BoxLayout({ vertical: true });
+        this.actor = new St.BoxLayout({ vertical: true, style_class: 'events-header-vbox'});
         // FIXME: Evolution backend is currently disabled
         // this.evolutionTasks = new EvolutionEventsSource();
 
@@ -586,7 +586,10 @@ EventsList.prototype = {
         if (tasks.length == 0)
             return;
 
-        this.actor.add(new St.Label({ style_class: 'events-day-header', text: header }));
+        let vbox = new St.BoxLayout( {vertical: true} );
+        this.actor.add(vbox);
+
+        vbox.add(new St.Label({ style_class: 'events-day-header', text: header }));
         let box = new St.BoxLayout({style_class: 'events-header-hbox'});
         let dayNameBox = new St.BoxLayout({ vertical: true, style_class: 'events-day-name-box' });
         let timeBox = new St.BoxLayout({ vertical: true, style_class: 'events-time-box' });
@@ -594,8 +597,7 @@ EventsList.prototype = {
         box.add(dayNameBox, {x_fill: false});
         box.add(timeBox, {x_fill: false});
         box.add(eventTitleBox, {expand: true});
-
-        this.actor.add(box);
+        vbox.add(box);
 
         for (let n = 0; n < tasks.length; n++) {
             let task = tasks[n];
@@ -625,8 +627,6 @@ EventsList.prototype = {
     showDay: function(day) {
         this.actor.destroy_children();
 
-        this.actor.add(new St.Bin({ style_class: 'events-header' }));
-
         let dayBegin = new Date(day.getTime());
         let dayEnd = new Date(day.getTime());
         dayBegin.setHours(0);
@@ -638,8 +638,6 @@ EventsList.prototype = {
 
     update: function() {
         this.actor.destroy_children();
-
-        this.actor.add(new St.Bin({ style_class: 'events-header' }));
 
         let dayBegin = new Date();
         let dayEnd = new Date();
