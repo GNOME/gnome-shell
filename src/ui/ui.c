@@ -60,6 +60,16 @@ struct _MetaUI
 void
 meta_ui_init (int *argc, char ***argv)
 {
+  /* As of 2.91.7, Gdk uses XI2 by default, which conflicts with the
+   * direct X calls we use - in particular, events caused by calls to
+   * XGrabPointer/XGrabKeyboard are no longer understood by GDK, while
+   * GDK will no longer generate the core XEvents we process.
+   * So at least for now, enforce the previous behavior.
+   */
+#if GTK_CHECK_VERSION(2, 91, 7)
+  gdk_disable_multidevice ();
+#endif
+
   if (!gtk_init_check (argc, argv))
     meta_fatal ("Unable to open X display %s\n", XDisplayName (NULL));
 
