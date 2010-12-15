@@ -843,7 +843,7 @@ clutter_actor_raise_top (text);
       <link linkend="layouts-box-example-1">full example</link>. It
       demonstrates how to lay out three rectangles in a vertical
       column. A different approach is used to set the <varname>x-fill</varname>
-      property on each rectangle, so that they fill the horizontal space in
+      property on each rectangle, so each fills the horizontal space in
       the layout (each rectangle is 100 pixels wide, while the
       box they are inside is 200 pixels wide).</para>
 
@@ -936,15 +936,16 @@ clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 
       <para><type>ClutterBoxLayout</type> is not a reflowing layout:
       that is, if the layout's container changes size, the actors inside
-      aren't automatically repositioned to fill the available area.
-      If you want that behaviour, use <type>ClutterFlowLayout</type>
-      instead.</para>
+      aren't automatically repositioned to occupy or find new positions
+      in its available area. If you want that behaviour, use
+      <type>ClutterFlowLayout</type> instead.</para>
 
-      <para>If you want the container to be resizable, but still want
-      access to the actors inside it if they go outside its clip area,
-      you can provide another way to get to them. For example, you
-      could put the container inside a scrollable area, so the
-      container's actors can be scrolled to if they go out of sight.</para>
+      <para>If you want the container to be resizable, but find that
+      resizing the container obscures its child actors, you could put
+      the container inside a scrollable area. Then the container's actors
+      can be scrolled to if they go out of sight.
+      <link linkend="events-mouse-scroll">This recipe</link> explains
+      how to make a container scrollable.</para>
 
       <section>
         <title>Layout properties</title>
@@ -963,15 +964,18 @@ clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
         <para>The main issue you may face when applying these properties
         is understanding how they interact. As this is harder to describe
         than to show, you can run the
-        <link linkend="layouts-box-example-3">third example</link>
-        below to toggle and tweak the various properties.</para>
+        <link linkend="layouts-box-example-3">example</link>
+        below to toggle and tweak various properties and see
+        how they affect the layout's appearance.</para>
 
         <note>
-          <para>The second example sets child properties (fill, alignment,
-          expand) on all children of the layout when those properties are
-          changed. If you want to see the effect of setting these to
-          different values for <emphasis>each</emphasis> child, you
-          will have to experiment yourself.</para>
+          <para>The "toggle and tweak"
+          <link linkend="layouts-box-example-3">example</link> sets
+          child properties (fill, alignment, expand) on all children
+          of the layout when those properties are changed. If you want
+          to see the effect of setting these to different values for
+          <emphasis>each</emphasis> child, you will have to experiment
+          yourself.</para>
         </note>
 
         <section>
@@ -1019,10 +1023,11 @@ clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 
                   <para>Sets the number of pixels to place between actors
                   in the layout.</para>
-                  <para>Note that if you increase spacing too much, actors
-                  may go outside the edges of the layout's container (if
-                  the container has a fixed size).</para>
                 </formalpara>
+
+                <para>Note that if you increase spacing too much, actors
+                may go outside the edges of the layout's container (if
+                the container has a fixed size).</para>
               </listitem>
 
               <listitem>
@@ -1035,11 +1040,11 @@ clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
                   prepend actors to the row or column; the default is
                   <constant>FALSE</constant>, meaning that actors are
                   appended to the row or column when added.</para>
-
-                  <para>Changing this property on a layout which already has
-                  actors in it will reverse the order of those actors, as
-                  well as changing how new actors are added to the layout.</para>
                 </formalpara>
+
+                <para>Changing this property on a layout which already has
+                actors in it will reverse the order of those actors, as
+                well as changing how new actors are added to the layout.</para>
               </listitem>
             </itemizedlist>
 
@@ -1067,11 +1072,11 @@ clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
                 set whether an actor will fill its allocated horizontal
                 or vertical space (respectively) within the layout. Setting
                 these properties only has an effect where an actor is smaller
-                (on the fill axis or axes) than the layout's container.</para>
+                (on the appropriate fill axes) than the layout's container.</para>
 
-                <para>Note that the actor's size is not actually changed
+                <para>Note that the actor's actual size is not changed
                 if it is set to fill: the reported width and height are
-                not affected.</para>
+                unaffected.</para>
               </listitem>
 
               <listitem>
@@ -1142,9 +1147,9 @@ clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
         introduction</link> for more about easing and duration
         properties).</para>
 
-        <para>The <link linkend="layouts-box-example-3">third example</link>
-        uses animation for layout changes, and can give you some idea
-        of what to expect in your own animated layouts.</para>
+        <para>The <link linkend="layouts-box-example-3">"toggle and tweak"
+        example</link> uses animation for layout changes, and can give
+        you some idea of what to expect in your own animated layouts.</para>
 
       </section>
     </section>
@@ -1172,8 +1177,8 @@ clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
       </example>
 
       <example id="layouts-box-example-3">
-        <title>A demonstrator for some of <type>ClutterBoxLayout's</type>
-        properties</title>
+        <title>A demonstrator for "toggling and tweaking" a
+        <type>ClutterBoxLayout's</type> properties</title>
         <programlisting>
 <xi:include href="examples/layouts-box-property-effects.c" parse="text">
   <xi:fallback>a code sample should be here... but isn't</xi:fallback>
