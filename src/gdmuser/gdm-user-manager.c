@@ -1199,6 +1199,8 @@ on_list_cached_users_finished (DBusGProxy     *proxy,
                 return;
         }
 
+        maybe_set_is_loaded (manager);
+
         g_ptr_array_foreach (paths, (GFunc)add_new_user_for_object_path, manager);
 
         g_ptr_array_foreach (paths, (GFunc)g_free, NULL);

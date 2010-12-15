@@ -158,7 +158,7 @@ StatusMenuButton.prototype = {
 
     _onPreferencesActivate: function() {
         Main.overview.hide();
-        this._spawn(['gnome-control-center']);
+        this._spawn(['gnome-control-center', '-o']);
     },
 
     _onLockScreenActivate: function() {

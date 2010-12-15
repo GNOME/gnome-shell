@@ -1,22 +1,22 @@
 # Punjabi translation for gnome-shell.
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-#
 # A S Alam <aalam@users.sf.net>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
-"cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-10-27 23:15+0000\n"
-"PO-Revision-Date: 2010-10-29 08:13+0530\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&component=general\n"
+"POT-Creation-Date: 2010-11-29 15:38+0000\n"
+"PO-Revision-Date: 2010-12-01 08:23+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
-"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
+"Language-Team: punjabi-users@lists.sf.net\n"
+"Language: pa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.1\n"
+"X-Generator: Virtaal 0.6.1\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -92,10 +92,6 @@ msgid "List of desktop file IDs for favorite applications"
 msgstr "ਪਸੰਦੀਦਾ ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਡੈਸਕਟਾਪ ਫਾਇਲ ID ਦੀ ਲਿਸਟ ਹੈ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "Overview workspace view mode"
-msgstr "ਵਰਕਸਪੇਸ ਝਲਕ ਮੋਡ ਦੀ ਝਲਕ"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -107,32 +103,32 @@ msgid ""
 "'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "ਘੜੀ ਵਿੱਚ ਮਿਤੀ ਵੇਖੋ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "ਕੈਲੰਡਰ ਵਿੱਚ ਹਫ਼ਤਾ ਮਿਤੀ ਵੇਖੋ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "ਸਮਾਂ ਵਿੱਚ ਸਕਿੰਟ ਵੇਖੋ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr "ਇਹਨਾਂ ਐਂਡਟਟੀਫਾਇਰ ਨਾਲ ਸਬੰਧਿਤ ਐਪਲੀਕੇਸ਼ਨ ਨੂੰ ਪਸੰਦੀਦਾ ਖੇਤਰ 'ਚ ਵੇਖਾਇਆ ਜਾਵੇਗਾ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -140,18 +136,11 @@ msgstr ""
 "ਗਨੋਮ ਸ਼ੈੱਲ ਦੇ ਸਕਰੀਨਕਾਸਟ ਰਿਕਾਰਡਰ ਵਲੋਂ ਰਿਕਾਰਡ ਕਰਕੇ ਬਣਾਈ ਗਈ ਸਕਰੀਨਕਾਸਟ ਦਾ ਫਰੇਮਰੇਟ ਫਰੇਮ ਪ੍ਰਤੀ "
 "ਸਕਿੰਟ 'ਚ ਹੈ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "ਸਕਰੀਨਕਾਸਟ ਇੰਕੋਡ ਕਰਨ ਲਈ ਵਰਤਣ ਵਾਸਤੇ ਜੀਸਟਰੀਮਰ ਪਾਇਪਲਾਇਨ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"The selected workspace view mode in the overview. Supported values are "
-"\"single\" and \"grid\"."
-msgstr ""
-"ਸੰਖੇਪ ਵਿੱਚ ਚੁਣੇ ਵਰਕਸਪੇਸ ਝਲਕ ਮੋਡ ਹੈ। ਸਹਾਇਕ ਮੁੱਲ ਹਨ \"single\"(ਇੱਕਲਾ) ਜਾਂ \"grid\" (ਗਰਿੱਡ)।"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -159,7 +148,7 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid ""
 "This key specifies the format used by the panel clock when the format key is "
 "set to \"custom\". You can use conversion specifiers understood by strftime"
@@ -170,7 +159,7 @@ msgstr ""
 "ਹੋਵੇ। ਤੁਸੀਂ ਖਾਸ ਫਾਰਮੈਟ ਦੇਣ ਲਈ ਹਦਾਇਤਾਂ ਵਾਸਤੇ  strftime () ਨੂੰ ਵਰਤ ਸਕਦੇ ਹੋ। ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ  "
 "strftime () ਦਸਤਾਵੇਜ਼ ਵੇਖੋ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid ""
 "This key specifies the hour format used by the panel clock. Possible values "
 "are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
@@ -186,11 +175,11 @@ msgstr ""
 "ਮੁਤਾਬਕ ਵੇਖਾਇਆ ਜਾਵੇਗਾ। ਯਾਦ ਰੱਖੋ ਕਿ ਜੇ \"ਯੂਨੈਕਸ\" ਜਾਂ \"ਪਸੰਦੀਦਾ\" ਸੈੱਟ ਕੀਤਾ ਤਾਂ ਅੱਪਗਰੇਡ ਮਿਤੀ "
 "ਵੇਖਾਓ ਤੇ ਸਕਿੰਟ ਵੇਖਾਓ ਨੂੰ ਅਣਡਿੱਠਾ ਕੀਤਾ ਜਾਵੇਗਾ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Uuids of extensions to disable"
 msgstr "ਇਕਟੈਨਸ਼ਨ ਦੀ Uuids ਬੰਦ ਹੈ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Whether to collect stats about applications usage"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਵਰਤੋਂ ਬਾਰੇ ਅੰਕੜੇ ਇੱਕਠੇ ਕਰਨੇ ਹਨ"
 
@@ -206,7 +195,7 @@ msgstr "ਕਰਾਂਸਹੇਅਰ ਦਾ ਰੰਗ"
 msgid ""
 "Determines the length of the vertical and horizontal lines that make up the "
 "crosshairs."
-msgstr ""
+msgstr "ਵਰਟੀਕਲ ਤੇ ਹਰੀਜੱਟਲ ਲਾਈਨਾਂ ਦੀ ਲੰਬਾਈ ਦੱਸੋ, ਜੋ ਕਿ ਕਰਾਂਸਹੇਅਰ ਬਣਾਉਂਦੀਆਂ ਹਨ।"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
 msgid ""
@@ -225,7 +214,7 @@ msgstr ""
 msgid ""
 "Determines the transparency of the crosshairs, from fully opaque to fully "
 "transparent."
-msgstr ""
+msgstr "ਕਰਾਂਸਹੇਅਰ ਦੀ ਟਰਾਂਸਪਰੇਸੀ ਤਹਿ ਕਰੋ, ਪੂਰੀ ਤਰ੍ਹਾਂ ਧੁੰਦਲੇ ਤੋਂ ਪਾਰਦਰਸ਼ੀ ਹੀ।"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
 msgid ""
@@ -235,7 +224,6 @@ msgid ""
 msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-#| msgid "Enabled"
 msgid "Enable lens mode"
 msgstr "ਲੈਨਜ਼ ਮੋਡ ਚਾਲੂ"
 
@@ -348,62 +336,41 @@ msgstr "_੧੨ ਘੰਟੇ ਫਾਰਮੈਟ"
 msgid "_24 hour format"
 msgstr "_੨੪ ਘੰਟੇ ਫਾਰਮੈਟ"
 
-#. **** Applications ****
-#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
+#: ../js/ui/appDisplay.js:215
 msgid "APPLICATIONS"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../js/ui/appDisplay.js:348
+#: ../js/ui/appDisplay.js:245
 msgid "PREFERENCES"
 msgstr "ਪਸੰਦ"
 
-#: ../js/ui/appDisplay.js:648
+#: ../js/ui/appDisplay.js:538
 msgid "New Window"
 msgstr "ਨਵੀਂ ਵਿੰਡੋ"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:542
 msgid "Remove from Favorites"
 msgstr "ਪਸੰਦ ਵਿੱਚੋਂ ਹਟਾਓ"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:543
 msgid "Add to Favorites"
 msgstr "ਪਸੰਦ 'ਚ ਸ਼ਾਮਲ ਕਰੋ"
 
-#: ../js/ui/appDisplay.js:830
-msgid "Drag here to add favorites"
-msgstr "ਪਸੰਦ ਵਿੱਚ ਜੋੜਨ ਲਈ ਇੱਥੇ ਸੁੱਟੋ"
-
-#: ../js/ui/appFavorites.js:88
+#: ../js/ui/appFavorites.js:91
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s ਨੂੰ ਤੁਹਾਡੀ ਪਸੰਦ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ।"
 
-#: ../js/ui/appFavorites.js:107
+#: ../js/ui/appFavorites.js:122
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s ਨੂੰ ਤੁਹਾਡੀ ਪਸੰਦ ਤੋਂ ਹਟਾਇਆ ਜਾ ਚੁੱਕਿਆ ਹੈ।"
 
-#: ../js/ui/dash.js:142
-msgid "Find"
-msgstr "ਖੋਜ"
+#: ../js/ui/dash.js:27
+msgid "Remove"
+msgstr "ਹਟਾਓ"
 
-#: ../js/ui/dash.js:473
-msgid "Searching..."
-msgstr "ਖੋਜ ਜਾਰੀ ਹੈ..."
-
-#: ../js/ui/dash.js:487
-msgid "No matching results."
-msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਲੱਭਿਆ।"
-
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
-msgid "PLACES & DEVICES"
-msgstr "ਥਾਵਾਂ ਤੇ ਜੰਤਰ"
-
-#. **** Documents ****
-#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
+#: ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "ਤਾਜ਼ਾ ਆਈਟਮਾਂ"
 
@@ -437,63 +404,63 @@ msgstr "ਸਰੋਤ ਵੇਖੋ"
 msgid "Web Page"
 msgstr "ਵੈੱਬ ਪੇਜ਼"
 
-#: ../js/ui/overview.js:160
+#: ../js/ui/overview.js:112
 msgid "Undo"
 msgstr "ਵਾਪਸ"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:469
+#: ../js/ui/panel.js:470
 #, c-format
 msgid "Quit %s"
 msgstr "%s ਬੰਦ ਕਰੋ"
 
-#: ../js/ui/panel.js:494
+#: ../js/ui/panel.js:495
 msgid "Preferences"
 msgstr "ਮੇਰੀ ਪਸੰਦ"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:580
+#: ../js/ui/panel.js:581
 msgid "%a %b %e, %R:%S"
 msgstr "%a, %e %b %R:%S"
 
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:582
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:586
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:587
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:593
+#: ../js/ui/panel.js:594
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l:%M:%S %p"
 
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:595
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:599
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:600
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:744
+#: ../js/ui/panel.js:745
 msgid "Activities"
 msgstr "ਸਰਗਰਮੀਆਂ"
 
@@ -509,6 +476,10 @@ msgstr "ਮੁੜ-ਕੋਸ਼ਿਸ਼"
 #: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
 msgstr "...ਨਾਲ ਕੁਨੈਕਟ ਕਰੋ"
+
+#: ../js/ui/placeDisplay.js:558
+msgid "PLACES & DEVICES"
+msgstr "ਥਾਵਾਂ ਤੇ ਜੰਤਰ"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -536,40 +507,34 @@ msgstr "ਉਪਲੱਬਧ"
 msgid "Busy"
 msgstr "ਰੁਝਿਆ"
 
-#: ../js/ui/statusMenu.js:111
-msgid "Invisible"
-msgstr "ਅਦਿੱਖ"
+#: ../js/ui/statusMenu.js:114
+#| msgid "My Account..."
+msgid "My Account"
+msgstr "ਮੇਰਾ ਅਕਾਊਂਟ"
 
-#: ../js/ui/statusMenu.js:119
-msgid "My Account..."
-msgstr "...ਮੇਰਾ ਅਕਾਊਂਟ"
+#: ../js/ui/statusMenu.js:118
+#| msgid "System Sounds"
+msgid "System Settings"
+msgstr "ਸਿਸਟਮ ਸੈਟਿੰਗ"
 
-#: ../js/ui/statusMenu.js:123
-#| msgid "Preferences"
-msgid "System Preferences..."
-msgstr "ਸਿਸਟਮ ਪਸੰਦ..."
-
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:125
 msgid "Lock Screen"
 msgstr "ਸਕਰੀਨ ਲਾਕ ਕਰੋ"
 
-#: ../js/ui/statusMenu.js:134
+#: ../js/ui/statusMenu.js:129
 msgid "Switch User"
 msgstr "ਯੂਜ਼ਰ ਬਦਲੋ"
 
-#: ../js/ui/statusMenu.js:139
+#: ../js/ui/statusMenu.js:134
 msgid "Log Out..."
 msgstr "ਲਾਗਆਉਟ..."
 
-#: ../js/ui/statusMenu.js:146
-msgid "Suspend"
-msgstr "ਸਸਪੈਂਡ"
+#: ../js/ui/statusMenu.js:141
+#| msgid "Suspend"
+msgid "Suspend..."
+msgstr "ਸਸਪੈਂਡ..."
 
-#: ../js/ui/statusMenu.js:150
-msgid "Restart..."
-msgstr "...ਮੁੜ-ਚਾਲੂ"
-
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
 msgstr "ਬੰਦ ਕਰੋ..."
 
@@ -609,13 +574,17 @@ msgstr "ਯੂਨੀਵਰਸਲ ਅਸੈੱਸ ਸੈਟਿੰਗ"
 msgid "High Contrast"
 msgstr "ਵੱਧ ਕਨਟਰਾਸਟ"
 
-#: ../js/ui/status/accessibility.js:202
+#: ../js/ui/status/accessibility.js:205
 msgid "Large Text"
 msgstr "ਵੱਡੇ ਅੱਖਰ"
 
-#: ../js/ui/status/accessibility.js:223
+#: ../js/ui/status/accessibility.js:224
 msgid "Zoom"
 msgstr "ਜ਼ੂਮ"
+
+#: ../js/ui/viewSelector.js:26
+msgid "Search your computer"
+msgstr "ਆਪਣੇ ਕੰਪਿਊਟਰ ਉੱਤੇ ਲੱਭੋ"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -627,11 +596,11 @@ msgstr "%s ਸ਼ੁਰੂ ਹੋਣਾ ਖਤਮ ਹੋਇਆ"
 msgid "'%s' is ready"
 msgstr "'%s' ਤਿਆਰ ਹੈ"
 
-#: ../js/ui/workspacesView.js:229
+#: ../js/ui/workspacesView.js:244
 msgid "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "ਨਵਾਂ ਵਰਕਸਪੇਸ ਜੋੜਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ, ਕਿਉਂਕਿ ਵਰਕਸਪੇਸਾਂ ਦੀ ਵੱਧੋ-ਵੱਧ ਗਿਣਤੀ ਪੂਰੀ ਹੋ ਚੁੱਕੀ ਹੈ।"
 
-#: ../js/ui/workspacesView.js:246
+#: ../js/ui/workspacesView.js:260
 msgid "Can't remove the first workspace."
 msgstr "ਪਹਿਲਾਂ ਵਰਕਸਪੇਸ ਨਹੀਂ ਹਟਾਇਆ ਜਾ ਸਕਦਾ।"
 
@@ -654,53 +623,56 @@ msgstr[0] "%u ਇੰਪੁੱਟ"
 msgstr[1] "%u ਇੰਪੁੱਟ"
 
 #: ../src/gvc/gvc-mixer-control.c:1402
-#| msgid "System Settings..."
 msgid "System Sounds"
 msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
-#: ../src/shell-global.c:1204
+#: ../src/shell-app-system.c:1012
+msgid "Unknown"
+msgstr "ਅਣਜਾਣ"
+
+#: ../src/shell-global.c:1163
 msgid "Less than a minute ago"
 msgstr "ਇੱਕ ਮਿੰਟ ਤੋਂ ਘੱਟ ਚਿਰ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1208
+#: ../src/shell-global.c:1167
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1213
+#: ../src/shell-global.c:1172
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ਘੰਟਾ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਘੰਟੇ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1218
+#: ../src/shell-global.c:1177
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d ਦਿਨ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਦਿਨ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1223
+#: ../src/shell-global.c:1182
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d ਹਫ਼ਤਾ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਹਫ਼ਤੇ ਪਹਿਲਾਂ"
 
-#: ../src/shell-uri-util.c:89
+#: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "ਘਰ ਫੋਲਡਰ"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:104
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "ਫਾਇਲ ਸਿਸਟਮ"
 
-#: ../src/shell-uri-util.c:250
+#: ../src/shell-util.c:250
 msgid "Search"
 msgstr "ਖੋਜ"
 
@@ -709,10 +681,42 @@ msgstr "ਖੋਜ"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:300
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Overview workspace view mode"
+#~ msgstr "ਵਰਕਸਪੇਸ ਝਲਕ ਮੋਡ ਦੀ ਝਲਕ"
+
+#~ msgid ""
+#~ "The selected workspace view mode in the overview. Supported values are "
+#~ "\"single\" and \"grid\"."
+#~ msgstr ""
+#~ "ਸੰਖੇਪ ਵਿੱਚ ਚੁਣੇ ਵਰਕਸਪੇਸ ਝਲਕ ਮੋਡ ਹੈ। ਸਹਾਇਕ ਮੁੱਲ ਹਨ \"single\"(ਇੱਕਲਾ) ਜਾਂ \"grid"
+#~ "\" (ਗਰਿੱਡ)।"
+
+#~ msgid "Drag here to add favorites"
+#~ msgstr "ਪਸੰਦ ਵਿੱਚ ਜੋੜਨ ਲਈ ਇੱਥੇ ਸੁੱਟੋ"
+
+#~ msgid "Find"
+#~ msgstr "ਖੋਜ"
+
+#~ msgid "Searching..."
+#~ msgstr "ਖੋਜ ਜਾਰੀ ਹੈ..."
+
+#~ msgid "No matching results."
+#~ msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਲੱਭਿਆ।"
+
+#~ msgid "Invisible"
+#~ msgstr "ਅਦਿੱਖ"
+
+#~| msgid "Preferences"
+#~ msgid "System Preferences..."
+#~ msgstr "ਸਿਸਟਮ ਪਸੰਦ..."
+
+#~ msgid "Restart..."
+#~ msgstr "...ਮੁੜ-ਚਾਲੂ"
 
 #~ msgid "Account Information..."
 #~ msgstr "ਅਕਾਊਂਟ ਜਾਣਕਾਰੀ..."
@@ -743,9 +747,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "SEARCH RESULTS"
 #~ msgstr "ਖੋਜ ਨਤੀਜੇ"
-
-#~ msgid "Unknown"
-#~ msgstr "ਅਣਜਾਣ"
 
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "ਸਕਰੀਨ ਲਾਕ ਨਹੀਂ ਹੋ ਸਕਦੀ: %s"

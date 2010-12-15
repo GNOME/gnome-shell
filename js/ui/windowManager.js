@@ -543,24 +543,34 @@ WindowManager.prototype = {
     },
 
     actionMoveWorkspaceLeft: function() {
+        let rtl = (St.Widget.get_default_direction() == St.TextDirection.RTL);
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        if (activeWorkspaceIndex > 0) {
-            global.screen.get_workspace_by_index(activeWorkspaceIndex - 1).activate(global.get_current_time());
-            if (!Main.overview.visible)
-                this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.LEFT, activeWorkspaceIndex - 1);
-        } else if (!Main.overview.visible) {
-            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.LEFT, activeWorkspaceIndex);
-        }
+        let indexToActivate = activeWorkspaceIndex;
+        if (rtl && activeWorkspaceIndex < global.screen.n_workspaces - 1)
+            indexToActivate++;
+        else if (!rtl && activeWorkspaceIndex > 0)
+            indexToActivate--;
+
+        if (indexToActivate != activeWorkspaceIndex)
+            global.screen.get_workspace_by_index(indexToActivate).activate(global.get_current_time());
+
+        if (!Main.overview.visible)
+            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.LEFT, indexToActivate);
     },
 
     actionMoveWorkspaceRight: function() {
+        let rtl = (St.Widget.get_default_direction() == St.TextDirection.RTL);
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        if (activeWorkspaceIndex <  global.screen.n_workspaces - 1) {
-            global.screen.get_workspace_by_index(activeWorkspaceIndex + 1).activate(global.get_current_time());
-            if (!Main.overview.visible)
-                this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.RIGHT, activeWorkspaceIndex + 1);
-        } else if (!Main.overview.visible) {
-            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.RIGHT, activeWorkspaceIndex);
-        }
+        let indexToActivate = activeWorkspaceIndex;
+        if (rtl && activeWorkspaceIndex > 0)
+            indexToActivate--;
+        else if (!rtl && activeWorkspaceIndex < global.screen.n_workspaces - 1)
+            indexToActivate++;
+
+        if (indexToActivate != activeWorkspaceIndex)
+            global.screen.get_workspace_by_index(indexToActivate).activate(global.get_current_time());
+
+        if (!Main.overview.visible)
+            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.RIGHT, indexToActivate);
     }
 };

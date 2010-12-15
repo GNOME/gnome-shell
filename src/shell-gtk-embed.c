@@ -39,7 +39,7 @@ shell_gtk_embed_on_window_realize (GtkWidget     *widget,
    * screen.
    */
   clutter_x11_texture_pixmap_set_window (CLUTTER_X11_TEXTURE_PIXMAP (embed),
-                                         GDK_WINDOW_XWINDOW (gtk_widget_get_window (widget)),
+                                         gdk_x11_window_get_xid (gtk_widget_get_window (widget)),
                                          FALSE);
 }
 

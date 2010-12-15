@@ -48,21 +48,6 @@ StScrollView StScrollBar
   min-height: 16px;
 }
 
-StScrollView > .top-shadow
-{
-    background-gradient-direction: vertical;
-    background-gradient-start: #111111;
-    background-gradient-end: rgba(17, 17, 17, 0);
-    height: 30px;
-}
-
-StScrollView > .bottom-shadow
-{
-    background-gradient-direction: vertical;
-    background-gradient-start: rgba(17, 17, 17, 0);
-    background-gradient-end: #111111;
-    height: 30px;
-}
 
 StScrollBar StBin#trough {
     background-color: #080808;
@@ -1051,6 +1036,7 @@ StTooltip StLabel {
 }
 
 .summary-source {
+    color: white;
 }
 
 .summary-source-button {
@@ -1065,7 +1051,6 @@ StTooltip StLabel {
 .source-title {
     font: 12px sans-serif;
     font-weight: bold;
-    color: white;
     padding-left: 4px;
 }
 

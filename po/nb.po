@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.91.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-20 14:39+0100\n"
-"PO-Revision-Date: 2010-11-20 14:40+0100\n"
+"POT-Creation-Date: 2010-12-06 19:04+0100\n"
+"PO-Revision-Date: 2010-12-06 19:06+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -92,10 +92,6 @@ msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "Overview workspace view mode"
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -107,48 +103,42 @@ msgid ""
 "'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Vis dato i klokken"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Vis dato for uken i kalender"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Vis tid med sekunder"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"The selected workspace view mode in the overview. Supported values are "
-"\"single\" and \"grid\"."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -156,7 +146,7 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid ""
 "This key specifies the format used by the panel clock when the format key is "
 "set to \"custom\". You can use conversion specifiers understood by strftime"
@@ -164,7 +154,7 @@ msgid ""
 "information."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid ""
 "This key specifies the hour format used by the panel clock. Possible values "
 "are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
@@ -174,11 +164,11 @@ msgid ""
 "the show_date and show_seconds keys are ignored."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Uuids of extensions to disable"
 msgstr "Uuider på utvidelser som skal slås av"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Whether to collect stats about applications usage"
 msgstr "Om det skal samles statistikk om bruk av programmer"
 
@@ -335,62 +325,41 @@ msgstr "_12-timers format"
 msgid "_24 hour format"
 msgstr "_24-timers format"
 
-#. **** Applications ****
-#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
+#: ../js/ui/appDisplay.js:215
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
-#: ../js/ui/appDisplay.js:348
+#: ../js/ui/appDisplay.js:245
 msgid "PREFERENCES"
 msgstr "BRUKERVALG"
 
-#: ../js/ui/appDisplay.js:647
+#: ../js/ui/appDisplay.js:542
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:651
+#: ../js/ui/appDisplay.js:546
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:547
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
-#: ../js/ui/appDisplay.js:829
-msgid "Drag here to add favorites"
-msgstr "Dra hit for å legge til favoritter"
-
-#: ../js/ui/appFavorites.js:88
+#: ../js/ui/appFavorites.js:91
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s ble lagt til i dine favoritter."
 
-#: ../js/ui/appFavorites.js:107
+#: ../js/ui/appFavorites.js:122
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s ble fjernet fra dine favoritter."
 
-#: ../js/ui/dash.js:142
-msgid "Find"
-msgstr "Finn"
+#: ../js/ui/dash.js:27
+msgid "Remove"
+msgstr "Fjern"
 
-#: ../js/ui/dash.js:473
-msgid "Searching..."
-msgstr "Søker..."
-
-#: ../js/ui/dash.js:487
-msgid "No matching results."
-msgstr "Ingen treff."
-
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:558
-msgid "PLACES & DEVICES"
-msgstr "STEDER & ENHETER"
-
-#. **** Documents ****
-#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
+#: ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "SISTE OPPFØRINGER"
 
@@ -424,7 +393,7 @@ msgstr "Vis kildekode"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/overview.js:160
+#: ../js/ui/overview.js:112
 msgid "Undo"
 msgstr "Angre"
 
@@ -497,6 +466,10 @@ msgstr "Prøv igjen"
 msgid "Connect to..."
 msgstr "Koble til..."
 
+#: ../js/ui/placeDisplay.js:558
+msgid "PLACES & DEVICES"
+msgstr "STEDER & ENHETER"
+
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
@@ -524,12 +497,12 @@ msgid "Busy"
 msgstr "Opptatt"
 
 #: ../js/ui/statusMenu.js:114
-msgid "My Account..."
-msgstr "Min konto..."
+msgid "My Account"
+msgstr "Min konto"
 
 #: ../js/ui/statusMenu.js:118
-msgid "System Settings..."
-msgstr "Systeminnstillinger..."
+msgid "System Settings"
+msgstr "Systeminnstillinger"
 
 #: ../js/ui/statusMenu.js:125
 msgid "Lock Screen"
@@ -544,12 +517,16 @@ msgid "Log Out..."
 msgstr "Logg ut..."
 
 #: ../js/ui/statusMenu.js:141
-msgid "Suspend"
-msgstr "Hvilemodus"
+msgid "Suspend..."
+msgstr "Hvilemodus..."
 
 #: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
 msgstr "Avslutt..."
+
+#: ../js/ui/status/accessibility.js:82
+msgid "Zoom"
+msgstr "Zoom"
 
 #: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
@@ -591,9 +568,109 @@ msgstr "Høy kontrast"
 msgid "Large Text"
 msgstr "Stor tekst"
 
-#: ../js/ui/status/accessibility.js:224
-msgid "Zoom"
-msgstr "Zoom"
+#: ../js/ui/status/power.js:87
+msgid "What's using power..."
+msgstr "Hva bruker strøm..."
+
+#: ../js/ui/status/power.js:90
+msgid "Power Settings"
+msgstr "Innstillinger for strøm"
+
+#: ../js/ui/status/power.js:117
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "%d time gjenstår"
+msgstr[1] "%d timer gjenstår"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:120
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "%d %s %d %s gjenstår"
+
+#: ../js/ui/status/power.js:122
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "time"
+msgstr[1] "timer"
+
+#: ../js/ui/status/power.js:122
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "minutt"
+msgstr[1] "minutter"
+
+#: ../js/ui/status/power.js:125
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "%d minutt gjenstår"
+msgstr[1] "%d minutter gjenstår"
+
+#: ../js/ui/status/power.js:244
+msgid "AC adapter"
+msgstr "Strømadapter"
+
+#: ../js/ui/status/power.js:246
+msgid "Laptop battery"
+msgstr "Batteri på bærbar"
+
+#: ../js/ui/status/power.js:248
+msgid "UPS"
+msgstr "UPS"
+
+#: ../js/ui/status/power.js:250
+msgid "Monitor"
+msgstr "Skjerm"
+
+#: ../js/ui/status/power.js:252
+msgid "Mouse"
+msgstr "Mus"
+
+#: ../js/ui/status/power.js:254
+msgid "Keyboard"
+msgstr "Tastatur"
+
+#: ../js/ui/status/power.js:256
+msgid "PDA"
+msgstr "PDA"
+
+#: ../js/ui/status/power.js:258
+msgid "Cell phone"
+msgstr "Mobiltelefon"
+
+#: ../js/ui/status/power.js:260
+msgid "Media player"
+msgstr "Medieavspiller"
+
+#: ../js/ui/status/power.js:262
+msgid "Tablet"
+msgstr "Nettbrett"
+
+#: ../js/ui/status/power.js:264
+msgid "Computer"
+msgstr "Datamaskin"
+
+#: ../js/ui/status/power.js:266 ../src/shell-app-system.c:1012
+msgid "Unknown"
+msgstr "Ukjent"
+
+#: ../js/ui/status/volume.js:41
+msgid "Volume"
+msgstr "Volum"
+
+#: ../js/ui/status/volume.js:54
+msgid "Microphone"
+msgstr "Mikrofon"
+
+#: ../js/ui/status/volume.js:62
+msgid "Sound Settings"
+msgstr "Innstillinger for lyd"
+
+#: ../js/ui/viewSelector.js:26
+msgid "Search your computer"
+msgstr "Søk på din datamaskin"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -605,14 +682,14 @@ msgstr "%s er ferdig startet"
 msgid "'%s' is ready"
 msgstr "«%s» er klar"
 
-#: ../js/ui/workspacesView.js:229
+#: ../js/ui/workspacesView.js:244
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr ""
 "Kan ikke legge til nytt arbeidsområde fordi grensen for maksimalt antall "
 "arbeidsområder er nådd."
 
-#: ../js/ui/workspacesView.js:246
+#: ../js/ui/workspacesView.js:260
 msgid "Can't remove the first workspace."
 msgstr "Kan ikke fjerne første arbeidsområde"
 
@@ -638,36 +715,32 @@ msgstr[1] "%u innganger"
 msgid "System Sounds"
 msgstr "Systemlyder"
 
-#: ../src/shell-app-system.c:1012
-msgid "Unknown"
-msgstr "Ukjent"
-
-#: ../src/shell-global.c:1158
+#: ../src/shell-global.c:1163
 msgid "Less than a minute ago"
 msgstr "Mindre enn ett minutt siden"
 
-#: ../src/shell-global.c:1162
+#: ../src/shell-global.c:1167
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minutt siden"
 msgstr[1] "%d minutter siden"
 
-#: ../src/shell-global.c:1167
+#: ../src/shell-global.c:1172
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d time siden"
 msgstr[1] "%d timer siden"
 
-#: ../src/shell-global.c:1172
+#: ../src/shell-global.c:1177
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag siden"
 msgstr[1] "%d dager siden"
 
-#: ../src/shell-global.c:1177
+#: ../src/shell-global.c:1182
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"

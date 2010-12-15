@@ -881,8 +881,7 @@ Workspace.prototype = {
 
         xCenter = xCenter * global.screen_width;
 
-        let rect = new Meta.Rectangle();
-        metaWindow.get_outer_rect(rect);
+        let rect = metaWindow.get_outer_rect();
         let buttonOuterHeight, captionHeight;
         let buttonOuterWidth = 0;
 

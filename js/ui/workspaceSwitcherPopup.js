@@ -89,6 +89,7 @@ WorkspaceSwitcherPopup.prototype = {
         let children = this._list.get_children();
         let childBox = new Clutter.ActorBox();
 
+        let rtl = (St.Widget.get_default_direction() == St.TextDirection.RTL);
         let x = box.x1;
         let prevChildBoxX2 = box.x1 - this._itemSpacing;
         for (let i = 0; i < children.length; i++) {
@@ -98,6 +99,11 @@ WorkspaceSwitcherPopup.prototype = {
             childBox.y2 = box.y1 + this._childHeight;
             x += this._childWidth + this._itemSpacing;
             prevChildBoxX2 = childBox.x2;
+            if (rtl) {
+                let ltrChildBoxX1 = childBox.x1;
+                childBox.x1 = box.x2 - (childBox.x2 - box.x1);
+                childBox.x2 = box.x2 - (ltrChildBoxX1 - box.x1);
+            }
             children[i].allocate(childBox, flags);
         }
     },

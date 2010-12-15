@@ -491,7 +491,11 @@ AppIconMenu.prototype = {
     __proto__: PopupMenu.PopupMenu.prototype,
 
     _init: function(source) {
-        PopupMenu.PopupMenu.prototype._init.call(this, source.actor, St.Align.MIDDLE, St.Side.LEFT, 0);
+        let side = St.Side.LEFT;
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+            side = St.Side.RIGHT;
+
+        PopupMenu.PopupMenu.prototype._init.call(this, source.actor, St.Align.MIDDLE, side, 0);
 
         this._source = source;
 

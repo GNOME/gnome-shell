@@ -1617,9 +1617,16 @@ _st_theme_node_ensure_background (StThemeNode *node)
                 }
               else if (term->type == TERM_URI)
                 {
+                  CRStyleSheet *base_stylesheet;
+
+                  if (decl->parent_statement != NULL)
+                    base_stylesheet = decl->parent_statement->parent_sheet;
+                  else
+                    base_stylesheet = NULL;
+
                   node->background_image = _st_theme_resolve_url (node->theme,
-                                                                     decl->parent_statement->parent_sheet,
-                                                                     term->content.str->stryng->str);
+                                                                  base_stylesheet,
+                                                                  term->content.str->stryng->str);
                 }
             }
         }
@@ -1669,9 +1676,16 @@ _st_theme_node_ensure_background (StThemeNode *node)
 
           if (decl->value->type == TERM_URI)
             {
+              CRStyleSheet *base_stylesheet;
+
+              if (decl->parent_statement != NULL)
+                base_stylesheet = decl->parent_statement->parent_sheet;
+              else
+                base_stylesheet = NULL;
+
               g_free (node->background_image);
               node->background_image = _st_theme_resolve_url (node->theme,
-                                                              decl->parent_statement->parent_sheet,
+                                                              base_stylesheet,
                                                               decl->value->content.str->stryng->str);
             }
           else if (term_is_inherit (decl->value))
@@ -2455,6 +2469,7 @@ st_theme_node_get_border_image (StThemeNode *node)
       if (strcmp (decl->property->stryng->str, "border-image") == 0)
         {
           CRTerm *term = decl->value;
+          CRStyleSheet *base_stylesheet;
           int borders[4];
           int n_borders = 0;
           int i;
@@ -2529,7 +2544,12 @@ st_theme_node_get_border_image (StThemeNode *node)
               break;
             }
 
-          filename = _st_theme_resolve_url (node->theme, decl->parent_statement->parent_sheet, url);
+          if (decl->parent_statement != NULL)
+            base_stylesheet = decl->parent_statement->parent_sheet;
+          else
+            base_stylesheet = NULL;
+
+          filename = _st_theme_resolve_url (node->theme, base_stylesheet, url);
           if (filename == NULL)
             goto next_property;
 

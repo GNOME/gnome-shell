@@ -10,24 +10,24 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
-const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
-const A11Y_SCHEMA = "org.gnome.desktop.a11y.keyboard";
-const KEY_STICKY_KEYS_ENABLED = "stickykeys-enable";
-const KEY_BOUNCE_KEYS_ENABLED = "bouncekeys-enable";
-const KEY_SLOW_KEYS_ENABLED   = "slowkeys-enable";
-const KEY_MOUSE_KEYS_ENABLED  = "mousekeys-enable";
+const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
+const KEY_STICKY_KEYS_ENABLED = 'stickykeys-enable';
+const KEY_BOUNCE_KEYS_ENABLED = 'bouncekeys-enable';
+const KEY_SLOW_KEYS_ENABLED   = 'slowkeys-enable';
+const KEY_MOUSE_KEYS_ENABLED  = 'mousekeys-enable';
 
-const AT_SCREEN_KEYBOARD_SCHEMA = "org.gnome.desktop.default-applications.at.mobility";
-const AT_SCREEN_READER_SCHEMA   = "org.gnome.desktop.default-applications.at.visual";
+const MAGNIFIER_SCHEMA = 'org.gnome.accessibility.magnifier';
+const AT_SCREEN_KEYBOARD_SCHEMA = 'org.gnome.desktop.default-applications.at.mobility';
+const AT_SCREEN_READER_SCHEMA   = 'org.gnome.desktop.default-applications.at.visual';
 
-const XSETTINGS_SCHEMA = "org.gnome.settings-daemon.plugins.xsettings";
-const KEY_DPI = "dpi";
+const XSETTINGS_SCHEMA = 'org.gnome.settings-daemon.plugins.xsettings';
+const KEY_DPI = 'dpi';
 
 const DPI_LOW_REASONABLE_VALUE  = 50;
 const DPI_HIGH_REASONABLE_VALUE = 500;
@@ -37,14 +37,14 @@ const DPI_FACTOR_LARGER  = 1.5;
 const DPI_FACTOR_LARGEST = 2.0;
 const DPI_DEFAULT        = 96;
 
-const KEY_META_DIR       = "/apps/metacity/general";
-const KEY_VISUAL_BELL = KEY_META_DIR + "/visual_bell";
+const KEY_META_DIR       = '/apps/metacity/general';
+const KEY_VISUAL_BELL = KEY_META_DIR + '/visual_bell';
 
-const DESKTOP_INTERFACE_SCHEMA = "org.gnome.desktop.interface";
-const KEY_GTK_THEME      = "gtk-theme";
-const KEY_ICON_THEME     = "icon-theme";
+const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
+const KEY_GTK_THEME      = 'gtk-theme';
+const KEY_ICON_THEME     = 'icon-theme';
 
-const HIGH_CONTRAST_THEME = "HighContrast";
+const HIGH_CONTRAST_THEME = 'HighContrast';
 
 function getDPIFromX() {
     let screen = global.get_gdk_screen();
@@ -79,7 +79,7 @@ ATIndicator.prototype = {
         let highContrast = this._buildHCItem();
         this.menu.addMenuItem(highContrast);
 
-        let magnifier = this._buildMagItem();
+        let magnifier = this._buildItem(_("Zoom"), MAGNIFIER_SCHEMA, 'show-magnifier');
         this.menu.addMenuItem(magnifier);
 
         let textZoom = this._buildFontItem();
@@ -214,18 +214,6 @@ ATIndicator.prototype = {
         settings.connect('changed::' + KEY_DPI, function() {
             let active = on_get();
             default_value = active ? x_value : user_value;
-            widget.setToggleState(active);
-        });
-        return widget;
-    },
-
-    _buildMagItem: function() {
-        let mag = Main.magnifier;
-        let widget = this._buildItemExtended(_("Zoom"),
-            mag.isActive(),
-            true,
-            Lang.bind(mag, mag.setActive));
-        mag.connect('active-changed', function(magnifier, active) {
             widget.setToggleState(active);
         });
         return widget;

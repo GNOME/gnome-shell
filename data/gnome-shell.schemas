@@ -44,19 +44,20 @@
       </schema>
 
       <schema>
-        <key>/schemas/desktop/gnome/shell/windows/side_by_side_tiling</key>
-        <applyto>/desktop/gnome/shell/windows/side_by_side_tiling</applyto>
+        <key>/schemas/desktop/gnome/shell/windows/edge_tiling</key>
+        <applyto>/desktop/gnome/shell/windows/edge_tiling</applyto>
         <owner>gnome-shell</owner>
         <type>bool</type>
         <default>true</default>
         <locale name="C">
-          <short>enable side-by-side tiling when dropping windows on screen edges</short>
+          <short>enable edge tiling when dropping windows on screen edges</short>
           <long>
-             If enabled, dropping windows on screen edges maximizes them
+             If enabled, dropping windows on vertical screen edges maximizes them
              vertically and resizes them horizontally to cover half of the
-             available area.
+             available area. Dropping windows on the top screen edge maximizes them
+             completely.
 
-             This key overrides /apps/metacity/general/side_by_side_tiling when
+             This key overrides /apps/metacity/general/edge_tiling when
              running GNOME Shell.
           </long>
         </locale>

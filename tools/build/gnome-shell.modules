@@ -150,6 +150,7 @@
       <dep package="clutter"/>
       <dep package="gconf"/>
       <dep package="gtk3"/>
+      <dep package="libcanberra"/>
     </dependencies>
   </autotools>
 
