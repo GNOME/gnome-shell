@@ -8,7 +8,7 @@
 #include <clutter/clutter.h>
 
 G_MODULE_EXPORT int
-test_rotate_main (int argc, char *argv[])
+test_shader_effects_main (int argc, char *argv[])
 {
   ClutterTimeline *timeline;
   ClutterActor *stage, *hand, *label, *rect;

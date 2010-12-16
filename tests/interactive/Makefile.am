@@ -9,7 +9,7 @@ UNIT_TESTS = \
         test-actors.c \
         test-actor-clone.c \
 	test-behave.c \
-	test-rotate.c \
+	test-shader-effects.c \
 	test-depth.c \
 	test-threads.c \
 	test-script.c \
