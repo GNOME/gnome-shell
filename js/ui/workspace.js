@@ -566,8 +566,6 @@ Workspace.prototype = {
                                                             Lang.bind(this, this._windowRemoved));
         this._repositionWindowsId = 0;
 
-        this._visible = false;
-
         this.leavingOverview = false;
     },
 
@@ -1206,8 +1204,6 @@ Workspace.prototype = {
             this.positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.ZOOM);
         else
             this.positionWindows(WindowPositionFlags.ZOOM);
-
-        this._visible = true;
     },
 
     // Animates the return from Overview mode
@@ -1253,7 +1249,6 @@ Workspace.prototype = {
             }
         }
 
-        this._visible = false;
     },
 
     destroy : function() {
