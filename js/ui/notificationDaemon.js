@@ -291,7 +291,10 @@ NotificationDaemon.prototype = {
                 function(n) {
                     delete this._notifications[id];
                 }));
-            notification.connect('action-invoked', Lang.bind(this, this._actionInvoked, source, id));
+            notification.connect('action-invoked', Lang.bind(this,
+                function(n, actionId) {
+                    this._emitActionInvoked(id, actionId);
+                }));
         } else {
             notification.update(summary, body, { icon: iconActor,
                                                  bannerMarkup: true,
@@ -305,6 +308,7 @@ NotificationDaemon.prototype = {
         }
 
         notification.setUrgent(hints.urgency == Urgency.CRITICAL);
+        notification.setResident(hints.resident == true);
 
         let sourceIconActor = source.useNotificationIcon ? this._iconForNotificationData(icon, hints, source.ICON_SIZE) : null;
         source.notify(notification, sourceIconActor);
@@ -352,15 +356,11 @@ NotificationDaemon.prototype = {
         for (let id in this._sources) {
             let source = this._sources[id];
             if (source.app == tracker.focus_app) {
-                source.activated();
+                if (source.notification && !source.notification.resident)
+                    source.notification.destroy();
                 return;
             }
         }
-    },
-
-    _actionInvoked: function(notification, action, source, id) {
-        source.activated();
-        this._emitActionInvoked(id, action);
     },
 
     _emitNotificationClosed: function(id, reason) {
@@ -421,6 +421,9 @@ Source.prototype = {
     },
 
     _setApp: function() {
+        if (this.app)
+            return;
+
         this.app = Shell.WindowTracker.get_default().get_app_from_pid(this._pid);
         if (!this.app)
             return;
@@ -440,12 +443,10 @@ Source.prototype = {
     },
 
     _notificationClicked: function(notification) {
-        notification.destroy();
         this.openApp();
-        this.activated();
     },
 
-    activated: function() {
+    _notificationRemoved: function() {
         if (!this._isTrayIcon)
             this.destroy();
     },

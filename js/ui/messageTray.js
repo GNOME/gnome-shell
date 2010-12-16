@@ -226,6 +226,7 @@ Notification.prototype = {
     _init: function(source, title, banner, params) {
         this.source = source;
         this.urgent = false;
+        this.resident = false;
         this.expanded = false;
         this._useActionIcons = false;
         this._customContent = false;
@@ -257,7 +258,7 @@ Notification.prototype = {
             function (actor, event) {
                 if (!this._actionArea ||
                     !this._actionArea.contains(event.get_source()))
-                    this.emit('clicked');
+                    this._onClicked();
             }));
 
         // The first line should have the title, followed by the
@@ -484,12 +485,16 @@ Notification.prototype = {
         }
 
         this._buttonBox.add(button);
-        button.connect('clicked', Lang.bind(this, function() { this.emit('action-invoked', id); }));
+        button.connect('clicked', Lang.bind(this, this._onActionInvoked, id));
         this._updated();
     },
 
     setUrgent: function(urgent) {
         this.urgent = urgent;
+    },
+
+    setResident: function(resident) {
+        this.resident = resident;
     },
 
     setUseActionIcons: function(useIcons) {
@@ -696,6 +701,28 @@ Notification.prototype = {
         return false;
     },
 
+    _onActionInvoked: function(actor, id) {
+        this.emit('action-invoked', id);
+        if (!this.resident) {
+            // We don't hide a resident notification when the user invokes one of its actions,
+            // because it is common for such notifications to update themselves with new
+            // information based on the action. We'd like to display the updated information
+            // in place, rather than pop-up a new notification.
+            this.emit('done-displaying');
+            this.destroy();
+        }
+    },
+
+    _onClicked: function() {
+        this.emit('clicked');
+        // We hide all types of notifications once the user clicks on them because the common
+        // outcome of clicking should be the relevant window being brought forward and the user's
+        // attention switching to the window.
+        this.emit('done-displaying');
+        if (!this.resident)
+            this.destroy();
+    },
+
     _onKeyPress: function(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.Escape) {
@@ -811,6 +838,7 @@ Source.prototype = {
                     this.notification = null;
                     this._notificationDestroyedId = 0;
                     this._notificationClickedId = 0;
+                    this._notificationRemoved();
                 }
             }));
 
@@ -830,8 +858,13 @@ Source.prototype = {
         this._iconBin.child = icon;
     },
 
-    // Default implementation is to do nothing, but subclass can override
+    // Default implementation is to do nothing, but subclasses can override
     _notificationClicked: function(notification) {
+    },
+
+    // Default implementation is to destroy this source, but subclasses can override
+    _notificationRemoved: function() {
+        this.destroy();
     }
 };
 Signals.addSignalMethods(Source.prototype);
@@ -905,6 +938,7 @@ MessageTray.prototype = {
         this._notificationBin.hide();
         this._notificationQueue = [];
         this._notification = null;
+        this._notificationClickedId = 0;
 
         this._summaryBin = new St.Bin({ anchor_gravity: Clutter.Gravity.NORTH_EAST });
         this.actor.add_actor(this._summaryBin);
@@ -926,6 +960,7 @@ MessageTray.prototype = {
         this._summaryNotificationBoxPointer.actor.hide();
 
         this._summaryNotification = null;
+        this._summaryNotificationClickedId = 0;
         this._clickedSummaryItem = null;
         this._clickedSummaryItemAllocationChangedId = 0;
         this._expandedSummaryItem = null;
@@ -1465,6 +1500,8 @@ MessageTray.prototype = {
 
     _showNotification: function() {
         this._notification = this._notificationQueue.shift();
+        this._notificationClickedId = this._notification.connect('done-displaying',
+                                                                 Lang.bind(this, this.escapeTray));
         this._notificationBin.child = this._notification.actor;
 
         this._notificationBin.opacity = 0;
@@ -1562,6 +1599,8 @@ MessageTray.prototype = {
         this._notificationBin.hide();
         this._notificationBin.child = null;
         this._notification.collapseCompleted();
+        this._notification.disconnect(this._notificationClickedId);
+        this._notificationClickedId = 0;
         this._notification = null;
     },
 
@@ -1636,7 +1675,8 @@ MessageTray.prototype = {
 
     _showSummaryNotification: function() {
         this._summaryNotification = this._clickedSummaryItem.source.notification;
-
+        this._summaryNotificationClickedId = this._summaryNotification.connect('done-displaying',
+                                                                               Lang.bind(this, this.escapeTray));
         let index = this._notificationQueue.indexOf(this._summaryNotification);
         if (index != -1)
             this._notificationQueue.splice(index, 1);
@@ -1706,6 +1746,8 @@ MessageTray.prototype = {
         this._summaryNotificationState = State.HIDDEN;
         this._summaryNotificationBoxPointer.bin.child = null;
         this._summaryNotification.collapseCompleted();
+        this._summaryNotification.disconnect(this._summaryNotificationClickedId);
+        this._summaryNotificationClickedId = 0;
         let summaryNotification = this._summaryNotification;
         this._summaryNotification = null;
         if (this._reNotifyWithSummaryNotificationAfterHide) {
