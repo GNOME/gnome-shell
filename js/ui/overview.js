@@ -28,7 +28,6 @@ const ANIMATION_TIME = 0.25;
 // We split the screen vertically between the dash and the view selector.
 const DASH_SPLIT_FRACTION = 0.1;
 
-const SHELL_INFO_HIDE_TIMEOUT = 10;
 
 function Source() {
     this._init();
@@ -61,14 +60,10 @@ function ShellInfo() {
 ShellInfo.prototype = {
     _init: function() {
         this._source = null;
-        this._timeoutId = 0;
         this._undoCallback = null;
     },
 
     _onUndoClicked: function() {
-        Mainloop.source_remove(this._timeoutId);
-        this._timeoutId = 0;
-
         if (this._undoCallback)
             this._undoCallback();
         this._undoCallback = null;
@@ -77,20 +72,7 @@ ShellInfo.prototype = {
             this._source.destroy();
     },
 
-    _onTimeout: function() {
-        this._timeoutId = 0;
-        if (this._source)
-            this._source.destroy();
-        return false;
-    },
-
     setMessage: function(text, undoCallback, undoLabel) {
-        if (this._timeoutId)
-            Mainloop.source_remove(this._timeoutId);
-
-        this._timeoutId = Mainloop.timeout_add_seconds(SHELL_INFO_HIDE_TIMEOUT,
-                                                       Lang.bind(this, this._onTimeout));
-
         if (this._source == null) {
             this._source = new Source();
             this._source.connect('destroy', Lang.bind(this,
@@ -105,6 +87,8 @@ ShellInfo.prototype = {
             notification = new MessageTray.Notification(this._source, text, null);
         else
             notification.update(text, null, { clear: true });
+
+        notification.setTransient(true);
 
         this._undoCallback = undoCallback;
         if (undoCallback) {
