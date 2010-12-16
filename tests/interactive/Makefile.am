@@ -23,7 +23,6 @@ UNIT_TESTS = \
 	test-state.c \
 	test-state-animator.c \
 	test-unproject.c \
-	test-viewport.c \
 	test-fbo.c \
 	test-multistage.c \
 	test-cogl-primitives.c \
