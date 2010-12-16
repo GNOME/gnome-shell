@@ -5,7 +5,6 @@ UNIT_TESTS = \
 	test-texture-async.c \
 	test-texture-material.c \
 	test-events.c \
-	test-offscreen.c \
 	test-scale.c \
         test-actors.c \
         test-actor-clone.c \
