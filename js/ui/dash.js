@@ -140,6 +140,7 @@ Dash.prototype = {
         this._clearDragPlaceholder();
         if (this._favRemoveTarget) {
             this._favRemoveTarget.actor.destroy();
+            this._adjustIconSize();
             this._favRemoveTarget = null;
         }
         DND.removeMonitor(this._dragMonitor);
@@ -164,6 +165,7 @@ Dash.prototype = {
                 this._favRemoveTarget = new RemoveFavoriteIcon();
                 this._favRemoveTarget.icon.setIconSize(this._iconSize);
                 this._box.add(this._favRemoveTarget.actor);
+                this._adjustIconSize();
         }
 
         let favRemoveHovered = false;
