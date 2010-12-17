@@ -180,6 +180,14 @@ _cogl_bitmap_get_height (CoglBitmap *bitmap);
 int
 _cogl_bitmap_get_rowstride (CoglBitmap *bitmap);
 
+/* Maps the bitmap so that the pixels can be accessed directly or if
+   the bitmap is just a memory bitmap then it just returns the pointer
+   to memory. Note that the bitmap isn't guaranteed to allocated to
+   the full size of rowstride*height so it is not safe to read up to
+   the rowstride of the last row. This will be the case if the user
+   uploads data using gdk_pixbuf_new_subpixbuf with a sub region
+   containing the last row of the pixbuf because in that case the
+   rowstride can be much larger than the width of the image */
 guint8 *
 _cogl_bitmap_map (CoglBitmap *bitmap,
                   CoglBufferAccess access,
