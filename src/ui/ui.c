@@ -101,6 +101,7 @@ static gboolean
 maybe_redirect_mouse_event (XEvent *xevent)
 {
   GdkDisplay *gdisplay;
+  GdkDeviceManager *gmanager;
   MetaUI *ui;
   GdkEvent *gevent;
   GdkWindow *gdk_window;
@@ -206,7 +207,8 @@ maybe_redirect_mouse_event (XEvent *xevent)
     }
 
   /* If we've gotten here, we've created the gdk_event and should send it on */
-  gdk_event_set_device (gevent, gdk_display_get_core_pointer (gdisplay));
+  gmanager = gdk_display_get_device_manager (gdisplay);
+  gdk_event_set_device (gevent, gdk_device_manager_get_client_pointer (gmanager));
   gtk_main_do_event (gevent);
   gdk_event_free (gevent);
 
