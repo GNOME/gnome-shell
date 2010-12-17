@@ -184,27 +184,7 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
   if (_cogl_texture_needs_premult_conversion (src_format,
                                               dst_format))
     {
-      guint8 *src_data;
-      guint8 *dst_data;
-
-      if ((src_data = _cogl_bitmap_map (src_bmp,
-                                        COGL_BUFFER_ACCESS_READ, 0)) == NULL)
-        return NULL;
-
-      dst_data = g_memdup (src_data,
-                           _cogl_bitmap_get_height (src_bmp) *
-                           _cogl_bitmap_get_rowstride (src_bmp));
-
-      _cogl_bitmap_unmap (src_bmp);
-
-      dst_bmp =
-        _cogl_bitmap_new_from_data (dst_data,
-                                    src_format,
-                                    _cogl_bitmap_get_width (src_bmp),
-                                    _cogl_bitmap_get_height (src_bmp),
-                                    _cogl_bitmap_get_rowstride (src_bmp),
-                                    (CoglBitmapDestroyNotify) g_free,
-                                    NULL);
+      dst_bmp = _cogl_bitmap_copy (src_bmp);
 
       if (!_cogl_bitmap_convert_premult_status (dst_bmp,
                                                 src_format ^
