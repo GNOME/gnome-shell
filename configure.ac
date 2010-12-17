@@ -1152,8 +1152,6 @@ AC_CONFIG_FILES([
 	doc/reference/clutter/clutter-docs.xml
 	doc/reference/cogl/Makefile
 	doc/reference/cogl/cogl-docs.xml
-	doc/reference/cogl-2.0/Makefile
-	doc/reference/cogl-2.0/cogl-docs.xml
 	doc/reference/cally/Makefile
 	doc/reference/cally/cally-docs.xml
 	doc/common/Makefile
@@ -1164,6 +1162,14 @@ AC_CONFIG_FILES([
 	doc/cookbook/examples/Makefile
 
 	po/Makefile.in
+])
+
+AS_IF([test "x$enable_cogl2_reference" = "xyes"],
+      [
+        AC_CONFIG_FILES([
+                doc/reference/cogl-2.0/Makefile
+                doc/reference/cogl-2.0/cogl-docs.xml
+        ])
 ])
 
 AC_OUTPUT
