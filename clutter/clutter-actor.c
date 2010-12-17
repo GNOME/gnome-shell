@@ -9244,12 +9244,16 @@ clutter_geometry_progress (const GValue *a,
   const ClutterGeometry *a_geom = g_value_get_boxed (a);
   const ClutterGeometry *b_geom = g_value_get_boxed (b);
   ClutterGeometry res = { 0, };
+  gint a_width = a_geom->width;
+  gint b_width = b_geom->width;
+  gint a_height = a_geom->height;
+  gint b_height = b_geom->height;
 
   res.x = a_geom->x + (b_geom->x - a_geom->x) * progress;
   res.y = a_geom->y + (b_geom->y - a_geom->y) * progress;
 
-  res.width = a_geom->width + (b_geom->width - a_geom->width) * progress;
-  res.height = a_geom->height + (b_geom->height - a_geom->height) * progress;
+  res.width = a_width + (b_width - a_width) * progress;
+  res.height = a_height + (b_height - a_height) * progress;
 
   g_value_set_boxed (retval, &res);
 
