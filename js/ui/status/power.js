@@ -82,9 +82,6 @@ Indicator.prototype = {
         this._otherDevicePosition = 2;
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        this.menu.addAction(_("What's using power..."),function() {
-            GLib.spawn_command_line_async('gnome-power-statistics --device wakeups');
-        });
         this.menu.addAction(_("Power Settings"),function() {
             GLib.spawn_command_line_async('gnome-control-center power');
         });
