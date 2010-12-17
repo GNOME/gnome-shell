@@ -94,6 +94,10 @@ AC_MSG_RESULT([$platform_win32])
 AC_SUBST(CLUTTER_LT_VERSION)
 AC_SUBST(CLUTTER_LT_LDFLAGS)
 
+dnl The 'ffs' function is part of C99 so it isn't always
+dnl available. Cogl has a fallback if needed.
+AC_CHECK_FUNCS([ffs])
+
 dnl ========================================================================
 
 # Checks for programs.

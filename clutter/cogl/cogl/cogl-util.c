@@ -218,3 +218,24 @@ _cogl_util_one_at_a_time_mix (unsigned int hash)
   return hash;
 }
 
+/* The 'ffs' function is part of C99 so it isn't always available */
+#ifndef HAVE_FFS
+
+int
+_cogl_util_ffs (int num)
+{
+  int i = 1;
+
+  if (num == 0)
+    return 0;
+
+  while ((num & 1) == 0)
+    {
+      num >>= 1;
+      i++;
+    }
+
+  return i;
+}
+
+#endif /* HAVE_FFS */
