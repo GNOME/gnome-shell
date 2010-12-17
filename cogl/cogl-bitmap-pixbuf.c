@@ -198,13 +198,8 @@ _cogl_bitmap_from_file (const char   *filename,
   int               width;
   int               height;
   int               rowstride;
-  int               aligned_rowstride;
   int               bits_per_sample;
   int               n_channels;
-  guint8           *pixels;
-  guint8           *out_data;
-  guint8           *out;
-  int               r;
 
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
@@ -247,55 +242,18 @@ _cogl_bitmap_from_file (const char   *filename,
       return FALSE;
     }
 
-  /* Work out what the rowstride would be if it was packing the data
-     but aligned to 4 bytes */
-  aligned_rowstride = (width * n_channels + 3) & ~3;
-
-  /* The documentation for GdkPixbuf states that is not safe to read
-     all of the data as height*rowstride because the buffer might not
-     be allocated to include the full length of the rowstride for the
-     last row so arguably we should always copy the buffer when
-     rowstride != width*bpp because some places in Cogl assume that it
-     can memcpy(height*rowstride). However that rule is probably only
-     in place so that GdkPixbuf can implement gdk_pixbuf_new_subpixbuf
-     by just sharing the data and setting a large rowstride. That does
-     not apply in this case because we are just creating a new buffer
-     for a file. It seems very unlikely that GdkPixbuf would not
-     allocate the full rowstride in this case and it is highly
-     desirable to avoid copying the buffer. This instead just assumes
-     that whatever buffer pixbuf points into will always be allocated
-     to a 4-byte aligned buffer so we can avoid copying unless the
-     rowstride is unusually large */
-  if (rowstride <= aligned_rowstride)
-    return _cogl_bitmap_new_from_data (gdk_pixbuf_get_pixels (pixbuf),
-                                       pixel_format,
-                                       width,
-                                       height,
-                                       rowstride,
-                                       _cogl_bitmap_unref_pixbuf,
-                                       pixbuf);
-
-  pixels   = gdk_pixbuf_get_pixels (pixbuf);
-  out_data = g_malloc (aligned_rowstride * height);
-  out      = out_data;
-
-  for (r = 0; r < height; ++r)
-    {
-      memcpy (out, pixels, n_channels * width);
-      pixels += rowstride;
-      out += aligned_rowstride;
-    }
-
-  /* Destroy GdkPixbuf object */
-  g_object_unref (pixbuf);
-
-  return _cogl_bitmap_new_from_data (out_data,
+  /* We just use the data directly from the pixbuf so that we don't
+     have to copy to a seperate buffer. Note that Cogl is expected not
+     to read past the end of bpp*width on the last row even if the
+     rowstride is much larger so we don't need to worry about
+     GdkPixbuf's semantics that it may under-allocate the buffer. */
+  return _cogl_bitmap_new_from_data (gdk_pixbuf_get_pixels (pixbuf),
                                      pixel_format,
                                      width,
                                      height,
-                                     aligned_rowstride,
-                                     (CoglBitmapDestroyNotify) g_free,
-                                     NULL);
+                                     rowstride,
+                                     _cogl_bitmap_unref_pixbuf,
+                                     pixbuf);
 }
 
 #else
