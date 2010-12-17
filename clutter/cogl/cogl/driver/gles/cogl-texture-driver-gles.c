@@ -97,6 +97,32 @@ _cogl_texture_driver_prep_gl_for_pixels_download (int pixels_rowstride,
   _cogl_texture_prep_gl_alignment_for_pixels_download (pixels_rowstride);
 }
 
+static CoglBitmap *
+prepare_bitmap_alignment_for_upload (CoglBitmap *src_bmp)
+{
+  CoglPixelFormat format = _cogl_bitmap_get_format (src_bmp);
+  int bpp = _cogl_get_format_bpp (format);
+  int src_rowstride = _cogl_bitmap_get_rowstride (src_bmp);
+  int width = _cogl_bitmap_get_width (src_bmp);
+  int alignment = 1;
+
+  if (src_rowstride == 0)
+    return cogl_object_ref (src_bmp);
+
+  /* Work out the alignment of the source rowstride */
+  alignment = 1 << (_cogl_util_ffs (src_rowstride) - 1);
+  alignment = MIN (alignment, 8);
+
+  /* If the aligned data equals the rowstride then we can upload from
+     the bitmap directly using GL_UNPACK_ALIGNMENT */
+  if (((width * bpp + alignment - 1) & ~(alignment - 1)) == src_rowstride)
+    return cogl_object_ref (src_bmp);
+  /* Otherwise we need to copy the bitmap to pack the alignment
+     because GLES has no GL_ROW_LENGTH */
+  else
+    return _cogl_bitmap_copy (src_bmp);
+}
+
 void
 _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
                                              GLuint       gl_handle,
@@ -117,36 +143,35 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
   CoglBitmap *slice_bmp;
   int rowstride;
 
-  /* NB: GLES doesn't support the GL_UNPACK_ROW_LENGTH,
-   * GL_UNPACK_SKIP_PIXELS or GL_UNPACK_SKIP_ROWS pixel store options
-   * so we can't directly source a sub-region from source_bmp, we need
-   * to use a transient bitmap instead. */
-
-  /* FIXME: optimize by not copying to intermediate slice bitmap when
-   * source rowstride = bpp * width and the texture image is not
-   * sliced */
-
-  /* Setup temp bitmap for slice subregion */
-  rowstride = bpp * width;
-  slice_bmp = _cogl_bitmap_new_from_data (g_malloc (rowstride * height),
-                                          source_format,
-                                          width,
-                                          height,
-                                          rowstride,
-                                          (CoglBitmapDestroyNotify)
-                                          g_free,
-                                          NULL);
+  /* If we are copying a sub region of the source bitmap then we need
+     to copy it because GLES does not support GL_UNPACK_ROW_LENGTH */
+  if (src_x != 0 || src_y != 0 ||
+      width != _cogl_bitmap_get_width (source_bmp) ||
+      height != _cogl_bitmap_get_height (source_bmp))
+    {
+      rowstride = bpp * width;
+      rowstride = (rowstride + 3) & ~3;
+      slice_bmp =
+        _cogl_bitmap_new_from_data (g_malloc (height * rowstride),
+                                    source_format,
+                                    width, height,
+                                    rowstride,
+                                    (CoglBitmapDestroyNotify) g_free,
+                                    NULL);
+      _cogl_bitmap_copy_subregion (source_bmp,
+                                   slice_bmp,
+                                   src_x, src_y,
+                                   0, 0, /* dst_x/y */
+                                   width, height);
+    }
+  else
+    {
+      slice_bmp = prepare_bitmap_alignment_for_upload (source_bmp);
+      rowstride = _cogl_bitmap_get_rowstride (slice_bmp);
+    }
 
   /* Setup gl alignment to match rowstride and top-left corner */
   _cogl_texture_driver_prep_gl_for_pixels_upload (rowstride, bpp);
-
-  /* Copy subregion data */
-  _cogl_bitmap_copy_subregion (source_bmp,
-                               slice_bmp,
-                               src_x,
-                               src_y,
-                               0, 0,
-                               width, height);
 
   data = _cogl_bitmap_bind (slice_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
@@ -174,32 +199,14 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
                                    GLuint       source_gl_type)
 {
   int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
-  int rowstride = _cogl_bitmap_get_rowstride (source_bmp);
+  int rowstride;
   int bmp_width = _cogl_bitmap_get_width (source_bmp);
   int bmp_height = _cogl_bitmap_get_height (source_bmp);
   CoglBitmap *bmp;
   guint8 *data;
 
-  /* If the rowstride can't be specified with just GL_ALIGNMENT alone
-     then we need to copy the bitmap because there is no GL_ROW_LENGTH */
-  if (rowstride / bpp != bmp_width)
-    {
-      bmp = _cogl_bitmap_new_from_data (g_malloc (rowstride * bmp_height),
-                                        _cogl_bitmap_get_format (source_bmp),
-                                        bmp_width,
-                                        bmp_height,
-                                        rowstride,
-                                        (CoglBitmapDestroyNotify) g_free,
-                                        NULL);
-
-      _cogl_bitmap_copy_subregion (source_bmp,
-                                   bmp,
-                                   0, 0, 0, 0,
-                                   bmp_width,
-                                   bmp_height);
-    }
-  else
-    bmp = cogl_object_ref (source_bmp);
+  bmp = prepare_bitmap_alignment_for_upload (source_bmp);
+  rowstride = _cogl_bitmap_get_rowstride (bmp);
 
   /* Setup gl alignment to match rowstride and top-left corner */
   _cogl_texture_driver_prep_gl_for_pixels_upload (rowstride, bpp);
