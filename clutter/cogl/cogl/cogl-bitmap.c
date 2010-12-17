@@ -181,6 +181,35 @@ _cogl_bitmap_convert_format_and_premult (CoglBitmap *bmp,
   return dst_bmp;
 }
 
+CoglBitmap *
+_cogl_bitmap_copy (CoglBitmap *src_bmp)
+{
+  CoglBitmap *dst_bmp;
+  CoglPixelFormat src_format = _cogl_bitmap_get_format (src_bmp);
+  int bpp = _cogl_get_format_bpp (src_format);
+  int width = _cogl_bitmap_get_width (src_bmp);
+  int height = _cogl_bitmap_get_height (src_bmp);
+  int dst_rowstride = width * bpp;
+
+  /* Round the rowstride up to the next nearest multiple of 4 bytes */
+  dst_rowstride = (dst_rowstride + 3) & ~3;
+
+  dst_bmp = _cogl_bitmap_new_from_data (g_malloc (dst_rowstride * height),
+                                        src_format,
+                                        width, height,
+                                        dst_rowstride,
+                                        (CoglBitmapDestroyNotify) g_free,
+                                        NULL);
+
+  _cogl_bitmap_copy_subregion (src_bmp,
+                               dst_bmp,
+                               0, 0, /* src_x/y */
+                               0, 0, /* dst_x/y */
+                               width, height);
+
+  return dst_bmp;
+}
+
 void
 _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     CoglBitmap *dst,

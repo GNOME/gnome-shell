@@ -155,6 +155,10 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     int         width,
 			     int         height);
 
+/* Creates a deep copy of the source bitmap */
+CoglBitmap *
+_cogl_bitmap_copy (CoglBitmap *src_bmp);
+
 gboolean
 _cogl_bitmap_get_size_from_file (const char *filename,
                                  int        *width,
