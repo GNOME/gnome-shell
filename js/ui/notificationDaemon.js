@@ -13,6 +13,7 @@ const Config = imports.misc.config;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Params = imports.misc.params;
+const Util = imports.misc.util;
 
 let nextNotificationId = 1;
 
@@ -127,17 +128,8 @@ NotificationDaemon.prototype = {
             log('Failed to acquire org.freedesktop.Notifications');
         else {
             log('Failed to acquire org.freedesktop.Notifications; trying again');
-
-            // kill the notification-daemon. pkill is more portable
-            // than killall, but on Linux at least it won't match if
-            // you pass more than 15 characters of the process name...
-            // However, if you use the '-f' flag to match the entire
-            // command line, it will work, but we have to be careful
-            // in that case that we don't match 'gedit
-            // notification-daemon.c' or whatever...
-            let p = new Shell.Process({ args: ['pkill', '-f',
-                                               '^([^ ]*/)?(notification-daemon|notify-osd)$']});
-            p.run();
+            Util.killall('notification-daemon');
+            Util.killall('notify-osd');
         }
     },
 

@@ -1,7 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
 const DBus = imports.dbus;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -196,7 +195,7 @@ Indicator.prototype = {
 
     _checkError: function(error) {
         if (!this._restarted && error && error.message.match(/org\.freedesktop\.DBus\.Error\.(UnknownMethod|InvalidArgs)/)) {
-            GLib.spawn_command_line_sync('pkill -f "^gnome-power-manager$"');
+            Util.killall('gnome-power-manager');
             Util.spawn(['gnome-power-manager']);
             this._restarted = true;
         }
