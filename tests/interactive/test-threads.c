@@ -221,6 +221,7 @@ test_threads_main (int argc, char *argv[])
 
   timeline = clutter_timeline_new (3000);
   clutter_timeline_set_loop (timeline, TRUE);
+  clutter_timeline_set_auto_reverse (timeline, TRUE);
 
   alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
   r_behaviour = clutter_behaviour_rotate_new (alpha,

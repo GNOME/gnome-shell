@@ -2660,12 +2660,12 @@ timeline_completed_cb (ClutterTimeline *timeline,
         completes, the timeline sets itself to run forward again, etc.</para>
 
         <para>To make a timeline reverse its direction each time it
-        completes, use the <function>clutter_timeline_set_reverse()</function>
+        completes, use the <function>clutter_timeline_set_auto_reverse()</function>
         function:</para>
 
         <informalexample>
           <programlisting>
-clutter_timeline_set_reverse (timeline, TRUE);
+clutter_timeline_set_auto_reverse (timeline, TRUE);
           </programlisting>
         </informalexample>
 

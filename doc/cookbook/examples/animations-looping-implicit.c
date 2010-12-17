@@ -49,7 +49,7 @@ main (int   argc,
 
   state->timeline = clutter_timeline_new (1000);
   clutter_timeline_set_loop (state->timeline, TRUE);
-  clutter_timeline_set_reverse (state->timeline, TRUE);
+  clutter_timeline_set_auto_reverse (state->timeline, TRUE);
 
   g_signal_connect (stage,
                     "key-press-event",

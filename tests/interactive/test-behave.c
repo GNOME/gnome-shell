@@ -148,7 +148,7 @@ test_behave_main (int argc, char *argv[])
   /* Make a timeline */
   timeline = clutter_timeline_new (4000);
   clutter_timeline_set_loop (timeline, TRUE);
-  clutter_timeline_set_reverse (timeline, TRUE);
+  clutter_timeline_set_auto_reverse (timeline, TRUE);
 
   /* Set an alpha func to power behaviour - ramp is constant rise */
   alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);

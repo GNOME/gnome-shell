@@ -73,7 +73,7 @@ struct _ClutterTimelinePrivate
    * a tick from the master clock
    */
   guint waiting_first_tick : 1;
-  guint reverse            : 1;
+  guint auto_reverse       : 1;
 };
 
 typedef struct {
@@ -90,7 +90,7 @@ enum
   PROP_DELAY,
   PROP_DURATION,
   PROP_DIRECTION,
-  PROP_REVERSE,
+  PROP_AUTO_REVERSE,
 
   PROP_LAST
 };
@@ -163,8 +163,8 @@ clutter_timeline_set_property (GObject      *object,
       clutter_timeline_set_direction (timeline, g_value_get_enum (value));
       break;
 
-    case PROP_REVERSE:
-      clutter_timeline_set_reverse (timeline, g_value_get_boolean (value));
+    case PROP_AUTO_REVERSE:
+      clutter_timeline_set_auto_reverse (timeline, g_value_get_boolean (value));
       break;
 
     default:
@@ -200,8 +200,8 @@ clutter_timeline_get_property (GObject    *object,
       g_value_set_enum (value, priv->direction);
       break;
 
-    case PROP_REVERSE:
-      g_value_set_boolean (value, priv->reverse);
+    case PROP_AUTO_REVERSE:
+      g_value_set_boolean (value, priv->auto_reverse);
       break;
 
     default:
@@ -314,17 +314,17 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                        CLUTTER_PARAM_READWRITE);
 
   /**
-   * ClutterTimeline:reverse:
+   * ClutterTimeline:auto-reverse:
    *
-   * Whether the direction of a looping timeline should be reversed
-   * when emitting the #ClutterTimeline::completed signal.
+   * If the direction of the timeline should be automatically reversed
+   * when reaching the end.
    *
    * Since: 1.6
    */
-  obj_props[PROP_REVERSE] =
-    g_param_spec_boolean ("reverse",
-                          P_("Reverse"),
-                          P_("Whether the direction should be reversed when looping"),
+  obj_props[PROP_AUTO_REVERSE] =
+    g_param_spec_boolean ("auto-reverse",
+                          P_("Auto Reverse"),
+                          P_("Whether the direction should be reversed when reaching the end"),
                           FALSE,
                           CLUTTER_PARAM_READWRITE);
 
@@ -683,11 +683,9 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
 
       g_signal_emit (timeline, timeline_signals[COMPLETED], 0);
 
-      /* reverse the direction of the timeline if :loop and
-       * :reverse are set to TRUE
-       */
-      if (priv->reverse)
+      if (priv->auto_reverse)
         {
+          /* :auto-reverse changes the direction of the timeline */
           if (priv->direction == CLUTTER_TIMELINE_FORWARD)
             priv->direction = CLUTTER_TIMELINE_BACKWARD;
           else
@@ -1538,7 +1536,7 @@ clutter_timeline_has_marker (ClutterTimeline *timeline,
 }
 
 /**
- * clutter_timeline_set_reverse:
+ * clutter_timeline_set_auto_reverse:
  * @timeline: a #ClutterTimeline
  * @reverse: %TRUE if the @timeline should reverse the direction
  *
@@ -1576,14 +1574,14 @@ clutter_timeline_has_marker (ClutterTimeline *timeline,
  * |[
  *   timeline = clutter_timeline_new (1000);
  *   clutter_timeline_set_loop (timeline);
- *   clutter_timeline_set_reverse (timeline);
+ *   clutter_timeline_set_auto_reverse (timeline);
  * ]|
  *
  * Since: 1.6
  */
 void
-clutter_timeline_set_reverse (ClutterTimeline *timeline,
-                              gboolean         reverse)
+clutter_timeline_set_auto_reverse (ClutterTimeline *timeline,
+                                   gboolean         reverse)
 {
   ClutterTimelinePrivate *priv;
 
@@ -1593,29 +1591,30 @@ clutter_timeline_set_reverse (ClutterTimeline *timeline,
 
   priv = timeline->priv;
 
-  if (priv->reverse != reverse)
+  if (priv->auto_reverse != reverse)
     {
-      priv->reverse = reverse;
+      priv->auto_reverse = reverse;
 
-      _clutter_notify_by_pspec (G_OBJECT (timeline), obj_props[PROP_REVERSE]);
+      _clutter_notify_by_pspec (G_OBJECT (timeline),
+                                obj_props[PROP_AUTO_REVERSE]);
     }
 }
 
 /**
- * clutter_timeline_get_reverse:
+ * clutter_timeline_get_auto_reverse:
  * @timeline: a #ClutterTimeline
  *
- * Retrieves the value set by clutter_timeline_set_reverse().
+ * Retrieves the value set by clutter_timeline_set_auto_reverse().
  *
- * Return value: %TRUE if the timeline should reverse when looping, and
+ * Return value: %TRUE if the timeline should automatically reverse, and
  *   %FALSE otherwise
  *
  * Since: 1.6
  */
 gboolean
-clutter_timeline_get_reverse (ClutterTimeline *timeline)
+clutter_timeline_get_auto_reverse (ClutterTimeline *timeline)
 {
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
 
-  return timeline->priv->reverse;
+  return timeline->priv->auto_reverse;
 }

@@ -106,7 +106,7 @@ reverse_timeline (ClutterTimeline *timeline)
 
   ClutterTimeline *timeline = clutter_animation_get_timeline (animation);
   clutter_timeline_set_loop (timeline, TRUE);
-  clutter_timeline_set_reverse (timeline, TRUE);
+  clutter_timeline_set_auto_reverse (timeline, TRUE);
     </programlisting>
   </informalexample>
 
