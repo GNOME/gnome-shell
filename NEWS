@@ -1,4 +1,4 @@
-Clutter 1.5.10
+Clutter 1.5.10                                                       2010-12-17
 ===============================================================================
 
   • List of changes since Clutter 1.5.8
@@ -10,7 +10,9 @@ Clutter 1.5.10
 
     » Updates for the Cookbook and the API references.
 
-    » Fix ClutterModel::get_iter_at_pos() for filtered ClutterListModels.
+    » Fix ClutterModel::get_iter_at_row() for filtered ClutterListModels.
+
+    » Scores of fixes to the pipeline state object for GLES2.
 
     » Add code that tries to perform manual clipping to avoid breaking
       up batches of primitives.
@@ -27,8 +29,13 @@ Clutter 1.5.10
     » Rename the ClutterTimeline:reverse property introduced in
       Clutter 1.5.6 to ClutterTimeline:auto-reverse.
 
+    » Clean up the interactive tests suite.
+
 Many thanks to:
 
+  Neil Roberts, Damien Lespiau, Robert Bragg, Elliot Smith,
+  Jussi Kukkonen, nobled, Alexandre Quessy, Mike Owens,
+  Tomeu Vizoso
 
 Clutter 1.5.8                                                        2010-11-29
 ===============================================================================
