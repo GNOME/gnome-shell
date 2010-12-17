@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter_1.0 1.0.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2010-11-29 14:10+0000\n"
+"POT-Creation-Date: 2010-12-17 15:51+0000\n"
 "PO-Revision-Date: 2009-11-24 21:04+0100\n"
 "Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
@@ -1328,11 +1328,11 @@ msgstr "Vertex-Shader"
 msgid "Fragment shader"
 msgstr "Fragment-Shader"
 
-#: clutter/clutter-shader-effect.c:406
+#: clutter/clutter-shader-effect.c:415
 msgid "Shader Type"
 msgstr ""
 
-#: clutter/clutter-shader-effect.c:407
+#: clutter/clutter-shader-effect.c:416
 msgid "The type of shader used"
 msgstr ""
 
@@ -1352,7 +1352,7 @@ msgstr ""
 msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1279 clutter/clutter-text.c:2642
+#: clutter/clutter-stage.c:1279 clutter/clutter-text.c:2643
 msgid "Cursor Visible"
 msgstr ""
 
@@ -1441,191 +1441,191 @@ msgstr ""
 msgid "Default transition duration"
 msgstr "Vorgabebildfrequenz"
 
-#: clutter/clutter-text.c:2529
+#: clutter/clutter-text.c:2530
 msgid "Font Name"
 msgstr ""
 
-#: clutter/clutter-text.c:2530
+#: clutter/clutter-text.c:2531
 msgid "The font to be used by the text"
 msgstr ""
 
-#: clutter/clutter-text.c:2547
+#: clutter/clutter-text.c:2548
 msgid "Font Description"
 msgstr ""
 
-#: clutter/clutter-text.c:2548
+#: clutter/clutter-text.c:2549
 msgid "The font description to be used"
 msgstr ""
 
-#: clutter/clutter-text.c:2564
+#: clutter/clutter-text.c:2565
 msgid "Text"
 msgstr ""
 
-#: clutter/clutter-text.c:2565
+#: clutter/clutter-text.c:2566
 msgid "The text to render"
 msgstr ""
 
-#: clutter/clutter-text.c:2579
+#: clutter/clutter-text.c:2580
 msgid "Font Color"
 msgstr ""
 
-#: clutter/clutter-text.c:2580
+#: clutter/clutter-text.c:2581
 msgid "Color of the font used by the text"
 msgstr ""
 
-#: clutter/clutter-text.c:2594
+#: clutter/clutter-text.c:2595
 msgid "Editable"
 msgstr ""
 
-#: clutter/clutter-text.c:2595
+#: clutter/clutter-text.c:2596
 msgid "Whether the text is editable"
 msgstr ""
 
-#: clutter/clutter-text.c:2610
+#: clutter/clutter-text.c:2611
 msgid "Selectable"
 msgstr ""
 
-#: clutter/clutter-text.c:2611
+#: clutter/clutter-text.c:2612
 msgid "Whether the text is selectable"
 msgstr ""
 
-#: clutter/clutter-text.c:2625
+#: clutter/clutter-text.c:2626
 msgid "Activatable"
 msgstr ""
 
-#: clutter/clutter-text.c:2626
+#: clutter/clutter-text.c:2627
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr ""
 
-#: clutter/clutter-text.c:2643
+#: clutter/clutter-text.c:2644
 msgid "Whether the input cursor is visible"
 msgstr ""
 
-#: clutter/clutter-text.c:2657 clutter/clutter-text.c:2658
+#: clutter/clutter-text.c:2658 clutter/clutter-text.c:2659
 msgid "Cursor Color"
 msgstr ""
 
-#: clutter/clutter-text.c:2672
+#: clutter/clutter-text.c:2673
 msgid "Cursor Color Set"
 msgstr ""
 
-#: clutter/clutter-text.c:2673
+#: clutter/clutter-text.c:2674
 msgid "Whether the cursor color has been set"
 msgstr ""
 
-#: clutter/clutter-text.c:2688
+#: clutter/clutter-text.c:2689
 msgid "Cursor Size"
 msgstr ""
 
-#: clutter/clutter-text.c:2689
+#: clutter/clutter-text.c:2690
 msgid "The width of the cursor, in pixels"
 msgstr ""
 
-#: clutter/clutter-text.c:2703
+#: clutter/clutter-text.c:2704
 msgid "Cursor Position"
 msgstr ""
 
-#: clutter/clutter-text.c:2704
+#: clutter/clutter-text.c:2705
 msgid "The cursor position"
 msgstr ""
 
-#: clutter/clutter-text.c:2719
+#: clutter/clutter-text.c:2720
 msgid "Selection-bound"
 msgstr ""
 
-#: clutter/clutter-text.c:2720
+#: clutter/clutter-text.c:2721
 msgid "The cursor position of the other end of the selection"
 msgstr ""
 
-#: clutter/clutter-text.c:2735 clutter/clutter-text.c:2736
+#: clutter/clutter-text.c:2736 clutter/clutter-text.c:2737
 msgid "Selection Color"
 msgstr ""
 
-#: clutter/clutter-text.c:2750
+#: clutter/clutter-text.c:2751
 msgid "Selection Color Set"
 msgstr ""
 
-#: clutter/clutter-text.c:2751
+#: clutter/clutter-text.c:2752
 msgid "Whether the selection color has been set"
 msgstr ""
 
-#: clutter/clutter-text.c:2766
+#: clutter/clutter-text.c:2767
 msgid "Attributes"
 msgstr ""
 
-#: clutter/clutter-text.c:2767
+#: clutter/clutter-text.c:2768
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr ""
 
-#: clutter/clutter-text.c:2789
+#: clutter/clutter-text.c:2790
 msgid "Use markup"
 msgstr ""
 
-#: clutter/clutter-text.c:2790
+#: clutter/clutter-text.c:2791
 msgid "Whether or not the text includes Pango markup"
 msgstr ""
 
-#: clutter/clutter-text.c:2806
+#: clutter/clutter-text.c:2807
 msgid "Line wrap"
 msgstr ""
 
-#: clutter/clutter-text.c:2807
+#: clutter/clutter-text.c:2808
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr ""
 
-#: clutter/clutter-text.c:2822
+#: clutter/clutter-text.c:2823
 msgid "Line wrap mode"
 msgstr ""
 
-#: clutter/clutter-text.c:2823
+#: clutter/clutter-text.c:2824
 msgid "Control how line-wrapping is done"
 msgstr ""
 
-#: clutter/clutter-text.c:2838
+#: clutter/clutter-text.c:2839
 msgid "Ellipsize"
 msgstr ""
 
-#: clutter/clutter-text.c:2839
+#: clutter/clutter-text.c:2840
 msgid "The preferred place to ellipsize the string"
 msgstr ""
 
-#: clutter/clutter-text.c:2855
+#: clutter/clutter-text.c:2856
 msgid "Line Alignment"
 msgstr ""
 
-#: clutter/clutter-text.c:2856
+#: clutter/clutter-text.c:2857
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr ""
 
-#: clutter/clutter-text.c:2872
+#: clutter/clutter-text.c:2873
 msgid "Justify"
 msgstr ""
 
-#: clutter/clutter-text.c:2873
+#: clutter/clutter-text.c:2874
 msgid "Whether the text should be justified"
 msgstr ""
 
-#: clutter/clutter-text.c:2888
+#: clutter/clutter-text.c:2889
 msgid "Password Character"
 msgstr ""
 
-#: clutter/clutter-text.c:2889
+#: clutter/clutter-text.c:2890
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr ""
 
-#: clutter/clutter-text.c:2903
+#: clutter/clutter-text.c:2904
 msgid "Max Length"
 msgstr ""
 
-#: clutter/clutter-text.c:2904
+#: clutter/clutter-text.c:2905
 msgid "Maximum length of the text inside the actor"
 msgstr ""
 
-#: clutter/clutter-text.c:2927
+#: clutter/clutter-text.c:2928
 msgid "Single Line Mode"
 msgstr ""
 
-#: clutter/clutter-text.c:2928
+#: clutter/clutter-text.c:2929
 msgid "Whether the text should be a single line"
 msgstr ""
 

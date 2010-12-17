@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2010-11-29 14:10+0000\n"
+"POT-Creation-Date: 2010-12-17 15:51+0000\n"
 "PO-Revision-Date: 2010-09-30 15:09+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -1303,11 +1303,11 @@ msgstr "顶点着色引擎"
 msgid "Fragment shader"
 msgstr "片段着色引擎"
 
-#: clutter/clutter-shader-effect.c:406
+#: clutter/clutter-shader-effect.c:415
 msgid "Shader Type"
 msgstr "着色引擎类型"
 
-#: clutter/clutter-shader-effect.c:407
+#: clutter/clutter-shader-effect.c:416
 msgid "The type of shader used"
 msgstr "使用的着色引擎类型"
 
@@ -1327,7 +1327,7 @@ msgstr ""
 msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1279 clutter/clutter-text.c:2642
+#: clutter/clutter-stage.c:1279 clutter/clutter-text.c:2643
 msgid "Cursor Visible"
 msgstr ""
 
@@ -1416,192 +1416,192 @@ msgstr ""
 msgid "Default transition duration"
 msgstr "默认帧率"
 
-#: clutter/clutter-text.c:2529
+#: clutter/clutter-text.c:2530
 msgid "Font Name"
 msgstr "字体名称"
 
-#: clutter/clutter-text.c:2530
+#: clutter/clutter-text.c:2531
 msgid "The font to be used by the text"
 msgstr "文本使用的字体"
 
-#: clutter/clutter-text.c:2547
+#: clutter/clutter-text.c:2548
 msgid "Font Description"
 msgstr "字体描述"
 
-#: clutter/clutter-text.c:2548
+#: clutter/clutter-text.c:2549
 msgid "The font description to be used"
 msgstr "使用的字体描述"
 
-#: clutter/clutter-text.c:2564
+#: clutter/clutter-text.c:2565
 msgid "Text"
 msgstr "文本"
 
-#: clutter/clutter-text.c:2565
+#: clutter/clutter-text.c:2566
 msgid "The text to render"
 msgstr "要渲染的文本"
 
-#: clutter/clutter-text.c:2579
+#: clutter/clutter-text.c:2580
 msgid "Font Color"
 msgstr "字体颜色"
 
-#: clutter/clutter-text.c:2580
+#: clutter/clutter-text.c:2581
 msgid "Color of the font used by the text"
 msgstr "文本字体使用的颜色"
 
-#: clutter/clutter-text.c:2594
+#: clutter/clutter-text.c:2595
 msgid "Editable"
 msgstr "可编辑"
 
-#: clutter/clutter-text.c:2595
+#: clutter/clutter-text.c:2596
 msgid "Whether the text is editable"
 msgstr "文本是否可以编辑"
 
-#: clutter/clutter-text.c:2610
+#: clutter/clutter-text.c:2611
 msgid "Selectable"
 msgstr "可选择"
 
-#: clutter/clutter-text.c:2611
+#: clutter/clutter-text.c:2612
 msgid "Whether the text is selectable"
 msgstr "文本是否可以选择"
 
-#: clutter/clutter-text.c:2625
+#: clutter/clutter-text.c:2626
 msgid "Activatable"
 msgstr "可激活"
 
-#: clutter/clutter-text.c:2626
+#: clutter/clutter-text.c:2627
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr ""
 
-#: clutter/clutter-text.c:2643
+#: clutter/clutter-text.c:2644
 msgid "Whether the input cursor is visible"
 msgstr ""
 
-#: clutter/clutter-text.c:2657 clutter/clutter-text.c:2658
+#: clutter/clutter-text.c:2658 clutter/clutter-text.c:2659
 msgid "Cursor Color"
 msgstr "指针颜色"
 
-#: clutter/clutter-text.c:2672
+#: clutter/clutter-text.c:2673
 msgid "Cursor Color Set"
 msgstr ""
 
-#: clutter/clutter-text.c:2673
+#: clutter/clutter-text.c:2674
 msgid "Whether the cursor color has been set"
 msgstr ""
 
-#: clutter/clutter-text.c:2688
+#: clutter/clutter-text.c:2689
 msgid "Cursor Size"
 msgstr "指针大小"
 
-#: clutter/clutter-text.c:2689
+#: clutter/clutter-text.c:2690
 msgid "The width of the cursor, in pixels"
 msgstr "指针的宽度，以像素计"
 
-#: clutter/clutter-text.c:2703
+#: clutter/clutter-text.c:2704
 #, fuzzy
 msgid "Cursor Position"
 msgstr "指针位置"
 
-#: clutter/clutter-text.c:2704
+#: clutter/clutter-text.c:2705
 msgid "The cursor position"
 msgstr "指针位置"
 
-#: clutter/clutter-text.c:2719
+#: clutter/clutter-text.c:2720
 msgid "Selection-bound"
 msgstr "选区边界"
 
-#: clutter/clutter-text.c:2720
+#: clutter/clutter-text.c:2721
 msgid "The cursor position of the other end of the selection"
 msgstr ""
 
-#: clutter/clutter-text.c:2735 clutter/clutter-text.c:2736
+#: clutter/clutter-text.c:2736 clutter/clutter-text.c:2737
 msgid "Selection Color"
 msgstr "选区颜色"
 
-#: clutter/clutter-text.c:2750
+#: clutter/clutter-text.c:2751
 msgid "Selection Color Set"
 msgstr ""
 
-#: clutter/clutter-text.c:2751
+#: clutter/clutter-text.c:2752
 msgid "Whether the selection color has been set"
 msgstr ""
 
-#: clutter/clutter-text.c:2766
+#: clutter/clutter-text.c:2767
 msgid "Attributes"
 msgstr "属性"
 
-#: clutter/clutter-text.c:2767
+#: clutter/clutter-text.c:2768
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr ""
 
-#: clutter/clutter-text.c:2789
+#: clutter/clutter-text.c:2790
 msgid "Use markup"
 msgstr "使用标记"
 
-#: clutter/clutter-text.c:2790
+#: clutter/clutter-text.c:2791
 msgid "Whether or not the text includes Pango markup"
 msgstr ""
 
-#: clutter/clutter-text.c:2806
+#: clutter/clutter-text.c:2807
 msgid "Line wrap"
 msgstr "换行"
 
-#: clutter/clutter-text.c:2807
+#: clutter/clutter-text.c:2808
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr ""
 
-#: clutter/clutter-text.c:2822
+#: clutter/clutter-text.c:2823
 msgid "Line wrap mode"
 msgstr "换行模式"
 
-#: clutter/clutter-text.c:2823
+#: clutter/clutter-text.c:2824
 msgid "Control how line-wrapping is done"
 msgstr "控制换行行为"
 
-#: clutter/clutter-text.c:2838
+#: clutter/clutter-text.c:2839
 msgid "Ellipsize"
 msgstr ""
 
-#: clutter/clutter-text.c:2839
+#: clutter/clutter-text.c:2840
 msgid "The preferred place to ellipsize the string"
 msgstr ""
 
-#: clutter/clutter-text.c:2855
+#: clutter/clutter-text.c:2856
 msgid "Line Alignment"
 msgstr ""
 
-#: clutter/clutter-text.c:2856
+#: clutter/clutter-text.c:2857
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr ""
 
-#: clutter/clutter-text.c:2872
+#: clutter/clutter-text.c:2873
 msgid "Justify"
 msgstr ""
 
-#: clutter/clutter-text.c:2873
+#: clutter/clutter-text.c:2874
 msgid "Whether the text should be justified"
 msgstr ""
 
-#: clutter/clutter-text.c:2888
+#: clutter/clutter-text.c:2889
 msgid "Password Character"
 msgstr "密码字符"
 
-#: clutter/clutter-text.c:2889
+#: clutter/clutter-text.c:2890
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr ""
 
-#: clutter/clutter-text.c:2903
+#: clutter/clutter-text.c:2904
 msgid "Max Length"
 msgstr "最大长度"
 
-#: clutter/clutter-text.c:2904
+#: clutter/clutter-text.c:2905
 msgid "Maximum length of the text inside the actor"
 msgstr ""
 
-#: clutter/clutter-text.c:2927
+#: clutter/clutter-text.c:2928
 msgid "Single Line Mode"
 msgstr "单行模式"
 
-#: clutter/clutter-text.c:2928
+#: clutter/clutter-text.c:2929
 msgid "Whether the text should be a single line"
 msgstr "文本是否只应使用一行"
 
