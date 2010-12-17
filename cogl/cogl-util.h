@@ -95,4 +95,12 @@ _cogl_util_one_at_a_time_hash (unsigned int hash,
 unsigned int
 _cogl_util_one_at_a_time_mix (unsigned int hash);
 
+/* The 'ffs' function is part of C99 so it isn't always available */
+#ifdef HAVE_FFS
+#define _cogl_util_ffs ffs
+#else
+int
+_cogl_util_ffs (int num);
+#endif
+
 #endif /* __COGL_UTIL_H */
