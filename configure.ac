@@ -1065,14 +1065,6 @@ AC_SUBST(CAIRO_PREFIX)
 AC_SUBST(GLIB_PREFIX)
 AC_SUBST(PANGO_PREFIX)
 
-AC_ARG_ENABLE([cogl2-reference],
-              [AC_HELP_STRING([--enable-cogl2-reference=@<:@no/yes@:>@],
-                              [Build Cogl-2.0 API Reference])],
-              [enable_cogl2_reference=$enableval],
-              [enable_cogl2_reference=no])
-
-AM_CONDITIONAL([BUILD_COGL2_REFERENCE], [test "x$enable_gtk_doc" = "xyes" && test "x$enable_cogl2_reference" = "xyes"])
-
 dnl === Manual ================================================================
 
 AC_ARG_ENABLE([docs],
@@ -1162,14 +1154,6 @@ AC_CONFIG_FILES([
 	doc/cookbook/examples/Makefile
 
 	po/Makefile.in
-])
-
-AS_IF([test "x$enable_cogl2_reference" = "xyes"],
-      [
-        AC_CONFIG_FILES([
-                doc/reference/cogl-2.0/Makefile
-                doc/reference/cogl-2.0/cogl-docs.xml
-        ])
 ])
 
 AC_OUTPUT
