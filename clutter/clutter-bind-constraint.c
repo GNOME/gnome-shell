@@ -206,6 +206,25 @@ clutter_bind_constraint_set_actor (ClutterActorMeta *meta,
 }
 
 static void
+clutter_bind_constraint_dispose (GObject *gobject)
+{
+  ClutterBindConstraint *bind = CLUTTER_BIND_CONSTRAINT (gobject);
+
+  if (bind->source != NULL)
+    {
+      g_signal_handlers_disconnect_by_func (bind->source,
+                                            source_destroyed,
+                                            bind);
+      g_signal_handlers_disconnect_by_func (bind->source,
+                                            source_queue_relayout,
+                                            bind);
+      bind->source = NULL;
+    }
+
+  G_OBJECT_CLASS (clutter_bind_constraint_parent_class)->dispose (gobject);
+}
+
+static void
 clutter_bind_constraint_set_property (GObject      *gobject,
                                       guint         prop_id,
                                       const GValue *value,
@@ -270,6 +289,7 @@ clutter_bind_constraint_class_init (ClutterBindConstraintClass *klass)
 
   gobject_class->set_property = clutter_bind_constraint_set_property;
   gobject_class->get_property = clutter_bind_constraint_get_property;
+  gobject_class->dispose = clutter_bind_constraint_dispose;
 
   meta_class->set_actor = clutter_bind_constraint_set_actor;
 
