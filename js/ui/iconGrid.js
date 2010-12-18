@@ -165,8 +165,16 @@ IconGrid.prototype = {
         alloc.natural_size = nColumns * this._item_size + totalSpacing;
     },
 
-    _getPreferredHeight: function (grid, forWidth, alloc) {
+    _getVisibleChildren: function() {
         let children = this._grid.get_children();
+        children = children.filter(function(actor) {
+            return actor.visible;
+        });
+        return children;
+    },
+
+    _getPreferredHeight: function (grid, forWidth, alloc) {
+        let children = this._getVisibleChildren();
         let [nColumns, usedWidth] = this._computeLayout(forWidth);
         let nRows;
         if (nColumns > 0)
@@ -182,7 +190,7 @@ IconGrid.prototype = {
     },
 
     _allocate: function (grid, box, flags) {
-        let children = this._grid.get_children();
+        let children = this._getVisibleChildren();
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
 
