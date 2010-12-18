@@ -104,6 +104,7 @@ PKG_CHECK_EXISTS([gnome-bluetooth-1.0 >= 2.90.0],
 	 AC_SUBST([HAVE_BLUETOOTH],[1])
 	 AC_MSG_RESULT([yes])],
 	[AC_DEFINE([HAVE_BLUETOOTH],[0])
+	 AC_SUBST([HAVE_BLUETOOTH],[0])
 	 AC_MSG_RESULT([no])])
 
 MUTTER_BIN_DIR=`$PKG_CONFIG --variable=exec_prefix mutter-plugins`/bin
