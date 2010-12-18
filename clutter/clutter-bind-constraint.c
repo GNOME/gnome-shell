@@ -213,10 +213,10 @@ clutter_bind_constraint_dispose (GObject *gobject)
   if (bind->source != NULL)
     {
       g_signal_handlers_disconnect_by_func (bind->source,
-                                            source_destroyed,
+                                            G_CALLBACK (source_destroyed),
                                             bind);
       g_signal_handlers_disconnect_by_func (bind->source,
-                                            source_queue_relayout,
+                                            G_CALLBACK (source_queue_relayout),
                                             bind);
       bind->source = NULL;
     }

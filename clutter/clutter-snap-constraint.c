@@ -215,6 +215,25 @@ clutter_snap_constraint_set_actor (ClutterActorMeta *meta,
 }
 
 static void
+clutter_snap_constraint_dispose (GObject *gobject)
+{
+  ClutterSnapConstraint *snap = CLUTTER_SNAP_CONSTRAINT (gobject);
+
+  if (snap->source != NULL)
+    {
+      g_signal_handlers_disconnect_by_func (snap->source,
+                                            G_CALLBACK (source_destroyed),
+                                            snap);
+      g_signal_handlers_disconnect_by_func (snap->source,
+                                            G_CALLBACK (source_queue_relayout),
+                                            snap);
+      snap->source = NULL;
+    }
+
+  G_OBJECT_CLASS (clutter_snap_constraint_parent_class)->dispose (gobject);
+}
+
+static void
 clutter_snap_constraint_set_property (GObject      *gobject,
                                       guint         prop_id,
                                       const GValue *value,
@@ -289,9 +308,6 @@ clutter_snap_constraint_class_init (ClutterSnapConstraintClass *klass)
   ClutterConstraintClass *constraint_class = CLUTTER_CONSTRAINT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->set_property = clutter_snap_constraint_set_property;
-  gobject_class->get_property = clutter_snap_constraint_get_property;
-
   meta_class->set_actor = clutter_snap_constraint_set_actor;
 
   constraint_class->update_allocation = clutter_snap_constraint_update_allocation;
@@ -355,9 +371,10 @@ clutter_snap_constraint_class_init (ClutterSnapConstraintClass *klass)
                         0.0f,
                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  gobject_class->dispose = clutter_snap_constraint_dispose;
+  gobject_class->set_property = clutter_snap_constraint_set_property;
+  gobject_class->get_property = clutter_snap_constraint_get_property;
+  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
 }
 
 static void

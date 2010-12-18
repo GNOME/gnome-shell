@@ -153,6 +153,25 @@ clutter_align_constraint_update_allocation (ClutterConstraint *constraint,
 }
 
 static void
+clutter_align_constraint_dispose (GObject *gobject)
+{
+  ClutterAlignConstraint *align = CLUTTER_ALIGN_CONSTRAINT (gobject);
+
+  if (align->source != NULL)
+    {
+      g_signal_handlers_disconnect_by_func (align->source,
+                                            G_CALLBACK (source_destroyed),
+                                            align);
+      g_signal_handlers_disconnect_by_func (align->source,
+                                            G_CALLBACK (source_position_changed),
+                                            align);
+      align->source = NULL;
+    }
+
+  G_OBJECT_CLASS (clutter_align_constraint_parent_class)->dispose (gobject);
+}
+
+static void
 clutter_align_constraint_set_property (GObject      *gobject,
                                        guint         prop_id,
                                        const GValue *value,
@@ -268,11 +287,10 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
                         0.0,
                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
+  gobject_class->dispose = clutter_align_constraint_dispose;
   gobject_class->set_property = clutter_align_constraint_set_property;
   gobject_class->get_property = clutter_align_constraint_get_property;
-  _clutter_object_class_install_properties (gobject_class,
-                                            PROP_LAST,
-                                            obj_props);
+  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
 }
 
 static void
