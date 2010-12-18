@@ -1,12 +1,30 @@
 <Menu>
-    <DefaultLayout>
-        <Menuname>Apps</Menuname>
-        <Menuname>Games</Menuname>
-        <Menuname>Tools</Menuname>
-    </DefaultLayout>
+	<DefaultLayout>
+		<Menuname>Accessories</Menuname>
+		<Menuname>Games</Menuname>
+		<Menuname>Graphics</Menuname>
+		<Menuname>Internet</Menuname>
+		<Menuname>Multimedia</Menuname>
+		<Menuname>Office</Menuname>
+		<Menuname>Other</Menuname>
+	</DefaultLayout>
+
 	<Name>Applications</Name>
 	<AppDir>/usr/local/share/applications</AppDir>
 	<DefaultAppDirs/>
+
+	<Menu>
+		<Name>Accessories</Name>
+		<Include>
+			<And>
+				<Category>Utility</Category>
+				<Not>
+					<Category>System</Category>
+				</Not>
+			</And>
+		</Include>
+	</Menu>
+
 	<Menu>
 		<Name>Games</Name>
 		<Include>
@@ -15,21 +33,47 @@
 			</And>
 		</Include>
 	</Menu>
+
 	<Menu>
-		<Name>Tools</Name>
+		<Name>Graphics</Name>
 		<Include>
-			<Category>Development</Category>
 			<And>
-				<Category>System</Category>
-				<Not>
-					<Category>Settings</Category>
-				</Not>
+				<Category>Graphics</Category>
 			</And>
-			<Category>Utility</Category>
 		</Include>
 	</Menu>
+
 	<Menu>
-		<Name>Apps</Name>
+		<Name>Internet</Name>
+		<Include>
+			<And>
+				<Category>Network</Category>
+				<Not><Category>Settings</Category></Not>
+			</And>
+		</Include>
+	</Menu>
+
+	<Menu>
+		<Name>Multimedia</Name>
+		<Include>
+			<And>
+				<Category>AudioVideo</Category>
+				<Not><Category>Settings</Category></Not>
+			</And>
+		</Include>
+	</Menu>
+
+	<Menu>
+		<Name>Office</Name>
+		<Include>
+			<And>
+				<Category>Office</Category>
+			</And>
+		</Include>
+	</Menu>
+
+	<Menu>
+		<Name>Other</Name>
 		<OnlyUnallocated/>
 		<Include>
 			<And>

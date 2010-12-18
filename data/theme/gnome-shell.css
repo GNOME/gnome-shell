@@ -470,26 +470,28 @@ StTooltip StLabel {
 
 /* Apps */
 
-.overview-pane {
-    width: 440px;
-}
-
 .icon-grid {
     spacing: 36px;
     -shell-grid-item-size: 70px;
 }
 
 .all-app {
-    padding: 16px 250px 10px 16px;
+    padding: 16px 25px 16px 16px;
+    spacing: 20px;
 }
 
-.app-section-divider-container {
-    padding-top: 36px;
-    padding-bottom: 36px;
+.app-filter {
+    font-size: 14px;
+    font-weight: bold;
+    height: 40px;
+    color: #aaa;
+    width: 200px;
 }
 
-.app-section-divider {
-    height: 2px;
+.app-filter:selected {
+    color: #ffffff;
+    background-image: url("filter-selected.svg");
+    background-position: 190px 10px;
 }
 
 #dash > .app-well-app {

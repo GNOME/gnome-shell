@@ -29,10 +29,20 @@ function AlphabeticalView() {
 
 AlphabeticalView.prototype = {
     _init: function() {
-        this.actor = new St.BoxLayout({ vertical: true });
         this._grid = new IconGrid.IconGrid({ xAlign: St.Align.START });
         this._appSystem = Shell.AppSystem.get_default();
-        this.actor.add(this._grid.actor, { y_align: St.Align.START, expand: true });
+
+        this._filterApp = null;
+
+        let box = new St.BoxLayout({ vertical: true });
+        box.add(this._grid.actor, { y_align: St.Align.START, expand: true });
+
+        this.actor = new St.ScrollView({ x_fill: true,
+                                         y_fill: false,
+                                         y_align: St.Align.START,
+                                         vshadows: true });
+        this.actor.add_actor(box);
+        this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
     },
 
     _removeAll: function() {
@@ -40,18 +50,22 @@ AlphabeticalView.prototype = {
         this._apps = [];
     },
 
-    _addApp: function(app) {
-        let appIcon = new AppWellIcon(this._appSystem.get_app(app.get_id()));
-        appIcon.connect('launching', Lang.bind(this, function() {
-            this.emit('launching');
-        }));
-        appIcon._draggable.connect('drag-begin', Lang.bind(this, function() {
-            this.emit('drag-begin');
-        }));
+    _addApp: function(appInfo) {
+        let appIcon = new AppWellIcon(this._appSystem.get_app(appInfo.get_id()));
 
         this._grid.addItem(appIcon.actor);
 
+        appIcon._appInfo = appInfo;
+        if (this._filterApp && !this._filterApp(appInfo))
+            appIcon.actor.hide();
+
         this._apps.push(appIcon);
+    },
+
+    setFilter: function(filter) {
+        this._filterApp = filter;
+        for (let i = 0; i < this._apps.length; i++)
+            this._apps[i].actor.visible = filter(this._apps[i]._appInfo);
     },
 
     refresh: function(apps) {
@@ -70,8 +84,6 @@ AlphabeticalView.prototype = {
     }
 };
 
-Signals.addSignalMethods(AlphabeticalView.prototype);
-
 function ViewByCategories() {
     this._init();
 }
@@ -79,58 +91,77 @@ function ViewByCategories() {
 ViewByCategories.prototype = {
     _init: function() {
         this._appSystem = Shell.AppSystem.get_default();
-        this.actor = new St.BoxLayout({ vertical: true });
+        this.actor = new St.BoxLayout({ style_class: 'all-app' });
         this.actor._delegate = this;
+
+        this._view = new AlphabeticalView();
+
+        this._filters = new St.BoxLayout({ vertical: true });
+        this.actor.add(this._view.actor, { expand: true, x_fill: true, y_fill: true });
+        this.actor.add(this._filters, { expand: false, y_fill: false, y_align: St.Align.START });
+
         this._sections = [];
     },
 
-    _updateSections: function(apps) {
-        this._removeAll();
+    _selectCategory: function(num) {
+        if (num != -1)
+            this._allFilter.remove_style_pseudo_class('selected');
+        else
+            this._allFilter.add_style_pseudo_class('selected');
 
-        let sections = this._appSystem.get_sections();
-        if (!sections)
-            return;
-        for (let i = 0; i < sections.length; i++) {
-            if (i) {
-                let actor = new St.Bin({ style_class: 'app-section-divider' });
-                let divider = new St.Bin({ style_class: 'app-section-divider-container',
-                                           child: actor,
-                                           x_fill: true });
+        this._view.setFilter(Lang.bind(this, function(app) {
+            if (num == -1)
+                return true;
+            return this._sections[num].name == app.get_section();
+        }));
 
-                this.actor.add(divider, { y_fill: false, expand: true });
-            }
-            let _apps = apps.filter(function(app) {
-                return app.get_section() == sections[i];
-            });
-            this._sections[i] = { view: new AlphabeticalView(),
-                                  apps: _apps,
-                                  name: sections[i] };
-            this._sections[i].view.connect('launching', Lang.bind(this, function() {
-                this.emit('launching');
-            }));
-            this._sections[i].view.connect('drag-begin', Lang.bind(this, function() {
-                this.emit('drag-begin');
-            }));
-            this.actor.add(this._sections[i].view.actor, { y_align: St.Align.START, expand: true });
+        for (let i = 0; i < this._sections.length; i++) {
+            if (i == num)
+                this._sections[i].filterActor.add_style_pseudo_class('selected');
+            else
+                this._sections[i].filterActor.remove_style_pseudo_class('selected');
         }
+    },
+
+    _addFilter: function(name, num) {
+        let button = new St.Button({ label: name,
+                                     style_class: 'app-filter',
+                                     x_align: St.Align.START });
+        this._filters.add(button, { expand: true, x_fill: true, y_fill: false });
+        button.connect('clicked', Lang.bind(this, function() {
+            this._selectCategory(num);
+        }));
+
+        if (num != -1)
+            this._sections[num] = { filterActor: button,
+                                    name: name };
+        else
+            this._allFilter = button;
     },
 
     _removeAll: function() {
-        this.actor.destroy_children();
-        this._sections.forEach(function (section) { section.view.disconnectAll(); });
-
         this._sections = [];
+        this._filters.destroy_children();
     },
 
     refresh: function(apps) {
-        this._updateSections(apps);
-        for (let i = 0; i < this._sections.length; i++) {
-            this._sections[i].view.refresh(this._sections[i].apps);
-        }
+        this._removeAll();
+
+        let sections = this._appSystem.get_sections();
+        this._apps = apps;
+        this._view.refresh(apps);
+
+        this._addFilter(_("All"), -1);
+
+        if (!sections)
+            return;
+
+        for (let i = 0; i < sections.length; i++)
+            this._addFilter(sections[i], i);
+
+        this._selectCategory(-1);
     }
 };
-
-Signals.addSignalMethods(ViewByCategories.prototype);
 
 /* This class represents a display containing a collection of application items.
  * The applications are sorted based on their name.
@@ -146,17 +177,8 @@ AllAppDisplay.prototype = {
             Main.queueDeferredWork(this._workId);
         }));
 
-        this._scrollView = new St.ScrollView({ x_fill: true,
-                                               y_fill: false,
-                                               vshadows: true });
-        this.actor = new St.Bin({ style_class: 'all-app',
-                                  y_align: St.Align.START,
-                                  child: this._scrollView });
-
         this._appView = new ViewByCategories();
-        this._scrollView.add_actor(this._appView.actor);
-
-        this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this.actor = new St.Bin({ child: this._appView.actor, x_fill: true, y_fill: true });
 
         this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
     },
@@ -169,8 +191,6 @@ AllAppDisplay.prototype = {
         this._appView.refresh(apps);
     }
 };
-Signals.addSignalMethods(AllAppDisplay.prototype);
-
 
 function BaseAppSearchProvider() {
     this._init();
