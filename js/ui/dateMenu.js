@@ -98,17 +98,13 @@ DateMenuButton.prototype = {
         // Event list
         hbox.add(this._event_list.actor);
 
-        // Update event list and set it to today when opening the menu ..
+        // Whenever the menu is opened, select today
         //
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, is_open) {
             if (is_open) {
                 let now = new Date();
                 this._calendar.setDate(now);
             }
-        }));
-        // .. and also update when selecting a new day
-        this._calendar.connect('selected-date-changed', Lang.bind(this, function(obj, day) {
-            // Nothing to do here since this._calendar is controlling this._event_list
         }));
 
         // Done with hbox for calendar and event list

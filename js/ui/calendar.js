@@ -55,51 +55,51 @@ function _getDigitWidth(actor){
     return width;
 }
 
-function _getCalendarDayAbrreviation(day_number) {
+function _getCalendarDayAbbreviation(day_number) {
     let ret;
     switch (day_number) {
     case 0:
-        /* Translators: One-letter calendar abbreviation for Sunday - note: all one-letter
-         * calendar abbreviations are always shown together and in order,
-         * e.g. "S M T W T F S"
+        /* Translators: Abbreviation used in calendar grid
+         * widget. Note: all calendar abbreviations are always shown
+         * together and in order, e.g. "S M T W T F S"
          */
         ret = _("S");
         break;
 
     case 1:
-        /* Translators: One-letter abbreaviation for Monday */
+        /* Translators: Calendar abbreviation for Monday */
         ret = _("M");
         break;
 
     case 2:
-        /* Translators: One-letter abbreaviation for Tuesday */
+        /* Translators: Calendar abbreviation for Tuesday */
         ret = _("T");
         break;
 
     case 3:
-        /* Translators: One-letter abbreaviation for Wednesday */
+        /* Translators: Calendar abbreviation for Wednesday */
         ret = _("W");
         break;
 
     case 4:
-        /* Translators: One-letter abbreaviation for Thursday */
+        /* Translators: Calendar abbreviation for Thursday */
         ret = _("T");
         break;
 
     case 5:
-        /* Translators: One-letter abbreaviation for Friday */
+        /* Translators: Calendar abbreviation for Friday */
         ret = _("F");
         break;
 
     case 6:
-        /* Translators: One-letter abbreaviation for Saturday */
+        /* Translators: Calendar abbreviation for Saturday */
         ret = _("S");
         break;
     }
     return ret;
 }
 
-function _getEventDayAbrreviation(day_number) {
+function _getEventDayAbbreviation(day_number) {
     let ret;
     switch (day_number) {
     case 0:
@@ -397,7 +397,7 @@ Calendar.prototype = {
         for (let i = 0; i < 7; i++) {
             // Could use iter.toLocaleFormat('%a') but that normally gives three characters
             // and we want, ideally, a single character for e.g. S M T W T F S
-            let custom_day_abbrev = _getCalendarDayAbrreviation(iter.getDay());
+            let custom_day_abbrev = _getCalendarDayAbbreviation(iter.getDay());
             let label = new St.Label({ text: custom_day_abbrev });
             label.style_class = 'calendar-day-base calendar-day-heading';
             this.actor.add(label,
@@ -427,11 +427,11 @@ Calendar.prototype = {
         switch (event.get_scroll_direction()) {
         case Clutter.ScrollDirection.UP:
         case Clutter.ScrollDirection.LEFT:
-            this._prevMonth();
+            this._onPrevMonthButtonClicked();
             break;
         case Clutter.ScrollDirection.DOWN:
         case Clutter.ScrollDirection.RIGHT:
-            this._nextMonth();
+            this._onNextMonthButtonClicked();
             break;
         }
     },
@@ -601,7 +601,7 @@ EventsList.prototype = {
 
         for (let n = 0; n < tasks.length; n++) {
             let task = tasks[n];
-            let dayString = _getEventDayAbrreviation(task.date.getDay());
+            let dayString = _getEventDayAbbreviation(task.date.getDay());
             let timeString = task.date.toLocaleFormat('%I:%M %p'); // TODO: locale considerations
             let summaryString = task.summary;
             this._addEvent(dayNameBox, timeBox, eventTitleBox, includeDayName, dayString, timeString, summaryString);
