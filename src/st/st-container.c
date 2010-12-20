@@ -159,6 +159,29 @@ st_container_move_child (StContainer  *container,
   clutter_actor_queue_relayout ((ClutterActor*) container);
 }
 
+void
+st_container_move_before (StContainer  *container,
+                          ClutterActor *actor,
+                          ClutterActor *sibling)
+{
+  StContainerPrivate *priv = container->priv;
+  GList *actor_item = NULL;
+  GList *sibling_item = NULL;
+
+  actor_item = g_list_find (priv->children, actor);
+  sibling_item = g_list_find (priv->children, sibling);
+
+  g_return_if_fail (actor_item != NULL);
+  g_return_if_fail (sibling_item != NULL);
+
+  priv->children = g_list_delete_link (priv->children, actor_item);
+  priv->children = g_list_insert_before (priv->children, sibling_item, actor);
+
+  st_container_update_pseudo_classes (container);
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
+}
+
 /**
  * st_container_get_children_list:
  * @container: An #StContainer

@@ -90,6 +90,10 @@ void     st_box_layout_insert_actor (StBoxLayout  *self,
                                      ClutterActor *actor,
                                      int           pos);
 
+void     st_box_layout_insert_before (StBoxLayout  *self,
+                                      ClutterActor *actor,
+                                      ClutterActor *sibling);
+
 G_END_DECLS
 
 #endif /* _ST_BOX_LAYOUT_H */
