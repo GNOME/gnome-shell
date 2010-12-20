@@ -810,8 +810,12 @@ StTooltip StLabel {
     text-align: center;
 }
 
+.calendar-day-base:hover {
+    background: #999999;
+}
+
 .calendar-day-base:active {
-    background: #666;
+    background: #666666;
 }
 
 .calendar-day-heading {

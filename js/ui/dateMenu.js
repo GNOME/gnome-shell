@@ -57,6 +57,10 @@ DateMenuButton.prototype = {
         let hbox;
         let vbox;
 
+        //this._event_source = new Calendar.EmptyEventSource();
+        this._event_source = new Calendar.FakeEventSource();
+        // TODO: write e.g. EvolutionEventSource
+
         PanelMenu.Button.prototype._init.call(this, St.Align.START);
 
         this._clock = new St.Label();
@@ -75,10 +79,10 @@ DateMenuButton.prototype = {
         this._date.style_class = 'datemenu-date-label';
         vbox.add(this._date);
 
-        this._taskList = new Calendar.EventsList();
+        this._event_list = new Calendar.EventsList(this._event_source);
 
         // Calendar
-        this._calendar = new Calendar.Calendar(this._taskList);
+        this._calendar = new Calendar.Calendar(this._event_source, this._event_list);
         vbox.add(this._calendar.actor);
 
         // Add vertical separator
@@ -92,28 +96,20 @@ DateMenuButton.prototype = {
         // Fill up the second column
         //
         // Event list
-        hbox.add(this._taskList.actor);
-        // Update event list when opening the menu ..
+        hbox.add(this._event_list.actor);
+
+        // Update event list and set it to today when opening the menu ..
+        //
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, is_open) {
             if (is_open) {
-                this._calendar.clearButtonsState();
-                this._taskList.update();
+                let now = new Date();
+                this._calendar.setDate(now);
             }
         }));
         // .. and also update when selecting a new day
-        this._calendar.connect('activate', Lang.bind(this, function(obj, day) {
-            let now = new Date();
-            if (now.getDate() == day.getDate() &&
-                now.getMonth() == day.getMonth() &&
-                now.getFullYear() == day.getFullYear()) {
-                // Today - show: Today, Tomorrow and This Week
-                this._taskList.update();
-            } else {
-                // Not Today - show only events from that day
-                this._taskList.showDay(day);
-            }
+        this._calendar.connect('selected-date-changed', Lang.bind(this, function(obj, day) {
+            // Nothing to do here since this._calendar is controlling this._event_list
         }));
-        // .. TODO: and also update when changing the month
 
         // Done with hbox for calendar and event list
         //
