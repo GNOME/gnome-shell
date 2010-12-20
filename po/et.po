@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-10-16 19:24+0000\n"
-"PO-Revision-Date: 2010-10-17 17:16+0300\n"
-"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
+"POT-Creation-Date: 2010-12-18 23:05+0000\n"
+"PO-Revision-Date: 2010-12-18 11:47+0200\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "Language: et\n"
 "MIME-Version: 1.0\n"
@@ -83,9 +83,6 @@ msgstr "Kui tõene, kuvatakse kalendris kuupäeva ISO nädalate järgi."
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Lemmikrakenduste töölauafailide ID-de loend"
 
-msgid "Overview workspace view mode"
-msgstr ""
-
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -123,11 +120,6 @@ msgid ""
 msgstr ""
 
 msgid "The gstreamer pipeline used to encode the screencast"
-msgstr ""
-
-msgid ""
-"The selected workspace view mode in the overview. Supported values are "
-"\"single\" and \"grid\"."
 msgstr ""
 
 msgid ""
@@ -270,7 +262,7 @@ msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr "Niitristi moodustavate püst- ja rõhtjoone laius"
 
 msgid "Clock Format"
-msgstr "Kella formaat"
+msgstr "Kellaaja vorming"
 
 msgid "Clock Preferences"
 msgstr "Kella eelistused"
@@ -290,7 +282,9 @@ msgstr "_12 tunni vorming"
 msgid "_24 hour format"
 msgstr "_24 tunni vorming"
 
-#. **** Applications ****
+msgid "All"
+msgstr ""
+
 msgid "APPLICATIONS"
 msgstr "Rakendused"
 
@@ -306,9 +300,6 @@ msgstr "Eemalda lemmikutest"
 msgid "Add to Favorites"
 msgstr "Lisa lemmikutesse"
 
-msgid "Drag here to add favorites"
-msgstr "Lemmikute lisamiseks lohista need siia"
-
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s lisati lemmikutesse."
@@ -317,22 +308,9 @@ msgstr "%s lisati lemmikutesse."
 msgid "%s has been removed from your favorites."
 msgstr "%s eemaldati lemmikutest."
 
-msgid "Find"
-msgstr "Otsi"
+msgid "Remove"
+msgstr ""
 
-msgid "Searching..."
-msgstr "Otsimine..."
-
-msgid "No matching results."
-msgstr "Tulemused puuduvad."
-
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-msgid "PLACES & DEVICES"
-msgstr "Asukohad ja seadmed"
-
-#. **** Documents ****
 msgid "RECENT ITEMS"
 msgstr "Hiljutised dokumendid"
 
@@ -342,6 +320,8 @@ msgstr "Ühtegi laiendust pole paigaldatud"
 msgid "Enabled"
 msgstr "Lubatud"
 
+#. translators:
+#. * The device has been disabled
 msgid "Disabled"
 msgstr "Keelatud"
 
@@ -359,6 +339,12 @@ msgstr "Veebileht"
 
 msgid "Undo"
 msgstr "Võta tagasi"
+
+msgid "Windows"
+msgstr "Aknad"
+
+msgid "Applications"
+msgstr "Rakendused"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
 #, c-format
@@ -415,6 +401,9 @@ msgstr "Proovi uuesti"
 msgid "Connect to..."
 msgstr "Ühendumine..."
 
+msgid "PLACES & DEVICES"
+msgstr "Asukohad ja seadmed"
+
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
@@ -436,14 +425,11 @@ msgstr "Saadaval"
 msgid "Busy"
 msgstr "Hõivatud"
 
-msgid "Invisible"
-msgstr "Nähtamatu"
+msgid "My Account"
+msgstr "Minu konto"
 
-msgid "Account Information..."
-msgstr "Konto andmed..."
-
-msgid "System Settings..."
-msgstr "Süsteemi sätted..."
+msgid "System Settings"
+msgstr "Süsteemi sätted"
 
 msgid "Lock Screen"
 msgstr "Lukusta ekraan"
@@ -454,8 +440,145 @@ msgstr "Vaheta kasutajat"
 msgid "Log Out..."
 msgstr "Logi välja..."
 
+msgid "Suspend..."
+msgstr ""
+
 msgid "Shut Down..."
 msgstr "Lülita välja..."
+
+msgid "Zoom"
+msgstr ""
+
+msgid "Screen Reader"
+msgstr "Ekraanilugeja"
+
+msgid "Screen Keyboard"
+msgstr "Ekraaniklaviatuur"
+
+msgid "Visual Alerts"
+msgstr "Visuaalsed märguanded"
+
+msgid "Sticky Keys"
+msgstr "Kleepuvad klahvid"
+
+msgid "Slow Keys"
+msgstr "Aeglased klahvid"
+
+msgid "Bounce Keys"
+msgstr ""
+
+msgid "Mouse Keys"
+msgstr "Hiireklahvid"
+
+msgid "Universal Access Settings"
+msgstr "Universaalse ligipääsu sätted"
+
+msgid "High Contrast"
+msgstr ""
+
+msgid "Large Text"
+msgstr ""
+
+msgid "Power Settings"
+msgstr "Toitesätted..."
+
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr ""
+
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "tund"
+msgstr[1] "tundi"
+
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "minut"
+msgstr[1] "minutit"
+
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "AC adapter"
+msgstr "Võrgutoite adapter"
+
+msgid "Laptop battery"
+msgstr "Sülearvuti aku"
+
+msgid "UPS"
+msgstr "UPS"
+
+msgid "Monitor"
+msgstr "Monitor"
+
+msgid "Mouse"
+msgstr "Hiir"
+
+msgid "Keyboard"
+msgstr "Klaviatuur"
+
+msgid "PDA"
+msgstr ""
+
+msgid "Cell phone"
+msgstr "Mobiiltelefon"
+
+msgid "Media player"
+msgstr "Meediaesitaja"
+
+msgid "Tablet"
+msgstr ""
+
+msgid "Computer"
+msgstr "Arvuti"
+
+msgid "Unknown"
+msgstr "Tundmatu"
+
+msgid "Volume"
+msgstr "Helivaljus"
+
+msgid "Microphone"
+msgstr "Mikrofon"
+
+msgid "Sound Settings"
+msgstr "Helisätted"
+
+#, c-format
+msgid "%s is online."
+msgstr "%s on ühendatud."
+
+#, c-format
+msgid "%s is offline."
+msgstr "%s on ühendamata."
+
+#, c-format
+msgid "%s is away."
+msgstr "%s on eemal."
+
+#, c-format
+msgid "%s is busy."
+msgstr "%s on hõivatud."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr ""
+
+msgid "Search your computer"
+msgstr ""
 
 #, c-format
 msgid "%s has finished starting"
@@ -471,6 +594,25 @@ msgstr "Pole võimalik uut tööala lisada, kuna tööalade piir on saavutatud."
 
 msgid "Can't remove the first workspace."
 msgstr "Esimest tööala pole võimalik eemaldada."
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "System Sounds"
+msgstr "Süsteemi helid"
 
 msgid "Less than a minute ago"
 msgstr "Vähem kui minuti eest"
@@ -518,3 +660,21 @@ msgstr "Otsing"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Drag here to add favorites"
+#~ msgstr "Lemmikute lisamiseks lohista need siia"
+
+#~ msgid "Find"
+#~ msgstr "Otsi"
+
+#~ msgid "Searching..."
+#~ msgstr "Otsimine..."
+
+#~ msgid "No matching results."
+#~ msgstr "Tulemused puuduvad."
+
+#~ msgid "Invisible"
+#~ msgstr "Nähtamatu"
+
+#~ msgid "Account Information..."
+#~ msgstr "Konto andmed..."
