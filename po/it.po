@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-13 21:30+0100\n"
-"PO-Revision-Date: 2010-12-13 22:40+0100\n"
+"POT-Creation-Date: 2010-12-20 22:54+0100\n"
+"PO-Revision-Date: 2010-12-20 22:55+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -367,23 +367,27 @@ msgstr "Formato _12 ore"
 msgid "_24 hour format"
 msgstr "Formato _24 ore"
 
-#: ../js/ui/appDisplay.js:215
+#: ../js/ui/appDisplay.js:154
+msgid "All"
+msgstr "Tutte"
+
+#: ../js/ui/appDisplay.js:235
 msgid "APPLICATIONS"
-msgstr "Applicazioni"
+msgstr "APPLICAZIONI"
 
-#: ../js/ui/appDisplay.js:245
+#: ../js/ui/appDisplay.js:265
 msgid "PREFERENCES"
-msgstr "Preferenze"
+msgstr "PREFERENZE"
 
-#: ../js/ui/appDisplay.js:542
+#: ../js/ui/appDisplay.js:562
 msgid "New Window"
 msgstr "Nuova finestra"
 
-#: ../js/ui/appDisplay.js:546
+#: ../js/ui/appDisplay.js:566
 msgid "Remove from Favorites"
 msgstr "Rimuovi dai preferiti"
 
-#: ../js/ui/appDisplay.js:547
+#: ../js/ui/appDisplay.js:567
 msgid "Add to Favorites"
 msgstr "Aggiungi ai preferiti"
 
@@ -439,64 +443,72 @@ msgstr "Visualizza sorgente"
 msgid "Web Page"
 msgstr "Pagina web"
 
-#: ../js/ui/overview.js:112
+#: ../js/ui/overview.js:96
 msgid "Undo"
 msgstr "Annulla"
 
+#: ../js/ui/overview.js:158
+msgid "Windows"
+msgstr "Finestra"
+
+#: ../js/ui/overview.js:161
+msgid "Applications"
+msgstr "Applicazioni"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:470
+#: ../js/ui/panel.js:474
 #, c-format
 msgid "Quit %s"
 msgstr "Chiudi %s"
 
-#: ../js/ui/panel.js:495
+#: ../js/ui/panel.js:499
 msgid "Preferences"
 msgstr "Preferenze"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %k.%M.%S"
 
 # (ndt) proviamo col k, se non funge, sappiamo il perché...
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:586
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %k.%M"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:590
 msgid "%a %R:%S"
 msgstr "%a %k.%M.%S"
 
-#: ../js/ui/panel.js:587
+#: ../js/ui/panel.js:591
 msgid "%a %R"
 msgstr "%a %k.%M"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:598
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %P"
 
-#: ../js/ui/panel.js:595
+#: ../js/ui/panel.js:599
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %P"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %P"
 
-#: ../js/ui/panel.js:600
+#: ../js/ui/panel.js:604
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %P"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:745
+#: ../js/ui/panel.js:749
 msgid "Activities"
 msgstr "Attività"
 
@@ -616,16 +628,134 @@ msgstr "Contrasto elevato"
 msgid "Large Text"
 msgstr "Caratteri grandi"
 
-# Sarebbe da vedere uhmmm...
-#: ../js/ui/status/power.js:87
-msgid "What's using power..."
-msgstr "Consumi energetici..."
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:200
+msgid "Bluetooth"
+msgstr "Bluetooth"
 
-#: ../js/ui/status/power.js:90
+# as on Android :P
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "Rilevabile"
+
+#: ../js/ui/status/bluetooth.js:68
+msgid "Send Files to Device..."
+msgstr "Invia file al dispositivo..."
+
+#: ../js/ui/status/bluetooth.js:71
+msgid "Setup a New Device..."
+msgstr "Imposta un nuovo dispositivo..."
+
+#: ../js/ui/status/bluetooth.js:94
+msgid "Bluetooth Settings"
+msgstr "Impostazioni Bluetooth"
+
+# indica lo stato del device BT, per esempio gli auricolari
+# credo sia meglio l'aggettivo che il sostantivo
+#: ../js/ui/status/bluetooth.js:151
+msgid "Connection"
+msgstr "Collegato"
+
+#: ../js/ui/status/bluetooth.js:187
+msgid "Send Files..."
+msgstr "Invia file..."
+
+#: ../js/ui/status/bluetooth.js:192
+msgid "Browse Files..."
+msgstr "Esplora file..."
+
+#: ../js/ui/status/bluetooth.js:201
+msgid "Error browsing device"
+msgstr "Errore nell'esplorare il dispositivo"
+
+#: ../js/ui/status/bluetooth.js:202
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "Non è possibile esplorare il dispositivo richiesto, l'errore è «%s»"
+
+#: ../js/ui/status/bluetooth.js:210
+msgid "Keyboard Settings"
+msgstr "Impostazioni tastiera"
+
+#: ../js/ui/status/bluetooth.js:215
+msgid "Mouse Settings"
+msgstr "Impostazioni mouse"
+
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/volume.js:62
+msgid "Sound Settings"
+msgstr "Impostazioni audio"
+
+#: ../js/ui/status/bluetooth.js:293 ../js/ui/status/bluetooth.js:327
+#: ../js/ui/status/bluetooth.js:367 ../js/ui/status/bluetooth.js:400
+msgid "Bluetooth Agent"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:328
+#, c-format
+msgid "Authorization request from %s"
+msgstr "Richesta autorizzazione da %s"
+
+#: ../js/ui/status/bluetooth.js:334
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "Il dispositivo %s vuole accedere al servizio «%s»"
+
+#: ../js/ui/status/bluetooth.js:336
+msgid "Always grant access"
+msgstr "Consenti sempre accesso"
+
+#: ../js/ui/status/bluetooth.js:337
+msgid "Grant this time only"
+msgstr "Consenti solo stavolta"
+
+#: ../js/ui/status/bluetooth.js:338
+msgid "Reject"
+msgstr "Rifiuta"
+
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Conferma associazione per %s"
+
+#: ../js/ui/status/bluetooth.js:374 ../js/ui/status/bluetooth.js:408
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "Il dispositivo %s vuole associarsi con questo computer"
+
+#: ../js/ui/status/bluetooth.js:375
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Confermare la corrispondenza del PIN «%s» con quello sul dispositivo."
+
+#: ../js/ui/status/bluetooth.js:377
+msgid "Matches"
+msgstr "Corrisponde"
+
+#: ../js/ui/status/bluetooth.js:378
+msgid "Does not match"
+msgstr "Non corrisponde"
+
+#: ../js/ui/status/bluetooth.js:401
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Richiesta associazione per %s"
+
+#: ../js/ui/status/bluetooth.js:409
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Inserire il PIN indicato sul dispositivo."
+
+#: ../js/ui/status/bluetooth.js:425
+msgid "OK"
+msgstr "OK"
+
+#: ../js/ui/status/bluetooth.js:426
+msgid "Cancel"
+msgstr "Annulla"
+
+#: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "Impostazioni alimentazione"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:112
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -633,76 +763,76 @@ msgstr[0] "%d ora rimanente"
 msgstr[1] "%d ore rimanenti"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:115
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s e %d %s rimanenti"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:117
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "ora"
 msgstr[1] "ore"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:117
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minuto"
 msgstr[1] "minuti"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:120
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d minuto rimanente"
 msgstr[1] "%d minuti rimanenti"
 
-#: ../js/ui/status/power.js:244
+#: ../js/ui/status/power.js:237
 msgid "AC adapter"
 msgstr "Alimentatore di corrente"
 
-#: ../js/ui/status/power.js:246
+#: ../js/ui/status/power.js:239
 msgid "Laptop battery"
 msgstr "Batteria del portatile"
 
-#: ../js/ui/status/power.js:248
+#: ../js/ui/status/power.js:241
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:250
+#: ../js/ui/status/power.js:243
 msgid "Monitor"
 msgstr "Monitor"
 
-#: ../js/ui/status/power.js:252
+#: ../js/ui/status/power.js:245
 msgid "Mouse"
 msgstr "Mouse"
 
-#: ../js/ui/status/power.js:254
+#: ../js/ui/status/power.js:247
 msgid "Keyboard"
 msgstr "Tastiera"
 
-#: ../js/ui/status/power.js:256
+#: ../js/ui/status/power.js:249
 msgid "PDA"
 msgstr "PDS"
 
 # c'era una discussione su tp...
-#: ../js/ui/status/power.js:258
+#: ../js/ui/status/power.js:251
 msgid "Cell phone"
 msgstr "Cellulare"
 
-#: ../js/ui/status/power.js:260
+#: ../js/ui/status/power.js:253
 msgid "Media player"
 msgstr "Lettore multimediale"
 
-#: ../js/ui/status/power.js:262
+#: ../js/ui/status/power.js:255
 msgid "Tablet"
 msgstr "Tablet"
 
-#: ../js/ui/status/power.js:264
+#: ../js/ui/status/power.js:257
 msgid "Computer"
 msgstr "Computer"
 
-#: ../js/ui/status/power.js:266 ../src/shell-app-system.c:1012
+#: ../js/ui/status/power.js:259 ../src/shell-app-system.c:1012
 msgid "Unknown"
 msgstr "Sconosciuto"
 
@@ -714,15 +844,6 @@ msgstr "Volume"
 msgid "Microphone"
 msgstr "Microfono"
 
-#: ../js/ui/status/volume.js:62
-msgid "Sound Settings"
-msgstr "Impostazioni audio"
-
-# FIXME ma ha senso in inglese???
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "Cerca nel computer"
-
 #: ../js/ui/telepathyClient.js:560
 #, c-format
 msgid "%s is online."
@@ -731,7 +852,7 @@ msgstr "%s è disponibile."
 #: ../js/ui/telepathyClient.js:565
 #, c-format
 msgid "%s is offline."
-msgstr "%s è furi rete."
+msgstr "%s è fuori rete."
 
 #: ../js/ui/telepathyClient.js:568
 #, c-format
@@ -743,14 +864,18 @@ msgstr "%s è assente."
 msgid "%s is busy."
 msgstr "%s non è disponibile."
 
-# FIXME -- Da rifinire..
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:663
-#, c-format, fuzzy
+#: ../js/ui/telepathyClient.js:664
+#, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Inviato alle %-H.%M.%S di %A"
+
+# FIXME ma ha senso in inglese???
+#: ../js/ui/viewSelector.js:26
+msgid "Search your computer"
+msgstr "Cerca nel computer"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
