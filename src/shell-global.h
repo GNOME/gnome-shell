@@ -100,7 +100,6 @@ void shell_global_get_pointer (ShellGlobal         *global,
                                ClutterModifierType *mods);
 
 GSettings *shell_global_get_settings (ShellGlobal *global);
-char* shell_global_icalcomponent_to_str (long icalcomp);
 
 ClutterModifierType shell_get_event_state (ClutterEvent *event);
 

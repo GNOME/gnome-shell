@@ -26,7 +26,6 @@
 #include <X11/extensions/Xfixes.h>
 #include <gjs/gjs-module.h>
 #include <canberra.h>
-#include <libical/ical.h>
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
@@ -465,17 +464,6 @@ shell_global_set_stage_input_mode (ShellGlobal         *global,
       global->input_mode = mode;
       g_object_notify (G_OBJECT (global), "stage-input-mode");
     }
-}
-
-/**
- * shell_global_icalcomponent_to_str:
- *
- * Wrap icalcomponent_as_ical_string_r
- */
-char*
-shell_global_icalcomponent_to_str (long icalcomp)
-{
-  return icalcomponent_as_ical_string_r ((icalcomponent*)icalcomp);
 }
 
 /**

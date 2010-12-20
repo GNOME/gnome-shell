@@ -864,10 +864,6 @@ Panel.prototype = {
         this._rightBox.add(this._statusmenu.actor);
     },
 
-    hideCalendar: function() {
-        this._clockButton.closeCalendar();
-    },
-
     startupAnimation: function() {
         this.actor.y = -this.actor.height;
         Tweener.addTween(this.actor,
