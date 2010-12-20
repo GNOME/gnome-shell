@@ -909,6 +909,7 @@ PopupSubMenu.prototype = {
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
 
+        this._arrow.rotation_angle_z = 0;
         this.actor.hide();
 
         this.isOpen = false;
