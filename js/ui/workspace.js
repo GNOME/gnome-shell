@@ -396,7 +396,7 @@ WindowOverlay.prototype = {
     // These parameters are not the values retrieved with
     // get_transformed_position() and get_transformed_size(),
     // as windowClone might be moving.
-    // See Workspace._fadeInWindowOverlay
+    // See Workspace._showWindowOverlay
     updatePositions: function(cloneX, cloneY, cloneWidth, cloneHeight) {
         let button = this.closeButton;
         let title = this.title;
@@ -565,8 +565,6 @@ Workspace.prototype = {
         this._windowRemovedId = this.metaWorkspace.connect('window-removed',
                                                             Lang.bind(this, this._windowRemoved));
         this._repositionWindowsId = 0;
-
-        this._visible = false;
 
         this.leavingOverview = false;
     },
@@ -948,6 +946,9 @@ Workspace.prototype = {
         let slots = this._computeAllWindowSlots(visibleClones.length);
         visibleClones = this._orderWindowsByMotionAndStartup(visibleClones, slots);
 
+        let currentWorkspace = global.screen.get_active_workspace();
+        let isOnCurrentWorkspace = this.metaWorkspace == currentWorkspace;
+
         for (let i = 0; i < visibleClones.length; i++) {
             let slot = slots[i];
             let clone = visibleClones[i];
@@ -964,7 +965,7 @@ Workspace.prototype = {
 
             if (overlay)
                 overlay.hide();
-            if (animate) {
+            if (animate && isOnCurrentWorkspace) {
                 if (!metaWindow.showing_on_its_workspace()) {
                     /* Hidden windows should fade in and grow
                      * therefore we need to resize them now so they
@@ -994,13 +995,13 @@ Workspace.prototype = {
                                    time: Overview.ANIMATION_TIME,
                                    transition: 'easeOutQuad',
                                    onComplete: Lang.bind(this, function() {
-                                      this._fadeInWindowOverlay(clone, overlay);
+                                      this._showWindowOverlay(clone, overlay, true);
                                    })
                                  });
             } else {
                 clone.actor.set_position(x, y);
                 clone.actor.set_scale(scale, scale);
-                this._fadeInWindowOverlay(clone, overlay);
+                this._showWindowOverlay(clone, overlay, isOnCurrentWorkspace);
             }
         }
     },
@@ -1021,7 +1022,7 @@ Workspace.prototype = {
         }
     },
 
-    _fadeInWindowOverlay: function(clone, overlay) {
+    _showWindowOverlay: function(clone, overlay, fade) {
         if (clone.inDrag)
             return;
 
@@ -1043,17 +1044,21 @@ Workspace.prototype = {
 
         if (overlay) {
             overlay.updatePositions(cloneX, cloneY, cloneWidth, cloneHeight);
-            overlay.fadeIn();
+            if (fade)
+                overlay.fadeIn();
+            else
+                overlay.show();
         }
     },
 
-    _fadeInAllOverlays: function() {
+    _showAllOverlays: function() {
+        let currentWorkspace = global.screen.get_active_workspace();
         for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
             let overlay = this._windowOverlays[i];
             if (this._showOnlyWindows != null && !(clone.metaWindow in this._showOnlyWindows))
                 continue;
-            this._fadeInWindowOverlay(clone, overlay);
+            this._showWindowOverlay(clone, overlay, this.metaWorkspace == currentWorkspace);
         }
     },
 
@@ -1089,7 +1094,7 @@ Workspace.prototype = {
 
     showWindowsOverlays: function() {
         this._windowOverlaysGroup.show();
-        this._fadeInAllOverlays();
+        this._showAllOverlays();
     },
 
     hideWindowsOverlays: function() {
@@ -1206,12 +1211,12 @@ Workspace.prototype = {
             this.positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.ZOOM);
         else
             this.positionWindows(WindowPositionFlags.ZOOM);
-
-        this._visible = true;
     },
 
     // Animates the return from Overview mode
     zoomFromOverview : function() {
+        let currentWorkspace = global.screen.get_active_workspace();
+
         this.leavingOverview = true;
 
         this._hideAllOverlays();
@@ -1222,6 +1227,9 @@ Workspace.prototype = {
         }
         this._overviewHiddenId = Main.overview.connect('hidden', Lang.bind(this,
                                                                            this._doneLeavingOverview));
+
+        if (this._metaWorkspace == currentWorkspace)
+            return;
 
         // Position and scale the windows.
         for (let i = 0; i < this._windows.length; i++) {
@@ -1253,7 +1261,6 @@ Workspace.prototype = {
             }
         }
 
-        this._visible = false;
     },
 
     destroy : function() {

@@ -2,6 +2,7 @@
 jsdir = $(pkgdatadir)/js
 
 nobase_dist_js_DATA = 	\
+	misc/config.js		\
 	misc/docInfo.js		\
 	misc/fileUtils.js	\
 	misc/format.js		\
@@ -48,6 +49,7 @@ nobase_dist_js_DATA = 	\
 	ui/status/accessibility.js	\
 	ui/status/power.js	\
 	ui/status/volume.js	\
+	ui/status/bluetooth.js	\
 	ui/telepathyClient.js	\
 	ui/tweener.js		\
 	ui/viewSelector.js	\

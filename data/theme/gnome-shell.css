@@ -105,6 +105,10 @@ StTooltip StLabel {
     min-width: 200px;
 }
 
+.popup-sub-menu {
+    background-color: #606060;
+}
+
 /* The remaining popup-menu sizing is all done in ems, so that if you
  * override .popup-menu.font-size, everything else will scale with it.
  */
@@ -470,26 +474,28 @@ StTooltip StLabel {
 
 /* Apps */
 
-.overview-pane {
-    width: 440px;
-}
-
 .icon-grid {
     spacing: 36px;
     -shell-grid-item-size: 70px;
 }
 
 .all-app {
-    padding: 16px 250px 10px 16px;
+    padding: 16px 25px 16px 16px;
+    spacing: 20px;
 }
 
-.app-section-divider-container {
-    padding-top: 36px;
-    padding-bottom: 36px;
+.app-filter {
+    font-size: 14px;
+    font-weight: bold;
+    height: 40px;
+    color: #aaa;
+    width: 200px;
 }
 
-.app-section-divider {
-    height: 2px;
+.app-filter:selected {
+    color: #ffffff;
+    background-image: url("filter-selected.svg");
+    background-position: 190px 10px;
 }
 
 #dash > .app-well-app {
@@ -1032,7 +1038,7 @@ StTooltip StLabel {
     color: #bbbbbb;
 }
 
-.chat-response {
+#notification StEntry {
     padding: 4px;
     border-radius: 4px;
     border: 1px solid #565656;
@@ -1042,7 +1048,7 @@ StTooltip StLabel {
     caret-size: 1px;
 }
 
-.chat-response:focus {
+#notification StEntry:focus {
     border: 1px solid #3a3a3a;
     color: #545454;
     background-color: #e8e8e8;

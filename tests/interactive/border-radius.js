@@ -10,15 +10,18 @@ let stage = Clutter.Stage.get_default();
 stage.width = 640;
 stage.height = 480;
 
-let vbox = new St.BoxLayout({ vertical: true,
-                              width: stage.width,
+let vbox = new St.BoxLayout({ width: stage.width,
                               height: stage.height,
-                              style: 'padding: 10px;'
-                                     + 'spacing: 20px;'
-                                     + 'background: #ffee88;' });
+                              style: 'background: #ffee88;' });
+stage.add_actor(vbox);
+
 let scroll = new St.ScrollView();
-scroll.add_actor(vbox);
-stage.add_actor(scroll);
+vbox.add(scroll, { expand: true });
+
+let box = new St.BoxLayout({ vertical: true,
+                             style: 'padding: 10px;'
+                                    + 'spacing: 20px;' });
+scroll.add_actor(box);
 
 function addTestCase(radii, useGradient) {
     let background;
@@ -29,11 +32,11 @@ function addTestCase(radii, useGradient) {
     else
         background = 'background: white;';
 
-    vbox.add(new St.Label({ text: "border-radius:  " + radii + ";",
-                            style: 'border: 1px solid black; '
-                                   + 'border-radius: ' + radii + ';'
-                                   + 'padding: 5px;' + background }),
-                          { x_fill: false });
+    box.add(new St.Label({ text: "border-radius:  " + radii + ";",
+                           style: 'border: 1px solid black; '
+                                  + 'border-radius: ' + radii + ';'
+                                  + 'padding: 5px;' + background }),
+                         { x_fill: false });
 }
 
 // uniform backgrounds

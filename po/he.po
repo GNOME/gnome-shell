@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-13 23:50+0200\n"
-"PO-Revision-Date: 2010-12-13 23:52+0200\n"
+"POT-Creation-Date: 2010-12-19 01:04+0200\n"
+"PO-Revision-Date: 2010-12-19 01:04+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -390,23 +390,27 @@ msgstr "מבנה _12 שעות"
 msgid "_24 hour format"
 msgstr "מבנה _24 שעות"
 
-#: ../js/ui/appDisplay.js:215
+#: ../js/ui/appDisplay.js:154
+msgid "All"
+msgstr "הכול"
+
+#: ../js/ui/appDisplay.js:235
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:245
+#: ../js/ui/appDisplay.js:265
 msgid "PREFERENCES"
 msgstr "העדפות"
 
-#: ../js/ui/appDisplay.js:542
+#: ../js/ui/appDisplay.js:562
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:546
+#: ../js/ui/appDisplay.js:566
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:547
+#: ../js/ui/appDisplay.js:567
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
@@ -458,63 +462,71 @@ msgstr "צפייה במקור"
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/overview.js:112
+#: ../js/ui/overview.js:96
 msgid "Undo"
 msgstr "ביטול"
 
+#: ../js/ui/overview.js:158
+msgid "Windows"
+msgstr "חלונות"
+
+#: ../js/ui/overview.js:161
+msgid "Applications"
+msgstr "יישומים"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:470
+#: ../js/ui/panel.js:474
 #, c-format
 msgid "Quit %s"
 msgstr "יציאה מ־%s"
 
-#: ../js/ui/panel.js:495
+#: ../js/ui/panel.js:499
 msgid "Preferences"
 msgstr "העדפות"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:586
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:590
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:587
+#: ../js/ui/panel.js:591
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:598
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/panel.js:595
+#: ../js/ui/panel.js:599
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:600
+#: ../js/ui/panel.js:604
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:745
+#: ../js/ui/panel.js:749
 msgid "Activities"
 msgstr "פעילויות"
 
@@ -633,15 +645,11 @@ msgstr "ניגודיות גבוהה"
 msgid "Large Text"
 msgstr "טקסט גדול"
 
-#: ../js/ui/status/power.js:87
-msgid "What's using power..."
-msgstr "מה צורך חשמל..."
-
-#: ../js/ui/status/power.js:90
+#: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "הגדרות צריכת החשמל"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:112
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -650,26 +658,26 @@ msgstr[1] "נותרו %d שעות"
 msgstr[2] "נותרו שעתיים"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:115
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s נותרו"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:117
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "שעה"
 msgstr[1] "שעות"
 msgstr[2] "שעתיים"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:117
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "דקה"
 msgstr[1] "דקות"
 msgstr[2] "דקות"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:120
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
@@ -677,51 +685,51 @@ msgstr[0] "דקה אחת נותרה"
 msgstr[1] "%d דקות נותרו"
 msgstr[2] "שתי דקות נותרו"
 
-#: ../js/ui/status/power.js:244
+#: ../js/ui/status/power.js:237
 msgid "AC adapter"
 msgstr "מתאם חשמל"
 
-#: ../js/ui/status/power.js:246
+#: ../js/ui/status/power.js:239
 msgid "Laptop battery"
 msgstr "סוללת נייד"
 
-#: ../js/ui/status/power.js:248
+#: ../js/ui/status/power.js:241
 msgid "UPS"
 msgstr "אל־פסק"
 
-#: ../js/ui/status/power.js:250
+#: ../js/ui/status/power.js:243
 msgid "Monitor"
 msgstr "צג"
 
-#: ../js/ui/status/power.js:252
+#: ../js/ui/status/power.js:245
 msgid "Mouse"
 msgstr "עכבר"
 
-#: ../js/ui/status/power.js:254
+#: ../js/ui/status/power.js:247
 msgid "Keyboard"
 msgstr "מקלדת"
 
-#: ../js/ui/status/power.js:256
+#: ../js/ui/status/power.js:249
 msgid "PDA"
 msgstr "מחשב כף יד"
 
-#: ../js/ui/status/power.js:258
+#: ../js/ui/status/power.js:251
 msgid "Cell phone"
 msgstr "טלפון סלולרי"
 
-#: ../js/ui/status/power.js:260
+#: ../js/ui/status/power.js:253
 msgid "Media player"
 msgstr "נגן מדיה"
 
-#: ../js/ui/status/power.js:262
+#: ../js/ui/status/power.js:255
 msgid "Tablet"
 msgstr "טבלת שליטה"
 
-#: ../js/ui/status/power.js:264
+#: ../js/ui/status/power.js:257
 msgid "Computer"
 msgstr "מחשב"
 
-#: ../js/ui/status/power.js:266 ../src/shell-app-system.c:1012
+#: ../js/ui/status/power.js:259 ../src/shell-app-system.c:1012
 msgid "Unknown"
 msgstr "לא ידוע"
 
@@ -760,8 +768,8 @@ msgstr "%s עסוק/ה."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:663
-#, c-format
+#: ../js/ui/telepathyClient.js:664
+#, no-c-format
 msgid "Sent at %X on %A"
 msgstr "נשלח ב־%X בשעה %A"
 
@@ -872,6 +880,9 @@ msgstr "חיפוש"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "What's using power..."
+#~ msgstr "מה צורך חשמל..."
+
 #~ msgid "Overview workspace view mode"
 #~ msgstr "Overview workspace view mode"
 
@@ -917,9 +928,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "%H:%M"
 #~ msgstr "%H:%M"
-
-#~ msgid "Applications"
-#~ msgstr "יישומים"
 
 #~ msgid "Recent Documents"
 #~ msgstr "מסמכים אחרונים"

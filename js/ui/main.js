@@ -135,6 +135,7 @@ function start() {
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     telepathyClient = new TelepathyClient.Client();
+    panel.startStatusArea();
 
     _startDate = new Date();
 

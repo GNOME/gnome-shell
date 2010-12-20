@@ -357,6 +357,10 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
                                "GL buffer swap complete event received (with timestamp of completion)",
                                "x");
 
+#if HAVE_BLUETOOTH
+  g_irepository_prepend_search_path (BLUETOOTH_DIR);
+#endif
+
   g_irepository_prepend_search_path (GNOME_SHELL_PKGLIBDIR);
 
   shell_js = g_getenv("GNOME_SHELL_JS");
@@ -364,7 +368,10 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
     shell_js = JSDIR;
 
   search_path = g_strsplit(shell_js, ":", -1);
-  shell_plugin->gjs_context = gjs_context_new_with_search_path(search_path);
+  shell_plugin->gjs_context = g_object_new (GJS_TYPE_CONTEXT,
+                                            "search-path", search_path,
+                                            "js-version", "1.8",
+                                            NULL);
   g_strfreev(search_path);
 
   /* Disable the gnome-volume-control debug */

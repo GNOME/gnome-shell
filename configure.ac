@@ -94,8 +94,20 @@ PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 gnome-desktop-3.0 >= 2.9
 PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-3.0)
 PKG_CHECK_MODULES(TRAY, gtk+-3.0)
 PKG_CHECK_MODULES(GVC, libpulse libpulse-mainloop-glib gobject-2.0)
-
 PKG_CHECK_MODULES(JS_TEST, clutter-x11-1.0 gjs-1.0 gobject-introspection-1.0 gtk+-3.0)
+
+AC_MSG_CHECKING([for bluetooth support])
+PKG_CHECK_EXISTS([gnome-bluetooth-1.0 >= 2.90.0],
+        [BLUETOOTH_DIR=`$PKG_CONFIG --variable=libdir gnome-bluetooth-1.0`/gnome-bluetooth
+	 BLUETOOTH_LIBS="-L'$BLUETOOTH_DIR' -lgnome-bluetooth-applet"
+	 AC_SUBST([BLUETOOTH_LIBS],["$BLUETOOTH_LIBS"])
+	 AC_DEFINE_UNQUOTED([BLUETOOTH_DIR],["$BLUETOOTH_DIR"],[Path to installed GnomeBluetooth typelib and library])
+	 AC_DEFINE([HAVE_BLUETOOTH],[1],[Define if you have libgnome-bluetooth-applet])
+	 AC_SUBST([HAVE_BLUETOOTH],[1])
+	 AC_MSG_RESULT([yes])],
+	[AC_DEFINE([HAVE_BLUETOOTH],[0])
+	 AC_SUBST([HAVE_BLUETOOTH],[0])
+	 AC_MSG_RESULT([no])])
 
 MUTTER_BIN_DIR=`$PKG_CONFIG --variable=exec_prefix mutter-plugins`/bin
 # FIXME: metacity-plugins.pc should point directly to its .gir file
@@ -167,6 +179,7 @@ AC_CONFIG_FILES([
   Makefile
   data/Makefile
   js/Makefile
+  js/misc/config.js
   src/Makefile
   tests/Makefile
   po/Makefile.in
