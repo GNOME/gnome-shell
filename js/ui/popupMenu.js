@@ -631,15 +631,22 @@ PopupMenuBase.prototype = {
     },
 
     addMenuItem: function(menuItem, position) {
-        if (position == undefined)
+        let before_item = null;
+        if (position == undefined) {
             this.box.add(menuItem.actor);
-        else
-            this.box.insert_actor(menuItem.actor, position);
+        } else {
+            let items = this.getMenuItems();
+            if (position < items.length) {
+                before_item = items[position].actor;
+                this.box.insert_before(menuItem.actor, before_item);
+            } else
+                this.box.add(menuItem.actor);
+        }
         if (menuItem instanceof PopupSubMenuMenuItem) {
-            if (position == undefined)
+            if (before_item == null)
                 this.box.add(menuItem.menu.actor);
             else
-                this.box.insert_actor(menuItem.menu.actor, position + 1);
+                this.box.insert_before(menuItem.menu.actor, before_item);
             menuItem._subMenuActivateId = menuItem.menu.connect('activate', Lang.bind(this, function() {
                 this.emit('activate');
                 this.close(true);
