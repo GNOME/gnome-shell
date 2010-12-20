@@ -176,7 +176,7 @@ EmptyEventSource.prototype = {
         return result;
     },
 
-    hasEvents: function(day) {
+    hasTasks: function(day) {
         return false;
     }
 };
@@ -232,10 +232,15 @@ FakeEventSource.prototype = {
         // ditto for 'NE Patriots vs NY Jets'
         this._fake_tasks.push(new CalendarTask(new Date(2010,11,6,20,30), 'NE Patriots vs NY Jets'));
 
-        // ditto for an event that is added/removed every five seconds (to check that the ::changed signal works)
+        // An event for tomorrow @6:30pm that is added/removed every five
+        // seconds (to check that the ::changed signal works)
+        let transient_event_date = new Date(now.getTime() + 86400*1000);
+        transient_event_date.setHours(18);
+        transient_event_date.setMinutes(30);
+        transient_event_date.setSeconds(0);
         Mainloop.timeout_add(5000, Lang.bind(this, this._updateTransientEvent));
         this._includeTransientEvent = false;
-        this._transientEvent = new CalendarTask(new Date(2010,11,21,18,30), 'A Transient Event');
+        this._transientEvent = new CalendarTask(transient_event_date, 'A Transient Event');
         this._transientEventCounter = 1;
     },
 
@@ -263,7 +268,7 @@ FakeEventSource.prototype = {
         return result;
     },
 
-    hasEvents: function(day) {
+    hasTasks: function(day) {
         let dayBegin = new Date(day.getTime());
         let dayEnd = new Date(day.getTime());
         dayBegin.setHours(0);
@@ -285,7 +290,7 @@ Signals.addSignalMethods(FakeEventSource.prototype);
 /* ------------------------------------------------------------------------ */
 
 // @event_source is an object implementing the EventSource API, e.g. the
-// getTasks(), hasEvents() methods and the ::changed signal.
+// getTasks(), hasTasks() methods and the ::changed signal.
 //
 // @event_list is the EventList object to control
 //
@@ -496,8 +501,8 @@ Calendar.prototype = {
             }));
 
             let style_class;
-            let has_events;
-            has_events = this._event_source.hasEvents(iter);
+            let has_tasks;
+            has_tasks = this._event_source.hasTasks(iter);
             style_class = 'calendar-day-base calendar-day';
             if (_isWorkDay(iter))
                 style_class += ' calendar-work-day'
@@ -512,7 +517,7 @@ Calendar.prototype = {
             if (_sameDay(this.selected_date, iter))
                 button.add_style_pseudo_class('active');
 
-            if (has_events)
+            if (has_tasks)
                 style_class += ' calendar-day-with-events'
 
             button.style_class = style_class;
