@@ -124,18 +124,20 @@ Indicator.prototype = {
         this._deviceItems = [];
 
         let devices = this._applet.get_devices();
-        if (devices.length == 0)
-            this._deviceSep.actor.hide();
-        else
-            this._deviceSep.actor.show();
+        let anydevice = false;
         for (let i = 0; i < devices.length; i++) {
             let d = devices[i];
             let item = this._createDeviceItem(d);
             if (item) {
                 this.menu.addMenuItem(item, this._deviceItemPosition + this._deviceItems.length);
                 this._deviceItems.push(item);
+                anydevice = true;
             }
         }
+        if (anydevice)
+            this._deviceSep.actor.show();
+        else
+            this._deviceSep.actor.hide();
     },
 
     _createDeviceItem: function(device) {
