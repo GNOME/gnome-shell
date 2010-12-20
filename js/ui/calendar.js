@@ -558,15 +558,15 @@ EventsList.prototype = {
     _getTasks: function(begin, end) {
         let result = [];
 
-        log('begin:' + begin);
-        log('end:  ' + end);
+        //log('begin:' + begin);
+        //log('end:  ' + end);
 
         for(let n = 0; n < this.tasks.length; n++) {
             let task = this.tasks[n];
             if (task.date >= begin && task.date <= end) {
                 result.push(task);
             }
-            log('when:' + task.date + ' summary:' + task.summary);
+            //log('when:' + task.date + ' summary:' + task.summary);
         }
 
         return result;
