@@ -422,7 +422,7 @@ PinNotification.prototype = {
         }));
         this.addActor(this._entry);
 
-        this.addButton('ok', _("Ok"));
+        this.addButton('ok', _("OK"));
         this.addButton('cancel', _("Cancel"));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
