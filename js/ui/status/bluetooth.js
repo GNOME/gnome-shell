@@ -68,6 +68,7 @@ Indicator.prototype = {
         this._fullMenuItems = [new PopupMenu.PopupSeparatorMenuItem(),
                                new PopupMenu.PopupMenuItem(_("Send Files to Device...")),
                                new PopupMenu.PopupMenuItem(_("Setup a New Device..."))];
+        this._hasDevices = false;
         this._deviceSep = this._fullMenuItems[0]; // hidden if no device exists
 
         this._fullMenuItems[1].connect('activate', function() {
@@ -118,22 +119,56 @@ Indicator.prototype = {
         }
     },
 
-    _updateDevices: function() {
-        this._destroyAll(this._deviceItems);
-        this._deviceItems = [];
+    _deviceCompare: function(d1, d2) {
+        return d1.device_path == d2.device_path &&
+            d1.bdaddr == d2.bdaddr &&
+            d1.can_connect == d2.can_connect &&
+            d1.capabilities == d2.capabilities;
+    },
 
+    _updateDevices: function() {
         let devices = this._applet.get_devices();
-        let anydevice = false;
+
+        for (let i = 0; i < this._deviceItems.length; i++) {
+            let item = this._deviceItems.length;
+            let destroy = true;
+            for (let j = 0; j < devices.length; j++) {
+                // we need to deep compare because BluetoothSimpleDevice is a boxed type
+                // (but we take advantage of that, because _skip will disappear the next
+                // time get_devices() is called)
+                if (this._deviceCompare(item._device, devices[i])) {
+                    item.label.text = devices[i].alias;
+                    devices[i]._skip = true;
+                    destroy = false;
+                }
+            }
+            if (destroy) {
+                item.destroy();
+                item._destroyed = true;
+            }
+        }
+
+        let newlist = [ ];
+        for (let i = 0; i < this._deviceItems.length; i++) {
+            let item = this._deviceItems[i];
+            if (!item._destroyed)
+                newlist.push(item);
+        }
+        this._deviceItems = newlist;
+
+        this._hasDevices = newlist.length > 0;
         for (let i = 0; i < devices.length; i++) {
             let d = devices[i];
+            if (d._skip)
+                continue;
             let item = this._createDeviceItem(d);
             if (item) {
                 this.menu.addMenuItem(item, this._deviceItemPosition + this._deviceItems.length);
                 this._deviceItems.push(item);
-                anydevice = true;
+                this._hasDevices = true;
             }
         }
-        if (anydevice)
+        if (this._hasDevices)
             this._deviceSep.actor.show();
         else
             this._deviceSep.actor.hide();
