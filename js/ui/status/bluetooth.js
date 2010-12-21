@@ -267,7 +267,10 @@ Indicator.prototype = {
     _updateFullMenu: function() {
         if (this._applet.show_full_menu) {
             this._showAll(this._fullMenuItems);
-            this._showAll(this._deviceItems);
+            if (this._hasDevices)
+                this._showAll(this._deviceItems);
+            else
+                this._deviceSep.hide();
         } else {
             this._hideAll(this._fullMenuItems);
             this._hideAll(this._deviceItems);
