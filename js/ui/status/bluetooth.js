@@ -65,16 +65,15 @@ Indicator.prototype = {
         this.menu.addMenuItem(this._discoverable);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        this._fullMenuItems = [new PopupMenu.PopupMenuItem(_("Send Files to Device...")),
-                               new PopupMenu.PopupSeparatorMenuItem(),
-                               new PopupMenu.PopupSeparatorMenuItem(),
+        this._fullMenuItems = [new PopupMenu.PopupSeparatorMenuItem(),
+                               new PopupMenu.PopupMenuItem(_("Send Files to Device...")),
                                new PopupMenu.PopupMenuItem(_("Setup a New Device..."))];
-        this._deviceSep = this._fullMenuItems[1]; // hidden if no device exists
+        this._deviceSep = this._fullMenuItems[0]; // hidden if no device exists
 
-        this._fullMenuItems[0].connect('activate', function() {
+        this._fullMenuItems[1].connect('activate', function() {
             GLib.spawn_command_line_async('bluetooth-sendto');
         });
-        this._fullMenuItems[3].connect('activate', function() {
+        this._fullMenuItems[2].connect('activate', function() {
             GLib.spawn_command_line_async('bluetooth-wizard');
         });
 
@@ -83,7 +82,7 @@ Indicator.prototype = {
             this.menu.addMenuItem(item);
         }
 
-        this._deviceItemPosition = 5;
+        this._deviceItemPosition = 3;
         this._deviceItems = [];
         this._applet.connect('devices-changed', Lang.bind(this, this._updateDevices));
         this._updateDevices();
