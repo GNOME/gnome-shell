@@ -293,8 +293,7 @@ test_text_field_main (gint    argc,
                     create_label (CLUTTER_COLOR_White, "<b>Input field:</b>"),
                     "row", 0,
                     "column", 0,
-                    "x-expand", TRUE,
-                    "x-align", CLUTTER_TABLE_ALIGNMENT_END,
+                    "x-expand", FALSE,
                     "y-expand", FALSE,
                     NULL);
 
@@ -311,8 +310,7 @@ test_text_field_main (gint    argc,
                     create_label (CLUTTER_COLOR_White, "<b>A very long password field:</b>"),
                     "row", 1,
                     "column", 0,
-                    "x-expand", TRUE,
-                    "x-align", CLUTTER_TABLE_ALIGNMENT_END,
+                    "x-expand", FALSE,
                     "y-expand", FALSE,
                     NULL);
 
