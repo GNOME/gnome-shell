@@ -12,6 +12,7 @@
 #include <glib/gi18n.h>
 
 #include "shell-app-private.h"
+#include "shell-window-tracker-private.h"
 #include "shell-global.h"
 #include "display.h"
 #include "st.h"
@@ -1296,6 +1297,26 @@ shell_app_info_get_source_window (ShellAppInfo *info)
   return NULL;
 }
 
+static void
+_gather_pid_callback (GDesktopAppInfo   *gapp,
+                      GPid               pid,
+                      gpointer           data)
+{
+  ShellApp *app;
+  ShellAppSystem *appsys;
+  ShellWindowTracker *tracker;
+
+  g_return_if_fail (data != NULL);
+
+  app = SHELL_APP (data);
+  tracker = shell_window_tracker_get_default ();
+  appsys = shell_app_system_get_default ();
+
+  _shell_window_tracker_add_child_process_app (tracker,
+                                               pid,
+                                               app);
+}
+
 /**
  * shell_app_info_launch_full:
  * @timestamp: Event timestamp, or 0 for current event timestamp
@@ -1312,6 +1333,7 @@ shell_app_info_launch_full (ShellAppInfo *info,
                             char        **startup_id,
                             GError      **error)
 {
+  ShellApp *shell_app;
   GDesktopAppInfo *gapp;
   GdkAppLaunchContext *context;
   gboolean ret;
@@ -1363,7 +1385,15 @@ shell_app_info_launch_full (ShellAppInfo *info,
   gdk_app_launch_context_set_timestamp (context, timestamp);
   gdk_app_launch_context_set_desktop (context, workspace);
 
-  ret = g_app_info_launch (G_APP_INFO (gapp), uris, (GAppLaunchContext*) context, error);
+  shell_app = shell_app_system_get_app (shell_app_system_get_default (),
+                                        shell_app_info_get_id (info));
+
+  ret = g_desktop_app_info_launch_uris_as_manager (gapp, uris,
+                                                   (GAppLaunchContext*) context,
+                                                   G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+                                                   NULL, NULL,
+                                                   _gather_pid_callback, shell_app,
+                                                   error);
 
   g_object_unref (G_OBJECT (gapp));
 

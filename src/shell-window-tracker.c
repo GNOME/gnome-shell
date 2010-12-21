@@ -71,6 +71,9 @@ struct _ShellWindowTracker
 
   /* <const char *id, ShellApp *app> */
   GHashTable *running_apps;
+
+  /* <int, ShellApp *app> */
+  GHashTable *launched_pid_to_app;
 };
 
 G_DEFINE_TYPE (ShellWindowTracker, shell_window_tracker, G_TYPE_OBJECT);
@@ -379,6 +382,20 @@ get_app_from_window_group (ShellWindowTracker  *monitor,
   return result;
 }
 
+static ShellApp *
+get_app_from_window_pid (ShellWindowTracker  *tracker,
+                         MetaWindow          *window)
+{
+  int pid;
+
+  if (meta_window_is_remote (window))
+    return NULL;
+
+  pid = meta_window_get_pid (window);
+
+  return g_hash_table_lookup (tracker->launched_pid_to_app, GINT_TO_POINTER (pid));
+}
+
 /**
  * get_app_for_window:
  *
@@ -409,6 +426,10 @@ get_app_for_window (ShellWindowTracker    *monitor,
           return result;
         }
     }
+
+  result = get_app_from_window_pid (monitor, window);
+  if (result != NULL)
+    return result;
 
   /* Check if the app's WM_CLASS specifies an app */
   result = get_app_from_window_wmclass (window);
@@ -673,6 +694,8 @@ shell_window_tracker_init (ShellWindowTracker *self)
 
   self->running_apps = g_hash_table_new (g_str_hash, g_str_equal);
 
+  self->launched_pid_to_app = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_object_unref);
+
   screen = shell_global_get_screen (shell_global_get ());
 
   g_signal_connect (G_OBJECT (screen), "startup-sequence-changed",
@@ -690,6 +713,8 @@ shell_window_tracker_finalize (GObject *object)
 
   g_hash_table_destroy (self->running_apps);
   g_hash_table_destroy (self->window_to_app);
+  g_hash_table_destroy (self->launched_pid_to_app);
+
   for (i = 0; title_patterns[i].app_id; i++)
     g_regex_unref (title_patterns[i].regex);
 
@@ -800,6 +825,40 @@ shell_window_tracker_get_running_apps (ShellWindowTracker *monitor,
   ret = g_slist_sort (ret, (GCompareFunc)shell_app_compare);
 
   return ret;
+}
+
+static void
+on_child_exited (GPid      pid,
+                 gint      status,
+                 gpointer  unused_data)
+{
+  ShellWindowTracker *tracker;
+
+  tracker = shell_window_tracker_get_default ();
+
+  g_hash_table_remove (tracker->launched_pid_to_app, GINT_TO_POINTER((gint)pid));
+}
+
+void
+_shell_window_tracker_add_child_process_app (ShellWindowTracker *tracker,
+                                             GPid                pid,
+                                             ShellApp           *app)
+{
+  int pid_int = (int) pid;
+
+  if (g_hash_table_lookup (tracker->launched_pid_to_app,
+                           &pid_int))
+    return;
+
+  g_hash_table_insert (tracker->launched_pid_to_app,
+                       GINT_TO_POINTER (pid_int),
+                       g_object_ref (app));
+  g_child_watch_add (pid, on_child_exited, NULL);
+  /* TODO: rescan unassociated windows
+   * Very unlikely in practice that the launched app gets ahead of us
+   * enough to map an X window before we get scheduled after the fork(),
+   * but adding this note for future reference.
+   */
 }
 
 static void
