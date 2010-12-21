@@ -59,16 +59,26 @@ IGNORE_HFILES=\
 	cogl-color-private.h			\
 	cogl-feature-private.h			\
 	cogl-framebuffer-private.h		\
+	cogl-gtype-private.h			\
+	cogl-index-array-private.h		\
+	cogl-indices-private.h			\
 	cogl-journal-private.h			\
-	cogl-material-arbfp-private.h		\
-	cogl-material-fixed-private.h		\
-	cogl-material-glsl-private.h		\
-	cogl-material-opengl-private.h		\
-	cogl-material-private.h			\
 	cogl-matrix-private.h			\
 	cogl-object-private.h			\
 	cogl-path-private.h			\
+	cogl-pipeline-fragend-arbfp-private.h	\
+	cogl-pipeline-fragend-fixed-private.h	\
+	cogl-pipeline-fragend-glsl-private.h	\
+	cogl-pipeline-opengl-private.h		\
+	cogl-pipeline-private.h			\
+	cogl-pipeline-progend-glsl-private.h	\
+	cogl-pipeline-vertend-fixed-private.h	\
+	cogl-pipeline-vertend-glsl-private.h	\
 	cogl-pixel-array-private.h		\
+	cogl-primitive-private.h		\
+	cogl-primitives-private.h		\
+	cogl-private.h				\
+	cogl-program-private.h			\
 	cogl-shader-private.h			\
 	cogl-sub-texture-private.h		\
 	cogl-texture-2d-private.h		\
@@ -76,6 +86,8 @@ IGNORE_HFILES=\
 	cogl-texture-3d-private.h		\
 	cogl-texture-private.h			\
 	cogl-texture-rectangle-private.h	\
+	cogl-vertex-array-private.h		\
+	cogl-vertex-attribute-private.h		\
 	cogl-vertex-buffer-private.h		\
 	cogl-blend-string.h 			\
 	cogl-clip-stack.h 			\
