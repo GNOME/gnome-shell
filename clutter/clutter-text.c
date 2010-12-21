@@ -146,6 +146,7 @@ struct _ClutterTextPrivate
   guint cursor_color_set    : 1;
   guint preedit_set         : 1;
   guint is_default_font     : 1;
+  guint has_focus           : 1;
 
   /* current cursor position */
   gint position;
@@ -1903,7 +1904,8 @@ clutter_text_paint (ClutterActor *self)
 
   priv->text_x = text_x;
 
-  cursor_paint (text);
+  if (priv->has_focus)
+    cursor_paint (text);
 
   real_opacity = clutter_actor_get_paint_opacity (self)
                * priv->text_color.alpha
@@ -2065,6 +2067,26 @@ clutter_text_allocate (ClutterActor           *self,
 
   parent_class = CLUTTER_ACTOR_CLASS (clutter_text_parent_class);
   parent_class->allocate (self, box, flags);
+}
+
+static void
+clutter_text_key_focus_in (ClutterActor *actor)
+{
+  ClutterTextPrivate *priv = CLUTTER_TEXT (actor)->priv;
+
+  priv->has_focus = TRUE;
+
+  clutter_actor_queue_redraw (actor);
+}
+
+static void
+clutter_text_key_focus_out (ClutterActor *actor)
+{
+  ClutterTextPrivate *priv = CLUTTER_TEXT (actor)->priv;
+
+  priv->has_focus = FALSE;
+
+  clutter_actor_queue_redraw (actor);
 }
 
 static gboolean
@@ -2515,6 +2537,8 @@ clutter_text_class_init (ClutterTextClass *klass)
   actor_class->button_press_event = clutter_text_button_press;
   actor_class->button_release_event = clutter_text_button_release;
   actor_class->motion_event = clutter_text_motion;
+  actor_class->key_focus_in = clutter_text_key_focus_in;
+  actor_class->key_focus_out = clutter_text_key_focus_out;
 
   /**
    * ClutterText:font-name:
