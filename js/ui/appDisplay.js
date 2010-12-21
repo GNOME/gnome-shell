@@ -151,6 +151,7 @@ ViewByCategories.prototype = {
         this._apps = apps;
         this._view.refresh(apps);
 
+        /* Translators: Filter to display all applications */
         this._addFilter(_("All"), -1);
 
         if (!sections)
