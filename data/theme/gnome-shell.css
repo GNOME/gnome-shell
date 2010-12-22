@@ -993,6 +993,15 @@ StTooltip StLabel {
     border-radius: 8px;
 }
 
+.switcher-list .item-box:outlined {
+    padding: 6px;
+    border: 2px solid rgba(85,85,85,1.0);
+}
+
+.switcher-list .item-box:selected {
+    background: rgba(255,255,255,0.33);
+}
+
 .switcher-list .thumbnail-box {
     padding: 2px;
     spacing: 4px;
@@ -1000,18 +1009,6 @@ StTooltip StLabel {
 
 .switcher-list .thumbnail {
     width:  256px;
-}
-
-.switcher-list .outlined-item-box {
-    padding: 6px;
-    border: 2px solid rgba(85,85,85,1.0);
-    border-radius: 8px;
-}
-
-.switcher-list .selected-item-box {
-    padding: 8px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.33);
 }
 
 .switcher-list .separator {

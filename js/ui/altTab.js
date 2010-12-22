@@ -604,16 +604,18 @@ SwitcherList.prototype = {
     },
 
     highlight: function(index, justOutline) {
-        if (this._highlighted != -1)
-            this._items[this._highlighted].style_class = 'item-box';
+        if (this._highlighted != -1) {
+            this._items[this._highlighted].remove_style_pseudo_class('outlined');
+            this._items[this._highlighted].remove_style_pseudo_class('selected');
+        }
 
         this._highlighted = index;
 
         if (this._highlighted != -1) {
             if (justOutline)
-                this._items[this._highlighted].style_class = 'outlined-item-box';
+                this._items[this._highlighted].add_style_pseudo_class('outlined');
             else
-                this._items[this._highlighted].style_class = 'selected-item-box';
+                this._items[this._highlighted].add_style_pseudo_class('selected');
         }
 
         let monitor = global.get_primary_monitor();
@@ -859,9 +861,11 @@ AppSwitcher.prototype = {
         while(this._items.length > 1 && this._items[j].style_class != 'item-box') {
                 j++;
         }
-        let iconPadding = this._items[j].get_theme_node().get_horizontal_padding();
+        let themeNode = this._items[j].get_theme_node();
+        let iconPadding = themeNode.get_horizontal_padding();
+        let iconBorder = themeNode.get_border_width(St.Side.LEFT) + themeNode.get_border_width(St.Side.RIGHT);
         let [iconMinHeight, iconNaturalHeight] = this.icons[j].label.get_preferred_height(-1);
-        let iconSpacing = iconNaturalHeight + iconPadding;
+        let iconSpacing = iconNaturalHeight + iconPadding + iconBorder;
         let totalSpacing = this._list.spacing * (this._items.length - 1);
         if (this._separator)
            totalSpacing += this._separator.width + this._list.spacing;
