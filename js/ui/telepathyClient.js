@@ -593,6 +593,7 @@ Notification.prototype = {
 
     _init: function(source) {
         MessageTray.Notification.prototype._init.call(this, source, source.title, null, { customContent: true });
+        this.setResident(true);
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response' });
         this._responseEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
