@@ -171,7 +171,7 @@ cogl_material_copy (CoglMaterial *source);
  * Deprecated: 1.2: Use cogl_object_ref() instead
  */
 CoglHandle
-cogl_material_ref (CoglHandle handle) G_GNUC_DEPRECATED;
+cogl_material_ref (CoglHandle material) G_GNUC_DEPRECATED;
 
 /**
  * cogl_material_unref:
@@ -184,7 +184,7 @@ cogl_material_ref (CoglHandle handle) G_GNUC_DEPRECATED;
  * Deprecated: 1.2: Use cogl_object_unref() instead
  */
 void
-cogl_material_unref (CoglHandle handle) G_GNUC_DEPRECATED;
+cogl_material_unref (CoglHandle material) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
@@ -607,8 +607,8 @@ cogl_material_set_blend_constant (CoglMaterial *material,
 
 /**
  * cogl_material_set_point_size:
- * @material: a #CoglHandle to a material.
- * @size: the new point size.
+ * @material: a material.
+ * @point_size: the new point size.
  *
  * Changes the size of points drawn when %COGL_VERTICES_MODE_POINTS is
  * used with the vertex buffer API. Note that typically the GPU will
@@ -645,7 +645,8 @@ cogl_material_get_point_size (CoglMaterial *material);
  * Queries what user program has been associated with the given
  * @material using cogl_material_set_user_program().
  *
- * Return value: The current user program or %COGL_INVALID_HANDLE.
+ * Return value: (transfer none): The current user program
+ *   or %COGL_INVALID_HANDLE.
  *
  * Since: 1.4
  */

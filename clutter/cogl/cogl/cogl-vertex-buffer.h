@@ -296,7 +296,7 @@ cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
 
 /**
  * cogl_vertex_buffer_indices_get_type:
- * @handle: An indices handle
+ * @indices: An indices handle
  *
  * Queries back the data type used for the given indices
  *

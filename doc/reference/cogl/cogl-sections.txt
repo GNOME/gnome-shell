@@ -186,11 +186,15 @@ cogl_path_stroke_preserve
 <SECTION>
 <FILE>cogl-bitmap</FILE>
 <TITLE>Bitmaps</TITLE>
+CoglBitmap
 cogl_bitmap_new_from_file
 cogl_bitmap_get_size_from_file
 cogl_is_bitmap
 CoglBitmapError
 COGL_BITMAP_ERROR
+<SUBSECTION Standard>
+cogl_bitmap_error_get_type
+cogl_bitmap_error_quark
 </SECTION>
 
 <SECTION>
@@ -334,6 +338,9 @@ cogl_fixed_pow2
 cogl_fixed_sin
 cogl_fixed_sqrt
 cogl_fixed_tan
+cogl_fixed_div
+cogl_fixed_mul
+cogl_fixed_mul_div
 
 <SUBSECTION>
 CoglAngle
@@ -348,7 +355,7 @@ cogl_angle_tan
 <SUBSECTION Private>
 cogl_double_to_fixed
 cogl_double_to_int
-cogl_double_to_unit
+cogl_double_to_uint
 </SECTION>
 
 <SECTION>
@@ -358,6 +365,9 @@ CoglColor
 cogl_color_new
 cogl_color_copy
 cogl_color_free
+cogl_color_init_from_4f
+cogl_color_init_from_4fv
+cogl_color_init_from_4ub
 cogl_color_set_from_4ub
 cogl_color_set_from_4f
 
@@ -433,6 +443,9 @@ cogl_vertex_buffer_indices_get_type
 <TITLE>Matrices</TITLE>
 CoglMatrix
 cogl_matrix_init_identity
+cogl_matrix_copy
+cogl_matrix_equal
+cogl_matrix_free
 cogl_matrix_frustum
 cogl_matrix_ortho
 cogl_matrix_perspective
@@ -444,11 +457,16 @@ cogl_matrix_init_from_array
 cogl_matrix_get_array
 cogl_matrix_get_inverse
 cogl_matrix_transform_point
+cogl_matrix_project_points
+cogl_matrix_transform_points
 </SECTION>
 
 <SECTION>
 <FILE>cogl-material</FILE>
 <TITLE>Materials</TITLE>
+CoglMaterial
+CoglMaterialLayer
+CoglMaterialLayerCallback
 cogl_material_new
 cogl_material_copy
 cogl_is_material
@@ -495,9 +513,22 @@ cogl_material_set_layer_wrap_mode
 cogl_material_set_layer_wrap_mode_s
 cogl_material_set_layer_wrap_mode_t
 cogl_material_set_layer_wrap_mode_p
-cogl_material_layer_get_wrap_mode_s
-cogl_material_layer_get_wrap_mode_t
-cogl_material_layer_get_wrap_mode_p
+cogl_material_get_layer_wrap_mode_s
+cogl_material_get_layer_wrap_mode_t
+cogl_material_get_layer_wrap_mode_p
+cogl_material_wrap_mode_get_type
+cogl_material_set_user_program
+cogl_material_get_user_program
+cogl_material_set_depth_range
+cogl_material_get_depth_range
+cogl_material_set_depth_test_enabled
+cogl_material_get_depth_test_enabled
+cogl_material_set_depth_test_function
+cogl_material_get_depth_test_function
+cogl_material_set_depth_writing_enabled
+cogl_material_get_depth_writing_enabled
+cogl_material_foreach_layer
+
 <SUBSECTION Private>
 cogl_blend_string_error_get_type
 cogl_blend_string_error_quark

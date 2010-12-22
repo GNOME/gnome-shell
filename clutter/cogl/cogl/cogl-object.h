@@ -82,15 +82,15 @@ typedef struct
 typedef void (*CoglUserDataDestroyCallback) (void *user_data);
 
 /**
- * cogl_object_set_user_data:
+ * cogl_object_set_user_data: (skip)
  * @object: The object to associate private data with
  * @key: The address of a #CoglUserDataKey which provides a unique value
- *       with which to index the private data.
- * @user_data: The data to associate with the given object, or NULL to
- *             remove a previous association.
+ *   with which to index the private data.
+ * @user_data: The data to associate with the given object,
+ *   or %NULL to remove a previous association.
  * @destroy: A #CoglUserDataDestroyCallback to call if the object is
- *           destroyed or if the association is removed by later setting
- *           NULL data for the same key.
+ *   destroyed or if the association is removed by later setting
+ *   %NULL data for the same key.
  *
  * Associates some private @user_data with a given #CoglObject. To
  * later remove the association call cogl_object_set_user_data() with
@@ -105,7 +105,7 @@ cogl_object_set_user_data (CoglObject *object,
                            CoglUserDataDestroyCallback destroy);
 
 /**
- * cogl_object_get_user_data:
+ * cogl_object_get_user_data: (skip)
  * @object: The object with associated private data to query
  * @key: The address of a #CoglUserDataKey which provides a unique value
  *       with which to index the private data.
@@ -114,8 +114,9 @@ cogl_object_set_user_data (CoglObject *object,
  * the given @key. If no user data has been associated with @object
  * for the given @key this function returns NULL.
  *
- * Returns: The user data previously associated with @object using
- * the given @key; or NULL if no associated data is found.
+ * Returns: (transfer none): The user data previously associated
+ *   with @object using the given @key; or %NULL if no associated
+ *   data is found.
  *
  * Since: 1.4
  */

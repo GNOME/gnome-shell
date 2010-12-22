@@ -603,7 +603,7 @@ cogl_pipeline_set_blend_constant (CoglPipeline *pipeline,
 /**
  * cogl_pipeline_set_point_size:
  * @pipeline: a #CoglHandle to a pipeline.
- * @size: the new point size.
+ * @point_size: the new point size.
  *
  * Changes the size of points drawn when %COGL_VERTICES_MODE_POINTS is
  * used with the vertex buffer API. Note that typically the GPU will

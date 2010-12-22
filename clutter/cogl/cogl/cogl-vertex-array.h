@@ -44,7 +44,7 @@ typedef struct _CoglVertexArray	      CoglVertexArray;
 
 /**
  * cogl_vertex_array_new:
- * @size: The number of bytes to allocate for vertex attribute data.
+ * @bytes: The number of bytes to allocate for vertex attribute data.
  * @data: An optional pointer to vertex data to upload immediately.
  *
  * Declares a new #CoglVertexArray of @size bytes to contain arrays of vertex
