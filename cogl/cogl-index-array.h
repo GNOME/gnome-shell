@@ -45,7 +45,7 @@ typedef struct _CoglIndexArray	      CoglIndexArray;
 
 /**
  * cogl_index_array_new:
- * @size: The number of bytes to allocate for vertex attribute data.
+ * @bytes: The number of bytes to allocate for vertex attribute data.
  *
  * Declares a new #CoglIndexArray of @size bytes to contain vertex
  * indices. Once declared, data can be set using

@@ -160,8 +160,8 @@ typedef enum { /*< prefix=COGL_BUFFER_ACCESS >*/
 
 /**
  * CoglBufferMapHint:
- * COGL_BUFFER_MAP_HINT_DISCARD: Tells Cogl that you plan to replace
- *                               all the buffer's contents.
+ * @COGL_BUFFER_MAP_HINT_DISCARD: Tells Cogl that you plan to replace
+ *    all the buffer's contents.
  *
  * Hints to Cogl about how you are planning to modify the data once it
  * is mapped.
@@ -170,7 +170,7 @@ typedef enum { /*< prefix=COGL_BUFFER_ACCESS >*/
  * Stability: Unstable
  */
 typedef enum { /*< prefix=COGL_BUFFER_MAP_HINT >*/
-    COGL_BUFFER_MAP_HINT_DISCARD = 1 << 0
+  COGL_BUFFER_MAP_HINT_DISCARD = 1 << 0
 } CoglBufferMapHint;
 
 /**
@@ -178,7 +178,7 @@ typedef enum { /*< prefix=COGL_BUFFER_MAP_HINT >*/
  * @buffer: a buffer object
  * @access: how the mapped buffer will be used by the application
  * @hints: A mask of #CoglBufferMapHint<!-- -->s that tell Cogl how
- *        the data will be modified once mapped.
+ *   the data will be modified once mapped.
  *
  * Maps the buffer into the application address space for direct access.
  *

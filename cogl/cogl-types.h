@@ -84,7 +84,7 @@ void
 cogl_handle_unref (CoglHandle handle);
 
 /**
- * cogl_object_ref:
+ * cogl_object_ref: (skip)
  * @object: a #CoglObject
  *
  * Increases the reference count of @handle by 1
@@ -95,7 +95,7 @@ void *
 cogl_object_ref (void *object);
 
 /**
- * cogl_object_unref:
+ * cogl_object_unref: (skip)
  * @object: a #CoglObject
  *
  * Drecreases the reference count of @object by 1; if the reference

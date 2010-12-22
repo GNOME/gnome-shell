@@ -107,8 +107,8 @@ cogl_is_bitmap (CoglHandle handle);
  * CoglBitmapError:
  * @COGL_BITMAP_ERROR_FAILED: Generic failure code, something went
  *   wrong.
- * @COGL_ERROR_UNKNOWN_TYPE: Unknown image type.
- * @COGL_ERROR_CORRUPT_IMAGE: An image file was broken somehow.
+ * @COGL_BITMAP_ERROR_UNKNOWN_TYPE: Unknown image type.
+ * @COGL_BITMAP_ERROR_CORRUPT_IMAGE: An image file was broken somehow.
  *
  * Error codes that can be thrown when performing bitmap
  * operations. Note that gdk_pixbuf_new_from_file() can also throw
