@@ -129,7 +129,7 @@ maybe_redirect_mouse_event (XEvent *xevent)
   if (!ui)
     return FALSE;
 
-  gdk_window = gdk_window_lookup_for_display (gdisplay, window);
+  gdk_window = gdk_x11_window_lookup_for_display (gdisplay, window);
   if (gdk_window == NULL)
     return FALSE;
 
@@ -411,8 +411,10 @@ meta_ui_map_frame   (MetaUI *ui,
                      Window  xwindow)
 {
   GdkWindow *window;
+  GdkDisplay *display;
 
-  window = gdk_xid_table_lookup (xwindow);
+  display = gdk_x11_lookup_xdisplay (ui->xdisplay);
+  window = gdk_x11_window_lookup_for_display (display, xwindow);
 
   if (window)
     gdk_window_show_unraised (window);
@@ -423,8 +425,10 @@ meta_ui_unmap_frame (MetaUI *ui,
                      Window  xwindow)
 {
   GdkWindow *window;
+  GdkDisplay *display;
 
-  window = gdk_xid_table_lookup (xwindow);
+  display = gdk_x11_lookup_xdisplay (ui->xdisplay);
+  window = gdk_x11_window_lookup_for_display (display, xwindow);
 
   if (window)
     gdk_window_hide (window);
@@ -653,8 +657,10 @@ meta_ui_window_should_not_cause_focus (Display *xdisplay,
                                        Window   xwindow)
 {
   GdkWindow *window;
+  GdkDisplay *display;
 
-  window = gdk_xid_table_lookup (xwindow);
+  display = gdk_x11_lookup_xdisplay (xdisplay);
+  window = gdk_x11_window_lookup_for_display (display, xwindow);
 
   /* we shouldn't cause focus if we're an override redirect
    * toplevel which is not foreign
@@ -669,17 +675,20 @@ char*
 meta_text_property_to_utf8 (Display             *xdisplay,
                             const XTextProperty *prop)
 {
+  GdkDisplay *display;
   char **list;
   int count;
   char *retval;
   
   list = NULL;
 
-  count = gdk_text_property_to_utf8_list (gdk_x11_xatom_to_atom (prop->encoding),
-                                          prop->format,
-                                          prop->value,
-                                          prop->nitems,
-                                          &list);
+  display = gdk_x11_lookup_xdisplay (xdisplay);
+  count = gdk_text_property_to_utf8_list_for_display (display,
+                                                      gdk_x11_xatom_to_atom (prop->encoding),
+                                                      prop->format,
+                                                      prop->value,
+                                                      prop->nitems,
+                                                      &list);
 
   if (count == 0)
     retval = NULL;
@@ -904,9 +913,11 @@ gboolean
 meta_ui_window_is_widget (MetaUI *ui,
                           Window  xwindow)
 {
+  GdkDisplay *display;
   GdkWindow *window;
 
-  window = gdk_xid_table_lookup (xwindow);
+  display = gdk_x11_lookup_xdisplay (ui->xdisplay);
+  window = gdk_x11_window_lookup_for_display (display, xwindow);
 
   if (window)
     {
