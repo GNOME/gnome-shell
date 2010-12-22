@@ -165,14 +165,6 @@ changequote([,])dnl
 AC_PATH_PROG(mutter, [mutter])
 AC_SUBST(mutter)
 
-AC_MSG_CHECKING([if mutter was compiled with GTK+-3.0])
-if $PKG_CONFIG --libs libmutter-private | grep gtk-x11-3 >/dev/null; then
-  AC_MSG_RESULT(yes)
-else
-  AC_MSG_RESULT(no)
-  AC_MSG_ERROR([GNOME Shell requires Mutter to be compiled against GTK+-3.0])
-fi
-
 AC_CONFIG_FILES([
   Makefile
   data/Makefile
