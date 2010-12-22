@@ -530,7 +530,8 @@ shell_global_set_cursor (ShellGlobal *global,
     {
       ClutterStage *stage = CLUTTER_STAGE (meta_plugin_get_stage (global->plugin));
 
-      global->stage_window = gdk_window_foreign_new (clutter_x11_get_stage_window (stage));
+      global->stage_window = gdk_x11_window_foreign_new_for_display (gdk_display_get_default (),
+                                                                     clutter_x11_get_stage_window (stage));
     }
 
   gdk_window_set_cursor (global->stage_window, cursor);

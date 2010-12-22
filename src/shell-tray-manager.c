@@ -198,6 +198,7 @@ shell_tray_manager_manage_stage (ShellTrayManager *manager,
 {
   Window stage_xwindow;
   GdkWindow *stage_window;
+  GdkDisplay *display;
   GdkScreen *screen;
 
   g_return_if_fail (manager->priv->stage == NULL);
@@ -212,13 +213,15 @@ shell_tray_manager_manage_stage (ShellTrayManager *manager,
    *  in in some way. (The Clutter/Mutter combo is currently incapable
    *  of multi-screen operation, so alternatively we could just assume
    *  that clutter_x11_get_default_screen() gives us the right
-   *  screen.)
+   *  screen.) We assume, in any case, that we are using the default
+   *  GDK display.
    */
-  stage_window = gdk_window_lookup (stage_xwindow);
+  display = gdk_display_get_default();
+  stage_window = gdk_x11_window_lookup_for_display (display, stage_xwindow);
   if (stage_window)
     g_object_ref (stage_window);
   else
-    stage_window = gdk_window_foreign_new (stage_xwindow);
+    stage_window = gdk_x11_window_foreign_new_for_display (display, stage_xwindow);
 
   screen = gdk_window_get_screen (stage_window);
 

@@ -27,7 +27,6 @@
 #include "na-tray-manager.h"
 #include "gtk-compat.h"
 
-#include <gdkconfig.h>
 #include <glib/gi18n-lib.h>
 #if defined (GDK_WINDOWING_X11)
 #include <gdk/gdkx.h>

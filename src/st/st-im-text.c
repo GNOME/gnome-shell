@@ -61,6 +61,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+#include <gdk/gdkx.h>
 #include <X11/extensions/XKB.h>
 
 #include "st-im-text.h"
@@ -200,11 +201,11 @@ window_for_actor (ClutterActor *actor)
   stage = clutter_actor_get_stage (actor);
   xwindow = clutter_x11_get_stage_window ((ClutterStage *)stage);
 
-  window = gdk_window_lookup_for_display (display, xwindow);
+  window = gdk_x11_window_lookup_for_display (display, xwindow);
   if (window)
     g_object_ref (window);
   else
-    window = gdk_window_foreign_new_for_display (display, xwindow);
+    window = gdk_x11_window_foreign_new_for_display (display, xwindow);
 
   return window;
 }
