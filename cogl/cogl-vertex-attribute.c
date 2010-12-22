@@ -209,7 +209,7 @@ validate_cogl_attribute (const char *name,
 	}
       *name_id = COGL_VERTEX_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY;
     }
-  else if (strcmp (name, "normal") == 0)
+  else if (strcmp (name, "normal_in") == 0)
     {
       if (G_UNLIKELY (n_components != 3))
         {
