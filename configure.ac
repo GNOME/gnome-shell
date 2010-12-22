@@ -1,5 +1,5 @@
 AC_PREREQ(2.63)
-AC_INIT([gnome-shell],[2.91.3],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
+AC_INIT([gnome-shell],[2.91.4],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/shell-global.c])
@@ -60,7 +60,7 @@ AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
 CLUTTER_MIN_VERSION=1.5.8
 GOBJECT_INTROSPECTION_MIN_VERSION=0.6.11
 GJS_MIN_VERSION=0.7
-MUTTER_MIN_VERSION=2.91.0
+MUTTER_MIN_VERSION=2.91.4
 GTK_MIN_VERSION=2.91.7
 GIO_MIN_VERSION=2.25.9
 
