@@ -2,15 +2,16 @@
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 # Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-12-18 19:25+0000\n"
-"PO-Revision-Date: 2010-12-19 13:12+0100\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
+"POT-Creation-Date: 2010-12-20 21:07+0000\n"
+"PO-Revision-Date: 2010-12-23 10:31+0100\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -88,8 +89,8 @@ msgid ""
 "If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
 "time."
 msgstr ""
-"Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos "
-"en la hora."
+"Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos en "
+"la hora."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "If true, display the ISO week date in the calendar."
@@ -111,13 +112,13 @@ msgid ""
 "'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
 msgstr ""
 "Establece la tubería GStreamer usada para codificar grabaciones. Sigue la "
-"sintaxis usada para gst-launch. La tubería debería tener un sumidero "
-"(«sink») de ensamblaje/sesensamblaje donde el vídeo que se está grabando se "
-"graba. Generalmente tendrá un origen de ensamblado/desensamblado; la salida "
-"de ese punto se escibirá en el archivo de salida. No obstante la tubería "
-"también puede tomar parte en su propia salida; esto se puede usar para "
-"enviar la salida a un servidor «icecast» a través de shout2send o similar. "
-"Cuando no está establecido o lo está a un valor vacío, se usará la tubería "
+"sintaxis usada para gst-launch. La tubería debería tener un sumidero («sink») "
+"de ensamblaje/sesensamblaje donde el vídeo que se está grabando se graba. "
+"Generalmente tendrá un origen de ensamblado/desensamblado; la salida de ese "
+"punto se escibirá en el archivo de salida. No obstante la tubería también "
+"puede tomar parte en su propia salida; esto se puede usar para enviar la "
+"salida a un servidor «icecast» a través de shout2send o similar. Cuando no "
+"está establecido o lo está a un valor vacío, se usará la tubería "
 "predeterminada. Actualmente es «videorate ! theoraenc ! oggmux» y greba en "
 "Ogg Theora."
 
@@ -199,8 +200,8 @@ msgid ""
 msgstr ""
 "Esta clave especifica el formato de la hora especificado por el reloj del "
 "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
-"«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará "
-"la hora en segundos desde la época (1 de enero de 1970). Si se establece a "
+"«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará la "
+"hora en segundos desde la época (1 de enero de 1970). Si se establece a "
 "«custom» el reloj mostrará la hora según el formato especificado en la clave "
 "«custom_format». Note que si se establece a «unix» o «custom» se ignoran las "
 "claves «show_date» y «show_seconds»."
@@ -654,6 +655,131 @@ msgstr "Contraste alto"
 msgid "Large Text"
 msgstr "<b>Texto:</b>"
 
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:200
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "Visibilidad"
+
+#: ../js/ui/status/bluetooth.js:68
+msgid "Send Files to Device..."
+msgstr "Enviar archivos al dispositivo…"
+
+#: ../js/ui/status/bluetooth.js:71
+msgid "Setup a New Device..."
+msgstr "Configurar un dispositivo nuevo…"
+
+#: ../js/ui/status/bluetooth.js:94
+#| msgid "Power Settings"
+msgid "Bluetooth Settings"
+msgstr "Configuración de Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:151
+#| msgid "Connect to..."
+msgid "Connection"
+msgstr "Conexión"
+
+#: ../js/ui/status/bluetooth.js:187
+#| msgid "Suspend..."
+msgid "Send Files..."
+msgstr "Enviar archivos…"
+
+#: ../js/ui/status/bluetooth.js:192
+msgid "Browse Files..."
+msgstr "Examinar archivos…"
+
+#: ../js/ui/status/bluetooth.js:201
+msgid "Error browsing device"
+msgstr "Error al examinar el dispositivo"
+
+#: ../js/ui/status/bluetooth.js:202
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "No se puede examinar el dispositivo solicitado, el error es «%s»"
+
+#: ../js/ui/status/bluetooth.js:210
+#| msgid "Power Settings"
+msgid "Keyboard Settings"
+msgstr "Configuración del teclado"
+
+#: ../js/ui/status/bluetooth.js:215
+#| msgid "Power Settings"
+msgid "Mouse Settings"
+msgstr "Ajustes del ratón…"
+
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/volume.js:62
+msgid "Sound Settings"
+msgstr "Configuración del sonido"
+
+#: ../js/ui/status/bluetooth.js:293 ../js/ui/status/bluetooth.js:327
+#: ../js/ui/status/bluetooth.js:367 ../js/ui/status/bluetooth.js:400
+msgid "Bluetooth Agent"
+msgstr "Agente Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:328
+#, c-format
+msgid "Authorization request from %s"
+msgstr "Solicitud de autorización de %s"
+
+#: ../js/ui/status/bluetooth.js:334
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "El dispositivo %s quiere acceder al servicio «%s»"
+
+#: ../js/ui/status/bluetooth.js:336
+msgid "Always grant access"
+msgstr "Conceder acceso siempre"
+
+#: ../js/ui/status/bluetooth.js:337
+msgid "Grant this time only"
+msgstr "Conceder sólo esta vez"
+
+#: ../js/ui/status/bluetooth.js:338
+msgid "Reject"
+msgstr "Rechazar"
+
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Confirmación de emparejamiento para «%s»"
+
+#: ../js/ui/status/bluetooth.js:374 ../js/ui/status/bluetooth.js:408
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "El dispositivo «%s» quiere emparejarse con este equipo"
+
+#: ../js/ui/status/bluetooth.js:375
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Confirme que el PIN mostrado en «%s» coincide con el del dispositivo."
+
+#: ../js/ui/status/bluetooth.js:377
+msgid "Matches"
+msgstr "Coincide"
+
+#: ../js/ui/status/bluetooth.js:378
+msgid "Does not match"
+msgstr "No coincide"
+
+#: ../js/ui/status/bluetooth.js:401
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Solicitud de emparejamiento para «%s»"
+
+#: ../js/ui/status/bluetooth.js:409
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Introduzca el PIN mencionado en el dispositivo."
+
+#: ../js/ui/status/bluetooth.js:425
+msgid "OK"
+msgstr "Aceptar"
+
+#: ../js/ui/status/bluetooth.js:426
+msgid "Cancel"
+msgstr "Cancelar"
+
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "Configuración de energía"
@@ -745,10 +871,6 @@ msgstr "Volumen"
 #: ../js/ui/status/volume.js:54
 msgid "Microphone"
 msgstr "Micrófono"
-
-#: ../js/ui/status/volume.js:62
-msgid "Sound Settings"
-msgstr "Configuración del sonido"
 
 #: ../js/ui/telepathyClient.js:560
 #, c-format
