@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&component=general\n"
-"POT-Creation-Date: 2010-11-18 14:48+0000\n"
+"POT-Creation-Date: 2010-11-20 11:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Gheyret Kenji<gheyret@yahoo.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -98,7 +98,7 @@ msgstr ""
 
 #: ../src/core/main.c:261
 msgid "Disable connection to session manager"
-msgstr "ئەڭگىمە باشقۇرغۇغا باغلىنىشنى چەكلە"
+msgstr "ئەڭگىمە باشقۇرغۇچقا باغلىنىشنى چەكلە"
 
 #: ../src/core/main.c:267
 msgid "Replace the running window manager with Mutter"
@@ -557,11 +557,11 @@ msgstr ""
 
 #: ../src/include/all-keybindings.h:183
 msgid "Move between panels and the desktop immediately"
-msgstr "يۈز بىلەن ئۈستەل ئارىسىدا فوكۇس نۇقتىنى دەرھال يۆتكەش"
+msgstr "يۈز بىلەن ئۈستەلئۈستى ئارىسىدا فوكۇس نۇقتىنى دەرھال يۆتكەش"
 
 #: ../src/include/all-keybindings.h:186
 msgid "Move backward between panels and the desktop immediately"
-msgstr "يۈز ۋە ئۈستەل ئارىسىدا فوكۇس نۇقتىنى دەرھال تەتۈر يۆتكەش"
+msgstr "يۈز ۋە ئۈستەلئۈستى ئارىسىدا فوكۇس نۇقتىنى دەرھال تەتۈر يۆتكەش"
 
 #: ../src/include/all-keybindings.h:203
 msgid "Hide all normal windows and set focus to the desktop"
@@ -1687,7 +1687,7 @@ msgstr ""
 
 #: ../src/ui/theme-viewer.c:108
 msgid "Des_ktop"
-msgstr "ئۈستەل يۈزى(_K)"
+msgstr "ئۈستەلئۈستى(_K)"
 
 #: ../src/ui/theme-viewer.c:114
 msgid "Open another one of these windows"
@@ -1743,7 +1743,6 @@ msgid "Border"
 msgstr "گىرۋەك"
 
 #: ../src/ui/theme-viewer.c:412
-#| msgid "Modal Dialog Box"
 msgid "Attached Modal Dialog"
 msgstr ""
 
