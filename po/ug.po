@@ -8,9 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&component=general\n"
-"POT-Creation-Date: 2010-11-25 14:32+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
+"POT-Creation-Date: 2010-12-20 21:07+0000\n"
 "PO-Revision-Date: 2010-11-25 14:28+0600\n"
 "Last-Translator: Sahran <sahran@live.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -47,28 +46,21 @@ msgstr "سائەتنىڭ ئىختىيارىي فورماتى"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"ئىچكى قورال قوزغىتىلسا ئىجادكارلار ۋە سىنىغۇچىلارنىڭ Alt-F2 ئارقىلىق "
-"كىرىشىگە قۇلايلىق"
+msgstr "ئىچكى قورال قوزغىتىلسا ئىجادكارلار ۋە سىنىغۇچىلارنىڭ Alt-F2 ئارقىلىق كىرىشىگە قۇلايلىق"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "File extension used for storing the screencast"
-msgstr ""
-"ئېكران كەسمىسى (screencasts) ساقلاشتا ئىشلىتىلىدىغان ھۆججەتنىڭ كېڭەيتىلگەن "
-"ئاتى "
+msgstr "ئېكران كەسمىسى (screencasts) ساقلاشتا ئىشلىتىلىدىغان ھۆججەتنىڭ كېڭەيتىلگەن ئاتى"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid "Framerate used for recording screencasts."
-msgstr ""
-"ئېكران كەسمىسى (screencasts) خاتىرىلەشتە ئىشلىتىلىدىغان كاندۇك تېزلىكى."
+msgstr "ئېكران كەسمىسى (screencasts) خاتىرىلەشتە ئىشلىتىلىدىغان كاندۇك تېزلىكى."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
-msgstr ""
-"GNOME چاپان (Shell)كېڭەيتىلمىسىنىڭ uuid خاسلىقى بار؛ بۇ كۇنۇپكا "
-"يۈكلەنمەيدىغان كېڭەيتىلمىلەر تىزىملىكىنى كۆرسىتىدۇ."
+msgstr "GNOME چاپان (Shell)كېڭەيتىلمىسىنىڭ uuid خاسلىقى بار؛ بۇ كۇنۇپكا يۈكلەنمەيدىغان كېڭەيتىلمىلەر تىزىملىكىنى كۆرسىتىدۇ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "History for command (Alt-F2) dialog"
@@ -82,17 +74,13 @@ msgstr "سائەت فورماتى"
 msgid ""
 "If true and format is either \"12-hour\" or \"24-hour\", display date in the "
 "clock, in addition to time."
-msgstr ""
-"ئەگەر راست (true) بولسا سائەتتە ۋاقىت فورماتىنى «12 سائەت» ياكى «24 سائەت» "
-"كۆرسەتكەندىن سىرت چېسلانىمۇ كۆرسىتىدۇ."
+msgstr "ئەگەر راست (true) بولسا سائەتتە ۋاقىت فورماتىنى «12 سائەت» ياكى «24 سائەت» كۆرسەتكەندىن سىرت چېسلانىمۇ كۆرسىتىدۇ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid ""
 "If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
 "time."
-msgstr ""
-"ئەگەر راست (true) بولسا سائەتتە ۋاقىت فورماتىنى «12 سائەت» ياكى «24 سائەت» "
-"كۆرسەتكەندىن سىرت سېكۇنتنىمۇ كۆرسىتىدۇ. "
+msgstr "ئەگەر راست (true) بولسا سائەتتە ۋاقىت فورماتىنى «12 سائەت» ياكى «24 سائەت» كۆرسەتكەندىن سىرت سېكۇنتنىمۇ كۆرسىتىدۇ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "If true, display the ISO week date in the calendar."
@@ -100,13 +88,9 @@ msgstr "ئەگەر راست(true) بولسا يىلنامىدىكى ISO ھەپت
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:12
 msgid "List of desktop file IDs for favorite applications"
-msgstr "ئامراق قوللىنىشچان پروگراممىلارنىڭ ئۈستەل ئۈستى ھۆججەت ID تىزىملىكى"
+msgstr "ئامراق پروگراممىلارنىڭ ئۈستەلئۈستى ھۆججەت ID تىزىملىكى"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "Overview workspace view mode"
-msgstr "خىزمەت رايون كۆرۈنۈش ھالىتى ھەققىدە قىسقىچە بايان"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -116,91 +100,60 @@ msgid ""
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
 "'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
-msgstr ""
-"ئۈن ئېلىشنى كودلاشتا ئىشلىتىلىدىغان GStreamer ئاقما لىنىيىنى تەڭشەيدۇ. ئۇ "
-"gst-launch گرامماتىكىسىغا بوي سۇنىدۇ. بۇ ئاقما لىنىيىدە ئۇلانمىغان sink pad "
-"بولۇشى لازىم، خاتىرىلىنىدىغان سىن مۇشۇ جايدا خاتىرىلىنىدۇ. بۇ لىنىيىدە "
-"ئادەتتە يەنە بىر ئۇلانمىغان مەنبە pad بولىدۇ؛ بۇ pad چىقارغان ئۇچۇرلار "
-"ھۆججەتكە يېزىلىدۇ. ئەمما ئاقما لىنىيە ئۆزىنىڭ چىقىرىشىنى بىر تەرەپ "
-"قىلالايدۇ، بۇنداق بولغاندا shout2send ئارقىلىق ياكى شۇنىڭغا ئوخشاش ئۇسۇلدا "
-"چىقىرىشنى icecast مۇلازىمېتىرىغا يوللايدۇ. ئاقما لىنىيە تەڭشەلمىگەن ياكى بوش "
-"قىممەتكە تەڭشەلگەندە كۆڭۈلدىكى ئاقما لىنىيە قوزغىتىلىدۇ. ئۇنىڭ نۆۋەتتىكى "
-"قىممىتى 'videorate ! theoraenc ! oggmux' بولۇپ، فورماتى Ogg شەكلىدە "
-"خاتىرىلىنىدۇ."
+msgstr "ئۈن ئېلىشنى كودلاشتا ئىشلىتىلىدىغان GStreamer ئاقما لىنىيىنى تەڭشەيدۇ. ئۇ gst-launch گرامماتىكىسىغا بوي سۇنىدۇ. بۇ ئاقما لىنىيىدە ئۇلانمىغان sink pad بولۇشى لازىم، خاتىرىلىنىدىغان سىن مۇشۇ جايدا خاتىرىلىنىدۇ. بۇ لىنىيىدە ئادەتتە يەنە بىر ئۇلانمىغان مەنبە pad بولىدۇ؛ بۇ pad چىقارغان ئۇچۇرلار ھۆججەتكە يېزىلىدۇ. ئەمما ئاقما لىنىيە ئۆزىنىڭ چىقىرىشىنى بىر تەرەپ قىلالايدۇ، بۇنداق بولغاندا shout2send ئارقىلىق ياكى شۇنىڭغا ئوخشاش ئۇسۇلدا چىقىرىشنى icecast مۇلازىمېتىرىغا يوللايدۇ. ئاقما لىنىيە تەڭشەلمىگەن ياكى بوش قىممەتكە تەڭشەلگەندە كۆڭۈلدىكى ئاقما لىنىيە قوزغىتىلىدۇ. ئۇنىڭ نۆۋەتتىكى قىممىتى 'videorate ! theoraenc ! oggmux' بولۇپ، فورماتى Ogg شەكلىدە خاتىرىلىنىدۇ."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "سائەت ئىچىدە چېسلا كۆرسەت"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "يىلنامىدە ھەپتىنى كۆرسىتىدۇ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "ۋاقىت ئىچىدە سېكۇنتنى بىللە كۆرسەت"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr "مۇناسىپ پروگرامما بەلگىسى يىغقۇچ رايونىدا كۆرسىتىلىدۇ."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
-msgstr ""
-"خاتىرىلەنگەن ئېكراننىڭ ھۆججەت ئاتى نۆۋەتتىكى چېسلا ئاساسىدا بىردىنبىر بولۇپ "
-"بۇ كېڭەيتىلگەن ئاتىنى ئىشلىتىدۇ. ئۇ ئۆزگەرسە ئوخشاش بولمىغان قاچا فورماتىدا "
-"خاتىرىلەيدۇ."
+msgstr "خاتىرىلەنگەن ئېكراننىڭ ھۆججەت ئاتى نۆۋەتتىكى چېسلا ئاساسىدا بىردىنبىر بولۇپ بۇ كېڭەيتىلگەن ئاتىنى ئىشلىتىدۇ. ئۇ ئۆزگەرسە ئوخشاش بولمىغان قاچا فورماتىدا خاتىرىلەيدۇ."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
-msgstr ""
-"GNOME Shell ئېكران خاتىرىلىگۈچ ھەر سېكۇنتتا خاتىرىلەيدىغان ئېكران كەسمىسى "
-"كاندۇك سۈرىتى(ھەر سېكۇنتتىكى كاندۇك سانى)."
+msgstr "GNOME Shell ئېكران خاتىرىلىگۈچ ھەر سېكۇنتتا خاتىرىلەيدىغان ئېكران كەسمىسى كاندۇك سۈرىتى(ھەر سېكۇنتتىكى كاندۇك سانى)."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "ئېكران كەسمىسىنى كودلاشتا ئىشلىتىلىدىغان gstreamer ئاقما لىنىيىسى"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"The selected workspace view mode in the overview. Supported values are "
-"\"single\" and \"grid\"."
-msgstr ""
-"قىسقىچە باياندىكى تاللانغان خىزمەت رايونىنىڭ كۆرۈنۈش ھالىتى. ئىشلىتىشكە "
-"بولىدىغان قىممەتلەر «يەككە» ۋە «سېتكا»"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
 "want to disable this for privacy reasons. Please note that doing so won't "
 "remove already saved data."
-msgstr ""
-"چاپان (shell) ئادەتتىكى ئەھۋالدا كۆپ ئىشلىتىلىدىغان ئاكتىپ پروگراممىلار"
-"(مەسىلەن، ئىجرا قىلىنىۋاتقان)نى كۆزىتىدۇ. گەرچە بۇ سانلىق مەلۇماتلار مەخپىي "
-"ساقلانسىمۇ، شەخسىي سىر سەۋەبىدىن بۇنى چەكلىشىڭىز مۇمكىن. دىققەت بۇنداق "
-"قىلغاندا ئاللىبۇرۇن ساقلانغان سانلىق مەلۇماتلار چىقىرىۋېتىلمەيدۇ."
+msgstr "چاپان (shell) ئادەتتىكى ئەھۋالدا كۆپ ئىشلىتىلىدىغان ئاكتىپ پروگراممىلار(مەسىلەن، ئىجرا قىلىنىۋاتقان)نى كۆزىتىدۇ. گەرچە بۇ سانلىق مەلۇماتلار مەخپىي ساقلانسىمۇ، شەخسىي سىر سەۋەبىدىن بۇنى چەكلىشىڭىز مۇمكىن. دىققەت بۇنداق قىلغاندا ئاللىبۇرۇن ساقلانغان سانلىق مەلۇماتلار چىقىرىۋېتىلمەيدۇ."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid ""
 "This key specifies the format used by the panel clock when the format key is "
 "set to \"custom\". You can use conversion specifiers understood by strftime"
 "() to obtain a specific format. See the strftime() manual for more "
 "information."
-msgstr ""
-"format (فورمات) كۇنۇپكىسى \"custom\" (ئىختىيارى) قىلىپ تەڭشەلسە بۇ كۇنۇپكا "
-"تاختا سائەت ئىشلىتىدىغان فورماتنى بەلگىلەيدۇ. سىز strftime()نىڭ فورمات "
-"بەلگىسىنى ئىشلىتىپ بەلگىلەنگەن فورماتقا ئېرىشەلەيسىز. تەپسىلاتىنى strftime() "
-"نىڭ قوللانمىسىدىن كۆرۈڭ."
+msgstr "format (فورمات) كۇنۇپكىسى \"custom\" (ئىختىيارى) قىلىپ تەڭشەلسە بۇ كۇنۇپكا تاختا سائەت ئىشلىتىدىغان فورماتنى بەلگىلەيدۇ. سىز strftime()نىڭ فورمات بەلگىسىنى ئىشلىتىپ بەلگىلەنگەن فورماتقا ئېرىشەلەيسىز. تەپسىلاتىنى strftime() نىڭ قوللانمىسىدىن كۆرۈڭ."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid ""
 "This key specifies the hour format used by the panel clock. Possible values "
 "are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
@@ -208,20 +161,13 @@ msgid ""
 "to \"custom\", the clock will display time according to the format specified "
 "in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
 "the show_date and show_seconds keys are ignored."
-msgstr ""
-"بۇ كۇنۇپكا تاختا سائەت ئىشلەتكەن سائەت فورماتىنى بەلگىلىگەن. ئىشلەتكىلى "
-"بولىدىغان قىممىتى \"12-hour\" يەنى (12 سائەت)، \"24-hour\" يەنى (24 سائەت)،  "
-"\"unix\" ۋە \"custom\" (ئىختىيارى). ئەگەر \"unix\" قىلىپ تەڭشەلسە سائەت "
-"ئۆزلۈكىدىن يېڭى ئېرا (يەنى، 1970-01-01) دىن ئۆتكەن سېكۇنتنى ئاساس قىلىدۇ. "
-"ئەگەر \"custom\" قىلىپ تەڭشەلسە سائەت custom_format كۇنۇپكا قىممىتىگە "
-"ئاساسەن ۋاقىتنى كۆرسىتىدۇ. ئەگەر  \"unix\" ياكى \"custom\" قىلىپ تەڭشەلسە "
-"show_date ۋە show_seconds قىممىتىگە پەرۋا قىلمايدۇ"
+msgstr "بۇ كۇنۇپكا تاختا سائەت ئىشلەتكەن سائەت فورماتىنى بەلگىلىگەن. ئىشلەتكىلى بولىدىغان قىممىتى \"12-hour\" يەنى (12 سائەت)، \"24-hour\" يەنى (24 سائەت)،  \"unix\" ۋە \"custom\" (ئىختىيارى). ئەگەر \"unix\" قىلىپ تەڭشەلسە سائەت ئۆزلۈكىدىن يېڭى ئېرا (يەنى، 1970-01-01) دىن ئۆتكەن سېكۇنتنى ئاساس قىلىدۇ. ئەگەر \"custom\" قىلىپ تەڭشەلسە سائەت custom_format كۇنۇپكا قىممىتىگە ئاساسەن ۋاقىتنى كۆرسىتىدۇ. ئەگەر  \"unix\" ياكى \"custom\" قىلىپ تەڭشەلسە show_date ۋە show_seconds قىممىتىگە پەرۋا قىلمايدۇ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Uuids of extensions to disable"
 msgstr "چەكلىنىدىغان كېڭەيتىلمىنىڭ Uuid سى"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Whether to collect stats about applications usage"
 msgstr "پروگراممىنىڭ ئىشلىتىلىشى ھەققىدىكى ستاتىستىكىنى توپلامدۇ يوق"
 
@@ -237,8 +183,7 @@ msgstr "نىشانلىغۇچنىڭ رەڭگى"
 msgid ""
 "Determines the length of the vertical and horizontal lines that make up the "
 "crosshairs."
-msgstr ""
-"نىشانلىغۇچنى ھاسىل قىلىدىغان توغرا ۋە بوي سىزىقنىڭ ئۇزۇنلۇقى بەلگىلىنىدۇ."
+msgstr "نىشانلىغۇچنى ھاسىل قىلىدىغان توغرا ۋە بوي سىزىقنىڭ ئۇزۇنلۇقى بەلگىلىنىدۇ."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
 msgid ""
@@ -305,7 +250,7 @@ msgstr "ئېكران ئورنى"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
 msgid "Scroll magnified contents beyond the edges of the desktop"
-msgstr "دومىلىما چوڭايتقۇچ ئۈستەل ئۈستى گىرۋەك مەزمۇنىدىن ھالقىپ كەتتى"
+msgstr "دومىلىما چوڭايتقۇچ ئۈستەلئۈستى گىرۋەك مەزمۇنىدىن ھالقىپ كەتتى"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
 msgid "Show or hide crosshairs"
@@ -379,62 +324,45 @@ msgstr "_12 سائەت فورماتى"
 msgid "_24 hour format"
 msgstr "_24 سائەت فورماتى"
 
-#. **** Applications ****
-#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
+#: ../js/ui/appDisplay.js:154
+msgid "All"
+msgstr "ھەممىسى"
+
+#: ../js/ui/appDisplay.js:235
 msgid "APPLICATIONS"
 msgstr "پروگراممىلار"
 
-#: ../js/ui/appDisplay.js:348
+#: ../js/ui/appDisplay.js:265
 msgid "PREFERENCES"
 msgstr "مايىللىق"
 
-#: ../js/ui/appDisplay.js:647
+#: ../js/ui/appDisplay.js:562
 msgid "New Window"
 msgstr "يېڭى كۆزنەك"
 
-#: ../js/ui/appDisplay.js:651
+#: ../js/ui/appDisplay.js:566
 msgid "Remove from Favorites"
 msgstr "يىغقۇچتىن چىقىرىۋەت"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:567
 msgid "Add to Favorites"
 msgstr "يىغقۇچقا قوش"
 
-#: ../js/ui/appDisplay.js:829
-msgid "Drag here to add favorites"
-msgstr "بۇ جايغا سۆرەپ يىغقۇچقا قوش"
-
-#: ../js/ui/appFavorites.js:88
+#: ../js/ui/appFavorites.js:91
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s يىغقۇچىڭىزغا قوشۇلدى."
 
-#: ../js/ui/appFavorites.js:107
+#: ../js/ui/appFavorites.js:122
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s يىغقۇچىڭىزدىن چىقىرىۋېتىلىدۇ."
 
-#: ../js/ui/dash.js:142
-msgid "Find"
-msgstr "ئىزدە"
+#: ../js/ui/dash.js:27
+msgid "Remove"
+msgstr "چىقىرىۋەت"
 
-#: ../js/ui/dash.js:473
-msgid "Searching..."
-msgstr "ئىزدەۋاتىدۇ..."
-
-#: ../js/ui/dash.js:487
-msgid "No matching results."
-msgstr "ماس كېلىدىغان نەتىجە يوق."
-
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:558
-msgid "PLACES & DEVICES"
-msgstr "ئورۇن ۋە ئۈسكۈنىلەر"
-
-#. **** Documents ****
-#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
+#: ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "يېقىنقى تۈرلەر"
 
@@ -468,63 +396,72 @@ msgstr "مەنبەنى كۆرسەت"
 msgid "Web Page"
 msgstr "توربەت"
 
-#: ../js/ui/overview.js:160
+#: ../js/ui/overview.js:96
 msgid "Undo"
 msgstr "يېنىۋال"
 
+#: ../js/ui/overview.js:158
+#| msgid "New Window"
+msgid "Windows"
+msgstr "كۆزنەكلەر"
+
+#: ../js/ui/overview.js:161
+msgid "Applications"
+msgstr "پروگراممىلار"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:470
+#: ../js/ui/panel.js:474
 #, c-format
 msgid "Quit %s"
 msgstr "%s چېكىن"
 
-#: ../js/ui/panel.js:495
+#: ../js/ui/panel.js:499
 msgid "Preferences"
 msgstr "مايىللىق"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e، %R:%S"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:586
 msgid "%a %b %e, %R"
 msgstr "%a %b %e، %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:590
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:587
+#: ../js/ui/panel.js:591
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:598
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e، %l:%M:%S %p"
 
-#: ../js/ui/panel.js:595
+#: ../js/ui/panel.js:599
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e، %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:600
+#: ../js/ui/panel.js:604
 msgid "%a %l:%M %p"
 msgstr "%p%l:%M (%a)"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:745
+#: ../js/ui/panel.js:749
 msgid "Activities"
 msgstr "پائالىيەتلەر"
 
@@ -540,6 +477,10 @@ msgstr "قايتا سىنا"
 #: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
 msgstr "باغلىنىش…"
+
+#: ../js/ui/placeDisplay.js:558
+msgid "PLACES & DEVICES"
+msgstr "ئورۇن ۋە ئۈسكۈنىلەر"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -568,16 +509,14 @@ msgid "Busy"
 msgstr "ئالدىراش"
 
 #: ../js/ui/statusMenu.js:114
-#, fuzzy
 #| msgid "My Account..."
 msgid "My Account"
-msgstr "ھېساباتىم…"
+msgstr "ھېساباتىم"
 
 #: ../js/ui/statusMenu.js:118
-#, fuzzy
 #| msgid "System Settings..."
 msgid "System Settings"
-msgstr "سىستېما تەڭشەكلىرى..."
+msgstr "سىستېما تەڭشىكى"
 
 #: ../js/ui/statusMenu.js:125
 msgid "Lock Screen"
@@ -592,14 +531,17 @@ msgid "Log Out..."
 msgstr "تىزىمدىن چىقىش…"
 
 #: ../js/ui/statusMenu.js:141
-#, fuzzy
 #| msgid "Suspend"
 msgid "Suspend..."
-msgstr "توڭلات"
+msgstr ""
 
 #: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
 msgstr "تاقا…"
+
+#: ../js/ui/status/accessibility.js:82
+msgid "Zoom"
+msgstr "كېڭەيت تارايت"
 
 #: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
@@ -641,9 +583,262 @@ msgstr "يۇقىرى ئاق-قارىلىقى"
 msgid "Large Text"
 msgstr "چوڭ تېكىست"
 
-#: ../js/ui/status/accessibility.js:224
-msgid "Zoom"
-msgstr "كېڭەيت تارايت"
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:200
+msgid "Bluetooth"
+msgstr "كۆكچىش"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "كۆرۈشچانلىقى"
+
+#: ../js/ui/status/bluetooth.js:68
+msgid "Send Files to Device..."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:71
+msgid "Setup a New Device..."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:94
+#| msgid "System Settings..."
+msgid "Bluetooth Settings"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:151
+#| msgid "Connect to..."
+msgid "Connection"
+msgstr "باغلىنىش"
+
+#: ../js/ui/status/bluetooth.js:187
+#| msgid "Suspend"
+msgid "Send Files..."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:192
+msgid "Browse Files..."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:201
+msgid "Error browsing device"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:202
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:210
+#| msgid "System Settings..."
+msgid "Keyboard Settings"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:215
+#| msgid "System Settings..."
+msgid "Mouse Settings"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/volume.js:62
+#| msgid "System Settings..."
+msgid "Sound Settings"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:293 ../js/ui/status/bluetooth.js:327
+#: ../js/ui/status/bluetooth.js:367 ../js/ui/status/bluetooth.js:400
+msgid "Bluetooth Agent"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:328
+#, c-format
+msgid "Authorization request from %s"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:334
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:336
+msgid "Always grant access"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:337
+msgid "Grant this time only"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:338
+msgid "Reject"
+msgstr "رەت قىل"
+
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:374 ../js/ui/status/bluetooth.js:408
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:375
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:377
+msgid "Matches"
+msgstr "جۈپلەش تۈرى"
+
+#: ../js/ui/status/bluetooth.js:378
+msgid "Does not match"
+msgstr "جۈپلىمە"
+
+#: ../js/ui/status/bluetooth.js:401
+#, c-format
+msgid "Pairing request for %s"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:409
+msgid "Please enter the PIN mentioned on the device."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:425
+msgid "OK"
+msgstr "جەزملە"
+
+#: ../js/ui/status/bluetooth.js:426
+msgid "Cancel"
+msgstr "ۋاز كەچ"
+
+#: ../js/ui/status/power.js:85
+#| msgid "System Settings..."
+msgid "Power Settings"
+msgstr ""
+
+#: ../js/ui/status/power.js:112
+#, c-format
+#| msgid "%d hour ago"
+#| msgid_plural "%d hours ago"
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] ""
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:115
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr ""
+
+#: ../js/ui/status/power.js:117
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "سائەت"
+
+#: ../js/ui/status/power.js:117
+#| msgid "%d minute ago"
+#| msgid_plural "%d minutes ago"
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "مىنۇت"
+
+#: ../js/ui/status/power.js:120
+#, c-format
+#| msgid "%d minute ago"
+#| msgid_plural "%d minutes ago"
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] ""
+
+#: ../js/ui/status/power.js:237
+msgid "AC adapter"
+msgstr ""
+
+#: ../js/ui/status/power.js:239
+msgid "Laptop battery"
+msgstr ""
+
+#: ../js/ui/status/power.js:241
+msgid "UPS"
+msgstr "UPS"
+
+#: ../js/ui/status/power.js:243
+msgid "Monitor"
+msgstr "ئېكران"
+
+#: ../js/ui/status/power.js:245
+#| msgid "Mouse Keys"
+msgid "Mouse"
+msgstr "چاشقىنەك"
+
+#: ../js/ui/status/power.js:247
+#| msgid "Screen Keyboard"
+msgid "Keyboard"
+msgstr "ھەرپتاختا"
+
+#: ../js/ui/status/power.js:249
+msgid "PDA"
+msgstr "PDA"
+
+#: ../js/ui/status/power.js:251
+msgid "Cell phone"
+msgstr ""
+
+#: ../js/ui/status/power.js:253
+msgid "Media player"
+msgstr "Media چالغۇ"
+
+#: ../js/ui/status/power.js:255
+#| msgid "Enabled"
+msgid "Tablet"
+msgstr "سەزمە تاختا"
+
+#: ../js/ui/status/power.js:257
+msgid "Computer"
+msgstr "كومپيۇتېر"
+
+#: ../js/ui/status/power.js:259 ../src/shell-app-system.c:1012
+msgid "Unknown"
+msgstr "نامەلۇم"
+
+#: ../js/ui/status/volume.js:41
+msgid "Volume"
+msgstr "دىسكا"
+
+#: ../js/ui/status/volume.js:54
+msgid "Microphone"
+msgstr ""
+
+#: ../js/ui/telepathyClient.js:560
+#, c-format
+msgid "%s is online."
+msgstr ""
+
+#: ../js/ui/telepathyClient.js:565
+#, c-format
+msgid "%s is offline."
+msgstr ""
+
+#: ../js/ui/telepathyClient.js:568
+#, c-format
+#| msgid "'%s' is ready"
+msgid "%s is away."
+msgstr ""
+
+#: ../js/ui/telepathyClient.js:571
+#, c-format
+msgid "%s is busy."
+msgstr ""
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:664
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr ""
+
+#: ../js/ui/viewSelector.js:26
+msgid "Search your computer"
+msgstr ""
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -655,12 +850,12 @@ msgstr "%s باشلاشنى تاماملىدى"
 msgid "'%s' is ready"
 msgstr "«%s» تەييار"
 
-#: ../js/ui/workspacesView.js:229
+#: ../js/ui/workspacesView.js:244
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "يېڭى خىزمەت رايونى قوشالمايدۇ چۈنكى ئەڭ كۆپ خىزمەت رايون چېكىگە يەتتى."
 
-#: ../js/ui/workspacesView.js:246
+#: ../js/ui/workspacesView.js:260
 msgid "Can't remove the first workspace."
 msgstr "بىرىنچى خىزمەت رايونىنى چىقىرىۋەتكىلى بولمايدۇ."
 
@@ -684,33 +879,29 @@ msgstr[0] "%u كىرگۈزۈلمە"
 msgid "System Sounds"
 msgstr "سىستېما ئاۋازى"
 
-#: ../src/shell-app-system.c:1012
-msgid "Unknown"
-msgstr "نامەلۇم"
-
-#: ../src/shell-global.c:1163
+#: ../src/shell-global.c:1155
 msgid "Less than a minute ago"
 msgstr "بىر مىنۇتتىنمۇ ئىلگىرى"
 
-#: ../src/shell-global.c:1167
+#: ../src/shell-global.c:1159
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d مىنۇت ئىلگىرى"
 
-#: ../src/shell-global.c:1172
+#: ../src/shell-global.c:1164
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d سائەت ئىلگىرى"
 
-#: ../src/shell-global.c:1177
+#: ../src/shell-global.c:1169
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d كۈن ئىلگىرى"
 
-#: ../src/shell-global.c:1182
+#: ../src/shell-global.c:1174
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -738,7 +929,29 @@ msgstr "ئىزدە"
 #: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
-msgstr "%1$s: %2$s "
+msgstr "%1$s: %2$s"
+
+#~ msgid "Overview workspace view mode"
+#~ msgstr "خىزمەت رايون كۆرۈنۈش ھالىتى ھەققىدە قىسقىچە بايان"
+
+#~ msgid ""
+#~ "The selected workspace view mode in the overview. Supported values are "
+#~ "\"single\" and \"grid\"."
+#~ msgstr ""
+#~ "قىسقىچە باياندىكى تاللانغان خىزمەت رايونىنىڭ كۆرۈنۈش ھالىتى. ئىشلىتىشكە "
+#~ "بولىدىغان قىممەتلەر «يەككە» ۋە «سېتكا»"
+
+#~ msgid "Drag here to add favorites"
+#~ msgstr "بۇ جايغا سۆرەپ يىغقۇچقا قوش"
+
+#~ msgid "Find"
+#~ msgstr "ئىزدە"
+
+#~ msgid "Searching..."
+#~ msgstr "ئىزدەۋاتىدۇ..."
+
+#~ msgid "No matching results."
+#~ msgstr "ماس كېلىدىغان نەتىجە يوق."
 
 #~ msgid "Invisible"
 #~ msgstr "يوشۇرۇن"
