@@ -684,7 +684,7 @@ meta_text_property_to_utf8 (Display             *xdisplay,
 
   display = gdk_x11_lookup_xdisplay (xdisplay);
   count = gdk_text_property_to_utf8_list_for_display (display,
-                                                      gdk_x11_xatom_to_atom (prop->encoding),
+                                                      gdk_x11_xatom_to_atom_for_display (display, prop->encoding),
                                                       prop->format,
                                                       prop->value,
                                                       prop->nitems,
