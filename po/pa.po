@@ -5,18 +5,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&component=general\n"
-"POT-Creation-Date: 2010-11-29 15:38+0000\n"
-"PO-Revision-Date: 2010-12-01 08:23+0530\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=gnome-shell&component=general\n"
+"POT-Creation-Date: 2010-12-20 21:07+0000\n"
+"PO-Revision-Date: 2010-12-27 07:12+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
-"Language-Team: punjabi-users@lists.sf.net\n"
-"Language: pa\n"
+"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pa\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.6.1\n"
+"X-Generator: Lokalize 1.1\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -287,6 +287,9 @@ msgid ""
 "The magnified view either fills the entire screen, or occupies the top-half, "
 "bottom-half, left-half, or right-half of the screen."
 msgstr ""
+"ਵੱਡਦਰਸ਼ੀ ਝਲਕ ਪੂਰੀ ਸਕਰੀਨ ਨੂੰ ਭਰ ਸਕਦਾ ਹੈ ਜਾਂ ਅੱਧਾ-ਉੱਤੇ, ਅੱਧਾ ਹੇਠਾਂ, ਅੱਧਾ ਖੱਬੇ ਜਾਂ ਅੱਧਾ-ਸੱਜੇ "
+"ਭਾਗ ਨੂੰ "
+"ਭਰ ਸਕਦਾ ਹੈ।"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
 msgid ""
@@ -302,7 +305,7 @@ msgstr "ਕਰਾਂਸਹੇਅਰ ਦੀ ਮੋਟਾਈ"
 msgid ""
 "Whether the magnified view should be centered over the location of the "
 "system mouse and move with it."
-msgstr ""
+msgstr "ਕੀ ਵੱਡਦਰਸ਼ੀ ਝਲਕ ਦੀ ਸਥਿਤੀ ਸਿਸਟਮ ਮਾਊਂਸ ਦੁਆਲੇ ਕੇਂਦਰਤ ਰਹੇ ਅਤੇ ਉਸ ਨਾਲ ਹੀ ਹਿੱਲੇ।"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
 msgid "Width of the vertical and horizontal lines that make up the crosshairs."
@@ -336,23 +339,27 @@ msgstr "_੧੨ ਘੰਟੇ ਫਾਰਮੈਟ"
 msgid "_24 hour format"
 msgstr "_੨੪ ਘੰਟੇ ਫਾਰਮੈਟ"
 
-#: ../js/ui/appDisplay.js:215
+#: ../js/ui/appDisplay.js:154
+msgid "All"
+msgstr "ਸਭ"
+
+#: ../js/ui/appDisplay.js:235
 msgid "APPLICATIONS"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../js/ui/appDisplay.js:245
+#: ../js/ui/appDisplay.js:265
 msgid "PREFERENCES"
 msgstr "ਪਸੰਦ"
 
-#: ../js/ui/appDisplay.js:538
+#: ../js/ui/appDisplay.js:562
 msgid "New Window"
 msgstr "ਨਵੀਂ ਵਿੰਡੋ"
 
-#: ../js/ui/appDisplay.js:542
+#: ../js/ui/appDisplay.js:566
 msgid "Remove from Favorites"
 msgstr "ਪਸੰਦ ਵਿੱਚੋਂ ਹਟਾਓ"
 
-#: ../js/ui/appDisplay.js:543
+#: ../js/ui/appDisplay.js:567
 msgid "Add to Favorites"
 msgstr "ਪਸੰਦ 'ਚ ਸ਼ਾਮਲ ਕਰੋ"
 
@@ -404,63 +411,72 @@ msgstr "ਸਰੋਤ ਵੇਖੋ"
 msgid "Web Page"
 msgstr "ਵੈੱਬ ਪੇਜ਼"
 
-#: ../js/ui/overview.js:112
+#: ../js/ui/overview.js:96
 msgid "Undo"
 msgstr "ਵਾਪਸ"
 
+#: ../js/ui/overview.js:158
+#| msgid "New Window"
+msgid "Windows"
+msgstr "ਵਿੰਡੋ"
+
+#: ../js/ui/overview.js:161
+msgid "Applications"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:470
+#: ../js/ui/panel.js:474
 #, c-format
 msgid "Quit %s"
 msgstr "%s ਬੰਦ ਕਰੋ"
 
-#: ../js/ui/panel.js:495
+#: ../js/ui/panel.js:499
 msgid "Preferences"
 msgstr "ਮੇਰੀ ਪਸੰਦ"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %R:%S"
 msgstr "%a, %e %b %R:%S"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:586
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:590
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:587
+#: ../js/ui/panel.js:591
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:598
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l:%M:%S %p"
 
-#: ../js/ui/panel.js:595
+#: ../js/ui/panel.js:599
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:600
+#: ../js/ui/panel.js:604
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:745
+#: ../js/ui/panel.js:749
 msgid "Activities"
 msgstr "ਸਰਗਰਮੀਆਂ"
 
@@ -508,12 +524,10 @@ msgid "Busy"
 msgstr "ਰੁਝਿਆ"
 
 #: ../js/ui/statusMenu.js:114
-#| msgid "My Account..."
 msgid "My Account"
 msgstr "ਮੇਰਾ ਅਕਾਊਂਟ"
 
 #: ../js/ui/statusMenu.js:118
-#| msgid "System Sounds"
 msgid "System Settings"
 msgstr "ਸਿਸਟਮ ਸੈਟਿੰਗ"
 
@@ -530,13 +544,16 @@ msgid "Log Out..."
 msgstr "ਲਾਗਆਉਟ..."
 
 #: ../js/ui/statusMenu.js:141
-#| msgid "Suspend"
 msgid "Suspend..."
 msgstr "ਸਸਪੈਂਡ..."
 
 #: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
 msgstr "ਬੰਦ ਕਰੋ..."
+
+#: ../js/ui/status/accessibility.js:82
+msgid "Zoom"
+msgstr "ਜ਼ੂਮ"
 
 #: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
@@ -578,9 +595,262 @@ msgstr "ਵੱਧ ਕਨਟਰਾਸਟ"
 msgid "Large Text"
 msgstr "ਵੱਡੇ ਅੱਖਰ"
 
-#: ../js/ui/status/accessibility.js:224
-msgid "Zoom"
-msgstr "ਜ਼ੂਮ"
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:200
+msgid "Bluetooth"
+msgstr "ਬਲਿਊਟੁੱਥ"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "ਦਿੱਖ"
+
+#: ../js/ui/status/bluetooth.js:68
+msgid "Send Files to Device..."
+msgstr "...ਜੰਤਰ ਨੂੰ ਫਾਇਲਾਂ ਭੇਜੋ"
+
+#: ../js/ui/status/bluetooth.js:71
+msgid "Setup a New Device..."
+msgstr "...ਨਵਾਂ ਜੰਤਰ ਸੈਟਅੱਪ"
+
+#: ../js/ui/status/bluetooth.js:94
+#| msgid "System Settings"
+msgid "Bluetooth Settings"
+msgstr "ਬਲਿਊਟੁੱਥ ਸੈਟਿੰਗ"
+
+#: ../js/ui/status/bluetooth.js:151
+#| msgid "Connect to..."
+msgid "Connection"
+msgstr "ਕੁਨੈਕਸ਼ਨ"
+
+#: ../js/ui/status/bluetooth.js:187
+#| msgid "Suspend..."
+msgid "Send Files..."
+msgstr "...ਫਾਇਲਾਂ ਭੇਜੋ"
+
+#: ../js/ui/status/bluetooth.js:192
+msgid "Browse Files..."
+msgstr "...ਫਾਇਲਾਂ ਦੀ ਝਲਕ"
+
+#: ../js/ui/status/bluetooth.js:201
+msgid "Error browsing device"
+msgstr "ਜੰਤਰ ਬਰਾਊਜ਼ ਕਰਨ ਲਈ ਗਲਤੀ"
+
+#: ../js/ui/status/bluetooth.js:202
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "ਮੰਗ ਕੀਤੇ ਗਏ ਜੰਤਰ ਨੂੰ ਬਰਾਊਜ਼ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ, ਗਲਤੀ ਸੀ '%s'"
+
+#: ../js/ui/status/bluetooth.js:210
+#| msgid "System Settings"
+msgid "Keyboard Settings"
+msgstr "ਕੀਬੋਰਡ ਸੈਟਿੰਗ"
+
+#: ../js/ui/status/bluetooth.js:215
+#| msgid "System Settings"
+msgid "Mouse Settings"
+msgstr "ਮਾਊਸ ਸੈਟਿੰਗ"
+
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/volume.js:62
+#| msgid "System Settings"
+msgid "Sound Settings"
+msgstr "ਸਾਊਂਡ ਸੈਟਿੰਗ"
+
+#: ../js/ui/status/bluetooth.js:293 ../js/ui/status/bluetooth.js:327
+#: ../js/ui/status/bluetooth.js:367 ../js/ui/status/bluetooth.js:400
+msgid "Bluetooth Agent"
+msgstr "ਬਲਿਊਟੁੱਥ ਏਜੰਟ"
+
+#: ../js/ui/status/bluetooth.js:328
+#, c-format
+msgid "Authorization request from %s"
+msgstr "'%s' ਤੋਂ ਪਰਮਾਣਕਿਤਾ ਮੰਗ"
+
+#: ../js/ui/status/bluetooth.js:334
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "ਜੰਤਰ %s ਸਰਵਿਸ '%s' ਨੂੰ ਵਰਤਣੀ ਚਾਹੁੰਦਾ ਹੈ।"
+
+#: ../js/ui/status/bluetooth.js:336
+msgid "Always grant access"
+msgstr "ਹਮੇਸ਼ਾ ਪਹੁੰਚ ਮਨਜ਼ੂਰ"
+
+#: ../js/ui/status/bluetooth.js:337
+msgid "Grant this time only"
+msgstr "ਕੇਵਲ ਇਸ ਸਮੇਂ ਹੀ ਮਨਜ਼ੂਰ"
+
+#: ../js/ui/status/bluetooth.js:338
+msgid "Reject"
+msgstr "ਨਾ-ਮਨਜ਼ੂਰ"
+
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "%s ਲਈ ਪੇਅਰ ਕਰਨ ਦੀ ਪੁਸ਼ਟੀ"
+
+#: ../js/ui/status/bluetooth.js:374 ../js/ui/status/bluetooth.js:408
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "ਜੰਤਰ %s ਇਸ ਕੰਪਿਊਟਰ ਨਾਲ ਪੇਅਰ ਹੋਣਾ ਚਾਹੁੰਦਾ ਹੈ"
+
+#: ../js/ui/status/bluetooth.js:375
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "ਪੁਸ਼ਟੀ ਕਰੋ ਜੀ ਕਿ ਪਿੰਨ '%s' ਜੰਤਰ ਉੱਤੇ ਮੌਜੂਦ ਪਿੰਨ ਨਾਲ ਮਿਲਦਾ ਹੈ।"
+
+#: ../js/ui/status/bluetooth.js:377
+msgid "Matches"
+msgstr "ਮਿਲਦਾ ਹੈ"
+
+#: ../js/ui/status/bluetooth.js:378
+msgid "Does not match"
+msgstr "ਮਿਲਦਾ ਨਹੀਂ ਹੈ"
+
+#: ../js/ui/status/bluetooth.js:401
+#, c-format
+msgid "Pairing request for %s"
+msgstr "%s ਲਈ ਪੇਅਰ ਕਰਨ ਦੀ ਮੰਗ"
+
+#: ../js/ui/status/bluetooth.js:409
+msgid "Please enter the PIN mentioned on the device."
+msgstr "ਜੰਤਰ ਉੱਤੇ ਦਿੱਤਾ ਗਿਆ ਪਿੰਨ ਦਿਉ ਜੀ।"
+
+#: ../js/ui/status/bluetooth.js:425
+msgid "OK"
+msgstr "ਠੀਕ ਹੈ"
+
+#: ../js/ui/status/bluetooth.js:426
+msgid "Cancel"
+msgstr "ਰੱਦ ਕਰੋ"
+
+#: ../js/ui/status/power.js:85
+#| msgid "System Settings"
+msgid "Power Settings"
+msgstr "ਪਾਵਰ ਸੈਟਿੰਗ"
+
+#: ../js/ui/status/power.js:112
+#, c-format
+#| msgid "%d hour ago"
+#| msgid_plural "%d hours ago"
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "%d ਘੰਟਾ ਬਾਕੀ"
+msgstr[1] "%d ਘੰਟੇ ਬਾਕੀ"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:115
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "%d %s %d %s ਬਾਕੀ"
+
+#: ../js/ui/status/power.js:117
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "ਘੰਟਾ"
+msgstr[1] "ਘੰਟੇ"
+
+#: ../js/ui/status/power.js:117
+#| msgid "%d minute ago"
+#| msgid_plural "%d minutes ago"
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "ਮਿੰਟ"
+msgstr[1] "ਮਿੰਟ"
+
+#: ../js/ui/status/power.js:120
+#, c-format
+#| msgid "%d minute ago"
+#| msgid_plural "%d minutes ago"
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "%d ਮਿੰਟ ਬਾਕੀ"
+msgstr[1] "%d ਮਿੰਟ ਬਾਕੀ"
+
+#: ../js/ui/status/power.js:237
+msgid "AC adapter"
+msgstr "AC ਐਡਪਟਰ"
+
+#: ../js/ui/status/power.js:239
+msgid "Laptop battery"
+msgstr "ਲੈਪਟਾਪ ਬੈਟਰੀ"
+
+#: ../js/ui/status/power.js:241
+msgid "UPS"
+msgstr "UPS"
+
+#: ../js/ui/status/power.js:243
+msgid "Monitor"
+msgstr "ਮਾਨੀਟਰ"
+
+#: ../js/ui/status/power.js:245
+#| msgid "Mouse Keys"
+msgid "Mouse"
+msgstr "ਮਾਊਸ"
+
+#: ../js/ui/status/power.js:247
+#| msgid "Screen Keyboard"
+msgid "Keyboard"
+msgstr "ਕੀਬੋਰਡ"
+
+#: ../js/ui/status/power.js:249
+msgid "PDA"
+msgstr "PDA"
+
+#: ../js/ui/status/power.js:251
+msgid "Cell phone"
+msgstr "ਸੈੱਲ ਫੋਨ"
+
+#: ../js/ui/status/power.js:253
+msgid "Media player"
+msgstr "ਮੀਡਿਆ ਪਲੇਅਰ"
+
+#: ../js/ui/status/power.js:255
+#| msgid "Enabled"
+msgid "Tablet"
+msgstr "ਟੇਬਲੇਟ"
+
+#: ../js/ui/status/power.js:257
+msgid "Computer"
+msgstr "ਕੰਪਿਊਟਰ"
+
+#: ../js/ui/status/power.js:259 ../src/shell-app-system.c:1012
+msgid "Unknown"
+msgstr "ਅਣਜਾਣ"
+
+#: ../js/ui/status/volume.js:41
+msgid "Volume"
+msgstr "ਆਵਾਜ਼"
+
+#: ../js/ui/status/volume.js:54
+msgid "Microphone"
+msgstr "ਮਾਈਕਰੋਫੋਨ"
+
+#: ../js/ui/telepathyClient.js:560
+#, c-format
+msgid "%s is online."
+msgstr "%s ਆਨਲਾਈਨ ਹੈ।"
+
+#: ../js/ui/telepathyClient.js:565
+#, c-format
+msgid "%s is offline."
+msgstr "%s ਆਫਲਾਈਨ ਹੈ।"
+
+#: ../js/ui/telepathyClient.js:568
+#, c-format
+#| msgid "'%s' is ready"
+msgid "%s is away."
+msgstr "%s ਦੂਰ ਹੈ।"
+
+#: ../js/ui/telepathyClient.js:571
+#, c-format
+msgid "%s is busy."
+msgstr "%s ਰੁੱਝਿਆ/ਰੁੱਝੀ ਹੈ।"
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:664
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "%2$A ਨੂੰ %1$X ਵਜੇ ਭੇਜਿਆ"
 
 #: ../js/ui/viewSelector.js:26
 msgid "Search your computer"
@@ -626,36 +896,32 @@ msgstr[1] "%u ਇੰਪੁੱਟ"
 msgid "System Sounds"
 msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
-#: ../src/shell-app-system.c:1012
-msgid "Unknown"
-msgstr "ਅਣਜਾਣ"
-
-#: ../src/shell-global.c:1163
+#: ../src/shell-global.c:1155
 msgid "Less than a minute ago"
 msgstr "ਇੱਕ ਮਿੰਟ ਤੋਂ ਘੱਟ ਚਿਰ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1167
+#: ../src/shell-global.c:1159
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1172
+#: ../src/shell-global.c:1164
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ਘੰਟਾ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਘੰਟੇ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1177
+#: ../src/shell-global.c:1169
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d ਦਿਨ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਦਿਨ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1182
+#: ../src/shell-global.c:1174
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -726,9 +992,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "%H:%M"
 #~ msgstr "%H:%M"
-
-#~ msgid "Applications"
-#~ msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
 #~ msgid "Recent Documents"
 #~ msgstr "ਤਾਜ਼ਾ ਡੌਕੂਮੈਂਟ"
