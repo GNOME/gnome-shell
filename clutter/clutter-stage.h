@@ -258,6 +258,10 @@ void                  clutter_stage_set_no_clear_hint (ClutterStage *stage,
                                                        gboolean      no_clear);
 gboolean              clutter_stage_get_no_clear_hint (ClutterStage *stage);
 
+void                  clutter_stage_set_accept_focus  (ClutterStage *stage,
+                                                       gboolean      accept_focus);
+gboolean              clutter_stage_get_accept_focus  (ClutterStage *stage);
+
 /* Commodity macro, for mallum only */
 #define clutter_stage_add(stage,actor)                  G_STMT_START {  \
   if (CLUTTER_IS_STAGE ((stage)) && CLUTTER_IS_ACTOR ((actor)))         \

@@ -147,6 +147,7 @@ struct _ClutterStagePrivate
   guint dirty_viewport         : 1;
   guint dirty_projection       : 1;
   guint have_valid_pick_buffer : 1;
+  guint accept_focus           : 1;
 };
 
 enum
@@ -164,7 +165,8 @@ enum
   PROP_FOG,
   PROP_USE_ALPHA,
   PROP_KEY_FOCUS,
-  PROP_NO_CLEAR_HINT
+  PROP_NO_CLEAR_HINT,
+  PROP_ACCEPT_FOCUS
 };
 
 enum
@@ -1423,6 +1425,20 @@ clutter_stage_class_init (ClutterStageClass *klass)
                                 FALSE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_NO_CLEAR_HINT, pspec);
+
+  /**
+   * ClutterStage:accept-focus:
+   *
+   * Whether the #ClutterStage should accept key focus when shown.
+   *
+   * Since: 1.6
+   */
+  pspec = g_param_spec_boolean ("accept-focus",
+                                P_("Accept Focus"),
+                                P_("Whether the stage should accept focus on show"),
+                                TRUE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_ACCEPT_FOCUS, pspec);
 
   /**
    * ClutterStage::fullscreen
@@ -3308,3 +3324,52 @@ _clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage)
     }
 }
 
+/**
+ * clutter_stage_get_accept_focus:
+ * @stage: a #ClutterStage
+ * @accept_focus: %TRUE to accept focus on show
+ *
+ * Sets whether the @stage should accept the key focus when shown.
+ *
+ * This function should be called before showing @stage using
+ * clutter_actor_show().
+ *
+ * Since: 1.6
+ */
+void
+clutter_stage_set_accept_focus (ClutterStage *stage,
+                                gboolean      accept_focus)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  accept_focus = !!accept_focus;
+
+  priv = stage->priv;
+
+  if (priv->accept_focus != accept_focus)
+    {
+      _clutter_stage_window_set_accept_focus (priv->impl, accept_focus);
+      g_object_notify (G_OBJECT (stage), "accept-focus");
+    }
+}
+
+/**
+ * clutter_stage_get_accept_focus:
+ * @stage: a #ClutterStage
+ *
+ * Retrieves the value set with clutter_stage_set_accept_focus().
+ *
+ * Return value: %TRUE if the #ClutterStage should accept focus, and %FALSE
+ *   otherwise
+ *
+ * Since: 1.6
+ */
+gboolean
+clutter_stage_get_accept_focus (ClutterStage *stage)
+{
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), TRUE);
+
+  return stage->priv->accept_focus;
+}
