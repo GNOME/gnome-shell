@@ -59,6 +59,9 @@ clutter_stage_win32_show (ClutterStageWindow *stage_window,
     {
       ShowWindow (stage_win32->hwnd, do_raise ? SW_SHOW : SW_SHOWNA);
 
+      if (stage_win32->accept_focus)
+        SetForegroundWindow (stage_win32->hwnd);
+
       clutter_actor_map (CLUTTER_ACTOR (stage_win32->wrapper));
     }
 }
@@ -284,6 +287,17 @@ clutter_stage_win32_set_user_resize (ClutterStageWindow *stage_window,
 		  | (old_style & WS_VISIBLE));
   /* Queue a redraw of the frame */
   RedrawWindow (hwnd, NULL, NULL, RDW_FRAME | RDW_INVALIDATE);
+}
+
+static void
+clutter_stage_win32_set_accept_focus (ClutterStageWindow *stage_window,
+                                      gboolean            accept_focus)
+{
+  ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage_window);
+
+  accept_focus = !!accept_focus;
+
+  stage_win32->accept_focus = accept_focus;
 }
 
 static ClutterActor *
@@ -538,10 +552,12 @@ clutter_stage_win32_init (ClutterStageWin32 *stage)
   stage->win_height = 480;
   stage->backend = NULL;
   stage->scroll_pos = 0;
-  stage->is_foreign_win = FALSE;
   stage->wtitle = NULL;
-  stage->is_cursor_visible = TRUE;
   stage->wrapper = NULL;
+
+  stage->is_foreign_win = FALSE;
+  stage->is_cursor_visible = TRUE;
+  stage->accept_focus = TRUE;
 }
 
 static void
@@ -552,6 +568,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->set_fullscreen = clutter_stage_win32_set_fullscreen;
   iface->set_cursor_visible = clutter_stage_win32_set_cursor_visible;
   iface->set_user_resizable = clutter_stage_win32_set_user_resize;
+  iface->set_accept_focus = clutter_stage_win32_set_accept_focus;
   iface->show = clutter_stage_win32_show;
   iface->hide = clutter_stage_win32_hide;
   iface->resize = clutter_stage_win32_resize;

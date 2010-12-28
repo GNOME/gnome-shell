@@ -50,15 +50,17 @@ struct _ClutterStageWin32
   gint         win_height;
   gint         scroll_pos;
   RECT         fullscreen_rect;
-  gboolean     is_foreign_win;
-  gboolean     tracking_mouse;
   wchar_t     *wtitle;
-  gboolean        is_cursor_visible;
 
   ClutterBackendWin32 *backend;
   ClutterStageState   state;
 
   ClutterStage *wrapper;
+
+  guint is_foreign_win    : 1;
+  guint tracking_mouse    : 1;
+  guint is_cursor_visible : 1;
+  guint accept_focus      : 1;
 };
 
 struct _ClutterStageWin32Class
