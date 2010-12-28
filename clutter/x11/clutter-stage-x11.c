@@ -537,7 +537,7 @@ clutter_stage_x11_set_user_resizable (ClutterStageWindow *stage_window,
                                      stage_x11->xwin_height);
 }
 
-static void
+static inline void
 update_wm_hints (ClutterStageX11 *stage_x11)
 {
   ClutterBackend *backend;
@@ -551,14 +551,24 @@ update_wm_hints (ClutterStageX11 *stage_x11)
     return;
 
   backend = clutter_get_default_backend ();
-
-  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
+  g_assert (CLUTTER_IS_BACKEND_X11 (backend));
   backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
-  wm_hints.flags = StateHint;
+  wm_hints.flags = StateHint | InputHint;
   wm_hints.initial_state = NormalState;
+  wm_hints.input = stage_x11->accept_focus ? True : False;
 
   XSetWMHints (backend_x11->xdpy, stage_x11->xwin, &wm_hints);
+}
+
+static void
+clutter_stage_x11_set_accept_focus (ClutterStageWindow *stage_window,
+                                    gboolean            accept_focus)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  stage_x11->accept_focus = !!accept_focus;
+  update_wm_hints (stage_x11);
 }
 
 static void
@@ -691,6 +701,7 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->is_foreign_xwin = FALSE;
   stage->fullscreening = FALSE;
   stage->is_cursor_visible = TRUE;
+  stage->accept_focus = TRUE;
 
   stage->title = NULL;
 
@@ -705,6 +716,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->set_fullscreen = clutter_stage_x11_set_fullscreen;
   iface->set_cursor_visible = clutter_stage_x11_set_cursor_visible;
   iface->set_user_resizable = clutter_stage_x11_set_user_resizable;
+  iface->set_accept_focus = clutter_stage_x11_set_accept_focus;
   iface->show = clutter_stage_x11_show;
   iface->hide = clutter_stage_x11_hide;
   iface->resize = clutter_stage_x11_resize;
