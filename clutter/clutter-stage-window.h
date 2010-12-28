@@ -63,6 +63,9 @@ struct _ClutterStageWindowIface
                                            ClutterGeometry    *stage_rectangle);
   gboolean      (* has_redraw_clips)      (ClutterStageWindow *stage_window);
   gboolean      (* ignoring_redraw_clips) (ClutterStageWindow *stage_window);
+
+  void          (* set_accept_focus)      (ClutterStageWindow *stage_window,
+                                           gboolean            accept_focus);
 };
 
 GType clutter_stage_window_get_type (void) G_GNUC_CONST;
@@ -96,6 +99,9 @@ void          _clutter_stage_window_add_redraw_clip       (ClutterStageWindow *w
                                                            ClutterGeometry    *stage_clip);
 gboolean      _clutter_stage_window_has_redraw_clips      (ClutterStageWindow *window);
 gboolean      _clutter_stage_window_ignoring_redraw_clips (ClutterStageWindow *window);
+
+void          _clutter_stage_window_set_accept_focus      (ClutterStageWindow *window,
+                                                           gboolean            accept_focus);
 
 G_END_DECLS
 

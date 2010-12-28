@@ -168,3 +168,15 @@ _clutter_stage_window_ignoring_redraw_clips (ClutterStageWindow *window)
   return TRUE;
 }
 
+void
+_clutter_stage_window_set_accept_focus (ClutterStageWindow *window,
+                                        gboolean            accept_focus)
+{
+  ClutterStageWindowIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_STAGE_WINDOW (window));
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->set_accept_focus)
+    iface->set_accept_focus (window, accept_focus);
+}
