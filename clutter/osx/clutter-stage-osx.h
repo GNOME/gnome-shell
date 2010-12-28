@@ -65,6 +65,8 @@ struct _ClutterStageOSX
   gint requisition_height;
 
   ClutterStageState stage_state;
+
+  gboolean acceptFocus;
 };
 
 struct _ClutterStageOSXClass

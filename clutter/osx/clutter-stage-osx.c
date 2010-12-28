@@ -345,16 +345,21 @@ clutter_stage_osx_show (ClutterStageWindow *stage_window,
   clutter_actor_map (CLUTTER_ACTOR (self->wrapper));
 
   clutter_stage_osx_set_frame (self);
+
   /* Draw view should be avoided and it is the reason why
-     we should hide OpenGL view while we showing the stage.
-  */
+   * we should hide OpenGL view while we showing the stage.
+   */
   BOOL isViewHidden = [self->view isHidden];
   if ( isViewHidden == NO)
-    {
-      [self->view setHidden:YES];
-    }
-  [self->window makeKeyAndOrderFront: nil];
+    [self->view setHidden:YES];
+
+  if (self->acceptFocus)
+    [self->window makeKeyAndOrderFront: nil];
+  else
+    [self->window orderFront: nil];
+
   [self->view setHidden:isViewHidden];
+
   /*
    * After hiding we cease to be first responder.
    */
@@ -499,6 +504,16 @@ clutter_stage_osx_set_user_resizable (ClutterStageWindow *stage_window,
 }
 
 static void
+clutter_stage_osx_set_accept_focus (ClutterStageWindow *stage_window,
+                                    gboolean            accept_focus)
+{
+  CLUTTER_OSX_POOL_ALLOC();
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
+  self->acceptFocus = !!accept_focus;
+  CLUTTER_OSX_POOL_RELEASE();
+}
+
+static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
   iface->get_wrapper    = clutter_stage_osx_get_wrapper;
@@ -512,6 +527,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->resize         = clutter_stage_osx_resize;
   iface->set_cursor_visible = clutter_stage_osx_set_cursor_visible;
   iface->set_user_resizable = clutter_stage_osx_set_user_resizable;
+  iface->set_accept_focus   = clutter_stage_osx_set_accept_focus;
 }
 
 /*************************************************************************/
@@ -534,6 +550,7 @@ clutter_stage_osx_init (ClutterStageOSX *self)
 {
   self->requisition_width  = 640;
   self->requisition_height = 480;
+  self->acceptFocus = TRUE;
 }
 
 static void
