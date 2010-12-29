@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
 "POT-Creation-Date: 2010-12-20 21:07+0000\n"
-"PO-Revision-Date: 2010-02-16 19:36+0700\n"
+"PO-Revision-Date: 2010-12-29 21:22+0700\n"
 "Last-Translator: Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -27,11 +27,11 @@ msgstr "Quản lý cửa sổ và chạy ứng dụng"
 
 #: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
 msgid "Clock"
-msgstr ""
+msgstr "Đồng hồ"
 
 #: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
 msgid "Customize the panel clock"
-msgstr ""
+msgstr "Tuỳ biến đồng hồ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid ""
@@ -163,10 +163,9 @@ msgid ""
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:24
-#, fuzzy
 #| msgid "No extensions installed"
 msgid "Uuids of extensions to disable"
-msgstr "Chưa cài phần mở rộng"
+msgstr "UUID của phần mở rộng cần tắt"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Whether to collect stats about applications usage"
@@ -213,10 +212,9 @@ msgid ""
 msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-#, fuzzy
 #| msgid "Enabled"
 msgid "Enable lens mode"
-msgstr "Bật"
+msgstr "Bật chế độ gương"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
 msgid ""
@@ -297,41 +295,40 @@ msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
 msgid "Width of the vertical and horizontal lines that make up the crosshairs."
-msgstr ""
+msgstr "Độ rộng của đường dọc/ngang hình thành dấu gạch chéo."
 
 #: ../data/clock-preferences.ui.h:1
 msgid "Clock Format"
-msgstr ""
+msgstr "Dạng đồng hồ"
 
 #: ../data/clock-preferences.ui.h:2
-#, fuzzy
 #| msgid "System Preferences..."
 msgid "Clock Preferences"
-msgstr "Thiết lập hệ thống..."
+msgstr "Thiết lập đồng hồ"
 
 #: ../data/clock-preferences.ui.h:3
 msgid "Panel Display"
-msgstr ""
+msgstr "Khung hiển thị"
 
 #: ../data/clock-preferences.ui.h:4
 msgid "Show seco_nds"
-msgstr ""
+msgstr "Hiện _giây"
 
 #: ../data/clock-preferences.ui.h:5
 msgid "Show the _date"
-msgstr ""
+msgstr "Hiện _ngày"
 
 #: ../data/clock-preferences.ui.h:6
 msgid "_12 hour format"
-msgstr ""
+msgstr "Dạng _12 giờ"
 
 #: ../data/clock-preferences.ui.h:7
 msgid "_24 hour format"
-msgstr ""
+msgstr "Dạng _24 giờ"
 
 #: ../js/ui/appDisplay.js:154
 msgid "All"
-msgstr ""
+msgstr "Tất cả"
 
 #: ../js/ui/appDisplay.js:235
 msgid "APPLICATIONS"
@@ -365,7 +362,7 @@ msgstr "Đã bỏ đánh dấu ưa thích cho %s"
 
 #: ../js/ui/dash.js:27
 msgid "Remove"
-msgstr ""
+msgstr "Loại bỏ"
 
 #: ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
@@ -406,10 +403,9 @@ msgid "Undo"
 msgstr "Hoàn lại"
 
 #: ../js/ui/overview.js:158
-#, fuzzy
 #| msgid "New Window"
 msgid "Windows"
-msgstr "Cửa sổ mới"
+msgstr "Cửa sổ"
 
 #: ../js/ui/overview.js:161
 msgid "Applications"
@@ -419,33 +415,30 @@ msgstr "Ứng dụng"
 #: ../js/ui/panel.js:474
 #, c-format
 msgid "Quit %s"
-msgstr ""
+msgstr "Thoát %s"
 
 #: ../js/ui/panel.js:499
-#, fuzzy
 #| msgid "System Preferences..."
 msgid "Preferences"
-msgstr "Thiết lập hệ thống..."
+msgstr "Thiết lập"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
 #: ../js/ui/panel.js:585
 msgid "%a %b %e, %R:%S"
-msgstr ""
+msgstr "%a %b %e, %R:%S"
 
 #: ../js/ui/panel.js:586
-#, fuzzy
 #| msgid "%a %l:%M %p"
 msgid "%a %b %e, %R"
-msgstr "%a %l:%M %p"
+msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
 #: ../js/ui/panel.js:590
-#, fuzzy
 #| msgid "%a %R"
 msgid "%a %R:%S"
-msgstr "%a %R"
+msgstr "%a %R:%S"
 
 #: ../js/ui/panel.js:591
 msgid "%a %R"
@@ -454,24 +447,21 @@ msgstr "%a %R"
 #. Translators: This is a time format with date used
 #. for AM/PM.
 #: ../js/ui/panel.js:598
-#, fuzzy
 #| msgid "%a %l:%M %p"
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %l:%M %p"
+msgstr "%a %b %e, %l:%M:%S %p"
 
 #: ../js/ui/panel.js:599
-#, fuzzy
 #| msgid "%a %l:%M %p"
 msgid "%a %b %e, %l:%M %p"
-msgstr "%a %l:%M %p"
+msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
 #: ../js/ui/panel.js:603
-#, fuzzy
 #| msgid "%a %l:%M %p"
 msgid "%a %l:%M:%S %p"
-msgstr "%a %l:%M %p"
+msgstr "%a %l:%M:%S %p"
 
 #: ../js/ui/panel.js:604
 msgid "%a %l:%M %p"
@@ -486,11 +476,11 @@ msgstr "Hoạt động"
 #: ../js/ui/placeDisplay.js:111
 #, c-format
 msgid "Failed to unmount '%s'"
-msgstr ""
+msgstr "Lỗi bỏ gắn '%s'"
 
 #: ../js/ui/placeDisplay.js:114
 msgid "Retry"
-msgstr ""
+msgstr "Thử lại"
 
 #: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
@@ -507,7 +497,7 @@ msgstr "ĐỊA ĐIỂM & THIẾT BỊ"
 #. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:33
 msgid "toggle-switch-us"
-msgstr ""
+msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:233
 msgid "Please enter a command:"
@@ -528,11 +518,11 @@ msgstr "Bận"
 
 #: ../js/ui/statusMenu.js:114
 msgid "My Account"
-msgstr ""
+msgstr "Tài khoản"
 
 #: ../js/ui/statusMenu.js:118
 msgid "System Settings"
-msgstr ""
+msgstr "Thiết lập hệ thống"
 
 #: ../js/ui/statusMenu.js:125
 msgid "Lock Screen"
@@ -548,7 +538,7 @@ msgstr "Đăng xuất..."
 
 #: ../js/ui/statusMenu.js:141
 msgid "Suspend..."
-msgstr ""
+msgstr "Ngưng..."
 
 #: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
@@ -556,102 +546,101 @@ msgstr "Tắt máy..."
 
 #: ../js/ui/status/accessibility.js:82
 msgid "Zoom"
-msgstr ""
+msgstr "Thu/Phóng"
 
 #: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
-msgstr ""
+msgstr "Trình đọc màn hình"
 
 #: ../js/ui/status/accessibility.js:91
 msgid "Screen Keyboard"
-msgstr ""
+msgstr "Bàn phím màn hình"
 
 #: ../js/ui/status/accessibility.js:94
 msgid "Visual Alerts"
-msgstr ""
+msgstr "Cảnh báo trực quan"
 
 #: ../js/ui/status/accessibility.js:97
 msgid "Sticky Keys"
-msgstr ""
+msgstr "Phím dính"
 
 #: ../js/ui/status/accessibility.js:100
 msgid "Slow Keys"
-msgstr ""
+msgstr "Phím chậm"
 
 #: ../js/ui/status/accessibility.js:103
 msgid "Bounce Keys"
-msgstr ""
+msgstr "Phím dội"
 
 #: ../js/ui/status/accessibility.js:106
 msgid "Mouse Keys"
-msgstr ""
+msgstr "Phím chuột"
 
 #: ../js/ui/status/accessibility.js:110
 msgid "Universal Access Settings"
-msgstr ""
+msgstr "Thiết lập hỗ trợ truy cập"
 
 #: ../js/ui/status/accessibility.js:163
 msgid "High Contrast"
-msgstr ""
+msgstr "Tương phản cao"
 
 #: ../js/ui/status/accessibility.js:205
 msgid "Large Text"
-msgstr ""
+msgstr "Chữ lớn"
 
 #: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:200
 msgid "Bluetooth"
-msgstr ""
+msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:55
 msgid "Visibility"
-msgstr ""
+msgstr "Tầm nhìn"
 
 #: ../js/ui/status/bluetooth.js:68
 msgid "Send Files to Device..."
-msgstr ""
+msgstr "Gửi tập tin đến thiết bị..."
 
 #: ../js/ui/status/bluetooth.js:71
 msgid "Setup a New Device..."
-msgstr ""
+msgstr "Thiết lập thiết bị mới..."
 
 #: ../js/ui/status/bluetooth.js:94
 msgid "Bluetooth Settings"
-msgstr ""
+msgstr "Thiết lập Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:151
-#, fuzzy
 #| msgid "Connect to..."
 msgid "Connection"
-msgstr "Kết nối đến..."
+msgstr "Kết nối"
 
 #: ../js/ui/status/bluetooth.js:187
 msgid "Send Files..."
-msgstr ""
+msgstr "Gửi tập tin..."
 
 #: ../js/ui/status/bluetooth.js:192
 msgid "Browse Files..."
-msgstr ""
+msgstr "Duyệt tập tin..."
 
 #: ../js/ui/status/bluetooth.js:201
 msgid "Error browsing device"
-msgstr ""
+msgstr "Lỗi duyệt tập tin"
 
 #: ../js/ui/status/bluetooth.js:202
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
-msgstr ""
+msgstr "Không thể duyệt thiết bị yêu cầu , lỗi là '%s'"
 
 #: ../js/ui/status/bluetooth.js:210
 msgid "Keyboard Settings"
-msgstr ""
+msgstr "Thiết lập bàn phím"
 
 #: ../js/ui/status/bluetooth.js:215
 msgid "Mouse Settings"
-msgstr ""
+msgstr "Thiết lập chuột"
 
 #: ../js/ui/status/bluetooth.js:222 ../js/ui/status/volume.js:62
 msgid "Sound Settings"
-msgstr ""
+msgstr "Thiết lập âm thanh"
 
 #: ../js/ui/status/bluetooth.js:293 ../js/ui/status/bluetooth.js:327
 #: ../js/ui/status/bluetooth.js:367 ../js/ui/status/bluetooth.js:400
@@ -661,181 +650,179 @@ msgstr ""
 #: ../js/ui/status/bluetooth.js:328
 #, c-format
 msgid "Authorization request from %s"
-msgstr ""
+msgstr "Yêu cầu cấp quyền từ %s"
 
 #: ../js/ui/status/bluetooth.js:334
 #, c-format
 msgid "Device %s wants access to the service '%s'"
-msgstr ""
+msgstr "Thiết bị %s muốn truy cập dịch vụ '%s'"
 
 #: ../js/ui/status/bluetooth.js:336
 msgid "Always grant access"
-msgstr ""
+msgstr "Luôn cho phép"
 
 #: ../js/ui/status/bluetooth.js:337
 msgid "Grant this time only"
-msgstr ""
+msgstr "Chỉ cho phép lần này"
 
 #: ../js/ui/status/bluetooth.js:338
 msgid "Reject"
-msgstr ""
+msgstr "Từ chối"
 
 #: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Pairing confirmation for %s"
-msgstr ""
+msgstr "Xác nhận kết nối cho %s"
 
 #: ../js/ui/status/bluetooth.js:374 ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Device %s wants to pair with this computer"
-msgstr ""
+msgstr "Thiết bị %s muốn kết nối với máy tính này"
 
 #: ../js/ui/status/bluetooth.js:375
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
-msgstr ""
+msgstr "Vui lòng xác nhận PIN '%s' khớp với số trên thiết bị."
 
 #: ../js/ui/status/bluetooth.js:377
 msgid "Matches"
-msgstr ""
+msgstr "Khớp"
 
 #: ../js/ui/status/bluetooth.js:378
 msgid "Does not match"
-msgstr ""
+msgstr "Không khớp"
 
 #: ../js/ui/status/bluetooth.js:401
 #, c-format
 msgid "Pairing request for %s"
-msgstr ""
+msgstr "Yêu cầu kết nối cho %s"
 
 #: ../js/ui/status/bluetooth.js:409
 msgid "Please enter the PIN mentioned on the device."
-msgstr ""
+msgstr "Vui lòng nhập số PIN ghi trên thiết bị."
 
 #: ../js/ui/status/bluetooth.js:425
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../js/ui/status/bluetooth.js:426
 msgid "Cancel"
-msgstr ""
+msgstr "Thôi"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
-msgstr ""
+msgstr "Thiết lập năng lượng"
 
 #: ../js/ui/status/power.js:112
-#, fuzzy, c-format
+#, c-format
 #| msgid "%d hour ago"
 #| msgid_plural "%d hours ago"
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
-msgstr[0] "%d giờ trước"
+msgstr[0] "%d giờ còn lại"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
 #: ../js/ui/status/power.js:115
 #, c-format
 msgid "%d %s %d %s remaining"
-msgstr ""
+msgstr "%d %s %d %s còn lại"
 
 #: ../js/ui/status/power.js:117
 msgid "hour"
 msgid_plural "hours"
-msgstr[0] ""
+msgstr[0] "giờ"
 
 #: ../js/ui/status/power.js:117
-#, fuzzy
 #| msgid "%d minute ago"
 #| msgid_plural "%d minutes ago"
 msgid "minute"
 msgid_plural "minutes"
-msgstr[0] "%d phút trước"
+msgstr[0] "%d phút"
 
 #: ../js/ui/status/power.js:120
-#, fuzzy, c-format
+#, c-format
 #| msgid "%d minute ago"
 #| msgid_plural "%d minutes ago"
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
-msgstr[0] "%d phút trước"
+msgstr[0] "%d phút còn lại"
 
 #: ../js/ui/status/power.js:237
 msgid "AC adapter"
-msgstr ""
+msgstr "Bộ đổi điện AC"
 
 #: ../js/ui/status/power.js:239
 msgid "Laptop battery"
-msgstr ""
+msgstr "Pin laptop"
 
 #: ../js/ui/status/power.js:241
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #: ../js/ui/status/power.js:243
 msgid "Monitor"
-msgstr ""
+msgstr "Màn hình"
 
 #: ../js/ui/status/power.js:245
 msgid "Mouse"
-msgstr ""
+msgstr "Chuột"
 
 #: ../js/ui/status/power.js:247
 msgid "Keyboard"
-msgstr ""
+msgstr "Bàn phím"
 
 #: ../js/ui/status/power.js:249
 msgid "PDA"
-msgstr ""
+msgstr "PDA"
 
 #: ../js/ui/status/power.js:251
 msgid "Cell phone"
-msgstr ""
+msgstr "Điện thoại cầm tay"
 
 #: ../js/ui/status/power.js:253
 msgid "Media player"
-msgstr ""
+msgstr "Máy phát"
 
 #: ../js/ui/status/power.js:255
-#, fuzzy
 #| msgid "Enabled"
 msgid "Tablet"
-msgstr "Bật"
+msgstr ""
 
 #: ../js/ui/status/power.js:257
 msgid "Computer"
-msgstr ""
+msgstr "Máy tính"
 
 #: ../js/ui/status/power.js:259 ../src/shell-app-system.c:1012
 msgid "Unknown"
-msgstr ""
+msgstr "Không biết"
 
 #: ../js/ui/status/volume.js:41
 msgid "Volume"
-msgstr ""
+msgstr "Âm lượng"
 
 #: ../js/ui/status/volume.js:54
 msgid "Microphone"
-msgstr ""
+msgstr "Micrô"
 
 #: ../js/ui/telepathyClient.js:560
 #, c-format
 msgid "%s is online."
-msgstr ""
+msgstr "%s trực tuyến."
 
 #: ../js/ui/telepathyClient.js:565
 #, c-format
 msgid "%s is offline."
-msgstr ""
+msgstr "%s ngoại tuyến."
 
 #: ../js/ui/telepathyClient.js:568
 #, c-format
 msgid "%s is away."
-msgstr ""
+msgstr "%s đi vắng."
 
 #: ../js/ui/telepathyClient.js:571
 #, c-format
 msgid "%s is busy."
-msgstr ""
+msgstr "%s bận."
 
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
@@ -843,30 +830,30 @@ msgstr ""
 #: ../js/ui/telepathyClient.js:664
 #, no-c-format
 msgid "Sent at %X on %A"
-msgstr ""
+msgstr "Đã gửi %X lúc %A"
 
 #: ../js/ui/viewSelector.js:26
 msgid "Search your computer"
-msgstr ""
+msgstr "Tìm trong máy"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
 msgid "%s has finished starting"
-msgstr ""
+msgstr "%s đã hoàn tất khởi chạy"
 
 #: ../js/ui/windowAttentionHandler.js:45
 #, c-format
 msgid "'%s' is ready"
-msgstr ""
+msgstr "'%s' đã sẵn sàng"
 
 #: ../js/ui/workspacesView.js:244
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
-msgstr ""
+msgstr "Không thể thêm vùng làm việc mới vì đã đạt giới hạn số vùng làm việc tối đa."
 
 #: ../js/ui/workspacesView.js:260
 msgid "Can't remove the first workspace."
-msgstr ""
+msgstr "Không thể bỏ vùng làm việc đầu tiên."
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -874,7 +861,7 @@ msgstr ""
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] ""
+msgstr[0] "%u đầu ra"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -882,11 +869,11 @@ msgstr[0] ""
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] ""
+msgstr[0] "%u đầu vào"
 
 #: ../src/gvc/gvc-mixer-control.c:1402
 msgid "System Sounds"
-msgstr ""
+msgstr "Âm thanh hệ thống"
 
 #: ../src/shell-global.c:1155
 msgid "Less than a minute ago"
