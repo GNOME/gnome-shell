@@ -761,11 +761,12 @@ _clutter_stage_maybe_relayout (ClutterActor *actor)
 
   if (!priv->relayout_pending)
     return;
-  priv->relayout_pending = FALSE;
 
   /* avoid reentrancy */
   if (!CLUTTER_ACTOR_IN_RELAYOUT (stage))
     {
+      priv->relayout_pending = FALSE;
+
       CLUTTER_TIMER_START (_clutter_uprof_context, relayout_timer);
       CLUTTER_NOTE (ACTOR, "Recomputing layout");
 
