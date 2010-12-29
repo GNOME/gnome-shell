@@ -359,12 +359,16 @@ _clutter_input_device_set_actor (ClutterInputDevice *device,
        */
       _clutter_process_event (&cev);
 
-      _clutter_actor_set_has_pointer (device->cursor_actor, FALSE);
-      g_object_weak_unref (G_OBJECT (device->cursor_actor),
-                           cursor_weak_unref,
-                           device);
+      /* processing the event might have destroyed the actor */
+      if (device->cursor_actor != NULL)
+        {
+          _clutter_actor_set_has_pointer (device->cursor_actor, FALSE);
+          g_object_weak_unref (G_OBJECT (device->cursor_actor),
+                               cursor_weak_unref,
+                               device);
 
-      device->cursor_actor = NULL;
+          device->cursor_actor = NULL;
+        }
     }
 
   if (actor != NULL)
