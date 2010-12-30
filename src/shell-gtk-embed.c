@@ -3,7 +3,6 @@
 #include "config.h"
 
 #include "shell-embedded-window-private.h"
-#include "gtk-compat.h"
 
 #include <gdk/gdkx.h>
 

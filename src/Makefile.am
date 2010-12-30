@@ -90,7 +90,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-window-tracker-private.h	\
 	shell-wm-private.h		\
 	gnome-shell-plugin.c		\
-	gtk-compat.h			\
 	shell-app.c			\
 	shell-app-system.c		\
 	shell-app-usage.c		\
