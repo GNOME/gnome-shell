@@ -104,11 +104,17 @@ Indicator.prototype = {
     _updateKillswitch: function() {
         let current_state = this._applet.killswitch_state;
         let on = current_state == GnomeBluetoothApplet.KillswitchState.UNBLOCKED;
+        let has_adapter = current_state != GnomeBluetoothApplet.KillswitchState.NO_ADAPTER;
         let can_toggle = current_state != GnomeBluetoothApplet.KillswitchState.NO_ADAPTER &&
                          current_state != GnomeBluetoothApplet.KillswitchState.HARD_BLOCKED;
 
         this._killswitch.setToggleState(on);
         this._killswitch.actor.reactive = can_toggle;
+
+        if (has_adapter)
+            this.actor.show();
+        else
+            this.actor.hide();
 
         if (on) {
             this._discoverable.actor.show();
@@ -130,7 +136,7 @@ Indicator.prototype = {
         let devices = this._applet.get_devices();
 
         for (let i = 0; i < this._deviceItems.length; i++) {
-            let item = this._deviceItems.length;
+            let item = this._deviceItems[i];
             let destroy = true;
             for (let j = 0; j < devices.length; j++) {
                 // we need to deep compare because BluetoothSimpleDevice is a boxed type
