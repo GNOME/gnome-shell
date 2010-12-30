@@ -806,6 +806,7 @@ Source.prototype = {
         this._iconBin = new St.Bin({ width: this.ICON_SIZE,
                                      height: this.ICON_SIZE });
         this.isTransient = false;
+        this.isChat = false;
     },
 
     setTransient: function(isTransient) {
@@ -1025,6 +1026,7 @@ MessageTray.prototype = {
         // added to the summary without a notification being shown.
         this._newSummaryItems = [];
         this._longestSummaryItem = null;
+        this._chatSummaryItemsCount = 0;
     },
 
     _setSizePosition: function() {
@@ -1058,7 +1060,12 @@ MessageTray.prototype = {
 
         let summaryItem = new SummaryItem(source);
 
-        this._summary.insert_actor(summaryItem.actor, 0);
+        if (source.isChat) {
+            this._summary.insert_actor(summaryItem.actor, 0);
+            this._chatSummaryItemsCount++;
+        } else {
+            this._summary.insert_actor(summaryItem.actor, this._chatSummaryItemsCount);
+        }
 
         let titleWidth = summaryItem.getTitleNaturalWidth();
         if (titleWidth > this._summaryItemTitleWidth) {
@@ -1123,6 +1130,10 @@ MessageTray.prototype = {
             this._newSummaryItems.splice(newSummaryItemsIndex, 1);
 
         this._summaryItems.splice(index, 1);
+
+        if (source.isChat)
+            this._chatSummaryItemsCount--;
+
         if (this._longestSummaryItem.source == source) {
             let newTitleWidth = 0;
             this._longestSummaryItem = null;

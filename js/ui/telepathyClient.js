@@ -455,6 +455,8 @@ Source.prototype = {
     _init: function(accountPath, connPath, channelPath, targetHandle, targetHandleType, targetId) {
         MessageTray.Source.prototype._init.call(this, targetId);
 
+        this.isChat = true;
+
         this._accountPath = accountPath;
 
         let connName = Telepathy.pathToName(connPath);
