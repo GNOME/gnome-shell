@@ -1194,6 +1194,18 @@ PopupMenuManager.prototype = {
         return -1;
     },
 
+    _nextMenu: function(pos, direction) {
+        for (let i = 1; i < this._menus.length; i++) {
+            let candidate = mod(pos + i * direction, this._menus.length);
+            let menu = this._menus[candidate].menu;
+            if (!menu.sourceActor || menu.sourceActor.visible)
+                return menu;
+        }
+        // no menu is found? this should not happen
+        // anyway stay on current menu
+        return this._menus[pos];
+    },
+
     _onEventCapture: function(actor, event) {
         if (!this.grabbed)
             return false;
@@ -1232,7 +1244,7 @@ PopupMenuManager.prototype = {
         if (symbol == Clutter.Left || symbol == Clutter.Right) {
             let direction = symbol == Clutter.Right ? 1 : -1;
             let pos = this._findMenu(this._activeMenu);
-            let next = this._menus[mod(pos + direction, this._menus.length)].menu;
+            let next = this._nextMenu(pos, direction);
             if (next != this._activeMenu) {
                 this._changeMenu(next);
                 next.activateFirst();
