@@ -19,6 +19,7 @@ test $TEST_TYPE $FILE || {
 if automake-1.11 --version < /dev/null > /dev/null 2>&1 ; then
     AUTOMAKE=automake-1.11
     ACLOCAL=aclocal-1.11
+    export AUTOMAKE ACLOCAL
 else
         echo
         echo "You must have automake 1.11.x installed to compile $PROJECT
