@@ -269,7 +269,7 @@ test_text_field_main (gint    argc,
                       gchar **argv)
 {
   ClutterActor *stage;
-  ClutterActor *box;
+  ClutterActor *box, *entry;
   ClutterLayoutManager *table;
 
   clutter_init (&argc, &argv);
@@ -297,8 +297,9 @@ test_text_field_main (gint    argc,
                     "y-expand", FALSE,
                     NULL);
 
+  entry = create_entry (CLUTTER_COLOR_LightGray, "<i>some</i> text", 0, 0);
   clutter_box_pack (CLUTTER_BOX (box),
-                    create_entry (CLUTTER_COLOR_LightGray, "<i>some</i> text", 0, 0),
+                    entry,
                     "row", 0,
                     "column", 1,
                     "x-expand", TRUE,
@@ -323,6 +324,7 @@ test_text_field_main (gint    argc,
                     "y-expand", FALSE,
                     NULL);
 
+  clutter_actor_grab_key_focus (entry);
   clutter_actor_show (stage);
 
   clutter_main ();
