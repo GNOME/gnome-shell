@@ -6,19 +6,21 @@
 #
 # Hendrik Brandt <heb@gnome-de.org>, 2009.
 # Hendrik Richter <hendrikr@gnome.org>, 2009.
-# Mario Blättermann <mariobl@gnome.org>, 2009, 2010.
+# Mario Blättermann <mariobl@gnome.org>, 2009, 2010, 2011.
 # Mario Klug <mario@klug.me>, 2010.
-# Christian Kirbach <Christian.Kirbach@googlemail.com>, 2009, 2010.
+# Jakob Kramer <jakob.kramer@gmx.de>, 2010.
+# Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>, 2010.
+# Christian Kirbach <Christian.Kirbach@googlemail.com>, 2009, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&component=general\n"
-"POT-Creation-Date: 2010-10-10 03:14+0000\n"
-"PO-Revision-Date: 2010-10-10 20:23+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-01-01 23:21+0100\n"
+"PO-Revision-Date: 2011-01-01 16:25+0100\n"
 "Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -105,12 +107,8 @@ msgstr ""
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Liste der Kennungen der Desktop-Dateien für bevorzugte Anwendungen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "Overview workspace view mode"
-msgstr "Modus des Arbeitsflächen-Überblicks"
-
 # Hier blicke ich überhaupt nicht durch.
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -130,22 +128,22 @@ msgstr ""
 "Das kann zum Senden der Ausgabe über shout2send an einen Icecast-Server oder "
 "Ähnliches verwendet werden. Falls nicht (oder auf einen leeren Wert) "
 "gesetzt, so wird die vorgegebene Weiterleitung verwendet, welche derzeit "
-"»videorate ! theoraenc ! oggmux« lautet und die Aufnahme im Ogg-Theora-Format "
-"speichert."
+"»videorate ! theoraenc ! oggmux« lautet und die Aufnahme im Ogg-Theora-"
+"Format speichert."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Datum in der Uhr anzeigen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Wochentag im Kalender anzeigen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Zeit sekundengenau anzeigen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -153,7 +151,7 @@ msgstr ""
 "Programme, welche auf diese Bezeichner zutreffen, werden im Favoriten-"
 "Bereich angezeigt."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -164,7 +162,7 @@ msgstr ""
 "Dateiname sollte geändert werden, wenn Sie in einem anderen Containerformat "
 "aufnehmen."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -173,19 +171,11 @@ msgstr ""
 "der GNOME-Shell aufgezeichnet werden soll, in Einzelbildern pro Sekunde."
 
 # hmm Enkodieren oder Kodieren?
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Die GStreamer-Weiterleitung zur Enkodierung des Screencasts"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"The selected workspace view mode in the overview. Supported values are "
-"\"single\" and \"grid\"."
-msgstr ""
-"Die gewählte Ansicht des Arbeitsflächen-Überblicks. Mögliche Werte sind "
-"»single« (einfach) und »grid« (Raster)."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -198,7 +188,7 @@ msgstr ""
 "deaktivieren, um Ihre Privatsphäre zu schützen. Bitte beachten Sie, dass "
 "bereits gespeicherte Daten hiervon nicht beeinflusst werden."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid ""
 "This key specifies the format used by the panel clock when the format key is "
 "set to \"custom\". You can use conversion specifiers understood by strftime"
@@ -211,7 +201,7 @@ msgstr ""
 "Format zu erhalten. Weitere Informationen finden Sie in der Handbuchseite zu "
 "strftime()."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid ""
 "This key specifies the hour format used by the panel clock. Possible values "
 "are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
@@ -221,18 +211,18 @@ msgid ""
 "the show_date and show_seconds keys are ignored."
 msgstr ""
 "Dieser Schlüssel legt das Stundenformat für die Anzeige der Panel-Uhr fest. "
-"Mögliche Werte sind »12-hour«, »24-hour«, »unix« und »custom«. Wenn Sie »unix« "
-"verwenden, zeigt die Uhr die Sekunden seit Epoch, dem Beginn der Unix-"
+"Mögliche Werte sind »12-hour«, »24-hour«, »unix« und »custom«. Wenn Sie "
+"»unix« verwenden, zeigt die Uhr die Sekunden seit Epoch, dem Beginn der Unix-"
 "Zeitrechnung am 1. Januar 1970 an. Wenn Sie »custom« (benutzerdefiniert) "
 "verwenden, zeigt die Uhr die Zeit gemäß dem im Schlüssel »custom_format« "
 "angegebenen Format an. Beachten Sie, dass bei »unix« oder »custom« die "
 "Schlüssel »show_date« und »show_seconds« ignoriert werden."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Uuids of extensions to disable"
 msgstr "UUIDs der zu deaktivierenden Erweiterungen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid "Whether to collect stats about applications usage"
 msgstr "Legt fest, ob der Status der Anwendungsnutzung erfasst werden soll"
 
@@ -266,14 +256,14 @@ msgid ""
 msgstr ""
 "Legt die Position des vergrößerten Bildes der Maus innerhalb der "
 "vergrößerten Ansicht fest, und wie die Maus auf die Mausbewegungen des "
-"Systems reagiert. Folgende Werte sind möglich: »none« - keine Mausverfolgung; "
-"»centered« - das Mausbild wird in der Mitte des vergrößerten Bereiches "
-"dargestellt (welche auch den Zeiger der Systemmaus darstellt), wobei der "
-"vergrößerte Inhalt gerollt wird, sobald die Systemmaus bewegt wird; "
-"»proportional« - die Position der vergrößerten Maus im vergrößerten Bereich "
-"ist proportional zur Position der Systemmaus auf dem Bildschirm; »push« - "
-"wenn die vergrößerte Maus einen der Ränder des vergrößerten Bereichs "
-"berührt, wird der entsprechende Inhalt in die Ansicht geschoben."
+"Systems reagiert. Folgende Werte sind möglich: »none« - keine "
+"Mausverfolgung; »centered« - das Mausbild wird in der Mitte des vergrößerten "
+"Bereiches dargestellt (welche auch den Zeiger der Systemmaus darstellt), "
+"wobei der vergrößerte Inhalt gerollt wird, sobald die Systemmaus bewegt "
+"wird; »proportional« - die Position der vergrößerten Maus im vergrößerten "
+"Bereich ist proportional zur Position der Systemmaus auf dem Bildschirm; "
+"»push« - wenn die vergrößerte Maus einen der Ränder des vergrößerten "
+"Bereichs berührt, wird der entsprechende Inhalt in die Ansicht geschoben."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
 msgid ""
@@ -422,62 +412,46 @@ msgstr "_12-Stunden-Format"
 msgid "_24 hour format"
 msgstr "_24-Stunden-Format"
 
-#. **** Applications ****
-#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:155
+msgid "All"
+msgstr "Alle"
+
+#: ../js/ui/appDisplay.js:236
 msgid "APPLICATIONS"
 msgstr "ANWENDUNGEN"
 
-#: ../js/ui/appDisplay.js:348
+#: ../js/ui/appDisplay.js:266
 msgid "PREFERENCES"
 msgstr "EINSTELLUNGEN"
 
-#: ../js/ui/appDisplay.js:648
+#: ../js/ui/appDisplay.js:563
 msgid "New Window"
 msgstr "Neues Fenster"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:567
 msgid "Remove from Favorites"
 msgstr "Aus Favoriten entfernen"
 
-#: ../js/ui/appDisplay.js:653
+#: ../js/ui/appDisplay.js:568
 msgid "Add to Favorites"
 msgstr "Zu Favoriten hinzufügen"
 
-#: ../js/ui/appDisplay.js:830
-msgid "Drag here to add favorites"
-msgstr "Hier ablegen, um zu Favoriten hinzuzufügen"
-
-#: ../js/ui/appFavorites.js:88
+#: ../js/ui/appFavorites.js:91
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s wurde zu Ihren Favoriten hinzugefügt"
 
-#: ../js/ui/appFavorites.js:107
+#: ../js/ui/appFavorites.js:122
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s wurde aus Ihren Favoriten entfernt"
 
-#: ../js/ui/dash.js:142
-msgid "Find"
-msgstr "Suchen"
+#: ../js/ui/dash.js:27
+msgid "Remove"
+msgstr "Entfernen"
 
-#: ../js/ui/dash.js:473
-msgid "Searching..."
-msgstr "Suche läuft …"
-
-#: ../js/ui/dash.js:487
-msgid "No matching results."
-msgstr "Keine passenden Ergebnisse."
-
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
-msgid "PLACES & DEVICES"
-msgstr "ORTE UND GERÄTE"
-
-#. **** Documents ****
-#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
+#: ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "ZULETZT GEÖFFNETE DOKUMENTE"
 
@@ -489,7 +463,9 @@ msgstr "Keine Erweiterungen installiert"
 msgid "Enabled"
 msgstr "Aktiviert"
 
-#: ../js/ui/lookingGlass.js:591
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:591 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "Deaktiviert"
 
@@ -509,63 +485,71 @@ msgstr "Quelle zeigen"
 msgid "Web Page"
 msgstr "Webseite"
 
-#: ../js/ui/overview.js:160
+#: ../js/ui/overview.js:96
 msgid "Undo"
 msgstr "Rückgängig"
 
+#: ../js/ui/overview.js:158
+msgid "Windows"
+msgstr "Fenster"
+
+#: ../js/ui/overview.js:161
+msgid "Applications"
+msgstr "Anwendungen"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:468
+#: ../js/ui/panel.js:474
 #, c-format
 msgid "Quit %s"
 msgstr "%s beenden"
 
-#: ../js/ui/panel.js:493
+#: ../js/ui/panel.js:499
 msgid "Preferences"
 msgstr "Einstellungen"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:579
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %R:%S"
 msgstr "%a, %e. %b, %R:%S"
 
-#: ../js/ui/panel.js:580
+#: ../js/ui/panel.js:586
 msgid "%a %b %e, %R"
 msgstr "%a, %e. %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:584
+#: ../js/ui/panel.js:590
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:591
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:592
+#: ../js/ui/panel.js:598
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a, %e. %b, %H:%M:%S"
 
-#: ../js/ui/panel.js:593
+#: ../js/ui/panel.js:599
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a, %e. %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:597
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:604
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:743
+#: ../js/ui/panel.js:749
 msgid "Activities"
 msgstr "Aktivitäten"
 
@@ -581,6 +565,10 @@ msgstr "Erneut versuchen"
 #: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
 msgstr "Verbinden mit …"
+
+#: ../js/ui/placeDisplay.js:558
+msgid "PLACES & DEVICES"
+msgstr "ORTE UND GERÄTE"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -600,41 +588,331 @@ msgstr "Bitte geben Sie einen Befehl ein:"
 msgid "Execution of '%s' failed:"
 msgstr "Ausführung von »%s« ist gescheitert:"
 
-#: ../js/ui/statusMenu.js:91
+#: ../js/ui/statusMenu.js:101
 msgid "Available"
 msgstr "Verfügbar"
 
-#: ../js/ui/statusMenu.js:95
+#: ../js/ui/statusMenu.js:106
 msgid "Busy"
 msgstr "Beschäftigt"
 
-#: ../js/ui/statusMenu.js:99
-msgid "Invisible"
-msgstr "Unsichtbar"
+#: ../js/ui/statusMenu.js:114
+msgid "My Account"
+msgstr "Eigenes Konto"
 
-#: ../js/ui/statusMenu.js:106
-msgid "Account Information..."
-msgstr "Benutzerinformationen …"
+#: ../js/ui/statusMenu.js:118
+msgid "System Settings"
+msgstr "Systemeinstellungen"
 
-#: ../js/ui/statusMenu.js:110
-msgid "System Settings..."
-msgstr "Systemeinstellungen …"
-
-#: ../js/ui/statusMenu.js:117
+#: ../js/ui/statusMenu.js:125
 msgid "Lock Screen"
 msgstr "Bildschirm sperren"
 
-#: ../js/ui/statusMenu.js:121
+#: ../js/ui/statusMenu.js:129
 msgid "Switch User"
 msgstr "Benutzer wechseln"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:134
 msgid "Log Out..."
 msgstr "Abmelden …"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:141
+msgid "Suspend..."
+msgstr "Bereitschaft …"
+
+#: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
 msgstr "Ausschalten …"
+
+#: ../js/ui/status/accessibility.js:82
+msgid "Zoom"
+msgstr "Vergrößern"
+
+#: ../js/ui/status/accessibility.js:88
+msgid "Screen Reader"
+msgstr "Bildschirmleser"
+
+#: ../js/ui/status/accessibility.js:91
+msgid "Screen Keyboard"
+msgstr "Bildschirmtastatur"
+
+#: ../js/ui/status/accessibility.js:94
+msgid "Visual Alerts"
+msgstr "Visuelle Warnungen"
+
+#: ../js/ui/status/accessibility.js:97
+msgid "Sticky Keys"
+msgstr "Klebrige Tasten"
+
+#: ../js/ui/status/accessibility.js:100
+msgid "Slow Keys"
+msgstr "Tastenverzögerung"
+
+#: ../js/ui/status/accessibility.js:103
+msgid "Bounce Keys"
+msgstr "Springende Tasten"
+
+#: ../js/ui/status/accessibility.js:106
+msgid "Mouse Keys"
+msgstr "Maustasten"
+
+#: ../js/ui/status/accessibility.js:110
+msgid "Universal Access Settings"
+msgstr "Einstellungen zur Barrierefreiheit"
+
+#: ../js/ui/status/accessibility.js:163
+msgid "High Contrast"
+msgstr "Hoher Kontrast"
+
+#: ../js/ui/status/accessibility.js:205
+msgid "Large Text"
+msgstr "Große Schrift"
+
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:234
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "Sichtbarkeit"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "Dateien an Gerät senden …"
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "Ein neues Gerät einrichten …"
+
+#: ../js/ui/status/bluetooth.js:94
+msgid "Bluetooth Settings"
+msgstr "Bluetooth-Einstellungen"
+
+#: ../js/ui/status/bluetooth.js:185
+msgid "Connection"
+msgstr "Verbindung"
+
+#: ../js/ui/status/bluetooth.js:221
+msgid "Send Files..."
+msgstr "Dateien senden …"
+
+#: ../js/ui/status/bluetooth.js:226
+msgid "Browse Files..."
+msgstr "Dateien durchsuchen …"
+
+#: ../js/ui/status/bluetooth.js:235
+msgid "Error browsing device"
+msgstr "Fehler beim Durchsuchen des Geräts"
+
+#: ../js/ui/status/bluetooth.js:236
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr ""
+"Das angesprochene Gerät kann nicht durchsucht werden. Der Fehler lautet »%s«"
+
+#: ../js/ui/status/bluetooth.js:244
+msgid "Keyboard Settings"
+msgstr "Tastatureinstellungen"
+
+#: ../js/ui/status/bluetooth.js:249
+msgid "Mouse Settings"
+msgstr "Maus-Einstellungen"
+
+#: ../js/ui/status/bluetooth.js:256 ../js/ui/status/volume.js:62
+msgid "Sound Settings"
+msgstr "Klangeinstellungen"
+
+#: ../js/ui/status/bluetooth.js:327 ../js/ui/status/bluetooth.js:361
+#: ../js/ui/status/bluetooth.js:401 ../js/ui/status/bluetooth.js:434
+msgid "Bluetooth Agent"
+msgstr "Bluetooth-Agent"
+
+#: ../js/ui/status/bluetooth.js:362
+#, c-format
+msgid "Authorization request from %s"
+msgstr "Legitimierungsanfrage von %s"
+
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "Gerät »%s« bittet um Zugriff auf den Dienst »%s«"
+
+#: ../js/ui/status/bluetooth.js:370
+msgid "Always grant access"
+msgstr "Immer Zugriff gewähren"
+
+#: ../js/ui/status/bluetooth.js:371
+msgid "Grant this time only"
+msgstr "Nur dieses Mal gewähren"
+
+#: ../js/ui/status/bluetooth.js:372
+msgid "Reject"
+msgstr "Abweisen"
+
+#: ../js/ui/status/bluetooth.js:402
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Koppelungsbestätigung für %s"
+
+#: ../js/ui/status/bluetooth.js:408 ../js/ui/status/bluetooth.js:442
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "Gerät »%s« möchte mit diesem Rechner gekoppelt werden"
+
+#: ../js/ui/status/bluetooth.js:409
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr ""
+"Bitte bestätigen Sie, ob die PIN »%s« mit der des Gerätes übereinstimmt."
+
+#: ../js/ui/status/bluetooth.js:411
+msgid "Matches"
+msgstr "Stimmt überein"
+
+#: ../js/ui/status/bluetooth.js:412
+msgid "Does not match"
+msgstr "Stimmt nicht überein"
+
+#: ../js/ui/status/bluetooth.js:435
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Koppelungsanfrage für %s"
+
+#: ../js/ui/status/bluetooth.js:443
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Bitte geben Sie die auf dem Gerät angezeigte PIN ein."
+
+#: ../js/ui/status/bluetooth.js:459
+msgid "OK"
+msgstr "OK"
+
+#: ../js/ui/status/bluetooth.js:460
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: ../js/ui/status/power.js:85
+msgid "Power Settings"
+msgstr "Energieeinstellungen"
+
+#: ../js/ui/status/power.js:112
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "%d Stunde verbleibend"
+msgstr[1] "%d Stunden verbleibend"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:115
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "%d %s %d %s verbleibend"
+
+#: ../js/ui/status/power.js:117
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "Stunde"
+msgstr[1] "Stunden"
+
+#: ../js/ui/status/power.js:117
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "Minute"
+msgstr[1] "Minuten"
+
+#: ../js/ui/status/power.js:120
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "%d Minute verbleibend"
+msgstr[1] "%d Minuten verbleibend"
+
+#: ../js/ui/status/power.js:237
+msgid "AC adapter"
+msgstr "Netzteil"
+
+#: ../js/ui/status/power.js:239
+msgid "Laptop battery"
+msgstr "Laptop-Akku"
+
+#: ../js/ui/status/power.js:241
+msgid "UPS"
+msgstr "Notstromversorgung"
+
+#: ../js/ui/status/power.js:243
+msgid "Monitor"
+msgstr "Bildschirm"
+
+#: ../js/ui/status/power.js:245
+msgid "Mouse"
+msgstr "Maus"
+
+#: ../js/ui/status/power.js:247
+msgid "Keyboard"
+msgstr "Tastatur"
+
+#: ../js/ui/status/power.js:249
+msgid "PDA"
+msgstr "PDA"
+
+#: ../js/ui/status/power.js:251
+msgid "Cell phone"
+msgstr "Mobiltelefon"
+
+#: ../js/ui/status/power.js:253
+msgid "Media player"
+msgstr "Medienwiedergabegerät"
+
+#: ../js/ui/status/power.js:255
+msgid "Tablet"
+msgstr "Tablet"
+
+#: ../js/ui/status/power.js:257
+msgid "Computer"
+msgstr "Rechner"
+
+#: ../js/ui/status/power.js:259 ../src/shell-app-system.c:1012
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: ../js/ui/status/volume.js:41
+msgid "Volume"
+msgstr "Lautstärke"
+
+#: ../js/ui/status/volume.js:54
+msgid "Microphone"
+msgstr "Mikrofon"
+
+#: ../js/ui/telepathyClient.js:560
+#, c-format
+msgid "%s is online."
+msgstr "%s ist angemeldet."
+
+#: ../js/ui/telepathyClient.js:565
+#, c-format
+msgid "%s is offline."
+msgstr "%s ist abgemeldet."
+
+#: ../js/ui/telepathyClient.js:568
+#, c-format
+msgid "%s is away."
+msgstr "»%s« ist abwesend."
+
+#: ../js/ui/telepathyClient.js:571
+#, c-format
+msgid "%s is busy."
+msgstr "%s ist beschäftigt."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:665
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "Gesendet am %A um %X "
+
+#: ../js/ui/viewSelector.js:26
+msgid "Search your computer"
+msgstr "Ihren Rechner durchsuchen"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -646,60 +924,82 @@ msgstr "Start von %s ist abgeschlossen"
 msgid "'%s' is ready"
 msgstr "»%s« ist bereit"
 
-#: ../js/ui/workspacesView.js:230
+#: ../js/ui/workspacesView.js:244
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr ""
 "Es kann keine weitere Arbeitsfläche hinzugefügt werden, weil das Maximum an "
 "Arbeitsflächen erreicht worden ist."
 
-#: ../js/ui/workspacesView.js:247
+#: ../js/ui/workspacesView.js:260
 msgid "Can't remove the first workspace."
 msgstr "Die erste Arbeitsfläche kann nicht entfernt werden."
 
-#: ../src/shell-global.c:1196
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1094
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Ausgang"
+msgstr[1] "%u Ausgänge"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1104
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u Eingang"
+msgstr[1] "%u Eingänge"
+
+#: ../src/gvc/gvc-mixer-control.c:1402
+msgid "System Sounds"
+msgstr "Systemklänge"
+
+#: ../src/shell-global.c:1156
 msgid "Less than a minute ago"
 msgstr "Vor weniger als einer Minute"
 
-#: ../src/shell-global.c:1200
+#: ../src/shell-global.c:1160
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Vor %d Minute"
 msgstr[1] "Vor %d Minuten"
 
-#: ../src/shell-global.c:1205
+#: ../src/shell-global.c:1165
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Vor %d Stunde"
 msgstr[1] "Vor %d Stunden"
 
-#: ../src/shell-global.c:1210
+#: ../src/shell-global.c:1170
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Vor %d Tag"
 msgstr[1] "Vor %d Tagen"
 
-#: ../src/shell-global.c:1215
+#: ../src/shell-global.c:1175
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "Vor %d Woche"
 msgstr[1] "Vor %d Wochen"
 
-#: ../src/shell-uri-util.c:89
+#: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "Persönlicher Ordner"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:104
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "Dateisystem"
 
-#: ../src/shell-uri-util.c:250
+#: ../src/shell-util.c:250
 msgid "Search"
 msgstr "Suchen"
 
@@ -708,10 +1008,41 @@ msgstr "Suchen"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:300
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "What's using power..."
+#~ msgstr "Energieverbraucher …"
+
+#~ msgid "Overview workspace view mode"
+#~ msgstr "Modus des Arbeitsflächen-Überblicks"
+
+#~ msgid ""
+#~ "The selected workspace view mode in the overview. Supported values are "
+#~ "\"single\" and \"grid\"."
+#~ msgstr ""
+#~ "Die gewählte Ansicht des Arbeitsflächen-Überblicks. Mögliche Werte sind "
+#~ "»single« (einfach) und »grid« (Raster)."
+
+#~ msgid "Drag here to add favorites"
+#~ msgstr "Hier ablegen, um zu Favoriten hinzuzufügen"
+
+#~ msgid "Find"
+#~ msgstr "Suchen"
+
+#~ msgid "Searching..."
+#~ msgstr "Suche läuft …"
+
+#~ msgid "No matching results."
+#~ msgstr "Keine passenden Ergebnisse."
+
+#~ msgid "Invisible"
+#~ msgstr "Unsichtbar"
+
+#~ msgid "Account Information..."
+#~ msgstr "Benutzerinformationen …"
 
 #~ msgid "ON"
 #~ msgstr "EIN"
@@ -724,9 +1055,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "%H:%M"
 #~ msgstr "%H:%M"
-
-#~ msgid "Applications"
-#~ msgstr "Anwendungen"
 
 #~ msgid "Recent Documents"
 #~ msgstr "Zuletzt geöffnete Dokumente"
@@ -745,9 +1073,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "SEARCH RESULTS"
 #~ msgstr "SUCHERGEBNISSE"
-
-#~ msgid "Unknown"
-#~ msgstr "Unbekannt"
 
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "Bildschirm kann nicht gesperrt werden: %s"
