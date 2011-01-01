@@ -52,6 +52,8 @@ src/test-recorder
 src/test-recorder.ogg
 src/test-theme
 src/st.h
+src/stamp-st.h
+src/stamp-st.h.tmp
 stamp-h1
 tests/run-test.sh
 xmldocs.make
