@@ -1,21 +1,24 @@
 # Norwegian bokmål translation of gnome-shell.
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Kjartan Maraas <kmaraas@gnome.org>, 2009-2010.
 #
+# Kjartan Maraas <kmaraas@gnome.org>, 2009-2010.
+# Torstein Adolf Winterseth <kvikende@fsfe.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.91.x\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-17 14:18+0100\n"
-"PO-Revision-Date: 2010-12-17 14:19+0100\n"
-"Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
-"Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
-"Language: \n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=gnome-shell&component=general\n"
+"POT-Creation-Date: 2010-12-20 21:07+0000\n"
+"PO-Revision-Date: 2010-12-30 21:34+0100\n"
+"Last-Translator: Torstein Adolf Winterseth <kvikende@fsfe.org>\n"
+"Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.1\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -325,23 +328,27 @@ msgstr "_12-timers format"
 msgid "_24 hour format"
 msgstr "_24-timers format"
 
-#: ../js/ui/appDisplay.js:215
+#: ../js/ui/appDisplay.js:154
+msgid "All"
+msgstr ""
+
+#: ../js/ui/appDisplay.js:235
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
-#: ../js/ui/appDisplay.js:245
+#: ../js/ui/appDisplay.js:265
 msgid "PREFERENCES"
 msgstr "BRUKERVALG"
 
-#: ../js/ui/appDisplay.js:542
+#: ../js/ui/appDisplay.js:562
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:546
+#: ../js/ui/appDisplay.js:566
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:547
+#: ../js/ui/appDisplay.js:567
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -406,58 +413,58 @@ msgid "Applications"
 msgstr "Programmer"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:470
+#: ../js/ui/panel.js:474
 #, c-format
 msgid "Quit %s"
 msgstr "Avslutt %s"
 
-#: ../js/ui/panel.js:495
+#: ../js/ui/panel.js:499
 msgid "Preferences"
 msgstr "Brukervalg"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R.%S"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:586
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:590
 msgid "%a %R:%S"
 msgstr "%a %R.%S"
 
-#: ../js/ui/panel.js:587
+#: ../js/ui/panel.js:591
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:598
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %p"
 
-#: ../js/ui/panel.js:595
+#: ../js/ui/panel.js:599
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %p"
 
-#: ../js/ui/panel.js:600
+#: ../js/ui/panel.js:604
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:745
+#: ../js/ui/panel.js:749
 msgid "Activities"
 msgstr "Aktiviteter"
 
@@ -472,7 +479,7 @@ msgstr "Prøv igjen"
 
 #: ../js/ui/placeDisplay.js:159
 msgid "Connect to..."
-msgstr "Koble til..."
+msgstr "Koble til …"
 
 #: ../js/ui/placeDisplay.js:558
 msgid "PLACES & DEVICES"
@@ -522,15 +529,15 @@ msgstr "Bytt bruker"
 
 #: ../js/ui/statusMenu.js:134
 msgid "Log Out..."
-msgstr "Logg ut..."
+msgstr "Logg ut …"
 
 #: ../js/ui/statusMenu.js:141
 msgid "Suspend..."
-msgstr "Hvilemodus..."
+msgstr "Hvilemodus …"
 
 #: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
-msgstr "Avslutt..."
+msgstr "Avslutt …"
 
 #: ../js/ui/status/accessibility.js:82
 msgid "Zoom"
@@ -576,15 +583,141 @@ msgstr "Høy kontrast"
 msgid "Large Text"
 msgstr "Stor tekst"
 
-#: ../js/ui/status/power.js:85
-msgid "What's using power..."
-msgstr "Hva bruker strøm..."
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:200
+msgid "Bluetooth"
+msgstr ""
 
-#: ../js/ui/status/power.js:88
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:68
+msgid "Send Files to Device..."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:71
+msgid "Setup a New Device..."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:94
+#, fuzzy
+#| msgid "Power Settings"
+msgid "Bluetooth Settings"
+msgstr "Innstillinger for strøm"
+
+#: ../js/ui/status/bluetooth.js:151
+#, fuzzy
+#| msgid "Connect to..."
+msgid "Connection"
+msgstr "Koble til..."
+
+#: ../js/ui/status/bluetooth.js:187
+#, fuzzy
+#| msgid "Suspend..."
+msgid "Send Files..."
+msgstr "Hvilemodus..."
+
+#: ../js/ui/status/bluetooth.js:192
+msgid "Browse Files..."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:201
+msgid "Error browsing device"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:202
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:210
+#, fuzzy
+#| msgid "Power Settings"
+msgid "Keyboard Settings"
+msgstr "Innstillinger for strøm"
+
+#: ../js/ui/status/bluetooth.js:215
+#, fuzzy
+#| msgid "Power Settings"
+msgid "Mouse Settings"
+msgstr "Innstillinger for strøm"
+
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/volume.js:62
+msgid "Sound Settings"
+msgstr "Innstillinger for lyd"
+
+#: ../js/ui/status/bluetooth.js:293 ../js/ui/status/bluetooth.js:327
+#: ../js/ui/status/bluetooth.js:367 ../js/ui/status/bluetooth.js:400
+msgid "Bluetooth Agent"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:328
+#, c-format
+msgid "Authorization request from %s"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:334
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:336
+msgid "Always grant access"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:337
+msgid "Grant this time only"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:338
+msgid "Reject"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:374 ../js/ui/status/bluetooth.js:408
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:375
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:377
+msgid "Matches"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:378
+msgid "Does not match"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:401
+#, c-format
+msgid "Pairing request for %s"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:409
+msgid "Please enter the PIN mentioned on the device."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:425
+msgid "OK"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:426
+msgid "Cancel"
+msgstr ""
+
+#: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "Innstillinger for strøm"
 
-#: ../js/ui/status/power.js:115
+#: ../js/ui/status/power.js:112
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -592,75 +725,75 @@ msgstr[0] "%d time gjenstår"
 msgstr[1] "%d timer gjenstår"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:118
+#: ../js/ui/status/power.js:115
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s gjenstår"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:117
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "time"
 msgstr[1] "timer"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:117
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minutt"
 msgstr[1] "minutter"
 
-#: ../js/ui/status/power.js:123
+#: ../js/ui/status/power.js:120
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d minutt gjenstår"
 msgstr[1] "%d minutter gjenstår"
 
-#: ../js/ui/status/power.js:240
+#: ../js/ui/status/power.js:237
 msgid "AC adapter"
 msgstr "Strømadapter"
 
-#: ../js/ui/status/power.js:242
+#: ../js/ui/status/power.js:239
 msgid "Laptop battery"
 msgstr "Batteri på bærbar"
 
-#: ../js/ui/status/power.js:244
+#: ../js/ui/status/power.js:241
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:246
+#: ../js/ui/status/power.js:243
 msgid "Monitor"
 msgstr "Skjerm"
 
-#: ../js/ui/status/power.js:248
+#: ../js/ui/status/power.js:245
 msgid "Mouse"
 msgstr "Mus"
 
-#: ../js/ui/status/power.js:250
+#: ../js/ui/status/power.js:247
 msgid "Keyboard"
 msgstr "Tastatur"
 
-#: ../js/ui/status/power.js:252
+#: ../js/ui/status/power.js:249
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:254
+#: ../js/ui/status/power.js:251
 msgid "Cell phone"
 msgstr "Mobiltelefon"
 
-#: ../js/ui/status/power.js:256
+#: ../js/ui/status/power.js:253
 msgid "Media player"
 msgstr "Medieavspiller"
 
-#: ../js/ui/status/power.js:258
+#: ../js/ui/status/power.js:255
 msgid "Tablet"
 msgstr "Nettbrett"
 
-#: ../js/ui/status/power.js:260
+#: ../js/ui/status/power.js:257
 msgid "Computer"
 msgstr "Datamaskin"
 
-#: ../js/ui/status/power.js:262 ../src/shell-app-system.c:1012
+#: ../js/ui/status/power.js:259 ../src/shell-app-system.c:1012
 msgid "Unknown"
 msgstr "Ukjent"
 
@@ -671,10 +804,6 @@ msgstr "Volum"
 #: ../js/ui/status/volume.js:54
 msgid "Microphone"
 msgstr "Mikrofon"
-
-#: ../js/ui/status/volume.js:62
-msgid "Sound Settings"
-msgstr "Innstillinger for lyd"
 
 #: ../js/ui/telepathyClient.js:560
 #, c-format
@@ -806,3 +935,6 @@ msgstr "Søk"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "What's using power..."
+#~ msgstr "Hva bruker strøm..."
