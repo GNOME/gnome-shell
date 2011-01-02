@@ -1,21 +1,26 @@
+# GNOME kesta eesti keele tõlge.
 # Estonian translation for gnome-shell.
-# Copyright (C) 2010 The Gnome Project
+#
+# Copyright (C) 2010, 2011 The Gnome Project
+#
 # This file is distributed under the same license as the gnome-shell package.
+#
 # Mattias Põldaru <mahfiaz gmail com>, 2010.
+# Ivar Smolin <okul linux ee>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-12-18 23:05+0000\n"
-"PO-Revision-Date: 2010-12-18 11:47+0200\n"
+"POT-Creation-Date: 2010-12-20 21:07+0000\n"
+"PO-Revision-Date: 2011-01-02 18:39+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
-"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Estonian\n"
 "X-Poedit-Country: Estonia\n"
@@ -283,7 +288,7 @@ msgid "_24 hour format"
 msgstr "_24 tunni vorming"
 
 msgid "All"
-msgstr ""
+msgstr "Kõik"
 
 msgid "APPLICATIONS"
 msgstr "Rakendused"
@@ -309,7 +314,7 @@ msgid "%s has been removed from your favorites."
 msgstr "%s eemaldati lemmikutest."
 
 msgid "Remove"
-msgstr ""
+msgstr "Eemalda"
 
 msgid "RECENT ITEMS"
 msgstr "Hiljutised dokumendid"
@@ -465,7 +470,7 @@ msgid "Slow Keys"
 msgstr "Aeglased klahvid"
 
 msgid "Bounce Keys"
-msgstr ""
+msgstr "Põrkeklahvid"
 
 msgid "Mouse Keys"
 msgstr "Hiireklahvid"
@@ -478,6 +483,97 @@ msgstr ""
 
 msgid "Large Text"
 msgstr ""
+
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+msgid "Visibility"
+msgstr "Nähtavus"
+
+msgid "Send Files to Device..."
+msgstr "Failide saatmine seadmesse..."
+
+msgid "Setup a New Device..."
+msgstr ""
+
+msgid "Bluetooth Settings"
+msgstr "Bluetoothi sätted"
+
+msgid "Connection"
+msgstr "Ühendus"
+
+msgid "Send Files..."
+msgstr "Failide saatmine..."
+
+msgid "Browse Files..."
+msgstr "Failide sirvimine..."
+
+msgid "Error browsing device"
+msgstr "Viga seadme sirvimisel"
+
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr ""
+
+msgid "Keyboard Settings"
+msgstr "Klaviatuurisätted"
+
+msgid "Mouse Settings"
+msgstr "Hiiresätted"
+
+msgid "Sound Settings"
+msgstr "Helisätted"
+
+msgid "Bluetooth Agent"
+msgstr ""
+
+#, c-format
+msgid "Authorization request from %s"
+msgstr "Autoriseerimise päring seadmelt %s"
+
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "Seade %s soovib ligipääsu teenusele '%s'"
+
+msgid "Always grant access"
+msgstr "Luba alati"
+
+msgid "Grant this time only"
+msgstr "Luba ainult seekord"
+
+msgid "Reject"
+msgstr "Lükka tagasi"
+
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Paardumise kinnitus seadmele %s"
+
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "Seade '%s' tahab selle arvutiga paarduda"
+
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Palun kontrolli, et PIN-kood '%s' kattuks seadme parooliga."
+
+msgid "Matches"
+msgstr "Kattub"
+
+msgid "Does not match"
+msgstr "Ei kattu"
+
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Seadmega %s paardumise päring"
+
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Palun sisesta seadme poolt öeldav PIN-kood."
+
+msgid "OK"
+msgstr "Olgu"
+
+msgid "Cancel"
+msgstr "Katkesta"
 
 msgid "Power Settings"
 msgstr "Toitesätted..."
@@ -550,9 +646,6 @@ msgstr "Helivaljus"
 
 msgid "Microphone"
 msgstr "Mikrofon"
-
-msgid "Sound Settings"
-msgstr "Helisätted"
 
 #, c-format
 msgid "%s is online."
