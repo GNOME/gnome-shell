@@ -1356,6 +1356,15 @@ clutter_script_parse_node (ClutterScript *script,
           break;
         }
 
+      if (G_VALUE_TYPE (value) == G_TYPE_GTYPE &&
+          G_VALUE_HOLDS (&node_value, G_TYPE_STRING))
+        {
+          const gchar *str = g_value_get_string (&node_value);
+          GType type = clutter_script_get_type_from_name (script, str);
+          g_value_set_gtype (value, type);
+          retval = TRUE;
+        }
+
       g_value_unset (&node_value);
       break;
     }
