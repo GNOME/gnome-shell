@@ -219,12 +219,23 @@ def start_shell(perf_output=None):
         js_dir = os.path.join('@pkgdatadir@', 'js')
 
     # Set up environment
+
+    # About the value of NO_GAIL and NO_AT_BRIDGE: If a11y is enabled,
+    # gtk_init() will normally load gail and at-bridge. But we don't
+    # want at-bridge to be loaded until after clutter is initialized
+    # (which mutter does after initializing gtk) and we don't want
+    # gail to be loaded at all. So set these flags.  shell_a11y_init()
+    # will clear them so they don't get passed to gnome-shell's
+    # children.
+
     env = dict(os.environ)
     env.update({'GNOME_SHELL_JS'      : js_dir,
                 'PATH'                : '@MUTTER_BIN_DIR@:' + os.environ.get('PATH', ''),
                 'XDG_CONFIG_DIRS'     : '@sysconfdir@/xdg:' + (os.environ.get('XDG_CONFIG_DIRS') or '/etc/xdg'),
                 'XDG_DATA_DIRS'       : '@datadir@:' + (os.environ.get('XDG_DATA_DIRS') or '/usr/local/share:/usr/share'),
-                'GNOME_DISABLE_CRASH_DIALOG' : '1'})
+                'GNOME_DISABLE_CRASH_DIALOG' : '1',
+                'NO_GAIL'             : '1',
+                'NO_AT_BRIDGE'        : '1'})
 
     if running_from_source_tree:
         env.update({'GNOME_SHELL_DATADIR'  : data_dir,
