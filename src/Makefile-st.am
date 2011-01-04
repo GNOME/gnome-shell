@@ -98,6 +98,7 @@ st_source_h =					\
 	st/st-tooltip.h				\
 	st/st-types.h				\
 	st/st-widget.h				\
+	st/st-widget-accessible.h		\
 	$(NULL)
 
 st.h: stamp-st.h
