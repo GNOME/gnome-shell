@@ -7,16 +7,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.91.x\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
-"cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2010-12-20 21:07+0000\n"
-"PO-Revision-Date: 2010-12-30 21:34+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-01-04 19:39+0100\n"
+"PO-Revision-Date: 2011-01-04 19:43+0100\n"
 "Last-Translator: Torstein Adolf Winterseth <kvikende@fsfe.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.1\n"
 
@@ -28,14 +27,6 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Vindushåndtering og oppstart av programmer"
 
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
-msgid "Clock"
-msgstr "Klokke"
-
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
-msgid "Customize the panel clock"
-msgstr "Tilpass klokken på panelet"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
@@ -45,56 +36,44 @@ msgstr ""
 "F2-dialogen."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Custom format of the clock"
-msgstr "Egendefinert format for klokken"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:4
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "Framerate used for recording screencasts."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:6
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
 msgstr ""
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "If true, display date in the clock, in addition to time."
+msgstr ""
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "Hour format"
-msgstr "Timeformat"
+msgid "If true, display seconds in time."
+msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
-"clock, in addition to time."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
-"time."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "If true, display the ISO week date in the calendar."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -106,42 +85,42 @@ msgid ""
 "'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
 msgid "Show date in clock"
 msgstr "Vis dato i klokken"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Show the week date in the calendar"
 msgstr "Vis dato for uken i kalender"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show time with seconds"
 msgstr "Vis tid med sekunder"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -149,29 +128,11 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"This key specifies the format used by the panel clock when the format key is "
-"set to \"custom\". You can use conversion specifiers understood by strftime"
-"() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid ""
-"This key specifies the hour format used by the panel clock. Possible values "
-"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
-"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
-"to \"custom\", the clock will display time according to the format specified "
-"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
-"the show_date and show_seconds keys are ignored."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Uuids of extensions to disable"
 msgstr "Uuider på utvidelser som skal slås av"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Whether to collect stats about applications usage"
 msgstr "Om det skal samles statistikk om bruk av programmer"
 
@@ -300,55 +261,28 @@ msgstr ""
 msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr ""
 
-#: ../data/clock-preferences.ui.h:1
-msgid "Clock Format"
-msgstr "Klokkeformat"
-
-#: ../data/clock-preferences.ui.h:2
-msgid "Clock Preferences"
-msgstr "Brukervalg for klokke"
-
-#: ../data/clock-preferences.ui.h:3
-msgid "Panel Display"
-msgstr "Panelvisning"
-
-#: ../data/clock-preferences.ui.h:4
-msgid "Show seco_nds"
-msgstr "Vis seku_nder"
-
-#: ../data/clock-preferences.ui.h:5
-msgid "Show the _date"
-msgstr "Vis _dato"
-
-#: ../data/clock-preferences.ui.h:6
-msgid "_12 hour format"
-msgstr "_12-timers format"
-
-#: ../data/clock-preferences.ui.h:7
-msgid "_24 hour format"
-msgstr "_24-timers format"
-
-#: ../js/ui/appDisplay.js:154
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:155
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:235
+#: ../js/ui/appDisplay.js:236
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
-#: ../js/ui/appDisplay.js:265
+#: ../js/ui/appDisplay.js:266
 msgid "PREFERENCES"
 msgstr "BRUKERVALG"
 
-#: ../js/ui/appDisplay.js:562
+#: ../js/ui/appDisplay.js:563
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:566
+#: ../js/ui/appDisplay.js:567
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:567
+#: ../js/ui/appDisplay.js:568
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -413,58 +347,54 @@ msgid "Applications"
 msgstr "Programmer"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:474
+#: ../js/ui/panel.js:476
 #, c-format
 msgid "Quit %s"
 msgstr "Avslutt %s"
 
-#: ../js/ui/panel.js:499
-msgid "Preferences"
-msgstr "Brukervalg"
-
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:561
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R.%S"
 
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:562
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:590
+#: ../js/ui/panel.js:566
 msgid "%a %R:%S"
 msgstr "%a %R.%S"
 
-#: ../js/ui/panel.js:591
+#: ../js/ui/panel.js:567
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:574
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %p"
 
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:575
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:603
+#: ../js/ui/panel.js:579
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %p"
 
-#: ../js/ui/panel.js:604
+#: ../js/ui/panel.js:580
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:749
+#: ../js/ui/panel.js:725
 msgid "Activities"
 msgstr "Aktiviteter"
 
@@ -583,135 +513,125 @@ msgstr "Høy kontrast"
 msgid "Large Text"
 msgstr "Stor tekst"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:200
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:234
 msgid "Bluetooth"
-msgstr ""
+msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:55
 msgid "Visibility"
-msgstr ""
+msgstr "Synlighet"
 
-#: ../js/ui/status/bluetooth.js:68
+#: ../js/ui/status/bluetooth.js:69
 msgid "Send Files to Device..."
-msgstr ""
+msgstr "Send filer til enhet..."
 
-#: ../js/ui/status/bluetooth.js:71
+#: ../js/ui/status/bluetooth.js:70
 msgid "Setup a New Device..."
-msgstr ""
+msgstr "Sett opp en ny enhet..."
 
 #: ../js/ui/status/bluetooth.js:94
-#, fuzzy
-#| msgid "Power Settings"
 msgid "Bluetooth Settings"
-msgstr "Innstillinger for strøm"
+msgstr "Innstillinger for Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:151
-#, fuzzy
-#| msgid "Connect to..."
+#: ../js/ui/status/bluetooth.js:185
 msgid "Connection"
-msgstr "Koble til..."
+msgstr "Tilkobling"
 
-#: ../js/ui/status/bluetooth.js:187
-#, fuzzy
-#| msgid "Suspend..."
+#: ../js/ui/status/bluetooth.js:221
 msgid "Send Files..."
-msgstr "Hvilemodus..."
+msgstr "Send filer..."
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:226
 msgid "Browse Files..."
-msgstr ""
+msgstr "Bla gjennom filer..."
 
-#: ../js/ui/status/bluetooth.js:201
+#: ../js/ui/status/bluetooth.js:235
 msgid "Error browsing device"
-msgstr ""
+msgstr "Feil under lesing av enhet"
 
-#: ../js/ui/status/bluetooth.js:202
+#: ../js/ui/status/bluetooth.js:236
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
-msgstr ""
+msgstr "Kan ikke bla gjennom forespurt enhet. Feilen er «%s»"
 
-#: ../js/ui/status/bluetooth.js:210
-#, fuzzy
-#| msgid "Power Settings"
+#: ../js/ui/status/bluetooth.js:244
 msgid "Keyboard Settings"
-msgstr "Innstillinger for strøm"
+msgstr "Innstillinger for tastatur"
 
-#: ../js/ui/status/bluetooth.js:215
-#, fuzzy
-#| msgid "Power Settings"
+#: ../js/ui/status/bluetooth.js:249
 msgid "Mouse Settings"
-msgstr "Innstillinger for strøm"
+msgstr "Innstillinger for mus"
 
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/volume.js:62
+#: ../js/ui/status/bluetooth.js:256 ../js/ui/status/volume.js:62
 msgid "Sound Settings"
 msgstr "Innstillinger for lyd"
 
-#: ../js/ui/status/bluetooth.js:293 ../js/ui/status/bluetooth.js:327
-#: ../js/ui/status/bluetooth.js:367 ../js/ui/status/bluetooth.js:400
+#: ../js/ui/status/bluetooth.js:327 ../js/ui/status/bluetooth.js:361
+#: ../js/ui/status/bluetooth.js:401 ../js/ui/status/bluetooth.js:434
 msgid "Bluetooth Agent"
-msgstr ""
+msgstr "Bluetooth-agent"
 
-#: ../js/ui/status/bluetooth.js:328
+#: ../js/ui/status/bluetooth.js:362
 #, c-format
 msgid "Authorization request from %s"
-msgstr ""
-
-#: ../js/ui/status/bluetooth.js:334
-#, c-format
-msgid "Device %s wants access to the service '%s'"
-msgstr ""
-
-#: ../js/ui/status/bluetooth.js:336
-msgid "Always grant access"
-msgstr ""
-
-#: ../js/ui/status/bluetooth.js:337
-msgid "Grant this time only"
-msgstr ""
-
-#: ../js/ui/status/bluetooth.js:338
-msgid "Reject"
-msgstr ""
+msgstr "Forespørsel om autorisering fra %s"
 
 #: ../js/ui/status/bluetooth.js:368
 #, c-format
-msgid "Pairing confirmation for %s"
-msgstr ""
+msgid "Device %s wants access to the service '%s'"
+msgstr "Enhet %s vil ha tilgang til tjenesten «%s»"
 
-#: ../js/ui/status/bluetooth.js:374 ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:370
+msgid "Always grant access"
+msgstr "Alltid gi tilgang"
+
+#: ../js/ui/status/bluetooth.js:371
+msgid "Grant this time only"
+msgstr "Gi tilgang kun denne ene gangen"
+
+#: ../js/ui/status/bluetooth.js:372
+msgid "Reject"
+msgstr "Avvis"
+
+#: ../js/ui/status/bluetooth.js:402
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Bekreftelse for tilkobling for %s"
+
+#: ../js/ui/status/bluetooth.js:408 ../js/ui/status/bluetooth.js:442
 #, c-format
 msgid "Device %s wants to pair with this computer"
-msgstr ""
-
-#: ../js/ui/status/bluetooth.js:375
-#, c-format
-msgid "Please confirm whether the PIN '%s' matches the one on the device."
-msgstr ""
-
-#: ../js/ui/status/bluetooth.js:377
-msgid "Matches"
-msgstr ""
-
-#: ../js/ui/status/bluetooth.js:378
-msgid "Does not match"
-msgstr ""
-
-#: ../js/ui/status/bluetooth.js:401
-#, c-format
-msgid "Pairing request for %s"
-msgstr ""
+msgstr "Enhet %s vil koble seg sammen med denne datamaskinen"
 
 #: ../js/ui/status/bluetooth.js:409
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Vennligst bekreft om PIN «%s» er lik den som brukes på enheten."
+
+#: ../js/ui/status/bluetooth.js:411
+msgid "Matches"
+msgstr "Stemmer overens"
+
+#: ../js/ui/status/bluetooth.js:412
+msgid "Does not match"
+msgstr "Stemmer ikke overens"
+
+#: ../js/ui/status/bluetooth.js:435
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Forespørsel om tilkobling for %s"
+
+#: ../js/ui/status/bluetooth.js:443
 msgid "Please enter the PIN mentioned on the device."
-msgstr ""
+msgstr "Vennligst oppgi PIN som oppgitt på enheten."
 
-#: ../js/ui/status/bluetooth.js:425
+#: ../js/ui/status/bluetooth.js:459
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
-#: ../js/ui/status/bluetooth.js:426
+#: ../js/ui/status/bluetooth.js:460
 msgid "Cancel"
-msgstr ""
+msgstr "Avbryt"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -828,7 +748,7 @@ msgstr "%s er opptatt."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:664
+#: ../js/ui/telepathyClient.js:665
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Sendt %X på %A"
@@ -880,32 +800,32 @@ msgstr[1] "%u innganger"
 msgid "System Sounds"
 msgstr "Systemlyder"
 
-#: ../src/shell-global.c:1155
+#: ../src/shell-global.c:1156
 msgid "Less than a minute ago"
 msgstr "Mindre enn ett minutt siden"
 
-#: ../src/shell-global.c:1159
+#: ../src/shell-global.c:1160
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minutt siden"
 msgstr[1] "%d minutter siden"
 
-#: ../src/shell-global.c:1164
+#: ../src/shell-global.c:1165
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d time siden"
 msgstr[1] "%d timer siden"
 
-#: ../src/shell-global.c:1169
+#: ../src/shell-global.c:1170
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag siden"
 msgstr[1] "%d dager siden"
 
-#: ../src/shell-global.c:1174
+#: ../src/shell-global.c:1175
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -935,6 +855,3 @@ msgstr "Søk"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
-#~ msgid "What's using power..."
-#~ msgstr "Hva bruker strøm..."
