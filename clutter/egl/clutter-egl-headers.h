@@ -24,17 +24,23 @@
 
 #include <cogl/cogl.h>
 
-#ifdef COGL_HAS_GLES2
-#include <GLES2/gl2.h>
-#include <EGL/egl.h>
-#else /* COGL_HAS_GLES2 */
+#if defined(COGL_HAS_GLES1)
 #include <GLES/gl.h>
 #include <GLES/egl.h>
-#endif /* COGL_HAS_GLES2 */
+#else
 
-#ifdef COGL_HAS_GLES2
+#include <EGL/egl.h>
 #define NativeDisplayType EGLNativeDisplayType
 #define NativeWindowType EGLNativeWindowType
-#endif /* COGL_HAS_GLES2 */
+
+#if defined(COGL_HAS_GLES2)
+#include <GLES2/gl2.h>
+#elif defined(COGL_HAS_GL)
+#include <GL/gl.h>
+#else
+#error Unknown Cogl backend
+#endif
+
+#endif /* !COGL_HAS_GLES1 */
 
 #endif /* __CLUTTER_EGL_HEADERS_H__ */
