@@ -56,7 +56,7 @@ clutter_stage_egl_unrealize (ClutterStageWindow *stage_window)
 
   if (stage_egl->egl_surface != EGL_NO_SURFACE)
     {
-      eglDestroySurface (clutter_eglx_display (), stage_egl->egl_surface);
+      eglDestroySurface (clutter_egl_get_egl_display (), stage_egl->egl_surface);
       stage_egl->egl_surface = EGL_NO_SURFACE;
     }
 
@@ -81,7 +81,7 @@ clutter_stage_egl_realize (ClutterStageWindow *stage_window)
   backend_egl = CLUTTER_BACKEND_EGL (backend);
   backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
-  edpy = clutter_eglx_display ();
+  edpy = clutter_egl_get_egl_display ();
 
   if (stage_x11->xwin == None)
     {
