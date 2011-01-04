@@ -977,6 +977,9 @@ function CalendarPopup() {
 CalendarPopup.prototype = {
     _init: function() {
         let panelActor = Main.panel.actor;
+        let alignConstraint = new Clutter.AlignConstraint({ source: panelActor,
+                                                            align_axis: Clutter.AlignAxis.X_AXIS,
+                                                            factor: 0.5 });
 
         this.actor = new St.Bin({ name: 'calendarPopup' });
 
@@ -988,7 +991,7 @@ CalendarPopup.prototype = {
         Main.chrome.addActor(this.actor, { visibleInOverview: true,
                                            affectsStruts: false });
         this.actor.y = (panelActor.y + panelActor.height - this.actor.height);
-        this.calendar.actor.connect('notify::width', Lang.bind(this, this._centerPopup));
+        this.actor.add_constraint(alignConstraint);
     },
 
     show: function() {
@@ -1001,7 +1004,6 @@ CalendarPopup.prototype = {
         // Reset the calendar to today's date
         this.calendar.setDate(new Date());
 
-        this._centerPopup();
         this.actor.lower(panelActor);
         this.actor.show();
         Tweener.addTween(this.actor,
@@ -1025,10 +1027,5 @@ CalendarPopup.prototype = {
                            onComplete: function() { this.actor.hide(); },
                            onCompleteScope: this
                          });
-    },
-
-    _centerPopup: function() {
-        let panelActor = Main.panel.actor;
-        this.actor.x = Math.round(panelActor.x + (panelActor.width - this.actor.width) / 2);
     }
 };
