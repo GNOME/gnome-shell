@@ -109,10 +109,7 @@ function start() {
     global.stage.color = DEFAULT_BACKGROUND_COLOR;
     global.stage.no_clear_hint = true;
 
-    let themeContext = St.ThemeContext.get_for_stage (global.stage);
-    let stylesheetPath = global.datadir + '/theme/gnome-shell.css';
-    let theme = new St.Theme ({ application_stylesheet: stylesheetPath });
-    themeContext.set_theme (theme);
+    loadTheme();
 
     let shellwm = global.window_manager;
     shellwm.takeover_keybinding('panel_main_menu');
@@ -199,6 +196,18 @@ function start() {
         let module = eval('imports.perf.' + perfModuleName + ';');
         Scripting.runPerfScript(module, perfOutput);
     }
+}
+
+/**
+ * loadTheme:
+ *
+ * Reloads the theme CSS file from the default theme.
+ */
+function loadTheme() {
+    let themeContext = St.ThemeContext.get_for_stage (global.stage);
+    let stylesheetPath = global.datadir + '/theme/gnome-shell.css';
+    let theme = new St.Theme ({ application_stylesheet: stylesheetPath });
+    themeContext.set_theme (theme);
 }
 
 /**
