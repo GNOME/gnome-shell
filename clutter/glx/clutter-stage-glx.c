@@ -30,6 +30,7 @@
 
 #include "clutter-actor-private.h"
 #include "clutter-debug.h"
+#include "clutter-device-manager.h"
 #include "clutter-event.h"
 #include "clutter-enum-types.h"
 #include "clutter-feature.h"
@@ -51,7 +52,8 @@
 #include <drm.h>
 #endif
 
-static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
+static void clutter_stage_window_iface_init     (ClutterStageWindowIface     *iface);
+static void clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface);
 
 static ClutterStageWindowIface *clutter_stage_glx_parent_iface = NULL;
 
@@ -59,7 +61,9 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageGLX,
                          _clutter_stage_glx,
                          CLUTTER_TYPE_STAGE_X11,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
-                                                clutter_stage_window_iface_init));
+                                                clutter_stage_window_iface_init)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_EVENT_TRANSLATOR,
+                                                clutter_event_translator_iface_init));
 
 static void
 clutter_stage_glx_unrealize (ClutterStageWindow *stage_window)
@@ -70,7 +74,7 @@ clutter_stage_glx_unrealize (ClutterStageWindow *stage_window)
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
 
   /* Note unrealize should free up any backend stage related resources */
-  CLUTTER_NOTE (BACKEND, "Unrealizing stage");
+  CLUTTER_NOTE (BACKEND, "Unrealizing GLX stage [%p]", stage_glx);
 
   clutter_x11_trap_x_errors ();
 
@@ -80,19 +84,11 @@ clutter_stage_glx_unrealize (ClutterStageWindow *stage_window)
       stage_glx->glxwin = None;
     }
 
-  if (!stage_x11->is_foreign_xwin && stage_x11->xwin != None)
-    {
-      XDestroyWindow (backend_x11->xdpy, stage_x11->xwin);
-      stage_x11->xwin = None;
-    }
-  else
-    stage_x11->xwin = None;
+  _clutter_stage_x11_destroy_window_untrapped (stage_x11);
 
   XSync (backend_x11->xdpy, False);
 
   clutter_x11_untrap_x_errors ();
-
-  CLUTTER_MARK ();
 }
 
 static gboolean
@@ -103,7 +99,6 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
   ClutterBackendX11 *backend_x11;
   ClutterBackendGLX *backend_glx;
   ClutterBackend *backend;
-  int event_flags;
 
   CLUTTER_NOTE (ACTOR, "Realizing stage '%s' [%p]",
                 G_OBJECT_TYPE_NAME (stage_window),
@@ -113,62 +108,8 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
   backend_glx = CLUTTER_BACKEND_GLX (backend);
   backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
-  if (stage_x11->xwin == None)
-    {
-      XSetWindowAttributes xattr;
-      unsigned long mask;
-      XVisualInfo *xvisinfo;
-      gfloat width, height;
-
-      CLUTTER_NOTE (MISC, "Creating stage X window");
-
-      xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
-      if (xvisinfo == NULL)
-        {
-          g_critical ("Unable to find suitable GL visual.");
-          return FALSE;
-        }
-
-      /* window attributes */
-      xattr.background_pixel = WhitePixel (backend_x11->xdpy,
-                                           backend_x11->xscreen_num);
-      xattr.border_pixel = 0;
-      xattr.colormap = XCreateColormap (backend_x11->xdpy,
-                                        backend_x11->xwin_root,
-                                        xvisinfo->visual,
-                                        AllocNone);
-      mask = CWBorderPixel | CWColormap;
-
-      /* Call get_size - this will either get the geometry size (which
-       * before we create the window is set to 640x480), or if a size
-       * is set, it will get that. This lets you set a size on the
-       * stage before it's realized.
-       */
-      clutter_actor_get_size (CLUTTER_ACTOR (stage_x11->wrapper),
-                              &width,
-                              &height);
-      stage_x11->xwin_width = (gint)width;
-      stage_x11->xwin_height = (gint)height;
-
-      stage_x11->xwin = XCreateWindow (backend_x11->xdpy,
-                                       backend_x11->xwin_root,
-                                       0, 0,
-                                       stage_x11->xwin_width,
-                                       stage_x11->xwin_height,
-                                       0,
-                                       xvisinfo->depth,
-                                       InputOutput,
-                                       xvisinfo->visual,
-                                       mask, &xattr);
-
-      CLUTTER_NOTE (BACKEND, "Stage [%p], window: 0x%x, size: %dx%d",
-                    stage_window,
-                    (unsigned int) stage_x11->xwin,
-                    stage_x11->xwin_width,
-                    stage_x11->xwin_height);
-
-      XFree (xvisinfo);
-    }
+  if (!_clutter_stage_x11_create_window (stage_x11))
+    return FALSE;
 
   if (stage_glx->glxwin == None)
     {
@@ -190,52 +131,12 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
         }
     }
 
-  /* the masks for the events we want to select on a stage window;
-   * KeyPressMask and KeyReleaseMask are necessary even with XI1
-   * because key events are broken with that extension, and will
-   * be fixed by XI2
-   */
-  event_flags = StructureNotifyMask
-              | FocusChangeMask
-              | ExposureMask
-              | PropertyChangeMask
-              | EnterWindowMask
-              | LeaveWindowMask
-              | KeyPressMask
-              | KeyReleaseMask;
-
-  /* if we don't use XI1 then we also want core pointer events */
-  if (!clutter_x11_has_xinput ())
-    event_flags |= (ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
-#ifdef HAVE_XINPUT
-  else
-    _clutter_x11_select_events (stage_x11->xwin);
-#endif
-
-  /* we unconditionally select input events even with event retrieval
-   * disabled because we need to guarantee that the Clutter internal
-   * state is maintained when calling clutter_x11_handle_event() without
-   * requiring applications or embedding toolkits to select events
-   * themselves. if we did that, we'd have to document the events to be
-   * selected, and also update applications and embedding toolkits each
-   * time we added a new mask, or a new class of events.
-   *
-   * see: http://bugzilla.clutter-project.org/show_bug.cgi?id=998
-   * for the rationale of why we did conditional selection. it is now
-   * clear that a compositor should clear out the input region, since
-   * it cannot assume a perfectly clean slate coming from us.
-   *
-   * see: http://bugzilla.clutter-project.org/show_bug.cgi?id=2228
-   * for an example of things that break if we do conditional event
-   * selection.
-   */
-  XSelectInput (backend_x11->xdpy, stage_x11->xwin, event_flags);
-
 #ifdef GLX_INTEL_swap_event
   if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
     {
-      GLXDrawable drawable =
-        stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
+      GLXDrawable drawable = stage_glx->glxwin
+                           ? stage_glx->glxwin
+                           : stage_x11->xwin;
 
       /* similarly to above, we unconditionally select this event
        * because we rely on it to advance the master clock, and
@@ -246,14 +147,6 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
                       GLX_BUFFER_SWAP_COMPLETE_INTEL_MASK);
     }
 #endif /* GLX_INTEL_swap_event */
-
-  /* no user resize.. */
-  clutter_stage_x11_fix_window_size (stage_x11,
-                                     stage_x11->xwin_width,
-                                     stage_x11->xwin_height);
-  clutter_stage_x11_set_wm_protocols (stage_x11);
-
-  CLUTTER_NOTE (BACKEND, "Successfully realized stage");
 
   /* chain up to the StageX11 implementation */
   return clutter_stage_glx_parent_iface->realize (stage_window);
@@ -439,6 +332,57 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   /* the rest is inherited from ClutterStageX11 */
 }
 
+static ClutterEventTranslatorIface *event_translator_parent_iface = NULL;
+
+static ClutterTranslateReturn
+clutter_stage_glx_translate_event (ClutterEventTranslator *translator,
+                                   gpointer                native,
+                                   ClutterEvent           *event)
+{
+#ifdef GLX_INTEL_swap_event
+  ClutterBackendGLX *backend_glx;
+  XEvent *xevent = native;
+
+  backend_glx = CLUTTER_BACKEND_GLX (clutter_get_default_backend ());
+
+  if (xevent->type == (backend_glx->event_base + GLX_BufferSwapComplete))
+    {
+      ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (translator);
+      ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (translator);
+      GLXBufferSwapComplete *swap_complete_event;
+
+      swap_complete_event = (GLXBufferSwapComplete *) xevent;
+
+      if (stage_x11->xwin == swap_complete_event->drawable)
+        {
+	  /* Early versions of the swap_event implementation in Mesa
+	   * deliver BufferSwapComplete event when not selected for,
+	   * so if we get a swap event we aren't expecting, just ignore it.
+	   *
+	   * https://bugs.freedesktop.org/show_bug.cgi?id=27962
+	   */
+          if (stage_glx->pending_swaps > 0)
+            stage_glx->pending_swaps--;
+
+          return CLUTTER_TRANSLATE_REMOVE;
+        }
+    }
+#endif
+
+  /* chain up to the common X11 implementation */
+  return event_translator_parent_iface->translate_event (translator,
+                                                         native,
+                                                         event);
+}
+
+static void
+clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface)
+{
+  event_translator_parent_iface = g_type_interface_peek_parent (iface);
+
+  iface->translate_event = clutter_stage_glx_translate_event;
+}
+
 #ifdef HAVE_DRM
 static int
 drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
@@ -491,7 +435,7 @@ wait_for_vblank (ClutterBackendGLX *backend_glx)
 
 void
 _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
-                          ClutterStage *stage)
+                           ClutterStage    *stage)
 {
   ClutterBackend    *backend;
   ClutterBackendX11 *backend_x11;

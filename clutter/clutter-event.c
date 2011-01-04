@@ -680,6 +680,35 @@ clutter_event_copy (const ClutterEvent *event)
   new_event = clutter_event_new (CLUTTER_NOTHING);
   *new_event = *event;
 
+  switch (event->type)
+    {
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_BUTTON_RELEASE:
+      if (event->button.device != NULL && event->button.axes != NULL)
+        {
+          gint n_axes;
+
+          n_axes = clutter_input_device_get_n_axes (event->button.device);
+          new_event->button.axes = g_memdup (event->button.axes,
+                                             sizeof (gdouble) * n_axes);
+        }
+      break;
+
+    case CLUTTER_MOTION:
+      if (event->motion.device != NULL && event->motion.axes != NULL)
+        {
+          gint n_axes;
+
+          n_axes = clutter_input_device_get_n_axes (event->motion.device);
+          new_event->motion.axes = g_memdup (event->motion.axes,
+                                             sizeof (gdouble) * n_axes);
+        }
+      break;
+
+    default:
+      break;
+    }
+
   if (is_event_allocated (event))
     _clutter_backend_copy_event_data (clutter_get_default_backend (),
                                       event,
@@ -700,6 +729,21 @@ clutter_event_free (ClutterEvent *event)
   if (G_LIKELY (event != NULL))
     {
       _clutter_backend_free_event_data (clutter_get_default_backend (), event);
+
+      switch (event->type)
+        {
+        case CLUTTER_BUTTON_PRESS:
+        case CLUTTER_BUTTON_RELEASE:
+          g_free (event->button.axes);
+          break;
+
+        case CLUTTER_MOTION:
+          g_free (event->motion.axes);
+          break;
+
+        default:
+          break;
+        }
 
       g_hash_table_remove (all_events, event);
       g_slice_free (ClutterEventPrivate, (ClutterEventPrivate *) event);
@@ -756,6 +800,28 @@ clutter_event_peek (void)
   return g_queue_peek_tail (context->events_queue);
 }
 
+void
+_clutter_event_push (const ClutterEvent *event,
+                     gboolean            do_copy)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  /* FIXME: check queue is valid */
+  g_assert (context != NULL);
+
+  if (do_copy)
+    {
+      ClutterEvent *copy;
+
+      copy = clutter_event_copy (event);
+      copy->any.flags |= CLUTTER_EVENT_FLAG_SYNTHETIC;
+
+      event = copy;
+    }
+
+  g_queue_push_head (context->events_queue, (gpointer) event);
+}
+
 /**
  * clutter_event_put:
  * @event: a #ClutterEvent
@@ -771,16 +837,7 @@ clutter_event_peek (void)
 void
 clutter_event_put (const ClutterEvent *event)
 {
-  ClutterMainContext *context = _clutter_context_get_default ();
-  ClutterEvent       *event_copy;
-
-  /* FIXME: check queue is valid */
-  g_return_if_fail (context != NULL);
-
-  event_copy = clutter_event_copy (event);
-  event_copy->any.flags |= CLUTTER_EVENT_FLAG_SYNTHETIC;
-
-  g_queue_push_head (context->events_queue, event_copy);
+  _clutter_event_push (event, TRUE);
 }
 
 /**

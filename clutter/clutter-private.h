@@ -228,6 +228,9 @@ void     _clutter_event_set_platform_data (ClutterEvent       *event,
                                            gpointer            data);
 gpointer _clutter_event_get_platform_data (const ClutterEvent *event);
 
+void     _clutter_event_push              (const ClutterEvent *event,
+                                           gboolean            do_copy);
+
 void                _clutter_util_fully_transform_vertices (const CoglMatrix *modelview,
                                                             const CoglMatrix *projection,
                                                             const int *viewport,

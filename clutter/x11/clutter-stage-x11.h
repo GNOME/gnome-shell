@@ -90,6 +90,15 @@ void clutter_stage_x11_unmap            (ClutterStageX11 *stage_x11);
 
 GList *clutter_stage_x11_get_input_devices (ClutterStageX11 *stage_x11);
 
+gboolean        _clutter_stage_x11_create_window                (ClutterStageX11 *stage_x11);
+void            _clutter_stage_x11_destroy_window_untrapped     (ClutterStageX11 *stage_x11);
+void            _clutter_stage_x11_destroy_window               (ClutterStageX11 *stage_x11);
+void            _clutter_stage_x11_set_user_time                (ClutterStageX11 *stage_x11,
+                                                                 guint32          user_time);
+gboolean        _clutter_stage_x11_get_root_coords              (ClutterStageX11 *stage_x11,
+                                                                 gint            *root_x,
+                                                                 gint            *root_y);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_H__ */

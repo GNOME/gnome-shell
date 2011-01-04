@@ -74,9 +74,28 @@ typedef enum {
   CLUTTER_TABLET_DEVICE,
   CLUTTER_TOUCHPAD_DEVICE,
   CLUTTER_TOUCHSCREEN_DEVICE,
+  CLUTTER_PEN_DEVICE,
+  CLUTTER_ERASER_DEVICE,
+  CLUTTER_CURSOR_DEVICE,
 
   CLUTTER_N_DEVICE_TYPES
 } ClutterInputDeviceType;
+
+typedef enum {
+  CLUTTER_INPUT_MODE_MASTER,
+  CLUTTER_INPUT_MODE_SLAVE,
+  CLUTTER_INPUT_MODE_FLOATING
+} ClutterInputMode;
+
+typedef enum {
+  CLUTTER_INPUT_AXIS_IGNORE,
+  CLUTTER_INPUT_AXIS_X,
+  CLUTTER_INPUT_AXIS_Y,
+  CLUTTER_INPUT_AXIS_PRESSURE,
+  CLUTTER_INPUT_AXIS_XTILT,
+  CLUTTER_INPUT_AXIS_YTILT,
+  CLUTTER_INPUT_AXIS_WHEEL
+} ClutterInputAxis;
 
 /**
  * ClutterInputDeviceClass:
@@ -94,18 +113,32 @@ struct _ClutterInputDeviceClass
 
 GType clutter_input_device_get_type (void) G_GNUC_CONST;
 
-ClutterInputDeviceType clutter_input_device_get_device_type   (ClutterInputDevice *device);
-gint                   clutter_input_device_get_device_id     (ClutterInputDevice *device);
-void                   clutter_input_device_get_device_coords (ClutterInputDevice *device,
-                                                               gint               *x,
-                                                               gint               *y);
-ClutterActor *         clutter_input_device_get_pointer_actor (ClutterInputDevice *device);
-ClutterStage *         clutter_input_device_get_pointer_stage (ClutterInputDevice *device);
-G_CONST_RETURN gchar * clutter_input_device_get_device_name   (ClutterInputDevice *device);
+ClutterInputDeviceType  clutter_input_device_get_device_type    (ClutterInputDevice  *device);
+gint                    clutter_input_device_get_device_id      (ClutterInputDevice  *device);
+void                    clutter_input_device_get_device_coords  (ClutterInputDevice  *device,
+                                                                 gint                *x,
+                                                                 gint                *y);
+ClutterActor *          clutter_input_device_get_pointer_actor  (ClutterInputDevice  *device);
+ClutterStage *          clutter_input_device_get_pointer_stage  (ClutterInputDevice  *device);
+G_CONST_RETURN gchar *  clutter_input_device_get_device_name    (ClutterInputDevice  *device);
 
-void                   clutter_input_device_update_from_event (ClutterInputDevice *device,
-                                                               ClutterEvent       *event,
-                                                               gboolean            update_stage);
+guint                   clutter_input_device_get_n_axes         (ClutterInputDevice  *device);
+
+void                    clutter_input_device_set_key            (ClutterInputDevice  *device,
+                                                                 guint                index_,
+                                                                 guint                keyval,
+                                                                 ClutterModifierType  modifiers);
+gboolean                clutter_input_device_get_key            (ClutterInputDevice  *device,
+                                                                 guint                index_,
+                                                                 guint               *keyval,
+                                                                 ClutterModifierType *modifiers);
+
+ClutterInputDevice *    clutter_input_device_get_associated_device (ClutterInputDevice *device);
+GList *                 clutter_input_device_get_slave_devices  (ClutterInputDevice  *device);
+
+void                    clutter_input_device_update_from_event  (ClutterInputDevice  *device,
+                                                                 ClutterEvent        *event,
+                                                                 gboolean             update_stage);
 
 G_END_DECLS
 

@@ -42,6 +42,8 @@ struct _ClutterDeviceManagerX11
 {
   ClutterDeviceManager parent_instance;
 
+  GHashTable *devices_by_id;
+
   /* the list of transient devices */
   GSList *devices;
 
@@ -53,7 +55,7 @@ struct _ClutterDeviceManagerX11
   ClutterInputDevice *core_pointer;
   ClutterInputDevice *core_keyboard;
 
-  guint use_xinput_1 : 1;
+  int xi_event_base;
 };
 
 struct _ClutterDeviceManagerX11Class

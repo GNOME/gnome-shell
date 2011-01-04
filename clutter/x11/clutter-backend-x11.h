@@ -28,8 +28,11 @@
 #include <X11/Xatom.h>
 
 #include "clutter-x11.h"
+
 #include "clutter-backend-private.h"
+#include "clutter-event-translator.h"
 #include "clutter-keymap-x11.h"
+
 #include "xsettings/xsettings-client.h"
 
 G_BEGIN_DECLS
@@ -43,23 +46,39 @@ G_BEGIN_DECLS
 
 typedef struct _ClutterBackendX11       ClutterBackendX11;
 typedef struct _ClutterBackendX11Class  ClutterBackendX11Class;
+typedef struct _ClutterEventX11         ClutterEventX11;
+typedef struct _ClutterX11EventFilter   ClutterX11EventFilter;
 
-typedef struct _ClutterX11EventFilter
+struct _ClutterX11EventFilter
 {
   ClutterX11FilterFunc func;
   gpointer             data;
 
-} ClutterX11EventFilter;
+};
+
+struct _ClutterEventX11
+{
+  /* additional fields for Key events */
+  gint key_group;
+
+  guint key_is_modifier : 1;
+  guint num_lock_set    : 1;
+  guint caps_lock_set   : 1;
+};
 
 struct _ClutterBackendX11
 {
   ClutterBackend parent_instance;
 
   Display *xdpy;
-  Window   xwin_root;
+  gchar   *display_name;
+
   Screen  *xscreen;
   int      xscreen_num;
-  gchar   *display_name;
+  int      xscreen_width;
+  int      xscreen_height;
+
+  Window   xwin_root;
 
   /* event source */
   GSource *event_source;
@@ -93,6 +112,8 @@ struct _ClutterBackendX11
   int xkb_event_base;
   gboolean use_xkb;
   gboolean have_xkb_autorepeat;
+
+  GList *event_translators;
 };
 
 struct _ClutterBackendX11Class
@@ -105,17 +126,7 @@ struct _ClutterBackendX11Class
    * may need to be handled differently for different backends.
    */
   XVisualInfo *(* get_visual_info) (ClutterBackendX11 *backend);
-
-  /*
-   * Different X11 backends may care about some special events so they all have
-   * a chance to intercept them.
-   */
-  gboolean (*handle_event) (ClutterBackendX11 *backend,
-                            XEvent            *xevent);
 };
-
-/* platform-specific event data */
-typedef struct _ClutterEventX11 ClutterEventX11;
 
 void   _clutter_backend_x11_events_init (ClutterBackend *backend);
 void   _clutter_backend_x11_events_uninit (ClutterBackend *backend);
@@ -162,6 +173,22 @@ _clutter_event_x11_copy (ClutterEventX11 *event_x11);
 
 void
 _clutter_event_x11_free (ClutterEventX11 *event_x11);
+
+void
+_clutter_backend_x11_add_event_translator (ClutterBackendX11      *backend_x11,
+                                           ClutterEventTranslator *translator);
+
+void
+_clutter_backend_x11_remove_event_translator (ClutterBackendX11      *backend_x11,
+                                              ClutterEventTranslator *translator);
+
+gboolean
+_clutter_x11_input_device_translate_screen_coord (ClutterInputDevice *device,
+                                                  gint                stage_root_x,
+                                                  gint                stage_root_y,
+                                                  guint               index_,
+                                                  gdouble             value,
+                                                  gdouble            *axis_value);
 
 G_END_DECLS
 

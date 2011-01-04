@@ -35,11 +35,13 @@
 #include "config.h"
 #endif
 
+#include "clutter-input-device.h"
+
 #include "clutter-actor-private.h"
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
 #include "clutter-enum-types.h"
-#include "clutter-input-device.h"
+#include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
@@ -47,16 +49,66 @@ enum
 {
   PROP_0,
 
+  PROP_BACKEND,
+
   PROP_ID,
-  PROP_DEVICE_TYPE,
   PROP_NAME,
+
+  PROP_DEVICE_TYPE,
+  PROP_DEVICE_MANAGER,
+  PROP_DEVICE_MODE,
+
+  PROP_HAS_CURSOR,
+
+  PROP_N_AXES,
 
   PROP_LAST
 };
 
-static GParamSpec *obj_props[PROP_LAST];
+enum
+{
+  SELECT_STAGE_EVENTS,
+
+  LAST_SIGNAL
+};
+
+static GParamSpec *obj_props[PROP_LAST] = { NULL, };
+
+static guint device_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (ClutterInputDevice, clutter_input_device, G_TYPE_OBJECT);
+
+static void
+clutter_input_device_dispose (GObject *gobject)
+{
+  ClutterInputDevice *device = CLUTTER_INPUT_DEVICE (gobject);
+
+  g_free (device->device_name);
+
+  if (device->device_mode == CLUTTER_INPUT_MODE_SLAVE)
+    _clutter_input_device_remove_slave (device->associated, device);
+
+  if (device->associated != NULL)
+    {
+      _clutter_input_device_set_associated_device (device->associated, NULL);
+      g_object_unref (device->associated);
+      device->associated = NULL;
+    }
+
+  if (device->axes != NULL)
+    {
+      g_array_free (device->axes, TRUE);
+      device->axes = NULL;
+    }
+
+  if (device->keys != NULL)
+    {
+      g_array_free (device->keys, TRUE);
+      device->keys = NULL;
+    }
+
+  G_OBJECT_CLASS (clutter_input_device_parent_class)->dispose (gobject);
+}
 
 static void
 clutter_input_device_set_property (GObject      *gobject,
@@ -76,8 +128,24 @@ clutter_input_device_set_property (GObject      *gobject,
       self->device_type = g_value_get_enum (value);
       break;
 
+    case PROP_DEVICE_MANAGER:
+      self->device_manager = g_value_get_object (value);
+      break;
+
+    case PROP_DEVICE_MODE:
+      self->device_mode = g_value_get_enum (value);
+      break;
+
+    case PROP_BACKEND:
+      self->backend = g_value_get_object (value);
+      break;
+
     case PROP_NAME:
-      self->device_name = g_strdup (g_value_get_string (value));
+      self->device_name = g_value_dup_string (value);
+      break;
+
+    case PROP_HAS_CURSOR:
+      self->has_cursor = g_value_get_boolean (value);
       break;
 
     default:
@@ -104,8 +172,31 @@ clutter_input_device_get_property (GObject    *gobject,
       g_value_set_enum (value, self->device_type);
       break;
 
+    case PROP_DEVICE_MANAGER:
+      g_value_set_object (value, self->device_manager);
+      break;
+
+    case PROP_DEVICE_MODE:
+      g_value_set_enum (value, self->device_mode);
+      break;
+
+    case PROP_BACKEND:
+      g_value_set_object (value, self->backend);
+      break;
+
     case PROP_NAME:
       g_value_set_string (value, self->device_name);
+      break;
+
+    case PROP_HAS_CURSOR:
+      g_value_set_boolean (value, self->has_cursor);
+      break;
+
+    case PROP_N_AXES:
+      if (self->axes != NULL)
+        g_value_set_uint (value, self->axes->len);
+      else
+        g_value_set_uint (value, 0);
       break;
 
     default:
@@ -118,10 +209,6 @@ static void
 clutter_input_device_class_init (ClutterInputDeviceClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
-
-  gobject_class->set_property = clutter_input_device_set_property;
-  gobject_class->get_property = clutter_input_device_get_property;
 
   /**
    * ClutterInputDevice:id:
@@ -130,15 +217,14 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_int ("id",
-                            P_("Id"),
-                            P_("Unique identifier of the device"),
-                            -1, G_MAXINT,
-                            0,
-                            CLUTTER_PARAM_READWRITE |
-                            G_PARAM_CONSTRUCT_ONLY);
-  obj_props[PROP_ID] = pspec;
-  g_object_class_install_property (gobject_class, PROP_ID, pspec);
+  obj_props[PROP_ID] =
+    g_param_spec_int ("id",
+                      P_("Id"),
+                      P_("Unique identifier of the device"),
+                      -1, G_MAXINT,
+                      0,
+                      CLUTTER_PARAM_READWRITE |
+                      G_PARAM_CONSTRUCT_ONLY);
 
   /**
    * ClutterInputDevice:name:
@@ -147,14 +233,13 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_string ("name",
-                               P_("Name"),
-                               P_("The name of the device"),
-                               NULL,
-                               CLUTTER_PARAM_READWRITE |
-                               G_PARAM_CONSTRUCT_ONLY);
-  obj_props[PROP_NAME] = pspec;
-  g_object_class_install_property (gobject_class, PROP_NAME, pspec);
+  obj_props[PROP_NAME] =
+    g_param_spec_string ("name",
+                         P_("Name"),
+                         P_("The name of the device"),
+                         NULL,
+                         CLUTTER_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT_ONLY);
 
   /**
    * ClutterInputDevice:device-type:
@@ -163,15 +248,67 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_enum ("device-type",
-                             P_("Device Type"),
-                             P_("The type of the device"),
-                             CLUTTER_TYPE_INPUT_DEVICE_TYPE,
-                             CLUTTER_POINTER_DEVICE,
-                             CLUTTER_PARAM_READWRITE |
-                             G_PARAM_CONSTRUCT_ONLY);
-  obj_props[PROP_DEVICE_TYPE] = pspec;
-  g_object_class_install_property (gobject_class, PROP_DEVICE_TYPE, pspec);
+  obj_props[PROP_DEVICE_TYPE] =
+    g_param_spec_enum ("device-type",
+                       P_("Device Type"),
+                       P_("The type of the device"),
+                       CLUTTER_TYPE_INPUT_DEVICE_TYPE,
+                       CLUTTER_POINTER_DEVICE,
+                       CLUTTER_PARAM_READWRITE |
+                       G_PARAM_CONSTRUCT_ONLY);
+
+  obj_props[PROP_DEVICE_MANAGER] =
+    g_param_spec_object ("device-manager",
+                         P_("Device Manager"),
+                         P_("The device manager instance"),
+                         CLUTTER_TYPE_DEVICE_MANAGER,
+                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  obj_props[PROP_DEVICE_MODE] =
+    g_param_spec_enum ("device-mode",
+                       P_("Device Mode"),
+                       P_("The mode of the device"),
+                       CLUTTER_TYPE_INPUT_MODE,
+                       CLUTTER_INPUT_MODE_FLOATING,
+                       CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  obj_props[PROP_HAS_CURSOR] =
+    g_param_spec_boolean ("has-cursor",
+                          P_("Has Cursor"),
+                          P_("Whether the device has a cursor"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  obj_props[PROP_N_AXES] =
+    g_param_spec_uint ("n-axes",
+                       P_("Number of Axes"),
+                       P_("The number of axes on the device"),
+                       0, G_MAXUINT,
+                       0,
+                       CLUTTER_PARAM_READABLE);
+
+  obj_props[PROP_BACKEND] =
+    g_param_spec_object ("backend",
+                         P_("Backend"),
+                         P_("The backend instance"),
+                         CLUTTER_TYPE_BACKEND,
+                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  gobject_class->dispose = clutter_input_device_dispose;
+  gobject_class->set_property = clutter_input_device_set_property;
+  gobject_class->get_property = clutter_input_device_get_property;
+  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
+
+  device_signals[SELECT_STAGE_EVENTS] =
+    g_signal_new (I_("select-stage-events"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL, NULL,
+                  _clutter_marshal_VOID__OBJECT_INT,
+                  G_TYPE_NONE, 2,
+                  CLUTTER_TYPE_STAGE,
+                  G_TYPE_INT);
 }
 
 static void
@@ -187,6 +324,9 @@ clutter_input_device_init (ClutterInputDevice *self)
   self->current_y = self->previous_y = -1;
   self->current_button_number = self->previous_button_number = -1;
   self->current_state = self->previous_state = 0;
+
+  self->min_keycode = 0;
+  self->max_keycode = G_MAXUINT;
 }
 
 /*
@@ -483,7 +623,6 @@ clutter_input_device_get_device_coords (ClutterInputDevice *device,
                                         gint               *y)
 {
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
-  g_return_if_fail (device->device_type == CLUTTER_POINTER_DEVICE);
 
   if (x)
     *x = device->current_x;
@@ -514,7 +653,8 @@ _clutter_input_device_update (ClutterInputDevice *device)
   ClutterActor *old_cursor_actor;
   gint x, y;
 
-  g_return_val_if_fail (device->device_type == CLUTTER_POINTER_DEVICE, NULL);
+  if (device->device_type == CLUTTER_KEYBOARD_DEVICE)
+    return NULL;
 
   stage = device->stage;
   if (G_UNLIKELY (stage == NULL))
@@ -699,4 +839,268 @@ clutter_input_device_update_from_event (ClutterInputDevice *device,
 
   if (update_stage)
     _clutter_input_device_set_stage (device, event_stage);
+}
+
+void
+_clutter_input_device_reset_axes (ClutterInputDevice *device)
+{
+  if (device->axes != NULL)
+    {
+      g_array_free (device->axes, TRUE);
+
+      g_object_notify_by_pspec (G_OBJECT (device), obj_props[PROP_N_AXES]);
+    }
+}
+
+guint
+_clutter_input_device_add_axis (ClutterInputDevice *device,
+                                ClutterInputAxis    axis,
+                                gdouble             minimum,
+                                gdouble             maximum,
+                                gdouble             resolution)
+{
+  ClutterAxisInfo info;
+  guint pos;
+
+  if (device->axes == NULL)
+    device->axes = g_array_new (FALSE, TRUE, sizeof (ClutterAxisInfo));
+
+  info.axis = axis;
+  info.min_value = minimum;
+  info.max_value = maximum;
+  info.resolution = resolution;
+
+  switch (axis)
+    {
+    case CLUTTER_INPUT_AXIS_X:
+    case CLUTTER_INPUT_AXIS_Y:
+      info.min_axis = 0;
+      info.max_axis = 0;
+      break;
+
+    case CLUTTER_INPUT_AXIS_XTILT:
+    case CLUTTER_INPUT_AXIS_YTILT:
+      info.min_axis = -1;
+      info.max_axis = 1;
+      break;
+
+    default:
+      info.min_axis = 0;
+      info.max_axis = 1;
+    }
+
+  device->axes = g_array_append_val (device->axes, info);
+  pos = device->axes->len - 1;
+
+  g_object_notify_by_pspec (G_OBJECT (device), obj_props[PROP_N_AXES]);
+
+  return pos;
+}
+
+gboolean
+_clutter_input_device_translate_axis (ClutterInputDevice *device,
+                                      guint               index_,
+                                      gint                value,
+                                      gdouble            *axis_value)
+{
+  ClutterAxisInfo *info;
+  gdouble width;
+  gdouble real_value;
+
+  if (device->axes == NULL || index_ >= device->axes->len)
+    return FALSE;
+
+  info = &g_array_index (device->axes, ClutterAxisInfo, index_);
+
+  if (info->axis == CLUTTER_INPUT_AXIS_X ||
+      info->axis == CLUTTER_INPUT_AXIS_Y)
+    return FALSE;
+
+  width = info->max_value - info->min_value;
+  real_value = (info->max_axis * (value - info->min_value)
+             + info->min_axis * (info->max_value - value))
+             / width;
+
+  if (axis_value)
+    *axis_value = real_value;
+
+  return TRUE;
+}
+
+ClutterInputAxis
+_clutter_input_device_get_axis (ClutterInputDevice *device,
+                                guint               index_)
+{
+  ClutterAxisInfo *info;
+
+  if (device->axes == NULL)
+    return CLUTTER_INPUT_AXIS_IGNORE;
+
+  if (index_ >= device->axes->len)
+    return CLUTTER_INPUT_AXIS_IGNORE;
+
+  info = &g_array_index (device->axes, ClutterAxisInfo, index_);
+
+  return info->axis;
+}
+
+guint
+clutter_input_device_get_n_axes (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), 0);
+
+  if (device->axes != NULL)
+    return device->axes->len;
+
+  return 0;
+}
+
+void
+_clutter_input_device_set_keys (ClutterInputDevice *device,
+                                guint               n_keys,
+                                gint                min_keycode,
+                                gint                max_keycode)
+{
+  if (device->keys != NULL)
+    g_array_free (device->keys, TRUE);
+
+  device->n_keys = n_keys;
+  device->keys = g_array_sized_new (FALSE, TRUE,
+                                    sizeof (ClutterKeyInfo),
+                                    n_keys);
+
+  device->min_keycode = min_keycode;
+  device->max_keycode = max_keycode;
+}
+
+guint
+clutter_input_device_get_n_keys (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), 0);
+
+  if (device->keys != NULL)
+    return device->keys->len;
+
+  return 0;
+}
+
+void
+clutter_input_device_set_key (ClutterInputDevice  *device,
+                              guint                index_,
+                              guint                keyval,
+                              ClutterModifierType  modifiers)
+{
+  ClutterKeyInfo *key_info;
+
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+  g_return_if_fail (index_ < device->n_keys);
+  g_return_if_fail (keyval >= device->min_keycode &&
+                    keyval <= device->max_keycode);
+
+  key_info = &g_array_index (device->keys, ClutterKeyInfo, index_);
+  key_info->keyval = keyval;
+  key_info->modifiers = modifiers;
+}
+
+gboolean
+clutter_input_device_get_key (ClutterInputDevice  *device,
+                              guint                index_,
+                              guint               *keyval,
+                              ClutterModifierType *modifiers)
+{
+  ClutterKeyInfo *key_info;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), FALSE);
+
+  if (device->keys == NULL)
+    return FALSE;
+
+  if (index_ > device->keys->len)
+    return FALSE;
+
+  key_info = &g_array_index (device->keys, ClutterKeyInfo, index_);
+
+  if (!key_info->keyval && !key_info->modifiers)
+    return FALSE;
+
+  if (keyval)
+    *keyval = key_info->keyval;
+
+  if (modifiers)
+    *modifiers = key_info->modifiers;
+
+  return TRUE;
+}
+
+void
+_clutter_input_device_add_slave (ClutterInputDevice *master,
+                                 ClutterInputDevice *slave)
+{
+  if (g_list_find (master->slaves, slave) == NULL)
+    master->slaves = g_list_prepend (master->slaves, slave);
+}
+
+void
+_clutter_input_device_remove_slave (ClutterInputDevice *master,
+                                    ClutterInputDevice *slave)
+{
+  if (g_list_find (master->slaves, slave) != NULL)
+    master->slaves = g_list_remove (master->slaves, slave);
+}
+
+GList *
+clutter_input_device_get_slave_devices (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+
+  return g_list_copy (device->slaves);
+}
+
+void
+_clutter_input_device_set_associated_device (ClutterInputDevice *device,
+                                             ClutterInputDevice *associated)
+{
+  if (device->associated == associated)
+    return;
+
+  if (device->associated != NULL)
+    g_object_unref (device->associated);
+
+  device->associated = associated;
+  if (device->associated != NULL)
+    g_object_ref (device->associated);
+
+  CLUTTER_NOTE (MISC, "Associating device '%s' to device '%s'",
+                clutter_input_device_get_device_name (device),
+                device->associated != NULL
+                  ? clutter_input_device_get_device_name (device->associated)
+                  : "(none)");
+
+  if (device->device_mode != CLUTTER_INPUT_MODE_MASTER)
+    {
+      if (device->associated != NULL)
+        device->device_mode = CLUTTER_INPUT_MODE_SLAVE;
+      else
+        device->device_mode = CLUTTER_INPUT_MODE_FLOATING;
+
+      g_object_notify_by_pspec (G_OBJECT (device), obj_props[PROP_DEVICE_MODE]);
+    }
+}
+
+ClutterInputDevice *
+clutter_input_device_get_associated_device (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+
+  return device->associated;
+}
+
+void
+_clutter_input_device_select_stage_events (ClutterInputDevice *device,
+                                           ClutterStage       *stage,
+                                           gint                event_mask)
+{
+  g_signal_emit (device, device_signals[SELECT_STAGE_EVENTS], 0,
+                 stage,
+                 event_mask);
 }

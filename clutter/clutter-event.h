@@ -55,57 +55,6 @@
 G_BEGIN_DECLS
 
 /**
- * ClutterModifierType:
- * @CLUTTER_SHIFT_MASK: Mask applied by the Shift key
- * @CLUTTER_LOCK_MASK: Mask applied by the Caps Lock key
- * @CLUTTER_CONTROL_MASK: Mask applied by the Control key
- * @CLUTTER_MOD1_MASK: Mask applied by the first Mod key
- * @CLUTTER_MOD2_MASK: Mask applied by the second Mod key
- * @CLUTTER_MOD3_MASK: Mask applied by the third Mod key
- * @CLUTTER_MOD4_MASK: Mask applied by the fourth Mod key
- * @CLUTTER_MOD5_MASK: Mask applied by the fifth Mod key
- * @CLUTTER_BUTTON1_MASK: Mask applied by the first pointer button
- * @CLUTTER_BUTTON2_MASK: Mask applied by the second pointer button
- * @CLUTTER_BUTTON3_MASK: Mask applied by the third pointer button
- * @CLUTTER_BUTTON4_MASK: Mask applied by the fourth pointer button
- * @CLUTTER_BUTTON5_MASK: Mask applied by the fifth pointer button
- * @CLUTTER_SUPER_MASK: Mask applied by the Super key
- * @CLUTTER_HYPER_MASK: Mask applied by the Hyper key
- * @CLUTTER_META_MASK: Mask applied by the Meta key
- * @CLUTTER_RELEASE_MASK: Mask applied during release
- * @CLUTTER_MODIFIER_MASK: A mask covering all modifier types
- *
- * Masks applied to a #ClutterEvent by modifiers.
- *
- * Since: 0.4
- */
-typedef enum {
-  CLUTTER_SHIFT_MASK    = 1 << 0,
-  CLUTTER_LOCK_MASK     = 1 << 1,
-  CLUTTER_CONTROL_MASK  = 1 << 2,
-  CLUTTER_MOD1_MASK     = 1 << 3,
-  CLUTTER_MOD2_MASK     = 1 << 4,
-  CLUTTER_MOD3_MASK     = 1 << 5,
-  CLUTTER_MOD4_MASK     = 1 << 6,
-  CLUTTER_MOD5_MASK     = 1 << 7,
-  CLUTTER_BUTTON1_MASK  = 1 << 8,
-  CLUTTER_BUTTON2_MASK  = 1 << 9,
-  CLUTTER_BUTTON3_MASK  = 1 << 10,
-  CLUTTER_BUTTON4_MASK  = 1 << 11,
-  CLUTTER_BUTTON5_MASK  = 1 << 12,
-
-  /* bits 15 to 25 are currently unused; bit 29 is used internally */
-
-  CLUTTER_SUPER_MASK    = 1 << 26,
-  CLUTTER_HYPER_MASK    = 1 << 27,
-  CLUTTER_META_MASK     = 1 << 28,
-
-  CLUTTER_RELEASE_MASK  = 1 << 30,
-
-  CLUTTER_MODIFIER_MASK = 0x5c001fff
-} ClutterModifierType;
-
-/**
  * ClutterEventFlags:
  * @CLUTTER_EVENT_NONE: No flag set
  * @CLUTTER_EVENT_FLAG_SYNTHETIC: Synthetic event

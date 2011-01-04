@@ -63,6 +63,7 @@
 #include <X11/XKBlib.h>
 #endif
 
+#if 0
 /* XEMBED protocol support for toolkit embedding */
 #define XEMBED_MAPPED                   (1 << 0)
 #define MAX_SUPPORTED_XEMBED_VERSION    1
@@ -83,6 +84,7 @@
 #define XEMBED_ACTIVATE_ACCELERATOR     14
 
 static Window ParentEmbedderWin = None;
+#endif
 
 typedef struct _ClutterEventSource      ClutterEventSource;
 
@@ -92,16 +94,6 @@ struct _ClutterEventSource
 
   ClutterBackend *backend;
   GPollFD event_poll_fd;
-};
-
-struct _ClutterEventX11
-{
-  /* additional fields for Key events */
-  gint key_group;
-
-  guint key_is_modifier : 1;
-  guint num_lock_set    : 1;
-  guint caps_lock_set   : 1;
 };
 
 ClutterEventX11 *
@@ -148,7 +140,6 @@ clutter_event_source_new (ClutterBackend *backend)
   GSource *source = g_source_new (&event_funcs, sizeof (ClutterEventSource));
   ClutterEventSource *event_source = (ClutterEventSource *) source;
 
-  g_source_set_name (source, "Clutter X11 Event");
   event_source->backend = backend;
 
   return source;
@@ -160,6 +151,7 @@ check_xpending (ClutterBackend *backend)
   return XPending (CLUTTER_BACKEND_X11 (backend)->xdpy);
 }
 
+#if 0
 static gboolean
 xembed_send_message (ClutterBackendX11 *backend_x11,
                      Window             window,
@@ -208,6 +200,7 @@ xembed_set_info (ClutterBackendX11 *backend_x11,
                    backend_x11->atom_XEMBED_INFO, 32,
                    PropModeReplace, (unsigned char *) list, 2);
 }
+#endif
 
 void
 _clutter_backend_x11_events_init (ClutterBackend *backend)
@@ -216,6 +209,7 @@ _clutter_backend_x11_events_init (ClutterBackend *backend)
   GSource *source;
   ClutterEventSource *event_source;
   int connection_number;
+  gchar *name;
 
   connection_number = ConnectionNumber (backend_x11->xdpy);
   CLUTTER_NOTE (EVENT, "Connection number: %d", connection_number);
@@ -223,6 +217,11 @@ _clutter_backend_x11_events_init (ClutterBackend *backend)
   source = backend_x11->event_source = clutter_event_source_new (backend);
   event_source = (ClutterEventSource *) source;
   g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
+
+  name = g_strdup_printf ("Clutter X11 Event (connection: %d)",
+                          connection_number);
+  g_source_set_name (source, name);
+  g_free (name);
 
   event_source->event_poll_fd.fd = connection_number;
   event_source->event_poll_fd.events = G_IO_IN;
@@ -252,6 +251,7 @@ _clutter_backend_x11_events_uninit (ClutterBackend *backend)
     }
 }
 
+#if 0
 static void
 update_last_event_time (ClutterBackendX11 *backend_x11,
                         XEvent            *xevent)
@@ -423,51 +423,6 @@ handle_wm_protocols_event (ClutterBackendX11 *backend_x11,
     }
 
   /* do not send any of the WM_PROTOCOLS events to the queue */
-  return FALSE;
-}
-
-static gboolean
-handle_xembed_event (ClutterBackendX11 *backend_x11,
-                     XEvent            *xevent)
-{
-  ClutterActor *stage;
-
-  stage = clutter_stage_get_default ();
-
-  switch (xevent->xclient.data.l[1])
-    {
-    case XEMBED_EMBEDDED_NOTIFY:
-      CLUTTER_NOTE (EVENT, "got XEMBED_EMBEDDED_NOTIFY from %lx",
-                    xevent->xclient.data.l[3]);
-
-      ParentEmbedderWin = xevent->xclient.data.l[3];
-
-      clutter_actor_realize (stage);
-      clutter_actor_show (stage);
-
-      xembed_set_info (backend_x11,
-                       clutter_x11_get_stage_window (CLUTTER_STAGE (stage)),
-                       XEMBED_MAPPED);
-      break;
-    case XEMBED_WINDOW_ACTIVATE:
-      CLUTTER_NOTE (EVENT, "got XEMBED_WINDOW_ACTIVATE");
-      break;
-    case XEMBED_WINDOW_DEACTIVATE:
-      CLUTTER_NOTE (EVENT, "got XEMBED_WINDOW_DEACTIVATE");
-      break;
-    case XEMBED_FOCUS_IN:
-      CLUTTER_NOTE (EVENT, "got XEMBED_FOCUS_IN");
-      if (ParentEmbedderWin)
-        xembed_send_message (backend_x11, ParentEmbedderWin,
-                             XEMBED_FOCUS_NEXT,
-                             0, 0, 0);
-      break;
-    default:
-      CLUTTER_NOTE (EVENT, "got unknown XEMBED message");
-      break;
-    }
-
-  /* do not propagate the XEMBED events to the stage */
   return FALSE;
 }
 
@@ -1135,34 +1090,24 @@ event_translate (ClutterBackend *backend,
 out:
   return res;
 }
+#endif
 
 static void
 events_queue (ClutterBackend *backend)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  ClutterBackendX11Class *backend_x11_class =
-    CLUTTER_BACKEND_X11_GET_CLASS (backend_x11);
-  ClutterEvent      *event;
-  Display           *xdisplay = backend_x11->xdpy;
-  XEvent             xevent;
-  ClutterMainContext  *clutter_context;
-
-  clutter_context = _clutter_context_get_default ();
+  Display *xdisplay = backend_x11->xdpy;
+  ClutterEvent *event;
+  XEvent xevent;
 
   while (!clutter_events_pending () && XPending (xdisplay))
     {
       XNextEvent (xdisplay, &xevent);
 
-      if (backend_x11_class->handle_event (backend_x11, &xevent))
-        continue;
-
       event = clutter_event_new (CLUTTER_NOTHING);
 
-      if (event_translate (backend, event, &xevent))
-        {
-	  /* push directly here to avoid copy of queue_put */
-	  g_queue_push_head (clutter_context->events_queue, event);
-        }
+      if (_clutter_backend_translate_event (backend, &xevent, event))
+        _clutter_event_push (event, FALSE);
       else
         clutter_event_free (event);
     }
@@ -1192,12 +1137,12 @@ events_queue (ClutterBackend *backend)
 ClutterX11FilterReturn
 clutter_x11_handle_event (XEvent *xevent)
 {
-  ClutterBackend      *backend;
   ClutterBackendX11Class *backend_x11_class;
-  ClutterEvent        *event;
-  ClutterMainContext  *clutter_context;
+  ClutterMainContext *clutter_context;
   ClutterX11FilterReturn result;
-  gint                 spin = 1;
+  ClutterBackend *backend;
+  ClutterEvent *event;
+  gint spin = 1;
 
   /* The return values here are someone approximate; we return
    * CLUTTER_X11_FILTER_REMOVE if a clutter event is
@@ -1213,22 +1158,16 @@ clutter_x11_handle_event (XEvent *xevent)
   clutter_threads_enter ();
 
   clutter_context = _clutter_context_get_default ();
-  backend = clutter_context->backend;
+  backend = clutter_get_default_backend ();
   backend_x11_class = CLUTTER_BACKEND_X11_GET_CLASS (backend);
-
-  /* If the backend just observed the event and didn't want it
-   * removed it could return FALSE, so assume that a TRUE return
-   * means that our caller should also do no further processing. */
-  if (backend_x11_class->handle_event (CLUTTER_BACKEND_X11(backend), xevent))
-    return CLUTTER_X11_FILTER_REMOVE;
 
   event = clutter_event_new (CLUTTER_NOTHING);
 
-  if (event_translate (backend, event, xevent))
+  if (_clutter_backend_translate_event (backend, xevent, event))
     {
-      /* push directly here to avoid copy of queue_put */
+      _clutter_event_push (event, FALSE);
+
       result = CLUTTER_X11_FILTER_REMOVE;
-      g_queue_push_head (clutter_context->events_queue, event);
     }
   else
     {
@@ -1253,7 +1192,7 @@ clutter_x11_handle_event (XEvent *xevent)
       --spin;
     }
 
- out:
+out:
   clutter_threads_leave ();
 
   return result;
@@ -1312,8 +1251,7 @@ clutter_event_dispatch (GSource     *source,
 
   /* Pop an event off the queue if any */
   event = clutter_event_get ();
-
-  if (event)
+  if (event != NULL)
     {
       /* forward the event into clutter for emission etc. */
       clutter_do_event (event);

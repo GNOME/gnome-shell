@@ -308,6 +308,27 @@ clutter_device_manager_get_core_device (ClutterDeviceManager   *device_manager,
   return manager_class->get_core_device (device_manager, device_type);
 }
 
+void
+_clutter_device_manager_select_stage_events (ClutterDeviceManager *device_manager,
+                                             ClutterStage         *stage,
+                                             gint                  event_flags)
+{
+  ClutterDeviceManagerClass *manager_class;
+  const GSList *devices, *d;
+
+  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager));
+
+  manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
+  devices = manager_class->get_devices (device_manager);
+
+  for (d = devices; d != NULL; d = d->next)
+    {
+      ClutterInputDevice *device = d->data;
+
+      _clutter_input_device_select_stage_events (device, stage, event_flags);
+    }
+}
+
 /*
  * _clutter_device_manager_add_device:
  * @device_manager: a #ClutterDeviceManager
@@ -404,4 +425,12 @@ _clutter_device_manager_update_devices (ClutterDeviceManager *device_manager)
 
       _clutter_input_device_update (device);
     }
+}
+
+ClutterBackend *
+_clutter_device_manager_get_backend (ClutterDeviceManager *manager)
+{
+  g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER (manager), NULL);
+
+  return manager->priv->backend;
 }

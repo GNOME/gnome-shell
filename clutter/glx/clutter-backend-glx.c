@@ -37,12 +37,12 @@
 #include <GL/gl.h>
 
 #include "clutter-backend-glx.h"
-#include "clutter-event-glx.h"
 #include "clutter-stage-glx.h"
 #include "clutter-glx.h"
 #include "clutter-profile.h"
 
 #include "clutter-debug.h"
+#include "clutter-event-translator.h"
 #include "clutter-event.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
@@ -108,8 +108,8 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
   /* XXX: Technically we should require >= GLX 1.3 support but for a long
    * time Mesa has exported a hybrid GLX, exporting extensions specified
    * to require GLX 1.3, but still reporting 1.2 via glXQueryVersion. */
-  if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor)
-      || !(glx_major == 1 && glx_minor >= 2))
+  if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor) ||
+      !(glx_major == 1 && glx_minor >= 2))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
@@ -787,6 +787,7 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
                                   GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  ClutterEventTranslator *translator;
   ClutterStageWindow *stage_window;
   ClutterStageX11 *stage_x11;
 
@@ -798,6 +799,9 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
   /* copy backend data into the stage */
   stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   stage_x11->wrapper = wrapper;
+
+  translator = CLUTTER_EVENT_TRANSLATOR (stage_x11);
+  _clutter_backend_x11_add_event_translator (backend_x11, translator);
 
   CLUTTER_NOTE (BACKEND,
                 "GLX stage created[%p] (dpy:%p, screen:%d, root:%u, wrap:%p)",
@@ -831,7 +835,6 @@ _clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
   backend_class->ensure_context = clutter_backend_glx_ensure_context;
 
   backendx11_class->get_visual_info = clutter_backend_glx_get_visual_info;
-  backendx11_class->handle_event = _clutter_backend_glx_handle_event;
 }
 
 static void

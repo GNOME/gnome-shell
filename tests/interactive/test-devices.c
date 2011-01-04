@@ -63,6 +63,19 @@ stage_motion_event_cb (ClutterActor *actor,
       return TRUE;
     }
 
+  if (event->motion.axes != NULL)
+    {
+      guint n_axes = clutter_input_device_get_n_axes (event->motion.device);
+      guint i;
+
+      for (i = 0; i < n_axes; i++)
+        {
+          g_print ("Axis[%02d].value: %.2f\n",
+                   i,
+                   event->motion.axes[i]);
+        }
+    }
+
   return FALSE;
 }
 

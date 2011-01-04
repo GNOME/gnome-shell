@@ -881,3 +881,15 @@ _clutter_backend_get_units_serial (ClutterBackend *backend)
 
   return backend->priv->units_serial;
 }
+
+gboolean
+_clutter_backend_translate_event (ClutterBackend *backend,
+                                  gpointer        native,
+                                  ClutterEvent   *event)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), FALSE);
+
+  return CLUTTER_BACKEND_GET_CLASS (backend)->translate_event (backend,
+                                                               native,
+                                                               event);
+}

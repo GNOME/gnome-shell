@@ -232,6 +232,7 @@ source_h_priv = \
 	$(srcdir)/clutter-bezier.h			\
 	$(srcdir)/clutter-debug.h 			\
 	$(srcdir)/clutter-device-manager-private.h	\
+	$(srcdir)/clutter-event-translator.h		\
 	$(srcdir)/clutter-id-pool.h 			\
 	$(srcdir)/clutter-keysyms-table.h		\
 	$(srcdir)/clutter-master-clock.h		\
@@ -247,6 +248,7 @@ source_h_priv = \
 
 # private source code; these should not be introspected
 source_c_priv = \
+	$(srcdir)/clutter-event-translator.c	\
 	$(srcdir)/clutter-id-pool.c 		\
 	$(srcdir)/clutter-profile.c		\
 	$(srcdir)/clutter-timeout-interval.c    \
@@ -294,9 +296,9 @@ backend_source_built =
 # X11 backend rules
 x11_source_c = \
 	$(srcdir)/x11/clutter-backend-x11.c		\
-	$(srcdir)/x11/clutter-device-manager-x11.c	\
+	$(srcdir)/x11/clutter-device-manager-core-x11.c	\
 	$(srcdir)/x11/clutter-event-x11.c		\
-	$(srcdir)/x11/clutter-input-device-x11.c	\
+	$(srcdir)/x11/clutter-input-device-core-x11.c	\
 	$(srcdir)/x11/clutter-keymap-x11.c		\
 	$(srcdir)/x11/clutter-stage-x11.c		\
 	$(srcdir)/x11/clutter-x11-texture-pixmap.c	\
@@ -309,8 +311,8 @@ x11_source_h = \
 
 x11_source_h_priv = \
 	$(srcdir)/x11/clutter-backend-x11.h		\
-	$(srcdir)/x11/clutter-device-manager-x11.h	\
-	$(srcdir)/x11/clutter-input-device-x11.h	\
+	$(srcdir)/x11/clutter-device-manager-core-x11.h	\
+	$(srcdir)/x11/clutter-input-device-core-x11.h	\
 	$(srcdir)/x11/clutter-keymap-x11.h		\
 	$(srcdir)/x11/clutter-settings-x11.h		\
 	$(srcdir)/x11/clutter-stage-x11.h		\
@@ -322,6 +324,18 @@ x11_source_c_priv = \
 	$(srcdir)/x11/xsettings/xsettings-common.c	\
 	$(srcdir)/x11/xsettings/xsettings-common.h	\
 	$(NULL)
+
+if BUILD_XI2
+x11_source_c += \
+	$(srcdir)/x11/clutter-device-manager-xi2.c	\
+	$(srcdir)/x11/clutter-input-device-xi2.c	\
+	$(NULL)
+
+x11_source_h_priv += \
+	$(srcdir)/x11/clutter-device-manager-xi2.h	\
+	$(srcdir)/x11/clutter-input-device-xi2.h	\
+	$(NULL)
+endif # BUILD_XI2
 
 if SUPPORT_X11
 backend_source_h += $(x11_source_h)
@@ -345,7 +359,6 @@ endif # SUPPORT_X11
 # GLX backend rules
 glx_source_c = \
 	$(srcdir)/glx/clutter-backend-glx.c		\
-	$(srcdir)/glx/clutter-event-glx.c		\
 	$(srcdir)/glx/clutter-glx-texture-pixmap.c	\
 	$(srcdir)/glx/clutter-stage-glx.c		\
 	$(NULL)
@@ -357,7 +370,6 @@ glx_source_h = \
 
 glx_source_h_priv = \
 	$(srcdir)/glx/clutter-backend-glx.h		\
-	$(srcdir)/glx/clutter-event-glx.h		\
 	$(srcdir)/glx/clutter-stage-glx.h		\
 	$(NULL)
 
