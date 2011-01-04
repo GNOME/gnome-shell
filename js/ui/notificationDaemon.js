@@ -343,8 +343,17 @@ NotificationDaemon.prototype = {
             for (let i = 0; i < actions.length - 1; i += 2)
                 notification.addButton(actions[i], actions[i + 1]);
         }
-
-        notification.setUrgent(hints.urgency == Urgency.CRITICAL);
+        switch (hints.urgency) {
+            case Urgency.LOW:
+                notification.setUrgency(MessageTray.Urgency.LOW);
+                break;
+            case Urgency.NORMAL:
+                notification.setUrgency(MessageTray.Urgency.NORMAL);
+                break;
+            case Urgency.CRITICAL:
+                notification.setUrgency(MessageTray.Urgency.CRITICAL);
+                break;
+        }
         notification.setResident(hints.resident == true);
         // 'transient' is a reserved keyword in JS, so we have to retrieve the value
         // of the 'transient' hint with hints['transient'] rather than hints.transient

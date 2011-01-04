@@ -38,6 +38,17 @@ const State = {
     HIDING:  3
 };
 
+// Message tray has its custom Urgency enumeration. LOW, NORMAL and CRITICAL
+// urgency values map to the corresponding values for the notifications received
+// through the notification daemon. HIGH urgency value is used for chats received
+// through the Telepathy client.
+const Urgency = {
+    LOW: 0,
+    NORMAL: 1,
+    HIGH: 2,
+    CRITICAL: 3
+}
+
 function _fixMarkup(text, allowMarkup) {
     if (allowMarkup) {
         // Support &amp;, &quot;, &apos;, &lt; and &gt;, escape all other
@@ -225,7 +236,7 @@ function Notification(source, title, banner, params) {
 Notification.prototype = {
     _init: function(source, title, banner, params) {
         this.source = source;
-        this.urgent = false;
+        this.urgency = Urgency.NORMAL;
         this.resident = false;
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
@@ -490,8 +501,8 @@ Notification.prototype = {
         this._updated();
     },
 
-    setUrgent: function(urgent) {
-        this.urgent = urgent;
+    setUrgency: function(urgency) {
+        this.urgency = urgency;
     },
 
     setResident: function(resident) {
@@ -1166,13 +1177,11 @@ MessageTray.prototype = {
         } else if (this._notificationQueue.indexOf(notification) < 0) {
             notification.connect('destroy',
                                  Lang.bind(this, this.removeNotification));
-
-            if (notification.urgent)
-                this._notificationQueue.unshift(notification);
-            else
-                this._notificationQueue.push(notification);
+            this._notificationQueue.push(notification);
+            this._notificationQueue.sort(function(notification1, notification2) {
+                return (notification2.urgency - notification1.urgency);
+            });
         }
-
         this._updateState();
     },
 
@@ -1508,11 +1517,11 @@ MessageTray.prototype = {
                       onCompleteScope: this
                     });
 
-        // We auto-expand urgent notifications.
+        // We auto-expand notifications with CRITICAL urgency.
         // We call _expandNotification() again on the notifications that
         // are expanded in case they were in the process of hiding and need
         // to re-expand.
-        if (this._notification.urgent || this._notification.expanded)
+        if (this._notification.urgency == Urgency.CRITICAL || this._notification.expanded)
             // This will overwrite the y tween, but leave the opacity
             // tween, and so the onComplete will remain as well.
             this._expandNotification(true);
@@ -1604,7 +1613,7 @@ MessageTray.prototype = {
    },
 
     // We use this function to grab focus when the user moves the pointer
-    // to an urgent notification that was already auto-expanded.
+    // to a notification with CRITICAL urgency that was already auto-expanded.
     _ensureNotificationFocused: function() {
         this._notification.grabFocus(false);
     },

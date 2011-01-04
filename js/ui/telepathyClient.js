@@ -476,6 +476,7 @@ Source.prototype = {
         }
 
         this._notification = new Notification(this);
+        this._notification.setUrgency(MessageTray.Urgency.HIGH);
 
         // Since we only create sources when receiving a message, this
         // is a plausible default
