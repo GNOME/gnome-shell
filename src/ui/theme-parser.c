@@ -2955,6 +2955,7 @@ parse_style_element (GMarkupParseContext  *context,
       const char *function = NULL;
       const char *state = NULL;
       const char *draw_ops = NULL;
+      gint required_version;
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
@@ -2973,13 +2974,14 @@ parse_style_element (GMarkupParseContext  *context,
           return;
         }
 
+      required_version = peek_required_version (info);
       if (meta_theme_earliest_version_with_button (info->button_type) >
-          info->theme->format_version)
+          (guint)required_version)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
                      _("Button function \"%s\" does not exist in this version (%d, need %d)"),
                      function,
-                     info->theme->format_version,
+                     required_version,
                      meta_theme_earliest_version_with_button (info->button_type)
                      );
           return;
@@ -3828,7 +3830,7 @@ end_element_handler (GMarkupParseContext *context,
       g_assert (info->style);
 
       if (!meta_frame_style_validate (info->style,
-                                      info->theme->format_version,
+                                      peek_required_version (info),
                                       error))
         {
           add_context_to_error (error, context);
