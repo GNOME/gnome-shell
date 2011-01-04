@@ -2678,6 +2678,8 @@ meta_window_show (MetaWindow *window)
 
   if (!window->visible_to_compositor)
     {
+      window->visible_to_compositor = TRUE;
+
       if (window->display->compositor)
         {
           MetaCompEffect effect = META_COMP_EFFECT_NONE;
@@ -2697,8 +2699,6 @@ meta_window_show (MetaWindow *window)
           meta_compositor_show_window (window->display->compositor,
                                        window, effect);
         }
-
-      window->visible_to_compositor = TRUE;
     }
 
   /* We don't want to worry about all cases from inside
@@ -2769,6 +2769,8 @@ meta_window_hide (MetaWindow *window)
 
   if (window->visible_to_compositor)
     {
+      window->visible_to_compositor = FALSE;
+
       if (window->display->compositor)
         {
           MetaCompEffect effect = META_COMP_EFFECT_NONE;
@@ -2788,8 +2790,6 @@ meta_window_hide (MetaWindow *window)
           meta_compositor_hide_window (window->display->compositor,
                                        window, effect);
         }
-
-      window->visible_to_compositor = FALSE;
     }
 
   did_hide = FALSE;
