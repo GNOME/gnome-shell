@@ -46,6 +46,7 @@ nobase_dist_js_DATA = 	\
 	ui/statusIconDispatcher.js	\
 	ui/statusMenu.js	\
 	ui/status/accessibility.js	\
+	ui/status/keyboard.js	\
 	ui/status/power.js	\
 	ui/status/volume.js	\
 	ui/status/bluetooth.js	\
