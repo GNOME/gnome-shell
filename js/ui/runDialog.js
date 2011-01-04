@@ -207,6 +207,11 @@ RunDialog.prototype = {
 
                                    'debugexit': Lang.bind(this, function() {
                                        Meta.exit(Meta.ExitCode.ERROR);
+                                   }),
+
+                                   // rt is short for "reload theme"
+                                   'rt': Lang.bind(this, function() {
+                                       Main.loadTheme();
                                    })
                                  };
 
