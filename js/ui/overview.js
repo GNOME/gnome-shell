@@ -6,6 +6,7 @@ const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 const Lang = imports.lang;
 const St = imports.gi.St;
+const Shell = imports.gi.Shell;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
@@ -135,7 +136,10 @@ Overview.prototype = {
 
         this._workspacesDisplay = null;
 
-        this.visible = false;
+        this.visible = false;           // animating to overview, in overview, animating out
+        this._shown = false;            // show() and not hide()
+        this._shownTemporarily = false; // showTemporarily() and not hideTemporarily()
+        this._modal = false;            // have a modal grab
         this.animationInProgress = false;
         this._hideInProgress = false;
 
@@ -267,10 +271,22 @@ Overview.prototype = {
         return [this.workspaces.actor.x, this.workspaces.actor.y];
     },
 
+    // show:
+    //
+    // Animates the overview visible and grabs mouse and keyboard input
     show : function() {
-        if (this.visible)
+        if (this._shown)
             return;
+        // Do this manually instead of using _syncInputMode, to handle failure
         if (!Main.pushModal(this.viewSelector.actor))
+            return;
+        this._modal = true;
+        this._animateVisible();
+        this._shown = true;
+    },
+
+    _animateVisible: function() {
+        if (this.visible || this.animationInProgress)
             return;
 
         this.visible = true;
@@ -337,8 +353,102 @@ Overview.prototype = {
         this.emit('showing');
     },
 
+    // showTemporarily:
+    //
+    // Animates the overview visible without grabbing mouse and keyboard input;
+    // if show() has already been called, this has no immediate effect, but
+    // will result in the overview not being hidden until hideTemporarily() is
+    // called.
+    showTemporarily: function() {
+        if (this._shownTemporarily)
+            return;
+
+        this._syncInputMode();
+        this._animateVisible();
+        this._shownTemporarily = true;
+    },
+
+    // hide:
+    //
+    // Reverses the effect of show()
     hide: function() {
-        if (!this.visible || this._hideInProgress)
+        if (!this._shown)
+            return;
+
+        if (!this._shownTemporarily)
+            this._animateNotVisible();
+
+        this._shown = false;
+        this._syncInputMode();
+    },
+
+    // hideTemporarily:
+    //
+    // Reverses the effect of showTemporarily()
+    hideTemporarily: function() {
+        if (!this._shownTemporarily)
+            return;
+
+        if (!this._shown)
+            this._animateNotVisible();
+
+        this._shownTemporarily = false;
+        this._syncInputMode();
+    },
+
+    toggle: function() {
+        if (this._shown)
+            this.hide();
+        else
+            this.show();
+    },
+
+    /**
+     * getWorkspacesForWindow:
+     * @metaWindow: A #MetaWindow
+     *
+     * Returns the Workspaces object associated with the given window.
+     * This method is not be accessible if the overview is not open
+     * and will return %null.
+     */
+    getWorkspacesForWindow: function(metaWindow) {
+        return this.workspaces;
+    },
+
+    //// Private methods ////
+
+    _syncInputMode: function() {
+        // We delay input mode changes during animation so that when removing the
+        // overview we don't have a problem with the release of a press/release
+        // going to an application.
+        if (this.animationInProgress)
+            return;
+
+        if (this._shown) {
+            if (!this._modal) {
+                if (Main.pushModal(this._dash.actor))
+                    this._modal = true;
+                else
+                    this.hide();
+            }
+        } else if (this._shownTemporarily) {
+            if (this._modal) {
+                Main.popModal(this._dash.actor);
+                this._modal = false;
+            }
+            global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
+        } else {
+            if (this._modal) {
+                Main.popModal(this._dash.actor);
+                this._modal = false;
+            }
+            else if (global.stage_input_mode == Shell.StageInputMode.FULLSCREEN)
+                global.stage_input_mode = Shell.StageInputMode.NORMAL;
+        }
+    },
+
+    _animateNotVisible: function() {
+        if (!this.visible || this.animationInProgress)
             return;
 
         this.animationInProgress = true;
@@ -382,36 +492,17 @@ Overview.prototype = {
         this.emit('hiding');
     },
 
-    toggle: function() {
-        if (this.visible)
-            this.hide();
-        else
-            this.show();
-    },
-
-    /**
-     * getWorkspacesForWindow:
-     * @metaWindow: A #MetaWindow
-     *
-     * Returns the Workspaces object associated with the given window.
-     * This method is not be accessible if the overview is not open
-     * and will return %null.
-     */
-    getWorkspacesForWindow: function(metaWindow) {
-        return this.workspaces;
-    },
-
-    //// Private methods ////
-
     _showDone: function() {
-        if (this._hideInProgress)
-            return;
-
         this.animationInProgress = false;
         this._desktopFade.hide();
         this._coverPane.lower_bottom();
 
         this.emit('shown');
+        // Handle any calls to hide* while we were showing
+        if (!this._shown && !this._shownTemporarily)
+            this._animateNotVisible();
+
+        this._syncInputMode();
     },
 
     _hideDone: function() {
@@ -434,8 +525,12 @@ Overview.prototype = {
 
         this._coverPane.lower_bottom();
 
-        Main.popModal(this.viewSelector.actor);
         this.emit('hidden');
+        // Handle any calls to show* while we were hiding
+        if (this._shown || this._shownTemporarily)
+            this._animateVisible();
+
+        this._syncInputMode();
     }
 };
 Signals.addSignalMethods(Overview.prototype);
