@@ -6,6 +6,7 @@
 #include "shell-enum-types.h"
 #include "shell-perf-log.h"
 #include "shell-window-tracker.h"
+#include "shell-marshal.h"
 #include "shell-wm.h"
 #include "st.h"
 
@@ -70,6 +71,8 @@ struct _ShellGlobal {
 
   /* For sound notifications */
   ca_context *sound_context;
+
+  guint32 xdnd_timestamp;
 };
 
 enum {
@@ -92,7 +95,18 @@ enum {
   PROP_FOCUS_MANAGER,
 };
 
+/* Signals */
+enum
+{
+ XDND_POSITION_CHANGED,
+ XDND_LEAVE,
+ XDND_ENTER,
+ LAST_SIGNAL
+};
+
 G_DEFINE_TYPE(ShellGlobal, shell_global, G_TYPE_OBJECT);
+
+static guint shell_global_signals [LAST_SIGNAL] = { 0 };
 
 static void
 shell_global_set_property(GObject         *object,
@@ -237,6 +251,36 @@ shell_global_class_init (ShellGlobalClass *klass)
 
   gobject_class->get_property = shell_global_get_property;
   gobject_class->set_property = shell_global_set_property;
+
+  /* Emitted from gnome-shell-plugin.c during event handling */
+  shell_global_signals[XDND_POSITION_CHANGED] =
+      g_signal_new ("xdnd-position-changed",
+                    G_TYPE_FROM_CLASS (klass),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL,
+                    _shell_marshal_VOID__INT_INT,
+                    G_TYPE_NONE, 2, G_TYPE_INT, G_TYPE_INT);
+
+  /* Emitted from gnome-shell-plugin.c during event handling */
+  shell_global_signals[XDND_LEAVE] =
+      g_signal_new ("xdnd-leave",
+                    G_TYPE_FROM_CLASS (klass),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL,
+                    g_cclosure_marshal_VOID__VOID,
+                    G_TYPE_NONE, 0);
+
+  /* Emitted from gnome-shell-plugin.c during event handling */
+  shell_global_signals[XDND_ENTER] =
+      g_signal_new ("xdnd-enter",
+                    G_TYPE_FROM_CLASS (klass),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL,
+                    g_cclosure_marshal_VOID__VOID,
+                    G_TYPE_NONE, 0);
 
   g_object_class_install_property (gobject_class,
                                    PROP_OVERLAY_GROUP,
@@ -1131,6 +1175,39 @@ grab_notify (GtkWidget *widget, gboolean was_grabbed, gpointer user_data)
 }
 
 /**
+ * shell_global_init_xdnd:
+ * @global: the #ShellGlobal
+ *
+ * Enables tracking of Xdnd events
+ */
+void shell_global_init_xdnd (ShellGlobal *global)
+{
+  long xdnd_version = 5;
+
+  MetaScreen *screen = shell_global_get_screen (global);
+  Window output_window = meta_get_overlay_window (screen);
+
+  MetaDisplay *display = meta_screen_get_display (screen);
+  Display *xdisplay = meta_display_get_xdisplay (display);
+
+  ClutterStage *stage = CLUTTER_STAGE(meta_plugin_get_stage (global->plugin));
+  Window stage_win = clutter_x11_get_stage_window (stage);
+
+  XChangeProperty (xdisplay, stage_win, gdk_x11_get_xatom_by_name ("XdndAware"), XA_ATOM,
+                  32, PropModeReplace, (const unsigned char *)&xdnd_version, 1);
+
+  XChangeProperty (xdisplay, output_window, gdk_x11_get_xatom_by_name ("XdndProxy"), XA_WINDOW,
+                  32, PropModeReplace, (const unsigned char *)&stage_win, 1);
+
+  /*
+   * XdndProxy is additionally set on the proxy window as verification that the
+   * XdndProxy property on the target window isn't a left-over
+   */
+  XChangeProperty (xdisplay, stage_win, gdk_x11_get_xatom_by_name ("XdndProxy"), XA_WINDOW,
+                  32, PropModeReplace, (const unsigned char *)&stage_win, 1);
+}
+
+/**
  * shell_global_format_time_relative_pretty:
  * @global:
  * @delta: Time in seconds since the current time
@@ -1422,6 +1499,10 @@ shell_global_get_current_time (ShellGlobal *global)
   guint32 time;
   MetaDisplay *display;
 
+  /* In case we have a xdnd timestamp use it */
+  if (global->xdnd_timestamp != 0)
+    return global->xdnd_timestamp;
+
   /* meta_display_get_current_time() will return the correct time
      when handling an X or Gdk event, but will return CurrentTime
      from some Clutter event callbacks.
@@ -1688,4 +1769,68 @@ shell_global_play_theme_sound (ShellGlobal *global,
                                const char  *name)
 {
   ca_context_play (global->sound_context, 0, CA_PROP_EVENT_ID, name, NULL);
+}
+
+/*
+ * Process Xdnd events
+ *
+ * We pass the position and leave events to JS via a signal
+ * where the actual drag & drop handling happens.
+ *
+ * http://www.freedesktop.org/wiki/Specifications/XDND
+ */
+gboolean _shell_global_check_xdnd_event (ShellGlobal  *global,
+                                         XEvent       *xev)
+{
+  MetaScreen *screen = meta_plugin_get_screen (global->plugin);
+  Window output_window = meta_get_overlay_window (screen);
+  MetaDisplay *display = meta_screen_get_display (screen);
+  Display *xdisplay = meta_display_get_xdisplay (display);
+
+  ClutterStage *stage = CLUTTER_STAGE (meta_plugin_get_stage (global->plugin));
+  Window stage_win = clutter_x11_get_stage_window (stage);
+
+  if (xev->xany.window != output_window && xev->xany.window != stage_win)
+    return FALSE;
+
+  if (xev->xany.type == ClientMessage && xev->xclient.message_type == gdk_x11_get_xatom_by_name ("XdndPosition"))
+    {
+      XEvent xevent;
+      Window src = xev->xclient.data.l[0];
+
+      memset (&xevent, 0, sizeof(xevent));
+      xevent.xany.type = ClientMessage;
+      xevent.xany.display = xdisplay;
+      xevent.xclient.window = src;
+      xevent.xclient.message_type = gdk_x11_get_xatom_by_name ("XdndStatus");
+      xevent.xclient.format = 32;
+      xevent.xclient.data.l[0] = output_window;
+      /* flags: bit 0: will we accept the drop? bit 1: do we want more position messages */
+      xevent.xclient.data.l[1] = 2;
+      xevent.xclient.data.l[4] = None;
+
+      XSendEvent (xdisplay, src, False, 0, &xevent);
+
+      /* Store the timestamp of the xdnd position event */
+      global->xdnd_timestamp = xev->xclient.data.l[3];
+      g_signal_emit_by_name (G_OBJECT (global), "xdnd-position-changed",
+                            (int)(xev->xclient.data.l[2] >> 16), (int)(xev->xclient.data.l[2] & 0xFFFF));
+      global->xdnd_timestamp = 0;
+
+      return TRUE;
+    }
+   else if (xev->xany.type == ClientMessage && xev->xclient.message_type == gdk_x11_get_xatom_by_name ("XdndLeave"))
+    {
+      g_signal_emit_by_name (G_OBJECT (global), "xdnd-leave");
+
+      return TRUE;
+    }
+   else if (xev->xany.type == ClientMessage && xev->xclient.message_type == gdk_x11_get_xatom_by_name ("XdndEnter"))
+    {
+      g_signal_emit_by_name (G_OBJECT (global), "xdnd-enter");
+
+      return TRUE;
+    }
+
+    return FALSE;
 }

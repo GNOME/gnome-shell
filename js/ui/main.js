@@ -37,6 +37,7 @@ const ShellDBus = imports.ui.shellDBus;
 const TelepathyClient = imports.ui.telepathyClient;
 const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
+const XdndHandler = imports.ui.xdndHandler;
 const StatusIconDispatcher = imports.ui.statusIconDispatcher;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
@@ -60,6 +61,7 @@ let modalCount = 0;
 let modalActorFocusStack = [];
 let uiGroup = null;
 let magnifier = null;
+let xdndHandler = null;
 let statusIconDispatcher = null;
 let _errorLogStack = [];
 let _startDate;
@@ -129,6 +131,7 @@ function start() {
     global.stage.add_actor(uiGroup);
 
     placesManager = new PlaceDisplay.PlacesManager();
+    xdndHandler = new XdndHandler.XdndHandler();
     overview = new Overview.Overview();
     chrome = new Chrome.Chrome();
     magnifier = new Magnifier.Magnifier();

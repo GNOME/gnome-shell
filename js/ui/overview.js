@@ -9,9 +9,11 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
+const Gdk = imports.gi.Gdk;
 
 const AppDisplay = imports.ui.appDisplay;
 const Dash = imports.ui.dash;
+const DND = imports.ui.dnd;
 const DocDisplay = imports.ui.docDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
 const Lightbox = imports.ui.lightbox;
@@ -29,6 +31,8 @@ const ANIMATION_TIME = 0.25;
 // We split the screen vertically between the dash and the view selector.
 const DASH_SPLIT_FRACTION = 0.1;
 
+
+const DND_WINDOW_SWITCH_TIMEOUT = 1250;
 
 function Source() {
     this._init();
@@ -178,7 +182,70 @@ Overview.prototype = {
 
         this._coverPane.lower_bottom();
 
+        // XDND
+        this._dragMonitor = {
+            dragMotion: Lang.bind(this, this._onDragMotion)
+        };
+
+        Main.xdndHandler.connect('drag-begin', Lang.bind(this, this._onDragBegin));
+        Main.xdndHandler.connect('drag-end', Lang.bind(this, this._onDragEnd));
+
+        this._windowSwitchTimeoutId = 0;
+        this._windowSwitchTimestamp = 0;
+        this._lastActiveWorkspaceIndex = -1;
+        this._needsFakePointerEvent = false;
+
         this.workspaces = null;
+    },
+
+    _onDragBegin: function() {
+        DND.addDragMonitor(this._dragMonitor);
+        // Remember the workspace we started from
+        this._lastActiveWorkspaceIndex = global.screen.get_active_workspace_index();
+    },
+
+    _onDragEnd: function(time) {
+        // In case the drag was canceled while in the overview
+        // we have to go back to where we started and hide
+        // the overview
+        if (this._shownTemporarily)  {
+            global.screen.get_workspace_by_index(this._lastActiveWorkspaceIndex).activate(time);
+            this.hideTemporarily();
+        }
+
+        DND.removeMonitor(this._dragMonitor);
+    },
+
+    _fakePointerEvent: function() {
+        let display = Gdk.Display.get_default();
+        let deviceManager = display.get_device_manager();
+        let pointer = deviceManager.get_client_pointer();
+        let [screen, pointerX, pointerY] = display.get_device_state(pointer);
+
+        display.warp_device(pointer, screen, pointerX, pointerY);
+    },
+
+    _onDragMotion: function(dragEvent) {
+        if (this._windowSwitchTimeoutId != 0) {
+            Mainloop.source_remove(this._windowSwitchTimeoutId);
+            this._windowSwitchTimeoutId = 0;
+            this._needsFakePointerEvent = false;
+        }
+
+        if (dragEvent.targetActor &&
+            dragEvent.targetActor._delegate &&
+            dragEvent.targetActor._delegate.metaWindow) {
+            this._windowSwitchTimestamp = global.get_current_time();
+            this._windowSwitchTimeoutId = Mainloop.timeout_add(DND_WINDOW_SWITCH_TIMEOUT,
+                                            Lang.bind(this, function() {
+                                                this._needsFakePointerEvent = true;
+                                                Main.activateWindow(dragEvent.targetActor._delegate.metaWindow,
+                                                                    this._windowSwitchTimestamp);
+                                                this.hideTemporarily();
+                                            }));
+        }
+
+        return DND.DragMotionResult.CONTINUE;
     },
 
     _getDesktopClone: function() {
@@ -531,6 +598,12 @@ Overview.prototype = {
             this._animateVisible();
 
         this._syncInputMode();
+
+        // Fake a pointer event if requested
+        if (this._needsFakePointerEvent) {
+            this._fakePointerEvent();
+            this._needsFakePointerEvent = false;
+        }
     }
 };
 Signals.addSignalMethods(Overview.prototype);

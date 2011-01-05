@@ -113,6 +113,8 @@ struct _GnomeShellPlugin
   int glx_error_base;
   int glx_event_base;
   guint have_swap_event : 1;
+
+  ShellGlobal *global;
 };
 
 struct _GnomeShellPluginClass
@@ -320,7 +322,6 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
   int status;
   const char *shell_js;
   char **search_path;
-  ShellGlobal *global;
   const char *glx_extensions;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -379,10 +380,10 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
                      gvc_muted_debug_log_handler, NULL);
 
   /* Initialize the global object here. */
-  global = shell_global_get ();
+  shell_plugin->global = shell_global_get ();
 
-  _shell_global_set_plugin (global, META_PLUGIN(shell_plugin));
-  _shell_global_set_gjs_context (global, shell_plugin->gjs_context);
+  _shell_global_set_plugin (shell_plugin->global, META_PLUGIN(shell_plugin));
+  _shell_global_set_gjs_context (shell_plugin->global, shell_plugin->gjs_context);
 
   add_statistics (shell_plugin);
 
@@ -511,9 +512,9 @@ static gboolean
 gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
                                   XEvent     *xev)
 {
-#ifdef GLX_INTEL_swap_event
-  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
 
+  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
+#ifdef GLX_INTEL_swap_event
   if (shell_plugin->have_swap_event &&
       xev->type == (shell_plugin->glx_event_base + GLX_BufferSwapComplete))
     {
@@ -543,6 +544,12 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
   if ((xev->xany.type == EnterNotify || xev->xany.type == LeaveNotify)
       && xev->xcrossing.detail == NotifyInferior
       && xev->xcrossing.window == clutter_x11_get_stage_window (CLUTTER_STAGE (clutter_stage_get_default ())))
+    return TRUE;
+
+  /*
+   * Pass the event to shell-global
+   */
+  if (_shell_global_check_xdnd_event (shell_plugin->global, xev))
     return TRUE;
 
   return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;

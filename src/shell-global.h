@@ -132,6 +132,8 @@ void shell_global_run_at_leisure (ShellGlobal         *global,
 void shell_global_play_theme_sound (ShellGlobal       *global,
                                     const char        *name);
 
+void shell_global_init_xdnd (ShellGlobal *global);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */

@@ -56,4 +56,5 @@ nobase_dist_js_DATA = 	\
 	ui/windowManager.js	\
 	ui/workspace.js		\
 	ui/workspacesView.js	\
-	ui/workspaceSwitcherPopup.js
+	ui/workspaceSwitcherPopup.js    \
+	ui/xdndHandler.js

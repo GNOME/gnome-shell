@@ -26,6 +26,8 @@ const PANEL_ICON_SIZE = 24;
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 
+const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
+
 const ANIMATED_ICON_UPDATE_TIMEOUT = 100;
 const SPINNER_UPDATE_TIMEOUT = 130;
 const SPINNER_SPEED = 0.02;
@@ -728,7 +730,20 @@ Panel.prototype = {
                                          reactive: true,
                                          can_focus: true });
         this.button.set_child(label);
-
+        this.button._delegate = this.button;
+        this.button._xdndTimeOut = 0;
+        this.button.handleDragOver = Lang.bind(this,
+            function(source, actor, x, y, time) {
+                 if (source == Main.xdndHandler) {
+                    if (this.button._xdndTimeOut != 0)
+                        Mainloop.source_remove(this.button._xdndTimeOut);
+                    this.button._xdndTimeOut = Mainloop.timeout_add(BUTTON_DND_ACTIVATION_TIMEOUT,
+                                                                    Lang.bind(this,
+                                                                                function() {
+                                                                                    this._xdndShowOverview(actor);
+                                                                                }));
+                 }
+            });
         this._leftBox.add(this.button);
 
         // We use this flag to mark the case where the user has entered the
@@ -765,6 +780,18 @@ Panel.prototype = {
                                 Lang.bind(this, this._onHotCornerClicked));
         this._hotCorner.connect('leave-event',
                                 Lang.bind(this, this._onHotCornerLeft));
+
+        this._hotCorner._delegate = this._hotCorner;
+        this._hotCorner.handleDragOver = Lang.bind(this,
+            function(source, actor, x, y, time) {
+                 if (source == Main.xdndHandler) {
+                    if(!Main.overview.visible && !Main.overview.animationInProgress) {
+                        this.rippleAnimation();
+                        Main.overview.showTemporarily();
+                        Main.overview.beginItemDrag(actor);
+                    }
+                 }
+            });
 
         this._boxContainer.add_actor(this._hotCornerEnvirons);
         this._boxContainer.add_actor(this._hotCorner);
@@ -819,6 +846,25 @@ Panel.prototype = {
         }));
 
         Main.chrome.addActor(this.actor, { visibleInOverview: true });
+    },
+
+    _xdndShowOverview: function (actor) {
+        let [x, y, mask] = global.get_pointer();
+        let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
+
+        if (pickedActor != this.button) {
+            Mainloop.source_remove(this.button._xdndTimeOut);
+            this.button._xdndTimeOut = 0;
+            return;
+        }
+
+        if(!Main.overview.visible && !Main.overview.animationInProgress) {
+            Main.overview.showTemporarily();
+            Main.overview.beginItemDrag(actor);
+        }
+
+        Mainloop.source_remove(this.button._xdndTimeOut);
+        this.button._xdndTimeOut = 0;
     },
 
     startStatusArea: function() {
@@ -915,6 +961,17 @@ Panel.prototype = {
         Main.uiGroup.add_actor(ripple);
     },
 
+    rippleAnimation: function() {
+        // Show three concentric ripples expanding outwards; the exact
+        // parameters were found by trial and error, so don't look
+        // for them to make perfect sense mathematically
+
+        //              delay  time  scale opacity => scale opacity
+        this._addRipple(0.0,   0.83,  0.25,  1.0,    1.5,  0.0);
+        this._addRipple(0.05,  1.0,   0.0,   0.7,    1.25, 0.0);
+        this._addRipple(0.35,  1.0,   0.0,   0.3,    1,    0.0);
+    },
+
     _onHotCornerEntered : function() {
         if (this._menus.grabbed)
             return false;
@@ -923,14 +980,7 @@ Panel.prototype = {
             if (!Main.overview.animationInProgress) {
                 this._hotCornerActivationTime = Date.now() / 1000;
 
-                // Show three concentric ripples expanding outwards; the exact
-                // parameters were found by trial and error, so don't look
-                // for them to make perfect sense mathematically
-
-                //              delay  time  scale opacity => scale opacity
-                this._addRipple(0.0,   0.83,  0.25,  1.0,    1.5,  0.0);
-                this._addRipple(0.05,  1.0,   0.0,   0.7,    1.25, 0.0);
-                this._addRipple(0.35,  1.0,   0.0,   0.3,    1,    0.0);
+                this.rippleAnimation();
                 Main.overview.toggle();
             }
         }
