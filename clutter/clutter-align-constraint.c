@@ -45,6 +45,8 @@
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
 
+#include <math.h>
+
 #define CLUTTER_ALIGN_CONSTRAINT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_ALIGN_CONSTRAINT, ClutterAlignConstraintClass))
 #define CLUTTER_IS_ALIGN_CONSTRAINT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_ALIGN_CONSTRAINT))
 #define CLUTTER_ALIGN_CONSTRAINT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ALIGN_CONSTRAINT, ClutterAlignConstraintClass))
@@ -136,6 +138,7 @@ clutter_align_constraint_update_allocation (ClutterConstraint *constraint,
       actor_width = clutter_actor_box_get_width (allocation);
       allocation->x1 = ((source_width - actor_width) * align->factor)
                      + source_x;
+      allocation->x1 = floorf (allocation->x1 + 0.5);
       allocation->x2 = allocation->x1 + actor_width;
       break;
 
@@ -143,6 +146,7 @@ clutter_align_constraint_update_allocation (ClutterConstraint *constraint,
       actor_height = clutter_actor_box_get_height (allocation);
       allocation->y1 = ((source_height - actor_height) * align->factor)
                      + source_y;
+      allocation->x1 = floorf (allocation->x1 + 0.5);
       allocation->y2 = allocation->y1 + actor_height;
       break;
 
