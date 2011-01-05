@@ -220,9 +220,9 @@ Overview.prototype = {
         let display = Gdk.Display.get_default();
         let deviceManager = display.get_device_manager();
         let pointer = deviceManager.get_client_pointer();
-        let [screen, pointerX, pointerY] = display.get_device_state(pointer);
+        let [screen, pointerX, pointerY] = pointer.get_position();
 
-        display.warp_device(pointer, screen, pointerX, pointerY);
+        pointer.warp(screen, pointerX, pointerY);
     },
 
     _onDragMotion: function(dragEvent) {
