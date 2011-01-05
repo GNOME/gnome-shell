@@ -46,6 +46,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-texture-driver.h"
 #include "cogl-vertex-attribute-private.h"
+#include "cogl-framebuffer-private.h"
 
 #ifdef HAVE_COGL_GL
 #define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
@@ -145,71 +146,12 @@ cogl_check_extension (const char *name, const char *ext)
   return _cogl_check_extension (name, ext);
 }
 
-/* This version of cogl_clear can be used internally as an alternative
-   to avoid flushing the journal or the framebuffer state. This is
-   needed when doing operations that may be called whiling flushing
-   the journal */
-void
-_cogl_clear (const CoglColor *color, unsigned long buffers)
-{
-  GLbitfield gl_buffers = 0;
-
-  if (buffers & COGL_BUFFER_BIT_COLOR)
-    {
-      GE( glClearColor (cogl_color_get_red_float (color),
-			cogl_color_get_green_float (color),
-			cogl_color_get_blue_float (color),
-			cogl_color_get_alpha_float (color)) );
-      gl_buffers |= GL_COLOR_BUFFER_BIT;
-    }
-
-  if (buffers & COGL_BUFFER_BIT_DEPTH)
-    gl_buffers |= GL_DEPTH_BUFFER_BIT;
-
-  if (buffers & COGL_BUFFER_BIT_STENCIL)
-    gl_buffers |= GL_STENCIL_BUFFER_BIT;
-
-  if (!gl_buffers)
-    {
-      static gboolean shown = FALSE;
-
-      if (!shown)
-        {
-	  g_warning ("You should specify at least one auxiliary buffer "
-                     "when calling cogl_clear");
-        }
-
-      return;
-    }
-
-  GE (glClear (gl_buffers));
-
-  /* This is a debugging variable used to visually display the quad
-     batches from the journal. It is reset here to increase the
-     chances of getting the same colours for each frame during an
-     animation */
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_RECTANGLES))
-    {
-      _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
-      ctxt->journal_rectangles_color = 1;
-    }
-}
-
+/* XXX: it's expected that we'll deprecated this with
+ * cogl_framebuffer_clear at some point. */
 void
 cogl_clear (const CoglColor *color, unsigned long buffers)
 {
-  COGL_NOTE (DRAW, "Clear begin");
-
-  _cogl_journal_flush ();
-
-  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
-   * as the pipeline state) when flushing the clip stack, so should
-   * always be done first when preparing to draw. */
-  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
-
-  _cogl_clear (color, buffers);;
-
-  COGL_NOTE (DRAW, "Clear end");
+  _cogl_framebuffer_clear (_cogl_get_framebuffer (), buffers, color);
 }
 
 static gboolean
