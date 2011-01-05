@@ -71,6 +71,65 @@ box.add(new St.Label({ text: "Border Image",
                        style_class: "border-image",
                        style: "padding: 10px;" }));
 
+box.add(new St.Label({ text: "Border Image with Gradient",
+                       style_class: 'border-image-with-background-gradient',
+                       style: "padding: 10px;"
+                              + 'background-gradient-direction: vertical;' }));
+
+box.add(new St.Label({ text: "Rounded, framed, shadowed gradients" }));
+
+let framedGradients = new St.BoxLayout({ vertical: false,
+                                         style: 'padding: 10px; spacing: 12px;' });
+box.add(framedGradients);
+
+function addGradientCase(direction, borderWidth, borderRadius, extra) {
+    let gradientBox = new St.BoxLayout({ style_class: 'background-gradient',
+                                         style: 'border: ' + borderWidth + 'px solid #8b8b8b;'
+                                                + 'border-radius: ' + borderRadius + 'px;'
+                                                + 'background-gradient-direction: ' + direction + ';'
+                                                + 'width: 32px;'
+                                                + 'height: 32px;'
+                                                + extra });
+    framedGradients.add(gradientBox, { x_fill: false, y_fill: false } );
+}
+
+addGradientCase ('horizontal', 0, 5,  '-st-shadow: 0px 0px 0px 0px rgba(0,0,0,0.5);');
+addGradientCase ('horizontal', 2, 5,  '-st-shadow: 0px 2px 0px 0px rgba(0,255,0,0.5);');
+addGradientCase ('horizontal', 5, 2,  '-st-shadow: 2px 0px 0px 0px rgba(0,0,255,0.5);');
+addGradientCase ('horizontal', 5, 20, '-st-shadow: 0px 0px 4px 0px rgba(255,0,0,0.5);');
+addGradientCase ('vertical', 0, 5,    '-st-shadow: 0px 0px 0px 4px rgba(0,0,0,0.5);');
+addGradientCase ('vertical', 2, 5,    '-st-shadow: 0px 0px 4px 4px rgba(0,0,0,0.5);');
+addGradientCase ('vertical', 5, 2,    '-st-shadow: -2px -2px 6px 0px rgba(0,0,0,0.5);');
+addGradientCase ('vertical', 5, 20,   '-st-shadow: -2px -2px 0px 6px rgba(0,0,0,0.5);');
+
+box.add(new St.Label({ text: "Rounded, framed, shadowed images" }));
+
+let framedImages = new St.BoxLayout({ vertical: false,
+                                      style: 'padding: 10px; spacing: 6px;' });
+box.add(framedImages);
+
+function addBackgroundImageCase(borderWidth, borderRadius, width, height, extra) {
+    let imageBox = new St.BoxLayout({ style_class: 'background-image',
+                                      style: 'border: ' + borderWidth + 'px solid #8b8b8b;'
+                                             + 'border-radius: ' + borderRadius + 'px;'
+                                             + 'width: ' + width + 'px;'
+                                             + 'height: ' + height + 'px;'
+                                             + extra });
+    framedImages.add(imageBox, { x_fill: false, y_fill: false } );
+}
+
+addBackgroundImageCase (0, 0, 32, 32, 'background-position: 2px 5px');
+addBackgroundImageCase (0, 0, 16, 16, '-st-shadow: 1px 1px 4px 0px rgba(0,0,0,0.5); background-color: rgba(0,0,0,0)');
+addBackgroundImageCase (0, 5, 32, 32, '-st-shadow: 0px 0px 0px 0px rgba(0,0,0,0.5);');
+addBackgroundImageCase (2, 5, 32, 32, '-st-shadow: 0px 2px 0px 0px rgba(0,255,0,0.5);');
+addBackgroundImageCase (5, 2, 32, 32, '-st-shadow: 2px 0px 0px 0px rgba(0,0,255,0.5);');
+addBackgroundImageCase (5, 20, 32, 32, '-st-shadow: 0px 0px 4px 0px rgba(255,0,0,0.5);');
+addBackgroundImageCase (0, 5, 48, 48, '-st-shadow: 0px 0px 0px 4px rgba(0,0,0,0.5);');
+addBackgroundImageCase (5, 5, 48, 48, '-st-shadow: 0px 0px 4px 4px rgba(0,0,0,0.5);');
+addBackgroundImageCase (0, 5, 64, 64, '-st-shadow: -2px -2px 6px 0px rgba(0,0,0,0.5);');
+addBackgroundImageCase (5, 5, 64, 64, '-st-shadow: -2px -2px 0px 6px rgba(0,0,0,0.5);');
+addBackgroundImageCase (0, 5, 32, 32, 'background-position: 2px 5px');
+
 stage.show();
 Clutter.main();
 stage.destroy();

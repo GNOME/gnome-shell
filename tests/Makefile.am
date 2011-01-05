@@ -15,6 +15,7 @@ TEST_JS =					\
 	interactive/scroll-view-sizing.js	\
 	interactive/table.js			\
 	testcommon/border-image.png		\
+	testcommon/face-plain.png		\
 	testcommon/ui.js                        \
 	unit/format.js
 EXTRA_DIST += $(TEST_JS)

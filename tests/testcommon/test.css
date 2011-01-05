@@ -37,6 +37,23 @@ stage {
     border-image: url('border-image.png') 16;
 }
 
+.background-gradient {
+    background-gradient-start: #88ff88;
+    background-gradient-end: #8888ff;
+}
+
+.border-image-with-background-gradient {
+    border: 15px black solid;
+    border-image: url('border-image.png') 16;
+    background-gradient-start: #88ff88;
+    background-gradient-end: #8888ff;
+}
+
+.background-image {
+    background-image: url('face-plain.png');
+    background-color: white;
+}
+
 .push-button {
     background: #eeddbb;
     border: 1px solid black;
