@@ -169,6 +169,109 @@ _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
   framebuffer->projection_stack = NULL;
 }
 
+/* This version of cogl_clear can be used internally as an alternative
+ * to avoid flushing the journal or the framebuffer state. This is
+ * needed when doing operations that may be called whiling flushing
+ * the journal */
+void
+_cogl_clear4f (unsigned long buffers,
+               float red,
+               float green,
+               float blue,
+               float alpha)
+{
+  GLbitfield gl_buffers = 0;
+
+  if (buffers & COGL_BUFFER_BIT_COLOR)
+    {
+      GE( glClearColor (red, green, blue, alpha) );
+      gl_buffers |= GL_COLOR_BUFFER_BIT;
+    }
+
+  if (buffers & COGL_BUFFER_BIT_DEPTH)
+    gl_buffers |= GL_DEPTH_BUFFER_BIT;
+
+  if (buffers & COGL_BUFFER_BIT_STENCIL)
+    gl_buffers |= GL_STENCIL_BUFFER_BIT;
+
+  if (!gl_buffers)
+    {
+      static gboolean shown = FALSE;
+
+      if (!shown)
+        {
+	  g_warning ("You should specify at least one auxiliary buffer "
+                     "when calling cogl_clear");
+        }
+
+      return;
+    }
+
+  GE (glClear (gl_buffers));
+}
+
+void
+_cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
+                           unsigned long buffers,
+                           float red,
+                           float green,
+                           float blue,
+                           float alpha)
+{
+  COGL_NOTE (DRAW, "Clear begin");
+
+  _cogl_journal_flush ();
+
+  /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
+   * as the pipeline state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. */
+  _cogl_framebuffer_flush_state (framebuffer, 0);
+
+  _cogl_clear4f (buffers, red, green, blue, alpha);;
+
+  /* This is a debugging variable used to visually display the quad
+   * batches from the journal. It is reset here to increase the
+   * chances of getting the same colours for each frame during an
+   * animation */
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_RECTANGLES) &&
+      buffers & COGL_BUFFER_BIT_COLOR)
+    {
+      _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
+      ctxt->journal_rectangles_color = 1;
+    }
+
+  COGL_NOTE (DRAW, "Clear end");
+}
+
+/* XXX: We'll need to consider if this API is a good approach for the
+ * planned, public, CoglFramebuffer API. A framebuffer may have
+ * multiple color buffers associated with it and the user may want to
+ * only clear a subset of those buffers. Flags aren't a great
+ * mechanism for handling this, but I don't think it would be very
+ * convenient if you had to explicitly enumerate the individual
+ * ancillary buffers to clear them.
+ *
+ * My current expectation is that we'll keep this flag based API but
+ * also add a way to enumerate the individual color buffers for
+ * clearing individually.
+ *
+ * Note: the 'buffers' and 'color' arguments were switched around on
+ * purpose compared to the original cogl_clear API since it was odd
+ * that you would be expected to specify a color before even
+ * necessarily choosing to clear the color buffer.
+ */
+void
+_cogl_framebuffer_clear (CoglFramebuffer *framebuffer,
+                         unsigned long buffers,
+                         const CoglColor *color)
+{
+  _cogl_framebuffer_clear4f (framebuffer, buffers,
+                             cogl_color_get_red_float (color),
+                             cogl_color_get_green_float (color),
+                             cogl_color_get_blue_float (color),
+                             cogl_color_get_alpha_float (color));
+}
+
 int
 _cogl_framebuffer_get_width (CoglFramebuffer *framebuffer)
 {

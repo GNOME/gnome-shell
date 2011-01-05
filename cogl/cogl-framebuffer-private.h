@@ -87,6 +87,26 @@ typedef struct _CoglOnscreen
 void
 _cogl_framebuffer_state_init (void);
 
+void
+_cogl_clear4f (unsigned long buffers,
+               float red,
+               float green,
+               float blue,
+               float alpha);
+
+void
+_cogl_framebuffer_clear (CoglFramebuffer *framebuffer,
+                         unsigned long buffers,
+                         const CoglColor *color);
+
+void
+_cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
+                           unsigned long buffers,
+                           float red,
+                           float green,
+                           float blue,
+                           float alpha);
+
 int
 _cogl_framebuffer_get_width (CoglFramebuffer *framebuffer);
 
