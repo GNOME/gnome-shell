@@ -34,7 +34,8 @@ function AltTabPopup() {
 AltTabPopup.prototype = {
     _init : function() {
         this.actor = new Shell.GenericContainer({ name: 'altTabPopup',
-                                                    reactive: true });
+                                                  reactive: true,
+                                                  visible: false });
 
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
@@ -365,15 +366,18 @@ AltTabPopup.prototype = {
     },
 
     destroy : function() {
-        Tweener.addTween(this.actor,
-                         { opacity: 0,
-                           time: POPUP_FADE_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this,
-                               function() {
-                                   this.actor.destroy();
-                               })
-                         });
+        if (this.actor.visible) {
+            Tweener.addTween(this.actor,
+                             { opacity: 0,
+                               time: POPUP_FADE_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: Lang.bind(this,
+                                   function() {
+                                       this.actor.destroy();
+                                   })
+                             });
+        } else
+            this.actor.destroy();
     },
 
     _onDestroy : function() {
