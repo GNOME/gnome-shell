@@ -307,7 +307,7 @@ function _removeUnusedWorkspaces() {
 function _globalKeyPressHandler(actor, event) {
     if (modalCount == 0)
         return false;
-    if (event.type() != Clutter.EventType.KEY_RELEASE)
+    if (event.type() != Clutter.EventType.KEY_PRESS)
         return false;
 
     let symbol = event.get_key_symbol();
@@ -348,6 +348,10 @@ function _globalKeyPressHandler(actor, event) {
         case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
         case Meta.KeyBindingAction.COMMAND_2:
             getRunDialog().open();
+            return true;
+        case Meta.KeyBindingAction.PANEL_MAIN_MENU:
+            if (overview.visible)
+                overview.hide();
             return true;
         case Meta.KeyBindingAction.SWITCH_PANELS:
             // Only intercept this when we're in the overview, and don't
