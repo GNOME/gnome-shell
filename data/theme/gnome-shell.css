@@ -384,10 +384,14 @@ StTooltip StLabel {
     color: #888a85;
     font-weight: bold;
     padding: 0px 12px;
+    height: 24px;
 }
 
 .view-tab-title:selected {
-    color: white;
+    color: #000000;
+    background-color: #c2c7cd;
+    border-radius: 4px;
+    height: 24px;
 }
 
 .view-tab-boxpointer {
