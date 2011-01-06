@@ -22,6 +22,7 @@ const _ = Gettext.gettext;
 
 const Chrome = imports.ui.chrome;
 const CtrlAltTab = imports.ui.ctrlAltTab;
+const EndSessionDialog = imports.ui.endSessionDialog;
 const Environment = imports.ui.environment;
 const ExtensionSystem = imports.ui.extensionSystem;
 const MessageTray = imports.ui.messageTray;
@@ -170,6 +171,10 @@ function start() {
             recorder.record();
         }
     });
+
+    // Provide the bus object for gnome-session to
+    // initiate logouts.
+    EndSessionDialog.init();
 
     global.gdk_screen.connect('monitors-changed', _relayout);
 

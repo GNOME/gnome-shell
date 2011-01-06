@@ -1165,6 +1165,62 @@ StTooltip StLabel {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
+/* End Session Dialog */
+.end-session-dialog-subject {
+    font: 12pt sans-serif;
+    font-weight: bold;
+    color: #666666;
+    padding-top: 10px;
+    padding-left: 17px;
+    padding-bottom: 30px;
+}
+
+.end-session-dialog-description {
+    font: 10pt sans-serif;
+    color: white;
+    padding-left: 17px;
+    padding-right: 40px;
+    width: 16em;
+}
+
+.end-session-dialog-logout-icon {
+    border: 2px solid #8b8b8b;
+    border-radius: 5px;
+    width: 32px;
+    height: 32px;
+}
+
+.end-session-dialog-shutdown-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.end-session-dialog-app-list {
+    font: 10pt sans-serif;
+    max-height: 200px;
+    padding-top: 42px;
+    padding-bottom: 42px;
+    padding-left: 17px;
+    padding-right: 32px;
+}
+
+.end-session-dialog-app-list-item {
+    padding-right: 1em;
+}
+
+.end-session-dialog-app-list-item-icon {
+    padding-right: 17px;
+}
+
+.end-session-dialog-app-list-item-name {
+    font: 10pt sans-serif;
+}
+
+.end-session-dialog-app-list-item-description {
+    font: 8pt sans-serif;
+    color: #444444;
+}
+
 /* Magnifier */
 
 .magnifier-zoom-region {

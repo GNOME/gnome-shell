@@ -21,6 +21,7 @@ nobase_dist_js_DATA = 	\
 	ui/dash.js		\
 	ui/dnd.js		\
 	ui/docDisplay.js	\
+	ui/endSessionDialog.js	\
 	ui/environment.js	\
 	ui/extensionSystem.js	\
 	ui/genericDisplay.js	\
