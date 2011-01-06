@@ -282,7 +282,7 @@ cogl_set_backface_culling_enabled (gboolean setting)
     return;
 
   /* Currently the journal can't track changes to backface culling state... */
-  _cogl_journal_flush ();
+  _cogl_framebuffer_flush_journal (_cogl_get_framebuffer ());
 
   ctx->enable_backface_culling = setting;
 }
@@ -479,7 +479,12 @@ cogl_disable_fog (void)
 void
 cogl_flush (void)
 {
-  _cogl_journal_flush ();
+  GList *l;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  for (l = ctx->framebuffers; l; l = l->next)
+    _cogl_framebuffer_flush_journal (l->data);
 }
 
 void
@@ -505,8 +510,15 @@ _cogl_read_pixels_with_rowstride (int x,
 
   g_return_if_fail (source == COGL_READ_PIXELS_COLOR_BUFFER);
 
-  /* make sure any batched primitives get emitted to the GL driver before
-   * issuing our read pixels... */
+  /* make sure any batched primitives get emitted to the GL driver
+   * before issuing our read pixels...
+   *
+   * XXX: Note we currently use cogl_flush to ensure *all* journals
+   * are flushed here and not _cogl_journal_flush because we don't
+   * track the dependencies between framebuffers so we don't know if
+   * the current framebuffer depends on the contents of other
+   * framebuffers which could also have associated journal entries.
+   */
   cogl_flush ();
 
   framebuffer = _cogl_get_framebuffer ();

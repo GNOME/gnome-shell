@@ -197,7 +197,7 @@ _cogl_texture_2d_create_base (unsigned int     width,
   CoglTexture2D *tex_2d = g_new (CoglTexture2D, 1);
   CoglTexture *tex = COGL_TEXTURE (tex_2d);
 
-  tex->vtable = &cogl_texture_2d_vtable;
+  _cogl_texture_init (tex, &cogl_texture_2d_vtable);
 
   tex_2d->width = width;
   tex_2d->height = height;

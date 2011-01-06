@@ -135,6 +135,7 @@ struct _CoglTextureVtable
 struct _CoglTexture
 {
   CoglHandleObject         _parent;
+  GList                   *framebuffers;
   const CoglTextureVtable *vtable;
 };
 
@@ -164,6 +165,10 @@ struct _CoglTexturePixel
   GLenum gl_type;
   guint8 data[4];
 };
+
+void
+_cogl_texture_init (CoglTexture *texture,
+                    const CoglTextureVtable *vtable);
 
 void
 _cogl_texture_free (CoglTexture *texture);
@@ -284,5 +289,15 @@ _cogl_texture_set_region_from_bitmap (CoglHandle    handle,
                                       unsigned int  dst_width,
                                       unsigned int  dst_height,
                                       CoglBitmap   *bmp);
+
+void
+_cogl_texture_associate_framebuffer (CoglHandle handle,
+                                     CoglFramebuffer *framebuffer);
+
+const GList *
+_cogl_texture_get_associated_framebuffers (CoglHandle handle);
+
+void
+_cogl_texture_flush_journal_rendering (CoglHandle handle);
 
 #endif /* __COGL_TEXTURE_PRIVATE_H */

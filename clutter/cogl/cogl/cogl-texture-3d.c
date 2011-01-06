@@ -178,7 +178,7 @@ _cogl_texture_3d_create_base (unsigned int     width,
   CoglTexture3D *tex_3d = g_new (CoglTexture3D, 1);
   CoglTexture *tex = COGL_TEXTURE (tex_3d);
 
-  tex->vtable = &cogl_texture_3d_vtable;
+  _cogl_texture_init (tex, &cogl_texture_3d_vtable);
 
   tex_3d->width = width;
   tex_3d->height = height;

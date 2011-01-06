@@ -49,6 +49,7 @@
 #include "cogl-pipeline.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
+#include "cogl-object-private.h"
 #include "cogl-primitives.h"
 #include "cogl-framebuffer-private.h"
 
@@ -116,6 +117,14 @@ cogl_texture_unref (CoglHandle handle)
   _COGL_HANDLE_DEBUG_UNREF (CoglTexture, handle);
 
   cogl_handle_unref (handle);
+}
+
+void
+_cogl_texture_init (CoglTexture *texture,
+                    const CoglTextureVtable *vtable)
+{
+  texture->vtable = vtable;
+  texture->framebuffers = NULL;
 }
 
 void
@@ -1472,4 +1481,53 @@ cogl_texture_get_data (CoglHandle       handle,
     }
 
   return byte_size;
+}
+
+static void
+_cogl_texture_framebuffer_destroy_cb (void *user_data,
+                                      void *instance)
+{
+  CoglTexture *tex = user_data;
+  CoglFramebuffer *framebuffer = instance;
+
+  tex->framebuffers = g_list_remove (tex->framebuffers, framebuffer);
+}
+
+void
+_cogl_texture_associate_framebuffer (CoglHandle handle,
+                                     CoglFramebuffer *framebuffer)
+{
+  CoglTexture *tex = COGL_TEXTURE (handle);
+  static CoglUserDataKey framebuffer_destroy_notify_key;
+
+  /* Note: we don't take a reference on the framebuffer here because
+   * that would introduce a circular reference. */
+  tex->framebuffers = g_list_prepend (tex->framebuffers, framebuffer);
+
+  /* Since we haven't taken a reference on the framebuffer we setup
+   * some private data so we will be notified if it is destroyed... */
+  _cogl_object_set_user_data (COGL_OBJECT (framebuffer),
+                              &framebuffer_destroy_notify_key,
+                              tex,
+                              _cogl_texture_framebuffer_destroy_cb);
+}
+
+const GList *
+_cogl_texture_get_associated_framebuffers (CoglHandle handle)
+{
+  CoglTexture *tex = COGL_TEXTURE (handle);
+  return tex->framebuffers;
+}
+
+void
+_cogl_texture_flush_journal_rendering (CoglHandle handle)
+{
+  CoglTexture *tex = COGL_TEXTURE (handle);
+  GList *l;
+
+  /* It could be that a referenced texture is part of a framebuffer
+   * which has an associated journal that must be flushed before it
+   * can be sampled from by the current primitive... */
+  for (l = tex->framebuffers; l; l = l->next)
+    _cogl_framebuffer_flush_journal (l->data);
 }

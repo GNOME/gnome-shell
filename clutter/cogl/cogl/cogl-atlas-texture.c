@@ -98,14 +98,14 @@ _cogl_atlas_texture_reorganize_cb (void *data)
 {
   CoglAtlas *atlas = data;
 
-  /* We don't know if any pipelines may currently be referenced in
-   * the journal that depend on the current underlying GL texture
-   * storage so we flush the journal before migrating.
+  /* We don't know if any journal entries currently depend on OpenGL
+   * texture coordinates that would be invalidated by reorganizing
+   * this atlas so we flush all journals before migrating.
    *
    * We are assuming that texture atlas migration never happens
    * during a flush so we don't have to consider recursion here.
    */
-  _cogl_journal_flush ();
+  cogl_flush ();
 
   if (atlas->map)
     _cogl_rectangle_map_foreach (atlas->map,
@@ -294,14 +294,15 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
     {
       COGL_NOTE (ATLAS, "Migrating texture out of the atlas");
 
-      /* We don't know if any pipelines may currently be referenced in
-       * the journal that depend on the current underlying GL texture
-       * storage so we flush the journal before migrating.
+      /* We don't know if any journal entries currently depend on
+       * OpenGL texture coordinates that would be invalidated by
+       * migrating textures in this atlas so we flush all journals
+       * before migrating.
        *
        * We are assuming that texture atlas migration never happens
        * during a flush so we don't have to consider recursion here.
        */
-      _cogl_journal_flush ();
+      cogl_flush ();
 
       /* Notify cogl-pipeline.c that the texture's underlying GL texture
        * storage is changing so it knows it may need to bind a new texture
@@ -575,6 +576,9 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
      to set as the data for the rectangle in the atlas */
   atlas_tex = g_new (CoglAtlasTexture, 1);
 
+  _cogl_texture_init (COGL_TEXTURE (atlas_tex),
+                      &cogl_atlas_texture_vtable);
+
   atlas_tex->sub_texture = COGL_INVALID_HANDLE;
 
   /* Look for an existing atlas that can hold the texture */
@@ -620,8 +624,6 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
       g_free (atlas_tex);
       return COGL_INVALID_HANDLE;
     }
-
-  atlas_tex->_parent.vtable = &cogl_atlas_texture_vtable;
   atlas_tex->format = internal_format;
   atlas_tex->atlas = atlas;
 

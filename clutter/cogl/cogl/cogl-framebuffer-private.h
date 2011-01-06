@@ -27,6 +27,7 @@
 #include "cogl-handle.h"
 #include "cogl-matrix-stack.h"
 #include "cogl-clip-state.h"
+#include "cogl-journal-private.h"
 
 typedef enum _CoglFramebufferType {
   COGL_FRAMEBUFFER_TYPE_ONSCREEN,
@@ -57,6 +58,15 @@ struct _CoglFramebuffer
   int                 blue_bits;
   int                 green_bits;
   int                 alpha_bits;
+
+  /* We journal the textured rectangles we want to submit to OpenGL so
+   * we have an oppertunity to batch them together into less draw
+   * calls. */
+  CoglJournal        *journal;
+
+  /* The scene of a given framebuffer may depend on images in other
+   * framebuffers... */
+  GList              *deps;
 };
 
 #define COGL_FRAMEBUFFER(X) ((CoglFramebuffer *)(X))
@@ -143,6 +153,19 @@ _cogl_framebuffer_get_modelview_stack (CoglFramebuffer *framebuffer);
 
 CoglMatrixStack *
 _cogl_framebuffer_get_projection_stack (CoglFramebuffer *framebuffer);
+
+void
+_cogl_framebuffer_add_dependency (CoglFramebuffer *framebuffer,
+                                  CoglFramebuffer *dependency);
+
+void
+_cogl_framebuffer_remove_all_dependencies (CoglFramebuffer *framebuffer);
+
+void
+_cogl_framebuffer_flush_journal (CoglFramebuffer *framebuffer);
+
+void
+_cogl_framebuffer_flush_dependency_journals (CoglFramebuffer *framebuffer);
 
 typedef enum _CoglFramebufferFlushFlags
 {

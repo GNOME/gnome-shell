@@ -109,14 +109,12 @@ typedef struct
   CoglHandle        default_gl_texture_2d_tex;
   CoglHandle        default_gl_texture_rect_tex;
 
-  /* Batching geometry... */
-  /* We journal the texture rectangles we want to submit to OpenGL so
-   * we have an oppertunity to optimise the final order so that we
-   * can batch things together. */
-  GArray           *journal;
-  GArray           *logged_vertices;
+  /* Central list of all framebuffers so all journals can be flushed
+   * at any time. */
+  GList            *framebuffers;
+
+  /* Global journal buffers */
   GArray           *journal_flush_attributes_array;
-  size_t            journal_needed_vbo_len;
   GArray           *journal_clip_bounds;
 
   GArray           *polygon_vertices;

@@ -1240,7 +1240,12 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
         }
 
       if (!skip_journal_flush)
-        _cogl_journal_flush ();
+        {
+          /* XXX: note we use cogl_flush() not _cogl_flush_journal() so
+           * we will flush *all* known journals that might reference the
+           * current pipeline. */
+          cogl_flush ();
+        }
     }
 
   /* The fixed function backend has no private state and can't
