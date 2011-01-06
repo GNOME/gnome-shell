@@ -298,12 +298,6 @@ function _removeUnusedWorkspaces() {
 // are disabled with a global grab. (When there is a global grab, then
 // all key events will be delivered to the stage, so ::captured-event
 // on the stage can be used for global keybindings.)
-//
-// We expect to need to conditionally enable just a few keybindings
-// depending on circumstance; the main hackiness here is that we are
-// assuming that keybindings have their default values; really we
-// should be asking Mutter to resolve the key into an action and then
-// base our handling based on the action.
 function _globalKeyPressHandler(actor, event) {
     if (modalCount == 0)
         return false;
@@ -313,32 +307,36 @@ function _globalKeyPressHandler(actor, event) {
     let symbol = event.get_key_symbol();
     let keyCode = event.get_key_code();
     let modifierState = Shell.get_event_state(event);
-    // Check the overview key first, this isn't a Meta.KeyBindingAction yet
-    if (symbol == Clutter.Super_L || symbol == Clutter.Super_R) {
-        // The super key is the default for triggering the overview, and should
-        // get us out of the overview when we are already in it.
-        if (overview.visible)
-            overview.hide();
 
+    let display = global.screen.get_display();
+    // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
+    let action = display.get_keybinding_action(keyCode, modifierState);
+
+    // The screenshot action should always be available (even if a
+    // modal dialog is present)
+    if (action == Meta.KeyBindingAction.COMMAND_SCREENSHOT) {
+        let gconf = GConf.Client.get_default();
+        let command = gconf.get_string('/apps/metacity/keybinding_commands/command_screenshot');
+        if (command != null && command != '') {
+            let [ok, len, args] = GLib.shell_parse_argv(command);
+            let p = new Shell.Process({'args' : args});
+            p.run();
+        }
         return true;
     }
 
-    // Whitelist some of the Metacity actions
-    let display = global.screen.get_display();
-    let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+    // Other bindings are only available when the overview is up and
+    // no modal dialog is present.
+    if (!overview.visible || modalCount > 1)
+        return false;
 
-    // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
-    let action = display.get_keybinding_action(keyCode, modifierState);
+    // This isn't a Meta.KeyBindingAction yet
+    if (symbol == Clutter.Super_L || symbol == Clutter.Super_R) {
+        overview.hide();
+        return true;
+    }
+
     switch (action) {
-        case Meta.KeyBindingAction.COMMAND_SCREENSHOT:
-            let gconf = GConf.Client.get_default();
-            let command = gconf.get_string('/apps/metacity/keybinding_commands/command_screenshot');
-            if (command != null && command != '') {
-                let [ok, len, args] = GLib.shell_parse_argv(command);
-                let p = new Shell.Process({'args' : args});
-                p.run();
-            }
-            return true;
         case Meta.KeyBindingAction.WORKSPACE_LEFT:
             wm.actionMoveWorkspaceLeft();
             return true;
@@ -350,17 +348,11 @@ function _globalKeyPressHandler(actor, event) {
             getRunDialog().open();
             return true;
         case Meta.KeyBindingAction.PANEL_MAIN_MENU:
-            if (overview.visible)
-                overview.hide();
+            overview.hide();
             return true;
         case Meta.KeyBindingAction.SWITCH_PANELS:
-            // Only intercept this when we're in the overview, and don't
-            // intercept it if something beyond that (like, say, the
-            // ctrl-alt-tab popup!) is visible
-            if (overview.visible && modalCount == 1) {
-                ctrlAltTabManager.popup(modifierState & Clutter.ModifierType.SHIFT_MASK);
-                return true;
-            }
+            ctrlAltTabManager.popup(modifierState & Clutter.ModifierType.SHIFT_MASK);
+            return true;
     }
 
     return false;
