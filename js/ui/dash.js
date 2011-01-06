@@ -273,7 +273,11 @@ Dash.prototype = {
         if (app == null || app.is_transient())
             return DND.DragMotionResult.NO_DROP;
 
-        let numFavorites = AppFavorites.getAppFavorites().getFavorites().length;
+        let favorites = AppFavorites.getAppFavorites().getFavorites();
+        let numFavorites = favorites.length;
+
+        let favPos = favorites.indexOf(app);
+
         let numChildren = this._box.get_children().length;
         let boxHeight = this._box.height;
 
@@ -291,15 +295,16 @@ Dash.prototype = {
             this._dragPlaceholderPos = pos;
             if (this._dragPlaceholder)
                 this._dragPlaceholder.destroy();
+
+            // Don't allow positioning before or after self
+            if (favPos != -1 && (pos == favPos || pos == favPos + 1))
+                return DND.DragMotionResult.CONTINUE;
+
             this._dragPlaceholder = new St.Bin({ style_class: 'dash-placeholder' });
             this._box.insert_actor(this._dragPlaceholder, pos);
         }
 
-        let id = app.get_id();
-
-        let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
-
-        let srcIsFavorite = (id in favorites);
+        let srcIsFavorite = (favPos != -1);
 
         if (srcIsFavorite)
             return DND.DragMotionResult.MOVE_DROP;
