@@ -276,7 +276,7 @@ Indicator.prototype = {
             if (this._hasDevices)
                 this._showAll(this._deviceItems);
             else
-                this._deviceSep.hide();
+                this._deviceSep.actor.hide();
         } else {
             this._hideAll(this._fullMenuItems);
             this._hideAll(this._deviceItems);
