@@ -220,11 +220,11 @@ clutter_device_manager_x11_get_devices (ClutterDeviceManager *manager)
    */
   if (manager_x11->all_devices == NULL)
     {
-      GSList *all_devices = NULL;
+      GSList *all_devices;
 
+      all_devices = manager_x11->devices;
       all_devices = g_slist_prepend (all_devices, manager_x11->core_keyboard);
       all_devices = g_slist_prepend (all_devices, manager_x11->core_pointer);
-      all_devices->next = manager_x11->devices;
 
       manager_x11->all_devices = all_devices;
     }
