@@ -166,8 +166,6 @@ cogl_create_context (void)
   _context->default_gl_texture_2d_tex = COGL_INVALID_HANDLE;
   _context->default_gl_texture_rect_tex = COGL_INVALID_HANDLE;
 
-  _context->journal = g_array_new (FALSE, FALSE, sizeof (CoglJournalEntry));
-  _context->logged_vertices = g_array_new (FALSE, FALSE, sizeof (GLfloat));
   _context->journal_flush_attributes_array =
     g_array_new (TRUE, FALSE, sizeof (CoglVertexAttribute *));
   _context->journal_clip_bounds = NULL;
@@ -333,10 +331,6 @@ _cogl_destroy_context (void)
   if (_context->texture_pipeline)
     cogl_handle_unref (_context->texture_pipeline);
 
-  if (_context->journal)
-    g_array_free (_context->journal, TRUE);
-  if (_context->logged_vertices)
-    g_array_free (_context->logged_vertices, TRUE);
   if (_context->journal_flush_attributes_array)
     g_array_free (_context->journal_flush_attributes_array, TRUE);
   if (_context->journal_clip_bounds)

@@ -139,6 +139,8 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
                         int width,
                         int height)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   framebuffer->type             = type;
   framebuffer->width            = width;
   framebuffer->height           = height;
@@ -155,11 +157,45 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
 
   /* Initialise the clip stack */
   _cogl_clip_state_init (&framebuffer->clip_state);
+
+  framebuffer->journal = _cogl_journal_new ();
+
+  /* XXX: We have to maintain a central list of all framebuffers
+   * because at times we need to be able to flush all known journals.
+   *
+   * Examples where we need to flush all journals are:
+   * - because journal entries can reference OpenGL texture
+   *   coordinates that may not survive texture-atlas reorganization
+   *   so we need the ability to flush those entries.
+   * - because although we generally advise against modifying
+   *   pipelines after construction we have to handle that possibility
+   *   and since pipelines may be referenced in journal entries we
+   *   need to be able to flush them before allowing the pipelines to
+   *   be changed.
+   *
+   * Note we don't maintain a list of journals and associate
+   * framebuffers with journals by e.g. having a journal->framebuffer
+   * reference since that would introduce a circular reference.
+   *
+   * Note: As a future change to try and remove the need to index all
+   * journals it might be possible to defer resolving of OpenGL
+   * texture coordinates for rectangle primitives until we come to
+   * flush a journal. This would mean for instance that a single
+   * rectangle entry in a journal could later be expanded into
+   * multiple quad primitives to handle sliced textures but would mean
+   * we don't have to worry about retaining references to OpenGL
+   * texture coordinates that may later become invalid.
+   */
+  ctx->framebuffers = g_list_prepend (ctx->framebuffers, framebuffer);
 }
 
 void
 _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  ctx->framebuffers = g_list_remove (ctx->framebuffers, framebuffer);
+
   _cogl_clip_state_destroy (&framebuffer->clip_state);
 
   cogl_object_unref (framebuffer->modelview_stack);
@@ -167,6 +203,8 @@ _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
 
   cogl_object_unref (framebuffer->projection_stack);
   framebuffer->projection_stack = NULL;
+
+  cogl_object_unref (framebuffer->journal);
 }
 
 /* This version of cogl_clear can be used internally as an alternative
@@ -220,7 +258,10 @@ _cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
 {
   COGL_NOTE (DRAW, "Clear begin");
 
-  _cogl_journal_flush ();
+  /* XXX: in the case where it's the color buffer being cleared and
+   * the current clip-stack is empty we could instead discard the
+   * journal here instead of flushing it. */
+  _cogl_framebuffer_flush_journal (framebuffer);
 
   /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the pipeline state) when flushing the clip stack, so should
@@ -305,7 +346,7 @@ _cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
       framebuffer->viewport_height == height)
     return;
 
-  _cogl_journal_flush ();
+  _cogl_framebuffer_flush_journal (framebuffer);
 
   framebuffer->viewport_x = x;
   framebuffer->viewport_y = y;
@@ -359,6 +400,50 @@ CoglMatrixStack *
 _cogl_framebuffer_get_projection_stack (CoglFramebuffer *framebuffer)
 {
   return framebuffer->projection_stack;
+}
+
+void
+_cogl_framebuffer_add_dependency (CoglFramebuffer *framebuffer,
+                                  CoglFramebuffer *dependency)
+{
+  GList *l;
+
+  for (l = framebuffer->deps; l; l = l->next)
+    {
+      CoglFramebuffer *existing_dep = l->data;
+      if (existing_dep == dependency)
+        return;
+    }
+
+  /* TODO: generalize the primed-array type structure we e.g. use for
+   * cogl_object_set_user_data or for pipeline children as a way to
+   * avoid quite a lot of mid-scene micro allocations here... */
+  framebuffer->deps =
+    g_list_prepend (framebuffer->deps, cogl_object_ref (dependency));
+}
+
+void
+_cogl_framebuffer_remove_all_dependencies (CoglFramebuffer *framebuffer)
+{
+  GList *l;
+  for (l = framebuffer->deps; l; l = l->next)
+    cogl_object_unref (l->data);
+  g_list_free (framebuffer->deps);
+  framebuffer->deps = NULL;
+}
+
+void
+_cogl_framebuffer_flush_journal (CoglFramebuffer *framebuffer)
+{
+  _cogl_journal_flush (framebuffer->journal, framebuffer);
+}
+
+void
+_cogl_framebuffer_flush_dependency_journals (CoglFramebuffer *framebuffer)
+{
+  GList *l;
+  for (l = framebuffer->deps; l; l = l->next)
+    _cogl_framebuffer_flush_journal (l->data);
 }
 
 static inline void
@@ -459,11 +544,9 @@ try_creating_fbo (CoglOffscreen *offscreen,
       )
     return FALSE;
 
-  /* We are about to generate and bind a new fbo, so we pretend to change framebuffer
-   * state so that the old framebuffer will be rebound again before drawing.
-   * The framebuffer state can't be changed while their are active entries, so flush
-   * first. */
-  _cogl_journal_flush ();
+  /* We are about to generate and bind a new fbo, so we pretend to
+   * change framebuffer state so that the old framebuffer will be
+   * rebound again before drawing. */
   ctx->dirty_bound_framebuffer = 1;
 
   /* Generate framebuffer */
@@ -639,13 +722,17 @@ _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
 
   if (fbo_created)
     {
+      CoglOffscreen *ret;
+
       _cogl_framebuffer_init (COGL_FRAMEBUFFER (offscreen),
                               COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
                               cogl_texture_get_format (texhandle),
                               data.level_width,
                               data.level_height);
 
-      return _cogl_offscreen_object_new (offscreen);
+      ret = _cogl_offscreen_object_new (offscreen);
+      _cogl_texture_associate_framebuffer (texhandle, COGL_FRAMEBUFFER (ret));
+      return ret;
     }
   else
     {
@@ -782,16 +869,14 @@ _cogl_set_framebuffer_real (CoglFramebuffer *framebuffer)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_flush ();
-
   entry = (CoglFramebuffer **)&ctx->framebuffer_stack->data;
 
   ctx->dirty_bound_framebuffer = 1;
   ctx->dirty_gl_viewport = 1;
 
-  if (framebuffer != COGL_INVALID_HANDLE)
+  if (framebuffer)
     cogl_object_ref (framebuffer);
-  if (*entry != COGL_INVALID_HANDLE)
+  if (*entry)
     cogl_object_unref (*entry);
 
   *entry = framebuffer;
@@ -843,8 +928,6 @@ cogl_push_framebuffer (CoglFramebuffer *buffer)
 
   g_return_if_fail (_cogl_is_framebuffer (buffer));
   g_assert (ctx->framebuffer_stack);
-
-  cogl_flush ();
 
   ctx->framebuffer_stack =
     g_slist_prepend (ctx->framebuffer_stack, COGL_INVALID_HANDLE);

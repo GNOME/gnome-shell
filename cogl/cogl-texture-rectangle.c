@@ -222,7 +222,7 @@ _cogl_texture_rectangle_create_base (unsigned int     width,
   CoglTextureRectangle *tex_rect = g_new (CoglTextureRectangle, 1);
   CoglTexture *tex = COGL_TEXTURE (tex_rect);
 
-  tex->vtable = &cogl_texture_rectangle_vtable;
+  _cogl_texture_init (tex, &cogl_texture_rectangle_vtable);
 
   tex_rect->width = width;
   tex_rect->height = height;

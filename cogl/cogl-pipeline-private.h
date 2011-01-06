@@ -1204,6 +1204,9 @@ _cogl_pipeline_layer_get_type (CoglPipelineLayer *layer);
 CoglHandle
 _cogl_pipeline_layer_get_texture (CoglPipelineLayer *layer);
 
+CoglHandle
+_cogl_pipeline_layer_get_texture_real (CoglPipelineLayer *layer);
+
 CoglPipelineFilter
 _cogl_pipeline_layer_get_min_filter (CoglPipelineLayer *layer);
 

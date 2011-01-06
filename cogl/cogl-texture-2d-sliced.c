@@ -907,7 +907,7 @@ _cogl_texture_2d_sliced_init_base (CoglTexture2DSliced *tex_2ds,
 {
   CoglTexture *tex = COGL_TEXTURE (tex_2ds);
 
-  tex->vtable = &cogl_texture_2d_sliced_vtable;
+  _cogl_texture_init (tex, &cogl_texture_2d_sliced_vtable);
 
   tex_2ds->slice_x_spans = NULL;
   tex_2ds->slice_y_spans = NULL;

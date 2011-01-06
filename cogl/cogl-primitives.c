@@ -78,6 +78,7 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
                           void *user_data)
 {
   TextureSlicedQuadState *state = user_data;
+  CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
   CoglHandle texture_override;
   float quad_coords[4];
 
@@ -120,7 +121,8 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
   else
     texture_override = texture_handle;
 
-  _cogl_journal_log_quad (quad_coords,
+  _cogl_journal_log_quad (framebuffer->journal,
+                          quad_coords,
                           state->pipeline,
                           1, /* one layer */
                           texture_override, /* replace the layer0 texture */
@@ -518,6 +520,7 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
   int n_layers = cogl_pipeline_get_n_layers (pipeline);
   ValidateTexCoordsState state;
   float *final_tex_coords = alloca (sizeof (float) * 4 * n_layers);
+  CoglFramebuffer *framebuffer;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -539,7 +542,9 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
   if (state.override_pipeline)
     pipeline = state.override_pipeline;
 
-  _cogl_journal_log_quad (position,
+  framebuffer = _cogl_get_framebuffer ();
+  _cogl_journal_log_quad (framebuffer->journal,
+                          position,
                           pipeline,
                           n_layers,
                           COGL_INVALID_HANDLE, /* no texture override */

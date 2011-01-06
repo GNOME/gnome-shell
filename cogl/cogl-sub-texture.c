@@ -267,7 +267,8 @@ _cogl_sub_texture_new (CoglHandle next_texture,
   sub_tex = g_new (CoglSubTexture, 1);
 
   tex = COGL_TEXTURE (sub_tex);
-  tex->vtable = &cogl_sub_texture_vtable;
+
+  _cogl_texture_init (tex, &cogl_sub_texture_vtable);
 
   /* If the next texture is also a sub texture we can avoid one level
      of indirection by referencing the full texture of that texture

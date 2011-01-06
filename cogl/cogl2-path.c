@@ -459,17 +459,21 @@ _cogl_add_path_to_stencil_buffer (CoglPath *path,
 void
 cogl2_path_fill (CoglPath *path)
 {
+  CoglFramebuffer *framebuffer;
+
   g_return_if_fail (cogl_is_path (path));
 
   if (path->data->path_nodes->len == 0)
     return;
 
-  _cogl_journal_flush ();
+  framebuffer = _cogl_get_framebuffer ();
+
+  _cogl_framebuffer_flush_journal (framebuffer);
 
   /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the pipeline state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
-  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
+  _cogl_framebuffer_flush_state (framebuffer, 0);
 
   _cogl_path_fill_nodes (path);
 }

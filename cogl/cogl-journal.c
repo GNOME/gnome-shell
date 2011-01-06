@@ -92,6 +92,8 @@
 
 typedef struct _CoglJournalFlushState
 {
+  CoglJournal         *journal;
+
   CoglVertexArray     *vertex_array;
   GArray              *attributes;
   int                  current_attribute;
@@ -114,6 +116,31 @@ typedef void (*CoglJournalBatchCallback) (CoglJournalEntry *start,
                                           void *data);
 typedef gboolean (*CoglJournalBatchTest) (CoglJournalEntry *entry0,
                                           CoglJournalEntry *entry1);
+
+static void _cogl_journal_free (CoglJournal *journal);
+
+COGL_OBJECT_DEFINE (Journal, journal);
+
+static void
+_cogl_journal_free (CoglJournal *journal)
+{
+  if (journal->entries)
+    g_array_free (journal->entries, TRUE);
+  if (journal->vertices)
+    g_array_free (journal->vertices, TRUE);
+  g_slice_free (CoglJournal, journal);
+}
+
+CoglJournal *
+_cogl_journal_new (void)
+{
+  CoglJournal *journal = g_slice_new0 (CoglJournal);
+
+  journal->entries = g_array_new (FALSE, FALSE, sizeof (CoglJournalEntry));
+  journal->vertices = g_array_new (FALSE, FALSE, sizeof (float));
+
+  return _cogl_journal_object_new (journal);
+}
 
 static void
 _cogl_journal_dump_logged_quad (guint8 *data, int n_layers)
@@ -798,6 +825,7 @@ check_software_clip_for_batch (CoglJournalEntry      *batch_start,
                                int                    batch_len,
                                CoglJournalFlushState *state)
 {
+  CoglJournal *journal = state->journal;
   CoglClipStack *clip_stack, *clip_entry;
   int entry_num;
 
@@ -914,7 +942,7 @@ check_software_clip_for_batch (CoglJournalEntry      *batch_start,
   for (entry_num = 0; entry_num < batch_len; entry_num++)
     {
       CoglJournalEntry *journal_entry = batch_start + entry_num;
-      float *verts = &g_array_index (ctx->logged_vertices, float,
+      float *verts = &g_array_index (journal->vertices, float,
                                      journal_entry->array_offset + 1);
       ClipBounds *clip_bounds = &g_array_index (ctx->journal_clip_bounds,
                                                 ClipBounds, entry_num);
@@ -1137,11 +1165,11 @@ upload_vertices (const CoglJournalEntry *entries,
  * is undefined.
  */
 void
-_cogl_journal_flush (void)
+_cogl_journal_flush (CoglJournal *journal,
+                     CoglFramebuffer *framebuffer)
 {
   CoglJournalFlushState state;
   int                   i;
-  CoglFramebuffer      *framebuffer;
   CoglMatrixStack      *modelview_stack;
   COGL_STATIC_TIMER (flush_timer,
                      "Mainloop", /* parent */
@@ -1151,17 +1179,32 @@ _cogl_journal_flush (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (ctx->journal->len == 0)
+  if (journal->entries->len == 0)
     return;
 
   COGL_TIMER_START (_cogl_uprof_context, flush_timer);
 
+  /* The entries in this journal may depend on images in other
+   * framebuffers which may require that we flush the journals
+   * associated with those framebuffers before we can flush
+   * this journal... */
+  _cogl_framebuffer_flush_dependency_journals (framebuffer);
+
+  cogl_push_framebuffer (framebuffer);
+
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
-    g_print ("BATCHING: journal len = %d\n", ctx->journal->len);
+    g_print ("BATCHING: journal len = %d\n", journal->entries->len);
+
+  /* NB: the journal deals with flushing the modelview stack and clip
+     state manually */
+  _cogl_framebuffer_flush_state (framebuffer,
+                                 COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW |
+                                 COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE);
+
+  state.journal = journal;
 
   state.attributes = ctx->journal_flush_attributes_array;
 
-  framebuffer = _cogl_get_framebuffer ();
   modelview_stack = _cogl_framebuffer_get_modelview_stack (framebuffer);
   state.modelview_stack = modelview_stack;
   state.projection_stack = _cogl_framebuffer_get_projection_stack (framebuffer);
@@ -1173,8 +1216,8 @@ _cogl_journal_flush (void)
          separate walk of the journal because we can modify entries and
          this may end up joining together clip stack batches in the next
          iteration. */
-      batch_and_call ((CoglJournalEntry *)ctx->journal->data, /* first entry */
-                      ctx->journal->len, /* max number of entries to consider */
+      batch_and_call ((CoglJournalEntry *)journal->entries->data, /* first entry */
+                      journal->entries->len, /* max number of entries to consider */
                       compare_entry_clip_stacks,
                       _cogl_journal_check_software_clip, /* callback */
                       &state); /* data */
@@ -1182,11 +1225,11 @@ _cogl_journal_flush (void)
 
   /* We upload the vertices after the clip stack pass in case it
      modifies the entries */
-  state.vertex_array = upload_vertices (&g_array_index (ctx->journal,
+  state.vertex_array = upload_vertices (&g_array_index (journal->entries,
                                                         CoglJournalEntry, 0),
-                                        ctx->journal->len,
-                                        ctx->journal_needed_vbo_len,
-                                        ctx->logged_vertices);
+                                        journal->entries->len,
+                                        journal->needed_vbo_len,
+                                        journal->vertices);
   state.array_offset = 0;
 
   /* batch_and_call() batches a list of journal entries according to some
@@ -1212,8 +1255,8 @@ _cogl_journal_flush (void)
    *      Note: Splitting by modelview changes is skipped when are doing the
    *      vertex transformation in software at log time.
    */
-  batch_and_call ((CoglJournalEntry *)ctx->journal->data, /* first entry */
-                  ctx->journal->len, /* max number of entries to consider */
+  batch_and_call ((CoglJournalEntry *)journal->entries->data, /* first entry */
+                  journal->entries->len, /* max number of entries to consider */
                   compare_entry_clip_stacks,
                   _cogl_journal_flush_clip_stacks_and_entries, /* callback */
                   &state); /* data */
@@ -1225,40 +1268,42 @@ _cogl_journal_flush (void)
 
   cogl_object_unref (state.vertex_array);
 
-  for (i = 0; i < ctx->journal->len; i++)
+  for (i = 0; i < journal->entries->len; i++)
     {
       CoglJournalEntry *entry =
-        &g_array_index (ctx->journal, CoglJournalEntry, i);
+        &g_array_index (journal->entries, CoglJournalEntry, i);
       _cogl_pipeline_journal_unref (entry->pipeline);
       _cogl_clip_stack_unref (entry->clip_stack);
     }
 
-  g_array_set_size (ctx->journal, 0);
-  g_array_set_size (ctx->logged_vertices, 0);
+  g_array_set_size (journal->entries, 0);
+  g_array_set_size (journal->vertices, 0);
+  journal->needed_vbo_len = 0;
+
+  cogl_pop_framebuffer ();
 
   COGL_TIMER_STOP (_cogl_uprof_context, flush_timer);
 }
 
-static void
-_cogl_journal_init (void)
+static gboolean
+add_framebuffer_deps_cb (CoglPipelineLayer *layer, void *user_data)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglFramebuffer *framebuffer = user_data;
+  CoglHandle texture = _cogl_pipeline_layer_get_texture_real (layer);
+  const GList *l;
 
-  /* Here we flush anything that we know must remain constant until the
-   * next the the journal is flushed. Note: This lets up flush things
-   * that themselves depend on the journal, such as clip state. */
+  if (!texture)
+    return TRUE;
 
-  /* NB: the journal deals with flushing the modelview stack and clip
-     state manually */
-  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (),
-                                 COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW |
-                                 COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE);
+  for (l = _cogl_texture_get_associated_framebuffers (texture); l; l = l->next)
+    _cogl_framebuffer_add_dependency (framebuffer, l->data);
 
-  ctx->journal_needed_vbo_len = 0;
+  return TRUE;
 }
 
 void
-_cogl_journal_log_quad (const float  *position,
+_cogl_journal_log_quad (CoglJournal  *journal,
+                        const float  *position,
                         CoglPipeline *pipeline,
                         int           n_layers,
                         CoglHandle    layer0_override_texture,
@@ -1267,7 +1312,7 @@ _cogl_journal_log_quad (const float  *position,
 {
   gsize            stride;
   int               next_vert;
-  GLfloat          *v;
+  float            *v;
   int               i;
   int               next_entry;
   guint32           disable_layers;
@@ -1284,9 +1329,6 @@ _cogl_journal_log_quad (const float  *position,
 
   COGL_TIMER_START (_cogl_uprof_context, log_timer);
 
-  if (ctx->logged_vertices->len == 0)
-    _cogl_journal_init ();
-
   /* The vertex data is logged into a separate array. The data needs
      to be copied into a vertex array before it's given to GL so we
      only store two vertices per quad and expand it to four while
@@ -1296,15 +1338,14 @@ _cogl_journal_log_quad (const float  *position,
    * about how we pack our vertex data */
   stride = GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS (n_layers);
 
-  next_vert = ctx->logged_vertices->len;
-  g_array_set_size (ctx->logged_vertices, next_vert + 2 * stride + 1);
-  v = &g_array_index (ctx->logged_vertices, GLfloat, next_vert);
+  next_vert = journal->vertices->len;
+  g_array_set_size (journal->vertices, next_vert + 2 * stride + 1);
+  v = &g_array_index (journal->vertices, float, next_vert);
 
   /* We calculate the needed size of the vbo as we go because it
      depends on the number of layers in each entry and it's not easy
      calculate based on the length of the logged vertices array */
-  ctx->journal_needed_vbo_len +=
-    GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers) * 4;
+  journal->needed_vbo_len += GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers) * 4;
 
   /* XXX: All the jumping around to fill in this strided buffer doesn't
    * seem ideal. */
@@ -1330,13 +1371,13 @@ _cogl_journal_log_quad (const float  *position,
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_JOURNAL))
     {
       g_print ("Logged new quad:\n");
-      v = &g_array_index (ctx->logged_vertices, GLfloat, next_vert);
+      v = &g_array_index (journal->vertices, float, next_vert);
       _cogl_journal_dump_logged_quad ((guint8 *)v, n_layers);
     }
 
-  next_entry = ctx->journal->len;
-  g_array_set_size (ctx->journal, next_entry + 1);
-  entry = &g_array_index (ctx->journal, CoglJournalEntry, next_entry);
+  next_entry = journal->entries->len;
+  g_array_set_size (journal->entries, next_entry + 1);
+  entry = &g_array_index (journal->entries, CoglJournalEntry, next_entry);
 
   entry->n_layers = n_layers;
   entry->array_offset = next_vert;
@@ -1379,8 +1420,17 @@ _cogl_journal_log_quad (const float  *position,
 
   cogl_get_modelview_matrix (&entry->model_view);
 
+  _cogl_pipeline_foreach_layer_internal (pipeline,
+                                         add_framebuffer_deps_cb,
+                                         _cogl_get_framebuffer ());
+
+  /* XXX: It doesn't feel very nice that in this case we just assume
+   * that the journal is associated with the current framebuffer. I
+   * think a journal->framebuffer reference would seem nicer here but
+   * the reason we don't have that currently is that it would
+   * introduce a circular reference. */
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_BATCHING))
-    _cogl_journal_flush ();
+    _cogl_framebuffer_flush_journal (_cogl_get_framebuffer ());
 
   COGL_TIMER_STOP (_cogl_uprof_context, log_timer);
 }

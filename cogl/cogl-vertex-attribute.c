@@ -386,6 +386,8 @@ validate_layer_cb (CoglPipeline *pipeline,
   if (texture == COGL_INVALID_HANDLE)
     goto validated;
 
+  _cogl_texture_flush_journal_rendering (texture);
+
   /* Give the texture a chance to know that we're rendering
      non-quad shaped primitives. If the texture is in an atlas it
      will be migrated */
@@ -1050,7 +1052,10 @@ flush_state (CoglDrawFlags flags,
              ValidateLayerState *state)
 {
   if (!(flags & COGL_DRAW_SKIP_JOURNAL_FLUSH))
-    _cogl_journal_flush ();
+    {
+      CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
+      _cogl_journal_flush (framebuffer->journal, framebuffer);
+    }
 
   state->unit = 0;
   state->options.flags = 0;
