@@ -2,15 +2,15 @@
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 # Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-12-20 21:07+0000\n"
-"PO-Revision-Date: 2010-12-23 10:31+0100\n"
+"POT-Creation-Date: 2011-01-04 16:17+0000\n"
+"PO-Revision-Date: 2011-01-05 12:38+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,14 +26,6 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gestión de ventanas e inicio de aplicaciones"
 
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
-msgid "Clock"
-msgstr "Reloj"
-
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
-msgid "Customize the panel clock"
-msgstr "Personalizar el reloj del panel"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
@@ -43,24 +35,20 @@ msgstr ""
 "usando el diálogo Alt+F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Custom format of the clock"
-msgstr "Formato personalizado del reloj"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 "Activar las herramientas internas, útiles para desarrolladores y probadores, "
 "desde Alt+F2"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:4
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
 msgstr "Extensión de archivo que usar para almacenar los «screencast»"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "Framerate used for recording screencasts."
 msgstr "Tasa de fotogramas usada para grabar «screencast»."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:6
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
@@ -68,39 +56,31 @@ msgstr ""
 "Las extensiones de GNOME Shell tienen una propiedad uuid; esta clave lista "
 "las extensiones que no se deben cargar."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
 msgstr "Histórico del diálogo de comandos (Alt+F2)"
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#| msgid ""
+#| "If true and format is either \"12-hour\" or \"24-hour\", display date in "
+#| "the clock, in addition to time."
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Si es cierta, muestra la fecha en el reloj, además de la hora."
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "Hour format"
-msgstr "Formato de la hora"
+#| msgid "If true, display the ISO week date in the calendar."
+msgid "If true, display seconds in time."
+msgstr "Si es cierta, muestra los segundos en la hora."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
-"clock, in addition to time."
-msgstr ""
-"Si es cierta y el formato es «12-horas» o «24-horas», muestra la fecha en el "
-"reloj, además de la hora."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
-"time."
-msgstr ""
-"Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos en "
-"la hora."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Si es cierta muestra la fecha de semana ISO en el calendario."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Lista de ID de archivos de escritorio para las aplicaciones favoritas"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -122,19 +102,19 @@ msgstr ""
 "predeterminada. Actualmente es «videorate ! theoraenc ! oggmux» y greba en "
 "Ogg Theora."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
 msgid "Show date in clock"
 msgstr "Mostrar la fecha en el reloj"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Show the week date in the calendar"
 msgstr "Mostrar la fecha de la semana en el calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show time with seconds"
 msgstr "Mostrar la hora con segundos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -142,7 +122,7 @@ msgstr ""
 "Las aplicaciones correspondientes con esos identificadores se mostrarán en "
 "el área de favoritos."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -152,7 +132,7 @@ msgstr ""
 "basado en la fecha actual y usará esta extensión. Se debería cambiar al "
 "grabar en otro formato contenedor diferente."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -160,11 +140,11 @@ msgstr ""
 "La tasa de fotogramas de la grabación resultante grabada por el grabador de "
 "«screencast» de GNOME Shell, en fotogramas por segundo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "La tubería de gstreamer usada para codificar el «screencast»"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -176,41 +156,11 @@ msgstr ""
 "mantienen de forma privada, puede querer desactivarlo por razones de "
 "privacidad. Note que haciéndolo no eliminará los datos ya guardados."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"This key specifies the format used by the panel clock when the format key is "
-"set to \"custom\". You can use conversion specifiers understood by strftime"
-"() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr ""
-"Esta clave especifica el formato usado por el reloj del panel cuando la "
-"clave del formato se establece a «custom» (personalizado). Puede usar "
-"especificadores de conversión que entienda strftime() para obtener un "
-"formato específico. Consulte el manual de strftime() para obtener más "
-"información."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid ""
-"This key specifies the hour format used by the panel clock. Possible values "
-"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
-"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
-"to \"custom\", the clock will display time according to the format specified "
-"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
-"the show_date and show_seconds keys are ignored."
-msgstr ""
-"Esta clave especifica el formato de la hora especificado por el reloj del "
-"panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
-"«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará la "
-"hora en segundos desde la época (1 de enero de 1970). Si se establece a "
-"«custom» el reloj mostrará la hora según el formato especificado en la clave "
-"«custom_format». Note que si se establece a «unix» o «custom» se ignoran las "
-"claves «show_date» y «show_seconds»."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Uuids of extensions to disable"
 msgstr "Uuid de las extensiones que desactivar"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 "Indica si se deben recolectar estadísticas acerca del uso de las aplicaciones"
@@ -372,55 +322,28 @@ msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr ""
 "Anchura de las líneas verticales y horizontales que conforman las cruces."
 
-#: ../data/clock-preferences.ui.h:1
-msgid "Clock Format"
-msgstr "Formato del reloj"
-
-#: ../data/clock-preferences.ui.h:2
-msgid "Clock Preferences"
-msgstr "Preferencias del reloj"
-
-#: ../data/clock-preferences.ui.h:3
-msgid "Panel Display"
-msgstr "Panel de visualización"
-
-#: ../data/clock-preferences.ui.h:4
-msgid "Show seco_nds"
-msgstr "Mostrar los segu_ndos"
-
-#: ../data/clock-preferences.ui.h:5
-msgid "Show the _date"
-msgstr "Mostrar la _fecha"
-
-#: ../data/clock-preferences.ui.h:6
-msgid "_12 hour format"
-msgstr "Formato _12 horas"
-
-#: ../data/clock-preferences.ui.h:7
-msgid "_24 hour format"
-msgstr "Formato _24 horas"
-
-#: ../js/ui/appDisplay.js:154
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:155
 msgid "All"
 msgstr "Todas"
 
-#: ../js/ui/appDisplay.js:235
+#: ../js/ui/appDisplay.js:236
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
-#: ../js/ui/appDisplay.js:265
+#: ../js/ui/appDisplay.js:266
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:562
+#: ../js/ui/appDisplay.js:563
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:566
+#: ../js/ui/appDisplay.js:567
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:567
+#: ../js/ui/appDisplay.js:568
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
@@ -485,58 +408,54 @@ msgid "Applications"
 msgstr "Aplicaciones"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:474
+#: ../js/ui/panel.js:476
 #, c-format
 msgid "Quit %s"
 msgstr "Salir de %s"
 
-#: ../js/ui/panel.js:499
-msgid "Preferences"
-msgstr "Preferencias"
-
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:561
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e de %b, %R:%S"
 
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:562
 msgid "%a %b %e, %R"
 msgstr "%a %e de %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:590
+#: ../js/ui/panel.js:566
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:591
+#: ../js/ui/panel.js:567
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:574
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e de %b, %H:%M:%S"
 
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:575
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e de %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:603
+#: ../js/ui/panel.js:579
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/panel.js:604
+#: ../js/ui/panel.js:580
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:749
+#: ../js/ui/panel.js:725
 msgid "Activities"
 msgstr "Actividades"
 
@@ -655,7 +574,7 @@ msgstr "Contraste alto"
 msgid "Large Text"
 msgstr "<b>Texto:</b>"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:200
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:234
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -663,120 +582,115 @@ msgstr "Bluetooth"
 msgid "Visibility"
 msgstr "Visibilidad"
 
-#: ../js/ui/status/bluetooth.js:68
+#: ../js/ui/status/bluetooth.js:69
 msgid "Send Files to Device..."
 msgstr "Enviar archivos al dispositivo…"
 
-#: ../js/ui/status/bluetooth.js:71
+#: ../js/ui/status/bluetooth.js:70
 msgid "Setup a New Device..."
 msgstr "Configurar un dispositivo nuevo…"
 
 #: ../js/ui/status/bluetooth.js:94
-#| msgid "Power Settings"
 msgid "Bluetooth Settings"
 msgstr "Configuración de Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:151
-#| msgid "Connect to..."
+#: ../js/ui/status/bluetooth.js:185
 msgid "Connection"
 msgstr "Conexión"
 
-#: ../js/ui/status/bluetooth.js:187
-#| msgid "Suspend..."
+#: ../js/ui/status/bluetooth.js:221
 msgid "Send Files..."
 msgstr "Enviar archivos…"
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:226
 msgid "Browse Files..."
 msgstr "Examinar archivos…"
 
-#: ../js/ui/status/bluetooth.js:201
+#: ../js/ui/status/bluetooth.js:235
 msgid "Error browsing device"
 msgstr "Error al examinar el dispositivo"
 
-#: ../js/ui/status/bluetooth.js:202
+#: ../js/ui/status/bluetooth.js:236
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "No se puede examinar el dispositivo solicitado, el error es «%s»"
 
-#: ../js/ui/status/bluetooth.js:210
-#| msgid "Power Settings"
+#: ../js/ui/status/bluetooth.js:244
 msgid "Keyboard Settings"
 msgstr "Configuración del teclado"
 
-#: ../js/ui/status/bluetooth.js:215
-#| msgid "Power Settings"
+#: ../js/ui/status/bluetooth.js:249
 msgid "Mouse Settings"
 msgstr "Ajustes del ratón…"
 
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/volume.js:62
+#: ../js/ui/status/bluetooth.js:256 ../js/ui/status/volume.js:62
 msgid "Sound Settings"
 msgstr "Configuración del sonido"
 
-#: ../js/ui/status/bluetooth.js:293 ../js/ui/status/bluetooth.js:327
-#: ../js/ui/status/bluetooth.js:367 ../js/ui/status/bluetooth.js:400
+#: ../js/ui/status/bluetooth.js:327 ../js/ui/status/bluetooth.js:361
+#: ../js/ui/status/bluetooth.js:401 ../js/ui/status/bluetooth.js:434
 msgid "Bluetooth Agent"
 msgstr "Agente Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:328
+#: ../js/ui/status/bluetooth.js:362
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Solicitud de autorización de %s"
 
-#: ../js/ui/status/bluetooth.js:334
+#: ../js/ui/status/bluetooth.js:368
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "El dispositivo %s quiere acceder al servicio «%s»"
 
-#: ../js/ui/status/bluetooth.js:336
+#: ../js/ui/status/bluetooth.js:370
 msgid "Always grant access"
 msgstr "Conceder acceso siempre"
 
-#: ../js/ui/status/bluetooth.js:337
+#: ../js/ui/status/bluetooth.js:371
 msgid "Grant this time only"
 msgstr "Conceder sólo esta vez"
 
-#: ../js/ui/status/bluetooth.js:338
+#: ../js/ui/status/bluetooth.js:372
 msgid "Reject"
 msgstr "Rechazar"
 
-#: ../js/ui/status/bluetooth.js:368
+#: ../js/ui/status/bluetooth.js:402
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Confirmación de emparejamiento para «%s»"
 
-#: ../js/ui/status/bluetooth.js:374 ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:408 ../js/ui/status/bluetooth.js:442
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "El dispositivo «%s» quiere emparejarse con este equipo"
 
-#: ../js/ui/status/bluetooth.js:375
+#: ../js/ui/status/bluetooth.js:409
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Confirme que el PIN mostrado en «%s» coincide con el del dispositivo."
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:411
 msgid "Matches"
 msgstr "Coincide"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:412
 msgid "Does not match"
 msgstr "No coincide"
 
-#: ../js/ui/status/bluetooth.js:401
+#: ../js/ui/status/bluetooth.js:435
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Solicitud de emparejamiento para «%s»"
 
-#: ../js/ui/status/bluetooth.js:409
+#: ../js/ui/status/bluetooth.js:443
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Introduzca el PIN mencionado en el dispositivo."
 
-#: ../js/ui/status/bluetooth.js:425
+#: ../js/ui/status/bluetooth.js:459
 msgid "OK"
 msgstr "Aceptar"
 
-#: ../js/ui/status/bluetooth.js:426
+#: ../js/ui/status/bluetooth.js:460
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -895,7 +809,7 @@ msgstr "%s está ocupado/a."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:664
+#: ../js/ui/telepathyClient.js:665
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Enviado a las %X el %A"
@@ -947,32 +861,32 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
-#: ../src/shell-global.c:1155
+#: ../src/shell-global.c:1156
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:1159
+#: ../src/shell-global.c:1160
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:1164
+#: ../src/shell-global.c:1165
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:1169
+#: ../src/shell-global.c:1170
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:1174
+#: ../src/shell-global.c:1175
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1002,6 +916,77 @@ msgstr "Buscar"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Clock"
+#~ msgstr "Reloj"
+
+#~ msgid "Customize the panel clock"
+#~ msgstr "Personalizar el reloj del panel"
+
+#~ msgid "Custom format of the clock"
+#~ msgstr "Formato personalizado del reloj"
+
+#~ msgid "Hour format"
+#~ msgstr "Formato de la hora"
+
+#~ msgid ""
+#~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
+#~ "in time."
+#~ msgstr ""
+#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos "
+#~ "en la hora."
+
+#~ msgid ""
+#~ "This key specifies the format used by the panel clock when the format key "
+#~ "is set to \"custom\". You can use conversion specifiers understood by "
+#~ "strftime() to obtain a specific format. See the strftime() manual for "
+#~ "more information."
+#~ msgstr ""
+#~ "Esta clave especifica el formato usado por el reloj del panel cuando la "
+#~ "clave del formato se establece a «custom» (personalizado). Puede usar "
+#~ "especificadores de conversión que entienda strftime() para obtener un "
+#~ "formato específico. Consulte el manual de strftime() para obtener más "
+#~ "información."
+
+#~ msgid ""
+#~ "This key specifies the hour format used by the panel clock. Possible "
+#~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
+#~ "01-01. If set to \"custom\", the clock will display time according to the "
+#~ "format specified in the custom_format key. Note that if set to either "
+#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ msgstr ""
+#~ "Esta clave especifica el formato de la hora especificado por el reloj del "
+#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
+#~ "«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará "
+#~ "la hora en segundos desde la época (1 de enero de 1970). Si se establece "
+#~ "a «custom» el reloj mostrará la hora según el formato especificado en la "
+#~ "clave «custom_format». Note que si se establece a «unix» o «custom» se "
+#~ "ignoran las claves «show_date» y «show_seconds»."
+
+#~ msgid "Clock Format"
+#~ msgstr "Formato del reloj"
+
+#~ msgid "Clock Preferences"
+#~ msgstr "Preferencias del reloj"
+
+#~ msgid "Panel Display"
+#~ msgstr "Panel de visualización"
+
+#~ msgid "Show seco_nds"
+#~ msgstr "Mostrar los segu_ndos"
+
+#~ msgid "Show the _date"
+#~ msgstr "Mostrar la _fecha"
+
+#~ msgid "_12 hour format"
+#~ msgstr "Formato _12 horas"
+
+#~ msgid "_24 hour format"
+#~ msgstr "Formato _24 horas"
+
+#~ msgid "Preferences"
+#~ msgstr "Preferencias"
 
 #~ msgid "What's using power..."
 #~ msgstr "Lo que está usando energía…"
