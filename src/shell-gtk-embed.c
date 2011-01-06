@@ -166,25 +166,19 @@ shell_gtk_embed_get_preferred_height (ClutterActor *actor,
 }
 
 static void
-shell_gtk_embed_paint (ClutterActor *actor)
+shell_gtk_embed_allocate (ClutterActor          *actor,
+                          const ClutterActorBox *box,
+                          ClutterAllocationFlags flags)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
   float wx = 0.0, wy = 0.0, x, y, ax, ay;
-  float w, h;
 
-  CLUTTER_ACTOR_CLASS (shell_gtk_embed_parent_class)->paint (actor);
+  CLUTTER_ACTOR_CLASS (shell_gtk_embed_parent_class)->
+    allocate (actor, box, flags);
 
-  if (!embed->priv->window)
-    return;
-
-  /* Move the X window to the same position as the actor; it's much
-   * easier to just do this from paint() than it is to tray to track
-   * the position and allocation of @embed and each of its ancestors
-   * as they change. We don't use get_transformed_position() here
-   * because we know that the icon isn't scaled or rotated, and so
-   * it's faster to avoid the floating-point transformations.
+  /* Find the actor's new coordinates in terms of the stage (which is
+   * priv->window's parent window.
    */
-  clutter_actor_get_size (actor, &w, &h);
   while (actor)
     {
       clutter_actor_get_position (actor, &x, &y);
@@ -198,7 +192,8 @@ shell_gtk_embed_paint (ClutterActor *actor)
 
   _shell_embedded_window_allocate (embed->priv->window,
                                    (int)(0.5 + wx), (int)(0.5 + wy),
-                                   w, h);
+                                   box->x2 - box->x1,
+                                   box->y2 - box->y1);
 }
 
 static void
@@ -245,7 +240,7 @@ shell_gtk_embed_class_init (ShellGtkEmbedClass *klass)
 
   actor_class->get_preferred_width = shell_gtk_embed_get_preferred_width;
   actor_class->get_preferred_height = shell_gtk_embed_get_preferred_height;
-  actor_class->paint = shell_gtk_embed_paint;
+  actor_class->allocate = shell_gtk_embed_allocate;
   actor_class->realize = shell_gtk_embed_realize;
   actor_class->unrealize = shell_gtk_embed_unrealize;
 
