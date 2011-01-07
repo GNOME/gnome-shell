@@ -916,7 +916,7 @@ MessageTray.prototype = {
         this._notification = null;
         this._notificationClickedId = 0;
 
-        this._summaryBin = new St.Bin({ anchor_gravity: Clutter.Gravity.NORTH_EAST });
+        this._summaryBin = new St.Bin({ x_align: St.Align.END });
         this.actor.add_actor(this._summaryBin);
         this._summary = new St.BoxLayout({ name: 'summary-mode',
                                            reactive: true,
@@ -1008,9 +1008,8 @@ MessageTray.prototype = {
         this.actor.width = primary.width;
         this._notificationBin.x = 0;
         this._notificationBin.width = primary.width;
-
-        // These work because of their anchor_gravity
-        this._summaryBin.x = primary.width;
+        this._summaryBin.x = 0;
+        this._summaryBin.width = primary.width;
     },
 
     contains: function(source) {
