@@ -476,8 +476,8 @@ Source.prototype = {
             return;
 
         // Only override the icon if we were previously using
-        // notification-based icons (ie, not a trayicon)
-        if (this.useNotificationIcon) {
+        // notification-based icons (ie, not a trayicon) or if it was unset before
+        if (!this._isTrayIcon) {
             this.useNotificationIcon = false;
             this._setSummaryIcon(this.app.create_icon_texture (this.ICON_SIZE));
         }
