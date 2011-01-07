@@ -167,6 +167,7 @@ Overview.prototype = {
         this._windowSwitchTimeoutId = 0;
         this._windowSwitchTimestamp = 0;
         this._lastActiveWorkspaceIndex = -1;
+        this._lastHoveredWindow = null;
         this._needsFakePointerEvent = false;
 
         this.workspaces = null;
@@ -186,7 +187,7 @@ Overview.prototype = {
             global.screen.get_workspace_by_index(this._lastActiveWorkspaceIndex).activate(time);
             this.hideTemporarily();
         }
-
+        this._lastHoveredWindow = null;
         DND.removeMonitor(this._dragMonitor);
     },
 
@@ -200,15 +201,24 @@ Overview.prototype = {
     },
 
     _onDragMotion: function(dragEvent) {
+        let targetIsWindow = dragEvent.targetActor &&
+                             dragEvent.targetActor._delegate &&
+                             dragEvent.targetActor._delegate.metaWindow;
+
+        if (targetIsWindow &&
+            dragEvent.targetActor._delegate.metaWindow == this._lastHoveredWindow)
+            return;
+        else
+            this._lastHoveredWindow = null;
+
         if (this._windowSwitchTimeoutId != 0) {
             Mainloop.source_remove(this._windowSwitchTimeoutId);
             this._windowSwitchTimeoutId = 0;
             this._needsFakePointerEvent = false;
         }
 
-        if (dragEvent.targetActor &&
-            dragEvent.targetActor._delegate &&
-            dragEvent.targetActor._delegate.metaWindow) {
+        if (targetIsWindow) {
+            this._lastHoveredWindow = dragEvent.targetActor._delegate.metaWindow;
             this._windowSwitchTimestamp = global.get_current_time();
             this._windowSwitchTimeoutId = Mainloop.timeout_add(DND_WINDOW_SWITCH_TIMEOUT,
                                             Lang.bind(this, function() {
@@ -216,6 +226,7 @@ Overview.prototype = {
                                                 Main.activateWindow(dragEvent.targetActor._delegate.metaWindow,
                                                                     this._windowSwitchTimestamp);
                                                 this.hideTemporarily();
+                                                this._lastHoveredWindow = null;
                                             }));
         }
 
