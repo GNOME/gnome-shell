@@ -5,17 +5,17 @@
 #
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Mattias Põldaru <mahfiaz gmail com>, 2010.
+# Mattias Põldaru <mahfiaz gmail com>, 2010, 2011.
 # Ivar Smolin <okul linux ee>, 2011.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell master\n"
+"Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-12-20 21:07+0000\n"
-"PO-Revision-Date: 2011-01-02 18:39+0200\n"
-"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
+"POT-Creation-Date: 2011-01-04 16:17+0000\n"
+"PO-Revision-Date: 2011-01-07 11:20+0300\n"
+"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,21 +31,12 @@ msgstr "GNOME kest"
 msgid "Window management and application launching"
 msgstr "Aknahaldur ja rakenduste käivitaja"
 
-msgid "Clock"
-msgstr "Kell"
-
-msgid "Customize the panel clock"
-msgstr "Paneelikella kohandamine"
-
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
 "Lubab ligipääsu sisemistele silumise ja monitoorimise tööriistadele Alt-F2 "
 "dialoogi kaudu."
-
-msgid "Custom format of the clock"
-msgstr "Kellaaaja kohandatud vorming"
 
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
@@ -65,25 +56,14 @@ msgstr ""
 msgid "History for command (Alt-F2) dialog"
 msgstr "Käsudialoogi (Alt-F2) ajalugu"
 
-msgid "Hour format"
-msgstr "Tundide vorming"
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Kui määratud, siis kuvatakse kellaaja kõrval ka kuupäeva."
 
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
-"clock, in addition to time."
-msgstr ""
-"Kui tõene ja vorming on kas \"12-tundi\" või \"24-tundi\", kuvatakse "
-"kellaaja kõrval ka kuupäeva."
-
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
-"time."
-msgstr ""
-"Kui tõene ja vorming on kas \"12-tundi\" või \"24-tundi\", kuvatakse "
-"kellaaega koos sekunditega."
+msgid "If true, display seconds in time."
+msgstr "Kui määratud, siis kuvatakse aja juures ka sekundeid."
 
 msgid "If true, display the ISO week date in the calendar."
-msgstr "Kui tõene, kuvatakse kalendris kuupäeva ISO nädalate järgi."
+msgstr "Kui määratud, kuvatakse kalendris kuupäeva ISO nädalavormingus."
 
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Lemmikrakenduste töölauafailide ID-de loend"
@@ -103,7 +83,7 @@ msgid "Show date in clock"
 msgstr "Kell näitab kuupäeva"
 
 msgid "Show the week date in the calendar"
-msgstr "Kalendris näidatakse nädala kuupäeva"
+msgstr "Kalendris näidatakse kuupäeva nädalavormingus"
 
 msgid "Show time with seconds"
 msgstr "Kellaaega näidatakse sekunditega"
@@ -132,22 +112,6 @@ msgid ""
 "used ones (e.g. in launchers). While this data will be kept private, you may "
 "want to disable this for privacy reasons. Please note that doing so won't "
 "remove already saved data."
-msgstr ""
-
-msgid ""
-"This key specifies the format used by the panel clock when the format key is "
-"set to \"custom\". You can use conversion specifiers understood by strftime"
-"() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr ""
-
-msgid ""
-"This key specifies the hour format used by the panel clock. Possible values "
-"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
-"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
-"to \"custom\", the clock will display time according to the format specified "
-"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
-"the show_date and show_seconds keys are ignored."
 msgstr ""
 
 msgid "Uuids of extensions to disable"
@@ -266,27 +230,7 @@ msgstr ""
 msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr "Niitristi moodustavate püst- ja rõhtjoone laius"
 
-msgid "Clock Format"
-msgstr "Kellaaja vorming"
-
-msgid "Clock Preferences"
-msgstr "Kella eelistused"
-
-msgid "Panel Display"
-msgstr "Paneelikuva"
-
-msgid "Show seco_nds"
-msgstr "_Sekundeid näidatakse"
-
-msgid "Show the _date"
-msgstr "_Kuupäeva näidatakse"
-
-msgid "_12 hour format"
-msgstr "_12 tunni vorming"
-
-msgid "_24 hour format"
-msgstr "_24 tunni vorming"
-
+#. Translators: Filter to display all applications
 msgid "All"
 msgstr "Kõik"
 
@@ -355,9 +299,6 @@ msgstr "Rakendused"
 #, c-format
 msgid "Quit %s"
 msgstr "Lõpeta %s"
-
-msgid "Preferences"
-msgstr "Eelistused"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
@@ -525,7 +466,7 @@ msgid "Sound Settings"
 msgstr "Helisätted"
 
 msgid "Bluetooth Agent"
-msgstr ""
+msgstr "Bluetoothi agent"
 
 #, c-format
 msgid "Authorization request from %s"
@@ -581,13 +522,13 @@ msgstr "Toitesätted..."
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "jäänud %d tund"
+msgstr[1] "jäänud %d tundi"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
 #, c-format
 msgid "%d %s %d %s remaining"
-msgstr ""
+msgstr "jäänud %d %s ja %d %s"
 
 msgid "hour"
 msgid_plural "hours"
@@ -602,8 +543,8 @@ msgstr[1] "minutit"
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "jäänud %d minut"
+msgstr[1] "jäänud %d minutit"
 
 msgid "AC adapter"
 msgstr "Võrgutoite adapter"
@@ -624,7 +565,7 @@ msgid "Keyboard"
 msgstr "Klaviatuur"
 
 msgid "PDA"
-msgstr ""
+msgstr "Elektronmärkmik"
 
 msgid "Cell phone"
 msgstr "Mobiiltelefon"
@@ -633,7 +574,7 @@ msgid "Media player"
 msgstr "Meediaesitaja"
 
 msgid "Tablet"
-msgstr ""
+msgstr "Graafikalaud"
 
 msgid "Computer"
 msgstr "Arvuti"
@@ -668,7 +609,7 @@ msgstr "%s on hõivatud."
 #. locale, without seconds.
 #, no-c-format
 msgid "Sent at %X on %A"
-msgstr ""
+msgstr "Saadetud: %a, kell %X"
 
 msgid "Search your computer"
 msgstr ""
@@ -753,6 +694,42 @@ msgstr "Otsing"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Clock"
+#~ msgstr "Kell"
+
+#~ msgid "Customize the panel clock"
+#~ msgstr "Paneelikella kohandamine"
+
+#~ msgid "Custom format of the clock"
+#~ msgstr "Kellaaaja kohandatud vorming"
+
+#~ msgid "Hour format"
+#~ msgstr "Tundide vorming"
+
+#~ msgid "Clock Format"
+#~ msgstr "Kellaaja vorming"
+
+#~ msgid "Clock Preferences"
+#~ msgstr "Kella eelistused"
+
+#~ msgid "Panel Display"
+#~ msgstr "Paneelikuva"
+
+#~ msgid "Show seco_nds"
+#~ msgstr "_Sekundeid näidatakse"
+
+#~ msgid "Show the _date"
+#~ msgstr "_Kuupäeva näidatakse"
+
+#~ msgid "_12 hour format"
+#~ msgstr "_12 tunni vorming"
+
+#~ msgid "_24 hour format"
+#~ msgstr "_24 tunni vorming"
+
+#~ msgid "Preferences"
+#~ msgstr "Eelistused"
 
 #~ msgid "Drag here to add favorites"
 #~ msgstr "Lemmikute lisamiseks lohista need siia"
