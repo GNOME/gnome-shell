@@ -15,8 +15,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&component=general\n"
 "POT-Creation-Date: 2011-01-04 16:55+0000\n"
-"PO-Revision-Date: 2011-01-06 16:55+0200\n"
-"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
+"PO-Revision-Date: 2011-01-07 08:59+0200\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -108,7 +108,7 @@ msgid "Specify session management ID"
 msgstr "Seansihalduse ID kirjeldamine"
 
 msgid "X Display to use"
-msgstr "X'i kuva, mida kasutada"
+msgstr "X-kuva, mida kasutada"
 
 msgid "Initialize session from savefile"
 msgstr "Seansi lähtestamine salvestatud failist"
@@ -117,14 +117,14 @@ msgid "Print version"
 msgstr "Versiooni printimine"
 
 msgid "Make X calls synchronous"
-msgstr "Tee Xi väljakutsed sünkroonseks"
+msgstr "Tee X-väljakutsed sünkroonseks"
 
 msgid ""
 "Don't make fullscreen windows that are maximized and have no decorations"
 msgstr ""
 
 msgid "Comma-separated list of compositor plugins"
-msgstr ""
+msgstr "Komaga eraldatud nimekiri komposiitmontaaži pluginatest"
 
 msgid "Whether window popup/frame should be shown when cycling windows."
 msgstr ""
@@ -484,7 +484,7 @@ msgid "Show the panel's \"Run Application\" dialog box"
 msgstr "Paneeli dialoogi \"Käivita rakendus\" näitamine"
 
 msgid "Start or stop recording the session"
-msgstr ""
+msgstr "Seansi salvestamise käivitamine või seiskamine"
 
 msgid "Take a screenshot"
 msgstr "Kuvatõmmise võtmine"
@@ -639,7 +639,7 @@ msgid "Modifier to use for extended window management operations"
 msgstr "Laiendatud aknaoperatsioonide korral kasutatav muuteklahv"
 
 msgid "Plugins to load for the Clutter-based compositing manager."
-msgstr ""
+msgstr "Clutteril põhineva komposiitmontaažihalduri laadimise pluginad."
 
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
@@ -1315,7 +1315,7 @@ msgstr ""
 
 #, c-format
 msgid "Bad version specification '%s'"
-msgstr ""
+msgstr "Vigane versioonikirjeldus '%s'"
 
 msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
@@ -1324,7 +1324,7 @@ msgstr ""
 
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
-msgstr ""
+msgstr "Teema nõuab versiooni %s, kuid viimane toetatud teemaversioon on %d.%d"
 
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
@@ -1491,7 +1491,7 @@ msgid ""
 "frame)\n"
 msgstr ""
 "Joonistati %d kaadrit %g kliendi-kella sekundiga (%g millisekundit kaadrile) "
-"ja %g sekundiga seinakella järgi, millesse on kaasatud X serveri "
+"ja %g sekundiga seinakella järgi, millesse on kaasatud X-serveri "
 "ressursikasutus (%g millisekundit kaadrile)\n"
 
 msgid "position expression test returned TRUE but set error"
