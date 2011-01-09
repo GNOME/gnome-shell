@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&component=general\n"
 "POT-Creation-Date: 2011-01-04 16:55+0000\n"
-"PO-Revision-Date: 2011-01-07 08:59+0200\n"
+"PO-Revision-Date: 2011-01-09 13:51+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -172,11 +172,11 @@ msgstr "GConf-i võti \"%s\" on määratud vigase tüübiga\n"
 
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
-msgstr ""
+msgstr "GConfi võti %s on juba kasutusel ja sellega ei saa tühistada võtit %s\n"
 
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
-msgstr ""
+msgstr "GConfi võtit pole võimalik tühistada, võtit %s ei leitud\n"
 
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
