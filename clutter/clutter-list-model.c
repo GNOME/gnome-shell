@@ -621,6 +621,18 @@ clutter_list_model_resort (ClutterModel         *model,
                    &sort_closure);
 }
 
+static guint
+clutter_list_model_get_n_rows (ClutterModel *model)
+{
+  ClutterListModel *list_model = CLUTTER_LIST_MODEL (model);
+
+  /* short-circuit in case we don't have a filter in place */
+  if (!clutter_model_get_filter_set (model))
+    return g_sequence_get_length (list_model->priv->sequence);
+
+  return CLUTTER_MODEL_CLASS (clutter_list_model_parent_class)->get_n_rows (model);
+}
+
 static void
 clutter_list_model_row_removed (ClutterModel     *model,
                                 ClutterModelIter *iter)
@@ -686,6 +698,7 @@ clutter_list_model_class_init (ClutterListModelClass *klass)
   model_class->insert_row      = clutter_list_model_insert_row;
   model_class->remove_row      = clutter_list_model_remove_row;
   model_class->resort          = clutter_list_model_resort;
+  model_class->get_n_rows      = clutter_list_model_get_n_rows;
 
   model_class->row_removed     = clutter_list_model_row_removed;
 }

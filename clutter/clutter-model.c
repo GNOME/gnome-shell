@@ -252,6 +252,32 @@ clutter_model_real_get_n_columns (ClutterModel *model)
   return priv->n_columns;
 }
 
+static guint
+clutter_model_real_get_n_rows (ClutterModel *model)
+{
+  ClutterModelIter *iter;
+  guint row_count;
+
+  g_return_val_if_fail (CLUTTER_IS_MODEL (model), 0);
+
+  iter = clutter_model_get_first_iter (model);
+  if (iter == NULL)
+    return 0;
+
+  row_count = 0;
+  while (!clutter_model_iter_is_last (iter))
+    {
+      if (clutter_model_filter_iter (model, iter))
+        row_count += 1;
+
+      iter = clutter_model_iter_next (iter);
+    }
+
+  g_object_unref (iter);
+
+  return row_count;
+}
+
 static void 
 clutter_model_finalize (GObject *object)
 {
@@ -314,6 +340,7 @@ clutter_model_class_init (ClutterModelClass *klass)
   klass->get_column_name  = clutter_model_real_get_column_name;
   klass->get_column_type  = clutter_model_real_get_column_type;
   klass->get_n_columns    = clutter_model_real_get_n_columns;
+  klass->get_n_rows       = clutter_model_real_get_n_rows;
 
   /**
    * ClutterModel:filter-set:
@@ -1373,37 +1400,10 @@ clutter_model_get_last_iter (ClutterModel *model)
 guint
 clutter_model_get_n_rows (ClutterModel *model)
 {
-  ClutterModelClass *klass;
-  guint row_count;
-
   g_return_val_if_fail (CLUTTER_IS_MODEL (model), 0);
 
-  klass = CLUTTER_MODEL_GET_CLASS (model);
-  if (klass->get_n_rows)
-    row_count = klass->get_n_rows (model);
-  else
-    {
-      ClutterModelIter *iter;
-
-      iter = clutter_model_get_first_iter (model);
-      if (iter == NULL)
-        return 0;
-
-      row_count = 0;
-      while (!clutter_model_iter_is_last (iter))
-        {
-          if (clutter_model_filter_iter (model, iter))
-            row_count += 1;
-
-          iter = clutter_model_iter_next (iter);
-        }
-
-      g_object_unref (iter);
-    }
-
-  return row_count;
+  return CLUTTER_MODEL_GET_CLASS (model)->get_n_rows (model);
 }
-
 
 /**
  * clutter_model_set_sorting_column:
