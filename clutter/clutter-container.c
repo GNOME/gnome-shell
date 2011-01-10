@@ -98,7 +98,7 @@ static void              child_notify       (ClutterContainer *container,
 
 typedef ClutterContainerIface   ClutterContainerInterface;
 
-G_DEFINE_INTERFACE (ClutterContainer, clutter_container, CLUTTER_TYPE_ACTOR);
+G_DEFINE_INTERFACE (ClutterContainer, clutter_container, G_TYPE_OBJECT);
 
 static void
 clutter_container_default_init (ClutterContainerInterface *iface)
