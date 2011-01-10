@@ -563,7 +563,8 @@ enable_gl_state (CoglDrawFlags flags,
        */
     }
 
-  if (G_UNLIKELY (ctx->legacy_state_set))
+  if (G_UNLIKELY (ctx->legacy_state_set) &&
+      (flags & COGL_DRAW_SKIP_LEGACY_STATE) == 0)
     {
       /* If we haven't already created a derived pipeline... */
       if (!copy)
@@ -1033,7 +1034,8 @@ draw_wireframe (CoglVerticesMode mode,
                                       wire_attribute,
                                       COGL_DRAW_SKIP_JOURNAL_FLUSH |
                                       COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                                      COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+                                      COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
+                                      COGL_DRAW_SKIP_LEGACY_STATE);
 
   cogl_debug_flags |= COGL_DEBUG_WIREFRAME;
 
