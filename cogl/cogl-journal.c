@@ -235,7 +235,8 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
   CoglVertexAttribute **attributes;
   CoglDrawFlags draw_flags = (COGL_DRAW_SKIP_JOURNAL_FLUSH |
                               COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                              COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+                              COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
+                              COGL_DRAW_SKIP_LEGACY_STATE);
 
   COGL_STATIC_TIMER (time_flush_modelview_and_entries,
                      "flush: pipeline+entries", /* parent */
