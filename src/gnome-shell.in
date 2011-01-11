@@ -672,7 +672,8 @@ use an extension title clicktofocus@janedoe.example.com.'''
     os.makedirs(extension_path)
     meta = { 'name': name,
              'description': description,
-             'uuid': uuid }
+             'uuid': uuid,
+             'shell-version': ['@VERSION@'] }
     f = open(os.path.join(extension_path, 'metadata.json'), 'w')
     try:
         json.dump(meta, f)

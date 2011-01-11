@@ -4,6 +4,8 @@ const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 
+const Config = imports.misc.config;
+
 const ExtensionState = {
     ENABLED: 1,
     DISABLED: 2,
@@ -25,6 +27,36 @@ var disabledExtensions;
 // GFile for user extensions
 var userExtensionsDir = null;
 
+/**
+ * versionCheck:
+ * @required: an array of versions we're compatible with
+ * @current: the version we have
+ *
+ * Check if a component is compatible for an extension.
+ * @required is an array, and at least one version must match.
+ * @current must be in the format <major>.<minor>.<point>.<micro>
+ * <micro> is always ignored
+ * <point> is ignored if <minor> is even (so you can target the
+ * whole stable release)
+ * <minor> and <major> must match
+ * Each target version must be at least <major> and <minor>
+ */
+function versionCheck(required, current) {
+    let currentArray = current.split('.');
+    let major = currentArray[0];
+    let minor = currentArray[1];
+    let point = currentArray[2];
+    for (let i = 0; i < required.length; i++) {
+        let requiredArray = required[i].split('.');
+        if (requiredArray[0] == major &&
+            requiredArray[1] == minor &&
+            (requiredArray[2] == point ||
+             (requiredArray[2] == undefined && parseInt(minor) % 2 == 0)))
+            return true;
+    }
+    return false;
+}
+
 function loadExtension(dir, enabled, type) {
     let info;
     let baseErrorString = 'While loading extension from "' + dir.get_parse_name() + '": ';
@@ -43,8 +75,8 @@ function loadExtension(dir, enabled, type) {
         global.logError(baseErrorString + 'Failed to parse metadata.json: ' + e);
         return;
     }
-    let requiredProperties = ['uuid', 'name', 'description'];
-    for (let i = 0; i < requiredProperties; i++) {
+    let requiredProperties = ['uuid', 'name', 'description', 'shell-version'];
+    for (let i = 0; i < requiredProperties.length; i++) {
         let prop = requiredProperties[i];
         if (!meta[prop]) {
             global.logError(baseErrorString + 'missing "' + prop + '" property in metadata.json');
@@ -65,6 +97,12 @@ function loadExtension(dir, enabled, type) {
     let base = dir.get_basename();
     if (base != meta.uuid) {
         global.logError(baseErrorString + 'uuid "' + meta.uuid + '" from metadata.json does not match directory name "' + base + '"');
+        return;
+    }
+
+    if (!versionCheck(meta['shell-version'], Config.PACKAGE_VERSION) ||
+        (meta['js-version'] && !versionCheck(meta['js-version'], Config.GJS_VERSION))) {
+        global.logError(baseErrorString + 'extension is not compatible with current GNOME Shell and/or GJS version');
         return;
     }
 
