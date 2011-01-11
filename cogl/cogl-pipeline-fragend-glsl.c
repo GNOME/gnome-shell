@@ -240,8 +240,7 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
         (pipeline,
          COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN &
          ~COGL_PIPELINE_STATE_LAYERS,
-         COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN,
-         COGL_PIPELINE_FIND_EQUIVALENT_COMPARE_TEXTURE_TARGET);
+         COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN);
 
       authority_priv = get_glsl_priv (authority);
       if (!authority_priv)

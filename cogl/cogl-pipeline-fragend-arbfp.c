@@ -240,8 +240,7 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
     (pipeline,
      COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN &
      ~COGL_PIPELINE_STATE_LAYERS,
-     COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN,
-     COGL_PIPELINE_FIND_EQUIVALENT_COMPARE_TEXTURE_TARGET);
+     COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN);
   authority_priv = get_arbfp_priv (authority);
   if (authority_priv &&
       authority_priv->arbfp_program_state)
@@ -336,11 +335,10 @@ _cogl_pipeline_fragend_arbfp_hash (const void *data)
     COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN;
   unsigned long layer_fragment_state =
     COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN;
-  CoglPipelineEvalFlags flags = COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA;
 
   return _cogl_pipeline_hash ((CoglPipeline *)data,
                               fragment_state, layer_fragment_state,
-                              flags);
+                              0);
 }
 
 gboolean
@@ -350,11 +348,10 @@ _cogl_pipeline_fragend_arbfp_equal (const void *a, const void *b)
     COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN;
   unsigned long layer_fragment_state =
     COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN;
-  CoglPipelineEvalFlags flags = COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA;
 
   return _cogl_pipeline_equal ((CoglPipeline *)a, (CoglPipeline *)b,
                                fragment_state, layer_fragment_state,
-                               flags);
+                               0);
 }
 
 static const char *

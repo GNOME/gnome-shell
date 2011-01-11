@@ -674,11 +674,11 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
       return FALSE;
     }
 
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE)
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA)
     {
+      unsigned long state = COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA;
       CoglPipelineLayer *authority =
-        _cogl_pipeline_layer_get_authority (layer,
-                                            COGL_PIPELINE_LAYER_STATE_TEXTURE);
+        _cogl_pipeline_layer_get_authority (layer, state);
       CoglHandle texture;
       GLuint     gl_texture;
       GLenum     gl_target;
@@ -909,7 +909,8 @@ compare_layer_differences_cb (CoglPipelineLayer *layer, void *user_data)
    * then we force an update of the texture state...
    */
   if (unit->texture_storage_changed)
-    state->layer_differences[state->i] |= COGL_PIPELINE_LAYER_STATE_TEXTURE;
+    state->layer_differences[state->i] |=
+      COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA;
 
   state->i++;
 

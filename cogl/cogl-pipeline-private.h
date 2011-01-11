@@ -116,7 +116,8 @@ typedef enum
 {
   /* sparse state */
   COGL_PIPELINE_LAYER_STATE_UNIT_INDEX,
-  COGL_PIPELINE_LAYER_STATE_TEXTURE_INDEX,
+  COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET_INDEX,
+  COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX,
   COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX,
   COGL_PIPELINE_LAYER_STATE_WRAP_MODES_INDEX,
   COGL_PIPELINE_LAYER_STATE_COMBINE_INDEX,
@@ -141,8 +142,10 @@ typedef enum
 {
   COGL_PIPELINE_LAYER_STATE_UNIT =
     1L<<COGL_PIPELINE_LAYER_STATE_UNIT_INDEX,
-  COGL_PIPELINE_LAYER_STATE_TEXTURE =
-    1L<<COGL_PIPELINE_LAYER_STATE_TEXTURE_INDEX,
+  COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET =
+    1L<<COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET_INDEX,
+  COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA =
+    1L<<COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX,
   COGL_PIPELINE_LAYER_STATE_FILTERS =
     1L<<COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX,
   COGL_PIPELINE_LAYER_STATE_WRAP_MODES =
@@ -190,13 +193,13 @@ typedef enum
  * when point sprite coords are enabled */
 #define COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN \
   (COGL_PIPELINE_LAYER_STATE_COMBINE | \
-   COGL_PIPELINE_LAYER_STATE_TEXTURE | \
+   COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET | \
    COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS | \
    COGL_PIPELINE_LAYER_STATE_UNIT)
 #else
 #define COGL_PIPELINE_LAYER_STATE_AFFECTS_FRAGMENT_CODEGEN \
   (COGL_PIPELINE_LAYER_STATE_COMBINE | \
-   COGL_PIPELINE_LAYER_STATE_TEXTURE | \
+   COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET | \
    COGL_PIPELINE_LAYER_STATE_UNIT)
 #endif
 
@@ -370,6 +373,7 @@ struct _CoglPipelineLayer
   /* The texture for this layer, or COGL_INVALID_HANDLE for an empty
    * layer */
   CoglHandle                 texture;
+  GLenum                     target;
 
   CoglPipelineFilter         mag_filter;
   CoglPipelineFilter         min_filter;
@@ -599,12 +603,6 @@ typedef struct
   CoglPipeline *owner;
   CoglPipelineLayer *layer;
 } CoglPipelineLayerCacheEntry;
-
-/* Flags used for _cogl_pipeline_find_equivalent_parent */
-typedef enum
-{
-  COGL_PIPELINE_FIND_EQUIVALENT_COMPARE_TEXTURE_TARGET = 1L<<0
-} CoglPipelineFindEquivalentFlags;
 
 /*
  * CoglPipelineDestroyCallback
@@ -1092,10 +1090,7 @@ _cogl_pipeline_compare_differences (CoglPipeline *pipeline0,
  * semantics */
 typedef enum _CoglPipelineEvalFlags
 {
-  /* When evaluating a pipeline-layer with associated textures then
-   * evaluate the texture target, but don't consider the texture data
-   * itself. */
-  COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA = 1L<<0
+  COGL_PIPELINE_EVAL_FLAG_NONE = 0
 } CoglPipelineEvalFlags;
 
 gboolean
@@ -1160,8 +1155,7 @@ _cogl_pipeline_get_authority (CoglPipeline *pipeline,
 CoglPipeline *
 _cogl_pipeline_find_equivalent_parent (CoglPipeline *pipeline,
                                        CoglPipelineState pipeline_state,
-                                       CoglPipelineLayerState layer_state,
-                                       CoglPipelineFindEquivalentFlags flags);
+                                       CoglPipelineLayerState layer_state);
 
 CoglHandle
 _cogl_pipeline_get_layer_texture (CoglPipeline *pipeline,
