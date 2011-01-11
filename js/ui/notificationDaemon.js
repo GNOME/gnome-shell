@@ -9,6 +9,7 @@ const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const Config = imports.misc.config;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Params = imports.misc.params;
@@ -390,10 +391,10 @@ NotificationDaemon.prototype = {
 
     GetServerInformation: function() {
         return [
-            'GNOME Shell',
+            Config.PACKAGE_NAME,
             'GNOME',
-            '0.1', // FIXME, get this from somewhere
-            '1.0'
+            Config.PACKAGE_VERSION,
+            '1.2'
         ];
     },
 

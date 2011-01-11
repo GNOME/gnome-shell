@@ -6,6 +6,9 @@ AC_CONFIG_SRCDIR([src/shell-global.c])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([config])
 
+AC_SUBST([PACKAGE_NAME], ["$PACKAGE_NAME"])
+AC_SUBST([PACKAGE_VERSION], ["$PACKAGE_VERSION"])
+
 AM_INIT_AUTOMAKE([1.10 dist-bzip2 no-dist-gzip foreign])
 AM_MAINTAINER_MODE
 
@@ -77,6 +80,10 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
                                  libstartup-notification-1.0
                                  gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
 				 libcanberra)
+
+GJS_VERSION=`$PKG_CONFIG --modversion gjs-internals-1.0`
+AC_DEFINE_UNQUOTED([GJS_VERSION], ["$GJS_VERSION"], [The version of GJS we're linking to])
+AC_SUBST([GJS_VERSION], ["$GJS_VERSION"])
 
 saved_CFLAGS=$CFLAGS
 saved_LIBS=$LIBS
