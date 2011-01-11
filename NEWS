@@ -39,10 +39,12 @@ Clutter 1.5.12                                                       2011-01-11
 
     » Build fix for compiling EGL backend with OpenGL under X11.
 
+    » Parse GType object properties in ClutterScript.
+
 Many thanks to:
 
   Neil Roberts, Johan Bilien, nobled, Adel Gadllah, Damien Lespiau,
-  Kristian Høgsberg, Nguyễn Thái Ngọc Duy, Tomeu Vizoso
+  Kristian Høgsberg, Nguyễn Thái Ngọc Duy, Tomeu Vizoso, Bastian Winkler
 
 Clutter 1.5.10                                                       2010-12-17
 ===============================================================================
