@@ -1063,7 +1063,8 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
     {
       /* Bail out asap if we've been asked to re-flush the already current
        * pipeline and we can see the pipeline hasn't changed */
-      if (ctx->current_pipeline_age == pipeline->age)
+      if (ctx->current_pipeline_age == pipeline->age &&
+          ctx->current_pipeline_skip_gl_color == skip_gl_color)
         goto done;
 
       pipelines_difference = ctx->current_pipeline_changes_since_flush;
