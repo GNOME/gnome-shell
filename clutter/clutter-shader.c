@@ -95,6 +95,31 @@ static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (ClutterShader, clutter_shader, G_TYPE_OBJECT);
 
+static inline void
+clutter_shader_release_internal (ClutterShader *shader)
+{
+  ClutterShaderPrivate *priv = shader->priv;
+
+  if (!priv->compiled)
+    return;
+
+  g_assert (priv->program != COGL_INVALID_HANDLE);
+
+  if (priv->vertex_is_glsl && priv->vertex_shader != COGL_INVALID_HANDLE)
+    cogl_handle_unref (priv->vertex_shader);
+
+  if (priv->fragment_is_glsl && priv->fragment_shader != COGL_INVALID_HANDLE)
+    cogl_handle_unref (priv->fragment_shader);
+
+  if (priv->program != COGL_INVALID_HANDLE)
+    cogl_handle_unref (priv->program);
+
+  priv->vertex_shader = COGL_INVALID_HANDLE;
+  priv->fragment_shader = COGL_INVALID_HANDLE;
+  priv->program = COGL_INVALID_HANDLE;
+  priv->compiled = FALSE;
+}
+
 static void
 clutter_shader_finalize (GObject *object)
 {
@@ -104,12 +129,20 @@ clutter_shader_finalize (GObject *object)
   shader = CLUTTER_SHADER (object);
   priv   = shader->priv;
 
-  clutter_shader_release (shader);
-
   clutter_shaders_list = g_list_remove (clutter_shaders_list, object);
 
   g_free (priv->fragment_source);
   g_free (priv->vertex_source);
+
+  G_OBJECT_CLASS (clutter_shader_parent_class)->finalize (object);
+}
+
+static void
+clutter_shader_dispose (GObject *object)
+{
+  ClutterShader *shader = CLUTTER_SHADER (object);
+
+  clutter_shader_release_internal (shader);
 
   G_OBJECT_CLASS (clutter_shader_parent_class)->finalize (object);
 }
@@ -197,6 +230,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
   GParamSpec *pspec = NULL;
 
   object_class->finalize      = clutter_shader_finalize;
+  object_class->dispose       = clutter_shader_dispose;
   object_class->set_property  = clutter_shader_set_property;
   object_class->get_property  = clutter_shader_get_property;
   object_class->constructor   = clutter_shader_constructor;
@@ -584,30 +618,9 @@ clutter_shader_compile (ClutterShader  *shader,
 void
 clutter_shader_release (ClutterShader *shader)
 {
-  ClutterShaderPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_SHADER (shader));
 
-  priv = shader->priv;
-
-  if (!priv->compiled)
-    return;
-
-  g_assert (priv->program != COGL_INVALID_HANDLE);
-
-  if (priv->vertex_is_glsl && priv->vertex_shader != COGL_INVALID_HANDLE)
-    cogl_handle_unref (priv->vertex_shader);
-
-  if (priv->fragment_is_glsl && priv->fragment_shader != COGL_INVALID_HANDLE)
-    cogl_handle_unref (priv->fragment_shader);
-
-  if (priv->program != COGL_INVALID_HANDLE)
-    cogl_handle_unref (priv->program);
-
-  priv->vertex_shader = COGL_INVALID_HANDLE;
-  priv->fragment_shader = COGL_INVALID_HANDLE;
-  priv->program = COGL_INVALID_HANDLE;
-  priv->compiled = FALSE;
+  clutter_shader_release_internal (shader);
 
   _clutter_notify_by_pspec (G_OBJECT (shader), obj_props[PROP_COMPILED]);
 }
