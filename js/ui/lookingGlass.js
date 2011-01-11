@@ -398,6 +398,9 @@ Inspector.prototype = {
     },
 
     _allocate: function(actor, box, flags) {
+        if (!this._eventHandler)
+            return;
+
         let primary = global.get_primary_monitor();
 
         let [minWidth, minHeight, natWidth, natHeight] =
@@ -415,6 +418,7 @@ Inspector.prototype = {
         Clutter.ungrab_pointer(this._eventHandler);
         Clutter.ungrab_keyboard(this._eventHandler);
         this._eventHandler.destroy();
+        this._eventHandler = null;
         this.emit('closed');
     },
 
