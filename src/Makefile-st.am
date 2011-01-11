@@ -112,6 +112,7 @@ stamp-st.h: Makefile
 	echo timestamp > $(@F)
 
 BUILT_SOURCES += st.h
+CLEANFILES += stamp-st.h
 
 st_source_private_h =				\
 	st/st-private.h				\
