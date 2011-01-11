@@ -338,6 +338,7 @@ StTooltip StLabel {
 
 #viewSelector {
     spacing: 16px;
+    font-size: 16px;
 }
 
 #viewSelectorTabBar {
