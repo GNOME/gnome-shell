@@ -162,6 +162,10 @@ char  *st_describe_actor       (ClutterActor *actor);
 void   st_set_slow_down_factor (gfloat factor);
 gfloat st_get_slow_down_factor (void);
 
+void              st_set_ui_root (ClutterStage     *stage,
+                                  ClutterContainer *container);
+ClutterContainer *st_get_ui_root (ClutterStage     *stage);
+
 G_END_DECLS
 
 #endif /* __ST_WIDGET_H__ */

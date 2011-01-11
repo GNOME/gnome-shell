@@ -2222,3 +2222,71 @@ on_can_focus_notify (GObject    *gobject,
   atk_object_notify_state_change (ATK_OBJECT (data),
                                   ATK_STATE_FOCUSABLE, can_focus);
 }
+
+static GQuark
+st_ui_root_quark (void)
+{
+  static GQuark value = 0;
+  if (G_UNLIKELY (value == 0))
+    value = g_quark_from_static_string ("st-ui-root");
+  return value;
+}
+
+static void
+st_ui_root_destroyed (ClutterActor *actor,
+                      ClutterStage *stage)
+{
+  st_set_ui_root (stage, NULL);
+  g_signal_handlers_disconnect_by_func (actor, st_ui_root_destroyed, stage);
+}
+
+/**
+ * st_get_ui_root:
+ * @stage: a #ClutterStage
+ * @container: (allow-none): the new UI root
+ *
+ * Sets a #ClutterContainer to be the parent of all UI in the program.
+ * This container is used when St needs to add new content outside the
+ * widget hierarchy, for example, when it shows a tooltip over a widget.
+ */
+void
+st_set_ui_root (ClutterStage     *stage,
+                ClutterContainer *container)
+{
+  ClutterContainer *previous;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+
+  previous = st_get_ui_root (stage);
+  if (previous)
+    g_signal_handlers_disconnect_by_func (container, st_ui_root_destroyed, stage);
+
+  if (container)
+    {
+      g_signal_connect (container, "destroy", G_CALLBACK (st_ui_root_destroyed), stage);
+      g_object_set_qdata_full (G_OBJECT (stage), st_ui_root_quark (), g_object_ref (container), g_object_unref);
+    }
+}
+
+/**
+ * st_get_ui_root:
+ * @stage: a #ClutterStage
+ *
+ * Returns: (transfer none): the container which should be the parent of all user interface,
+ *   which can be set with st_set_ui_root(). If not set, returns @stage
+ */
+ClutterContainer *
+st_get_ui_root (ClutterStage *stage)
+{
+  ClutterContainer *root;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+
+  root = g_object_get_qdata (G_OBJECT (stage), st_ui_root_quark ());
+
+  if (root != NULL)
+    return root;
+  else
+    return CLUTTER_CONTAINER (stage);
+}

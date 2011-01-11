@@ -136,6 +136,7 @@ function start() {
 
     // Set up stage hierarchy to group all UI actors under one container.
     uiGroup = new Clutter.Group();
+    St.set_ui_root(global.stage, uiGroup);
     global.window_group.reparent(uiGroup);
     global.overlay_group.reparent(uiGroup);
     global.stage.add_actor(uiGroup);
