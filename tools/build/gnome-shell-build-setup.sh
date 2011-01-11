@@ -62,7 +62,7 @@ fi
 # libxklavier, libxml2, ORBit2, pam, python, readline,
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification,
 # xdamage, icon-naming-utils, upower, libtool-ltdl, libvorbis,
-# libgcrypt, libtasn1, libgnome-keyring
+# libgcrypt, libtasn1, libgnome-keyring, libgtop
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
@@ -76,7 +76,7 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     build-essential curl
     automake bison flex gettext git-core gnome-common gtk-doc-tools
     gvfs gvfs-backends icon-naming-utils
-    libdbus-glib-1-dev libexpat-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev
+    libdbus-glib-1-dev libexpat-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev libgtop2-dev
     libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev
     libwnck-dev libgl1-mesa-dev liborbit2-dev libpulse-dev libreadline5-dev libxml2-dev
     mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject
@@ -120,7 +120,7 @@ if test "x$system" = xFedora ; then
     startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
     icon-naming-utils upower-devel libtool-ltdl-devel libvorbis-devel
     libxklavier-devel libgcrypt-devel libtasn1-devel libtasn1-tools
-    libgnome-keyring-devel
+    libgnome-keyring-devel libgtop2-devel
     "
 
   if expr $version \>= 14 > /dev/null ; then
@@ -143,7 +143,7 @@ if test "x$system" = xSUSE -o "x$system" = "xSUSE LINUX" ; then
     curl \
     bison flex gtk-doc gnome-common gnome-doc-utils-devel \
     gnome-desktop-devel gnome-menus-devel icon-naming-utils \
-    libpulse-devel libtiff-devel cups-devel libffi-devel \
+    libgtop-devel libpulse-devel libtiff-devel cups-devel libffi-devel \
     orbit2-devel libwnck-devel xorg-x11-proto-devel readline-devel \
     mozilla-xulrunner191-devel libcroco-devel \
     xorg-x11-devel xorg-x11 xorg-x11-server-extra \
