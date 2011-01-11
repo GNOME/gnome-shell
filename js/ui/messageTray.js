@@ -1379,7 +1379,7 @@ MessageTray.prototype = {
         let notificationsPending = this._notificationQueue.length > 0;
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
         let notificationExpanded = this._notificationBin.y < 0;
-        let notificationExpired = (this._notificationTimeoutId == 0 && !this._pointerInTray && !this._locked) || this._notificationRemoved;
+        let notificationExpired = (this._notificationTimeoutId == 0 && !(this._notification && this._notification.urgency == Urgency.CRITICAL) && !this._pointerInTray && !this._locked) || this._notificationRemoved;
 
         if (this._notificationState == State.HIDDEN) {
             if (notificationsPending)
@@ -1527,7 +1527,8 @@ MessageTray.prototype = {
    },
 
     _showNotificationCompleted: function() {
-        this._updateNotificationTimeout(NOTIFICATION_TIMEOUT * 1000);
+        if (this._notification.urgency != Urgency.CRITICAL)
+            this._updateNotificationTimeout(NOTIFICATION_TIMEOUT * 1000);
     },
 
     _updateNotificationTimeout: function(timeout) {
