@@ -1,3 +1,49 @@
+Clutter 1.5.12                                                       2011-01-11
+===============================================================================
+
+  • List of changes since Clutter 1.5.10
+
+    » Allow disabling the focus when showing a ClutterStage; this also
+      makes Clutter more compliant to the X11 window manager
+      specifications.
+
+    » Avoid state corruption in relayout cycles.
+
+    » Do not crash when destroying actors during CLUTTER_LEAVE events.
+
+    » Remove signal handlers when disposing constraints.
+
+    » Keep the pixel alignment for ClutterAlignConstraint.
+
+    » Do not release compiled ClutterShader during their finalization to
+      avoid a warning.
+
+    » Revert an ABI break on the ClutterContainer pre-requisites.
+
+    » Fix the name of the cogl_normal_in attribute.
+
+    » Do not assume CoglBitmaps are allocated to height * rowstride.
+
+    » Fix the core device list creation on X11.
+
+    » Avoid enabling blending in the Cogl journal, if possible.
+
+    » Documentation fixes.
+
+    » Build fixes for mixed autotools version environment.
+
+    » Improve the performance of getting the number of rows of a
+      ClutterListModel.
+
+    » Don't use obsolete API internally.
+
+    » Build fix for compiling EGL backend with OpenGL under X11.
+
+Many thanks to:
+
+  Neil Roberts, Johan Bilien, nobled, Adel Gadllah, Damien Lespiau,
+  Kristian Høgsberg, Nguyễn Thái Ngọc Duy, Tomeu Vizoso
+
 Clutter 1.5.10                                                       2010-12-17
 ===============================================================================
 
