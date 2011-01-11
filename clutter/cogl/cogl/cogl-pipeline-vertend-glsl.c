@@ -157,8 +157,7 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
         (pipeline,
          COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN &
          ~COGL_PIPELINE_STATE_LAYERS,
-         COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN,
-         0);
+         COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN);
 
       priv = get_glsl_priv (authority);
 

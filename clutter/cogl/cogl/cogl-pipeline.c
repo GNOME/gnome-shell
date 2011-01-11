@@ -799,7 +799,7 @@ layer_has_alpha_cb (CoglPipelineLayer *layer, void *data)
    */
   tex_authority =
     _cogl_pipeline_layer_get_authority (layer,
-                                        COGL_PIPELINE_LAYER_STATE_TEXTURE);
+                                        COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA);
   if (tex_authority->texture &&
       cogl_texture_get_format (tex_authority->texture) & COGL_A_BIT)
     {
@@ -1716,7 +1716,8 @@ _cogl_pipeline_layer_init_multi_property_sparse_state (
     /* XXX: avoid using a default: label so we get a warning if we
      * don't explicitly handle a newly defined state-group here. */
     case COGL_PIPELINE_LAYER_STATE_UNIT:
-    case COGL_PIPELINE_LAYER_STATE_TEXTURE:
+    case COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET:
+    case COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA:
     case COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS:
     case COGL_PIPELINE_LAYER_STATE_USER_MATRIX:
     case COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT:
@@ -2153,7 +2154,7 @@ _cogl_pipeline_layer_get_texture_real (CoglPipelineLayer *layer)
 {
   CoglPipelineLayer *authority =
     _cogl_pipeline_layer_get_authority (layer,
-                                        COGL_PIPELINE_LAYER_STATE_TEXTURE);
+                                        COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA);
 
   return authority->texture;
 }
@@ -2242,12 +2243,83 @@ _cogl_pipeline_prune_empty_layer_difference (CoglPipeline *layers_authority,
     }
 }
 
-void
-cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
-                                 int layer_index,
-                                 CoglHandle texture)
+static void
+_cogl_pipeline_set_layer_texture_target (CoglPipeline *pipeline,
+                                         int layer_index,
+                                         GLenum target)
 {
-  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_TEXTURE;
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET;
+  CoglPipelineLayer *layer;
+  CoglPipelineLayer *authority;
+  CoglPipelineLayer *new;
+
+  /* Note: this will ensure that the layer exists, creating one if it
+   * doesn't already.
+   *
+   * Note: If the layer already existed it's possibly owned by another
+   * pipeline. If the layer is created then it will be owned by
+   * pipeline. */
+  layer = _cogl_pipeline_get_layer (pipeline, layer_index);
+
+  /* Now find the ancestor of the layer that is the authority for the
+   * state we want to change */
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
+
+  if (target == authority->target)
+    return;
+
+  new = _cogl_pipeline_layer_pre_change_notify (pipeline, layer, change);
+  if (new != layer)
+    layer = new;
+  else
+    {
+      /* If the original layer we found is currently the authority on
+       * the state we are changing see if we can revert to one of our
+       * ancestors being the authority. */
+      if (layer == authority &&
+          _cogl_pipeline_layer_get_parent (authority) != NULL)
+        {
+          CoglPipelineLayer *parent =
+            _cogl_pipeline_layer_get_parent (authority);
+          CoglPipelineLayer *old_authority =
+            _cogl_pipeline_layer_get_authority (parent, change);
+
+          if (old_authority->target == target)
+            {
+              layer->differences &= ~change;
+
+              g_assert (layer->owner == pipeline);
+              if (layer->differences == 0)
+                _cogl_pipeline_prune_empty_layer_difference (pipeline,
+                                                             layer);
+              goto changed;
+            }
+        }
+    }
+
+  layer->target = target;
+
+  /* If we weren't previously the authority on this state then we need
+   * to extended our differences mask and so it's possible that some
+   * of our ancestry will now become redundant, so we aim to reparent
+   * ourselves if that's true... */
+  if (layer != authority)
+    {
+      layer->differences |= change;
+      _cogl_pipeline_layer_prune_redundant_ancestry (layer);
+    }
+
+changed:
+
+  handle_automatic_blend_enable (pipeline, COGL_PIPELINE_STATE_LAYERS);
+}
+
+static void
+_cogl_pipeline_set_layer_texture_data (CoglPipeline *pipeline,
+                                       int layer_index,
+                                       CoglHandle texture)
+{
+  CoglPipelineLayerState change = COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA;
   CoglPipelineLayer *layer;
   CoglPipelineLayer *authority;
   CoglPipelineLayer *new;
@@ -2319,6 +2391,48 @@ cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
 changed:
 
   handle_automatic_blend_enable (pipeline, COGL_PIPELINE_STATE_LAYERS);
+}
+
+/* A convenience for querying the target of a given texture that
+ * notably returns 0 for NULL textures - so we can say that a layer
+ * with no associated CoglTexture will have a texture target of 0.
+ */
+static GLenum
+get_texture_target (CoglHandle texture)
+{
+  GLuint ignore_handle;
+  GLenum gl_target;
+
+  if (texture)
+    cogl_texture_get_gl_texture (texture, &ignore_handle, &gl_target);
+  else
+    return 0;/* XXX: An invalid GL target enum */
+
+  return gl_target;
+}
+
+void
+cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
+                                 int layer_index,
+                                 CoglHandle texture)
+{
+  /* For the convenience of fragend code we separate texture state
+   * into the "target" and the "data", and setting a layer texture
+   * updates both of these properties.
+   *
+   * One example for why this is helpful is that the fragends may
+   * cache programs they generate and want to re-use those programs
+   * with all pipelines having equivalent fragment processing state.
+   * For the sake of determining if pipelines have equivalent fragment
+   * processing state we don't need to compare that the same
+   * underlying texture objects are referenced by the pipelines but we
+   * do need to see if they use the same texture targets. Making this
+   * distinction is much simpler if they are in different state
+   * groups.
+   */
+  _cogl_pipeline_set_layer_texture_target (pipeline, layer_index,
+                                           get_texture_target (texture));
+  _cogl_pipeline_set_layer_texture_data (pipeline, layer_index, texture);
 }
 
 typedef struct
@@ -2897,20 +3011,24 @@ _cogl_pipeline_apply_overrides (CoglPipeline *pipeline,
 }
 
 static gboolean
-_cogl_pipeline_layer_texture_equal (CoglPipelineLayer *authority0,
-                                    CoglPipelineLayer *authority1,
-                                    CoglPipelineEvalFlags flags)
+_cogl_pipeline_layer_texture_target_equal (CoglPipelineLayer *authority0,
+                                           CoglPipelineLayer *authority1,
+                                           CoglPipelineEvalFlags flags)
+{
+  return authority0->target == authority1->target;
+}
+
+static gboolean
+_cogl_pipeline_layer_texture_data_equal (CoglPipelineLayer *authority0,
+                                         CoglPipelineLayer *authority1,
+                                         CoglPipelineEvalFlags flags)
 {
   GLuint gl_handle0, gl_handle1;
-  GLenum gl_target0, gl_target1;
 
-  cogl_texture_get_gl_texture (authority0->texture, &gl_handle0, &gl_target0);
-  cogl_texture_get_gl_texture (authority1->texture, &gl_handle1, &gl_target1);
+  cogl_texture_get_gl_texture (authority0->texture, &gl_handle0, NULL);
+  cogl_texture_get_gl_texture (authority1->texture, &gl_handle1, NULL);
 
-  if (flags & COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA)
-    return (gl_target0 == gl_target1);
-  else
-    return (gl_handle0 == gl_handle1 && gl_target0 == gl_target1);
+  return gl_handle0 == gl_handle1;
 }
 
 /* Determine the mask of differences between two layers.
@@ -3177,13 +3295,23 @@ _cogl_pipeline_layer_equal (CoglPipelineLayer *layer0,
                                             layers_difference,
                                             authorities1);
 
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE)
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET)
     {
       CoglPipelineLayerStateIndex state_index =
-        COGL_PIPELINE_LAYER_STATE_TEXTURE_INDEX;
-      if (!_cogl_pipeline_layer_texture_equal (authorities0[state_index],
-                                               authorities1[state_index],
-                                               flags))
+        COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET_INDEX;
+      if (!_cogl_pipeline_layer_texture_target_equal (authorities0[state_index],
+                                                      authorities1[state_index],
+                                                      flags))
+        return FALSE;
+    }
+
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA)
+    {
+      CoglPipelineLayerStateIndex state_index =
+        COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX;
+      if (!_cogl_pipeline_layer_texture_data_equal (authorities0[state_index],
+                                                    authorities1[state_index],
+                                                    flags))
         return FALSE;
     }
 
@@ -4794,7 +4922,7 @@ _cogl_pipeline_layer_free (CoglPipelineLayer *layer)
 {
   _cogl_pipeline_layer_unparent (COGL_PIPELINE_NODE (layer));
 
-  if (layer->differences & COGL_PIPELINE_LAYER_STATE_TEXTURE &&
+  if (layer->differences & COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA &&
       layer->texture != COGL_INVALID_HANDLE)
     cogl_handle_unref (layer->texture);
 
@@ -4851,6 +4979,7 @@ _cogl_pipeline_init_default_layers (void)
   layer->unit_index = 0;
 
   layer->texture = COGL_INVALID_HANDLE;
+  layer->target = 0;
 
   layer->mag_filter = COGL_PIPELINE_FILTER_LINEAR;
   layer->min_filter = COGL_PIPELINE_FILTER_LINEAR;
@@ -5511,7 +5640,7 @@ _cogl_pipeline_layer_pre_paint (CoglPipelineLayer *layer)
 
   texture_authority =
     _cogl_pipeline_layer_get_authority (layer,
-                                        COGL_PIPELINE_LAYER_STATE_TEXTURE);
+                                        COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA);
 
   if (texture_authority->texture != COGL_INVALID_HANDLE)
     {
@@ -5750,22 +5879,27 @@ _cogl_pipeline_layer_hash_unit_state (CoglPipelineLayer *authority,
 }
 
 static void
-_cogl_pipeline_layer_hash_texture_state (CoglPipelineLayer *authority,
-                                         CoglPipelineLayer **authorities,
-                                         HashState *state)
+_cogl_pipeline_layer_hash_texture_target_state (CoglPipelineLayer *authority,
+                                                CoglPipelineLayer **authorities,
+                                                HashState *state)
+{
+  GLenum gl_target = authority->target;
+
+  state->hash =
+    _cogl_util_one_at_a_time_hash (state->hash, &gl_target, sizeof (gl_target));
+}
+
+static void
+_cogl_pipeline_layer_hash_texture_data_state (CoglPipelineLayer *authority,
+                                              CoglPipelineLayer **authorities,
+                                              HashState *state)
 {
   GLuint gl_handle;
-  GLenum gl_target;
-  unsigned long hash = state->hash;
 
-  cogl_texture_get_gl_texture (authority->texture, &gl_handle, &gl_target);
+  cogl_texture_get_gl_texture (authority->texture, &gl_handle, NULL);
 
-  hash = _cogl_util_one_at_a_time_hash (hash, &gl_target, sizeof (gl_target));
-
-  if (!(state->flags & COGL_PIPELINE_EVAL_FLAG_IGNORE_TEXTURE_DATA))
-    hash = _cogl_util_one_at_a_time_hash (hash, &gl_handle, sizeof (gl_handle));
-
-  state->hash = hash;
+  state->hash =
+    _cogl_util_one_at_a_time_hash (state->hash, &gl_handle, sizeof (gl_handle));
 }
 
 static void
@@ -5922,8 +6056,10 @@ _cogl_pipeline_init_layer_state_hash_functions (void)
   CoglPipelineLayerStateIndex _index;
   layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_UNIT_INDEX] =
     _cogl_pipeline_layer_hash_unit_state;
-  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_TEXTURE_INDEX] =
-    _cogl_pipeline_layer_hash_texture_state;
+  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET_INDEX] =
+    _cogl_pipeline_layer_hash_texture_target_state;
+  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX] =
+    _cogl_pipeline_layer_hash_texture_data_state;
   layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX] =
     _cogl_pipeline_layer_hash_filters_state;
   layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_WRAP_MODES_INDEX] =
@@ -5939,7 +6075,7 @@ _cogl_pipeline_init_layer_state_hash_functions (void)
     _cogl_pipeline_layer_hash_point_sprite_state;
 
   /* So we get a big error if we forget to update this code! */
-  g_assert (COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT == 8);
+  g_assert (COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT == 9);
 }
 
 static gboolean
@@ -6300,7 +6436,7 @@ dump_layer_cb (CoglPipelineNode *node, void *user_data)
                               layer->unit_index);
     }
 
-  if (layer->differences & COGL_PIPELINE_LAYER_STATE_TEXTURE)
+  if (layer->differences & COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA)
     {
       changes = TRUE;
       g_string_append_printf (changes_label,
@@ -6585,43 +6721,6 @@ _cogl_pipeline_need_texture_combine_separate
    return FALSE;
 }
 
-static gboolean
-layers_differ_for_find_equivalent (CoglPipelineLayerState layer_state,
-                                   CoglPipelineFindEquivalentFlags flags,
-                                   CoglPipelineLayer *layer0,
-                                   CoglPipelineLayer *layer1)
-{
-  unsigned long layer_differences;
-
-  if (layer0 == layer1)
-    return FALSE;
-
-  layer_differences =
-    _cogl_pipeline_layer_compare_differences (layer0, layer1);
-
-  if (layer_differences & layer_state)
-    return TRUE;
-
-  /* When generating a shader we need to detect when the texture
-     target changes but we don't care if the texture object
-     changes so we have a flag to handle this special case */
-  if ((flags & COGL_PIPELINE_FIND_EQUIVALENT_COMPARE_TEXTURE_TARGET) &&
-      (layer_differences & COGL_PIPELINE_LAYER_STATE_TEXTURE))
-    {
-      CoglHandle tex0 = _cogl_pipeline_layer_get_texture (layer0);
-      CoglHandle tex1 = _cogl_pipeline_layer_get_texture (layer1);
-      GLenum gl_target0;
-      GLenum gl_target1;
-
-      cogl_texture_get_gl_texture (tex0, NULL, &gl_target0);
-      cogl_texture_get_gl_texture (tex1, NULL, &gl_target1);
-      if (gl_target0 != gl_target1)
-        return TRUE;
-    }
-
-  return FALSE;
-}
-
 /* This tries to find the oldest ancestor whose pipeline and layer
    state matches the given flags. This is mostly used to detect code
    gen authorities so that we can reduce the numer of programs
@@ -6629,8 +6728,7 @@ layers_differ_for_find_equivalent (CoglPipelineLayerState layer_state,
 CoglPipeline *
 _cogl_pipeline_find_equivalent_parent (CoglPipeline *pipeline,
                                        CoglPipelineState pipeline_state,
-                                       CoglPipelineLayerState layer_state,
-                                       CoglPipelineFindEquivalentFlags flags)
+                                       CoglPipelineLayerState layer_state)
 {
   CoglPipeline *authority0;
   CoglPipeline *authority1;
@@ -6690,10 +6788,19 @@ _cogl_pipeline_find_equivalent_parent (CoglPipeline *pipeline,
                                              &state);
 
       for (i = 0; i < n_layers; i++)
-        if (layers_differ_for_find_equivalent (layer_state, flags,
-                                               authority0_layers[i],
-                                               authority1_layers[i]))
-          return authority0;
+        {
+          unsigned long layer_differences;
+
+          if (authority0_layers[i] == authority1_layers[i])
+            continue;
+
+          layer_differences =
+            _cogl_pipeline_layer_compare_differences (authority0_layers[i],
+                                                      authority1_layers[i]);
+
+          if (layer_differences & layer_state)
+            return authority0;
+        }
 
       /* Find the next ancestor after that, that also modifies state
        * affecting codegen... */

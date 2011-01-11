@@ -139,22 +139,19 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
     }
 
   /* Handle enabling or disabling the right texture target */
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE)
+  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET)
     {
-      CoglPipelineLayer *authority =
+      CoglPipelineLayer *tex_authority =
         _cogl_pipeline_layer_get_authority (layer,
-                                            COGL_PIPELINE_LAYER_STATE_TEXTURE);
-      CoglHandle texture;
-      GLuint     gl_texture;
-      GLenum     gl_target;
-
-      texture = (authority->texture == COGL_INVALID_HANDLE ?
-                 ctx->default_gl_texture_2d_tex :
-                 authority->texture);
-
-      cogl_texture_get_gl_texture (texture,
-                                   &gl_texture,
-                                   &gl_target);
+                                            COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA);
+      CoglPipelineLayer *target_authority =
+        _cogl_pipeline_layer_get_authority (layer,
+                                            COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET);
+      /* XXX: currently layers with no associated texture fallback to
+       * using ctx->default_gl_texture_2d_tex so they have a texture
+       * target of GL_TEXTURE_2D */
+      GLenum gl_target =
+        tex_authority->texture ? target_authority->target : GL_TEXTURE_2D;
 
       _cogl_set_active_texture_unit (unit_index);
 
