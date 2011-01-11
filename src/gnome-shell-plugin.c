@@ -302,10 +302,10 @@ add_statistics (GnomeShellPlugin *shell_plugin)
 }
 
 static void
-gvc_muted_debug_log_handler (const char     *log_domain,
-                             GLogLevelFlags  log_level,
-                             const char     *message,
-                             gpointer        data)
+muted_log_handler (const char     *log_domain,
+                   GLogLevelFlags  log_level,
+                   const char     *message,
+                   gpointer        data)
 {
   /* Intentionally empty to discard message */
 }
@@ -375,9 +375,13 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
                                             NULL);
   g_strfreev(search_path);
 
-  /* Disable the gnome-volume-control debug */
+  /* Disable debug spew from various libraries */
   g_log_set_handler ("Gvc", G_LOG_LEVEL_DEBUG,
-                     gvc_muted_debug_log_handler, NULL);
+                     muted_log_handler, NULL);
+  g_log_set_handler ("GdmUser", G_LOG_LEVEL_DEBUG,
+                     muted_log_handler, NULL);
+  g_log_set_handler ("libgnome-bluetooth", G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_MESSAGE,
+                     muted_log_handler, NULL);
 
   /* Initialize the global object here. */
   shell_plugin->global = shell_global_get ();
