@@ -532,15 +532,40 @@ _cogl_clip_stack_pop (CoglClipStack *stack)
 }
 
 void
+_cogl_clip_stack_get_bounds (CoglClipStack *stack,
+                             int *scissor_x0,
+                             int *scissor_y0,
+                             int *scissor_x1,
+                             int *scissor_y1)
+{
+  CoglClipStack *entry;
+
+  *scissor_x0 = 0;
+  *scissor_y0 = 0;
+  *scissor_x1 = G_MAXINT;
+  *scissor_y1 = G_MAXINT;
+
+  for (entry = stack; entry; entry = entry->parent)
+    {
+      /* Get the intersection of the current scissor and the bounding
+         box of this clip */
+      *scissor_x0 = MAX (*scissor_x0, entry->bounds_x0);
+      *scissor_y0 = MAX (*scissor_y0, entry->bounds_y0);
+      *scissor_x1 = MIN (*scissor_x1, entry->bounds_x1);
+      *scissor_y1 = MIN (*scissor_y1, entry->bounds_y1);
+    }
+}
+
+void
 _cogl_clip_stack_flush (CoglClipStack *stack)
 {
   int has_clip_planes;
   gboolean using_clip_planes = FALSE;
   gboolean using_stencil_buffer = FALSE;
-  int scissor_x0 = 0;
-  int scissor_y0 = 0;
-  int scissor_x1 = G_MAXINT;
-  int scissor_y1 = G_MAXINT;
+  int scissor_x0;
+  int scissor_y0;
+  int scissor_x1;
+  int scissor_y1;
   CoglMatrixStack *modelview_stack;
   CoglClipStack *entry;
   int scissor_y_start;
@@ -581,15 +606,9 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
      clear the stencil buffer then the clear will be clipped to the
      intersection of all of the bounding boxes. This saves having to
      clear the whole stencil buffer */
-  for (entry = stack; entry; entry = entry->parent)
-    {
-      /* Get the intersection of the current scissor and the bounding
-         box of this clip */
-      scissor_x0 = MAX (scissor_x0, entry->bounds_x0);
-      scissor_y0 = MAX (scissor_y0, entry->bounds_y0);
-      scissor_x1 = MIN (scissor_x1, entry->bounds_x1);
-      scissor_y1 = MIN (scissor_y1, entry->bounds_y1);
-    }
+  _cogl_clip_stack_get_bounds (stack,
+                               &scissor_x0, &scissor_y0,
+                               &scissor_x1, &scissor_y1);
 
   /* Enable scissoring as soon as possible */
   if (scissor_x0 >= scissor_x1 || scissor_y0 >= scissor_y1)

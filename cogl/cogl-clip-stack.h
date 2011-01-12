@@ -171,6 +171,13 @@ CoglClipStack *
 _cogl_clip_stack_pop (CoglClipStack *stack);
 
 void
+_cogl_clip_stack_get_bounds (CoglClipStack *stack,
+                             int *scissor_x0,
+                             int *scissor_y0,
+                             int *scissor_x1,
+                             int *scissor_y1);
+
+void
 _cogl_clip_stack_flush (CoglClipStack *stack);
 
 CoglClipStack *
