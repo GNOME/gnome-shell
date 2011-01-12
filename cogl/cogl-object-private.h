@@ -36,6 +36,19 @@
 typedef struct _CoglObjectClass CoglHandleClass;
 typedef struct _CoglObject      CoglHandleObject;
 
+/* XXX: sadly we didn't fully consider when we copied the cairo API
+ * for _set_user_data that the callback doesn't get a pointer to the
+ * instance which is desired in most cases. This means you tend to end
+ * up creating micro allocations for the private data just so you can
+ * pair up the data of interest with the original instance for
+ * identification when it is later destroyed.
+ *
+ * Internally we use a small hack to avoid needing these micro
+ * allocations by actually passing the instance as a second argument
+ * to the callback */
+typedef void (*CoglUserDataDestroyInternalCallback) (void *user_data,
+                                                     void *instance);
+
 typedef struct _CoglObjectClass
 {
   GQuark   type;
@@ -48,7 +61,7 @@ typedef struct
 {
   CoglUserDataKey *key;
   void *user_data;
-  CoglUserDataDestroyCallback destroy;
+  CoglUserDataDestroyInternalCallback destroy;
 } CoglUserDataEntry;
 
 /* All Cogl objects inherit from this base object by adding a member:
@@ -252,6 +265,12 @@ _cogl_##type_name##_handle_new (CoglHandle handle)                       \
 
 #define COGL_HANDLE_DEFINE(TypeName, type_name)                 \
   COGL_HANDLE_DEFINE_WITH_CODE (TypeName, type_name, (void) 0)
+
+void
+_cogl_object_set_user_data (CoglObject *object,
+                            CoglUserDataKey *key,
+                            void *user_data,
+                            CoglUserDataDestroyInternalCallback destroy);
 
 #endif /* __COGL_OBJECT_PRIVATE_H */
 
