@@ -100,8 +100,10 @@ struct _StThemeNode {
   CoglHandle box_shadow_material;
   CoglHandle background_texture;
   CoglHandle background_material;
-  CoglHandle border_texture;
-  CoglHandle border_material;
+  CoglHandle border_slices_texture;
+  CoglHandle border_slices_material;
+  CoglHandle prerendered_texture;
+  CoglHandle prerendered_material;
   CoglHandle corner_material[4];
 };
 

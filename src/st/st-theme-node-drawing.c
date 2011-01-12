@@ -633,10 +633,14 @@ _st_theme_node_free_drawing_state (StThemeNode  *node)
     cogl_handle_unref (node->background_material);
   if (node->background_shadow_material != COGL_INVALID_HANDLE)
     cogl_handle_unref (node->background_shadow_material);
-  if (node->border_texture != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->border_texture);
-  if (node->border_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->border_material);
+  if (node->border_slices_texture != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->border_slices_texture);
+  if (node->border_slices_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->border_slices_material);
+  if (node->prerendered_texture != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->prerendered_texture);
+  if (node->prerendered_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->prerendered_material);
   if (node->box_shadow_material != COGL_INVALID_HANDLE)
     cogl_handle_unref (node->box_shadow_material);
 
@@ -656,8 +660,10 @@ _st_theme_node_init_drawing_state (StThemeNode *node)
   node->background_material = COGL_INVALID_HANDLE;
   node->background_shadow_material = COGL_INVALID_HANDLE;
   node->box_shadow_material = COGL_INVALID_HANDLE;
-  node->border_texture = COGL_INVALID_HANDLE;
-  node->border_material = COGL_INVALID_HANDLE;
+  node->border_slices_texture = COGL_INVALID_HANDLE;
+  node->border_slices_material = COGL_INVALID_HANDLE;
+  node->prerendered_texture = COGL_INVALID_HANDLE;
+  node->prerendered_material = COGL_INVALID_HANDLE;
 
   for (corner_id = 0; corner_id < 4; corner_id++)
     node->corner_material[corner_id] = COGL_INVALID_HANDLE;
@@ -703,23 +709,31 @@ st_theme_node_render_resources (StThemeNode   *node,
 
       filename = st_border_image_get_filename (border_image);
 
-      node->border_texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, filename);
+      node->border_slices_texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, filename);
     }
   else if (node->background_gradient_type != ST_GRADIENT_NONE)
     {
-      node->border_texture = st_theme_node_render_gradient (node);
+      node->prerendered_texture = st_theme_node_render_gradient (node);
     }
 
-  if (node->border_texture)
-    node->border_material = _st_create_texture_material (node->border_texture);
+  if (node->border_slices_texture)
+    node->border_slices_material = _st_create_texture_material (node->border_slices_texture);
   else
-    node->border_material = COGL_INVALID_HANDLE;
+    node->border_slices_material = COGL_INVALID_HANDLE;
+
+  if (node->prerendered_texture)
+    node->prerendered_material = _st_create_texture_material (node->prerendered_texture);
+  else
+    node->prerendered_material = COGL_INVALID_HANDLE;
 
   if (box_shadow_spec)
     {
-      if (node->border_texture != COGL_INVALID_HANDLE)
+      if (node->border_slices_texture != COGL_INVALID_HANDLE)
         node->box_shadow_material = _st_create_shadow_material (box_shadow_spec,
-                                                                node->border_texture);
+                                                                node->border_slices_texture);
+      else if (node->prerendered_texture != COGL_INVALID_HANDLE)
+        node->box_shadow_material = _st_create_shadow_material (box_shadow_spec,
+                                                                node->prerendered_texture);
       else if (node->background_color.alpha > 0 ||
                node->border_width[ST_SIDE_TOP] > 0 ||
                node->border_width[ST_SIDE_LEFT] > 0 ||
@@ -1072,8 +1086,8 @@ st_theme_node_paint_sliced_border_image (StThemeNode           *node,
   st_border_image_get_borders (border_image,
                                &border_left, &border_right, &border_top, &border_bottom);
 
-  img_width = cogl_texture_get_width (node->border_texture);
-  img_height = cogl_texture_get_height (node->border_texture);
+  img_width = cogl_texture_get_width (node->border_slices_texture);
+  img_height = cogl_texture_get_height (node->border_slices_texture);
 
   tx1 = border_left / img_width;
   tx2 = (img_width - border_right) / img_width;
@@ -1088,7 +1102,7 @@ st_theme_node_paint_sliced_border_image (StThemeNode           *node,
   if (ey < 0)
     ey = border_bottom;          /* FIXME ? */
 
-  material = node->border_material;
+  material = node->border_slices_material;
   cogl_material_set_color4ub (material,
                               paint_opacity, paint_opacity, paint_opacity, paint_opacity);
 
@@ -1249,14 +1263,11 @@ st_theme_node_paint (StThemeNode           *node,
                                    &allocation,
                                    paint_opacity);
 
-  if (node->border_material != COGL_INVALID_HANDLE)
-    {
-      /* Gradients and border images are mutually exclusive at this time */
-      if (node->background_gradient_type != ST_GRADIENT_NONE)
-        paint_material_with_opacity (node->border_material, &allocation, paint_opacity);
-      else
-        st_theme_node_paint_sliced_border_image (node, &allocation, paint_opacity);
-    }
+  /* Gradients and border images are mutually exclusive at this time */
+  if (node->prerendered_material != COGL_INVALID_HANDLE)
+    paint_material_with_opacity (node->prerendered_material, &allocation, paint_opacity);
+  else if (node->border_slices_material != COGL_INVALID_HANDLE)
+    st_theme_node_paint_sliced_border_image (node, &allocation, paint_opacity);
   else
     st_theme_node_paint_borders (node, box, paint_opacity);
 
@@ -1325,10 +1336,14 @@ st_theme_node_copy_cached_paint_state (StThemeNode *node,
     node->background_texture = cogl_handle_ref (other->background_texture);
   if (other->background_material)
     node->background_material = cogl_handle_ref (other->background_material);
-  if (other->border_texture)
-    node->border_texture = cogl_handle_ref (other->border_texture);
-  if (other->border_material)
-    node->border_material = cogl_handle_ref (other->border_material);
+  if (other->border_slices_texture)
+    node->border_slices_texture = cogl_handle_ref (other->border_slices_texture);
+  if (other->border_slices_material)
+    node->border_slices_material = cogl_handle_ref (other->border_slices_material);
+  if (other->prerendered_texture)
+    node->prerendered_texture = cogl_handle_ref (other->prerendered_texture);
+  if (other->prerendered_material)
+    node->prerendered_material = cogl_handle_ref (other->prerendered_material);
   for (corner_id = 0; corner_id < 4; corner_id++)
     if (other->corner_material[corner_id])
       node->corner_material[corner_id] = cogl_handle_ref (other->corner_material[corner_id]);
