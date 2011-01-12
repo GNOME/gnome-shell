@@ -328,7 +328,9 @@ test_cogl_shader_glsl_main (int argc, char *argv[])
 
   file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
   error = NULL;
-  redhand = cogl_texture_new_from_file (file, 0, COGL_PIXEL_FORMAT_ANY,
+  redhand = cogl_texture_new_from_file (file,
+                                        COGL_TEXTURE_NO_ATLAS,
+                                        COGL_PIXEL_FORMAT_ANY,
                                         &error);
   if (redhand == COGL_INVALID_HANDLE)
     g_error ("image load failed: %s", error->message);
