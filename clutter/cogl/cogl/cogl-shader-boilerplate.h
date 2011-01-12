@@ -30,11 +30,16 @@
 #include "cogl.h"
 
 
+#ifndef HAVE_COGL_GLES2
+
 #define _COGL_COMMON_SHADER_BOILERPLATE \
   "#define COGL_VERSION 100\n" \
+  "\n" \
+  "#define cogl_modelview_matrix gl_ModelViewMatrix\n" \
+  "#define cogl_modelview_projection_matrix gl_ModelViewProjectionMatrix\n" \
+  "#define cogl_projection_matrix gl_ProjectionMatrix\n" \
+  "#define cogl_texture_matrix gl_TextureMatrix\n" \
   "\n"
-
-#ifndef HAVE_COGL_GLES2
 
 #define _COGL_VERTEX_SHADER_BOILERPLATE \
   _COGL_COMMON_SHADER_BOILERPLATE \
@@ -54,12 +59,7 @@
   "#define cogl_position_out gl_Position\n" \
   "#define cogl_point_size_out gl_PointSize\n" \
   "#define cogl_color_out gl_FrontColor\n" \
-  "#define cogl_tex_coord_out gl_TexCoord\n" \
-  "\n" \
-  "#define cogl_modelview_matrix gl_ModelViewMatrix\n" \
-  "#define cogl_modelview_projection_matrix gl_ModelViewProjectionMatrix\n" \
-  "#define cogl_projection_matrix gl_ProjectionMatrix\n" \
-  "#define cogl_texture_matrix gl_TextureMatrix\n"
+  "#define cogl_tex_coord_out gl_TexCoord\n"
 
 #define _COGL_FRAGMENT_SHADER_BOILERPLATE \
   _COGL_COMMON_SHADER_BOILERPLATE \
@@ -79,6 +79,14 @@
 
 #else /* HAVE_COGL_GLES2 */
 
+#define _COGL_COMMON_SHADER_BOILERPLATE \
+  "#define COGL_VERSION 100\n" \
+  "\n" \
+  "uniform mat4 cogl_modelview_matrix;\n" \
+  "uniform mat4 cogl_modelview_projection_matrix;\n"  \
+  "uniform mat4 cogl_projection_matrix;\n" \
+  "uniform float cogl_point_size_in;\n"
+
 /* This declares all of the variables that we might need. This is
    working on the assumption that the compiler will optimise them out
    if they are not actually used. The GLSL spec for GLES at least
@@ -95,12 +103,7 @@
   "attribute vec4 cogl_color_in;\n" \
   "attribute vec4 cogl_position_in;\n" \
   "#define cogl_tex_coord_in cogl_tex_coord0_in;\n" \
-  "attribute vec3 cogl_normal_in;\n" \
-  "\n" \
-  "uniform mat4 cogl_modelview_matrix;\n" \
-  "uniform mat4 cogl_modelview_projection_matrix;\n"  \
-  "uniform mat4 cogl_projection_matrix;\n" \
-  "uniform float cogl_point_size_in;\n"
+  "attribute vec3 cogl_normal_in;\n"
 
 #define _COGL_FRAGMENT_SHADER_BOILERPLATE \
   _COGL_COMMON_SHADER_BOILERPLATE \
