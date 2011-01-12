@@ -1069,15 +1069,21 @@ clutter_script_parse_node (ClutterScript *script,
        * is a custom member that will be parsed by the Scriptable
        * interface implementantion
        */
-      if (pspec == NULL)
+      if (pspec == NULL && !G_IS_VALUE (value))
         return FALSE;
       else
         {
-          GType p_type = G_PARAM_SPEC_VALUE_TYPE (pspec);
+          GType p_type;
           ObjectInfo *oinfo;
           const gchar *id;
 
-          g_value_init (value, p_type);
+          if (G_IS_VALUE (value))
+            p_type = G_VALUE_TYPE (value);
+          else
+            {
+              p_type = G_PARAM_SPEC_VALUE_TYPE (pspec);
+              g_value_init (value, p_type);
+            }
 
           if (g_type_is_a (p_type, G_TYPE_OBJECT))
             {
@@ -1160,11 +1166,12 @@ clutter_script_parse_node (ClutterScript *script,
       return FALSE;
 
     case JSON_NODE_ARRAY:
-      if (!pspec)
+      if (!pspec && !G_IS_VALUE (value))
         return FALSE;
       else
         {
-          g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+          if (!G_IS_VALUE (value))
+            g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 
           if (G_VALUE_HOLDS (value, CLUTTER_TYPE_KNOT))
             {
@@ -1236,10 +1243,10 @@ clutter_script_parse_node (ClutterScript *script,
     case JSON_NODE_VALUE:
       json_node_get_value (node, &node_value);
 
-      if (pspec)
-        g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
-      else
+      if (!pspec && !G_IS_VALUE (value))
         g_value_init (value, G_VALUE_TYPE (&node_value));
+      else if (pspec)
+        g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 
       switch (G_TYPE_FUNDAMENTAL (G_VALUE_TYPE (value)))
         {
