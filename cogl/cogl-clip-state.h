@@ -43,26 +43,11 @@ _cogl_clip_state_destroy (CoglClipState *state);
 void
 _cogl_clip_state_flush (CoglClipState *clip_state);
 
-/*
- * _cogl_get_clip_stack:
- *
- * Gets a pointer to the current clip stack. This can be used to later
- * return to the same clip stack state with _cogl_set_clip_stack(). A
- * reference is not taken on the stack so if you want to keep it you
- * should call _cogl_clip_stack_ref().
- *
- * Return value: a pointer to the current clip stack.
- */
 CoglClipStack *
-_cogl_get_clip_stack (void);
+_cogl_clip_state_get_stack (CoglClipState *clip_state);
 
-/*
- * _cogl_set_clip_stack:
- * @stack: a pointer to the replacement clip stack
- *
- * Replaces the current clip stack with @stack.
- */
 void
-_cogl_set_clip_stack (CoglClipStack *stack);
+_cogl_clip_state_set_stack (CoglClipState *clip_state,
+                            CoglClipStack *clip_stack);
 
 #endif /* __COGL_CLIP_STATE_H */

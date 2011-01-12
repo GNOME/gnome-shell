@@ -1318,6 +1318,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
   guint32           disable_layers;
   CoglJournalEntry *entry;
   CoglPipeline     *source;
+  CoglClipStack    *clip_stack;
   CoglPipelineFlushOptions flush_options;
   COGL_STATIC_TIMER (log_timer,
                      "Mainloop", /* parent */
@@ -1413,7 +1414,9 @@ _cogl_journal_log_quad (CoglJournal  *journal,
     }
 
   entry->pipeline = _cogl_pipeline_journal_ref (source);
-  entry->clip_stack = _cogl_clip_stack_ref (_cogl_get_clip_stack ());
+
+  clip_stack = _cogl_framebuffer_get_clip_stack (_cogl_get_framebuffer ());
+  entry->clip_stack = _cogl_clip_stack_ref (clip_stack);
 
   if (G_UNLIKELY (source != pipeline))
     cogl_handle_unref (source);

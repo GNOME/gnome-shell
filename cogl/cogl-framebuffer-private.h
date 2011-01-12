@@ -126,6 +126,32 @@ _cogl_framebuffer_get_height (CoglFramebuffer *framebuffer);
 CoglClipState *
 _cogl_framebuffer_get_clip_state (CoglFramebuffer *framebuffer);
 
+/*
+ * _cogl_framebuffer_get_clip_stack:
+ * @framebuffer: A #CoglFramebuffer
+ *
+ * Gets a pointer to the current clip stack. This can be used to later
+ * return to the same clip stack state with
+ * _cogl_framebuffer_set_clip_stack(). A reference is not taken on the
+ * stack so if you want to keep it you should call
+ * _cogl_clip_stack_ref().
+ *
+ * Return value: a pointer to the @framebuffer clip stack.
+ */
+CoglClipStack *
+_cogl_framebuffer_get_clip_stack (CoglFramebuffer *framebuffer);
+
+/*
+ * _cogl_framebuffer_set_clip_stack:
+ * @framebuffer: A #CoglFramebuffer
+ * @stack: a pointer to the replacement clip stack
+ *
+ * Replaces the @framebuffer clip stack with @stack.
+ */
+void
+_cogl_framebuffer_set_clip_stack (CoglFramebuffer *framebuffer,
+                                  CoglClipStack *stack);
+
 void
 _cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
                                 int x,
