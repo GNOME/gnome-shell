@@ -42,7 +42,7 @@ LayoutMenuItem.prototype = {
 };
 
 function XKBIndicator() {
-    this._init.apply(this, arguments);
+    this._init.call(this);
 }
 
 XKBIndicator.prototype = {
@@ -75,7 +75,7 @@ XKBIndicator.prototype = {
         this._sync_config();
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addAction(_("Keyboard Settings"), function() {
+        this.menu.addAction(_("Localization Settings"), function() {
             GLib.spawn_command_line_async('gnome-control-center region');
         });
     },
@@ -202,5 +202,54 @@ XKBIndicator.prototype = {
         this._iconActor.allocate_align_fill(box, 0.5, 0, false, false, flags);
         for (let i = 0; i < this._labelActors.length; i++)
             this._labelActors[i].allocate_align_fill(box, 0.5, 0, false, false, flags);
+    }
+};
+
+function ModifierIndicatorFactory() {
+    this._init.call(this);
+}
+
+ModifierIndicatorFactory.prototype = {
+    _init: function() {
+        this._settings = new Gio.Settings({ schema: INDICATOR_SCHEMA });
+        this._settings.connect('changed::show-keyboard-leds-indicator', Lang.bind(this, this._changed));
+
+        this._config = Gkbd.Configuration.get();
+        this._config.connect('indicators-changed', Lang.bind(this, this._changed));
+
+        this._scrollLock = new St.Icon({ icon_name: 'kbdled-scroll-lock', icon_type: St.IconType.SYMBOLIC, style_class: 'system-status-icon' });
+        this._numLock = new St.Icon({ icon_name: 'kbdled-num-lock', icon_type: St.IconType.SYMBOLIC, style_class: 'system-status-icon' });
+        this._capsLock = new St.Icon({ icon_name: 'kbdled-caps-lock', icon_type: St.IconType.SYMBOLIC, style_class: 'system-status-icon' });
+
+        this._changed();
+    },
+
+    getIndicators: function() {
+        return [this._scrollLock, this._numLock, this._capsLock];
+    },
+
+    _changed: function() {
+        let enable = this._settings.get_boolean('show-keyboard-leds-indicator');
+
+        if (enable) {
+            if (this._config.get_scroll_lock_state())
+                this._scrollLock.show();
+            else
+                this._scrollLock.hide();
+
+            if (this._config.get_num_lock_state())
+                this._numLock.show();
+            else
+                this._numLock.hide();
+
+            if (this._config.get_caps_lock_state())
+                this._capsLock.show();
+            else
+                this._capsLock.hide();
+        } else {
+            this._scrollLock.hide();
+            this._numLock.hide();
+            this._capsLock.hide();
+        }
     }
 };
