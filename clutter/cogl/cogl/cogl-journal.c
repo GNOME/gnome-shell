@@ -37,6 +37,7 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-profile.h"
 #include "cogl-vertex-attribute-private.h"
+#include "cogl-point-in-poly-private.h"
 
 #include <string.h>
 #include <gmodule.h>
@@ -820,10 +821,182 @@ typedef struct
   float x_2, y_2;
 } ClipBounds;
 
+static gboolean
+can_software_clip_entry (CoglJournalEntry *journal_entry,
+                         CoglJournalEntry *prev_journal_entry,
+                         CoglClipStack *clip_stack,
+                         ClipBounds *clip_bounds_out)
+{
+  CoglPipeline *pipeline = journal_entry->pipeline;
+  CoglClipStack *clip_entry;
+  int layer_num;
+
+  clip_bounds_out->x_1 = -G_MAXFLOAT;
+  clip_bounds_out->y_1 = -G_MAXFLOAT;
+  clip_bounds_out->x_2 = G_MAXFLOAT;
+  clip_bounds_out->y_2 = G_MAXFLOAT;
+
+  /* Check the pipeline is usable. We can short-cut here for
+     entries using the same pipeline as the previous entry */
+  if (prev_journal_entry == NULL || pipeline != prev_journal_entry->pipeline)
+    {
+      /* If the pipeline has a user program then we can't reliably modify
+         the texture coordinates */
+      if (cogl_pipeline_get_user_program (pipeline))
+        return FALSE;
+
+      /* If any of the pipeline layers have a texture matrix then we can't
+         reliably modify the texture coordinates */
+      for (layer_num = cogl_pipeline_get_n_layers (pipeline) - 1;
+           layer_num >= 0;
+           layer_num--)
+        if (_cogl_pipeline_layer_has_user_matrix (pipeline, layer_num))
+          return FALSE;
+    }
+
+  /* Now we need to verify that each clip entry's matrix is just a
+     translation of the journal entry's modelview matrix. We can
+     also work out the bounds of the clip in modelview space using
+     this translation */
+  for (clip_entry = clip_stack; clip_entry; clip_entry = clip_entry->parent)
+    {
+      float rect_x1, rect_y1, rect_x2, rect_y2;
+      CoglClipStackRect *clip_rect;
+      float tx, ty;
+
+      clip_rect = (CoglClipStackRect *) clip_entry;
+
+      if (!calculate_translation (&clip_rect->matrix,
+                                  &journal_entry->model_view,
+                                  &tx, &ty))
+        return FALSE;
+
+      if (clip_rect->x0 < clip_rect->x1)
+        {
+          rect_x1 = clip_rect->x0;
+          rect_x2 = clip_rect->x1;
+        }
+      else
+        {
+          rect_x1 = clip_rect->x1;
+          rect_x2 = clip_rect->x0;
+        }
+      if (clip_rect->y0 < clip_rect->y1)
+        {
+          rect_y1 = clip_rect->y0;
+          rect_y2 = clip_rect->y1;
+        }
+      else
+        {
+          rect_y1 = clip_rect->y1;
+          rect_y2 = clip_rect->y0;
+        }
+
+      clip_bounds_out->x_1 = MAX (clip_bounds_out->x_1, rect_x1 - tx);
+      clip_bounds_out->y_1 = MAX (clip_bounds_out->y_1, rect_y1 - ty);
+      clip_bounds_out->x_2 = MIN (clip_bounds_out->x_2, rect_x2 - tx);
+      clip_bounds_out->y_2 = MIN (clip_bounds_out->y_2, rect_y2 - ty);
+    }
+
+  return TRUE;
+}
+
 static void
-check_software_clip_for_batch (CoglJournalEntry      *batch_start,
-                               int                    batch_len,
-                               CoglJournalFlushState *state)
+software_clip_entry (CoglJournalEntry *journal_entry,
+                     float *verts,
+                     ClipBounds *clip_bounds)
+{
+  size_t stride =
+    GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS (journal_entry->n_layers);
+  float rx1, ry1, rx2, ry2;
+  float vx1, vy1, vx2, vy2;
+  int layer_num;
+
+  /* Remove the clip on the entry */
+  _cogl_clip_stack_unref (journal_entry->clip_stack);
+  journal_entry->clip_stack = NULL;
+
+  vx1 = verts[0];
+  vy1 = verts[1];
+  vx2 = verts[stride];
+  vy2 = verts[stride + 1];
+
+  if (vx1 < vx2)
+    {
+      rx1 = vx1;
+      rx2 = vx2;
+    }
+  else
+    {
+      rx1 = vx2;
+      rx2 = vx1;
+    }
+  if (vy1 < vy2)
+    {
+      ry1 = vy1;
+      ry2 = vy2;
+    }
+  else
+    {
+      ry1 = vy2;
+      ry2 = vy1;
+    }
+
+  rx1 = CLAMP (rx1, clip_bounds->x_1, clip_bounds->x_2);
+  ry1 = CLAMP (ry1, clip_bounds->y_1, clip_bounds->y_2);
+  rx2 = CLAMP (rx2, clip_bounds->x_1, clip_bounds->x_2);
+  ry2 = CLAMP (ry2, clip_bounds->y_1, clip_bounds->y_2);
+
+  /* Check if the rectangle intersects the clip at all */
+  if (rx1 == rx2 || ry1 == ry2)
+    /* Will set all of the vertex data to 0 in the hope that this
+       will create a degenerate rectangle and the GL driver will
+       be able to clip it quickly */
+    memset (verts, 0, sizeof (float) * stride * 2);
+  else
+    {
+      if (vx1 > vx2)
+        {
+          float t = rx1;
+          rx1 = rx2;
+          rx2 = t;
+        }
+      if (vy1 > vy2)
+        {
+          float t = ry1;
+          ry1 = ry2;
+          ry2 = t;
+        }
+
+      verts[0] = rx1;
+      verts[1] = ry1;
+      verts[stride] = rx2;
+      verts[stride + 1] = ry2;
+
+      /* Convert the rectangle coordinates to a fraction of the original
+         rectangle */
+      rx1 = (rx1 - vx1) / (vx2 - vx1);
+      ry1 = (ry1 - vy1) / (vy2 - vy1);
+      rx2 = (rx2 - vx1) / (vx2 - vx1);
+      ry2 = (ry2 - vy1) / (vy2 - vy1);
+
+      for (layer_num = 0; layer_num < journal_entry->n_layers; layer_num++)
+        {
+          float *t = verts + 2 + 2 * layer_num;
+          float tx1 = t[0], ty1 = t[1];
+          float tx2 = t[stride], ty2 = t[stride + 1];
+          t[0] = rx1 * (tx2 - tx1) + tx1;
+          t[1] = ry1 * (ty2 - ty1) + ty1;
+          t[stride] = rx2 * (tx2 - tx1) + tx1;
+          t[stride + 1] = ry2 * (ty2 - ty1) + ty1;
+        }
+    }
+}
+
+static void
+maybe_software_clip_entries (CoglJournalEntry      *batch_start,
+                             int                    batch_len,
+                             CoglJournalFlushState *state)
 {
   CoglJournal *journal = state->journal;
   CoglClipStack *clip_stack, *clip_entry;
@@ -864,77 +1037,15 @@ check_software_clip_for_batch (CoglJournalEntry      *batch_start,
   for (entry_num = 0; entry_num < batch_len; entry_num++)
     {
       CoglJournalEntry *journal_entry = batch_start + entry_num;
-      CoglPipeline *pipeline = journal_entry->pipeline;
+      CoglJournalEntry *prev_journal_entry =
+        entry_num ? batch_start + (entry_num - 1) : NULL;
       ClipBounds *clip_bounds = &g_array_index (ctx->journal_clip_bounds,
                                                 ClipBounds, entry_num);
-      int layer_num;
 
-      clip_bounds->x_1 = -G_MAXFLOAT;
-      clip_bounds->y_1 = -G_MAXFLOAT;
-      clip_bounds->x_2 = G_MAXFLOAT;
-      clip_bounds->y_2 = G_MAXFLOAT;
-
-      /* Check the pipeline is usable. We can short-cut here for
-         entries using the same pipeline as the previous entry */
-      if (entry_num == 0 || pipeline != batch_start[entry_num - 1].pipeline)
-        {
-          /* If the pipeline has a user program then we can't reliably modify
-             the texture coordinates */
-          if (cogl_pipeline_get_user_program (pipeline))
-            return;
-
-          /* If any of the pipeline layers have a texture matrix then we can't
-             reliably modify the texture coordinates */
-          for (layer_num = cogl_pipeline_get_n_layers (pipeline) - 1;
-               layer_num >= 0;
-               layer_num--)
-            if (_cogl_pipeline_layer_has_user_matrix (pipeline, layer_num))
-              return;
-        }
-
-      /* Now we need to verify that each clip entry's matrix is just a
-         translation of the journal entry's modelview matrix. We can
-         also work out the bounds of the clip in modelview space using
-         this translation */
-      for (clip_entry = clip_stack; clip_entry; clip_entry = clip_entry->parent)
-        {
-          float rect_x1, rect_y1, rect_x2, rect_y2;
-          CoglClipStackRect *clip_rect;
-          float tx, ty;
-
-          clip_rect = (CoglClipStackRect *) clip_entry;
-
-          if (!calculate_translation (&clip_rect->matrix,
-                                      &journal_entry->model_view,
-                                      &tx, &ty))
-            return;
-
-          if (clip_rect->x0 < clip_rect->x1)
-            {
-              rect_x1 = clip_rect->x0;
-              rect_x2 = clip_rect->x1;
-            }
-          else
-            {
-              rect_x1 = clip_rect->x1;
-              rect_x2 = clip_rect->x0;
-            }
-          if (clip_rect->y0 < clip_rect->y1)
-            {
-              rect_y1 = clip_rect->y0;
-              rect_y2 = clip_rect->y1;
-            }
-          else
-            {
-              rect_y1 = clip_rect->y1;
-              rect_y2 = clip_rect->y0;
-            }
-
-          clip_bounds->x_1 = MAX (clip_bounds->x_1, rect_x1 - tx);
-          clip_bounds->y_1 = MAX (clip_bounds->y_1, rect_y1 - ty);
-          clip_bounds->x_2 = MIN (clip_bounds->x_2, rect_x2 - tx);
-          clip_bounds->y_2 = MIN (clip_bounds->y_2, rect_y2 - ty);
-        }
+      if (!can_software_clip_entry (journal_entry, prev_journal_entry,
+                                    clip_stack,
+                                    clip_bounds))
+        return;
     }
 
   /* If we make it here then we know we can software clip the entire batch */
@@ -947,107 +1058,23 @@ check_software_clip_for_batch (CoglJournalEntry      *batch_start,
       ClipBounds *clip_bounds = &g_array_index (ctx->journal_clip_bounds,
                                                 ClipBounds, entry_num);
 
-      size_t stride =
-        GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS (journal_entry->n_layers);
-      float rx1, ry1, rx2, ry2;
-      float vx1, vy1, vx2, vy2;
-      int layer_num;
-
-      /* Remove the clip on the entry */
-      _cogl_clip_stack_unref (journal_entry->clip_stack);
-      journal_entry->clip_stack = NULL;
-
-      vx1 = verts[0];
-      vy1 = verts[1];
-      vx2 = verts[stride];
-      vy2 = verts[stride + 1];
-
-      if (vx1 < vx2)
-        {
-          rx1 = vx1;
-          rx2 = vx2;
-        }
-      else
-        {
-          rx1 = vx2;
-          rx2 = vx1;
-        }
-      if (vy1 < vy2)
-        {
-          ry1 = vy1;
-          ry2 = vy2;
-        }
-      else
-        {
-          ry1 = vy2;
-          ry2 = vy1;
-        }
-
-      rx1 = CLAMP (rx1, clip_bounds->x_1, clip_bounds->x_2);
-      ry1 = CLAMP (ry1, clip_bounds->y_1, clip_bounds->y_2);
-      rx2 = CLAMP (rx2, clip_bounds->x_1, clip_bounds->x_2);
-      ry2 = CLAMP (ry2, clip_bounds->y_1, clip_bounds->y_2);
-
-      /* Check if the rectangle intersects the clip at all */
-      if (rx1 == rx2 || ry1 == ry2)
-        /* Will set all of the vertex data to 0 in the hope that this
-           will create a degenerate rectangle and the GL driver will
-           be able to clip it quickly */
-        memset (verts, 0, sizeof (float) * stride * 2);
-      else
-        {
-          if (vx1 > vx2)
-            {
-              float t = rx1;
-              rx1 = rx2;
-              rx2 = t;
-            }
-          if (vy1 > vy2)
-            {
-              float t = ry1;
-              ry1 = ry2;
-              ry2 = t;
-            }
-
-          verts[0] = rx1;
-          verts[1] = ry1;
-          verts[stride] = rx2;
-          verts[stride + 1] = ry2;
-
-          /* Convert the rectangle coordinates to a fraction of the original
-             rectangle */
-          rx1 = (rx1 - vx1) / (vx2 - vx1);
-          ry1 = (ry1 - vy1) / (vy2 - vy1);
-          rx2 = (rx2 - vx1) / (vx2 - vx1);
-          ry2 = (ry2 - vy1) / (vy2 - vy1);
-
-          for (layer_num = 0; layer_num < journal_entry->n_layers; layer_num++)
-            {
-              float *t = verts + 2 + 2 * layer_num;
-              float tx1 = t[0], ty1 = t[1];
-              float tx2 = t[stride], ty2 = t[stride + 1];
-              t[0] = rx1 * (tx2 - tx1) + tx1;
-              t[1] = ry1 * (ty2 - ty1) + ty1;
-              t[stride] = rx2 * (tx2 - tx1) + tx1;
-              t[stride + 1] = ry2 * (ty2 - ty1) + ty1;
-            }
-        }
+      software_clip_entry (journal_entry, verts, clip_bounds);
     }
 
   return;
 }
 
 static void
-_cogl_journal_check_software_clip (CoglJournalEntry *batch_start,
-                                   int               batch_len,
-                                   void             *data)
+_cogl_journal_maybe_software_clip_entries (CoglJournalEntry *batch_start,
+                                           int               batch_len,
+                                           void             *data)
 {
   CoglJournalFlushState *state = data;
 
   COGL_STATIC_TIMER (time_check_software_clip,
                      "Journal Flush", /* parent */
-                     "flush: check software clip",
-                     "Time spent checking for software clip",
+                     "flush: software clipping",
+                     "Time spent software clipping",
                      0 /* no application private data */);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -1055,7 +1082,7 @@ _cogl_journal_check_software_clip (CoglJournalEntry *batch_start,
   COGL_TIMER_START (_cogl_uprof_context,
                     time_check_software_clip);
 
-  check_software_clip_for_batch (batch_start, batch_len, state);
+  maybe_software_clip_entries (batch_start, batch_len, state);
 
   COGL_TIMER_STOP (_cogl_uprof_context,
                    time_check_software_clip);
@@ -1160,6 +1187,93 @@ upload_vertices (const CoglJournalEntry *entries,
   return array;
 }
 
+void
+_cogl_journal_discard (CoglJournal *journal)
+{
+  int i;
+
+  for (i = 0; i < journal->entries->len; i++)
+    {
+      CoglJournalEntry *entry =
+        &g_array_index (journal->entries, CoglJournalEntry, i);
+      _cogl_pipeline_journal_unref (entry->pipeline);
+      _cogl_clip_stack_unref (entry->clip_stack);
+    }
+
+  g_array_set_size (journal->entries, 0);
+  g_array_set_size (journal->vertices, 0);
+  journal->needed_vbo_len = 0;
+  journal->fast_read_pixel_count = 0;
+}
+
+/* Note: A return value of FALSE doesn't mean 'no' it means
+ * 'unknown' */
+gboolean
+_cogl_journal_all_entries_within_bounds (CoglJournal *journal,
+                                         float clip_x0,
+                                         float clip_y0,
+                                         float clip_x1,
+                                         float clip_y1)
+{
+  CoglJournalEntry *entry = (CoglJournalEntry *)journal->entries->data;
+  CoglClipStack *clip_entry;
+  CoglClipStack *reference = NULL;
+  int bounds_x0;
+  int bounds_y0;
+  int bounds_x1;
+  int bounds_y1;
+  int i;
+
+  if (journal->entries->len == 0)
+    return TRUE;
+
+  /* Find the shortest clip_stack ancestry that leaves us in the
+   * required bounds */
+  for (clip_entry = entry->clip_stack;
+       clip_entry;
+       clip_entry = clip_entry->parent)
+    {
+      _cogl_clip_stack_get_bounds (clip_entry,
+                                   &bounds_x0, &bounds_y0,
+                                   &bounds_x1, &bounds_y1);
+
+      if (bounds_x0 >= clip_x0 && bounds_y0 >= clip_y0 &&
+          bounds_x1 <= clip_x1 && bounds_y1 <= clip_y1)
+        reference = clip_entry;
+      else
+        break;
+    }
+
+  if (!reference)
+    return FALSE;
+
+  /* For the remaining journal entries we will only verify they share
+   * 'reference' as an ancestor in their clip stack since that's
+   * enough to know that they would be within the required bounds.
+   */
+  for (i = 1; i < journal->entries->len; i++)
+    {
+      gboolean found_reference = FALSE;
+      entry = &g_array_index (journal->entries, CoglJournalEntry, i);
+
+      for (clip_entry = entry->clip_stack;
+           clip_entry;
+           clip_entry = clip_entry->parent)
+        {
+          if (clip_entry == reference)
+            {
+              found_reference = TRUE;
+              break;
+            }
+        }
+
+      if (!found_reference)
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
 /* XXX NB: When _cogl_journal_flush() returns all state relating
  * to pipelines, all glEnable flags and current matrix state
  * is undefined.
@@ -1219,7 +1333,7 @@ _cogl_journal_flush (CoglJournal *journal,
       batch_and_call ((CoglJournalEntry *)journal->entries->data, /* first entry */
                       journal->entries->len, /* max number of entries to consider */
                       compare_entry_clip_stacks,
-                      _cogl_journal_check_software_clip, /* callback */
+                      _cogl_journal_maybe_software_clip_entries, /* callback */
                       &state); /* data */
     }
 
@@ -1268,17 +1382,7 @@ _cogl_journal_flush (CoglJournal *journal,
 
   cogl_object_unref (state.vertex_array);
 
-  for (i = 0; i < journal->entries->len; i++)
-    {
-      CoglJournalEntry *entry =
-        &g_array_index (journal->entries, CoglJournalEntry, i);
-      _cogl_pipeline_journal_unref (entry->pipeline);
-      _cogl_clip_stack_unref (entry->clip_stack);
-    }
-
-  g_array_set_size (journal->entries, 0);
-  g_array_set_size (journal->vertices, 0);
-  journal->needed_vbo_len = 0;
+  _cogl_journal_discard (journal);
 
   cogl_pop_framebuffer ();
 
@@ -1438,3 +1542,261 @@ _cogl_journal_log_quad (CoglJournal  *journal,
   COGL_TIMER_STOP (_cogl_uprof_context, log_timer);
 }
 
+static void
+entry_to_screen_polygon (const CoglJournalEntry *entry,
+                         float *vertices,
+                         float *poly)
+{
+  size_t array_stride =
+    GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS (entry->n_layers);
+  CoglMatrixStack *projection_stack;
+  CoglMatrix projection;
+  int i;
+  int viewport[4];
+
+  poly[0] = vertices[0];
+  poly[1] = vertices[1];
+  poly[2] = 0;
+  poly[3] = 1;
+
+  poly[4] = vertices[0];
+  poly[5] = vertices[array_stride + 1];
+  poly[6] = 0;
+  poly[7] = 1;
+
+  poly[8] = vertices[array_stride];
+  poly[9] = vertices[array_stride + 1];
+  poly[10] = 0;
+  poly[11] = 1;
+
+  poly[12] = vertices[array_stride];
+  poly[13] = vertices[1];
+  poly[14] = 0;
+  poly[15] = 1;
+
+  /* TODO: perhaps split the following out into a more generalized
+   * _cogl_transform_points utility...
+   */
+
+  cogl_matrix_transform_points (&entry->model_view,
+                                2, /* n_components */
+                                sizeof (float) * 4, /* stride_in */
+                                poly, /* points_in */
+                                /* strideout */
+                                sizeof (float) * 4,
+                                poly, /* points_out */
+                                4 /* n_points */);
+
+  projection_stack =
+    _cogl_framebuffer_get_projection_stack (_cogl_get_framebuffer ());
+  _cogl_matrix_stack_get (projection_stack, &projection);
+
+  cogl_matrix_project_points (&projection,
+                              3, /* n_components */
+                              sizeof (float) * 4, /* stride_in */
+                              poly, /* points_in */
+                              /* strideout */
+                              sizeof (float) * 4,
+                              poly, /* points_out */
+                              4 /* n_points */);
+
+  _cogl_framebuffer_get_viewport4fv (_cogl_get_framebuffer (),
+                                     viewport);
+
+/* Scale from OpenGL normalized device coordinates (ranging from -1 to 1)
+ * to Cogl window/framebuffer coordinates (ranging from 0 to buffer-size) with
+ * (0,0) being top left. */
+#define VIEWPORT_TRANSFORM_X(x, vp_origin_x, vp_width) \
+    (  ( ((x) + 1.0) * ((vp_width) / 2.0) ) + (vp_origin_x)  )
+/* Note: for Y we first flip all coordinates around the X axis while in
+ * normalized device coodinates */
+#define VIEWPORT_TRANSFORM_Y(y, vp_origin_y, vp_height) \
+    (  ( ((-(y)) + 1.0) * ((vp_height) / 2.0) ) + (vp_origin_y)  )
+
+  /* Scale from normalized device coordinates (in range [-1,1]) to
+   * window coordinates ranging [0,window-size] ... */
+  for (i = 0; i < 4; i++)
+    {
+      float w = poly[4 * i + 3];
+
+      /* Perform perspective division */
+      poly[4 * i] /= w;
+      poly[4 * i + 1] /= w;
+
+      /* Apply viewport transform */
+      poly[4 * i] = VIEWPORT_TRANSFORM_X (poly[4 * i],
+                                          viewport[0], viewport[2]);
+      poly[4 * i + 1] = VIEWPORT_TRANSFORM_Y (poly[4 * i + 1],
+                                              viewport[1], viewport[3]);
+    }
+
+#undef VIEWPORT_TRANSFORM_X
+#undef VIEWPORT_TRANSFORM_Y
+}
+
+static gboolean
+try_checking_point_hits_entry_after_clipping (CoglJournalEntry *entry,
+                                              float *vertices,
+                                              float x,
+                                              float y,
+                                              gboolean *hit)
+{
+  gboolean can_software_clip = TRUE;
+  gboolean needs_software_clip = FALSE;
+  CoglClipStack *clip_entry;
+
+  *hit = TRUE;
+
+  /* Verify that all of the clip stack entries are simple rectangle
+   * clips */
+  for (clip_entry = entry->clip_stack;
+       clip_entry;
+       clip_entry = clip_entry->parent)
+    {
+      if (x < clip_entry->bounds_x0 ||
+          x >= clip_entry->bounds_x1 ||
+          y < clip_entry->bounds_y0 ||
+          y >= clip_entry->bounds_y1)
+        {
+          *hit = FALSE;
+          return TRUE;
+        }
+
+      if (clip_entry->type == COGL_CLIP_STACK_WINDOW_RECT)
+        {
+          /* XXX: technically we could still run the software clip in
+           * this case because for our purposes we know this clip
+           * can be ignored now, but [can_]sofware_clip_entry() doesn't
+           * know this and will bail out. */
+          can_software_clip = FALSE;
+        }
+      else if (clip_entry->type == COGL_CLIP_STACK_RECT)
+        {
+          CoglClipStackRect *rect_entry = (CoglClipStackRect *)entry;
+
+          if (rect_entry->can_be_scissor == FALSE)
+            needs_software_clip = TRUE;
+          /* If can_be_scissor is TRUE then we know it's screen
+           * aligned and the hit test we did above has determined
+           * that we are inside this clip. */
+        }
+      else
+        return FALSE;
+    }
+
+  if (needs_software_clip)
+    {
+      ClipBounds clip_bounds;
+      float poly[16];
+
+      if (!can_software_clip_entry (entry, NULL,
+                                    entry->clip_stack, &clip_bounds))
+        return FALSE;
+
+      software_clip_entry (entry, vertices, &clip_bounds);
+      entry_to_screen_polygon (entry, vertices, poly);
+
+      *hit = _cogl_util_point_in_poly (x, y, poly, sizeof (float) * 4, 4);
+      return TRUE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+_cogl_journal_try_read_pixel (CoglJournal *journal,
+                              int x,
+                              int y,
+                              CoglPixelFormat format,
+                              guint8 *pixel,
+                              gboolean *found_intersection)
+{
+  int i;
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  /* XXX: this number has been plucked out of thin air, but the idea
+   * is that if so many pixels are being read from the same un-changed
+   * journal than we expect that it will be more efficient to fail
+   * here so we end up flushing and rendering the journal so that
+   * further reads can directly read from the framebuffer. There will
+   * be a bit more lag to flush the render but if there are going to
+   * continue being lots of arbitrary single pixel reads they will end
+   * up faster in the end. */
+  if (journal->fast_read_pixel_count > 50)
+    return FALSE;
+
+  if (format != COGL_PIXEL_FORMAT_RGBA_8888_PRE &&
+      format != COGL_PIXEL_FORMAT_RGBA_8888)
+    return FALSE;
+
+  *found_intersection = FALSE;
+
+  /* NB: The most recently added journal entry is the last entry, and
+   * assuming this is a simple scene only comprised of opaque coloured
+   * rectangles with no special pipelines involved (e.g. enabling
+   * depth testing) then we can assume painter's algorithm for the
+   * entries and so our fast read-pixel just needs to walk backwards
+   * through the journal entries trying to intersect each entry with
+   * the given point of interest. */
+  for (i = journal->entries->len - 1; i >= 0; i--)
+    {
+      CoglJournalEntry *entry =
+        &g_array_index (journal->entries, CoglJournalEntry, i);
+      guint8 *color = (guint8 *)&g_array_index (journal->vertices, float,
+                                                entry->array_offset);
+      float *vertices = (float *)color + 1;
+      float poly[16];
+
+      entry_to_screen_polygon (entry, vertices, poly);
+
+      if (!_cogl_util_point_in_poly (x, y, poly, sizeof (float) * 4, 4))
+        continue;
+
+      /* FIXME: the journal should have a back pointer to the
+       * associated framebuffer, because it should be possible to read
+       * a pixel from arbitrary framebuffers without needing to
+       * internally call _cogl_push/pop_framebuffer.
+       */
+      if (entry->clip_stack)
+        {
+          gboolean hit;
+
+          if (!try_checking_point_hits_entry_after_clipping (entry, vertices,
+                                                             x, y, &hit))
+            return FALSE; /* hit couldn't be determined */
+
+          if (!hit)
+            continue;
+        }
+
+      *found_intersection = TRUE;
+
+      /* If we find that the rectangle the point of interest
+       * intersects has any state more complex than a constant opaque
+       * color then we bail out. */
+      if (!_cogl_pipeline_equal (ctx->opaque_color_pipeline, entry->pipeline,
+                                 (COGL_PIPELINE_STATE_ALL &
+                                  ~COGL_PIPELINE_STATE_COLOR),
+                                 COGL_PIPELINE_LAYER_STATE_ALL,
+                                 0))
+        return FALSE;
+
+
+      /* we currently only care about cases where the premultiplied or
+       * unpremultipled colors are equivalent... */
+      if (color[3] != 0xff)
+        return FALSE;
+
+      pixel[0] = color[0];
+      pixel[1] = color[1];
+      pixel[2] = color[2];
+      pixel[3] = color[3];
+
+      goto success;
+    }
+
+success:
+  journal->fast_read_pixel_count++;
+  return TRUE;
+}

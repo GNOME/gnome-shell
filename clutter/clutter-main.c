@@ -659,9 +659,6 @@ _clutter_do_pick (ClutterStage   *stage,
   else
     _clutter_stage_set_pick_buffer_valid (stage, TRUE, mode);
 
-  /* Make sure Cogl flushes any batched geometry to the GPU driver */
-  cogl_flush ();
-
   /* Read the color of the screen co-ords pixel. RGBA_8888_PRE is used
      even though we don't care about the alpha component because under
      GLES this is the only format that is guaranteed to work so Cogl
