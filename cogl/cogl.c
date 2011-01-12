@@ -497,7 +497,7 @@ _cogl_read_pixels_with_rowstride (int x,
                                   guint8 *pixels,
                                   int rowstride)
 {
-  CoglFramebuffer *framebuffer;
+  CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
   int              framebuffer_height;
   int              bpp;
   CoglBitmap      *bmp;
@@ -510,6 +510,22 @@ _cogl_read_pixels_with_rowstride (int x,
 
   g_return_if_fail (source == COGL_READ_PIXELS_COLOR_BUFFER);
 
+  if (width == 1 && height == 1 && !framebuffer->clear_clip_dirty)
+    {
+      /* If everything drawn so far for this frame is still in the
+       * Journal then if all of the rectangles only have a flat
+       * opaque color we have a fast-path for reading a single pixel
+       * that avoids the relatively high cost of flushing primitives
+       * to be drawn on the GPU (considering how simple the geometry
+       * is in this case) and then blocking on the long GPU pipelines
+       * for the result.
+       */
+      if (_cogl_framebuffer_try_fast_read_pixel (framebuffer,
+                                                 x, y, source, format,
+                                                 pixels))
+        return;
+    }
+
   /* make sure any batched primitives get emitted to the GL driver
    * before issuing our read pixels...
    *
@@ -520,8 +536,6 @@ _cogl_read_pixels_with_rowstride (int x,
    * framebuffers which could also have associated journal entries.
    */
   cogl_flush ();
-
-  framebuffer = _cogl_get_framebuffer ();
 
   _cogl_framebuffer_flush_state (framebuffer, 0);
 

@@ -35,6 +35,8 @@ typedef struct _CoglJournal
   GArray *vertices;
   size_t needed_vbo_len;
 
+  int fast_read_pixel_count;
+
 } CoglJournal;
 
 /* To improve batching of geometry when submitting vertices to OpenGL we
@@ -68,5 +70,23 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 void
 _cogl_journal_flush (CoglJournal *journal,
                      CoglFramebuffer *framebuffer);
+
+void
+_cogl_journal_discard (CoglJournal *journal);
+
+gboolean
+_cogl_journal_all_entries_within_bounds (CoglJournal *journal,
+                                         float clip_x0,
+                                         float clip_y0,
+                                         float clip_x1,
+                                         float clip_y1);
+
+gboolean
+_cogl_journal_try_read_pixel (CoglJournal *journal,
+                              int x,
+                              int y,
+                              CoglPixelFormat format,
+                              guint8 *pixel,
+                              gboolean *found_intersection);
 
 #endif /* __COGL_JOURNAL_PRIVATE_H */

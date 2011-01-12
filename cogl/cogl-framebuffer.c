@@ -160,6 +160,13 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
 
   framebuffer->journal = _cogl_journal_new ();
 
+  /* Ensure we know the framebuffer->clear_color* members can't be
+   * referenced for our fast-path read-pixel optimization (see
+   * _cogl_journal_try_read_pixel()) until some region of the
+   * framebuffer is initialized.
+   */
+  framebuffer->clear_clip_dirty = TRUE;
+
   /* XXX: We have to maintain a central list of all framebuffers
    * because at times we need to be able to flush all known journals.
    *
@@ -249,6 +256,12 @@ _cogl_clear4f (unsigned long buffers,
 }
 
 void
+_cogl_framebuffer_dirty (CoglFramebuffer *framebuffer)
+{
+  framebuffer->clear_clip_dirty = TRUE;
+}
+
+void
 _cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
                            unsigned long buffers,
                            float red,
@@ -256,11 +269,96 @@ _cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
                            float blue,
                            float alpha)
 {
+  CoglClipStack *clip_stack = _cogl_framebuffer_get_clip_stack (framebuffer);
+  int scissor_x0;
+  int scissor_y0;
+  int scissor_x1;
+  int scissor_y1;
+
+  _cogl_clip_stack_get_bounds (clip_stack,
+                               &scissor_x0, &scissor_y0,
+                               &scissor_x1, &scissor_y1);
+
+  /* NB: the previous clear could have had an arbitrary clip.
+   * NB: everything for the last frame might still be in the journal
+   *     but we can't assume anything about how each entry was
+   *     clipped.
+   * NB: Clutter will scissor its pick renders which would mean all
+   *     journal entries have a common ClipStack entry, but without
+   *     a layering violation Cogl has to explicitly walk the journal
+   *     entries to determine if this is the case.
+   * NB: We have a software only read-pixel optimization in the
+   *     journal that determines the color at a given framebuffer
+   *     coordinate for simple scenes without rendering with the GPU.
+   *     When Clutter is hitting this fast-path we can expect to
+   *     receive calls to clear the framebuffer with an un-flushed
+   *     journal.
+   * NB: To fully support software based picking for Clutter we
+   *     need to be able to reliably detect when the contents of a
+   *     journal can be discarded and when we can skip the call to
+   *     glClear because it matches the previous clear request.
+   */
+
+  /* Note: we don't check for the stencil buffer being cleared here
+   * since there isn't any public cogl api to manipulate the stencil
+   * buffer.
+   *
+   * Note: we check for an exact clip match here because
+   * 1) a smaller clip could mean existing journal entries may
+   *    need to contribute to regions outside the new clear-clip
+   * 2) a larger clip would mean we need to issue a real
+   *    glClear and we only care about cases avoiding a
+   *    glClear.
+   *
+   * Note: Comparing without an epsilon is considered
+   * appropriate here.
+   */
+  if (buffers & COGL_BUFFER_BIT_COLOR &&
+      buffers & COGL_BUFFER_BIT_DEPTH &&
+      !framebuffer->clear_clip_dirty &&
+      framebuffer->clear_color_red == red &&
+      framebuffer->clear_color_green == green &&
+      framebuffer->clear_color_blue == blue &&
+      framebuffer->clear_color_alpha == alpha &&
+      scissor_x0 == framebuffer->clear_clip_x0 &&
+      scissor_y0 == framebuffer->clear_clip_y0 &&
+      scissor_x1 == framebuffer->clear_clip_x1 &&
+      scissor_y1 == framebuffer->clear_clip_y1)
+    {
+      /* NB: We only have to consider the clip state of journal
+       * entries if the current clear is clipped since otherwise we
+       * know every pixel of the framebuffer is affected by the clear
+       * and so all journal entries become redundant and can simply be
+       * discarded.
+       */
+      if (clip_stack)
+        {
+          /*
+           * Note: the function for checking the journal entries is
+           * quite strict. It avoids detailed checking of all entry
+           * clip_stacks by only checking the details of the first
+           * entry and then it only verifies that the remaining
+           * entries share the same clip_stack ancestry. This means
+           * it's possible for some false negatives here but that will
+           * just result in us falling back to a real clear.
+           */
+          if (_cogl_journal_all_entries_within_bounds (framebuffer->journal,
+                                                       scissor_x0, scissor_y0,
+                                                       scissor_x1, scissor_y1))
+            {
+              _cogl_journal_discard (framebuffer->journal);
+              goto cleared;
+            }
+        }
+      else
+        {
+          _cogl_journal_discard (framebuffer->journal);
+          goto cleared;
+        }
+    }
+
   COGL_NOTE (DRAW, "Clear begin");
 
-  /* XXX: in the case where it's the color buffer being cleared and
-   * the current clip-stack is empty we could instead discard the
-   * journal here instead of flushing it. */
   _cogl_framebuffer_flush_journal (framebuffer);
 
   /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
@@ -282,6 +380,38 @@ _cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
     }
 
   COGL_NOTE (DRAW, "Clear end");
+
+cleared:
+
+  if (buffers & COGL_BUFFER_BIT_COLOR && buffers & COGL_BUFFER_BIT_DEPTH)
+    {
+      /* For our fast-path for reading back a single pixel of simple
+       * scenes where the whole frame is in the journal we need to
+       * track the cleared color of the framebuffer in case the point
+       * read doesn't intersect any of the journal rectangles. */
+      framebuffer->clear_clip_dirty = FALSE;
+      framebuffer->clear_color_red = red;
+      framebuffer->clear_color_green = green;
+      framebuffer->clear_color_blue = blue;
+      framebuffer->clear_color_alpha = alpha;
+
+      /* NB: A clear may be scissored so we need to track the extents
+       * that the clear is applicable too... */
+      if (clip_stack)
+        {
+          _cogl_clip_stack_get_bounds (clip_stack,
+                                       &framebuffer->clear_clip_x0,
+                                       &framebuffer->clear_clip_y0,
+                                       &framebuffer->clear_clip_x1,
+                                       &framebuffer->clear_clip_y1);
+        }
+      else
+        {
+          /* FIXME: set degenerate clip */
+        }
+    }
+  else
+    _cogl_framebuffer_dirty (framebuffer);
 }
 
 /* XXX: We'll need to consider if this API is a good approach for the
@@ -1095,5 +1225,65 @@ _cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer)
   _cogl_framebuffer_init_bits (framebuffer);
 
   return framebuffer->alpha_bits;
+}
+
+gboolean
+_cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
+                                       int x,
+                                       int y,
+                                       CoglReadPixelsFlags source,
+                                       CoglPixelFormat format,
+                                       guint8 *pixel)
+{
+  gboolean found_intersection;
+
+  if (source != COGL_READ_PIXELS_COLOR_BUFFER)
+    return FALSE;
+
+  if (format != COGL_PIXEL_FORMAT_RGBA_8888_PRE &&
+      format != COGL_PIXEL_FORMAT_RGBA_8888)
+    return FALSE;
+
+  if (!_cogl_journal_try_read_pixel (framebuffer->journal,
+                                     x, y, format, pixel,
+                                     &found_intersection))
+    return FALSE;
+
+  /* If we can't determine the color from the primitives in the
+   * journal then see if we can use the last recorded clear color
+   */
+
+  /* If _cogl_journal_try_read_pixel() failed even though there was an
+   * intersection of the given point with a primitive in the journal
+   * then we can't fallback to the framebuffer's last clear color...
+   * */
+  if (found_intersection)
+    return TRUE;
+
+  /* If the framebuffer has been rendered too since it was last
+   * cleared then we can't return the last known clear color. */
+  if (framebuffer->clear_clip_dirty)
+    return FALSE;
+
+  if (x >= framebuffer->clear_clip_x0 &&
+      x < framebuffer->clear_clip_x1 &&
+      y >= framebuffer->clear_clip_y0 &&
+      y < framebuffer->clear_clip_y1)
+    {
+
+      /* we currently only care about cases where the premultiplied or
+       * unpremultipled colors are equivalent... */
+      if (framebuffer->clear_color_alpha != 1.0)
+        return FALSE;
+
+      pixel[0] = framebuffer->clear_color_red * 255.0;
+      pixel[1] = framebuffer->clear_color_green * 255.0;
+      pixel[2] = framebuffer->clear_color_blue * 255.0;
+      pixel[3] = framebuffer->clear_color_alpha * 255.0;
+
+      return TRUE;
+    }
+
+  return FALSE;
 }
 

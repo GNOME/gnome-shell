@@ -480,6 +480,7 @@ enable_gl_state (CoglDrawFlags flags,
                  CoglVertexAttribute **attributes,
                  ValidateLayerState *state)
 {
+  CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
   int i;
 #ifdef MAY_HAVE_PROGRAMABLE_GL
   GLuint generic_index = 0;
@@ -491,6 +492,12 @@ enable_gl_state (CoglDrawFlags flags,
   int n_tex_coord_attribs = 0;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+
+  /* In cogl_read_pixels we have a fast-path when reading a single
+   * pixel and the scene is just comprised of simple rectangles still
+   * in the journal. For this optimization to work we need to track
+   * when the framebuffer really does get drawn to. */
+  _cogl_framebuffer_dirty (framebuffer);
 
   source = cogl_get_source ();
 

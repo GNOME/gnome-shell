@@ -67,6 +67,22 @@ struct _CoglFramebuffer
   /* The scene of a given framebuffer may depend on images in other
    * framebuffers... */
   GList              *deps;
+
+  /* As part of an optimization for reading-back single pixels from a
+   * framebuffer in some simple cases where the geometry is still
+   * available in the journal we need to track the bounds of the last
+   * region cleared, its color and we need to track when something
+   * does in fact draw to that region so it is no longer clear.
+   */
+  float               clear_color_red;
+  float               clear_color_green;
+  float               clear_color_blue;
+  float               clear_color_alpha;
+  int                 clear_clip_x0;
+  int                 clear_clip_y0;
+  int                 clear_clip_x1;
+  int                 clear_clip_y1;
+  gboolean            clear_clip_dirty;
 };
 
 #define COGL_FRAMEBUFFER(X) ((CoglFramebuffer *)(X))
@@ -116,6 +132,9 @@ _cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
                            float green,
                            float blue,
                            float alpha);
+
+void
+_cogl_framebuffer_dirty (CoglFramebuffer *framebuffer);
 
 int
 _cogl_framebuffer_get_width (CoglFramebuffer *framebuffer);
@@ -195,6 +214,14 @@ _cogl_framebuffer_flush_dependency_journals (CoglFramebuffer *framebuffer);
 
 void
 _cogl_framebuffer_swap_notify (CoglFramebuffer *framebuffer);
+
+gboolean
+_cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
+                                       int x,
+                                       int y,
+                                       CoglReadPixelsFlags source,
+                                       CoglPixelFormat format,
+                                       guint8 *pixel);
 
 typedef enum _CoglFramebufferFlushFlags
 {
