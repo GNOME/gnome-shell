@@ -251,30 +251,15 @@ _cogl_clip_state_destroy (CoglClipState *clip_state)
 }
 
 CoglClipStack *
-_cogl_get_clip_stack (void)
+_cogl_clip_state_get_stack (CoglClipState *clip_state)
 {
-  CoglFramebuffer *framebuffer;
-  CoglClipState *clip_state;
-
-  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
-
-  framebuffer = _cogl_get_framebuffer ();
-  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
   return clip_state->stacks->data;
 }
 
 void
-_cogl_set_clip_stack (CoglClipStack *stack)
+_cogl_clip_state_set_stack (CoglClipState *clip_state,
+                            CoglClipStack *stack)
 {
-  CoglFramebuffer *framebuffer;
-  CoglClipState *clip_state;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  framebuffer = _cogl_get_framebuffer ();
-  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
   /* Replace the top of the stack of stacks */
   _cogl_clip_stack_ref (stack);
   _cogl_clip_stack_unref (clip_state->stacks->data);

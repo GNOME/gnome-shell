@@ -331,6 +331,23 @@ _cogl_framebuffer_get_clip_state (CoglFramebuffer *framebuffer)
   return &framebuffer->clip_state;
 }
 
+CoglClipStack *
+_cogl_framebuffer_get_clip_stack (CoglFramebuffer *framebuffer)
+{
+  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+
+  return _cogl_clip_state_get_stack (clip_state);
+}
+
+void
+_cogl_framebuffer_set_clip_stack (CoglFramebuffer *framebuffer,
+                                  CoglClipStack *stack)
+{
+  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+
+  _cogl_clip_state_set_stack (clip_state, stack);
+}
+
 void
 _cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
                                 int x,
