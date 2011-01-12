@@ -4,14 +4,14 @@
 # Arafat Medini <lumina@silverpen.de>, 2003.
 # Abdulaziz Al-Arfaj <alarfaj0@yahoo.com>, 2004.
 # Djihed Afifi <djihed@gmail.com>, 2006.
-# Khaled Hosny <khaledhosny@eglug.org>, 2006, 2007, 2008, 2009, 2010.
+# Khaled Hosny <khaledhosny@eglug.org>, 2006, 2007, 2008, 2009, 2010, 2011.
 # Anas Afif Emad <anas.e87@gmail.com>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-12 11:31+0200\n"
-"PO-Revision-Date: 2010-11-09 03:39+0300\n"
+"POT-Creation-Date: 2011-01-12 11:33+0200\n"
+"PO-Revision-Date: 2011-01-12 11:33+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -1774,7 +1774,6 @@ msgid "Border"
 msgstr "حد"
 
 #: ../src/ui/theme-viewer.c:412
-#, fuzzy
 msgid "Attached Modal Dialog"
 msgstr "صندوق حوار سائد"
 
