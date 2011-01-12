@@ -1293,6 +1293,9 @@ _cogl_driver_error_quark (void);
 void
 _cogl_onscreen_clutter_backend_set_size (int width, int height);
 
+void
+_cogl_swap_buffers_notify (void);
+
 G_END_DECLS
 
 #undef __COGL_H_INSIDE__
