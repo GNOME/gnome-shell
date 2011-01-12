@@ -193,6 +193,9 @@ _cogl_framebuffer_flush_journal (CoglFramebuffer *framebuffer);
 void
 _cogl_framebuffer_flush_dependency_journals (CoglFramebuffer *framebuffer);
 
+void
+_cogl_framebuffer_swap_notify (CoglFramebuffer *framebuffer);
+
 typedef enum _CoglFramebufferFlushFlags
 {
   /* XXX: When using this, that imples you are going to manually load the
