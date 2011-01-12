@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Khaled Hosny <khaledhosny@eglug.org>, 2009, 2010.
+# Khaled Hosny <khaledhosny@eglug.org>, 2009, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-30 13:30+0200\n"
-"PO-Revision-Date: 2010-10-30 13:30+0300\n"
+"POT-Creation-Date: 2011-01-12 11:29+0200\n"
+"PO-Revision-Date: 2011-01-12 11:29+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,14 +26,6 @@ msgstr "صدفة جنوم"
 msgid "Window management and application launching"
 msgstr "إدارة النوافذ وإطلاق التطبيقات"
 
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
-msgid "Clock"
-msgstr "الساعة"
-
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
-msgid "Customize the panel clock"
-msgstr "طوّع ساعة اللوحة"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
@@ -41,60 +33,44 @@ msgid ""
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Custom format of the clock"
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:4
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "Framerate used for recording screencasts."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:6
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
 msgstr ""
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "If true, display date in the clock, in addition to time."
+msgstr ""
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "Hour format"
+msgid "If true, display seconds in time."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
-"clock, in addition to time."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
-"time."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "If true, display the ISO week date in the calendar."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "Overview workspace view mode"
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -106,48 +82,42 @@ msgid ""
 "'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
 msgid "Show date in clock"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Show the week date in the calendar"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show time with seconds"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"The selected workspace view mode in the overview. Supported values are "
-"\"single\" and \"grid\"."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -155,29 +125,11 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
-msgid ""
-"This key specifies the format used by the panel clock when the format key is "
-"set to \"custom\". You can use conversion specifiers understood by strftime"
-"() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
-msgid ""
-"This key specifies the hour format used by the panel clock. Possible values "
-"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
-"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
-"to \"custom\", the clock will display time according to the format specified "
-"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
-"the show_date and show_seconds keys are ignored."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Uuids of extensions to disable"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 
@@ -306,90 +258,46 @@ msgstr ""
 msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr ""
 
-#: ../data/clock-preferences.ui.h:1
-msgid "Clock Format"
-msgstr "تنسيق الساعة"
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:155
+msgid "All"
+msgstr "الكل"
 
-#: ../data/clock-preferences.ui.h:2
-msgid "Clock Preferences"
-msgstr "تفضيلات الساعة"
-
-#: ../data/clock-preferences.ui.h:3
-msgid "Panel Display"
-msgstr "عرض اللوحة"
-
-#: ../data/clock-preferences.ui.h:4
-msgid "Show seco_nds"
-msgstr "أظهر ال_ثواني"
-
-#: ../data/clock-preferences.ui.h:5
-msgid "Show the _date"
-msgstr "أظهر ال_تاريخ"
-
-#: ../data/clock-preferences.ui.h:6
-msgid "_12 hour format"
-msgstr "نسق _12 ساعة"
-
-#: ../data/clock-preferences.ui.h:7
-msgid "_24 hour format"
-msgstr "نسق _24 ساعة"
-
-#. **** Applications ****
-#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
+#: ../js/ui/appDisplay.js:236
 msgid "APPLICATIONS"
 msgstr "التطبيقات"
 
-#: ../js/ui/appDisplay.js:348
+#: ../js/ui/appDisplay.js:266
 msgid "PREFERENCES"
 msgstr "التفضيلات"
 
-#: ../js/ui/appDisplay.js:647
+#: ../js/ui/appDisplay.js:563
 msgid "New Window"
 msgstr "نافذة جديدة"
 
-#: ../js/ui/appDisplay.js:651
+#: ../js/ui/appDisplay.js:567
 msgid "Remove from Favorites"
 msgstr "أزِل من المفضّلة"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:568
 msgid "Add to Favorites"
 msgstr "أضِف إلى المفضّلة"
 
-#: ../js/ui/appDisplay.js:829
-msgid "Drag here to add favorites"
-msgstr "اسحب إلى هنا ليضاف إلى المفضّلة"
-
-#: ../js/ui/appFavorites.js:88
+#: ../js/ui/appFavorites.js:91
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "أضيف %s إلى مفضلتك."
 
-#: ../js/ui/appFavorites.js:107
+#: ../js/ui/appFavorites.js:122
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "أزيل %s من مفضّلتك."
 
-#: ../js/ui/dash.js:142
-msgid "Find"
-msgstr "ابحث"
+#: ../js/ui/dash.js:27
+msgid "Remove"
+msgstr "أزِل"
 
-#: ../js/ui/dash.js:473
-msgid "Searching..."
-msgstr "يبحث..."
-
-#: ../js/ui/dash.js:487
-msgid "No matching results."
-msgstr "لا نتائج مطابقة."
-
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
-msgid "PLACES & DEVICES"
-msgstr "الأماكن والأجهزة"
-
-#. **** Documents ****
-#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
+#: ../js/ui/docDisplay.js:494
 msgid "RECENT ITEMS"
 msgstr "العناصر الحديثة"
 
@@ -423,63 +331,67 @@ msgstr "اعرض المصدر"
 msgid "Web Page"
 msgstr "صفحة الوب"
 
-#: ../js/ui/overview.js:160
+#: ../js/ui/overview.js:101
 msgid "Undo"
 msgstr "تراجع"
 
+#: ../js/ui/overview.js:166
+msgid "Windows"
+msgstr "النوافذ"
+
+#: ../js/ui/overview.js:169
+msgid "Applications"
+msgstr "التطبيقات"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:469
+#: ../js/ui/panel.js:478
 #, c-format
 msgid "Quit %s"
 msgstr "أغلق %s"
 
-#: ../js/ui/panel.js:494
-msgid "Preferences"
-msgstr "التفضيلات"
-
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:580
+#: ../js/ui/panel.js:563
 msgid "%a %b %e, %R:%S"
 msgstr "%A %e %B، %R:%S"
 
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:564
 msgid "%a %b %e, %R"
 msgstr "%A %e %B، %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:585
+#: ../js/ui/panel.js:568
 msgid "%a %R:%S"
 msgstr "%A %R:%S"
 
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:569
 msgid "%a %R"
 msgstr "%A %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:593
+#: ../js/ui/panel.js:576
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%A %e %B، %l:%M:%S %p"
 
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:577
 msgid "%a %b %e, %l:%M %p"
 msgstr "%A %e %B، %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:581
 msgid "%a %l:%M:%S %p"
 msgstr "%A %l:%M:%S %p"
 
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:582
 msgid "%a %l:%M %p"
 msgstr "%A %Ol:%OM %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:744
+#: ../js/ui/panel.js:727
 msgid "Activities"
 msgstr "الأنشطة"
 
@@ -496,6 +408,10 @@ msgstr "أعد المحاولة"
 msgid "Connect to..."
 msgstr "اتّصل ب‍..."
 
+#: ../js/ui/placeDisplay.js:558
+msgid "PLACES & DEVICES"
+msgstr "الأماكن والأجهزة"
+
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
@@ -503,13 +419,13 @@ msgstr "اتّصل ب‍..."
 #. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:33
 msgid "toggle-switch-us"
-msgstr ""
+msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:233
+#: ../js/ui/runDialog.js:238
 msgid "Please enter a command:"
 msgstr "من فضلك اكتب أمرا:"
 
-#: ../js/ui/runDialog.js:378
+#: ../js/ui/runDialog.js:383
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "فشل تنفيذ '%s':‏"
@@ -522,41 +438,37 @@ msgstr "متاح"
 msgid "Busy"
 msgstr "مشغول"
 
-#: ../js/ui/statusMenu.js:111
-msgid "Invisible"
-msgstr "خفي"
+#: ../js/ui/statusMenu.js:114
+msgid "My Account"
+msgstr "حسابي"
 
-#: ../js/ui/statusMenu.js:119
-msgid "My Account..."
-msgstr "حسابي..."
+#: ../js/ui/statusMenu.js:118
+msgid "System Settings"
+msgstr "إعدادات النظام"
 
-#: ../js/ui/statusMenu.js:123
-msgid "System Preferences..."
-msgstr "تفضيلات النظام..."
-
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:125
 msgid "Lock Screen"
 msgstr "أوصد الشاشة"
 
-#: ../js/ui/statusMenu.js:134
+#: ../js/ui/statusMenu.js:129
 msgid "Switch User"
 msgstr "بدّل المستخدم"
 
-#: ../js/ui/statusMenu.js:139
+#: ../js/ui/statusMenu.js:134
 msgid "Log Out..."
 msgstr "اخرج..."
 
-#: ../js/ui/statusMenu.js:146
-msgid "Suspend"
-msgstr "علّق"
+#: ../js/ui/statusMenu.js:141
+msgid "Suspend..."
+msgstr "علّق..."
 
-#: ../js/ui/statusMenu.js:150
-msgid "Restart..."
-msgstr "أعد التشغيل..."
-
-#: ../js/ui/statusMenu.js:154
+#: ../js/ui/statusMenu.js:145
 msgid "Shut Down..."
 msgstr "أطفئ..."
+
+#: ../js/ui/status/accessibility.js:82
+msgid "Zoom"
+msgstr "تقريب"
 
 #: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
@@ -594,13 +506,269 @@ msgstr "إعدادات الإتاحة"
 msgid "High Contrast"
 msgstr "تباين عال"
 
-#: ../js/ui/status/accessibility.js:202
+#: ../js/ui/status/accessibility.js:205
 msgid "Large Text"
 msgstr "نص كبير"
 
-#: ../js/ui/status/accessibility.js:223
-msgid "Zoom"
-msgstr "تقريب"
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:240
+msgid "Bluetooth"
+msgstr "بلوتوث"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "الرؤية"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "أرسِل ملفات للجهاز..."
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "اضبط جهازا جديدا..."
+
+#: ../js/ui/status/bluetooth.js:94
+msgid "Bluetooth Settings"
+msgstr "إعدادات بلوتوث"
+
+#: ../js/ui/status/bluetooth.js:191
+msgid "Connection"
+msgstr "الاتصال"
+
+#: ../js/ui/status/bluetooth.js:227
+msgid "Send Files..."
+msgstr "أرسل ملفات..."
+
+#: ../js/ui/status/bluetooth.js:232
+msgid "Browse Files..."
+msgstr "تصفح الملفات..."
+
+#: ../js/ui/status/bluetooth.js:241
+msgid "Error browsing device"
+msgstr "عطل أثناء تصفّح الجهاز"
+
+#: ../js/ui/status/bluetooth.js:242
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "تعذّر تصفح الجهاز، رسالة العطل '%s'"
+
+#: ../js/ui/status/bluetooth.js:250
+msgid "Keyboard Settings"
+msgstr "إعدادات لوحة المفاتيح"
+
+#: ../js/ui/status/bluetooth.js:255
+msgid "Mouse Settings"
+msgstr "إعدادات الفأرة"
+
+#: ../js/ui/status/bluetooth.js:262 ../js/ui/status/volume.js:62
+msgid "Sound Settings"
+msgstr "إعدادات الصوت"
+
+#: ../js/ui/status/bluetooth.js:336 ../js/ui/status/bluetooth.js:370
+#: ../js/ui/status/bluetooth.js:410 ../js/ui/status/bluetooth.js:443
+msgid "Bluetooth Agent"
+msgstr "عميل بلوتوث"
+
+#: ../js/ui/status/bluetooth.js:371
+#, c-format
+msgid "Authorization request from %s"
+msgstr "طلب تخويل من %s"
+
+#: ../js/ui/status/bluetooth.js:377
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "يريد الجهاز %s صلاحية الوصول للخدمة '%s'"
+
+#: ../js/ui/status/bluetooth.js:379
+msgid "Always grant access"
+msgstr "امنح الصلاحية دائما"
+
+#: ../js/ui/status/bluetooth.js:380
+msgid "Grant this time only"
+msgstr "امنح هذه المرة فقط"
+
+#: ../js/ui/status/bluetooth.js:381
+msgid "Reject"
+msgstr "أخرج"
+
+#: ../js/ui/status/bluetooth.js:411
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "تأكيد مزاوجة %s"
+
+#: ../js/ui/status/bluetooth.js:417 ../js/ui/status/bluetooth.js:451
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "يريد الجهاز %s المزاوجة مع هذا الحاسوب"
+
+#: ../js/ui/status/bluetooth.js:418
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "من فضلك أكد تطابق الرقم '%s' مع الموجود على الجهاز."
+
+#: ../js/ui/status/bluetooth.js:420
+msgid "Matches"
+msgstr "مطابقات"
+
+#: ../js/ui/status/bluetooth.js:421
+msgid "Does not match"
+msgstr "لا تتطابق"
+
+#: ../js/ui/status/bluetooth.js:444
+#, c-format
+msgid "Pairing request for %s"
+msgstr "طلب مزاوجة من %s"
+
+#: ../js/ui/status/bluetooth.js:452
+msgid "Please enter the PIN mentioned on the device."
+msgstr "من فضلك أدخل الرقم المذكور على الجهاز."
+
+#: ../js/ui/status/bluetooth.js:468
+msgid "OK"
+msgstr "حسنا"
+
+#: ../js/ui/status/bluetooth.js:469
+msgid "Cancel"
+msgstr "ألغِ"
+
+#: ../js/ui/status/power.js:85
+msgid "Power Settings"
+msgstr "إعدادات الطاقة"
+
+#: ../js/ui/status/power.js:112
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "بقي أقل من ساعة"
+msgstr[1] "بقي ساعة"
+msgstr[2] "بقي ساعتين"
+msgstr[3] "بقي %d ساعات"
+msgstr[4] "بقي %d ساعة"
+msgstr[5] "بقي %d ساعة"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:115
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "بقي %d %s و %d %s"
+
+#: ../js/ui/status/power.js:117
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "أقل من ساعة"
+msgstr[1] "ساعة"
+msgstr[2] "ساعتين"
+msgstr[3] "ساعات"
+msgstr[4] "ساعة"
+msgstr[5] "ساعة"
+
+#: ../js/ui/status/power.js:117
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "أقل من دقيقة"
+msgstr[1] "دقيقة"
+msgstr[2] "دقيقتين"
+msgstr[3] "دقائق"
+msgstr[4] "دقيقة"
+msgstr[5] "دقيقة"
+
+#: ../js/ui/status/power.js:120
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "بقي أقل من دقيقة"
+msgstr[1] "بقي دقيقة"
+msgstr[2] "بقي دقيقتين"
+msgstr[3] "بقي %d دقائق"
+msgstr[4] "بقي %d دقيقة"
+msgstr[5] "بقي %d دقيقة"
+
+#: ../js/ui/status/power.js:237
+msgid "AC adapter"
+msgstr "مقبس طاقة"
+
+#: ../js/ui/status/power.js:239
+msgid "Laptop battery"
+msgstr "بطارية حاسوب محمول"
+
+#: ../js/ui/status/power.js:241
+msgid "UPS"
+msgstr "مزود طاقة لا منقطعة"
+
+#: ../js/ui/status/power.js:243
+msgid "Monitor"
+msgstr "شاشة"
+
+#: ../js/ui/status/power.js:245
+msgid "Mouse"
+msgstr "فأرة"
+
+#: ../js/ui/status/power.js:247
+msgid "Keyboard"
+msgstr "لوحة المفاتيح"
+
+#: ../js/ui/status/power.js:249
+msgid "PDA"
+msgstr "مساعد رقمي"
+
+#: ../js/ui/status/power.js:251
+msgid "Cell phone"
+msgstr "هاتف محمول"
+
+#: ../js/ui/status/power.js:253
+msgid "Media player"
+msgstr "مشغل وسائط"
+
+#: ../js/ui/status/power.js:255
+msgid "Tablet"
+msgstr "لوحة"
+
+#: ../js/ui/status/power.js:257
+msgid "Computer"
+msgstr "حاسوب"
+
+#: ../js/ui/status/power.js:259 ../src/shell-app-system.c:1012
+msgid "Unknown"
+msgstr "مجهول"
+
+#: ../js/ui/status/volume.js:41
+msgid "Volume"
+msgstr "جزء"
+
+#: ../js/ui/status/volume.js:54
+msgid "Microphone"
+msgstr "ميكروفون"
+
+#: ../js/ui/telepathyClient.js:561
+#, c-format
+msgid "%s is online."
+msgstr "‏%s متّصل."
+
+#: ../js/ui/telepathyClient.js:566
+#, c-format
+msgid "%s is offline."
+msgstr "‏%s غير متّصل."
+
+#: ../js/ui/telepathyClient.js:569
+#, c-format
+msgid "%s is away."
+msgstr "‏%s غائب."
+
+#: ../js/ui/telepathyClient.js:572
+#, c-format
+msgid "%s is busy."
+msgstr "‏%s مشغول."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:666
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "أُرسلت الساعة %l:%M:%S في %A"
+
+#: ../js/ui/viewSelector.js:26
+msgid "Search your computer"
+msgstr "ابحث في حاسوبك"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -612,12 +780,12 @@ msgstr "انتهى %s من البدء"
 msgid "'%s' is ready"
 msgstr "‏'%s' جاهز"
 
-#: ../js/ui/workspacesView.js:229
+#: ../js/ui/workspacesView.js:244
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "تعذّر إضافة مساحة عمل جديدة، لتجاوز أقصى عدد من مساحات العمل."
 
-#: ../js/ui/workspacesView.js:246
+#: ../js/ui/workspacesView.js:260
 msgid "Can't remove the first workspace."
 msgstr "لا يمكن حذف مساحة العمل الأولى."
 
@@ -651,11 +819,11 @@ msgstr[5] "%u مدخل"
 msgid "System Sounds"
 msgstr "أصوات النظام"
 
-#: ../src/shell-global.c:1219
+#: ../src/shell-global.c:1233
 msgid "Less than a minute ago"
 msgstr "منذ أقل من دقيقة"
 
-#: ../src/shell-global.c:1223
+#: ../src/shell-global.c:1237
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -666,7 +834,7 @@ msgstr[3] "منذ %d دقائق"
 msgstr[4] "منذ %d دقيقة"
 msgstr[5] "منذ %d دقيقة"
 
-#: ../src/shell-global.c:1228
+#: ../src/shell-global.c:1242
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -677,7 +845,7 @@ msgstr[3] "منذ %d ساعات"
 msgstr[4] "منذ %d ساعة"
 msgstr[5] "منذ %d ساعة"
 
-#: ../src/shell-global.c:1233
+#: ../src/shell-global.c:1247
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -688,7 +856,7 @@ msgstr[3] "منذ %d أيام"
 msgstr[4] "منذ %d يوما"
 msgstr[5] "منذ %d يوم"
 
-#: ../src/shell-global.c:1238
+#: ../src/shell-global.c:1252
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -699,17 +867,17 @@ msgstr[3] "منذ %d أسابيع"
 msgstr[4] "منذ %d أسبوعا"
 msgstr[5] "منذ %d أسبوع"
 
-#: ../src/shell-uri-util.c:89
+#: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "مجلد المنزل"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:104
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "نظام الملفات"
 
-#: ../src/shell-uri-util.c:250
+#: ../src/shell-util.c:250
 msgid "Search"
 msgstr "ابحث"
 
@@ -718,19 +886,67 @@ msgstr "ابحث"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:300
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "‏%1$s:‏ %2$s"
+
+#~ msgid "Clock"
+#~ msgstr "الساعة"
+
+#~ msgid "Customize the panel clock"
+#~ msgstr "طوّع ساعة اللوحة"
+
+#~ msgid "Clock Format"
+#~ msgstr "تنسيق الساعة"
+
+#~ msgid "Clock Preferences"
+#~ msgstr "تفضيلات الساعة"
+
+#~ msgid "Panel Display"
+#~ msgstr "عرض اللوحة"
+
+#~ msgid "Show seco_nds"
+#~ msgstr "أظهر ال_ثواني"
+
+#~ msgid "Show the _date"
+#~ msgstr "أظهر ال_تاريخ"
+
+#~ msgid "_12 hour format"
+#~ msgstr "نسق _12 ساعة"
+
+#~ msgid "_24 hour format"
+#~ msgstr "نسق _24 ساعة"
+
+#~ msgid "Drag here to add favorites"
+#~ msgstr "اسحب إلى هنا ليضاف إلى المفضّلة"
+
+#~ msgid "Find"
+#~ msgstr "ابحث"
+
+#~ msgid "Searching..."
+#~ msgstr "يبحث..."
+
+#~ msgid "No matching results."
+#~ msgstr "لا نتائج مطابقة."
+
+#~ msgid "Preferences"
+#~ msgstr "التفضيلات"
+
+#~ msgid "Invisible"
+#~ msgstr "خفي"
+
+#~ msgid "System Preferences..."
+#~ msgstr "تفضيلات النظام..."
+
+#~ msgid "Restart..."
+#~ msgstr "أعد التشغيل..."
 
 #~ msgid "Account Information..."
 #~ msgstr "معلومات الحساب..."
 
 #~ msgid "%H:%M"
 #~ msgstr "%OH:%OM"
-
-#~ msgid "Applications"
-#~ msgstr "التطبيقات"
 
 #~ msgid "Recent Documents"
 #~ msgstr "المستندات الحديثة"
@@ -749,9 +965,6 @@ msgstr "‏%1$s:‏ %2$s"
 
 #~ msgid "SEARCH RESULTS"
 #~ msgstr "نتائج البحث"
-
-#~ msgid "Unknown"
-#~ msgstr "مجهول"
 
 #~ msgid "Can't lock screen: %s"
 #~ msgstr "تعذّر إيصاد الشاشة: %s"
