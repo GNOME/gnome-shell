@@ -1100,21 +1100,63 @@ check_for_blending_change:
 }
 
 static void
-_cogl_pipeline_initialize_sparse_state (CoglPipeline *dest,
-                                        CoglPipeline *src,
-                                        CoglPipelineState state)
+_cogl_pipeline_init_multi_property_sparse_state (CoglPipeline *pipeline,
+                                                 CoglPipelineState change)
 {
-  if (dest == src)
+  CoglPipeline *authority;
+
+  g_return_if_fail (change & COGL_PIPELINE_STATE_ALL_SPARSE);
+
+  if (!(change & COGL_PIPELINE_STATE_MULTI_PROPERTY))
     return;
 
-  g_return_if_fail (state & COGL_PIPELINE_STATE_ALL_SPARSE);
+  authority = _cogl_pipeline_get_authority (pipeline, change);
 
-  if (state != COGL_PIPELINE_STATE_LAYERS)
-    _cogl_pipeline_copy_differences (dest, src, state);
-  else
+  switch (change)
     {
-      dest->n_layers = src->n_layers;
-      dest->layer_differences = NULL;
+    /* XXX: avoid using a default: label so we get a warning if we
+     * don't explicitly handle a newly defined state-group here. */
+    case COGL_PIPELINE_STATE_COLOR:
+    case COGL_PIPELINE_STATE_BLEND_ENABLE:
+    case COGL_PIPELINE_STATE_ALPHA_FUNC:
+    case COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE:
+    case COGL_PIPELINE_STATE_POINT_SIZE:
+    case COGL_PIPELINE_STATE_USER_SHADER:
+    case COGL_PIPELINE_STATE_REAL_BLEND_ENABLE:
+      g_return_if_reached ();
+
+    case COGL_PIPELINE_STATE_LAYERS:
+      pipeline->n_layers = authority->n_layers;
+      pipeline->layer_differences = NULL;
+      break;
+    case COGL_PIPELINE_STATE_LIGHTING:
+      {
+        memcpy (&pipeline->big_state->lighting_state,
+                &authority->big_state->lighting_state,
+                sizeof (CoglPipelineLightingState));
+        break;
+      }
+    case COGL_PIPELINE_STATE_BLEND:
+      {
+        memcpy (&pipeline->big_state->blend_state,
+                &authority->big_state->blend_state,
+                sizeof (CoglPipelineBlendState));
+        break;
+      }
+    case COGL_PIPELINE_STATE_DEPTH:
+      {
+        memcpy (&pipeline->big_state->depth_state,
+                &authority->big_state->depth_state,
+                sizeof (CoglPipelineDepthState));
+        break;
+      }
+    case COGL_PIPELINE_STATE_FOG:
+      {
+        memcpy (&pipeline->big_state->fog_state,
+                &authority->big_state->fog_state,
+                sizeof (CoglPipelineFogState));
+        break;
+      }
     }
 }
 
@@ -1170,7 +1212,6 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
                                   const CoglColor  *new_color,
                                   gboolean          from_layer_change)
 {
-  CoglPipeline *authority;
   int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -1354,14 +1395,32 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
 
   pipeline->age++;
 
-  /* If changing a sparse property and if the pipeline isn't already an
-   * authority for the state group being modified then we need to
-   * initialize the corresponding state. */
+  if (change & COGL_PIPELINE_STATE_NEEDS_BIG_STATE &&
+      !pipeline->has_big_state)
+    {
+      pipeline->big_state = g_slice_new (CoglPipelineBigState);
+      pipeline->has_big_state = TRUE;
+    }
+
+  /* Note: conceptually we have just been notified that a single
+   * property value is about to change, but since some state-groups
+   * contain multiple properties and 'pipeline' is about to take over
+   * being the authority for the property's corresponding state-group
+   * we need to maintain the integrity of the other property values
+   * too.
+   *
+   * To ensure this we handle multi-property state-groups by copying
+   * all the values from the old-authority to the new...
+   *
+   * We don't have to worry about non-sparse property groups since
+   * we never take over being an authority for such properties so
+   * they automatically maintain integrity.
+   */
   if (change & COGL_PIPELINE_STATE_ALL_SPARSE &&
       !(pipeline->differences & change))
     {
-      authority = _cogl_pipeline_get_authority (pipeline, change);
-      _cogl_pipeline_initialize_sparse_state (pipeline, authority, change);
+      _cogl_pipeline_init_multi_property_sparse_state (pipeline, change);
+      pipeline->differences |= change;
     }
 
   /* Each pipeline has a sorted cache of the layers it depends on
@@ -1639,82 +1698,73 @@ _cogl_get_n_args_for_combine_func (CoglPipelineCombineFunc func)
 }
 
 static void
-_cogl_pipeline_layer_initialize_state (CoglPipelineLayer *dest,
-                                       CoglPipelineLayer *src,
-                                       unsigned long differences)
+_cogl_pipeline_layer_init_multi_property_sparse_state (
+                                                  CoglPipelineLayer *layer,
+                                                  CoglPipelineLayerState change)
 {
-  CoglPipelineLayerBigState *big_state;
+  CoglPipelineLayer *authority;
 
-  dest->differences |= differences;
-
-  if (differences & COGL_PIPELINE_LAYER_STATE_UNIT)
-    dest->unit_index = src->unit_index;
-
-  if (differences & COGL_PIPELINE_LAYER_STATE_TEXTURE)
-    dest->texture = src->texture;
-
-  if (differences & COGL_PIPELINE_LAYER_STATE_FILTERS)
-    {
-      dest->min_filter = src->min_filter;
-      dest->mag_filter = src->mag_filter;
-    }
-
-  if (differences & COGL_PIPELINE_LAYER_STATE_WRAP_MODES)
-    {
-      dest->wrap_mode_s = src->wrap_mode_s;
-      dest->wrap_mode_t = src->wrap_mode_t;
-      dest->wrap_mode_p = src->wrap_mode_p;
-    }
-
-  if (differences & COGL_PIPELINE_LAYER_STATE_NEEDS_BIG_STATE)
-    {
-      if (!dest->has_big_state)
-        {
-          dest->big_state = g_slice_new (CoglPipelineLayerBigState);
-          dest->has_big_state = TRUE;
-        }
-      big_state = dest->big_state;
-    }
-  else
+  /* Nothing to initialize in these cases since they are all comprised
+   * of one member which we expect to immediately be overwritten. */
+  if (!(change & COGL_PIPELINE_LAYER_STATE_MULTI_PROPERTY))
     return;
 
-  if (differences & COGL_PIPELINE_LAYER_STATE_COMBINE)
+  authority = _cogl_pipeline_layer_get_authority (layer, change);
+
+  switch (change)
     {
-      int n_args;
-      int i;
-      GLint func = src->big_state->texture_combine_rgb_func;
-      big_state->texture_combine_rgb_func = func;
-      n_args = _cogl_get_n_args_for_combine_func (func);
-      for (i = 0; i < n_args; i++)
-        {
-          big_state->texture_combine_rgb_src[i] =
-            src->big_state->texture_combine_rgb_src[i];
-          big_state->texture_combine_rgb_op[i] =
-            src->big_state->texture_combine_rgb_op[i];
-        }
+    /* XXX: avoid using a default: label so we get a warning if we
+     * don't explicitly handle a newly defined state-group here. */
+    case COGL_PIPELINE_LAYER_STATE_UNIT:
+    case COGL_PIPELINE_LAYER_STATE_TEXTURE:
+    case COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS:
+    case COGL_PIPELINE_LAYER_STATE_USER_MATRIX:
+    case COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT:
+      g_return_if_reached ();
 
-      func = src->big_state->texture_combine_alpha_func;
-      big_state->texture_combine_alpha_func = func;
-      n_args = _cogl_get_n_args_for_combine_func (func);
-      for (i = 0; i < n_args; i++)
-        {
-          big_state->texture_combine_alpha_src[i] =
-            src->big_state->texture_combine_alpha_src[i];
-          big_state->texture_combine_alpha_op[i] =
-            src->big_state->texture_combine_alpha_op[i];
-        }
+    /* XXX: technically we could probably even consider these as
+     * single property state-groups from the pov that currently the
+     * corresponding property setters always update all of the values
+     * at the same time. */
+    case COGL_PIPELINE_LAYER_STATE_FILTERS:
+      layer->min_filter = authority->min_filter;
+      layer->mag_filter = authority->mag_filter;
+      break;
+    case COGL_PIPELINE_LAYER_STATE_WRAP_MODES:
+      layer->wrap_mode_s = authority->wrap_mode_s;
+      layer->wrap_mode_t = authority->wrap_mode_t;
+      layer->wrap_mode_p = authority->wrap_mode_p;
+      break;
+    case COGL_PIPELINE_LAYER_STATE_COMBINE:
+      {
+        int n_args;
+        int i;
+        CoglPipelineLayerBigState *big_state = layer->big_state;
+        GLint func = big_state->texture_combine_rgb_func;
+
+        big_state->texture_combine_rgb_func = func;
+        n_args = _cogl_get_n_args_for_combine_func (func);
+        for (i = 0; i < n_args; i++)
+          {
+            big_state->texture_combine_rgb_src[i] =
+              authority->big_state->texture_combine_rgb_src[i];
+            big_state->texture_combine_rgb_op[i] =
+              authority->big_state->texture_combine_rgb_op[i];
+          }
+
+        func = authority->big_state->texture_combine_alpha_func;
+        big_state->texture_combine_alpha_func = func;
+        n_args = _cogl_get_n_args_for_combine_func (func);
+        for (i = 0; i < n_args; i++)
+          {
+            big_state->texture_combine_alpha_src[i] =
+              authority->big_state->texture_combine_alpha_src[i];
+            big_state->texture_combine_alpha_op[i] =
+              authority->big_state->texture_combine_alpha_op[i];
+          }
+        break;
+      }
     }
-
-  if (differences & COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT)
-    memcpy (dest->big_state->texture_combine_constant,
-            src->big_state->texture_combine_constant,
-            sizeof (float) * 4);
-
-  if (differences & COGL_PIPELINE_LAYER_STATE_USER_MATRIX)
-    dest->big_state->matrix = src->big_state->matrix;
-
-  if (differences & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS)
-    dest->big_state->point_sprite_coords = src->big_state->point_sprite_coords;
 }
 
 /* NB: This function will allocate a new derived layer if you are
@@ -1732,7 +1782,6 @@ _cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
                                         CoglPipelineLayerState change)
 {
   CoglTextureUnit *unit;
-  CoglPipelineLayer *authority;
 
   /* Identify the case where the layer is new with no owner or
    * dependants and so we don't need to do anything. */
@@ -1792,11 +1841,33 @@ init_layer_state:
   if (required_owner)
     required_owner->age++;
 
-  /* If the pipeline isn't already an authority for the state group
-   * being modified then we need to initialize the corresponding
-   * state. */
-  authority = _cogl_pipeline_layer_get_authority (layer, change);
-  _cogl_pipeline_layer_initialize_state (layer, authority, change);
+  if (change & COGL_PIPELINE_LAYER_STATE_NEEDS_BIG_STATE &&
+      !layer->has_big_state)
+    {
+      layer->big_state = g_slice_new (CoglPipelineLayerBigState);
+      layer->has_big_state = TRUE;
+    }
+
+  /* Note: conceptually we have just been notified that a single
+   * property value is about to change, but since some state-groups
+   * contain multiple properties and 'layer' is about to take over
+   * being the authority for the property's corresponding state-group
+   * we need to maintain the integrity of the other property values
+   * too.
+   *
+   * To ensure this we handle multi-property state-groups by copying
+   * all the values from the old-authority to the new...
+   *
+   * We don't have to worry about non-sparse property groups since
+   * we never take over being an authority for such properties so
+   * they automatically maintain integrity.
+   */
+  if (change & COGL_PIPELINE_LAYER_STATE_ALL_SPARSE &&
+      !(layer->differences & change))
+    {
+      _cogl_pipeline_layer_init_multi_property_sparse_state (layer, change);
+      layer->differences |= change;
+    }
 
   return layer;
 }
