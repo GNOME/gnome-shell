@@ -72,7 +72,7 @@ cogl_object_unref (void *object)
             {
               CoglUserDataEntry *entry = &obj->user_data_entry[i];
               if (entry->destroy)
-                entry->destroy (entry->user_data);
+                entry->destroy (entry->user_data, obj);
             }
 
           if (obj->user_data_array != NULL)
@@ -84,7 +84,7 @@ cogl_object_unref (void *object)
                                     CoglUserDataEntry, i);
 
                   if (entry->destroy)
-                    entry->destroy (entry->user_data);
+                    entry->destroy (entry->user_data, obj);
                 }
               g_array_free (obj->user_data_array, TRUE);
             }
@@ -157,10 +157,10 @@ _cogl_object_find_entry (CoglObject *object, CoglUserDataKey *key)
 }
 
 void
-cogl_object_set_user_data (CoglObject *object,
-                           CoglUserDataKey *key,
-                           void *user_data,
-                           CoglUserDataDestroyCallback destroy)
+_cogl_object_set_user_data (CoglObject *object,
+                            CoglUserDataKey *key,
+                            void *user_data,
+                            CoglUserDataDestroyInternalCallback destroy)
 {
   CoglUserDataEntry new_entry;
   CoglUserDataEntry *entry;
@@ -178,7 +178,7 @@ cogl_object_set_user_data (CoglObject *object,
   if (entry)
     {
       if (G_LIKELY (entry->destroy))
-        entry->destroy (entry->user_data);
+        entry->destroy (entry->user_data, object);
     }
   else
     {
@@ -204,6 +204,16 @@ cogl_object_set_user_data (CoglObject *object,
     }
 
   *entry = new_entry;
+}
+
+void
+cogl_object_set_user_data (CoglObject *object,
+                           CoglUserDataKey *key,
+                           void *user_data,
+                           CoglUserDataDestroyCallback destroy)
+{
+  _cogl_object_set_user_data (object, key, user_data,
+                              (CoglUserDataDestroyInternalCallback)destroy);
 }
 
 void *
