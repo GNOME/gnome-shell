@@ -1509,7 +1509,7 @@ clutter_model_foreach (ClutterModel            *model,
  */
 void
 clutter_model_set_sort (ClutterModel         *model,
-                        guint                 column,
+                        gint                  column,
                         ClutterModelSortFunc  func,
                         gpointer              user_data,
                         GDestroyNotify        notify)

@@ -244,7 +244,7 @@ void                  clutter_model_foreach            (ClutterModel     *model,
                                                         ClutterModelForeachFunc func, 
                                                         gpointer          user_data);
 void                  clutter_model_set_sort           (ClutterModel     *model, 
-                                                        guint             column,
+                                                        gint              column,
                                                         ClutterModelSortFunc func, 
                                                         gpointer          user_data,
                                                         GDestroyNotify    notify);
