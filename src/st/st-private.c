@@ -422,44 +422,31 @@ calculate_gaussian_kernel (gdouble   sigma,
   return ret;
 }
 
-CoglHandle
-_st_create_shadow_material (StShadow   *shadow_spec,
-                            CoglHandle  src_texture)
+static guchar *
+blur_pixels (guchar  *pixels_in,
+             gint     width_in,
+             gint     height_in,
+             gint     rowstride_in,
+             gdouble  blur,
+             gint    *width_out,
+             gint    *height_out,
+             gint    *rowstride_out)
 {
-  static CoglHandle shadow_material_template = COGL_INVALID_HANDLE;
-
-  CoglHandle  material;
-  CoglHandle  texture;
-  guchar     *pixels_in, *pixels_out;
-  gint        width_in, height_in, rowstride_in;
-  gint        width_out, height_out, rowstride_out;
-  float       sigma;
-
-  g_return_val_if_fail (shadow_spec != NULL, COGL_INVALID_HANDLE);
-  g_return_val_if_fail (src_texture != COGL_INVALID_HANDLE,
-                        COGL_INVALID_HANDLE);
+  guchar *pixels_out;
+  float   sigma;
 
   /* we use an approximation of the sigma - blur radius relationship used
      in Firefox for doing SVG blurs; see
      http://mxr.mozilla.org/mozilla-central/source/gfx/thebes/src/gfxBlur.cpp#280
   */
-  sigma = shadow_spec->blur / 1.9;
+  sigma = blur / 1.9;
 
-  width_in  = cogl_texture_get_width  (src_texture);
-  height_in = cogl_texture_get_height (src_texture);
-  rowstride_in = (width_in + 3) & ~3;
-
-  pixels_in  = g_malloc0 (rowstride_in * height_in);
-
-  cogl_texture_get_data (src_texture, COGL_PIXEL_FORMAT_A_8,
-                         rowstride_in, pixels_in);
-
-  if ((guint) shadow_spec->blur == 0)
+  if ((guint) blur == 0)
     {
-      width_out  = width_in;
-      height_out = height_in;
-      rowstride_out = rowstride_in;
-      pixels_out = g_memdup (pixels_in, rowstride_out * height_out);
+      *width_out  = width_in;
+      *height_out = height_in;
+      *rowstride_out = rowstride_in;
+      pixels_out = g_memdup (pixels_in, *rowstride_out * *height_out);
     }
   else
     {
@@ -471,18 +458,18 @@ _st_create_shadow_material (StShadow   *shadow_spec,
       n_values = (gint) 5 * sigma;
       half = n_values / 2;
 
-      width_out  = width_in  + 2 * half;
-      height_out = height_in + 2 * half;
-      rowstride_out = (width_out + 3) & ~3;
+      *width_out  = width_in  + 2 * half;
+      *height_out = height_in + 2 * half;
+      *rowstride_out = (*width_out + 3) & ~3;
 
-      pixels_out = g_malloc0 (rowstride_out * height_out);
-      line       = g_malloc0 (rowstride_out);
+      pixels_out = g_malloc0 (*rowstride_out * *height_out);
+      line       = g_malloc0 (*rowstride_out);
 
       kernel = calculate_gaussian_kernel (sigma, n_values);
 
       /* vertical blur */
       for (x_in = 0; x_in < width_in; x_in++)
-        for (y_out = 0; y_out < height_out; y_out++)
+        for (y_out = 0; y_out < *height_out; y_out++)
           {
             guchar *pixel_in, *pixel_out;
             gint i0, i1;
@@ -496,7 +483,7 @@ _st_create_shadow_material (StShadow   *shadow_spec,
             i1 = MIN (height_in + half - y_in, n_values);
 
             pixel_in  =  pixels_in + (y_in + i0 - half) * rowstride_in + x_in;
-            pixel_out =  pixels_out + y_out * rowstride_out + (x_in + half);
+            pixel_out =  pixels_out + y_out * *rowstride_out + (x_in + half);
 
             for (i = i0; i < i1; i++)
               {
@@ -506,11 +493,11 @@ _st_create_shadow_material (StShadow   *shadow_spec,
           }
 
       /* horizontal blur */
-      for (y_out = 0; y_out < height_out; y_out++)
+      for (y_out = 0; y_out < *height_out; y_out++)
         {
-          memcpy (line, pixels_out + y_out * rowstride_out, rowstride_out);
+          memcpy (line, pixels_out + y_out * *rowstride_out, *rowstride_out);
 
-          for (x_out = 0; x_out < width_out; x_out++)
+          for (x_out = 0; x_out < *width_out; x_out++)
             {
               gint i0, i1;
               guchar *pixel_out, *pixel_in;
@@ -519,10 +506,10 @@ _st_create_shadow_material (StShadow   *shadow_spec,
                * full i range [0, n_values) so that x is in [0, width_out).
                */
               i0 = MAX (half - x_out, 0);
-              i1 = MIN (width_out + half - x_out, n_values);
+              i1 = MIN (*width_out + half - x_out, n_values);
 
               pixel_in  = line + x_out + i0 - half;
-              pixel_out = pixels_out + rowstride_out * y_out + x_out;
+              pixel_out = pixels_out + *rowstride_out * y_out + x_out;
 
               *pixel_out = 0;
               for (i = i0; i < i1; i++)
@@ -536,6 +523,39 @@ _st_create_shadow_material (StShadow   *shadow_spec,
       g_free (line);
     }
 
+  return pixels_out;
+}
+
+CoglHandle
+_st_create_shadow_material (StShadow   *shadow_spec,
+                            CoglHandle  src_texture)
+{
+  static CoglHandle shadow_material_template = COGL_INVALID_HANDLE;
+
+  CoglHandle  material;
+  CoglHandle  texture;
+  guchar     *pixels_in, *pixels_out;
+  gint        width_in, height_in, rowstride_in;
+  gint        width_out, height_out, rowstride_out;
+
+  g_return_val_if_fail (shadow_spec != NULL, COGL_INVALID_HANDLE);
+  g_return_val_if_fail (src_texture != COGL_INVALID_HANDLE,
+                        COGL_INVALID_HANDLE);
+
+  width_in  = cogl_texture_get_width  (src_texture);
+  height_in = cogl_texture_get_height (src_texture);
+  rowstride_in = (width_in + 3) & ~3;
+
+  pixels_in  = g_malloc0 (rowstride_in * height_in);
+
+  cogl_texture_get_data (src_texture, COGL_PIXEL_FORMAT_A_8,
+                         rowstride_in, pixels_in);
+
+  pixels_out = blur_pixels (pixels_in, width_in, height_in, rowstride_in,
+                            shadow_spec->blur,
+                            &width_out, &height_out, &rowstride_out);
+  g_free (pixels_in);
+
   texture = cogl_texture_new_from_data (width_out,
                                         height_out,
                                         COGL_TEXTURE_NONE,
@@ -544,7 +564,6 @@ _st_create_shadow_material (StShadow   *shadow_spec,
                                         rowstride_out,
                                         pixels_out);
 
-  g_free (pixels_in);
   g_free (pixels_out);
 
   if (G_UNLIKELY (shadow_material_template == COGL_INVALID_HANDLE))
