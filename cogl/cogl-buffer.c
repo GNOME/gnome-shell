@@ -57,10 +57,12 @@
 #define glBufferSubData ctx->drv.pf_glBufferSubData
 #define glGetBufferSubData ctx->drv.pf_glGetBufferSubData
 #define glDeleteBuffers ctx->drv.pf_glDeleteBuffers
-#define glMapBuffer ctx->drv.pf_glMapBuffer
-#define glUnmapBuffer ctx->drv.pf_glUnmapBuffer
 
 #endif
+
+/* These two are always accessed through an extension, even on GLES */
+#define glMapBuffer ctx->drv.pf_glMapBuffer
+#define glUnmapBuffer ctx->drv.pf_glUnmapBuffer
 
 #ifndef GL_PIXEL_PACK_BUFFER
 #define GL_PIXEL_PACK_BUFFER 0x88EB
@@ -73,6 +75,15 @@
 #endif
 #ifndef GL_ELEMENT_ARRAY_BUFFER
 #define GL_ARRAY_BUFFER 0x8893
+#endif
+#ifndef GL_READ_ONLY
+#define GL_READ_ONLY 0x88B8
+#endif
+#ifndef GL_WRITE_ONLY
+#define GL_WRITE_ONLY 0x88B9
+#endif
+#ifndef GL_READ_WRITE
+#define GL_READ_WRITE 0x88BA
 #endif
 
 /* XXX:
@@ -131,12 +142,18 @@ bo_map (CoglBuffer       *buffer,
         CoglBufferAccess  access,
         CoglBufferMapHint hints)
 {
-#ifndef COGL_HAS_GLES
   guint8 *data;
   CoglBufferBindTarget target;
   GLenum gl_target;
 
   _COGL_GET_CONTEXT (ctx, NULL);
+
+  if ((access & COGL_BUFFER_ACCESS_READ) &&
+      !cogl_features_available (COGL_FEATURE_MAP_BUFFER_FOR_READ))
+    return NULL;
+  if ((access & COGL_BUFFER_ACCESS_WRITE) &&
+      !cogl_features_available (COGL_FEATURE_MAP_BUFFER_FOR_WRITE))
+    return NULL;
 
   target = buffer->last_target;
   _cogl_buffer_bind (buffer, target);
@@ -164,18 +181,11 @@ bo_map (CoglBuffer       *buffer,
   _cogl_buffer_unbind (buffer);
 
   return data;
-
-#else /* COGL_HAS_GLES */
-
-  return NULL;
-
-#endif /* COGL_HAS_GLES */
 }
 
 static void
 bo_unmap (CoglBuffer *buffer)
 {
-#ifndef COGL_HAS_GLES
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   _cogl_buffer_bind (buffer, buffer->last_target);
@@ -184,9 +194,6 @@ bo_unmap (CoglBuffer *buffer)
   buffer->flags &= ~COGL_BUFFER_FLAG_MAPPED;
 
   _cogl_buffer_unbind (buffer);
-#else
-  g_return_if_reached ();
-#endif
 }
 
 static gboolean
@@ -306,16 +313,6 @@ _cogl_buffer_fini (CoglBuffer *buffer)
     g_free (buffer->data);
 }
 
-/* OpenGL ES 1.1 and 2 have a GL_OES_mapbuffer extension that is able to map
- * VBOs for write only, we don't support that in CoglBuffer */
-#if defined (COGL_HAS_GLES)
-GLenum
-_cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
-{
-  return 0;
-}
-
-#else
 GLenum
 _cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
 {
@@ -326,7 +323,6 @@ _cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
   else
     return GL_READ_ONLY;
 }
-#endif
 
 /* OpenGL ES 1.1 and 2 only know about STATIC_DRAW and DYNAMIC_DRAW */
 #if defined (COGL_HAS_GLES)
