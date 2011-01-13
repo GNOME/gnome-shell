@@ -133,6 +133,10 @@ gboolean st_theme_node_lookup_length (StThemeNode *node,
                                       const char  *property_name,
                                       gboolean     inherit,
                                       gdouble     *length);
+gboolean st_theme_node_lookup_shadow (StThemeNode  *node,
+                                      const char   *property_name,
+                                      gboolean      inherit,
+                                      StShadow    **shadow);
 
 /* Easier-to-use variants of the above, for application-level use */
 void          st_theme_node_get_color  (StThemeNode  *node,
@@ -141,6 +145,8 @@ void          st_theme_node_get_color  (StThemeNode  *node,
 gdouble       st_theme_node_get_double (StThemeNode  *node,
                                         const char   *property_name);
 gdouble       st_theme_node_get_length (StThemeNode  *node,
+                                        const char   *property_name);
+StShadow     *st_theme_node_get_shadow (StThemeNode  *node,
                                         const char   *property_name);
 
 /* Specific getters for particular properties: cached
@@ -195,8 +201,10 @@ StTextAlign st_theme_node_get_text_align (StThemeNode *node);
 const PangoFontDescription *st_theme_node_get_font (StThemeNode *node);
 
 StBorderImage *st_theme_node_get_border_image (StThemeNode *node);
-StShadow      *st_theme_node_get_shadow       (StThemeNode *node);
+StShadow      *st_theme_node_get_box_shadow   (StThemeNode *node);
 StShadow      *st_theme_node_get_text_shadow  (StThemeNode *node);
+
+StShadow      *st_theme_node_get_background_image_shadow (StThemeNode *node);
 
 StIconColors  *st_theme_node_get_icon_colors  (StThemeNode *node);
 

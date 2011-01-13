@@ -93,14 +93,14 @@ function addGradientCase(direction, borderWidth, borderRadius, extra) {
     framedGradients.add(gradientBox, { x_fill: false, y_fill: false } );
 }
 
-addGradientCase ('horizontal', 0, 5,  '-st-shadow: 0px 0px 0px 0px rgba(0,0,0,0.5);');
-addGradientCase ('horizontal', 2, 5,  '-st-shadow: 0px 2px 0px 0px rgba(0,255,0,0.5);');
-addGradientCase ('horizontal', 5, 2,  '-st-shadow: 2px 0px 0px 0px rgba(0,0,255,0.5);');
-addGradientCase ('horizontal', 5, 20, '-st-shadow: 0px 0px 4px 0px rgba(255,0,0,0.5);');
-addGradientCase ('vertical', 0, 5,    '-st-shadow: 0px 0px 0px 4px rgba(0,0,0,0.5);');
-addGradientCase ('vertical', 2, 5,    '-st-shadow: 0px 0px 4px 4px rgba(0,0,0,0.5);');
-addGradientCase ('vertical', 5, 2,    '-st-shadow: -2px -2px 6px 0px rgba(0,0,0,0.5);');
-addGradientCase ('vertical', 5, 20,   '-st-shadow: -2px -2px 0px 6px rgba(0,0,0,0.5);');
+addGradientCase ('horizontal', 0, 5,  'box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.5);');
+addGradientCase ('horizontal', 2, 5,  'box-shadow: 0px 2px 0px 0px rgba(0,255,0,0.5);');
+addGradientCase ('horizontal', 5, 2,  'box-shadow: 2px 0px 0px 0px rgba(0,0,255,0.5);');
+addGradientCase ('horizontal', 5, 20, 'box-shadow: 0px 0px 4px 0px rgba(255,0,0,0.5);');
+addGradientCase ('vertical', 0, 5,    'box-shadow: 0px 0px 0px 4px rgba(0,0,0,0.5);');
+addGradientCase ('vertical', 2, 5,    'box-shadow: 0px 0px 4px 4px rgba(0,0,0,0.5);');
+addGradientCase ('vertical', 5, 2,    'box-shadow: -2px -2px 6px 0px rgba(0,0,0,0.5);');
+addGradientCase ('vertical', 5, 20,   'box-shadow: -2px -2px 0px 6px rgba(0,0,0,0.5);');
 
 box.add(new St.Label({ text: "Rounded, framed, shadowed images" }));
 
@@ -119,15 +119,15 @@ function addBackgroundImageCase(borderWidth, borderRadius, width, height, extra)
 }
 
 addBackgroundImageCase (0, 0, 32, 32, 'background-position: 2px 5px');
-addBackgroundImageCase (0, 0, 16, 16, '-st-shadow: 1px 1px 4px 0px rgba(0,0,0,0.5); background-color: rgba(0,0,0,0)');
-addBackgroundImageCase (0, 5, 32, 32, '-st-shadow: 0px 0px 0px 0px rgba(0,0,0,0.5);');
-addBackgroundImageCase (2, 5, 32, 32, '-st-shadow: 0px 2px 0px 0px rgba(0,255,0,0.5);');
-addBackgroundImageCase (5, 2, 32, 32, '-st-shadow: 2px 0px 0px 0px rgba(0,0,255,0.5);');
-addBackgroundImageCase (5, 20, 32, 32, '-st-shadow: 0px 0px 4px 0px rgba(255,0,0,0.5);');
-addBackgroundImageCase (0, 5, 48, 48, '-st-shadow: 0px 0px 0px 4px rgba(0,0,0,0.5);');
-addBackgroundImageCase (5, 5, 48, 48, '-st-shadow: 0px 0px 4px 4px rgba(0,0,0,0.5);');
-addBackgroundImageCase (0, 5, 64, 64, '-st-shadow: -2px -2px 6px 0px rgba(0,0,0,0.5);');
-addBackgroundImageCase (5, 5, 64, 64, '-st-shadow: -2px -2px 0px 6px rgba(0,0,0,0.5);');
+addBackgroundImageCase (0, 0, 16, 16, '-st-background-image-shadow: 1px 1px 4px 0px rgba(0,0,0,0.5); background-color: rgba(0,0,0,0)');
+addBackgroundImageCase (0, 5, 32, 32, '-st-background-image-shadow: 0px 0px 0px 0px rgba(0,0,0,0.5);');
+addBackgroundImageCase (2, 5, 32, 32, '-st-background-image-shadow: 0px 2px 0px 0px rgba(0,255,0,0.5);');
+addBackgroundImageCase (5, 2, 32, 32, '-st-background-image-shadow: 2px 0px 0px 0px rgba(0,0,255,0.5);');
+addBackgroundImageCase (5, 20, 32, 32, '-st-background-image-shadow: 0px 0px 4px 0px rgba(255,0,0,0.5);');
+addBackgroundImageCase (0, 5, 48, 48, '-st-background-image-shadow: 0px 0px 0px 4px rgba(0,0,0,0.5);');
+addBackgroundImageCase (5, 5, 48, 48, '-st-background-image-shadow: 0px 0px 4px 4px rgba(0,0,0,0.5);');
+addBackgroundImageCase (0, 5, 64, 64, '-st-background-image-shadow: -2px -2px 6px 0px rgba(0,0,0,0.5);');
+addBackgroundImageCase (5, 5, 64, 64, '-st-background-image-shadow: -2px -2px 0px 6px rgba(0,0,0,0.5);');
 addBackgroundImageCase (0, 5, 32, 32, 'background-position: 2px 5px');
 
 stage.show();

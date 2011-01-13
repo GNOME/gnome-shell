@@ -637,8 +637,8 @@ _st_theme_node_free_drawing_state (StThemeNode  *node)
     cogl_handle_unref (node->border_texture);
   if (node->border_material != COGL_INVALID_HANDLE)
     cogl_handle_unref (node->border_material);
-  if (node->border_shadow_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->border_shadow_material);
+  if (node->box_shadow_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->box_shadow_material);
 
   for (corner_id = 0; corner_id < 4; corner_id++)
     if (node->corner_material[corner_id] != COGL_INVALID_HANDLE)
@@ -655,7 +655,7 @@ _st_theme_node_init_drawing_state (StThemeNode *node)
   node->background_texture = COGL_INVALID_HANDLE;
   node->background_material = COGL_INVALID_HANDLE;
   node->background_shadow_material = COGL_INVALID_HANDLE;
-  node->border_shadow_material = COGL_INVALID_HANDLE;
+  node->box_shadow_material = COGL_INVALID_HANDLE;
   node->border_texture = COGL_INVALID_HANDLE;
   node->border_material = COGL_INVALID_HANDLE;
 
@@ -674,7 +674,8 @@ st_theme_node_render_resources (StThemeNode   *node,
 {
   StTextureCache *texture_cache;
   StBorderImage *border_image;
-  StShadow *shadow_spec;
+  StShadow *box_shadow_spec;
+  StShadow *background_image_shadow_spec;
   const char *background_image;
 
   texture_cache = st_texture_cache_get_default ();
@@ -691,7 +692,7 @@ st_theme_node_render_resources (StThemeNode   *node,
   _st_theme_node_ensure_background (node);
   _st_theme_node_ensure_geometry (node);
 
-  shadow_spec = st_theme_node_get_shadow (node);
+  box_shadow_spec = st_theme_node_get_box_shadow (node);
 
   /* Load referenced images from disk and draw anything we need with cairo now */
 
@@ -714,11 +715,11 @@ st_theme_node_render_resources (StThemeNode   *node,
   else
     node->border_material = COGL_INVALID_HANDLE;
 
-  if (shadow_spec)
+  if (box_shadow_spec)
     {
       if (node->border_texture != COGL_INVALID_HANDLE)
-        node->border_shadow_material = _st_create_shadow_material (shadow_spec,
-                                                                   node->border_texture);
+        node->box_shadow_material = _st_create_shadow_material (box_shadow_spec,
+                                                                node->border_texture);
       else if (node->background_color.alpha > 0 ||
                node->border_width[ST_SIDE_TOP] > 0 ||
                node->border_width[ST_SIDE_LEFT] > 0 ||
@@ -743,23 +744,25 @@ st_theme_node_render_resources (StThemeNode   *node,
               cogl_pop_framebuffer ();
               cogl_handle_unref (offscreen);
 
-              node->border_shadow_material = _st_create_shadow_material (shadow_spec,
-                                                                         buffer);
+              node->box_shadow_material = _st_create_shadow_material (box_shadow_spec,
+                                                                      buffer);
             }
           cogl_handle_unref (buffer);
         }
     }
 
   background_image = st_theme_node_get_background_image (node);
+  background_image_shadow_spec = st_theme_node_get_background_image_shadow (node);
+
   if (background_image != NULL)
     {
 
       node->background_texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, background_image);
       node->background_material = _st_create_texture_material (node->background_texture);
 
-      if (shadow_spec)
+      if (background_image_shadow_spec)
         {
-          node->background_shadow_material = _st_create_shadow_material (shadow_spec,
+          node->background_shadow_material = _st_create_shadow_material (background_image_shadow_spec,
                                                                          node->background_texture);
         }
     }
@@ -1240,9 +1243,9 @@ st_theme_node_paint (StThemeNode           *node,
    * border_image and a single background image above it.
    */
 
-  if (node->border_shadow_material)
-    _st_paint_shadow_with_opacity (node->shadow,
-                                   node->border_shadow_material,
+  if (node->box_shadow_material)
+    _st_paint_shadow_with_opacity (node->box_shadow,
+                                   node->box_shadow_material,
                                    &allocation,
                                    paint_opacity);
 
@@ -1278,7 +1281,7 @@ st_theme_node_paint (StThemeNode           *node,
        * like boder and background color into account).
        */
       if (node->background_shadow_material != COGL_INVALID_HANDLE)
-        _st_paint_shadow_with_opacity (node->shadow,
+        _st_paint_shadow_with_opacity (node->background_image_shadow,
                                        node->background_shadow_material,
                                        &background_box,
                                        paint_opacity);
@@ -1316,8 +1319,8 @@ st_theme_node_copy_cached_paint_state (StThemeNode *node,
 
   if (other->background_shadow_material)
     node->background_shadow_material = cogl_handle_ref (other->background_shadow_material);
-  if (other->border_shadow_material)
-    node->border_shadow_material = cogl_handle_ref (other->border_shadow_material);
+  if (other->box_shadow_material)
+    node->box_shadow_material = cogl_handle_ref (other->box_shadow_material);
   if (other->background_texture)
     node->background_texture = cogl_handle_ref (other->background_texture);
   if (other->background_material)
