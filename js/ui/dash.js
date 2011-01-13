@@ -86,8 +86,6 @@ Dash.prototype = {
         this._dragPlaceholderPos = -1;
         this._favRemoveTarget = null;
 
-        this._favorites = [];
-
         this._box = new St.BoxLayout({ name: 'dash',
                                        vertical: true,
                                        clip_to_allocation: true });
@@ -193,7 +191,7 @@ Dash.prototype = {
         Main.queueDeferredWork(this._workId);
     },
 
-    _addApp: function(app) {
+    _addApp: function(app, pos) {
         let display = new AppDisplay.AppWellIcon(app,
                                                  { setSizeManually: true,
                                                    showLabel: false });
@@ -207,7 +205,7 @@ Dash.prototype = {
                                    }));
         display.icon.setIconSize(this._iconSize);
 
-        this._box.add(display.actor);
+        this._box.insert_actor(display.actor, pos);
     },
 
     _adjustIconSize: function() {
@@ -251,9 +249,6 @@ Dash.prototype = {
     },
 
     _redisplay: function () {
-        this._box.hide();
-        this._box.destroy_children();
-
         let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
 
         /* hardcode here pending some design about how exactly desktop contexts behave */
@@ -261,20 +256,97 @@ Dash.prototype = {
 
         let running = this._tracker.get_running_apps(contextId);
 
-        for (let id in favorites) {
-            let app = favorites[id];
-            this._addApp(app);
-        }
+        let children = this._box.get_children().filter(function(actor) {
+                return actor._delegate && actor._delegate.app;
+            });
+        // Apps currently in the dash
+        let oldApps = children.map(function(actor) {
+                return actor._delegate.app;
+            });
+        // Apps supposed to be in the dash
+        let newApps = [];
+
+        for (let id in favorites)
+            newApps.push(favorites[id]);
 
         for (let i = 0; i < running.length; i++) {
             let app = running[i];
             if (app.get_id() in favorites)
                 continue;
-            this._addApp(app);
+            newApps.push(app);
         }
 
+        // Figure out the actual changes to the list of items; we iterate
+        // over both the list of items currently in the dash and the list
+        // of items expected there, and collect additions and removals.
+        // Moves are both an addition and a removal, where the order of
+        // the operations depends on whether we encounter the position
+        // where the item has been added first or the one from where it
+        // was removed.
+        // There is an assumption that only one item is moved at a given
+        // time; when moving several items at once, everything will still
+        // end up at the right position, but there might be additional
+        // additions/removals (e.g. it might remove all the launchers
+        // and add them back in the new order even if a smaller set of
+        // additions and removals is possible).
+        // If above assumptions turns out to be a problem, we might need
+        // to use a more sophisticated algorithm, e.g. Longest Common
+        // Subsequence as used by diff.
+        let addedItems = [];
+        let removedActors = [];
+
+        let newIndex = 0;
+        let oldIndex = 0;
+        while (newIndex < newApps.length || oldIndex < oldApps.length) {
+            // No change at oldIndex/newIndex
+            if (oldApps[oldIndex] == newApps[newIndex]) {
+                oldIndex++;
+                newIndex++;
+                continue;
+            }
+
+            // App removed at oldIndex
+            if (oldApps[oldIndex] &&
+                newApps.indexOf(oldApps[oldIndex]) == -1) {
+                removedActors.push(children[oldIndex]);
+                oldIndex++;
+                continue;
+            }
+
+            // App added at newIndex
+            if (newApps[newIndex] &&
+                oldApps.indexOf(newApps[newIndex]) == -1) {
+                addedItems.push({ app: newApps[newIndex],
+                                  pos: newIndex });
+                newIndex++;
+                continue;
+            }
+
+            // App moved
+            let insertHere = newApps[newIndex + 1] &&
+                             newApps[newIndex + 1] == oldApps[oldIndex];
+            let alreadyRemoved = removedActors.reduce(function(result, actor) {
+                let removedApp = actor._delegate.app;
+                return result || removedApp == newApps[newIndex];
+            }, false);
+
+            if (insertHere || alreadyRemoved) {
+                addedItems.push({ app: newApps[newIndex],
+                                  pos: newIndex + removedActors.length });
+                newIndex++;
+            } else {
+                removedActors.push(children[oldIndex]);
+                oldIndex++;
+            }
+        }
+
+        for (let i = 0; i < addedItems.length; i++)
+            this._addApp(addedItems[i].app, addedItems[i].pos);
+
+        for (let i = 0; i < removedActors.length; i++)
+            removedActors[i].destroy();
+
         this._adjustIconSize();
-        this._box.show();
     },
 
     _clearDragPlaceholder: function() {
