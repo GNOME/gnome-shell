@@ -292,9 +292,12 @@ cogl_create_context (void)
      layer. Therefore it seems like it should be ok to just leave it
      enabled all the time instead of having to have a set property on
      each pipeline to track whether any layers have point sprite
-     coords enabled */
+     coords enabled. We don't need to do this for GLES2 because point
+     sprites are handled using a builtin varying in the shader. */
+#ifndef HAVE_COGL_GLES2
   if (cogl_features_available (COGL_FEATURE_POINT_SPRITE))
     GE (glEnable (GL_POINT_SPRITE));
+#endif
 
   return TRUE;
 }
