@@ -1484,9 +1484,8 @@ _cogl_path_build_stroke_vbo (CoglPath *path)
                                             sizeof (floatVec2),
                                             NULL);
 
-  vbo_p = cogl_buffer_map (COGL_BUFFER (data->stroke_vbo),
-                           COGL_BUFFER_ACCESS_WRITE,
-                           COGL_BUFFER_MAP_HINT_DISCARD);
+  vbo_p =
+    _cogl_buffer_map_for_fill_or_fallback (COGL_BUFFER (data->stroke_vbo));
 
   /* Copy the vertices in and count the number of sub paths. Each sub
      path will form a separate attribute so we can paint the disjoint
@@ -1506,7 +1505,7 @@ _cogl_path_build_stroke_vbo (CoglPath *path)
       n_attributes++;
     }
 
-  cogl_buffer_unmap (COGL_BUFFER (data->stroke_vbo));
+  _cogl_buffer_unmap_for_fill_or_fallback (COGL_BUFFER (data->stroke_vbo));
 
   data->stroke_vbo_attributes = g_new (CoglVertexAttribute *, n_attributes);
 

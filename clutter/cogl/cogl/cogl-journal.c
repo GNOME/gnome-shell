@@ -1058,8 +1058,7 @@ upload_vertices (const CoglJournalEntry *entries,
   buffer = COGL_BUFFER (array);
   cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_STATIC);
 
-  vout = cogl_buffer_map (buffer, COGL_BUFFER_ACCESS_WRITE,
-                          COGL_BUFFER_MAP_HINT_DISCARD);
+  vout = _cogl_buffer_map_for_fill_or_fallback (buffer);
   vin = &g_array_index (vertices, float, 0);
 
   /* Expand the number of vertices from 2 to 4 while uploading */
@@ -1128,7 +1127,7 @@ upload_vertices (const CoglJournalEntry *entries,
       vout += vb_stride * 4;
     }
 
-  cogl_buffer_unmap (buffer);
+  _cogl_buffer_unmap_for_fill_or_fallback (buffer);
 
   return array;
 }
