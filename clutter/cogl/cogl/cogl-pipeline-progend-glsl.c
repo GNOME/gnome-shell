@@ -56,6 +56,37 @@
 #define glUniform1f          ctx->drv.pf_glUniform1f
 #define glUniform4fv         ctx->drv.pf_glUniform4fv
 
+#else
+
+/* These are used to generalise updating some uniforms that are
+   required when building for GLES2 */
+
+typedef void (* UpdateUniformFunc) (CoglPipeline *pipeline,
+                                    int uniform_location,
+                                    void *getter_func);
+
+static void update_float_uniform (CoglPipeline *pipeline,
+                                  int uniform_location,
+                                  void *getter_func);
+
+typedef struct
+{
+  const char *uniform_name;
+  void *getter_func;
+  UpdateUniformFunc update_func;
+  CoglPipelineState change;
+} BuiltinUniformData;
+
+static BuiltinUniformData builtin_uniforms[] =
+  {
+    { "cogl_point_size_in",
+      cogl_pipeline_get_point_size, update_float_uniform,
+      COGL_PIPELINE_STATE_POINT_SIZE },
+    { "_cogl_alpha_test_ref",
+      cogl_pipeline_get_alpha_test_reference, update_float_uniform,
+      COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE }
+  };
+
 #endif /* HAVE_COGL_GLES2 */
 
 const CoglPipelineProgend _cogl_pipeline_glsl_progend;
@@ -90,13 +121,8 @@ typedef struct
   int n_tex_coord_attribs;
 
 #ifdef HAVE_COGL_GLES2
-  /* Under GLES2 the alpha test is implemented in the shader. We need
-     a uniform for the reference value */
-  gboolean dirty_alpha_test_reference;
-  GLint alpha_test_reference_uniform;
-
-  gboolean dirty_point_size;
-  GLint point_size_uniform;
+  unsigned long dirty_builtin_uniforms;
+  GLint builtin_uniform_locations[G_N_ELEMENTS (builtin_uniforms)];
 
   /* Under GLES2 we can't use the builtin functions to set attribute
      pointers such as the vertex position. Instead the vertex
@@ -454,37 +480,23 @@ update_constants_cb (CoglPipeline *pipeline,
 #ifdef HAVE_COGL_GLES2
 
 static void
-update_alpha_test_reference (CoglPipeline *pipeline,
-                             GLuint gl_program,
-                             CoglPipelineProgendPrivate *priv)
+update_builtin_uniforms (CoglPipeline *pipeline,
+                         GLuint gl_program,
+                         CoglPipelineProgendPrivate *priv)
 {
-  float alpha_reference;
+  int i;
 
-  if (priv->dirty_alpha_test_reference &&
-      priv->alpha_test_reference_uniform != -1)
-    {
-      alpha_reference = cogl_pipeline_get_alpha_test_reference (pipeline);
+  if (priv->dirty_builtin_uniforms == 0)
+    return;
 
-      GE( glUniform1f (priv->alpha_test_reference_uniform,
-                       alpha_reference) );
+  for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
+    if ((priv->dirty_builtin_uniforms & (1 << i)) &&
+        priv->builtin_uniform_locations[i] != -1)
+      builtin_uniforms[i].update_func (pipeline,
+                                       priv->builtin_uniform_locations[i],
+                                       builtin_uniforms[i].getter_func);
 
-      priv->dirty_alpha_test_reference = FALSE;
-    }
-}
-
-static void
-update_point_size (CoglPipeline *pipeline,
-                   GLuint gl_program,
-                   CoglPipelineProgendPrivate *priv)
-{
-  if (priv->dirty_point_size && priv->point_size_uniform != -1)
-    {
-      float point_size = cogl_pipeline_get_point_size (pipeline);
-
-      GE( glUniform1f (priv->point_size_uniform, point_size) );
-
-      priv->dirty_point_size = FALSE;
-    }
+  priv->dirty_builtin_uniforms = 0;
 }
 
 #endif /* HAVE_COGL_GLES2 */
@@ -650,12 +662,15 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
 #ifdef HAVE_COGL_GLES2
   if (program_changed)
     {
+      int i;
+
       clear_attribute_cache (priv);
       clear_flushed_matrix_stacks (priv);
 
-      GE_RET( priv->alpha_test_reference_uniform,
-              glGetUniformLocation (gl_program,
-                                    "_cogl_alpha_test_ref") );
+      for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
+        GE_RET( priv->builtin_uniform_locations[i],
+                glGetUniformLocation (gl_program,
+                                      builtin_uniforms[i].uniform_name) );
 
       GE_RET( priv->modelview_uniform,
               glGetUniformLocation (gl_program,
@@ -668,20 +683,12 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       GE_RET( priv->mvp_uniform,
               glGetUniformLocation (gl_program,
                                     "cogl_modelview_projection_matrix") );
-
-      GE_RET( priv->point_size_uniform,
-              glGetUniformLocation (gl_program,
-                                    "cogl_point_size_in") );
     }
   if (program_changed ||
       priv->last_used_for_pipeline != pipeline)
-    {
-      priv->dirty_alpha_test_reference = TRUE;
-      priv->dirty_point_size = TRUE;
-    }
+    priv->dirty_builtin_uniforms = ~(unsigned long) 0;
 
-  update_alpha_test_reference (pipeline, gl_program, priv);
-  update_point_size (pipeline, gl_program, priv);
+  update_builtin_uniforms (pipeline, gl_program, priv);
 #endif
 
   if (user_program)
@@ -702,17 +709,18 @@ _cogl_pipeline_progend_glsl_pre_change_notify (CoglPipeline *pipeline,
   if ((change & COGL_PIPELINE_STATE_AFFECTS_FRAGMENT_CODEGEN))
     dirty_glsl_program_state (pipeline);
 #ifdef HAVE_COGL_GLES2
-  else if ((change & COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE))
+  else
     {
-      CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
-      if (priv)
-        priv->dirty_alpha_test_reference = TRUE;
-    }
-  else if ((change & COGL_PIPELINE_STATE_POINT_SIZE))
-    {
-      CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
-      if (priv)
-        priv->dirty_point_size = TRUE;
+      int i;
+
+      for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
+        if ((change & builtin_uniforms[i].change))
+          {
+            CoglPipelineProgendPrivate *priv = get_glsl_priv (pipeline);
+            if (priv)
+              priv->dirty_builtin_uniforms |= 1 << i;
+            return;
+          }
     }
 #endif /* HAVE_COGL_GLES2 */
 }
@@ -909,6 +917,18 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline)
                                           COGL_MATRIX_PROJECTION,
                                           flush_combined_step_one_cb,
                                           priv);
+}
+
+static void
+update_float_uniform (CoglPipeline *pipeline,
+                      int uniform_location,
+                      void *getter_func)
+{
+  float (* float_getter_func) (CoglPipeline *) = getter_func;
+  float value;
+
+  value = float_getter_func (pipeline);
+  GE( glUniform1f (uniform_location, value) );
 }
 
 #endif
