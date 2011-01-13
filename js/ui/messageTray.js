@@ -706,15 +706,6 @@ Notification.prototype = {
             this.destroy();
     },
 
-    _onKeyPress: function(actor, event) {
-        let symbol = event.get_key_symbol();
-        if (symbol == Clutter.Escape) {
-            Main.messageTray.escapeTray();
-            return true;
-        }
-        return false;
-    },
-
     ungrabFocus: function() {
         if (!this._hasFocus)
             return;
