@@ -773,8 +773,35 @@ st_theme_node_render_resources (StThemeNode   *node,
 
   if (background_image != NULL)
     {
+      CoglHandle texture;
 
-      node->background_texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, background_image);
+      texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, background_image);
+
+      /* If no background position is specified, then we will automatically scale
+       * the background to fit within the node allocation. But, if a background
+       * position is specified, we won't scale the background, and it could
+       * potentially leak out of bounds. To prevent that, we subtexture from the
+       * in bounds area when necessary.
+       */
+      if (node->background_position_set &&
+          (cogl_texture_get_width (texture) > width ||
+           cogl_texture_get_height (texture) > height))
+        {
+          CoglHandle subtexture;
+
+          subtexture = cogl_texture_new_from_sub_texture (texture,
+                                                          0, 0,
+                                                          width - node->background_position_x,
+                                                          height - node->background_position_y);
+          cogl_handle_unref (texture);
+
+          node->background_texture = subtexture;
+        }
+      else
+        {
+          node->background_texture = texture;
+        }
+
       node->background_material = _st_create_texture_material (node->background_texture);
 
       if (background_image_shadow_spec)
