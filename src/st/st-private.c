@@ -636,6 +636,103 @@ _st_create_shadow_material_from_actor (StShadow     *shadow_spec,
   return shadow_material;
 }
 
+cairo_pattern_t *
+_st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
+                                 cairo_pattern_t *src_pattern)
+{
+  cairo_t *cr;
+  cairo_surface_t *src_surface;
+  cairo_surface_t *surface_in;
+  cairo_surface_t *surface_out;
+  cairo_pattern_t *dst_pattern;
+  guchar          *pixels_in, *pixels_out;
+  gint             width_in, height_in, rowstride_in;
+  gint             width_out, height_out, rowstride_out;
+  cairo_matrix_t   shadow_matrix;
+
+  g_return_val_if_fail (shadow_spec != NULL, NULL);
+  g_return_val_if_fail (src_pattern != NULL, NULL);
+
+  cairo_pattern_get_surface (src_pattern, &src_surface);
+
+  width_in  = cairo_image_surface_get_width  (src_surface);
+  height_in = cairo_image_surface_get_height (src_surface);
+
+  /* We want the output to be a color agnostic alpha mask,
+   * so we need to strip the color channels from the input
+   */
+  if (cairo_image_surface_get_format (src_surface) != CAIRO_FORMAT_A8)
+    {
+      surface_in = cairo_image_surface_create (CAIRO_FORMAT_A8,
+                                               width_in, height_in);
+
+      cr = cairo_create (surface_in);
+      cairo_set_source_surface (cr, src_surface, 0, 0);
+      cairo_paint (cr);
+      cairo_destroy (cr);
+    }
+  else
+    {
+      surface_in = cairo_surface_reference (src_surface);
+    }
+
+  pixels_in = cairo_image_surface_get_data (surface_in);
+  rowstride_in = cairo_image_surface_get_stride (surface_in);
+
+  pixels_out = blur_pixels (pixels_in, width_in, height_in, rowstride_in,
+                            shadow_spec->blur,
+                            &width_out, &height_out, &rowstride_out);
+  cairo_surface_destroy (surface_in);
+
+  surface_out = cairo_image_surface_create_for_data (pixels_out,
+                                                     CAIRO_FORMAT_A8,
+                                                     width_out,
+                                                     height_out,
+                                                     rowstride_out);
+
+  dst_pattern = cairo_pattern_create_for_surface (surface_out);
+  cairo_surface_destroy (surface_out);
+
+  cairo_pattern_get_matrix (src_pattern, &shadow_matrix);
+
+  /* Read all the code from the cairo_pattern_set_matrix call
+   * at the end of this function to here from bottom to top,
+   * because each new affine transformation is applied in
+   * front of all the previous ones */
+
+  /* 6. Invert the matrix back */
+  cairo_matrix_invert (&shadow_matrix);
+
+  /* 5. Adjust based on specified offsets */
+  cairo_matrix_translate (&shadow_matrix,
+                          shadow_spec->xoffset,
+                          shadow_spec->yoffset);
+
+  /* 4. Recenter the newly scaled image */
+  cairo_matrix_translate (&shadow_matrix,
+                          - shadow_spec->spread,
+                          - shadow_spec->spread);
+
+  /* 3. Scale up the blurred image to fill the spread */
+  cairo_matrix_scale (&shadow_matrix,
+                      (width_in + 2.0 * shadow_spec->spread) / width_in,
+                      (height_in + 2.0 * shadow_spec->spread) / height_in);
+
+  /* 2. Shift the blurred image left, so that it aligns centered
+   * under the unblurred one */
+  cairo_matrix_translate (&shadow_matrix,
+                          - (width_out - width_in) / 2.0,
+                          - (height_out - height_in) / 2.0);
+
+  /* 1. Invert the matrix so we can work with it in pattern space
+   */
+  cairo_matrix_invert (&shadow_matrix);
+
+  cairo_pattern_set_matrix (dst_pattern, &shadow_matrix);
+
+  return dst_pattern;
+}
+
 void
 _st_paint_shadow_with_opacity (StShadow        *shadow_spec,
                                CoglHandle       shadow_material,

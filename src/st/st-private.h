@@ -24,6 +24,7 @@
 #define __ST_PRIVATE_H__
 
 #include <glib.h>
+#include <cairo.h>
 #include "st-widget.h"
 #include "st-bin.h"
 #include "st-shadow.h"
@@ -79,6 +80,9 @@ CoglHandle _st_create_shadow_material (StShadow   *shadow_spec,
                                        CoglHandle  src_texture);
 CoglHandle _st_create_shadow_material_from_actor (StShadow     *shadow_spec,
                                                   ClutterActor *actor);
+cairo_pattern_t *_st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
+                                                  cairo_pattern_t *src_pattern);
+
 void _st_paint_shadow_with_opacity (StShadow        *shadow_spec,
                                     CoglHandle       shadow_material,
                                     ClutterActorBox *box,
