@@ -5,8 +5,8 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
-   width="74.01342"
-   height="74.006706"
+   width="119.97824"
+   height="119.97824"
    id="svg7355"
    version="1.1">
   <defs
@@ -66,7 +66,7 @@
   </defs>
   <g
      id="layer1"
-     transform="translate(-266.21629,-168.11809)">
+     transform="matrix(1.6213276,0,0,1.6213276,-431.6347,-272.5745)">
     <g
        style="display:inline"
        id="g30864"
@@ -83,7 +83,8 @@
       <path
          id="rect34520"
          d="m 84.506708,167.95508 c 6e-6,1.96759 -1.584022,3.55162 -3.551629,3.55163 l -65.910146,0 c -1.967608,-1e-5 -3.551648,-1.58402 -3.551643,-3.55164"
-         style="opacity:0.2;fill:none;stroke:url(#radialGradient7488);stroke-width:1;stroke-opacity:1" />
+         style="opacity:0.2;fill:none;stroke:url(#radialGradient7488);stroke-width:1;stroke-opacity:1"
+         inkscape:connector-curvature="0" />
     </g>
   </g>
 </svg>
