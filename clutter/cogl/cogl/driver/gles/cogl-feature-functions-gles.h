@@ -109,3 +109,15 @@ COGL_FEATURE_FUNCTION (void, glTexSubImage3D,
                         GLsizei width, GLsizei height, GLsizei depth,
                         GLenum format, GLenum type, const GLvoid* pixels))
 COGL_FEATURE_END ()
+
+COGL_FEATURE_BEGIN (map_buffer, 255, 255,
+                    "OES\0",
+                    "mapbuffer\0",
+                    COGL_FEATURE_MAP_BUFFER_FOR_WRITE,
+                    0)
+COGL_FEATURE_FUNCTION (void *, glMapBuffer,
+                       (GLenum           target,
+                        GLenum           access))
+COGL_FEATURE_FUNCTION (GLboolean, glUnmapBuffer,
+                       (GLenum           target))
+COGL_FEATURE_END ()

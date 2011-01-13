@@ -252,6 +252,10 @@ typedef enum { /*< prefix=COGL_PIXEL_FORMAT >*/
  * @COGL_FEATURE_POINT_SPRITE: Whether
  *     cogl_material_set_layer_point_sprite_coords_enabled() is supported.
  * @COGL_FEATURE_TEXTURE_3D: 3D texture support
+ * @COGL_FEATURE_MAP_BUFFER_FOR_READ: Whether cogl_buffer_map() is
+ *     supported with CoglBufferAccess including read support.
+ * @COGL_FEATURE_MAP_BUFFER_FOR_WRITE: Whether cogl_buffer_map() is
+ *     supported with CoglBufferAccess including write support.
  *
  * Flags for the supported features.
  *
@@ -278,7 +282,9 @@ typedef enum
   COGL_FEATURE_TEXTURE_NPOT_REPEAT    = (1 << 17),
   COGL_FEATURE_POINT_SPRITE           = (1 << 18),
   COGL_FEATURE_TEXTURE_3D             = (1 << 19),
-  COGL_FEATURE_SHADERS_ARBFP          = (1 << 20)
+  COGL_FEATURE_SHADERS_ARBFP          = (1 << 20),
+  COGL_FEATURE_MAP_BUFFER_FOR_READ    = (1 << 21),
+  COGL_FEATURE_MAP_BUFFER_FOR_WRITE   = (1 << 22)
 } CoglFeatureFlags;
 
 /**

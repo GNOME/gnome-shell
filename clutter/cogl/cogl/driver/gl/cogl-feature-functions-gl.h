@@ -295,7 +295,9 @@ COGL_FEATURE_END ()
 COGL_FEATURE_BEGIN (vbos, 1, 5,
                     "ARB\0",
                     "vertex_buffer_object\0",
-                    COGL_FEATURE_VBOS,
+                    COGL_FEATURE_VBOS |
+                    COGL_FEATURE_MAP_BUFFER_FOR_READ |
+                    COGL_FEATURE_MAP_BUFFER_FOR_WRITE,
                     0)
 COGL_FEATURE_FUNCTION (void, glGenBuffers,
                        (GLuint		 n,
