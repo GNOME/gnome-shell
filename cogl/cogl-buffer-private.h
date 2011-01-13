@@ -56,9 +56,10 @@ struct _CoglBufferVtable
 
 typedef enum _CoglBufferFlags
 {
-  COGL_BUFFER_FLAG_NONE          = 0,
-  COGL_BUFFER_FLAG_BUFFER_OBJECT = 1UL << 0,  /* real openGL buffer object */
-  COGL_BUFFER_FLAG_MAPPED        = 1UL << 1
+  COGL_BUFFER_FLAG_NONE            = 0,
+  COGL_BUFFER_FLAG_BUFFER_OBJECT   = 1UL << 0,  /* real openGL buffer object */
+  COGL_BUFFER_FLAG_MAPPED          = 1UL << 1,
+  COGL_BUFFER_FLAG_MAPPED_FALLBACK = 1UL << 2
 } CoglBufferFlags;
 
 typedef enum {
@@ -144,6 +145,18 @@ _cogl_buffer_immutable_ref (CoglBuffer *buffer);
 
 void
 _cogl_buffer_immutable_unref (CoglBuffer *buffer);
+
+/* This is a wrapper around cogl_buffer_map for internal use when we
+   want to map the buffer for write only to replace the entire
+   contents. If the map fails then it will fallback to writing to a
+   temporary buffer. When _cogl_buffer_unmap_for_fill_or_fallback is
+   called the temporary buffer will be copied into the array. Note
+   that these calls share a global array so they can not be nested. */
+void *
+_cogl_buffer_map_for_fill_or_fallback (CoglBuffer *buffer);
+
+void
+_cogl_buffer_unmap_for_fill_or_fallback (CoglBuffer *buffer);
 
 G_END_DECLS
 

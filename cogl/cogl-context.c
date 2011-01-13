@@ -287,6 +287,9 @@ cogl_create_context (void)
 
   _context->atlases = NULL;
 
+  _context->buffer_map_fallback_array = g_byte_array_new ();
+  _context->buffer_map_fallback_in_use = FALSE;
+
   /* As far as I can tell, GL_POINT_SPRITE doesn't have any effect
      unless GL_COORD_REPLACE is enabled for an individual
      layer. Therefore it seems like it should be ok to just leave it
@@ -384,6 +387,8 @@ _cogl_destroy_context (void)
 #ifdef HAVE_COGL_GL
   g_hash_table_unref (_context->arbfp_cache);
 #endif
+
+  g_byte_array_free (_context->buffer_map_fallback_array, TRUE);
 
   g_free (_context);
 }

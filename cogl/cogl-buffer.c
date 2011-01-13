@@ -474,6 +474,57 @@ cogl_buffer_unmap (CoglBuffer *buffer)
   buffer->vtable.unmap (buffer);
 }
 
+void *
+_cogl_buffer_map_for_fill_or_fallback (CoglBuffer *buffer)
+{
+  void *ret;
+
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  g_return_val_if_fail (!ctx->buffer_map_fallback_in_use, NULL);
+
+  ctx->buffer_map_fallback_in_use = TRUE;
+
+  ret = cogl_buffer_map (buffer,
+                         COGL_BUFFER_ACCESS_WRITE,
+                         COGL_BUFFER_MAP_HINT_DISCARD);
+
+  if (ret)
+    return ret;
+  else
+    {
+      /* If the map fails then we'll use a temporary buffer to fill
+         the data and then upload it using cogl_buffer_set_data when
+         the buffer is unmapped. The temporary buffer is shared to
+         avoid reallocating it every time */
+      g_byte_array_set_size (ctx->buffer_map_fallback_array, buffer->size);
+
+      buffer->flags |= COGL_BUFFER_FLAG_MAPPED_FALLBACK;
+
+      return ctx->buffer_map_fallback_array->data;
+    }
+}
+
+void
+_cogl_buffer_unmap_for_fill_or_fallback (CoglBuffer *buffer)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_return_if_fail (ctx->buffer_map_fallback_in_use);
+
+  ctx->buffer_map_fallback_in_use = FALSE;
+
+  if ((buffer->flags & COGL_BUFFER_FLAG_MAPPED_FALLBACK))
+    {
+      cogl_buffer_set_data (buffer, 0,
+                            ctx->buffer_map_fallback_array->data,
+                            buffer->size);
+      buffer->flags &= ~COGL_BUFFER_FLAG_MAPPED_FALLBACK;
+    }
+  else
+    cogl_buffer_unmap (buffer);
+}
+
 gboolean
 cogl_buffer_set_data (CoglBuffer   *buffer,
                       gsize         offset,

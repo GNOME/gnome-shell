@@ -229,6 +229,12 @@ typedef struct
      stencil buffer */
   gboolean          current_clip_stack_uses_stencil;
 
+  /* This is used as a temporary buffer to fill a CoglBuffer when
+     cogl_buffer_map fails and we only want to map to fill it with new
+     data */
+  GByteArray       *buffer_map_fallback_array;
+  gboolean          buffer_map_fallback_in_use;
+
   CoglContextDriver drv;
   CoglContextWinsys winsys;
 } CoglContext;
