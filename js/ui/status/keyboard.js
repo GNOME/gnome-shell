@@ -36,6 +36,7 @@ LayoutMenuItem.prototype = {
     },
 
     activate: function(event) {
+        PopupMenu.PopupBaseMenuItem.prototype.activate.call(this);
         this._config.lock_group(this._id);
     }
 };
