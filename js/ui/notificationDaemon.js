@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Clutter = imports.gi.Clutter;
 const DBus = imports.dbus;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
@@ -441,7 +442,7 @@ Source.prototype = {
             this.title = this.app.get_name();
         else
             this.useNotificationIcon = true;
-        this._isTrayIcon = false;
+        this._trayIcon = null;
     },
 
     notify: function(notification, icon) {
@@ -450,6 +451,18 @@ Source.prototype = {
         if (!this.app && icon)
             this._setSummaryIcon(icon);
         MessageTray.Source.prototype.notify.call(this, notification);
+    },
+
+    handleSummaryClick: function() {
+        if (!this._trayIcon)
+            return false;
+
+        let event = Clutter.get_current_event();
+        if (event.type() != Clutter.EventType.BUTTON_RELEASE)
+            return false;
+
+        this._trayIcon.click(event);
+        return true;
     },
 
     _setApp: function() {
@@ -466,7 +479,7 @@ Source.prototype = {
 
         // Only override the icon if we were previously using
         // notification-based icons (ie, not a trayicon) or if it was unset before
-        if (!this._isTrayIcon) {
+        if (!this._trayIcon) {
             this.useNotificationIcon = false;
             this._setSummaryIcon(this.app.create_icon_texture (this.ICON_SIZE));
         }
@@ -475,7 +488,7 @@ Source.prototype = {
     setTrayIcon: function(icon) {
         this._setSummaryIcon(icon);
         this.useNotificationIcon = false;
-        this._isTrayIcon = true;
+        this._trayIcon = icon;
     },
 
     open: function(notification) {
@@ -483,7 +496,7 @@ Source.prototype = {
     },
 
     _notificationRemoved: function() {
-        if (!this._isTrayIcon)
+        if (!this._trayIcon)
             this.destroy();
     },
 

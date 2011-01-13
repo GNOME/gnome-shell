@@ -874,6 +874,14 @@ Source.prototype = {
         this.emit('destroy');
     },
 
+    // A subclass can redefine this to "steal" clicks from the
+    // summaryitem; Use Clutter.get_current_event() to get the
+    // details, return true to prevent the default handling from
+    // ocurring.
+    handleSummaryClick: function() {
+        return false;
+    },
+
     //// Protected methods ////
 
     // The subclass must call this at least once to set the summary icon.
@@ -903,6 +911,7 @@ SummaryItem.prototype = {
         this.source = source;
         this.actor = new St.Button({ style_class: 'summary-source-button',
                                      reactive: true,
+                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE,
                                      track_hover: true });
 
         this._sourceBox = new St.BoxLayout({ style_class: 'summary-source' });
@@ -1165,9 +1174,9 @@ MessageTray.prototype = {
                 this._onSummaryItemHoverChanged(summaryItem);
             }));
 
-        summaryItem.actor.connect('button-press-event', Lang.bind(this,
-            function (actor, event) {
-                this._onSummaryItemClicked(summaryItem, event);
+        summaryItem.actor.connect('clicked', Lang.bind(this,
+            function (actor, button) {
+                this._onSummaryItemClicked(summaryItem, button);
             }));
 
         source.connect('destroy', Lang.bind(this, this._onSourceDestroy));
@@ -1404,13 +1413,14 @@ MessageTray.prototype = {
             this._expandedSummaryItem.setEllipsization(Pango.EllipsizeMode.END);
     },
 
-    _onSummaryItemClicked: function(summaryItem, event) {
-        let clickedButton = event.get_button();
-        if (!this._clickedSummaryItem ||
-            this._clickedSummaryItem != summaryItem ||
-            this._clickedSummaryItemMouseButton != clickedButton) {
+    _onSummaryItemClicked: function(summaryItem, button) {
+        if (summaryItem.source.handleSummaryClick())
+            this._unsetClickedSummaryItem();
+        else if (!this._clickedSummaryItem ||
+                 this._clickedSummaryItem != summaryItem ||
+                 this._clickedSummaryItemMouseButton != button) {
             this._clickedSummaryItem = summaryItem;
-            this._clickedSummaryItemMouseButton = clickedButton;
+            this._clickedSummaryItemMouseButton = button;
         } else {
             this._unsetClickedSummaryItem();
         }
