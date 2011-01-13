@@ -193,7 +193,8 @@ Dash.prototype = {
     },
 
     _addApp: function(app) {
-        let display = new AppDisplay.AppWellIcon(app);
+        let display = new AppDisplay.AppWellIcon(app,
+                                                 { setSizeManually: true });
         display._draggable.connect('drag-begin',
                                    Lang.bind(this, function() {
                                        display.actor.opacity = 50;

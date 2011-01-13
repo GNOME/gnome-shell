@@ -281,21 +281,21 @@ PrefsSearchProvider.prototype = {
     }
 };
 
-function AppIcon(app) {
-    this._init(app);
+function AppIcon(app, params) {
+    this._init(app, params);
 }
 
 AppIcon.prototype = {
     __proto__:  IconGrid.BaseIcon.prototype,
 
-    _init : function(app) {
+    _init : function(app, params) {
         this.app = app;
 
         let label = this.app.get_name();
 
         IconGrid.BaseIcon.prototype._init.call(this,
                                                label,
-                                               { setSizeManually: true });
+                                               params);
     },
 
     createIcon: function(iconSize) {
@@ -303,12 +303,12 @@ AppIcon.prototype = {
     }
 };
 
-function AppWellIcon(app) {
-    this._init(app);
+function AppWellIcon(app, iconParams) {
+    this._init(app, iconParams);
 }
 
 AppWellIcon.prototype = {
-    _init : function(app) {
+    _init : function(app, iconParams) {
         this.app = app;
         this.actor = new St.Clickable({ style_class: 'app-well-app',
                                          reactive: true,
@@ -316,7 +316,7 @@ AppWellIcon.prototype = {
                                          y_fill: true });
         this.actor._delegate = this;
 
-        this.icon = new AppIcon(app);
+        this.icon = new AppIcon(app, iconParams);
         this.actor.set_child(this.icon.actor);
 
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
