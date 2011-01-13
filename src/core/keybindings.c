@@ -1551,6 +1551,10 @@ process_mouse_move_resize_grab (MetaDisplay *display,
 
   if (keysym == XK_Escape)
     {
+      /* Hide the tiling preview if necessary */
+      if (window->tile_mode != META_TILE_NONE)
+        meta_screen_tile_preview_hide (screen);
+
       /* End move or resize and restore to original state.  If the
        * window was a maximized window that had been "shaken loose" we
        * need to remaximize it.  In normal cases, we need to do a
