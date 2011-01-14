@@ -6,6 +6,7 @@ js/ui/appDisplay.js
 js/ui/appFavorites.js
 js/ui/dash.js
 js/ui/docDisplay.js
+js/ui/endSessionDialog.js
 js/ui/lookingGlass.js
 js/ui/messageTray.js
 js/ui/overview.js
@@ -16,6 +17,7 @@ js/ui/runDialog.js
 js/ui/statusMenu.js
 js/ui/status/accessibility.js
 js/ui/status/bluetooth.js
+js/ui/status/keyboard.js
 js/ui/status/power.js
 js/ui/status/volume.js
 js/ui/telepathyClient.js
