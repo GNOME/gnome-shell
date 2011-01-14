@@ -1690,7 +1690,7 @@ clutter_stage_set_color (ClutterStage       *stage,
 /**
  * clutter_stage_get_color:
  * @stage: A #ClutterStage
- * @color: return location for a #ClutterColor
+ * @color: (out): return location for a #ClutterColor
  *
  * Retrieves the stage color.
  */
