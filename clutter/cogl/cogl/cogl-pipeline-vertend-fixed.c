@@ -95,25 +95,6 @@ _cogl_pipeline_vertend_fixed_end (CoglPipeline *pipeline,
 {
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  if (pipelines_difference & COGL_PIPELINE_STATE_LIGHTING)
-    {
-      CoglPipeline *authority =
-        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LIGHTING);
-      CoglPipelineLightingState *lighting_state =
-        &authority->big_state->lighting_state;
-
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT,
-                        lighting_state->ambient));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE,
-                        lighting_state->diffuse));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR,
-                        lighting_state->specular));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION,
-                        lighting_state->emission));
-      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS,
-                        &lighting_state->shininess));
-    }
-
   if (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE)
     {
       CoglPipeline *authority =

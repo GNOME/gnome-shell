@@ -565,9 +565,10 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
                          blend_state->blend_dst_factor_rgb));
     }
 
+#ifndef HAVE_COGL_GLES2
+
   /* Under GLES2 the alpha function is implemented as part of the
      fragment shader */
-#ifndef HAVE_COGL_GLES2
   if (pipelines_difference & (COGL_PIPELINE_STATE_ALPHA_FUNC |
                               COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE))
     {
@@ -580,6 +581,28 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
       GE (glAlphaFunc (alpha_state->alpha_func,
                        alpha_state->alpha_func_reference));
     }
+
+  /* Under GLES2 the lighting parameters are implemented as uniforms
+     in the progend */
+  if (pipelines_difference & COGL_PIPELINE_STATE_LIGHTING)
+    {
+      CoglPipeline *authority =
+        _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LIGHTING);
+      CoglPipelineLightingState *lighting_state =
+        &authority->big_state->lighting_state;
+
+      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT,
+                        lighting_state->ambient));
+      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE,
+                        lighting_state->diffuse));
+      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR,
+                        lighting_state->specular));
+      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION,
+                        lighting_state->emission));
+      GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS,
+                        &lighting_state->shininess));
+    }
+
 #endif /* HAVE_COGL_GLES2 */
 
   if (pipelines_difference & COGL_PIPELINE_STATE_DEPTH)
