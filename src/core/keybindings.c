@@ -535,6 +535,9 @@ meta_display_get_keybinding_action (MetaDisplay  *display,
   mask = mask & 0xff & ~display->ignored_modifier_mask;
   binding = display_get_keybinding (display, keysym, keycode, mask);
 
+  if (!binding && keycode == meta_display_get_above_tab_keycode (display))
+    binding = display_get_keybinding (display, META_KEY_ABOVE_TAB, keycode, mask);
+
   if (binding)
     return meta_prefs_get_keybinding_action (binding->name);
   else
