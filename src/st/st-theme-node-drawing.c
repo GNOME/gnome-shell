@@ -430,6 +430,7 @@ get_arbitrary_border_color (StThemeNode   *node,
 static CoglHandle
 st_theme_node_render_gradient (StThemeNode *node)
 {
+  StBorderImage *border_image;
   CoglHandle texture;
   int radius[4], i;
   cairo_t *cr;
@@ -439,6 +440,8 @@ st_theme_node_render_gradient (StThemeNode *node)
   int border_width[4];
   guint rowstride;
   guchar *data;
+
+  border_image = st_theme_node_get_border_image (node);
 
   rowstride = cairo_format_stride_for_width (CAIRO_FORMAT_ARGB32, node->alloc_width);
   data = g_new0 (guchar, node->alloc_height * rowstride);
@@ -512,15 +515,16 @@ st_theme_node_render_gradient (StThemeNode *node)
   cairo_close_path (cr);
 
 
-  /* If we have a border, we fill the outline with the border
+  /* If we have a solid border, we fill the outline with the border
    * color and create the inline shape for the background gradient;
    * otherwise the outline shape is filled with the background
    * gradient directly
    */
-  if (border_width[ST_SIDE_TOP] > 0 ||
-      border_width[ST_SIDE_RIGHT] > 0 ||
-      border_width[ST_SIDE_BOTTOM] > 0 ||
-      border_width[ST_SIDE_LEFT] > 0)
+  if (border_image == NULL &&
+      (border_width[ST_SIDE_TOP] > 0 ||
+       border_width[ST_SIDE_RIGHT] > 0 ||
+       border_width[ST_SIDE_BOTTOM] > 0 ||
+       border_width[ST_SIDE_LEFT] > 0))
     {
       cairo_set_source_rgba (cr,
                              border_color.red / 255.,
@@ -711,10 +715,9 @@ st_theme_node_render_resources (StThemeNode   *node,
 
       node->border_slices_texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, filename);
     }
-  else if (node->background_gradient_type != ST_GRADIENT_NONE)
-    {
-      node->prerendered_texture = st_theme_node_render_gradient (node);
-    }
+
+  if (node->background_gradient_type != ST_GRADIENT_NONE)
+    node->prerendered_texture = st_theme_node_render_gradient (node);
 
   if (node->border_slices_texture)
     node->border_slices_material = _st_create_texture_material (node->border_slices_texture);
@@ -1247,14 +1250,8 @@ st_theme_node_paint (StThemeNode           *node,
    *  - The combination of border image and a non-zero border radius is
    *    not supported; the background color will be drawn with square
    *    corners.
-   *  - The combination of border image and a background gradient is not
-   *    supported; the background will be drawn as a solid color
-   *  - The background image is drawn above the border color or image,
-   *    not below it.
+   *  - The background image is drawn above the border color, not below it.
    *  - We don't clip the background image to the (rounded) border area.
-   *
-   * The first three allow us to always draw with no more than a single
-   * border_image and a single background image above it.
    */
 
   if (node->box_shadow_material)
@@ -1263,13 +1260,19 @@ st_theme_node_paint (StThemeNode           *node,
                                    &allocation,
                                    paint_opacity);
 
-  /* Gradients and border images are mutually exclusive at this time */
-  if (node->prerendered_material != COGL_INVALID_HANDLE)
-    paint_material_with_opacity (node->prerendered_material, &allocation, paint_opacity);
-  else if (node->border_slices_material != COGL_INVALID_HANDLE)
-    st_theme_node_paint_sliced_border_image (node, &allocation, paint_opacity);
+  if (node->prerendered_material != COGL_INVALID_HANDLE ||
+      node->border_slices_material != COGL_INVALID_HANDLE)
+    {
+      if (node->prerendered_material != COGL_INVALID_HANDLE)
+        paint_material_with_opacity (node->prerendered_material, &allocation, paint_opacity);
+
+      if (node->border_slices_material != COGL_INVALID_HANDLE)
+        st_theme_node_paint_sliced_border_image (node, &allocation, paint_opacity);
+    }
   else
-    st_theme_node_paint_borders (node, box, paint_opacity);
+    {
+      st_theme_node_paint_borders (node, box, paint_opacity);
+    }
 
   st_theme_node_paint_outline (node, box, paint_opacity);
 
