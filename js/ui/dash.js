@@ -78,8 +78,6 @@ function Dash() {
 
 Dash.prototype = {
     _init : function() {
-        this._menus = [];
-        this._menuDisplays = [];
         this._maxHeight = -1;
         this._iconSize = 48;
 
