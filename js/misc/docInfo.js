@@ -60,8 +60,7 @@ function getDocManager() {
 }
 
 /**
- * DocManager wraps the DocSystem, primarily to expose DocInfo objects
- * which conform to the GenericDisplay item API.
+ * DocManager wraps the DocSystem, primarily to expose DocInfo objects.
  */
 function DocManager() {
     this._init();

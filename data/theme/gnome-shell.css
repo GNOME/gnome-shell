@@ -441,42 +441,6 @@ StTooltip StLabel {
     spacing: 4px;
 }
 
-/* GenericDisplay */
-
-.generic-display-container {
-    spacing: 4px;
-}
-
-.generic-display-item {
-    height: 50px;
-    border-radius: 4px;
-    color: #ffffff;
-    font-size: 14px;
-    spacing: 4px;
-}
-
-.generic-display-item:selected {
-    background-color: rgba(79,111,173,0.66);
-}
-
-.generic-display-item-text {
-    spacing: 4px;
-}
-
-.generic-display-item-description {
-    font-size: 12px;
-    color: #bababa;
-}
-
-.generic-display-details {
-    font-size: 14px;
-    color: #ffffff;
-}
-
-.generic-display-details-name {
-    font-weight: bold;
-}
-
 /* Apps */
 
 .icon-grid {

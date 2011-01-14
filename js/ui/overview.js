@@ -15,7 +15,6 @@ const AppDisplay = imports.ui.appDisplay;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
 const DocDisplay = imports.ui.docDisplay;
-const GenericDisplay = imports.ui.genericDisplay;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
