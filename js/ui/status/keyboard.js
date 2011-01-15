@@ -75,7 +75,7 @@ XKBIndicator.prototype = {
         this._sync_config();
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addAction(_("Keyboard Preferences"), function() {
+        this.menu.addAction(_("Keyboard Settings"), function() {
             GLib.spawn_command_line_async('gnome-control-center region');
         });
     },
