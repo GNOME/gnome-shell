@@ -125,11 +125,24 @@ PlacesManager.prototype = {
         this._mounts = [];
         this._bookmarks = [];
 
-        this._settings = new Gio.Settings({ schema: NAUTILUS_PREFS_SCHEMA });
-        this._isDesktopHome = this._settings.get_boolean(DESKTOP_IS_HOME_KEY);
-        this._settings.connect('changed::' + DESKTOP_IS_HOME_KEY,
-                               Lang.bind(this,
-                                         this._updateDesktopMenuVisibility));
+        this._settings = null;
+        this._isDesktopHome = false;
+
+        // The GNOME3 version of nautilus has been ported to GSettings; we
+        // don't require it though, so for now we'll have to deal with the
+        // case of GNOME3 nautilus not being installed.
+        try {
+            this._settings = new Gio.Settings({ schema: NAUTILUS_PREFS_SCHEMA });
+        } catch (e) {
+            log('Failed to get settings from Nautilus. Places may not work as expected');
+        }
+
+        if (this._settings != null) {
+            this._isDesktopHome = this._settings.get_boolean(DESKTOP_IS_HOME_KEY);
+            this._settings.connect('changed::' + DESKTOP_IS_HOME_KEY,
+                                   Lang.bind(this,
+                                             this._updateDesktopMenuVisibility));
+        }
 
         let homeFile = Gio.file_new_for_path (GLib.get_home_dir());
         let homeUri = homeFile.get_uri();
