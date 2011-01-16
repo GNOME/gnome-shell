@@ -1,6 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const GConf = imports.gi.GConf;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Shell = imports.gi.Shell;
@@ -16,8 +15,8 @@ const Main = imports.ui.main;
 const Search = imports.ui.search;
 const Util = imports.misc.util;
 
-const NAUTILUS_PREFS_DIR = '/apps/nautilus/preferences';
-const DESKTOP_IS_HOME_KEY = NAUTILUS_PREFS_DIR + '/desktop_is_home_dir';
+const NAUTILUS_PREFS_SCHEMA = 'org.gnome.nautilus.preferences';
+const DESKTOP_IS_HOME_KEY = 'desktop-is-home-dir';
 
 /**
  * Represents a place object, which is most normally a bookmark entry,
@@ -122,13 +121,15 @@ function PlacesManager() {
 
 PlacesManager.prototype = {
     _init: function() {
-        let gconf = GConf.Client.get_default();
-        gconf.add_dir(NAUTILUS_PREFS_DIR, GConf.ClientPreloadType.PRELOAD_NONE);
-
         this._defaultPlaces = [];
         this._mounts = [];
         this._bookmarks = [];
-        this._isDesktopHome = gconf.get_bool(DESKTOP_IS_HOME_KEY);
+
+        this._settings = new Gio.Settings({ schema: NAUTILUS_PREFS_SCHEMA });
+        this._isDesktopHome = this._settings.get_boolean(DESKTOP_IS_HOME_KEY);
+        this._settings.connect('changed::' + DESKTOP_IS_HOME_KEY,
+                               Lang.bind(this,
+                                         this._updateDesktopMenuVisibility));
 
         let homeFile = Gio.file_new_for_path (GLib.get_home_dir());
         let homeUri = homeFile.get_uri();
@@ -228,9 +229,6 @@ PlacesManager.prototype = {
         }));
 
         this._reloadBookmarks();
-
-        gconf.notify_add(DESKTOP_IS_HOME_KEY, Lang.bind(this, this._updateDesktopMenuVisibility));
-
     },
 
     _updateDevices: function() {
@@ -340,8 +338,7 @@ PlacesManager.prototype = {
     },
 
     _updateDesktopMenuVisibility: function() {
-        let gconf = GConf.Client.get_default();
-        this._isDesktopHome = gconf.get_boolean(DESKTOP_IS_HOME_KEY);
+        this._isDesktopHome = this._settings.get_boolean(DESKTOP_IS_HOME_KEY);
 
         if (this._isDesktopHome)
             this._removeById(this._defaultPlaces, 'special:desktop');
