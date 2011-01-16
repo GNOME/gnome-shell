@@ -19,8 +19,6 @@ const Util = imports.misc.util;
 const NAUTILUS_PREFS_DIR = '/apps/nautilus/preferences';
 const DESKTOP_IS_HOME_KEY = NAUTILUS_PREFS_DIR + '/desktop_is_home_dir';
 
-const PLACES_ICON_SIZE = 16;
-
 /**
  * Represents a place object, which is most normally a bookmark entry,
  * a mount/volume, or a special place like the Home Folder, Computer, and Network.
@@ -403,150 +401,8 @@ PlacesManager.prototype = {
         sourceArray.splice(this._lookupIndexById(sourceArray, id), 1);
     }
 };
-
 Signals.addSignalMethods(PlacesManager.prototype);
 
-/**
- * An entry in the places menu.
- * @info The corresponding PlaceInfo to populate this entry.
- */
-function DashPlaceDisplayItem(info) {
-    this._init(info);
-}
-
-DashPlaceDisplayItem.prototype = {
-    _init: function(info) {
-        this.name = info.name;
-        this._info = info;
-        this._icon = info.iconFactory(PLACES_ICON_SIZE);
-
-        this.actor = new St.Clickable({ style_class: 'places-item',
-                                        reactive: true,
-                                        x_align: St.Align.START,
-                                        x_fill: true });
-
-        let box = new St.BoxLayout({ style_class: 'places-item-box' });
-        this.actor.set_child(box);
-
-        let bin = new St.Bin({ child: this._icon });
-        box.add(bin);
-
-        let text = new St.Label({ text: info.name });
-        box.add(text, { expand: true, x_fill: true });
-
-        if (info.isRemovable()) {
-            let removeIcon = new St.Icon({ icon_name: 'media-eject',
-                                           icon_type: St.IconType.FULLCOLOR,
-                                           icon_size: PLACES_ICON_SIZE });
-            let removeIconBox = new St.Clickable({ child: removeIcon,
-                                                   reactive: true });
-            box.add(removeIconBox);
-            removeIconBox.connect('clicked',
-                                  Lang.bind(this, function() {
-                                                  this._info.remove();
-                                            }));
-        }
-
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
-
-        this.actor._delegate = this;
-        this._draggable = DND.makeDraggable(this.actor);
-        this._draggable.connect('drag-begin',
-                                Lang.bind(this, function() {
-                                    Main.overview.beginItemDrag(this);
-                                }));
-        this._draggable.connect('drag-end',
-                                Lang.bind(this, function() {
-                                    Main.overview.endItemDrag(this);
-                                }));
-    },
-
-    _onClicked: function(b) {
-        this._info.launch();
-        Main.overview.hide();
-    },
-
-    getDragActorSource: function() {
-        return this._icon;
-    },
-
-    getDragActor: function(stageX, stageY) {
-        return this._info.iconFactory(PLACES_ICON_SIZE);
-    },
-
-    //// Drag and drop methods ////
-
-    shellWorkspaceLaunch: function() {
-        this._info.launch();
-    }
-};
-
-function DashPlaceDisplay() {
-    this._init();
-}
-
-DashPlaceDisplay.prototype = {
-    _init: function() {
-
-        // Places is divided semi-arbitrarily into left and right; a grid would
-        // look better in that there would be an even number of items left+right,
-        // but it seems like we want some sort of differentiation between actions
-        // like "Connect to server..." and regular folders
-        this.actor = new St.Table({ style_class: 'places-section',
-                                    homogeneous: true });
-
-        this._defaultsList = [];
-        this._bookmarksList = [];
-        this._mountsList = [];
-
-        Main.placesManager.connect('defaults-updated', Lang.bind(this, this._updateDefaults));
-        Main.placesManager.connect('bookmarks-updated', Lang.bind(this, this._updateBookmarks));
-        Main.placesManager.connect('mounts-updated', Lang.bind(this, this._updateMounts));
-
-        this._updateDefaults();
-        this._updateMounts();
-        this._updateBookmarks();
-    },
-
-    _updateDefaults: function() {
-        for (let i = 0; i < this._defaultsList.length; i++)
-            this._defaultsList[i].destroy();
-
-        this._defaultsList = [];
-        let places = Main.placesManager.getDefaultPlaces();
-        for (let i = 0; i < places.length; i++) {
-            this._defaultsList[i] = new DashPlaceDisplayItem(places[i]).actor;
-            this.actor.add(this._defaultsList[i], {row: i, col: 0});
-        }
-        this._updateMounts();
-    },
-
-    _updateMounts: function() {
-        for (let i = 0; i < this._mountsList.length; i++)
-            this._mountsList[i].destroy();
-
-        this._mountsList = [];
-        let places = Main.placesManager.getMounts();
-        for (let i = 0; i < places.length; i++) {
-             this._mountsList[i] = new DashPlaceDisplayItem(places[i]).actor;
-             this.actor.add(this._mountsList[i], {row: this._defaultsList.length + i, col: 0});
-        }
-    },
-
-    _updateBookmarks: function() {
-        for (let i = 0; i < this._bookmarksList.length; i++)
-            this._bookmarksList[i].destroy();
-
-        this._bookmarksList = [];
-        let places = Main.placesManager.getBookmarks();
-        for (let i = 0; i < places.length; i ++) {
-            this._bookmarksList[i] = new DashPlaceDisplayItem(places[i]).actor;
-            this.actor.add(this._bookmarksList[i], {row: i, col: 1});
-        }
-    }
-};
-
-Signals.addSignalMethods(DashPlaceDisplay.prototype);
 
 function PlaceSearchProvider() {
     this._init();
