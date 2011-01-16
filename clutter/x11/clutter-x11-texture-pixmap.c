@@ -663,7 +663,7 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
    * ClutterX11TexturePixmap::update-area:
    * @texture: the object which received the signal
    *
-   * The ::hide signal is emitted to ask the texture to update its
+   * The ::update-area signal is emitted to ask the texture to update its
    * content from its source pixmap.
    *
    * Since: 0.8
