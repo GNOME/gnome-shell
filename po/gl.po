@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-14 16:32+0100\n"
-"PO-Revision-Date: 2011-01-14 16:33+0100\n"
+"POT-Creation-Date: 2011-01-16 17:04+0100\n"
+"PO-Revision-Date: 2011-01-16 17:09+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -370,9 +370,82 @@ msgstr "%s foi eliminado dos seus favoritos."
 msgid "Remove"
 msgstr "Eliminar"
 
-#: ../js/ui/docDisplay.js:494
+#: ../js/ui/docDisplay.js:18
 msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECENTES"
+
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+msgid "Log Out %s"
+msgstr "Saír da sesión de %s"
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+msgid "Log Out"
+msgstr "Saír da sesión"
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Prema sobre Saír da sesión para saír de estes aplicativos e pechar a sesión."
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "Vaise pechar a sesión de %s de forma automática en %d segundos."
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "A súa sesión pecharase automaticamente en %d segundos."
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "Saíndo da sesión."
+
+#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
+msgid "Shut Down"
+msgstr "Apagar"
+
+#: ../js/ui/endSessionDialog.js:75
+msgid "Click Shut Down to quit these applications and shut down the system."
+msgstr ""
+"Prema sobre Apagar para saír de estes aplicativos e apagar o computador."
+
+#: ../js/ui/endSessionDialog.js:76
+#, c-format
+msgid "The system will shut down automatically in %d seconds."
+msgstr "O computador apagarase automaticamente en %d segundos."
+
+#: ../js/ui/endSessionDialog.js:77
+msgid "Shutting down the system."
+msgstr "Apagando o computador."
+
+#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+msgid "Restart"
+msgstr "Reiniciar"
+
+#: ../js/ui/endSessionDialog.js:85
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Prema sobre Reiniciar para saír de estes aplicativos e reiniciar o seu "
+"computador."
+
+#: ../js/ui/endSessionDialog.js:86
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "O seu computador reiniciarase automaticamente en %d segundos."
+
+#: ../js/ui/endSessionDialog.js:87
+msgid "Restarting the system."
+msgstr "Reiniciando o computador."
+
+#: ../js/ui/endSessionDialog.js:395
+msgid "Confirm"
+msgstr "Confirmar"
+
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:469
+msgid "Cancel"
+msgstr "Cancelar"
 
 #: ../js/ui/lookingGlass.js:556
 msgid "No extensions installed"
@@ -408,15 +481,15 @@ msgstr "Páxina web"
 msgid "System Information"
 msgstr "Información do sistema"
 
-#: ../js/ui/overview.js:76
+#: ../js/ui/overview.js:75
 msgid "Undo"
 msgstr "Desfacer"
 
-#: ../js/ui/overview.js:141
+#: ../js/ui/overview.js:140
 msgid "Windows"
 msgstr "Xanelas"
 
-#: ../js/ui/overview.js:144
+#: ../js/ui/overview.js:143
 msgid "Applications"
 msgstr "Aplicativos"
 
@@ -623,7 +696,7 @@ msgstr "Produciuse un erro ao explorar o dispositivo"
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "O dispositivo solicitado non pode explorarse, o erro foi «%s»"
 
-#: ../js/ui/status/bluetooth.js:250
+#: ../js/ui/status/bluetooth.js:250 ../js/ui/status/keyboard.js:78
 msgid "Keyboard Settings"
 msgstr "Configuracións do teclado"
 
@@ -697,10 +770,6 @@ msgstr "Introduza o PIN mencionado no dispositivo."
 #: ../js/ui/status/bluetooth.js:468
 msgid "OK"
 msgstr "Aceptar"
-
-#: ../js/ui/status/bluetooth.js:469
-msgid "Cancel"
-msgstr "Cancelar"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -1024,9 +1093,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Invisible"
 #~ msgstr "Invisíbel"
-
-#~ msgid "Restart..."
-#~ msgstr "Reiniciar..."
 
 #~ msgid "System Preferences..."
 #~ msgstr "Preferencias do sistema..."
