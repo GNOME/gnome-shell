@@ -875,9 +875,9 @@ AppSwitcher.prototype = {
            totalSpacing += this._separator.width + this._list.spacing;
 
         // We just assume the whole screen here due to weirdness happing with the passed width
-        let focus = global.get_focus_monitor();
+        let primary = global.get_primary_monitor();
         let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
-        let availWidth = focus.width - parentPadding - this.actor.get_theme_node().get_horizontal_padding();
+        let availWidth = primary.width - parentPadding - this.actor.get_theme_node().get_horizontal_padding();
         let height = 0;
 
         for(let i =  0; i < iconSizes.length; i++) {
