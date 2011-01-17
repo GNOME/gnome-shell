@@ -134,7 +134,6 @@ emit_drag_begin (ClutterDragAction *action,
 {
   ClutterDragActionPrivate *priv = action->priv;
 
-  priv->motion_events_enabled = clutter_get_motion_events_enabled ();
   clutter_set_motion_events_enabled (FALSE);
 
   g_signal_emit (action, drag_signals[DRAG_BEGIN], 0,
@@ -309,6 +308,8 @@ on_button_press (ClutterActor      *actor,
   clutter_actor_transform_stage_point (actor, priv->press_x, priv->press_y,
                                        &priv->transformed_press_x,
                                        &priv->transformed_press_y);
+
+  priv->motion_events_enabled = clutter_get_motion_events_enabled ();
 
   if (priv->x_drag_threshold == 0 || priv->y_drag_threshold == 0)
     emit_drag_begin (action, actor, event);
