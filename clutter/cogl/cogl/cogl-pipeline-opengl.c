@@ -252,9 +252,16 @@ _cogl_pipeline_texture_storage_change_notify (CoglHandle texture)
        * we continue to check the rest */
     }
 }
+
 static void
 set_glsl_program (GLuint gl_program)
 {
+#ifdef HAVE_COGL_GLES
+
+  g_return_if_reached ();
+
+#else /* HAVE_COGL_GLES */
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (ctx->current_gl_program != gl_program)
@@ -272,6 +279,8 @@ set_glsl_program (GLuint gl_program)
           ctx->current_gl_program = 0;
         }
     }
+
+#endif /* HAVE_COGL_GLES */
 }
 
 void
