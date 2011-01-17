@@ -149,18 +149,18 @@ GridSearchResults.prototype = {
 };
 
 
-function SearchResults(searchSystem) {
-    this._init(searchSystem);
+function SearchResults(searchSystem, openSearchSystem) {
+    this._init(searchSystem, openSearchSystem);
 }
 
 SearchResults.prototype = {
-    _init: function(searchSystem) {
+    _init: function(searchSystem, openSearchSystem) {
         this._searchSystem = searchSystem;
+        this._openSearchSystem = openSearchSystem;
 
-        this.actor = new St.Bin({ name: 'searchResults',
-                                  y_align: St.Align.START,
-                                  x_align: St.Align.START,
-                                  x_fill: true });
+        this.actor = new St.BoxLayout({ name: 'searchResults',
+                                        vertical: true });
+
         this._content = new St.BoxLayout({ name: 'searchResultsContent',
                                            vertical: true });
 
@@ -170,7 +170,11 @@ SearchResults.prototype = {
         scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         scrollView.add_actor(this._content);
 
-        this.actor.set_child(scrollView);
+        this.actor.add(scrollView, { x_fill: true,
+                                     y_fill: false,
+                                     expand: true,
+                                     x_align: St.Align.START,
+                                     y_align: St.Align.START });
 
         this._statusText = new St.Label({ style_class: 'search-statustext' });
         this._content.add(this._statusText);
@@ -179,6 +183,51 @@ SearchResults.prototype = {
         this._providerMeta = [];
         for (let i = 0; i < this._providers.length; i++)
             this.createProviderMeta(this._providers[i]);
+
+        this._searchProvidersBox = new St.BoxLayout({ style_class: 'search-providers-box' });
+        this.actor.add(this._searchProvidersBox);
+
+        this._openSearchProviders = [];
+        this._openSearchSystem.connect('changed', Lang.bind(this, this._updateOpenSearchProviderButtons));
+        this._updateOpenSearchProviderButtons();
+    },
+
+    _updateOpenSearchProviderButtons: function() {
+        this._selectedOpenSearchButton = -1;
+        for (let i = 0; i < this._openSearchProviders.length; i++)
+            this._openSearchProviders[i].actor.destroy();
+        this._openSearchProviders = this._openSearchSystem.getProviders();
+        for (let i = 0; i < this._openSearchProviders.length; i++)
+            this._createOpenSearchProviderButton(this._openSearchProviders[i]);
+    },
+
+    _updateOpenSearchButtonState: function() {
+         for (let i = 0; i < this._openSearchProviders.length; i++) {
+             if (i == this._selectedOpenSearchButton)
+                 this._openSearchProviders[i].actor.add_style_pseudo_class('selected');
+             else
+                 this._openSearchProviders[i].actor.remove_style_pseudo_class('selected');
+         }
+    },
+
+    _createOpenSearchProviderButton: function(provider) {
+        let clickable = new St.Clickable({ style_class: 'dash-search-button',
+                                           reactive: true,
+                                           x_fill: true,
+                                           y_align: St.Align.MIDDLE });
+        let bin = new St.Bin({ x_fill: false,
+                               x_align:St.Align.MIDDLE });
+        clickable.connect('clicked', Lang.bind(this, function() {
+            this._openSearchSystem.activateResult(provider.id);
+        }));
+        let title = new St.Label({ text: provider.name,
+                                   style_class: 'dash-search-button-label' });
+
+        bin.set_child(title);
+        clickable.set_child(bin);
+        provider.actor = clickable;
+
+        this._searchProvidersBox.add(clickable);
     },
 
     createProviderMeta: function(provider) {
@@ -227,6 +276,8 @@ SearchResults.prototype = {
         this._searchSystem.reset();
         this._statusText.hide();
         this._clearDisplay();
+        this._selectedOpenSearchButton = -1;
+        this._updateOpenSearchButtonState();
     },
 
     startingSearch: function() {
@@ -247,12 +298,12 @@ SearchResults.prototype = {
         if (results.length == 0) {
             this._statusText.set_text(_("No matching results."));
             this._statusText.show();
-            return true;
         } else {
             this._statusText.hide();
         }
 
         let terms = this._searchSystem.getTerms();
+        this._openSearchSystem.setSearchTerms(terms);
 
         for (let i = 0; i < results.length; i++) {
             let [provider, providerResults] = results[i];
@@ -262,7 +313,8 @@ SearchResults.prototype = {
             meta.count.set_text('' + providerResults.length);
         }
 
-        this.selectDown(false);
+        if (this._selectedOpenSearchButton == -1)
+            this.selectDown(false);
 
         return true;
     },
@@ -284,16 +336,26 @@ SearchResults.prototype = {
     },
 
     selectUp: function(recursing) {
-        for (let i = this._selectedProvider; i >= 0; i--) {
-            let meta = this._providerMeta[i];
-            if (!meta.actor.visible)
-                continue;
-            let success = this._modifyActorSelection(meta.resultDisplay, true);
-            if (success) {
-                this._selectedProvider = i;
-                return;
+        if (this._selectedOpenSearchButton == -1) {
+            for (let i = this._selectedProvider; i >= 0; i--) {
+                let meta = this._providerMeta[i];
+                if (!meta.actor.visible)
+                    continue;
+                let success = this._modifyActorSelection(meta.resultDisplay, true);
+                if (success) {
+                    this._selectedProvider = i;
+                    return;
+                }
             }
         }
+
+        if (this._selectedOpenSearchButton == -1)
+            this._selectedOpenSearchButton = this._openSearchProviders.length;
+        this._selectedOpenSearchButton--;
+        this._updateOpenSearchButtonState();
+        if (this._selectedOpenSearchButton >= 0)
+            return;
+
         if (this._providerMeta.length > 0 && !recursing) {
             this._selectedProvider = this._providerMeta.length - 1;
             this.selectUp(true);
@@ -302,18 +364,30 @@ SearchResults.prototype = {
 
     selectDown: function(recursing) {
         let current = this._selectedProvider;
-        if (current == -1)
-            current = 0;
-        for (let i = current; i < this._providerMeta.length; i++) {
-            let meta = this._providerMeta[i];
-            if (!meta.actor.visible)
-                continue;
-            let success = this._modifyActorSelection(meta.resultDisplay, false);
-            if (success) {
-                this._selectedProvider = i;
-                return;
+        if (this._selectedOpenSearchButton == -1) {
+            if (current == -1)
+                current = 0;
+            for (let i = current; i < this._providerMeta.length; i++) {
+                let meta = this._providerMeta[i];
+                if (!meta.actor.visible)
+                    continue;
+                 let success = this._modifyActorSelection(meta.resultDisplay, false);
+                 if (success) {
+                    this._selectedProvider = i;
+                    return;
+                 }
             }
         }
+        this._selectedOpenSearchButton++;
+
+        if (this._selectedOpenSearchButton < this._openSearchProviders.length) {
+            this._updateOpenSearchButtonState();
+            return;
+        }
+
+        this._selectedOpenSearchButton = -1;
+        this._updateOpenSearchButtonState();
+
         if (this._providerMeta.length > 0 && !recursing) {
             this._selectedProvider = 0;
             this.selectDown(true);
@@ -321,6 +395,13 @@ SearchResults.prototype = {
     },
 
     activateSelected: function() {
+        if (this._selectedOpenSearchButton != -1) {
+            let provider = this._openSearchProviders[this._selectedOpenSearchButton];
+            this._openSearchSystem.activateResult(provider.id);
+            Main.overview.hide();
+            return;
+        }
+
         let current = this._selectedProvider;
         if (current < 0)
             return;

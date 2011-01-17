@@ -441,6 +441,32 @@ StTooltip StLabel {
     spacing: 4px;
 }
 
+.search-providers-box {
+    spacing: 4px;
+}
+
+.dash-search-button {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(255, 255, 255, 0.2);
+    background-gradient-end: rgba(255, 255, 255, 0);
+/*    border: 1px solid #808080;*/
+    border-radius: 10px;
+    height: 32px;
+    width: 300px;
+}
+
+.dash-search-button:selected,
+.dash-search-button:hover {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(255, 255, 255, 0.4);
+    background-gradient-end: rgba(255, 255, 255, 0.2);
+}
+
+.dash-search-button-label {
+    color: #cccccc;
+    font: 16px sans-serif;
+}
+
 /* Apps */
 
 .icon-grid {

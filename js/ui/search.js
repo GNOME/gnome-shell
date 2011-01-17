@@ -1,6 +1,18 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const Lang = imports.lang;
 const Signals = imports.signals;
+const Shell = imports.gi.Shell;
+
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
+
+const FileUtils = imports.misc.fileUtils;
+const Main = imports.ui.main;
+
+const DISABLED_OPEN_SEARCH_PROVIDERS_KEY = 'disabled-open-search-providers';
 
 const RESULT_ICON_SIZE = 48;
 
@@ -210,6 +222,108 @@ SearchProvider.prototype = {
     }
 };
 Signals.addSignalMethods(SearchProvider.prototype);
+
+function OpenSearchSystem(title) {
+    this._init(title);
+}
+
+OpenSearchSystem.prototype = {
+    _init: function() {
+        this._providers = [];
+        global.settings.connect('changed::' + DISABLED_OPEN_SEARCH_PROVIDERS_KEY, Lang.bind(this, this._refresh));
+        this._refresh();
+    },
+
+    getProviders: function() {
+        let res = [];
+        for (let i = 0; i < this._providers.length; i++)
+            res.push({ id: i, name: this._providers[i].name });
+
+        return res;
+    },
+
+    setSearchTerms: function(terms) {
+        this._terms = terms;
+    },
+
+    _checkSupportedProviderLanguage: function(provider) {
+        if (provider.url.search(/{language}/) == -1)
+            return true;
+
+        let langs = GLib.get_language_names();
+
+        langs.push('en');
+        let lang = null;
+        for (let i = 0; i < langs.length; i++) {
+            for (let k = 0; k < provider.langs.length; k++) {
+                if (langs[i] == provider.langs[k])
+                    lang = langs[i];
+            }
+            if (lang)
+                break;
+        }
+        provider.lang = lang;
+        return lang != null;
+    },
+
+    activateResult: function(id) {
+        let searchTerms = this._terms.join(' ');
+
+        let url = this._providers[id].url.replace('{searchTerms}', encodeURIComponent(searchTerms));
+        if (url.match('{language}'))
+            url = url.replace('{language}', this._providers[id].lang);
+
+        try {
+            Gio.app_info_launch_default_for_uri(url, global.create_app_launch_context());
+        } catch (e) {
+            // TODO: remove this after glib will be removed from moduleset
+            // In the default jhbuild, gio is in our prefix but gvfs is not
+            let p = new Shell.Process({ 'args' : ['gvfs-open', url] });
+            p.run();
+        }
+
+        Main.overview.hide();
+    },
+
+    _addProvider: function(fileName) {
+        let file = Gio.file_new_for_path(global.datadir + '/search_providers/' + fileName);
+        let source = '';
+
+        file.load_contents_async(null, Lang.bind(this, function (obj, res) {
+            let [success, source] = file.load_contents_finish(res);
+            if (source) {
+                let [success, name, url, langs, icon_uri] = global.parse_search_provider(source);
+                let provider ={ name: name,
+                                url: url,
+                                id: this._providers.length,
+                                icon_uri: icon_uri,
+                                langs: langs };
+                if (this._checkSupportedProviderLanguage(provider)) {
+                    this._providers.push(provider);
+                    this.emit('changed');
+                }
+            }
+        }));
+    },
+
+    _refresh: function() {
+        this._providers = [];
+        let names = global.settings.get_strv(DISABLED_OPEN_SEARCH_PROVIDERS_KEY);
+        let file = Gio.file_new_for_path(global.datadir + '/search_providers');
+        FileUtils.listDirAsync(file, Lang.bind(this, function(files) {
+            for (let i = 0; i < files.length; i++) {
+                let enabled = true;
+                let name = files[i].get_name();
+                for (let k = 0; k < names.length; k++)
+                    if (names[k] == name)
+                        enabled = false;
+                if (enabled)
+                    this._addProvider(name);
+            }
+        }));
+    }
+}
+Signals.addSignalMethods(OpenSearchSystem.prototype);
 
 function SearchSystem() {
     this._init();

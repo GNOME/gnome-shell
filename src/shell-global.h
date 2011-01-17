@@ -84,6 +84,14 @@ void shell_global_reexec_self (ShellGlobal *global);
 
 void shell_global_breakpoint (ShellGlobal *global);
 
+gboolean shell_global_parse_search_provider (ShellGlobal   *global,
+                                             const char    *data,
+                                             char         **name,
+                                             char         **url,
+                                             GList        **langs,
+                                             char         **icon_data_uri,
+                                             GError       **error);
+
 void shell_global_gc (ShellGlobal *global);
 
 void shell_global_maybe_gc (ShellGlobal *global);

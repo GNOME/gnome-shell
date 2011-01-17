@@ -12,6 +12,11 @@ desktop_DATA = gnome-shell.desktop
 %.desktop:%.desktop.in
 	$(AM_V_GEN) sed s/^_// < $< > $@ || rm $@
 
+searchprovidersdir = $(pkgdatadir)/search_providers
+dist_searchproviders_DATA =				\
+	search_providers/google.xml				\
+	search_providers/wikipedia.xml
+
 imagesdir = $(pkgdatadir)/images
 dist_images_DATA =				\
 	close-black.svg				\

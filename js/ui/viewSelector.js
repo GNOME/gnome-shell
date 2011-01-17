@@ -247,9 +247,10 @@ SearchTab.prototype = {
         this._focusBase = focusBase;
 
         this._searchSystem = new Search.SearchSystem();
+        this._openSearchSystem = new Search.OpenSearchSystem();
 
         this._searchEntry = new SearchEntry(focusBase);
-        this._searchResults = new SearchDisplay.SearchResults(this._searchSystem);
+        this._searchResults = new SearchDisplay.SearchResults(this._searchSystem, this._openSearchSystem);
         BaseTab.prototype._init.call(this,
                                      this._searchEntry.actor,
                                      this._searchResults.actor);
