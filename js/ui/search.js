@@ -5,6 +5,7 @@ const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
+const Util = imports.misc.util;
 
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
@@ -278,8 +279,7 @@ OpenSearchSystem.prototype = {
         } catch (e) {
             // TODO: remove this after glib will be removed from moduleset
             // In the default jhbuild, gio is in our prefix but gvfs is not
-            let p = new Shell.Process({ 'args' : ['gvfs-open', url] });
-            p.run();
+            Util.spawn(['gvfs-open', url])
         }
 
         Main.overview.hide();
