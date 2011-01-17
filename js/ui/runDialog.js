@@ -11,6 +11,7 @@ const Signals = imports.signals;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
@@ -63,25 +64,6 @@ CommandCompleter.prototype = {
         this._update(0);
     },
 
-    _onGetEnumerateComplete : function(obj, res) {
-        this._enumerator = obj.enumerate_children_finish(res);
-        this._enumerator.next_files_async(100, GLib.PRIORITY_LOW, null, Lang.bind(this, this._onNextFileComplete));
-    },
-
-    _onNextFileComplete : function(obj, res) {
-        let files = obj.next_files_finish(res);
-        for (let i = 0; i < files.length; i++) {
-            this._childs[this._i].push(files[i].get_name());
-        }
-        if (files.length) {
-            this._enumerator.next_files_async(100, GLib.PRIORITY_LOW, null, Lang.bind(this, this._onNextFileComplete));
-        } else {
-            this._enumerator.close(null);
-            this._enumerator = null;
-            this._update(this._i + 1);
-        }
-    },
-
     update : function() {
         if (this._valid)
             return;
@@ -101,7 +83,12 @@ CommandCompleter.prototype = {
         }
         let file = Gio.file_new_for_path(this._paths[i]);
         this._childs[this._i] = [];
-        file.enumerate_children_async(Gio.FILE_ATTRIBUTE_STANDARD_NAME, Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_LOW, null, Lang.bind(this, this._onGetEnumerateComplete));
+        FileUtils.listDirAsync(file, Lang.bind(this, function (files) {
+            for (let i = 0; i < files.length; i++) {
+                this._childs[this._i].push(files[i].get_name());
+            }
+            this._update(this._i + 1);
+        }));
     },
 
     _onChanged : function(m, f, of, type) {
