@@ -52,8 +52,6 @@
 #define GET_CONTEXT(CTXVAR,RETVAL) G_STMT_START { } G_STMT_END
 #endif
 
-#ifndef HAVE_COGL_GLES
-
 static void _cogl_shader_free (CoglShader *shader);
 
 COGL_HANDLE_DEFINE (Shader, shader);
@@ -62,6 +60,8 @@ COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (shader);
 static void
 _cogl_shader_free (CoglShader *shader)
 {
+#ifndef HAVE_COGL_GLES
+
   /* Frees shader resources but its handle is not
      released! Do that separately before this! */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -76,6 +76,8 @@ _cogl_shader_free (CoglShader *shader)
 #endif
     if (shader->gl_handle)
       GE (glDeleteShader (shader->gl_handle));
+
+#endif /* HAVE_COGL_GLES */
 
   g_slice_free (CoglShader, shader);
 }
@@ -112,6 +114,8 @@ cogl_create_shader (CoglShaderType type)
 static void
 delete_shader (CoglShader *shader)
 {
+#ifndef HAVE_COGL_GLES
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
 #ifdef HAVE_COGL_GL
@@ -128,6 +132,8 @@ delete_shader (CoglShader *shader)
     }
 
   shader->gl_handle = 0;
+
+#endif /* HAVE_COGL_GLES */
 }
 
 void
@@ -193,6 +199,8 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
                                           const char **strings_in,
                                           const GLint *lengths_in)
 {
+#ifndef HAVE_COGL_GLES
+
   static const char vertex_boilerplate[] = _COGL_VERTEX_SHADER_BOILERPLATE;
   static const char fragment_boilerplate[] = _COGL_FRAGMENT_SHADER_BOILERPLATE;
 
@@ -293,12 +301,16 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
 #ifdef HAVE_COGL_GLES2
   g_free (tex_coord_declarations);
 #endif
+
+#endif /* HAVE_COGL_GLES */
 }
 
 void
 _cogl_shader_compile_real (CoglHandle handle,
                            int n_tex_coord_attribs)
 {
+#ifndef HAVE_COGL_GLES
+
   CoglShader *shader = handle;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -393,11 +405,19 @@ _cogl_shader_compile_real (CoglHandle handle,
         }
 #endif
     }
+
+#endif /* HAVE_COGL_GLES */
 }
 
 char *
 cogl_shader_get_info_log (CoglHandle handle)
 {
+#ifdef HAVE_COGL_GLES
+
+  return NULL;
+
+#else /* HAVE_COGL_GLES */
+
   CoglShader *shader;
 
   GET_CONTEXT (ctx, NULL);
@@ -439,6 +459,8 @@ cogl_shader_get_info_log (CoglHandle handle)
       buffer[len] = '\0';
       return g_strdup (buffer);
     }
+
+#endif /* HAVE_COGL_GLES */
 }
 
 CoglShaderType
@@ -461,6 +483,12 @@ cogl_shader_get_type (CoglHandle  handle)
 gboolean
 cogl_shader_is_compiled (CoglHandle handle)
 {
+#ifdef HAVE_COGL_GLES
+
+  return FALSE;
+
+#else /* HAVE_COGL_GLES */
+
   GLint status;
   CoglShader *shader;
 
@@ -501,63 +529,6 @@ cogl_shader_is_compiled (CoglHandle handle)
       else
         return FALSE;
     }
-}
-
-#else /* HAVE_COGL_GLES */
-
-/* No support on regular OpenGL 1.1 */
-
-CoglHandle
-cogl_create_shader (CoglShaderType type)
-{
-  return COGL_INVALID_HANDLE;
-}
-
-gboolean
-cogl_is_shader (CoglHandle handle)
-{
-  return FALSE;
-}
-
-CoglHandle
-cogl_shader_ref (CoglHandle handle)
-{
-  return COGL_INVALID_HANDLE;
-}
-
-void
-cogl_shader_unref (CoglHandle handle)
-{
-}
-
-void
-cogl_shader_source (CoglHandle  shader,
-                    const char   *source)
-{
-}
-
-void
-cogl_shader_compile (CoglHandle shader_handle)
-{
-}
-
-char *
-cogl_shader_get_info_log (CoglHandle handle)
-{
-  return NULL;
-}
-
-CoglShaderType
-cogl_shader_get_type (CoglHandle  handle)
-{
-  return COGL_SHADER_TYPE_VERTEX;
-}
-
-gboolean
-cogl_shader_is_compiled (CoglHandle handle)
-{
-  return FALSE;
-}
 
 #endif /* HAVE_COGL_GLES */
-
+}

@@ -31,12 +31,10 @@
 #include "cogl-context.h"
 #include "cogl-handle.h"
 
-#ifndef HAVE_COGL_GLES
-
-#include <string.h>
-
 #include "cogl-shader-private.h"
 #include "cogl-program-private.h"
+
+#include <string.h>
 
 static void _cogl_program_free (CoglProgram *program);
 
@@ -394,6 +392,8 @@ cogl_program_uniform_matrix (int uniform_no,
                                    uniform_no, size, count, transpose, value);
 }
 
+#ifndef HAVE_COGL_GLES
+
 /* ARBfp local parameters can be referenced like:
  *
  * "program.local[5]"
@@ -501,6 +501,8 @@ _cogl_program_flush_uniform_glsl (GLint location,
     }
 }
 
+#endif /* HAVE_COGL_GLES */
+
 #ifdef HAVE_COGL_GL
 
 static void
@@ -527,6 +529,12 @@ _cogl_program_flush_uniforms (CoglProgram *program,
                               GLuint gl_program,
                               gboolean gl_program_changed)
 {
+#ifdef HAVE_COGL_GLES
+
+  g_return_if_reached ();
+
+#else /* HAVE_COGL_GLES */
+
   CoglProgramUniform *uniform;
   int i;
 
@@ -575,96 +583,9 @@ _cogl_program_flush_uniforms (CoglProgram *program,
           uniform->dirty = FALSE;
         }
     }
+
+#endif /* HAVE_COGL_GLES */
 }
-
-#else /* HAVE_COGL_GLES */
-
-/* No support on regular OpenGL 1.1 */
-
-CoglHandle
-cogl_create_program (void)
-{
-  return COGL_INVALID_HANDLE;
-}
-
-gboolean
-cogl_is_program (CoglHandle handle)
-{
-  return FALSE;
-}
-
-CoglHandle
-cogl_program_ref (CoglHandle handle)
-{
-  return COGL_INVALID_HANDLE;
-}
-
-void
-cogl_program_unref (CoglHandle handle)
-{
-}
-
-void
-cogl_program_attach_shader (CoglHandle program_handle,
-                            CoglHandle shader_handle)
-{
-}
-
-void
-cogl_program_link (CoglHandle program_handle)
-{
-}
-
-void
-cogl_program_use (CoglHandle program_handle)
-{
-}
-
-int
-cogl_program_get_uniform_location (CoglHandle program_handle,
-                                   const char *uniform_name)
-{
-  return 0;
-}
-
-void
-cogl_program_uniform_1f (int uniform_no,
-                         float value)
-{
-}
-
-void
-cogl_program_uniform_1i (int uniform_no,
-                         int value)
-{
-}
-
-void
-cogl_program_uniform_float (int uniform_no,
-                            int size,
-                            int count,
-                            const GLfloat *value)
-{
-}
-
-void
-cogl_program_uniform_int (int uniform_no,
-                          int size,
-                          int count,
-                          const int *value)
-{
-}
-
-void
-cogl_program_uniform_matrix (int uniform_no,
-                             int size,
-                             int count,
-                             gboolean transpose,
-                             const GLfloat *value)
-{
-}
-
-#endif /* HAVE_COGL_GLES2 */
 
 CoglShaderLanguage
 _cogl_program_get_language (CoglHandle handle)
