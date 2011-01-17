@@ -5987,11 +5987,11 @@ _cogl_pipeline_layer_hash_combine_constant_state (CoglPipelineLayer *authority,
   n_args = _cogl_get_n_args_for_combine_func (b->texture_combine_rgb_func);
   for (i = 0; i < n_args; i++)
     {
-      if (b->texture_combine_rgb_src[i] == GL_CONSTANT_COLOR ||
-          b->texture_combine_rgb_src[i] == GL_CONSTANT_ALPHA)
+      if (b->texture_combine_rgb_src[i] ==
+          COGL_PIPELINE_COMBINE_SOURCE_CONSTANT)
         {
           /* XXX: should we be careful to only hash the alpha
-           * component in the GL_CONSTANT_ALPHA case? */
+           * component in the COGL_PIPELINE_COMBINE_OP_SRC_ALPHA case? */
           need_hash = TRUE;
           goto done;
         }
@@ -6000,11 +6000,11 @@ _cogl_pipeline_layer_hash_combine_constant_state (CoglPipelineLayer *authority,
   n_args = _cogl_get_n_args_for_combine_func (b->texture_combine_alpha_func);
   for (i = 0; i < n_args; i++)
     {
-      if (b->texture_combine_alpha_src[i] == GL_CONSTANT_COLOR ||
-          b->texture_combine_alpha_src[i] == GL_CONSTANT_ALPHA)
+      if (b->texture_combine_alpha_src[i] ==
+          COGL_PIPELINE_COMBINE_SOURCE_CONSTANT)
         {
           /* XXX: should we be careful to only hash the alpha
-           * component in the GL_CONSTANT_ALPHA case? */
+           * component in the COGL_PIPELINE_COMBINE_OP_SRC_ALPHA case? */
           need_hash = TRUE;
           goto done;
         }
