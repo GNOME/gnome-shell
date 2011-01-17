@@ -865,7 +865,7 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
         AC_ARG_ENABLE([xinput],
                       [AS_HELP_STRING([--enable-xinput], [Use the XI X extension])],
                       [],
-                      [enable_xinput=no])
+                      [enable_xinput=yes])
 
         AS_IF([test "x$enable_xinput" = "xyes"],
               [
