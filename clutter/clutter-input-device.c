@@ -65,16 +65,7 @@ enum
   PROP_LAST
 };
 
-enum
-{
-  SELECT_STAGE_EVENTS,
-
-  LAST_SIGNAL
-};
-
 static GParamSpec *obj_props[PROP_LAST] = { NULL, };
-
-static guint device_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (ClutterInputDevice, clutter_input_device, G_TYPE_OBJECT);
 
@@ -298,17 +289,6 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
   gobject_class->set_property = clutter_input_device_set_property;
   gobject_class->get_property = clutter_input_device_get_property;
   g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
-
-  device_signals[SELECT_STAGE_EVENTS] =
-    g_signal_new (I_("select-stage-events"),
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_FIRST,
-                  0,
-                  NULL, NULL,
-                  _clutter_marshal_VOID__OBJECT_INT,
-                  G_TYPE_NONE, 2,
-                  CLUTTER_TYPE_STAGE,
-                  G_TYPE_INT);
 }
 
 static void
@@ -1100,7 +1080,9 @@ _clutter_input_device_select_stage_events (ClutterInputDevice *device,
                                            ClutterStage       *stage,
                                            gint                event_mask)
 {
-  g_signal_emit (device, device_signals[SELECT_STAGE_EVENTS], 0,
-                 stage,
-                 event_mask);
+  ClutterInputDeviceClass *device_class;
+
+  device_class = CLUTTER_INPUT_DEVICE_GET_CLASS (device);
+  if (device_class->select_stage_events != NULL)
+    device_class->select_stage_events (device, stage, event_mask);
 }

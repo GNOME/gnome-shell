@@ -109,6 +109,10 @@ struct _ClutterInputDevice
 struct _ClutterInputDeviceClass
 {
   GObjectClass parent_class;
+
+  void (* select_stage_events) (ClutterInputDevice *device,
+                                ClutterStage       *stage,
+                                gint                event_mask);
 };
 
 /* device manager */

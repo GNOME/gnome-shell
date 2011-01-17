@@ -178,13 +178,12 @@ static void
 clutter_input_device_x11_class_init (ClutterInputDeviceX11Class *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterInputDeviceClass *device_class = CLUTTER_INPUT_DEVICE_CLASS (klass);
 
   gobject_class->constructed = clutter_input_device_x11_constructed;
   gobject_class->dispose = clutter_input_device_x11_dispose;
 
-  g_signal_override_class_handler ("select-stage-events",
-                                   CLUTTER_TYPE_INPUT_DEVICE_X11,
-                                   G_CALLBACK (clutter_input_device_x11_select_stage_events));
+  device_class->select_stage_events = clutter_input_device_x11_select_stage_events;
 }
 
 static void
