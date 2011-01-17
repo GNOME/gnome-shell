@@ -205,7 +205,7 @@ ATIndicator.prototype = {
             return (user_value - (DPI_FACTOR_LARGE * x_value) > -1);
         }
         let initial_setting = on_get();
-        let default_value = initial_setting ? x_value : user_value;
+        let default_value = (initial_setting || user_value == 0) ? x_value : user_value;
         let widget = this._buildItemExtended(_("Large Text"),
             initial_setting,
             settings.is_writable(KEY_DPI),
@@ -217,7 +217,7 @@ ATIndicator.prototype = {
             });
         settings.connect('changed::' + KEY_DPI, function() {
             let active = on_get();
-            default_value = active ? x_value : user_value;
+            default_value = (active || user_value == 0) ? x_value : user_value;
             widget.setToggleState(active);
         });
         return widget;
