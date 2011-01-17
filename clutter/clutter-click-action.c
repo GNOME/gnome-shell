@@ -67,6 +67,7 @@ struct _ClutterClickActionPrivate
   gulong capture_id;
 
   guint press_button;
+  ClutterModifierType modifier_state;
 
   guint is_held    : 1;
   guint is_pressed : 1;
@@ -137,6 +138,7 @@ on_event (ClutterActor       *actor,
 
       priv->is_held = TRUE;
       priv->press_button = clutter_event_get_button (event);
+      priv->modifier_state = clutter_event_get_state (event);
 
       if (priv->stage == NULL)
         priv->stage = clutter_actor_get_stage (actor);
@@ -170,6 +172,7 @@ on_captured_event (ClutterActor       *stage,
 {
   ClutterClickActionPrivate *priv = action->priv;
   ClutterActor *actor;
+  ClutterModifierType modifier_state;
 
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
 
@@ -194,6 +197,22 @@ on_captured_event (ClutterActor       *stage,
 
       if (!clutter_actor_contains (actor, clutter_event_get_source (event)))
         return FALSE;
+
+      /* exclude any button-mask so that we can compare
+       * the press and release states properly */
+      modifier_state = clutter_event_get_state (event) &
+                       ~(CLUTTER_BUTTON1_MASK |
+                         CLUTTER_BUTTON2_MASK |
+                         CLUTTER_BUTTON3_MASK |
+                         CLUTTER_BUTTON4_MASK |
+                         CLUTTER_BUTTON5_MASK);
+
+      /* if press and release states don't match we
+       * simply ignore modifier keys. i.e. modifier keys
+       * are expected to be pressed throughout the whole
+       * click */
+      if (modifier_state != priv->modifier_state)
+        priv->modifier_state = 0;
 
       click_action_set_pressed (action, FALSE);
       g_signal_emit (action, click_signals[CLICKED], 0, actor);
@@ -399,4 +418,22 @@ clutter_click_action_get_button (ClutterClickAction *action)
   g_return_val_if_fail (CLUTTER_IS_CLICK_ACTION (action), 0);
 
   return action->priv->press_button;
+}
+
+/**
+ * clutter_click_action_get_state:
+ * @action: a #ClutterClickAction
+ *
+ * Retrieves the modifier state of the click action.
+ *
+ * Return value: the modifier state parameter, or 0
+ *
+ * Since: 1.6
+ */
+ClutterModifierType
+clutter_click_action_get_state (ClutterClickAction *action)
+{
+  g_return_val_if_fail (CLUTTER_IS_CLICK_ACTION (action), 0);
+
+  return action->priv->modifier_state;
 }

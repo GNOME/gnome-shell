@@ -33,6 +33,7 @@
 #define __CLUTTER_CLICK_ACTION_H__
 
 #include <clutter/clutter-action.h>
+#include <clutter/clutter-event.h>
 
 G_BEGIN_DECLS
 
@@ -95,8 +96,9 @@ GType clutter_click_action_get_type (void) G_GNUC_CONST;
 
 ClutterAction *clutter_click_action_new        (void);
 
-guint          clutter_click_action_get_button (ClutterClickAction *action);
-void           clutter_click_action_release    (ClutterClickAction *action);
+guint                  clutter_click_action_get_button (ClutterClickAction *action);
+ClutterModifierType    clutter_click_action_get_state  (ClutterClickAction *action);
+void                   clutter_click_action_release    (ClutterClickAction *action);
 
 G_END_DECLS
 
