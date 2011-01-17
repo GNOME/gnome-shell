@@ -15,9 +15,6 @@ const Main = imports.ui.main;
 const Search = imports.ui.search;
 const Util = imports.misc.util;
 
-const NAUTILUS_PREFS_SCHEMA = 'org.gnome.nautilus.preferences';
-const DESKTOP_IS_HOME_KEY = 'desktop-is-home-dir';
-
 /**
  * Represents a place object, which is most normally a bookmark entry,
  * a mount/volume, or a special place like the Home Folder, Computer, and Network.
@@ -125,25 +122,6 @@ PlacesManager.prototype = {
         this._mounts = [];
         this._bookmarks = [];
 
-        this._settings = null;
-        this._isDesktopHome = false;
-
-        // The GNOME3 version of nautilus has been ported to GSettings; we
-        // don't require it though, so for now we'll have to deal with the
-        // case of GNOME3 nautilus not being installed.
-        try {
-            this._settings = new Gio.Settings({ schema: NAUTILUS_PREFS_SCHEMA });
-        } catch (e) {
-            log('Failed to get settings from Nautilus. Places may not work as expected');
-        }
-
-        if (this._settings != null) {
-            this._isDesktopHome = this._settings.get_boolean(DESKTOP_IS_HOME_KEY);
-            this._settings.connect('changed::' + DESKTOP_IS_HOME_KEY,
-                                   Lang.bind(this,
-                                             this._updateDesktopMenuVisibility));
-        }
-
         let homeFile = Gio.file_new_for_path (GLib.get_home_dir());
         let homeUri = homeFile.get_uri();
         let homeLabel = Shell.util_get_label_for_uri (homeUri);
@@ -201,10 +179,7 @@ PlacesManager.prototype = {
         }
 
         this._defaultPlaces.push(this._home);
-
-        this._desktopMenuIndex = this._defaultPlaces.length;
-        if (!this._isDesktopHome)
-            this._defaultPlaces.push(this._desktopMenu);
+        this._defaultPlaces.push(this._desktopMenu);
 
         if (this._network)
             this._defaultPlaces.push(this._network);
@@ -347,20 +322,6 @@ PlacesManager.prototype = {
 
         /* See comment in _updateDevices for explanation why there are two signals. */
         this.emit('bookmarks-updated');
-        this.emit('places-updated');
-    },
-
-    _updateDesktopMenuVisibility: function() {
-        this._isDesktopHome = this._settings.get_boolean(DESKTOP_IS_HOME_KEY);
-
-        if (this._isDesktopHome)
-            this._removeById(this._defaultPlaces, 'special:desktop');
-        else
-            this._defaultPlaces.splice(this._desktopMenuIndex, 0,
-                                       this._desktopMenu);
-
-        /* See comment in _updateDevices for explanation why there are two signals. */
-        this.emit('defaults-updated');
         this.emit('places-updated');
     },
 
