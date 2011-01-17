@@ -113,7 +113,7 @@ static const ClutterColor const static_colors[] = {
  * Return value: a pointer to a static color; the returned pointer
  *   is owned by Clutter and it should never be modified or freed
  *
- * Since: 1.4
+ * Since: 1.6
  */
 G_CONST_RETURN ClutterColor *
 clutter_color_get_static (ClutterStaticColor color)

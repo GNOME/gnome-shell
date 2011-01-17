@@ -199,7 +199,7 @@ GParamSpec *clutter_param_spec_color     (const gchar        *name,
  *
  * Named colors, for accessing global colors defined by Clutter
  *
- * Since: 1.4
+ * Since: 1.6
  */
 typedef enum { /*< prefix=CLUTTER_COLOR >*/
   /* CGA/EGA-like palette */
