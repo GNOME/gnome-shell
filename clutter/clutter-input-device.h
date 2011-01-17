@@ -97,20 +97,6 @@ typedef enum {
   CLUTTER_INPUT_AXIS_WHEEL
 } ClutterInputAxis;
 
-/**
- * ClutterInputDeviceClass:
- *
- * The #ClutterInputDeviceClass structure contains only private
- * data and should not be accessed directly
- *
- * Since: 1.2
- */
-struct _ClutterInputDeviceClass
-{
-  /*< private >*/
-  GObjectClass parent_class;
-};
-
 GType clutter_input_device_get_type (void) G_GNUC_CONST;
 
 ClutterInputDeviceType  clutter_input_device_get_device_type    (ClutterInputDevice  *device);

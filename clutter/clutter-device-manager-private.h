@@ -106,6 +106,11 @@ struct _ClutterInputDevice
   guint has_cursor  : 1;
 };
 
+struct _ClutterInputDeviceClass
+{
+  GObjectClass parent_class;
+};
+
 /* device manager */
 void            _clutter_device_manager_add_device              (ClutterDeviceManager *device_manager,
                                                                  ClutterInputDevice   *device);
