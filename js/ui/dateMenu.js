@@ -16,8 +16,10 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Calendar = imports.ui.calendar;
 
-const CLOCK_FORMAT_KEY        = 'format';
-const CLOCK_CUSTOM_FORMAT_KEY = 'custom-format';
+// in org.gnome.desktop.interface
+const CLOCK_FORMAT_KEY        = 'clock-format';
+
+// in org.gnome.shell.clock
 const CLOCK_SHOW_DATE_KEY     = 'show-date';
 const CLOCK_SHOW_SECONDS_KEY  = 'show-seconds';
 
@@ -120,7 +122,9 @@ DateMenuButton.prototype = {
         this.menu.addMenuItem(item);
 
         // Track changes to clock settings
+        this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
         this._clockSettings = new Gio.Settings({ schema: 'org.gnome.shell.clock' });
+        this._desktopSettings.connect('changed', Lang.bind(this, this._clockSettingsChanged));
         this._clockSettings.connect('changed', Lang.bind(this, this._clockSettingsChanged));
 
         // Start the clock
@@ -132,7 +136,7 @@ DateMenuButton.prototype = {
     },
 
     _updateClockAndDate: function() {
-        let format = this._clockSettings.get_string(CLOCK_FORMAT_KEY);
+        let format = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);
         let showDate = this._clockSettings.get_boolean(CLOCK_SHOW_DATE_KEY);
         let showSeconds = this._clockSettings.get_boolean(CLOCK_SHOW_SECONDS_KEY);
 
@@ -140,17 +144,7 @@ DateMenuButton.prototype = {
         let dateFormat;
 
         switch (format) {
-            case 'unix':
-                // force updates every second
-                showSeconds = true;
-                clockFormat = '%s';
-                break;
-            case 'custom':
-                // force updates every second
-                showSeconds = true;
-                clockFormat = this._clockSettings.get_string(CLOCK_CUSTOM_FORMAT_KEY);
-                break;
-            case '24-hour':
+            case '24h':
                 if (showDate)
 	            /* Translators: This is the time format with date used
                        in 24-hour mode. */
@@ -162,7 +156,7 @@ DateMenuButton.prototype = {
                     clockFormat = showSeconds ? _("%a %R:%S")
                                               : _("%a %R");
                 break;
-            case '12-hour':
+            case '12h':
             default:
                 if (showDate)
 	            /* Translators: This is a time format with date used
@@ -206,7 +200,7 @@ DateMenuButton.prototype = {
 
     _onPreferencesActivate: function() {
         Main.overview.hide();
-        this._spawn(['gnome-shell-clock-preferences']);
+        this._spawn(['gnome-control-center', 'datetime']);
     },
 
     _spawn: function(args) {

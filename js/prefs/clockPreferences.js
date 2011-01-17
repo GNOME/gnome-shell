@@ -13,7 +13,6 @@ const FORMAT_KEY       = 'format';
 const SHOW_DATE_KEY    = 'show-date';
 const SHOW_SECONDS_KEY = 'show-seconds';
 
-const SHOW_WEEKDATE_KEY = 'show-weekdate';
 
 function ClockPreferences(uiFile) {
     this._init(uiFile);
@@ -31,7 +30,6 @@ ClockPreferences.prototype = {
         this._24hrRadio = builder.get_object('24hr_radio');
         this._dateCheck = builder.get_object('date_check');
         this._secondsCheck = builder.get_object('seconds_check');
-        this._weekCheck = builder.get_object('week_check');
 
         delete builder;
 
@@ -39,10 +37,6 @@ ClockPreferences.prototype = {
         this._notifyId = this._settings.connect('changed',
                                                 Lang.bind(this,
                                                           this._updateDialog));
-        this._calendar_settings = new Gio.Settings({ schema: 'org.gnome.shell.calendar' });
-        this._calendar_notifyId = this._calendar_settings.connect('changed',
-                                                                  Lang.bind(this,
-                                                                            this._updateDialog));
 
         this._12hrRadio.connect('toggled', Lang.bind(this,
             function() {
@@ -59,11 +53,6 @@ ClockPreferences.prototype = {
                 this._settings.set_boolean(SHOW_SECONDS_KEY,
                                            this._secondsCheck.active);
             }));
-        this._weekCheck.connect('toggled', Lang.bind(this,
-            function() {
-                this._calendar_settings.set_boolean(SHOW_WEEKDATE_KEY,
-                                                    this._weekCheck.active);
-            }));
 
         this._updateDialog();
     },
@@ -79,13 +68,11 @@ ClockPreferences.prototype = {
 
         this._dateCheck.active = this._settings.get_boolean(SHOW_DATE_KEY);
         this._secondsCheck.active = this._settings.get_boolean(SHOW_SECONDS_KEY);
-        this._weekCheck.active = this._calendar_settings.get_boolean(SHOW_WEEKDATE_KEY);
     },
 
     _onResponse: function() {
         this._dialog.destroy();
         this._settings.disconnect(this._notifyId);
-        this._calendar_settings.disconnect(this._calendar_notifyId);
         this.emit('destroy');
     }
 };
