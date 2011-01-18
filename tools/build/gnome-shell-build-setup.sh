@@ -62,7 +62,7 @@ fi
 # libxklavier, libxml2, ORBit2, pam, python, readline,
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification,
 # xdamage, icon-naming-utils, upower, libtool-ltdl, libvorbis,
-# libgcrypt, libtasn1, libgnome-keyring, libgtop
+# libgcrypt, libtasn1, libgnome-keyring, libgtop, cups
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
@@ -82,7 +82,8 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject
     xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good
-    libltdl-dev libvorbis-dev libxklavier-dev libgnome-keyring-dev libupower-glib-dev
+    libltdl-dev libvorbis-dev libxklavier-dev libgnome-keyring-dev
+    libupower-glib-dev libcups2-dev
     "
 
   if apt-cache show autopoint > /dev/null 2> /dev/null; then
@@ -120,7 +121,7 @@ if test "x$system" = xFedora ; then
     startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
     icon-naming-utils upower-devel libtool-ltdl-devel libvorbis-devel
     libxklavier-devel libgcrypt-devel libtasn1-devel libtasn1-tools
-    libgnome-keyring-devel libgtop2-devel
+    libgnome-keyring-devel libgtop2-devel cups-devel
     "
 
   if expr $version \>= 14 > /dev/null ; then
