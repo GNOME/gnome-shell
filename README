@@ -27,7 +27,7 @@ On X11, Clutter depends on the following extensions
   • XDamage
   • XExt
   • XFixes
-  • XInput 1.x (if --enable-xinput is passed to configure)
+  • XInput 1.x or 2.x
   • XKB
 
 When running the OpenGL flavor, Clutter requires at least version 1.3
