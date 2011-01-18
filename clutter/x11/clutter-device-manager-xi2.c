@@ -272,6 +272,10 @@ add_device (ClutterDeviceManagerXI2 *manager_xi2,
           _clutter_input_device_add_slave (master, device);
         }
 
+      /* blow the cache */
+      g_slist_free (manager_xi2->all_devices);
+      manager_xi2->all_devices = NULL;
+
       g_signal_emit_by_name (manager_xi2, "device-added", device);
     }
 
@@ -293,6 +297,10 @@ remove_device (ClutterDeviceManagerXI2 *manager_xi2,
         g_list_remove (manager_xi2->master_devices, device);
       manager_xi2->slave_devices =
         g_list_remove (manager_xi2->slave_devices, device);
+
+      /* blow the cache */
+      g_slist_free (manager_xi2->all_devices);
+      manager_xi2->all_devices = NULL;
 
       g_signal_emit_by_name (manager_xi2, "device-removed", device);
 
