@@ -140,6 +140,10 @@ G_CONST_RETURN gchar *  clutter_input_device_get_device_name    (ClutterInputDev
 guint                   clutter_input_device_get_n_axes         (ClutterInputDevice  *device);
 ClutterInputAxis        clutter_input_device_get_axis           (ClutterInputDevice  *device,
                                                                  guint                index_);
+gboolean                clutter_input_device_get_axis_value     (ClutterInputDevice  *device,
+                                                                 gdouble             *axes,
+                                                                 ClutterInputAxis     axis,
+                                                                 gdouble             *value);
 
 guint                   clutter_input_device_get_n_keys         (ClutterInputDevice  *device);
 void                    clutter_input_device_set_key            (ClutterInputDevice  *device,

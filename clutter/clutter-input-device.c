@@ -924,6 +924,9 @@ clutter_input_device_get_axis (ClutterInputDevice *device,
 {
   ClutterAxisInfo *info;
 
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device),
+                        CLUTTER_INPUT_AXIS_IGNORE);
+
   if (device->axes == NULL)
     return CLUTTER_INPUT_AXIS_IGNORE;
 
@@ -933,6 +936,50 @@ clutter_input_device_get_axis (ClutterInputDevice *device,
   info = &g_array_index (device->axes, ClutterAxisInfo, index_);
 
   return info->axis;
+}
+
+/**
+ * clutter_input_device_get_axis_value:
+ * @device: a #ClutterInputDevice
+ * @axes: (array): an array of axes values, typically
+ *   coming from clutter_event_get_axes()
+ * @axis: the axis to extract
+ * @value: (out): return location for the axis value
+ *
+ * Extracts the value of the given @axis of a #ClutterInputDevice from
+ * an array of axis values.
+ *
+ * Return value: %TRUE if the value was set, and %FALSE otherwise
+ *
+ * Since: 1.6
+ */
+gboolean
+clutter_input_device_get_axis_value (ClutterInputDevice *device,
+                                     gdouble            *axes,
+                                     ClutterInputAxis    axis,
+                                     gdouble            *value)
+{
+  gint i;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), FALSE);
+  g_return_val_if_fail (device->axes != NULL, FALSE);
+
+  for (i = 0; i < device->axes->len; i++)
+    {
+      ClutterAxisInfo *info;
+
+      info = &g_array_index (device->axes, ClutterAxisInfo, i);
+
+      if (info->axis == axis)
+        {
+          if (value)
+            *value = axes[i];
+
+          return TRUE;
+        }
+    }
+
+  return FALSE;
 }
 
 /**
