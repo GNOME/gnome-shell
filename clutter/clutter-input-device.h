@@ -136,6 +136,8 @@ void                    clutter_input_device_get_device_coords  (ClutterInputDev
 ClutterActor *          clutter_input_device_get_pointer_actor  (ClutterInputDevice  *device);
 ClutterStage *          clutter_input_device_get_pointer_stage  (ClutterInputDevice  *device);
 G_CONST_RETURN gchar *  clutter_input_device_get_device_name    (ClutterInputDevice  *device);
+ClutterInputMode        clutter_input_device_get_device_mode    (ClutterInputDevice  *device);
+gboolean                clutter_input_device_get_has_cursor     (ClutterInputDevice  *device);
 
 guint                   clutter_input_device_get_n_axes         (ClutterInputDevice  *device);
 ClutterInputAxis        clutter_input_device_get_axis           (ClutterInputDevice  *device,

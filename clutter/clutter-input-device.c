@@ -733,6 +733,44 @@ clutter_input_device_get_device_name (ClutterInputDevice *device)
 }
 
 /**
+ * clutter_input_device_get_has_cursor:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves whether @device has a pointer that follows the
+ * device motion.
+ *
+ * Return value: %TRUE if the device has a cursor
+ *
+ * Since: 1.6
+ */
+gboolean
+clutter_input_device_get_has_cursor (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), FALSE);
+
+  return device->has_cursor;
+}
+
+/**
+ * clutter_input_device_get_device_mode:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the #ClutterInputMode of @device.
+ *
+ * Return value: the device mode
+ *
+ * Since: 1.6
+ */
+ClutterInputMode
+clutter_input_device_get_device_mode (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device),
+                        CLUTTER_INPUT_MODE_FLOATING);
+
+  return device->device_mode;
+}
+
+/**
  * clutter_input_device_update_from_event:
  * @device: a #ClutterInputDevice
  * @event: a #ClutterEvent
