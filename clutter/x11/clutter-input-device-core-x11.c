@@ -234,23 +234,25 @@ update_axes (ClutterInputDeviceX11 *device_x11,
     device_x11->axis_data[first_axis + i] = axes_data[i];
 }
 
-static void
+static gdouble *
 translate_axes (ClutterInputDeviceX11 *device_x11,
                 ClutterStageX11       *stage_x11,
-                gdouble               *event_axes,
                 gfloat                *event_x,
                 gfloat                *event_y)
 {
   ClutterInputDevice *device = CLUTTER_INPUT_DEVICE (device_x11);
   gint root_x, root_y;
   gint n_axes, i;
-  gfloat x, y;
+  gdouble x, y;
+  gdouble *retval;
 
   if (!_clutter_stage_x11_get_root_coords (stage_x11, &root_x, &root_y))
-    return;
+    return NULL;
 
   x = y = 0.0f;
   n_axes = clutter_input_device_get_n_axes (device);
+
+  retval = g_new0 (gdouble, n_axes);
 
   for (i = 0; i < n_axes; i++)
     {
@@ -266,17 +268,17 @@ translate_axes (ClutterInputDeviceX11 *device_x11,
                                                             root_x, root_y,
                                                             i,
                                                             device_x11->axis_data[i],
-                                                            &event_axes[i]);
+                                                            &retval[i]);
           if (axis == CLUTTER_INPUT_AXIS_X)
-            x = event_axes[i];
+            x = retval[i];
           else if (axis == CLUTTER_INPUT_AXIS_Y)
-            y = event_axes[i];
+            y = retval[i];
           break;
 
         default:
           _clutter_input_device_translate_axis (device, i,
                                                 device_x11->axis_data[i],
-                                                &event_axes[i]);
+                                                &retval[i]);
           break;
         }
     }
@@ -286,6 +288,8 @@ translate_axes (ClutterInputDeviceX11 *device_x11,
 
   if (event_y)
     *event_y = y;
+
+  return retval;
 }
 
 /*
@@ -327,17 +331,14 @@ _clutter_input_device_x11_translate_xi_event (ClutterInputDeviceX11 *device_x11,
       event->button.modifier_state =
         translate_state (xdbe->state, xdbe->device_state);
 
-      event->button.axes =
-        g_new0 (gdouble, clutter_input_device_get_n_axes (device));
-
       update_axes (device_x11,
                    xdbe->axes_count,
                    xdbe->first_axis,
                    xdbe->axis_data);
-      translate_axes (device_x11, stage_x11,
-                      event->button.axes,
-                      &event->button.x,
-                      &event->button.y);
+
+      event->button.axes = translate_axes (device_x11, stage_x11,
+                                           &event->button.x,
+                                           &event->button.y);
 
       _clutter_stage_x11_set_user_time (stage_x11, event->button.time);
 
@@ -400,12 +401,10 @@ _clutter_input_device_x11_translate_xi_event (ClutterInputDeviceX11 *device_x11,
                    xdme->axes_count,
                    xdme->first_axis,
                    xdme->axis_data);
-      translate_axes (device_x11, stage_x11,
-                      event->motion.axes,
-                      &event->motion.x,
-                      &event->motion.y);
 
-      _clutter_stage_x11_set_user_time (stage_x11, event->motion.time);
+      event->motion.axes = translate_axes (device_x11, stage_x11,
+                                           &event->motion.x,
+                                           &event->motion.y);
 
       return TRUE;
     }
