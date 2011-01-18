@@ -1029,6 +1029,7 @@ clutter_event_get_time
 clutter_event_get_source
 clutter_event_get_stage
 clutter_event_get_flags
+clutter_event_get_axes
 
 <SUBSECTION>
 clutter_event_get
@@ -1093,6 +1094,7 @@ clutter_input_device_get_key
 <SUBSECTION>
 clutter_input_device_get_n_axes
 clutter_input_device_get_axis
+clutter_input_device_get_axis_value
 
 <SUBSECTION>
 clutter_input_device_update_from_event
