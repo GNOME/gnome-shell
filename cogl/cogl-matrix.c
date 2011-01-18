@@ -444,17 +444,17 @@ _cogl_matrix_transform_points_f2_packed (const CoglMatrix *matrix,
                                          void *points_out,
                                          int n_points)
 {
-  Point2f *p = points_in;
   Point3f *o = points_out;
   int i;
 
   for (i = 0; i < n_points; i++)
     {
-      o[i].x = matrix->xx * p[i].x + matrix->xy * p[i].y +
+      Point2f p = ((Point2f *)points_in)[i];
+      o[i].x = matrix->xx * p.x + matrix->xy * p.y +
                matrix->xw;
-      o[i].y = matrix->yx * p[i].x + matrix->yy * p[i].y +
+      o[i].y = matrix->yx * p.x + matrix->yy * p.y +
                matrix->yw;
-      o[i].z = matrix->zx * p[i].x + matrix->zy * p[i].y +
+      o[i].z = matrix->zx * p.x + matrix->zy * p.y +
                matrix->zw;
     }
 }
@@ -471,12 +471,12 @@ _cogl_matrix_transform_points_f2_strided (const CoglMatrix *matrix,
 
   for (i = 0; i < n_points; i++)
     {
-      Point2f *p = (Point2f *)((guint8 *)points_in + i * stride_in);
+      Point2f p = *(Point2f *)((guint8 *)points_in + i * stride_in);
       Point3f *o = (Point3f *)((guint8 *)points_out + i * stride_out);
 
-      o->x = matrix->xx * p->x + matrix->xy * p->y + matrix->xw;
-      o->y = matrix->yx * p->x + matrix->yy * p->y + matrix->yw;
-      o->z = matrix->zx * p->x + matrix->zy * p->y + matrix->zw;
+      o->x = matrix->xx * p.x + matrix->xy * p.y + matrix->xw;
+      o->y = matrix->yx * p.x + matrix->yy * p.y + matrix->yw;
+      o->z = matrix->zx * p.x + matrix->zy * p.y + matrix->zw;
     }
 }
 
@@ -486,19 +486,19 @@ _cogl_matrix_project_points_f2_packed (const CoglMatrix *matrix,
                                        void *points_out,
                                        int n_points)
 {
-  Point2f *p = points_in;
   Point4f *o = points_out;
   int i;
 
   for (i = 0; i < n_points; i++)
     {
-      o[i].x = matrix->xx * p[i].x + matrix->xy * p[i].y +
+      Point2f p = ((Point2f *)points_in)[i];
+      o[i].x = matrix->xx * p.x + matrix->xy * p.y +
                matrix->xw;
-      o[i].y = matrix->yx * p[i].x + matrix->yy * p[i].y +
+      o[i].y = matrix->yx * p.x + matrix->yy * p.y +
                matrix->yw;
-      o[i].z = matrix->zx * p[i].x + matrix->zy * p[i].y +
+      o[i].z = matrix->zx * p.x + matrix->zy * p.y +
                matrix->zw;
-      o[i].w = matrix->wx * p[i].x + matrix->wy * p[i].y +
+      o[i].w = matrix->wx * p.x + matrix->wy * p.y +
                matrix->ww;
     }
 }
@@ -515,13 +515,13 @@ _cogl_matrix_project_points_f2_strided (const CoglMatrix *matrix,
 
   for (i = 0; i < n_points; i++)
     {
-      Point2f *p = (Point2f *)((guint8 *)points_in + i * stride_in);
+      Point2f p = *(Point2f *)((guint8 *)points_in + i * stride_in);
       Point4f *o = (Point4f *)((guint8 *)points_out + i * stride_out);
 
-      o->x = matrix->xx * p->x + matrix->xy * p->y + matrix->xw;
-      o->y = matrix->yx * p->x + matrix->yy * p->y + matrix->yw;
-      o->z = matrix->zx * p->x + matrix->zy * p->y + matrix->zw;
-      o->w = matrix->wx * p->x + matrix->wy * p->y + matrix->ww;
+      o->x = matrix->xx * p.x + matrix->xy * p.y + matrix->xw;
+      o->y = matrix->yx * p.x + matrix->yy * p.y + matrix->yw;
+      o->z = matrix->zx * p.x + matrix->zy * p.y + matrix->zw;
+      o->w = matrix->wx * p.x + matrix->wy * p.y + matrix->ww;
     }
 }
 
@@ -531,18 +531,18 @@ _cogl_matrix_transform_points_f3_packed (const CoglMatrix *matrix,
                                          void *points_out,
                                          int n_points)
 {
-  Point3f *p = points_in;
   Point3f *o = points_out;
   int i;
 
   for (i = 0; i < n_points; i++)
     {
-      o[i].x = matrix->xx * p[i].x + matrix->xy * p[i].y +
-               matrix->xz * p[i].z + matrix->xw;
-      o[i].y = matrix->yx * p[i].x + matrix->yy * p[i].y +
-               matrix->yz * p[i].z + matrix->yw;
-      o[i].z = matrix->zx * p[i].x + matrix->zy * p[i].y +
-               matrix->zz * p[i].z + matrix->zw;
+      Point3f p = ((Point3f *)points_in)[i];
+      o[i].x = matrix->xx * p.x + matrix->xy * p.y +
+               matrix->xz * p.z + matrix->xw;
+      o[i].y = matrix->yx * p.x + matrix->yy * p.y +
+               matrix->yz * p.z + matrix->yw;
+      o[i].z = matrix->zx * p.x + matrix->zy * p.y +
+               matrix->zz * p.z + matrix->zw;
     }
 }
 
@@ -558,15 +558,15 @@ _cogl_matrix_transform_points_f3_strided (const CoglMatrix *matrix,
 
   for (i = 0; i < n_points; i++)
     {
-      Point3f *p = (Point3f *)((guint8 *)points_in + i * stride_in);
+      Point3f p = *(Point3f *)((guint8 *)points_in + i * stride_in);
       Point3f *o = (Point3f *)((guint8 *)points_out + i * stride_out);
 
-      o->x = matrix->xx * p->x + matrix->xy * p->y +
-             matrix->xz * p->z + matrix->xw;
-      o->y = matrix->yx * p->x + matrix->yy * p->y +
-             matrix->yz * p->z + matrix->yw;
-      o->z = matrix->zx * p->x + matrix->zy * p->y +
-             matrix->zz * p->z + matrix->zw;
+      o->x = matrix->xx * p.x + matrix->xy * p.y +
+             matrix->xz * p.z + matrix->xw;
+      o->y = matrix->yx * p.x + matrix->yy * p.y +
+             matrix->yz * p.z + matrix->yw;
+      o->z = matrix->zx * p.x + matrix->zy * p.y +
+             matrix->zz * p.z + matrix->zw;
     }
 }
 
@@ -576,20 +576,20 @@ _cogl_matrix_project_points_f3_packed (const CoglMatrix *matrix,
                                        void *points_out,
                                        int n_points)
 {
-  Point3f *p = points_in;
   Point4f *o = points_out;
   int i;
 
   for (i = 0; i < n_points; i++)
     {
-      o[i].x = matrix->xx * p[i].x + matrix->xy * p[i].y +
-               matrix->xz * p[i].z + matrix->xw;
-      o[i].y = matrix->yx * p[i].x + matrix->yy * p[i].y +
-               matrix->yz * p[i].z + matrix->yw;
-      o[i].z = matrix->zx * p[i].x + matrix->zy * p[i].y +
-               matrix->zz * p[i].z + matrix->zw;
-      o[i].w = matrix->wx * p[i].x + matrix->wy * p[i].y +
-               matrix->wz * p[i].z + matrix->ww;
+      Point3f p = ((Point3f *)points_in)[i];
+      o[i].x = matrix->xx * p.x + matrix->xy * p.y +
+               matrix->xz * p.z + matrix->xw;
+      o[i].y = matrix->yx * p.x + matrix->yy * p.y +
+               matrix->yz * p.z + matrix->yw;
+      o[i].z = matrix->zx * p.x + matrix->zy * p.y +
+               matrix->zz * p.z + matrix->zw;
+      o[i].w = matrix->wx * p.x + matrix->wy * p.y +
+               matrix->wz * p.z + matrix->ww;
     }
 }
 
@@ -605,17 +605,17 @@ _cogl_matrix_project_points_f3_strided (const CoglMatrix *matrix,
 
   for (i = 0; i < n_points; i++)
     {
-      Point3f *p = (Point3f *)((guint8 *)points_in + i * stride_in);
+      Point3f p = *(Point3f *)((guint8 *)points_in + i * stride_in);
       Point4f *o = (Point4f *)((guint8 *)points_out + i * stride_out);
 
-      o->x = matrix->xx * p->x + matrix->xy * p->y +
-             matrix->xz * p->z + matrix->xw;
-      o->y = matrix->yx * p->x + matrix->yy * p->y +
-             matrix->yz * p->z + matrix->yw;
-      o->z = matrix->zx * p->x + matrix->zy * p->y +
-             matrix->zz * p->z + matrix->zw;
-      o->w = matrix->wx * p->x + matrix->wy * p->y +
-             matrix->wz * p->z + matrix->ww;
+      o->x = matrix->xx * p.x + matrix->xy * p.y +
+             matrix->xz * p.z + matrix->xw;
+      o->y = matrix->yx * p.x + matrix->yy * p.y +
+             matrix->yz * p.z + matrix->yw;
+      o->z = matrix->zx * p.x + matrix->zy * p.y +
+             matrix->zz * p.z + matrix->zw;
+      o->w = matrix->wx * p.x + matrix->wy * p.y +
+             matrix->wz * p.z + matrix->ww;
     }
 }
 
@@ -625,20 +625,20 @@ _cogl_matrix_project_points_f4_packed (const CoglMatrix *matrix,
                                        void *points_out,
                                        int n_points)
 {
-  Point4f *p = points_in;
   Point4f *o = points_out;
   int i;
 
   for (i = 0; i < n_points; i++)
     {
-      o[i].x = matrix->xx * p[i].x + matrix->xy * p[i].y +
-               matrix->xz * p[i].z + matrix->xw * p[i].w;
-      o[i].y = matrix->yx * p[i].x + matrix->yy * p[i].y +
-               matrix->yz * p[i].z + matrix->yw * p[i].w;
-      o[i].z = matrix->zx * p[i].x + matrix->zy * p[i].y +
-               matrix->zz * p[i].z + matrix->zw * p[i].w;
-      o[i].w = matrix->wx * p[i].x + matrix->wy * p[i].y +
-               matrix->wz * p[i].z + matrix->ww * p[i].w;
+      Point4f p = ((Point4f *)points_in)[i];
+      o[i].x = matrix->xx * p.x + matrix->xy * p.y +
+               matrix->xz * p.z + matrix->xw * p.w;
+      o[i].y = matrix->yx * p.x + matrix->yy * p.y +
+               matrix->yz * p.z + matrix->yw * p.w;
+      o[i].z = matrix->zx * p.x + matrix->zy * p.y +
+               matrix->zz * p.z + matrix->zw * p.w;
+      o[i].w = matrix->wx * p.x + matrix->wy * p.y +
+               matrix->wz * p.z + matrix->ww * p.w;
     }
 }
 
@@ -654,17 +654,17 @@ _cogl_matrix_project_points_f4_strided (const CoglMatrix *matrix,
 
   for (i = 0; i < n_points; i++)
     {
-      Point4f *p = (Point4f *)((guint8 *)points_in + i * stride_in);
+      Point4f p = *(Point4f *)((guint8 *)points_in + i * stride_in);
       Point4f *o = (Point4f *)((guint8 *)points_out + i * stride_out);
 
-      o->x = matrix->xx * p->x + matrix->xy * p->y +
-             matrix->xz * p->z + matrix->xw * p->w;
-      o->y = matrix->yx * p->x + matrix->yy * p->y +
-             matrix->yz * p->z + matrix->yw * p->w;
-      o->z = matrix->zx * p->x + matrix->zy * p->y +
-             matrix->zz * p->z + matrix->zw * p->w;
-      o->w = matrix->wx * p->x + matrix->wy * p->y +
-             matrix->wz * p->z + matrix->ww * p->w;
+      o->x = matrix->xx * p.x + matrix->xy * p.y +
+             matrix->xz * p.z + matrix->xw * p.w;
+      o->y = matrix->yx * p.x + matrix->yy * p.y +
+             matrix->yz * p.z + matrix->yw * p.w;
+      o->z = matrix->zx * p.x + matrix->zy * p.y +
+             matrix->zz * p.z + matrix->zw * p.w;
+      o->w = matrix->wx * p.x + matrix->wy * p.y +
+             matrix->wz * p.z + matrix->ww * p.w;
     }
 }
 
