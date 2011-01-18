@@ -244,7 +244,7 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
               if (XIQueryVersion (backend_x11->xdpy, &major, &minor) != BadRequest)
                 {
                   CLUTTER_NOTE (BACKEND, "Creating XI2 device manager");
-
+                  backend_x11->has_xinput = TRUE;
                   backend_x11->device_manager =
                     g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_XI2,
                                   "backend", backend_x11,
@@ -255,11 +255,13 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
 #endif /* HAVE_XINPUT_2 */
                 {
                   CLUTTER_NOTE (BACKEND, "Creating Core+XI device manager");
+                  backend_x11->has_xinput = TRUE;
                   backend_x11->device_manager =
                     g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_X11,
                                   "backend", backend_x11,
                                   "event-base", first_event,
                                   NULL);
+
                 }
             }
         }
@@ -267,6 +269,7 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
 #endif /* HAVE_XINPUT || HAVE_XINPUT_2 */
         {
           CLUTTER_NOTE (BACKEND, "Creating Core device manager");
+          backend_x11->has_xinput = FALSE;
           backend_x11->device_manager =
             g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_X11,
                           "backend", backend_x11,
@@ -831,8 +834,6 @@ clutter_x11_set_display (Display *xdpy)
  * want to use clutter_x11_has_xinput() to see if support was enabled.
  *
  * Since: 0.8
- *
- * Deprecated: 1.6: This function does not do anything.
  */
 void
 clutter_x11_enable_xinput (void)
@@ -1056,14 +1057,15 @@ clutter_x11_get_input_devices (void)
  *   and XInput support is available at run time.
  *
  * Since: 0.8
- *
- * Deprecated: 1.6
  */
 gboolean
 clutter_x11_has_xinput (void)
 {
 #if defined(HAVE_XINPUT) || defined(HAVE_XINPUT_2)
-  return TRUE;
+  if (backend_singleton != NULL)
+    return backend_singleton->has_xinput;
+
+  return FALSE;
 #else
   return FALSE;
 #endif

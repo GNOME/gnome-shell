@@ -97,13 +97,10 @@ struct _ClutterBackendX11
   Atom atom_NET_WM_NAME;
   Atom atom_UTF8_STRING;
 
-  int xi_event_base;
-  int event_types[CLUTTER_X11_XINPUT_LAST_EVENT];
-  gboolean have_xinput;
-
   Time last_event_time;
 
   ClutterDeviceManager *device_manager;
+  gboolean has_xinput;
 
   XSettingsClient *xsettings;
   Window xsettings_xwin;
