@@ -1253,6 +1253,14 @@ _clutter_timeline_do_tick (ClutterTimeline *timeline,
 
   priv = timeline->priv;
 
+  /* Check the is_playing variable before performing the timeline tick.
+   * This is necessary, as if a timeline is stopped in response to a
+   * master-clock generated signal of a different timeline, this code can
+   * still be reached.
+   */
+  if (!priv->is_playing)
+    return;
+
   if (priv->waiting_first_tick)
     {
       priv->last_frame_time = tick_time;
