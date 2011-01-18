@@ -1,3 +1,21 @@
+Clutter 1.5.14                                                       2011-01-21
+===============================================================================
+
+  • List of changes since Clutter 1.5.12
+
+    » Allow getting the modifiers from a ClutterClickAction.
+
+    » Fix ClutterDragAction to never leave the event delivery in
+      an unwanted state.
+
+    » Optimize state changes for texture and data states.
+
+    » Enable VBO support in Cogl for GLES2.
+
+    » Fix compilation on GLES1.1.
+
+    » Documentation fixes.
+
 Clutter 1.5.12                                                       2011-01-11
 ===============================================================================
 
