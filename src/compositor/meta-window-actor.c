@@ -883,6 +883,19 @@ meta_window_actor_get_texture (MetaWindowActor *self)
   return self->priv->actor;
 }
 
+/**
+ * meta_window_actor_is_destroyed:
+ *
+ * Gets whether the X window that the actor was displaying has been destroyed
+ *
+ * Return value: %TRUE when the window is destroyed, otherwise %FALSE
+ */
+gboolean
+meta_window_actor_is_destroyed (MetaWindowActor *self)
+{
+  return self->priv->disposed;
+}
+
 gboolean
 meta_window_actor_is_override_redirect (MetaWindowActor *self)
 {
