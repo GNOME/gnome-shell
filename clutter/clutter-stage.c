@@ -3325,7 +3325,7 @@ _clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage)
 }
 
 /**
- * clutter_stage_get_accept_focus:
+ * clutter_stage_set_accept_focus:
  * @stage: a #ClutterStage
  * @accept_focus: %TRUE to accept focus on show
  *
