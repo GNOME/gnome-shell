@@ -676,11 +676,21 @@ ClutterEvent *
 clutter_event_copy (const ClutterEvent *event)
 {
   ClutterEvent *new_event;
+  ClutterEventPrivate *new_real_event;
 
   g_return_val_if_fail (event != NULL, NULL);
 
   new_event = clutter_event_new (CLUTTER_NOTHING);
+  new_real_event = (ClutterEventPrivate *) new_event;
+
   *new_event = *event;
+
+  if (is_event_allocated (event))
+    {
+      ClutterEventPrivate *real_event = (ClutterEventPrivate *) event;
+
+      new_real_event->source_device = real_event->source_device;
+    }
 
   switch (event->type)
     {
@@ -692,6 +702,17 @@ clutter_event_copy (const ClutterEvent *event)
 
           n_axes = clutter_input_device_get_n_axes (event->button.device);
           new_event->button.axes = g_memdup (event->button.axes,
+                                             sizeof (gdouble) * n_axes);
+        }
+      break;
+
+    case CLUTTER_SCROLL:
+      if (event->scroll.device != NULL && event->scroll.axes != NULL)
+        {
+          gint n_axes;
+
+          n_axes = clutter_input_device_get_n_axes (event->scroll.device);
+          new_event->scroll.axes = g_memdup (event->scroll.axes,
                                              sizeof (gdouble) * n_axes);
         }
       break;
@@ -741,6 +762,10 @@ clutter_event_free (ClutterEvent *event)
 
         case CLUTTER_MOTION:
           g_free (event->motion.axes);
+          break;
+
+        case CLUTTER_SCROLL:
+          g_free (event->scroll.axes);
           break;
 
         default:
