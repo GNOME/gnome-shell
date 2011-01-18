@@ -119,7 +119,8 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
 
       /* Try and create a GLXWindow to use with extensions dependent on
        * GLX versions >= 1.3 that don't accept regular X Windows as GLX
-       * drawables. */
+       * drawables.
+       */
       if (glXQueryVersion (backend_x11->xdpy, &major, &minor) &&
           major == 1 && minor >= 3 &&
           _clutter_backend_glx_get_fbconfig (backend_glx, &config))
@@ -138,9 +139,9 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
                            ? stage_glx->glxwin
                            : stage_x11->xwin;
 
-      /* similarly to above, we unconditionally select this event
-       * because we rely on it to advance the master clock, and
-       * drive redraw/relayout, animations and event handling.
+      /* we unconditionally select this event because we rely on it to
+       * advance the master clock, and drive redraw/relayout, animations
+       * and event handling.
        */
       glXSelectEvent (backend_x11->xdpy,
                       drawable,
