@@ -57,6 +57,9 @@ typedef struct _ClutterInputDeviceClass ClutterInputDeviceClass;
  * @CLUTTER_TABLET_DEVICE: A tablet device
  * @CLUTTER_TOUCHPAD_DEVICE: A touchpad device
  * @CLUTTER_TOUCHSCREEN_DEVICE: A touch screen device
+ * @CLUTTER_PEN_DEVICE: A pen device
+ * @CLUTTER_ERASER_DEVICE: An eraser device
+ * @CLUTTER_CURSOR_DEVICE: A cursor device
  * @CLUTTER_N_DEVICE_TYPES: The number of device types
  *
  * The types of input devices available.
@@ -81,12 +84,38 @@ typedef enum {
   CLUTTER_N_DEVICE_TYPES
 } ClutterInputDeviceType;
 
+/**
+ * ClutterInputMode:
+ * @CLUTTER_INPUT_MODE_MASTER: A master, virtual device
+ * @CLUTTER_INPUT_MODE_SLAVE: A slave, physical device, attached to
+ *   a master device
+ * @CLUTTER_INPUT_MODE_FLOATING: A slave, physical device, not attached
+ *   to a master device
+ *
+ * The mode for input devices available.
+ *
+ * Since: 1.6
+ */
 typedef enum {
   CLUTTER_INPUT_MODE_MASTER,
   CLUTTER_INPUT_MODE_SLAVE,
   CLUTTER_INPUT_MODE_FLOATING
 } ClutterInputMode;
 
+/**
+ * ClutterInputAxis:
+ * @CLUTTER_INPUT_AXIS_IGNORE: Unused axis
+ * @CLUTTER_INPUT_AXIS_X: The position on the X axis
+ * @CLUTTER_INPUT_AXIS_Y: The position of the Y axis
+ * @CLUTTER_INPUT_AXIS_PRESSURE: The pressure information
+ * @CLUTTER_INPUT_AXIS_XTILT: The tilt on the X axis
+ * @CLUTTER_INPUT_AXIS_YTILT: The tile on the Y axis
+ * @CLUTTER_INPUT_AXIS_WHEEL: A wheel
+ *
+ * The type of axes Clutter recognizes on a #ClutterInputDevice
+ *
+ * Since: 1.6
+ */
 typedef enum {
   CLUTTER_INPUT_AXIS_IGNORE,
   CLUTTER_INPUT_AXIS_X,

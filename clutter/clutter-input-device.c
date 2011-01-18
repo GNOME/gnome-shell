@@ -924,6 +924,16 @@ _clutter_input_device_get_axis (ClutterInputDevice *device,
   return info->axis;
 }
 
+/**
+ * clutter_input_device_get_n_axes:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the number of axes available on @device.
+ *
+ * Return value: the number of axes on the device
+ *
+ * Since: 1.6
+ */
 guint
 clutter_input_device_get_n_axes (ClutterInputDevice *device)
 {
@@ -964,6 +974,20 @@ clutter_input_device_get_n_keys (ClutterInputDevice *device)
   return 0;
 }
 
+/**
+ * clutter_input_device_set_key:
+ * @device: a #ClutterInputDevice
+ * @index_: the index of the key
+ * @keyval: the keyval
+ * @modifiers: a bitmask of modifiers
+ *
+ * Sets the keyval and modifiers at the given @index_ for @device.
+ *
+ * Clutter will use the keyval and modifiers set when filling out
+ * an event coming from the same input device.
+ *
+ * Since: 1.6
+ */
 void
 clutter_input_device_set_key (ClutterInputDevice  *device,
                               guint                index_,
@@ -982,6 +1006,19 @@ clutter_input_device_set_key (ClutterInputDevice  *device,
   key_info->modifiers = modifiers;
 }
 
+/**
+ * clutter_input_device_get_key:
+ * @device: a #ClutterInputDevice
+ * @index_: the index of the key
+ * @keyval: (out): return location for the keyval at @index_
+ * @modifiers: (out): return location for the modifiers at @index_
+ *
+ * Retrieves the key set using clutter_input_device_set_key()
+ *
+ * Return value: %TRUE if a key was set at the given index
+ *
+ * Since: 1.6
+ */
 gboolean
 clutter_input_device_get_key (ClutterInputDevice  *device,
                               guint                index_,

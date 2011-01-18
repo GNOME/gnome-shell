@@ -75,6 +75,7 @@ IGNORE_HFILES=\
 	clutter-deprecated.h 		\
 	clutter-device-manager-private.h	\
 	clutter-enum-types.h 		\
+	clutter-event-translator.h	\
 	clutter-id-pool.h 		\
 	clutter-keysyms.h 		\
 	clutter-keysyms-compat.h	\

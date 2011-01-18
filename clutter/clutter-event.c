@@ -47,6 +47,8 @@
 typedef struct _ClutterEventPrivate {
   ClutterEvent base;
 
+  ClutterInputDevice *source_device;
+
   gpointer platform_data;
 } ClutterEventPrivate;
 
@@ -906,4 +908,84 @@ clutter_get_current_event (void)
   g_return_val_if_fail (context != NULL, NULL);
 
   return context->current_event;
+}
+
+/**
+ * clutter_event_get_source_device:
+ * @event: a #ClutterEvent
+ *
+ * Retrieves the hardware device that originated the event.
+ *
+ * If you need the virtual device, use clutter_event_get_device().
+ *
+ * If no hardware device originated this event, this function will
+ * return the same device as clutter_event_get_device().
+ *
+ * Return value: (transfer none): a pointer to a #ClutterInputDevice
+ *   or %NULL
+ *
+ * Since: 1.6
+ */
+ClutterInputDevice *
+clutter_event_get_source_device (const ClutterEvent *event)
+{
+  ClutterEventPrivate *real_event;
+
+  if (!is_event_allocated (event))
+    return NULL;
+
+  real_event = (ClutterEventPrivate *) event;
+
+  if (real_event->source_device != NULL)
+    return real_event->source_device;
+
+  return clutter_event_get_device (event);
+}
+
+void
+_clutter_event_set_device (ClutterEvent       *event,
+                           ClutterInputDevice *device)
+{
+  switch (event->type)
+    {
+    case CLUTTER_NOTHING:
+    case CLUTTER_STAGE_STATE:
+    case CLUTTER_DESTROY_NOTIFY:
+    case CLUTTER_CLIENT_MESSAGE:
+    case CLUTTER_DELETE:
+    case CLUTTER_ENTER:
+    case CLUTTER_LEAVE:
+      break;
+
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_BUTTON_RELEASE:
+      event->button.device = device;
+      break;
+
+    case CLUTTER_MOTION:
+      event->motion.device = device;
+      break;
+
+    case CLUTTER_SCROLL:
+      event->scroll.device = device;
+      break;
+
+    case CLUTTER_KEY_PRESS:
+    case CLUTTER_KEY_RELEASE:
+      event->key.device = device;
+      break;
+    }
+}
+
+void
+_clutter_event_set_source_device (ClutterEvent       *event,
+                                  ClutterInputDevice *device)
+{
+  ClutterEventPrivate *real_event;
+
+  if (!is_event_allocated (event))
+    return;
+
+  real_event = (ClutterEventPrivate *) event;
+  real_event->source_device = device;
 }

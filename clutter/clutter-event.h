@@ -403,6 +403,7 @@ ClutterModifierType    clutter_event_get_state              (const ClutterEvent 
 gint                   clutter_event_get_device_id          (const ClutterEvent *event);
 ClutterInputDeviceType clutter_event_get_device_type        (const ClutterEvent *event);
 ClutterInputDevice *   clutter_event_get_device             (const ClutterEvent *event);
+ClutterInputDevice *   clutter_event_get_source_device      (const ClutterEvent *event);
 ClutterActor *         clutter_event_get_source             (const ClutterEvent *event);
 ClutterStage *         clutter_event_get_stage              (const ClutterEvent *event);
 
