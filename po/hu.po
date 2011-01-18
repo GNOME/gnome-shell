@@ -595,7 +595,7 @@ msgstr "Váltás ablakok között felugró ablakkal"
 
 #: ../src/include/all-keybindings.h:160
 msgid "Move backward between windows, using a popup window"
-msgstr "Váltás hátrafelé ablakok között között felugró ablakkal"
+msgstr "Váltás hátrafelé ablakok között felugró ablakkal"
 
 #: ../src/include/all-keybindings.h:163
 msgid "Move between panels and the desktop, using a popup window"
