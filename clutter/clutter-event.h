@@ -410,6 +410,8 @@ ClutterStage *         clutter_event_get_stage              (const ClutterEvent 
 void                   clutter_event_get_coords             (const ClutterEvent *event,
                                                              gfloat             *x,
                                                              gfloat             *y);
+gdouble *              clutter_event_get_axes               (const ClutterEvent *event,
+                                                             guint              *n_axes);
 
 guint                  clutter_event_get_key_symbol         (const ClutterEvent *event);
 guint16                clutter_event_get_key_code           (const ClutterEvent *event);

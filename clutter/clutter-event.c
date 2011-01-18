@@ -989,3 +989,60 @@ _clutter_event_set_source_device (ClutterEvent       *event,
   real_event = (ClutterEventPrivate *) event;
   real_event->source_device = device;
 }
+
+/**
+ * clutter_event_get_axes:
+ * @event: a #ClutterEvent
+ * @n_axes: (out): return location for the number of axes returned
+ *
+ * Retrieves the array of axes values attached to the event.
+ *
+ * Return value: (transfer none): an array of axis values
+ *
+ * Since: 1.6
+ */
+gdouble *
+clutter_event_get_axes (const ClutterEvent *event,
+                        guint              *n_axes)
+{
+  gdouble *retval = NULL;
+  guint len = 0;
+
+  switch (event->type)
+    {
+    case CLUTTER_NOTHING:
+    case CLUTTER_STAGE_STATE:
+    case CLUTTER_DESTROY_NOTIFY:
+    case CLUTTER_CLIENT_MESSAGE:
+    case CLUTTER_DELETE:
+    case CLUTTER_ENTER:
+    case CLUTTER_LEAVE:
+    case CLUTTER_SCROLL:
+    case CLUTTER_KEY_PRESS:
+    case CLUTTER_KEY_RELEASE:
+      break;
+
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_BUTTON_RELEASE:
+      retval = event->button.axes;
+      break;
+
+    case CLUTTER_MOTION:
+      retval = event->motion.axes;
+      break;
+    }
+
+  if (retval != NULL)
+    {
+      ClutterInputDevice *device;
+
+      device = clutter_event_get_device (event);
+      if (device != NULL)
+        len = clutter_input_device_get_n_axes (device);
+    }
+
+  if (n_axes)
+    *n_axes = len;
+
+  return retval;
+}
