@@ -148,8 +148,6 @@ guint           _clutter_input_device_add_axis                  (ClutterInputDev
                                                                  gdouble               min_value,
                                                                  gdouble               max_value,
                                                                  gdouble               resolution);
-ClutterInputAxis        _clutter_input_device_get_axis          (ClutterInputDevice   *device,
-                                                                 guint                 index_);
 void            _clutter_input_device_reset_axes                (ClutterInputDevice   *device);
 
 void            _clutter_input_device_set_associated_device     (ClutterInputDevice   *device,

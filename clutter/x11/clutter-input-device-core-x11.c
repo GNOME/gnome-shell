@@ -258,8 +258,7 @@ translate_axes (ClutterInputDeviceX11 *device_x11,
     {
       ClutterInputAxis axis;
 
-      axis = _clutter_input_device_get_axis (device, i);
-
+      axis = clutter_input_device_get_axis (device, i);
       switch (axis)
         {
         case CLUTTER_INPUT_AXIS_X:

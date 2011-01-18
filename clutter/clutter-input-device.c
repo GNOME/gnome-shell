@@ -907,9 +907,20 @@ _clutter_input_device_translate_axis (ClutterInputDevice *device,
   return TRUE;
 }
 
+/**
+ * clutter_input_device_get_axis:
+ * @device: a #ClutterInputDevice
+ * @index_: the index of the axis
+ *
+ * Retrieves the type of axis on @device at the given index.
+ *
+ * Return value: the axis type
+ *
+ * Since: 1.6
+ */
 ClutterInputAxis
-_clutter_input_device_get_axis (ClutterInputDevice *device,
-                                guint               index_)
+clutter_input_device_get_axis (ClutterInputDevice *device,
+                               guint               index_)
 {
   ClutterAxisInfo *info;
 
@@ -963,15 +974,22 @@ _clutter_input_device_set_keys (ClutterInputDevice *device,
   device->max_keycode = max_keycode;
 }
 
+/**
+ * clutter_input_device_get_n_keys:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the number of keys registered for @device.
+ *
+ * Return value: the number of registered keys
+ *
+ * Since: 1.6
+ */
 guint
 clutter_input_device_get_n_keys (ClutterInputDevice *device)
 {
   g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), 0);
 
-  if (device->keys != NULL)
-    return device->keys->len;
-
-  return 0;
+  return device->n_keys;
 }
 
 /**

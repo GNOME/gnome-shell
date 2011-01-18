@@ -138,7 +138,10 @@ ClutterStage *          clutter_input_device_get_pointer_stage  (ClutterInputDev
 G_CONST_RETURN gchar *  clutter_input_device_get_device_name    (ClutterInputDevice  *device);
 
 guint                   clutter_input_device_get_n_axes         (ClutterInputDevice  *device);
+ClutterInputAxis        clutter_input_device_get_axis           (ClutterInputDevice  *device,
+                                                                 guint                index_);
 
+guint                   clutter_input_device_get_n_keys         (ClutterInputDevice  *device);
 void                    clutter_input_device_set_key            (ClutterInputDevice  *device,
                                                                  guint                index_,
                                                                  guint                keyval,

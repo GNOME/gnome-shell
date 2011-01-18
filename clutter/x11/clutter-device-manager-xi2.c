@@ -500,7 +500,7 @@ translate_axes (ClutterInputDevice *device,
       if (!XIMaskIsSet (valuators->mask, i))
         continue;
 
-      axis = _clutter_input_device_get_axis (device, i);
+      axis = clutter_input_device_get_axis (device, i);
       val = *values++;
 
       switch (axis)
