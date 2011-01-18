@@ -851,28 +851,14 @@ static void
 clutter_device_manager_xi2_add_device (ClutterDeviceManager *manager,
                                        ClutterInputDevice   *device)
 {
+  /* XXX implement */
 }
 
 static void
 clutter_device_manager_xi2_remove_device (ClutterDeviceManager *manager,
                                           ClutterInputDevice   *device)
 {
-  ClutterDeviceManagerXI2 *manager_xi2 = CLUTTER_DEVICE_MANAGER_XI2 (manager);
-  gint device_id;
-
-  device_id = clutter_input_device_get_device_id (device);
-
-  manager_xi2->master_devices =
-    g_list_remove (manager_xi2->master_devices, device);
-  manager_xi2->slave_devices =
-    g_list_remove (manager_xi2->slave_devices, device);
-
-  g_signal_emit_by_name (manager_xi2, "device-removed", device);
-
-  g_object_run_dispose (G_OBJECT (device));
-
-  g_hash_table_remove (manager_xi2->devices_by_id,
-                       GINT_TO_POINTER (device_id));
+  /* XXX implement */
 }
 
 static const GSList *
