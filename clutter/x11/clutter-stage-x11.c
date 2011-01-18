@@ -19,9 +19,7 @@
  *
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <math.h>
 
@@ -577,7 +575,7 @@ clutter_stage_x11_set_cursor_visible (ClutterStageWindow *stage_window,
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
-  stage_x11->is_cursor_visible = (cursor_visible == TRUE);
+  stage_x11->is_cursor_visible = !!cursor_visible;
   set_cursor_visible (stage_x11);
 }
 
