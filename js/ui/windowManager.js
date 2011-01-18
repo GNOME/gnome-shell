@@ -497,6 +497,8 @@ WindowManager.prototype = {
 
         for (let i = 0; i < switchData.windows.length; i++) {
                 let w = switchData.windows[i];
+                if (w.window.is_destroyed()) // Window gone
+                    continue;
                 if (w.window.get_parent() == switchData.outGroup) {
                     w.window.reparent(w.parent);
                     w.window.hide();
