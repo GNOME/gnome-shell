@@ -3,7 +3,7 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Copyright (C) 2009 Intel Corp.
+ * Copyright © 2009, 2010, 2011  Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1028,6 +1028,18 @@ _clutter_input_device_remove_slave (ClutterInputDevice *master,
     master->slaves = g_list_remove (master->slaves, slave);
 }
 
+/**
+ * clutter_input_device_get_slave_devices:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the slave devices attached to @device.
+ *
+ * Return value: (transfer container) (element-type Clutter.InputDevice): a
+ *   list of #ClutterInputDevice, or %NULL. The contents of the list are
+ *   owned by the device. Use g_list_free() when done
+ *
+ * Since: 1.6
+ */
 GList *
 clutter_input_device_get_slave_devices (ClutterInputDevice *device)
 {
@@ -1036,6 +1048,15 @@ clutter_input_device_get_slave_devices (ClutterInputDevice *device)
   return g_list_copy (device->slaves);
 }
 
+/*< internal >
+ * clutter_input_device_set_associated_device:
+ * @device: a #ClutterInputDevice
+ * @associated: (allow-none): a #ClutterInputDevice, or %NULL
+ *
+ * Sets the associated device for @device.
+ *
+ * This function keeps a reference on the associated device.
+ */
 void
 _clutter_input_device_set_associated_device (ClutterInputDevice *device,
                                              ClutterInputDevice *associated)
@@ -1067,6 +1088,21 @@ _clutter_input_device_set_associated_device (ClutterInputDevice *device,
     }
 }
 
+/**
+ * clutter_input_device_get_associated_device:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves a pointer to the #ClutterInputDevice that has been
+ * associated to @device.
+ *
+ * If the #ClutterInputDevice:device-mode property of @device is
+ * set to %CLUTTER_INPUT_MODE_MASTER, this function will return
+ * %NULL.
+ *
+ * Return value: (transfer none): a #ClutterInputDevice, or %NULL
+ *
+ * Since: 1.6
+ */
 ClutterInputDevice *
 clutter_input_device_get_associated_device (ClutterInputDevice *device)
 {
@@ -1075,6 +1111,16 @@ clutter_input_device_get_associated_device (ClutterInputDevice *device)
   return device->associated;
 }
 
+/*< internal >
+ * clutter_input_device_select_stage_events:
+ * @device: a #ClutterInputDevice
+ * @stage: the #ClutterStage to select events on
+ * @event_mask: platform-specific mask of events
+ *
+ * Selects input device events on @stage.
+ *
+ * The implementation of this function depends on the backend used.
+ */
 void
 _clutter_input_device_select_stage_events (ClutterInputDevice *device,
                                            ClutterStage       *stage,
