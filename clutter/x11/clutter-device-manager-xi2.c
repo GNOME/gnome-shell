@@ -700,12 +700,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->scroll.modifier_state =
               _clutter_input_device_xi2_translate_state (&xev->mods,
                                                          &xev->buttons);
-            event->scroll.axes = translate_axes (event->scroll.device,
-                                                 event->scroll.x,
-                                                 event->scroll.y,
-                                                 stage_x11,
-                                                 &xev->valuators);
-
             device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                           GINT_TO_POINTER (xev->sourceid));
             _clutter_event_set_source_device (event, device);
@@ -713,6 +707,13 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                           GINT_TO_POINTER (xev->deviceid));
             _clutter_event_set_device (event, device);
+
+            event->scroll.axes = translate_axes (event->scroll.device,
+                                                 event->scroll.x,
+                                                 event->scroll.y,
+                                                 stage_x11,
+                                                 &xev->valuators);
+
             break;
 
           default:
@@ -729,11 +730,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->button.modifier_state =
               _clutter_input_device_xi2_translate_state (&xev->mods,
                                                          &xev->buttons);
-            event->button.axes = translate_axes (event->button.device,
-                                                 event->button.x,
-                                                 event->button.y,
-                                                 stage_x11,
-                                                 &xev->valuators);
 
             device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                           GINT_TO_POINTER (xev->sourceid));
@@ -742,6 +738,12 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                           GINT_TO_POINTER (xev->deviceid));
             _clutter_event_set_device (event, device);
+
+            event->button.axes = translate_axes (event->button.device,
+                                                 event->button.x,
+                                                 event->button.y,
+                                                 stage_x11,
+                                                 &xev->valuators);
             break;
           }
 
@@ -785,6 +787,12 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                       GINT_TO_POINTER (xev->deviceid));
         _clutter_event_set_device (event, device);
+
+        event->motion.axes = translate_axes (event->motion.device,
+                                             event->motion.x,
+                                             event->motion.y,
+                                             stage_x11,
+                                             &xev->valuators);
 
         CLUTTER_NOTE (EVENT, "motion: win:0x%x device:%s (x:%.2f, y:%.2f)",
                       (unsigned int) stage_x11->xwin,
