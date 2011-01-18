@@ -129,8 +129,8 @@ cogl_xlib_filter (XEvent       *xevent,
                   ClutterEvent *event,
                   gpointer      data)
 {
-  CoglXlibFilterReturn ret;
   ClutterX11FilterReturn retval;
+  CoglXlibFilterReturn ret;
 
   ret = _cogl_xlib_handle_event (xevent);
   switch (ret)
@@ -237,6 +237,7 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
                                &first_event,
                                &first_error))
             {
+#ifdef HAVE_XINPUT_2
               int major = 2;
               int minor = 0;
 
@@ -251,6 +252,7 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
                                   NULL);
                 }
               else
+#endif /* HAVE_XINPUT_2 */
                 {
                   CLUTTER_NOTE (BACKEND, "Creating Core+XI device manager");
                   backend_x11->device_manager =
@@ -273,6 +275,18 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
 
       translator = CLUTTER_EVENT_TRANSLATOR (backend_x11->device_manager);
       _clutter_backend_x11_add_event_translator (backend_x11, translator);
+    }
+}
+
+static void
+clutter_backend_x11_create_keymap (ClutterBackendX11 *backend_x11)
+{
+  if (backend_x11->keymap == NULL)
+    {
+      backend_x11->keymap =
+        g_object_new (CLUTTER_TYPE_KEYMAP_X11,
+                      "backend", backend_x11,
+                      NULL);
     }
 }
 
@@ -389,10 +403,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
       clutter_backend_x11_create_device_manager (backend_x11);
 
       /* register keymap */
-      backend_x11->keymap =
-        g_object_new (CLUTTER_TYPE_KEYMAP_X11,
-                      "backend", backend_x11,
-                      NULL);
+      clutter_backend_x11_create_keymap (backend_x11);
 
       /* create XSETTINGS client */
       backend_x11->xsettings =
@@ -492,6 +503,8 @@ clutter_backend_x11_finalize (GObject *gobject)
 
   g_free (backend_x11->display_name);
 
+  clutter_x11_remove_filter (cogl_xlib_filter, NULL);
+
   clutter_x11_remove_filter (xsettings_filter, backend_x11);
   _clutter_xsettings_client_destroy (backend_x11->xsettings);
 
@@ -528,7 +541,7 @@ clutter_backend_x11_constructor (GType                  gtype,
   GObjectClass *parent_class;
   GObject *retval;
 
-  if (!backend_singleton)
+  if (backend_singleton == NULL)
     {
       parent_class = G_OBJECT_CLASS (clutter_backend_x11_parent_class);
       retval = parent_class->constructor (gtype, n_params, params);
@@ -797,8 +810,8 @@ clutter_x11_set_display (Display *xdpy)
 {
   if (_clutter_context_is_initialized ())
     {
-      g_critical ("Display connection already exists. You can only call "
-		  "clutter_x11_set_display() before clutter_init()");
+      g_warning ("%s() can only be used before calling clutter_init()",
+                 G_STRFUNC);
       return;
     }
 
@@ -824,6 +837,14 @@ clutter_x11_set_display (Display *xdpy)
 void
 clutter_x11_enable_xinput (void)
 {
+  if (_clutter_context_is_initialized ())
+    {
+      g_warning ("%s() can only be used before calling clutter_init()",
+                 G_STRFUNC);
+      return;
+    }
+
+  clutter_enable_xinput = TRUE;
 }
 
 /**
@@ -856,8 +877,8 @@ clutter_x11_disable_event_retrieval (void)
 {
   if (_clutter_context_is_initialized ())
     {
-      g_warning  ("clutter_x11_disable_event_retrieval() can only be "
-                  "called before clutter_init()");
+      g_warning ("%s() can only be used before calling clutter_init()",
+                 G_STRFUNC);
       return;
     }
 
@@ -1067,7 +1088,7 @@ clutter_x11_has_composite_extension (void)
   if (done_check)
     return have_composite;
 
-  if (!backend_singleton)
+  if (!_clutter_context_is_initialized ())
     {
       g_critical ("X11 backend has not been initialised");
       return FALSE;
