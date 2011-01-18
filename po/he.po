@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-13 23:22+0200\n"
-"PO-Revision-Date: 2011-01-13 23:23+0200\n"
+"POT-Creation-Date: 2011-01-18 13:02+0200\n"
+"PO-Revision-Date: 2011-01-18 13:05+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -154,6 +154,10 @@ msgstr "Uuids of extensions to disable"
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Whether to collect stats about applications usage"
 msgstr "Whether to collect stats about applications usage"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "disabled OpenSearch providers"
+msgstr "disabled OpenSearch providers"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
 msgid "Clip the crosshairs at the center"
@@ -320,7 +324,7 @@ msgstr "לא ניתן לפענח את הפקודה:"
 msgid "No such application"
 msgstr "אין כזה יישום"
 
-#: ../js/misc/util.js:143 ../js/ui/runDialog.js:377
+#: ../js/misc/util.js:143 ../js/ui/runDialog.js:351
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
@@ -364,53 +368,122 @@ msgstr "%s הוסר מהמועדפים שלך."
 msgid "Remove"
 msgstr "הסרה"
 
-#: ../js/ui/docDisplay.js:494
+#: ../js/ui/docDisplay.js:18
 msgid "RECENT ITEMS"
 msgstr "פריטים אחרונים"
 
-#: ../js/ui/lookingGlass.js:552
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+msgid "Log Out %s"
+msgstr "הוצאת %s"
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+msgid "Log Out"
+msgstr "יציאה"
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr "יש ללחוץ על יציאה כדי לסגור יישומים אלה ולצאת מהמערכת."
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "המשתמש %s ייצא אוטומטית בעוד %d שניות."
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "המערכת תוציא אותך אוטומטית בעוד %d שניות."
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "מתבצעת יציאה מהמערכת."
+
+#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
+msgid "Shut Down"
+msgstr "כיבוי"
+
+#: ../js/ui/endSessionDialog.js:75
+msgid "Click Shut Down to quit these applications and shut down the system."
+msgstr "יש ללחוץ על יציאה כדי לסגור יישומים אלה ולכבות את המערכת."
+
+#: ../js/ui/endSessionDialog.js:76
+#, c-format
+msgid "The system will shut down automatically in %d seconds."
+msgstr "המערכת תכבה אוטומטית בעוד %d שניות."
+
+#: ../js/ui/endSessionDialog.js:77
+msgid "Shutting down the system."
+msgstr "המערכת נכבית."
+
+#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+msgid "Restart"
+msgstr "הפעלה מחדש"
+
+#: ../js/ui/endSessionDialog.js:85
+msgid "Click Restart to quit these applications and restart the system."
+msgstr "יש ללחוץ על יציאה כדי לסגור יישומים אלה ולהפעיל את המערכת מחדש."
+
+#: ../js/ui/endSessionDialog.js:86
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "המערכת תופעל מחדש בעוד %d שניות."
+
+#: ../js/ui/endSessionDialog.js:87
+msgid "Restarting the system."
+msgstr "המערכת מופעלת מחדש"
+
+#: ../js/ui/endSessionDialog.js:395
+msgid "Confirm"
+msgstr "אישור"
+
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+msgid "Cancel"
+msgstr "ביטול"
+
+#: ../js/ui/lookingGlass.js:556
 msgid "No extensions installed"
 msgstr "לא מותקנות הרחבות"
 
-#: ../js/ui/lookingGlass.js:589
+#: ../js/ui/lookingGlass.js:593
 msgid "Enabled"
 msgstr "פעיל"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:591 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:595 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "מנוטרל"
 
-#: ../js/ui/lookingGlass.js:593
+#: ../js/ui/lookingGlass.js:597
 msgid "Error"
 msgstr "שגיאה"
 
-#: ../js/ui/lookingGlass.js:595
+#: ../js/ui/lookingGlass.js:599
 msgid "Out of date"
 msgstr "לא בתוקף"
 
-#: ../js/ui/lookingGlass.js:620
+#: ../js/ui/lookingGlass.js:624
 msgid "View Source"
 msgstr "צפייה במקור"
 
-#: ../js/ui/lookingGlass.js:626
+#: ../js/ui/lookingGlass.js:630
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/messageTray.js:1757
+#: ../js/ui/messageTray.js:1748
 msgid "System Information"
 msgstr "פרטי המערכת"
 
-#: ../js/ui/overview.js:76
+#: ../js/ui/overview.js:75
 msgid "Undo"
 msgstr "ביטול"
 
-#: ../js/ui/overview.js:141
+#: ../js/ui/overview.js:140
 msgid "Windows"
 msgstr "חלונות"
 
-#: ../js/ui/overview.js:144
+#: ../js/ui/overview.js:143
 msgid "Applications"
 msgstr "יישומים"
 
@@ -466,20 +539,20 @@ msgstr "%a %l:%M %p"
 msgid "Activities"
 msgstr "פעילויות"
 
-#: ../js/ui/placeDisplay.js:112
+#: ../js/ui/placeDisplay.js:106
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "אירע כשל בניתוק '%s'"
 
-#: ../js/ui/placeDisplay.js:115
+#: ../js/ui/placeDisplay.js:109
 msgid "Retry"
 msgstr "ניסיון חוזר"
 
-#: ../js/ui/placeDisplay.js:160
+#: ../js/ui/placeDisplay.js:150
 msgid "Connect to..."
 msgstr "התחברות אל..."
 
-#: ../js/ui/placeDisplay.js:559
+#: ../js/ui/placeDisplay.js:386
 msgid "PLACES & DEVICES"
 msgstr "מקומות והתקנים"
 
@@ -492,7 +565,7 @@ msgstr "מקומות והתקנים"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:239
+#: ../js/ui/runDialog.js:209
 msgid "Please enter a command:"
 msgstr "נא להזין פקודה:"
 
@@ -576,7 +649,7 @@ msgstr "ניגודיות גבוהה"
 msgid "Large Text"
 msgstr "טקסט גדול"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:240
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -592,109 +665,105 @@ msgstr "שליחת קובץ להתקן..."
 msgid "Setup a New Device..."
 msgstr "הגדרת התקן חדש..."
 
-#: ../js/ui/status/bluetooth.js:94
+#: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
 msgstr "הגדרות Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:191
+#: ../js/ui/status/bluetooth.js:192
 msgid "Connection"
 msgstr "חיבור"
 
-#: ../js/ui/status/bluetooth.js:227
+#: ../js/ui/status/bluetooth.js:228
 msgid "Send Files..."
 msgstr "שליחת קבצים..."
 
-#: ../js/ui/status/bluetooth.js:232
+#: ../js/ui/status/bluetooth.js:233
 msgid "Browse Files..."
 msgstr "עיון בקבצים..."
 
-#: ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:242
 msgid "Error browsing device"
 msgstr "שגיאה בעיון בהתקן"
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:243
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "לא ניתן לעיין בהתקן הנבחר, השגיאה היא '%s'"
 
-#: ../js/ui/status/bluetooth.js:250
+#: ../js/ui/status/bluetooth.js:251 ../js/ui/status/keyboard.js:78
 msgid "Keyboard Settings"
 msgstr "הגדרות מקלדת"
 
-#: ../js/ui/status/bluetooth.js:255
+#: ../js/ui/status/bluetooth.js:256
 msgid "Mouse Settings"
 msgstr "הגדרות עכבר"
 
-#: ../js/ui/status/bluetooth.js:262 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
 msgid "Sound Settings"
 msgstr "הגדרות שמע"
 
-#: ../js/ui/status/bluetooth.js:336 ../js/ui/status/bluetooth.js:370
-#: ../js/ui/status/bluetooth.js:410 ../js/ui/status/bluetooth.js:443
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
 msgid "Bluetooth Agent"
 msgstr "סוכן Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:372
 #, c-format
 msgid "Authorization request from %s"
 msgstr "בקשת אישור מאת %s"
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:378
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "ההתקן %s מעוניין לגשת אל השירות '%s'"
 
-#: ../js/ui/status/bluetooth.js:379
+#: ../js/ui/status/bluetooth.js:380
 msgid "Always grant access"
 msgstr "תמיד להעניק גישה"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:381
 msgid "Grant this time only"
 msgstr "הענקת גישה הפעם בלבד"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:382
 msgid "Reject"
 msgstr "סירוב"
 
-#: ../js/ui/status/bluetooth.js:411
+#: ../js/ui/status/bluetooth.js:412
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "אישור צימוד עבור %s"
 
-#: ../js/ui/status/bluetooth.js:417 ../js/ui/status/bluetooth.js:451
+#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "ההתקן %s מעוניין בצימוד עם מחשב זה"
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:419
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "נא לאשר האם קוד ה־PIN‏ '%s' תואם את זה שמופיע בהתקן."
 
-#: ../js/ui/status/bluetooth.js:420
+#: ../js/ui/status/bluetooth.js:421
 msgid "Matches"
 msgstr "התאמות"
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:422
 msgid "Does not match"
 msgstr "אינו תואם"
 
-#: ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:445
 #, c-format
 msgid "Pairing request for %s"
 msgstr "בקשת צימוד עבור %s"
 
-#: ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:453
 msgid "Please enter the PIN mentioned on the device."
 msgstr "נא להזין את קוד ה־PIN המוזכר בהתקן."
 
-#: ../js/ui/status/bluetooth.js:468
+#: ../js/ui/status/bluetooth.js:469
 msgid "OK"
 msgstr "אישור"
-
-#: ../js/ui/status/bluetooth.js:469
-msgid "Cancel"
-msgstr "ביטול"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -867,11 +936,11 @@ msgstr[2] "2 קלטים"
 msgid "System Sounds"
 msgstr "צלילי מערכת"
 
-#: ../src/shell-global.c:1233
+#: ../src/shell-global.c:1366
 msgid "Less than a minute ago"
 msgstr "לפני פחות מדקה"
 
-#: ../src/shell-global.c:1237
+#: ../src/shell-global.c:1370
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -879,7 +948,7 @@ msgstr[0] "לפני דקה"
 msgstr[1] "לפני %d דקות"
 msgstr[2] "לפני 2 דקות"
 
-#: ../src/shell-global.c:1242
+#: ../src/shell-global.c:1375
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -887,7 +956,7 @@ msgstr[0] "לפני שעה"
 msgstr[1] "לפני %d שעות"
 msgstr[2] "לפני שעתיים"
 
-#: ../src/shell-global.c:1247
+#: ../src/shell-global.c:1380
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -895,7 +964,7 @@ msgstr[0] "לפני יום"
 msgstr[1] "לפני %d ימים"
 msgstr[2] "לפני יומיים"
 
-#: ../src/shell-global.c:1252
+#: ../src/shell-global.c:1385
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1023,9 +1092,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Invisible"
 #~ msgstr "בלתי נראה"
-
-#~ msgid "Restart..."
-#~ msgstr "הפעלה מחדש..."
 
 #~ msgid "ON"
 #~ msgstr "1"
