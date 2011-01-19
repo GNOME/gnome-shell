@@ -673,6 +673,35 @@ dnl using the define also.
 AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1],
           [Can use Cogl 2.0 API internally])
 
+dnl === Clutter configuration =================================================
+
+CLUTTER_CONFIG_DEFINES=
+
+# windowing systems
+AS_IF([test "x$SUPPORT_XLIB" = "x1"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_WINDOWING_X11 1"])
+AS_IF([test "x$SUPPORT_GLX" = "x1"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_WINDOWING_GLX 1"])
+AS_IF([test "x$SUPPORT_EGL" = "x1"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_WINDOWING_EGL 1"])
+AS_IF([test "x$SUPPORT_WAYLAND" = "x1"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_WINDOWING_WAYLAND 1"])
+AS_IF([test "x$SUPPORT_OSX" = "x1"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_WINDOWING_OSX 1"])
+AS_IF([test "x$SUPPORT_WIN32" = "x1"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_WINDOWING_WIN32 1"])
+AS_IF([test "x$SUPPORT_CEX100" = "x1"],
+      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+#define CLUTTER_WINDOWING_CEX100 1"])
+
+AC_SUBST([CLUTTER_CONFIG_DEFINES])
+
 dnl === Clutter substitutions =================================================
 # Eventually the idea of a winsys should be hidden from Clutter and moved
 # into Cogl, but for now we have CLUTTER_WINSYS...
@@ -1121,6 +1150,7 @@ AC_CONFIG_FILES([
 	build/mingw/Makefile
 
 	clutter/Makefile
+        clutter/clutter-config.h
 	clutter/clutter-version.h
 	clutter/clutter-$CLUTTER_API_VERSION.pc:clutter/clutter.pc.in
 

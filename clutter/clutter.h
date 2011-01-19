@@ -30,6 +30,8 @@
 
 #include "clutter-deprecated.h"
 
+#include "clutter-config.h"
+
 #include "clutter-action.h"
 #include "clutter-actor.h"
 #include "clutter-actor-meta.h"

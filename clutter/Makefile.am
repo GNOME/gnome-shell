@@ -264,6 +264,10 @@ built_source_h = \
 	clutter-marshal.h			\
 	$(NULL)
 
+# config header
+DISTCLEANFILES += clutter-config.h
+EXTRA_DIST += clutter-config.h.in
+
 # version header
 DISTCLEANFILES += clutter-version.h
 EXTRA_DIST += clutter-version.h.in
@@ -612,6 +616,7 @@ DISTCLEANFILES += $(pc_files)
 
 clutter_include_HEADERS = $(source_h) $(top_srcdir)/clutter/clutter.h
 nodist_clutter_include_HEADERS = \
+	$(top_builddir)/clutter/clutter-config.h \
 	$(top_builddir)/clutter/clutter-version.h \
 	$(built_source_h)
 

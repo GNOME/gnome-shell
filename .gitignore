@@ -15,6 +15,7 @@ compile
 stamp-enum-types
 stamp-marshal
 /ChangeLog*
+/clutter/clutter-config.h
 /clutter/clutter-enum-types.[ch]
 /clutter/clutter-marshal.[ch]
 /clutter/clutter-version.h
