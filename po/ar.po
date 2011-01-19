@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-19 22:35+0200\n"
-"PO-Revision-Date: 2011-01-19 22:35+0300\n"
+"POT-Creation-Date: 2011-01-19 22:47+0200\n"
+"PO-Revision-Date: 2011-01-19 22:47+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -334,12 +334,12 @@ msgid "Click Log Out to quit these applications and log out of the system."
 msgstr "انقر على \"اخرج\" لغلق هذه التطبيقات والخروج من النظام."
 
 #: ../js/ui/endSessionDialog.js:66
-#, fuzzy, c-format
+#, c-format
 msgid "%s will be logged out automatically in %d seconds."
 msgstr "سيُخرج %s تلقائيا بعد %d ثوان."
 
 #: ../js/ui/endSessionDialog.js:67
-#, fuzzy, c-format
+#, c-format
 msgid "You will be logged out automatically in %d seconds."
 msgstr "ستُخرج تلقائيا بعد %d ثوان."
 
@@ -356,7 +356,7 @@ msgid "Click Shut Down to quit these applications and shut down the system."
 msgstr "انقر على \"أطفئ\" لغلق هذه التطبيقات وإطفاء النظام."
 
 #: ../js/ui/endSessionDialog.js:76
-#, fuzzy, c-format
+#, c-format
 msgid "The system will shut down automatically in %d seconds."
 msgstr "سيُطفأ النظام تلقائيا خلال %d ثوان."
 
@@ -373,7 +373,7 @@ msgid "Click Restart to quit these applications and restart the system."
 msgstr "انقر على \"أعِد التشغيل\" لغلق هذه التطبيقات إعادة تشغيل النظام."
 
 #: ../js/ui/endSessionDialog.js:86
-#, fuzzy, c-format
+#, c-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "سيُعاد تشغيل النظام تلقائيا خلال %d ثوان."
 
@@ -737,7 +737,7 @@ msgstr "بقي %d %s و %d %s"
 #: ../js/ui/status/power.js:117
 msgid "hour"
 msgid_plural "hours"
-msgstr[0] "أقل من ساعة"
+msgstr[0] "ساعة"
 msgstr[1] "ساعة"
 msgstr[2] "ساعتين"
 msgstr[3] "ساعات"
@@ -747,7 +747,7 @@ msgstr[5] "ساعة"
 #: ../js/ui/status/power.js:117
 msgid "minute"
 msgid_plural "minutes"
-msgstr[0] "أقل من دقيقة"
+msgstr[0] "دقيقة"
 msgstr[1] "دقيقة"
 msgstr[2] "دقيقتين"
 msgstr[3] "دقائق"
