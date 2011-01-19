@@ -16,7 +16,10 @@ const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 const BoxPointer = imports.ui.boxpointer;
 const Params = imports.misc.params;
-const Utils = imports.misc.utils;
+const Util = imports.misc.util;
+
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
 const ANIMATION_TIME = 0.2;
 const NOTIFICATION_TIMEOUT = 4;
@@ -37,6 +40,17 @@ const State = {
     SHOWN:   2,
     HIDING:  3
 };
+
+// Message tray has its custom Urgency enumeration. LOW, NORMAL and CRITICAL
+// urgency values map to the corresponding values for the notifications received
+// through the notification daemon. HIGH urgency value is used for chats received
+// through the Telepathy client.
+const Urgency = {
+    LOW: 0,
+    NORMAL: 1,
+    HIGH: 2,
+    CRITICAL: 3
+}
 
 function _fixMarkup(text, allowMarkup) {
     if (allowMarkup) {
@@ -92,8 +106,7 @@ URLHighlighter.prototype = {
                     return true;
                 } catch (e) {
                     // TODO: remove this after gnome 3 release
-                    let p = new Shell.Process({ 'args' : ['gvfs-open', url] });
-                    p.run();
+                    Util.spawn(['gvfs-open', url]);
                     return true;
                 }
             }
@@ -124,13 +137,13 @@ URLHighlighter.prototype = {
 
         this.actor.clutter_text.set_markup(text);
         /* clutter_text.text contain text without markup */
-        this._urls = Utils.findUrls(this.actor.clutter_text.text);
+        this._urls = Util.findUrls(this.actor.clutter_text.text);
         this._highlightUrls();
     },
 
     _highlightUrls: function() {
         // text here contain markup
-        let urls = Utils.findUrls(this._text);
+        let urls = Util.findUrls(this._text);
         let markup = '';
         let pos = 0;
         for (let i = 0; i < urls.length; i++) {
@@ -225,7 +238,7 @@ function Notification(source, title, banner, params) {
 Notification.prototype = {
     _init: function(source, title, banner, params) {
         this.source = source;
-        this.urgent = false;
+        this.urgency = Urgency.NORMAL;
         this.resident = false;
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
@@ -245,7 +258,6 @@ Notification.prototype = {
         this._prevFocusedWindow = null;
         this._prevKeyFocusActor = null;
 
-        this._focusWindowChangedId = 0;
         this._focusActorChangedId = 0;
         this._stageInputModeChangedId = 0;
         this._capturedEventId = 0;
@@ -491,8 +503,8 @@ Notification.prototype = {
         this._updated();
     },
 
-    setUrgent: function(urgent) {
-        this.urgent = urgent;
+    setUrgency: function(urgency) {
+        this.urgency = urgency;
     },
 
     setResident: function(resident) {
@@ -624,47 +636,21 @@ Notification.prototype = {
         let metaDisplay = global.screen.get_display();
 
         this._prevFocusedWindow = metaDisplay.focus_window;
-        this._prevKeyFocus = global.stage.get_key_focus();
+        this._prevKeyFocusActor = global.stage.get_key_focus();
 
-        // We need to use the captured event in the overview, because we don't want to change the stage input mode to
-        // FOCUSED there. On the other hand, using the captured event doesn't work correctly in the main view because
-        // it doesn't allow focusing the windows again correctly. So we are using the FOCUSED stage input mode in the
-        // main view.
-        if (Main.overview.visible) {
-            if (!Main.pushModal(this.actor))
-                return;
-            this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
-        } else {
+        if (!Main.overview.visible)
             global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
 
-            this._focusWindowChangedId = metaDisplay.connect('notify::focus-window', Lang.bind(this, this._focusWindowChanged));
-            this._stageInputModeChangedId = global.connect('notify::stage-input-mode', Lang.bind(this, this._stageInputModeChanged));
+        // Use captured-event to notice clicks outside the notification
+        // without consuming them.
+        this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
 
-            this._keyPressId = global.stage.connect('key-press-event', Lang.bind(this, this._onKeyPress));
-        }
-
-        // We need to listen to this signal in the overview, as well as in the main view, to make the key bindings such as
-        // Alt+F2 work. When a notification has key focus, which is the case with chat notifications, all captured KEY_PRESS
-        // events have the actor with the key focus as their source. This makes it impossible to distinguish between the chat
-        // window input and the key bindings based solely on the KEY_PRESS event.
+        this._stageInputModeChangedId = global.connect('notify::stage-input-mode', Lang.bind(this, this._stageInputModeChanged));
         this._focusActorChangedId = global.stage.connect('notify::key-focus', Lang.bind(this, this._focusActorChanged));
 
         this._hasFocus = true;
         if (lockTray)
             Main.messageTray.lock();
-    },
-
-    _focusWindowChanged: function() {
-        let metaDisplay = global.screen.get_display();
-        // this._focusWindowChanged() will be called when we call
-        // global.set_stage_input_mode(Shell.StageInputMode.FOCUSED) ,
-        // however metaDisplay.focus_window will be null in that case. We only
-        // want to ungrab focus if the focus has been moved to an application
-        // window.
-        if (metaDisplay.focus_window) {
-            this._prevFocusedWindow = null;
-            this.ungrabFocus();
-        }
     },
 
     _focusActorChanged: function() {
@@ -676,15 +662,6 @@ Notification.prototype = {
     },
 
     _stageInputModeChanged: function() {
-        let focusedActor = global.stage.get_key_focus();
-        // TODO: We need to set this._prevFocusedWindow to null in order to
-        // get the cursor in the run dialog. However, that also means it's
-        // set to null when the application menu is activated, which defeats
-        // the point of keeping the name of the previously focused application
-        // in the panel. It'd be good to be able to distinguish between these
-        // two cases.
-        this._prevFocusedWindow = null;
-        this._prevKeyFocusActor = null;
         this.ungrabFocus();
     },
 
@@ -729,24 +706,11 @@ Notification.prototype = {
             this.destroy();
     },
 
-    _onKeyPress: function(actor, event) {
-        let symbol = event.get_key_symbol();
-        if (symbol == Clutter.Escape) {
-            Main.messageTray.escapeTray();
-            return true;
-        }
-        return false;
-    },
-
     ungrabFocus: function() {
         if (!this._hasFocus)
             return;
 
         let metaDisplay = global.screen.get_display();
-        if (this._focusWindowChangedId > 0) {
-            metaDisplay.disconnect(this._focusWindowChangedId);
-            this._focusWindowChangedId = 0;
-        }
 
         if (this._focusActorChangedId > 0) {
             global.stage.disconnect(this._focusActorChangedId);
@@ -759,20 +723,14 @@ Notification.prototype = {
         }
 
         if (this._capturedEventId > 0) {
-            Main.popModal(this.actor);
             global.stage.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
-        }
-
-        if (this._keyPressId > 0) {
-            global.stage.disconnect(this._keyPressId);
-            this._keyPressId = 0;
         }
 
         this._hasFocus = false;
         Main.messageTray.unlock();
 
-        if (this._prevFocusedWindow) {
+        if (this._prevFocusedWindow && !metaDisplay.focus_window) {
             metaDisplay.set_input_focus_window(this._prevFocusedWindow, false, global.get_current_time());
             this._prevFocusedWindow = null;
         }
@@ -951,7 +909,7 @@ MessageTray.prototype = {
         this._notification = null;
         this._notificationClickedId = 0;
 
-        this._summaryBin = new St.Bin({ anchor_gravity: Clutter.Gravity.NORTH_EAST });
+        this._summaryBin = new St.Bin({ x_align: St.Align.END });
         this.actor.add_actor(this._summaryBin);
         this._summary = new St.BoxLayout({ name: 'summary-mode',
                                            reactive: true,
@@ -1043,9 +1001,8 @@ MessageTray.prototype = {
         this.actor.width = primary.width;
         this._notificationBin.x = 0;
         this._notificationBin.width = primary.width;
-
-        // These work because of their anchor_gravity
-        this._summaryBin.x = primary.width;
+        this._summaryBin.x = 0;
+        this._summaryBin.width = primary.width;
     },
 
     contains: function(source) {
@@ -1212,13 +1169,11 @@ MessageTray.prototype = {
         } else if (this._notificationQueue.indexOf(notification) < 0) {
             notification.connect('destroy',
                                  Lang.bind(this, this.removeNotification));
-
-            if (notification.urgent)
-                this._notificationQueue.unshift(notification);
-            else
-                this._notificationQueue.push(notification);
+            this._notificationQueue.push(notification);
+            this._notificationQueue.sort(function(notification1, notification2) {
+                return (notification2.urgency - notification1.urgency);
+            });
         }
-
         this._updateState();
     },
 
@@ -1417,7 +1372,7 @@ MessageTray.prototype = {
         let notificationsPending = this._notificationQueue.length > 0;
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
         let notificationExpanded = this._notificationBin.y < 0;
-        let notificationExpired = (this._notificationTimeoutId == 0 && !this._pointerInTray && !this._locked) || this._notificationRemoved;
+        let notificationExpired = (this._notificationTimeoutId == 0 && !(this._notification && this._notification.urgency == Urgency.CRITICAL) && !this._pointerInTray && !this._locked) || this._notificationRemoved;
 
         if (this._notificationState == State.HIDDEN) {
             if (notificationsPending)
@@ -1545,27 +1500,45 @@ MessageTray.prototype = {
 
     _updateShowingNotification: function() {
         Tweener.removeTweens(this._notificationBin);
-        this._tween(this._notificationBin, '_notificationState', State.SHOWN,
-                    { y: 0,
-                      opacity: 255,
-                      time: ANIMATION_TIME,
-                      transition: 'easeOutQuad',
-                      onComplete: this._showNotificationCompleted,
-                      onCompleteScope: this
-                    });
 
-        // We auto-expand urgent notifications.
-        // We call _expandNotification() again on the notifications that
-        // are expanded in case they were in the process of hiding and need
-        // to re-expand.
-        if (this._notification.urgent || this._notification.expanded)
-            // This will overwrite the y tween, but leave the opacity
-            // tween, and so the onComplete will remain as well.
+        // We auto-expand notifications with CRITICAL urgency.
+        // We use Tweener.removeTweens() to remove a tween that was hiding the notification we are
+        // updating, in case that notification was in the process of being hidden. However,
+        // Tweener.removeTweens() would also remove a tween that was updating the position of the
+        // notification we are updating, in case that notification was already expanded and its height
+        // changed. Therefore we need to call this._expandNotification() for expanded notifications
+        // to make sure their position is updated.
+        if (this._notification.urgency == Urgency.CRITICAL || this._notification.expanded)
             this._expandNotification(true);
+
+        // We tween all notifications to full opacity. This ensures that both new notifications and
+        // notifications that might have been in the process of hiding get full opacity.
+        //
+        // We tween any notification showing in the banner mode to banner height (this._notificationBin.y = 0).
+        // This ensures that both new notifications and notifications in the banner mode that might
+        // have been in the process of hiding are shown with the banner height.
+        //
+        // We use this._showNotificationCompleted() onComplete callback to extend the time the updated
+        // notification is being shown.
+        //
+        // We don't set the y parameter for the tween for expanded notifications because
+        // this._expandNotification() will result in getting this._notificationBin.y set to the appropriate
+        // fully expanded value.
+        let tweenParams = { opacity: 255,
+                            time: ANIMATION_TIME,
+                            transition: 'easeOutQuad',
+                            onComplete: this._showNotificationCompleted,
+                            onCompleteScope: this
+                          };
+        if (!this._notification.expanded)
+            tweenParams.y = 0;
+
+        this._tween(this._notificationBin, '_notificationState', State.SHOWN, tweenParams);
    },
 
     _showNotificationCompleted: function() {
-        this._updateNotificationTimeout(NOTIFICATION_TIMEOUT * 1000);
+        if (this._notification.urgency != Urgency.CRITICAL)
+            this._updateNotificationTimeout(NOTIFICATION_TIMEOUT * 1000);
     },
 
     _updateNotificationTimeout: function(timeout) {
@@ -1650,7 +1623,7 @@ MessageTray.prototype = {
    },
 
     // We use this function to grab focus when the user moves the pointer
-    // to an urgent notification that was already auto-expanded.
+    // to a notification with CRITICAL urgency that was already auto-expanded.
     _ensureNotificationFocused: function() {
         this._notification.grabFocus(false);
     },
@@ -1722,7 +1695,7 @@ MessageTray.prototype = {
         this._adjustNotificationBoxPointerPosition();
 
         this._summaryNotificationState = State.SHOWING;
-        this._summaryNotificationBoxPointer.animateAppear(Lang.bind(this, function() {
+        this._summaryNotificationBoxPointer.show(true, Lang.bind(this, function() {
             this._summaryNotificationState = State.SHOWN;
         }));
     },
@@ -1761,7 +1734,7 @@ MessageTray.prototype = {
 
         this._summaryNotification.ungrabFocus();
         this._summaryNotificationState = State.HIDING;
-        this._summaryNotificationBoxPointer.animateDisappear(Lang.bind(this, this._hideSummaryNotificationCompleted));
+        this._summaryNotificationBoxPointer.hide(true, Lang.bind(this, this._hideSummaryNotificationCompleted));
     },
 
     _hideSummaryNotificationCompleted: function() {
@@ -1778,5 +1751,29 @@ MessageTray.prototype = {
             this._onNotify(summaryNotification.source, summaryNotification);
             this._reNotifyWithSummaryNotificationAfterHide = false;
         }
+    }
+};
+
+function SystemNotificationSource() {
+    this._init();
+}
+
+SystemNotificationSource.prototype = {
+    __proto__:  Source.prototype,
+
+    _init: function() {
+        Source.prototype._init.call(this, _("System Information"));
+
+        this._setSummaryIcon(this.createNotificationIcon());
+    },
+
+    createNotificationIcon: function() {
+        return new St.Icon({ icon_name: 'dialog-information',
+                             icon_type: St.IconType.SYMBOLIC,
+                             icon_size: this.ICON_SIZE });
+    },
+
+    _notificationClicked: function() {
+        this.destroy();
     }
 };

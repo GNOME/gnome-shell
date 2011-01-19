@@ -9,9 +9,11 @@ const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const Config = imports.misc.config;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Params = imports.misc.params;
+const Util = imports.misc.util;
 
 let nextNotificationId = 1;
 
@@ -126,17 +128,8 @@ NotificationDaemon.prototype = {
             log('Failed to acquire org.freedesktop.Notifications');
         else {
             log('Failed to acquire org.freedesktop.Notifications; trying again');
-
-            // kill the notification-daemon. pkill is more portable
-            // than killall, but on Linux at least it won't match if
-            // you pass more than 15 characters of the process name...
-            // However, if you use the '-f' flag to match the entire
-            // command line, it will work, but we have to be careful
-            // in that case that we don't match 'gedit
-            // notification-daemon.c' or whatever...
-            let p = new Shell.Process({ args: ['pkill', '-f',
-                                               '^([^ ]*/)?(notification-daemon|notify-osd)$']});
-            p.run();
+            Util.killall('notification-daemon');
+            Util.killall('notify-osd');
         }
     },
 
@@ -343,8 +336,17 @@ NotificationDaemon.prototype = {
             for (let i = 0; i < actions.length - 1; i += 2)
                 notification.addButton(actions[i], actions[i + 1]);
         }
-
-        notification.setUrgent(hints.urgency == Urgency.CRITICAL);
+        switch (hints.urgency) {
+            case Urgency.LOW:
+                notification.setUrgency(MessageTray.Urgency.LOW);
+                break;
+            case Urgency.NORMAL:
+                notification.setUrgency(MessageTray.Urgency.NORMAL);
+                break;
+            case Urgency.CRITICAL:
+                notification.setUrgency(MessageTray.Urgency.CRITICAL);
+                break;
+        }
         notification.setResident(hints.resident == true);
         // 'transient' is a reserved keyword in JS, so we have to retrieve the value
         // of the 'transient' hint with hints['transient'] rather than hints.transient
@@ -381,10 +383,10 @@ NotificationDaemon.prototype = {
 
     GetServerInformation: function() {
         return [
-            'GNOME Shell',
+            Config.PACKAGE_NAME,
             'GNOME',
-            '0.1', // FIXME, get this from somewhere
-            '1.0'
+            Config.PACKAGE_VERSION,
+            '1.2'
         ];
     },
 
@@ -467,8 +469,8 @@ Source.prototype = {
             return;
 
         // Only override the icon if we were previously using
-        // notification-based icons (ie, not a trayicon)
-        if (this.useNotificationIcon) {
+        // notification-based icons (ie, not a trayicon) or if it was unset before
+        if (!this._isTrayIcon) {
             this.useNotificationIcon = false;
             this._setSummaryIcon(this.app.create_icon_texture (this.ICON_SIZE));
         }

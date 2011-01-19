@@ -644,6 +644,9 @@ WorkspacesView.prototype = {
     },
 
     _onDragMotion: function(dragEvent) {
+        if (Main.overview.animationInProgress)
+             return DND.DragMotionResult.CONTINUE;
+
         let primary = global.get_primary_monitor();
 
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();

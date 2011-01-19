@@ -8,7 +8,7 @@ noinst_PROGRAMS =
 
 .AUTOPARALLEL:
 
-bin_SCRIPTS = gnome-shell gnome-shell-clock-preferences
+bin_SCRIPTS = gnome-shell
 
 gnome-shell: gnome-shell.in
 	$(AM_V_GEN) sed -e "s|@MUTTER_BIN_DIR[@]|$(MUTTER_BIN_DIR)|" \
@@ -22,15 +22,6 @@ gnome-shell: gnome-shell.in
 	    $< > $@ && chmod a+x $@
 CLEANFILES += gnome-shell
 EXTRA_DIST += gnome-shell.in
-
-gnome-shell-clock-preferences: gnome-shell-clock-preferences.in
-	$(AM_V_GEN) sed -e "s|@datadir[@]|$(datadir)|" \
-	    -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \
-	    -e "s|@localedir[@]|$(datadir)/locale|" \
-	    -e "s|@GJS_CONSOLE[@]|$(GJS_CONSOLE)|" \
-	    $< > $@ && chmod a+x $@
-CLEANFILES += gnome-shell-clock-preferences
-EXTRA_DIST += gnome-shell-clock-preferences.in
 
 include Makefile-gdmuser.am
 include Makefile-st.am
@@ -68,7 +59,6 @@ shell_public_headers_h =		\
 	shell-embedded-window.h		\
 	shell-generic-container.h	\
 	shell-gtk-embed.h		\
-	shell-process.h			\
 	shell-global.h			\
 	shell-perf-log.h		\
 	shell-slicer.h			\
@@ -90,7 +80,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-window-tracker-private.h	\
 	shell-wm-private.h		\
 	gnome-shell-plugin.c		\
-	gtk-compat.h			\
 	shell-app.c			\
 	shell-app-system.c		\
 	shell-app-usage.c		\
@@ -100,7 +89,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-embedded-window.c		\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
-	shell-process.c			\
 	shell-global.c			\
 	shell-perf-log.c		\
 	shell-slicer.c			\

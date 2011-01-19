@@ -577,7 +577,8 @@ shell_app_is_on_workspace (ShellApp *app,
 
   if (shell_app_get_state (app) == SHELL_APP_STATE_STARTING)
     {
-      if (meta_workspace_index (workspace) == app->started_on_workspace)
+      if (app->started_on_workspace == -1 ||
+          meta_workspace_index (workspace) == app->started_on_workspace)
         return TRUE;
       else
         return FALSE;

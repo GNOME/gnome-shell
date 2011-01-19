@@ -65,16 +65,17 @@ Indicator.prototype = {
         this.menu.addMenuItem(this._discoverable);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        this._fullMenuItems = [new PopupMenu.PopupMenuItem(_("Send Files to Device...")),
-                               new PopupMenu.PopupSeparatorMenuItem(),
-                               new PopupMenu.PopupSeparatorMenuItem(),
-                               new PopupMenu.PopupMenuItem(_("Setup a New Device..."))];
-        this._deviceSep = this._fullMenuItems[1]; // hidden if no device exists
+        this._fullMenuItems = [new PopupMenu.PopupSeparatorMenuItem(),
+                               new PopupMenu.PopupMenuItem(_("Send Files to Device...")),
+                               new PopupMenu.PopupMenuItem(_("Setup a New Device...")),
+                               new PopupMenu.PopupSeparatorMenuItem()];
+        this._hasDevices = false;
+        this._deviceSep = this._fullMenuItems[0]; // hidden if no device exists
 
-        this._fullMenuItems[0].connect('activate', function() {
+        this._fullMenuItems[1].connect('activate', function() {
             GLib.spawn_command_line_async('bluetooth-sendto');
         });
-        this._fullMenuItems[3].connect('activate', function() {
+        this._fullMenuItems[2].connect('activate', function() {
             GLib.spawn_command_line_async('bluetooth-wizard');
         });
 
@@ -83,7 +84,7 @@ Indicator.prototype = {
             this.menu.addMenuItem(item);
         }
 
-        this._deviceItemPosition = 5;
+        this._deviceItemPosition = 3;
         this._deviceItems = [];
         this._applet.connect('devices-changed', Lang.bind(this, this._updateDevices));
         this._updateDevices();
@@ -104,11 +105,17 @@ Indicator.prototype = {
     _updateKillswitch: function() {
         let current_state = this._applet.killswitch_state;
         let on = current_state == GnomeBluetoothApplet.KillswitchState.UNBLOCKED;
+        let has_adapter = current_state != GnomeBluetoothApplet.KillswitchState.NO_ADAPTER;
         let can_toggle = current_state != GnomeBluetoothApplet.KillswitchState.NO_ADAPTER &&
                          current_state != GnomeBluetoothApplet.KillswitchState.HARD_BLOCKED;
 
         this._killswitch.setToggleState(on);
         this._killswitch.actor.reactive = can_toggle;
+
+        if (has_adapter)
+            this.actor.show();
+        else
+            this.actor.hide();
 
         if (on) {
             this._discoverable.actor.show();
@@ -119,22 +126,56 @@ Indicator.prototype = {
         }
     },
 
-    _updateDevices: function() {
-        this._destroyAll(this._deviceItems);
-        this._deviceItems = [];
+    _deviceCompare: function(d1, d2) {
+        return d1.device_path == d2.device_path &&
+            d1.bdaddr == d2.bdaddr &&
+            d1.can_connect == d2.can_connect &&
+            d1.capabilities == d2.capabilities;
+    },
 
+    _updateDevices: function() {
         let devices = this._applet.get_devices();
-        let anydevice = false;
+
+        for (let i = 0; i < this._deviceItems.length; i++) {
+            let item = this._deviceItems[i];
+            let destroy = true;
+            for (let j = 0; j < devices.length; j++) {
+                // we need to deep compare because BluetoothSimpleDevice is a boxed type
+                // (but we take advantage of that, because _skip will disappear the next
+                // time get_devices() is called)
+                if (this._deviceCompare(item._device, devices[i])) {
+                    item.label.text = devices[i].alias;
+                    devices[i]._skip = true;
+                    destroy = false;
+                }
+            }
+            if (destroy) {
+                item.destroy();
+                item._destroyed = true;
+            }
+        }
+
+        let newlist = [ ];
+        for (let i = 0; i < this._deviceItems.length; i++) {
+            let item = this._deviceItems[i];
+            if (!item._destroyed)
+                newlist.push(item);
+        }
+        this._deviceItems = newlist;
+
+        this._hasDevices = newlist.length > 0;
         for (let i = 0; i < devices.length; i++) {
             let d = devices[i];
+            if (d._skip)
+                continue;
             let item = this._createDeviceItem(d);
             if (item) {
                 this.menu.addMenuItem(item, this._deviceItemPosition + this._deviceItems.length);
                 this._deviceItems.push(item);
-                anydevice = true;
+                this._hasDevices = true;
             }
         }
-        if (anydevice)
+        if (this._hasDevices)
             this._deviceSep.actor.show();
         else
             this._deviceSep.actor.hide();
@@ -233,7 +274,10 @@ Indicator.prototype = {
     _updateFullMenu: function() {
         if (this._applet.show_full_menu) {
             this._showAll(this._fullMenuItems);
-            this._showAll(this._deviceItems);
+            if (this._hasDevices)
+                this._showAll(this._deviceItems);
+            else
+                this._deviceSep.actor.hide();
         } else {
             this._hideAll(this._fullMenuItems);
             this._hideAll(this._deviceItems);
@@ -422,7 +466,7 @@ PinNotification.prototype = {
         }));
         this.addActor(this._entry);
 
-        this.addButton('ok', _("Ok"));
+        this.addButton('ok', _("OK"));
         this.addButton('cancel', _("Cancel"));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {

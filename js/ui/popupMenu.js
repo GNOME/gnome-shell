@@ -631,18 +631,25 @@ PopupMenuBase.prototype = {
     },
 
     addMenuItem: function(menuItem, position) {
-        if (position == undefined)
+        let before_item = null;
+        if (position == undefined) {
             this.box.add(menuItem.actor);
-        else
-            this.box.insert_actor(menuItem.actor, position);
+        } else {
+            let items = this.getMenuItems();
+            if (position < items.length) {
+                before_item = items[position].actor;
+                this.box.insert_before(menuItem.actor, before_item);
+            } else
+                this.box.add(menuItem.actor);
+        }
         if (menuItem instanceof PopupSubMenuMenuItem) {
-            if (position == undefined)
+            if (before_item == null)
                 this.box.add(menuItem.menu.actor);
             else
-                this.box.insert_actor(menuItem.menu.actor, position + 1);
+                this.box.insert_before(menuItem.menu.actor, before_item);
             menuItem._subMenuActivateId = menuItem.menu.connect('activate', Lang.bind(this, function() {
                 this.emit('activate');
-                this.close();
+                this.close(true);
             }));
             menuItem._subMenuActiveChangeId = menuItem.menu.connect('active-changed', Lang.bind(this, function(submenu, submenuItem) {
                 if (this._activeMenuItem && this._activeMenuItem != submenuItem)
@@ -652,7 +659,7 @@ PopupMenuBase.prototype = {
             }));
             menuItem._closingId = this.connect('open-state-changed', function(self, open) {
                 if (!open)
-                    menuItem.menu.immediateClose();
+                    menuItem.menu.close(false);
             });
         }
         menuItem._activeChangeId = menuItem.connect('active-changed', Lang.bind(this, function (menuItem, active) {
@@ -668,7 +675,7 @@ PopupMenuBase.prototype = {
         }));
         menuItem._activateId = menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
             this.emit('activate', menuItem);
-            this.close();
+            this.close(true);
         }));
         menuItem.connect('destroy', Lang.bind(this, function(emitter) {
             menuItem.disconnect(menuItem._activateId);
@@ -735,9 +742,9 @@ PopupMenuBase.prototype = {
 
     toggle: function() {
         if (this.isOpen)
-            this.close();
+            this.close(true);
         else
-            this.open();
+            this.open(true);
     },
 
     destroy: function() {
@@ -802,26 +809,26 @@ PopupMenu.prototype = {
         this._boxPointer.setArrowOrigin(origin);
     },
 
-    open: function() {
+    open: function(animate) {
         if (this.isOpen)
             return;
 
         this.isOpen = true;
 
         this._boxPointer.setPosition(this.sourceActor, this._gap, this._alignment);
-        this._boxPointer.animateAppear();
+        this._boxPointer.show(animate);
 
         this.emit('open-state-changed', true);
     },
 
-    close: function() {
+    close: function(animate) {
         if (!this.isOpen)
             return;
 
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
 
-        this._boxPointer.animateDisappear();
+        this._boxPointer.hide(animate);
 
         this.isOpen = false;
         this.emit('open-state-changed', false);
@@ -848,11 +855,14 @@ PopupSubMenu.prototype = {
         this.actor.hide();
     },
 
-    open: function() {
+    open: function(animate) {
         if (this.isOpen)
             return;
 
         this.isOpen = true;
+
+        // we don't implement the !animate case because that doesn't
+        // currently get used...
 
         let [naturalHeight, minHeight] = this.actor.get_preferred_height(-1);
         this.actor.height = 0;
@@ -874,7 +884,7 @@ PopupSubMenu.prototype = {
                          });
     },
 
-    close: function() {
+    close: function(animate) {
         if (!this.isOpen)
             return;
 
@@ -883,44 +893,38 @@ PopupSubMenu.prototype = {
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
 
-        this.actor._arrow_rotation = this._arrow.rotation_angle_z;
-        Tweener.addTween(this.actor,
-                         { _arrow_rotation: 0,
-                           height: 0,
-                           time: 0.25,
-                           onCompleteScope: this,
-                           onComplete: function() {
-                               this.actor.hide();
-                               this.actor.set_height(-1);
+        if (animate) {
+            this.actor._arrow_rotation = this._arrow.rotation_angle_z;
+            Tweener.addTween(this.actor,
+                             { _arrow_rotation: 0,
+                               height: 0,
+                               time: 0.25,
+                               onCompleteScope: this,
+                               onComplete: function() {
+                                   this.actor.hide();
+                                   this.actor.set_height(-1);
 
-                               this.emit('open-state-changed', false);
-                           },
-                           onUpdateScope: this,
-                           onUpdate: function() {
-                               this._arrow.rotation_angle_z = this.actor._arrow_rotation;
-                           }
-                         });
-    },
+                                   this.emit('open-state-changed', false);
+                               },
+                               onUpdateScope: this,
+                               onUpdate: function() {
+                                   this._arrow.rotation_angle_z = this.actor._arrow_rotation;
+                               }
+                             });
+            } else {
+                this._arrow.rotation_angle_z = 0;
+                this.actor.hide();
 
-    immediateClose: function() {
-        if (!this.isOpen)
-            return;
-
-        if (this._activeMenuItem)
-            this._activeMenuItem.setActive(false);
-
-        this._arrow.rotation_angle_z = 0;
-        this.actor.hide();
-
-        this.isOpen = false;
-        this.emit('open-state-changed', false);
+                this.isOpen = false;
+                this.emit('open-state-changed', false);
+            }
     },
 
     _onKeyPressEvent: function(actor, event) {
         // Move focus back to parent menu if the user types Left.
 
         if (this.isOpen && event.get_key_symbol() == Clutter.KEY_Left) {
-            this.close();
+            this.close(true);
             this.sourceActor._delegate.setActive(true);
             return true;
         }
@@ -964,7 +968,7 @@ PopupSubMenuMenuItem.prototype = {
 
     _onKeyPressEvent: function(actor, event) {
         if (event.get_key_symbol() == Clutter.KEY_Right) {
-            this.menu.open();
+            this.menu.open(true);
             this.menu.activateFirst();
             return true;
         }
@@ -972,7 +976,7 @@ PopupSubMenuMenuItem.prototype = {
     },
 
     activate: function(event) {
-        this.menu.open();
+        this.menu.open(true);
     },
 
     _onButtonReleaseEvent: function(actor) {
@@ -999,23 +1003,24 @@ PopupMenuManager.prototype = {
         this._leaveEventId = 0;
         this._activeMenu = null;
         this._menus = [];
-        this._delayedMenus = [];
+        this._preGrabInputMode = null;
     },
 
     addMenu: function(menu, position) {
         let menudata = {
             menu:              menu,
             openStateChangeId: menu.connect('open-state-changed', Lang.bind(this, this._onMenuOpenState)),
-            activateId:        menu.connect('activate', Lang.bind(this, this._onMenuActivated)),
             destroyId:         menu.connect('destroy', Lang.bind(this, this._onMenuDestroy)),
             enterId:           0,
-            focusId:           0
+            focusInId:         0,
+            focusOutId:        0
         };
 
         let source = menu.sourceActor;
         if (source) {
             menudata.enterId = source.connect('enter-event', Lang.bind(this, function() { this._onMenuSourceEnter(menu); }));
-            menudata.focusId = source.connect('key-focus-in', Lang.bind(this, function() { this._onMenuSourceEnter(menu); }));
+            menudata.focusInId = source.connect('key-focus-in', Lang.bind(this, function() { this._onMenuSourceEnter(menu); }));
+            menudata.focusOutId = source.connect('key-focus-out', Lang.bind(this, function() { this._onKeyFocusOut(menu); }));
         }
 
         if (position == undefined)
@@ -1034,18 +1039,19 @@ PopupMenuManager.prototype = {
 
         let menudata = this._menus[position];
         menu.disconnect(menudata.openStateChangeId);
-        menu.disconnect(menudata.activateId);
         menu.disconnect(menudata.destroyId);
 
         if (menudata.enterId)
             menu.sourceActor.disconnect(menudata.enterId);
-        if (menudata.focusId)
-            menu.sourceActor.disconnect(menudata.focusId);
+        if (menudata.focusInId)
+            menu.sourceActor.disconnect(menudata.focusInId);
+        if (menudata.focusOutId)
+            menu.sourceActor.disconnect(menudata.focusOutId);
 
         this._menus.splice(position, 1);
     },
 
-    grab: function() {
+    _grab: function() {
         Main.pushModal(this._owner.actor);
 
         this._eventCaptureId = global.stage.connect('captured-event', Lang.bind(this, this._onEventCapture));
@@ -1057,7 +1063,7 @@ PopupMenuManager.prototype = {
         this.grabbed = true;
     },
 
-    ungrab: function() {
+    _ungrab: function() {
         global.stage.disconnect(this._eventCaptureId);
         this._eventCaptureId = 0;
         global.stage.disconnect(this._keyPressEventId);
@@ -1073,40 +1079,100 @@ PopupMenuManager.prototype = {
 
     _onMenuOpenState: function(menu, open) {
         if (open) {
+            if (!this.grabbed) {
+                this._preGrabInputMode = global.stage_input_mode;
+                this._grab();
+            }
             this._activeMenu = menu;
-            if (!this.grabbed)
-                this.grab();
+
+            // if the focus is not already associated with the menu,
+            // then focus the menu
+            let focus = global.stage.key_focus;
+            if (!this._activeMenuContains(focus))
+                menu.sourceActor.grab_key_focus();
         } else if (menu == this._activeMenu) {
-            this._activeMenu = null;
+            let focus = global.stage.key_focus;
+            let fromActive = this._activeMenuContains(focus);
+
             if (this.grabbed)
-                this.ungrab();
+                this._ungrab();
+            this._activeMenu = null;
+
+            // If keynav was in effect before we grabbed, then we need
+            // to properly re-establish it after we ungrab. (popModal
+            // will have unset the focus.) If some part of the menu
+            // was focused at the time of the ungrab then focus its
+            // sourceActor. Otherwise just reset the focus to where it
+            // was right before the ungrab.
+            if (this._preGrabInputMode == Shell.StageInputMode.FOCUSED) {
+                global.stage_input_mode = Shell.StageInputMode.FOCUSED;
+                if (fromActive)
+                    menu.sourceActor.grab_key_focus();
+                else
+                    focus.grab_key_focus();
+            }
         }
+    },
+
+    // change the currently-open menu without dropping grab
+    _changeMenu: function(newMenu) {
+        if (this._activeMenu) {
+            // _onOpenMenuState will drop the grab if it sees
+            // this._activeMenu being closed; so clear _activeMenu
+            // before closing it to keep that from happening
+            let oldMenu = this._activeMenu;
+            this._activeMenu = null;
+            oldMenu.close(false);
+            newMenu.open(false);
+        } else
+            newMenu.open(true);
     },
 
     _onMenuSourceEnter: function(menu) {
         if (!this.grabbed || menu == this._activeMenu)
             return false;
 
-        if (this._activeMenu != null)
-            this._activeMenu.close();
-        menu.open();
+        this._changeMenu(menu);
         return false;
     },
 
-    _onMenuActivated: function(menu, item) {
-        if (this.grabbed)
-            this.ungrab();
+    _onKeyFocusOut: function(menu) {
+        if (!this.grabbed || menu != this._activeMenu)
+            return;
+
+        // We want to close the menu if the focus has moved somewhere
+        // other than inside the menu or to another menu's sourceActor.
+        // Unfortunately, when key-focus-out is emitted,
+        // stage.key_focus will be null. So we have to wait until
+        // after it emits the key-focus-in as well.
+        let id = global.stage.connect('notify::key-focus', Lang.bind(this,
+            function () {
+                global.stage.disconnect(id);
+
+                if (menu != this._activeMenu)
+                    return;
+
+                let focus = global.stage.key_focus;
+                if (!focus || this._activeMenuContains(focus))
+                    return;
+                if (focus._delegate && this._findMenu(focus._delegate.menu) != -1)
+                    return;
+                menu.close(true);
+            }));
     },
 
     _onMenuDestroy: function(menu) {
         this.removeMenu(menu);
     },
 
-    _eventIsOnActiveMenu: function(event) {
-        let src = event.get_source();
+    _activeMenuContains: function(actor) {
         return this._activeMenu != null
-                && (this._activeMenu.actor.contains(src) ||
-                    (this._activeMenu.sourceActor && this._activeMenu.sourceActor.contains(src)));
+                && (this._activeMenu.actor.contains(actor) ||
+                    (this._activeMenu.sourceActor && this._activeMenu.sourceActor.contains(actor)));
+    },
+
+    _eventIsOnActiveMenu: function(event) {
+        return this._activeMenuContains(event.get_source());
     },
 
     _eventIsOnAnyMenuSource: function(event) {
@@ -1126,6 +1192,18 @@ PopupMenuManager.prototype = {
                 return i;
         }
         return -1;
+    },
+
+    _nextMenu: function(pos, direction) {
+        for (let i = 1; i < this._menus.length; i++) {
+            let candidate = mod(pos + i * direction, this._menus.length);
+            let menu = this._menus[candidate].menu;
+            if (!menu.sourceActor || menu.sourceActor.visible)
+                return menu;
+        }
+        // no menu is found? this should not happen
+        // anyway stay on current menu
+        return this._menus[pos];
     },
 
     _onEventCapture: function(actor, event) {
@@ -1166,12 +1244,9 @@ PopupMenuManager.prototype = {
         if (symbol == Clutter.Left || symbol == Clutter.Right) {
             let direction = symbol == Clutter.Right ? 1 : -1;
             let pos = this._findMenu(this._activeMenu);
-            let next = this._menus[mod(pos + direction, this._menus.length)].menu;
+            let next = this._nextMenu(pos, direction);
             if (next != this._activeMenu) {
-                let oldMenu = this._activeMenu;
-                this._activeMenu = next;
-                oldMenu.close();
-                next.open();
+                this._changeMenu(next);
                 next.activateFirst();
             }
             return true;
@@ -1182,6 +1257,6 @@ PopupMenuManager.prototype = {
 
     _closeMenu: function() {
         if (this._activeMenu != null)
-            this._activeMenu.close();
+            this._activeMenu.close(true);
     }
 };

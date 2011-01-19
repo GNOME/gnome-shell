@@ -1,13 +1,14 @@
 data/gnome-shell.desktop.in.in
-data/gnome-shell-clock-preferences.desktop.in.in
 data/org.gnome.shell.gschema.xml.in
 data/org.gnome.accessibility.magnifier.gschema.xml.in
-[type: gettext/glade]data/clock-preferences.ui
+js/misc/util.js
 js/ui/appDisplay.js
 js/ui/appFavorites.js
 js/ui/dash.js
 js/ui/docDisplay.js
+js/ui/endSessionDialog.js
 js/ui/lookingGlass.js
+js/ui/messageTray.js
 js/ui/overview.js
 js/ui/panel.js
 js/ui/placeDisplay.js
@@ -15,6 +16,8 @@ js/ui/popupMenu.js
 js/ui/runDialog.js
 js/ui/statusMenu.js
 js/ui/status/accessibility.js
+js/ui/status/bluetooth.js
+js/ui/status/keyboard.js
 js/ui/status/power.js
 js/ui/status/volume.js
 js/ui/telepathyClient.js

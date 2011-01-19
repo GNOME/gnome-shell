@@ -3,19 +3,19 @@
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Milo Casagrande <milo@ubuntu.com>, 2009, 2010.
-# Luca Ferretti <lferrett@gnome.org>, 2010.
+# Luca Ferretti <lferrett@gnome.org>, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-13 21:30+0100\n"
-"PO-Revision-Date: 2010-12-13 22:40+0100\n"
+"POT-Creation-Date: 2011-01-15 01:10+0100\n"
+"PO-Revision-Date: 2011-01-15 01:19+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -26,14 +26,6 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gestisce finestre e avvia applicazioni"
 
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
-msgid "Clock"
-msgstr "Orologio"
-
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
-msgid "Customize the panel clock"
-msgstr "Personalizza l'orologio sul pannello"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
@@ -43,24 +35,20 @@ msgstr ""
 "utilizzando il dialogo Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Custom format of the clock"
-msgstr "Formato personalizzato dell'orologio"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 "Abilita gli strumenti interni utili a sviluppatori e beta-tester attraverso "
 "Alt-F2"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:4
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
 msgstr "Estensione del file utilizzato per salvare lo screencast"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "Framerate used for recording screencasts."
 msgstr "Framerate per la registrazione di screencast."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:6
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
@@ -68,39 +56,27 @@ msgstr ""
 "Le estensioni per la GNOME Shell dispongono di una proprietà UUID: questa "
 "chiave elenca le estensioni che non dovrebbero essere caricate."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
 msgstr "Cronologia per il dialogo dei comandi (Alt-F2)"
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Se VERO, mostra nell'orologio la data, oltre all'orario."
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "Hour format"
-msgstr "Formato orario"
+msgid "If true, display seconds in time."
+msgstr "Se VERO, mostra i secondi nell'orario."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
-"clock, in addition to time."
-msgstr ""
-"Se VERO e il formato è \"12-hour\" oppure \"24-hour\", visualizza anche la "
-"data nell'orologio oltre all'orario."
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Se VERO, mostra il giorno della settimana ISO nel calendario."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
-"time."
-msgstr ""
-"Se VERO e il formato è \"12-hour\" oppure \"24-hour\", visualizza i secondi "
-"nell'ora."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
-msgid "If true, display the ISO week date in the calendar."
-msgstr "Se VERO, visualizza il giorno della settimana ISO nel calendario."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Elenco di ID di file desktop per le applicazioni preferite"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -121,19 +97,19 @@ msgstr ""
 "alcun valore, viene usata la pipeline predefinita il cui valore è "
 "\"videorate ! theoraenc ! oggmux\" e che registra nel formato Ogg Theora."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
 msgid "Show date in clock"
 msgstr "Mostra la data nell'orologio"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Show the week date in the calendar"
 msgstr "Mostra il giorno della settimana nel calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show time with seconds"
 msgstr "Mostra l'ora con i secondi"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -141,7 +117,7 @@ msgstr ""
 "Le applicazioni che corrispondono a questi identificatori vengono "
 "visualizzate nell'area dei preferiti."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -151,7 +127,7 @@ msgstr ""
 "data corrente e utilizza questa estensione. Dovrebbe essere modificato "
 "quando si registra utilizzando un diverso formato contenitore."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -159,12 +135,12 @@ msgstr ""
 "Il framerate in fotogrammi al secondo dello screencast registrato attraverso "
 "il registratore della GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "La pipeline di gstreamer utilizzata per codificare lo screencast"
 
 # (ndt) quel "in launchers" non mi convince...
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -176,40 +152,11 @@ msgstr ""
 "disabilitare questa funzionalità per motivi di privacy. I dati già salvati "
 "non verranno comunque rimossi."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"This key specifies the format used by the panel clock when the format key is "
-"set to \"custom\". You can use conversion specifiers understood by strftime"
-"() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr ""
-"Questa chiave indica il formato usato dall'orologio nel pannello quando la "
-"chiave specifica è impostata a \"custom\". È possibile utilizzare gli "
-"specificatori di formato compatibili con strftime(). Per maggiori "
-"informazioni, consultare il manuale di strftime()."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid ""
-"This key specifies the hour format used by the panel clock. Possible values "
-"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
-"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
-"to \"custom\", the clock will display time according to the format specified "
-"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
-"the show_date and show_seconds keys are ignored."
-msgstr ""
-"Questa chiave indica il formato orario usato dall'orologio. I possibili "
-"valori sono \"12-hour\", \"24-hour\", \"unix\" e \"custom\". Se impostata a "
-"\"unix\", l'orologio visualizza l'ora in secondi a partire dall'era Epoch, "
-"cioè dal 1970-01-01. Se impostata a \"custom\", l'orologio visualizza l'ora "
-"in base al formato specificato nella chiave custom_format. Notare che se "
-"impostata a \"unix\" o \"custom\", le chiavi show_date e show_seconds non "
-"vengono considerate."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Uuids of extensions to disable"
 msgstr "UUID delle estensioni da disabilitare"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 "Indica se raccogliere statistiche riguardo l'utilizzo delle applicazioni"
@@ -339,51 +286,43 @@ msgstr ""
 msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr ""
 
-#: ../data/clock-preferences.ui.h:1
-msgid "Clock Format"
-msgstr "Formato ora"
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:108
+msgid "Could not parse command:"
+msgstr "Impossibile analizzare il comando:"
 
-#: ../data/clock-preferences.ui.h:2
-msgid "Clock Preferences"
-msgstr "Preferenze di Orologio"
+#: ../js/misc/util.js:130
+msgid "No such application"
+msgstr "Applicazione inesistente"
 
-#: ../data/clock-preferences.ui.h:3
-msgid "Panel Display"
-msgstr "Visualizzazione sul pannello"
+#: ../js/misc/util.js:143 ../js/ui/runDialog.js:364
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Esecuzione di «%s» non riuscita:"
 
-#: ../data/clock-preferences.ui.h:4
-msgid "Show seco_nds"
-msgstr "Mostrare i _secondi"
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:155
+msgid "All"
+msgstr "Tutte"
 
-#: ../data/clock-preferences.ui.h:5
-msgid "Show the _date"
-msgstr "Mostrare la _data"
-
-#: ../data/clock-preferences.ui.h:6
-msgid "_12 hour format"
-msgstr "Formato _12 ore"
-
-#: ../data/clock-preferences.ui.h:7
-msgid "_24 hour format"
-msgstr "Formato _24 ore"
-
-#: ../js/ui/appDisplay.js:215
+#: ../js/ui/appDisplay.js:236
 msgid "APPLICATIONS"
-msgstr "Applicazioni"
+msgstr "APPLICAZIONI"
 
-#: ../js/ui/appDisplay.js:245
+#: ../js/ui/appDisplay.js:266
 msgid "PREFERENCES"
-msgstr "Preferenze"
+msgstr "PREFERENZE"
 
-#: ../js/ui/appDisplay.js:542
+#: ../js/ui/appDisplay.js:563
 msgid "New Window"
 msgstr "Nuova finestra"
 
-#: ../js/ui/appDisplay.js:546
+#: ../js/ui/appDisplay.js:567
 msgid "Remove from Favorites"
 msgstr "Rimuovi dai preferiti"
 
-#: ../js/ui/appDisplay.js:547
+#: ../js/ui/appDisplay.js:568
 msgid "Add to Favorites"
 msgstr "Aggiungi ai preferiti"
 
@@ -403,118 +342,197 @@ msgstr "%s è stato rimosso dai preferiti."
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: ../js/ui/docDisplay.js:494
+#: ../js/ui/docDisplay.js:18
 msgid "RECENT ITEMS"
 msgstr "Elementi recenti"
 
-#: ../js/ui/lookingGlass.js:552
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+msgid "Log Out %s"
+msgstr "Termina sessione di %s"
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+msgid "Log Out"
+msgstr "Termina sessione"
+
+# oddio... abbandonare il sistema sembra la nave che affonda... (LF)
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr "Fare clic su «Termina sessione» per chiudere queste applicazioni e abbandonare il sistema."
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "La sessione di %s verrà terminata automaticamente tra %d secondi."
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "La sessione verrà terminata automaticamente tra %d secondi."
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "Chiusura della sessione."
+
+#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
+msgid "Shut Down"
+msgstr "Arresta"
+
+# usato un termine diverso, magari si capisce meglio (LF)
+#: ../js/ui/endSessionDialog.js:75
+msgid "Click Shut Down to quit these applications and shut down the system."
+msgstr "Fare clic su «Arresta» per chiudere queste applicazioni e spegnere il sistema."
+
+#: ../js/ui/endSessionDialog.js:76
+#, c-format
+msgid "The system will shut down automatically in %d seconds."
+msgstr "Il sistema verrà arrestato automaticamente tra %d secondi."
+
+#: ../js/ui/endSessionDialog.js:77
+msgid "Shutting down the system."
+msgstr "Arresto del sistema."
+
+#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+msgid "Restart"
+msgstr "Riavvia"
+
+#: ../js/ui/endSessionDialog.js:85
+msgid "Click Restart to quit these applications and restart the system."
+msgstr "Fare clic su «Riavvia» per chiudere queste applicazioni e riavviare il sistema."
+
+#: ../js/ui/endSessionDialog.js:86
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "Il sistema verrà riavviato automaticamente tra %d secondi."
+
+#: ../js/ui/endSessionDialog.js:87
+msgid "Restarting the system."
+msgstr "Riavvio del sistema."
+
+#: ../js/ui/endSessionDialog.js:395
+msgid "Confirm"
+msgstr "Conferma"
+
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:469
+msgid "Cancel"
+msgstr "Annulla"
+
+#: ../js/ui/lookingGlass.js:556
 msgid "No extensions installed"
 msgstr "Nessuna estensione installata"
 
 # (ndt) o abilitata?
-#: ../js/ui/lookingGlass.js:589
+#: ../js/ui/lookingGlass.js:593
 msgid "Enabled"
 msgstr "Abilitato"
 
 # (ndt) o disabilitata?
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:591 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:595 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "Disabilitato"
 
-#: ../js/ui/lookingGlass.js:593
+#: ../js/ui/lookingGlass.js:597
 msgid "Error"
 msgstr "Errore"
 
-#: ../js/ui/lookingGlass.js:595
+#: ../js/ui/lookingGlass.js:599
 msgid "Out of date"
 msgstr "Non aggiornato"
 
-#: ../js/ui/lookingGlass.js:620
+#: ../js/ui/lookingGlass.js:624
 msgid "View Source"
 msgstr "Visualizza sorgente"
 
-#: ../js/ui/lookingGlass.js:626
+#: ../js/ui/lookingGlass.js:630
 msgid "Web Page"
 msgstr "Pagina web"
 
-#: ../js/ui/overview.js:112
+#: ../js/ui/messageTray.js:1748
+msgid "System Information"
+msgstr "Informazione di sistema"
+
+#: ../js/ui/overview.js:75
 msgid "Undo"
 msgstr "Annulla"
 
+#: ../js/ui/overview.js:140
+msgid "Windows"
+msgstr "Finestre"
+
+#: ../js/ui/overview.js:143
+msgid "Applications"
+msgstr "Applicazioni"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:470
+#: ../js/ui/panel.js:479
 #, c-format
 msgid "Quit %s"
 msgstr "Chiudi %s"
 
-#: ../js/ui/panel.js:495
-msgid "Preferences"
-msgstr "Preferenze"
-
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:564
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %k.%M.%S"
 
 # (ndt) proviamo col k, se non funge, sappiamo il perché...
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:565
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %k.%M"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:569
 msgid "%a %R:%S"
 msgstr "%a %k.%M.%S"
 
-#: ../js/ui/panel.js:587
+#: ../js/ui/panel.js:570
 msgid "%a %R"
 msgstr "%a %k.%M"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:577
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %P"
 
-#: ../js/ui/panel.js:595
+#: ../js/ui/panel.js:578
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %P"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:582
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %P"
 
-#: ../js/ui/panel.js:600
+#: ../js/ui/panel.js:583
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %P"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:745
+#: ../js/ui/panel.js:728
 msgid "Activities"
 msgstr "Attività"
 
 # (ndt) libera, ma unmount non si può proprio vedere...
-#: ../js/ui/placeDisplay.js:111
+#: ../js/ui/placeDisplay.js:112
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Impossibile scollegare «%s»"
 
-#: ../js/ui/placeDisplay.js:114
+#: ../js/ui/placeDisplay.js:115
 msgid "Retry"
 msgstr "Riprova"
 
-#: ../js/ui/placeDisplay.js:159
+#: ../js/ui/placeDisplay.js:160
 msgid "Connect to..."
 msgstr "Connetti a..."
 
-#: ../js/ui/placeDisplay.js:558
+#: ../js/ui/placeDisplay.js:559
 msgid "PLACES & DEVICES"
 msgstr "Risorse e dispositivi"
 
@@ -527,84 +545,79 @@ msgstr "Risorse e dispositivi"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:233
+#: ../js/ui/runDialog.js:222
 msgid "Please enter a command:"
 msgstr "Inserire un comando:"
 
-#: ../js/ui/runDialog.js:378
-#, c-format
-msgid "Execution of '%s' failed:"
-msgstr "Esecuzione di «%s» non riuscita:"
-
-#: ../js/ui/statusMenu.js:101
+#: ../js/ui/statusMenu.js:102
 msgid "Available"
 msgstr "Disponibile"
 
-#: ../js/ui/statusMenu.js:106
+#: ../js/ui/statusMenu.js:107
 msgid "Busy"
 msgstr "Non disponibile"
 
-#: ../js/ui/statusMenu.js:114
+#: ../js/ui/statusMenu.js:115
 msgid "My Account"
 msgstr "Account personale"
 
-#: ../js/ui/statusMenu.js:118
+#: ../js/ui/statusMenu.js:119
 msgid "System Settings"
 msgstr "Impostazioni di sistema"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:126
 msgid "Lock Screen"
 msgstr "Blocca schermo"
 
-#: ../js/ui/statusMenu.js:129
+#: ../js/ui/statusMenu.js:130
 msgid "Switch User"
 msgstr "Cambia utente"
 
-#: ../js/ui/statusMenu.js:134
+#: ../js/ui/statusMenu.js:135
 msgid "Log Out..."
 msgstr "Termina sessione..."
 
-#: ../js/ui/statusMenu.js:141
+#: ../js/ui/statusMenu.js:142
 msgid "Suspend..."
 msgstr "Sospendi..."
 
-#: ../js/ui/statusMenu.js:145
+#: ../js/ui/statusMenu.js:146
 msgid "Shut Down..."
 msgstr "Arresta..."
 
-#: ../js/ui/status/accessibility.js:82
+#: ../js/ui/status/accessibility.js:83
 msgid "Zoom"
 msgstr "Ingrandimento"
 
-#: ../js/ui/status/accessibility.js:88
+#: ../js/ui/status/accessibility.js:89
 msgid "Screen Reader"
 msgstr "Lettore schermo"
 
-#: ../js/ui/status/accessibility.js:91
+#: ../js/ui/status/accessibility.js:92
 msgid "Screen Keyboard"
 msgstr "Tastiera a schermo"
 
-#: ../js/ui/status/accessibility.js:94
+#: ../js/ui/status/accessibility.js:95
 msgid "Visual Alerts"
 msgstr "Allerte visive"
 
-#: ../js/ui/status/accessibility.js:97
+#: ../js/ui/status/accessibility.js:98
 msgid "Sticky Keys"
 msgstr "Permanenza tasti"
 
-#: ../js/ui/status/accessibility.js:100
+#: ../js/ui/status/accessibility.js:101
 msgid "Slow Keys"
 msgstr "Rallentamento tasti"
 
-#: ../js/ui/status/accessibility.js:103
+#: ../js/ui/status/accessibility.js:104
 msgid "Bounce Keys"
 msgstr "Pressione ravvicinata tasti"
 
-#: ../js/ui/status/accessibility.js:106
+#: ../js/ui/status/accessibility.js:107
 msgid "Mouse Keys"
 msgstr "Mouse da tastiera"
 
-#: ../js/ui/status/accessibility.js:110
+#: ../js/ui/status/accessibility.js:111
 msgid "Universal Access Settings"
 msgstr "Impostazioni accesso universale"
 
@@ -616,16 +629,130 @@ msgstr "Contrasto elevato"
 msgid "Large Text"
 msgstr "Caratteri grandi"
 
-# Sarebbe da vedere uhmmm...
-#: ../js/ui/status/power.js:87
-msgid "What's using power..."
-msgstr "Consumi energetici..."
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:240
+msgid "Bluetooth"
+msgstr "Bluetooth"
 
-#: ../js/ui/status/power.js:90
+# as on Android :P
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "Rilevabile"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "Invia file al dispositivo..."
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "Imposta un nuovo dispositivo..."
+
+#: ../js/ui/status/bluetooth.js:94
+msgid "Bluetooth Settings"
+msgstr "Impostazioni Bluetooth"
+
+# indica lo stato del device BT, per esempio gli auricolari
+# credo sia meglio l'aggettivo che il sostantivo
+#: ../js/ui/status/bluetooth.js:191
+msgid "Connection"
+msgstr "Collegato"
+
+#: ../js/ui/status/bluetooth.js:227
+msgid "Send Files..."
+msgstr "Invia file..."
+
+#: ../js/ui/status/bluetooth.js:232
+msgid "Browse Files..."
+msgstr "Esplora file..."
+
+#: ../js/ui/status/bluetooth.js:241
+msgid "Error browsing device"
+msgstr "Errore nell'esplorare il dispositivo"
+
+#: ../js/ui/status/bluetooth.js:242
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "Non è possibile esplorare il dispositivo richiesto, l'errore è «%s»"
+
+#: ../js/ui/status/bluetooth.js:250 ../js/ui/status/keyboard.js:78
+msgid "Keyboard Settings"
+msgstr "Impostazioni tastiera"
+
+#: ../js/ui/status/bluetooth.js:255
+msgid "Mouse Settings"
+msgstr "Impostazioni mouse"
+
+#: ../js/ui/status/bluetooth.js:262 ../js/ui/status/volume.js:63
+msgid "Sound Settings"
+msgstr "Impostazioni audio"
+
+#: ../js/ui/status/bluetooth.js:336 ../js/ui/status/bluetooth.js:370
+#: ../js/ui/status/bluetooth.js:410 ../js/ui/status/bluetooth.js:443
+msgid "Bluetooth Agent"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:371
+#, c-format
+msgid "Authorization request from %s"
+msgstr "Richesta autorizzazione da %s"
+
+#: ../js/ui/status/bluetooth.js:377
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "Il dispositivo %s vuole accedere al servizio «%s»"
+
+#: ../js/ui/status/bluetooth.js:379
+msgid "Always grant access"
+msgstr "Consenti sempre accesso"
+
+#: ../js/ui/status/bluetooth.js:380
+msgid "Grant this time only"
+msgstr "Consenti solo stavolta"
+
+#: ../js/ui/status/bluetooth.js:381
+msgid "Reject"
+msgstr "Rifiuta"
+
+#: ../js/ui/status/bluetooth.js:411
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Conferma associazione per %s"
+
+#: ../js/ui/status/bluetooth.js:417 ../js/ui/status/bluetooth.js:451
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "Il dispositivo %s vuole associarsi con questo computer"
+
+#: ../js/ui/status/bluetooth.js:418
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Confermare la corrispondenza del PIN «%s» con quello sul dispositivo."
+
+#: ../js/ui/status/bluetooth.js:420
+msgid "Matches"
+msgstr "Corrisponde"
+
+#: ../js/ui/status/bluetooth.js:421
+msgid "Does not match"
+msgstr "Non corrisponde"
+
+#: ../js/ui/status/bluetooth.js:444
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Richiesta associazione per %s"
+
+#: ../js/ui/status/bluetooth.js:452
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Inserire il PIN indicato sul dispositivo."
+
+#: ../js/ui/status/bluetooth.js:468
+msgid "OK"
+msgstr "OK"
+
+#: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "Impostazioni alimentazione"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:112
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -633,124 +760,119 @@ msgstr[0] "%d ora rimanente"
 msgstr[1] "%d ore rimanenti"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:115
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s e %d %s rimanenti"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:117
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "ora"
 msgstr[1] "ore"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:117
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minuto"
 msgstr[1] "minuti"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:120
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d minuto rimanente"
 msgstr[1] "%d minuti rimanenti"
 
-#: ../js/ui/status/power.js:244
+#: ../js/ui/status/power.js:235
 msgid "AC adapter"
 msgstr "Alimentatore di corrente"
 
-#: ../js/ui/status/power.js:246
+#: ../js/ui/status/power.js:237
 msgid "Laptop battery"
 msgstr "Batteria del portatile"
 
-#: ../js/ui/status/power.js:248
+#: ../js/ui/status/power.js:239
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:250
+#: ../js/ui/status/power.js:241
 msgid "Monitor"
 msgstr "Monitor"
 
-#: ../js/ui/status/power.js:252
+#: ../js/ui/status/power.js:243
 msgid "Mouse"
 msgstr "Mouse"
 
-#: ../js/ui/status/power.js:254
+#: ../js/ui/status/power.js:245
 msgid "Keyboard"
 msgstr "Tastiera"
 
-#: ../js/ui/status/power.js:256
+#: ../js/ui/status/power.js:247
 msgid "PDA"
 msgstr "PDS"
 
 # c'era una discussione su tp...
-#: ../js/ui/status/power.js:258
+#: ../js/ui/status/power.js:249
 msgid "Cell phone"
 msgstr "Cellulare"
 
-#: ../js/ui/status/power.js:260
+#: ../js/ui/status/power.js:251
 msgid "Media player"
 msgstr "Lettore multimediale"
 
-#: ../js/ui/status/power.js:262
+#: ../js/ui/status/power.js:253
 msgid "Tablet"
 msgstr "Tablet"
 
-#: ../js/ui/status/power.js:264
+#: ../js/ui/status/power.js:255
 msgid "Computer"
 msgstr "Computer"
 
-#: ../js/ui/status/power.js:266 ../src/shell-app-system.c:1012
+#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1012
 msgid "Unknown"
 msgstr "Sconosciuto"
 
-#: ../js/ui/status/volume.js:41
+#: ../js/ui/status/volume.js:42
 msgid "Volume"
 msgstr "Volume"
 
-#: ../js/ui/status/volume.js:54
+#: ../js/ui/status/volume.js:55
 msgid "Microphone"
 msgstr "Microfono"
 
-#: ../js/ui/status/volume.js:62
-msgid "Sound Settings"
-msgstr "Impostazioni audio"
+#: ../js/ui/telepathyClient.js:561
+#, c-format
+msgid "%s is online."
+msgstr "%s è disponibile."
+
+#: ../js/ui/telepathyClient.js:566
+#, c-format
+msgid "%s is offline."
+msgstr "%s è fuori rete."
+
+#: ../js/ui/telepathyClient.js:569
+#, c-format
+msgid "%s is away."
+msgstr "%s è assente."
+
+#: ../js/ui/telepathyClient.js:572
+#, c-format
+msgid "%s is busy."
+msgstr "%s non è disponibile."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:666
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "Inviato alle %-H.%M.%S di %A"
 
 # FIXME ma ha senso in inglese???
 #: ../js/ui/viewSelector.js:26
 msgid "Search your computer"
 msgstr "Cerca nel computer"
-
-#: ../js/ui/telepathyClient.js:560
-#, c-format
-msgid "%s is online."
-msgstr "%s è disponibile."
-
-#: ../js/ui/telepathyClient.js:565
-#, c-format
-msgid "%s is offline."
-msgstr "%s è furi rete."
-
-#: ../js/ui/telepathyClient.js:568
-#, c-format
-msgid "%s is away."
-msgstr "%s è assente."
-
-#: ../js/ui/telepathyClient.js:571
-#, c-format
-msgid "%s is busy."
-msgstr "%s non è disponibile."
-
-# FIXME -- Da rifinire..
-#. Translators: this is a time format string followed by a date.
-#. If applicable, replace %X with a strftime format valid for your
-#. locale, without seconds.
-#: ../js/ui/telepathyClient.js:663
-#, c-format, fuzzy
-msgid "Sent at %X on %A"
-msgstr "Inviato alle %-H.%M.%S di %A"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -797,32 +919,32 @@ msgstr[1] "%u ingressi"
 msgid "System Sounds"
 msgstr "Audio di sistema"
 
-#: ../src/shell-global.c:1155
+#: ../src/shell-global.c:1233
 msgid "Less than a minute ago"
 msgstr "Meno di un minuto fa"
 
-#: ../src/shell-global.c:1159
+#: ../src/shell-global.c:1237
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minuto fa"
 msgstr[1] "%d minuti fa"
 
-#: ../src/shell-global.c:1164
+#: ../src/shell-global.c:1242
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ora fa"
 msgstr[1] "%d ore fa"
 
-#: ../src/shell-global.c:1169
+#: ../src/shell-global.c:1247
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d giorno fa"
 msgstr[1] "%d giorni fa"
 
-#: ../src/shell-global.c:1174
+#: ../src/shell-global.c:1252
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"

@@ -30,12 +30,16 @@
       </_description>
     </key>
     <key name="favorite-apps" type="as">
-      <default>[ 'mozilla-firefox.desktop', 'evolution.desktop', 'openoffice.org-writer.desktop' ]</default>
+      <default>[ 'mozilla-firefox.desktop', 'evolution.desktop', 'empathy.desktop', 'rhythmbox.desktop', 'shotwell.desktop', 'openoffice.org-writer.desktop', 'nautilus.desktop' ]</default>
       <_summary>List of desktop file IDs for favorite applications</_summary>
       <_description>
         The applications corresponding to these identifiers
         will be displayed in the favorites area.
       </_description>
+    </key>
+    <key name="disabled-open-search-providers" type="as">
+      <default>[]</default>
+      <_summary>disabled OpenSearch providers</_summary>
     </key>
     <key name="command-history" type="as">
       <default>[]</default>
@@ -59,51 +63,18 @@
 
   <schema id="org.gnome.shell.clock" path="/apps/gnome-shell/clock/"
           gettext-domain="@GETTEXT_PACKAGE@">
-    <key name="format" type="s">
-      <default l10n="messages" context="hour_format">
-      <!-- TRANSLATORS: This is the default hour format, choose ONLY '12-hour' or '24-hour'. -->
-        "12-hour"
-      </default>
-      <_summary>Hour format</_summary>
-      <_description>
-        This key specifies the hour format used by the panel clock.
-        Possible values are "12-hour", "24-hour", "unix" and "custom". If set
-        to "unix", the clock will display time in seconds since Epoch,
-        i.e. 1970-01-01. If set to "custom", the clock will display time
-        according to the format specified in the custom_format key. Note that
-        if set to either "unix" or "custom", the show_date and show_seconds
-        keys are ignored.
-      </_description>
-      <choices>
-        <choice value="12-hour"/>
-        <choice value="24-hour"/>
-        <choice value="unix"/>
-        <choice value="custom"/>
-      </choices>
-    </key>
-    <key name="custom-format" type="s">
-      <default>''</default>
-      <_summary>Custom format of the clock</_summary>
-      <_description>
-        This key specifies the format used by the panel clock when the format
-        key is set to "custom". You can use conversion specifiers understood
-        by strftime() to obtain a specific format. See the strftime() manual
-        for more information.
-      </_description>
-    </key>
     <key name="show-seconds" type="b">
       <default>false</default>
       <_summary>Show time with seconds</_summary>
       <_description>
-        If true and format is either "12-hour" or "24-hour", display seconds in time.
+        If true, display seconds in time.
       </_description>
     </key>
     <key name="show-date" type="b">
       <default>false</default>
       <_summary>Show date in clock</_summary>
       <_description>
-        If true and format is either "12-hour" or "24-hour",
-        display date in the clock, in addition to time.
+        If true, display date in the clock, in addition to time.
       </_description>
     </key>
   </schema>

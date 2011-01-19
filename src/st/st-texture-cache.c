@@ -437,6 +437,67 @@ out:
   return rotated_pixbuf;
 }
 
+static GdkPixbuf*
+decode_image (const char *val)
+{
+  int i;
+  GError *error = NULL;
+  GdkPixbuf *res = NULL;
+  struct {
+    const char *prefix;
+    const char *mime_type;
+  } formats[] = {
+    { "data:image/x-icon;base64,", "image/x-icon" },
+    { "data:image/png;base64,", "image/png" }
+  };
+
+  g_return_val_if_fail (val, NULL);
+
+  for (i = 0; i < G_N_ELEMENTS (formats); i++)
+    {
+      if (g_str_has_prefix (val, formats[i].prefix))
+        {
+          gsize len;
+          guchar *data = NULL;
+          char *unescaped;
+
+          unescaped = g_uri_unescape_string (val + strlen (formats[i].prefix), NULL);
+          if (unescaped)
+            {
+              data = g_base64_decode (unescaped, &len);
+              g_free (unescaped);
+            }
+
+          if (data)
+            {
+              GdkPixbufLoader *loader;
+
+              loader = gdk_pixbuf_loader_new_with_mime_type (formats[i].mime_type, &error);
+              if (loader &&
+                  gdk_pixbuf_loader_write (loader, data, len, &error) &&
+                  gdk_pixbuf_loader_close (loader, &error))
+                {
+                  res = gdk_pixbuf_loader_get_pixbuf (loader);
+                  g_object_ref (res);
+                }
+              g_object_unref (loader);
+              g_free (data);
+            }
+        }
+    }
+  if (!res)
+    {
+      if (error)
+        {
+          g_warning ("%s\n", error->message);
+          g_error_free (error);
+        }
+      else
+        g_warning ("incorrect data uri");
+    }
+  return res;
+}
+
 static GdkPixbuf *
 impl_load_pixbuf_file (const char     *uri,
                        int             available_width,
@@ -447,6 +508,9 @@ impl_load_pixbuf_file (const char     *uri,
   GFile *file;
   char *contents = NULL;
   gsize size;
+
+  if (g_str_has_prefix (uri, "data:"))
+    return decode_image (uri);
 
   file = g_file_new_for_uri (uri);
   if (g_file_load_contents (file, NULL, &contents, &size, NULL, error))
@@ -1615,7 +1679,7 @@ st_texture_cache_load_from_data (StTextureCache    *cache,
 /**
  * st_texture_cache_load_from_raw:
  * @cache: a #StTextureCache
- * @data: raw pixel data
+ * @data: (array length=len): raw pixel data
  * @len: the length of @data
  * @has_alpha: whether @data includes an alpha channel
  * @width: width in pixels of @data

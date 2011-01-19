@@ -6,6 +6,7 @@ const Signals = imports.signals;
 
 const MessageTray = imports.ui.messageTray;
 const NotificationDaemon = imports.ui.notificationDaemon;
+const Util = imports.misc.util;
 
 const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'bluetooth-applet': 'bluetooth',
@@ -33,8 +34,7 @@ StatusIconDispatcher.prototype = {
         // app-indicators, so that applications fall back to normal
         // status icons
         // http://bugzilla.gnome.org/show_bug.cgi=id=621382
-        let p = new Shell.Process({ args: ['pkill', '-f', '^([^ ]*/)?indicator-application-service$']});
-        p.run();
+        Util.killall('indicator-application-service');
     },
 
     _onTrayIconAdded: function(o, icon) {

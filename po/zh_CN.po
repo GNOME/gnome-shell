@@ -7,14 +7,15 @@
 # Jessica Ban <bancage@gmail.com>, 2010.
 # YunQiang Su <wzssyqa@gmail.com>, 2010.
 # zhang ping <zhangping159@gmail.com>, 2010.
+# 指冷玉笙寒 (dhyang) <dhyang555@gmail.com>, 2010
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2010-12-10 00:17+0000\n"
-"PO-Revision-Date: 2010-12-12 15:45+0800\n"
+"POT-Creation-Date: 2010-12-23 17:30+0000\n"
+"PO-Revision-Date: 2010-12-25 20:54+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -356,23 +357,28 @@ msgstr "_12 时格式"
 msgid "_24 hour format"
 msgstr "_24 小时格式"
 
-#: ../js/ui/appDisplay.js:215
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:155
+msgid "All"
+msgstr "全部"
+
+#: ../js/ui/appDisplay.js:236
 msgid "APPLICATIONS"
 msgstr "应用程序"
 
-#: ../js/ui/appDisplay.js:245
+#: ../js/ui/appDisplay.js:266
 msgid "PREFERENCES"
 msgstr "首选项"
 
-#: ../js/ui/appDisplay.js:542
+#: ../js/ui/appDisplay.js:563
 msgid "New Window"
 msgstr "新窗口"
 
-#: ../js/ui/appDisplay.js:546
+#: ../js/ui/appDisplay.js:567
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: ../js/ui/appDisplay.js:547
+#: ../js/ui/appDisplay.js:568
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
@@ -424,63 +430,71 @@ msgstr "查看源"
 msgid "Web Page"
 msgstr "网页"
 
-#: ../js/ui/overview.js:112
+#: ../js/ui/overview.js:96
 msgid "Undo"
 msgstr "撤销"
 
+#: ../js/ui/overview.js:158
+msgid "Windows"
+msgstr "窗口"
+
+#: ../js/ui/overview.js:161
+msgid "Applications"
+msgstr "应用程序"
+
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:470
+#: ../js/ui/panel.js:474
 #, c-format
 msgid "Quit %s"
 msgstr "退出 %s"
 
-#: ../js/ui/panel.js:495
+#: ../js/ui/panel.js:499
 msgid "Preferences"
 msgstr "首选项"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:585
 msgid "%a %b %e, %R:%S"
 msgstr "%A %b %e, %R:%S"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:586
 msgid "%a %b %e, %R"
 msgstr "%A %m月%d日 %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:590
 msgid "%a %R:%S"
 msgstr "%A %R:%S"
 
-#: ../js/ui/panel.js:587
+#: ../js/ui/panel.js:591
 msgid "%a %R"
 msgstr "%A %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:594
+#: ../js/ui/panel.js:598
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%A %m月%d日 %p%I:%M:%S"
 
-#: ../js/ui/panel.js:595
+#: ../js/ui/panel.js:599
 msgid "%a %b %e, %l:%M %p"
 msgstr "%A %m月%d日 %p%I:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:603
 msgid "%a %l:%M:%S %p"
 msgstr "%A %p%I:%M:%S"
 
-#: ../js/ui/panel.js:600
+#: ../js/ui/panel.js:604
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:745
+#: ../js/ui/panel.js:749
 msgid "Activities"
 msgstr "活动"
 
@@ -599,87 +613,203 @@ msgstr "高对比度"
 msgid "Large Text"
 msgstr "大号文本"
 
-#: ../js/ui/status/power.js:87
-msgid "What's using power..."
-msgstr "哪些设备在用电..."
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:234
+msgid "Bluetooth"
+msgstr "蓝牙"
 
-#: ../js/ui/status/power.js:90
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "可见性"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "发送文件到设备..."
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "安装新设备..."
+
+#: ../js/ui/status/bluetooth.js:94
+msgid "Bluetooth Settings"
+msgstr "蓝牙设置"
+
+#: ../js/ui/status/bluetooth.js:185
+msgid "Connection"
+msgstr "连接"
+
+#: ../js/ui/status/bluetooth.js:221
+msgid "Send Files..."
+msgstr "发送文件..."
+
+#: ../js/ui/status/bluetooth.js:226
+msgid "Browse Files..."
+msgstr "浏览文件..."
+
+#: ../js/ui/status/bluetooth.js:235
+msgid "Error browsing device"
+msgstr "浏览设备出错"
+
+#: ../js/ui/status/bluetooth.js:236
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "无法浏览请求的设备，错误为 %s"
+
+#: ../js/ui/status/bluetooth.js:244
+msgid "Keyboard Settings"
+msgstr "键盘设置"
+
+#: ../js/ui/status/bluetooth.js:249
+msgid "Mouse Settings"
+msgstr "鼠标设置"
+
+#: ../js/ui/status/bluetooth.js:256 ../js/ui/status/volume.js:62
+msgid "Sound Settings"
+msgstr "声音设置"
+
+#: ../js/ui/status/bluetooth.js:327 ../js/ui/status/bluetooth.js:361
+#: ../js/ui/status/bluetooth.js:401 ../js/ui/status/bluetooth.js:434
+msgid "Bluetooth Agent"
+msgstr "蓝牙助手"
+
+#: ../js/ui/status/bluetooth.js:362
+#, c-format
+msgid "Authorization request from %s"
+msgstr "来自 %s 的认证请求"
+
+#: ../js/ui/status/bluetooth.js:368
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "设备 %s 希望访问 %s 服务"
+
+#: ../js/ui/status/bluetooth.js:370
+msgid "Always grant access"
+msgstr "始终允许"
+
+#: ../js/ui/status/bluetooth.js:371
+msgid "Grant this time only"
+msgstr "允许一次"
+
+#: ../js/ui/status/bluetooth.js:372
+msgid "Reject"
+msgstr "拒绝"
+
+#: ../js/ui/status/bluetooth.js:402
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "%s 的配对确认"
+
+#: ../js/ui/status/bluetooth.js:408 ../js/ui/status/bluetooth.js:442
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "设备 %s 希望与此电脑配对"
+
+#: ../js/ui/status/bluetooth.js:409
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "请确认 PIN 码 %s 和要配对的设备是否相同。"
+
+#: ../js/ui/status/bluetooth.js:411
+msgid "Matches"
+msgstr "相同"
+
+#: ../js/ui/status/bluetooth.js:412
+msgid "Does not match"
+msgstr "不同"
+
+#: ../js/ui/status/bluetooth.js:435
+#, c-format
+msgid "Pairing request for %s"
+msgstr "%s 的配对请求"
+
+#: ../js/ui/status/bluetooth.js:443
+msgid "Please enter the PIN mentioned on the device."
+msgstr "请输入设备上的 PIN 码。"
+
+#: ../js/ui/status/bluetooth.js:459
+msgid "OK"
+msgstr "确定"
+
+#: ../js/ui/status/bluetooth.js:460
+msgid "Cancel"
+msgstr "取消"
+
+#: ../js/ui/status/power.js:85
 msgid "Power Settings"
 msgstr "电源设置"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:112
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
 msgstr[0] "剩余 %d 小时"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:115
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "剩余 %d %s %d %s"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:117
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "小时"
 
-#: ../js/ui/status/power.js:122
+#: ../js/ui/status/power.js:117
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "分钟"
 
-#: ../js/ui/status/power.js:125
+#: ../js/ui/status/power.js:120
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "剩余 %d 分钟"
 
-#: ../js/ui/status/power.js:244
+#: ../js/ui/status/power.js:237
 msgid "AC adapter"
 msgstr "AC 适配器"
 
-#: ../js/ui/status/power.js:246
+#: ../js/ui/status/power.js:239
 msgid "Laptop battery"
 msgstr "笔记本电池"
 
-#: ../js/ui/status/power.js:248
+#: ../js/ui/status/power.js:241
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:250
+#: ../js/ui/status/power.js:243
 msgid "Monitor"
 msgstr "显示器"
 
-#: ../js/ui/status/power.js:252
+#: ../js/ui/status/power.js:245
 msgid "Mouse"
 msgstr "鼠标"
 
-#: ../js/ui/status/power.js:254
+#: ../js/ui/status/power.js:247
 msgid "Keyboard"
 msgstr "键盘"
 
-#: ../js/ui/status/power.js:256
+#: ../js/ui/status/power.js:249
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:258
+#: ../js/ui/status/power.js:251
 msgid "Cell phone"
 msgstr "手机"
 
-#: ../js/ui/status/power.js:260
+#: ../js/ui/status/power.js:253
 msgid "Media player"
 msgstr "媒体播放器"
 
-#: ../js/ui/status/power.js:262
+#: ../js/ui/status/power.js:255
 msgid "Tablet"
 msgstr "触摸板"
 
-#: ../js/ui/status/power.js:264
+#: ../js/ui/status/power.js:257
 msgid "Computer"
 msgstr "计算机"
 
-#: ../js/ui/status/power.js:266 ../src/shell-app-system.c:1012
+#: ../js/ui/status/power.js:259 ../src/shell-app-system.c:1012
 msgid "Unknown"
 msgstr "未知"
 
@@ -691,9 +821,33 @@ msgstr "音量"
 msgid "Microphone"
 msgstr "麦克风"
 
-#: ../js/ui/status/volume.js:62
-msgid "Sound Settings"
-msgstr "声音设置"
+#: ../js/ui/telepathyClient.js:560
+#, c-format
+msgid "%s is online."
+msgstr "%s 在线。"
+
+#: ../js/ui/telepathyClient.js:565
+#, c-format
+msgid "%s is offline."
+msgstr "%s 离线。"
+
+#: ../js/ui/telepathyClient.js:568
+#, c-format
+msgid "%s is away."
+msgstr "%s 离开。"
+
+#: ../js/ui/telepathyClient.js:571
+#, c-format
+msgid "%s is busy."
+msgstr "%s 忙碌。"
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:665
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "发送于 %X on %A"
 
 #: ../js/ui/viewSelector.js:26
 msgid "Search your computer"
@@ -738,29 +892,29 @@ msgstr[0] "%u 个输入"
 msgid "System Sounds"
 msgstr "系统声音"
 
-#: ../src/shell-global.c:1155
+#: ../src/shell-global.c:1156
 msgid "Less than a minute ago"
 msgstr "少于一分钟前"
 
-#: ../src/shell-global.c:1159
+#: ../src/shell-global.c:1160
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分钟前"
 
-#: ../src/shell-global.c:1164
+#: ../src/shell-global.c:1165
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小时前"
 
-#: ../src/shell-global.c:1169
+#: ../src/shell-global.c:1170
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d 天前"
 
-#: ../src/shell-global.c:1174
+#: ../src/shell-global.c:1175
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -789,6 +943,9 @@ msgstr "搜索"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "What's using power..."
+#~ msgstr "哪些设备在用电..."
 
 #~ msgid "Overview workspace view mode"
 #~ msgstr "工作区视图模式的总览"
@@ -829,9 +986,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "%H:%M"
 #~ msgstr "%H:%M"
-
-#~ msgid "Applications"
-#~ msgstr "应用程序"
 
 #~ msgid "Recent Documents"
 #~ msgstr "最近文档"

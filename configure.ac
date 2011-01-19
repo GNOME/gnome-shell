@@ -1,10 +1,13 @@
 AC_PREREQ(2.63)
-AC_INIT([gnome-shell],[2.91.3],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
+AC_INIT([gnome-shell],[2.91.5],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/shell-global.c])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([config])
+
+AC_SUBST([PACKAGE_NAME], ["$PACKAGE_NAME"])
+AC_SUBST([PACKAGE_VERSION], ["$PACKAGE_VERSION"])
 
 AM_INIT_AUTOMAKE([1.10 dist-bzip2 no-dist-gzip foreign])
 AM_MAINTAINER_MODE
@@ -58,15 +61,15 @@ fi
 AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
 
 CLUTTER_MIN_VERSION=1.5.8
-GOBJECT_INTROSPECTION_MIN_VERSION=0.6.11
-GJS_MIN_VERSION=0.7
-MUTTER_MIN_VERSION=2.91.0
-GTK_MIN_VERSION=2.91.0
+GOBJECT_INTROSPECTION_MIN_VERSION=0.10.1
+GJS_MIN_VERSION=0.7.8
+MUTTER_MIN_VERSION=2.91.4
+GTK_MIN_VERSION=2.91.7
 GIO_MIN_VERSION=2.25.9
 
 # Collect more than 20 libraries for a prize!
 PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
-                                 gio-unix-2.0 dbus-glib-1
+                                 gio-unix-2.0 dbus-glib-1 libxml-2.0
                                  gtk+-3.0 >= $GTK_MIN_VERSION
                                  mutter-plugins >= $MUTTER_MIN_VERSION
                                  gjs-internals-1.0 >= $GJS_MIN_VERSION
@@ -78,6 +81,10 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
                                  gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
 				 libcanberra)
 
+GJS_VERSION=`$PKG_CONFIG --modversion gjs-internals-1.0`
+AC_DEFINE_UNQUOTED([GJS_VERSION], ["$GJS_VERSION"], [The version of GJS we're linking to])
+AC_SUBST([GJS_VERSION], ["$GJS_VERSION"])
+
 saved_CFLAGS=$CFLAGS
 saved_LIBS=$LIBS
 CFLAGS=$MUTTER_PLUGIN_CFLAGS
@@ -87,7 +94,6 @@ AC_CHECK_FUNCS(JS_NewGlobalObject sn_startup_sequence_get_application_id)
 CFLAGS=$saved_CFLAGS
 LIBS=$saved_LIBS
 
-PKG_CHECK_MODULES(TIDY, clutter-1.0)
 PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 gnome-desktop-3.0 >= 2.90.0)
 PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-3.0)
 PKG_CHECK_MODULES(TRAY, gtk+-3.0)
@@ -164,14 +170,6 @@ changequote([,])dnl
 
 AC_PATH_PROG(mutter, [mutter])
 AC_SUBST(mutter)
-
-AC_MSG_CHECKING([if mutter was compiled with GTK+-3.0])
-if $PKG_CONFIG --libs libmutter-private | grep gtk-x11-3 >/dev/null; then
-  AC_MSG_RESULT(yes)
-else
-  AC_MSG_RESULT(no)
-  AC_MSG_ERROR([GNOME Shell requires Mutter to be compiled against GTK+-3.0])
-fi
 
 AC_CONFIG_FILES([
   Makefile

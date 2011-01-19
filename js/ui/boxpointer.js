@@ -42,7 +42,7 @@ BoxPointer.prototype = {
         this.bin.raise(this._border);
     },
 
-    animateAppear: function(onComplete) {
+    show: function(animate, onComplete) {
         let x = this.actor.x;
         let y = this.actor.y;
         let themeNode = this.actor.get_theme_node();
@@ -51,19 +51,21 @@ BoxPointer.prototype = {
         this.actor.opacity = 0;
         this.actor.show();
 
-        switch (this._arrowSide) {
-            case St.Side.TOP:
-                this.actor.y -= rise;
-                break;
-            case St.Side.BOTTOM:
-                this.actor.y += rise;
-                break;
-            case St.Side.LEFT:
-                this.actor.x -= rise;
-                break;
-            case St.Side.RIGHT:
-                this.actor.x += rise;
-                break;
+        if (animate) {
+            switch (this._arrowSide) {
+                case St.Side.TOP:
+                    this.actor.y -= rise;
+                    break;
+                case St.Side.BOTTOM:
+                    this.actor.y += rise;
+                    break;
+                case St.Side.LEFT:
+                    this.actor.x -= rise;
+                    break;
+                case St.Side.RIGHT:
+                    this.actor.x += rise;
+                    break;
+            }
         }
 
         Tweener.addTween(this.actor, { opacity: 255,
@@ -74,7 +76,7 @@ BoxPointer.prototype = {
                                        time: POPUP_ANIMATION_TIME });
     },
 
-    animateDisappear: function(onComplete) {
+    hide: function(animate, onComplete) {
         let x = this.actor.x;
         let y = this.actor.y;
         let originalX = this.actor.x;
@@ -82,19 +84,21 @@ BoxPointer.prototype = {
         let themeNode = this.actor.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
 
-        switch (this._arrowSide) {
-            case St.Side.TOP:
-                y += rise;
-                break;
-            case St.Side.BOTTOM:
-                y -= rise;
-                break;
-            case St.Side.LEFT:
-                x += rise;
-                break;
-            case St.Side.RIGHT:
-                x -= rise;
-                break;
+        if (animate) {
+            switch (this._arrowSide) {
+                case St.Side.TOP:
+                    y += rise;
+                    break;
+                case St.Side.BOTTOM:
+                    y -= rise;
+                    break;
+                case St.Side.LEFT:
+                    x += rise;
+                    break;
+                case St.Side.RIGHT:
+                    x -= rise;
+                    break;
+            }
         }
 
         Tweener.addTween(this.actor, { opacity: 0,

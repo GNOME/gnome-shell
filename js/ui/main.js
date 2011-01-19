@@ -17,8 +17,12 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
 const Chrome = imports.ui.chrome;
+const CtrlAltTab = imports.ui.ctrlAltTab;
+const EndSessionDialog = imports.ui.endSessionDialog;
 const Environment = imports.ui.environment;
 const ExtensionSystem = imports.ui.extensionSystem;
 const MessageTray = imports.ui.messageTray;
@@ -34,7 +38,9 @@ const ShellDBus = imports.ui.shellDBus;
 const TelepathyClient = imports.ui.telepathyClient;
 const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
+const XdndHandler = imports.ui.xdndHandler;
 const StatusIconDispatcher = imports.ui.statusIconDispatcher;
+const Util = imports.misc.util;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
 DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
@@ -50,12 +56,14 @@ let messageTray = null;
 let notificationDaemon = null;
 let windowAttentionHandler = null;
 let telepathyClient = null;
+let ctrlAltTabManager = null;
 let recorder = null;
 let shellDBusService = null;
 let modalCount = 0;
 let modalActorFocusStack = [];
 let uiGroup = null;
 let magnifier = null;
+let xdndHandler = null;
 let statusIconDispatcher = null;
 let _errorLogStack = [];
 let _startDate;
@@ -103,10 +111,7 @@ function start() {
     global.stage.color = DEFAULT_BACKGROUND_COLOR;
     global.stage.no_clear_hint = true;
 
-    let themeContext = St.ThemeContext.get_for_stage (global.stage);
-    let stylesheetPath = global.datadir + '/theme/gnome-shell.css';
-    let theme = new St.Theme ({ application_stylesheet: stylesheetPath });
-    themeContext.set_theme (theme);
+    loadTheme();
 
     let shellwm = global.window_manager;
     shellwm.takeover_keybinding('panel_main_menu');
@@ -125,6 +130,7 @@ function start() {
     global.stage.add_actor(uiGroup);
 
     placesManager = new PlaceDisplay.PlacesManager();
+    xdndHandler = new XdndHandler.XdndHandler();
     overview = new Overview.Overview();
     chrome = new Chrome.Chrome();
     magnifier = new Magnifier.Magnifier();
@@ -136,6 +142,9 @@ function start() {
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     telepathyClient = new TelepathyClient.Client();
     panel.startStatusArea();
+
+    ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
+    ctrlAltTabManager.addGroup(panel.actor, _("Panel"), 'gnome-panel');
 
     _startDate = new Date();
 
@@ -163,6 +172,10 @@ function start() {
         }
     });
 
+    // Provide the bus object for gnome-session to
+    // initiate logouts.
+    EndSessionDialog.init();
+
     global.gdk_screen.connect('monitors-changed', _relayout);
 
     ExtensionSystem.init();
@@ -189,6 +202,18 @@ function start() {
         let module = eval('imports.perf.' + perfModuleName + ';');
         Scripting.runPerfScript(module, perfOutput);
     }
+}
+
+/**
+ * loadTheme:
+ *
+ * Reloads the theme CSS file from the default theme.
+ */
+function loadTheme() {
+    let themeContext = St.ThemeContext.get_for_stage (global.stage);
+    let stylesheetPath = global.datadir + '/theme/gnome-shell.css';
+    let theme = new St.Theme ({ application_stylesheet: stylesheetPath });
+    themeContext.set_theme (theme);
 }
 
 /**
@@ -277,47 +302,42 @@ function _removeUnusedWorkspaces() {
 // are disabled with a global grab. (When there is a global grab, then
 // all key events will be delivered to the stage, so ::captured-event
 // on the stage can be used for global keybindings.)
-//
-// We expect to need to conditionally enable just a few keybindings
-// depending on circumstance; the main hackiness here is that we are
-// assuming that keybindings have their default values; really we
-// should be asking Mutter to resolve the key into an action and then
-// base our handling based on the action.
 function _globalKeyPressHandler(actor, event) {
     if (modalCount == 0)
         return false;
-    if (event.type() != Clutter.EventType.KEY_RELEASE)
+    if (event.type() != Clutter.EventType.KEY_PRESS)
         return false;
 
     let symbol = event.get_key_symbol();
     let keyCode = event.get_key_code();
     let modifierState = Shell.get_event_state(event);
-    // Check the overview key first, this isn't a Meta.KeyBindingAction yet
-    if (symbol == Clutter.Super_L || symbol == Clutter.Super_R) {
-        // The super key is the default for triggering the overview, and should
-        // get us out of the overview when we are already in it.
-        if (overview.visible)
-            overview.hide();
 
+    let display = global.screen.get_display();
+    // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
+    let action = display.get_keybinding_action(keyCode, modifierState);
+
+    // The screenshot action should always be available (even if a
+    // modal dialog is present)
+    if (action == Meta.KeyBindingAction.COMMAND_SCREENSHOT) {
+        let gconf = GConf.Client.get_default();
+        let command = gconf.get_string('/apps/metacity/keybinding_commands/command_screenshot');
+        if (command != null && command != '')
+            Util.spawnCommandLine(command);
         return true;
     }
 
-    // Whitelist some of the Metacity actions
-    let display = global.screen.get_display();
-    let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+    // Other bindings are only available when the overview is up and
+    // no modal dialog is present.
+    if (!overview.visible || modalCount > 1)
+        return false;
 
-    // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
-    let action = display.get_keybinding_action(keyCode, modifierState);
+    // This isn't a Meta.KeyBindingAction yet
+    if (symbol == Clutter.Super_L || symbol == Clutter.Super_R) {
+        overview.hide();
+        return true;
+    }
+
     switch (action) {
-        case Meta.KeyBindingAction.COMMAND_SCREENSHOT:
-            let gconf = GConf.Client.get_default();
-            let command = gconf.get_string('/apps/metacity/keybinding_commands/command_screenshot');
-            if (command != null && command != '') {
-                let [ok, len, args] = GLib.shell_parse_argv(command);
-                let p = new Shell.Process({'args' : args});
-                p.run();
-            }
-            return true;
         case Meta.KeyBindingAction.WORKSPACE_LEFT:
             wm.actionMoveWorkspaceLeft();
             return true;
@@ -327,6 +347,12 @@ function _globalKeyPressHandler(actor, event) {
         case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
         case Meta.KeyBindingAction.COMMAND_2:
             getRunDialog().open();
+            return true;
+        case Meta.KeyBindingAction.PANEL_MAIN_MENU:
+            overview.hide();
+            return true;
+        case Meta.KeyBindingAction.SWITCH_PANELS:
+            ctrlAltTabManager.popup(modifierState & Clutter.ModifierType.SHIFT_MASK);
             return true;
     }
 
@@ -346,21 +372,30 @@ function _findModal(actor) {
 /**
  * pushModal:
  * @actor: #ClutterActor which will be given keyboard focus
+ * @timestamp: optional timestamp
  *
  * Ensure we are in a mode where all keyboard and mouse input goes to
- * the stage.  Multiple calls to this function act in a stacking fashion;
- * the effect will be undone when an equal number of popModal() invocations
- * have been made.
+ * the stage, and focus @actor. Multiple calls to this function act in
+ * a stacking fashion; the effect will be undone when an equal number
+ * of popModal() invocations have been made.
  *
- * Next, record the current Clutter keyboard focus on a stack.  If the modal stack
- * returns to this actor, reset the focus to the actor which was focused
- * at the time pushModal() was invoked.
+ * Next, record the current Clutter keyboard focus on a stack. If the
+ * modal stack returns to this actor, reset the focus to the actor
+ * which was focused at the time pushModal() was invoked.
+ *
+ * @timestamp is optionally used to associate the call with a specific user
+ * initiated event.  If not provided then the value of
+ * global.get_current_time() is assumed.
  *
  * Returns: true iff we successfully acquired a grab or already had one
  */
-function pushModal(actor) {
+function pushModal(actor, timestamp) {
+
+    if (timestamp == undefined)
+        timestamp = global.get_current_time();
+
     if (modalCount == 0) {
-        if (!global.begin_modal(global.get_current_time())) {
+        if (!global.begin_modal(timestamp)) {
             log('pushModal: invocation of begin_modal failed');
             return false;
         }
@@ -384,19 +419,28 @@ function pushModal(actor) {
     }
     modalActorFocusStack.push([actor, curFocus]);
 
-    global.stage.set_key_focus(null);
+    global.stage.set_key_focus(actor);
     return true;
 }
 
 /**
  * popModal:
  * @actor: #ClutterActor passed to original invocation of pushModal().
+ * @timestamp: optional timestamp
  *
  * Reverse the effect of pushModal().  If this invocation is undoing
  * the topmost invocation, then the focus will be restored to the
  * previous focus at the time when pushModal() was invoked.
+ *
+ * @timestamp is optionally used to associate the call with a specific user
+ * initiated event.  If not provided then the value of
+ * global.get_current_time() is assumed.
  */
-function popModal(actor) {
+function popModal(actor, timestamp) {
+
+    if (timestamp == undefined)
+        timestamp = global.get_current_time();
+
     modalCount -= 1;
     let focusIndex = _findModal(actor);
     if (focusIndex >= 0) {
@@ -414,7 +458,8 @@ function popModal(actor) {
     if (modalCount > 0)
         return;
 
-    global.end_modal(global.get_current_time());
+    global.stage.set_key_focus(null);
+    global.end_modal(timestamp);
     global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
 }
 

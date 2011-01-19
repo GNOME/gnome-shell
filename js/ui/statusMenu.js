@@ -12,6 +12,7 @@ const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const Util = imports.misc.util;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //
@@ -31,7 +32,7 @@ StatusMenuButton.prototype = {
         this.actor.set_child(box);
 
         this._gdm = Gdm.UserManager.ref_default();
-        this._gdm.queue_load()
+        this._gdm.queue_load();
 
         this._user = this._gdm.get_user(GLib.get_user_name());
         this._presence = new GnomeSession.Presence();
@@ -153,17 +154,17 @@ StatusMenuButton.prototype = {
 
     _onMyAccountActivate: function() {
         Main.overview.hide();
-        this._spawn(['gnome-control-center', 'user-accounts']);
+        Util.spawnDesktop('gnome-user-accounts-panel');
     },
 
     _onPreferencesActivate: function() {
         Main.overview.hide();
-        this._spawn(['gnome-control-center', '-o']);
+        Util.spawnDesktop('gnome-control-center');
     },
 
     _onLockScreenActivate: function() {
         Main.overview.hide();
-        this._spawn(['gnome-screensaver-command', '--lock']);
+        Util.spawn(['gnome-screensaver-command', '--lock']);
     },
 
     _onLoginScreenActivate: function() {
@@ -174,19 +175,11 @@ StatusMenuButton.prototype = {
 
     _onQuitSessionActivate: function() {
         Main.overview.hide();
-        this._spawn(['gnome-session-save', '--logout-dialog']);
+        Util.spawn(['gnome-session-save', '--logout-dialog']);
     },
 
     _onShutDownActivate: function() {
         Main.overview.hide();
-        this._spawn(['gnome-session-save', '--shutdown-dialog']);
-    },
-
-    _spawn: function(args) {
-        // FIXME: once Shell.Process gets support for signalling
-        // errors we should pop up an error dialog or something here
-        // on failure
-        let p = new Shell.Process({'args' : args});
-        p.run();
+        Util.spawn(['gnome-session-save', '--shutdown-dialog']);
     }
 };

@@ -149,7 +149,7 @@ st_icon_dispose (GObject *gobject)
     {
       clutter_actor_destroy (priv->pending_texture);
       g_object_unref (priv->pending_texture);
-      priv->icon_texture = NULL;
+      priv->pending_texture = NULL;
     }
 
   if (priv->gicon)

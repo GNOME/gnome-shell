@@ -1,7 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
 const DBus = imports.dbus;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -10,6 +9,7 @@ const St = imports.gi.St;
 
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const Util = imports.misc.util;
 
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
@@ -83,7 +83,7 @@ Indicator.prototype = {
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this.menu.addAction(_("Power Settings"),function() {
-            GLib.spawn_command_line_async('gnome-control-center power');
+            Util.spawnDesktop('gnome-power-panel');
         });
 
         this._proxy.connect('Changed', Lang.bind(this, this._devicesChanged));
@@ -134,8 +134,7 @@ Indicator.prototype = {
                 this._batteryItem.actor.reactive = true;
                 this._batteryItem.actor.can_focus = true;
                 this._batteryItem.connect('activate', function(item) {
-                    let p = new Shell.Process({ args: ['gnome-power-statistics', '--device', device_id] });
-                    p.run();
+                    Util.spawn(['gnome-power-statistics', '--device', device_id]);
                 });
             } else {
                 // virtual device
@@ -164,8 +163,7 @@ Indicator.prototype = {
 
                 let item = new DeviceItem (devices[i]);
                 item.connect('activate', function() {
-                    let p = new Shell.Process({ args: ['gnome-power-statistics', '--device', device_id] });
-                    p.run();
+                    Util.spawn(['gnome-power-statistics', '--device', device_id]);
                 });
                 this._deviceItems.push(item);
                 this.menu.addMenuItem(item, this._otherDevicePosition + position);
@@ -197,8 +195,8 @@ Indicator.prototype = {
 
     _checkError: function(error) {
         if (!this._restarted && error && error.message.match(/org\.freedesktop\.DBus\.Error\.(UnknownMethod|InvalidArgs)/)) {
-            GLib.spawn_command_line_sync('pkill -f "^gnome-power-manager$"');
-            GLib.spawn_command_line_async('gnome-power-manager');
+            Util.killall('gnome-power-manager');
+            Util.spawn(['gnome-power-manager']);
             this._restarted = true;
         }
     }

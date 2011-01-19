@@ -152,7 +152,7 @@ def start_dconf_await_service():
     # dconf is linked without libtool, so unlike other GNOME modules,
     # won't have an embedded rpath for its library directory.
     env = dict(os.environ)
-    if 'LD_LIBRARY_PATH' in env:
+    if 'LD_LIBRARY_PATH' in env and env['LD_LIBRARY_PATH']:
         ld_library_path = '@libdir@:' + env['LD_LIBRARY_PATH']
     else:
         ld_library_path = '@libdir@'
@@ -246,7 +246,7 @@ def start_shell(perf_output=None):
     if pkgconfig.returncode == 0:
         mozjs_libdir = re.sub('-(sdk|devel)', '', mozjs_sdkdir)
         if os.path.exists(mozjs_libdir + '/libmozjs.so'):
-            if 'LD_LIBRARY_PATH' in env:
+            if 'LD_LIBRARY_PATH' in env and env['LD_LIBRARY_PATH']:
                 ld_library_path = env['LD_LIBRARY_PATH'] + ':' + mozjs_libdir
             else:
                 ld_library_path = mozjs_libdir
@@ -672,7 +672,8 @@ use an extension title clicktofocus@janedoe.example.com.'''
     os.makedirs(extension_path)
     meta = { 'name': name,
              'description': description,
-             'uuid': uuid }
+             'uuid': uuid,
+             'shell-version': ['@VERSION@'] }
     f = open(os.path.join(extension_path, 'metadata.json'), 'w')
     try:
         json.dump(meta, f)

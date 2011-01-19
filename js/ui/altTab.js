@@ -34,7 +34,8 @@ function AltTabPopup() {
 AltTabPopup.prototype = {
     _init : function() {
         this.actor = new Shell.GenericContainer({ name: 'altTabPopup',
-                                                    reactive: true });
+                                                  reactive: true,
+                                                  visible: false });
 
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
@@ -126,8 +127,8 @@ AltTabPopup.prototype = {
             return false;
         this._haveModal = true;
 
-        this._keyPressEventId = global.stage.connect('key-press-event', Lang.bind(this, this._keyPressEvent));
-        this._keyReleaseEventId = global.stage.connect('key-release-event', Lang.bind(this, this._keyReleaseEvent));
+        this.actor.connect('key-press-event', Lang.bind(this, this._keyPressEvent));
+        this.actor.connect('key-release-event', Lang.bind(this, this._keyReleaseEvent));
 
         this.actor.connect('button-press-event', Lang.bind(this, this._clickedOutside));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScroll));
@@ -365,15 +366,18 @@ AltTabPopup.prototype = {
     },
 
     destroy : function() {
-        Tweener.addTween(this.actor,
-                         { opacity: 0,
-                           time: POPUP_FADE_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this,
-                               function() {
-                                   this.actor.destroy();
-                               })
-                         });
+        if (this.actor.visible) {
+            Tweener.addTween(this.actor,
+                             { opacity: 0,
+                               time: POPUP_FADE_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: Lang.bind(this,
+                                   function() {
+                                       this.actor.destroy();
+                                   })
+                             });
+        } else
+            this.actor.destroy();
     },
 
     _onDestroy : function() {
@@ -382,11 +386,6 @@ AltTabPopup.prototype = {
 
         if (this._thumbnails)
             this._destroyThumbnails();
-
-        if (this._keyPressEventId)
-            global.stage.disconnect(this._keyPressEventId);
-        if (this._keyReleaseEventId)
-            global.stage.disconnect(this._keyReleaseEventId);
 
         if (this._motionTimeoutId != 0)
             Mainloop.source_remove(this._motionTimeoutId);
@@ -609,16 +608,18 @@ SwitcherList.prototype = {
     },
 
     highlight: function(index, justOutline) {
-        if (this._highlighted != -1)
-            this._items[this._highlighted].style_class = 'item-box';
+        if (this._highlighted != -1) {
+            this._items[this._highlighted].remove_style_pseudo_class('outlined');
+            this._items[this._highlighted].remove_style_pseudo_class('selected');
+        }
 
         this._highlighted = index;
 
         if (this._highlighted != -1) {
             if (justOutline)
-                this._items[this._highlighted].style_class = 'outlined-item-box';
+                this._items[this._highlighted].add_style_pseudo_class('outlined');
             else
-                this._items[this._highlighted].style_class = 'selected-item-box';
+                this._items[this._highlighted].add_style_pseudo_class('selected');
         }
 
         let monitor = global.get_primary_monitor();
@@ -864,17 +865,19 @@ AppSwitcher.prototype = {
         while(this._items.length > 1 && this._items[j].style_class != 'item-box') {
                 j++;
         }
-        let iconPadding = this._items[j].get_theme_node().get_horizontal_padding();
+        let themeNode = this._items[j].get_theme_node();
+        let iconPadding = themeNode.get_horizontal_padding();
+        let iconBorder = themeNode.get_border_width(St.Side.LEFT) + themeNode.get_border_width(St.Side.RIGHT);
         let [iconMinHeight, iconNaturalHeight] = this.icons[j].label.get_preferred_height(-1);
-        let iconSpacing = iconNaturalHeight + iconPadding;
+        let iconSpacing = iconNaturalHeight + iconPadding + iconBorder;
         let totalSpacing = this._list.spacing * (this._items.length - 1);
         if (this._separator)
            totalSpacing += this._separator.width + this._list.spacing;
 
         // We just assume the whole screen here due to weirdness happing with the passed width
-        let focus = global.get_focus_monitor();
+        let primary = global.get_primary_monitor();
         let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
-        let availWidth = focus.width - parentPadding - this.actor.get_theme_node().get_horizontal_padding();
+        let availWidth = primary.width - parentPadding - this.actor.get_theme_node().get_horizontal_padding();
         let height = 0;
 
         for(let i =  0; i < iconSizes.length; i++) {

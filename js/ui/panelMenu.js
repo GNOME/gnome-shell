@@ -47,12 +47,9 @@ Button.prototype = {
     },
 
     _onOpenStateChanged: function(menu, open) {
-        if (open) {
+        if (open)
             this.actor.add_style_pseudo_class('pressed');
-            let focus = global.stage.get_key_focus();
-            if (!focus || (focus != this.actor && !menu.actor.contains(focus)))
-                this.actor.grab_key_focus();
-        } else
+        else
             this.actor.remove_style_pseudo_class('pressed');
     }
 };

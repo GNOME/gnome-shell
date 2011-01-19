@@ -11,16 +11,18 @@ const Signals = imports.signals;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
-const Lightbox = imports.ui.lightbox;
+const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
+const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
+const Util = imports.misc.util;
 
 const MAX_FILE_DELETED_BEFORE_INVALID = 10;
 
 const HISTORY_KEY = 'command-history';
 const HISTORY_LIMIT = 512;
 
-const DIALOG_FADE_TIME = 0.1;
+const DIALOG_GROW_TIME = 0.1;
 
 function CommandCompleter() {
     this._init();
@@ -62,25 +64,6 @@ CommandCompleter.prototype = {
         this._update(0);
     },
 
-    _onGetEnumerateComplete : function(obj, res) {
-        this._enumerator = obj.enumerate_children_finish(res);
-        this._enumerator.next_files_async(100, GLib.PRIORITY_LOW, null, Lang.bind(this, this._onNextFileComplete));
-    },
-
-    _onNextFileComplete : function(obj, res) {
-        let files = obj.next_files_finish(res);
-        for (let i = 0; i < files.length; i++) {
-            this._childs[this._i].push(files[i].get_name());
-        }
-        if (files.length) {
-            this._enumerator.next_files_async(100, GLib.PRIORITY_LOW, null, Lang.bind(this, this._onNextFileComplete));
-        } else {
-            this._enumerator.close(null);
-            this._enumerator = null;
-            this._update(this._i + 1);
-        }
-    },
-
     update : function() {
         if (this._valid)
             return;
@@ -100,7 +83,12 @@ CommandCompleter.prototype = {
         }
         let file = Gio.file_new_for_path(this._paths[i]);
         this._childs[this._i] = [];
-        file.enumerate_children_async(Gio.FILE_ATTRIBUTE_STANDARD_NAME, Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_LOW, null, Lang.bind(this, this._onGetEnumerateComplete));
+        FileUtils.listDirAsync(file, Lang.bind(this, function (files) {
+            for (let i = 0; i < files.length; i++) {
+                this._childs[this._i].push(files[i].get_name());
+            }
+            this._update(this._i + 1);
+        }));
     },
 
     _onChanged : function(m, f, of, type) {
@@ -175,8 +163,9 @@ function RunDialog() {
 }
 
 RunDialog.prototype = {
+__proto__: ModalDialog.ModalDialog.prototype,
     _init : function() {
-        this._isOpen = false;
+        ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'run-dialog' });
 
         global.settings.connect('changed::development-tools', Lang.bind(this, function () {
             this._enableInternalCommands = global.settings.get_boolean('development-tools');
@@ -207,41 +196,32 @@ RunDialog.prototype = {
 
                                    'debugexit': Lang.bind(this, function() {
                                        Meta.exit(Meta.ExitCode.ERROR);
+                                   }),
+
+                                   // rt is short for "reload theme"
+                                   'rt': Lang.bind(this, function() {
+                                       Main.loadTheme();
                                    })
                                  };
 
-        // All actors are inside _group. We create it initially
-        // hidden then show it in show()
-        this._group = new Clutter.Group({ visible: false,
-                                          x: 0, y: 0 });
-        Main.uiGroup.add_actor(this._group);
-
-        this._lightbox = new Lightbox.Lightbox(this._group,
-                                               { inhibitEvents: true });
-
-        this._box = new St.Bin({ x_align: St.Align.MIDDLE,
-                                 y_align: St.Align.MIDDLE });
-
-        this._group.add_actor(this._box);
-        this._lightbox.highlight(this._box);
-
-        let dialogBox = new St.BoxLayout({ style_class: 'run-dialog', vertical: true });
-
-        this._box.set_child(dialogBox);
 
         let label = new St.Label({ style_class: 'run-dialog-label',
                                    text: _("Please enter a command:") });
 
-        dialogBox.add(label, { expand: true, y_fill: false });
+        this.contentLayout.add(label, { y_align: St.Align.START });
 
         let entry = new St.Entry({ style_class: 'run-dialog-entry' });
 
         this._entryText = entry.clutter_text;
-        dialogBox.add(entry, { expand: true });
+        this.contentLayout.add(entry, { y_align: St.Align.START });
+        this.connect('opened',
+                     Lang.bind(this, function() {
+                         this._entryText.grab_key_focus();
+                     }));
 
         this._errorBox = new St.BoxLayout();
 
-        dialogBox.add(this._errorBox, { expand: true });
+        this.contentLayout.add(this._errorBox, { expand: true });
 
         let errorIcon = new St.Button({ style_class: 'run-dialog-error-icon' });
 
@@ -275,10 +255,10 @@ RunDialog.prototype = {
                 else
                     this._run(o.get_text(), false);
                 if (!this._commandError)
-                    this.close();
+                    this.close(global.get_current_time());
             }
             if (symbol == Clutter.Escape) {
-                this.close();
+                this.close(global.get_current_time());
                 return true;
             }
             if (symbol == Clutter.slash) {
@@ -349,9 +329,7 @@ RunDialog.prototype = {
             try {
                 if (inTerminal)
                     command = 'gnome-terminal -x ' + input;
-                let [ok, len, args] = GLib.shell_parse_argv(command);
-                let p = new Shell.Process({ 'args' : args });
-                p.run();
+                Util.trySpawnCommandLine(command);
             } catch (e) {
                 // Mmmh, that failed - see if @input matches an existing file
                 let path = null;
@@ -369,16 +347,25 @@ RunDialog.prototype = {
                                                         global.create_app_launch_context());
                 } else {
                     this._commandError = true;
-                    // The exception contains an error string like:
-                    // Error invoking Shell.run: Failed to execute child
-                    // process "foo" (No such file or directory)
-                    // We are only interested in the actual error, so parse
-                    //that out.
-                    let m = /.+\((.+)\)/.exec(e);
-                    let errorStr = _("Execution of '%s' failed:").format(command) + '\n' + m[1];
+
+                    let errorStr = _("Execution of '%s' failed:").format(command) + '\n' + e.message;
                     this._errorMessage.set_text(errorStr);
 
-                    this._errorBox.show();
+                    if (!this._errorBox.visible) {
+                        let [errorBoxMinHeight, errorBoxNaturalHeight] = this._errorBox.get_preferred_height(-1);
+
+                        let parentActor = this._errorBox.get_parent();
+                        Tweener.addTween(parentActor,
+                                         { height: parentActor.height + errorBoxNaturalHeight,
+                                           time: DIALOG_GROW_TIME,
+                                           transition: 'easeOutQuad',
+                                           onComplete: Lang.bind(this,
+                                               function() {
+                                                    parentActor.set_height(-1);
+                                                    this._errorBox.show();
+                                               })
+                                         });
+                    }
                 }
             }
         }
@@ -400,53 +387,14 @@ RunDialog.prototype = {
             this._entryText.set_text('');
     },
 
-    open : function() {
-        if (this._isOpen) // Already shown
-            return;
-
-        if (!Main.pushModal(this._group))
-            return;
-
-        // Position the dialog on the current monitor
-        let monitor = global.get_focus_monitor();
-
+    open: function() {
         this._historyIndex = this._history.length;
-
-        this._box.set_position(monitor.x, monitor.y);
-        this._box.set_size(monitor.width, monitor.height);
-
-        this._isOpen = true;
-        this._lightbox.show();
-        this._group.opacity = 0;
-        this._group.show();
-        Tweener.addTween(this._group,
-                         { opacity: 255,
-                           time: DIALOG_FADE_TIME,
-                           transition: 'easeOutQuad'
-                         });
-
-        global.stage.set_key_focus(this._entryText);
-    },
-
-    close : function() {
-        if (!this._isOpen)
-            return;
-
-        this._isOpen = false;
+        this._errorBox.hide();
+        this._entryText.set_text('');
         this._commandError = false;
 
-        Main.popModal(this._group);
+        ModalDialog.ModalDialog.prototype.open.call(this);
+    },
 
-        Tweener.addTween(this._group,
-                         { opacity: 0,
-                           time: DIALOG_FADE_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function() {
-                               this._errorBox.hide();
-                               this._group.hide();
-                               this._entryText.set_text('');
-                           })
-                         });
-    }
 };
 Signals.addSignalMethods(RunDialog.prototype);

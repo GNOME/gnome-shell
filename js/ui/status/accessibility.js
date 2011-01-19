@@ -12,6 +12,7 @@ const St = imports.gi.St;
 
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const Util = imports.misc.util;
 
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
@@ -108,8 +109,7 @@ ATIndicator.prototype = {
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addAction(_("Universal Access Settings"), function() {
-            let p = new Shell.Process({ args: ['gnome-control-center','universal-access'] });
-            p.run();
+            Util.spawnDesktop('gnome-universal-access-panel');
         });
     },
 

@@ -100,13 +100,19 @@ st_source_h =					\
 	st/st-widget.h				\
 	$(NULL)
 
-st.h: Makefile
+st.h: stamp-st.h
+	@true
+stamp-st.h: Makefile
 	$(AM_V_GEN) (echo "#define ST_H_INSIDE 1";	\
 	for name in $(st_source_h); do			\
 	  echo "#include <"$$name">";			\
-	done; echo "#undef ST_H_INSIDE") > st.h.tmp && mv st.h.tmp st.h
+	done; echo "#undef ST_H_INSIDE") > $@.tmp &&  \
+	(cmp -s $@.tmp st.h || cp $@.tmp st.h) &&	\
+	rm -f $@.tmp &&				\
+	echo timestamp > $(@F)
 
 BUILT_SOURCES += st.h
+CLEANFILES += stamp-st.h
 
 st_source_private_h =				\
 	st/st-private.h				\

@@ -6,13 +6,15 @@ const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 const Lang = imports.lang;
 const St = imports.gi.St;
+const Shell = imports.gi.Shell;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
+const Gdk = imports.gi.Gdk;
 
 const AppDisplay = imports.ui.appDisplay;
 const Dash = imports.ui.dash;
+const DND = imports.ui.dnd;
 const DocDisplay = imports.ui.docDisplay;
-const GenericDisplay = imports.ui.genericDisplay;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
@@ -28,30 +30,7 @@ const ANIMATION_TIME = 0.25;
 // We split the screen vertically between the dash and the view selector.
 const DASH_SPLIT_FRACTION = 0.1;
 
-
-function Source() {
-    this._init();
-}
-
-Source.prototype = {
-    __proto__:  MessageTray.Source.prototype,
-
-    _init: function() {
-        MessageTray.Source.prototype._init.call(this,
-                                                "System Information");
-        this._setSummaryIcon(this.createNotificationIcon());
-    },
-
-    createNotificationIcon: function() {
-        return new St.Icon({ icon_name: 'dialog-information',
-                             icon_type: St.IconType.SYMBOLIC,
-                             icon_size: this.ICON_SIZE });
-    },
-
-    _notificationClicked: function() {
-        this.destroy();
-    }
-}
+const DND_WINDOW_SWITCH_TIMEOUT = 1250;
 
 function ShellInfo() {
     this._init();
@@ -74,7 +53,7 @@ ShellInfo.prototype = {
 
     setMessage: function(text, undoCallback, undoLabel) {
         if (this._source == null) {
-            this._source = new Source();
+            this._source = new MessageTray.SystemNotificationSource();
             this._source.connect('destroy', Lang.bind(this,
                 function() {
                     this._source = null;
@@ -135,7 +114,10 @@ Overview.prototype = {
 
         this._workspacesDisplay = null;
 
-        this.visible = false;
+        this.visible = false;           // animating to overview, in overview, animating out
+        this._shown = false;            // show() and not hide()
+        this._shownTemporarily = false; // showTemporarily() and not hideTemporarily()
+        this._modal = false;            // have a modal grab
         this.animationInProgress = false;
         this._hideInProgress = false;
 
@@ -174,7 +156,70 @@ Overview.prototype = {
 
         this._coverPane.lower_bottom();
 
+        // XDND
+        this._dragMonitor = {
+            dragMotion: Lang.bind(this, this._onDragMotion)
+        };
+
+        Main.xdndHandler.connect('drag-begin', Lang.bind(this, this._onDragBegin));
+        Main.xdndHandler.connect('drag-end', Lang.bind(this, this._onDragEnd));
+
+        this._windowSwitchTimeoutId = 0;
+        this._windowSwitchTimestamp = 0;
+        this._lastActiveWorkspaceIndex = -1;
+        this._needsFakePointerEvent = false;
+
         this.workspaces = null;
+    },
+
+    _onDragBegin: function() {
+        DND.addDragMonitor(this._dragMonitor);
+        // Remember the workspace we started from
+        this._lastActiveWorkspaceIndex = global.screen.get_active_workspace_index();
+    },
+
+    _onDragEnd: function(time) {
+        // In case the drag was canceled while in the overview
+        // we have to go back to where we started and hide
+        // the overview
+        if (this._shownTemporarily)  {
+            global.screen.get_workspace_by_index(this._lastActiveWorkspaceIndex).activate(time);
+            this.hideTemporarily();
+        }
+
+        DND.removeMonitor(this._dragMonitor);
+    },
+
+    _fakePointerEvent: function() {
+        let display = Gdk.Display.get_default();
+        let deviceManager = display.get_device_manager();
+        let pointer = deviceManager.get_client_pointer();
+        let [screen, pointerX, pointerY] = pointer.get_position();
+
+        pointer.warp(screen, pointerX, pointerY);
+    },
+
+    _onDragMotion: function(dragEvent) {
+        if (this._windowSwitchTimeoutId != 0) {
+            Mainloop.source_remove(this._windowSwitchTimeoutId);
+            this._windowSwitchTimeoutId = 0;
+            this._needsFakePointerEvent = false;
+        }
+
+        if (dragEvent.targetActor &&
+            dragEvent.targetActor._delegate &&
+            dragEvent.targetActor._delegate.metaWindow) {
+            this._windowSwitchTimestamp = global.get_current_time();
+            this._windowSwitchTimeoutId = Mainloop.timeout_add(DND_WINDOW_SWITCH_TIMEOUT,
+                                            Lang.bind(this, function() {
+                                                this._needsFakePointerEvent = true;
+                                                Main.activateWindow(dragEvent.targetActor._delegate.metaWindow,
+                                                                    this._windowSwitchTimestamp);
+                                                this.hideTemporarily();
+                                            }));
+        }
+
+        return DND.DragMotionResult.CONTINUE;
     },
 
     _getDesktopClone: function() {
@@ -267,10 +312,22 @@ Overview.prototype = {
         return [this.workspaces.actor.x, this.workspaces.actor.y];
     },
 
+    // show:
+    //
+    // Animates the overview visible and grabs mouse and keyboard input
     show : function() {
-        if (this.visible)
+        if (this._shown)
             return;
+        // Do this manually instead of using _syncInputMode, to handle failure
         if (!Main.pushModal(this.viewSelector.actor))
+            return;
+        this._modal = true;
+        this._animateVisible();
+        this._shown = true;
+    },
+
+    _animateVisible: function() {
+        if (this.visible || this.animationInProgress)
             return;
 
         this.visible = true;
@@ -337,8 +394,102 @@ Overview.prototype = {
         this.emit('showing');
     },
 
+    // showTemporarily:
+    //
+    // Animates the overview visible without grabbing mouse and keyboard input;
+    // if show() has already been called, this has no immediate effect, but
+    // will result in the overview not being hidden until hideTemporarily() is
+    // called.
+    showTemporarily: function() {
+        if (this._shownTemporarily)
+            return;
+
+        this._syncInputMode();
+        this._animateVisible();
+        this._shownTemporarily = true;
+    },
+
+    // hide:
+    //
+    // Reverses the effect of show()
     hide: function() {
-        if (!this.visible || this._hideInProgress)
+        if (!this._shown)
+            return;
+
+        if (!this._shownTemporarily)
+            this._animateNotVisible();
+
+        this._shown = false;
+        this._syncInputMode();
+    },
+
+    // hideTemporarily:
+    //
+    // Reverses the effect of showTemporarily()
+    hideTemporarily: function() {
+        if (!this._shownTemporarily)
+            return;
+
+        if (!this._shown)
+            this._animateNotVisible();
+
+        this._shownTemporarily = false;
+        this._syncInputMode();
+    },
+
+    toggle: function() {
+        if (this._shown)
+            this.hide();
+        else
+            this.show();
+    },
+
+    /**
+     * getWorkspacesForWindow:
+     * @metaWindow: A #MetaWindow
+     *
+     * Returns the Workspaces object associated with the given window.
+     * This method is not be accessible if the overview is not open
+     * and will return %null.
+     */
+    getWorkspacesForWindow: function(metaWindow) {
+        return this.workspaces;
+    },
+
+    //// Private methods ////
+
+    _syncInputMode: function() {
+        // We delay input mode changes during animation so that when removing the
+        // overview we don't have a problem with the release of a press/release
+        // going to an application.
+        if (this.animationInProgress)
+            return;
+
+        if (this._shown) {
+            if (!this._modal) {
+                if (Main.pushModal(this._dash.actor))
+                    this._modal = true;
+                else
+                    this.hide();
+            }
+        } else if (this._shownTemporarily) {
+            if (this._modal) {
+                Main.popModal(this._dash.actor);
+                this._modal = false;
+            }
+            global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
+        } else {
+            if (this._modal) {
+                Main.popModal(this._dash.actor);
+                this._modal = false;
+            }
+            else if (global.stage_input_mode == Shell.StageInputMode.FULLSCREEN)
+                global.stage_input_mode = Shell.StageInputMode.NORMAL;
+        }
+    },
+
+    _animateNotVisible: function() {
+        if (!this.visible || this.animationInProgress)
             return;
 
         this.animationInProgress = true;
@@ -382,36 +533,17 @@ Overview.prototype = {
         this.emit('hiding');
     },
 
-    toggle: function() {
-        if (this.visible)
-            this.hide();
-        else
-            this.show();
-    },
-
-    /**
-     * getWorkspacesForWindow:
-     * @metaWindow: A #MetaWindow
-     *
-     * Returns the Workspaces object associated with the given window.
-     * This method is not be accessible if the overview is not open
-     * and will return %null.
-     */
-    getWorkspacesForWindow: function(metaWindow) {
-        return this.workspaces;
-    },
-
-    //// Private methods ////
-
     _showDone: function() {
-        if (this._hideInProgress)
-            return;
-
         this.animationInProgress = false;
         this._desktopFade.hide();
         this._coverPane.lower_bottom();
 
         this.emit('shown');
+        // Handle any calls to hide* while we were showing
+        if (!this._shown && !this._shownTemporarily)
+            this._animateNotVisible();
+
+        this._syncInputMode();
     },
 
     _hideDone: function() {
@@ -434,8 +566,18 @@ Overview.prototype = {
 
         this._coverPane.lower_bottom();
 
-        Main.popModal(this.viewSelector.actor);
         this.emit('hidden');
+        // Handle any calls to show* while we were hiding
+        if (this._shown || this._shownTemporarily)
+            this._animateVisible();
+
+        this._syncInputMode();
+
+        // Fake a pointer event if requested
+        if (this._needsFakePointerEvent) {
+            this._fakePointerEvent();
+            this._needsFakePointerEvent = false;
+        }
     }
 };
 Signals.addSignalMethods(Overview.prototype);

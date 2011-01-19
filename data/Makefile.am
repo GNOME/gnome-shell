@@ -1,5 +1,5 @@
 desktopdir=$(datadir)/applications
-desktop_DATA = gnome-shell.desktop gnome-shell-clock-preferences.desktop
+desktop_DATA = gnome-shell.desktop
 
 # We substitute in bindir so it works as an autostart
 # file when built in a non-system prefix
@@ -12,7 +12,10 @@ desktop_DATA = gnome-shell.desktop gnome-shell-clock-preferences.desktop
 %.desktop:%.desktop.in
 	$(AM_V_GEN) sed s/^_// < $< > $@ || rm $@
 
-dist_pkgdata_DATA = clock-preferences.ui
+searchprovidersdir = $(pkgdatadir)/search_providers
+dist_searchproviders_DATA =				\
+	search_providers/google.xml				\
+	search_providers/wikipedia.xml
 
 imagesdir = $(pkgdatadir)/images
 dist_images_DATA =				\
@@ -88,7 +91,6 @@ install-data-local:
 
 EXTRA_DIST =						\
 	gnome-shell.desktop.in.in			\
-	gnome-shell-clock-preferences.desktop.in.in	\
 	$(menu_DATA)					\
 	$(gconfschema_DATA)				\
 	$(shaders_DATA)					\
@@ -97,7 +99,6 @@ EXTRA_DIST =						\
 
 CLEANFILES =						\
 	gnome-shell.desktop.in				\
-	gnome-shell-clock-preferences.desktop.in	\
 	$(desktop_DATA)					\
 	$(gsettings_SCHEMAS)				\
 	gschemas.compiled

@@ -214,7 +214,7 @@ StTooltip StLabel {
     transition-duration: 100;
 }
 
-.panel-button:active, .panel-button:checked, .panel-button:pressed {
+.panel-button:active, .panel-button:checked, .panel-button:pressed, .panel-button:focus {
     background-gradient-direction: vertical;
     background-gradient-start: #3c3c3c;
     background-gradient-end: #131313;
@@ -338,6 +338,7 @@ StTooltip StLabel {
 
 #viewSelector {
     spacing: 16px;
+    font-size: 16px;
 }
 
 #viewSelectorTabBar {
@@ -384,10 +385,14 @@ StTooltip StLabel {
     color: #888a85;
     font-weight: bold;
     padding: 0px 12px;
+    height: 24px;
 }
 
 .view-tab-title:selected {
-    color: white;
+    color: #000000;
+    background-color: #c2c7cd;
+    border-radius: 4px;
+    height: 24px;
 }
 
 .view-tab-boxpointer {
@@ -436,40 +441,30 @@ StTooltip StLabel {
     spacing: 4px;
 }
 
-/* GenericDisplay */
-
-.generic-display-container {
+.search-providers-box {
     spacing: 4px;
 }
 
-.generic-display-item {
-    height: 50px;
-    border-radius: 4px;
-    color: #ffffff;
-    font-size: 14px;
-    spacing: 4px;
+.dash-search-button {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(255, 255, 255, 0.2);
+    background-gradient-end: rgba(255, 255, 255, 0);
+/*    border: 1px solid #808080;*/
+    border-radius: 10px;
+    height: 32px;
+    width: 300px;
 }
 
-.generic-display-item:selected {
-    background-color: rgba(79,111,173,0.66);
+.dash-search-button:selected,
+.dash-search-button:hover {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(255, 255, 255, 0.4);
+    background-gradient-end: rgba(255, 255, 255, 0.2);
 }
 
-.generic-display-item-text {
-    spacing: 4px;
-}
-
-.generic-display-item-description {
-    font-size: 12px;
-    color: #bababa;
-}
-
-.generic-display-details {
-    font-size: 14px;
-    color: #ffffff;
-}
-
-.generic-display-details-name {
-    font-weight: bold;
+.dash-search-button-label {
+    color: #cccccc;
+    font: 16px sans-serif;
 }
 
 /* Apps */
@@ -547,57 +542,6 @@ StTooltip StLabel {
 
 .app-well-menu {
     font-size: 12px
-}
-
-/* Places */
-
-.places-section {
-    spacing-columns: 4px;
-    spacing-rows: 4px;
-}
-
-.places-item-box {
-    spacing: 2px;
-}
-
-.places-item {
-    border-radius: 4px;
-    padding: 2px;
-    border: 1px solid #181818;
-    padding-left: 4px;
-    padding-right: 4px;
-    transition-duration: 100;
-}
-
-.places-item:hover {
-    border: 1px solid #666666;
-    background-gradient-direction: vertical;
-    background-gradient-start: rgba(61,61,61,0.8);
-    background-gradient-end: rgba(24,24,24,0.2);
-    transition-duration: 100;
-}
-
-/* Recent items */
-
-.recent-docs-item-box {
-    spacing: 2px;
-}
-
-.recent-docs-item {
-    border-radius: 4px;
-    padding: 2px;
-    border: 1px solid #181818;
-    padding-left: 4px;
-    padding-right: 4px;
-    transition-duration: 100;
-}
-
-.recent-docs-item:hover {
-    border: 1px solid #666666;
-    background-gradient-direction: vertical;
-    background-gradient-start: rgba(61,61,61,0.8);
-    background-gradient-end: rgba(24,24,24,0.2);
-    transition-duration: 100;
 }
 
 /* LookingGlass */
@@ -1142,6 +1086,15 @@ StTooltip StLabel {
     border-radius: 8px;
 }
 
+.switcher-list .item-box:outlined {
+    padding: 6px;
+    border: 2px solid rgba(85,85,85,1.0);
+}
+
+.switcher-list .item-box:selected {
+    background: rgba(255,255,255,0.33);
+}
+
 .switcher-list .thumbnail-box {
     padding: 2px;
     spacing: 4px;
@@ -1149,18 +1102,6 @@ StTooltip StLabel {
 
 .switcher-list .thumbnail {
     width:  256px;
-}
-
-.switcher-list .outlined-item-box {
-    padding: 6px;
-    border: 2px solid rgba(85,85,85,1.0);
-    border-radius: 8px;
-}
-
-.switcher-list .selected-item-box {
-    padding: 8px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.33);
 }
 
 .switcher-list .separator {
@@ -1227,6 +1168,54 @@ StTooltip StLabel {
     border-radius: 8px;
 }
 
+/* Modal Dialogs */
+.modal-dialog {
+    font: 12pt sans-serif;
+    border-radius: 24px;
+    background-color: rgba(0.0, 0.0, 0.0, 0.9);
+    border: 2px solid #868686;
+    color: #ffffff;
+
+    padding-right: 42px;
+    padding-left: 42px;
+    padding-bottom: 30px;
+    padding-top: 30px;
+}
+
+.modal-dialog-button {
+    border: 1px solid #8b8b8b;
+    border-radius: 18px;
+    font: 14px sans-serif;
+
+    margin-left: 10px;
+    margin-right: 10px;
+
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    background-gradient-direction: vertical;
+    background-gradient-start: #29323b;
+    background-gradient-end: #121a24;
+}
+
+.modal-dialog-button:active,
+.modal-dialog-button:pressed {
+    border-color: #a5a5a5;
+    background-gradient-start: #121a24;
+    background-gradient-end: #29323b;
+}
+
+.modal-dialog-button:focus {
+    border: 2px solid #a5a5a5;
+
+    padding-left: 31px;
+    padding-right: 31px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
 /* Run Dialog */
 .run-dialog-label {
     font: 12px sans-serif;
@@ -1252,14 +1241,72 @@ StTooltip StLabel {
 }
 
 .run-dialog {
-    padding: 8px;
-    border: 1px solid rgba(128,128,128,0.40);
-    border-radius: 4px;
-    background: rgba(0,0,0,0.8);
+    border-radius: 16px;
+
+    padding-right: 21px;
+    padding-left: 21px;
+    padding-bottom: 15px;
+    padding-top: 15px;
 }
 
 .lightbox {
     background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* End Session Dialog */
+.end-session-dialog-subject {
+    font: 12pt sans-serif;
+    font-weight: bold;
+    color: #666666;
+    padding-top: 10px;
+    padding-left: 17px;
+    padding-bottom: 30px;
+}
+
+.end-session-dialog-description {
+    font: 10pt sans-serif;
+    color: white;
+    padding-left: 17px;
+    padding-right: 40px;
+    width: 16em;
+}
+
+.end-session-dialog-logout-icon {
+    border: 2px solid #8b8b8b;
+    border-radius: 5px;
+    width: 32px;
+    height: 32px;
+}
+
+.end-session-dialog-shutdown-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.end-session-dialog-app-list {
+    font: 10pt sans-serif;
+    max-height: 200px;
+    padding-top: 42px;
+    padding-bottom: 42px;
+    padding-left: 17px;
+    padding-right: 32px;
+}
+
+.end-session-dialog-app-list-item {
+    padding-right: 1em;
+}
+
+.end-session-dialog-app-list-item-icon {
+    padding-right: 17px;
+}
+
+.end-session-dialog-app-list-item-name {
+    font: 10pt sans-serif;
+}
+
+.end-session-dialog-app-list-item-description {
+    font: 8pt sans-serif;
+    color: #444444;
 }
 
 /* Magnifier */

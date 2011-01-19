@@ -233,6 +233,8 @@ shell_generic_container_set_skip_paint (ShellGenericContainer  *self,
     g_hash_table_remove (self->priv->skip_paint, child);
   else
     g_hash_table_insert (self->priv->skip_paint, child, child);
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 }
 
 static void

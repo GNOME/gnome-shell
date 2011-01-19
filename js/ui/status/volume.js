@@ -11,6 +11,7 @@ const St = imports.gi.St;
 
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const Util = imports.misc.util;
 
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
@@ -60,8 +61,7 @@ Indicator.prototype = {
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addAction(_("Sound Settings"), function() {
-            let p = new Shell.Process({ args: ['gnome-control-center', 'sound'] });
-            p.run();
+            Util.spawnDesktop('gnome-sound-panel');
         });
 
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));

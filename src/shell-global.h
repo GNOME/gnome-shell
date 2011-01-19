@@ -84,6 +84,14 @@ void shell_global_reexec_self (ShellGlobal *global);
 
 void shell_global_breakpoint (ShellGlobal *global);
 
+gboolean shell_global_parse_search_provider (ShellGlobal   *global,
+                                             const char    *data,
+                                             char         **name,
+                                             char         **url,
+                                             GList        **langs,
+                                             char         **icon_data_uri,
+                                             GError       **error);
+
 void shell_global_gc (ShellGlobal *global);
 
 void shell_global_maybe_gc (ShellGlobal *global);
@@ -131,6 +139,8 @@ void shell_global_run_at_leisure (ShellGlobal         *global,
 
 void shell_global_play_theme_sound (ShellGlobal       *global,
                                     const char        *name);
+
+void shell_global_init_xdnd (ShellGlobal *global);
 
 G_END_DECLS
 

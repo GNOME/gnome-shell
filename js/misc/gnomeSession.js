@@ -2,6 +2,7 @@
 
 const DBus = imports.dbus;
 const Lang = imports.lang;
+const Signals = imports.signals;
 
 const PresenceIface = {
     name: 'org.gnome.SessionManager.Presence',
@@ -43,3 +44,60 @@ Presence.prototype = {
     }
 };
 DBus.proxifyPrototype(Presence.prototype, PresenceIface);
+
+// Note inhibitors are immutable objects, so they don't
+// change at runtime (changes always come in the form
+// of new inhibitors)
+const InhibitorIface = {
+    name: 'org.gnome.SessionManager.Inhibitor',
+    properties: [{ name: 'app_id',
+                   signature: 's',
+                   access: 'readonly' },
+                 { name: 'client_id',
+                   signature: 's',
+                   access: 'readonly' },
+                 { name: 'reason',
+                   signature: 's',
+                   access: 'readonly' },
+                 { name: 'flags',
+                   signature: 'u',
+                   access: 'readonly' },
+                 { name: 'toplevel_xid',
+                   signature: 'u',
+                   access: 'readonly' },
+                 { name: 'cookie',
+                   signature: 'u',
+                   access: 'readonly' }],
+};
+
+function Inhibitor(objectPath) {
+    this._init(objectPath);
+}
+
+Inhibitor.prototype = {
+    _init: function(objectPath) {
+        DBus.session.proxifyObject(this,
+                                   "org.gnome.SessionManager",
+                                   objectPath);
+        this.isLoaded = false;
+        this._loadingPropertiesCount = InhibitorIface.properties.length;
+        for (let i = 0; i < InhibitorIface.properties.length; i++) {
+            let propertyName = InhibitorIface.properties[i].name;
+            this.GetRemote(propertyName, Lang.bind(this,
+                function(value, exception) {
+                    if (exception)
+                        return;
+
+                    this[propertyName] = value;
+                    this._loadingPropertiesCount--;
+
+                    if (this._loadingPropertiesCount == 0) {
+                        this.isLoaded = true;
+                        this.emit("is-loaded");
+                    }
+                }));
+        }
+    },
+};
+DBus.proxifyPrototype(Inhibitor.prototype, InhibitorIface);
+Signals.addSignalMethods(Inhibitor.prototype);

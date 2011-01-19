@@ -27,6 +27,8 @@ const PANEL_ICON_SIZE = 24;
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 
+const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
+
 const ANIMATED_ICON_UPDATE_TIMEOUT = 100;
 const SPINNER_UPDATE_TIMEOUT = 130;
 const SPINNER_SPEED = 0.02;
@@ -35,14 +37,17 @@ const STANDARD_TRAY_ICON_ORDER = ['a11y', 'display', 'keyboard', 'volume', 'blue
 const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'volume': imports.ui.status.volume.Indicator,
-    'battery': imports.ui.status.power.Indicator
+    'battery': imports.ui.status.power.Indicator,
+    'keyboard': imports.ui.status.keyboard.XKBIndicator
 };
 
 if (Config.HAVE_BLUETOOTH)
     STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['bluetooth'] = imports.ui.status.bluetooth.Indicator;
 
-const CLOCK_FORMAT_KEY        = 'format';
-const CLOCK_CUSTOM_FORMAT_KEY = 'custom-format';
+// in org.gnome.desktop.interface
+const CLOCK_FORMAT_KEY        = 'clock-format';
+
+// in org.gnome.shell.clock
 const CLOCK_SHOW_DATE_KEY     = 'show-date';
 const CLOCK_SHOW_SECONDS_KEY  = 'show-seconds';
 
@@ -493,31 +498,30 @@ function ClockButton() {
 }
 
 ClockButton.prototype = {
-    __proto__: PanelMenu.Button.prototype,
-
     _init: function() {
-        PanelMenu.Button.prototype._init.call(this, St.Align.START);
-        this.menu.addAction(_("Preferences"), Lang.bind(this, this._onPrefs));
+        this.actor = new St.Bin({ style_class: 'panel-button',
+                                  reactive: true,
+                                  can_focus: true,
+                                  x_fill: true,
+                                  y_fill: false,
+                                  track_hover: true });
+        this.actor._delegate = this;
+        this.actor.connect('button-press-event',
+                           Lang.bind(this, this._toggleCalendar));
 
         this._clock = new St.Label();
         this.actor.set_child(this._clock);
 
         this._calendarPopup = null;
 
+        this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
         this._clockSettings = new Gio.Settings({ schema: 'org.gnome.shell.clock' });
+
+        this._desktopSettings.connect('changed', Lang.bind(this, this._updateClock));
         this._clockSettings.connect('changed', Lang.bind(this, this._updateClock));
 
         // Start the clock
         this._updateClock();
-    },
-
-    _onButtonPress: function(actor, event) {
-        let button = event.get_button();
-        if (button == 3 &&
-            (!this._calendarPopup || !this._calendarPopup.isOpen))
-            this.menu.toggle();
-        else
-            this._toggleCalendar();
     },
 
     closeCalendar: function() {
@@ -526,34 +530,19 @@ ClockButton.prototype = {
 
         this._calendarPopup.hide();
 
-        this.menu.isOpen = false;
         this.actor.remove_style_pseudo_class('pressed');
     },
 
     openCalendar: function() {
         this._calendarPopup.show();
 
-        // simulate an open menu, so it won't appear beneath the calendar
-        this.menu.isOpen = true;
         this.actor.add_style_pseudo_class('pressed');
-    },
-
-    _onPrefs: function() {
-        let args = ['gnome-shell-clock-preferences'];
-        let p = new Shell.Process({ args: args });
-
-        p.run();
     },
 
     _toggleCalendar: function() {
         if (this._calendarPopup == null) {
             this._calendarPopup = new CalendarPopup();
             this._calendarPopup.actor.hide();
-        }
-
-        if (this.menu.isOpen && !this._calendarPopup.isOpen) {
-            this.menu.close();
-            return;
         }
 
         if (!this._calendarPopup.isOpen)
@@ -563,23 +552,13 @@ ClockButton.prototype = {
     },
 
     _updateClock: function() {
-        let format = this._clockSettings.get_string(CLOCK_FORMAT_KEY);
+        let format = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);
         let showDate = this._clockSettings.get_boolean(CLOCK_SHOW_DATE_KEY);
         let showSeconds = this._clockSettings.get_boolean(CLOCK_SHOW_SECONDS_KEY);
 
         let clockFormat;
         switch (format) {
-            case 'unix':
-                // force updates every second
-                showSeconds = true;
-                clockFormat = '%s';
-                break;
-            case 'custom':
-                // force updates every second
-                showSeconds = true;
-                clockFormat = this._clockSettings.get_string(CLOCK_CUSTOM_FORMAT_KEY);
-                break;
-            case '24-hour':
+            case '24h':
                 if (showDate)
 	            /* Translators: This is the time format with date used
                        in 24-hour mode. */
@@ -591,7 +570,7 @@ ClockButton.prototype = {
                     clockFormat = showSeconds ? _("%a %R:%S")
                                               : _("%a %R");
                 break;
-            case '12-hour':
+            case '12h':
             default:
                 if (showDate)
 	            /* Translators: This is a time format with date used
@@ -753,7 +732,20 @@ Panel.prototype = {
                                          reactive: true,
                                          can_focus: true });
         this.button.set_child(label);
-
+        this.button._delegate = this.button;
+        this.button._xdndTimeOut = 0;
+        this.button.handleDragOver = Lang.bind(this,
+            function(source, actor, x, y, time) {
+                 if (source == Main.xdndHandler) {
+                    if (this.button._xdndTimeOut != 0)
+                        Mainloop.source_remove(this.button._xdndTimeOut);
+                    this.button._xdndTimeOut = Mainloop.timeout_add(BUTTON_DND_ACTIVATION_TIMEOUT,
+                                                                    Lang.bind(this,
+                                                                                function() {
+                                                                                    this._xdndShowOverview(actor);
+                                                                                }));
+                 }
+            });
         this._leftBox.add(this.button);
 
         // We use this flag to mark the case where the user has entered the
@@ -790,6 +782,18 @@ Panel.prototype = {
                                 Lang.bind(this, this._onHotCornerClicked));
         this._hotCorner.connect('leave-event',
                                 Lang.bind(this, this._onHotCornerLeft));
+
+        this._hotCorner._delegate = this._hotCorner;
+        this._hotCorner.handleDragOver = Lang.bind(this,
+            function(source, actor, x, y, time) {
+                 if (source == Main.xdndHandler) {
+                    if(!Main.overview.visible && !Main.overview.animationInProgress) {
+                        this.rippleAnimation();
+                        Main.overview.showTemporarily();
+                        Main.overview.beginItemDrag(actor);
+                    }
+                 }
+            });
 
         this._boxContainer.add_actor(this._hotCornerEnvirons);
         this._boxContainer.add_actor(this._hotCorner);
@@ -844,6 +848,25 @@ Panel.prototype = {
         }));
 
         Main.chrome.addActor(this.actor, { visibleInOverview: true });
+    },
+
+    _xdndShowOverview: function (actor) {
+        let [x, y, mask] = global.get_pointer();
+        let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
+
+        if (pickedActor != this.button) {
+            Mainloop.source_remove(this.button._xdndTimeOut);
+            this.button._xdndTimeOut = 0;
+            return;
+        }
+
+        if(!Main.overview.visible && !Main.overview.animationInProgress) {
+            Main.overview.showTemporarily();
+            Main.overview.beginItemDrag(actor);
+        }
+
+        Mainloop.source_remove(this.button._xdndTimeOut);
+        this.button._xdndTimeOut = 0;
     },
 
     startStatusArea: function() {
@@ -936,6 +959,17 @@ Panel.prototype = {
         Main.uiGroup.add_actor(ripple);
     },
 
+    rippleAnimation: function() {
+        // Show three concentric ripples expanding outwards; the exact
+        // parameters were found by trial and error, so don't look
+        // for them to make perfect sense mathematically
+
+        //              delay  time  scale opacity => scale opacity
+        this._addRipple(0.0,   0.83,  0.25,  1.0,    1.5,  0.0);
+        this._addRipple(0.05,  1.0,   0.0,   0.7,    1.25, 0.0);
+        this._addRipple(0.35,  1.0,   0.0,   0.3,    1,    0.0);
+    },
+
     _onHotCornerEntered : function() {
         if (this._menus.grabbed)
             return false;
@@ -944,14 +978,7 @@ Panel.prototype = {
             if (!Main.overview.animationInProgress) {
                 this._hotCornerActivationTime = Date.now() / 1000;
 
-                // Show three concentric ripples expanding outwards; the exact
-                // parameters were found by trial and error, so don't look
-                // for them to make perfect sense mathematically
-
-                //              delay  time  scale opacity => scale opacity
-                this._addRipple(0.0,   0.83,  0.25,  1.0,    1.5,  0.0);
-                this._addRipple(0.05,  1.0,   0.0,   0.7,    1.25, 0.0);
-                this._addRipple(0.35,  1.0,   0.0,   0.3,    1,    0.0);
+                this.rippleAnimation();
                 Main.overview.toggle();
             }
         }
@@ -998,6 +1025,9 @@ function CalendarPopup() {
 CalendarPopup.prototype = {
     _init: function() {
         let panelActor = Main.panel.actor;
+        let alignConstraint = new Clutter.AlignConstraint({ source: panelActor,
+                                                            align_axis: Clutter.AlignAxis.X_AXIS,
+                                                            factor: 0.5 });
 
         this.actor = new St.Bin({ name: 'calendarPopup' });
 
@@ -1009,7 +1039,7 @@ CalendarPopup.prototype = {
         Main.chrome.addActor(this.actor, { visibleInOverview: true,
                                            affectsStruts: false });
         this.actor.y = (panelActor.y + panelActor.height - this.actor.height);
-        this.calendar.actor.connect('notify::width', Lang.bind(this, this._centerPopup));
+        this.actor.add_constraint(alignConstraint);
     },
 
     show: function() {
@@ -1022,7 +1052,6 @@ CalendarPopup.prototype = {
         // Reset the calendar to today's date
         this.calendar.setDate(new Date());
 
-        this._centerPopup();
         this.actor.lower(panelActor);
         this.actor.show();
         Tweener.addTween(this.actor,
@@ -1046,10 +1075,5 @@ CalendarPopup.prototype = {
                            onComplete: function() { this.actor.hide(); },
                            onCompleteScope: this
                          });
-    },
-
-    _centerPopup: function() {
-        let panelActor = Main.panel.actor;
-        this.actor.x = Math.round(panelActor.x + (panelActor.width - this.actor.width) / 2);
     }
 };
