@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-16 17:04+0100\n"
-"PO-Revision-Date: 2011-01-16 17:09+0100\n"
+"POT-Creation-Date: 2011-01-19 15:01+0100\n"
+"PO-Revision-Date: 2011-01-19 15:01+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -161,6 +161,10 @@ msgstr "Os Uuid das extensións a desactivar"
 #: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Whether to collect stats about applications usage"
 msgstr "Indica se recoller estatísticas sobre o uso dos aplicativos"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "disabled OpenSearch providers"
+msgstr "fornecedores de OpenSearch desactivados"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
 msgid "Clip the crosshairs at the center"
@@ -326,7 +330,7 @@ msgstr "Non foi posíbel analizar a orde:"
 msgid "No such application"
 msgstr "Non existe o aplicativo"
 
-#: ../js/misc/util.js:143 ../js/ui/runDialog.js:364
+#: ../js/misc/util.js:143 ../js/ui/runDialog.js:351
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Produciuse un fallo na execución de «%s»:"
@@ -443,7 +447,7 @@ msgstr "Reiniciando o computador."
 msgid "Confirm"
 msgstr "Confirmar"
 
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:469
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -477,7 +481,7 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageTray.js:1748
+#: ../js/ui/messageTray.js:1765
 msgid "System Information"
 msgstr "Información do sistema"
 
@@ -545,20 +549,20 @@ msgstr "%a %l:%M %p"
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/placeDisplay.js:112
+#: ../js/ui/placeDisplay.js:106
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Produciuse un fallo ao desmontar «%s»"
 
-#: ../js/ui/placeDisplay.js:115
+#: ../js/ui/placeDisplay.js:109
 msgid "Retry"
 msgstr "Reintentar"
 
-#: ../js/ui/placeDisplay.js:160
+#: ../js/ui/placeDisplay.js:150
 msgid "Connect to..."
 msgstr "Conectar con..."
 
-#: ../js/ui/placeDisplay.js:559
+#: ../js/ui/placeDisplay.js:386
 msgid "PLACES & DEVICES"
 msgstr "LUGARES E DISPOSITIVOS"
 
@@ -571,7 +575,7 @@ msgstr "LUGARES E DISPOSITIVOS"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:222
+#: ../js/ui/runDialog.js:209
 msgid "Please enter a command:"
 msgstr "Insira unha orde:"
 
@@ -655,7 +659,7 @@ msgstr "Alto contraste"
 msgid "Large Text"
 msgstr "Texto máis grande"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:240
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -671,103 +675,103 @@ msgstr "Enviar ficheiros ao dispositivo..."
 msgid "Setup a New Device..."
 msgstr "Configurar un novo dispositivo..."
 
-#: ../js/ui/status/bluetooth.js:94
+#: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
 msgstr "Configuracións de Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:191
+#: ../js/ui/status/bluetooth.js:192
 msgid "Connection"
 msgstr "Conexión"
 
-#: ../js/ui/status/bluetooth.js:227
+#: ../js/ui/status/bluetooth.js:228
 msgid "Send Files..."
 msgstr "Enviar ficheiros..."
 
-#: ../js/ui/status/bluetooth.js:232
+#: ../js/ui/status/bluetooth.js:233
 msgid "Browse Files..."
 msgstr "Explorar ficheiros..."
 
-#: ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:242
 msgid "Error browsing device"
 msgstr "Produciuse un erro ao explorar o dispositivo"
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:243
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "O dispositivo solicitado non pode explorarse, o erro foi «%s»"
 
-#: ../js/ui/status/bluetooth.js:250 ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/bluetooth.js:251 ../js/ui/status/keyboard.js:78
 msgid "Keyboard Settings"
 msgstr "Configuracións do teclado"
 
-#: ../js/ui/status/bluetooth.js:255
+#: ../js/ui/status/bluetooth.js:256
 msgid "Mouse Settings"
 msgstr "Configuracións do rato"
 
-#: ../js/ui/status/bluetooth.js:262 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
 msgid "Sound Settings"
 msgstr "Configuracións do son"
 
-#: ../js/ui/status/bluetooth.js:336 ../js/ui/status/bluetooth.js:370
-#: ../js/ui/status/bluetooth.js:410 ../js/ui/status/bluetooth.js:443
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
 msgid "Bluetooth Agent"
 msgstr "Axente Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:372
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Solicitude de autorización de %s"
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:378
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "O dispositivo %s quere acceder ao servizo «%s»"
 
-#: ../js/ui/status/bluetooth.js:379
+#: ../js/ui/status/bluetooth.js:380
 msgid "Always grant access"
 msgstr "Conceder acceso sempre"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:381
 msgid "Grant this time only"
 msgstr "Conceder só esta vez"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:382
 msgid "Reject"
 msgstr "Rexeitar"
 
-#: ../js/ui/status/bluetooth.js:411
+#: ../js/ui/status/bluetooth.js:412
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Confirmación de emparellado para «%s»"
 
-#: ../js/ui/status/bluetooth.js:417 ../js/ui/status/bluetooth.js:451
+#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "O dispositivo «%s» quere emparellarse con este equipo"
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:419
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Confirme que o PIN mostrado en «%s» coincide co do dispositivo."
 
-#: ../js/ui/status/bluetooth.js:420
+#: ../js/ui/status/bluetooth.js:421
 msgid "Matches"
 msgstr "Coincide"
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:422
 msgid "Does not match"
 msgstr "Non coincide"
 
-#: ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:445
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Solicitude de emparellamento para «%s»"
 
-#: ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:453
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Introduza o PIN mencionado no dispositivo."
 
-#: ../js/ui/status/bluetooth.js:468
+#: ../js/ui/status/bluetooth.js:469
 msgid "OK"
 msgstr "Aceptar"
 
@@ -938,32 +942,32 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/shell-global.c:1233
+#: ../src/shell-global.c:1366
 msgid "Less than a minute ago"
 msgstr "Hai menos dun minuto"
 
-#: ../src/shell-global.c:1237
+#: ../src/shell-global.c:1370
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "hai %d minuto"
 msgstr[1] "hai %d minutos"
 
-#: ../src/shell-global.c:1242
+#: ../src/shell-global.c:1375
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "hai %d hora"
 msgstr[1] "hai %d horas"
 
-#: ../src/shell-global.c:1247
+#: ../src/shell-global.c:1380
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "hai %d día"
 msgstr[1] "hai %d días"
 
-#: ../src/shell-global.c:1252
+#: ../src/shell-global.c:1385
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
