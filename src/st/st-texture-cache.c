@@ -1679,7 +1679,7 @@ st_texture_cache_load_from_data (StTextureCache    *cache,
 /**
  * st_texture_cache_load_from_raw:
  * @cache: a #StTextureCache
- * @data: raw pixel data
+ * @data: (array length=len): raw pixel data
  * @len: the length of @data
  * @has_alpha: whether @data includes an alpha channel
  * @width: width in pixels of @data
