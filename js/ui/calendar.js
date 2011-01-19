@@ -55,89 +55,53 @@ function _getDigitWidth(actor){
     return width;
 }
 
-function _getCalendarDayAbbreviation(day_number) {
-    let ret;
-    switch (day_number) {
-    case 0:
-        /* Translators: Abbreviation used in calendar grid
-         * widget. Note: all calendar abbreviations are always shown
-         * together and in order, e.g. "S M T W T F S"
+function _getCalendarDayAbbreviation(dayNumber) {
+    let abbreviations = [
+        /* Translators: Calendar grid abbreviation for Sunday.
+         *
+         * NOTE: These abbreviations are always shown together and in
+         * order, e.g. "S M T W T F S".
          */
-        ret = _("S");
-        break;
-
-    case 1:
-        /* Translators: Calendar abbreviation for Monday */
-        ret = _("M");
-        break;
-
-    case 2:
-        /* Translators: Calendar abbreviation for Tuesday */
-        ret = _("T");
-        break;
-
-    case 3:
-        /* Translators: Calendar abbreviation for Wednesday */
-        ret = _("W");
-        break;
-
-    case 4:
-        /* Translators: Calendar abbreviation for Thursday */
-        ret = _("T");
-        break;
-
-    case 5:
-        /* Translators: Calendar abbreviation for Friday */
-        ret = _("F");
-        break;
-
-    case 6:
-        /* Translators: Calendar abbreviation for Saturday */
-        ret = _("S");
-        break;
-    }
-    return ret;
+        _("S"),
+        /* Translators: Calendar grid abbreviation for Monday */
+        _("M"),
+        /* Translators: Calendar grid abbreviation for Tuesday */
+        _("T"),
+        /* Translators: Calendar grid abbreviation for Wednesday */
+        _("W"),
+        /* Translators: Calendar grid abbreviation for Thursday */
+        _("T"),
+        /* Translators: Calendar grid abbreviation for Friday */
+        _("F"),
+        /* Translators: Calendar grid abbreviation for Saturday */
+        _("S")
+    ];
+    return abbreviations[dayNumber];
 }
 
-function _getEventDayAbbreviation(day_number) {
-    let ret;
-    switch (day_number) {
-    case 0:
-        /* Translators: Abbreviation used in event list for Sunday */
-        ret = _("Su");
-        break;
-
-    case 1:
-        /* Translators: Abbreviation used in event list for Monday */
-        ret = _("M");
-        break;
-
-    case 2:
-        /* Translators: Abbreviation used in event list for Tuesday */
-        ret = _("T");
-        break;
-
-    case 3:
-        /* Translators: Abbreviation used in event list for Wednesday */
-        ret = _("W");
-        break;
-
-    case 4:
-        /* Translators: Abbreviation used in event list for Thursday */
-        ret = _("Th");
-        break;
-
-    case 5:
-        /* Translators: Abbreviation used in event list for Friday */
-        ret = _("F");
-        break;
-
-    case 6:
-        /* Translators: Abbreviation used in event list for Saturday */
-        ret = _("S");
-        break;
-    }
-    return ret;
+function _getEventDayAbbreviation(dayNumber) {
+    let abbreviations = [
+        /* Translators: Event list abbreviation for Sunday.
+         *
+         * NOTE: These abbreviations are normally not shown together
+         * so they need to be unique (e.g. Tuesday and Thursday cannot
+         * both be 'T').
+         */
+        _("Su"),
+        /* Translators: Event list abbreviation for Monday */
+        _("M"),
+        /* Translators: Event list abbreviation for Tuesday */
+        _("T"),
+        /* Translators: Event list abbreviation for Wednesday */
+        _("W"),
+        /* Translators: Event list abbreviation for Thursday */
+        _("Th"),
+        /* Translators: Event list abbreviation for Friday */
+        _("F"),
+        /* Translators: Event list abbreviation for Saturday */
+        _("S")
+    ];
+    return abbreviations[dayNumber];
 }
 
 // ------------------------------------------------------------------------
@@ -203,7 +167,7 @@ FakeEventSource.prototype = {
 
         // '10-oclock pow-wow' is an event occuring IN THE PAST every four days at 10am
         for(let n = 0; n < 10; n++) {
-            let t = new Date(now.getTime() - n*4*86400*1000);
+            let t = new Date(now.getTime() - n * 4 * 86400 * 1000);
             t.setHours(10);
             summary = '10-oclock pow-wow (n=' + n + ')';
             this._fake_tasks.push(new CalendarTask(t, summary));
@@ -211,7 +175,7 @@ FakeEventSource.prototype = {
 
         // '11-oclock thing' is an event occuring every three days at 11am
         for(let n = 0; n < 10; n++) {
-            let t = new Date(now.getTime() + n*3*86400*1000);
+            let t = new Date(now.getTime() + n * 3 * 86400 * 1000);
             t.setHours(11);
             summary = '11-oclock thing (n=' + n + ')';
             this._fake_tasks.push(new CalendarTask(t, summary));
@@ -219,7 +183,7 @@ FakeEventSource.prototype = {
 
         // 'Weekly Meeting' is an event occuring every seven days at 1:45pm (two days displaced)
         for(let n = 0; n < 5; n++) {
-            let t = new Date(now.getTime() + (n*7+2)*86400*1000);
+            let t = new Date(now.getTime() + (n * 7 + 2) * 86400 * 1000);
             t.setHours(13);
             t.setMinutes(45);
             summary = 'Weekly Meeting (n=' + n + ')';
@@ -227,10 +191,10 @@ FakeEventSource.prototype = {
         }
 
         // 'Get Married' is an event that actually reflects reality (Dec 4, 2010) :-)
-        this._fake_tasks.push(new CalendarTask(new Date(2010,11,4,16,0), 'Get Married'));
+        this._fake_tasks.push(new CalendarTask(new Date(2010, 11, 4, 16, 0), 'Get Married'));
 
         // ditto for 'NE Patriots vs NY Jets'
-        this._fake_tasks.push(new CalendarTask(new Date(2010,11,6,20,30), 'NE Patriots vs NY Jets'));
+        this._fake_tasks.push(new CalendarTask(new Date(2010, 11, 6, 20, 30), 'NE Patriots vs NY Jets'));
 
         // An event for tomorrow @6:30pm that is added/removed every five
         // seconds (to check that the ::changed signal works)
@@ -289,13 +253,13 @@ Signals.addSignalMethods(FakeEventSource.prototype);
 
 /* ------------------------------------------------------------------------ */
 
-// @event_source is an object implementing the EventSource API, e.g. the
+// Calendar:
+// @eventSource: is an object implementing the EventSource API, e.g. the
 // getTasks(), hasTasks() methods and the ::changed signal.
+// @eventList: is the EventList object to control
 //
-// @event_list is the EventList object to control
-//
-function Calendar(event_source, event_list) {
-    this._init(event_source, event_list);
+function Calendar(eventSource, eventList) {
+    this._init(eventSource, eventList);
 }
 
 Calendar.prototype = {
@@ -303,7 +267,7 @@ Calendar.prototype = {
         this._event_source = event_source;
         this._event_list = event_list;
 
-        this._event_source.connect('changed', Lang.bind(this, this._onEventSourceChanged));
+        this._event_source.connect('changed', Lang.bind(this, this._update));
 
         // FIXME: This is actually the fallback method for GTK+ for the week start;
         // GTK+ by preference uses nl_langinfo (NL_TIME_FIRST_WEEKDAY). We probably
@@ -390,7 +354,6 @@ Calendar.prototype = {
         // We need to figure out the abbreviated localized names for the days of the week;
         // we do this by just getting the next 7 days starting from right now and then putting
         // them in the right cell in the table. It doesn't matter if we add them in order
-        //
         let iter = new Date(this.selected_date);
         iter.setSeconds(0); // Leap second protection. Hah!
         iter.setHours(12);
@@ -464,10 +427,6 @@ Calendar.prototype = {
         this._update();
     },
 
-    _onEventSourceChanged: function() {
-        this._update();
-    },
-
     _update: function() {
         this._dateLabel.text = this.selected_date.toLocaleFormat(this._headerFormat);
 
@@ -487,12 +446,8 @@ Calendar.prototype = {
         let now = new Date();
 
         let row = 2;
-        let dayButtons = [];
-        this._dayButtons = dayButtons;
         while (true) {
             let button = new St.Button({ label: iter.getDate().toString() });
-
-            dayButtons.push(button);
 
             let iterStr = iter.toUTCString();
             button.connect('clicked', Lang.bind(this, function() {
@@ -566,18 +521,20 @@ function EventsList(event_source) {
 EventsList.prototype = {
     _init: function(event_source) {
         this.actor = new St.BoxLayout({ vertical: true, style_class: 'events-header-vbox'});
-        // FIXME: Evolution backend is currently disabled
-        // this.evolutionTasks = new EvolutionEventsSource();
-
         this._event_source = event_source;
     },
 
     _addEvent: function(dayNameBox, timeBox, eventTitleBox, includeDayName, day, time, desc) {
         if (includeDayName) {
-            dayNameBox.add(new St.Label({ style_class: 'events-day-dayname', text: day}), {x_fill: false});
+            dayNameBox.add(new St.Label( { style_class: 'events-day-dayname',
+                                           text: day } ),
+                           { x_fill: false } );
         }
-        timeBox.add(new St.Label({ style_class: 'events-day-time', text: time}), {x_fill: false});
-        eventTitleBox.add(new St.Label({ style_class: 'events-day-task', text: desc}));
+        timeBox.add(new St.Label( { style_class: 'events-day-time',
+                                    text: time} ),
+                    { x_fill: false } );
+        eventTitleBox.add(new St.Label( { style_class: 'events-day-task',
+                                          text: desc} ));
     },
 
     _addPeriod: function(header, begin, end, includeDayName) {

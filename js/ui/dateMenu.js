@@ -11,6 +11,7 @@ const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const Util = imports.misc.util;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -22,10 +23,6 @@ const CLOCK_FORMAT_KEY        = 'clock-format';
 // in org.gnome.shell.clock
 const CLOCK_SHOW_DATE_KEY     = 'show-date';
 const CLOCK_SHOW_SECONDS_KEY  = 'show-seconds';
-
-function DateMenuButton() {
-    this._init();
-}
 
 function on_vert_sep_repaint (area)
 {
@@ -51,6 +48,10 @@ function on_vert_sep_repaint (area)
     cr.fill();
 };
 
+function DateMenuButton() {
+    this._init();
+}
+
 DateMenuButton.prototype = {
     __proto__: PanelMenu.Button.prototype,
 
@@ -72,7 +73,7 @@ DateMenuButton.prototype = {
         this.menu.addActor(hbox);
 
         // Fill up the first column
-        //
+
         vbox = new St.BoxLayout({vertical: true, name: 'calendarVBox1'});
         hbox.add(vbox);
 
@@ -88,7 +89,7 @@ DateMenuButton.prototype = {
         vbox.add(this._calendar.actor);
 
         // Add vertical separator
-        //
+
         item = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
                                     pseudo_class: 'highlighted' });
         item.set_width(25); // TODO: don't hard-code the width
@@ -101,7 +102,6 @@ DateMenuButton.prototype = {
         hbox.add(this._event_list.actor);
 
         // Whenever the menu is opened, select today
-        //
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, is_open) {
             if (is_open) {
                 let now = new Date();
@@ -110,28 +110,22 @@ DateMenuButton.prototype = {
         }));
 
         // Done with hbox for calendar and event list
-        //
 
         // Add separator
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
         // Add button to get to the Date and Time settings
-        item = new PopupMenu.PopupImageMenuItem(_("Date and Time Settings"), 'gnome-shell-clock-preferences');
-        item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
-        this.menu.addMenuItem(item);
+        this.menu.addAction(_("Date and Time Settings"),
+                            Lang.bind(this, this._onPreferencesActivate));
 
         // Track changes to clock settings
         this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
         this._clockSettings = new Gio.Settings({ schema: 'org.gnome.shell.clock' });
-        this._desktopSettings.connect('changed', Lang.bind(this, this._clockSettingsChanged));
-        this._clockSettings.connect('changed', Lang.bind(this, this._clockSettingsChanged));
+        this._desktopSettings.connect('changed', Lang.bind(this, this._updateClockAndDate));
+        this._clockSettings.connect('changed', Lang.bind(this, this._updateClockAndDate));
 
         // Start the clock
-        this._updateClockAndDate();
-    },
-
-    _clockSettingsChanged: function() {
         this._updateClockAndDate();
     },
 
@@ -199,15 +193,6 @@ DateMenuButton.prototype = {
     },
 
     _onPreferencesActivate: function() {
-        Main.overview.hide();
-        this._spawn(['gnome-control-center', 'datetime']);
+        Util.spawnDesktop('gnome-datetime-panel');
     },
-
-    _spawn: function(args) {
-        // FIXME: once Shell.Process gets support for signalling
-        // errors we should pop up an error dialog or something here
-        // on failure
-        let p = new Shell.Process({'args' : args});
-        p.run();
-    }
 };
