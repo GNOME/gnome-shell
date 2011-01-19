@@ -155,7 +155,7 @@ function FakeEventSource() {
 FakeEventSource.prototype = {
     _init: function() {
 
-        this._fake_tasks = [];
+        this._fakeTasks = [];
 
         // Generate fake events
         //
@@ -170,7 +170,7 @@ FakeEventSource.prototype = {
             let t = new Date(now.getTime() - n * 4 * 86400 * 1000);
             t.setHours(10);
             summary = '10-oclock pow-wow (n=' + n + ')';
-            this._fake_tasks.push(new CalendarTask(t, summary));
+            this._fakeTasks.push(new CalendarTask(t, summary));
         }
 
         // '11-oclock thing' is an event occuring every three days at 11am
@@ -178,7 +178,7 @@ FakeEventSource.prototype = {
             let t = new Date(now.getTime() + n * 3 * 86400 * 1000);
             t.setHours(11);
             summary = '11-oclock thing (n=' + n + ')';
-            this._fake_tasks.push(new CalendarTask(t, summary));
+            this._fakeTasks.push(new CalendarTask(t, summary));
         }
 
         // 'Weekly Meeting' is an event occuring every seven days at 1:45pm (two days displaced)
@@ -187,24 +187,24 @@ FakeEventSource.prototype = {
             t.setHours(13);
             t.setMinutes(45);
             summary = 'Weekly Meeting (n=' + n + ')';
-            this._fake_tasks.push(new CalendarTask(t, summary));
+            this._fakeTasks.push(new CalendarTask(t, summary));
         }
 
         // 'Get Married' is an event that actually reflects reality (Dec 4, 2010) :-)
-        this._fake_tasks.push(new CalendarTask(new Date(2010, 11, 4, 16, 0), 'Get Married'));
+        this._fakeTasks.push(new CalendarTask(new Date(2010, 11, 4, 16, 0), 'Get Married'));
 
         // ditto for 'NE Patriots vs NY Jets'
-        this._fake_tasks.push(new CalendarTask(new Date(2010, 11, 6, 20, 30), 'NE Patriots vs NY Jets'));
+        this._fakeTasks.push(new CalendarTask(new Date(2010, 11, 6, 20, 30), 'NE Patriots vs NY Jets'));
 
         // An event for tomorrow @6:30pm that is added/removed every five
         // seconds (to check that the ::changed signal works)
-        let transient_event_date = new Date(now.getTime() + 86400*1000);
-        transient_event_date.setHours(18);
-        transient_event_date.setMinutes(30);
-        transient_event_date.setSeconds(0);
+        let transientEventDate = new Date(now.getTime() + 86400*1000);
+        transientEventDate.setHours(18);
+        transientEventDate.setMinutes(30);
+        transientEventDate.setSeconds(0);
         Mainloop.timeout_add(5000, Lang.bind(this, this._updateTransientEvent));
         this._includeTransientEvent = false;
-        this._transientEvent = new CalendarTask(transient_event_date, 'A Transient Event');
+        this._transientEvent = new CalendarTask(transientEventDate, 'A Transient Event');
         this._transientEventCounter = 1;
     },
 
@@ -220,8 +220,8 @@ FakeEventSource.prototype = {
         let result = [];
         //log('begin:' + begin);
         //log('end:  ' + end);
-        for(let n = 0; n < this._fake_tasks.length; n++) {
-            let task = this._fake_tasks[n];
+        for(let n = 0; n < this._fakeTasks.length; n++) {
+            let task = this._fakeTasks[n];
             if (task.date >= begin && task.date <= end) {
                 result.push(task);
             }
@@ -263,11 +263,11 @@ function Calendar(eventSource, eventList) {
 }
 
 Calendar.prototype = {
-    _init: function(event_source, event_list) {
-        this._event_source = event_source;
-        this._event_list = event_list;
+    _init: function(eventSource, eventList) {
+        this._eventSource = eventSource;
+        this._eventList = eventList;
 
-        this._event_source.connect('changed', Lang.bind(this, this._update));
+        this._eventSource.connect('changed', Lang.bind(this, this._update));
 
         // FIXME: This is actually the fallback method for GTK+ for the week start;
         // GTK+ by preference uses nl_langinfo (NL_TIME_FIRST_WEEKDAY). We probably
@@ -305,7 +305,7 @@ Calendar.prototype = {
         }
 
         // Start off with the current date
-        this.selected_date = new Date();
+        this.selectedDate = new Date();
 
         this.actor = new St.Table({ homogeneous: false,
                                     style_class: 'calendar',
@@ -320,10 +320,10 @@ Calendar.prototype = {
 
     // Sets the calendar to show a specific date
     setDate: function(date) {
-        if (!_sameDay(date, this.selected_date)) {
-            this.selected_date = date;
+        if (!_sameDay(date, this.selectedDate)) {
+            this.selectedDate = date;
             this._update();
-            this.emit('selected-date-changed', new Date(this.selected_date));
+            this.emit('selected-date-changed', new Date(this.selectedDate));
         }
     },
 
@@ -354,14 +354,14 @@ Calendar.prototype = {
         // We need to figure out the abbreviated localized names for the days of the week;
         // we do this by just getting the next 7 days starting from right now and then putting
         // them in the right cell in the table. It doesn't matter if we add them in order
-        let iter = new Date(this.selected_date);
+        let iter = new Date(this.selectedDate);
         iter.setSeconds(0); // Leap second protection. Hah!
         iter.setHours(12);
         for (let i = 0; i < 7; i++) {
             // Could use iter.toLocaleFormat('%a') but that normally gives three characters
             // and we want, ideally, a single character for e.g. S M T W T F S
-            let custom_day_abbrev = _getCalendarDayAbbreviation(iter.getDay());
-            let label = new St.Label({ text: custom_day_abbrev });
+            let customDayAbbrev = _getCalendarDayAbbreviation(iter.getDay());
+            let label = new St.Label({ text: customDayAbbrev });
             label.style_class = 'calendar-day-base calendar-day-heading';
             this.actor.add(label,
                            { row: 1,
@@ -400,25 +400,25 @@ Calendar.prototype = {
     },
 
     _onPrevMonthButtonClicked: function() {
-        let new_date = new Date(this.selected_date);
-        if (new_date.getMonth() == 0) {
-            new_date.setMonth(11);
-            new_date.setFullYear(new_date.getFullYear() - 1);
+        let newDate = new Date(this.selectedDate);
+        if (newDate.getMonth() == 0) {
+            newDate.setMonth(11);
+            newDate.setFullYear(newDate.getFullYear() - 1);
         } else {
-            new_date.setMonth(new_date.getMonth() - 1);
+            newDate.setMonth(newDate.getMonth() - 1);
         }
-        this.setDate(new_date);
+        this.setDate(newDate);
    },
 
     _onNextMonthButtonClicked: function() {
-        let new_date = new Date(this.selected_date);
-        if (new_date.getMonth() == 11) {
-            new_date.setMonth(0);
-            new_date.setFullYear(new_date.getFullYear() + 1);
+        let newDate = new Date(this.selectedDate);
+        if (newDate.getMonth() == 11) {
+            newDate.setMonth(0);
+            newDate.setFullYear(newDate.getFullYear() + 1);
         } else {
-            new_date.setMonth(new_date.getMonth() + 1);
+            newDate.setMonth(newDate.getMonth() + 1);
         }
-        this.setDate(new_date);
+        this.setDate(newDate);
     },
 
     _onSettingsChange: function() {
@@ -428,7 +428,7 @@ Calendar.prototype = {
     },
 
     _update: function() {
-        this._dateLabel.text = this.selected_date.toLocaleFormat(this._headerFormat);
+        this._dateLabel.text = this.selectedDate.toLocaleFormat(this._headerFormat);
 
         // Remove everything but the topBox and the weekday labels
         let children = this.actor.get_children();
@@ -436,7 +436,7 @@ Calendar.prototype = {
             children[i].destroy();
 
         // Start at the beginning of the week before the start of the month
-        let iter = new Date(this.selected_date);
+        let iter = new Date(this.selectedDate);
         iter.setDate(1);
         iter.setSeconds(0);
         iter.setHours(12);
@@ -451,31 +451,31 @@ Calendar.prototype = {
 
             let iterStr = iter.toUTCString();
             button.connect('clicked', Lang.bind(this, function() {
-                let newly_selected_date = new Date(iterStr);
-                this.setDate(newly_selected_date);
+                let newly_selectedDate = new Date(iterStr);
+                this.setDate(newly_selectedDate);
             }));
 
-            let style_class;
-            let has_tasks;
-            has_tasks = this._event_source.hasTasks(iter);
-            style_class = 'calendar-day-base calendar-day';
+            let styleClass;
+            let hasTasks;
+            hasTasks = this._eventSource.hasTasks(iter);
+            styleClass = 'calendar-day-base calendar-day';
             if (_isWorkDay(iter))
-                style_class += ' calendar-work-day'
+                styleClass += ' calendar-work-day'
             else
-                style_class += ' calendar-nonwork-day'
+                styleClass += ' calendar-nonwork-day'
 
             if (_sameDay(now, iter))
-                style_class += ' calendar-today';
-            else if (iter.getMonth() != this.selected_date.getMonth())
-                style_class += ' calendar-other-month-day';
+                styleClass += ' calendar-today';
+            else if (iter.getMonth() != this.selectedDate.getMonth())
+                styleClass += ' calendar-other-month-day';
 
-            if (_sameDay(this.selected_date, iter))
+            if (_sameDay(this.selectedDate, iter))
                 button.add_style_pseudo_class('active');
 
-            if (has_tasks)
-                style_class += ' calendar-day-with-events'
+            if (hasTasks)
+                styleClass += ' calendar-day-with-events'
 
-            button.style_class = style_class;
+            button.style_class = styleClass;
 
             let offsetCols = this._useWeekdate ? 1 : 0;
             this.actor.add(button,
@@ -491,21 +491,21 @@ Calendar.prototype = {
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
             if (iter.getDay() == this._weekStart) {
                 // We stop on the first "first day of the week" after the month we are displaying
-                if (iter.getMonth() > this.selected_date.getMonth() || iter.getYear() > this.selected_date.getYear())
+                if (iter.getMonth() > this.selectedDate.getMonth() || iter.getYear() > this.selectedDate.getYear())
                     break;
                 row++;
             }
         }
 
         // update the event list widget
-        if (now.getDate() == this.selected_date.getDate() &&
-            now.getMonth() == this.selected_date.getMonth() &&
-            now.getFullYear() == this.selected_date.getFullYear()) {
+        if (now.getDate() == this.selectedDate.getDate() &&
+            now.getMonth() == this.selectedDate.getMonth() &&
+            now.getFullYear() == this.selectedDate.getFullYear()) {
             // Today - show: Today, Tomorrow and This Week
-            this._event_list.showToday();
+            this._eventList.showToday();
         } else {
             // Not Today - show only events from that day
-            this._event_list.showOtherDay(this.selected_date);
+            this._eventList.showOtherDay(this.selectedDate);
         }
     }
 };
@@ -514,14 +514,14 @@ Signals.addSignalMethods(Calendar.prototype);
 
 // ------------------------------------------------------------------------
 
-function EventsList(event_source) {
-    this._init(event_source);
+function EventsList(eventSource) {
+    this._init(eventSource);
 }
 
 EventsList.prototype = {
-    _init: function(event_source) {
+    _init: function(eventSource) {
         this.actor = new St.BoxLayout({ vertical: true, style_class: 'events-header-vbox'});
-        this._event_source = event_source;
+        this._eventSource = eventSource;
     },
 
     _addEvent: function(dayNameBox, timeBox, eventTitleBox, includeDayName, day, time, desc) {
@@ -538,7 +538,7 @@ EventsList.prototype = {
     },
 
     _addPeriod: function(header, begin, end, includeDayName) {
-        let tasks = this._event_source.getTasks(begin, end);
+        let tasks = this._eventSource.getTasks(begin, end);
 
         if (tasks.length == 0)
             return;

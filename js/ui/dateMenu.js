@@ -24,7 +24,7 @@ const CLOCK_FORMAT_KEY        = 'clock-format';
 const CLOCK_SHOW_DATE_KEY     = 'show-date';
 const CLOCK_SHOW_SECONDS_KEY  = 'show-seconds';
 
-function on_vert_sep_repaint (area)
+function _onVertSepRepaint (area)
 {
     let cr = area.get_context();
     let themeNode = area.get_theme_node();
@@ -60,8 +60,8 @@ DateMenuButton.prototype = {
         let hbox;
         let vbox;
 
-        //this._event_source = new Calendar.EmptyEventSource();
-        this._event_source = new Calendar.FakeEventSource();
+        //this._eventSource = new Calendar.EmptyEventSource();
+        this._eventSource = new Calendar.FakeEventSource();
         // TODO: write e.g. EvolutionEventSource
 
         PanelMenu.Button.prototype._init.call(this, St.Align.START);
@@ -82,10 +82,10 @@ DateMenuButton.prototype = {
         this._date.style_class = 'datemenu-date-label';
         vbox.add(this._date);
 
-        this._event_list = new Calendar.EventsList(this._event_source);
+        this._eventList = new Calendar.EventsList(this._eventSource);
 
         // Calendar
-        this._calendar = new Calendar.Calendar(this._event_source, this._event_list);
+        this._calendar = new Calendar.Calendar(this._eventSource, this._eventList);
         vbox.add(this._calendar.actor);
 
         // Add vertical separator
@@ -93,17 +93,17 @@ DateMenuButton.prototype = {
         item = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
                                     pseudo_class: 'highlighted' });
         item.set_width(25); // TODO: don't hard-code the width
-        item.connect('repaint', Lang.bind(this, on_vert_sep_repaint));
+        item.connect('repaint', Lang.bind(this, _onVertSepRepaint));
         hbox.add(item);
 
         // Fill up the second column
         //
         // Event list
-        hbox.add(this._event_list.actor);
+        hbox.add(this._eventList.actor);
 
         // Whenever the menu is opened, select today
-        this.menu.connect('open-state-changed', Lang.bind(this, function(menu, is_open) {
-            if (is_open) {
+        this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
+            if (isOpen) {
                 let now = new Date();
                 this._calendar.setDate(now);
             }
