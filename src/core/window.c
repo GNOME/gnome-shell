@@ -3184,7 +3184,7 @@ meta_window_is_fullscreen (MetaWindow *window)
   return window->fullscreen;
 }
 
-static void
+void
 meta_window_tile (MetaWindow *window)
 {
   MetaMaximizeFlags directions;
