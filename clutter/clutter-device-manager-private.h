@@ -103,7 +103,8 @@ struct _ClutterInputDevice
   gint min_keycode;
   gint max_keycode;
 
-  guint has_cursor  : 1;
+  guint has_cursor : 1;
+  guint is_enabled : 1;
 };
 
 struct _ClutterInputDeviceClass

@@ -159,6 +159,7 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
   ClutterInputDeviceType source;
   ClutterInputDevice *retval;
   ClutterInputMode mode;
+  gboolean is_enabled;
 
   if (info->use == XIMasterKeyboard || info->use == XISlaveKeyboard)
     source = CLUTTER_KEYBOARD_DEVICE;
@@ -185,16 +186,19 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
     case XIMasterKeyboard:
     case XIMasterPointer:
       mode = CLUTTER_INPUT_MODE_MASTER;
+      is_enabled = TRUE;
       break;
 
     case XISlaveKeyboard:
     case XISlavePointer:
       mode = CLUTTER_INPUT_MODE_SLAVE;
+      is_enabled = FALSE;
       break;
 
     case XIFloatingSlave:
     default:
       mode = CLUTTER_INPUT_MODE_FLOATING;
+      is_enabled = FALSE;
       break;
     }
 
@@ -206,6 +210,7 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
                          "device-type", source,
                          "device-mode", mode,
                          "backend", backend_x11,
+                         "enabled", is_enabled,
                          NULL);
 
   translate_device_classes (backend_x11->xdpy, retval,
@@ -655,11 +660,14 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
               event->key.unicode_value = (gunichar) '\0';
           }
 
-        CLUTTER_NOTE (EVENT, "%s: win:0x%x, key: %12s (%d)",
+        CLUTTER_NOTE (EVENT,
+                      "%s: win:0x%x device:%d source:%d, key: %12s (%d)",
                       event->any.type == CLUTTER_KEY_PRESS
                         ? "key press  "
                         : "key release",
                       (unsigned int) stage_x11->xwin,
+                      xev->deviceid,
+                      xev->sourceid,
                       event->key.keyval ? buffer : "(none)",
                       event->key.keyval);
 

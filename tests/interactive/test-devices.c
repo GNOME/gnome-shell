@@ -196,15 +196,21 @@ test_devices_main (int argc, char **argv)
       ClutterInputDeviceType device_type;
       ClutterActor *hand = NULL;
 
-      g_print ("got a %s device '%s' with id %d...\n",
+      g_print ("got a %s device '%s' with id %d\n",
                device_type_name (device),
                clutter_input_device_get_device_name (device),
                clutter_input_device_get_device_id (device));
 
       device_type = clutter_input_device_get_device_type (device);
       if (device_type == CLUTTER_POINTER_DEVICE ||
-          device_type == CLUTTER_EXTENSION_DEVICE)
+          device_type == CLUTTER_PEN_DEVICE ||
+          device_type == CLUTTER_POINTER_DEVICE)
         {
+          g_print ("*** enabling device '%s' ***\n",
+                   clutter_input_device_get_device_name (device));
+
+          clutter_input_device_set_enabled (device, TRUE);
+
           hand = clutter_texture_new_from_file (TESTS_DATADIR
                                                 G_DIR_SEPARATOR_S
                                                 "redhand.png",

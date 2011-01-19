@@ -59,6 +59,7 @@ enum
   PROP_DEVICE_MODE,
 
   PROP_HAS_CURSOR,
+  PROP_ENABLED,
 
   PROP_N_AXES,
 
@@ -139,6 +140,10 @@ clutter_input_device_set_property (GObject      *gobject,
       self->has_cursor = g_value_get_boolean (value);
       break;
 
+    case PROP_ENABLED:
+      self->is_enabled = g_value_get_boolean (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -188,6 +193,10 @@ clutter_input_device_get_property (GObject    *gobject,
         g_value_set_uint (value, self->axes->len);
       else
         g_value_set_uint (value, 0);
+      break;
+
+    case PROP_ENABLED:
+      g_value_set_boolean (value, self->is_enabled);
       break;
 
     default:
@@ -269,6 +278,13 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                           P_("Whether the device has a cursor"),
                           FALSE,
                           CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  obj_props[PROP_ENABLED] =
+    g_param_spec_boolean ("enabled",
+                          P_("Enabled"),
+                          P_("Whether the device is enabled"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
 
   obj_props[PROP_N_AXES] =
     g_param_spec_uint ("n-axes",
@@ -585,6 +601,56 @@ clutter_input_device_get_device_id (ClutterInputDevice *device)
   g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), -1);
 
   return device->id;
+}
+
+/**
+ * clutter_input_device_set_enabled:
+ * @device: a #ClutterInputDevice
+ * @enabled: %TRUE to enable the @device
+ *
+ * Enables or disables a #ClutterInputDevice.
+ *
+ * Only devices with a #ClutterInputDevice:device-mode property set
+ * to %CLUTTER_INPUT_MODE_SLAVE or %CLUTTER_INPUT_MODE_FLOATING can
+ * be disabled.
+ *
+ * Since: 1.6
+ */
+void
+clutter_input_device_set_enabled (ClutterInputDevice *device,
+                                  gboolean            enabled)
+{
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+
+  enabled = !!enabled;
+
+  if (!enabled && device->device_mode == CLUTTER_INPUT_MODE_MASTER)
+    return;
+
+  if (device->is_enabled == enabled)
+    return;
+
+  device->is_enabled = enabled;
+
+  g_object_notify_by_pspec (G_OBJECT (device), obj_props[PROP_ENABLED]);
+}
+
+/**
+ * clutter_input_device_get_enabled:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves whether @device is enabled.
+ *
+ * Return value: %TRUE if the device is enabled
+ *
+ * Since: 1.6
+ */
+gboolean
+clutter_input_device_get_enabled (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), FALSE);
+
+  return device->is_enabled;
 }
 
 /**

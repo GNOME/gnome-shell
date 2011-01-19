@@ -832,9 +832,18 @@ _clutter_event_push (const ClutterEvent *event,
                      gboolean            do_copy)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
+  ClutterInputDevice *device;
 
   /* FIXME: check queue is valid */
   g_assert (context != NULL);
+
+  /* disabled devices don't propagate events */
+  device = clutter_event_get_device (event);
+  if (device != NULL)
+    {
+      if (!clutter_input_device_get_enabled (device))
+        return;
+    }
 
   if (do_copy)
     {

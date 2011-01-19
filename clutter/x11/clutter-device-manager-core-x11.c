@@ -188,6 +188,7 @@ create_device (ClutterDeviceManagerX11 *manager_x11,
                          "device-type", source,
                          "device-mode", CLUTTER_INPUT_MODE_FLOATING,
                          "backend", backend_x11,
+                         "enabled", FALSE,
                          NULL);
   translate_class_info (retval, info);
 
@@ -581,6 +582,7 @@ default_device:
                   "device-manager", manager_x11,
                   "device-mode", CLUTTER_INPUT_MODE_MASTER,
                   "backend", backend_x11,
+                  "enabled", TRUE,
                   NULL);
   CLUTTER_NOTE (BACKEND, "Added core pointer device");
 
@@ -592,6 +594,7 @@ default_device:
                   "device-manager", manager_x11,
                   "device-mode", CLUTTER_INPUT_MODE_MASTER,
                   "backend", backend_x11,
+                  "enabled", TRUE,
                   NULL);
   CLUTTER_NOTE (BACKEND, "Added core keyboard device");
 
