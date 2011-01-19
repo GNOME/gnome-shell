@@ -141,7 +141,7 @@ clutter_input_device_set_property (GObject      *gobject,
       break;
 
     case PROP_ENABLED:
-      self->is_enabled = g_value_get_boolean (value);
+      clutter_input_device_set_enabled (self, g_value_get_boolean (value));
       break;
 
     default:
@@ -189,10 +189,7 @@ clutter_input_device_get_property (GObject    *gobject,
       break;
 
     case PROP_N_AXES:
-      if (self->axes != NULL)
-        g_value_set_uint (value, self->axes->len);
-      else
-        g_value_set_uint (value, 0);
+      g_value_set_uint (value, clutter_input_device_get_n_axes (self));
       break;
 
     case PROP_ENABLED:
@@ -257,6 +254,13 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                        CLUTTER_PARAM_READWRITE |
                        G_PARAM_CONSTRUCT_ONLY);
 
+  /**
+   * ClutterInputDevice:device-manager:
+   *
+   * The #ClutterDeviceManager instance which owns the device
+   *
+   * Since: 1.6
+   */
   obj_props[PROP_DEVICE_MANAGER] =
     g_param_spec_object ("device-manager",
                          P_("Device Manager"),
@@ -264,6 +268,13 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                          CLUTTER_TYPE_DEVICE_MANAGER,
                          CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
+  /**
+   * ClutterInputDevice:mode:
+   *
+   * The mode of the device.
+   *
+   * Since: 1.6
+   */
   obj_props[PROP_DEVICE_MODE] =
     g_param_spec_enum ("device-mode",
                        P_("Device Mode"),
@@ -272,6 +283,13 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                        CLUTTER_INPUT_MODE_FLOATING,
                        CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
+  /**
+   * ClutterInputDevice:has-cursor:
+   *
+   * Whether the device has an on screen cursor following its movement.
+   *
+   * Since: 1.6
+   */
   obj_props[PROP_HAS_CURSOR] =
     g_param_spec_boolean ("has-cursor",
                           P_("Has Cursor"),
@@ -279,6 +297,18 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                           FALSE,
                           CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
+  /**
+   * ClutterInputDevice:enabled:
+   *
+   * Whether the device is enabled.
+   *
+   * A device with the #ClutterInputDevice:device-mode property set
+   * to %CLUTTER_INPUT_MODE_MASTER cannot be disabled.
+   *
+   * A device must be enabled in order to receive events from it.
+   *
+   * Since: 1.6
+   */
   obj_props[PROP_ENABLED] =
     g_param_spec_boolean ("enabled",
                           P_("Enabled"),
@@ -286,6 +316,13 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                           FALSE,
                           CLUTTER_PARAM_READWRITE);
 
+  /**
+   * ClutterInputDevice:n-axes:
+   *
+   * The number of axes of the device.
+   *
+   * Since: 1.6
+   */
   obj_props[PROP_N_AXES] =
     g_param_spec_uint ("n-axes",
                        P_("Number of Axes"),
@@ -294,6 +331,13 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                        0,
                        CLUTTER_PARAM_READABLE);
 
+  /**
+   * ClutterInputDevice:backend:
+   *
+   * The #ClutterBackend that created the device.
+   *
+   * Since: 1.6
+   */
   obj_props[PROP_BACKEND] =
     g_param_spec_object ("backend",
                          P_("Backend"),
@@ -325,8 +369,8 @@ clutter_input_device_init (ClutterInputDevice *self)
   self->max_keycode = G_MAXUINT;
 }
 
-/*
- * _clutter_input_device_set_coords:
+/*< private >
+ * clutter_input_device_set_coords:
  * @device: a #ClutterInputDevice
  * @x: X coordinate of the device
  * @y: Y coordinate of the device
@@ -347,8 +391,8 @@ _clutter_input_device_set_coords (ClutterInputDevice *device,
     device->current_y = y;
 }
 
-/*
- * _clutter_input_device_set_state:
+/*< private >
+ * clutter_input_device_set_state:
  * @device: a #ClutterInputDevice
  * @state: a bitmask of modifiers
  *
@@ -363,8 +407,8 @@ _clutter_input_device_set_state (ClutterInputDevice  *device,
   device->current_state = state;
 }
 
-/*
- * _clutter_input_device_set_time:
+/*< private >
+ * clutter_input_device_set_time:
  * @device: a #ClutterInputDevice
  * @time_: the time
  *
@@ -380,10 +424,7 @@ _clutter_input_device_set_time (ClutterInputDevice *device,
     device->current_time = time_;
 }
 
-/*
- * cursor_weak_unref:
- *
- * #ClutterInputDevice keeps a weak reference on the actor
+/* #ClutterInputDevice keeps a weak reference on the actor
  * under its pointer; this function unsets the reference on
  * the actor to avoid keeping around stale pointers
  */
@@ -396,8 +437,8 @@ cursor_weak_unref (gpointer  user_data,
   device->cursor_actor = NULL;
 }
 
-/*
- * _clutter_input_device_set_stage:
+/*< private >
+ * clutter_input_device_set_stage:
  * @device: a #ClutterInputDevice
  * @stage: a #ClutterStage or %NULL
  *
@@ -446,8 +487,8 @@ _clutter_input_device_set_stage (ClutterInputDevice *device,
   device->cursor_actor = NULL;
 }
 
-/*
- * _clutter_input_device_set_actor:
+/*< private >
+ * clutter_input_device_set_actor:
  * @device: a #ClutterInputDevice
  * @actor: a #ClutterActor
  *
@@ -925,6 +966,12 @@ clutter_input_device_update_from_event (ClutterInputDevice *device,
     _clutter_input_device_set_stage (device, event_stage);
 }
 
+/*< private >
+ * clutter_input_device_reset_axes:
+ * @device: a #ClutterInputDevice
+ *
+ * Resets the axes on @device
+ */
 void
 _clutter_input_device_reset_axes (ClutterInputDevice *device)
 {
@@ -936,6 +983,16 @@ _clutter_input_device_reset_axes (ClutterInputDevice *device)
     }
 }
 
+/*< private >
+ * clutter_input_device_add_axis:
+ * @device: a #ClutterInputDevice
+ * @axis: the axis type
+ * @minimum: the minimum axis value
+ * @maximum: the maximum axis value
+ * @resolution: the axis resolution
+ *
+ * Adds an axis of type @axis on @device.
+ */
 guint
 _clutter_input_device_add_axis (ClutterInputDevice *device,
                                 ClutterInputAxis    axis,
@@ -1134,6 +1191,18 @@ clutter_input_device_get_n_axes (ClutterInputDevice *device)
   return 0;
 }
 
+/*< private >
+ * clutter_input_device_set_keys:
+ * @device: a #ClutterInputDevice
+ * @n_keys: the number of keys of the device
+ * @min_keycode: the minimum key code
+ * @max_keycode: the maximum key code
+ *
+ * Initializes the keys of @device.
+ *
+ * Call clutter_input_device_set_key() on each key to set the keyval
+ * and modifiers.
+ */
 void
 _clutter_input_device_set_keys (ClutterInputDevice *device,
                                 guint               n_keys,
