@@ -1491,6 +1491,48 @@ shell_global_get_pointer (ShellGlobal         *global,
 }
 
 /**
+ * shell_global_sync_pointer:
+ * @global: the #ShellGlobal
+ *
+ * Ensures that clutter is aware of the current pointer position,
+ * causing enter and leave events to be emitted if the pointer moved
+ * behind our back (ie, during a pointer grab).
+ */
+void
+shell_global_sync_pointer (ShellGlobal *global)
+{
+  int x, y;
+  GdkModifierType mods;
+  ClutterMotionEvent event;
+
+  gdk_display_get_pointer (gdk_display_get_default (), NULL, &x, &y, &mods);
+
+  event.type = CLUTTER_MOTION;
+  event.time = shell_global_get_current_time (global);
+  event.flags = 0;
+  /* This is wrong: we should be setting event.stage to NULL if the
+   * pointer is not inside the bounds of the stage given the current
+   * stage_input_mode. For our current purposes however, this works.
+   */
+  event.stage = CLUTTER_STAGE (meta_plugin_get_stage (global->plugin));
+  event.x = x;
+  event.y = y;
+  event.modifier_state = mods;
+  event.axes = NULL;
+  event.device = clutter_device_manager_get_core_device (clutter_device_manager_get_default (),
+                                                         CLUTTER_POINTER_DEVICE);
+
+  /* Leaving event.source NULL will force clutter to look it up, which
+   * will generate enter/leave events as a side effect, if they are
+   * needed. We need a better way to do this though... see
+   * http://bugzilla.clutter-project.org/show_bug.cgi?id=2615.
+   */
+  event.source = NULL;
+
+  clutter_event_put ((ClutterEvent *)&event);
+}
+
+/**
  * shell_get_event_state:
  * @event: a #ClutterEvent
  *

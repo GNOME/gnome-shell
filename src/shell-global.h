@@ -103,10 +103,11 @@ MetaRectangle *shell_global_get_primary_monitor (ShellGlobal  *global);
 int            shell_global_get_primary_monitor_index (ShellGlobal  *global);
 MetaRectangle *shell_global_get_focus_monitor   (ShellGlobal  *global);
 
-void shell_global_get_pointer (ShellGlobal         *global,
-                               int                 *x,
-                               int                 *y,
-                               ClutterModifierType *mods);
+void shell_global_get_pointer  (ShellGlobal         *global,
+                                int                 *x,
+                                int                 *y,
+                                ClutterModifierType *mods);
+void shell_global_sync_pointer (ShellGlobal         *global);
 
 GSettings *shell_global_get_settings (ShellGlobal *global);
 
