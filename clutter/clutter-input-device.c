@@ -1002,6 +1002,18 @@ clutter_input_device_get_axis (ClutterInputDevice *device,
  * Extracts the value of the given @axis of a #ClutterInputDevice from
  * an array of axis values.
  *
+ * An example of typical usage for this function is:
+ *
+ * |[
+ *   ClutterInputDevice *device = clutter_event_get_device (event);
+ *   gdouble *axes = clutter_event_get_axes (event, NULL);
+ *   gdouble pressure_value = 0;
+ *
+ *   clutter_input_device_get_axis_value (device, axes,
+ *                                        CLUTTER_INPUT_AXIS_PRESSURE,
+ *                                        &amp;pressure_value);
+ * ]|
+ *
  * Return value: %TRUE if the value was set, and %FALSE otherwise
  *
  * Since: 1.6
@@ -1167,6 +1179,16 @@ clutter_input_device_get_key (ClutterInputDevice  *device,
   return TRUE;
 }
 
+/*< private >
+ * clutter_input_device_add_slave:
+ * @master: a #ClutterInputDevice
+ * @slave: a #ClutterInputDevice
+ *
+ * Adds @slave to the list of slave devices of @master
+ *
+ * This function does not increase the reference count of either @master
+ * or @slave.
+ */
 void
 _clutter_input_device_add_slave (ClutterInputDevice *master,
                                  ClutterInputDevice *slave)
@@ -1175,6 +1197,16 @@ _clutter_input_device_add_slave (ClutterInputDevice *master,
     master->slaves = g_list_prepend (master->slaves, slave);
 }
 
+/*< private >
+ * clutter_input_device_remove_slave:
+ * @master: a #ClutterInputDevice
+ * @slave: a #ClutterInputDevice
+ *
+ * Removes @slave from the list of slave devices of @master.
+ *
+ * This function does not decrease the reference count of either @master
+ * or @slave.
+ */
 void
 _clutter_input_device_remove_slave (ClutterInputDevice *master,
                                     ClutterInputDevice *slave)
