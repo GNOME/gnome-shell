@@ -279,7 +279,7 @@ st_icon_style_changed (StWidget *widget)
   StThemeNode *theme_node = st_widget_get_theme_node (widget);
   StIconPrivate *priv = self->priv;
 
-  priv->theme_icon_size = st_theme_node_get_length (theme_node, "icon-size");
+  priv->theme_icon_size = (int)(0.5 + st_theme_node_get_length (theme_node, "icon-size"));
   st_icon_update_icon_size (self);
   st_icon_update (self);
 }
