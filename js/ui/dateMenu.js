@@ -85,7 +85,11 @@ DateMenuButton.prototype = {
         this._eventList = new Calendar.EventsList(this._eventSource);
 
         // Calendar
-        this._calendar = new Calendar.Calendar(this._eventSource, this._eventList);
+        this._calendar = new Calendar.Calendar(this._eventSource);
+        this._calendar.connect('selected-date-changed',
+                               Lang.bind(this, function(calendar, date) {
+                                   this._eventList.setDate(date);
+                               }));
         vbox.add(this._calendar.actor);
 
         // Add vertical separator
@@ -106,6 +110,8 @@ DateMenuButton.prototype = {
             if (isOpen) {
                 let now = new Date();
                 this._calendar.setDate(now);
+                // No need to update this._eventList as ::selected-date-changed
+                // signal will fire
             }
         }));
 

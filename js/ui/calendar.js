@@ -248,15 +248,13 @@ Signals.addSignalMethods(FakeEventSource.prototype);
 // Calendar:
 // @eventSource: is an object implementing the EventSource API, e.g. the
 // getTasks(), hasTasks() methods and the ::changed signal.
-// @eventList: is the EventList object to control
-function Calendar(eventSource, eventList) {
-    this._init(eventSource, eventList);
+function Calendar(eventSource) {
+    this._init(eventSource);
 }
 
 Calendar.prototype = {
-    _init: function(eventSource, eventList) {
+    _init: function(eventSource) {
         this._eventSource = eventSource;
-        this._eventList = eventList;
 
         this._eventSource.connect('changed', Lang.bind(this, this._update));
 
@@ -487,17 +485,6 @@ Calendar.prototype = {
                 row++;
             }
         }
-
-        // update the event list widget
-        if (now.getDate() == this.selectedDate.getDate() &&
-            now.getMonth() == this.selectedDate.getMonth() &&
-            now.getFullYear() == this.selectedDate.getFullYear()) {
-            // Today - show: Today, Tomorrow and This Week
-            this._eventList.showToday();
-        } else {
-            // Not Today - show only events from that day
-            this._eventList.showOtherDay(this.selectedDate);
-        }
     }
 };
 
@@ -510,7 +497,10 @@ function EventsList(eventSource) {
 EventsList.prototype = {
     _init: function(eventSource) {
         this.actor = new St.BoxLayout({ vertical: true, style_class: 'events-header-vbox'});
+        this._date = new Date();
         this._eventSource = eventSource;
+        this._eventSource.connect('changed', Lang.bind(this, this._update));
+        this._update();
     },
 
     _addEvent: function(dayNameBox, timeBox, eventTitleBox, includeDayName, day, time, desc) {
@@ -554,7 +544,7 @@ EventsList.prototype = {
         }
     },
 
-    showOtherDay: function(day) {
+    _showOtherDay: function(day) {
         this.actor.destroy_children();
 
         let dayBegin = new Date(day.getTime());
@@ -566,7 +556,7 @@ EventsList.prototype = {
         this._addPeriod(day.toLocaleFormat('%A, %B %d, %Y'), dayBegin, dayEnd, false);
     },
 
-    showToday: function() {
+    _showToday: function() {
         this.actor.destroy_children();
 
         let dayBegin = new Date();
@@ -592,5 +582,22 @@ EventsList.prototype = {
         dayBegin.setDate(dayBegin.getDate() + 1);
         dayEnd.setDate(dayEnd.getDate() + 1 + d);
         this._addPeriod(_("This week"), dayBegin, dayEnd, true);
+    },
+
+    // Sets the event list to show events from a specific date
+    setDate: function(date) {
+        if (!_sameDay(date, this._date)) {
+            this._date = date;
+            this._update();
+        }
+    },
+
+    _update: function() {
+        let today = new Date();
+        if (_sameDay (this._date, today)) {
+            this._showToday();
+        } else {
+            this._showOtherDay(this._date);
+        }
     }
 };
