@@ -274,7 +274,7 @@ clutter_event_dispatch (GSource     *source,
           clicked = FALSE;
         }
 
-      g_queue_push_head (clutter_context->events_queue, event);
+      _clutter_event_push (event, FALSE);
     }
 
   /* Pop an event off the queue if any */
