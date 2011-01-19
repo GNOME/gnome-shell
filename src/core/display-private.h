@@ -77,6 +77,13 @@ typedef enum {
  */
 #define N_IGNORED_SERIALS           4
 
+typedef enum {
+  META_TILE_NONE,
+  META_TILE_LEFT,
+  META_TILE_RIGHT,
+  META_TILE_MAXIMIZED
+} MetaTileMode;
+
 struct _MetaDisplay
 {
   GObject parent_instance;
@@ -179,6 +186,7 @@ struct _MetaDisplay
   int         grab_anchor_root_x;
   int         grab_anchor_root_y;
   MetaRectangle grab_anchor_window_pos;
+  MetaTileMode  grab_tile_mode;
   int         grab_latest_motion_x;
   int         grab_latest_motion_y;
   gulong      grab_mask;

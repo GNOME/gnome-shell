@@ -553,6 +553,7 @@ meta_display_open (void)
   the_display->grab_window = NULL;
   the_display->grab_screen = NULL;
   the_display->grab_resize_popup = NULL;
+  the_display->grab_tile_mode = META_TILE_NONE;
 
   the_display->grab_edge_resistance_data = NULL;
 
@@ -3580,6 +3581,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_xwindow = grab_xwindow;
   display->grab_button = button;
   display->grab_mask = modmask;
+  display->grab_tile_mode = window->tile_mode;
   display->grab_anchor_root_x = root_x;
   display->grab_anchor_root_y = root_y;
   display->grab_latest_motion_x = root_x;
@@ -3776,6 +3778,7 @@ meta_display_end_grab_op (MetaDisplay *display,
   display->grab_window = NULL;
   display->grab_screen = NULL;
   display->grab_xwindow = None;
+  display->grab_tile_mode = META_TILE_NONE;
   display->grab_op = META_GRAB_OP_NONE;
 
   if (display->grab_resize_popup)
