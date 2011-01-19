@@ -1843,6 +1843,16 @@ meta_screen_tile_preview_update (MetaScreen *screen,
     }
 }
 
+void
+meta_screen_tile_preview_hide (MetaScreen *screen)
+{
+  if (screen->tile_preview_timeout_id > 0)
+    g_source_remove (screen->tile_preview_timeout_id);
+
+  if (screen->tile_preview)
+    meta_tile_preview_hide (screen->tile_preview);
+}
+
 MetaWindow*
 meta_screen_get_mouse_window (MetaScreen  *screen,
                               MetaWindow  *not_this_one)
