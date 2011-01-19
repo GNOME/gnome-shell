@@ -146,9 +146,9 @@ NotificationDaemon.prototype = {
                 return new St.Icon({ icon_name: icon,
                                      icon_type: St.IconType.FULLCOLOR,
                                      icon_size: size });
-        } else if (hints.icon_data) {
+        } else if (hints['image-data']) {
             let [width, height, rowStride, hasAlpha,
-                 bitsPerSample, nChannels, data] = hints.icon_data;
+                 bitsPerSample, nChannels, data] = hints['image-data'];
             return textureCache.load_from_raw(data, data.length, hasAlpha,
                                               width, height, rowStride, size);
         } else {
@@ -237,6 +237,15 @@ NotificationDaemon.prototype = {
         }
 
         hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
+
+        // Be compatible with the various hints for image data
+        // 'image-data' is the latest name of this hint, introduced in 1.2
+        if (!hints['image-data']) {
+            if (hints['image_data'])
+                hints['image-data'] = hints['image_data']; // version 1.1 of the spec
+            else if (hints['icon_data'])
+                hints['image-data'] = hints['icon_data']; // previous versions of the spec
+        }
 
         let ndata = { appName: appName,
                       icon: icon,
