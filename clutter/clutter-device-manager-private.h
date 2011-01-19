@@ -163,7 +163,7 @@ void            _clutter_input_device_select_stage_events       (ClutterInputDev
 
 gboolean        _clutter_input_device_translate_axis            (ClutterInputDevice   *device,
                                                                  guint                 index_,
-                                                                 gint                  value,
+                                                                 gdouble               value,
                                                                  gdouble              *axis_value);
 
 G_END_DECLS

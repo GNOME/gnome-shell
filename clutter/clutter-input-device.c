@@ -915,10 +915,25 @@ _clutter_input_device_add_axis (ClutterInputDevice *device,
   return pos;
 }
 
+/*< private >
+ * clutter_input_translate_axis:
+ * @device: a #ClutterInputDevice
+ * @index_: the index of the axis
+ * @gint: the absolute value of the axis
+ * @axis_value: (out): the translated value of the axis
+ *
+ * Performs a conversion from the absolute value of the axis
+ * to a relative value.
+ *
+ * The axis at @index_ must not be %CLUTTER_INPUT_AXIS_X or
+ * %CLUTTER_INPUT_AXIS_Y.
+ *
+ * Return value: %TRUE if the conversion was successful
+ */
 gboolean
 _clutter_input_device_translate_axis (ClutterInputDevice *device,
                                       guint               index_,
-                                      gint                value,
+                                      gdouble             value,
                                       gdouble            *axis_value)
 {
   ClutterAxisInfo *info;
