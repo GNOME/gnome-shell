@@ -1555,15 +1555,20 @@ process_mouse_move_resize_grab (MetaDisplay *display,
       if (window->tile_mode != META_TILE_NONE)
         meta_screen_tile_preview_hide (screen);
 
+      /* Restore the original tile mode */
+      window->tile_mode = display->grab_tile_mode;
+
       /* End move or resize and restore to original state.  If the
        * window was a maximized window that had been "shaken loose" we
        * need to remaximize it.  In normal cases, we need to do a
        * moveresize now to get the position back to the original.
        */
-      if (window->shaken_loose)
+      if (window->shaken_loose || window->tile_mode == META_TILE_MAXIMIZED)
         meta_window_maximize (window,
                               META_MAXIMIZE_HORIZONTAL |
                               META_MAXIMIZE_VERTICAL);
+      else if (window->tile_mode != META_TILE_NONE)
+        meta_window_tile (window);
       else
         meta_window_move_resize (display->grab_window,
                                  TRUE,
