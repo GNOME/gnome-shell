@@ -104,9 +104,7 @@ function _getEventDayAbbreviation(dayNumber) {
     return abbreviations[dayNumber];
 }
 
-// ------------------------------------------------------------------------
 // Abstraction for an appointment/task in a calendar
-//
 
 function CalendarTask(date, summary) {
     this._init(date, summary);
@@ -119,14 +117,11 @@ CalendarTask.prototype = {
     }
 };
 
-// ------------------------------------------------------------------------
 // Interface for appointments/tasks - e.g. the contents of a calendar
 //
 // TODO: write e.g. EvolutionEventSource
-//
 
 // First, an implementation with no events
-//
 function EmptyEventSource() {
     this._init();
 }
@@ -147,7 +142,6 @@ EmptyEventSource.prototype = {
 Signals.addSignalMethods(EmptyEventSource.prototype);
 
 // Second, an implementation with fake events
-//
 function FakeEventSource() {
     this._init();
 }
@@ -251,13 +245,10 @@ FakeEventSource.prototype = {
 };
 Signals.addSignalMethods(FakeEventSource.prototype);
 
-/* ------------------------------------------------------------------------ */
-
 // Calendar:
 // @eventSource: is an object implementing the EventSource API, e.g. the
 // getTasks(), hasTasks() methods and the ::changed signal.
 // @eventList: is the EventList object to control
-//
 function Calendar(eventSource, eventList) {
     this._init(eventSource, eventList);
 }
@@ -511,8 +502,6 @@ Calendar.prototype = {
 };
 
 Signals.addSignalMethods(Calendar.prototype);
-
-// ------------------------------------------------------------------------
 
 function EventsList(eventSource) {
     this._init(eventSource);
