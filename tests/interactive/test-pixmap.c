@@ -14,8 +14,10 @@
 # include <clutter/x11/clutter-x11.h>
 # include <clutter/x11/clutter-x11-texture-pixmap.h>
 
+# ifdef CLUTTER_WINDOWING_GLX
 # include <clutter/glx/clutter-glx.h>
 # include <clutter/glx/clutter-glx-texture-pixmap.h>
+# endif
 
 # include <X11/Xlib.h>
 # include <X11/extensions/Xcomposite.h>
