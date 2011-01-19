@@ -1,10 +1,10 @@
-#include <config.h>
-#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <glib.h>
 #include <gmodule.h>
 #include <stdlib.h>
-#include <clutter/clutter.h>
+
+#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl.h>
+#include <clutter/clutter.h>
 
 typedef void (*PaintFunc) (void);
 

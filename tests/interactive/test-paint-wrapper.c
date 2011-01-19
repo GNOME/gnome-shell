@@ -1,7 +1,3 @@
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include <gmodule.h>
 
 #undef CLUTTER_DISABLE_DEPRECATED
@@ -16,7 +12,7 @@
 #include <stdlib.h>
 #include <glib.h>
 
-#ifdef HAVE_CLUTTER_GLX
+#ifdef CLUTTER_WINDOWING_X11
 #include "clutter/x11/clutter-x11.h"
 #endif
 
@@ -205,7 +201,7 @@ test_paint_wrapper_main (int argc, char *argv[])
 
   error = NULL;
 
-#ifdef HAVE_CLUTTER_GLX
+#ifdef CLUTTER_WINDOWING_X11
   clutter_x11_set_use_argb_visual (TRUE);
 #endif
 

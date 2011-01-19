@@ -1,4 +1,6 @@
-#include <config.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -7,16 +9,16 @@
 #undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
-#if HAVE_CLUTTER_GLX
+#ifdef CLUTTER_WINDOWING_X11
 
-#include <clutter/x11/clutter-x11.h>
-#include <clutter/x11/clutter-x11-texture-pixmap.h>
+# include <clutter/x11/clutter-x11.h>
+# include <clutter/x11/clutter-x11-texture-pixmap.h>
 
-#include <clutter/glx/clutter-glx.h>
-#include <clutter/glx/clutter-glx-texture-pixmap.h>
+# include <clutter/glx/clutter-glx.h>
+# include <clutter/glx/clutter-glx-texture-pixmap.h>
 
-#include <X11/Xlib.h>
-#include <X11/extensions/Xcomposite.h>
+# include <X11/Xlib.h>
+# include <X11/extensions/Xcomposite.h>
 
 #define IMAGE   TESTS_DATADIR G_DIR_SEPARATOR_S "redhand.png"
 
@@ -320,7 +322,7 @@ test_pixmap_main (int argc, char **argv)
         clutter_behaviour_apply (depth_behavior, group);
     }
 
-#ifdef HAVE_CLUTTER_GLX
+#ifdef CLUTTER_WINDOWING_GLX
   /* a window with glx */
   if (!disable_glx)
     {
@@ -347,7 +349,7 @@ test_pixmap_main (int argc, char **argv)
 				      CLUTTER_GLX_TEXTURE_PIXMAP (tex)))
 	g_print ("NOTE: Using fallback path, not GLX TFP!\n");
     }
-#endif /* HAVE_CLUTTER_GLX */
+#endif /* CLUTTER_WINDOWING_GLX */
 
   if (group)
     row_height = clutter_actor_get_height (group);
@@ -400,6 +402,12 @@ test_pixmap_main (int argc, char **argv)
   return EXIT_SUCCESS;
 }
 
-#else /* HAVE_CLUTTER_GLX */
-int test_pixmap_main (int argc, char **argv) { return EXIT_SUCCESS; };
-#endif /* HAVE_CLUTTER_GLX */
+#else
+
+int
+test_pixmap_main (int argc, char **argv)
+{
+  return EXIT_SUCCESS;
+};
+
+#endif /* CLUTTER_WINDOWING_X11 */
