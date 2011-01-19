@@ -1,0 +1,66 @@
+# A makefile based framework for testing performance commits in retrospect,
+# based on work done by pippin@gimp.org done for GEGL, original code placed in the public domain.
+
+SELF = Makefile-retrospect
+
+MAKE_FLAGS = -j3 -k
+CC = "ccache gcc"   # if you do not have ccache replace with just gcc
+
+PROJECT_PATH = ../../
+
+# mute makes echoing of commands
+.SILENT:
+
+# replace sequential with random to build a random subset
+all: reset sequential
+#all: reset random
+
+retry:
+	rm -rf reports/`cat jobs | tail -n1`*
+	make -f $(SELF)
+
+prepare:
+	# uncomment these to make sure cpu is in high performance mode
+	#sudo sh -c 'echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor || true'
+	#sudo sh -c 'echo performance > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor || true'
+
+reset:
+	rm -rf jobs jobs
+	# remove checkout dir to have a full reset on each invokation
+	rm -rf checkout
+	# create clone
+	git clone -s $(PROJECT_PATH) checkout
+	mkdir reports > /dev/null 2>&1 || true
+	make -f $(SELF) jobs
+	make -f $(SELF) prepare
+
+jobs: joblist
+	./makejobs.rb joblist > jobs
+
+sequential:
+	for a in `cat jobs`;do make -f $(SELF) reports/$$a;done
+
+random:
+	for a in `cat jobs|sort`;do make -f $(SELF) reports/$$a;done
+
+reports/%:
+	# check out revision
+	(cd checkout; git checkout `echo $@|sed s:reports/::`)
+	# write header for report
+	git log -1 `echo $@|sed s:reports/::` > $@  || true 
+	# clean previous build
+	rm -rf install; mkdir install
+	# build revision
+	(cd checkout; if [ ! -f Makefile ]; then CC=$(CC) ./autogen.sh --disable-introspection --prefix=`pwd`/../install; fi ; \
+	 make $(MAKE_FLAGS) ; make -k install ) > $@.log 2>&1 || true
+	# testing
+	make -f Makefile-tests clean;\
+	make -f Makefile-tests; sync;\
+	make -f Makefile-tests check >> $@ || true
+	# update report.pdf / report.png
+	./create-report.rb
+	echo
+
+clean:
+	rm -rf reports jobs report.pdf report.png checkout install
+	make -f Makefile-tests clean

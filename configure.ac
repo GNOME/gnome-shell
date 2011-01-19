@@ -949,6 +949,7 @@ AC_CONFIG_FILES([
 	tests/interactive/Makefile
 	tests/interactive/wrapper.sh
 	tests/micro-bench/Makefile
+	tests/performance/Makefile
 
 	doc/Makefile
 	doc/reference/Makefile

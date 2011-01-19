@@ -1,0 +1,15 @@
+CFILES = $(wildcard *.c)
+bins   = $(subst ,,$(CFILES:.c=))
+
+all: $(bins)
+
+%: %.c
+	PKG_CONFIG_PATH=install/lib/pkgconfig:$(PKG_CONFIG_PATH) $(CC) -DTESTS_DATA_DIR=\"../data/\" `pkg-config clutter-1.0 --cflags --libs` -Wall -O2  -o $@ $<
+
+check: $(bins)
+	for a in $(bins); do \
+	  LD_LIBRARY_PATH=install/lib:$(LD_LIBRARY_PATH) ./$$a;\
+	done
+
+clean:
+	rm -f $(bins)

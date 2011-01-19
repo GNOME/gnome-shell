@@ -1,10 +1,10 @@
-SUBDIRS = accessibility data interactive micro-bench
+SUBDIRS = accessibility data interactive micro-bench performance
 
 if BUILD_TESTS
 SUBDIRS += conform
 endif
 
-DIST_SUBDIRS = accessibility data conform interactive micro-bench
+DIST_SUBDIRS = accessibility data conform interactive micro-bench performance
 
 EXTRA_DIST = README
 

@@ -1,0 +1,27 @@
+# This file lists the commits that we want to do retrospective testing
+# of, aborting the retrospective testing and adjusting this file will
+# add the commit range to be tested without having to redo the initial one
+# thus allowing a sparse distributed range to first be tested, with
+# detailed ranges added in later.
+
+master~500..master % 32   # every 32th commit, to provide context
+
+# various spans of commits around which "interesting things happen"
+
+#eeac7~1..985a4
+#6c6e93d~1..3142b15
+#0486c56..88b026
+#732eecf..8cfb158
+#b499696..b77d9a6
+#ba09e9c..7bdbbe6
+#b424bd7..c1878 
+#bc58de4..d03c3a6
+#5640a6..a29623e
+#6fd2663..6ec9c32
+# 012e4ab..1a8d577   #  
+#120d759~4..2235e70
+
+# ef8be9e25ebe77fc63055191cc48af53d731c108 - actor: Use paint volumes to always queue clipped redraws
+
+# 5d16000 going up, and 3b78949 going down,. was a case of clipped redraws being broken
+

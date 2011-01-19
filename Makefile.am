@@ -32,4 +32,7 @@ gcov:
 test-report full-report:
 	$(MAKE) -C tests/conform $(@)
 
-.PHONY: gcov test-report full-report
+perf-report:
+	$(MAKE) -C tests/performance $(@)
+
+.PHONY: gcov test-report full-report perf-report
