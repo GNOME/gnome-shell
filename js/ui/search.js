@@ -224,8 +224,8 @@ SearchProvider.prototype = {
 };
 Signals.addSignalMethods(SearchProvider.prototype);
 
-function OpenSearchSystem(title) {
-    this._init(title);
+function OpenSearchSystem() {
+    this._init();
 }
 
 OpenSearchSystem.prototype = {

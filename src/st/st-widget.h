@@ -82,6 +82,8 @@ struct _StWidgetClass
   gboolean (* navigate_focus)  (StWidget         *self,
                                 ClutterActor     *from,
                                 GtkDirectionType  direction);
+
+  GType    (*get_accessible_type)   (void);
 };
 
 GType st_widget_get_type (void) G_GNUC_CONST;

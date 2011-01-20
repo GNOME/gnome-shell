@@ -52,6 +52,7 @@
 #include "shell-perf-log.h"
 #include "shell-wm-private.h"
 #include "st.h"
+#include "shell-a11y.h"
 
 static void gnome_shell_plugin_dispose     (GObject *object);
 static void gnome_shell_plugin_finalize    (GObject *object);
@@ -419,6 +420,8 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+
+  shell_a11y_init ();
 
   settings = gtk_settings_get_default ();
   g_object_connect (settings,

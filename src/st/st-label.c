@@ -44,6 +44,8 @@
 #include "st-private.h"
 #include "st-widget.h"
 
+#include <st/st-widget-accessible.h>
+
 enum
 {
   PROP_0,
@@ -64,6 +66,8 @@ struct _StLabelPrivate
 };
 
 G_DEFINE_TYPE (StLabel, st_label, ST_TYPE_WIDGET);
+
+static GType st_label_accessible_get_type (void) G_GNUC_CONST;
 
 static void
 st_label_set_property (GObject      *gobject,
@@ -290,6 +294,7 @@ st_label_class_init (StLabelClass *klass)
   actor_class->unmap = st_label_unmap;
 
   widget_class->style_changed = st_label_style_changed;
+  widget_class->get_accessible_type = st_label_accessible_get_type;
 
   pspec = g_param_spec_object ("clutter-text",
 			       "Clutter Text",
@@ -402,4 +407,101 @@ st_label_get_clutter_text (StLabel *label)
   g_return_val_if_fail (ST_LABEL (label), NULL);
 
   return label->priv->label;
+}
+
+
+/******************************************************************************/
+/*************************** ACCESSIBILITY SUPPORT ****************************/
+/******************************************************************************/
+
+#define ST_TYPE_LABEL_ACCESSIBLE st_label_accessible_get_type ()
+
+#define ST_LABEL_ACCESSIBLE(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+  ST_TYPE_LABEL_ACCESSIBLE, StLabelAccessible))
+
+#define ST_IS_LABEL_ACCESSIBLE(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+  ST_TYPE_LABEL_ACCESSIBLE))
+
+#define ST_LABEL_ACCESSIBLE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), \
+  ST_TYPE_LABEL_ACCESSIBLE, StLabelAccessibleClass))
+
+#define ST_IS_LABEL_ACCESSIBLE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
+  ST_TYPE_LABEL_ACCESSIBLE))
+
+#define ST_LABEL_ACCESSIBLE_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
+  ST_TYPE_LABEL_ACCESSIBLE, StLabelAccessibleClass))
+
+typedef struct _StLabelAccessible  StLabelAccessible;
+typedef struct _StLabelAccessibleClass  StLabelAccessibleClass;
+
+struct _StLabelAccessible
+{
+  StWidgetAccessible parent;
+};
+
+struct _StLabelAccessibleClass
+{
+  StWidgetAccessibleClass parent_class;
+};
+
+static void st_label_accessible_class_init (StLabelAccessibleClass *klass);
+static void st_label_accessible_init       (StLabelAccessible *label);
+
+/* AtkObject */
+static void          st_label_accessible_initialize (AtkObject *obj,
+                                                     gpointer   data);
+static const gchar * st_label_accessible_get_name   (AtkObject *obj);
+
+G_DEFINE_TYPE (StLabelAccessible, st_label_accessible, ST_TYPE_WIDGET_ACCESSIBLE)
+
+static void
+st_label_accessible_class_init (StLabelAccessibleClass *klass)
+{
+  AtkObjectClass *atk_class = ATK_OBJECT_CLASS (klass);
+
+  atk_class->initialize = st_label_accessible_initialize;
+  atk_class->get_name = st_label_accessible_get_name;
+}
+
+static void
+st_label_accessible_init (StLabelAccessible *self)
+{
+  /* initialization done on AtkObject->initialize */
+}
+
+static void
+st_label_accessible_initialize (AtkObject *obj,
+                                gpointer   data)
+{
+  ATK_OBJECT_CLASS (st_label_accessible_parent_class)->initialize (obj, data);
+
+  obj->role = ATK_ROLE_LABEL;
+}
+
+static const gchar *
+st_label_accessible_get_name (AtkObject *obj)
+{
+  const gchar *name = NULL;
+
+  g_return_val_if_fail (ST_IS_LABEL_ACCESSIBLE (obj), NULL);
+
+  name = ATK_OBJECT_CLASS (st_label_accessible_parent_class)->get_name (obj);
+  if (name == NULL)
+    {
+      ClutterActor *actor = NULL;
+
+      actor = CLUTTER_ACTOR (atk_gobject_accessible_get_object (ATK_GOBJECT_ACCESSIBLE (obj)));
+
+      if (actor == NULL) /* State is defunct */
+        name = NULL;
+      else
+        name = st_label_get_text (ST_LABEL (actor));
+    }
+
+  return name;
 }

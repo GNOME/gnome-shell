@@ -88,8 +88,6 @@ function init() {
 
     _blockMethod('Clutter.Event.get_state', 'Shell.get_event_state',
                  'gjs\'s handling of Clutter.ModifierType is broken. See bug 597292.');
-    _blockMethod('Gdk.Device.get_state', 'global.get_pointer',
-                 'gjs\'s handling of Gdk.ModifierType is broken. See bug 597292.');
     _blockMethod('Gdk.Window.get_device_position', 'global.get_pointer',
                  'gjs\'s handling of Gdk.ModifierType is broken. See bug 597292.');
 

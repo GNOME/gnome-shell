@@ -42,6 +42,8 @@
 #include "st-tooltip.h"
 #include "st-theme-node-transition.h"
 
+#include "st-widget-accessible.h"
+
 /*
  * Forward declaration for sake of StWidgetChild
  */
@@ -67,6 +69,8 @@ struct _StWidgetPrivate
   StTooltip    *tooltip;
 
   StTextDirection   direction;
+
+  AtkObject *accessible;
 };
 
 /**
@@ -116,6 +120,8 @@ static void st_widget_recompute_style (StWidget    *widget,
 static gboolean st_widget_real_navigate_focus (StWidget         *widget,
                                                ClutterActor     *from,
                                                GtkDirectionType  direction);
+
+static AtkObject * st_widget_get_accessible (ClutterActor *actor);
 
 static void
 st_widget_set_property (GObject      *gobject,
@@ -280,6 +286,12 @@ st_widget_dispose (GObject *gobject)
 
       priv->tooltip = NULL;
     }
+
+  /* The real dispose of this accessible is done on
+   * AtkGObjectAccessible weak ref callback
+   */
+  if (priv->accessible)
+    priv->accessible = NULL;
 
   G_OBJECT_CLASS (st_widget_parent_class)->dispose (gobject);
 }
@@ -725,8 +737,11 @@ st_widget_class_init (StWidgetClass *klass)
   actor_class->key_focus_out = st_widget_key_focus_out;
   actor_class->hide = st_widget_hide;
 
+  actor_class->get_accessible = st_widget_get_accessible;
+
   klass->style_changed = st_widget_real_style_changed;
   klass->navigate_focus = st_widget_real_navigate_focus;
+  klass->get_accessible_type = st_widget_accessible_get_type;
 
   /**
    * StWidget:pseudo-class:
@@ -1947,4 +1962,194 @@ gfloat
 st_get_slow_down_factor ()
 {
   return st_slow_down_factor;
+}
+
+/******************************************************************************/
+/*************************** ACCESSIBILITY SUPPORT ****************************/
+/******************************************************************************/
+
+/* GObject */
+
+static void st_widget_accessible_class_init (StWidgetAccessibleClass *klass);
+static void st_widget_accessible_init       (StWidgetAccessible *widget);
+
+/* AtkObject */
+static AtkStateSet *st_widget_accessible_ref_state_set (AtkObject *obj);
+static void         st_widget_accessible_initialize    (AtkObject *obj,
+                                                        gpointer   data);
+
+/* Private methods */
+static void on_pseudo_class_notify (GObject    *gobject,
+                                    GParamSpec *pspec,
+                                    gpointer    data);
+static void on_can_focus_notify    (GObject    *gobject,
+                                    GParamSpec *pspec,
+                                    gpointer    data);
+static void check_selected         (StWidgetAccessible *self,
+                                    StWidget *widget);
+
+G_DEFINE_TYPE (StWidgetAccessible, st_widget_accessible, CALLY_TYPE_ACTOR)
+
+#define ST_WIDGET_ACCESSIBLE_GET_PRIVATE(obj) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ST_TYPE_WIDGET_ACCESSIBLE, \
+                                StWidgetAccessiblePrivate))
+
+struct _StWidgetAccessiblePrivate
+{
+  /* Cached values (used to avoid extra notifications) */
+  gboolean selected;
+};
+
+
+static AtkObject *
+st_widget_get_accessible (ClutterActor *actor)
+{
+  StWidget *widget = NULL;
+
+  g_return_val_if_fail (ST_IS_WIDGET (actor), NULL);
+
+  widget = ST_WIDGET (actor);
+
+  if (widget->priv->accessible == NULL)
+    {
+      widget->priv->accessible =
+        g_object_new (ST_WIDGET_GET_CLASS (widget)->get_accessible_type (),
+                      NULL);
+
+      atk_object_initialize (widget->priv->accessible, actor);
+    }
+
+  return widget->priv->accessible;
+}
+
+
+static void
+st_widget_accessible_class_init (StWidgetAccessibleClass *klass)
+{
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  AtkObjectClass *atk_class = ATK_OBJECT_CLASS (klass);
+
+  atk_class->ref_state_set = st_widget_accessible_ref_state_set;
+  atk_class->initialize = st_widget_accessible_initialize;
+
+  g_type_class_add_private (gobject_class, sizeof (StWidgetAccessiblePrivate));
+}
+
+static void
+st_widget_accessible_init (StWidgetAccessible *self)
+{
+  StWidgetAccessiblePrivate *priv = ST_WIDGET_ACCESSIBLE_GET_PRIVATE (self);
+
+  self->priv = priv;
+}
+
+static void
+st_widget_accessible_initialize (AtkObject *obj,
+                                 gpointer   data)
+{
+  ATK_OBJECT_CLASS (st_widget_accessible_parent_class)->initialize (obj, data);
+
+  g_signal_connect (data, "notify::pseudo-class",
+                    G_CALLBACK (on_pseudo_class_notify),
+                    obj);
+
+  g_signal_connect (data, "notify::can-focus",
+                    G_CALLBACK (on_can_focus_notify),
+                    obj);
+
+  /* Check the cached selected state and notify the first selection.
+   * Ie: it is required to ensure a first notification when Alt+Tab
+   * popup appears
+   */
+  check_selected (ST_WIDGET_ACCESSIBLE (obj), ST_WIDGET (data));
+}
+
+static AtkStateSet *
+st_widget_accessible_ref_state_set (AtkObject *obj)
+{
+  AtkStateSet *result = NULL;
+  ClutterActor *actor = NULL;
+  StWidget *widget = NULL;
+  StWidgetAccessible *self = NULL;
+
+  result = ATK_OBJECT_CLASS (st_widget_accessible_parent_class)->ref_state_set (obj);
+
+  actor = CLUTTER_ACTOR (atk_gobject_accessible_get_object (ATK_GOBJECT_ACCESSIBLE (obj)));
+
+  if (actor == NULL) /* State is defunct */
+    return result;
+
+  widget = ST_WIDGET (actor);
+  self = ST_WIDGET_ACCESSIBLE (obj);
+
+  /* priv->selected should be properly updated on the
+   * ATK_STATE_SELECTED notification callbacks
+   */
+  if (self->priv->selected)
+    atk_state_set_add_state (result, ATK_STATE_SELECTED);
+
+  /* On clutter there isn't any tip to know if a actor is focusable or
+   * not, anyone can receive the key_focus. For this reason
+   * cally_actor sets any actor as FOCUSABLE. This is not the case on
+   * St, where we have can_focus. But this means that we need to
+   * remove the state FOCUSABLE if it is not focusable
+   */
+  if (st_widget_get_can_focus (widget))
+    atk_state_set_add_state (result, ATK_STATE_FOCUSABLE);
+  else
+    atk_state_set_remove_state (result, ATK_STATE_FOCUSABLE);
+
+  return result;
+}
+
+static void
+on_pseudo_class_notify (GObject    *gobject,
+                        GParamSpec *pspec,
+                        gpointer    data)
+{
+  check_selected (ST_WIDGET_ACCESSIBLE (data),
+                  ST_WIDGET (gobject));
+}
+
+/*
+ * This method checks if the widget is selected, and notify a atk
+ * state change if required
+ *
+ * In order to decide if there was a selection, we use the current
+ * pseudo-class of the widget searching for "selected", the current
+ * homogeneus way to check if a item is selected (see bug 637830)
+ *
+ * In a ideal world we would have a more standard way to check if the
+ * item is selected or not, like the widget-context (as in the case of
+ * gtktreeview-cells), or something like the property "can-focus". But
+ * for the moment this is enough, and we can update that in the future
+ * if required.
+ */
+static void
+check_selected (StWidgetAccessible *self,
+                StWidget *widget)
+{
+  gboolean found = FALSE;
+
+  found = st_widget_has_style_pseudo_class (widget,
+                                            "selected");
+
+  if (found != self->priv->selected)
+    {
+      self->priv->selected = found;
+      atk_object_notify_state_change (ATK_OBJECT (self),
+                                      ATK_STATE_SELECTED,
+                                      found);
+    }
+}
+
+static void
+on_can_focus_notify (GObject    *gobject,
+                     GParamSpec *pspec,
+                     gpointer    data)
+{
+  gboolean can_focus = st_widget_get_can_focus (ST_WIDGET (gobject));
+
+  atk_object_notify_state_change (ATK_OBJECT (data),
+                                  ATK_STATE_FOCUSABLE, can_focus);
 }
