@@ -51,8 +51,6 @@
 
 #define BLUR_PADDING    2
 
-typedef struct _ClutterBlurEffectClass  ClutterBlurEffectClass;
-
 /* FIXME - lame shader; we should really have a decoupled
  * horizontal/vertical two pass shader for the gaussian blur
  */

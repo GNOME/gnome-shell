@@ -45,7 +45,16 @@ G_BEGIN_DECLS
 #define CLUTTER_BACKEND(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND, ClutterBackend))
 #define CLUTTER_IS_BACKEND(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND))
 
+/**
+ * ClutterBackend:
+ *
+ * <structname>ClutterBackend</structname> is an opaque structure whose
+ * members cannot be directly accessed.
+ *
+ * Since: 0.4
+ */
 typedef struct _ClutterBackend          ClutterBackend;
+typedef struct _ClutterBackendClass     ClutterBackendClass;
 
 GType clutter_backend_get_type    (void) G_GNUC_CONST;
 

@@ -50,8 +50,6 @@
 #define CLUTTER_IS_PAGE_TURN_EFFECT_CLASS(k)    (G_TYPE_CHECK_CLASS_TYPE ((k), CLUTTER_TYPE_PAGE_TURN_EFFECT))
 #define CLUTTER_PAGE_TURN_EFFECT_GET_CLASS(o)   (G_TYPE_INSTANCE_GET_CLASS ((o), CLUTTER_TYPE_PAGE_TURN_EFFECT, ClutterPageTurnEffectClass))
 
-typedef struct _ClutterPageTurnEffectClass      ClutterPageTurnEffectClass;
-
 struct _ClutterPageTurnEffect
 {
   ClutterDeformEffect parent_instance;

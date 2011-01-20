@@ -46,6 +46,7 @@ G_BEGIN_DECLS
  * Since: 1.4
  */
 typedef struct _ClutterDesaturateEffect         ClutterDesaturateEffect;
+typedef struct _ClutterDesaturateEffectClass    ClutterDesaturateEffectClass;
 
 GType clutter_desaturate_effect_get_type (void) G_GNUC_CONST;
 

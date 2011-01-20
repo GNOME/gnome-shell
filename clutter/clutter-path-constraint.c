@@ -50,8 +50,6 @@
 #define CLUTTER_IS_PATH_CONSTRAINT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_PATH_CONSTRAINT))
 #define CLUTTER_PATH_CONSTRAINT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_PATH_CONSTRAINT, ClutterPathConstraintClass))
 
-typedef struct _ClutterPathConstraintClass      ClutterPathConstraintClass;
-
 struct _ClutterPathConstraint
 {
   ClutterConstraint parent_instance;

@@ -893,6 +893,7 @@ clutter_behaviour_ellipse_get_type
 <SECTION>
 <FILE>clutter-backend</FILE>
 <TITLE>ClutterBackend</TITLE>
+ClutterBackend
 clutter_get_default_backend
 clutter_backend_set_resolution
 clutter_backend_get_resolution
@@ -912,9 +913,7 @@ CLUTTER_IS_BACKEND_CLASS
 CLUTTER_BACKEND_GET_CLASS
 CLUTTER_TYPE_BACKEND
 <SUBSECTION Private>
-ClutterBackend
 ClutterBackendClass
-ClutterBackendPrivate
 clutter_backend_get_type
 </SECTION>
 
@@ -1843,6 +1842,7 @@ CLUTTER_IS_BINDING_POOL
 CLUTTER_TYPE_BINDING_POOL
 
 <SUBSECTION Private>
+ClutterBindingPoolClass
 clutter_binding_pool_get_type
 </SECTION>
 
@@ -2320,11 +2320,12 @@ clutter_bind_constraint_set_coordinate
 clutter_bind_constraint_get_coordinate
 clutter_bind_constraint_set_offset
 clutter_bind_constraint_get_offset
-
 <SUBSECTION Standard>
 CLUTTER_TYPE_BIND_CONSTRAINT
 CLUTTER_BIND_CONSTRAINT
 CLUTTER_IS_BIND_CONSTRAINT
+<SUBSECTION Private>
+ClutterBindConstraintClass
 clutter_bind_constraint_get_type
 </SECTION>
 
@@ -2345,6 +2346,9 @@ clutter_align_constraint_get_factor
 CLUTTER_TYPE_ALIGN_CONSTRAINT
 CLUTTER_ALIGN_CONSTRAINT
 CLUTTER_IS_ALIGN_CONSTRAINT
+
+<SUBSECTION Private>
+ClutterAlignConstraintClass
 clutter_align_constraint_get_type
 </SECTION>
 
@@ -2490,6 +2494,7 @@ CLUTTER_TYPE_BLUR_EFFECT
 CLUTTER_BLUR_EFFECT
 CLUTTER_IS_BLUR_EFFECT
 <SUBSECTION Private>
+ClutterBlurEffectClass
 clutter_blur_effect_get_type
 </SECTION>
 
@@ -2505,6 +2510,7 @@ CLUTTER_TYPE_COLORIZE_EFFECT
 CLUTTER_COLORIZE_EFFECT
 CLUTTER_IS_COLORIZE_EFFECT
 <SUBSECTION Private>
+ClutterColorizeEffectClass
 clutter_colorize_effect_get_type
 </SECTION>
 
@@ -2520,6 +2526,7 @@ CLUTTER_TYPE_DESATURATE_EFFECT
 CLUTTER_DESATURATE_EFFECT
 CLUTTER_IS_DESATURATE_EFFECT
 <SUBSECTION Private>
+ClutterDesaturateEffectClass
 clutter_desaturate_effect_get_type
 </SECTION>
 
@@ -2560,6 +2567,7 @@ CLUTTER_TYPE_PAGE_TURN_EFFECT
 CLUTTER_PAGE_TURN_EFFECT
 CLUTTER_IS_PAGE_TURN_EFFECT
 <SUBSECTION Private>
+ClutterPageTurnEffectClass
 clutter_page_turn_effect_get_type
 </SECTION>
 
@@ -2572,6 +2580,7 @@ CLUTTER_TYPE_SETTINGS
 CLUTTER_SETTINGS
 CLUTTER_IS_SETTINGS
 <SUBSECTION Private>
+ClutterSettingsClass
 clutter_settings_get_type
 </SECTION>
 
@@ -2588,6 +2597,7 @@ CLUTTER_PATH_CONSTRAINT
 CLUTTER_IS_PATH_CONSTRAINT
 CLUTTER_TYPE_PATH_CONSTRAINT
 <SUBSECTION Private>
+ClutterPathConstraintClass
 clutter_path_constraint_get_type
 </SECTION>
 
@@ -2607,5 +2617,6 @@ CLUTTER_SNAP_CONSTRAINT
 CLUTTER_IS_SNAP_CONSTRAINT
 CLUTTER_TYPE_SNAP_CONSTRAINT
 <SUBSECTION Private>
+ClutterSnapConstraintClass
 clutter_snap_constraint_get_type
 </SECTION>

@@ -46,6 +46,7 @@ G_BEGIN_DECLS
  * Since: 1.0
  */
 typedef struct _ClutterBindingPool      ClutterBindingPool;
+typedef struct _ClutterBindingPoolClass ClutterBindingPoolClass;
 
 /**
  * ClutterBindingActionFunc:

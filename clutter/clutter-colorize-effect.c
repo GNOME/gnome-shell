@@ -50,8 +50,6 @@
 #include "clutter-offscreen-effect.h"
 #include "clutter-private.h"
 
-typedef struct _ClutterColorizeEffectClass    ClutterColorizeEffectClass;
-
 struct _ClutterColorizeEffect
 {
   ClutterOffscreenEffect parent_instance;

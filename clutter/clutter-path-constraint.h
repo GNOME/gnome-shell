@@ -46,7 +46,8 @@ G_BEGIN_DECLS
  *
  * Since: 1.6
  */
-typedef struct _ClutterPathConstraint   ClutterPathConstraint;
+typedef struct _ClutterPathConstraint           ClutterPathConstraint;
+typedef struct _ClutterPathConstraintClass      ClutterPathConstraintClass;
 
 GType clutter_path_constraint_get_type (void) G_GNUC_CONST;
 

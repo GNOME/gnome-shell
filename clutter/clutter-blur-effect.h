@@ -46,6 +46,7 @@ G_BEGIN_DECLS
  * Since: 1.4
  */
 typedef struct _ClutterBlurEffect       ClutterBlurEffect;
+typedef struct _ClutterBlurEffectClass  ClutterBlurEffectClass;
 
 GType clutter_blur_effect_get_type (void) G_GNUC_CONST;
 

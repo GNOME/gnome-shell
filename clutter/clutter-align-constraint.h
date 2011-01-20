@@ -45,7 +45,8 @@ G_BEGIN_DECLS
  *
  * Since: 1.4
  */
-typedef struct _ClutterAlignConstraint  ClutterAlignConstraint;
+typedef struct _ClutterAlignConstraint          ClutterAlignConstraint;
+typedef struct _ClutterAlignConstraintClass     ClutterAlignConstraintClass;
 
 /**
  * ClutterAlignAxis:

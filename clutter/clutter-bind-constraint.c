@@ -97,8 +97,6 @@
 #define CLUTTER_IS_BIND_CONSTRAINT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_BIND_CONSTRAINT))
 #define CLUTTER_BIND_CONSTRAINT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BIND_CONSTRAINT, ClutterBindConstraintClass))
 
-typedef struct _ClutterBindConstraintClass      ClutterBindConstraintClass;
-
 struct _ClutterBindConstraint
 {
   ClutterConstraint parent_instance;

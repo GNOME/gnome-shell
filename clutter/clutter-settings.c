@@ -32,8 +32,6 @@
 #define CLUTTER_IS_SETTINGS_CLASS(klass)        (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_SETTINGS))
 #define CLUTTER_SETTINGS_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_SETTINGS, ClutterSettingsClass))
 
-typedef struct _ClutterSettingsClass            ClutterSettingsClass;
-
 /**
  * ClutterSettings:
  *

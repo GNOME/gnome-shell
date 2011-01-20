@@ -45,7 +45,8 @@ G_BEGIN_DECLS
  *
  * Since: 1.4
  */
-typedef struct _ClutterBindConstraint   ClutterBindConstraint;
+typedef struct _ClutterBindConstraint           ClutterBindConstraint;
+typedef struct _ClutterBindConstraintClass      ClutterBindConstraintClass;
 
 /**
  * ClutterBindCoordinate:

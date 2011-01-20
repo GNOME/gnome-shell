@@ -116,7 +116,6 @@
                                   CLUTTER_HYPER_MASK   | \
                                   CLUTTER_META_MASK)   | CLUTTER_RELEASE_MASK)
 
-typedef struct _ClutterBindingPoolClass ClutterBindingPoolClass;
 typedef struct _ClutterBindingEntry     ClutterBindingEntry;
 
 static GSList *clutter_binding_pools = NULL;

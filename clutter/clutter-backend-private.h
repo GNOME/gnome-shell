@@ -31,7 +31,6 @@
 G_BEGIN_DECLS
 
 typedef struct _ClutterBackendPrivate   ClutterBackendPrivate;
-typedef struct _ClutterBackendClass     ClutterBackendClass;
 
 struct _ClutterBackend
 {

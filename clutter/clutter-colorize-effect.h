@@ -46,7 +46,8 @@ G_BEGIN_DECLS
  *
  * SinceL 1.4
  */
-typedef struct _ClutterColorizeEffect   ClutterColorizeEffect;
+typedef struct _ClutterColorizeEffect           ClutterColorizeEffect;
+typedef struct _ClutterColorizeEffectClass      ClutterColorizeEffectClass;
 
 GType clutter_colorize_effect_get_type (void) G_GNUC_CONST;
 

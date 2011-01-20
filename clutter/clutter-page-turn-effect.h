@@ -49,6 +49,7 @@ G_BEGIN_DECLS
  * Since: 1.4
  */
 typedef struct _ClutterPageTurnEffect           ClutterPageTurnEffect;
+typedef struct _ClutterPageTurnEffectClass      ClutterPageTurnEffectClass;
 
 GType clutter_page_turn_effect_get_type (void) G_GNUC_CONST;
 

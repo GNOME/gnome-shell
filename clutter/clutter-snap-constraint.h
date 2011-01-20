@@ -45,7 +45,8 @@ G_BEGIN_DECLS
  *
  * Since: 1.6
  */
-typedef struct _ClutterSnapConstraint   ClutterSnapConstraint;
+typedef struct _ClutterSnapConstraint           ClutterSnapConstraint;
+typedef struct _ClutterSnapConstraintClass      ClutterSnapConstraintClass;
 
 /**
  * ClutterSnapEdge:

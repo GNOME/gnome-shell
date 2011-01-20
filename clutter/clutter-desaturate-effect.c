@@ -54,8 +54,6 @@
 #include "clutter-offscreen-effect.h"
 #include "clutter-private.h"
 
-typedef struct _ClutterDesaturateEffectClass    ClutterDesaturateEffectClass;
-
 struct _ClutterDesaturateEffect
 {
   ClutterOffscreenEffect parent_instance;
