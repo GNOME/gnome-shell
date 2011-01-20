@@ -26,6 +26,7 @@ RemoveFavoriteIcon.prototype = {
         this._iconActor = null;
         this.icon = new IconGrid.BaseIcon(_("Remove"),
                                            { setSizeManually: true,
+                                             showLabel: false,
                                              createIcon: Lang.bind(this, this._createIcon) });
         this.actor.set_child(this.icon.actor);
         this.actor._delegate = this;
@@ -192,7 +193,8 @@ Dash.prototype = {
 
     _addApp: function(app) {
         let display = new AppDisplay.AppWellIcon(app,
-                                                 { setSizeManually: true });
+                                                 { setSizeManually: true,
+                                                   showLabel: false });
         display._draggable.connect('drag-begin',
                                    Lang.bind(this, function() {
                                        display.actor.opacity = 50;
