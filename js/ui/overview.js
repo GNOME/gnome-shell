@@ -207,9 +207,9 @@ Overview.prototype = {
 
         if (targetIsWindow &&
             dragEvent.targetActor._delegate.metaWindow == this._lastHoveredWindow)
-            return;
-        else
-            this._lastHoveredWindow = null;
+            return DND.DragMotionResult.CONTINUE;
+
+        this._lastHoveredWindow = null;
 
         if (this._windowSwitchTimeoutId != 0) {
             Mainloop.source_remove(this._windowSwitchTimeoutId);
