@@ -845,7 +845,7 @@ add_line (void *vertices,
           CoglVertexAttribute *attribute,
           int start,
           int end,
-          CoglP3Vertex *lines,
+          CoglVertexP3 *lines,
           int *n_line_vertices)
 {
   int start_index = get_index (indices, indices_type, start);
@@ -868,7 +868,7 @@ add_line (void *vertices,
   *n_line_vertices += 2;
 }
 
-static CoglP3Vertex *
+static CoglVertexP3 *
 get_wire_lines (CoglVertexAttribute *attribute,
                 CoglVerticesMode mode,
                 int n_vertices_in,
@@ -882,7 +882,7 @@ get_wire_lines (CoglVertexAttribute *attribute,
   CoglIndicesType indices_type;
   int i;
   int n_lines;
-  CoglP3Vertex *out;
+  CoglVertexP3 *out;
 
   vertices = cogl_buffer_map (COGL_BUFFER (vertex_array),
                               COGL_BUFFER_ACCESS_READ, 0);
@@ -902,7 +902,7 @@ get_wire_lines (CoglVertexAttribute *attribute,
       (n_vertices_in % 3) == 0)
     {
       n_lines = n_vertices_in;
-      out = g_new (CoglP3Vertex, n_lines * 2);
+      out = g_new (CoglVertexP3, n_lines * 2);
       for (i = 0; i < n_vertices_in; i += 3)
         {
           add_line (vertices, indices, indices_type, attribute,
@@ -917,7 +917,7 @@ get_wire_lines (CoglVertexAttribute *attribute,
            n_vertices_in >= 3)
     {
       n_lines = 2 * n_vertices_in - 3;
-      out = g_new (CoglP3Vertex, n_lines * 2);
+      out = g_new (CoglVertexP3, n_lines * 2);
 
       add_line (vertices, indices, indices_type, attribute,
                 0, 1, out, n_vertices_out);
@@ -938,7 +938,7 @@ get_wire_lines (CoglVertexAttribute *attribute,
            n_vertices_in >= 3)
     {
       n_lines = 2 * n_vertices_in - 3;
-      out = g_new (CoglP3Vertex, n_lines * 2);
+      out = g_new (CoglVertexP3, n_lines * 2);
 
       add_line (vertices, indices, indices_type, attribute,
                 0, 1, out, n_vertices_out);
@@ -961,7 +961,7 @@ get_wire_lines (CoglVertexAttribute *attribute,
   else if (mode == GL_QUADS && (n_vertices_in % 4) == 0)
     {
       n_lines = n_vertices_in;
-      out = g_new (CoglP3Vertex, n_lines * 2);
+      out = g_new (CoglVertexP3, n_lines * 2);
 
       for (i = 0; i < n_vertices_in; i += 4)
         {
@@ -996,7 +996,7 @@ draw_wireframe (CoglVerticesMode mode,
   int n_line_vertices;
   static CoglPipeline *wire_pipeline;
   CoglVertexAttribute *wire_attribute[2];
-  CoglP3Vertex *lines;
+  CoglVertexP3 *lines;
   CoglVertexArray *array;
 
   for (i = 0; attributes[i]; i++)
@@ -1015,11 +1015,11 @@ draw_wireframe (CoglVerticesMode mode,
                           n_vertices,
                           &n_line_vertices,
                           indices);
-  array = cogl_vertex_array_new (sizeof (CoglP3Vertex) * n_line_vertices,
+  array = cogl_vertex_array_new (sizeof (CoglVertexP3) * n_line_vertices,
                                  lines);
   wire_attribute[0] =
     cogl_vertex_attribute_new (array, "cogl_position_in",
-                               sizeof (CoglP3Vertex),
+                               sizeof (CoglVertexP3),
                                0,
                                3,
                                COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);

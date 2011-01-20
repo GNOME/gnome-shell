@@ -47,7 +47,7 @@ G_BEGIN_DECLS
 typedef struct _CoglPrimitive CoglPrimitive;
 
 /**
- * CoglP2Vertex:
+ * CoglVertexP2:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  *
@@ -60,10 +60,10 @@ typedef struct _CoglPrimitive CoglPrimitive;
 typedef struct
 {
    float x, y;
-} CoglP2Vertex;
+} CoglVertexP2;
 
 /**
- * CoglP3Vertex:
+ * CoglVertexP3:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @z: The z component of a position attribute
@@ -77,10 +77,10 @@ typedef struct
 typedef struct
 {
    float x, y, z;
-} CoglP3Vertex;
+} CoglVertexP3;
 
 /**
- * CoglP2C4Vertex:
+ * CoglVertexP2C4:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @r: The red component of a color attribute
@@ -98,10 +98,10 @@ typedef struct
 {
    float x, y;
    guint8 r, g, b, a;
-} CoglP2C4Vertex;
+} CoglVertexP2C4;
 
 /**
- * CoglP3C4Vertex:
+ * CoglVertexP3C4:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @z: The z component of a position attribute
@@ -120,10 +120,10 @@ typedef struct
 {
    float x, y, z;
    guint8 r, g, b, a;
-} CoglP3C4Vertex;
+} CoglVertexP3C4;
 
 /**
- * CoglP2T2Vertex:
+ * CoglVertexP2T2:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @s: The s component of a texture coordinate attribute
@@ -139,10 +139,10 @@ typedef struct
 {
    float x, y;
    float s, t;
-} CoglP2T2Vertex;
+} CoglVertexP2T2;
 
 /**
- * CoglP3T2Vertex:
+ * CoglVertexP3T2:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @z: The z component of a position attribute
@@ -159,11 +159,11 @@ typedef struct
 {
    float x, y, z;
    float s, t;
-} CoglP3T2Vertex;
+} CoglVertexP3T2;
 
 
 /**
- * CoglP2T2C4Vertex:
+ * CoglVertexP2T2C4:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @s: The s component of a texture coordinate attribute
@@ -184,10 +184,10 @@ typedef struct
    float x, y;
    float s, t;
    guint8 r, g, b, a;
-} CoglP2T2C4Vertex;
+} CoglVertexP2T2C4;
 
 /**
- * CoglP3T2C4Vertex:
+ * CoglVertexP3T2C4:
  * @x: The x component of a position attribute
  * @y: The y component of a position attribute
  * @z: The z component of a position attribute
@@ -209,7 +209,7 @@ typedef struct
    float x, y, z;
    float s, t;
    guint8 r, g, b, a;
-} CoglP3T2C4Vertex;
+} CoglVertexP3T2C4;
 
 /**
  * cogl_primitive_new:
@@ -241,7 +241,7 @@ cogl_primitive_new_with_attributes_array (CoglVerticesMode mode,
  * cogl_primitive_new_p2:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to process when drawing
- * @data: An array of #CoglP2Vertex vertices
+ * @data: An array of #CoglVertexP2 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -250,7 +250,7 @@ cogl_primitive_new_with_attributes_array (CoglVerticesMode mode,
  *
  * For example to draw a convex polygon you can do:
  * |[
- * CoglP2Vertex triangle[] =
+ * CoglVertexP2 triangle[] =
  * {
  *   { 0,   300 },
  *   { 150, 0,  },
@@ -279,13 +279,13 @@ cogl_primitive_new_with_attributes_array (CoglVerticesMode mode,
 CoglPrimitive *
 cogl_primitive_new_p2 (CoglVerticesMode mode,
                        int n_vertices,
-                       const CoglP2Vertex *data);
+                       const CoglVertexP2 *data);
 
 /**
  * cogl_primitive_new_p3:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to process when drawing
- * @data: An array of #CoglP3Vertex vertices
+ * @data: An array of #CoglVertexP3 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -294,7 +294,7 @@ cogl_primitive_new_p2 (CoglVerticesMode mode,
  *
  * For example to draw a convex polygon you can do:
  * |[
- * CoglP3Vertex triangle[] =
+ * CoglVertexP3 triangle[] =
  * {
  *   { 0,   300, 0 },
  *   { 150, 0,   0 },
@@ -323,13 +323,13 @@ cogl_primitive_new_p2 (CoglVerticesMode mode,
 CoglPrimitive *
 cogl_primitive_new_p3 (CoglVerticesMode mode,
                        int n_vertices,
-                       const CoglP3Vertex *data);
+                       const CoglVertexP3 *data);
 
 /**
  * cogl_primitive_new_p2c4:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to process when drawing
- * @data: An array of #CoglP2C4Vertex vertices
+ * @data: An array of #CoglVertexP2C4 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -340,7 +340,7 @@ cogl_primitive_new_p3 (CoglVerticesMode mode,
  * For example to draw a convex polygon with a linear gradient you
  * can do:
  * |[
- * CoglP2C4Vertex triangle[] =
+ * CoglVertexP2C4 triangle[] =
  * {
  *   { 0,   300,  0xff, 0x00, 0x00, 0xff },
  *   { 150, 0,    0x00, 0xff, 0x00, 0xff },
@@ -369,13 +369,13 @@ cogl_primitive_new_p3 (CoglVerticesMode mode,
 CoglPrimitive *
 cogl_primitive_new_p2c4 (CoglVerticesMode mode,
                          int n_vertices,
-                         const CoglP2C4Vertex *data);
+                         const CoglVertexP2C4 *data);
 
 /**
  * cogl_primitive_new_p3c4:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to process when drawing
- * @data: An array of #CoglP3C4Vertex vertices
+ * @data: An array of #CoglVertexP3C4 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -386,7 +386,7 @@ cogl_primitive_new_p2c4 (CoglVerticesMode mode,
  * For example to draw a convex polygon with a linear gradient you
  * can do:
  * |[
- * CoglP3C4Vertex triangle[] =
+ * CoglVertexP3C4 triangle[] =
  * {
  *   { 0,   300, 0,  0xff, 0x00, 0x00, 0xff },
  *   { 150, 0,   0,  0x00, 0xff, 0x00, 0xff },
@@ -415,13 +415,13 @@ cogl_primitive_new_p2c4 (CoglVerticesMode mode,
 CoglPrimitive *
 cogl_primitive_new_p3c4 (CoglVerticesMode mode,
                          int n_vertices,
-                         const CoglP3C4Vertex *data);
+                         const CoglVertexP3C4 *data);
 
 /**
  * cogl_primitive_new_p2t2:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to process when drawing
- * @data: An array of #CoglP2T2Vertex vertices
+ * @data: An array of #CoglVertexP2T2 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -432,7 +432,7 @@ cogl_primitive_new_p3c4 (CoglVerticesMode mode,
  * For example to draw a convex polygon with texture mapping you can
  * do:
  * |[
- * CoglP2T2Vertex triangle[] =
+ * CoglVertexP2T2 triangle[] =
  * {
  *   { 0,   300,  0.0, 1.0},
  *   { 150, 0,    0.5, 0.0},
@@ -461,13 +461,13 @@ cogl_primitive_new_p3c4 (CoglVerticesMode mode,
 CoglPrimitive *
 cogl_primitive_new_p2t2 (CoglVerticesMode mode,
                          int n_vertices,
-                         const CoglP2T2Vertex *data);
+                         const CoglVertexP2T2 *data);
 
 /**
  * cogl_primitive_new_p3t2:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to process when drawing
- * @data: An array of #CoglP3T2Vertex vertices
+ * @data: An array of #CoglVertexP3T2 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -478,7 +478,7 @@ cogl_primitive_new_p2t2 (CoglVerticesMode mode,
  * For example to draw a convex polygon with texture mapping you can
  * do:
  * |[
- * CoglP3T2Vertex triangle[] =
+ * CoglVertexP3T2 triangle[] =
  * {
  *   { 0,   300, 0,  0.0, 1.0},
  *   { 150, 0,   0,  0.5, 0.0},
@@ -507,13 +507,13 @@ cogl_primitive_new_p2t2 (CoglVerticesMode mode,
 CoglPrimitive *
 cogl_primitive_new_p3t2 (CoglVerticesMode mode,
                          int n_vertices,
-                         const CoglP3T2Vertex *data);
+                         const CoglVertexP3T2 *data);
 
 /**
  * cogl_primitive_new_p2t2c4:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to process when drawing
- * @data: An array of #CoglP2T2C4Vertex vertices
+ * @data: An array of #CoglVertexP2T2C4 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -524,7 +524,7 @@ cogl_primitive_new_p3t2 (CoglVerticesMode mode,
  * For example to draw a convex polygon with texture mapping and a
  * linear gradient you can do:
  * |[
- * CoglP2T2C4Vertex triangle[] =
+ * CoglVertexP2T2C4 triangle[] =
  * {
  *   { 0,   300,  0.0, 1.0,  0xff, 0x00, 0x00, 0xff},
  *   { 150, 0,    0.5, 0.0,  0x00, 0xff, 0x00, 0xff},
@@ -553,13 +553,13 @@ cogl_primitive_new_p3t2 (CoglVerticesMode mode,
 CoglPrimitive *
 cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
                            int n_vertices,
-                           const CoglP2T2C4Vertex *data);
+                           const CoglVertexP2T2C4 *data);
 
 /**
  * cogl_primitive_new_p3t2c4:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to process when drawing
- * @data: An array of #CoglP3T2C4Vertex vertices
+ * @data: An array of #CoglVertexP3T2C4 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -570,7 +570,7 @@ cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
  * For example to draw a convex polygon with texture mapping and a
  * linear gradient you can do:
  * |[
- * CoglP3T2C4Vertex triangle[] =
+ * CoglVertexP3T2C4 triangle[] =
  * {
  *   { 0,   300, 0,  0.0, 1.0,  0xff, 0x00, 0x00, 0xff},
  *   { 150, 0,   0,  0.5, 0.0,  0x00, 0xff, 0x00, 0xff},
@@ -599,7 +599,7 @@ cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
 CoglPrimitive *
 cogl_primitive_new_p3t2c4 (CoglVerticesMode mode,
                            int n_vertices,
-                           const CoglP3T2C4Vertex *data);
+                           const CoglVertexP3T2C4 *data);
 int
 cogl_primitive_get_first_vertex (CoglPrimitive *primitive);
 

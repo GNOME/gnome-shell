@@ -12,7 +12,7 @@ typedef CoglPrimitive * (* TestPrimFunc) (ClutterColor *expected_color);
 static CoglPrimitive *
 test_prim_p2 (ClutterColor *expected_color)
 {
-  static const CoglP2Vertex verts[] =
+  static const CoglVertexP2 verts[] =
     { { 0, 0 }, { 0, 10 }, { 10, 0 } };
 
   return cogl_primitive_new_p2 (COGL_VERTICES_MODE_TRIANGLES,
@@ -23,7 +23,7 @@ test_prim_p2 (ClutterColor *expected_color)
 static CoglPrimitive *
 test_prim_p3 (ClutterColor *expected_color)
 {
-  static const CoglP3Vertex verts[] =
+  static const CoglVertexP3 verts[] =
     { { 0, 0, 0 }, { 0, 10, 0 }, { 10, 0, 0 } };
 
   return cogl_primitive_new_p3 (COGL_VERTICES_MODE_TRIANGLES,
@@ -34,7 +34,7 @@ test_prim_p3 (ClutterColor *expected_color)
 static CoglPrimitive *
 test_prim_p2c4 (ClutterColor *expected_color)
 {
-  static const CoglP2C4Vertex verts[] =
+  static const CoglVertexP2C4 verts[] =
     { { 0, 0, 255, 255, 0, 255 },
       { 0, 10, 255, 255, 0, 255 },
       { 10, 0, 255, 255, 0, 255 } };
@@ -51,7 +51,7 @@ test_prim_p2c4 (ClutterColor *expected_color)
 static CoglPrimitive *
 test_prim_p3c4 (ClutterColor *expected_color)
 {
-  static const CoglP3C4Vertex verts[] =
+  static const CoglVertexP3C4 verts[] =
     { { 0, 0, 0, 255, 255, 0, 255 },
       { 0, 10, 0, 255, 255, 0, 255 },
       { 10, 0, 0, 255, 255, 0, 255 } };
@@ -68,7 +68,7 @@ test_prim_p3c4 (ClutterColor *expected_color)
 static CoglPrimitive *
 test_prim_p2t2 (ClutterColor *expected_color)
 {
-  static const CoglP2T2Vertex verts[] =
+  static const CoglVertexP2T2 verts[] =
     { { 0, 0, 1, 0 },
       { 0, 10, 1, 0 },
       { 10, 0, 1, 0 } };
@@ -83,7 +83,7 @@ test_prim_p2t2 (ClutterColor *expected_color)
 static CoglPrimitive *
 test_prim_p3t2 (ClutterColor *expected_color)
 {
-  static const CoglP3T2Vertex verts[] =
+  static const CoglVertexP3T2 verts[] =
     { { 0, 0, 0, 1, 0 },
       { 0, 10, 0, 1, 0 },
       { 10, 0, 0, 1, 0 } };
@@ -98,7 +98,7 @@ test_prim_p3t2 (ClutterColor *expected_color)
 static CoglPrimitive *
 test_prim_p2t2c4 (ClutterColor *expected_color)
 {
-  static const CoglP2T2C4Vertex verts[] =
+  static const CoglVertexP2T2C4 verts[] =
     { { 0, 0, 1, 0, 0xff, 0xff, 0xf0, 0xff },
       { 0, 10, 1, 0, 0xff, 0xff, 0xf0, 0xff },
       { 10, 0, 1, 0, 0xff, 0xff, 0xf0, 0xff } };
@@ -114,7 +114,7 @@ test_prim_p2t2c4 (ClutterColor *expected_color)
 static CoglPrimitive *
 test_prim_p3t2c4 (ClutterColor *expected_color)
 {
-  static const CoglP3T2C4Vertex verts[] =
+  static const CoglVertexP3T2C4 verts[] =
     { { 0, 0, 0, 1, 0, 0xff, 0xff, 0xf0, 0xff },
       { 0, 10, 0, 1, 0, 0xff, 0xff, 0xf0, 0xff },
       { 10, 0, 0, 1, 0, 0xff, 0xff, 0xf0, 0xff } };
