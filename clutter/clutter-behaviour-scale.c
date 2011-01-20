@@ -37,7 +37,6 @@
 
 #include <math.h>
 
-#undef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-behaviour-scale.h"
 
 #include "clutter-debug.h"

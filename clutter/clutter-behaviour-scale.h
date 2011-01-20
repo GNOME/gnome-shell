@@ -34,7 +34,7 @@
 
 G_BEGIN_DECLS
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 
 #define CLUTTER_TYPE_BEHAVIOUR_SCALE            (clutter_behaviour_scale_get_type ())
 #define CLUTTER_BEHAVIOUR_SCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScale))

@@ -32,7 +32,7 @@
 
 G_BEGIN_DECLS
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 
 guint clutter_frame_source_add (guint          fps,
 				GSourceFunc    func,

@@ -34,7 +34,6 @@
 #include "config.h"
 #endif
 
-#undef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-timeout-pool.h"
 
 #include "clutter-debug.h"

@@ -47,7 +47,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-#undef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-behaviour-ellipse.h"
 
 #include "clutter-debug.h"

@@ -64,7 +64,6 @@
 #include "config.h"
 #endif
 
-#undef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-behaviour-path.h"
 
 #include "clutter-bezier.h"

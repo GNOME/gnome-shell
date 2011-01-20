@@ -35,7 +35,7 @@
 
 G_BEGIN_DECLS
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 
 #define CLUTTER_TYPE_BEHAVIOUR_ELLIPSE (clutter_behaviour_ellipse_get_type ())
 

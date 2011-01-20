@@ -36,7 +36,7 @@
 
 G_BEGIN_DECLS
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
+#if !defined(CLUTTER_DISABLE_DEPRECATED) || defined(CLUTTER_COMPILATION)
 
 #define CLUTTER_TYPE_BEHAVIOUR clutter_behaviour_get_type()
 
@@ -159,7 +159,7 @@ void          clutter_behaviour_set_alpha      (ClutterBehaviour            *beh
 gboolean      clutter_behaviour_is_applied     (ClutterBehaviour            *behave,
 						ClutterActor                *actor);
 
-#endif /* CLUTTER_DISABLE_DEPRECATED */
+#endif /* !CLUTTER_DISABLE_DEPRECATED || CLUTTER_COMPILATION */
 
 G_END_DECLS
 

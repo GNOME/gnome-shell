@@ -38,7 +38,6 @@
 
 #include <math.h>
 
-#undef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-behaviour-opacity.h"
 
 #include "clutter-private.h"

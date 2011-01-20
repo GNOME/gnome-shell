@@ -71,7 +71,6 @@
 #include "config.h"
 #endif
 
-#undef CLUTTER_DISABLE_DEPRECATED
 #include "clutter-behaviour.h"
 
 #include "clutter-debug.h"
