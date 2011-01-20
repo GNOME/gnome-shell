@@ -22,7 +22,7 @@ function _sameDay(dateA, dateB) {
 }
 
 /* TODO: maybe needs config - right now we assume that Saturday and
- * Sunday are work days (not true in e.g. Israel, it's Sunday and
+ * Sunday are non-work days (not true in e.g. Israel, it's Sunday and
  * Monday there)
  */
 function _isWorkDay(date) {
