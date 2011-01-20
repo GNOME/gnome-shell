@@ -244,6 +244,7 @@ cogl_create_context (void)
   _context->rectangle_short_indices_len = 0;
 
   _context->texture_download_pipeline = COGL_INVALID_HANDLE;
+  _context->blit_texture_pipeline = COGL_INVALID_HANDLE;
 
 #ifndef HAVE_COGL_GLES2
   /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
@@ -332,6 +333,9 @@ _cogl_destroy_context (void)
     cogl_handle_unref (_context->blended_color_pipeline);
   if (_context->texture_pipeline)
     cogl_handle_unref (_context->texture_pipeline);
+
+  if (_context->blit_texture_pipeline)
+    cogl_handle_unref (_context->blit_texture_pipeline);
 
   if (_context->journal_flush_attributes_array)
     g_array_free (_context->journal_flush_attributes_array, TRUE);
