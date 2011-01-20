@@ -25,32 +25,32 @@
  *   Robert Bragg <robert@linux.intel.com>
  */
 
-#ifndef __COGL_VERTEX_ATTRIBUTE_PRIVATE_H
-#define __COGL_VERTEX_ATTRIBUTE_PRIVATE_H
+#ifndef __COGL_ATTRIBUTE_PRIVATE_H
+#define __COGL_ATTRIBUTE_PRIVATE_H
 
 #include "cogl-object-private.h"
-#include "cogl-vertex-attribute.h"
+#include "cogl-attribute.h"
 
 typedef enum
 {
-  COGL_VERTEX_ATTRIBUTE_NAME_ID_POSITION_ARRAY,
-  COGL_VERTEX_ATTRIBUTE_NAME_ID_COLOR_ARRAY,
-  COGL_VERTEX_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY,
-  COGL_VERTEX_ATTRIBUTE_NAME_ID_NORMAL_ARRAY,
-  COGL_VERTEX_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY
-} CoglVertexAttributeNameID;
+  COGL_ATTRIBUTE_NAME_ID_POSITION_ARRAY,
+  COGL_ATTRIBUTE_NAME_ID_COLOR_ARRAY,
+  COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY,
+  COGL_ATTRIBUTE_NAME_ID_NORMAL_ARRAY,
+  COGL_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY
+} CoglAttributeNameID;
 
-struct _CoglVertexAttribute
+struct _CoglAttribute
 {
   CoglObject _parent;
 
   CoglVertexArray *array;
   char *name;
-  CoglVertexAttributeNameID name_id;
+  CoglAttributeNameID name_id;
   gsize stride;
   gsize offset;
   int n_components;
-  CoglVertexAttributeType type;
+  CoglAttributeType type;
   gboolean normalized;
   unsigned int texture_unit;
 
@@ -75,29 +75,29 @@ typedef enum
   COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE = 1 << 4
 } CoglDrawFlags;
 
-CoglVertexAttribute *
-_cogl_vertex_attribute_immutable_ref (CoglVertexAttribute *vertex_attribute);
+CoglAttribute *
+_cogl_attribute_immutable_ref (CoglAttribute *attribute);
 
 void
-_cogl_vertex_attribute_immutable_unref (CoglVertexAttribute *vertex_attribute);
+_cogl_attribute_immutable_unref (CoglAttribute *attribute);
 
 void
-_cogl_draw_vertex_attributes_array (CoglVerticesMode mode,
-                                    int first_vertex,
-                                    int n_vertices,
-                                    CoglVertexAttribute **attributes,
-                                    CoglDrawFlags flags);
+_cogl_draw_attributes_array (CoglVerticesMode mode,
+                             int first_vertex,
+                             int n_vertices,
+                             CoglAttribute **attributes,
+                             CoglDrawFlags flags);
 
 void
-_cogl_draw_indexed_vertex_attributes_array (CoglVerticesMode mode,
-                                            int first_vertex,
-                                            int n_vertices,
-                                            CoglIndices *indices,
-                                            CoglVertexAttribute **attributes,
-                                            CoglDrawFlags flags);
+_cogl_draw_indexed_attributes_array (CoglVerticesMode mode,
+                                     int first_vertex,
+                                     int n_vertices,
+                                     CoglIndices *indices,
+                                     CoglAttribute **attributes,
+                                     CoglDrawFlags flags);
 
 void
-_cogl_vertex_attribute_disable_cached_arrays (void);
+_cogl_attribute_disable_cached_arrays (void);
 
-#endif /* __COGL_VERTEX_ATTRIBUTE_PRIVATE_H */
+#endif /* __COGL_ATTRIBUTE_PRIVATE_H */
 

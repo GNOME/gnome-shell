@@ -32,8 +32,8 @@
 #include "cogl-context.h"
 #include "cogl-object-private.h"
 #include "cogl-journal-private.h"
-#include "cogl-vertex-attribute.h"
-#include "cogl-vertex-attribute-private.h"
+#include "cogl-attribute.h"
+#include "cogl-attribute-private.h"
 #include "cogl-pipeline.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-opengl-private.h"
@@ -90,15 +90,15 @@
 
 #endif
 
-static void _cogl_vertex_attribute_free (CoglVertexAttribute *attribute);
+static void _cogl_attribute_free (CoglAttribute *attribute);
 
-COGL_OBJECT_DEFINE (VertexAttribute, vertex_attribute);
+COGL_OBJECT_DEFINE (Attribute, attribute);
 
 #if 0
 gboolean
 validate_gl_attribute (const char *name,
                        int n_components,
-                       CoglVertexAttributeNameID *name_id,
+                       CoglAttributeNameID *name_id,
                        gboolean *normalized,
                        unsigned int *texture_unit)
 {
@@ -116,7 +116,7 @@ validate_gl_attribute (const char *name,
                       "attributes where n_components == 2, 3 or 4");
           return FALSE;
         }
-      *name_id = COGL_VERTEX_ATTRIBUTE_NAME_ID_POSITION_ARRAY;
+      *name_id = COGL_ATTRIBUTE_NAME_ID_POSITION_ARRAY;
     }
   else if (strcmp (name, "Color") == 0)
     {
@@ -127,7 +127,7 @@ validate_gl_attribute (const char *name,
                       "n_components == 3 or 4");
           return FALSE;
         }
-      *name_id = COGL_VERTEX_ATTRIBUTE_NAME_ID_COLOR_ARRAY;
+      *name_id = COGL_ATTRIBUTE_NAME_ID_COLOR_ARRAY;
       *normalized = TRUE;
     }
   else if (strncmp (name, "MultiTexCoord", strlen ("MultiTexCoord")) == 0)
@@ -138,7 +138,7 @@ validate_gl_attribute (const char *name,
 		     "texture unit number, E.g. gl_MultiTexCoord0\n");
 	  unit = 0;
 	}
-      *name_id = COGL_VERTEX_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY;
+      *name_id = COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY;
     }
   else if (strncmp (name, "Normal") == 0)
     {
@@ -149,7 +149,7 @@ validate_gl_attribute (const char *name,
                       "n_components == 3");
           return FALSE;
         }
-      *name_id = COGL_VERTEX_ATTRIBUTE_NAME_ID_NORMAL_ARRAY;
+      *name_id = COGL_ATTRIBUTE_NAME_ID_NORMAL_ARRAY;
       *normalized = TRUE;
     }
   else
@@ -165,7 +165,7 @@ validate_gl_attribute (const char *name,
 gboolean
 validate_cogl_attribute (const char *name,
                          int n_components,
-                         CoglVertexAttributeNameID *name_id,
+                         CoglAttributeNameID *name_id,
                          gboolean *normalized,
                          unsigned int *texture_unit)
 {
@@ -183,7 +183,7 @@ validate_cogl_attribute (const char *name,
                       "attributes where n_components == 2, 3 or 4");
           return FALSE;
         }
-      *name_id = COGL_VERTEX_ATTRIBUTE_NAME_ID_POSITION_ARRAY;
+      *name_id = COGL_ATTRIBUTE_NAME_ID_POSITION_ARRAY;
     }
   else if (strcmp (name, "color_in") == 0)
     {
@@ -194,10 +194,10 @@ validate_cogl_attribute (const char *name,
                       "n_components == 3 or 4");
           return FALSE;
         }
-      *name_id = COGL_VERTEX_ATTRIBUTE_NAME_ID_COLOR_ARRAY;
+      *name_id = COGL_ATTRIBUTE_NAME_ID_COLOR_ARRAY;
     }
   else if (strcmp (name, "tex_coord_in") == 0)
-    *name_id = COGL_VERTEX_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY;
+    *name_id = COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY;
   else if (strncmp (name, "tex_coord", strlen ("tex_coord")) == 0)
     {
       if (sscanf (name, "tex_coord%u_in", texture_unit) != 1)
@@ -207,7 +207,7 @@ validate_cogl_attribute (const char *name,
                      "like \"cogl_tex_coord2_in\"\n");
           return FALSE;
 	}
-      *name_id = COGL_VERTEX_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY;
+      *name_id = COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY;
     }
   else if (strcmp (name, "normal_in") == 0)
     {
@@ -218,7 +218,7 @@ validate_cogl_attribute (const char *name,
                       "where n_components == 3");
           return FALSE;
         }
-      *name_id = COGL_VERTEX_ATTRIBUTE_NAME_ID_NORMAL_ARRAY;
+      *name_id = COGL_ATTRIBUTE_NAME_ID_NORMAL_ARRAY;
       *normalized = TRUE;
     }
   else
@@ -230,15 +230,15 @@ validate_cogl_attribute (const char *name,
   return TRUE;
 }
 
-CoglVertexAttribute *
-cogl_vertex_attribute_new (CoglVertexArray *array,
-                           const char *name,
-                           gsize stride,
-                           gsize offset,
-                           int n_components,
-                           CoglVertexAttributeType type)
+CoglAttribute *
+cogl_attribute_new (CoglVertexArray *array,
+                    const char *name,
+                    gsize stride,
+                    gsize offset,
+                    int n_components,
+                    CoglAttributeType type)
 {
-  CoglVertexAttribute *attribute = g_slice_new (CoglVertexAttribute);
+  CoglAttribute *attribute = g_slice_new (CoglAttribute);
   gboolean status;
 
   attribute->array = cogl_object_ref (array);
@@ -265,7 +265,7 @@ cogl_vertex_attribute_new (CoglVertexArray *array,
 #endif
   else
     {
-      attribute->name_id = COGL_VERTEX_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY;
+      attribute->name_id = COGL_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY;
       attribute->normalized = FALSE;
       attribute->texture_unit = 0;
       status = TRUE;
@@ -273,17 +273,17 @@ cogl_vertex_attribute_new (CoglVertexArray *array,
 
   if (!status)
     {
-      _cogl_vertex_attribute_free (attribute);
+      _cogl_attribute_free (attribute);
       return NULL;
     }
 
-  return _cogl_vertex_attribute_object_new (attribute);
+  return _cogl_attribute_object_new (attribute);
 }
 
 gboolean
-cogl_vertex_attribute_get_normalized (CoglVertexAttribute *attribute)
+cogl_attribute_get_normalized (CoglAttribute *attribute)
 {
-  g_return_val_if_fail (cogl_is_vertex_attribute (attribute), FALSE);
+  g_return_val_if_fail (cogl_is_attribute (attribute), FALSE);
 
   return attribute->normalized;
 }
@@ -301,10 +301,10 @@ warn_about_midscene_changes (void)
 }
 
 void
-cogl_vertex_attribute_set_normalized (CoglVertexAttribute *attribute,
+cogl_attribute_set_normalized (CoglAttribute *attribute,
                                       gboolean normalized)
 {
-  g_return_if_fail (cogl_is_vertex_attribute (attribute));
+  g_return_if_fail (cogl_is_attribute (attribute));
 
   if (G_UNLIKELY (attribute->immutable_ref))
     warn_about_midscene_changes ();
@@ -313,18 +313,18 @@ cogl_vertex_attribute_set_normalized (CoglVertexAttribute *attribute,
 }
 
 CoglVertexArray *
-cogl_vertex_attribute_get_array (CoglVertexAttribute *attribute)
+cogl_attribute_get_array (CoglAttribute *attribute)
 {
-  g_return_val_if_fail (cogl_is_vertex_attribute (attribute), NULL);
+  g_return_val_if_fail (cogl_is_attribute (attribute), NULL);
 
   return attribute->array;
 }
 
 void
-cogl_vertex_attribute_set_array (CoglVertexAttribute *attribute,
+cogl_attribute_set_array (CoglAttribute *attribute,
                                  CoglVertexArray *array)
 {
-  g_return_if_fail (cogl_is_vertex_attribute (attribute));
+  g_return_if_fail (cogl_is_attribute (attribute));
 
   if (G_UNLIKELY (attribute->immutable_ref))
     warn_about_midscene_changes ();
@@ -335,33 +335,33 @@ cogl_vertex_attribute_set_array (CoglVertexAttribute *attribute,
   attribute->array = array;
 }
 
-CoglVertexAttribute *
-_cogl_vertex_attribute_immutable_ref (CoglVertexAttribute *vertex_attribute)
+CoglAttribute *
+_cogl_attribute_immutable_ref (CoglAttribute *attribute)
 {
-  g_return_val_if_fail (cogl_is_vertex_attribute (vertex_attribute), NULL);
+  g_return_val_if_fail (cogl_is_attribute (attribute), NULL);
 
-  vertex_attribute->immutable_ref++;
-  _cogl_buffer_immutable_ref (COGL_BUFFER (vertex_attribute->array));
-  return vertex_attribute;
+  attribute->immutable_ref++;
+  _cogl_buffer_immutable_ref (COGL_BUFFER (attribute->array));
+  return attribute;
 }
 
 void
-_cogl_vertex_attribute_immutable_unref (CoglVertexAttribute *vertex_attribute)
+_cogl_attribute_immutable_unref (CoglAttribute *attribute)
 {
-  g_return_if_fail (cogl_is_vertex_attribute (vertex_attribute));
-  g_return_if_fail (vertex_attribute->immutable_ref > 0);
+  g_return_if_fail (cogl_is_attribute (attribute));
+  g_return_if_fail (attribute->immutable_ref > 0);
 
-  vertex_attribute->immutable_ref--;
-  _cogl_buffer_immutable_unref (COGL_BUFFER (vertex_attribute->array));
+  attribute->immutable_ref--;
+  _cogl_buffer_immutable_unref (COGL_BUFFER (attribute->array));
 }
 
 static void
-_cogl_vertex_attribute_free (CoglVertexAttribute *attribute)
+_cogl_attribute_free (CoglAttribute *attribute)
 {
   g_free (attribute->name);
   cogl_object_unref (attribute->array);
 
-  g_slice_free (CoglVertexAttribute, attribute);
+  g_slice_free (CoglAttribute, attribute);
 }
 
 typedef struct
@@ -477,7 +477,7 @@ set_enabled_arrays (CoglBitmask *value_cache,
 
 static CoglHandle
 enable_gl_state (CoglDrawFlags flags,
-                 CoglVertexAttribute **attributes,
+                 CoglAttribute **attributes,
                  ValidateLayerState *state)
 {
   CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
@@ -507,7 +507,7 @@ enable_gl_state (CoglDrawFlags flags,
   for (i = 0; attributes[i]; i++)
     switch (attributes[i]->name_id)
       {
-      case COGL_VERTEX_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
+      case COGL_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
         if ((flags & COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE) == 0 &&
             !_cogl_pipeline_get_real_blend_enabled (source))
           {
@@ -520,7 +520,7 @@ enable_gl_state (CoglDrawFlags flags,
         skip_gl_color = TRUE;
         break;
 
-      case COGL_VERTEX_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
+      case COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
         n_tex_coord_attribs++;
         break;
 
@@ -597,7 +597,7 @@ enable_gl_state (CoglDrawFlags flags,
 
   for (i = 0; attributes[i]; i++)
     {
-      CoglVertexAttribute *attribute = attributes[i];
+      CoglAttribute *attribute = attributes[i];
       CoglVertexArray *vertex_array;
       CoglBuffer *buffer;
       void *base;
@@ -605,13 +605,13 @@ enable_gl_state (CoglDrawFlags flags,
       int attrib_location;
 #endif
 
-      vertex_array = cogl_vertex_attribute_get_array (attribute);
+      vertex_array = cogl_attribute_get_array (attribute);
       buffer = COGL_BUFFER (vertex_array);
       base = _cogl_buffer_bind (buffer, COGL_BUFFER_BIND_TARGET_VERTEX_ARRAY);
 
       switch (attribute->name_id)
         {
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
+        case COGL_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
 #ifdef HAVE_COGL_GLES2
 
           attrib_location =
@@ -640,7 +640,7 @@ enable_gl_state (CoglDrawFlags flags,
 #endif
 
           break;
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_NORMAL_ARRAY:
+        case COGL_ATTRIBUTE_NAME_ID_NORMAL_ARRAY:
 #ifdef HAVE_COGL_GLES2
 
           attrib_location =
@@ -667,7 +667,7 @@ enable_gl_state (CoglDrawFlags flags,
 #endif
 
           break;
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
+        case COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
 #ifdef HAVE_COGL_GLES2
 
           attrib_location = _cogl_pipeline_progend_glsl_get_tex_coord_attribute
@@ -695,7 +695,7 @@ enable_gl_state (CoglDrawFlags flags,
 
 #endif
           break;
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_POSITION_ARRAY:
+        case COGL_ATTRIBUTE_NAME_ID_POSITION_ARRAY:
 #ifdef HAVE_COGL_GLES2
 
           attrib_location =
@@ -722,7 +722,7 @@ enable_gl_state (CoglDrawFlags flags,
 
 #endif
           break;
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY:
+        case COGL_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY:
           {
 #ifdef MAY_HAVE_PROGRAMABLE_GL
             /* FIXME: go through cogl cache to enable generic array. */
@@ -755,7 +755,7 @@ enable_gl_state (CoglDrawFlags flags,
 }
 
 void
-_cogl_vertex_attribute_disable_cached_arrays (void)
+_cogl_attribute_disable_cached_arrays (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -766,7 +766,7 @@ _cogl_vertex_attribute_disable_cached_arrays (void)
 /* FIXME: we shouldn't be disabling state after drawing we should
  * just disable the things not needed after enabling state. */
 static void
-disable_gl_state (CoglVertexAttribute **attributes,
+disable_gl_state (CoglAttribute **attributes,
                   CoglPipeline *source)
 {
 #ifdef MAY_HAVE_PROGRAMABLE_GL
@@ -781,30 +781,30 @@ disable_gl_state (CoglVertexAttribute **attributes,
 
   for (i = 0; attributes[i]; i++)
     {
-      CoglVertexAttribute *attribute = attributes[i];
+      CoglAttribute *attribute = attributes[i];
 
       switch (attribute->name_id)
         {
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
+        case COGL_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
           /* GE (glDisableClientState (GL_COLOR_ARRAY)); */
           break;
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_NORMAL_ARRAY:
+        case COGL_ATTRIBUTE_NAME_ID_NORMAL_ARRAY:
           /* FIXME: go through cogl cache to enable normal array */
 #ifndef HAVE_COGL_GLES2
           GE (glDisableClientState (GL_NORMAL_ARRAY));
 #endif
           break;
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
+        case COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
           /* The enabled state of the texture coord arrays is
              cached in ctx->enabled_texcoord_arrays so we don't
              need to do anything here. The array will be disabled
              by the next drawing primitive if it is not
              required */
           break;
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_POSITION_ARRAY:
+        case COGL_ATTRIBUTE_NAME_ID_POSITION_ARRAY:
           /* GE (glDisableClientState (GL_VERTEX_ARRAY)); */
           break;
-        case COGL_VERTEX_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY:
+        case COGL_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY:
 #ifdef MAY_HAVE_PROGRAMABLE_GL
           /* FIXME: go through cogl cache to enable generic array */
           GE (glDisableVertexAttribArray (generic_index++));
@@ -842,7 +842,7 @@ static void
 add_line (void *vertices,
           void *indices,
           CoglIndicesType indices_type,
-          CoglVertexAttribute *attribute,
+          CoglAttribute *attribute,
           int start,
           int end,
           CoglVertexP3 *lines,
@@ -869,13 +869,13 @@ add_line (void *vertices,
 }
 
 static CoglVertexP3 *
-get_wire_lines (CoglVertexAttribute *attribute,
+get_wire_lines (CoglAttribute *attribute,
                 CoglVerticesMode mode,
                 int n_vertices_in,
                 int *n_vertices_out,
                 CoglIndices *_indices)
 {
-  CoglVertexArray *vertex_array = cogl_vertex_attribute_get_array (attribute);
+  CoglVertexArray *vertex_array = cogl_attribute_get_array (attribute);
   void *vertices;
   CoglIndexArray *index_array;
   void *indices;
@@ -988,14 +988,14 @@ static void
 draw_wireframe (CoglVerticesMode mode,
                 int first_vertex,
                 int n_vertices,
-                CoglVertexAttribute **attributes,
+                CoglAttribute **attributes,
                 CoglIndices *indices)
 {
-  CoglVertexAttribute *position = NULL;
+  CoglAttribute *position = NULL;
   int i;
   int n_line_vertices;
   static CoglPipeline *wire_pipeline;
-  CoglVertexAttribute *wire_attribute[2];
+  CoglAttribute *wire_attribute[2];
   CoglVertexP3 *lines;
   CoglVertexArray *array;
 
@@ -1018,11 +1018,11 @@ draw_wireframe (CoglVerticesMode mode,
   array = cogl_vertex_array_new (sizeof (CoglVertexP3) * n_line_vertices,
                                  lines);
   wire_attribute[0] =
-    cogl_vertex_attribute_new (array, "cogl_position_in",
-                               sizeof (CoglVertexP3),
-                               0,
-                               3,
-                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+    cogl_attribute_new (array, "cogl_position_in",
+                        sizeof (CoglVertexP3),
+                        0,
+                        3,
+                        COGL_ATTRIBUTE_TYPE_FLOAT);
   wire_attribute[1] = NULL;
   cogl_object_unref (array);
 
@@ -1037,14 +1037,14 @@ draw_wireframe (CoglVerticesMode mode,
 
   /* temporarily disable the wireframe to avoid recursion! */
   cogl_debug_flags &= ~COGL_DEBUG_WIREFRAME;
-  _cogl_draw_vertex_attributes_array (COGL_VERTICES_MODE_LINES,
-                                      0,
-                                      n_line_vertices,
-                                      wire_attribute,
-                                      COGL_DRAW_SKIP_JOURNAL_FLUSH |
-                                      COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                                      COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
-                                      COGL_DRAW_SKIP_LEGACY_STATE);
+  _cogl_draw_attributes_array (COGL_VERTICES_MODE_LINES,
+                               0,
+                               n_line_vertices,
+                               wire_attribute,
+                               COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                               COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                               COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
+                               COGL_DRAW_SKIP_LEGACY_STATE);
 
   cogl_debug_flags |= COGL_DEBUG_WIREFRAME;
 
@@ -1087,11 +1087,11 @@ flush_state (CoglDrawFlags flags,
  * skipping the implicit journal flush, the framebuffer flush and
  * pipeline validation. */
 void
-_cogl_draw_vertex_attributes_array (CoglVerticesMode mode,
-                                    int first_vertex,
-                                    int n_vertices,
-                                    CoglVertexAttribute **attributes,
-                                    CoglDrawFlags flags)
+_cogl_draw_attributes_array (CoglVerticesMode mode,
+                             int first_vertex,
+                             int n_vertices,
+                             CoglAttribute **attributes,
+                             CoglDrawFlags flags)
 {
   ValidateLayerState state;
   CoglPipeline *source;
@@ -1113,43 +1113,43 @@ _cogl_draw_vertex_attributes_array (CoglVerticesMode mode,
 }
 
 void
-cogl_draw_vertex_attributes_array (CoglVerticesMode mode,
-                                   int first_vertex,
-                                   int n_vertices,
-                                   CoglVertexAttribute **attributes)
+cogl_draw_attributes_array (CoglVerticesMode mode,
+                            int first_vertex,
+                            int n_vertices,
+                            CoglAttribute **attributes)
 {
-  _cogl_draw_vertex_attributes_array (mode, first_vertex,
-                                      n_vertices, attributes,
-                                      0 /* no flags */);
+  _cogl_draw_attributes_array (mode, first_vertex,
+                               n_vertices, attributes,
+                               0 /* no flags */);
 }
 
 void
-cogl_draw_vertex_attributes (CoglVerticesMode mode,
-                             int first_vertex,
-                             int n_vertices,
-                             ...)
+cogl_draw_attributes (CoglVerticesMode mode,
+                      int first_vertex,
+                      int n_vertices,
+                      ...)
 {
   va_list ap;
   int n_attributes;
-  CoglVertexAttribute *attribute;
-  CoglVertexAttribute **attributes;
+  CoglAttribute *attribute;
+  CoglAttribute **attributes;
   int i;
 
   va_start (ap, n_vertices);
-  for (n_attributes = 0; va_arg (ap, CoglVertexAttribute *); n_attributes++)
+  for (n_attributes = 0; va_arg (ap, CoglAttribute *); n_attributes++)
     ;
   va_end (ap);
 
-  attributes = g_alloca (sizeof (CoglVertexAttribute *) * (n_attributes + 1));
+  attributes = g_alloca (sizeof (CoglAttribute *) * (n_attributes + 1));
   attributes[n_attributes] = NULL;
 
   va_start (ap, n_vertices);
-  for (i = 0; (attribute = va_arg (ap, CoglVertexAttribute *)); i++)
+  for (i = 0; (attribute = va_arg (ap, CoglAttribute *)); i++)
     attributes[i] = attribute;
   va_end (ap);
 
-  cogl_draw_vertex_attributes_array (mode, first_vertex, n_vertices,
-                                     attributes);
+  cogl_draw_attributes_array (mode, first_vertex, n_vertices,
+                              attributes);
 }
 
 static size_t
@@ -1168,12 +1168,12 @@ sizeof_index_type (CoglIndicesType type)
 }
 
 void
-_cogl_draw_indexed_vertex_attributes_array (CoglVerticesMode mode,
-                                            int first_vertex,
-                                            int n_vertices,
-                                            CoglIndices *indices,
-                                            CoglVertexAttribute **attributes,
-                                            CoglDrawFlags flags)
+_cogl_draw_indexed_attributes_array (CoglVerticesMode mode,
+                                     int first_vertex,
+                                     int n_vertices,
+                                     CoglIndices *indices,
+                                     CoglAttribute **attributes,
+                                     CoglDrawFlags flags)
 {
   ValidateLayerState state;
   CoglPipeline *source;
@@ -1225,48 +1225,48 @@ _cogl_draw_indexed_vertex_attributes_array (CoglVerticesMode mode,
 }
 
 void
-cogl_draw_indexed_vertex_attributes_array (CoglVerticesMode mode,
-                                           int first_vertex,
-                                           int n_vertices,
-                                           CoglIndices *indices,
-                                           CoglVertexAttribute **attributes)
+cogl_draw_indexed_attributes_array (CoglVerticesMode mode,
+                                    int first_vertex,
+                                    int n_vertices,
+                                    CoglIndices *indices,
+                                    CoglAttribute **attributes)
 {
-  _cogl_draw_indexed_vertex_attributes_array (mode, first_vertex,
-                                              n_vertices, indices, attributes,
-                                              0 /* no flags */);
+  _cogl_draw_indexed_attributes_array (mode, first_vertex,
+                                       n_vertices, indices, attributes,
+                                       0 /* no flags */);
 }
 
 void
-cogl_draw_indexed_vertex_attributes (CoglVerticesMode mode,
-                                     int first_vertex,
-                                     int n_vertices,
-                                     CoglIndices *indices,
-                                     ...)
+cogl_draw_indexed_attributes (CoglVerticesMode mode,
+                              int first_vertex,
+                              int n_vertices,
+                              CoglIndices *indices,
+                              ...)
 {
   va_list ap;
   int n_attributes;
-  CoglVertexAttribute **attributes;
+  CoglAttribute **attributes;
   int i;
-  CoglVertexAttribute *attribute;
+  CoglAttribute *attribute;
 
   va_start (ap, indices);
-  for (n_attributes = 0; va_arg (ap, CoglVertexAttribute *); n_attributes++)
+  for (n_attributes = 0; va_arg (ap, CoglAttribute *); n_attributes++)
     ;
   va_end (ap);
 
-  attributes = g_alloca (sizeof (CoglVertexAttribute *) * (n_attributes + 1));
+  attributes = g_alloca (sizeof (CoglAttribute *) * (n_attributes + 1));
   attributes[n_attributes] = NULL;
 
   va_start (ap, indices);
-  for (i = 0; (attribute = va_arg (ap, CoglVertexAttribute *)); i++)
+  for (i = 0; (attribute = va_arg (ap, CoglAttribute *)); i++)
     attributes[i] = attribute;
   va_end (ap);
 
-  cogl_draw_indexed_vertex_attributes_array (mode,
-                                             first_vertex,
-                                             n_vertices,
-                                             indices,
-                                             attributes);
+  cogl_draw_indexed_attributes_array (mode,
+                                      first_vertex,
+                                      n_vertices,
+                                      indices,
+                                      attributes);
 }
 
 

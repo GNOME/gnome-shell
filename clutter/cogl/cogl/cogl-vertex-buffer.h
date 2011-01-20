@@ -98,28 +98,6 @@ unsigned int
 cogl_vertex_buffer_get_n_vertices (CoglHandle handle);
 
 /**
- * CoglAttributeType:
- * @COGL_ATTRIBUTE_TYPE_BYTE: Data is the same size of a byte
- * @COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE: Data is the same size of an
- *   unsigned byte
- * @COGL_ATTRIBUTE_TYPE_SHORT: Data is the same size of a short integer
- * @COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT: Data is the same size of
- *   an unsigned short integer
- * @COGL_ATTRIBUTE_TYPE_FLOAT: Data is the same size of a float
- *
- * Data types for the components of cogl_vertex_buffer_add()
- *
- * Since: 1.0
- */
-typedef enum {
-  COGL_ATTRIBUTE_TYPE_BYTE = GL_BYTE,
-  COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE = GL_UNSIGNED_BYTE,
-  COGL_ATTRIBUTE_TYPE_SHORT = GL_SHORT,
-  COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT = GL_UNSIGNED_SHORT,
-  COGL_ATTRIBUTE_TYPE_FLOAT = GL_FLOAT
-} CoglAttributeType;
-
-/**
  * cogl_vertex_buffer_add:
  * @handle: A vertex buffer handle
  * @attribute_name: The name of your attribute. It should be a valid GLSL

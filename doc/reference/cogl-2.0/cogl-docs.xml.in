@@ -77,7 +77,7 @@
 
     <section id="cogl-buffer-layout-apis">
       <title>Describing the layout of GPU Memory</title>
-      <xi:include href="xml/cogl-vertex-attribute.xml"/>
+      <xi:include href="xml/cogl-attribute.xml"/>
       <xi:include href="xml/cogl-indices.xml"/>
     </section>
 

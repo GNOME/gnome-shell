@@ -73,7 +73,7 @@
 #include <cogl/cogl-index-array.h>
 #include <cogl/cogl-vertex-array.h>
 #include <cogl/cogl-indices.h>
-#include <cogl/cogl-vertex-attribute.h>
+#include <cogl/cogl-attribute.h>
 #include <cogl/cogl-primitive.h>
 #include <cogl/cogl-pipeline.h>
 #endif

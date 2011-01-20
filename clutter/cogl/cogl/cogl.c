@@ -45,7 +45,7 @@
 #include "cogl-bitmap-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-driver.h"
-#include "cogl-vertex-attribute-private.h"
+#include "cogl-attribute-private.h"
 #include "cogl-framebuffer-private.h"
 
 #ifdef HAVE_COGL_GL
@@ -739,7 +739,7 @@ cogl_begin_gl (void)
   _cogl_flush_face_winding ();
 
   /* Disable any cached vertex arrays */
-  _cogl_vertex_attribute_disable_cached_arrays ();
+  _cogl_attribute_disable_cached_arrays ();
 }
 
 void

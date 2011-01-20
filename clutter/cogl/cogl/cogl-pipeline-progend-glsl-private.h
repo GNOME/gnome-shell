@@ -29,7 +29,7 @@
 #define __COGL_PIPELINE_PROGEND_GLSL_PRIVATE_H
 
 #include "cogl-pipeline-private.h"
-#include "cogl-vertex-attribute-private.h"
+#include "cogl-attribute-private.h"
 
 extern const CoglPipelineProgend _cogl_pipeline_glsl_progend;
 
