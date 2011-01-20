@@ -26,11 +26,9 @@
 #ifndef __CLUTTER_GLX_TEXTURE_PIXMAP_H__
 #define __CLUTTER_GLX_TEXTURE_PIXMAP_H__
 
-#include <glib.h>
-#include <glib-object.h>
 #include <clutter/x11/clutter-x11-texture-pixmap.h>
 
-#include <GL/glx.h>
+#if !defined(CLUTTER_COMPILATION) || defined(CLUTTER_DISABLE_DEPRECATED)
 
 G_BEGIN_DECLS
 
@@ -51,6 +49,8 @@ typedef struct _ClutterGLXTexturePixmapPrivate ClutterGLXTexturePixmapPrivate;
  * The #ClutterGLXTexturePixmapClass structure contains only private data
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.6: Use #ClutterX11TexturePixmapClass instead
  */
 struct _ClutterGLXTexturePixmapClass
 {
@@ -64,6 +64,8 @@ struct _ClutterGLXTexturePixmapClass
  * The #ClutterGLXTexturePixmap structure contains only private data
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.6: Use #ClutterX11TexturePixmap instead
  */
 struct _ClutterGLXTexturePixmap
 {
@@ -85,4 +87,6 @@ gboolean       clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixm
 
 G_END_DECLS
 
-#endif
+#endif /* !CLUTTER_DISABLE_DEPRECATED || CLUTTER_COMPILATION */
+
+#endif /* __CLUTTER_GLX_TEXTURE_PIXMAP_H__ */

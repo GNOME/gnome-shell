@@ -43,22 +43,20 @@
  * may use the extension if it is possible.
  */
 
-
-
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
+
+#include "clutter-glx-texture-pixmap.h"
 
 #include <string.h>
 
-#include "../x11/clutter-x11-texture-pixmap.h"
-#include "clutter-glx-texture-pixmap.h"
+#include <GL/glx.h>
+
+#include "x11/clutter-x11-texture-pixmap.h"
 #include "cogl/winsys/cogl-texture-pixmap-x11.h"
 
 G_DEFINE_TYPE (ClutterGLXTexturePixmap,    \
                clutter_glx_texture_pixmap, \
                CLUTTER_X11_TYPE_TEXTURE_PIXMAP);
-
 
 static void
 clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
@@ -82,6 +80,9 @@ clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass)
  * Return value: %TRUE if the texture is using the
  *   GLX_EXT_texture_from_pixmap OpenGL extension or falling back to the
  *   slower software mechanism.
+ *
+ * Deprecated: 1.6: Use cogl_texture_pixmap_x11_is_using_tfp_extension()
+ *   on the texture handle instead.
  *
  * Since: 0.8
  */
@@ -107,6 +108,8 @@ clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture)
  * Return value: A new #ClutterGLXTexturePixmap bound to the given X Pixmap
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.6: Use clutter_x11_texture_pixmap_new_with_pixmap() instead
  */
 ClutterActor *
 clutter_glx_texture_pixmap_new_with_pixmap (Pixmap pixmap)
@@ -125,7 +128,9 @@ clutter_glx_texture_pixmap_new_with_pixmap (Pixmap pixmap)
  * Return value: A new #ClutterGLXTexturePixmap bound to the given X window
  *
  * Since: 0.8
- **/
+ *
+ * Deprecated: 1.6: Use clutter_x11_texture_pixmap_new_with_window() instead
+ */
 ClutterActor *
 clutter_glx_texture_pixmap_new_with_window (Window window)
 {
@@ -142,6 +147,8 @@ clutter_glx_texture_pixmap_new_with_window (Window window)
  * Return value: A new #ClutterGLXTexturePixmap
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.6: Use clutter_x11_texture_pixmap_new() instead
  */
 ClutterActor *
 clutter_glx_texture_pixmap_new (void)
