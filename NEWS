@@ -3,7 +3,7 @@ Clutter 1.5.14                                                       2011-01-21
 
   • List of changes since Clutter 1.5.12
 
-    » Allow getting the modifiers from a ClutterClickAction.
+    » Allow getting the state modifiers from a ClutterClickAction.
 
     » Fix ClutterDragAction to never leave the event delivery in
       an unwanted state.
@@ -15,6 +15,16 @@ Clutter 1.5.14                                                       2011-01-21
     » Fix compilation on GLES1.1.
 
     » Documentation fixes.
+
+    » ClutterGLXTexturePixmap has been deprecated; its parent class
+      ClutterX11TexturePixmap provides the whole set of features.
+
+    » Be more resilient against timelines referencing other timelines
+      during the clock tick.
+
+    » Provide defines for the windowing platforms, to allow portable
+      applications to include the correct header and select the
+      correct API depending on the target.
 
 Clutter 1.5.12                                                       2011-01-11
 ===============================================================================
