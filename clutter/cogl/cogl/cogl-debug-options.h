@@ -168,4 +168,9 @@ OPT (DISABLE_BLENDING,
      "disable-program-caches",
      "Disable program caches",
      "Disable fallback caches for arbfp and glsl programs")
-
+OPT (DISABLE_FAST_READ_PIXEL,
+     "Root Cause",
+     "disable-fast-read-pixel",
+     "Disable read pixel optimization",
+     "Disable optimization for reading 1px for simple "
+     "scenes of opaque rectangles")

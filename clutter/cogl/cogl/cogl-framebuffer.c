@@ -1237,6 +1237,9 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
 {
   gboolean found_intersection;
 
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_FAST_READ_PIXEL))
+    return FALSE;
+
   if (source != COGL_READ_PIXELS_COLOR_BUFFER)
     return FALSE;
 

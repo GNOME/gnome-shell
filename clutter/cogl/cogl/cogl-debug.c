@@ -75,7 +75,8 @@ static const GDebugKey cogl_behavioural_debug_keys[] = {
   { "disable-npot-textures", COGL_DEBUG_DISABLE_NPOT_TEXTURES},
   { "wireframe", COGL_DEBUG_WIREFRAME},
   { "disable-software-clip", COGL_DEBUG_DISABLE_SOFTWARE_CLIP},
-  { "disable-program-caches", COGL_DEBUG_DISABLE_PROGRAM_CACHES}
+  { "disable-program-caches", COGL_DEBUG_DISABLE_PROGRAM_CACHES},
+  { "disable-fast-read-pixel", COGL_DEBUG_DISABLE_FAST_READ_PIXEL}
 };
 static const int n_cogl_behavioural_debug_keys =
   G_N_ELEMENTS (cogl_behavioural_debug_keys);
