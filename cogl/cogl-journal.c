@@ -1689,6 +1689,9 @@ try_checking_point_hits_entry_after_clipping (CoglJournalEntry *entry,
       ClipBounds clip_bounds;
       float poly[16];
 
+      if (!can_software_clip)
+        return FALSE;
+
       if (!can_software_clip_entry (entry, NULL,
                                     entry->clip_stack, &clip_bounds))
         return FALSE;
