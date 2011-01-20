@@ -60,8 +60,8 @@ DateMenuButton.prototype = {
         let hbox;
         let vbox;
 
-        //this._eventSource = new Calendar.EmptyEventSource();
-        this._eventSource = new Calendar.FakeEventSource();
+        this._eventSource = new Calendar.EmptyEventSource();
+        //this._eventSource = new Calendar.FakeEventSource();
         // TODO: write e.g. EvolutionEventSource
 
         PanelMenu.Button.prototype._init.call(this, St.Align.START);
