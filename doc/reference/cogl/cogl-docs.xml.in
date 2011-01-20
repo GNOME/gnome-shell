@@ -71,6 +71,7 @@
     <xi:include href="xml/cogl-matrix.xml"/>
     <xi:include href="xml/cogl-shaders.xml"/>
     <xi:include href="xml/cogl-offscreen.xml"/>
+    <xi:include href="xml/cogl-bitmap.xml"/>
     <xi:include href="xml/cogl-fixed.xml"/>
     <xi:include href="xml/cogl-gtype.xml"/>
 
