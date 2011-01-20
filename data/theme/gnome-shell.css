@@ -316,6 +316,7 @@ StTooltip StLabel {
 .dash-placeholder {
     background-image: url("dash-placeholder.svg");
     height: 27px;
+    width: 48px;
 }
 
 #viewSelector {
@@ -478,7 +479,7 @@ StTooltip StLabel {
     background-position: 190px 10px;
 }
 
-#dash > .app-well-app {
+.dash-item-container > .app-well-app {
     padding: 6px 12px;
 }
 
