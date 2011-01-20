@@ -251,6 +251,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-atlas.c                          \
 	$(srcdir)/cogl-atlas-texture-private.h          \
 	$(srcdir)/cogl-atlas-texture.c                  \
+	$(srcdir)/cogl-blit.h				\
+	$(srcdir)/cogl-blit.c				\
 	$(srcdir)/cogl-spans.h				\
 	$(srcdir)/cogl-spans.c				\
 	$(srcdir)/cogl-journal-private.h		\

@@ -175,6 +175,7 @@ typedef struct
   gboolean          in_begin_gl_block;
 
   CoglPipeline     *texture_download_pipeline;
+  CoglPipeline     *blit_texture_pipeline;
 
   GSList           *atlases;
 
