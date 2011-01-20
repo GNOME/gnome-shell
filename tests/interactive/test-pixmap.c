@@ -14,11 +14,6 @@
 # include <clutter/x11/clutter-x11.h>
 # include <clutter/x11/clutter-x11-texture-pixmap.h>
 
-# ifdef CLUTTER_WINDOWING_GLX
-# include <clutter/glx/clutter-glx.h>
-# include <clutter/glx/clutter-glx-texture-pixmap.h>
-# endif
-
 # include <X11/Xlib.h>
 # include <X11/extensions/Xcomposite.h>
 
@@ -28,7 +23,6 @@
 # include <gdk-pixbuf/gdk-pixbuf.h>
 
 static gboolean disable_x11 = FALSE;
-static gboolean disable_glx = FALSE;
 static gboolean disable_animation = FALSE;
 
 static GOptionEntry g_options[] =
@@ -38,12 +32,6 @@ static GOptionEntry g_options[] =
     G_OPTION_ARG_NONE,
     &disable_x11,
     "Disable redirection through X11 pixmap",
-    NULL },
-  { "disable-glx",
-    0, 0,
-    G_OPTION_ARG_NONE,
-    &disable_glx,
-    "Disable redirection through GLX pixmap",
     NULL },
   { "disable-animation",
     0, 0,
@@ -323,35 +311,6 @@ test_pixmap_main (int argc, char **argv)
       if (!disable_animation)
         clutter_behaviour_apply (depth_behavior, group);
     }
-
-#ifdef CLUTTER_WINDOWING_GLX
-  /* a window with glx */
-  if (!disable_glx)
-    {
-      group = clutter_group_new ();
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
-      label = clutter_text_new_with_text ("fixed",
-					   "ClutterGLXTexture (Window)");
-      clutter_container_add_actor (CLUTTER_CONTAINER (group), label);
-      tex = clutter_glx_texture_pixmap_new_with_window (win_remote);
-      clutter_container_add_actor (CLUTTER_CONTAINER (group), tex);
-      clutter_actor_set_position (tex, 0, 20);
-      clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (tex),
-						TRUE);
-      clutter_texture_set_filter_quality (CLUTTER_TEXTURE (tex),
-					  CLUTTER_TEXTURE_QUALITY_HIGH);
-      clutter_actor_set_position (group,
-				  clutter_actor_get_width (stage)
-				  - clutter_actor_get_width (tex),
-				  0);
-      if (!disable_animation)
-        clutter_behaviour_apply (depth_behavior, group);
-
-      if (!clutter_glx_texture_pixmap_using_extension (
-				      CLUTTER_GLX_TEXTURE_PIXMAP (tex)))
-	g_print ("NOTE: Using fallback path, not GLX TFP!\n");
-    }
-#endif /* CLUTTER_WINDOWING_GLX */
 
   if (group)
     row_height = clutter_actor_get_height (group);
