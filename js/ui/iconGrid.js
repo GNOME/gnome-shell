@@ -17,7 +17,8 @@ function BaseIcon(label, createIcon) {
 BaseIcon.prototype = {
     _init : function(label, params) {
         params = Params.parse(params, { createIcon: null,
-                                        setSizeManually: false });
+                                        setSizeManually: false,
+                                        showLabel: true });
         this.actor = new St.Bin({ style_class: 'overview-icon',
                                   x_fill: true,
                                   y_fill: true });
@@ -40,8 +41,12 @@ BaseIcon.prototype = {
 
         box.add_actor(this._iconBin);
 
-        this._name = new St.Label({ text: label });
-        box.add_actor(this._name);
+        if (params.showLabel) {
+            this._name = new St.Label({ text: label });
+            box.add_actor(this._name);
+        } else {
+            this._name = null;
+        }
 
         if (params.createIcon)
             this.createIcon = params.createIcon;
@@ -55,27 +60,35 @@ BaseIcon.prototype = {
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
 
-        let [labelMinHeight, labelNatHeight] = this._name.get_preferred_height(-1);
+        let iconSize = availHeight;
+
         let [iconMinHeight, iconNatHeight] = this._iconBin.get_preferred_height(-1);
-        let preferredHeight = labelNatHeight + this._spacing + iconNatHeight;
-        let labelHeight = availHeight >= preferredHeight ? labelNatHeight
-                                                         : labelMinHeight;
-        let iconSize = availHeight - this._spacing - labelHeight;
-        let iconPadding = (availWidth - iconSize) / 2;
+        let preferredHeight = iconNatHeight;
 
         let childBox = new Clutter.ActorBox();
+
+        if (this._name) {
+            let [labelMinHeight, labelNatHeight] = this._name.get_preferred_height(-1);
+            preferredHeight += this._spacing + labelNatHeight;
+
+            let labelHeight = availHeight >= preferredHeight ? labelNatHeight
+                                                             : labelMinHeight;
+            iconSize -= this._spacing + labelHeight;
+
+            childBox.x1 = 0;
+            childBox.x2 = availWidth;
+            childBox.y1 = iconSize + this._spacing;
+            childBox.y2 = childBox.y1 + labelHeight;
+            this._name.allocate(childBox, flags);
+        }
+
+        let iconPadding = (availWidth - iconSize) / 2;
 
         childBox.x1 = iconPadding;
         childBox.y1 = 0;
         childBox.x2 = availWidth - iconPadding;
         childBox.y2 = iconSize;
         this._iconBin.allocate(childBox, flags);
-
-        childBox.x1 = 0;
-        childBox.x2 = availWidth;
-        childBox.y1 = iconSize + this._spacing;
-        childBox.y2 = childBox.y1 + labelHeight;
-        this._name.allocate(childBox, flags);
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
@@ -84,9 +97,14 @@ BaseIcon.prototype = {
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
         let [iconMinHeight, iconNatHeight] = this._iconBin.get_preferred_height(forWidth);
-        let [labelMinHeight, labelNatHeight] = this._name.get_preferred_height(forWidth);
-        alloc.min_size = iconMinHeight + this._spacing + labelMinHeight;
-        alloc.natural_size = iconNatHeight + this._spacing + labelNatHeight;
+        alloc.min_size = iconMinHeight;
+        alloc.natural_size = iconNatHeight;
+
+        if (this._name) {
+            let [labelMinHeight, labelNatHeight] = this._name.get_preferred_height(forWidth);
+            alloc.min_size += this._spacing + labelMinHeight;
+            alloc.natural_size += this._spacing + labelNatHeight;
+        }
     },
 
     // This can be overridden by a subclass, or by the createIcon
