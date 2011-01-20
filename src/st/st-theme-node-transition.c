@@ -183,6 +183,22 @@ static void
 calculate_offscreen_box (StThemeNodeTransition *transition,
                          const ClutterActorBox *allocation)
 {
+  ClutterActorBox paint_box;
+
+  st_theme_node_transition_get_paint_box (transition,
+                                          allocation,
+                                          &paint_box);
+  transition->priv->offscreen_box.x1 = paint_box.x1 - allocation->x1;
+  transition->priv->offscreen_box.y1 = paint_box.y1 - allocation->y1;
+  transition->priv->offscreen_box.x2 = paint_box.x2 - allocation->x1;
+  transition->priv->offscreen_box.y2 = paint_box.y2 - allocation->y1;
+}
+
+void
+st_theme_node_transition_get_paint_box (StThemeNodeTransition *transition,
+                                        const ClutterActorBox *allocation,
+                                        ClutterActorBox       *paint_box)
+{
   StThemeNodeTransitionPrivate *priv = transition->priv;
   ClutterActorBox old_node_box, new_node_box;
 
@@ -194,14 +210,10 @@ calculate_offscreen_box (StThemeNodeTransition *transition,
                                allocation,
                                &new_node_box);
 
-  priv->offscreen_box.x1 = MIN (old_node_box.x1, new_node_box.x1)
-                           - allocation->x1;
-  priv->offscreen_box.y1 = MIN (old_node_box.y1, new_node_box.y1)
-                           - allocation->y1;
-  priv->offscreen_box.x2 = MAX (old_node_box.x2, new_node_box.x2)
-                           - allocation->x1;
-  priv->offscreen_box.y2 = MAX (old_node_box.y2, new_node_box.y2)
-                           - allocation->y1;
+  paint_box->x1 = MIN (old_node_box.x1, new_node_box.x1);
+  paint_box->y1 = MIN (old_node_box.y1, new_node_box.y1);
+  paint_box->x2 = MAX (old_node_box.x2, new_node_box.x2);
+  paint_box->y2 = MAX (old_node_box.y2, new_node_box.y2);
 }
 
 static gboolean
