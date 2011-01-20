@@ -262,6 +262,7 @@ Notification.prototype = {
         this._titleFitsInBannerMode = true;
         this._spacing = 0;
 
+        this._buttonFocusManager = null;
         this._hasFocus = false;
         this._lockTrayOnFocusGrab = false;
         // We use this._prevFocusedWindow and this._prevKeyFocusActor to return the
@@ -504,7 +505,7 @@ Notification.prototype = {
             this._buttonBox = box;
         }
 
-        let button = new St.Button();
+        let button = new St.Button({ can_focus: true });
 
         if (this._useActionIcons && Gtk.IconTheme.get_default().has_icon(id)) {
             button.add_style_class_name('notification-icon-button');
@@ -514,8 +515,15 @@ Notification.prototype = {
             button.label = label;
         }
 
+        if (!this._buttonFocusManager)
+            this._buttonFocusManager = St.FocusManager.get_for_stage(global.stage);
+        if (this._buttonBox.get_children().length > 0)
+            this._buttonFocusManager.remove_group(this._buttonBox);
+
         this._buttonBox.add(button);
+        this._buttonFocusManager.add_group(this._buttonBox);
         button.connect('clicked', Lang.bind(this, this._onActionInvoked, id));
+
         this._updated();
     },
 
@@ -665,6 +673,10 @@ Notification.prototype = {
         this._focusActorChangedId = global.stage.connect('notify::key-focus', Lang.bind(this, this._focusActorChanged));
 
         this._hasFocus = true;
+
+        if (this._buttonFocusManager)
+            this._buttonBox.get_children()[0].grab_key_focus();
+
         if (lockTray)
             Main.messageTray.lock();
     },

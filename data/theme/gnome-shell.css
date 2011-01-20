@@ -921,6 +921,10 @@ StTooltip StLabel {
     border: 1px solid #a1a1a1;
 }
 
+.notification-button:focus {
+    background-color: #666666;
+}
+
 .notification-button:active {
     border: 1px solid #a1a1a1;
     background-color: #2b2b2b;
@@ -933,6 +937,10 @@ StTooltip StLabel {
 }
 
 .notification-icon-button:hover {
+    border: 2px rgba(161,161,161,0.7);
+}
+
+.notification-icon-button:focus {
     background: rgba(192,192,192,0.7);
 }
 
