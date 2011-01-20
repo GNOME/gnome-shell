@@ -53,30 +53,16 @@ do_events (ClutterActor *stage)
     }
 }
 
-static gboolean
-fps_cb (gpointer data)
+static void
+on_paint (ClutterActor *stage, gconstpointer *data)
 {
-  ClutterActor *stage = CLUTTER_ACTOR (data);
-
-  static GTimer *timer = NULL;
-  static gint fps = 0;
-
-  if (!timer)
-    {
-      timer = g_timer_new ();
-      g_timer_start (timer);
-    }
-
-  if (g_timer_elapsed (timer, NULL) >= 1)
-    {
-      printf ("fps: %d\n", fps);
-      g_timer_start (timer);
-      fps = 0;
-    }
-
-  clutter_actor_paint (stage);
   do_events (stage);
-  ++fps;
+}
+
+static gboolean
+queue_redraw (gpointer stage)
+{
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
   return TRUE;
 }
@@ -89,6 +75,10 @@ main (int argc, char **argv)
   const ClutterColor black = { 0x00, 0x00, 0x00, 0xff };
   ClutterColor color = { 0x00, 0x00, 0x00, 0xff };
   ClutterActor *stage, *rect;
+
+  g_setenv ("CLUTTER_VBLANK", "none", FALSE);
+  g_setenv ("CLUTTER_DEFAULT_FPS", "1000", FALSE);
+  g_setenv ("CLUTTER_SHOW_FPS", "1", FALSE);
 
   clutter_init_with_args (&argc, &argv,
                           NULL,
@@ -134,7 +124,9 @@ main (int argc, char **argv)
 
   clutter_actor_show (stage);
 
-  g_idle_add (fps_cb, (gpointer)stage);
+  g_idle_add (queue_redraw, stage);
+
+  g_signal_connect (stage, "paint", G_CALLBACK (on_paint), NULL);
 
   clutter_main ();
 
