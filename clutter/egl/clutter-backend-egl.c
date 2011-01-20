@@ -290,7 +290,7 @@ retry:
    * a dummy, offscreen override-redirect window to which we can always
    * fall back if no stage is available */
 
-  xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
+  xvisinfo = _clutter_backend_x11_get_visual_info (backend_x11);
   if (xvisinfo == NULL)
     {
       g_critical ("Unable to find suitable GL visual.");
@@ -679,7 +679,7 @@ check_vblank_env (const char *name)
 static ClutterFeatureFlags
 clutter_backend_egl_get_features (ClutterBackend *backend)
 {
-  ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
   const gchar *egl_extensions = NULL;
   const gchar *gl_extensions = NULL;
   ClutterFeatureFlags flags;
@@ -687,8 +687,13 @@ clutter_backend_egl_get_features (ClutterBackend *backend)
   g_assert (backend_egl->egl_context != NULL);
 
 #ifdef COGL_HAS_XLIB_SUPPORT
-  flags = clutter_backend_x11_get_features (backend);
-  flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
+  {
+    ClutterBackendClass *parent_class;
+
+    parent_class = CLUTTER_BACKEND_CLASS (_clutter_backend_egl_parent_class);
+    flags = parent_class->get_features (backend);
+    flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
+  }
 #else
   flags = CLUTTER_FEATURE_STAGE_STATIC;
 #endif

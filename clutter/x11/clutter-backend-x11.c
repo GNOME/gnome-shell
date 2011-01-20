@@ -68,6 +68,8 @@
 #include "clutter-main.h"
 #include "clutter-private.h"
 
+#define clutter_backend_x11_get_type    _clutter_backend_x11_get_type
+
 G_DEFINE_TYPE (ClutterBackendX11, clutter_backend_x11, CLUTTER_TYPE_BACKEND);
 
 /* atoms; remember to add the code that assigns the atom value to
@@ -294,8 +296,8 @@ clutter_backend_x11_create_keymap (ClutterBackendX11 *backend_x11)
 }
 
 gboolean
-clutter_backend_x11_pre_parse (ClutterBackend  *backend,
-                               GError         **error)
+_clutter_backend_x11_pre_parse (ClutterBackend  *backend,
+                                GError         **error)
 {
   const gchar *env_string;
 
@@ -327,8 +329,8 @@ clutter_backend_x11_pre_parse (ClutterBackend  *backend,
 }
 
 gboolean
-clutter_backend_x11_post_parse (ClutterBackend  *backend,
-                                GError         **error)
+_clutter_backend_x11_post_parse (ClutterBackend  *backend,
+                                 GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
@@ -716,8 +718,8 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   gobject_class->dispose = clutter_backend_x11_dispose;
   gobject_class->finalize = clutter_backend_x11_finalize;
 
-  backend_class->pre_parse = clutter_backend_x11_pre_parse;
-  backend_class->post_parse = clutter_backend_x11_post_parse;
+  backend_class->pre_parse = _clutter_backend_x11_pre_parse;
+  backend_class->post_parse = _clutter_backend_x11_post_parse;
   backend_class->init_events = clutter_backend_x11_init_events;
   backend_class->add_options = clutter_backend_x11_add_options;
   backend_class->get_features = clutter_backend_x11_get_features;
@@ -1015,16 +1017,6 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func,
     }
 }
 
-ClutterInputDevice *
-_clutter_x11_get_device_for_xid (XID id)
-{
-  ClutterDeviceManager *manager;
-
-  manager = clutter_device_manager_get_default ();
-
-  return clutter_device_manager_get_device (manager, (gint) id);
-}
-
 /**
  * clutter_x11_get_input_devices:
  *
@@ -1167,7 +1159,7 @@ clutter_x11_get_use_argb_visual (void)
 }
 
 XVisualInfo *
-clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11)
+_clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11)
 {
   ClutterBackendX11Class *klass;
 
@@ -1199,7 +1191,7 @@ clutter_x11_get_visual_info (void)
 
   backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
 
-  return clutter_backend_x11_get_visual_info (backend_x11);
+  return _clutter_backend_x11_get_visual_info (backend_x11);
 }
 
 void

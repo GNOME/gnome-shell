@@ -37,7 +37,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_BACKEND_X11                (clutter_backend_x11_get_type ())
+#define CLUTTER_TYPE_BACKEND_X11                (_clutter_backend_x11_get_type ())
 #define CLUTTER_BACKEND_X11(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_X11, ClutterBackendX11))
 #define CLUTTER_IS_BACKEND_X11(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_X11))
 #define CLUTTER_BACKEND_X11_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_X11, ClutterBackendX11Class))
@@ -128,36 +128,11 @@ struct _ClutterBackendX11Class
 void   _clutter_backend_x11_events_init (ClutterBackend *backend);
 void   _clutter_backend_x11_events_uninit (ClutterBackend *backend);
 
-GType clutter_backend_x11_get_type (void) G_GNUC_CONST;
+GType _clutter_backend_x11_get_type (void) G_GNUC_CONST;
 
 /* Private to glx/eglx backends */
-gboolean
-clutter_backend_x11_pre_parse (ClutterBackend  *backend,
-                               GError         **error);
-
-gboolean
-clutter_backend_x11_post_parse (ClutterBackend  *backend,
-                                GError         **error);
-
-gboolean
-clutter_backend_x11_init_stage (ClutterBackend  *backend,
-                                GError         **error);
-
-ClutterActor *
-clutter_backend_x11_get_stage (ClutterBackend *backend);
-
-void
-clutter_backend_x11_add_options (ClutterBackend *backend,
-                                 GOptionGroup   *group);
-
-ClutterFeatureFlags
-clutter_backend_x11_get_features (ClutterBackend *backend);
-
 XVisualInfo *
-clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11);
-
-ClutterInputDevice *
-_clutter_x11_get_device_for_xid (XID id);
+_clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11);
 
 void
 _clutter_x11_select_events (Window xwin);

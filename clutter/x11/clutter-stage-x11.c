@@ -54,6 +54,8 @@
 static void clutter_stage_window_iface_init     (ClutterStageWindowIface     *iface);
 static void clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface);
 
+#define clutter_stage_x11_get_type      _clutter_stage_x11_get_type
+
 G_DEFINE_TYPE_WITH_CODE (ClutterStageX11,
                          clutter_stage_x11,
                          G_TYPE_OBJECT,
@@ -120,7 +122,7 @@ update_state (ClutterStageX11   *stage_x11,
     }
 }
 
-void
+static void
 clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
                                    gint             new_width,
                                    gint             new_height)
@@ -179,7 +181,7 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
     }
 }
 
-void
+static void
 clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
@@ -1218,7 +1220,7 @@ clutter_x11_get_stage_visual (ClutterStage *stage)
   g_return_val_if_fail (CLUTTER_IS_BACKEND_X11 (backend), NULL);
   backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
-  return clutter_backend_x11_get_visual_info (backend_x11);
+  return _clutter_backend_x11_get_visual_info (backend_x11);
 }
 
 typedef struct {
@@ -1297,7 +1299,7 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
 
   actor = CLUTTER_ACTOR (stage);
 
-  xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
+  xvisinfo = _clutter_backend_x11_get_visual_info (backend_x11);
   g_return_val_if_fail (xvisinfo != NULL, FALSE);
 
   clutter_x11_trap_x_errors ();
@@ -1412,7 +1414,7 @@ _clutter_stage_x11_create_window (ClutterStageX11 *stage_x11)
 
   backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
 
-  xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
+  xvisinfo = _clutter_backend_x11_get_visual_info (backend_x11);
   if (xvisinfo == NULL)
     {
       g_critical ("Unable to find suitable GL visual.");

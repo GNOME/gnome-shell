@@ -29,13 +29,13 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_KEYMAP_X11         (clutter_keymap_x11_get_type ())
+#define CLUTTER_TYPE_KEYMAP_X11         (_clutter_keymap_x11_get_type ())
 #define CLUTTER_KEYMAP_X11(obj)         (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_KEYMAP_X11, ClutterKeymapX11))
 #define CLUTTER_IS_KEYMAP_X11(obj)      (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_KEYMAP_X11))
 
 typedef struct _ClutterKeymapX11        ClutterKeymapX11;
 
-GType clutter_keymap_x11_get_type (void) G_GNUC_CONST;
+GType _clutter_keymap_x11_get_type (void) G_GNUC_CONST;
 
 gint     _clutter_keymap_x11_get_key_group       (ClutterKeymapX11    *keymap,
                                                   ClutterModifierType  state);

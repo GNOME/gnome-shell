@@ -21,9 +21,7 @@
  * Author: Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include "clutter-keymap-x11.h"
 #include "clutter-backend-x11.h"
@@ -79,6 +77,8 @@ enum
 };
 
 static GParamSpec *obj_props[PROP_LAST];
+
+#define clutter_keymap_x11_get_type     _clutter_keymap_x11_get_type
 
 G_DEFINE_TYPE (ClutterKeymapX11, clutter_keymap_x11, G_TYPE_OBJECT);
 

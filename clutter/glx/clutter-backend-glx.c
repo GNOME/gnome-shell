@@ -69,6 +69,8 @@ static gboolean
 clutter_backend_glx_pre_parse (ClutterBackend  *backend,
                                GError         **error)
 {
+  ClutterBackendClass *parent_class =
+    CLUTTER_BACKEND_CLASS (_clutter_backend_glx_parent_class);
   const gchar *env_string;
 
   env_string = g_getenv ("CLUTTER_VBLANK");
@@ -78,7 +80,7 @@ clutter_backend_glx_pre_parse (ClutterBackend  *backend,
       env_string = NULL;
     }
 
-  return clutter_backend_x11_pre_parse (backend, error);
+  return parent_class->pre_parse (backend, error);
 }
 
 static gboolean
@@ -87,11 +89,11 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
-  ClutterBackendClass *backend_class =
+  ClutterBackendClass *parent_class =
     CLUTTER_BACKEND_CLASS (_clutter_backend_glx_parent_class);
   int glx_major, glx_minor;
 
-  if (!backend_class->post_parse (backend, error))
+  if (!parent_class->post_parse (backend, error))
     return FALSE;
 
   if (!glXQueryExtension (backend_x11->xdpy,
@@ -134,8 +136,12 @@ static void
 clutter_backend_glx_add_options (ClutterBackend *backend,
                                  GOptionGroup   *group)
 {
+  ClutterBackendClass *parent_class =
+    CLUTTER_BACKEND_CLASS (_clutter_backend_glx_parent_class);
+
   g_option_group_add_entries (group, entries);
-  clutter_backend_x11_add_options (backend, group);
+
+  parent_class->add_options (backend, group);
 }
 
 static void
@@ -215,12 +221,15 @@ static ClutterFeatureFlags
 clutter_backend_glx_get_features (ClutterBackend *backend)
 {
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendClass *parent_class;
   const gchar *glx_extensions = NULL;
   const gchar *gl_extensions = NULL;
   ClutterFeatureFlags flags;
   gboolean use_dri = FALSE;
 
-  flags = clutter_backend_x11_get_features (backend);
+  parent_class = CLUTTER_BACKEND_CLASS (_clutter_backend_glx_parent_class);
+
+  flags = parent_class->get_features (backend);
   flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
 
   /* this will make sure that the GL context exists */
