@@ -84,8 +84,8 @@ void          st_scroll_view_set_policy          (StScrollView   *scroll,
                                                   GtkPolicyType   hscroll,
                                                   GtkPolicyType   vscroll);
 
-void          st_scroll_view_set_vshadows        (StScrollView *self,
-                                                  gboolean      vshadows);
+void          st_scroll_view_set_vfade           (StScrollView *self,
+                                                  gboolean      vfade);
 
 G_END_DECLS
 

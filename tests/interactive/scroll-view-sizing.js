@@ -319,17 +319,17 @@ function togglePolicy(button) {
 hpolicy.connect('clicked', function() { togglePolicy(hpolicy); });
 vpolicy.connect('clicked', function() { togglePolicy(vpolicy); });
 
-let shadowsBox = new St.BoxLayout({ vertical: false });
-mainBox.add(shadowsBox);
+let fadeBox = new St.BoxLayout({ vertical: false });
+mainBox.add(fadeBox);
 
 spacer = new St.Bin();
-shadowsBox.add(spacer, { expand: true });
+fadeBox.add(spacer, { expand: true });
 
-shadowsBox.add(new St.Label({ text: 'Vertical Shadows: '}));
-let vshadows = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;' });
-shadowsBox.add(vshadows);
+fadeBox.add(new St.Label({ text: 'Vertical Fade: '}));
+let vfade = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;' });
+fadeBox.add(vfade);
 
-function toggleShadows(button) {
+function toggleFade(button) {
     switch(button.label) {
     case 'No':
 	button.label = 'Yes';
@@ -338,10 +338,10 @@ function toggleShadows(button) {
 	button.label = 'No';
 	break;
     }
-    scrollView.set_vshadows(vshadows.label == 'Yes');
+    scrollView.set_vfade(vfade.label == 'Yes');
 }
 
-vshadows.connect('clicked', function() { toggleShadows(vshadows); });
+vfade.connect('clicked', function() { toggleFade(vfade); });
 
 stage.show();
 Clutter.main();
