@@ -32,7 +32,7 @@
 #define __COGL_PRIMITIVE_H__
 
 #include <cogl/cogl-vertex-buffer.h> /* for CoglVerticesMode */
-#include <cogl/cogl-vertex-attribute.h>
+#include <cogl/cogl-attribute.h>
 
 G_BEGIN_DECLS
 
@@ -217,7 +217,7 @@ typedef struct
  * @n_vertices: The number of vertices to process when drawing
  * @Varargs: A %NULL terminated list of attributes
  *
- * Combines a set of #CoglVertexAttribute<!-- -->s with a specific draw @mode
+ * Combines a set of #CoglAttribute<!-- -->s with a specific draw @mode
  * and defines a vertex count so a #CoglPrimitive object can be retained and
  * drawn later with no addition information required.
  *
@@ -235,7 +235,7 @@ cogl_primitive_new (CoglVerticesMode mode,
 CoglPrimitive *
 cogl_primitive_new_with_attributes_array (CoglVerticesMode mode,
                                           int n_vertices,
-                                          CoglVertexAttribute **attributes);
+                                          CoglAttribute **attributes);
 
 /**
  * cogl_primitive_new_p2:
@@ -246,7 +246,7 @@ cogl_primitive_new_with_attributes_array (CoglVerticesMode mode,
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
  * necessary #CoglVertexArray storage, describe the position
- * attribute with a #CoglVertexAttribute and upload your data.
+ * attribute with a #CoglAttribute and upload your data.
  *
  * For example to draw a convex polygon you can do:
  * |[
@@ -290,7 +290,7 @@ cogl_primitive_new_p2 (CoglVerticesMode mode,
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
  * necessary #CoglVertexArray storage, describe the position
- * attribute with a #CoglVertexAttribute and upload your data.
+ * attribute with a #CoglAttribute and upload your data.
  *
  * For example to draw a convex polygon you can do:
  * |[
@@ -334,7 +334,7 @@ cogl_primitive_new_p3 (CoglVerticesMode mode,
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
  * necessary #CoglVertexArray storage, describe the position
- * and color attributes with #CoglVertexAttribute<!-- -->s and upload
+ * and color attributes with #CoglAttribute<!-- -->s and upload
  * your data.
  *
  * For example to draw a convex polygon with a linear gradient you
@@ -380,7 +380,7 @@ cogl_primitive_new_p2c4 (CoglVerticesMode mode,
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
  * necessary #CoglVertexArray storage, describe the position
- * and color attributes with #CoglVertexAttribute<!-- -->s and upload
+ * and color attributes with #CoglAttribute<!-- -->s and upload
  * your data.
  *
  * For example to draw a convex polygon with a linear gradient you
@@ -426,7 +426,7 @@ cogl_primitive_new_p3c4 (CoglVerticesMode mode,
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
  * necessary #CoglVertexArray storage, describe the position and
- * texture coordinate attributes with #CoglVertexAttribute<!-- -->s and
+ * texture coordinate attributes with #CoglAttribute<!-- -->s and
  * upload your data.
  *
  * For example to draw a convex polygon with texture mapping you can
@@ -472,7 +472,7 @@ cogl_primitive_new_p2t2 (CoglVerticesMode mode,
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
  * necessary #CoglVertexArray storage, describe the position and
- * texture coordinate attributes with #CoglVertexAttribute<!-- -->s and
+ * texture coordinate attributes with #CoglAttribute<!-- -->s and
  * upload your data.
  *
  * For example to draw a convex polygon with texture mapping you can
@@ -518,7 +518,7 @@ cogl_primitive_new_p3t2 (CoglVerticesMode mode,
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
  * necessary #CoglVertexArray storage, describe the position, texture
- * coordinate and color attributes with #CoglVertexAttribute<!-- -->s and
+ * coordinate and color attributes with #CoglAttribute<!-- -->s and
  * upload your data.
  *
  * For example to draw a convex polygon with texture mapping and a
@@ -564,7 +564,7 @@ cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
  * necessary #CoglVertexArray storage, describe the position, texture
- * coordinate and color attributes with #CoglVertexAttribute<!-- -->s and
+ * coordinate and color attributes with #CoglAttribute<!-- -->s and
  * upload your data.
  *
  * For example to draw a convex polygon with texture mapping and a
@@ -624,7 +624,7 @@ cogl_primitive_set_mode (CoglPrimitive *primitive,
 /**
  * cogl_primitive_set_attributes:
  * @primitive: A #CoglPrimitive object
- * @attributes: A %NULL terminated array of #CoglVertexAttribute
+ * @attributes: A %NULL terminated array of #CoglAttribute
  *              pointers
  *
  * Replaces all the attributes of the given #CoglPrimitive object.
@@ -634,7 +634,7 @@ cogl_primitive_set_mode (CoglPrimitive *primitive,
  */
 void
 cogl_primitive_set_attributes (CoglPrimitive *primitive,
-                               CoglVertexAttribute **attributes);
+                               CoglAttribute **attributes);
 
 
 void

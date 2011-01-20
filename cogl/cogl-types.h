@@ -472,6 +472,28 @@ GQuark
 _cogl_error_quark (void);
 
 /**
+ * CoglAttributeType:
+ * @COGL_ATTRIBUTE_TYPE_BYTE: Data is the same size of a byte
+ * @COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE: Data is the same size of an
+ *   unsigned byte
+ * @COGL_ATTRIBUTE_TYPE_SHORT: Data is the same size of a short integer
+ * @COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT: Data is the same size of
+ *   an unsigned short integer
+ * @COGL_ATTRIBUTE_TYPE_FLOAT: Data is the same size of a float
+ *
+ * Data types for the components of a vertex attribute.
+ *
+ * Since: 1.0
+ */
+typedef enum {
+  COGL_ATTRIBUTE_TYPE_BYTE           = 0x1400,
+  COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE  = 0x1401,
+  COGL_ATTRIBUTE_TYPE_SHORT          = 0x1402,
+  COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT = 0x1403,
+  COGL_ATTRIBUTE_TYPE_FLOAT          = 0x1406
+} CoglAttributeType;
+
+/**
  * CoglIndicesType:
  * @COGL_INDICES_TYPE_UNSIGNED_BYTE: Your indices are unsigned bytes
  * @COGL_INDICES_TYPE_UNSIGNED_SHORT: Your indices are unsigned shorts

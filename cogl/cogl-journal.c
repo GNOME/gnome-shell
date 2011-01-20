@@ -36,7 +36,7 @@
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-profile.h"
-#include "cogl-vertex-attribute-private.h"
+#include "cogl-attribute-private.h"
 #include "cogl-point-in-poly-private.h"
 
 #include <string.h>
@@ -260,7 +260,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
                                            void             *data)
 {
   CoglJournalFlushState *state = data;
-  CoglVertexAttribute **attributes;
+  CoglAttribute **attributes;
   CoglDrawFlags draw_flags = (COGL_DRAW_SKIP_JOURNAL_FLUSH |
                               COGL_DRAW_SKIP_PIPELINE_VALIDATION |
                               COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
@@ -287,7 +287,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
                                       COGL_MATRIX_MODELVIEW);
     }
 
-  attributes = (CoglVertexAttribute **)state->attributes->data;
+  attributes = (CoglAttribute **)state->attributes->data;
   cogl_push_source (state->source);
 
   if (!_cogl_pipeline_get_real_blend_enabled (state->source))
@@ -296,28 +296,28 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
 #ifdef HAVE_COGL_GL
 
   /* XXX: it's rather evil that we sneak in the GL_QUADS enum here... */
-  _cogl_draw_vertex_attributes_array (GL_QUADS,
-                                      state->current_vertex, batch_len * 4,
-                                      attributes,
-                                      draw_flags);
+  _cogl_draw_attributes_array (GL_QUADS,
+                               state->current_vertex, batch_len * 4,
+                               attributes,
+                               draw_flags);
 
 #else /* HAVE_COGL_GL */
   if (batch_len > 1)
     {
-      _cogl_draw_indexed_vertex_attributes_array (COGL_VERTICES_MODE_TRIANGLES,
-                                                  state->current_vertex * 6 / 4,
-                                                  batch_len * 6,
-                                                  state->indices,
-                                                  attributes,
-                                                  draw_flags);
+      _cogl_draw_indexed_attributes_array (COGL_VERTICES_MODE_TRIANGLES,
+                                           state->current_vertex * 6 / 4,
+                                           batch_len * 6,
+                                           state->indices,
+                                           attributes,
+                                           draw_flags);
 
     }
   else
     {
-      _cogl_draw_vertex_attributes_array (COGL_VERTICES_MODE_TRIANGLE_FAN,
-                                          state->current_vertex, 4,
-                                          attributes,
-                                          draw_flags);
+      _cogl_draw_attributes_array (COGL_VERTICES_MODE_TRIANGLE_FAN,
+                                   state->current_vertex, 4,
+                                   attributes,
+                                   draw_flags);
     }
 #endif
 
@@ -332,7 +332,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
       static CoglPipeline *outline = NULL;
       guint8 color_intensity;
       int i;
-      CoglVertexAttribute *loop_attributes[2];
+      CoglAttribute *loop_attributes[2];
 
       _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
 
@@ -360,10 +360,10 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
       loop_attributes[0] = attributes[0]; /* we just want the position */
       loop_attributes[1] = NULL;
       for (i = 0; i < batch_len; i++)
-        _cogl_draw_vertex_attributes_array (COGL_VERTICES_MODE_LINE_LOOP,
-                                            4 * i + state->current_vertex, 4,
-                                            loop_attributes,
-                                            draw_flags);
+        _cogl_draw_attributes_array (COGL_VERTICES_MODE_LINE_LOOP,
+                                     4 * i + state->current_vertex, 4,
+                                     loop_attributes,
+                                     draw_flags);
 
       /* Go to the next color */
       do
@@ -483,15 +483,14 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
   /* NB: attributes 0 and 1 are position and color */
 
   for (i = 2; i < state->attributes->len; i++)
-    cogl_object_unref (g_array_index (state->attributes,
-                                      CoglVertexAttribute *, i));
+    cogl_object_unref (g_array_index (state->attributes, CoglAttribute *, i));
 
   g_array_set_size (state->attributes, batch_start->n_layers + 2);
 
   for (i = 0; i < batch_start->n_layers; i++)
     {
-      CoglVertexAttribute **attribute_entry =
-        &g_array_index (state->attributes, CoglVertexAttribute *, i + 2);
+      CoglAttribute **attribute_entry =
+        &g_array_index (state->attributes, CoglAttribute *, i + 2);
       const char *names[] = {
           "cogl_tex_coord0_in",
           "cogl_tex_coord1_in",
@@ -519,14 +518,14 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
       /* XXX: it may be worth having some form of static initializer for
        * attributes... */
       *attribute_entry =
-        cogl_vertex_attribute_new (state->vertex_array,
-                                   name,
-                                   state->stride,
-                                   state->array_offset +
-                                      (POS_STRIDE + COLOR_STRIDE) * 4 +
-                                      TEX_STRIDE * 4 * i,
-                                   2,
-                                   COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+        cogl_attribute_new (state->vertex_array,
+                            name,
+                            state->stride,
+                            state->array_offset +
+                            (POS_STRIDE + COLOR_STRIDE) * 4 +
+                            TEX_STRIDE * 4 * i,
+                            2,
+                            COGL_ATTRIBUTE_TYPE_FLOAT);
 
       if (i >= 8)
         g_free (name);
@@ -559,7 +558,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
   CoglJournalFlushState   *state = data;
   gsize                    stride;
   int                      i;
-  CoglVertexAttribute    **attribute_entry;
+  CoglAttribute          **attribute_entry;
   COGL_STATIC_TIMER (time_flush_vbo_texcoord_pipeline_entries,
                      "flush: clip+vbo+texcoords+pipeline+entries", /* parent */
                      "flush: vbo+texcoords+pipeline+entries",
@@ -589,39 +588,36 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
   state->stride = stride;
 
   for (i = 0; i < state->attributes->len; i++)
-    cogl_object_unref (g_array_index (state->attributes,
-                                      CoglVertexAttribute *, i));
+    cogl_object_unref (g_array_index (state->attributes, CoglAttribute *, i));
 
   g_array_set_size (state->attributes, 2);
 
-  attribute_entry =
-    &g_array_index (state->attributes, CoglVertexAttribute *, 0);
-  *attribute_entry =
-    cogl_vertex_attribute_new (state->vertex_array,
-                               "cogl_position_in",
-                               stride,
-                               state->array_offset,
-                               N_POS_COMPONENTS,
-                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+  attribute_entry = &g_array_index (state->attributes, CoglAttribute *, 0);
+  *attribute_entry = cogl_attribute_new (state->vertex_array,
+                                         "cogl_position_in",
+                                         stride,
+                                         state->array_offset,
+                                         N_POS_COMPONENTS,
+                                         COGL_ATTRIBUTE_TYPE_FLOAT);
 
-  attribute_entry =
-    &g_array_index (state->attributes, CoglVertexAttribute *, 1);
+  attribute_entry = &g_array_index (state->attributes, CoglAttribute *, 1);
   *attribute_entry =
-    cogl_vertex_attribute_new (state->vertex_array,
-                               "cogl_color_in",
-                               stride,
-                               state->array_offset + (POS_STRIDE * 4),
-                               4,
-                               COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
+    cogl_attribute_new (state->vertex_array,
+                        "cogl_color_in",
+                        stride,
+                        state->array_offset + (POS_STRIDE * 4),
+                        4,
+                        COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
 
 #ifndef HAVE_COGL_GL
   state->indices = cogl_get_rectangle_indices (batch_len);
 #endif
 
-  /* We only create new VertexAttributes when the stride within the
-   * VertexArray changes. (due to a change in the number of pipeline layers)
-   * While the stride remains constant we walk forward through the above
-   * VertexArray using a vertex offset passed to cogl_draw_vertex_attributes
+  /* We only create new Attributes when the stride within the
+   * VertexArray changes. (due to a change in the number of pipeline
+   * layers) While the stride remains constant we walk forward through
+   * the above VertexArray using a vertex offset passed to
+   * cogl_draw_attributes
    */
   state->current_vertex = 0;
 
@@ -1376,8 +1372,7 @@ _cogl_journal_flush (CoglJournal *journal,
                   &state); /* data */
 
   for (i = 0; i < state.attributes->len; i++)
-    cogl_object_unref (g_array_index (state.attributes,
-                                      CoglVertexAttribute *, i));
+    cogl_object_unref (g_array_index (state.attributes, CoglAttribute *, i));
   g_array_set_size (state.attributes, 0);
 
   cogl_object_unref (state.vertex_array);

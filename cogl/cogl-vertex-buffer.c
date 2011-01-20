@@ -327,7 +327,7 @@ validate_custom_attribute_name (const char *attribute_name)
  * of all the submitted attributes
  *
  * Note: The CoglVertexBufferAttrib structs are deep copied, except the
- * internal CoglVertexAttribute pointer is set to NULL.
+ * internal CoglAttribute pointer is set to NULL.
  */
 static GList *
 copy_submitted_attributes_list (CoglVertexBuffer *buffer)
@@ -1145,7 +1145,7 @@ update_primitive_attributes (CoglVertexBuffer *buffer)
 {
   GList *l;
   int n_attributes = 0;
-  CoglVertexAttribute **attributes;
+  CoglAttribute **attributes;
   int i;
 
   if (!buffer->dirty_attributes)
@@ -1164,7 +1164,7 @@ update_primitive_attributes (CoglVertexBuffer *buffer)
 
   g_return_if_fail (n_attributes > 0);
 
-  attributes = g_alloca (sizeof (CoglVertexAttribute *) * n_attributes + 1);
+  attributes = g_alloca (sizeof (CoglAttribute *) * n_attributes + 1);
 
   i = 0;
   for (l = buffer->submitted_vbos; l; l = l->next)
@@ -1181,12 +1181,12 @@ update_primitive_attributes (CoglVertexBuffer *buffer)
               if (G_UNLIKELY (!attribute->attribute))
                 {
                   attribute->attribute =
-                    cogl_vertex_attribute_new (cogl_vbo->array,
-                                               attribute->name_without_detail,
-                                               attribute->stride,
-                                               attribute->u.vbo_offset,
-                                               attribute->n_components,
-                                               attribute->type);
+                    cogl_attribute_new (cogl_vbo->array,
+                                        attribute->name_without_detail,
+                                        attribute->stride,
+                                        attribute->u.vbo_offset,
+                                        attribute->n_components,
+                                        attribute->type);
                 }
 
               attributes[i++] = attribute->attribute;

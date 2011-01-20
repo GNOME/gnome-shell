@@ -28,8 +28,8 @@
 #error "Only <cogl/cogl.h> can be included directly."
 #endif
 
-#ifndef __COGL_VERTEX_ATTRIBUTE_H__
-#define __COGL_VERTEX_ATTRIBUTE_H__
+#ifndef __COGL_ATTRIBUTE_H__
+#define __COGL_ATTRIBUTE_H__
 
 #include <cogl/cogl-vertex-array.h>
 #include <cogl/cogl-indices.h>
@@ -37,40 +37,17 @@
 G_BEGIN_DECLS
 
 /**
- * SECTION:cogl-vertex-attribute
- * @short_description: Fuctions for declaring and drawing vertex
+ * SECTION:cogl-attribute
+ * @short_description: Functions for declaring and drawing vertex
  *    attributes
  *
  * FIXME
  */
 
-typedef struct _CoglVertexAttribute CoglVertexAttribute;
+typedef struct _CoglAttribute CoglAttribute;
 
 /**
- * CoglVertexAttributeType:
- * @COGL_VERTEX_ATTRIBUTE_TYPE_BYTE: Data is the same size of a byte
- * @COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_BYTE: Data is the same size of an
- *   unsigned byte
- * @COGL_VERTEX_ATTRIBUTE_TYPE_SHORT: Data is the same size of a short integer
- * @COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_SHORT: Data is the same size of
- *   an unsigned short integer
- * @COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT: Data is the same size of a float
- *
- * Data types for the components of a vertex attribute.
- *
- * Since: 1.4
- * Stability: Unstable
- */
-typedef enum {
-  COGL_VERTEX_ATTRIBUTE_TYPE_BYTE           = 0x1400,
-  COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_BYTE  = 0x1401,
-  COGL_VERTEX_ATTRIBUTE_TYPE_SHORT          = 0x1402,
-  COGL_VERTEX_ATTRIBUTE_TYPE_UNSIGNED_SHORT = 0x1403,
-  COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT          = 0x1406
-} CoglVertexAttributeType;
-
-/**
- * cogl_vertex_attribute_new:
+ * cogl_attribute_new:
  * @array: The #CoglVertexArray containing the actual attribute data
  * @name: The name of the attribute (used to reference it from GLSL)
  * @stride: The number of bytes to jump to get to the next attribute
@@ -145,7 +122,7 @@ typedef enum {
  * mapped into the GPU which can be a bottlneck when dealing with
  * a large number of vertices.
  *
- * Returns: A newly allocated #CoglVertexAttribute describing the
+ * Returns: A newly allocated #CoglAttribute describing the
  *          layout for a list of attribute values stored in @array.
  *
  * Since: 1.4
@@ -153,53 +130,53 @@ typedef enum {
  */
 /* XXX: look for a precedent to see if the stride/offset args should
  * have a different order. */
-CoglVertexAttribute *
-cogl_vertex_attribute_new (CoglVertexArray *array,
-                           const char *name,
-                           gsize stride,
-                           gsize offset,
-                           int components,
-                           CoglVertexAttributeType type);
+CoglAttribute *
+cogl_attribute_new (CoglVertexArray *array,
+                    const char *name,
+                    gsize stride,
+                    gsize offset,
+                    int components,
+                    CoglAttributeType type);
 
 /**
- * cogl_is_vertex_attribute:
+ * cogl_is_attribute:
  * @object: A #CoglObject
  *
- * Gets whether the given object references a #CoglVertexAttribute.
+ * Gets whether the given object references a #CoglAttribute.
  *
- * Return value: %TRUE if the handle references a #CoglVertexAttribute,
+ * Return value: %TRUE if the handle references a #CoglAttribute,
  *   %FALSE otherwise
  */
 gboolean
-cogl_is_vertex_attribute (void *object);
+cogl_is_attribute (void *object);
 
 void
-cogl_draw_vertex_attributes (CoglVerticesMode mode,
-                             int first_vertex,
-                             int n_vertices,
-                             ...) G_GNUC_NULL_TERMINATED;
+cogl_draw_attributes (CoglVerticesMode mode,
+                      int first_vertex,
+                      int n_vertices,
+                      ...) G_GNUC_NULL_TERMINATED;
 
 void
-cogl_draw_vertex_attributes_array (CoglVerticesMode mode,
-                                   int first_vertex,
-                                   int n_vertices,
-                                   CoglVertexAttribute **attributes);
+cogl_draw_attributes_array (CoglVerticesMode mode,
+                            int first_vertex,
+                            int n_vertices,
+                            CoglAttribute **attributes);
 
 void
-cogl_draw_indexed_vertex_attributes (CoglVerticesMode mode,
-                                     int first_vertex,
-                                     int n_vertices,
-                                     CoglIndices *indices,
-                                     ...) G_GNUC_NULL_TERMINATED;
+cogl_draw_indexed_attributes (CoglVerticesMode mode,
+                              int first_vertex,
+                              int n_vertices,
+                              CoglIndices *indices,
+                              ...) G_GNUC_NULL_TERMINATED;
 
 void
-cogl_draw_indexed_vertex_attributes_array (CoglVerticesMode mode,
-                                           int first_vertex,
-                                           int n_vertices,
-                                           CoglIndices *indices,
-                                           CoglVertexAttribute **attributes);
+cogl_draw_indexed_attributes_array (CoglVerticesMode mode,
+                                    int first_vertex,
+                                    int n_vertices,
+                                    CoglIndices *indices,
+                                    CoglAttribute **attributes);
 
 G_END_DECLS
 
-#endif /* __COGL_VERTEX_ATTRIBUTE_H__ */
+#endif /* __COGL_ATTRIBUTE_H__ */
 

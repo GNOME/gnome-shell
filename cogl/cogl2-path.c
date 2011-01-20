@@ -42,7 +42,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-primitives-private.h"
 #include "cogl-private.h"
-#include "cogl-vertex-attribute-private.h"
+#include "cogl-attribute-private.h"
 #include "tesselator/tesselator.h"
 
 #include <string.h>
@@ -233,7 +233,7 @@ _cogl_path_stroke_nodes (CoglPath *path)
     {
       node = &g_array_index (data->path_nodes, CoglPathNode, path_start);
 
-      cogl_draw_vertex_attributes (COGL_VERTICES_MODE_LINE_STRIP,
+      cogl_draw_attributes (COGL_VERTICES_MODE_LINE_STRIP,
                                    0, node->path_size,
                                    data->stroke_vbo_attributes[path_num],
                                    NULL);
@@ -338,7 +338,7 @@ _cogl_path_fill_nodes (CoglPath *path)
 
   _cogl_path_build_fill_vbo (path);
 
-  _cogl_draw_indexed_vertex_attributes_array
+  _cogl_draw_indexed_attributes_array
                                  (COGL_VERTICES_MODE_TRIANGLES,
                                   0, /* first_vertex */
                                   path->data->fill_vbo_n_indices,
@@ -1447,19 +1447,19 @@ _cogl_path_build_fill_vbo (CoglPath *path)
   g_array_free (tess.vertices, TRUE);
 
   data->fill_vbo_attributes[0] =
-    cogl_vertex_attribute_new (data->fill_vbo,
+    cogl_attribute_new (data->fill_vbo,
                                "cogl_position_in",
                                sizeof (CoglPathTesselatorVertex),
                                G_STRUCT_OFFSET (CoglPathTesselatorVertex, x),
                                2, /* n_components */
-                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+                               COGL_ATTRIBUTE_TYPE_FLOAT);
   data->fill_vbo_attributes[1] =
-    cogl_vertex_attribute_new (data->fill_vbo,
+    cogl_attribute_new (data->fill_vbo,
                                "cogl_tex_coord0_in",
                                sizeof (CoglPathTesselatorVertex),
                                G_STRUCT_OFFSET (CoglPathTesselatorVertex, s),
                                2, /* n_components */
-                               COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+                               COGL_ATTRIBUTE_TYPE_FLOAT);
   /* NULL terminator */
   data->fill_vbo_attributes[2] = NULL;
 
@@ -1511,7 +1511,7 @@ _cogl_path_build_stroke_vbo (CoglPath *path)
 
   _cogl_buffer_unmap_for_fill_or_fallback (COGL_BUFFER (data->stroke_vbo));
 
-  data->stroke_vbo_attributes = g_new (CoglVertexAttribute *, n_attributes);
+  data->stroke_vbo_attributes = g_new (CoglAttribute *, n_attributes);
 
   /* Now we can loop the sub paths again to create the attributes */
   for (i = 0, path_start = 0;
@@ -1521,12 +1521,12 @@ _cogl_path_build_stroke_vbo (CoglPath *path)
       node = &g_array_index (data->path_nodes, CoglPathNode, path_start);
 
       data->stroke_vbo_attributes[i] =
-        cogl_vertex_attribute_new (data->stroke_vbo,
-                                   "cogl_position_in",
-                                   sizeof (floatVec2),
-                                   path_start * sizeof (floatVec2),
-                                   2, /* n_components */
-                                   COGL_VERTEX_ATTRIBUTE_TYPE_FLOAT);
+        cogl_attribute_new (data->stroke_vbo,
+                            "cogl_position_in",
+                            sizeof (floatVec2),
+                            path_start * sizeof (floatVec2),
+                            2, /* n_components */
+                            COGL_ATTRIBUTE_TYPE_FLOAT);
     }
 
   data->stroke_vbo_n_attributes = n_attributes;

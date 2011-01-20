@@ -93,14 +93,14 @@ typedef struct _CoglVertexBufferAttrib
     const void		  *pointer;
     size_t		   vbo_offset;
   } u;
-  CoglVertexAttributeType  type;
+  CoglAttributeType        type;
   size_t		   span_bytes;
   guint16		   stride;
   guint8		   n_components;
   guint8		   texture_unit;
 
   int                      attribute_first;
-  CoglVertexAttribute     *attribute;
+  CoglAttribute           *attribute;
 
 } CoglVertexBufferAttrib;
 

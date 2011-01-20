@@ -89,7 +89,7 @@ cogl_index_array_allocate (CoglIndexArray *indices,
  * data.
  *
  * XXX: I think in the end it'll be that CoglIndices are to
- * CoglIndexArrays as CoglVertexAttributes are to CoglVertices. I.e
+ * CoglIndexArrays as CoglAttributes are to CoglVertices. I.e
  * a CoglIndexArray is a lite subclass of CoglBuffer that simply
  * implies that the buffer will later be bound as indices but doesn't
  * track more detailed meta data. CoglIndices build on a
@@ -98,7 +98,7 @@ cogl_index_array_allocate (CoglIndexArray *indices,
  *
  * XXX: The double plurel form that "Indices" "Array" implies could be
  * a bit confusing. Also to be a bit more consistent with
- * CoglVertexArray vs CoglVertexAttribute it might be best to rename so
+ * CoglVertexArray vs CoglAttribute it might be best to rename so
  * we have CoglIndexArray vs CoglIndices? maybe even
  * CoglIndexRange :-/ ?
  *
