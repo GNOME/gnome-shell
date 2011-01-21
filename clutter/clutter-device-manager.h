@@ -29,6 +29,7 @@
 #define __CLUTTER_DEVICE_MANAGER_H__
 
 #include <clutter/clutter-input-device.h>
+#include <clutter/clutter-stage.h>
 
 G_BEGIN_DECLS
 

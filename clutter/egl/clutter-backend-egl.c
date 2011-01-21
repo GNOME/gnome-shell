@@ -290,7 +290,7 @@ retry:
    * a dummy, offscreen override-redirect window to which we can always
    * fall back if no stage is available */
 
-  xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
+  xvisinfo = _clutter_backend_x11_get_visual_info (backend_x11);
   if (xvisinfo == NULL)
     {
       g_critical ("Unable to find suitable GL visual.");
@@ -679,7 +679,7 @@ check_vblank_env (const char *name)
 static ClutterFeatureFlags
 clutter_backend_egl_get_features (ClutterBackend *backend)
 {
-  ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
   const gchar *egl_extensions = NULL;
   const gchar *gl_extensions = NULL;
   ClutterFeatureFlags flags;
@@ -687,8 +687,13 @@ clutter_backend_egl_get_features (ClutterBackend *backend)
   g_assert (backend_egl->egl_context != NULL);
 
 #ifdef COGL_HAS_XLIB_SUPPORT
-  flags = clutter_backend_x11_get_features (backend);
-  flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
+  {
+    ClutterBackendClass *parent_class;
+
+    parent_class = CLUTTER_BACKEND_CLASS (_clutter_backend_egl_parent_class);
+    flags = parent_class->get_features (backend);
+    flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
+  }
 #else
   flags = CLUTTER_FEATURE_STAGE_STATIC;
 #endif
@@ -750,6 +755,7 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
 {
 #ifdef COGL_HAS_XLIB_SUPPORT
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  ClutterEventTranslator *translator;
   ClutterStageWindow *stage;
   ClutterStageX11 *stage_x11;
 
@@ -761,6 +767,9 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
   /* copy backend data into the stage */
   stage_x11 = CLUTTER_STAGE_X11 (stage);
   stage_x11->wrapper = wrapper;
+
+  translator = CLUTTER_EVENT_TRANSLATOR (stage_x11);
+  _clutter_backend_x11_add_event_translator (backend_x11, translator);
 
   CLUTTER_NOTE (MISC, "EGLX stage created (display:%p, screen:%d, root:%u)",
                 backend_x11->xdpy,

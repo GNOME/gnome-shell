@@ -42,23 +42,17 @@ clutter_stage_egl_unrealize (ClutterStageWindow *stage_window)
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage_window);
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
-  CLUTTER_NOTE (BACKEND, "Unrealizing stage");
+  CLUTTER_NOTE (BACKEND, "Unrealizing EGL stage [%p]", stage_egl);
 
   clutter_x11_trap_x_errors ();
-
-  if (!stage_x11->is_foreign_xwin && stage_x11->xwin != None)
-    {
-      XDestroyWindow (backend_x11->xdpy, stage_x11->xwin);
-      stage_x11->xwin = None;
-    }
-  else
-    stage_x11->xwin = None;
 
   if (stage_egl->egl_surface != EGL_NO_SURFACE)
     {
       eglDestroySurface (clutter_egl_get_egl_display (), stage_egl->egl_surface);
       stage_egl->egl_surface = EGL_NO_SURFACE;
     }
+
+  _clutter_stage_x11_destroy_window_untrapped (stage_x11);
 
   XSync (backend_x11->xdpy, False);
 
@@ -72,73 +66,19 @@ clutter_stage_egl_realize (ClutterStageWindow *stage_window)
   ClutterStageX11   *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterBackend    *backend;
   ClutterBackendEGL *backend_egl;
-  ClutterBackendX11 *backend_x11;
   EGLDisplay         edpy;
 
-  CLUTTER_NOTE (BACKEND, "Realizing main stage");
+  CLUTTER_NOTE (BACKEND, "Realizing stage '%s' [%p]",
+                G_OBJECT_TYPE_NAME (stage_egl),
+                stage_egl);
 
   backend     = clutter_get_default_backend ();
   backend_egl = CLUTTER_BACKEND_EGL (backend);
-  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   edpy = clutter_egl_get_egl_display ();
 
-  if (stage_x11->xwin == None)
-    {
-      XSetWindowAttributes xattr;
-      unsigned long mask;
-      XVisualInfo *xvisinfo;
-      gfloat width, height;
-
-      CLUTTER_NOTE (MISC, "Creating stage X window");
-
-      xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
-      if (xvisinfo == NULL)
-        {
-          g_critical ("Unable to find suitable GL visual.");
-          return FALSE;
-        }
-
-      /* window attributes */
-      xattr.background_pixel = WhitePixel (backend_x11->xdpy,
-                                           backend_x11->xscreen_num);
-      xattr.border_pixel = 0;
-      xattr.colormap = XCreateColormap (backend_x11->xdpy,
-                                        backend_x11->xwin_root,
-                                        xvisinfo->visual,
-                                        AllocNone);
-      mask = CWBorderPixel | CWColormap;
-
-      /* Call get_size - this will either get the geometry size (which
-       * before we create the window is set to 640x480), or if a size
-       * is set, it will get that. This lets you set a size on the
-       * stage before it's realized.
-       */
-      clutter_actor_get_size (CLUTTER_ACTOR (stage_x11->wrapper),
-                              &width,
-                              &height);
-      stage_x11->xwin_width = (gint)width;
-      stage_x11->xwin_height = (gint)height;
-
-      stage_x11->xwin = XCreateWindow (backend_x11->xdpy,
-                                       backend_x11->xwin_root,
-                                       0, 0,
-                                       stage_x11->xwin_width,
-                                       stage_x11->xwin_height,
-                                       0,
-                                       xvisinfo->depth,
-                                       InputOutput,
-                                       xvisinfo->visual,
-                                       mask, &xattr);
-
-      CLUTTER_NOTE (BACKEND, "Stage [%p], window: 0x%x, size: %dx%d",
-                    stage_window,
-                    (unsigned int) stage_x11->xwin,
-                    stage_x11->xwin_width,
-                    stage_x11->xwin_height);
-
-      XFree (xvisinfo);
-    }
+  if (!_clutter_stage_x11_create_window (stage_x11))
+    return FALSE;
 
   if (stage_egl->egl_surface == EGL_NO_SURFACE)
     {
@@ -151,38 +91,6 @@ clutter_stage_egl_realize (ClutterStageWindow *stage_window)
 
   if (stage_egl->egl_surface == EGL_NO_SURFACE)
     g_warning ("Unable to create an EGL surface");
-
-  if (clutter_x11_has_event_retrieval ())
-    {
-      if (clutter_x11_has_xinput ())
-        {
-          XSelectInput (backend_x11->xdpy, stage_x11->xwin,
-                        StructureNotifyMask |
-                        FocusChangeMask |
-                        ExposureMask |
-                        EnterWindowMask | LeaveWindowMask |
-                        PropertyChangeMask);
-#ifdef USE_XINPUT
-          _clutter_x11_select_events (stage_x11->xwin);
-#endif
-        }
-      else
-        XSelectInput (backend_x11->xdpy, stage_x11->xwin,
-                      StructureNotifyMask |
-                      FocusChangeMask |
-                      ExposureMask |
-                      PointerMotionMask |
-                      KeyPressMask | KeyReleaseMask |
-                      ButtonPressMask | ButtonReleaseMask |
-                      EnterWindowMask | LeaveWindowMask |
-                      PropertyChangeMask);
-    }
-
-  /* no user resize... */
-  clutter_stage_x11_fix_window_size (stage_x11,
-                                     stage_x11->xwin_width,
-                                     stage_x11->xwin_height);
-  clutter_stage_x11_set_wm_protocols (stage_x11);
 
   return clutter_stage_egl_parent_iface->realize (stage_window);
 }

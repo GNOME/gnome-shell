@@ -3,7 +3,7 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Copyright (C) 2009 Intel Corp.
+ * Copyright © 2009, 2010, 2011  Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,11 +35,13 @@
 #include "config.h"
 #endif
 
+#include "clutter-input-device.h"
+
 #include "clutter-actor-private.h"
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
 #include "clutter-enum-types.h"
-#include "clutter-input-device.h"
+#include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
@@ -47,16 +49,58 @@ enum
 {
   PROP_0,
 
+  PROP_BACKEND,
+
   PROP_ID,
-  PROP_DEVICE_TYPE,
   PROP_NAME,
+
+  PROP_DEVICE_TYPE,
+  PROP_DEVICE_MANAGER,
+  PROP_DEVICE_MODE,
+
+  PROP_HAS_CURSOR,
+  PROP_ENABLED,
+
+  PROP_N_AXES,
 
   PROP_LAST
 };
 
-static GParamSpec *obj_props[PROP_LAST];
+static GParamSpec *obj_props[PROP_LAST] = { NULL, };
 
 G_DEFINE_TYPE (ClutterInputDevice, clutter_input_device, G_TYPE_OBJECT);
+
+static void
+clutter_input_device_dispose (GObject *gobject)
+{
+  ClutterInputDevice *device = CLUTTER_INPUT_DEVICE (gobject);
+
+  g_free (device->device_name);
+
+  if (device->device_mode == CLUTTER_INPUT_MODE_SLAVE)
+    _clutter_input_device_remove_slave (device->associated, device);
+
+  if (device->associated != NULL)
+    {
+      _clutter_input_device_set_associated_device (device->associated, NULL);
+      g_object_unref (device->associated);
+      device->associated = NULL;
+    }
+
+  if (device->axes != NULL)
+    {
+      g_array_free (device->axes, TRUE);
+      device->axes = NULL;
+    }
+
+  if (device->keys != NULL)
+    {
+      g_array_free (device->keys, TRUE);
+      device->keys = NULL;
+    }
+
+  G_OBJECT_CLASS (clutter_input_device_parent_class)->dispose (gobject);
+}
 
 static void
 clutter_input_device_set_property (GObject      *gobject,
@@ -76,8 +120,28 @@ clutter_input_device_set_property (GObject      *gobject,
       self->device_type = g_value_get_enum (value);
       break;
 
+    case PROP_DEVICE_MANAGER:
+      self->device_manager = g_value_get_object (value);
+      break;
+
+    case PROP_DEVICE_MODE:
+      self->device_mode = g_value_get_enum (value);
+      break;
+
+    case PROP_BACKEND:
+      self->backend = g_value_get_object (value);
+      break;
+
     case PROP_NAME:
-      self->device_name = g_strdup (g_value_get_string (value));
+      self->device_name = g_value_dup_string (value);
+      break;
+
+    case PROP_HAS_CURSOR:
+      self->has_cursor = g_value_get_boolean (value);
+      break;
+
+    case PROP_ENABLED:
+      clutter_input_device_set_enabled (self, g_value_get_boolean (value));
       break;
 
     default:
@@ -104,8 +168,32 @@ clutter_input_device_get_property (GObject    *gobject,
       g_value_set_enum (value, self->device_type);
       break;
 
+    case PROP_DEVICE_MANAGER:
+      g_value_set_object (value, self->device_manager);
+      break;
+
+    case PROP_DEVICE_MODE:
+      g_value_set_enum (value, self->device_mode);
+      break;
+
+    case PROP_BACKEND:
+      g_value_set_object (value, self->backend);
+      break;
+
     case PROP_NAME:
       g_value_set_string (value, self->device_name);
+      break;
+
+    case PROP_HAS_CURSOR:
+      g_value_set_boolean (value, self->has_cursor);
+      break;
+
+    case PROP_N_AXES:
+      g_value_set_uint (value, clutter_input_device_get_n_axes (self));
+      break;
+
+    case PROP_ENABLED:
+      g_value_set_boolean (value, self->is_enabled);
       break;
 
     default:
@@ -118,10 +206,6 @@ static void
 clutter_input_device_class_init (ClutterInputDeviceClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
-
-  gobject_class->set_property = clutter_input_device_set_property;
-  gobject_class->get_property = clutter_input_device_get_property;
 
   /**
    * ClutterInputDevice:id:
@@ -130,15 +214,14 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_int ("id",
-                            P_("Id"),
-                            P_("Unique identifier of the device"),
-                            -1, G_MAXINT,
-                            0,
-                            CLUTTER_PARAM_READWRITE |
-                            G_PARAM_CONSTRUCT_ONLY);
-  obj_props[PROP_ID] = pspec;
-  g_object_class_install_property (gobject_class, PROP_ID, pspec);
+  obj_props[PROP_ID] =
+    g_param_spec_int ("id",
+                      P_("Id"),
+                      P_("Unique identifier of the device"),
+                      -1, G_MAXINT,
+                      0,
+                      CLUTTER_PARAM_READWRITE |
+                      G_PARAM_CONSTRUCT_ONLY);
 
   /**
    * ClutterInputDevice:name:
@@ -147,14 +230,13 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_string ("name",
-                               P_("Name"),
-                               P_("The name of the device"),
-                               NULL,
-                               CLUTTER_PARAM_READWRITE |
-                               G_PARAM_CONSTRUCT_ONLY);
-  obj_props[PROP_NAME] = pspec;
-  g_object_class_install_property (gobject_class, PROP_NAME, pspec);
+  obj_props[PROP_NAME] =
+    g_param_spec_string ("name",
+                         P_("Name"),
+                         P_("The name of the device"),
+                         NULL,
+                         CLUTTER_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT_ONLY);
 
   /**
    * ClutterInputDevice:device-type:
@@ -163,15 +245,110 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * Since: 1.2
    */
-  pspec = g_param_spec_enum ("device-type",
-                             P_("Device Type"),
-                             P_("The type of the device"),
-                             CLUTTER_TYPE_INPUT_DEVICE_TYPE,
-                             CLUTTER_POINTER_DEVICE,
-                             CLUTTER_PARAM_READWRITE |
-                             G_PARAM_CONSTRUCT_ONLY);
-  obj_props[PROP_DEVICE_TYPE] = pspec;
-  g_object_class_install_property (gobject_class, PROP_DEVICE_TYPE, pspec);
+  obj_props[PROP_DEVICE_TYPE] =
+    g_param_spec_enum ("device-type",
+                       P_("Device Type"),
+                       P_("The type of the device"),
+                       CLUTTER_TYPE_INPUT_DEVICE_TYPE,
+                       CLUTTER_POINTER_DEVICE,
+                       CLUTTER_PARAM_READWRITE |
+                       G_PARAM_CONSTRUCT_ONLY);
+
+  /**
+   * ClutterInputDevice:device-manager:
+   *
+   * The #ClutterDeviceManager instance which owns the device
+   *
+   * Since: 1.6
+   */
+  obj_props[PROP_DEVICE_MANAGER] =
+    g_param_spec_object ("device-manager",
+                         P_("Device Manager"),
+                         P_("The device manager instance"),
+                         CLUTTER_TYPE_DEVICE_MANAGER,
+                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  /**
+   * ClutterInputDevice:mode:
+   *
+   * The mode of the device.
+   *
+   * Since: 1.6
+   */
+  obj_props[PROP_DEVICE_MODE] =
+    g_param_spec_enum ("device-mode",
+                       P_("Device Mode"),
+                       P_("The mode of the device"),
+                       CLUTTER_TYPE_INPUT_MODE,
+                       CLUTTER_INPUT_MODE_FLOATING,
+                       CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  /**
+   * ClutterInputDevice:has-cursor:
+   *
+   * Whether the device has an on screen cursor following its movement.
+   *
+   * Since: 1.6
+   */
+  obj_props[PROP_HAS_CURSOR] =
+    g_param_spec_boolean ("has-cursor",
+                          P_("Has Cursor"),
+                          P_("Whether the device has a cursor"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  /**
+   * ClutterInputDevice:enabled:
+   *
+   * Whether the device is enabled.
+   *
+   * A device with the #ClutterInputDevice:device-mode property set
+   * to %CLUTTER_INPUT_MODE_MASTER cannot be disabled.
+   *
+   * A device must be enabled in order to receive events from it.
+   *
+   * Since: 1.6
+   */
+  obj_props[PROP_ENABLED] =
+    g_param_spec_boolean ("enabled",
+                          P_("Enabled"),
+                          P_("Whether the device is enabled"),
+                          FALSE,
+                          CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterInputDevice:n-axes:
+   *
+   * The number of axes of the device.
+   *
+   * Since: 1.6
+   */
+  obj_props[PROP_N_AXES] =
+    g_param_spec_uint ("n-axes",
+                       P_("Number of Axes"),
+                       P_("The number of axes on the device"),
+                       0, G_MAXUINT,
+                       0,
+                       CLUTTER_PARAM_READABLE);
+
+  /**
+   * ClutterInputDevice:backend:
+   *
+   * The #ClutterBackend that created the device.
+   *
+   * Since: 1.6
+   */
+  obj_props[PROP_BACKEND] =
+    g_param_spec_object ("backend",
+                         P_("Backend"),
+                         P_("The backend instance"),
+                         CLUTTER_TYPE_BACKEND,
+                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  gobject_class->dispose = clutter_input_device_dispose;
+  gobject_class->set_property = clutter_input_device_set_property;
+  gobject_class->get_property = clutter_input_device_get_property;
+  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
 }
 
 static void
@@ -189,8 +366,8 @@ clutter_input_device_init (ClutterInputDevice *self)
   self->current_state = self->previous_state = 0;
 }
 
-/*
- * _clutter_input_device_set_coords:
+/*< private >
+ * clutter_input_device_set_coords:
  * @device: a #ClutterInputDevice
  * @x: X coordinate of the device
  * @y: Y coordinate of the device
@@ -211,8 +388,8 @@ _clutter_input_device_set_coords (ClutterInputDevice *device,
     device->current_y = y;
 }
 
-/*
- * _clutter_input_device_set_state:
+/*< private >
+ * clutter_input_device_set_state:
  * @device: a #ClutterInputDevice
  * @state: a bitmask of modifiers
  *
@@ -227,8 +404,8 @@ _clutter_input_device_set_state (ClutterInputDevice  *device,
   device->current_state = state;
 }
 
-/*
- * _clutter_input_device_set_time:
+/*< private >
+ * clutter_input_device_set_time:
  * @device: a #ClutterInputDevice
  * @time_: the time
  *
@@ -244,10 +421,7 @@ _clutter_input_device_set_time (ClutterInputDevice *device,
     device->current_time = time_;
 }
 
-/*
- * cursor_weak_unref:
- *
- * #ClutterInputDevice keeps a weak reference on the actor
+/* #ClutterInputDevice keeps a weak reference on the actor
  * under its pointer; this function unsets the reference on
  * the actor to avoid keeping around stale pointers
  */
@@ -260,8 +434,8 @@ cursor_weak_unref (gpointer  user_data,
   device->cursor_actor = NULL;
 }
 
-/*
- * _clutter_input_device_set_stage:
+/*< private >
+ * clutter_input_device_set_stage:
  * @device: a #ClutterInputDevice
  * @stage: a #ClutterStage or %NULL
  *
@@ -310,8 +484,8 @@ _clutter_input_device_set_stage (ClutterInputDevice *device,
   device->cursor_actor = NULL;
 }
 
-/*
- * _clutter_input_device_set_actor:
+/*< private >
+ * clutter_input_device_set_actor:
  * @device: a #ClutterInputDevice
  * @actor: a #ClutterActor
  *
@@ -468,6 +642,56 @@ clutter_input_device_get_device_id (ClutterInputDevice *device)
 }
 
 /**
+ * clutter_input_device_set_enabled:
+ * @device: a #ClutterInputDevice
+ * @enabled: %TRUE to enable the @device
+ *
+ * Enables or disables a #ClutterInputDevice.
+ *
+ * Only devices with a #ClutterInputDevice:device-mode property set
+ * to %CLUTTER_INPUT_MODE_SLAVE or %CLUTTER_INPUT_MODE_FLOATING can
+ * be disabled.
+ *
+ * Since: 1.6
+ */
+void
+clutter_input_device_set_enabled (ClutterInputDevice *device,
+                                  gboolean            enabled)
+{
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+
+  enabled = !!enabled;
+
+  if (!enabled && device->device_mode == CLUTTER_INPUT_MODE_MASTER)
+    return;
+
+  if (device->is_enabled == enabled)
+    return;
+
+  device->is_enabled = enabled;
+
+  g_object_notify_by_pspec (G_OBJECT (device), obj_props[PROP_ENABLED]);
+}
+
+/**
+ * clutter_input_device_get_enabled:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves whether @device is enabled.
+ *
+ * Return value: %TRUE if the device is enabled
+ *
+ * Since: 1.6
+ */
+gboolean
+clutter_input_device_get_enabled (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), FALSE);
+
+  return device->is_enabled;
+}
+
+/**
  * clutter_input_device_get_device_coords:
  * @device: a #ClutterInputDevice of type %CLUTTER_POINTER_DEVICE
  * @x: (out): return location for the X coordinate
@@ -483,7 +707,6 @@ clutter_input_device_get_device_coords (ClutterInputDevice *device,
                                         gint               *y)
 {
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
-  g_return_if_fail (device->device_type == CLUTTER_POINTER_DEVICE);
 
   if (x)
     *x = device->current_x;
@@ -514,7 +737,8 @@ _clutter_input_device_update (ClutterInputDevice *device)
   ClutterActor *old_cursor_actor;
   gint x, y;
 
-  g_return_val_if_fail (device->device_type == CLUTTER_POINTER_DEVICE, NULL);
+  if (device->device_type == CLUTTER_KEYBOARD_DEVICE)
+    return NULL;
 
   stage = device->stage;
   if (G_UNLIKELY (stage == NULL))
@@ -613,6 +837,44 @@ clutter_input_device_get_device_name (ClutterInputDevice *device)
 }
 
 /**
+ * clutter_input_device_get_has_cursor:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves whether @device has a pointer that follows the
+ * device motion.
+ *
+ * Return value: %TRUE if the device has a cursor
+ *
+ * Since: 1.6
+ */
+gboolean
+clutter_input_device_get_has_cursor (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), FALSE);
+
+  return device->has_cursor;
+}
+
+/**
+ * clutter_input_device_get_device_mode:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the #ClutterInputMode of @device.
+ *
+ * Return value: the device mode
+ *
+ * Since: 1.6
+ */
+ClutterInputMode
+clutter_input_device_get_device_mode (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device),
+                        CLUTTER_INPUT_MODE_FLOATING);
+
+  return device->device_mode;
+}
+
+/**
  * clutter_input_device_update_from_event:
  * @device: a #ClutterInputDevice
  * @event: a #ClutterEvent
@@ -699,4 +961,486 @@ clutter_input_device_update_from_event (ClutterInputDevice *device,
 
   if (update_stage)
     _clutter_input_device_set_stage (device, event_stage);
+}
+
+/*< private >
+ * clutter_input_device_reset_axes:
+ * @device: a #ClutterInputDevice
+ *
+ * Resets the axes on @device
+ */
+void
+_clutter_input_device_reset_axes (ClutterInputDevice *device)
+{
+  if (device->axes != NULL)
+    {
+      g_array_free (device->axes, TRUE);
+      device->axes = NULL;
+
+      g_object_notify_by_pspec (G_OBJECT (device), obj_props[PROP_N_AXES]);
+    }
+}
+
+/*< private >
+ * clutter_input_device_add_axis:
+ * @device: a #ClutterInputDevice
+ * @axis: the axis type
+ * @minimum: the minimum axis value
+ * @maximum: the maximum axis value
+ * @resolution: the axis resolution
+ *
+ * Adds an axis of type @axis on @device.
+ */
+guint
+_clutter_input_device_add_axis (ClutterInputDevice *device,
+                                ClutterInputAxis    axis,
+                                gdouble             minimum,
+                                gdouble             maximum,
+                                gdouble             resolution)
+{
+  ClutterAxisInfo info;
+  guint pos;
+
+  if (device->axes == NULL)
+    device->axes = g_array_new (FALSE, TRUE, sizeof (ClutterAxisInfo));
+
+  info.axis = axis;
+  info.min_value = minimum;
+  info.max_value = maximum;
+  info.resolution = resolution;
+
+  switch (axis)
+    {
+    case CLUTTER_INPUT_AXIS_X:
+    case CLUTTER_INPUT_AXIS_Y:
+      info.min_axis = 0;
+      info.max_axis = 0;
+      break;
+
+    case CLUTTER_INPUT_AXIS_XTILT:
+    case CLUTTER_INPUT_AXIS_YTILT:
+      info.min_axis = -1;
+      info.max_axis = 1;
+      break;
+
+    default:
+      info.min_axis = 0;
+      info.max_axis = 1;
+      break;
+    }
+
+  device->axes = g_array_append_val (device->axes, info);
+  pos = device->axes->len - 1;
+
+  g_object_notify_by_pspec (G_OBJECT (device), obj_props[PROP_N_AXES]);
+
+  return pos;
+}
+
+/*< private >
+ * clutter_input_translate_axis:
+ * @device: a #ClutterInputDevice
+ * @index_: the index of the axis
+ * @gint: the absolute value of the axis
+ * @axis_value: (out): the translated value of the axis
+ *
+ * Performs a conversion from the absolute value of the axis
+ * to a relative value.
+ *
+ * The axis at @index_ must not be %CLUTTER_INPUT_AXIS_X or
+ * %CLUTTER_INPUT_AXIS_Y.
+ *
+ * Return value: %TRUE if the conversion was successful
+ */
+gboolean
+_clutter_input_device_translate_axis (ClutterInputDevice *device,
+                                      guint               index_,
+                                      gdouble             value,
+                                      gdouble            *axis_value)
+{
+  ClutterAxisInfo *info;
+  gdouble width;
+  gdouble real_value;
+
+  if (device->axes == NULL || index_ >= device->axes->len)
+    return FALSE;
+
+  info = &g_array_index (device->axes, ClutterAxisInfo, index_);
+
+  if (info->axis == CLUTTER_INPUT_AXIS_X ||
+      info->axis == CLUTTER_INPUT_AXIS_Y)
+    return FALSE;
+
+  width = info->max_value - info->min_value;
+  real_value = (info->max_axis * (value - info->min_value)
+             + info->min_axis * (info->max_value - value))
+             / width;
+
+  if (axis_value)
+    *axis_value = real_value;
+
+  return TRUE;
+}
+
+/**
+ * clutter_input_device_get_axis:
+ * @device: a #ClutterInputDevice
+ * @index_: the index of the axis
+ *
+ * Retrieves the type of axis on @device at the given index.
+ *
+ * Return value: the axis type
+ *
+ * Since: 1.6
+ */
+ClutterInputAxis
+clutter_input_device_get_axis (ClutterInputDevice *device,
+                               guint               index_)
+{
+  ClutterAxisInfo *info;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device),
+                        CLUTTER_INPUT_AXIS_IGNORE);
+
+  if (device->axes == NULL)
+    return CLUTTER_INPUT_AXIS_IGNORE;
+
+  if (index_ >= device->axes->len)
+    return CLUTTER_INPUT_AXIS_IGNORE;
+
+  info = &g_array_index (device->axes, ClutterAxisInfo, index_);
+
+  return info->axis;
+}
+
+/**
+ * clutter_input_device_get_axis_value:
+ * @device: a #ClutterInputDevice
+ * @axes: (array): an array of axes values, typically
+ *   coming from clutter_event_get_axes()
+ * @axis: the axis to extract
+ * @value: (out): return location for the axis value
+ *
+ * Extracts the value of the given @axis of a #ClutterInputDevice from
+ * an array of axis values.
+ *
+ * An example of typical usage for this function is:
+ *
+ * |[
+ *   ClutterInputDevice *device = clutter_event_get_device (event);
+ *   gdouble *axes = clutter_event_get_axes (event, NULL);
+ *   gdouble pressure_value = 0;
+ *
+ *   clutter_input_device_get_axis_value (device, axes,
+ *                                        CLUTTER_INPUT_AXIS_PRESSURE,
+ *                                        &amp;pressure_value);
+ * ]|
+ *
+ * Return value: %TRUE if the value was set, and %FALSE otherwise
+ *
+ * Since: 1.6
+ */
+gboolean
+clutter_input_device_get_axis_value (ClutterInputDevice *device,
+                                     gdouble            *axes,
+                                     ClutterInputAxis    axis,
+                                     gdouble            *value)
+{
+  gint i;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), FALSE);
+  g_return_val_if_fail (device->axes != NULL, FALSE);
+
+  for (i = 0; i < device->axes->len; i++)
+    {
+      ClutterAxisInfo *info;
+
+      info = &g_array_index (device->axes, ClutterAxisInfo, i);
+
+      if (info->axis == axis)
+        {
+          if (value)
+            *value = axes[i];
+
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+/**
+ * clutter_input_device_get_n_axes:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the number of axes available on @device.
+ *
+ * Return value: the number of axes on the device
+ *
+ * Since: 1.6
+ */
+guint
+clutter_input_device_get_n_axes (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), 0);
+
+  if (device->axes != NULL)
+    return device->axes->len;
+
+  return 0;
+}
+
+/*< private >
+ * clutter_input_device_set_n_keys:
+ * @device: a #ClutterInputDevice
+ * @n_keys: the number of keys of the device
+ *
+ * Initializes the keys of @device.
+ *
+ * Call clutter_input_device_set_key() on each key to set the keyval
+ * and modifiers.
+ */
+void
+_clutter_input_device_set_n_keys (ClutterInputDevice *device,
+                                  guint               n_keys)
+{
+  if (device->keys != NULL)
+    g_array_free (device->keys, TRUE);
+
+  device->n_keys = n_keys;
+  device->keys = g_array_sized_new (FALSE, TRUE,
+                                    sizeof (ClutterKeyInfo),
+                                    n_keys);
+}
+
+/**
+ * clutter_input_device_get_n_keys:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the number of keys registered for @device.
+ *
+ * Return value: the number of registered keys
+ *
+ * Since: 1.6
+ */
+guint
+clutter_input_device_get_n_keys (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), 0);
+
+  return device->n_keys;
+}
+
+/**
+ * clutter_input_device_set_key:
+ * @device: a #ClutterInputDevice
+ * @index_: the index of the key
+ * @keyval: the keyval
+ * @modifiers: a bitmask of modifiers
+ *
+ * Sets the keyval and modifiers at the given @index_ for @device.
+ *
+ * Clutter will use the keyval and modifiers set when filling out
+ * an event coming from the same input device.
+ *
+ * Since: 1.6
+ */
+void
+clutter_input_device_set_key (ClutterInputDevice  *device,
+                              guint                index_,
+                              guint                keyval,
+                              ClutterModifierType  modifiers)
+{
+  ClutterKeyInfo *key_info;
+
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+  g_return_if_fail (index_ < device->n_keys);
+
+  key_info = &g_array_index (device->keys, ClutterKeyInfo, index_);
+  key_info->keyval = keyval;
+  key_info->modifiers = modifiers;
+}
+
+/**
+ * clutter_input_device_get_key:
+ * @device: a #ClutterInputDevice
+ * @index_: the index of the key
+ * @keyval: (out): return location for the keyval at @index_
+ * @modifiers: (out): return location for the modifiers at @index_
+ *
+ * Retrieves the key set using clutter_input_device_set_key()
+ *
+ * Return value: %TRUE if a key was set at the given index
+ *
+ * Since: 1.6
+ */
+gboolean
+clutter_input_device_get_key (ClutterInputDevice  *device,
+                              guint                index_,
+                              guint               *keyval,
+                              ClutterModifierType *modifiers)
+{
+  ClutterKeyInfo *key_info;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), FALSE);
+
+  if (device->keys == NULL)
+    return FALSE;
+
+  if (index_ > device->keys->len)
+    return FALSE;
+
+  key_info = &g_array_index (device->keys, ClutterKeyInfo, index_);
+
+  if (!key_info->keyval && !key_info->modifiers)
+    return FALSE;
+
+  if (keyval)
+    *keyval = key_info->keyval;
+
+  if (modifiers)
+    *modifiers = key_info->modifiers;
+
+  return TRUE;
+}
+
+/*< private >
+ * clutter_input_device_add_slave:
+ * @master: a #ClutterInputDevice
+ * @slave: a #ClutterInputDevice
+ *
+ * Adds @slave to the list of slave devices of @master
+ *
+ * This function does not increase the reference count of either @master
+ * or @slave.
+ */
+void
+_clutter_input_device_add_slave (ClutterInputDevice *master,
+                                 ClutterInputDevice *slave)
+{
+  if (g_list_find (master->slaves, slave) == NULL)
+    master->slaves = g_list_prepend (master->slaves, slave);
+}
+
+/*< private >
+ * clutter_input_device_remove_slave:
+ * @master: a #ClutterInputDevice
+ * @slave: a #ClutterInputDevice
+ *
+ * Removes @slave from the list of slave devices of @master.
+ *
+ * This function does not decrease the reference count of either @master
+ * or @slave.
+ */
+void
+_clutter_input_device_remove_slave (ClutterInputDevice *master,
+                                    ClutterInputDevice *slave)
+{
+  if (g_list_find (master->slaves, slave) != NULL)
+    master->slaves = g_list_remove (master->slaves, slave);
+}
+
+/**
+ * clutter_input_device_get_slave_devices:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the slave devices attached to @device.
+ *
+ * Return value: (transfer container) (element-type Clutter.InputDevice): a
+ *   list of #ClutterInputDevice, or %NULL. The contents of the list are
+ *   owned by the device. Use g_list_free() when done
+ *
+ * Since: 1.6
+ */
+GList *
+clutter_input_device_get_slave_devices (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+
+  return g_list_copy (device->slaves);
+}
+
+/*< internal >
+ * clutter_input_device_set_associated_device:
+ * @device: a #ClutterInputDevice
+ * @associated: (allow-none): a #ClutterInputDevice, or %NULL
+ *
+ * Sets the associated device for @device.
+ *
+ * This function keeps a reference on the associated device.
+ */
+void
+_clutter_input_device_set_associated_device (ClutterInputDevice *device,
+                                             ClutterInputDevice *associated)
+{
+  if (device->associated == associated)
+    return;
+
+  if (device->associated != NULL)
+    g_object_unref (device->associated);
+
+  device->associated = associated;
+  if (device->associated != NULL)
+    g_object_ref (device->associated);
+
+  CLUTTER_NOTE (MISC, "Associating device '%s' to device '%s'",
+                clutter_input_device_get_device_name (device),
+                device->associated != NULL
+                  ? clutter_input_device_get_device_name (device->associated)
+                  : "(none)");
+
+  if (device->device_mode != CLUTTER_INPUT_MODE_MASTER)
+    {
+      if (device->associated != NULL)
+        device->device_mode = CLUTTER_INPUT_MODE_SLAVE;
+      else
+        device->device_mode = CLUTTER_INPUT_MODE_FLOATING;
+
+      g_object_notify_by_pspec (G_OBJECT (device), obj_props[PROP_DEVICE_MODE]);
+    }
+}
+
+/**
+ * clutter_input_device_get_associated_device:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves a pointer to the #ClutterInputDevice that has been
+ * associated to @device.
+ *
+ * If the #ClutterInputDevice:device-mode property of @device is
+ * set to %CLUTTER_INPUT_MODE_MASTER, this function will return
+ * %NULL.
+ *
+ * Return value: (transfer none): a #ClutterInputDevice, or %NULL
+ *
+ * Since: 1.6
+ */
+ClutterInputDevice *
+clutter_input_device_get_associated_device (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+
+  return device->associated;
+}
+
+/*< internal >
+ * clutter_input_device_select_stage_events:
+ * @device: a #ClutterInputDevice
+ * @stage: the #ClutterStage to select events on
+ * @event_mask: platform-specific mask of events
+ *
+ * Selects input device events on @stage.
+ *
+ * The implementation of this function depends on the backend used.
+ */
+void
+_clutter_input_device_select_stage_events (ClutterInputDevice *device,
+                                           ClutterStage       *stage,
+                                           gint                event_mask)
+{
+  ClutterInputDeviceClass *device_class;
+
+  device_class = CLUTTER_INPUT_DEVICE_GET_CLASS (device);
+  if (device_class->select_stage_events != NULL)
+    device_class->select_stage_events (device, stage, event_mask);
 }

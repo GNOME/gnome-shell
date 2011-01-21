@@ -1029,6 +1029,7 @@ clutter_event_get_time
 clutter_event_get_source
 clutter_event_get_stage
 clutter_event_get_flags
+clutter_event_get_axes
 
 <SUBSECTION>
 clutter_event_get
@@ -1056,6 +1057,7 @@ clutter_event_get_scroll_direction
 clutter_event_get_device
 clutter_event_get_device_id
 clutter_event_get_device_type
+clutter_event_get_source_device
 
 <SUBSECTION>
 clutter_get_current_event_time
@@ -1072,14 +1074,35 @@ clutter_event_get_type
 <FILE>clutter-input-device</FILE>
 <TITLE>ClutterInputDevice</TITLE>
 ClutterInputDeviceType
+ClutterInputAxis
+ClutterInputMode
 ClutterInputDevice
-ClutterInputDeviceClass
 clutter_input_device_get_device_id
 clutter_input_device_get_device_type
 clutter_input_device_get_device_name
+clutter_input_device_get_device_mode
+clutter_input_device_get_has_cursor
+clutter_input_device_set_enabled
+clutter_input_device_get_enabled
+clutter_input_device_get_associated_device
+clutter_input_device_get_slave_devices
+
+<SUBSECTION>
+clutter_input_device_get_n_keys
+clutter_input_device_set_key
+clutter_input_device_get_key
+
+<SUBSECTION>
+clutter_input_device_get_n_axes
+clutter_input_device_get_axis
+clutter_input_device_get_axis_value
+
+<SUBSECTION>
 clutter_input_device_get_device_coords
 clutter_input_device_get_pointer_actor
 clutter_input_device_get_pointer_stage
+
+<SUBSECTION>
 clutter_input_device_update_from_event
 
 <SUBSECTION Standard>
@@ -1091,6 +1114,7 @@ CLUTTER_IS_INPUT_DEVICE_CLASS
 CLUTTER_INPUT_DEVICE_GET_CLASS
 
 <SUBSECTION Private>
+ClutterInputDeviceClass
 clutter_input_device_get_type
 </SECTION>
 

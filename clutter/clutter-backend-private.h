@@ -71,6 +71,10 @@ struct _ClutterBackendClass
   void                  (* free_event_data)    (ClutterBackend     *backend,
                                                 ClutterEvent       *event);
 
+  gboolean              (* translate_event)    (ClutterBackend     *backend,
+                                                gpointer            native,
+                                                ClutterEvent       *event);
+
   /* signals */
   void (* resolution_changed) (ClutterBackend *backend);
   void (* font_changed)       (ClutterBackend *backend);
@@ -113,6 +117,10 @@ gfloat        _clutter_backend_get_units_per_em   (ClutterBackend       *backend
                                                    PangoFontDescription *font_desc);
 
 gint32 _clutter_backend_get_units_serial (ClutterBackend *backend);
+
+gboolean      _clutter_backend_translate_event   (ClutterBackend   *backend,
+                                                  gpointer          native,
+                                                  ClutterEvent     *event);
 
 G_END_DECLS
 

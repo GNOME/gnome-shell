@@ -70,7 +70,7 @@ struct _ClutterStageGLXClass
 GType _clutter_stage_glx_get_type  (void) G_GNUC_CONST;
 
 void  _clutter_stage_glx_redraw    (ClutterStageGLX *stage_glx,
-                                   ClutterStage *stage);
+                                    ClutterStage    *stage);
 
 G_END_DECLS
 

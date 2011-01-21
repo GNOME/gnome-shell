@@ -48,12 +48,16 @@ static void
 clutter_device_manager_win32_constructed (GObject *gobject)
 {
   ClutterDeviceManager *manager = CLUTTER_DEVICE_MANAGER (gobject);
+  ClutterDeviceManagerWin32 *manager_win32;
   ClutterInputDevice *device;
 
   device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE,
                          "id", 0,
                          "name", "Core Pointer",
                          "device-type", CLUTTER_POINTER_DEVICE,
+                         "device-mode", CLUTTER_INPUT_MODE_MASTER,
+                         "has-cursor", TRUE,
+                         "enabled", TRUE,
                          NULL);
   CLUTTER_NOTE (BACKEND, "Added core pointer device");
   _clutter_device_manager_add_device (manager, device);
@@ -62,9 +66,18 @@ clutter_device_manager_win32_constructed (GObject *gobject)
                          "id", 1,
                          "name", "Core Keyboard",
                          "device-type", CLUTTER_KEYBOARD_DEVICE,
+                         "device-mode", CLUTTER_INPUT_MODE_MASTER,
+                         "enabled", TRUE,
                          NULL);
   CLUTTER_NOTE (BACKEND, "Added core keyboard device");
   _clutter_device_manager_add_device (manager, device);
+
+  manager_win32 = CLUTTER_DEVICE_MANAGER_WIN32 (manager);
+
+  _clutter_input_device_set_associated_device (manager_win32->core_pointer,
+                                               manager_win32->core_keyboard);
+  _clutter_input_device_set_associated_device (manager_win32->core_keyboard,
+                                               manager_win32->core_pointer);
 }
 
 static void

@@ -37,12 +37,12 @@
 #include <GL/gl.h>
 
 #include "clutter-backend-glx.h"
-#include "clutter-event-glx.h"
 #include "clutter-stage-glx.h"
 #include "clutter-glx.h"
 #include "clutter-profile.h"
 
 #include "clutter-debug.h"
+#include "clutter-event-translator.h"
 #include "clutter-event.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
@@ -51,8 +51,9 @@
 
 #include "cogl/cogl.h"
 
+#define clutter_backend_glx_get_type    _clutter_backend_glx_get_type
 
-G_DEFINE_TYPE (ClutterBackendGLX, _clutter_backend_glx, CLUTTER_TYPE_BACKEND_X11);
+G_DEFINE_TYPE (ClutterBackendGLX, clutter_backend_glx, CLUTTER_TYPE_BACKEND_X11);
 
 /* singleton object */
 static ClutterBackendGLX *backend_singleton = NULL;
@@ -69,6 +70,8 @@ static gboolean
 clutter_backend_glx_pre_parse (ClutterBackend  *backend,
                                GError         **error)
 {
+  ClutterBackendClass *parent_class =
+    CLUTTER_BACKEND_CLASS (clutter_backend_glx_parent_class);
   const gchar *env_string;
 
   env_string = g_getenv ("CLUTTER_VBLANK");
@@ -78,7 +81,7 @@ clutter_backend_glx_pre_parse (ClutterBackend  *backend,
       env_string = NULL;
     }
 
-  return clutter_backend_x11_pre_parse (backend, error);
+  return parent_class->pre_parse (backend, error);
 }
 
 static gboolean
@@ -87,11 +90,11 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
-  ClutterBackendClass *backend_class =
-    CLUTTER_BACKEND_CLASS (_clutter_backend_glx_parent_class);
+  ClutterBackendClass *parent_class =
+    CLUTTER_BACKEND_CLASS (clutter_backend_glx_parent_class);
   int glx_major, glx_minor;
 
-  if (!backend_class->post_parse (backend, error))
+  if (!parent_class->post_parse (backend, error))
     return FALSE;
 
   if (!glXQueryExtension (backend_x11->xdpy,
@@ -108,8 +111,8 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
   /* XXX: Technically we should require >= GLX 1.3 support but for a long
    * time Mesa has exported a hybrid GLX, exporting extensions specified
    * to require GLX 1.3, but still reporting 1.2 via glXQueryVersion. */
-  if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor)
-      || !(glx_major == 1 && glx_minor >= 2))
+  if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor) ||
+      !(glx_major == 1 && glx_minor >= 2))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
@@ -134,8 +137,12 @@ static void
 clutter_backend_glx_add_options (ClutterBackend *backend,
                                  GOptionGroup   *group)
 {
+  ClutterBackendClass *parent_class =
+    CLUTTER_BACKEND_CLASS (clutter_backend_glx_parent_class);
+
   g_option_group_add_entries (group, entries);
-  clutter_backend_x11_add_options (backend, group);
+
+  parent_class->add_options (backend, group);
 }
 
 static void
@@ -144,7 +151,7 @@ clutter_backend_glx_finalize (GObject *gobject)
   if (backend_singleton)
     backend_singleton = NULL;
 
-  G_OBJECT_CLASS (_clutter_backend_glx_parent_class)->finalize (gobject);
+  G_OBJECT_CLASS (clutter_backend_glx_parent_class)->finalize (gobject);
 }
 
 static void
@@ -175,7 +182,7 @@ clutter_backend_glx_dispose (GObject *gobject)
       backend_glx->dummy_xwin = None;
     }
 
-  G_OBJECT_CLASS (_clutter_backend_glx_parent_class)->dispose (gobject);
+  G_OBJECT_CLASS (clutter_backend_glx_parent_class)->dispose (gobject);
 }
 
 static GObject *
@@ -188,7 +195,7 @@ clutter_backend_glx_constructor (GType                  gtype,
 
   if (!backend_singleton)
     {
-      parent_class = G_OBJECT_CLASS (_clutter_backend_glx_parent_class);
+      parent_class = G_OBJECT_CLASS (clutter_backend_glx_parent_class);
       retval = parent_class->constructor (gtype, n_params, params);
 
       backend_singleton = CLUTTER_BACKEND_GLX (retval);
@@ -215,12 +222,15 @@ static ClutterFeatureFlags
 clutter_backend_glx_get_features (ClutterBackend *backend)
 {
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendClass *parent_class;
   const gchar *glx_extensions = NULL;
   const gchar *gl_extensions = NULL;
   ClutterFeatureFlags flags;
   gboolean use_dri = FALSE;
 
-  flags = clutter_backend_x11_get_features (backend);
+  parent_class = CLUTTER_BACKEND_CLASS (clutter_backend_glx_parent_class);
+
+  flags = parent_class->get_features (backend);
   flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
 
   /* this will make sure that the GL context exists */
@@ -787,6 +797,7 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
                                   GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  ClutterEventTranslator *translator;
   ClutterStageWindow *stage_window;
   ClutterStageX11 *stage_x11;
 
@@ -798,6 +809,9 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
   /* copy backend data into the stage */
   stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   stage_x11->wrapper = wrapper;
+
+  translator = CLUTTER_EVENT_TRANSLATOR (stage_x11);
+  _clutter_backend_x11_add_event_translator (backend_x11, translator);
 
   CLUTTER_NOTE (BACKEND,
                 "GLX stage created[%p] (dpy:%p, screen:%d, root:%u, wrap:%p)",
@@ -811,7 +825,7 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
 }
 
 static void
-_clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
+clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
@@ -831,13 +845,11 @@ _clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
   backend_class->ensure_context = clutter_backend_glx_ensure_context;
 
   backendx11_class->get_visual_info = clutter_backend_glx_get_visual_info;
-  backendx11_class->handle_event = _clutter_backend_glx_handle_event;
 }
 
 static void
-_clutter_backend_glx_init (ClutterBackendGLX *backend_glx)
+clutter_backend_glx_init (ClutterBackendGLX *backend_glx)
 {
-
 }
 
 /* every backend must implement this function */

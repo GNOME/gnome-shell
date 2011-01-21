@@ -31,7 +31,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_STAGE_X11                  (clutter_stage_x11_get_type ())
+#define CLUTTER_TYPE_STAGE_X11                  (_clutter_stage_x11_get_type ())
 #define CLUTTER_STAGE_X11(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE_X11, ClutterStageX11))
 #define CLUTTER_IS_STAGE_X11(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_STAGE_X11))
 #define CLUTTER_STAGE_X11_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_STAGE_X11, ClutterStageX11Class))
@@ -78,17 +78,17 @@ struct _ClutterStageX11Class
   ClutterGroupClass parent_class;
 };
 
-GType clutter_stage_x11_get_type (void) G_GNUC_CONST;
+GType _clutter_stage_x11_get_type (void) G_GNUC_CONST;
 
 /* Private to subclasses */
-void clutter_stage_x11_fix_window_size  (ClutterStageX11 *stage_x11,
-                                         gint             new_width,
-                                         gint             new_height);
-void clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11);
-void clutter_stage_x11_map              (ClutterStageX11 *stage_x11);
-void clutter_stage_x11_unmap            (ClutterStageX11 *stage_x11);
-
-GList *clutter_stage_x11_get_input_devices (ClutterStageX11 *stage_x11);
+gboolean        _clutter_stage_x11_create_window                (ClutterStageX11 *stage_x11);
+void            _clutter_stage_x11_destroy_window_untrapped     (ClutterStageX11 *stage_x11);
+void            _clutter_stage_x11_destroy_window               (ClutterStageX11 *stage_x11);
+void            _clutter_stage_x11_set_user_time                (ClutterStageX11 *stage_x11,
+                                                                 guint32          user_time);
+gboolean        _clutter_stage_x11_get_root_coords              (ClutterStageX11 *stage_x11,
+                                                                 gint            *root_x,
+                                                                 gint            *root_y);
 
 G_END_DECLS
 

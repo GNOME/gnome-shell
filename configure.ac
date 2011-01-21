@@ -861,29 +861,47 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
               [AC_MSG_ERROR([not found])]
         )
 
-        # XINPUT (optional)
-        xinput=no
+        # XI (optional)
         AC_ARG_ENABLE([xinput],
-                      [AS_HELP_STRING([--enable-xinput], [Use the XINPUT X extension])],
-                      [
-                        AS_IF([test "x$enableval" = "xyes"],
-                              [PKG_CHECK_MODULES(XINPUT, [xi], [xinput=yes], [xinput=no])]
-                        )
-                      ],
-                      [xinput=no])
+                      [AS_HELP_STRING([--enable-xinput], [Use the XI X extension])],
+                      [],
+                      [enable_xinput=yes])
 
-        AS_CASE([$xinput],
+        AS_IF([test "x$enable_xinput" = "xyes"],
+              [
+                PKG_CHECK_EXISTS([xi], [have_xinput=yes], [have_xinput=no])
+              ],
+              [
+                have_xinput=no
+              ])
+
+        AS_CASE([$have_xinput],
 
                 [yes],
                 [
-                  AC_DEFINE(HAVE_XINPUT, 1, [Use the XINPUT X extension])
+                  AC_CHECK_HEADERS([X11/extensions/XInput2.h],
+                                   [
+                                     have_xinput2=yes
+                                     AC_DEFINE([HAVE_XINPUT_2],
+                                               [1],
+                                               [Define to 1 if XI2 is available])
+                                   ],
+                                   [
+                                     have_xinput2=no
+                                     AC_DEFINE([HAVE_XINPUT],
+                                               [1],
+                                               [Define to 1 if XInput is available])
+                                   ])
 
-                  X11_LIBS="$X11_LIBS -lXi"
+                  X11_LIBS="$X11_LIBS $XINPUT_LIBS"
                   X11_PC_FILES="$X11_PC_FILES xi"
                 ],
 
                 [no],
-                [],
+                [have_xinput2=no],
+
+                [*],
+                [AC_MSG_ERROR([Invalid argument for --enable-xinput])]
         )
 
         # XKB
@@ -910,6 +928,7 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
       ]
 )
 
+AM_CONDITIONAL([BUILD_XI2], [test "x$have_xinput2" = "xyes"])
 AM_CONDITIONAL(X11_TESTS, [test "x$x11_tests" = "xyes"])
 
 dnl === Enable debug level ====================================================
@@ -1258,7 +1277,8 @@ fi
 
 if test "x$SUPPORT_XLIB" = "x1"; then
 echo "        Enable XComposite: ${have_xcomposite}"
-echo "        Enable XInput 1.0: ${xinput}"
+echo "        Enable XInput: ${have_xinput}"
+echo "        Enable XI2: ${have_xinput2}"
 echo "        Enable XKB: ${have_xkb}"
 echo "        Enable X11 tests: ${x11_tests}"
 fi

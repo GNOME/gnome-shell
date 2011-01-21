@@ -24,45 +24,22 @@
  *      Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
-#include "clutter-stage-x11.h"
 #include "clutter-backend-x11.h"
-#include "clutter-keymap-x11.h"
 #include "clutter-x11.h"
 
-#include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
 #include "clutter-debug.h"
-#include "clutter-device-manager-private.h"
 #include "clutter-event.h"
 #include "clutter-main.h"
-#include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
-#include "clutter-stage-private.h"
-
-#include "cogl/cogl-internal.h"
 
 #include <string.h>
 
 #include <glib.h>
 
-#ifdef HAVE_XFIXES
-#include <X11/extensions/Xfixes.h>
-#endif
-
-#include <X11/Xatom.h>
-
-#ifdef HAVE_XINPUT
-#include <X11/extensions/XInput.h>
-#endif
-
-#ifdef HAVE_XKB
-#include <X11/XKBlib.h>
-#endif
-
+#if 0
 /* XEMBED protocol support for toolkit embedding */
 #define XEMBED_MAPPED                   (1 << 0)
 #define MAX_SUPPORTED_XEMBED_VERSION    1
@@ -83,6 +60,7 @@
 #define XEMBED_ACTIVATE_ACCELERATOR     14
 
 static Window ParentEmbedderWin = None;
+#endif
 
 typedef struct _ClutterEventSource      ClutterEventSource;
 
@@ -92,16 +70,6 @@ struct _ClutterEventSource
 
   ClutterBackend *backend;
   GPollFD event_poll_fd;
-};
-
-struct _ClutterEventX11
-{
-  /* additional fields for Key events */
-  gint key_group;
-
-  guint key_is_modifier : 1;
-  guint num_lock_set    : 1;
-  guint caps_lock_set   : 1;
 };
 
 ClutterEventX11 *
@@ -148,7 +116,6 @@ clutter_event_source_new (ClutterBackend *backend)
   GSource *source = g_source_new (&event_funcs, sizeof (ClutterEventSource));
   ClutterEventSource *event_source = (ClutterEventSource *) source;
 
-  g_source_set_name (source, "Clutter X11 Event");
   event_source->backend = backend;
 
   return source;
@@ -160,6 +127,7 @@ check_xpending (ClutterBackend *backend)
   return XPending (CLUTTER_BACKEND_X11 (backend)->xdpy);
 }
 
+#if 0
 static gboolean
 xembed_send_message (ClutterBackendX11 *backend_x11,
                      Window             window,
@@ -208,6 +176,7 @@ xembed_set_info (ClutterBackendX11 *backend_x11,
                    backend_x11->atom_XEMBED_INFO, 32,
                    PropModeReplace, (unsigned char *) list, 2);
 }
+#endif
 
 void
 _clutter_backend_x11_events_init (ClutterBackend *backend)
@@ -216,6 +185,7 @@ _clutter_backend_x11_events_init (ClutterBackend *backend)
   GSource *source;
   ClutterEventSource *event_source;
   int connection_number;
+  gchar *name;
 
   connection_number = ConnectionNumber (backend_x11->xdpy);
   CLUTTER_NOTE (EVENT, "Connection number: %d", connection_number);
@@ -223,6 +193,11 @@ _clutter_backend_x11_events_init (ClutterBackend *backend)
   source = backend_x11->event_source = clutter_event_source_new (backend);
   event_source = (ClutterEventSource *) source;
   g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
+
+  name = g_strdup_printf ("Clutter X11 Event (connection: %d)",
+                          connection_number);
+  g_source_set_name (source, name);
+  g_free (name);
 
   event_source->event_poll_fd.fd = connection_number;
   event_source->event_poll_fd.events = G_IO_IN;
@@ -253,916 +228,21 @@ _clutter_backend_x11_events_uninit (ClutterBackend *backend)
 }
 
 static void
-update_last_event_time (ClutterBackendX11 *backend_x11,
-                        XEvent            *xevent)
-{
-  Time current_time = CurrentTime;
-  Time last_time = backend_x11->last_event_time;
-
-  switch (xevent->type)
-    {
-    case KeyPress:
-    case KeyRelease:
-      current_time = xevent->xkey.time;
-      break;
-
-    case ButtonPress:
-    case ButtonRelease:
-      current_time = xevent->xbutton.time;
-      break;
-
-    case MotionNotify:
-      current_time = xevent->xmotion.time;
-      break;
-
-    case EnterNotify:
-    case LeaveNotify:
-      current_time = xevent->xcrossing.time;
-      break;
-
-    case PropertyNotify:
-      current_time = xevent->xproperty.time;
-      break;
-
-    default:
-      break;
-    }
-
-  /* only change the current event time if it's after the previous event
-   * time, or if it is at least 30 seconds earlier - in case the system
-   * clock was changed
-   */
-  if ((current_time != CurrentTime) &&
-      (current_time > last_time || (last_time - current_time > (30 * 1000))))
-    backend_x11->last_event_time = current_time;
-}
-
-static void
-set_user_time (ClutterBackendX11 *backend_x11,
-               Window            *xwindow,
-               long               timestamp)
-{
-  if (timestamp != CLUTTER_CURRENT_TIME)
-    {
-      XChangeProperty (backend_x11->xdpy, *xwindow,
-                       backend_x11->atom_NET_WM_USER_TIME,
-                       XA_CARDINAL, 32, PropModeReplace,
-                       (unsigned char *) &timestamp, 1);
-    }
-}
-
-#ifdef HAVE_XINPUT
-static void
-convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev,
-                            XEvent          *xevent)
-{
-  xevent->xany.type = xevent->xkey.type = xkev->type;
-  xevent->xkey.serial = xkev->serial;
-  xevent->xkey.display = xkev->display;
-  xevent->xkey.window = xkev->window;
-  xevent->xkey.root = xkev->root;
-  xevent->xkey.subwindow = xkev->subwindow;
-  xevent->xkey.time = xkev->time;
-  xevent->xkey.x = xkev->x;
-  xevent->xkey.y = xkev->y;
-  xevent->xkey.x_root = xkev->x_root;
-  xevent->xkey.y_root = xkev->y_root;
-  xevent->xkey.state = xkev->state;
-  xevent->xkey.keycode = xkev->keycode;
-  xevent->xkey.same_screen = xkev->same_screen;
-}
-#endif /* HAVE_XINPUT */
-
-static inline void
-translate_key_event (ClutterBackendX11 *backend_x11,
-                     ClutterEvent      *event,
-                     XEvent            *xevent)
-{
-  ClutterEventX11 *event_x11;
-  char buffer[256 + 1];
-  int n;
-
-  /* KeyEvents have platform specific data associated to them */
-  event_x11 = _clutter_event_x11_new ();
-  _clutter_event_set_platform_data (event, event_x11);
-
-  event->key.time = xevent->xkey.time;
-  event->key.modifier_state = (ClutterModifierType) xevent->xkey.state;
-  event->key.hardware_keycode = xevent->xkey.keycode;
-
-  /* keyval is the key ignoring all modifiers ('1' vs. '!') */
-  event->key.keyval =
-    _clutter_keymap_x11_translate_key_state (backend_x11->keymap,
-                                             event->key.hardware_keycode,
-                                             event->key.modifier_state,
-                                             NULL);
-
-  event_x11->key_group =
-    _clutter_keymap_x11_get_key_group (backend_x11->keymap,
-                                       event->key.modifier_state);
-  event_x11->key_is_modifier =
-    _clutter_keymap_x11_get_is_modifier (backend_x11->keymap,
-                                         event->key.hardware_keycode);
-  event_x11->num_lock_set =
-    _clutter_keymap_x11_get_num_lock_state (backend_x11->keymap);
-  event_x11->caps_lock_set =
-    _clutter_keymap_x11_get_caps_lock_state (backend_x11->keymap);
-
-  /* unicode_value is the printable representation */
-  n = XLookupString (&xevent->xkey, buffer, sizeof (buffer) - 1, NULL, NULL);
-
-  if (n != NoSymbol)
-    {
-      event->key.unicode_value = g_utf8_get_char_validated (buffer, n);
-      if ((event->key.unicode_value != -1) &&
-          (event->key.unicode_value != -2))
-        goto out;
-    }
-  else
-    event->key.unicode_value = (gunichar)'\0';
-
-out:
-  return;
-}
-
-static gboolean
-handle_wm_protocols_event (ClutterBackendX11 *backend_x11,
-                           Window             window,
-                           XEvent            *xevent)
-{
-  Atom atom = (Atom) xevent->xclient.data.l[0];
-
-  if (atom == backend_x11->atom_WM_DELETE_WINDOW &&
-      xevent->xany.window == window)
-    {
-      /* the WM_DELETE_WINDOW is a request: we do not destroy
-       * the window right away, as it might contain vital data;
-       * we relay the event to the application and we let it
-       * handle the request
-       */
-      CLUTTER_NOTE (EVENT, "delete window:\txid: %ld",
-                    xevent->xclient.window);
-
-      set_user_time (backend_x11,
-                     &window,
-                     xevent->xclient.data.l[1]);
-
-      return TRUE;
-    }
-  else if (atom == backend_x11->atom_NET_WM_PING &&
-           xevent->xany.window == window)
-    {
-      XClientMessageEvent xclient = xevent->xclient;
-
-      xclient.window = backend_x11->xwin_root;
-      XSendEvent (backend_x11->xdpy, xclient.window,
-                  False,
-                  SubstructureRedirectMask | SubstructureNotifyMask,
-                  (XEvent *) &xclient);
-      return FALSE;
-    }
-
-  /* do not send any of the WM_PROTOCOLS events to the queue */
-  return FALSE;
-}
-
-static gboolean
-handle_xembed_event (ClutterBackendX11 *backend_x11,
-                     XEvent            *xevent)
-{
-  ClutterActor *stage;
-
-  stage = clutter_stage_get_default ();
-
-  switch (xevent->xclient.data.l[1])
-    {
-    case XEMBED_EMBEDDED_NOTIFY:
-      CLUTTER_NOTE (EVENT, "got XEMBED_EMBEDDED_NOTIFY from %lx",
-                    xevent->xclient.data.l[3]);
-
-      ParentEmbedderWin = xevent->xclient.data.l[3];
-
-      clutter_actor_realize (stage);
-      clutter_actor_show (stage);
-
-      xembed_set_info (backend_x11,
-                       clutter_x11_get_stage_window (CLUTTER_STAGE (stage)),
-                       XEMBED_MAPPED);
-      break;
-    case XEMBED_WINDOW_ACTIVATE:
-      CLUTTER_NOTE (EVENT, "got XEMBED_WINDOW_ACTIVATE");
-      break;
-    case XEMBED_WINDOW_DEACTIVATE:
-      CLUTTER_NOTE (EVENT, "got XEMBED_WINDOW_DEACTIVATE");
-      break;
-    case XEMBED_FOCUS_IN:
-      CLUTTER_NOTE (EVENT, "got XEMBED_FOCUS_IN");
-      if (ParentEmbedderWin)
-        xembed_send_message (backend_x11, ParentEmbedderWin,
-                             XEMBED_FOCUS_NEXT,
-                             0, 0, 0);
-      break;
-    default:
-      CLUTTER_NOTE (EVENT, "got unknown XEMBED message");
-      break;
-    }
-
-  /* do not propagate the XEMBED events to the stage */
-  return FALSE;
-}
-
-static gboolean
-clipped_redraws_cool_off_cb (void *data)
-{
-  ClutterStageX11 *stage_x11 = data;
-
-  stage_x11->clipped_redraws_cool_off = 0;
-
-  return FALSE;
-}
-
-static gboolean
-event_translate (ClutterBackend *backend,
-                 ClutterEvent   *event,
-                 XEvent         *xevent)
-{
-  ClutterBackendX11 *backend_x11;
-  ClutterStageX11 *stage_x11;
-  ClutterStage *stage;
-  ClutterStageWindow *impl;
-  ClutterDeviceManager *manager;
-  gboolean res, not_yet_handled = FALSE;
-  Window xwindow, stage_xwindow;
-  ClutterInputDevice *device;
-
-  backend_x11 = CLUTTER_BACKEND_X11 (backend);
-
-  xwindow = xevent->xany.window;
-
-  if (backend_x11->event_filters)
-    {
-      GSList *node;
-
-      node = backend_x11->event_filters;
-
-      while (node)
-        {
-          ClutterX11EventFilter *filter = node->data;
-
-          switch (filter->func (xevent, event, filter->data))
-            {
-            case CLUTTER_X11_FILTER_CONTINUE:
-              break;
-            case CLUTTER_X11_FILTER_TRANSLATE:
-              return TRUE;
-            case CLUTTER_X11_FILTER_REMOVE:
-              return FALSE;
-            default:
-              break;
-            }
-
-          node = node->next;
-        }
-    }
-
-  /* Pass the event through Cogl */
-  if (_cogl_xlib_handle_event (xevent) == COGL_XLIB_FILTER_REMOVE)
-    return FALSE;
-
-  /* Do further processing only on events for the stage window (the x11
-   * filters might be getting events for other windows, so do not mess
-   * them about.
-   */
-  stage = clutter_x11_get_stage_from_window (xwindow);
-  if (stage == NULL)
-    return FALSE;
-
-  impl = _clutter_stage_get_window (stage);
-  stage_x11 = CLUTTER_STAGE_X11 (impl);
-  stage_xwindow = xwindow; /* clutter_x11_get_stage_window (stage); */
-
-  event->any.stage = stage;
-
-  res = TRUE;
-
-  update_last_event_time (backend_x11, xevent);
-
-  manager = clutter_device_manager_get_default ();
-
-  switch (xevent->type)
-    {
-    case ConfigureNotify:
-      if (!stage_x11->is_foreign_xwin)
-        {
-          CLUTTER_NOTE (BACKEND, "%s: ConfigureNotify[%x] (%d, %d)",
-                        G_STRLOC,
-                        (unsigned int) stage_x11->xwin,
-                        xevent->xconfigure.width,
-                        xevent->xconfigure.height);
-
-          /* Queue a relayout - we want glViewport to be called
-           * with the correct values, and this is done in ClutterStage
-           * via _cogl_onscreen_clutter_backend_set_size ().
-           *
-           * We queue a relayout, because if this ConfigureNotify is
-           * in response to a size we set in the application, the
-           * set_size above is essentially a null-op.
-           *
-           * Make sure we do this only when the size has changed,
-           * otherwise we end up relayouting on window moves.
-           */
-          if ((stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN) ||
-              (stage_x11->xwin_width != xevent->xconfigure.width) ||
-              (stage_x11->xwin_height != xevent->xconfigure.height))
-            {
-              clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
-            }
-
-          /* If we're fullscreened, we want these variables to
-           * represent the size of the window before it was set
-           * to fullscreen.
-           */
-          if (!(stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN))
-            {
-              stage_x11->xwin_width = xevent->xconfigure.width;
-              stage_x11->xwin_height = xevent->xconfigure.height;
-            }
-
-          clutter_actor_set_size (CLUTTER_ACTOR (stage),
-                                  xevent->xconfigure.width,
-                                  xevent->xconfigure.height);
-
-          /* XXX: This is a workaround for a race condition when
-           * resizing windows while there are in-flight
-           * glXCopySubBuffer blits happening.
-           *
-           * The problem stems from the fact that rectangles for the
-           * blits are described relative to the bottom left of the
-           * window and because we can't guarantee control over the X
-           * window gravity used when resizing so the gravity is
-           * typically NorthWest not SouthWest.
-           *
-           * This means if you grow a window vertically the server
-           * will make sure to place the old contents of the window
-           * at the top-left/north-west of your new larger window, but
-           * that may happen asynchronous to GLX preparing to do a
-           * blit specified relative to the bottom-left/south-west of
-           * the window (based on the old smaller window geometry).
-           *
-           * When the GLX issued blit finally happens relative to the
-           * new bottom of your window, the destination will have
-           * shifted relative to the top-left where all the pixels you
-           * care about are so it will result in a nasty artefact
-           * making resizing look very ugly!
-           *
-           * We can't currently fix this completely, in-part because
-           * the window manager tends to trample any gravity we might
-           * set.  This workaround instead simply disables blits for a
-           * while if we are notified of any resizes happening so if
-           * the user is resizing a window via the window manager then
-           * they may see an artefact for one frame but then we will
-           * fallback to redrawing the full stage until the cooling
-           * off period is over.
-           */
-          if (stage_x11->clipped_redraws_cool_off)
-            g_source_remove (stage_x11->clipped_redraws_cool_off);
-          stage_x11->clipped_redraws_cool_off =
-            g_timeout_add_seconds (1, clipped_redraws_cool_off_cb, stage_x11);
-
-          CLUTTER_UNSET_PRIVATE_FLAGS (stage_x11->wrapper,
-                                       CLUTTER_IN_RESIZE);
-
-          /* the resize process is complete, so we can ask the stage
-           * to set up the GL viewport with the new size
-           */
-          clutter_stage_ensure_viewport (stage);
-        }
-      res = FALSE;
-      break;
-
-    case PropertyNotify:
-      if (xevent->xproperty.atom == backend_x11->atom_NET_WM_STATE &&
-          xevent->xproperty.window == stage_xwindow &&
-          !stage_x11->is_foreign_xwin)
-        {
-          Atom     type;
-          gint     format;
-          gulong   n_items, bytes_after;
-          guchar  *data = NULL;
-          gboolean fullscreen_set = FALSE;
-
-          clutter_x11_trap_x_errors ();
-          XGetWindowProperty (backend_x11->xdpy, stage_xwindow,
-                              backend_x11->atom_NET_WM_STATE,
-                              0, G_MAXLONG,
-                              False, XA_ATOM,
-                              &type, &format, &n_items,
-                              &bytes_after, &data);
-          clutter_x11_untrap_x_errors ();
-
-          if (type != None && data != NULL)
-            {
-              Atom *atoms = (Atom *) data;
-              gulong i;
-              gboolean is_fullscreen = FALSE;
-
-              for (i = 0; i < n_items; i++)
-                {
-                  if (atoms[i] == backend_x11->atom_NET_WM_STATE_FULLSCREEN)
-                    fullscreen_set = TRUE;
-                }
-
-              is_fullscreen =
-                (stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN);
-
-              if (fullscreen_set != is_fullscreen)
-                {
-                  if (fullscreen_set)
-                    stage_x11->state |= CLUTTER_STAGE_STATE_FULLSCREEN;
-                  else
-                    stage_x11->state &= ~CLUTTER_STAGE_STATE_FULLSCREEN;
-
-                  stage_x11->fullscreening = fullscreen_set;
-
-                  event->type = CLUTTER_STAGE_STATE;
-                  event->stage_state.changed_mask =
-                    CLUTTER_STAGE_STATE_FULLSCREEN;
-                  event->stage_state.new_state = stage_x11->state;
-                }
-              else
-                res = FALSE;
-
-              XFree (data);
-            }
-          else
-            res = FALSE;
-        }
-      else
-        res = FALSE;
-      break;
-
-    case MapNotify:
-      res = FALSE;
-      break;
-
-    case UnmapNotify:
-      res = FALSE;
-      break;
-
-    case FocusIn:
-      if (!(stage_x11->state & CLUTTER_STAGE_STATE_ACTIVATED))
-        {
-          /* TODO: check xevent->xfocus.detail ? */
-          stage_x11->state |= CLUTTER_STAGE_STATE_ACTIVATED;
-
-          event->type = CLUTTER_STAGE_STATE;
-          event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-          event->stage_state.new_state = stage_x11->state;
-        }
-      else
-        res = FALSE;
-      break;
-
-    case FocusOut:
-      if (stage_x11->state & CLUTTER_STAGE_STATE_ACTIVATED)
-        {
-          stage_x11->state &= ~CLUTTER_STAGE_STATE_ACTIVATED;
-
-          event->type = CLUTTER_STAGE_STATE;
-          event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-          event->stage_state.new_state = stage_x11->state;
-        }
-      else
-        res = FALSE;
-      break;
-
-    case Expose:
-      {
-        XExposeEvent *expose = (XExposeEvent *)xevent;
-        ClutterPaintVolume clip;
-        ClutterVertex origin;
-
-        CLUTTER_NOTE (MULTISTAGE, "expose for stage: %p, redrawing", stage);
-        CLUTTER_NOTE (MULTISTAGE,
-                      "expose for stage: %p, "
-                      "redrawing (x=%d, y=%d, width=%d, height=%d)",
-                      stage,
-                      expose->x,
-                      expose->y,
-                      expose->width,
-                      expose->height);
-
-        origin.x = expose->x;
-        origin.y = expose->y;
-        origin.z = 0;
-
-        _clutter_paint_volume_init_static (CLUTTER_ACTOR (stage), &clip);
-
-        clutter_paint_volume_set_origin (&clip, &origin);
-        clutter_paint_volume_set_width (&clip, expose->width);
-        clutter_paint_volume_set_height (&clip, expose->height);
-
-        _clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stage), 0, &clip);
-
-        clutter_paint_volume_free (&clip);
-
-        res = FALSE;
-      }
-      break;
-    case DestroyNotify:
-      CLUTTER_NOTE (EVENT, "destroy notify:\txid: %ld",
-                    xevent->xdestroywindow.window);
-      if (xevent->xdestroywindow.window == stage_xwindow &&
-          !stage_x11->is_foreign_xwin)
-        event->type = event->any.type = CLUTTER_DESTROY_NOTIFY;
-      else
-        res = FALSE;
-      break;
-
-    case ClientMessage:
-      CLUTTER_NOTE (EVENT, "client message");
-
-      event->type = event->any.type = CLUTTER_CLIENT_MESSAGE;
-
-      if (xevent->xclient.message_type == backend_x11->atom_XEMBED)
-        res = handle_xembed_event (backend_x11, xevent);
-      else if (xevent->xclient.message_type == backend_x11->atom_WM_PROTOCOLS)
-        {
-          res = handle_wm_protocols_event (backend_x11, stage_xwindow, xevent);
-          event->type = event->any.type = CLUTTER_DELETE;
-        }
-      break;
-
-    case KeyPress:
-      event->key.type = event->type = CLUTTER_KEY_PRESS;
-      event->key.device =
-        clutter_device_manager_get_core_device (manager,
-                                                CLUTTER_KEYBOARD_DEVICE);
-
-      translate_key_event (backend_x11, event, xevent);
-
-      set_user_time (backend_x11, &xwindow, xevent->xkey.time);
-      break;
-              
-    case KeyRelease:
-      /* old-style X11 terminals require that even modern X11 send
-       * KeyPress/KeyRelease pairs when auto-repeating. for this
-       * reason modern(-ish) API like XKB has a way to detect
-       * auto-repeat and do a single KeyRelease at the end of a
-       * KeyPress sequence.
-       *
-       * this check emulates XKB's detectable auto-repeat; we peek
-       * the next event and check if it's a KeyPress for the same key
-       * and timestamp - and then ignore it if it matches the
-       * KeyRelease
-       *
-       * if we have XKB, and autorepeat is enabled, then this becomes
-       * a no-op
-       */
-      if (!backend_x11->have_xkb_autorepeat && XPending (xevent->xkey.display))
-        {
-          XEvent next_event;
-
-          XPeekEvent (xevent->xkey.display, &next_event);
-
-          if (next_event.type == KeyPress &&
-              next_event.xkey.keycode == xevent->xkey.keycode &&
-              next_event.xkey.time == xevent->xkey.time)
-            {
-              res = FALSE;
-              break;
-            }
-        }
-
-      event->key.type = event->type = CLUTTER_KEY_RELEASE;
-      event->key.device =
-        clutter_device_manager_get_core_device (manager,
-                                                CLUTTER_KEYBOARD_DEVICE);
-
-      translate_key_event (backend_x11, event, xevent);
-      break;
-
-    default:
-      /* ignore every other event */
-      not_yet_handled = TRUE;
-      break;
-    }
-
-  /* Input device event handling.. */
-  if (not_yet_handled)
-    {
-      device = clutter_device_manager_get_core_device (manager,
-                                                       CLUTTER_POINTER_DEVICE);
-
-      /* Regular X event */
-      switch (xevent->type)
-        {
-        case ButtonPress:
-          switch (xevent->xbutton.button)
-            {
-            case 4: /* up */
-            case 5: /* down */
-            case 6: /* left */
-            case 7: /* right */
-              event->scroll.type = event->type = CLUTTER_SCROLL;
-
-              if (xevent->xbutton.button == 4)
-                event->scroll.direction = CLUTTER_SCROLL_UP;
-              else if (xevent->xbutton.button == 5)
-                event->scroll.direction = CLUTTER_SCROLL_DOWN;
-              else if (xevent->xbutton.button == 6)
-                event->scroll.direction = CLUTTER_SCROLL_LEFT;
-              else
-                event->scroll.direction = CLUTTER_SCROLL_RIGHT;
-
-              event->scroll.time = xevent->xbutton.time;
-              event->scroll.x = xevent->xbutton.x;
-              event->scroll.y = xevent->xbutton.y;
-              event->scroll.modifier_state = xevent->xbutton.state;
-              event->scroll.device = device;
-              break;
-
-            default:
-              event->button.type = event->type = CLUTTER_BUTTON_PRESS;
-              event->button.time = xevent->xbutton.time;
-              event->button.x = xevent->xbutton.x;
-              event->button.y = xevent->xbutton.y;
-              event->button.modifier_state = xevent->xbutton.state;
-              event->button.button = xevent->xbutton.button;
-              event->button.device = device;
-              break;
-            }
-
-          set_user_time (backend_x11, &xwindow, event->button.time);
-
-          res = TRUE;
-          break;
-
-        case ButtonRelease:
-          /* scroll events don't have a corresponding release */
-          if (xevent->xbutton.button == 4 ||
-              xevent->xbutton.button == 5 ||
-              xevent->xbutton.button == 6 ||
-              xevent->xbutton.button == 7)
-            {
-              res = FALSE;
-              goto out;
-            }
-
-          event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
-          event->button.time = xevent->xbutton.time;
-          event->button.x = xevent->xbutton.x;
-          event->button.y = xevent->xbutton.y;
-          event->button.modifier_state = xevent->xbutton.state;
-          event->button.button = xevent->xbutton.button;
-          event->button.device = device;
-
-          res = TRUE;
-          break;
-
-        case MotionNotify:
-          event->motion.type = event->type = CLUTTER_MOTION;
-          event->motion.time = xevent->xmotion.time;
-          event->motion.x = xevent->xmotion.x;
-          event->motion.y = xevent->xmotion.y;
-          event->motion.modifier_state = xevent->xmotion.state;
-          event->motion.device = device;
-
-          res = TRUE;
-          break;
-
-        case EnterNotify:
-          /* we know that we are entering the stage here */
-          _clutter_input_device_set_stage (device, stage);
-          CLUTTER_NOTE (EVENT, "Entering the stage");
-
-          /* Convert enter notifies to motion events because X
-             doesn't emit the corresponding motion notify */
-          event->motion.type = event->type = CLUTTER_MOTION;
-          event->motion.time = xevent->xcrossing.time;
-          event->motion.x = xevent->xcrossing.x;
-          event->motion.y = xevent->xcrossing.y;
-          event->motion.modifier_state = xevent->xcrossing.state;
-          event->motion.source = CLUTTER_ACTOR (stage);
-          event->motion.device = device;
-
-          res = TRUE;
-          break;
-
-        case LeaveNotify:
-          if (device->stage == NULL)
-            {
-              CLUTTER_NOTE (EVENT,
-                            "Discarding LeaveNotify for ButtonRelease "
-                            "event off-stage");
-              res = FALSE;
-              goto out;
-            }
-
-          /* we know that we are leaving the stage here */
-          _clutter_input_device_set_stage (device, NULL);
-          CLUTTER_NOTE (EVENT, "Leaving the stage (time:%u)",
-                        event->crossing.time);
-
-          event->crossing.type = event->type = CLUTTER_LEAVE;
-          event->crossing.time = xevent->xcrossing.time;
-          event->crossing.x = xevent->xcrossing.x;
-          event->crossing.y = xevent->xcrossing.y;
-          event->crossing.source = CLUTTER_ACTOR (stage);
-          event->crossing.device = device;
-          res = TRUE;
-          break;
-
-        default:
-          res = FALSE;
-          break;
-        }
-    }
-
-    /* XInput fun...*/
-  if (!res && clutter_x11_has_xinput ())
-    {
-#ifdef HAVE_XINPUT
-      int *ev_types = backend_x11->event_types;
-      int button_press, button_release;
-      int key_press, key_release;
-      int motion_notify;
-
-      button_press   = ev_types[CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT];
-      button_release = ev_types[CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT];
-      motion_notify  = ev_types[CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT];
-      key_press      = ev_types[CLUTTER_X11_XINPUT_KEY_PRESS_EVENT];
-      key_release    = ev_types[CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT];
-
-      CLUTTER_NOTE (EVENT, "XInput event type: %d", xevent->type);
-
-      if (xevent->type == button_press)
-        {
-          XDeviceButtonEvent *xbev = (XDeviceButtonEvent *) xevent;
-
-          device = _clutter_x11_get_device_for_xid (xbev->deviceid);
-          _clutter_input_device_set_stage (device, stage);
-
-          CLUTTER_NOTE (EVENT,
-                        "XI ButtonPress for %li ('%s') at %d, %d",
-                        xbev->deviceid,
-                        device->device_name,
-                        xbev->x,
-                        xbev->y);
-
-          switch (xbev->button)
-            {
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-              event->scroll.type = event->type = CLUTTER_SCROLL;
-
-              if (xbev->button == 4)
-                event->scroll.direction = CLUTTER_SCROLL_UP;
-              else if (xbev->button == 5)
-                event->scroll.direction = CLUTTER_SCROLL_DOWN;
-              else if (xbev->button == 6)
-                event->scroll.direction = CLUTTER_SCROLL_LEFT;
-              else
-                event->scroll.direction = CLUTTER_SCROLL_RIGHT;
-
-              event->scroll.time = xbev->time;
-              event->scroll.x = xbev->x;
-              event->scroll.y = xbev->y;
-              event->scroll.modifier_state = xbev->state;
-              event->scroll.device = device;
-              break;
-
-            default:
-              event->button.type = event->type = CLUTTER_BUTTON_PRESS;
-              event->button.time = xbev->time;
-              event->button.x = xbev->x;
-              event->button.y = xbev->y;
-              event->button.modifier_state = xbev->state;
-              event->button.button = xbev->button;
-              event->button.device = device;
-              break;
-            }
-
-          set_user_time (backend_x11, &xwindow, xbev->time);
-
-          res = TRUE;
-        }
-      else if (xevent->type == button_release)
-        {
-          XDeviceButtonEvent *xbev = (XDeviceButtonEvent *)xevent;
-
-          device = _clutter_x11_get_device_for_xid (xbev->deviceid);
-          _clutter_input_device_set_stage (device, stage);
-
-          CLUTTER_NOTE (EVENT, "XI ButtonRelease for %li ('%s') at %d, %d",
-                        xbev->deviceid,
-                        device->device_name,
-                        xbev->x,
-                        xbev->y);
-
-          /* scroll events don't have a corresponding release */
-          if (xbev->button == 4 ||
-              xbev->button == 5 ||
-              xbev->button == 6 ||
-              xbev->button == 7)
-            {
-              res = FALSE;
-              goto out;
-            }
-
-          event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
-          event->button.time = xbev->time;
-          event->button.x = xbev->x;
-          event->button.y = xbev->y;
-          event->button.modifier_state = xbev->state;
-          event->button.button = xbev->button;
-          event->button.device = device;
-
-          res = TRUE;
-        }
-      else if (xevent->type == motion_notify)
-        {
-          XDeviceMotionEvent *xmev = (XDeviceMotionEvent *)xevent;
-
-          device = _clutter_x11_get_device_for_xid (xmev->deviceid);
-          _clutter_input_device_set_stage (device, stage);
-
-          CLUTTER_NOTE (EVENT, "XI Motion for %li ('%s') at %d, %d",
-                        xmev->deviceid,
-                        device->device_name,
-                        xmev->x,
-                        xmev->y);
-
-          event->motion.type = event->type = CLUTTER_MOTION;
-          event->motion.time = xmev->time;
-          event->motion.x = xmev->x;
-          event->motion.y = xmev->y;
-          event->motion.modifier_state = xmev->state;
-          event->motion.device = device;
-
-          res = TRUE;
-        }
-      else if (xevent->type == key_press || xevent->type == key_release)
-        {
-          /* the XInput 1.x handling of key presses/releases is broken:
-           * it makes key repeat, key presses and releases outside the
-           * window not generate events even when the window has focus
-           */
-          XDeviceKeyEvent *xkev = (XDeviceKeyEvent *) xevent;
-          XEvent xevent_converted;
-
-          convert_xdevicekey_to_xkey (xkev, &xevent_converted);
-
-          event->key.type = event->type = (xevent->type == key_press)
-                                          ? CLUTTER_KEY_PRESS
-                                          : CLUTTER_KEY_RELEASE;
-
-          translate_key_event (backend_x11, event, &xevent_converted);
-
-          if (xevent->type == key_press)
-            set_user_time (backend_x11, &xwindow, xkev->time);
-        }
-      else
-#endif /* HAVE_XINPUT */
-        {
-          CLUTTER_NOTE (EVENT, "Uknown Event");
-          res = FALSE;
-        }
-    }
-
-out:
-  return res;
-}
-
-static void
 events_queue (ClutterBackend *backend)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  ClutterBackendX11Class *backend_x11_class =
-    CLUTTER_BACKEND_X11_GET_CLASS (backend_x11);
-  ClutterEvent      *event;
-  Display           *xdisplay = backend_x11->xdpy;
-  XEvent             xevent;
-  ClutterMainContext  *clutter_context;
-
-  clutter_context = _clutter_context_get_default ();
+  Display *xdisplay = backend_x11->xdpy;
+  ClutterEvent *event;
+  XEvent xevent;
 
   while (!clutter_events_pending () && XPending (xdisplay))
     {
       XNextEvent (xdisplay, &xevent);
 
-      if (backend_x11_class->handle_event (backend_x11, &xevent))
-        continue;
-
       event = clutter_event_new (CLUTTER_NOTHING);
 
-      if (event_translate (backend, event, &xevent))
-        {
-	  /* push directly here to avoid copy of queue_put */
-	  g_queue_push_head (clutter_context->events_queue, event);
-        }
+      if (_clutter_backend_translate_event (backend, &xevent, event))
+        _clutter_event_push (event, FALSE);
       else
         clutter_event_free (event);
     }
@@ -1192,12 +272,10 @@ events_queue (ClutterBackend *backend)
 ClutterX11FilterReturn
 clutter_x11_handle_event (XEvent *xevent)
 {
-  ClutterBackend      *backend;
-  ClutterBackendX11Class *backend_x11_class;
-  ClutterEvent        *event;
-  ClutterMainContext  *clutter_context;
   ClutterX11FilterReturn result;
-  gint                 spin = 1;
+  ClutterBackend *backend;
+  ClutterEvent *event;
+  gint spin = 1;
 
   /* The return values here are someone approximate; we return
    * CLUTTER_X11_FILTER_REMOVE if a clutter event is
@@ -1212,23 +290,15 @@ clutter_x11_handle_event (XEvent *xevent)
 
   clutter_threads_enter ();
 
-  clutter_context = _clutter_context_get_default ();
-  backend = clutter_context->backend;
-  backend_x11_class = CLUTTER_BACKEND_X11_GET_CLASS (backend);
-
-  /* If the backend just observed the event and didn't want it
-   * removed it could return FALSE, so assume that a TRUE return
-   * means that our caller should also do no further processing. */
-  if (backend_x11_class->handle_event (CLUTTER_BACKEND_X11(backend), xevent))
-    return CLUTTER_X11_FILTER_REMOVE;
+  backend = clutter_get_default_backend ();
 
   event = clutter_event_new (CLUTTER_NOTHING);
 
-  if (event_translate (backend, event, xevent))
+  if (_clutter_backend_translate_event (backend, xevent, event))
     {
-      /* push directly here to avoid copy of queue_put */
+      _clutter_event_push (event, FALSE);
+
       result = CLUTTER_X11_FILTER_REMOVE;
-      g_queue_push_head (clutter_context->events_queue, event);
     }
   else
     {
@@ -1253,7 +323,7 @@ clutter_x11_handle_event (XEvent *xevent)
       --spin;
     }
 
- out:
+out:
   clutter_threads_leave ();
 
   return result;
@@ -1312,8 +382,7 @@ clutter_event_dispatch (GSource     *source,
 
   /* Pop an event off the queue if any */
   event = clutter_event_get ();
-
-  if (event)
+  if (event != NULL)
     {
       /* forward the event into clutter for emission etc. */
       clutter_do_event (event);

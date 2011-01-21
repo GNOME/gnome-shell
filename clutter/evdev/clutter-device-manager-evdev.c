@@ -139,13 +139,10 @@ clutter_event_check (GSource *source)
 static void
 queue_event (ClutterEvent *event)
 {
-  ClutterMainContext *context;
-
   if (event == NULL)
     return;
 
-  context = _clutter_context_get_default ();
-  g_queue_push_head (context->events_queue, event);
+  _clutter_event_push (event, FALSE);
 }
 
 static void

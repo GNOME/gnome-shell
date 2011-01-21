@@ -3,7 +3,7 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Copyright (C) 2009  Intel Corp.
+ * Copyright © 2009, 2010, 2011  Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,6 +42,8 @@ struct _ClutterDeviceManagerX11
 {
   ClutterDeviceManager parent_instance;
 
+  GHashTable *devices_by_id;
+
   /* the list of transient devices */
   GSList *devices;
 
@@ -53,7 +55,7 @@ struct _ClutterDeviceManagerX11
   ClutterInputDevice *core_pointer;
   ClutterInputDevice *core_keyboard;
 
-  guint use_xinput_1 : 1;
+  int xi_event_base;
 };
 
 struct _ClutterDeviceManagerX11Class

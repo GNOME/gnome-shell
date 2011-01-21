@@ -3,7 +3,7 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Copyright (C) 2009 Intel Corp.
+ * Copyright © 2009, 2010, 2011  Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -57,6 +57,9 @@ typedef struct _ClutterInputDeviceClass ClutterInputDeviceClass;
  * @CLUTTER_TABLET_DEVICE: A tablet device
  * @CLUTTER_TOUCHPAD_DEVICE: A touchpad device
  * @CLUTTER_TOUCHSCREEN_DEVICE: A touch screen device
+ * @CLUTTER_PEN_DEVICE: A pen device
+ * @CLUTTER_ERASER_DEVICE: An eraser device
+ * @CLUTTER_CURSOR_DEVICE: A cursor device
  * @CLUTTER_N_DEVICE_TYPES: The number of device types
  *
  * The types of input devices available.
@@ -74,38 +77,95 @@ typedef enum {
   CLUTTER_TABLET_DEVICE,
   CLUTTER_TOUCHPAD_DEVICE,
   CLUTTER_TOUCHSCREEN_DEVICE,
+  CLUTTER_PEN_DEVICE,
+  CLUTTER_ERASER_DEVICE,
+  CLUTTER_CURSOR_DEVICE,
 
   CLUTTER_N_DEVICE_TYPES
 } ClutterInputDeviceType;
 
 /**
- * ClutterInputDeviceClass:
+ * ClutterInputMode:
+ * @CLUTTER_INPUT_MODE_MASTER: A master, virtual device
+ * @CLUTTER_INPUT_MODE_SLAVE: A slave, physical device, attached to
+ *   a master device
+ * @CLUTTER_INPUT_MODE_FLOATING: A slave, physical device, not attached
+ *   to a master device
  *
- * The #ClutterInputDeviceClass structure contains only private
- * data and should not be accessed directly
+ * The mode for input devices available.
  *
- * Since: 1.2
+ * Since: 1.6
  */
-struct _ClutterInputDeviceClass
-{
-  /*< private >*/
-  GObjectClass parent_class;
-};
+typedef enum {
+  CLUTTER_INPUT_MODE_MASTER,
+  CLUTTER_INPUT_MODE_SLAVE,
+  CLUTTER_INPUT_MODE_FLOATING
+} ClutterInputMode;
+
+/**
+ * ClutterInputAxis:
+ * @CLUTTER_INPUT_AXIS_IGNORE: Unused axis
+ * @CLUTTER_INPUT_AXIS_X: The position on the X axis
+ * @CLUTTER_INPUT_AXIS_Y: The position of the Y axis
+ * @CLUTTER_INPUT_AXIS_PRESSURE: The pressure information
+ * @CLUTTER_INPUT_AXIS_XTILT: The tilt on the X axis
+ * @CLUTTER_INPUT_AXIS_YTILT: The tile on the Y axis
+ * @CLUTTER_INPUT_AXIS_WHEEL: A wheel
+ *
+ * The type of axes Clutter recognizes on a #ClutterInputDevice
+ *
+ * Since: 1.6
+ */
+typedef enum {
+  CLUTTER_INPUT_AXIS_IGNORE,
+  CLUTTER_INPUT_AXIS_X,
+  CLUTTER_INPUT_AXIS_Y,
+  CLUTTER_INPUT_AXIS_PRESSURE,
+  CLUTTER_INPUT_AXIS_XTILT,
+  CLUTTER_INPUT_AXIS_YTILT,
+  CLUTTER_INPUT_AXIS_WHEEL
+} ClutterInputAxis;
 
 GType clutter_input_device_get_type (void) G_GNUC_CONST;
 
-ClutterInputDeviceType clutter_input_device_get_device_type   (ClutterInputDevice *device);
-gint                   clutter_input_device_get_device_id     (ClutterInputDevice *device);
-void                   clutter_input_device_get_device_coords (ClutterInputDevice *device,
-                                                               gint               *x,
-                                                               gint               *y);
-ClutterActor *         clutter_input_device_get_pointer_actor (ClutterInputDevice *device);
-ClutterStage *         clutter_input_device_get_pointer_stage (ClutterInputDevice *device);
-G_CONST_RETURN gchar * clutter_input_device_get_device_name   (ClutterInputDevice *device);
+ClutterInputDeviceType  clutter_input_device_get_device_type    (ClutterInputDevice  *device);
+gint                    clutter_input_device_get_device_id      (ClutterInputDevice  *device);
+void                    clutter_input_device_get_device_coords  (ClutterInputDevice  *device,
+                                                                 gint                *x,
+                                                                 gint                *y);
+ClutterActor *          clutter_input_device_get_pointer_actor  (ClutterInputDevice  *device);
+ClutterStage *          clutter_input_device_get_pointer_stage  (ClutterInputDevice  *device);
+G_CONST_RETURN gchar *  clutter_input_device_get_device_name    (ClutterInputDevice  *device);
+ClutterInputMode        clutter_input_device_get_device_mode    (ClutterInputDevice  *device);
+gboolean                clutter_input_device_get_has_cursor     (ClutterInputDevice  *device);
+void                    clutter_input_device_set_enabled        (ClutterInputDevice  *device,
+                                                                 gboolean             enabled);
+gboolean                clutter_input_device_get_enabled        (ClutterInputDevice  *device);
 
-void                   clutter_input_device_update_from_event (ClutterInputDevice *device,
-                                                               ClutterEvent       *event,
-                                                               gboolean            update_stage);
+guint                   clutter_input_device_get_n_axes         (ClutterInputDevice  *device);
+ClutterInputAxis        clutter_input_device_get_axis           (ClutterInputDevice  *device,
+                                                                 guint                index_);
+gboolean                clutter_input_device_get_axis_value     (ClutterInputDevice  *device,
+                                                                 gdouble             *axes,
+                                                                 ClutterInputAxis     axis,
+                                                                 gdouble             *value);
+
+guint                   clutter_input_device_get_n_keys         (ClutterInputDevice  *device);
+void                    clutter_input_device_set_key            (ClutterInputDevice  *device,
+                                                                 guint                index_,
+                                                                 guint                keyval,
+                                                                 ClutterModifierType  modifiers);
+gboolean                clutter_input_device_get_key            (ClutterInputDevice  *device,
+                                                                 guint                index_,
+                                                                 guint               *keyval,
+                                                                 ClutterModifierType *modifiers);
+
+ClutterInputDevice *    clutter_input_device_get_associated_device (ClutterInputDevice *device);
+GList *                 clutter_input_device_get_slave_devices  (ClutterInputDevice  *device);
+
+void                    clutter_input_device_update_from_event  (ClutterInputDevice  *device,
+                                                                 ClutterEvent        *event,
+                                                                 gboolean             update_stage);
 
 G_END_DECLS
 

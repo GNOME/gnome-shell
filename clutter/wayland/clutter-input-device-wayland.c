@@ -74,7 +74,6 @@ clutter_backend_wayland_handle_motion (void *data,
 {
   ClutterInputDeviceWayland *device = data;
   ClutterStageWayland       *stage_wayland = device->pointer_focus;
-  ClutterMainContext        *clutter_context;
   ClutterEvent              *event;
 
   event = clutter_event_new (CLUTTER_MOTION);
@@ -90,8 +89,7 @@ clutter_backend_wayland_handle_motion (void *data,
   device->x = x;
   device->y = y;
 
-  clutter_context = _clutter_context_get_default ();
-  g_queue_push_head (clutter_context->events_queue, event);
+  _clutter_event_push (event, FALSE);
 }
 
 static void
@@ -102,7 +100,6 @@ clutter_backend_wayland_handle_button (void *data,
 {
   ClutterInputDeviceWayland *device = data;
   ClutterStageWayland       *stage_wayland = device->pointer_focus;
-  ClutterMainContext        *clutter_context;
   ClutterEvent              *event;
   ClutterEventType           type;
 
@@ -132,8 +129,7 @@ clutter_backend_wayland_handle_button (void *data,
     break;
   }
 
-  clutter_context = _clutter_context_get_default ();
-  g_queue_push_head (clutter_context->events_queue, event);
+  _clutter_event_push (event, FALSE);
 }
 
 static void
@@ -144,7 +140,6 @@ clutter_backend_wayland_handle_key (void *data,
 {
   ClutterInputDeviceWayland *device = data;
   ClutterStageWayland       *stage_wayland = device->keyboard_focus;
-  ClutterMainContext        *clutter_context;
   ClutterEvent              *event;
 
   event = _clutter_key_event_new_from_evdev ((ClutterInputDevice *) device,
@@ -153,8 +148,7 @@ clutter_backend_wayland_handle_key (void *data,
                                              _time, key, state,
                                              &device->modifier_state);
 
-  clutter_context = _clutter_context_get_default ();
-  g_queue_push_head (clutter_context->events_queue, event);
+  _clutter_event_push (event, FALSE);
 }
 
 static void
@@ -166,7 +160,6 @@ clutter_backend_wayland_handle_pointer_focus (void *data,
 {
   ClutterInputDeviceWayland *device = data;
   ClutterStageWayland       *stage_wayland;
-  ClutterMainContext        *clutter_context;
   ClutterEvent              *event;
 
   if (device->pointer_focus)
@@ -181,8 +174,7 @@ clutter_backend_wayland_handle_pointer_focus (void *data,
       event->crossing.source = CLUTTER_ACTOR (stage_wayland->wrapper);
       event->crossing.device = CLUTTER_INPUT_DEVICE (device);
 
-      clutter_context = _clutter_context_get_default ();
-      g_queue_push_head (clutter_context->events_queue, event);
+      _clutter_event_push (event, FALSE);
 
       device->pointer_focus = NULL;
       _clutter_input_device_set_stage (CLUTTER_INPUT_DEVICE (device), NULL);
@@ -204,8 +196,7 @@ clutter_backend_wayland_handle_pointer_focus (void *data,
       event->motion.source = CLUTTER_ACTOR (stage_wayland->wrapper);
       event->motion.device = CLUTTER_INPUT_DEVICE (device);
 
-      clutter_context = _clutter_context_get_default ();
-      g_queue_push_head (clutter_context->events_queue, event);
+      _clutter_event_push (event, FALSE);
 
       device->surface_x = sx;
       device->surface_y = sy;
@@ -226,7 +217,6 @@ clutter_backend_wayland_handle_keyboard_focus (void *data,
 {
   ClutterInputDeviceWayland *device = data;
   ClutterStageWayland       *stage_wayland;
-  ClutterMainContext        *clutter_context;
   ClutterEvent              *event;
   uint32_t                  *k, *end;
 
@@ -242,8 +232,7 @@ clutter_backend_wayland_handle_keyboard_focus (void *data,
       event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
       event->stage_state.new_state = 0;
 
-      clutter_context = _clutter_context_get_default ();
-      g_queue_push_head (clutter_context->events_queue, event);
+      _clutter_event_push (event, FALSE);
     }
 
   if (surface)
@@ -261,8 +250,7 @@ clutter_backend_wayland_handle_keyboard_focus (void *data,
       for (k = keys->data; k < end; k++)
 	device->modifier_state |= device->xkb->map->modmap[*k];
 
-      clutter_context = _clutter_context_get_default ();
-      g_queue_push_head (clutter_context->events_queue, event);
+      _clutter_event_push (event, FALSE);
     }
 }
 
