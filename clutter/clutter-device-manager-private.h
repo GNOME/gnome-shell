@@ -100,8 +100,6 @@ struct _ClutterInputDevice
 
   guint n_keys;
   GArray *keys;
-  gint min_keycode;
-  gint max_keycode;
 
   guint has_cursor : 1;
   guint is_enabled : 1;
@@ -140,10 +138,8 @@ void            _clutter_input_device_set_stage                 (ClutterInputDev
 void            _clutter_input_device_set_actor                 (ClutterInputDevice   *device,
                                                                  ClutterActor         *actor);
 ClutterActor *  _clutter_input_device_update                    (ClutterInputDevice   *device);
-void            _clutter_input_device_set_keys                  (ClutterInputDevice   *device,
-                                                                 guint                 n_keys,
-                                                                 gint                  min_keycode,
-                                                                 gint                  max_keycode);
+void            _clutter_input_device_set_n_keys                (ClutterInputDevice   *device,
+                                                                 guint                 n_keys);
 guint           _clutter_input_device_add_axis                  (ClutterInputDevice   *device,
                                                                  ClutterInputAxis      axis,
                                                                  gdouble               min_value,

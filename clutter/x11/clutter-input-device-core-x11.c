@@ -61,6 +61,9 @@ struct _ClutterInputDeviceX11
 #endif /* HAVE_XINPUT */
 
   gint *axis_data;
+
+  gint min_keycode;
+  gint max_keycode;
 };
 
 #define clutter_input_device_x11_get_type       _clutter_input_device_x11_get_type
@@ -349,15 +352,15 @@ _clutter_input_device_x11_translate_xi_event (ClutterInputDeviceX11 *device_x11,
     {
       XDeviceKeyEvent *xdke = (XDeviceKeyEvent *) xevent;
 
-      if (xdke->keycode < device->min_keycode ||
-          xdke->keycode >= device->max_keycode)
+      if (xdke->keycode < device_x11->min_keycode ||
+          xdke->keycode >= device_x11->max_keycode)
         {
           g_warning ("Invalid device key code received: %d", xdke->keycode);
           return FALSE;
         }
 
       clutter_input_device_get_key (device,
-                                    xdke->keycode - device->min_keycode,
+                                    xdke->keycode - device_x11->min_keycode,
                                     &event->key.keyval,
                                     &event->key.modifier_state);
       if (event->key.keyval == 0)

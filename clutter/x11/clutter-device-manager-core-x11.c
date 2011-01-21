@@ -86,12 +86,16 @@ translate_class_info (ClutterInputDevice *device,
         case KeyClass:
           {
             XKeyInfo *xk_info = (XKeyInfo *) any_class;
+            ClutterInputDeviceX11 *device_x11;
             guint n_keys;
 
+            device_x11 = CLUTTER_INPUT_DEVICE_X11 (device);
+
             n_keys = xk_info->max_keycode - xk_info->min_keycode + 1;
-            _clutter_input_device_set_keys (device, n_keys,
-                                            xk_info->min_keycode,
-                                            xk_info->max_keycode);
+
+            _clutter_input_device_set_n_keys (device, n_keys);
+            device_x11->min_keycode = xk_info->min_keycode;
+            device_x11->max_keycode = xk_info->max_keycode;
           }
           break;
 

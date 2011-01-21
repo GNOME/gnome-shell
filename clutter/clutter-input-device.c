@@ -364,9 +364,6 @@ clutter_input_device_init (ClutterInputDevice *self)
   self->current_y = self->previous_y = -1;
   self->current_button_number = self->previous_button_number = -1;
   self->current_state = self->previous_state = 0;
-
-  self->min_keycode = 0;
-  self->max_keycode = G_MAXUINT;
 }
 
 /*< private >
@@ -1192,11 +1189,9 @@ clutter_input_device_get_n_axes (ClutterInputDevice *device)
 }
 
 /*< private >
- * clutter_input_device_set_keys:
+ * clutter_input_device_set_n_keys:
  * @device: a #ClutterInputDevice
  * @n_keys: the number of keys of the device
- * @min_keycode: the minimum key code
- * @max_keycode: the maximum key code
  *
  * Initializes the keys of @device.
  *
@@ -1204,10 +1199,8 @@ clutter_input_device_get_n_axes (ClutterInputDevice *device)
  * and modifiers.
  */
 void
-_clutter_input_device_set_keys (ClutterInputDevice *device,
-                                guint               n_keys,
-                                gint                min_keycode,
-                                gint                max_keycode)
+_clutter_input_device_set_n_keys (ClutterInputDevice *device,
+                                  guint               n_keys)
 {
   if (device->keys != NULL)
     g_array_free (device->keys, TRUE);
@@ -1216,9 +1209,6 @@ _clutter_input_device_set_keys (ClutterInputDevice *device,
   device->keys = g_array_sized_new (FALSE, TRUE,
                                     sizeof (ClutterKeyInfo),
                                     n_keys);
-
-  device->min_keycode = min_keycode;
-  device->max_keycode = max_keycode;
 }
 
 /**
@@ -1263,8 +1253,6 @@ clutter_input_device_set_key (ClutterInputDevice  *device,
 
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
   g_return_if_fail (index_ < device->n_keys);
-  g_return_if_fail (keyval >= device->min_keycode &&
-                    keyval <= device->max_keycode);
 
   key_info = &g_array_index (device->keys, ClutterKeyInfo, index_);
   key_info->keyval = keyval;

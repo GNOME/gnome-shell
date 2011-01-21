@@ -126,10 +126,8 @@ translate_device_classes (Display             *xdisplay,
             XIKeyClassInfo *key_info = (XIKeyClassInfo *) class_info;
             gint j;
 
-            _clutter_input_device_set_keys (device,
-                                            key_info->num_keycodes,
-                                            0,
-                                            G_MAXUINT);
+            _clutter_input_device_set_n_keys (device,
+                                              key_info->num_keycodes);
 
             for (j = 0; j < key_info->num_keycodes; j++)
               {
