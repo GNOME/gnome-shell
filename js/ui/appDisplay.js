@@ -51,6 +51,9 @@ AlphabeticalView.prototype = {
                 let adjustment = this.actor.vscroll.adjustment;
                 let direction = Overview.SwipeScrollDirection.VERTICAL;
                 Main.overview.setScrollAdjustment(adjustment, direction);
+
+                // Reset scroll on mapping
+                adjustment.value = 0;
             }));
     },
 
