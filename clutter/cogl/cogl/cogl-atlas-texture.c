@@ -292,6 +292,8 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
   /* Make sure this texture is not in the atlas */
   if (atlas_tex->atlas)
     {
+      CoglHandle sub_texture;
+
       COGL_NOTE (ATLAS, "Migrating texture out of the atlas");
 
       /* We don't know if any journal entries currently depend on
@@ -304,14 +306,7 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
        */
       cogl_flush ();
 
-      /* Notify cogl-pipeline.c that the texture's underlying GL texture
-       * storage is changing so it knows it may need to bind a new texture
-       * if the CoglTexture is reused with the same texture unit. */
-      _cogl_pipeline_texture_storage_change_notify (atlas_tex);
-
-      cogl_handle_unref (atlas_tex->sub_texture);
-
-      atlas_tex->sub_texture =
+      sub_texture =
         _cogl_atlas_copy_rectangle (atlas_tex->atlas,
                                     atlas_tex->rectangle.x + 1,
                                     atlas_tex->rectangle.y + 1,
@@ -319,6 +314,18 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
                                     atlas_tex->rectangle.height - 2,
                                     COGL_TEXTURE_NO_ATLAS,
                                     atlas_tex->format);
+
+      /* Notify cogl-pipeline.c that the texture's underlying GL texture
+       * storage is changing so it knows it may need to bind a new texture
+       * if the CoglTexture is reused with the same texture unit. */
+      _cogl_pipeline_texture_storage_change_notify (atlas_tex);
+
+      /* We need to unref the sub texture after doing the copy because
+         the copy can involve rendering which might cause the texture
+         to be used if it is used from a layer that is left in a
+         texture unit */
+      cogl_handle_unref (atlas_tex->sub_texture);
+      atlas_tex->sub_texture = sub_texture;
 
       _cogl_atlas_texture_remove_from_atlas (atlas_tex);
     }
