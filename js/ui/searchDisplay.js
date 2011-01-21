@@ -10,6 +10,7 @@ const St = imports.gi.St;
 const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
+const Overview = imports.ui.overview;
 const Search = imports.ui.search;
 
 const MAX_SEARCH_RESULTS_ROWS = 2;
@@ -175,6 +176,15 @@ SearchResults.prototype = {
                                      expand: true,
                                      x_align: St.Align.START,
                                      y_align: St.Align.START });
+        this.actor.connect('notify::mapped', Lang.bind(this,
+            function() {
+                if (!this.actor.mapped)
+                    return;
+
+                let adjustment = scrollView.vscroll.adjustment;
+                let direction = Overview.SwipeScrollDirection.VERTICAL;
+                Main.overview.setScrollAdjustment(adjustment, direction);
+            }));
 
         this._statusText = new St.Label({ style_class: 'search-statustext' });
         this._content.add(this._statusText);
