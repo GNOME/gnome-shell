@@ -533,7 +533,7 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
 
   _COGL_GET_CONTEXT (ctxt, COGL_INVALID_HANDLE);
 
-  tex->vtable = &cogl_texture_pixmap_x11_vtable;
+  _cogl_texture_init (tex, &cogl_texture_pixmap_x11_vtable);
 
   tex_pixmap->pixmap = pixmap;
   tex_pixmap->image = NULL;
