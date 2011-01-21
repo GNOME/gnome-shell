@@ -55,10 +55,13 @@
 static void clutter_stage_window_iface_init     (ClutterStageWindowIface     *iface);
 static void clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface);
 
-static ClutterStageWindowIface *clutter_stage_glx_parent_iface = NULL;
+static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
+static ClutterEventTranslatorIface *clutter_event_translator_parent_iface = NULL;
+
+#define clutter_stage_glx_get_type      _clutter_stage_glx_get_type
 
 G_DEFINE_TYPE_WITH_CODE (ClutterStageGLX,
-                         _clutter_stage_glx,
+                         clutter_stage_glx,
                          CLUTTER_TYPE_STAGE_X11,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init)
@@ -150,7 +153,7 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
 #endif /* GLX_INTEL_swap_event */
 
   /* chain up to the StageX11 implementation */
-  return clutter_stage_glx_parent_iface->realize (stage_window);
+  return clutter_stage_window_parent_iface->realize (stage_window);
 }
 
 static int
@@ -162,21 +165,12 @@ clutter_stage_glx_get_pending_swaps (ClutterStageWindow *stage_window)
 }
 
 static void
-clutter_stage_glx_dispose (GObject *gobject)
+clutter_stage_glx_class_init (ClutterStageGLXClass *klass)
 {
-  G_OBJECT_CLASS (_clutter_stage_glx_parent_class)->dispose (gobject);
 }
 
 static void
-_clutter_stage_glx_class_init (ClutterStageGLXClass *klass)
-{
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  gobject_class->dispose = clutter_stage_glx_dispose;
-}
-
-static void
-_clutter_stage_glx_init (ClutterStageGLX *stage)
+clutter_stage_glx_init (ClutterStageGLX *stage)
 {
 }
 
@@ -320,7 +314,7 @@ clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
-  clutter_stage_glx_parent_iface = g_type_interface_peek_parent (iface);
+  clutter_stage_window_parent_iface = g_type_interface_peek_parent (iface);
 
   iface->realize = clutter_stage_glx_realize;
   iface->unrealize = clutter_stage_glx_unrealize;
@@ -332,8 +326,6 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 
   /* the rest is inherited from ClutterStageX11 */
 }
-
-static ClutterEventTranslatorIface *event_translator_parent_iface = NULL;
 
 static ClutterTranslateReturn
 clutter_stage_glx_translate_event (ClutterEventTranslator *translator,
@@ -371,15 +363,15 @@ clutter_stage_glx_translate_event (ClutterEventTranslator *translator,
 #endif
 
   /* chain up to the common X11 implementation */
-  return event_translator_parent_iface->translate_event (translator,
-                                                         native,
-                                                         event);
+  return clutter_event_translator_parent_iface->translate_event (translator,
+                                                                 native,
+                                                                 event);
 }
 
 static void
 clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface)
 {
-  event_translator_parent_iface = g_type_interface_peek_parent (iface);
+  clutter_event_translator_parent_iface = g_type_interface_peek_parent (iface);
 
   iface->translate_event = clutter_stage_glx_translate_event;
 }
@@ -462,11 +454,13 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
                         "The time spent in _glx_blit_sub_buffer",
                         0 /* no application private data */);
 
+  stage_x11 = CLUTTER_STAGE_X11 (stage_glx);
+  if (stage_x11->xwin == None)
+    return;
+
   backend     = clutter_get_default_backend ();
   backend_x11 = CLUTTER_BACKEND_X11 (backend);
   backend_glx = CLUTTER_BACKEND_GLX (backend);
-
-  stage_x11 = CLUTTER_STAGE_X11 (stage_glx);
 
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
 
@@ -480,7 +474,9 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
        * artefacts. See clutter-event-x11.c:event_translate for a
        * detailed explanation */
       G_LIKELY (stage_x11->clipped_redraws_cool_off == 0))
-    may_use_clipped_redraw = TRUE;
+    {
+      may_use_clipped_redraw = TRUE;
+    }
   else
     may_use_clipped_redraw = FALSE;
 
@@ -503,7 +499,7 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
   else
     _clutter_stage_do_paint (stage, NULL);
 
-  if (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS &&
+  if ((clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS) &&
       may_use_clipped_redraw)
     {
       ClutterGeometry *clip = &stage_glx->bounding_redraw_clip;
@@ -552,10 +548,9 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
   cogl_flush ();
   CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);
 
-  if (stage_x11->xwin == None)
-    return;
-
-  drawable = stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
+  drawable = stage_glx->glxwin
+           ? stage_glx->glxwin
+           : stage_x11->xwin;
 
   /* If we might ever use _clutter_backend_glx_blit_sub_buffer then we
    * always need to keep track of the video_sync_count so that we can
@@ -592,7 +587,8 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
        * anyway so it should only exhibit temporary artefacts.
        */
       copy_area.y = clutter_actor_get_height (CLUTTER_ACTOR (stage))
-        - clip->y - clip->height;
+                  - clip->y
+                  - clip->height;
       copy_area.x = clip->x;
       copy_area.width = clip->width;
       copy_area.height = clip->height;
@@ -691,4 +687,3 @@ _clutter_stage_glx_redraw (ClutterStageGLX *stage_glx,
 
   stage_glx->frame_count++;
 }
-
