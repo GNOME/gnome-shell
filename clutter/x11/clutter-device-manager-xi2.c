@@ -235,9 +235,6 @@ add_device (ClutterDeviceManagerXI2 *manager_xi2,
 
   /* we don't go through the DeviceManager::add_device() vfunc because
    * that emits the signal, and we only do it conditionally
-   *
-   * FIXME: add a boolean "emit_signal" argument to the add_device()
-   * wrapper in ClutterDeviceManager, and emit the signal only if true
    */
   g_hash_table_replace (manager_xi2->devices_by_id,
                         GINT_TO_POINTER (info->deviceid),
@@ -329,6 +326,8 @@ translate_hierarchy_event (ClutterBackendX11       *backend_x11,
           XIDeviceInfo *info;
           int n_devices;
 
+          CLUTTER_NOTE (EVENT, "Hierarchy event: device enabled");
+
           info = XIQueryDevice (backend_x11->xdpy,
                                 ev->info[i].deviceid,
                                 &n_devices);
@@ -336,6 +335,8 @@ translate_hierarchy_event (ClutterBackendX11       *backend_x11,
         }
       else if (ev->info[i].flags & XIDeviceDisabled)
         {
+          CLUTTER_NOTE (EVENT, "Hierarchy event: device disabled");
+
           remove_device (manager_xi2, ev->info[i].deviceid);
         }
       else if ((ev->info[i].flags & XISlaveAttached) ||
@@ -344,6 +345,11 @@ translate_hierarchy_event (ClutterBackendX11       *backend_x11,
           ClutterInputDevice *master, *slave;
           XIDeviceInfo *info;
           int n_devices;
+
+          CLUTTER_NOTE (EVENT, "Hierarchy event: slave %s",
+                        (ev->info[i].flags & XISlaveAttached)
+                          ? "attached"
+                          : "detached");
 
           slave = g_hash_table_lookup (manager_xi2->devices_by_id,
                                        GINT_TO_POINTER (ev->info[i].deviceid));
@@ -533,8 +539,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
   ClutterDeviceManagerXI2 *manager_xi2 = CLUTTER_DEVICE_MANAGER_XI2 (translator);
   ClutterTranslateReturn retval = CLUTTER_TRANSLATE_CONTINUE;
   ClutterBackendX11 *backend_x11;
-  ClutterStageX11 *stage_x11;
-  ClutterStage *stage;
+  ClutterStageX11 *stage_x11 = NULL;
+  ClutterStage *stage = NULL;
   ClutterInputDevice *device;
   XGenericEventCookie *cookie;
   XIEvent *xi_event;
@@ -558,14 +564,18 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
   xi_event = (XIEvent *) cookie->data;
 
-  stage = get_event_stage (translator, xi_event);
-  if (stage == NULL || CLUTTER_ACTOR_IN_DESTRUCTION (stage))
+  if (!(xi_event->evtype == XI_HierarchyChanged ||
+        xi_event->evtype == XI_DeviceChanged))
     {
-      XFreeEventData (backend_x11->xdpy, cookie);
-      return CLUTTER_TRANSLATE_CONTINUE;
+      stage = get_event_stage (translator, xi_event);
+      if (stage == NULL || CLUTTER_ACTOR_IN_DESTRUCTION (stage))
+        {
+          XFreeEventData (backend_x11->xdpy, cookie);
+          return CLUTTER_TRANSLATE_CONTINUE;
+        }
+      else
+        stage_x11 = CLUTTER_STAGE_X11 (_clutter_stage_get_window (stage));
     }
-
-  stage_x11 = CLUTTER_STAGE_X11 (_clutter_stage_get_window (stage));
 
   event->any.stage = stage;
 
