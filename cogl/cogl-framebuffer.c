@@ -587,7 +587,8 @@ _cogl_framebuffer_remove_all_dependencies (CoglFramebuffer *framebuffer)
 void
 _cogl_framebuffer_flush_journal (CoglFramebuffer *framebuffer)
 {
-  _cogl_journal_flush (framebuffer->journal, framebuffer);
+  if (framebuffer)
+    _cogl_journal_flush (framebuffer->journal, framebuffer);
 }
 
 void
@@ -1045,10 +1046,20 @@ _cogl_set_framebuffer_real (CoglFramebuffer *framebuffer)
 void
 cogl_set_framebuffer (CoglFramebuffer *framebuffer)
 {
+  CoglFramebuffer *current;
+
   g_return_if_fail (_cogl_is_framebuffer (framebuffer));
 
-  if (_cogl_get_framebuffer () != framebuffer)
-    _cogl_set_framebuffer_real (framebuffer);
+  current = _cogl_get_framebuffer ();
+  if (current != framebuffer)
+    {
+      /* XXX: eventually we want to remove this implicit journal flush
+       * so we can log into the journal beyond framebuffer changes to
+       * support batching scenes that depend on the results of
+       * mid-scene renders to textures. */
+      _cogl_framebuffer_flush_journal (current);
+      _cogl_set_framebuffer_real (framebuffer);
+    }
 }
 
 /* XXX: deprecated API */
@@ -1108,7 +1119,14 @@ cogl_pop_framebuffer (void)
   to_pop = ctx->framebuffer_stack->data;
   to_restore = ctx->framebuffer_stack->next->data;
 
-  cogl_flush ();
+  if (to_pop != to_restore)
+    {
+      /* XXX: eventually we want to remove this implicit journal flush
+       * so we can log into the journal beyond framebuffer changes to
+       * support batching scenes that depend on the results of
+       * mid-scene renders to textures. */
+      _cogl_framebuffer_flush_journal (to_pop);
+    }
 
   cogl_object_unref (to_pop);
   ctx->framebuffer_stack =
