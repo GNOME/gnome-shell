@@ -14,7 +14,10 @@ const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
+const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
+
+const DASH_ANIMATION_TIME = 0.2;
 
 // A container like StBin, but taking the child's scale into account
 // when requesting a size
@@ -34,6 +37,8 @@ DashItemContainer.prototype = {
         this.actor._delegate = this;
 
         this.child = null;
+        this._childScale = 1;
+        this._childOpacity = 255;
     },
 
     _allocate: function(actor, box, flags) {
@@ -90,6 +95,67 @@ DashItemContainer.prototype = {
 
         this.child = actor;
         this.actor.add_actor(this.child);
+    },
+
+    animateIn: function() {
+        if (this.child == null)
+            return;
+
+        this.childScale = 0;
+        this.childOpacity = 0;
+        Tweener.addTween(this,
+                         { childScale: 1.0,
+                           childOpacity: 255,
+                           time: DASH_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
+    },
+
+    animateOutAndDestroy: function() {
+        if (this.child == null) {
+            this.actor.destroy();
+            return;
+        }
+
+        this.childScale = 1.0;
+        Tweener.addTween(this,
+                         { childScale: 0.0,
+                           childOpacity: 0,
+                           time: DASH_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this, function() {
+                               this.actor.destroy();
+                           })
+                         });
+    },
+
+    set childScale(scale) {
+        this._childScale = scale;
+
+        if (this.child == null)
+            return;
+
+        this.child.set_scale_with_gravity(scale, scale,
+                                          Clutter.Gravity.CENTER);
+        this.actor.queue_relayout();
+    },
+
+    get childScale() {
+        return this._childScale;
+    },
+
+    set childOpacity(opacity) {
+        this._childOpacity = opacity;
+
+        if (this.child == null)
+            return;
+
+        this.child.set_opacity(opacity);
+        this.actor.queue_redraw();
+    },
+
+    get childOpacity() {
+        return this._childOpacity;
     }
 };
 
@@ -113,6 +179,12 @@ RemoveFavoriteIcon.prototype = {
         this._iconBin._delegate = this;
 
         this.setChild(this._iconBin);
+        this.hiding = false;
+    },
+
+    animateOutAndDestroy: function() {
+        DashItemContainer.prototype.animateOutAndDestroy.call(this);
+        this.hiding = true;
     },
 
     _createIcon: function(size) {
@@ -181,6 +253,7 @@ Dash.prototype = {
 
         this._dragPlaceholder = null;
         this._dragPlaceholderPos = -1;
+        this._animatingPlaceholdersCount = 0;
         this._favRemoveTarget = null;
 
         this._box = new St.BoxLayout({ name: 'dash',
@@ -234,9 +307,15 @@ Dash.prototype = {
     _onDragEnd: function() {
         this._clearDragPlaceholder();
         if (this._favRemoveTarget) {
-            this._favRemoveTarget.actor.destroy();
+            this._favRemoveTarget.actor.hide();
             this._adjustIconSize();
-            this._favRemoveTarget = null;
+            this._favRemoveTarget.actor.show();
+
+            this._favRemoveTarget.animateOutAndDestroy();
+            this._favRemoveTarget.actor.connect('destroy', Lang.bind(this,
+                function() {
+                    this._favRemoveTarget = null;
+                }));
         }
         DND.removeMonitor(this._dragMonitor);
     },
@@ -261,6 +340,7 @@ Dash.prototype = {
                 this._favRemoveTarget.icon.setIconSize(this._iconSize);
                 this._box.add(this._favRemoveTarget.actor);
                 this._adjustIconSize();
+                this._favRemoveTarget.animateIn();
         }
 
         let favRemoveHovered = false;
@@ -343,11 +423,29 @@ Dash.prototype = {
         if (newIconSize == this._iconSize)
             return;
 
+        let oldIconSize = this._iconSize;
         this._iconSize = newIconSize;
 
+        let scale = oldIconSize / newIconSize;
         for (let i = 0; i < iconChildren.length; i++) {
             let icon = iconChildren[i]._delegate.child._delegate.icon;
+
+            // Set the new size immediately, to keep the icons' sizes
+            // in sync with this._iconSize
             icon.setIconSize(this._iconSize);
+            let [targetWidth, targetHeight] = icon.icon.get_size();
+
+            // Scale the icon's texture to the previous size and
+            // tween to the new size
+            icon.icon.set_size(icon.icon.width * scale,
+                               icon.icon.height * scale);
+
+            Tweener.addTween(icon.icon,
+                             { width: targetWidth,
+                               height: targetHeight,
+                               time: DASH_ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
         }
     },
 
@@ -452,15 +550,33 @@ Dash.prototype = {
             this._box.insert_actor(addedItems[i].item.actor,
                                    addedItems[i].pos);
 
+        // Hide removed actors to not take them into account
+        // when adjusting the icon size ...
         for (let i = 0; i < removedActors.length; i++)
-            removedActors[i].destroy();
+            removedActors[i].hide();
+
+        // ... and do the same for the remove target if necessary
+        if (this._favRemoveTarget && this._favRemoveTarget.hiding)
+            this._favRemoveTarget.actor.hide();
 
         this._adjustIconSize();
+
+        if (this._favRemoveTarget && this._favRemoveTarget.hiding)
+            this._favRemoveTarget.actor.show();
+
+        for (let i = 0; i < removedActors.length; i++) {
+            removedActors[i].show();
+            let item = removedActors[i]._delegate;
+            item.animateOutAndDestroy();
+        }
+
+        for (let i = 0; i < addedItems.length; i++)
+            addedItems[i].item.animateIn();
     },
 
     _clearDragPlaceholder: function() {
         if (this._dragPlaceholder) {
-            this._dragPlaceholder.actor.destroy();
+            this._dragPlaceholder.animateOutAndDestroy();
             this._dragPlaceholder = null;
             this._dragPlaceholderPos = -1;
         }
@@ -482,7 +598,8 @@ Dash.prototype = {
 
         let favPos = favorites.indexOf(app);
 
-        let numChildren = this._box.get_children().length;
+        let children = this._box.get_children();
+        let numChildren = children.length;
         let boxHeight = this._box.height;
 
         // Keep the placeholder out of the index calculation; assuming that
@@ -496,17 +613,49 @@ Dash.prototype = {
         let pos = Math.round(y * numChildren / boxHeight);
 
         if (pos != this._dragPlaceholderPos && pos <= numFavorites) {
-            this._dragPlaceholderPos = pos;
-            if (this._dragPlaceholder)
-                this._dragPlaceholder.actor.destroy();
+            if (this._animatingPlaceholdersCount > 0) {
+                let appChildren = children.filter(function(actor) {
+                    return actor._delegate &&
+                           actor._delegate.child &&
+                           actor._delegate.child._delegate &&
+                           actor._delegate.child._delegate.app;
+                });
+                this._dragPlaceholderPos = children.indexOf(appChildren[pos]);
+            } else {
+                this._dragPlaceholderPos = pos;
+            }
 
             // Don't allow positioning before or after self
-            if (favPos != -1 && (pos == favPos || pos == favPos + 1))
+            if (favPos != -1 && (pos == favPos || pos == favPos + 1)) {
+                if (this._dragPlaceholder) {
+                    this._dragPlaceholder.animateOutAndDestroy();
+                    this._animatingPlaceholdersCount++;
+                    this._dragPlaceholder.actor.connect('destroy',
+                        Lang.bind(this, function() {
+                            this._animatingPlaceholdersCount--;
+                        }));
+                }
+                this._dragPlaceholder = null;
+
                 return DND.DragMotionResult.CONTINUE;
+            }
+
+            // If the placeholder already exists, we just move
+            // it, but if we are adding it, expand its size in
+            // an animation
+            let fadeIn;
+            if (this._dragPlaceholder) {
+                this._dragPlaceholder.actor.destroy();
+                fadeIn = false;
+            } else {
+                fadeIn = true;
+            }
 
             this._dragPlaceholder = new DragPlaceholderItem();
             this._box.insert_actor(this._dragPlaceholder.actor,
                                    this._dragPlaceholderPos);
+            if (fadeIn)
+                this._dragPlaceholder.animateIn();
         }
 
         let srcIsFavorite = (favPos != -1);
@@ -540,6 +689,10 @@ Dash.prototype = {
         let favPos = 0;
         let children = this._box.get_children();
         for (let i = 0; i < this._dragPlaceholderPos; i++) {
+            if (this._dragPlaceholder &&
+                children[i] == this._dragPlaceholder.actor)
+                continue;
+
             let childId = children[i]._delegate.child._delegate.app.get_id();
             if (childId == id)
                 continue;
