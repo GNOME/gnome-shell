@@ -517,20 +517,10 @@ Workspace.prototype = {
         // Without this the drop area will be overlapped.
         this._windowOverlaysGroup.set_size(0, 0);
 
-        this.actor = new Clutter.Group({ reactive: true });
+        this.actor = new Clutter.Group();
         this.actor._delegate = this;
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        this.actor.connect('button-release-event', Lang.bind(this,
-            function(actor, event) {
-                // Only switch to the workspace when there's no application
-                // windows open. The problem is that it's too easy to miss
-                // an app window and get the wrong one focused.
-                if (this._windows.length == 0) {
-                    this.metaWorkspace.activate(event.get_time());
-                    Main.overview.hide();
-                }
-            }));
 
         // Items in _windowOverlaysGroup should not be scaled, so we don't
         // add them to this.actor, but to its parent whenever it changes
@@ -603,6 +593,10 @@ Workspace.prototype = {
 
     containsMetaWindow: function (metaWindow) {
         return this._lookupIndex(metaWindow) >= 0;
+    },
+
+    isEmpty: function() {
+        return this._windows.length == 0;
     },
 
     setShowOnlyWindows: function(showOnlyWindows, reposition) {
