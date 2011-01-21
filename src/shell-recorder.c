@@ -83,6 +83,7 @@ struct _ShellRecorder {
   guint redraw_idle;
   guint update_memory_used_timeout;
   guint update_pointer_timeout;
+  guint repaint_hook_id;
 };
 
 struct _RecorderPipeline
@@ -237,6 +238,22 @@ get_memory_target (void)
   fclose(f);
 
   return DEFAULT_MEMORY_TARGET;
+}
+
+/*
+ * Used to force full stage redraws during recording to avoid artifacts
+ *
+ * Note: That this will cause the stage to be repainted on
+ * every animation frame even if the frame wouldn't normally cause any new
+ * drawing
+ */
+static gboolean
+recorder_repaint_hook (gpointer data)
+{
+  ClutterActor *stage = data;
+  clutter_actor_queue_redraw (stage);
+
+  return TRUE;
 }
 
 static void
@@ -1682,6 +1699,9 @@ shell_recorder_record (ShellRecorder *recorder)
   recorder->state = RECORDER_STATE_RECORDING;
   recorder_add_update_pointer_timeout (recorder);
 
+  /* Set up repaint hook */
+  recorder->repaint_hook_id = clutter_threads_add_repaint_func(recorder_repaint_hook, recorder->stage, NULL);
+
   /* Record an initial frame and also redraw with the indicator */
   clutter_actor_queue_redraw (CLUTTER_ACTOR (recorder->stage));
 
@@ -1723,6 +1743,12 @@ shell_recorder_pause (ShellRecorder *recorder)
 
   /* Queue a redraw to remove the recording indicator */
   clutter_actor_queue_redraw (CLUTTER_ACTOR (recorder->stage));
+
+  if (recorder->repaint_hook_id != 0)
+  {
+    clutter_threads_remove_repaint_func (recorder->repaint_hook_id);
+    recorder->repaint_hook_id = 0;
+  }
 }
 
 /**
