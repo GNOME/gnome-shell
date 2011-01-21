@@ -677,6 +677,8 @@ clutter_event_copy (const ClutterEvent *event)
 {
   ClutterEvent *new_event;
   ClutterEventPrivate *new_real_event;
+  ClutterInputDevice *device;
+  gint n_axes = 0;
 
   g_return_val_if_fail (event != NULL, NULL);
 
@@ -692,40 +694,29 @@ clutter_event_copy (const ClutterEvent *event)
       new_real_event->source_device = real_event->source_device;
     }
 
+  device = clutter_event_get_device (event);
+  if (device != NULL)
+    n_axes = clutter_input_device_get_n_axes (device);
+
   switch (event->type)
     {
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
-      if (event->button.device != NULL && event->button.axes != NULL)
-        {
-          gint n_axes;
-
-          n_axes = clutter_input_device_get_n_axes (event->button.device);
-          new_event->button.axes = g_memdup (event->button.axes,
-                                             sizeof (gdouble) * n_axes);
-        }
+      if (event->button.axes != NULL)
+        new_event->button.axes = g_memdup (event->button.axes,
+                                           sizeof (gdouble) * n_axes);
       break;
 
     case CLUTTER_SCROLL:
-      if (event->scroll.device != NULL && event->scroll.axes != NULL)
-        {
-          gint n_axes;
-
-          n_axes = clutter_input_device_get_n_axes (event->scroll.device);
-          new_event->scroll.axes = g_memdup (event->scroll.axes,
-                                             sizeof (gdouble) * n_axes);
-        }
+      if (event->scroll.axes != NULL)
+        new_event->scroll.axes = g_memdup (event->scroll.axes,
+                                           sizeof (gdouble) * n_axes);
       break;
 
     case CLUTTER_MOTION:
-      if (event->motion.device != NULL && event->motion.axes != NULL)
-        {
-          gint n_axes;
-
-          n_axes = clutter_input_device_get_n_axes (event->motion.device);
-          new_event->motion.axes = g_memdup (event->motion.axes,
-                                             sizeof (gdouble) * n_axes);
-        }
+      if (event->motion.axes != NULL)
+        new_event->motion.axes = g_memdup (event->motion.axes,
+                                           sizeof (gdouble) * n_axes);
       break;
 
     default:
@@ -1051,9 +1042,12 @@ clutter_event_get_axes (const ClutterEvent *event,
     case CLUTTER_DELETE:
     case CLUTTER_ENTER:
     case CLUTTER_LEAVE:
-    case CLUTTER_SCROLL:
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
+      break;
+
+    case CLUTTER_SCROLL:
+      retval = event->scroll.axes;
       break;
 
     case CLUTTER_BUTTON_PRESS:
@@ -1073,6 +1067,8 @@ clutter_event_get_axes (const ClutterEvent *event,
       device = clutter_event_get_device (event);
       if (device != NULL)
         len = clutter_input_device_get_n_axes (device);
+      else
+        retval = NULL;
     }
 
   if (n_axes)
