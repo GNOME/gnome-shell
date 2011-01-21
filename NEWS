@@ -26,6 +26,27 @@ Clutter 1.5.14                                                       2011-01-21
       applications to include the correct header and select the
       correct API depending on the target.
 
+    » Introduce a fast path for cogl_read_pixels() that uses the journal
+      to determine the position of a single pixel on the stage; this
+      fast path gracefully degrades to the usual render-based approach,
+      and should speed up picking considerably in the case of opaque
+      quads batched together.
+
+    » Support XInput axis data on valuator devices, and introduce XInput2
+      support for event translation and device hotplugging. The support
+      for XI and XI2 must still be explicitly enabled by the developer.
+
+    » Clean up the unintentionally leaked internal symbols in the X11
+      and GLX backends.
+
+    » Allow defining the contents of the rows of a ListModel using
+      ClutterScript.
+
+Many thanks to:
+
+  Robert Bragg, Neil Roberts, Bastian Winkler, Lucas Rocha,
+  Adel Gadllah, Chris Lord, Damien Lespiau
+
 Clutter 1.5.12                                                       2011-01-11
 ===============================================================================
 
