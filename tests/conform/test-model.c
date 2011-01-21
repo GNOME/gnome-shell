@@ -363,6 +363,8 @@ test_list_model_from_script (TestConformSimpleFixture *fixture,
   gchar *test_file;
   const gchar *name;
   GType type;
+  ClutterModelIter *iter;
+  GValue value = { 0, };
 
   test_file = clutter_test_get_data_file ("test-script-model.json");
   clutter_script_load_from_file (script, test_file, &error);
@@ -397,4 +399,37 @@ test_list_model_from_script (TestConformSimpleFixture *fixture,
 
   g_assert (strcmp (name, "actor-column") == 0);
   g_assert (type == CLUTTER_TYPE_RECTANGLE);
+
+  g_assert (clutter_model_get_n_rows (CLUTTER_MODEL (model)) == 3);
+
+  iter = clutter_model_get_iter_at_row (CLUTTER_MODEL (model), 0);
+  clutter_model_iter_get_value (iter, 0, &value);
+  g_assert (G_VALUE_HOLDS_STRING (&value));
+  g_assert (strcmp (g_value_get_string (&value), "text-row-1") == 0);
+  g_value_unset (&value);
+
+  clutter_model_iter_get_value (iter, 1, &value);
+  g_assert (G_VALUE_HOLDS_INT (&value));
+  g_assert (g_value_get_int (&value) == 1);
+  g_value_unset (&value);
+
+  clutter_model_iter_get_value (iter, 2, &value);
+  g_assert (G_VALUE_HOLDS_OBJECT (&value));
+  g_assert (g_value_get_object (&value) == NULL);
+  g_value_unset (&value);
+
+  iter = clutter_model_iter_next (iter);
+  clutter_model_iter_get_value (iter, 2, &value);
+  g_assert (G_VALUE_HOLDS_OBJECT (&value));
+  g_assert (CLUTTER_IS_RECTANGLE (g_value_get_object (&value)));
+  g_value_unset (&value);
+
+  iter = clutter_model_iter_next (iter);
+  clutter_model_iter_get_value (iter, 2, &value);
+  g_assert (G_VALUE_HOLDS_OBJECT (&value));
+  g_assert (CLUTTER_IS_RECTANGLE (g_value_get_object (&value)));
+  g_assert (strcmp (clutter_actor_get_name (g_value_get_object (&value)),
+                    "actor-row-3") == 0);
+  g_value_unset (&value);
+  g_object_unref (iter);
 }

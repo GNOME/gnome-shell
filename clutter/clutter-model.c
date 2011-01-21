@@ -117,13 +117,19 @@
  * <refsect2 id="ClutterModel-script">
  *   <title>ClutterModel custom properties for #ClutterScript</title>
  *   <para>#ClutterModel defines a custom property "columns" for #ClutterScript
- *   which allows defining the column names and types.</para>
- *   <example id="ClutterModel-script-column-example">
- *     <title>Example of the "columns" custom property</title>
+ *   which allows defining the column names and types. It also defines a custom
+ *   "rows" property which allows filling the #ClutterModel with some
+ *   data.</para>
+ *   <example id="ClutterModel-script-example">
+ *     <title>Example of the "columns" and "rows" custom properties</title>
  *     <para>The definition below will create a #ClutterListModel with three
  *     columns: the first one with name "Name" and containing strings; the
  *     second one with name "Score" and containing integers; the third one with
- *     name "Icon" and containing #ClutterTexture<!-- -->s.</para>
+ *     name "Icon" and containing #ClutterTexture<!-- -->s. The model is filled
+ *     with three rows. A row can be defined either with an array that holds
+ *     all columns of a row, or an object that holds "column-name" :
+ *     "column-value" pairs.
+ *     </para>
  *     <programlisting>
  *  {
  *    "type" : "ClutterListModel",
@@ -132,6 +138,11 @@
  *      [ "Name", "gchararray" ],
  *      [ "Score", "gint" ],
  *      [ "Icon", "ClutterTexture" ]
+ *    ],
+ *    "rows" : [
+ *      [ "Team 1", 42, { "type" : "ClutterTexture", "filename" : "team1.png" } ],
+ *      [ "Team 2", 23, "team2-icon-script-id" ],
+ *      { "Name" : "Team 3", "Icon" : "team3-icon-script-id" }
  *    ]
  *  }
  *     </programlisting>
@@ -157,6 +168,7 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 #include "clutter-scriptable.h"
+#include "clutter-script-private.h"
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
@@ -528,49 +540,73 @@ clutter_model_parse_custom_node (ClutterScriptable *scriptable,
                                  const gchar       *name,
                                  JsonNode          *node)
 {
-  GSList *columns = NULL;
-  GList *elements, *l;
-
-  if (strcmp (name, "columns") != 0)
-    return FALSE;
-
-  if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
-    return FALSE;
-
-  elements = json_array_get_elements (json_node_get_array (node));
-
-  for (l = elements; l != NULL; l = l->next)
+  if (strcmp (name, "columns") == 0)
     {
-      JsonNode *child_node = l->data;
-      JsonArray *array = json_node_get_array (child_node);
-      ColumnInfo *cinfo;
-      const gchar *column_name;
-      const gchar *type_name;
+      GSList *columns = NULL;
+      GList *elements, *l;
 
-      if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY ||
-          json_array_get_length (array) != 2)
+      if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
+        return FALSE;
+
+      elements = json_array_get_elements (json_node_get_array (node));
+
+      for (l = elements; l != NULL; l = l->next)
         {
-          g_warning ("A column must be an array of "
-                     "[\"column-name\", \"GType-name\"] pairs");
-          return FALSE;
+          JsonNode *child_node = l->data;
+          JsonArray *array = json_node_get_array (child_node);
+          ColumnInfo *cinfo;
+          const gchar *column_name;
+          const gchar *type_name;
+
+          if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY ||
+              json_array_get_length (array) != 2)
+            {
+              g_warning ("A column must be an array of "
+                         "[\"column-name\", \"GType-name\"] pairs");
+              return FALSE;
+            }
+
+          column_name = json_array_get_string_element (array, 0);
+          type_name = json_array_get_string_element (array, 1);
+
+          cinfo = g_slice_new0 (ColumnInfo);
+          cinfo->name = g_strdup (column_name);
+          cinfo->type = clutter_script_get_type_from_name (script, type_name);
+
+          columns = g_slist_prepend (columns, cinfo);
         }
 
-      column_name = json_array_get_string_element (array, 0);
-      type_name = json_array_get_string_element (array, 1);
+      g_list_free (elements);
 
-      cinfo = g_slice_new0 (ColumnInfo);
-      cinfo->name = g_strdup (column_name);
-      cinfo->type = clutter_script_get_type_from_name (script, type_name);
+      g_value_init (value, G_TYPE_POINTER);
+      g_value_set_pointer (value, g_slist_reverse (columns));
 
-      columns = g_slist_prepend (columns, cinfo);
+      return TRUE;
     }
+  else if (strcmp (name, "rows") == 0)
+    {
+      GSList *rows = NULL;
+      GList *elements, *l;
 
-  g_list_free (elements);
+      if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
+        return FALSE;
 
-  g_value_init (value, G_TYPE_POINTER);
-  g_value_set_pointer (value, g_slist_reverse (columns));
+      /*
+       * at this point we have no information about the column types, so
+       * we just copy the json elements and resolve them in the
+       * set_custom_property method
+       */
+      elements = json_array_get_elements (json_node_get_array (node));
+      for (l = elements; l != NULL; l = l->next)
+        rows = g_slist_prepend (rows, json_node_copy (l->data));
+      g_list_free (elements);
 
-  return TRUE;
+      g_value_init (value, G_TYPE_POINTER);
+      g_value_set_pointer (value, g_slist_reverse (rows));
+
+      return TRUE;
+    }
+  return FALSE;
 }
 
 static void
@@ -603,6 +639,110 @@ clutter_model_set_custom_property (ClutterScriptable *scriptable,
         }
 
       g_slist_free (columns);
+    }
+  else if (strcmp (name, "rows") == 0)
+    {
+      ClutterModel *model = CLUTTER_MODEL (scriptable);
+      GSList *rows, *l;
+      guint n_columns, row = 0;
+
+      rows = g_value_get_pointer (value);
+      n_columns = clutter_model_get_n_columns (model);
+
+      for (l = rows; l; l = l->next)
+        {
+          JsonNode *node = l->data;
+          guint *columns, i, n_values = 0;
+          GValueArray *values;
+
+          if (JSON_NODE_TYPE (node) == JSON_NODE_ARRAY)
+            {
+              JsonArray *array = json_node_get_array (node);
+              if (json_array_get_length (array) != n_columns)
+                {
+                  g_warning ("Row %d contains the wrong count of columns",
+                             g_slist_position (rows, l) + 1);
+                  row++;
+                  continue;
+                }
+
+              n_values = n_columns;
+              columns = g_new (guint, n_values);
+              values = g_value_array_new (n_values);
+
+              for (i = 0; i < n_values; i++)
+                {
+                  GType column_type;
+                  const gchar *column_name;
+                  GValue v = { 0, };
+
+                  column_type = clutter_model_get_column_type (model, i);
+                  column_name = clutter_model_get_column_name (model, i);
+                  columns[i] = i;
+                  g_value_init (&v, column_type);
+                  clutter_script_parse_node (script, &v, column_name,
+                                             json_array_get_element (array, i),
+                                             NULL);
+                  g_value_array_append (values, &v);
+                  g_value_unset (&v);
+                }
+            }
+          else if (JSON_NODE_TYPE (node) == JSON_NODE_OBJECT)
+            {
+              JsonObject *object = json_node_get_object (node);
+              GList *members, *m;
+              guint column = 0;
+
+              n_values = json_object_get_size (object);
+              columns = g_new (guint, n_values);
+              values = g_value_array_new (n_values);
+
+              members = json_object_get_members (object);
+              for (m = members; m; m = m->next)
+                {
+                  const gchar *mname = m->data;
+
+                  for (i = 0; i < clutter_model_get_n_columns (model); i++)
+                    {
+                      const gchar *cname;
+
+                      cname = clutter_model_get_column_name (model, i);
+                      if (strcmp (mname, cname) == 0)
+                        {
+                          JsonNode *member;
+                          GType col_type;
+                          const gchar *col_name;
+                          GValue v = { 0, };
+
+                          col_type = clutter_model_get_column_type (model, i);
+                          col_name = clutter_model_get_column_name (model, i);
+                          columns[column] = i;
+                          g_value_init (&v, col_type);
+                          member = json_object_get_member (object, mname);
+                          clutter_script_parse_node (script, &v,
+                                                     col_name, member,
+                                                     NULL);
+                          g_value_array_append (values, &v);
+                          g_value_unset (&v);
+                          break;
+                        }
+                    }
+                  column++;
+                }
+            }
+          else
+            {
+              row++;
+              continue;
+            }
+
+          clutter_model_insertv (model, row, n_values, columns, values->values);
+          g_value_array_free (values);
+          g_free (columns);
+          json_node_free (node);
+          row++;
+        }
+      g_slist_free (rows);
     }
 }
 
