@@ -147,11 +147,11 @@ G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
  * (Theora does have some support for frames at non-uniform times, but
  * things seem to break down if there are large gaps.)
  */
-#define DEFAULT_PIPELINE "videorate ! theoraenc ! oggmux"
+#define DEFAULT_PIPELINE "videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux"
 
-/* The default filename pattern. Example shell-20090311b-2.ogg
+/* The default filename pattern. Example shell-20090311b-2.webm
  */
-#define DEFAULT_FILENAME "shell-%d%u-%c.ogg"
+#define DEFAULT_FILENAME "shell-%d%u-%c.webm"
 
 /* If we can find the amount of memory on the machine, we use half
  * of that for memory_target, otherwise, we use this value, in kB.
@@ -1493,11 +1493,47 @@ recorder_pipeline_closed (RecorderPipeline *pipeline)
   recorder_pipeline_free (pipeline);
 }
 
+/*
+ * Replaces '%T' in the passed pipeline with the thread count,
+ * the maximum possible value is 64 (limit of what vp8enc supports)
+ *
+ * It is assumes that %T occurs only once.
+ */
+static char*
+substitute_thread_count (const char *pipeline)
+{
+  char *tmp;
+  int n_threads;
+  GString *result;
+
+  tmp = strstr (pipeline, "%T");
+
+  if (!tmp)
+    return g_strdup (pipeline);
+
+#ifdef _SC_NPROCESSORS_ONLN
+    {
+      int n_processors = sysconf (_SC_NPROCESSORS_ONLN); /* includes hyper-threading */
+      n_threads = MIN (MAX (1, n_processors - 1), 64);
+    }
+#else
+    n_threads = 3;
+#endif
+
+  result = g_string_new (NULL);
+  g_string_append_len (result, pipeline, tmp - pipeline);
+  g_string_append_printf (result, "%d", n_threads);
+  g_string_append (result, tmp + 2);
+
+  return g_string_free (result, FALSE);;
+}
+
 static gboolean
 recorder_open_pipeline (ShellRecorder *recorder)
 {
   RecorderPipeline *pipeline;
   const char *pipeline_description;
+  char *parsed_pipeline;
   GError *error = NULL;
   GstBus *bus;
 
@@ -1509,9 +1545,12 @@ recorder_open_pipeline (ShellRecorder *recorder)
   if (!pipeline_description)
     pipeline_description = DEFAULT_PIPELINE;
 
-  pipeline->pipeline = gst_parse_launch_full (pipeline_description, NULL,
+  parsed_pipeline = substitute_thread_count (pipeline_description);
+
+  pipeline->pipeline = gst_parse_launch_full (parsed_pipeline, NULL,
                                               GST_PARSE_FLAG_FATAL_ERRORS,
                                               &error);
+  g_free (parsed_pipeline);
 
   if (pipeline->pipeline == NULL)
     {
