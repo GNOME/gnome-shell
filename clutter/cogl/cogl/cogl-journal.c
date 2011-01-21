@@ -1292,13 +1292,15 @@ _cogl_journal_flush (CoglJournal *journal,
   if (journal->entries->len == 0)
     return;
 
-  COGL_TIMER_START (_cogl_uprof_context, flush_timer);
-
   /* The entries in this journal may depend on images in other
    * framebuffers which may require that we flush the journals
    * associated with those framebuffers before we can flush
    * this journal... */
   _cogl_framebuffer_flush_dependency_journals (framebuffer);
+
+  /* Note: we start the timer after flushing dependency journals so
+   * that the timer isn't started recursively. */
+  COGL_TIMER_START (_cogl_uprof_context, flush_timer);
 
   cogl_push_framebuffer (framebuffer);
 
