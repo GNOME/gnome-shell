@@ -84,19 +84,22 @@ stage_button_event_cb (ClutterActor   *actor,
   ClutterInputDevice *device;
   ClutterInputDevice *source_device;
   ClutterActor *hand = NULL;
+  gdouble *axes;
+  guint n_axes, i;
 
   device = clutter_event_get_device (event);
   source_device = clutter_event_get_source_device (event);
 
   hand = g_hash_table_lookup (app->devices, device);
 
-  g_print ("Device: '%s' (id:%d, type: %s, source: '%s')\n",
+  g_print ("Device: '%s' (id:%d, type: %s, source: '%s', axes: %d)\n",
            clutter_input_device_get_device_name (device),
            clutter_input_device_get_device_id (device),
            device_type_name (device),
            source_device != device
              ? clutter_input_device_get_device_name (source_device)
-             : "<same>");
+             : "<same>",
+           clutter_input_device_get_n_axes (device));
 
   if (hand != NULL)
     {
@@ -104,23 +107,21 @@ stage_button_event_cb (ClutterActor   *actor,
 
       clutter_event_get_coords (event, &event_x, &event_y);
       clutter_actor_set_position (hand, event_x, event_y);
-
-      return TRUE;
     }
 
-  if (event->motion.axes != NULL)
+  axes = clutter_event_get_axes (event, &n_axes);
+  for (i = 0; i < n_axes; i++)
     {
-      gdouble *axes;
-      guint n_axes, i;
+      ClutterInputAxis axis;
 
-      axes = clutter_event_get_axes (event, &n_axes);
-      for (i = 0; i < n_axes; i++)
-        {
-          g_print ("Axis[%02d][%s].value: %.2f\n",
-                   i,
-                   axis_type_name (clutter_input_device_get_axis (device, i)),
-                   axes[i]);
-        }
+      axis = clutter_input_device_get_axis (device, i);
+      if (axis == CLUTTER_INPUT_AXIS_IGNORE)
+        continue;
+
+      g_print ("\tAxis[%2d][%s].value: %.2f\n",
+               i,
+               axis_type_name (axis),
+               axes[i]);
     }
 
   return FALSE;
