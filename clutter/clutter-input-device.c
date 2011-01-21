@@ -975,6 +975,7 @@ _clutter_input_device_reset_axes (ClutterInputDevice *device)
   if (device->axes != NULL)
     {
       g_array_free (device->axes, TRUE);
+      device->axes = NULL;
 
       g_object_notify_by_pspec (G_OBJECT (device), obj_props[PROP_N_AXES]);
     }
@@ -1025,6 +1026,7 @@ _clutter_input_device_add_axis (ClutterInputDevice *device,
     default:
       info.min_axis = 0;
       info.max_axis = 1;
+      break;
     }
 
   device->axes = g_array_append_val (device->axes, info);
