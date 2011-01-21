@@ -166,6 +166,8 @@ cogl_create_context (void)
   _context->default_gl_texture_2d_tex = COGL_INVALID_HANDLE;
   _context->default_gl_texture_rect_tex = COGL_INVALID_HANDLE;
 
+  _context->framebuffers = NULL;
+
   _context->journal_flush_attributes_array =
     g_array_new (TRUE, FALSE, sizeof (CoglAttribute *));
   _context->journal_clip_bounds = NULL;
