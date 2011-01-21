@@ -2783,18 +2783,20 @@ clutter_stage_queue_redraw (ClutterStage *stage)
 gboolean
 clutter_stage_is_default (ClutterStage *stage)
 {
+  ClutterStageManager *stage_manager;
   ClutterStageWindow *impl;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
 
-  if (CLUTTER_ACTOR (stage) == clutter_stage_get_default ())
-    return TRUE;
+  stage_manager = clutter_stage_manager_get_default ();
+  if (stage != clutter_stage_manager_get_default_stage (stage_manager))
+    return FALSE;
 
   impl = _clutter_stage_get_window (stage);
-  if (impl == _clutter_stage_get_default_window ())
-    return TRUE;
+  if (impl != _clutter_stage_get_default_window ())
+    return FALSE;
 
-  return FALSE;
+  return TRUE;
 }
 
 void
