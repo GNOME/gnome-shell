@@ -105,6 +105,14 @@ translate_valuator_class (Display             *xdisplay,
                                   class->min,
                                   class->max,
                                   class->resolution);
+
+  CLUTTER_NOTE (BACKEND,
+                "Added axis '%s' (min:%.2f, max:%.2fd, res:%d) of device %d",
+                clutter_input_axis_atom_names[axis],
+                class->min,
+                class->max,
+                class->resolution,
+                device->id);
 }
 
 static void
@@ -541,7 +549,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
   ClutterBackendX11 *backend_x11;
   ClutterStageX11 *stage_x11 = NULL;
   ClutterStage *stage = NULL;
-  ClutterInputDevice *device;
+  ClutterInputDevice *device, *source_device;
   XGenericEventCookie *cookie;
   XIEvent *xi_event;
   XEvent *xevent;
@@ -645,9 +653,9 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         event_x11->caps_lock_set =
           _clutter_keymap_x11_get_caps_lock_state (backend_x11->keymap);
 
-        device = g_hash_table_lookup (manager_xi2->devices_by_id,
-                                      GINT_TO_POINTER (xev->sourceid));
-        _clutter_event_set_source_device (event, device);
+        source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                             GINT_TO_POINTER (xev->sourceid));
+        _clutter_event_set_source_device (event, source_device);
 
         device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                       GINT_TO_POINTER (xev->deviceid));
@@ -716,9 +724,10 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->scroll.modifier_state =
               _clutter_input_device_xi2_translate_state (&xev->mods,
                                                          &xev->buttons);
-            device = g_hash_table_lookup (manager_xi2->devices_by_id,
-                                          GINT_TO_POINTER (xev->sourceid));
-            _clutter_event_set_source_device (event, device);
+
+            source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                                 GINT_TO_POINTER (xev->sourceid));
+            _clutter_event_set_source_device (event, source_device);
 
             device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                           GINT_TO_POINTER (xev->deviceid));
@@ -747,9 +756,9 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
               _clutter_input_device_xi2_translate_state (&xev->mods,
                                                          &xev->buttons);
 
-            device = g_hash_table_lookup (manager_xi2->devices_by_id,
-                                          GINT_TO_POINTER (xev->sourceid));
-            _clutter_event_set_source_device (event, device);
+            source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                                 GINT_TO_POINTER (xev->sourceid));
+            _clutter_event_set_source_device (event, source_device);
 
             device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                           GINT_TO_POINTER (xev->deviceid));
@@ -763,8 +772,11 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             break;
           }
 
+        if (source_device != NULL && device->stage != NULL)
+          _clutter_input_device_set_stage (source_device, device->stage);
+
         CLUTTER_NOTE (EVENT,
-                      "%s: win:0x%x, device:%s (button:%d, x:%.2f, y:%.2f)",
+                      "%s: win:0x%x, device:%s (button:%d, x:%.2f, y:%.2f, axes:%s)",
                       event->any.type == CLUTTER_BUTTON_PRESS
                         ? "button press  "
                         : "button release",
@@ -772,7 +784,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                       event->button.device->device_name,
                       event->button.button,
                       event->button.x,
-                      event->button.y);
+                      event->button.y,
+                      event->button.axes != NULL ? "yes" : "no");
 
         if (xi_event->evtype == XI_ButtonPress)
           _clutter_stage_x11_set_user_time (stage_x11, event->button.time);
@@ -796,9 +809,9 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
           _clutter_input_device_xi2_translate_state (&xev->mods,
                                                      &xev->buttons);
 
-        device = g_hash_table_lookup (manager_xi2->devices_by_id,
-                                      GINT_TO_POINTER (xev->sourceid));
-        _clutter_event_set_source_device (event, device);
+        source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                             GINT_TO_POINTER (xev->sourceid));
+        _clutter_event_set_source_device (event, source_device);
 
         device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                       GINT_TO_POINTER (xev->deviceid));
@@ -810,11 +823,15 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                              stage_x11,
                                              &xev->valuators);
 
-        CLUTTER_NOTE (EVENT, "motion: win:0x%x device:%s (x:%.2f, y:%.2f)",
+        if (source_device != NULL && device->stage != NULL)
+          _clutter_input_device_set_stage (source_device, device->stage);
+
+        CLUTTER_NOTE (EVENT, "motion: win:0x%x device:%s (x:%.2f, y:%.2f, axes:%s)",
                       (unsigned int) stage_x11->xwin,
                       event->motion.device->device_name,
                       event->motion.x,
-                      event->motion.y);
+                      event->motion.y,
+                      event->motion.axes != NULL ? "yes" : "no");
 
         retval = CLUTTER_TRANSLATE_QUEUE;
       }
