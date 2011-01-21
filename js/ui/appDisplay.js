@@ -43,6 +43,15 @@ AlphabeticalView.prototype = {
                                          vfade: true });
         this.actor.add_actor(box);
         this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this.actor.connect('notify::mapped', Lang.bind(this,
+            function() {
+                if (!this.actor.mapped)
+                    return;
+
+                let adjustment = this.actor.vscroll.adjustment;
+                let direction = Overview.SwipeScrollDirection.VERTICAL;
+                Main.overview.setScrollAdjustment(adjustment, direction);
+            }));
     },
 
     _removeAll: function() {
