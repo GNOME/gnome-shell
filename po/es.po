@@ -1,17 +1,17 @@
 # Spanish translation of gnome-shell.
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010.
 # Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
+# Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2011-01-17 21:45+0000\n"
-"PO-Revision-Date: 2011-01-19 16:17+0100\n"
-"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
+"POT-Creation-Date: 2011-01-21 18:46+0000\n"
+"PO-Revision-Date: 2011-01-22 16:34+0100\n"
+"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,7 +76,18 @@ msgstr "Si es cierta muestra la fecha de semana ISO en el calendario."
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Lista de ID de archivos de escritorio para las aplicaciones favoritas"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#, no-c-format
+#| msgid ""
+#| "Sets the GStreamer pipeline used to encode recordings. It follows the "
+#| "syntax used for gst-launch. The pipeline should have an unconnected sink "
+#| "pad where the recorded video is recorded. It will normally have a "
+#| "unconnected source pad; output from that pad will be written into the "
+#| "output file. However the pipeline can also take care of its own output - "
+#| "this might be used to send the output to an icecast server via shout2send "
+#| "or similar. When unset or set to an empty value, the default pipeline "
+#| "will be used. This is currently 'videorate ! theoraenc ! oggmux' and "
+#| "records to Ogg Theora."
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -85,32 +96,35 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
 msgstr ""
 "Establece la tubería GStreamer usada para codificar grabaciones. Sigue la "
-"sintaxis usada para gst-launch. La tubería debería tener un sumidero («sink») "
-"de ensamblaje/sesensamblaje donde el vídeo que se está grabando se graba. "
-"Generalmente tendrá un origen de ensamblado/desensamblado; la salida de ese "
-"punto se escibirá en el archivo de salida. No obstante la tubería también "
-"puede tomar parte en su propia salida; esto se puede usar para enviar la "
-"salida a un servidor «icecast» a través de shout2send o similar. Cuando no "
-"está establecido o lo está a un valor vacío, se usará la tubería "
-"predeterminada. Actualmente es «videorate ! theoraenc ! oggmux» y greba en "
-"Ogg Theora."
+"sintaxis usada para gst-launch. La tubería debería tener un sumidero "
+"(«sink») de ensamblaje/sesensamblaje donde el vídeo que se está grabando se "
+"graba. Generalmente tendrá un origen de ensamblado/desensamblado; la salida "
+"de ese punto se escibirá en el archivo de salida. No obstante la tubería "
+"también puede tomar parte en su propia salida; esto se puede usar para "
+"enviar la salida a un servidor «icecast» a través de shout2send o similar. "
+"Cuando no está establecido o lo está a un valor vacío, se usará la tubería "
+"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 "
+"threads=%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T "
+"como suposición para el número de hilos óptimos en el sistema."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Show date in clock"
 msgstr "Mostrar la fecha en el reloj"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show the week date in the calendar"
 msgstr "Mostrar la fecha de la semana en el calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show time with seconds"
 msgstr "Mostrar la hora con segundos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -118,7 +132,7 @@ msgstr ""
 "Las aplicaciones correspondientes con esos identificadores se mostrarán en "
 "el área de favoritos."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -128,7 +142,7 @@ msgstr ""
 "basado en la fecha actual y usará esta extensión. Se debería cambiar al "
 "grabar en otro formato contenedor diferente."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -136,11 +150,11 @@ msgstr ""
 "La tasa de fotogramas de la grabación resultante grabada por el grabador de "
 "«screencast» de GNOME Shell, en fotogramas por segundo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "La tubería de gstreamer usada para codificar el «screencast»"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -152,16 +166,16 @@ msgstr ""
 "mantienen de forma privada, puede querer desactivarlo por razones de "
 "privacidad. Note que haciéndolo no eliminará los datos ya guardados."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Uuids of extensions to disable"
 msgstr "Uuid de las extensiones que desactivar"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 "Indica si se deben recolectar estadísticas acerca del uso de las aplicaciones"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "disabled OpenSearch providers"
 msgstr "proveedores OpenSearch desactivados"
 
@@ -482,7 +496,7 @@ msgstr "Ver fuente"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:1748
+#: ../js/ui/messageTray.js:1765
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -499,54 +513,54 @@ msgid "Applications"
 msgstr "Aplicaciones"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:479
+#: ../js/ui/panel.js:483
 #, c-format
 msgid "Quit %s"
 msgstr "Salir de %s"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:564
+#: ../js/ui/panel.js:568
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e de %b, %R:%S"
 
-#: ../js/ui/panel.js:565
+#: ../js/ui/panel.js:569
 msgid "%a %b %e, %R"
 msgstr "%a %e de %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:569
+#: ../js/ui/panel.js:573
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:570
+#: ../js/ui/panel.js:574
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:577
+#: ../js/ui/panel.js:581
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e de %b, %H:%M:%S"
 
-#: ../js/ui/panel.js:578
+#: ../js/ui/panel.js:582
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e de %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:586
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:587
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:728
+#: ../js/ui/panel.js:732
 msgid "Activities"
 msgstr "Actividades"
 
@@ -701,7 +715,7 @@ msgstr "Error al examinar el dispositivo"
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "No se puede examinar el dispositivo solicitado, el error es «%s»"
 
-#: ../js/ui/status/bluetooth.js:251 ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/bluetooth.js:251
 msgid "Keyboard Settings"
 msgstr "Configuración del teclado"
 
@@ -775,6 +789,11 @@ msgstr "Introduzca el PIN mencionado en el dispositivo."
 #: ../js/ui/status/bluetooth.js:469
 msgid "OK"
 msgstr "Aceptar"
+
+#: ../js/ui/status/keyboard.js:78
+#| msgid "Sound Settings"
+msgid "Localization Settings"
+msgstr "Configuración regional"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -1015,8 +1034,8 @@ msgstr "%1$s: %2$s"
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
-#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos "
-#~ "en la hora."
+#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los "
+#~ "segundos en la hora."
 
 #~ msgid ""
 #~ "This key specifies the format used by the panel clock when the format key "
@@ -1033,18 +1052,19 @@ msgstr "%1$s: %2$s"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
-#~ "01-01. If set to \"custom\", the clock will display time according to the "
-#~ "format specified in the custom_format key. Note that if set to either "
-#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
 #~ msgstr ""
 #~ "Esta clave especifica el formato de la hora especificado por el reloj del "
-#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
-#~ "«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará "
-#~ "la hora en segundos desde la época (1 de enero de 1970). Si se establece "
-#~ "a «custom» el reloj mostrará la hora según el formato especificado en la "
-#~ "clave «custom_format». Note que si se establece a «unix» o «custom» se "
-#~ "ignoran las claves «show_date» y «show_seconds»."
+#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 "
+#~ "horas), «unix» y «custom» (personalizado).Si se establece a «unix» el "
+#~ "reloj mostrará la hora en segundos desde la época (1 de enero de 1970). "
+#~ "Si se establece a «custom» el reloj mostrará la hora según el formato "
+#~ "especificado en la clave «custom_format». Note que si se establece a "
+#~ "«unix» o «custom» se ignoran las claves «show_date» y «show_seconds»."
 
 #~ msgid "Clock Format"
 #~ msgstr "Formato del reloj"
