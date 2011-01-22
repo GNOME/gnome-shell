@@ -427,6 +427,30 @@ get_arbitrary_border_color (StThemeNode   *node,
     st_theme_node_get_border_color (node, ST_SIDE_TOP, color);
 }
 
+static gboolean
+st_theme_node_has_visible_outline (StThemeNode *node)
+{
+  if (node->background_color.alpha > 0)
+    return TRUE;
+
+  if (node->background_gradient_end.alpha > 0)
+    return TRUE;
+
+  if (node->border_radius[ST_CORNER_TOPLEFT] > 0 ||
+      node->border_radius[ST_CORNER_TOPRIGHT] > 0 ||
+      node->border_radius[ST_CORNER_BOTTOMLEFT] > 0 ||
+      node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0)
+    return TRUE;
+
+  if (node->border_width[ST_SIDE_TOP] > 0 ||
+      node->border_width[ST_SIDE_LEFT] > 0 ||
+      node->border_width[ST_SIDE_RIGHT] > 0 ||
+      node->border_width[ST_SIDE_BOTTOM] > 0)
+    return TRUE;
+
+  return FALSE;
+}
+
 static CoglHandle
 st_theme_node_render_gradient (StThemeNode *node)
 {
@@ -1308,6 +1332,16 @@ st_theme_node_paint (StThemeNode           *node,
       ClutterActorBox background_box;
 
       get_background_position (node, &allocation, &background_box);
+      gboolean has_visible_outline;
+
+      /* If the background doesn't have a border or opaque background,
+       * then we let its background image shadows leak out, but other
+       * wise we clip it.
+       */
+      has_visible_outline = st_theme_node_has_visible_outline (node);
+
+      if (has_visible_outline)
+        cogl_clip_push_rectangle (allocation.x1, allocation.y1, allocation.x2, allocation.y2);
 
       /* CSS based drop shadows
        *
@@ -1318,8 +1352,9 @@ st_theme_node_paint (StThemeNode           *node,
        * multiple shadows and allow for a more liberal placement of the color
        * parameter - its interpretation defers significantly in that the shadow's
        * shape is not determined by the bounding box, but by the CSS background
-       * image (we could exend this in the future to take other CSS properties
-       * like boder and background color into account).
+       * image. The drop shadows are allowed to escape the nodes allocation if
+       * there is nothing (like a border, or the edge of the background color)
+       * to logically confine it.
        */
       if (node->background_shadow_material != COGL_INVALID_HANDLE)
         _st_paint_shadow_with_opacity (node->background_image_shadow,
@@ -1328,6 +1363,9 @@ st_theme_node_paint (StThemeNode           *node,
                                        paint_opacity);
 
       paint_material_with_opacity (node->background_material, &background_box, paint_opacity);
+
+      if (has_visible_outline)
+        cogl_clip_pop ();
     }
 }
 
