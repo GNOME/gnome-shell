@@ -1499,7 +1499,7 @@ clutter_model_foreach (ClutterModel            *model,
  * clutter_model_set_sort:
  * @model: a #ClutterModel
  * @column: the column to sort on
- * @func: a #ClutterModelSortFunc, or #NULL
+ * @func: (allow-none): a #ClutterModelSortFunc, or #NULL
  * @user_data: user data to pass to @func, or #NULL
  * @notify: destroy notifier of @user_data, or #NULL
  *
@@ -1536,7 +1536,7 @@ clutter_model_set_sort (ClutterModel         *model,
 /**
  * clutter_model_set_filter:
  * @model: a #ClutterModel
- * @func: a #ClutterModelFilterFunc, or #NULL
+ * @func: (allow-none): a #ClutterModelFilterFunc, or #NULL
  * @user_data: user data to pass to @func, or #NULL
  * @notify: destroy notifier of @user_data, or #NULL
  *
@@ -1962,7 +1962,7 @@ clutter_model_iter_get (ClutterModelIter *iter,
  * clutter_model_iter_get_value:
  * @iter: a #ClutterModelIter
  * @column: column number to retrieve the value from
- * @value: an empty #GValue to set
+ * @value: (out): an empty #GValue to set
  *
  * Sets an initializes @value to that at @column. When done with @value, 
  * g_value_unset() needs to be called to free any allocated memory.
