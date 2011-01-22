@@ -3581,7 +3581,10 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_xwindow = grab_xwindow;
   display->grab_button = button;
   display->grab_mask = modmask;
-  display->grab_tile_mode = window->tile_mode;
+  if (window)
+    display->grab_tile_mode = window->tile_mode;
+  else
+    display->grab_tile_mode = META_TILE_NONE;
   display->grab_anchor_root_x = root_x;
   display->grab_anchor_root_y = root_y;
   display->grab_latest_motion_x = root_x;
