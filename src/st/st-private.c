@@ -49,7 +49,7 @@ _st_actor_get_preferred_width  (ClutterActor *actor,
       ClutterRequestMode mode;
       gfloat natural_height;
 
-      g_object_get (G_OBJECT (actor), "request-mode", &mode, NULL);
+      mode = clutter_actor_get_request_mode (actor);
       if (mode == CLUTTER_REQUEST_WIDTH_FOR_HEIGHT)
         {
           clutter_actor_get_preferred_height (actor, -1, NULL, &natural_height);
@@ -86,7 +86,7 @@ _st_actor_get_preferred_height (ClutterActor *actor,
       ClutterRequestMode mode;
       gfloat natural_width;
 
-      g_object_get (G_OBJECT (actor), "request-mode", &mode, NULL);
+      mode = clutter_actor_get_request_mode (actor);
       if (mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
         {
           clutter_actor_get_preferred_width (actor, -1, NULL, &natural_width);
@@ -173,8 +173,7 @@ _st_allocate_fill (StWidget        *parent,
    * modified to cope with the fact that the available size may be
    * less than the preferred size.
    */
-  request = CLUTTER_REQUEST_HEIGHT_FOR_WIDTH;
-  g_object_get (G_OBJECT (child), "request-mode", &request, NULL);
+  request = clutter_actor_get_request_mode (child);
 
   if (request == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
     {
