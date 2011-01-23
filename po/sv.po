@@ -1,76 +1,59 @@
 # Swedish messages for mutter.
-# Copyright (C) 2001-2009 Free Software Foundation, Inc.
+# Copyright (C) 2001-2011 Free Software Foundation, Inc.
 # Christian Rose <menthos@menthos.com>, 2001, 2002, 2003, 2004, 2005.
-# Daniel Nylander <po@danielnylander.se>, 2006, 2007, 2008, 2009.
+# Daniel Nylander <po@danielnylander.se>, 2006, 2007, 2008, 2009, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-27 08:49+0200\n"
-"PO-Revision-Date: 2009-08-27 08:51+0100\n"
+"POT-Creation-Date: 2011-01-23 10:14+0100\n"
+"PO-Revision-Date: 2011-01-23 10:23+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/core/core.c:213
+#: ../src/core/bell.c:302
+msgid "Bell event"
+msgstr ""
+
+#: ../src/core/core.c:157
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Okänd fråga efter fönsterinformation: %d"
 
-#: ../src/core/delete.c:105
+#. Translators: %s is a window title
+#: ../src/core/delete.c:94
 #, c-format
-msgid ""
-"<big><b><tt>%s</tt> is not responding.</b></big>\n"
-"\n"
-"<i>You may choose to wait a short while for it to continue or force the application to quit entirely.</i>"
-msgstr ""
-"<big><b><tt>%s</tt> svarar inte.</b></big>\n"
-"\n"
-"<i>Du kan välja att vänta en kort stund på det för att fortsätta eller tvinga programmet att helt avslutas.</i>"
+msgid "<tt>%s</tt> is not responding."
+msgstr "<tt>%s</tt> svarar inte."
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:99
+msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
+msgstr "Du kan välja att vänta en kort stund på det för att fortsätta eller tvinga programmet att helt avslutas."
+
+#: ../src/core/delete.c:108
 msgid "_Wait"
 msgstr "_Vänta"
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:108
 msgid "_Force Quit"
 msgstr "_Tvinga avslut"
 
-#: ../src/core/delete.c:217
-#, c-format
-msgid "Failed to get hostname: %s\n"
-msgstr "Misslyckades med att få tag i värdnamn: %s\n"
-
-#: ../src/core/display.c:329
+#: ../src/core/display.c:365
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Saknar %s-tillägg som krävs för kompositing"
 
-#: ../src/core/display.c:414
+#: ../src/core/display.c:431
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen \"%s\"\n"
 
-#: ../src/core/errors.c:236
-#, c-format
-msgid ""
-"Lost connection to the display '%s';\n"
-"most likely the X server was shut down or you killed/destroyed\n"
-"the window manager.\n"
-msgstr ""
-"Tappade anslutningen till displayen \"%s\";\n"
-"troligtvis stängdes X-servern ner, eller så dödade/förstörde du\n"
-"fönsterhanteraren.\n"
-
-#: ../src/core/errors.c:243
-#, c-format
-msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "Ödesdigert IO-fel %d (%s) på display \"%s\".\n"
-
-#: ../src/core/keybindings.c:697
+#: ../src/core/keybindings.c:759
 #, c-format
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "Ett annat program använder redan tangenten %s med modifierarna %x som en bindning\n"
@@ -78,7 +61,7 @@ msgstr "Ett annat program använder redan tangenten %s med modifierarna %x som e
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2392
+#: ../src/core/keybindings.c:2468
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -89,88 +72,84 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2482
+#: ../src/core/keybindings.c:2558
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Inget kommando %d har definierats.\n"
 
-#: ../src/core/keybindings.c:3495
+#: ../src/core/keybindings.c:3570
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Inget terminalkommando har definierats.\n"
 
-#: ../src/core/main.c:127
+#: ../src/core/main.c:130
 #, c-format
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
-"Copyright © 2001-2008 Havoc Pennington, Red Hat, Inc. och andra\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc. och andra\n"
 "Det här är fri programvara; se källkoden för kopieringsvillkor.\n"
 "Det finns INGA garantier; inte ens för SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL.\n"
 
-#: ../src/core/main.c:257
+#: ../src/core/main.c:261
 msgid "Disable connection to session manager"
 msgstr "Inaktivera anslutning till sessionshanteraren"
 
-#: ../src/core/main.c:263
+#: ../src/core/main.c:267
 msgid "Replace the running window manager with Mutter"
 msgstr "Ersätt den körande fönsterhanteraren med Mutter"
 
-#: ../src/core/main.c:269
+#: ../src/core/main.c:273
 msgid "Specify session management ID"
 msgstr "Ange sessionshanteringsid"
 
-#: ../src/core/main.c:274
+#: ../src/core/main.c:278
 msgid "X Display to use"
 msgstr "X-display att använda"
 
-#: ../src/core/main.c:280
+#: ../src/core/main.c:284
 msgid "Initialize session from savefile"
 msgstr "Initiera session från sparandefil"
 
-#: ../src/core/main.c:286
+#: ../src/core/main.c:290
 msgid "Print version"
 msgstr "Skriv ut version"
 
-#: ../src/core/main.c:292
+#: ../src/core/main.c:296
 msgid "Make X calls synchronous"
 msgstr "Gör X-anrop synkrona"
 
-#: ../src/core/main.c:298
-msgid "Turn compositing on"
-msgstr "Slå på compositing"
+#: ../src/core/main.c:302
+msgid "Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
 
-#: ../src/core/main.c:304
-msgid "Turn compositing off"
-msgstr "Stäng av compositing"
-
-#: ../src/core/main.c:310
+#: ../src/core/main.c:308
 msgid "Comma-separated list of compositor plugins"
 msgstr ""
 
-#: ../src/core/main.c:316
+#: ../src/core/main.c:314
 msgid "Whether window popup/frame should be shown when cycling windows."
 msgstr ""
 
-#: ../src/core/main.c:323
+#: ../src/core/main.c:321
 msgid "Internal argument for GObject introspection"
 msgstr ""
 
-#: ../src/core/main.c:668
+#: ../src/core/main.c:648
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Misslyckades med att genomsöka temakatalogen: %s\n"
 
-#: ../src/core/main.c:684
+#: ../src/core/main.c:664
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Kunde inte hitta ett tema! Försäkra dig om att %s finns och innehåller vanliga teman.\n"
 
-#: ../src/core/main.c:745
+#: ../src/core/main.c:725
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Misslyckades med att starta om: %s\n"
@@ -186,220 +165,219 @@ msgstr "Misslyckades med att starta om: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:522
-#: ../src/core/prefs.c:683
+#: ../src/core/prefs.c:541
+#: ../src/core/prefs.c:702
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nyckeln \"%s\" är satt till ett ogiltigt värde\n"
 
-#: ../src/core/prefs.c:609
-#: ../src/core/prefs.c:852
+#: ../src/core/prefs.c:628
+#: ../src/core/prefs.c:871
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d lagrad i GConf-nyckeln %s är inte i intervallet %d till %d\n"
 
 # SUN CHANGED MESSAGE
-#: ../src/core/prefs.c:653
-#: ../src/core/prefs.c:730
-#: ../src/core/prefs.c:778
-#: ../src/core/prefs.c:842
-#: ../src/core/prefs.c:1142
-#: ../src/core/prefs.c:1158
-#: ../src/core/prefs.c:1175
-#: ../src/core/prefs.c:1191
+#: ../src/core/prefs.c:672
+#: ../src/core/prefs.c:749
+#: ../src/core/prefs.c:797
+#: ../src/core/prefs.c:861
+#: ../src/core/prefs.c:1336
+#: ../src/core/prefs.c:1352
+#: ../src/core/prefs.c:1369
+#: ../src/core/prefs.c:1385
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nyckeln \"%s\" är satt till en ogiltig typ\n"
 
-#: ../src/core/prefs.c:1282
+#: ../src/core/prefs.c:1215
+#, c-format
+msgid "GConf key %s is already in use and can't be used to override %s\n"
+msgstr "GConf-nyckeln %s används redan och kan inte användas för att åsidosätta %s\n"
+
+#: ../src/core/prefs.c:1274
+#, c-format
+msgid "Can't override GConf key, %s not found\n"
+msgstr "Kan inte åsidosätta GConf-nyckeln, %s hittades inte\n"
+
+#: ../src/core/prefs.c:1476
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Fixar för trasiga program är inaktiverade. En del program fungerar kanske inte korrekt.\n"
 
-#: ../src/core/prefs.c:1353
+#: ../src/core/prefs.c:1553
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunde inte tolka typsnittsbeskrivningen \"%s\" från GConf-nyckeln %s\n"
 
-#: ../src/core/prefs.c:1415
+#: ../src/core/prefs.c:1615
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för musknappsmodifierare\n"
 
-#: ../src/core/prefs.c:1839
+#: ../src/core/prefs.c:2045
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fel vid inställning av antalet arbetsytor till %d: %s\n"
 
-#: ../src/core/prefs.c:2023
-#: ../src/core/prefs.c:2529
+#: ../src/core/prefs.c:2229
+#: ../src/core/prefs.c:2731
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbetsyta %d"
 
-#: ../src/core/prefs.c:2056
-#: ../src/core/prefs.c:2234
+#: ../src/core/prefs.c:2261
+#: ../src/core/prefs.c:2439
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för tangentbindningen \"%s\"\n"
 
-#: ../src/core/prefs.c:2610
+#: ../src/core/prefs.c:2812
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fel vid inställning av namnet på arbetsyta %d till \"%s\": %s\n"
 
-#: ../src/core/prefs.c:2808
-#, c-format
-msgid "Error setting compositor status: %s\n"
-msgstr "Fel vid inställning av status för compositor: %s\n"
-
-#: ../src/core/prefs.c:2836
+#: ../src/core/prefs.c:3028
 #, fuzzy, c-format
 msgid "Error setting clutter plugin list: %s\n"
 msgstr "Fel vid inställning av status för compositor: %s\n"
 
-#: ../src/core/prefs.c:2879
+#: ../src/core/prefs.c:3072
 #, fuzzy, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Fel vid inställning av status för compositor: %s\n"
 
-#: ../src/core/prefs.c:2907
+#: ../src/core/prefs.c:3100
 #, fuzzy, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Fel vid inställning av status för compositor: %s\n"
 
-#: ../src/core/screen.c:562
+#: ../src/core/screen.c:577
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skärm %d på display \"%s\" är ogiltig\n"
 
-#: ../src/core/screen.c:578
+#: ../src/core/screen.c:593
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
 msgstr "Skärm %d på display \"%s\" har redan en fönsterhanterare; försök med flaggan --replace för att ersätta den aktuella fönsterhanteraren.\n"
 
-#: ../src/core/screen.c:605
+#: ../src/core/screen.c:620
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Kunde inte få tag i fönsterhanterarval på skärm %d display \"%s\"\n"
 
-#: ../src/core/screen.c:660
+#: ../src/core/screen.c:675
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skärm %d på display \"%s\" har redan en fönsterhanterare\n"
 
-#: ../src/core/screen.c:872
+#: ../src/core/screen.c:860
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunde inte släppa skärm %d på display \"%s\"\n"
 
-#: ../src/core/session.c:851
-#: ../src/core/session.c:858
+#: ../src/core/session.c:856
+#: ../src/core/session.c:863
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunde inte skapa katalogen \"%s\": %s\n"
 
-#: ../src/core/session.c:868
+#: ../src/core/session.c:873
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunde inte öppna sessionsfilen \"%s\" för skrivning: %s\n"
 
-#: ../src/core/session.c:1009
+#: ../src/core/session.c:1014
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Fel vid skrivning av sessionsfilen \"%s\": %s\n"
 
-#: ../src/core/session.c:1014
+#: ../src/core/session.c:1019
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Fel vid stängning av sessionsfilen \"%s\": %s\n"
 
-#. oh, just give up
-#: ../src/core/session.c:1107
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "Misslyckades med att läsa sparad sessionsfil %s: %s\n"
-
-#: ../src/core/session.c:1146
+#: ../src/core/session.c:1149
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Misslyckades med att tolka sparad sessionsfil: %s\n"
 
-#: ../src/core/session.c:1195
+#: ../src/core/session.c:1198
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "<mutter_session>-attribut hittat men vi har redan sessions-ID"
 
 # SUN CHANGED MESSAGE
-#: ../src/core/session.c:1208
-#: ../src/core/session.c:1283
-#: ../src/core/session.c:1315
-#: ../src/core/session.c:1387
-#: ../src/core/session.c:1447
+#: ../src/core/session.c:1211
+#: ../src/core/session.c:1286
+#: ../src/core/session.c:1318
+#: ../src/core/session.c:1390
+#: ../src/core/session.c:1450
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Okänt attribut %s i <%s>-element"
 
-#: ../src/core/session.c:1225
+#: ../src/core/session.c:1228
 #, c-format
 msgid "nested <window> tag"
 msgstr "nästlad <window>-tagg"
 
-#: ../src/core/session.c:1467
+#: ../src/core/session.c:1470
 #, c-format
 msgid "Unknown element %s"
 msgstr "Okänt element %s"
 
-#: ../src/core/session.c:1818
+#: ../src/core/session.c:1822
 msgid "These windows do not support &quot;save current setup&quot; and will have to be restarted manually next time you log in."
 msgstr "Dessa fönster saknar stöd för &quot;spara nuvarande inställningar&quot; och kommer att behöva startas om manuellt nästa gång du loggar in."
 
-#: ../src/core/util.c:103
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Misslyckades med att öppna felsökningslogg: %s\n"
 
-#: ../src/core/util.c:113
+#: ../src/core/util.c:121
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Misslyckades med att använda fdopen() på loggfilen %s: %s\n"
 
-#: ../src/core/util.c:119
+#: ../src/core/util.c:127
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Öppnade loggfilen %s\n"
 
-#: ../src/core/util.c:138
-#: ../src/tools/mutter-message.c:176
-#, fuzzy, c-format
+#: ../src/core/util.c:146
+#: ../src/tools/mutter-message.c:179
+#, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
-msgstr "Metacity kompilerades utan stöd för utförligt läge\n"
+msgstr "Mutter kompilerades utan stöd för utförligt läge\n"
 
-#: ../src/core/util.c:238
+#: ../src/core/util.c:286
 msgid "Window manager: "
 msgstr "Fönsterhanterare: "
 
-#: ../src/core/util.c:390
+#: ../src/core/util.c:434
 msgid "Bug in window manager: "
 msgstr "Fel i fönsterhanterare: "
 
-#: ../src/core/util.c:423
+#: ../src/core/util.c:467
 msgid "Window manager warning: "
 msgstr "Fönsterhanterarvarning: "
 
-#: ../src/core/util.c:451
+#: ../src/core/util.c:495
 msgid "Window manager error: "
 msgstr "Fönsterhanterarfel: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:570
+#: ../src/core/util.c:616
 #: ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6072
+#: ../src/core/window.c:6472
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Fönstret %s ställer in SM_CLIENT_ID på sig själv, istället för på WM_CLIENT_LEADER-fönstret som är angivet i ICCCM.\n"
@@ -411,7 +389,7 @@ msgstr "Fönstret %s ställer in SM_CLIENT_ID på sig själv, istället för på
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6735
+#: ../src/core/window.c:7135
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Fönstret %s ställer in ett MWM-tips som anger att det inte går att ändra storlek på, men ställer in minsta storleken %d × %d och största storleken %d × %d; detta verkar inte vettigt.\n"
@@ -426,7 +404,7 @@ msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
 
-#: ../src/core/window-props.c:1419
+#: ../src/core/window-props.c:1478
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ogiltigt WM_TRANSIENT_FOR-fönster 0x%lx angivet för %s.\n"
@@ -446,12 +424,12 @@ msgstr ""
 "Det här är sannolikt ett programfel och inte ett fel i fönsterhanteraren.\n"
 "Fönstret har titeln=\"%s\" klass=\"%s\" namn=\"%s\"\n"
 
-#: ../src/core/xprops.c:401
+#: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8\n"
 
-#: ../src/core/xprops.c:484
+#: ../src/core/xprops.c:494
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8 för objekt %d i listan\n"
@@ -765,178 +743,185 @@ msgid "Move window to center of screen"
 msgstr "Flytta fönstret till mitten av skärmen"
 
 #: ../src/mutter.schemas.in.h:1
-msgid "Clutter Plugins"
+msgid "Attach modal dialogs"
 msgstr ""
 
 #: ../src/mutter.schemas.in.h:2
-msgid "Determines whether hidden windows (i.e., minimized windows and windows on other workspaces than the current one) should be kept alive."
-msgstr ""
+msgid "Clutter Plugins"
+msgstr "Clutter-insticksmoduler"
 
 #: ../src/mutter.schemas.in.h:3
-msgid "Live Hidden Windows"
-msgstr ""
+msgid "Determines whether hidden windows (i.e., minimized windows and windows on other workspaces than the current one) should be kept alive."
+msgstr "Bestämmer huruvida dolda fönster (t.ex., minimerade fönster och fönster på andra arbetsytor än den aktuella) ska hållas vid liv."
 
 #: ../src/mutter.schemas.in.h:4
-#, fuzzy
-msgid "Modifier to use for extended window management operations"
-msgstr "Modifierare att använda för modifierade fönsterklickåtgärder"
+msgid "Live Hidden Windows"
+msgstr "Levande, dolda fönster"
 
 #: ../src/mutter.schemas.in.h:5
+msgid "Modifier to use for extended window management operations"
+msgstr "Modifierare att använda för utökade fönsterhanteringsåtgärder"
+
+#: ../src/mutter.schemas.in.h:6
 msgid "Plugins to load for the Clutter-based compositing manager."
 msgstr ""
 
-#: ../src/mutter.schemas.in.h:6
+#: ../src/mutter.schemas.in.h:7
 msgid "This key will initiate the \"overlay\", which is a combination window overview and application launching system. The default is intended to be the \"Windows key\" on PC hardware. It's expected that this binding either the default or set to the empty string."
 msgstr ""
 
-#: ../src/tools/mutter-message.c:150
+#: ../src/mutter.schemas.in.h:8
+msgid "When true, instead of having independent titlebars, modal dialogs appear attached to the titlebar of the parent window and are moved together with the parent window."
+msgstr ""
+
+#: ../src/tools/mutter-message.c:151
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Användning: %s\n"
 
-#: ../src/ui/frames.c:1118
+#: ../src/ui/frames.c:1099
 msgid "Close Window"
 msgstr "Stäng fönster"
 
-#: ../src/ui/frames.c:1121
+#: ../src/ui/frames.c:1102
 msgid "Window Menu"
 msgstr "Fönstermeny"
 
-#: ../src/ui/frames.c:1124
+#: ../src/ui/frames.c:1105
 msgid "Minimize Window"
 msgstr "Minimera fönster"
 
-#: ../src/ui/frames.c:1127
+#: ../src/ui/frames.c:1108
 msgid "Maximize Window"
 msgstr "Maximera fönster"
 
-#: ../src/ui/frames.c:1130
+#: ../src/ui/frames.c:1111
 msgid "Restore Window"
 msgstr "Återställ fönster"
 
-#: ../src/ui/frames.c:1133
+#: ../src/ui/frames.c:1114
 msgid "Roll Up Window"
 msgstr "Rulla upp fönstret"
 
-#: ../src/ui/frames.c:1136
+#: ../src/ui/frames.c:1117
 msgid "Unroll Window"
 msgstr "Rulla tillbaka fönstret"
 
-#: ../src/ui/frames.c:1139
+#: ../src/ui/frames.c:1120
 msgid "Keep Window On Top"
 msgstr "Behåll fönstret överst"
 
-#: ../src/ui/frames.c:1142
+#: ../src/ui/frames.c:1123
 msgid "Remove Window From Top"
 msgstr "Ta bort överliggande fönster"
 
-#: ../src/ui/frames.c:1145
+#: ../src/ui/frames.c:1126
 msgid "Always On Visible Workspace"
 msgstr "Alltid på synlig arbetsyta"
 
-#: ../src/ui/frames.c:1148
+#: ../src/ui/frames.c:1129
 msgid "Put Window On Only One Workspace"
 msgstr "Placera fönstret på endast en arbetsyta"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:70
+#: ../src/ui/menu.c:69
 msgid "Mi_nimize"
 msgstr "_Minimera"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:72
+#: ../src/ui/menu.c:71
 msgid "Ma_ximize"
 msgstr "Ma_ximera"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:74
+#: ../src/ui/menu.c:73
 msgid "Unma_ximize"
 msgstr "Avma_ximera"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:76
+#: ../src/ui/menu.c:75
 msgid "Roll _Up"
 msgstr "_Rulla upp"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:78
+#: ../src/ui/menu.c:77
 msgid "_Unroll"
 msgstr "_Rulla ned"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:80
+#: ../src/ui/menu.c:79
 msgid "_Move"
 msgstr "_Flytta"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:82
+#: ../src/ui/menu.c:81
 msgid "_Resize"
 msgstr "_Ändra storlek"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:84
+#: ../src/ui/menu.c:83
 msgid "Move Titlebar On_screen"
 msgstr "Flytta titelrad på _skärm"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:87
-#: ../src/ui/menu.c:89
+#: ../src/ui/menu.c:86
+#: ../src/ui/menu.c:88
 msgid "Always on _Top"
 msgstr "Alltid _överst"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:91
+#: ../src/ui/menu.c:90
 msgid "_Always on Visible Workspace"
 msgstr "Alltid på _synlig arbetsyta"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:93
+#: ../src/ui/menu.c:92
 msgid "_Only on This Workspace"
 msgstr "_Endast på denna arbetsyta"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:95
+#: ../src/ui/menu.c:94
 msgid "Move to Workspace _Left"
 msgstr "Flytta till arbetsyta till _vänster"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:97
+#: ../src/ui/menu.c:96
 msgid "Move to Workspace R_ight"
 msgstr "Flytta till arbetsyta till _höger"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:99
+#: ../src/ui/menu.c:98
 msgid "Move to Workspace _Up"
 msgstr "Flytta till arbetsyta _uppåt"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:101
+#: ../src/ui/menu.c:100
 msgid "Move to Workspace _Down"
 msgstr "Flytta till arbetsyta _nedanför"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:105
+#: ../src/ui/menu.c:104
 msgid "_Close"
 msgstr "S_täng"
 
-#: ../src/ui/menu.c:203
+#: ../src/ui/menu.c:204
 #, c-format
 msgid "Workspace %d%n"
 msgstr "Arbetsyta %d%n"
 
-#: ../src/ui/menu.c:213
+#: ../src/ui/menu.c:214
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Arbetsyta 1_0"
 
-#: ../src/ui/menu.c:215
+#: ../src/ui/menu.c:216
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbetsyta %s%d"
 
-#: ../src/ui/menu.c:395
+#: ../src/ui/menu.c:397
 msgid "Move to Another _Workspace"
 msgstr "Flytta till en annan _arbetsyta"
 
@@ -945,7 +930,7 @@ msgstr "Flytta till en annan _arbetsyta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:104
+#: ../src/ui/metaaccellabel.c:77
 msgid "Shift"
 msgstr "Skift"
 
@@ -954,7 +939,7 @@ msgstr "Skift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:110
+#: ../src/ui/metaaccellabel.c:83
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -963,7 +948,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:116
+#: ../src/ui/metaaccellabel.c:89
 msgid "Alt"
 msgstr "Alt"
 
@@ -972,7 +957,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:122
+#: ../src/ui/metaaccellabel.c:95
 msgid "Meta"
 msgstr "Meta"
 
@@ -981,7 +966,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:128
+#: ../src/ui/metaaccellabel.c:101
 msgid "Super"
 msgstr "Super"
 
@@ -990,7 +975,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:134
+#: ../src/ui/metaaccellabel.c:107
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -999,7 +984,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:140
+#: ../src/ui/metaaccellabel.c:113
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -1008,7 +993,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:146
+#: ../src/ui/metaaccellabel.c:119
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -1017,7 +1002,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:152
+#: ../src/ui/metaaccellabel.c:125
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -1026,7 +1011,7 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:158
+#: ../src/ui/metaaccellabel.c:131
 msgid "Mod5"
 msgstr "Mod5"
 
@@ -1038,232 +1023,232 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: ../src/ui/theme.c:254
+#: ../src/ui/theme.c:255
 msgid "top"
 msgstr "överkant"
 
-#: ../src/ui/theme.c:256
+#: ../src/ui/theme.c:257
 msgid "bottom"
 msgstr "nederkant"
 
-#: ../src/ui/theme.c:258
+#: ../src/ui/theme.c:259
 msgid "left"
 msgstr "vänster"
 
-#: ../src/ui/theme.c:260
+#: ../src/ui/theme.c:261
 msgid "right"
 msgstr "höger"
 
-#: ../src/ui/theme.c:287
+#: ../src/ui/theme.c:288
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "ramgeometrin anger inte \"%s\"-dimension"
 
-#: ../src/ui/theme.c:306
+#: ../src/ui/theme.c:307
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "ramgeometrin anger inte dimensionen \"%s\" för ramen \"%s\""
 
-#: ../src/ui/theme.c:343
+#: ../src/ui/theme.c:344
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Knappförhållandet %g är inte rimligt"
 
-#: ../src/ui/theme.c:355
+#: ../src/ui/theme.c:356
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "ramgeometrin anger inte storlek på knappar"
 
-#: ../src/ui/theme.c:1020
+#: ../src/ui/theme.c:1064
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Toningarna bör ha minst två färger"
 
-#: ../src/ui/theme.c:1146
+#: ../src/ui/theme.c:1202
 #, c-format
 msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr "GTK-färgspecifikationen måste ha tillståndet inom klamrar, t.ex. gtk:fg[NORMAL], där NORMAL är tillståndet; kunde inte tolka \"%s\""
 
-#: ../src/ui/theme.c:1160
+#: ../src/ui/theme.c:1216
 #, c-format
 msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr "GTK-färgspecifikationen måste ha en stängningsklammer efter tillståndet, t.ex. gtk:fg[NORMAL], där NORMAL är tillståndet; kunde inte tolka \"%s\""
 
-#: ../src/ui/theme.c:1171
+#: ../src/ui/theme.c:1227
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Förstod inte tillståndet \"%s\" i färgspecifikation"
 
-#: ../src/ui/theme.c:1184
+#: ../src/ui/theme.c:1240
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Förstod inte färgkomponenten \"%s\" i färgspecifikation"
 
-#: ../src/ui/theme.c:1214
+#: ../src/ui/theme.c:1270
 #, c-format
 msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
 msgstr "Blandningsformatet är \"blend/bg_color/fg_color/alpha\", \"%s\" passar inte med formatet"
 
-#: ../src/ui/theme.c:1225
+#: ../src/ui/theme.c:1281
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Kunde inte tolka alfavärdet \"%s\" i blandad färg"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1291
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Alfavärdet \"%s\" i blandad färg är inte mellan 0,0 och 1,0"
 
-#: ../src/ui/theme.c:1282
+#: ../src/ui/theme.c:1338
 #, c-format
 msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "Skuggformatet är \"shade/base_color/factor\", \"%s\" passar inte med formatet"
 
-#: ../src/ui/theme.c:1293
+#: ../src/ui/theme.c:1349
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Kunde inte tolka skuggfaktorn \"%s\" i skuggad färg"
 
-#: ../src/ui/theme.c:1303
+#: ../src/ui/theme.c:1359
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Skuggfaktorn \"%s\" i skuggad färg är negativ"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1388
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Kunde inte tolka färgen \"%s\""
 
-#: ../src/ui/theme.c:1582
+#: ../src/ui/theme.c:1646
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Koordinatuttrycket innehåller tecknet \"%s\" vilket inte är tillåtet"
 
-#: ../src/ui/theme.c:1609
+#: ../src/ui/theme.c:1673
 #, c-format
 msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
 msgstr "Koordinatuttrycket innehåller flyttalet \"%s\" som inte kunde tolkas"
 
-#: ../src/ui/theme.c:1623
+#: ../src/ui/theme.c:1687
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Koordinatuttrycket innehåller heltalet \"%s\" som inte kunde tolkas"
 
-#: ../src/ui/theme.c:1745
+#: ../src/ui/theme.c:1809
 #, c-format
 msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
 msgstr "Koordinatuttrycket hade en okänd operand vid början av denna text: \"%s\""
 
-#: ../src/ui/theme.c:1802
+#: ../src/ui/theme.c:1866
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Koordinatuttrycket var tomt eller förstods inte"
 
-#: ../src/ui/theme.c:1913
-#: ../src/ui/theme.c:1923
-#: ../src/ui/theme.c:1957
+#: ../src/ui/theme.c:1977
+#: ../src/ui/theme.c:1987
+#: ../src/ui/theme.c:2021
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Koordinatuttrycket resulterar i division med noll"
 
-#: ../src/ui/theme.c:1965
+#: ../src/ui/theme.c:2029
 #, c-format
 msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Koordinatuttrycket försöker använda mod-operator på ett flyttal"
 
-#: ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2085
 #, c-format
 msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Koordinatuttrycket har en operator \"%s\" där en operand förväntades"
 
-#: ../src/ui/theme.c:2030
+#: ../src/ui/theme.c:2094
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Koordinatuttrycket hade en operand där en operator förväntades"
 
-#: ../src/ui/theme.c:2038
+#: ../src/ui/theme.c:2102
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Koordinatuttrycket slutade med en operator istället för en operand"
 
-#: ../src/ui/theme.c:2048
+#: ../src/ui/theme.c:2112
 #, c-format
 msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
 msgstr "Koordinatuttrycket har en operator \"%c\" som följer på operatorn \"%c\" utan någon operand imellan"
 
-#: ../src/ui/theme.c:2195
-#: ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2263
+#: ../src/ui/theme.c:2308
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Koordinatuttrycket hade en okänd variabel eller konstant \"%s\""
 
-#: ../src/ui/theme.c:2290
+#: ../src/ui/theme.c:2362
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Koordinatuttryckstolkaren överflödade sin buffert."
 
-#: ../src/ui/theme.c:2319
+#: ../src/ui/theme.c:2391
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Koordinatuttrycket hade en stängningsparentes utan någon öppningsparentes"
 
-#: ../src/ui/theme.c:2383
+#: ../src/ui/theme.c:2455
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Koordinatuttrycket hade en öppningsparentes utan någon stängningsparentes"
 
-#: ../src/ui/theme.c:2394
+#: ../src/ui/theme.c:2466
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Koordinatuttrycket verkar inte ha några operatorer eller operander"
 
-#: ../src/ui/theme.c:2596
-#: ../src/ui/theme.c:2616
-#: ../src/ui/theme.c:2636
+#: ../src/ui/theme.c:2676
+#: ../src/ui/theme.c:2696
+#: ../src/ui/theme.c:2716
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Temat innehöll ett uttryck som resulterade i ett fel: %s\n"
 
-#: ../src/ui/theme.c:4187
+#: ../src/ui/theme.c:4410
 #, c-format
 msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
 msgstr "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> måste anges för denna ramtyp"
 
-#: ../src/ui/theme.c:4695
-#: ../src/ui/theme.c:4720
+#: ../src/ui/theme.c:4940
+#: ../src/ui/theme.c:4965
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> saknas"
 
-#: ../src/ui/theme.c:4764
+#: ../src/ui/theme.c:5013
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Misslyckades med att läsa in temat \"%s\": %s\n"
 
-#: ../src/ui/theme.c:4894
-#: ../src/ui/theme.c:4901
-#: ../src/ui/theme.c:4908
-#: ../src/ui/theme.c:4915
-#: ../src/ui/theme.c:4922
+#: ../src/ui/theme.c:5149
+#: ../src/ui/theme.c:5156
+#: ../src/ui/theme.c:5163
+#: ../src/ui/theme.c:5170
+#: ../src/ui/theme.c:5177
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Inget <%s> angivet för temat \"%s\""
 
-#: ../src/ui/theme.c:4930
+#: ../src/ui/theme.c:5185
 #, c-format
 msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
 msgstr "Ingen ramstil angiven för fönstertypen \"%s\" i temat \"%s\", lägg till ett <window type=\"%s\" style_set=\"whatever\"/>-element"
 
-#: ../src/ui/theme.c:5383
-#: ../src/ui/theme.c:5445
-#: ../src/ui/theme.c:5508
+#: ../src/ui/theme.c:5635
+#: ../src/ui/theme.c:5697
+#: ../src/ui/theme.c:5760
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "Användardefinierade konstanter måste börja med en stor bokstav; \"%s\" gör det inte"
 
-#: ../src/ui/theme.c:5391
-#: ../src/ui/theme.c:5453
-#: ../src/ui/theme.c:5516
+#: ../src/ui/theme.c:5643
+#: ../src/ui/theme.c:5705
+#: ../src/ui/theme.c:5768
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanten \"%s\" har redan definierats"
@@ -1272,575 +1257,614 @@ msgstr "Konstanten \"%s\" har redan definierats"
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
 #.
-#: ../src/ui/theme-parser.c:202
+#: ../src/ui/theme-parser.c:236
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "Inget \"%s\"-attribut i element <%s>"
 
-#: ../src/ui/theme-parser.c:231
-#: ../src/ui/theme-parser.c:249
+#: ../src/ui/theme-parser.c:265
+#: ../src/ui/theme-parser.c:283
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Rad %d tecken %d: %s"
 
-#: ../src/ui/theme-parser.c:413
+#: ../src/ui/theme-parser.c:479
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Attributet \"%s\" upprepat två gånger på samma <%s>-element"
 
 # SUN CHANGED MESSAGE
-#: ../src/ui/theme-parser.c:437
-#: ../src/ui/theme-parser.c:480
+#: ../src/ui/theme-parser.c:503
+#: ../src/ui/theme-parser.c:552
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Attributet \"%s\" är ogiltigt i <%s>-element i detta sammanhang"
 
-#: ../src/ui/theme-parser.c:522
+#: ../src/ui/theme-parser.c:594
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Kunde inte tolka \"%s\" som ett heltal"
 
-#: ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
+#: ../src/ui/theme-parser.c:603
+#: ../src/ui/theme-parser.c:658
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Förstod inte de avslutande tecknen \"%s\" i strängen \"%s\""
 
-#: ../src/ui/theme-parser.c:541
+#: ../src/ui/theme-parser.c:613
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "Heltalet %ld måste vara positivt"
 
 # SUN CHANGED MESSAGE
-#: ../src/ui/theme-parser.c:549
+#: ../src/ui/theme-parser.c:621
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Heltalet %ld är för stort, aktuellt maxvärde är %d"
 
-#: ../src/ui/theme-parser.c:577
-#: ../src/ui/theme-parser.c:693
+#: ../src/ui/theme-parser.c:649
+#: ../src/ui/theme-parser.c:765
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Kunde inte tolka \"%s\" som ett flyttal"
 
-#: ../src/ui/theme-parser.c:608
-#: ../src/ui/theme-parser.c:636
+#: ../src/ui/theme-parser.c:680
+#: ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Booleska värden måste vara \"true\" eller \"false\", inte \"%s\""
 
-#: ../src/ui/theme-parser.c:663
+#: ../src/ui/theme-parser.c:735
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "Vinkeln måste vara mellan 0,0 och 360,0, var %g\n"
 
-#: ../src/ui/theme-parser.c:726
+#: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr "Alfavärdet måste vara mellan 0,0 (osynligt) och 1,0 (helt synligt), var %g\n"
 
-#: ../src/ui/theme-parser.c:791
+#: ../src/ui/theme-parser.c:863
 #, c-format
 msgid "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
 msgstr "Ogiltig titelskala \"%s\" (måste vara ett av xx-small,x-small,small,medium,large,x-large,xx-large)\n"
 
-#: ../src/ui/theme-parser.c:936
-#: ../src/ui/theme-parser.c:999
-#: ../src/ui/theme-parser.c:1033
-#: ../src/ui/theme-parser.c:1136
+#: ../src/ui/theme-parser.c:1019
+#: ../src/ui/theme-parser.c:1082
+#: ../src/ui/theme-parser.c:1116
+#: ../src/ui/theme-parser.c:1219
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s>-namnet \"%s\" använt en andra gång"
 
-#: ../src/ui/theme-parser.c:948
-#: ../src/ui/theme-parser.c:1045
-#: ../src/ui/theme-parser.c:1148
+#: ../src/ui/theme-parser.c:1031
+#: ../src/ui/theme-parser.c:1128
+#: ../src/ui/theme-parser.c:1231
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s>-föräldern \"%s\" har inte definierats"
 
-#: ../src/ui/theme-parser.c:1058
+#: ../src/ui/theme-parser.c:1141
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "<%s>-geometrin \"%s\" har inte definierats"
 
-#: ../src/ui/theme-parser.c:1071
+#: ../src/ui/theme-parser.c:1154
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "<%s> måste ange antingen en geometri eller en förälder som har en geometri"
 
-#: ../src/ui/theme-parser.c:1113
+#: ../src/ui/theme-parser.c:1196
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "Du måste ange en bakgrund för att ett alfavärde ska vara meningsfullt"
 
 # SUN CHANGED MESSAGE
-#: ../src/ui/theme-parser.c:1180
+#: ../src/ui/theme-parser.c:1264
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Okänd typ \"%s\" i <%s>-element"
 
 # SUN CHANGED MESSAGE
-#: ../src/ui/theme-parser.c:1191
+#: ../src/ui/theme-parser.c:1275
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "Okänt style_set \"%s\" i <%s>-element"
 
-#: ../src/ui/theme-parser.c:1199
+#: ../src/ui/theme-parser.c:1283
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Fönstertypen \"%s\" har redan tilldelats en stilsamling"
 
-#: ../src/ui/theme-parser.c:1229
-#: ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519
-#: ../src/ui/theme-parser.c:2732
-#: ../src/ui/theme-parser.c:2778
-#: ../src/ui/theme-parser.c:2926
-#: ../src/ui/theme-parser.c:3118
-#: ../src/ui/theme-parser.c:3156
-#: ../src/ui/theme-parser.c:3194
-#: ../src/ui/theme-parser.c:3232
+#: ../src/ui/theme-parser.c:1313
+#: ../src/ui/theme-parser.c:1377
+#: ../src/ui/theme-parser.c:1603
+#: ../src/ui/theme-parser.c:2838
+#: ../src/ui/theme-parser.c:2884
+#: ../src/ui/theme-parser.c:3034
+#: ../src/ui/theme-parser.c:3273
+#: ../src/ui/theme-parser.c:3311
+#: ../src/ui/theme-parser.c:3349
+#: ../src/ui/theme-parser.c:3387
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Elementet <%s> är inte tillåtet under <%s>"
 
-#: ../src/ui/theme-parser.c:1343
-#: ../src/ui/theme-parser.c:1357
-#: ../src/ui/theme-parser.c:1402
+#: ../src/ui/theme-parser.c:1427
+#: ../src/ui/theme-parser.c:1441
+#: ../src/ui/theme-parser.c:1486
 msgid "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" for buttons"
 msgstr "Kan inte ange både \"button_width\"/\"button_height\" och \"aspect_ratio\" för knappar"
 
-#: ../src/ui/theme-parser.c:1366
+#: ../src/ui/theme-parser.c:1450
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "Avståndet \"%s\" är okänt"
 
-#: ../src/ui/theme-parser.c:1411
+#: ../src/ui/theme-parser.c:1495
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Förhållandet \"%s\" är okänt"
 
-#: ../src/ui/theme-parser.c:1473
+#: ../src/ui/theme-parser.c:1557
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Ramen \"%s\" är okänd"
 
 # SUN CHANGED MESSAGE
-#: ../src/ui/theme-parser.c:1776
+#: ../src/ui/theme-parser.c:1868
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Inget \"start_angle\"- eller \"from\"-attribut i element <%s>"
 
 # SUN CHANGED MESSAGE
-#: ../src/ui/theme-parser.c:1783
+#: ../src/ui/theme-parser.c:1875
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Inget \"extent_angle\"- eller \"to\"-attribut i element <%s>"
 
-#: ../src/ui/theme-parser.c:2023
+#: ../src/ui/theme-parser.c:2115
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Förstod inte värdet \"%s\" för toningstyp"
 
-#: ../src/ui/theme-parser.c:2101
-#: ../src/ui/theme-parser.c:2476
+#: ../src/ui/theme-parser.c:2193
+#: ../src/ui/theme-parser.c:2568
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Förstod inte fyllnadstypen \"%s\" för <%s>-element"
 
-#: ../src/ui/theme-parser.c:2268
-#: ../src/ui/theme-parser.c:2351
-#: ../src/ui/theme-parser.c:2414
+#: ../src/ui/theme-parser.c:2360
+#: ../src/ui/theme-parser.c:2443
+#: ../src/ui/theme-parser.c:2506
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Förstod inte tillståndet \"%s\" för <%s>-element"
 
-#: ../src/ui/theme-parser.c:2278
-#: ../src/ui/theme-parser.c:2361
+#: ../src/ui/theme-parser.c:2370
+#: ../src/ui/theme-parser.c:2453
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Förstod inte skuggan \"%s\" för <%s>-element"
 
-#: ../src/ui/theme-parser.c:2288
+#: ../src/ui/theme-parser.c:2380
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Förstod inte pilen \"%s\" för <%s>-element"
 
-#: ../src/ui/theme-parser.c:2588
-#: ../src/ui/theme-parser.c:2684
+#: ../src/ui/theme-parser.c:2694
+#: ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Inget <draw_ops> anropat \"%s\" har definierats"
 
-#: ../src/ui/theme-parser.c:2600
-#: ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2706
+#: ../src/ui/theme-parser.c:2802
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Att inkludera draw_ops \"%s\" här skulle skapa en cirkulärreferens"
 
-#: ../src/ui/theme-parser.c:2811
+#: ../src/ui/theme-parser.c:2917
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Okänd position \"%s\" för ramdel"
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2925
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Ramstilen har redan en del vid position %s"
 
-#: ../src/ui/theme-parser.c:2836
-#: ../src/ui/theme-parser.c:2911
+#: ../src/ui/theme-parser.c:2942
+#: ../src/ui/theme-parser.c:3019
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Inget <draw_ops> med namnet \"%s\" har definierats"
 
-#: ../src/ui/theme-parser.c:2865
+#: ../src/ui/theme-parser.c:2972
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Okänd funktion \"%s\" för knapp"
 
-#: ../src/ui/theme-parser.c:2874
+#: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "Knappfunktionen \"%s\" finns inte i den här versionen (%d, behöver %d)"
 
-#: ../src/ui/theme-parser.c:2886
+#: ../src/ui/theme-parser.c:2994
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Okänt tillstånd \"%s\" för knapp"
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:3002
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "Ramstilen har redan en knapp för funktionen %s tillstånd %s"
 
-#: ../src/ui/theme-parser.c:2965
+#: ../src/ui/theme-parser.c:3073
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" är inte ett tillåtet värde för fokusattribut"
 
-#: ../src/ui/theme-parser.c:2974
+#: ../src/ui/theme-parser.c:3082
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" är inte ett giltigt värde på tillståndsattribut"
 
-#: ../src/ui/theme-parser.c:2984
+#: ../src/ui/theme-parser.c:3092
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "En stil med namnet \"%s\" har inte definierats"
 
-#: ../src/ui/theme-parser.c:3005
-#: ../src/ui/theme-parser.c:3028
+#: ../src/ui/theme-parser.c:3113
+#: ../src/ui/theme-parser.c:3136
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" är inte ett giltigt värde för storleksändringsattribut"
 
 # SUN CHANGED MESSAGE
-#: ../src/ui/theme-parser.c:3039
+#: ../src/ui/theme-parser.c:3147
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
 msgstr "Bör inte ha \"resize\"-attribut i <%s>-element för maximerad/upprullat tillstånd"
 
 # SUN CHANGED MESSAGE
-#: ../src/ui/theme-parser.c:3053
+#: ../src/ui/theme-parser.c:3161
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr "Bör inte ha \"resize\"-attribut i <%s>-element för maximerade tillstånd"
 
-#: ../src/ui/theme-parser.c:3067
-#: ../src/ui/theme-parser.c:3089
+#: ../src/ui/theme-parser.c:3175
+#: ../src/ui/theme-parser.c:3222
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "Stilen har redan angivits för tillståndet %s storleksändring %s fokus %s"
 
-#: ../src/ui/theme-parser.c:3078
-#: ../src/ui/theme-parser.c:3100
+#: ../src/ui/theme-parser.c:3186
+#: ../src/ui/theme-parser.c:3197
+#: ../src/ui/theme-parser.c:3208
+#: ../src/ui/theme-parser.c:3233
+#: ../src/ui/theme-parser.c:3244
+#: ../src/ui/theme-parser.c:3255
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Stilen har redan angivits för tillståndet %s fokus %s"
 
-#: ../src/ui/theme-parser.c:3139
+#: ../src/ui/theme-parser.c:3294
 msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "Kan inte ha två draw_ops för ett <piece>-element (temat angav ett draw_ops-attribut och även ett <draw_ops>-element, eller angav två element)"
 
-#: ../src/ui/theme-parser.c:3177
+#: ../src/ui/theme-parser.c:3332
 msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "Kan inte ha två draw_ops för ett <button>-element (temat angav ett draw_ops-attribut och även ett <draw_ops>-element, eller angav två element)"
 
-#: ../src/ui/theme-parser.c:3215
+#: ../src/ui/theme-parser.c:3370
 msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "Kan inte ha två draw_ops för ett <menu_icon>-element (temat angav ett draw_ops-attribut och även ett <draw_ops>-element, eller angav två element)"
 
-#: ../src/ui/theme-parser.c:3263
+#: ../src/ui/theme-parser.c:3434
+#, c-format
+msgid "Bad version specification '%s'"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:3507
+msgid "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-theme-2.xml"
+msgstr "\"version\"-attribut får inte användas i metacity-theme-1.xml eller metacity-theme-2.xml"
+
+#: ../src/ui/theme-parser.c:3530
+#, c-format
+msgid "Theme requires version %s but latest supported theme version is %d.%d"
+msgstr "Temat kräver version %s men senaste temaversionen som stöds är %d.%d"
+
+#: ../src/ui/theme-parser.c:3562
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Yttersta elementet i temat måste vara <metacity_theme>, inte <%s>"
 
-#: ../src/ui/theme-parser.c:3283
+#: ../src/ui/theme-parser.c:3582
 #, c-format
 msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "Elementet <%s> är inte tillåtet inuti ett namn-/författare-/datum-/beskrivningselement"
 
-#: ../src/ui/theme-parser.c:3288
+#: ../src/ui/theme-parser.c:3587
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Elementet <%s> är inte tillåtet inuti ett <constant>-element"
 
-#: ../src/ui/theme-parser.c:3300
+#: ../src/ui/theme-parser.c:3599
 #, c-format
 msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "Elementet <%s> är inte tillåtet inuti ett avstånds-/ram-/förhållandeelement"
 
-#: ../src/ui/theme-parser.c:3322
+#: ../src/ui/theme-parser.c:3621
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Elementet <%s> är inte tillåtet inuti ett ritningsåtgärdselement"
 
-#: ../src/ui/theme-parser.c:3332
-#: ../src/ui/theme-parser.c:3362
-#: ../src/ui/theme-parser.c:3367
-#: ../src/ui/theme-parser.c:3372
+#: ../src/ui/theme-parser.c:3631
+#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3666
+#: ../src/ui/theme-parser.c:3671
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Elementet <%s> är inte tillåtet inuti ett <%s>-element"
 
-#: ../src/ui/theme-parser.c:3594
+#: ../src/ui/theme-parser.c:3899
 msgid "No draw_ops provided for frame piece"
 msgstr "Inget draw_ops tillhandahålls för ramdel"
 
-#: ../src/ui/theme-parser.c:3609
+#: ../src/ui/theme-parser.c:3914
 msgid "No draw_ops provided for button"
 msgstr "Inget draw_ops tillhandahålls för knappen"
 
-#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3968
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Ingen text är tillåten inuti elementet <%s>"
 
-#: ../src/ui/theme-parser.c:3716
-msgid "<name> specified twice for this theme"
-msgstr "<namn> är angiven två gånger för detta tema"
+#: ../src/ui/theme-parser.c:4026
+#: ../src/ui/theme-parser.c:4038
+#: ../src/ui/theme-parser.c:4050
+#: ../src/ui/theme-parser.c:4062
+#: ../src/ui/theme-parser.c:4074
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "<%s> är angiven två gånger för detta tema"
 
-#: ../src/ui/theme-parser.c:3727
-msgid "<author> specified twice for this theme"
-msgstr "<author> är angiven två gånger för detta tema"
-
-#: ../src/ui/theme-parser.c:3738
-msgid "<copyright> specified twice for this theme"
-msgstr "<copyright> är angivet två gånger för detta tema"
-
-#: ../src/ui/theme-parser.c:3749
-msgid "<date> specified twice for this theme"
-msgstr "<date> är angivet två gånger för detta tema"
-
-#: ../src/ui/theme-parser.c:3760
-msgid "<description> specified twice for this theme"
-msgstr "<description> är angivet två gånger för detta tema"
-
-#: ../src/ui/theme-parser.c:4027
+#: ../src/ui/theme-parser.c:4348
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Misslyckades med att hitta en giltig fil för temat %s\n"
 
-#: ../src/ui/theme-parser.c:4083
-#, c-format
-msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "Temafilen %s innehöll inte ett <metacity_theme>-rotelement"
+#: ../src/ui/theme-viewer.c:98
+msgid "_Windows"
+msgstr "_Fönster"
 
-#: ../src/ui/theme-viewer.c:75
-msgid "/_Windows"
-msgstr "/_Fönster"
+#: ../src/ui/theme-viewer.c:99
+msgid "_Dialog"
+msgstr "_Dialogruta"
 
-#: ../src/ui/theme-viewer.c:76
-msgid "/Windows/tearoff"
-msgstr "/Fönster/avskiljare"
+#: ../src/ui/theme-viewer.c:100
+msgid "_Modal dialog"
+msgstr "_Modalt dialogfönster"
 
-#: ../src/ui/theme-viewer.c:77
-msgid "/Windows/_Dialog"
-msgstr "/Fönster/_Dialogruta"
+#: ../src/ui/theme-viewer.c:101
+msgid "_Utility"
+msgstr "Ver_ktyg"
 
-#: ../src/ui/theme-viewer.c:78
-msgid "/Windows/_Modal dialog"
-msgstr "/Fönster/_Modal dialogruta"
+#: ../src/ui/theme-viewer.c:102
+msgid "_Splashscreen"
+msgstr "_Startbild"
 
-#: ../src/ui/theme-viewer.c:79
-msgid "/Windows/_Utility"
-msgstr "/Fönster/_Verktyg"
+#: ../src/ui/theme-viewer.c:103
+msgid "_Top dock"
+msgstr "_Övre docka"
 
-#: ../src/ui/theme-viewer.c:80
-msgid "/Windows/_Splashscreen"
-msgstr "/Fönster/_Startbild"
+#: ../src/ui/theme-viewer.c:104
+msgid "_Bottom dock"
+msgstr "_Nedre docka"
 
-#: ../src/ui/theme-viewer.c:81
-msgid "/Windows/_Top dock"
-msgstr "/Fönster/_Övre docka"
+#: ../src/ui/theme-viewer.c:105
+msgid "_Left dock"
+msgstr "_Vänster docka"
 
-#: ../src/ui/theme-viewer.c:82
-msgid "/Windows/_Bottom dock"
-msgstr "/Fönster/_Nedre docka"
+#: ../src/ui/theme-viewer.c:106
+msgid "_Right dock"
+msgstr "_Höger docka"
 
-#: ../src/ui/theme-viewer.c:83
-msgid "/Windows/_Left dock"
-msgstr "/Fönster/_Vänster docka"
+#: ../src/ui/theme-viewer.c:107
+msgid "_All docks"
+msgstr "_Alla dockor"
 
-#: ../src/ui/theme-viewer.c:84
-msgid "/Windows/_Right dock"
-msgstr "/Fönster/_Höger docka"
+#: ../src/ui/theme-viewer.c:108
+msgid "Des_ktop"
+msgstr "Skriv_bord"
 
-#: ../src/ui/theme-viewer.c:85
-msgid "/Windows/_All docks"
-msgstr "/Fönster/_Alla dockor"
-
-#: ../src/ui/theme-viewer.c:86
-msgid "/Windows/Des_ktop"
-msgstr "/Fönster/S_krivbord"
-
-#: ../src/ui/theme-viewer.c:151
+#: ../src/ui/theme-viewer.c:114
 msgid "Open another one of these windows"
 msgstr "Öppna ytterligare ett över dessa fönster"
 
-#: ../src/ui/theme-viewer.c:153
+#: ../src/ui/theme-viewer.c:116
 msgid "This is a demo button with an 'open' icon"
 msgstr "Detta är en exempelknapp med en \"öppna\"-ikon"
 
-#: ../src/ui/theme-viewer.c:155
+#: ../src/ui/theme-viewer.c:118
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Detta är en exempelknapp med en \"avsluta\"-ikon"
 
-#: ../src/ui/theme-viewer.c:245
+#: ../src/ui/theme-viewer.c:252
 msgid "This is a sample message in a sample dialog"
 msgstr "Detta är ett exempelmeddelande i en exempelkatalog"
 
-#: ../src/ui/theme-viewer.c:328
+#: ../src/ui/theme-viewer.c:335
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Falskt menyobjekt %d\n"
 
-#: ../src/ui/theme-viewer.c:362
+#: ../src/ui/theme-viewer.c:369
 msgid "Border-only window"
 msgstr "Fönster med endast ram"
 
-#: ../src/ui/theme-viewer.c:364
+#: ../src/ui/theme-viewer.c:371
 msgid "Bar"
 msgstr "Rad"
 
-#: ../src/ui/theme-viewer.c:381
+#: ../src/ui/theme-viewer.c:388
 msgid "Normal Application Window"
 msgstr "Normalt programfönster"
 
-#: ../src/ui/theme-viewer.c:385
+#: ../src/ui/theme-viewer.c:392
 msgid "Dialog Box"
 msgstr "Dialogruta"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:396
 msgid "Modal Dialog Box"
 msgstr "Modalt dialogfönster"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:400
 msgid "Utility Palette"
 msgstr "Verktygspalett"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:404
 msgid "Torn-off Menu"
 msgstr "Avtagen meny"
 
-#: ../src/ui/theme-viewer.c:401
+#: ../src/ui/theme-viewer.c:408
 msgid "Border"
 msgstr "Ram"
 
-#: ../src/ui/theme-viewer.c:729
+#: ../src/ui/theme-viewer.c:412
+#, fuzzy
+msgid "Attached Modal Dialog"
+msgstr "Modalt dialogfönster"
+
+#: ../src/ui/theme-viewer.c:743
 #, c-format
 msgid "Button layout test %d"
 msgstr "Test %d av knapplayout"
 
-#: ../src/ui/theme-viewer.c:758
+#: ../src/ui/theme-viewer.c:772
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g millisekunder för att rita en fönsterram"
 
-#: ../src/ui/theme-viewer.c:801
+#: ../src/ui/theme-viewer.c:817
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Användning: metacity-theme-viewer [TEMANAMN]\n"
 
-#: ../src/ui/theme-viewer.c:808
+#: ../src/ui/theme-viewer.c:824
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Fel vid inläsning av tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:814
+#: ../src/ui/theme-viewer.c:830
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Läste in temat \"%s\" på %g sekunder\n"
 
-#: ../src/ui/theme-viewer.c:855
+#: ../src/ui/theme-viewer.c:874
 msgid "Normal Title Font"
 msgstr "Normalt titeltypsnitt"
 
-#: ../src/ui/theme-viewer.c:861
+#: ../src/ui/theme-viewer.c:880
 msgid "Small Title Font"
 msgstr "Litet titeltypsnitt"
 
-#: ../src/ui/theme-viewer.c:867
+#: ../src/ui/theme-viewer.c:886
 msgid "Large Title Font"
 msgstr "Stort titeltypsnitt"
 
-#: ../src/ui/theme-viewer.c:872
+#: ../src/ui/theme-viewer.c:891
 msgid "Button Layouts"
 msgstr "Knapplayouter"
 
-#: ../src/ui/theme-viewer.c:877
+#: ../src/ui/theme-viewer.c:896
 msgid "Benchmark"
 msgstr "Prestandatest"
 
-#: ../src/ui/theme-viewer.c:924
+#: ../src/ui/theme-viewer.c:948
 msgid "Window Title Goes Here"
 msgstr "Fönstertitel hamnar här"
 
-#: ../src/ui/theme-viewer.c:1028
+#: ../src/ui/theme-viewer.c:1054
 #, c-format
 msgid "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n"
 msgstr "Ritade %d ramar på %g sekunder på klientsidan (%g millisekunder per ram) och %g sekunder väggklockstid inklusive X-serverresurser (%g millisekunder per ram)\n"
 
-#: ../src/ui/theme-viewer.c:1247
+#: ../src/ui/theme-viewer.c:1273
 msgid "position expression test returned TRUE but set error"
 msgstr "test av positionsuttryck returnerade SANT men satte fel"
 
-#: ../src/ui/theme-viewer.c:1249
+#: ../src/ui/theme-viewer.c:1275
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "test av positionsuttryck returnerade FALSKT men satte inte fel"
 
-#: ../src/ui/theme-viewer.c:1253
+#: ../src/ui/theme-viewer.c:1279
 msgid "Error was expected but none given"
 msgstr "Fel förväntades men gavs inte"
 
-#: ../src/ui/theme-viewer.c:1255
+#: ../src/ui/theme-viewer.c:1281
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Fel %d förväntades men %d givet"
 
-#: ../src/ui/theme-viewer.c:1261
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Fel förväntades inte men ett returnerades: %s"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1291
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x-värdet var %d, %d förväntades"
 
-#: ../src/ui/theme-viewer.c:1268
+#: ../src/ui/theme-viewer.c:1294
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y-värdet var %d, %d förväntades"
 
-#: ../src/ui/theme-viewer.c:1333
+#: ../src/ui/theme-viewer.c:1359
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d koordinatuttryck tolkades på %g sekunder (%g sekunder i medelvärde)\n"
 
-#~ msgid "Desktop"
-#~ msgstr "Skrivbord"
+#~ msgid "Turn compositing on"
+#~ msgstr "Slå på compositing"
+#~ msgid "Turn compositing off"
+#~ msgstr "Stäng av compositing"
+#~ msgid "Error setting compositor status: %s\n"
+#~ msgstr "Fel vid inställning av status för compositor: %s\n"
+#~ msgid "Failed to get hostname: %s\n"
+#~ msgstr "Misslyckades med att få tag i värdnamn: %s\n"
+#~ msgid ""
+#~ "Lost connection to the display '%s';\n"
+#~ "most likely the X server was shut down or you killed/destroyed\n"
+#~ "the window manager.\n"
+#~ msgstr ""
+#~ "Tappade anslutningen till displayen \"%s\";\n"
+#~ "troligtvis stängdes X-servern ner, eller så dödade/förstörde du\n"
+#~ "fönsterhanteraren.\n"
+#~ msgid "Fatal IO error %d (%s) on display '%s'.\n"
+#~ msgstr "Ödesdigert IO-fel %d (%s) på display \"%s\".\n"
+#~ msgid "Failed to read saved session file %s: %s\n"
+#~ msgstr "Misslyckades med att läsa sparad sessionsfil %s: %s\n"
+#~ msgid "<author> specified twice for this theme"
+#~ msgstr "<author> är angiven två gånger för detta tema"
+#~ msgid "<copyright> specified twice for this theme"
+#~ msgstr "<copyright> är angivet två gånger för detta tema"
+#~ msgid "<date> specified twice for this theme"
+#~ msgstr "<date> är angivet två gånger för detta tema"
+#~ msgid "<description> specified twice for this theme"
+#~ msgstr "<description> är angivet två gånger för detta tema"
+#~ msgid "Theme file %s did not contain a root <metacity_theme> element"
+#~ msgstr "Temafilen %s innehöll inte ett <metacity_theme>-rotelement"
+#~ msgid "/Windows/tearoff"
+#~ msgstr "/Fönster/avskiljare"
+#~ msgid "/Windows/_Dialog"
+#~ msgstr "/Fönster/_Dialogruta"
+#~ msgid "/Windows/_Modal dialog"
+#~ msgstr "/Fönster/_Modal dialogruta"
+#~ msgid "/Windows/Des_ktop"
+#~ msgstr "/Fönster/S_krivbord"
 #~ msgid "Window Management"
 #~ msgstr "Fönsterhantering"
 #~ msgid "Failed to parse message \"%s\" from dialog process\n"
