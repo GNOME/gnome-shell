@@ -1745,28 +1745,29 @@ _cogl_pipeline_layer_init_multi_property_sparse_state (
       {
         int n_args;
         int i;
-        CoglPipelineLayerBigState *big_state = layer->big_state;
-        GLint func = big_state->texture_combine_rgb_func;
+        CoglPipelineLayerBigState *src_big_state = authority->big_state;
+        CoglPipelineLayerBigState *dest_big_state = layer->big_state;
+        GLint func = src_big_state->texture_combine_rgb_func;
 
-        big_state->texture_combine_rgb_func = func;
+        dest_big_state->texture_combine_rgb_func = func;
         n_args = _cogl_get_n_args_for_combine_func (func);
         for (i = 0; i < n_args; i++)
           {
-            big_state->texture_combine_rgb_src[i] =
-              authority->big_state->texture_combine_rgb_src[i];
-            big_state->texture_combine_rgb_op[i] =
-              authority->big_state->texture_combine_rgb_op[i];
+            dest_big_state->texture_combine_rgb_src[i] =
+              src_big_state->texture_combine_rgb_src[i];
+            dest_big_state->texture_combine_rgb_op[i] =
+              src_big_state->texture_combine_rgb_op[i];
           }
 
-        func = authority->big_state->texture_combine_alpha_func;
-        big_state->texture_combine_alpha_func = func;
+        func = src_big_state->texture_combine_alpha_func;
+        dest_big_state->texture_combine_alpha_func = func;
         n_args = _cogl_get_n_args_for_combine_func (func);
         for (i = 0; i < n_args; i++)
           {
-            big_state->texture_combine_alpha_src[i] =
-              authority->big_state->texture_combine_alpha_src[i];
-            big_state->texture_combine_alpha_op[i] =
-              authority->big_state->texture_combine_alpha_op[i];
+            dest_big_state->texture_combine_alpha_src[i] =
+              src_big_state->texture_combine_alpha_src[i];
+            dest_big_state->texture_combine_alpha_op[i] =
+              src_big_state->texture_combine_alpha_op[i];
           }
         break;
       }
