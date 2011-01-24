@@ -33,7 +33,7 @@
     <foaf:Person>
       <foaf:name>Colin Walters</foaf:name>
       <foaf:mbox rdf:resource="mailto:walters@verbum.org" />
-      <gnome:userid>cwalters</gnome:userid>
+      <gnome:userid>walters</gnome:userid>
     </foaf:Person>
   </maintainer>
   <maintainer>
