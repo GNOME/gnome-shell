@@ -29,23 +29,18 @@ function _onVertSepRepaint (area)
     let cr = area.get_context();
     let themeNode = area.get_theme_node();
     let [width, height] = area.get_surface_size();
-    let found, margin, gradientHeight;
-    [found, margin] = themeNode.lookup_length('-margin-vertical', false);
-    [found, gradientWidth] = themeNode.lookup_length('-gradient-width', false);
-    let startColor = new Clutter.Color();
-    themeNode.lookup_color('-gradient-start', false, startColor);
-    let endColor = new Clutter.Color();
-    themeNode.lookup_color('-gradient-end', false, endColor);
-
-    let gradientHeight = (height - margin * 2);
-    let gradientOffset = (width - gradientWidth) / 2;
-    let pattern = new Cairo.LinearGradient(gradientOffset, margin, gradientOffset + gradientWidth, height - margin);
-    pattern.addColorStopRGBA(0, startColor.red / 255, startColor.green / 255, startColor.blue / 255, startColor.alpha / 255);
-    pattern.addColorStopRGBA(0.5, endColor.red / 255, endColor.green / 255, endColor.blue / 255, endColor.alpha / 255);
-    pattern.addColorStopRGBA(1, startColor.red / 255, startColor.green / 255, startColor.blue / 255, startColor.alpha / 255);
-    cr.setSource(pattern);
-    cr.rectangle(gradientOffset, margin, gradientWidth, gradientHeight);
-    cr.fill();
+    let found;
+    let stippleWidth = 1.0;
+    let stippleColor = new Clutter.Color();
+    [found, stippleWidth] = themeNode.lookup_length('-stipple-width', false);
+    themeNode.lookup_color('-stipple-color', false, stippleColor);
+    let x = Math.floor(width/2) + 0.5;
+    cr.moveTo(x, 0);
+    cr.lineTo(x, height);
+    Clutter.cairo_set_source_color(cr, stippleColor);
+    cr.setDash([1, 3], 1); // Hard-code for now
+    cr.setLineWidth(stippleWidth);
+    cr.stroke();
 };
 
 function DateMenuButton() {

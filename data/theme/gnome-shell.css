@@ -675,10 +675,8 @@ StTooltip StLabel {
 /* Calendar popup */
 
 .calendar-vertical-separator {
-    -gradient-width: 2px;
-    -gradient-start: rgba(8,8,8,0);
-    -gradient-end: #333333;
-    -margin-vertical: 1.5em;
+    -stipple-width: 1px;
+    -stipple-color: #505050;
     width: 1em;
 }
 
