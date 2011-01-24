@@ -372,7 +372,7 @@ _cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
    * batches from the journal. It is reset here to increase the
    * chances of getting the same colours for each frame during an
    * animation */
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_RECTANGLES) &&
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_RECTANGLES)) &&
       buffers & COGL_BUFFER_BIT_COLOR)
     {
       _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
@@ -1237,7 +1237,7 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
 {
   gboolean found_intersection;
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_FAST_READ_PIXEL))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_FAST_READ_PIXEL)))
     return FALSE;
 
   if (source != COGL_READ_PIXELS_COLOR_BUFFER)

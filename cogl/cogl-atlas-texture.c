@@ -535,7 +535,7 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
 
   /* Don't put textures in the atlas if the user has explicitly
      requested to disable it */
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_ATLAS))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_ATLAS)))
     return COGL_INVALID_HANDLE;
 
   /* We can't put the texture in the atlas if there are any special

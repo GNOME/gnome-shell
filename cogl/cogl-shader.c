@@ -275,7 +275,7 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
     }
   count += count_in;
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_SHOW_SOURCE))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_SHOW_SOURCE)))
     {
       GString *buf = g_string_new (NULL);
       int i;
@@ -329,7 +329,7 @@ _cogl_shader_compile_real (CoglHandle handle,
 
       GE (glBindProgram (GL_FRAGMENT_PROGRAM_ARB, shader->gl_handle));
 
-      if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_SHOW_SOURCE))
+      if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_SHOW_SOURCE)))
         g_message ("user ARBfp program:\n%s", shader->source);
 
 #ifdef COGL_GL_DEBUG

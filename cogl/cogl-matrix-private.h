@@ -32,7 +32,7 @@
 G_BEGIN_DECLS
 
 #define _COGL_MATRIX_DEBUG_PRINT(MATRIX) \
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_MATRICES)) \
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_MATRICES))) \
     { \
       g_print ("%s:\n", G_STRFUNC); \
       _cogl_matrix_print (MATRIX); \

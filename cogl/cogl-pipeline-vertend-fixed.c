@@ -49,7 +49,7 @@ _cogl_pipeline_vertend_fixed_start (CoglPipeline *pipeline,
 {
   CoglProgram *user_program;
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_FIXED))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_FIXED)))
     return FALSE;
 
   /* If there is a user program with a vertex shader then the

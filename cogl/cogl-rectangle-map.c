@@ -454,7 +454,7 @@ _cogl_rectangle_map_add (CoglRectangleMap *map,
       map->space_remaining -= rectangle_size;
 
 #ifdef COGL_ENABLE_DEBUG
-      if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DUMP_ATLAS_IMAGE))
+      if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DUMP_ATLAS_IMAGE)))
         {
           _cogl_rectangle_map_dump_image (map);
           /* Dumping the rectangle map is really slow so we might as well
@@ -545,7 +545,7 @@ _cogl_rectangle_map_remove (CoglRectangleMap *map,
     }
 
 #ifdef COGL_ENABLE_DEBUG
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DUMP_ATLAS_IMAGE))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DUMP_ATLAS_IMAGE)))
     {
       _cogl_rectangle_map_dump_image (map);
       /* Dumping the rectangle map is really slow so we might as well

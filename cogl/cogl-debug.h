@@ -31,50 +31,79 @@
 G_BEGIN_DECLS
 
 typedef enum {
-  COGL_DEBUG_SLICING          = 1 << 0,
-  COGL_DEBUG_OFFSCREEN        = 1 << 1,
-  COGL_DEBUG_DRAW             = 1 << 2,
-  COGL_DEBUG_PANGO            = 1 << 3,
-  COGL_DEBUG_RECTANGLES       = 1 << 4,
-  COGL_DEBUG_HANDLE           = 1 << 5,
-  COGL_DEBUG_BLEND_STRINGS    = 1 << 6,
-  COGL_DEBUG_DISABLE_BATCHING = 1 << 7,
-  COGL_DEBUG_DISABLE_VBOS     = 1 << 8,
-  COGL_DEBUG_DISABLE_PBOS     = 1 << 9,
-  COGL_DEBUG_JOURNAL          = 1 << 10,
-  COGL_DEBUG_BATCHING         = 1 << 11,
-  COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM = 1 << 12,
-  COGL_DEBUG_MATRICES         = 1 << 13,
-  COGL_DEBUG_ATLAS            = 1 << 14,
-  COGL_DEBUG_DUMP_ATLAS_IMAGE = 1 << 15,
-  COGL_DEBUG_DISABLE_ATLAS    = 1 << 16,
-  COGL_DEBUG_OPENGL           = 1 << 17,
-  COGL_DEBUG_DISABLE_TEXTURING = 1 << 18,
-  COGL_DEBUG_DISABLE_ARBFP    = 1 << 19,
-  COGL_DEBUG_DISABLE_FIXED    = 1 << 20,
-  COGL_DEBUG_DISABLE_GLSL     = 1 << 21,
-  COGL_DEBUG_SHOW_SOURCE      = 1 << 22,
-  COGL_DEBUG_DISABLE_BLENDING = 1 << 23,
-  COGL_DEBUG_TEXTURE_PIXMAP   = 1 << 24,
-  COGL_DEBUG_BITMAP           = 1 << 25,
-  COGL_DEBUG_DISABLE_NPOT_TEXTURES = 1 << 26,
-  COGL_DEBUG_WIREFRAME        = 1 << 27,
-  COGL_DEBUG_DISABLE_SOFTWARE_CLIP = 1 << 28,
-  COGL_DEBUG_DISABLE_PROGRAM_CACHES = 1 << 29,
-  COGL_DEBUG_DISABLE_FAST_READ_PIXEL = 1 << 30
+  COGL_DEBUG_SLICING,
+  COGL_DEBUG_OFFSCREEN,
+  COGL_DEBUG_DRAW,
+  COGL_DEBUG_PANGO,
+  COGL_DEBUG_RECTANGLES,
+  COGL_DEBUG_HANDLE,
+  COGL_DEBUG_BLEND_STRINGS,
+  COGL_DEBUG_DISABLE_BATCHING,
+  COGL_DEBUG_DISABLE_VBOS,
+  COGL_DEBUG_DISABLE_PBOS,
+  COGL_DEBUG_JOURNAL,
+  COGL_DEBUG_BATCHING,
+  COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM,
+  COGL_DEBUG_MATRICES,
+  COGL_DEBUG_ATLAS,
+  COGL_DEBUG_DUMP_ATLAS_IMAGE,
+  COGL_DEBUG_DISABLE_ATLAS,
+  COGL_DEBUG_OPENGL,
+  COGL_DEBUG_DISABLE_TEXTURING,
+  COGL_DEBUG_DISABLE_ARBFP,
+  COGL_DEBUG_DISABLE_FIXED,
+  COGL_DEBUG_DISABLE_GLSL,
+  COGL_DEBUG_SHOW_SOURCE,
+  COGL_DEBUG_DISABLE_BLENDING,
+  COGL_DEBUG_TEXTURE_PIXMAP,
+  COGL_DEBUG_BITMAP,
+  COGL_DEBUG_DISABLE_NPOT_TEXTURES,
+  COGL_DEBUG_WIREFRAME,
+  COGL_DEBUG_DISABLE_SOFTWARE_CLIP,
+  COGL_DEBUG_DISABLE_PROGRAM_CACHES,
+  COGL_DEBUG_DISABLE_FAST_READ_PIXEL,
+
+  COGL_DEBUG_N_FLAGS
 } CoglDebugFlags;
 
 #ifdef COGL_ENABLE_DEBUG
 
+#define COGL_DEBUG_N_INTS ((COGL_DEBUG_N_FLAGS + \
+                            (sizeof (unsigned int) * 8 - 1)) \
+                           / (sizeof (unsigned int) * 8))
+
+/* It would probably make sense to use unsigned long here instead
+   because then on 64-bit systems where it can handle 64-bits just as
+   easily and it can test more bits. However GDebugKey uses a guint
+   for the mask and we need to fit the masks into this */
+extern unsigned int _cogl_debug_flags[COGL_DEBUG_N_INTS];
+
+#define COGL_DEBUG_GET_FLAG_INDEX(flag) \
+  ((flag) / (sizeof (unsigned int) * 8))
+#define COGL_DEBUG_GET_FLAG_MASK(flag) \
+  (1U << ((unsigned int) (flag) & (sizeof (unsigned int) * 8 - 1)))
+
+#define COGL_DEBUG_ENABLED(flag) \
+  (!!(_cogl_debug_flags[COGL_DEBUG_GET_FLAG_INDEX (flag)] & \
+      COGL_DEBUG_GET_FLAG_MASK (flag)))
+
+#define COGL_DEBUG_SET_FLAG(flag) \
+  (_cogl_debug_flags[COGL_DEBUG_GET_FLAG_INDEX (flag)] |= \
+   COGL_DEBUG_GET_FLAG_MASK (flag))
+
+#define COGL_DEBUG_CLEAR_FLAG(flag) \
+  (_cogl_debug_flags[COGL_DEBUG_GET_FLAG_INDEX (flag)] &= \
+   ~COGL_DEBUG_GET_FLAG_MASK (flag))
+
 #ifdef __GNUC__
 #define COGL_NOTE(type,x,a...)                      G_STMT_START {            \
-        if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_##type)) {              \
+        if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_##type))) {            \
           _cogl_profile_trace_message ("[" #type "] " G_STRLOC " & " x, ##a); \
         }                                           } G_STMT_END
 
 #else
 #define COGL_NOTE(type,...)                         G_STMT_START {            \
-        if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_##type)) {              \
+        if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_##type)) {             \
           char *_fmt = g_strdup_printf (__VA_ARGS__);                         \
           _cogl_profile_trace_message ("[" #type "] " G_STRLOC " & %s", _fmt);\
           g_free (_fmt);                                                      \
@@ -86,9 +115,15 @@ typedef enum {
 
 #define COGL_NOTE(type,...) G_STMT_START {} G_STMT_END
 
-#endif /* COGL_ENABLE_DEBUG */
+#define COGL_DEBUG_ENABLED(flag) FALSE
 
-extern unsigned int cogl_debug_flags;
+#define COGL_DEBUG_SET_FLAG(flag) \
+  G_STMT_START { } G_STMT_END
+
+#define COGL_DEBUG_CLEAR_FLAG(flag) \
+  G_STMT_START { } G_STMT_END
+
+#endif /* COGL_ENABLE_DEBUG */
 
 G_END_DECLS
 

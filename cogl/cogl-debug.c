@@ -83,17 +83,57 @@ static const int n_cogl_behavioural_debug_keys =
 
 #endif /* COGL_ENABLE_DEBUG */
 
-unsigned int cogl_debug_flags = 0;
+unsigned int _cogl_debug_flags[COGL_DEBUG_N_INTS];
 
 #ifdef COGL_ENABLE_DEBUG
-static unsigned int
+
+static void
+_cogl_parse_debug_string_for_keys (const char *value,
+                                   gboolean enable,
+                                   const GDebugKey *keys,
+                                   unsigned int nkeys)
+{
+  int int_num, key_num;
+
+  /* g_parse_debug_string expects the value field in GDebugKey to be a
+     mask in a guint but we may have multiple guints so we need to
+     build a separate array for each possible guint */
+
+  for (int_num = 0; int_num < COGL_DEBUG_N_INTS; int_num++)
+    {
+      GDebugKey keys_for_int[sizeof (unsigned int) * 8];
+      unsigned int mask_for_int;
+      int nkeys_for_int = 0;
+
+      for (key_num = 0; key_num < nkeys; key_num++)
+        if (COGL_DEBUG_GET_FLAG_INDEX (keys[key_num].value) == int_num)
+          {
+            keys_for_int[nkeys_for_int] = keys[key_num];
+            keys_for_int[nkeys_for_int].value =
+              COGL_DEBUG_GET_FLAG_MASK (keys[key_num].value);
+            nkeys_for_int++;
+          }
+
+      if (nkeys_for_int > 0)
+        {
+          mask_for_int = g_parse_debug_string (value,
+                                               keys_for_int,
+                                               nkeys_for_int);
+          if (enable)
+            _cogl_debug_flags[int_num] |= mask_for_int;
+          else
+            _cogl_debug_flags[int_num] &= ~mask_for_int;
+        }
+    }
+}
+
+static void
 _cogl_parse_debug_string (const char *value,
+                          gboolean enable,
                           gboolean ignore_help)
 {
-  unsigned int flags = 0;
-
   if (ignore_help && strcmp (value, "help") == 0)
-    return 0;
+    return;
 
   /* We don't want to let g_parse_debug_string handle "all" because
    * literally enabling all the debug options wouldn't be useful to
@@ -105,7 +145,10 @@ _cogl_parse_debug_string (const char *value,
     {
       int i;
       for (i = 0; i < n_cogl_log_debug_keys; i++)
-        flags |= cogl_log_debug_keys[i].value;
+        if (enable)
+          COGL_DEBUG_SET_FLAG (cogl_log_debug_keys[i].value);
+        else
+          COGL_DEBUG_CLEAR_FLAG (cogl_log_debug_keys[i].value);
     }
   else if (strcmp (value, "help") == 0)
     {
@@ -123,17 +166,15 @@ _cogl_parse_debug_string (const char *value,
     }
   else
     {
-      flags |=
-        g_parse_debug_string (value,
-                              cogl_log_debug_keys,
-                              n_cogl_log_debug_keys);
-      flags |=
-        g_parse_debug_string (value,
-                              cogl_behavioural_debug_keys,
-                              n_cogl_behavioural_debug_keys);
+      _cogl_parse_debug_string_for_keys (value,
+                                         enable,
+                                         cogl_log_debug_keys,
+                                         n_cogl_log_debug_keys);
+      _cogl_parse_debug_string_for_keys (value,
+                                         enable,
+                                         cogl_behavioural_debug_keys,
+                                         n_cogl_behavioural_debug_keys);
     }
-
-  return flags;
 }
 
 static gboolean
@@ -141,7 +182,9 @@ cogl_arg_debug_cb (const char *key,
                    const char *value,
                    gpointer    user_data)
 {
-  cogl_debug_flags |= _cogl_parse_debug_string (value, FALSE);
+  _cogl_parse_debug_string (value,
+                            TRUE /* enable the flags */,
+                            FALSE /* don't ignore help */);
   return TRUE;
 }
 
@@ -150,7 +193,9 @@ cogl_arg_no_debug_cb (const char *key,
                       const char *value,
                       gpointer    user_data)
 {
-  cogl_debug_flags &= ~_cogl_parse_debug_string (value, TRUE);
+  _cogl_parse_debug_string (value,
+                            FALSE, /* disable the flags */
+                            TRUE /* ignore help */);
   return TRUE;
 }
 #endif /* COGL_ENABLE_DEBUG */
@@ -177,7 +222,9 @@ pre_parse_hook (GOptionContext  *context,
   env_string = g_getenv ("COGL_DEBUG");
   if (env_string != NULL)
     {
-      cogl_debug_flags |= _cogl_parse_debug_string (env_string, FALSE);
+      _cogl_parse_debug_string (env_string,
+                                TRUE /* enable the flags */,
+                                FALSE /* don't ignore help */);
       env_string = NULL;
     }
 #endif /* COGL_ENABLE_DEBUG */
