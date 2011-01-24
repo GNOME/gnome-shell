@@ -1,4 +1,4 @@
-Clutter 1.5.14                                                       2011-01-21
+Clutter 1.5.14                                                       2011-01-24
 ===============================================================================
 
   • List of changes since Clutter 1.5.12
@@ -17,10 +17,11 @@ Clutter 1.5.14                                                       2011-01-21
     » Documentation fixes.
 
     » ClutterGLXTexturePixmap has been deprecated; its parent class
-      ClutterX11TexturePixmap provides the whole set of features.
+      ClutterX11TexturePixmap and the low level CoglTexturePixmapX11
+      API provide access to the same features.
 
-    » Be more resilient against timelines referencing other timelines
-      during the clock tick.
+    » Be more resilient against timelines controlling the state of
+      other timelines during the clock tick.
 
     » Provide defines for the windowing platforms, to allow portable
       applications to include the correct header and select the
@@ -34,18 +35,43 @@ Clutter 1.5.14                                                       2011-01-21
 
     » Support XInput axis data on valuator devices, and introduce XInput2
       support for event translation and device hotplugging. The support
-      for XI and XI2 must still be explicitly enabled by the developer.
+      for XI and XI2 must still be explicitly enabled by the developer,
+      but it is now compiled in by default. It can be disabled at compile
+      time by passing --disable-xinput to the configure script.
 
     » Clean up the unintentionally leaked internal symbols in the X11
       and GLX backends.
 
     » Allow defining the contents of the rows of a ListModel using
-      ClutterScript.
+      ClutterScript. This completes the ability to fully define a
+      ClutterListModel inside a UI definition file.
+
+  • Bugs fixed since Clutter 1.5.12
+
+    #1422, key input handler for eglnative
+    #1456, Hinting mishandling
+    #1721, XInput2 support
+    #2268, EGL backend dependent on X11 headers
+    #2400, Don't enable GL_POINT_SPRITE on GLES
+    #2497, should not throw away a program when just the texture
+           object has changed
+    #2512, shader: Don't notify properties when finalizing shaders
+    #2513, script-parser: Also honor properties of type GType
+    #2516, [PATCH] Fails to compile with --with-gles=1.1
+    #2518, introspection: Add missing (out) annotations for get_color()
+    #2520, Add API to get modifier type in ClutterClickAction
+    #2522, ClutterDragAction might indefinitely disable motion events
+    #2524, It's possible to receive a new-frame signal after stopping
+           a timeline
+    #2526, model: Fix some GObject-Introspection annotations
+    #2527, model: Change the column argument type to gint for
+           clutter_model_set_sort
+    #2528, model: Add support to define rows in ClutterScript
 
 Many thanks to:
 
-  Robert Bragg, Neil Roberts, Bastian Winkler, Lucas Rocha,
-  Adel Gadllah, Chris Lord, Damien Lespiau
+  Robert Bragg, Neil Roberts, Bastian Winkler, Lucas Rocha, Adel Gadllah,
+  Chris Lord, Damien Lespiau
 
 Clutter 1.5.12                                                       2011-01-11
 ===============================================================================
