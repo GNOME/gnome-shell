@@ -174,3 +174,8 @@ OPT (DISABLE_FAST_READ_PIXEL,
      "Disable read pixel optimization",
      "Disable optimization for reading 1px for simple "
      "scenes of opaque rectangles")
+OPT (CLIPPING,
+     "Cogl Tracing",
+     "clipping",
+     "Trace clipping",
+     "Logs information about how Cogl is implementing clipping")
