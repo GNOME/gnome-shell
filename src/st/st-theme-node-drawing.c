@@ -939,12 +939,15 @@ st_theme_node_render_background_with_border (StThemeNode *node)
 
   if (draw_solid_background)
     {
+      cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+
       cairo_set_source_rgba (cr,
                              node->background_color.red / 255.,
                              node->background_color.green / 255.,
                              node->background_color.blue / 255.,
                              node->background_color.alpha / 255.);
       cairo_fill_preserve (cr);
+      cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
     }
 
   if (draw_background_image_shadow)
