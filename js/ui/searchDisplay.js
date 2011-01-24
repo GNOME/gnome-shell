@@ -309,6 +309,8 @@ SearchResults.prototype = {
             this._statusText.set_text(_("No matching results."));
             this._statusText.show();
         } else {
+            this._selectedOpenSearchButton = -1;
+            this._updateOpenSearchButtonState();
             this._statusText.hide();
         }
 
