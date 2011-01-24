@@ -276,6 +276,8 @@ Overview.prototype = {
 
     _onCapturedEvent: function(actor, event) {
         let stageX, stageY;
+        let threshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
+
         switch(event.type()) {
             case Clutter.EventType.BUTTON_RELEASE:
                 [stageX, stageY] = event.get_coords();
@@ -328,7 +330,6 @@ Overview.prototype = {
 
                 // See if the user has moved the mouse enough to trigger
                 // a drag
-                let threshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
                 if (Math.abs(stageX - this._dragStartX) < threshold &&
                     Math.abs(stageY - this._dragStartY) < threshold) {
                     // no motion? It's a click!
@@ -371,6 +372,16 @@ Overview.prototype = {
                 let dy = this._dragY - stageY;
                 let primary = global.get_primary_monitor();
 
+                this._dragX = stageX;
+                this._dragY = stageY;
+                this._lastMotionTime = event.get_time();
+
+                // See if the user has moved the mouse enough to trigger
+                // a drag
+                if (Math.abs(stageX - this._dragStartX) < threshold &&
+                    Math.abs(stageY - this._dragStartY) < threshold)
+                    return true;
+
                 if (this._scrollDirection == SwipeScrollDirection.HORIZONTAL) {
                     if (St.Widget.get_default_direction() == St.TextDirection.RTL)
                         this._scrollAdjustment.value -= (dx / primary.width) * this._scrollAdjustment.page_size;
@@ -379,10 +390,6 @@ Overview.prototype = {
                 } else {
                     this._scrollAdjustment.value += (dy / primary.height) * this._scrollAdjustment.page_size;
                 }
-
-                this._dragX = stageX;
-                this._dragY = stageY;
-                this._lastMotionTime = event.get_time();
 
                 return true;
 
