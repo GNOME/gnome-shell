@@ -324,7 +324,8 @@ on_app_state_changed (ShellWindowTracker *tracker,
 
   running = shell_app_get_state (app) == SHELL_APP_STATE_RUNNING;
 
-  usage->last_seen = get_time ();
+  if (running)
+    usage->last_seen = get_time ();
 }
 
 static void
