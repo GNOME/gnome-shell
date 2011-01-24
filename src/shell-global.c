@@ -885,7 +885,6 @@ shell_global_add_extension_importer (ShellGlobal *global,
                                      GError     **error)
 {
   jsval target_object;
-  JSObject *importer;
   JSContext *context = gjs_context_get_native_context (global->js_context);
   char *search_path[2] = { 0, 0 };
 
@@ -920,7 +919,7 @@ shell_global_add_extension_importer (ShellGlobal *global,
     }
 
   search_path[0] = (char*)directory;
-  importer = gjs_define_importer (context, JSVAL_TO_OBJECT (target_object), target_property, (const char **)search_path, FALSE);
+  gjs_define_importer (context, JSVAL_TO_OBJECT (target_object), target_property, (const char **)search_path, FALSE);
   JS_EndRequest (context);
   return TRUE;
  out_error:

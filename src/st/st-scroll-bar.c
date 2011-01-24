@@ -643,13 +643,11 @@ st_scroll_bar_constructor (GType                  type,
   GObjectClass *gobject_class;
   GObject *obj;
   StScrollBar *bar;
-  StScrollBarPrivate *priv;
 
   gobject_class = G_OBJECT_CLASS (st_scroll_bar_parent_class);
   obj = gobject_class->constructor (type, n_properties, properties);
 
   bar  = ST_SCROLL_BAR (obj);
-  priv = ST_SCROLL_BAR_GET_PRIVATE (bar);
 
   g_signal_connect (bar, "notify::reactive",
                     G_CALLBACK (bar_reactive_notify_cb), NULL);

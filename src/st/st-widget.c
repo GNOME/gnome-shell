@@ -357,12 +357,9 @@ st_widget_allocate (ClutterActor          *actor,
 {
   StWidget *self = ST_WIDGET (actor);
   StWidgetPrivate *priv = self->priv;
-  StThemeNode *theme_node;
   ClutterActorClass *klass;
   ClutterGeometry area;
   ClutterVertex in_v, out_v;
-
-  theme_node = st_widget_get_theme_node (self);
 
   klass = CLUTTER_ACTOR_CLASS (st_widget_parent_class);
   klass->allocate (actor, box, flags);

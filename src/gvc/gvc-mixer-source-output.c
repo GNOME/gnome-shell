@@ -66,11 +66,8 @@ gvc_mixer_source_output_constructor (GType                  type,
                                   GObjectConstructParam *construct_params)
 {
         GObject       *object;
-        GvcMixerSourceOutput *self;
 
         object = G_OBJECT_CLASS (gvc_mixer_source_output_parent_class)->constructor (type, n_construct_properties, construct_params);
-
-        self = GVC_MIXER_SOURCE_OUTPUT (object);
 
         return object;
 }
