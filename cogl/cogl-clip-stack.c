@@ -203,6 +203,14 @@ add_stencil_clip_rectangle (float x_1,
   /* temporarily swap in our special stenciling pipeline */
   cogl_push_source (ctx->stencil_pipeline);
 
+  /* This can be called from the journal code which doesn't flush
+     the matrix stacks between calls so we need to ensure they're
+     flushed now */
+  _cogl_matrix_stack_flush_to_gl (modelview_stack,
+                                  COGL_MATRIX_MODELVIEW);
+  _cogl_matrix_stack_flush_to_gl (projection_stack,
+                                  COGL_MATRIX_PROJECTION);
+
   if (first)
     {
       GE( glEnable (GL_STENCIL_TEST) );
@@ -214,14 +222,6 @@ add_stencil_clip_rectangle (float x_1,
       /* Punch out a hole to allow the rectangle */
       GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
       GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
-
-      /* This can be called from the journal code which doesn't flush
-         the matrix stacks between calls so we need to ensure they're
-         flushed now */
-      _cogl_matrix_stack_flush_to_gl (modelview_stack,
-                                      COGL_MATRIX_MODELVIEW);
-      _cogl_matrix_stack_flush_to_gl (projection_stack,
-                                      COGL_MATRIX_PROJECTION);
 
       _cogl_rectangle_immediate (x_1, y_1, x_2, y_2);
     }
