@@ -1020,12 +1020,9 @@ on_get_unix_user_finished (DBusGProxy               *proxy,
                            DBusGProxyCall           *call,
                            GdmUserManagerNewSession *new_session)
 {
-        GdmUserManager *manager;
         GError         *error;
         guint           uid;
         gboolean        res;
-
-        manager = new_session->manager;
 
         g_assert (new_session->get_unix_user_call == call);
 
@@ -1550,11 +1547,9 @@ static void
 get_accounts_proxy (GdmUserManager *manager)
 {
         DBusGProxy      *proxy;
-        GError          *error;
 
         g_assert (manager->priv->accounts_proxy == NULL);
 
-        error = NULL;
         proxy = dbus_g_proxy_new_for_name (manager->priv->connection,
                                            ACCOUNTS_NAME,
                                            ACCOUNTS_PATH,
@@ -2554,8 +2549,6 @@ reload_shells (GdmUserManager *manager)
 static void
 load_users_manually (GdmUserManager *manager)
 {
-        gboolean res;
-
         manager->priv->shells = g_hash_table_new_full (g_str_hash,
                                                        g_str_equal,
                                                        g_free,
@@ -2564,7 +2557,7 @@ load_users_manually (GdmUserManager *manager)
 
         load_sessions (manager);
 
-        res = load_ck_history (manager);
+        load_ck_history (manager);
         schedule_reload_passwd (manager);
 }
 
@@ -2605,10 +2598,8 @@ load_seat_incrementally (GdmUserManager *manager)
         }
 
         if (manager->priv->seat.state == GDM_USER_MANAGER_SEAT_STATE_LOADED) {
-                gboolean res;
-
                 load_sessions (manager);
-                res = load_ck_history (manager);
+                load_ck_history (manager);
         }
 
         maybe_set_is_loaded (manager);

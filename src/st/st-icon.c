@@ -62,6 +62,7 @@ struct _StIconPrivate
   CoglHandle    shadow_material;
   float         shadow_width;
   float         shadow_height;
+  StShadow     *shadow_spec;
 };
 
 static void st_icon_update               (StIcon *icon);
@@ -164,6 +165,12 @@ st_icon_dispose (GObject *gobject)
       priv->shadow_material = COGL_INVALID_HANDLE;
     }
 
+  if (priv->shadow_spec)
+    {
+      st_shadow_unref (priv->shadow_spec);
+      priv->shadow_spec = NULL;
+    }
+
   G_OBJECT_CLASS (st_icon_parent_class)->dispose (gobject);
 }
 
@@ -249,8 +256,6 @@ st_icon_paint (ClutterActor *actor)
     {
       if (priv->shadow_material)
         {
-          StThemeNode *node = st_widget_get_theme_node (ST_WIDGET (actor));
-          StShadow *shadow_spec = st_theme_node_get_shadow (node);
           ClutterActorBox allocation;
           float width, height;
 
@@ -262,7 +267,7 @@ st_icon_paint (ClutterActor *actor)
           allocation.x2 = allocation.x1 + priv->shadow_width;
           allocation.y2 = allocation.y1 + priv->shadow_height;
 
-          _st_paint_shadow_with_opacity (shadow_spec,
+          _st_paint_shadow_with_opacity (priv->shadow_spec,
                                          priv->shadow_material,
                                          &allocation,
                                          clutter_actor_get_paint_opacity (priv->icon_texture));
@@ -278,6 +283,13 @@ st_icon_style_changed (StWidget *widget)
   StIcon *self = ST_ICON (widget);
   StThemeNode *theme_node = st_widget_get_theme_node (widget);
   StIconPrivate *priv = self->priv;
+
+  if (priv->shadow_spec)
+    {
+      st_shadow_unref (priv->shadow_spec);
+      priv->shadow_spec = NULL;
+    }
+  priv->shadow_spec = st_theme_node_get_shadow (theme_node, "icon-shadow");
 
   priv->theme_icon_size = (int)(0.5 + st_theme_node_get_length (theme_node, "icon-size"));
   st_icon_update_icon_size (self);
@@ -353,8 +365,6 @@ static void
 st_icon_update_shadow_material (StIcon *icon)
 {
   StIconPrivate *priv = icon->priv;
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (icon));
-  StShadow *shadow_spec = st_theme_node_get_shadow (theme_node);
 
   if (priv->shadow_material)
     {
@@ -362,14 +372,15 @@ st_icon_update_shadow_material (StIcon *icon)
       priv->shadow_material = COGL_INVALID_HANDLE;
     }
 
-  if (shadow_spec)
+  if (priv->shadow_spec)
    {
      CoglHandle material;
      gint width, height;
 
      clutter_texture_get_base_size (CLUTTER_TEXTURE (priv->icon_texture),
                                     &width, &height);
-     material = _st_create_shadow_material_from_actor (shadow_spec,
+
+     material = _st_create_shadow_material_from_actor (priv->shadow_spec,
                                                        priv->icon_texture);
      priv->shadow_material = material;
      priv->shadow_width = width;

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-19 22:47+0200\n"
-"PO-Revision-Date: 2011-01-19 22:47+0300\n"
+"POT-Creation-Date: 2011-01-23 13:29+0200\n"
+"PO-Revision-Date: 2011-01-23 13:29+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -70,7 +70,8 @@ msgstr ""
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -79,45 +80,47 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
-msgid "Show date in clock"
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "Show the week date in the calendar"
+msgid "Show date in clock"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
-msgid "Show time with seconds"
+msgid "Show the week date in the calendar"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show time with seconds"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -125,15 +128,15 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Uuids of extensions to disable"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "disabled OpenSearch providers"
 msgstr ""
 
@@ -436,54 +439,54 @@ msgid "Applications"
 msgstr "التطبيقات"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:479
+#: ../js/ui/panel.js:483
 #, c-format
 msgid "Quit %s"
 msgstr "أغلق %s"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:564
+#: ../js/ui/panel.js:568
 msgid "%a %b %e, %R:%S"
 msgstr "%A %e %B، %R:%S"
 
-#: ../js/ui/panel.js:565
+#: ../js/ui/panel.js:569
 msgid "%a %b %e, %R"
 msgstr "%A %e %B، %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:569
+#: ../js/ui/panel.js:573
 msgid "%a %R:%S"
 msgstr "%A %R:%S"
 
-#: ../js/ui/panel.js:570
+#: ../js/ui/panel.js:574
 msgid "%a %R"
 msgstr "%A %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:577
+#: ../js/ui/panel.js:581
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%A %e %B، %l:%M:%S %p"
 
-#: ../js/ui/panel.js:578
+#: ../js/ui/panel.js:582
 msgid "%a %b %e, %l:%M %p"
 msgstr "%A %e %B، %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:586
 msgid "%a %l:%M:%S %p"
 msgstr "%A %l:%M:%S %p"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:587
 msgid "%a %l:%M %p"
 msgstr "%A %Ol:%OM %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:728
+#: ../js/ui/panel.js:732
 msgid "Activities"
 msgstr "الأنشطة"
 
@@ -638,7 +641,7 @@ msgstr "عطل أثناء تصفّح الجهاز"
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "تعذّر تصفح الجهاز، رسالة العطل '%s'"
 
-#: ../js/ui/status/bluetooth.js:251 ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/bluetooth.js:251
 msgid "Keyboard Settings"
 msgstr "إعدادات لوحة المفاتيح"
 
@@ -712,6 +715,10 @@ msgstr "من فضلك أدخل الرقم المذكور على الجهاز."
 #: ../js/ui/status/bluetooth.js:469
 msgid "OK"
 msgstr "حسنا"
+
+#: ../js/ui/status/keyboard.js:78
+msgid "Localization Settings"
+msgstr "إعدادات اللغة"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"

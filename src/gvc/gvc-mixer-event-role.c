@@ -59,12 +59,9 @@ update_settings (GvcMixerEventRole *role,
                  gpointer          *op)
 {
         pa_operation              *o;
-        guint                      index;
         const GvcChannelMap       *map;
         pa_context                *context;
         pa_ext_stream_restore_info info;
-
-        index = gvc_mixer_stream_get_index (GVC_MIXER_STREAM (role));
 
         map = gvc_mixer_stream_get_channel_map (GVC_MIXER_STREAM(role));
 
@@ -165,11 +162,8 @@ gvc_mixer_event_role_constructor (GType                  type,
                                   GObjectConstructParam *construct_params)
 {
         GObject       *object;
-        GvcMixerEventRole *self;
 
         object = G_OBJECT_CLASS (gvc_mixer_event_role_parent_class)->constructor (type, n_construct_properties, construct_params);
-
-        self = GVC_MIXER_EVENT_ROLE (object);
 
         return object;
 }

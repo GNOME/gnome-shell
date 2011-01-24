@@ -285,7 +285,8 @@ shell_doc_system_open (ShellDocSystem *system,
           app_exec_quoted = g_regex_replace (regex, app_exec, -1, 0, "%%", 0, NULL);
           g_regex_unref (regex);
 
-          app_info = g_app_info_create_from_commandline (app_exec, NULL, 0, NULL);
+          app_info = g_app_info_create_from_commandline (app_exec_quoted, NULL, 0, NULL);
+          g_free (app_exec_quoted);
 
           /* The point of passing an app launch context to
              launch() is mostly to get startup notification and

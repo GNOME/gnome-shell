@@ -145,11 +145,8 @@ gvc_mixer_sink_constructor (GType                  type,
                             GObjectConstructParam *construct_params)
 {
         GObject      *object;
-        GvcMixerSink *self;
 
         object = G_OBJECT_CLASS (gvc_mixer_sink_parent_class)->constructor (type, n_construct_properties, construct_params);
-
-        self = GVC_MIXER_SINK (object);
 
         return object;
 }
@@ -180,12 +177,8 @@ gvc_mixer_sink_init (GvcMixerSink *sink)
 static void
 gvc_mixer_sink_dispose (GObject *object)
 {
-        GvcMixerSink *mixer_sink;
-
         g_return_if_fail (object != NULL);
         g_return_if_fail (GVC_IS_MIXER_SINK (object));
-
-        mixer_sink = GVC_MIXER_SINK (object);
 
         G_OBJECT_CLASS (gvc_mixer_sink_parent_class)->dispose (object);
 }

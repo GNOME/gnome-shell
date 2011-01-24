@@ -357,12 +357,9 @@ st_widget_allocate (ClutterActor          *actor,
 {
   StWidget *self = ST_WIDGET (actor);
   StWidgetPrivate *priv = self->priv;
-  StThemeNode *theme_node;
   ClutterActorClass *klass;
   ClutterGeometry area;
   ClutterVertex in_v, out_v;
-
-  theme_node = st_widget_get_theme_node (self);
 
   klass = CLUTTER_ACTOR_CLASS (st_widget_parent_class);
   klass->allocate (actor, box, flags);
@@ -686,15 +683,23 @@ st_widget_get_paint_volume (ClutterActor *self, ClutterPaintVolume *volume)
 {
   ClutterActorBox paint_box, alloc_box;
   StThemeNode *theme_node;
+  StWidgetPrivate *priv;
   ClutterVertex origin;
 
   /* Setting the paint volume does not make sense when we don't have any allocation */
   if (!clutter_actor_has_allocation (self))
     return FALSE;
 
+  priv = ST_WIDGET(self)->priv;
+
   theme_node = st_widget_get_theme_node (ST_WIDGET(self));
   clutter_actor_get_allocation_box (self, &alloc_box);
-  st_theme_node_get_paint_box (theme_node, &alloc_box, &paint_box);
+
+  if (priv->transition_animation)
+    st_theme_node_transition_get_paint_box (priv->transition_animation,
+                                            &alloc_box, &paint_box);
+  else
+    st_theme_node_get_paint_box (theme_node, &alloc_box, &paint_box);
 
   origin.x = paint_box.x1 - alloc_box.x1;
   origin.y = paint_box.y1 - alloc_box.y1;

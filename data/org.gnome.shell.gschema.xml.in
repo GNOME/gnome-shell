@@ -101,11 +101,13 @@
         take care of its own output - this might be used to send the output
         to an icecast server via shout2send or similar. When unset or set
         to an empty value, the default pipeline will be used. This is currently
-        'videorate ! theoraenc ! oggmux' and records to Ogg Theora.
+        'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux'
+        and records to WEBM using the VP8 codec. %T is used as a placeholder
+        for a guess at the optimal thread count on the system.
       </_description>
     </key>
     <key name="file-extension" type="s">
-      <default>'ogv'</default>
+      <default>'webm'</default>
       <_summary>File extension used for storing the screencast</_summary>
       <_description>
         The filename for recorded screencasts will be a unique filename

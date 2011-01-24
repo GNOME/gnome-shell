@@ -62,6 +62,7 @@
 #include "st-marshal.h"
 #include "st-scroll-bar.h"
 #include "st-scrollable.h"
+#include "st-scroll-view-fade.h"
 #include <clutter/clutter.h>
 #include <math.h>
 
@@ -93,20 +94,17 @@ struct _StScrollViewPrivate
   GtkPolicyType hscrollbar_policy;
   GtkPolicyType vscrollbar_policy;
 
-  ClutterActor *top_shadow;
-  ClutterActor *bottom_shadow;
-
   gfloat        row_size;
   gfloat        column_size;
 
-  gboolean      vshadows;
+  gboolean      vfade;
+  StScrollViewFade *vfade_effect;
+
   gboolean      row_size_set : 1;
   gboolean      column_size_set : 1;
   guint         mouse_scroll : 1;
   guint         hscrollbar_visible : 1;
   guint         vscrollbar_visible : 1;
-  guint         top_shadow_visible : 1;
-  guint         bottom_shadow_visible : 1;
 };
 
 enum {
@@ -117,7 +115,7 @@ enum {
   PROP_HSCROLLBAR_POLICY,
   PROP_VSCROLLBAR_POLICY,
   PROP_MOUSE_SCROLL,
-  PROP_VSHADOWS
+  PROP_VFADE
 };
 
 static void
@@ -145,80 +143,50 @@ st_scroll_view_get_property (GObject    *object,
     case PROP_MOUSE_SCROLL:
       g_value_set_boolean (value, priv->mouse_scroll);
       break;
-    case PROP_VSHADOWS:
-      g_value_set_boolean (value, priv->vshadows);
+    case PROP_VFADE:
+      g_value_set_boolean (value, priv->vfade);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 
-static void
-update_shadow_visibility (StScrollView *scroll)
-{
-  StScrollViewPrivate *priv = scroll->priv;
-
-  if (priv->vshadows)
-    {
-      gdouble value, lower, upper, page_size;
-
-      st_adjustment_get_values (priv->vadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
-
-      priv->top_shadow_visible = value > lower + 0.1;
-      priv->bottom_shadow_visible = value < upper - page_size - 0.1;
-    }
-  else
-    {
-      priv->top_shadow_visible = FALSE;
-      priv->bottom_shadow_visible = FALSE;
-    }
-}
-
 /**
- * st_scroll_view_set_vshadows:
+ * st_scroll_view_set_vfade:
  * @self: a #StScrollView
- * @vshadows: Whether to enable vertical shadows
+ * @vfade: Whether to enable the vertical fade effect
  *
- * Sets whether to show shadows at the top and bottom of the area. Shadows
- * are omitted when fully scrolled to that edge.
+ * Sets whether to fade the content at the top and bottom of the area when not
+ * fully scrolled to that edge.
  */
 void
-st_scroll_view_set_vshadows (StScrollView *self,
-                             gboolean      vshadows)
+st_scroll_view_set_vfade (StScrollView *self,
+                          gboolean vfade)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (self)->priv;
 
-  vshadows = vshadows != FALSE;
-  if (priv->vshadows == vshadows)
+  vfade = vfade != FALSE;
+  if (priv->vfade == vfade)
     return;
 
-  priv->vshadows = vshadows;
+  priv->vfade = vfade;
 
-  if (vshadows)
+  if (vfade)
     {
-      if (priv->top_shadow)
-        {
-          clutter_actor_show (priv->top_shadow);
-          clutter_actor_show (priv->bottom_shadow);
-        }
-      else
-        {
-          priv->top_shadow = g_object_new (ST_TYPE_BIN, "style-class", "top-shadow", NULL);
-          priv->bottom_shadow = g_object_new (ST_TYPE_BIN, "style-class", "bottom-shadow", NULL);
+      if (priv->vfade_effect == NULL)
+        priv->vfade_effect = g_object_new (ST_TYPE_SCROLL_VIEW_FADE, NULL);
 
-          clutter_actor_set_parent (priv->bottom_shadow, CLUTTER_ACTOR (self));
-          clutter_actor_set_parent (priv->top_shadow, CLUTTER_ACTOR (self));
-        }
+      clutter_actor_add_effect (CLUTTER_ACTOR (self), CLUTTER_EFFECT (priv->vfade_effect));
     }
-  else
+   else
     {
-      clutter_actor_hide (priv->top_shadow);
-      clutter_actor_hide (priv->bottom_shadow);
+      clutter_actor_remove_effect (CLUTTER_ACTOR (self), CLUTTER_EFFECT (priv->vfade_effect));
+      priv->vfade_effect = NULL;
     }
 
-  update_shadow_visibility (self);
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-  g_object_notify (G_OBJECT (self), "vshadows");
+  g_object_notify (G_OBJECT (self), "vfade");
 }
 
 static void
@@ -232,8 +200,8 @@ st_scroll_view_set_property (GObject      *object,
 
   switch (property_id)
     {
-    case PROP_VSHADOWS:
-      st_scroll_view_set_vshadows (self, g_value_get_boolean (value));
+    case PROP_VFADE:
+      st_scroll_view_set_vfade (self, g_value_get_boolean (value));
       break;
     case PROP_MOUSE_SCROLL:
       st_scroll_view_set_mouse_scrolling (self,
@@ -258,6 +226,12 @@ static void
 st_scroll_view_dispose (GObject *object)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (object)->priv;
+
+  if (priv->vfade_effect)
+    {
+      clutter_actor_remove_effect (CLUTTER_ACTOR (object), CLUTTER_EFFECT (priv->vfade_effect));
+      priv->vfade_effect = NULL;
+    }
 
   if (priv->vscroll)
     clutter_actor_destroy (priv->vscroll);
@@ -284,20 +258,6 @@ st_scroll_view_dispose (GObject *object)
       priv->vadjustment = NULL;
     }
 
-  /* since it's impossible to get a handle to these actors, we can
-   * just directly unparent them and not go through destroy/remove */
-  if (priv->top_shadow)
-    {
-      clutter_actor_unparent (priv->top_shadow);
-      priv->top_shadow = NULL;
-    }
-
-  if (priv->bottom_shadow)
-    {
-      clutter_actor_unparent (priv->bottom_shadow);
-      priv->bottom_shadow = NULL;
-    }
-
   G_OBJECT_CLASS (st_scroll_view_parent_class)->dispose (object);
 }
 
@@ -314,11 +274,6 @@ st_scroll_view_paint (ClutterActor *actor)
     clutter_actor_paint (priv->hscroll);
   if (priv->vscrollbar_visible && CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
     clutter_actor_paint (priv->vscroll);
-
-  if (priv->top_shadow_visible)
-    clutter_actor_paint (priv->top_shadow);
-  if (priv->bottom_shadow_visible)
-    clutter_actor_paint (priv->bottom_shadow);
 }
 
 static void
@@ -532,18 +487,6 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
   st_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
 }
 
-static gfloat
-get_shadow_height (ClutterActor *shadow)
-{
-  gfloat natural_height;
-
-  /* The shadows are empty StBin and have no height-for-width behavior */
-
-  clutter_actor_get_preferred_height (shadow, -1, NULL, &natural_height);
-
-  return natural_height;
-}
-
 static void
 st_scroll_view_allocate (ClutterActor          *actor,
                          const ClutterActorBox *box,
@@ -688,25 +631,6 @@ st_scroll_view_allocate (ClutterActor          *actor,
   if (priv->child)
     clutter_actor_allocate (priv->child, &child_box, flags);
 
-  /* Shadows */
-  if (priv->top_shadow && CLUTTER_ACTOR_IS_VISIBLE (priv->top_shadow))
-    {
-      child_box.x1 = content_box.x1;
-      child_box.y1 = content_box.y1;
-      child_box.x2 = MAX (child_box.x1, content_box.x2 - sb_width);
-      child_box.y2 = content_box.y1 + get_shadow_height (priv->top_shadow);
-      clutter_actor_allocate (priv->top_shadow, &child_box, flags);
-    }
-
-  if (priv->bottom_shadow && CLUTTER_ACTOR_IS_VISIBLE (priv->bottom_shadow))
-    {
-      child_box.x1 = content_box.x1;
-      child_box.y1 = content_box.y2 - sb_height - get_shadow_height (priv->bottom_shadow);
-      child_box.x2 = MAX (content_box.x1, content_box.x2 - sb_width);
-      child_box.y2 = content_box.y2 - sb_height;
-      clutter_actor_allocate (priv->bottom_shadow, &child_box, flags);
-    }
-
   priv->hscrollbar_visible = hscrollbar_visible;
   priv->vscrollbar_visible = vscrollbar_visible;
 }
@@ -718,12 +642,6 @@ st_scroll_view_style_changed (StWidget *widget)
 
   st_widget_style_changed (ST_WIDGET (priv->hscroll));
   st_widget_style_changed (ST_WIDGET (priv->vscroll));
-
-  if (priv->top_shadow)
-    {
-      st_widget_style_changed (ST_WIDGET (priv->top_shadow));
-      st_widget_style_changed (ST_WIDGET (priv->bottom_shadow));
-    }
 
   ST_WIDGET_CLASS (st_scroll_view_parent_class)->style_changed (widget);
 }
@@ -857,29 +775,14 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                                    PROP_MOUSE_SCROLL,
                                    pspec);
 
-  pspec = g_param_spec_boolean ("vshadows",
+  pspec = g_param_spec_boolean ("vfade",
                                 "Vertical Shadows",
-                                "Show shadows at the top and and bottom of the area unless fully scrolled to that edge",
+                                "Fade the content at the top and and bottom of the area unless fully scrolled to that edge",
                                 FALSE,
                                 G_PARAM_READWRITE);
   g_object_class_install_property (object_class,
-                                   PROP_VSHADOWS,
+                                   PROP_VFADE,
                                    pspec);
-}
-
-static void
-child_adjustment_changed_cb (StAdjustment *adjustment,
-                             StScrollView *scroll)
-{
-  update_shadow_visibility (scroll);
-}
-
-static void
-child_adjustment_notify_value (GObject      *gobject,
-                               GParamSpec   *pspec,
-                               StScrollView *scroll)
-{
-  update_shadow_visibility (scroll);
 }
 
 static void
@@ -897,10 +800,6 @@ st_scroll_view_init (StScrollView *self)
                                 NULL);
 
   priv->vadjustment = g_object_new (ST_TYPE_ADJUSTMENT, NULL);
-  g_signal_connect (priv->vadjustment, "changed",
-                    G_CALLBACK (child_adjustment_changed_cb), self);
-  g_signal_connect (priv->vadjustment, "notify::value",
-                    G_CALLBACK (child_adjustment_notify_value), self);
   priv->vscroll = g_object_new (ST_TYPE_SCROLL_BAR,
                                 "adjustment", priv->vadjustment,
                                 "vertical", TRUE,
@@ -988,12 +887,6 @@ st_scroll_view_foreach_with_internals (ClutterContainer *container,
 
   if (priv->vscroll != NULL)
     callback (priv->vscroll, user_data);
-
-  if (priv->top_shadow)
-    {
-      callback (priv->top_shadow, user_data);
-      callback (priv->bottom_shadow, user_data);
-    }
 }
 
 static void

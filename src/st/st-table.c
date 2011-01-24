@@ -315,12 +315,12 @@ st_table_calculate_col_widths (StTable *table,
 
   for (list = children; list; list = list->next)
     {
-      gint row, col;
+      gint col;
       gfloat w_min, w_pref;
       gboolean x_expand;
       StTableChild *meta;
       ClutterActor *child;
-      gint col_span, row_span;
+      gint col_span;
 
       child = CLUTTER_ACTOR (list->data);
 
@@ -331,10 +331,8 @@ st_table_calculate_col_widths (StTable *table,
 
       /* get child properties */
       col = meta->col;
-      row = meta->row;
       x_expand = meta->x_expand;
       col_span = meta->col_span;
-      row_span = meta->row_span;
 
       if (x_expand)
         is_expand_col[col] = TRUE;
@@ -428,7 +426,7 @@ st_table_calculate_row_heights (StTable *table,
     {
       gint row, col, cell_width;
       gfloat h_min, h_pref;
-      gboolean x_expand, y_expand;
+      gboolean y_expand;
       StTableChild *meta;
       ClutterActor *child;
       gint col_span, row_span;
@@ -443,7 +441,6 @@ st_table_calculate_row_heights (StTable *table,
       /* get child properties */
       col = meta->col;
       row = meta->row;
-      x_expand = meta->x_expand;
       y_expand = meta->y_expand;
       col_span = meta->col_span;
       row_span = meta->row_span;

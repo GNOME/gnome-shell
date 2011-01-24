@@ -122,10 +122,16 @@ st_theme_node_finalize (GObject *object)
       node->font_desc = NULL;
     }
 
-  if (node->shadow)
+  if (node->box_shadow)
     {
-      st_shadow_unref (node->shadow);
-      node->shadow = NULL;
+      st_shadow_unref (node->box_shadow);
+      node->box_shadow = NULL;
+    }
+
+  if (node->background_image_shadow)
+    {
+      st_shadow_unref (node->background_image_shadow);
+      node->background_image_shadow = NULL;
     }
 
   if (node->text_shadow)
@@ -2606,16 +2612,17 @@ st_theme_node_get_vertical_padding (StThemeNode *node)
   return padding;
 }
 
-static void
-parse_shadow_property (StThemeNode   *node,
-                       CRDeclaration *decl,
-                       ClutterColor  *color,
-                       gdouble       *xoffset,
-                       gdouble       *yoffset,
-                       gdouble       *blur,
-                       gdouble       *spread)
+static GetFromTermResult
+parse_shadow_property (StThemeNode       *node,
+                       CRDeclaration     *decl,
+                       ClutterColor      *color,
+                       gdouble           *xoffset,
+                       gdouble           *yoffset,
+                       gdouble           *blur,
+                       gdouble           *spread)
 {
   /* Set value for width/color/blur in any order */
+  GetFromTermResult result;
   CRTerm *term;
   int n_offsets = 0;
 
@@ -2628,8 +2635,6 @@ parse_shadow_property (StThemeNode   *node,
 
   for (term = decl->value; term; term = term->next)
     {
-      GetFromTermResult result;
-
       if (term->type == TERM_NUMBER)
         {
           gdouble value;
@@ -2637,7 +2642,16 @@ parse_shadow_property (StThemeNode   *node,
 
           multiplier = (term->unary_op == MINUS_UOP) ? -1. : 1.;
           result = get_length_from_term (node, term, FALSE, &value);
-          if (result != VALUE_NOT_FOUND)
+
+          if (result == VALUE_INHERIT)
+            {
+              /* we only allow inherit on the line by itself */
+              if (n_offsets > 0)
+                return VALUE_NOT_FOUND;
+              else
+                return VALUE_INHERIT;
+            }
+          else if (result == VALUE_FOUND)
             {
               switch (n_offsets++)
                 {
@@ -2665,32 +2679,65 @@ parse_shadow_property (StThemeNode   *node,
         }
 
       result = get_color_from_term (node, term, color);
-      if (result != VALUE_NOT_FOUND)
+
+      if (result == VALUE_INHERIT)
+        {
+          if (n_offsets > 0)
+            return VALUE_NOT_FOUND;
+          else
+            return VALUE_INHERIT;
+        }
+      else if (result == VALUE_FOUND)
         {
           continue;
         }
     }
+
+  /* The only required terms are the x and y offsets
+   */
+  if (n_offsets >= 2)
+    return VALUE_FOUND;
+  else
+    return VALUE_NOT_FOUND;
 }
 
 /**
- * st_theme_node_get_shadow:
+ * st_theme_node_lookup_shadow:
  * @node: a #StThemeNode
+ * @property_name: The name of the shadow property
+ * @inherit: if %TRUE, if a value is not found for the property on the
+ *   node, then it will be looked up on the parent node, and then on the
+ *   parent's parent, and so forth. Note that if the property has a
+ *   value of 'inherit' it will be inherited even if %FALSE is passed
+ *   in for @inherit; this only affects the default behavior for inheritance.
+ * @shadow: (out): location to store the shadow
  *
- * Gets the value for the -st-shadow style property
+ * If the property is not found, the value in the shadow variable will not
+ * be changed.
  *
- * Return value: (transfer none): the node's shadow, or %NULL
- *   if node has no shadow
+ * Generically looks up a property containing a set of shadow values. When
+ * specific getters (like st_theme_node_get_box_shadow ()) exist, they
+ * should be used instead. They are cached, so more efficient, and have
+ * handling for shortcut properties and other details of CSS.
+ *
+ * See also st_theme_node_get_shadow(), which provides a simpler API.
+ *
+ * Return value: %TRUE if the property was found in the properties for this
+ *  theme node (or in the properties of parent nodes when inheriting.)
  */
-StShadow *
-st_theme_node_get_shadow (StThemeNode *node)
+gboolean
+st_theme_node_lookup_shadow (StThemeNode  *node,
+                             const char   *property_name,
+                             gboolean      inherit,
+                             StShadow    **shadow)
 {
+  ClutterColor color = { 0., };
+  gdouble xoffset = 0.;
+  gdouble yoffset = 0.;
+  gdouble blur = 0.;
+  gdouble spread = 0.;
+
   int i;
-
-  if (node->shadow_computed)
-    return node->shadow;
-
-  node->shadow = NULL;
-  node->shadow_computed = TRUE;
 
   ensure_properties (node);
 
@@ -2698,24 +2745,134 @@ st_theme_node_get_shadow (StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, "-st-shadow") == 0)
+      if (strcmp (decl->property->stryng->str, property_name) == 0)
         {
-          ClutterColor color;
-          gdouble xoffset;
-          gdouble yoffset;
-          gdouble blur;
-          gdouble spread;
-
-          parse_shadow_property (node, decl,
-                                 &color, &xoffset, &yoffset, &blur, &spread);
-
-          node->shadow = st_shadow_new (&color,
-                                        xoffset, yoffset,
-                                        blur, spread);
-
-          return node->shadow;
+          GetFromTermResult result = parse_shadow_property (node,
+                                                            decl,
+                                                            &color,
+                                                            &xoffset,
+                                                            &yoffset,
+                                                            &blur,
+                                                            &spread);
+          if (result == VALUE_FOUND)
+            {
+              *shadow = st_shadow_new (&color, xoffset, yoffset, blur, spread);
+              return TRUE;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              if (node->parent_node)
+                return st_theme_node_lookup_shadow (node->parent_node,
+                                                    property_name,
+                                                    inherit,
+                                                    shadow);
+              else
+                break;
+            }
         }
     }
+
+    if (inherit && node->parent_node)
+      return st_theme_node_lookup_shadow (node->parent_node,
+                                          property_name,
+                                          inherit,
+                                          shadow);
+
+  return FALSE;
+}
+
+/**
+ * st_theme_node_get_shadow:
+ * @node: a #StThemeNode
+ * @property_name: The name of the shadow property
+ *
+ * Generically looks up a property containing a set of shadow values. When
+ * specific getters (like st_theme_node_get_box_shadow()) exist, they
+ * should be used instead. They are cached, so more efficient, and have
+ * handling for shortcut properties and other details of CSS.
+ *
+ * Like st_theme_get_length(), this does not print a warning if the property is
+ * not found; it just returns %NULL
+ *
+ * See also st_theme_node_lookup_shadow (), which provides more options.
+ *
+ * Return value: (transfer full): the shadow, or %NULL if the property was not found.
+ */
+StShadow *
+st_theme_node_get_shadow (StThemeNode  *node,
+                          const char   *property_name)
+{
+  StShadow *shadow;
+
+  if (st_theme_node_lookup_shadow (node, property_name, FALSE, &shadow))
+    return shadow;
+  else
+    return NULL;
+}
+
+/**
+ * st_theme_node_get_box_shadow:
+ * @node: a #StThemeNode
+ *
+ * Gets the value for the box-shadow style property
+ *
+ * Return value: (transfer none): the node's shadow, or %NULL
+ *   if node has no shadow
+ */
+StShadow *
+st_theme_node_get_box_shadow (StThemeNode *node)
+{
+  StShadow *shadow;
+
+  if (node->box_shadow_computed)
+    return node->box_shadow;
+
+  node->box_shadow = NULL;
+  node->box_shadow_computed = TRUE;
+
+  if (st_theme_node_lookup_shadow (node,
+                                   "box-shadow",
+                                   FALSE,
+                                   &shadow))
+    {
+      node->box_shadow = shadow;
+
+      return node->box_shadow;
+    }
+
+  return NULL;
+}
+
+/**
+ * st_theme_node_get_background_image_shadow:
+ * @node: a #StThemeNode
+ *
+ * Gets the value for the -st-background-image-shadow style property
+ *
+ * Return value: (transfer none): the node's background image shadow, or %NULL
+ *   if node has no such shadow
+ */
+StShadow *
+st_theme_node_get_background_image_shadow (StThemeNode *node)
+{
+  StShadow *shadow;
+
+  if (node->background_image_shadow_computed)
+    return node->background_image_shadow;
+
+  node->background_image_shadow = NULL;
+  node->background_image_shadow_computed = TRUE;
+
+  if (st_theme_node_lookup_shadow (node,
+                                   "-st-background-image-shadow",
+                                   FALSE,
+                                   &shadow))
+    {
+      node->background_image_shadow = shadow;
+
+      return node->background_image_shadow;
+    }
+
   return NULL;
 }
 
@@ -2732,41 +2889,23 @@ StShadow *
 st_theme_node_get_text_shadow (StThemeNode *node)
 {
   StShadow *result = NULL;
-  int i;
 
   if (node->text_shadow_computed)
     return node->text_shadow;
 
   ensure_properties (node);
 
-  for (i = node->n_properties - 1; i >= 0; i--)
+  if (!st_theme_node_lookup_shadow (node,
+                                    "text-shadow",
+                                    FALSE,
+                                    &result))
     {
-      CRDeclaration *decl = node->properties[i];
-
-      if (strcmp (decl->property->stryng->str, "text-shadow") == 0)
+      if (node->parent_node)
         {
-          ClutterColor color;
-          gdouble xoffset;
-          gdouble yoffset;
-          gdouble blur;
-          gdouble spread;
-
-          parse_shadow_property (node, decl,
-                                 &color, &xoffset, &yoffset, &blur, &spread);
-
-          result = st_shadow_new (&color,
-                                  xoffset, yoffset,
-                                  blur, spread);
-
-          break;
+          result = st_theme_node_get_text_shadow (node->parent_node);
+          if (result)
+            st_shadow_ref (result);
         }
-    }
-
-  if (!result && node->parent_node)
-    {
-      result = st_theme_node_get_text_shadow (node->parent_node);
-      if (result)
-        st_shadow_ref (result);
     }
 
   node->text_shadow = result;
@@ -3102,7 +3241,8 @@ st_theme_node_get_paint_box (StThemeNode           *node,
                              const ClutterActorBox *actor_box,
                              ClutterActorBox       *paint_box)
 {
-  StShadow *shadow;
+  StShadow *box_shadow;
+  StShadow *background_image_shadow;
   ClutterActorBox shadow_box;
   int outline_width;
 
@@ -3110,25 +3250,40 @@ st_theme_node_get_paint_box (StThemeNode           *node,
   g_return_if_fail (actor_box != NULL);
   g_return_if_fail (paint_box != NULL);
 
-  shadow = st_theme_node_get_shadow (node);
+  box_shadow = st_theme_node_get_box_shadow (node);
+  background_image_shadow = st_theme_node_get_background_image_shadow (node);
   outline_width = st_theme_node_get_outline_width (node);
-  if (!shadow && !outline_width)
+
+  *paint_box = *actor_box;
+
+  if (!box_shadow && !background_image_shadow && !outline_width)
+    return;
+
+  paint_box->x1 -= outline_width;
+  paint_box->x2 += outline_width;
+  paint_box->y1 -= outline_width;
+  paint_box->y2 += outline_width;
+
+  if (box_shadow)
     {
-      *paint_box = *actor_box;
-      return;
+      st_shadow_get_box (box_shadow, actor_box, &shadow_box);
+
+      paint_box->x1 = MIN (paint_box->x1, shadow_box.x1);
+      paint_box->x2 = MAX (paint_box->x2, shadow_box.x2);
+      paint_box->y1 = MIN (paint_box->y1, shadow_box.y1);
+      paint_box->y2 = MAX (paint_box->y2, shadow_box.y2);
     }
 
-  if (shadow)
-    st_shadow_get_box (shadow, actor_box, &shadow_box);
-  else
-    shadow_box = *actor_box;
+  if (background_image_shadow)
+    {
+      st_shadow_get_box (background_image_shadow, actor_box, &shadow_box);
 
-  paint_box->x1 = MIN (actor_box->x1 - outline_width, shadow_box.x1);
-  paint_box->x2 = MAX (actor_box->x2 + outline_width, shadow_box.x2);
-  paint_box->y1 = MIN (actor_box->y1 - outline_width, shadow_box.y1);
-  paint_box->y2 = MAX (actor_box->y2 + outline_width, shadow_box.y2);
+      paint_box->x1 = MIN (paint_box->x1, shadow_box.x1);
+      paint_box->x2 = MAX (paint_box->x2, shadow_box.x2);
+      paint_box->y1 = MIN (paint_box->y1, shadow_box.y1);
+      paint_box->y2 = MAX (paint_box->y2, shadow_box.y2);
+    }
 }
-
 
 /**
  * st_theme_node_geometry_equal:
@@ -3240,8 +3395,17 @@ st_theme_node_paint_equal (StThemeNode *node,
   if (border_image != NULL && !st_border_image_equal (border_image, other_border_image))
     return FALSE;
 
-  shadow = st_theme_node_get_shadow (node);
-  other_shadow = st_theme_node_get_shadow (other);
+  shadow = st_theme_node_get_box_shadow (node);
+  other_shadow = st_theme_node_get_box_shadow (other);
+
+  if ((shadow == NULL) != (other_shadow == NULL))
+    return FALSE;
+
+  if (shadow != NULL && !st_shadow_equal (shadow, other_shadow))
+    return FALSE;
+
+  shadow = st_theme_node_get_background_image_shadow (node);
+  other_shadow = st_theme_node_get_background_image_shadow (other);
 
   if ((shadow == NULL) != (other_shadow == NULL))
     return FALSE;

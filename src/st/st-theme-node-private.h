@@ -65,7 +65,8 @@ struct _StThemeNode {
 
   char *background_image;
   StBorderImage *border_image;
-  StShadow *shadow;
+  StShadow *box_shadow;
+  StShadow *background_image_shadow;
   StShadow *text_shadow;
   StIconColors *icon_colors;
 
@@ -86,7 +87,8 @@ struct _StThemeNode {
   guint background_computed : 1;
   guint foreground_computed : 1;
   guint border_image_computed : 1;
-  guint shadow_computed : 1;
+  guint box_shadow_computed : 1;
+  guint background_image_shadow_computed : 1;
   guint text_shadow_computed : 1;
   guint link_type : 2;
 
@@ -95,11 +97,13 @@ struct _StThemeNode {
   float alloc_height;
 
   CoglHandle background_shadow_material;
-  CoglHandle border_shadow_material;
+  CoglHandle box_shadow_material;
   CoglHandle background_texture;
   CoglHandle background_material;
-  CoglHandle border_texture;
-  CoglHandle border_material;
+  CoglHandle border_slices_texture;
+  CoglHandle border_slices_material;
+  CoglHandle prerendered_texture;
+  CoglHandle prerendered_material;
   CoglHandle corner_material[4];
 };
 

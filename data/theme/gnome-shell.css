@@ -313,7 +313,7 @@ StTooltip StLabel {
     background-image: url("close-window.svg");
     height: 24px;
     width: 24px;
-    -st-shadow: -2px 2px 6px rgba(0,0,0,0.5);
+    -st-background-image-shadow: -2px 2px 6px rgba(0,0,0,0.5);
     -shell-close-overlap: 16px;
 }
 
@@ -374,7 +374,7 @@ StTooltip StLabel {
     background-gradient-direction: vertical;
     color: rgb(64, 64, 64);
     font-weight: bold;
-    -st-shadow: 0px 0px 6px 2px rgba(255,255,255,0.9);
+    box-shadow: 0px 0px 6px 2px rgba(255,255,255,0.9);
     transition-duration: 0;
 }
 
@@ -389,6 +389,10 @@ StTooltip StLabel {
     font-weight: bold;
     padding: 0px 12px;
     height: 24px;
+}
+
+.view-tab-title:hover {
+    color: #bbb;
 }
 
 .view-tab-title:selected {
@@ -506,7 +510,7 @@ StTooltip StLabel {
 
 .remove-favorite-icon:hover {
     color: white;
-    -st-shadow: black 0px 2px 2px;
+    icon-shadow: black 0px 2px 2px;
 }
 
 .app-well-app > .overview-icon,
@@ -1004,7 +1008,7 @@ StTooltip StLabel {
     color: #545454;
     background-color: #e8e8e8;
     caret-color: #545454;
-    -st-shadow: 0px 0px 6px 2px rgba(255,255,255,0.9);
+    box-shadow: 0px 0px 6px 2px rgba(255,255,255,0.9);
 }
 
 /* The spacing and padding on the summary is tricky; we want to keep

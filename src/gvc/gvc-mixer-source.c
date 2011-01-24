@@ -145,11 +145,8 @@ gvc_mixer_source_constructor (GType                  type,
                             GObjectConstructParam *construct_params)
 {
         GObject        *object;
-        GvcMixerSource *self;
 
         object = G_OBJECT_CLASS (gvc_mixer_source_parent_class)->constructor (type, n_construct_properties, construct_params);
-
-        self = GVC_MIXER_SOURCE (object);
 
         return object;
 }
@@ -180,12 +177,8 @@ gvc_mixer_source_init (GvcMixerSource *source)
 static void
 gvc_mixer_source_dispose (GObject *object)
 {
-        GvcMixerSource *mixer_source;
-
         g_return_if_fail (object != NULL);
         g_return_if_fail (GVC_IS_MIXER_SOURCE (object));
-
-        mixer_source = GVC_MIXER_SOURCE (object);
 
         G_OBJECT_CLASS (gvc_mixer_source_parent_class)->dispose (object);
 }

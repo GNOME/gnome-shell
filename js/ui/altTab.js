@@ -15,6 +15,8 @@ const POPUP_APPICON_SIZE = 96;
 const POPUP_SCROLL_TIME = 0.10; // seconds
 const POPUP_FADE_TIME = 0.1; // seconds
 
+const APP_ICON_HOVER_TIMEOUT = 750; // milliseconds
+
 const DISABLE_HOVER_TIMEOUT = 500; // milliseconds
 
 const THUMBNAIL_DEFAULT_SIZE = 256;
@@ -49,6 +51,8 @@ AltTabPopup.prototype = {
         this._currentWindow = -1;
         this._thumbnailTimeoutId = 0;
         this._motionTimeoutId = 0;
+
+        this.thumbnailsVisible = false;
 
         // Initially disable hover so we ignore the enter-event if
         // the switcher appears underneath the current pointer location
@@ -133,7 +137,7 @@ AltTabPopup.prototype = {
         this.actor.connect('button-press-event', Lang.bind(this, this._clickedOutside));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScroll));
 
-        this._appSwitcher = new AppSwitcher(apps);
+        this._appSwitcher = new AppSwitcher(apps, this);
         this.actor.add_actor(this._appSwitcher.actor);
         this._appSwitcher.connect('item-activated', Lang.bind(this, this._appActivated));
         this._appSwitcher.connect('item-entered', Lang.bind(this, this._appEntered));
@@ -457,11 +461,15 @@ AltTabPopup.prototype = {
     },
 
     _destroyThumbnails : function() {
-        Tweener.addTween(this._thumbnails.actor,
+        let thumbnailsActor = this._thumbnails.actor;
+        Tweener.addTween(thumbnailsActor,
                          { opacity: 0,
                            time: THUMBNAIL_FADE_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: function() { this.destroy(); }
+                           onComplete: Lang.bind(this, function() {
+                                                            thumbnailsActor.destroy();
+                                                            this.thumbnailsVisible = false;
+                                                        })
                          });
         this._thumbnails = null;
     },
@@ -477,7 +485,8 @@ AltTabPopup.prototype = {
         Tweener.addTween(this._thumbnails.actor,
                          { opacity: 255,
                            time: THUMBNAIL_FADE_TIME,
-                           transition: 'easeOutQuad'
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this, function () { this.thumbnailsVisible = true; })
                          });
     }
 };
@@ -591,14 +600,18 @@ SwitcherList.prototype = {
         this._list.add_actor(bbox);
 
         let n = this._items.length;
-        bbox.connect('clicked', Lang.bind(this, function () {
-                                               this._itemActivated(n);
-                                          }));
-        bbox.connect('enter-event', Lang.bind(this, function () {
-                                                  this._itemEntered(n);
-                                              }));
+        bbox.connect('clicked', Lang.bind(this, function() { this._onItemClicked(n); }));
+        bbox.connect('enter-event', Lang.bind(this, function() { this._onItemEnter(n); }));
 
         this._items.push(bbox);
+    },
+
+    _onItemClicked: function (index) {
+        this._itemActivated(index);
+    },
+
+    _onItemEnter: function (index) {
+        this._itemEntered(index);
     },
 
     addSeparator: function () {
@@ -819,14 +832,14 @@ AppIcon.prototype = {
     }
 };
 
-function AppSwitcher(apps) {
-    this._init(apps);
+function AppSwitcher(apps, altTabPopup) {
+    this._init(apps, altTabPopup);
 }
 
 AppSwitcher.prototype = {
     __proto__ : SwitcherList.prototype,
 
-    _init : function(apps) {
+    _init : function(apps, altTabPopup) {
         SwitcherList.prototype._init.call(this, true);
 
         // Construct the AppIcons, sort by time, add to the popup
@@ -858,6 +871,8 @@ AppSwitcher.prototype = {
 
         this._curApp = -1;
         this._iconSize = 0;
+        this._altTabPopup = altTabPopup;
+        this._mouseTimeOutId = 0;
     },
 
     _getPreferredHeight: function (actor, forWidth, alloc) {
@@ -920,6 +935,27 @@ AppSwitcher.prototype = {
             childBox.y2 = childBox.y1 + arrowHeight;
             this._arrows[i].allocate(childBox, flags);
         }
+    },
+
+    // We override SwitcherList's _onItemEnter method to delay
+    // activation when the thumbnail list is open
+    _onItemEnter: function (index) {
+        if (this._mouseTimeOutId != 0)
+            Mainloop.source_remove(this._mouseTimeOutId);
+        if (this._altTabPopup.thumbnailsVisible) {
+            this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT,
+                                                        Lang.bind(this, function () {
+                                                                            this._enterItem(index);
+                                                        }));
+        } else
+           this._itemEntered(index);
+    },
+
+    _enterItem: function(index) {
+        let [x, y, mask] = global.get_pointer();
+        let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
+        if (this._items[index].contains(pickedActor))
+            this._itemEntered(index);
     },
 
     // We override SwitcherList's highlight() method to also deal with

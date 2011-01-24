@@ -262,7 +262,7 @@ St-1.0.gir: $(mutter) $(G_IR_SCANNER) libst-1.0.la Makefile
 	        --libtool="$(LIBTOOL)"						\
 	        --library=libst-1.0.la						\
 	        -DST_COMPILATION						\
-	        $(filter-out %-private.h, $(addprefix $(srcdir)/,$(st_source_h))) \
+	        $(filter-out %-private.h $(st_non_gir_sources), $(addprefix $(srcdir)/,$(st_source_h))) \
 	        $(addprefix $(srcdir)/,$(st_source_c))				\
 	        $(srcdir)/st-enum-types.h					\
 	        $(st_cflags)							\

@@ -250,7 +250,7 @@ st_overflow_box_allocate (ClutterActor          *actor,
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   ClutterActorBox content_box;
   gfloat position;
-  float avail_width, avail_height;
+  float avail_width;
   GList *l, *children;
   int i;
   gboolean done_non_fixed;
@@ -265,7 +265,6 @@ st_overflow_box_allocate (ClutterActor          *actor,
   st_theme_node_get_content_box (theme_node, box, &content_box);
 
   avail_width = content_box.x2 - content_box.x1;
-  avail_height = content_box.y2 - content_box.y1;
 
   position = content_box.y1;
   priv->n_visible = 0;

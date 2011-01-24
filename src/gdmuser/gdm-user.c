@@ -151,10 +151,6 @@ gdm_user_set_property (GObject        *object,
                        const GValue   *value,
                        GParamSpec     *pspec)
 {
-        GdmUser *user;
-
-        user = GDM_USER (object);
-
         switch (prop_id) {
         default:
                 G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);

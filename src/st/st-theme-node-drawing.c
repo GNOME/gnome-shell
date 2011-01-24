@@ -427,37 +427,37 @@ get_arbitrary_border_color (StThemeNode   *node,
     st_theme_node_get_border_color (node, ST_SIDE_TOP, color);
 }
 
-static CoglHandle
-st_theme_node_render_gradient (StThemeNode *node)
+static gboolean
+st_theme_node_has_visible_outline (StThemeNode *node)
 {
-  CoglHandle texture;
-  int radius[4], i;
-  cairo_t *cr;
-  cairo_surface_t *surface;
+  if (node->background_color.alpha > 0)
+    return TRUE;
+
+  if (node->background_gradient_end.alpha > 0)
+    return TRUE;
+
+  if (node->border_radius[ST_CORNER_TOPLEFT] > 0 ||
+      node->border_radius[ST_CORNER_TOPRIGHT] > 0 ||
+      node->border_radius[ST_CORNER_BOTTOMLEFT] > 0 ||
+      node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0)
+    return TRUE;
+
+  if (node->border_width[ST_SIDE_TOP] > 0 ||
+      node->border_width[ST_SIDE_LEFT] > 0 ||
+      node->border_width[ST_SIDE_RIGHT] > 0 ||
+      node->border_width[ST_SIDE_BOTTOM] > 0)
+    return TRUE;
+
+  return FALSE;
+}
+
+static cairo_pattern_t *
+create_cairo_pattern_of_background_gradient (StThemeNode *node)
+{
   cairo_pattern_t *pattern;
-  ClutterColor border_color;
-  int border_width[4];
-  guint rowstride;
-  guchar *data;
 
-  rowstride = cairo_format_stride_for_width (CAIRO_FORMAT_ARGB32, node->alloc_width);
-  data = g_new0 (guchar, node->alloc_height * rowstride);
-  surface = cairo_image_surface_create_for_data (data,
-                                                 CAIRO_FORMAT_ARGB32,
-                                                 node->alloc_width,
-                                                 node->alloc_height,
-                                                 rowstride);
-  cr = cairo_create (surface);
-
-  /* TODO - support non-uniform border colors */
-  get_arbitrary_border_color (node, &border_color);
-
-  for (i = 0; i < 4; i++)
-    {
-      border_width[i] = st_theme_node_get_border_width (node, i);
-
-      radius[i] = st_theme_node_get_border_radius (node, i);
-    }
+  g_return_val_if_fail (node->background_gradient_type != ST_GRADIENT_NONE,
+                        NULL);
 
   if (node->background_gradient_type == ST_GRADIENT_VERTICAL)
     pattern = cairo_pattern_create_linear (0, 0, 0, node->alloc_height);
@@ -482,45 +482,374 @@ st_theme_node_render_gradient (StThemeNode *node)
                                      node->background_gradient_end.green / 255.,
                                      node->background_gradient_end.blue / 255.,
                                      node->background_gradient_end.alpha / 255.);
+  return pattern;
+}
+
+static cairo_pattern_t *
+create_cairo_pattern_of_background_image (StThemeNode *node,
+                                          gboolean    *needs_background_fill)
+{
+  cairo_surface_t *surface;
+  cairo_pattern_t *pattern;
+  cairo_content_t  content;
+  cairo_matrix_t   matrix;
+  const char *file;
+  double height_ratio, width_ratio;
+  int file_width;
+  int file_height;
+
+  StTextureCache *texture_cache;
+
+  file = st_theme_node_get_background_image (node);
+
+  texture_cache = st_texture_cache_get_default ();
+
+  surface = st_texture_cache_load_file_to_cairo_surface (texture_cache, file);
+
+  if (surface == NULL)
+    return NULL;
+
+  g_assert (cairo_surface_get_type (surface) == CAIRO_SURFACE_TYPE_IMAGE);
+
+  content = cairo_surface_get_content (surface);
+  pattern = cairo_pattern_create_for_surface (surface);
+
+  file_width = cairo_image_surface_get_width (surface);
+  file_height = cairo_image_surface_get_height (surface);
+
+  height_ratio = file_height / node->alloc_height;
+  width_ratio = file_width / node->alloc_width;
+
+  *needs_background_fill = TRUE;
+  if ((file_width > node->alloc_width || file_height > node->alloc_height)
+      && !node->background_position_set)
+    {
+      double scale_factor;
+      double x_offset, y_offset;
+
+      if (width_ratio > height_ratio)
+        {
+          double scaled_height;
+
+          /* center vertically */
+
+          scale_factor = width_ratio;
+          scaled_height = file_height / scale_factor;
+
+          x_offset = 0.;
+          y_offset = - (node->alloc_height / 2. - scaled_height / 2.);
+        }
+      else
+        {
+          double scaled_width;
+
+          /* center horizontally */
+
+          scale_factor = height_ratio;
+          scaled_width = file_width / scale_factor;
+
+          y_offset = 0.;
+          x_offset = - (node->alloc_width / 2. - scaled_width / 2.);
+        }
+
+      cairo_matrix_init_translate (&matrix, x_offset, y_offset);
+      cairo_matrix_scale (&matrix, scale_factor, scale_factor);
+
+      cairo_pattern_set_matrix (pattern, &matrix);
+
+      /* If it's opaque, and when scaled, fills up the entire allocated
+       * area, then don't bother doing a background fill first
+       */
+      if (content != CAIRO_CONTENT_COLOR_ALPHA && width_ratio == height_ratio)
+        *needs_background_fill = FALSE;
+    }
+  else
+    {
+      double x_offset, y_offset;
+
+      if (node->background_position_set)
+        {
+          x_offset = -node->background_position_x;
+          y_offset = -node->background_position_y;
+        }
+      else
+        {
+          if (node->alloc_width > file_width)
+            x_offset = - (node->alloc_width / 2.0 - file_width / 2.0);
+          else
+            x_offset = - (file_width / 2.0 - node->alloc_width / 2.0);
+
+          if (node->alloc_height > file_height)
+            y_offset = - (node->alloc_height / 2.0 - file_height / 2.0);
+          else
+            y_offset = - (file_height / 2.0 - node->alloc_height / 2.0);
+        }
+
+      /* If it's opaque, and when translated, fills up the entire allocated
+       * area, then don't bother doing a background fill first
+       */
+      if (content != CAIRO_CONTENT_COLOR_ALPHA
+          && -x_offset <= 0
+          && -x_offset + file_width >= node->alloc_width
+          && -y_offset <= 0
+          && -y_offset + file_height >= node->alloc_height)
+        *needs_background_fill = FALSE;
+
+      cairo_matrix_init_translate (&matrix, x_offset, y_offset);
+      cairo_pattern_set_matrix (pattern, &matrix);
+    }
+
+  return pattern;
+}
+
+static void
+paint_background_image_shadow_to_cairo_context (StThemeNode     *node,
+                                                StShadow        *shadow_spec,
+                                                cairo_pattern_t *pattern,
+                                                cairo_t         *cr,
+                                                cairo_path_t    *interior_path,
+                                                cairo_path_t    *outline_path,
+                                                int              x,
+                                                int              y,
+                                                int              width,
+                                                int              height)
+{
+  cairo_pattern_t *shadow_pattern;
+
+  g_assert (shadow_spec != NULL);
+  g_assert (pattern != NULL);
+
+  if (outline_path != NULL)
+    {
+      cairo_surface_t *clipped_surface;
+      cairo_pattern_t *clipped_pattern;
+      cairo_t *temp_cr;
+
+      /* Prerender the pattern to a temporary surface,
+       * so it's properly clipped before we create a shadow from it
+       */
+      clipped_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
+      temp_cr = cairo_create (clipped_surface);
+
+      cairo_set_operator (temp_cr, CAIRO_OPERATOR_CLEAR);
+      cairo_paint (temp_cr);
+      cairo_set_operator (temp_cr, CAIRO_OPERATOR_SOURCE);
+
+      if (interior_path != NULL)
+        {
+          cairo_append_path (temp_cr, interior_path);
+          cairo_clip (temp_cr);
+        }
+
+      cairo_append_path (temp_cr, outline_path);
+      cairo_translate (temp_cr, x, y);
+      cairo_set_source (temp_cr, pattern);
+      cairo_clip (temp_cr);
+      cairo_paint (temp_cr);
+      cairo_destroy (temp_cr);
+
+      clipped_pattern = cairo_pattern_create_for_surface (clipped_surface);
+      cairo_surface_destroy (clipped_surface);
+
+      shadow_pattern = _st_create_shadow_cairo_pattern (shadow_spec,
+                                                        clipped_pattern);
+      cairo_pattern_destroy (clipped_pattern);
+    }
+  else
+    {
+      shadow_pattern = _st_create_shadow_cairo_pattern (shadow_spec,
+                                                        pattern);
+    }
+
+  /* Stamp the shadow pattern out in the appropriate color
+   * in a new layer
+   */
+  cairo_push_group (cr);
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_rgba (cr,
+                         shadow_spec->color.red / 255.0,
+                         shadow_spec->color.green / 255.0,
+                         shadow_spec->color.blue / 255.0,
+                         shadow_spec->color.alpha / 255.0);
+  cairo_paint (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_DEST_IN);
+
+  cairo_set_source (cr, shadow_pattern);
+  cairo_paint (cr);
+  cairo_pattern_destroy (shadow_pattern);
+
+  cairo_pop_group_to_source (cr);
+
+  /* mask and merge the shadow
+   */
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_save (cr);
+  if (interior_path != NULL)
+    {
+      /* If there are borders, clip the shadow to the interior
+       * of the borders
+       */
+      cairo_append_path (cr, interior_path);
+      cairo_clip (cr);
+    }
+  else if (outline_path != NULL)
+    {
+      /* If there is a visible outline, clip the shadow to
+       * that outline
+       */
+      cairo_append_path (cr, outline_path);
+      cairo_clip (cr);
+    }
+
+  cairo_paint (cr);
+  cairo_restore (cr);
+}
+
+/* In order for borders to be smoothly blended with non-solid backgrounds,
+ * we need to use cairo.  This function is a slow fallback path for those
+ * cases (gradients, background images, etc).
+ */
+static CoglHandle
+st_theme_node_render_background_with_border (StThemeNode *node)
+{
+  StBorderImage *border_image;
+  CoglHandle texture;
+  int radius[4], i;
+  cairo_t *cr;
+  cairo_surface_t *surface;
+  StShadow *shadow_spec;
+  cairo_pattern_t *pattern = NULL;
+  cairo_path_t *outline_path = NULL;
+  gboolean draw_solid_background = TRUE;
+  gboolean draw_background_image_shadow = FALSE;
+  gboolean has_visible_outline;
+  ClutterColor border_color;
+  int border_width[4];
+  guint rowstride;
+  guchar *data;
+  ClutterActorBox actor_box;
+  ClutterActorBox paint_box;
+  cairo_path_t *interior_path = NULL;
+
+  border_image = st_theme_node_get_border_image (node);
+
+  shadow_spec = st_theme_node_get_background_image_shadow (node);
+
+  actor_box.x1 = 0;
+  actor_box.x2 = node->alloc_width;
+  actor_box.y1 = 0;
+  actor_box.y2 = node->alloc_height;
+
+  /* If there's a background image shadow, we
+   * may need to create an image bigger than the nodes
+   * allocation
+   */
+  st_theme_node_get_paint_box (node, &actor_box, &paint_box);
+
+  /* translate the boxes so the paint box is at 0,0
+  */
+  actor_box.x1 += - paint_box.x1;
+  actor_box.x2 += - paint_box.x1;
+  actor_box.y1 += - paint_box.y1;
+  actor_box.y2 += - paint_box.y1;
+
+  paint_box.x2 += - paint_box.x1;
+  paint_box.x1 += - paint_box.x1;
+  paint_box.y2 += - paint_box.y1;
+  paint_box.y1 += - paint_box.y1;
+
+  rowstride = cairo_format_stride_for_width (CAIRO_FORMAT_ARGB32,
+                                             paint_box.x2 - paint_box.x1);
+  data = g_new0 (guchar, (paint_box.y2 - paint_box.y1) * rowstride);
+  surface = cairo_image_surface_create_for_data (data,
+                                                 CAIRO_FORMAT_ARGB32,
+                                                 paint_box.x2 - paint_box.x1,
+                                                 paint_box.y2 - paint_box.y1,
+                                                 rowstride);
+  cr = cairo_create (surface);
+
+  /* TODO - support non-uniform border colors */
+  get_arbitrary_border_color (node, &border_color);
+
+  for (i = 0; i < 4; i++)
+    {
+      border_width[i] = st_theme_node_get_border_width (node, i);
+
+      radius[i] = st_theme_node_get_border_radius (node, i);
+    }
+
+  /* Note we don't support translucent background images on top
+   * of gradients. It's strictly either/or.
+   */
+  if (node->background_gradient_type != ST_GRADIENT_NONE)
+    {
+      pattern = create_cairo_pattern_of_background_gradient (node);
+      draw_solid_background = FALSE;
+    }
+  else
+    {
+      const char *background_image;
+
+      background_image = st_theme_node_get_background_image (node);
+
+      if (background_image != NULL)
+        {
+          pattern = create_cairo_pattern_of_background_image (node,
+                                                              &draw_solid_background);
+          if (shadow_spec && pattern != NULL)
+            draw_background_image_shadow = TRUE;
+        }
+    }
+
+  if (pattern == NULL)
+    draw_solid_background = TRUE;
+
+  has_visible_outline = st_theme_node_has_visible_outline (node);
 
   /* Create a path for the background's outline first */
   if (radius[ST_CORNER_TOPLEFT] > 0)
     cairo_arc (cr,
-               radius[ST_CORNER_TOPLEFT],
-               radius[ST_CORNER_TOPLEFT],
+               actor_box.x1 + radius[ST_CORNER_TOPLEFT],
+               actor_box.y1 + radius[ST_CORNER_TOPLEFT],
                radius[ST_CORNER_TOPLEFT], M_PI, 3 * M_PI / 2);
   else
-    cairo_move_to (cr, 0, 0);
-  cairo_line_to (cr, node->alloc_width - radius[ST_CORNER_TOPRIGHT], 0);
+    cairo_move_to (cr, actor_box.x1, actor_box.y1);
+  cairo_line_to (cr, actor_box.x2 - radius[ST_CORNER_TOPRIGHT], actor_box.x1);
   if (radius[ST_CORNER_TOPRIGHT] > 0)
     cairo_arc (cr,
-               node->alloc_width - radius[ST_CORNER_TOPRIGHT],
-               radius[ST_CORNER_TOPRIGHT],
+               actor_box.x2 - radius[ST_CORNER_TOPRIGHT],
+               actor_box.x1 + radius[ST_CORNER_TOPRIGHT],
                radius[ST_CORNER_TOPRIGHT], 3 * M_PI / 2, 2 * M_PI);
-  cairo_line_to (cr, node->alloc_width, node->alloc_height - radius[ST_CORNER_BOTTOMRIGHT]);
+  cairo_line_to (cr, actor_box.x2, actor_box.y2 - radius[ST_CORNER_BOTTOMRIGHT]);
   if (radius[ST_CORNER_BOTTOMRIGHT] > 0)
     cairo_arc (cr,
-               node->alloc_width - radius[ST_CORNER_BOTTOMRIGHT],
-               node->alloc_height - radius[ST_CORNER_BOTTOMRIGHT],
+               actor_box.x2 - radius[ST_CORNER_BOTTOMRIGHT],
+               actor_box.y2 - radius[ST_CORNER_BOTTOMRIGHT],
                radius[ST_CORNER_BOTTOMRIGHT], 0, M_PI / 2);
-  cairo_line_to (cr, radius[ST_CORNER_BOTTOMLEFT], node->alloc_height);
+  cairo_line_to (cr, actor_box.x1 + radius[ST_CORNER_BOTTOMLEFT], actor_box.y2);
   if (radius[ST_CORNER_BOTTOMLEFT] > 0)
     cairo_arc (cr,
-               radius[ST_CORNER_BOTTOMLEFT],
-               node->alloc_height - radius[ST_CORNER_BOTTOMLEFT],
+               actor_box.x1 + radius[ST_CORNER_BOTTOMLEFT],
+               actor_box.y2 - radius[ST_CORNER_BOTTOMLEFT],
                radius[ST_CORNER_BOTTOMLEFT], M_PI / 2, M_PI);
   cairo_close_path (cr);
 
+  outline_path = cairo_copy_path (cr);
 
-  /* If we have a border, we fill the outline with the border
-   * color and create the inline shape for the background gradient;
+  /* If we have a solid border, we fill the outline shape with the border
+   * color and create the inline shape for the background;
    * otherwise the outline shape is filled with the background
-   * gradient directly
+   * directly
    */
-  if (border_width[ST_SIDE_TOP] > 0 ||
-      border_width[ST_SIDE_RIGHT] > 0 ||
-      border_width[ST_SIDE_BOTTOM] > 0 ||
-      border_width[ST_SIDE_LEFT] > 0)
+  if (border_image == NULL &&
+      (border_width[ST_SIDE_TOP] > 0 ||
+       border_width[ST_SIDE_RIGHT] > 0 ||
+       border_width[ST_SIDE_BOTTOM] > 0 ||
+       border_width[ST_SIDE_LEFT] > 0))
     {
       cairo_set_source_rgba (cr,
                              border_color.red / 255.,
@@ -532,76 +861,124 @@ st_theme_node_render_gradient (StThemeNode *node)
       if (radius[ST_CORNER_TOPLEFT] > MAX(border_width[ST_SIDE_TOP],
                                           border_width[ST_SIDE_LEFT]))
         elliptical_arc (cr,
-                        radius[ST_CORNER_TOPLEFT],
-                        radius[ST_CORNER_TOPLEFT],
+                        actor_box.x1 + radius[ST_CORNER_TOPLEFT],
+                        actor_box.y1 + radius[ST_CORNER_TOPLEFT],
                         radius[ST_CORNER_TOPLEFT] - border_width[ST_SIDE_LEFT],
                         radius[ST_CORNER_TOPLEFT] - border_width[ST_SIDE_TOP],
                         M_PI, 3 * M_PI / 2);
       else
         cairo_move_to (cr,
-                       border_width[ST_SIDE_LEFT],
-                       border_width[ST_SIDE_TOP]);
+                       actor_box.x1 + border_width[ST_SIDE_LEFT],
+                       actor_box.y1 + border_width[ST_SIDE_TOP]);
 
       cairo_line_to (cr,
-                     node->alloc_width - MAX(radius[ST_CORNER_TOPRIGHT], border_width[ST_SIDE_RIGHT]),
-                     border_width[ST_SIDE_TOP]);
+                     actor_box.x2 - MAX(radius[ST_CORNER_TOPRIGHT], border_width[ST_SIDE_RIGHT]),
+                     actor_box.y1 + border_width[ST_SIDE_TOP]);
 
       if (radius[ST_CORNER_TOPRIGHT] > MAX(border_width[ST_SIDE_TOP],
                                            border_width[ST_SIDE_RIGHT]))
         elliptical_arc (cr,
-                        node->alloc_width - radius[ST_CORNER_TOPRIGHT],
-                        radius[ST_CORNER_TOPRIGHT],
+                        actor_box.x2 - radius[ST_CORNER_TOPRIGHT],
+                        actor_box.y1 + radius[ST_CORNER_TOPRIGHT],
                         radius[ST_CORNER_TOPRIGHT] - border_width[ST_SIDE_RIGHT],
                         radius[ST_CORNER_TOPRIGHT] - border_width[ST_SIDE_TOP],
                         3 * M_PI / 2, 2 * M_PI);
       else
         cairo_line_to (cr,
-                       node->alloc_width - border_width[ST_SIDE_RIGHT],
-                       border_width[ST_SIDE_TOP]);
+                       actor_box.x2 - border_width[ST_SIDE_RIGHT],
+                       actor_box.y1 + border_width[ST_SIDE_TOP]);
 
       cairo_line_to (cr,
-                     node->alloc_width - border_width[ST_SIDE_RIGHT],
-                     node->alloc_height - MAX(radius[ST_CORNER_BOTTOMRIGHT], border_width[ST_SIDE_BOTTOM]));
+                     actor_box.x2 - border_width[ST_SIDE_RIGHT],
+                     actor_box.y2 - MAX(radius[ST_CORNER_BOTTOMRIGHT], border_width[ST_SIDE_BOTTOM]));
 
       if (radius[ST_CORNER_BOTTOMRIGHT] > MAX(border_width[ST_SIDE_BOTTOM],
                                               border_width[ST_SIDE_RIGHT]))
         elliptical_arc (cr,
-                        node->alloc_width - radius[ST_CORNER_BOTTOMRIGHT],
-                        node->alloc_height - radius[ST_CORNER_BOTTOMRIGHT],
+                        actor_box.x2 - radius[ST_CORNER_BOTTOMRIGHT],
+                        actor_box.y2 - radius[ST_CORNER_BOTTOMRIGHT],
                         radius[ST_CORNER_BOTTOMRIGHT] - border_width[ST_SIDE_RIGHT],
                         radius[ST_CORNER_BOTTOMRIGHT] - border_width[ST_SIDE_BOTTOM],
                         0, M_PI / 2);
       else
         cairo_line_to (cr,
-                       node->alloc_width - border_width[ST_SIDE_RIGHT],
-                       node->alloc_height - border_width[ST_SIDE_BOTTOM]);
+                       actor_box.x2 - border_width[ST_SIDE_RIGHT],
+                       actor_box.y2 - border_width[ST_SIDE_BOTTOM]);
 
       cairo_line_to (cr,
                      MAX(radius[ST_CORNER_BOTTOMLEFT], border_width[ST_SIDE_LEFT]),
-                     node->alloc_height - border_width[ST_SIDE_BOTTOM]);
+                     actor_box.y2 - border_width[ST_SIDE_BOTTOM]);
 
       if (radius[ST_CORNER_BOTTOMLEFT] > MAX(border_width[ST_SIDE_BOTTOM],
                                              border_width[ST_SIDE_LEFT]))
         elliptical_arc (cr,
-                        radius[ST_CORNER_BOTTOMLEFT],
-                        node->alloc_height - radius[ST_CORNER_BOTTOMLEFT],
+                        actor_box.x1 + radius[ST_CORNER_BOTTOMLEFT],
+                        actor_box.y2 - radius[ST_CORNER_BOTTOMLEFT],
                         radius[ST_CORNER_BOTTOMLEFT] - border_width[ST_SIDE_LEFT],
                         radius[ST_CORNER_BOTTOMLEFT] - border_width[ST_SIDE_BOTTOM],
                         M_PI / 2, M_PI);
       else
         cairo_line_to (cr,
-                       border_width[ST_SIDE_LEFT],
-                       node->alloc_height - border_width[ST_SIDE_BOTTOM]);
+                       actor_box.x1 + border_width[ST_SIDE_LEFT],
+                       actor_box.y2 - border_width[ST_SIDE_BOTTOM]);
 
       cairo_close_path (cr);
+
+      interior_path = cairo_copy_path (cr);
+
+      /* clip drawing to the region inside of the borders
+       */
+      cairo_clip (cr);
+
+      /* But fill the pattern as if it started at the edge of outline,
+       * behind the borders.  This is similar to
+       * background-clip: border-box; semantics.
+       */
+      cairo_append_path (cr, outline_path);
     }
 
-  cairo_set_source (cr, pattern);
-  cairo_fill (cr);
+  if (draw_solid_background)
+    {
+      cairo_set_source_rgba (cr,
+                             node->background_color.red / 255.,
+                             node->background_color.green / 255.,
+                             node->background_color.blue / 255.,
+                             node->background_color.alpha / 255.);
+      cairo_fill_preserve (cr);
+    }
 
-  cairo_pattern_destroy (pattern);
+  if (draw_background_image_shadow)
+    {
+      paint_background_image_shadow_to_cairo_context (node,
+                                                      shadow_spec,
+                                                      pattern,
+                                                      cr,
+                                                      interior_path,
+                                                      has_visible_outline?  outline_path : NULL,
+                                                      actor_box.x1,
+                                                      actor_box.y1,
+                                                      paint_box.x2 - paint_box.x1,
+                                                      paint_box.y2 - paint_box.y1);
+      cairo_append_path (cr, outline_path);
+    }
 
-  texture = cogl_texture_new_from_data (node->alloc_width, node->alloc_height,
+  cairo_translate (cr, actor_box.x1, actor_box.y1);
+
+  if (pattern != NULL)
+    {
+      cairo_set_source (cr, pattern);
+      cairo_fill (cr);
+      cairo_pattern_destroy (pattern);
+    }
+
+  if (outline_path != NULL)
+    cairo_path_destroy (outline_path);
+
+  if (interior_path != NULL)
+    cairo_path_destroy (interior_path);
+
+  texture = cogl_texture_new_from_data (paint_box.x2 - paint_box.x1,
+                                        paint_box.y2 - paint_box.y1,
                                         COGL_TEXTURE_NONE,
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
                                         COGL_PIXEL_FORMAT_BGRA_8888_PRE,
@@ -633,12 +1010,16 @@ _st_theme_node_free_drawing_state (StThemeNode  *node)
     cogl_handle_unref (node->background_material);
   if (node->background_shadow_material != COGL_INVALID_HANDLE)
     cogl_handle_unref (node->background_shadow_material);
-  if (node->border_texture != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->border_texture);
-  if (node->border_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->border_material);
-  if (node->border_shadow_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->border_shadow_material);
+  if (node->border_slices_texture != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->border_slices_texture);
+  if (node->border_slices_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->border_slices_material);
+  if (node->prerendered_texture != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->prerendered_texture);
+  if (node->prerendered_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->prerendered_material);
+  if (node->box_shadow_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->box_shadow_material);
 
   for (corner_id = 0; corner_id < 4; corner_id++)
     if (node->corner_material[corner_id] != COGL_INVALID_HANDLE)
@@ -655,9 +1036,11 @@ _st_theme_node_init_drawing_state (StThemeNode *node)
   node->background_texture = COGL_INVALID_HANDLE;
   node->background_material = COGL_INVALID_HANDLE;
   node->background_shadow_material = COGL_INVALID_HANDLE;
-  node->border_shadow_material = COGL_INVALID_HANDLE;
-  node->border_texture = COGL_INVALID_HANDLE;
-  node->border_material = COGL_INVALID_HANDLE;
+  node->box_shadow_material = COGL_INVALID_HANDLE;
+  node->border_slices_texture = COGL_INVALID_HANDLE;
+  node->border_slices_material = COGL_INVALID_HANDLE;
+  node->prerendered_texture = COGL_INVALID_HANDLE;
+  node->prerendered_material = COGL_INVALID_HANDLE;
 
   for (corner_id = 0; corner_id < 4; corner_id++)
     node->corner_material[corner_id] = COGL_INVALID_HANDLE;
@@ -674,7 +1057,10 @@ st_theme_node_render_resources (StThemeNode   *node,
 {
   StTextureCache *texture_cache;
   StBorderImage *border_image;
-  StShadow *shadow_spec;
+  gboolean has_border;
+  gboolean has_border_radius;
+  StShadow *box_shadow_spec;
+  StShadow *background_image_shadow_spec;
   const char *background_image;
 
   texture_cache = st_texture_cache_get_default ();
@@ -691,39 +1077,68 @@ st_theme_node_render_resources (StThemeNode   *node,
   _st_theme_node_ensure_background (node);
   _st_theme_node_ensure_geometry (node);
 
-  shadow_spec = st_theme_node_get_shadow (node);
+  box_shadow_spec = st_theme_node_get_box_shadow (node);
+
+  if (node->border_width[ST_SIDE_TOP] > 0 ||
+      node->border_width[ST_SIDE_LEFT] > 0 ||
+      node->border_width[ST_SIDE_RIGHT] > 0 ||
+      node->border_width[ST_SIDE_BOTTOM] > 0)
+    has_border = TRUE;
+  else
+    has_border = FALSE;
+
+  if (node->border_radius[ST_CORNER_TOPLEFT] > 0 ||
+      node->border_radius[ST_CORNER_TOPRIGHT] > 0 ||
+      node->border_radius[ST_CORNER_BOTTOMLEFT] > 0 ||
+      node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0)
+    has_border_radius = TRUE;
+  else
+    has_border_radius = FALSE;
 
   /* Load referenced images from disk and draw anything we need with cairo now */
-
+  background_image = st_theme_node_get_background_image (node);
   border_image = st_theme_node_get_border_image (node);
+
   if (border_image)
     {
       const char *filename;
 
       filename = st_border_image_get_filename (border_image);
 
-      node->border_texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, filename);
-    }
-  else if (node->background_gradient_type != ST_GRADIENT_NONE)
-    {
-      node->border_texture = st_theme_node_render_gradient (node);
+      node->border_slices_texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, filename);
     }
 
-  if (node->border_texture)
-    node->border_material = _st_create_texture_material (node->border_texture);
+  if (node->border_slices_texture)
+    node->border_slices_material = _st_create_texture_material (node->border_slices_texture);
   else
-    node->border_material = COGL_INVALID_HANDLE;
+    node->border_slices_material = COGL_INVALID_HANDLE;
 
-  if (shadow_spec)
+  /* Use cairo to prerender the node if there is a gradient, or
+   * background image with borders and/or rounded corners,
+   * since we can't do those things easily with cogl.
+   *
+   * FIXME: if we could figure out ahead of time that a
+   * background image won't overlap with the node borders,
+   * then we could use cogl for that case.
+   */
+  if ((node->background_gradient_type != ST_GRADIENT_NONE)
+      || (background_image && (has_border || has_border_radius)))
+    node->prerendered_texture = st_theme_node_render_background_with_border (node);
+
+  if (node->prerendered_texture)
+    node->prerendered_material = _st_create_texture_material (node->prerendered_texture);
+  else
+    node->prerendered_material = COGL_INVALID_HANDLE;
+
+  if (box_shadow_spec)
     {
-      if (node->border_texture != COGL_INVALID_HANDLE)
-        node->border_shadow_material = _st_create_shadow_material (shadow_spec,
-                                                                   node->border_texture);
-      else if (node->background_color.alpha > 0 ||
-               node->border_width[ST_SIDE_TOP] > 0 ||
-               node->border_width[ST_SIDE_LEFT] > 0 ||
-               node->border_width[ST_SIDE_RIGHT] > 0 ||
-               node->border_width[ST_SIDE_BOTTOM] > 0)
+      if (node->border_slices_texture != COGL_INVALID_HANDLE)
+        node->box_shadow_material = _st_create_shadow_material (box_shadow_spec,
+                                                                node->border_slices_texture);
+      else if (node->prerendered_texture != COGL_INVALID_HANDLE)
+        node->box_shadow_material = _st_create_shadow_material (box_shadow_spec,
+                                                                node->prerendered_texture);
+      else if (node->background_color.alpha > 0 || has_border)
         {
           CoglHandle buffer, offscreen;
 
@@ -743,23 +1158,50 @@ st_theme_node_render_resources (StThemeNode   *node,
               cogl_pop_framebuffer ();
               cogl_handle_unref (offscreen);
 
-              node->border_shadow_material = _st_create_shadow_material (shadow_spec,
-                                                                         buffer);
+              node->box_shadow_material = _st_create_shadow_material (box_shadow_spec,
+                                                                      buffer);
             }
           cogl_handle_unref (buffer);
         }
     }
 
-  background_image = st_theme_node_get_background_image (node);
-  if (background_image != NULL)
+  background_image_shadow_spec = st_theme_node_get_background_image_shadow (node);
+  if (background_image != NULL && !has_border && !has_border_radius)
     {
+      CoglHandle texture;
 
-      node->background_texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, background_image);
+      texture = st_texture_cache_load_file_to_cogl_texture (texture_cache, background_image);
+
+      /* If no background position is specified, then we will automatically scale
+       * the background to fit within the node allocation. But, if a background
+       * position is specified, we won't scale the background, and it could
+       * potentially leak out of bounds. To prevent that, we subtexture from the
+       * in bounds area when necessary.
+       */
+      if (node->background_position_set &&
+          (cogl_texture_get_width (texture) > width ||
+           cogl_texture_get_height (texture) > height))
+        {
+          CoglHandle subtexture;
+
+          subtexture = cogl_texture_new_from_sub_texture (texture,
+                                                          0, 0,
+                                                          width - node->background_position_x,
+                                                          height - node->background_position_y);
+          cogl_handle_unref (texture);
+
+          node->background_texture = subtexture;
+        }
+      else
+        {
+          node->background_texture = texture;
+        }
+
       node->background_material = _st_create_texture_material (node->background_texture);
 
-      if (shadow_spec)
+      if (background_image_shadow_spec)
         {
-          node->background_shadow_material = _st_create_shadow_material (shadow_spec,
+          node->background_shadow_material = _st_create_shadow_material (background_image_shadow_spec,
                                                                          node->background_texture);
         }
     }
@@ -1069,8 +1511,8 @@ st_theme_node_paint_sliced_border_image (StThemeNode           *node,
   st_border_image_get_borders (border_image,
                                &border_left, &border_right, &border_top, &border_bottom);
 
-  img_width = cogl_texture_get_width (node->border_texture);
-  img_height = cogl_texture_get_height (node->border_texture);
+  img_width = cogl_texture_get_width (node->border_slices_texture);
+  img_height = cogl_texture_get_height (node->border_slices_texture);
 
   tx1 = border_left / img_width;
   tx2 = (img_width - border_right) / img_width;
@@ -1085,7 +1527,7 @@ st_theme_node_paint_sliced_border_image (StThemeNode           *node,
   if (ey < 0)
     ey = border_bottom;          /* FIXME ? */
 
-  material = node->border_material;
+  material = node->border_slices_material;
   cogl_material_set_color4ub (material,
                               paint_opacity, paint_opacity, paint_opacity, paint_opacity);
 
@@ -1230,40 +1672,57 @@ st_theme_node_paint (StThemeNode           *node,
    *  - The combination of border image and a non-zero border radius is
    *    not supported; the background color will be drawn with square
    *    corners.
-   *  - The combination of border image and a background gradient is not
-   *    supported; the background will be drawn as a solid color
-   *  - The background image is drawn above the border color or image,
-   *    not below it.
-   *  - We don't clip the background image to the (rounded) border area.
-   *
-   * The first three allow us to always draw with no more than a single
-   * border_image and a single background image above it.
+   *  - The background image is drawn above the border color, not below it.
+   *  - We clip the background image to the inside edges of the border
+   *    instead of the outside edges of the border (but position the image
+   *    such that it's aligned to the outside edges)
    */
 
-  if (node->border_shadow_material)
-    _st_paint_shadow_with_opacity (node->shadow,
-                                   node->border_shadow_material,
+  if (node->box_shadow_material)
+    _st_paint_shadow_with_opacity (node->box_shadow,
+                                   node->box_shadow_material,
                                    &allocation,
                                    paint_opacity);
 
-  if (node->border_material != COGL_INVALID_HANDLE)
+  if (node->prerendered_material != COGL_INVALID_HANDLE ||
+      node->border_slices_material != COGL_INVALID_HANDLE)
     {
-      /* Gradients and border images are mutually exclusive at this time */
-      if (node->background_gradient_type != ST_GRADIENT_NONE)
-        paint_material_with_opacity (node->border_material, &allocation, paint_opacity);
-      else
+      if (node->prerendered_material != COGL_INVALID_HANDLE)
+        {
+          ClutterActorBox paint_box;
+
+          st_theme_node_get_paint_box (node, &allocation, &paint_box);
+
+          paint_material_with_opacity (node->prerendered_material,
+                                       &paint_box,
+                                       paint_opacity);
+        }
+
+      if (node->border_slices_material != COGL_INVALID_HANDLE)
         st_theme_node_paint_sliced_border_image (node, &allocation, paint_opacity);
     }
   else
-    st_theme_node_paint_borders (node, box, paint_opacity);
+    {
+      st_theme_node_paint_borders (node, box, paint_opacity);
+    }
 
   st_theme_node_paint_outline (node, box, paint_opacity);
 
   if (node->background_texture != COGL_INVALID_HANDLE)
     {
       ClutterActorBox background_box;
+      gboolean has_visible_outline;
+
+      /* If the background doesn't have a border or opaque background,
+       * then we let its background image shadows leak out, but other
+       * wise we clip it.
+       */
+      has_visible_outline = st_theme_node_has_visible_outline (node);
 
       get_background_position (node, &allocation, &background_box);
+
+      if (has_visible_outline)
+        cogl_clip_push_rectangle (allocation.x1, allocation.y1, allocation.x2, allocation.y2);
 
       /* CSS based drop shadows
        *
@@ -1274,16 +1733,20 @@ st_theme_node_paint (StThemeNode           *node,
        * multiple shadows and allow for a more liberal placement of the color
        * parameter - its interpretation defers significantly in that the shadow's
        * shape is not determined by the bounding box, but by the CSS background
-       * image (we could exend this in the future to take other CSS properties
-       * like boder and background color into account).
+       * image. The drop shadows are allowed to escape the nodes allocation if
+       * there is nothing (like a border, or the edge of the background color)
+       * to logically confine it.
        */
       if (node->background_shadow_material != COGL_INVALID_HANDLE)
-        _st_paint_shadow_with_opacity (node->shadow,
+        _st_paint_shadow_with_opacity (node->background_image_shadow,
                                        node->background_shadow_material,
                                        &background_box,
                                        paint_opacity);
 
       paint_material_with_opacity (node->background_material, &background_box, paint_opacity);
+
+      if (has_visible_outline)
+        cogl_clip_pop ();
     }
 }
 
@@ -1316,16 +1779,20 @@ st_theme_node_copy_cached_paint_state (StThemeNode *node,
 
   if (other->background_shadow_material)
     node->background_shadow_material = cogl_handle_ref (other->background_shadow_material);
-  if (other->border_shadow_material)
-    node->border_shadow_material = cogl_handle_ref (other->border_shadow_material);
+  if (other->box_shadow_material)
+    node->box_shadow_material = cogl_handle_ref (other->box_shadow_material);
   if (other->background_texture)
     node->background_texture = cogl_handle_ref (other->background_texture);
   if (other->background_material)
     node->background_material = cogl_handle_ref (other->background_material);
-  if (other->border_texture)
-    node->border_texture = cogl_handle_ref (other->border_texture);
-  if (other->border_material)
-    node->border_material = cogl_handle_ref (other->border_material);
+  if (other->border_slices_texture)
+    node->border_slices_texture = cogl_handle_ref (other->border_slices_texture);
+  if (other->border_slices_material)
+    node->border_slices_material = cogl_handle_ref (other->border_slices_material);
+  if (other->prerendered_texture)
+    node->prerendered_texture = cogl_handle_ref (other->prerendered_texture);
+  if (other->prerendered_material)
+    node->prerendered_material = cogl_handle_ref (other->prerendered_material);
   for (corner_id = 0; corner_id < 4; corner_id++)
     if (other->corner_material[corner_id])
       node->corner_material[corner_id] = cogl_handle_ref (other->corner_material[corner_id]);

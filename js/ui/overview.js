@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
@@ -31,6 +32,18 @@ const ANIMATION_TIME = 0.25;
 const DASH_SPLIT_FRACTION = 0.1;
 
 const DND_WINDOW_SWITCH_TIMEOUT = 1250;
+
+const SwipeScrollDirection = {
+    NONE: 0,
+    HORIZONTAL: 1,
+    VERTICAL: 2
+};
+
+const SwipeScrollResult = {
+    CANCEL: 0,
+    SWIPE: 1,
+    CLICK: 2
+};
 
 function ShellInfo() {
     this._init();
@@ -98,7 +111,8 @@ Overview.prototype = {
 
         this._spacing = 0;
 
-        this._group = new St.Group({ name: 'overview' });
+        this._group = new St.Group({ name: 'overview',
+                                     reactive: true });
         this._group._delegate = this;
         this._group.connect('style-changed',
             Lang.bind(this, function() {
@@ -109,6 +123,11 @@ Overview.prototype = {
                     this.relayout();
                 }
             }));
+
+        this._scrollDirection = SwipeScrollDirection.NONE;
+        this._scrollAdjustment = null;
+        this._capturedEventId = 0;
+        this._buttonPressId = 0;
 
         this.shellInfo = new ShellInfo();
 
@@ -154,7 +173,7 @@ Overview.prototype = {
         this._dash.actor.add_constraint(this.viewSelector.constrainY);
         this._dash.actor.add_constraint(this.viewSelector.constrainHeight);
 
-        this._coverPane.lower_bottom();
+        this._coverPane.hide();
 
         // XDND
         this._dragMonitor = {
@@ -231,6 +250,149 @@ Overview.prototype = {
         }
 
         return DND.DragMotionResult.CONTINUE;
+    },
+
+    setScrollAdjustment: function(adjustment, direction) {
+        this._scrollAdjustment = adjustment;
+        if (this._scrollAdjustment == null)
+            this._scrollDirection = SwipeScrollDirection.NONE;
+        else
+            this._scrollDirection = direction;
+    },
+
+    _onButtonPress: function(actor, event) {
+        if (this._scrollDirection == SwipeScrollDirection.NONE)
+            return;
+
+        let [stageX, stageY] = event.get_coords();
+        this._dragStartX = this._dragX = stageX;
+        this._dragStartY = this._dragY = stageY;
+        this._dragStartValue = this._scrollAdjustment.value;
+        this._lastMotionTime = -1; // used to track "stopping" while swipe-scrolling
+        this._capturedEventId = global.stage.connect('captured-event',
+            Lang.bind(this, this._onCapturedEvent));
+        this.emit('swipe-scroll-begin');
+    },
+
+    _onCapturedEvent: function(actor, event) {
+        let stageX, stageY;
+        switch(event.type()) {
+            case Clutter.EventType.BUTTON_RELEASE:
+                [stageX, stageY] = event.get_coords();
+
+                // default to snapping back to the original value
+                let newValue = this._dragStartValue;
+
+                let minValue = this._scrollAdjustment.lower;
+                let maxValue = this._scrollAdjustment.upper - this._scrollAdjustment.page_size;
+
+                let direction;
+                if (this._scrollDirection == SwipeScrollDirection.HORIZONTAL) {
+                    direction = stageX > this._dragStartX ? -1 : 1;
+                    if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+                        direction *= -1;
+                } else {
+                    direction = stageY > this._dragStartY ? -1 : 1;
+                }
+
+                // We default to scroll a full page size; both the first
+                // and the last page may be smaller though, so we need to
+                // adjust difference in those cases.
+                let difference = direction * this._scrollAdjustment.page_size;
+                if (this._dragStartValue + difference > maxValue)
+                    difference = maxValue - this._dragStartValue;
+                else if (this._dragStartValue + difference < minValue)
+                    difference = minValue - this._dragStartValue;
+
+                // If the user has moved more than half the scroll
+                // difference, we want to "settle" to the new value
+                // even if the user stops dragging rather "throws" by
+                // releasing during the drag.
+                let distance = this._dragStartValue - this._scrollAdjustment.value;
+                let noStop = Math.abs(distance / difference) > 0.5;
+
+                // We detect if the user is stopped by comparing the
+                // timestamp of the button release with the timestamp of
+                // the last motion. Experimentally, a difference of 0 or 1
+                // millisecond indicates that the mouse is in motion, a
+                // larger difference indicates that the mouse is stopped.
+                if ((this._lastMotionTime > 0 &&
+                     this._lastMotionTime > event.get_time() - 2) ||
+                    noStop) {
+                    if (this._dragStartValue + difference >= minValue &&
+                        this._dragStartValue + difference <= maxValue)
+                        newValue += difference;
+                }
+
+                // See if the user has moved the mouse enough to trigger
+                // a drag
+                let threshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
+                if (Math.abs(stageX - this._dragStartX) < threshold &&
+                    Math.abs(stageY - this._dragStartY) < threshold) {
+                    // no motion? It's a click!
+                    this.emit('swipe-scroll-end', SwipeScrollResult.CLICK);
+                } else {
+                    let result;
+
+                    if (newValue == this._dragStartValue)
+                        result = SwipeScrollResult.CANCEL;
+                    else
+                        result = SwipeScrollResult.SWIPE;
+
+                    // The event capture handler is disconnected
+                    // while scrolling to the final position, so
+                    // to avoid undesired prelights we raise
+                    // the cover pane.
+                    this._coverPane.raise_top();
+                    this._coverPane.show();
+
+                    Tweener.addTween(this._scrollAdjustment,
+                                     { value: newValue,
+                                       time: ANIMATION_TIME,
+                                       transition: 'easeOutQuad',
+                                       onCompleteScope: this,
+                                       onComplete: function() {
+                                          this._coverPane.hide();
+                                          this.emit('swipe-scroll-end',
+                                                    result);
+                                       }
+                                     });
+                }
+
+                global.stage.disconnect(this._capturedEventId);
+                this._capturedEventId = 0;
+
+                return true;
+
+            case Clutter.EventType.MOTION:
+                [stageX, stageY] = event.get_coords();
+                let dx = this._dragX - stageX;
+                let dy = this._dragY - stageY;
+                let primary = global.get_primary_monitor();
+
+                if (this._scrollDirection == SwipeScrollDirection.HORIZONTAL) {
+                    if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+                        this._scrollAdjustment.value -= (dx / primary.width) * this._scrollAdjustment.page_size;
+                    else
+                        this._scrollAdjustment.value += (dx / primary.width) * this._scrollAdjustment.page_size;
+                } else {
+                    this._scrollAdjustment.value += (dy / primary.height) * this._scrollAdjustment.page_size;
+                }
+
+                this._dragX = stageX;
+                this._dragY = stageY;
+                this._lastMotionTime = event.get_time();
+
+                return true;
+
+            // Block enter/leave events to avoid prelights
+            // during swipe-scroll
+            case Clutter.EventType.ENTER:
+            case Clutter.EventType.LEAVE:
+                return true;
+        }
+
+        return false;
     },
 
     _getDesktopClone: function() {
@@ -335,6 +497,9 @@ Overview.prototype = {
         this._modal = true;
         this._animateVisible();
         this._shown = true;
+
+        this._buttonPressId = this._group.connect('button-press-event',
+            Lang.bind(this, this._onButtonPress));
     },
 
     _animateVisible: function() {
@@ -402,6 +567,7 @@ Overview.prototype = {
                          });
 
         this._coverPane.raise_top();
+        this._coverPane.show();
         this.emit('showing');
     },
 
@@ -432,6 +598,10 @@ Overview.prototype = {
 
         this._shown = false;
         this._syncInputMode();
+
+        if (this._buttonPressId > 0)
+            this._group.disconnect(this._buttonPressId);
+        this._buttonPressId = 0;
     },
 
     // hideTemporarily:
@@ -541,13 +711,14 @@ Overview.prototype = {
                          });
 
         this._coverPane.raise_top();
+        this._coverPane.show();
         this.emit('hiding');
     },
 
     _showDone: function() {
         this.animationInProgress = false;
         this._desktopFade.hide();
-        this._coverPane.lower_bottom();
+        this._coverPane.hide();
 
         this.emit('shown');
         // Handle any calls to hide* while we were showing
@@ -575,7 +746,7 @@ Overview.prototype = {
         this.animationInProgress = false;
         this._hideInProgress = false;
 
-        this._coverPane.lower_bottom();
+        this._coverPane.hide();
 
         this.emit('hidden');
         // Handle any calls to show* while we were hiding

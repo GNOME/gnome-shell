@@ -1317,7 +1317,6 @@ shell_app_info_launch_full (ShellAppInfo *info,
   gboolean ret;
   ShellGlobal *global;
   MetaScreen *screen;
-  MetaDisplay *display;
 
   if (startup_id)
     *startup_id = NULL;
@@ -1353,7 +1352,6 @@ shell_app_info_launch_full (ShellAppInfo *info,
 
   global = shell_global_get ();
   screen = shell_global_get_screen (global);
-  display = meta_screen_get_display (screen);
 
   if (timestamp == 0)
     timestamp = clutter_get_current_event_time ();

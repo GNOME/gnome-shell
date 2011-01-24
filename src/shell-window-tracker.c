@@ -825,11 +825,8 @@ on_focus_window_changed (MetaDisplay        *display,
                          GParamSpec         *spec,
                          ShellWindowTracker *tracker)
 {
-  MetaScreen *screen;
   MetaWindow *new_focus_win;
   ShellApp *new_focus_app;
-
-  screen = shell_global_get_screen (shell_global_get ());
 
   new_focus_win = meta_display_get_focus_window (display);
   new_focus_app = new_focus_win ? g_hash_table_lookup (tracker->window_to_app, new_focus_win) : NULL;

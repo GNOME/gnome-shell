@@ -45,6 +45,8 @@ WorkspacesView.prototype = {
                 this._spacing = node.get_length('spacing');
                 this._computeWorkspacePositions();
             }));
+        this.actor.connect('notify::mapped',
+                           Lang.bind(this, this._onMappedChanged));
 
         this._width = width;
         this._height = height;
@@ -55,10 +57,9 @@ WorkspacesView.prototype = {
         this._activeWorkspaceY = 0; // y offset of active ws while dragging
         this._lostWorkspaces = [];
         this._animating = false; // tweening
-        this._scrolling = false; // dragging desktop
+        this._scrolling = false; // swipe-scrolling
         this._animatingScroll = false; // programatically updating the adjustment
         this._inDrag = false; // dragging a window
-        this._lastMotionTime = -1; // used to track "stopping" while dragging workspaces
 
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         this._workspaces = workspaces;
@@ -89,10 +90,6 @@ WorkspacesView.prototype = {
         this._scrollAdjustment.connect('notify::value',
                                        Lang.bind(this, this._onScroll));
 
-        this._dragIndex = -1;
-
-        this._buttonPressId = 0;
-        this._capturedEventId = 0;
         this._timeoutId = 0;
 
         this._windowSelectionAppId = null;
@@ -113,6 +110,8 @@ WorkspacesView.prototype = {
                                                         Lang.bind(this, this._dragBegin));
         this._windowDragEndId = Main.overview.connect('window-drag-end',
                                                       Lang.bind(this, this._dragEnd));
+        this._swipeScrollBeginId = 0;
+        this._swipeScrollEndId = 0;
     },
 
     _lookupWorkspaceForMetaWindow: function (metaWindow) {
@@ -290,8 +289,6 @@ WorkspacesView.prototype = {
         if (this._inDrag)
             scale *= WORKSPACE_DRAGGING_SCALE;
 
-        this._setWorkspaceDraggable(active, true);
-
         let _width = this._workspaces[0].actor.width * scale;
         let _height = this._workspaces[0].actor.height * scale;
 
@@ -323,128 +320,6 @@ WorkspacesView.prototype = {
         this._updateScrollAdjustment(active, showAnimation);
     },
 
-    // _setWorkspaceDraggable:
-    // @index: workspace index
-    // @draggable: whether workspace @index should be draggable
-    //
-    // If @draggable is %true, set up workspace @index to allow switching
-    // workspaces by dragging the desktop - if a draggable workspace has
-    // been set up before, it will be reset before the new one is made
-    // draggable.
-    // If @draggable is %false, workspace @index is reset to no longer allow
-    // dragging.
-    _setWorkspaceDraggable: function(index, draggable) {
-        if (index < 0 || index >= global.n_workspaces)
-            return;
-
-        let dragActor = this._workspaces[index].actor;
-
-        if (draggable) {
-            this._workspaces[index].actor.reactive = true;
-
-            // reset old draggable workspace
-            if (this._dragIndex > -1)
-                this._setWorkspaceDraggable(this._dragIndex, false);
-
-            this._dragIndex = index;
-            this._buttonPressId = dragActor.connect('button-press-event',
-                                      Lang.bind(this, this._onButtonPress));
-        } else {
-            this._dragIndex = -1;
-
-            if (this._buttonPressId > 0) {
-                if (dragActor.get_stage())
-                    dragActor.disconnect(this._buttonPressId);
-                this._buttonPressId = 0;
-            }
-
-            if (this._capturedEventId > 0) {
-                global.stage.disconnect(this._capturedEventId);
-                this._capturedEventId = 0;
-            }
-        }
-    },
-
-    // start dragging the active workspace
-    _onButtonPress: function(actor, event) {
-        if (actor != event.get_source())
-            return;
-
-        if (this._dragIndex == -1)
-            return;
-
-        let [stageX, stageY] = event.get_coords();
-        this._dragStartX = this._dragX = stageX;
-        this._scrolling = true;
-        this._capturedEventId = global.stage.connect('captured-event',
-            Lang.bind(this, this._onCapturedEvent));
-    },
-
-    // handle captured events while dragging a workspace
-    _onCapturedEvent: function(actor, event) {
-        let active = global.screen.get_active_workspace_index();
-        let stageX, stageY;
-
-        switch (event.type()) {
-            case Clutter.EventType.BUTTON_RELEASE:
-                this._scrolling = false;
-
-                [stageX, stageY] = event.get_coords();
-
-                // default to snapping back to the original workspace
-                let activate = this._dragIndex;
-                let last = global.screen.n_workspaces - 1;
-
-                // If the user has moved more than half a workspace, we want to "settle"
-                // to the new workspace even if the user stops dragging rather "throws"
-                // by releasing during the drag.
-                let noStop = Math.abs(activate - this._scrollAdjustment.value) > 0.5;
-
-                let difference = stageX > this._dragStartX ? -1 : 1;
-                if (St.Widget.get_default_direction() == St.TextDirection.RTL)
-                    difference *= -1;
-
-                // We detect if the user is stopped by comparing the timestamp of the button
-                // release with the timestamp of the last motion. Experimentally, a difference
-                // of 0 or 1 millisecond indicates that the mouse is in motion, a larger
-                // difference indicates that the mouse is stopped.
-                if ((this._lastMotionTime > 0 && this._lastMotionTime > event.get_time() - 2) || noStop) {
-                    if (activate + difference >= 0 &&
-                        activate + difference <= last)
-                        activate += difference;
-                }
-
-                if (activate != active) {
-                    let workspace = this._workspaces[activate].metaWorkspace;
-                    workspace.activate(global.get_current_time());
-                } else {
-                    this._scrollToActive(true);
-                }
-
-                if (stageX == this._dragStartX)
-                    // no motion? It's a click!
-                    return false;
-
-                return true;
-
-            case Clutter.EventType.MOTION:
-                [stageX, stageY] = event.get_coords();
-                let dx = this._dragX - stageX;
-                let primary = global.get_primary_monitor();
-
-                if (St.Widget.get_default_direction() == St.TextDirection.RTL)
-                    this._scrollAdjustment.value -= (dx / primary.width);
-                else
-                    this._scrollAdjustment.value += (dx / primary.width);
-                this._dragX = stageX;
-                this._lastMotionTime = event.get_time();
-
-                return true;
-        }
-
-        return false;
-    },
-
     // Update workspace actors parameters to the values calculated in
     // _computeWorkspacePositions()
     // @showAnimation: iff %true, transition between states
@@ -454,7 +329,6 @@ WorkspacesView.prototype = {
         let targetWorkspaceCurrentX = this._workspaces[active].x;
         let dx = targetWorkspaceNewX - targetWorkspaceCurrentX;
 
-        this._setWorkspaceDraggable(active, true);
         this._animating = showAnimation;
 
         for (let w = 0; w < this._workspaces.length; w++) {
@@ -606,7 +480,6 @@ WorkspacesView.prototype = {
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
         global.screen.disconnect(this._restackedNotifyId);
 
-        this._setWorkspaceDraggable(this._dragIndex, false);
         if (this._timeoutId) {
             Mainloop.source_remove(this._timeoutId);
             this._timeoutId = 0;
@@ -626,6 +499,21 @@ WorkspacesView.prototype = {
         if (this._windowDragEndId > 0) {
             Main.overview.disconnect(this._windowDragEndId);
             this._windowDragEndId = 0;
+        }
+    },
+
+    _onMappedChanged: function() {
+        if (this.actor.mapped) {
+            let direction = Overview.SwipeScrollDirection.HORIZONTAL;
+            Main.overview.setScrollAdjustment(this._scrollAdjustment,
+                                              direction);
+            this._swipeScrollBeginId = Main.overview.connect('swipe-scroll-begin',
+                                                             Lang.bind(this, this._swipeScrollBegin));
+            this._swipeScrollEndId = Main.overview.connect('swipe-scroll-end',
+                                                           Lang.bind(this, this._swipeScrollEnd));
+        } else {
+            Main.overview.disconnect(this._swipeScrollBeginId);
+            Main.overview.disconnect(this._swipeScrollEndId);
         }
     },
 
@@ -734,6 +622,37 @@ WorkspacesView.prototype = {
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setReservedSlot(null);
+    },
+
+    _swipeScrollBegin: function() {
+        this._scrolling = true;
+    },
+
+    _swipeScrollEnd: function(overview, result) {
+        this._scrolling = false;
+
+        if (result == Overview.SwipeScrollResult.CLICK) {
+            let [x, y, mod] = global.get_pointer();
+            let actor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
+                                                      x, y);
+
+            // Only switch to the workspace when there's no application
+            // windows open. The problem is that it's too easy to miss
+            // an app window and get the wrong one focused.
+            let active = global.screen.get_active_workspace_index();
+            if (this._workspaces[active].isEmpty() &&
+                this.actor.contains(actor))
+                Main.overview.hide();
+        }
+
+        if (result == Overview.SwipeScrollResult.SWIPE)
+            // The active workspace has changed; while swipe-scrolling
+            // has already taken care of the positioning, the cached
+            // positions need to be updated
+            this._computeWorkspacePositions();
+
+        // Make sure title captions etc are shown as necessary
+        this._updateVisibility();
     },
 
     // sync the workspaces' positions to the value of the scroll adjustment

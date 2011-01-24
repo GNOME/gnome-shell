@@ -49,7 +49,7 @@ _st_actor_get_preferred_width  (ClutterActor *actor,
       ClutterRequestMode mode;
       gfloat natural_height;
 
-      g_object_get (G_OBJECT (actor), "request-mode", &mode, NULL);
+      mode = clutter_actor_get_request_mode (actor);
       if (mode == CLUTTER_REQUEST_WIDTH_FOR_HEIGHT)
         {
           clutter_actor_get_preferred_height (actor, -1, NULL, &natural_height);
@@ -86,7 +86,7 @@ _st_actor_get_preferred_height (ClutterActor *actor,
       ClutterRequestMode mode;
       gfloat natural_width;
 
-      g_object_get (G_OBJECT (actor), "request-mode", &mode, NULL);
+      mode = clutter_actor_get_request_mode (actor);
       if (mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
         {
           clutter_actor_get_preferred_width (actor, -1, NULL, &natural_width);
@@ -173,8 +173,7 @@ _st_allocate_fill (StWidget        *parent,
    * modified to cope with the fact that the available size may be
    * less than the preferred size.
    */
-  request = CLUTTER_REQUEST_HEIGHT_FOR_WIDTH;
-  g_object_get (G_OBJECT (child), "request-mode", &request, NULL);
+  request = clutter_actor_get_request_mode (child);
 
   if (request == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
     {
@@ -423,44 +422,31 @@ calculate_gaussian_kernel (gdouble   sigma,
   return ret;
 }
 
-CoglHandle
-_st_create_shadow_material (StShadow   *shadow_spec,
-                            CoglHandle  src_texture)
+static guchar *
+blur_pixels (guchar  *pixels_in,
+             gint     width_in,
+             gint     height_in,
+             gint     rowstride_in,
+             gdouble  blur,
+             gint    *width_out,
+             gint    *height_out,
+             gint    *rowstride_out)
 {
-  static CoglHandle shadow_material_template = COGL_INVALID_HANDLE;
-
-  CoglHandle  material;
-  CoglHandle  texture;
-  guchar     *pixels_in, *pixels_out;
-  gint        width_in, height_in, rowstride_in;
-  gint        width_out, height_out, rowstride_out;
-  float       sigma;
-
-  g_return_val_if_fail (shadow_spec != NULL, COGL_INVALID_HANDLE);
-  g_return_val_if_fail (src_texture != COGL_INVALID_HANDLE,
-                        COGL_INVALID_HANDLE);
+  guchar *pixels_out;
+  float   sigma;
 
   /* we use an approximation of the sigma - blur radius relationship used
      in Firefox for doing SVG blurs; see
      http://mxr.mozilla.org/mozilla-central/source/gfx/thebes/src/gfxBlur.cpp#280
   */
-  sigma = shadow_spec->blur / 1.9;
+  sigma = blur / 1.9;
 
-  width_in  = cogl_texture_get_width  (src_texture);
-  height_in = cogl_texture_get_height (src_texture);
-  rowstride_in = (width_in + 3) & ~3;
-
-  pixels_in  = g_malloc0 (rowstride_in * height_in);
-
-  cogl_texture_get_data (src_texture, COGL_PIXEL_FORMAT_A_8,
-                         rowstride_in, pixels_in);
-
-  if ((guint) shadow_spec->blur == 0)
+  if ((guint) blur == 0)
     {
-      width_out  = width_in;
-      height_out = height_in;
-      rowstride_out = rowstride_in;
-      pixels_out = g_memdup (pixels_in, rowstride_out * height_out);
+      *width_out  = width_in;
+      *height_out = height_in;
+      *rowstride_out = rowstride_in;
+      pixels_out = g_memdup (pixels_in, *rowstride_out * *height_out);
     }
   else
     {
@@ -472,18 +458,18 @@ _st_create_shadow_material (StShadow   *shadow_spec,
       n_values = (gint) 5 * sigma;
       half = n_values / 2;
 
-      width_out  = width_in  + 2 * half;
-      height_out = height_in + 2 * half;
-      rowstride_out = (width_out + 3) & ~3;
+      *width_out  = width_in  + 2 * half;
+      *height_out = height_in + 2 * half;
+      *rowstride_out = (*width_out + 3) & ~3;
 
-      pixels_out = g_malloc0 (rowstride_out * height_out);
-      line       = g_malloc0 (rowstride_out);
+      pixels_out = g_malloc0 (*rowstride_out * *height_out);
+      line       = g_malloc0 (*rowstride_out);
 
       kernel = calculate_gaussian_kernel (sigma, n_values);
 
       /* vertical blur */
       for (x_in = 0; x_in < width_in; x_in++)
-        for (y_out = 0; y_out < height_out; y_out++)
+        for (y_out = 0; y_out < *height_out; y_out++)
           {
             guchar *pixel_in, *pixel_out;
             gint i0, i1;
@@ -497,7 +483,7 @@ _st_create_shadow_material (StShadow   *shadow_spec,
             i1 = MIN (height_in + half - y_in, n_values);
 
             pixel_in  =  pixels_in + (y_in + i0 - half) * rowstride_in + x_in;
-            pixel_out =  pixels_out + y_out * rowstride_out + (x_in + half);
+            pixel_out =  pixels_out + y_out * *rowstride_out + (x_in + half);
 
             for (i = i0; i < i1; i++)
               {
@@ -507,11 +493,11 @@ _st_create_shadow_material (StShadow   *shadow_spec,
           }
 
       /* horizontal blur */
-      for (y_out = 0; y_out < height_out; y_out++)
+      for (y_out = 0; y_out < *height_out; y_out++)
         {
-          memcpy (line, pixels_out + y_out * rowstride_out, rowstride_out);
+          memcpy (line, pixels_out + y_out * *rowstride_out, *rowstride_out);
 
-          for (x_out = 0; x_out < width_out; x_out++)
+          for (x_out = 0; x_out < *width_out; x_out++)
             {
               gint i0, i1;
               guchar *pixel_out, *pixel_in;
@@ -520,10 +506,10 @@ _st_create_shadow_material (StShadow   *shadow_spec,
                * full i range [0, n_values) so that x is in [0, width_out).
                */
               i0 = MAX (half - x_out, 0);
-              i1 = MIN (width_out + half - x_out, n_values);
+              i1 = MIN (*width_out + half - x_out, n_values);
 
               pixel_in  = line + x_out + i0 - half;
-              pixel_out = pixels_out + rowstride_out * y_out + x_out;
+              pixel_out = pixels_out + *rowstride_out * y_out + x_out;
 
               *pixel_out = 0;
               for (i = i0; i < i1; i++)
@@ -537,6 +523,39 @@ _st_create_shadow_material (StShadow   *shadow_spec,
       g_free (line);
     }
 
+  return pixels_out;
+}
+
+CoglHandle
+_st_create_shadow_material (StShadow   *shadow_spec,
+                            CoglHandle  src_texture)
+{
+  static CoglHandle shadow_material_template = COGL_INVALID_HANDLE;
+
+  CoglHandle  material;
+  CoglHandle  texture;
+  guchar     *pixels_in, *pixels_out;
+  gint        width_in, height_in, rowstride_in;
+  gint        width_out, height_out, rowstride_out;
+
+  g_return_val_if_fail (shadow_spec != NULL, COGL_INVALID_HANDLE);
+  g_return_val_if_fail (src_texture != COGL_INVALID_HANDLE,
+                        COGL_INVALID_HANDLE);
+
+  width_in  = cogl_texture_get_width  (src_texture);
+  height_in = cogl_texture_get_height (src_texture);
+  rowstride_in = (width_in + 3) & ~3;
+
+  pixels_in  = g_malloc0 (rowstride_in * height_in);
+
+  cogl_texture_get_data (src_texture, COGL_PIXEL_FORMAT_A_8,
+                         rowstride_in, pixels_in);
+
+  pixels_out = blur_pixels (pixels_in, width_in, height_in, rowstride_in,
+                            shadow_spec->blur,
+                            &width_out, &height_out, &rowstride_out);
+  g_free (pixels_in);
+
   texture = cogl_texture_new_from_data (width_out,
                                         height_out,
                                         COGL_TEXTURE_NONE,
@@ -545,7 +564,6 @@ _st_create_shadow_material (StShadow   *shadow_spec,
                                         rowstride_out,
                                         pixels_out);
 
-  g_free (pixels_in);
   g_free (pixels_out);
 
   if (G_UNLIKELY (shadow_material_template == COGL_INVALID_HANDLE))
@@ -616,6 +634,103 @@ _st_create_shadow_material_from_actor (StShadow     *shadow_spec,
     }
 
   return shadow_material;
+}
+
+cairo_pattern_t *
+_st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
+                                 cairo_pattern_t *src_pattern)
+{
+  cairo_t *cr;
+  cairo_surface_t *src_surface;
+  cairo_surface_t *surface_in;
+  cairo_surface_t *surface_out;
+  cairo_pattern_t *dst_pattern;
+  guchar          *pixels_in, *pixels_out;
+  gint             width_in, height_in, rowstride_in;
+  gint             width_out, height_out, rowstride_out;
+  cairo_matrix_t   shadow_matrix;
+
+  g_return_val_if_fail (shadow_spec != NULL, NULL);
+  g_return_val_if_fail (src_pattern != NULL, NULL);
+
+  cairo_pattern_get_surface (src_pattern, &src_surface);
+
+  width_in  = cairo_image_surface_get_width  (src_surface);
+  height_in = cairo_image_surface_get_height (src_surface);
+
+  /* We want the output to be a color agnostic alpha mask,
+   * so we need to strip the color channels from the input
+   */
+  if (cairo_image_surface_get_format (src_surface) != CAIRO_FORMAT_A8)
+    {
+      surface_in = cairo_image_surface_create (CAIRO_FORMAT_A8,
+                                               width_in, height_in);
+
+      cr = cairo_create (surface_in);
+      cairo_set_source_surface (cr, src_surface, 0, 0);
+      cairo_paint (cr);
+      cairo_destroy (cr);
+    }
+  else
+    {
+      surface_in = cairo_surface_reference (src_surface);
+    }
+
+  pixels_in = cairo_image_surface_get_data (surface_in);
+  rowstride_in = cairo_image_surface_get_stride (surface_in);
+
+  pixels_out = blur_pixels (pixels_in, width_in, height_in, rowstride_in,
+                            shadow_spec->blur,
+                            &width_out, &height_out, &rowstride_out);
+  cairo_surface_destroy (surface_in);
+
+  surface_out = cairo_image_surface_create_for_data (pixels_out,
+                                                     CAIRO_FORMAT_A8,
+                                                     width_out,
+                                                     height_out,
+                                                     rowstride_out);
+
+  dst_pattern = cairo_pattern_create_for_surface (surface_out);
+  cairo_surface_destroy (surface_out);
+
+  cairo_pattern_get_matrix (src_pattern, &shadow_matrix);
+
+  /* Read all the code from the cairo_pattern_set_matrix call
+   * at the end of this function to here from bottom to top,
+   * because each new affine transformation is applied in
+   * front of all the previous ones */
+
+  /* 6. Invert the matrix back */
+  cairo_matrix_invert (&shadow_matrix);
+
+  /* 5. Adjust based on specified offsets */
+  cairo_matrix_translate (&shadow_matrix,
+                          shadow_spec->xoffset,
+                          shadow_spec->yoffset);
+
+  /* 4. Recenter the newly scaled image */
+  cairo_matrix_translate (&shadow_matrix,
+                          - shadow_spec->spread,
+                          - shadow_spec->spread);
+
+  /* 3. Scale up the blurred image to fill the spread */
+  cairo_matrix_scale (&shadow_matrix,
+                      (width_in + 2.0 * shadow_spec->spread) / width_in,
+                      (height_in + 2.0 * shadow_spec->spread) / height_in);
+
+  /* 2. Shift the blurred image left, so that it aligns centered
+   * under the unblurred one */
+  cairo_matrix_translate (&shadow_matrix,
+                          - (width_out - width_in) / 2.0,
+                          - (height_out - height_in) / 2.0);
+
+  /* 1. Invert the matrix so we can work with it in pattern space
+   */
+  cairo_matrix_invert (&shadow_matrix);
+
+  cairo_pattern_set_matrix (dst_pattern, &shadow_matrix);
+
+  return dst_pattern;
 }
 
 void

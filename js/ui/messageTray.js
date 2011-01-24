@@ -386,7 +386,7 @@ Notification.prototype = {
             this._scrollArea = new St.ScrollView({ name: 'notification-scrollview',
                                                    vscrollbar_policy: Gtk.PolicyType.AUTOMATIC,
                                                    hscrollbar_policy: Gtk.PolicyType.NEVER,
-                                                   vshadows: true });
+                                                   vfade: true });
             this.actor.add(this._scrollArea, { row: 1,
                                                col: 1 });
             this._contentArea = new St.BoxLayout({ name: 'notification-body',

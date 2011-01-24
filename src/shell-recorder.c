@@ -83,6 +83,7 @@ struct _ShellRecorder {
   guint redraw_idle;
   guint update_memory_used_timeout;
   guint update_pointer_timeout;
+  guint repaint_hook_id;
 };
 
 struct _RecorderPipeline
@@ -146,11 +147,11 @@ G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
  * (Theora does have some support for frames at non-uniform times, but
  * things seem to break down if there are large gaps.)
  */
-#define DEFAULT_PIPELINE "videorate ! theoraenc ! oggmux"
+#define DEFAULT_PIPELINE "videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux"
 
-/* The default filename pattern. Example shell-20090311b-2.ogg
+/* The default filename pattern. Example shell-20090311b-2.webm
  */
-#define DEFAULT_FILENAME "shell-%d%u-%c.ogg"
+#define DEFAULT_FILENAME "shell-%d%u-%c.webm"
 
 /* If we can find the amount of memory on the machine, we use half
  * of that for memory_target, otherwise, we use this value, in kB.
@@ -237,6 +238,22 @@ get_memory_target (void)
   fclose(f);
 
   return DEFAULT_MEMORY_TARGET;
+}
+
+/*
+ * Used to force full stage redraws during recording to avoid artifacts
+ *
+ * Note: That this will cause the stage to be repainted on
+ * every animation frame even if the frame wouldn't normally cause any new
+ * drawing
+ */
+static gboolean
+recorder_repaint_hook (gpointer data)
+{
+  ClutterActor *stage = data;
+  clutter_actor_queue_redraw (stage);
+
+  return TRUE;
 }
 
 static void
@@ -1476,11 +1493,47 @@ recorder_pipeline_closed (RecorderPipeline *pipeline)
   recorder_pipeline_free (pipeline);
 }
 
+/*
+ * Replaces '%T' in the passed pipeline with the thread count,
+ * the maximum possible value is 64 (limit of what vp8enc supports)
+ *
+ * It is assumes that %T occurs only once.
+ */
+static char*
+substitute_thread_count (const char *pipeline)
+{
+  char *tmp;
+  int n_threads;
+  GString *result;
+
+  tmp = strstr (pipeline, "%T");
+
+  if (!tmp)
+    return g_strdup (pipeline);
+
+#ifdef _SC_NPROCESSORS_ONLN
+    {
+      int n_processors = sysconf (_SC_NPROCESSORS_ONLN); /* includes hyper-threading */
+      n_threads = MIN (MAX (1, n_processors - 1), 64);
+    }
+#else
+    n_threads = 3;
+#endif
+
+  result = g_string_new (NULL);
+  g_string_append_len (result, pipeline, tmp - pipeline);
+  g_string_append_printf (result, "%d", n_threads);
+  g_string_append (result, tmp + 2);
+
+  return g_string_free (result, FALSE);;
+}
+
 static gboolean
 recorder_open_pipeline (ShellRecorder *recorder)
 {
   RecorderPipeline *pipeline;
   const char *pipeline_description;
+  char *parsed_pipeline;
   GError *error = NULL;
   GstBus *bus;
 
@@ -1492,9 +1545,12 @@ recorder_open_pipeline (ShellRecorder *recorder)
   if (!pipeline_description)
     pipeline_description = DEFAULT_PIPELINE;
 
-  pipeline->pipeline = gst_parse_launch_full (pipeline_description, NULL,
+  parsed_pipeline = substitute_thread_count (pipeline_description);
+
+  pipeline->pipeline = gst_parse_launch_full (parsed_pipeline, NULL,
                                               GST_PARSE_FLAG_FATAL_ERRORS,
                                               &error);
+  g_free (parsed_pipeline);
 
   if (pipeline->pipeline == NULL)
     {
@@ -1682,6 +1738,9 @@ shell_recorder_record (ShellRecorder *recorder)
   recorder->state = RECORDER_STATE_RECORDING;
   recorder_add_update_pointer_timeout (recorder);
 
+  /* Set up repaint hook */
+  recorder->repaint_hook_id = clutter_threads_add_repaint_func(recorder_repaint_hook, recorder->stage, NULL);
+
   /* Record an initial frame and also redraw with the indicator */
   clutter_actor_queue_redraw (CLUTTER_ACTOR (recorder->stage));
 
@@ -1723,6 +1782,12 @@ shell_recorder_pause (ShellRecorder *recorder)
 
   /* Queue a redraw to remove the recording indicator */
   clutter_actor_queue_redraw (CLUTTER_ACTOR (recorder->stage));
+
+  if (recorder->repaint_hook_id != 0)
+  {
+    clutter_threads_remove_repaint_func (recorder->repaint_hook_id);
+    recorder->repaint_hook_id = 0;
+  }
 }
 
 /**

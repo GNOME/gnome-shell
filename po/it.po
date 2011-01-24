@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-15 01:10+0100\n"
+"POT-Creation-Date: 2011-01-21 01:16+0100\n"
 "PO-Revision-Date: 2011-01-15 01:19+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -161,6 +161,10 @@ msgid "Whether to collect stats about applications usage"
 msgstr ""
 "Indica se raccogliere statistiche riguardo l'utilizzo delle applicazioni"
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "disabled OpenSearch providers"
+msgstr ""
+
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
 msgid "Clip the crosshairs at the center"
 msgstr ""
@@ -296,7 +300,7 @@ msgstr "Impossibile analizzare il comando:"
 msgid "No such application"
 msgstr "Applicazione inesistente"
 
-#: ../js/misc/util.js:143 ../js/ui/runDialog.js:364
+#: ../js/misc/util.js:143 ../js/ui/runDialog.js:351
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Esecuzione di «%s» non riuscita:"
@@ -344,7 +348,7 @@ msgstr "Rimuovi"
 
 #: ../js/ui/docDisplay.js:18
 msgid "RECENT ITEMS"
-msgstr "Elementi recenti"
+msgstr "ELEMENTI RECENTI"
 
 #: ../js/ui/endSessionDialog.js:63
 #, c-format
@@ -358,7 +362,9 @@ msgstr "Termina sessione"
 # oddio... abbandonare il sistema sembra la nave che affonda... (LF)
 #: ../js/ui/endSessionDialog.js:65
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr "Fare clic su «Termina sessione» per chiudere queste applicazioni e abbandonare il sistema."
+msgstr ""
+"Fare clic su «Termina sessione» per chiudere queste applicazioni e "
+"abbandonare il sistema."
 
 #: ../js/ui/endSessionDialog.js:66
 #, c-format
@@ -381,7 +387,9 @@ msgstr "Arresta"
 # usato un termine diverso, magari si capisce meglio (LF)
 #: ../js/ui/endSessionDialog.js:75
 msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr "Fare clic su «Arresta» per chiudere queste applicazioni e spegnere il sistema."
+msgstr ""
+"Fare clic su «Arresta» per chiudere queste applicazioni e spegnere il "
+"sistema."
 
 #: ../js/ui/endSessionDialog.js:76
 #, c-format
@@ -398,7 +406,9 @@ msgstr "Riavvia"
 
 #: ../js/ui/endSessionDialog.js:85
 msgid "Click Restart to quit these applications and restart the system."
-msgstr "Fare clic su «Riavvia» per chiudere queste applicazioni e riavviare il sistema."
+msgstr ""
+"Fare clic su «Riavvia» per chiudere queste applicazioni e riavviare il "
+"sistema."
 
 #: ../js/ui/endSessionDialog.js:86
 #, c-format
@@ -413,7 +423,7 @@ msgstr "Riavvio del sistema."
 msgid "Confirm"
 msgstr "Conferma"
 
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:469
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -449,7 +459,7 @@ msgstr "Visualizza sorgente"
 msgid "Web Page"
 msgstr "Pagina web"
 
-#: ../js/ui/messageTray.js:1748
+#: ../js/ui/messageTray.js:1765
 msgid "System Information"
 msgstr "Informazione di sistema"
 
@@ -519,22 +529,22 @@ msgid "Activities"
 msgstr "Attività"
 
 # (ndt) libera, ma unmount non si può proprio vedere...
-#: ../js/ui/placeDisplay.js:112
+#: ../js/ui/placeDisplay.js:106
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Impossibile scollegare «%s»"
 
-#: ../js/ui/placeDisplay.js:115
+#: ../js/ui/placeDisplay.js:109
 msgid "Retry"
 msgstr "Riprova"
 
-#: ../js/ui/placeDisplay.js:160
+#: ../js/ui/placeDisplay.js:150
 msgid "Connect to..."
 msgstr "Connetti a..."
 
-#: ../js/ui/placeDisplay.js:559
+#: ../js/ui/placeDisplay.js:386
 msgid "PLACES & DEVICES"
-msgstr "Risorse e dispositivi"
+msgstr "RISORSE E DISPOSITIVI"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -545,7 +555,7 @@ msgstr "Risorse e dispositivi"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:222
+#: ../js/ui/runDialog.js:209
 msgid "Please enter a command:"
 msgstr "Inserire un comando:"
 
@@ -629,7 +639,7 @@ msgstr "Contrasto elevato"
 msgid "Large Text"
 msgstr "Caratteri grandi"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:240
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -646,105 +656,105 @@ msgstr "Invia file al dispositivo..."
 msgid "Setup a New Device..."
 msgstr "Imposta un nuovo dispositivo..."
 
-#: ../js/ui/status/bluetooth.js:94
+#: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
 msgstr "Impostazioni Bluetooth"
 
 # indica lo stato del device BT, per esempio gli auricolari
 # credo sia meglio l'aggettivo che il sostantivo
-#: ../js/ui/status/bluetooth.js:191
+#: ../js/ui/status/bluetooth.js:192
 msgid "Connection"
 msgstr "Collegato"
 
-#: ../js/ui/status/bluetooth.js:227
+#: ../js/ui/status/bluetooth.js:228
 msgid "Send Files..."
 msgstr "Invia file..."
 
-#: ../js/ui/status/bluetooth.js:232
+#: ../js/ui/status/bluetooth.js:233
 msgid "Browse Files..."
 msgstr "Esplora file..."
 
-#: ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:242
 msgid "Error browsing device"
 msgstr "Errore nell'esplorare il dispositivo"
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:243
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Non è possibile esplorare il dispositivo richiesto, l'errore è «%s»"
 
-#: ../js/ui/status/bluetooth.js:250 ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/bluetooth.js:251 ../js/ui/status/keyboard.js:78
 msgid "Keyboard Settings"
 msgstr "Impostazioni tastiera"
 
-#: ../js/ui/status/bluetooth.js:255
+#: ../js/ui/status/bluetooth.js:256
 msgid "Mouse Settings"
 msgstr "Impostazioni mouse"
 
-#: ../js/ui/status/bluetooth.js:262 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
 msgid "Sound Settings"
 msgstr "Impostazioni audio"
 
-#: ../js/ui/status/bluetooth.js:336 ../js/ui/status/bluetooth.js:370
-#: ../js/ui/status/bluetooth.js:410 ../js/ui/status/bluetooth.js:443
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
 msgid "Bluetooth Agent"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:372
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Richesta autorizzazione da %s"
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:378
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Il dispositivo %s vuole accedere al servizio «%s»"
 
-#: ../js/ui/status/bluetooth.js:379
+#: ../js/ui/status/bluetooth.js:380
 msgid "Always grant access"
 msgstr "Consenti sempre accesso"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:381
 msgid "Grant this time only"
 msgstr "Consenti solo stavolta"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:382
 msgid "Reject"
 msgstr "Rifiuta"
 
-#: ../js/ui/status/bluetooth.js:411
+#: ../js/ui/status/bluetooth.js:412
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Conferma associazione per %s"
 
-#: ../js/ui/status/bluetooth.js:417 ../js/ui/status/bluetooth.js:451
+#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Il dispositivo %s vuole associarsi con questo computer"
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:419
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Confermare la corrispondenza del PIN «%s» con quello sul dispositivo."
 
-#: ../js/ui/status/bluetooth.js:420
+#: ../js/ui/status/bluetooth.js:421
 msgid "Matches"
 msgstr "Corrisponde"
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:422
 msgid "Does not match"
 msgstr "Non corrisponde"
 
-#: ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:445
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Richiesta associazione per %s"
 
-#: ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:453
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Inserire il PIN indicato sul dispositivo."
 
-#: ../js/ui/status/bluetooth.js:468
+#: ../js/ui/status/bluetooth.js:469
 msgid "OK"
 msgstr "OK"
 
@@ -867,7 +877,7 @@ msgstr "%s non è disponibile."
 #: ../js/ui/telepathyClient.js:666
 #, no-c-format
 msgid "Sent at %X on %A"
-msgstr "Inviato alle %-H.%M.%S di %A"
+msgstr "Inviato alle %-H.%M di %A"
 
 # FIXME ma ha senso in inglese???
 #: ../js/ui/viewSelector.js:26
@@ -919,32 +929,32 @@ msgstr[1] "%u ingressi"
 msgid "System Sounds"
 msgstr "Audio di sistema"
 
-#: ../src/shell-global.c:1233
+#: ../src/shell-global.c:1366
 msgid "Less than a minute ago"
 msgstr "Meno di un minuto fa"
 
-#: ../src/shell-global.c:1237
+#: ../src/shell-global.c:1370
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minuto fa"
 msgstr[1] "%d minuti fa"
 
-#: ../src/shell-global.c:1242
+#: ../src/shell-global.c:1375
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ora fa"
 msgstr[1] "%d ore fa"
 
-#: ../src/shell-global.c:1247
+#: ../src/shell-global.c:1380
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d giorno fa"
 msgstr[1] "%d giorni fa"
 
-#: ../src/shell-global.c:1252
+#: ../src/shell-global.c:1385
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"

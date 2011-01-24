@@ -159,11 +159,17 @@ st_source_c =					\
 	st/st-widget.c				\
 	$(NULL)
 
+st_non_gir_sources =           \
+	st/st-scroll-view-fade.c	\
+	st/st-scroll-view-fade.h	\
+	$(NULL)
+
 noinst_LTLIBRARIES += libst-1.0.la
 
 libst_1_0_la_LIBADD = -lm $(ST_LIBS)
 libst_1_0_la_SOURCES =				\
-	$(st_source_c)				\
+	$(st_source_c)					\
+	$(st_non_gir_sources)			\
 	$(st_source_private_h)			\
 	$(st_source_private_c)			\
 	$(st_source_h)				\
