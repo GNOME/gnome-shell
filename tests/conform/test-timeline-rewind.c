@@ -35,11 +35,9 @@ watchdog_timeout (TestState *state)
 
 static void
 new_frame_cb (ClutterTimeline *timeline,
-              gint frame_num,
+              gint elapsed_time,
               TestState *state)
 {
-  gint elapsed_time = clutter_timeline_get_elapsed_time (timeline);
-
   if (elapsed_time == TEST_TIMELINE_DURATION)
     {
       g_test_message ("new-frame signal received (end of timeline)");

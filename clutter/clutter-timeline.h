@@ -96,7 +96,7 @@ struct _ClutterTimelineClass
   void (*paused)         (ClutterTimeline *timeline);
   
   void (*new_frame)      (ClutterTimeline *timeline,
-		          gint             frame_num);
+		          gint             msecs);
 
   void (*marker_reached) (ClutterTimeline *timeline,
                           const gchar     *marker_name,

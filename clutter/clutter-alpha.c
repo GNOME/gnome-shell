@@ -149,7 +149,7 @@ static GParamSpec *obj_props[PROP_LAST];
 
 static void
 timeline_new_frame_cb (ClutterTimeline *timeline,
-                       guint            current_frame_num,
+                       guint            msecs,
                        ClutterAlpha    *alpha)
 {
   ClutterAlphaPrivate *priv = alpha->priv;
