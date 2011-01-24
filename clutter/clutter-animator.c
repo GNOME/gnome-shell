@@ -1426,7 +1426,6 @@ again:
           ClutterAnimatorKey *prev_key = NULL;
           key->is_inert = is_inert;
 
-          clutter_animator_key_free (key);
 
           /* FIXME: non performant since we reiterate the list many times */
 
@@ -1446,6 +1445,8 @@ again:
                   next_key->ease_in = key->ease_in;
                 }
             }
+
+          clutter_animator_key_free (key);
           priv->score = g_list_remove (priv->score, key);
           goto again;
         }
