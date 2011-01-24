@@ -1264,7 +1264,9 @@ _clutter_timeline_do_tick (ClutterTimeline *timeline,
   if (priv->waiting_first_tick)
     {
       priv->last_frame_time = tick_time;
+      priv->msecs_delta = 0;
       priv->waiting_first_tick = FALSE;
+      clutter_timeline_do_frame (timeline);
     }
   else
     {
