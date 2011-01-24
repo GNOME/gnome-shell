@@ -2163,6 +2163,9 @@ meta_screen_update_workspace_layout (MetaScreen *screen)
 {
   gulong *list;
   int n_items;
+
+  if (screen->workspace_layout_overridden)
+    return;
   
   list = NULL;
   n_items = 0;
@@ -2247,6 +2250,43 @@ meta_screen_update_workspace_layout (MetaScreen *screen)
                 screen->columns_of_workspaces,
                 screen->vertical_workspaces,
                 screen->starting_corner);
+}
+
+/**
+ * meta_screen_override_workspace_layout:
+ * @screen: a #MetaScreen
+ * @starting_corner: the corner at which the first workspace is found
+ * @vertical_layout: if %TRUE the workspaces are laid out in columns rather than rows
+ * @n_rows: number of rows of workspaces, or -1 to determine the number of rows from
+ *   @n_columns and the total number of workspaces
+ * @n_columns: number of columns of workspaces, or -1 to determine the number of columns from
+ *   @n_rows and the total number of workspaces
+ *
+ * Explicitly set the layout of workspaces. Once this has been called, the contents of the
+ * _NET_DESKTOP_LAYOUT property on the root window are completely ignored.
+ */
+void
+meta_screen_override_workspace_layout (MetaScreen      *screen,
+                                       MetaScreenCorner starting_corner,
+                                       gboolean         vertical_layout,
+                                       int              n_rows,
+                                       int              n_columns)
+{
+  g_return_if_fail (META_IS_SCREEN (screen));
+  g_return_if_fail (n_rows > 0 || n_columns > 0);
+  g_return_if_fail (n_rows != 0 && n_columns != 0);
+
+  screen->workspace_layout_overridden = TRUE;
+  screen->vertical_workspaces = vertical_layout != FALSE;
+  screen->starting_corner = starting_corner;
+  screen->rows_of_workspaces = n_rows;
+  screen->columns_of_workspaces = n_columns;
+
+  /* In theory we should remove _NET_DESKTOP_LAYOUT from _NET_SUPPORTED at this
+   * point, but it's unlikely that anybody checks that, and it's unlikely that
+   * anybody who checks that handles changes, so we'd probably just create
+   * a race condition. And it's hard to implement with the code in set_supported_hint()
+   */
 }
 
 static void

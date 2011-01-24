@@ -52,14 +52,6 @@ typedef void (* MetaScreenWindowFunc) (MetaScreen *screen, MetaWindow *window,
 
 typedef enum
 {
-  META_SCREEN_TOPLEFT,
-  META_SCREEN_TOPRIGHT,
-  META_SCREEN_BOTTOMLEFT,
-  META_SCREEN_BOTTOMRIGHT
-} MetaScreenCorner;
-
-typedef enum
-{
   META_SCREEN_UP,
   META_SCREEN_DOWN,
   META_SCREEN_LEFT,
@@ -127,6 +119,7 @@ struct _MetaScreen
   int columns_of_workspaces;
   MetaScreenCorner starting_corner;
   guint vertical_workspaces : 1;
+  guint workspace_layout_overridden : 1;
   
   guint keys_grabbed : 1;
   guint all_keys_grabbed : 1;

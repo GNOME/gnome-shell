@@ -80,4 +80,17 @@ void meta_screen_get_monitor_geometry (MetaScreen    *screen,
                                        int            monitor,
                                        MetaRectangle *geometry);
 
+typedef enum
+{
+  META_SCREEN_TOPLEFT,
+  META_SCREEN_TOPRIGHT,
+  META_SCREEN_BOTTOMLEFT,
+  META_SCREEN_BOTTOMRIGHT
+} MetaScreenCorner;
+
+void meta_screen_override_workspace_layout (MetaScreen      *screen,
+                                            MetaScreenCorner starting_corner,
+                                            gboolean         vertical_layout,
+                                            int              n_rows,
+                                            int              n_columns);
 #endif
