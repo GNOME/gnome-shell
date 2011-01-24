@@ -1046,6 +1046,8 @@ maybe_software_clip_entries (CoglJournalEntry      *batch_start,
 
   /* If we make it here then we know we can software clip the entire batch */
 
+  COGL_NOTE (CLIPPING, "Software clipping a batch of length %i", batch_len);
+
   for (entry_num = 0; entry_num < batch_len; entry_num++)
     {
       CoglJournalEntry *journal_entry = batch_start + entry_num;

@@ -597,6 +597,8 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
   /* If the stack is empty then there's nothing else to do */
   if (stack == NULL)
     {
+      COGL_NOTE (CLIPPING, "Flushed empty clip stack");
+
       ctx->current_clip_stack_uses_stencil = FALSE;
       GE (glDisable (GL_SCISSOR_TEST));
       return;
@@ -636,6 +638,10 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
         }
     }
 
+  COGL_NOTE (CLIPPING, "Flushing scissor to (%i, %i, %i, %i)",
+             scissor_x0, scissor_y0,
+             scissor_x1, scissor_y1);
+
   GE (glEnable (GL_SCISSOR_TEST));
   GE (glScissor (scissor_x0, scissor_y_start,
                  scissor_x1 - scissor_x0,
@@ -650,6 +656,8 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
       if (entry->type == COGL_CLIP_STACK_PATH)
         {
           CoglClipStackPath *path_entry = (CoglClipStackPath *) entry;
+
+          COGL_NOTE (CLIPPING, "Adding stencil clip for path");
 
           _cogl_matrix_stack_push (modelview_stack);
           _cogl_matrix_stack_set (modelview_stack, &path_entry->matrix);
@@ -677,6 +685,8 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
                  them then use that instead */
               if (has_clip_planes)
                 {
+                  COGL_NOTE (CLIPPING, "Adding clip planes clip for rectangle");
+
                   set_clip_planes (rect->x0,
                                    rect->y0,
                                    rect->x1,
@@ -687,6 +697,8 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
                 }
               else
                 {
+                  COGL_NOTE (CLIPPING, "Adding stencil clip for rectangle");
+
                   add_stencil_clip_rectangle (rect->x0,
                                               rect->y0,
                                               rect->x1,
