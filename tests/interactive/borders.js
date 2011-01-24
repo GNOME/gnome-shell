@@ -84,7 +84,7 @@ box.add(framedGradients);
 
 function addGradientCase(direction, borderWidth, borderRadius, extra) {
     let gradientBox = new St.BoxLayout({ style_class: 'background-gradient',
-                                         style: 'border: ' + borderWidth + 'px solid #8b8b8b;'
+                                         style: 'border: ' + borderWidth + 'px solid #8b0000;'
                                                 + 'border-radius: ' + borderRadius + 'px;'
                                                 + 'background-gradient-direction: ' + direction + ';'
                                                 + 'width: 32px;'

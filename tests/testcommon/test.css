@@ -38,8 +38,8 @@ stage {
 }
 
 .background-gradient {
-    background-gradient-start: #88ff88;
-    background-gradient-end: #8888ff;
+    background-gradient-start: rgba(127, 255, 127, .6);
+    background-gradient-end: rgba(127, 127, 255, .6);
 }
 
 .border-image-with-background-gradient {
