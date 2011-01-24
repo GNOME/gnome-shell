@@ -1,5 +1,6 @@
 #include <clutter/clutter.h>
 #include <gmodule.h>
+#include <math.h>
 
 typedef struct _CallbackData CallbackData;
 typedef struct _Clip Clip;
@@ -8,7 +9,7 @@ typedef enum
   {
     CLIP_NONE,
     CLIP_RECTANGLE,
-    CLIP_ELLIPSE,
+    CLIP_ROTATED_RECTANGLE,
     CLIP_SHAPES
   } ClipType;
 
@@ -77,11 +78,19 @@ make_clip_path (Clip *clip)
                            clip->y2);
       break;
 
-    case CLIP_ELLIPSE:
-      cogl_path_ellipse ((clip->x1 + clip->x2) / 2,
-                         (clip->y1 + clip->y2) / 2,
-                         (clip->x2 - clip->x1) / 2,
-                         (clip->y2 - clip->y1) / 2);
+    case CLIP_ROTATED_RECTANGLE:
+      {
+        int size = MIN (ABS (clip->x2 - clip->x1),
+                        ABS (clip->y2 - clip->y1));
+        int cx = (clip->x1 + clip->x2) / 2;
+        int cy = (clip->y1 + clip->y2) / 2;
+
+        cogl_path_move_to (cx - size / 2, cy);
+        cogl_path_line_to (cx, cy - size / 2);
+        cogl_path_line_to (cx + size / 2, cy);
+        cogl_path_line_to (cx, cy + size / 2);
+        cogl_path_close ();
+      }
       break;
 
     case CLIP_SHAPES:
@@ -138,6 +147,24 @@ on_paint (ClutterActor *actor, CallbackData *data)
                                   clip->y1,
                                   clip->x2,
                                   clip->y2);
+      else if (clip->type == CLIP_ROTATED_RECTANGLE)
+        {
+          float size = MIN (ABS (clip->x2 - clip->x1),
+                            ABS (clip->y2 - clip->y1));
+          int cx = (clip->x1 + clip->x2) / 2;
+          int cy = (clip->y1 + clip->y2) / 2;
+
+          size = sqrtf ((size / 2) * (size / 2) * 2);
+
+          cogl_push_matrix ();
+
+          /* Rotate 45° about the centre point */
+          cogl_translate (cx, cy, 0.0f);
+          cogl_rotate (45.0f, 0.0f, 0.0f, 1.0f);
+          cogl_clip_push_rectangle (-size / 2, -size / 2, size / 2, size / 2);
+
+          cogl_pop_matrix ();
+        }
       else
         {
           make_clip_path (clip);
@@ -207,7 +234,7 @@ on_button_press (ClutterActor *stage, ClutterButtonEvent *event,
   data->current_clip.type
     = event->button == 1 ? CLIP_RECTANGLE
     : event->button == 2 ? CLIP_SHAPES
-    : CLIP_ELLIPSE;
+    : CLIP_ROTATED_RECTANGLE;
 
   clutter_actor_queue_redraw (stage);
 
