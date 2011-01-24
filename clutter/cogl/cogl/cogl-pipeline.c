@@ -837,7 +837,7 @@ _cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
   CoglPipelineBlendEnable enabled;
   unsigned long other_state;
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_BLENDING))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_BLENDING)))
     return FALSE;
 
   enable_authority =

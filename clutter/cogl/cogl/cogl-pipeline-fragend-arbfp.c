@@ -262,7 +262,7 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
   /* If we haven't yet found an existing program then before we resort to
    * generating a new arbfp program we see if we can find a suitable
    * program in the arbfp_cache. */
-  if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_DISABLE_PROGRAM_CACHES)))
+  if (G_LIKELY (!(COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_PROGRAM_CACHES))))
     {
       arbfp_program_state = g_hash_table_lookup (ctx->arbfp_cache, authority);
       if (arbfp_program_state)
@@ -891,7 +891,7 @@ _cogl_pipeline_fragend_arbfp_end (CoglPipeline *pipeline,
                        "MOV result.color,output;\n");
       g_string_append (arbfp_program_state->source, "END\n");
 
-      if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_SHOW_SOURCE))
+      if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_SHOW_SOURCE)))
         g_message ("pipeline program:\n%s", arbfp_program_state->source->str);
 
       GE (glGenPrograms (1, &arbfp_program_state->gl_program));
@@ -914,7 +914,7 @@ _cogl_pipeline_fragend_arbfp_end (CoglPipeline *pipeline,
 
       arbfp_program_state->source = NULL;
 
-      if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_DISABLE_PROGRAM_CACHES)))
+      if (G_LIKELY (!(COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_PROGRAM_CACHES))))
         {
           CoglPipeline *key;
 

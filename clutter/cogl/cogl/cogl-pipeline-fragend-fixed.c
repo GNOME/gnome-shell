@@ -92,7 +92,7 @@ _cogl_pipeline_fragend_fixed_start (CoglPipeline *pipeline,
 {
   CoglHandle user_program;
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_FIXED))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_FIXED)))
     return FALSE;
 
   /* If there is a user program with a fragment shader then the
@@ -165,7 +165,7 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
             GE (glDisable (unit->enabled_gl_target));
 
           /* Enable the new target */
-          if (!G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_TEXTURING))
+          if (!G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
             {
               GE (glEnable (gl_target));
               unit->enabled_gl_target = gl_target;
@@ -179,7 +179,7 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
        * texture unit has been disabled for some time so we need to assert that
        * it's enabled now.
        */
-      if (!G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_TEXTURING) &&
+      if (!G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)) &&
           !unit->enabled_gl_target == 0)
         {
           _cogl_set_active_texture_unit (unit_index);

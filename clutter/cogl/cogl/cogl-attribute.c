@@ -1036,7 +1036,7 @@ draw_wireframe (CoglVerticesMode mode,
   cogl_push_source (wire_pipeline);
 
   /* temporarily disable the wireframe to avoid recursion! */
-  cogl_debug_flags &= ~COGL_DEBUG_WIREFRAME;
+  COGL_DEBUG_CLEAR_FLAG (COGL_DEBUG_WIREFRAME);
   _cogl_draw_attributes_array (COGL_VERTICES_MODE_LINES,
                                0,
                                n_line_vertices,
@@ -1046,7 +1046,7 @@ draw_wireframe (CoglVerticesMode mode,
                                COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
                                COGL_DRAW_SKIP_LEGACY_STATE);
 
-  cogl_debug_flags |= COGL_DEBUG_WIREFRAME;
+  COGL_DEBUG_SET_FLAG (COGL_DEBUG_WIREFRAME);
 
   cogl_pop_source ();
 
@@ -1107,7 +1107,7 @@ _cogl_draw_attributes_array (CoglVerticesMode mode,
   disable_gl_state (attributes, source);
 
 #ifdef COGL_ENABLE_DEBUG
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_WIREFRAME))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_WIREFRAME)))
     draw_wireframe (mode, first_vertex, n_vertices, attributes, NULL);
 #endif
 }
@@ -1219,7 +1219,7 @@ _cogl_draw_indexed_attributes_array (CoglVerticesMode mode,
   disable_gl_state (attributes, source);
 
 #ifdef COGL_ENABLE_DEBUG
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_WIREFRAME))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_WIREFRAME)))
     draw_wireframe (mode, first_vertex, n_vertices, attributes, indices);
 #endif
 }

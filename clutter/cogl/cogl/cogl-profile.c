@@ -12,7 +12,7 @@ static gboolean
 debug_option_getter (void *user_data)
 {
   unsigned int shift = GPOINTER_TO_UINT (user_data);
-  return (cogl_debug_flags & (1 << shift)) ? TRUE : FALSE;
+  return COGL_DEBUG_ENABLED (shift);
 }
 
 static void
@@ -21,9 +21,9 @@ debug_option_setter (gboolean value, void *user_data)
   unsigned int shift = GPOINTER_TO_UINT (user_data);
 
   if (value)
-    cogl_debug_flags |= (1 << shift);
+    COGL_DEBUG_SET_FLAG (shift);
   else
-    cogl_debug_flags &= ~(1 << shift);
+    COGL_DEBUG_CLEAR_FLAG (shift);
 }
 
 static void
@@ -45,9 +45,7 @@ _cogl_uprof_init (void)
   _cogl_uprof_context = uprof_context_new ("Cogl");
 #define OPT(MASK_NAME, GROUP, NAME, NAME_FORMATTED, DESCRIPTION) \
   G_STMT_START { \
-    int shift; \
-    for (shift = 0; (COGL_DEBUG_ ## MASK_NAME >> shift) != 1; shift++) \
-        ; \
+    int shift = COGL_DEBUG_ ## MASK_NAME; \
     uprof_context_add_boolean_option (_cogl_uprof_context, \
                                       GROUP, \
                                       NAME, \

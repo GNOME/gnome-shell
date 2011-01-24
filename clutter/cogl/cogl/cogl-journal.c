@@ -75,8 +75,8 @@
  *
  * So for a given number of layers this gets the stride in 32bit words:
  */
-#define SW_TRANSFORM      (!(cogl_debug_flags & \
-                             COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
+#define SW_TRANSFORM      (!(COGL_DEBUG_ENABLED \
+                             (COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)))
 #define POS_STRIDE        (SW_TRANSFORM ? 3 : 2) /* number of 32bit words */
 #define N_POS_COMPONENTS  POS_STRIDE
 #define COLOR_STRIDE      1 /* number of 32bit words */
@@ -191,8 +191,8 @@ _cogl_journal_dump_quad_vertices (guint8 *data, int n_layers)
       guint8 *c = data + (POS_STRIDE * 4) + (i * stride * 4);
       int j;
 
-      if (G_UNLIKELY (cogl_debug_flags &
-                      COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
+      if (G_UNLIKELY (COGL_DEBUG_ENABLED
+                      (COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)))
         g_print ("v%d: x = %f, y = %f, rgba=0x%02X%02X%02X%02X",
                  i, v[0], v[1], c[0], c[1], c[2], c[3]);
       else
@@ -276,10 +276,10 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
 
   COGL_TIMER_START (_cogl_uprof_context, time_flush_modelview_and_entries);
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING:     modelview batch len = %d\n", batch_len);
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)))
     {
       _cogl_matrix_stack_set (state->modelview_stack,
                               &batch_start->model_view);
@@ -327,7 +327,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
    * issues, visually seeing what is batched and debugging blending
    * issues, plus it looks quite cool.
    */
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_RECTANGLES))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_RECTANGLES)))
     {
       static CoglPipeline *outline = NULL;
       guint8 color_intensity;
@@ -421,14 +421,14 @@ _cogl_journal_flush_pipeline_and_entries (CoglJournalEntry *batch_start,
 
   COGL_TIMER_START (_cogl_uprof_context, time_flush_pipeline_entries);
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING:    pipeline batch len = %d\n", batch_len);
 
   state->source = batch_start->pipeline;
 
   /* If we haven't transformed the quads in software then we need to also break
    * up batches according to changes in the modelview matrix... */
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)))
     {
       batch_and_call (batch_start,
                       batch_len,
@@ -571,7 +571,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
   COGL_TIMER_START (_cogl_uprof_context,
                     time_flush_vbo_texcoord_pipeline_entries);
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING:   vbo offset batch len = %d\n", batch_len);
 
   /* XXX NB:
@@ -621,7 +621,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
    */
   state->current_vertex = 0;
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_JOURNAL))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_JOURNAL)))
     {
       guint8 *verts;
 
@@ -647,7 +647,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
 
   /* progress forward through the VBO containing all our vertices */
   state->array_offset += (stride * 4 * batch_len);
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_JOURNAL))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_JOURNAL)))
     g_print ("new vbo offset = %lu\n", (unsigned long)state->array_offset);
 
   COGL_TIMER_STOP (_cogl_uprof_context,
@@ -690,7 +690,7 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
   COGL_TIMER_START (_cogl_uprof_context,
                     time_flush_clip_stack_pipeline_entries);
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING:  clip stack batch len = %d\n", batch_len);
 
   _cogl_clip_stack_flush (batch_start->clip_stack);
@@ -701,7 +701,7 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
    * no further model transform is applied by loading the identity
    * matrix here. We need to do this after flushing the clip stack
    * because the clip stack flushing code can modify the matrix */
-  if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)))
+  if (G_LIKELY (!(COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))))
     {
       _cogl_matrix_stack_load_identity (state->modelview_stack);
       _cogl_matrix_stack_flush_to_gl (state->modelview_stack,
@@ -1125,7 +1125,7 @@ upload_vertices (const CoglJournalEntry *entries,
         memcpy (vout + vb_stride * i + POS_STRIDE, vin, 4);
       vin++;
 
-      if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
+      if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)))
         {
           vout[vb_stride * 0] = vin[0];
           vout[vb_stride * 0 + 1] = vin[1];
@@ -1304,7 +1304,7 @@ _cogl_journal_flush (CoglJournal *journal,
 
   cogl_push_framebuffer (framebuffer);
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING: journal len = %d\n", journal->entries->len);
 
   /* NB: the journal deals with flushing the modelview stack and clip
@@ -1321,7 +1321,7 @@ _cogl_journal_flush (CoglJournal *journal,
   state.modelview_stack = modelview_stack;
   state.projection_stack = _cogl_framebuffer_get_projection_stack (framebuffer);
 
-  if (G_UNLIKELY ((cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_CLIP) == 0))
+  if (G_UNLIKELY ((COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SOFTWARE_CLIP)) == 0))
     {
       /* We do an initial walk of the journal to analyse the clip stack
          batches to see if we can do software clipping. We do this as a
@@ -1470,7 +1470,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
       memcpy (t + stride, tex_coords + i * 4 + 2, sizeof (float) * 2);
     }
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_JOURNAL))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_JOURNAL)))
     {
       g_print ("Logged new quad:\n");
       v = &g_array_index (journal->vertices, float, next_vert);
@@ -1533,7 +1533,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
    * think a journal->framebuffer reference would seem nicer here but
    * the reason we don't have that currently is that it would
    * introduce a circular reference. */
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_BATCHING))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_BATCHING)))
     _cogl_framebuffer_flush_journal (_cogl_get_framebuffer ());
 
   COGL_TIMER_STOP (_cogl_uprof_context, log_timer);

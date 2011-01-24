@@ -197,7 +197,7 @@ error:
                "Invalid texture combine string: %s",
                error_string);
 
-  if (cogl_debug_flags & COGL_DEBUG_BLEND_STRINGS)
+  if (COGL_DEBUG_ENABLED (COGL_DEBUG_BLEND_STRINGS))
     {
       g_debug ("Invalid texture combine string: %s",
                error_string);
@@ -321,7 +321,7 @@ error:
                "blend" : "texture combine",
                error_string);
 
-  if (cogl_debug_flags & COGL_DEBUG_BLEND_STRINGS)
+  if (COGL_DEBUG_ENABLED (COGL_DEBUG_BLEND_STRINGS))
     {
       g_debug ("Invalid %s string: %s",
                context == COGL_BLEND_STRING_CONTEXT_BLENDING ?
@@ -728,7 +728,7 @@ error:
                  offset,
                  error_string);
 
-    if (cogl_debug_flags & COGL_DEBUG_BLEND_STRINGS)
+    if (COGL_DEBUG_ENABLED (COGL_DEBUG_BLEND_STRINGS))
       {
         g_debug ("Syntax error for argument %d at offset %d: %s",
                  current_arg, offset, error_string);
@@ -753,10 +753,10 @@ _cogl_blend_string_compile (const char *string,
   int remaining_argc = 0;
 
 #if 0
-  cogl_debug_flags |= COGL_DEBUG_BLEND_STRINGS;
+  COGL_DEBUG_SET_FLAG (COGL_DEBUG_BLEND_STRINGS);
 #endif
 
-  if (cogl_debug_flags & COGL_DEBUG_BLEND_STRINGS)
+  if (COGL_DEBUG_ENABLED (COGL_DEBUG_BLEND_STRINGS))
     {
       COGL_NOTE (BLEND_STRINGS, "Compiling %s string:\n%s\n",
                  context == COGL_BLEND_STRING_CONTEXT_BLENDING ?
@@ -882,7 +882,7 @@ _cogl_blend_string_compile (const char *string,
 
 finished:
 
-  if (cogl_debug_flags & COGL_DEBUG_BLEND_STRINGS)
+  if (COGL_DEBUG_ENABLED (COGL_DEBUG_BLEND_STRINGS))
     {
       if (current_statement > 0)
         print_statement (0, &statements[0]);
@@ -908,7 +908,7 @@ error:
                    offset,
                    error_string);
 
-      if (cogl_debug_flags & COGL_DEBUG_BLEND_STRINGS)
+      if (COGL_DEBUG_ENABLED (COGL_DEBUG_BLEND_STRINGS))
         {
           g_debug ("Syntax error at offset %d: %s",
                    offset, error_string);

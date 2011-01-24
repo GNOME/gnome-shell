@@ -62,19 +62,19 @@ static gboolean gl_is_indirect = FALSE;
 static void
 _cogl_init_feature_overrides (CoglContext *ctx)
 {
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_VBOS))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_VBOS)))
     ctx->feature_flags &= ~COGL_FEATURE_VBOS;
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_PBOS))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_PBOS)))
     ctx->feature_flags &= ~COGL_FEATURE_PBOS;
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_ARBFP))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_ARBFP)))
     ctx->feature_flags &= ~COGL_FEATURE_SHADERS_ARBFP;
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_GLSL))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_GLSL)))
     ctx->feature_flags &= ~COGL_FEATURE_SHADERS_GLSL;
 
-  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_NPOT_TEXTURES))
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_NPOT_TEXTURES)))
     ctx->feature_flags &= ~(COGL_FEATURE_TEXTURE_NPOT |
                             COGL_FEATURE_TEXTURE_NPOT_BASIC |
                             COGL_FEATURE_TEXTURE_NPOT_MIPMAP |
