@@ -301,7 +301,6 @@ window_decorated_notify (MetaWindow *mw,
   MetaDisplay            *display  = meta_screen_get_display (screen);
   Display                *xdisplay = meta_display_get_xdisplay (display);
   Window                  new_xwindow;
-  MetaCompScreen         *info;
   XWindowAttributes       attrs;
 
   /*
@@ -316,8 +315,6 @@ window_decorated_notify (MetaWindow *mw,
     new_xwindow = meta_window_get_xwindow (mw);
 
   meta_window_actor_detach (self);
-
-  info = meta_screen_get_compositor_data (screen);
 
   /*
    * First of all, clean up any resources we are currently using and will
@@ -362,9 +359,6 @@ meta_window_actor_constructed (GObject *object)
   Window                  xwindow  = priv->xwindow;
   Display                *xdisplay = meta_display_get_xdisplay (display);
   XRenderPictFormat      *format;
-  MetaCompositor         *compositor;
-
-  compositor = meta_display_get_compositor (display);
 
 #ifdef HAVE_SHAPE
   /* Listen for ShapeNotify events on the window */
@@ -1777,7 +1771,6 @@ check_needs_pixmap (MetaWindowActor *self)
   MetaCompScreen      *info     = meta_screen_get_compositor_data (screen);
   MetaCompositor      *compositor;
   Window               xwindow  = priv->xwindow;
-  gboolean             full     = FALSE;
 
   if (!priv->needs_pixmap)
     return;
@@ -1850,8 +1843,6 @@ check_needs_pixmap (MetaWindowActor *self)
                     NULL);
 
       meta_window_actor_update_bounding_region (self, pxm_width, pxm_height);
-
-      full = TRUE;
     }
 
   meta_error_trap_pop (display);

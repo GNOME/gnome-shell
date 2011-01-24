@@ -275,31 +275,29 @@ create_gradient_window (const char *title,
 static void
 meta_gradient_test (void)
 {
-  GtkWidget *window;
+  create_gradient_window ("Simple vertical",
+                          render_vertical_func);
 
-  window = create_gradient_window ("Simple vertical",
-                                   render_vertical_func);
-  
-  window = create_gradient_window ("Simple horizontal",
-                                   render_horizontal_func);
+  create_gradient_window ("Simple horizontal",
+                          render_horizontal_func);
 
-  window = create_gradient_window ("Simple diagonal",
-                                   render_diagonal_func);
+  create_gradient_window ("Simple diagonal",
+                          render_diagonal_func);
 
-  window = create_gradient_window ("Multi vertical",
-                                   render_vertical_multi_func);
-  
-  window = create_gradient_window ("Multi horizontal",
-                                   render_horizontal_multi_func);
+  create_gradient_window ("Multi vertical",
+                          render_vertical_multi_func);
 
-  window = create_gradient_window ("Multi diagonal",
-                                   render_diagonal_multi_func);
+  create_gradient_window ("Multi horizontal",
+                          render_horizontal_multi_func);
 
-  window = create_gradient_window ("Interwoven",
-                                   render_interwoven_func);
+  create_gradient_window ("Multi diagonal",
+                          render_diagonal_multi_func);
 
-  window = create_gradient_window ("Simple diagonal with horizontal multi alpha",
-                                   render_diagonal_alpha_func);
+  create_gradient_window ("Interwoven",
+                          render_interwoven_func);
+
+  create_gradient_window ("Simple diagonal with horizontal multi alpha",
+                          render_diagonal_alpha_func);
 
 }
 

@@ -442,9 +442,7 @@ sigterm_handler (int signum)
 {
   if (sigterm_pipe_fds[1] >= 0)
     {
-      int dummy;
-
-      dummy = write (sigterm_pipe_fds[1], "", 1);
+      (void) write (sigterm_pipe_fds[1], "", 1);
       close (sigterm_pipe_fds[1]);
       sigterm_pipe_fds[1] = -1;
     }

@@ -707,7 +707,6 @@ meta_select_image_draw (GtkWidget *widget,
       GtkMisc *misc;
       GtkRequisition requisition;
       GtkStyleContext *context;
-      GdkWindow *window;
       GdkRGBA color;
       int x, y, w, h;
       gint xpad, ypad;
@@ -728,7 +727,6 @@ meta_select_image_draw (GtkWidget *widget,
       w = requisition.width - OUTSIDE_SELECT_RECT * 2 - 1;
       h = requisition.height - OUTSIDE_SELECT_RECT * 2 - 1;
 
-      window = gtk_widget_get_window (widget);
       context = gtk_widget_get_style_context (widget);
 
       gtk_style_context_set_state (context,

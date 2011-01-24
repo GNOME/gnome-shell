@@ -416,7 +416,6 @@ run_speed_comparison (Display *xdisplay,
       
       while ((task = ag_get_next_completed_task (xdisplay)))
         {
-          int result;
           Atom actual_type;
           int actual_format;
           unsigned long n_items;
@@ -426,12 +425,12 @@ run_speed_comparison (Display *xdisplay,
           assert (ag_task_have_reply (task));
           
           data = NULL;
-          result = ag_task_get_reply_and_free (task,
-                                               &actual_type,
-                                               &actual_format,
-                                               &n_items,
-                                               &bytes_after,
-                                               &data);
+          ag_task_get_reply_and_free (task,
+                                      &actual_type,
+                                      &actual_format,
+                                      &n_items,
+                                      &bytes_after,
+                                      &data);
           
           if (data)
             XFree (data);

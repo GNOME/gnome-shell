@@ -340,7 +340,6 @@ meta_rectangle_resize_with_gravity (const MetaRectangle *old_rect,
    */
 
   /* First, the x direction */
-  int adjust = 0;
   switch (gravity)
     {
     case NorthWestGravity:
@@ -373,7 +372,6 @@ meta_rectangle_resize_with_gravity (const MetaRectangle *old_rect,
   rect->width = new_width;
   
   /* Next, the y direction */
-  adjust = 0;
   switch (gravity)
     {
     case NorthWestGravity:

@@ -5970,12 +5970,12 @@ meta_window_client_message (MetaWindow *window,
   else if (event->xclient.message_type ==
            display->atom__NET_MOVERESIZE_WINDOW)
     {
-      int gravity, source;
+      int gravity;
       guint value_mask;
 
       gravity = (event->xclient.data.l[0] & 0xff);
       value_mask = (event->xclient.data.l[0] & 0xf00) >> 8;
-      source = (event->xclient.data.l[0] & 0xf000) >> 12;
+      /* source = (event->xclient.data.l[0] & 0xf000) >> 12; */
 
       if (gravity == 0)
         gravity = window->size_hints.win_gravity;
@@ -6018,7 +6018,6 @@ meta_window_client_message (MetaWindow *window,
   else if (event->xclient.message_type ==
            display->atom__NET_WM_FULLSCREEN_MONITORS)
     {
-      MetaClientType source_indication;
       gulong top, bottom, left, right;
 
       meta_verbose ("_NET_WM_FULLSCREEN_MONITORS request for window '%s'\n",
@@ -6028,7 +6027,7 @@ meta_window_client_message (MetaWindow *window,
       bottom = event->xclient.data.l[1];
       left = event->xclient.data.l[2];
       right = event->xclient.data.l[3];
-      source_indication = event->xclient.data.l[4];
+      /* source_indication = event->xclient.data.l[4]; */
 
       meta_window_update_fullscreen_monitors (window, top, bottom, left, right);
     }
@@ -7638,7 +7637,6 @@ meta_window_titlebar_is_onscreen (MetaWindow *window)
 {
   MetaRectangle  titlebar_rect;
   GList         *onscreen_region;
-  int            titlebar_size;
   gboolean       is_onscreen;
 
   const int min_height_needed  = 8;
@@ -7652,7 +7650,6 @@ meta_window_titlebar_is_onscreen (MetaWindow *window)
   /* Get the rectangle corresponding to the titlebar */
   meta_window_get_outer_rect (window, &titlebar_rect);
   titlebar_rect.height = window->frame->child_y;
-  titlebar_size = meta_rectangle_area (&titlebar_rect);
 
   /* Run through the spanning rectangles for the screen and see if one of
    * them overlaps with the titlebar sufficiently to consider it onscreen.
