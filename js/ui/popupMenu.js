@@ -26,7 +26,9 @@ PopupBaseMenuItem.prototype = {
     _init: function (params) {
         params = Params.parse (params, { reactive: true,
                                          activate: true,
-                                         hover: true });
+                                         hover: true,
+                                         style_class: null
+                                       });
         this.actor = new Shell.GenericContainer({ style_class: 'popup-menu-item',
                                                   reactive: params.reactive,
                                                   track_hover: params.reactive,
@@ -42,6 +44,9 @@ PopupBaseMenuItem.prototype = {
         this._columnWidths = null;
         this._spacing = 0;
         this.active = false;
+
+        if (params.style_class)
+            this.actor.add_style_class_name(params.style_class);
 
         if (params.reactive && params.activate) {
             this.actor.connect('button-release-event', Lang.bind(this, this._onButtonReleaseEvent));
@@ -527,8 +532,8 @@ function PopupSwitchMenuItem() {
 PopupSwitchMenuItem.prototype = {
     __proto__: PopupBaseMenuItem.prototype,
 
-    _init: function(text, active) {
-        PopupBaseMenuItem.prototype._init.call(this);
+    _init: function(text, active, params) {
+        PopupBaseMenuItem.prototype._init.call(this, params);
 
         this.label = new St.Label({ text: text });
         this._switch = new Switch(active);
@@ -555,15 +560,15 @@ PopupSwitchMenuItem.prototype = {
     }
 };
 
-function PopupImageMenuItem(text, iconName) {
-    this._init(text, iconName);
+function PopupImageMenuItem() {
+    this._init.apply(this, arguments);
 }
 
 PopupImageMenuItem.prototype = {
     __proto__: PopupBaseMenuItem.prototype,
 
-    _init: function (text, iconName) {
-        PopupBaseMenuItem.prototype._init.call(this);
+    _init: function (text, iconName, params) {
+        PopupBaseMenuItem.prototype._init.call(this, params);
 
         this.label = new St.Label({ text: text });
         this.addActor(this.label);
@@ -608,8 +613,12 @@ PopupMenuBase.prototype = {
     _init: function(sourceActor, styleClass) {
         this.sourceActor = sourceActor;
 
-        this.box = new St.BoxLayout({ style_class: styleClass,
-                                      vertical: true });
+        if (styleClass !== undefined) {
+            this.box = new St.BoxLayout({ style_class: styleClass,
+                                          vertical: true });
+        } else {
+            this.box = new St.BoxLayout({ vertical: true });
+        }
 
         this.isOpen = false;
         this._activeMenuItem = null;

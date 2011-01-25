@@ -99,12 +99,12 @@ StatusMenuButton.prototype = {
     _createSubMenu: function() {
         let item;
 
-        item = new PopupMenu.PopupImageMenuItem(_("Available"), 'user-available', true);
+        item = new PopupMenu.PopupImageMenuItem(_("Available"), 'user-available');
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.AVAILABLE));
         this.menu.addMenuItem(item);
         this._presenceItems[GnomeSession.PresenceStatus.AVAILABLE] = item;
 
-        item = new PopupMenu.PopupImageMenuItem(_("Busy"), 'user-busy', true);
+        item = new PopupMenu.PopupImageMenuItem(_("Busy"), 'user-busy');
         item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSession.PresenceStatus.BUSY));
         this.menu.addMenuItem(item);
         this._presenceItems[GnomeSession.PresenceStatus.BUSY] = item;
