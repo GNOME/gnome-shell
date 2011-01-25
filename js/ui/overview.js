@@ -276,6 +276,8 @@ Overview.prototype = {
 
     _onCapturedEvent: function(actor, event) {
         let stageX, stageY;
+        let threshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
+
         switch(event.type()) {
             case Clutter.EventType.BUTTON_RELEASE:
                 [stageX, stageY] = event.get_coords();
@@ -324,16 +326,16 @@ Overview.prototype = {
                         newValue += difference;
                 }
 
+                let result;
+
                 // See if the user has moved the mouse enough to trigger
                 // a drag
-                let threshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
                 if (Math.abs(stageX - this._dragStartX) < threshold &&
                     Math.abs(stageY - this._dragStartY) < threshold) {
                     // no motion? It's a click!
-                    this.emit('swipe-scroll-end', SwipeScrollResult.CLICK);
+                    result = SwipeScrollResult.CLICK;
+                    this.emit('swipe-scroll-end', result);
                 } else {
-                    let result;
-
                     if (newValue == this._dragStartValue)
                         result = SwipeScrollResult.CANCEL;
                     else
@@ -362,13 +364,23 @@ Overview.prototype = {
                 global.stage.disconnect(this._capturedEventId);
                 this._capturedEventId = 0;
 
-                return true;
+                return result != SwipeScrollResult.CLICK;
 
             case Clutter.EventType.MOTION:
                 [stageX, stageY] = event.get_coords();
                 let dx = this._dragX - stageX;
                 let dy = this._dragY - stageY;
                 let primary = global.get_primary_monitor();
+
+                this._dragX = stageX;
+                this._dragY = stageY;
+                this._lastMotionTime = event.get_time();
+
+                // See if the user has moved the mouse enough to trigger
+                // a drag
+                if (Math.abs(stageX - this._dragStartX) < threshold &&
+                    Math.abs(stageY - this._dragStartY) < threshold)
+                    return true;
 
                 if (this._scrollDirection == SwipeScrollDirection.HORIZONTAL) {
                     if (St.Widget.get_default_direction() == St.TextDirection.RTL)
@@ -378,10 +390,6 @@ Overview.prototype = {
                 } else {
                     this._scrollAdjustment.value += (dy / primary.height) * this._scrollAdjustment.page_size;
                 }
-
-                this._dragX = stageX;
-                this._dragY = stageY;
-                this._lastMotionTime = event.get_time();
 
                 return true;
 
