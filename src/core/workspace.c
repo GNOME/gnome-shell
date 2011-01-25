@@ -24,6 +24,7 @@
  */
 
 #include <config.h>
+#include "screen-private.h"
 #include "workspace.h"
 #include "workspace-private.h"
 #include "boxes-private.h"
@@ -45,7 +46,6 @@ enum {
 };
 
 void meta_workspace_queue_calc_showing   (MetaWorkspace *workspace);
-static void set_active_space_hint        (MetaScreen *screen);
 static void focus_ancestor_or_mru_window (MetaWorkspace *workspace,
                                           MetaWindow    *not_this_one,
                                           guint32        timestamp);
@@ -557,7 +557,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
 
   workspace->screen->active_workspace = workspace;
 
-  set_active_space_hint (workspace->screen);
+  meta_screen_set_active_workspace_hint (workspace->screen);
 
   /* If the "show desktop" mode is active for either the old workspace
    * or the new one *but not both*, then update the
@@ -750,32 +750,6 @@ meta_workspace_list_windows (MetaWorkspace *workspace)
   g_slist_free (display_windows);
 
   return workspace_windows;
-}
-
-static void
-set_active_space_hint (MetaScreen *screen)
-{
-  unsigned long data[1];
-
-  /* this is because we destroy the spaces in order,
-   * so we always end up setting a current desktop of
-   * 0 when closing a screen, so lose the current desktop
-   * on restart. By doing this we keep the current
-   * desktop on restart.
-   */
-  if (screen->closing > 0)
-    return;
-  
-  data[0] = meta_workspace_index (screen->active_workspace);
-
-  meta_verbose ("Setting _NET_CURRENT_DESKTOP to %lu\n", data[0]);
-  
-  meta_error_trap_push (screen->display);
-  XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom__NET_CURRENT_DESKTOP,
-                   XA_CARDINAL,
-                   32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (screen->display);
 }
 
 void

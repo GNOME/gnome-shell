@@ -1283,6 +1283,7 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
   MetaWorkspace *neighbour = NULL;
   GList         *next = NULL;
   int            index;
+  gboolean       active_index_changed;
   int            new_num;
 
   l = screen->workspaces;
@@ -1321,6 +1322,7 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
 
   /* To emit the signal after removing the workspace */
   index = meta_workspace_index (workspace);
+  active_index_changed = index < meta_screen_get_active_workspace_index (screen);
 
   /* This also removes the workspace from the screens list */
   meta_workspace_remove (workspace);
@@ -1329,6 +1331,11 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
 
   set_number_of_spaces_hint (screen, new_num);
   meta_prefs_set_num_workspaces (new_num);
+
+  /* If deleting a workspace before the current workspace, the active
+   * workspace index changes, so we need to update that hint */
+  if (active_index_changed)
+      meta_screen_set_active_workspace_hint (workspace->screen);
 
   l = next;
   while (l)
@@ -3343,5 +3350,31 @@ meta_screen_workspace_switched (MetaScreen         *screen,
 {
   g_signal_emit (screen, screen_signals[WORKSPACE_SWITCHED], 0,
                  from, to, direction);
+}
+
+void
+meta_screen_set_active_workspace_hint (MetaScreen *screen)
+{
+  unsigned long data[1];
+
+  /* this is because we destroy the spaces in order,
+   * so we always end up setting a current desktop of
+   * 0 when closing a screen, so lose the current desktop
+   * on restart. By doing this we keep the current
+   * desktop on restart.
+   */
+  if (screen->closing > 0)
+    return;
+  
+  data[0] = meta_workspace_index (screen->active_workspace);
+
+  meta_verbose ("Setting _NET_CURRENT_DESKTOP to %lu\n", data[0]);
+  
+  meta_error_trap_push (screen->display);
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+                   screen->display->atom__NET_CURRENT_DESKTOP,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 1);
+  meta_error_trap_pop (screen->display);
 }
 

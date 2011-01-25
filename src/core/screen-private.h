@@ -255,4 +255,6 @@ void     meta_screen_workspace_switched (MetaScreen         *screen,
                                          int                 to,
                                          MetaMotionDirection direction);
 
+void meta_screen_set_active_workspace_hint (MetaScreen *screen);
+
 #endif
