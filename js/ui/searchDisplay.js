@@ -24,10 +24,10 @@ SearchResult.prototype = {
     _init: function(provider, metaInfo, terms) {
         this.provider = provider;
         this.metaInfo = metaInfo;
-        this.actor = new St.Clickable({ style_class: 'search-result',
-                                        reactive: true,
-                                        x_align: St.Align.START,
-                                        y_fill: true });
+        this.actor = new St.Button({ style_class: 'search-result',
+                                     reactive: true,
+                                     x_align: St.Align.START,
+                                     y_fill: true });
         this.actor._delegate = this;
 
         let content = provider.createResultActor(metaInfo, terms);
@@ -69,7 +69,7 @@ SearchResult.prototype = {
         Main.overview.toggle();
     },
 
-    _onResultClicked: function(actor, event) {
+    _onResultClicked: function(actor) {
         this.activate();
     },
 
@@ -221,23 +221,23 @@ SearchResults.prototype = {
     },
 
     _createOpenSearchProviderButton: function(provider) {
-        let clickable = new St.Clickable({ style_class: 'dash-search-button',
-                                           reactive: true,
-                                           x_fill: true,
-                                           y_align: St.Align.MIDDLE });
+        let button = new St.Button({ style_class: 'dash-search-button',
+                                     reactive: true,
+                                     x_fill: true,
+                                     y_align: St.Align.MIDDLE });
         let bin = new St.Bin({ x_fill: false,
                                x_align:St.Align.MIDDLE });
-        clickable.connect('clicked', Lang.bind(this, function() {
+        button.connect('clicked', Lang.bind(this, function() {
             this._openSearchSystem.activateResult(provider.id);
         }));
         let title = new St.Label({ text: provider.name,
                                    style_class: 'dash-search-button-label' });
 
         bin.set_child(title);
-        clickable.set_child(bin);
-        provider.actor = clickable;
+        button.set_child(bin);
+        provider.actor = button;
 
-        this._searchProvidersBox.add(clickable);
+        this._searchProvidersBox.add(button);
     },
 
     createProviderMeta: function(provider) {

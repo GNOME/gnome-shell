@@ -112,11 +112,11 @@ _Draggable.prototype = {
             return false;
 
         this._buttonDown = true;
-        // special case St.Clickable: grabbing the pointer would mess up the
+        // special case St.Button: grabbing the pointer would mess up the
         // internal state, so we start the drag manually on hover change
-        if (this.actor instanceof St.Clickable)
+        if (this.actor instanceof St.Button)
             this.actor.connect('notify::hover',
-                               Lang.bind(this, this._onClickableHoverChanged));
+                               Lang.bind(this, this._onButtonHoverChanged));
         else
             this._grabActor();
 
@@ -127,8 +127,8 @@ _Draggable.prototype = {
         return false;
     },
 
-    _onClickableHoverChanged: function(button) {
-        if (button.hover || !button.held)
+    _onButtonHoverChanged: function(button) {
+        if (button.hover || !button.pressed)
             return;
 
         button.fake_release();

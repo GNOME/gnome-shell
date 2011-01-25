@@ -319,10 +319,11 @@ function AppWellIcon(app, iconParams) {
 AppWellIcon.prototype = {
     _init : function(app, iconParams) {
         this.app = app;
-        this.actor = new St.Clickable({ style_class: 'app-well-app',
-                                         reactive: true,
-                                         x_fill: true,
-                                         y_fill: true });
+        this.actor = new St.Button({ style_class: 'app-well-app',
+                                     reactive: true,
+                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+                                     x_fill: true,
+                                     y_fill: true });
         this.actor._delegate = this;
 
         this.icon = new AppIcon(app, iconParams);
@@ -390,12 +391,11 @@ AppWellIcon.prototype = {
         return false;
     },
 
-    _onClicked: function(actor, event) {
+    _onClicked: function(actor, button) {
         this._removeMenuTimeout();
 
-        let button = event.get_button();
         if (button == 1) {
-            this._onActivate(event);
+            this._onActivate(Clutter.get_current_event());
         } else if (button == 2) {
             let newWorkspace = Main.overview.workspaces.addWorkspace();
             if (newWorkspace != null) {

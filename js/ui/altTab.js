@@ -593,8 +593,8 @@ SwitcherList.prototype = {
     },
 
     addItem : function(item) {
-        let bbox = new St.Clickable({ style_class: 'item-box',
-                                      reactive: true });
+        let bbox = new St.Button({ style_class: 'item-box',
+                                   reactive: true });
 
         bbox.set_child(item);
         this._list.add_actor(bbox);

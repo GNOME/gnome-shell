@@ -137,12 +137,12 @@ ListItem.prototype = {
 
         let layout = new St.BoxLayout({ vertical: false});
 
-        this.actor = new St.Clickable({ style_class: 'end-session-dialog-app-list-item',
-                                        can_focus:   true,
-                                        child:       layout,
-                                        reactive:    true,
-                                        x_align:     St.Align.START,
-                                        x_fill:      true });
+        this.actor = new St.Button({ style_class: 'end-session-dialog-app-list-item',
+                                     can_focus:   true,
+                                     child:       layout,
+                                     reactive:    true,
+                                     x_align:     St.Align.START,
+                                     x_fill:      true });
 
         this._icon = this._app.create_icon_texture(_ITEM_ICON_SIZE);
 

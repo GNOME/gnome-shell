@@ -40,6 +40,7 @@
 
 #include "st-button.h"
 
+#include "st-enum-types.h"
 #include "st-marshal.h"
 #include "st-texture-cache.h"
 #include "st-private.h"
@@ -49,8 +50,10 @@ enum
   PROP_0,
 
   PROP_LABEL,
+  PROP_BUTTON_MASK,
   PROP_TOGGLE_MODE,
-  PROP_CHECKED
+  PROP_CHECKED,
+  PROP_PRESSED
 };
 
 enum
@@ -65,14 +68,16 @@ enum
 
 struct _StButtonPrivate
 {
-  gchar            *text;
+  gchar *text;
 
-  guint             is_pressed : 1;
-  guint             is_checked : 1;
-  guint             is_toggle : 1;
-  guint             has_grab : 1;
+  guint  button_mask : 3;
+  guint  is_toggle   : 1;
 
-  gint              spacing;
+  guint  pressed     : 3;
+  guint  grabbed     : 3;
+  guint  is_checked  : 1;
+
+  gint   spacing;
 };
 
 static guint button_signals[LAST_SIGNAL] = { 0, };
@@ -119,31 +124,32 @@ st_button_style_changed (StWidget *widget)
 }
 
 static void
-st_button_press (StButton *button)
+st_button_press (StButton     *button,
+                 StButtonMask  mask)
 {
-  if (button->priv->is_pressed)
-    return;
+  if (button->priv->pressed == 0)
+    st_widget_add_style_pseudo_class (ST_WIDGET (button), "active");
 
-  button->priv->is_pressed = TRUE;
-  st_widget_add_style_pseudo_class (ST_WIDGET (button), "active");
+  button->priv->pressed |= mask;
 }
 
 static void
-st_button_release (StButton *button,
-                   gboolean  clicked)
+st_button_release (StButton     *button,
+                   StButtonMask  mask,
+                   int           clicked_button)
 {
-  if (!button->priv->is_pressed)
+  button->priv->pressed &= ~mask;
+  if (button->priv->pressed != 0)
     return;
 
-  button->priv->is_pressed = FALSE;
   st_widget_remove_style_pseudo_class (ST_WIDGET (button), "active");
 
-  if (clicked)
+  if (clicked_button)
     {
       if (button->priv->is_toggle)
         st_button_set_checked (button, !button->priv->is_checked);
 
-      g_signal_emit (button, button_signals[CLICKED], 0);
+      g_signal_emit (button, button_signals[CLICKED], 0, clicked_button);
     }
 }
 
@@ -151,15 +157,18 @@ static gboolean
 st_button_button_press (ClutterActor       *actor,
                         ClutterButtonEvent *event)
 {
+  StButton *button = ST_BUTTON (actor);
+  StButtonMask mask = ST_BUTTON_MASK_FROM_BUTTON (event->button);
+
   st_widget_hide_tooltip (ST_WIDGET (actor));
 
-  if (event->button == 1)
+  if (button->priv->button_mask & mask)
     {
-      StButton *button = ST_BUTTON (actor);
+      if (button->priv->grabbed == 0)
+        clutter_grab_pointer (actor);
 
-      clutter_grab_pointer (actor);
-      button->priv->has_grab = TRUE;
-      st_button_press (button);
+      button->priv->grabbed |= mask;
+      st_button_press (button, mask);
 
       return TRUE;
     }
@@ -171,19 +180,19 @@ static gboolean
 st_button_button_release (ClutterActor       *actor,
                           ClutterButtonEvent *event)
 {
-  if (event->button == 1)
+  StButton *button = ST_BUTTON (actor);
+  StButtonMask mask = ST_BUTTON_MASK_FROM_BUTTON (event->button);
+
+  if (button->priv->button_mask & mask)
     {
-      StButton *button = ST_BUTTON (actor);
       gboolean is_click;
 
-      is_click = button->priv->has_grab && st_widget_get_hover (ST_WIDGET (button));
-      st_button_release (button, is_click);
+      is_click = button->priv->grabbed && st_widget_get_hover (ST_WIDGET (button));
+      st_button_release (button, mask, is_click ? event->button : 0);
 
-      if (button->priv->has_grab)
-        {
-          button->priv->has_grab = FALSE;
-          clutter_ungrab_pointer ();
-        }
+      button->priv->grabbed &= ~mask;
+      if (button->priv->grabbed == 0)
+        clutter_ungrab_pointer ();
 
       return TRUE;
     }
@@ -195,13 +204,18 @@ static gboolean
 st_button_key_press (ClutterActor    *actor,
                      ClutterKeyEvent *event)
 {
+  StButton *button = ST_BUTTON (actor);
+
   st_widget_hide_tooltip (ST_WIDGET (actor));
 
-  if (event->keyval == CLUTTER_KEY_space ||
-      event->keyval == CLUTTER_KEY_Return)
+  if (button->priv->button_mask & ST_BUTTON_ONE)
     {
-      st_button_press (ST_BUTTON (actor));
-      return TRUE;
+      if (event->keyval == CLUTTER_KEY_space ||
+          event->keyval == CLUTTER_KEY_Return)
+        {
+          st_button_press (button, ST_BUTTON_ONE);
+          return TRUE;
+        }
     }
 
   return FALSE;
@@ -211,14 +225,32 @@ static gboolean
 st_button_key_release (ClutterActor    *actor,
                        ClutterKeyEvent *event)
 {
-  if (event->keyval == CLUTTER_KEY_space ||
-      event->keyval == CLUTTER_KEY_Return)
+  StButton *button = ST_BUTTON (actor);
+
+  if (button->priv->button_mask & ST_BUTTON_ONE)
     {
-      st_button_release (ST_BUTTON (actor), TRUE);
-      return TRUE;
+      if (event->keyval == CLUTTER_KEY_space ||
+          event->keyval == CLUTTER_KEY_Return)
+        {
+          st_button_release (button, ST_BUTTON_ONE, 1);
+          return TRUE;
+        }
     }
 
   return FALSE;
+}
+
+static void
+st_button_key_focus_out (ClutterActor *actor)
+{
+  StButton *button = ST_BUTTON (actor);
+
+  /* If we lose focus between a key press and release, undo the press */
+  if ((button->priv->pressed & ST_BUTTON_ONE) &&
+      !(button->priv->grabbed & ST_BUTTON_ONE))
+    st_button_release (button, ST_BUTTON_ONE, 0);
+
+  CLUTTER_ACTOR_CLASS (st_button_parent_class)->key_focus_out (actor);
 }
 
 static gboolean
@@ -230,12 +262,12 @@ st_button_enter (ClutterActor         *actor,
 
   ret = CLUTTER_ACTOR_CLASS (st_button_parent_class)->enter_event (actor, event);
 
-  if (button->priv->has_grab)
+  if (button->priv->grabbed)
     {
       if (st_widget_get_hover (ST_WIDGET (button)))
-        st_button_press (button);
+        st_button_press (button, button->priv->grabbed);
       else
-        st_button_release (button, FALSE);
+        st_button_release (button, button->priv->grabbed, 0);
     }
 
   return ret;
@@ -250,12 +282,12 @@ st_button_leave (ClutterActor         *actor,
 
   ret = CLUTTER_ACTOR_CLASS (st_button_parent_class)->leave_event (actor, event);
 
-  if (button->priv->has_grab)
+  if (button->priv->grabbed)
     {
       if (st_widget_get_hover (ST_WIDGET (button)))
-        st_button_press (button);
+        st_button_press (button, button->priv->grabbed);
       else
-        st_button_release (button, FALSE);
+        st_button_release (button, button->priv->grabbed, 0);
     }
 
   return ret;
@@ -273,6 +305,9 @@ st_button_set_property (GObject      *gobject,
     {
     case PROP_LABEL:
       st_button_set_label (button, g_value_get_string (value));
+      break;
+    case PROP_BUTTON_MASK:
+      st_button_set_button_mask (button, g_value_get_flags (value));
       break;
     case PROP_TOGGLE_MODE:
       st_button_set_toggle_mode (button, g_value_get_boolean (value));
@@ -301,11 +336,17 @@ st_button_get_property (GObject    *gobject,
     case PROP_LABEL:
       g_value_set_string (value, priv->text);
       break;
+    case PROP_BUTTON_MASK:
+      g_value_set_flags (value, priv->button_mask);
+      break;
     case PROP_TOGGLE_MODE:
       g_value_set_boolean (value, priv->is_toggle);
       break;
     case PROP_CHECKED:
       g_value_set_boolean (value, priv->is_checked);
+      break;
+    case PROP_PRESSED:
+      g_value_set_boolean (value, priv->pressed != 0);
       break;
 
 
@@ -343,6 +384,7 @@ st_button_class_init (StButtonClass *klass)
   actor_class->button_release_event = st_button_button_release;
   actor_class->key_press_event = st_button_key_press;
   actor_class->key_release_event = st_button_key_release;
+  actor_class->key_focus_out = st_button_key_focus_out;
   actor_class->enter_event = st_button_enter;
   actor_class->leave_event = st_button_leave;
 
@@ -353,6 +395,13 @@ st_button_class_init (StButtonClass *klass)
                                "Label of the button",
                                NULL, G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_LABEL, pspec);
+
+  pspec = g_param_spec_flags ("button-mask",
+                              "Button mask",
+                              "Which buttons trigger the 'clicked' signal",
+                              ST_TYPE_BUTTON_MASK, ST_BUTTON_ONE,
+                              G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_BUTTON_MASK, pspec);
 
   pspec = g_param_spec_boolean ("toggle-mode",
                                 "Toggle Mode",
@@ -367,23 +416,30 @@ st_button_class_init (StButtonClass *klass)
                                 FALSE, G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CHECKED, pspec);
 
+  pspec = g_param_spec_boolean ("pressed",
+                                "Pressed",
+                                "Indicates if the button is pressed in",
+                                FALSE, G_PARAM_READABLE);
+  g_object_class_install_property (gobject_class, PROP_PRESSED, pspec);
+
 
   /**
    * StButton::clicked:
    * @button: the object that received the signal
+   * @clicked_button: the mouse button that was used
    *
    * Emitted when the user activates the button, either with a mouse press and
    * release or with the keyboard.
    */
-
   button_signals[CLICKED] =
     g_signal_new ("clicked",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (StButtonClass, clicked),
                   NULL, NULL,
-                  _st_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  _st_marshal_VOID__INT,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_INT);
 }
 
 static void
@@ -391,6 +447,7 @@ st_button_init (StButton *button)
 {
   button->priv = ST_BUTTON_GET_PRIVATE (button);
   button->priv->spacing = 6;
+  button->priv->button_mask = ST_BUTTON_ONE;
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (button), TRUE);
   st_widget_set_track_hover (ST_WIDGET (button), TRUE);
@@ -431,7 +488,7 @@ st_button_new_with_label (const gchar *text)
  *
  * Returns: the text for the button. This must not be freed by the application
  */
-G_CONST_RETURN gchar *
+const gchar *
 st_button_get_label (StButton *button)
 {
   g_return_val_if_fail (ST_IS_BUTTON (button), NULL);
@@ -485,6 +542,42 @@ st_button_set_label (StButton    *button,
   st_widget_style_changed (ST_WIDGET (button));
 
   g_object_notify (G_OBJECT (button), "label");
+}
+
+/**
+ * st_button_get_button_mask:
+ * @button: a #StButton
+ *
+ * Gets the mask of mouse buttons that @button emits the
+ * #StButton::clicked signal for.
+ *
+ * Returns: the mask of mouse buttons that @button emits the
+ * #StButton::clicked signal for.
+ */
+StButtonMask
+st_button_get_button_mask (StButton *button)
+{
+  g_return_val_if_fail (ST_IS_BUTTON (button), 0);
+
+  return button->priv->button_mask;
+}
+
+/**
+ * st_button_set_button_mask:
+ * @button: a #Stbutton
+ * @mask: the mask of mouse buttons that @button responds to
+ *
+ * Sets which mouse buttons @button emits #StButton::clicked for.
+ */
+void
+st_button_set_button_mask (StButton     *button,
+                           StButtonMask  mask)
+{
+  g_return_if_fail (ST_IS_BUTTON (button));
+
+  button->priv->button_mask = mask;
+
+  g_object_notify (G_OBJECT (button), "button-mask");
 }
 
 /**
@@ -563,4 +656,30 @@ st_button_set_checked (StButton *button,
     }
 
   g_object_notify (G_OBJECT (button), "checked");
+}
+
+/**
+ * st_button_fake_release:
+ * @button: an #StButton
+ *
+ * If this widget is holding a pointer grab, this function will
+ * will ungrab it, and reset the pressed state.  The effect is
+ * similar to if the user had released the mouse button, but without
+ * emitting the clicked signal.
+ *
+ * This function is useful if for example you want to do something
+ * after the user is holding the mouse button for a given period of
+ * time, breaking the grab.
+ */
+void
+st_button_fake_release (StButton *button)
+{
+  if (button->priv->pressed)
+    st_button_release (button, button->priv->pressed, 0);
+
+  if (button->priv->grabbed)
+    {
+      button->priv->grabbed = 0;
+      clutter_ungrab_pointer ();
+    }
 }

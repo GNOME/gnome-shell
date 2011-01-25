@@ -612,10 +612,10 @@ Panel.prototype = {
         /* Button on the left side of the panel. */
         /* Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview". */
         let label = new St.Label({ text: _("Activities") });
-        this.button = new St.Clickable({ name: 'panelActivities',
-                                         style_class: 'panel-button',
-                                         reactive: true,
-                                         can_focus: true });
+        this.button = new St.Button({ name: 'panelActivities',
+                                      style_class: 'panel-button',
+                                      reactive: true,
+                                      can_focus: true });
         this.button.set_child(label);
         this.button._delegate = this.button;
         this.button._xdndTimeOut = 0;
@@ -712,7 +712,7 @@ Panel.prototype = {
         // We get into the Overview mode on button-press-event as opposed to button-release-event because eventually we'll probably
         // have the Overview act like a menu that allows the user to release the mouse on the activity the user wants
         // to switch to.
-        this.button.connect('clicked', Lang.bind(this, function(b, event) {
+        this.button.connect('clicked', Lang.bind(this, function(b) {
             if (!Main.overview.animationInProgress) {
                 this._maybeToggleOverviewOnClick();
                 return true;
@@ -724,10 +724,10 @@ Panel.prototype = {
         // pressing the System key, Alt+F1 or Esc. We want the button to be pressed in when the Overview is entered
         // and to be released when it is exited regardless of how it was triggered.
         Main.overview.connect('showing', Lang.bind(this, function() {
-            this.button.active = true;
+            this.button.checked = true;
         }));
         Main.overview.connect('hiding', Lang.bind(this, function() {
-            this.button.active = false;
+            this.button.checked = false;
         }));
 
         Main.chrome.addActor(this.actor, { visibleInOverview: true });

@@ -217,7 +217,7 @@ StTooltip StLabel {
     transition-duration: 100;
 }
 
-.panel-button:active, .panel-button:checked, .panel-button:pressed, .panel-button:focus {
+.panel-button:active, .panel-button:checked, .panel-button:focus {
     background-gradient-direction: vertical;
     background-gradient-start: #3c3c3c;
     background-gradient-end: #131313;
@@ -539,11 +539,6 @@ StTooltip StLabel {
     background: rgba(255,255,255,0.33);
     text-shadow: black 0px 2px 2px;
     transition-duration: 100;
-}
-
-.app-well-app:active > .overview-icon {
-    background-color: #1e1e1e;
-    border: 1px solid #5f5f5f;
 }
 
 .app-well-menu {
