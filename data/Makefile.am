@@ -24,7 +24,6 @@ dist_images_DATA =				\
 
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA =				\
-	theme/add-workspace.svg			\
 	theme/calendar-arrow-left.svg		\
 	theme/calendar-arrow-right.svg		\
 	theme/close-window.svg			\
@@ -37,7 +36,6 @@ dist_theme_DATA =				\
 	theme/mosaic-view.svg			\
 	theme/move-window-on-new.svg		\
 	theme/process-working.png		\
-	theme/remove-workspace.svg		\
 	theme/running-indicator.svg		\
 	theme/scroll-button-down-hover.png	\
 	theme/scroll-button-down.png		\

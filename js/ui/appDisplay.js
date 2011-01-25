@@ -397,13 +397,12 @@ AppWellIcon.prototype = {
         if (button == 1) {
             this._onActivate(Clutter.get_current_event());
         } else if (button == 2) {
-            let newWorkspace = Main.overview.workspaces.addWorkspace();
-            if (newWorkspace != null) {
-                newWorkspace.activate(global.get_current_time());
-                this.emit('launching');
-                this.app.open_new_window();
-                Main.overview.hide();
-            }
+            // Last workspace is always empty
+            let launchWorkspace = global.screen.get_workspace_by_index(global.screen.n_workspaces - 1);
+            launchWorkspace.activate(global.get_current_time());
+            this.emit('launching');
+            this.app.open_new_window();
+            Main.overview.hide();
         }
         return false;
     },
