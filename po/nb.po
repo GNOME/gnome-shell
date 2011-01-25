@@ -2,14 +2,14 @@
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Kjartan Maraas <kmaraas@gnome.org>, 2009-2010.
+# Kjartan Maraas <kmaraas@gnome.org>, 2009-2011.
 # Torstein Adolf Winterseth <kvikende@fsfe.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.91.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-15 12:41+0100\n"
-"PO-Revision-Date: 2011-01-15 12:44+0100\n"
+"POT-Creation-Date: 2011-01-25 20:46+0100\n"
+"PO-Revision-Date: 2011-01-25 20:47+0100\n"
 "Last-Translator: Torstein Adolf Winterseth <kvikende@fsfe.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -73,7 +73,8 @@ msgstr ""
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -82,45 +83,47 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Show date in clock"
 msgstr "Vis dato i klokken"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show the week date in the calendar"
 msgstr "Vis dato for uken i kalender"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show time with seconds"
 msgstr "Vis tid med sekunder"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -128,13 +131,17 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Uuids of extensions to disable"
 msgstr "Uuider på utvidelser som skal slås av"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Whether to collect stats about applications usage"
 msgstr "Om det skal samles statistikk om bruk av programmer"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid "disabled OpenSearch providers"
+msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
 msgid "Clip the crosshairs at the center"
@@ -271,33 +278,33 @@ msgstr "Klarte ikke å lese kommando:"
 msgid "No such application"
 msgstr "Programmet finnes ikke"
 
-#: ../js/misc/util.js:143 ../js/ui/runDialog.js:364
+#: ../js/misc/util.js:143 ../js/ui/runDialog.js:351
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:155
+#: ../js/ui/appDisplay.js:164
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:236
+#: ../js/ui/appDisplay.js:245
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
-#: ../js/ui/appDisplay.js:266
+#: ../js/ui/appDisplay.js:275
 msgid "PREFERENCES"
 msgstr "BRUKERVALG"
 
-#: ../js/ui/appDisplay.js:563
+#: ../js/ui/appDisplay.js:572
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:567
+#: ../js/ui/appDisplay.js:576
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:568
+#: ../js/ui/appDisplay.js:577
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -330,7 +337,7 @@ msgstr "Logg ut …"
 
 #: ../js/ui/endSessionDialog.js:65
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr ""
+msgstr "Klikk Logg ut for å avslutte disse programmene og logge ut av systemet."
 
 #: ../js/ui/endSessionDialog.js:66
 #, c-format
@@ -352,7 +359,7 @@ msgstr "Avslutt"
 
 #: ../js/ui/endSessionDialog.js:75
 msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr ""
+msgstr "Klikk Avslutt for å avslutte disse programmene og stenge ned systemet."
 
 #: ../js/ui/endSessionDialog.js:76
 #, c-format
@@ -369,7 +376,7 @@ msgstr "Start på nytt"
 
 #: ../js/ui/endSessionDialog.js:85
 msgid "Click Restart to quit these applications and restart the system."
-msgstr ""
+msgstr "Klikk Start på nytt for å avslutte disse programmene og starte systemet på nytt."
 
 #: ../js/ui/endSessionDialog.js:86
 #, c-format
@@ -384,7 +391,7 @@ msgstr "Starter systemet på nytt."
 msgid "Confirm"
 msgstr "Bekreft"
 
-#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:469
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -418,88 +425,88 @@ msgstr "Vis kildekode"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/messageTray.js:1748
+#: ../js/ui/messageTray.js:1765
 msgid "System Information"
 msgstr "Systeminformasjon"
 
-#: ../js/ui/overview.js:75
+#: ../js/ui/overview.js:88
 msgid "Undo"
 msgstr "Angre"
 
-#: ../js/ui/overview.js:140
+#: ../js/ui/overview.js:159
 msgid "Windows"
 msgstr "Vinduer"
 
-#: ../js/ui/overview.js:143
+#: ../js/ui/overview.js:162
 msgid "Applications"
 msgstr "Programmer"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:479
+#: ../js/ui/panel.js:483
 #, c-format
 msgid "Quit %s"
 msgstr "Avslutt %s"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:564
+#: ../js/ui/panel.js:568
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R.%S"
 
-#: ../js/ui/panel.js:565
+#: ../js/ui/panel.js:569
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:569
+#: ../js/ui/panel.js:573
 msgid "%a %R:%S"
 msgstr "%a %R.%S"
 
-#: ../js/ui/panel.js:570
+#: ../js/ui/panel.js:574
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:577
+#: ../js/ui/panel.js:581
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %p"
 
-#: ../js/ui/panel.js:578
+#: ../js/ui/panel.js:582
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:586
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %p"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:587
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:728
+#: ../js/ui/panel.js:732
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/placeDisplay.js:112
+#: ../js/ui/placeDisplay.js:106
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Klarte ikke å avmontere «%s»"
 
-#: ../js/ui/placeDisplay.js:115
+#: ../js/ui/placeDisplay.js:109
 msgid "Retry"
 msgstr "Prøv igjen"
 
-#: ../js/ui/placeDisplay.js:160
+#: ../js/ui/placeDisplay.js:150
 msgid "Connect to..."
 msgstr "Koble til …"
 
-#: ../js/ui/placeDisplay.js:559
+#: ../js/ui/placeDisplay.js:386
 msgid "PLACES & DEVICES"
 msgstr "STEDER & ENHETER"
 
@@ -512,7 +519,7 @@ msgstr "STEDER & ENHETER"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:222
+#: ../js/ui/runDialog.js:209
 msgid "Please enter a command:"
 msgstr "Oppgi en kommando:"
 
@@ -596,7 +603,7 @@ msgstr "Høy kontrast"
 msgid "Large Text"
 msgstr "Stor tekst"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:240
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -612,105 +619,109 @@ msgstr "Send filer til enhet..."
 msgid "Setup a New Device..."
 msgstr "Sett opp en ny enhet..."
 
-#: ../js/ui/status/bluetooth.js:94
+#: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
 msgstr "Innstillinger for Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:191
+#: ../js/ui/status/bluetooth.js:192
 msgid "Connection"
 msgstr "Tilkobling"
 
-#: ../js/ui/status/bluetooth.js:227
+#: ../js/ui/status/bluetooth.js:228
 msgid "Send Files..."
 msgstr "Send filer..."
 
-#: ../js/ui/status/bluetooth.js:232
+#: ../js/ui/status/bluetooth.js:233
 msgid "Browse Files..."
 msgstr "Bla gjennom filer..."
 
-#: ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:242
 msgid "Error browsing device"
 msgstr "Feil under lesing av enhet"
 
-#: ../js/ui/status/bluetooth.js:242
+#: ../js/ui/status/bluetooth.js:243
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Kan ikke bla gjennom forespurt enhet. Feilen er «%s»"
 
-#: ../js/ui/status/bluetooth.js:250 ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/bluetooth.js:251
 msgid "Keyboard Settings"
 msgstr "Innstillinger for tastatur"
 
-#: ../js/ui/status/bluetooth.js:255
+#: ../js/ui/status/bluetooth.js:256
 msgid "Mouse Settings"
 msgstr "Innstillinger for mus"
 
-#: ../js/ui/status/bluetooth.js:262 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
 msgid "Sound Settings"
 msgstr "Innstillinger for lyd"
 
-#: ../js/ui/status/bluetooth.js:336 ../js/ui/status/bluetooth.js:370
-#: ../js/ui/status/bluetooth.js:410 ../js/ui/status/bluetooth.js:443
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
 msgid "Bluetooth Agent"
 msgstr "Bluetooth-agent"
 
-#: ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:372
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Forespørsel om autorisering fra %s"
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:378
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Enhet %s vil ha tilgang til tjenesten «%s»"
 
-#: ../js/ui/status/bluetooth.js:379
+#: ../js/ui/status/bluetooth.js:380
 msgid "Always grant access"
 msgstr "Alltid gi tilgang"
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:381
 msgid "Grant this time only"
 msgstr "Gi tilgang kun denne ene gangen"
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:382
 msgid "Reject"
 msgstr "Avvis"
 
-#: ../js/ui/status/bluetooth.js:411
+#: ../js/ui/status/bluetooth.js:412
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Bekreftelse for tilkobling for %s"
 
-#: ../js/ui/status/bluetooth.js:417 ../js/ui/status/bluetooth.js:451
+#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Enhet %s vil koble seg sammen med denne datamaskinen"
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:419
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Vennligst bekreft om PIN «%s» er lik den som brukes på enheten."
 
-#: ../js/ui/status/bluetooth.js:420
+#: ../js/ui/status/bluetooth.js:421
 msgid "Matches"
 msgstr "Stemmer overens"
 
-#: ../js/ui/status/bluetooth.js:421
+#: ../js/ui/status/bluetooth.js:422
 msgid "Does not match"
 msgstr "Stemmer ikke overens"
 
-#: ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:445
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Forespørsel om tilkobling for %s"
 
-#: ../js/ui/status/bluetooth.js:452
+#: ../js/ui/status/bluetooth.js:453
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Vennligst oppgi PIN som oppgitt på enheten."
 
-#: ../js/ui/status/bluetooth.js:468
+#: ../js/ui/status/bluetooth.js:469
 msgid "OK"
 msgstr "OK"
+
+#: ../js/ui/status/keyboard.js:78
+msgid "Localization Settings"
+msgstr "Innstillinger for lokalisering"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -846,14 +857,14 @@ msgstr "%s er ferdig startet"
 msgid "'%s' is ready"
 msgstr "«%s» er klar"
 
-#: ../js/ui/workspacesView.js:244
+#: ../js/ui/workspacesView.js:243
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr ""
 "Kan ikke legge til nytt arbeidsområde fordi grensen for maksimalt antall "
 "arbeidsområder er nådd."
 
-#: ../js/ui/workspacesView.js:260
+#: ../js/ui/workspacesView.js:259
 msgid "Can't remove the first workspace."
 msgstr "Kan ikke fjerne første arbeidsområde"
 
@@ -879,32 +890,32 @@ msgstr[1] "%u innganger"
 msgid "System Sounds"
 msgstr "Systemlyder"
 
-#: ../src/shell-global.c:1233
+#: ../src/shell-global.c:1365
 msgid "Less than a minute ago"
 msgstr "Mindre enn ett minutt siden"
 
-#: ../src/shell-global.c:1237
+#: ../src/shell-global.c:1369
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minutt siden"
 msgstr[1] "%d minutter siden"
 
-#: ../src/shell-global.c:1242
+#: ../src/shell-global.c:1374
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d time siden"
 msgstr[1] "%d timer siden"
 
-#: ../src/shell-global.c:1247
+#: ../src/shell-global.c:1379
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag siden"
 msgstr[1] "%d dager siden"
 
-#: ../src/shell-global.c:1252
+#: ../src/shell-global.c:1384
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
