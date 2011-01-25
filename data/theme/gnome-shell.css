@@ -279,21 +279,6 @@ StTooltip StLabel {
     outline: 2px solid white;
 }
 
-.add-workspace {
-}
-
-.add-workspace:hover {
-    background-color: rgba(128, 128, 128, 0.2);
-}
-
-.remove-workspace {
-    height: 48px;
-}
-
-.remove-workspace:hover {
-    background-color: rgba(128, 128, 128, 0.2);
-}
-
 .window-caption {
     background: rgba(0,0,0,0.8);
     border: 1px solid rgba(128,128,128,0.40);

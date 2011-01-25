@@ -209,49 +209,12 @@ WorkspacesView.prototype = {
             this._workspaces[i].syncStacking(stackIndices);
     },
 
-    // Handles a drop onto the (+) button; assumes the new workspace
-    // has already been added
-    acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {
-        return this._workspaces[this._workspaces.length - 1].acceptDrop(source, dropActor, x, y, time);
-    },
-
     // Get the grid position of the active workspace.
     getActiveWorkspacePosition: function() {
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[activeWorkspaceIndex];
 
         return [activeWorkspace.x, activeWorkspace.y];
-    },
-
-    canAddWorkspace: function() {
-        return global.screen.n_workspaces < MAX_WORKSPACES;
-    },
-
-    addWorkspace: function() {
-        let ws = null;
-        if (!this.canAddWorkspace()) {
-            Main.overview.shellInfo.setMessage(_("Can't add a new workspace because maximum workspaces limit has been reached."));
-        } else {
-            let currentTime = global.get_current_time();
-            ws = global.screen.append_new_workspace(false, currentTime);
-        }
-
-        return ws;
-    },
-
-    canRemoveWorkspace: function() {
-        return this._getWorkspaceIndexToRemove() > 0;
-    },
-
-    removeWorkspace: function() {
-        if (!this.canRemoveWorkspace()) {
-            Main.overview.shellInfo.setMessage(_("Can't remove the first workspace."));
-            return;
-        }
-        let index = this._getWorkspaceIndexToRemove();
-        let metaWorkspace = this._workspaces[index].metaWorkspace;
-        global.screen.remove_workspace(metaWorkspace,
-                                       global.get_current_time());
     },
 
     zoomOut: function() {
@@ -270,21 +233,6 @@ WorkspacesView.prototype = {
         this._zoomOut = false;
         this._computeWorkspacePositions();
         this._updateWorkspaceActors(true);
-    },
-
-    _handleDragOverNewWorkspace: function(source, dropActor, x, y, time) {
-        if (source.realWindow)
-            return DND.DragMotionResult.MOVE_DROP;
-        if (source.shellWorkspaceLaunch)
-            return DND.DragMotionResult.COPY_DROP;
-        return DND.DragMotionResult.CONTINUE;
-    },
-
-    _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {
-        let ws = this.addWorkspace();
-        if (ws == null)
-            return false;
-        return this.acceptNewWorkspaceDrop(source, dropActor, x, y, time);
     },
 
     // Compute the position, scale and opacity of the workspaces, but don't
@@ -786,14 +734,6 @@ WorkspacesDisplay.prototype = {
         controls.connect('notify::hover',
                          Lang.bind(this, this._onControlsHoverChanged));
 
-        // Add/remove workspace buttons
-        this._removeButton = new St.Button({ label: '&#8211;', // n-dash
-                                             style_class: 'remove-workspace' });
-        this._removeButton.connect('clicked', Lang.bind(this, function() {
-            this.workspacesView.removeWorkspace();
-        }));
-        controls.add(this._removeButton);
-
         this._thumbnailsBox = new St.BoxLayout({ vertical: true,
                                                  style_class: 'workspace-thumbnails' });
         controls.add(this._thumbnailsBox, { expand: false });
@@ -814,22 +754,6 @@ WorkspacesDisplay.prototype = {
         this._thumbnailIndicatorConstraints.forEach(function(constraint) {
                                                         indicator.add_constraint(constraint);
                                                     });
-
-        this._addButton = new St.Button({ label: '+',
-                                          style_class: 'add-workspace' });
-        this._addButton.connect('clicked', Lang.bind(this, function() {
-            this.workspacesView.addWorkspace();
-        }));
-        this._addButton._delegate = this._addButton;
-        this._addButton._delegate.acceptDrop = Lang.bind(this,
-            function(source, actor, x, y, time) {
-                return this.workspacesView._acceptNewWorkspaceDrop(source, actor, x, y, time);
-            });
-        this._addButton._delegate.handleDragOver = Lang.bind(this,
-            function(source, actor, x, y, time) {
-                return this.workspacesView._handleDragOverNewWorkspace(source, actor, x, y, time);
-            });
-        controls.add(this._addButton, { expand: true });
 
         this.workspacesView = null;
 
