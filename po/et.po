@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2011-01-15 00:23+0000\n"
-"PO-Revision-Date: 2011-01-15 15:45+0200\n"
+"POT-Creation-Date: 2011-01-21 18:46+0000\n"
+"PO-Revision-Date: 2011-01-24 08:04+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -70,6 +70,7 @@ msgstr "Kui määratud, kuvatakse kalendris kuupäeva ISO nädalavormingus."
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Lemmikrakenduste töölauafailide ID-de loend"
 
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -78,7 +79,9 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
 msgstr ""
 
 msgid "Show date in clock"
@@ -124,6 +127,9 @@ msgid "Uuids of extensions to disable"
 msgstr "Keelatavate laienduste UUID-d"
 
 msgid "Whether to collect stats about applications usage"
+msgstr ""
+
+msgid "disabled OpenSearch providers"
 msgstr ""
 
 msgid "Clip the crosshairs at the center"
@@ -293,24 +299,24 @@ msgstr ""
 
 #, c-format
 msgid "%s will be logged out automatically in %d seconds."
-msgstr ""
+msgstr "%s logitakse %d sekundi pärast automaatselt välja."
 
 #, c-format
 msgid "You will be logged out automatically in %d seconds."
-msgstr ""
+msgstr "Sind logitakse %d sekundi pärast automaatselt välja."
 
 msgid "Logging out of the system."
 msgstr "Süsteemist väljalogimine"
 
 msgid "Shut Down"
-msgstr "Lülita välja"
+msgstr "Seiska"
 
 msgid "Click Shut Down to quit these applications and shut down the system."
 msgstr ""
 
 #, c-format
 msgid "The system will shut down automatically in %d seconds."
-msgstr ""
+msgstr "Süsteem seisatakse automaatselt %d sekundi pärast."
 
 msgid "Shutting down the system."
 msgstr "Süsteemi seiskamine."
@@ -584,6 +590,9 @@ msgstr "Palun sisesta seadme poolt öeldav PIN-kood."
 
 msgid "OK"
 msgstr "Olgu"
+
+msgid "Localization Settings"
+msgstr "Lokaliseerimissätted"
 
 msgid "Power Settings"
 msgstr "Toitesätted..."
