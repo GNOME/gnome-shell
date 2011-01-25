@@ -1325,6 +1325,10 @@ Workspace.prototype = {
                       Lang.bind(this, function() {
                           this._windowIsZooming = false;
                       }));
+        win.connect('size-changed',
+                    Lang.bind(this, function() {
+                        this.positionWindows(0);
+                    }));
 
         this.actor.add_actor(clone.actor);
 
