@@ -1,15 +1,16 @@
 #include "cb-button.h"
+
 /*
  * convenience macro for GType implementations; see:
  * http://library.gnome.org/devel/gobject/2.27/gobject-Type-Information.html#G-DEFINE-TYPE:CAPS
  */
 G_DEFINE_TYPE (CbButton, cb_button, CLUTTER_TYPE_ACTOR);
 
-/* macro for easy access to the private structure defined in this file */
+/* macro for accessing the object's private structure */
 #define CB_BUTTON_GET_PRIVATE(obj) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CB_TYPE_BUTTON, CbButtonPrivate))
 
-/* private structure */
+/* private structure - should only be accessed through the public API */
 struct _CbButtonPrivate
 {
   ClutterActor  *child;
@@ -18,14 +19,14 @@ struct _CbButtonPrivate
   gchar         *text;
 };
 
-/* enum for signals */
+/* enumerates signal identifiers for this class */
 enum
 {
   CLICKED,
   LAST_SIGNAL
 };
 
-/* enum for properties */
+/* enumerates property identifiers for this class */
 enum
 {
   PROP_0,
@@ -125,7 +126,7 @@ cb_button_allocate (ClutterActor           *actor,
   clutter_actor_allocate (priv->child, &child_box, flags);
 }
 
-/* paint function implementation: just call paint() on the ClutterBox */
+/* paint function implementation: just calls paint() on the ClutterBox */
 static void
 cb_button_paint (ClutterActor *actor)
 {
@@ -161,6 +162,11 @@ cb_button_class_init (CbButtonClass *klass)
 
   g_type_class_add_private (klass, sizeof (CbButtonPrivate));
 
+  /**
+   * CbButton:text:
+   *
+   * The text shown on the #CbButton
+   */
   pspec = g_param_spec_string ("text",
                                "Text",
                                "Text of the button",
@@ -168,6 +174,13 @@ cb_button_class_init (CbButtonClass *klass)
                                G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
 
+  /**
+   * CbButton::clicked:
+   * @button: the #CbButton that emitted the signal
+   *
+   * The ::clicked signal is emitted when the internal #ClutterClickAction
+   * associated with a #CbButton emits its own ::clicked signal
+   */
   cb_button_signals[CLICKED] =
     g_signal_new ("clicked",
                   G_TYPE_FROM_CLASS (klass),
@@ -221,9 +234,16 @@ cb_button_init (CbButton *self)
 }
 
 /* public API */
-
 /* examples of public API functions which wrap functions
  * on internal actors
+ */
+
+/**
+ * cb_button_set_text:
+ * @self: a #CbButton
+ * @text: the text to display on the button
+ *
+ * Set the text on the button
  */
 void
 cb_button_set_text (CbButton    *self,
@@ -246,10 +266,17 @@ cb_button_set_text (CbButton    *self,
   else
     priv->text = g_strdup ("");
 
-  /* call the actual function on the ClutterText inside the layout */
+  /* call a function on the ClutterText inside the layout */
   clutter_text_set_text (CLUTTER_TEXT (priv->label), priv->text);
 }
 
+/**
+ * cb_button_set_background_color:
+ * @self: a #CbButton
+ * @color: the #ClutterColor to use for the button's background
+ *
+ * Set the color of the button's background
+ */
 void
 cb_button_set_background_color (CbButton *self,
                                 const ClutterColor *color)
@@ -259,6 +286,13 @@ cb_button_set_background_color (CbButton *self,
   clutter_box_set_color (CLUTTER_BOX (self->priv->child), color);
 }
 
+/**
+ * cb_button_set_text_color:
+ * @self: a #CbButton
+ * @color: the #ClutterColor to use as the color for the button text
+ *
+ * Set the color of the text on the button
+ */
 void
 cb_button_set_text_color (CbButton *self,
                           const ClutterColor *color)
@@ -268,9 +302,13 @@ cb_button_set_text_color (CbButton *self,
   clutter_text_set_color (CLUTTER_TEXT (self->priv->label), color);
 }
 
-/* see http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#G-CONST-RETURN:CAPS
- * for an explanation of G_CONST_RETURN: basically it means that the
- * return value of this function should not be modified
+/**
+ * cb_button_get_text:
+ * @self: a #CbButton
+ *
+ * Get the text displayed on the button
+ *
+ * Returns: the button's text. This must not be freed by the application.
  */
 G_CONST_RETURN gchar *
 cb_button_get_text (CbButton *self)
@@ -280,6 +318,13 @@ cb_button_get_text (CbButton *self)
   return self->priv->text;
 }
 
+/**
+ * cb_button_new:
+ *
+ * Creates a new #CbButton instance
+ *
+ * Returns: a new #CbButton
+ */
 ClutterActor *
 cb_button_new (void)
 {
