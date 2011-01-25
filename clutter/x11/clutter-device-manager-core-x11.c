@@ -60,6 +60,8 @@ static GParamSpec *obj_props[PROP_LAST] = { NULL, };
 
 static void clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface);
 
+#define clutter_device_manager_x11_get_type     _clutter_device_manager_x11_get_type
+
 G_DEFINE_TYPE_WITH_CODE (ClutterDeviceManagerX11,
                          clutter_device_manager_x11,
                          CLUTTER_TYPE_DEVICE_MANAGER,

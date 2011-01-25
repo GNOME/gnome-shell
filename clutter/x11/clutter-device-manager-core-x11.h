@@ -28,7 +28,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_DEVICE_MANAGER_X11            (clutter_device_manager_x11_get_type ())
+#define CLUTTER_TYPE_DEVICE_MANAGER_X11            (_clutter_device_manager_x11_get_type ())
 #define CLUTTER_DEVICE_MANAGER_X11(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_DEVICE_MANAGER_X11, ClutterDeviceManagerX11))
 #define CLUTTER_IS_DEVICE_MANAGER_X11(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_DEVICE_MANAGER_X11))
 #define CLUTTER_DEVICE_MANAGER_X11_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_DEVICE_MANAGER_X11, ClutterDeviceManagerX11Class))
@@ -63,7 +63,7 @@ struct _ClutterDeviceManagerX11Class
   ClutterDeviceManagerClass parent_class;
 };
 
-GType clutter_device_manager_x11_get_type (void) G_GNUC_CONST;
+GType _clutter_device_manager_x11_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 

@@ -494,7 +494,7 @@ static const GOptionEntry entries[] =
   { NULL }
 };
 
-void
+static void
 clutter_backend_x11_add_options (ClutterBackend *backend,
                                  GOptionGroup   *group)
 {
@@ -562,7 +562,7 @@ clutter_backend_x11_constructor (GType                  gtype,
   return g_object_ref (backend_singleton);
 }
 
-ClutterFeatureFlags
+static ClutterFeatureFlags
 clutter_backend_x11_get_features (ClutterBackend *backend)
 {
   return CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
