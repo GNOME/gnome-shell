@@ -199,14 +199,103 @@ function start() {
     _log('info', 'loaded at ' + _startDate);
     log('GNOME Shell started at ' + _startDate);
 
-    Mainloop.idle_add(_removeUnusedWorkspaces);
-
     let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
     if (perfModuleName) {
         let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
         let module = eval('imports.perf.' + perfModuleName + ';');
         Scripting.runPerfScript(module, perfOutput);
     }
+
+    global.screen.connect('notify::n-workspaces', _nWorkspacesChanged);
+    Mainloop.idle_add(_nWorkspacesChanged);
+}
+
+let _workspaces = [];
+let _checkWorkspacesId = 0;
+
+function _checkWorkspaces() {
+    let i;
+    let emptyWorkspaces = [];
+
+    for (i = 0; i < _workspaces.length; i++)
+        emptyWorkspaces[i] = true;
+
+    let windows = global.get_window_actors();
+    for (i = 0; i < windows.length; i++) {
+        let win = windows[i];
+
+        if (win.get_meta_window().is_on_all_workspaces())
+            continue;
+
+        let workspaceIndex = win.get_workspace();
+        emptyWorkspaces[workspaceIndex] = false;
+    }
+
+    // If we don't have an empty workspace at the end, add one
+    if (!emptyWorkspaces[emptyWorkspaces.length -1]) {
+        global.screen.append_new_workspace(false, global.get_current_time());
+        emptyWorkspaces.push(false);
+    }
+
+    // Delete other empty workspaces; do it from the end to avoid index changes
+    for (i = emptyWorkspaces.length - 2; i >= 0; i--) {
+        if (emptyWorkspaces[i])
+            global.screen.remove_workspace(_workspaces[i], global.get_current_time());
+    }
+
+    _checkWorkspacesId = 0;
+    return false;
+}
+
+function _queueCheckWorkspaces() {
+    if (_checkWorkspacesId == 0)
+        _checkWorkspacesId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, _checkWorkspaces);
+}
+
+function _nWorkspacesChanged() {
+    let oldNumWorkspaces = _workspaces.length;
+    let newNumWorkspaces = global.screen.n_workspaces;
+
+    if (oldNumWorkspaces == newNumWorkspaces)
+        return false;
+
+    let lostWorkspaces = [];
+    if (newNumWorkspaces > oldNumWorkspaces) {
+        let w;
+
+        // Assume workspaces are only added at the end
+        for (w = oldNumWorkspaces; w < newNumWorkspaces; w++)
+            _workspaces[w] = global.screen.get_workspace_by_index(w);
+
+        for (w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
+            let workspace = _workspaces[w];
+            workspace._windowAddedId = workspace.connect('window-added', _queueCheckWorkspaces);
+            workspace._windowRemovedId = workspace.connect('window-removed', _queueCheckWorkspaces);
+        }
+
+    } else {
+        // Assume workspaces are only removed sequentially
+        // (e.g. 2,3,4 - not 2,4,7)
+        let removedIndex;
+        let removedNum = oldNumWorkspaces - newNumWorkspaces;
+        for (let w = 0; w < oldNumWorkspaces; w++) {
+            let workspace = global.screen.get_workspace_by_index(w);
+            if (_workspaces[w] != workspace) {
+                removedIndex = w;
+                break;
+            }
+        }
+
+        let lostWorkspaces = _workspaces.splice(removedIndex, removedNum);
+        lostWorkspaces.forEach(function(workspace) {
+                                   workspace.disconnect(workspace._windowAddedId);
+                                   workspace.disconnect(workspace._windowRemovedId);
+                               });
+    }
+
+    _queueCheckWorkspaces();
+
+    return false;
 }
 
 /**
@@ -301,34 +390,6 @@ function _relayout() {
     // in the overview, we just hide the overview. The positions
     // will be updated when it is next shown.
     overview.hide();
-}
-
-// metacity-clutter currently uses the same prefs as plain metacity,
-// which probably means we'll be starting out with multiple workspaces;
-// remove any unused ones. (We do this from an idle handler, because
-// global.get_window_actors() still returns NULL at the point when start()
-// is called.)
-function _removeUnusedWorkspaces() {
-
-    let windows = global.get_window_actors();
-    let maxWorkspace = 0;
-    for (let i = 0; i < windows.length; i++) {
-        let win = windows[i];
-
-        if (!win.get_meta_window().is_on_all_workspaces() &&
-            win.get_workspace() > maxWorkspace) {
-            maxWorkspace = win.get_workspace();
-        }
-    }
-    let screen = global.screen;
-    if (screen.n_workspaces > maxWorkspace) {
-        for (let w = screen.n_workspaces - 1; w > maxWorkspace; w--) {
-            let workspace = screen.get_workspace_by_index(w);
-            screen.remove_workspace(workspace, 0);
-        }
-    }
-
-    return false;
 }
 
 // This function encapsulates hacks to make certain global keybindings

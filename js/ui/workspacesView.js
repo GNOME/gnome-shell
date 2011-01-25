@@ -1077,6 +1077,12 @@ WorkspacesDisplay.prototype = {
             this._workspaceThumbnails.splice(removedIndex, removedNum);
         }
 
+        // If we removed the current workspace then we'll be animating workspace indicator
+        // to an adjacent workspace, but that is wrong, since now that adjacent workspace
+        // is in the current slot, so remove the animation
+        Tweener.removeTweens(this._thumbnailIndicator);
+        this._constrainThumbnailIndicator();
+
         this.workspacesView.updateWorkspaces(oldNumWorkspaces,
                                              newNumWorkspaces,
                                              lostWorkspaces);
