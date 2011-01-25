@@ -89,6 +89,8 @@ libgnome_shell_la_SOURCES =		\
 	shell-doc-system.c		\
 	shell-drawing.c			\
 	shell-embedded-window.c		\
+	shell-evolution-event-source.h	\
+	shell-evolution-event-source.c	\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
 	shell-global.c			\

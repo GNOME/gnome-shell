@@ -10,6 +10,7 @@ const Gettext_gtk30 = imports.gettext.domain('gtk30');
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 const Mainloop = imports.mainloop;
+const Shell = imports.gi.Shell;
 
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 const WEEKDATE_HEADER_WIDTH_DIGITS = 3;
@@ -52,21 +53,21 @@ function _getEndOfDay(date) {
     return ret;
 }
 
-function _formatTaskTime(task, clockFormat) {
+function _formatEventTime(event, clockFormat) {
     let ret;
-    if (task.allDay) {
+    if (event.allDay) {
         /* Translators: Shown in calendar event list for all day events */
         ret = _("All Day");
     } else {
         switch (clockFormat) {
         case '24h':
-            ret = task.date.toLocaleFormat('%H:%M');
+            ret = event.date.toLocaleFormat('%H:%M');
             break;
 
         default:
             /* explicit fall-through */
         case '12h':
-            ret = task.date.toLocaleFormat('%l:%M %p');
+            ret = event.date.toLocaleFormat('%l:%M %p');
             break;
         }
     }
@@ -148,13 +149,13 @@ function _getEventDayAbbreviation(dayNumber) {
     return abbreviations[dayNumber];
 }
 
-// Abstraction for an appointment/task in a calendar
+// Abstraction for an appointment/event in a calendar
 
-function CalendarTask(date, summary, allDay) {
+function CalendarEvent(date, summary, allDay) {
     this._init(date, summary, allDay);
 }
 
-CalendarTask.prototype = {
+CalendarEvent.prototype = {
     _init: function(date, summary, allDay) {
         this.date = date;
         this.summary = summary;
@@ -162,9 +163,8 @@ CalendarTask.prototype = {
     }
 };
 
-// Interface for appointments/tasks - e.g. the contents of a calendar
+// Interface for appointments/events - e.g. the contents of a calendar
 //
-// TODO: write e.g. EvolutionEventSource
 
 // First, an implementation with no events
 function EmptyEventSource() {
@@ -175,18 +175,55 @@ EmptyEventSource.prototype = {
     _init: function() {
     },
 
-    getTasks: function(begin, end) {
+    getEvents: function(begin, end) {
         let result = [];
         return result;
     },
 
-    hasTasks: function(day) {
+    hasEvents: function(day) {
         return false;
     }
 };
 Signals.addSignalMethods(EmptyEventSource.prototype);
 
-// Second, an implementation with fake events
+// Second, wrap native Evolution event source
+function EvolutionEventSource() {
+    this._init();
+}
+
+EvolutionEventSource.prototype = {
+    _init: function() {
+        this._native = new Shell.EvolutionEventSource();
+        this._native.connect('changed', Lang.bind(this, function() {
+            this.emit('changed');
+        }));
+    },
+
+    getEvents: function(begin, end) {
+        let result = [];
+        let nativeEvents = this._native.get_events(begin.getTime(), end.getTime());
+        for (let n = 0; n < nativeEvents.length; n++) {
+            let nativeEvent = nativeEvents[n];
+            result.push(new CalendarEvent(new Date(nativeEvent.date), nativeEvent.summary, nativeEvent.all_day));
+        }
+        return result;
+    },
+
+    hasEvents: function(day) {
+        let dayBegin = _getBeginningOfDay(day);
+        let dayEnd = _getEndOfDay(day);
+
+        let events = this.getEvents(dayBegin, dayEnd);
+
+        if (events.length == 0)
+            return false;
+
+        return true;
+    }
+};
+Signals.addSignalMethods(EvolutionEventSource.prototype);
+
+// Finally, an implementation with fake events
 function FakeEventSource() {
     this._init();
 }
@@ -194,7 +231,7 @@ function FakeEventSource() {
 FakeEventSource.prototype = {
     _init: function() {
 
-        this._fakeTasks = [];
+        this._fakeEvents = [];
 
         // Generate fake events
         //
@@ -206,7 +243,7 @@ FakeEventSource.prototype = {
             let t = new Date(midnightToday.getTime() - n * 4 * 86400 * 1000);
             t.setHours(10);
             summary = '10-oclock pow-wow (n=' + n + ')';
-            this._fakeTasks.push(new CalendarTask(t, summary, false));
+            this._fakeEvents.push(new CalendarEvent(t, summary, false));
         }
 
         // '11-oclock thing' is an event occuring every three days at 11am
@@ -214,7 +251,7 @@ FakeEventSource.prototype = {
             let t = new Date(midnightToday.getTime() + n * 3 * 86400 * 1000);
             t.setHours(11);
             summary = '11-oclock thing (n=' + n + ')';
-            this._fakeTasks.push(new CalendarTask(t, summary, false));
+            this._fakeEvents.push(new CalendarEvent(t, summary, false));
         }
 
         // 'Weekly Meeting' is an event occuring every seven days at 1:45pm (two days displaced)
@@ -223,21 +260,21 @@ FakeEventSource.prototype = {
             t.setHours(13);
             t.setMinutes(45);
             summary = 'Weekly Meeting (n=' + n + ')';
-            this._fakeTasks.push(new CalendarTask(t, summary, false));
+            this._fakeEvents.push(new CalendarEvent(t, summary, false));
         }
 
         // 'Fun All Day' is an all-day event occuring every fortnight (three days displayed)
         for (let n = 0; n < 10; n++) {
             let t = new Date(midnightToday.getTime() + (n * 14 + 3) * 86400 * 1000);
             summary = 'Fun All Day (n=' + n + ')';
-            this._fakeTasks.push(new CalendarTask(t, summary, true));
+            this._fakeEvents.push(new CalendarEvent(t, summary, true));
         }
 
         // 'Get Married' is an event that actually reflects reality (Dec 4, 2010) :-)
-        this._fakeTasks.push(new CalendarTask(new Date(2010, 11, 4, 16, 0), 'Get Married', false));
+        this._fakeEvents.push(new CalendarEvent(new Date(2010, 11, 4, 16, 0), 'Get Married', false));
 
         // ditto for 'NE Patriots vs NY Jets'
-        this._fakeTasks.push(new CalendarTask(new Date(2010, 11, 6, 20, 30), 'NE Patriots vs NY Jets', false));
+        this._fakeEvents.push(new CalendarEvent(new Date(2010, 11, 6, 20, 30), 'NE Patriots vs NY Jets', false));
 
         // An event for tomorrow @6:30pm that is added/removed every five
         // seconds (to check that the ::changed signal works)
@@ -247,7 +284,7 @@ FakeEventSource.prototype = {
         transientEventDate.setSeconds(0);
         Mainloop.timeout_add(5000, Lang.bind(this, this._updateTransientEvent));
         this._includeTransientEvent = false;
-        this._transientEvent = new CalendarTask(transientEventDate, 'A Transient Event', false);
+        this._transientEvent = new CalendarEvent(transientEventDate, 'A Transient Event', false);
         this._transientEventCounter = 1;
     },
 
@@ -259,32 +296,32 @@ FakeEventSource.prototype = {
         Mainloop.timeout_add(5000, Lang.bind(this, this._updateTransientEvent));
     },
 
-    getTasks: function(begin, end) {
+    getEvents: function(begin, end) {
         let result = [];
         //log('begin:' + begin);
         //log('end:  ' + end);
-        for(let n = 0; n < this._fakeTasks.length; n++) {
-            let task = this._fakeTasks[n];
-            if (task.date >= begin && task.date <= end) {
-                result.push(task);
+        for(let n = 0; n < this._fakeEvents.length; n++) {
+            let event = this._fakeEvents[n];
+            if (event.date >= begin && event.date <= end) {
+                result.push(event);
             }
-            //log('when:' + task.date + ' summary:' + task.summary);
+            //log('when:' + event.date + ' summary:' + event.summary);
         }
         if (this._includeTransientEvent && this._transientEvent.date >= begin && this._transientEvent.date <= end)
             result.push(this._transientEvent);
-        result.sort(function(task1, task2) {
-            return task1.date.getTime() - task2.date.getTime();
+        result.sort(function(event1, event2) {
+            return event1.date.getTime() - event2.date.getTime();
         });
         return result;
     },
 
-    hasTasks: function(day) {
+    hasEvents: function(day) {
         let dayBegin = _getBeginningOfDay(day);
         let dayEnd = _getEndOfDay(day);
 
-        let tasks = this.getTasks(dayBegin, dayEnd);
+        let events = this.getEvents(dayBegin, dayEnd);
 
-        if (tasks.length == 0)
+        if (events.length == 0)
             return false;
 
         return true;
@@ -295,7 +332,7 @@ Signals.addSignalMethods(FakeEventSource.prototype);
 
 // Calendar:
 // @eventSource: is an object implementing the EventSource API, e.g. the
-// getTasks(), hasTasks() methods and the ::changed signal.
+// getEvents(), hasEvents() methods and the ::changed signal.
 function Calendar(eventSource) {
     this._init(eventSource);
 }
@@ -497,8 +534,8 @@ Calendar.prototype = {
             }));
 
             let styleClass;
-            let hasTasks;
-            hasTasks = this._eventSource.hasTasks(iter);
+            let hasEvents;
+            hasEvents = this._eventSource.hasEvents(iter);
             styleClass = 'calendar-day-base calendar-day';
             if (_isWorkDay(iter))
                 styleClass += ' calendar-work-day'
@@ -513,7 +550,7 @@ Calendar.prototype = {
             if (_sameDay(this.selectedDate, iter))
                 button.add_style_pseudo_class('active');
 
-            if (hasTasks)
+            if (hasEvents)
                 styleClass += ' calendar-day-with-events'
 
             button.style_class = styleClass;
@@ -571,11 +608,11 @@ EventsList.prototype = {
     },
 
     _addPeriod: function(header, begin, end, includeDayName, showNothingScheduled) {
-        let tasks = this._eventSource.getTasks(begin, end);
+        let events = this._eventSource.getEvents(begin, end);
 
         let clockFormat = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);;
 
-        if (tasks.length == 0 && !showNothingScheduled)
+        if (events.length == 0 && !showNothingScheduled)
             return;
 
         let vbox = new St.BoxLayout( {vertical: true} );
@@ -591,20 +628,20 @@ EventsList.prototype = {
         box.add(eventTitleBox, {expand: true});
         vbox.add(box);
 
-        for (let n = 0; n < tasks.length; n++) {
-            let task = tasks[n];
-            let dayString = _getEventDayAbbreviation(task.date.getDay());
-            let timeString = _formatTaskTime(task, clockFormat);
-            let summaryString = task.summary;
+        for (let n = 0; n < events.length; n++) {
+            let event = events[n];
+            let dayString = _getEventDayAbbreviation(event.date.getDay());
+            let timeString = _formatEventTime(event, clockFormat);
+            let summaryString = event.summary;
             this._addEvent(dayNameBox, timeBox, eventTitleBox, includeDayName, dayString, timeString, summaryString);
         }
 
-        if (tasks.length == 0 && showNothingScheduled) {
+        if (events.length == 0 && showNothingScheduled) {
             let now = new Date();
             /* Translators: Text to show if there are no events */
-            let nothingTask = new CalendarTask(now, _("Nothing Scheduled"), true);
-            let timeString = _formatTaskTime(nothingTask, clockFormat);
-            this._addEvent(dayNameBox, timeBox, eventTitleBox, false, "", timeString, nothingTask.summary);
+            let nothingEvent = new CalendarEvent(now, _("Nothing Scheduled"), true);
+            let timeString = _formatEventTime(nothingEvent, clockFormat);
+            this._addEvent(dayNameBox, timeBox, eventTitleBox, false, "", timeString, nothingEvent.summary);
         }
     },
 
