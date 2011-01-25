@@ -15,10 +15,17 @@ const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 const WEEKDATE_HEADER_WIDTH_DIGITS = 3;
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
 
+// in org.gnome.desktop.interface
+const CLOCK_FORMAT_KEY        = 'clock-format';
+
 function _sameDay(dateA, dateB) {
     return (dateA.getDate() == dateB.getDate() &&
             dateA.getMonth() == dateB.getMonth() &&
             dateA.getYear() == dateB.getYear());
+}
+
+function _sameYear(dateA, dateB) {
+    return (dateA.getYear() == dateB.getYear());
 }
 
 /* TODO: maybe needs config - right now we assume that Saturday and
@@ -27,6 +34,43 @@ function _sameDay(dateA, dateB) {
  */
 function _isWorkDay(date) {
     return date.getDay() != 0 && date.getDay() != 6;
+}
+
+function _getBeginningOfDay(date) {
+    let ret = new Date(date.getTime());
+    ret.setHours(0);
+    ret.setMinutes(0);
+    ret.setMilliseconds(0);
+    return ret;
+}
+
+function _getEndOfDay(date) {
+    let ret = new Date(date.getTime());
+    ret.setHours(23);
+    ret.setMinutes(59);
+    ret.setMilliseconds(999);
+    return ret;
+}
+
+function _formatTaskTime(task, clockFormat) {
+    let ret;
+    if (task.allDay) {
+        /* Translators: Shown in calendar event list for all day events */
+        ret = _("All Day");
+    } else {
+        switch (clockFormat) {
+        case '24h':
+            ret = task.date.toLocaleFormat('%H:%M');
+            break;
+
+        default:
+            /* explicit fall-through */
+        case '12h':
+            ret = task.date.toLocaleFormat('%l:%M %p');
+            break;
+        }
+    }
+    return ret;
 }
 
 function _getCalendarWeekForDate(date) {
@@ -106,14 +150,15 @@ function _getEventDayAbbreviation(dayNumber) {
 
 // Abstraction for an appointment/task in a calendar
 
-function CalendarTask(date, summary) {
-    this._init(date, summary);
+function CalendarTask(date, summary, allDay) {
+    this._init(date, summary, allDay);
 }
 
 CalendarTask.prototype = {
-    _init: function(date, summary) {
+    _init: function(date, summary, allDay) {
         this.date = date;
         this.summary = summary;
+        this.allDay = allDay;
     }
 };
 
@@ -153,52 +198,56 @@ FakeEventSource.prototype = {
 
         // Generate fake events
         //
-        let now = new Date();
+        let midnightToday = _getBeginningOfDay(new Date());
         let summary = '';
-        now.setHours(0);
-        now.setMinutes(0);
-        now.setSeconds(0);
 
         // '10-oclock pow-wow' is an event occuring IN THE PAST every four days at 10am
-        for(let n = 0; n < 10; n++) {
-            let t = new Date(now.getTime() - n * 4 * 86400 * 1000);
+        for (let n = 0; n < 10; n++) {
+            let t = new Date(midnightToday.getTime() - n * 4 * 86400 * 1000);
             t.setHours(10);
             summary = '10-oclock pow-wow (n=' + n + ')';
-            this._fakeTasks.push(new CalendarTask(t, summary));
+            this._fakeTasks.push(new CalendarTask(t, summary, false));
         }
 
         // '11-oclock thing' is an event occuring every three days at 11am
-        for(let n = 0; n < 10; n++) {
-            let t = new Date(now.getTime() + n * 3 * 86400 * 1000);
+        for (let n = 0; n < 10; n++) {
+            let t = new Date(midnightToday.getTime() + n * 3 * 86400 * 1000);
             t.setHours(11);
             summary = '11-oclock thing (n=' + n + ')';
-            this._fakeTasks.push(new CalendarTask(t, summary));
+            this._fakeTasks.push(new CalendarTask(t, summary, false));
         }
 
         // 'Weekly Meeting' is an event occuring every seven days at 1:45pm (two days displaced)
-        for(let n = 0; n < 5; n++) {
-            let t = new Date(now.getTime() + (n * 7 + 2) * 86400 * 1000);
+        for (let n = 0; n < 5; n++) {
+            let t = new Date(midnightToday.getTime() + (n * 7 + 2) * 86400 * 1000);
             t.setHours(13);
             t.setMinutes(45);
             summary = 'Weekly Meeting (n=' + n + ')';
-            this._fakeTasks.push(new CalendarTask(t, summary));
+            this._fakeTasks.push(new CalendarTask(t, summary, false));
+        }
+
+        // 'Fun All Day' is an all-day event occuring every fortnight (three days displayed)
+        for (let n = 0; n < 10; n++) {
+            let t = new Date(midnightToday.getTime() + (n * 14 + 3) * 86400 * 1000);
+            summary = 'Fun All Day (n=' + n + ')';
+            this._fakeTasks.push(new CalendarTask(t, summary, true));
         }
 
         // 'Get Married' is an event that actually reflects reality (Dec 4, 2010) :-)
-        this._fakeTasks.push(new CalendarTask(new Date(2010, 11, 4, 16, 0), 'Get Married'));
+        this._fakeTasks.push(new CalendarTask(new Date(2010, 11, 4, 16, 0), 'Get Married', false));
 
         // ditto for 'NE Patriots vs NY Jets'
-        this._fakeTasks.push(new CalendarTask(new Date(2010, 11, 6, 20, 30), 'NE Patriots vs NY Jets'));
+        this._fakeTasks.push(new CalendarTask(new Date(2010, 11, 6, 20, 30), 'NE Patriots vs NY Jets', false));
 
         // An event for tomorrow @6:30pm that is added/removed every five
         // seconds (to check that the ::changed signal works)
-        let transientEventDate = new Date(now.getTime() + 86400*1000);
+        let transientEventDate = new Date(midnightToday.getTime() + 86400 * 1000);
         transientEventDate.setHours(18);
         transientEventDate.setMinutes(30);
         transientEventDate.setSeconds(0);
         Mainloop.timeout_add(5000, Lang.bind(this, this._updateTransientEvent));
         this._includeTransientEvent = false;
-        this._transientEvent = new CalendarTask(transientEventDate, 'A Transient Event');
+        this._transientEvent = new CalendarTask(transientEventDate, 'A Transient Event', false);
         this._transientEventCounter = 1;
     },
 
@@ -223,16 +272,15 @@ FakeEventSource.prototype = {
         }
         if (this._includeTransientEvent && this._transientEvent.date >= begin && this._transientEvent.date <= end)
             result.push(this._transientEvent);
+        result.sort(function(task1, task2) {
+            return task1.date.getTime() - task2.date.getTime();
+        });
         return result;
     },
 
     hasTasks: function(day) {
-        let dayBegin = new Date(day.getTime());
-        let dayEnd = new Date(day.getTime());
-        dayBegin.setHours(0);
-        dayBegin.setMinutes(1);
-        dayEnd.setHours(23);
-        dayEnd.setMinutes(59);
+        let dayBegin = _getBeginningOfDay(day);
+        let dayEnd = _getEndOfDay(day);
 
         let tasks = this.getTasks(dayBegin, dayEnd);
 
@@ -280,6 +328,7 @@ Calendar.prototype = {
         }
 
         // Find the ordering for month/year in the calendar heading
+        this._headerFormatWithoutYear = '%B';
         switch (Gettext_gtk30.gettext('calendar:MY')) {
         case 'calendar:MY':
             this._headerFormat = '%B %Y';
@@ -417,7 +466,12 @@ Calendar.prototype = {
     },
 
     _update: function() {
-        this._dateLabel.text = this.selectedDate.toLocaleFormat(this._headerFormat);
+        let now = new Date();
+
+        if (_sameYear(this.selectedDate, now))
+            this._dateLabel.text = this.selectedDate.toLocaleFormat(this._headerFormatWithoutYear);
+        else
+            this._dateLabel.text = this.selectedDate.toLocaleFormat(this._headerFormat);
 
         // Remove everything but the topBox and the weekday labels
         let children = this.actor.get_children();
@@ -431,8 +485,6 @@ Calendar.prototype = {
         iter.setHours(12);
         let daysToWeekStart = (7 + iter.getDay() - this._weekStart) % 7;
         iter.setTime(iter.getTime() - daysToWeekStart * MSECS_IN_DAY);
-
-        let now = new Date();
 
         let row = 2;
         while (true) {
@@ -500,6 +552,8 @@ EventsList.prototype = {
         this._date = new Date();
         this._eventSource = eventSource;
         this._eventSource.connect('changed', Lang.bind(this, this._update));
+        this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
+        this._desktopSettings.connect('changed', Lang.bind(this, this._update));
         this._update();
     },
 
@@ -516,10 +570,12 @@ EventsList.prototype = {
                                           text: desc} ));
     },
 
-    _addPeriod: function(header, begin, end, includeDayName) {
+    _addPeriod: function(header, begin, end, includeDayName, showNothingScheduled) {
         let tasks = this._eventSource.getTasks(begin, end);
 
-        if (tasks.length == 0)
+        let clockFormat = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);;
+
+        if (tasks.length == 0 && !showNothingScheduled)
             return;
 
         let vbox = new St.BoxLayout( {vertical: true} );
@@ -538,50 +594,59 @@ EventsList.prototype = {
         for (let n = 0; n < tasks.length; n++) {
             let task = tasks[n];
             let dayString = _getEventDayAbbreviation(task.date.getDay());
-            let timeString = task.date.toLocaleFormat('%I:%M %p'); // TODO: locale considerations
+            let timeString = _formatTaskTime(task, clockFormat);
             let summaryString = task.summary;
             this._addEvent(dayNameBox, timeBox, eventTitleBox, includeDayName, dayString, timeString, summaryString);
+        }
+
+        if (tasks.length == 0 && showNothingScheduled) {
+            let now = new Date();
+            /* Translators: Text to show if there are no events */
+            let nothingTask = new CalendarTask(now, _("Nothing Scheduled"), true);
+            let timeString = _formatTaskTime(nothingTask, clockFormat);
+            this._addEvent(dayNameBox, timeBox, eventTitleBox, false, "", timeString, nothingTask.summary);
         }
     },
 
     _showOtherDay: function(day) {
         this.actor.destroy_children();
 
-        let dayBegin = new Date(day.getTime());
-        let dayEnd = new Date(day.getTime());
-        dayBegin.setHours(0);
-        dayBegin.setMinutes(1);
-        dayEnd.setHours(23);
-        dayEnd.setMinutes(59);
-        this._addPeriod(day.toLocaleFormat('%A, %B %d, %Y'), dayBegin, dayEnd, false);
+        let dayBegin = _getBeginningOfDay(day);
+        let dayEnd = _getEndOfDay(day);
+
+        let dayString;
+        let now = new Date();
+        if (_sameYear(day, now))
+            dayString = day.toLocaleFormat('%A, %B %d');
+        else
+            dayString = day.toLocaleFormat('%A, %B %d, %Y');
+        this._addPeriod(dayString, dayBegin, dayEnd, false, true);
     },
 
     _showToday: function() {
         this.actor.destroy_children();
 
-        let dayBegin = new Date();
-        let dayEnd = new Date();
-        dayBegin.setHours(0);
-        dayBegin.setMinutes(1);
-        dayEnd.setHours(23);
-        dayEnd.setMinutes(59);
-        this._addPeriod(_("Today"), dayBegin, dayEnd, false);
+        let now = new Date();
+        let dayBegin = _getBeginningOfDay(now);
+        let dayEnd = _getEndOfDay(now);
+        this._addPeriod(_("Today"), dayBegin, dayEnd, false, true);
 
         dayBegin.setDate(dayBegin.getDate() + 1);
         dayEnd.setDate(dayEnd.getDate() + 1);
-        this._addPeriod(_("Tomorrow"), dayBegin, dayEnd, false);
+        this._addPeriod(_("Tomorrow"), dayBegin, dayEnd, false, true);
 
         if (dayEnd.getDay() == 6 || dayEnd.getDay() == 0) {
             dayBegin.setDate(dayEnd.getDate() + 1);
             dayEnd.setDate(dayBegin.getDate() + 6 - dayBegin.getDay());
 
-            this._addPeriod(_("Next week"), dayBegin, dayEnd, true);
+            this._addPeriod(_("Next week"), dayBegin, dayEnd, true, true);
             return;
+        } else {
+            let d = 6 - dayEnd.getDay() - 1;
+            dayBegin.setDate(dayBegin.getDate() + 1);
+            dayEnd.setDate(dayEnd.getDate() + 1 + d);
+            this._addPeriod(_("This week"), dayBegin, dayEnd, true, true);
         }
-        let d = 6 - dayEnd.getDay() - 1;
-        dayBegin.setDate(dayBegin.getDate() + 1);
-        dayEnd.setDate(dayEnd.getDate() + 1 + d);
-        this._addPeriod(_("This week"), dayBegin, dayEnd, true);
     },
 
     // Sets the event list to show events from a specific date

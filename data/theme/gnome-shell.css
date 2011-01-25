@@ -677,7 +677,7 @@ StTooltip StLabel {
 .calendar-vertical-separator {
     -stipple-width: 1px;
     -stipple-color: #505050;
-    width: 1em;
+    width: 1.5em;
 }
 
 #calendarPopup {
@@ -691,15 +691,8 @@ StTooltip StLabel {
     padding: 10px;
 }
 
-#calendarHBox {
-    padding: 10px 20px;
-}
-
-#calendarVBox1 {
-    spacing: 20px;
-}
-
 .calendar {
+    padding: .4em 1.75em;
     spacing-rows: 0px;
     spacing-columns: 0px;
 }
@@ -749,22 +742,24 @@ StTooltip StLabel {
 }
 
 .datemenu-date-label {
+    padding: .4em 1.75em;
     font-size: 16px;
     color: #ffffff;
 }
 
 .calendar-day-base {
     font-size: 10px;
-    padding: 5px 3px;
     text-align: center;
+    width: 24px;
+    height: 24px;
 }
 
 .calendar-day-base:hover {
-    background: #999999;
+    background: #777777;
 }
 
 .calendar-day-base:active {
-    background: #666666;
+    background: #555555;
 }
 
 .calendar-day-heading {
@@ -820,6 +815,7 @@ StTooltip StLabel {
 .events-day-header {
     font-size: 14px;
     color: rgba(153, 153, 153, 1.0);
+    padding: 0.3em;
 }
 
 .events-day-dayname {
@@ -850,14 +846,6 @@ StTooltip StLabel {
 
 .events-event-box {
     width: 200px;
-}
-
-.events-no-events {
-    font-weight: bold;
-    padding-left: 40px;
-    padding-right: 40px;
-    font-size: 14px;
-    color: rgba(153, 153, 153, 1.0);
 }
 
 .open-calendar {

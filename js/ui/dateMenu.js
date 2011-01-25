@@ -55,8 +55,8 @@ DateMenuButton.prototype = {
         let hbox;
         let vbox;
 
-        this._eventSource = new Calendar.EmptyEventSource();
-        //this._eventSource = new Calendar.FakeEventSource();
+        //this._eventSource = new Calendar.EmptyEventSource();
+        this._eventSource = new Calendar.FakeEventSource();
         // TODO: write e.g. EvolutionEventSource
 
         PanelMenu.Button.prototype._init.call(this, St.Align.START);
@@ -64,12 +64,12 @@ DateMenuButton.prototype = {
         this._clock = new St.Label();
         this.actor.set_child(this._clock);
 
-        hbox = new St.BoxLayout({name: 'calendarHBox'});
+        hbox = new St.BoxLayout();
         this.menu.addActor(hbox);
 
         // Fill up the first column
 
-        vbox = new St.BoxLayout({vertical: true, name: 'calendarVBox1'});
+        vbox = new St.BoxLayout({vertical: true});
         hbox.add(vbox);
 
         // Date
@@ -87,18 +87,33 @@ DateMenuButton.prototype = {
                                }));
         vbox.add(this._calendar.actor);
 
+        //item = new St.Button({style_class: 'popup-menu-item', label: 'foobar'});
+        //vbox.add(item);
+        item = new PopupMenu.PopupSeparatorMenuItem();
+        item.actor.remove_actor(item._drawingArea);
+        vbox.add(item._drawingArea);
+        item = new PopupMenu.PopupMenuItem(_("Date and Time Settings"));
+        item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
+        vbox.add(item.actor);
+
         // Add vertical separator
 
         item = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
                                     pseudo_class: 'highlighted' });
-        item.set_width(25); // TODO: don't hard-code the width
         item.connect('repaint', Lang.bind(this, _onVertSepRepaint));
         hbox.add(item);
 
         // Fill up the second column
         //
+        vbox = new St.BoxLayout({vertical: true});
+        hbox.add(vbox);
+
         // Event list
-        hbox.add(this._eventList.actor);
+        vbox.add(this._eventList.actor);
+
+        item = new PopupMenu.PopupMenuItem(_("Open Calendar"));
+        item.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
+        vbox.add(item.actor, {y_align : St.Align.END, expand : true, y_fill : false});
 
         // Whenever the menu is opened, select today
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
@@ -113,12 +128,12 @@ DateMenuButton.prototype = {
         // Done with hbox for calendar and event list
 
         // Add separator
-        item = new PopupMenu.PopupSeparatorMenuItem();
-        this.menu.addMenuItem(item);
+        //item = new PopupMenu.PopupSeparatorMenuItem();
+        //this.menu.addMenuItem(item);
 
         // Add button to get to the Date and Time settings
-        this.menu.addAction(_("Date and Time Settings"),
-                            Lang.bind(this, this._onPreferencesActivate));
+        //this.menu.addAction(_("Date and Time Settings"),
+        //                    Lang.bind(this, this._onPreferencesActivate));
 
         // Track changes to clock settings
         this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
@@ -185,8 +200,10 @@ DateMenuButton.prototype = {
 
         this._clock.set_text(displayDate.toLocaleFormat(clockFormat));
 
-        /* Translators: This is the date format to use */
-        dateFormat = _("%B %e, %Y");
+        /* Translators: This is the date format to use when the calendar popup is
+         * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+         */
+        dateFormat = _("%A %B %e, %Y");
         this._date.set_text(displayDate.toLocaleFormat(dateFormat));
 
         Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClockAndDate));
@@ -194,6 +211,14 @@ DateMenuButton.prototype = {
     },
 
     _onPreferencesActivate: function() {
+        this.menu.close();
         Util.spawnDesktop('gnome-datetime-panel');
+    },
+
+    _onOpenCalendarActivate: function() {
+        this.menu.close();
+        // TODO: pass '-c calendar' (to force the calendar at startup)
+        // TODO: pass the selected day
+        Util.spawnDesktop('evolution');
     },
 };
