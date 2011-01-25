@@ -110,10 +110,7 @@ test_flow_layout_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 
   if (!fixed_size)
-    {
-      clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage, CLUTTER_BIND_WIDTH, 0.0));
-      clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage, CLUTTER_BIND_HEIGHT, 0.0));
-    }
+    clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage, CLUTTER_BIND_SIZE, 0.0));
 
   clutter_actor_set_position (box, 0, 0);
 

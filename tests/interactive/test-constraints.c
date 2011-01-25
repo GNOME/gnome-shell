@@ -152,7 +152,6 @@ test_constraints_main (int argc, char *argv[])
       clutter_color_from_string (&rect_color, colors[i]);
       rect = clutter_rectangle_new ();
       clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &rect_color);
-      clutter_actor_set_size (rect, 128, 128);
       clutter_actor_set_opacity (rect, 0);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
 
@@ -161,6 +160,9 @@ test_constraints_main (int argc, char *argv[])
 
       constraint = clutter_bind_constraint_new (rects[Center], CLUTTER_BIND_Y, 0.0);
       clutter_actor_add_constraint_with_name (rect, "y-bind", constraint);
+
+      constraint = clutter_bind_constraint_new (rects[Center], CLUTTER_BIND_SIZE, 0.0);
+      clutter_actor_add_constraint_with_name (rect, "size-bind", constraint);
 
       rects[i] = rect;
     }
