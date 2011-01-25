@@ -946,6 +946,8 @@ AppSwitcher.prototype = {
             this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT,
                                                         Lang.bind(this, function () {
                                                                             this._enterItem(index);
+                                                                            this._mouseTimeOutId = 0;
+                                                                            return false;
                                                         }));
         } else
            this._itemEntered(index);
