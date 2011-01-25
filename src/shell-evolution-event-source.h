@@ -12,13 +12,13 @@ struct _ShellEvolutionEvent
 {
   gchar    *summary;
   gboolean  all_day;
-  gint64    date;
+  gint64    msec_begin;
 };
 
 GType                shell_evolution_event_get_type (void) G_GNUC_CONST;
 ShellEvolutionEvent *shell_evolution_event_new      (const gchar *summary,
                                                      gboolean     all_day,
-                                                     gint64       date);
+                                                     gint64       msec_begin);
 ShellEvolutionEvent *shell_evolution_event_copy     (ShellEvolutionEvent *event);
 void                 shell_evolution_event_free     (ShellEvolutionEvent *event);
 
@@ -32,11 +32,14 @@ typedef struct _ShellEvolutionEventSourceClass ShellEvolutionEventSourceClass;
 #define SHELL_IS_EVOLUTION_EVENT_SOURCE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_EVOLUTION_EVENT_SOURCE))
 #define SHELL_EVOLUTION_EVENT_SOURCE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_EVOLUTION_EVENT_SOURCE, ShellEvolutionEventSourceClass))
 
-GType                      shell_evolution_event_source_get_type    (void) G_GNUC_CONST;
-ShellEvolutionEventSource *shell_evolution_event_source_new         (void);
-GList                     *shell_evolution_event_source_get_events  (ShellEvolutionEventSource *source,
-                                                                     gint64                     date_begin,
-                                                                     gint64                     date_end);
+GType                      shell_evolution_event_source_get_type      (void) G_GNUC_CONST;
+ShellEvolutionEventSource *shell_evolution_event_source_new           (void);
+void                       shell_evolution_event_source_request_range (ShellEvolutionEventSource *source,
+                                                                       gint64                     msec_begin,
+                                                                       gint64                     msec_end);
+GList                     *shell_evolution_event_source_get_events    (ShellEvolutionEventSource *source,
+                                                                       gint64                     msec_begin,
+                                                                       gint64                     msec_end);
 G_END_DECLS
 
 #endif /* __SHELL_EVOLUTION_EVENT_SOURCE_H__ */

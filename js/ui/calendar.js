@@ -175,6 +175,9 @@ EmptyEventSource.prototype = {
     _init: function() {
     },
 
+    requestRange: function(begin, end) {
+    },
+
     getEvents: function(begin, end) {
         let result = [];
         return result;
@@ -199,12 +202,16 @@ EvolutionEventSource.prototype = {
         }));
     },
 
+    requestRange: function(begin, end) {
+        this._native.request_range(begin.getTime(), end.getTime());
+    },
+
     getEvents: function(begin, end) {
         let result = [];
         let nativeEvents = this._native.get_events(begin.getTime(), end.getTime());
         for (let n = 0; n < nativeEvents.length; n++) {
             let nativeEvent = nativeEvents[n];
-            result.push(new CalendarEvent(new Date(nativeEvent.date), nativeEvent.summary, nativeEvent.all_day));
+            result.push(new CalendarEvent(new Date(nativeEvent.msec_begin), nativeEvent.summary, nativeEvent.all_day));
         }
         return result;
     },
@@ -296,6 +303,9 @@ FakeEventSource.prototype = {
         Mainloop.timeout_add(5000, Lang.bind(this, this._updateTransientEvent));
     },
 
+    requestRange: function(begin, end) {
+    },
+
     getEvents: function(begin, end) {
         let result = [];
         //log('begin:' + begin);
@@ -332,7 +342,7 @@ Signals.addSignalMethods(FakeEventSource.prototype);
 
 // Calendar:
 // @eventSource: is an object implementing the EventSource API, e.g. the
-// getEvents(), hasEvents() methods and the ::changed signal.
+// requestRange(), getEvents(), hasEvents() methods and the ::changed signal.
 function Calendar(eventSource) {
     this._init(eventSource);
 }
@@ -516,13 +526,14 @@ Calendar.prototype = {
             children[i].destroy();
 
         // Start at the beginning of the week before the start of the month
-        let iter = new Date(this.selectedDate);
-        iter.setDate(1);
-        iter.setSeconds(0);
-        iter.setHours(12);
-        let daysToWeekStart = (7 + iter.getDay() - this._weekStart) % 7;
-        iter.setTime(iter.getTime() - daysToWeekStart * MSECS_IN_DAY);
+        let beginDate = new Date(this.selectedDate);
+        beginDate.setDate(1);
+        beginDate.setSeconds(0);
+        beginDate.setHours(12);
+        let daysToWeekStart = (7 + beginDate.getDay() - this._weekStart) % 7;
+        beginDate.setTime(beginDate.getTime() - daysToWeekStart * MSECS_IN_DAY);
 
+        let iter = new Date(beginDate);
         let row = 2;
         while (true) {
             let button = new St.Button({ label: iter.getDate().toString() });
@@ -574,6 +585,9 @@ Calendar.prototype = {
                 row++;
             }
         }
+        // Signal to the event source that we are interested in events
+        // only from this date range
+        this._eventSource.requestRange(beginDate, iter);
     }
 };
 
