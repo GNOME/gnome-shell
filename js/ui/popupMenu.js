@@ -632,38 +632,28 @@ PopupMenuBase.prototype = {
         }));
     },
 
-    addMenuItem: function(menuItem, position) {
-        let before_item = null;
-        if (position == undefined) {
-            this.box.add(menuItem.actor);
-        } else {
-            let items = this.getMenuItems();
-            if (position < items.length) {
-                before_item = items[position].actor;
-                this.box.insert_before(menuItem.actor, before_item);
-            } else
-                this.box.add(menuItem.actor);
-        }
-        if (menuItem instanceof PopupSubMenuMenuItem) {
-            if (before_item == null)
-                this.box.add(menuItem.menu.actor);
-            else
-                this.box.insert_before(menuItem.menu.actor, before_item);
-            menuItem._subMenuActivateId = menuItem.menu.connect('activate', Lang.bind(this, function() {
-                this.emit('activate');
-                this.close(true);
-            }));
-            menuItem._subMenuActiveChangeId = menuItem.menu.connect('active-changed', Lang.bind(this, function(submenu, submenuItem) {
-                if (this._activeMenuItem && this._activeMenuItem != submenuItem)
-                    this._activeMenuItem.setActive(false);
-                this._activeMenuItem = submenuItem;
-                this.emit('active-changed', submenuItem);
-            }));
-            menuItem._closingId = this.connect('open-state-changed', function(self, open) {
-                if (!open)
-                    menuItem.menu.close(false);
-            });
-        }
+    /**
+     * _connectSubMenuSignals:
+     * @object: a menu item, or a menu section
+     * @menu: a sub menu, or a menu section
+     *
+     * Connects to signals on @menu that are necessary for
+     * operating the submenu, and stores the ids on @object.
+     */
+    _connectSubMenuSignals: function(object, menu) {
+        object._subMenuActivateId = menu.connect('activate', Lang.bind(this, function() {
+            this.emit('activate');
+            this.close(true);
+        }));
+        object._subMenuActiveChangeId = menu.connect('active-changed', Lang.bind(this, function(submenu, submenuItem) {
+            if (this._activeMenuItem && this._activeMenuItem != submenuItem)
+                this._activeMenuItem.setActive(false);
+            this._activeMenuItem = submenuItem;
+            this.emit('active-changed', submenuItem);
+        }));
+    },
+
+    _connectItemSignals: function(menuItem) {
         menuItem._activeChangeId = menuItem.connect('active-changed', Lang.bind(this, function (menuItem, active) {
             if (active && this._activeMenuItem != menuItem) {
                 if (this._activeMenuItem)
@@ -690,6 +680,41 @@ PopupMenuBase.prototype = {
             if (menuItem == this._activeMenuItem)
                 this._activeMenuItem = null;
         }));
+    },
+
+    addMenuItem: function(menuItem, position) {
+        let before_item = null;
+        if (position == undefined) {
+            this.box.add(menuItem.actor);
+        } else {
+            let items = this._getMenuItems();
+            if (position < items.length) {
+                before_item = items[position].actor;
+                this.box.insert_before(menuItem.actor, before_item);
+            } else
+                this.box.add(menuItem.actor);
+        }
+        if (menuItem instanceof PopupMenuSection) {
+            this._connectSubMenuSignals(menuItem, menuItem);
+            menuItem.connect('destroy', Lang.bind(this, function() {
+                menuItem.disconnect(menuItem._subMenuActivateId);
+                menuItem.disconnect(menuItem._subMenuActiveChangeId);
+            }));
+        } else if (menuItem instanceof PopupSubMenuMenuItem) {
+            if (before_item == null)
+                this.box.add(menuItem.menu.actor);
+            else
+                this.box.insert_before(menuItem.menu.actor, before_item);
+            this._connectSubMenuSignals(menuItem, menuItem.menu);
+            this._connectItemSignals(menuItem);
+            menuItem._closingId = this.connect('open-state-changed', function(self, open) {
+                if (!open)
+                    menuItem.menu.close(false);
+            });
+        } else if (menuItem instanceof PopupBaseMenuItem)
+            this._connectItemSignals(menuItem);
+        else
+            throw TypeError("Invalid argument to PopupMenuBase.addMenuItem()");
     },
 
     getColumnWidths: function() {
@@ -719,12 +744,16 @@ PopupMenuBase.prototype = {
         this.box.add(actor);
     },
 
-    getMenuItems: function() {
-        return this.box.get_children().map(function (actor) { return actor._delegate; }).filter(function(item) { return item instanceof PopupBaseMenuItem; });
+    _getMenuItems: function() {
+        return this.box.get_children().map(function (actor) {
+            return actor._delegate;
+        }).filter(function(item) {
+            return item instanceof PopupBaseMenuItem || item instanceof PopupMenuSection;
+        });
     },
 
     removeAll: function() {
-        let children = this.getMenuItems();
+        let children = this._getMenuItems();
         for (let i = 0; i < children.length; i++) {
             let item = children[i];
             item.destroy();
@@ -934,6 +963,34 @@ PopupSubMenu.prototype = {
         return false;
     }
 };
+
+/**
+ * PopupMenuSection:
+ *
+ * A section of a PopupMenu which is handled like a submenu
+ * (you can add and remove items, you can destroy it, you
+ * can add it to another menu), but is completely transparent
+ * to the user
+ */
+function PopupMenuSection() {
+    this._init.apply(this, arguments);
+}
+
+PopupMenuSection.prototype = {
+    __proto__: PopupMenuBase.prototype,
+
+    _init: function() {
+        PopupMenuBase.prototype._init.call(this);
+
+        this.actor = this.box;
+        this.actor._delegate = this;
+        this.isOpen = true;
+    },
+
+    // deliberately ignore any attempt to open() or close()
+    open: function(animate) { },
+    close: function() { },
+}
 
 function PopupSubMenuMenuItem() {
     this._init.apply(this, arguments);
