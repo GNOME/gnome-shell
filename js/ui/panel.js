@@ -44,6 +44,12 @@ const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
 if (Config.HAVE_BLUETOOTH)
     STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['bluetooth'] = imports.ui.status.bluetooth.Indicator;
 
+try {
+    STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['network'] = imports.ui.status.network.NMApplet;
+} catch(e) {
+    log('NMApplet is not supported. It is possible that your NetworkManager version is too old');
+}
+
 // To make sure the panel corners blend nicely with the panel,
 // we draw background and borders the same way, e.g. drawing
 // them as filled shapes from the outside inwards instead of

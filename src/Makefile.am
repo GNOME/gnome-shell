@@ -62,7 +62,8 @@ gnome_shell_cflags =				\
 	$(GNOME_SHELL_CFLAGS)			\
 	-I$(srcdir)/tray			\
 	-DVERSION=\"$(VERSION)\"		\
-	-DLOCALEDIR=\"$(datadir)/locale\" \
+	-DLOCALEDIR=\"$(datadir)/locale\" 	\
+	-DDATADIR=\"$(datadir)\"		\
 	-DGNOME_SHELL_LIBEXECDIR=\"$(libexecdir)\"	\
 	-DGNOME_SHELL_DATADIR=\"$(pkgdatadir)\"	\
 	-DGNOME_SHELL_PKGLIBDIR=\"$(pkglibdir)\" \
@@ -90,6 +91,7 @@ shell_public_headers_h =		\
 	shell-generic-container.h	\
 	shell-gtk-embed.h		\
 	shell-global.h			\
+	shell-mobile-providers.h	\
 	shell-perf-log.h		\
 	shell-slicer.h			\
 	shell-stack.h			\
@@ -121,6 +123,7 @@ libgnome_shell_la_SOURCES =		\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
 	shell-global.c			\
+	shell-mobile-providers.c	\
 	shell-perf-log.c		\
 	shell-polkit-authentication-agent.h	\
 	shell-polkit-authentication-agent.c	\

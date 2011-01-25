@@ -20,6 +20,7 @@ js/ui/statusMenu.js
 js/ui/status/accessibility.js
 js/ui/status/bluetooth.js
 js/ui/status/keyboard.js
+js/ui/status/network.js
 js/ui/status/power.js
 js/ui/status/volume.js
 js/ui/telepathyClient.js
@@ -31,6 +32,7 @@ src/gdmuser/gdm-user.c
 src/main.c
 src/shell-app-system.c
 src/shell-global.c
+src/shell-mobile-providers.c
 src/shell-polkit-authentication-agent.c
 src/shell-util.c
 

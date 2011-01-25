@@ -153,6 +153,14 @@ StTooltip StLabel {
     spacing: .5em;
 }
 
+.popup-inactive-menu-item {
+    font-style: italic;
+}
+
+.popup-subtitle-menu-item {
+    font-weight: bold;
+}
+
 .popup-menu-icon {
     icon-size: 1.14em;
 }
