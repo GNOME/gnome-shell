@@ -24,6 +24,14 @@
 #include "meta-shaped-texture.h"
 #include "meta-window-actor-private.h"
 
+enum {
+  SIZE_CHANGED,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = {0};
+
+
 struct _MetaWindowActorPrivate
 {
   XWindowAttributes attrs;
@@ -275,6 +283,14 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_SHADOW_CLASS,
                                    pspec);
+
+  signals[SIZE_CHANGED] =
+    g_signal_new ("size-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -1607,6 +1623,8 @@ meta_window_actor_update_bounding_region (MetaWindowActor *self,
    */
   if (!priv->shaped)
     meta_window_actor_invalidate_shadow (self);
+
+  g_signal_emit (self, signals[SIZE_CHANGED], 0);
 }
 
 static void
