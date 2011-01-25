@@ -442,7 +442,9 @@ sigterm_handler (int signum)
 {
   if (sigterm_pipe_fds[1] >= 0)
     {
-      (void) write (sigterm_pipe_fds[1], "", 1);
+      int G_GNUC_UNUSED dummy;
+
+      dummy = write (sigterm_pipe_fds[1], "", 1);
       close (sigterm_pipe_fds[1]);
       sigterm_pipe_fds[1] = -1;
     }
