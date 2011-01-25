@@ -1006,6 +1006,15 @@ WorkspacesDisplay.prototype = {
             this._workspaceThumbnails.splice(removedIndex, removedNum);
         }
 
+        // If we removed the current workspace, then metacity will have already
+        // switched to an adjacent workspace. Leaving the animation we
+        // started in response to that around will look funny because it's an
+        // animation for the *old* workspace configuration. So, kill it.
+        // If we animate the workspace removal in the future, we should animate
+        // the indicator as part of that.
+        Tweener.removeTweens(this._thumbnailIndicator);
+        this._constrainThumbnailIndicator();
+
         this.workspacesView.updateWorkspaces(oldNumWorkspaces,
                                              newNumWorkspaces,
                                              lostWorkspaces);
