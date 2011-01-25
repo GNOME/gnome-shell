@@ -886,36 +886,23 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
     case ConfigureNotify:
       if (!stage_x11->is_foreign_xwin)
         {
+          gboolean size_changed = FALSE;
+
           CLUTTER_NOTE (BACKEND, "%s: ConfigureNotify[%x] (%d, %d)",
                         G_STRLOC,
                         (unsigned int) stage_x11->xwin,
                         xevent->xconfigure.width,
                         xevent->xconfigure.height);
 
-          /* Queue a relayout - we want glViewport to be called
-           * with the correct values, and this is done in ClutterStage
-           * via _cogl_onscreen_clutter_backend_set_size ().
-           *
-           * We queue a relayout, because if this ConfigureNotify is
-           * in response to a size we set in the application, the
-           * set_size() call below is essentially a null-op.
-           *
-           * Make sure we do this only when the size has changed,
-           * otherwise we end up relayouting on window moves.
-           */
-          if ((stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN) ||
-              (stage_x11->xwin_width != xevent->xconfigure.width) ||
-              (stage_x11->xwin_height != xevent->xconfigure.height))
+          /* When fullscreen, we'll keep the xwin_width/height
+             variables to track the old size of the window and we'll
+             assume all ConfigureNotifies constitute a size change */
+          if ((stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN))
+            size_changed = TRUE;
+          else if ((stage_x11->xwin_width != xevent->xconfigure.width) ||
+                   (stage_x11->xwin_height != xevent->xconfigure.height))
             {
-              clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
-            }
-
-          /* If we're fullscreened, we want these variables to
-           * represent the size of the window before it was set
-           * to fullscreen.
-           */
-          if (!(stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN))
-            {
+              size_changed = TRUE;
               stage_x11->xwin_width = xevent->xconfigure.width;
               stage_x11->xwin_height = xevent->xconfigure.height;
             }
@@ -924,50 +911,67 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
                                   xevent->xconfigure.width,
                                   xevent->xconfigure.height);
 
-          /* XXX: This is a workaround for a race condition when
-           * resizing windows while there are in-flight
-           * glXCopySubBuffer blits happening.
-           *
-           * The problem stems from the fact that rectangles for the
-           * blits are described relative to the bottom left of the
-           * window and because we can't guarantee control over the X
-           * window gravity used when resizing so the gravity is
-           * typically NorthWest not SouthWest.
-           *
-           * This means if you grow a window vertically the server
-           * will make sure to place the old contents of the window
-           * at the top-left/north-west of your new larger window, but
-           * that may happen asynchronous to GLX preparing to do a
-           * blit specified relative to the bottom-left/south-west of
-           * the window (based on the old smaller window geometry).
-           *
-           * When the GLX issued blit finally happens relative to the
-           * new bottom of your window, the destination will have
-           * shifted relative to the top-left where all the pixels you
-           * care about are so it will result in a nasty artefact
-           * making resizing look very ugly!
-           *
-           * We can't currently fix this completely, in-part because
-           * the window manager tends to trample any gravity we might
-           * set.  This workaround instead simply disables blits for a
-           * while if we are notified of any resizes happening so if
-           * the user is resizing a window via the window manager then
-           * they may see an artefact for one frame but then we will
-           * fallback to redrawing the full stage until the cooling
-           * off period is over.
-           */
-          if (stage_x11->clipped_redraws_cool_off)
-            g_source_remove (stage_x11->clipped_redraws_cool_off);
-
-          stage_x11->clipped_redraws_cool_off =
-            g_timeout_add_seconds (1, clipped_redraws_cool_off_cb, stage_x11);
-
           CLUTTER_UNSET_PRIVATE_FLAGS (stage_x11->wrapper, CLUTTER_IN_RESIZE);
 
-          /* the resize process is complete, so we can ask the stage
-           * to set up the GL viewport with the new size
-           */
-          clutter_stage_ensure_viewport (stage);
+          if (size_changed)
+            {
+              /* XXX: This is a workaround for a race condition when
+               * resizing windows while there are in-flight
+               * glXCopySubBuffer blits happening.
+               *
+               * The problem stems from the fact that rectangles for the
+               * blits are described relative to the bottom left of the
+               * window and because we can't guarantee control over the X
+               * window gravity used when resizing so the gravity is
+               * typically NorthWest not SouthWest.
+               *
+               * This means if you grow a window vertically the server
+               * will make sure to place the old contents of the window
+               * at the top-left/north-west of your new larger window, but
+               * that may happen asynchronous to GLX preparing to do a
+               * blit specified relative to the bottom-left/south-west of
+               * the window (based on the old smaller window geometry).
+               *
+               * When the GLX issued blit finally happens relative to the
+               * new bottom of your window, the destination will have
+               * shifted relative to the top-left where all the pixels you
+               * care about are so it will result in a nasty artefact
+               * making resizing look very ugly!
+               *
+               * We can't currently fix this completely, in-part because
+               * the window manager tends to trample any gravity we might
+               * set.  This workaround instead simply disables blits for a
+               * while if we are notified of any resizes happening so if
+               * the user is resizing a window via the window manager then
+               * they may see an artefact for one frame but then we will
+               * fallback to redrawing the full stage until the cooling
+               * off period is over.
+               */
+              if (stage_x11->clipped_redraws_cool_off)
+                g_source_remove (stage_x11->clipped_redraws_cool_off);
+
+              stage_x11->clipped_redraws_cool_off =
+                g_timeout_add_seconds (1, clipped_redraws_cool_off_cb,
+                                       stage_x11);
+
+              /* Queue a relayout - we want glViewport to be called
+               * with the correct values, and this is done in ClutterStage
+               * via _cogl_onscreen_clutter_backend_set_size ().
+               *
+               * We queue a relayout, because if this ConfigureNotify is
+               * in response to a size we set in the application, the
+               * set_size() call above is essentially a null-op.
+               *
+               * Make sure we do this only when the size has changed,
+               * otherwise we end up relayouting on window moves.
+               */
+              clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
+
+              /* the resize process is complete, so we can ask the stage
+               * to set up the GL viewport with the new size
+               */
+              clutter_stage_ensure_viewport (stage);
+            }
         }
       break;
 
