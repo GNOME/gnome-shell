@@ -674,6 +674,11 @@ StTooltip StLabel {
 
 /* Calendar popup */
 
+#calendarArea {
+    /* this is the width of the entire popup */
+    width: 600px;
+}
+
 .calendar-vertical-separator {
     -stipple-width: 1px;
     -stipple-color: #505050;
@@ -810,7 +815,6 @@ StTooltip StLabel {
 
 .events-header-vbox {
     spacing: 10px;
-    width: 300px;
 }
 
 .events-header {
@@ -854,7 +858,6 @@ StTooltip StLabel {
 }
 
 .events-event-box {
-    width: 200px;
 }
 
 .open-calendar {

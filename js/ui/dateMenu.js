@@ -65,7 +65,7 @@ DateMenuButton.prototype = {
         this._clock = new St.Label();
         this.actor.set_child(this._clock);
 
-        hbox = new St.BoxLayout();
+        hbox = new St.BoxLayout({name: 'calendarArea'});
         this.menu.addActor(hbox);
 
         // Fill up the first column
