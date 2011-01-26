@@ -846,8 +846,7 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
         {
           gboolean size_changed = FALSE;
 
-          CLUTTER_NOTE (BACKEND, "%s: ConfigureNotify[%x] (%d, %d)",
-                        G_STRLOC,
+          CLUTTER_NOTE (BACKEND, "ConfigureNotify[%x] (%d, %d)",
                         (unsigned int) stage_x11->xwin,
                         xevent->xconfigure.width,
                         xevent->xconfigure.height);
