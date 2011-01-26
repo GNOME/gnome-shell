@@ -103,6 +103,7 @@ enum
 enum
 {
   STYLE_CHANGED,
+  POPUP_MENU,
 
   LAST_SIGNAL
 };
@@ -689,6 +690,21 @@ st_widget_key_focus_out (ClutterActor *actor)
   st_widget_remove_style_pseudo_class (widget, "focus");
 }
 
+static gboolean
+st_widget_key_press_event (ClutterActor    *actor,
+                           ClutterKeyEvent *event)
+{
+  if (event->keyval == CLUTTER_KEY_Menu ||
+      (event->keyval == CLUTTER_KEY_F10 &&
+       (event->modifier_state & CLUTTER_SHIFT_MASK)))
+    {
+      g_signal_emit (actor, signals[POPUP_MENU], 0);
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 static void
 st_widget_hide (ClutterActor *actor)
 {
@@ -763,6 +779,7 @@ st_widget_class_init (StWidgetClass *klass)
   actor_class->leave_event = st_widget_leave;
   actor_class->key_focus_in = st_widget_key_focus_in;
   actor_class->key_focus_out = st_widget_key_focus_out;
+  actor_class->key_press_event = st_widget_key_press_event;
   actor_class->hide = st_widget_hide;
 
   actor_class->get_accessible = st_widget_get_accessible;
@@ -918,6 +935,7 @@ st_widget_class_init (StWidgetClass *klass)
 
   /**
    * StWidget::style-changed:
+   * @widget: the #StWidget
    *
    * Emitted when the style information that the widget derives from the
    * theme changes
@@ -927,6 +945,22 @@ st_widget_class_init (StWidgetClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (StWidgetClass, style_changed),
+                  NULL, NULL,
+                  _st_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  /**
+   * StWidget::popup-menu:
+   * @widget: the #StWidget
+   *
+   * Emitted when the user has requested a context menu (eg, via a
+   * keybinding)
+   */
+  signals[POPUP_MENU] =
+    g_signal_new ("popup-menu",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (StWidgetClass, popup_menu),
                   NULL, NULL,
                   _st_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);

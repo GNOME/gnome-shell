@@ -218,7 +218,7 @@ st_button_key_press (ClutterActor    *actor,
         }
     }
 
-  return FALSE;
+  return CLUTTER_ACTOR_CLASS (st_button_parent_class)->key_press_event (actor, event);
 }
 
 static gboolean
