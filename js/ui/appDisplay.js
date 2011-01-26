@@ -328,6 +328,7 @@ AppWellIcon.prototype = {
         this.icon = new AppIcon(app, iconParams);
         this.actor.set_child(this.icon.actor);
 
+        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
 
         this._menu = null;
@@ -344,7 +345,6 @@ AppWellIcon.prototype = {
                Main.overview.endItemDrag(this);
             }));
 
-        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._menuTimeoutId = 0;
@@ -383,7 +383,11 @@ AppWellIcon.prototype = {
                 Lang.bind(this, function() {
                     this.popupMenu();
                 }));
+        } else if (button == 3) {
+            this.popupMenu();
+            return true;
         }
+        return false;
     },
 
     _onClicked: function(actor, event) {
@@ -400,8 +404,6 @@ AppWellIcon.prototype = {
                 this.app.open_new_window();
                 Main.overview.hide();
             }
-        } else if (button == 3) {
-            this.popupMenu();
         }
         return false;
     },
