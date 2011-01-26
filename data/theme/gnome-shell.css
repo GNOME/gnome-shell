@@ -771,9 +771,18 @@ StTooltip StLabel {
     font-weight: bold;
 }
 
+/* Hack used in lieu of border-collapse - see calendar.js */
 .calendar-day {
     border: 1px solid #333333;
     color: #cccccc;
+    border-top-width: 0;
+    border-left-width: 0;
+}
+.calendar-day-top {
+    border-top-width: 1px;
+}
+.calendar-day-left {
+    border-left-width: 1px;
 }
 
 .calendar-work-day {

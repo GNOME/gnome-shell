@@ -553,6 +553,12 @@ Calendar.prototype = {
             else
                 styleClass += ' calendar-nonwork-day'
 
+            // Hack used in lieu of border-collapse - see gnome-shell.css
+            if (row == 2)
+                styleClass = 'calendar-day-top ' + styleClass;
+            if (iter.getDay() == 0)
+                styleClass = 'calendar-day-left ' + styleClass;
+
             if (_sameDay(now, iter))
                 styleClass += ' calendar-today';
             else if (iter.getMonth() != this.selectedDate.getMonth())
