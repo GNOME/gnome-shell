@@ -974,7 +974,10 @@ meta_compositor_sync_stack (MetaCompositor  *compositor,
 
           if (old_window->hidden &&
               !meta_window_actor_effect_in_progress (old_actor))
-            old_stack = g_list_delete_link (old_stack, old_stack);
+            {
+              old_stack = g_list_delete_link (old_stack, old_stack);
+              old_actor = NULL;
+            }
           else
             break;
         }
