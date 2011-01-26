@@ -117,6 +117,43 @@ function SearchProvider(title) {
 SearchProvider.prototype = {
     _init: function(title) {
         this.title = title;
+        this.searchSystem = null;
+        this.searchAsync  = false;
+    },
+
+    _asyncCancelled: function() {
+    },
+
+    startAsync: function() {
+        this.searchAsync = true;
+    },
+
+    tryCancelAsync: function() {
+        if (!this.searchAsync)
+            return;
+        this._asyncCancelled();
+        this.searchAsync = false;
+    },
+
+    /**
+     * addItems:
+     * @items: an array of result identifier strings representing
+     * items which match the last given search terms.
+     *
+     * This should be used for something that requires a bit more
+     * logic; it's designed to be an asyncronous way to add a result
+     * to the current search.
+     */
+    addItems: function( items) {
+        if (!this.searchSystem)
+            throw new Error('Search provider not registered');
+
+        if (!items.length)
+            return;
+
+        this.tryCancelAsync();
+
+        this.searchSystem.addProviderItems(this, items);
     },
 
     /**
@@ -223,6 +260,7 @@ SearchProvider.prototype = {
     }
 };
 Signals.addSignalMethods(SearchProvider.prototype);
+
 
 function OpenSearchSystem() {
     this._init();
@@ -336,6 +374,7 @@ SearchSystem.prototype = {
     },
 
     registerProvider: function (provider) {
+        provider.searchSystem = this;
         this._providers.push(provider);
     },
 
@@ -352,30 +391,50 @@ SearchSystem.prototype = {
         this._previousResults = [];
     },
 
+    addProviderItems: function(provider, items) {
+        let index = this._providers.indexOf(provider);
+        let [provider2, results] = this._previousResults[index];
+        if (provider !== provider2)
+            return;
+
+        results.push.apply(results, items);
+        this.emit('results-updated', this._previousResults);
+    },
+
     updateSearch: function(searchString) {
         searchString = searchString.replace(/^\s+/g, '').replace(/\s+$/g, '');
         if (searchString == '')
-            return [];
+            return;
 
         let terms = searchString.split(/\s+/);
-        let isSubSearch = terms.length == this._previousTerms.length;
-        if (isSubSearch) {
-            for (let i = 0; i < terms.length; i++) {
-                if (terms[i].indexOf(this._previousTerms[i]) != 0) {
-                    isSubSearch = false;
-                    break;
+        this.updateSearchResults(terms);
+    },
+
+    updateSearchResults: function(terms) {
+        let isSubSearch = false;
+
+        if (terms) {
+            isSubSearch = terms.length == this._previousTerms.length;
+            if (isSubSearch) {
+                for (let i = 0; i < terms.length; i++) {
+                    if (terms[i].indexOf(this._previousTerms[i]) != 0) {
+                        isSubSearch = false;
+                        break;
+                    }
                 }
             }
+        } else {
+            terms = this._previousTerms;
         }
 
         let results = [];
         if (isSubSearch) {
-            for (let i = 0; i < this._previousResults.length; i++) {
+            for (let i = 0; i < this._providers.length; i++) {
                 let [provider, previousResults] = this._previousResults[i];
+                provider.tryCancelAsync();
                 try {
                     let providerResults = provider.getSubsearchResultSet(previousResults, terms);
-                    if (providerResults.length > 0)
-                        results.push([provider, providerResults]);
+                    results.push([provider, providerResults]);
                 } catch (error) {
                     global.log ('A ' + error.name + ' has occured in ' + provider.title + ': ' + error.message);
                 }
@@ -383,10 +442,10 @@ SearchSystem.prototype = {
         } else {
             for (let i = 0; i < this._providers.length; i++) {
                 let provider = this._providers[i];
+                provider.tryCancelAsync();
                 try {
                     let providerResults = provider.getInitialResultSet(terms);
-                    if (providerResults.length > 0)
-                        results.push([provider, providerResults]);
+                    results.push([provider, providerResults]);
                 } catch (error) {
                     global.log ('A ' + error.name + ' has occured in ' + provider.title + ': ' + error.message);
                 }
@@ -395,8 +454,7 @@ SearchSystem.prototype = {
 
         this._previousTerms = terms;
         this._previousResults = results;
-
-        return results;
-    }
+        this.emit('results-updated', results);
+    },
 };
 Signals.addSignalMethods(SearchSystem.prototype);

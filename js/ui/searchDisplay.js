@@ -157,6 +157,7 @@ function SearchResults(searchSystem, openSearchSystem) {
 SearchResults.prototype = {
     _init: function(searchSystem, openSearchSystem) {
         this._searchSystem = searchSystem;
+        this._searchSystem.connect('results-updated', Lang.bind(this, this._updateResults));
         this._openSearchSystem = openSearchSystem;
 
         this.actor = new St.BoxLayout({ name: 'searchResults',
@@ -296,15 +297,16 @@ SearchResults.prototype = {
         this._statusText.show();
     },
 
+    doSearch: function (searchString) {
+        this._searchSystem.updateSearch(searchString);
+    },
+
     _metaForProvider: function(provider) {
         return this._providerMeta[this._providers.indexOf(provider)];
     },
 
-    updateSearch: function (searchString) {
-        let results = this._searchSystem.updateSearch(searchString);
-
+    _updateResults: function(searchSystem, results) {
         this._clearDisplay();
-
         if (results.length == 0) {
             this._statusText.set_text(_("No matching results."));
             this._statusText.show();
@@ -314,11 +316,13 @@ SearchResults.prototype = {
             this._statusText.hide();
         }
 
-        let terms = this._searchSystem.getTerms();
+        let terms = searchSystem.getTerms();
         this._openSearchSystem.setSearchTerms(terms);
 
         for (let i = 0; i < results.length; i++) {
             let [provider, providerResults] = results[i];
+            if (providerResults.length == 0)
+                  continue;
             let meta = this._metaForProvider(provider);
             meta.actor.show();
             meta.resultDisplay.renderResults(providerResults, terms);

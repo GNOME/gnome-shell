@@ -268,7 +268,7 @@ SearchTab.prototype = {
     _doSearch: function () {
         this._searchTimeoutId = 0;
         let text = this._text.get_text().replace(/^\s+/g, '').replace(/\s+$/g, '');
-        this._searchResults.updateSearch(text);
+        this._searchResults.doSearch(text);
 
         return false;
     }
