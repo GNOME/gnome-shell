@@ -612,11 +612,11 @@ EventsList.prototype = {
         if (includeDayName) {
             dayNameBox.add(new St.Label( { style_class: 'events-day-dayname',
                                            text: day } ),
-                           { x_fill: false } );
+                           { x_fill: true } );
         }
         timeBox.add(new St.Label( { style_class: 'events-day-time',
                                     text: time} ),
-                    { x_fill: false } );
+                    { x_fill: true } );
         eventTitleBox.add(new St.Label( { style_class: 'events-day-task',
                                           text: desc} ));
     },
