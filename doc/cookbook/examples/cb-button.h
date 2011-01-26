@@ -14,20 +14,20 @@
 GType cb_button_get_type (void);
 
 /* GObject type macros */
-#define CB_TYPE_BUTTON             (cb_button_get_type ())
-#define CB_BUTTON(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), CB_TYPE_BUTTON, CbButton))
-#define CB_IS_BUTTON(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CB_TYPE_BUTTON))
-#define CB_BUTTON_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), CB_TYPE_BUTTON, CbButtonClass))
-#define CB_IS_BUTTON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), CB_TYPE_BUTTON))
-#define CB_BUTTON_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), CB_TYPE_BUTTON, CbButtonClass))
+#define CB_TYPE_BUTTON            (cb_button_get_type ())
+#define CB_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CB_TYPE_BUTTON, CbButton))
+#define CB_IS_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CB_TYPE_BUTTON))
+#define CB_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CB_TYPE_BUTTON, CbButtonClass))
+#define CB_IS_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CB_TYPE_BUTTON))
+#define CB_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CB_TYPE_BUTTON, CbButtonClass))
 
 /*
  * Private instance fields; see
- * http://www.gotw.ca/gotw/024.htm for the rationalse
+ * http://www.gotw.ca/gotw/024.htm for the rationale
  */
-typedef struct _CbButtonPrivate    CbButtonPrivate;
-typedef struct _CbButton           CbButton;
-typedef struct _CbButtonClass      CbButtonClass;
+typedef struct _CbButtonPrivate CbButtonPrivate;
+typedef struct _CbButton        CbButton;
+typedef struct _CbButtonClass   CbButtonClass;
 
 /* object structure */
 struct _CbButton
@@ -44,7 +44,7 @@ struct _CbButton
 struct _CbButtonClass
 {
   /* signals */
-  void (* clicked) (CbButton *button);
+  void (* clicked)(CbButton *button);
 
   /*<private>*/
   ClutterActorClass parent_class;
@@ -61,12 +61,13 @@ G_CONST_RETURN gchar * cb_button_get_text (CbButton *self);
 /* setters - these are wrappers round functions
  * which change properties of the internal actors
  */
-void cb_button_set_text (CbButton *self, const gchar *text);
+void cb_button_set_text (CbButton    *self,
+                         const gchar *text);
 
-void cb_button_set_background_color (CbButton *self,
+void cb_button_set_background_color (CbButton           *self,
                                      const ClutterColor *color);
 
-void cb_button_set_text_color (CbButton *self,
+void cb_button_set_text_color (CbButton           *self,
                                const ClutterColor *color);
 
 #endif /* __CB_BUTTON_H__ */

@@ -20,15 +20,13 @@ struct _CbButtonPrivate
 };
 
 /* enumerates signal identifiers for this class */
-enum
-{
+enum {
   CLICKED,
   LAST_SIGNAL
 };
 
 /* enumerates property identifiers for this class */
-enum
-{
+enum {
   PROP_0,
   PROP_TEXT
 };
@@ -107,9 +105,9 @@ cb_button_get_property (GObject    *gobject,
 
 /* use the actor's allocation for the ClutterBox */
 static void
-cb_button_allocate (ClutterActor           *actor,
-                    const ClutterActorBox  *box,
-                    ClutterAllocationFlags  flags)
+cb_button_allocate (ClutterActor          *actor,
+                    const ClutterActorBox *box,
+                    ClutterAllocationFlags flags)
 {
   CbButtonPrivate *priv = CB_BUTTON (actor)->priv;
   ClutterActorBox child_box = { 0, };
@@ -278,7 +276,7 @@ cb_button_set_text (CbButton    *self,
  * Set the color of the button's background
  */
 void
-cb_button_set_background_color (CbButton *self,
+cb_button_set_background_color (CbButton           *self,
                                 const ClutterColor *color)
 {
   g_return_if_fail (CB_IS_BUTTON (self));
@@ -294,7 +292,7 @@ cb_button_set_background_color (CbButton *self,
  * Set the color of the text on the button
  */
 void
-cb_button_set_text_color (CbButton *self,
+cb_button_set_text_color (CbButton           *self,
                           const ClutterColor *color)
 {
   g_return_if_fail (CB_IS_BUTTON (self));
