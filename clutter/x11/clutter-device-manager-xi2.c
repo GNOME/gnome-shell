@@ -23,6 +23,8 @@
 
 #include "config.h"
 
+#include <stdint.h>
+
 #include "clutter-device-manager-xi2.h"
 
 #include "clutter-backend-x11.h"
@@ -458,9 +460,9 @@ get_event_stage (ClutterEventTranslator *translator,
  *       does the work for the other keysyms.
  */
 static int
-print_keysym (uint32_t  symbol,
-               char     *buffer,
-               int       len)
+print_keysym (uint32_t symbol,
+              char    *buffer,
+              int      len)
 {
   unsigned long high_bytes;
   unsigned char c;
