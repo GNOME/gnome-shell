@@ -67,18 +67,15 @@ XdndHandler.prototype = {
             if (!cursorWindow.is_override_redirect())
                 return;
 
-            let constraint_x = new Clutter.BindConstraint({ coordinate : Clutter.BindCoordinate.X,
-                                                             source: cursorWindow});
-            let constraint_y = new Clutter.BindConstraint({ coordinate : Clutter.BindCoordinate.Y,
-                                                             source: cursorWindow});
+            let constraint_position = new Clutter.BindConstraint({ coordinate : Clutter.BindCoordinate.POSITION,
+                                                                   source: cursorWindow});
 
             this._cursorWindowClone = new Clutter.Clone({ source: cursorWindow });
             global.overlay_group.add_actor(this._cursorWindowClone);
             Shell.util_set_hidden_from_pick(this._cursorWindowClone, true);
 
             // Make sure that the clone has the same position as the source
-            this._cursorWindowClone.add_constraint(constraint_x);
-            this._cursorWindowClone.add_constraint(constraint_y);
+            this._cursorWindowClone.add_constraint(constraint_position);
         } else {
             if (this._cursorWindowClone)
             {
