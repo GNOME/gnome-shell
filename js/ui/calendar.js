@@ -690,13 +690,13 @@ EventsList.prototype = {
             dayBegin.setDate(dayEnd.getDate() + 1);
             dayEnd.setDate(dayBegin.getDate() + 6 - dayBegin.getDay());
 
-            this._addPeriod(_("Next week"), dayBegin, dayEnd, true, true);
+            this._addPeriod(_("Next week"), dayBegin, dayEnd, true, false);
             return;
         } else {
             let d = 6 - dayEnd.getDay() - 1;
             dayBegin.setDate(dayBegin.getDate() + 1);
             dayEnd.setDate(dayEnd.getDate() + 1 + d);
-            this._addPeriod(_("This week"), dayBegin, dayEnd, true, true);
+            this._addPeriod(_("This week"), dayBegin, dayEnd, true, false);
         }
     },
 
