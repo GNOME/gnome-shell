@@ -1,7 +1,8 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
   "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 
-<chapter id="actors">
+<chapter id="actors"
+         xmlns:xi="http://www.w3.org/2003/XInclude">
   <title>Actors</title>
 
   <epigraph>
@@ -34,6 +35,193 @@
     by adding or removing actors, but also by changing the parent-child
     relationship: it is possible, for instance, to move an entire
     section of the scene graph from one parent actor to another.</para>
+
+  </section>
+
+  <section id="actors-composite">
+    <title>Implementing a simple custom actor</title>
+
+    <section id="actors-composite-problem">
+      <title>Problem</title>
+
+      <para>You want to implement your own <type>ClutterActor</type>. For
+      example, a widget (button, scrollbar, checkbox etc.) composed of
+      several Clutter primitives.</para>
+    </section>
+
+    <section id="actors-composite-solution">
+      <title>Solution</title>
+
+      <para>Implement a custom actor composed from a <type>ClutterBox</type>
+      packed with other <type>ClutterActors</type>. The custom actor
+      effectively provides a facade for these internal actors, simplifying
+      access to their properties and behavior.</para>
+
+      <para>In this recipe, we make the simplest possible button widget
+      (<type>CbButton</type>) to demonstrate the basic principles of
+      implementing a <type>ClutterActor</type>. It is not a complete
+      button implementation: see
+      <ulink url="http://git.clutter-project.org/mx/tree/mx/mx-button.c"><type>MxButton</type></ulink>
+      for a more
+      comprehensive example (and the basis for this recipe). But
+      it does cover the most important parts of a <type>ClutterActor</type>
+      implementation, as well some useful <type>GObject</type>-related
+      code.</para>
+
+      <para>The code for this solution is structured like standard GObject
+      C library code:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>The header file <filename>cb-button.h</filename>
+          declares the class' public API (function prototypes, macros,
+          structs).</para>
+        </listitem>
+        <listitem>
+          <para>The code file <filename>cb-button.c</filename>
+          contains the class implementation.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>One more example file, <filename>actors-composite-main.c</filename>,
+      shows how to use <type>CbButton</type> in an application.</para>
+
+      <para>Each of these files is described in more detail below.</para>
+
+      <tip>
+        <para>As Clutter is a GObject-based library, it relies
+        heavily on GObject concepts and idioms. If you are unfamiliar with GObject,
+        please read
+        <ulink url="http://library.gnome.org/devel/gobject/unstable/">the GObject
+        Reference Manual</ulink> before proceeding.</para>
+      </tip>
+
+      <section>
+        <title><filename>cb-button.h</filename></title>
+
+        <para>The header file defines the public API for the class,
+        including GObject type macros, class and object structures, and
+        function prototypes.</para>
+
+        <programlisting>
+<xi:include href="examples/cb-button.h" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+
+      </section>
+
+      <section>
+        <title><filename>cb-button.c</filename></title>
+
+        <para>This is the main C code file which implements both
+        the GObject and Clutter parts of <type>CbButton</type>.
+        The example below is commented liberally, and gives some samples
+        of gtk-doc annotations to generate API docs for the
+        widget. The <link linkend="">discussion section</link>
+        comments more specifically about the Clutter-specific parts
+        of it.</para>
+
+        <para>
+        enum for signals ???why do we need these
+
+        enum for properties ???why do we need these
+
+        array for signals ???is it an array
+
+
+
+
+        and Clutter stuff (private to the class):
+
+        allocate (required)
+        paint (required)
+        you could get away with just these two
+        but if you're not composing your actor, or are creating a container,
+        you need to do more
+
+
+
+
+        then more GObject stuff (it should come after the Clutter method
+        implementations, i.e. allocate and paint):
+
+        class_init
+        - where we wire together our functions
+        - we can also do things like adding properties and signals
+
+        init
+        - where we create the private structure
+        - where we compose the actors together inside our ClutterActor
+        subclass
+
+
+
+
+
+        Then normally some public API:
+
+        typically you want a new() function
+
+        for our class, we'll put some wrappers around functions
+        on the composed actors
+
+        </para>
+
+      </section>
+
+      <section>
+        <title><filename>actors-composite-main.c</filename></title>
+
+        <para>
+        The cb-button-main.c file shows how to use the new
+        actor inside a Clutter application. Note how any of the
+        <type>ClutterActor</type> functions (like set_size,
+        add_constraint) can be applied to instance
+        of our <type>ClutterActor</type> implementation.
+        </para>
+
+      </section>
+
+    </section>
+
+    <section id="actors-composite-discussion">
+      <title>Discussion</title>
+
+      <para>Explain about GObject a bit???</para>
+
+      <para>The actor implemented here is put together through
+      simple composition. This has the advantage of simplifying the
+      code for the subclass: we can just wrap a facade round
+      existing Clutter classes, rather than writing code to implement
+      everything ourselves. In the example here, we make use of a
+      <type>ClutterLayoutManager</type> to handle positioning of
+      the <type>ClutterText</type>; we change the background color of
+      the button by changing the color of the
+      <type>ClutterBox</type>; we use a <type>ClutterClickAction</type>
+      to simplify implementation of a click signal.</para>
+
+      <para>On the other hand, it puts some constraints on the outline of
+      the actor: it makes it harder to use a custom outline, for
+      example, to round the corners of the button. This approach may
+      not be suitable where you need to do a lot of custom animation
+      and drawing.</para>
+
+      <para>This isn't the whole story: if you aren't using this simple
+      composition approach, you may need to do more: see the notes in
+      the Clutter reference manual. Also, if you're implementing a
+      container, you'll need to do more.</para>
+
+      <para>use Mx for inspiration???</para>
+
+      <para>GObject implementation parts vs. Clutter implementation???</para>
+
+      <para>something about how the ClutterBox is parented onto the
+      ClutterActor subclass we are implementing; we just create
+      an allocation for the ClutterBox based on the allocation of its
+      parent???</para>
+
+    </section>
 
   </section>
 
