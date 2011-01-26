@@ -67,10 +67,9 @@ struct _ClutterStageX11
 
   ClutterStageX11State wm_state;
 
-  int event_types[CLUTTER_X11_XINPUT_LAST_EVENT];
-  GList *devices;
-
+  /* backpointers */
   ClutterStage *wrapper;
+  ClutterBackendX11 *backend;
 };
 
 struct _ClutterStageX11Class

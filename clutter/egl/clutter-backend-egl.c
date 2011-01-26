@@ -767,6 +767,7 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
   /* copy backend data into the stage */
   stage_x11 = CLUTTER_STAGE_X11 (stage);
   stage_x11->wrapper = wrapper;
+  stage_x11->backend = backend_x11;
 
   translator = CLUTTER_EVENT_TRANSLATOR (stage_x11);
   _clutter_backend_x11_add_event_translator (backend_x11, translator);
