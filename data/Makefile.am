@@ -29,7 +29,6 @@ dist_theme_DATA =				\
 	theme/close.svg				\
 	theme/corner-ripple.png			\
 	theme/dash-placeholder.svg		\
-	theme/dialog-error.svg			\
 	theme/filter-selected.svg		\
 	theme/gnome-shell.css			\
 	theme/mosaic-view-active.svg		\

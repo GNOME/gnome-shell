@@ -82,12 +82,17 @@ function trySpawn(argv)
                          GLib.SpawnFlags.SEARCH_PATH,
                          null, null);
     } catch (err) {
-        // The exception from gjs contains an error string like:
-        //   Error invoking GLib.spawn_command_line_async: Failed to
-        //   execute child process "foo" (No such file or directory)
-        // We are only interested in the part in the parentheses. (And
-        // we can't pattern match the text, since it gets localized.)
-        err.message = err.message.replace(/.*\((.+)\)/, '$1');
+        if (err.code == GLib.SpawnError.G_SPAWN_ERROR_NOENT) {
+            err.message = _("Command not found");
+        } else {
+            // The exception from gjs contains an error string like:
+            //   Error invoking GLib.spawn_command_line_async: Failed to
+            //   execute child process "foo" (No such file or directory)
+            // We are only interested in the part in the parentheses. (And
+            // we can't pattern match the text, since it gets localized.)
+            err.message = err.message.replace(/.*\((.+)\)/, '$1');
+        }
+
         throw err;
     }
 }
