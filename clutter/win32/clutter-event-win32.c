@@ -548,6 +548,7 @@ clutter_win32_handle_event (const MSG *msg)
            we're not already */
         if (!stage_win32->tracking_mouse)
           {
+            ClutterEvent *crossing = clutter_event_new (CLUTTER_ENTER);
             TRACKMOUSEEVENT tmevent;
 
             tmevent.cbSize = sizeof (tmevent);
@@ -555,8 +556,18 @@ clutter_win32_handle_event (const MSG *msg)
             tmevent.hwndTrack = stage_win32->hwnd;
             TrackMouseEvent (&tmevent);
 
+            event->crossing.time = msg->time;
+            event->crossing.x = event->motion.x;
+            event->crossing.y = event->motion.y;
+            event->crossing.device = event->motion.device;
+            event->crossing.stage = stage;
+            event->crossing.source = CLUTTER_ACTOR (stage);
+            event->crossing.related = NULL;
+
             /* we entered the stage */
-            _clutter_input_device_set_stage (event->motion.device, stage);
+            _clutter_stage_add_device (stage, event->crossing.device);
+
+            take_and_queue_event (crossing);
 
             stage_win32->tracking_mouse = TRUE;
           }
@@ -573,10 +584,12 @@ clutter_win32_handle_event (const MSG *msg)
         event->crossing.x = msg->pt.x;
         event->crossing.y = msg->pt.y;
         event->crossing.device = core_pointer;
-        event->any.stage = stage;
+        event->crossing.stage = stage;
+        event->crossing.source = CLUTTER_ACTOR (stage);
+        event->crossing.related = NULL;
 
         /* we left the stage */
-        _clutter_input_device_set_stage (event->crossing.device, NULL);
+        _clutter_stage_remove_device (stage, event->crossing.device);
 
         /* When we get a leave message the mouse tracking is
            automatically cancelled so we'll need to start it again when

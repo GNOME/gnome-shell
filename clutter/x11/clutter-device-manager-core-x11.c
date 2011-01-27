@@ -220,7 +220,8 @@ translate_key_event (ClutterBackendX11       *backend_x11,
   event->key.type = xevent->xany.type == KeyPress ? CLUTTER_KEY_PRESS
                                                   : CLUTTER_KEY_RELEASE;
   event->key.time = xevent->xkey.time;
-  event->key.device = manager_x11->core_keyboard;
+
+  clutter_event_set_device (event, manager_x11->core_keyboard);
 
   /* KeyEvents have platform specific data associated to them */
   event_x11 = _clutter_event_x11_new ();
@@ -406,7 +407,7 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
           event->scroll.x = xevent->xbutton.x;
           event->scroll.y = xevent->xbutton.y;
           event->scroll.modifier_state = xevent->xbutton.state;
-          event->scroll.device = manager_x11->core_pointer;
+          event->scroll.axes = NULL;
           break;
 
         default:
@@ -416,10 +417,11 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
           event->button.y = xevent->xbutton.y;
           event->button.modifier_state = xevent->xbutton.state;
           event->button.button = xevent->xbutton.button;
-          event->button.device = manager_x11->core_pointer;
           event->button.axes = NULL;
           break;
         }
+
+      clutter_event_set_device (event, manager_x11->core_pointer);
 
       _clutter_stage_x11_set_user_time (stage_x11, xevent->xbutton.time);
       res = CLUTTER_TRANSLATE_QUEUE;
@@ -450,7 +452,7 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
       event->button.modifier_state = xevent->xbutton.state;
       event->button.button = xevent->xbutton.button;
       event->button.axes = NULL;
-      event->button.device = manager_x11->core_pointer;
+      clutter_event_set_device (event, manager_x11->core_pointer);
       res = CLUTTER_TRANSLATE_QUEUE;
       break;
 
@@ -466,25 +468,25 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
       event->motion.x = xevent->xmotion.x;
       event->motion.y = xevent->xmotion.y;
       event->motion.modifier_state = xevent->xmotion.state;
-      event->motion.device = manager_x11->core_pointer;
       event->motion.axes = NULL;
+      clutter_event_set_device (event, manager_x11->core_pointer);
       res = CLUTTER_TRANSLATE_QUEUE;
       break;
 
     case EnterNotify:
-      /* we know that we are entering the stage here */
-      _clutter_input_device_set_stage (manager_x11->core_pointer, stage);
-      CLUTTER_NOTE (EVENT, "Entering the stage");
+      CLUTTER_NOTE (EVENT, "Entering the stage (time:%u)",
+                    (unsigned int) xevent->xcrossing.time);
 
-      /* Convert enter notifies to motion events because X
-         doesn't emit the corresponding motion notify */
-      event->motion.type = event->type = CLUTTER_MOTION;
-      event->motion.time = xevent->xcrossing.time;
-      event->motion.x = xevent->xcrossing.x;
-      event->motion.y = xevent->xcrossing.y;
-      event->motion.modifier_state = xevent->xcrossing.state;
-      event->motion.source = CLUTTER_ACTOR (stage);
-      event->motion.device = manager_x11->core_pointer;
+      event->crossing.type = CLUTTER_ENTER;
+      event->crossing.time = xevent->xcrossing.time;
+      event->crossing.x = xevent->xcrossing.x;
+      event->crossing.y = xevent->xcrossing.y;
+      event->crossing.source = CLUTTER_ACTOR (stage);
+      event->crossing.related = NULL;
+      clutter_event_set_device (event, manager_x11->core_pointer);
+
+      _clutter_stage_add_device (stage, manager_x11->core_pointer);
+
       res = CLUTTER_TRANSLATE_QUEUE;
       break;
 
@@ -498,16 +500,19 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
         }
 
       /* we know that we are leaving the stage here */
-      _clutter_input_device_set_stage (manager_x11->core_pointer, NULL);
       CLUTTER_NOTE (EVENT, "Leaving the stage (time:%u)",
-                    event->crossing.time);
+                    (unsigned int) xevent->xcrossing.time);
 
       event->crossing.type = CLUTTER_LEAVE;
       event->crossing.time = xevent->xcrossing.time;
       event->crossing.x = xevent->xcrossing.x;
       event->crossing.y = xevent->xcrossing.y;
       event->crossing.source = CLUTTER_ACTOR (stage);
-      event->crossing.device = manager_x11->core_pointer;
+      event->crossing.related = NULL;
+      clutter_event_set_device (event, manager_x11->core_pointer);
+
+      _clutter_stage_remove_device (stage, manager_x11->core_pointer);
+
       res = CLUTTER_TRANSLATE_QUEUE;
       break;
 

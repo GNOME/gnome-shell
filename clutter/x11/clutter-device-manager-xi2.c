@@ -847,22 +847,22 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                       GINT_TO_POINTER (xev->deviceid));
 
+        source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                             GINT_TO_POINTER (xev->sourceid));
+
         if (xi_event->evtype == XI_Enter)
           {
-            _clutter_input_device_set_stage (device, stage);
+            event->crossing.type = event->type = CLUTTER_ENTER;
 
-            event->motion.type = event->type = CLUTTER_MOTION;
+            event->crossing.stage = stage;
+            event->crossing.source = CLUTTER_ACTOR (stage);
+            event->crossing.related = NULL;
 
-            event->motion.stage = stage;
-            event->motion.source = CLUTTER_ACTOR (stage);
+            event->crossing.time = xev->time;
+            event->crossing.x = xev->event_x;
+            event->crossing.y = xev->event_y;
 
-            event->motion.time = xev->time;
-            event->motion.x = xev->event_x;
-            event->motion.y = xev->event_y;
-            event->motion.device = device;
-            event->motion.modifier_state =
-              _clutter_input_device_xi2_translate_state (&xev->mods,
-                                                         &xev->buttons);
+            _clutter_stage_add_device (stage, device);
           }
         else
           {
@@ -876,17 +876,21 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                 break;
               }
 
-            _clutter_input_device_set_stage (device, NULL);
-
             event->crossing.type = event->type = CLUTTER_LEAVE;
 
+            event->crossing.stage = stage;
             event->crossing.source = CLUTTER_ACTOR (stage);
+            event->crossing.related = NULL;
 
             event->crossing.time = xev->time;
             event->crossing.x = xev->event_x;
             event->crossing.y = xev->event_y;
-            event->crossing.device = device;
+
+            _clutter_stage_remove_device (stage, device);
           }
+
+        clutter_event_set_device (event, device);
+        _clutter_event_set_source_device (event, source_device);
 
         retval = CLUTTER_TRANSLATE_QUEUE;
       }

@@ -24,6 +24,7 @@
 
 #include <clutter/clutter-stage-window.h>
 #include <clutter/clutter-stage.h>
+#include <clutter/clutter-input-device.h>
 
 G_BEGIN_DECLS
 
@@ -81,6 +82,13 @@ ClutterStageQueueRedrawEntry *_clutter_stage_queue_actor_redraw            (Clut
                                                                             ClutterActor                 *actor,
                                                                             ClutterPaintVolume           *clip);
 void                          _clutter_stage_queue_redraw_entry_invalidate (ClutterStageQueueRedrawEntry *entry);
+
+void            _clutter_stage_add_device       (ClutterStage       *stage,
+                                                 ClutterInputDevice *device);
+void            _clutter_stage_remove_device    (ClutterStage       *stage,
+                                                 ClutterInputDevice *device);
+gboolean        _clutter_stage_has_device       (ClutterStage       *stage,
+                                                 ClutterInputDevice *device);
 
 G_END_DECLS
 

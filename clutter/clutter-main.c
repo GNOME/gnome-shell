@@ -2154,7 +2154,7 @@ emit_event (ClutterEvent *event,
   /* reentrancy check */
   if (lock != FALSE)
     {
-      g_warning ("Tried emitting event during event delivery, bailing out.n");
+      g_warning ("Tried emitting event during event delivery, bailing out.");
       return;
     }
 
@@ -2248,10 +2248,14 @@ is_off_stage (ClutterActor *stage,
               gfloat        x,
               gfloat        y)
 {
+  gfloat width, height;
+
+  clutter_actor_get_size (stage, &width, &height);
+
   return (x < 0 ||
           y < 0 ||
-          x >= clutter_actor_get_width (stage) ||
-          y >= clutter_actor_get_height (stage));
+          x >= width ||
+          y >= height);
 }
 
 /**
@@ -2293,18 +2297,6 @@ _clutter_process_event_details (ClutterActor        *stage,
         event->any.source = stage;
         break;
 
-      case CLUTTER_LEAVE:
-      case CLUTTER_ENTER:
-        emit_pointer_event (event, device);
-        break;
-
-      case CLUTTER_DESTROY_NOTIFY:
-      case CLUTTER_DELETE:
-        event->any.source = stage;
-        /* the stage did not handle the event, so we just quit */
-        clutter_stage_event (CLUTTER_STAGE (stage), event);
-        break;
-
       case CLUTTER_KEY_PRESS:
       case CLUTTER_KEY_RELEASE:
         {
@@ -2324,6 +2316,65 @@ _clutter_process_event_details (ClutterActor        *stage,
 
           emit_keyboard_event (event);
         }
+        break;
+
+      case CLUTTER_ENTER:
+        /* if we're entering from outside the stage we need
+         * to check whether the pointer is actually on another
+         * actor, and emit an additional pointer event
+         */
+        if (event->any.source == stage &&
+            event->crossing.related == NULL)
+          {
+            ClutterActor *actor = NULL;
+
+            emit_pointer_event (event, device);
+
+            actor = _clutter_input_device_update (device, FALSE);
+            if (actor != stage)
+              {
+                ClutterEvent *crossing;
+
+                /* we emit the exact same event on the actor */
+                crossing = clutter_event_copy (event);
+                crossing->crossing.related = stage;
+                crossing->crossing.source = actor;
+
+                emit_pointer_event (crossing, device);
+                clutter_event_free (crossing);
+              }
+          }
+        else
+          emit_pointer_event (event, device);
+        break;
+
+      case CLUTTER_LEAVE:
+        /* same as CLUTTER_ENTER above: when leaving the stage
+         * we need to also emit a CLUTTER_LEAVE event on the
+         * actor currently underneath the device, unless it's the
+         * stage
+         */
+        if (event->any.source == stage &&
+            event->crossing.related == NULL &&
+            device->cursor_actor != stage)
+          {
+            ClutterEvent *crossing;
+
+            crossing = clutter_event_copy (event);
+            crossing->crossing.related = stage;
+            crossing->crossing.source = device->cursor_actor;
+
+            emit_pointer_event (crossing, device);
+            clutter_event_free (crossing);
+          }
+        emit_pointer_event (event, device);
+        break;
+
+      case CLUTTER_DESTROY_NOTIFY:
+      case CLUTTER_DELETE:
+        event->any.source = stage;
+        /* the stage did not handle the event, so we just quit */
+        clutter_stage_event (CLUTTER_STAGE (stage), event);
         break;
 
       case CLUTTER_MOTION:
@@ -2413,7 +2464,7 @@ _clutter_process_event_details (ClutterActor        *stage,
                * get the actor underneath
                */
               if (device != NULL)
-                actor = _clutter_input_device_update (device);
+                actor = _clutter_input_device_update (device, TRUE);
               else
                 {
                   CLUTTER_NOTE (EVENT, "No device found: picking");
@@ -2433,11 +2484,6 @@ _clutter_process_event_details (ClutterActor        *stage,
               /* use the source already set in the synthetic event */
               actor = event->any.source;
             }
-
-          /* FIXME: for an optimisation should check if there are
-           * actually any reactive actors and avoid the pick all together
-           * (signalling just the stage). Should be big help for gles.
-           */
 
           CLUTTER_NOTE (EVENT,
                         "Reactive event received at %.2f, %.2f - actor: %p",
@@ -2507,7 +2553,7 @@ _clutter_process_event (ClutterEvent *event)
  *
  * Since: 0.6
  */
-ClutterActor*
+ClutterActor *
 clutter_get_actor_by_gid (guint32 id)
 {
   ClutterMainContext *context;

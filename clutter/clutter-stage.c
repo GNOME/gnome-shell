@@ -135,6 +135,8 @@ struct _ClutterStagePrivate
 
   ClutterPickMode     pick_buffer_mode;
 
+  GHashTable *devices;
+
   guint relayout_pending       : 1;
   guint redraw_pending         : 1;
   guint is_fullscreen          : 1;
@@ -1202,9 +1204,12 @@ clutter_stage_finalize (GObject *object)
   g_queue_foreach (priv->event_queue, (GFunc)clutter_event_free, NULL);
   g_queue_free (priv->event_queue);
 
-  g_free (stage->priv->title);
+  g_free (priv->title);
 
   g_array_free (priv->paint_volume_stack, TRUE);
+
+  if (priv->devices != NULL)
+    g_hash_table_destroy (priv->devices);
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
 }
@@ -3374,4 +3379,45 @@ clutter_stage_get_accept_focus (ClutterStage *stage)
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), TRUE);
 
   return stage->priv->accept_focus;
+}
+
+void
+_clutter_stage_add_device (ClutterStage       *stage,
+                           ClutterInputDevice *device)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  if (G_UNLIKELY (priv->devices == NULL))
+    priv->devices = g_hash_table_new (NULL, NULL);
+
+  if (g_hash_table_lookup (priv->devices, device) != NULL)
+    return;
+
+  g_hash_table_insert (priv->devices, device, GINT_TO_POINTER (1));
+  _clutter_input_device_set_stage (device, stage);
+}
+
+void
+_clutter_stage_remove_device (ClutterStage       *stage,
+                              ClutterInputDevice *device)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  if (G_UNLIKELY (priv->devices == NULL))
+    return;
+
+  _clutter_input_device_set_stage (device, NULL);
+  g_hash_table_remove (priv->devices, device);
+}
+
+gboolean
+_clutter_stage_has_device (ClutterStage       *stage,
+                           ClutterInputDevice *device)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  if (priv->devices == NULL)
+    return FALSE;
+
+  return g_hash_table_lookup (priv->devices, device) != NULL;
 }

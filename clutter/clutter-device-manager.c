@@ -423,7 +423,7 @@ _clutter_device_manager_update_devices (ClutterDeviceManager *device_manager)
       if (device->stage == NULL)
         continue;
 
-      _clutter_input_device_update (device);
+      _clutter_input_device_update (device, TRUE);
     }
 }
 

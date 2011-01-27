@@ -543,6 +543,7 @@ clutter_event_set_device (ClutterEvent       *event,
                           ClutterInputDevice *device)
 {
   g_return_if_fail (event != NULL);
+  g_return_if_fail (device == NULL || CLUTTER_IS_INPUT_DEVICE (device));
 
   if (is_event_allocated (event))
     {

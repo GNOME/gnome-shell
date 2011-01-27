@@ -136,8 +136,10 @@ void            _clutter_input_device_set_time                  (ClutterInputDev
 void            _clutter_input_device_set_stage                 (ClutterInputDevice   *device,
                                                                  ClutterStage         *stage);
 void            _clutter_input_device_set_actor                 (ClutterInputDevice   *device,
-                                                                 ClutterActor         *actor);
-ClutterActor *  _clutter_input_device_update                    (ClutterInputDevice   *device);
+                                                                 ClutterActor         *actor,
+                                                                 gboolean              emit_crossing);
+ClutterActor *  _clutter_input_device_update                    (ClutterInputDevice   *device,
+                                                                 gboolean              emit_crossing);
 void            _clutter_input_device_set_n_keys                (ClutterInputDevice   *device,
                                                                  guint                 n_keys);
 guint           _clutter_input_device_add_axis                  (ClutterInputDevice   *device,
