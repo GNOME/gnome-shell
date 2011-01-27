@@ -1024,10 +1024,6 @@ WorkspacesDisplay.prototype = {
             this._workspaces[i] = new Workspace.Workspace(metaWorkspace);
         }
 
-        this._nWorkspacesNotifyId =
-            global.screen.connect('notify::n-workspaces',
-                                  Lang.bind(this, this._workspacesChanged));
-
         let binAllocation = this._workspacesBin.allocation;
         let binWidth = binAllocation.x2 - binAllocation.x1;
         let binHeight = binAllocation.y2 - binAllocation.y1;
