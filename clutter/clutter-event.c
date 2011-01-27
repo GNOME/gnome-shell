@@ -47,6 +47,7 @@
 typedef struct _ClutterEventPrivate {
   ClutterEvent base;
 
+  ClutterInputDevice *device;
   ClutterInputDevice *source_device;
 
   gpointer platform_data;
@@ -494,38 +495,13 @@ clutter_event_get_device_id (const ClutterEvent *event)
 {
   ClutterInputDevice *device = NULL;
 
-  g_return_val_if_fail (event != NULL, -1);
+  g_return_val_if_fail (event != NULL, CLUTTER_POINTER_DEVICE);
 
-  switch (event->type)
-    {
-    case CLUTTER_NOTHING:
-    case CLUTTER_STAGE_STATE:
-    case CLUTTER_DESTROY_NOTIFY:
-    case CLUTTER_CLIENT_MESSAGE:
-    case CLUTTER_DELETE:
-    case CLUTTER_ENTER:
-    case CLUTTER_LEAVE:
-      break;
-    case CLUTTER_BUTTON_PRESS:
-    case CLUTTER_BUTTON_RELEASE:
-      device = event->button.device;
-      break;
-    case CLUTTER_MOTION:
-      device = event->motion.device;
-      break;
-    case CLUTTER_SCROLL:
-      device = event->scroll.device;
-      break;
-    case CLUTTER_KEY_PRESS:
-    case CLUTTER_KEY_RELEASE:
-      device = event->scroll.device;
-      break;
-    }
-
+  device = clutter_event_get_device (event);
   if (device != NULL)
     return clutter_input_device_get_device_id (device);
-  else
-    return -1;
+
+  return -1;
 }
 
 /**
@@ -546,6 +522,37 @@ clutter_event_get_device_type (const ClutterEvent *event)
 
   g_return_val_if_fail (event != NULL, CLUTTER_POINTER_DEVICE);
 
+  device = clutter_event_get_device (event);
+  if (device != NULL)
+    return clutter_input_device_get_device_type (device);
+
+  return CLUTTER_POINTER_DEVICE;
+}
+
+/**
+ * clutter_event_set_device:
+ * @event: a #ClutterEvent
+ * @device: a #ClutterInputDevice
+ *
+ * Sets the device for @event.
+ *
+ * Since: 1.6
+ */
+void
+clutter_event_set_device (ClutterEvent       *event,
+                          ClutterInputDevice *device)
+{
+  g_return_if_fail (event != NULL);
+
+  if (is_event_allocated (event))
+    {
+      ClutterEventPrivate *real_event = (ClutterEventPrivate *) event;
+
+      real_event->device = device;
+
+      return;
+    }
+
   switch (event->type)
     {
     case CLUTTER_NOTHING:
@@ -559,27 +566,22 @@ clutter_event_get_device_type (const ClutterEvent *event)
 
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
-      device = event->button.device;
+      event->button.device = device;
       break;
 
     case CLUTTER_MOTION:
-      device = event->motion.device;
+      event->motion.device = device;
       break;
 
     case CLUTTER_SCROLL:
-      device = event->scroll.device;
+      event->scroll.device = device;
       break;
 
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
-      device = event->scroll.device;
+      event->key.device = device;
       break;
     }
-
-  if (device != NULL)
-    return clutter_input_device_get_device_type (device);
-  else
-    return CLUTTER_POINTER_DEVICE;
 }
 
 /**
@@ -603,6 +605,14 @@ clutter_event_get_device (const ClutterEvent *event)
   ClutterInputDevice *device = NULL;
 
   g_return_val_if_fail (event != NULL, NULL);
+
+  if (is_event_allocated (event))
+    {
+      ClutterEventPrivate *real_event = (ClutterEventPrivate *) event;
+
+      if (real_event->device != NULL)
+        return real_event->device;
+    }
 
   switch (event->type)
     {
@@ -691,6 +701,7 @@ clutter_event_copy (const ClutterEvent *event)
     {
       ClutterEventPrivate *real_event = (ClutterEventPrivate *) event;
 
+      new_real_event->device = real_event->device;
       new_real_event->source_device = real_event->source_device;
     }
 
@@ -1002,6 +1013,17 @@ _clutter_event_set_device (ClutterEvent       *event,
     }
 }
 
+/*< private >
+ * clutter_event_set_source_device:
+ * @event: a #ClutterEvent
+ * @device: a #ClutterInputDevice
+ *
+ * Sets the source #ClutterInputDevice for @event.
+ *
+ * The #ClutterEvent must have been created using clutter_event_new().
+ *
+ * Since: 1.6
+ */
 void
 _clutter_event_set_source_device (ClutterEvent       *event,
                                   ClutterInputDevice *device)

@@ -1054,6 +1054,7 @@ clutter_event_get_related
 clutter_event_get_scroll_direction
 
 <SUBSECTION>
+clutter_event_set_device
 clutter_event_get_device
 clutter_event_get_device_id
 clutter_event_get_device_type

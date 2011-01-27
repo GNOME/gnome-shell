@@ -424,6 +424,9 @@ ClutterActor *         clutter_event_get_related            (const ClutterEvent 
 
 ClutterScrollDirection clutter_event_get_scroll_direction   (const ClutterEvent *event);
 
+void                   clutter_event_set_device             (ClutterEvent       *event,
+                                                             ClutterInputDevice *device);
+
 guint32                clutter_keysym_to_unicode            (guint               keyval);
 
 guint32                clutter_get_current_event_time       (void);
