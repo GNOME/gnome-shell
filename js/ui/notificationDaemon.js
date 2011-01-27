@@ -322,13 +322,22 @@ NotificationDaemon.prototype = {
                                                         { icon: iconActor,
                                                           bannerMarkup: true });
             ndata.notification = notification;
-            notification.connect('clicked', Lang.bind(this,
-                function(n) {
-                    this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
-                }));
             notification.connect('destroy', Lang.bind(this,
-                function(n) {
+                function(n, reason) {
                     delete this._notifications[id];
+                    let notificationClosedReason;
+                    switch (reason) {
+                        case MessageTray.NotificationDestroyedReason.EXPIRED:
+                            notificationClosedReason = NotificationClosedReason.EXPIRED;
+                            break;
+                        case MessageTray.NotificationDestroyedReason.DISMISSED:
+                            notificationClosedReason = NotificationClosedReason.DISMISSED;
+                            break;
+                        case MessageTray.NotificationDestroyedReason.SOURCE_CLOSED:
+                            notificationClosedReason = NotificationClosedReason.APP_CLOSED;
+                            break;
+                    }
+                    this._emitNotificationClosed(id, notificationClosedReason);
                 }));
             notification.connect('action-invoked', Lang.bind(this,
                 function(n, actionId) {
@@ -369,10 +378,9 @@ NotificationDaemon.prototype = {
         let ndata = this._notifications[id];
         if (ndata) {
             if (ndata.notification)
-                ndata.notification.destroy();
+                ndata.notification.destroy(MessageTray.NotificationDestroyedReason.SOURCE_CLOSED);
             delete this._notifications[id];
         }
-        this._emitNotificationClosed(id, NotificationClosedReason.APP_CLOSED);
     },
 
     GetCapabilities: function() {
