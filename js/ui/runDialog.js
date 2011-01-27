@@ -232,7 +232,9 @@ __proto__: ModalDialog.ModalDialog.prototype,
         this._errorMessage = new St.Label({ style_class: 'run-dialog-error-label' });
         this._errorMessage.clutter_text.line_wrap = true;
 
-        this._errorBox.add(this._errorMessage, { expand: true, y_align: St.Align.MIDDLE });
+        this._errorBox.add(this._errorMessage, { expand: true,
+                                                 y_align: St.Align.MIDDLE,
+                                                 y_fill: false });
 
         this._errorBox.hide();
 
