@@ -145,10 +145,53 @@ cb_button_get_property (GObject    *gobject,
 
 /* ClutterActor implementation
  *
- * we only implement allocate(), paint(), get_preferred_height()
- * and get_preferred_width(), as this is the minimum
- * we can get away with
+ * we only implement get_preferred_height(), get_preferred_width(),
+ * allocate(), and paint(), as this is the minimum we can get away with
  */
+
+/* get_preferred_height and get_preferred_width defer to the
+ * internal ClutterBox, adding 20px padding on each axis;
+ * min_*_p is the minimum height or width the actor should occupy
+ * to be useful; natural_*_p is the height or width the actor
+ * would occupy if not constrained
+ *
+ * note that if we required explicit sizing for CbButtons
+ * (i.e. a developer must set their height and width),
+ * we wouldn't need to implement these functions
+ */
+static void
+cb_button_get_preferred_height (ClutterActor *self,
+                                gfloat for_width,
+                                gfloat *min_height_p,
+                                gfloat *natural_height_p)
+{
+  CbButtonPrivate *priv = CB_BUTTON (self)->priv;
+
+  clutter_actor_get_preferred_height (priv->child,
+                                      for_width,
+                                      min_height_p,
+                                      natural_height_p);
+
+  *min_height_p += 20.0;
+  *natural_height_p += 20.0;
+}
+
+static void
+cb_button_get_preferred_width (ClutterActor *self,
+                               gfloat for_height,
+                               gfloat *min_width_p,
+                               gfloat *natural_width_p)
+{
+  CbButtonPrivate *priv = CB_BUTTON (self)->priv;
+
+  clutter_actor_get_preferred_width (priv->child,
+                                     for_height,
+                                     min_width_p,
+                                     natural_width_p);
+
+  *min_width_p += 20.0;
+  *natural_width_p += 20.0;
+}
 
 /* use the actor's allocation for the ClutterBox */
 static void
@@ -185,60 +228,6 @@ cb_button_paint (ClutterActor *actor)
   CbButtonPrivate *priv = CB_BUTTON (actor)->priv;
 
   clutter_actor_paint (priv->child);
-}
-
-/* get_preferred_height defers to the internal ClutterBox
- * but adds 20px padding around it;
- * min_height_p is the minimum height the actor should occupy
- * to be useful; natural_height_p is the height the actor
- * would occupy if not constrained
- *
- * note that if we required explicit sizing for CbButtons
- * (i.e. a developer must set their height and width),
- * we wouldn't need to implement this function
- */
-static void
-cb_button_get_preferred_height (ClutterActor *self,
-                                gfloat for_width,
-                                gfloat *min_height_p,
-                                gfloat *natural_height_p)
-{
-  CbButtonPrivate *priv = CB_BUTTON (self)->priv;
-
-  clutter_actor_get_preferred_height (priv->child,
-                                      for_width,
-                                      min_height_p,
-                                      natural_height_p);
-
-  *min_height_p += 20.0;
-  *natural_height_p += 20.0;
-}
-
-/* get_preferred_width defers to the internal ClutterBox
- * but adds 20px padding around it;
- * min_width_p is the minimum width the actor should occupy
- * to be useful; natural_width_p is the width the actor
- * would occupy if not constrained
- *
- * note that if we required explicit sizing for CbButtons
- * (i.e. a developer must set their height and width),
- * we wouldn't need to implement this function
- */
-static void
-cb_button_get_preferred_width (ClutterActor *self,
-                               gfloat for_height,
-                               gfloat *min_width_p,
-                               gfloat *natural_width_p)
-{
-  CbButtonPrivate *priv = CB_BUTTON (self)->priv;
-
-  clutter_actor_get_preferred_width (priv->child,
-                                     for_height,
-                                     min_width_p,
-                                     natural_width_p);
-
-  *min_width_p += 20.0;
-  *natural_width_p += 20.0;
 }
 
 /* proxy ClickAction signals so they become signals from the actor */
