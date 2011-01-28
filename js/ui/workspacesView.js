@@ -476,6 +476,7 @@ WorkspacesView.prototype = {
     },
 
     _onDestroy: function() {
+        this._scrollAdjustment.run_dispose();
         Main.overview.disconnect(this._overviewShowingId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
         global.screen.disconnect(this._restackedNotifyId);
