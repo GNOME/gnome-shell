@@ -390,7 +390,7 @@ Calendar.prototype = {
         }
 
         // Start off with the current date
-        this.selectedDate = new Date();
+        this._selectedDate = new Date();
 
         this.actor = new St.Table({ homogeneous: false,
                                     style_class: 'calendar',
@@ -405,10 +405,10 @@ Calendar.prototype = {
 
     // Sets the calendar to show a specific date
     setDate: function(date) {
-        if (!_sameDay(date, this.selectedDate)) {
-            this.selectedDate = date;
+        if (!_sameDay(date, this._selectedDate)) {
+            this._selectedDate = date;
             this._update();
-            this.emit('selected-date-changed', new Date(this.selectedDate));
+            this.emit('selected-date-changed', new Date(this._selectedDate));
         }
     },
 
@@ -427,8 +427,8 @@ Calendar.prototype = {
         this._topBox.add(back);
         back.connect('clicked', Lang.bind(this, this._onPrevMonthButtonClicked));
 
-        this._dateLabel = new St.Label({style_class: 'calendar-change-month'});
-        this._topBox.add(this._dateLabel, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
+        this._monthLabel = new St.Label({style_class: 'calendar-month-label'});
+        this._topBox.add(this._monthLabel, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
 
         let forward = new St.Button({ style_class: 'calendar-change-month-forward' });
         this._topBox.add(forward);
@@ -439,15 +439,15 @@ Calendar.prototype = {
         // We need to figure out the abbreviated localized names for the days of the week;
         // we do this by just getting the next 7 days starting from right now and then putting
         // them in the right cell in the table. It doesn't matter if we add them in order
-        let iter = new Date(this.selectedDate);
+        let iter = new Date(this._selectedDate);
         iter.setSeconds(0); // Leap second protection. Hah!
         iter.setHours(12);
         for (let i = 0; i < 7; i++) {
             // Could use iter.toLocaleFormat('%a') but that normally gives three characters
             // and we want, ideally, a single character for e.g. S M T W T F S
             let customDayAbbrev = _getCalendarDayAbbreviation(iter.getDay());
-            let label = new St.Label({ text: customDayAbbrev });
-            label.style_class = 'calendar-day-base calendar-day-heading';
+            let label = new St.Label({ style_class: 'calendar-day-base calendar-day-heading',
+                                       text: customDayAbbrev });
             this.actor.add(label,
                            { row: 1,
                              col: offsetCols + (7 + iter.getDay() - this._weekStart) % 7,
@@ -485,7 +485,7 @@ Calendar.prototype = {
     },
 
     _onPrevMonthButtonClicked: function() {
-        let newDate = new Date(this.selectedDate);
+        let newDate = new Date(this._selectedDate);
         if (newDate.getMonth() == 0) {
             newDate.setMonth(11);
             newDate.setFullYear(newDate.getFullYear() - 1);
@@ -496,7 +496,7 @@ Calendar.prototype = {
    },
 
     _onNextMonthButtonClicked: function() {
-        let newDate = new Date(this.selectedDate);
+        let newDate = new Date(this._selectedDate);
         if (newDate.getMonth() == 11) {
             newDate.setMonth(0);
             newDate.setFullYear(newDate.getFullYear() + 1);
@@ -515,10 +515,10 @@ Calendar.prototype = {
     _update: function() {
         let now = new Date();
 
-        if (_sameYear(this.selectedDate, now))
-            this._dateLabel.text = this.selectedDate.toLocaleFormat(this._headerFormatWithoutYear);
+        if (_sameYear(this._selectedDate, now))
+            this._monthLabel.text = this._selectedDate.toLocaleFormat(this._headerFormatWithoutYear);
         else
-            this._dateLabel.text = this.selectedDate.toLocaleFormat(this._headerFormat);
+            this._monthLabel.text = this._selectedDate.toLocaleFormat(this._headerFormat);
 
         // Remove everything but the topBox and the weekday labels
         let children = this.actor.get_children();
@@ -526,7 +526,7 @@ Calendar.prototype = {
             children[i].destroy();
 
         // Start at the beginning of the week before the start of the month
-        let beginDate = new Date(this.selectedDate);
+        let beginDate = new Date(this._selectedDate);
         beginDate.setDate(1);
         beginDate.setSeconds(0);
         beginDate.setHours(12);
@@ -540,14 +540,12 @@ Calendar.prototype = {
 
             let iterStr = iter.toUTCString();
             button.connect('clicked', Lang.bind(this, function() {
-                let newly_selectedDate = new Date(iterStr);
-                this.setDate(newly_selectedDate);
+                let newlySelectedDate = new Date(iterStr);
+                this.setDate(newlySelectedDate);
             }));
 
-            let styleClass;
-            let hasEvents;
-            hasEvents = this._eventSource.hasEvents(iter);
-            styleClass = 'calendar-day-base calendar-day';
+            let hasEvents = this._eventSource.hasEvents(iter);
+            let styleClass = 'calendar-day-base calendar-day';
             if (_isWorkDay(iter))
                 styleClass += ' calendar-work-day'
             else
@@ -561,10 +559,10 @@ Calendar.prototype = {
 
             if (_sameDay(now, iter))
                 styleClass += ' calendar-today';
-            else if (iter.getMonth() != this.selectedDate.getMonth())
+            else if (iter.getMonth() != this._selectedDate.getMonth())
                 styleClass += ' calendar-other-month-day';
 
-            if (_sameDay(this.selectedDate, iter))
+            if (_sameDay(this._selectedDate, iter))
                 button.add_style_pseudo_class('active');
 
             if (hasEvents)
@@ -586,7 +584,7 @@ Calendar.prototype = {
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
             if (iter.getDay() == this._weekStart) {
                 // We stop on the first "first day of the week" after the month we are displaying
-                if (iter.getMonth() > this.selectedDate.getMonth() || iter.getYear() > this.selectedDate.getYear())
+                if (iter.getMonth() > this._selectedDate.getMonth() || iter.getYear() > this._selectedDate.getYear())
                     break;
                 row++;
             }

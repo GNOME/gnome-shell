@@ -18,3 +18,5 @@ libcalendar_client_la_CFLAGS = 			\
 	$(NULL)
 
 libcalendar_client_la_LIBADD = $(LIBECAL_LIBS)
+
+EXTRA_DIST += calendar-client/README

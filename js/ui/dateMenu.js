@@ -29,12 +29,10 @@ function _onVertSepRepaint (area)
     let cr = area.get_context();
     let themeNode = area.get_theme_node();
     let [width, height] = area.get_surface_size();
-    let found;
-    let stippleWidth = 1.0;
     let stippleColor = new Clutter.Color();
-    [found, stippleWidth] = themeNode.lookup_length('-stipple-width', false);
-    themeNode.lookup_color('-stipple-color', false, stippleColor);
+    let stippleWidth = themeNode.get_length('-stipple-width');
     let x = Math.floor(width/2) + 0.5;
+    themeNode.lookup_color('-stipple-color', false, stippleColor);
     cr.moveTo(x, 0);
     cr.lineTo(x, height);
     Clutter.cairo_set_source_color(cr, stippleColor);
@@ -58,7 +56,6 @@ DateMenuButton.prototype = {
         //this._eventSource = new Calendar.EmptyEventSource();
         //this._eventSource = new Calendar.FakeEventSource();
         this._eventSource = new Calendar.EvolutionEventSource();
-        // TODO: write e.g. EvolutionEventSource
 
         PanelMenu.Button.prototype._init.call(this, St.Align.START);
 
@@ -88,11 +85,9 @@ DateMenuButton.prototype = {
                                }));
         vbox.add(this._calendar.actor);
 
-        //item = new St.Button({style_class: 'popup-menu-item', label: 'foobar'});
-        //vbox.add(item);
         item = new PopupMenu.PopupSeparatorMenuItem();
-        item.actor.remove_actor(item._drawingArea);
-        vbox.add(item._drawingArea);
+        item.setColumnWidths(1);
+        vbox.add(item.actor);
         item = new PopupMenu.PopupMenuItem(_("Date and Time Settings"));
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
         vbox.add(item.actor);
@@ -114,7 +109,7 @@ DateMenuButton.prototype = {
 
         item = new PopupMenu.PopupMenuItem(_("Open Calendar"));
         item.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
-        vbox.add(item.actor, {y_align : St.Align.END, expand : true, y_fill : false});
+        vbox.add(item.actor, {y_align: St.Align.END, expand: true, y_fill: false});
 
         // Whenever the menu is opened, select today
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
@@ -127,14 +122,6 @@ DateMenuButton.prototype = {
         }));
 
         // Done with hbox for calendar and event list
-
-        // Add separator
-        //item = new PopupMenu.PopupSeparatorMenuItem();
-        //this.menu.addMenuItem(item);
-
-        // Add button to get to the Date and Time settings
-        //this.menu.addAction(_("Date and Time Settings"),
-        //                    Lang.bind(this, this._onPreferencesActivate));
 
         // Track changes to clock settings
         this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });

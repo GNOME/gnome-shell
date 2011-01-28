@@ -702,48 +702,36 @@ StTooltip StLabel {
     spacing-columns: 0px;
 }
 
-.calendar-change-month {
+.calendar-month-label {
     color: #666666;
     font-size: 10px;
     padding: 2px;
-}
-
-.calendar-change-month:hover {
-    background: #999999;
-    border-radius: 5px;
-}
-
-.calendar-change-month:active {
-    background: #aaaaaa;
-    border-radius: 5px;
 }
 
 .calendar-change-month-back {
     width: 20px;
     height: 20px;
     background-image: url("calendar-arrow-left.svg");
+    border-radius: 4px;
 }
 .calendar-change-month-back:hover {
-    background: #999999;
-    background-image: url("calendar-arrow-left.svg");
+    background-color: #999999;
 }
 .calendar-change-month-back:active {
-    background: #aaaaaa;
-    background-image: url("calendar-arrow-left.svg");
+    background-color: #aaaaaa;
 }
 
 .calendar-change-month-forward {
     width: 20px;
     height: 20px;
     background-image: url("calendar-arrow-right.svg");
+    border-radius: 4px;
 }
 .calendar-change-month-forward:hover {
-    background: #999999;
-    background-image: url("calendar-arrow-right.svg");
+    background-color: #999999;
 }
 .calendar-change-month-forward:active {
-    background: #aaaaaa;
-    background-image: url("calendar-arrow-right.svg");
+    background-color: #aaaaaa;
 }
 
 .datemenu-date-label {
@@ -794,7 +782,7 @@ StTooltip StLabel {
 }
 
 .calendar-nonwork-day {
-    background: #181818;
+    background-color: rgba(128, 128, 128, .1);
 }
 
 .calendar-today {
@@ -858,16 +846,6 @@ StTooltip StLabel {
 }
 
 .events-event-box {
-}
-
-.open-calendar {
-    padding-bottom: 12px;
-    padding-left: 12px;
-    height: 40px;
-}
-
-.open-calendar:hover {
-    background: #666;
 }
 
 .url-highlighter {
