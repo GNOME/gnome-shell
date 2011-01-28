@@ -43,10 +43,6 @@ const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
 if (Config.HAVE_BLUETOOTH)
     STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['bluetooth'] = imports.ui.status.bluetooth.Indicator;
 
-const STANDARD_TRAY_INDICATOR_FACTORIES = [
-    imports.ui.status.keyboard.ModifierIndicatorFactory
-];
-
 // in org.gnome.desktop.interface
 const CLOCK_FORMAT_KEY        = 'clock-format';
 
@@ -813,16 +809,13 @@ Panel.prototype = {
 
         /* right */
 
-        // On-off indicators (for keyboard leds and accessx) are in indicatorBox
-        // System status applets live in statusBox, and legacy tray icons
+        // System status applets live in statusBox, while legacy tray icons
         // live in trayBox
         // The trayBox is hidden when there are no tray icons.
-        this._indicatorBox = new St.BoxLayout({ name: 'indicatorBox' });
         this._trayBox = new St.BoxLayout({ name: 'legacyTray' });
         this._statusBox = new St.BoxLayout({ name: 'statusTray' });
 
         this._trayBox.hide();
-        this._rightBox.add(this._indicatorBox);
         this._rightBox.add(this._trayBox);
         this._rightBox.add(this._statusBox);
 
@@ -874,13 +867,6 @@ Panel.prototype = {
     },
 
     startStatusArea: function() {
-        for (let i = 0; i < STANDARD_TRAY_INDICATOR_FACTORIES.length; i++) {
-            let factory = new STANDARD_TRAY_INDICATOR_FACTORIES[i];
-            let indicators = factory.getIndicators();
-            for (let j = 0; j < indicators.length; j++)
-                this._indicatorBox.add(indicators[j]);
-        }
-
         for (let i = 0; i < STANDARD_TRAY_ICON_ORDER.length; i++) {
             let role = STANDARD_TRAY_ICON_ORDER[i];
             let constructor = STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION[role];
