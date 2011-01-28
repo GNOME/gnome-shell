@@ -31,16 +31,22 @@ struct _CbButtonPrivate
   gchar         *text;
 };
 
-/* enumerates signal identifiers for this class */
-enum {
-  CLICKED,
-  LAST_SIGNAL
-};
-
-/* enumerates property identifiers for this class */
+/* enumerates property identifiers for this class;
+ * note that property identifiers should be non-zero integers,
+ * so we add an unused PROP_0 to occupy the 0 position in the enum
+ */
 enum {
   PROP_0,
   PROP_TEXT
+};
+
+/* enumerates signal identifiers for this class;
+ * LAST_SIGNAL is not used as a signal identifier, but is instead
+ * used to delineate the size of the cache array for signals (see below)
+ */
+enum {
+  CLICKED,
+  LAST_SIGNAL
 };
 
 /* cache array for signals */
