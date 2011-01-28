@@ -466,12 +466,18 @@ path_test_convert_to_cairo_path (CallbackData *data)
           last_point = path_start;
 
           /* Cairo always adds a move to after every close so we need
-             to insert one here */
-          memmove (data->nodes + i + 2, data->nodes + i + 1,
-                   (data->n_nodes - i - 1) * sizeof (ClutterPathNode));
-          data->nodes[i + 1].type = CLUTTER_PATH_MOVE_TO;
-          data->nodes[i + 1].points[0] = last_point;
-          data->n_nodes++;
+             to insert one here. Since Cairo commit 166453c1abf2 it
+             doesn't seem to do this anymore so will assume that if
+             Cairo's minor version is >= 11 then it includes that
+             commit */
+          if (cairo_version () < CAIRO_VERSION_ENCODE (1, 11, 0))
+            {
+              memmove (data->nodes + i + 2, data->nodes + i + 1,
+                       (data->n_nodes - i - 1) * sizeof (ClutterPathNode));
+              data->nodes[i + 1].type = CLUTTER_PATH_MOVE_TO;
+              data->nodes[i + 1].points[0] = last_point;
+              data->n_nodes++;
+            }
           break;
         }
     }
