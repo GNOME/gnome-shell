@@ -41,6 +41,17 @@ const State = {
     HIDING:  3
 };
 
+// These reasons are useful when we destroy the notifications received through
+// the notification daemon. We use EXPIRED for transient notifications that the
+// user did not interact with, DISMISSED for all other notifications that were
+// destroyed as a result of a user action, and SOURCE_CLOSED for the notifications
+// that were requested to be destroyed by the associated source.
+const NotificationDestroyedReason = {
+    EXPIRED: 1,
+    DISMISSED: 2,
+    SOURCE_CLOSED 3
+};
+
 // Message tray has its custom Urgency enumeration. LOW, NORMAL and CRITICAL
 // urgency values map to the corresponding values for the notifications received
 // through the notification daemon. HIGH urgency value is used for chats received
@@ -755,8 +766,10 @@ Notification.prototype = {
         }
     },
 
-    destroy: function() {
-        this.emit('destroy');
+    destroy: function(reason) {
+        if (!reason)
+            reason = NotificationDestroyedReason.DISMISSED;
+        this.emit('destroy', reason);
     }
 };
 Signals.addSignalMethods(Notification.prototype);
@@ -1596,7 +1609,7 @@ MessageTray.prototype = {
         let notification = this._notification;
         this._notification = null;
         if (notification.isTransient)
-            notification.destroy();
+            notification.destroy(NotificationDestroyedReason.EXPIRED);
     },
 
     _expandNotification: function(autoExpanding) {
@@ -1746,7 +1759,7 @@ MessageTray.prototype = {
         let summaryNotification = this._summaryNotification;
         this._summaryNotification = null;
         if (summaryNotification.isTransient && !this._reNotifyWithSummaryNotificationAfterHide)
-            summaryNotification.destroy();
+            summaryNotification.destroy(NotificationDestroyedReason.EXPIRED);
         if (this._reNotifyWithSummaryNotificationAfterHide) {
             this._onNotify(summaryNotification.source, summaryNotification);
             this._reNotifyWithSummaryNotificationAfterHide = false;
