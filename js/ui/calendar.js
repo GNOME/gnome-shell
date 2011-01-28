@@ -41,6 +41,7 @@ function _getBeginningOfDay(date) {
     let ret = new Date(date.getTime());
     ret.setHours(0);
     ret.setMinutes(0);
+    ret.setSeconds(0);
     ret.setMilliseconds(0);
     return ret;
 }
@@ -49,6 +50,7 @@ function _getEndOfDay(date) {
     let ret = new Date(date.getTime());
     ret.setHours(23);
     ret.setMinutes(59);
+    ret.setSeconds(59);
     ret.setMilliseconds(999);
     return ret;
 }
@@ -686,21 +688,24 @@ EventsList.prototype = {
         let dayEnd = _getEndOfDay(now);
         this._addPeriod(_("Today"), dayBegin, dayEnd, false, true);
 
-        dayBegin.setDate(dayBegin.getDate() + 1);
-        dayEnd.setDate(dayEnd.getDate() + 1);
-        this._addPeriod(_("Tomorrow"), dayBegin, dayEnd, false, true);
+        let tomorrowBegin = new Date(dayBegin.getTime() + 86400 * 1000);
+        let tomorrowEnd = new Date(dayEnd.getTime() + 86400 * 1000);
+        this._addPeriod(_("Tomorrow"), tomorrowBegin, tomorrowEnd, false, true);
 
-        if (dayEnd.getDay() == 6 || dayEnd.getDay() == 0) {
-            dayBegin.setDate(dayEnd.getDate() + 1);
-            dayEnd.setDate(dayBegin.getDate() + 6 - dayBegin.getDay());
-
-            this._addPeriod(_("Next week"), dayBegin, dayEnd, true, false);
-            return;
+        if (dayEnd.getDay() <= 4) {
+            /* if now is Sunday through Thursday show "This week" and include events up until
+             * and including Saturday
+             */
+            let thisWeekBegin = new Date(dayBegin.getTime() + 2 * 86400 * 1000);
+            let thisWeekEnd = new Date(dayEnd.getTime() + (6 - dayEnd.getDay()) * 86400 * 1000);
+            this._addPeriod(_("This week"), thisWeekBegin, thisWeekEnd, true, false);
         } else {
-            let d = 6 - dayEnd.getDay() - 1;
-            dayBegin.setDate(dayBegin.getDate() + 1);
-            dayEnd.setDate(dayEnd.getDate() + 1 + d);
-            this._addPeriod(_("This week"), dayBegin, dayEnd, true, false);
+            /* otherwise it's a Friday or Saturday... show "Next week" and include events up
+             * until and including *next* Saturday
+             */
+            let nextWeekBegin = new Date(dayBegin.getTime() + 2 * 86400 * 1000);
+            let nextWeekEnd = new Date(dayEnd.getTime() + (13 - dayEnd.getDay()) * 86400 * 1000);
+            this._addPeriod(_("Next week"), nextWeekBegin, nextWeekEnd, true, false);
         }
     },
 

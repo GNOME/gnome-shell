@@ -168,7 +168,7 @@ shell_evolution_event_source_get_events  (ShellEvolutionEventSource *source,
       GDateTime *next_date;
 
       g_date_time_get_ymd (cur_date, &year, &mon, &day);
-      /* g_print ("y=%04d m=%02d d=%02d: ", year, mon, day); */
+      /* g_print ("y=%04d m=%02d d=%02d\n", year, mon, day); */
 
       /* Silently drop events not in range (see comment in
        * shell_evolution_event_source_request_range() above)
@@ -188,9 +188,19 @@ shell_evolution_event_source_get_events  (ShellEvolutionEventSource *source,
             {
               CalendarAppointment *appointment = l->data;
               ShellEvolutionEvent *event;
+              gint64 start_time;
+
+              if (appointment->is_all_day)
+                {
+                  start_time = g_date_time_to_unix (cur_date) * G_GINT64_CONSTANT (1000);
+                }
+              else
+                {
+                  start_time = appointment->start_time * G_GINT64_CONSTANT (1000);
+                }
               event = shell_evolution_event_new (appointment->summary,
                                                  appointment->is_all_day,
-                                                 appointment->start_time * G_GINT64_CONSTANT (1000));
+                                                 start_time);
               result = g_list_prepend (result, event);
             }
           g_slist_foreach (events, (GFunc) calendar_event_free, NULL);

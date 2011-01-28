@@ -87,7 +87,7 @@ DateMenuButton.prototype = {
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         item.setColumnWidths(1);
-        vbox.add(item.actor);
+        vbox.add(item.actor, {y_align: St.Align.END, expand: true, y_fill: false});
         item = new PopupMenu.PopupMenuItem(_("Date and Time Settings"));
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
         vbox.add(item.actor);
