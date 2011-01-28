@@ -83,7 +83,7 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good
     libltdl-dev libvorbis-dev libxklavier-dev libgnome-keyring-dev
-    libupower-glib-dev libcups2-dev
+    libupower-glib-dev libcups2-dev evolution-data-server-dev
     "
 
   if apt-cache show autopoint > /dev/null 2> /dev/null; then
@@ -121,7 +121,7 @@ if test "x$system" = xFedora ; then
     startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
     icon-naming-utils upower-devel libtool-ltdl-devel libvorbis-devel
     libxklavier-devel libgcrypt-devel libtasn1-devel libtasn1-tools
-    libgnome-keyring-devel libgtop2-devel cups-devel
+    libgnome-keyring-devel libgtop2-devel cups-devel evolution-data-server-devel
     "
 
   if expr $version \>= 14 > /dev/null ; then
@@ -147,7 +147,7 @@ if test "x$system" = xSUSE -o "x$system" = "xSUSE LINUX" ; then
     libgtop-devel libpulse-devel libtiff-devel cups-devel libffi-devel \
     orbit2-devel libwnck-devel xorg-x11-proto-devel readline-devel \
     mozilla-xulrunner191-devel libcroco-devel \
-    xorg-x11-devel xorg-x11 xorg-x11-server-extra \
+    xorg-x11-devel xorg-x11 xorg-x11-server-extra evolution-data-server-devel \
     ; do
       if ! rpm -q $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
@@ -168,7 +168,7 @@ if test "x$system" = xMandrivaLinux ; then
     intltool ffi5-devel libwnck-1-devel GL-devel ORBit2-devel \
     readline-devel libxulrunner-devel \
     libxdamage-devel mesa-demos x11-server-xephyr zenity \
-    libcroco0.6-devel \
+    libcroco0.6-devel libevolution-data-server3-devel \
     ; do
       if ! rpm -q --whatprovides $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
