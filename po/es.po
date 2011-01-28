@@ -1,17 +1,17 @@
 # Spanish translation of gnome-shell.
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
 # Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2011-01-21 18:46+0000\n"
-"PO-Revision-Date: 2011-01-22 16:34+0100\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
+"POT-Creation-Date: 2011-01-27 20:47+0000\n"
+"PO-Revision-Date: 2011-01-28 10:43+0100\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -78,16 +78,6 @@ msgstr "Lista de ID de archivos de escritorio para las aplicaciones favoritas"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:12
 #, no-c-format
-#| msgid ""
-#| "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#| "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#| "pad where the recorded video is recorded. It will normally have a "
-#| "unconnected source pad; output from that pad will be written into the "
-#| "output file. However the pipeline can also take care of its own output - "
-#| "this might be used to send the output to an icecast server via shout2send "
-#| "or similar. When unset or set to an empty value, the default pipeline "
-#| "will be used. This is currently 'videorate ! theoraenc ! oggmux' and "
-#| "records to Ogg Theora."
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -101,16 +91,16 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 "Establece la tubería GStreamer usada para codificar grabaciones. Sigue la "
-"sintaxis usada para gst-launch. La tubería debería tener un sumidero "
-"(«sink») de ensamblaje/sesensamblaje donde el vídeo que se está grabando se "
-"graba. Generalmente tendrá un origen de ensamblado/desensamblado; la salida "
-"de ese punto se escibirá en el archivo de salida. No obstante la tubería "
-"también puede tomar parte en su propia salida; esto se puede usar para "
-"enviar la salida a un servidor «icecast» a través de shout2send o similar. "
-"Cuando no está establecido o lo está a un valor vacío, se usará la tubería "
-"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 "
-"threads=%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T "
-"como suposición para el número de hilos óptimos en el sistema."
+"sintaxis usada para gst-launch. La tubería debería tener un sumidero («sink») "
+"de ensamblaje/sesensamblaje donde el vídeo que se está grabando se graba. "
+"Generalmente tendrá un origen de ensamblado/desensamblado; la salida de ese "
+"punto se escibirá en el archivo de salida. No obstante la tubería también "
+"puede tomar parte en su propia salida; esto se puede usar para enviar la "
+"salida a un servidor «icecast» a través de shout2send o similar. Cuando no "
+"está establecido o lo está a un valor vacío, se usará la tubería "
+"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 threads="
+"%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T como "
+"suposición para el número de hilos óptimos en el sistema."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Show date in clock"
@@ -336,43 +326,47 @@ msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr ""
 "Anchura de las líneas verticales y horizontales que conforman las cruces."
 
+#: ../js/misc/util.js:86
+msgid "Command not found"
+msgstr "Comando no encontrado"
+
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:108
+#: ../js/misc/util.js:113
 msgid "Could not parse command:"
 msgstr "No se pudo analizar el comando:"
 
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:135
 msgid "No such application"
 msgstr "No existe la aplicación"
 
-#: ../js/misc/util.js:143 ../js/ui/runDialog.js:351
+#: ../js/misc/util.js:148
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Falló la ejecución de «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:155
+#: ../js/ui/appDisplay.js:164
 msgid "All"
 msgstr "Todas"
 
-#: ../js/ui/appDisplay.js:236
+#: ../js/ui/appDisplay.js:245
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
-#: ../js/ui/appDisplay.js:266
+#: ../js/ui/appDisplay.js:275
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:563
+#: ../js/ui/appDisplay.js:572
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:567
+#: ../js/ui/appDisplay.js:576
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:568
+#: ../js/ui/appDisplay.js:577
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
@@ -500,15 +494,15 @@ msgstr "Página web"
 msgid "System Information"
 msgstr "Información del sistema"
 
-#: ../js/ui/overview.js:75
+#: ../js/ui/overview.js:88
 msgid "Undo"
 msgstr "Deshacer"
 
-#: ../js/ui/overview.js:140
+#: ../js/ui/overview.js:159
 msgid "Windows"
 msgstr "Ventanas"
 
-#: ../js/ui/overview.js:143
+#: ../js/ui/overview.js:162
 msgid "Applications"
 msgstr "Aplicaciones"
 
@@ -791,7 +785,6 @@ msgid "OK"
 msgstr "Aceptar"
 
 #: ../js/ui/status/keyboard.js:78
-#| msgid "Sound Settings"
 msgid "Localization Settings"
 msgstr "Configuración regional"
 
@@ -929,14 +922,14 @@ msgstr "%s finalizó su lanzamiento"
 msgid "'%s' is ready"
 msgstr "«%s» está preparado"
 
-#: ../js/ui/workspacesView.js:244
+#: ../js/ui/workspacesView.js:243
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr ""
 "No se puede añadir un área de trabajo nueva porque se ha llegado al límite "
 "de áreas de trabajo."
 
-#: ../js/ui/workspacesView.js:260
+#: ../js/ui/workspacesView.js:259
 msgid "Can't remove the first workspace."
 msgstr "No se puede quitar el primer área de trabajo."
 
@@ -962,32 +955,32 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
-#: ../src/shell-global.c:1366
+#: ../src/shell-global.c:1365
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:1370
+#: ../src/shell-global.c:1369
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:1375
+#: ../src/shell-global.c:1374
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:1380
+#: ../src/shell-global.c:1379
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:1385
+#: ../src/shell-global.c:1384
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1034,8 +1027,8 @@ msgstr "%1$s: %2$s"
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
-#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los "
-#~ "segundos en la hora."
+#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos "
+#~ "en la hora."
 
 #~ msgid ""
 #~ "This key specifies the format used by the panel clock when the format key "
@@ -1052,19 +1045,18 @@ msgstr "%1$s: %2$s"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
-#~ "1970-01-01. If set to \"custom\", the clock will display time according "
-#~ "to the format specified in the custom_format key. Note that if set to "
-#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
-#~ "ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
+#~ "01-01. If set to \"custom\", the clock will display time according to the "
+#~ "format specified in the custom_format key. Note that if set to either "
+#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
 #~ msgstr ""
 #~ "Esta clave especifica el formato de la hora especificado por el reloj del "
-#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 "
-#~ "horas), «unix» y «custom» (personalizado).Si se establece a «unix» el "
-#~ "reloj mostrará la hora en segundos desde la época (1 de enero de 1970). "
-#~ "Si se establece a «custom» el reloj mostrará la hora según el formato "
-#~ "especificado en la clave «custom_format». Note que si se establece a "
-#~ "«unix» o «custom» se ignoran las claves «show_date» y «show_seconds»."
+#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
+#~ "«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará "
+#~ "la hora en segundos desde la época (1 de enero de 1970). Si se establece "
+#~ "a «custom» el reloj mostrará la hora según el formato especificado en la "
+#~ "clave «custom_format». Note que si se establece a «unix» o «custom» se "
+#~ "ignoran las claves «show_date» y «show_seconds»."
 
 #~ msgid "Clock Format"
 #~ msgstr "Formato del reloj"
