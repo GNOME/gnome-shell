@@ -1227,15 +1227,14 @@ StTooltip StLabel {
     color: white;
 }
 
-.run-dialog-error-icon {
-    background-image: url("dialog-error.svg");
-    width: 36px;
-    height: 36px;
+.run-dialog-error-label {
+    font-size: 12px;
+    color: white;
 }
 
-.run-dialog-error-label {
-    font-size: 16px;
-    color: white;
+.run-dialog-error-box {
+    padding-top: 15px;
+    spacing: 5px;
 }
 
 .run-dialog-entry {

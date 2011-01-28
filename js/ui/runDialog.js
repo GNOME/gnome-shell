@@ -219,20 +219,22 @@ __proto__: ModalDialog.ModalDialog.prototype,
                          this._entryText.grab_key_focus();
                      }));
 
-        this._errorBox = new St.BoxLayout();
+        this._errorBox = new St.BoxLayout({ style_class: 'run-dialog-error-box' });
 
         this.contentLayout.add(this._errorBox, { expand: true });
 
-        let errorIcon = new St.Button({ style_class: 'run-dialog-error-icon' });
+        let errorIcon = new St.Icon({ icon_name: 'dialog-error', icon_size: 24, style_class: 'run-dialog-error-icon' });
 
-        this._errorBox.add(errorIcon);
+        this._errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
 
         this._commandError = false;
 
         this._errorMessage = new St.Label({ style_class: 'run-dialog-error-label' });
         this._errorMessage.clutter_text.line_wrap = true;
 
-        this._errorBox.add(this._errorMessage, { expand: true });
+        this._errorBox.add(this._errorMessage, { expand: true,
+                                                 y_align: St.Align.MIDDLE,
+                                                 y_fill: false });
 
         this._errorBox.hide();
 
@@ -348,8 +350,7 @@ __proto__: ModalDialog.ModalDialog.prototype,
                 } else {
                     this._commandError = true;
 
-                    let errorStr = _("Execution of '%s' failed:").format(command) + '\n' + e.message;
-                    this._errorMessage.set_text(errorStr);
+                    this._errorMessage.set_text(e.message);
 
                     if (!this._errorBox.visible) {
                         let [errorBoxMinHeight, errorBoxNaturalHeight] = this._errorBox.get_preferred_height(-1);

@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-19 15:01+0100\n"
-"PO-Revision-Date: 2011-01-19 15:01+0100\n"
+"POT-Creation-Date: 2011-01-27 03:33+0100\n"
+"PO-Revision-Date: 2011-01-26 21:02+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -80,6 +80,7 @@ msgid "List of desktop file IDs for favorite applications"
 msgstr "Mostra os ID de ficheiros desktop para os aplicativos preferidos"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:11
+#, fuzzy
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -270,16 +271,16 @@ msgstr "Mostrar os contidos magnificados máis aló dos bordos do escritorio"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
 msgid "Show or hide crosshairs"
-msgstr "Mostrar ou agochar o punto de mira"
+msgstr "Mostrar ou ocultar o punto de mira"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
 msgid "Show or hide the magnifier"
-msgstr "Mostrar ou agochar o magnificador"
+msgstr "Mostrar ou ocultar o magnificador"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
 msgid "Show or hide the magnifier and all of its zoom regions."
 msgstr ""
-"Mostrar ou agochar o magnificador e todas as súas rexións de magnificación."
+"Mostrar ou ocultar o magnificador e todas as súas rexións de magnificación."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
 msgid ""
@@ -560,7 +561,7 @@ msgstr "Reintentar"
 
 #: ../js/ui/placeDisplay.js:150
 msgid "Connect to..."
-msgstr "Conectar con..."
+msgstr "Conectar con…"
 
 #: ../js/ui/placeDisplay.js:386
 msgid "PLACES & DEVICES"
@@ -605,15 +606,15 @@ msgstr "Cambiar de usuario"
 
 #: ../js/ui/statusMenu.js:135
 msgid "Log Out..."
-msgstr "Saír da sesión..."
+msgstr "Saír da sesión…"
 
 #: ../js/ui/statusMenu.js:142
 msgid "Suspend..."
-msgstr "Suspender..."
+msgstr "Suspender…"
 
 #: ../js/ui/statusMenu.js:146
 msgid "Shut Down..."
-msgstr "Apagar..."
+msgstr "Apagar…"
 
 #: ../js/ui/status/accessibility.js:83
 msgid "Zoom"
@@ -669,11 +670,11 @@ msgstr "Visibilidade"
 
 #: ../js/ui/status/bluetooth.js:69
 msgid "Send Files to Device..."
-msgstr "Enviar ficheiros ao dispositivo..."
+msgstr "Enviar ficheiros ao dispositivo…"
 
 #: ../js/ui/status/bluetooth.js:70
 msgid "Setup a New Device..."
-msgstr "Configurar un novo dispositivo..."
+msgstr "Configurar un novo dispositivo…"
 
 #: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
@@ -685,11 +686,11 @@ msgstr "Conexión"
 
 #: ../js/ui/status/bluetooth.js:228
 msgid "Send Files..."
-msgstr "Enviar ficheiros..."
+msgstr "Enviar ficheiros…"
 
 #: ../js/ui/status/bluetooth.js:233
 msgid "Browse Files..."
-msgstr "Explorar ficheiros..."
+msgstr "Explorar ficheiros…"
 
 #: ../js/ui/status/bluetooth.js:242
 msgid "Error browsing device"
@@ -997,6 +998,10 @@ msgstr "Buscar"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~| msgid "Sound Settings"
+#~ msgid "Localization Settings"
+#~ msgstr "Configuracións do son"
 
 #~ msgid "Clock"
 #~ msgstr "Reloxo"

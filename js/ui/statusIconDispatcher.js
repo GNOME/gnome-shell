@@ -16,7 +16,10 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'nm-applet': 'network',
     'gnome-power-manager': 'battery',
     'keyboard': 'keyboard',
-    'gnome-settings-daemon': 'display'
+    'a11y-keyboard': 'a11y',
+    'kbd-scrolllock': 'keyboard',
+    'kbd-numlock': 'keyboard',
+    'kbd-capslock': 'keyboard'
 };
 
 function StatusIconDispatcher() {
