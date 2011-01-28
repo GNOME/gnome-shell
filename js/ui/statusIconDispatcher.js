@@ -15,8 +15,7 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'gnome-sound-applet': 'volume',
     'nm-applet': 'network',
     'gnome-power-manager': 'battery',
-    'keyboard': 'keyboard',
-    'gnome-settings-daemon': 'display'
+    'keyboard': 'keyboard'
 };
 
 function StatusIconDispatcher() {
