@@ -190,7 +190,7 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
   g_atexit (clutter_backend_at_exit);
 
   /* TODO: expose environment variable/commandline option for this... */
-  backend_wayland->wayland_display = wl_display_connect ("\0wayland");
+  backend_wayland->wayland_display = wl_display_connect (NULL);
   if (!backend_wayland->wayland_display)
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
