@@ -14,11 +14,22 @@
 GType cb_button_get_type (void);
 
 /* GObject type macros */
+/* returns the class type identifier (GType) for CbButton */
 #define CB_TYPE_BUTTON            (cb_button_get_type ())
+
+/* cast obj to a CbButton object structure*/
 #define CB_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CB_TYPE_BUTTON, CbButton))
+
+/* check whether obj is a CbButton */
 #define CB_IS_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CB_TYPE_BUTTON))
+
+/* cast klass to CbButtonClass class structure */
 #define CB_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CB_TYPE_BUTTON, CbButtonClass))
+
+/* check whether klass is a member of the CbButtonClass */
 #define CB_IS_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CB_TYPE_BUTTON))
+
+/* get the CbButtonClass structure for a CbButton obj */
 #define CB_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CB_TYPE_BUTTON, CbButtonClass))
 
 /*

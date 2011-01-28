@@ -1,7 +1,13 @@
 #include "cb-button.h"
 
-/*
- * convenience macro for GType implementations; see:
+/**
+ * SECTION:cb-button
+ * @short_description: Button widget
+ *
+ * A button widget with support for a text label and background color.
+ */
+
+/* convenience macro for GType implementations; see:
  * http://library.gnome.org/devel/gobject/2.27/gobject-Type-Information.html#G-DEFINE-TYPE:CAPS
  */
 G_DEFINE_TYPE (CbButton, cb_button, CLUTTER_TYPE_ACTOR);
@@ -10,7 +16,13 @@ G_DEFINE_TYPE (CbButton, cb_button, CLUTTER_TYPE_ACTOR);
 #define CB_BUTTON_GET_PRIVATE(obj) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CB_TYPE_BUTTON, CbButtonPrivate))
 
-/* private structure - should only be accessed through the public API */
+/* private structure - should only be accessed through the public API;
+ * this is used to store member variables whose properties
+ * need to be accessible from the implementation; for example, if we
+ * intend to create wrapper functions which modify properties on the
+ * actors composing an object, we should keep a reference to the actors
+ * here
+ */
 struct _CbButtonPrivate
 {
   ClutterActor  *child;
@@ -31,16 +43,24 @@ enum {
   PROP_TEXT
 };
 
-/* signals */
+/* cache array for signals */
 static guint cb_button_signals[LAST_SIGNAL] = { 0, };
 
+/* from http://mail.gnome.org/archives/gtk-devel-list/2004-July/msg00158.html:
+ *
+ * "The dispose method is supposed to release any references to resources
+ * when the object first knows it will be destroyed. The dispose method may
+ * be called any number of times, and thus the code therein should be safe
+ * in that case."
+ */
 static void
 cb_button_dispose (GObject *gobject)
 {
   CbButtonPrivate *priv = CB_BUTTON (gobject)->priv;
 
   /* we just dispose of the child, and let its dispose()
-   * function deal with its children
+   * function deal with its children; note that we have a guard
+   * here in case the child has already been destroyed
    */
   if (priv->child)
     {
@@ -48,9 +68,19 @@ cb_button_dispose (GObject *gobject)
       priv->child = NULL;
     }
 
+  /* call the parent class' dispose() method */
   G_OBJECT_CLASS (cb_button_parent_class)->dispose (gobject);
 }
 
+/* from http://mail.gnome.org/archives/gtk-devel-list/2004-July/msg00158.html:
+ *
+ * "The finalize method finishes releasing the remaining
+ * resources just before the object itself will be freed from memory, and
+ * therefore it will only be called once. The two step process helps break
+ * cyclic references. Both dispose and finalize must chain up to their
+ * parent objects by calling their parent's respective methods *after* they
+ * have disposed or finalized their own members."
+ */
 static void
 cb_button_finalize (GObject *gobject)
 {
@@ -58,9 +88,14 @@ cb_button_finalize (GObject *gobject)
 
   g_free (priv->text);
 
+  /* call the parent class' finalize() method */
   G_OBJECT_CLASS (cb_button_parent_class)->finalize (gobject);
 }
 
+/* enables objects to be uniformly treated as GObjects;
+ * also exposes properties so they become scriptable, e.g.
+ * through ClutterScript
+ */
 static void
 cb_button_set_property (GObject      *gobject,
                         guint         prop_id,
@@ -81,6 +116,7 @@ cb_button_set_property (GObject      *gobject,
     }
 }
 
+/* enables objects to be uniformly treated as GObjects */
 static void
 cb_button_get_property (GObject    *gobject,
                         guint       prop_id,
@@ -139,10 +175,18 @@ cb_button_clicked (ClutterClickAction *action,
                    ClutterActor       *actor,
                    gpointer            user_data)
 {
+  /* emit signal via the cache array */
   g_signal_emit (actor, cb_button_signals[CLICKED], 0);
 }
 
-/* GObject class and instance init */
+/* GObject class and instance initialization functions; note that
+ * these have been placed after the Clutter implementation, as
+ * they refer to the static paint() and allocate() functions
+ */
+
+/* class init: attach functions to the class, define properties
+ * and signals
+ */
 static void
 cb_button_class_init (CbButtonClass *klass)
 {
@@ -191,6 +235,9 @@ cb_button_class_init (CbButtonClass *klass)
                   0);
 }
 
+/* object init: create a private structure and pack
+ * composed ClutterActors into it
+ */
 static void
 cb_button_init (CbButton *self)
 {
@@ -201,6 +248,10 @@ cb_button_init (CbButton *self)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
+  /* the only child of this actor is a ClutterBox with a
+   * ClutterBinLayout: painting and allocation of the actor basically
+   * involves painting and allocating this child box
+   */
   layout = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_CENTER,
                                    CLUTTER_BIN_ALIGNMENT_CENTER);
 
@@ -210,7 +261,9 @@ cb_button_init (CbButton *self)
   clutter_actor_set_parent (priv->child,
                             CLUTTER_ACTOR (self));
 
-  /* add text label to the button */
+  /* add text label to the button; see the ClutterText API docs
+   * for more information about available properties
+   */
   priv->label = g_object_new (CLUTTER_TYPE_TEXT,
                               "line-alignment", PANGO_ALIGN_CENTER,
                               "ellipsize", PANGO_ELLIPSIZE_END,
@@ -220,7 +273,7 @@ cb_button_init (CbButton *self)
                                priv->label);
 
   /* add a ClutterClickAction on this actor, so we can proxy its
-   * "clicked" signal through a signal from this actor
+   * "clicked" signal into a signal from this actor
    */
   priv->click_action = clutter_click_action_new ();
   clutter_actor_add_action (CLUTTER_ACTOR (self), priv->click_action);
