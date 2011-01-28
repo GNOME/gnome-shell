@@ -54,6 +54,8 @@
 static void clutter_stage_window_iface_init     (ClutterStageWindowIface     *iface);
 static void clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface);
 
+static GHashTable *clutter_stages_by_xid = NULL;
+
 #define clutter_stage_x11_get_type      _clutter_stage_x11_get_type
 
 G_DEFINE_TYPE_WITH_CODE (ClutterStageX11,
@@ -1131,24 +1133,16 @@ clutter_x11_get_stage_window (ClutterStage *stage)
 ClutterStage *
 clutter_x11_get_stage_from_window (Window win)
 {
-  ClutterStageManager *stage_manager;
-  const GSList        *stages, *s;
+  ClutterStageX11 *stage_x11;
 
-  stage_manager = clutter_stage_manager_get_default ();
-  stages = clutter_stage_manager_peek_stages (stage_manager);
+  if (clutter_stages_by_xid == NULL)
+    return NULL;
 
-  /* XXX: might use a hash here for performance resaon */
-  for (s = stages; s != NULL; s = s->next)
-    {
-      ClutterStage *stage = s->data;
-      ClutterStageWindow *impl;
+  stage_x11 = g_hash_table_lookup (clutter_stages_by_xid,
+                                   GINT_TO_POINTER (win));
 
-      impl = _clutter_stage_get_window (stage);
-      g_assert (CLUTTER_IS_STAGE_X11 (impl));
-
-      if (CLUTTER_STAGE_X11 (impl)->xwin == win)
-        return stage;
-    }
+  if (stage_x11 != NULL)
+    return stage_x11->wrapper;
 
   return NULL;
 }
@@ -1215,6 +1209,13 @@ set_foreign_window_callback (ClutterActor *actor,
   fwd->stage_x11->xwin_height = fwd->geom.height;
 
   clutter_actor_set_geometry (actor, &fwd->geom);
+
+  if (clutter_stages_by_xid == NULL)
+    clutter_stages_by_xid = g_hash_table_new (NULL, NULL);
+
+  g_hash_table_insert (clutter_stages_by_xid,
+                       GINT_TO_POINTER (fwd->stage_x11->xwin),
+                       fwd->stage_x11);
 
   /* calling this with the stage unrealized will unset the stage
    * from the GL context; once the stage is realized the GL context
@@ -1329,11 +1330,18 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
 void
 _clutter_stage_x11_destroy_window_untrapped (ClutterStageX11 *stage_x11)
 {
-  if (!stage_x11->is_foreign_xwin && stage_x11->xwin != None)
+  Window xwin = stage_x11->xwin;
+
+  if (clutter_stages_by_xid != NULL)
+    g_hash_table_remove (clutter_stages_by_xid, GINT_TO_POINTER (xwin));
+
+  if (!stage_x11->is_foreign_xwin && xwin != None)
     {
       ClutterBackendX11 *backend_x11 = stage_x11->backend;
 
-      XDestroyWindow (backend_x11->xdpy, stage_x11->xwin);
+      g_assert (clutter_stages_by_xid != NULL);
+
+      XDestroyWindow (backend_x11->xdpy, xwin);
       stage_x11->xwin = None;
     }
   else
@@ -1414,6 +1422,13 @@ _clutter_stage_x11_create_window (ClutterStageX11 *stage_x11)
                 stage_x11->xwin_height);
 
   XFree (xvisinfo);
+
+  if (clutter_stages_by_xid == NULL)
+    clutter_stages_by_xid = g_hash_table_new (NULL, NULL);
+
+  g_hash_table_insert (clutter_stages_by_xid,
+                       GINT_TO_POINTER (stage_x11->xwin),
+                       stage_x11);
 
   return TRUE;
 }

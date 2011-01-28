@@ -505,8 +505,11 @@ _clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
 
 void
 _clutter_backend_glx_blit_sub_buffer (ClutterBackendGLX *backend_glx,
-                                      GLXDrawable drawable,
-                                      int x, int y, int width, int height)
+                                      GLXDrawable        drawable,
+                                      int                x,
+                                      int                y,
+                                      int                width,
+                                      int                height)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend_glx);
 
