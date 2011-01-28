@@ -1,36 +1,32 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const St = imports.gi.St;
-const Shell = imports.gi.Shell;
-const Lang = imports.lang;
-const Signals = imports.signals;
 const Search = imports.ui.search;
 
-const THUMBNAIL_ICON_MARGIN = 2;
-
-function DocInfo(recentInfo) {
-    this._init(recentInfo);
+function ZeitgeistItemInfo(event) {
+    this._init(event);
 }
 
-DocInfo.prototype = {
-    _init : function(recentInfo) {
-        this.recentInfo = recentInfo;
-        // We actually used get_modified() instead of get_visited()
-        // here, as GtkRecentInfo doesn't updated get_visited()
-        // correctly. See http://bugzilla.gnome.org/show_bug.cgi?id=567094
-        this.timestamp = recentInfo.get_modified();
-        this.name = recentInfo.get_display_name();
+ZeitgeistItemInfo.prototype = {
+    _init : function(event) {
+        this.event = event;
+        this.subject = event.subjects[0];
+        this.timestamp = event.timestamp;
+        this.name = this.subject.text;
         this._lowerName = this.name.toLowerCase();
-        this.uri = recentInfo.get_uri();
-        this.mimeType = recentInfo.get_mime_type();
+        this.uri = this.subject.uri;
+        this.mimeType = this.subject.mimetype;
+        this.interpretation = this.subject.interpretation;
     },
 
     createIcon : function(size) {
-        return St.TextureCache.get_default().load_recent_thumbnail(size, this.recentInfo);
+        return St.TextureCache.get_default().load_thumbnail(size, this.uri, this.subject.mimetype);
+        // FIXME: We should consider caching icons
     },
 
-    launch : function(workspaceIndex) {
-        Shell.DocSystem.get_default().open(this.recentInfo, workspaceIndex);
+    launch : function() {
+        Gio.app_info_launch_default_for_uri(this.uri,
+                                            global.create_app_launch_context());
     },
 
     matchTerms: function(terms) {
@@ -48,93 +44,5 @@ DocInfo.prototype = {
             }
         }
         return mtype;
-    }
+    },
 };
-
-var docManagerInstance = null;
-
-function getDocManager() {
-    if (docManagerInstance == null)
-        docManagerInstance = new DocManager();
-    return docManagerInstance;
-}
-
-/**
- * DocManager wraps the DocSystem, primarily to expose DocInfo objects.
- */
-function DocManager() {
-    this._init();
-}
-
-DocManager.prototype = {
-    _init: function() {
-        this._docSystem = Shell.DocSystem.get_default();
-        this._infosByTimestamp = [];
-        this._infosByUri = {};
-        this._docSystem.connect('changed', Lang.bind(this, this._reload));
-        this._reload();
-    },
-
-    _reload: function() {
-        let docs = this._docSystem.get_all();
-        this._infosByTimestamp = [];
-        this._infosByUri = {};
-        for (let i = 0; i < docs.length; i++) {
-            let recentInfo = docs[i];
-
-            let docInfo = new DocInfo(recentInfo);
-            this._infosByTimestamp.push(docInfo);
-            this._infosByUri[docInfo.uri] = docInfo;
-        }
-        this.emit('changed');
-    },
-
-    getTimestampOrderedInfos: function() {
-        return this._infosByTimestamp;
-    },
-
-    getInfosByUri: function() {
-        return this._infosByUri;
-    },
-
-    lookupByUri: function(uri) {
-        return this._infosByUri[uri];
-    },
-
-    queueExistenceCheck: function(count) {
-        return this._docSystem.queue_existence_check(count);
-    },
-
-    _searchDocs: function(items, terms) {
-        let multiplePrefixMatches = [];
-        let prefixMatches = [];
-        let multipleSubtringMatches = [];
-        let substringMatches = [];
-        for (let i = 0; i < items.length; i++) {
-            let item = items[i];
-            let mtype = item.matchTerms(terms);
-            if (mtype == Search.MatchType.MULTIPLE_PREFIX)
-                multiplePrefixMatches.push(item.uri);
-            else if (mtype == Search.MatchType.PREFIX)
-                prefixMatches.push(item.uri);
-            else if (mtype == Search.MatchType.MULTIPLE_SUBSTRING)
-                multipleSubtringMatches.push(item.uri);
-            else if (mtype == Search.MatchType.SUBSTRING)
-                substringMatches.push(item.uri);
-         }
-        return multiplePrefixMatches.concat(prefixMatches.concat(multipleSubtringMatches.concat(substringMatches)));
-    },
-
-    initialSearch: function(terms) {
-        return this._searchDocs(this._infosByTimestamp, terms);
-    },
-
-    subsearch: function(previousResults, terms) {
-        return this._searchDocs(previousResults.map(Lang.bind(this,
-            function(url) {
-                return this._infosByUri[url];
-            })), terms);
-    }
-};
-
-Signals.addSignalMethods(DocManager.prototype);

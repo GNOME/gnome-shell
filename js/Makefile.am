@@ -23,7 +23,6 @@ nobase_dist_js_DATA = 	\
 	ui/dash.js		\
 	ui/dateMenu.js		\
 	ui/dnd.js		\
-	ui/docDisplay.js	\
 	ui/endSessionDialog.js	\
 	ui/environment.js	\
 	ui/extensionSystem.js	\
@@ -64,4 +63,5 @@ nobase_dist_js_DATA = 	\
 	ui/workspaceThumbnail.js	\
 	ui/workspacesView.js	\
 	ui/workspaceSwitcherPopup.js    \
-	ui/xdndHandler.js
+	ui/xdndHandler.js	\
+	ui/zeitgeistSearch.js

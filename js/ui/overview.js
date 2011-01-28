@@ -15,7 +15,6 @@ const Gdk = imports.gi.Gdk;
 const AppDisplay = imports.ui.appDisplay;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
-const DocDisplay = imports.ui.docDisplay;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
@@ -24,6 +23,7 @@ const PlaceDisplay = imports.ui.placeDisplay;
 const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
 const WorkspacesView = imports.ui.workspacesView;
+const ZeitgeistSearch = imports.ui.zeitgeistSearch;
 
 // Time for initial animation going into Overview mode
 const ANIMATION_TIME = 0.25;
@@ -189,7 +189,11 @@ Overview.prototype = {
         this.viewSelector.addSearchProvider(new AppDisplay.AppSearchProvider());
         this.viewSelector.addSearchProvider(new AppDisplay.PrefsSearchProvider());
         this.viewSelector.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
-        this.viewSelector.addSearchProvider(new DocDisplay.DocSearchProvider());
+        this.viewSelector.addSearchProvider(new ZeitgeistSearch.DocumentsAsyncSearchProvider());
+        this.viewSelector.addSearchProvider(new ZeitgeistSearch.VideosAsyncSearchProvider());
+        this.viewSelector.addSearchProvider(new ZeitgeistSearch.MusicAsyncSearchProvider());
+        this.viewSelector.addSearchProvider(new ZeitgeistSearch.PicturesAsyncSearchProvider());
+        this.viewSelector.addSearchProvider(new ZeitgeistSearch.OtherAsyncSearchProvider());
 
         // TODO - recalculate everything when desktop size changes
         this.dash = new Dash.Dash();
