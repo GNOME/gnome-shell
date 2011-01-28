@@ -23,6 +23,7 @@
 
 #include "clutter-osx.h"
 #include "clutter-backend-osx.h"
+#include "clutter-device-manager-osx.h"
 #include "clutter-stage-osx.h"
 
 #include "clutter-debug.h"
@@ -78,7 +79,7 @@ clutter_backend_osx_create_stage (ClutterBackend  *backend,
 
   CLUTTER_OSX_POOL_ALLOC();
 
-  impl = clutter_stage_osx_new (backend, wrapper);
+  impl = _clutter_stage_osx_new (backend, wrapper);
 
   CLUTTER_NOTE (BACKEND, "create_stage: impl=%p", impl);
 
@@ -87,11 +88,38 @@ clutter_backend_osx_create_stage (ClutterBackend  *backend,
   return impl;
 }
 
+static inline void
+clutter_backend_osx_create_device_manager (ClutterBackendOSX *backend_osx)
+{
+  if (backend_osx->device_manager != NULL)
+    return;
+
+  backend_osx->device_manager = g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_OSX,
+                                              "backend", backend,
+                                              NULL);
+}
+
+static ClutterDeviceManager *
+clutter_backend_osx_get_device_manager (ClutterBackend *backend)
+{
+  ClutterBackendOSX *backend_osx = CLUTTER_BACKEND_OSX (backend);
+
+  clutter_backend_osx_create_device_manager (backend_osx);
+
+  return backend_osx->device_manager;
+}
+
 static void
 clutter_backend_osx_init_events (ClutterBackend *backend)
 {
+  ClutterBackendOSX *backend_osx = CLUTTER_BACKEND_OSX (backend);
+
+  if (backend_osx->device_manager != NULL)
+    return;
+
   CLUTTER_NOTE (BACKEND, "init_events");
 
+  clutter_backend_osx_create_device_manager (backend_osx);
   _clutter_events_osx_init ();
 }
 
@@ -221,13 +249,14 @@ clutter_backend_osx_class_init (ClutterBackendOSXClass *klass)
 
   object_class->dispose = clutter_backend_osx_dispose;
 
-  backend_class->post_parse       = clutter_backend_osx_post_parse;
-  backend_class->get_features     = clutter_backend_osx_get_features;
-  backend_class->create_stage     = clutter_backend_osx_create_stage;
-  backend_class->create_context   = clutter_backend_osx_create_context;
-  backend_class->ensure_context   = clutter_backend_osx_ensure_context;
-  backend_class->init_events      = clutter_backend_osx_init_events;
-  backend_class->redraw           = clutter_backend_osx_redraw;
+  backend_class->post_parse         = clutter_backend_osx_post_parse;
+  backend_class->get_features       = clutter_backend_osx_get_features;
+  backend_class->create_stage       = clutter_backend_osx_create_stage;
+  backend_class->create_context     = clutter_backend_osx_create_context;
+  backend_class->ensure_context     = clutter_backend_osx_ensure_context;
+  backend_class->init_events        = clutter_backend_osx_init_events;
+  backend_class->redraw             = clutter_backend_osx_redraw;
+  backend_class->get_device_manager = clutter_backend_osx_get_device_manager;
 }
 
 GType

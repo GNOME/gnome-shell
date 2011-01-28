@@ -23,14 +23,18 @@
 #include "config.h"
 
 #include "clutter-osx.h"
+
+#include "clutter-device-manager-osx.h"
 #include "clutter-stage-osx.h"
 
 #import <AppKit/AppKit.h>
 
 #include <glib.h>
 #include <clutter/clutter-debug.h>
-#include <clutter/clutter-private.h>
+#include <clutter/clutter-device-manager.h>
 #include <clutter/clutter-keysyms.h>
+#include <clutter/clutter-private.h>
+#include <clutter/clutter-stage-private.h>
 
 #include "clutter-event-loop-osx.h"
 
@@ -220,7 +224,8 @@ take_and_queue_event (ClutterEvent *event)
 }
 
 static void
-process_scroll_event(ClutterEvent *event, gboolean isVertical)
+process_scroll_event (ClutterEvent *event,
+                      gboolean isVertical)
 {
   ClutterStageWindow   *impl;
   ClutterStageOSX *stage_osx;
@@ -252,6 +257,8 @@ process_scroll_event(ClutterEvent *event, gboolean isVertical)
           *scroll_pos += WHEEL_DELTA;
         }
 
+      clutter_event_set_device (event_gen, clutter_event_get_device (event));
+
       take_and_queue_event (event_gen);
       
       CLUTTER_NOTE (EVENT, "scroll %s at %f,%f",
@@ -260,20 +267,23 @@ process_scroll_event(ClutterEvent *event, gboolean isVertical)
                     (event_gen->scroll.direction == CLUTTER_SCROLL_DOWN) ? "DOWN" :
                     (
                     (event_gen->scroll.direction == CLUTTER_SCROLL_RIGHT) ? "RIGHT" : "LEFT")),
-                    (float)event->scroll.x, (float)event->scroll.y);
+                    event->scroll.x, event->scroll.y);
     } 
 }
 
 static gboolean
-clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
-{  
-  ClutterStageWindow   *impl;
+clutter_event_osx_translate (NSEvent *nsevent,
+                             ClutterEvent *event)
+{
+  ClutterDeviceManagerOSX *manager_osx;
   ClutterStageOSX *stage_osx;
-  
+  ClutterStageWindow *impl;
+  ClutterStage *stage;
+
+  stage       = event->any.stage;
   impl        = _clutter_stage_get_window (event->any.stage);
   stage_osx   = CLUTTER_STAGE_OSX (impl);
-  
-  event->any.time = [nsevent clutterTime];
+  manager_osx = CLUTTER_DEVICE_MANAGER_OSX (clutter_device_manager_get_default ());
 
   switch ([nsevent type])
     {
@@ -292,11 +302,12 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
       event->button.click_count = [nsevent clickCount];
       event->motion.modifier_state = [nsevent clutterModifierState];
       [nsevent clutterX:&(event->button.x) y:&(event->button.y)];
+      clutter_event_set_device (event, manager_osx->core_pointer);
 
       CLUTTER_NOTE (EVENT, "button %d %s at %f,%f clicks=%d",
                     (int)[nsevent buttonNumber],
                     event->type == CLUTTER_BUTTON_PRESS ? "press" : "release",
-                    (float)event->button.x, (float)event->button.y,
+                    event->button.x, event->button.y,
                     event->button.click_count);
       return TRUE;
 
@@ -308,10 +319,39 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
 
       [nsevent clutterX:&(event->motion.x) y:&(event->motion.y)];
       event->motion.modifier_state = [nsevent clutterModifierState];
+      clutter_event_set_device (event, manager_osx->core_pointer);
 
       CLUTTER_NOTE (EVENT, "motion %d at %f,%f",
                     (int)[nsevent buttonNumber],
-                    (float)event->button.x, (float)event->button.y);
+                    event->button.x, event->button.y);
+      return TRUE;
+
+    case NSMouseEntered:
+      event->type = CLUTTER_ENTER;
+
+      [nsevent clutterX:&(event->crossing.x) y:&(event->crossing.y)];
+      event->crossing.related = NULL;
+      event->crossing.actor = CLUTTER_ACTOR (stage);
+      clutter_event_set_device (event, manager_osx->core_pointer);
+
+      _clutter_stage_add_device (stage, manager_osx->core_pointer);
+
+      CLUTTER_NOTE (EVENT, "enter at %f,%f",
+                    event->crossing.x, event->crossing.y);
+      return TRUE;
+
+    case NSMouseExited:
+      event->type = CLUTTER_LEAVE;
+
+      [nsevent clutterX:&(event->crossing.x) y:&(event->crossing.y)];
+      event->crossing.related = NULL;
+      event->crossing.actor = CLUTTER_ACTOR (stage);
+      clutter_event_set_device (event, manager_osx->core_pointer);
+
+      _clutter_stage_remove_device (stage, manager_osx->core_pointer);
+
+      CLUTTER_NOTE (EVENT, "exit at %f,%f",
+                    event->crossing.x, event->crossing.y);
       return TRUE;
 
     case NSScrollWheel:
@@ -320,11 +360,11 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
       
       [nsevent clutterX:&(event->scroll.x) y:&(event->scroll.y)];
       event->scroll.modifier_state = [nsevent clutterModifierState];
+      clutter_event_set_device (event, manager_osx->core_pointer);
       
-      process_scroll_event(event, TRUE);
-      process_scroll_event(event, FALSE);
-        
-      return FALSE;
+      process_scroll_event (event, TRUE);
+      process_scroll_event (event, FALSE);
+      break;
       
     case NSKeyDown:
       event->type = CLUTTER_KEY_PRESS;
@@ -337,6 +377,7 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
       event->key.modifier_state = [nsevent clutterModifierState];
       event->key.keyval = [nsevent clutterKeyVal];
       event->key.unicode_value = [[nsevent characters] characterAtIndex:0];
+      clutter_event_set_device (event, manager_osx->core_keyboard);
 
       CLUTTER_NOTE (EVENT, "key %d (%s) (%s) %s, keyval %d",
                     [nsevent keyCode],
@@ -355,17 +396,21 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
 }
 
 void
-_clutter_event_osx_put (NSEvent *nsevent, ClutterStage *wrapper)
+_clutter_event_osx_put (NSEvent *nsevent,
+                        ClutterStage *wrapper)
 {
-  ClutterEvent event = { 0, };
+  ClutterEvent *event = clutter_event_new (CLUTTER_NOTHING);
 
-  event.any.stage = wrapper;
+  event->any.stage = wrapper;
 
   if (clutter_event_osx_translate (nsevent, &event))
     {
       g_assert (event.type != CLUTTER_NOTHING);
-      clutter_event_put (&event);
+
+      _clutter_event_push (event, FALSE);
     }
+  else
+    clutter_event_free (event);
 }
 
 void

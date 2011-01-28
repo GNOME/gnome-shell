@@ -31,7 +31,7 @@
 G_BEGIN_DECLS
 
 /* convenience macros */
-#define CLUTTER_TYPE_STAGE_OSX             (clutter_stage_osx_get_type())
+#define CLUTTER_TYPE_STAGE_OSX             (_clutter_stage_osx_get_type())
 #define CLUTTER_STAGE_OSX(obj)             (G_TYPE_CHECK_INSTANCE_CAST((obj),CLUTTER_TYPE_STAGE_OSX,ClutterStageOSX))
 #define CLUTTER_STAGE_OSX_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST((klass),CLUTTER_TYPE_STAGE_OSX,ClutterStage))
 #define CLUTTER_IS_STAGE_OSX(obj)          (G_TYPE_CHECK_INSTANCE_TYPE((obj),CLUTTER_TYPE_STAGE_OSX))
@@ -50,7 +50,7 @@ typedef struct _ClutterStageOSXClass ClutterStageOSXClass;
 
 struct _ClutterStageOSX
 {
-  ClutterGroup parent;
+  GObject parent;
 
   ClutterBackend *backend;
   ClutterStage   *wrapper;
@@ -74,13 +74,13 @@ struct _ClutterStageOSX
 
 struct _ClutterStageOSXClass
 {
-  ClutterGroupClass parent_class;
+  GObjectClass parent_class;
 };
 
-GType           clutter_stage_osx_get_type    (void) G_GNUC_CONST;
+GType _clutter_stage_osx_get_type (void) G_GNUC_CONST;
 
-ClutterStageWindow*   clutter_stage_osx_new (ClutterBackend *backend,
-                                             ClutterStage   *wrapper);
+ClutterStageWindow *    _clutter_stage_osx_new  (ClutterBackend *backend,
+                                                 ClutterStage   *wrapper);
 
 G_END_DECLS
 

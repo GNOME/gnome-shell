@@ -33,6 +33,8 @@
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
+#define clutter_stage_osx_get_type      _clutter_stage_osx_get_type
+
 G_DEFINE_TYPE_WITH_CODE (ClutterStageOSX,
                          clutter_stage_osx,
                          G_TYPE_OBJECT,
@@ -44,6 +46,7 @@ static void
 clutter_stage_osx_state_update (ClutterStageOSX   *self,
                                 ClutterStageState  unset_flags,
                                 ClutterStageState  set_flags);
+
 static ClutterActor *
 clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
@@ -533,8 +536,8 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 
 /*************************************************************************/
 ClutterStageWindow *
-clutter_stage_osx_new (ClutterBackend *backend,
-                       ClutterStage   *wrapper)
+_clutter_stage_osx_new (ClutterBackend *backend,
+                        ClutterStage   *wrapper)
 {
   ClutterStageOSX *self;
 
