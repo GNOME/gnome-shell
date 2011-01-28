@@ -49,7 +49,7 @@ const State = {
 const NotificationDestroyedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
-    SOURCE_CLOSED 3
+    SOURCE_CLOSED: 3
 };
 
 // Message tray has its custom Urgency enumeration. LOW, NORMAL and CRITICAL
