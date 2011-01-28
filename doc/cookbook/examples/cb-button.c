@@ -162,7 +162,14 @@ cb_button_allocate (ClutterActor          *actor,
   /* set the allocation for the whole button */
   CLUTTER_ACTOR_CLASS (cb_button_parent_class)->allocate (actor, box, flags);
 
-  /* make the child (the ClutterBox) fill the parent */
+  /* make the child (the ClutterBox) fill the parent;
+   * note that this allocation box is relative to the
+   * coordinates of the whole button actor, so we can't just
+   * use the box passed into this function; instead, it
+   * is adjusted to span the whole of the actor, from its
+   * top-left corner (0,0) to its bottom-right corner
+   * (width,height)
+   */
   child_box.x1 = 0.0;
   child_box.y1 = 0.0;
   child_box.x2 = clutter_actor_box_get_width (box);
