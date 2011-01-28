@@ -500,10 +500,14 @@ osx_source_h = $(srcdir)/osx/clutter-osx.h
 
 osx_source_h_priv = \
 	$(srcdir)/osx/clutter-backend-osx.h	\
+	$(srcdir)/osx/clutter-event-loop-osx.h	\
 	$(srcdir)/osx/clutter-stage-osx.h	\
 	$(NULL)
 
-osx_source_c_priv = $(srcdir)/osx/clutter-event-osx.c
+osx_source_c_priv = \
+	$(srcdir)/osx/clutter-event-loop-osx.c	\
+	$(srcdir)/osx/clutter-event-osx.c	\
+	$(NULL)
 
 if SUPPORT_OSX
 # we need to tell the compiler that part of our code base is

@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2007-2008  Tommi Komulainen <tommi.komulainen@iki.fi>
  * Copyright (C) 2007  OpenedHand Ltd.
+ * Copyright (C) 2011  Crystalnix  <vgachkaylo@crystalnix.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,11 +32,9 @@
 #include <clutter/clutter-private.h>
 #include <clutter/clutter-keysyms.h>
 
-/* Overriding the poll function because the events are not delivered over file
- * descriptors and setting up a GSource would just introduce polling.
- */
+#include "clutter-event-loop-osx.h"
 
-static GPollFunc old_poll_func = NULL;
+#define WHEEL_DELTA 1
 
 /*************************************************************************/
 @interface NSEvent (Clutter)
@@ -206,9 +205,74 @@ static GPollFunc old_poll_func = NULL;
 @end
 
 /*************************************************************************/
+
+static void
+take_and_queue_event (ClutterEvent *event)
+{
+  ClutterMainContext *clutter_context;
+
+  clutter_context = _clutter_context_get_default ();
+
+  /* The event is added directly to the queue instead of using
+     clutter_event_put so that it can avoid a copy. This takes
+     ownership of the event */
+  g_queue_push_head (clutter_context->events_queue, event);
+}
+
+static void
+process_scroll_event(ClutterEvent *event, gboolean isVertical)
+{
+  ClutterStageWindow   *impl;
+  ClutterStageOSX *stage_osx;
+  
+  impl        = _clutter_stage_get_window (event->any.stage);
+  stage_osx   = CLUTTER_STAGE_OSX (impl);
+  
+  gfloat *scroll_pos = isVertical ? &(stage_osx->scroll_pos_y) : &(stage_osx->scroll_pos_x);
+ 
+  while (abs (*scroll_pos) >= WHEEL_DELTA) 
+    {
+      ClutterEvent *event_gen = clutter_event_new (CLUTTER_SCROLL);
+
+      event_gen->scroll.time = event->any.time;
+      event_gen->scroll.modifier_state = event->scroll.modifier_state;
+      event_gen->any.stage = event->any.stage;
+
+      event_gen->scroll.x = event->scroll.x;
+      event_gen->scroll.y = event->scroll.y;
+
+      if (*scroll_pos > 0)
+        {
+          event_gen->scroll.direction = isVertical ? CLUTTER_SCROLL_UP : CLUTTER_SCROLL_RIGHT;
+          *scroll_pos -= WHEEL_DELTA;
+        }
+      else
+        {
+          event_gen->scroll.direction = isVertical ? CLUTTER_SCROLL_DOWN : CLUTTER_SCROLL_LEFT;
+          *scroll_pos += WHEEL_DELTA;
+        }
+
+      take_and_queue_event (event_gen);
+      
+      CLUTTER_NOTE (EVENT, "scroll %s at %f,%f",
+                    (event_gen->scroll.direction == CLUTTER_SCROLL_UP) ? "UP" :
+                    ( 
+                    (event_gen->scroll.direction == CLUTTER_SCROLL_DOWN) ? "DOWN" :
+                    (
+                    (event_gen->scroll.direction == CLUTTER_SCROLL_RIGHT) ? "RIGHT" : "LEFT")),
+                    (float)event->scroll.x, (float)event->scroll.y);
+    } 
+}
+
 static gboolean
 clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
-{
+{  
+  ClutterStageWindow   *impl;
+  ClutterStageOSX *stage_osx;
+  
+  impl        = _clutter_stage_get_window (event->any.stage);
+  stage_osx   = CLUTTER_STAGE_OSX (impl);
+  
   event->any.time = [nsevent clutterTime];
 
   switch ([nsevent type])
@@ -250,6 +314,18 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
                     (float)event->button.x, (float)event->button.y);
       return TRUE;
 
+    case NSScrollWheel:
+      stage_osx->scroll_pos_x += [nsevent deltaX];
+      stage_osx->scroll_pos_y += [nsevent deltaY];
+      
+      [nsevent clutterX:&(event->scroll.x) y:&(event->scroll.y)];
+      event->scroll.modifier_state = [nsevent clutterModifierState];
+      
+      process_scroll_event(event, TRUE);
+      process_scroll_event(event, FALSE);
+        
+      return FALSE;
+      
     case NSKeyDown:
       event->type = CLUTTER_KEY_PRESS;
       /* fall through */
@@ -292,147 +368,14 @@ _clutter_event_osx_put (NSEvent *nsevent, ClutterStage *wrapper)
     }
 }
 
-typedef struct {
-  CFSocketRef        sock;
-  CFRunLoopSourceRef source;
-
-  gushort            revents;
-} SocketInfo;
-
-static void
-socket_activity_cb (CFSocketRef           sock,
-                    CFSocketCallBackType  cbtype,
-                    CFDataRef             address,
-                    const void           *data,
-                    void                 *info)
-{
-  SocketInfo *si = info;
-
-  if (cbtype & kCFSocketReadCallBack)
-    si->revents |= G_IO_IN;
-  if (cbtype & kCFSocketWriteCallBack)
-    si->revents |= G_IO_OUT;
-}
-
-static gint
-clutter_event_osx_poll_func (GPollFD *ufds, guint nfds, gint timeout)
-{
-  NSDate     *until_date;
-  NSEvent    *nsevent;
-  SocketInfo *sockets = NULL;
-  gint        n_active = 0;
-
-  CLUTTER_OSX_POOL_ALLOC();
-
-  if (timeout == -1)
-    until_date = [NSDate distantFuture];
-  else if (timeout == 0)
-    until_date = [NSDate distantPast];
-  else
-    until_date = [NSDate dateWithTimeIntervalSinceNow:timeout/1000.0];
-
-  /* File descriptors appear to be similar enough to sockets so that they can
-   * be used in CFRunLoopSource.
-   *
-   * We could also launch a thread to call old_poll_func and signal the main
-   * thread. No idea which way is better.
-   */
-  if (nfds > 0)
-    {
-      CFRunLoopRef run_loop;
-
-      run_loop = [[NSRunLoop currentRunLoop] getCFRunLoop];
-      sockets = g_new (SocketInfo, nfds);
-
-      int i;
-      for (i = 0; i < nfds; i++)
-        {
-          SocketInfo *si = &sockets[i];
-          CFSocketCallBackType cbtype;
-
-          cbtype = 0;
-          if (ufds[i].events & G_IO_IN)
-            cbtype |= kCFSocketReadCallBack;
-          if (ufds[i].events & G_IO_OUT)
-            cbtype |= kCFSocketWriteCallBack;
-          /* FIXME: how to handle G_IO_HUP and G_IO_ERR? */
-
-          const CFSocketContext ctxt = {
-            0, si, NULL, NULL, NULL
-          };
-          si->sock = CFSocketCreateWithNative (NULL, ufds[i].fd, cbtype, socket_activity_cb, &ctxt);
-          si->source = CFSocketCreateRunLoopSource (NULL, si->sock, 0);
-          si->revents = 0;
-
-          CFRunLoopAddSource (run_loop, si->source, kCFRunLoopCommonModes);
-        }
-    }
-
-  nsevent = [NSApp nextEventMatchingMask: NSAnyEventMask
-                               untilDate: until_date
-                                  inMode: NSDefaultRunLoopMode
-                                 dequeue: YES];
-
-  /* Push the events to NSApplication which will do some magic(?) and forward
-   * interesting events to our view. While we could do event translation here
-   * we'd also need to filter out clicks on titlebar, and perhaps do special
-   * handling for the first click (couldn't figure it out - always ended up
-   * missing a screen refresh) and maybe other things.
-   */
-  [NSApp sendEvent:nsevent];
-
-  if (nfds > 0)
-    {
-      int i;
-      for (i = 0; i < nfds; i++)
-        {
-          SocketInfo *si = &sockets[i];
-
-          if ((ufds[i].revents = si->revents) != 0)
-            n_active++;
-
-          /* Invalidating the source also removes it from run loop and
-           * guarantees the callback is never called again.
-           * CFRunLoopRemoveSource removes the source from the loop, but might
-           * still call the callback which would be badly timed.
-           */
-          CFRunLoopSourceInvalidate (si->source);
-          CFRelease (si->source);
-          CFRelease (si->sock);
-        }
-
-      g_free (sockets);
-    }
-
-  /* FIXME this could result in infinite loop */
-  ClutterEvent *event = clutter_event_get ();
-  while (event)
-    {
-      clutter_do_event (event);
-      clutter_event_free (event);
-      event = clutter_event_get ();
-    }
-
-  CLUTTER_OSX_POOL_RELEASE();
-
-  return n_active;
-}
-
 void
 _clutter_events_osx_init (void)
 {
-  g_assert (old_poll_func == NULL);
-
-  old_poll_func = g_main_context_get_poll_func (NULL);
-  g_main_context_set_poll_func (NULL, clutter_event_osx_poll_func);
+  _clutter_osx_event_loop_init ();
 }
 
 void
 _clutter_events_osx_uninit (void)
 {
-  if (old_poll_func)
-    {
-      g_main_context_set_poll_func (NULL, old_poll_func);
-      old_poll_func = NULL;
-    }
+  g_assert_not_reached ();
 }

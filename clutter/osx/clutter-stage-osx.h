@@ -67,6 +67,9 @@ struct _ClutterStageOSX
   ClutterStageState stage_state;
 
   gboolean acceptFocus;
+
+  gfloat scroll_pos_x;
+  gfloat scroll_pos_y;
 };
 
 struct _ClutterStageOSXClass

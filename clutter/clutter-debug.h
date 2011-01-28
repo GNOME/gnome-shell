@@ -24,7 +24,8 @@ typedef enum {
   CLUTTER_DEBUG_MULTISTAGE          = 1 << 13,
   CLUTTER_DEBUG_ANIMATION           = 1 << 14,
   CLUTTER_DEBUG_LAYOUT              = 1 << 15,
-  CLUTTER_DEBUG_PICK                = 1 << 16
+  CLUTTER_DEBUG_PICK                = 1 << 16,
+  CLUTTER_DEBUG_EVENTLOOP           = 1 << 17
 } ClutterDebugFlag;
 
 typedef enum {
