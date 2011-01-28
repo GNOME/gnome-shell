@@ -129,8 +129,8 @@ static const struct
     { VK_LCONTROL, CLUTTER_KEY_Control_L },
     { VK_RCONTROL, CLUTTER_KEY_Control_R }
   };
-#define CLUTTER_WIN32_KEY_MAP_SIZE (sizeof (clutter_win32_key_map) \
-				    / sizeof (clutter_win32_key_map[0]))
+
+#define CLUTTER_WIN32_KEY_MAP_SIZE      (G_N_ELEMENTS (clutter_win32_key_map))
 
 static GSource *
 clutter_event_source_new (ClutterBackend *backend)
@@ -139,6 +139,8 @@ clutter_event_source_new (ClutterBackend *backend)
   ClutterEventSource *event_source = (ClutterEventSource *) source;
 
   event_source->backend = backend;
+
+  g_source_set_name (source, "Clutter Win32 Event Source");
 
   return source;
 }
@@ -204,7 +206,7 @@ get_modifier_state (WPARAM wparam)
   return ret;
 }
 
-static void
+static inline void
 take_and_queue_event (ClutterEvent *event)
 {
   /* The event is added directly to the queue instead of using
@@ -224,14 +226,16 @@ make_button_event (const MSG *msg,
   ClutterEvent *event = clutter_event_new (release ?
                                            CLUTTER_BUTTON_RELEASE :
                                            CLUTTER_BUTTON_PRESS);
+
+  event->any.stage = stage;
+
   event->button.time = msg->time;
   event->button.x = GET_X_LPARAM (msg->lParam);
   event->button.y = GET_Y_LPARAM (msg->lParam);
   event->button.modifier_state = get_modifier_state (msg->wParam);
   event->button.button = button;
   event->button.click_count = click_count;
-  event->button.device = device;
-  event->any.stage = stage;
+  clutter_event_set_device (event, device);
 
   take_and_queue_event (event);
 }
@@ -508,8 +512,9 @@ clutter_win32_handle_event (const MSG *msg)
           event->scroll.time = msg->time;
           event->scroll.modifier_state =
             get_modifier_state (LOWORD (msg->wParam));
-          event->scroll.device = core_pointer;
           event->any.stage = stage;
+
+          clutter_event_set_device (event, core_pointer);
 
           /* conversion to window coordinates is required */
           pt.x = GET_X_LPARAM (msg->lParam);
@@ -541,8 +546,9 @@ clutter_win32_handle_event (const MSG *msg)
         event->motion.x = GET_X_LPARAM (msg->lParam);
         event->motion.y = GET_Y_LPARAM (msg->lParam);
         event->motion.modifier_state = get_modifier_state (msg->wParam);
-        event->motion.device = core_pointer;
         event->any.stage = stage;
+
+        clutter_event_set_device (event, core_pointer);
 
         /* We need to start tracking when the mouse enters the stage if
            we're not already */
@@ -559,10 +565,11 @@ clutter_win32_handle_event (const MSG *msg)
             event->crossing.time = msg->time;
             event->crossing.x = event->motion.x;
             event->crossing.y = event->motion.y;
-            event->crossing.device = event->motion.device;
             event->crossing.stage = stage;
             event->crossing.source = CLUTTER_ACTOR (stage);
             event->crossing.related = NULL;
+
+            clutter_event_set_device (event, core_pointer);
 
             /* we entered the stage */
             _clutter_stage_add_device (stage, event->crossing.device);
@@ -583,13 +590,14 @@ clutter_win32_handle_event (const MSG *msg)
         event->crossing.time = msg->time;
         event->crossing.x = msg->pt.x;
         event->crossing.y = msg->pt.y;
-        event->crossing.device = core_pointer;
         event->crossing.stage = stage;
         event->crossing.source = CLUTTER_ACTOR (stage);
         event->crossing.related = NULL;
 
+        clutter_event_set_device (event, core_pointer);
+
         /* we left the stage */
-        _clutter_stage_remove_device (stage, event->crossing.device);
+        _clutter_stage_remove_device (stage, core_pointer);
 
         /* When we get a leave message the mouse tracking is
            automatically cancelled so we'll need to start it again when
@@ -678,8 +686,9 @@ clutter_win32_handle_event (const MSG *msg)
 	event->key.time = msg->time;
 	event->key.modifier_state = get_key_modifier_state (key_states);
 	event->key.hardware_keycode = scan_code;
-        event->key.device = core_keyboard;
         event->any.stage = stage;
+
+        clutter_event_set_device (event, core_keyboard);
 
         take_and_queue_event (event);
       }
