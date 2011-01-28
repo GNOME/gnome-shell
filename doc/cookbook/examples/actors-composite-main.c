@@ -53,9 +53,9 @@ main (int   argc,
    * or more properties with a single call to g_object_new()
    */
 
+  /* note that the size of the button is left to Clutter's size requisition */
   cb_button_set_text_color (CB_BUTTON (button), &white_color);
   cb_button_set_background_color (CB_BUTTON (button), &yellow_color);
-  clutter_actor_set_size (button, 200, 100);
   g_signal_connect (button, "clicked", G_CALLBACK (clicked), NULL);
 
   align_x_constraint = clutter_align_constraint_new (stage,
