@@ -1,0 +1,22 @@
+
+noinst_LTLIBRARIES += libcalendar-client.la
+
+libcalendar_client_la_SOURCES = 							\
+	calendar-client/calendar-client.h	calendar-client/calendar-client.c	\
+	calendar-client/calendar-debug.h						\
+	calendar-client/calendar-sources.c	calendar-client/calendar-sources.h	\
+	$(NULL)
+
+libcalendar_client_la_CFLAGS = 			\
+	-I$(top_srcdir)/src			\
+	-DPREFIX=\""$(prefix)"\"		\
+	-DLIBDIR=\""$(libdir)"\"		\
+	-DDATADIR=\""$(datadir)"\"		\
+	-DG_DISABLE_DEPRECATED			\
+	-DG_LOG_DOMAIN=\"CalendarClient\"	\
+	$(LIBECAL_CFLAGS)			\
+	$(NULL)
+
+libcalendar_client_la_LIBADD = $(LIBECAL_LIBS)
+
+EXTRA_DIST += calendar-client/README

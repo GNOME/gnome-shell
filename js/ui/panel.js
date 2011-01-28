@@ -17,6 +17,7 @@ const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const StatusMenu = imports.ui.statusMenu;
+const DateMenu = imports.ui.dateMenu;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
@@ -492,121 +493,6 @@ AppMenuButton.prototype = {
 
 Signals.addSignalMethods(AppMenuButton.prototype);
 
-function ClockButton() {
-    this._init();
-}
-
-ClockButton.prototype = {
-    _init: function() {
-        this.actor = new St.Bin({ style_class: 'panel-button',
-                                  reactive: true,
-                                  can_focus: true,
-                                  x_fill: true,
-                                  y_fill: false,
-                                  track_hover: true });
-        this.actor._delegate = this;
-        this.actor.connect('button-press-event',
-                           Lang.bind(this, this._toggleCalendar));
-
-        this._clock = new St.Label();
-        this.actor.set_child(this._clock);
-
-        this._calendarPopup = null;
-
-        this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
-        this._clockSettings = new Gio.Settings({ schema: 'org.gnome.shell.clock' });
-
-        this._desktopSettings.connect('changed', Lang.bind(this, this._updateClock));
-        this._clockSettings.connect('changed', Lang.bind(this, this._updateClock));
-
-        // Start the clock
-        this._updateClock();
-    },
-
-    closeCalendar: function() {
-        if (!this._calendarPopup || !this._calendarPopup.isOpen)
-            return;
-
-        this._calendarPopup.hide();
-
-        this.actor.remove_style_pseudo_class('pressed');
-    },
-
-    openCalendar: function() {
-        this._calendarPopup.show();
-
-        this.actor.add_style_pseudo_class('pressed');
-    },
-
-    _toggleCalendar: function() {
-        if (this._calendarPopup == null) {
-            this._calendarPopup = new CalendarPopup();
-            this._calendarPopup.actor.hide();
-        }
-
-        if (!this._calendarPopup.isOpen)
-            this.openCalendar();
-        else
-            this.closeCalendar();
-    },
-
-    _updateClock: function() {
-        let format = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);
-        let showDate = this._clockSettings.get_boolean(CLOCK_SHOW_DATE_KEY);
-        let showSeconds = this._clockSettings.get_boolean(CLOCK_SHOW_SECONDS_KEY);
-
-        let clockFormat;
-        switch (format) {
-            case '24h':
-                if (showDate)
-	            /* Translators: This is the time format with date used
-                       in 24-hour mode. */
-                    clockFormat = showSeconds ? _("%a %b %e, %R:%S")
-                                              : _("%a %b %e, %R");
-                else
-	            /* Translators: This is the time format without date used
-                       in 24-hour mode. */
-                    clockFormat = showSeconds ? _("%a %R:%S")
-                                              : _("%a %R");
-                break;
-            case '12h':
-            default:
-                if (showDate)
-	            /* Translators: This is a time format with date used
-                       for AM/PM. */
-                    clockFormat = showSeconds ? _("%a %b %e, %l:%M:%S %p")
-                                              : _("%a %b %e, %l:%M %p");
-                else
-	            /* Translators: This is a time format without date used
-                       for AM/PM. */
-                    clockFormat = showSeconds ? _("%a %l:%M:%S %p")
-                                              : _("%a %l:%M %p");
-                break;
-        }
-
-        let displayDate = new Date();
-        let msecRemaining;
-        if (showSeconds) {
-            msecRemaining = 1000 - displayDate.getMilliseconds();
-            if (msecRemaining < 50) {
-                displayDate.setSeconds(displayDate.getSeconds() + 1);
-                msecRemaining += 1000;
-            }
-        } else {
-            msecRemaining = 60000 - (1000 * displayDate.getSeconds() +
-                                     displayDate.getMilliseconds());
-            if (msecRemaining < 500) {
-                displayDate.setMinutes(displayDate.getMinutes() + 1);
-                msecRemaining += 60000;
-            }
-        }
-
-        this._clock.set_text(displayDate.toLocaleFormat(clockFormat));
-        Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClock));
-        return false;
-    }
-};
-
 function Panel() {
     this._init();
 }
@@ -803,9 +689,9 @@ Panel.prototype = {
         this._menus.addMenu(appMenuButton.menu);
 
         /* center */
-
-        this._clockButton = new ClockButton();
-        this._centerBox.add(this._clockButton.actor, { y_fill: true });
+        this._dateMenu = new DateMenu.DateMenuButton();
+        this._centerBox.add(this._dateMenu.actor, { y_fill: true });
+        this._menus.addMenu(this._dateMenu.menu);
 
         /* right */
 
@@ -882,10 +768,6 @@ Panel.prototype = {
         this._statusmenu = new StatusMenu.StatusMenuButton();
         this._menus.addMenu(this._statusmenu.menu);
         this._rightBox.add(this._statusmenu.actor);
-    },
-
-    hideCalendar: function() {
-        this._clockButton.closeCalendar();
     },
 
     startupAnimation: function() {

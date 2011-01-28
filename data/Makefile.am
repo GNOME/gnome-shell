@@ -25,6 +25,8 @@ dist_images_DATA =				\
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA =				\
 	theme/add-workspace.svg			\
+	theme/calendar-arrow-left.svg		\
+	theme/calendar-arrow-right.svg		\
 	theme/close-window.svg			\
 	theme/close.svg				\
 	theme/corner-ripple.png			\

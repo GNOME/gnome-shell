@@ -674,6 +674,17 @@ StTooltip StLabel {
 
 /* Calendar popup */
 
+#calendarArea {
+    /* this is the width of the entire popup */
+    width: 600px;
+}
+
+.calendar-vertical-separator {
+    -stipple-width: 1px;
+    -stipple-color: #505050;
+    width: 1.5em;
+}
+
 #calendarPopup {
     border-radius: 5px;
     background: rgba(0,0,0,0.9);
@@ -686,37 +697,155 @@ StTooltip StLabel {
 }
 
 .calendar {
-    spacing-rows: 5px;
-    spacing-columns: 3px;
+    padding: .4em 1.75em;
+    spacing-rows: 0px;
+    spacing-columns: 0px;
 }
 
-.calendar-change-month {
+.calendar-month-label {
+    color: #666666;
+    font-size: 10px;
     padding: 2px;
 }
 
-.calendar-change-month:hover {
-    background: #314a6c;
-    border-radius: 5px;
+.calendar-change-month-back {
+    width: 20px;
+    height: 20px;
+    background-image: url("calendar-arrow-left.svg");
+    border-radius: 4px;
+}
+.calendar-change-month-back:hover {
+    background-color: #999999;
+}
+.calendar-change-month-back:active {
+    background-color: #aaaaaa;
 }
 
-.calendar-change-month:active {
-    background: #213050;
-    border-radius: 5px;
+.calendar-change-month-forward {
+    width: 20px;
+    height: 20px;
+    background-image: url("calendar-arrow-right.svg");
+    border-radius: 4px;
+}
+.calendar-change-month-forward:hover {
+    background-color: #999999;
+}
+.calendar-change-month-forward:active {
+    background-color: #aaaaaa;
 }
 
+.datemenu-date-label {
+    padding: .4em 1.75em;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.calendar-day-base {
+    font-size: 10px;
+    text-align: center;
+    width: 24px;
+    height: 24px;
+}
+
+.calendar-day-base:hover {
+    background: #777777;
+}
+
+.calendar-day-base:active {
+    background: #555555;
+}
+
+.calendar-day-heading {
+    color: #666666;
+}
+
+.calendar-week-number {
+    color: #666666;
+    font-weight: bold;
+}
+
+/* Hack used in lieu of border-collapse - see calendar.js */
 .calendar-day {
-    padding: 1px 2px;
+    border: 1px solid #333333;
+    color: #cccccc;
+    border-top-width: 0;
+    border-left-width: 0;
+}
+.calendar-day-top {
+    border-top-width: 1px;
+}
+.calendar-day-left {
+    border-left-width: 1px;
+}
+
+.calendar-work-day {
+}
+
+.calendar-nonwork-day {
+    background-color: rgba(128, 128, 128, .1);
 }
 
 .calendar-today {
+    color: #ffffff;
     font-weight: bold;
-    background: #ffffff;
-    color: black;
-    border-radius: 5px;
+    background-gradient-direction: vertical;
+    background-gradient-start: #3c3c3c;
+    background-gradient-end: #131313;
 }
 
 .calendar-other-month-day {
-    color: #cccccc;
+    color: #333333;
+}
+
+.calendar-day-with-events {
+    font-weight: bold;
+}
+
+.events-header-vbox {
+    spacing: 10px;
+}
+
+.events-header {
+    height: 40px;
+}
+
+.events-header-hbox {
+    spacing: 8px;
+    padding: 0.3em;
+}
+
+.events-day-header {
+    font-size: 14px;
+    color: rgba(153, 153, 153, 1.0);
+}
+
+.events-day-dayname {
+    font-size: 12px;
+    color: rgba(153, 153, 153, 1.0);
+    text-align: left;
+}
+
+.events-day-time {
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    text-align: right;
+}
+
+.events-day-task {
+    font-size: 12px;
+    color: rgba(153, 153, 153, 1.0);
+}
+
+.events-day-name-box {
+    width: 20px;
+}
+
+.events-time-box {
+    width: 70px;
+}
+
+.events-event-box {
 }
 
 .url-highlighter {
@@ -893,10 +1022,6 @@ StTooltip StLabel {
     font-size: 12px;
     font-weight: bold;
     padding-left: 4px;
-}
-
-.calendar-calendarweek {
-    color: #666666;
 }
 
 /* App Switcher */

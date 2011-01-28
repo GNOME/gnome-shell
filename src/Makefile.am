@@ -27,6 +27,7 @@ include Makefile-gdmuser.am
 include Makefile-st.am
 include Makefile-tray.am
 include Makefile-gvc.am
+include Makefile-calendar-client.am
 
 gnome_shell_cflags =				\
 	$(MUTTER_PLUGIN_CFLAGS)			\
@@ -89,6 +90,8 @@ libgnome_shell_la_SOURCES =		\
 	shell-doc-system.c		\
 	shell-drawing.c			\
 	shell-embedded-window.c		\
+	shell-evolution-event-source.h	\
+	shell-evolution-event-source.c	\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
 	shell-global.c			\
@@ -212,7 +215,9 @@ libgnome_shell_la_LIBADD =	\
 	libst-1.0.la       	\
 	libgdmuser-1.0.la	\
 	libtray.la		\
-	libgvc.la
+	libgvc.la		\
+	libcalendar-client.la	\
+	$(NULL)
 
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
