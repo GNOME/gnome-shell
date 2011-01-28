@@ -361,12 +361,10 @@ wayland_swap_buffers (ClutterStageWayland *stage_wayland)
   stage_wayland->back_buffer = buffer;
 
   wl_surface_attach (stage_wayland->wayland_surface,
-                     stage_wayland->front_buffer->wayland_buffer);
-  wl_surface_map (stage_wayland->wayland_surface,
-                  stage_wayland->allocation.x,
-                  stage_wayland->allocation.y,
-                  stage_wayland->allocation.width,
-                  stage_wayland->allocation.height);
+                     stage_wayland->front_buffer->wayland_buffer,
+  /* 0,0 here is "relative to the old buffer," not absolute */
+                     0, 0);
+  wl_surface_map_toplevel (stage_wayland->wayland_surface);
 
   stage_wayland->pending_swaps++;
   wl_display_frame_callback (backend_wayland->wayland_display,

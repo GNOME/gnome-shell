@@ -111,7 +111,7 @@ static void
 handle_configure (void *data, struct wl_shell *shell,
 		  uint32_t timestamp, uint32_t edges,
 		  struct wl_surface *surface,
-		  int32_t x, int32_t y, int32_t width, int32_t height)
+		  int32_t width, int32_t height)
 {
   ClutterStageWayland *stage_wayland;
 
@@ -123,8 +123,6 @@ handle_configure (void *data, struct wl_shell *shell,
       clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_wayland->wrapper));
     }
 
-  stage_wayland->pending_allocation.x = x;
-  stage_wayland->pending_allocation.y = y;
   stage_wayland->pending_allocation.width = width;
   stage_wayland->pending_allocation.height = height;
   stage_wayland->allocation = stage_wayland->pending_allocation;
