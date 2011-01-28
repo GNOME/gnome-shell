@@ -137,7 +137,12 @@ cb_button_get_property (GObject    *gobject,
     }
 }
 
-/* ClutterActor implementation */
+/* ClutterActor implementation
+ *
+ * we only implement allocate(), paint(), get_preferred_height()
+ * and get_preferred_width(), as this is the minimum
+ * we can get away with
+ */
 
 /* use the actor's allocation for the ClutterBox */
 static void
@@ -169,6 +174,60 @@ cb_button_paint (ClutterActor *actor)
   clutter_actor_paint (priv->child);
 }
 
+/* get_preferred_height defers to the internal ClutterBox
+ * but adds 20px padding around it;
+ * min_height_p is the minimum height the actor should occupy
+ * to be useful; natural_height_p is the height the actor
+ * would occupy if not constrained
+ *
+ * note that if we required explicit sizing for CbButtons
+ * (i.e. a developer must set their height and width),
+ * we wouldn't need to implement this function
+ */
+static void
+cb_button_get_preferred_height (ClutterActor *self,
+                                gfloat for_width,
+                                gfloat *min_height_p,
+                                gfloat *natural_height_p)
+{
+  CbButtonPrivate *priv = CB_BUTTON (self)->priv;
+
+  clutter_actor_get_preferred_height (priv->child,
+                                      for_width,
+                                      min_height_p,
+                                      natural_height_p);
+
+  *min_height_p += 20.0;
+  *natural_height_p += 20.0;
+}
+
+/* get_preferred_width defers to the internal ClutterBox
+ * but adds 20px padding around it;
+ * min_width_p is the minimum width the actor should occupy
+ * to be useful; natural_width_p is the width the actor
+ * would occupy if not constrained
+ *
+ * note that if we required explicit sizing for CbButtons
+ * (i.e. a developer must set their height and width),
+ * we wouldn't need to implement this function
+ */
+static void
+cb_button_get_preferred_width (ClutterActor *self,
+                               gfloat for_height,
+                               gfloat *min_width_p,
+                               gfloat *natural_width_p)
+{
+  CbButtonPrivate *priv = CB_BUTTON (self)->priv;
+
+  clutter_actor_get_preferred_width (priv->child,
+                                     for_height,
+                                     min_width_p,
+                                     natural_width_p);
+
+  *min_width_p += 20.0;
+  *natural_width_p += 20.0;
+}
+
 /* proxy ClickAction signals so they become signals from the actor */
 static void
 cb_button_clicked (ClutterClickAction *action,
@@ -181,10 +240,10 @@ cb_button_clicked (ClutterClickAction *action,
 
 /* GObject class and instance initialization functions; note that
  * these have been placed after the Clutter implementation, as
- * they refer to the static paint() and allocate() functions
+ * they refer to the static function implementations above
  */
 
-/* class init: attach functions to the class, define properties
+/* class init: attach functions to superclasses, define properties
  * and signals
  */
 static void
@@ -201,6 +260,8 @@ cb_button_class_init (CbButtonClass *klass)
 
   actor_class->allocate = cb_button_allocate;
   actor_class->paint = cb_button_paint;
+  actor_class->get_preferred_height = cb_button_get_preferred_height;
+  actor_class->get_preferred_width = cb_button_get_preferred_width;
 
   g_type_class_add_private (klass, sizeof (CbButtonPrivate));
 
