@@ -633,6 +633,18 @@ EventsList.prototype = {
         this._eventSource.connect('changed', Lang.bind(this, this._update));
         this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed', Lang.bind(this, this._update));
+        let weekStartString = Gettext_gtk30.gettext('calendar:week_start:0');
+        if (weekStartString.indexOf('calendar:week_start:') == 0) {
+            this._weekStart = parseInt(weekStartString.substring(20));
+        }
+
+        if (isNaN(this._weekStart) ||
+                  this._weekStart < 0 ||
+                  this._weekStart > 6) {
+            log('Translation of "calendar:week_start:0" in GTK+ is not correct');
+            this._weekStart = 0;
+        }
+
         this._update();
     },
 
@@ -714,19 +726,21 @@ EventsList.prototype = {
         let tomorrowEnd = new Date(dayEnd.getTime() + 86400 * 1000);
         this._addPeriod(_("Tomorrow"), tomorrowBegin, tomorrowEnd, false, true);
 
-        if (dayEnd.getDay() <= 4) {
-            /* if now is Sunday through Thursday show "This week" and include events up until
-             * and including Saturday
+        if (dayEnd.getDay() <= 4 + this._weekStart) {
+            /* If now is within the first 5 days we show "This week" and
+             * include events up until and including Saturday/Sunday
+             * (depending on whether a week starts on Sunday/Monday).
              */
             let thisWeekBegin = new Date(dayBegin.getTime() + 2 * 86400 * 1000);
-            let thisWeekEnd = new Date(dayEnd.getTime() + (6 - dayEnd.getDay()) * 86400 * 1000);
+            let thisWeekEnd = new Date(dayEnd.getTime() + (6 + this._weekStart - dayEnd.getDay()) * 86400 * 1000);
             this._addPeriod(_("This week"), thisWeekBegin, thisWeekEnd, true, false);
         } else {
-            /* otherwise it's a Friday or Saturday... show "Next week" and include events up
-             * until and including *next* Saturday
+            /* otherwise it's one of the two last days of the week ... show
+             * "Next week" and include events up until and including *next*
+             * Saturday/Sunday
              */
             let nextWeekBegin = new Date(dayBegin.getTime() + 2 * 86400 * 1000);
-            let nextWeekEnd = new Date(dayEnd.getTime() + (13 - dayEnd.getDay()) * 86400 * 1000);
+            let nextWeekEnd = new Date(dayEnd.getTime() + (13 + this._weekStart - dayEnd.getDay()) * 86400 * 1000);
             this._addPeriod(_("Next week"), nextWeekBegin, nextWeekEnd, true, false);
         }
     },
