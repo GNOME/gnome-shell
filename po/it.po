@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-21 01:16+0100\n"
-"PO-Revision-Date: 2011-01-15 01:19+0100\n"
+"POT-Creation-Date: 2011-01-29 16:06+0100\n"
+"PO-Revision-Date: 2011-01-29 16:06+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -76,7 +76,8 @@ msgstr "Se VERO, mostra il giorno della settimana ISO nel calendario."
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Elenco di ID di file desktop per le applicazioni preferite"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#, fuzzy, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -85,7 +86,9 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
 msgstr ""
 "Imposta la pipeline di GStreamer utilizzata per codificare le registrazioni, "
 "seguendo la sintassi di gst-launch. La pipeline dovrebbe disporre di un sink "
@@ -97,19 +100,19 @@ msgstr ""
 "alcun valore, viene usata la pipeline predefinita il cui valore è "
 "\"videorate ! theoraenc ! oggmux\" e che registra nel formato Ogg Theora."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Show date in clock"
 msgstr "Mostra la data nell'orologio"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show the week date in the calendar"
 msgstr "Mostra il giorno della settimana nel calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show time with seconds"
 msgstr "Mostra l'ora con i secondi"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -117,7 +120,7 @@ msgstr ""
 "Le applicazioni che corrispondono a questi identificatori vengono "
 "visualizzate nell'area dei preferiti."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -127,7 +130,7 @@ msgstr ""
 "data corrente e utilizza questa estensione. Dovrebbe essere modificato "
 "quando si registra utilizzando un diverso formato contenitore."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -135,12 +138,12 @@ msgstr ""
 "Il framerate in fotogrammi al secondo dello screencast registrato attraverso "
 "il registratore della GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "La pipeline di gstreamer utilizzata per codificare lo screencast"
 
 # (ndt) quel "in launchers" non mi convince...
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -152,16 +155,16 @@ msgstr ""
 "disabilitare questa funzionalità per motivi di privacy. I dati già salvati "
 "non verranno comunque rimossi."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Uuids of extensions to disable"
 msgstr "UUID delle estensioni da disabilitare"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 "Indica se raccogliere statistiche riguardo l'utilizzo delle applicazioni"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "disabled OpenSearch providers"
 msgstr ""
 
@@ -290,43 +293,47 @@ msgstr ""
 msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr ""
 
+#: ../js/misc/util.js:86
+msgid "Command not found"
+msgstr ""
+
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:108
+#: ../js/misc/util.js:113
 msgid "Could not parse command:"
 msgstr "Impossibile analizzare il comando:"
 
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:135
 msgid "No such application"
 msgstr "Applicazione inesistente"
 
-#: ../js/misc/util.js:143 ../js/ui/runDialog.js:351
+#: ../js/misc/util.js:148
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Esecuzione di «%s» non riuscita:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:155
+#: ../js/ui/appDisplay.js:164
 msgid "All"
 msgstr "Tutte"
 
-#: ../js/ui/appDisplay.js:236
+#: ../js/ui/appDisplay.js:245
 msgid "APPLICATIONS"
 msgstr "APPLICAZIONI"
 
-#: ../js/ui/appDisplay.js:266
+#: ../js/ui/appDisplay.js:275
 msgid "PREFERENCES"
 msgstr "PREFERENZE"
 
-#: ../js/ui/appDisplay.js:563
+#: ../js/ui/appDisplay.js:572
 msgid "New Window"
 msgstr "Nuova finestra"
 
-#: ../js/ui/appDisplay.js:567
+#: ../js/ui/appDisplay.js:576
 msgid "Remove from Favorites"
 msgstr "Rimuovi dai preferiti"
 
-#: ../js/ui/appDisplay.js:568
+#: ../js/ui/appDisplay.js:577
 msgid "Add to Favorites"
 msgstr "Aggiungi ai preferiti"
 
@@ -459,72 +466,72 @@ msgstr "Visualizza sorgente"
 msgid "Web Page"
 msgstr "Pagina web"
 
-#: ../js/ui/messageTray.js:1765
+#: ../js/ui/messageTray.js:1778
 msgid "System Information"
 msgstr "Informazione di sistema"
 
-#: ../js/ui/overview.js:75
+#: ../js/ui/overview.js:88
 msgid "Undo"
 msgstr "Annulla"
 
-#: ../js/ui/overview.js:140
+#: ../js/ui/overview.js:159
 msgid "Windows"
 msgstr "Finestre"
 
-#: ../js/ui/overview.js:143
+#: ../js/ui/overview.js:162
 msgid "Applications"
 msgstr "Applicazioni"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:479
+#: ../js/ui/panel.js:483
 #, c-format
 msgid "Quit %s"
 msgstr "Chiudi %s"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:564
+#: ../js/ui/panel.js:568
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %k.%M.%S"
 
 # (ndt) proviamo col k, se non funge, sappiamo il perché...
-#: ../js/ui/panel.js:565
+#: ../js/ui/panel.js:569
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %k.%M"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:569
+#: ../js/ui/panel.js:573
 msgid "%a %R:%S"
 msgstr "%a %k.%M.%S"
 
-#: ../js/ui/panel.js:570
+#: ../js/ui/panel.js:574
 msgid "%a %R"
 msgstr "%a %k.%M"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:577
+#: ../js/ui/panel.js:581
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %P"
 
-#: ../js/ui/panel.js:578
+#: ../js/ui/panel.js:582
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %P"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:586
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %P"
 
-#: ../js/ui/panel.js:583
+#: ../js/ui/panel.js:587
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %P"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:728
+#: ../js/ui/panel.js:732
 msgid "Activities"
 msgstr "Attività"
 
@@ -553,7 +560,7 @@ msgstr "RISORSE E DISPOSITIVI"
 #. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:33
 msgid "toggle-switch-us"
-msgstr "toggle-switch-intl"
+msgstr "toggle-switch-us"
 
 #: ../js/ui/runDialog.js:209
 msgid "Please enter a command:"
@@ -683,7 +690,7 @@ msgstr "Errore nell'esplorare il dispositivo"
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Non è possibile esplorare il dispositivo richiesto, l'errore è «%s»"
 
-#: ../js/ui/status/bluetooth.js:251 ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/bluetooth.js:251
 msgid "Keyboard Settings"
 msgstr "Impostazioni tastiera"
 
@@ -757,6 +764,10 @@ msgstr "Inserire il PIN indicato sul dispositivo."
 #: ../js/ui/status/bluetooth.js:469
 msgid "OK"
 msgstr "OK"
+
+#: ../js/ui/status/keyboard.js:78
+msgid "Localization Settings"
+msgstr "Impostazioni localizzazione"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -896,14 +907,14 @@ msgid "'%s' is ready"
 msgstr "«%s» è pronto"
 
 # (ndt) un po' liberetta...
-#: ../js/ui/workspacesView.js:244
+#: ../js/ui/workspacesView.js:243
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr ""
 "Impossibile aggiungere un nuovo spazio di lavoro: raggiunto il limite "
 "massimo consentito."
 
-#: ../js/ui/workspacesView.js:260
+#: ../js/ui/workspacesView.js:259
 msgid "Can't remove the first workspace."
 msgstr "Impossibile rimuovere il primo spazio di lavoro."
 
@@ -929,32 +940,32 @@ msgstr[1] "%u ingressi"
 msgid "System Sounds"
 msgstr "Audio di sistema"
 
-#: ../src/shell-global.c:1366
+#: ../src/shell-global.c:1365
 msgid "Less than a minute ago"
 msgstr "Meno di un minuto fa"
 
-#: ../src/shell-global.c:1370
+#: ../src/shell-global.c:1369
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minuto fa"
 msgstr[1] "%d minuti fa"
 
-#: ../src/shell-global.c:1375
+#: ../src/shell-global.c:1374
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ora fa"
 msgstr[1] "%d ore fa"
 
-#: ../src/shell-global.c:1380
+#: ../src/shell-global.c:1379
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d giorno fa"
 msgstr[1] "%d giorni fa"
 
-#: ../src/shell-global.c:1385
+#: ../src/shell-global.c:1384
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
