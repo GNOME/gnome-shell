@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const Gdk = imports.gi.Gdk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
@@ -226,41 +227,38 @@ AltTabPopup.prototype = {
 
     _keyPressEvent : function(actor, event) {
         let keysym = event.get_key_symbol();
-        let shift = (Shell.get_event_state(event) & Clutter.ModifierType.SHIFT_MASK);
-        // X allows servers to represent Shift+Tab in two different ways
-        if (shift && keysym == Clutter.Tab)
-            keysym = Clutter.ISO_Left_Tab;
+        let event_state = Shell.get_event_state(event);
+        let backwards = event_state & Clutter.ModifierType.SHIFT_MASK;
+        let action = global.screen.get_display().get_keybinding_action(event.get_key_code(), event_state);
 
         this._disableHover();
 
-        if (keysym == Clutter.grave)
-            this._select(this._currentApp, this._nextWindow());
-        else if (keysym == Clutter.asciitilde)
-            this._select(this._currentApp, this._previousWindow());
+        if (action == Meta.KeyBindingAction.SWITCH_GROUP)
+            this._select(this._currentApp, backwards ? this._previousWindow() : this._nextWindow());
         else if (keysym == Clutter.Escape)
             this.destroy();
         else if (this._thumbnailsFocused) {
-            if (keysym == Clutter.Tab) {
-                if (this._currentWindow == this._appIcons[this._currentApp].cachedWindows.length - 1)
-                    this._select(this._nextApp());
-                else
-                    this._select(this._currentApp, this._nextWindow());
-            } else if (keysym == Clutter.ISO_Left_Tab) {
-                if (this._currentWindow == 0 || this._currentWindow == -1)
-                    this._select(this._previousApp());
-                else
-                    this._select(this._currentApp, this._previousWindow());
-            } else if (keysym == Clutter.Left)
+            if (action == Meta.KeyBindingAction.SWITCH_WINDOWS)
+                if (backwards) {
+                    if (this._currentWindow == 0 || this._currentWindow == -1)
+                        this._select(this._previousApp());
+                    else
+                        this._select(this._currentApp, this._previousWindow());
+                } else {
+                    if (this._currentWindow == this._appIcons[this._currentApp].cachedWindows.length - 1)
+                        this._select(this._nextApp());
+                    else
+                        this._select(this._currentApp, this._nextWindow());
+                }
+            else if (keysym == Clutter.Left)
                 this._select(this._currentApp, this._previousWindow());
             else if (keysym == Clutter.Right)
                 this._select(this._currentApp, this._nextWindow());
             else if (keysym == Clutter.Up)
                 this._select(this._currentApp, null, true);
         } else {
-            if (keysym == Clutter.Tab)
-                this._select(this._nextApp());
-            else if (keysym == Clutter.ISO_Left_Tab)
-                this._select(this._previousApp());
+            if (action == Meta.KeyBindingAction.SWITCH_WINDOWS)
+                this._select(backwards ? this._previousApp() : this._nextApp());
             else if (keysym == Clutter.Left)
                 this._select(this._previousApp());
             else if (keysym == Clutter.Right)
