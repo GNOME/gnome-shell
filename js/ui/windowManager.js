@@ -116,6 +116,7 @@ WindowManager.prototype = {
         this.setKeybindingHandler('switch_to_workspace_up', Lang.bind(this, this._showWorkspaceSwitcher));
         this.setKeybindingHandler('switch_to_workspace_down', Lang.bind(this, this._showWorkspaceSwitcher));
         this.setKeybindingHandler('switch_windows', Lang.bind(this, this._startAppSwitcher));
+        this.setKeybindingHandler('switch_group', Lang.bind(this, this._startAppSwitcher));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
@@ -520,7 +521,7 @@ WindowManager.prototype = {
 
         let tabPopup = new AltTab.AltTabPopup();
 
-        if (!tabPopup.show(backwards))
+        if (!tabPopup.show(backwards, binding == 'switch_group'))
             tabPopup.destroy();
     },
 

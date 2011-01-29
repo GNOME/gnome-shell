@@ -120,7 +120,7 @@ AltTabPopup.prototype = {
         }
     },
 
-    show : function(backward) {
+    show : function(backward, switch_group) {
         let tracker = Shell.WindowTracker.get_default();
         let apps = tracker.get_running_apps ('');
 
@@ -145,7 +145,16 @@ AltTabPopup.prototype = {
         this._appIcons = this._appSwitcher.icons;
 
         // Make the initial selection
-        if (this._appIcons.length == 1) {
+        if (switch_group) {
+            if (backward) {
+                this._select(0, this._appIcons[0].cachedWindows.length - 1);
+            } else {
+                if (this._appIcons[0].cachedWindows.length > 1)
+                    this._select(0, 1);
+                else
+                    this._select(0, 0);
+            }
+        } else if (this._appIcons.length == 1) {
             if (!backward && this._appIcons[0].cachedWindows.length > 1) {
                 // For compatibility with the multi-app case below
                 this._select(0, 1, true);
