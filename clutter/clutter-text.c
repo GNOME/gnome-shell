@@ -3133,6 +3133,10 @@ clutter_text_class_init (ClutterTextClass *klass)
                                        G_CALLBACK (clutter_text_real_del_prev),
                                        NULL, NULL);
   clutter_binding_pool_install_action (binding_pool, "delete-prev",
+                                       CLUTTER_KEY_BackSpace, CLUTTER_SHIFT_MASK,
+                                       G_CALLBACK (clutter_text_real_del_prev),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "delete-prev",
                                        CLUTTER_KEY_BackSpace, CLUTTER_CONTROL_MASK,
                                        G_CALLBACK (clutter_text_real_del_word_prev),
                                        NULL, NULL);
