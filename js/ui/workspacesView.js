@@ -301,14 +301,9 @@ WorkspacesView.prototype = {
             workspace.opacity = (this._inDrag && w != active) ? 200 : 255;
 
             workspace.scale = scale;
-            if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
-                workspace.x = this._x + this._activeWorkspaceX
-                              - (w - active) * (_width + this._spacing);
-            } else {
-                workspace.x = this._x + this._activeWorkspaceX
-                              + (w - active) * (_width + this._spacing);
-            }
-            workspace.y = this._y + this._activeWorkspaceY;
+            workspace.x = this._x + this._activeWorkspaceX;
+            workspace.y = this._y + this._activeWorkspaceY
+                                  + (w - active) * (_height + this._spacing);
         }
     },
 
@@ -325,9 +320,9 @@ WorkspacesView.prototype = {
     // @showAnimation: iff %true, transition between states
     _updateWorkspaceActors: function(showAnimation) {
         let active = global.screen.get_active_workspace_index();
-        let targetWorkspaceNewX = this._x + this._activeWorkspaceX;
-        let targetWorkspaceCurrentX = this._workspaces[active].x;
-        let dx = targetWorkspaceNewX - targetWorkspaceCurrentX;
+        let targetWorkspaceNewY = this._y + this._activeWorkspaceY;
+        let targetWorkspaceCurrentY = this._workspaces[active].y;
+        let dy = targetWorkspaceNewY - targetWorkspaceCurrentY;
 
         this._animating = showAnimation;
 
@@ -336,7 +331,7 @@ WorkspacesView.prototype = {
 
             Tweener.removeTweens(workspace.actor);
 
-            workspace.x += dx;
+            workspace.y += dy;
 
             if (showAnimation) {
                 let params = { x: workspace.x,
@@ -373,13 +368,13 @@ WorkspacesView.prototype = {
 
             Tweener.removeTweens(workspace.actor);
 
-            workspace.x += dx;
+            workspace.y += dy;
             workspace.actor.show();
             workspace.hideWindowsOverlays();
 
             if (showAnimation) {
                 Tweener.addTween(workspace.actor,
-                                 { x: workspace.x,
+                                 { y: workspace.x,
                                    time: WORKSPACE_SWITCH_TIME,
                                    transition: 'easeOutQuad',
                                    onComplete: Lang.bind(this,
@@ -505,7 +500,7 @@ WorkspacesView.prototype = {
 
     _onMappedChanged: function() {
         if (this.actor.mapped) {
-            let direction = Overview.SwipeScrollDirection.HORIZONTAL;
+            let direction = Overview.SwipeScrollDirection.VERTICAL;
             Main.overview.setScrollAdjustment(this._scrollAdjustment,
                                               direction);
             this._swipeScrollBeginId = Main.overview.connect('swipe-scroll-begin',
@@ -539,56 +534,51 @@ WorkspacesView.prototype = {
         let primary = global.get_primary_monitor();
 
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        let leftWorkspace, rightWorkspace;
-        if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
-            leftWorkspace  = this._workspaces[activeWorkspaceIndex + 1];
-            rightWorkspace = this._workspaces[activeWorkspaceIndex - 1];
-        } else {
-            leftWorkspace  = this._workspaces[activeWorkspaceIndex - 1];
-            rightWorkspace = this._workspaces[activeWorkspaceIndex + 1];
-        }
+        let topWorkspace, bottomWorkspace;
+        topWorkspace  = this._workspaces[activeWorkspaceIndex - 1];
+        bottomWorkspace = this._workspaces[activeWorkspaceIndex + 1];
         let hoverWorkspace = null;
 
         // reactive monitor edges
-        let leftEdge = primary.x;
-        let switchLeft = (dragEvent.x <= leftEdge && leftWorkspace);
-        if (switchLeft && this._dragOverLastX != leftEdge) {
-            leftWorkspace.metaWorkspace.activate(global.get_current_time());
-            leftWorkspace.setReservedSlot(dragEvent.dragActor._delegate);
-            this._dragOverLastX = leftEdge;
+        let topEdge = primary.y;
+        let switchTop = (dragEvent.y <= topEdge && topWorkspace);
+        if (switchTop && this._dragOverLastY != topEdge) {
+            topWorkspace.metaWorkspace.activate(global.get_current_time());
+            topWorkspace.setReservedSlot(dragEvent.dragActor._delegate);
+            this._dragOverLastY = topEdge;
 
             return DND.DragMotionResult.CONTINUE;
         }
-        let rightEdge = primary.x + primary.width - 1;
-        let switchRight = (dragEvent.x >= rightEdge && rightWorkspace);
-        if (switchRight && this._dragOverLastX != rightEdge) {
-            rightWorkspace.metaWorkspace.activate(global.get_current_time());
-            rightWorkspace.setReservedSlot(dragEvent.dragActor._delegate);
-            this._dragOverLastX = rightEdge;
+        let bottomEdge = primary.y + primary.height - 1;
+        let switchBottom = (dragEvent.y >= bottomEdge && bottomWorkspace);
+        if (switchBottom && this._dragOverLastY != bottomEdge) {
+            bottomWorkspace.metaWorkspace.activate(global.get_current_time());
+            bottomWorkspace.setReservedSlot(dragEvent.dragActor._delegate);
+            this._dragOverLastY = bottomEdge;
 
             return DND.DragMotionResult.CONTINUE;
         }
-        this._dragOverLastX = dragEvent.x;
+        this._dragOverLastY = dragEvent.y;
         let result = DND.DragMotionResult.CONTINUE;
 
         // check hover state of new workspace area / inactive workspaces
-        if (leftWorkspace) {
-            if (leftWorkspace.actor.contains(dragEvent.targetActor)) {
-                hoverWorkspace = leftWorkspace;
-                leftWorkspace.opacity = leftWorkspace.actor.opacity = 255;
-                result = leftWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
+        if (topWorkspace) {
+            if (topWorkspace.actor.contains(dragEvent.targetActor)) {
+                hoverWorkspace = topWorkspace;
+                topWorkspace.opacity = topWorkspace.actor.opacity = 255;
+                result = topWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
             } else {
-                leftWorkspace.opacity = leftWorkspace.actor.opacity = 200;
+                topWorkspace.opacity = topWorkspace.actor.opacity = 200;
             }
         }
 
-        if (rightWorkspace) {
-            if (rightWorkspace.actor.contains(dragEvent.targetActor)) {
-                hoverWorkspace = rightWorkspace;
-                rightWorkspace.opacity = rightWorkspace.actor.opacity = 255;
-                result = rightWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
+        if (bottomWorkspace) {
+            if (bottomWorkspace.actor.contains(dragEvent.targetActor)) {
+                hoverWorkspace = bottomWorkspace;
+                bottomWorkspace.opacity = bottomWorkspace.actor.opacity = 255;
+                result = bottomWorkspace.handleDragOver(dragEvent.source, dragEvent.dragActor);
             } else {
-                rightWorkspace.opacity = rightWorkspace.actor.opacity = 200;
+                bottomWorkspace.opacity = bottomWorkspace.actor.opacity = 200;
             }
         }
 
@@ -671,22 +661,22 @@ WorkspacesView.prototype = {
         }
 
         let last = this._workspaces.length - 1;
-        let firstWorkspaceX = this._workspaces[0].actor.x;
-        let lastWorkspaceX = this._workspaces[last].actor.x;
-        let workspacesWidth = lastWorkspaceX - firstWorkspaceX;
+        let firstWorkspaceY = this._workspaces[0].actor.y;
+        let lastWorkspaceY = this._workspaces[last].actor.y;
+        let workspacesHeight = lastWorkspaceY - firstWorkspaceY;
 
         if (adj.upper == 1)
             return;
 
-        let currentX = firstWorkspaceX;
-        let newX = this._x - adj.value / (adj.upper - 1) * workspacesWidth;
+        let currentY = firstWorkspaceY;
+        let newY = this._y - adj.value / (adj.upper - 1) * workspacesHeight;
 
-        let dx = newX - currentX;
+        let dy = newY - currentY;
 
         for (let i = 0; i < this._workspaces.length; i++) {
             this._workspaces[i]._hideAllOverlays();
             this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
-            this._workspaces[i].actor.x += dx;
+            this._workspaces[i].actor.y += dy;
         }
     },
 
