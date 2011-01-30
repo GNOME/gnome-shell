@@ -104,6 +104,10 @@ WindowClone.prototype = {
 
         this._stackAbove = null;
 
+        this._sizeChangedId = this.realWindow.connect('size-changed', Lang.bind(this, function() {
+            this.emit('size-changed');
+        }));
+
         this.actor.connect('button-release-event',
                            Lang.bind(this, this._onButtonRelease));
 
@@ -157,6 +161,9 @@ WindowClone.prototype = {
     },
 
     _onDestroy: function() {
+        this.realWindow.disconnect(this._sizeChangedId);
+        this._sizeChangedId = 0;
+
         this.metaWindow._delegate = null;
         this.actor._delegate = null;
         if (this._zoomLightbox)
@@ -1325,10 +1332,10 @@ Workspace.prototype = {
                       Lang.bind(this, function() {
                           this._windowIsZooming = false;
                       }));
-        win.connect('size-changed',
-                    Lang.bind(this, function() {
-                        this.positionWindows(0);
-                    }));
+        clone.connect('size-changed',
+                      Lang.bind(this, function() {
+                          this.positionWindows(0);
+                      }));
 
         this.actor.add_actor(clone.actor);
 
