@@ -267,7 +267,7 @@ OpenSearchSystem.prototype = {
         return lang != null;
     },
 
-    activateResult: function(id) {
+    activateResult: function(id, params) {
         let searchTerms = this._terms.join(' ');
 
         let url = this._providers[id].url.replace('{searchTerms}', encodeURIComponent(searchTerms));

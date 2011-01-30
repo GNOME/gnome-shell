@@ -223,14 +223,20 @@ BaseAppSearchProvider.prototype = {
                  'icon': app.create_icon_texture(Search.RESULT_ICON_SIZE)};
     },
 
-    activateResult: function(id) {
+    activateResult: function(id, params) {
+        params = Params.parse(params, { workspace: null,
+                                        timestamp: null });
+
         let app = this._appSys.get_app(id);
-        app.activate();
+        app.activate(params.workspace ? params.workspace.index() : -1);
     },
 
-    dragActivateResult: function(id) {
+    dragActivateResult: function(id, params) {
+        params = Params.parse(params, { workspace: null,
+                                        timestamp: null });
+
         let app = this._appSys.get_app(id);
-        app.open_new_window();
+        app.open_new_window(params.workspace ? params.workspace.get_index() : -1);
     }
 };
 
@@ -401,7 +407,7 @@ AppWellIcon.prototype = {
             let launchWorkspace = global.screen.get_workspace_by_index(global.screen.n_workspaces - 1);
             launchWorkspace.activate(global.get_current_time());
             this.emit('launching');
-            this.app.open_new_window();
+            this.app.open_new_window(-1);
             Main.overview.hide();
         }
         return false;
@@ -486,9 +492,9 @@ AppWellIcon.prototype = {
 
         if (modifiers & Clutter.ModifierType.CONTROL_MASK
             && this.app.state == Shell.AppState.RUNNING) {
-            this.app.open_new_window();
+            this.app.open_new_window(-1);
         } else {
-            this.app.activate();
+            this.app.activate(-1);
         }
         Main.overview.hide();
     },
@@ -498,8 +504,11 @@ AppWellIcon.prototype = {
         return this._menu.menuEventFilter(event);
     },
 
-    shellWorkspaceLaunch : function() {
-        this.app.open_new_window();
+    shellWorkspaceLaunch : function(params) {
+        params = Params.parse(params, { workspace: null,
+                                        timestamp: null });
+
+        this.app.open_new_window(params.workspace ? params.workspace.index() : -1);
     },
 
     getDragActor: function() {
@@ -668,7 +677,7 @@ AppIconMenu.prototype = {
             let metaWindow = child._window;
             this.emit('activate-window', metaWindow);
         } else if (child == this._newWindowMenuItem) {
-            this._source.app.open_new_window();
+            this._source.app.open_new_window(-1);
             this.emit('activate-window', null);
         } else if (child == this._toggleFavoriteMenuItem) {
             let favs = AppFavorites.getAppFavorites();

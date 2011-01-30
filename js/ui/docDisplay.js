@@ -4,6 +4,7 @@ const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const DocInfo = imports.misc.docInfo;
+const Params = imports.misc.params;
 const Search = imports.ui.search;
 
 
@@ -28,9 +29,12 @@ DocSearchProvider.prototype = {
                  'icon': docInfo.createIcon(Search.RESULT_ICON_SIZE)};
     },
 
-    activateResult: function(id) {
+    activateResult: function(id, params) {
+        params = Params.parse(params, { workspace: null,
+                                        timestamp: null });
+
         let docInfo = this._docManager.lookupByUri(id);
-        docInfo.launch();
+        docInfo.launch(params.workspace ? params.workspace.index() : -1);
     },
 
     getInitialResultSet: function(terms) {

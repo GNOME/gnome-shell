@@ -44,9 +44,11 @@ gboolean shell_app_is_transient (ShellApp *app);
 
 void shell_app_activate_window (ShellApp *app, MetaWindow *window, guint32 timestamp);
 
-void shell_app_activate (ShellApp *app);
+void shell_app_activate (ShellApp      *app,
+                         int            workspace);
 
-void shell_app_open_new_window (ShellApp *app);
+void shell_app_open_new_window (ShellApp *app,
+                                int       workspace);
 
 ShellAppState shell_app_get_state (ShellApp *app);
 

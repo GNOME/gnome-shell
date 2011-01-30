@@ -227,17 +227,24 @@ shell_doc_system_on_recent_changed (GtkRecentManager  *manager,
  * shell_doc_system_open:
  * @system: A #ShellDocSystem
  * @info: A #GtkRecentInfo
+ * @workspace: Open on this workspace, or -1 for default
  *
  * Launch the default application associated with the mime type of
  * @info, using its uri.
  */
 void
 shell_doc_system_open (ShellDocSystem *system,
-                       GtkRecentInfo  *info)
+                       GtkRecentInfo  *info,
+                       int             workspace)
 {
   GFile *file;
   GAppInfo *app_info;
   gboolean needs_uri;
+  GAppLaunchContext *context;
+
+  context = shell_global_create_app_launch_context (shell_global_get ());
+  if (workspace != -1)
+    gdk_app_launch_context_set_desktop ((GdkAppLaunchContext *)context, workspace);
 
   file = g_file_new_for_uri (gtk_recent_info_get_uri (info));
   needs_uri = g_file_get_path (file) == NULL;
@@ -248,7 +255,7 @@ shell_doc_system_open (ShellDocSystem *system,
     {
       GList *uris;
       uris = g_list_prepend (NULL, (gpointer)gtk_recent_info_get_uri (info));
-      g_app_info_launch_uris (app_info, uris, shell_global_create_app_launch_context (shell_global_get ()), NULL);
+      g_app_info_launch_uris (app_info, uris, context, NULL);
       g_list_free (uris);
     }
   else
@@ -267,7 +274,6 @@ shell_doc_system_open (ShellDocSystem *system,
       if (gtk_recent_info_get_application_info (info, app_name, &app_exec, &count, &time))
         {
           GRegex *regex;
-          GAppLaunchContext *context;
 
           /* TODO: Change this once better support for creating
              GAppInfo is added to GtkRecentInfo, as right now
@@ -298,13 +304,13 @@ shell_doc_system_open (ShellDocSystem *system,
              despite passing the app launch context, no startup
              notification occurs.
            */
-          context = shell_global_create_app_launch_context (shell_global_get ());
           g_app_info_launch (app_info, NULL, context, NULL);
-          g_object_unref (context);
         }
 
       g_free (app_name);
     }
+
+  g_object_unref (context);
 }
 
 static void
