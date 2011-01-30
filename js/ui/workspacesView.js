@@ -25,8 +25,6 @@ const WORKSPACE_DRAGGING_SCALE = 0.85;
 const CONTROLS_POP_IN_FRACTION = 0.8;
 const CONTROLS_POP_IN_TIME = 0.1;
 
-const INDICATOR_HOVER_SCALE = 1.1;
-
 
 function WorkspacesView(width, height, x, y, workspaces) {
     this._init(width, height, x, y, workspaces);
@@ -687,155 +685,6 @@ WorkspacesView.prototype = {
 Signals.addSignalMethods(WorkspacesView.prototype);
 
 
-function WorkspaceIndicatorPanel() {
-    this._init();
-}
-
-WorkspaceIndicatorPanel.prototype = {
-    _init: function() {
-        this.actor = new Shell.GenericContainer({ clip_to_allocation: true });
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
-
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-
-        this._box = new St.BoxLayout({ style_class: 'workspace-indicator-panel' });
-        this.actor.add_actor(this._box);
-
-        this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace',
-                                          Lang.bind(this, this._updateActive));
-    },
-
-    _onDestroy: function() {
-        if (this._switchWorkspaceNotifyId > 0)
-            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-        this._switchWorkspaceNotifyId = 0;
-        this._workspaces = null;
-    },
-
-    // Allocate the box centered to the available area like StBin would do,
-    // except that the full height is used even if the box is not actually
-    // shown. This is a workaround, as the size of the workspace area is
-    // determined once when entering the overview, so if it would take up
-    // the indicator space in that case, it would overlap it later when
-    // additional workspaces were added.
-    _allocate: function(actor, box, flags) {
-        let children = this._box.get_children();
-
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
-        let [minWidth, natWidth] = this._box.get_preferred_width(-1);
-        let [minHeight, natHeight] = this._box.get_preferred_height(-1);
-
-        let childBox = new Clutter.ActorBox();
-        childBox.x1 = Math.floor((availWidth - natWidth) / 2);
-        childBox.x2 = childBox.x1 + natWidth;
-        childBox.y1 = Math.floor((availHeight - natHeight) / 2);
-        childBox.y2 = childBox.y2 + natHeight;
-
-        this._box.allocate(childBox, flags);
-    },
-
-    _getPreferredWidth: function(actor, forHeight, alloc) {
-        let [minWidth, natWidth] = this._box.get_preferred_width(-1);
-        alloc.min_size = 0;
-        alloc.natural_size = natWidth;
-    },
-
-    _getPreferredHeight: function(actor, forWidth, alloc) {
-        let [minHeight, natHeight] = this._box.get_preferred_height(-1);
-        alloc.min_size = minHeight * INDICATOR_HOVER_SCALE;
-        alloc.natural_size = natHeight * INDICATOR_HOVER_SCALE;
-    },
-
-    updateWorkspaces: function(workspaces) {
-        this._workspaces = workspaces;
-
-        // Do not display a single indicator
-        if (this._workspaces.length == 1)
-            this.actor.set_skip_paint(this._box, true);
-        else
-            this.actor.set_skip_paint(this._box, false);
-
-        this._box.destroy_children();
-        for (let i = 0; i < this._workspaces.length; i++) {
-            let actor = new St.Button({ style_class: 'workspace-indicator',
-                                        track_hover: true });
-            let workspace = this._workspaces[i];
-            let metaWorkspace = this._workspaces[i].metaWorkspace;
-
-            actor.connect('clicked', Lang.bind(this, function() {
-                metaWorkspace.activate(global.get_current_time());
-            }));
-            actor.connect('notify::hover', Lang.bind(this, function() {
-                if (actor.hover)
-                    actor.set_scale_with_gravity(INDICATOR_HOVER_SCALE,
-                                                 INDICATOR_HOVER_SCALE,
-                                                 Clutter.Gravity.CENTER);
-                else
-                    actor.set_scale(1.0, 1.0);
-            }));
-
-            actor._delegate = {
-                acceptDrop: Lang.bind(this,
-                    function(source, actor, x, y, time) {
-                        if (workspace.acceptDrop(source, actor, x, y, time)) {
-                            metaWorkspace.activate(time);
-                            return true;
-                        }
-                        return false;
-                    }),
-                handleDragOver: Lang.bind(this,
-                    function(source, actor, x, y, time) {
-                        return workspace.handleDragOver(source, actor, x, y, time);
-                    })
-            };
-
-            actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
-
-            this._box.add(actor);
-        }
-
-        this._updateActive();
-    },
-
-    _updateActive: function() {
-        let children = this._box.get_children();
-        let activeIndex = global.screen.get_active_workspace_index();
-        for (let i = 0; i < children.length; i++) {
-            if (i == activeIndex)
-                children[i].add_style_class_name('active');
-            else
-                children[i].remove_style_class_name('active');
-        }
-    },
-
-    // handle scroll wheel events:
-    // activate the next or previous workspace and let the signal handler
-    // manage the animation
-    _onScrollEvent: function(actor, event) {
-        let direction = event.get_scroll_direction();
-        let current = global.screen.get_active_workspace_index();
-        let last = global.screen.n_workspaces - 1;
-        let activate = current;
-
-        let difference = direction == Clutter.ScrollDirection.UP ? -1 : 1;
-        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
-            difference *= -1;
-
-        if (activate + difference >= 0 && activate + difference <= last)
-            activate += difference;
-
-        if (activate != current) {
-            let metaWorkspace = this._workspaces[activate].metaWorkspace;
-            metaWorkspace.activate(global.get_current_time());
-        }
-    }
-};
-
-
 function WorkspaceControlsContainer(controls) {
     this._init(controls);
 }
@@ -970,9 +819,6 @@ WorkspacesDisplay.prototype = {
         this._workspacesBin = new St.Bin();
         workspacesBox.add(this._workspacesBin, { expand: true });
 
-        this._workspaceIndicatorPanel = new WorkspaceIndicatorPanel();
-        workspacesBox.add(this._workspaceIndicatorPanel.actor);
-
         let controls = new St.BoxLayout({ vertical: true,
                                           style_class: 'workspace-controls' });
         this._controlsContainer = new WorkspaceControlsContainer(controls);
@@ -1043,8 +889,6 @@ WorkspacesDisplay.prototype = {
             this.workspacesView.destroy();
         this.workspacesView = newView;
 
-        this._workspaceIndicatorPanel.updateWorkspaces(this._workspaces);
-
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
                                   Lang.bind(this, this._workspacesChanged));
@@ -1103,7 +947,6 @@ WorkspacesDisplay.prototype = {
         this.workspacesView.updateWorkspaces(oldNumWorkspaces,
                                              newNumWorkspaces,
                                              lostWorkspaces);
-        this._workspaceIndicatorPanel.updateWorkspaces(this._workspaces);
     }
 };
 Signals.addSignalMethods(WorkspacesDisplay.prototype);

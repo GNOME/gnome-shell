@@ -260,20 +260,6 @@ StTooltip StLabel {
     spacing: 25px;
 }
 
-.workspace-indicator-panel {
-    spacing: 8px;
-}
-
-.workspace-indicator {
-    width: 24px;
-    height: 16px;
-    background: rgba(255,255,255,0.2);
-}
-
-.workspace-indicator.active {
-    background: rgba(255,255,255,0.8);
-}
-
 .workspace-controls {
     width: 48px;
     font-size: 32px;
