@@ -101,6 +101,12 @@ _Draggable.prototype = {
         this._dragInProgress = false; // The drag has been started, and has not been dropped or cancelled yet.
         this._animationInProgress = false; // The drag is over and the item is in the process of animating to its original position (snapping back or reverting).
 
+        // During the drag, we eat enter/leave events so that actors don't prelight or show
+        // tooltips. But we remember the relevant events (first leave, last enter) so we can
+        // fix up the hover state after the drag ends.
+        this._firstLeaveEvent = null;
+        this._lastEnterEvent = null;
+
         this._eventsGrabbed = false;
     },
 
@@ -198,6 +204,11 @@ _Draggable.prototype = {
                 this._cancelDrag(event.get_time());
                 return true;
             }
+        } else if (event.type() == Clutter.EventType.LEAVE) {
+            if (this._firstLeaveEvent == null)
+                this._firstLeaveEvent = event;
+        } else if (event.type() == Clutter.EventType.ENTER) {
+            this._lastEnterEvent = event;
         }
 
         return false;
@@ -485,7 +496,7 @@ _Draggable.prototype = {
         if (this._actorDestroyed) {
             global.unset_cursor();
             if (!this._buttonDown)
-                this._ungrabEvents();
+                this._dragComplete();
             this.emit('drag-end', eventTime, false);
             return;
         }
@@ -542,12 +553,41 @@ _Draggable.prototype = {
             this._dragComplete();
     },
 
+    // Actor is an actor we might have entered or left during the drag; call
+    // st_widget_sync_hover on all StWidget ancestors
+    _syncHover: function(actor) {
+        // If the actor was reparented from its original location and
+        // destroyed, then start syncing hover at the original parent
+        if (actor == this._dragActor && this._actorDestroyed)
+            actor = this._dragOrigParent;
+
+        while (actor) {
+            let parent = actor.get_parent();
+            if (actor instanceof St.Widget)
+                actor.sync_hover();
+
+            actor = parent;
+        }
+    },
+
     _dragComplete: function() {
-        Shell.util_set_hidden_from_pick(this._dragActor, false);
+        if (!this._actorDestroyed)
+            Shell.util_set_hidden_from_pick(this._dragActor, false);
+
+        this._ungrabEvents();
+
+        if (this._firstLeaveEvent) {
+            this._syncHover(this._firstLeaveEvent.get_source());
+            this._firstLeaveEvent = null;
+        }
+
+        if (this._lastEnterEvent) {
+            this._syncHover(this._lastEnterEvent.get_source());
+            this._lastEnterEvent = null;
+        }
 
         this._dragActor = undefined;
         currentDraggable = null;
-        this._ungrabEvents();
     }
 };
 
