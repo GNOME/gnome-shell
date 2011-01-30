@@ -275,6 +275,12 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
+#if defined(HAVE_COGL_GLES2)
+#define _COGL_GLES_VERSION 2
+#elif defined(HAVE_COGL_GLES)
+#define _COGL_GLES_VERSION 1
+#endif
+
 static gboolean
 try_create_context (ClutterBackend  *backend,
                     int retry_cookie,
@@ -283,16 +289,19 @@ try_create_context (ClutterBackend  *backend,
 {
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
   const char *error_message;
-
+#if defined(HAVE_COGL_GL)
   eglBindAPI (EGL_OPENGL_API);
+#else
+  eglBindAPI (EGL_OPENGL_ES_API);
+#endif
 
   if (backend_wayland->egl_context == EGL_NO_CONTEXT)
     {
-#if defined (HAVE_COGL_GLES2)
-      static const EGLint attribs[] =
-        { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
-#else
+#if defined(HAVE_COGL_GL)
       static const EGLint *attribs = NULL;
+#else
+      static const EGLint attribs[] =
+        { EGL_CONTEXT_CLIENT_VERSION, _COGL_GLES_VERSION, EGL_NONE };
 #endif
 
       backend_wayland->egl_context =
