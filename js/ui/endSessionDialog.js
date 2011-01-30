@@ -171,7 +171,7 @@ ListItem.prototype = {
 
     _onClicked: function() {
         this.emit('activate');
-        this._app.activate();
+        this._app.activate(-1);
     }
 };
 Signals.addSignalMethods(ListItem.prototype);

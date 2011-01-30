@@ -29,8 +29,8 @@ DocInfo.prototype = {
         return St.TextureCache.get_default().load_recent_thumbnail(size, this.recentInfo);
     },
 
-    launch : function() {
-        Shell.DocSystem.get_default().open(this.recentInfo);
+    launch : function(workspaceIndex) {
+        Shell.DocSystem.get_default().open(this.recentInfo, workspaceIndex);
     },
 
     matchTerms: function(terms) {

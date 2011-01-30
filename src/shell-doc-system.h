@@ -41,6 +41,7 @@ void shell_doc_system_queue_existence_check (ShellDocSystem   *system,
                                              guint             n_items);
 
 void shell_doc_system_open (ShellDocSystem *system,
-                            GtkRecentInfo  *info);
+                            GtkRecentInfo  *info,
+                            int             workspace);
 
 #endif /* __SHELL_DOC_SYSTEM_H__ */

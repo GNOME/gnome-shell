@@ -1421,8 +1421,8 @@ Workspace.prototype = {
                                                  time);
             return true;
         } else if (source.shellWorkspaceLaunch) {
-            this.metaWorkspace.activate(time);
-            source.shellWorkspaceLaunch();
+            source.shellWorkspaceLaunch({ workspace: this.metaWorkspace,
+                                          timestamp: time });
             return true;
         }
 

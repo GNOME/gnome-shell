@@ -411,6 +411,8 @@ shell_app_activate_window (ShellApp     *app,
 /**
  * shell_app_activate:
  * @app: a #ShellApp
+ * @workspace: launch on this workspace, or -1 for default. Ignored if
+ *   activating an existing window
  *
  * Perform an appropriate default action for operating on this application,
  * dependent on its current state.  For example, if the application is not
@@ -419,13 +421,19 @@ shell_app_activate_window (ShellApp     *app,
  * recently used transient for that window).
  */
 void
-shell_app_activate (ShellApp  *app)
+shell_app_activate (ShellApp      *app,
+                    int            workspace)
 {
   switch (app->state)
     {
       case SHELL_APP_STATE_STOPPED:
         /* TODO sensibly handle this error */
-        shell_app_info_launch (app->info, NULL);
+        shell_app_info_launch_full (app->info,
+                                    0,
+                                    NULL,
+                                    workspace,
+                                    NULL,
+                                    NULL);
         break;
       case SHELL_APP_STATE_STARTING:
         break;
@@ -438,11 +446,13 @@ shell_app_activate (ShellApp  *app)
 /**
  * shell_app_open_new_window:
  * @app: a #ShellApp
+ * @workspace: open on this workspace, or -1 for default
  *
  * Request that the application create a new window.
  */
 void
-shell_app_open_new_window (ShellApp *app)
+shell_app_open_new_window (ShellApp      *app,
+                           int            workspace)
 {
   /* Here we just always launch the application again, even if we know
    * it was already running.  For most applications this
@@ -452,7 +462,12 @@ shell_app_open_new_window (ShellApp *app)
    * as say Pidgin.  Ideally, we have the application express to us
    * that it supports an explicit new-window action.
    */
-  shell_app_info_launch (app->info, NULL);
+  shell_app_info_launch_full (app->info,
+                              0,
+                              NULL,
+                              workspace,
+                              NULL,
+                              NULL);
 }
 
 /**

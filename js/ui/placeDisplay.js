@@ -12,6 +12,7 @@ const _ = Gettext.gettext;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
+const Params = imports.misc.params;
 const Search = imports.ui.search;
 const Util = imports.misc.util;
 
@@ -58,6 +59,21 @@ PlaceInfo.prototype = {
     }
 };
 
+// Helper function to translate launch parameters into a GAppLaunchContext
+function _makeLaunchContext(params)
+{
+    params = Params.parse(params, { workspace: null,
+                                    timestamp: null });
+
+    let launchContext = global.create_app_launch_context();
+    if (params.workspace != null)
+        launchContext.set_desktop(params.workspace.index());
+    if (params.timestamp != null)
+        launchContext.set_timestamp(params.timestamp);
+
+    return launchContext;
+}
+
 function PlaceDeviceInfo(mount) {
     this._init(mount);
 }
@@ -77,9 +93,9 @@ PlaceDeviceInfo.prototype = {
         return St.TextureCache.get_default().load_gicon(null, icon, size);
     },
 
-    launch: function() {
+    launch: function(param) {
         Gio.app_info_launch_default_for_uri(this._mount.get_root().get_uri(),
-                                            global.create_app_launch_context());
+                                            _makeLaunchContex(params));
     },
 
     isRemovable: function() {
@@ -111,7 +127,6 @@ PlaceDeviceInfo.prototype = {
     }
 };
 
-
 function PlacesManager() {
     this._init();
 }
@@ -130,8 +145,8 @@ PlacesManager.prototype = {
             function(size) {
                 return St.TextureCache.get_default().load_gicon(null, homeIcon, size);
             },
-            function() {
-                Gio.app_info_launch_default_for_uri(homeUri, global.create_app_launch_context());
+            function(params) {
+                Gio.app_info_launch_default_for_uri(homeUri, _makeLaunchContext(params));
             });
 
         let desktopPath = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DESKTOP);
@@ -143,8 +158,8 @@ PlacesManager.prototype = {
             function(size) {
                 return St.TextureCache.get_default().load_gicon(null, desktopIcon, size);
             },
-            function() {
-                Gio.app_info_launch_default_for_uri(desktopUri, global.create_app_launch_context());
+            function(params) {
+                Gio.app_info_launch_default_for_uri(desktopUri, _makeLaunchContext(params));
             });
 
         this._connect = new PlaceInfo('special:connect', _("Connect to..."),
@@ -153,7 +168,11 @@ PlacesManager.prototype = {
                                      icon_type: St.IconType.FULLCOLOR,
                                      icon_size: size });
             },
-            function () {
+            function (params) {
+                // BUG: nautilus-connect-server doesn't have a desktop file, so we can'
+                // launch it with the workspace from params. It's probably pretty rare
+                // and odd to drag this place onto a workspace in any case
+
                 Util.spawn(['nautilus-connect-server']);
             });
 
@@ -173,8 +192,12 @@ PlacesManager.prototype = {
                 function(size) {
                     return networkApp.create_icon_texture(size);
                 },
-                function () {
-                    networkApp.launch();
+                function (params) {
+                    params = Params.parse(params, { workspace: null,
+                                                    timestamp: 0 });
+
+                    networkApp.launch_full(params.timestamp, [],
+                                           params.workspace ? params.workspace.index() : -1);
                 });
         }
 
@@ -314,8 +337,8 @@ PlacesManager.prototype = {
                 function(size) {
                     return St.TextureCache.get_default().load_gicon(null, icon, size);
                 },
-                function() {
-                    Gio.app_info_launch_default_for_uri(bookmark, global.create_app_launch_context());
+                function(params) {
+                    Gio.app_info_launch_default_for_uri(bookmark, _makeLaunchContext(params));
                 });
             this._bookmarks.push(item);
         }
@@ -395,9 +418,9 @@ PlaceSearchProvider.prototype = {
                  'icon': placeInfo.iconFactory(Search.RESULT_ICON_SIZE) };
     },
 
-    activateResult: function(id) {
+    activateResult: function(id, params) {
         let placeInfo = Main.placesManager.lookupPlaceById(id);
-        placeInfo.launch();
+        placeInfo.launch(params);
     },
 
     _compareResultMeta: function (idA, idB) {

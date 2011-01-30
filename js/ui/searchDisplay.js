@@ -81,11 +81,11 @@ SearchResult.prototype = {
         return new Clutter.Clone({ source: this.metaInfo['icon'] });
     },
 
-    shellWorkspaceLaunch: function() {
+    shellWorkspaceLaunch: function(params) {
         if (this.provider.dragActivateResult)
-            this.provider.dragActivateResult(this.metaInfo.id);
+            this.provider.dragActivateResult(this.metaInfo.id, params);
         else
-            this.provider.activateResult(this.metaInfo.id);
+            this.provider.activateResult(this.metaInfo.id, params);
     }
 };
 
