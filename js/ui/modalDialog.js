@@ -84,6 +84,8 @@ ModalDialog.prototype = {
 
     setButtons: function(buttons) {
         this._buttonLayout.destroy_children();
+        this._actionKeys = {};
+
         let i = 0;
         for (let index in buttons) {
             let buttonInfo = buttons[index];
