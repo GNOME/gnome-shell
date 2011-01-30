@@ -15,7 +15,7 @@ const POPUP_APPICON_SIZE = 96;
 const POPUP_SCROLL_TIME = 0.10; // seconds
 const POPUP_FADE_TIME = 0.1; // seconds
 
-const APP_ICON_HOVER_TIMEOUT = 750; // milliseconds
+const APP_ICON_HOVER_TIMEOUT = 200; // milliseconds
 
 const DISABLE_HOVER_TIMEOUT = 500; // milliseconds
 
