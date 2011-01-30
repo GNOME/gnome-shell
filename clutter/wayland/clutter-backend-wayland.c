@@ -341,6 +341,14 @@ fail:
     }
 }
 
+#if defined(HAVE_COGL_GL)
+#define _COGL_SURFACELESS_EXTENSION "EGL_KHR_surfaceless_opengl"
+#elif defined(HAVE_COGL_GLES)
+#define _COGL_SURFACELESS_EXTENSION "EGL_KHR_surfaceless_gles1"
+#elif defined(HAVE_COGL_GLES2)
+#define _COGL_SURFACELESS_EXTENSION "EGL_KHR_surfaceless_gles2"
+#endif
+
 static gboolean
 clutter_backend_wayland_create_context (ClutterBackend  *backend,
 					GError         **error)
@@ -357,12 +365,12 @@ clutter_backend_wayland_create_context (ClutterBackend  *backend,
 
   egl_extensions = eglQueryString (backend_wayland->edpy, EGL_EXTENSIONS);
 
-  if (!_cogl_check_extension ("EGL_KHR_surfaceless_opengl", egl_extensions))
+  if (!_cogl_check_extension (_COGL_SURFACELESS_EXTENSION, egl_extensions))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
                    "Wayland clients require the "
-                   "EGL_KHR_surfaceless_opengl extension");
+                   _COGL_SURFACELESS_EXTENSION " extension");
       return FALSE;
     }
 
