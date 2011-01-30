@@ -254,6 +254,7 @@ Notification.prototype = {
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
         this.expanded = false;
+        this._destroyed = false;
         this._useActionIcons = false;
         this._customContent = false;
         this._bannerBodyText = null;
@@ -771,6 +772,9 @@ Notification.prototype = {
     },
 
     destroy: function(reason) {
+        if (this._destroyed)
+            return;
+        this._destroyed = true;
         if (!reason)
             reason = NotificationDestroyedReason.DISMISSED;
         this.emit('destroy', reason);
