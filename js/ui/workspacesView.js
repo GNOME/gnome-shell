@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Signals = imports.signals;
@@ -992,7 +993,14 @@ WorkspacesDisplay.prototype = {
 
     _dragEnd: function() {
         this._inDrag = false;
-        this._updateZoom();
+
+        // We do this deferred because drag-end is emitted before dnd.js emits
+        // event/leave events that were suppressed during the drag. If we didn't
+        // defer this, we'd zoom out then immediately zoom in because of the
+        // enter event we received. That would normally be invisible but we
+        // might as well avoid it.
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
+                       Lang.bind(this, this._updateZoom));
     }
 };
 Signals.addSignalMethods(WorkspacesDisplay.prototype);
