@@ -274,7 +274,11 @@ Notification.prototype = {
         this._capturedEventId = 0;
         this._keyPressId = 0;
 
-        source.connect('destroy', Lang.bind(this, this.destroy));
+        source.connect('destroy', Lang.bind(this,
+            // Avoid passing 'source' as an argument to this.destroy()
+            function () {
+                this.destroy();
+            }));
 
         this.actor = new St.Table({ name: 'notification',
                                     reactive: true });
