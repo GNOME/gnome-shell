@@ -275,6 +275,31 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
+static gboolean
+make_dummy_surface (ClutterBackendWayland *backend_wayland)
+{
+  static const EGLint attrs[] = {
+    EGL_WIDTH, 1,
+    EGL_HEIGHT, 1,
+    EGL_NONE };
+  EGLint num_configs;
+
+  eglGetConfigs(backend_wayland->edpy,
+                &backend_wayland->egl_config, 1, &num_configs);
+  if (num_configs < 1)
+    return FALSE;
+
+  backend_wayland->egl_surface =
+    eglCreatePbufferSurface(backend_wayland->edpy,
+                            backend_wayland->egl_config,
+                            attrs);
+
+  if (backend_wayland->egl_surface == EGL_NO_SURFACE)
+    return FALSE;
+
+  return TRUE;
+}
+
 #if defined(HAVE_COGL_GLES2)
 #define _COGL_GLES_VERSION 2
 #elif defined(HAVE_COGL_GLES)
@@ -289,11 +314,6 @@ try_create_context (ClutterBackend  *backend,
 {
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
   const char *error_message;
-#if defined(HAVE_COGL_GL)
-  eglBindAPI (EGL_OPENGL_API);
-#else
-  eglBindAPI (EGL_OPENGL_ES_API);
-#endif
 
   if (backend_wayland->egl_context == EGL_NO_CONTEXT)
     {
@@ -306,7 +326,7 @@ try_create_context (ClutterBackend  *backend,
 
       backend_wayland->egl_context =
         eglCreateContext (backend_wayland->edpy,
-                          NULL,
+                          backend_wayland->egl_config,
                           EGL_NO_CONTEXT,
                           attribs);
       if (backend_wayland->egl_context == EGL_NO_CONTEXT)
@@ -319,13 +339,13 @@ try_create_context (ClutterBackend  *backend,
     }
 
   if (!eglMakeCurrent (backend_wayland->edpy,
-                       EGL_NO_SURFACE,
-                       EGL_NO_SURFACE,
+                       backend_wayland->egl_surface,
+                       backend_wayland->egl_surface,
                        backend_wayland->egl_context))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to MakeCurrent with NULL drawables");
+                   "Unable to MakeCurrent");
       return FALSE;
     }
 
@@ -363,15 +383,29 @@ clutter_backend_wayland_create_context (ClutterBackend  *backend,
   if (backend_wayland->egl_context != EGL_NO_CONTEXT)
     return TRUE;
 
+#if defined(HAVE_COGL_GL)
+  eglBindAPI (EGL_OPENGL_API);
+#else
+  eglBindAPI (EGL_OPENGL_ES_API);
+#endif
   egl_extensions = eglQueryString (backend_wayland->edpy, EGL_EXTENSIONS);
 
   if (!_cogl_check_extension (_COGL_SURFACELESS_EXTENSION, egl_extensions))
     {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Wayland clients require the "
-                   _COGL_SURFACELESS_EXTENSION " extension");
-      return FALSE;
+      g_debug("Could not find the " _COGL_SURFACELESS_EXTENSION
+              " extension; falling back to binding a dummy surface");
+      if (!make_dummy_surface(backend_wayland))
+        {
+          g_set_error (error, CLUTTER_INIT_ERROR,
+                       CLUTTER_INIT_ERROR_BACKEND,
+                       "Could not create dummy surface");
+          return FALSE;
+        }
+    }
+  else
+    {
+      backend_wayland->egl_config = NULL;
+      backend_wayland->egl_surface = EGL_NO_SURFACE;
     }
 
   retry_cookie = 0;
