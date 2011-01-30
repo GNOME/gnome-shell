@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-23 02:42+0200\n"
-"PO-Revision-Date: 2011-01-23 02:43+0200\n"
+"POT-Creation-Date: 2011-01-30 23:03+0200\n"
+"PO-Revision-Date: 2011-01-30 23:03+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -319,43 +319,47 @@ msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr ""
 "Width of the vertical and horizontal lines that make up the crosshairs."
 
+#: ../js/misc/util.js:86
+msgid "Command not found"
+msgstr "הפקודה לא נמצאה"
+
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:108
+#: ../js/misc/util.js:113
 msgid "Could not parse command:"
 msgstr "לא ניתן לפענח את הפקודה:"
 
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:135
 msgid "No such application"
 msgstr "אין כזה יישום"
 
-#: ../js/misc/util.js:143 ../js/ui/runDialog.js:351
+#: ../js/misc/util.js:148
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:155
+#: ../js/ui/appDisplay.js:164
 msgid "All"
 msgstr "הכול"
 
-#: ../js/ui/appDisplay.js:236
+#: ../js/ui/appDisplay.js:245
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:266
+#: ../js/ui/appDisplay.js:275
 msgid "PREFERENCES"
 msgstr "העדפות"
 
-#: ../js/ui/appDisplay.js:563
+#: ../js/ui/appDisplay.js:572
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:567
+#: ../js/ui/appDisplay.js:576
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:568
+#: ../js/ui/appDisplay.js:577
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
@@ -476,71 +480,71 @@ msgstr "צפייה במקור"
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/messageTray.js:1765
+#: ../js/ui/messageTray.js:1778
 msgid "System Information"
 msgstr "פרטי המערכת"
 
-#: ../js/ui/overview.js:75
+#: ../js/ui/overview.js:88
 msgid "Undo"
 msgstr "ביטול"
 
-#: ../js/ui/overview.js:140
+#: ../js/ui/overview.js:159
 msgid "Windows"
 msgstr "חלונות"
 
-#: ../js/ui/overview.js:143
+#: ../js/ui/overview.js:162
 msgid "Applications"
 msgstr "יישומים"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:483
+#: ../js/ui/panel.js:479
 #, c-format
 msgid "Quit %s"
 msgstr "יציאה מ־%s"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:564
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/panel.js:569
+#: ../js/ui/panel.js:565
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:569
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:574
+#: ../js/ui/panel.js:570
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:581
+#: ../js/ui/panel.js:577
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/panel.js:582
+#: ../js/ui/panel.js:578
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:586
+#: ../js/ui/panel.js:582
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:587
+#: ../js/ui/panel.js:583
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:732
+#: ../js/ui/panel.js:728
 msgid "Activities"
 msgstr "פעילויות"
 
@@ -912,12 +916,12 @@ msgstr "%s סיים את תהליך ההתחלה"
 msgid "'%s' is ready"
 msgstr "'%s' מוכן"
 
-#: ../js/ui/workspacesView.js:244
+#: ../js/ui/workspacesView.js:243
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "לא ניתן להוסיף מרחבי עבודה כיוון שהם ממלאים את המכסה המרבית."
 
-#: ../js/ui/workspacesView.js:260
+#: ../js/ui/workspacesView.js:259
 msgid "Can't remove the first workspace."
 msgstr "לא ניתן להסיר את מרחב העבודה הראשון."
 
@@ -945,11 +949,11 @@ msgstr[2] "2 קלטים"
 msgid "System Sounds"
 msgstr "צלילי מערכת"
 
-#: ../src/shell-global.c:1366
+#: ../src/shell-global.c:1365
 msgid "Less than a minute ago"
 msgstr "לפני פחות מדקה"
 
-#: ../src/shell-global.c:1370
+#: ../src/shell-global.c:1369
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -957,7 +961,7 @@ msgstr[0] "לפני דקה"
 msgstr[1] "לפני %d דקות"
 msgstr[2] "לפני 2 דקות"
 
-#: ../src/shell-global.c:1375
+#: ../src/shell-global.c:1374
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -965,7 +969,7 @@ msgstr[0] "לפני שעה"
 msgstr[1] "לפני %d שעות"
 msgstr[2] "לפני שעתיים"
 
-#: ../src/shell-global.c:1380
+#: ../src/shell-global.c:1379
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -973,7 +977,7 @@ msgstr[0] "לפני יום"
 msgstr[1] "לפני %d ימים"
 msgstr[2] "לפני יומיים"
 
-#: ../src/shell-global.c:1385
+#: ../src/shell-global.c:1384
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
