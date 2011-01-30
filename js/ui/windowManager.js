@@ -525,23 +525,20 @@ WindowManager.prototype = {
     },
 
     _showWorkspaceSwitcher : function(shellwm, binding, window, backwards) {
-        /* We don't support this kind of layout */
-        if (binding == 'switch_to_workspace_up' || binding == 'switch_to_workspace_down')
-            return;
-
         if (global.screen.n_workspaces == 1)
             return;
 
         if (this._workspaceSwitcherPopup == null)
             this._workspaceSwitcherPopup = new WorkspaceSwitcherPopup.WorkspaceSwitcherPopup();
 
-        if (binding == 'switch_to_workspace_left') {
+        if (binding == 'switch_to_workspace_left')
             this.actionMoveWorkspaceLeft();
-        }
-
-        if (binding == 'switch_to_workspace_right') {
+        else if (binding == 'switch_to_workspace_right')
             this.actionMoveWorkspaceRight();
-        }
+        else if (binding == 'switch_to_workspace_up')
+            this.actionMoveWorkspaceUp();
+        else if (binding == 'switch_to_workspace_down')
+            this.actionMoveWorkspaceDown();
     },
 
     actionMoveWorkspaceLeft: function() {
@@ -567,6 +564,32 @@ WindowManager.prototype = {
         if (rtl && activeWorkspaceIndex > 0)
             indexToActivate--;
         else if (!rtl && activeWorkspaceIndex < global.screen.n_workspaces - 1)
+            indexToActivate++;
+
+        if (indexToActivate != activeWorkspaceIndex)
+            global.screen.get_workspace_by_index(indexToActivate).activate(global.get_current_time());
+
+        if (!Main.overview.visible)
+            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.RIGHT, indexToActivate);
+    },
+
+    actionMoveWorkspaceUp: function() {
+        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        let indexToActivate = activeWorkspaceIndex;
+        if (activeWorkspaceIndex > 0)
+            indexToActivate--;
+
+        if (indexToActivate != activeWorkspaceIndex)
+            global.screen.get_workspace_by_index(indexToActivate).activate(global.get_current_time());
+
+        if (!Main.overview.visible)
+            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.LEFT, indexToActivate);
+    },
+
+    actionMoveWorkspaceDown: function() {
+        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        let indexToActivate = activeWorkspaceIndex;
+        if (activeWorkspaceIndex < global.screen.n_workspaces - 1)
             indexToActivate++;
 
         if (indexToActivate != activeWorkspaceIndex)

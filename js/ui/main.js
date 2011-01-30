@@ -175,6 +175,8 @@ function start() {
         }
     });
 
+    global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT, false, -1, 1);
+
     // Provide the bus object for gnome-session to
     // initiate logouts.
     EndSessionDialog.init();
@@ -375,6 +377,12 @@ function _globalKeyPressHandler(actor, event) {
             return true;
         case Meta.KeyBindingAction.WORKSPACE_RIGHT:
             wm.actionMoveWorkspaceRight();
+            return true;
+        case Meta.KeyBindingAction.WORKSPACE_UP:
+            wm.actionMoveWorkspaceUp();
+            return true;
+        case Meta.KeyBindingAction.WORKSPACE_DOWN:
+            wm.actionMoveWorkspaceDown();
             return true;
         case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
         case Meta.KeyBindingAction.COMMAND_2:
