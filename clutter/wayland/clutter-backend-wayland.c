@@ -310,8 +310,8 @@ try_create_context (ClutterBackend  *backend,
     }
 
   if (!eglMakeCurrent (backend_wayland->edpy,
-                       NULL,
-                       NULL,
+                       EGL_NO_SURFACE,
+                       EGL_NO_SURFACE,
                        backend_wayland->egl_context))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
