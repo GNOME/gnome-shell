@@ -51,15 +51,23 @@
 typedef struct _ClutterStageWayland         ClutterStageWayland;
 typedef struct _ClutterStageWaylandClass    ClutterStageWaylandClass;
 
+#define BUFFER_TYPE_DRM 1
+
 typedef struct _ClutterStageWaylandWaylandBuffer
 {
-  EGLImageKHR drm_image;
-  GLuint texture;
   CoglHandle offscreen;
   struct wl_buffer *wayland_buffer;
   cairo_region_t *dirty_region;
   CoglHandle tex;
+  guint8 type;
 } ClutterStageWaylandWaylandBuffer;
+
+typedef struct _ClutterStageWaylandWaylandBufferDRM
+{
+  ClutterStageWaylandWaylandBuffer buffer;
+  EGLImageKHR drm_image;
+  GLuint texture;
+} ClutterStageWaylandWaylandBufferDRM;
 
 struct _ClutterStageWayland
 {
