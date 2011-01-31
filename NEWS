@@ -1,3 +1,38 @@
+Clutter 1.6.0                                                        2011-01-31
+===============================================================================
+
+  • List of changes since Clutter 1.5.14
+
+    » Remove more private symbols from the X11 backend.
+
+    » Add CLUTTER_BIND_POSITION and CLUTTER_BIND_SIZE values to the
+      ClutterBindCoordinate enumeration; these are short-hand values
+      for binding both X and Y, or width and height, instead of
+      requiring two ClutterBindConstraint instances.
+
+    » Clean up in the X11 backend to reduce indirection.
+
+    » Small clean ups in the Win32 backend.
+
+    » Make Shift+Backspace behave like Backspace in ClutterText.
+
+    » Emit the ::new-frame signal even on the first frame of
+      ClutterTimeline, to allow setting up the initial state of an
+      animation.
+
+    » Fix an invalid memory access in ClutterAnimator.
+
+    » Flush the per-framebuffer journal when switching between
+      framebuffers.
+
+    » Generalize updating GLES2 uniforms.
+
+    » Add debug code for tracing clipping in Cogl.
+
+Many thanks to:
+
+  Neil Roberts, Robert Bragg, Rob Bradford
+
 Clutter 1.5.14                                                       2011-01-24
 ===============================================================================
 
