@@ -14,6 +14,7 @@ const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
+const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
 const WORKSPACE_SWITCH_TIME = 0.25;
 // Note that mutter has a compile-time limit of 36
@@ -794,6 +795,27 @@ WorkspacesDisplay.prototype = {
         }));
         controls.add(this._removeButton);
 
+        this._thumbnailsBox = new St.BoxLayout({ vertical: true,
+                                                 style_class: 'workspace-thumbnails' });
+        controls.add(this._thumbnailsBox, { expand: false });
+
+        let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator',
+                                     fixed_position_set: true });
+
+        // We don't want the indicator to affect drag-and-drop
+        Shell.util_set_hidden_from_pick(indicator, true);
+
+        this._thumbnailIndicator = indicator;
+        this._thumbnailsBox.add(this._thumbnailIndicator);
+        this._thumbnailIndicatorConstraints = [];
+        this._thumbnailIndicatorConstraints.push(new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.X }));
+        this._thumbnailIndicatorConstraints.push(new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.Y }));
+        this._thumbnailIndicatorConstraints.push(new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.WIDTH }));
+        this._thumbnailIndicatorConstraints.push(new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.HEIGHT }));
+        this._thumbnailIndicatorConstraints.forEach(function(constraint) {
+                                                        indicator.add_constraint(constraint);
+                                                    });
+
         this._addButton = new St.Button({ label: '+',
                                           style_class: 'add-workspace' });
         this._addButton.connect('clicked', Lang.bind(this, function() {
@@ -828,10 +850,21 @@ WorkspacesDisplay.prototype = {
         this._controls.show();
 
         this._workspaces = [];
+        this._workspaceThumbnails = [];
         for (let i = 0; i < global.screen.n_workspaces; i++) {
             let metaWorkspace = global.screen.get_workspace_by_index(i);
             this._workspaces[i] = new Workspace.Workspace(metaWorkspace);
+
+            let thumbnail = new WorkspaceThumbnail.WorkspaceThumbnail(metaWorkspace);
+            this._workspaceThumbnails[i] = thumbnail;
+            this._thumbnailsBox.add(thumbnail.actor);
         }
+
+        // The thumbnails indicator actually needs to be on top of the thumbnails, but
+        // there is also something more subtle going on as well - actors in a StBoxLayout
+        // are allocated from bottom to to top (start to end), and we need the
+        // thumnail indicator to be allocated after the actors it is constrained to.
+        this._thumbnailIndicator.raise_top();
 
         let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
 
@@ -879,31 +912,110 @@ WorkspacesDisplay.prototype = {
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
                                   Lang.bind(this, this._workspacesChanged));
+        this._switchWorkspaceNotifyId =
+            global.window_manager.connect('switch-workspace',
+                                          Lang.bind(this, this._activeWorkspaceChanged));
 
         this._restackedNotifyId =
             global.screen.connect('restacked',
                                   Lang.bind(this, this._onRestacked));
 
+        if (this._itemDragBeginId == 0)
+            this._itemDragBeginId = Main.overview.connect('item-drag-begin',
+                                                          Lang.bind(this, this._dragBegin));
+        if (this._itemDragEndId == 0)
+            this._itemDragEndId = Main.overview.connect('item-drag-end',
+                                                        Lang.bind(this, this._dragEnd));
+        if (this._windowDragBeginId == 0)
+            this._windowDragBeginId = Main.overview.connect('window-drag-begin',
+                                                            Lang.bind(this, this._dragBegin));
+        if (this._windowDragEndId == 0)
+            this._windowDragEndId = Main.overview.connect('window-drag-end',
+                                                          Lang.bind(this, this._dragEnd));
+
         this._onRestacked();
+        this._constrainThumbnailIndicator();
+        this._zoomOut = false;
+        this._updateZoom();
     },
 
     hide: function() {
-        this._controlsContainer.hide();
+        this._controls.hide();
 
-        if (this._nWorkspacesNotifyId > 0)
+        if (this._nWorkspacesNotifyId > 0) {
             global.screen.disconnect(this._nWorkspacesNotifyId);
-
+            this._nWorkspacesNotifyId = 0;
+        }
+        if (this._switchWorkspaceNotifyId > 0) {
+            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+            this._switchWorkspaceNotifyId = 0;
+        }
         if (this._restackedNotifyId > 0){
             global.screen.disconnect(this._restackedNotifyId);
             this._restackedNotifyId = 0;
         }
+        if (this._itemDragBeginId > 0) {
+            Main.overview.disconnect(this._itemDragBeginId);
+            this._itemDragBeginId = 0;
+        }
+        if (this._itemEndBeginId > 0) {
+            Main.overview.disconnect(this._itemDragEndId);
+            this._itemDragEndId = 0;
+        }
+        if (this._windowDragBeginId > 0) {
+            Main.overview.disconnect(this._windowDragBeginId);
+            this._windowDragBeginId = 0;
+        }
+        if (this._windowDragEndId > 0) {
+            Main.overview.disconnect(this._windowDragEndId);
+            this._windowDragEndId = 0;
+        }
 
         this.workspacesView.destroy();
         this.workspacesView = null;
+        this._unconstrainThumbnailIndicator();
         for (let w = 0; w < this._workspaces.length; w++) {
             this._workspaces[w].disconnectAll();
             this._workspaces[w].destroy();
+            this._workspaceThumbnails[w].destroy();
         }
+    },
+
+    _constrainThumbnailIndicator: function() {
+        let active = global.screen.get_active_workspace_index();
+        let thumbnail = this._workspaceThumbnails[active];
+
+        this._thumbnailIndicatorConstraints.forEach(function(constraint) {
+                                                        constraint.set_source(thumbnail.actor);
+                                                        constraint.set_enabled(true);
+                                                    });
+    },
+
+    _unconstrainThumbnailIndicator: function() {
+        this._thumbnailIndicatorConstraints.forEach(function(constraint) {
+                                                        constraint.set_enabled(false);
+                                                    });
+    },
+
+    _activeWorkspaceChanged: function(wm, from, to, direction) {
+        let active = global.screen.get_active_workspace_index();
+        let thumbnail = this._workspaceThumbnails[active];
+
+        this._unconstrainThumbnailIndicator();
+        let oldAllocation = this._thumbnailIndicator.allocation;
+        this._thumbnailIndicator.x = oldAllocation.x1;
+        this._thumbnailIndicator.y = oldAllocation.y1;
+        this._thumbnailIndicator.width = oldAllocation.x2 - oldAllocation.x1;
+        this._thumbnailIndicator.height = oldAllocation.y2 - oldAllocation.y1;
+
+        Tweener.addTween(this._thumbnailIndicator,
+                         { x: thumbnail.actor.allocation.x1,
+                           y: thumbnail.actor.allocation.y1,
+                           time: WORKSPACE_SWITCH_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this,
+                                                 this._constrainThumbnailIndicator)
+                         });
     },
 
     _onRestacked: function() {
@@ -934,7 +1046,12 @@ WorkspacesDisplay.prototype = {
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
                 let metaWorkspace = global.screen.get_workspace_by_index(w);
                 this._workspaces[w] = new Workspace.Workspace(metaWorkspace);
+
+                let thumbnail = new WorkspaceThumbnail.WorkspaceThumbnail(metaWorkspace);
+                this._workspaceThumbnails[w] = thumbnail;
+                this._thumbnailsBox.add(thumbnail.actor);
             }
+            this._thumbnailIndicator.raise_top();
         } else {
             // Assume workspaces are only removed sequentially
             // (e.g. 2,3,4 - not 2,4,7)
@@ -955,6 +1072,10 @@ WorkspacesDisplay.prototype = {
             // making its exit.
             for (let l = 0; l < lostWorkspaces.length; l++)
                 lostWorkspaces[l].setReactive(false);
+
+            for (let k = removedIndex; k < removedIndex + removedNum; k++)
+                this._workspaceThumbnails[k].destroy();
+            this._workspaceThumbnails.splice(removedIndex, removedNum);
         }
 
         this.workspacesView.updateWorkspaces(oldNumWorkspaces,
