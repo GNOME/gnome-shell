@@ -77,7 +77,6 @@ WorkspacesView.prototype = {
         this._overviewShowingId =
             Main.overview.connect('showing',
                                  Lang.bind(this, function() {
-                this._onRestacked();
                 for (let w = 0; w < this._workspaces.length; w++)
                     this._workspaces[w].zoomToOverview();
         }));
@@ -99,9 +98,6 @@ WorkspacesView.prototype = {
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
-        this._restackedNotifyId =
-            global.screen.connect('restacked',
-                                  Lang.bind(this, this._onRestacked));
 
         this._itemDragBeginId = Main.overview.connect('item-drag-begin',
                                                       Lang.bind(this, this._dragBegin));
@@ -207,15 +203,7 @@ WorkspacesView.prototype = {
         return this._workspaces[0].scale;
     },
 
-    _onRestacked: function() {
-        let stack = global.get_window_actors();
-        let stackIndices = {};
-
-        for (let i = 0; i < stack.length; i++) {
-            // Use the stable sequence for an integer to use as a hash key
-            stackIndices[stack[i].get_meta_window().get_stable_sequence()] = i;
-        }
-
+    syncStacking: function(stackIndices) {
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].syncStacking(stackIndices);
     },
@@ -502,7 +490,6 @@ WorkspacesView.prototype = {
         this._scrollAdjustment.run_dispose();
         Main.overview.disconnect(this._overviewShowingId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-        global.screen.disconnect(this._restackedNotifyId);
 
         if (this._timeoutId) {
             Mainloop.source_remove(this._timeoutId);
@@ -892,6 +879,12 @@ WorkspacesDisplay.prototype = {
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
                                   Lang.bind(this, this._workspacesChanged));
+
+        this._restackedNotifyId =
+            global.screen.connect('restacked',
+                                  Lang.bind(this, this._onRestacked));
+
+        this._onRestacked();
     },
 
     hide: function() {
@@ -899,12 +892,32 @@ WorkspacesDisplay.prototype = {
 
         if (this._nWorkspacesNotifyId > 0)
             global.screen.disconnect(this._nWorkspacesNotifyId);
+
+        if (this._restackedNotifyId > 0){
+            global.screen.disconnect(this._restackedNotifyId);
+            this._restackedNotifyId = 0;
+        }
+
         this.workspacesView.destroy();
         this.workspacesView = null;
         for (let w = 0; w < this._workspaces.length; w++) {
             this._workspaces[w].disconnectAll();
             this._workspaces[w].destroy();
         }
+    },
+
+    _onRestacked: function() {
+        let stack = global.get_window_actors();
+        let stackIndices = {};
+
+        for (let i = 0; i < stack.length; i++) {
+            // Use the stable sequence for an integer to use as a hash key
+            stackIndices[stack[i].get_meta_window().get_stable_sequence()] = i;
+        }
+
+        this.workspacesView.syncStacking(stackIndices);
+        for (let i = 0; i < this._workspaceThumbnails.length; i++)
+            this._workspaceThumbnails[i].syncStacking(stackIndices);
     },
 
     _workspacesChanged: function() {
