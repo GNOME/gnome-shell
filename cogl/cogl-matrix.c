@@ -439,33 +439,12 @@ typedef struct _Point4f
 } Point4f;
 
 static void
-_cogl_matrix_transform_points_f2_packed (const CoglMatrix *matrix,
-                                         void *points_in,
-                                         void *points_out,
-                                         int n_points)
-{
-  Point3f *o = points_out;
-  int i;
-
-  for (i = 0; i < n_points; i++)
-    {
-      Point2f p = ((Point2f *)points_in)[i];
-      o[i].x = matrix->xx * p.x + matrix->xy * p.y +
-               matrix->xw;
-      o[i].y = matrix->yx * p.x + matrix->yy * p.y +
-               matrix->yw;
-      o[i].z = matrix->zx * p.x + matrix->zy * p.y +
-               matrix->zw;
-    }
-}
-
-static void
-_cogl_matrix_transform_points_f2_strided (const CoglMatrix *matrix,
-                                          size_t stride_in,
-                                          void *points_in,
-                                          size_t stride_out,
-                                          void *points_out,
-                                          int n_points)
+_cogl_matrix_transform_points_f2 (const CoglMatrix *matrix,
+                                  size_t stride_in,
+                                  void *points_in,
+                                  size_t stride_out,
+                                  void *points_out,
+                                  int n_points)
 {
   int i;
 
@@ -481,35 +460,12 @@ _cogl_matrix_transform_points_f2_strided (const CoglMatrix *matrix,
 }
 
 static void
-_cogl_matrix_project_points_f2_packed (const CoglMatrix *matrix,
-                                       void *points_in,
-                                       void *points_out,
-                                       int n_points)
-{
-  Point4f *o = points_out;
-  int i;
-
-  for (i = 0; i < n_points; i++)
-    {
-      Point2f p = ((Point2f *)points_in)[i];
-      o[i].x = matrix->xx * p.x + matrix->xy * p.y +
-               matrix->xw;
-      o[i].y = matrix->yx * p.x + matrix->yy * p.y +
-               matrix->yw;
-      o[i].z = matrix->zx * p.x + matrix->zy * p.y +
-               matrix->zw;
-      o[i].w = matrix->wx * p.x + matrix->wy * p.y +
-               matrix->ww;
-    }
-}
-
-static void
-_cogl_matrix_project_points_f2_strided (const CoglMatrix *matrix,
-                                        size_t stride_in,
-                                        void *points_in,
-                                        size_t stride_out,
-                                        void *points_out,
-                                        int n_points)
+_cogl_matrix_project_points_f2 (const CoglMatrix *matrix,
+                                size_t stride_in,
+                                void *points_in,
+                                size_t stride_out,
+                                void *points_out,
+                                int n_points)
 {
   int i;
 
@@ -526,33 +482,12 @@ _cogl_matrix_project_points_f2_strided (const CoglMatrix *matrix,
 }
 
 static void
-_cogl_matrix_transform_points_f3_packed (const CoglMatrix *matrix,
-                                         void *points_in,
-                                         void *points_out,
-                                         int n_points)
-{
-  Point3f *o = points_out;
-  int i;
-
-  for (i = 0; i < n_points; i++)
-    {
-      Point3f p = ((Point3f *)points_in)[i];
-      o[i].x = matrix->xx * p.x + matrix->xy * p.y +
-               matrix->xz * p.z + matrix->xw;
-      o[i].y = matrix->yx * p.x + matrix->yy * p.y +
-               matrix->yz * p.z + matrix->yw;
-      o[i].z = matrix->zx * p.x + matrix->zy * p.y +
-               matrix->zz * p.z + matrix->zw;
-    }
-}
-
-static void
-_cogl_matrix_transform_points_f3_strided (const CoglMatrix *matrix,
-                                          size_t stride_in,
-                                          void *points_in,
-                                          size_t stride_out,
-                                          void *points_out,
-                                          int n_points)
+_cogl_matrix_transform_points_f3 (const CoglMatrix *matrix,
+                                  size_t stride_in,
+                                  void *points_in,
+                                  size_t stride_out,
+                                  void *points_out,
+                                  int n_points)
 {
   int i;
 
@@ -571,35 +506,12 @@ _cogl_matrix_transform_points_f3_strided (const CoglMatrix *matrix,
 }
 
 static void
-_cogl_matrix_project_points_f3_packed (const CoglMatrix *matrix,
-                                       void *points_in,
-                                       void *points_out,
-                                       int n_points)
-{
-  Point4f *o = points_out;
-  int i;
-
-  for (i = 0; i < n_points; i++)
-    {
-      Point3f p = ((Point3f *)points_in)[i];
-      o[i].x = matrix->xx * p.x + matrix->xy * p.y +
-               matrix->xz * p.z + matrix->xw;
-      o[i].y = matrix->yx * p.x + matrix->yy * p.y +
-               matrix->yz * p.z + matrix->yw;
-      o[i].z = matrix->zx * p.x + matrix->zy * p.y +
-               matrix->zz * p.z + matrix->zw;
-      o[i].w = matrix->wx * p.x + matrix->wy * p.y +
-               matrix->wz * p.z + matrix->ww;
-    }
-}
-
-static void
-_cogl_matrix_project_points_f3_strided (const CoglMatrix *matrix,
-                                        size_t stride_in,
-                                        void *points_in,
-                                        size_t stride_out,
-                                        void *points_out,
-                                        int n_points)
+_cogl_matrix_project_points_f3 (const CoglMatrix *matrix,
+                                size_t stride_in,
+                                void *points_in,
+                                size_t stride_out,
+                                void *points_out,
+                                int n_points)
 {
   int i;
 
@@ -620,35 +532,12 @@ _cogl_matrix_project_points_f3_strided (const CoglMatrix *matrix,
 }
 
 static void
-_cogl_matrix_project_points_f4_packed (const CoglMatrix *matrix,
-                                       void *points_in,
-                                       void *points_out,
-                                       int n_points)
-{
-  Point4f *o = points_out;
-  int i;
-
-  for (i = 0; i < n_points; i++)
-    {
-      Point4f p = ((Point4f *)points_in)[i];
-      o[i].x = matrix->xx * p.x + matrix->xy * p.y +
-               matrix->xz * p.z + matrix->xw * p.w;
-      o[i].y = matrix->yx * p.x + matrix->yy * p.y +
-               matrix->yz * p.z + matrix->yw * p.w;
-      o[i].z = matrix->zx * p.x + matrix->zy * p.y +
-               matrix->zz * p.z + matrix->zw * p.w;
-      o[i].w = matrix->wx * p.x + matrix->wy * p.y +
-               matrix->wz * p.z + matrix->ww * p.w;
-    }
-}
-
-static void
-_cogl_matrix_project_points_f4_strided (const CoglMatrix *matrix,
-                                        size_t stride_in,
-                                        void *points_in,
-                                        size_t stride_out,
-                                        void *points_out,
-                                        int n_points)
+_cogl_matrix_project_points_f4 (const CoglMatrix *matrix,
+                                size_t stride_in,
+                                void *points_in,
+                                size_t stride_out,
+                                void *points_out,
+                                int n_points)
 {
   int i;
 
@@ -681,31 +570,18 @@ cogl_matrix_transform_points (const CoglMatrix *matrix,
   g_return_if_fail (stride_out >= sizeof (Point3f));
 
   if (n_components == 2)
-    {
-      if (stride_in == sizeof (Point2f) &&
-          stride_out == sizeof (Point3f))
-        _cogl_matrix_transform_points_f2_packed (matrix,
-                                                 points_in, points_out,
-                                                 n_points);
-      else
-        _cogl_matrix_transform_points_f2_strided (matrix,
-                                                  stride_in, points_in,
-                                                  stride_out, points_out,
-                                                  n_points);
-    }
+    _cogl_matrix_transform_points_f2 (matrix,
+                                      stride_in, points_in,
+                                      stride_out, points_out,
+                                      n_points);
   else
     {
       g_return_if_fail (n_components == 3);
 
-      if (stride_in == sizeof (Point3f) && stride_out == stride_in)
-        _cogl_matrix_transform_points_f3_packed (matrix,
-                                                 points_in, points_out,
-                                                 n_points);
-      else
-        _cogl_matrix_transform_points_f3_strided (matrix,
-                                                  stride_in, points_in,
-                                                  stride_out, points_out,
-                                                  n_points);
+      _cogl_matrix_transform_points_f3 (matrix,
+                                        stride_in, points_in,
+                                        stride_out, points_out,
+                                        n_points);
     }
 }
 
@@ -719,44 +595,22 @@ cogl_matrix_project_points (const CoglMatrix *matrix,
                             int n_points)
 {
   if (n_components == 2)
-    {
-      if (stride_in == sizeof (Point2f) &&
-          stride_out == sizeof (Point4f))
-        _cogl_matrix_project_points_f2_packed (matrix,
-                                               points_in, points_out,
-                                               n_points);
-      else
-        _cogl_matrix_project_points_f2_strided (matrix,
-                                                stride_in, points_in,
-                                                stride_out, points_out,
-                                                n_points);
-    }
+    _cogl_matrix_project_points_f2 (matrix,
+                                    stride_in, points_in,
+                                    stride_out, points_out,
+                                    n_points);
   else if (n_components == 3)
-    {
-      if (stride_in == sizeof (Point3f) &&
-          stride_out == sizeof (Point4f))
-        _cogl_matrix_project_points_f3_packed (matrix,
-                                               points_in, points_out,
-                                               n_points);
-      else
-        _cogl_matrix_project_points_f3_strided (matrix,
-                                                stride_in, points_in,
-                                                stride_out, points_out,
-                                                n_points);
-    }
+    _cogl_matrix_project_points_f3 (matrix,
+                                    stride_in, points_in,
+                                    stride_out, points_out,
+                                    n_points);
   else
     {
       g_return_if_fail (n_components == 4);
 
-      if (stride_in == sizeof (Point4f) && stride_out == stride_in)
-        _cogl_matrix_project_points_f4_packed (matrix,
-                                               points_in, points_out,
-                                               n_points);
-      else
-        _cogl_matrix_project_points_f4_strided (matrix,
-                                                stride_in, points_in,
-                                                stride_out, points_out,
-                                                n_points);
+      _cogl_matrix_project_points_f4 (matrix,
+                                      stride_in, points_in,
+                                      stride_out, points_out,
+                                      n_points);
     }
 }
-
