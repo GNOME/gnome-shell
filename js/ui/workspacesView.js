@@ -264,7 +264,7 @@ WorkspacesView.prototype = {
     },
 
     _handleDragOverNewWorkspace: function(source, dropActor, x, y, time) {
-        if (source instanceof Workspace.WindowClone)
+        if (source.realWindow)
             return DND.DragMotionResult.MOVE_DROP;
         if (source.shellWorkspaceLaunch)
             return DND.DragMotionResult.COPY_DROP;
