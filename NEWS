@@ -37,10 +37,12 @@ Clutter 1.6.0                                                        2011-01-31
     #2490 - OS X backend event loop improved
     #2530 - animator: Animator uses key after freeing it
     #2534 - Incorrect description of function 'clutter_actor_pop_internal'
+    #2535 - Add recipe about creating a composite actor
 
 Many thanks to:
 
-  Neil Roberts, Robert Bragg, Rob Bradford, Viatcheslav Gachkaylo
+  Neil Roberts, Robert Bragg, Elliot Smith, Rob Bradford,
+  Viatcheslav Gachkaylo
 
 Clutter 1.5.14                                                       2011-01-24
 ===============================================================================
