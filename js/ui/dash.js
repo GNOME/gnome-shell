@@ -54,7 +54,7 @@ RemoveFavoriteIcon.prototype = {
         if (source instanceof AppDisplay.AppWellIcon) {
             let appSystem = Shell.AppSystem.get_default();
             app = appSystem.get_app(source.getId());
-        } else if (source instanceof Workspace.WindowClone) {
+        } else if (source.metaWindow) {
             let tracker = Shell.WindowTracker.get_default();
             app = tracker.get_window_app(source.metaWindow);
         }
@@ -148,7 +148,7 @@ Dash.prototype = {
         let app = null;
         if (dragEvent.source instanceof AppDisplay.AppWellIcon)
             app = this._appSystem.get_app(dragEvent.source.getId());
-        else if (dragEvent.source instanceof Workspace.WindowClone)
+        else if (dragEvent.source.metaWindow)
             app = this._tracker.get_window_app(dragEvent.source.metaWindow);
         else
             return DND.DragMotionResult.CONTINUE;
@@ -265,7 +265,7 @@ Dash.prototype = {
         let app = null;
         if (source instanceof AppDisplay.AppWellIcon)
             app = this._appSystem.get_app(source.getId());
-        else if (source instanceof Workspace.WindowClone)
+        else if (source.metaWindow)
             app = this._tracker.get_window_app(source.metaWindow);
 
         // Don't allow favoriting of transient apps
@@ -316,7 +316,7 @@ Dash.prototype = {
         let app = null;
         if (source instanceof AppDisplay.AppWellIcon) {
             app = this._appSystem.get_app(source.getId());
-        } else if (source instanceof Workspace.WindowClone) {
+        } else if (source.metaWindow) {
             app = this._tracker.get_window_app(source.metaWindow);
         }
 

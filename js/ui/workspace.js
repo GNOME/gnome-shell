@@ -1402,7 +1402,7 @@ Workspace.prototype = {
     },
 
     acceptDrop : function(source, actor, x, y, time) {
-        if (source instanceof WindowClone) {
+        if (source.realWindow) {
             let win = source.realWindow;
             if (this._isMyWindow(win))
                 return false;

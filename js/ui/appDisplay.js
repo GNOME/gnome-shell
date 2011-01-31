@@ -630,7 +630,7 @@ AppIconMenu.prototype = {
     },
 
     _findMetaWindowForActor: function (actor) {
-        if (actor._delegate instanceof Workspace.WindowClone)
+        if (actor._delegate.metaWindow)
             return actor._delegate.metaWindow;
         else if (actor.get_meta_window)
             return actor.get_meta_window();
