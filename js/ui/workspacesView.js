@@ -769,7 +769,7 @@ WorkspaceIndicatorPanel.prototype = {
         else
             this.actor.set_skip_paint(this._box, false);
 
-        this._box.remove_all();
+        this._box.destroy_children();
         for (let i = 0; i < this._workspaces.length; i++) {
             let actor = new St.Button({ style_class: 'workspace-indicator',
                                         track_hover: true });

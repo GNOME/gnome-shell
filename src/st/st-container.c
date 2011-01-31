@@ -35,6 +35,7 @@ struct _StContainerPrivate
   GList *children;
   ClutterActor *first_child;
   ClutterActor *last_child;
+  gboolean block_update_pseude_classes;
 };
 
 static void clutter_container_iface_init (ClutterContainerIface *iface);
@@ -49,6 +50,9 @@ st_container_update_pseudo_classes (StContainer *container)
   GList *first_item, *last_item;
   ClutterActor *first_child, *last_child;
   StContainerPrivate *priv = container->priv;
+
+  if (priv->block_update_pseude_classes)
+    return;
 
   first_item = priv->children;
   first_child = first_item ? first_item->data : NULL;
@@ -92,28 +96,6 @@ st_container_update_pseudo_classes (StContainer *container)
 }
 
 /**
- * st_container_remove_all:
- * @container: An #StContainer
- *
- * Removes all child actors from @container.
- */
-void
-st_container_remove_all (StContainer *container)
-{
-  StContainerPrivate *priv = container->priv;
-
-  /* copied from clutter_group_remove_all() */
-  while (priv->children)
-    {
-      ClutterActor *child = priv->children->data;
-      priv->children = priv->children->next;
-
-      clutter_container_remove_actor (CLUTTER_CONTAINER (container), child);
-    }
-  st_container_update_pseudo_classes (container);
-}
-
-/**
  * st_container_destroy_children:
  * @container: An #StContainer
  *
@@ -124,13 +106,14 @@ st_container_destroy_children (StContainer *container)
 {
   StContainerPrivate *priv = container->priv;
 
-  while (priv->children)
-    {
-      ClutterActor *child = priv->children->data;
-      priv->children = priv->children->next;
+  priv->block_update_pseude_classes = TRUE;
 
-      clutter_actor_destroy (child);
-    }
+  while (priv->children)
+    clutter_actor_destroy (priv->children->data);
+
+  priv->block_update_pseude_classes = FALSE;
+
+  st_container_update_pseudo_classes (container);
 }
 
 void

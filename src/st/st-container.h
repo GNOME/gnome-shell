@@ -53,7 +53,6 @@ struct _StContainerClass {
 
 GType   st_container_get_type             (void) G_GNUC_CONST;
 
-void    st_container_remove_all           (StContainer *container);
 void    st_container_destroy_children     (StContainer *container);
 
 GList * st_container_get_focus_chain      (StContainer *container);

@@ -470,7 +470,7 @@ EndSessionDialog.prototype = {
     OpenAsync: function(type, timestamp, totalSecondsToStayOpen, inhibitorObjectPaths, callback) {
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._inhibitors = [];
-        this._applicationList.remove_all();
+        this._applicationList.destroy_children();
         this._type = type;
 
         if (!(this._type in DialogContent))

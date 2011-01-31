@@ -206,7 +206,7 @@ Dash.prototype = {
 
     _redisplay: function () {
         this._box.hide();
-        this._box.remove_all();
+        this._box.destroy_children();
 
         let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
 
