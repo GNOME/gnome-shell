@@ -17,10 +17,10 @@ clicked (CbButton *button,
 
   current_text = cb_button_get_text (button);
 
-  if (g_strcmp0 (current_text, "winkle") == 0)
-    cb_button_set_text (button, "pickers");
+  if (g_strcmp0 (current_text, "hello") == 0)
+    cb_button_set_text (button, "world");
   else
-    cb_button_set_text (button, "winkle");
+    cb_button_set_text (button, "hello");
 }
 
 int
@@ -40,7 +40,7 @@ main (int   argc,
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   button = cb_button_new ();
-  cb_button_set_text (CB_BUTTON (button), "winkle");
+  cb_button_set_text (CB_BUTTON (button), "hello");
 
   /* the following is equivalent to the two lines above:
    *
