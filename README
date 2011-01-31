@@ -9,24 +9,24 @@ REQUIREMENTS
 
 Clutter currently requires:
 
-  • GLib >= 2.26.0
-  • JSON-GLib >= 0.12
-  • Atk >= 1.17
-  • Cairo >= 1.10
-  • PangoCairo >= 1.20
-  • OpenGL >= 1.3 or 1.2+multitexturing, OpenGL ES 1.1 or OpenGL ES 2.0
+  • GLib ≥ 2.26.0
+  • JSON-GLib ≥ 0.12
+  • Atk ≥ 1.17
+  • Cairo ≥ 1.10
+  • PangoCairo ≥ 1.20
+  • OpenGL ≥ 1.3 (or 1.2+multitexturing), OpenGL ES 1.1 or OpenGL ES 2.0
   • GLX, SDL, WGL or an EGL Implementation
 
 Clutter also has optional dependencies:
 
-  • GDK-Pixbuf >= 2.0 (optional, see --with-imagebackend below)
+  • GDK-Pixbuf ≥ 2.0 (optional, see --with-imagebackend below)
 
 On X11, Clutter depends on the following extensions
 
-  • XComposite
+  • XComposite ≥ 0.4
   • XDamage
   • XExt
-  • XFixes
+  • XFixes ≥ 3
   • XInput 1.x or 2.x
   • XKB
 
@@ -38,7 +38,7 @@ you will need the latest GL headers which can be obtained from:
 
 If you are building the API reference you will also need:
 
-  • GTK-Doc >= 1.13
+  • GTK-Doc ≥ 1.13
 
 If you are building the additional documentation you will also need:
 
@@ -47,7 +47,7 @@ If you are building the additional documentation you will also need:
 
 If you are building the Introspection data you will also need:
 
-  • GObject-Introspection >= 0.9.5
+  • GObject-Introspection ≥ 0.9.5
 
 GObject-Introspection is available from:
 
@@ -55,7 +55,7 @@ GObject-Introspection is available from:
 
 If you want support for profiling Clutter you will also need:
 
-  • UProf >= 0.3
+  • UProf ≥ 0.3
 
 UProf is available from:
 
@@ -78,7 +78,7 @@ New releases of Clutter are available at:
 
    http://source.clutter-project.org/sources/clutter/
 
-The Clutter blog is at:
+The Clutter blog is available at:
 
    http://www.clutter-project.org/blog/
 
@@ -178,35 +178,44 @@ Clutter has additional command line options for the configure script:
         Select the Clutter backend: (default=glx)
 
 	glx:
-                Fully featured GLX backend. Using Open GL.
+                Fully featured GLX backend.
+
+        opengl-egl-xlib:
+                EGL/Open GL backend for X11.
+
+        wayland:
+                EGL/Open GL backend for Wayland.
 
 	eglx:
-                EGL/Open GL ES backend for EGL on X windows implementations
+                EGL/Open GL|ES backend for X11.
 
 	eglnative:
-                EGL/Open GL ES backend on 'native windowing system' - i.e
+                EGL/Open GL|ES backend on 'native windowing system' - i.e
 		raw framebuffer. Expects the EGL implementation to provide
-                a createNativeWindow() call. Also it optionally supports
-		tslib for touchscreen events.
+                a createNativeWindow() call.
+
+        cex100:
+                EGL/Open GL|ES backend on Intel CE3100 and CE4100 platforms.
+                Requires libgdl.
 
         osx:
                 OS X backend. (EXPERIMENTAL)
 
         win32:
-                Microsoft Windows(tm) WGL backend
+                Microsoft Windows(tm) WGL backend.
 
         fruity:
-                Apple iPod Touch(tm)/iPhone(tm) backend (EXPERIMENTAL)
+                Apple iPod Touch(tm)/iPhone(tm) backend. (EXPERIMENTAL)
 
  --with-imagebackend=[gdk-pixbuf/quartz/internal]
         Select the image loading backend used by COGL
 
         gdk-pixbuf:
                 Depend on gdk-pixbuf-2.0 (default for the glx, eglx,
-                eglnative, win32 flavours and recommended)
+                eglnative, win32 flavours and recommended).
 
         quartz:
-                Depend on CoreGraphics (default for the osx flavour)
+                Depend on CoreGraphics (default for the osx flavour).
 
         internal:
                 Internal JPEG and PNG loader. Should only be used
@@ -284,7 +293,7 @@ If diffing against the Git repository, you should use:
 
   git diff > clutter-patch.diff
 
-Or, better, commit locally and use `git format-patch` to generate a patch
+Or, better: commit locally and use `git format-patch` to generate a patch
 containing authorship details, so that members of the Clutter development
 team can credit your contribution properly.
 
@@ -317,6 +326,41 @@ Release Notes for Clutter 1.6
 • The ClutterTimeoutPool and clutter_frame_source_* API have been deprecated;
   both API are not integrated in the Clutter main loop, and are not used
   internally any longer, so they are of relative use.
+
+• It it not necessary any more to provide implementations for the
+  ClutterActor::map() and ClutterActor::unmap() virtual functions, even
+  for composite actors not implementing the ClutterContainer interface.
+
+• ClutterTimeline now guarantees that the ::new-frame signal will be
+  emitted at the beginning of the timeline, as well as guaranteeing that
+  the ::completed signal will be emitted at the end of the timeline.
+
+• ClutterActor will check for the enabled property of ClutterActorMeta
+  instances (actions, constraints and effects), and will not invoke
+  ClutterActorMeta functions on disabled instances. This removes the
+  requirement for checking the property inside the ClutterActorMeta
+  sub-classes.
+
+• ClutterActorBox, ClutterGeometry and ClutterVertex install a progress
+  function for ClutterInterval, allowing the interpolation of properties
+  using them as storage types.
+
+• ClutterColor's clutter_color_from_string() function accepts CSS3 color
+  specifications.
+
+• The previously unused "axes" field in the ClutterButtonEvent,
+  ClutterScrollEvent and ClutterMotionEvent structures is now used on
+  the X11-based backends with XInput support.
+
+• ClutterListModel will honour the filter function when calling
+  clutter_model_get_iter_at_row().
+
+• ClutterClickAction does not use a pointer grab any longer, and uses
+  a capture on the stage instead.
+
+• On all platforms which allow it, ClutterStage will ask the windowing
+  system for an explicit key focus when showing the stage window. This
+  can be disabled using clutter_stage_set_accept_focus().
 
 Release Notes for Clutter 1.4
 -------------------------------------------------------------------------------
