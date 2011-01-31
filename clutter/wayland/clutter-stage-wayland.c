@@ -93,7 +93,7 @@ wayland_create_buffer (ClutterGeometry *geom)
 					       geom->height,
 					       0,
 					       0,
-					       COGL_PIXEL_FORMAT_ARGB_8888);
+					       COGL_PIXEL_FORMAT_ARGB_8888_PRE);
   buffer->offscreen = cogl_offscreen_new_to_texture (buffer->tex);
 
   backend_wayland->export_drm_image (edpy, buffer->drm_image,
