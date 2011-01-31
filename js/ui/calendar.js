@@ -578,7 +578,7 @@ Calendar.prototype = {
             // Hack used in lieu of border-collapse - see gnome-shell.css
             if (row == 2)
                 styleClass = 'calendar-day-top ' + styleClass;
-            if (iter.getDay() == 0)
+            if (iter.getDay() == this._weekStart)
                 styleClass = 'calendar-day-left ' + styleClass;
 
             if (_sameDay(now, iter))
