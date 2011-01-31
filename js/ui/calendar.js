@@ -488,23 +488,45 @@ Calendar.prototype = {
 
     _onPrevMonthButtonClicked: function() {
         let newDate = new Date(this._selectedDate);
-        if (newDate.getMonth() == 0) {
+        let oldMonth = newDate.getMonth();
+        if (oldMonth == 0) {
             newDate.setMonth(11);
             newDate.setFullYear(newDate.getFullYear() - 1);
-        } else {
-            newDate.setMonth(newDate.getMonth() - 1);
+            if (newDate.getMonth() != 11) {
+                let day = 32 - new Date(newDate.getFullYear() - 1, 11, 32).getDate();
+                newDate = new Date(newDate.getFullYear() - 1, 11, day);
+            }
         }
+        else {
+            newDate.setMonth(oldMonth - 1);
+            if (newDate.getMonth() != oldMonth - 1) {
+                let day = 32 - new Date(newDate.getFullYear(), oldMonth - 1, 32).getDate();
+                newDate = new Date(newDate.getFullYear(), oldMonth - 1, day);
+            }
+        }
+
         this.setDate(newDate);
    },
 
-    _onNextMonthButtonClicked: function() {
+   _onNextMonthButtonClicked: function() {
         let newDate = new Date(this._selectedDate);
-        if (newDate.getMonth() == 11) {
+        let oldMonth = newDate.getMonth();
+        if (oldMonth == 11) {
             newDate.setMonth(0);
             newDate.setFullYear(newDate.getFullYear() + 1);
-        } else {
-            newDate.setMonth(newDate.getMonth() + 1);
+            if (newDate.getMonth() != 0) {
+                let day = 32 - new Date(newDate.getFullYear() + 1, 0, 32).getDate();
+                newDate = new Date(newDate.getFullYear() + 1, 0, day);
+            }
         }
+        else {
+            newDate.setMonth(oldMonth + 1);
+            if (newDate.getMonth() != oldMonth + 1) {
+                let day = 32 - new Date(newDate.getFullYear(), oldMonth + 1, 32).getDate();
+                newDate = new Date(newDate.getFullYear(), oldMonth + 1, day);
+            }
+        }
+
         this.setDate(newDate);
     },
 
