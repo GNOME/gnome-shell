@@ -99,7 +99,7 @@ shell_evolution_event_source_request_range (ShellEvolutionEventSource *source,
                                             gint64                     msec_begin,
                                             gint64                     msec_end)
 {
-  GDateTime *middle;
+  GDateTime *middle_utc, *middle;
 
   /* The CalendarClient type is a convenience wrapper on top of
    * Evolution Data Server. It is based on the assumption that only
@@ -112,7 +112,10 @@ shell_evolution_event_source_request_range (ShellEvolutionEventSource *source,
    * days before and after) it works out just fine.
    */
 
-  middle = g_date_time_new_from_unix_utc ((msec_begin + msec_end) / 2 / 1000);
+  middle_utc = g_date_time_new_from_unix_utc ((msec_begin + msec_end) / 2 / 1000);
+  /* CalendarClient uses localtime rather than UTC */
+  middle = g_date_time_to_local (middle_utc);
+  g_date_time_unref (middle_utc);
   g_date_time_get_ymd (middle, &source->req_year, &source->req_mon, NULL);
   g_date_time_unref (middle);
   calendar_client_select_month (source->client, source->req_mon - 1, source->req_year);
@@ -152,15 +155,22 @@ shell_evolution_event_source_get_events  (ShellEvolutionEventSource *source,
 {
   GList *result;
   GDateTime *cur_date;
-  GDateTime *begin_date;
-  GDateTime *end_date;
+  GDateTime *begin_date_utc, *begin_date;
+  GDateTime *end_date_utc, *end_date;
 
   g_return_val_if_fail (msec_begin <= msec_end, NULL);
 
   result = NULL;
 
-  begin_date = g_date_time_new_from_unix_utc (msec_begin / 1000);
-  end_date = g_date_time_new_from_unix_utc (msec_end / 1000);
+  begin_date_utc = g_date_time_new_from_unix_utc (msec_begin / 1000);
+  end_date_utc = g_date_time_new_from_unix_utc (msec_end / 1000);
+
+  /* CalendarClient uses localtime rather than UTC */
+  begin_date = g_date_time_to_local (begin_date_utc);
+  end_date = g_date_time_to_local (end_date_utc);
+  g_date_time_unref (begin_date_utc);
+  g_date_time_unref (end_date_utc);
+
   cur_date = g_date_time_ref (begin_date);
   do
     {
