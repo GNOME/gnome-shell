@@ -206,6 +206,31 @@
           <listitem>
 
             <formalpara>
+              <title>Object destruction:
+              <function>cb_button_destroy()</function></title>
+
+              <para><type>ClutterActor</type> subclasses based
+              on composition should implement the <function>destroy()</function>
+              virtual function. This is called on an actor when its
+              container is destroyed to clean up the resources
+              allocated to the actor; it also emits a
+              <emphasis>destroy</emphasis> signal which other code can
+              hook onto.</para>
+            </formalpara>
+
+            <para>In the case of <type>CbButton</type>, the
+            <function>destroy()</function> implementation calls
+            <function>clutter_actor_destroy()</function> on the child
+            <type>ClutterBox</type>, then sets that child to
+            <constant>NULL</constant>. Finally, it checks for a
+            <function>destroy()</function> implementation on the parent
+            class, then calls it if one exists.</para>
+
+          </listitem>
+
+          <listitem>
+
+            <formalpara>
               <title>Size requisition:
               <function>cb_button_get_preferred_height()</function>
               and <function>cb_button_get_preferred_width()</function></title>
