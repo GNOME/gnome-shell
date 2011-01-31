@@ -72,7 +72,9 @@
         heavily on GObject concepts and idioms. If you are unfamiliar with
         GObject, please read
         <ulink url="http://library.gnome.org/devel/gobject/unstable/">the GObject
-        Reference Manual</ulink> before proceeding.</para>
+        Reference Manual</ulink> before proceeding. You might also find
+        <ulink url="http://diuf.unifr.ch/pai/wiki/doku.php/research:projects:gobject_tutorial">this
+        tutorial</ulink> a useful introduction.</para>
       </tip>
 
       <para>The code for this solution is structured like standard GObject
