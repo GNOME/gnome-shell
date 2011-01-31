@@ -22,6 +22,10 @@ G_DEFINE_TYPE (CbButton, cb_button, CLUTTER_TYPE_ACTOR);
  * intend to create wrapper functions which modify properties on the
  * actors composing an object, we should keep a reference to the actors
  * here
+ *
+ * this is also the place where other state variables go:
+ * for example, you might record the current state of the button
+ * (toggled on or off) or a background image
  */
 struct _CbButtonPrivate
 {
