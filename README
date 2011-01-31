@@ -362,6 +362,29 @@ Release Notes for Clutter 1.6
   system for an explicit key focus when showing the stage window. This
   can be disabled using clutter_stage_set_accept_focus().
 
+Release Notes for Cogl 1.6
+-------------------------------------------------------------------------------
+
+• Cogl may internally optimise cogl_read_pixels when only a single
+  pixel is drawn and the entire scene is comprised of solid colour
+  rectangles. Instead of actually rendering the rectangles it will
+  compute the single pixel value in software. This effectively means
+  that Clutter can do software picking without any API changes.
+
+• Internally Cogl now has a GLSL backend as well as the ARBfp and
+  fixed function backends. By default, this backend has the lowest
+  priority but it can be explicitly enabled by setting the
+  COGL_DEBUG environment variable, e.g.:
+
+    export COGL_DEBUG=disable-fixed,disable-arbfp
+
+  for builds of Clutter with debug support enabled.
+
+• Cogl will internally now cache generated ARBfp programs so that it
+  should be able to reuse a previous program even if it was generated
+  for an unrelated CoglMaterial. This makes using one-shot materials
+  less expensive than before although it is still not recommended.
+
 Release Notes for Clutter 1.4
 -------------------------------------------------------------------------------
 
