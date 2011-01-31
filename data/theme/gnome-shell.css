@@ -261,21 +261,29 @@ StTooltip StLabel {
 }
 
 .workspace-controls {
-    width: 48px;
     font-size: 32px;
     font-weight: bold;
     color: #ffffff;
-    border: 2px solid rgba(128, 128, 128, 0.4);
+    border: 1px solid #424242;
     border-right: 0px;
     border-radius: 9px 0px 0px 9px;
+    background: #071524;
+}
+
+.workspace-thumbnails {
+    spacing: 7px;
+    padding: 8px;
+}
+
+.workspace-thumbnail-indicator {
+    outline: 2px solid white;
 }
 
 .add-workspace {
-    background-color: rgba(128, 128, 128, 0.4);
 }
 
 .add-workspace:hover {
-    background-color: rgba(128, 128, 128, 0.6);
+    background-color: rgba(128, 128, 128, 0.2);
 }
 
 .remove-workspace {
