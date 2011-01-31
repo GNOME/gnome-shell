@@ -58,32 +58,6 @@ static guint cb_button_signals[LAST_SIGNAL] = { 0, };
 
 /* from http://mail.gnome.org/archives/gtk-devel-list/2004-July/msg00158.html:
  *
- * "The dispose method is supposed to release any references to resources
- * when the object first knows it will be destroyed. The dispose method may
- * be called any number of times, and thus the code therein should be safe
- * in that case."
- */
-static void
-cb_button_dispose (GObject *gobject)
-{
-  CbButtonPrivate *priv = CB_BUTTON (gobject)->priv;
-
-  /* we just dispose of the child, and let its dispose()
-   * function deal with its children; note that we have a guard
-   * here in case the child has already been destroyed
-   */
-  if (priv->child)
-    {
-      clutter_actor_unparent (priv->child);
-      priv->child = NULL;
-    }
-
-  /* call the parent class' dispose() method */
-  G_OBJECT_CLASS (cb_button_parent_class)->dispose (gobject);
-}
-
-/* from http://mail.gnome.org/archives/gtk-devel-list/2004-July/msg00158.html:
- *
  * "The finalize method finishes releasing the remaining
  * resources just before the object itself will be freed from memory, and
  * therefore it will only be called once. The two step process helps break
@@ -149,9 +123,36 @@ cb_button_get_property (GObject    *gobject,
 
 /* ClutterActor implementation
  *
- * we only implement get_preferred_height(), get_preferred_width(),
+ * we only implement destroy(), get_preferred_height(), get_preferred_width(),
  * allocate(), and paint(), as this is the minimum we can get away with
  */
+
+/* composite actors should implement destroy(), and inside their
+ * implementation destroy any actors they are composed from;
+ * in this case, we just destroy the child ClutterBox
+ */
+static void
+cb_button_destroy (ClutterActor *self)
+{
+  CbButtonPrivate *priv = CB_BUTTON (self)->priv;
+
+  /* we just destroy the child, and let the child
+   * deal with destroying _its_ children; note that we have a guard
+   * here in case the child has already been destroyed
+   */
+  if (priv->child)
+    {
+      clutter_actor_destroy (priv->child);
+      priv->child = NULL;
+    }
+
+  /* chain up to destroy() on the parent ClutterActorClass;
+   * note that we check the parent class has a destroy() implementation
+   * before calling it
+   */
+  if (CLUTTER_ACTOR_CLASS (cb_button_parent_class)->destroy)
+    CLUTTER_ACTOR_CLASS (cb_button_parent_class)->destroy (self);
+}
 
 /* get_preferred_height and get_preferred_width defer to the
  * internal ClutterBox, adding 20px padding on each axis;
@@ -259,15 +260,15 @@ cb_button_class_init (CbButtonClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GParamSpec *pspec;
 
-  gobject_class->dispose = cb_button_dispose;
   gobject_class->finalize = cb_button_finalize;
   gobject_class->set_property = cb_button_set_property;
   gobject_class->get_property = cb_button_get_property;
 
-  actor_class->allocate = cb_button_allocate;
-  actor_class->paint = cb_button_paint;
+  actor_class->destroy = cb_button_destroy;
   actor_class->get_preferred_height = cb_button_get_preferred_height;
   actor_class->get_preferred_width = cb_button_get_preferred_width;
+  actor_class->allocate = cb_button_allocate;
+  actor_class->paint = cb_button_paint;
 
   g_type_class_add_private (klass, sizeof (CbButtonPrivate));
 
