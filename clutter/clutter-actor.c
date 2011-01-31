@@ -10774,7 +10774,7 @@ clutter_actor_push_internal (ClutterActor *self)
  * clutter_actor_pop_internal:
  * @self: a #ClutterActor
  *
- * Disables the effects of clutter_actor_pop_internal()
+ * Disables the effects of clutter_actor_push_internal()
  *
  * Since: 1.2
  */
