@@ -190,7 +190,13 @@ wayland_create_buffer (ClutterGeometry *geom)
   ClutterStageWaylandWaylandBuffer *buffer;
   cairo_rectangle_int_t rect;
 
-  buffer = wayland_create_drm_buffer (backend_wayland, geom);
+  if (backend_wayland->drm_enabled &&
+      backend_wayland->wayland_drm != NULL)
+    buffer = wayland_create_drm_buffer (backend_wayland, geom);
+  else if (backend_wayland->wayland_shm != NULL)
+    buffer = wayland_create_shm_buffer (backend_wayland, geom);
+  else
+    return NULL;
 
   buffer->offscreen = cogl_offscreen_new_to_texture (buffer->tex);
 

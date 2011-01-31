@@ -182,36 +182,9 @@ display_handle_global (struct wl_display *display,
 }
 
 static gboolean
-clutter_backend_wayland_post_parse (ClutterBackend  *backend,
-				    GError         **error)
+try_enable_drm (ClutterBackendWayland *backend_wayland, GError **error)
 {
-  ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
-  EGLBoolean status;
   drm_magic_t magic;
-
-  g_atexit (clutter_backend_at_exit);
-
-  /* TODO: expose environment variable/commandline option for this... */
-  backend_wayland->wayland_display = wl_display_connect (NULL);
-  if (!backend_wayland->wayland_display)
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Failed to open Wayland display socket");
-      return FALSE;
-    }
-
-  backend_wayland->wayland_source =
-    _clutter_event_source_wayland_new (backend_wayland->wayland_display);
-  g_source_attach (backend_wayland->wayland_source, NULL);
-
-  /* Set up listener so we'll catch all events. */
-  wl_display_add_global_listener (backend_wayland->wayland_display,
-                                  display_handle_global,
-                                  backend_wayland);
-
-  /* Process connection events. */
-  wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_READABLE);
 
   backend_wayland->drm_fd = open (backend_wayland->device_name, O_RDWR);
   if (backend_wayland->drm_fd < 0)
@@ -260,6 +233,51 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
 
   backend_wayland->edpy =
     backend_wayland->get_drm_display (backend_wayland->drm_fd);
+
+  return TRUE;
+};
+
+static gboolean
+clutter_backend_wayland_post_parse (ClutterBackend  *backend,
+				    GError         **error)
+{
+  ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
+  EGLBoolean status;
+
+  g_atexit (clutter_backend_at_exit);
+
+  /* TODO: expose environment variable/commandline option for this... */
+  backend_wayland->wayland_display = wl_display_connect (NULL);
+  if (!backend_wayland->wayland_display)
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+		   CLUTTER_INIT_ERROR_BACKEND,
+		   "Failed to open Wayland display socket");
+      return FALSE;
+    }
+
+  backend_wayland->wayland_source =
+    _clutter_event_source_wayland_new (backend_wayland->wayland_display);
+  g_source_attach (backend_wayland->wayland_source, NULL);
+
+  /* Set up listener so we'll catch all events. */
+  wl_display_add_global_listener (backend_wayland->wayland_display,
+                                  display_handle_global,
+                                  backend_wayland);
+
+  /* Process connection events. */
+  wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_READABLE);
+
+  backend_wayland->drm_enabled = try_enable_drm(backend_wayland, error);
+
+  if (!backend_wayland->drm_enabled) {
+    if (backend_wayland->wayland_shm == NULL)
+      return FALSE;
+
+    g_debug("Could not enable DRM buffers, falling back to SHM buffers");
+    g_clear_error(error);
+    backend_wayland->edpy = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+  }
 
   status = eglInitialize (backend_wayland->edpy,
 			  &backend_wayland->egl_version_major,
