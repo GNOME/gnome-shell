@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter_1.0 1.0.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-01-24 10:42+0000\n"
+"POT-Creation-Date: 2011-01-31 14:54+0000\n"
 "PO-Revision-Date: 2009-11-24 21:04+0100\n"
 "Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
@@ -427,7 +427,7 @@ msgid "Whether the meta is enabled"
 msgstr ""
 
 #: clutter/clutter-align-constraint.c:252
-#: clutter/clutter-bind-constraint.c:304 clutter/clutter-clone.c:322
+#: clutter/clutter-bind-constraint.c:316 clutter/clutter-clone.c:322
 msgid "Source"
 msgstr "Quelle"
 
@@ -453,7 +453,7 @@ msgid "The alignment factor, between 0.0 and 1.0"
 msgstr ""
 
 #: clutter/clutter-alpha.c:339 clutter/clutter-animation.c:523
-#: clutter/clutter-animator.c:1801
+#: clutter/clutter-animator.c:1802
 msgid "Timeline"
 msgstr "Zeitleiste"
 
@@ -489,7 +489,7 @@ msgstr ""
 msgid "The mode of the animation"
 msgstr "Animationsmodus"
 
-#: clutter/clutter-animation.c:494 clutter/clutter-animator.c:1785
+#: clutter/clutter-animation.c:494 clutter/clutter-animator.c:1786
 #: clutter/clutter-media.c:194 clutter/clutter-state.c:1282
 msgid "Duration"
 msgstr "Dauer"
@@ -520,11 +520,11 @@ msgstr "Alpha"
 msgid "The alpha used by the animation"
 msgstr ""
 
-#: clutter/clutter-animator.c:1786
+#: clutter/clutter-animator.c:1787
 msgid "The duration of the animation"
 msgstr "Die Dauer der Animation"
 
-#: clutter/clutter-animator.c:1802
+#: clutter/clutter-animator.c:1803
 msgid "The timeline of the animation"
 msgstr "Die Zeitleiste der Animation"
 
@@ -721,23 +721,23 @@ msgstr "Endskalierung Y"
 msgid "Final scale on the Y axis"
 msgstr "Finale Skalierung auf der Y-Achse"
 
-#: clutter/clutter-bind-constraint.c:305
+#: clutter/clutter-bind-constraint.c:317
 msgid "The source of the binding"
 msgstr ""
 
-#: clutter/clutter-bind-constraint.c:318
+#: clutter/clutter-bind-constraint.c:330
 msgid "Coordinate"
 msgstr "Koordinate"
 
-#: clutter/clutter-bind-constraint.c:319
+#: clutter/clutter-bind-constraint.c:331
 msgid "The coordinate to bind"
 msgstr ""
 
-#: clutter/clutter-bind-constraint.c:333
+#: clutter/clutter-bind-constraint.c:345
 msgid "Offset"
 msgstr ""
 
-#: clutter/clutter-bind-constraint.c:334
+#: clutter/clutter-bind-constraint.c:346
 msgid "The offset in pixels to apply to the binding"
 msgstr ""
 
@@ -782,7 +782,7 @@ msgid "The layout manager used by the box"
 msgstr ""
 
 #: clutter/clutter-box.c:514 clutter/clutter-rectangle.c:258
-#: clutter/clutter-stage.c:1310
+#: clutter/clutter-stage.c:1315
 msgid "Color"
 msgstr "Farbe"
 
@@ -1379,103 +1379,103 @@ msgstr ""
 msgid "The type of shader used"
 msgstr ""
 
-#: clutter/clutter-stage.c:1252
+#: clutter/clutter-stage.c:1257
 msgid "Fullscreen Set"
 msgstr ""
 
-#: clutter/clutter-stage.c:1253
+#: clutter/clutter-stage.c:1258
 msgid "Whether the main stage is fullscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1269
+#: clutter/clutter-stage.c:1274
 msgid "Offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1270
+#: clutter/clutter-stage.c:1275
 msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1282 clutter/clutter-text.c:2667
+#: clutter/clutter-stage.c:1287 clutter/clutter-text.c:2667
 msgid "Cursor Visible"
 msgstr ""
 
-#: clutter/clutter-stage.c:1283
+#: clutter/clutter-stage.c:1288
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr ""
 
-#: clutter/clutter-stage.c:1297
+#: clutter/clutter-stage.c:1302
 msgid "User Resizable"
 msgstr ""
 
-#: clutter/clutter-stage.c:1298
+#: clutter/clutter-stage.c:1303
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr ""
 
-#: clutter/clutter-stage.c:1311
+#: clutter/clutter-stage.c:1316
 msgid "The color of the stage"
 msgstr ""
 
-#: clutter/clutter-stage.c:1325
+#: clutter/clutter-stage.c:1330
 msgid "Perspective"
 msgstr ""
 
-#: clutter/clutter-stage.c:1326
+#: clutter/clutter-stage.c:1331
 msgid "Perspective projection parameters"
 msgstr ""
 
-#: clutter/clutter-stage.c:1341
+#: clutter/clutter-stage.c:1346
 msgid "Title"
 msgstr ""
 
-#: clutter/clutter-stage.c:1342
+#: clutter/clutter-stage.c:1347
 msgid "Stage Title"
 msgstr ""
 
-#: clutter/clutter-stage.c:1357
+#: clutter/clutter-stage.c:1362
 msgid "Use Fog"
 msgstr ""
 
-#: clutter/clutter-stage.c:1358
+#: clutter/clutter-stage.c:1363
 msgid "Whether to enable depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1372
+#: clutter/clutter-stage.c:1377
 msgid "Fog"
 msgstr ""
 
-#: clutter/clutter-stage.c:1373
+#: clutter/clutter-stage.c:1378
 msgid "Settings for the depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1389
+#: clutter/clutter-stage.c:1394
 msgid "Use Alpha"
 msgstr ""
 
-#: clutter/clutter-stage.c:1390
+#: clutter/clutter-stage.c:1395
 msgid "Whether to honour the alpha component of the stage color"
 msgstr ""
 
-#: clutter/clutter-stage.c:1406
+#: clutter/clutter-stage.c:1411
 msgid "Key Focus"
 msgstr ""
 
-#: clutter/clutter-stage.c:1407
+#: clutter/clutter-stage.c:1412
 msgid "The currently key focused actor"
 msgstr ""
 
-#: clutter/clutter-stage.c:1423
+#: clutter/clutter-stage.c:1428
 msgid "No Clear Hint"
 msgstr ""
 
-#: clutter/clutter-stage.c:1424
+#: clutter/clutter-stage.c:1429
 msgid "Whether the stage should clear its contents"
 msgstr ""
 
-#: clutter/clutter-stage.c:1437
+#: clutter/clutter-stage.c:1442
 msgid "Accept Focus"
 msgstr ""
 
-#: clutter/clutter-stage.c:1438
+#: clutter/clutter-stage.c:1443
 msgid "Whether the stage should accept focus on show"
 msgstr ""
 
