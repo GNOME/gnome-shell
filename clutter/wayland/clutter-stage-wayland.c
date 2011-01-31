@@ -28,7 +28,12 @@
 #include "config.h"
 #endif
 
+#include <fcntl.h>
+#include <glib.h>
+#include <glib/gstdio.h>
 #include <stdlib.h>
+#include <sys/mman.h>
+#include <unistd.h>
 #include <wayland-util.h>
 #include <wayland-client.h>
 #include <xf86drm.h>
@@ -83,6 +88,50 @@ get_visual (struct wl_display *display, CoglPixelFormat format)
     default:
       return NULL;
     }
+}
+static ClutterStageWaylandWaylandBuffer *
+wayland_create_shm_buffer (ClutterBackendWayland *backend_wayland,
+                           ClutterGeometry *geom)
+{
+  ClutterStageWaylandWaylandBufferSHM *buffer;
+  struct wl_visual *visual;
+  CoglTextureFlags flags = COGL_TEXTURE_NONE; /* XXX: tweak flags? */
+  CoglPixelFormat format = VISUAL_ARGB_PRE;
+  unsigned int stride;
+  int fd;
+  gchar tmp[] = "/tmp/clutter-wayland-shm-XXXXXX";
+
+  buffer = g_slice_new (ClutterStageWaylandWaylandBufferSHM);
+
+  buffer->buffer.type = BUFFER_TYPE_SHM;
+
+  /* XXX: can we query Cogl for what the stride should
+          be for a given format and width? */
+  stride = geom->width;
+  buffer->size = stride * geom->height;
+
+  fd = g_mkstemp_full(tmp, O_RDWR, 0600);
+  ftruncate(fd, buffer->size);
+  buffer->data = mmap(NULL, buffer->size, PROT_READ | PROT_WRITE,
+	              MAP_SHARED, fd, 0);
+
+  g_unlink(tmp);
+
+  buffer->buffer.tex = cogl_texture_new_from_data ((unsigned int)geom->width,
+					       (unsigned int)geom->height,
+					       flags, format,
+					       COGL_PIXEL_FORMAT_ANY,
+					       stride, buffer->data);
+
+  visual = get_visual (backend_wayland->wayland_display, format);
+  buffer->buffer.wayland_buffer =
+    wl_shm_create_buffer (backend_wayland->wayland_shm,
+                          fd,
+                          geom->width,
+                          geom->height,
+                          stride, visual);
+  close(fd);
+  return &buffer->buffer;
 }
 
 static ClutterStageWaylandWaylandBuffer *
@@ -155,6 +204,17 @@ wayland_create_buffer (ClutterGeometry *geom)
 }
 
 static void
+wayland_free_shm_buffer (ClutterStageWaylandWaylandBuffer *generic_buffer)
+{
+  ClutterStageWaylandWaylandBufferSHM *buffer;
+
+  buffer = (ClutterStageWaylandWaylandBufferSHM *)generic_buffer;
+
+  munmap(buffer->data, buffer->size);
+  g_slice_free (ClutterStageWaylandWaylandBufferSHM, buffer);
+}
+
+static void
 wayland_free_drm_buffer (ClutterStageWaylandWaylandBuffer *generic_buffer)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
@@ -178,6 +238,8 @@ wayland_free_buffer (ClutterStageWaylandWaylandBuffer *buffer)
 
   if (buffer->type == BUFFER_TYPE_DRM)
     wayland_free_drm_buffer(buffer);
+  else if (buffer->type == BUFFER_TYPE_SHM)
+    wayland_free_shm_buffer(buffer);
 }
 
 static void

@@ -52,6 +52,7 @@ typedef struct _ClutterStageWayland         ClutterStageWayland;
 typedef struct _ClutterStageWaylandClass    ClutterStageWaylandClass;
 
 #define BUFFER_TYPE_DRM 1
+#define BUFFER_TYPE_SHM 2
 
 typedef struct _ClutterStageWaylandWaylandBuffer
 {
@@ -68,6 +69,13 @@ typedef struct _ClutterStageWaylandWaylandBufferDRM
   EGLImageKHR drm_image;
   GLuint texture;
 } ClutterStageWaylandWaylandBufferDRM;
+
+typedef struct _ClutterStageWaylandWaylandBufferSHM
+{
+  ClutterStageWaylandWaylandBuffer buffer;
+  guint8 *data;
+  size_t size;
+} ClutterStageWaylandWaylandBufferSHM;
 
 struct _ClutterStageWayland
 {

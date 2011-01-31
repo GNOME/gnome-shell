@@ -175,6 +175,10 @@ display_handle_global (struct wl_display *display,
       wl_drm_add_listener (backend_wayland->wayland_drm,
                            &drm_listener, backend_wayland);
     }
+  else if (strcmp (interface, "shm") == 0)
+    {
+      backend_wayland->wayland_shm = wl_shm_create (display, id);
+    }
 }
 
 static gboolean
