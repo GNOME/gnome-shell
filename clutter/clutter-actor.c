@@ -7710,9 +7710,11 @@ invalidate_queue_redraw_entry (ClutterActor *self,
  *
  * Removes the parent of @self.
  *
- * This function should not be used in applications.  It should be called by
- * implementations of container actors, to dissociate a child from the
- * container.
+ * This function should not be used in applications.
+ *
+ * This function should only be called by implementations of the
+ * #ClutterContainer interface, or by composite actors that do
+ * not implicitly create their children.
  *
  * Since: 0.1.1
  */
