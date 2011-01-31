@@ -234,7 +234,6 @@ WorkspacesView.prototype = {
         } else {
             let currentTime = global.get_current_time();
             ws = global.screen.append_new_workspace(false, currentTime);
-            ws.activate(currentTime);
         }
 
         return ws;
