@@ -653,8 +653,10 @@ function WorkspacesDisplay() {
 
 WorkspacesDisplay.prototype = {
     _init: function() {
-        this.actor = new St.Group();
-        this.actor.set_size(0, 0);
+        this.actor = new Shell.GenericContainer();
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
 
         let controls = new St.BoxLayout({ vertical: true,
                                           style_class: 'workspace-controls' });
@@ -689,6 +691,7 @@ WorkspacesDisplay.prototype = {
 
         this._inDrag = false;
         this._zoomOut = false;
+        this._zoomFraction = 0;
 
         this._nWorkspacesNotifyId = 0;
         this._switchWorkspaceNotifyId = 0;
@@ -723,8 +726,7 @@ WorkspacesDisplay.prototype = {
 
         let totalAllocation = this.actor.allocation;
         let totalWidth = totalAllocation.x2 - totalAllocation.x1;
-        // XXXX: 50 is just a hack for message tray compensation
-        let totalHeight = totalAllocation.y2 - totalAllocation.y1 - 50;
+        let totalHeight = totalAllocation.y2 - totalAllocation.y1;
 
         let [controlsMin, controlsNatural] = this._controls.get_preferred_width(-1);
         let controlsReserved = controlsNatural * (1 - CONTROLS_POP_IN_FRACTION);
@@ -751,9 +753,6 @@ WorkspacesDisplay.prototype = {
 
         if (rtl)
             x += controlsReserved;
-
-        this._controls.x = this._getControlsX();
-        this._controls.height = totalHeight;
 
         let zoomScale = (totalWidth - controlsNatural) / totalWidth;
         let newView = new WorkspacesView(width, height, x, y, zoomScale, this._workspaces);
@@ -789,6 +788,7 @@ WorkspacesDisplay.prototype = {
         this._onRestacked();
         this._constrainThumbnailIndicator();
         this._zoomOut = false;
+        this._zoomFraction = 0;
         this._updateZoom();
     },
 
@@ -832,6 +832,51 @@ WorkspacesDisplay.prototype = {
             this._workspaces[w].destroy();
             this._workspaceThumbnails[w].destroy();
         }
+    },
+
+    // zoomFraction property allows us to tween the controls sliding in and out
+    set zoomFraction(fraction) {
+        this._zoomFraction = fraction;
+        this.actor.queue_relayout();
+    },
+
+    get zoomFraction() {
+        return this._zoomFraction;
+    },
+
+    _getPreferredWidth: function (actor, forHeight, alloc) {
+        // pass through the call in case the child needs it, but report 0x0
+        this._controls.get_preferred_width(forHeight);
+    },
+
+    _getPreferredHeight: function (actor, forWidth, alloc) {
+        // pass through the call in case the child needs it, but report 0x0
+        this._controls.get_preferred_height(forWidth);
+    },
+
+    _allocate: function (actor, box, flags) {
+        let childBox = new Clutter.ActorBox();
+
+        let totalWidth = box.x2 - box.x1;
+
+        // width of the controls
+        let [controlsMin, controlsNatural] = this._controls.get_preferred_width(box.y2 - box.y1);
+
+        // Amount of space on the screen we reserve for the visible control
+        let controlsReserved = controlsNatural * (1 - (1 - this._zoomFraction) * CONTROLS_POP_IN_FRACTION);
+
+        let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
+        if (rtl) {
+            childBox.x2 = controlsReserved;
+            childBox.x1 = childBox.x2 - controlsNatural;
+        } else {
+            childBox.x1 = totalWidth - controlsReserved;
+            childBox.x2 = childBox.x1 + controlsNatural;
+        }
+
+        childBox.y1 = 0;
+        childBox.y2 = box.y2- box.y1;
+        this._controls.allocate(childBox, flags);
     },
 
     _constrainThumbnailIndicator: function() {
@@ -945,20 +990,6 @@ WorkspacesDisplay.prototype = {
                                              lostWorkspaces);
     },
 
-    _getControlsX: function() {
-        let totalAllocation = this.actor.allocation;
-        let totalWidth = totalAllocation.x2 - totalAllocation.x1;
-        let [controlsMin, controlsNatural] = this._controls.get_preferred_width(-1);
-        let controlsReserved = controlsNatural * (1 - CONTROLS_POP_IN_FRACTION);
-
-        let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
-        let width = this._zoomOut ? controlsNatural : controlsReserved;
-        if (rtl)
-            return width;
-        else
-            return totalWidth - width;
-    },
-
     _updateZoom : function() {
         if (Main.overview.animationInProgress)
             return;
@@ -970,8 +1001,8 @@ WorkspacesDisplay.prototype = {
             if (!this.workspacesView)
                 return;
 
-            Tweener.addTween(this._controls,
-                             { x: this._getControlsX(),
+            Tweener.addTween(this,
+                             { zoomFraction: this._zoomOut ? 1 : 0,
                                time: WORKSPACE_SWITCH_TIME,
                                transition: 'easeOutQuad' });
 
