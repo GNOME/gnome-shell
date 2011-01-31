@@ -29,9 +29,18 @@ Clutter 1.6.0                                                        2011-01-31
 
     » Add debug code for tracing clipping in Cogl.
 
+    » Improve the OSX event loop, re-using the same implementation
+      as GDK. Also, provide simple, core-like device support.
+
+  • Bugs fixed since Clutter 1.5.14
+
+    #2490 - OS X backend event loop improved
+    #2530 - animator: Animator uses key after freeing it
+    #2534 - Incorrect description of function 'clutter_actor_pop_internal'
+
 Many thanks to:
 
-  Neil Roberts, Robert Bragg, Rob Bradford
+  Neil Roberts, Robert Bragg, Rob Bradford, Viatcheslav Gachkaylo
 
 Clutter 1.5.14                                                       2011-01-24
 ===============================================================================
