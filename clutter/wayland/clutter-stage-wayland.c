@@ -60,8 +60,7 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageWayland,
                                                 clutter_stage_window_iface_init));
 
 static ClutterStageWaylandWaylandBuffer *
-wayland_create_buffer (ClutterStageWayland *stage_wayland,
-                       ClutterGeometry *geom)
+wayland_create_buffer (ClutterGeometry *geom)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
@@ -104,8 +103,8 @@ wayland_create_buffer (ClutterStageWayland *stage_wayland,
   buffer->wayland_buffer =
     wl_drm_create_buffer (backend_wayland->wayland_drm,
                           name,
-                          stage_wayland->allocation.width,
-                          stage_wayland->allocation.height,
+                          geom->width,
+                          geom->height,
                           stride, visual);
 
   rect.x = geom->x;
@@ -171,7 +170,7 @@ clutter_stage_wayland_realize (ClutterStageWindow *stage_window)
   wl_surface_set_user_data (stage_wayland->wayland_surface, stage_wayland);
 
   stage_wayland->pick_buffer =
-    wayland_create_buffer (stage_wayland, &stage_wayland->allocation);
+    wayland_create_buffer (&stage_wayland->allocation);
 
   return TRUE;
 }
@@ -502,7 +501,7 @@ _clutter_stage_wayland_redraw (ClutterStageWayland *stage_wayland,
 
   if (!stage_wayland->back_buffer)
       stage_wayland->back_buffer =
-	wayland_create_buffer (stage_wayland, &stage_wayland->allocation);
+	wayland_create_buffer (&stage_wayland->allocation);
 
   cogl_set_framebuffer (stage_wayland->back_buffer->offscreen);
   _clutter_stage_maybe_setup_viewport (stage_wayland->wrapper);
