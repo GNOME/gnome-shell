@@ -4319,11 +4319,22 @@ clutter_actor_class_init (ClutterActorClass *klass)
 
   /**
    * ClutterActor::destroy:
-   * @actor: the object which received the signal
+   * @actor: the #ClutterActor which emitted the signal
    *
-   * The ::destroy signal is emitted when an actor is destroyed,
-   * either by direct invocation of clutter_actor_destroy() or
-   * when the #ClutterGroup that contains the actor is destroyed.
+   * The ::destroy signal notifies that all references held on the
+   * actor which emitted it should be released.
+   *
+   * The ::destroy signal should be used by all holders of a reference
+   * on @actor.
+   *
+   * This signal might result in the finalization of the #ClutterActor
+   * if all references are released.
+   *
+   * Composite actors and actors implementing the #ClutterContainer
+   * interface should override the default implementation of the
+   * class handler of this signal and call clutter_actor_destroy() on
+   * their children. When overriding the default class handler, it is
+   * required to chain up to the parent's implementation.
    *
    * Since: 0.2
    */
