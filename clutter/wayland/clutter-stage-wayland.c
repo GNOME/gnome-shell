@@ -59,6 +59,32 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageWayland,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init));
 
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+#define VISUAL_ARGB_PRE COGL_PIXEL_FORMAT_ARGB_8888_PRE
+#define VISUAL_ARGB     COGL_PIXEL_FORMAT_ARGB_8888
+#define VISUAL_RGB      COGL_PIXEL_FORMAT_RGB_888
+#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
+#define VISUAL_ARGB_PRE COGL_PIXEL_FORMAT_BGRA_8888_PRE
+#define VISUAL_ARGB     COGL_PIXEL_FORMAT_BGRA_8888
+#define VISUAL_RGB      COGL_PIXEL_FORMAT_BGR_888
+#endif
+
+static struct wl_visual *
+get_visual (struct wl_display *display, CoglPixelFormat format)
+{
+  switch (format)
+    {
+    case VISUAL_ARGB_PRE:
+      return wl_display_get_premultiplied_argb_visual (display);
+    case VISUAL_ARGB:
+      return wl_display_get_argb_visual (display);
+    case VISUAL_RGB:
+      return wl_display_get_rgb_visual (display);
+    default:
+      return NULL;
+    }
+}
+
 static ClutterStageWaylandWaylandBuffer *
 wayland_create_buffer (ClutterGeometry *geom)
 {
@@ -93,13 +119,12 @@ wayland_create_buffer (ClutterGeometry *geom)
 					       geom->height,
 					       0,
 					       0,
-					       COGL_PIXEL_FORMAT_ARGB_8888_PRE);
+					       VISUAL_ARGB_PRE);
   buffer->offscreen = cogl_offscreen_new_to_texture (buffer->tex);
 
   backend_wayland->export_drm_image (edpy, buffer->drm_image,
 				     &name, NULL, &stride);
-  visual =
-    wl_display_get_premultiplied_argb_visual (backend_wayland->wayland_display);
+  visual = get_visual (backend_wayland->wayland_display, VISUAL_ARGB_PRE);
   buffer->wayland_buffer =
     wl_drm_create_buffer (backend_wayland->wayland_drm,
                           name,
