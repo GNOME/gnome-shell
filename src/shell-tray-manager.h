@@ -4,6 +4,7 @@
 #define __SHELL_TRAY_MANAGER_H__
 
 #include <clutter/clutter.h>
+#include "st.h"
 
 G_BEGIN_DECLS
 
@@ -41,7 +42,8 @@ GType             shell_tray_manager_get_type     (void);
 
 ShellTrayManager *shell_tray_manager_new          (void);
 void              shell_tray_manager_manage_stage (ShellTrayManager *manager,
-                                                   ClutterStage     *stage);
+                                                   ClutterStage     *stage,
+                                                   StWidget         *theme_widget);
 
 G_END_DECLS
 

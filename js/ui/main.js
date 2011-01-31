@@ -144,7 +144,9 @@ function start() {
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     telepathyClient = new TelepathyClient.Client();
+
     panel.startStatusArea();
+    statusIconDispatcher.start(messageTray.actor);
 
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     ctrlAltTabManager.addGroup(panel.actor, _("Panel"), 'gnome-panel');

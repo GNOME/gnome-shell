@@ -31,13 +31,16 @@ StatusIconDispatcher.prototype = {
         this._traymanager = new Shell.TrayManager();
         this._traymanager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
         this._traymanager.connect('tray-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
-        this._traymanager.manage_stage(global.stage);
 
         // Yet-another-Ubuntu-workaround - we have to kill their
         // app-indicators, so that applications fall back to normal
         // status icons
         // http://bugzilla.gnome.org/show_bug.cgi=id=621382
         Util.killall('indicator-application-service');
+    },
+
+    start: function(themeWidget) {
+        this._traymanager.manage_stage(global.stage, themeWidget);
     },
 
     _onTrayIconAdded: function(o, icon) {

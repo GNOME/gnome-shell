@@ -857,13 +857,13 @@ StTooltip StLabel {
     background-gradient-start: rgba(0,0,0,0.01);
     background-gradient-end: rgba(0,0,0,0.95);
     height: 36px;
+    color: white;
 }
 
 #notification {
     font-size: 16px;
     border-radius: 5px 5px 0px 0px;
     background: rgba(0,0,0,0.9);
-    color: white;
     padding: 8px 8px 4px 8px;
     spacing-rows: 10px;
     spacing-columns: 10px;
@@ -1010,10 +1010,6 @@ StTooltip StLabel {
 #summary-mode {
     padding: 2px 0px 0px 4px;
     height: 36px;
-}
-
-.summary-source {
-    color: white;
 }
 
 .summary-source-button {
