@@ -19,21 +19,22 @@ const WORKSPACE_SWITCH_TIME = 0.25;
 // Note that mutter has a compile-time limit of 36
 const MAX_WORKSPACES = 16;
 
-const WORKSPACE_DRAGGING_SCALE = 0.85;
-
 
 const CONTROLS_POP_IN_FRACTION = 0.8;
 const CONTROLS_POP_IN_TIME = 0.1;
 
 
-function WorkspacesView(width, height, x, y, workspaces) {
-    this._init(width, height, x, y, workspaces);
+function WorkspacesView(width, height, x, y, zoomScale, workspaces) {
+    this._init(width, height, x, y, zoomScale, workspaces);
 }
 
 WorkspacesView.prototype = {
-    _init: function(width, height, x, y, workspaces) {
+    _init: function(width, height, x, y, zoomScale, workspaces) {
         this.actor = new St.Group({ style_class: 'workspaces-view' });
         this.actor.set_clip(x, y, width, height);
+
+        // The actor itself isn't a drop target, so we don't want to pick on its aea
+        this.actor.set_size(0, 0);
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
@@ -50,6 +51,7 @@ WorkspacesView.prototype = {
         this._height = height;
         this._x = x;
         this._y = y;
+        this._zoomScale = zoomScale;
         this._spacing = 0;
         this._activeWorkspaceX = 0; // x offset of active ws while dragging
         this._activeWorkspaceY = 0; // y offset of active ws while dragging
@@ -57,6 +59,7 @@ WorkspacesView.prototype = {
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
         this._animatingScroll = false; // programatically updating the adjustment
+        this._zoomOut = false; // zoom to a larger area
         this._inDrag = false; // dragging a window
 
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
@@ -263,6 +266,24 @@ WorkspacesView.prototype = {
                                        global.get_current_time());
     },
 
+    zoomOut: function() {
+        if (this._zoomOut)
+            return;
+
+        this._zoomOut = true;
+        this._computeWorkspacePositions();
+        this._updateWorkspaceActors(true);
+    },
+
+    zoomIn: function() {
+        if (!this._zoomOut)
+            return;
+
+        this._zoomOut = false;
+        this._computeWorkspacePositions();
+        this._updateWorkspaceActors(true);
+    },
+
     _handleDragOverNewWorkspace: function(source, dropActor, x, y, time) {
         if (source.realWindow)
             return DND.DragMotionResult.MOVE_DROP;
@@ -282,10 +303,8 @@ WorkspacesView.prototype = {
     // actually change the actors to match
     _computeWorkspacePositions: function() {
         let active = global.screen.get_active_workspace_index();
-
-        let scale = this._width / global.screen_width;
-        if (this._inDrag)
-            scale *= WORKSPACE_DRAGGING_SCALE;
+        let zoomScale = this._zoomOut ? this._zoomScale : 1;
+        let scale = zoomScale * this._width / global.screen_width;
 
         let _width = this._workspaces[0].actor.width * scale;
         let _height = this._workspaces[0].actor.height * scale;
@@ -300,9 +319,19 @@ WorkspacesView.prototype = {
 
             workspace.scale = scale;
             workspace.x = this._x + this._activeWorkspaceX;
-            workspace.y = this._y + this._activeWorkspaceY
-                              + (w - active) * (_height + this._spacing);
 
+            // We adjust the center because the zoomScale is to leave space for
+            // the expanded workspace control so we want to zoom to either the
+            // left part of the area or the right part of the area
+            let offset = 0.5 * (1 - this._zoomScale) * this._width;
+            let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
+            if (this._zoomOut)
+                workspace.x += rtl ? offset : - offset;
+
+            // We divide by zoomScale so that adjacent workspaces are always offscreen
+            // except when we are switching between workspaces
+            workspace.y = this._y + this._activeWorkspaceY
+                              + (w - active) * (_height + this._spacing) / zoomScale;
         }
     },
 
@@ -517,8 +546,6 @@ WorkspacesView.prototype = {
             return;
 
         this._inDrag = true;
-        this._computeWorkspacePositions();
-        this._updateWorkspaceActors(true);
 
         this._dragMonitor = {
             dragMotion: Lang.bind(this, this._onDragMotion)
@@ -607,8 +634,6 @@ WorkspacesView.prototype = {
         }
         DND.removeMonitor(this._dragMonitor);
         this._inDrag = false;
-        this._computeWorkspacePositions();
-        this._updateWorkspaceActors(true);
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setReservedSlot(null);
@@ -702,50 +727,13 @@ WorkspaceControlsContainer.prototype = {
         this.actor.add_actor(controls);
 
         this._controls = controls;
-        this._controls.reactive = true;
-        this._controls.track_hover = true;
-        this._controls.connect('notify::hover',
-                               Lang.bind(this, this._onHoverChanged));
-
-        this._itemDragBeginId = 0;
-        this._itemDragEndId = 0;
-        this._windowDragBeginId = 0;
-        this._windowDragEndId = 0;
     },
 
     show: function() {
-        if (this._itemDragBeginId == 0)
-            this._itemDragBeginId = Main.overview.connect('item-drag-begin',
-                                                          Lang.bind(this, this.popOut));
-        if (this._itemDragEndId == 0)
-            this._itemDragEndId = Main.overview.connect('item-drag-end',
-                                                        Lang.bind(this, this.popIn));
-        if (this._windowDragBeginId == 0)
-            this._windowDragBeginId = Main.overview.connect('window-drag-begin',
-                                                            Lang.bind(this, this.popOut));
-        if (this._windowDragEndId == 0)
-            this._windowDragEndId = Main.overview.connect('window-drag-end',
-                                                          Lang.bind(this, this.popIn));
         this._controls.x = this._poppedInX();
     },
 
     hide: function() {
-        if (this._itemDragBeginId > 0) {
-            Main.overview.disconnect(this._itemDragBeginId);
-            this._itemDragBeginId = 0;
-        }
-        if (this._itemEndBeginId > 0) {
-            Main.overview.disconnect(this._itemDragEndId);
-            this._itemDragEndId = 0;
-        }
-        if (this._windowDragBeginId > 0) {
-            Main.overview.disconnect(this._windowDragBeginId);
-            this._windowDragBeginId = 0;
-        }
-        if (this._windowDragEndId > 0) {
-            Main.overview.disconnect(this._windowDragEndId);
-            this._windowDragEndId = 0;
-        }
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
@@ -776,13 +764,6 @@ WorkspaceControlsContainer.prototype = {
         this._controls.allocate(childBox, flags);
     },
 
-    _onHoverChanged: function() {
-        if (this._controls.hover)
-            this.popOut();
-        else
-            this.popIn();
-    },
-
     _poppedInX: function() {
         let x = CONTROLS_POP_IN_FRACTION * this._controls.width;
         if (St.Widget.get_default_direction() == St.TextDirection.RTL)
@@ -797,12 +778,6 @@ WorkspaceControlsContainer.prototype = {
                            transition: 'easeOutQuad' });
     },
 
-    popIn: function() {
-        Tweener.addTween(this._controls,
-                         { x: this._poppedInX(),
-                           time: CONTROLS_POP_IN_TIME,
-                           transition: 'easeOutQuad' });
-    }
 };
 
 function WorkspacesDisplay() {
@@ -811,19 +786,18 @@ function WorkspacesDisplay() {
 
 WorkspacesDisplay.prototype = {
     _init: function() {
-        this.actor = new St.BoxLayout();
-
-        let workspacesBox = new St.BoxLayout({ vertical: true });
-        this.actor.add(workspacesBox, { expand: true });
-
-        // placeholder for window previews
-        this._workspacesBin = new St.Bin();
-        workspacesBox.add(this._workspacesBin, { expand: true });
+        this.actor = new St.Group();
+        this.actor.set_size(0, 0);
 
         let controls = new St.BoxLayout({ vertical: true,
                                           style_class: 'workspace-controls' });
-        this._controlsContainer = new WorkspaceControlsContainer(controls);
-        this.actor.add(this._controlsContainer.actor);
+        this._controls = controls;
+        this.actor.add_actor(controls);
+
+        controls.reactive = true;
+        controls.track_hover = true;
+        controls.connect('notify::hover',
+                         Lang.bind(this, this._onControlsHoverChanged));
 
         // Add/remove workspace buttons
         this._removeButton = new St.Button({ label: '&#8211;', // n-dash
@@ -850,11 +824,21 @@ WorkspacesDisplay.prototype = {
         controls.add(this._addButton, { expand: true });
 
         this.workspacesView = null;
+
+        this._inDrag = false;
+        this._zoomOut = false;
+
         this._nWorkspacesNotifyId = 0;
+        this._switchWorkspaceNotifyId = 0;
+
+        this._itemDragBeginId = 0;
+        this._itemDragEndId = 0;
+        this._windowDragBeginId = 0;
+        this._windowDragEndId = 0;
     },
 
    show: function() {
-        this._controlsContainer.show();
+        this._controls.show();
 
         this._workspaces = [];
         for (let i = 0; i < global.screen.n_workspaces; i++) {
@@ -862,29 +846,44 @@ WorkspacesDisplay.prototype = {
             this._workspaces[i] = new Workspace.Workspace(metaWorkspace);
         }
 
-        let binAllocation = this._workspacesBin.allocation;
-        let binWidth = binAllocation.x2 - binAllocation.x1;
-        let binHeight = binAllocation.y2 - binAllocation.y1;
+        let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
+
+        let totalAllocation = this.actor.allocation;
+        let totalWidth = totalAllocation.x2 - totalAllocation.x1;
+        // XXXX: 50 is just a hack for message tray compensation
+        let totalHeight = totalAllocation.y2 - totalAllocation.y1 - 50;
+
+        let [controlsMin, controlsNatural] = this._controls.get_preferred_width(-1);
+        let controlsReserved = controlsNatural * (1 - CONTROLS_POP_IN_FRACTION);
+
+        totalWidth -= controlsReserved;
 
         // Workspaces expect to have the same ratio as the screen, so take
-        // this into account when fitting the workspace into the bin
+        // this into account when fitting the workspace into the available space
         let width, height;
-        let binRatio = binWidth / binHeight;
+        let totalRatio = totalWidth / totalHeight;
         let wsRatio = global.screen_width / global.screen_height;
-        if (wsRatio > binRatio) {
-            width = binWidth;
-            height = Math.floor(binWidth / wsRatio);
+        if (wsRatio > totalRatio) {
+            width = totalWidth;
+            height = Math.floor(totalWidth / wsRatio);
         } else {
-            width = Math.floor(binHeight * wsRatio);
-            height = binHeight;
+            width = Math.floor(totalHeight * wsRatio);
+            height = totalHeight;
         }
 
-        // Position workspaces as if they were parented to this._workspacesBin
-        let [x, y] = this._workspacesBin.get_transformed_position();
-        x = Math.floor(x + Math.abs(binWidth - width) / 2);
-        y = Math.floor(y + Math.abs(binHeight - height) / 2);
+        // Position workspaces in the available space
+        let [x, y] = this.actor.get_transformed_position();
+        x = Math.floor(x + Math.abs(totalWidth - width) / 2);
+        y = Math.floor(y + Math.abs(totalHeight - height) / 2);
 
-        let newView = new WorkspacesView(width, height, x, y, this._workspaces);
+        if (rtl)
+            x += controlsReserved;
+
+        this._controls.x = this._getControlsX();
+        this._controls.height = totalHeight;
+
+        let zoomScale = (totalWidth - controlsNatural) / totalWidth;
+        let newView = new WorkspacesView(width, height, x, y, zoomScale, this._workspaces);
 
         if (this.workspacesView)
             this.workspacesView.destroy();
@@ -948,6 +947,57 @@ WorkspacesDisplay.prototype = {
         this.workspacesView.updateWorkspaces(oldNumWorkspaces,
                                              newNumWorkspaces,
                                              lostWorkspaces);
+    },
+
+    _getControlsX: function() {
+        let totalAllocation = this.actor.allocation;
+        let totalWidth = totalAllocation.x2 - totalAllocation.x1;
+        let [controlsMin, controlsNatural] = this._controls.get_preferred_width(-1);
+        let controlsReserved = controlsNatural * (1 - CONTROLS_POP_IN_FRACTION);
+
+        let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
+        let width = this._zoomOut ? controlsNatural : controlsReserved;
+        if (rtl)
+            return width;
+        else
+            return totalWidth - width;
+    },
+
+    _updateZoom : function() {
+        if (Main.overview.animationInProgress)
+            return;
+
+        let shouldZoom = this._controls.hover || this._inDrag;
+        if (shouldZoom != this._zoomOut) {
+            this._zoomOut = shouldZoom;
+
+            if (!this.workspacesView)
+                return;
+
+            Tweener.addTween(this._controls,
+                             { x: this._getControlsX(),
+                               time: WORKSPACE_SWITCH_TIME,
+                               transition: 'easeOutQuad' });
+
+            if (shouldZoom)
+                this.workspacesView.zoomOut();
+            else
+                this.workspacesView.zoomIn();
+        }
+    },
+
+    _onControlsHoverChanged: function() {
+        this._updateZoom();
+    },
+
+    _dragBegin: function() {
+        this._inDrag = true;
+        this._updateZoom();
+    },
+
+    _dragEnd: function() {
+        this._inDrag = false;
+        this._updateZoom();
     }
 };
 Signals.addSignalMethods(WorkspacesDisplay.prototype);
