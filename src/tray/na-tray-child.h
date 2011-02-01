@@ -25,7 +25,6 @@
 
 #include <gtk/gtk.h>
 #include <gtk/gtkx.h>
-#include <gdk/gdkx.h>
 
 G_BEGIN_DECLS
 

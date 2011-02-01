@@ -24,7 +24,6 @@
 
 #include "na-tray-child.h"
 
-#include <glib/gi18n-lib.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
@@ -173,9 +172,8 @@ na_tray_child_size_allocate (GtkWidget      *widget,
 }
 
 /* The plug window should completely occupy the area of the child, so we won't
- * get an expose event. But in case we do (the plug unmaps itself, say), this
+ * get a draw event. But in case we do (the plug unmaps itself, say), this
  * draw handler draws with real or fake transparency.
- * Copy-pasted from GtkTrayIcon.
  */
 static gboolean
 na_tray_child_draw (GtkWidget *widget,
@@ -419,7 +417,7 @@ na_tray_child_force_redraw (NaTrayChild *child)
       gtk_widget_get_allocation (widget, &allocation);
 
       xev.xexpose.type = Expose;
-      xev.xexpose.window = gdk_x11_window_get_xid (plug_window);
+      xev.xexpose.window = GDK_WINDOW_XID (plug_window);
       xev.xexpose.x = 0;
       xev.xexpose.y = 0;
       xev.xexpose.width = allocation.width;
@@ -427,14 +425,10 @@ na_tray_child_force_redraw (NaTrayChild *child)
       xev.xexpose.count = 0;
 
       gdk_error_trap_push ();
-      XSendEvent (GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (widget)),
+      XSendEvent (xdisplay,
                   xev.xexpose.window,
                   False, ExposureMask,
                   &xev);
-      /* We have to sync to reliably catch errors from the XSendEvent(),
-       * since that is asynchronous.
-       */
-      XSync (xdisplay, False);
       gdk_error_trap_pop_ignored ();
 #else
       /* Hiding and showing is the safe way to do it, but can result in more

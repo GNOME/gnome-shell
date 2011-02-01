@@ -26,7 +26,6 @@
 
 #include "na-tray-manager.h"
 
-#include <glib/gi18n-lib.h>
 #if defined (GDK_WINDOWING_X11)
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
@@ -97,6 +96,22 @@ na_tray_manager_init (NaTrayManager *manager)
 {
   manager->invisible = NULL;
   manager->socket_table = g_hash_table_new (NULL, NULL);
+
+  manager->fg.red = 0;
+  manager->fg.green = 0;
+  manager->fg.blue = 0;
+
+  manager->error.red = 0xffff;
+  manager->error.green = 0;
+  manager->error.blue = 0;
+
+  manager->warning.red = 0xffff;
+  manager->warning.green = 0xffff;
+  manager->warning.blue = 0;
+
+  manager->success.red = 0;
+  manager->success.green = 0xffff;
+  manager->success.blue = 0;
 }
 
 static void
@@ -565,11 +580,9 @@ na_tray_manager_set_orientation_property (NaTrayManager *manager)
   Atom        orientation_atom;
   gulong      data[1];
 
-  if (!manager->invisible)
-    return;
+  g_return_if_fail (manager->invisible != NULL);
   window = gtk_widget_get_window (manager->invisible);
-  if (!window)
-    return;
+  g_return_if_fail (window != NULL);
 
   display = gtk_widget_get_display (manager->invisible);
   orientation_atom = gdk_x11_get_xatom_by_name_for_display (display,
@@ -580,7 +593,7 @@ na_tray_manager_set_orientation_property (NaTrayManager *manager)
 		SYSTEM_TRAY_ORIENTATION_VERT;
 
   XChangeProperty (GDK_DISPLAY_XDISPLAY (display),
-		   gdk_x11_window_get_xid (window),
+		   GDK_WINDOW_XID (window),
                    orientation_atom,
 		   XA_CARDINAL, 32,
 		   PropModeReplace,
@@ -598,11 +611,9 @@ na_tray_manager_set_visual_property (NaTrayManager *manager)
   Atom        visual_atom;
   gulong      data[1];
 
-  if (!manager->invisible)
-    return;
+  g_return_if_fail (manager->invisible != NULL);
   window = gtk_widget_get_window (manager->invisible);
-  if (!window)
-    return;
+  g_return_if_fail (window != NULL);
 
   /* The visual property is a hint to the tray icons as to what visual they
    * should use for their windows. If the X server has RGBA colormaps, then
@@ -620,16 +631,61 @@ na_tray_manager_set_visual_property (NaTrayManager *manager)
       gdk_display_supports_composite (display))
     xvisual = GDK_VISUAL_XVISUAL (gdk_screen_get_rgba_visual (manager->screen));
   else
-    xvisual = GDK_VISUAL_XVISUAL (gdk_screen_get_system_visual (manager->screen));
+    {
+      /* We actually want the visual of the tray where the icons will
+       * be embedded. In almost all cases, this will be the same as the visual
+       * of the screen.
+       */
+      xvisual = GDK_VISUAL_XVISUAL (gdk_screen_get_system_visual (manager->screen));
+    }
 
   data[0] = XVisualIDFromVisual (xvisual);
 
   XChangeProperty (GDK_DISPLAY_XDISPLAY (display),
-                   gdk_x11_window_get_xid (window),
+                   GDK_WINDOW_XID (window),
                    visual_atom,
                    XA_VISUALID, 32,
                    PropModeReplace,
                    (guchar *) &data, 1);
+#endif
+}
+
+static void
+na_tray_manager_set_colors_property (NaTrayManager *manager)
+{
+#ifdef GDK_WINDOWING_X11
+  GdkWindow  *window;
+  GdkDisplay *display;
+  Atom        atom;
+  gulong      data[12];
+
+  g_return_if_fail (manager->invisible != NULL);
+  window = gtk_widget_get_window (manager->invisible);
+  g_return_if_fail (window != NULL);
+
+  display = gtk_widget_get_display (manager->invisible);
+  atom = gdk_x11_get_xatom_by_name_for_display (display,
+                                                "_NET_SYSTEM_TRAY_COLORS");
+
+  data[0] = manager->fg.red;
+  data[1] = manager->fg.green;
+  data[2] = manager->fg.blue;
+  data[3] = manager->error.red;
+  data[4] = manager->error.green;
+  data[5] = manager->error.blue;
+  data[6] = manager->warning.red;
+  data[7] = manager->warning.green;
+  data[8] = manager->warning.blue;
+  data[9] = manager->success.red;
+  data[10] = manager->success.green;
+  data[11] = manager->success.blue;
+
+  XChangeProperty (GDK_DISPLAY_XDISPLAY (display),
+                   GDK_WINDOW_XID (window),
+                   atom,
+                   XA_CARDINAL, 32,
+                   PropModeReplace,
+                   (guchar *) &data, 12);
 #endif
 }
 
@@ -678,6 +734,7 @@ na_tray_manager_manage_screen_x11 (NaTrayManager *manager,
 
   na_tray_manager_set_orientation_property (manager);
   na_tray_manager_set_visual_property (manager);
+  na_tray_manager_set_colors_property (manager);
   
   window = gtk_widget_get_window (invisible);
 
@@ -703,7 +760,7 @@ na_tray_manager_manage_screen_x11 (NaTrayManager *manager,
       xev.data.l[0] = timestamp;
       xev.data.l[1] = gdk_x11_atom_to_xatom_for_display (display,
                                                          manager->selection_atom);
-      xev.data.l[2] = gdk_x11_window_get_xid (window);
+      xev.data.l[2] = GDK_WINDOW_XID (window);
       xev.data.l[3] = 0;	/* manager specific data */
       xev.data.l[4] = 0;	/* manager specific data */
 
@@ -809,6 +866,29 @@ na_tray_manager_set_orientation (NaTrayManager  *manager,
       na_tray_manager_set_orientation_property (manager);
 
       g_object_notify (G_OBJECT (manager), "orientation");
+    }
+}
+
+void
+na_tray_manager_set_colors (NaTrayManager *manager,
+                            GdkColor      *fg,
+                            GdkColor      *error,
+                            GdkColor      *warning,
+                            GdkColor      *success)
+{
+  g_return_if_fail (NA_IS_TRAY_MANAGER (manager));
+
+  if (!gdk_color_equal (&manager->fg, fg) ||
+      !gdk_color_equal (&manager->error, error) ||
+      !gdk_color_equal (&manager->warning, warning) ||
+      !gdk_color_equal (&manager->success, success))
+    {
+      manager->fg = *fg;
+      manager->error = *error;
+      manager->warning = *warning;
+      manager->success = *success;
+
+      na_tray_manager_set_colors_property (manager);
     }
 }
 
