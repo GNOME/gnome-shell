@@ -8,14 +8,14 @@ HTML_DIR = $(datadir)/gtk-doc/html
 TARGET_DIR = $(HTML_DIR)/clutter-cookbook
 
 XML_FILES = \
-	actors.xml		\
-	animations.xml		\
-	events.xml		\
-	introduction.xml	\
-	text.xml		\
-	textures.xml		\
-	layouts.xml		\
-	script.xml		\
+	$(srcdir)/actors.xml		\
+	$(srcdir)/animations.xml	\
+	$(srcdir)/events.xml		\
+	$(srcdir)/introduction.xml	\
+	$(srcdir)/text.xml		\
+	$(srcdir)/textures.xml		\
+	$(srcdir)/layouts.xml		\
+	$(srcdir)/script.xml		\
 	$(NULL)
 
 XSLTOPTS = \
@@ -25,46 +25,47 @@ XSLTOPTS = \
 	--stringparam  section.autolabel 1 			\
 	--stringparam gtkdoc.bookname "clutter-cookbook" 	\
 	--stringparam gtkdoc.version @CLUTTER_API_VERSION@ 	\
-	--stringparam callout.graphics 0	\
+	--stringparam callout.graphics 0			\
 	--path $(top_srcdir)/doc/common				\
 	--xinclude
 
 XSL_BASE_URI  = http://docbook.sourceforge.net/release/xsl/current
 XSL_XHTML_URI = $(XSL_BASE_URI)/xhtml/docbook.xsl
 
-HTML_FILES = html/*.html
-CSS_FILES = html/*.css
+HTML_FILES = $(top_builddir)/doc/cookbook/html/*.html
+CSS_FILES = $(top_builddir)/doc/cookbook/html/*.css
 IMAGE_FILES = \
-	images/clutter-logo.png \
-	images/textures-reflection.png \
-	images/actors-opacity.png \
-	images/actors-opacity-container-affects-opacity.png \
-	images/text-shadow.png \
-	images/textures-sub-texture.png \
-	images/layouts-stacking-diff-actor-sizes.png \
-	images/events-pointer-motion-stacking.png	\
-	images/layouts-bind-constraint-stage.png	\
+	$(srcdir)/images/clutter-logo.png \
+	$(srcdir)/images/textures-reflection.png \
+	$(srcdir)/images/actors-opacity.png \
+	$(srcdir)/images/actors-opacity-container-affects-opacity.png \
+	$(srcdir)/images/text-shadow.png \
+	$(srcdir)/images/textures-sub-texture.png \
+	$(srcdir)/images/layouts-stacking-diff-actor-sizes.png \
+	$(srcdir)/images/events-pointer-motion-stacking.png	\
+	$(srcdir)/images/layouts-bind-constraint-stage.png	\
 	$(NULL)
+
 VIDEO_FILES = \
-	videos/animations-fading-out.ogv \
-	videos/animations-fading-in-then-out.ogv \
-	videos/animations-rotating-x-minus-45.ogv \
-	videos/animations-rotating-y-45.ogv \
-	videos/animations-rotating-z-90.ogv \
-	videos/animations-rotating-x-minus-180-with-y-minus-96.ogv \
-	videos/animations-rotating-x-minus-180-with-z-minus-96.ogv \
-	videos/animations-rotating-x-centered.ogv \
-	videos/animations-rotating-y-centered.ogv \
-	videos/animations-rotating-z-centered.ogv \
-	videos/animations-rotating-container-reverses-direction.ogv \
-	videos/textures-split-go.ogv \
-	videos/events-mouse-scroll.ogv \
-	videos/textures-crossfade-two-textures.ogv \
-	videos/animations-complex.ogv \
-	videos/animations-reuse.ogv \
-	videos/animations-moving-anchors.ogv \
-	videos/animations-moving-depth.ogv \
-	videos/animations-looping.ogv \
+	$(srcdir)/videos/animations-fading-out.ogv \
+	$(srcdir)/videos/animations-fading-in-then-out.ogv \
+	$(srcdir)/videos/animations-rotating-x-minus-45.ogv \
+	$(srcdir)/videos/animations-rotating-y-45.ogv \
+	$(srcdir)/videos/animations-rotating-z-90.ogv \
+	$(srcdir)/videos/animations-rotating-x-minus-180-with-y-minus-96.ogv \
+	$(srcdir)/videos/animations-rotating-x-minus-180-with-z-minus-96.ogv \
+	$(srcdir)/videos/animations-rotating-x-centered.ogv \
+	$(srcdir)/videos/animations-rotating-y-centered.ogv \
+	$(srcdir)/videos/animations-rotating-z-centered.ogv \
+	$(srcdir)/videos/animations-rotating-container-reverses-direction.ogv \
+	$(srcdir)/videos/textures-split-go.ogv \
+	$(srcdir)/videos/events-mouse-scroll.ogv \
+	$(srcdir)/videos/textures-crossfade-two-textures.ogv \
+	$(srcdir)/videos/animations-complex.ogv \
+	$(srcdir)/videos/animations-reuse.ogv \
+	$(srcdir)/videos/animations-moving-anchors.ogv \
+	$(srcdir)/videos/animations-moving-depth.ogv \
+	$(srcdir)/videos/animations-looping.ogv \
 	$(NULL)
 
 EXTRA_DIST = \
@@ -76,7 +77,8 @@ EXTRA_DIST = \
 
 CLEANFILES = \
 	pdf-build.stamp \
-	html-build.stamp
+	html-build.stamp \
+	clutter-cookbook.html
 
 pdf-build.stamp: clutter-cookbook.xml $(XML_FILES)
 	SP_ENCODING=XML SP_CHARSET_FIXED=YES \
@@ -97,8 +99,8 @@ html-build.stamp: clutter-cookbook.xml $(XML_FILES)
 			cp $$file html/videos/ ; \
 		done \
 	fi && \
-	cp images/* html/images/ && \
-	cp examples/*.c html/examples/ && \
+	cp $(top_srcdir)/doc/cookbook/images/* html/images/ && \
+	cp $(top_srcdir)/doc/cookbook/examples/*.c html/examples/ && \
 	echo timestamp > $(@F)
 
 if ENABLE_PDFS
@@ -120,10 +122,12 @@ clean-local:
 	rm -f *.stamp
 
 uninstall-local:
+	@rm -rf $(DESTDIR)$(TARGET_DIR)
+	@rm -f $(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
 
 install-data-local:
-	installfiles=`echo ./html/*`; \
-	if test "$$installfiles" = './html/*'; \
+	installfiles=`echo $(top_builddir)/doc/cookbook/html/*`; \
+	if test "$$installfiles" = '$(top_builddir)/doc/cookbook/html/*'; \
 	then echo '-- Nothing to install' ; \
 	else \
 	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
@@ -134,7 +138,7 @@ install-data-local:
 	    fi \
 	  done; \
 	fi; \
-	if [ -d ./images ]; \
+	if [ -d $(top_srcdir)/doc/cookbook/images ]; \
 	then \
 	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images ; \
 	  for file in `ls $(IMAGE_FILES)`; do \
@@ -145,18 +149,18 @@ install-data-local:
 	    fi \
 	  done; \
 	fi; \
-	if [ -d ./videos ] && [[ "$(VIDEO_FILES)" != "" ]] ; \
+	if [ -d $(top_srcdir)/doc/cookbook/videos ]; \
 	then \
 	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/videos ; \
-    for file in `ls $(VIDEO_FILES)`; do \
-      if [ -f $$file ]; \
-      then \
-        basefile=`echo $$file | sed -e 's,^.*/,,'`; \
-        $(INSTALL_DATA) $$file $(DESTDIR)$(TARGET_DIR)/videos/$$basefile; \
-      fi \
-    done; \
+	  for file in `ls $(VIDEO_FILES)`; do \
+	    if [ -f $$file ]; \
+	    then \
+	      basefile=`echo $$file | sed -e 's,^.*/,,'`; \
+	      $(INSTALL_DATA) $$file $(DESTDIR)$(TARGET_DIR)/videos/$$basefile; \
+	    fi \
+	  done; \
 	fi; \
-	$(INSTALL_DATA) html/clutter-cookbook.devhelp $(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
+	$(INSTALL_DATA) $(top_builddir)/doc/cookbook/html/clutter-cookbook.devhelp $(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
 
 .PHONY : doc
 
