@@ -407,19 +407,14 @@ _cogl_features_available_private (CoglFeatureFlagsPrivate features)
  * _cogl_framebuffer_get_viewport* functions public.
  */
 void
-cogl_get_viewport (float v[4])
+cogl_get_viewport (float viewport[4])
 {
   CoglFramebuffer *framebuffer;
-  int viewport[4];
-  int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   framebuffer = _cogl_get_draw_buffer ();
   _cogl_framebuffer_get_viewport4fv (framebuffer, viewport);
-
-  for (i = 0; i < 4; i++)
-    v[i] = viewport[i];
 }
 
 void

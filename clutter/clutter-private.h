@@ -221,10 +221,16 @@ GType _clutter_layout_manager_get_child_meta_type (ClutterLayoutManager *manager
 
 void  _clutter_util_fully_transform_vertices (const CoglMatrix    *modelview,
                                               const CoglMatrix    *projection,
-                                              const int           *viewport,
+                                              const float         *viewport,
                                               const ClutterVertex *vertices_in,
                                               ClutterVertex       *vertices_out,
                                               int                  n_vertices);
+
+typedef struct _ClutterPlane
+{
+  CoglVector3 v0;
+  CoglVector3 n;
+} ClutterPlane;
 
 G_END_DECLS
 

@@ -115,7 +115,7 @@ struct _ClutterStagePrivate
   ClutterColor        color;
   ClutterPerspective  perspective;
   CoglMatrix          projection;
-  int                 viewport[4];
+  float               viewport[4];
   ClutterFog          fog;
 
   gchar              *title;
@@ -1880,14 +1880,19 @@ _clutter_stage_dirty_projection (ClutterStage *stage)
  * (XXX: If we were to make this API public then we might want to do
  *  add that property.)
  *
+ * Note: currently this interface only support integer precision
+ * offsets and sizes for viewports but the interface takes floats because
+ * OpenGL 4.0 has introduced floating point viewports which we might
+ * want to expose via this API eventually.
+ *
  * Since: 1.6
  */
 void
 _clutter_stage_set_viewport (ClutterStage *stage,
-                             int           x,
-                             int           y,
-                             int           width,
-                             int           height)
+                             float         x,
+                             float         y,
+                             float         width,
+                             float         height)
 {
   ClutterStagePrivate *priv;
 
@@ -1943,10 +1948,10 @@ _clutter_stage_dirty_viewport (ClutterStage *stage)
  */
 void
 _clutter_stage_get_viewport (ClutterStage *stage,
-                             int          *x,
-                             int          *y,
-                             int          *width,
-                             int          *height)
+                             float        *x,
+                             float        *y,
+                             float        *width,
+                             float        *height)
 {
   ClutterStagePrivate *priv;
 
@@ -2753,7 +2758,7 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
   if (priv->dirty_viewport)
     {
       CLUTTER_NOTE (PAINT,
-                    "Setting up the viewport { w:%d, h:%d }",
+                    "Setting up the viewport { w:%f, h:%f }",
                     priv->viewport[2], priv->viewport[3]);
 
       cogl_set_viewport (priv->viewport[0],

@@ -1968,7 +1968,7 @@ _clutter_actor_fully_transform_vertices (ClutterActor *self,
   ClutterActor *stage;
   CoglMatrix modelview;
   CoglMatrix projection;
-  int viewport[4];
+  float viewport[4];
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
@@ -11786,7 +11786,7 @@ clutter_actor_get_paint_box (ClutterActor    *self,
   const ClutterPaintVolume *pv;
   CoglMatrix modelview;
   CoglMatrix projection;
-  int viewport[4];
+  float viewport[4];
   ClutterPaintVolume projected_pv;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);

@@ -1251,13 +1251,15 @@ _math_matrix_translate (CoglMatrix *matrix, float x, float y, float z)
  * Transforms Normalized Device Coords to window/Z values.
  */
 void
-_math_matrix_viewport (CoglMatrix *matrix, int x, int y, int width, int height,
+_math_matrix_viewport (CoglMatrix *matrix,
+                       float x, float y,
+                       float width, float height,
                        float zNear, float zFar, float depthMax)
 {
   float *m = (float *)matrix;
-  m[MAT_SX] = (float)width / 2.0f;
+  m[MAT_SX] = width / 2.0f;
   m[MAT_TX] = m[MAT_SX] + x;
-  m[MAT_SY] = (float) height / 2.0f;
+  m[MAT_SY] = height / 2.0f;
   m[MAT_TY] = m[MAT_SY] + y;
   m[MAT_SZ] = depthMax * ((zFar - zNear) / 2.0f);
   m[MAT_TZ] = depthMax * ((zFar - zNear) / 2.0f + zNear);

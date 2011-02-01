@@ -84,7 +84,7 @@ _clutter_gettext (const gchar *str)
 void
 _clutter_util_fully_transform_vertices (const CoglMatrix *modelview,
                                         const CoglMatrix *projection,
-                                        const int *viewport,
+                                        const float *viewport,
                                         const ClutterVertex *vertices_in,
                                         ClutterVertex *vertices_out,
                                         int n_vertices)

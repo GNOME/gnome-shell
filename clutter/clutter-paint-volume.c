@@ -651,7 +651,7 @@ void
 _clutter_paint_volume_project (ClutterPaintVolume *pv,
                                const CoglMatrix *modelview,
                                const CoglMatrix *projection,
-                               const int *viewport)
+                               const float *viewport)
 {
   int transform_count;
 

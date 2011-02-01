@@ -1552,7 +1552,7 @@ entry_to_screen_polygon (const CoglJournalEntry *entry,
   CoglMatrixStack *projection_stack;
   CoglMatrix projection;
   int i;
-  int viewport[4];
+  float viewport[4];
 
   poly[0] = vertices[0];
   poly[1] = vertices[1];

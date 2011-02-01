@@ -929,7 +929,7 @@ cogl_texture_set_region (CoglHandle       handle,
 static void
 do_texture_draw_and_read (CoglHandle   handle,
                           CoglBitmap  *target_bmp,
-                          GLint       *viewport)
+                          float       *viewport)
 {
   int         bpp;
   float       rx1, ry1;
@@ -1036,7 +1036,7 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
 {
   int        bpp;
   CoglFramebuffer *framebuffer;
-  int        viewport[4];
+  float viewport[4];
   CoglBitmap *alpha_bmp;
   CoglMatrixStack *projection_stack;
   CoglMatrixStack *modelview_stack;
@@ -1064,10 +1064,10 @@ _cogl_texture_draw_and_read (CoglHandle   handle,
   _cogl_matrix_stack_push (projection_stack);
   _cogl_matrix_stack_load_identity (projection_stack);
   _cogl_matrix_stack_ortho (projection_stack,
-                            0, (float)(viewport[2]),
-                            (float)(viewport[3]), 0,
-                            (float)(0),
-                            (float)(100));
+                            0, viewport[2],
+                            viewport[3], 0,
+                            0,
+                            100);
 
   modelview_stack = _cogl_framebuffer_get_modelview_stack (framebuffer);
   _cogl_matrix_stack_push (modelview_stack);

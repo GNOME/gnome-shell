@@ -113,7 +113,7 @@ void                _clutter_paint_volume_transform            (ClutterPaintVolu
 void                _clutter_paint_volume_project              (ClutterPaintVolume *pv,
                                                                 const CoglMatrix   *modelview,
                                                                 const CoglMatrix   *projection,
-                                                                const int          *viewport);
+                                                                const float        *viewport);
 void                _clutter_paint_volume_get_bounding_box     (ClutterPaintVolume *pv,
                                                                 ClutterActorBox    *box);
 void                _clutter_paint_volume_axis_align           (ClutterPaintVolume *pv);

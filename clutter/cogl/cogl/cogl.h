@@ -1281,9 +1281,6 @@ _cogl_check_extension (const char *name, const char *ext);
 void
 _cogl_set_indirect_context  (gboolean indirect);
 
-void
-_cogl_set_viewport (int x, int y, int width, int height);
-
 gboolean
 _cogl_check_driver_valid (GError **error);
 

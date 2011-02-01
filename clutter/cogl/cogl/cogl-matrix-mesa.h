@@ -134,7 +134,7 @@ _math_matrix_frustum (CoglMatrix *matrix,
 
 void
 _math_matrix_viewport (CoglMatrix *matrix,
-                       int x, int y, int width, int height,
+                       float x, float y, float width, float height,
                        float z_near, float z_far, float depth_max);
 
 void
