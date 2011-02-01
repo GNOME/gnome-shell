@@ -129,7 +129,8 @@ cogl_vertex_buffer_get_n_vertices (CoglHandle handle);
  *   must remain valid until you either call cogl_vertex_buffer_submit() or
  *   issue a draw call.
  *
- * Adds an attribute to a buffer.
+ * Adds an attribute to a buffer, or replaces a previously added
+ * attribute with the same name.
  *
  * You either can use one of the built-in names such as "gl_Vertex", or
  * "gl_MultiTexCoord0" to add standard attributes, like positions, colors
