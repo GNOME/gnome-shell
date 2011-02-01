@@ -130,7 +130,10 @@ cogl_matrix_init_identity (CoglMatrix *matrix);
  * @b: A 4x4 transformation matrix
  *
  * Multiplies the two supplied matrices together and stores
- * the resulting matrix inside @result
+ * the resulting matrix inside @result.
+ *
+ * <note>It is possible to multiply the @a matrix in-place, so
+ * @result can be equal to @a but can't be equal to @b.</note>
  */
 void
 cogl_matrix_multiply (CoglMatrix *result,
