@@ -67,8 +67,8 @@ let xdndHandler = null;
 let statusIconDispatcher = null;
 let _errorLogStack = [];
 let _startDate;
-let _default_css_stylesheet = null;
-let _css_stylesheet = null;
+let _defaultCssStylesheet = null;
+let _cssStylesheet = null;
 
 let background = null;
 
@@ -113,7 +113,7 @@ function start() {
     global.stage.color = DEFAULT_BACKGROUND_COLOR;
     global.stage.no_clear_hint = true;
 
-    _default_css_stylesheet = global.datadir + '/theme/gnome-shell.css';
+    _defaultCssStylesheet = global.datadir + '/theme/gnome-shell.css';
     loadTheme();
 
     let shellwm = global.window_manager;
@@ -217,19 +217,19 @@ function start() {
  */
 function getThemeStylesheet()
 {
-    return _css_stylesheet;
+    return _cssStylesheet;
 }
 
 /**
  * setThemeStylesheet:
- * @css_stylesheet: A file path that contains the theme CSS,
+ * @cssStylesheet: A file path that contains the theme CSS,
  *                  set it to null to use the default
  *
  * Set the theme CSS file that the shell will load
  */
-function setThemeStylesheet(css_stylesheet)
+function setThemeStylesheet(cssStylesheet)
 {
-    _css_stylesheet = css_stylesheet;
+    _cssStylesheet = cssStylesheet;
 }
 
 /**
@@ -240,11 +240,11 @@ function setThemeStylesheet(css_stylesheet)
 function loadTheme() {
     let themeContext = St.ThemeContext.get_for_stage (global.stage);
 
-    let css_stylesheet = _default_css_stylesheet;
-    if (_css_stylesheet != null)
-        css_stylesheet = _css_stylesheet;
+    let cssStylesheet = _defaultCssStylesheet;
+    if (_cssStylesheet != null)
+        cssStylesheet = _cssStylesheet;
 
-    let theme = new St.Theme ({ application_stylesheet: css_stylesheet });
+    let theme = new St.Theme ({ application_stylesheet: cssStylesheet });
     themeContext.set_theme (theme);
 }
 
