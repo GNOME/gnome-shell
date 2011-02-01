@@ -25,6 +25,7 @@
 #include "meta-window-actor-private.h"
 
 enum {
+  POSITION_CHANGED,
   SIZE_CHANGED,
   LAST_SIGNAL
 };
@@ -284,6 +285,13 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
                                    PROP_SHADOW_CLASS,
                                    pspec);
 
+  signals[POSITION_CHANGED] =
+    g_signal_new ("position-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
   signals[SIZE_CHANGED] =
     g_signal_new ("size-changed",
                   G_TYPE_FROM_CLASS (klass),
@@ -1332,6 +1340,8 @@ meta_window_actor_sync_actor_position (MetaWindowActor *self)
                               window_rect.x, window_rect.y);
   clutter_actor_set_size (CLUTTER_ACTOR (self),
                           window_rect.width, window_rect.height);
+
+  g_signal_emit (self, signals[POSITION_CHANGED], 0);
 }
 
 void
