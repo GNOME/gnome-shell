@@ -550,8 +550,6 @@ clutter_event_set_device (ClutterEvent       *event,
       ClutterEventPrivate *real_event = (ClutterEventPrivate *) event;
 
       real_event->device = device;
-
-      return;
     }
 
   switch (event->type)
