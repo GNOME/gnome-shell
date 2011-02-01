@@ -1475,15 +1475,32 @@ cogl_vertex_buffer_submit (CoglHandle handle)
 
 typedef struct
 {
+  /* We have a ref-count on this private structure because we need to
+     refer to it both from the private data on a pipeline and any weak
+     pipelines that we create from it. If we didn't have the ref count
+     then we would depend on the order of destruction of a
+     CoglPipeline and the weak materials to avoid a crash */
+  unsigned int ref_count;
+
   CoglPipeline *real_source;
 } VertexBufferMaterialPrivate;
 
 static void
+unref_pipeline_priv (VertexBufferMaterialPrivate *priv)
+{
+  if (--priv->ref_count < 1)
+    g_slice_free (VertexBufferMaterialPrivate, priv);
+}
+
+static void
 weak_override_source_destroyed_cb (CoglPipeline *pipeline,
-                 void *user_data)
+                                   void *user_data)
 {
   VertexBufferMaterialPrivate *pipeline_priv = user_data;
   pipeline_priv->real_source = NULL;
+  /* A reference was added when we copied the weak material so we need
+     to unref it here */
+  unref_pipeline_priv (pipeline_priv);
 }
 
 static gboolean
@@ -1531,10 +1548,13 @@ validate_layer_cb (CoglPipeline *pipeline,
       if (need_override_source)
         {
           if (pipeline_priv->real_source == pipeline)
-            pipeline_priv->real_source = source =
-              _cogl_pipeline_weak_copy (pipeline,
-                                        weak_override_source_destroyed_cb,
-                                        pipeline_priv);
+            {
+              pipeline_priv->ref_count++;
+              pipeline_priv->real_source = source =
+                _cogl_pipeline_weak_copy (pipeline,
+                                          weak_override_source_destroyed_cb,
+                                          pipeline_priv);
+            }
 
           cogl_pipeline_set_layer_wrap_mode_s (source, layer_index, wrap_s);
           cogl_pipeline_set_layer_wrap_mode_t (source, layer_index, wrap_t);
@@ -1548,7 +1568,7 @@ validate_layer_cb (CoglPipeline *pipeline,
 static void
 destroy_pipeline_priv_cb (void *user_data)
 {
-  g_slice_free (VertexBufferMaterialPrivate, user_data);
+  unref_pipeline_priv (user_data);
 }
 
 static void
@@ -1581,6 +1601,7 @@ update_primitive_and_draw (CoglVertexBuffer *buffer,
   if (G_UNLIKELY (!pipeline_priv))
     {
       pipeline_priv = g_slice_new0 (VertexBufferMaterialPrivate);
+      pipeline_priv->ref_count = 1;
       cogl_object_set_user_data (COGL_OBJECT (users_source),
                                  &_cogl_vertex_buffer_pipeline_priv_key,
                                  pipeline_priv,
