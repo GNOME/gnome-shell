@@ -2186,35 +2186,24 @@ clutter_stage_read_pixels (ClutterStage *stage,
                            gint          width,
                            gint          height)
 {
+  ClutterGeometry geom;
   guchar *pixels;
-  GLint   viewport[4];
-  gint    rowstride;
-  gint    stage_width, stage_height;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
-
-  /* according to glReadPixels documentation pixels outside the viewport are
-   * undefined, but no error should be provoked, thus this is probably unnneed.
-   */
-  g_return_val_if_fail (x >= 0 && y >= 0, NULL);
 
   /* Force a redraw of the stage before reading back pixels */
   clutter_stage_ensure_current (stage);
   clutter_actor_paint (CLUTTER_ACTOR (stage));
 
-  glGetIntegerv (GL_VIEWPORT, viewport);
-  stage_width  = viewport[2];
-  stage_height = viewport[3];
+  clutter_actor_get_allocation_geometry (CLUTTER_ACTOR (stage), &geom);
 
-  if (width < 0 || width > stage_width)
-    width = stage_width;
+  if (width < 0)
+    width = geom.width;
 
-  if (height < 0 || height > stage_height)
-    height = stage_height;
+  if (height < 0)
+    height = geom.height;
 
-  rowstride = width * 4;
-
-  pixels  = g_malloc (height * rowstride);
+  pixels = g_malloc (height * width * 4);
 
   cogl_read_pixels (x, y, width, height,
                     COGL_READ_PIXELS_COLOR_BUFFER,
