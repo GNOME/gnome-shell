@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-27 03:33+0100\n"
-"PO-Revision-Date: 2011-01-26 21:02+0100\n"
+"POT-Creation-Date: 2011-02-01 02:40+0100\n"
+"PO-Revision-Date: 2011-02-01 02:44+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -79,8 +79,8 @@ msgstr "Se é verdadeiro, móstrase a data da semana ISO no calendario."
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Mostra os ID de ficheiros desktop para os aplicativos preferidos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
-#, fuzzy
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -89,31 +89,35 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
 msgstr ""
 "Estabelece a tubería GStreamer usada para codificar gravacións. Segue a "
 "sintaxe usada para gst-launch. A tubería debería ter un sumideiro («sink») "
-"de ensamblaxe/desensamblaxe onde o vídeo que se está gravando grávase. "
-"Xeralmente terá unha orixe de ensamblado/desensamblado; a saída dese punto "
-"escribirase no ficheiro de saída. Porén, a tubería tamén pode tomar parte na "
-"súa propia saída; isto pódese usar para enviar a saída a un servidor "
-"«icecast» a través de shout2send ou similar. Cando non está estabelecido ou "
-"está a un valor baleiro, usarase a tubería predeterminada. Actualmente é "
-"«videorate ! theoraenc ! oggmux» e grava en Ogg Theora."
+"de ensamblaxe/desensamblaxe onde o vídeo gravado se grava. Xeralmente terá "
+"unha orixe de ensamblado/desensamblado; a saída dese punto escribirase no "
+"ficheiro de saída. Porén, a tubería tamén pode tomar parte na súa propia "
+"saída; isto pódese usar para enviar a saída a un servidor «icecast» a través "
+"de shout2send ou similar. Cando non está estabelecido ou está a un valor "
+"baleiro, usarase a tubería predeterminada. Actualmente é «! vp8enc "
+"quality=10 speed=2 threads=%T ! queue ! webmmux'» e grava en WEBM usando o "
+"códec VP8. Úsase %T como suposición para o número de fillos óptimos no "
+"sistema."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Show date in clock"
 msgstr "Mostrar a data no reloxo"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show the week date in the calendar"
 msgstr "Mostrar a data da semana no calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show time with seconds"
 msgstr "Mostrar a hora con segundos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -121,7 +125,7 @@ msgstr ""
 "Os aplicativos que corresponden a estes identificadores mostraranse na área "
 "de preferidos."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -131,7 +135,7 @@ msgstr ""
 "baseado na data actual e usa esta extensión. Debería cambiar ao grabar nun "
 "formato de contedor diferente."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -139,11 +143,11 @@ msgstr ""
 "A taxa de marcos do screencast resultante grabado polo grabador de "
 "screencasts de GNOME Shell en marcos-por-segundo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "A tubería de gstreamer usada para codificar o screencast"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -155,15 +159,15 @@ msgstr ""
 "privados, vostede pode desactivar isto por motivos de privacidade. Teña en "
 "conta que facendo isto non eliminará os datos gardados."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Uuids of extensions to disable"
 msgstr "Os Uuid das extensións a desactivar"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Whether to collect stats about applications usage"
 msgstr "Indica se recoller estatísticas sobre o uso dos aplicativos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "disabled OpenSearch providers"
 msgstr "fornecedores de OpenSearch desactivados"
 
@@ -321,43 +325,47 @@ msgstr ""
 msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr "Anchura das liñas verticais e horizontais que contén o punto de mira."
 
+#: ../js/misc/util.js:86
+msgid "Command not found"
+msgstr "Orde non atopada"
+
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:108
+#: ../js/misc/util.js:113
 msgid "Could not parse command:"
 msgstr "Non foi posíbel analizar a orde:"
 
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:135
 msgid "No such application"
 msgstr "Non existe o aplicativo"
 
-#: ../js/misc/util.js:143 ../js/ui/runDialog.js:351
+#: ../js/misc/util.js:148
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Produciuse un fallo na execución de «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:155
+#: ../js/ui/appDisplay.js:164
 msgid "All"
 msgstr "Todos"
 
-#: ../js/ui/appDisplay.js:236
+#: ../js/ui/appDisplay.js:245
 msgid "APPLICATIONS"
 msgstr "APLICATIVOS"
 
-#: ../js/ui/appDisplay.js:266
+#: ../js/ui/appDisplay.js:275
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:563
+#: ../js/ui/appDisplay.js:572
 msgid "New Window"
 msgstr "Xanela nova"
 
-#: ../js/ui/appDisplay.js:567
+#: ../js/ui/appDisplay.js:576
 msgid "Remove from Favorites"
 msgstr "Eliminar dos favoritos"
 
-#: ../js/ui/appDisplay.js:568
+#: ../js/ui/appDisplay.js:577
 msgid "Add to Favorites"
 msgstr "Engadir aos favoritos"
 
@@ -482,71 +490,31 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageTray.js:1765
+#: ../js/ui/messageTray.js:1786
 msgid "System Information"
 msgstr "Información do sistema"
 
-#: ../js/ui/overview.js:75
+#: ../js/ui/overview.js:88
 msgid "Undo"
 msgstr "Desfacer"
 
-#: ../js/ui/overview.js:140
+#: ../js/ui/overview.js:159
 msgid "Windows"
 msgstr "Xanelas"
 
-#: ../js/ui/overview.js:143
+#: ../js/ui/overview.js:162
 msgid "Applications"
 msgstr "Aplicativos"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:479
+#: ../js/ui/panel.js:480
 #, c-format
 msgid "Quit %s"
 msgstr "Saír de %s"
 
-#. Translators: This is the time format with date used
-#. in 24-hour mode.
-#: ../js/ui/panel.js:564
-msgid "%a %b %e, %R:%S"
-msgstr "%a %e de %b, %R:%S"
-
-#: ../js/ui/panel.js:565
-msgid "%a %b %e, %R"
-msgstr "%a %e de %b, %R"
-
-#. Translators: This is the time format without date used
-#. in 24-hour mode.
-#: ../js/ui/panel.js:569
-msgid "%a %R:%S"
-msgstr "%a %R:%S"
-
-#: ../js/ui/panel.js:570
-msgid "%a %R"
-msgstr "%a %R"
-
-#. Translators: This is a time format with date used
-#. for AM/PM.
-#: ../js/ui/panel.js:577
-msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %e de %b, %H:%M:%S"
-
-#: ../js/ui/panel.js:578
-msgid "%a %b %e, %l:%M %p"
-msgstr "%a %e de %b, %H:%M"
-
-#. Translators: This is a time format without date used
-#. for AM/PM.
-#: ../js/ui/panel.js:582
-msgid "%a %l:%M:%S %p"
-msgstr "%a %H:%M:%S"
-
-#: ../js/ui/panel.js:583
-msgid "%a %l:%M %p"
-msgstr "%a %l:%M %p"
-
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:728
+#: ../js/ui/panel.js:614
 msgid "Activities"
 msgstr "Actividades"
 
@@ -701,7 +669,7 @@ msgstr "Produciuse un erro ao explorar o dispositivo"
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "O dispositivo solicitado non pode explorarse, o erro foi «%s»"
 
-#: ../js/ui/status/bluetooth.js:251 ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/bluetooth.js:251
 msgid "Keyboard Settings"
 msgstr "Configuracións do teclado"
 
@@ -775,6 +743,10 @@ msgstr "Introduza o PIN mencionado no dispositivo."
 #: ../js/ui/status/bluetooth.js:469
 msgid "OK"
 msgstr "Aceptar"
+
+#: ../js/ui/status/keyboard.js:78
+msgid "Localization Settings"
+msgstr "Configuracións do son"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -910,14 +882,14 @@ msgstr "%s rematou de iniarse"
 msgid "'%s' is ready"
 msgstr "«%s» está preparado"
 
-#: ../js/ui/workspacesView.js:244
+#: ../js/ui/workspacesView.js:243
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr ""
 "Non é posíbel engadir unha área de traballo nova porque chegouse ao límite "
 "de áreas de traballo."
 
-#: ../js/ui/workspacesView.js:260
+#: ../js/ui/workspacesView.js:259
 msgid "Can't remove the first workspace."
 msgstr "Non é posíbel quitar a primeira área de traballo."
 
@@ -943,32 +915,32 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/shell-global.c:1366
+#: ../src/shell-global.c:1365
 msgid "Less than a minute ago"
 msgstr "Hai menos dun minuto"
 
-#: ../src/shell-global.c:1370
+#: ../src/shell-global.c:1369
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "hai %d minuto"
 msgstr[1] "hai %d minutos"
 
-#: ../src/shell-global.c:1375
+#: ../src/shell-global.c:1374
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "hai %d hora"
 msgstr[1] "hai %d horas"
 
-#: ../src/shell-global.c:1380
+#: ../src/shell-global.c:1379
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "hai %d día"
 msgstr[1] "hai %d días"
 
-#: ../src/shell-global.c:1385
+#: ../src/shell-global.c:1384
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -999,9 +971,29 @@ msgstr "Buscar"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#~| msgid "Sound Settings"
-#~ msgid "Localization Settings"
-#~ msgstr "Configuracións do son"
+#~ msgid "%a %b %e, %R:%S"
+#~ msgstr "%a %e de %b, %R:%S"
+
+#~ msgid "%a %b %e, %R"
+#~ msgstr "%a %e de %b, %R"
+
+#~ msgid "%a %R:%S"
+#~ msgstr "%a %R:%S"
+
+#~ msgid "%a %R"
+#~ msgstr "%a %R"
+
+#~ msgid "%a %b %e, %l:%M:%S %p"
+#~ msgstr "%a %e de %b, %H:%M:%S"
+
+#~ msgid "%a %b %e, %l:%M %p"
+#~ msgstr "%a %e de %b, %H:%M"
+
+#~ msgid "%a %l:%M:%S %p"
+#~ msgstr "%a %H:%M:%S"
+
+#~ msgid "%a %l:%M %p"
+#~ msgstr "%a %l:%M %p"
 
 #~ msgid "Clock"
 #~ msgstr "Reloxo"
