@@ -1414,9 +1414,9 @@ cally_actor_add_action (CallyActor      *cally_actor,
  *
  * Return value: added action id, or -1 if failure
  *
- * Since: 1.6
- *
  * Rename to: cally_actor_add_action
+ *
+ * Since: 1.6
  */
 guint
 cally_actor_add_action_full (CallyActor          *cally_actor,
