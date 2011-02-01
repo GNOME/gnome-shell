@@ -133,7 +133,7 @@ struct _ClutterStagePrivate
 
   GArray             *paint_volume_stack;
 
-  const ClutterGeometry *current_paint_clip;
+  ClutterPlane        current_clip_planes[4];
 
   GList              *pending_queue_redraws;
 
@@ -380,6 +380,110 @@ clutter_stage_allocate (ClutterActor           *self,
     }
 }
 
+typedef struct _Vector4
+{
+  float x, y, z, w;
+} Vector4;
+
+static void
+_cogl_util_get_eye_planes_for_screen_poly (float *polygon,
+                                           int n_vertices,
+                                           float *viewport,
+                                           const CoglMatrix *projection,
+                                           const CoglMatrix *inverse_project,
+                                           ClutterPlane *planes)
+{
+  float Wc;
+  Vector4 *tmp_poly;
+  ClutterPlane *plane;
+  int i;
+  CoglVector3 b;
+  CoglVector3 c;
+  int count;
+
+  tmp_poly = g_alloca (sizeof (Vector4) * n_vertices * 2);
+
+#define DEPTH -50
+
+  /* Determine W in clip-space (Wc) for a point (0, 0, DEPTH, 1)
+   *
+   * Note: the depth could be anything except 0.
+   *
+   * We will transform the polygon into clip coordinates using this
+   * depth and then into eye coordinates. Our clip planes will be
+   * defined by triangles that extend between points of the polygon at
+   * DEPTH and corresponding points of the same polygon at DEPTH * 2.
+   *
+   * NB: Wc defines the position of the clip planes in clip
+   * coordinates. Given a screen aligned cross section through the
+   * frustum; coordinates range from [-Wc,Wc] left to right on the
+   * x-axis and [Wc,-Wc] top to bottom on the y-axis.
+   */
+  Wc = DEPTH * projection->wz + projection->ww;
+
+#define CLIP_X(X) ((((float)X - viewport[0]) * (2.0 / viewport[2])) - 1) * Wc
+#define CLIP_Y(Y) ((((float)Y - viewport[1]) * (2.0 / viewport[3])) - 1) * -Wc
+
+  for (i = 0; i < n_vertices; i++)
+    {
+      tmp_poly[i].x = CLIP_X (polygon[i * 2]);
+      tmp_poly[i].y = CLIP_Y (polygon[i * 2 + 1]);
+      tmp_poly[i].z = DEPTH;
+      tmp_poly[i].w = Wc;
+    }
+
+  Wc = DEPTH * 2 * projection->wz + projection->ww;
+
+  /* FIXME: technically we don't need to project all of the points
+   * twice, it would be enough project every other point since
+   * we can share points in this set to define the plane vectors. */
+  for (i = 0; i < n_vertices; i++)
+    {
+      tmp_poly[n_vertices + i].x = CLIP_X (polygon[i * 2]);
+      tmp_poly[n_vertices + i].y = CLIP_Y (polygon[i * 2 + 1]);
+      tmp_poly[n_vertices + i].z = DEPTH * 2;
+      tmp_poly[n_vertices + i].w = Wc;
+    }
+
+#undef CLIP_X
+#undef CLIP_Y
+
+  cogl_matrix_project_points (inverse_project,
+                              4,
+                              sizeof (Vector4),
+                              tmp_poly,
+                              sizeof (Vector4),
+                              tmp_poly,
+                              n_vertices * 2);
+
+  /* XXX: It's quite ugly that we end up with these casts between
+   * Vector4 types and CoglVector3s, it might be better if the
+   * cogl_vector APIs just took pointers to floats.
+   */
+
+  count = n_vertices - 1;
+  for (i = 0; i < count; i++)
+    {
+      plane = &planes[i];
+      plane->v0 = *(CoglVector3 *)&tmp_poly[i];
+      b = *(CoglVector3 *)&tmp_poly[n_vertices + i];
+      c = *(CoglVector3 *)&tmp_poly[n_vertices + i + 1];
+      cogl_vector3_subtract (&b, &b, &plane->v0);
+      cogl_vector3_subtract (&c, &c, &plane->v0);
+      cogl_vector3_cross_product (&plane->n, &b, &c);
+      cogl_vector3_normalize (&plane->n);
+    }
+
+  plane = &planes[n_vertices - 1];
+  plane->v0 = *(CoglVector3 *)&tmp_poly[0];
+  b = *(CoglVector3 *)&tmp_poly[2 * n_vertices - 1];
+  c = *(CoglVector3 *)&tmp_poly[n_vertices];
+  cogl_vector3_subtract (&b, &b, &plane->v0);
+  cogl_vector3_subtract (&c, &c, &plane->v0);
+  cogl_vector3_cross_product (&plane->n, &b, &c);
+  cogl_vector3_normalize (&plane->n);
+}
+
 /* This provides a common point of entry for painting the scenegraph
  * for picking or painting...
  *
@@ -392,10 +496,44 @@ void
 _clutter_stage_do_paint (ClutterStage *stage, const ClutterGeometry *clip)
 {
   ClutterStagePrivate *priv = stage->priv;
-  priv->current_paint_clip = clip;
+  float clip_poly[8];
+
+  if (clip)
+    {
+      clip_poly[0] = clip->x;
+      clip_poly[1] = clip->y;
+      clip_poly[2] = clip->x + clip->width;
+      clip_poly[3] = clip->y;
+      clip_poly[4] = clip->x + clip->width;
+      clip_poly[5] = clip->y + clip->height;
+      clip_poly[6] = clip->x;
+      clip_poly[7] = clip->y + clip->height;
+    }
+  else
+    {
+      ClutterGeometry geom;
+
+      _clutter_stage_window_get_geometry (priv->impl, &geom);
+
+      clip_poly[0] = 0;
+      clip_poly[1] = 0;
+      clip_poly[2] = geom.width;
+      clip_poly[3] = 0;
+      clip_poly[4] = geom.width;
+      clip_poly[5] = geom.height;
+      clip_poly[6] = 0;
+      clip_poly[7] = geom.height;
+    }
+
+  _cogl_util_get_eye_planes_for_screen_poly (clip_poly,
+                                             4,
+                                             priv->viewport,
+                                             &priv->projection,
+                                             &priv->inverse_projection,
+                                             priv->current_clip_planes);
+
   _clutter_stage_paint_volume_stack_free_all (stage);
   clutter_actor_paint (CLUTTER_ACTOR (stage));
-  priv->current_paint_clip = NULL;
 }
 
 static void
@@ -924,12 +1062,9 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
                                  ClutterActor *leaf)
 {
   ClutterStage *stage = CLUTTER_STAGE (actor);
-  ClutterStagePrivate *priv = stage->priv;
   ClutterStageWindow *stage_window;
   ClutterGeometry stage_clip;
-  const ClutterPaintVolume *redraw_clip;
-  ClutterPaintVolume projected_clip;
-  CoglMatrix modelview;
+  ClutterPaintVolume *redraw_clip;
   ClutterActorBox bounding_box;
 
   if (CLUTTER_ACTOR_IN_DESTRUCTION (actor))
@@ -948,9 +1083,8 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
       return;
     }
 
-  /* Convert the clip volume (which is in leaf actor coordinates) into stage
-   * coordinates and then into an axis aligned stage coordinates bounding
-   * box...
+  /* Convert the clip volume into stage coordinates and then into an
+   * axis aligned stage coordinates bounding box...
    */
 
   if (!_clutter_actor_get_queue_redraw_clip (leaf))
@@ -961,25 +1095,9 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
 
   redraw_clip = _clutter_actor_get_queue_redraw_clip (leaf);
 
-  _clutter_paint_volume_copy_static (redraw_clip, &projected_clip);
-
-  /* NB: _clutter_actor_apply_modelview_transform_recursive will never
-   * include the transformation between stage coordinates and OpenGL
-   * window coordinates, we have to explicitly use the
-   * stage->apply_transform to get that... */
-  cogl_matrix_init_identity (&modelview);
-  _clutter_actor_apply_modelview_transform (CLUTTER_ACTOR (stage), &modelview);
-  _clutter_actor_apply_modelview_transform_recursive (leaf, NULL, &modelview);
-
-  _clutter_paint_volume_project (&projected_clip,
-                                 &modelview,
-                                 &priv->projection,
-                                 priv->viewport);
-
-  _clutter_paint_volume_get_bounding_box (&projected_clip, &bounding_box);
-  clutter_paint_volume_free (&projected_clip);
-
-  clutter_actor_box_clamp_to_pixel (&bounding_box);
+  _clutter_paint_volume_get_stage_paint_box (redraw_clip,
+                                             stage,
+                                             &bounding_box);
 
   /* when converting to integer coordinates make sure we round the edges of the
    * clip rectangle outwards... */
@@ -3195,10 +3313,10 @@ _clutter_stage_paint_volume_stack_free_all (ClutterStage *stage)
 
 /* The is an out-of-band paramater available while painting that
  * can be used to cull actors. */
-const ClutterGeometry *
+const ClutterPlane *
 _clutter_stage_get_clip (ClutterStage *stage)
 {
-  return stage->priv->current_paint_clip;
+  return stage->priv->current_clip_planes;
 }
 
 /* When an actor queues a redraw we add it to a list on the stage that
@@ -3219,6 +3337,9 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
                                    ClutterPaintVolume *clip)
 {
   ClutterStagePrivate *priv = stage->priv;
+
+  CLUTTER_NOTE (CLIPPING, "stage_queue_actor_redraw (actor=%s, clip=%p): ",
+                G_OBJECT_TYPE_NAME (actor), clip);
 
   if (!priv->redraw_pending)
     {
@@ -3256,7 +3377,12 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
       /* Ignore all requests to queue a redraw for an actor if a full
        * (non-clipped) redraw of the actor has already been queued. */
       if (!entry->has_clip)
-        return entry;
+        {
+          CLUTTER_NOTE (CLIPPING, "Bail from stage_queue_actor_redraw (%s): "
+                        "Unclipped redraw of actor already queued",
+                        G_OBJECT_CLASS_NAME (actor));
+          return entry;
+        }
 
       /* If queuing a clipped redraw and a clipped redraw has
        * previously been queued for this actor then combine the latest
@@ -3278,7 +3404,7 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
       if (clip)
         {
           entry->has_clip = TRUE;
-          _clutter_paint_volume_init_static (actor, &entry->clip);
+          _clutter_paint_volume_init_static (&entry->clip, actor);
           _clutter_paint_volume_set_from_volume (&entry->clip, clip);
         }
       else

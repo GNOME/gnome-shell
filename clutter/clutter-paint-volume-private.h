@@ -23,11 +23,14 @@
 #define __CLUTTER_PAINT_VOLUME_PRIVATE_H__
 
 #include <clutter/clutter-types.h>
+#include <clutter/clutter-private.h>
 
 G_BEGIN_DECLS
 
 struct _ClutterPaintVolume
 {
+  /* A paint volume represents a volume in a given actors private
+   * coordinate system. */
   ClutterActor *actor;
 
   /* cuboid for the volume:
@@ -99,8 +102,8 @@ struct _ClutterPaintVolume
    */
 };
 
-void                _clutter_paint_volume_init_static          (ClutterActor *actor,
-                                                                ClutterPaintVolume *pv);
+void                _clutter_paint_volume_init_static          (ClutterPaintVolume *pv,
+                                                                ClutterActor *actor);
 ClutterPaintVolume *_clutter_paint_volume_new                  (ClutterActor       *actor);
 void                _clutter_paint_volume_copy_static          (const ClutterPaintVolume *src_pv,
                                                                 ClutterPaintVolume *dst_pv);
@@ -119,6 +122,16 @@ void                _clutter_paint_volume_get_bounding_box     (ClutterPaintVolu
 void                _clutter_paint_volume_axis_align           (ClutterPaintVolume *pv);
 void                _clutter_paint_volume_set_reference_actor  (ClutterPaintVolume *pv,
                                                                 ClutterActor *actor);
+
+ClutterCullResult   _clutter_paint_volume_cull                 (ClutterPaintVolume *pv,
+                                                                const ClutterPlane       *planes);
+
+void                _clutter_paint_volume_get_stage_paint_box  (ClutterPaintVolume *pv,
+                                                                ClutterStage *stage,
+                                                                ClutterActorBox *box);
+
+void                _clutter_paint_volume_transform_relative   (ClutterPaintVolume *pv,
+                                                                ClutterActor *relative_to_ancestor);
 
 G_END_DECLS
 

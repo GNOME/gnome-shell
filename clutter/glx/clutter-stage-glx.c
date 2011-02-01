@@ -425,6 +425,12 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
 
   if (use_clipped_redraw)
     {
+      CLUTTER_NOTE (CLIPPING,
+                    "Stage clip pushed: x=%d, y=%d, width=%d, height=%d\n",
+                    stage_glx->bounding_redraw_clip.x,
+                    stage_glx->bounding_redraw_clip.y,
+                    stage_glx->bounding_redraw_clip.width,
+                    stage_glx->bounding_redraw_clip.height);
       cogl_clip_push_window_rectangle (stage_glx->bounding_redraw_clip.x,
                                        stage_glx->bounding_redraw_clip.y,
                                        stage_glx->bounding_redraw_clip.width,
@@ -434,7 +440,10 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
       cogl_clip_pop ();
     }
   else
-    _clutter_stage_do_paint (stage_x11->wrapper, NULL);
+    {
+      CLUTTER_NOTE (CLIPPING, "Unclipped stage paint\n");
+      _clutter_stage_do_paint (stage_x11->wrapper, NULL);
+    }
 
   if (may_use_clipped_redraw &&
       G_UNLIKELY ((clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS)))

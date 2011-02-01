@@ -411,7 +411,7 @@ struct _ClutterActorPrivate
   guint has_pointer                 : 1;
   guint propagated_one_redraw       : 1;
   guint paint_volume_valid          : 1;
-  guint last_paint_box_valid        : 1;
+  guint last_paint_volume_valid     : 1;
   guint in_clone_paint              : 1;
 
   gfloat clip[4];
@@ -460,7 +460,7 @@ struct _ClutterActorPrivate
    * of the QUEUE_REDRAW signal. It's an out-of-band argument.
    * See clutter_actor_queue_clipped_redraw() for details.
    */
-  const ClutterPaintVolume *oob_queue_redraw_clip;
+  ClutterPaintVolume *oob_queue_redraw_clip;
 
   ClutterMetaGroup *actions;
   ClutterMetaGroup *constraints;
@@ -471,7 +471,10 @@ struct _ClutterActorPrivate
 
   ClutterPaintVolume paint_volume;
 
-  ClutterActorBox last_paint_box;
+  /* NB: This volume isn't relative to this actor, it is in eye
+   * coordinates so that it can remain valid after the actor changes.
+   */
+  ClutterPaintVolume last_paint_volume;
 
   ClutterStageQueueRedrawEntry *queue_redraw_entry;
 };
@@ -1092,11 +1095,11 @@ clutter_actor_real_unmap (ClutterActor *self)
 
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
 
-  /* unset the contents of the last paint box, so that hiding + moving +
+  /* clear the contents of the last paint volume, so that hiding + moving +
    * showing will not result in the wrong area being repainted
    */
-  memset (&self->priv->last_paint_box, 0, sizeof (ClutterActorBox));
-  self->priv->last_paint_box_valid = TRUE;
+  _clutter_paint_volume_init_static (&self->priv->last_paint_volume, NULL);
+  self->priv->last_paint_volume_valid = TRUE;
 
   /* notify on parent mapped after potentially unmapping
    * children, so apps see a bottom-up notification.
@@ -1974,7 +1977,7 @@ _clutter_actor_fully_transform_vertices (ClutterActor *self,
 
   /* NB: _clutter_actor_apply_modelview_transform_recursive will never
    * include the transformation between stage coordinates and OpenGL
-   * window coordinates, we have to explicitly use the
+   * eye coordinates, we have to explicitly use the
    * stage->apply_transform to get that... */
   stage = _clutter_actor_get_stage_internal (self);
 
@@ -2402,7 +2405,7 @@ _clutter_actor_draw_paint_volume (ClutterActor *self)
     {
       gfloat width, height;
       ClutterActor *stage = _clutter_actor_get_stage_internal (self);
-      _clutter_paint_volume_init_static (stage, &fake_pv);
+      _clutter_paint_volume_init_static (&fake_pv, stage);
       free_fake_pv = TRUE;
 
       clutter_actor_get_size (self, &width, &height);
@@ -2492,16 +2495,19 @@ in_clone_paint (void)
 }
 
 /* Returns TRUE if the actor can be ignored */
+/* FIXME: we should return a ClutterCullResult, and
+ * clutter_actor_paint should understand that a CLUTTER_CULL_RESULT_IN
+ * means there's no point in trying to cull descendants of the current
+ * node. */
 static gboolean
 cull_actor (ClutterActor *self)
 {
   ClutterActorPrivate *priv = self->priv;
   ClutterActor *stage;
-  const ClutterGeometry *stage_clip;
-  ClutterActorBox *box;
-  ClutterGeometry paint_geom;
+  const ClutterPlane *stage_clip;
+  ClutterCullResult result;
 
-  if (G_UNLIKELY (priv->last_paint_box_valid == FALSE))
+  if (!priv->last_paint_volume_valid)
     return FALSE;
 
   if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_DISABLE_CULLING))
@@ -2512,18 +2518,36 @@ cull_actor (ClutterActor *self)
   if (G_UNLIKELY (!stage_clip))
     return FALSE;
 
-  /* XXX: It might be better if _get_paint_box returned a
-   * ClutterGeometry instead. */
-  box = &priv->last_paint_box;
-  paint_geom.x = box->x1;
-  paint_geom.y = box->y1;
-  paint_geom.width = box->x2 - box->x1;
-  paint_geom.height = box->y2 - box->y1;
-
-  if (!clutter_geometry_intersects (stage_clip, &paint_geom))
-    return TRUE;
-  else
+  result = _clutter_paint_volume_cull (&priv->last_paint_volume, stage_clip);
+  if (result == CLUTTER_CULL_RESULT_IN ||
+      result == CLUTTER_CULL_RESULT_PARTIAL)
     return FALSE;
+  else
+    return TRUE;
+}
+
+static void
+_clutter_actor_update_last_paint_volume (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
+  const ClutterPaintVolume *pv;
+
+  if (priv->last_paint_volume_valid)
+    {
+      clutter_paint_volume_free (&priv->last_paint_volume);
+      priv->last_paint_volume_valid = FALSE;
+    }
+
+  pv = clutter_actor_get_paint_volume (self);
+  if (!pv)
+    return;
+
+  _clutter_paint_volume_copy_static (pv, &priv->last_paint_volume);
+
+  _clutter_paint_volume_transform_relative (&priv->last_paint_volume,
+                                            NULL); /* eye coordinates */
+
+  priv->last_paint_volume_valid = TRUE;
 }
 
 static inline gboolean
@@ -2632,58 +2656,36 @@ clutter_actor_paint (ClutterActor *self)
   if (pick_mode == CLUTTER_PICK_NONE)
     {
       gboolean effect_painted = FALSE;
-      gboolean need_paint_box;
 
       CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
 
-      if (G_UNLIKELY (clutter_paint_debug_flags &
-                      CLUTTER_DEBUG_DISABLE_CULLING &&
-                      clutter_paint_debug_flags &
-                      CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS))
-        need_paint_box = FALSE;
-      else
-        need_paint_box = TRUE;
-
-      /* We save the current paint box so that the next time the
+      /* We save the current paint volume so that the next time the
        * actor queues a redraw we can constrain the redraw to just
        * cover the union of the new bounding box and the old.
        *
-       * We also fetch the current paint box to perform culling so we
-       * can avoid painting actors outside the current clip region.
+       * We also fetch the current paint volume to perform culling so
+       * we can avoid painting actors outside the current clip region.
        *
        * If we are painting inside a clone, we should neither update
-       * the paint box or use it to cull painting, since the paint
+       * the paint volume or use it to cull painting, since the paint
        * box represents the location of the source actor on the
        * screen.
        *
        * XXX: We are starting to do a lot of vertex transforms on
        * the CPU in a typical paint, so at some point we should
        * audit these and consider caching some things.
-       *
-       * XXX: We should consider doing all our culling in the
-       * stage's model space using PaintVolumes so we don't have
-       * to project actor paint volumes all the way into window
-       * coordinates!
-       *   XXX: To do this we also need a way to store an
-       *   "absolute paint volume" in some way. Currently the
-       *   paint volumes are defined relative to a referenced
-       *   actor's coordinates, but we'd need to be able to cache
-       *   the last paint volume used with the actor's *current*
-       *   modelview and either with a specific projection matrix
-       *   or we'd need to be able to invalidate paint-volumes on
-       *   projection changes.
        */
       if (!in_clone_paint ())
-	{
-          if (G_LIKELY (need_paint_box) &&
-              clutter_actor_get_paint_box (self, &priv->last_paint_box))
-            priv->last_paint_box_valid = TRUE;
-          else
-            priv->last_paint_box_valid = FALSE;
+        {
+          if (G_LIKELY (!(clutter_paint_debug_flags &
+                          CLUTTER_DEBUG_DISABLE_CULLING) &&
+                        !(clutter_paint_debug_flags &
+                          CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
+            _clutter_actor_update_last_paint_volume (self);
 
-	  if (cull_actor (self))
-	    goto done;
-	}
+          if (cull_actor (self))
+            goto done;
+        }
 
       if (priv->effects != NULL)
         effect_painted = _clutter_actor_effects_pre_paint (self);
@@ -4903,9 +4905,9 @@ clutter_actor_init (ClutterActor *self)
   priv->opacity_override = -1;
   priv->enable_model_view_transform = TRUE;
 
-  /* Initialize an empty paint box to start with */
-  memset (&priv->last_paint_box, 0, sizeof (ClutterActorBox));
-  priv->last_paint_box_valid = TRUE;
+  /* Initialize an empty paint volume to start with */
+  _clutter_paint_volume_init_static (&priv->last_paint_volume, NULL);
+  priv->last_paint_volume_valid = TRUE;
 
   memset (priv->clip, 0, sizeof (gfloat) * 4);
 }
@@ -4954,18 +4956,19 @@ _clutter_actor_finish_queue_redraw (ClutterActor *self,
                                     ClutterPaintVolume *clip)
 {
   ClutterActorPrivate *priv = self->priv;
-  const ClutterPaintVolume *pv;
+  ClutterPaintVolume *pv;
   gboolean clipped;
 
   /* If we've been explicitly passed a clip volume then there's
-   * nothing more to calculate, but otherwhise the only thing we know
+   * nothing more to calculate, but otherwise the only thing we know
    * is that the change is constrained to the given actor.
    *
-   * The idea is that if we know the paint box for where the actor was
-   * last drawn and we also have the paint volume for where it will be
-   * drawn next then if we queue a redraw for both these regions that
-   * will cover everything that needs to be redrawn to clear the old
-   * view and show the latest view of the actor.
+   * The idea is that if we know the paint volume for where the actor
+   * was last drawn (in eye coordinates) and we also have the paint
+   * volume for where it will be drawn next (in actor coordinates)
+   * then if we queue a redraw for both these volumes that will cover
+   * everything that needs to be redrawn to clear the old view and
+   * show the latest view of the actor.
    *
    * Don't clip this redraw if we don't know what position we had for
    * the previous redraw since we don't know where to set the clip so
@@ -4976,31 +4979,18 @@ _clutter_actor_finish_queue_redraw (ClutterActor *self,
       _clutter_actor_set_queue_redraw_clip (self, clip);
       clipped = TRUE;
     }
-  else if (G_LIKELY (priv->last_paint_box_valid))
+  else if (G_LIKELY (priv->last_paint_volume_valid))
     {
-      pv = clutter_actor_get_paint_volume (self);
+      pv = _clutter_actor_get_paint_volume_mutable (self);
       if (pv)
         {
           ClutterActor *stage = _clutter_actor_get_stage_internal (self);
-          ClutterPaintVolume stage_pv;
-          ClutterActorBox *box = &priv->last_paint_box;
-          ClutterVertex origin;
-
-          _clutter_paint_volume_init_static (stage, &stage_pv);
-
-          origin.x = box->x1;
-          origin.y = box->y1;
-          origin.z = 0;
-          clutter_paint_volume_set_origin (&stage_pv, &origin);
-          clutter_paint_volume_set_width (&stage_pv, box->x2 - box->x1);
-          clutter_paint_volume_set_height (&stage_pv, box->y2 - box->y1);
 
           /* make sure we redraw the actors old position... */
-          _clutter_actor_set_queue_redraw_clip (stage, &stage_pv);
+          _clutter_actor_set_queue_redraw_clip (stage,
+                                                &priv->last_paint_volume);
           _clutter_actor_signal_queue_redraw (stage, stage);
           _clutter_actor_set_queue_redraw_clip (stage, NULL);
-
-          clutter_paint_volume_free (&stage_pv);
 
           /* XXX: Ideally the redraw signal would take a clip volume
            * argument, but that would be an ABI break. Until we can
@@ -5226,7 +5216,7 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
           return;
         }
 
-      _clutter_paint_volume_init_static (self, &allocation_pv);
+      _clutter_paint_volume_init_static (&allocation_pv, self);
       pv = &allocation_pv;
 
       _clutter_actor_get_allocation_clip (self, &allocation_clip);
@@ -10812,7 +10802,7 @@ clutter_actor_has_pointer (ClutterActor *self)
  * the QUEUE_REDRAW signal. It is an out-of-band argument.  See
  * clutter_actor_queue_clipped_redraw() for details.
  */
-const ClutterPaintVolume *
+ClutterPaintVolume *
 _clutter_actor_get_queue_redraw_clip (ClutterActor *self)
 {
   return self->priv->oob_queue_redraw_clip;
@@ -10820,7 +10810,7 @@ _clutter_actor_get_queue_redraw_clip (ClutterActor *self)
 
 void
 _clutter_actor_set_queue_redraw_clip (ClutterActor *self,
-                                      const ClutterPaintVolume *clip)
+                                      ClutterPaintVolume *clip)
 {
   self->priv->oob_queue_redraw_clip = clip;
 }
@@ -11555,31 +11545,21 @@ clutter_actor_has_key_focus (ClutterActor *self)
   return clutter_stage_get_key_focus (CLUTTER_STAGE (stage)) == self;
 }
 
-/* The public clutter_actor_get_paint_volume API returns a const
- * pointer since we return a pointer directly to the cached
- * PaintVolume associated with the actor and don't want the user to
- * inadvertently modify it, but for internal uses we sometimes need
- * access to the same PaintVolume but need to apply some book-keeping
- * modifications to it so we don't want a const pointer.
- */
-static ClutterPaintVolume *
-_clutter_actor_get_paint_volume_mutable (ClutterActor *self)
+static gboolean
+_clutter_actor_get_paint_volume_real (ClutterActor *self,
+                                      ClutterPaintVolume *pv)
 {
-  ClutterActorPrivate *priv;
-  ClutterPaintVolume *pv;
-
-  priv = self->priv;
-
-  if (priv->paint_volume_valid)
-    {
-      clutter_paint_volume_free (&priv->paint_volume);
-      priv->paint_volume_valid = FALSE;
-    }
+  ClutterActorPrivate *priv = self->priv;
 
   /* Actors are only expected to report a valid paint volume
    * while they have a valid allocation. */
   if (G_UNLIKELY (priv->needs_allocation))
-    return NULL;
+    {
+      CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
+                    "Actor needs allocation",
+                    G_OBJECT_TYPE_NAME (self));
+      return FALSE;
+    }
 
   /* Check if there are any handlers connected to the paint
    * signal. If there are then all bets are off for what the paint
@@ -11612,15 +11592,22 @@ _clutter_actor_get_paint_volume_mutable (ClutterActor *self)
                                     actor_signals[PAINT],
                                     0,
                                     TRUE))
-    return NULL;
+    {
+      CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
+                    "Actor has \"paint\" signal handlers",
+                    G_OBJECT_TYPE_NAME (self));
+      return FALSE;
+    }
 
-  pv = &priv->paint_volume;
-  _clutter_paint_volume_init_static (self, pv);
+  _clutter_paint_volume_init_static (pv, self);
 
   if (!CLUTTER_ACTOR_GET_CLASS (self)->get_paint_volume (self, pv))
     {
       clutter_paint_volume_free (pv);
-      return NULL;
+      CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
+                    "Actor failed to report a volume",
+                    G_OBJECT_TYPE_NAME (self));
+      return FALSE;
     }
 
   /* since effects can modify the paint volume, we allow them to actually
@@ -11643,7 +11630,11 @@ _clutter_actor_get_paint_volume_mutable (ClutterActor *self)
               if (!_clutter_effect_get_paint_volume (l->data, pv))
                 {
                   clutter_paint_volume_free (pv);
-                  return NULL;
+                  CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
+                                "Effect (%s) failed to report a volume",
+                                G_OBJECT_TYPE_NAME (self),
+                                G_OBJECT_TYPE_NAME (l->data));
+                  return FALSE;
                 }
             }
         }
@@ -11657,13 +11648,45 @@ _clutter_actor_get_paint_volume_mutable (ClutterActor *self)
             if (!_clutter_effect_get_paint_volume (l->data, pv))
               {
                 clutter_paint_volume_free (pv);
-                return NULL;
+                CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
+                              "Effect (%s) failed to report a volume",
+                              G_OBJECT_TYPE_NAME (self),
+                              G_OBJECT_TYPE_NAME (l->data));
+                return FALSE;
               }
         }
     }
 
-  priv->paint_volume_valid = TRUE;
-  return pv;
+  return TRUE;
+}
+
+/* The public clutter_actor_get_paint_volume API returns a const
+ * pointer since we return a pointer directly to the cached
+ * PaintVolume associated with the actor and don't want the user to
+ * inadvertently modify it, but for internal uses we sometimes need
+ * access to the same PaintVolume but need to apply some book-keeping
+ * modifications to it so we don't want a const pointer.
+ */
+static ClutterPaintVolume *
+_clutter_actor_get_paint_volume_mutable (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+
+  priv = self->priv;
+
+  if (priv->paint_volume_valid)
+    clutter_paint_volume_free (&priv->paint_volume);
+
+  if (_clutter_actor_get_paint_volume_real (self, &priv->paint_volume))
+    {
+      priv->paint_volume_valid = TRUE;
+      return &priv->paint_volume;
+    }
+  else
+    {
+      priv->paint_volume_valid = FALSE;
+      return NULL;
+    }
 }
 
 /**
@@ -11690,7 +11713,7 @@ _clutter_actor_get_paint_volume_mutable (ClutterActor *self)
  * Return value: (transfer none): a pointer to a #ClutterPaintVolume
  *   or %NULL if no volume could be determined.
  *
- * Since: 1.4
+ * Since: 1.6
  */
 const ClutterPaintVolume *
 clutter_actor_get_paint_volume (ClutterActor *self)
@@ -11721,36 +11744,34 @@ clutter_actor_get_paint_volume (ClutterActor *self)
  * Return value: (transfer none): a pointer to a #ClutterPaintVolume
  *   or %NULL if no volume could be determined.
  *
- * Since: 1.4
+ * Since: 1.6
  */
 const ClutterPaintVolume *
 clutter_actor_get_transformed_paint_volume (ClutterActor *self,
                                             ClutterActor *relative_to_ancestor)
 {
-  CoglMatrix matrix;
   const ClutterPaintVolume *volume;
-  ClutterStage *stage;
+  ClutterActor *stage;
   ClutterPaintVolume *transformed_volume;
 
-  if (relative_to_ancestor == NULL)
-    relative_to_ancestor = _clutter_actor_get_stage_internal (self);
+  stage = _clutter_actor_get_stage_internal (self);
+  if (G_UNLIKELY (stage == NULL))
+    return NULL;
 
   if (relative_to_ancestor == NULL)
-    return NULL;
+    relative_to_ancestor = stage;
 
   volume = clutter_actor_get_paint_volume (self);
   if (volume == NULL)
     return NULL;
 
-  _clutter_actor_get_relative_modelview (self, relative_to_ancestor, &matrix);
+  transformed_volume =
+    _clutter_stage_paint_volume_stack_allocate (CLUTTER_STAGE (stage));
 
-  stage = CLUTTER_STAGE (_clutter_actor_get_stage_internal (self));
-  transformed_volume = _clutter_stage_paint_volume_stack_allocate (stage);
   _clutter_paint_volume_copy_static (volume, transformed_volume);
-  _clutter_paint_volume_transform (transformed_volume, &matrix);
-  _clutter_paint_volume_axis_align (transformed_volume);
-  _clutter_paint_volume_set_reference_actor (transformed_volume,
-                                             relative_to_ancestor);
+
+  _clutter_paint_volume_transform_relative (transformed_volume,
+                                            relative_to_ancestor);
 
   return transformed_volume;
 }
@@ -11776,18 +11797,14 @@ clutter_actor_get_transformed_paint_volume (ClutterActor *self,
  * Return value: %TRUE if a 2D paint box could be determined, else
  * %FALSE.
  *
- * Since: 1.4
+ * Since: 1.6
  */
 gboolean
 clutter_actor_get_paint_box (ClutterActor    *self,
                              ClutterActorBox *box)
 {
   ClutterActor *stage;
-  const ClutterPaintVolume *pv;
-  CoglMatrix modelview;
-  CoglMatrix projection;
-  float viewport[4];
-  ClutterPaintVolume projected_pv;
+  ClutterPaintVolume *pv;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
   g_return_val_if_fail (box != NULL, FALSE);
@@ -11796,36 +11813,11 @@ clutter_actor_get_paint_box (ClutterActor    *self,
   if (G_UNLIKELY (!stage))
     return FALSE;
 
-  pv = clutter_actor_get_paint_volume (self);
+  pv = _clutter_actor_get_paint_volume_mutable (self);
   if (G_UNLIKELY (!pv))
     return FALSE;
 
-  /* NB: _clutter_actor_apply_modelview_transform_recursive will never
-   * include the transformation between stage coordinates and OpenGL
-   * window coordinates, we have to explicitly use the
-   * stage->apply_transform to get that... */
-  cogl_matrix_init_identity (&modelview);
-  _clutter_actor_apply_modelview_transform (stage, &modelview);
-  _clutter_actor_apply_modelview_transform_recursive (pv->actor,
-                                                      stage, &modelview);
-
-  _clutter_stage_get_projection_matrix (CLUTTER_STAGE (stage), &projection);
-  _clutter_stage_get_viewport (CLUTTER_STAGE (stage),
-                               &viewport[0],
-                               &viewport[1],
-                               &viewport[2],
-                               &viewport[3]);
-
-  _clutter_paint_volume_copy_static (pv, &projected_pv);
-  _clutter_paint_volume_project (&projected_pv,
-                                 &modelview,
-                                 &projection,
-                                 viewport);
-
-  _clutter_paint_volume_get_bounding_box (&projected_pv, box);
-  clutter_actor_box_clamp_to_pixel (box);
-
-  clutter_paint_volume_free (&projected_pv);
+  _clutter_paint_volume_get_stage_paint_box (pv, CLUTTER_STAGE (stage), box);
 
   return TRUE;
 }
@@ -11990,4 +11982,3 @@ _clutter_actor_traverse (ClutterActor              *actor,
                                    0, /* start depth */
                                    user_data);
 }
-

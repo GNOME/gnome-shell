@@ -372,7 +372,7 @@ clutter_x11_texture_pixmap_real_queue_damage_redraw (
   scale_x = (allocation.x2 - allocation.x1) / priv->pixmap_width;
   scale_y = (allocation.y2 - allocation.y1) / priv->pixmap_height;
 
-  _clutter_paint_volume_init_static (self, &clip);
+  _clutter_paint_volume_init_static (&clip, self);
 
   origin.x = x * scale_x;
   origin.y = y * scale_y;

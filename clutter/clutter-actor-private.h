@@ -147,9 +147,9 @@ void _clutter_actor_set_has_pointer (ClutterActor *self,
 void _clutter_actor_queue_redraw_with_clip   (ClutterActor              *self,
                                               ClutterRedrawFlags         flags,
                                               ClutterPaintVolume        *clip_volume);
-const ClutterPaintVolume *_clutter_actor_get_queue_redraw_clip (ClutterActor *self);
+ClutterPaintVolume *_clutter_actor_get_queue_redraw_clip (ClutterActor *self);
 void _clutter_actor_set_queue_redraw_clip     (ClutterActor             *self,
-                                               const ClutterPaintVolume *clip_volume);
+                                               ClutterPaintVolume *clip_volume);
 void _clutter_actor_finish_queue_redraw       (ClutterActor             *self,
                                                ClutterPaintVolume       *clip);
 

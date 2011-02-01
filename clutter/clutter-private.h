@@ -232,6 +232,14 @@ typedef struct _ClutterPlane
   CoglVector3 n;
 } ClutterPlane;
 
+typedef enum _ClutterCullResult
+{
+  CLUTTER_CULL_RESULT_UNKNOWN,
+  CLUTTER_CULL_RESULT_IN,
+  CLUTTER_CULL_RESULT_OUT,
+  CLUTTER_CULL_RESULT_PARTIAL
+} ClutterCullResult;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_PRIVATE_H__ */

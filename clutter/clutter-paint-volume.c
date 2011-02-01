@@ -35,6 +35,7 @@
 #include "clutter-actor-private.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
+#include "clutter-stage-private.h"
 
 G_DEFINE_BOXED_TYPE (ClutterPaintVolume, clutter_paint_volume,
                      clutter_paint_volume_copy,
@@ -90,11 +91,9 @@ _clutter_paint_volume_new (ClutterActor *actor)
  * free it during _paint_volume_free().
  */
 void
-_clutter_paint_volume_init_static (ClutterActor *actor,
-                                   ClutterPaintVolume *pv)
+_clutter_paint_volume_init_static (ClutterPaintVolume *pv,
+                                   ClutterActor *actor)
 {
-  g_return_if_fail (actor != NULL);
-
   pv->actor = actor;
 
   memset (pv->vertices, 0, 8 * sizeof (ClutterVertex));
@@ -433,12 +432,12 @@ void
 clutter_paint_volume_union (ClutterPaintVolume *pv,
                             const ClutterPaintVolume *another_pv)
 {
+  ClutterPaintVolume aligned_pv;
   static const int key_vertices[4] = { 0, 1, 3, 4 };
 
   g_return_if_fail (pv != NULL);
   g_return_if_fail (pv->is_axis_aligned);
   g_return_if_fail (another_pv != NULL);
-  g_return_if_fail (another_pv->is_axis_aligned);
 
   /* NB: we only have to update vertices 0, 1, 3 and 4
    * (See the ClutterPaintVolume typedef for more details) */
@@ -457,6 +456,13 @@ clutter_paint_volume_union (ClutterPaintVolume *pv,
         pv->vertices[key_vertices[i]] = another_pv->vertices[key_vertices[i]];
       pv->is_2d = another_pv->is_2d;
       goto done;
+    }
+
+  if (!another_pv->is_axis_aligned)
+    {
+      _clutter_paint_volume_copy_static (another_pv, &aligned_pv);
+      _clutter_paint_volume_axis_align (&aligned_pv);
+      another_pv = &aligned_pv;
     }
 
   /* grow left*/
@@ -904,4 +910,155 @@ _clutter_paint_volume_set_reference_actor (ClutterPaintVolume *pv,
   g_return_if_fail (pv != NULL);
 
   pv->actor = actor;
+}
+
+ClutterCullResult
+_clutter_paint_volume_cull (ClutterPaintVolume *pv,
+                            const ClutterPlane *planes)
+{
+  int vertex_count;
+  ClutterVertex *vertices = pv->vertices;
+  gboolean in = TRUE;
+  gboolean out = TRUE;
+  int i;
+  int j;
+
+  /* We expect the volume to already be transformed into eye coordinates
+   */
+  g_return_val_if_fail (pv->is_complete == TRUE, CLUTTER_CULL_RESULT_IN);
+  g_return_val_if_fail (pv->actor == NULL, CLUTTER_CULL_RESULT_IN);
+
+  if (pv->is_empty)
+    return CLUTTER_CULL_RESULT_OUT;
+
+  /* Most actors are 2D so we only have to transform the front 4
+   * vertices of the paint volume... */
+  if (G_LIKELY (pv->is_2d))
+    vertex_count = 4;
+  else
+    vertex_count = 8;
+
+  for (i = 0; i < vertex_count; i++)
+    {
+      gboolean point_in = TRUE;
+      for (j = 0; j < 4; j++)
+        {
+          ClutterVertex p;
+          float distance;
+
+          /* XXX: for perspective projections this can be optimized
+           * out because all the planes should pass through the origin
+           * so (0,0,0) is a valid v0. */
+          p.x = vertices[i].x - planes[j].v0.x;
+          p.y = vertices[i].y - planes[j].v0.y;
+          p.z = vertices[i].z - planes[j].v0.z;
+
+          distance =
+            planes[j].n.x * p.x + planes[j].n.y * p.y + planes[j].n.z * p.z;
+
+          if (distance < 0)
+            {
+              point_in = FALSE;
+              break;
+            }
+        }
+
+      if (!point_in)
+        in = FALSE;
+      else
+        out = FALSE;
+    }
+
+  if (in)
+    return CLUTTER_CULL_RESULT_IN;
+  else if (out)
+    return CLUTTER_CULL_RESULT_OUT;
+  else
+    return CLUTTER_CULL_RESULT_PARTIAL;
+}
+
+void
+_clutter_paint_volume_get_stage_paint_box (ClutterPaintVolume *pv,
+                                           ClutterStage *stage,
+                                           ClutterActorBox *box)
+{
+  ClutterPaintVolume projected_pv;
+  CoglMatrix modelview;
+  CoglMatrix projection;
+  float viewport[4];
+
+  _clutter_paint_volume_copy_static (pv, &projected_pv);
+
+  /* NB: _clutter_actor_apply_modelview_transform_recursive will never
+   * include the transformation between stage coordinates and OpenGL
+   * eye coordinates, we have to explicitly use the
+   * stage->apply_transform to get that... */
+  cogl_matrix_init_identity (&modelview);
+
+  /* If the paint volume isn't already in eye coordinates... */
+  if (pv->actor)
+    {
+      ClutterActor *stage_actor = CLUTTER_ACTOR (stage);
+      _clutter_actor_apply_modelview_transform (stage_actor, &modelview);
+      _clutter_actor_apply_modelview_transform_recursive (pv->actor,
+                                                          stage_actor,
+                                                          &modelview);
+    }
+
+  _clutter_stage_get_projection_matrix (stage, &projection);
+  _clutter_stage_get_viewport (stage,
+                               &viewport[0],
+                               &viewport[1],
+                               &viewport[2],
+                               &viewport[3]);
+
+  _clutter_paint_volume_project (&projected_pv,
+                                 &modelview,
+                                 &projection,
+                                 viewport);
+
+  _clutter_paint_volume_get_bounding_box (&projected_pv, box);
+  clutter_actor_box_clamp_to_pixel (box);
+
+  clutter_paint_volume_free (&projected_pv);
+}
+
+void
+_clutter_paint_volume_transform_relative (ClutterPaintVolume *pv,
+                                          ClutterActor *relative_to_ancestor)
+{
+  CoglMatrix matrix;
+  ClutterActor *actor;
+
+  actor = pv->actor;
+
+  g_return_if_fail (actor != NULL);
+
+  _clutter_paint_volume_set_reference_actor (pv, relative_to_ancestor);
+
+  cogl_matrix_init_identity (&matrix);
+
+  if (relative_to_ancestor == NULL)
+    {
+      /* NB: _clutter_actor_apply_modelview_transform_recursive will never
+       * include the transformation between stage coordinates and OpenGL
+       * eye coordinates, we have to explicitly use the
+       * stage->apply_transform to get that... */
+      ClutterActor *stage = _clutter_actor_get_stage_internal (actor);
+
+      /* We really can't do anything meaningful in this case so don't try
+       * to do any transform */
+      if (G_UNLIKELY (stage == NULL))
+        return;
+
+      _clutter_actor_apply_modelview_transform (stage, &matrix);
+
+      relative_to_ancestor = stage;
+    }
+
+  _clutter_actor_apply_modelview_transform_recursive (actor,
+                                                      relative_to_ancestor,
+                                                      &matrix);
+
+  _clutter_paint_volume_transform (pv, &matrix);
 }

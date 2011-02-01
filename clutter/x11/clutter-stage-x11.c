@@ -1046,7 +1046,7 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
         origin.y = expose->y;
         origin.z = 0;
 
-        _clutter_paint_volume_init_static (CLUTTER_ACTOR (stage), &clip);
+        _clutter_paint_volume_init_static (&clip, CLUTTER_ACTOR (stage));
 
         clutter_paint_volume_set_origin (&clip, &origin);
         clutter_paint_volume_set_width (&clip, expose->width);
