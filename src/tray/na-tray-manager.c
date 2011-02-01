@@ -374,13 +374,17 @@ na_tray_manager_handle_begin_message (NaTrayManager       *manager,
   if (!socket)
     return;
 
+  timeout = xevent->data.l[2];
+  len     = xevent->data.l[3];
+  id      = xevent->data.l[4];
+
   /* Check if the same message is already in the queue and remove it if so */
   for (p = manager->messages; p; p = p->next)
     {
       PendingMessage *pmsg = p->data;
 
       if (xevent->window == pmsg->window &&
-	  xevent->data.l[4] == pmsg->id)
+	  id == pmsg->id)
 	{
 	  /* Hmm, we found it, now remove it */
 	  pending_message_free (pmsg);
@@ -389,10 +393,6 @@ na_tray_manager_handle_begin_message (NaTrayManager       *manager,
 	  break;
 	}
     }
-
-  timeout = xevent->data.l[2];
-  len     = xevent->data.l[3];
-  id      = xevent->data.l[4];
 
   if (len == 0)
     {
@@ -420,6 +420,9 @@ na_tray_manager_handle_cancel_message (NaTrayManager       *manager,
 {
   GList     *p;
   GtkSocket *socket;
+  long       id;
+
+  id = xevent->data.l[2];
   
   /* Check if the message is in the queue and remove it if so */
   for (p = manager->messages; p; p = p->next)
@@ -427,7 +430,7 @@ na_tray_manager_handle_cancel_message (NaTrayManager       *manager,
       PendingMessage *msg = p->data;
 
       if (xevent->window == msg->window &&
-	  xevent->data.l[4] == msg->id)
+	  id == msg->id)
 	{
 	  pending_message_free (msg);
 	  manager->messages = g_list_remove_link (manager->messages, p);
