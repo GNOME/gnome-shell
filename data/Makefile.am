@@ -72,11 +72,6 @@ all-local: gschemas.compiled
 gconfschemadir  = @GCONF_SCHEMA_FILE_DIR@
 gconfschema_DATA = gnome-shell.schemas
 
-menudir = $(sysconfdir)/xdg/menus
-
-menu_DATA = \
-	gs-applications.menu
-
 shadersdir = $(pkgdatadir)/shaders
 shaders_DATA = \
 	shaders/dim-window.glsl
