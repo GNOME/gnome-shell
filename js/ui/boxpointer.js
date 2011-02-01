@@ -414,16 +414,15 @@ BoxPointer.prototype = {
             if (sourceCenterX < margin) {
                 // Not enough space to the top
                 this._arrowCorner = (this._arrowSide == St.Side.TOP) ? St.Corner.TOPLEFT : St.Corner.BOTTOMLEFT;
-                resX = 10;
-            } else if (sourceCenterX > (primary.width - margin)) {
+                resX = primary.x + 10;
+            } else if (sourceCenterX > (primary.x + primary.width - margin)) {
                 // Not enough space to the botom
                 this._arrowCorner = (this._arrowSide == St.Side.TOP) ? St.Corner.TOPRIGHT : St.Corner.BOTTOMRIGHT;
-                resX = primary.width - (10 + natWidth);
+                resX = primary.x + primary.width - (10 + natWidth);
             }
 
-            resX = Math.max(resX, 10);
-            resX = Math.min(resX, primary.width - (10 + natWidth));
-
+            resX = Math.max(resX, primary.x + 10);
+            resX = Math.min(resX, primary.x + primary.width - (10 + natWidth));
             this.setArrowOrigin(sourceCenterX - resX);
             break;
 
@@ -445,14 +444,14 @@ BoxPointer.prototype = {
                 this._arrowCorner = (this._arrowSide == St.Side.LEFT) ? St.Corner.TOPLEFT : St.Corner.TORIGHT;
                 resY = 10;
             }
-            else if (sourceCenterY > (primary.height - margin)) {
+            else if (sourceCenterY > (primary.y + primary.height - margin)) {
                 // Not enough space to the right
                 this._arrowCorner = (this._arrowSide == St.Side.LEFT) ? St.Corner.BOTTOMLEFT : St.Corner.BOTTOMRIGHT;
-                resY = primary.height - (10 + natHeight);
+                resY = primary.y + primary.height - (10 + natHeight);
             }
 
-            resY = Math.max(resY, 10);
-            resY = Math.min(resY, primary.height - (10 + natHeight));
+            resY = Math.max(resY, primary.y + 10);
+            resY = Math.min(resY, primary.y + primary.height - (10 + natHeight));
 
             this.setArrowOrigin(sourceCenterY - resY);
             break;
