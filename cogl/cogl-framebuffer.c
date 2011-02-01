@@ -499,10 +499,10 @@ _cogl_framebuffer_set_clip_stack (CoglFramebuffer *framebuffer,
 
 void
 _cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
-                                int x,
-                                int y,
-                                int width,
-                                int height)
+                                float x,
+                                float y,
+                                float width,
+                                float height)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -523,32 +523,33 @@ _cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
     ctx->dirty_gl_viewport = TRUE;
 }
 
-int
+float
 _cogl_framebuffer_get_viewport_x (CoglFramebuffer *framebuffer)
 {
   return framebuffer->viewport_x;
 }
 
-int
+float
 _cogl_framebuffer_get_viewport_y (CoglFramebuffer *framebuffer)
 {
   return framebuffer->viewport_y;
 }
 
-int
+float
 _cogl_framebuffer_get_viewport_width (CoglFramebuffer *framebuffer)
 {
   return framebuffer->viewport_width;
 }
 
-int
+float
 _cogl_framebuffer_get_viewport_height (CoglFramebuffer *framebuffer)
 {
   return framebuffer->viewport_height;
 }
 
 void
-_cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer, int *viewport)
+_cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer,
+                                   float *viewport)
 {
   viewport[0] = framebuffer->viewport_x;
   viewport[1] = framebuffer->viewport_y;
@@ -1290,7 +1291,7 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
 
   if (ctx->dirty_gl_viewport)
     {
-      int gl_viewport_y;
+      float gl_viewport_y;
 
       /* Convert the Cogl viewport y offset to an OpenGL viewport y offset
        * NB: OpenGL defines its window and viewport origins to be bottom
@@ -1303,7 +1304,7 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
         gl_viewport_y = draw_buffer->height -
           (draw_buffer->viewport_y + draw_buffer->viewport_height);
 
-      COGL_NOTE (OPENGL, "Calling glViewport(%d, %d, %d, %d)",
+      COGL_NOTE (OPENGL, "Calling glViewport(%f, %f, %f, %f)",
                  draw_buffer->viewport_x,
                  gl_viewport_y,
                  draw_buffer->viewport_width,

@@ -46,10 +46,10 @@ struct _CoglFramebuffer
 
   CoglMatrixStack    *modelview_stack;
   CoglMatrixStack    *projection_stack;
-  int                 viewport_x;
-  int                 viewport_y;
-  int                 viewport_width;
-  int                 viewport_height;
+  float               viewport_x;
+  float               viewport_y;
+  float               viewport_width;
+  float               viewport_height;
 
   CoglClipState       clip_state;
 
@@ -173,25 +173,25 @@ _cogl_framebuffer_set_clip_stack (CoglFramebuffer *framebuffer,
 
 void
 _cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
-                                int x,
-                                int y,
-                                int width,
-                                int height);
-int
+                                float x,
+                                float y,
+                                float width,
+                                float height);
+float
 _cogl_framebuffer_get_viewport_x (CoglFramebuffer *framebuffer);
 
-int
+float
 _cogl_framebuffer_get_viewport_y (CoglFramebuffer *framebuffer);
 
-int
+float
 _cogl_framebuffer_get_viewport_width (CoglFramebuffer *framebuffer);
 
-int
+float
 _cogl_framebuffer_get_viewport_height (CoglFramebuffer *framebuffer);
 
 void
 _cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer,
-                                   int *viewport);
+                                   float *viewport);
 
 CoglMatrixStack *
 _cogl_framebuffer_get_modelview_stack (CoglFramebuffer *framebuffer);
