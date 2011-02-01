@@ -208,13 +208,26 @@ function start() {
 }
 
 /**
- * setTheme
+ * getThemeStylesheet:
+ *
+ * Get the theme CSS file that the shell will load
+ *
+ * Returns: A file path that contains the theme CSS,
+ *          null if using the default
+ */
+function getThemeStylesheet()
+{
+    return _css_stylesheet;
+}
+
+/**
+ * setThemeStylesheet:
  * @css_stylesheet: A file path that contains the theme CSS,
  *                  set it to null to use the default
  *
  * Set the theme CSS file that the shell will load
  */
-function setTheme(css_stylesheet)
+function setThemeStylesheet(css_stylesheet)
 {
     _css_stylesheet = css_stylesheet;
 }
