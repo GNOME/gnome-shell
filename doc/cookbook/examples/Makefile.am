@@ -63,7 +63,7 @@ AM_CFLAGS = \
 
 AM_LDFLAGS = $(CLUTTER_LIBS) -export-dynamic
 
-actors_composite_main_SOURCES              = cb-button.c actors-composite-main.c
+actors_composite_main_SOURCES              = cb-button.c cb-button.h actors-composite-main.c
 animations_complex_SOURCES                 = animations-complex.c
 animations_looping_animator_SOURCES        = animations-looping-animator.c
 animations_looping_implicit_SOURCES        = animations-looping-implicit.c
