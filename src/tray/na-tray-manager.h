@@ -50,6 +50,7 @@ struct _NaTrayManager
 #ifdef GDK_WINDOWING_X11
   GdkAtom selection_atom;
   Atom    opcode_atom;
+  Atom    message_data_atom;
 #endif
   
   GtkWidget *invisible;

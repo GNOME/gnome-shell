@@ -315,19 +315,13 @@ pending_message_free (PendingMessage *message)
   g_free (message);
 }
 
-static GdkFilterReturn
-na_tray_manager_handle_client_message_message_data (GdkXEvent *xev,
-                                                    GdkEvent  *event,
-                                                    gpointer   data)
+static void
+na_tray_manager_handle_message_data (NaTrayManager       *manager,
+				     XClientMessageEvent *xevent)
 {
-  XClientMessageEvent *xevent;
-  NaTrayManager       *manager;
-  GList               *p;
-  int                  len;
+  GList *p;
+  int    len;
   
-  xevent  = (XClientMessageEvent *) xev;
-  manager = data;
-
   /* Try to see if we can find the pending message in the list */
   for (p = manager->messages; p; p = p->next)
     {
@@ -361,8 +355,6 @@ na_tray_manager_handle_client_message_message_data (GdkXEvent *xev,
           break;
 	}
     }
-
-  return GDK_FILTER_REMOVE;
 }
 
 static void
@@ -455,39 +447,6 @@ na_tray_manager_handle_cancel_message (NaTrayManager       *manager,
 }
 
 static GdkFilterReturn
-na_tray_manager_handle_client_message_opcode (GdkXEvent *xev,
-                                              GdkEvent  *event,
-                                              gpointer   data)
-{
-  XClientMessageEvent *xevent;
-  NaTrayManager       *manager;
-
-  xevent  = (XClientMessageEvent *) xev;
-  manager = data;
-
-  switch (xevent->data.l[1])
-    {
-    case SYSTEM_TRAY_REQUEST_DOCK:
-      /* Ignore this one since we don't know on which window this was received
-       * and so we can't know for which screen this is. It will be handled
-       * in na_tray_manager_window_filter() since we also receive it there */
-      break;
-
-    case SYSTEM_TRAY_BEGIN_MESSAGE:
-      na_tray_manager_handle_begin_message (manager, xevent);
-      return GDK_FILTER_REMOVE;
-
-    case SYSTEM_TRAY_CANCEL_MESSAGE:
-      na_tray_manager_handle_cancel_message (manager, xevent);
-      return GDK_FILTER_REMOVE;
-    default:
-      break;
-    }
-
-  return GDK_FILTER_CONTINUE;
-}
-
-static GdkFilterReturn
 na_tray_manager_window_filter (GdkXEvent *xev,
                                GdkEvent  *event,
                                gpointer   data)
@@ -497,8 +456,7 @@ na_tray_manager_window_filter (GdkXEvent *xev,
 
   if (xevent->type == ClientMessage)
     {
-      /* We handle this client message here. See comment in
-       * na_tray_manager_handle_client_message_opcode() for details */
+      /* _NET_SYSTEM_TRAY_OPCODE: SYSTEM_TRAY_REQUEST_DOCK */
       if (xevent->xclient.message_type == manager->opcode_atom &&
           xevent->xclient.data.l[1]    == SYSTEM_TRAY_REQUEST_DOCK)
 	{
@@ -506,6 +464,29 @@ na_tray_manager_window_filter (GdkXEvent *xev,
                                                (XClientMessageEvent *) xevent);
           return GDK_FILTER_REMOVE;
 	}
+      /* _NET_SYSTEM_TRAY_OPCODE: SYSTEM_TRAY_BEGIN_MESSAGE */
+      else if (xevent->xclient.message_type == manager->opcode_atom &&
+               xevent->xclient.data.l[1]    == SYSTEM_TRAY_BEGIN_MESSAGE)
+        {
+          na_tray_manager_handle_begin_message (manager,
+                                                (XClientMessageEvent *) event);
+          return GDK_FILTER_REMOVE;
+        }
+      /* _NET_SYSTEM_TRAY_OPCODE: SYSTEM_TRAY_CANCEL_MESSAGE */
+      else if (xevent->xclient.message_type == manager->opcode_atom &&
+               xevent->xclient.data.l[1]    == SYSTEM_TRAY_CANCEL_MESSAGE)
+        {
+          na_tray_manager_handle_cancel_message (manager,
+                                                 (XClientMessageEvent *) event);
+          return GDK_FILTER_REMOVE;
+        }
+      /* _NET_SYSTEM_TRAY_MESSAGE_DATA */
+      else if (xevent->xclient.message_type == manager->message_data_atom)
+        {
+          na_tray_manager_handle_message_data (manager,
+                                               (XClientMessageEvent *) event);
+          return GDK_FILTER_REMOVE;
+        }
     }
   else if (xevent->type == SelectionClear)
     {
@@ -563,9 +544,6 @@ na_tray_manager_unmanage (NaTrayManager *manager)
                                            TRUE);
     }
 
-  //FIXME: we should also use gdk_remove_client_message_filter when it's
-  //available
-  // See bug #351254
   gdk_window_remove_filter (window,
                             na_tray_manager_window_filter, manager);  
 
@@ -736,6 +714,8 @@ na_tray_manager_manage_screen_x11 (NaTrayManager *manager,
 
       message_data_atom = gdk_atom_intern ("_NET_SYSTEM_TRAY_MESSAGE_DATA",
                                            FALSE);
+      manager->message_data_atom = gdk_x11_atom_to_xatom_for_display (display,
+                                                                      message_data_atom);
 
       /* Add a window filter */
 #if 0
@@ -744,17 +724,8 @@ na_tray_manager_manage_screen_x11 (NaTrayManager *manager,
                         G_CALLBACK (na_tray_manager_selection_clear_event),
                         manager);
 #endif
-      /* This is for SYSTEM_TRAY_REQUEST_DOCK and SelectionClear */
       gdk_window_add_filter (window,
                              na_tray_manager_window_filter, manager);
-      /* This is for SYSTEM_TRAY_BEGIN_MESSAGE and SYSTEM_TRAY_CANCEL_MESSAGE */
-      gdk_display_add_client_message_filter (display, opcode_atom,
-                                             na_tray_manager_handle_client_message_opcode,
-                                             manager);
-      /* This is for _NET_SYSTEM_TRAY_MESSAGE_DATA */
-      gdk_display_add_client_message_filter (display, message_data_atom,
-                                             na_tray_manager_handle_client_message_message_data,
-                                             manager);
       return TRUE;
     }
   else
