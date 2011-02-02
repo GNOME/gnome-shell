@@ -213,14 +213,7 @@
 static void
 take_and_queue_event (ClutterEvent *event)
 {
-  ClutterMainContext *clutter_context;
-
-  clutter_context = _clutter_context_get_default ();
-
-  /* The event is added directly to the queue instead of using
-     clutter_event_put so that it can avoid a copy. This takes
-     ownership of the event */
-  g_queue_push_head (clutter_context->events_queue, event);
+  _clutter_event_push (event, FALSE);
 }
 
 static void
