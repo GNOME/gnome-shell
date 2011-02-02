@@ -396,12 +396,14 @@ clutter_event_osx_translate (NSEvent *nsevent,
 }
 
 void
-_clutter_event_osx_put (NSEvent *nsevent,
+_clutter_event_osx_put (NSEvent      *nsevent,
                         ClutterStage *wrapper)
 {
   ClutterEvent *event = clutter_event_new (CLUTTER_NOTHING);
 
+  /* common fields */
   event->any.stage = wrapper;
+  event->any.time = [nsevent clutterTime];
 
   if (clutter_event_osx_translate (nsevent, &event))
     {
