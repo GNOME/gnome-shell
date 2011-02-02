@@ -151,7 +151,7 @@ cogl_check_extension (const char *name, const char *ext)
 void
 cogl_clear (const CoglColor *color, unsigned long buffers)
 {
-  _cogl_framebuffer_clear (_cogl_get_framebuffer (), buffers, color);
+  _cogl_framebuffer_clear (_cogl_get_draw_buffer (), buffers, color);
 }
 
 static gboolean
@@ -282,7 +282,7 @@ cogl_set_backface_culling_enabled (gboolean setting)
     return;
 
   /* Currently the journal can't track changes to backface culling state... */
-  _cogl_framebuffer_flush_journal (_cogl_get_framebuffer ());
+  _cogl_framebuffer_flush_journal (_cogl_get_draw_buffer ());
 
   ctx->enable_backface_culling = setting;
 }
@@ -311,7 +311,7 @@ _cogl_flush_face_winding (void)
    * all offscreen rendering is done upside down resulting in reversed winding
    * for all triangles.
    */
-  if (cogl_is_offscreen (_cogl_get_framebuffer ()))
+  if (cogl_is_offscreen (_cogl_get_draw_buffer ()))
     winding = COGL_FRONT_WINDING_CLOCKWISE;
   else
     winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
@@ -360,7 +360,7 @@ cogl_set_viewport (int x,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  framebuffer = _cogl_get_framebuffer ();
+  framebuffer = _cogl_get_draw_buffer ();
 
   _cogl_framebuffer_set_viewport (framebuffer,
                                   x,
@@ -415,7 +415,7 @@ cogl_get_viewport (float v[4])
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  framebuffer = _cogl_get_framebuffer ();
+  framebuffer = _cogl_get_draw_buffer ();
   _cogl_framebuffer_get_viewport4fv (framebuffer, viewport);
 
   for (i = 0; i < 4; i++)
@@ -430,7 +430,7 @@ cogl_get_bitmasks (int *red,
 {
   CoglFramebuffer *framebuffer;
 
-  framebuffer = _cogl_get_framebuffer ();
+  framebuffer = _cogl_get_draw_buffer ();
 
   if (red)
     *red = _cogl_framebuffer_get_red_bits (framebuffer);
@@ -497,7 +497,7 @@ _cogl_read_pixels_with_rowstride (int x,
                                   guint8 *pixels,
                                   int rowstride)
 {
-  CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
+  CoglFramebuffer *framebuffer = _cogl_get_read_buffer ();
   int              framebuffer_height;
   int              bpp;
   CoglBitmap      *bmp;
@@ -537,7 +537,9 @@ _cogl_read_pixels_with_rowstride (int x,
    */
   cogl_flush ();
 
-  _cogl_framebuffer_flush_state (framebuffer, 0);
+  _cogl_framebuffer_flush_state (_cogl_get_draw_buffer (),
+                                 framebuffer,
+                                 0);
 
   framebuffer_height = _cogl_framebuffer_get_height (framebuffer);
 
@@ -706,7 +708,9 @@ cogl_begin_gl (void)
    * NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the pipeline state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
-  _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
+  _cogl_framebuffer_flush_state (_cogl_get_draw_buffer (),
+                                 _cogl_get_read_buffer (),
+                                 0);
 
   /* Setup the state for the current pipeline */
 
@@ -762,7 +766,7 @@ void
 cogl_push_matrix (void)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_push (modelview_stack);
 }
 
@@ -770,7 +774,7 @@ void
 cogl_pop_matrix (void)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_pop (modelview_stack);
 }
 
@@ -778,7 +782,7 @@ void
 cogl_scale (float x, float y, float z)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_scale (modelview_stack, x, y, z);
 }
 
@@ -786,7 +790,7 @@ void
 cogl_translate (float x, float y, float z)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_translate (modelview_stack, x, y, z);
 }
 
@@ -794,7 +798,7 @@ void
 cogl_rotate (float angle, float x, float y, float z)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_rotate (modelview_stack, angle, x, y, z);
 }
 
@@ -802,7 +806,7 @@ void
 cogl_transform (const CoglMatrix *matrix)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_multiply (modelview_stack, matrix);
 }
 
@@ -831,7 +835,7 @@ cogl_frustum (float        left,
 	      float        z_far)
 {
   CoglMatrixStack *projection_stack =
-    _cogl_framebuffer_get_projection_stack (_cogl_get_framebuffer ());
+    _cogl_framebuffer_get_projection_stack (_cogl_get_draw_buffer ());
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -856,7 +860,7 @@ cogl_ortho (float left,
 {
   CoglMatrix ortho;
   CoglMatrixStack *projection_stack =
-    _cogl_framebuffer_get_projection_stack (_cogl_get_framebuffer ());
+    _cogl_framebuffer_get_projection_stack (_cogl_get_draw_buffer ());
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -869,7 +873,7 @@ void
 cogl_get_modelview_matrix (CoglMatrix *matrix)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_get (modelview_stack, matrix);
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -878,7 +882,7 @@ void
 cogl_set_modelview_matrix (CoglMatrix *matrix)
 {
   CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (_cogl_get_framebuffer ());
+    _cogl_framebuffer_get_modelview_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_set (modelview_stack, matrix);
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -887,7 +891,7 @@ void
 cogl_get_projection_matrix (CoglMatrix *matrix)
 {
   CoglMatrixStack *projection_stack =
-    _cogl_framebuffer_get_projection_stack (_cogl_get_framebuffer ());
+    _cogl_framebuffer_get_projection_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_get (projection_stack, matrix);
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
@@ -896,7 +900,7 @@ void
 cogl_set_projection_matrix (CoglMatrix *matrix)
 {
   CoglMatrixStack *projection_stack =
-    _cogl_framebuffer_get_projection_stack (_cogl_get_framebuffer ());
+    _cogl_framebuffer_get_projection_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_set (projection_stack, matrix);
 
   /* FIXME: Update the inverse projection matrix!! Presumably use
@@ -909,7 +913,7 @@ _cogl_get_clip_state (void)
 {
   CoglFramebuffer *framebuffer;
 
-  framebuffer = _cogl_get_framebuffer ();
+  framebuffer = _cogl_get_draw_buffer ();
   return _cogl_framebuffer_get_clip_state (framebuffer);
 }
 
@@ -1119,5 +1123,5 @@ _cogl_swap_buffers_notify (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  _cogl_framebuffer_swap_notify (_cogl_get_framebuffer ());
+  _cogl_framebuffer_swap_notify (_cogl_get_draw_buffer ());
 }

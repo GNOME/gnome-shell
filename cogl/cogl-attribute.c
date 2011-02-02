@@ -480,7 +480,7 @@ enable_gl_state (CoglDrawFlags flags,
                  CoglAttribute **attributes,
                  ValidateLayerState *state)
 {
-  CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
+  CoglFramebuffer *framebuffer = _cogl_get_draw_buffer ();
   int i;
 #ifdef MAY_HAVE_PROGRAMABLE_GL
   GLuint generic_index = 0;
@@ -1060,7 +1060,7 @@ flush_state (CoglDrawFlags flags,
 {
   if (!(flags & COGL_DRAW_SKIP_JOURNAL_FLUSH))
     {
-      CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
+      CoglFramebuffer *framebuffer = _cogl_get_draw_buffer ();
       _cogl_journal_flush (framebuffer->journal, framebuffer);
     }
 
@@ -1080,7 +1080,9 @@ flush_state (CoglDrawFlags flags,
    * stack can cause some drawing which would change the array
    * pointers. */
   if (!(flags & COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH))
-    _cogl_framebuffer_flush_state (_cogl_get_framebuffer (), 0);
+    _cogl_framebuffer_flush_state (_cogl_get_draw_buffer (),
+                                   _cogl_get_read_buffer (),
+                                   0);
 }
 
 /* This can be called directly by the CoglJournal to draw attributes

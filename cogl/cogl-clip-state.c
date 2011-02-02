@@ -51,7 +51,7 @@ cogl_clip_push_window_rectangle (int x_offset,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  framebuffer = _cogl_get_framebuffer ();
+  framebuffer = _cogl_get_draw_buffer ();
   clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   clip_state->stacks->data =
@@ -82,7 +82,7 @@ cogl_clip_push_rectangle (float x_1,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  framebuffer = _cogl_get_framebuffer ();
+  framebuffer = _cogl_get_draw_buffer ();
   clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   cogl_get_modelview_matrix (&modelview_matrix);
@@ -115,7 +115,7 @@ cogl_clip_push_from_path_preserve (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  framebuffer = _cogl_get_framebuffer ();
+  framebuffer = _cogl_get_draw_buffer ();
   clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   cogl_get_modelview_matrix (&modelview_matrix);
@@ -151,7 +151,7 @@ cogl_clip_pop (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  framebuffer = _cogl_get_framebuffer ();
+  framebuffer = _cogl_get_draw_buffer ();
   clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   _cogl_clip_pop_real (clip_state);
@@ -169,7 +169,7 @@ _cogl_clip_state_flush (CoglClipState *clip_state)
 void
 cogl_clip_ensure (void)
 {
-  CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
+  CoglFramebuffer *framebuffer = _cogl_get_draw_buffer ();
   CoglClipState *clip_state;
 
   clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
@@ -195,7 +195,7 @@ cogl_clip_stack_save (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  framebuffer = _cogl_get_framebuffer ();
+  framebuffer = _cogl_get_draw_buffer ();
   clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   _cogl_clip_stack_save_real (clip_state);
@@ -225,7 +225,7 @@ cogl_clip_stack_restore (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  framebuffer = _cogl_get_framebuffer ();
+  framebuffer = _cogl_get_draw_buffer ();
   clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
   _cogl_clip_stack_restore_real (clip_state);
