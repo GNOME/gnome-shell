@@ -587,8 +587,7 @@ _cogl_framebuffer_remove_all_dependencies (CoglFramebuffer *framebuffer)
 void
 _cogl_framebuffer_flush_journal (CoglFramebuffer *framebuffer)
 {
-  if (framebuffer)
-    _cogl_journal_flush (framebuffer->journal, framebuffer);
+  _cogl_journal_flush (framebuffer->journal, framebuffer);
 }
 
 void
@@ -1057,8 +1056,11 @@ cogl_set_framebuffer (CoglFramebuffer *framebuffer)
       /* XXX: eventually we want to remove this implicit journal flush
        * so we can log into the journal beyond framebuffer changes to
        * support batching scenes that depend on the results of
-       * mid-scene renders to textures. */
-      _cogl_framebuffer_flush_journal (current);
+       * mid-scene renders to textures. Current will be NULL when the
+       * framebuffer stack is first created so we need to guard
+       * against that here */
+      if (current)
+        _cogl_framebuffer_flush_journal (current);
       _cogl_set_framebuffer_real (framebuffer);
     }
 }
@@ -1093,8 +1095,11 @@ cogl_push_framebuffer (CoglFramebuffer *buffer)
   g_return_if_fail (_cogl_is_framebuffer (buffer));
   g_assert (ctx->framebuffer_stack);
 
+  /* Copy the top of the stack so that when we call cogl_set_framebuffer
+     it will still know what the old framebuffer was */
   ctx->framebuffer_stack =
-    g_slist_prepend (ctx->framebuffer_stack, COGL_INVALID_HANDLE);
+    g_slist_prepend (ctx->framebuffer_stack,
+                     cogl_object_ref (_cogl_get_framebuffer ()));
 
   cogl_set_framebuffer (buffer);
 }
