@@ -49,6 +49,7 @@ test_atk_text (ClutterActor *actor)
   AtkAttributeSet *at_set     = NULL;
   GSList          *attrs;
   gchar           *buf;
+  gint             x, y, width, height;
 
   object = atk_gobject_accessible_for_object (G_OBJECT (actor));
   cally_text = ATK_TEXT (object);
@@ -124,6 +125,16 @@ test_atk_text (ClutterActor *actor)
         attrs = g_slist_next (attrs);
     }
 
+  atk_text_get_character_extents (cally_text, 0, &x, &y, &width, &height,
+                                  ATK_XY_WINDOW);
+  g_print ("atk_text_get_character_extents (0, window): x=%i y=%i width=%i height=%i\n",
+           x, y, width, height);
+
+  atk_text_get_character_extents (cally_text, 0, &x, &y, &width, &height,
+                                  ATK_XY_SCREEN);
+  g_print ("atk_text_get_character_extents (0, screen): x=%i y=%i width=%i height=%i\n",
+           x, y, width, height);
+
 }
 
 static void
@@ -192,7 +203,7 @@ make_ui (ClutterActor *stage)
   text_editable_actor = clutter_text_new_full ("Sans Bold 32px",
                                                "consectetur adipisicing elit",
                                                &color_text);
-  clutter_actor_set_position (text_editable_actor, 0, 100);
+  clutter_actor_set_position (text_editable_actor, 20, 100);
   clutter_text_set_editable (CLUTTER_TEXT (text_editable_actor), TRUE);
   clutter_text_set_selectable (CLUTTER_TEXT (text_editable_actor), TRUE);
   clutter_text_set_selection_color (CLUTTER_TEXT (text_editable_actor),

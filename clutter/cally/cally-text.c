@@ -134,6 +134,13 @@ static AtkAttributeSet*      cally_text_get_run_attributes       (AtkText *text,
                                                                   gint    *start_offset,
                                                                   gint    *end_offset);
 static AtkAttributeSet*      cally_text_get_default_attributes   (AtkText *text);
+static void                  cally_text_get_character_extents    (AtkText *text,
+                                                                  gint offset,
+                                                                  gint *x,
+                                                                  gint *y,
+                                                                  gint *width,
+                                                                  gint *height,
+                                                                  AtkCoordType coords);
 static void                  _cally_text_get_selection_bounds    (ClutterText *clutter_text,
                                                                   gint        *start_offset,
                                                                   gint        *end_offset);
@@ -398,7 +405,7 @@ cally_text_text_interface_init (AtkTextIface *iface)
   iface->set_selection           = cally_text_set_selection;
   iface->get_run_attributes      = cally_text_get_run_attributes;
   iface->get_default_attributes  = cally_text_get_default_attributes;
-/*   iface->get_character_extents = */
+  iface->get_character_extents   = cally_text_get_character_extents;
 /*   iface->get_offset_at_point = */
 
 }
@@ -778,6 +785,76 @@ cally_text_get_default_attributes (AtkText *text)
 
   return at_set;
 }
+
+static void cally_text_get_character_extents (AtkText *text,
+                                              gint offset,
+                                              gint *xp,
+                                              gint *yp,
+                                              gint *widthp,
+                                              gint *heightp,
+                                              AtkCoordType coords)
+{
+  ClutterActor    *actor        = NULL;
+  ClutterText     *clutter_text = NULL;
+  gint x = 0, y = 0, width = 0, height = 0;
+  gint index, x_window, y_window, x_toplevel, y_toplevel;
+  gint x_layout, y_layout;
+  PangoLayout *layout;
+  PangoRectangle extents;
+  const gchar *text_value;
+  ClutterVertex verts[4];
+
+  actor = CALLY_GET_CLUTTER_ACTOR (text);
+  if (actor == NULL) /* State is defunct */
+    goto done;
+
+  clutter_text = CLUTTER_TEXT (actor);
+
+  text_value = clutter_text_get_text (clutter_text);
+  index = g_utf8_offset_to_pointer (text_value, offset) - text_value;
+
+  layout = clutter_text_get_layout (clutter_text);
+  pango_layout_index_to_pos (layout, index, &extents);
+
+  /* handle RTL text layout */
+  if (extents.width < 0)
+    {
+      extents.x += extents.width;
+      extents.width = -extents.width;
+    }
+
+  clutter_actor_get_abs_allocation_vertices (actor, verts);
+  x_window = verts[0].x;
+  y_window = verts[0].y;
+
+  clutter_text_get_layout_offsets (clutter_text, &x_layout, &y_layout);
+
+  x = (extents.x / PANGO_SCALE) + x_layout + x_window;
+  y = (extents.y / PANGO_SCALE) + y_layout + y_window;
+  width = extents.width / PANGO_SCALE;
+  height = extents.height / PANGO_SCALE;
+
+  if (coords == ATK_XY_SCREEN)
+    {
+      _cally_actor_get_top_level_origin (actor, &x_toplevel, &y_toplevel);
+      x += x_toplevel;
+      y += y_toplevel;
+    }
+
+done:
+  if (widthp)
+    *widthp = width;
+
+  if (heightp)
+    *heightp = height;
+
+  if (xp)
+    *xp = x;
+
+  if (yp)
+    *yp = y;
+}
+
 
 /******** Auxiliar private methods ******/
 
