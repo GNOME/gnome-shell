@@ -135,6 +135,12 @@ test_atk_text (ClutterActor *actor)
   g_print ("atk_text_get_character_extents (0, screen): x=%i y=%i width=%i height=%i\n",
            x, y, width, height);
 
+  pos = atk_text_get_offset_at_point (cally_text, 200, 10, ATK_XY_WINDOW);
+  g_print ("atk_text_get_offset_at_point (200, 10, window): %i\n", pos);
+
+  pos = atk_text_get_offset_at_point (cally_text, 200, 100, ATK_XY_SCREEN);
+  g_print ("atk_text_get_offset_at_point (200, 100, screen): %i\n", pos);
+
 }
 
 static void

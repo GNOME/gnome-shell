@@ -141,6 +141,11 @@ static void                  cally_text_get_character_extents    (AtkText *text,
                                                                   gint *width,
                                                                   gint *height,
                                                                   AtkCoordType coords);
+static gint                  cally_text_get_offset_at_point      (AtkText *text,
+                                                                  gint x,
+                                                                  gint y,
+                                                                  AtkCoordType coords);
+
 static void                  _cally_text_get_selection_bounds    (ClutterText *clutter_text,
                                                                   gint        *start_offset,
                                                                   gint        *end_offset);
@@ -189,6 +194,11 @@ static AtkAttributeSet*     _cally_misc_layout_get_run_attributes (AtkAttributeS
 
 static AtkAttributeSet*     _cally_misc_layout_get_default_attributes (AtkAttributeSet *attrib_set,
                                                                        ClutterText *text);
+
+static int                  _cally_misc_get_index_at_point (ClutterText *clutter_text,
+                                                            gint         x,
+                                                            gint         y,
+                                                            AtkCoordType coords);
 
 G_DEFINE_TYPE_WITH_CODE (CallyText,
                          cally_text,
@@ -406,7 +416,7 @@ cally_text_text_interface_init (AtkTextIface *iface)
   iface->get_run_attributes      = cally_text_get_run_attributes;
   iface->get_default_attributes  = cally_text_get_default_attributes;
   iface->get_character_extents   = cally_text_get_character_extents;
-/*   iface->get_offset_at_point = */
+  iface->get_offset_at_point     = cally_text_get_offset_at_point;
 
 }
 
@@ -853,6 +863,31 @@ done:
 
   if (yp)
     *yp = y;
+}
+
+static gint
+cally_text_get_offset_at_point (AtkText *text,
+                                gint x,
+                                gint y,
+                                AtkCoordType coords)
+{
+  ClutterActor    *actor        = NULL;
+  ClutterText     *clutter_text = NULL;
+  const gchar *text_value;
+  gint index;
+
+  actor = CALLY_GET_CLUTTER_ACTOR (text);
+  if (actor == NULL) /* State is defunct */
+    return -1;
+
+  clutter_text = CLUTTER_TEXT (actor);
+
+  index = _cally_misc_get_index_at_point (clutter_text, x, y, coords);
+  text_value = clutter_text_get_text (clutter_text);
+  if (index == -1)
+    return g_utf8_strlen (text_value, -1);
+  else
+    return g_utf8_pointer_to_offset (text_value, text_value + index);
 }
 
 
@@ -1616,4 +1651,50 @@ _cally_misc_layout_get_default_attributes (AtkAttributeSet *attrib_set,
                                           g_strdup_printf ("%i", 0));
 
   return attrib_set;
+}
+
+static int
+_cally_misc_get_index_at_point (ClutterText *clutter_text,
+                                gint         x,
+                                gint         y,
+                                AtkCoordType coords)
+{
+  gint index, x_window, y_window, x_toplevel, y_toplevel;
+  gint x_temp, y_temp;
+  gboolean ret;
+  ClutterVertex verts[4];
+  PangoLayout *layout;
+  gint x_layout, y_layout;
+
+  clutter_text_get_layout_offsets (clutter_text, &x_layout, &y_layout);
+
+  clutter_actor_get_abs_allocation_vertices (CLUTTER_ACTOR (clutter_text), verts);
+  x_window = verts[0].x;
+  y_window = verts[0].y;
+
+  x_temp =  x - x_layout - x_window;
+  y_temp =  y - y_layout - y_window;
+
+  if (coords == ATK_XY_SCREEN)
+    {
+      _cally_actor_get_top_level_origin (CLUTTER_ACTOR (clutter_text), &x_toplevel,
+                                         &y_toplevel);
+      x_temp -= x_toplevel;
+      y_temp -= y_toplevel;
+    }
+
+  layout = clutter_text_get_layout (clutter_text);
+  ret = pango_layout_xy_to_index (layout,
+                                  x_temp * PANGO_SCALE,
+                                  y_temp * PANGO_SCALE,
+                                  &index, NULL);
+
+  if (!ret)
+    {
+      if (x_temp < 0 || y_temp < 0)
+        index = 0;
+      else
+        index = -1;
+    }
+  return index;
 }
