@@ -78,7 +78,7 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
                           void *user_data)
 {
   TextureSlicedQuadState *state = user_data;
-  CoglFramebuffer *framebuffer = _cogl_get_framebuffer ();
+  CoglFramebuffer *framebuffer = _cogl_get_draw_buffer ();
   CoglHandle texture_override;
   float quad_coords[4];
 
@@ -542,7 +542,7 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
   if (state.override_pipeline)
     pipeline = state.override_pipeline;
 
-  framebuffer = _cogl_get_framebuffer ();
+  framebuffer = _cogl_get_draw_buffer ();
   _cogl_journal_log_quad (framebuffer->journal,
                           position,
                           pipeline,

@@ -236,14 +236,18 @@ typedef enum _CoglFramebufferFlushFlags
 } CoglFramebufferFlushFlags;
 
 void
-_cogl_framebuffer_flush_state (CoglFramebuffer *framebuffer,
+_cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
+                               CoglFramebuffer *read_buffer,
                                CoglFramebufferFlushFlags flags);
 
 CoglHandle
 _cogl_onscreen_new (void);
 
 CoglFramebuffer *
-_cogl_get_framebuffer (void);
+_cogl_get_draw_buffer (void);
+
+CoglFramebuffer *
+_cogl_get_read_buffer (void);
 
 GSList *
 _cogl_create_framebuffer_stack (void);
@@ -268,6 +272,21 @@ CoglHandle
 _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
                                      CoglOffscreenFlags create_flags,
                                      unsigned int level);
+
+/*
+ * _cogl_push_framebuffers:
+ * @draw_buffer: A pointer to the buffer used for drawing
+ * @read_buffer: A pointer to the buffer used for reading back pixels
+ *
+ * Redirects drawing and reading to the specified framebuffers as in
+ * cogl_push_framebuffer() except that it allows the draw and read
+ * buffer to be different. The buffers are pushed as a pair so that
+ * they can later both be restored with a single call to
+ * cogl_pop_framebuffer().
+ */
+void
+_cogl_push_framebuffers (CoglFramebuffer *draw_buffer,
+                         CoglFramebuffer *read_buffer);
 
 #endif /* __COGL_FRAMEBUFFER_PRIVATE_H */
 
