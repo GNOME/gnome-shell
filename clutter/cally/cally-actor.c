@@ -186,9 +186,6 @@ static void     cally_actor_remove_focus_handler     (AtkComponent *component,
 static void     cally_actor_focus_event              (AtkObject   *obj,
                                                       gboolean    focus_in);
 static gboolean _is_actor_on_screen                 (ClutterActor *actor);
-static void     _get_top_level_origin               (ClutterActor *actor,
-                                                     gint         *x,
-                                                     gint         *y);
 
 /* AtkAction.h */
 static void                  cally_actor_action_interface_init  (AtkActionIface *iface);
@@ -809,7 +806,7 @@ cally_actor_get_extents (AtkComponent *component,
 
   if (coord_type == ATK_XY_SCREEN)
     {
-      _get_top_level_origin (actor, &top_level_x, &top_level_y);
+      _cally_actor_get_top_level_origin (actor, &top_level_x, &top_level_y);
 
       *x += top_level_x;
       *y += top_level_y;
@@ -914,14 +911,14 @@ _is_actor_on_screen (ClutterActor *actor)
  * required
  *
  */
-static void
-_get_top_level_origin (ClutterActor *actor,
-                       gint         *x,
-                       gint         *y)
+void
+_cally_actor_get_top_level_origin (ClutterActor *actor,
+                                   gint         *xp,
+                                   gint         *yp)
 {
   /* default values */
-  *x = 0;
-  *y = 0;
+  gint x = 0;
+  gint y = 0;
 
 #ifdef HAVE_CLUTTER_GLX
   {
@@ -941,7 +938,7 @@ _get_top_level_origin (ClutterActor *actor,
     stage_window = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
     return_val = XTranslateCoordinates (display, stage_window, root_window,
-                                        0, 0, x, y,
+                                        0, 0, &x, &y,
                                         &child);
 
     if (!return_val)
@@ -962,6 +959,12 @@ _get_top_level_origin (ClutterActor *actor,
       }
   }
 #endif
+
+  if (xp)
+      *xp = x;
+
+  if (yp)
+      *yp = y;
 }
 
 /* AtkAction implementation */
