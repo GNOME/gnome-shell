@@ -27,7 +27,6 @@ BoxPointer.prototype = {
     _init: function(arrowSide, binProperties) {
         this._arrowSide = arrowSide;
         this._arrowOrigin = 0;
-        this._arrowCorner = null;
         this.actor = new St.Bin({ x_fill: true,
                                   y_fill: true });
         this._container = new Shell.GenericContainer();
@@ -218,135 +217,84 @@ BoxPointer.prototype = {
 
         cr.moveTo(x1 + borderRadius, y1);
         if (this._arrowSide == St.Side.TOP) {
-            if (this._arrowCorner == St.Corner.TOPLEFT) {
-                cr.moveTo(x1, y1);
-                cr.lineTo(x1, y1 - rise);
-                cr.lineTo(x1 + halfBase, y1);
-                cr.lineTo(x2 - borderRadius, y1);
-            } else if (this._arrowCorner == St.Corner.TOPRIGHT) {
-                cr.lineTo(x2 - halfBase, y1);
-                cr.lineTo(x2, y1 - rise);
-            } else if (this._arrowOrigin < (x1 + (borderRadius + halfBase))) {
-                cr.lineTo(this._arrowOrigin, y1);
+            if (this._arrowOrigin < (x1 + (borderRadius + halfBase))) {
                 cr.lineTo(this._arrowOrigin, y1 - rise);
-                cr.lineTo(this._arrowOrigin + halfBase, y1);
-                cr.lineTo(x2 - borderRadius, y1);
+                cr.lineTo(Math.max(x1 + borderRadius, this._arrowOrigin) + halfBase, y1);
             } else if (this._arrowOrigin > (x2 - (borderRadius + halfBase))) {
-                cr.lineTo(this._arrowOrigin - halfBase, y1);
+                cr.lineTo(Math.min(x2 - borderRadius, this._arrowOrigin) - halfBase, y1);
                 cr.lineTo(this._arrowOrigin, y1 - rise);
-                cr.lineTo(this._arrowOrigin, y1);
-                cr.lineTo(x2 - borderRadius, y1);
             } else {
                 cr.lineTo(this._arrowOrigin - halfBase, y1);
                 cr.lineTo(this._arrowOrigin, y1 - rise);
                 cr.lineTo(this._arrowOrigin + halfBase, y1);
-                cr.lineTo(x2 - borderRadius, y1);
             }
-        } else
-            cr.lineTo(x2 - borderRadius, y1);
+        }
+
+        cr.lineTo(x2 - borderRadius, y1);
 
         // top-right corner
-        if (this._arrowCorner != St.Corner.TOPRIGHT)
-            cr.arc(x2 - borderRadius, y1 + borderRadius, borderRadius,
-                   3*Math.PI/2, Math.PI*2);
+        cr.arc(x2 - borderRadius, y1 + borderRadius, borderRadius,
+               3*Math.PI/2, Math.PI*2);
 
         if (this._arrowSide == St.Side.RIGHT) {
-            if (this._arrowCorner == St.Corner.TOPRIGHT) {
-                cr.lineTo(x2, y1);
-                cr.lineTo(x2 + rise, y1);
-                cr.lineTo(x2, y1 + halfBase);
-                cr.lineTo(x2, y2 - borderRadius);
-            } else if (this._arrowCorner == St.Corner.BOTTOMRIGHT) {
-                cr.moveTo(x2, y2 - halfBase);
-                cr.lineTo(x2 + rise, y2);
-            } else if (this._arrowOrigin < (y1 + (borderRadius + halfBase))) {
-                cr.lineTo(x2, this._arrowOrigin);
+            if (this._arrowOrigin < (y1 + (borderRadius + halfBase))) {
                 cr.lineTo(x2 + rise, this._arrowOrigin);
-                cr.lineTo(x2, this._arrowOrigin + halfBase);
-                cr.lineTo(x2, y2 - borderRadius);
+                cr.lineTo(x2, Math.max(y1 + borderRadius, this._arrowOrigin) + halfBase);
             } else if (this._arrowOrigin > (y2 - (borderRadius + halfBase))) {
-                cr.lineTo(x2, this._arrowOrigin - halfBase);
+                cr.lineTo(x2, Math.min(y2 - borderRadius, this._arrowOrigin) - halfBase);
                 cr.lineTo(x2 + rise, this._arrowOrigin);
-                cr.lineTo(x2, this._arrowOrigin);
-                cr.lineTo(x2, y2 - borderRadius);
             } else {
                 cr.lineTo(x2, this._arrowOrigin - halfBase);
                 cr.lineTo(x2 + rise, this._arrowOrigin);
                 cr.lineTo(x2, this._arrowOrigin + halfBase);
-                cr.lineTo(x2, y2 - borderRadius);
             }
-        } else
-            cr.lineTo(x2, y2 - borderRadius);
+        }
+
+        cr.lineTo(x2, y2 - borderRadius);
 
         // bottom-right corner
-        if (this._arrowCorner != St.Corner.BOTTOMRIGHT)
-            cr.arc(x2 - borderRadius, y2 - borderRadius, borderRadius,
-                   0, Math.PI/2);
+        cr.arc(x2 - borderRadius, y2 - borderRadius, borderRadius,
+               0, Math.PI/2);
 
         if (this._arrowSide == St.Side.BOTTOM) {
-            if (this._arrowCorner == St.Corner.BOTTOMLEFT) {
-                cr.lineTo(x1 + halfBase, y2);
-                cr.lineTo(x1, y2 + rise);
-            } else if (this._arrowCorner == St.Corner.BOTTOMRIGHT) {
-                cr.lineTo(x2, y2 + rise);
-                cr.lineTo(x2 - halfBase, y2);
-                cr.lineTo(x1 + borderRadius, y2);
-            } else if (this._arrowOrigin < (x1 + (borderRadius + halfBase))) {
-                cr.lineTo(this._arrowOrigin + halfBase, y2);
+            if (this._arrowOrigin < (x1 + (borderRadius + halfBase))) {
+                cr.lineTo(Math.max(x1 + borderRadius, this._arrowOrigin) + halfBase, y2);
                 cr.lineTo(this._arrowOrigin, y2 + rise);
-                cr.lineTo(this._arrowOrigin, y2);
-                cr.lineTo(x1 + borderRadius, y2);
             } else if (this._arrowOrigin > (x2 - (borderRadius + halfBase))) {
-                cr.lineTo(this._arrowOrigin, y2);
                 cr.lineTo(this._arrowOrigin, y2 + rise);
-                cr.lineTo(this._arrowOrigin - halfBase, y2);
-                cr.lineTo(x1 + borderRadius, y2);
+                cr.lineTo(Math.min(x2 - borderRadius, this._arrowOrigin) - halfBase, y2);
             } else {
                 cr.lineTo(this._arrowOrigin + halfBase, y2);
                 cr.lineTo(this._arrowOrigin, y2 + rise);
                 cr.lineTo(this._arrowOrigin - halfBase, y2);
-                cr.lineTo(x1 + borderRadius, y2);
             }
-        } else
-            cr.lineTo(x1 + borderRadius, y2);
+        }
+
+        cr.lineTo(x1 + borderRadius, y2);
 
         // bottom-left corner
-        if (this._arrowCorner != St.Corner.BOTTOMLEFT)
-            cr.arc(x1 + borderRadius, y2 - borderRadius, borderRadius,
-                   Math.PI/2, Math.PI);
+        cr.arc(x1 + borderRadius, y2 - borderRadius, borderRadius,
+               Math.PI/2, Math.PI);
 
         if (this._arrowSide == St.Side.LEFT) {
-            if (this._arrowCorner == St.Corner.TOPLEFT) {
-                cr.lineTo(x2, y1 + halfBase);
-                cr.lineTo(x1 - rise, y1);
-            } else if (this._arrowCorner == St.Corner.BOTTOMLEFT) {
-                cr.lineTo(x1 + rise, y2);
-                cr.moveTo(x1, y2 - halfBase);
-            } else if (this._arrowOrigin < (y1 + (borderRadius + halfBase))) {
-                cr.lineTo(x1, this._arrowOrigin + halfBase);
+            if (this._arrowOrigin < (y1 + (borderRadius + halfBase))) {
+                cr.lineTo(x1, Math.max(y1 + borderRadius, this._arrowOrigin) + halfBase);
                 cr.lineTo(x1 - rise, this._arrowOrigin);
-                cr.lineTo(x1, this._arrowOrigin);
-                cr.lineTo(x1, y1 + borderRadius);
             } else if (this._arrowOrigin > (y2 - (borderRadius + halfBase))) {
-                cr.lineTo(x1, this._arrowOrigin);
                 cr.lineTo(x1 - rise, this._arrowOrigin);
-                cr.lineTo(x1, this._arrowOrigin - halfBase);
-                cr.lineTo(x1, y1 + borderRadius);
+                cr.lineTo(x1, Math.min(y2 - borderRadius, this._arrowOrigin) - halfBase);
             } else {
                 cr.lineTo(x1, this._arrowOrigin + halfBase);
                 cr.lineTo(x1 - rise, this._arrowOrigin);
                 cr.lineTo(x1, this._arrowOrigin - halfBase);
-                cr.lineTo(x1, y1 + borderRadius);
             }
-        } else
-            cr.lineTo(x1, y1 + borderRadius);
+        }
+
+        cr.lineTo(x1, y1 + borderRadius);
 
         // top-left corner
-        if (this._arrowCorner != St.Corner.TOPLEFT)
-            cr.arc(x1 + borderRadius, y1 + borderRadius, borderRadius,
-                   Math.PI, 3*Math.PI/2);
-        else
-            cr.lineTo(x1, y1);
+        cr.arc(x1 + borderRadius, y1 + borderRadius, borderRadius,
+               Math.PI, 3*Math.PI/2);
 
         Clutter.cairo_set_source_color(cr, backgroundColor);
         cr.fillPreserve();
@@ -375,10 +323,7 @@ BoxPointer.prototype = {
         let halfBase = themeNode.get_length('-arrow-base') / 2;
         let borderRadius = themeNode.get_length('-arrow-border-radius');
 
-        let margin = 2 * borderRadius + halfBorder;
-
         let resX, resY;
-        this._arrowCorner = null;
 
         switch (this._arrowSide) {
         case St.Side.TOP:
@@ -411,15 +356,6 @@ BoxPointer.prototype = {
                 resX = sourceCenterX - natWidth + (halfBase + borderRadius + halfBorder);
                 break;
             }
-            if (sourceCenterX < margin) {
-                // Not enough space to the top
-                this._arrowCorner = (this._arrowSide == St.Side.TOP) ? St.Corner.TOPLEFT : St.Corner.BOTTOMLEFT;
-                resX = primary.x + 10;
-            } else if (sourceCenterX > (primary.x + primary.width - margin)) {
-                // Not enough space to the botom
-                this._arrowCorner = (this._arrowSide == St.Side.TOP) ? St.Corner.TOPRIGHT : St.Corner.BOTTOMRIGHT;
-                resX = primary.x + primary.width - (10 + natWidth);
-            }
 
             resX = Math.max(resX, primary.x + 10);
             resX = Math.min(resX, primary.x + primary.width - (10 + natWidth));
@@ -438,16 +374,6 @@ BoxPointer.prototype = {
             case St.Align.END:
                 resY = sourceCenterY - natHeight + (halfBase + borderRadius + halfBorder);
                 break;
-            }
-            if (sourceCenterY < margin) {
-                // Not enough space to the left
-                this._arrowCorner = (this._arrowSide == St.Side.LEFT) ? St.Corner.TOPLEFT : St.Corner.TORIGHT;
-                resY = 10;
-            }
-            else if (sourceCenterY > (primary.y + primary.height - margin)) {
-                // Not enough space to the right
-                this._arrowCorner = (this._arrowSide == St.Side.LEFT) ? St.Corner.BOTTOMLEFT : St.Corner.BOTTOMRIGHT;
-                resY = primary.y + primary.height - (10 + natHeight);
             }
 
             resY = Math.max(resY, primary.y + 10);
