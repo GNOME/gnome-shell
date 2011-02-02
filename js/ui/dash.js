@@ -250,6 +250,7 @@ Dash.prototype = {
     _init : function() {
         this._maxHeight = -1;
         this._iconSize = 48;
+        this._shownInitially = false;
 
         this._dragPlaceholder = null;
         this._dragPlaceholderPos = -1;
@@ -563,6 +564,13 @@ Dash.prototype = {
 
         if (this._favRemoveTarget && this._favRemoveTarget.hiding)
             this._favRemoveTarget.actor.show();
+
+        // Skip animations on first run when adding the initial set
+        // of items, to avoid all items zooming in at once
+        if (!this._shownInitially) {
+            this._shownInitially = true;
+            return;
+        }
 
         for (let i = 0; i < removedActors.length; i++) {
             removedActors[i].show();
