@@ -3184,7 +3184,7 @@ st_theme_node_adjust_preferred_height (StThemeNode  *node,
  * st_theme_node_get_content_box:
  * @node: a #StThemeNode
  * @allocation: the box allocated to a #ClutterAlctor
- * @content_box: computed box occupied by the actor's content
+ * @content_box: (out): computed box occupied by the actor's content
  *
  * Gets the box within an actor's allocation that contents the content
  * of an actor (excluding borders and padding). This is a convenience function

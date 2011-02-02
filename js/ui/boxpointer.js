@@ -309,9 +309,12 @@ BoxPointer.prototype = {
         this.actor.show();
 
         // Position correctly relative to the sourceActor
+        let sourceNode = sourceActor.get_theme_node();
+        let sourceContentBox = sourceNode.get_content_box(sourceActor.get_allocation_box());
         let [sourceX, sourceY] = sourceActor.get_transformed_position();
         let [sourceWidth, sourceHeight] = sourceActor.get_transformed_size();
-        let [sourceCenterX, sourceCenterY] = [sourceX + (sourceWidth / 2), sourceY + (sourceHeight / 2)];
+        let sourceCenterX = sourceX + sourceContentBox.x1 + (sourceContentBox.x2 - sourceContentBox.x1) / 2;
+        let sourceCenterY = sourceY + sourceContentBox.y1 + (sourceContentBox.y2 - sourceContentBox.y1) / 2;
         let [minWidth, minHeight, natWidth, natHeight] = this.actor.get_preferred_size();
 
         // We also want to keep it onscreen, and separated from the
