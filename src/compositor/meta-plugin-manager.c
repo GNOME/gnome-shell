@@ -31,6 +31,7 @@
 #include "../core/window-private.h"
 
 #include <string.h>
+#include <stdlib.h>
 
 #include <clutter/x11/clutter-x11.h>
 
@@ -281,8 +282,15 @@ meta_plugin_manager_load (MetaPluginManager *plugin_mgr)
                 }
             }
           else
-            g_warning ("Unable to load plugin module [%s]: %s",
-                       path, g_module_error());
+            {
+              /* This is fatal under the assumption that a monitoring
+               * process like gnome-session will take over and handle
+               * our untimely exit.
+               */
+              g_printerr ("Unable to load plugin module [%s]: %s",
+                          path, g_module_error());
+              exit (1);
+            }
 
           g_free (path);
           g_free (plugin_string);
