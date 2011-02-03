@@ -21,12 +21,16 @@ function WindowClone(realWindow) {
 WindowClone.prototype = {
     _init : function(realWindow) {
         this.actor = new Clutter.Clone({ source: realWindow.get_texture(),
-                                         reactive: true,
-                                         x: realWindow.x,
-                                         y: realWindow.y });
+                                         reactive: true });
         this.actor._delegate = this;
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
+
+        this._positionChangedId = this.realWindow.connect('position-changed',
+                                                          Lang.bind(this, this._onPositionChanged));
+        this._realWindowDestroyedId = this.realWindow.connect('destroy',
+                                                              Lang.bind(this, this._disconnectRealWindowSignals));
+        this._onPositionChanged();
 
         this.actor.connect('button-release-event',
                            Lang.bind(this, this._onButtonRelease));
@@ -56,7 +60,26 @@ WindowClone.prototype = {
         this.actor.destroy();
     },
 
+    _onPositionChanged: function() {
+        let rect = this.metaWindow.get_outer_rect();
+        this.actor.set_position(this.realWindow.x, this.realWindow.y);
+    },
+
+    _disconnectRealWindowSignals: function() {
+        if (this._positionChangedId != 0) {
+            this.realWindow.disconnect(this._positionChangedId);
+            this._positionChangedId = 0;
+        }
+
+        if (this._realWindowDestroyedId != 0) {
+            this.realWindow.disconnect(this._realWindowDestroyedId);
+            this._realWindowDestroyedId = 0;
+        }
+    },
+
     _onDestroy: function() {
+        this._disconnectRealWindowSignals();
+
         this.actor._delegate = null;
 
         if (this.inDrag) {
