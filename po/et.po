@@ -7,24 +7,25 @@
 #
 # Tõivo Leedjärv <toivo linux ee>, 2004.
 # Ivar Smolin <okul linux ee>, 2005, 2006, 2009–2011.
-# Mattias Põldaru <mahfiaz gmail com>, 2008–2010.
+# Mattias Põldaru <mahfiaz gmail com>, 2008–2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&component=general\n"
-"POT-Creation-Date: 2011-01-04 16:55+0000\n"
-"PO-Revision-Date: 2011-01-09 13:51+0200\n"
-"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
+"POT-Creation-Date: 2011-02-01 17:26+0000\n"
+"PO-Revision-Date: 2011-02-03 00:52+0300\n"
+"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
+"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "Bell event"
-msgstr ""
+msgstr "Helina sündmus"
 
 #, c-format
 msgid "Unknown window information request: %d"
@@ -121,16 +122,16 @@ msgstr "Tee X-väljakutsed sünkroonseks"
 
 msgid ""
 "Don't make fullscreen windows that are maximized and have no decorations"
-msgstr ""
+msgstr "Ei tehta maksimeeritud ilma raamita täisekraanaknaid."
 
 msgid "Comma-separated list of compositor plugins"
 msgstr "Komaga eraldatud nimekiri komposiitmontaaži pluginatest"
 
 msgid "Whether window popup/frame should be shown when cycling windows."
-msgstr ""
+msgstr "Kas hüpikakent/raami näidatakse akende vahetamisel."
 
 msgid "Internal argument for GObject introspection"
-msgstr ""
+msgstr "GObject enesevaatluse siseargument"
 
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
@@ -172,7 +173,8 @@ msgstr "GConf-i võti \"%s\" on määratud vigase tüübiga\n"
 
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
-msgstr "GConfi võti %s on juba kasutusel ja sellega ei saa tühistada võtit %s\n"
+msgstr ""
+"GConfi võti %s on juba kasutusel ja sellega ei saa tühistada võtit %s\n"
 
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
@@ -223,7 +225,7 @@ msgstr "Viga clutteri pluginate nimekirja määramisel: %s\n"
 
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
-msgstr ""
+msgstr "Viga varjus elushoitavate akende oleku määramisel: %s\n"
 
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
@@ -622,7 +624,7 @@ msgid "Move window to center of screen"
 msgstr "Akna tõstmine ekraani keskele"
 
 msgid "Attach modal dialogs"
-msgstr ""
+msgstr "Modaaldialoogide kinnistamine"
 
 msgid "Clutter Plugins"
 msgstr "Clutteri pluginad"
@@ -631,9 +633,11 @@ msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
 msgstr ""
+"Määrab, kas varjatud aknaid (nt minimeeritud ja teistel tööaladel aknad) "
+"hoitakse elus."
 
 msgid "Live Hidden Windows"
-msgstr ""
+msgstr "Varjatud akende aktiivsus"
 
 msgid "Modifier to use for extended window management operations"
 msgstr "Laiendatud aknaoperatsioonide korral kasutatav muuteklahv"
@@ -641,18 +645,25 @@ msgstr "Laiendatud aknaoperatsioonide korral kasutatav muuteklahv"
 msgid "Plugins to load for the Clutter-based compositing manager."
 msgstr "Clutteril põhineva komposiitmontaažihalduri laadimise pluginad."
 
+# millalgi võiks selle kohta vearaporti kirjutada
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
 "\"Windows key\" on PC hardware. It's expected that this binding either the "
 "default or set to the empty string."
 msgstr ""
+"See klahv näitab \"pealiskihti\", milles on koos akende ülevaade ja "
+"rakenduste käivitamise süsteem. PC-arvutitel on see vaikimisi \"Windowsi "
+"klahv\". Eeldatavasti määratakse selle seose väärtuseks vaikimisi või tühi "
+"sõne."
 
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
 "the parent window."
 msgstr ""
+"Kui märgitud, siis eraldi tiitliribade asemel on moodaalsed dialoogid "
+"emaakna tiitliribade küljes ning liiguvad koos emaaknaga."
 
 #, c-format
 msgid "Usage: %s\n"
@@ -1321,6 +1332,8 @@ msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
 msgstr ""
+"\"version\" rekvisiiti pole võimalik kasutada ei failis metacity-theme-1.xml "
+"ega metacity-theme-2.xml"
 
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
@@ -1444,7 +1457,7 @@ msgid "Border"
 msgstr "Raam"
 
 msgid "Attached Modal Dialog"
-msgstr ""
+msgstr "Kinnistatud modaaldialoog"
 
 #, c-format
 msgid "Button layout test %d"
