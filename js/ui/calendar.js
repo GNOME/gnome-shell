@@ -9,6 +9,7 @@ const Pango = imports.gi.Pango;
 const Gettext_gtk30 = imports.gettext.domain('gtk30');
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
+const C_ = Gettext.pgettext;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 
@@ -58,18 +59,22 @@ function _getEndOfDay(date) {
 function _formatEventTime(event, clockFormat) {
     let ret;
     if (event.allDay) {
-        /* Translators: Shown in calendar event list for all day events */
-        ret = _("All Day");
+        /* Translators: Shown in calendar event list for all day events
+         * Keep it short, best if you can use less then 10 characters
+         */
+        ret = C_("event list time", "All Day");
     } else {
         switch (clockFormat) {
         case '24h':
-            ret = event.date.toLocaleFormat('%H:%M');
+            /* Translators: Shown in calendar event list, if 24h format */
+            ret = event.date.toLocaleFormat(C_("event list time", "%H:%M"));
             break;
 
         default:
             /* explicit fall-through */
         case '12h':
-            ret = event.date.toLocaleFormat('%l:%M %p');
+            /* Transators: Shown in calendar event list, if 12h format */
+            ret = event.date.toLocaleFormat(C_("event list time", "%l:%M %p"));
             break;
         }
     }
@@ -106,22 +111,22 @@ function _getCalendarDayAbbreviation(dayNumber) {
     let abbreviations = [
         /* Translators: Calendar grid abbreviation for Sunday.
          *
-         * NOTE: These abbreviations are always shown together and in
-         * order, e.g. "S M T W T F S".
+         * NOTE: These grid abbreviations are always shown together
+         * and in order, e.g. "S M T W T F S".
          */
-        _("S"),
+        C_("grid sunday", "S"),
         /* Translators: Calendar grid abbreviation for Monday */
-        _("M"),
+        C_("grid monday", "M"),
         /* Translators: Calendar grid abbreviation for Tuesday */
-        _("T"),
+        C_("grid tuesday", "T"),
         /* Translators: Calendar grid abbreviation for Wednesday */
-        _("W"),
+        C_("grid wednesday", "W"),
         /* Translators: Calendar grid abbreviation for Thursday */
-        _("T"),
+        C_("grid thursday", "T"),
         /* Translators: Calendar grid abbreviation for Friday */
-        _("F"),
+        C_("grid friday", "F"),
         /* Translators: Calendar grid abbreviation for Saturday */
-        _("S")
+        C_("grid saturday", "S")
     ];
     return abbreviations[dayNumber];
 }
@@ -130,23 +135,23 @@ function _getEventDayAbbreviation(dayNumber) {
     let abbreviations = [
         /* Translators: Event list abbreviation for Sunday.
          *
-         * NOTE: These abbreviations are normally not shown together
+         * NOTE: These list abbreviations are normally not shown together
          * so they need to be unique (e.g. Tuesday and Thursday cannot
          * both be 'T').
          */
-        _("Su"),
+        C_("list sunday", "Su"),
         /* Translators: Event list abbreviation for Monday */
-        _("M"),
+        C_("list monday", "M"),
         /* Translators: Event list abbreviation for Tuesday */
-        _("T"),
+        C_("list tuesday", "T"),
         /* Translators: Event list abbreviation for Wednesday */
-        _("W"),
+        C_("list wednesday", "W"),
         /* Translators: Event list abbreviation for Thursday */
-        _("Th"),
+        C_("list thursday", "Th"),
         /* Translators: Event list abbreviation for Friday */
-        _("F"),
+        C_("list friday", "F"),
         /* Translators: Event list abbreviation for Saturday */
-        _("S")
+        C_("list saturday", "S")
     ];
     return abbreviations[dayNumber];
 }
@@ -708,9 +713,11 @@ EventsList.prototype = {
         let dayString;
         let now = new Date();
         if (_sameYear(day, now))
-            dayString = day.toLocaleFormat('%A, %B %d');
+            /* Translators: Shown on calendar heading when selected day occurs on current year */
+            dayString = day.toLocaleFormat(C_("calendar heading", "%A, %B %d"));
         else
-            dayString = day.toLocaleFormat('%A, %B %d, %Y');
+            /* Translators: Shown on calendar heading when selected day occurs on different year */
+            dayString = day.toLocaleFormat(C_("calendar heading", "%A, %B %d, %Y"));
         this._addPeriod(dayString, dayBegin, dayEnd, false, true);
     },
 
