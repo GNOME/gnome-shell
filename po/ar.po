@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-23 13:29+0200\n"
-"PO-Revision-Date: 2011-01-23 13:29+0300\n"
+"POT-Creation-Date: 2011-02-03 17:35+0200\n"
+"PO-Revision-Date: 2011-02-03 17:35+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -265,43 +265,47 @@ msgstr ""
 msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr ""
 
+#: ../js/misc/util.js:86
+msgid "Command not found"
+msgstr "لم يُعثَر على الأمر"
+
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:108
+#: ../js/misc/util.js:113
 msgid "Could not parse command:"
 msgstr "تعذّر تحليل الأمر:"
 
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:135
 msgid "No such application"
 msgstr "لا تطبيق بهذا الاسم"
 
-#: ../js/misc/util.js:143 ../js/ui/runDialog.js:351
+#: ../js/misc/util.js:148
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "فشل تنفيذ '%s':‏"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:155
+#: ../js/ui/appDisplay.js:164
 msgid "All"
 msgstr "الكل"
 
-#: ../js/ui/appDisplay.js:236
+#: ../js/ui/appDisplay.js:245
 msgid "APPLICATIONS"
 msgstr "التطبيقات"
 
-#: ../js/ui/appDisplay.js:266
+#: ../js/ui/appDisplay.js:275
 msgid "PREFERENCES"
 msgstr "التفضيلات"
 
-#: ../js/ui/appDisplay.js:563
+#: ../js/ui/appDisplay.js:572
 msgid "New Window"
 msgstr "نافذة جديدة"
 
-#: ../js/ui/appDisplay.js:567
+#: ../js/ui/appDisplay.js:576
 msgid "Remove from Favorites"
 msgstr "أزِل من المفضّلة"
 
-#: ../js/ui/appDisplay.js:568
+#: ../js/ui/appDisplay.js:577
 msgid "Add to Favorites"
 msgstr "أضِف إلى المفضّلة"
 
@@ -315,9 +319,210 @@ msgstr "أضيف %s إلى مفضلتك."
 msgid "%s has been removed from your favorites."
 msgstr "أزيل %s من مفضّلتك."
 
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:65
+msgctxt "event list time"
+msgid "All Day"
+msgstr "طوال اليوم"
+
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:70
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:77
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: ../js/ui/calendar.js:117
+msgctxt "grid sunday"
+msgid "S"
+msgstr "أ"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:119
+msgctxt "grid monday"
+msgid "M"
+msgstr "ث"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:121
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "ث"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:123
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "أ"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:125
+msgctxt "grid thursday"
+msgid "T"
+msgstr "خ"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:127
+msgctxt "grid friday"
+msgid "F"
+msgstr "ج"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:129
+msgctxt "grid saturday"
+msgid "S"
+msgstr "س"
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+#: ../js/ui/calendar.js:142
+msgctxt "list sunday"
+msgid "Su"
+msgstr "أحد"
+
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:144
+msgctxt "list monday"
+msgid "M"
+msgstr "اثنين"
+
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:146
+msgctxt "list tuesday"
+msgid "T"
+msgstr "ثلاثاء"
+
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:148
+msgctxt "list wednesday"
+msgid "W"
+msgstr "أربعاء"
+
+#. Translators: Event list abbreviation for Thursday
+#: ../js/ui/calendar.js:150
+msgctxt "list thursday"
+msgid "Th"
+msgstr "خميس"
+
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:152
+msgctxt "list friday"
+msgid "F"
+msgstr "جمعة"
+
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:154
+msgctxt "list saturday"
+msgid "S"
+msgstr "سبت"
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:701
+msgid "Nothing Scheduled"
+msgstr "الجدول خال"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:717
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A، %d %B"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:720
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A، %d %B، %Y"
+
+#: ../js/ui/calendar.js:730
+msgid "Today"
+msgstr "اليوم"
+
+#: ../js/ui/calendar.js:734
+msgid "Tomorrow"
+msgstr "غدا"
+
+#: ../js/ui/calendar.js:743
+msgid "This week"
+msgstr "هذا الأسبوع"
+
+#: ../js/ui/calendar.js:751
+msgid "Next week"
+msgstr "الأسبوع القادم"
+
 #: ../js/ui/dash.js:27
 msgid "Remove"
 msgstr "أزِل"
+
+#: ../js/ui/dateMenu.js:91
+msgid "Date and Time Settings"
+msgstr "إعدادات الوقت و التّأريخ"
+
+#: ../js/ui/dateMenu.js:110
+msgid "Open Calendar"
+msgstr "افتح التقويم"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:149
+msgid "%a %b %e, %R:%S"
+msgstr "%A %e %B، %R:%S"
+
+#: ../js/ui/dateMenu.js:150
+msgid "%a %b %e, %R"
+msgstr "%A %e %B، %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:154
+msgid "%a %R:%S"
+msgstr "%A %R:%S"
+
+#: ../js/ui/dateMenu.js:155
+msgid "%a %R"
+msgstr "%A %R"
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:162
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%A %e %B، %l:%M:%S %p"
+
+#: ../js/ui/dateMenu.js:163
+msgid "%a %b %e, %l:%M %p"
+msgstr "%A %e %B، %l:%M %p"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:167
+msgid "%a %l:%M:%S %p"
+msgstr "%A %l:%M:%S %p"
+
+#: ../js/ui/dateMenu.js:168
+msgid "%a %l:%M %p"
+msgstr "%A %Ol:%OM %p"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:194
+msgid "%A %B %e, %Y"
+msgstr "%A %e %B، %Y"
 
 #: ../js/ui/docDisplay.js:18
 msgid "RECENT ITEMS"
@@ -422,71 +627,31 @@ msgstr "اعرض المصدر"
 msgid "Web Page"
 msgstr "صفحة الوب"
 
-#: ../js/ui/messageTray.js:1765
+#: ../js/ui/messageTray.js:1809
 msgid "System Information"
 msgstr "معلومات النظام"
 
-#: ../js/ui/overview.js:75
+#: ../js/ui/overview.js:88
 msgid "Undo"
 msgstr "تراجع"
 
-#: ../js/ui/overview.js:140
+#: ../js/ui/overview.js:159
 msgid "Windows"
 msgstr "النوافذ"
 
-#: ../js/ui/overview.js:143
+#: ../js/ui/overview.js:162
 msgid "Applications"
 msgstr "التطبيقات"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:483
+#: ../js/ui/panel.js:480
 #, c-format
 msgid "Quit %s"
 msgstr "أغلق %s"
 
-#. Translators: This is the time format with date used
-#. in 24-hour mode.
-#: ../js/ui/panel.js:568
-msgid "%a %b %e, %R:%S"
-msgstr "%A %e %B، %R:%S"
-
-#: ../js/ui/panel.js:569
-msgid "%a %b %e, %R"
-msgstr "%A %e %B، %R"
-
-#. Translators: This is the time format without date used
-#. in 24-hour mode.
-#: ../js/ui/panel.js:573
-msgid "%a %R:%S"
-msgstr "%A %R:%S"
-
-#: ../js/ui/panel.js:574
-msgid "%a %R"
-msgstr "%A %R"
-
-#. Translators: This is a time format with date used
-#. for AM/PM.
-#: ../js/ui/panel.js:581
-msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%A %e %B، %l:%M:%S %p"
-
-#: ../js/ui/panel.js:582
-msgid "%a %b %e, %l:%M %p"
-msgstr "%A %e %B، %l:%M %p"
-
-#. Translators: This is a time format without date used
-#. for AM/PM.
-#: ../js/ui/panel.js:586
-msgid "%a %l:%M:%S %p"
-msgstr "%A %l:%M:%S %p"
-
-#: ../js/ui/panel.js:587
-msgid "%a %l:%M %p"
-msgstr "%A %Ol:%OM %p"
-
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:732
+#: ../js/ui/panel.js:614
 msgid "Activities"
 msgstr "الأنشطة"
 
@@ -828,22 +993,22 @@ msgstr "جزء"
 msgid "Microphone"
 msgstr "ميكروفون"
 
-#: ../js/ui/telepathyClient.js:561
+#: ../js/ui/telepathyClient.js:563
 #, c-format
 msgid "%s is online."
 msgstr "‏%s متّصل."
 
-#: ../js/ui/telepathyClient.js:566
+#: ../js/ui/telepathyClient.js:568
 #, c-format
 msgid "%s is offline."
 msgstr "‏%s غير متّصل."
 
-#: ../js/ui/telepathyClient.js:569
+#: ../js/ui/telepathyClient.js:571
 #, c-format
 msgid "%s is away."
 msgstr "‏%s غائب."
 
-#: ../js/ui/telepathyClient.js:572
+#: ../js/ui/telepathyClient.js:574
 #, c-format
 msgid "%s is busy."
 msgstr "‏%s مشغول."
@@ -851,7 +1016,7 @@ msgstr "‏%s مشغول."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:666
+#: ../js/ui/telepathyClient.js:668
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "أُرسلت الساعة %l:%M:%S في %A"
@@ -870,12 +1035,12 @@ msgstr "انتهى %s من البدء"
 msgid "'%s' is ready"
 msgstr "‏'%s' جاهز"
 
-#: ../js/ui/workspacesView.js:244
+#: ../js/ui/workspacesView.js:243
 msgid ""
 "Can't add a new workspace because maximum workspaces limit has been reached."
 msgstr "تعذّر إضافة مساحة عمل جديدة، لتجاوز أقصى عدد من مساحات العمل."
 
-#: ../js/ui/workspacesView.js:260
+#: ../js/ui/workspacesView.js:259
 msgid "Can't remove the first workspace."
 msgstr "لا يمكن حذف مساحة العمل الأولى."
 
@@ -909,11 +1074,11 @@ msgstr[5] "%u مدخل"
 msgid "System Sounds"
 msgstr "أصوات النظام"
 
-#: ../src/shell-global.c:1366
+#: ../src/shell-global.c:1365
 msgid "Less than a minute ago"
 msgstr "منذ أقل من دقيقة"
 
-#: ../src/shell-global.c:1370
+#: ../src/shell-global.c:1369
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -924,7 +1089,7 @@ msgstr[3] "منذ %d دقائق"
 msgstr[4] "منذ %d دقيقة"
 msgstr[5] "منذ %d دقيقة"
 
-#: ../src/shell-global.c:1375
+#: ../src/shell-global.c:1374
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -935,7 +1100,7 @@ msgstr[3] "منذ %d ساعات"
 msgstr[4] "منذ %d ساعة"
 msgstr[5] "منذ %d ساعة"
 
-#: ../src/shell-global.c:1380
+#: ../src/shell-global.c:1379
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -946,7 +1111,7 @@ msgstr[3] "منذ %d أيام"
 msgstr[4] "منذ %d يوما"
 msgstr[5] "منذ %d يوم"
 
-#: ../src/shell-global.c:1385
+#: ../src/shell-global.c:1384
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1028,9 +1193,6 @@ msgstr "‏%1$s:‏ %2$s"
 
 #~ msgid "System Preferences..."
 #~ msgstr "تفضيلات النظام..."
-
-#~ msgid "%H:%M"
-#~ msgstr "%OH:%OM"
 
 #~ msgid "Recent Documents"
 #~ msgstr "المستندات الحديثة"
