@@ -1211,8 +1211,7 @@ clutter_stage_finalize (GObject *object)
 
   g_array_free (priv->paint_volume_stack, TRUE);
 
-  if (priv->devices != NULL)
-    g_hash_table_destroy (priv->devices);
+  g_hash_table_destroy (priv->devices);
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
 }
@@ -1632,6 +1631,8 @@ clutter_stage_init (ClutterStage *self)
 
   priv->paint_volume_stack =
     g_array_new (FALSE, FALSE, sizeof (ClutterPaintVolume));
+
+  priv->devices = g_hash_table_new (NULL, NULL);
 }
 
 /**
@@ -3390,9 +3391,6 @@ _clutter_stage_add_device (ClutterStage       *stage,
 {
   ClutterStagePrivate *priv = stage->priv;
 
-  if (G_UNLIKELY (priv->devices == NULL))
-    priv->devices = g_hash_table_new (NULL, NULL);
-
   if (g_hash_table_lookup (priv->devices, device) != NULL)
     return;
 
@@ -3406,9 +3404,6 @@ _clutter_stage_remove_device (ClutterStage       *stage,
 {
   ClutterStagePrivate *priv = stage->priv;
 
-  if (G_UNLIKELY (priv->devices == NULL))
-    return;
-
   _clutter_input_device_set_stage (device, NULL);
   g_hash_table_remove (priv->devices, device);
 }
@@ -3418,9 +3413,6 @@ _clutter_stage_has_device (ClutterStage       *stage,
                            ClutterInputDevice *device)
 {
   ClutterStagePrivate *priv = stage->priv;
-
-  if (priv->devices == NULL)
-    return FALSE;
 
   return g_hash_table_lookup (priv->devices, device) != NULL;
 }
