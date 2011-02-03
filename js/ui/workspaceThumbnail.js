@@ -22,13 +22,15 @@ WindowClone.prototype = {
     _init : function(realWindow) {
         this.actor = new Clutter.Clone({ source: realWindow.get_texture(),
                                          clip_to_allocation: true,
-                                         reactive: true,
-                                         x: realWindow.x,
-                                         y: realWindow.y });
+                                         reactive: true });
         this.actor._delegate = this;
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
         this.metaWindow._delegate = this;
+
+        this._positionChangedId = this.realWindow.connect('position-changed',
+                                                          Lang.bind(this, this._onPositionChanged));
+        this._onPositionChanged();
 
         this.actor.connect('button-release-event',
                            Lang.bind(this, this._onButtonRelease));
@@ -58,9 +60,19 @@ WindowClone.prototype = {
         this.actor.destroy();
     },
 
+    _onPositionChanged: function() {
+        let rect = this.metaWindow.get_outer_rect();
+        this.actor.set_position(this.realWindow.x, this.realWindow.y);
+    },
+
     _onDestroy: function() {
         this.metaWindow._delegate = null;
         this.actor._delegate = null;
+
+        if (this._positionChangedId != 0) {
+            this.realWindow.disconnect(this._positionChangedId);
+            this._positionChangedId = 0;
+        }
 
         if (this.inDrag) {
             this.emit('drag-end');
@@ -286,8 +298,8 @@ WorkspaceThumbnail.prototype = {
                                                  time);
             return true;
         } else if (source.shellWorkspaceLaunch) {
-            this.metaWorkspace.activate(time);
-            source.shellWorkspaceLaunch();
+            source.shellWorkspaceLaunch({ workspace: this.metaWorkspace,
+                                          timestamp: time });
             return true;
         }
 
