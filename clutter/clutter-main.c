@@ -2262,14 +2262,28 @@ is_off_stage (ClutterActor *stage,
  * clutter_do_event
  * @event: a #ClutterEvent.
  *
- * Processes an event. This function should never be called by applications.
+ * Processes an event.
+ *
+ * The @event must be a valid #ClutterEvent and have a #ClutterStage
+ * associated to it.
+ *
+ * This function is only useful when embedding Clutter inside another
+ * toolkit, and it should never be called by applications.
  *
  * Since: 0.4
  */
 void
 clutter_do_event (ClutterEvent *event)
 {
-  if (!event->any.stage)
+  /* we need the stage for the event */
+  if (event->any.stage == NULL)
+    {
+      g_warning ("%s: Event does not have a stage: discarding.", G_STRFUNC);
+      return;
+    }
+
+  /* stages in destruction do not process events */
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (event->any.stage))
     return;
 
   /* Instead of processing events when received, we queue them up to
