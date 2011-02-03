@@ -107,6 +107,8 @@ WindowClone.prototype = {
         this._sizeChangedId = this.realWindow.connect('size-changed', Lang.bind(this, function() {
             this.emit('size-changed');
         }));
+        this._realWindowDestroyId = this.realWindow.connect('destroy',
+            Lang.bind(this, this._disconnectRealWindowSignals));
 
         this.actor.connect('button-release-event',
                            Lang.bind(this, this._onButtonRelease));
@@ -160,9 +162,18 @@ WindowClone.prototype = {
         }
     },
 
-    _onDestroy: function() {
-        this.realWindow.disconnect(this._sizeChangedId);
+    _disconnectRealWindowSignals: function() {
+        if (this._sizeChangedId > 0)
+            this.realWindow.disconnect(this._sizeChangedId);
         this._sizeChangedId = 0;
+
+        if (this._realWindowDestroyId > 0)
+            this.realWindow.disconnect(this._realWindowDestroyId);
+        this._realWindowDestroyId = 0;
+    },
+
+    _onDestroy: function() {
+        this._disconnectRealWindowSignals();
 
         this.metaWindow._delegate = null;
         this.actor._delegate = null;
