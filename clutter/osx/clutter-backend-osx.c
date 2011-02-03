@@ -192,14 +192,25 @@ clutter_backend_osx_ensure_context (ClutterBackend *backend,
 }
 
 static void
-clutter_backend_osx_redraw (ClutterBackend *backend, ClutterStage *wrapper)
+clutter_backend_osx_redraw (ClutterBackend *backend,
+                            ClutterStage   *wrapper)
 {
-  ClutterStageWindow *impl = _clutter_stage_get_window (wrapper);
-  ClutterStageOSX *stage_osx = CLUTTER_STAGE_OSX (impl);
+  ClutterStageWindow *impl;
+  ClutterStageOSX *stage_osx;
+
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (wrapper))
+    return;
+
+  impl = _clutter_stage_get_window (wrapper);
+  if (impl == NULL)
+    return;
+
+  stage_osx = CLUTTER_STAGE_OSX (impl);
 
   CLUTTER_OSX_POOL_ALLOC();
 
-  [stage_osx->view setNeedsDisplay: YES];
+  if (stage_osx->view != NULL)
+    [stage_osx->view setNeedsDisplay: YES];
 
   CLUTTER_OSX_POOL_RELEASE();
 }
