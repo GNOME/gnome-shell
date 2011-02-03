@@ -197,6 +197,10 @@ Overview.prototype = {
         this.dash.actor.add_constraint(this.viewSelector.constrainY);
         this.dash.actor.add_constraint(this.viewSelector.constrainHeight);
 
+        // Translators: this is the name of the dock/favorites area on
+        // the left of the overview
+        Main.ctrlAltTabManager.addGroup(this.dash.actor, _("Dash"), 'user-bookmarks');
+
     },
 
     _onDragBegin: function() {

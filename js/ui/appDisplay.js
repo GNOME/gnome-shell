@@ -352,6 +352,7 @@ AppWellIcon.prototype = {
         this.actor = new St.Button({ style_class: 'app-well-app',
                                      reactive: true,
                                      button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+                                     can_focus: true,
                                      x_fill: true,
                                      y_fill: true });
         this.actor._delegate = this;
@@ -361,6 +362,7 @@ AppWellIcon.prototype = {
 
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+        this.actor.connect('popup-menu', Lang.bind(this, this._onKeyboardPopupMenu));
 
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this);
@@ -437,6 +439,11 @@ AppWellIcon.prototype = {
         return false;
     },
 
+    _onKeyboardPopupMenu: function() {
+        this.popupMenu();
+        this._menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+    },
+
     getId: function() {
         return this.app.get_id();
     },
@@ -454,6 +461,7 @@ AppWellIcon.prototype = {
                 if (!isPoppedUp)
                     this._onMenuPoppedDown();
             }));
+            Main.overview.connect('hiding', Lang.bind(this, function () { this._menu.close(); }));
 
             this._menuManager.addMenu(this._menu);
         }
