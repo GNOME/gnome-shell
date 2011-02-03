@@ -169,13 +169,16 @@ clutter_clone_paint (ClutterActor *self)
                                               : "unknown");
 
   /* The final bits of magic:
-   * - We need to make sure that when the clone-source actor's paint
-   *   method calls clutter_actor_get_paint_opacity, it traverses to
-   *   us and our parent not it's real parent.
+   * - We need to override the paint opacity of the actor with our own
+   *   opacity.
+   * - We need to inform the actor that it's in a clone paint (for the function
+   *   clutter_actor_is_in_clone_paint())
    * - We need to stop clutter_actor_paint applying the model view matrix of
    *   the clone source actor.
    */
-  _clutter_actor_set_opacity_parent (priv->clone_source, self);
+  _clutter_actor_set_in_clone_paint (priv->clone_source, TRUE);
+  _clutter_actor_set_opacity_override (priv->clone_source,
+                                       clutter_actor_get_paint_opacity (self));
   _clutter_actor_set_enable_model_view_transform (priv->clone_source, FALSE);
 
   if (!CLUTTER_ACTOR_IS_MAPPED (priv->clone_source))
@@ -192,7 +195,8 @@ clutter_clone_paint (ClutterActor *self)
     _clutter_actor_set_enable_paint_unmapped (priv->clone_source, FALSE);
 
   _clutter_actor_set_enable_model_view_transform (priv->clone_source, TRUE);
-  _clutter_actor_set_opacity_parent (priv->clone_source, NULL);
+  _clutter_actor_set_opacity_override (priv->clone_source, -1);
+  _clutter_actor_set_in_clone_paint (priv->clone_source, FALSE);
 }
 
 gboolean

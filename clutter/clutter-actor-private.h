@@ -129,8 +129,10 @@ void _clutter_actor_rerealize (ClutterActor    *self,
                                ClutterCallback  callback,
                                gpointer         data);
 
-void _clutter_actor_set_opacity_parent (ClutterActor *self,
-                                        ClutterActor *parent);
+void _clutter_actor_set_opacity_override (ClutterActor *self,
+                                          gint          opacity);
+void _clutter_actor_set_in_clone_paint (ClutterActor *self,
+                                        gboolean      in_clone_paint);
 
 void _clutter_actor_set_enable_model_view_transform (ClutterActor *self,
                                                      gboolean      enable);

@@ -412,6 +412,7 @@ struct _ClutterActorPrivate
   guint propagated_one_redraw       : 1;
   guint paint_volume_valid          : 1;
   guint last_paint_box_valid        : 1;
+  guint in_clone_paint              : 1;
 
   gfloat clip[4];
 
@@ -436,6 +437,7 @@ struct _ClutterActorPrivate
   gfloat z;
 
   guint8 opacity;
+  gint   opacity_override;
 
   ClutterActor   *parent_actor;
   GList          *children;
@@ -452,8 +454,6 @@ struct _ClutterActorPrivate
   ShaderData     *shader_data;
 
   PangoContext   *pango_context;
-
-  ClutterActor   *opacity_parent;
 
   ClutterTextDirection text_direction;
 
@@ -2581,9 +2581,9 @@ clutter_actor_paint (ClutterActor *self)
   if (context->pick_mode == CLUTTER_PICK_NONE &&
       /* ignore top-levels, since they might be transparent */
       !CLUTTER_ACTOR_IS_TOPLEVEL (self) &&
-      /* If the actor is being painted from a clone then check the
-         clone's opacity instead */
-      (priv->opacity_parent ? priv->opacity_parent->priv : priv)->opacity == 0)
+      /* Use the override opacity if its been set */
+      ((priv->opacity_override >= 0) ?
+       priv->opacity_override : priv->opacity) == 0)
     {
       priv->propagated_one_redraw = FALSE;
       return;
@@ -4901,7 +4901,7 @@ clutter_actor_init (ClutterActor *self)
   priv->cached_width_age = 1;
   priv->cached_height_age = 1;
 
-  priv->opacity_parent = NULL;
+  priv->opacity_override = -1;
   priv->enable_model_view_transform = TRUE;
 
   /* Initialize an empty paint box to start with */
@@ -7065,8 +7065,8 @@ clutter_actor_get_paint_opacity_internal (ClutterActor *self)
   if (CLUTTER_ACTOR_IS_TOPLEVEL (self))
     return 255;
 
-  if (priv->opacity_parent != NULL)
-    return clutter_actor_get_paint_opacity_internal (priv->opacity_parent);
+  if (priv->opacity_override >= 0)
+    return priv->opacity_override;
 
   parent = priv->parent_actor;
 
@@ -10196,15 +10196,16 @@ clutter_actor_create_pango_layout (ClutterActor *self,
   return layout;
 }
 
-/* Allows overriding the parent traversed when querying an actors paint
- * opacity. Used by ClutterClone. */
+/* Allows overriding the calculated paint opacity. Used by ClutterClone and
+ * ClutterOffscreenEffect.
+ */
 void
-_clutter_actor_set_opacity_parent (ClutterActor *self,
-                                   ClutterActor *parent)
+_clutter_actor_set_opacity_override (ClutterActor *self,
+                                     gint          opacity)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  self->priv->opacity_parent = parent;
+  self->priv->opacity_override = opacity;
 }
 
 /* Allows you to disable applying the actors model view transform during
@@ -10568,6 +10569,14 @@ clutter_actor_get_transformation_matrix (ClutterActor *self,
   _clutter_actor_apply_modelview_transform (self, matrix);
 }
 
+void
+_clutter_actor_set_in_clone_paint (ClutterActor *self,
+                                   gboolean      in_clone_paint)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  self->priv->in_clone_paint = in_clone_paint;
+}
+
 /**
  * clutter_actor_is_in_clone_paint:
  * @self: a #ClutterActor
@@ -10588,20 +10597,9 @@ clutter_actor_get_transformation_matrix (ClutterActor *self,
 gboolean
 clutter_actor_is_in_clone_paint (ClutterActor *self)
 {
-  ClutterActorPrivate *priv;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  /* XXX - keep in sync with the overrides set by ClutterClone:
-   *
-   *  - opacity_parent != NULL
-   *  - enable_model_view_transform == FALSE
-   */
-
-  priv = self->priv;
-
-  return priv->opacity_parent != NULL &&
-         !priv->enable_model_view_transform;
+  return self->priv->in_clone_paint;
 }
 
 static void
