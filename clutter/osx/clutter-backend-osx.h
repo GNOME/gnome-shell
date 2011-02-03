@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2007  Tommi Komulainen <tommi.komulainen@iki.fi>
  * Copyright (C) 2007  OpenedHand Ltd.
+ * Copyright (C) 2011  Crystalnix <vgachkaylo@crystalnix.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +24,7 @@
 #define __CLUTTER_BACKEND_OSX_H__
 
 #include "clutter-backend-private.h"
+#include "clutter-device-manager.h"
 
 @class NSOpenGLPixelFormat, NSOpenGLContext;
 
@@ -42,8 +44,9 @@ struct _ClutterBackendOSX
 {
   ClutterBackend parent;
 
-  NSOpenGLPixelFormat *pixel_format;
-  NSOpenGLContext     *context;
+  NSOpenGLPixelFormat  *pixel_format;
+  NSOpenGLContext      *context;
+  ClutterDeviceManager *device_manager;
 };
 
 struct _ClutterBackendOSXClass

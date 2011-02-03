@@ -42,6 +42,8 @@ struct _ClutterDeviceManagerOSX
 {
   ClutterDeviceManager parent_instance;
 
+  GSList *devices;
+
   ClutterInputDevice *core_pointer;
   ClutterInputDevice *core_keyboard;
 };

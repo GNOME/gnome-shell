@@ -502,11 +502,13 @@ osx_source_h_priv = \
 	$(srcdir)/osx/clutter-backend-osx.h	\
 	$(srcdir)/osx/clutter-event-loop-osx.h	\
 	$(srcdir)/osx/clutter-stage-osx.h	\
+	$(srcdir)/osx/clutter-device-manager-osx.h \
 	$(NULL)
 
 osx_source_c_priv = \
 	$(srcdir)/osx/clutter-event-loop-osx.c	\
 	$(srcdir)/osx/clutter-event-osx.c	\
+	$(srcdir)/osx/clutter-device-manager-osx.c \
 	$(NULL)
 
 if SUPPORT_OSX

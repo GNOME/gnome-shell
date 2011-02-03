@@ -278,6 +278,8 @@ clutter_event_osx_translate (NSEvent *nsevent,
   stage_osx   = CLUTTER_STAGE_OSX (impl);
   manager_osx = CLUTTER_DEVICE_MANAGER_OSX (clutter_device_manager_get_default ());
 
+  event->any.time = [nsevent clutterTime];
+
   switch ([nsevent type])
     {
     case NSLeftMouseDown:
@@ -324,7 +326,7 @@ clutter_event_osx_translate (NSEvent *nsevent,
 
       [nsevent clutterX:&(event->crossing.x) y:&(event->crossing.y)];
       event->crossing.related = NULL;
-      event->crossing.actor = CLUTTER_ACTOR (stage);
+      event->crossing.source = CLUTTER_ACTOR (stage);
       clutter_event_set_device (event, manager_osx->core_pointer);
 
       _clutter_stage_add_device (stage, manager_osx->core_pointer);
@@ -338,7 +340,7 @@ clutter_event_osx_translate (NSEvent *nsevent,
 
       [nsevent clutterX:&(event->crossing.x) y:&(event->crossing.y)];
       event->crossing.related = NULL;
-      event->crossing.actor = CLUTTER_ACTOR (stage);
+      event->crossing.source = CLUTTER_ACTOR (stage);
       clutter_event_set_device (event, manager_osx->core_pointer);
 
       _clutter_stage_remove_device (stage, manager_osx->core_pointer);
@@ -398,9 +400,9 @@ _clutter_event_osx_put (NSEvent      *nsevent,
   event->any.stage = wrapper;
   event->any.time = [nsevent clutterTime];
 
-  if (clutter_event_osx_translate (nsevent, &event))
+  if (clutter_event_osx_translate (nsevent, event))
     {
-      g_assert (event.type != CLUTTER_NOTHING);
+      g_assert (event->type != CLUTTER_NOTHING);
 
       _clutter_event_push (event, FALSE);
     }

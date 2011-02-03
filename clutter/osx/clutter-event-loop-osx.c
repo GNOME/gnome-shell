@@ -27,7 +27,7 @@
 #include "clutter-stage-osx.h"
 
 #import <AppKit/AppKit.h>
-#include <glib/gmain.h>
+#include <glib.h>
 #include <pthread.h>
 #include <sys/types.h>
 #include <sys/uio.h>

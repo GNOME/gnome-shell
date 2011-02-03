@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2007-2008  Tommi Komulainen <tommi.komulainen@iki.fi>
  * Copyright (C) 2007  OpenedHand Ltd.
+ * Copyright (C) 2011  Crystalnix <vgachkaylo@crystalnix.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -95,7 +96,7 @@ clutter_backend_osx_create_device_manager (ClutterBackendOSX *backend_osx)
     return;
 
   backend_osx->device_manager = g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_OSX,
-                                              "backend", backend,
+                                              "backend", CLUTTER_BACKEND(backend_osx),
                                               NULL);
 }
 
