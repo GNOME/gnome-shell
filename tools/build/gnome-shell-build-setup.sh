@@ -85,6 +85,7 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good
     libltdl-dev libvorbis-dev libxklavier-dev libgnome-keyring-dev
     libupower-glib-dev libcups2-dev evolution-data-server-dev
+    libecal1.2-dev libedataserverui1.2-dev
     "
 
   if apt-cache show autopoint > /dev/null 2> /dev/null; then
