@@ -251,6 +251,12 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
 
   cogl_push_matrix ();
 
+  /* Override the actor's opacity to fully opaque - we paint the offscreen
+   * texture with the actor's paint opacity, so we need to do this to avoid
+   * multiplying the opacity twice.
+   */
+  _clutter_actor_set_opacity_override (priv->actor, 0xff);
+
   return TRUE;
 }
 
@@ -306,6 +312,9 @@ clutter_offscreen_effect_post_paint (ClutterEffect *effect)
   _clutter_actor_apply_modelview_transform (priv->stage, &modelview);
   cogl_matrix_translate (&modelview, priv->x_offset, priv->y_offset, 0.0f);
   cogl_set_modelview_matrix (&modelview);
+
+  /* Remove the opacity override */
+  _clutter_actor_set_opacity_override (priv->actor, -1);
 
   /* paint the target material; this is virtualized for
    * sub-classes that require special hand-holding
