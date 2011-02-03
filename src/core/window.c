@@ -71,6 +71,9 @@ static void     set_net_wm_state          (MetaWindow     *window);
 static void     send_configure_notify     (MetaWindow     *window);
 static gboolean process_property_notify   (MetaWindow     *window,
                                            XPropertyEvent *event);
+
+static void     meta_window_force_placement (MetaWindow     *window);
+
 static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
 
@@ -1794,7 +1797,18 @@ implement_showing (MetaWindow *window,
                 showing, window->desc);
 
   if (!showing)
-    meta_window_hide (window);
+    {
+      /* When we manage a new window, we normally delay placing it
+       * until it is is first shown, but if we're previewing hidden
+       * windows we might want to know where they are on the screen,
+       * so we should place the window even if we're hiding it rather
+       * than showing it.
+       */
+      if (!window->placed && meta_prefs_get_live_hidden_windows ())
+        meta_window_force_placement (window);
+
+      meta_window_hide (window);
+    }
   else
     meta_window_show (window);
 
@@ -2478,6 +2492,36 @@ meta_window_toplevel_is_mapped (MetaWindow *window)
 }
 
 static void
+meta_window_force_placement (MetaWindow *window)
+{
+  if (window->placed)
+    return;
+
+  /* We have to recalc the placement here since other windows may
+   * have been mapped/placed since we last did constrain_position
+   */
+
+  /* calc_placement is an efficiency hack to avoid
+   * multiple placement calculations before we finally
+   * show the window.
+   */
+  window->calc_placement = TRUE;
+  meta_window_move_resize_now (window);
+  window->calc_placement = FALSE;
+
+  /* don't ever do the initial position constraint thing again.
+   * This is toggled here so that initially-iconified windows
+   * still get placed when they are ultimately shown.
+   */
+  window->placed = TRUE;
+
+  /* Don't want to accidentally reuse the fact that we had been denied
+   * focus in any future constraints unless we're denied focus again.
+   */
+  window->denied_focus_and_not_transient = FALSE;
+}
+
+static void
 meta_window_show (MetaWindow *window)
 {
   gboolean did_show;
@@ -2550,30 +2594,7 @@ meta_window_show (MetaWindow *window)
     }
 
   if (!window->placed)
-    {
-      /* We have to recalc the placement here since other windows may
-       * have been mapped/placed since we last did constrain_position
-       */
-
-      /* calc_placement is an efficiency hack to avoid
-       * multiple placement calculations before we finally
-       * show the window.
-       */
-      window->calc_placement = TRUE;
-      meta_window_move_resize_now (window);
-      window->calc_placement = FALSE;
-
-      /* don't ever do the initial position constraint thing again.
-       * This is toggled here so that initially-iconified windows
-       * still get placed when they are ultimately shown.
-       */
-      window->placed = TRUE;
-
-      /* Don't want to accidentally reuse the fact that we had been denied
-       * focus in any future constraints unless we're denied focus again.
-       */
-      window->denied_focus_and_not_transient = FALSE;
-    }
+    meta_window_force_placement (window);
 
   if (needs_stacking_adjustment)
     {
