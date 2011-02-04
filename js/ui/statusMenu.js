@@ -5,6 +5,7 @@ const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const UPowerGlib = imports.gi.UPowerGlib;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
@@ -38,6 +39,8 @@ StatusMenuButton.prototype = {
         this._presence = new GnomeSession.Presence();
         this._presenceItems = {};
 
+        this._upClient = new UPowerGlib.Client();
+
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._iconBox = new St.Bin();
@@ -61,6 +64,8 @@ StatusMenuButton.prototype = {
         this._gdm.connect('notify::is-loaded', Lang.bind(this, this._updateSwitchUser));
         this._gdm.connect('user-added', Lang.bind(this, this._updateSwitchUser));
         this._gdm.connect('user-removed', Lang.bind(this, this._updateSwitchUser));
+
+        this._upClient.connect('notify::can-suspend', Lang.bind(this, this._updateSuspendOrPowerOff));
     },
 
     _onDestroy: function() {
@@ -80,6 +85,21 @@ StatusMenuButton.prototype = {
             this._loginScreenItem.actor.show();
         else
             this._loginScreenItem.actor.hide();
+    },
+
+    _updateSuspendOrPowerOff: function() {
+        this._haveSuspend = this._upClient.get_can_suspend();
+
+        if (!this._suspendOrPowerOffItem)
+            return;
+
+        // If we can't suspend show Power Off... instead
+        // and disable the alt key
+        if (!this._haveSuspend) {
+            this._suspendOrPowerOffItem.updateText(_("Power Off..."), null);
+        } else {
+            this._suspendOrPowerOffItem.updateText(_("Suspend"), ("Power Off..."));
+        }
     },
 
     _updatePresenceIcon: function(presence, status) {
@@ -139,16 +159,12 @@ StatusMenuButton.prototype = {
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        // This is temporarily removed, see
-        // http://bugzilla.gnome.org/show_bug.cgi?id=636680
-        // for details.
-        //item = new PopupMenu.PopupMenuItem(_("Suspend..."));
-        //item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-        //this.menu.addMenuItem(item);
-
-        item = new PopupMenu.PopupMenuItem(_("Shut Down..."));
-        item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+        item = new PopupMenu.PopupAlternatingMenuItem(_("Suspend"),
+                                                      _("Power Off..."));
         this.menu.addMenuItem(item);
+        this._suspendOrPowerOffItem = item;
+        item.connect('activate', Lang.bind(this, this._onSuspendOrPowerOffActivate));
+        this._updateSuspendOrPowerOff();
     },
 
     _setPresenceStatus: function(item, event, status) {
@@ -181,8 +197,14 @@ StatusMenuButton.prototype = {
         Util.spawn(['gnome-session-save', '--logout-dialog']);
     },
 
-    _onShutDownActivate: function() {
+    _onSuspendOrPowerOffActivate: function() {
         Main.overview.hide();
-        Util.spawn(['gnome-session-save', '--shutdown-dialog']);
+
+        if (this._haveSuspend &&
+            this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
+            this._upClient.suspend_sync(null);
+        } else {
+            Util.spawn(['gnome-session-save', '--shutdown-dialog']);
+        }
     }
 };
