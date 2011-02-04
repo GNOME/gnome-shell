@@ -1826,6 +1826,7 @@ clutter_text_get_cursor_size
 clutter_text_activate
 clutter_text_position_to_coords
 clutter_text_set_preedit_string
+clutter_text_get_layout_offsets
 
 <SUBSECTION Standard>
 CLUTTER_IS_TEXT

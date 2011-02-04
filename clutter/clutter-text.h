@@ -217,6 +217,10 @@ void                  clutter_text_set_preedit_string   (ClutterText          *s
                                                          PangoAttrList        *preedit_attrs,
                                                          guint                 cursor_pos);
 
+void                  clutter_text_get_layout_offsets   (ClutterText           *self,
+                                                         gint                  *x,
+                                                         gint                  *y);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_TEXT_H__ */

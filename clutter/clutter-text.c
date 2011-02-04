@@ -168,6 +168,10 @@ struct _ClutterTextPrivate
    */
   gint text_x;
 
+  /* the y position of the PangoLayout, fixed to 0 by
+   * default for now */
+  gint text_y;
+
   /* the length of the text, in bytes */
   gint n_bytes;
 
@@ -2037,7 +2041,7 @@ clutter_text_paint (ClutterActor *self)
                             priv->text_color.green,
                             priv->text_color.blue,
                             real_opacity);
-  cogl_pango_render_layout (layout, text_x, 0, &color, 0);
+  cogl_pango_render_layout (layout, text_x, priv->text_y, &color, 0);
 
   selection_paint (text);
 
@@ -3485,6 +3489,8 @@ clutter_text_init (ClutterText *self)
   priv->password_char = 0;
 
   priv->max_length = 0;
+
+  priv->text_y = 0;
 
   priv->cursor_size = DEFAULT_CURSOR_SIZE;
   memset (&priv->cursor_pos, 0, sizeof (ClutterGeometry));
@@ -5477,4 +5483,34 @@ clutter_text_set_preedit_string (ClutterText   *self,
 
   clutter_text_dirty_cache (self);
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+}
+
+
+/**
+ * clutter_text_get_layout_offsets:
+ * @self: a #ClutterText
+ * @x: (out): location to store X offset of layout, or %NULL
+ * @y: (out): location to store Y offset of layout, or %NULL
+ *
+ * Obtains the coordinates where the #ClutterText will draw the #PangoLayout
+ * representing the text.
+ *
+ * Since: 1.7
+ **/
+void
+clutter_text_get_layout_offsets (ClutterText *self,
+                                 gint        *x,
+                                 gint        *y)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (x != NULL)
+    *x = priv->text_x;
+
+  if (y != NULL)
+    *y = priv->text_y;
 }
