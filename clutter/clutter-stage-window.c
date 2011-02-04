@@ -180,3 +180,15 @@ _clutter_stage_window_set_accept_focus (ClutterStageWindow *window,
   if (iface->set_accept_focus)
     iface->set_accept_focus (window, accept_focus);
 }
+
+void
+_clutter_stage_window_redraw (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_STAGE_WINDOW (window));
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->redraw)
+    iface->redraw (window);
+}

@@ -66,6 +66,8 @@ struct _ClutterStageWindowIface
 
   void          (* set_accept_focus)      (ClutterStageWindow *stage_window,
                                            gboolean            accept_focus);
+
+  void          (* redraw)                (ClutterStageWindow *stage_window);
 };
 
 GType clutter_stage_window_get_type (void) G_GNUC_CONST;
@@ -102,6 +104,8 @@ gboolean      _clutter_stage_window_ignoring_redraw_clips (ClutterStageWindow *w
 
 void          _clutter_stage_window_set_accept_focus      (ClutterStageWindow *window,
                                                            gboolean            accept_focus);
+
+void          _clutter_stage_window_redraw                (ClutterStageWindow *window);
 
 G_END_DECLS
 
