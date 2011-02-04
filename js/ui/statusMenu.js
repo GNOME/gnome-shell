@@ -139,9 +139,12 @@ StatusMenuButton.prototype = {
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("Suspend..."));
-        item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-        this.menu.addMenuItem(item);
+        // This is temporarily removed, see
+        // http://bugzilla.gnome.org/show_bug.cgi?id=636680
+        // for details.
+        //item = new PopupMenu.PopupMenuItem(_("Suspend..."));
+        //item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+        //this.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupMenuItem(_("Shut Down..."));
         item.connect('activate', Lang.bind(this, this._onShutDownActivate));
