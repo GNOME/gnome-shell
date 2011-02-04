@@ -362,7 +362,6 @@ StTooltip StLabel {
     background-gradient-direction: vertical;
     caret-color: rgb(128, 128, 128);
     caret-size: 1px;
-    height: 16px;
     width: 250px;
     transition-duration: 300;
 }
