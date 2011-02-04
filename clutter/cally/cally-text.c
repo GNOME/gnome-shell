@@ -1249,6 +1249,25 @@ _cally_misc_layout_atk_attributes_from_pango (AtkAttributeSet *attrib_set,
   return attrib_set;
 }
 
+static AtkAttributeSet*
+_cally_misc_add_actor_color_to_attribute_set (AtkAttributeSet *attrib_set,
+                                              ClutterText *clutter_text)
+{
+  ClutterColor color;
+  gchar *value;
+
+  clutter_text_get_color (clutter_text, &color);
+  value = g_strdup_printf ("%u,%u,%u",
+                           (guint) (color.red * 65535 / 255),
+                           (guint) (color.green * 65535 / 255),
+                           (guint) (color.blue * 65535 / 255));
+  attrib_set = _cally_misc_add_attribute (attrib_set,
+                                          ATK_TEXT_ATTR_FG_COLOR,
+                                          value);
+  return attrib_set;
+}
+
+
 /**
  * _cally_misc_layout_get_run_attributes:
  *
@@ -1278,38 +1297,45 @@ _cally_misc_layout_get_run_attributes (AtkAttributeSet *attrib_set,
     {
       *start_offset = 0;
       *end_offset = len;
+      _cally_misc_add_actor_color_to_attribute_set (attrib_set, clutter_text);
     }
-  iter = pango_attr_list_get_iterator (attr);
-  /* Get invariant range offsets */
-  /* If offset out of range, set offset in range */
-  if (offset > len)
-    offset = len;
-  else if (offset < 0)
-    offset = 0;
-
-  index = g_utf8_offset_to_pointer (text, offset) - text;
-  pango_attr_iterator_range (iter, &start_index, &end_index);
-  while (is_next)
+  else
     {
-      if (index >= start_index && index < end_index)
-        {
-          *start_offset = g_utf8_pointer_to_offset (text,
-                                                    text + start_index);
-          if (end_index == G_MAXINT)
-          /* Last iterator */
-            end_index = len;
+      iter = pango_attr_list_get_iterator (attr);
+      /* Get invariant range offsets */
+      /* If offset out of range, set offset in range */
+      if (offset > len)
+        offset = len;
+      else if (offset < 0)
+        offset = 0;
 
-          *end_offset = g_utf8_pointer_to_offset (text,
-                                                  text + end_index);
-          break;
-        }
-      is_next = pango_attr_iterator_next (iter);
+      index = g_utf8_offset_to_pointer (text, offset) - text;
       pango_attr_iterator_range (iter, &start_index, &end_index);
+      while (is_next)
+        {
+            if (index >= start_index && index < end_index)
+              {
+                *start_offset = g_utf8_pointer_to_offset (text,
+                                                          text + start_index);
+                if (end_index == G_MAXINT)
+                    /* Last iterator */
+                    end_index = len;
+
+                *end_offset = g_utf8_pointer_to_offset (text,
+                                                        text + end_index);
+                break;
+              }
+            is_next = pango_attr_iterator_next (iter);
+            pango_attr_iterator_range (iter, &start_index, &end_index);
+        }
+
+      /* Get attributes */
+      attrib_set = _cally_misc_layout_atk_attributes_from_pango (attrib_set, iter);
+      pango_attr_iterator_destroy (iter);
     }
 
-  /* Get attributes */
-  attrib_set = _cally_misc_layout_atk_attributes_from_pango (attrib_set, iter);
-  pango_attr_iterator_destroy (iter);
+  if (!_cally_misc_find_atk_attribute (attrib_set, ATK_TEXT_ATTR_FG_COLOR))
+    attrib_set = _cally_misc_add_actor_color_to_attribute_set (attrib_set, clutter_text);
 
   return attrib_set;
 }
