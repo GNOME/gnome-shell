@@ -505,21 +505,6 @@ clutter_backend_egl_ensure_context (ClutterBackend *backend,
 #endif /* COGL_HAS_XLIB_SUPPORT */
 }
 
-static void
-clutter_backend_egl_redraw (ClutterBackend *backend,
-                            ClutterStage   *stage)
-{
-  ClutterStageWindow *impl;
-
-  impl = _clutter_stage_get_window (stage);
-  if (!impl)
-    return;
-
-  g_assert (CLUTTER_IS_STAGE_EGL (impl));
-
-  _clutter_stage_egl_redraw (CLUTTER_STAGE_EGL (impl), stage);
-}
-
 #ifndef COGL_HAS_XLIB_SUPPORT
 static ClutterDeviceManager *
 clutter_backend_egl_get_device_manager (ClutterBackend *backend)
@@ -879,7 +864,6 @@ _clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
   backend_class->create_stage       = clutter_backend_egl_create_stage;
   backend_class->create_context     = clutter_backend_egl_create_context;
   backend_class->ensure_context     = clutter_backend_egl_ensure_context;
-  backend_class->redraw             = clutter_backend_egl_redraw;
 
 #ifdef COGL_HAS_XLIB_SUPPORT
   backendx11_class->get_visual_info = clutter_backend_egl_get_visual_info;

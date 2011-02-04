@@ -524,6 +524,19 @@ clutter_stage_osx_set_accept_focus (ClutterStageWindow *stage_window,
 }
 
 static void
+clutter_stage_osx_redraw (ClutterStageWindow *stage_window)
+{
+  ClutterStageOSX *stage_osx = CLUTTER_STAGE_OSX (stage_window);
+
+  CLUTTER_OSX_POOL_ALLOC();
+
+  if (stage_osx->view != NULL)
+    [stage_osx->view setNeedsDisplay: YES];
+
+  CLUTTER_OSX_POOL_RELEASE();
+}
+
+static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
   iface->get_wrapper    = clutter_stage_osx_get_wrapper;
@@ -538,6 +551,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->set_cursor_visible = clutter_stage_osx_set_cursor_visible;
   iface->set_user_resizable = clutter_stage_osx_set_user_resizable;
   iface->set_accept_focus   = clutter_stage_osx_set_accept_focus;
+  iface->redraw             = clutter_stage_osx_redraw;
 }
 
 /*************************************************************************/

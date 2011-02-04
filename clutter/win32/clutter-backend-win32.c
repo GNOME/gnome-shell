@@ -478,32 +478,6 @@ clutter_backend_win32_ensure_context (ClutterBackend *backend,
     }
 }
 
-static void
-clutter_backend_win32_redraw (ClutterBackend *backend,
-			      ClutterStage   *stage)
-{
-  ClutterStageWin32  *stage_win32;
-  ClutterStageWindow *impl;
-
-  impl = _clutter_stage_get_window (stage);
-  if (impl == NULL)
-    return;
-
-  g_return_if_fail (CLUTTER_IS_STAGE_WIN32 (impl));
-
-  stage_win32 = CLUTTER_STAGE_WIN32 (impl);
-
-  /* this will cause the stage implementation to be painted */
-  _clutter_stage_do_paint (stage, NULL);
-  cogl_flush ();
-
-  if (stage_win32->client_dc)
-    {
-      SwapBuffers (stage_win32->client_dc);
-      _cogl_swap_buffers_notify ();
-    }
-}
-
 static ClutterStageWindow *
 clutter_backend_win32_create_stage (ClutterBackend  *backend,
 				    ClutterStage    *wrapper,
@@ -580,7 +554,6 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
   backend_class->create_stage     = clutter_backend_win32_create_stage;
   backend_class->add_options      = clutter_backend_win32_add_options;
   backend_class->get_features     = clutter_backend_win32_get_features;
-  backend_class->redraw           = clutter_backend_win32_redraw;
   backend_class->create_context   = clutter_backend_win32_create_context;
   backend_class->ensure_context   = clutter_backend_win32_ensure_context;
   backend_class->get_device_manager = clutter_backend_win32_get_device_manager;

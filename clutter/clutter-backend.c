@@ -205,6 +205,22 @@ clutter_backend_real_font_changed (ClutterBackend *backend)
 }
 
 static void
+clutter_backend_real_redraw (ClutterBackend *backend,
+                             ClutterStage   *stage)
+{
+  ClutterStageWindow *impl;
+
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
+    return;
+
+  impl = _clutter_stage_get_window (stage);
+  if (impl == NULL)
+    return;
+
+  _clutter_stage_window_redraw (impl);
+}
+
+static void
 clutter_backend_class_init (ClutterBackendClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -243,6 +259,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
 
   klass->resolution_changed = clutter_backend_real_resolution_changed;
   klass->font_changed = clutter_backend_real_font_changed;
+  klass->redraw = clutter_backend_real_redraw;
 }
 
 static void
@@ -333,7 +350,6 @@ void
 _clutter_backend_redraw (ClutterBackend *backend,
                          ClutterStage   *stage)
 {
-  ClutterBackendClass *klass;
   CLUTTER_STATIC_COUNTER (redraw_counter,
                           "_clutter_backend_redraw counter",
                           "Increments for each _clutter_backend_redraw call",
@@ -347,9 +363,7 @@ _clutter_backend_redraw (ClutterBackend *backend,
   CLUTTER_COUNTER_INC (_clutter_uprof_context, redraw_counter);
   CLUTTER_TIMER_START (_clutter_uprof_context, redraw_timer);
 
-  klass = CLUTTER_BACKEND_GET_CLASS (backend);
-  if (G_LIKELY (klass->redraw))
-    klass->redraw (backend, stage);
+  CLUTTER_BACKEND_GET_CLASS (backend)->redraw (backend, stage);
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, redraw_timer);
 }

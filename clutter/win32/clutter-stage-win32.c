@@ -519,6 +519,22 @@ clutter_stage_win32_unrealize (ClutterStageWindow *stage_window)
 }
 
 static void
+clutter_stage_win32_redraw (ClutterStageWindow *stage_window)
+{
+  ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage_window);
+
+  /* this will cause the stage implementation to be painted */
+  _clutter_stage_do_paint (stage_win32->wrapper, NULL);
+  cogl_flush ();
+
+  if (stage_win32->client_dc)
+    {
+      SwapBuffers (stage_win32->client_dc);
+      _cogl_swap_buffers_notify ();
+    }
+}
+
+static void
 clutter_stage_win32_dispose (GObject *gobject)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (gobject);
@@ -575,6 +591,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->get_geometry = clutter_stage_win32_get_geometry;
   iface->realize = clutter_stage_win32_realize;
   iface->unrealize = clutter_stage_win32_unrealize;
+  iface->redraw = clutter_stage_win32_redraw;
 }
 
 /**

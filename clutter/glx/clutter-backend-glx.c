@@ -772,28 +772,6 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
     }
 }
 
-/*
- * FIXME: we should remove backend_class->redraw() and just
- * have stage_window_iface->redraw()
- */
-static void
-clutter_backend_glx_redraw (ClutterBackend *backend,
-                            ClutterStage   *stage)
-{
-  ClutterStageWindow *impl = _clutter_stage_get_window (stage);
-
-  if (G_UNLIKELY (impl == NULL))
-    {
-      CLUTTER_NOTE (BACKEND, "Stage [%p] has no implementation", stage);
-      return;
-    }
-
-  g_assert (CLUTTER_IS_STAGE_GLX (impl));
-
-  _clutter_stage_glx_redraw (CLUTTER_STAGE_GLX (impl),
-                             stage);
-}
-
 static ClutterStageWindow *
 clutter_backend_glx_create_stage (ClutterBackend  *backend,
                                   ClutterStage    *wrapper,
@@ -844,7 +822,6 @@ clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
   backend_class->create_stage   = clutter_backend_glx_create_stage;
   backend_class->add_options    = clutter_backend_glx_add_options;
   backend_class->get_features   = clutter_backend_glx_get_features;
-  backend_class->redraw         = clutter_backend_glx_redraw;
   backend_class->create_context = clutter_backend_glx_create_context;
   backend_class->ensure_context = clutter_backend_glx_ensure_context;
 

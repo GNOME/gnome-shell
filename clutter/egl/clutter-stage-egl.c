@@ -297,6 +297,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->add_redraw_clip = clutter_stage_egl_add_redraw_clip;
   iface->has_redraw_clips = clutter_stage_egl_has_redraw_clips;
   iface->ignoring_redraw_clips = clutter_stage_egl_ignoring_redraw_clips;
+  iface->redraw = clutter_stage_egl_redraw;
 }
 
 #ifdef COGL_HAS_X11_SUPPORT
@@ -336,18 +337,18 @@ _clutter_stage_egl_init (ClutterStageEGL *stage)
 
 #endif /* COGL_HAS_X11_SUPPORT */
 
-void
-_clutter_stage_egl_redraw (ClutterStageEGL *stage_egl,
-                           ClutterStage    *stage)
+static void
+clutter_stage_egl_redraw (ClutterStageWindow *stage_window)
 {
-  ClutterBackend     *backend = clutter_get_default_backend ();
-  ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  ClutterActor       *wrapper;
-  EGLSurface          egl_surface;
-  gboolean            may_use_clipped_redraw;
-  gboolean            use_clipped_redraw;
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage_window);
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterActor *wrapper;
+  EGLSurface egl_surface;
+  gboolean may_use_clipped_redraw;
+  gboolean use_clipped_redraw;
 #ifdef COGL_HAS_X11_SUPPORT
-  ClutterStageX11    *stage_x11 = CLUTTER_STAGE_X11 (stage_egl);
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_egl);
 
   wrapper = CLUTTER_ACTOR (stage_x11->wrapper);
   egl_surface = stage_egl->egl_surface;

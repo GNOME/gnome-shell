@@ -18,6 +18,7 @@
 #include "clutter-egl-headers.h"
 #include "clutter-backend-egl.h"
 
+G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_STAGE_EGL                  (_clutter_stage_egl_get_type ())
 #define CLUTTER_STAGE_EGL(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE_EGL, ClutterStageEGL))
@@ -69,7 +70,6 @@ struct _ClutterStageEGLClass
 
 GType _clutter_stage_egl_get_type (void) G_GNUC_CONST;
 
-void  _clutter_stage_egl_redraw   (ClutterStageEGL *stage_egl,
-                                  ClutterStage    *stage);
+G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_EGL_H__ */
