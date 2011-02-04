@@ -748,7 +748,7 @@ st_theme_node_render_background_with_border (StThemeNode *node)
    * may need to create an image bigger than the nodes
    * allocation
    */
-  st_theme_node_get_paint_box (node, &actor_box, &paint_box);
+  st_theme_node_get_background_paint_box (node, &actor_box, &paint_box);
 
   /* translate the boxes so the paint box is at 0,0
   */
@@ -1691,7 +1691,9 @@ st_theme_node_paint (StThemeNode           *node,
         {
           ClutterActorBox paint_box;
 
-          st_theme_node_get_paint_box (node, &allocation, &paint_box);
+          st_theme_node_get_background_paint_box (node,
+                                                  &allocation,
+                                                  &paint_box);
 
           paint_material_with_opacity (node->prerendered_material,
                                        &paint_box,

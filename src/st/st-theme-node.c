@@ -3226,6 +3226,42 @@ st_theme_node_get_content_box (StThemeNode           *node,
 }
 
 /**
+ * st_theme_node_get_background_paint_box:
+ * @node: a #StThemeNode
+ * @allocation: the box allocated to a #ClutterActor
+ * @paint_box: computed box occupied when painting the actor's background
+ *
+ * Gets the box used to paint the actor's background, including the area
+ * occupied by properties which paint outside the actor's assigned allocation.
+ */
+void
+st_theme_node_get_background_paint_box (StThemeNode           *node,
+                                        const ClutterActorBox *actor_box,
+                                        ClutterActorBox       *paint_box)
+{
+  StShadow *background_image_shadow;
+  ClutterActorBox shadow_box;
+
+  g_return_if_fail (ST_IS_THEME_NODE (node));
+  g_return_if_fail (actor_box != NULL);
+  g_return_if_fail (paint_box != NULL);
+
+  background_image_shadow = st_theme_node_get_background_image_shadow (node);
+
+  *paint_box = *actor_box;
+
+  if (!background_image_shadow)
+    return;
+
+  st_shadow_get_box (background_image_shadow, actor_box, &shadow_box);
+
+  paint_box->x1 = MIN (paint_box->x1, shadow_box.x1);
+  paint_box->x2 = MAX (paint_box->x2, shadow_box.x2);
+  paint_box->y1 = MIN (paint_box->y1, shadow_box.y1);
+  paint_box->y2 = MAX (paint_box->y2, shadow_box.y2);
+}
+
+/**
  * st_theme_node_get_paint_box:
  * @node: a #StThemeNode
  * @allocation: the box allocated to a #ClutterActor
@@ -3242,7 +3278,6 @@ st_theme_node_get_paint_box (StThemeNode           *node,
                              ClutterActorBox       *paint_box)
 {
   StShadow *box_shadow;
-  StShadow *background_image_shadow;
   ClutterActorBox shadow_box;
   int outline_width;
 
@@ -3251,12 +3286,11 @@ st_theme_node_get_paint_box (StThemeNode           *node,
   g_return_if_fail (paint_box != NULL);
 
   box_shadow = st_theme_node_get_box_shadow (node);
-  background_image_shadow = st_theme_node_get_background_image_shadow (node);
   outline_width = st_theme_node_get_outline_width (node);
 
-  *paint_box = *actor_box;
+  st_theme_node_get_background_paint_box (node, actor_box, paint_box);
 
-  if (!box_shadow && !background_image_shadow && !outline_width)
+  if (!box_shadow && !outline_width)
     return;
 
   paint_box->x1 -= outline_width;
@@ -3267,16 +3301,6 @@ st_theme_node_get_paint_box (StThemeNode           *node,
   if (box_shadow)
     {
       st_shadow_get_box (box_shadow, actor_box, &shadow_box);
-
-      paint_box->x1 = MIN (paint_box->x1, shadow_box.x1);
-      paint_box->x2 = MAX (paint_box->x2, shadow_box.x2);
-      paint_box->y1 = MIN (paint_box->y1, shadow_box.y1);
-      paint_box->y2 = MAX (paint_box->y2, shadow_box.y2);
-    }
-
-  if (background_image_shadow)
-    {
-      st_shadow_get_box (background_image_shadow, actor_box, &shadow_box);
 
       paint_box->x1 = MIN (paint_box->x1, shadow_box.x1);
       paint_box->x2 = MAX (paint_box->x2, shadow_box.x2);

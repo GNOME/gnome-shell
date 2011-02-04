@@ -228,6 +228,10 @@ void st_theme_node_get_content_box         (StThemeNode        *node,
 void st_theme_node_get_paint_box           (StThemeNode           *node,
                                             const ClutterActorBox *allocation,
                                             ClutterActorBox       *paint_box);
+/* Helper for background prerendering */
+void st_theme_node_get_background_paint_box (StThemeNode           *node,
+                                             const ClutterActorBox *allocation,
+                                             ClutterActorBox       *paint_box);
 
 gboolean st_theme_node_geometry_equal (StThemeNode *node,
                                        StThemeNode *other);
