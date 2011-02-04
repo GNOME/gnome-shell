@@ -413,6 +413,7 @@ struct _ClutterActorPrivate
   guint paint_volume_valid          : 1;
   guint last_paint_volume_valid     : 1;
   guint in_clone_paint              : 1;
+  guint transform_valid             : 1;
 
   gfloat clip[4];
 
@@ -435,6 +436,8 @@ struct _ClutterActorPrivate
 
   /* depth */
   gfloat z;
+
+  CoglMatrix transform;
 
   guint8 opacity;
   gint   opacity_override;
@@ -1807,6 +1810,8 @@ clutter_actor_real_allocate (ClutterActor           *self,
       CLUTTER_NOTE (LAYOUT, "Allocation for '%s' changed",
                     _clutter_actor_get_debug_name (self));
 
+      priv->transform_valid = FALSE;
+
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ALLOCATION]);
 
       /* we also emit the ::allocation-changed signal for people
@@ -2240,58 +2245,70 @@ clutter_actor_real_apply_transform (ClutterActor *self,
 {
   ClutterActorPrivate *priv = self->priv;
 
-  cogl_matrix_translate (matrix,
-                         priv->allocation.x1,
-                         priv->allocation.y1,
-                         0.0);
-
-  if (priv->z)
-    cogl_matrix_translate (matrix, 0, 0, priv->z);
-
-  /*
-   * because the rotation involves translations, we must scale before
-   * applying the rotations (if we apply the scale after the rotations,
-   * the translations included in the rotation are not scaled and so the
-   * entire object will move on the screen as a result of rotating it).
-   */
-  if (priv->scale_x != 1.0 || priv->scale_y != 1.0)
+  if (!priv->transform_valid)
     {
-      TRANSFORM_ABOUT_ANCHOR_COORD (self, matrix,
-                                    &priv->scale_center,
-                                    cogl_matrix_scale (matrix,
-                                                       priv->scale_x,
-                                                       priv->scale_y,
-                                                       1.0));
+      CoglMatrix *transform = &priv->transform;
+
+      cogl_matrix_init_identity (transform);
+
+      cogl_matrix_translate (transform,
+                             priv->allocation.x1,
+                             priv->allocation.y1,
+                             0.0);
+
+      if (priv->z)
+        cogl_matrix_translate (transform, 0, 0, priv->z);
+
+      /*
+       * because the rotation involves translations, we must scale
+       * before applying the rotations (if we apply the scale after
+       * the rotations, the translations included in the rotation are
+       * not scaled and so the entire object will move on the screen
+       * as a result of rotating it).
+       */
+      if (priv->scale_x != 1.0 || priv->scale_y != 1.0)
+        {
+          TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
+                                        &priv->scale_center,
+                                        cogl_matrix_scale (transform,
+                                                           priv->scale_x,
+                                                           priv->scale_y,
+                                                           1.0));
+        }
+
+      if (priv->rzang)
+        TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
+                                      &priv->rz_center,
+                                      cogl_matrix_rotate (transform,
+                                                          priv->rzang,
+                                                          0, 0, 1.0));
+
+      if (priv->ryang)
+        TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
+                                      &priv->ry_center,
+                                      cogl_matrix_rotate (transform,
+                                                          priv->ryang,
+                                                          0, 1.0, 0));
+
+      if (priv->rxang)
+        TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
+                                      &priv->rx_center,
+                                      cogl_matrix_rotate (transform,
+                                                          priv->rxang,
+                                                          1.0, 0, 0));
+
+      if (!clutter_anchor_coord_is_zero (&priv->anchor))
+        {
+          gfloat x, y, z;
+
+          clutter_anchor_coord_get_units (self, &priv->anchor, &x, &y, &z);
+          cogl_matrix_translate (transform, -x, -y, -z);
+        }
+
+      priv->transform_valid = TRUE;
     }
 
-  if (priv->rzang)
-    TRANSFORM_ABOUT_ANCHOR_COORD (self, matrix,
-                                  &priv->rz_center,
-                                  cogl_matrix_rotate (matrix,
-                                                      priv->rzang,
-                                                      0, 0, 1.0));
-
-  if (priv->ryang)
-    TRANSFORM_ABOUT_ANCHOR_COORD (self, matrix,
-                                  &priv->ry_center,
-                                  cogl_matrix_rotate (matrix,
-                                                      priv->ryang,
-                                                      0, 1.0, 0));
-
-  if (priv->rxang)
-    TRANSFORM_ABOUT_ANCHOR_COORD (self, matrix,
-                                  &priv->rx_center,
-                                  cogl_matrix_rotate (matrix,
-                                                      priv->rxang,
-                                                      1.0, 0, 0));
-
-  if (!clutter_anchor_coord_is_zero (&priv->anchor))
-    {
-      gfloat x, y, z;
-
-      clutter_anchor_coord_get_units (self, &priv->anchor, &x, &y, &z);
-      cogl_matrix_translate (matrix, -x, -y, -z);
-    }
+  cogl_matrix_multiply (matrix, matrix, &priv->transform);
 }
 
 /* Applies the transforms associated with this actor to the given
@@ -2739,6 +2756,8 @@ clutter_actor_set_rotation_internal (ClutterActor      *self,
   ClutterActorPrivate *priv = self->priv;
 
   g_object_freeze_notify (G_OBJECT (self));
+
+  priv->transform_valid = FALSE;
 
   switch (axis)
     {
@@ -4909,6 +4928,8 @@ clutter_actor_init (ClutterActor *self)
   _clutter_paint_volume_init_static (&priv->last_paint_volume, NULL);
   priv->last_paint_volume_valid = TRUE;
 
+  priv->transform_valid = FALSE;
+
   memset (priv->clip, 0, sizeof (gfloat) * 4);
 }
 
@@ -6830,6 +6851,8 @@ clutter_actor_set_scale (ClutterActor *self,
 
   priv = self->priv;
 
+  priv->transform_valid = FALSE;
+
   g_object_freeze_notify (G_OBJECT (self));
 
   priv->scale_x = scale_x;
@@ -6873,6 +6896,8 @@ clutter_actor_set_scale_full (ClutterActor *self,
   g_object_freeze_notify (G_OBJECT (self));
 
   clutter_actor_set_scale (self, scale_x, scale_y);
+
+  priv->transform_valid = FALSE;
 
   if (priv->scale_center.is_fractional)
     g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_GRAVITY]);
@@ -6920,6 +6945,8 @@ clutter_actor_set_scale_with_gravity (ClutterActor   *self,
       g_object_freeze_notify (G_OBJECT (self));
 
       clutter_actor_set_scale (self, scale_x, scale_y);
+
+      priv->transform_valid = FALSE;
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_GRAVITY]);
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SCALE_CENTER_X]);
@@ -7212,6 +7239,8 @@ clutter_actor_set_depth (ClutterActor *self,
           clutter_container_sort_depth_order (parent);
         }
 
+      priv->transform_valid = FALSE;
+
       clutter_actor_queue_redraw (self);
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_DEPTH]);
@@ -7295,6 +7324,8 @@ clutter_actor_set_rotation (ClutterActor      *self,
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ROTATION_CENTER_Z]);
       break;
     }
+
+  priv->transform_valid = FALSE;
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -8205,7 +8236,10 @@ clutter_actor_set_anchor_point (ClutterActor *self,
   clutter_anchor_coord_set_units (&priv->anchor, anchor_x, anchor_y, 0);
 
   if (changed)
-    clutter_actor_queue_redraw (self);
+    {
+      priv->transform_valid = FALSE;
+      clutter_actor_queue_redraw (self);
+    }
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -8349,6 +8383,8 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
   else
     {
       clutter_anchor_coord_set_gravity (&self->priv->anchor, gravity);
+
+      self->priv->transform_valid = FALSE;
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_GRAVITY]);
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_ANCHOR_X]);
