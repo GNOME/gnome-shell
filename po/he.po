@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-05 16:47+0200\n"
-"PO-Revision-Date: 2011-02-05 16:49+0200\n"
+"POT-Creation-Date: 2011-02-05 16:50+0200\n"
+"PO-Revision-Date: 2011-02-05 16:55+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -525,11 +525,11 @@ msgstr "הסרה"
 
 #: ../js/ui/dateMenu.js:91
 msgid "Date and Time Settings"
-msgstr "הגדרות שעה ותאריך"
+msgstr "הגדרות תאריך ושעה"
 
 #: ../js/ui/dateMenu.js:110
 msgid "Open Calendar"
-msgstr "פתיחת לוח השנה"
+msgstr "פתיחת היומן"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
