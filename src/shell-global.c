@@ -1228,9 +1228,7 @@ shell_global_gc (ShellGlobal *global)
 void
 shell_global_maybe_gc (ShellGlobal *global)
 {
-  JSContext *context = gjs_context_get_native_context (global->js_context);
-
-  JS_MaybeGC (context);
+  gjs_context_maybe_gc (global->js_context);
 }
 
 void
