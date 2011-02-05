@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-03 10:49+0100\n"
-"PO-Revision-Date: 2011-02-03 10:50+0100\n"
+"POT-Creation-Date: 2011-02-06 00:11+0100\n"
+"PO-Revision-Date: 2011-02-06 00:14+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -380,79 +380,148 @@ msgid "%s has been removed from your favorites."
 msgstr "%s foi eliminado dos seus favoritos."
 
 #. Translators: Shown in calendar event list for all day events
-#: ../js/ui/calendar.js:62
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:65
+msgctxt "event list time"
 msgid "All Day"
 msgstr "Todo o día"
 
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:70
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:77
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
-#. * NOTE: These abbreviations are always shown together and in
-#. * order, e.g. "S M T W T F S".
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
 #.
-#. Translators: Calendar grid abbreviation for Saturday
-#. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:112 ../js/ui/calendar.js:124 ../js/ui/calendar.js:149
+#: ../js/ui/calendar.js:117
+msgctxt "grid sunday"
 msgid "S"
-msgstr "S"
+msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday
-#. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:114 ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:119
+msgctxt "grid monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#. Translators: Calendar grid abbreviation for Thursday
-#. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:116 ../js/ui/calendar.js:120 ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:121
+msgctxt "grid tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:118 ../js/ui/calendar.js:143
+#: ../js/ui/calendar.js:123
+msgctxt "grid wednesday"
 msgid "W"
 msgstr "W"
 
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:125
+msgctxt "grid thursday"
+msgid "T"
+msgstr "X"
+
 #. Translators: Calendar grid abbreviation for Friday
-#. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:122 ../js/ui/calendar.js:147
+#: ../js/ui/calendar.js:127
+msgctxt "grid friday"
 msgid "F"
 msgstr "V"
 
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:129
+msgctxt "grid saturday"
+msgid "S"
+msgstr "S"
+
 #. Translators: Event list abbreviation for Sunday.
 #. *
-#. * NOTE: These abbreviations are normally not shown together
+#. * NOTE: These list abbreviations are normally not shown together
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:137
+#: ../js/ui/calendar.js:142
+msgctxt "list sunday"
 msgid "Su"
-msgstr "D"
+msgstr "Do"
+
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:144
+msgctxt "list monday"
+msgid "M"
+msgstr "L"
+
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:146
+msgctxt "list tuesday"
+msgid "T"
+msgstr "M"
+
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:148
+msgctxt "list wednesday"
+msgid "W"
+msgstr "W"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:145
+#: ../js/ui/calendar.js:150
+msgctxt "list thursday"
 msgid "Th"
 msgstr "X"
 
-#. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:696
-msgid "Nothing Scheduled"
-msgstr ""
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:152
+msgctxt "list friday"
+msgid "F"
+msgstr "V"
 
-#: ../js/ui/calendar.js:723
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:154
+msgctxt "list saturday"
+msgid "S"
+msgstr "S"
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:701
+msgid "Nothing Scheduled"
+msgstr "Nada programado"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:717
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %d de %B"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:720
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A, %d de %B de %Y"
+
+#: ../js/ui/calendar.js:730
 msgid "Today"
 msgstr "Hoxe"
 
-#: ../js/ui/calendar.js:727
+#: ../js/ui/calendar.js:734
 msgid "Tomorrow"
 msgstr "Mañá"
 
-#: ../js/ui/calendar.js:736
+#: ../js/ui/calendar.js:743
 msgid "This week"
 msgstr "Esta semana"
 
-#: ../js/ui/calendar.js:744
+#: ../js/ui/calendar.js:751
 msgid "Next week"
 msgstr "A vindeira semana"
 
@@ -680,6 +749,14 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Insira unha orde:"
 
+#: ../js/ui/searchDisplay.js:295
+msgid "Searching..."
+msgstr "Buscando..."
+
+#: ../js/ui/searchDisplay.js:309
+msgid "No matching results."
+msgstr "Non hai resultados que coincidan."
+
 #: ../js/ui/statusMenu.js:102
 msgid "Available"
 msgstr "Dispoñíbel"
@@ -708,11 +785,13 @@ msgstr "Cambiar de usuario"
 msgid "Log Out..."
 msgstr "Saír da sesión…"
 
-#: ../js/ui/statusMenu.js:142
-msgid "Suspend..."
-msgstr "Suspender…"
-
-#: ../js/ui/statusMenu.js:146
+#. This is temporarily removed, see
+#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
+#. for details.
+#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
+#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+#. this.menu.addMenuItem(item);
+#: ../js/ui/statusMenu.js:149
 msgid "Shut Down..."
 msgstr "Apagar…"
 
@@ -1103,6 +1182,9 @@ msgstr "Buscar"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Suspend..."
+#~ msgstr "Suspender…"
+
 #~ msgid "Clock"
 #~ msgstr "Reloxo"
 
@@ -1193,12 +1275,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Find"
 #~ msgstr "Buscar"
-
-#~ msgid "Searching..."
-#~ msgstr "Buscando..."
-
-#~ msgid "No matching results."
-#~ msgstr "Non hai resultados que coincidan."
 
 #~ msgid "Invisible"
 #~ msgstr "Invisíbel"
