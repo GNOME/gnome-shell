@@ -74,6 +74,24 @@ COGL_FEATURE_FUNCTION (void, glGetFramebufferAttachmentParameteriv,
                         GLint                *params))
 COGL_FEATURE_END ()
 
+COGL_FEATURE_BEGIN (offscreen_blit, 255, 255,
+                    "ANGLE\0",
+                    "framebuffer_blit\0",
+                    COGL_FEATURE_OFFSCREEN_BLIT,
+                    0)
+COGL_FEATURE_FUNCTION (void, glBlitFramebuffer,
+                       (GLint                 srcX0,
+                        GLint                 srcY0,
+                        GLint                 srcX1,
+                        GLint                 srcY1,
+                        GLint                 dstX0,
+                        GLint                 dstY0,
+                        GLint                 dstX1,
+                        GLint                 dstY1,
+                        GLbitfield            mask,
+                        GLenum                filter))
+COGL_FEATURE_END ()
+
 COGL_FEATURE_BEGIN (element_index_uint, 255, 255,
                     "OES\0",
                     "element_index_uint\0",
