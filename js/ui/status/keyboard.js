@@ -11,6 +11,7 @@ const St = imports.gi.St;
 
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
+const Util = imports.misc.util;
 
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
@@ -69,8 +70,11 @@ XKBIndicator.prototype = {
         this._sync_config();
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.menu.addAction(_("Show Keyboard Layout..."), Lang.bind(this, function() {
+            Util.spawn(['gkbd-keyboard-display', '-g', this._config.get_current_group() + 1]);
+        }));
         this.menu.addAction(_("Localization Settings"), function() {
-            GLib.spawn_command_line_async('gnome-control-center region');
+            Util.spawn(['gnome-control-center', 'region']);
         });
     },
 
