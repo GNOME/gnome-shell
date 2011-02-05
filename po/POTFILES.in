@@ -16,6 +16,7 @@ js/ui/panel.js
 js/ui/placeDisplay.js
 js/ui/popupMenu.js
 js/ui/runDialog.js
+js/ui/searchDisplay.js
 js/ui/statusMenu.js
 js/ui/status/accessibility.js
 js/ui/status/bluetooth.js
