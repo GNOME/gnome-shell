@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-03 12:14+0100\n"
-"PO-Revision-Date: 2011-02-03 12:19+0100\n"
+"POT-Creation-Date: 2011-02-05 16:33+0100\n"
+"PO-Revision-Date: 2011-02-05 16:34+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -726,6 +726,14 @@ msgstr "toggle-switch-us"
 msgid "Please enter a command:"
 msgstr "Inserire un comando:"
 
+#: ../js/ui/searchDisplay.js:295
+msgid "Searching..."
+msgstr "Ricerca..."
+
+#: ../js/ui/searchDisplay.js:309
+msgid "No matching results."
+msgstr "Nessun risultato corrispondente."
+
 #: ../js/ui/statusMenu.js:102
 msgid "Available"
 msgstr "Disponibile"
@@ -754,11 +762,13 @@ msgstr "Cambia utente"
 msgid "Log Out..."
 msgstr "Termina sessione..."
 
-#: ../js/ui/statusMenu.js:142
-msgid "Suspend..."
-msgstr "Sospendi..."
-
-#: ../js/ui/statusMenu.js:146
+#. This is temporarily removed, see
+#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
+#. for details.
+#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
+#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+#. this.menu.addMenuItem(item);
+#: ../js/ui/statusMenu.js:149
 msgid "Shut Down..."
 msgstr "Arresta..."
 
@@ -1156,3 +1166,6 @@ msgstr "Cerca"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Suspend..."
+#~ msgstr "Sospendi..."
