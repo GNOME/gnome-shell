@@ -288,5 +288,58 @@ void
 _cogl_push_framebuffers (CoglFramebuffer *draw_buffer,
                          CoglFramebuffer *read_buffer);
 
+/*
+ * _cogl_blit_framebuffer:
+ * @src_x: Source x position
+ * @src_y: Source y position
+ * @dst_x: Destination x position
+ * @dst_y: Destination y position
+ * @width: Width of region to copy
+ * @height: Height of region to copy
+ *
+ * This blits a region of the color buffer of the current draw buffer
+ * to the current read buffer. The draw and read buffers can be set up
+ * using _cogl_push_framebuffers(). This function should only be
+ * called if the COGL_FEATURE_OFFSCREEN_BLIT feature is
+ * advertised. The two buffers must both be offscreen and have the
+ * same format.
+ *
+ * Note that this function differs a lot from the glBlitFramebuffer
+ * function provided by the GL_EXT_framebuffer_blit extension. Notably
+ * it doesn't support having different sizes for the source and
+ * destination rectangle. This isn't supported by the corresponding
+ * GL_ANGLE_framebuffer_blit extension on GLES2.0 and it doesn't seem
+ * like a particularly useful feature. If the application wanted to
+ * scale the results it may make more sense to draw a primitive
+ * instead.
+ *
+ * We can only really support blitting between two offscreen buffers
+ * for this function on GLES2.0. This is because we effectively render
+ * upside down to offscreen buffers to maintain Cogl's representation
+ * of the texture coordinate system where 0,0 is the top left of the
+ * texture. If we were to blit from an offscreen to an onscreen buffer
+ * then we would need to mirror the blit along the x-axis but the GLES
+ * extension does not support this.
+ *
+ * The GL function is documented to be affected by the scissor. This
+ * function therefore ensure that an empty clip stack is flushed
+ * before performing the blit which means the scissor is effectively
+ * ignored.
+ *
+ * The function also doesn't support specifying the buffers to copy
+ * and instead only the color buffer is copied. When copying the depth
+ * or stencil buffers the extension on GLES2.0 only supports copying
+ * the full buffer which would be awkward to document with this
+ * API. If we wanted to support that feature it may be better to have
+ * a separate function to copy the entire buffer for a given mask.
+ */
+void
+_cogl_blit_framebuffer (unsigned int src_x,
+                        unsigned int src_y,
+                        unsigned int dst_x,
+                        unsigned int dst_y,
+                        unsigned int width,
+                        unsigned int height);
+
 #endif /* __COGL_FRAMEBUFFER_PRIVATE_H */
 

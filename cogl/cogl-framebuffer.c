@@ -54,6 +54,8 @@
 
 #endif
 
+#define glBlitFramebuffer                 ctx->drv.pf_glBlitFramebuffer
+
 #ifndef GL_FRAMEBUFFER
 #define GL_FRAMEBUFFER		0x8D40
 #endif
@@ -1429,3 +1431,47 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
   return FALSE;
 }
 
+void
+_cogl_blit_framebuffer (unsigned int src_x,
+                        unsigned int src_y,
+                        unsigned int dst_x,
+                        unsigned int dst_y,
+                        unsigned int width,
+                        unsigned int height)
+{
+  CoglFramebuffer *draw_buffer;
+  CoglFramebuffer *read_buffer;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  draw_buffer = _cogl_get_draw_buffer ();
+  read_buffer = _cogl_get_read_buffer ();
+
+  g_return_if_fail (cogl_features_available (COGL_FEATURE_OFFSCREEN_BLIT));
+  /* We can only support blitting between offscreen buffers because
+     otherwise we would need to mirror the image and GLES2.0 doesn't
+     support this */
+  g_return_if_fail (cogl_is_offscreen (draw_buffer));
+  g_return_if_fail (cogl_is_offscreen (read_buffer));
+  /* The buffers must be the same format */
+  g_return_if_fail (draw_buffer->format == read_buffer->format);
+
+  /* Make sure the current framebuffers are bound. We explicitly avoid
+     flushing the clip state so we can bind our own empty state */
+  _cogl_framebuffer_flush_state (_cogl_get_draw_buffer (),
+                                 _cogl_get_read_buffer (),
+                                 COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE);
+
+  /* Flush any empty clip stack because glBlitFramebuffer is affected
+     by the scissor and we want to hide this feature for the Cogl API
+     because it's not obvious to an app how the clip state will affect
+     the scissor */
+  _cogl_clip_stack_flush (NULL);
+
+  glBlitFramebuffer (src_x, src_y,
+                     src_x + width, src_y + height,
+                     dst_x, dst_y,
+                     dst_x + width, dst_y + height,
+                     GL_COLOR_BUFFER_BIT,
+                     GL_NEAREST);
+}
