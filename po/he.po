@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-04 09:21+0200\n"
-"PO-Revision-Date: 2011-02-04 09:30+0200\n"
+"POT-Creation-Date: 2011-02-05 14:11+0200\n"
+"PO-Revision-Date: 2011-02-05 14:11+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -767,11 +767,13 @@ msgstr "החלפת משתמש"
 msgid "Log Out..."
 msgstr "ניתוק..."
 
-#: ../js/ui/statusMenu.js:142
-msgid "Suspend..."
-msgstr "השהיה..."
-
-#: ../js/ui/statusMenu.js:146
+#. This is temporarily removed, see
+#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
+#. for details.
+#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
+#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+#. this.menu.addMenuItem(item);
+#: ../js/ui/statusMenu.js:149
 msgid "Shut Down..."
 msgstr "כיבוי..."
 
@@ -937,7 +939,7 @@ msgstr "אישור"
 
 #: ../js/ui/status/keyboard.js:78
 msgid "Localization Settings"
-msgstr "הגדרות אוזריות"
+msgstr "הגדרות אזוריות"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -1169,6 +1171,9 @@ msgstr "חיפוש"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Suspend..."
+#~ msgstr "השהיה..."
 
 #~ msgid "Clock"
 #~ msgstr "שעון"
