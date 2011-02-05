@@ -164,10 +164,10 @@ Indicator.prototype = {
         if (volume <= 0) {
             return 'audio-volume-muted';
         } else {
-            let v = volume / VOLUME_MAX;
-            if (v < 0.33)
+            let n = Math.floor(3 * volume / VOLUME_MAX) + 1;
+            if (n < 2)
                 return 'audio-volume-low';
-            if (v > 0.8)
+            if (n >= 3)
                 return 'audio-volume-high';
             return 'audio-volume-medium';
         }
