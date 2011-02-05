@@ -1222,26 +1222,29 @@ MessageTray.prototype = {
     },
 
     _onSummaryItemHoverChanged: function(summaryItem) {
+        if (summaryItem.actor.hover)
+            this._setExpandedSummaryItem(summaryItem);
+    },
+
+    _setExpandedSummaryItem: function(summaryItem) {
+        if (summaryItem == this._expandedSummaryItem)
+            return;
+
         // We can't just animate individual summary items as the
         // pointer moves in and out of them, because if they don't
         // move in sync you get weird-looking wobbling. So whenever
         // there's a change, we have to re-tween the entire summary
         // area.
 
-        if (summaryItem.actor.hover) {
-            if (summaryItem == this._expandedSummaryItem)
-                return;
+        // Turn off ellipsization for the previously expanded item that is
+        // collapsing and for the item that is expanding because it looks
+        // better that way.
+        if (this._expandedSummaryItem)
+            this._expandedSummaryItem.setEllipsization(Pango.EllipsizeMode.NONE);
 
-            this._expandedSummaryItem = summaryItem;
-        } else {
-            if (summaryItem != this._expandedSummaryItem)
-                return;
-
-            this._expandedSummaryItem = null;
-
-            // Turn off ellipsization while collapsing; it looks better
-            summaryItem.setEllipsization(Pango.EllipsizeMode.NONE);
-        }
+        this._expandedSummaryItem = summaryItem;
+        if (this._expandedSummaryItem)
+            this._expandedSummaryItem.setEllipsization(Pango.EllipsizeMode.NONE);
 
         // We tween on a "_expandedSummaryItemTitleWidth" pseudo-property
         // that represents the current title width of the
@@ -1330,6 +1333,13 @@ MessageTray.prototype = {
             // the tray yet. We need to check for this case because sometimes _onTrayHoverChanged() gets called
             // multiple times while this.actor.hover is true.
             if (this._useLongerTrayLeftTimeout && !this._trayLeftTimeoutId)
+                return;
+
+            // Don't do anything if the mouse is over the summary notification as this should be considered as
+            // leaving the tray. The tray is locked when the summary notification is visible anyway, but we
+            // should treat the mouse being over the summary notification as the tray being left for collapsing
+            // any expanded summary item other than the one related to the notification.
+            if (this._summaryNotificationBoxPointer.bin.hover)
                 return;
 
             this._useLongerTrayLeftTimeout = false;
@@ -1433,6 +1443,9 @@ MessageTray.prototype = {
         // Summary
         let summarySummoned = this._pointerInSummary || this._overviewVisible;
         let summaryPinned = this._summaryTimeoutId != 0 || this._pointerInTray || summarySummoned || this._locked;
+        let summaryHovered = this._pointerInTray || this._pointerInSummary;
+        let summaryVisibleWithNoHover = (this._overviewVisible || this._locked) && !summaryHovered;
+        let summaryNotificationIsForExpandedSummaryItem = (this._clickedSummaryItem == this._expandedSummaryItem);
 
         let notificationsVisible = (this._notificationState == State.SHOWING ||
                                     this._notificationState == State.SHOWN);
@@ -1446,6 +1459,12 @@ MessageTray.prototype = {
         } else if (this._summaryState == State.SHOWN) {
             if (!summaryPinned)
                 this._hideSummary();
+            else if (summaryVisibleWithNoHover && !summaryNotificationIsForExpandedSummaryItem)
+                // If we are hiding the summary, we'll collapse the expanded summary item when we are done
+                // so that there is no animation. However, we should collapse the expanded summary item
+                // if the summary is visible, but not hovered over, and the summary notification for the
+                // expanded summary item is not being shown.
+                this._setExpandedSummaryItem(null);
         }
 
         // Summary notification
@@ -1707,9 +1726,16 @@ MessageTray.prototype = {
         this._tween(this._summaryBin, '_summaryState', State.HIDDEN,
                     { opacity: 0,
                       time: ANIMATION_TIME,
-                      transition: 'easeOutQuad'
+                      transition: 'easeOutQuad',
+                      onComplete: this._hideSummaryCompleted,
+                      onCompleteScope: this,
                     });
         this._newSummaryItems = [];
+    },
+
+    _hideSummaryCompleted: function() {
+        this._expandedSummaryItem = null;
+        this._expandedSummaryItemTitleWidth = this._summaryItemTitleWidth;
     },
 
     _showSummaryNotification: function() {
