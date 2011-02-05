@@ -13,14 +13,14 @@ msgstr ""
 "Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2011-01-29 18:34+0000\n"
-"PO-Revision-Date: 2011-02-01 13:51+0300\n"
-"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
+"POT-Creation-Date: 2011-02-04 22:28+0000\n"
+"PO-Revision-Date: 2011-02-05 11:34+0200\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
-"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Estonian\n"
 "X-Poedit-Country: Estonia\n"
@@ -243,7 +243,7 @@ msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr "Niitristi moodustavate püst- ja rõhtjoone laius"
 
 msgid "Command not found"
-msgstr ""
+msgstr "Käsku ei leitud"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
@@ -284,8 +284,174 @@ msgstr "%s lisati lemmikutesse."
 msgid "%s has been removed from your favorites."
 msgstr "%s eemaldati lemmikutest."
 
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Kogu päeva"
+
+#. Translators: Shown in calendar event list, if 24h format
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. Transators: Shown in calendar event list, if 12h format
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+msgctxt "grid sunday"
+msgid "S"
+msgstr "P"
+
+#. Translators: Calendar grid abbreviation for Monday
+msgctxt "grid monday"
+msgid "M"
+msgstr "E"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "T"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "K"
+
+#. Translators: Calendar grid abbreviation for Thursday
+msgctxt "grid thursday"
+msgid "T"
+msgstr "N"
+
+#. Translators: Calendar grid abbreviation for Friday
+msgctxt "grid friday"
+msgid "F"
+msgstr "R"
+
+#. Translators: Calendar grid abbreviation for Saturday
+msgctxt "grid saturday"
+msgid "S"
+msgstr "L"
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+msgctxt "list sunday"
+msgid "Su"
+msgstr "P"
+
+#. Translators: Event list abbreviation for Monday
+msgctxt "list monday"
+msgid "M"
+msgstr "E"
+
+#. Translators: Event list abbreviation for Tuesday
+msgctxt "list tuesday"
+msgid "T"
+msgstr "T"
+
+#. Translators: Event list abbreviation for Wednesday
+msgctxt "list wednesday"
+msgid "W"
+msgstr "K"
+
+#. Translators: Event list abbreviation for Thursday
+msgctxt "list thursday"
+msgid "Th"
+msgstr "N"
+
+#. Translators: Event list abbreviation for Friday
+msgctxt "list friday"
+msgid "F"
+msgstr "R"
+
+#. Translators: Event list abbreviation for Saturday
+msgctxt "list saturday"
+msgid "S"
+msgstr "L"
+
+#. Translators: Text to show if there are no events
+msgid "Nothing Scheduled"
+msgstr ""
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %d. %B"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A, %B %d, %Y"
+
+msgid "Today"
+msgstr "Täna"
+
+msgid "Tomorrow"
+msgstr "Homme"
+
+msgid "This week"
+msgstr "Käesolev nädal"
+
+msgid "Next week"
+msgstr "Järgmine nädal"
+
 msgid "Remove"
 msgstr "Eemalda"
+
+msgid "Date and Time Settings"
+msgstr "Kuupäeva ja kellaaja sätted"
+
+msgid "Open Calendar"
+msgstr "Ava kalender"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+msgid "%a %b %e, %R:%S"
+msgstr "%a, %e. %b, %R:%S"
+
+msgid "%a %b %e, %R"
+msgstr "%a, %e. %b, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+msgid "%a %R:%S"
+msgstr "%A %R:%S"
+
+msgid "%a %R"
+msgstr "%A %R"
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a, %e. %b, %l:%M:%S %p"
+
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a, %e. %b, %l:%M %p"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+msgid "%a %l:%M:%S %p"
+msgstr "%A, %l:%M:%S %p"
+
+msgid "%a %l:%M %p"
+msgstr "%A, %l:%M %p"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+msgid "%A %B %e, %Y"
+msgstr "%A, %d. %B %Y"
 
 msgid "RECENT ITEMS"
 msgstr "Hiljutised dokumendid"
@@ -385,38 +551,6 @@ msgstr "Rakendused"
 msgid "Quit %s"
 msgstr "Lõpeta %s"
 
-#. Translators: This is the time format with date used
-#. in 24-hour mode.
-msgid "%a %b %e, %R:%S"
-msgstr "%a, %e. %b, %R:%S"
-
-msgid "%a %b %e, %R"
-msgstr "%a, %e. %b, %R"
-
-#. Translators: This is the time format without date used
-#. in 24-hour mode.
-msgid "%a %R:%S"
-msgstr "%A %R:%S"
-
-msgid "%a %R"
-msgstr "%A %R"
-
-#. Translators: This is a time format with date used
-#. for AM/PM.
-msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a, %e. %b, %l:%M:%S %p"
-
-msgid "%a %b %e, %l:%M %p"
-msgstr "%a, %e. %b, %l:%M %p"
-
-#. Translators: This is a time format without date used
-#. for AM/PM.
-msgid "%a %l:%M:%S %p"
-msgstr "%A, %l:%M:%S %p"
-
-msgid "%a %l:%M %p"
-msgstr "%A, %l:%M %p"
-
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
 msgid "Activities"
@@ -467,9 +601,12 @@ msgstr "Vaheta kasutajat"
 msgid "Log Out..."
 msgstr "Logi välja..."
 
-msgid "Suspend..."
-msgstr "Peata..."
-
+#. This is temporarily removed, see
+#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
+#. for details.
+#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
+#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+#. this.menu.addMenuItem(item);
 msgid "Shut Down..."
 msgstr "Lülita välja..."
 
@@ -775,6 +912,9 @@ msgstr "Otsing"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Suspend..."
+#~ msgstr "Peata..."
 
 #~ msgid "Clock"
 #~ msgstr "Kell"
