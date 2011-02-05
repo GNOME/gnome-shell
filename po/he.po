@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-05 14:11+0200\n"
-"PO-Revision-Date: 2011-02-05 14:11+0200\n"
+"POT-Creation-Date: 2011-02-05 16:47+0200\n"
+"PO-Revision-Date: 2011-02-05 16:49+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -489,7 +489,7 @@ msgstr "ש׳"
 #. Translators: Text to show if there are no events
 #: ../js/ui/calendar.js:701
 msgid "Nothing Scheduled"
-msgstr "אין משימות מתוזמנות"
+msgstr "היומן ריק"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:717
