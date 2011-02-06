@@ -575,8 +575,17 @@ Dash.prototype = {
         for (let i = 0; i < removedActors.length; i++) {
             removedActors[i].show();
             let item = removedActors[i]._delegate;
-            item.animateOutAndDestroy();
+
+            // Don't animate item removal when the overview is hidden
+            if (Main.overview.visible)
+                item.animateOutAndDestroy();
+            else
+                item.actor.destroy();
         }
+
+        // Don't animate item addition when the overview is hidden
+        if (!Main.overview.visible)
+            return;
 
         for (let i = 0; i < addedItems.length; i++)
             addedItems[i].item.animateIn();
