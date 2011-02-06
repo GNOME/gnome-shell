@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
 "POT-Creation-Date: 2011-02-04 22:28+0000\n"
-"PO-Revision-Date: 2011-02-05 11:34+0200\n"
+"PO-Revision-Date: 2011-02-06 08:43+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -392,7 +392,7 @@ msgstr "%A, %d. %B"
 #. Translators: Shown on calendar heading when selected day occurs on different year
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%A, %B %d, %Y"
+msgstr "%A, %d. %B %Y"
 
 msgid "Today"
 msgstr "Täna"
@@ -445,7 +445,7 @@ msgid "%a %l:%M:%S %p"
 msgstr "%A, %l:%M:%S %p"
 
 msgid "%a %l:%M %p"
-msgstr "%A, %l:%M %p"
+msgstr "%a, %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
