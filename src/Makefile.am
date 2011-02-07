@@ -232,6 +232,7 @@ Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) St-1.0.gir libgnome-shell.la Makefile
 		--include=Clutter-1.0			\
 		--include=ClutterX11-1.0		\
 		--include=Meta-2.91			\
+		--include=TelepathyGLib-0.12		\
 		--libtool="$(LIBTOOL)"			\
 		--add-include-path=$(builddir)		\
 		--include=St-1.0			\

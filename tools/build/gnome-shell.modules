@@ -16,6 +16,8 @@
   <repository type="cvs" name="libxklavier.freedesktop.org"
       cvsroot=":pserver:anoncvs@anoncvs.freedesktop.org:/cvs/xklavier"
       password=""/>
+  <repository type="git" name="git.collabora.co.uk"
+      href="git://git.collabora.co.uk/git/"/>
 
   <autotools id="gobject-introspection">
     <branch repo="git.gnome.org" module="gobject-introspection"/>
@@ -211,6 +213,13 @@
     </dependencies>
   </autotools>
 
+  <autotools id="telepathy-glib">
+    <branch repo="git.collabora.co.uk" module="telepathy-glib"/>
+    <dependencies>
+      <dep package="gobject-introspection"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gnome-shell">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
@@ -227,6 +236,7 @@
         <dep package="libcanberra"/>
 	<dep package="gnome-settings-daemon"/>
 	<dep package="gnome-bluetooth"/>
+        <dep package="telepathy-glib"/>
     </dependencies>
   </autotools>
 
