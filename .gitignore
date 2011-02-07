@@ -56,3 +56,4 @@ tests/run-test.sh
 xmldocs.make
 *~
 *.patch
+*.sw?
