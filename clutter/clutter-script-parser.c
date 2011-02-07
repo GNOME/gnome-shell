@@ -560,12 +560,9 @@ parse_signals (ClutterScript *script,
   for (i = 0; i < array_len; i++)
     {
       JsonNode *val = json_array_get_element (array, i);
+      SignalInfo *sinfo = NULL;
       JsonObject *object;
-      SignalInfo *sinfo;
       const gchar *name;
-      const gchar *handler;
-      const gchar *connect;
-      GConnectFlags flags = 0;
 
       if (JSON_NODE_TYPE (val) != JSON_NODE_OBJECT)
         {
@@ -595,56 +592,97 @@ parse_signals (ClutterScript *script,
             }
         }
 
-      /* mandatory: "handler" */
-      if (!json_object_has_member (object, "handler"))
+      /* mandatory: "state" */
+      if (json_object_has_member (object, "state"))
         {
-          _clutter_script_warn_missing_attribute (script, NULL, "handler");
-          continue;
+          const gchar *state;
+          const gchar *target;
+
+          state = json_object_get_string_member (object, "state");
+          if (state == NULL)
+            {
+              _clutter_script_warn_invalid_value (script,
+                                                  "state", "string",
+                                                  val);
+              continue;
+            }
+
+          target = json_object_get_string_member (object, "target-state");
+          if (target == NULL)
+            {
+              _clutter_script_warn_invalid_value (script,
+                                                  "target-state", "string",
+                                                  val);
+              continue;
+            }
+
+          CLUTTER_NOTE (SCRIPT,
+                        "Added signal '%s' (state:%s, target:%s)",
+                        name,
+                        state, target);
+
+          sinfo = g_slice_new0 (SignalInfo);
+          sinfo->is_handler = FALSE;
+          sinfo->name = g_strdup (name);
+          sinfo->state = g_strdup (state);
+          sinfo->target = g_strdup (target);
         }
-      else
+
+      /* mandatory: "handler" */
+      if (json_object_has_member (object, "handler"))
         {
+          const gchar *handler;
+          const gchar *connect;
+          GConnectFlags flags = 0;
+
           handler = json_object_get_string_member (object, "handler");
-          if (!handler)
+          if (handler == NULL)
             {
               _clutter_script_warn_invalid_value (script,
                                                   "handler", "string",
                                                   val);
               continue;
             }
+
+          /* optional: "object" */
+          if (json_object_has_member (object, "object"))
+            connect = json_object_get_string_member (object, "object");
+          else
+            connect = NULL;
+
+          /* optional: "after" */
+          if (json_object_has_member (object, "after"))
+            {
+              if (json_object_get_boolean_member (object, "after"))
+                flags |= G_CONNECT_AFTER;
+            }
+
+          /* optional: "swapped" */
+          if (json_object_has_member (object, "swapped"))
+            {
+              if (json_object_get_boolean_member (object, "swapped"))
+                flags |= G_CONNECT_SWAPPED;
+            }
+
+          CLUTTER_NOTE (SCRIPT,
+                        "Added signal '%s' (handler:%s, object:%s, flags:%d)",
+                        name,
+                        handler, connect, flags);
+
+          sinfo = g_slice_new0 (SignalInfo);
+          sinfo->is_handler = TRUE;
+          sinfo->name = g_strdup (name);
+          sinfo->handler = g_strdup (handler);
+          sinfo->object = g_strdup (connect);
+          sinfo->flags = flags;
         }
 
-      /* optional: "object" */
-      if (json_object_has_member (object, "object"))
-        connect = json_object_get_string_member (object, "object");
+      if (sinfo != NULL)
+        retval = g_list_prepend (retval, sinfo);
       else
-        connect = NULL;
-
-      /* optional: "after" */
-      if (json_object_has_member (object, "after"))
-        {
-          if (json_object_get_boolean_member (object, "after"))
-            flags |= G_CONNECT_AFTER;
-        }
-
-      /* optional: "swapped" */
-      if (json_object_has_member (object, "swapped"))
-        {
-          if (json_object_get_boolean_member (object, "swapped"))
-            flags |= G_CONNECT_SWAPPED;
-        }
-
-      CLUTTER_NOTE (SCRIPT,
-                    "Parsing signal '%s' (handler:%s, object:%s, flags:%d)",
-                    name,
-                    handler, connect, flags);
-
-      sinfo = g_slice_new0 (SignalInfo);
-      sinfo->name = g_strdup (name);
-      sinfo->handler = g_strdup (handler);
-      sinfo->object = g_strdup (connect);
-      sinfo->flags = flags;
-
-      retval = g_list_prepend (retval, sinfo);
+        _clutter_script_warn_missing_attribute (script,
+                                                NULL,
+                                                "handler or state");
     }
 
   return retval;

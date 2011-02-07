@@ -196,6 +196,7 @@
 #include "clutter-behaviour.h"
 #include "clutter-container.h"
 #include "clutter-stage.h"
+#include "clutter-state.h"
 #include "clutter-texture.h"
 
 #include "clutter-script.h"
@@ -907,10 +908,45 @@ clutter_script_connect_signals (ClutterScript *script,
 }
 
 typedef struct {
+  ClutterState *state;
+  GObject *emitter;
+  gchar *target;
+} HookData;
+
+typedef struct {
   ClutterScript *script;
   ClutterScriptConnectFunc func;
   gpointer user_data;
 } SignalConnectData;
+
+static void
+hook_data_free (gpointer data)
+{
+  if (G_LIKELY (data != NULL))
+    {
+      HookData *hook_data = data;
+
+      g_free (hook_data->target);
+      g_slice_free (HookData, hook_data);
+    }
+}
+
+static gboolean
+clutter_script_state_change_hook (GSignalInvocationHint *ihint,
+                                  guint                  n_params,
+                                  const GValue          *params,
+                                  gpointer               user_data)
+{
+  HookData *hook_data = user_data;
+  GObject *emitter;
+
+  emitter = g_value_get_object (&params[0]);
+
+  if (emitter == hook_data->emitter)
+    clutter_state_set_state (hook_data->state, hook_data->target);
+
+  return TRUE;
+}
 
 static void
 connect_each_object (gpointer key,
@@ -929,24 +965,75 @@ connect_each_object (gpointer key,
   for (l = oinfo->signals; l != NULL; l = l->next)
     {
       SignalInfo *sinfo = l->data;
-      GObject *connect_object = NULL;
 
-      if (sinfo->object)
-        connect_object = clutter_script_get_object (script, sinfo->object);
+      if (sinfo->is_handler)
+        {
+          GObject *connect_object = NULL;
 
-      if (sinfo->object && !connect_object)
-        unresolved = g_list_prepend (unresolved, sinfo);
+          if (sinfo->object)
+            connect_object = clutter_script_get_object (script, sinfo->object);
+
+          if (sinfo->object && !connect_object)
+            unresolved = g_list_prepend (unresolved, sinfo);
+          else
+            {
+              connect_data->func (script, object,
+                                  sinfo->name,
+                                  sinfo->handler,
+                                  connect_object,
+                                  sinfo->flags,
+                                  connect_data->user_data);
+            }
+        }
       else
         {
-          connect_data->func (script, object,
-                              sinfo->name,
-                              sinfo->handler,
-                              connect_object,
-                              sinfo->flags,
-                              connect_data->user_data);
+          GObject *state_object;
+          const gchar *signal_name, *signal_detail;
+          gchar **components;
+          GQuark signal_quark;
+          guint signal_id;
+          HookData *hook_data;
 
-          signal_info_free (sinfo);
+          state_object = clutter_script_get_object (script, sinfo->state);
+          if (state_object == NULL)
+            continue;
+
+          components = g_strsplit (sinfo->name, "::", 2);
+          if (g_strv_length (components) == 2)
+            {
+              signal_name = components[0];
+              signal_detail = components[1];
+            }
+          else
+            {
+              signal_name = components[0];
+              signal_detail = NULL;
+            }
+
+          signal_id = g_signal_lookup (signal_name, G_OBJECT_TYPE (object));
+          if (signal_id == 0)
+            {
+              g_strfreev (components);
+              continue;
+            }
+
+          if (signal_detail != NULL)
+            signal_quark = g_quark_from_string (signal_detail);
+          else
+            signal_quark = 0;
+
+          hook_data = g_slice_new (HookData);
+          hook_data->emitter = object;
+          hook_data->state = CLUTTER_STATE (state_object);
+          hook_data->target = g_strdup (sinfo->target);
+
+          g_signal_add_emission_hook (signal_id, signal_quark,
+                                      clutter_script_state_change_hook,
+                                      hook_data,
+                                      hook_data_free);
         }
+
+      signal_info_free (sinfo);
     }
 
   /* keep the unresolved signal handlers around, in case
