@@ -12,6 +12,6 @@ requires=@CLUTTER_REQUIRES@
 Name: Cally
 Description: Clutter Accessibility Implementation Library
 Version: @VERSION@
-Libs: -L${libdir} -lclutter-${winsys}-${apiversion}
+Libs: -L${libdir} -lclutter-${soname_infix}-${apiversion}
 Cflags: -I${includedir}/clutter-${apiversion}
 Requires: atk clutter-1.0
