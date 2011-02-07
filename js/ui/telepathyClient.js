@@ -26,9 +26,9 @@ const SCROLLBACK_IDLE_LENGTH = 5;
 // The (non-chat) channel indicating the users whose presence
 // information we subscribe to
 let subscribedContactsChannel = {};
-subscribedContactsChannel[Telepathy.CHANNEL_NAME + '.ChannelType'] = Telepathy.CHANNEL_CONTACT_LIST_NAME;
-subscribedContactsChannel[Telepathy.CHANNEL_NAME + '.TargetHandleType'] = Telepathy.HandleType.LIST;
-subscribedContactsChannel[Telepathy.CHANNEL_NAME + '.TargetID'] = 'subscribe';
+subscribedContactsChannel[Tp.PROP_CHANNEL_CHANNEL_TYPE] = Tp.IFACE_CHANNEL_TYPE_CONTACT_LIST
+subscribedContactsChannel[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE] = Tp.HandleType.LIST;
+subscribedContactsChannel[Tp.PROP_CHANNEL_TARGET_ID] = 'subscribe';
 
 const NotificationDirection = {
     SENT: 'chat-sent',
@@ -53,14 +53,15 @@ Client.prototype = {
         contactManager.connect('presence-changed', Lang.bind(this, this._presenceChanged));
 
         channelDispatcher = new Telepathy.ChannelDispatcher(DBus.session,
-                                                            Telepathy.CHANNEL_DISPATCHER_NAME,
-                                                            Telepathy.nameToPath(Telepathy.CHANNEL_DISPATCHER_NAME));
+                                                            Tp.CHANNEL_DISPATCHER_BUS_NAME,
+                                                            Tp.CHANNEL_DISPATCHER_OBJECT_PATH);
 
         // Acquire existing connections. (Needed to make things work
         // through a restart.)
         let accountManager = new Telepathy.AccountManager(DBus.session,
-                                                          Telepathy.ACCOUNT_MANAGER_NAME,
-                                                          Telepathy.nameToPath(Telepathy.ACCOUNT_MANAGER_NAME));
+                                                          Tp.ACCOUNT_MANAGER_BUS_NAME,
+                                                          Tp.ACCOUNT_MANAGER_OBJECT_PATH);
+
         accountManager.GetRemote('ValidAccounts', Lang.bind(this,
             function (accounts, err) {
                 if (!accounts)
@@ -80,10 +81,10 @@ Client.prototype = {
                                               Lang.bind(this, this._observeChannels));
 
         // We only care about single-user text-based chats
-        this._observer.add_observer_filter({
-            'org.freedesktop.Telepathy.Channel.ChannelType': Tp.IFACE_CHANNEL_TYPE_TEXT,
-            'org.freedesktop.Telepathy.Channel.TargetHandleType': Tp.HandleType.CONTACT,
-        });
+        let props = {};
+        props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE] = Tp.IFACE_CHANNEL_TYPE_TEXT;
+        props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE] = Tp.HandleType.CONTACT;
+        this._observer.add_observer_filter(props);
 
         try {
             this._observer.register();
@@ -104,6 +105,7 @@ Client.prototype = {
             let [targetHandle, targetHandleType] = channel.get_handle();
             let props = channel.borrow_immutable_properties();
             let targetId = props[Telepathy.CHANNEL_NAME + '.TargetID'];
+            let targetId = props[Tp.PROP_CHANNEL_TARGET_ID];
 
             /* Only observe contact text channels */
             if ((!(channel instanceof Tp.TextChannel)) ||
@@ -139,7 +141,7 @@ Client.prototype = {
 
     _gotAccount: function(accountPath) {
         let account = new Telepathy.Account(DBus.session,
-                                            Telepathy.ACCOUNT_MANAGER_NAME,
+                                            Tp.ACCOUNT_MANAGER_BUS_NAME,
                                             accountPath);
         this._accounts[accountPath] = account;
         account.GetRemote('Connection', Lang.bind(this,
@@ -170,17 +172,17 @@ Client.prototype = {
             // won't have passed through our filters, so we need to
             // check the channel/targetHandle type ourselves.
 
-            let channelType = props[Telepathy.CHANNEL_NAME + '.ChannelType'];
-            if (channelType != Telepathy.CHANNEL_TEXT_NAME)
+            let channelType = props[Tp.PROP_CHANNEL_CHANNEL_TYPE];
+            if (channelType != Tp.IFACE_CHANNEL_TYPE_TEXT)
                 continue;
 
-            let targetHandleType = props[Telepathy.CHANNEL_NAME + '.TargetHandleType'];
-            if (targetHandleType != Telepathy.HandleType.CONTACT &&
-                targetHandleType != Telepathy.HandleType.NONE)
+            let targetHandleType = props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE];
+            if (targetHandleType != Tp.HandleType.CONTACT &&
+                targetHandleType != Tp.HandleType.NONE)
                 continue;
 
-            let targetHandle = props[Telepathy.CHANNEL_NAME + '.TargetHandle'];
-            let targetId = props[Telepathy.CHANNEL_NAME + '.TargetID'];
+            let targetHandle = props[Tp.PROP_CHANNEL_TARGET_HANDLE];
+            let targetId = props[Tp.PROP_CHANNEL_TARGET_ID];
 
             if (this._sources[connPath + ':' + targetHandle])
                 continue;
@@ -265,7 +267,7 @@ ContactManager.prototype = {
         let conn = new Telepathy.Connection(DBus.session, connName, connPath);
         info.statusChangedId = conn.connect('StatusChanged', Lang.bind(this,
             function (status, reason) {
-                if (status == Telepathy.ConnectionStatus.DISCONNECTED)
+                if (status == Tp.ConnectionStatus.DISCONNECTED)
                     this._removeConnection(conn);
             }));
 
@@ -301,7 +303,7 @@ ContactManager.prototype = {
                     return;
 
                 info.connectionContacts.GetContactAttributesRemote(
-                    contacts, [Telepathy.CONNECTION_ALIASING_NAME], false,
+                    contacts, [Tp.IFACE_CONNECTION_INTERFACE_ALIASING], false,
                     Lang.bind(this, this._gotContactAttributes, info));
             }));
     },
@@ -313,7 +315,7 @@ ContactManager.prototype = {
             delete info.names[removed[i]];
 
         info.connectionContacts.GetContactAttributesRemote(
-            added, [Telepathy.CONNECTION_ALIASING_NAME], false,
+            added, [Tp.IFACE_CONNECTION_INTERFACE_ALIASING], false,
             Lang.bind(this, this._gotContactAttributes, info));
     },
 
@@ -322,7 +324,7 @@ ContactManager.prototype = {
             return;
 
         for (let handle in attrs)
-            info.names[handle] = attrs[handle][Telepathy.CONNECTION_ALIASING_NAME + '/alias'];
+            info.names[handle] = attrs[handle][Tp.TOKEN_CONNECTION_INTERFACE_ALIASING_ALIAS];
     },
 
     _presencesChanged: function(conn, presences, err) {
@@ -487,7 +489,7 @@ Source.prototype = {
         this._targetHandleType = targetHandleType;
         this._targetId = targetId;
 
-        if (targetHandleType == Telepathy.HandleType.CONTACT) {
+        if (targetHandleType == Tp.HandleType.CONTACT) {
             let aliasing = new Telepathy.ConnectionAliasing(DBus.session, connName, connPath);
             aliasing.RequestAliasesRemote([this._targetHandle], Lang.bind(this,
                 function (aliases, err) {
@@ -501,7 +503,7 @@ Source.prototype = {
 
         // Since we only create sources when receiving a message, this
         // is a plausible default
-        this._presence = Telepathy.ConnectionPresenceType.AVAILABLE;
+        this._presence = Tp.ConnectionPresenceType.AVAILABLE;
 
         this._channelText = new Telepathy.ChannelText(DBus.session, connName, channelPath);
         this._sentId = this._channelText.connect('Sent', Lang.bind(this, this._messageSent));
@@ -518,10 +520,11 @@ Source.prototype = {
     },
 
     _notificationClicked: function(notification) {
-        channelDispatcher.EnsureChannelRemote(this._accountPath,
-                                              { 'org.freedesktop.Telepathy.Channel.ChannelType': Telepathy.CHANNEL_TEXT_NAME,
-                                                'org.freedesktop.Telepathy.Channel.TargetHandle': this._targetHandle,
-                                                'org.freedesktop.Telepathy.Channel.TargetHandleType': this._targetHandleType },
+        let props = {};
+        props[Tp.PROP_CHANNEL_CHANNEL_TYPE] = Tp.IFACE_CHANNEL_TYPE_TEXT;
+        props[Tp.PROP_CHANNEL_TARGET_HANDLE] = this._targetHandle;
+        props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE] = this._targetHandleType;
+        channelDispatcher.EnsureChannelRemote(this._accountPath, props,
                                               global.get_current_time(),
                                               '',
                                               Lang.bind(this, this._gotChannelRequest));
@@ -533,7 +536,7 @@ Source.prototype = {
             return;
         }
 
-        let chanReq = new Telepathy.ChannelRequest(DBus.session, Telepathy.CHANNEL_DISPATCHER_NAME, chanReqPath);
+        let chanReq = new Telepathy.ChannelRequest(DBus.session, Tp.CHANNEL_DISPATCHER_BUS_NAME, chanReqPath);
         chanReq.ProceedRemote();
     },
 
@@ -572,7 +575,7 @@ Source.prototype = {
     },
 
     respond: function(text) {
-        this._channelText.SendRemote(Telepathy.ChannelTextMessageType.NORMAL, text);
+        this._channelText.SendRemote(Tp.ChannelTextMessageType.NORMAL, text);
     },
 
     setPresence: function(presence, message) {
@@ -580,18 +583,18 @@ Source.prototype = {
 
         title = GLib.markup_escape_text(this.title, -1);
 
-        if (presence == Telepathy.ConnectionPresenceType.AVAILABLE) {
+        if (presence == Tp.ConnectionPresenceType.AVAILABLE) {
             msg = _("%s is online.").format(title);
-            shouldNotify = (this._presence == Telepathy.ConnectionPresenceType.OFFLINE);
-        } else if (presence == Telepathy.ConnectionPresenceType.OFFLINE ||
-                   presence == Telepathy.ConnectionPresenceType.EXTENDED_AWAY) {
-            presence = Telepathy.ConnectionPresenceType.OFFLINE;
+            shouldNotify = (this._presence == Tp.ConnectionPresenceType.OFFLINE);
+        } else if (presence == Tp.ConnectionPresenceType.OFFLINE ||
+                   presence == Tp.ConnectionPresenceType.EXTENDED_AWAY) {
+            presence = Tp.ConnectionPresenceType.OFFLINE;
             msg = _("%s is offline.").format(title);
-            shouldNotify = (this._presence != Telepathy.ConnectionPresenceType.OFFLINE);
-        } else if (presence == Telepathy.ConnectionPresenceType.AWAY) {
+            shouldNotify = (this._presence != Tp.ConnectionPresenceType.OFFLINE);
+        } else if (presence == Tp.ConnectionPresenceType.AWAY) {
             msg = _("%s is away.").format(title);
             shouldNotify = false;
-        } else if (presence == Telepathy.ConnectionPresenceType.BUSY) {
+        } else if (presence == Tp.ConnectionPresenceType.BUSY) {
             msg = _("%s is busy.").format(title);
             shouldNotify = false;
         } else
