@@ -6,6 +6,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const Tp = imports.gi.TelepathyGLib;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
@@ -21,21 +22,6 @@ const SCROLLBACK_IMMEDIATE_TIME = 60; // 1 minute
 const SCROLLBACK_RECENT_TIME = 15 * 60; // 15 minutes
 const SCROLLBACK_RECENT_LENGTH = 20;
 const SCROLLBACK_IDLE_LENGTH = 5;
-
-// A 'Qualified_Property_Value_Map' that represents a single-user
-// text-based chat.
-let singleUserTextChannel = {};
-singleUserTextChannel[Telepathy.CHANNEL_NAME + '.ChannelType'] = Telepathy.CHANNEL_TEXT_NAME;
-singleUserTextChannel[Telepathy.CHANNEL_NAME + '.TargetHandleType'] = Telepathy.HandleType.CONTACT;
-
-// Some protocols only support 'multi-user' chats, and single-user
-// chats are just treated as multi-user chats with only one other
-// participant. Telepathy uses HandleType.NONE for all chats in these
-// protocols; there's no good way for us to tell if the channel is
-// single- or multi-user.
-let oneOrMoreUserTextChannel = {};
-oneOrMoreUserTextChannel[Telepathy.CHANNEL_NAME + '.ChannelType'] = Telepathy.CHANNEL_TEXT_NAME;
-oneOrMoreUserTextChannel[Telepathy.CHANNEL_NAME + '.TargetHandleType'] = Telepathy.HandleType.NONE;
 
 // The (non-chat) channel indicating the users whose presence
 // information we subscribe to
@@ -60,12 +46,6 @@ function Client() {
 
 Client.prototype = {
     _init : function() {
-        let name = Telepathy.CLIENT_NAME + '.GnomeShell';
-        DBus.session.exportObject(Telepathy.nameToPath(name), this);
-        DBus.session.acquire_name(name, DBus.SINGLE_INSTANCE,
-                                  function (name) { /* FIXME: acquired */ },
-                                  function (name) { /* FIXME: lost */ });
-
         this._accounts = {};
         this._sources = {};
 
@@ -90,6 +70,62 @@ Client.prototype = {
                     this._gotAccount(accounts[i]);
             }));
         accountManager.connect('AccountValidityChanged', Lang.bind(this, this._accountValidityChanged));
+
+        // Set up a SimpleObserver, which will call _observeChannels whenever a
+        // channel matching its filters is detected.
+        // The second argument, recover, means _observeChannels will be run
+        // for any existing channel as well.
+        let dbus = Tp.DBusDaemon.dup();
+        this._observer = Tp.SimpleObserver.new(dbus, false, 'GnomeShell', true,
+                                              Lang.bind(this, this._observeChannels));
+
+        // We only care about single-user text-based chats
+        this._observer.add_observer_filter({
+            'org.freedesktop.Telepathy.Channel.ChannelType': Tp.IFACE_CHANNEL_TYPE_TEXT,
+            'org.freedesktop.Telepathy.Channel.TargetHandleType': Tp.HandleType.CONTACT,
+        });
+
+        try {
+            this._observer.register();
+        } catch (e) {
+            throw new Error('Couldn\'t register SimpleObserver. Error: \n' + e);
+        }
+    },
+
+    _observeChannels: function(observer, account, conn, channels,
+                               dispatchOp, requests, context) {
+        let connPath = conn.get_object_path();
+        let connName = conn.get_bus_name();
+        let accountPath = account.get_object_path()
+
+        let len = channels.length;
+        for (let i = 0; i < len; i++) {
+            let channel = channels[i];
+            let [targetHandle, targetHandleType] = channel.get_handle();
+            let props = channel.borrow_immutable_properties();
+            let targetId = props[Telepathy.CHANNEL_NAME + '.TargetID'];
+
+            /* Only observe contact text channels */
+            if ((!(channel instanceof Tp.TextChannel)) ||
+               targetHandleType != Tp.HandleType.CONTACT)
+               continue;
+
+            if (this._sources[connPath + ':' + targetHandle])
+                continue;
+
+            let source = new Source(accountPath, connPath,
+                                    channel.get_object_path(),
+                                    targetHandle, targetHandleType, targetId);
+            this._sources[connPath + ':' + targetHandle] = source;
+            source.connect('destroy', Lang.bind(this,
+                function() {
+                    delete this._sources[connPath + ':' + targetHandle];
+                }));
+
+        }
+
+        // Allow dbus method to return
+        context.accept();
     },
 
     _accountValidityChanged: function(accountManager, accountPath, valid) {
@@ -124,20 +160,6 @@ Client.prototype = {
 
                 contactManager.addConnection(connPath);
             }));
-    },
-
-    get Interfaces() {
-        return [ Telepathy.CLIENT_OBSERVER_NAME ];
-    },
-
-    get ObserverChannelFilter() {
-        return [ singleUserTextChannel, oneOrMoreUserTextChannel ];
-    },
-
-    ObserveChannels: function(accountPath, connPath, channels,
-                              dispatchOperation, requestsSatisfied,
-                              observerInfo) {
-        this._addChannels(accountPath, connPath, channels);
     },
 
     _addChannels: function(accountPath, connPath, channelDetailsList) {
@@ -182,9 +204,6 @@ Client.prototype = {
         source.setPresence(type, message);
     }
 };
-DBus.conformExport(Client.prototype, Telepathy.ClientIface);
-DBus.conformExport(Client.prototype, Telepathy.ClientObserverIface);
-
 
 function ContactManager() {
     this._init();
