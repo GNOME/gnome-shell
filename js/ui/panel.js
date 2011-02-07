@@ -13,6 +13,7 @@ const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
+const CtrlAltTab = imports.ui.ctrlAltTab;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
@@ -989,6 +990,9 @@ Panel.prototype = {
         Main.chrome.addActor(this._rightCorner.actor, { visibleInOverview: true,
                                                   affectsStruts: false,
                                                   affectsInputRegion: false });
+
+        Main.ctrlAltTabManager.addGroup(this.actor, _("Panel"), 'start-here',
+                                        { sortGroup: CtrlAltTab.SortGroup.TOP });
     },
 
     _xdndShowOverview: function (actor) {

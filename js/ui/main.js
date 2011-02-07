@@ -139,6 +139,7 @@ function start() {
 
     placesManager = new PlaceDisplay.PlacesManager();
     xdndHandler = new XdndHandler.XdndHandler();
+    ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     overview = new Overview.Overview();
     chrome = new Chrome.Chrome();
     magnifier = new Magnifier.Magnifier();
@@ -152,9 +153,6 @@ function start() {
 
     overview.init();
     statusIconDispatcher.start(messageTray.actor);
-
-    ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
-    ctrlAltTabManager.addGroup(panel.actor, _("Panel"), 'gnome-panel');
 
     _startDate = new Date();
 

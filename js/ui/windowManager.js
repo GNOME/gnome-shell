@@ -117,6 +117,7 @@ WindowManager.prototype = {
         this.setKeybindingHandler('switch_to_workspace_down', Lang.bind(this, this._showWorkspaceSwitcher));
         this.setKeybindingHandler('switch_windows', Lang.bind(this, this._startAppSwitcher));
         this.setKeybindingHandler('switch_group', Lang.bind(this, this._startAppSwitcher));
+        this.setKeybindingHandler('switch_panels', Lang.bind(this, this._startA11ySwitcher));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
@@ -523,6 +524,10 @@ WindowManager.prototype = {
 
         if (!tabPopup.show(backwards, binding == 'switch_group'))
             tabPopup.destroy();
+    },
+
+    _startA11ySwitcher : function(shellwm, binding, window, backwards) {
+        Main.ctrlAltTabManager.popup(backwards);
     },
 
     _showWorkspaceSwitcher : function(shellwm, binding, window, backwards) {
