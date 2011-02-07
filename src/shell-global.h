@@ -8,6 +8,8 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
 
+#include <telepathy-glib/telepathy-glib.h>
+
 G_BEGIN_DECLS
 
 typedef struct _ShellGlobal      ShellGlobal;
@@ -141,6 +143,17 @@ void shell_global_play_theme_sound (ShellGlobal       *global,
                                     const char        *name);
 
 void shell_global_init_xdnd (ShellGlobal *global);
+
+typedef void (*ShellGetTpContactCb) (TpConnection *connection,
+                                     GList *contacts,
+                                     TpHandle *failed);
+
+void shell_get_tp_contacts (TpConnection *self,
+                            guint n_handles,
+                            const TpHandle *handles,
+                            guint n_features,
+                            const TpContactFeature *features,
+                            ShellGetTpContactCb callback);
 
 G_END_DECLS
 
