@@ -85,6 +85,11 @@ units_sources += \
 	test-script-parser.c		\
         $(NULL)
 
+# cally tests
+units_sources += \
+	test-cally-text.c		\
+	$(NULL)
+
 test_conformance_SOURCES = $(common_sources) $(units_sources)
 
 if OS_WIN32

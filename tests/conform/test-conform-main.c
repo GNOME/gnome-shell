@@ -246,5 +246,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_viewport);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_offscreen);
 
+  TEST_CONFORM_SIMPLE ("/cally", cally_text);
+
   return g_test_run ();
 }
