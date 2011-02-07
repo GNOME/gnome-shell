@@ -1,3 +1,32 @@
+Clutter 1.6.2                                                        2011-02-07
+===============================================================================
+
+  • List of changes since Clutter 1.6.0
+
+    » Fix building the Clutter Cookbook from the released tarballs.
+
+    » Set the input device field in ClutterEvent even when they
+      have been allocated by Clutter.
+
+    » Fix the color comparison when setting the layer combine constant.
+
+    » Fix memory corruption when removing the last reference on a
+      Cogl vertex buffer object.
+
+    » Fixes for the OSX backend.
+
+  • List of bugs fixed since Clutter 1.6.0
+
+    #2540 - coobook examples do not build from tarball
+    #2544 - Using vertex buffers causes memory corruption when you unref
+            the CoglHandle
+    #2545 - Broken event handling in OS X backend
+    #2549 - Fix lib locations in *.pc.in
+
+Many thanks to:
+
+  Neil Roberts, Viatcheslav Gachkaylo
+
 Clutter 1.6.0                                                        2011-01-31
 ===============================================================================
 
