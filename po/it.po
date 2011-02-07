@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-01-31 14:54+0000\n"
+"POT-Creation-Date: 2011-02-07 15:50+0000\n"
 "PO-Revision-Date: 2010-08-20 16:59+0200\n"
 "Last-Translator: Luca Ferretti\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -762,7 +762,7 @@ msgid "The layout manager used by the box"
 msgstr "Il gestore di layout usato dal box"
 
 #: clutter/clutter-box.c:514 clutter/clutter-rectangle.c:258
-#: clutter/clutter-stage.c:1315
+#: clutter/clutter-stage.c:1317
 msgid "Color"
 msgstr "Colore"
 
@@ -1369,105 +1369,105 @@ msgstr "Tipo di ombreggiatore"
 msgid "The type of shader used"
 msgstr "Il tipo di ombreggiatore usato"
 
-#: clutter/clutter-stage.c:1257
+#: clutter/clutter-stage.c:1259
 msgid "Fullscreen Set"
 msgstr "Imposta a schermo intero"
 
-#: clutter/clutter-stage.c:1258
+#: clutter/clutter-stage.c:1260
 msgid "Whether the main stage is fullscreen"
 msgstr "Se il livello principale è a schermo intero"
 
-#: clutter/clutter-stage.c:1274
+#: clutter/clutter-stage.c:1276
 msgid "Offscreen"
 msgstr "Fuorischermo"
 
-#: clutter/clutter-stage.c:1275
+#: clutter/clutter-stage.c:1277
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Se il livello principale dovrebbe essere renderizzato fuori schermo"
 
-#: clutter/clutter-stage.c:1287 clutter/clutter-text.c:2667
+#: clutter/clutter-stage.c:1289 clutter/clutter-text.c:2667
 msgid "Cursor Visible"
 msgstr "Cursore visibile"
 
-#: clutter/clutter-stage.c:1288
+#: clutter/clutter-stage.c:1290
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Se il puntatore del mouse è visibile sul livello principale"
 
-#: clutter/clutter-stage.c:1302
+#: clutter/clutter-stage.c:1304
 msgid "User Resizable"
 msgstr "Ridimensionabile dall'utente"
 
-#: clutter/clutter-stage.c:1303
+#: clutter/clutter-stage.c:1305
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr ""
 "Se il livello può essere ridimensionato attraverso l'interazione dell'utente"
 
-#: clutter/clutter-stage.c:1316
+#: clutter/clutter-stage.c:1318
 msgid "The color of the stage"
 msgstr "Il colore del livello"
 
-#: clutter/clutter-stage.c:1330
+#: clutter/clutter-stage.c:1332
 msgid "Perspective"
 msgstr "Prospettiva"
 
-#: clutter/clutter-stage.c:1331
+#: clutter/clutter-stage.c:1333
 msgid "Perspective projection parameters"
 msgstr "Parametri di proiezione prospettica"
 
-#: clutter/clutter-stage.c:1346
+#: clutter/clutter-stage.c:1348
 msgid "Title"
 msgstr "Titolo"
 
-#: clutter/clutter-stage.c:1347
+#: clutter/clutter-stage.c:1349
 msgid "Stage Title"
 msgstr "Titolo del livello"
 
-#: clutter/clutter-stage.c:1362
+#: clutter/clutter-stage.c:1364
 msgid "Use Fog"
 msgstr "Usa nebbia"
 
-#: clutter/clutter-stage.c:1363
+#: clutter/clutter-stage.c:1365
 msgid "Whether to enable depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1377
+#: clutter/clutter-stage.c:1379
 msgid "Fog"
 msgstr "Nebbia"
 
-#: clutter/clutter-stage.c:1378
+#: clutter/clutter-stage.c:1380
 msgid "Settings for the depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1394
+#: clutter/clutter-stage.c:1396
 msgid "Use Alpha"
 msgstr "Usa Alpha"
 
-#: clutter/clutter-stage.c:1395
+#: clutter/clutter-stage.c:1397
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Se rispettare il componente alpha del colore del livello"
 
-#: clutter/clutter-stage.c:1411
+#: clutter/clutter-stage.c:1413
 msgid "Key Focus"
 msgstr "Fuoco chiave"
 
-#: clutter/clutter-stage.c:1412
+#: clutter/clutter-stage.c:1414
 msgid "The currently key focused actor"
 msgstr "L'attore chiave attuale con fuoco"
 
-#: clutter/clutter-stage.c:1428
+#: clutter/clutter-stage.c:1430
 msgid "No Clear Hint"
 msgstr ""
 
-#: clutter/clutter-stage.c:1429
+#: clutter/clutter-stage.c:1431
 msgid "Whether the stage should clear its contents"
 msgstr "Se il livello dovrebbe cancellare il suo contenuto"
 
-#: clutter/clutter-stage.c:1442
+#: clutter/clutter-stage.c:1444
 #, fuzzy
 msgid "Accept Focus"
 msgstr "Fuoco chiave"
 
-#: clutter/clutter-stage.c:1443
+#: clutter/clutter-stage.c:1445
 #, fuzzy
 msgid "Whether the stage should accept focus on show"
 msgstr "Se il livello dovrebbe cancellare il suo contenuto"

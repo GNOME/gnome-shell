@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-01-31 14:54+0000\n"
+"POT-Creation-Date: 2011-02-07 15:50+0000\n"
 "PO-Revision-Date: 2010-10-01 17:03+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
@@ -758,7 +758,7 @@ msgid "The layout manager used by the box"
 msgstr "Menedżer warstw używany przez to pole"
 
 #: clutter/clutter-box.c:514 clutter/clutter-rectangle.c:258
-#: clutter/clutter-stage.c:1315
+#: clutter/clutter-stage.c:1317
 msgid "Color"
 msgstr "Kolor"
 
@@ -1357,104 +1357,104 @@ msgstr "Typ cieniowania"
 msgid "The type of shader used"
 msgstr "Typ używanego cieniowania"
 
-#: clutter/clutter-stage.c:1257
+#: clutter/clutter-stage.c:1259
 msgid "Fullscreen Set"
 msgstr "Ustawienie pełnego ekranu"
 
-#: clutter/clutter-stage.c:1258
+#: clutter/clutter-stage.c:1260
 msgid "Whether the main stage is fullscreen"
 msgstr "Określa, czy główna scena jest na pełnym ekranie"
 
-#: clutter/clutter-stage.c:1274
+#: clutter/clutter-stage.c:1276
 msgid "Offscreen"
 msgstr "Poza ekranem"
 
-#: clutter/clutter-stage.c:1275
+#: clutter/clutter-stage.c:1277
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Określa, czy główna scena powinna być wyświetlana poza ekranem"
 
-#: clutter/clutter-stage.c:1287 clutter/clutter-text.c:2667
+#: clutter/clutter-stage.c:1289 clutter/clutter-text.c:2667
 msgid "Cursor Visible"
 msgstr "Widoczność kursora"
 
-#: clutter/clutter-stage.c:1288
+#: clutter/clutter-stage.c:1290
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Określa, czy kursor myszy jest widoczny na głównej scenie"
 
-#: clutter/clutter-stage.c:1302
+#: clutter/clutter-stage.c:1304
 msgid "User Resizable"
 msgstr "Użytkownik może zmieniać rozmiar"
 
-#: clutter/clutter-stage.c:1303
+#: clutter/clutter-stage.c:1305
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Określa, czy można zmieniać rozmiar sceny przez działania użytkownika"
 
-#: clutter/clutter-stage.c:1316
+#: clutter/clutter-stage.c:1318
 msgid "The color of the stage"
 msgstr "Kolor sceny"
 
-#: clutter/clutter-stage.c:1330
+#: clutter/clutter-stage.c:1332
 msgid "Perspective"
 msgstr "Perspektywa"
 
-#: clutter/clutter-stage.c:1331
+#: clutter/clutter-stage.c:1333
 msgid "Perspective projection parameters"
 msgstr "Parametry projekcji perspektywy"
 
-#: clutter/clutter-stage.c:1346
+#: clutter/clutter-stage.c:1348
 msgid "Title"
 msgstr "Tytuł"
 
-#: clutter/clutter-stage.c:1347
+#: clutter/clutter-stage.c:1349
 msgid "Stage Title"
 msgstr "Tytuł sceny"
 
-#: clutter/clutter-stage.c:1362
+#: clutter/clutter-stage.c:1364
 msgid "Use Fog"
 msgstr "Użycie mgły"
 
-#: clutter/clutter-stage.c:1363
+#: clutter/clutter-stage.c:1365
 msgid "Whether to enable depth cueing"
 msgstr "Określa, czy włączyć wskazówki głębi"
 
-#: clutter/clutter-stage.c:1377
+#: clutter/clutter-stage.c:1379
 msgid "Fog"
 msgstr "Mgła"
 
-#: clutter/clutter-stage.c:1378
+#: clutter/clutter-stage.c:1380
 msgid "Settings for the depth cueing"
 msgstr "Ustawienia dla wskazówek głębi"
 
-#: clutter/clutter-stage.c:1394
+#: clutter/clutter-stage.c:1396
 msgid "Use Alpha"
 msgstr "Użycie alfy"
 
-#: clutter/clutter-stage.c:1395
+#: clutter/clutter-stage.c:1397
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Określa, czy uwzględniać składnik alfa koloru sceny"
 
-#: clutter/clutter-stage.c:1411
+#: clutter/clutter-stage.c:1413
 msgid "Key Focus"
 msgstr "Aktywny klawisz"
 
-#: clutter/clutter-stage.c:1412
+#: clutter/clutter-stage.c:1414
 msgid "The currently key focused actor"
 msgstr "Aktor obecnie posiadający aktywny klawisz"
 
-#: clutter/clutter-stage.c:1428
+#: clutter/clutter-stage.c:1430
 msgid "No Clear Hint"
 msgstr "Bez wskazówki czyszczenia"
 
-#: clutter/clutter-stage.c:1429
+#: clutter/clutter-stage.c:1431
 msgid "Whether the stage should clear its contents"
 msgstr "Określa, czy scena powinna czyścić swoją zawartość"
 
-#: clutter/clutter-stage.c:1442
+#: clutter/clutter-stage.c:1444
 #, fuzzy
 msgid "Accept Focus"
 msgstr "Aktywny klawisz"
 
-#: clutter/clutter-stage.c:1443
+#: clutter/clutter-stage.c:1445
 #, fuzzy
 msgid "Whether the stage should accept focus on show"
 msgstr "Określa, czy scena powinna czyścić swoją zawartość"

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-01-31 14:54+0000\n"
+"POT-Creation-Date: 2011-02-07 15:50+0000\n"
 "PO-Revision-Date: 2010-09-30 15:09+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -761,7 +761,7 @@ msgid "The layout manager used by the box"
 msgstr ""
 
 #: clutter/clutter-box.c:514 clutter/clutter-rectangle.c:258
-#: clutter/clutter-stage.c:1315
+#: clutter/clutter-stage.c:1317
 msgid "Color"
 msgstr "色彩"
 
@@ -1358,103 +1358,103 @@ msgstr "着色引擎类型"
 msgid "The type of shader used"
 msgstr "使用的着色引擎类型"
 
-#: clutter/clutter-stage.c:1257
+#: clutter/clutter-stage.c:1259
 msgid "Fullscreen Set"
 msgstr ""
 
-#: clutter/clutter-stage.c:1258
+#: clutter/clutter-stage.c:1260
 msgid "Whether the main stage is fullscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1274
+#: clutter/clutter-stage.c:1276
 msgid "Offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1275
+#: clutter/clutter-stage.c:1277
 msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1287 clutter/clutter-text.c:2667
+#: clutter/clutter-stage.c:1289 clutter/clutter-text.c:2667
 msgid "Cursor Visible"
 msgstr ""
 
-#: clutter/clutter-stage.c:1288
+#: clutter/clutter-stage.c:1290
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr ""
 
-#: clutter/clutter-stage.c:1302
+#: clutter/clutter-stage.c:1304
 msgid "User Resizable"
 msgstr "用户可改变大小"
 
-#: clutter/clutter-stage.c:1303
+#: clutter/clutter-stage.c:1305
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr ""
 
-#: clutter/clutter-stage.c:1316
+#: clutter/clutter-stage.c:1318
 msgid "The color of the stage"
 msgstr ""
 
-#: clutter/clutter-stage.c:1330
+#: clutter/clutter-stage.c:1332
 msgid "Perspective"
 msgstr ""
 
-#: clutter/clutter-stage.c:1331
+#: clutter/clutter-stage.c:1333
 msgid "Perspective projection parameters"
 msgstr ""
 
-#: clutter/clutter-stage.c:1346
+#: clutter/clutter-stage.c:1348
 msgid "Title"
 msgstr "标题"
 
-#: clutter/clutter-stage.c:1347
+#: clutter/clutter-stage.c:1349
 msgid "Stage Title"
 msgstr ""
 
-#: clutter/clutter-stage.c:1362
+#: clutter/clutter-stage.c:1364
 msgid "Use Fog"
 msgstr ""
 
-#: clutter/clutter-stage.c:1363
+#: clutter/clutter-stage.c:1365
 msgid "Whether to enable depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1377
+#: clutter/clutter-stage.c:1379
 msgid "Fog"
 msgstr ""
 
-#: clutter/clutter-stage.c:1378
+#: clutter/clutter-stage.c:1380
 msgid "Settings for the depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1394
+#: clutter/clutter-stage.c:1396
 msgid "Use Alpha"
 msgstr "使用 Alpha"
 
-#: clutter/clutter-stage.c:1395
+#: clutter/clutter-stage.c:1397
 msgid "Whether to honour the alpha component of the stage color"
 msgstr ""
 
-#: clutter/clutter-stage.c:1411
+#: clutter/clutter-stage.c:1413
 msgid "Key Focus"
 msgstr ""
 
-#: clutter/clutter-stage.c:1412
+#: clutter/clutter-stage.c:1414
 msgid "The currently key focused actor"
 msgstr ""
 
-#: clutter/clutter-stage.c:1428
+#: clutter/clutter-stage.c:1430
 msgid "No Clear Hint"
 msgstr ""
 
-#: clutter/clutter-stage.c:1429
+#: clutter/clutter-stage.c:1431
 msgid "Whether the stage should clear its contents"
 msgstr ""
 
-#: clutter/clutter-stage.c:1442
+#: clutter/clutter-stage.c:1444
 msgid "Accept Focus"
 msgstr ""
 
-#: clutter/clutter-stage.c:1443
+#: clutter/clutter-stage.c:1445
 #, fuzzy
 msgid "Whether the stage should accept focus on show"
 msgstr "文本是否只应使用一行"
