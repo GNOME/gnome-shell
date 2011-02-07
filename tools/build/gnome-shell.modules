@@ -12,7 +12,10 @@
   <repository type="tarball" name="cairo.org"
       href="http://cairographics.org/"/>
   <repository type="tarball" name="0pointer.de"
-    href="http://0pointer.de/lennart/projects/"/>
+      href="http://0pointer.de/lennart/projects/"/>
+  <repository type="cvs" name="libxklavier.freedesktop.org"
+      cvsroot=":pserver:anoncvs@anoncvs.freedesktop.org:/cvs/xklavier"
+      password=""/>
 
   <autotools id="gobject-introspection">
     <branch repo="git.gnome.org" module="gobject-introspection"/>
@@ -290,6 +293,16 @@
     <branch repo="git.gnome.org" module="libgnomekbd"/>
     <dependencies>
       <dep package="glib"/>
+      <dep package="libxklavier"/>
     </dependencies>
   </autotools>
+
+<autotools id="libxklavier">
+  <branch module="libxklavier"
+	  repo="libxklavier.freedesktop.org"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+</autotools>
+
 </moduleset>

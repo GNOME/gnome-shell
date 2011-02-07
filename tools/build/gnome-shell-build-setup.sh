@@ -53,13 +53,13 @@ fi
 # binutils, curl, gcc, make, git
 #
 # General build stuff:
-# automake, bison, flex, gettext, git, gnome-common, gtk-doc, intltool,
-# libtool, pkgconfig
+# automake, bison, flex, gettext, gnome-common, gtk-doc, intltool,
+# libtool, pkgconfig, cvs
 #
 # Devel packages needed by gnome-shell and its deps:
 # dbus-glib, expat, GL, gnome-menus, gstreamer, libffi,
 # libjasper, libjpeg, libpng, libpulse, libtiff, libwnck,
-# libxklavier, libxml2, ORBit2, pam, python, readline,
+# iso-codes, libxml2, ORBit2, pam, python, readline,
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification,
 # xdamage, icon-naming-utils, upower, libtool-ltdl, libvorbis,
 # libgcrypt, libtasn1, libgnome-keyring, libgtop, cups,
@@ -75,7 +75,7 @@ fi
 if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint ; then
   reqd="
     build-essential curl
-    automake bison flex gettext git-core gnome-common gtk-doc-tools
+    automake bison flex gettext git-core cvs gnome-common gtk-doc-tools
     gvfs gvfs-backends icon-naming-utils
     libdbus-glib-1-dev libexpat-dev libffi-dev libgnome-menu-dev libgnome-desktop-dev libgtop2-dev
     libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev
@@ -83,7 +83,7 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject
     xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good
-    libltdl-dev libvorbis-dev libxklavier-dev libgnome-keyring-dev
+    libltdl-dev libvorbis-dev iso-codes libgnome-keyring-dev
     libupower-glib-dev libcups2-dev evolution-data-server-dev
     libecal1.2-dev libedataserverui1.2-dev
     "
@@ -112,7 +112,7 @@ fi
 
 if test "x$system" = xFedora ; then
   reqd="
-    binutils curl gcc gcc-c++ make
+    binutils curl gcc gcc-c++ make cvs
     automake bison flex gettext git gnome-common gnome-doc-utils gvfs intltool
     libtool pkgconfig dbus-glib-devel gnome-desktop-devel gnome-menus-devel
     gnome-python2-gconf jasper-devel libffi-devel libjpeg-devel libpng-devel
@@ -122,7 +122,7 @@ if test "x$system" = xFedora ; then
     gstreamer-plugins-base gstreamer-plugins-good glx-utils expat-devel
     startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
     icon-naming-utils upower-devel libtool-ltdl-devel libvorbis-devel
-    libxklavier-devel libgcrypt-devel libtasn1-devel libtasn1-tools
+    iso-codes-devel libgcrypt-devel libtasn1-devel libtasn1-tools
     libgnome-keyring-devel libgtop2-devel cups-devel evolution-data-server-devel
     "
 
@@ -150,6 +150,7 @@ if test "x$system" = xSUSE -o "x$system" = "xSUSE LINUX" ; then
     orbit2-devel libwnck-devel xorg-x11-proto-devel readline-devel \
     mozilla-xulrunner191-devel libcroco-devel \
     xorg-x11-devel xorg-x11 xorg-x11-server-extra evolution-data-server-devel \
+    cvs iso-codes-devel \
     ; do
       if ! rpm -q $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
@@ -171,6 +172,7 @@ if test "x$system" = xMandrivaLinux ; then
     readline-devel libxulrunner-devel \
     libxdamage-devel mesa-demos x11-server-xephyr zenity \
     libcroco0.6-devel libevolution-data-server3-devel \
+    cvs iso-codes-devel \
     ; do
       if ! rpm -q --whatprovides $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
