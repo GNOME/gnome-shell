@@ -150,7 +150,7 @@ function loadExtension(dir, enabled, type) {
         return;
     }
     try {
-        extensionModule.main();
+        extensionModule.main(meta);
     } catch (e) {
         if (stylesheetPath != null)
             theme.unload_stylesheet(stylesheetPath);
