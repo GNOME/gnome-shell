@@ -56,28 +56,12 @@ Client.prototype = {
                                                             Tp.CHANNEL_DISPATCHER_BUS_NAME,
                                                             Tp.CHANNEL_DISPATCHER_OBJECT_PATH);
 
-        // Acquire existing connections. (Needed to make things work
-        // through a restart.)
-        let accountManager = new Telepathy.AccountManager(DBus.session,
-                                                          Tp.ACCOUNT_MANAGER_BUS_NAME,
-                                                          Tp.ACCOUNT_MANAGER_OBJECT_PATH);
-
-        accountManager.GetRemote('ValidAccounts', Lang.bind(this,
-            function (accounts, err) {
-                if (!accounts)
-                    return;
-
-                for (let i = 0; i < accounts.length; i++)
-                    this._gotAccount(accounts[i]);
-            }));
-        accountManager.connect('AccountValidityChanged', Lang.bind(this, this._accountValidityChanged));
-
         // Set up a SimpleObserver, which will call _observeChannels whenever a
         // channel matching its filters is detected.
         // The second argument, recover, means _observeChannels will be run
         // for any existing channel as well.
         let dbus = Tp.DBusDaemon.dup();
-        this._observer = Tp.SimpleObserver.new(dbus, false, 'GnomeShell', true,
+        this._observer = Tp.SimpleObserver.new(dbus, true, 'GnomeShell', true,
                                               Lang.bind(this, this._observeChannels));
 
         // We only care about single-user text-based chats
@@ -128,73 +112,6 @@ Client.prototype = {
 
         // Allow dbus method to return
         context.accept();
-    },
-
-    _accountValidityChanged: function(accountManager, accountPath, valid) {
-        if (!valid) {
-            delete this._accounts[accountPath];
-            // We don't need to clean up connections, sources, etc; they'll
-            // get Closed and cleaned up independently.
-        } else
-            this._gotAccount(accountPath);
-    },
-
-    _gotAccount: function(accountPath) {
-        let account = new Telepathy.Account(DBus.session,
-                                            Tp.ACCOUNT_MANAGER_BUS_NAME,
-                                            accountPath);
-        this._accounts[accountPath] = account;
-        account.GetRemote('Connection', Lang.bind(this,
-            function (connPath, err) {
-                if (!connPath || connPath == '/')
-                    return;
-
-                let connReq = new Telepathy.ConnectionRequests(DBus.session,
-                                                               Telepathy.pathToName(connPath),
-                                                               connPath);
-                connReq.GetRemote('Channels', Lang.bind(this,
-                    function(channels, err) {
-                        if (!channels)
-                            return;
-
-                        this._addChannels(accountPath, connPath, channels);
-                    }));
-
-                contactManager.addConnection(connPath);
-            }));
-    },
-
-    _addChannels: function(accountPath, connPath, channelDetailsList) {
-        for (let i = 0; i < channelDetailsList.length; i++) {
-            let [channelPath, props] = channelDetailsList[i];
-
-            // If this is being called from the startup code then it
-            // won't have passed through our filters, so we need to
-            // check the channel/targetHandle type ourselves.
-
-            let channelType = props[Tp.PROP_CHANNEL_CHANNEL_TYPE];
-            if (channelType != Tp.IFACE_CHANNEL_TYPE_TEXT)
-                continue;
-
-            let targetHandleType = props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE];
-            if (targetHandleType != Tp.HandleType.CONTACT &&
-                targetHandleType != Tp.HandleType.NONE)
-                continue;
-
-            let targetHandle = props[Tp.PROP_CHANNEL_TARGET_HANDLE];
-            let targetId = props[Tp.PROP_CHANNEL_TARGET_ID];
-
-            if (this._sources[connPath + ':' + targetHandle])
-                continue;
-
-            let source = new Source(accountPath, connPath, channelPath,
-                                    targetHandle, targetHandleType, targetId);
-            this._sources[connPath + ':' + targetHandle] = source;
-            source.connect('destroy', Lang.bind(this,
-                function() {
-                    delete this._sources[connPath + ':' + targetHandle];
-                }));
-        }
     },
 
     _presenceChanged: function(contactManager, connPath, handle,
