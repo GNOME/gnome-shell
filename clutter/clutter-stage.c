@@ -76,6 +76,8 @@
 
 #include "cogl/cogl.h"
 
+#include <math.h>
+
 G_DEFINE_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 
 #define CLUTTER_STAGE_GET_PRIVATE(obj) \
@@ -115,6 +117,8 @@ struct _ClutterStagePrivate
   ClutterColor        color;
   ClutterPerspective  perspective;
   CoglMatrix          projection;
+  CoglMatrix          inverse_projection;
+  CoglMatrix          view;
   float               viewport[4];
   ClutterFog          fog;
 
@@ -1019,65 +1023,11 @@ clutter_stage_real_apply_transform (ClutterActor *stage,
                                     CoglMatrix   *matrix)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (stage)->priv;
-  CoglMatrix perspective;
-  gfloat z_camera;
-  gfloat width, height;
 
-  /*
-   * In theory, we can compute the camera distance from screen as:
-   *
-   *   0.5 * tan (FOV)
-   *
-   * However, it's better to compute the z_camera from our projection
-   * matrix so that we get a 1:1 mapping at the screen distance. Consider
-   * the upper-left corner of the screen. It has object coordinates
-   * (0,0,0), so by the transform below, ends up with eye coordinate
-   *
-   *   x_eye = x_object / width - 0.5 = - 0.5
-   *   y_eye = (height - y_object) / width - 0.5 = 0.5
-   *   z_eye = z_object / width - z_camera = - z_camera
-   *
-   * From cogl_perspective(), we know that the projection matrix has
-   * the form:
-   *
-   *  (x, 0,  0, 0)
-   *  (0, y,  0, 0)
-   *  (0, 0,  c, d)
-   *  (0, 0, -1, 0)
-   *
-   * Applied to the above, we get clip coordinates of
-   *
-   *  x_clip = x * (- 0.5)
-   *  y_clip = y * 0.5
-   *  w_clip = - 1 * (- z_camera) = z_camera
-   *
-   * Dividing through by w to get normalized device coordinates, we
-   * have, x_nd = x * 0.5 / z_camera, y_nd = - y * 0.5 / z_camera.
-   * The upper left corner of the screen has normalized device coordinates,
-   * (-1, 1), so to have the correct 1:1 mapping, we have to have:
-   *
-   *   z_camera = 0.5 * x = 0.5 * y
-   *
-   * If x != y, then we have a non-uniform aspect ration, and a 1:1 mapping
-   * doesn't make sense.
-   */
-
-  cogl_matrix_init_identity (&perspective);
-  cogl_matrix_perspective (&perspective,
-                           priv->perspective.fovy,
-                           priv->perspective.aspect,
-                           priv->perspective.z_near,
-                           priv->perspective.z_far);
-
-  z_camera = 0.5f * perspective.xx;
-
-  clutter_actor_get_size (stage, &width, &height);
-
+  /* FIXME: we probably shouldn't be explicitly reseting the matrix
+   * here... */
   cogl_matrix_init_identity (matrix);
-  cogl_matrix_translate (matrix, -0.5f, -0.5f, -z_camera);
-  cogl_matrix_scale (matrix,
-                     1.0f / width, -1.0f / height, 1.0f / width);
-  cogl_matrix_translate (matrix, 0.0f, -1.0f * height, 0.0f);
+  cogl_matrix_multiply (matrix, matrix, &priv->view);
 }
 
 static void
@@ -1641,8 +1591,10 @@ clutter_stage_init (ClutterStage *self)
 
   priv->color = default_stage_color;
 
+  _clutter_stage_window_get_geometry (priv->impl, &geom);
+
   priv->perspective.fovy   = 60.0; /* 60 Degrees */
-  priv->perspective.aspect = 1.0;
+  priv->perspective.aspect = (float)geom.width / (float)geom.height;
   priv->perspective.z_near = 0.1;
   priv->perspective.z_far  = 100.0;
 
@@ -1652,6 +1604,17 @@ clutter_stage_init (ClutterStage *self)
                            priv->perspective.aspect,
                            priv->perspective.z_near,
                            priv->perspective.z_far);
+  cogl_matrix_get_inverse (&priv->projection,
+                           &priv->inverse_projection);
+  cogl_matrix_init_identity (&priv->view);
+  cogl_matrix_view_2d_in_perspective (&priv->view,
+                                      priv->perspective.fovy,
+                                      priv->perspective.aspect,
+                                      priv->perspective.z_near,
+                                      50, /* distance to 2d plane */
+                                      geom.width,
+                                      geom.height);
+
 
   /* depth cueing */
   priv->fog.z_near = 1.0;
@@ -1668,7 +1631,6 @@ clutter_stage_init (ClutterStage *self)
   g_signal_connect (self, "notify::min-height",
                     G_CALLBACK (clutter_stage_notify_min_size), NULL);
 
-  _clutter_stage_window_get_geometry (priv->impl, &geom);
   _clutter_stage_set_viewport (self, 0, 0, geom.width, geom.height);
 
   _clutter_stage_set_pick_buffer_valid (self, FALSE, CLUTTER_PICK_ALL);
@@ -1795,6 +1757,8 @@ clutter_stage_set_perspective (ClutterStage       *stage,
                            priv->perspective.aspect,
                            priv->perspective.z_near,
                            priv->perspective.z_far);
+  cogl_matrix_get_inverse (&priv->projection,
+                           &priv->inverse_projection);
 
   priv->dirty_projection = TRUE;
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
@@ -2746,6 +2710,8 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
 
   if (priv->dirty_viewport)
     {
+      ClutterPerspective perspective;
+
       CLUTTER_NOTE (PAINT,
                     "Setting up the viewport { w:%f, h:%f }",
                     priv->viewport[2], priv->viewport[3]);
@@ -2755,6 +2721,18 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
                          priv->viewport[2],
                          priv->viewport[3]);
 
+      perspective = priv->perspective;
+      perspective.aspect = priv->viewport[2] / priv->viewport[3];
+      clutter_stage_set_perspective (stage, &perspective);
+
+      cogl_matrix_init_identity (&priv->view);
+      cogl_matrix_view_2d_in_perspective (&priv->view,
+                                          perspective.fovy,
+                                          perspective.aspect,
+                                          perspective.z_near,
+                                          50, /* depth of 2d plane */
+                                          priv->viewport[2],
+                                          priv->viewport[3]);
 
       priv->dirty_viewport = FALSE;
     }
