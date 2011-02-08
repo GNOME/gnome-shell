@@ -15,20 +15,12 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Telepathy = imports.misc.telepathy;
 
-let contactManager;
 
 // See Notification.appendMessage
 const SCROLLBACK_IMMEDIATE_TIME = 60; // 1 minute
 const SCROLLBACK_RECENT_TIME = 15 * 60; // 15 minutes
 const SCROLLBACK_RECENT_LENGTH = 20;
 const SCROLLBACK_IDLE_LENGTH = 5;
-
-// The (non-chat) channel indicating the users whose presence
-// information we subscribe to
-let subscribedContactsChannel = {};
-subscribedContactsChannel[Tp.PROP_CHANNEL_CHANNEL_TYPE] = Tp.IFACE_CHANNEL_TYPE_CONTACT_LIST
-subscribedContactsChannel[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE] = Tp.HandleType.LIST;
-subscribedContactsChannel[Tp.PROP_CHANNEL_TARGET_ID] = 'subscribe';
 
 const NotificationDirection = {
     SENT: 'chat-sent',
@@ -52,8 +44,6 @@ Client.prototype = {
     _init : function() {
         this._accounts = {};
         this._sources = {};
-
-        contactManager = new ContactManager();
 
         // Set up a SimpleObserver, which will call _observeChannels whenever a
         // channel matching its filters is detected.
@@ -126,157 +116,6 @@ Client.prototype = {
         context.accept();
     }
 };
-
-function ContactManager() {
-    this._init();
-};
-
-ContactManager.prototype = {
-    _init: function() {
-        this._connections = {};
-        // Note that if we changed this to '/telepathy/avatars' then
-        // we would share cache files with empathy. But since this is
-        // not documented/guaranteed, it seems a little sketchy
-        this._cacheDir = GLib.get_user_cache_dir() + '/gnome-shell/avatars';
-    },
-
-    addConnection: function(connPath) {
-        let info = this._connections[connPath];
-        if (info)
-            return info;
-
-        info = {};
-
-        // Figure out the cache subdirectory for this connection by
-        // parsing the connection manager name (eg, 'gabble') and
-        // protocol name (eg, 'jabber') from the Connection's path.
-        // Telepathy requires the D-Bus path for a connection to have
-        // a specific form, and explicitly says that clients are
-        // allowed to parse it.
-        let match = connPath.match(/\/org\/freedesktop\/Telepathy\/Connection\/([^\/]*\/[^\/]*)\/.*/);
-        if (!match)
-            throw new Error('Could not parse connection path ' + connPath);
-
-        info.cacheDir = this._cacheDir + '/' + match[1];
-        GLib.mkdir_with_parents(info.cacheDir, 0x1c0); // 0x1c0 = octal 0700
-
-        // info.names[handle] is @handle's real name
-        // info.tokens[handle] is the token for @handle's avatar
-        info.names = {};
-        info.tokens = {};
-
-        // info.icons[handle] is an array of the icon actors currently
-        // being displayed for @handle. These will be updated
-        // automatically if @handle's avatar changes.
-        info.icons = {};
-
-        let connName = Telepathy.pathToName(connPath);
-
-        info.connectionAvatars = new Telepathy.ConnectionAvatars(DBus.session, connName, connPath);
-        info.updatedId = info.connectionAvatars.connect(
-            'AvatarUpdated', Lang.bind(this, this._avatarUpdated));
-        info.retrievedId = info.connectionAvatars.connect(
-            'AvatarRetrieved', Lang.bind(this, this._avatarRetrieved));
-
-        info.connectionContacts = new Telepathy.ConnectionContacts(DBus.session, connName, connPath);
-
-        info.connectionPresence = new Telepathy.ConnectionSimplePresence(DBus.session, connName, connPath);
-        info.presenceChangedId = info.connectionPresence.connect(
-            'PresencesChanged', Lang.bind(this, this._presencesChanged));
-
-        let conn = new Telepathy.Connection(DBus.session, connName, connPath);
-        info.statusChangedId = conn.connect('StatusChanged', Lang.bind(this,
-            function (status, reason) {
-                if (status == Tp.ConnectionStatus.DISCONNECTED)
-                    this._removeConnection(conn);
-            }));
-
-        let connReq = new Telepathy.ConnectionRequests(DBus.session,
-                                                       connName, connPath);
-        connReq.EnsureChannelRemote(subscribedContactsChannel, Lang.bind(this,
-            function (result, err) {
-                if (!result)
-                    return;
-
-                let [mine, channelPath, props] = result;
-                this._gotContactsChannel(connPath, channelPath, props);
-            }));
-
-        this._connections[connPath] = info;
-        return info;
-    },
-
-    _gotContactsChannel: function(connPath, channelPath, props) {
-        let info = this._connections[connPath];
-        if (!info)
-            return;
-
-        info.contactsGroup = new Telepathy.ChannelGroup(DBus.session,
-                                                        Telepathy.pathToName(connPath),
-                                                        channelPath);
-        info.contactsListChangedId =
-            info.contactsGroup.connect('MembersChanged', Lang.bind(this, this._contactsListChanged, info));
-
-        info.contactsGroup.GetRemote('Members', Lang.bind(this,
-            function(contacts, err) {
-                if (!contacts)
-                    return;
-
-                info.connectionContacts.GetContactAttributesRemote(
-                    contacts, [Tp.IFACE_CONNECTION_INTERFACE_ALIASING], false,
-                    Lang.bind(this, this._gotContactAttributes, info));
-            }));
-    },
-
-    _contactsListChanged: function(group, message, added, removed,
-                                   local_pending, remote_pending,
-                                   actor, reason, info) {
-        for (let i = 0; i < removed.length; i++)
-            delete info.names[removed[i]];
-
-        info.connectionContacts.GetContactAttributesRemote(
-            added, [Tp.IFACE_CONNECTION_INTERFACE_ALIASING], false,
-            Lang.bind(this, this._gotContactAttributes, info));
-    },
-
-    _gotContactAttributes: function(attrs, err, info) {
-        if (!attrs)
-            return;
-
-        for (let handle in attrs)
-            info.names[handle] = attrs[handle][Tp.TOKEN_CONNECTION_INTERFACE_ALIASING_ALIAS];
-    },
-
-    _presencesChanged: function(conn, presences, err) {
-        if (!presences)
-            return;
-
-        let info = this._connections[conn.getPath()];
-        if (!info)
-            return;
-
-        for (let handle in presences) {
-            let [type, status, message] = presences[handle];
-            this.emit('presence-changed', conn.getPath(), handle, type, message);
-        }
-    },
-
-    _removeConnection: function(conn) {
-        let info = this._connections[conn.getPath()];
-        if (!info)
-            return;
-
-        conn.disconnect(info.statusChangedId);
-        info.connectionAvatars.disconnect(info.updatedId);
-        info.connectionAvatars.disconnect(info.retrievedId);
-        info.connectionPresence.disconnect(info.presenceChangedId);
-        info.contactsGroup.disconnect(info.contactsListChangedId);
-
-        delete this._connections[conn.getPath()];
-    },
-};
-Signals.addSignalMethods(ContactManager.prototype);
-
 
 function Source(account, conn, channel, contact) {
     this._init(account, conn, channel, contact);
