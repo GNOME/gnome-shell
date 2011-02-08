@@ -133,7 +133,7 @@ struct _ClutterContainerIface
                           ClutterActor     *actor);
 
   void (* child_notify)  (ClutterContainer *container,
-                          ClutterActor     *actor,
+                          ClutterActor     *child,
                           GParamSpec       *pspec);
 };
 

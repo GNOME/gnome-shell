@@ -236,7 +236,7 @@ struct _ClutterActorClass
   void (* parent_set)           (ClutterActor          *actor,
                                  ClutterActor          *old_parent);
 
-  void (* destroy)              (ClutterActor          *actor);
+  void (* destroy)              (ClutterActor          *self);
   void (* pick)                 (ClutterActor          *actor,
                                  const ClutterColor    *color);
 
@@ -284,7 +284,7 @@ struct _ClutterActorClass
   void     (* key_focus_in)         (ClutterActor         *actor);
   void     (* key_focus_out)        (ClutterActor         *actor);
 
-  void     (* queue_relayout)       (ClutterActor         *actor);
+  void     (* queue_relayout)       (ClutterActor         *self);
 
   /* accessibility support */
   AtkObject * (* get_accessible)    (ClutterActor         *self);
