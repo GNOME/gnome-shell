@@ -60,7 +60,7 @@ typedef struct _ClutterStageWaylandWaylandBuffer
   struct wl_buffer *wayland_buffer;
   cairo_region_t *dirty_region;
   CoglHandle tex;
-  guint8 type;
+  guint type;
 } ClutterStageWaylandWaylandBuffer;
 
 typedef struct _ClutterStageWaylandWaylandBufferDRM
@@ -73,8 +73,10 @@ typedef struct _ClutterStageWaylandWaylandBufferDRM
 typedef struct _ClutterStageWaylandWaylandBufferSHM
 {
   ClutterStageWaylandWaylandBuffer buffer;
+  CoglPixelFormat format;
   guint8 *data;
   size_t size;
+  unsigned int stride;
 } ClutterStageWaylandWaylandBufferSHM;
 
 struct _ClutterStageWayland

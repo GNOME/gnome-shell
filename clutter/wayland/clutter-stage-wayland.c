@@ -95,9 +95,9 @@ wayland_create_shm_buffer (ClutterBackendWayland *backend_wayland,
 {
   ClutterStageWaylandWaylandBufferSHM *buffer;
   struct wl_visual *visual;
+  CoglHandle tex;
   CoglTextureFlags flags = COGL_TEXTURE_NONE; /* XXX: tweak flags? */
   CoglPixelFormat format = VISUAL_ARGB_PRE;
-  unsigned int stride;
   int fd;
   gchar tmp[] = "/tmp/clutter-wayland-shm-XXXXXX";
 
@@ -105,10 +105,13 @@ wayland_create_shm_buffer (ClutterBackendWayland *backend_wayland,
 
   buffer->buffer.type = BUFFER_TYPE_SHM;
 
-  /* XXX: can we query Cogl for what the stride should
-          be for a given format and width? */
-  stride = geom->width;
-  buffer->size = stride * geom->height;
+  tex = cogl_texture_new_with_size ((unsigned int)geom->width,
+			       (unsigned int)geom->height,
+			       flags, format);
+  buffer->format = format;
+  buffer->stride = cogl_texture_get_rowstride(tex);
+  buffer->size = cogl_texture_get_data(tex, format, buffer->stride, NULL);
+  buffer->buffer.tex = tex;
 
   fd = g_mkstemp_full(tmp, O_RDWR, 0600);
   ftruncate(fd, buffer->size);
@@ -117,19 +120,14 @@ wayland_create_shm_buffer (ClutterBackendWayland *backend_wayland,
 
   g_unlink(tmp);
 
-  buffer->buffer.tex = cogl_texture_new_from_data ((unsigned int)geom->width,
-					       (unsigned int)geom->height,
-					       flags, format,
-					       COGL_PIXEL_FORMAT_ANY,
-					       stride, buffer->data);
-
   visual = get_visual (backend_wayland->wayland_display, format);
+
   buffer->buffer.wayland_buffer =
     wl_shm_create_buffer (backend_wayland->wayland_shm,
                           fd,
                           geom->width,
                           geom->height,
-                          stride, visual);
+                          buffer->stride, visual);
   close(fd);
   return &buffer->buffer;
 }
@@ -466,6 +464,26 @@ wayland_frame_callback (void *data, uint32_t _time)
 }
 
 static void
+wayland_damage_buffer(ClutterStageWaylandWaylandBuffer *generic_buffer)
+{
+  ClutterStageWaylandWaylandBufferSHM *buffer;
+  int size;
+
+  if (generic_buffer->type != BUFFER_TYPE_SHM)
+    return;
+
+  buffer = (ClutterStageWaylandWaylandBufferSHM *)generic_buffer;
+
+  size = cogl_texture_get_data(buffer->buffer.tex, buffer->format,
+                               buffer->stride, NULL);
+  g_assert(size == (int)buffer->size);
+
+  (void) cogl_texture_get_data(buffer->buffer.tex, buffer->format,
+                               buffer->stride, buffer->data);
+
+}
+
+static void
 wayland_swap_buffers (ClutterStageWayland *stage_wayland)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
@@ -475,6 +493,8 @@ wayland_swap_buffers (ClutterStageWayland *stage_wayland)
   buffer = stage_wayland->front_buffer;
   stage_wayland->front_buffer = stage_wayland->back_buffer;
   stage_wayland->back_buffer = buffer;
+
+  wayland_damage_buffer(stage_wayland->front_buffer);
 
   wl_surface_attach (stage_wayland->wayland_surface,
                      stage_wayland->front_buffer->wayland_buffer,
