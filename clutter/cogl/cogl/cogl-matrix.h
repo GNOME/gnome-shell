@@ -258,6 +258,86 @@ cogl_matrix_ortho (CoglMatrix *matrix,
                    float       z_near,
                    float       z_far);
 
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
+#define cogl_matrix_view_2d_in_frustum cogl_matrix_view_2d_in_frustum_EXP
+#define cogl_matrix_view_2d_in_perspective \
+  cogl_matrix_view_2d_in_perspective_EXP
+
+/**
+ * cogl_matrix_view_2d_in_frustum:
+ * @matrix: A 4x4 transformation matrix
+ * @left: coord of left vertical clipping plane
+ * @right: coord of right vertical clipping plane
+ * @bottom: coord of bottom horizontal clipping plane
+ * @top: coord of top horizontal clipping plane
+ * @z_near: The distance to the near clip plane. Never pass 0 and always pass
+ *   a positive number.
+ * @z_2d: The distance to the 2D plane. (Should always be positive and
+ *   be between @z_near and the z_far value that was passed to
+ *   cogl_matrix_frustum())
+ * @width_2d: The width of the 2D coordinate system
+ * @height_2d: The height of the 2D coordinate system
+ *
+ * Multiplies @matrix by a view transform that maps the 2D coordinates
+ * (0,0) top left and (@width_2d,@height_2d) bottom right the full viewport
+ * size. Geometry at a depth of 0 will now lie on this 2D plane.
+ *
+ * Note: this doesn't multiply the matrix by any projection matrix,
+ * but it assumes you have a perspective projection as defined by
+ * passing the corresponding arguments to cogl_matrix_frustum().
+
+ * Toolkits such as Clutter that mix 2D and 3D drawing can use this to
+ * create a 2D coordinate system within a 3D perspective projected
+ * view frustum.
+ */
+void
+cogl_matrix_view_2d_in_frustum (CoglMatrix *matrix,
+                                float left,
+                                float right,
+                                float bottom,
+                                float top,
+                                float z_near,
+                                float z_2d,
+                                float width_2d,
+                                float height_2d);
+
+/**
+ * cogl_matrix_view_2d_in_perspective:
+ * @fov_y: A field of view angle for the Y axis
+ * @aspect: The ratio of width to height determining the field of view angle
+ *   for the x axis.
+ * @z_near: The distance to the near clip plane. Never pass 0 and always pass
+ *   a positive number.
+ * @z_2d: The distance to the 2D plane. (Should always be positive and
+ *   be between @z_near and the z_far value that was passed to
+ *   cogl_matrix_frustum())
+ * @width_2d: The width of the 2D coordinate system
+ * @height_2d: The height of the 2D coordinate system
+ *
+ * Multiplies @matrix by a view transform that maps the 2D coordinates
+ * (0,0) top left and (@width_2d,@height_2d) bottom right the full viewport
+ * size. Geometry at a depth of 0 will now lie on this 2D plane.
+ *
+ * Note: this doesn't multiply the matrix by any projection matrix,
+ * but it assumes you have a perspective projection as defined by
+ * passing the corresponding arguments to cogl_matrix_perspective().
+ *
+ * Toolkits such as Clutter that mix 2D and 3D drawing can use this to
+ * create a 2D coordinate system within a 3D perspective projected
+ * view frustum.
+
+ */
+void
+cogl_matrix_view_2d_in_perspective (CoglMatrix *matrix,
+                                    float fov_y,
+                                    float aspect,
+                                    float z_near,
+                                    float z_2d,
+                                    float width_2d,
+                                    float height_2d);
+
+#endif
+
 /**
  * cogl_matrix_init_from_array:
  * @matrix: A 4x4 transformation matrix

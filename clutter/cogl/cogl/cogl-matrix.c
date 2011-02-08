@@ -305,6 +305,63 @@ cogl_matrix_ortho (CoglMatrix *matrix,
 }
 
 void
+cogl_matrix_view_2d_in_frustum (CoglMatrix *matrix,
+                                float left,
+                                float right,
+                                float bottom,
+                                float top,
+                                float z_near,
+                                float z_2d,
+                                float width_2d,
+                                float height_2d)
+{
+  float left_2d_plane = left / z_near * z_2d;
+  float right_2d_plane = right / z_near * z_2d;
+  float bottom_2d_plane = bottom / z_near * z_2d;
+  float top_2d_plane = top / z_near * z_2d;
+
+  float width_2d_start = right_2d_plane - left_2d_plane;
+  float height_2d_start = top_2d_plane - bottom_2d_plane;
+
+  /* Factors to scale from framebuffer geometry to frustum
+   * cross-section geometry. */
+  float width_scale = width_2d_start / width_2d;
+  float height_scale = height_2d_start / height_2d;
+
+  cogl_matrix_translate (matrix,
+                         left_2d_plane, top_2d_plane, -z_2d);
+
+  cogl_matrix_scale (matrix, width_scale, -height_scale, width_scale);
+}
+
+/* Assuming a symmetric perspective matrix is being used for your
+ * projective transform this convenience function lets you compose a
+ * view transform such that geometry on the z=0 plane will map to
+ * screen coordinates with a top left origin of (0,0) and with the
+ * given width and height.
+ */
+void
+cogl_matrix_view_2d_in_perspective (CoglMatrix *matrix,
+                                    float fov_y,
+                                    float aspect,
+                                    float z_near,
+                                    float z_2d,
+                                    float width_2d,
+                                    float height_2d)
+{
+  float top = z_near * tan (fov_y * G_PI / 360.0);
+  cogl_matrix_view_2d_in_frustum (matrix,
+                                  -top * aspect,
+                                  top * aspect,
+                                  -top,
+                                  top,
+                                  z_near,
+                                  z_2d,
+                                  width_2d,
+                                  height_2d);
+}
+
+void
 cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array)
 {
 #ifndef USE_MESA_MATRIX_API
