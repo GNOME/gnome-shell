@@ -393,6 +393,9 @@ get_app_from_window_pid (ShellWindowTracker  *tracker,
 
   pid = meta_window_get_pid (window);
 
+  if (pid == -1)
+    return NULL;
+
   return g_hash_table_lookup (tracker->launched_pid_to_app, GINT_TO_POINTER (pid));
 }
 
@@ -844,18 +847,18 @@ _shell_window_tracker_add_child_process_app (ShellWindowTracker *tracker,
                                              GPid                pid,
                                              ShellApp           *app)
 {
-  int pid_int = (int) pid;
+  gpointer pid_ptr = GINT_TO_POINTER((int)pid);
 
   if (g_hash_table_lookup (tracker->launched_pid_to_app,
-                           &pid_int))
+                           &pid_ptr))
     return;
 
   g_hash_table_insert (tracker->launched_pid_to_app,
-                       GINT_TO_POINTER (pid_int),
+                       pid_ptr,
                        g_object_ref (app));
   g_child_watch_add (pid, on_child_exited, NULL);
   /* TODO: rescan unassociated windows
-   * Very unlikely in practice that the launched app gets ahead of us
+   * Unlikely in practice that the launched app gets ahead of us
    * enough to map an X window before we get scheduled after the fork(),
    * but adding this note for future reference.
    */

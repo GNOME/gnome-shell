@@ -1303,14 +1303,12 @@ _gather_pid_callback (GDesktopAppInfo   *gapp,
                       gpointer           data)
 {
   ShellApp *app;
-  ShellAppSystem *appsys;
   ShellWindowTracker *tracker;
 
   g_return_if_fail (data != NULL);
 
   app = SHELL_APP (data);
   tracker = shell_window_tracker_get_default ();
-  appsys = shell_app_system_get_default ();
 
   _shell_window_tracker_add_child_process_app (tracker,
                                                pid,
@@ -1389,7 +1387,7 @@ shell_app_info_launch_full (ShellAppInfo *info,
                                         shell_app_info_get_id (info));
 
   ret = g_desktop_app_info_launch_uris_as_manager (gapp, uris,
-                                                   (GAppLaunchContext*) context,
+                                                   G_APP_LAUNCH_CONTEXT (context),
                                                    G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
                                                    NULL, NULL,
                                                    _gather_pid_callback, shell_app,
