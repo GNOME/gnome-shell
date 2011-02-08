@@ -505,7 +505,7 @@ void
 cogl_matrix_transform_points (const CoglMatrix *matrix,
                               int n_components,
                               size_t stride_in,
-                              void *points_in,
+                              const void *points_in,
                               size_t stride_out,
                               void *points_out,
                               int n_points);
@@ -560,7 +560,7 @@ void
 cogl_matrix_project_points (const CoglMatrix *matrix,
                             int n_components,
                             size_t stride_in,
-                            void *points_in,
+                            const void *points_in,
                             size_t stride_out,
                             void *points_out,
                             int n_points);

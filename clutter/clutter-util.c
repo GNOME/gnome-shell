@@ -81,6 +81,14 @@ _clutter_gettext (const gchar *str)
 #define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - (((((y) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
 #define MTX_GL_SCALE_Z(z,w,v1,v2) (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
 
+typedef struct _ClutterVertex4
+{
+  float x;
+  float y;
+  float z;
+  float w;
+} ClutterVertex4;
+
 void
 _clutter_util_fully_transform_vertices (const CoglMatrix *modelview,
                                         const CoglMatrix *projection,
@@ -90,31 +98,53 @@ _clutter_util_fully_transform_vertices (const CoglMatrix *modelview,
                                         int n_vertices)
 {
   CoglMatrix modelview_projection;
+  ClutterVertex4 *vertices_tmp;
   int i;
 
-  /* XXX: we should find a way to cache this per actor */
-  cogl_matrix_multiply (&modelview_projection,
-                        projection,
-                        modelview);
+  vertices_tmp = g_alloca (sizeof (ClutterVertex4) * n_vertices);
+
+  if (n_vertices >= 4)
+    {
+      /* XXX: we should find a way to cache this per actor */
+      cogl_matrix_multiply (&modelview_projection,
+                            projection,
+                            modelview);
+      cogl_matrix_project_points (&modelview_projection,
+                                  3,
+                                  sizeof (ClutterVertex),
+                                  vertices_in,
+                                  sizeof (ClutterVertex4),
+                                  vertices_tmp,
+                                  n_vertices);
+    }
+  else
+    {
+      cogl_matrix_transform_points (modelview,
+                                    3,
+                                    sizeof (ClutterVertex),
+                                    vertices_in,
+                                    sizeof (ClutterVertex4),
+                                    vertices_tmp,
+                                    n_vertices);
+
+      cogl_matrix_project_points (projection,
+                                  3,
+                                  sizeof (ClutterVertex4),
+                                  vertices_tmp,
+                                  sizeof (ClutterVertex4),
+                                  vertices_tmp,
+                                  n_vertices);
+    }
 
   for (i = 0; i < n_vertices; i++)
     {
-      const ClutterVertex *vertex_in = &vertices_in[i];
+      ClutterVertex4 vertex_tmp = vertices_tmp[i];
       ClutterVertex *vertex_out = &vertices_out[i];
-      gfloat x, y, z, w;
-
-      x = vertex_in->x;
-      y = vertex_in->y;
-      z = vertex_in->z;
-      w = 1.0;
-
-      /* Transform the point using the modelview matrix */
-      cogl_matrix_transform_point (&modelview_projection, &x, &y, &z, &w);
-
       /* Finally translate from OpenGL coords to window coords */
-      vertex_out->x = MTX_GL_SCALE_X (x, w, viewport[2], viewport[0]);
-      vertex_out->y = MTX_GL_SCALE_Y (y, w, viewport[3], viewport[1]);
-      vertex_out->z = MTX_GL_SCALE_Z (z, w, viewport[2], viewport[0]);
+      vertex_out->x = MTX_GL_SCALE_X (vertex_tmp.x, vertex_tmp.w,
+                                      viewport[2], viewport[0]);
+      vertex_out->y = MTX_GL_SCALE_Y (vertex_tmp.y, vertex_tmp.w,
+                                      viewport[3], viewport[1]);
     }
 }
 
