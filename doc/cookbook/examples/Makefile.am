@@ -11,6 +11,9 @@ noinst_PROGRAMS = \
 	animations-moving-animator		\
 	animations-moving-implicit		\
 	animations-moving-state			\
+	animations-path			\
+	animations-path-circle			\
+	animations-path-easing			\
 	animations-reuse			\
 	animations-rotating			\
 	animations-scaling			\
@@ -71,6 +74,9 @@ animations_looping_state_SOURCES           = animations-looping-state.c
 animations_moving_animator_SOURCES         = animations-moving-animator.c
 animations_moving_implicit_SOURCES         = animations-moving-implicit.c
 animations_moving_state_SOURCES            = animations-moving-state.c
+animations_path_SOURCES                    = animations-path.c
+animations_path_circle_SOURCES             = animations-path-circle.c
+animations_path_easing_SOURCES             = animations-path-easing.c
 animations_reuse_SOURCES                   = animations-reuse.c
 animations_rotating_SOURCES                = animations-rotating.c
 animations_scaling_SOURCES                 = animations-scaling.c

@@ -49,6 +49,7 @@ IMAGE_FILES = \
 VIDEO_FILES = \
 	$(srcdir)/videos/animations-fading-out.ogv \
 	$(srcdir)/videos/animations-fading-in-then-out.ogv \
+	$(srcdir)/videos/animations-path.ogv \
 	$(srcdir)/videos/animations-rotating-x-minus-45.ogv \
 	$(srcdir)/videos/animations-rotating-y-45.ogv \
 	$(srcdir)/videos/animations-rotating-z-90.ogv \
