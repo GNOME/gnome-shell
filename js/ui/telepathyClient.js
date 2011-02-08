@@ -4,6 +4,7 @@ const DBus = imports.dbus;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 const Tp = imports.gi.TelepathyGLib;
@@ -33,6 +34,10 @@ const NotificationDirection = {
     SENT: 'chat-sent',
     RECEIVED: 'chat-received'
 };
+
+let contactFeatures = [Tp.ContactFeature.ALIAS,
+                        Tp.ContactFeature.AVATAR_DATA,
+                        Tp.ContactFeature.PRESENCE];
 
 // This is GNOME Shell's implementation of the Telepathy 'Client'
 // interface. Specifically, the shell is a Telepathy 'Observer', which
@@ -97,6 +102,25 @@ Client.prototype = {
                     delete this._sources[connPath + ':' + targetHandle];
                 }));
 
+            /* Request a TpContact */
+            Shell.get_tp_contacts(conn, 1, [targetHandle],
+                    contactFeatures.length, contactFeatures,
+                    Lang.bind(this,  function (connection, contacts, failed) {
+                        if (contacts.length < 1)
+                            return;
+
+                        /* We got the TpContact */
+                        if (this._sources[connPath + ':' + targetHandle])
+                            return;
+
+                        let source = new Source(account, conn, chan, contacts[0]);
+
+                        this._sources[connPath + ':' + targetHandle] = source;
+                        source.connect('destroy', Lang.bind(this,
+                            function() {
+                                delete this._sources[connPath + ':' + targetHandle];
+                            }));
+                    }));
         }
 
         // Allow dbus method to return
@@ -372,38 +396,26 @@ ContactManager.prototype = {
 Signals.addSignalMethods(ContactManager.prototype);
 
 
-function Source(account, conn, channel) {
-    this._init(account, conn, channel);
+function Source(account, conn, channel, contact) {
+    this._init(account, conn, channel, contact);
 }
 
 Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
-    _init: function(account, conn, channel) {
-        // FIXME: use chan.get_handle()
-        let props = channel.borrow_immutable_properties();
-        this._targetHandle = props[Tp.PROP_CHANNEL_TARGET_HANDLE];
-        this._targetHandleType = props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE];
-        this._targetId = channel.get_identifier();
-
-        MessageTray.Source.prototype._init.call(this, this._targetId);
+    _init: function(account, conn, channel, contact) {
+        MessageTray.Source.prototype._init.call(this, channel.get_identifier());
 
         this.isChat = true;
 
         this._account = account;
+        this._contact = contact;
 
         this._conn = conn;
         this._channel = channel;
         this._closedId = this._channel.connect('invalidated', Lang.bind(this, this._channelClosed));
 
-        if (this._targetHandleType == Tp.HandleType.CONTACT) {
-            let aliasing = new Telepathy.ConnectionAliasing(DBus.session, conn.get_bus_name(), conn.get_object_path());
-            aliasing.RequestAliasesRemote([this._targetHandle], Lang.bind(this,
-                function (aliases, err) {
-                    if (aliases && aliases.length)
-                        this.title = aliases[0];
-                }));
-        }
+        this._updateAlias();
 
         this._notification = new Notification(this);
         this._notification.setUrgency(MessageTray.Urgency.HIGH);
@@ -419,6 +431,12 @@ Source.prototype = {
         this._channelText.ListPendingMessagesRemote(false, Lang.bind(this, this._gotPendingMessages));
 
         this._setSummaryIcon(this.createNotificationIcon());
+
+        this._notifyAliasId = this._contact.connect('notify::alias', Lang.bind(this, this._updateAlias));
+    },
+
+    _updateAlias: function() {
+        this.title = this._contact.get_alias();
     },
 
     createNotificationIcon: function() {
@@ -448,6 +466,8 @@ Source.prototype = {
         this._channel.disconnect(this._closedId);
         this._channelText.disconnect(this._receivedId);
         this._channelText.disconnect(this._sentId);
+
+        this._contact.disconnect(this._notifyAliasId);
         this.destroy();
     },
 
