@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-03 17:35+0200\n"
+"POT-Creation-Date: 2011-02-09 01:09+0200\n"
 "PO-Revision-Date: 2011-02-03 17:35+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -297,15 +297,15 @@ msgstr "التطبيقات"
 msgid "PREFERENCES"
 msgstr "التفضيلات"
 
-#: ../js/ui/appDisplay.js:572
+#: ../js/ui/appDisplay.js:574
 msgid "New Window"
 msgstr "نافذة جديدة"
 
-#: ../js/ui/appDisplay.js:576
+#: ../js/ui/appDisplay.js:578
 msgid "Remove from Favorites"
 msgstr "أزِل من المفضّلة"
 
-#: ../js/ui/appDisplay.js:577
+#: ../js/ui/appDisplay.js:579
 msgid "Add to Favorites"
 msgstr "أضِف إلى المفضّلة"
 
@@ -627,7 +627,7 @@ msgstr "اعرض المصدر"
 msgid "Web Page"
 msgstr "صفحة الوب"
 
-#: ../js/ui/messageTray.js:1809
+#: ../js/ui/messageTray.js:1835
 msgid "System Information"
 msgstr "معلومات النظام"
 
@@ -677,13 +677,21 @@ msgstr "الأماكن والأجهزة"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:33
+#: ../js/ui/popupMenu.js:512
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:209
 msgid "Please enter a command:"
 msgstr "من فضلك اكتب أمرا:"
+
+#: ../js/ui/searchDisplay.js:295
+msgid "Searching..."
+msgstr "يبحث..."
+
+#: ../js/ui/searchDisplay.js:309
+msgid "No matching results."
+msgstr "لا نتائج مطابقة."
 
 #: ../js/ui/statusMenu.js:102
 msgid "Available"
@@ -713,11 +721,13 @@ msgstr "بدّل المستخدم"
 msgid "Log Out..."
 msgstr "اخرج..."
 
-#: ../js/ui/statusMenu.js:142
-msgid "Suspend..."
-msgstr "علّق..."
-
-#: ../js/ui/statusMenu.js:146
+#. This is temporarily removed, see
+#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
+#. for details.
+#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
+#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+#. this.menu.addMenuItem(item);
+#: ../js/ui/statusMenu.js:149
 msgid "Shut Down..."
 msgstr "أطفئ..."
 
@@ -981,7 +991,7 @@ msgstr "لوحة"
 msgid "Computer"
 msgstr "حاسوب"
 
-#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1012
+#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
 msgid "Unknown"
 msgstr "مجهول"
 
@@ -1074,11 +1084,11 @@ msgstr[5] "%u مدخل"
 msgid "System Sounds"
 msgstr "أصوات النظام"
 
-#: ../src/shell-global.c:1365
+#: ../src/shell-global.c:1363
 msgid "Less than a minute ago"
 msgstr "منذ أقل من دقيقة"
 
-#: ../src/shell-global.c:1369
+#: ../src/shell-global.c:1367
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -1089,7 +1099,7 @@ msgstr[3] "منذ %d دقائق"
 msgstr[4] "منذ %d دقيقة"
 msgstr[5] "منذ %d دقيقة"
 
-#: ../src/shell-global.c:1374
+#: ../src/shell-global.c:1372
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -1100,7 +1110,7 @@ msgstr[3] "منذ %d ساعات"
 msgstr[4] "منذ %d ساعة"
 msgstr[5] "منذ %d ساعة"
 
-#: ../src/shell-global.c:1379
+#: ../src/shell-global.c:1377
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -1111,7 +1121,7 @@ msgstr[3] "منذ %d أيام"
 msgstr[4] "منذ %d يوما"
 msgstr[5] "منذ %d يوم"
 
-#: ../src/shell-global.c:1384
+#: ../src/shell-global.c:1382
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1146,6 +1156,9 @@ msgstr "ابحث"
 msgid "%1$s: %2$s"
 msgstr "‏%1$s:‏ %2$s"
 
+#~ msgid "Suspend..."
+#~ msgstr "علّق..."
+
 #~ msgid "Clock"
 #~ msgstr "الساعة"
 
@@ -1178,12 +1191,6 @@ msgstr "‏%1$s:‏ %2$s"
 
 #~ msgid "Find"
 #~ msgstr "ابحث"
-
-#~ msgid "Searching..."
-#~ msgstr "يبحث..."
-
-#~ msgid "No matching results."
-#~ msgstr "لا نتائج مطابقة."
 
 #~ msgid "Preferences"
 #~ msgstr "التفضيلات"
