@@ -337,12 +337,23 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
+#if defined(HAVE_COGL_GL)
+#define _COGL_RENDERABLE_BIT EGL_OPENGL_BIT
+#elif defined(HAVE_COGL_GLES2)
+#define _COGL_GLES_VERSION 2
+#define _COGL_RENDERABLE_BIT EGL_OPENGL_ES2_BIT
+#elif defined(HAVE_COGL_GLES)
+#define _COGL_GLES_VERSION 1
+#define _COGL_RENDERABLE_BIT EGL_OPENGL_ES_BIT
+#endif
+
 static gboolean
 make_dummy_surface (ClutterBackendWayland *backend_wayland)
 {
   static const EGLint attrs[] = {
     EGL_WIDTH, 1,
     EGL_HEIGHT, 1,
+    EGL_RENDERABLE_TYPE, _COGL_RENDERABLE_BIT,
     EGL_NONE };
   EGLint num_configs;
 
@@ -361,12 +372,6 @@ make_dummy_surface (ClutterBackendWayland *backend_wayland)
 
   return TRUE;
 }
-
-#if defined(HAVE_COGL_GLES2)
-#define _COGL_GLES_VERSION 2
-#elif defined(HAVE_COGL_GLES)
-#define _COGL_GLES_VERSION 1
-#endif
 
 static gboolean
 try_create_context (ClutterBackend  *backend,
