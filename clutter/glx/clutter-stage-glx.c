@@ -577,6 +577,13 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
                                             copy_area.width,
                                             copy_area.height);
       CLUTTER_TIMER_STOP (_clutter_uprof_context, blit_sub_buffer_timer);
+
+      /* NB: unlike glXSwapBuffers, glXCopySubBuffer and
+       * glBlitFramebuffer don't issue an implicit glFlush() so we
+       * have to flush ourselves if we want the request to complete in
+       * finite amount of time since otherwise the driver can batch
+       * the command indefinitely. */
+      glFlush ();
     }
   else
     {
