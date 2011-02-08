@@ -54,7 +54,6 @@ Client.prototype = {
         this._sources = {};
 
         contactManager = new ContactManager();
-        contactManager.connect('presence-changed', Lang.bind(this, this._presenceChanged));
 
         // Set up a SimpleObserver, which will call _observeChannels whenever a
         // channel matching its filters is detected.
@@ -125,15 +124,6 @@ Client.prototype = {
 
         // Allow dbus method to return
         context.accept();
-    },
-
-    _presenceChanged: function(contactManager, connPath, handle,
-                               type, message) {
-        let source = this._sources[connPath + ':' + handle];
-        if (!source)
-            return;
-
-        source.setPresence(type, message);
     }
 };
 
@@ -312,9 +302,7 @@ Source.prototype = {
         this._notification = new Notification(this);
         this._notification.setUrgency(MessageTray.Urgency.HIGH);
 
-        // Since we only create sources when receiving a message, this
-        // is a plausible default
-        this._presence = Tp.ConnectionPresenceType.AVAILABLE;
+        this._presence = contact.get_presence_type();
 
         this._channelText = new Telepathy.ChannelText(DBus.session, conn.get_bus_name(), channel.get_object_path());
         this._sentId = this._channelText.connect('Sent', Lang.bind(this, this._messageSent));
@@ -326,6 +314,7 @@ Source.prototype = {
 
         this._notifyAliasId = this._contact.connect('notify::alias', Lang.bind(this, this._updateAlias));
         this._notifyAvatarId = this._contact.connect('notify::avatar-file', Lang.bind(this, this._updateAvatarIcon));
+        this._presenceChangedId = this._contact.connect('presence-changed', Lang.bind(this, this._presenceChanged));
     },
 
     _updateAlias: function() {
@@ -380,6 +369,7 @@ Source.prototype = {
 
         this._contact.disconnect(this._notifyAliasId);
         this._contact.disconnect(this._notifyAvatarId);
+        this._contact.disconnect(this._presenceChangedId);
         this.destroy();
     },
 
@@ -406,8 +396,11 @@ Source.prototype = {
         this._channelText.SendRemote(Tp.ChannelTextMessageType.NORMAL, text);
     },
 
-    setPresence: function(presence, message) {
+    _presenceChanged: function (contact, presence, type, status, message) {
         let msg, shouldNotify, title;
+
+        if (this._presence == presence)
+          return;
 
         title = GLib.markup_escape_text(this.title, -1);
 
