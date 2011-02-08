@@ -182,16 +182,80 @@ display_handle_global (struct wl_display *display,
 }
 
 static gboolean
+try_get_display (ClutterBackendWayland *backend_wayland, GError **error)
+{
+  EGLDisplay edpy = EGL_NO_DISPLAY;
+  int drm_fd;
+
+  drm_fd = open (backend_wayland->device_name, O_RDWR);
+
+  backend_wayland->get_drm_display =
+    (PFNEGLGETDRMDISPLAYMESA) eglGetProcAddress ("eglGetDRMDisplayMESA");
+
+  if (backend_wayland->get_drm_display != NULL && drm_fd >= 0)
+     edpy = backend_wayland->get_drm_display (drm_fd);
+
+  if (edpy == EGL_NO_DISPLAY)
+      edpy = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+
+  if (edpy == EGL_NO_DISPLAY)
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+		   CLUTTER_INIT_ERROR_BACKEND,
+		   "Failed to open EGLDisplay");
+      return FALSE;
+    }
+
+  backend_wayland->edpy   = edpy;
+  backend_wayland->drm_fd = drm_fd;
+
+  return TRUE;
+}
+
+static gboolean
 try_enable_drm (ClutterBackendWayland *backend_wayland, GError **error)
 {
   drm_magic_t magic;
+  const gchar *exts, *glexts;
 
-  backend_wayland->drm_fd = open (backend_wayland->device_name, O_RDWR);
   if (backend_wayland->drm_fd < 0)
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
 		   CLUTTER_INIT_ERROR_BACKEND,
 		   "Failed to open drm device");
+      return FALSE;
+    }
+
+  glexts = glGetString(GL_EXTENSIONS);
+  exts = eglQueryString (backend_wayland->edpy, EGL_EXTENSIONS);
+
+  if (!_cogl_check_extension ("EGL_KHR_image_base", exts) ||
+      !_cogl_check_extension ("EGL_MESA_drm_image", exts) ||
+      !_cogl_check_extension ("GL_OES_EGL_image", glexts))
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+		   CLUTTER_INIT_ERROR_BACKEND,
+		   "Missing EGL extensions");
+      return FALSE;
+    }
+
+  backend_wayland->create_drm_image =
+    (PFNEGLCREATEDRMIMAGEMESA) eglGetProcAddress ("eglCreateDRMImageMESA");
+  backend_wayland->destroy_image =
+    (PFNEGLDESTROYIMAGEKHRPROC) eglGetProcAddress ("eglDestroyImageKHR");
+  backend_wayland->export_drm_image =
+    (PFNEGLEXPORTDRMIMAGEMESA) eglGetProcAddress ("eglExportDRMImageMESA");
+  backend_wayland->image_target_texture_2d =
+    (PFNGLEGLIMAGETARGETTEXTURE2DOESPROC) eglGetProcAddress ("glEGLImageTargetTexture2DOES");
+
+  if (backend_wayland->create_drm_image == NULL ||
+      backend_wayland->destroy_image == NULL ||
+      backend_wayland->export_drm_image == NULL ||
+      backend_wayland->image_target_texture_2d == NULL)
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+		   CLUTTER_INIT_ERROR_BACKEND,
+		   "Missing EGL extensions");
       return FALSE;
     }
 
@@ -207,32 +271,6 @@ try_enable_drm (ClutterBackendWayland *backend_wayland, GError **error)
   wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_WRITABLE);
   while (!backend_wayland->authenticated)
     wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_READABLE);
-
-  backend_wayland->get_drm_display =
-    (PFNEGLGETDRMDISPLAYMESA) eglGetProcAddress ("eglGetDRMDisplayMESA");
-  backend_wayland->create_drm_image =
-    (PFNEGLCREATEDRMIMAGEMESA) eglGetProcAddress ("eglCreateDRMImageMESA");
-  backend_wayland->destroy_image =
-    (PFNEGLDESTROYIMAGEKHRPROC) eglGetProcAddress ("eglDestroyImageKHR");
-  backend_wayland->export_drm_image =
-    (PFNEGLEXPORTDRMIMAGEMESA) eglGetProcAddress ("eglExportDRMImageMESA");
-  backend_wayland->image_target_texture_2d =
-    (PFNGLEGLIMAGETARGETTEXTURE2DOESPROC) eglGetProcAddress ("glEGLImageTargetTexture2DOES");
-
-  if (backend_wayland->get_drm_display == NULL ||
-      backend_wayland->create_drm_image == NULL ||
-      backend_wayland->destroy_image == NULL ||
-      backend_wayland->export_drm_image == NULL ||
-      backend_wayland->image_target_texture_2d == NULL)
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Missing EGL extensions");
-      return FALSE;
-    }
-
-  backend_wayland->edpy =
-    backend_wayland->get_drm_display (backend_wayland->drm_fd);
 
   return TRUE;
 };
@@ -268,16 +306,8 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
   /* Process connection events. */
   wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_READABLE);
 
-  backend_wayland->drm_enabled = try_enable_drm(backend_wayland, error);
-
-  if (!backend_wayland->drm_enabled) {
-    if (backend_wayland->wayland_shm == NULL)
-      return FALSE;
-
-    g_debug("Could not enable DRM buffers, falling back to SHM buffers");
-    g_clear_error(error);
-    backend_wayland->edpy = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-  }
+  if (!try_get_display(backend_wayland, error))
+    return FALSE;
 
   status = eglInitialize (backend_wayland->edpy,
 			  &backend_wayland->egl_version_major,
@@ -293,6 +323,16 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
   CLUTTER_NOTE (BACKEND, "EGL Reports version %i.%i",
 		backend_wayland->egl_version_major,
 		backend_wayland->egl_version_minor);
+
+  backend_wayland->drm_enabled = try_enable_drm(backend_wayland, error);
+
+  if (!backend_wayland->drm_enabled) {
+    if (backend_wayland->wayland_shm == NULL)
+      return FALSE;
+
+    g_debug("Could not enable DRM buffers, falling back to SHM buffers");
+    g_clear_error(error);
+  }
 
   return TRUE;
 }
@@ -612,6 +652,7 @@ _clutter_backend_wayland_class_init (ClutterBackendWaylandClass *klass)
 static void
 _clutter_backend_wayland_init (ClutterBackendWayland *backend_wayland)
 {
+  backend_wayland->edpy = EGL_NO_DISPLAY;
   backend_wayland->egl_context = EGL_NO_CONTEXT;
 
   backend_wayland->drm_fd = -1;
