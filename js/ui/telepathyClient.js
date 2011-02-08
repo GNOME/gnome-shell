@@ -13,7 +13,6 @@ const _ = Gettext.gettext;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
-const Telepathy = imports.misc.telepathy;
 
 
 // See Notification.appendMessage
@@ -143,17 +142,16 @@ Source.prototype = {
 
         this._presence = contact.get_presence_type();
 
-        this._channelText = new Telepathy.ChannelText(DBus.session, conn.get_bus_name(), channel.get_object_path());
-        this._sentId = this._channelText.connect('Sent', Lang.bind(this, this._messageSent));
-        this._receivedId = this._channelText.connect('Received', Lang.bind(this, this._messageReceived));
-
-        this._channelText.ListPendingMessagesRemote(false, Lang.bind(this, this._gotPendingMessages));
+        this._sentId = this._channel.connect('message-sent', Lang.bind(this, this._messageSent));
+        this._receivedId = this._channel.connect('message-received', Lang.bind(this, this._messageReceived));
 
         this._setSummaryIcon(this.createNotificationIcon());
 
         this._notifyAliasId = this._contact.connect('notify::alias', Lang.bind(this, this._updateAlias));
         this._notifyAvatarId = this._contact.connect('notify::avatar-file', Lang.bind(this, this._updateAvatarIcon));
         this._presenceChangedId = this._contact.connect('presence-changed', Lang.bind(this, this._presenceChanged));
+
+        this._displayPendingMessages();
     },
 
     _updateAlias: function() {
@@ -193,35 +191,36 @@ Source.prototype = {
         req.ensure_channel_async('', null, null);
     },
 
-    _gotPendingMessages: function(msgs, err) {
-        if (!msgs)
-            return;
+    _displayPendingMessages: function() {
+        let msgs = this._channel.get_pending_messages();
 
-        for (let i = 0; i < msgs.length; i++)
-            this._messageReceived.apply(this, [this._channel].concat(msgs[i]));
+        for (let i = 0; i < msgs.length; i++) {
+            let msg = msgs[i];
+            this._messageReceived(this._channel, msg);
+        }
     },
 
     _channelClosed: function() {
         this._channel.disconnect(this._closedId);
-        this._channelText.disconnect(this._receivedId);
-        this._channelText.disconnect(this._sentId);
+        this._channel.disconnect(this._receivedId);
+        this._channel.disconnect(this._sentId);
 
         this._contact.disconnect(this._notifyAliasId);
         this._contact.disconnect(this._notifyAvatarId);
         this._contact.disconnect(this._presenceChangedId);
+
         this.destroy();
     },
 
-    _messageReceived: function(channel, id, timestamp, sender,
-                               type, flags, text) {
-        this._notification.appendMessage(text, timestamp, NotificationDirection.RECEIVED);
+    _messageReceived: function(channel, message) {
+        this._notification.appendMessage(message, NotificationDirection.RECEIVED);
         this.notify();
     },
 
     // This is called for both messages we send from
     // our client and other clients as well.
-    _messageSent: function(channel, timestamp, type, text) {
-        this._notification.appendMessage(text, timestamp, NotificationDirection.SENT);
+    _messageSent: function(channel, message, flags, token) {
+        this._notification.appendMessage(message, NotificationDirection.SENT);
     },
 
     notify: function() {
@@ -232,7 +231,8 @@ Source.prototype = {
     },
 
     respond: function(text) {
-        this._channelText.SendRemote(Tp.ChannelTextMessageType.NORMAL, text);
+        let msg = Tp.ClientMessage.new_text(Tp.ChannelTextMessageType.NORMAL, text);
+        this._channel.send_message_async(msg, 0, null);
     },
 
     _presenceChanged: function (contact, presence, type, status, message) {
@@ -291,7 +291,10 @@ Notification.prototype = {
         this._timestampTimeoutId = 0;
     },
 
-    appendMessage: function(text, timestamp, direction) {
+    appendMessage: function(message, direction) {
+        let [text, flags] = message.to_text();
+        let timestamp = message.get_received_timestamp();
+
         this.update(this.source.title, text, { customContent: true });
         this._append(text, direction, timestamp);
     },
