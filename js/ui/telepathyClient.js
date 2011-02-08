@@ -284,114 +284,6 @@ ContactManager.prototype = {
 
         delete this._connections[conn.getPath()];
     },
-
-    _getFileForToken: function(info, token) {
-        return info.cacheDir + '/' + Telepathy.escapeAsIdentifier(token);
-    },
-
-    _setIcon: function(iconBox, info, handle) {
-        let textureCache = St.TextureCache.get_default();
-        let token = info.tokens[handle];
-        let file;
-
-        if (token) {
-            file = this._getFileForToken(info, token);
-            if (!GLib.file_test(file, GLib.FileTest.EXISTS))
-                file = null;
-        }
-
-        if (file) {
-            let uri = GLib.filename_to_uri(file, null);
-            iconBox.child = textureCache.load_uri_async(uri, iconBox._size, iconBox._size);
-        } else {
-            iconBox.child = new St.Icon({ icon_name: 'stock_person',
-                                          icon_type: St.IconType.FULLCOLOR,
-                                          icon_size: iconBox._size });
-        }
-    },
-
-    _updateIcons: function(info, handle) {
-        if (!info.icons[handle])
-            return;
-
-        for (let i = 0; i < info.icons[handle].length; i++) {
-            let iconBox = info.icons[handle][i];
-            this._setIcon(iconBox, info, handle);
-        }
-    },
-
-    _avatarUpdated: function(conn, handle, token) {
-        let info = this._connections[conn.getPath()];
-        if (!info)
-            return;
-
-        if (info.tokens[handle] == token)
-            return;
-
-        info.tokens[handle] = token;
-        if (token != '') {
-            let file = this._getFileForToken(info, token);
-            if (!GLib.file_test(file, GLib.FileTest.EXISTS)) {
-                info.connectionAvatars.RequestAvatarsRemote([handle]);
-                return;
-            }
-        }
-
-        this._updateIcons(info, handle);
-    },
-
-    _avatarRetrieved: function(conn, handle, token, avatarData, mimeType) {
-        let info = this._connections[conn.getPath()];
-        if (!info)
-            return;
-
-        let file = this._getFileForToken(info, token);
-        let success = false;
-        try {
-            success = GLib.file_set_contents(file, avatarData, avatarData.length);
-        } catch (e) {
-            logError(e, 'Error caching avatar data');
-        }
-
-        if (success)
-            this._updateIcons(info, handle);
-    },
-
-    createAvatar: function(conn, handle, size) {
-        let iconBox = new St.Bin({ style_class: 'avatar-box' });
-        iconBox._size = size;
-
-        let info = this._connections[conn.get_object_path()];
-        if (!info)
-            info = this.addConnection(conn.get_object_path());
-
-        if (!info.icons[handle])
-            info.icons[handle] = [];
-        info.icons[handle].push(iconBox);
-
-        iconBox.connect('destroy', Lang.bind(this,
-            function() {
-                let i = info.icons[handle].indexOf(iconBox);
-                if (i != -1)
-                    info.icons[handle].splice(i, 1);
-            }));
-
-        // If we already have the icon cached and know its token, this
-        // will fill it in. Otherwise it will fill in the default
-        // icon.
-        this._setIcon(iconBox, info, handle);
-
-        // Asynchronously load the real avatar if we don't have it yet.
-        if (info.tokens[handle] == null) {
-            info.connectionAvatars.GetKnownAvatarTokensRemote([handle], Lang.bind(this,
-                function (tokens, err) {
-                    let token = tokens && tokens[handle] ? tokens[handle] : '';
-                    this._avatarUpdated(info.connectionAvatars, handle, token);
-                }));
-        }
-
-        return iconBox;
-    }
 };
 Signals.addSignalMethods(ContactManager.prototype);
 
@@ -433,6 +325,7 @@ Source.prototype = {
         this._setSummaryIcon(this.createNotificationIcon());
 
         this._notifyAliasId = this._contact.connect('notify::alias', Lang.bind(this, this._updateAlias));
+        this._notifyAvatarId = this._contact.connect('notify::avatar-file', Lang.bind(this, this._updateAvatarIcon));
     },
 
     _updateAlias: function() {
@@ -440,8 +333,26 @@ Source.prototype = {
     },
 
     createNotificationIcon: function() {
-        return contactManager.createAvatar(this._conn, this._targetHandle,
-                                           this.ICON_SIZE);
+        this._iconBox = new St.Bin({ style_class: 'avatar-box' });
+        this._iconBox._size = this.ICON_SIZE;
+
+        this._updateAvatarIcon();
+
+        return this._iconBox;
+    },
+
+    _updateAvatarIcon: function() {
+        let textureCache = St.TextureCache.get_default();
+        let file = this._contact.get_avatar_file();
+
+        if (file) {
+            let uri = file.get_uri();
+            this._iconBox.child = textureCache.load_uri_async(uri, this._iconBox._size, this._iconBox._size);
+        } else {
+            this._iconBox.child = new St.Icon({ icon_name: 'stock_person',
+                                                icon_type: St.IconType.FULLCOLOR,
+                                                icon_size: this._iconBox._size });
+        }
     },
 
     _notificationClicked: function(notification) {
@@ -468,6 +379,7 @@ Source.prototype = {
         this._channelText.disconnect(this._sentId);
 
         this._contact.disconnect(this._notifyAliasId);
+        this._contact.disconnect(this._notifyAvatarId);
         this.destroy();
     },
 
