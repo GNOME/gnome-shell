@@ -552,7 +552,7 @@ Workspace.prototype = {
         this.actor.height = global.screen_height;
         this.scale = 1.0;
 
-        let windows = global.get_window_actors().filter(this._isMyWindow, this);
+        let windows = Main.getWindowActorsForWorkspace(this.metaWorkspace.index());
 
         // Create clones for remaining windows that should be
         // visible in the Overview
@@ -1308,8 +1308,7 @@ Workspace.prototype = {
 
     // Tests if @win belongs to this workspaces
     _isMyWindow : function (win) {
-        return win.get_workspace() == this.metaWorkspace.index() ||
-            (win.get_meta_window() && win.get_meta_window().is_on_all_workspaces());
+        return Main.isWindowActorDisplayedOnWorkspace(win, this.metaWorkspace.index());
     },
 
     // Tests if @win should be shown in the Overview

@@ -303,6 +303,17 @@ function _relayout() {
     overview.hide();
 }
 
+function isWindowActorDisplayedOnWorkspace(win, workspaceIndex) {
+    return win.get_workspace() == workspaceIndex ||
+        (win.get_meta_window() && win.get_meta_window().is_on_all_workspaces());
+}
+
+function getWindowActorsForWorkspace(workspaceIndex) {
+    return global.get_window_actors().filter(function (win) {
+        return isWindowActorDisplayedOnWorkspace(win, workspaceIndex);
+    });
+}
+
 // metacity-clutter currently uses the same prefs as plain metacity,
 // which probably means we'll be starting out with multiple workspaces;
 // remove any unused ones. (We do this from an idle handler, because
