@@ -18,35 +18,6 @@ const _ = Gettext.gettext;
 
 const SLIDER_SCROLL_STEP = 0.05; /* Slider scrolling step in % */
 
-function Switch() {
-    this._init.apply(this, arguments);
-}
-
-Switch.prototype = {
-    _init: function(state) {
-        this.actor = new St.Bin({ style_class: 'toggle-switch' });
-        // Translators: this MUST be either "toggle-switch-us"
-        // (for toggle switches containing the English words
-        // "ON" and "OFF") or "toggle-switch-intl" (for toggle
-        // switches containing "◯" and "|"). Other values will
-        // simply result in invisible toggle switches.
-        this.actor.add_style_class_name(_("toggle-switch-us"));
-        this.setToggleState(state);
-    },
-
-    setToggleState: function(state) {
-        if (state)
-            this.actor.add_style_pseudo_class('checked');
-        else
-            this.actor.remove_style_pseudo_class('checked');
-        this.state = state;
-    },
-
-    toggle: function() {
-        this.setToggleState(!this.state);
-    }
-};
-
 function PopupBaseMenuItem(params) {
     this._init(params);
 }
@@ -483,7 +454,7 @@ PopupSliderMenuItem.prototype = {
     _motionEvent: function(actor, event) {
         let absX, absY;
         [absX, absY] = event.get_coords();
-        this._moveHandle(absX, absY)
+        this._moveHandle(absX, absY);
         return true;
     },
 
@@ -524,7 +495,36 @@ PopupSliderMenuItem.prototype = {
         }
         return false;
     }
+};
+
+function Switch() {
+    this._init.apply(this, arguments);
 }
+
+Switch.prototype = {
+    _init: function(state) {
+        this.actor = new St.Bin({ style_class: 'toggle-switch' });
+        // Translators: this MUST be either "toggle-switch-us"
+        // (for toggle switches containing the English words
+        // "ON" and "OFF") or "toggle-switch-intl" (for toggle
+        // switches containing "◯" and "|"). Other values will
+        // simply result in invisible toggle switches.
+        this.actor.add_style_class_name(_("toggle-switch-us"));
+        this.setToggleState(state);
+    },
+
+    setToggleState: function(state) {
+        if (state)
+            this.actor.add_style_pseudo_class('checked');
+        else
+            this.actor.remove_style_pseudo_class('checked');
+        this.state = state;
+    },
+
+    toggle: function() {
+        this.setToggleState(!this.state);
+    }
+};
 
 function PopupSwitchMenuItem() {
     this._init.apply(this, arguments);
@@ -559,8 +559,7 @@ PopupSwitchMenuItem.prototype = {
     setToggleState: function(state) {
         this._switch.setToggleState(state);
     }
-}
-
+};
 
 function PopupImageMenuItem(text, iconName) {
     this._init(text, iconName);
