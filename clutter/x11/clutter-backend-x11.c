@@ -925,7 +925,7 @@ clutter_x11_get_default_screen (void)
 }
 
 /**
- * clutter_x11_get_root_window:
+ * clutter_x11_get_root_window: (skip)
  *
  * Retrieves the root window.
  *
@@ -946,7 +946,7 @@ clutter_x11_get_root_window (void)
 }
 
 /**
- * clutter_x11_add_filter:
+ * clutter_x11_add_filter: (skip)
  * @func: a filter function
  * @data: user data to be passed to the filter function, or %NULL
  *
@@ -979,7 +979,7 @@ clutter_x11_add_filter (ClutterX11FilterFunc func,
 }
 
 /**
- * clutter_x11_remove_filter:
+ * clutter_x11_remove_filter: (skip)
  * @func: a filter function
  * @data: user data to be passed to the filter function, or %NULL
  *
@@ -1173,7 +1173,7 @@ _clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11)
 }
 
 /**
- * clutter_x11_get_visual_info:
+ * clutter_x11_get_visual_info: (skip)
  *
  * Retrieves the <structname>XVisualInfo</structname> used by the Clutter X11
  * backend.

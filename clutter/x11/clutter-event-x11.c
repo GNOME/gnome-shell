@@ -395,7 +395,7 @@ clutter_event_dispatch (GSource     *source,
 }
 
 /**
- * clutter_x11_get_current_event_time:
+ * clutter_x11_get_current_event_time: (skip)
  *
  * Retrieves the timestamp of the last X11 event processed by
  * Clutter. This might be different from the timestamp returned

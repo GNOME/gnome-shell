@@ -1104,7 +1104,7 @@ clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface)
 }
 
 /**
- * clutter_x11_get_stage_window:
+ * clutter_x11_get_stage_window: (skip)
  * @stage: a #ClutterStage
  *
  * Gets the stages X Window.
@@ -1155,7 +1155,7 @@ clutter_x11_get_stage_from_window (Window win)
 }
 
 /**
- * clutter_x11_get_stage_visual:
+ * clutter_x11_get_stage_visual: (skip)
  * @stage: a #ClutterStage
  *
  * Returns an XVisualInfo suitable for creating a foreign window for the given
