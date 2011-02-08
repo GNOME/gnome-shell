@@ -199,3 +199,26 @@ st_focus_manager_remove_group (StFocusManager *manager,
 {
   g_hash_table_remove (manager->priv->groups, root);
 }
+
+/**
+ * st_focus_manager_get_group:
+ * @manager: the #StFocusManager
+ * @widget: an #StWidget
+ *
+ * Checks if @widget is inside a focus group, and if so, returns
+ * the root of that group.
+ *
+ * Return value: (transfer none): the focus group root, or %NULL if
+ * @widget is not in a focus group
+ */
+StWidget *
+st_focus_manager_get_group (StFocusManager *manager,
+                            StWidget       *widget)
+{
+  ClutterActor *actor = CLUTTER_ACTOR (widget);
+
+  while (actor && !g_hash_table_lookup (manager->priv->groups, actor))
+    actor = clutter_actor_get_parent (actor);
+
+  return ST_WIDGET (actor);
+}

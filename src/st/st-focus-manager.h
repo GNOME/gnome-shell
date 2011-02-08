@@ -73,6 +73,8 @@ void            st_focus_manager_add_group     (StFocusManager *manager,
                                                 StWidget       *root);
 void            st_focus_manager_remove_group  (StFocusManager *manager,
                                                 StWidget       *root);
+StWidget       *st_focus_manager_get_group     (StFocusManager *manager,
+                                                StWidget       *widget);
 
 G_END_DECLS
 
