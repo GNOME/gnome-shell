@@ -80,16 +80,11 @@ Client.prototype = {
     _observeChannels: function(observer, account, conn, channels,
                                dispatchOp, requests, context) {
         let connPath = conn.get_object_path();
-        let connName = conn.get_bus_name();
-        let accountPath = account.get_object_path()
 
         let len = channels.length;
         for (let i = 0; i < len; i++) {
             let channel = channels[i];
             let [targetHandle, targetHandleType] = channel.get_handle();
-            let props = channel.borrow_immutable_properties();
-            let targetId = props[Telepathy.CHANNEL_NAME + '.TargetID'];
-            let targetId = props[Tp.PROP_CHANNEL_TARGET_ID];
 
             /* Only observe contact text channels */
             if ((!(channel instanceof Tp.TextChannel)) ||
@@ -99,9 +94,8 @@ Client.prototype = {
             if (this._sources[connPath + ':' + targetHandle])
                 continue;
 
-            let source = new Source(accountPath, connPath,
-                                    channel.get_object_path(),
-                                    targetHandle, targetHandleType, targetId);
+            let source = new Source(account, conn, chan);
+
             this._sources[connPath + ':' + targetHandle] = source;
             source.connect('destroy', Lang.bind(this,
                 function() {
@@ -348,9 +342,9 @@ ContactManager.prototype = {
         let iconBox = new St.Bin({ style_class: 'avatar-box' });
         iconBox._size = size;
 
-        let info = this._connections[conn.getPath()];
+        let info = this._connections[conn.get_object_path()];
         if (!info)
-            info = this.addConnection(conn.getPath());
+            info = this.addConnection(conn.get_object_path());
 
         if (!info.icons[handle])
             info.icons[handle] = [];
@@ -373,7 +367,7 @@ ContactManager.prototype = {
             info.connectionAvatars.GetKnownAvatarTokensRemote([handle], Lang.bind(this,
                 function (tokens, err) {
                     let token = tokens && tokens[handle] ? tokens[handle] : '';
-                    this._avatarUpdated(conn, handle, token);
+                    this._avatarUpdated(info.connectionAvatars, handle, token);
                 }));
         }
 
@@ -383,31 +377,32 @@ ContactManager.prototype = {
 Signals.addSignalMethods(ContactManager.prototype);
 
 
-function Source(accountPath, connPath, channelPath, targetHandle, targetHandleType, targetId) {
-    this._init(accountPath, connPath, channelPath, targetHandle, targetHandleType, targetId);
+function Source(account, conn, channel) {
+    this._init(account, conn, channel);
 }
 
 Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
-    _init: function(accountPath, connPath, channelPath, targetHandle, targetHandleType, targetId) {
-        MessageTray.Source.prototype._init.call(this, targetId);
+    _init: function(account, conn, channel) {
+        // FIXME: use chan.get_handle()
+        let props = channel.borrow_immutable_properties();
+        this._targetHandle = props[Tp.PROP_CHANNEL_TARGET_HANDLE];
+        this._targetHandleType = props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE];
+        this._targetId = channel.get_identifier();
+
+        MessageTray.Source.prototype._init.call(this, this._targetId);
 
         this.isChat = true;
 
-        this._accountPath = accountPath;
+        this._account = account;
 
-        let connName = Telepathy.pathToName(connPath);
-        this._conn = new Telepathy.Connection(DBus.session, connName, connPath);
-        this._channel = new Telepathy.Channel(DBus.session, connName, channelPath);
-        this._closedId = this._channel.connect('Closed', Lang.bind(this, this._channelClosed));
+        this._conn = conn;
+        this._channel = channel;
+        this._closedId = this._channel.connect('invalidated', Lang.bind(this, this._channelClosed));
 
-        this._targetHandle = targetHandle;
-        this._targetHandleType = targetHandleType;
-        this._targetId = targetId;
-
-        if (targetHandleType == Tp.HandleType.CONTACT) {
-            let aliasing = new Telepathy.ConnectionAliasing(DBus.session, connName, connPath);
+        if (this._targetHandleType == Tp.HandleType.CONTACT) {
+            let aliasing = new Telepathy.ConnectionAliasing(DBus.session, conn.get_bus_name(), conn.get_object_path());
             aliasing.RequestAliasesRemote([this._targetHandle], Lang.bind(this,
                 function (aliases, err) {
                     if (aliases && aliases.length)
@@ -422,7 +417,7 @@ Source.prototype = {
         // is a plausible default
         this._presence = Tp.ConnectionPresenceType.AVAILABLE;
 
-        this._channelText = new Telepathy.ChannelText(DBus.session, connName, channelPath);
+        this._channelText = new Telepathy.ChannelText(DBus.session, conn.get_bus_name(), channel.get_object_path());
         this._sentId = this._channelText.connect('Sent', Lang.bind(this, this._messageSent));
         this._receivedId = this._channelText.connect('Received', Lang.bind(this, this._messageReceived));
 
@@ -441,7 +436,7 @@ Source.prototype = {
         props[Tp.PROP_CHANNEL_CHANNEL_TYPE] = Tp.IFACE_CHANNEL_TYPE_TEXT;
         props[Tp.PROP_CHANNEL_TARGET_HANDLE] = this._targetHandle;
         props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE] = this._targetHandleType;
-        channelDispatcher.EnsureChannelRemote(this._accountPath, props,
+        channelDispatcher.EnsureChannelRemote(this._account.get_object_path(), props,
                                               global.get_current_time(),
                                               '',
                                               Lang.bind(this, this._gotChannelRequest));
