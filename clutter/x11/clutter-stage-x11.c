@@ -1082,6 +1082,13 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
         }
       break;
 
+    case MappingNotify:
+      CLUTTER_NOTE (EVENT, "Refresh keyboard mapping");
+      XRefreshKeyboardMapping (&xevent->xmapping);
+      backend_x11->keymap_serial += 1;
+      res = CLUTTER_TRANSLATE_REMOVE;
+      break;
+
     default:
       res = CLUTTER_TRANSLATE_CONTINUE;
       break;
