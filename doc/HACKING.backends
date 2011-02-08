@@ -1,5 +1,5 @@
 IMPLEMENTING BACKENDS
-=====================
+===============================================================================
 
 Clutter supports multiple backends for handling windowing systems and
 GL/GLES API on different platforms.
@@ -21,11 +21,16 @@ create a new sub-directory under clutter/clutter containing:
   <backend>/clutter-stage-<backend>.h
   <backend>/clutter-stage-<backend>.c
 
-  -- The implementation of the stage actor.
+  -- The implementation of the stage window
+
+  <backend>/clutter-device-manager-<backend>.h
+  <backend>/clutter-device-manager-<backend>.c
+
+  -- The implementation of the input device manager
 
   <backend>/clutter-event-<backend>.c
 
-  -- The event handling code (optional).
+  -- Event-specific code (optional)
 
   <backend>/clutter-<backend>.h
 
@@ -35,7 +40,7 @@ create a new sub-directory under clutter/clutter containing:
 
 
 Implementing ClutterBackend
----------------------------
+-------------------------------------------------------------------------------
 
 Each backend must implement the
 
@@ -108,12 +113,6 @@ can be overridden:
      drawing surface or should unset the drawing surface from the
      drawing context.
 
-  ClutterBackend::redraw
-  -- This function is used to draw the passed ClutterStage; the backend
-     must call clutter_actor_paint() on the ClutterStage that has been
-     passed as a parameter and then perform backend-specific tasks, like
-     waiting for vertical blanking and swapping the buffers.
-
   ClutterBackend::create_stage
   -- This function is used to create the stage implementation. It will
      receive as an argument the ClutterStage instance that is "wrapping"
@@ -121,8 +120,13 @@ can be overridden:
      its stage implementation, initialise it and then return it; in case
      of error, the backend must return NULL and set the passed GError.
 
+  ClutterBackend::get_device_manager
+  -- This function is used to return the ClutterDeviceManager instance
+     that is going to be returned by clutter_device_manager_get_default()
+     and that should be used internally by input event translation.
+
 Implementing the stage
-----------------------
+-------------------------------------------------------------------------------
 
 ClutterStage acts as a wrapper object relaying all the drawing operations
 to the actual implementation. The implementation of the stage can be any
@@ -139,6 +143,7 @@ The stage implementation actor must implement:
   • ClutterStageWindow::show() and ::hide()
   • ClutterStageWindow::resize()
   • ClutterStageWindow::get_geometry()
+  • ClutterStageWindow::redraw()
 
 The ::get_wrapper() implementation should return the pointer to the
 ClutterStage actor using the ClutterStageWindow implementation.
@@ -159,6 +164,10 @@ the native window handle created in ::realize().
 The ::resize() virtual function implementation should cause an update
 of the COGL viewport.
 
+The ::redraw() virtual function implementation should contain the platform
+specific drawing logic, and call _clutter_stage_do_paint() on the ClutterStage
+wrapper instance to cause the scene to be painted.
+
 The stage implementation actor can optionally implement:
 
   • ClutterStageWindow::get_pending_swaps()
@@ -167,9 +176,32 @@ The get_pending_swaps() implementation should return the number of swap
 buffer requests pending completion. This is only relevent for backends
 that also support CLUTTER_FEATURE_SWAP_EVENTS.
 
-NOTES
-=====
+If the stage window is supposed to handle events, then it should also implement
+the ClutterEventTranslator interface; this interface has a single virtual
+function:
 
-If the platform is using X11 you should probably subclass ClutterBackendX11
-and ClutterStageX11, which will provide you with a ready to use code
-implementation for event handling and window management.
+  • ClutterEventTranslator::translate_event()
+
+which gets passed a pointer to the native event data structure, and a pointer
+to a newly-allocated, empty ClutterEvent. The EventTranslator implementation
+should then decide between three options:
+
+  - translate the native event and return CLUTTER_TRANSLATE_QUEUE to
+    let Clutter queue it up in the events queue;
+  - return CLUTTER_TRANSLATE_CONTINUE to let other event translators handle
+    the event;
+  - return CLUTTER_TRANSLATE_REMOVE to ignore the event.
+
+Implementing ClutterDeviceManager
+-------------------------------------------------------------------------------
+
+Backends with input devices should provide a ClutterDeviceManager
+implementation to handle addition, removal and input device event translation
+through the ClutterEventTranslator interface.
+
+NOTES
+===============================================================================
+
+• If the platform is using X11 you should probably subclass ClutterBackendX11
+  and ClutterStageX11, which will provide you with a ready to use code
+  implementation for event handling and window management.
