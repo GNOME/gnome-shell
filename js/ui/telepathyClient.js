@@ -15,7 +15,6 @@ const MessageTray = imports.ui.messageTray;
 const Telepathy = imports.misc.telepathy;
 
 let contactManager;
-let channelDispatcher;
 
 // See Notification.appendMessage
 const SCROLLBACK_IMMEDIATE_TIME = 60; // 1 minute
@@ -51,10 +50,6 @@ Client.prototype = {
 
         contactManager = new ContactManager();
         contactManager.connect('presence-changed', Lang.bind(this, this._presenceChanged));
-
-        channelDispatcher = new Telepathy.ChannelDispatcher(DBus.session,
-                                                            Tp.CHANNEL_DISPATCHER_BUS_NAME,
-                                                            Tp.CHANNEL_DISPATCHER_OBJECT_PATH);
 
         // Set up a SimpleObserver, which will call _observeChannels whenever a
         // channel matching its filters is detected.
@@ -434,22 +429,11 @@ Source.prototype = {
     _notificationClicked: function(notification) {
         let props = {};
         props[Tp.PROP_CHANNEL_CHANNEL_TYPE] = Tp.IFACE_CHANNEL_TYPE_TEXT;
-        props[Tp.PROP_CHANNEL_TARGET_HANDLE] = this._targetHandle;
-        props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE] = this._targetHandleType;
-        channelDispatcher.EnsureChannelRemote(this._account.get_object_path(), props,
-                                              global.get_current_time(),
-                                              '',
-                                              Lang.bind(this, this._gotChannelRequest));
-    },
+        [props[Tp.PROP_CHANNEL_TARGET_HANDLE], props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE]] = this._channel.get_handle();
 
-    _gotChannelRequest: function (chanReqPath, ex) {
-        if (ex) {
-            log ('EnsureChannelRemote failed? ' + ex);
-            return;
-        }
+        let req = Tp.AccountChannelRequest.new(this._account, props, global.get_current_time());
 
-        let chanReq = new Telepathy.ChannelRequest(DBus.session, Tp.CHANNEL_DISPATCHER_BUS_NAME, chanReqPath);
-        chanReq.ProceedRemote();
+        req.ensure_channel_async('', null, null);
     },
 
     _gotPendingMessages: function(msgs, err) {
