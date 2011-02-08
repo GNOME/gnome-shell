@@ -712,7 +712,7 @@ Notification.prototype = {
         return false;
     },
 
-    _onActionInvoked: function(actor, id) {
+    _onActionInvoked: function(actor, mouseButtonClicked, id) {
         this.emit('action-invoked', id);
         if (!this.resident) {
             // We don't hide a resident notification when the user invokes one of its actions,
