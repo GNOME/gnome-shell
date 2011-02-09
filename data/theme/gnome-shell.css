@@ -210,6 +210,21 @@ StTooltip StLabel {
     padding-right: 4px;
 }
 
+.panel-corner {
+    -panel-corner-radius: 10px;
+    -panel-corner-background-color: black;
+    -panel-corner-inner-border-width: 2px;
+    -panel-corner-inner-border-color: transparent;
+    -panel-corner-outer-border-width: 1px;
+    -panel-corner-outer-border-color: #536272;
+}
+
+.panel-corner:active,
+.panel-corner:checked,
+.panel-corner:focus {
+    -panel-corner-inner-border-color: rgba(255,255,255,0.8);
+}
+
 #appMenu {
     spacing: 4px;
 }

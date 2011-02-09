@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
@@ -49,6 +50,51 @@ const CLOCK_FORMAT_KEY        = 'clock-format';
 // in org.gnome.shell.clock
 const CLOCK_SHOW_DATE_KEY     = 'show-date';
 const CLOCK_SHOW_SECONDS_KEY  = 'show-seconds';
+
+
+// To make sure the panel corners blend nicely with the panel,
+// we draw background and borders the same way, e.g. drawing
+// them as filled shapes from the outside inwards instead of
+// using cairo stroke(). So in order to give the border the
+// appearance of being drawn on top of the background, we need
+// to blend border and background color together.
+// For that purpose we use the following helper methods, taken
+// from st-theme-node-drawing.c
+function _norm(x) {
+    return Math.round(x / 255);
+}
+
+function _over(srcColor, dstColor) {
+    let src = _premultiply(srcColor);
+    let dst = _premultiply(dstColor);
+    let result = new Clutter.Color();
+
+    result.alpha = src.alpha + _norm((255 - src.alpha) * dst.alpha);
+    result.red = src.red + _norm((255 - src.alpha) * dst.red);
+    result.green = src.green + _norm((255 - src.alpha) * dst.green);
+    result.blue = src.blue + _norm((255 - src.alpha) * dst.blue);
+
+    return _unpremultiply(result);
+}
+
+function _premultiply(color) {
+    return new Clutter.Color({ red: _norm(color.red * color.alpha),
+                               green: _norm(color.green * color.alpha),
+                               blue: _norm(color.blue * color.alpha),
+                               alpha: color.alpha });
+};
+
+function _unpremultiply(color) {
+    if (color.alpha == 0)
+        return new Clutter.Color();
+
+    let red = Math.min((color.red * 255 + 127) / color.alpha, 255);
+    let green = Math.min((color.green * 255 + 127) / color.alpha, 255);
+    let blue = Math.min((color.blue * 255 + 127) / color.alpha, 255);
+    return new Clutter.Color({ red: red, green: green,
+                               blue: blue, alpha: color.alpha });
+};
+
 
 function AnimatedIcon(name, size) {
     this._init(name, size);
@@ -504,6 +550,95 @@ AppMenuButton.prototype = {
 
 Signals.addSignalMethods(AppMenuButton.prototype);
 
+
+function PanelCorner(side) {
+    this._init(side);
+}
+
+PanelCorner.prototype = {
+    _init: function(side) {
+        this._side = side;
+        this.actor = new St.DrawingArea({ style_class: 'panel-corner' });
+        this.actor.connect('repaint', Lang.bind(this, this._repaint));
+        this.actor.connect('style-changed', Lang.bind(this, this._reposition));
+    },
+
+    _repaint: function() {
+        let node = this.actor.get_theme_node();
+
+        let cornerRadius = node.get_length("-panel-corner-radius");
+        let innerBorderWidth = node.get_length('-panel-corner-inner-border-width');
+        let outerBorderWidth = node.get_length('-panel-corner-outer-border-width');
+
+        let backgroundColor = node.get_color('-panel-corner-background-color');
+        let innerBorderColor = node.get_color('-panel-corner-inner-border-color');
+        let outerBorderColor = node.get_color('-panel-corner-outer-border-color');
+
+        let cr = this.actor.get_context();
+        cr.setOperator(Cairo.Operator.SOURCE);
+
+        cr.moveTo(0, 0);
+        if (this._side == St.Side.LEFT)
+            cr.arc(cornerRadius,
+                   innerBorderWidth + outerBorderWidth + cornerRadius,
+                   cornerRadius, Math.PI, 3 * Math.PI / 2);
+        else
+            cr.arc(0,
+                   innerBorderWidth + outerBorderWidth + cornerRadius,
+                   cornerRadius, 3 * Math.PI / 2, 2 * Math.PI);
+        cr.lineTo(cornerRadius, 0);
+        cr.closePath();
+
+        let savedPath = cr.copyPath();
+
+        let over = _over(outerBorderColor, backgroundColor);
+        Clutter.cairo_set_source_color(cr, over);
+        cr.fill();
+
+        let xOffsetDirection = this._side == St.Side.LEFT ? -1 : 1;
+        let offset = outerBorderWidth;
+        over = _over(innerBorderColor, backgroundColor);
+        Clutter.cairo_set_source_color(cr, over);
+
+        cr.save();
+        cr.translate(xOffsetDirection * offset, - offset);
+        cr.appendPath(savedPath);
+        cr.fill();
+        cr.restore();
+
+        if (this._side == St.Side.LEFT)
+            cr.rectangle(cornerRadius - offset, 0, offset, innerBorderWidth);
+        else
+            cr.rectangle(0, 0, offset, innerBorderWidth);
+        cr.fill();
+
+        offset = innerBorderWidth + outerBorderWidth;
+        Clutter.cairo_set_source_color(cr, backgroundColor);
+
+        cr.save();
+        cr.translate(xOffsetDirection * offset, - offset);
+        cr.appendPath(savedPath);
+        cr.fill();
+        cr.restore();
+    },
+
+    _reposition: function() {
+        let node = this.actor.get_theme_node();
+
+        let cornerRadius = node.get_length("-panel-corner-radius");
+        let innerBorderWidth = node.get_length('-panel-corner-inner-border-width');
+        let outerBorderWidth = node.get_length('-panel-corner-outer-border-width');
+
+        this.actor.set_size(cornerRadius,
+                            innerBorderWidth + outerBorderWidth + cornerRadius);
+        if (this._side == St.Side.LEFT)
+            this.actor.set_position(0, Main.panel.actor.height - innerBorderWidth - outerBorderWidth);
+        else
+            this.actor.set_position(Main.panel.actor.width - cornerRadius, Main.panel.actor.height - innerBorderWidth - outerBorderWidth);
+    }
+};
+
+
 function Panel() {
     this._init();
 }
@@ -534,6 +669,9 @@ Panel.prototype = {
             this._leftBox.add_style_pseudo_class('rtl');
             this._rightBox.add_style_pseudo_class('rtl');
         }
+
+        this._leftCorner = new PanelCorner(St.Side.LEFT);
+        this._rightCorner = new PanelCorner(St.Side.RIGHT);
 
         /* This box container ensures that the centerBox is positioned in the *absolute*
          * center, but can be pushed aside if necessary. */
@@ -651,6 +789,15 @@ Panel.prototype = {
             });
         this._leftBox.add(this.button);
 
+        // Synchronize the buttons pseudo classes with its corner
+        this.button.connect('style-changed', Lang.bind(this,
+            function(actor) {
+                let rtl = actor.get_direction() == St.TextDirection.RTL;
+                let corner = rtl ? this._rightCorner : this._leftCorner;
+                let pseudoClass = actor.get_style_pseudo_class();
+                corner.actor.set_style_pseudo_class(pseudoClass);
+            }));
+
         // We use this flag to mark the case where the user has entered the
         // hot corner and has not left both the hot corner and a surrounding
         // guard area (the "environs"). This avoids triggering the hot corner
@@ -727,6 +874,15 @@ Panel.prototype = {
         this._menus.addMenu(this._statusmenu.menu);
         this._rightBox.add(this._statusmenu.actor);
 
+        // Synchronize the buttons pseudo classes with its corner
+        this._statusmenu.actor.connect('style-changed', Lang.bind(this,
+            function(actor) {
+                let rtl = actor.get_direction() == St.TextDirection.RTL;
+                let corner = rtl ? this._leftCorner : this._rightCorner;
+                let pseudoClass = actor.get_style_pseudo_class();
+                corner.actor.set_style_pseudo_class(pseudoClass);
+            }));
+
         Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
         Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
 
@@ -753,6 +909,12 @@ Panel.prototype = {
         }));
 
         Main.chrome.addActor(this.actor, { visibleInOverview: true });
+        Main.chrome.addActor(this._leftCorner.actor, { visibleInOverview: true,
+                                                 affectsStruts: false,
+                                                 affectsInputRegion: false });
+        Main.chrome.addActor(this._rightCorner.actor, { visibleInOverview: true,
+                                                  affectsStruts: false,
+                                                  affectsInputRegion: false });
     },
 
     _xdndShowOverview: function (actor) {
