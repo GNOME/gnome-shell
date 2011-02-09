@@ -368,7 +368,7 @@ gnome_shell_gdk_event_handler (GdkEvent *event_gdk,
           ClutterInputDevice *keyboard = clutter_device_manager_get_core_device (device_manager,
                                                                                  CLUTTER_KEYBOARD_DEVICE);
 
-          ClutterEvent *event_clutter = clutter_event_new ((event_gdk->type == GDK_KEY_RELEASE) ?
+          ClutterEvent *event_clutter = clutter_event_new ((event_gdk->type == GDK_KEY_PRESS) ?
                                                            CLUTTER_KEY_PRESS : CLUTTER_KEY_RELEASE);
           event_clutter->key.time = event_gdk->key.time;
           event_clutter->key.flags = CLUTTER_EVENT_NONE;
