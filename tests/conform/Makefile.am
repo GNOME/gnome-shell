@@ -32,6 +32,7 @@ units_sources += \
 	test-cogl-depth-test.c			\
 	test-cogl-fixed.c 			\
 	test-cogl-materials.c			\
+	test-cogl-pipeline-user-matrix.c	\
 	test-cogl-viewport.c			\
 	test-cogl-multitexture.c        	\
 	test-cogl-npot-texture.c        	\

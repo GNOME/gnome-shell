@@ -213,6 +213,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_fixed);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_backface_culling);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_materials);
+  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_pipeline_user_matrix);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_blend_strings);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_premult);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_readpixels);
