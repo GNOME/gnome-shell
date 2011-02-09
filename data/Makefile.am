@@ -30,6 +30,9 @@ dist_theme_DATA =				\
 	theme/mosaic-view-active.svg		\
 	theme/mosaic-view.svg			\
 	theme/move-window-on-new.svg		\
+	theme/panel-button-border.svg		\
+	theme/panel-button-highlight-narrow.svg	\
+	theme/panel-button-highlight-wide.svg	\
 	theme/process-working.png		\
 	theme/running-indicator.svg		\
 	theme/scroll-button-down-hover.png	\

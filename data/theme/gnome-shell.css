@@ -183,6 +183,8 @@ StTooltip StLabel {
 #panel {
     color: #ffffff;
     background-color: black;
+    border: 0px solid #536272;
+    border-bottom-width: 1px;
 }
 
 #panelLeft, #panelCenter, #panelRight {
@@ -209,26 +211,37 @@ StTooltip StLabel {
 
 .panel-button {
     padding: 0px 12px;
-    border-radius: 5px;
-    border-radius-bottomleft: 0px;
-    border-radius-bottomright: 0px;
     font-size: 14px;
     font-weight: bold;
+    color: #ccc;
     transition-duration: 100;
 }
 
-.panel-button:active, .panel-button:checked, .panel-button:focus {
-    background-gradient-direction: vertical;
-    background-gradient-start: #3c3c3c;
-    background-gradient-end: #131313;
+.panel-button:active,
+.panel-button:checked,
+.panel-button:focus {
+    border-image: url("panel-button-border.svg") 10 10 0 2;
+    background-image: url("panel-button-highlight-wide.svg");
+    color: white;
+    text-shadow: black 0px 2px 2px;
+}
+
+#statusTray > .panel-button:active,
+#statusTray > .panel-button:checked,
+#statusTray > .panel-button:focus {
+    background-image: url("panel-button-highlight-narrow.svg");
+}
+
+.panel-button:active > .system-status-icon,
+.panel-button:checked > .system-status-icon,
+.panel-button:focus > .system-status-icon {
+    icon-shadow: black 0px 2px 2px;
 }
 
 #panelActivities {
-    border-radius-topleft: 0px;
 }
 
 #panelStatus {
-    border-radius-topright: 0px;
 }
 
 #panelStatusMenu {
