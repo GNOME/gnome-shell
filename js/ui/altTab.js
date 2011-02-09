@@ -1081,6 +1081,9 @@ ThumbnailList.prototype = {
 
         for (let i = 0; i < this._thumbnailBins.length; i++) {
             let mutterWindow = this._windows[i].get_compositor_private();
+            if (!mutterWindow)
+                continue;
+
             let windowTexture = mutterWindow.get_texture ();
             let [width, height] = windowTexture.get_size();
             let scale = Math.min(1.0, THUMBNAIL_DEFAULT_SIZE / width, availHeight / height);
