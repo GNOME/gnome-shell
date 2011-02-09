@@ -236,7 +236,6 @@ clutter_keymap_x11_constructed (GObject *gobject)
                                &xkb_major, &xkb_minor))
           {
             Bool detectable_autorepeat_supported;
-            ClutterEventTranslator *t;
 
             backend_x11->use_xkb = TRUE;
 
@@ -290,7 +289,6 @@ static void
 clutter_keymap_x11_finalize (GObject *gobject)
 {
   ClutterKeymapX11 *keymap;
-  ClutterBackendX11 *backend;
   ClutterEventTranslator *translator;
 
   keymap = CLUTTER_KEYMAP_X11 (gobject);
@@ -310,7 +308,6 @@ static void
 clutter_keymap_x11_class_init (ClutterKeymapX11Class *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   obj_props[PROP_BACKEND] =
     g_param_spec_object ("backend",
