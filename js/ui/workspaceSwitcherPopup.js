@@ -12,8 +12,8 @@ const Tweener = imports.ui.tweener;
 const ANIMATION_TIME = 0.1;
 const DISPLAY_TIMEOUT = 600;
 
-const LEFT = -1;
-const RIGHT = 1;
+const UP = -1;
+const DOWN = 1;
 
 function WorkspaceSwitcherPopup() {
     this._init();
@@ -32,6 +32,8 @@ WorkspaceSwitcherPopup.prototype = {
         this._container = new St.BoxLayout({ style_class: 'workspace-switcher-container' });
         this._list = new Shell.GenericContainer({ style_class: 'workspace-switcher' });
         this._itemSpacing = 0;
+        this._childHeight = 0;
+        this._childWidth = 0;
         this._list.connect('style-changed', Lang.bind(this, function() {
                                                         this._itemSpacing = this._list.get_theme_node().get_length('spacing');
                                                      }));
@@ -51,59 +53,54 @@ WorkspaceSwitcherPopup.prototype = {
         this._timeoutId = Mainloop.timeout_add(DISPLAY_TIMEOUT, Lang.bind(this, this._onTimeout));
     },
 
-    _getPreferredWidth : function (actor, forHeight, alloc) {
+    _getPreferredHeight : function (actor, forWidth, alloc) {
         let children = this._list.get_children();
         let primary = global.get_primary_monitor();
 
-        let availwidth = primary.width;
-        availwidth -= this.actor.get_theme_node().get_horizontal_padding();
-        availwidth -= this._container.get_theme_node().get_horizontal_padding();
-        availwidth -= this._list.get_theme_node().get_horizontal_padding();
+        let availHeight = primary.height;
+        availHeight -= Main.panel.actor.height;
+        availHeight -= this.actor.get_theme_node().get_vertical_padding();
+        availHeight -= this._container.get_theme_node().get_vertical_padding();
+        availHeight -= this._list.get_theme_node().get_vertical_padding();
 
-        let width = 0;
+        let height = 0;
         for (let i = 0; i < children.length; i++) {
-            let [childMinWidth, childNaturalWidth] = children[i].get_preferred_width(-1);
-            let [childMinHeight, childNaturalHeight] = children[i].get_preferred_height(childNaturalWidth);
-            width += childNaturalHeight * primary.width / primary.height;
+            let [childMinHeight, childNaturalHeight] = children[i].get_preferred_height(-1);
+            let [childMinWidth, childNaturalWidth] = children[i].get_preferred_width(childNaturalHeight);
+            height += childNaturalHeight * primary.width / primary.height;
         }
 
         let spacing = this._itemSpacing * (global.screen.n_workspaces - 1);
-        width += spacing;
-        width = Math.min(width, availwidth);
+        height += spacing;
+        height = Math.min(height, availHeight);
 
-        this._childWidth = (width - spacing) / global.screen.n_workspaces;
+        this._childHeight = (height - spacing) / global.screen.n_workspaces;
 
-        alloc.min_size = width;
-        alloc.natural_size = width;
+        alloc.min_size = height;
+        alloc.natural_size = height;
     },
 
-    _getPreferredHeight : function (actor, forWidth, alloc) {
+    _getPreferredWidth : function (actor, forHeight, alloc) {
         let primary = global.get_primary_monitor();
-        this._childHeight = Math.round(this._childWidth * primary.height / primary.width);
+        this._childWidth = Math.round(this._childHeight * primary.width / primary.height);
 
-        alloc.min_size = this._childHeight;
-        alloc.natural_size = this._childHeight;
+        alloc.min_size = this._childWidth;
+        alloc.natural_size = this._childWidth;
     },
 
     _allocate : function (actor, box, flags) {
         let children = this._list.get_children();
         let childBox = new Clutter.ActorBox();
 
-        let rtl = (St.Widget.get_default_direction() == St.TextDirection.RTL);
-        let x = box.x1;
-        let prevChildBoxX2 = box.x1 - this._itemSpacing;
+        let y = box.y1;
+        let prevChildBoxY2 = box.y1 - this._itemSpacing;
         for (let i = 0; i < children.length; i++) {
-            childBox.x1 = prevChildBoxX2 + this._itemSpacing;
-            childBox.x2 = Math.round(x + this._childWidth);
-            childBox.y1 = box.y1;
-            childBox.y2 = box.y1 + this._childHeight;
-            x += this._childWidth + this._itemSpacing;
-            prevChildBoxX2 = childBox.x2;
-            if (rtl) {
-                let ltrChildBoxX1 = childBox.x1;
-                childBox.x1 = box.x2 - (childBox.x2 - box.x1);
-                childBox.x2 = box.x2 - (ltrChildBoxX1 - box.x1);
-            }
+            childBox.x1 = box.x1;
+            childBox.x2 = box.x1 + this._childWidth;
+            childBox.y1 = prevChildBoxY2 + this._itemSpacing;
+            childBox.y2 = Math.round(y + this._childHeight);
+            y += this._childHeight + this._itemSpacing;
+            prevChildBoxY2 = childBox.y2;
             children[i].allocate(childBox, flags);
         }
     },
@@ -114,10 +111,10 @@ WorkspaceSwitcherPopup.prototype = {
         for (let i = 0; i < global.screen.n_workspaces; i++) {
             let indicator = null;
 
-           if (i == activeWorkspaceIndex && direction == LEFT)
-               indicator = new St.Bin({ style_class: 'ws-switcher-active-left' });
-           else if(i == activeWorkspaceIndex && direction == RIGHT)
-               indicator = new St.Bin({ style_class: 'ws-switcher-active-right' });
+           if (i == activeWorkspaceIndex && direction == UP)
+               indicator = new St.Bin({ style_class: 'ws-switcher-active-up' });
+           else if(i == activeWorkspaceIndex && direction == DOWN)
+               indicator = new St.Bin({ style_class: 'ws-switcher-active-down' });
            else
                indicator = new St.Bin({ style_class: 'ws-switcher-box' });
 
@@ -129,7 +126,8 @@ WorkspaceSwitcherPopup.prototype = {
     _position: function() {
         let primary = global.get_primary_monitor();
         this._container.x = primary.x + Math.floor((primary.width - this._container.width) / 2);
-        this._container.y = primary.y + Math.floor((primary.height - this._container.height) / 2);
+        this._container.y = primary.y + Main.panel.actor.height +
+                            Math.floor(((primary.height - Main.panel.actor.height) - this._container.height) / 2);
     },
 
     _show : function() {

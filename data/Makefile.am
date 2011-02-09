@@ -52,8 +52,8 @@ dist_theme_DATA =				\
 	theme/toggle-off-intl.svg		\
 	theme/toggle-on-us.svg			\
 	theme/toggle-on-intl.svg		\
-	theme/ws-switch-arrow-left.svg		\
-	theme/ws-switch-arrow-right.svg
+	theme/ws-switch-arrow-up.svg		\
+	theme/ws-switch-arrow-down.svg
 
 gsettings_SCHEMAS =					\
 	org.gnome.accessibility.magnifier.gschema.xml	\

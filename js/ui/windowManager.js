@@ -556,7 +556,7 @@ WindowManager.prototype = {
             global.screen.get_workspace_by_index(indexToActivate).activate(global.get_current_time());
 
         if (!Main.overview.visible)
-            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.LEFT, indexToActivate);
+            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.UP, indexToActivate);
     },
 
     actionMoveWorkspaceRight: function() {
@@ -572,7 +572,7 @@ WindowManager.prototype = {
             global.screen.get_workspace_by_index(indexToActivate).activate(global.get_current_time());
 
         if (!Main.overview.visible)
-            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.RIGHT, indexToActivate);
+            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.DOWN, indexToActivate);
     },
 
     actionMoveWorkspaceUp: function() {
@@ -585,7 +585,7 @@ WindowManager.prototype = {
             global.screen.get_workspace_by_index(indexToActivate).activate(global.get_current_time());
 
         if (!Main.overview.visible)
-            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.LEFT, indexToActivate);
+            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.UP, indexToActivate);
     },
 
     actionMoveWorkspaceDown: function() {
@@ -598,6 +598,6 @@ WindowManager.prototype = {
             global.screen.get_workspace_by_index(indexToActivate).activate(global.get_current_time());
 
         if (!Main.overview.visible)
-            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.RIGHT, indexToActivate);
+            this._workspaceSwitcherPopup.display(WorkspaceSwitcherPopup.DOWN, indexToActivate);
     }
 };
