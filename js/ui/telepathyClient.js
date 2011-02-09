@@ -42,6 +42,7 @@ function Client() {
 Client.prototype = {
     _init : function() {
         this._accounts = {};
+        // channel path -> Source
         this._sources = {};
 
         // Set up a SimpleObserver, which will call _observeChannels whenever a
@@ -68,7 +69,6 @@ Client.prototype = {
     _observeChannels: function(observer, account, conn, channels,
                                dispatchOp, requests, context) {
         let connPath = conn.get_object_path();
-
         let len = channels.length;
         for (let i = 0; i < len; i++) {
             let channel = channels[i];
@@ -98,15 +98,15 @@ Client.prototype = {
                             return;
 
                         /* We got the TpContact */
-                        if (this._sources[connPath + ':' + targetHandle])
+                        if (this._sources[chan.get_object_path()])
                             return;
 
                         let source = new Source(account, conn, chan, contacts[0]);
 
-                        this._sources[connPath + ':' + targetHandle] = source;
+                        this._sources[chan.get_object_path()] = source;
                         source.connect('destroy', Lang.bind(this,
                             function() {
-                                delete this._sources[connPath + ':' + targetHandle];
+                                delete this._sources[chan.get_object_path()];
                             }));
                     }));
         }
