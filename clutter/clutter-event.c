@@ -793,7 +793,7 @@ clutter_event_get (void)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
 
-  if (!context->events_queue)
+  if (context->events_queue == NULL)
     return NULL;
 
   if (g_queue_is_empty (context->events_queue))
@@ -835,8 +835,10 @@ _clutter_event_push (const ClutterEvent *event,
   ClutterMainContext *context = _clutter_context_get_default ();
   ClutterInputDevice *device;
 
-  /* FIXME: check queue is valid */
   g_assert (context != NULL);
+
+  if (context->events_queue == NULL)
+    context->events_queue = g_queue_new ();
 
   /* disabled devices don't propagate events */
   device = clutter_event_get_device (event);
@@ -893,7 +895,7 @@ clutter_events_pending (void)
 
   g_return_val_if_fail (context != NULL, FALSE);
 
-  if (!context->events_queue)
+  if (context->events_queue == NULL)
     return FALSE;
 
   return g_queue_is_empty (context->events_queue) == FALSE;

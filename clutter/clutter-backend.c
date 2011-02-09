@@ -87,19 +87,11 @@ static void
 clutter_backend_dispose (GObject *gobject)
 {
   ClutterBackendPrivate *priv = CLUTTER_BACKEND (gobject)->priv;
-  ClutterMainContext *clutter_context;
 
-  clutter_context = _clutter_context_get_default ();
+  /* clear the events still in the queue of the main context */
+  _clutter_clear_events_queue ();
 
-  if (clutter_context && clutter_context->events_queue)
-    {
-      g_queue_foreach (clutter_context->events_queue,
-                       (GFunc) clutter_event_free,
-                       NULL);
-      g_queue_free (clutter_context->events_queue);
-      clutter_context->events_queue = NULL;
-    }
-
+  /* remove all event translators */
   if (priv->event_translators != NULL)
     {
       g_list_free (priv->event_translators);
@@ -551,8 +543,6 @@ _clutter_backend_init_events (ClutterBackend *backend)
 
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
   g_return_if_fail (clutter_context != NULL);
-
-  clutter_context->events_queue = g_queue_new ();
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->init_events)

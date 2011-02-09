@@ -189,6 +189,10 @@ gboolean      _clutter_feature_init (GError **error);
 /* Reinjecting queued events for processing */
 void _clutter_process_event (ClutterEvent *event);
 
+/* clears the event queue inside the main context */
+void _clutter_clear_events_queue           (void);
+void _clutter_clear_events_queue_for_stage (ClutterStage *stage);
+
 /* Picking code */
 ClutterActor *_clutter_do_pick (ClutterStage    *stage,
 				gint             x,
