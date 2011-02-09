@@ -334,7 +334,7 @@ Source.prototype = {
     __proto__: MessageTray.Source.prototype,
 
     _init: function() {
-        MessageTray.Source.prototype._init.call(this, _("Bluetooth Agent"));
+        MessageTray.Source.prototype._init.call(this, _("Bluetooth"));
 
         this._setSummaryIcon(this.createNotificationIcon());
     },
@@ -368,7 +368,7 @@ AuthNotification.prototype = {
     _init: function(source, applet, device_path, name, long_name, uuid) {
         MessageTray.Notification.prototype._init.call(this,
                                                       source,
-                                                      _("Bluetooth Agent"),
+                                                      _("Bluetooth"),
                                                       _("Authorization request from %s").format(name),
                                                       { customContent: true });
         this.setResident(true);
@@ -408,7 +408,7 @@ ConfirmNotification.prototype = {
     _init: function(source, applet, device_path, name, long_name, pin) {
         MessageTray.Notification.prototype._init.call(this,
                                                       source,
-                                                      _("Bluetooth Agent"),
+                                                      _("Bluetooth"),
                                                       _("Pairing confirmation for %s").format(name),
                                                       { customContent: true });
         this.setResident(true);
@@ -441,7 +441,7 @@ PinNotification.prototype = {
     _init: function(source, applet, device_path, name, long_name, numeric) {
         MessageTray.Notification.prototype._init.call(this,
                                                       source,
-                                                      _("Bluetooth Agent"),
+                                                      _("Bluetooth"),
                                                       _("Pairing request for %s").format(name),
                                                       { customContent: true });
         this.setResident(true);
