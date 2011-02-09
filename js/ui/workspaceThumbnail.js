@@ -146,7 +146,7 @@ WorkspaceThumbnail.prototype = {
             }));
         this.actor.connect('button-release-event', Lang.bind(this,
             function(actor, event) {
-                this.metaWorkspace.activate(event.get_time());
+                this._activate();
                 return true;
             }));
 
@@ -264,7 +264,7 @@ WorkspaceThumbnail.prototype = {
         let clone = new WindowClone(win);
 
         clone.connect('selected',
-                      Lang.bind(this, this._onCloneSelected));
+                      Lang.bind(this, this._activate));
         clone.connect('drag-begin',
                       Lang.bind(this, function(clone) {
                           Main.overview.beginWindowDrag();
@@ -280,8 +280,12 @@ WorkspaceThumbnail.prototype = {
         return clone;
     },
 
-    _onCloneSelected : function (clone, time) {
-        this.metaWorkspace.activate(time);
+    _activate : function (clone, time) {
+        // a click on the already current workspace should go back to the main view
+        if (this.metaWorkspace == global.screen.get_active_workspace())
+            Main.overview.hide();
+        else
+            this.metaWorkspace.activate(time);
     },
 
     // Draggable target interface
