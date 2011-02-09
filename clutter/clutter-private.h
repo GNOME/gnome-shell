@@ -99,54 +99,66 @@ typedef enum {
   CLUTTER_INTERNAL_CHILD = 1 << 6
 } ClutterPrivateFlags;
 
+/*
+ * ClutterMainContext:
+ *
+ * The shared state of Clutter
+ */
 struct _ClutterMainContext
 {
-  ClutterBackend  *backend;            /* holds a pointer to the windowing
-                                          system backend */
-  GQueue          *events_queue;       /* the main event queue */
+  /* the main windowing system backend */
+  ClutterBackend *backend;
 
-  guint            is_initialized : 1;
-  guint            motion_events_per_actor : 1;/* set for enter/leave events */
-  guint            defer_display_setup : 1;
-  guint            options_parsed : 1;
+  /* the main event queue */
+  GQueue *events_queue;
 
-  GTimer          *timer;	       /* Used for debugging scheduler */
+  /* timer used to print the FPS count */
+  GTimer *timer;
 
-  ClutterPickMode  pick_mode;          /* Indicates pick render mode   */
+  ClutterPickMode  pick_mode;
 
-  gint             num_reactives;      /* Num of reactive actors */
+  /* mapping between reused integer ids and actors */
+  ClutterIDPool *id_pool;
 
-  ClutterIDPool   *id_pool;            /* mapping between reused integer ids
-                                        * and actors
-                                        */
-  guint            frame_rate;         /* Default FPS */
+  /* default FPS; this is only used if we cannot sync to vblank */
+  guint frame_rate;
 
-  ClutterActor    *pointer_grab_actor; /* The actor having the pointer grab
-                                        * (or NULL if there is no pointer grab
-                                        */
-  ClutterActor    *keyboard_grab_actor; /* The actor having the pointer grab
-                                         * (or NULL if there is no pointer
-                                         *  grab)
-                                         */
-  GSList          *shaders;            /* stack of overridden shaders */
+  /* actors with a grab on all devices */
+  ClutterActor *pointer_grab_actor;
+  ClutterActor *keyboard_grab_actor;
 
-  ClutterActor    *motion_last_actor;
+  /* stack of overridden shaders during paint */
+  GSList *shaders;
 
   /* fb bit masks for col<->id mapping in picking */
-  gint fb_r_mask, fb_g_mask, fb_b_mask;
-  gint fb_r_mask_used, fb_g_mask_used, fb_b_mask_used;
+  gint fb_r_mask;
+  gint fb_g_mask;
+  gint fb_b_mask;
+  gint fb_r_mask_used;
+  gint fb_g_mask_used;
+  gint fb_b_mask_used;
 
-  PangoContext     *pango_context;      /* Global Pango context */
-  CoglPangoFontMap *font_map;           /* Global font map */
+  PangoContext *pango_context;  /* Global Pango context */
+  CoglPangoFontMap *font_map;   /* Global font map */
 
   ClutterEvent *current_event;
   guint32 last_event_time;
 
   gulong redraw_count;
 
+  /* list of repaint functions installed through
+   * clutter_threads_add_repaint_func()
+   */
   GList *repaint_funcs;
 
+  /* main settings singleton */
   ClutterSettings *settings;
+
+  /* boolean flags */
+  guint is_initialized          : 1;
+  guint motion_events_per_actor : 1;
+  guint defer_display_setup     : 1;
+  guint options_parsed          : 1;
 };
 
 /* shared between clutter-main.c and clutter-frame-source.c */
@@ -161,18 +173,16 @@ gboolean _clutter_threads_dispatch      (gpointer data);
 void     _clutter_threads_dispatch_free (gpointer data);
 
 #define CLUTTER_CONTEXT()	(_clutter_context_get_default ())
-ClutterMainContext *_clutter_context_get_default (void);
-gboolean            _clutter_context_is_initialized (void);
-PangoContext *_clutter_context_create_pango_context (ClutterMainContext *self);
-PangoContext *_clutter_context_get_pango_context    (ClutterMainContext *self);
+ClutterMainContext *    _clutter_context_get_default            (void);
+gboolean                _clutter_context_is_initialized         (void);
+PangoContext *          _clutter_context_create_pango_context   (ClutterMainContext *self);
+PangoContext *          _clutter_context_get_pango_context      (ClutterMainContext *self);
 
-#define CLUTTER_PARAM_READABLE  \
-        G_PARAM_READABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB
-#define CLUTTER_PARAM_WRITABLE  \
-        G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB
-#define CLUTTER_PARAM_READWRITE \
-        G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |G_PARAM_STATIC_BLURB
+#define CLUTTER_PARAM_READABLE  (G_PARAM_READABLE | G_PARAM_STATIC_STRINGS)
+#define CLUTTER_PARAM_WRITABLE  (G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS)
+#define CLUTTER_PARAM_READWRITE (G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS)
 
+/* automagic interning of a static string */
 #define I_(str)  (g_intern_static_string ((str)))
 
 /* mark all properties under the "Property" context */
