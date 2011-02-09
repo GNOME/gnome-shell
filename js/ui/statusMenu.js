@@ -27,7 +27,7 @@ StatusMenuButton.prototype = {
     __proto__: PanelMenu.Button.prototype,
 
     _init: function() {
-        PanelMenu.Button.prototype._init.call(this, St.Align.START);
+        PanelMenu.Button.prototype._init.call(this, 0.0);
         let box = new St.BoxLayout({ name: 'panelStatusMenu' });
         this.actor.set_child(box);
 

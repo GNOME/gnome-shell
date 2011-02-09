@@ -1802,7 +1802,7 @@ MessageTray.prototype = {
         if (!this._clickedSummaryItem)
             return;
 
-        this._summaryNotificationBoxPointer.setPosition(this._clickedSummaryItem.actor, 0, St.Align.MIDDLE);
+        this._summaryNotificationBoxPointer.setPosition(this._clickedSummaryItem.actor, 0, 0.5);
     },
 
     _unsetClickedSummaryItem: function() {

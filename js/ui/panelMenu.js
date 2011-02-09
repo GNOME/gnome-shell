@@ -68,7 +68,7 @@ SystemStatusButton.prototype = {
     __proto__: Button.prototype,
 
     _init: function(iconName,tooltipText) {
-        Button.prototype._init.call(this, St.Align.START);
+        Button.prototype._init.call(this, 0.0);
         this._iconActor = new St.Icon({ icon_name: iconName,
                                         icon_type: St.IconType.SYMBOLIC,
                                         style_class: 'system-status-icon' });

@@ -320,9 +320,11 @@ BoxPointer.prototype = {
         // separated from its sourceActor
         let primary = global.get_primary_monitor();
         let themeNode = this.actor.get_theme_node();
-        let halfBorder = themeNode.get_length('-arrow-border-width') / 2;
-        let halfBase = themeNode.get_length('-arrow-base') / 2;
+        let borderWidth = themeNode.get_length('-arrow-border-width');
+        let arrowBase = themeNode.get_length('-arrow-base');
         let borderRadius = themeNode.get_length('-arrow-border-radius');
+        let margin = (4 * borderRadius + borderWidth + arrowBase);
+        let halfMargin = margin / 2;
 
         let resX, resY;
 
@@ -346,17 +348,7 @@ BoxPointer.prototype = {
         switch (this._arrowSide) {
         case St.Side.TOP:
         case St.Side.BOTTOM:
-            switch (alignment) {
-            case St.Align.START:
-                resX = sourceCenterX - (halfBase + borderRadius + halfBorder);
-                break;
-            case St.Align.MIDDLE:
-                resX = sourceCenterX - (natWidth / 2);
-                break;
-            case St.Align.END:
-                resX = sourceCenterX - natWidth + (halfBase + borderRadius + halfBorder);
-                break;
-            }
+            resX = sourceCenterX - (halfMargin + (natWidth - margin) * alignment);
 
             resX = Math.max(resX, primary.x + 10);
             resX = Math.min(resX, primary.x + primary.width - (10 + natWidth));
@@ -365,17 +357,7 @@ BoxPointer.prototype = {
 
         case St.Side.LEFT:
         case St.Side.RIGHT:
-            switch (alignment) {
-            case St.Align.START:
-                resY = sourceCenterY - (halfBase + borderRadius + halfBorder);
-                break;
-            case St.Align.MIDDLE:
-                resY = sourceCenterY - (natHeight / 2);
-                break;
-            case St.Align.END:
-                resY = sourceCenterY - natHeight + (halfBase + borderRadius + halfBorder);
-                break;
-            }
+            resY = sourceCenterY - (halfMargin + (natHeight - margin) * alignment);
 
             resY = Math.max(resY, primary.y + 10);
             resY = Math.min(resY, primary.y + primary.height - (10 + natHeight));
