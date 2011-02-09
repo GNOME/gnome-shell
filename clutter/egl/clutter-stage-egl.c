@@ -269,6 +269,160 @@ clutter_stage_egl_add_redraw_clip (ClutterStageWindow *stage_window,
 }
 
 static void
+clutter_stage_egl_redraw (ClutterStageWindow *stage_window)
+{
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage_window);
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterActor *wrapper;
+  EGLSurface egl_surface;
+  gboolean may_use_clipped_redraw;
+  gboolean use_clipped_redraw;
+#ifdef COGL_HAS_X11_SUPPORT
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_egl);
+
+  wrapper = CLUTTER_ACTOR (stage_x11->wrapper);
+  egl_surface = stage_egl->egl_surface;
+#else
+  wrapper = CLUTTER_ACTOR (stage_egl->wrapper);
+  /* Without X we only support one surface and that is associated
+   * with the backend directly instead of the stage */
+  egl_surface = backend_egl->egl_surface;
+#endif
+
+  if (G_LIKELY (backend_egl->can_blit_sub_buffer) &&
+      /* NB: a zero width clip == full stage redraw */
+      stage_egl->bounding_redraw_clip.width != 0 &&
+      /* some drivers struggle to get going and produce some junk
+       * frames when starting up... */
+      G_LIKELY (stage_egl->frame_count > 3)
+#ifdef COGL_HAS_X11_SUPPORT
+      /* While resizing a window clipped redraws are disabled to avoid
+       * artefacts. See clutter-event-x11.c:event_translate for a
+       * detailed explanation */
+      && G_LIKELY (stage_x11->clipped_redraws_cool_off == 0)
+#endif
+      )
+    may_use_clipped_redraw = TRUE;
+  else
+    may_use_clipped_redraw = FALSE;
+
+  if (may_use_clipped_redraw &&
+      G_LIKELY (!(clutter_paint_debug_flags &
+                  CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
+    use_clipped_redraw = TRUE;
+  else
+    use_clipped_redraw = FALSE;
+
+  if (use_clipped_redraw)
+    {
+      cogl_clip_push_window_rectangle (stage_egl->bounding_redraw_clip.x,
+                                       stage_egl->bounding_redraw_clip.y,
+                                       stage_egl->bounding_redraw_clip.width,
+                                       stage_egl->bounding_redraw_clip.height);
+      _clutter_stage_do_paint (CLUTTER_STAGE (wrapper),
+                               &stage_egl->bounding_redraw_clip);
+      cogl_clip_pop ();
+    }
+  else
+    _clutter_stage_do_paint (CLUTTER_STAGE (wrapper), NULL);
+
+  if (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS &&
+      may_use_clipped_redraw)
+    {
+      ClutterGeometry *clip = &stage_egl->bounding_redraw_clip;
+      static CoglMaterial *outline = NULL;
+      CoglHandle vbo;
+      float x_1 = clip->x;
+      float x_2 = clip->x + clip->width;
+      float y_1 = clip->y;
+      float y_2 = clip->y + clip->height;
+      float quad[8] = {
+        x_1, y_1,
+        x_2, y_1,
+        x_2, y_2,
+        x_1, y_2
+      };
+      CoglMatrix modelview;
+
+      if (outline == NULL)
+        {
+          outline = cogl_material_new ();
+          cogl_material_set_color4ub (outline, 0xff, 0x00, 0x00, 0xff);
+        }
+
+      vbo = cogl_vertex_buffer_new (4);
+      cogl_vertex_buffer_add (vbo,
+                              "gl_Vertex",
+                              2, /* n_components */
+                              COGL_ATTRIBUTE_TYPE_FLOAT,
+                              FALSE, /* normalized */
+                              0, /* stride */
+                              quad);
+      cogl_vertex_buffer_submit (vbo);
+
+      cogl_push_matrix ();
+      cogl_matrix_init_identity (&modelview);
+      _clutter_actor_apply_modelview_transform (wrapper, &modelview);
+      cogl_set_modelview_matrix (&modelview);
+      cogl_set_source (outline);
+      cogl_vertex_buffer_draw (vbo, COGL_VERTICES_MODE_LINE_LOOP,
+                               0 , 4);
+      cogl_pop_matrix ();
+      cogl_object_unref (vbo);
+    }
+
+  cogl_flush ();
+
+  /* push on the screen */
+  if (use_clipped_redraw)
+    {
+      ClutterGeometry *clip = &stage_egl->bounding_redraw_clip;
+      ClutterGeometry copy_area;
+
+      CLUTTER_NOTE (BACKEND,
+                    "_egl_blit_sub_buffer (surface: %p, "
+                                          "x: %d, y: %d, "
+                                          "width: %d, height: %d)",
+                    egl_surface,
+                    stage_egl->bounding_redraw_clip.x,
+                    stage_egl->bounding_redraw_clip.y,
+                    stage_egl->bounding_redraw_clip.width,
+                    stage_egl->bounding_redraw_clip.height);
+
+      copy_area.x = clip->x;
+      copy_area.y = clip->y;
+      copy_area.width = clip->width;
+      copy_area.height = clip->height;
+
+      CLUTTER_TIMER_START (_clutter_uprof_context, blit_sub_buffer_timer);
+      _clutter_backend_egl_blit_sub_buffer (backend_egl,
+                                            egl_surface,
+                                            copy_area.x,
+                                            copy_area.y,
+                                            copy_area.width,
+                                            copy_area.height);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, blit_sub_buffer_timer);
+    }
+  else
+    {
+      CLUTTER_NOTE (BACKEND, "eglwapBuffers (display: %p, surface: %p)",
+                    backend_egl->edpy,
+                    egl_surface);
+
+      CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
+      eglSwapBuffers (backend_egl->edpy, egl_surface);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
+      _cogl_swap_buffers_notify ();
+    }
+
+  /* reset the redraw clipping for the next paint... */
+  stage_egl->initialized_redraw_clip = FALSE;
+
+  stage_egl->frame_count++;
+}
+
+static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
 #ifdef COGL_HAS_X11_SUPPORT
@@ -336,157 +490,3 @@ _clutter_stage_egl_init (ClutterStageEGL *stage)
 }
 
 #endif /* COGL_HAS_X11_SUPPORT */
-
-static void
-clutter_stage_egl_redraw (ClutterStageWindow *stage_window)
-{
-  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage_window);
-  ClutterBackend *backend = clutter_get_default_backend ();
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  ClutterActor *wrapper;
-  EGLSurface egl_surface;
-  gboolean may_use_clipped_redraw;
-  gboolean use_clipped_redraw;
-#ifdef COGL_HAS_X11_SUPPORT
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_egl);
-
-  wrapper = CLUTTER_ACTOR (stage_x11->wrapper);
-  egl_surface = stage_egl->egl_surface;
-#else
-  wrapper = CLUTTER_ACTOR (stage_egl->wrapper);
-  /* Without X we only support one surface and that is associated
-   * with the backend directly instead of the stage */
-  egl_surface = backend_egl->egl_surface;
-#endif
-
-  if (G_LIKELY (backend_egl->can_blit_sub_buffer) &&
-      /* NB: a zero width clip == full stage redraw */
-      stage_egl->bounding_redraw_clip.width != 0 &&
-      /* some drivers struggle to get going and produce some junk
-       * frames when starting up... */
-      G_LIKELY (stage_egl->frame_count > 3)
-#ifdef COGL_HAS_X11_SUPPORT
-      /* While resizing a window clipped redraws are disabled to avoid
-       * artefacts. See clutter-event-x11.c:event_translate for a
-       * detailed explanation */
-      && G_LIKELY (stage_x11->clipped_redraws_cool_off == 0)
-#endif
-      )
-    may_use_clipped_redraw = TRUE;
-  else
-    may_use_clipped_redraw = FALSE;
-
-  if (may_use_clipped_redraw &&
-      G_LIKELY (!(clutter_paint_debug_flags &
-                  CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
-    use_clipped_redraw = TRUE;
-  else
-    use_clipped_redraw = FALSE;
-
-  if (use_clipped_redraw)
-    {
-      cogl_clip_push_window_rectangle (stage_egl->bounding_redraw_clip.x,
-                                       stage_egl->bounding_redraw_clip.y,
-                                       stage_egl->bounding_redraw_clip.width,
-                                       stage_egl->bounding_redraw_clip.height);
-      _clutter_stage_do_paint (stage, &stage_egl->bounding_redraw_clip);
-      cogl_clip_pop ();
-    }
-  else
-    _clutter_stage_do_paint (stage, NULL);
-
-  if (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS &&
-      may_use_clipped_redraw)
-    {
-      ClutterGeometry *clip = &stage_egl->bounding_redraw_clip;
-      static CoglMaterial *outline = NULL;
-      CoglHandle vbo;
-      float x_1 = clip->x;
-      float x_2 = clip->x + clip->width;
-      float y_1 = clip->y;
-      float y_2 = clip->y + clip->height;
-      float quad[8] = {
-        x_1, y_1,
-        x_2, y_1,
-        x_2, y_2,
-        x_1, y_2
-      };
-      CoglMatrix modelview;
-
-      if (outline == NULL)
-        {
-          outline = cogl_material_new ();
-          cogl_material_set_color4ub (outline, 0xff, 0x00, 0x00, 0xff);
-        }
-
-      vbo = cogl_vertex_buffer_new (4);
-      cogl_vertex_buffer_add (vbo,
-                              "gl_Vertex",
-                              2, /* n_components */
-                              COGL_ATTRIBUTE_TYPE_FLOAT,
-                              FALSE, /* normalized */
-                              0, /* stride */
-                              quad);
-      cogl_vertex_buffer_submit (vbo);
-
-      cogl_push_matrix ();
-      cogl_matrix_init_identity (&modelview);
-      _clutter_actor_apply_modelview_transform (CLUTTER_ACTOR (stage),
-                                                &modelview);
-      cogl_set_modelview_matrix (&modelview);
-      cogl_set_source (outline);
-      cogl_vertex_buffer_draw (vbo, COGL_VERTICES_MODE_LINE_LOOP,
-                               0 , 4);
-      cogl_pop_matrix ();
-      cogl_object_unref (vbo);
-    }
-
-  cogl_flush ();
-
-  /* push on the screen */
-  if (use_clipped_redraw)
-    {
-      ClutterGeometry *clip = &stage_egl->bounding_redraw_clip;
-      ClutterGeometry copy_area;
-
-      CLUTTER_NOTE (BACKEND,
-                    "_egl_blit_sub_buffer (surface: %p, "
-                                          "x: %d, y: %d, "
-                                          "width: %d, height: %d)",
-                    egl_surface,
-                    stage_egl->bounding_redraw_clip.x,
-                    stage_egl->bounding_redraw_clip.y,
-                    stage_egl->bounding_redraw_clip.width,
-                    stage_egl->bounding_redraw_clip.height);
-
-      copy_area.x = clip->x;
-      copy_area.y = clip->y;
-      copy_area.width = clip->width;
-      copy_area.height = clip->height;
-
-      CLUTTER_TIMER_START (_clutter_uprof_context, blit_sub_buffer_timer);
-      _clutter_backend_egl_blit_sub_buffer (backend_egl,
-                                            egl_surface,
-                                            copy_area.x,
-                                            copy_area.y,
-                                            copy_area.width,
-                                            copy_area.height);
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, blit_sub_buffer_timer);
-    }
-  else
-    {
-      CLUTTER_NOTE (BACKEND, "eglwapBuffers (display: %p, surface: %p)",
-                    backend_egl->edpy,
-                    egl_surface);
-
-      CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
-      eglSwapBuffers (backend_egl->edpy, egl_surface);
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
-      _cogl_swap_buffers_notify ();
-    }
-
-  /* reset the redraw clipping for the next paint... */
-  stage_egl->initialized_redraw_clip = FALSE;
-
-  stage_egl->frame_count++;
-}
