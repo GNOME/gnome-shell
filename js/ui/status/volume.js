@@ -70,13 +70,21 @@ Indicator.prototype = {
         this._control.open();
     },
 
+    _getMaxVolume: function(property) {
+        if (this[property].get_can_decibel())
+            return (VOLUME_MAX * 1.5);
+        else
+            return VOLUME_MAX;
+    },
+
     _onScrollEvent: function(actor, event) {
         let direction = event.get_scroll_direction();
         let currentVolume = this._output.volume;
+        let maxVolume = this._getMaxVolume('_output');
 
         if (direction == Clutter.ScrollDirection.DOWN) {
             let prev_muted = this._output.is_muted;
-            this._output.volume = Math.max(0, currentVolume - VOLUME_MAX * VOLUME_ADJUSTMENT_STEP);
+            this._output.volume = Math.max(0, currentVolume - maxVolume * VOLUME_ADJUSTMENT_STEP);
             if (this._output.volume < 1) {
                 this._output.volume = 0;
                 if (!prev_muted)
@@ -85,7 +93,7 @@ Indicator.prototype = {
             this._output.push_volume();
         }
         else if (direction == Clutter.ScrollDirection.UP) {
-            this._output.volume = Math.min(VOLUME_MAX, currentVolume + VOLUME_MAX * VOLUME_ADJUSTMENT_STEP);
+            this._output.volume = Math.min(maxVolume, currentVolume + maxVolume * VOLUME_ADJUSTMENT_STEP);
             this._output.change_is_muted(false);
             this._output.push_volume();
         }
@@ -165,10 +173,11 @@ Indicator.prototype = {
     },
 
     _volumeToIcon: function(volume) {
+        let maxVolume = this._getMaxVolume('_output');
         if (volume <= 0) {
             return 'audio-volume-muted';
         } else {
-            let n = Math.floor(3 * volume / VOLUME_MAX) + 1;
+            let n = Math.floor(3 * volume / maxVolume) + 1;
             if (n < 2)
                 return 'audio-volume-low';
             if (n >= 3)
@@ -182,7 +191,7 @@ Indicator.prototype = {
             log ('Volume slider changed for %s, but %s does not exist'.format(property, property));
             return;
         }
-        let volume = value * VOLUME_MAX;
+        let volume = value * this._getMaxVolume(property);
         let prev_muted = this[property].is_muted;
         if (volume < 1) {
             this[property].volume = 0;
@@ -204,7 +213,8 @@ Indicator.prototype = {
     _mutedChanged: function(object, param_spec, property) {
         let muted = this[property].is_muted;
         let slider = this[property+'Slider'];
-        slider.setValue(muted ? 0 : (this[property].volume / VOLUME_MAX));
+        let maxVolume = this._getMaxVolume(property);
+        slider.setValue(muted ? 0 : (this[property].volume / maxVolume));
         if (property == '_output') {
             if (muted)
                 this.setIcon('audio-volume-muted');
@@ -214,7 +224,8 @@ Indicator.prototype = {
     },
 
     _volumeChanged: function(object, param_spec, property) {
-        this[property+'Slider'].setValue(this[property].volume / VOLUME_MAX);
+        let maxVolume = this._getMaxVolume(property);
+        this[property+'Slider'].setValue(this[property].volume / maxVolume);
         if (property == '_output' && !this._output.is_muted)
             this.setIcon(this._volumeToIcon(this._output.volume));
     }
