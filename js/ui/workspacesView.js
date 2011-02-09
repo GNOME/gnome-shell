@@ -604,24 +604,8 @@ WorkspacesDisplay.prototype = {
         controls.connect('notify::hover',
                          Lang.bind(this, this._onControlsHoverChanged));
 
-        this._thumbnailsBox = new St.BoxLayout({ vertical: true,
-                                                 style_class: 'workspace-thumbnails' });
-        controls.add(this._thumbnailsBox, { expand: false });
-
-        let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator',
-                                     fixed_position_set: true });
-
-        // We don't want the indicator to affect drag-and-drop
-        Shell.util_set_hidden_from_pick(indicator, true);
-
-        this._thumbnailIndicator = indicator;
-        this._thumbnailsBox.add(this._thumbnailIndicator);
-        this._thumbnailIndicatorConstraints = [];
-        this._thumbnailIndicatorConstraints.push(new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.POSITION }));
-        this._thumbnailIndicatorConstraints.push(new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.SIZE }));
-        this._thumbnailIndicatorConstraints.forEach(function(constraint) {
-                                                        indicator.add_constraint(constraint);
-                                                    });
+        this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
+        controls.add(this._thumbnailsBox.actor, { expand: false });
 
         this.workspacesView = null;
 
@@ -640,23 +624,13 @@ WorkspacesDisplay.prototype = {
 
    show: function() {
         this._controls.show();
+        this._thumbnailsBox.show();
 
         this._workspaces = [];
-        this._workspaceThumbnails = [];
         for (let i = 0; i < global.screen.n_workspaces; i++) {
             let metaWorkspace = global.screen.get_workspace_by_index(i);
             this._workspaces[i] = new Workspace.Workspace(metaWorkspace);
-
-            let thumbnail = new WorkspaceThumbnail.WorkspaceThumbnail(metaWorkspace);
-            this._workspaceThumbnails[i] = thumbnail;
-            this._thumbnailsBox.add(thumbnail.actor);
         }
-
-        // The thumbnails indicator actually needs to be on top of the thumbnails, but
-        // there is also something more subtle going on as well - actors in a StBoxLayout
-        // are allocated from bottom to top (start to end), and we need the
-        // thumnail indicator to be allocated after the actors it is constrained to.
-        this._thumbnailIndicator.raise_top();
 
         let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
 
@@ -700,9 +674,6 @@ WorkspacesDisplay.prototype = {
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
                                   Lang.bind(this, this._workspacesChanged));
-        this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace',
-                                          Lang.bind(this, this._activeWorkspaceChanged));
 
         this._restackedNotifyId =
             global.screen.connect('restacked',
@@ -722,7 +693,6 @@ WorkspacesDisplay.prototype = {
                                                           Lang.bind(this, this._dragEnd));
 
         this._onRestacked();
-        this._constrainThumbnailIndicator();
         this._zoomOut = false;
         this._zoomFraction = 0;
         this._updateZoom();
@@ -730,14 +700,11 @@ WorkspacesDisplay.prototype = {
 
     hide: function() {
         this._controls.hide();
+        this._thumbnailsBox.hide();
 
         if (this._nWorkspacesNotifyId > 0) {
             global.screen.disconnect(this._nWorkspacesNotifyId);
             this._nWorkspacesNotifyId = 0;
-        }
-        if (this._switchWorkspaceNotifyId > 0) {
-            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-            this._switchWorkspaceNotifyId = 0;
         }
         if (this._restackedNotifyId > 0){
             global.screen.disconnect(this._restackedNotifyId);
@@ -762,11 +729,9 @@ WorkspacesDisplay.prototype = {
 
         this.workspacesView.destroy();
         this.workspacesView = null;
-        this._unconstrainThumbnailIndicator();
         for (let w = 0; w < this._workspaces.length; w++) {
             this._workspaces[w].disconnectAll();
             this._workspaces[w].destroy();
-            this._workspaceThumbnails[w].destroy();
         }
     },
 
@@ -815,43 +780,6 @@ WorkspacesDisplay.prototype = {
         this._controls.allocate(childBox, flags);
     },
 
-    _constrainThumbnailIndicator: function() {
-        let active = global.screen.get_active_workspace_index();
-        let thumbnail = this._workspaceThumbnails[active];
-
-        this._thumbnailIndicatorConstraints.forEach(function(constraint) {
-                                                        constraint.set_source(thumbnail.actor);
-                                                        constraint.set_enabled(true);
-                                                    });
-    },
-
-    _unconstrainThumbnailIndicator: function() {
-        this._thumbnailIndicatorConstraints.forEach(function(constraint) {
-                                                        constraint.set_enabled(false);
-                                                    });
-    },
-
-    _activeWorkspaceChanged: function(wm, from, to, direction) {
-        let active = global.screen.get_active_workspace_index();
-        let thumbnail = this._workspaceThumbnails[active];
-
-        this._unconstrainThumbnailIndicator();
-        let oldAllocation = this._thumbnailIndicator.allocation;
-        this._thumbnailIndicator.x = oldAllocation.x1;
-        this._thumbnailIndicator.y = oldAllocation.y1;
-        this._thumbnailIndicator.width = oldAllocation.x2 - oldAllocation.x1;
-        this._thumbnailIndicator.height = oldAllocation.y2 - oldAllocation.y1;
-
-        Tweener.addTween(this._thumbnailIndicator,
-                         { x: thumbnail.actor.allocation.x1,
-                           y: thumbnail.actor.allocation.y1,
-                           time: WORKSPACE_SWITCH_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this,
-                                                 this._constrainThumbnailIndicator)
-                         });
-    },
-
     _onRestacked: function() {
         let stack = global.get_window_actors();
         let stackIndices = {};
@@ -862,8 +790,7 @@ WorkspacesDisplay.prototype = {
         }
 
         this.workspacesView.syncStacking(stackIndices);
-        for (let i = 0; i < this._workspaceThumbnails.length; i++)
-            this._workspaceThumbnails[i].syncStacking(stackIndices);
+        this._thumbnailsBox.syncStacking(stackIndices);
     },
 
     _workspacesChanged: function() {
@@ -880,12 +807,9 @@ WorkspacesDisplay.prototype = {
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
                 let metaWorkspace = global.screen.get_workspace_by_index(w);
                 this._workspaces[w] = new Workspace.Workspace(metaWorkspace);
-
-                let thumbnail = new WorkspaceThumbnail.WorkspaceThumbnail(metaWorkspace);
-                this._workspaceThumbnails[w] = thumbnail;
-                this._thumbnailsBox.add(thumbnail.actor);
             }
-            this._thumbnailIndicator.raise_top();
+
+            this._thumbnailsBox.addThumbnails(oldNumWorkspaces, newNumWorkspaces - oldNumWorkspaces);
         } else {
             // Assume workspaces are only removed sequentially
             // (e.g. 2,3,4 - not 2,4,7)
@@ -907,19 +831,8 @@ WorkspacesDisplay.prototype = {
             for (let l = 0; l < lostWorkspaces.length; l++)
                 lostWorkspaces[l].setReactive(false);
 
-            for (let k = removedIndex; k < removedIndex + removedNum; k++)
-                this._workspaceThumbnails[k].destroy();
-            this._workspaceThumbnails.splice(removedIndex, removedNum);
+            this._thumbnailsBox.removeThumbmails(removedIndex, removedNum);
         }
-
-        // If we removed the current workspace, then metacity will have already
-        // switched to an adjacent workspace. Leaving the animation we
-        // started in response to that around will look funny because it's an
-        // animation for the *old* workspace configuration. So, kill it.
-        // If we animate the workspace removal in the future, we should animate
-        // the indicator as part of that.
-        Tweener.removeTweens(this._thumbnailIndicator);
-        this._constrainThumbnailIndicator();
 
         this.workspacesView.updateWorkspaces(oldNumWorkspaces,
                                              newNumWorkspaces,

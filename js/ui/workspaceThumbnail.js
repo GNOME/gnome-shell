@@ -9,7 +9,9 @@ const St = imports.gi.St;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
+const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
+const WorkspacesView = imports.ui.workspacesView;
 
 // Fraction of original screen size for thumbnails
 let THUMBNAIL_SCALE = 1/8.;
@@ -319,3 +321,126 @@ WorkspaceThumbnail.prototype = {
 };
 
 Signals.addSignalMethods(WorkspaceThumbnail.prototype);
+
+
+function ThumbnailsBox() {
+    this._init();
+}
+
+ThumbnailsBox.prototype = {
+    _init: function() {
+        this.actor = new St.BoxLayout({ vertical: true,
+                                        style_class: 'workspace-thumbnails' });
+
+        let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator',
+                                     fixed_position_set: true });
+
+        // We don't want the indicator to affect drag-and-drop
+        Shell.util_set_hidden_from_pick(indicator, true);
+
+        this._indicator = indicator;
+        this.actor.add(indicator);
+        this._indicatorConstraints = [];
+        this._indicatorConstraints.push(new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.POSITION }));
+        this._indicatorConstraints.push(new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.SIZE }));
+        this._indicatorConstraints.forEach(function(constraint) {
+                                               indicator.add_constraint(constraint);
+                                           });
+
+        this._thumbnails = [];
+    },
+
+    show: function() {
+        this._switchWorkspaceNotifyId =
+            global.window_manager.connect('switch-workspace',
+                                          Lang.bind(this, this._activeWorkspaceChanged));
+
+        this.addThumbnails(0, global.screen.n_workspaces);
+        this._constrainThumbnailIndicator();
+    },
+
+    hide: function() {
+        this._unconstrainThumbnailIndicator();
+
+        if (this._switchWorkspaceNotifyId > 0) {
+            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+            this._switchWorkspaceNotifyId = 0;
+        }
+
+        for (let w = 0; w < this._thumbnails.length; w++)
+            this._thumbnails[w].destroy();
+        this._thumbnails = [];
+    },
+
+    addThumbnails: function(start, count) {
+        for (let k = start; k < start + count; k++) {
+            let metaWorkspace = global.screen.get_workspace_by_index(k);
+            let thumbnail = new WorkspaceThumbnail(metaWorkspace);
+            this._thumbnails[k] = thumbnail;
+            this.actor.add(thumbnail.actor);
+        }
+
+        // The thumbnails indicator actually needs to be on top of the thumbnails, but
+        // there is also something more subtle going on as well - actors in a StBoxLayout
+        // are allocated from bottom to top (start to end), and we need the
+        // thumnail indicator to be allocated after the actors it is constrained to.
+        this._indicator.raise_top();
+    },
+
+    removeThumbmails: function(start, count) {
+        for (let k = start; k < start + count; k++)
+            this._thumbnails[k].destroy();
+        this._thumbnails.splice(start, count);
+
+        // If we removed the current workspace, then metacity will have already
+        // switched to an adjacent workspace. Leaving the animation we
+        // started in response to that around will look funny because it's an
+        // animation for the *old* workspace configuration. So, kill it.
+        // If we animate the workspace removal in the future, we should animate
+        // the indicator as part of that.
+        Tweener.removeTweens(this._thumbnailIndicator);
+        this._constrainThumbnailIndicator();
+    },
+
+    syncStacking: function(stackIndices) {
+        for (let i = 0; i < this._thumbnails.length; i++)
+            this._thumbnails[i].syncStacking(stackIndices);
+    },
+
+    _constrainThumbnailIndicator: function() {
+        let active = global.screen.get_active_workspace_index();
+        let thumbnail = this._thumbnails[active];
+
+        this._indicatorConstraints.forEach(function(constraint) {
+                                               constraint.set_source(thumbnail.actor);
+                                               constraint.set_enabled(true);
+                                           });
+    },
+
+    _unconstrainThumbnailIndicator: function() {
+        this._indicatorConstraints.forEach(function(constraint) {
+                                               constraint.set_enabled(false);
+                                           });
+    },
+
+    _activeWorkspaceChanged: function(wm, from, to, direction) {
+        let active = global.screen.get_active_workspace_index();
+        let thumbnail = this._thumbnails[active];
+
+        this._unconstrainThumbnailIndicator();
+        let oldAllocation = this._indicator.allocation;
+        this._indicator.x = oldAllocation.x1;
+        this._indicator.y = oldAllocation.y1;
+        this._indicator.width = oldAllocation.x2 - oldAllocation.x1;
+        this._indicator.height = oldAllocation.y2 - oldAllocation.y1;
+
+        Tweener.addTween(this._indicator,
+                         { x: thumbnail.actor.allocation.x1,
+                           y: thumbnail.actor.allocation.y1,
+                           time: WorkspacesView.WORKSPACE_SWITCH_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this,
+                                                 this._constrainThumbnailIndicator)
+                         });
+    }
+};
