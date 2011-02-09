@@ -249,7 +249,7 @@ function Dash() {
 Dash.prototype = {
     _init : function() {
         this._maxHeight = -1;
-        this._iconSize = 48;
+        this._iconSize = 64;
         this._shownInitially = false;
 
         this._dragPlaceholder = null;
@@ -413,7 +413,7 @@ Dash.prototype = {
         let [minHeight, natHeight] = this.actor.get_preferred_height(-1);
         let diff = (this._maxHeight - natHeight) / iconChildren.length;
 
-        let iconSizes = [ 16, 22, 24, 32, 48 ];
+        let iconSizes = [ 16, 22, 24, 32, 48, 64 ];
 
         let newIconSize = 16;
         for (let i = 0; i < iconSizes.length; i++) {
