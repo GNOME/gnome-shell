@@ -510,13 +510,13 @@ StTooltip StLabel {
 
 .app-well-app:selected > .overview-icon,
 .search-result-content:selected > .overview-icon {
-    background: rgba(255,255,255,0.33);
+    background-color: rgba(255,255,255,0.33);
 }
 
 .app-well-app:hover > .overview-icon,
 .remove-favorite:hover > .overview-icon,
 .search-result-content:hover > .overview-icon {
-    background: rgba(255,255,255,0.1);
+    background-color: rgba(255,255,255,0.1);
     text-shadow: black 0px 2px 2px;
     transition-duration: 100;
 }
