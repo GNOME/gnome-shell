@@ -334,7 +334,15 @@ clutter_get_motion_events_enabled (void)
   return context->motion_events_per_actor;
 }
 
-guint _clutter_pix_to_id (guchar pixel[4]);
+static inline ClutterActor *
+_clutter_actor_get_by_id (guint32 id)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  g_assert (context->id_pool != NULL);
+
+  return clutter_id_pool_lookup (context->id_pool, id);
+}
 
 void
 _clutter_id_to_color (guint id, ClutterColor *col)
@@ -599,7 +607,7 @@ _clutter_do_pick (ClutterStage   *stage,
         }
 
       id = _clutter_pixel_to_id (pixel);
-      actor = clutter_get_actor_by_gid (id);
+      actor = _clutter_actor_get_by_id (id);
       goto result;
     }
 
@@ -691,7 +699,7 @@ _clutter_do_pick (ClutterStage   *stage,
     }
 
   id = _clutter_pixel_to_id (pixel);
-  actor = clutter_get_actor_by_gid (id);
+  actor = _clutter_actor_get_by_id (id);
 
 result:
 
@@ -2555,7 +2563,6 @@ _clutter_process_event (ClutterEvent *event)
   context->current_event = NULL;
 }
 
-
 /**
  * clutter_get_actor_by_gid:
  * @id: a #ClutterActor ID.
@@ -2570,13 +2577,7 @@ _clutter_process_event (ClutterEvent *event)
 ClutterActor *
 clutter_get_actor_by_gid (guint32 id)
 {
-  ClutterMainContext *context;
-
-  context = _clutter_context_get_default ();
-
-  g_return_val_if_fail (context != NULL, NULL);
-
-  return CLUTTER_ACTOR (clutter_id_pool_lookup (context->id_pool, id));
+  return _clutter_actor_get_by_id (id);
 }
 
 void

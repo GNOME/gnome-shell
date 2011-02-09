@@ -214,7 +214,8 @@ void          _clutter_do_redraw (ClutterStage *stage);
 
 guint         _clutter_pixel_to_id (guchar pixel[4]);
 
-void          _clutter_id_to_color (guint id, ClutterColor *col);
+void          _clutter_id_to_color (guint id,
+                                    ClutterColor *col);
 
 /* use this function as the accumulator if you have a signal with
  * a G_TYPE_BOOLEAN return value; this will stop the emission as
