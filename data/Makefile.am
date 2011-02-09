@@ -21,6 +21,7 @@ themedir = $(pkgdatadir)/theme
 dist_theme_DATA =				\
 	theme/calendar-arrow-left.svg		\
 	theme/calendar-arrow-right.svg		\
+	theme/calendar-today.svg		\
 	theme/close-window.svg			\
 	theme/close.svg				\
 	theme/corner-ripple.png			\

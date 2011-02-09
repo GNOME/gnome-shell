@@ -801,11 +801,11 @@ StTooltip StLabel {
 }
 
 .calendar-day-base:hover {
-    background: #777777;
+    background-color: #777777;
 }
 
 .calendar-day-base:active {
-    background: #555555;
+    background-color: #555555;
 }
 
 .calendar-day-heading {
@@ -839,11 +839,10 @@ StTooltip StLabel {
 }
 
 .calendar-today {
+    background-image: url("calendar-today.svg");
+    text-shadow: black 0px 2px 2px;
     color: #ffffff;
     font-weight: bold;
-    background-gradient-direction: vertical;
-    background-gradient-start: #3c3c3c;
-    background-gradient-end: #131313;
 }
 
 .calendar-other-month-day {
