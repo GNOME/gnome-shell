@@ -56,7 +56,7 @@ DateMenuButton.prototype = {
         //this._eventSource = new Calendar.FakeEventSource();
         this._eventSource = new Calendar.EvolutionEventSource();
 
-        PanelMenu.Button.prototype._init.call(this, 0.0);
+        PanelMenu.Button.prototype._init.call(this, 0.25);
 
         this._clock = new St.Label();
         this.actor.set_child(this._clock);
