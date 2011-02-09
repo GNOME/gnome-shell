@@ -434,6 +434,12 @@ Dash.prototype = {
             // Set the new size immediately, to keep the icons' sizes
             // in sync with this._iconSize
             icon.setIconSize(this._iconSize);
+
+            // Don't animate the icon size change when the overview
+            // is not visible or when initially filling the dash
+            if (!Main.overview.visible || !this._shownInitially)
+                continue;
+
             let [targetWidth, targetHeight] = icon.icon.get_size();
 
             // Scale the icon's texture to the previous size and
