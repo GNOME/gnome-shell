@@ -79,17 +79,6 @@ Client.prototype = {
                targetHandleType != Tp.HandleType.CONTACT)
                continue;
 
-            if (this._sources[connPath + ':' + targetHandle])
-                continue;
-
-            let source = new Source(account, conn, chan);
-
-            this._sources[connPath + ':' + targetHandle] = source;
-            source.connect('destroy', Lang.bind(this,
-                function() {
-                    delete this._sources[connPath + ':' + targetHandle];
-                }));
-
             /* Request a TpContact */
             Shell.get_tp_contacts(conn, 1, [targetHandle],
                     contactFeatures.length, contactFeatures,
@@ -98,21 +87,25 @@ Client.prototype = {
                             return;
 
                         /* We got the TpContact */
-                        if (this._sources[chan.get_object_path()])
-                            return;
-
-                        let source = new Source(account, conn, chan, contacts[0]);
-
-                        this._sources[chan.get_object_path()] = source;
-                        source.connect('destroy', Lang.bind(this,
-                            function() {
-                                delete this._sources[chan.get_object_path()];
-                            }));
-                    }));
+                        this._createSource(account, conn, channel, contacts[0]);
+                    }), null);
         }
 
         // Allow dbus method to return
         context.accept();
+    },
+
+    _createSource: function(account, conn, channel, contact) {
+        if (this._sources[channel.get_object_path()])
+            return;
+
+        let source = new Source(account, conn, channel, contact);
+
+        this._sources[channel.get_object_path()] = source;
+        source.connect('destroy', Lang.bind(this,
+                       function() {
+                           delete this._sources[channel.get_object_path()];
+                       }));
     }
 };
 
