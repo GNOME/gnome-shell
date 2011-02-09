@@ -594,8 +594,9 @@ WorkspacesDisplay.prototype = {
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
 
-        let controls = new St.BoxLayout({ vertical: true,
-                                          style_class: 'workspace-controls' });
+        let controls = new St.Bin({ style_class: 'workspace-controls',
+                                    request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT,
+                                    y_align: St.Align.START });
         this._controls = controls;
         this.actor.add_actor(controls);
 
@@ -605,7 +606,7 @@ WorkspacesDisplay.prototype = {
                          Lang.bind(this, this._onControlsHoverChanged));
 
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
-        controls.add(this._thumbnailsBox.actor, { expand: false });
+        controls.add_actor(this._thumbnailsBox.actor);
 
         this.workspacesView = null;
 
@@ -638,7 +639,7 @@ WorkspacesDisplay.prototype = {
         let totalWidth = totalAllocation.x2 - totalAllocation.x1;
         let totalHeight = totalAllocation.y2 - totalAllocation.y1;
 
-        let [controlsMin, controlsNatural] = this._controls.get_preferred_width(-1);
+        let [controlsMin, controlsNatural] = this._controls.get_preferred_width(totalHeight);
         let controlsReserved = controlsNatural * (1 - CONTROLS_POP_IN_FRACTION);
 
         totalWidth -= controlsReserved;
@@ -664,7 +665,7 @@ WorkspacesDisplay.prototype = {
         if (rtl)
             x += controlsReserved;
 
-        let zoomScale = (totalWidth - controlsNatural) / totalWidth;
+        let zoomScale = (totalWidth - (controlsNatural - controlsReserved)) / totalWidth;
         let newView = new WorkspacesView(width, height, x, y, zoomScale, this._workspaces);
 
         if (this.workspacesView)
