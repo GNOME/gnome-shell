@@ -38,6 +38,26 @@ static GOptionEntry super_oh_entries[] = {
   { NULL }
 };
 
+static void
+on_group_destroy (ClutterActor *actor,
+                  SuperOH      *oh)
+{
+  oh->group = NULL;
+}
+
+static void
+on_hand_destroy (ClutterActor *actor,
+                 SuperOH      *oh)
+{
+  int i;
+
+  for (i = 0; i < n_hands; i++)
+    {
+      if (oh->hand[i] == actor)
+        oh->hand[i] = NULL;
+    }
+}
+
 static gboolean
 on_button_press_event (ClutterActor *actor,
                        ClutterEvent *event,
@@ -80,7 +100,10 @@ input_cb (ClutterActor *stage,
           gint i;
 
           for (i = 0; i < n_hands; i++)
-            clutter_actor_show (oh->hand[i]);
+            {
+              if (oh->hand[i] != NULL)
+                clutter_actor_show (oh->hand[i]);
+            }
 
           return TRUE;
         }
@@ -100,23 +123,24 @@ frame_cb (ClutterTimeline *timeline,
   float rotation = clutter_timeline_get_progress (timeline) * 360.0f;
 
   /* Rotate everything clockwise about stage center*/
-
-  clutter_actor_set_rotation (oh->group,
-                              CLUTTER_Z_AXIS,
-                              rotation,
-			      oh->stage_width / 2,
-                              oh->stage_height / 2,
-			      0);
+  if (oh->group != NULL)
+    clutter_actor_set_rotation (oh->group,
+                                CLUTTER_Z_AXIS,
+                                rotation,
+                                oh->stage_width / 2,
+                                oh->stage_height / 2,
+                                0);
 
   for (i = 0; i < n_hands; i++)
     {
       /* Rotate each hand around there centers - to get this we need
        * to take into account any scaling.
        */
-      clutter_actor_set_rotation (oh->hand[i],
-                                  CLUTTER_Z_AXIS,
-                                  -6.0 * rotation,
-                                  0, 0, 0);
+      if (oh->hand[i] != NULL)
+        clutter_actor_set_rotation (oh->hand[i],
+                                    CLUTTER_Z_AXIS,
+                                    -6.0 * rotation,
+                                    0, 0, 0);
     }
 }
 
@@ -192,6 +216,7 @@ test_actors_main (int argc, char *argv[])
   /* create a new group to hold multiple actors in a group */
   oh->group = clutter_group_new();
   clutter_actor_set_name (oh->group, "Group");
+  g_signal_connect (oh->group, "destroy", G_CALLBACK (on_group_destroy), oh);
 
   oh->hand = g_new (ClutterActor*, n_hands);
 
@@ -245,6 +270,10 @@ test_actors_main (int argc, char *argv[])
                         G_CALLBACK (on_button_press_event),
                         oh);
 
+      g_signal_connect (oh->hand[i], "destroy",
+                        G_CALLBACK (on_hand_destroy),
+                        oh);
+
       if (i % 2)
 	clutter_behaviour_apply (oh->scaler_1, oh->hand[i]);
       else
@@ -265,6 +294,8 @@ test_actors_main (int argc, char *argv[])
   clutter_timeline_start (oh->timeline);
 
   clutter_main ();
+
+  clutter_timeline_stop (oh->timeline);
 
   /* clean up */
   g_object_unref (oh->scaler_1);
