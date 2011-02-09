@@ -49,7 +49,8 @@ WorkspaceSwitcherPopup.prototype = {
 
         this._position();
 
-        this.actor.show();
+        this.actor.hide();
+
         this._timeoutId = Mainloop.timeout_add(DISPLAY_TIMEOUT, Lang.bind(this, this._onTimeout));
     },
 
