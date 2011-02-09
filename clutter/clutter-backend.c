@@ -68,6 +68,8 @@ struct _ClutterBackendPrivate
 
   gfloat units_per_em;
   gint32 units_serial;
+
+  GList *event_translators;
 };
 
 enum
@@ -84,6 +86,7 @@ static guint backend_signals[LAST_SIGNAL] = { 0, };
 static void
 clutter_backend_dispose (GObject *gobject)
 {
+  ClutterBackendPrivate *priv = CLUTTER_BACKEND (gobject)->priv;
   ClutterMainContext *clutter_context;
 
   clutter_context = _clutter_context_get_default ();
@@ -95,6 +98,12 @@ clutter_backend_dispose (GObject *gobject)
                        NULL);
       g_queue_free (clutter_context->events_queue);
       clutter_context->events_queue = NULL;
+    }
+
+  if (priv->event_translators != NULL)
+    {
+      g_list_free (priv->event_translators);
+      priv->event_translators = NULL;
     }
 
   G_OBJECT_CLASS (clutter_backend_parent_class)->dispose (gobject);
@@ -220,6 +229,35 @@ clutter_backend_real_redraw (ClutterBackend *backend,
   _clutter_stage_window_redraw (impl);
 }
 
+static gboolean
+clutter_backend_real_translate_event (ClutterBackend *backend,
+                                      gpointer        native,
+                                      ClutterEvent   *event)
+{
+  ClutterBackendPrivate *priv = backend->priv;
+  GList *l;
+
+  for (l = priv->event_translators;
+       l != NULL;
+       l = l->next)
+    {
+      ClutterEventTranslator *translator = l->data;
+      ClutterTranslateReturn retval;
+
+      retval = _clutter_event_translator_translate_event (translator,
+                                                          native,
+                                                          event);
+
+      if (retval == CLUTTER_TRANSLATE_QUEUE)
+        return TRUE;
+
+      if (retval == CLUTTER_TRANSLATE_REMOVE)
+        return FALSE;
+    }
+
+  return FALSE;
+}
+
 static void
 clutter_backend_class_init (ClutterBackendClass *klass)
 {
@@ -259,6 +297,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
 
   klass->resolution_changed = clutter_backend_real_resolution_changed;
   klass->font_changed = clutter_backend_real_font_changed;
+  klass->translate_event = clutter_backend_real_translate_event;
   klass->redraw = clutter_backend_real_redraw;
 }
 
@@ -906,4 +945,30 @@ _clutter_backend_translate_event (ClutterBackend *backend,
   return CLUTTER_BACKEND_GET_CLASS (backend)->translate_event (backend,
                                                                native,
                                                                event);
+}
+
+void
+_clutter_backend_add_event_translator (ClutterBackend         *backend,
+                                       ClutterEventTranslator *translator)
+{
+  ClutterBackendPrivate *priv = backend->priv;
+
+  if (g_list_find (priv->event_translators, translator) != NULL)
+    return;
+
+  priv->event_translators =
+    g_list_prepend (priv->event_translators, translator);
+}
+
+void
+_clutter_backend_remove_event_translator (ClutterBackend         *backend,
+                                          ClutterEventTranslator *translator)
+{
+  ClutterBackendPrivate *priv = backend->priv;
+
+  if (g_list_find (priv->event_translators, translator) == NULL)
+    return;
+
+  priv->event_translators =
+    g_list_remove (priv->event_translators, translator);
 }

@@ -250,10 +250,6 @@ clutter_keymap_x11_constructed (GObject *gobject)
                                    XkbAllStateComponentsMask,
                                    XkbGroupLockMask | XkbModifierLockMask);
 
-            /* add ourselves as an event translator for XKB events */
-            t = CLUTTER_EVENT_TRANSLATOR (keymap_x11);
-            _clutter_backend_x11_add_event_translator (backend_x11, t);
-
             /* enable XKB autorepeat */
             XkbSetDetectableAutoRepeat (backend_x11->xdpy,
                                         True,
@@ -298,11 +294,10 @@ clutter_keymap_x11_finalize (GObject *gobject)
   ClutterEventTranslator *translator;
 
   keymap = CLUTTER_KEYMAP_X11 (gobject);
-  backend = CLUTTER_BACKEND_X11 (keymap->backend);
   translator = CLUTTER_EVENT_TRANSLATOR (keymap);
 
 #ifdef HAVE_XKB
-  _clutter_backend_x11_remove_event_translator (backend, translator);
+  _clutter_backend_remove_event_translator (keymap->backend, translator);
 
   if (keymap->xkb_desc != NULL)
     XkbFreeKeyboard (keymap->xkb_desc, XkbAllComponentsMask, True);

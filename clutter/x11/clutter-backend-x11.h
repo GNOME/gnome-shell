@@ -30,7 +30,6 @@
 #include "clutter-x11.h"
 
 #include "clutter-backend-private.h"
-#include "clutter-event-translator.h"
 #include "clutter-keymap-x11.h"
 
 #include "xsettings/xsettings-client.h"
@@ -109,8 +108,6 @@ struct _ClutterBackendX11
   gboolean use_xkb;
   gboolean have_xkb_autorepeat;
   guint keymap_serial;
-
-  GList *event_translators;
 };
 
 struct _ClutterBackendX11Class
@@ -145,14 +142,6 @@ _clutter_event_x11_copy (ClutterEventX11 *event_x11);
 
 void
 _clutter_event_x11_free (ClutterEventX11 *event_x11);
-
-void
-_clutter_backend_x11_add_event_translator (ClutterBackendX11      *backend_x11,
-                                           ClutterEventTranslator *translator);
-
-void
-_clutter_backend_x11_remove_event_translator (ClutterBackendX11      *backend_x11,
-                                              ClutterEventTranslator *translator);
 
 gboolean
 _clutter_x11_input_device_translate_screen_coord (ClutterInputDevice *device,

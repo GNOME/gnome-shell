@@ -228,6 +228,7 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
   if (G_UNLIKELY (backend_x11->device_manager == NULL))
     {
       ClutterEventTranslator *translator;
+      ClutterBackend *backend;
 
 #if defined(HAVE_XINPUT) || defined(HAVE_XINPUT_2)
       if (clutter_enable_xinput)
@@ -278,8 +279,9 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
                           NULL);
         }
 
+      backend = CLUTTER_BACKEND (backend_x11);
       translator = CLUTTER_EVENT_TRANSLATOR (backend_x11->device_manager);
-      _clutter_backend_x11_add_event_translator (backend_x11, translator);
+      _clutter_backend_add_event_translator (backend, translator);
     }
 }
 
@@ -288,10 +290,17 @@ clutter_backend_x11_create_keymap (ClutterBackendX11 *backend_x11)
 {
   if (backend_x11->keymap == NULL)
     {
+      ClutterEventTranslator *translator;
+      ClutterBackend *backend;
+
       backend_x11->keymap =
         g_object_new (CLUTTER_TYPE_KEYMAP_X11,
                       "backend", backend_x11,
                       NULL);
+
+      backend = CLUTTER_BACKEND (backend_x11);
+      translator = CLUTTER_EVENT_TRANSLATOR (backend_x11->keymap);
+      _clutter_backend_add_event_translator (backend, translator);
     }
 }
 
@@ -652,10 +661,11 @@ clutter_backend_x11_translate_event (ClutterBackend *backend,
                                      ClutterEvent   *event)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  ClutterBackendClass *parent_class;
   XEvent *xevent = native;
-  GList *l;
 
-  if (backend_x11->event_filters)
+  /* X11 filter functions have a higher priority */
+  if (backend_x11->event_filters != NULL)
     {
       GSList *node = backend_x11->event_filters;
 
@@ -687,25 +697,11 @@ clutter_backend_x11_translate_event (ClutterBackend *backend,
    */
   update_last_event_time (backend_x11, xevent);
 
-  for (l = backend_x11->event_translators;
-       l != NULL;
-       l = l->next)
-    {
-      ClutterEventTranslator *translator = l->data;
-      ClutterTranslateReturn retval;
-
-      retval = _clutter_event_translator_translate_event (translator,
-                                                          native,
-                                                          event);
-
-      if (retval == CLUTTER_TRANSLATE_QUEUE)
-        return TRUE;
-
-      if (retval == CLUTTER_TRANSLATE_REMOVE)
-        return FALSE;
-    }
-
-  return FALSE;
+  /* chain up to the parent implementation, which will handle
+   * event translators
+   */
+  parent_class = CLUTTER_BACKEND_CLASS (clutter_backend_x11_parent_class);
+  return parent_class->translate_event (backend, native, event);
 }
 
 static void
@@ -1192,28 +1188,6 @@ clutter_x11_get_visual_info (void)
   backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
 
   return _clutter_backend_x11_get_visual_info (backend_x11);
-}
-
-void
-_clutter_backend_x11_add_event_translator (ClutterBackendX11      *backend_x11,
-                                           ClutterEventTranslator *translator)
-{
-  if (g_list_find (backend_x11->event_translators, translator) != NULL)
-    return;
-
-  backend_x11->event_translators =
-    g_list_prepend (backend_x11->event_translators, translator);
-}
-
-void
-_clutter_backend_x11_remove_event_translator (ClutterBackendX11      *backend_x11,
-                                              ClutterEventTranslator *translator)
-{
-  if (g_list_find (backend_x11->event_translators, translator) == NULL)
-    return;
-
-  backend_x11->event_translators =
-    g_list_remove (backend_x11->event_translators, translator);
 }
 
 gboolean

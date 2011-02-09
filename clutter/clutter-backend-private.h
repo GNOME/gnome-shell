@@ -23,6 +23,7 @@
 #define __CLUTTER_BACKEND_PRIVATE_H__
 
 #include <clutter/clutter-backend.h>
+#include "clutter-event-translator.h"
 
 #define CLUTTER_BACKEND_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND, ClutterBackendClass))
 #define CLUTTER_IS_BACKEND_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_BACKEND))
@@ -121,6 +122,12 @@ gint32 _clutter_backend_get_units_serial (ClutterBackend *backend);
 gboolean      _clutter_backend_translate_event   (ClutterBackend   *backend,
                                                   gpointer          native,
                                                   ClutterEvent     *event);
+
+void          _clutter_backend_add_event_translator    (ClutterBackend         *backend,
+                                                        ClutterEventTranslator *translator);
+void          _clutter_backend_remove_event_translator (ClutterBackend         *backend,
+                                                        ClutterEventTranslator *translator);
+
 
 G_END_DECLS
 
