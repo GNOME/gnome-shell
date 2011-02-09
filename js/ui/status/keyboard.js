@@ -15,8 +15,6 @@ const PanelMenu = imports.ui.panelMenu;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
-const INDICATOR_SCHEMA = 'org.gnome.settings-daemon.plugins.keyboard';
-
 function LayoutMenuItem() {
     this._init.apply(this, arguments);
 }
@@ -62,10 +60,6 @@ XKBIndicator.prototype = {
         this._labelActors = [ ];
         this._layoutItems = [ ];
 
-        this._indicatorSettings = new Gio.Settings({ schema: INDICATOR_SCHEMA });
-        this._indicatorSettings.connect('changed::disable-indicator', Lang.bind(this, this._sync_config));
-
-        this._disableIndicator = false;
         this._showFlags = false;
         this._config = Gkbd.Configuration.get();
         this._config.connect('changed', Lang.bind(this, this._sync_config));
@@ -81,8 +75,6 @@ XKBIndicator.prototype = {
     },
 
     _sync_config: function() {
-        this._disableIndicator = this._indicatorSettings.get_boolean('disable-indicator');
-
         this._showFlags = this._config.if_flags_shown();
         if (this._showFlags) {
             this._container.set_skip_paint(this._iconActor, false);
@@ -91,7 +83,7 @@ XKBIndicator.prototype = {
         }
 
         let groups = this._config.get_group_names();
-        if (groups.length > 1 && !this._disableIndicator) {
+        if (groups.length > 1) {
             this.actor.show();
         } else {
             this.menu.close();
