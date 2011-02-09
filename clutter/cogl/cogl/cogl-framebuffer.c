@@ -597,6 +597,7 @@ _cogl_framebuffer_flush_dependency_journals (CoglFramebuffer *framebuffer)
   GList *l;
   for (l = framebuffer->deps; l; l = l->next)
     _cogl_framebuffer_flush_journal (l->data);
+  _cogl_framebuffer_remove_all_dependencies (framebuffer);
 }
 
 static inline void
