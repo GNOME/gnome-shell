@@ -44,8 +44,6 @@ WindowClone.prototype = {
         this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
         this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this.inDrag = false;
-
-        this._selected = false;
     },
 
     setStackAbove: function (actor) {
@@ -91,8 +89,9 @@ WindowClone.prototype = {
     },
 
     _onButtonRelease : function (actor, event) {
-        this._selected = true;
         this.emit('selected', event.get_time());
+
+        return true;
     },
 
     _onDragBegin : function (draggable, time) {
