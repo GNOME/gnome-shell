@@ -70,6 +70,18 @@ AC_SUBST([CLUTTER_API_VERSION],    [clutter_api_version])
 AC_SUBST([CLUTTER_API_VERSION_AM], [$CLUTTER_MAJOR_VERSION\_0])
 AC_SUBST([CLUTTER_RELEASE_STATUS], [clutter_release_status])
 
+dnl For Makefile.am compatibility with the standalone build of Cogl:
+AC_SUBST([COGL_1_MINOR_VERSION],[clutter_minor_version])
+AC_SUBST([COGL_1_MICRO_VERSION],[clutter_micro_version])
+AC_SUBST([COGL_1_VERSION],[clutter_version])
+
+AC_SUBST([COGL_MAJOR_VERSION],[2])
+AC_SUBST([COGL_MINOR_VERSION],[0])
+AC_SUBST([COGL_MICRO_VERSION],[0])
+AC_SUBST([COGL_VERSION],[2.0.0])
+AC_SUBST([COGL_API_VERSION],[2.0])
+AC_SUBST([COGL_API_VERSION_AM],[2_0])
+
 m4_define([lt_current],  [m4_eval(100 * clutter_minor_version + clutter_micro_version - clutter_interface_age)])
 m4_define([lt_revision], [clutter_interface_age])
 m4_define([lt_age],      [m4_eval(clutter_binary_age - clutter_interface_age)])
@@ -651,11 +663,19 @@ dnl cogl-defines.h
 COGL_DEFINES_SYMBOLS="";
 
 if test "x$SUPPORT_X11" = "x1"; then
-  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_X11"
+  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_X11 COGL_HAS_X11_SUPPORT"
 fi;
 
 if test "x$SUPPORT_XLIB" = "x1"; then
-  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_XLIB"
+  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_XLIB COGL_HAS_XLIB_SUPPORT"
+fi;
+
+if test "x$SUPPORT_GLX" = "x1"; then
+  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLX_SUPPORT"
+fi;
+
+if test "x$SUPPORT_EGL" = "x1"; then
+  COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_SUPPORT"
 fi;
 
 if test "x$NEED_SEPARATE_EGL" = "xyes"; then
@@ -704,6 +724,10 @@ dnl other tools such as glib-mkenums and gir-scanner don't end up
 dnl using the define also.
 AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1],
           [Can use Cogl 2.0 API internally])
+
+dnl Cogl can be experimentally be built standalone and there are a few
+dnl tweaks we need to make in the Makefiles when building standalone
+AM_CONDITIONAL(COGL_STANDALONE_BUILD, [false])
 
 dnl === Clutter configuration =================================================
 
@@ -1001,18 +1025,18 @@ AC_ARG_ENABLE([cogl-debug],
 AS_CASE([$enable_cogl_debug],
 
         [yes],
-        [COGL_DEBUG_CFLAGS="-DCOGL_GL_DEBUG -DCOGL_OBJECT_DEBUG -DCOGL_HANDLE_DEBUG -DCOGL_ENABLE_DEBUG"],
+        [COGL_EXTRA_CFLAGS="-DCOGL_GL_DEBUG -DCOGL_OBJECT_DEBUG -DCOGL_HANDLE_DEBUG -DCOGL_ENABLE_DEBUG"],
 
         [minimum],
-        [COGL_DEBUG_CFLAGS="-DCOGL_ENABLE_DEBUG"],
+        [COGL_EXTRA_CFLAGS="-DCOGL_ENABLE_DEBUG"],
 
         [no],
-        [COGL_DEBUG_CFLAGS=""],
+        [COGL_EXTRA_CFLAGS=""],
 
         [AC_MSG_ERROR([Invalid value for --enable-cogl-debug])]
 )
 
-AC_SUBST(COGL_DEBUG_CFLAGS)
+AC_SUBST(COGL_EXTRA_CFLAGS)
 
 dnl === Conformance test suite ================================================
 
@@ -1146,6 +1170,12 @@ CLUTTER_LIBS="$FLAVOUR_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_PROFILE_LDFLAGS $GLIB_LI
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
 
+dnl For Makefile.am compatibility with the standalone build of Cogl:
+AC_SUBST([COGL_DEP_CFLAGS], [$CLUTTER_CFLAGS])
+AC_SUBST([COGL_DEP_LIBS], [$CLUTTER_LIBS])
+AC_SUBST([COGL_PKG_REQUIRES],[$CLUTTER_REQUIRES])
+
+
 dnl === GObject-Introspection check ===========================================
 
 GOBJECT_INTROSPECTION_CHECK([gi_req_version])
@@ -1236,7 +1266,7 @@ AC_CONFIG_FILES([
 	clutter/cogl/Makefile
 	clutter/cogl/cogl/Makefile
 	clutter/cogl/cogl/cogl-defines.h
-	clutter/cogl/cogl/cogl-$CLUTTER_API_VERSION.pc:clutter/cogl/cogl/cogl.pc.in
+	clutter/cogl/cogl/cogl-1.0.pc:clutter/cogl/cogl/cogl-1.0-clutter.pc.in
 	clutter/cogl/pango/Makefile
 
 	clutter/egl/clutter-cex100.h
