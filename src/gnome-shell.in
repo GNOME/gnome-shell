@@ -79,49 +79,6 @@ def get_running_session_environs():
                 result[key] = environs[key]
         return result
 
-def start_xephyr():
-    tmpdir = tempfile.mkdtemp("", "gnome-shell.")
-    atexit.register(shutil.rmtree, tmpdir)
-
-    display = ":" + str(random.randint(10, 99))
-    xauth_file = os.path.join(tmpdir, "database")
-
-    # Create a random 128-bit key and format it as hex
-    f = open("/dev/urandom", "r")
-    key = f.read(16)
-    f.close()
-    hexkey = "".join(("%02x" % ord(byte) for byte in key))
-
-    # Store that in an xauthority file as the key for connecting to our Xephyr
-    retcode = subprocess.call(["xauth",
-                               "-f", xauth_file,
-                               "add", display,  "MIT-MAGIC-COOKIE-1", hexkey])
-    if retcode != 0:
-        raise RuntimeError("xauth failed")
-
-    # Launch Xephyr
-    try:
-        xephyr = subprocess.Popen(["Xephyr", display,
-                                   "-auth", xauth_file,
-                                   "-screen", options.geometry,
-                                   "-host-cursor"])
-    except OSError, e:
-        if e.errno == errno.ENOENT:
-            print "Could not find Xephyr."
-            sys.exit(1)
-        else:
-            raise
-    os.environ['DISPLAY'] = display
-    os.environ['XAUTHORITY'] = xauth_file
-
-    # Wait for server to get going: LAME
-    time.sleep(1)
-
-    # Start some windows in our session.
-    subprocess.Popen(["gnome-terminal"])
-
-    return xephyr;
-
 def start_dconf_await_service():
     DCONF_NAME = 'ca.desrt.dconf'
 
@@ -277,9 +234,6 @@ def start_shell(perf_output=None):
         # be supported on both the client and server but not in the
         # list of effective extensions as a signal of needing to force
         # indirect rendering.
-        #
-        # Note that this check would give the wrong answer for Xephyr,
-        # but since we force !use_tfp there anyway, it doesn't matter.
         (server_glx_extensions, client_glx_extensions, glx_extensions) = _get_glx_extensions()
 
         if ("GLX_EXT_texture_from_pixmap" in server_glx_extensions and
@@ -318,21 +272,12 @@ def run_shell(perf_output=None):
         termattrs = termios.tcgetattr(0);
 
     normal_exit = False
-    xephyr = None
 
     if options.verbose:
         print "Starting shell"
 
     try:
-        shell = None
-        if options.xephyr:
-            xephyr = start_xephyr()
-            # This makes us not grab the org.gnome.Panel or
-            # org.freedesktop.Notifications D-Bus names
-            os.environ['GNOME_SHELL_NO_REPLACE'] = '1'
-            shell = start_shell()
-        else:
-            shell = start_shell(perf_output=perf_output)
+        shell = start_shell(perf_output=perf_output)
 
         # Wait for shell to exit
         if options.verbose:
@@ -346,13 +291,6 @@ def run_shell(perf_output=None):
             pass
         shell.wait()
     finally:
-        # Clean up Xephyr if it outlived the shell
-        if xephyr:
-            try:
-                os.kill(xephyr.pid, signal.SIGKILL)
-            except OSError:
-                pass
-
         if shell is None:
             print "Failed to start shell"
         elif shell.returncode == 0:
@@ -620,13 +558,6 @@ parser.add_option("", "--perf-output", metavar="OUTPUT_FILE",
 		  help="Output file to write performance report")
 parser.add_option("", "--perf-upload", action="store_true",
 		  help="Upload performance report to server")
-parser.add_option("", "--xephyr", action="store_true",
-                  help="Run a debugging instance inside Xephyr")
-parser.add_option("", "--geometry", metavar="GEOMETRY",
-                  help="Specify Xephyr screen geometry",
-                  default="1024x768");
-parser.add_option("-w", "--wide", action="store_true",
-                  help="Use widescreen (1280x800) with Xephyr")
 parser.add_option("", "--eval-file", metavar="EVAL_FILE",
                   help="Evaluate the contents of the given JavaScript file")
 parser.add_option("", "--create-extension", action="store_true",
@@ -755,20 +686,10 @@ if options.debug_command:
 elif options.debug:
     options.debug_command = "gdb --args"
 
-if options.wide:
-    options.geometry = "1280x800"
-
-# Figure out whether or not to use GL_EXT_texture_from_pixmap. By default
-# we use it iff we aren't running Xephyr, but we allow the user to
-# explicitly disable it.
+# Figure out whether or not to use GL_EXT_texture_from_pixmap.
 # FIXME: Move this to ClutterGlxPixmap like
 # CLUTTER_PIXMAP_TEXTURE_RECTANGLE=disable.
-if 'GNOME_SHELL_DISABLE_TFP' in os.environ and \
-       os.environ['GNOME_SHELL_DISABLE_TFP'] != '':
-    use_tfp = False
-else:
-    # tfp does not work correctly in Xephyr
-    use_tfp = not options.xephyr
+use_tfp = os.environ.get('GNOME_SHELL_DISABLE_TFP', '') != ''
 
 # We only respawn the previous environment on abnormal exit;
 # for a clean exit, we assume that gnome-shell was replaced with
@@ -784,5 +705,5 @@ try:
     else:
         normal_exit = run_shell()
 finally:
-    if not options.xephyr and options.replace and (options.perf or not normal_exit):
+    if options.replace and (options.perf or not normal_exit):
         restore_gnome()
