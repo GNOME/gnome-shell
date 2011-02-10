@@ -1051,9 +1051,6 @@ Workspace.prototype = {
         cloneWidth = this.scale * clone.actor.scale_x * cloneWidth;
         cloneHeight = this.scale * clone.actor.scale_y * cloneHeight;
 
-        if (!this._windowOverlaysGroup.visible)
-            this._windowOverlaysGroup.show();
-
         if (overlay) {
             overlay.updatePositions(cloneX, cloneY, cloneWidth, cloneHeight);
             if (fade)
@@ -1071,13 +1068,6 @@ Workspace.prototype = {
             if (this._showOnlyWindows != null && !(clone.metaWindow in this._showOnlyWindows))
                 continue;
             this._showWindowOverlay(clone, overlay, this.metaWorkspace == currentWorkspace);
-        }
-    },
-
-    _hideAllOverlays: function() {
-        for (let i = 0; i < this._windows.length; i++) {
-            let overlay = this._windowOverlays[i];
-            overlay.hide();
         }
     },
 
@@ -1105,6 +1095,9 @@ Workspace.prototype = {
     },
 
     showWindowsOverlays: function() {
+        if (this.leavingOverview)
+            return;
+
         this._windowOverlaysGroup.show();
         this._showAllOverlays();
     },
@@ -1231,7 +1224,7 @@ Workspace.prototype = {
 
         this.leavingOverview = true;
 
-        this._hideAllOverlays();
+        this.hideWindowsOverlays();
 
         if (this._repositionWindowsId > 0) {
             Mainloop.source_remove(this._repositionWindowsId);

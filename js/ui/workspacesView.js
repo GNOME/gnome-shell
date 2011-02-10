@@ -634,7 +634,7 @@ WorkspacesView.prototype = {
         let dy = newY - currentY;
 
         for (let i = 0; i < this._workspaces.length; i++) {
-            this._workspaces[i]._hideAllOverlays();
+            this._workspaces[i].hideWindowsOverlays();
             this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
             this._workspaces[i].actor.y += dy;
         }
