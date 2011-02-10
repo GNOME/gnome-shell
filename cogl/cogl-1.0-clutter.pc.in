@@ -1,0 +1,17 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+apiversion=1.0
+requires=@COGL_PKG_REQUIRES@
+backend=@COGL_WINSYS@ #only kept for backward compatability
+winsys=@COGL_WINSYS@
+cogl=@COGL_DRIVER@ #only kept for backward compatability
+driver=@COGL_DRIVER@
+
+Name: Cogl
+Description: An object oriented GL/GLES Abstraction/Utility Layer
+Version: @COGL_1_VERSION@
+Libs: -L${libdir} -lcogl -lcoglpango
+Cflags: -I${includedir}/clutter-${apiversion}
+Requires: ${requires}

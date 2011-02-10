@@ -13,37 +13,53 @@ CLEANFILES =
 DISTCLEANFILES =
 
 noinst_LTLIBRARIES =
+lib_LTLIBRARIES =
 
 INCLUDES = \
 	-I$(top_srcdir)				\
-	-I$(top_srcdir)/clutter/cogl		\
+	-I$(top_builddir)			\
 	-I$(srcdir)/tesselator			\
 	-I$(srcdir)/winsys 			\
 	-I$(srcdir)/driver/$(COGL_DRIVER) 	\
+	$(NULL)
+
+if COGL_STANDALONE_BUILD
+INCLUDES += \
+	-I$(top_srcdir)/clutter/cogl		\
 	-I$(top_builddir)/clutter/cogl          \
 	$(NULL)
+else
+INCLUDES += \
+	-I$(top_srcdir)/clutter/cogl		\
+	-I$(top_builddir)/clutter/cogl          \
+	$(NULL)
+endif
 
 AM_CPPFLAGS = \
-	-DG_DISABLE_SINGLE_INCLUDES 		\
-	-DG_DISABLE_DEPRECATED			\
-	-DG_LOG_DOMAIN=\"Cogl-$(COGL_WINSYS)\" 	\
-	-DCLUTTER_COMPILATION			\
-	$(COGL_DEBUG_CFLAGS) 			\
-	$(CLUTTER_DEBUG_CFLAGS) 		\
+	-DG_DISABLE_SINGLE_INCLUDES 	\
+	-DG_DISABLE_DEPRECATED		\
+	-DG_LOG_DOMAIN=\"Cogl\" 	\
+	-DCLUTTER_COMPILATION		\
 	$(NULL)
 
-AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
+AM_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
 
 BUILT_SOURCES += cogl-defines.h
 DISTCLEANFILES += cogl-defines.h
 EXTRA_DIST += cogl-defines.h.in
 
-# pkg-config
+# Note: The cogl-1.0/cogl-gl-1.0 files are essentially for
+# compatability only.  I'm not really sure who could possibly be using
+# them so we may decide to remove them entirely at some point.
 pc_files = \
-	cogl-$(COGL_DRIVER)-$(CLUTTER_API_VERSION).pc \
-	cogl-$(CLUTTER_API_VERSION).pc
+	cogl-1.0.pc \
+	cogl-gl-1.0.pc
 
-cogl-$(COGL_DRIVER)-$(CLUTTER_API_VERSION).pc: cogl-$(CLUTTER_API_VERSION).pc
+if COGL_STANDALONE_BUILD
+pc_files += cogl-$(COGL_API_VERSION).pc
+endif
+
+cogl-gl-1.0.pc: cogl-1.0.pc
 	$(QUIET_GEN)cp -f $< $(@F)
 
 pkgconfigdir = $(libdir)/pkgconfig
@@ -356,11 +372,28 @@ glib_enum_c = cogl-enum-types.c
 glib_enum_headers = $(cogl_public_h)
 include $(top_srcdir)/build/autotools/Makefile.am.enums
 
-noinst_LTLIBRARIES += libclutter-cogl.la
+if COGL_STANDALONE_BUILD
+lib_LTLIBRARIES += libcogl.la
+else
+noinst_LTLIBRARIES += libcogl.la
+endif
 
-libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS)
-libclutter_cogl_la_SOURCES = $(cogl_sources_c)
-nodist_libclutter_cogl_la_SOURCES = $(BUILT_SOURCES)
+libcogl_la_LIBADD = -lm $(COGL_DEP_LIBS)
+if SUPPORT_GLX
+libcogl_la_LIBADD += -ldl
+endif
+if COGL_STANDALONE_BUILD
+# XXX: The aim is to eventually get rid of all private API exports
+# for coglpango.
+libcogl_la_LDFLAGS = \
+	-no-undefined \
+	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@ \
+	-export-dynamic \
+	-export-symbols-regex "^(cogl|_cogl_debug_flags|_cogl_atlas_new|_cogl_atlas_add_reorganize_callback|_cogl_atlas_reserve_space|_cogl_callback|_cogl_util_get_eye_planes_for_screen_poly).*"
+endif
+
+libcogl_la_SOURCES = $(cogl_sources_c)
+nodist_libcogl_la_SOURCES = $(BUILT_SOURCES)
 
 # Cogl installed headers
 cogl_headers = \
@@ -368,28 +401,33 @@ cogl_headers = \
 	$(srcdir)/cogl-deprecated.h \
 	$(NULL)
 
+if COGL_STANDALONE_BUILD
+coglincludedir = $(includedir)/cogl/cogl
+coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)
+nodist_coglinclude_HEADERS = cogl-defines.h cogl-enum-types.h
+else
 coglincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
 coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)
 nodist_coglinclude_HEADERS = cogl-defines.h cogl-enum-types.h
+endif
 
 -include $(INTROSPECTION_MAKEFILE)
 
 INTROSPECTION_GIRS =
 
 if HAVE_INTROSPECTION
+Cogl-1.0.gir: libcogl.la Makefile
 
-Cogl-@CLUTTER_API_VERSION@.gir: libclutter-cogl.la Makefile
+Cogl_1_0_gir_NAMESPACE = Cogl
+Cogl_1_0_gir_VERSION = 1.0
+Cogl_1_0_gir_LIBS = libcogl.la
+Cogl_1_0_gir_FILES = $(cogl_headers) cogl-enum-types.h
+Cogl_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS)
+Cogl_1_0_gir_INCLUDES = GL-1.0 GObject-2.0
+Cogl_1_0_gir_EXPORT_PACKAGES = cogl-1.0
+Cogl_1_0_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'
 
-Cogl_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Cogl
-Cogl_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
-Cogl_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-cogl.la
-Cogl_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cogl_headers) cogl-enum-types.h
-Cogl_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS)
-Cogl_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0
-Cogl_@CLUTTER_API_VERSION_AM@_gir_EXPORT_PACKAGES = cogl-1.0
-Cogl_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'
-
-INTROSPECTION_GIRS += Cogl-@CLUTTER_API_VERSION@.gir
+INTROSPECTION_GIRS += Cogl-1.0.gir
 
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)
