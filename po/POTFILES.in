@@ -1,6 +1,5 @@
 data/gnome-shell.desktop.in.in
 data/org.gnome.shell.gschema.xml.in
-data/org.gnome.accessibility.magnifier.gschema.xml.in
 js/misc/util.js
 js/ui/appDisplay.js
 js/ui/appFavorites.js

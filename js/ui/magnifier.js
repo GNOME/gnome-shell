@@ -438,7 +438,7 @@ Magnifier.prototype = {
     },
 
     _settingsInit: function(zoomRegion) {
-        this._settings = new Gio.Settings({ schema: 'org.gnome.accessibility.magnifier' });
+        this._settings = new Gio.Settings({ schema: 'org.gnome.desktop.a11y.magnifier' });
 
         if (zoomRegion) {
             // Mag factor is accurate to two decimal places.

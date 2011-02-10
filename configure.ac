@@ -104,6 +104,7 @@ PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-3.0)
 PKG_CHECK_MODULES(TRAY, gtk+-3.0)
 PKG_CHECK_MODULES(GVC, libpulse libpulse-mainloop-glib gobject-2.0)
 PKG_CHECK_MODULES(JS_TEST, clutter-x11-1.0 gjs-1.0 gobject-introspection-1.0 gtk+-3.0)
+PKG_CHECK_MODULES(DESKTOP_SCHEMAS, gsettings-desktop-schemas >= 0.1.7)
 
 AC_MSG_CHECKING([for bluetooth support])
 PKG_CHECK_EXISTS([gnome-bluetooth-1.0 >= 2.90.0],

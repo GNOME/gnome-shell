@@ -55,9 +55,7 @@ dist_theme_DATA =				\
 	theme/ws-switch-arrow-up.svg		\
 	theme/ws-switch-arrow-down.svg
 
-gsettings_SCHEMAS =					\
-	org.gnome.accessibility.magnifier.gschema.xml	\
-	org.gnome.shell.gschema.xml
+gsettings_SCHEMAS = org.gnome.shell.gschema.xml
 
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
@@ -93,7 +91,6 @@ EXTRA_DIST =						\
 	$(menu_DATA)					\
 	$(gconfschema_DATA)				\
 	$(shaders_DATA)					\
-	org.gnome.accessibility.magnifier.gschema.xml.in \
 	org.gnome.shell.gschema.xml.in
 
 CLEANFILES =						\
