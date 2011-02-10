@@ -126,6 +126,12 @@ BaseIcon.prototype = {
         this.icon.destroy();
         this.iconSize = size;
         this.icon = this.createIcon(this.iconSize);
+
+        // The icon returned by createIcon() might actually be smaller than
+        // the requested icon size (for instance StTextureCache does this
+        // for fallback icons), so set the size explicitly.
+        this.icon.set_size(this.iconSize, this.iconSize);
+
         this._iconBin.child = this.icon;
     },
 
