@@ -168,10 +168,10 @@ Overview.prototype = {
         this.viewSelector.addSearchProvider(new DocDisplay.DocSearchProvider());
 
         // TODO - recalculate everything when desktop size changes
-        this._dash = new Dash.Dash();
-        this._group.add_actor(this._dash.actor);
-        this._dash.actor.add_constraint(this.viewSelector.constrainY);
-        this._dash.actor.add_constraint(this.viewSelector.constrainHeight);
+        this.dash = new Dash.Dash();
+        this._group.add_actor(this.dash.actor);
+        this.dash.actor.add_constraint(this.viewSelector.constrainY);
+        this.dash.actor.add_constraint(this.viewSelector.constrainHeight);
 
         this._coverPane.hide();
 
@@ -439,12 +439,12 @@ Overview.prototype = {
         // Set the dash's x position - y is handled by a constraint
         let dashX;
         if (rtl) {
-            this._dash.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
+            this.dash.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
             dashX = primary.width;
         } else {
             dashX = 0;
         }
-        this._dash.actor.set_x(dashX);
+        this.dash.actor.set_x(dashX);
 
         this.viewSelector.actor.set_position(viewX, viewY);
         this.viewSelector.actor.set_size(viewWidth, viewHeight);
@@ -530,7 +530,7 @@ Overview.prototype = {
 
         this.viewSelector.show();
         this._workspacesDisplay.show();
-        this._dash.show();
+        this.dash.show();
 
         this.workspaces = this._workspacesDisplay.workspacesView;
         global.overlay_group.add_actor(this.workspaces.actor);
@@ -656,20 +656,20 @@ Overview.prototype = {
 
         if (this._shown) {
             if (!this._modal) {
-                if (Main.pushModal(this._dash.actor))
+                if (Main.pushModal(this.dash.actor))
                     this._modal = true;
                 else
                     this.hide();
             }
         } else if (this._shownTemporarily) {
             if (this._modal) {
-                Main.popModal(this._dash.actor);
+                Main.popModal(this.dash.actor);
                 this._modal = false;
             }
             global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
         } else {
             if (this._modal) {
-                Main.popModal(this._dash.actor);
+                Main.popModal(this.dash.actor);
                 this._modal = false;
             }
             else if (global.stage_input_mode == Shell.StageInputMode.FULLSCREEN)
@@ -744,7 +744,7 @@ Overview.prototype = {
 
         this._workspacesDisplay.hide();
         this.viewSelector.hide();
-        this._dash.hide();
+        this.dash.hide();
 
         this._desktopFade.hide();
         this._background.hide();
