@@ -261,11 +261,7 @@ shell_doc_system_open (ShellDocSystem *system,
   else
     {
       char *app_name;
-#if GTK_MINOR_VERSION >= 18
       const char *app_exec;
-#else
-      char *app_exec;
-#endif
       char *app_exec_quoted;
       guint count;
       time_t time;
