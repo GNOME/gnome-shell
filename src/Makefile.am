@@ -56,7 +56,6 @@ shell_public_headers_h =		\
 	shell-app-usage.h		\
 	shell-arrow.h			\
 	shell-doc-system.h		\
-	shell-drawing.h			\
 	shell-embedded-window.h		\
 	shell-generic-container.h	\
 	shell-gtk-embed.h		\
@@ -88,7 +87,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-app-usage.c		\
 	shell-arrow.c			\
 	shell-doc-system.c		\
-	shell-drawing.c			\
 	shell-embedded-window.c		\
 	shell-evolution-event-source.h	\
 	shell-evolution-event-source.c	\
