@@ -598,7 +598,8 @@ Notification.prototype = {
         MessageTray.Notification.prototype._init.call(this, source, source.title, null, { customContent: true });
         this.setResident(true);
 
-        this._responseEntry = new St.Entry({ style_class: 'chat-response' });
+        this._responseEntry = new St.Entry({ style_class: 'chat-response',
+                                             can_focus: true });
         this._responseEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
         this.setActionArea(this._responseEntry);
 
@@ -681,13 +682,6 @@ Notification.prototype = {
         let label = this.addBody(text);
         label.add_style_class_name('chat-meta-message');
         this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false});
-    },
-
-    grabFocus: function(lockTray) {
-        // Need to call the base class function first so that
-        // it saves where the key focus was before.
-        MessageTray.Notification.prototype.grabFocus.call(this, lockTray);
-        global.stage.set_key_focus(this._responseEntry.clutter_text);
     },
 
     _onEntryActivated: function() {
