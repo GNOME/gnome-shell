@@ -59,6 +59,9 @@ struct _CoglTexture2D
 GQuark
 _cogl_handle_texture_2d_get_type (void);
 
+gboolean
+_cogl_is_texture_2d (CoglHandle object);
+
 CoglHandle
 _cogl_texture_2d_new_with_size (unsigned int     width,
                                 unsigned int     height,
