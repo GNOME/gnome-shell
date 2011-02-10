@@ -38,6 +38,7 @@
 #include "cogl-handle.h"
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
+#include "cogl-framebuffer-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -439,6 +440,40 @@ _cogl_texture_2d_externally_modified (CoglHandle handle)
     return;
 
   COGL_TEXTURE_2D (handle)->mipmaps_dirty = TRUE;
+}
+
+void
+_cogl_texture_2d_copy_from_framebuffer (CoglHandle handle,
+                                        int dst_x,
+                                        int dst_y,
+                                        int src_x,
+                                        int src_y,
+                                        int width,
+                                        int height)
+{
+  CoglTexture2D *tex_2d;
+
+  g_return_if_fail (_cogl_is_texture_2d (handle));
+
+  tex_2d = COGL_TEXTURE_2D (handle);
+
+  /* Make sure the current framebuffers are bound. We explicitly avoid
+     flushing the clip state so we can bind our own empty state */
+  _cogl_framebuffer_flush_state (_cogl_get_draw_buffer (),
+                                 _cogl_get_read_buffer (),
+                                 0);
+
+  _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
+                                   tex_2d->gl_texture,
+                                   tex_2d->is_foreign);
+
+  glCopyTexSubImage2D (GL_TEXTURE_2D,
+                       0, /* level */
+                       dst_x, dst_y,
+                       src_x, src_y,
+                       width, height);
+
+  tex_2d->mipmaps_dirty = TRUE;
 }
 
 static int
