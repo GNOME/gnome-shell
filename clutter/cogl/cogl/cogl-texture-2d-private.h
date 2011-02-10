@@ -87,4 +87,26 @@ _cogl_texture_2d_new_from_foreign (GLuint gl_handle,
 void
 _cogl_texture_2d_externally_modified (CoglHandle handle);
 
+/*
+ * _cogl_texture_2d_copy_from_framebuffer:
+ * @handle: A handle to a 2D texture
+ * @dst_x: X-position to store the image within the texture
+ * @dst_y: Y-position to store the image within the texture
+ * @src_x: X-position to within the framebuffer to read from
+ * @src_y: Y-position to within the framebuffer to read from
+ * @width: width of the rectangle to copy
+ * @height: height of the rectangle to copy
+ *
+ * This copies a portion of the current read framebuffer into the
+ * texture.
+ */
+void
+_cogl_texture_2d_copy_from_framebuffer (CoglHandle handle,
+                                        int dst_x,
+                                        int dst_y,
+                                        int src_x,
+                                        int src_y,
+                                        int width,
+                                        int height);
+
 #endif /* __COGL_TEXTURE_2D_H */
