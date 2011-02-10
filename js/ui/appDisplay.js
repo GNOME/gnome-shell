@@ -522,7 +522,7 @@ AppWellIcon.prototype = {
     },
 
     getDragActor: function() {
-        return this.app.create_icon_texture(this.icon.iconSize);
+        return this.app.create_icon_texture(Main.overview.dash.iconSize);
     },
 
     // Returns the original actor that should align with the actor
