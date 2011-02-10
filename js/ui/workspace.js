@@ -921,6 +921,9 @@ Workspace.prototype = {
     },
 
     setReservedSlot: function(clone) {
+        if (this._reservedSlot == clone)
+            return;
+
         if (clone && this.containsMetaWindow(clone.metaWindow)) {
             this._reservedSlot = null;
             this.positionWindows(WindowPositionFlags.ANIMATE);
