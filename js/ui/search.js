@@ -355,7 +355,7 @@ SearchSystem.prototype = {
     updateSearch: function(searchString) {
         searchString = searchString.replace(/^\s+/g, '').replace(/\s+$/g, '');
         if (searchString == '')
-            return null;
+            return [];
 
         let terms = searchString.split(/\s+/);
         let isSubSearch = terms.length == this._previousTerms.length;
