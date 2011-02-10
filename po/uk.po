@@ -2,20 +2,22 @@
 # Copyright (C) 2010 Free Software Foundation
 # This file is distributed under the same license as the gnome-shell package.
 # Maxim V. Dziumanenko <dziumanenko@gmail.com>, 2010.
-#
+# Korostil Daniel <ted.korostiled@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&component=general\n"
-"POT-Creation-Date: 2010-03-31 13:32+0000\n"
-"PO-Revision-Date: 2010-03-31 13:32+0000\n"
-"Last-Translator: Maxim V. Dziumanenko <dziumanenko@gmail.com>\n"
-"Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-02-10 09:04+0200\n"
+"PO-Revision-Date: 2011-02-10 21:29+0300\n"
+"Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
+"Language-Team: translation@linux.org.ua\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Virtaal 0.6.1\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -25,203 +27,1092 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Керування вікнами та запуск програм"
 
-#. **** Applications ****
-#: ../js/ui/appDisplay.js:312 ../js/ui/dash.js:855
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Надає доступ до внутрішніх засобів зневаджування та спостереження через "
+"Alt-F2."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Увімкнути внутрішні засоби, які будуть корисними для розробників і "
+"випробувальників при натисненні Alt-F2"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "File extension used for storing the screencast"
+msgstr "Розширення файла для зберігання трансляції з екрана"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "Framerate used for recording screencasts."
+msgstr "Частота кадрів для запису трансляцій з екрана."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+"Розширення GNOME Shell мають властивості «uuid»; цей ключ перелічує "
+"розширення, які не варто завантажувати."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid "History for command (Alt-F2) dialog"
+msgstr "Історія для команд (Alt-F2)"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Якщо це так, дата буде показуватись у годиннику разом з часом."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "If true, display seconds in time."
+msgstr "Якщо це так, буде показано секунди в часі."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Якщо це так, буде показано дні тижня у календарі згідно з ISO."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Перелічити ідентифікатори файла стільниці для улюблених програм"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#, no-c-format, 
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
+msgstr ""
+"Вказує канал даних GStreamer для кодування запису. Звідси відповідний "
+"синтаксис для gst-launch. Канал даних повинен мати нез'єднаний приймальний "
+"буфер, де відео записано. Зазвичай воно має нез'єднане джерело буфера; вивід "
+"з цього буфера  буде записано в вихідний файл. Однак канал даних також "
+"відповідати за власний вивід — це може бути використано для відправлення "
+"виводу до сервера через протокол shout2send чи будь-який інший. Коли не "
+"вказано або вказано порожнє значення, буде використано типовий канал даних. "
+"Натепер це «videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! "
+"webmmux» і записує у WEBM, використовуючи кодек VP8. %T використовується як "
+"заповнювач для гостей в оптимальній кількості потоків на систему."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "Show date in clock"
+msgstr "Показати дату в годиннику"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Show the week date in the calendar"
+msgstr "Показати дні тижня в календарі"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show time with seconds"
+msgstr "Показати час з секундами"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Програми, які відповідають цьому ідентифікатору, буде показано в ділянці "
+"улюбленого."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"Назва файла для запису трансляції з екрана буде унікальною, яка основана на "
+"даті, та буде використовувати це розширення. Слід змінити це, коли записуєте "
+"в різні формати контейнера. "
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"Частота кадрів кінцевої трансляції з екрана записано в записувачі GNOME Shell як "
+"«frames-per-second»."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "Канал даних GStreamer використовується для кодування транляції з екрана"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"Shell зазвичай показує активні програми, щоб продемонструвати найуживаніші "
+"(наприклад, у пускачі). Поки ці дані будуть утримуватись закритими, ви "
+"можете забажати вимкнути це через особисті мотиви. Будь ласка, завважте, це "
+"не вилучить уже збережені дані."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "Uuids of extensions to disable"
+msgstr "Вимкнути розширення Uuids"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "Whether to collect stats about applications usage"
+msgstr "Чи потрібно збирати статистику про вживаність програм "
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid "disabled OpenSearch providers"
+msgstr "вимкнено постачальника OpenSearch"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
+msgid "Clip the crosshairs at the center"
+msgstr "Обрізати перехрестя в центрі"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
+msgid "Color of the crosshairs"
+msgstr "Колір перехрестя"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
+msgid ""
+"Determines the length of the vertical and horizontal lines that make up the "
+"crosshairs."
+msgstr ""
+"Визначає довжину вертикальних і горизонтальних ліній, які складають "
+"перехрестя."
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
+msgid ""
+"Determines the position of the magnified mouse image within the magnified "
+"view and how it reacts to system mouse movement. The values are - none: no "
+"mouse tracking; - centered: the mouse image is displayed at the center of "
+"the zoom region (which also represents the point under the system mouse) and "
+"the magnified contents are scrolled as the system mouse moves; - "
+"proportional: the position of the magnified mouse in the zoom region is "
+"proportionally the same as the position of the system mouse on screen; - "
+"push: when the magnified mouse intersects a boundary of the zoom region, the "
+"contents are scrolled into view."
+msgstr ""
+"Визначає позиції збільшеного зображення миші у збільшеному перегляді і як це "
+"реагує на рух системної миші. Значення — none: без стеження за мишкою; — "
+"centered: зображення миші показується в центрі області масштабу (який також "
+"змальовує точку під системною мишею) і збільшений вміст прокручується в міру "
+"руху системної миші; —  proportional: позиція збільшеної миші в області "
+"масштабу пропорційно однакова до позиції системної миші на екрані; — push: "
+"коли збільшена миша перетинає межу області масштабу, вміст прокручується в "
+"перегляд."
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
+msgid ""
+"Determines the transparency of the crosshairs, from fully opaque to fully "
+"transparent."
+msgstr ""
+"Визначає прозорість перехрестя, від повністю непрозорого до абсолютно "
+"прозорого."
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
+msgid ""
+"Determines whether the crosshairs intersect the magnified mouse sprite, or "
+"are clipped such that the ends of the horizontal and vertical lines surround "
+"the mouse image."
+msgstr ""
+"Визначає, чи перехрестя перетинає спрайт збільшеної миші, або чи обрізано "
+"так, що кінці горизонтальних і вертикальних ліній межують із зображенням "
+"миші. "
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
+msgid "Enable lens mode"
+msgstr "Увімкнути режим лінзи"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
+msgid ""
+"Enables/disables display of crosshairs centered on the magnified mouse "
+"sprite."
+msgstr ""
+"Вмикає/вимикає показ перехрестя зосередженого на спрайті збільшеної миші."
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
+msgid ""
+"For centered mouse tracking, when the system pointer is at or near the edge "
+"of the screen, the magnified contents continue to scroll such that the "
+"screen edge moves into the magnified view."
+msgstr ""
+"Для зосередженого стеження за мишею, коли системний вказівник близько до "
+"краю екрана, збільшений вміст і надалі гортається так, ніби краї екрана "
+"переходять у збільшений перегляд."
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
+msgid "Length of the crosshairs"
+msgstr "Довжина перехрестя"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:11
+msgid "Magnification factor"
+msgstr "Коефіцієнт збільшення"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:12
+msgid "Mouse Tracking Mode"
+msgstr "Режим стеження за мишою"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:13
+msgid "Opacity of the crosshairs"
+msgstr "Непрозорість перехрестя"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
+msgid "Screen position"
+msgstr "Позиція на екрані"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
+msgid "Scroll magnified contents beyond the edges of the desktop"
+msgstr "Гортати збільшений вміст за краями стільниці"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
+msgid "Show or hide crosshairs"
+msgstr "Показує або ховає перехрестя"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
+msgid "Show or hide the magnifier"
+msgstr "Показати або сховати лупу"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
+msgid "Show or hide the magnifier and all of its zoom regions."
+msgstr "Показати або сховати лупу і всі її області масштабу."
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
+msgid ""
+"The color of the the vertical and horizontal lines that make up the "
+"crosshairs."
+msgstr "Колір вертикальних і горизонтальних ліній, які складають перехрестя."
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
+msgid ""
+"The magnified view either fills the entire screen, or occupies the top-half, "
+"bottom-half, left-half, or right-half of the screen."
+msgstr ""
+"Збільшений перегляд заповнює ввесь екран або займає верхню половину, нижню "
+"половину, ліву половину чи праву половину на екрані."
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
+msgid ""
+"The power of the magnification. A value of 1.0 means no magnification. A "
+"value of 2.0 doubles the size."
+msgstr ""
+"Степінь збільшення. Значення 1.0 означає, що нема збільшення. Значення 2.0 — "
+"подвійний розмір."
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
+msgid "Thickness of the crosshairs"
+msgstr "Товщина перехрестя"
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
+msgid ""
+"Whether the magnified view should be centered over the location of the "
+"system mouse and move with it."
+msgstr ""
+"Чи збільшений перегляд повинен зосередитись на адресі системної миші і "
+"рухатись з нею."
+
+#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
+msgid "Width of the vertical and horizontal lines that make up the crosshairs."
+msgstr "Ширина вертикальних і горизонтальних ліній, які складають перехрестя."
+
+#: ../js/misc/util.js:86
+msgid "Command not found"
+msgstr "Команди не знайдено"
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:113
+msgid "Could not parse command:"
+msgstr "Неможливо розібрати команду:"
+
+#: ../js/misc/util.js:135
+msgid "No such application"
+msgstr "Нема такої програми"
+
+#: ../js/misc/util.js:148
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Не вдалось виконати «%s»:"
+
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:164
+msgid "All"
+msgstr "Всі"
+
+#: ../js/ui/appDisplay.js:251
 msgid "APPLICATIONS"
 msgstr "ПРОГРАМИ"
 
-#: ../js/ui/appDisplay.js:344
+#: ../js/ui/appDisplay.js:281
 msgid "PREFERENCES"
 msgstr "ПАРАМЕТРИ"
 
-#: ../js/ui/appDisplay.js:734
+#: ../js/ui/appDisplay.js:582
 msgid "New Window"
 msgstr "Нове вікно"
 
-#: ../js/ui/appDisplay.js:738
+#: ../js/ui/appDisplay.js:586
 msgid "Remove from Favorites"
-msgstr "Видалити з улюбленого"
+msgstr "Вилучити з улюбленого"
 
-#: ../js/ui/appDisplay.js:739
+#: ../js/ui/appDisplay.js:587
 msgid "Add to Favorites"
 msgstr "Додати до улюбленого"
 
-#: ../js/ui/appDisplay.js:1091
-msgid "Drag here to add favorites"
-msgstr "Перетягніть сюди для додавання до улюбленого"
-
-#: ../js/ui/appFavorites.js:89
+#: ../js/ui/appFavorites.js:91
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s додано до улюбленого."
 
-#: ../js/ui/appFavorites.js:107
+#: ../js/ui/appFavorites.js:122
 #, c-format
 msgid "%s has been removed from your favorites."
-msgstr "%s видалено з улюбленого."
+msgstr "%s вилучено з улюбленого."
 
-#: ../js/ui/dash.js:194
-msgid "Find"
-msgstr "Знайти"
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:65
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Увесь день"
 
-#: ../js/ui/dash.js:510
-msgid "Searching..."
-msgstr "Пошук..."
-
-#: ../js/ui/dash.js:524
-msgid "No matching results."
-msgstr "Немає відповідностей."
-
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:874 ../js/ui/placeDisplay.js:543
-msgid "PLACES & DEVICES"
-msgstr "МІСЦЯ ТА ПРИСТРОЇ"
-
-#. **** Documents ****
-#: ../js/ui/dash.js:881 ../js/ui/docDisplay.js:489
-msgid "RECENT ITEMS"
-msgstr "ОСТАННІ ДОКУМЕНТИ"
-
-#: ../js/ui/lookingGlass.js:363
-msgid "No extensions installed"
-msgstr "Не встановлено розширення"
-
-#: ../js/ui/lookingGlass.js:400
-msgid "Enabled"
-msgstr "Увімкнено"
-
-#: ../js/ui/lookingGlass.js:402
-msgid "Disabled"
-msgstr "Вимкнено"
-
-#: ../js/ui/lookingGlass.js:404
-msgid "Error"
-msgstr "Помилка"
-
-#: ../js/ui/lookingGlass.js:406
-msgid "Out of date"
-msgstr "Застаріло"
-
-#: ../js/ui/lookingGlass.js:431
-msgid "View Source"
-msgstr "Переглянути джерело"
-
-#: ../js/ui/lookingGlass.js:437
-msgid "Web Page"
-msgstr "Веб-сторінка"
-
-#: ../js/ui/overview.js:182
-msgid "Undo"
-msgstr "Вернути"
-
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:388
-msgid "Activities"
-msgstr "Дії"
-
-#. Translators: This is the time format used in 24-hour mode.
-#: ../js/ui/panel.js:619
-msgid "%a %R"
-msgstr "%a %R"
-
-#. Translators: This is a time format used for AM/PM.
-#: ../js/ui/panel.js:622
-msgid "%a %l:%M %p"
-msgstr "%a, %H:%M"
-
-#: ../js/ui/placeDisplay.js:108
-#, c-format
-msgid "Failed to unmount '%s'"
-msgstr "Помилка при відключенні '%s'"
-
-#: ../js/ui/placeDisplay.js:111
-msgid "Retry"
-msgstr "Повторити"
-
-#: ../js/ui/placeDisplay.js:156
-msgid "Connect to..."
-msgstr "З'єднатися з..."
-
-#: ../js/ui/runDialog.js:232
-msgid "Please enter a command:"
-msgstr "Введіть команду:"
-
-#: ../js/ui/runDialog.js:376
-#, c-format
-msgid "Execution of '%s' failed:"
-msgstr "Не вдається виконати «%s»:"
-
-#: ../js/ui/statusMenu.js:107
-msgid "Available"
-msgstr "Доступний"
-
-#: ../js/ui/statusMenu.js:112
-msgid "Busy"
-msgstr "Зайнятий"
-
-#: ../js/ui/statusMenu.js:117
-msgid "Invisible"
-msgstr "Невидимий"
-
-#: ../js/ui/statusMenu.js:126
-msgid "Account Information..."
-msgstr "Інформація про користувача..."
-
-#: ../js/ui/statusMenu.js:132
-msgid "Sidebar"
-msgstr "Бічна панель"
-
-#: ../js/ui/statusMenu.js:142
-msgid "System Preferences..."
-msgstr "Параметри системи..."
-
-#: ../js/ui/statusMenu.js:151
-msgid "Lock Screen"
-msgstr "Блокувати екран"
-
-#: ../js/ui/statusMenu.js:156
-msgid "Switch User"
-msgstr "Змінити користувача"
-
-#: ../js/ui/statusMenu.js:162
-msgid "Log Out..."
-msgstr "Завершити сеанс..."
-
-#: ../js/ui/statusMenu.js:167
-msgid "Shut Down..."
-msgstr "Вимкнути..."
-
-#. Translators: This is a time format.
-#: ../js/ui/widget.js:163
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:70
+msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../js/ui/widget.js:317
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:77
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: ../js/ui/calendar.js:117
+msgctxt "grid sunday"
+msgid "S"
+msgstr "Н"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:119
+msgctxt "grid monday"
+msgid "M"
+msgstr "П"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:121
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "В"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:123
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "С"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:125
+msgctxt "grid thursday"
+msgid "T"
+msgstr "Ч"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:127
+msgctxt "grid friday"
+msgid "F"
+msgstr "П"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:129
+msgctxt "grid saturday"
+msgid "S"
+msgstr "С"
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+#: ../js/ui/calendar.js:142
+msgctxt "list sunday"
+msgid "Su"
+msgstr "Нд"
+
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:144
+msgctxt "list monday"
+msgid "M"
+msgstr "Пн"
+
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:146
+msgctxt "list tuesday"
+msgid "T"
+msgstr "Вт"
+
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:148
+msgctxt "list wednesday"
+msgid "W"
+msgstr "Ср"
+
+#. Translators: Event list abbreviation for Thursday
+#: ../js/ui/calendar.js:150
+msgctxt "list thursday"
+msgid "Th"
+msgstr "Чт"
+
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:152
+msgctxt "list friday"
+msgid "F"
+msgstr "Пт"
+
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:154
+msgctxt "list saturday"
+msgid "S"
+msgstr "Сб"
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:701
+msgid "Nothing Scheduled"
+msgstr "Нічого не заплановано"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:717
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:720
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A, %B %d, %Y"
+
+#: ../js/ui/calendar.js:730
+msgid "Today"
+msgstr "Сьогодні"
+
+#: ../js/ui/calendar.js:734
+msgid "Tomorrow"
+msgstr "Завтра"
+
+#: ../js/ui/calendar.js:743
+msgid "This week"
+msgstr "Цей тиждень"
+
+#: ../js/ui/calendar.js:751
+msgid "Next week"
+msgstr "Наступний тиждень"
+
+#: ../js/ui/dash.js:174
+msgid "Remove"
+msgstr "Вилучити"
+
+#: ../js/ui/dateMenu.js:91
+msgid "Date and Time Settings"
+msgstr "Параметри дати і часу"
+
+#: ../js/ui/dateMenu.js:110
+msgid "Open Calendar"
+msgstr "Відкрити календар"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:149
+msgid "%a %b %e, %R:%S"
+msgstr "%a %b %e, %R:%S"
+
+#: ../js/ui/dateMenu.js:150
+msgid "%a %b %e, %R"
+msgstr "%a %b %e, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:154
+msgid "%a %R:%S"
+msgstr "%a %R:%S"
+
+#: ../js/ui/dateMenu.js:155
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:162
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a %b %e, %l:%M:%S %p"
+
+#: ../js/ui/dateMenu.js:163
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a %b %e, %l:%M %p"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:167
+msgid "%a %l:%M:%S %p"
+msgstr "%a %l:%M:%S %p"
+
+#: ../js/ui/dateMenu.js:168
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:194
+msgid "%A %B %e, %Y"
+msgstr "%A %B %e, %Y"
+
+#: ../js/ui/docDisplay.js:19
+msgid "RECENT ITEMS"
+msgstr "ОСТАННІ ПУНКТИ"
+
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+msgid "Log Out %s"
+msgstr "Завершити сеанс %s…"
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+msgid "Log Out"
+msgstr "Завершити сеанс"
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr "Натисніть «Завершити сеанс», щоб вийти з усіх програм і системи."
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "Сеанс %s буде завершено автоматично через %d секунд."
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "Буде завершено сеанс автоматично через %d секунд."
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "Вихід із системи."
+
+#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
+msgid "Shut Down"
+msgstr "Вимкнути"
+
+#: ../js/ui/endSessionDialog.js:75
+msgid "Click Shut Down to quit these applications and shut down the system."
+msgstr "Натисніть «Вимкнути», щоб вийти з усіх програм і вимкнути систему."
+
+#: ../js/ui/endSessionDialog.js:76
+#, c-format
+msgid "The system will shut down automatically in %d seconds."
+msgstr "Систему буде вимкнуто автоматично через %d секунд."
+
+#: ../js/ui/endSessionDialog.js:77
+msgid "Shutting down the system."
+msgstr "Вимкнення системи."
+
+#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+msgid "Restart"
+msgstr "Перезапустити"
+
+#: ../js/ui/endSessionDialog.js:85
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Натисніть «Перезапустити», щоб вийти з усіх програм і перезапустити систему."
+
+#: ../js/ui/endSessionDialog.js:86
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "Система автоматично перезапуститься через %d секунд."
+
+#: ../js/ui/endSessionDialog.js:87
+msgid "Restarting the system."
+msgstr "Перезапуск системи."
+
+#: ../js/ui/endSessionDialog.js:395
+msgid "Confirm"
+msgstr "Підтвердження"
+
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+msgid "Cancel"
+msgstr "Скасувати"
+
+#: ../js/ui/lookingGlass.js:556
+msgid "No extensions installed"
+msgstr "Не встановлено розширення"
+
+#: ../js/ui/lookingGlass.js:593
+msgid "Enabled"
+msgstr "Увімкнено"
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:595 ../src/gvc/gvc-mixer-control.c:1087
+msgid "Disabled"
+msgstr "Вимкнено"
+
+#: ../js/ui/lookingGlass.js:597
+msgid "Error"
+msgstr "Помилка"
+
+#: ../js/ui/lookingGlass.js:599
+msgid "Out of date"
+msgstr "Застаріло"
+
+#: ../js/ui/lookingGlass.js:624
+msgid "View Source"
+msgstr "Переглянути джерело"
+
+#: ../js/ui/lookingGlass.js:630
+msgid "Web Page"
+msgstr "Веб-сторінка"
+
+#: ../js/ui/messageTray.js:1835
+msgid "System Information"
+msgstr "Інформація про систему"
+
+#: ../js/ui/overview.js:88
+msgid "Undo"
+msgstr "Повернути"
+
+#: ../js/ui/overview.js:159
+msgid "Windows"
+msgstr "Вікна"
+
+#: ../js/ui/overview.js:162
 msgid "Applications"
 msgstr "Програми"
 
-#: ../js/ui/widget.js:339
-msgid "Recent Documents"
-msgstr "Недавні документи"
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:480
+#, c-format
+msgid "Quit %s"
+msgstr "Вийти з %s"
 
-#: ../js/ui/windowAttentionHandler.js:47
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:614
+msgid "Activities"
+msgstr "Дії"
+
+#: ../js/ui/placeDisplay.js:122
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "Не вдалось демонтувати «%s»"
+
+#: ../js/ui/placeDisplay.js:125
+msgid "Retry"
+msgstr "Повторити"
+
+#: ../js/ui/placeDisplay.js:165
+msgid "Connect to..."
+msgstr "З'єднатися з…"
+
+#: ../js/ui/placeDisplay.js:409
+msgid "PLACES & DEVICES"
+msgstr "МІСЦЯ ТА ПРИСТРОЇ"
+
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:512
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
+
+#: ../js/ui/runDialog.js:209
+msgid "Please enter a command:"
+msgstr "Будь ласка, введіть команду:"
+
+#: ../js/ui/searchDisplay.js:295
+msgid "Searching..."
+msgstr "Пошук…"
+
+#: ../js/ui/searchDisplay.js:309
+msgid "No matching results."
+msgstr "Нема збігів."
+
+#: ../js/ui/statusMenu.js:102
+msgid "Available"
+msgstr "Доступний"
+
+#: ../js/ui/statusMenu.js:107
+msgid "Busy"
+msgstr "Зайнятий"
+
+#: ../js/ui/statusMenu.js:115
+msgid "My Account"
+msgstr "Мій обліковий запис"
+
+#: ../js/ui/statusMenu.js:119
+msgid "System Settings"
+msgstr "Системні параметри"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Lock Screen"
+msgstr "Заблокувати екран"
+
+#: ../js/ui/statusMenu.js:130
+msgid "Switch User"
+msgstr "Змінити користувача"
+
+#: ../js/ui/statusMenu.js:135
+msgid "Log Out..."
+msgstr "Завершити сеанс…"
+
+#. This is temporarily removed, see
+#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
+#. for details.
+#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
+#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+#. this.menu.addMenuItem(item);
+#: ../js/ui/statusMenu.js:149
+msgid "Shut Down..."
+msgstr "Вимкнути…"
+
+#: ../js/ui/status/accessibility.js:83
+msgid "Zoom"
+msgstr "Масштаб"
+
+#: ../js/ui/status/accessibility.js:89
+msgid "Screen Reader"
+msgstr "Читання з екрану"
+
+#: ../js/ui/status/accessibility.js:92
+msgid "Screen Keyboard"
+msgstr "Екранна клавіатура"
+
+#: ../js/ui/status/accessibility.js:95
+msgid "Visual Alerts"
+msgstr "Візуальні тривоги"
+
+#: ../js/ui/status/accessibility.js:98
+msgid "Sticky Keys"
+msgstr "Липкі клавіші"
+
+#: ../js/ui/status/accessibility.js:101
+msgid "Slow Keys"
+msgstr "Повільні клавіші"
+
+#: ../js/ui/status/accessibility.js:104
+msgid "Bounce Keys"
+msgstr "Пружні клавіші"
+
+#: ../js/ui/status/accessibility.js:107
+msgid "Mouse Keys"
+msgstr "Клавіші миші"
+
+#: ../js/ui/status/accessibility.js:111
+msgid "Universal Access Settings"
+msgstr "Параметри універсального доступу"
+
+#: ../js/ui/status/accessibility.js:163
+msgid "High Contrast"
+msgstr "Висока контрастність"
+
+#: ../js/ui/status/accessibility.js:205
+msgid "Large Text"
+msgstr "Більший текст"
+
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "Видимість"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "Відправити файли до пристрою…"
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "Встановити новий пристрій…"
+
+#: ../js/ui/status/bluetooth.js:95
+msgid "Bluetooth Settings"
+msgstr "Налаштування Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:192
+msgid "Connection"
+msgstr "З'єднання"
+
+#: ../js/ui/status/bluetooth.js:228
+msgid "Send Files..."
+msgstr "Відправити файли…"
+
+#: ../js/ui/status/bluetooth.js:233
+msgid "Browse Files..."
+msgstr "Огляд файлів…"
+
+#: ../js/ui/status/bluetooth.js:242
+msgid "Error browsing device"
+msgstr "Помилка перегляду пристрою…"
+
+#: ../js/ui/status/bluetooth.js:243
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "Потрібний пристрій неможливо переглянути, помилка — «%s»"
+
+#: ../js/ui/status/bluetooth.js:251
+msgid "Keyboard Settings"
+msgstr "Параметри клавіатури"
+
+#: ../js/ui/status/bluetooth.js:256
+msgid "Mouse Settings"
+msgstr "Параметри миші"
+
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+msgid "Sound Settings"
+msgstr "Параметри звуку"
+
+#: ../js/ui/status/bluetooth.js:372
+#, c-format
+msgid "Authorization request from %s"
+msgstr "Запит про авторизацію від %s"
+
+#: ../js/ui/status/bluetooth.js:378
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "Пристрій %sпотребує доступ до служби «%s»"
+
+#: ../js/ui/status/bluetooth.js:380
+msgid "Always grant access"
+msgstr "Завжди надавати доступ"
+
+#: ../js/ui/status/bluetooth.js:381
+msgid "Grant this time only"
+msgstr "Надати лише цього разу"
+
+#: ../js/ui/status/bluetooth.js:382
+msgid "Reject"
+msgstr "Відмовити"
+
+#: ../js/ui/status/bluetooth.js:412
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Сполучення підтвердження для %s"
+
+#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "Пристрій %s потребує прив'язання до цього комп'ютера"
+
+#: ../js/ui/status/bluetooth.js:419
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Будь ласка, підвердьте, чи «%s» збігається з PIN на пристрої."
+
+#: ../js/ui/status/bluetooth.js:421
+msgid "Matches"
+msgstr "Збігається"
+
+#: ../js/ui/status/bluetooth.js:422
+msgid "Does not match"
+msgstr "Не збігається"
+
+#: ../js/ui/status/bluetooth.js:445
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Запит на сполучення для %s"
+
+#: ../js/ui/status/bluetooth.js:453
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Будь ласка, введіть PIN, згаданий на пристрої."
+
+#: ../js/ui/status/bluetooth.js:469
+msgid "OK"
+msgstr "Гаразд"
+
+#: ../js/ui/status/keyboard.js:72
+msgid "Localization Settings"
+msgstr "Параметри локалізації"
+
+#: ../js/ui/status/power.js:85
+msgid "Power Settings"
+msgstr "Енергетичні параметри"
+
+#: ../js/ui/status/power.js:112
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "Залишилось %d година"
+msgstr[1] "Залишилось %d години"
+msgstr[2] "Залишилось %d годин"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:115
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "Залишилось %d %s %d %s"
+
+#: ../js/ui/status/power.js:117
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "година"
+msgstr[1] "години"
+msgstr[2] "годин"
+
+#: ../js/ui/status/power.js:117
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "хвилина"
+msgstr[1] "хвилини"
+msgstr[2] "хвилин"
+
+#: ../js/ui/status/power.js:120
+#, c-format, 
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "Залишилось %d хвилина"
+msgstr[1] "Залишилось %d хвилини"
+msgstr[2] "Залишилось %d хвилин"
+
+#: ../js/ui/status/power.js:235
+msgid "AC adapter"
+msgstr "Блок живлення"
+
+#: ../js/ui/status/power.js:237
+msgid "Laptop battery"
+msgstr "Батарея ноутбука"
+
+#: ../js/ui/status/power.js:239
+msgid "UPS"
+msgstr "UPS"
+
+#: ../js/ui/status/power.js:241
+msgid "Monitor"
+msgstr "Монітор"
+
+#: ../js/ui/status/power.js:243
+msgid "Mouse"
+msgstr "Миша"
+
+#: ../js/ui/status/power.js:245
+msgid "Keyboard"
+msgstr "Клавіатура"
+
+#: ../js/ui/status/power.js:247
+msgid "PDA"
+msgstr "КПК"
+
+#: ../js/ui/status/power.js:249
+msgid "Cell phone"
+msgstr "Мобільний телефон"
+
+#: ../js/ui/status/power.js:251
+msgid "Media player"
+msgstr "Програвач"
+
+#: ../js/ui/status/power.js:253
+msgid "Tablet"
+msgstr "Планшет"
+
+#: ../js/ui/status/power.js:255
+msgid "Computer"
+msgstr "Комп'ютер"
+
+#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
+msgid "Unknown"
+msgstr "Невідомо"
+
+#: ../js/ui/status/volume.js:42
+msgid "Volume"
+msgstr "Гучність"
+
+#: ../js/ui/status/volume.js:55
+msgid "Microphone"
+msgstr "Мікрофон"
+
+#: ../js/ui/telepathyClient.js:563
+#, c-format
+msgid "%s is online."
+msgstr "%s в мережі."
+
+#: ../js/ui/telepathyClient.js:568
+#, c-format
+msgid "%s is offline."
+msgstr "%s поза мережею."
+
+#: ../js/ui/telepathyClient.js:571
+#, c-format
+msgid "%s is away."
+msgstr "%s відійшов."
+
+#: ../js/ui/telepathyClient.js:574
+#, c-format
+msgid "%s is busy."
+msgstr "%s зайнятий."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:668
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "Відправити на %X в %A"
+
+#: ../js/ui/viewSelector.js:26
+msgid "Search your computer"
+msgstr "Пошук на комп'ютері"
+
+#: ../js/ui/windowAttentionHandler.js:43
 #, c-format
 msgid "%s has finished starting"
 msgstr "%s завершив запуск"
 
-#: ../js/ui/windowAttentionHandler.js:49
+#: ../js/ui/windowAttentionHandler.js:45
 #, c-format
 msgid "'%s' is ready"
-msgstr "'%s' готовий"
+msgstr "«%s» готовий"
 
-#: ../src/shell-global.c:967
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1094
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u вихід"
+msgstr[1] "%u виходи"
+msgstr[2] "%u виходів"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1104
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u вхід"
+msgstr[1] "%u входи"
+msgstr[2] "%u входів"
+
+#: ../src/gvc/gvc-mixer-control.c:1402
+msgid "System Sounds"
+msgstr "Системні звуки"
+
+#: ../src/shell-global.c:1363
 msgid "Less than a minute ago"
 msgstr "Менше хвилини тому"
 
-#: ../src/shell-global.c:971
+#: ../src/shell-global.c:1367
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -229,7 +1120,7 @@ msgstr[0] "%d хвилина тому"
 msgstr[1] "%d хвилини тому"
 msgstr[2] "%d хвилин тому"
 
-#: ../src/shell-global.c:976
+#: ../src/shell-global.c:1372
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -237,7 +1128,7 @@ msgstr[0] "%d година тому"
 msgstr[1] "%d години тому"
 msgstr[2] "%d годин тому"
 
-#: ../src/shell-global.c:981
+#: ../src/shell-global.c:1377
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -245,7 +1136,7 @@ msgstr[0] "%d день тому"
 msgstr[1] "%d дні тому"
 msgstr[2] "%d днів тому"
 
-#: ../src/shell-global.c:986
+#: ../src/shell-global.c:1382
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -253,17 +1144,17 @@ msgstr[0] "%d тиждень тому"
 msgstr[1] "%d тижні тому"
 msgstr[2] "%d тижнів тому"
 
-#: ../src/shell-uri-util.c:89
+#: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "Домашня тека"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:104
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "Файлова система"
 
-#: ../src/shell-uri-util.c:250
+#: ../src/shell-util.c:250
 msgid "Search"
 msgstr "Пошук"
 
@@ -272,9 +1163,25 @@ msgstr "Пошук"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:300
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Drag here to add favorites"
+#~ msgstr "Перетягніть сюди для додавання до улюбленого"
 
+#~ msgid "Find"
+#~ msgstr "Знайти"
+
+#~ msgid "Invisible"
+#~ msgstr "Невидимий"
+
+#~ msgid "Sidebar"
+#~ msgstr "Бічна панель"
+
+#~ msgid "System Preferences..."
+#~ msgstr "Параметри системи..."
+
+#~ msgid "Recent Documents"
+#~ msgstr "Недавні документи"
