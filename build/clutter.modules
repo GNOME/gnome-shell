@@ -4,7 +4,7 @@
 <!-- vim:set ts=2 expandtab: -->
 <moduleset>
   <repository type="git" name="git.freedesktop.org"
-      href="git://anongit.freedesktop.org/git/"/>
+      href="git://anongit.freedesktop.org/"/>
   <repository type="git" name="git.gnome.org"
       href="git://git.gnome.org/"/>
   <repository type="git" name="git.clutter-project.org"
@@ -102,7 +102,7 @@
 
   <autotools id="wayland">
     <branch repo="git.freedesktop.org"
-            module="~krh/wayland" checkoutdir="wayland"/>
+            module="wayland" checkoutdir="wayland"/>
     <dependencies>
       <dep package="mesa"/>
     </dependencies>
