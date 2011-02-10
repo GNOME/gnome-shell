@@ -527,16 +527,11 @@ SwitcherList.prototype = {
         this._leftArrow = new St.DrawingArea({ style_class: 'switcher-arrow',
                                                pseudo_class: 'highlighted' });
         this._leftArrow.connect('repaint', Lang.bind(this,
-                                            function (area) {
-                                                Shell.draw_box_pointer(area, Shell.PointerDirection.LEFT);
-                                            }));
-
+            function() { _drawArrow(this._leftArrow, St.Side.LEFT); }));
         this._rightArrow = new St.DrawingArea({ style_class: 'switcher-arrow',
                                                 pseudo_class: 'highlighted' });
         this._rightArrow.connect('repaint', Lang.bind(this,
-                                            function (area) {
-                                                Shell.draw_box_pointer(area, Shell.PointerDirection.RIGHT);
-                                            }));
+            function() { _drawArrow(this._rightArrow, St.Side.RIGHT); }));
 
         this.actor.add_actor(this._leftArrow);
         this.actor.add_actor(this._rightArrow);
@@ -992,10 +987,7 @@ AppSwitcher.prototype = {
 
         let n = this._arrows.length;
         let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
-        arrow.connect('repaint', Lang.bind(this,
-            function (area) {
-                Shell.draw_box_pointer(area, Shell.PointerDirection.DOWN);
-            }));
+        arrow.connect('repaint', function() { _drawArrow(arrow, St.Side.BOTTOM); });
         this._list.add_actor(arrow);
         this._arrows.push(arrow);
 
@@ -1101,3 +1093,48 @@ ThumbnailList.prototype = {
         this._thumbnailBins = new Array();
     }
 };
+
+function _drawArrow(area, side) {
+    let themeNode = area.get_theme_node();
+    let borderColor = new Clutter.Color();
+    themeNode.get_border_color(side, borderColor);
+    let bodyColor = new Clutter.Color();
+    themeNode.get_foreground_color(bodyColor);
+
+    let [width, height] = area.get_surface_size ();
+    let cr = area.get_context();
+
+    cr.setLineWidth(1.0);
+    Clutter.cairo_set_source_color(cr, borderColor);
+
+    switch (side) {
+    case St.Side.TOP:
+        cr.moveTo(0, height);
+        cr.lineTo(Math.floor(width * 0.5), 0);
+        cr.lineTo(width, height);
+        break;
+
+    case St.Side.BOTTOM:
+        cr.moveTo(width, 0);
+        cr.lineTo(Math.floor(width * 0.5), height);
+        cr.lineTo(0, 0);
+        break;
+
+    case St.Side.LEFT:
+        cr.moveTo(width, height);
+        cr.lineTo(0, Math.floor(height * 0.5));
+        cr.lineTo(width, 0);
+        break;
+
+    case St.Side.RIGHT:
+        cr.moveTo(0, 0);
+        cr.lineTo(width, Math.floor(height * 0.5));
+        cr.lineTo(0, height);
+        break;
+    }
+
+    cr.strokePreserve();
+
+    Clutter.cairo_set_source_color(cr, bodyColor);
+    cr.fill();
+}
