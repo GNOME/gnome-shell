@@ -106,33 +106,3 @@ shell_draw_box_pointer (StDrawingArea         *area,
 
   cairo_fill (cr);
 }
-
-static void
-hook_paint_red_border (ClutterActor  *actor,
-                       gpointer       user_data)
-{
-  CoglColor color;
-  ClutterGeometry geom;
-  float width = 2;
-
-  cogl_color_set_from_4ub (&color, 0xff, 0, 0, 0xc4);
-  cogl_set_source_color (&color);
-
-  clutter_actor_get_allocation_geometry (actor, &geom);
-
-  /** clockwise order **/
-  cogl_rectangle (0, 0, geom.width, width);
-  cogl_rectangle (geom.width - width, width,
-                  geom.width, geom.height);
-  cogl_rectangle (0, geom.height,
-                  geom.width - width, geom.height - width);
-  cogl_rectangle (0, geom.height - width,
-                  width, width);
-}
-
-guint
-shell_add_hook_paint_red_border (ClutterActor *actor)
-{
-  return g_signal_connect_after (G_OBJECT (actor), "paint",
-                                 G_CALLBACK (hook_paint_red_border), NULL);
-}

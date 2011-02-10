@@ -23,8 +23,6 @@ void shell_draw_clock (StDrawingArea       *area,
 	               int                  hour,
 	               int                  minute);
 
-guint shell_add_hook_paint_red_border (ClutterActor *actor);
-
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */

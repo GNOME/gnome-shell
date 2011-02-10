@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const Cogl = imports.gi.Cogl;
 const GConf = imports.gi.GConf;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
@@ -359,6 +360,30 @@ ObjInspector.prototype = {
     }
 };
 
+function addBorderPaintHook(actor) {
+    let signalId = actor.connect_after('paint',
+        function () {
+            let color = new Cogl.Color();
+            color.init_from_4ub(0xff, 0, 0, 0xc4);
+            Cogl.set_source_color(color);
+
+            let geom = actor.get_allocation_geometry();
+            let width = 2;
+
+            // clockwise order
+            Cogl.rectangle(0, 0, geom.width, width);
+            Cogl.rectangle(geom.width - width, width,
+                           geom.width, geom.height);
+            Cogl.rectangle(0, geom.height,
+                           geom.width - width, geom.height - width);
+            Cogl.rectangle(0, geom.height - width,
+                           width, width);
+        });
+
+    actor.queue_redraw();
+    return signalId;
+}
+
 function Inspector() {
     this._init();
 }
@@ -494,10 +519,13 @@ Inspector.prototype = {
         let position = '[inspect x: ' + stageX + ' y: ' + stageY + ']';
         this._displayText.text = '';
         this._displayText.text = position + ' ' + this._target;
-        if (this._borderPaintTarget != null)
-            this._borderPaintTarget.disconnect(this._borderPaintId);
-        this._borderPaintTarget = this._target;
-        this._borderPaintId = Shell.add_hook_paint_red_border(this._target);
+
+        if (this._borderPaintTarget != this._target) {
+            if (this._borderPaintTarget != null)
+                this._borderPaintTarget.disconnect(this._borderPaintId);
+            this._borderPaintTarget = this._target;
+            this._borderPaintId = addBorderPaintHook(this._target);
+        }
     }
 };
 
@@ -827,7 +855,7 @@ LookingGlass.prototype = {
         }
         if (obj instanceof Clutter.Actor) {
             this._borderPaintTarget = obj;
-            this._borderPaintId = Shell.add_hook_paint_red_border(obj);
+            this._borderPaintId = addBorderPaintHook(obj);
             this._borderDestroyId = obj.connect('destroy', Lang.bind(this, function () {
                 this._borderDestroyId = 0;
                 this._borderPaintTarget = null;
