@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-09 01:09+0200\n"
+"POT-Creation-Date: 2011-02-10 20:49+0200\n"
 "PO-Revision-Date: 2011-02-03 17:35+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -285,27 +285,27 @@ msgid "Execution of '%s' failed:"
 msgstr "فشل تنفيذ '%s':‏"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:164
+#: ../js/ui/appDisplay.js:174
 msgid "All"
 msgstr "الكل"
 
-#: ../js/ui/appDisplay.js:245
+#: ../js/ui/appDisplay.js:261
 msgid "APPLICATIONS"
 msgstr "التطبيقات"
 
-#: ../js/ui/appDisplay.js:275
+#: ../js/ui/appDisplay.js:291
 msgid "PREFERENCES"
 msgstr "التفضيلات"
 
-#: ../js/ui/appDisplay.js:574
+#: ../js/ui/appDisplay.js:592
 msgid "New Window"
 msgstr "نافذة جديدة"
 
-#: ../js/ui/appDisplay.js:578
+#: ../js/ui/appDisplay.js:596
 msgid "Remove from Favorites"
 msgstr "أزِل من المفضّلة"
 
-#: ../js/ui/appDisplay.js:579
+#: ../js/ui/appDisplay.js:597
 msgid "Add to Favorites"
 msgstr "أضِف إلى المفضّلة"
 
@@ -465,7 +465,7 @@ msgstr "هذا الأسبوع"
 msgid "Next week"
 msgstr "الأسبوع القادم"
 
-#: ../js/ui/dash.js:27
+#: ../js/ui/dash.js:174
 msgid "Remove"
 msgstr "أزِل"
 
@@ -524,7 +524,7 @@ msgstr "%A %Ol:%OM %p"
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B، %Y"
 
-#: ../js/ui/docDisplay.js:18
+#: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
 msgstr "العناصر الحديثة"
 
@@ -627,7 +627,7 @@ msgstr "اعرض المصدر"
 msgid "Web Page"
 msgstr "صفحة الوب"
 
-#: ../js/ui/messageTray.js:1835
+#: ../js/ui/messageTray.js:1854
 msgid "System Information"
 msgstr "معلومات النظام"
 
@@ -655,20 +655,20 @@ msgstr "أغلق %s"
 msgid "Activities"
 msgstr "الأنشطة"
 
-#: ../js/ui/placeDisplay.js:106
+#: ../js/ui/placeDisplay.js:122
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "فشل فصْل '%s'"
 
-#: ../js/ui/placeDisplay.js:109
+#: ../js/ui/placeDisplay.js:125
 msgid "Retry"
 msgstr "أعد المحاولة"
 
-#: ../js/ui/placeDisplay.js:150
+#: ../js/ui/placeDisplay.js:165
 msgid "Connect to..."
 msgstr "اتّصل ب‍..."
 
-#: ../js/ui/placeDisplay.js:386
+#: ../js/ui/placeDisplay.js:409
 msgid "PLACES & DEVICES"
 msgstr "الأماكن والأجهزة"
 
@@ -776,6 +776,8 @@ msgid "Large Text"
 msgstr "نص كبير"
 
 #: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
 msgid "Bluetooth"
 msgstr "بلوتوث"
 
@@ -827,11 +829,6 @@ msgstr "إعدادات الفأرة"
 #: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
 msgid "Sound Settings"
 msgstr "إعدادات الصوت"
-
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
-msgid "Bluetooth Agent"
-msgstr "عميل بلوتوث"
 
 #: ../js/ui/status/bluetooth.js:372
 #, c-format
@@ -891,7 +888,7 @@ msgstr "من فضلك أدخل الرقم المذكور على الجهاز."
 msgid "OK"
 msgstr "حسنا"
 
-#: ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/keyboard.js:72
 msgid "Localization Settings"
 msgstr "إعدادات اللغة"
 
@@ -1026,7 +1023,7 @@ msgstr "‏%s مشغول."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:668
+#: ../js/ui/telepathyClient.js:669
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "أُرسلت الساعة %l:%M:%S في %A"
@@ -1044,15 +1041,6 @@ msgstr "انتهى %s من البدء"
 #, c-format
 msgid "'%s' is ready"
 msgstr "‏'%s' جاهز"
-
-#: ../js/ui/workspacesView.js:243
-msgid ""
-"Can't add a new workspace because maximum workspaces limit has been reached."
-msgstr "تعذّر إضافة مساحة عمل جديدة، لتجاوز أقصى عدد من مساحات العمل."
-
-#: ../js/ui/workspacesView.js:259
-msgid "Can't remove the first workspace."
-msgstr "لا يمكن حذف مساحة العمل الأولى."
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -1155,6 +1143,17 @@ msgstr "ابحث"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "‏%1$s:‏ %2$s"
+
+#~ msgid "Bluetooth Agent"
+#~ msgstr "عميل بلوتوث"
+
+#~ msgid ""
+#~ "Can't add a new workspace because maximum workspaces limit has been "
+#~ "reached."
+#~ msgstr "تعذّر إضافة مساحة عمل جديدة، لتجاوز أقصى عدد من مساحات العمل."
+
+#~ msgid "Can't remove the first workspace."
+#~ msgstr "لا يمكن حذف مساحة العمل الأولى."
 
 #~ msgid "Suspend..."
 #~ msgstr "علّق..."
