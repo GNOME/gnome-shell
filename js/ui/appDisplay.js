@@ -115,7 +115,7 @@ ViewByCategories.prototype = {
         // Always select the "All" filter when switching to the app view
         this.actor.connect('notify::mapped', Lang.bind(this,
             function() {
-                if (this.actor.mapped)
+                if (this.actor.mapped && this._allFilter)
                     this._selectCategory(-1);
             }));
 
