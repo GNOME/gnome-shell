@@ -31,18 +31,18 @@ SearchEntry.prototype = {
                                     track_hover: true });
         this.entry = this.actor.clutter_text;
 
-        this.actor.clutter_text.connect('text-changed', Lang.bind(this,
-            function() {
-                if (this.isActive())
-                    this.actor.set_secondary_icon_from_file(global.imagedir +
-                                                            'close-black.svg');
-                else
-                    this.actor.set_secondary_icon_from_file(null);
-            }));
-        this.actor.connect('secondary-icon-clicked', Lang.bind(this,
-            function() {
-                this.reset();
-            }));
+        this._inactiveIcon = new St.Icon({ style_class: 'search-entry-icon',
+                                           icon_name: 'edit-find',
+                                           icon_type: St.IconType.SYMBOLIC });
+        this._activeIcon = new St.Icon({ style_class: 'search-entry-icon',
+                                         icon_name: 'edit-clear',
+                                         icon_type: St.IconType.SYMBOLIC });
+        this.actor.set_secondary_icon(this._inactiveIcon);
+
+        this._iconClickedId = 0;
+
+        this.actor.clutter_text.connect('text-changed',
+                                        Lang.bind(this, this._onTextChanged));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         this.actor.connect('notify::mapped', Lang.bind(this, this._onMapped));
 
@@ -157,11 +157,32 @@ SearchEntry.prototype = {
         }
     },
 
+    _onTextChanged: function() {
+        if (this.isActive()) {
+            this.actor.set_secondary_icon(this._activeIcon);
+
+            if (this._iconClickedId == 0)
+            this._iconClickedId = this.actor.connect('secondary-icon-clicked',
+                Lang.bind(this, function() {
+                    this.reset();
+                }));
+        } else {
+            if (this._iconClickedId > 0)
+                this.actor.disconnect(this._iconClickedId);
+            this._iconClickedId = 0;
+
+            this.actor.set_secondary_icon(this._inactiveIcon);
+        }
+    },
+
     _onDestroy: function() {
         if (this._capturedEventId > 0) {
             global.stage.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
         }
+
+        this._activeIcon = null;
+        this._inactiveIcon = null;
     }
 };
 Signals.addSignalMethods(SearchEntry.prototype);

@@ -17,11 +17,6 @@ dist_searchproviders_DATA =				\
 	search_providers/google.xml				\
 	search_providers/wikipedia.xml
 
-imagesdir = $(pkgdatadir)/images
-dist_images_DATA =				\
-	close-black.svg				\
-	magnifier.svg
-
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA =				\
 	theme/calendar-arrow-left.svg		\
