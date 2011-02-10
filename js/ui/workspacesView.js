@@ -25,12 +25,12 @@ const MAX_WORKSPACES = 16;
 const CONTROLS_POP_IN_TIME = 0.1;
 
 
-function WorkspacesView(width, height, x, y, zoomScale, workspaces) {
-    this._init(width, height, x, y, zoomScale, workspaces);
+function WorkspacesView(width, height, x, y, workspaces) {
+    this._init(width, height, x, y, workspaces);
 }
 
 WorkspacesView.prototype = {
-    _init: function(width, height, x, y, zoomScale, workspaces) {
+    _init: function(width, height, x, y, workspaces) {
         this.actor = new St.Group({ style_class: 'workspaces-view' });
         this.actor.set_clip(x, y, width, height);
 
@@ -52,7 +52,7 @@ WorkspacesView.prototype = {
         this._height = height;
         this._x = x;
         this._y = y;
-        this._zoomScale = zoomScale;
+        this._zoomScale = 1.0;
         this._spacing = 0;
         this._activeWorkspaceX = 0; // x offset of active ws while dragging
         this._activeWorkspaceY = 0; // y offset of active ws while dragging
@@ -107,6 +107,32 @@ WorkspacesView.prototype = {
                                                       Lang.bind(this, this._dragEnd));
         this._swipeScrollBeginId = 0;
         this._swipeScrollEndId = 0;
+    },
+
+    setZoomScale: function(zoomScale) {
+        if (zoomScale == this._zoomScale)
+            return;
+
+        this._zoomScale = zoomScale;
+        if (this._zoomOut) {
+            // If we are already zoomed out, then we have to reposition.
+            // Note that when shown initially zoomOut is false, so we
+            // won't trigger this.
+
+            // setZoomScale can be invoked when the workspaces view is
+            // reallocated. Since we just want to animate things to the
+            // new position it seems OK to call updateWorkspaceActors
+            // immediately - adding a tween doesn't immediately cause
+            // a new allocation. But hide/show of the window overlays we
+            // do around animation does, so we need to do it later.
+            // This can be removed when we fix things to not hide/show
+            // the window overlay.
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
+                           Lang.bind(this, function() {
+                                         this._computeWorkspacePositions();
+                                         this._updateWorkspaceActors(true);
+                                     }));
+        }
     },
 
     _lookupWorkspaceForMetaWindow: function (metaWindow) {
@@ -638,7 +664,6 @@ WorkspacesDisplay.prototype = {
         let totalWidth = totalAllocation.x2 - totalAllocation.x1;
         let totalHeight = totalAllocation.y2 - totalAllocation.y1;
 
-        let [controlsMin, controlsNatural] = this._controls.get_preferred_width(totalHeight);
         let controlsVisible = this._controls.get_theme_node().get_length('visible-width');
 
         totalWidth -= controlsVisible;
@@ -664,8 +689,8 @@ WorkspacesDisplay.prototype = {
         if (rtl)
             x += controlsVisible;
 
-        let zoomScale = (totalWidth - (controlsNatural - controlsVisible)) / totalWidth;
-        let newView = new WorkspacesView(width, height, x, y, zoomScale, this._workspaces);
+        let newView = new WorkspacesView(width, height, x, y, this._workspaces);
+        this._updateZoomScale();
 
         if (this.workspacesView)
             this.workspacesView.destroy();
@@ -779,6 +804,23 @@ WorkspacesDisplay.prototype = {
         childBox.y1 = 0;
         childBox.y2 = box.y2- box.y1;
         this._controls.allocate(childBox, flags);
+
+        this._updateZoomScale();
+    },
+
+    _updateZoomScale: function() {
+        if (!this.workspacesView)
+            return;
+
+        let totalAllocation = this.actor.allocation;
+        let totalWidth = totalAllocation.x2 - totalAllocation.x1;
+        let totalHeight = totalAllocation.y2 - totalAllocation.y1;
+
+        let [controlsMin, controlsNatural] = this._controls.get_preferred_width(totalHeight);
+        let controlsVisible = this._controls.get_theme_node().get_length('visible-width');
+
+        let zoomScale = (totalWidth - controlsNatural) / (totalWidth - controlsVisible);
+        this.workspacesView.setZoomScale(zoomScale);
     },
 
     _onRestacked: function() {
