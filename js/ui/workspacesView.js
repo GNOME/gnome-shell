@@ -22,7 +22,6 @@ const WORKSPACE_SWITCH_TIME = 0.25;
 const MAX_WORKSPACES = 16;
 
 
-const CONTROLS_POP_IN_FRACTION = 0.8;
 const CONTROLS_POP_IN_TIME = 0.1;
 
 
@@ -640,9 +639,9 @@ WorkspacesDisplay.prototype = {
         let totalHeight = totalAllocation.y2 - totalAllocation.y1;
 
         let [controlsMin, controlsNatural] = this._controls.get_preferred_width(totalHeight);
-        let controlsReserved = controlsNatural * (1 - CONTROLS_POP_IN_FRACTION);
+        let controlsVisible = this._controls.get_theme_node().get_length('visible-width');
 
-        totalWidth -= controlsReserved;
+        totalWidth -= controlsVisible;
 
         // Workspaces expect to have the same ratio as the screen, so take
         // this into account when fitting the workspace into the available space
@@ -663,9 +662,9 @@ WorkspacesDisplay.prototype = {
         y = Math.floor(y + Math.abs(totalHeight - height) / 2);
 
         if (rtl)
-            x += controlsReserved;
+            x += controlsVisible;
 
-        let zoomScale = (totalWidth - (controlsNatural - controlsReserved)) / totalWidth;
+        let zoomScale = (totalWidth - (controlsNatural - controlsVisible)) / totalWidth;
         let newView = new WorkspacesView(width, height, x, y, zoomScale, this._workspaces);
 
         if (this.workspacesView)
@@ -765,7 +764,8 @@ WorkspacesDisplay.prototype = {
         let [controlsMin, controlsNatural] = this._controls.get_preferred_width(box.y2 - box.y1);
 
         // Amount of space on the screen we reserve for the visible control
-        let controlsReserved = controlsNatural * (1 - (1 - this._zoomFraction) * CONTROLS_POP_IN_FRACTION);
+        let controlsVisible = this._controls.get_theme_node().get_length('visible-width');
+        let controlsReserved = controlsVisible * (1 - this._zoomFraction) + controlsNatural * this._zoomFraction;
 
         let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
         if (rtl) {
