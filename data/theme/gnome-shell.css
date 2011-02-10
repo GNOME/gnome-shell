@@ -75,10 +75,10 @@ StScrollBar StButton#vhandle:hover
 }
 
 StTooltip StLabel {
-    border: 1px solid rgba(79,111,173,1);
+    border: 1px solid rgba(255,255,255,0.6);
     border-radius: 5px;
-    padding: 4px;
-    background-color: rgba(79,111,173,0.9);
+    padding: 2px 12px;
+    background-color: rgba(0,0,0,0.9);
     color: #ffffff;
     font-size: 0.8em;
     font-weight: normal;
