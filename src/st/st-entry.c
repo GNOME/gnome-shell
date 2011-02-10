@@ -868,9 +868,9 @@ _st_entry_icon_press_cb (ClutterActor       *actor,
 }
 
 static void
-_st_entry_set_icon_from_file (StEntry       *entry,
-                              ClutterActor **icon,
-                              const gchar   *filename)
+_st_entry_set_icon (StEntry       *entry,
+                    ClutterActor **icon,
+                    ClutterActor  *new_icon)
 {
   if (*icon)
     {
@@ -881,13 +881,9 @@ _st_entry_set_icon_from_file (StEntry       *entry,
       *icon = NULL;
     }
 
-  if (filename)
+  if (new_icon)
     {
-      StTextureCache *cache;
-
-      cache = st_texture_cache_get_default ();
-
-      *icon = (ClutterActor*) st_texture_cache_load_file_simple (cache, filename);
+      *icon = g_object_ref (new_icon);
 
       clutter_actor_set_reactive (*icon, TRUE);
       clutter_actor_set_parent (*icon, CLUTTER_ACTOR (entry));
@@ -896,6 +892,65 @@ _st_entry_set_icon_from_file (StEntry       *entry,
     }
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (entry));
+}
+
+static void
+_st_entry_set_icon_from_file (StEntry       *entry,
+                              ClutterActor **icon,
+                              const gchar   *filename)
+{
+  ClutterActor *new_icon = NULL;
+
+  if (filename)
+    {
+      StTextureCache *cache;
+
+      cache = st_texture_cache_get_default ();
+
+      new_icon = (ClutterActor*) st_texture_cache_load_file_simple (cache, filename);
+    }
+
+  _st_entry_set_icon  (entry, icon, new_icon);
+}
+
+/**
+ * st_entry_set_primary_icon:
+ * @entry: a #StEntry
+ * @icon: (allow-none): a #ClutterActor
+ *
+ * Set the primary icon of the entry to @icon
+ */
+void
+st_entry_set_primary_icon (StEntry      *entry,
+                           ClutterActor *icon)
+{
+  StEntryPrivate *priv;
+
+  g_return_if_fail (ST_IS_ENTRY (entry));
+
+  priv = entry->priv;
+
+  _st_entry_set_icon (entry, &priv->primary_icon, icon);
+}
+
+/**
+ * st_entry_set_secondary_icon:
+ * @entry: a #StEntry
+ * @icon: (allow-none): an #ClutterActor
+ *
+ * Set the secondary icon of the entry to @icon
+ */
+void
+st_entry_set_secondary_icon (StEntry      *entry,
+                             ClutterActor *icon)
+{
+  StEntryPrivate *priv;
+
+  g_return_if_fail (ST_IS_ENTRY (entry));
+
+  priv = entry->priv;
+
+  _st_entry_set_icon (entry, &priv->secondary_icon, icon);
 }
 
 /**

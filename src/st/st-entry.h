@@ -74,6 +74,10 @@ void                  st_entry_set_hint_text    (StEntry     *entry,
                                                  const gchar *text);
 G_CONST_RETURN gchar *st_entry_get_hint_text    (StEntry     *entry);
 
+void st_entry_set_primary_icon             (StEntry      *entry,
+                                            ClutterActor *icon);
+void st_entry_set_secondary_icon           (StEntry      *entry,
+                                            ClutterActor *icon);
 void st_entry_set_primary_icon_from_file   (StEntry     *entry,
                                             const gchar *filename);
 void st_entry_set_secondary_icon_from_file (StEntry     *entry,
