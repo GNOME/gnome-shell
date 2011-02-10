@@ -389,6 +389,8 @@ Dash.prototype = {
                                    Lang.bind(this, function() {
                                        display.actor.opacity = 255;
                                    }));
+        display.actor.set_tooltip_text(app.get_name());
+
         let item = new DashItemContainer();
         item.setChild(display.actor);
 
