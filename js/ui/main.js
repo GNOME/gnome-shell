@@ -145,6 +145,7 @@ function start() {
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     telepathyClient = new TelepathyClient.Client();
 
+    overview.init();
     statusIconDispatcher.start(messageTray.actor);
 
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();

@@ -129,8 +129,6 @@ Overview.prototype = {
         this._capturedEventId = 0;
         this._buttonPressId = 0;
 
-        this.shellInfo = new ShellInfo();
-
         this._workspacesDisplay = null;
 
         this.visible = false;           // animating to overview, in overview, animating out
@@ -151,6 +149,32 @@ Overview.prototype = {
 
         this._group.hide();
         global.overlay_group.add_actor(this._group);
+
+        this._coverPane.hide();
+
+        // XDND
+        this._dragMonitor = {
+            dragMotion: Lang.bind(this, this._onDragMotion)
+        };
+
+        Main.xdndHandler.connect('drag-begin', Lang.bind(this, this._onDragBegin));
+        Main.xdndHandler.connect('drag-end', Lang.bind(this, this._onDragEnd));
+
+        this._windowSwitchTimeoutId = 0;
+        this._windowSwitchTimestamp = 0;
+        this._lastActiveWorkspaceIndex = -1;
+        this._lastHoveredWindow = null;
+        this._needsFakePointerEvent = false;
+
+        this.workspaces = null;
+    },
+
+    // The members we construct that are implemented in JS might
+    // want to access the overview as Main.overview to connect
+    // signal handlers and so forth. So we create them after
+    // construction in this init() method.
+    init: function() {
+        this.shellInfo = new ShellInfo();
 
         this.viewSelector = new ViewSelector.ViewSelector();
         this._group.add_actor(this.viewSelector.actor);
@@ -173,23 +197,6 @@ Overview.prototype = {
         this.dash.actor.add_constraint(this.viewSelector.constrainY);
         this.dash.actor.add_constraint(this.viewSelector.constrainHeight);
 
-        this._coverPane.hide();
-
-        // XDND
-        this._dragMonitor = {
-            dragMotion: Lang.bind(this, this._onDragMotion)
-        };
-
-        Main.xdndHandler.connect('drag-begin', Lang.bind(this, this._onDragBegin));
-        Main.xdndHandler.connect('drag-end', Lang.bind(this, this._onDragEnd));
-
-        this._windowSwitchTimeoutId = 0;
-        this._windowSwitchTimestamp = 0;
-        this._lastActiveWorkspaceIndex = -1;
-        this._lastHoveredWindow = null;
-        this._needsFakePointerEvent = false;
-
-        this.workspaces = null;
     },
 
     _onDragBegin: function() {
