@@ -6,12 +6,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&component=general\n"
-"POT-Creation-Date: 2010-12-20 21:07+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-02-12 00:44+0700\n"
 "PO-Revision-Date: 2010-12-29 21:22+0700\n"
 "Last-Translator: Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,14 +25,6 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Quản lý cửa sổ và chạy ứng dụng"
 
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
-msgid "Clock"
-msgstr "Đồng hồ"
-
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
-msgid "Customize the panel clock"
-msgstr "Tuỳ biến đồng hồ"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
@@ -40,56 +32,45 @@ msgid ""
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Custom format of the clock"
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:4
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "Framerate used for recording screencasts."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:6
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
 msgstr ""
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "If true, display date in the clock, in addition to time."
+msgstr ""
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "Hour format"
+msgid "If true, display seconds in time."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
-"clock, in addition to time."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
-"time."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "If true, display the ISO week date in the calendar."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -98,45 +79,47 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Show date in clock"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show the week date in the calendar"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show time with seconds"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -144,31 +127,16 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"This key specifies the format used by the panel clock when the format key is "
-"set to \"custom\". You can use conversion specifiers understood by strftime"
-"() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid ""
-"This key specifies the hour format used by the panel clock. Possible values "
-"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
-"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
-"to \"custom\", the clock will display time according to the format specified "
-"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
-"the show_date and show_seconds keys are ignored."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
-#| msgid "No extensions installed"
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "Uuids of extensions to disable"
 msgstr "UUID của phần mở rộng cần tắt"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Whether to collect stats about applications usage"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid "disabled OpenSearch providers"
 msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
@@ -212,7 +180,6 @@ msgid ""
 msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-#| msgid "Enabled"
 msgid "Enable lens mode"
 msgstr "Bật chế độ gương"
 
@@ -297,56 +264,49 @@ msgstr ""
 msgid "Width of the vertical and horizontal lines that make up the crosshairs."
 msgstr "Độ rộng của đường dọc/ngang hình thành dấu gạch chéo."
 
-#: ../data/clock-preferences.ui.h:1
-msgid "Clock Format"
-msgstr "Dạng đồng hồ"
+#: ../js/misc/util.js:86
+msgid "Command not found"
+msgstr ""
 
-#: ../data/clock-preferences.ui.h:2
-#| msgid "System Preferences..."
-msgid "Clock Preferences"
-msgstr "Thiết lập đồng hồ"
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:113
+#, fuzzy
+msgid "Could not parse command:"
+msgstr "Vui lòng nhập lệnh:"
 
-#: ../data/clock-preferences.ui.h:3
-msgid "Panel Display"
-msgstr "Khung hiển thị"
+#: ../js/misc/util.js:135
+#, fuzzy
+msgid "No such application"
+msgstr "Ứng dụng"
 
-#: ../data/clock-preferences.ui.h:4
-msgid "Show seco_nds"
-msgstr "Hiện _giây"
+#: ../js/misc/util.js:148
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Lỗi thực hiện '%s':"
 
-#: ../data/clock-preferences.ui.h:5
-msgid "Show the _date"
-msgstr "Hiện _ngày"
-
-#: ../data/clock-preferences.ui.h:6
-msgid "_12 hour format"
-msgstr "Dạng _12 giờ"
-
-#: ../data/clock-preferences.ui.h:7
-msgid "_24 hour format"
-msgstr "Dạng _24 giờ"
-
-#: ../js/ui/appDisplay.js:154
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:174
 msgid "All"
 msgstr "Tất cả"
 
-#: ../js/ui/appDisplay.js:235
+#: ../js/ui/appDisplay.js:261
 msgid "APPLICATIONS"
 msgstr "ỨNG DỤNG"
 
-#: ../js/ui/appDisplay.js:265
+#: ../js/ui/appDisplay.js:291
 msgid "PREFERENCES"
 msgstr "TUỲ THÍCH"
 
-#: ../js/ui/appDisplay.js:562
+#: ../js/ui/appDisplay.js:592
 msgid "New Window"
 msgstr "Cửa sổ mới"
 
-#: ../js/ui/appDisplay.js:566
+#: ../js/ui/appDisplay.js:596
 msgid "Remove from Favorites"
 msgstr "Bỏ đánh dấu ưa thích"
 
-#: ../js/ui/appDisplay.js:567
+#: ../js/ui/appDisplay.js:597
 msgid "Add to Favorites"
 msgstr "Đánh dấu ưa thích"
 
@@ -360,133 +320,363 @@ msgstr "Đã được đánh dấu ưa thích cho %s."
 msgid "%s has been removed from your favorites."
 msgstr "Đã bỏ đánh dấu ưa thích cho %s"
 
-#: ../js/ui/dash.js:27
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:65
+msgctxt "event list time"
+msgid "All Day"
+msgstr ""
+
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:70
+#, fuzzy
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:77
+#, fuzzy
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%a %l:%M %p"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: ../js/ui/calendar.js:117
+msgctxt "grid sunday"
+msgid "S"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:119
+msgctxt "grid monday"
+msgid "M"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:121
+msgctxt "grid tuesday"
+msgid "T"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:123
+msgctxt "grid wednesday"
+msgid "W"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:125
+msgctxt "grid thursday"
+msgid "T"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:127
+msgctxt "grid friday"
+msgid "F"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:129
+msgctxt "grid saturday"
+msgid "S"
+msgstr ""
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+#: ../js/ui/calendar.js:142
+msgctxt "list sunday"
+msgid "Su"
+msgstr ""
+
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:144
+msgctxt "list monday"
+msgid "M"
+msgstr ""
+
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:146
+msgctxt "list tuesday"
+msgid "T"
+msgstr ""
+
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:148
+msgctxt "list wednesday"
+msgid "W"
+msgstr ""
+
+#. Translators: Event list abbreviation for Thursday
+#: ../js/ui/calendar.js:150
+msgctxt "list thursday"
+msgid "Th"
+msgstr ""
+
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:152
+msgctxt "list friday"
+msgid "F"
+msgstr ""
+
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:154
+msgctxt "list saturday"
+msgid "S"
+msgstr ""
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:701
+msgid "Nothing Scheduled"
+msgstr ""
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:717
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr ""
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:720
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr ""
+
+#: ../js/ui/calendar.js:730
+msgid "Today"
+msgstr ""
+
+#: ../js/ui/calendar.js:734
+msgid "Tomorrow"
+msgstr ""
+
+#: ../js/ui/calendar.js:743
+msgid "This week"
+msgstr ""
+
+#: ../js/ui/calendar.js:751
+msgid "Next week"
+msgstr ""
+
+#: ../js/ui/dash.js:174
 msgid "Remove"
 msgstr "Loại bỏ"
 
-#: ../js/ui/docDisplay.js:494
-msgid "RECENT ITEMS"
-msgstr "MỤC GẦN ĐÂY"
+#: ../js/ui/dateMenu.js:91
+#, fuzzy
+msgid "Date and Time Settings"
+msgstr "Thiết lập hệ thống"
 
-#: ../js/ui/lookingGlass.js:552
-msgid "No extensions installed"
-msgstr "Chưa cài phần mở rộng"
-
-#: ../js/ui/lookingGlass.js:589
-msgid "Enabled"
-msgstr "Bật"
-
-#. translators:
-#. * The device has been disabled
-#: ../js/ui/lookingGlass.js:591 ../src/gvc/gvc-mixer-control.c:1087
-msgid "Disabled"
-msgstr "Tắt"
-
-#: ../js/ui/lookingGlass.js:593
-msgid "Error"
-msgstr "Lỗi"
-
-#: ../js/ui/lookingGlass.js:595
-msgid "Out of date"
-msgstr "Hết hạn"
-
-#: ../js/ui/lookingGlass.js:620
-msgid "View Source"
-msgstr "Xem mã nguồn"
-
-#: ../js/ui/lookingGlass.js:626
-msgid "Web Page"
-msgstr "Trang Web"
-
-#: ../js/ui/overview.js:96
-msgid "Undo"
-msgstr "Hoàn lại"
-
-#: ../js/ui/overview.js:158
-#| msgid "New Window"
-msgid "Windows"
-msgstr "Cửa sổ"
-
-#: ../js/ui/overview.js:161
-msgid "Applications"
-msgstr "Ứng dụng"
-
-#. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:474
-#, c-format
-msgid "Quit %s"
-msgstr "Thoát %s"
-
-#: ../js/ui/panel.js:499
-#| msgid "System Preferences..."
-msgid "Preferences"
-msgstr "Thiết lập"
+#: ../js/ui/dateMenu.js:110
+msgid "Open Calendar"
+msgstr ""
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:585
+#: ../js/ui/dateMenu.js:149
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/panel.js:586
-#| msgid "%a %l:%M %p"
+#: ../js/ui/dateMenu.js:150
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:590
-#| msgid "%a %R"
+#: ../js/ui/dateMenu.js:154
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/panel.js:591
+#: ../js/ui/dateMenu.js:155
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:598
-#| msgid "%a %l:%M %p"
+#: ../js/ui/dateMenu.js:162
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/panel.js:599
-#| msgid "%a %l:%M %p"
+#: ../js/ui/dateMenu.js:163
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:603
-#| msgid "%a %l:%M %p"
+#: ../js/ui/dateMenu.js:167
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/panel.js:604
+#: ../js/ui/dateMenu.js:168
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:194
+#, fuzzy
+msgid "%A %B %e, %Y"
+msgstr "%a %b %e, %R"
+
+#: ../js/ui/docDisplay.js:19
+msgid "RECENT ITEMS"
+msgstr "MỤC GẦN ĐÂY"
+
+#: ../js/ui/endSessionDialog.js:63
+#, fuzzy, c-format
+msgid "Log Out %s"
+msgstr "Đăng xuất..."
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+#, fuzzy
+msgid "Log Out"
+msgstr "Đăng xuất..."
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
+#, fuzzy
+msgid "Shut Down"
+msgstr "Tắt máy..."
+
+#: ../js/ui/endSessionDialog.js:75
+msgid "Click Shut Down to quit these applications and shut down the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:76
+#, c-format
+msgid "The system will shut down automatically in %d seconds."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:77
+msgid "Shutting down the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+msgid "Restart"
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:85
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:86
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:87
+msgid "Restarting the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:395
+msgid "Confirm"
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+msgid "Cancel"
+msgstr "Thôi"
+
+#: ../js/ui/lookingGlass.js:584
+msgid "No extensions installed"
+msgstr "Chưa cài phần mở rộng"
+
+#: ../js/ui/lookingGlass.js:621
+msgid "Enabled"
+msgstr "Bật"
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:623 ../src/gvc/gvc-mixer-control.c:1087
+msgid "Disabled"
+msgstr "Tắt"
+
+#: ../js/ui/lookingGlass.js:625
+msgid "Error"
+msgstr "Lỗi"
+
+#: ../js/ui/lookingGlass.js:627
+msgid "Out of date"
+msgstr "Hết hạn"
+
+#: ../js/ui/lookingGlass.js:652
+msgid "View Source"
+msgstr "Xem mã nguồn"
+
+#: ../js/ui/lookingGlass.js:658
+msgid "Web Page"
+msgstr "Trang Web"
+
+#: ../js/ui/messageTray.js:1854
+#, fuzzy
+msgid "System Information"
+msgstr "Thông tin tài khoản..."
+
+#: ../js/ui/overview.js:88
+msgid "Undo"
+msgstr "Hoàn lại"
+
+#: ../js/ui/overview.js:159
+msgid "Windows"
+msgstr "Cửa sổ"
+
+#: ../js/ui/overview.js:162
+msgid "Applications"
+msgstr "Ứng dụng"
+
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:480
+#, c-format
+msgid "Quit %s"
+msgstr "Thoát %s"
+
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:749
+#: ../js/ui/panel.js:614
 msgid "Activities"
 msgstr "Hoạt động"
 
-#: ../js/ui/placeDisplay.js:111
+#: ../js/ui/placeDisplay.js:122
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Lỗi bỏ gắn '%s'"
 
-#: ../js/ui/placeDisplay.js:114
+#: ../js/ui/placeDisplay.js:125
 msgid "Retry"
 msgstr "Thử lại"
 
-#: ../js/ui/placeDisplay.js:159
+#: ../js/ui/placeDisplay.js:165
 msgid "Connect to..."
 msgstr "Kết nối đến..."
 
-#: ../js/ui/placeDisplay.js:558
+#: ../js/ui/placeDisplay.js:409
 msgid "PLACES & DEVICES"
 msgstr "ĐỊA ĐIỂM & THIẾT BỊ"
 
@@ -495,88 +685,93 @@ msgstr "ĐỊA ĐIỂM & THIẾT BỊ"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:33
+#: ../js/ui/popupMenu.js:512
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:233
+#: ../js/ui/runDialog.js:209
 msgid "Please enter a command:"
 msgstr "Vui lòng nhập lệnh:"
 
-#: ../js/ui/runDialog.js:378
-#, c-format
-msgid "Execution of '%s' failed:"
-msgstr "Lỗi thực hiện '%s':"
+#: ../js/ui/searchDisplay.js:295
+msgid "Searching..."
+msgstr "Đang tìm..."
 
-#: ../js/ui/statusMenu.js:101
+#: ../js/ui/searchDisplay.js:309
+msgid "No matching results."
+msgstr "Không tìm thấy."
+
+#: ../js/ui/statusMenu.js:102
 msgid "Available"
 msgstr "Có mặt"
 
-#: ../js/ui/statusMenu.js:106
+#: ../js/ui/statusMenu.js:107
 msgid "Busy"
 msgstr "Bận"
 
-#: ../js/ui/statusMenu.js:114
+#: ../js/ui/statusMenu.js:115
 msgid "My Account"
 msgstr "Tài khoản"
 
-#: ../js/ui/statusMenu.js:118
+#: ../js/ui/statusMenu.js:119
 msgid "System Settings"
 msgstr "Thiết lập hệ thống"
 
-#: ../js/ui/statusMenu.js:125
+#: ../js/ui/statusMenu.js:126
 msgid "Lock Screen"
 msgstr "Khoá màn hình"
 
-#: ../js/ui/statusMenu.js:129
+#: ../js/ui/statusMenu.js:130
 msgid "Switch User"
 msgstr "Chuyển người dùng"
 
-#: ../js/ui/statusMenu.js:134
+#: ../js/ui/statusMenu.js:135
 msgid "Log Out..."
 msgstr "Đăng xuất..."
 
-#: ../js/ui/statusMenu.js:141
-msgid "Suspend..."
-msgstr "Ngưng..."
-
-#: ../js/ui/statusMenu.js:145
+#. This is temporarily removed, see
+#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
+#. for details.
+#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
+#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+#. this.menu.addMenuItem(item);
+#: ../js/ui/statusMenu.js:149
 msgid "Shut Down..."
 msgstr "Tắt máy..."
 
-#: ../js/ui/status/accessibility.js:82
+#: ../js/ui/status/accessibility.js:83
 msgid "Zoom"
 msgstr "Thu/Phóng"
 
-#: ../js/ui/status/accessibility.js:88
+#: ../js/ui/status/accessibility.js:89
 msgid "Screen Reader"
 msgstr "Trình đọc màn hình"
 
-#: ../js/ui/status/accessibility.js:91
+#: ../js/ui/status/accessibility.js:92
 msgid "Screen Keyboard"
 msgstr "Bàn phím màn hình"
 
-#: ../js/ui/status/accessibility.js:94
+#: ../js/ui/status/accessibility.js:95
 msgid "Visual Alerts"
 msgstr "Cảnh báo trực quan"
 
-#: ../js/ui/status/accessibility.js:97
+#: ../js/ui/status/accessibility.js:98
 msgid "Sticky Keys"
 msgstr "Phím dính"
 
-#: ../js/ui/status/accessibility.js:100
+#: ../js/ui/status/accessibility.js:101
 msgid "Slow Keys"
 msgstr "Phím chậm"
 
-#: ../js/ui/status/accessibility.js:103
+#: ../js/ui/status/accessibility.js:104
 msgid "Bounce Keys"
 msgstr "Phím dội"
 
-#: ../js/ui/status/accessibility.js:106
+#: ../js/ui/status/accessibility.js:107
 msgid "Mouse Keys"
 msgstr "Phím chuột"
 
-#: ../js/ui/status/accessibility.js:110
+#: ../js/ui/status/accessibility.js:111
 msgid "Universal Access Settings"
 msgstr "Thiết lập hỗ trợ truy cập"
 
@@ -588,7 +783,9 @@ msgstr "Tương phản cao"
 msgid "Large Text"
 msgstr "Chữ lớn"
 
-#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:200
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -596,118 +793,113 @@ msgstr "Bluetooth"
 msgid "Visibility"
 msgstr "Tầm nhìn"
 
-#: ../js/ui/status/bluetooth.js:68
+#: ../js/ui/status/bluetooth.js:69
 msgid "Send Files to Device..."
 msgstr "Gửi tập tin đến thiết bị..."
 
-#: ../js/ui/status/bluetooth.js:71
+#: ../js/ui/status/bluetooth.js:70
 msgid "Setup a New Device..."
 msgstr "Thiết lập thiết bị mới..."
 
-#: ../js/ui/status/bluetooth.js:94
+#: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
 msgstr "Thiết lập Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:151
-#| msgid "Connect to..."
+#: ../js/ui/status/bluetooth.js:192
 msgid "Connection"
 msgstr "Kết nối"
 
-#: ../js/ui/status/bluetooth.js:187
+#: ../js/ui/status/bluetooth.js:228
 msgid "Send Files..."
 msgstr "Gửi tập tin..."
 
-#: ../js/ui/status/bluetooth.js:192
+#: ../js/ui/status/bluetooth.js:233
 msgid "Browse Files..."
 msgstr "Duyệt tập tin..."
 
-#: ../js/ui/status/bluetooth.js:201
+#: ../js/ui/status/bluetooth.js:242
 msgid "Error browsing device"
 msgstr "Lỗi duyệt tập tin"
 
-#: ../js/ui/status/bluetooth.js:202
+#: ../js/ui/status/bluetooth.js:243
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "Không thể duyệt thiết bị yêu cầu , lỗi là '%s'"
 
-#: ../js/ui/status/bluetooth.js:210
+#: ../js/ui/status/bluetooth.js:251
 msgid "Keyboard Settings"
 msgstr "Thiết lập bàn phím"
 
-#: ../js/ui/status/bluetooth.js:215
+#: ../js/ui/status/bluetooth.js:256
 msgid "Mouse Settings"
 msgstr "Thiết lập chuột"
 
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/volume.js:62
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
 msgid "Sound Settings"
 msgstr "Thiết lập âm thanh"
 
-#: ../js/ui/status/bluetooth.js:293 ../js/ui/status/bluetooth.js:327
-#: ../js/ui/status/bluetooth.js:367 ../js/ui/status/bluetooth.js:400
-msgid "Bluetooth Agent"
-msgstr ""
-
-#: ../js/ui/status/bluetooth.js:328
+#: ../js/ui/status/bluetooth.js:372
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Yêu cầu cấp quyền từ %s"
 
-#: ../js/ui/status/bluetooth.js:334
+#: ../js/ui/status/bluetooth.js:378
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Thiết bị %s muốn truy cập dịch vụ '%s'"
 
-#: ../js/ui/status/bluetooth.js:336
+#: ../js/ui/status/bluetooth.js:380
 msgid "Always grant access"
 msgstr "Luôn cho phép"
 
-#: ../js/ui/status/bluetooth.js:337
+#: ../js/ui/status/bluetooth.js:381
 msgid "Grant this time only"
 msgstr "Chỉ cho phép lần này"
 
-#: ../js/ui/status/bluetooth.js:338
+#: ../js/ui/status/bluetooth.js:382
 msgid "Reject"
 msgstr "Từ chối"
 
-#: ../js/ui/status/bluetooth.js:368
+#: ../js/ui/status/bluetooth.js:412
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Xác nhận kết nối cho %s"
 
-#: ../js/ui/status/bluetooth.js:374 ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Thiết bị %s muốn kết nối với máy tính này"
 
-#: ../js/ui/status/bluetooth.js:375
+#: ../js/ui/status/bluetooth.js:419
 #, c-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Vui lòng xác nhận PIN '%s' khớp với số trên thiết bị."
 
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:421
 msgid "Matches"
 msgstr "Khớp"
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:422
 msgid "Does not match"
 msgstr "Không khớp"
 
-#: ../js/ui/status/bluetooth.js:401
+#: ../js/ui/status/bluetooth.js:445
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Yêu cầu kết nối cho %s"
 
-#: ../js/ui/status/bluetooth.js:409
+#: ../js/ui/status/bluetooth.js:453
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Vui lòng nhập số PIN ghi trên thiết bị."
 
-#: ../js/ui/status/bluetooth.js:425
+#: ../js/ui/status/bluetooth.js:469
 msgid "OK"
 msgstr "OK"
 
-#: ../js/ui/status/bluetooth.js:426
-msgid "Cancel"
-msgstr "Thôi"
+#: ../js/ui/status/keyboard.js:72
+#, fuzzy
+msgid "Localization Settings"
+msgstr "Thiết lập âm thanh"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -715,8 +907,6 @@ msgstr "Thiết lập năng lượng"
 
 #: ../js/ui/status/power.js:112
 #, c-format
-#| msgid "%d hour ago"
-#| msgid_plural "%d hours ago"
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
 msgstr[0] "%d giờ còn lại"
@@ -733,93 +923,88 @@ msgid_plural "hours"
 msgstr[0] "giờ"
 
 #: ../js/ui/status/power.js:117
-#| msgid "%d minute ago"
-#| msgid_plural "%d minutes ago"
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "%d phút"
 
 #: ../js/ui/status/power.js:120
 #, c-format
-#| msgid "%d minute ago"
-#| msgid_plural "%d minutes ago"
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d phút còn lại"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:235
 msgid "AC adapter"
 msgstr "Bộ đổi điện AC"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:237
 msgid "Laptop battery"
 msgstr "Pin laptop"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:239
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:241
 msgid "Monitor"
 msgstr "Màn hình"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:243
 msgid "Mouse"
 msgstr "Chuột"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:245
 msgid "Keyboard"
 msgstr "Bàn phím"
 
-#: ../js/ui/status/power.js:249
+#: ../js/ui/status/power.js:247
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:251
+#: ../js/ui/status/power.js:249
 msgid "Cell phone"
 msgstr "Điện thoại cầm tay"
 
-#: ../js/ui/status/power.js:253
+#: ../js/ui/status/power.js:251
 msgid "Media player"
 msgstr "Máy phát"
 
-#: ../js/ui/status/power.js:255
-#| msgid "Enabled"
+#: ../js/ui/status/power.js:253
 msgid "Tablet"
 msgstr ""
 
-#: ../js/ui/status/power.js:257
+#: ../js/ui/status/power.js:255
 msgid "Computer"
 msgstr "Máy tính"
 
-#: ../js/ui/status/power.js:259 ../src/shell-app-system.c:1012
+#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
 msgid "Unknown"
 msgstr "Không biết"
 
-#: ../js/ui/status/volume.js:41
+#: ../js/ui/status/volume.js:42
 msgid "Volume"
 msgstr "Âm lượng"
 
-#: ../js/ui/status/volume.js:54
+#: ../js/ui/status/volume.js:55
 msgid "Microphone"
 msgstr "Micrô"
 
-#: ../js/ui/telepathyClient.js:560
+#: ../js/ui/telepathyClient.js:563
 #, c-format
 msgid "%s is online."
 msgstr "%s trực tuyến."
 
-#: ../js/ui/telepathyClient.js:565
+#: ../js/ui/telepathyClient.js:568
 #, c-format
 msgid "%s is offline."
 msgstr "%s ngoại tuyến."
 
-#: ../js/ui/telepathyClient.js:568
+#: ../js/ui/telepathyClient.js:571
 #, c-format
 msgid "%s is away."
 msgstr "%s đi vắng."
 
-#: ../js/ui/telepathyClient.js:571
+#: ../js/ui/telepathyClient.js:574
 #, c-format
 msgid "%s is busy."
 msgstr "%s bận."
@@ -827,7 +1012,7 @@ msgstr "%s bận."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:664
+#: ../js/ui/telepathyClient.js:669
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Đã gửi %X lúc %A"
@@ -845,15 +1030,6 @@ msgstr "%s đã hoàn tất khởi chạy"
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' đã sẵn sàng"
-
-#: ../js/ui/workspacesView.js:244
-msgid ""
-"Can't add a new workspace because maximum workspaces limit has been reached."
-msgstr "Không thể thêm vùng làm việc mới vì đã đạt giới hạn số vùng làm việc tối đa."
-
-#: ../js/ui/workspacesView.js:260
-msgid "Can't remove the first workspace."
-msgstr "Không thể bỏ vùng làm việc đầu tiên."
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -875,29 +1051,29 @@ msgstr[0] "%u đầu vào"
 msgid "System Sounds"
 msgstr "Âm thanh hệ thống"
 
-#: ../src/shell-global.c:1155
+#: ../src/shell-global.c:1363
 msgid "Less than a minute ago"
 msgstr "Chưa đến một phút"
 
-#: ../src/shell-global.c:1159
+#: ../src/shell-global.c:1367
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d phút trước"
 
-#: ../src/shell-global.c:1164
+#: ../src/shell-global.c:1372
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d giờ trước"
 
-#: ../src/shell-global.c:1169
+#: ../src/shell-global.c:1377
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d ngày trước"
 
-#: ../src/shell-global.c:1174
+#: ../src/shell-global.c:1382
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -927,29 +1103,62 @@ msgstr "Tìm"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Clock"
+#~ msgstr "Đồng hồ"
+
+#~ msgid "Customize the panel clock"
+#~ msgstr "Tuỳ biến đồng hồ"
+
+#~ msgid "Clock Format"
+#~ msgstr "Dạng đồng hồ"
+
+#~| msgid "System Preferences..."
+#~ msgid "Clock Preferences"
+#~ msgstr "Thiết lập đồng hồ"
+
+#~ msgid "Panel Display"
+#~ msgstr "Khung hiển thị"
+
+#~ msgid "Show seco_nds"
+#~ msgstr "Hiện _giây"
+
+#~ msgid "Show the _date"
+#~ msgstr "Hiện _ngày"
+
+#~ msgid "_12 hour format"
+#~ msgstr "Dạng _12 giờ"
+
+#~ msgid "_24 hour format"
+#~ msgstr "Dạng _24 giờ"
+
+#~| msgid "System Preferences..."
+#~ msgid "Preferences"
+#~ msgstr "Thiết lập"
+
+#~ msgid "Suspend..."
+#~ msgstr "Ngưng..."
+
+#~ msgid ""
+#~ "Can't add a new workspace because maximum workspaces limit has been "
+#~ "reached."
+#~ msgstr ""
+#~ "Không thể thêm vùng làm việc mới vì đã đạt giới hạn số vùng làm việc tối "
+#~ "đa."
+
+#~ msgid "Can't remove the first workspace."
+#~ msgstr "Không thể bỏ vùng làm việc đầu tiên."
+
 #~ msgid "Drag here to add favorites"
 #~ msgstr "Kéo vào đây để thêm vào danh mục ưa thích"
 
 #~ msgid "Find..."
 #~ msgstr "Tìm"
 
-#~ msgid "Searching..."
-#~ msgstr "Đang tìm..."
-
-#~ msgid "No matching results."
-#~ msgstr "Không tìm thấy."
-
 #~ msgid "Invisible"
 #~ msgstr "Giấu mặt"
 
-#~ msgid "Account Information..."
-#~ msgstr "Thông tin tài khoản..."
-
 #~ msgid "Sidebar"
 #~ msgstr "Thanh bên"
-
-#~ msgid "%H:%M"
-#~ msgstr "%H:%M"
 
 #~ msgid "Recent Documents"
 #~ msgstr "Tài liệu gần đây"
