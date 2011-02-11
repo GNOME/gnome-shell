@@ -80,8 +80,8 @@ typedef struct _ClutterContainerIface   ClutterContainerIface;
  * @destroy_child_meta: virtual function that gets called when a child is
  *   removed; it shuld release all resources held by the record
  * @get_child_meta: return the record for a container child
- * @actor_added: class handler for #ClutterContainer::actor_added
- * @actor_removed: class handler for #ClutterContainer::actor_removed
+ * @actor_added: class handler for #ClutterContainer::actor-added
+ * @actor_removed: class handler for #ClutterContainer::actor-removed
  * @child_notify: class handler for #ClutterContainer::child-notify
  *
  * Base interface for container actors. The @add, @remove and @foreach

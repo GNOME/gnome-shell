@@ -57,6 +57,7 @@ struct _ClutterBackendWayland
   EGLDisplay edpy;
   EGLContext egl_context;
   EGLConfig  egl_config;
+  EGLSurface egl_surface;
 
   gint egl_version_major;
   gint egl_version_minor;
@@ -66,11 +67,13 @@ struct _ClutterBackendWayland
   struct wl_compositor *wayland_compositor;
   struct wl_shell *wayland_shell;
   struct wl_drm *wayland_drm;
+  struct wl_shm *wayland_shm;
   char *device_name;
   int authenticated;
   struct wl_output *wayland_output;
   ClutterGeometry screen_allocation;
   int drm_fd;
+  gboolean drm_enabled;
 
   PFNEGLGETDRMDISPLAYMESA get_drm_display;
   PFNEGLCREATEDRMIMAGEMESA create_drm_image;

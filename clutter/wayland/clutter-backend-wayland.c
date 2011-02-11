@@ -111,7 +111,7 @@ static void
 handle_configure (void *data, struct wl_shell *shell,
 		  uint32_t timestamp, uint32_t edges,
 		  struct wl_surface *surface,
-		  int32_t x, int32_t y, int32_t width, int32_t height)
+		  int32_t width, int32_t height)
 {
   ClutterStageWayland *stage_wayland;
 
@@ -123,8 +123,6 @@ handle_configure (void *data, struct wl_shell *shell,
       clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_wayland->wrapper));
     }
 
-  stage_wayland->pending_allocation.x = x;
-  stage_wayland->pending_allocation.y = y;
   stage_wayland->pending_allocation.width = width;
   stage_wayland->pending_allocation.height = height;
   stage_wayland->allocation = stage_wayland->pending_allocation;
@@ -177,7 +175,105 @@ display_handle_global (struct wl_display *display,
       wl_drm_add_listener (backend_wayland->wayland_drm,
                            &drm_listener, backend_wayland);
     }
+  else if (strcmp (interface, "shm") == 0)
+    {
+      backend_wayland->wayland_shm = wl_shm_create (display, id);
+    }
 }
+
+static gboolean
+try_get_display (ClutterBackendWayland *backend_wayland, GError **error)
+{
+  EGLDisplay edpy = EGL_NO_DISPLAY;
+  int drm_fd;
+
+  drm_fd = open (backend_wayland->device_name, O_RDWR);
+
+  backend_wayland->get_drm_display =
+    (PFNEGLGETDRMDISPLAYMESA) eglGetProcAddress ("eglGetDRMDisplayMESA");
+
+  if (backend_wayland->get_drm_display != NULL && drm_fd >= 0)
+     edpy = backend_wayland->get_drm_display (drm_fd);
+
+  if (edpy == EGL_NO_DISPLAY)
+      edpy = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+
+  if (edpy == EGL_NO_DISPLAY)
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+		   CLUTTER_INIT_ERROR_BACKEND,
+		   "Failed to open EGLDisplay");
+      return FALSE;
+    }
+
+  backend_wayland->edpy   = edpy;
+  backend_wayland->drm_fd = drm_fd;
+
+  return TRUE;
+}
+
+static gboolean
+try_enable_drm (ClutterBackendWayland *backend_wayland, GError **error)
+{
+  drm_magic_t magic;
+  const gchar *exts, *glexts;
+
+  if (backend_wayland->drm_fd < 0)
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+		   CLUTTER_INIT_ERROR_BACKEND,
+		   "Failed to open drm device");
+      return FALSE;
+    }
+
+  glexts = glGetString(GL_EXTENSIONS);
+  exts = eglQueryString (backend_wayland->edpy, EGL_EXTENSIONS);
+
+  if (!_cogl_check_extension ("EGL_KHR_image_base", exts) ||
+      !_cogl_check_extension ("EGL_MESA_drm_image", exts) ||
+      !_cogl_check_extension ("GL_OES_EGL_image", glexts))
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+		   CLUTTER_INIT_ERROR_BACKEND,
+		   "Missing EGL extensions");
+      return FALSE;
+    }
+
+  backend_wayland->create_drm_image =
+    (PFNEGLCREATEDRMIMAGEMESA) eglGetProcAddress ("eglCreateDRMImageMESA");
+  backend_wayland->destroy_image =
+    (PFNEGLDESTROYIMAGEKHRPROC) eglGetProcAddress ("eglDestroyImageKHR");
+  backend_wayland->export_drm_image =
+    (PFNEGLEXPORTDRMIMAGEMESA) eglGetProcAddress ("eglExportDRMImageMESA");
+  backend_wayland->image_target_texture_2d =
+    (PFNGLEGLIMAGETARGETTEXTURE2DOESPROC) eglGetProcAddress ("glEGLImageTargetTexture2DOES");
+
+  if (backend_wayland->create_drm_image == NULL ||
+      backend_wayland->destroy_image == NULL ||
+      backend_wayland->export_drm_image == NULL ||
+      backend_wayland->image_target_texture_2d == NULL)
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+		   CLUTTER_INIT_ERROR_BACKEND,
+		   "Missing EGL extensions");
+      return FALSE;
+    }
+
+  if (drmGetMagic (backend_wayland->drm_fd, &magic))
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+		   CLUTTER_INIT_ERROR_BACKEND,
+		   "Failed to get drm magic");
+      return FALSE;
+    }
+
+  wl_drm_authenticate (backend_wayland->wayland_drm, magic);
+  wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_WRITABLE);
+  while (!backend_wayland->authenticated)
+    wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_READABLE);
+
+  return TRUE;
+};
 
 static gboolean
 clutter_backend_wayland_post_parse (ClutterBackend  *backend,
@@ -185,12 +281,11 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
 {
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
   EGLBoolean status;
-  drm_magic_t magic;
 
   g_atexit (clutter_backend_at_exit);
 
   /* TODO: expose environment variable/commandline option for this... */
-  backend_wayland->wayland_display = wl_display_connect ("\0wayland");
+  backend_wayland->wayland_display = wl_display_connect (NULL);
   if (!backend_wayland->wayland_display)
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
@@ -211,53 +306,8 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
   /* Process connection events. */
   wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_READABLE);
 
-  backend_wayland->drm_fd = open (backend_wayland->device_name, O_RDWR);
-  if (backend_wayland->drm_fd < 0)
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Failed to open drm device");
-      return FALSE;
-    }
-
-  if (drmGetMagic (backend_wayland->drm_fd, &magic))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Failed to get drm magic");
-      return FALSE;
-    }
-
-  wl_drm_authenticate (backend_wayland->wayland_drm, magic);
-  wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_WRITABLE);
-  while (!backend_wayland->authenticated)
-    wl_display_iterate (backend_wayland->wayland_display, WL_DISPLAY_READABLE);
-
-  backend_wayland->get_drm_display =
-    (PFNEGLGETDRMDISPLAYMESA) eglGetProcAddress ("eglGetDRMDisplayMESA");
-  backend_wayland->create_drm_image =
-    (PFNEGLCREATEDRMIMAGEMESA) eglGetProcAddress ("eglCreateDRMImageMESA");
-  backend_wayland->destroy_image =
-    (PFNEGLDESTROYIMAGEKHRPROC) eglGetProcAddress ("eglDestroyImageKHR");
-  backend_wayland->export_drm_image =
-    (PFNEGLEXPORTDRMIMAGEMESA) eglGetProcAddress ("eglExportDRMImageMESA");
-  backend_wayland->image_target_texture_2d =
-    (PFNGLEGLIMAGETARGETTEXTURE2DOESPROC) eglGetProcAddress ("glEGLImageTargetTexture2DOES");
-
-  if (backend_wayland->get_drm_display == NULL ||
-      backend_wayland->create_drm_image == NULL ||
-      backend_wayland->destroy_image == NULL ||
-      backend_wayland->export_drm_image == NULL ||
-      backend_wayland->image_target_texture_2d == NULL)
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Missing EGL extensions");
-      return FALSE;
-    }
-
-  backend_wayland->edpy =
-    backend_wayland->get_drm_display (backend_wayland->drm_fd);
+  if (!try_get_display(backend_wayland, error))
+    return FALSE;
 
   status = eglInitialize (backend_wayland->edpy,
 			  &backend_wayland->egl_version_major,
@@ -274,6 +324,52 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
 		backend_wayland->egl_version_major,
 		backend_wayland->egl_version_minor);
 
+  backend_wayland->drm_enabled = try_enable_drm(backend_wayland, error);
+
+  if (!backend_wayland->drm_enabled) {
+    if (backend_wayland->wayland_shm == NULL)
+      return FALSE;
+
+    g_debug("Could not enable DRM buffers, falling back to SHM buffers");
+    g_clear_error(error);
+  }
+
+  return TRUE;
+}
+
+#if defined(HAVE_COGL_GL)
+#define _COGL_RENDERABLE_BIT EGL_OPENGL_BIT
+#elif defined(HAVE_COGL_GLES2)
+#define _COGL_GLES_VERSION 2
+#define _COGL_RENDERABLE_BIT EGL_OPENGL_ES2_BIT
+#elif defined(HAVE_COGL_GLES)
+#define _COGL_GLES_VERSION 1
+#define _COGL_RENDERABLE_BIT EGL_OPENGL_ES_BIT
+#endif
+
+static gboolean
+make_dummy_surface (ClutterBackendWayland *backend_wayland)
+{
+  static const EGLint attrs[] = {
+    EGL_WIDTH, 1,
+    EGL_HEIGHT, 1,
+    EGL_RENDERABLE_TYPE, _COGL_RENDERABLE_BIT,
+    EGL_NONE };
+  EGLint num_configs;
+
+  eglGetConfigs(backend_wayland->edpy,
+                &backend_wayland->egl_config, 1, &num_configs);
+  if (num_configs < 1)
+    return FALSE;
+
+  backend_wayland->egl_surface =
+    eglCreatePbufferSurface(backend_wayland->edpy,
+                            backend_wayland->egl_config,
+                            attrs);
+
+  if (backend_wayland->egl_surface == EGL_NO_SURFACE)
+    return FALSE;
+
   return TRUE;
 }
 
@@ -286,20 +382,18 @@ try_create_context (ClutterBackend  *backend,
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
   const char *error_message;
 
-  eglBindAPI (EGL_OPENGL_API);
-
   if (backend_wayland->egl_context == EGL_NO_CONTEXT)
     {
-#if defined (HAVE_COGL_GLES2)
-      static const EGLint attribs[] =
-        { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
-#else
+#if defined(HAVE_COGL_GL)
       static const EGLint *attribs = NULL;
+#else
+      static const EGLint attribs[] =
+        { EGL_CONTEXT_CLIENT_VERSION, _COGL_GLES_VERSION, EGL_NONE };
 #endif
 
       backend_wayland->egl_context =
         eglCreateContext (backend_wayland->edpy,
-                          NULL,
+                          backend_wayland->egl_config,
                           EGL_NO_CONTEXT,
                           attribs);
       if (backend_wayland->egl_context == EGL_NO_CONTEXT)
@@ -312,13 +406,13 @@ try_create_context (ClutterBackend  *backend,
     }
 
   if (!eglMakeCurrent (backend_wayland->edpy,
-                       NULL,
-                       NULL,
+                       backend_wayland->egl_surface,
+                       backend_wayland->egl_surface,
                        backend_wayland->egl_context))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to MakeCurrent with NULL drawables");
+                   "Unable to MakeCurrent");
       return FALSE;
     }
 
@@ -334,6 +428,14 @@ fail:
     }
 }
 
+#if defined(HAVE_COGL_GL)
+#define _COGL_SURFACELESS_EXTENSION "EGL_KHR_surfaceless_opengl"
+#elif defined(HAVE_COGL_GLES)
+#define _COGL_SURFACELESS_EXTENSION "EGL_KHR_surfaceless_gles1"
+#elif defined(HAVE_COGL_GLES2)
+#define _COGL_SURFACELESS_EXTENSION "EGL_KHR_surfaceless_gles2"
+#endif
+
 static gboolean
 clutter_backend_wayland_create_context (ClutterBackend  *backend,
 					GError         **error)
@@ -348,15 +450,29 @@ clutter_backend_wayland_create_context (ClutterBackend  *backend,
   if (backend_wayland->egl_context != EGL_NO_CONTEXT)
     return TRUE;
 
+#if defined(HAVE_COGL_GL)
+  eglBindAPI (EGL_OPENGL_API);
+#else
+  eglBindAPI (EGL_OPENGL_ES_API);
+#endif
   egl_extensions = eglQueryString (backend_wayland->edpy, EGL_EXTENSIONS);
 
-  if (!_cogl_check_extension ("EGL_KHR_surfaceless_opengl", egl_extensions))
+  if (!_cogl_check_extension (_COGL_SURFACELESS_EXTENSION, egl_extensions))
     {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Wayland clients require the "
-                   "EGL_KHR_surfaceless_opengl extension");
-      return FALSE;
+      g_debug("Could not find the " _COGL_SURFACELESS_EXTENSION
+              " extension; falling back to binding a dummy surface");
+      if (!make_dummy_surface(backend_wayland))
+        {
+          g_set_error (error, CLUTTER_INIT_ERROR,
+                       CLUTTER_INIT_ERROR_BACKEND,
+                       "Could not create dummy surface");
+          return FALSE;
+        }
+    }
+  else
+    {
+      backend_wayland->egl_config = NULL;
+      backend_wayland->egl_surface = EGL_NO_SURFACE;
     }
 
   retry_cookie = 0;
@@ -541,6 +657,7 @@ _clutter_backend_wayland_class_init (ClutterBackendWaylandClass *klass)
 static void
 _clutter_backend_wayland_init (ClutterBackendWayland *backend_wayland)
 {
+  backend_wayland->edpy = EGL_NO_DISPLAY;
   backend_wayland->egl_context = EGL_NO_CONTEXT;
 
   backend_wayland->drm_fd = -1;

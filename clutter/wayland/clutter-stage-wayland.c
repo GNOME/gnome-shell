@@ -28,7 +28,12 @@
 #include "config.h"
 #endif
 
+#include <fcntl.h>
+#include <glib.h>
+#include <glib/gstdio.h>
 #include <stdlib.h>
+#include <sys/mman.h>
+#include <unistd.h>
 #include <wayland-util.h>
 #include <wayland-client.h>
 #include <xf86drm.h>
@@ -59,14 +64,82 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageWayland,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init));
 
-static ClutterStageWaylandWaylandBuffer *
-wayland_create_buffer (ClutterStageWayland *stage_wayland,
-                       ClutterGeometry *geom)
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+#define VISUAL_ARGB_PRE COGL_PIXEL_FORMAT_ARGB_8888_PRE
+#define VISUAL_ARGB     COGL_PIXEL_FORMAT_ARGB_8888
+#define VISUAL_RGB      COGL_PIXEL_FORMAT_RGB_888
+#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
+#define VISUAL_ARGB_PRE COGL_PIXEL_FORMAT_BGRA_8888_PRE
+#define VISUAL_ARGB     COGL_PIXEL_FORMAT_BGRA_8888
+#define VISUAL_RGB      COGL_PIXEL_FORMAT_BGR_888
+#endif
+
+static struct wl_visual *
+get_visual (struct wl_display *display, CoglPixelFormat format)
 {
-  ClutterBackend *backend = clutter_get_default_backend ();
-  ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
+  switch (format)
+    {
+    case VISUAL_ARGB_PRE:
+      return wl_display_get_premultiplied_argb_visual (display);
+    case VISUAL_ARGB:
+      return wl_display_get_argb_visual (display);
+    case VISUAL_RGB:
+      return wl_display_get_rgb_visual (display);
+    default:
+      return NULL;
+    }
+}
+static ClutterStageWaylandWaylandBuffer *
+wayland_create_shm_buffer (ClutterBackendWayland *backend_wayland,
+                           ClutterGeometry *geom)
+{
+  ClutterStageWaylandWaylandBufferSHM *buffer;
+  struct wl_visual *visual;
+  CoglHandle tex;
+  CoglTextureFlags flags = COGL_TEXTURE_NONE; /* XXX: tweak flags? */
+  CoglPixelFormat format = VISUAL_ARGB_PRE;
+  int fd;
+  gchar tmp[] = "/tmp/clutter-wayland-shm-XXXXXX";
+
+  buffer = g_slice_new (ClutterStageWaylandWaylandBufferSHM);
+
+  buffer->buffer.type = BUFFER_TYPE_SHM;
+
+  tex = cogl_texture_new_with_size ((unsigned int)geom->width,
+			       (unsigned int)geom->height,
+			       flags, format);
+  buffer->format = format;
+  buffer->stride = cogl_texture_get_rowstride(tex);
+  buffer->size = cogl_texture_get_data(tex, format, buffer->stride, NULL);
+  buffer->buffer.tex = tex;
+
+  fd = g_mkstemp_full(tmp, O_RDWR, 0600);
+  ftruncate(fd, buffer->size);
+  buffer->data = mmap(NULL, buffer->size, PROT_READ | PROT_WRITE,
+	              MAP_SHARED, fd, 0);
+
+  g_unlink(tmp);
+
+  visual = get_visual (backend_wayland->wayland_display, format);
+
+  buffer->buffer.wayland_buffer =
+    wl_shm_create_buffer (backend_wayland->wayland_shm,
+                          fd,
+                          geom->width,
+                          geom->height,
+                          buffer->stride, visual);
+  close(fd);
+  return &buffer->buffer;
+}
+
+static ClutterStageWaylandWaylandBuffer *
+wayland_create_drm_buffer (ClutterBackendWayland *backend_wayland,
+                           ClutterGeometry *geom)
+{
   EGLDisplay edpy = clutter_wayland_get_egl_display ();
-  ClutterStageWaylandWaylandBuffer *buffer;
+  struct wl_visual *visual;
+  EGLint name, stride;
+  ClutterStageWaylandWaylandBufferDRM *buffer;
   EGLint image_attribs[] = {
       EGL_WIDTH, 0,
       EGL_HEIGHT, 0,
@@ -74,12 +147,10 @@ wayland_create_buffer (ClutterStageWayland *stage_wayland,
       EGL_DRM_BUFFER_USE_MESA, EGL_DRM_BUFFER_USE_SCANOUT_MESA,
       EGL_NONE
   };
-  struct wl_visual *visual;
-  EGLint name;
-  EGLint stride;
-  cairo_rectangle_int_t rect;
 
-  buffer = g_slice_new (ClutterStageWaylandWaylandBuffer);
+  buffer = g_slice_new (ClutterStageWaylandWaylandBufferDRM);
+
+  buffer->buffer.type = BUFFER_TYPE_DRM;
 
   image_attribs[1] = geom->width;
   image_attribs[3] = geom->height;
@@ -88,25 +159,44 @@ wayland_create_buffer (ClutterStageWayland *stage_wayland,
   glBindTexture (GL_TEXTURE_2D, buffer->texture);
   backend_wayland->image_target_texture_2d (GL_TEXTURE_2D, buffer->drm_image);
 
-  buffer->tex = cogl_texture_new_from_foreign (buffer->texture,
+  buffer->buffer.tex = cogl_texture_new_from_foreign (buffer->texture,
 					       GL_TEXTURE_2D,
 					       geom->width,
 					       geom->height,
 					       0,
 					       0,
-					       COGL_PIXEL_FORMAT_ARGB_8888);
-  buffer->offscreen = cogl_offscreen_new_to_texture (buffer->tex);
+					       VISUAL_ARGB_PRE);
 
   backend_wayland->export_drm_image (edpy, buffer->drm_image,
 				     &name, NULL, &stride);
-  visual =
-    wl_display_get_premultiplied_argb_visual (backend_wayland->wayland_display);
-  buffer->wayland_buffer =
+  visual = get_visual (backend_wayland->wayland_display, VISUAL_ARGB_PRE);
+  buffer->buffer.wayland_buffer =
     wl_drm_create_buffer (backend_wayland->wayland_drm,
                           name,
-                          stage_wayland->allocation.width,
-                          stage_wayland->allocation.height,
+                          geom->width,
+                          geom->height,
                           stride, visual);
+
+  return &buffer->buffer;
+}
+
+static ClutterStageWaylandWaylandBuffer *
+wayland_create_buffer (ClutterGeometry *geom)
+{
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
+  ClutterStageWaylandWaylandBuffer *buffer;
+  cairo_rectangle_int_t rect;
+
+  if (backend_wayland->drm_enabled &&
+      backend_wayland->wayland_drm != NULL)
+    buffer = wayland_create_drm_buffer (backend_wayland, geom);
+  else if (backend_wayland->wayland_shm != NULL)
+    buffer = wayland_create_shm_buffer (backend_wayland, geom);
+  else
+    return NULL;
+
+  buffer->offscreen = cogl_offscreen_new_to_texture (buffer->tex);
 
   rect.x = geom->x;
   rect.y = geom->y;
@@ -118,18 +208,42 @@ wayland_create_buffer (ClutterStageWayland *stage_wayland,
 }
 
 static void
-wayland_free_buffer (ClutterStageWaylandWaylandBuffer *buffer)
+wayland_free_shm_buffer (ClutterStageWaylandWaylandBuffer *generic_buffer)
+{
+  ClutterStageWaylandWaylandBufferSHM *buffer;
+
+  buffer = (ClutterStageWaylandWaylandBufferSHM *)generic_buffer;
+
+  munmap(buffer->data, buffer->size);
+  g_slice_free (ClutterStageWaylandWaylandBufferSHM, buffer);
+}
+
+static void
+wayland_free_drm_buffer (ClutterStageWaylandWaylandBuffer *generic_buffer)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
   EGLDisplay edpy = clutter_wayland_get_egl_display ();
+  ClutterStageWaylandWaylandBufferDRM *buffer;
 
+  buffer = (ClutterStageWaylandWaylandBufferDRM *)generic_buffer;
+
+  glDeleteTextures (1, &buffer->texture);
+  backend_wayland->destroy_image (edpy, buffer->drm_image);
+  g_slice_free (ClutterStageWaylandWaylandBufferDRM, buffer);
+}
+
+static void
+wayland_free_buffer (ClutterStageWaylandWaylandBuffer *buffer)
+{
   cogl_handle_unref (buffer->tex);
   wl_buffer_destroy (buffer->wayland_buffer);
   cogl_handle_unref (buffer->offscreen);
-  glDeleteTextures (1, &buffer->texture);
-  backend_wayland->destroy_image (edpy, buffer->drm_image);
-  g_slice_free (ClutterStageWaylandWaylandBuffer, buffer);
+
+  if (buffer->type == BUFFER_TYPE_DRM)
+    wayland_free_drm_buffer(buffer);
+  else if (buffer->type == BUFFER_TYPE_SHM)
+    wayland_free_shm_buffer(buffer);
 }
 
 static void
@@ -171,7 +285,7 @@ clutter_stage_wayland_realize (ClutterStageWindow *stage_window)
   wl_surface_set_user_data (stage_wayland->wayland_surface, stage_wayland);
 
   stage_wayland->pick_buffer =
-    wayland_create_buffer (stage_wayland, &stage_wayland->allocation);
+    wayland_create_buffer (&stage_wayland->allocation);
 
   return TRUE;
 }
@@ -350,6 +464,26 @@ wayland_frame_callback (void *data, uint32_t _time)
 }
 
 static void
+wayland_damage_buffer(ClutterStageWaylandWaylandBuffer *generic_buffer)
+{
+  ClutterStageWaylandWaylandBufferSHM *buffer;
+  int size;
+
+  if (generic_buffer->type != BUFFER_TYPE_SHM)
+    return;
+
+  buffer = (ClutterStageWaylandWaylandBufferSHM *)generic_buffer;
+
+  size = cogl_texture_get_data(buffer->buffer.tex, buffer->format,
+                               buffer->stride, NULL);
+  g_assert(size == (int)buffer->size);
+
+  (void) cogl_texture_get_data(buffer->buffer.tex, buffer->format,
+                               buffer->stride, buffer->data);
+
+}
+
+static void
 wayland_swap_buffers (ClutterStageWayland *stage_wayland)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
@@ -360,13 +494,13 @@ wayland_swap_buffers (ClutterStageWayland *stage_wayland)
   stage_wayland->front_buffer = stage_wayland->back_buffer;
   stage_wayland->back_buffer = buffer;
 
+  wayland_damage_buffer(stage_wayland->front_buffer);
+
   wl_surface_attach (stage_wayland->wayland_surface,
-                     stage_wayland->front_buffer->wayland_buffer);
-  wl_surface_map (stage_wayland->wayland_surface,
-                  stage_wayland->allocation.x,
-                  stage_wayland->allocation.y,
-                  stage_wayland->allocation.width,
-                  stage_wayland->allocation.height);
+                     stage_wayland->front_buffer->wayland_buffer,
+  /* 0,0 here is "relative to the old buffer," not absolute */
+                     0, 0);
+  wl_surface_map_toplevel (stage_wayland->wayland_surface);
 
   stage_wayland->pending_swaps++;
   wl_display_frame_callback (backend_wayland->wayland_display,
@@ -506,7 +640,7 @@ _clutter_stage_wayland_redraw (ClutterStageWayland *stage_wayland,
 
   if (!stage_wayland->back_buffer)
       stage_wayland->back_buffer =
-	wayland_create_buffer (stage_wayland, &stage_wayland->allocation);
+	wayland_create_buffer (&stage_wayland->allocation);
 
   cogl_set_framebuffer (stage_wayland->back_buffer->offscreen);
   _clutter_stage_maybe_setup_viewport (stage_wayland->wrapper);
