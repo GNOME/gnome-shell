@@ -3055,4 +3055,275 @@ g_object_set (actor,
 
   </section>
 
+  <section id="animations-path">
+    <title>Animating an actor along a curved path</title>
+
+    <section>
+      <title>Problem</title>
+
+      <para>You want to animate an actor along a curved path: for
+      example, to move an actor in a circle or spiral.</para>
+    </section>
+
+    <section>
+      <title>Solution</title>
+
+      <para>Create a <type>ClutterPath</type> to describe the
+      path the actor should move along; then create a
+      <type>ClutterPathConstraint</type> based on that path:</para>
+
+      <informalexample>
+        <programlisting>
+ClutterPath *path;
+ClutterConstraint *constraint;
+
+/* create the path */
+path = clutter_path_new ();
+
+/* first node is at 30,60 */
+clutter_path_add_move_to (path, 30, 60);
+
+/* add a curve to the top-right of the stage, with control
+ * points relative to the start point at 30,60
+ */
+clutter_path_add_rel_curve_to (path,
+                               120, 180,
+                               180, 120,
+                               240, 0);
+
+/* create a constraint based on the path */
+constraint = clutter_path_constraint_new (path, 0.0);
+        </programlisting>
+      </informalexample>
+
+      <note>
+        <para>For more on the types of curve and line segment available,
+        see the <type>ClutterPath</type> API documentation.</para>
+      </note>
+
+      <para>Next, add the constraint to an actor; in this case, the
+      actor is a red rectangle:</para>
+
+      <informalexample>
+        <programlisting>
+ClutterActor *rectangle;
+ClutterActor *stage = clutter_stage_new ();
+
+/* ...set size stage, color, etc... */
+
+const ClutterColor *red_color = clutter_color_new (255, 0, 0, 255);
+
+rectangle = clutter_rectangle_new_with_color (red_color);
+clutter_actor_set_size (rectangle, 60, 60);
+
+/* add the constraint to the rectangle; note that this
+ * puts the rectangle at the start of the path, i.e. at position 30,60;
+ * we also give the constraint a name, so we can use it from an implicit
+ * animation
+ */
+clutter_actor_add_constraint_with_name (rectangle, "path", constraint);
+
+/* add the rectangle to the stage */
+clutter_container_add_actor (CLUTTER_CONTAINER (stage), rectangle);
+        </programlisting>
+      </informalexample>
+
+      <para>Note how the constraint has to be assigned a name (here, "path")
+      to make it accessible via implicit animations.</para>
+
+      <para>Finally, animate the constraint's <varname>offset</varname>
+      property; which in turn moves the actor along the path:</para>
+
+      <informalexample>
+        <programlisting>
+ClutterTimeline *timeline;
+
+/* create a timeline with 1000 milliseconds duration, which loops
+ * indefinitely and reverses its direction each time it completes
+ */
+timeline = clutter_timeline_new (1000);
+clutter_timeline_set_loop (timeline, TRUE);
+clutter_timeline_set_auto_reverse (timeline, TRUE);
+
+/* animate the offset property on the constraint from 0.0 to 1.0;
+ * note the syntax used to refer to the constraints metadata for the
+ * rectangle actor:
+ *
+ *   "@constraints.&lt;constraint name&gt;.&lt;property&gt;"
+ */
+clutter_actor_animate_with_timeline (rectangle, CLUTTER_LINEAR, timeline,
+                                     "@constraints.path.offset", 1.0,
+                                     NULL);
+
+/* ...show the stage, run the mainloop, free memory on exit... */
+        </programlisting>
+      </informalexample>
+
+      <para>The <link linkend="animations-path-example-1">full
+      example</link> shows how these fragments fit together.
+      The animation produced by this example looks
+      like this:</para>
+
+      <inlinemediaobject>
+        <videoobject>
+          <videodata fileref="videos/animations-path.ogv"/>
+        </videoobject>
+        <alt>
+          <para>Video showing animation of an actor along a curved
+          path using <type>ClutterPathConstraint</type></para>
+        </alt>
+      </inlinemediaobject>
+
+      <para>The <link linkend="animations-path-example-2">second full
+      example</link> animates an actor around a simulated circle
+      using a more complex <type>ClutterPath</type>.</para>
+
+    </section>
+
+    <section>
+      <title>Discussion</title>
+
+      <para>Animating an actor using <type>ClutterPathConstraint</type>
+      is the recommended way to animate actors along curved paths. It
+      replaces the older <type>ClutterBehaviourPath</type>.</para>
+
+      <para>A <type>ClutterPathConstraint</type> constrains an
+      actor's <varname>x</varname> and <varname>y</varname> properties
+      to a position along such a <type>ClutterPath</type>: a path through
+      2D space. The <type>ClutterPath</type> itself is composed of nodes
+      (x,y positions in 2D space), connected by straight lines or (cubic)
+      <ulink url="http://en.wikipedia.org/wiki/B%C3%A9zier_curve">Bézier
+      curves</ulink>.</para>
+
+      <note>
+        <para><type>ClutterPath</type> doesn't have to be used in animations:
+        it can also be used in drawing (see the
+        <link linkend="actors-non-rectangular">non-rectangular actor
+        recipe</link>).</para>
+      </note>
+
+      <para>The actor's position along the path is determined by the constraint's
+      <varname>offset</varname> property, which has a
+      value between 0.0 and 1.0. When the offset is 0.0, the actor
+      is at the beginning of the path; when the actor is at 1.0, the
+      actor is at the end of the path. Between 0.0 and 1.0, the actor
+      is some fraction of the way along the path.</para>
+
+      <para>If you immediately set the <varname>offset</varname> for the
+      constraint (e.g. to <code>0.5</code>), the actor is instantly placed
+      at that position along the path: for <code>offset = 0.5</code>,
+      at the halfway point.</para>
+
+      <para>By contrast, to animate an actor along a path, you
+      <emphasis>animate</emphasis> the offset property of a
+      <type>ClutterPathConstraint</type>. The actor's position
+      along the path is dependent on the progress of the animation:
+      when the animation starts, the actor is at the beginning of the path;
+      by the end of the animation, it will have reached its end.</para>
+
+      <para>If you animate the constraint using a linear easing mode,
+      the progress of the animation matches progress along the path: at
+      half-way through the animation, the actor will be half-way along
+      the path.</para>
+
+      <para>However, if you are using a non-linear easing mode
+      (e.g. a quintic or cubic mode), the offset along the path and
+      progress through the animation may differ. This is because the
+      offset along the path is computed from the alpha value at that
+      point in the animation; this in turn depends on the alpha function
+      applied by the animation. (See the
+      <link linkend="animations-introduction">animations introduction</link>
+      for more details about alphas.)</para>
+
+      <para>One way to think about this is to imagine the actor
+      making a journey along the path. The alpha function governs the
+      actor's speed, including how it speeds up and slows down
+      during its journey. The actor's speed may be constant
+      (as in a linear easing mode). Alternatively, the actor's speed
+      may not be constant: it might start out fast then slow down
+      (ease out); or start slow and speed up (ease in); or start and
+      end fast, but slow down in the middle (ease in and ease out); or
+      some other more complex arrangement (as in the bounce and elastic
+      easing modes). So where the actor is on the path at a particular
+      time doesn't directly relate to how long it's been travelling:
+      the position is determined both by how long it's been travelling,
+      and changes in its speed throughout the journey.</para>
+
+      <section>
+        <title>Other ways to animate along a path</title>
+
+        <para><type>ClutterPathConstraint</type> is the only
+        decent way of animating along curves in a predictable
+        and manageable fashion. It can also be used to animate along
+        paths composed of straight lines, though this isn't essential: you
+        can do straight line animations directly with <type>ClutterAnimator</type>,
+        <type>ClutterState</type> or implicit animations. But if
+        you need to animate between more than a half a dozen sets of
+        points joined by straight lines, <type>ClutterPathConstraint</type>
+        makes sense then too.</para>
+
+        <para>It is also possible to animate actors over very simple, non-Bézier
+        curves without using <type>ClutterPathConstraint</type>. This
+        can be done by animating the actor's position properties using
+        a non-linear easing mode (see the <type>ClutterAlpha</type>
+        documentation for available modes, or write your own custom
+        alpha function). <link linkend="animations-path-example-3">This
+        example</link> shows how to animate two actors on
+        curved paths around each other without
+        <type>ClutterPathConstraint</type>.</para>
+
+        <para>However, it is difficult to precisely calculate paths
+        with this approach. It is also only practical where you have a
+        very simple curve: if you want to chain together several curved
+        motions (as in the <link linkend="animations-path-example-2">circle
+        example</link>), this quickly becomes unwieldy.</para>
+
+        <tip>
+          <para>
+          If you want physics-based animation, look at
+          <ulink url="http://git.clutter-project.org/clutter-box2d/">clutter-box2d</ulink>.
+          </para>
+        </tip>
+
+      </section>
+
+    </section>
+
+    <section id="animations-path-examples">
+      <title>Full examples</title>
+
+      <example id="animations-path-example-1">
+        <title>Using a <type>ClutterPathConstraint</type> with
+        implicit animations to move an actor along a curved path</title>
+        <programlisting>
+<xi:include href="examples/animations-path.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="animations-path-example-2">
+        <title>Using a <type>ClutterPathConstraint</type> with
+        <type>ClutterAnimator</type> to animate an actor on
+        a simulated circular path</title>
+        <programlisting>
+<xi:include href="examples/animations-path-circle.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+      <example id="animations-path-example-3">
+        <title>Animating actors on curved paths using easing modes</title>
+        <programlisting>
+<xi:include href="examples/animations-path-easing.c" parse="text">
+  <xi:fallback>a code sample should be here... but isn't</xi:fallback>
+</xi:include>
+        </programlisting>
+      </example>
+
+    </section>
+
+  </section>
+
 </chapter>
