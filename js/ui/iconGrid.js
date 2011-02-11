@@ -63,6 +63,7 @@ BaseIcon.prototype = {
         let iconSize = availHeight;
 
         let [iconMinHeight, iconNatHeight] = this._iconBin.get_preferred_height(-1);
+        let [iconMinWidth, iconNatWidth] = this._iconBin.get_preferred_width(-1);
         let preferredHeight = iconNatHeight;
 
         let childBox = new Clutter.ActorBox();
@@ -82,12 +83,10 @@ BaseIcon.prototype = {
             this._name.allocate(childBox, flags);
         }
 
-        let iconPadding = (availWidth - iconSize) / 2;
-
-        childBox.x1 = iconPadding;
-        childBox.y1 = 0;
-        childBox.x2 = availWidth - iconPadding;
-        childBox.y2 = iconSize;
+        childBox.x1 = Math.floor((availWidth - iconNatWidth) / 2);
+        childBox.y1 = Math.floor((iconSize - iconNatHeight) / 2);
+        childBox.x2 = childBox.x1 + iconNatWidth;
+        childBox.y2 = childBox.y1 + iconNatHeight;
         this._iconBin.allocate(childBox, flags);
     },
 
