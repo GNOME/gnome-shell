@@ -148,9 +148,10 @@ Clutter has additional command line options for the configure script:
         no:
                 Disable support for COGL runtime debugging notes.
 
- --enable-maintainer-flags=[no/yes]
+ --enable-maintainer-flags=[no/yes/error]
         Use strict compiler flags. This defaults to 'yes' for developers
-        snapshots and to 'no' for stable releases.
+        snapshots and to 'no' for stable releases. If 'error' is used, then
+        -Werror will be enabled (if available).
 
  --enable-gtk-doc
 	use gtk-doc to build API documentation (default=no). Requires gtk-doc

@@ -1061,22 +1061,38 @@ AC_SUBST([GCOV_LDFLAGS])
 
 dnl === Enable strict compiler flags ==========================================
 
-# use strict compiler flags only on development releases
-m4_define([maintainer_flags_default], [m4_if(m4_eval(clutter_minor_version % 2), [1], [yes], [no])])
+# use strict compiler flags only when building from git; the rules for
+# distcheck will take care of turning this on when making a release
+m4_define([maintainer_flags_default], [m4_if(m4_eval(clutter_micro_version % 2), [1], [yes], [no])])
 AC_ARG_ENABLE([maintainer-flags],
-              [AC_HELP_STRING([--enable-maintainer-flags=@<:@no/yes@:>@],
+              [AC_HELP_STRING([--enable-maintainer-flags=@<:@no/yes/error@:>@],
                               [Use strict compiler flags @<:@default=maintainer_flags_default@:>@])],
               [],
               [enable_maintainer_flags=maintainer_flags_default])
 
-AS_IF([test "x$enable_maintainer_flags" = "xyes" && test "x$GCC" = "xyes"],
-      [
-        AS_COMPILER_FLAGS([MAINTAINER_CFLAGS],
-                          ["-Wall -Wshadow -Wcast-align -Wuninitialized
-                            -Wno-strict-aliasing -Wempty-body -Wformat
-                            -Wformat-security -Winit-self
-                            -Wdeclaration-after-statement -Wvla"])
-      ]
+MAINTAINER_COMPILER_FLAGS="-Wall -Wshadow -Wcast-align -Wuninitialized
+                           -Wno-strict-aliasing -Wempty-body -Wformat
+                           -Wformat-security -Winit-self
+                           -Wdeclaration-after-statement -Wvla"
+
+AS_CASE([$enable_maintainer_flags],
+        [yes],
+        [
+          AS_COMPILER_FLAGS([MAINTAINER_CFLAGS], [$MAINTAINER_COMPILER_FLAGS])
+        ],
+
+        [no],
+        [
+        ],
+
+        [error],
+        [
+          MAINTAINER_COMPILER_FLAGS="$MAINTAINER_COMPILER_FLAGS -Werror"
+          AS_COMPILER_FLAGS([MAINTAINER_CFLAGS], [$MAINTAINER_COMPILER_FLAGS])
+        ],
+
+        [*],
+        [AC_MSG_ERROR([Invalid option for --enable-maintainer-flags])]
 )
 
 AC_SUBST(MAINTAINER_CFLAGS)
