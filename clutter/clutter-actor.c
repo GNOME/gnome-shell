@@ -10571,10 +10571,10 @@ clutter_actor_get_transformation_matrix (ClutterActor *self,
 
 void
 _clutter_actor_set_in_clone_paint (ClutterActor *self,
-                                   gboolean      in_clone_paint)
+                                   gboolean      is_in_clone_paint)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  self->priv->in_clone_paint = in_clone_paint;
+  self->priv->in_clone_paint = is_in_clone_paint;
 }
 
 /**
