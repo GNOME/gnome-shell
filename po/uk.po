@@ -39,7 +39,7 @@ msgstr ""
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 "Увімкнути внутрішні засоби, які будуть корисними для розробників і "
-"випробувальників при натисненні Alt-F2"
+"випробування при натисненні Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
@@ -142,7 +142,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The gstreamer pipeline used to encode the screencast"
-msgstr "Канал даних GStreamer використовується для кодування транляції з екрана"
+msgstr "Канал даних GStreamer використовується для кодування транcляції з екрана"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid ""
@@ -270,7 +270,7 @@ msgstr "Гортати збільшений вміст за краями сті�
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
 msgid "Show or hide crosshairs"
-msgstr "Показує або ховає перехрестя"
+msgstr "Показати або сховати перехрестя"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
 msgid "Show or hide the magnifier"
@@ -645,7 +645,7 @@ msgstr "Перезапуск системи."
 
 #: ../js/ui/endSessionDialog.js:395
 msgid "Confirm"
-msgstr "Підтвердження"
+msgstr "Підтвердити"
 
 #: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
 msgid "Cancel"
@@ -849,7 +849,7 @@ msgstr "Встановити новий пристрій…"
 
 #: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
-msgstr "Налаштування Bluetooth"
+msgstr "Параметри Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:192
 msgid "Connection"
@@ -892,7 +892,7 @@ msgstr "Запит про авторизацію від %s"
 #: ../js/ui/status/bluetooth.js:378
 #, c-format
 msgid "Device %s wants access to the service '%s'"
-msgstr "Пристрій %sпотребує доступ до служби «%s»"
+msgstr "Пристрій %s потребує доступ до служби «%s»"
 
 #: ../js/ui/status/bluetooth.js:380
 msgid "Always grant access"
