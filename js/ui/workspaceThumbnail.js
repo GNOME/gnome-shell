@@ -16,6 +16,8 @@ const WorkspacesView = imports.ui.workspacesView;
 // The maximum size of a thumbnail is 1/8 the width and height of the screen
 let MAX_THUMBNAIL_SCALE = 1/8.;
 
+const RESCALE_ANIMATION_TIME = 0.2;
+
 function WindowClone(realWindow) {
     this._init(realWindow);
 }
@@ -342,6 +344,8 @@ ThumbnailsBox.prototype = {
         this._indicator = indicator;
         this.actor.add_actor(indicator);
         this._indicatorConstrained = false;
+        this._targetScale = 0;
+        this._scale = 0;
 
         this._thumbnails = [];
     },
@@ -353,6 +357,8 @@ ThumbnailsBox.prototype = {
 
         this.addThumbnails(0, global.screen.n_workspaces);
         this._constrainThumbnailIndicator();
+        this._targetScale = 0;
+        this._scale = 0;
     },
 
     hide: function() {
@@ -400,6 +406,15 @@ ThumbnailsBox.prototype = {
             this._thumbnails[i].syncStacking(stackIndices);
     },
 
+    set scale(scale) {
+        this._scale = scale;
+        this.actor.queue_relayout();
+    },
+
+    get scale() {
+        return this._scale;
+    },
+
     _getPreferredHeight: function(actor, forWidth, alloc) {
         // Note that for getPreferredWidth/Height we cheat a bit and skip propagating
         // the size request to our children because we know how big they are and know
@@ -430,6 +445,9 @@ ThumbnailsBox.prototype = {
     },
 
     _allocate: function(actor, box, flags) {
+        if (this._thumbnails.length == 0) // not visible
+            return;
+
         let screenHeight = global.screen_height;
 
         let spacing = this.actor.get_theme_node().get_length('spacing');
@@ -439,7 +457,19 @@ ThumbnailsBox.prototype = {
         let scale = (avail / this._thumbnails.length) / screenHeight;
         scale = Math.min(scale, MAX_THUMBNAIL_SCALE);
 
-        let thumbnailHeight = screenHeight * scale;
+        if (scale != this._targetScale) {
+            if (this._targetScale > 0) {
+                this._targetScale = scale;
+                Tweener.addTween(this,
+                                 { scale: this._targetScale,
+                                   time: RESCALE_ANIMATION_TIME,
+                                   transition: 'easeOutQuad' });
+            } else {
+                this._targetScale = this._scale = scale;
+            }
+        }
+
+        let thumbnailHeight = screenHeight * this._scale;
 
         let childBox = new Clutter.ActorBox();
 
@@ -465,6 +495,17 @@ ThumbnailsBox.prototype = {
             let y2 = Math.round(y + thumbnailHeight);
             let roundedScale = (y2 - y1) / screenHeight;
 
+            // When animating to a smaller scale, don't include workspaces that don't
+            // yet fit in the visible portion
+            if (y2 > Math.round(box.y2)) {
+
+                this.actor.set_skip_paint(this._thumbnails[i].actor, true);
+                if (this._thumbnails[i].metaWorkspace == indicatorWorkspace)
+                    this.actor.set_skip_paint(this._indicator, true);
+
+                continue;
+            }
+
             if (this._thumbnails[i].metaWorkspace == indicatorWorkspace) {
                 let indicatorBox = new Clutter.ActorBox();
                 indicatorBox.x1 = box.x1;
@@ -472,18 +513,22 @@ ThumbnailsBox.prototype = {
                 indicatorBox.y1 = y1;
                 indicatorBox.y2 = y2;
 
+                this.actor.set_skip_paint(this._indicator, false);
                 this._indicator.allocate(indicatorBox, flags);
             }
 
             childBox.y1 = y1;
             childBox.y2 = childBox.y1 + screenHeight;
 
+            this.actor.set_skip_paint(this._thumbnails[i].actor, false);
             this._thumbnails[i].actor.set_scale(roundedScale, roundedScale);
             this._thumbnails[i].actor.allocate(childBox, flags);
         }
 
-        if (indicatorWorkspace == null)
+        if (indicatorWorkspace == null) {
+            this.actor.set_skip_paint(this._indicator, false);
             this._indicator.allocate_preferred_size(flags);
+        }
     },
 
     _constrainThumbnailIndicator: function() {
