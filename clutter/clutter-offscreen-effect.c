@@ -196,6 +196,7 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   CoglMatrix modelview;
   gfloat fbo_width, fbo_height;
   gfloat width, height;
+  gfloat xexpand, yexpand;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
     return FALSE;
@@ -234,12 +235,52 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
    * framebuffer. */
   clutter_actor_get_size (priv->stage, &width, &height);
   clutter_actor_box_get_origin (&box, &priv->x_offset, &priv->y_offset);
-  cogl_set_viewport (-priv->x_offset, -priv->y_offset, width, height);
+
+  /* Expand the viewport if the actor is partially off-stage,
+   * otherwise the actor will end up clipped to the stage viewport
+   */
+  xexpand = 0.f;
+  if (priv->x_offset < 0.f)
+    xexpand = -priv->x_offset;
+  if (priv->x_offset + fbo_width > width)
+    xexpand = MAX (xexpand, (priv->x_offset + fbo_width) - width);
+
+  yexpand = 0.f;
+  if (priv->y_offset < 0.f)
+    yexpand = -priv->y_offset;
+  if (priv->y_offset + fbo_height > height)
+    yexpand = MAX (yexpand, (priv->y_offset + fbo_height) - height);
+
+  /* Set the viewport */
+  cogl_set_viewport (-(priv->x_offset + xexpand), -(priv->y_offset + yexpand),
+                     width + (2 * xexpand), height + (2 * yexpand));
 
   /* Copy the stage's projection matrix across to the framebuffer */
   _clutter_stage_get_projection_matrix (CLUTTER_STAGE (priv->stage),
                                         &projection);
   cogl_set_projection_matrix (&projection);
+
+  /* If we've expanded the viewport, make sure to scale the modelview
+   * matrix accordingly (as it's been initialised to work with the
+   * original viewport and not our expanded one).
+   */
+  if (xexpand > 0.f || yexpand > 0.f)
+    {
+      CoglMatrix correction;
+      gfloat new_width, new_height;
+
+      new_width = width + (2 * xexpand);
+      new_height = height + (2 * yexpand);
+
+      cogl_matrix_init_identity (&correction);
+      cogl_matrix_scale (&correction,
+                         width / new_width,
+                         height / new_height,
+                         1);
+
+      cogl_matrix_multiply (&correction, &correction, &modelview);
+      modelview = correction;
+    }
 
   /* Copy the modelview that would have been used if rendering onscreen */
   cogl_set_modelview_matrix (&modelview);
