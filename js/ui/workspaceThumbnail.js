@@ -13,8 +13,8 @@ const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 const WorkspacesView = imports.ui.workspacesView;
 
-// Fraction of original screen size for thumbnails
-let THUMBNAIL_SCALE = 1/8.;
+// The maximum size of a thumbnail is 1/8 the width and height of the screen
+let MAX_THUMBNAIL_SCALE = 1/8.;
 
 function WindowClone(realWindow) {
     this._init(realWindow);
@@ -153,9 +153,7 @@ WorkspaceThumbnail.prototype = {
 
         this._background = new Clutter.Clone({ source: global.background_actor });
         this._group.add_actor(this._background);
-
-        this._group.set_size(THUMBNAIL_SCALE * global.screen_width, THUMBNAIL_SCALE * global.screen_height);
-        this._group.set_scale(THUMBNAIL_SCALE, THUMBNAIL_SCALE);
+        this._group.set_size(global.screen_width, global.screen_height);
 
         let windows = global.get_window_actors().filter(this._isMyWindow, this);
 
@@ -329,8 +327,11 @@ function ThumbnailsBox() {
 
 ThumbnailsBox.prototype = {
     _init: function() {
-        this.actor = new St.BoxLayout({ vertical: true,
-                                        style_class: 'workspace-thumbnails' });
+        this.actor = new Shell.GenericContainer({ style_class: 'workspace-thumbnails',
+                                                  request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT });
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
 
         let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator',
                                      fixed_position_set: true });
@@ -339,13 +340,8 @@ ThumbnailsBox.prototype = {
         Shell.util_set_hidden_from_pick(indicator, true);
 
         this._indicator = indicator;
-        this.actor.add(indicator);
-        this._indicatorConstraints = [];
-        this._indicatorConstraints.push(new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.POSITION }));
-        this._indicatorConstraints.push(new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.SIZE }));
-        this._indicatorConstraints.forEach(function(constraint) {
-                                               indicator.add_constraint(constraint);
-                                           });
+        this.actor.add_actor(indicator);
+        this._indicatorConstrained = false;
 
         this._thumbnails = [];
     },
@@ -377,13 +373,10 @@ ThumbnailsBox.prototype = {
             let metaWorkspace = global.screen.get_workspace_by_index(k);
             let thumbnail = new WorkspaceThumbnail(metaWorkspace);
             this._thumbnails[k] = thumbnail;
-            this.actor.add(thumbnail.actor);
+            this.actor.add_actor(thumbnail.actor);
         }
 
-        // The thumbnails indicator actually needs to be on top of the thumbnails, but
-        // there is also something more subtle going on as well - actors in a StBoxLayout
-        // are allocated from bottom to top (start to end), and we need the
-        // thumnail indicator to be allocated after the actors it is constrained to.
+        // The thumbnails indicator actually needs to be on top of the thumbnails
         this._indicator.raise_top();
     },
 
@@ -407,20 +400,99 @@ ThumbnailsBox.prototype = {
             this._thumbnails[i].syncStacking(stackIndices);
     },
 
-    _constrainThumbnailIndicator: function() {
-        let active = global.screen.get_active_workspace_index();
-        let thumbnail = this._thumbnails[active];
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        // Note that for getPreferredWidth/Height we cheat a bit and skip propagating
+        // the size request to our children because we know how big they are and know
+        // that the actors aren't depending on the virtual functions being called.
 
-        this._indicatorConstraints.forEach(function(constraint) {
-                                               constraint.set_source(thumbnail.actor);
-                                               constraint.set_enabled(true);
-                                           });
+        if (this._thumbnails.length == 0)
+            return;
+
+        let spacing = this.actor.get_theme_node().get_length('spacing');
+        let totalSpacing = (this._thumbnails.length - 1) * spacing;
+
+        alloc.min_size = totalSpacing;
+        alloc.natural_size = totalSpacing + this._thumbnails.length * global.screen_height * MAX_THUMBNAIL_SCALE;
+    },
+
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        if (this._thumbnails.length == 0)
+            return;
+
+        let spacing = this.actor.get_theme_node().get_length('spacing');
+        let totalSpacing = (this._thumbnails.length - 1) * spacing;
+        let avail = forHeight - totalSpacing;
+
+        let scale = (avail / this._thumbnails.length) / global.screen_height;
+        scale = Math.min(scale, MAX_THUMBNAIL_SCALE);
+
+        alloc.min_size = alloc.natural_size = Math.round(global.screen_width * scale);
+    },
+
+    _allocate: function(actor, box, flags) {
+        let screenHeight = global.screen_height;
+
+        let spacing = this.actor.get_theme_node().get_length('spacing');
+        let totalSpacing = (this._thumbnails.length - 1) * spacing;
+        let avail = (box.y2 - box.y1) - totalSpacing;
+
+        let scale = (avail / this._thumbnails.length) / screenHeight;
+        scale = Math.min(scale, MAX_THUMBNAIL_SCALE);
+
+        let thumbnailHeight = screenHeight * scale;
+
+        let childBox = new Clutter.ActorBox();
+
+        let indicatorWorkspace = this._indicatorConstrained ? global.screen.get_active_workspace() : null;
+        let indicatorBox;
+
+        // Allocating a scaled actor is funny - x1/y1 correspond to the origin
+        // of the actor, but x2/y2 are increased by the *unscaled* size.
+        childBox.x1 = box.x1;
+        childBox.x2 = childBox.x1 + global.screen_width;
+
+        let y = box.y1;
+
+        for (let i = 0; i < this._thumbnails.length; i++) {
+            if (i > 0)
+                y += spacing + thumbnailHeight;
+
+            // We might end up with thumbnailHeight being something like 99.33
+            // pixels. To make this work and not end up with a gap at the bottom,
+            // we need some thumbnails to be 99 pixels and some 100 pixels height;
+            // we compute an actual scale separately for each thumbnail.
+            let y1 = Math.round(y);
+            let y2 = Math.round(y + thumbnailHeight);
+            let roundedScale = (y2 - y1) / screenHeight;
+
+            if (this._thumbnails[i].metaWorkspace == indicatorWorkspace) {
+                let indicatorBox = new Clutter.ActorBox();
+                indicatorBox.x1 = box.x1;
+                indicatorBox.x2 = box.x2;
+                indicatorBox.y1 = y1;
+                indicatorBox.y2 = y2;
+
+                this._indicator.allocate(indicatorBox, flags);
+            }
+
+            childBox.y1 = y1;
+            childBox.y2 = childBox.y1 + screenHeight;
+
+            this._thumbnails[i].actor.set_scale(roundedScale, roundedScale);
+            this._thumbnails[i].actor.allocate(childBox, flags);
+        }
+
+        if (indicatorWorkspace == null)
+            this._indicator.allocate_preferred_size(flags);
+    },
+
+    _constrainThumbnailIndicator: function() {
+        this._indicatorConstrained = true;
+        this.actor.queue_relayout();
     },
 
     _unconstrainThumbnailIndicator: function() {
-        this._indicatorConstraints.forEach(function(constraint) {
-                                               constraint.set_enabled(false);
-                                           });
+        this._indicatorConstrained = false;
     },
 
     _activeWorkspaceChanged: function(wm, from, to, direction) {
