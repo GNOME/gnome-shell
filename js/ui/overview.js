@@ -537,7 +537,6 @@ Overview.prototype = {
 
         this.viewSelector.show();
         this._workspacesDisplay.show();
-        this.dash.show();
 
         this.workspaces = this._workspacesDisplay.workspacesView;
         global.overlay_group.add_actor(this.workspaces.actor);
@@ -751,7 +750,6 @@ Overview.prototype = {
 
         this._workspacesDisplay.hide();
         this.viewSelector.hide();
-        this.dash.hide();
 
         this._desktopFade.hide();
         this._background.hide();

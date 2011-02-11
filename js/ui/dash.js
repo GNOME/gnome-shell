@@ -278,24 +278,15 @@ Dash.prototype = {
         this._appSystem.connect('installed-changed', Lang.bind(this, this._queueRedisplay));
         AppFavorites.getAppFavorites().connect('changed', Lang.bind(this, this._queueRedisplay));
         this._tracker.connect('app-state-changed', Lang.bind(this, this._queueRedisplay));
-    },
 
-    show: function() {
-        this._itemDragBeginId = Main.overview.connect('item-drag-begin',
-            Lang.bind(this, this._onDragBegin));
-        this._itemDragEndId = Main.overview.connect('item-drag-end',
-            Lang.bind(this, this._onDragEnd));
-        this._windowDragBeginId = Main.overview.connect('window-drag-begin',
-            Lang.bind(this, this._onDragBegin));
-        this._windowDragEndId = Main.overview.connect('window-drag-end',
-            Lang.bind(this, this._onDragEnd));
-    },
-
-    hide: function() {
-        Main.overview.disconnect(this._itemDragBeginId);
-        Main.overview.disconnect(this._itemDragEndId);
-        Main.overview.disconnect(this._windowDragBeginId);
-        Main.overview.disconnect(this._windowDragEndId);
+        Main.overview.connect('item-drag-begin',
+                              Lang.bind(this, this._onDragBegin));
+        Main.overview.connect('item-drag-end',
+                              Lang.bind(this, this._onDragEnd));
+        Main.overview.connect('window-drag-begin',
+                              Lang.bind(this, this._onDragBegin));
+        Main.overview.connect('window-drag-end',
+                              Lang.bind(this, this._onDragEnd));
     },
 
     _onDragBegin: function() {
