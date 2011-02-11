@@ -1,6 +1,6 @@
 # Vietnamese translation for Metacity.
 # Copyright © 2009 GNOME i18n Project for Vietnamese.
-# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2002-2004, 2007, 2008.
+# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2002-2004, 2007, 2008, 2011.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2009.
 #
 msgid ""
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: metacity GNOME 2.26\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-02-12 00:09+0700\n"
-"PO-Revision-Date: 2009-02-07 20:45+0930\n"
+"PO-Revision-Date: 2011-02-12 00:31+0700\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "Language: vi\n"
@@ -20,18 +20,18 @@ msgstr ""
 
 #: ../src/core/bell.c:302
 msgid "Bell event"
-msgstr ""
+msgstr "Sự kiện chuông"
 
 #: ../src/core/core.c:157
 #, c-format
 msgid "Unknown window information request: %d"
-msgstr "Yêu cầu thông tin cửa sổ không rõ : %d"
+msgstr "Yêu cầu thông tin cửa sổ không rõ: %d"
 
 #. Translators: %s is a window title
 #: ../src/core/delete.c:94
-#, fuzzy, c-format
+#, c-format
 msgid "<tt>%s</tt> is not responding."
-msgstr "\"%s\" không trả lời."
+msgstr "<tt>%s</tt> không trả lời."
 
 #: ../src/core/delete.c:99
 msgid ""
@@ -50,7 +50,7 @@ msgstr "_Buộc thoát"
 #: ../src/core/display.c:365
 #, c-format
 msgid "Missing %s extension required for compositing"
-msgstr "Thiếu phần mở rộng %s cần thiết để sắp thành phần"
+msgstr "Thiếu phần mở rộng %s cần thiết để tổng hợp"
 
 #: ../src/core/display.c:431
 #, c-format
@@ -91,7 +91,7 @@ msgid "No terminal command has been defined.\n"
 msgstr "Không có lệnh thiết bị cuối nào được định nghĩa.\n"
 
 #: ../src/core/main.c:130
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "mutter %s\n"
 "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
@@ -99,8 +99,9 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
-"metacity %s\n"
-"Tác quyền © 2001-2008 của Havoc Pennington, Red Hat, Inc., và người khác.\n"
+"mutter %s\n"
+"Tác quyền © 2001-%d của Havoc Pennington, Red Hat, Inc., và những người "
+"khác.\n"
 "Chương trình này là phần mềm tự do; xem mã nguồn để tìm điều kiện sao chép.\n"
 "KHÔNG CÓ BẢO HÀNH GÌ CẢ, THẬM CHÍ KHÔNG CÓ BẢO ĐẢM ĐƯỢC NGỤ Ý KHẢ NĂNG BÁN "
 "HAY KHẢ NĂNG LÀM ĐƯỢC VIỆC DỨT KHOÁT.\n"
@@ -110,9 +111,8 @@ msgid "Disable connection to session manager"
 msgstr "Vô hiệu hóa kết nối với bộ quản lý phiên làm việc"
 
 #: ../src/core/main.c:267
-#, fuzzy
 msgid "Replace the running window manager with Mutter"
-msgstr "Thay thế bộ quản lý cửa sổ đang chạy bằng Metacity"
+msgstr "Thay thế bộ quản lý cửa sổ đang chạy bằng Mutter"
 
 #: ../src/core/main.c:273
 msgid "Specify session management ID"
@@ -138,18 +138,19 @@ msgstr "Khiến các lời gọi X đồng bộ với nhau"
 msgid ""
 "Don't make fullscreen windows that are maximized and have no decorations"
 msgstr ""
+"Đừng đối xử cửa sổ phóng to hết cỡ và không có viền như cửa sổ toàn màn hình"
 
 #: ../src/core/main.c:308
 msgid "Comma-separated list of compositor plugins"
-msgstr ""
+msgstr "Danh sách phần bổ sung tổng hợp cách nhau bằng dấu phẩy"
 
 #: ../src/core/main.c:314
 msgid "Whether window popup/frame should be shown when cycling windows."
-msgstr ""
+msgstr "Có hiện khung/cửa sổ tự mở khi xoay vòng cửa sổ không."
 
 #: ../src/core/main.c:321
 msgid "Internal argument for GObject introspection"
-msgstr ""
+msgstr "Đối số nội bộ cho GObject introspection"
 
 #: ../src/core/main.c:648
 #, c-format
@@ -200,12 +201,12 @@ msgstr "Khóa GConf « %s » được đặt kiểu sai\n"
 #: ../src/core/prefs.c:1215
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
-msgstr ""
+msgstr "Khoá GConf %s đã được dùng và không thể ghi đè %s\n"
 
 #: ../src/core/prefs.c:1274
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
-msgstr ""
+msgstr "Không thể ghi đè khoá GConf, không tìm thấy %s\n"
 
 #: ../src/core/prefs.c:1476
 msgid ""
@@ -254,19 +255,19 @@ msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Gặp lỗi khi đặt tên cho vùng làm việc %d thành « %s »: %s\n"
 
 #: ../src/core/prefs.c:3028
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting clutter plugin list: %s\n"
-msgstr "Gặp lỗi khi đặt trạng thái về công cụ sắp thành phần: %s\n"
+msgstr "Lỗi đặt danh sách phần bổ sung clutter: %s\n"
 
 #: ../src/core/prefs.c:3072
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting live hidden windows status status: %s\n"
-msgstr "Gặp lỗi khi đặt trạng thái về công cụ sắp thành phần: %s\n"
+msgstr "Lỗi đặt trạng thái cửa sổ ẩn sống: %s\n"
 
 #: ../src/core/prefs.c:3100
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting no tab popup status: %s\n"
-msgstr "Gặp lỗi khi đặt trạng thái về công cụ sắp thành phần: %s\n"
+msgstr "Lỗi đặt trạng thái không tab tự mở: %s\n"
 
 #: ../src/core/screen.c:577
 #, c-format
@@ -326,9 +327,9 @@ msgid "Failed to parse saved session file: %s\n"
 msgstr "Lỗi phân tích tập tin phiên làm việc đã lưu: %s\n"
 
 #: ../src/core/session.c:1198
-#, fuzzy, c-format
+#, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr "Thấy thuộc tính <metacity_session>, nhưng đã có session ID."
+msgstr "Thấy thuộc tính <mutter_session>, nhưng đã có session ID"
 
 #: ../src/core/session.c:1211 ../src/core/session.c:1286
 #: ../src/core/session.c:1318 ../src/core/session.c:1390
@@ -348,13 +349,12 @@ msgid "Unknown element %s"
 msgstr "Phần tử lạ « %s »"
 
 #: ../src/core/session.c:1822
-#, fuzzy
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
-"Những cửa sổ này không hỗ trợ «lưu thiết lập hiện thời» và sẽ phải khởi động "
-"lại bằng tay lần kế bạn đăng nhập."
+"Những cửa sổ này không hỗ trợ &quot;lưu thiết lập hiện thời&quot; và sẽ phải "
+"khởi động lại bằng tay lần kế bạn đăng nhập."
 
 #: ../src/core/util.c:111
 #, c-format
@@ -372,9 +372,9 @@ msgid "Opened log file %s\n"
 msgstr "Đã mở tập tin ghi lưu %s.\n"
 
 #: ../src/core/util.c:146 ../src/tools/mutter-message.c:179
-#, fuzzy, c-format
+#, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
-msgstr "Metacity đã được biên dịch không hỗ trợ chế độ chi tiết.\n"
+msgstr "Mutter đã được biên dịch không hỗ trợ chế độ chi tiết\n"
 
 #: ../src/core/util.c:286
 msgid "Window manager: "
@@ -397,7 +397,7 @@ msgstr "Lỗi bộ quản lý cửa sổ: "
 #: ../src/core/util.c:616 ../src/mutter.desktop.in.h:1
 #: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
-msgstr ""
+msgstr "Mutter"
 
 #. first time through
 #: ../src/core/window.c:6492
@@ -596,7 +596,7 @@ msgstr "Hiện hộp thoại « Chạy ứng dụng » của Bảng"
 
 #: ../src/include/all-keybindings.h:211
 msgid "Start or stop recording the session"
-msgstr ""
+msgstr "Bắt đầu hoặc ngừng thu phiên làm việc"
 
 #: ../src/include/all-keybindings.h:252
 msgid "Take a screenshot"
@@ -654,7 +654,7 @@ msgstr "Di chuyển cửa sổ"
 
 #: ../src/include/all-keybindings.h:292
 msgid "Resize window"
-msgstr "Đổi cỡ cửa sổ"
+msgstr "Co giãn cửa sổ"
 
 #: ../src/include/all-keybindings.h:295
 msgid "Toggle whether window is on all workspaces or just one"
@@ -782,31 +782,31 @@ msgstr "Chuyển cửa sổ vào trung tâm của màn hình"
 
 #: ../src/mutter.schemas.in.h:1
 msgid "Attach modal dialogs"
-msgstr ""
+msgstr "Gắn hộp thoại cách thức"
 
 #: ../src/mutter.schemas.in.h:2
 msgid "Clutter Plugins"
-msgstr ""
+msgstr "Phần bổ sung Clutter"
 
 #: ../src/mutter.schemas.in.h:3
 msgid ""
 "Determines whether hidden windows (i.e., minimized windows and windows on "
 "other workspaces than the current one) should be kept alive."
 msgstr ""
+"Xác định có giữ cửa sổ ẩn (ví dụ cửa sổ thu nhỏ, và cửa sổ ở vùng làm việc "
+"khác) không."
 
 #: ../src/mutter.schemas.in.h:4
 msgid "Live Hidden Windows"
-msgstr ""
+msgstr "Cửa sổ ẩn sống"
 
 #: ../src/mutter.schemas.in.h:5
-#, fuzzy
 msgid "Modifier to use for extended window management operations"
-msgstr ""
-"Trình biến đổi để dùng cho các hành động nhấn chuột biến đổi lên cửa sổ"
+msgstr "Phím bổ trợ dùng cho chức năng quản lý cửa sổ mở rộng"
 
 #: ../src/mutter.schemas.in.h:6
 msgid "Plugins to load for the Clutter-based compositing manager."
-msgstr ""
+msgstr "Phần bổ sung cần nạp cho trình quản lý tổng hợp dựa trên Clutter."
 
 #: ../src/mutter.schemas.in.h:7
 msgid ""
@@ -815,6 +815,9 @@ msgid ""
 "\"Windows key\" on PC hardware. It's expected that this binding either the "
 "default or set to the empty string."
 msgstr ""
+"Phím này kích hoạt \"overlay\", một tổ hợp tổng quát cửa sổ và hệ thống chạy "
+"ứng dụng. Mặc định là \"phím Windows\" trên phần cứng PC. Chứa một tổ hợp "
+"phím, hoặc mặc định, hoặc chuỗi rỗng."
 
 #: ../src/mutter.schemas.in.h:8
 msgid ""
@@ -822,6 +825,9 @@ msgid ""
 "attached to the titlebar of the parent window and are moved together with "
 "the parent window."
 msgstr ""
+"Nếu đúng (true), thay vì hiện thanh tiêu đề độc lập, hộp thoại cách thức sẽ "
+"xuất hiện gắn với thanh tiêu đề của cửa sổ cha và được di chuyển cùng với "
+"cửa sổ cha."
 
 #: ../src/tools/mutter-message.c:151
 #, c-format
@@ -905,7 +911,7 @@ msgstr "_Di chuyển"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:81
 msgid "_Resize"
-msgstr "Đổi _cỡ"
+msgstr "_Co giãn"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:83
@@ -1654,18 +1660,21 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3434
 #, c-format
 msgid "Bad version specification '%s'"
-msgstr ""
+msgstr "Đặc tả phiên bản '%s' sai"
 
 #: ../src/ui/theme-parser.c:3507
 msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
 msgstr ""
+"Không thể dùng thuộc tính \"version\" trong metacity-theme-1.xml hoặc "
+"metacity-theme-2.xml"
 
 #: ../src/ui/theme-parser.c:3530
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
 msgstr ""
+"Sắc thái này yêu cầu phiên bản %s nhưng chỉ hỗ trợ tối đa phiên bản %d.%d"
 
 #: ../src/ui/theme-parser.c:3562
 #, c-format
@@ -1720,9 +1729,9 @@ msgstr "Không cho phép chữ nằm trong <%s>."
 #: ../src/ui/theme-parser.c:4026 ../src/ui/theme-parser.c:4038
 #: ../src/ui/theme-parser.c:4050 ../src/ui/theme-parser.c:4062
 #: ../src/ui/theme-parser.c:4074
-#, fuzzy, c-format
+#, c-format
 msgid "<%s> specified twice for this theme"
-msgstr "<name> (tên) được xác định hai lần trong sắc thái này."
+msgstr "<%s> được xác định hai lần trong sắc thái này"
 
 #: ../src/ui/theme-parser.c:4348
 #, c-format
@@ -1730,59 +1739,48 @@ msgid "Failed to find a valid file for theme %s\n"
 msgstr "Lỗi tìm tập tin hợp lệ của sắc thái %s\n"
 
 #: ../src/ui/theme-viewer.c:98
-#, fuzzy
 msgid "_Windows"
-msgstr "/_Cửa sổ"
+msgstr "_Cửa sổ"
 
 #: ../src/ui/theme-viewer.c:99
-#, fuzzy
 msgid "_Dialog"
-msgstr "Hộp thoại"
+msgstr "_Hộp thoại"
 
 #: ../src/ui/theme-viewer.c:100
-#, fuzzy
 msgid "_Modal dialog"
-msgstr "Hộp thoại cách thức"
+msgstr "Hộp _thoại cách thức"
 
 #: ../src/ui/theme-viewer.c:101
-#, fuzzy
 msgid "_Utility"
-msgstr "/Cửa sổ/_Tiện ích"
+msgstr "_Tiện ích"
 
 #: ../src/ui/theme-viewer.c:102
-#, fuzzy
 msgid "_Splashscreen"
-msgstr "/Cửa sổ/_Màn hình giật gân"
+msgstr "_Màn hình giật gân"
 
 #: ../src/ui/theme-viewer.c:103
-#, fuzzy
 msgid "_Top dock"
-msgstr "/Cửa sổ/Neo đỉ_nh"
+msgstr "Neo đỉ_nh"
 
 #: ../src/ui/theme-viewer.c:104
-#, fuzzy
 msgid "_Bottom dock"
-msgstr "/Cửa sổ/Neo đá_y"
+msgstr "Neo đá_y"
 
 #: ../src/ui/theme-viewer.c:105
-#, fuzzy
 msgid "_Left dock"
-msgstr "/Cửa sổ/Neo t_rái"
+msgstr "Neo t_rái"
 
 #: ../src/ui/theme-viewer.c:106
-#, fuzzy
 msgid "_Right dock"
-msgstr "/Cửa sổ/Neo _phải"
+msgstr "Neo _phải"
 
 #: ../src/ui/theme-viewer.c:107
-#, fuzzy
 msgid "_All docks"
-msgstr "/Cửa sổ/Mọi neo"
+msgstr "_Mọi neo"
 
 #: ../src/ui/theme-viewer.c:108
-#, fuzzy
 msgid "Des_ktop"
-msgstr "Màn hình nền"
+msgstr "_Màn hình nền"
 
 #: ../src/ui/theme-viewer.c:114
 msgid "Open another one of these windows"
@@ -1838,9 +1836,8 @@ msgid "Border"
 msgstr "Viền"
 
 #: ../src/ui/theme-viewer.c:412
-#, fuzzy
 msgid "Attached Modal Dialog"
-msgstr "Hộp thoại cách thức"
+msgstr "Hộp thoại cách thức đính kèm"
 
 #: ../src/ui/theme-viewer.c:743
 #, c-format
