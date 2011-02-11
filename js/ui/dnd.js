@@ -461,12 +461,12 @@ _Draggable.prototype = {
             // its parent, adjusting for the fact that the parent
             // may have been moved or scaled
             let [parentX, parentY] = this._dragOrigParent.get_transformed_position();
-            x = parentX + this._dragOrigParent.scale_x * this._dragOrigX;
-            y = parentY + this._dragOrigParent.scale_y * this._dragOrigY;
-
             let [parentWidth, parentHeight] = this._dragOrigParent.get_size();
             let [parentScaledWidth, parentScaledHeight] = this._dragOrigParent.get_transformed_size();
             let parentScale = parentScaledWidth / parentWidth;
+
+            x = parentX + parentScale * this._dragOrigX;
+            y = parentY + parentScale * this._dragOrigY;
             scale = this._dragOrigScale * parentScale;
         } else {
             // Snap back actor to its original stage position
