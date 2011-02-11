@@ -5,8 +5,6 @@
 # Making a point release:
 # - increase clutter_micro_version to the next even number
 # - increase clutter_interface_age to the next even number
-#   UNLESS there was an API addition/deprecation, in which case
-#   - set clutter_interface_age to 0
 # After the release:
 # - increase clutter_micro_version to the next odd number
 # - increase clutter_interface_version to the next odd number
@@ -14,9 +12,9 @@ m4_define([clutter_major_version], [1])
 m4_define([clutter_minor_version], [6])
 m4_define([clutter_micro_version], [3])
 
-# increase the interface age by 1 for each release; if the API changes,
-# set to 0. interface_age and binary_age are used to create the soname
-# of the shared object:
+# • for stable releases: increase the interface age by 1 for each release;
+#   if the API changes, set to 0. interface_age and binary_age are used to
+#   create the soname of the shared object:
 #
 #  (<minor> * 100 + <micro>) - <interface_age>
 #
@@ -32,6 +30,7 @@ m4_define([clutter_micro_version], [3])
 #   clutter 1.2.10 -> 100 * 2 + 10 = 210, interface age = 4 -> 206
 #   ...
 #
+# • for development releases: keep clutter_interface_age to 0
 m4_define([clutter_interface_age], [3])
 
 m4_define([clutter_binary_age], [m4_eval(100 * clutter_minor_version + clutter_micro_version)])
