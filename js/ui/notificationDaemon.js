@@ -473,7 +473,7 @@ Source.prototype = {
         this._isTrayIcon = true;
     },
 
-    _notificationClicked: function(notification) {
+    open: function(notification) {
         this.openApp();
     },
 

@@ -54,8 +54,10 @@ PopupBaseMenuItem.prototype = {
         }
         if (params.reactive && params.hover)
             this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
-        if (params.reactive)
+        if (params.reactive) {
             this.actor.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
+            this.actor.connect('key-focus-out', Lang.bind(this, this._onKeyFocusOut));
+        }
     },
 
     _onStyleChanged: function (actor) {
@@ -79,6 +81,10 @@ PopupBaseMenuItem.prototype = {
 
     _onKeyFocusIn: function (actor) {
         this.setActive(true);
+    },
+
+    _onKeyFocusOut: function (actor) {
+        this.setActive(false);
     },
 
     _onHoverChanged: function (actor) {

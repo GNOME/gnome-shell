@@ -977,7 +977,7 @@ StTooltip StLabel {
     padding-bottom: 8px;
 }
 
-.summary-notification-boxpointer {
+.summary-boxpointer {
     -arrow-border-radius: 9px;
     -arrow-background-color: rgba(0,0,0,0.9);
     -arrow-border-width: 2px;
@@ -986,9 +986,15 @@ StTooltip StLabel {
     -arrow-rise: 15px;
 }
 
-.summary-notification-boxpointer #notification {
+.summary-boxpointer #notification {
     border-radius: 9px;
     background: rgba(0,0,0,0) !important;
+    padding-bottom: 12px;
+}
+
+.summary-boxpointer #summary-right-click-menu {
+    font-size: 14px;
+    padding-top: 12px;
     padding-bottom: 12px;
 }
 

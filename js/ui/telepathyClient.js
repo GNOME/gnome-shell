@@ -173,7 +173,7 @@ Source.prototype = {
         }
     },
 
-    _notificationClicked: function(notification) {
+    open: function(notification) {
         let props = {};
         props[Tp.PROP_CHANNEL_CHANNEL_TYPE] = Tp.IFACE_CHANNEL_TYPE_TEXT;
         [props[Tp.PROP_CHANNEL_TARGET_HANDLE], props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE]] = this._channel.get_handle();

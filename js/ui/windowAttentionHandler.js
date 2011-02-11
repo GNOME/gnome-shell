@@ -101,7 +101,7 @@ Source.prototype = {
         return this._app.create_icon_texture(this.ICON_SIZE);
     },
 
-    _notificationClicked : function(notification) {
+    open : function(notification) {
         Main.activateWindow(this._window);
         this.destroy();
     }
