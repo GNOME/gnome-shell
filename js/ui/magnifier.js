@@ -268,7 +268,7 @@ Magnifier.prototype = {
 
         let thickness = this._settings.get_int(CROSS_HAIRS_THICKNESS_KEY);
         let color = this._settings.get_string(CROSS_HAIRS_COLOR_KEY);
-        let opacity = this._settings.get_int(CROSS_HAIRS_OPACITY_KEY);
+        let opacity = this._settings.get_double(CROSS_HAIRS_OPACITY_KEY);
         let length = this._settings.get_int(CROSS_HAIRS_LENGTH_KEY);
         let clip = this._settings.get_boolean(CROSS_HAIRS_CLIP_KEY);
 
@@ -354,22 +354,22 @@ Magnifier.prototype = {
 
     /**
      * setCrosshairsOpacity:
-     * @opacity:    Value between 0 (transparent) and 255 (fully opaque).
+     * @opacity:    Value between 0.0 (transparent) and 1.0 (fully opaque).
      */
     setCrosshairsOpacity: function(opacity) {
         if (this._crossHairs)
-            this._crossHairs.setOpacity(opacity);
+            this._crossHairs.setOpacity(opacity * 255);
     },
 
     /**
      * getCrosshairsOpacity:
-     * @return:     Value between 0 (transparent) and 255 (fully opaque).
+     * @return:     Value between 0.0 (transparent) and 1.0 (fully opaque).
      */
     getCrosshairsOpacity: function() {
         if (this._crossHairs)
-            return this._crossHairs.getOpacity();
+            return this._crossHairs.getOpacity() / 255.0;
         else
-            return 0;
+            return 0.0;
     },
 
     /**
@@ -495,7 +495,7 @@ Magnifier.prototype = {
 
         this._settings.connect('changed::' + CROSS_HAIRS_OPACITY_KEY,
                                Lang.bind(this, function() {
-            this.setCrosshairsOpacity(this._settings.get_int(CROSS_HAIRS_OPACITY_KEY));
+            this.setCrosshairsOpacity(this._settings.get_double(CROSS_HAIRS_OPACITY_KEY));
         }));
 
         this._settings.connect('changed::' + CROSS_HAIRS_LENGTH_KEY,
