@@ -1,14 +1,14 @@
 # Vietnamese translation for gnome-shell.
 # Copyright (C) 2010 GNOME i18n Project for Vietnamese.
 # This file is distributed under the same license as the gnome-shell package.
-# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2010.
+# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2010-2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-02-12 00:44+0700\n"
-"PO-Revision-Date: 2010-12-29 21:22+0700\n"
+"PO-Revision-Date: 2011-03-05 15:33+0700\n"
 "Last-Translator: Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "Language: vi\n"
@@ -29,45 +29,45 @@ msgstr "Quản lý cửa sổ và chạy ứng dụng"
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
+msgstr "Cho phép truy cập công cụ theo dõi và tìm lỗi nội bộ qua hộp thoại Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
+msgstr "Bật công cụ nội bộ, hữu dụng với người phát triển và kiểm thử, qua Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
-msgstr ""
+msgstr "Phần mở rộng dùng để lưu screencast"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "Framerate used for recording screencasts."
-msgstr ""
+msgstr "Tốc độ khung dùng lưu screencast."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
-msgstr ""
+msgstr "Phần mở rộng GNOME Shell có thuộc tính uuid. Khoá này liệt kê danh sách phần mở rộng không nên nạp."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
-msgstr ""
+msgstr "Hộp thoại lịch sử lệnh (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
 msgid "If true, display date in the clock, in addition to time."
-msgstr ""
+msgstr "Nếu đúng (true), hiện ngày trên đồng hồ, bên cạnh giờ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display seconds in time."
-msgstr ""
+msgstr "Nếu đúng (true), hiện giây."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display the ISO week date in the calendar."
-msgstr ""
+msgstr "Nếu đúng (true), hiện tuần ISO trong lịch."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "List of desktop file IDs for favorite applications"
-msgstr ""
+msgstr "Danh sách ID tập tin desktop của ứng dụng yêu thích"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:12
 #, no-c-format
@@ -82,42 +82,42 @@ msgid ""
 "'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
 "records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
 "at the optimal thread count on the system."
-msgstr ""
+msgstr "Đặt ống dẫn GStreamer dùng để thu hình. Tuân theo cú pháp gst-launch. Ống dẫn nên có pad sink không kết nối, nơi bắt đầu thu. Bình thường cũng nên có source pad không kết nối; đầu ra từ pad sẽ được ghi vào tập tin kết quả. Tuy nhiên ống dẫn có thể tự lưu đầu ra riêng - có thể hữu dụng để gửi kết quả đến máy chủ icecast thông qua shout2send hoặc tương tự. Nếu bỏ chọn hoặc đặt giá trị rỗng, ống dẫn mặc định sẽ được dùng, hiện thời là 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' và lưu ở dạng WEBM dùng VP8 codec. %T được dùng để thế chỗ cho số thread dự đoán tối ưu cho hệ thống."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Show date in clock"
-msgstr ""
+msgstr "Hiện ngày trên đồng hồ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show the week date in the calendar"
-msgstr ""
+msgstr "Hiện tuần trên lịch"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show time with seconds"
-msgstr ""
+msgstr "Hiện giây"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
-msgstr ""
+msgstr "Ứng dụng tương ứng với những định danh này sẽ được hiển thị ở vùng ưa thích."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
-msgstr ""
+msgstr "Tên tập tin cho screencast được lưu sẽ là tên độc nhất dự trên ngày hiện thời, và dùng phần mở rộng này. Khi lưu ở định dạng khác nhau thì tên này cũng nên khác nhau."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
-msgstr ""
+msgstr "Tốc độ khung của screencast lưu bởi bộ thu GNOME Shell theo số khung mỗi giây."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The gstreamer pipeline used to encode the screencast"
-msgstr ""
+msgstr "Ống dẫn gstreamer để thu screencast"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid ""
@@ -133,25 +133,25 @@ msgstr "UUID của phần mở rộng cần tắt"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Whether to collect stats about applications usage"
-msgstr ""
+msgstr "Có thu thập thống kê sử dụng ứng dụng không"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "disabled OpenSearch providers"
-msgstr ""
+msgstr "Phần cung cấp OpenSearch bị tắt"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
 msgid "Clip the crosshairs at the center"
-msgstr ""
+msgstr "Cắt lưới chéo ở giữa"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
 msgid "Color of the crosshairs"
-msgstr ""
+msgstr "Màu lưới chéo"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
 msgid ""
 "Determines the length of the vertical and horizontal lines that make up the "
 "crosshairs."
-msgstr ""
+msgstr "Xác định độ dài và rộng của những dòng tạo nên lưới chéo."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
 msgid ""
@@ -170,7 +170,7 @@ msgstr ""
 msgid ""
 "Determines the transparency of the crosshairs, from fully opaque to fully "
 "transparent."
-msgstr ""
+msgstr "Xác định độ trong suốt của lưới chéo, từ đặc đến trong suốt."
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
 msgid ""
@@ -214,7 +214,7 @@ msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
 msgid "Screen position"
-msgstr ""
+msgstr "Vị trí màn hình"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
 msgid "Scroll magnified contents beyond the edges of the desktop"
@@ -222,11 +222,11 @@ msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
 msgid "Show or hide crosshairs"
-msgstr ""
+msgstr "Hiện hoặc ẩn lưới chéo"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
 msgid "Show or hide the magnifier"
-msgstr ""
+msgstr "Hiện hoặc ẩn kính lúp"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
 msgid "Show or hide the magnifier and all of its zoom regions."
@@ -252,7 +252,7 @@ msgstr ""
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
 msgid "Thickness of the crosshairs"
-msgstr ""
+msgstr "Độ dày lưới chéo"
 
 #: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
 msgid ""
@@ -266,19 +266,17 @@ msgstr "Độ rộng của đường dọc/ngang hình thành dấu gạch chéo
 
 #: ../js/misc/util.js:86
 msgid "Command not found"
-msgstr ""
+msgstr "Không tìm thấy lệnh"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
 #: ../js/misc/util.js:113
-#, fuzzy
 msgid "Could not parse command:"
-msgstr "Vui lòng nhập lệnh:"
+msgstr "Không thể phân tích lệnh:"
 
 #: ../js/misc/util.js:135
-#, fuzzy
 msgid "No such application"
-msgstr "Ứng dụng"
+msgstr "Không có ứng dụng đó"
 
 #: ../js/misc/util.js:148
 #, c-format
@@ -326,21 +324,19 @@ msgstr "Đã bỏ đánh dấu ưa thích cho %s"
 #: ../js/ui/calendar.js:65
 msgctxt "event list time"
 msgid "All Day"
-msgstr ""
+msgstr "Nguyên ngày"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:70
-#, fuzzy
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
 #: ../js/ui/calendar.js:77
-#, fuzzy
 msgctxt "event list time"
 msgid "%l:%M %p"
-msgstr "%a %l:%M %p"
+msgstr "%l:%M %p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -350,43 +346,43 @@ msgstr "%a %l:%M %p"
 #: ../js/ui/calendar.js:117
 msgctxt "grid sunday"
 msgid "S"
-msgstr ""
+msgstr "C"
 
 #. Translators: Calendar grid abbreviation for Monday
 #: ../js/ui/calendar.js:119
 msgctxt "grid monday"
 msgid "M"
-msgstr ""
+msgstr "2"
 
 #. Translators: Calendar grid abbreviation for Tuesday
 #: ../js/ui/calendar.js:121
 msgctxt "grid tuesday"
 msgid "T"
-msgstr ""
+msgstr "3"
 
 #. Translators: Calendar grid abbreviation for Wednesday
 #: ../js/ui/calendar.js:123
 msgctxt "grid wednesday"
 msgid "W"
-msgstr ""
+msgstr "4"
 
 #. Translators: Calendar grid abbreviation for Thursday
 #: ../js/ui/calendar.js:125
 msgctxt "grid thursday"
 msgid "T"
-msgstr ""
+msgstr "5"
 
 #. Translators: Calendar grid abbreviation for Friday
 #: ../js/ui/calendar.js:127
 msgctxt "grid friday"
 msgid "F"
-msgstr ""
+msgstr "6"
 
 #. Translators: Calendar grid abbreviation for Saturday
 #: ../js/ui/calendar.js:129
 msgctxt "grid saturday"
 msgid "S"
-msgstr ""
+msgstr "7"
 
 #. Translators: Event list abbreviation for Sunday.
 #. *
@@ -397,109 +393,108 @@ msgstr ""
 #: ../js/ui/calendar.js:142
 msgctxt "list sunday"
 msgid "Su"
-msgstr ""
+msgstr "CN"
 
 #. Translators: Event list abbreviation for Monday
 #: ../js/ui/calendar.js:144
 msgctxt "list monday"
 msgid "M"
-msgstr ""
+msgstr "T2"
 
 #. Translators: Event list abbreviation for Tuesday
 #: ../js/ui/calendar.js:146
 msgctxt "list tuesday"
 msgid "T"
-msgstr ""
+msgstr "T3"
 
 #. Translators: Event list abbreviation for Wednesday
 #: ../js/ui/calendar.js:148
 msgctxt "list wednesday"
 msgid "W"
-msgstr ""
+msgstr "T4"
 
 #. Translators: Event list abbreviation for Thursday
 #: ../js/ui/calendar.js:150
 msgctxt "list thursday"
 msgid "Th"
-msgstr ""
+msgstr "T5"
 
 #. Translators: Event list abbreviation for Friday
 #: ../js/ui/calendar.js:152
 msgctxt "list friday"
 msgid "F"
-msgstr ""
+msgstr "T6"
 
 #. Translators: Event list abbreviation for Saturday
 #: ../js/ui/calendar.js:154
 msgctxt "list saturday"
 msgid "S"
-msgstr ""
+msgstr "T7"
 
 #. Translators: Text to show if there are no events
 #: ../js/ui/calendar.js:701
 msgid "Nothing Scheduled"
-msgstr ""
+msgstr "Không có lịch hẹn"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:717
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr ""
+msgstr "%A, %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr ""
+msgstr "%A, %d %B %Y"
 
 #: ../js/ui/calendar.js:730
 msgid "Today"
-msgstr ""
+msgstr "Hôm nay"
 
 #: ../js/ui/calendar.js:734
 msgid "Tomorrow"
-msgstr ""
+msgstr "Ngày mai"
 
 #: ../js/ui/calendar.js:743
 msgid "This week"
-msgstr ""
+msgstr "Tuần này"
 
 #: ../js/ui/calendar.js:751
 msgid "Next week"
-msgstr ""
+msgstr "Tuần tới"
 
 #: ../js/ui/dash.js:174
 msgid "Remove"
 msgstr "Loại bỏ"
 
 #: ../js/ui/dateMenu.js:91
-#, fuzzy
 msgid "Date and Time Settings"
-msgstr "Thiết lập hệ thống"
+msgstr "Thiết lập ngày giờ"
 
 #: ../js/ui/dateMenu.js:110
 msgid "Open Calendar"
-msgstr ""
+msgstr "Mở lịch"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:149
 msgid "%a %b %e, %R:%S"
-msgstr "%a %b %e, %R:%S"
+msgstr "%R:%S, %a %b %e"
 
 #: ../js/ui/dateMenu.js:150
 msgid "%a %b %e, %R"
-msgstr "%a %b %e, %R"
+msgstr "%R, %a %b %e"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:154
 msgid "%a %R:%S"
-msgstr "%a %R:%S"
+msgstr "%R:%S %a"
 
 #: ../js/ui/dateMenu.js:155
 msgid "%a %R"
-msgstr "%a %R"
+msgstr "%R %a"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
@@ -525,80 +520,77 @@ msgstr "%a %l:%M %p"
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
 #: ../js/ui/dateMenu.js:194
-#, fuzzy
 msgid "%A %B %e, %Y"
-msgstr "%a %b %e, %R"
+msgstr "%A %e %B, %Y"
 
 #: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
 msgstr "MỤC GẦN ĐÂY"
 
 #: ../js/ui/endSessionDialog.js:63
-#, fuzzy, c-format
+#, c-format
 msgid "Log Out %s"
-msgstr "Đăng xuất..."
+msgstr "Đăng xuất %s"
 
 #: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
-#, fuzzy
 msgid "Log Out"
-msgstr "Đăng xuất..."
+msgstr "Đăng xuất"
 
 #: ../js/ui/endSessionDialog.js:65
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr ""
+msgstr "Nhấn Đăng xuất để thoát những ứng dụng này và đăng xuất khỏi hệ thống."
 
 #: ../js/ui/endSessionDialog.js:66
 #, c-format
 msgid "%s will be logged out automatically in %d seconds."
-msgstr ""
+msgstr "Sẽ đăng xuất %s tự động sau %d giây."
 
 #: ../js/ui/endSessionDialog.js:67
 #, c-format
 msgid "You will be logged out automatically in %d seconds."
-msgstr ""
+msgstr "Bạn sẽ tự động đăng xuất sau %d giây."
 
 #: ../js/ui/endSessionDialog.js:68
 msgid "Logging out of the system."
-msgstr ""
+msgstr "Đang xuất khỏi hệ thống."
 
 #: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
-#, fuzzy
 msgid "Shut Down"
-msgstr "Tắt máy..."
+msgstr "Tắt máy"
 
 #: ../js/ui/endSessionDialog.js:75
 msgid "Click Shut Down to quit these applications and shut down the system."
-msgstr ""
+msgstr "Nhấn Tắt máy để thoát những ứng dụng này và tắt hệ thống."
 
 #: ../js/ui/endSessionDialog.js:76
 #, c-format
 msgid "The system will shut down automatically in %d seconds."
-msgstr ""
+msgstr "Hệ thống sẽ tự động tắt sau %d giây."
 
 #: ../js/ui/endSessionDialog.js:77
 msgid "Shutting down the system."
-msgstr ""
+msgstr "Tắt hệ thống."
 
 #: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
 msgid "Restart"
-msgstr ""
+msgstr "Khởi động lại"
 
 #: ../js/ui/endSessionDialog.js:85
 msgid "Click Restart to quit these applications and restart the system."
-msgstr ""
+msgstr "Nhấn Khởi động lại để thoát những ứng dụng này và khởi động lại hệ thống."
 
 #: ../js/ui/endSessionDialog.js:86
 #, c-format
 msgid "The system will restart automatically in %d seconds."
-msgstr ""
+msgstr "Hệ thống sẽ tự động khởi động lại sau %d giây."
 
 #: ../js/ui/endSessionDialog.js:87
 msgid "Restarting the system."
-msgstr ""
+msgstr "Khởi động lại hệ thống."
 
 #: ../js/ui/endSessionDialog.js:395
 msgid "Confirm"
-msgstr ""
+msgstr "Xác nhận"
 
 #: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
 msgid "Cancel"
@@ -635,9 +627,8 @@ msgid "Web Page"
 msgstr "Trang Web"
 
 #: ../js/ui/messageTray.js:1854
-#, fuzzy
 msgid "System Information"
-msgstr "Thông tin tài khoản..."
+msgstr "Thông tin hệ thống"
 
 #: ../js/ui/overview.js:88
 msgid "Undo"
@@ -741,7 +732,7 @@ msgstr "Tắt máy..."
 
 #: ../js/ui/status/accessibility.js:83
 msgid "Zoom"
-msgstr "Thu/Phóng"
+msgstr "Phóng to"
 
 #: ../js/ui/status/accessibility.js:89
 msgid "Screen Reader"
@@ -897,9 +888,8 @@ msgid "OK"
 msgstr "OK"
 
 #: ../js/ui/status/keyboard.js:72
-#, fuzzy
 msgid "Localization Settings"
-msgstr "Thiết lập âm thanh"
+msgstr "Thiết lập bản địa hoá"
 
 #: ../js/ui/status/power.js:85
 msgid "Power Settings"
@@ -971,7 +961,7 @@ msgstr "Máy phát"
 
 #: ../js/ui/status/power.js:253
 msgid "Tablet"
-msgstr ""
+msgstr "Bảng"
 
 #: ../js/ui/status/power.js:255
 msgid "Computer"
