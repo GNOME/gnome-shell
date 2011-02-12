@@ -621,7 +621,8 @@ WorkspacesDisplay.prototype = {
 
         let controls = new St.Bin({ style_class: 'workspace-controls',
                                     request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT,
-                                    y_align: St.Align.START });
+                                    y_align: St.Align.START,
+                                    y_fill: true });
         this._controls = controls;
         this.actor.add_actor(controls);
 

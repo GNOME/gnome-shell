@@ -370,6 +370,19 @@ ThumbnailsBox.prototype = {
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
 
+        // When we animate the scale, we don't animate the requested size of the thumbnails, rather
+        // we ask for our final size and then animate within that size. This slightly simplifies the
+        // interaction with the main workspace windows (instead of constantly reallocating them
+        // to a new size, they get a new size once, then use the standard window animation code
+        // allocate the windows to their new positions), however it causes problems for drawing
+        // the background and border wrapped around the thumbnail as we animate - we can't just pack
+        // the container into a box and set style properties on the box since that box would wrap
+        // around the final size not the animating size. So instead we fake the background with
+        // an actor underneath the content and adjust the allocation of our children to leave space
+        // for the border and padding of the background actor.
+        this._background = new St.Bin({ style_class: 'workspace-thumbnails-background' });
+        this.actor.add_actor(this._background);
+
         let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator',
                                      fixed_position_set: true });
 
@@ -596,6 +609,11 @@ ThumbnailsBox.prototype = {
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
+        // See comment about this._background in _init()
+        let themeNode = this._background.get_theme_node();
+
+        forWidth = themeNode.adjust_for_width(forWidth);
+
         // Note that for getPreferredWidth/Height we cheat a bit and skip propagating
         // the size request to our children because we know how big they are and know
         // that the actors aren't depending on the virtual functions being called.
@@ -607,11 +625,15 @@ ThumbnailsBox.prototype = {
         let nWorkspaces = global.screen.n_workspaces;
         let totalSpacing = (nWorkspaces - 1) * spacing;
 
-        alloc.min_size = totalSpacing;
-        alloc.natural_size = totalSpacing + nWorkspaces * global.screen_height * MAX_THUMBNAIL_SCALE;
+        [alloc.min_size, alloc.natural_size] =
+            themeNode.adjust_preferred_height(totalSpacing,
+                                              totalSpacing + nWorkspaces * global.screen_height * MAX_THUMBNAIL_SCALE);
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
+        // See comment about this._background in _init()
+        let themeNode = this._background.get_theme_node();
+
         if (this._thumbnails.length == 0)
             return;
 
@@ -627,10 +649,16 @@ ThumbnailsBox.prototype = {
         let scale = (avail / nWorkspaces) / global.screen_height;
         scale = Math.min(scale, MAX_THUMBNAIL_SCALE);
 
-        alloc.min_size = alloc.natural_size = Math.round(global.screen_width * scale);
+        let width = Math.round(global.screen_width * scale);
+        [alloc.min_size, alloc.natural_size] =
+            themeNode.adjust_preferred_width(width, width);
     },
 
     _allocate: function(actor, box, flags) {
+        // See comment about this._background in _init()
+        let themeNode = this._background.get_theme_node();
+        let contentBox = themeNode.get_content_box(box);
+
         if (this._thumbnails.length == 0) // not visible
             return;
 
@@ -641,7 +669,7 @@ ThumbnailsBox.prototype = {
         // Compute the scale we'll need once everything is updated
         let nWorkspaces = global.screen.n_workspaces;
         let totalSpacing = (nWorkspaces - 1) * spacing;
-        let avail = (box.y2 - box.y1) - totalSpacing;
+        let avail = (contentBox.y2 - contentBox.y1) - totalSpacing;
 
         let newScale = (avail / nWorkspaces) / screenHeight;
         newScale = Math.min(newScale, MAX_THUMBNAIL_SCALE);
@@ -662,15 +690,23 @@ ThumbnailsBox.prototype = {
 
         let thumbnailHeight = screenHeight * this._scale;
         let thumbnailWidth = Math.round(screenWidth * this._scale);
-        let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
+        let rightPadding = themeNode.get_padding(St.Side.RIGHT);
         let slideWidth = thumbnailWidth + rightPadding; // Amount to slide a thumbnail off to right
 
         let childBox = new Clutter.ActorBox();
 
+        // The background is horizontally restricted to correspond to the current thumbnail size
+        // but otherwise covers the entire allocation
+        childBox.x1 = box.x1 + ((contentBox.x2 - contentBox.x1) - thumbnailWidth);
+        childBox.x2 = box.x2;
+        childBox.y1 = box.y1;
+        childBox.y2 = box.y2;
+        this._background.allocate(childBox, flags);
+
         let indicatorWorkspace = this._indicatorConstrained ? global.screen.get_active_workspace() : null;
         let indicatorBox;
 
-        let y = box.y1;
+        let y = contentBox.y1;
 
         for (let i = 0; i < this._thumbnails.length; i++) {
             let thumbnail = this._thumbnails[i];
@@ -686,7 +722,7 @@ ThumbnailsBox.prototype = {
             let y2 = Math.round(y + thumbnailHeight);
             let roundedScale = (y2 - y1) / screenHeight;
 
-            let x1 = box.x2 - thumbnailWidth + slideWidth * thumbnail.slidePosition;
+            let x1 = contentBox.x2 - thumbnailWidth + slideWidth * thumbnail.slidePosition;
             let x2 = x1 + thumbnailWidth;
 
             if (thumbnail.metaWorkspace == indicatorWorkspace) {
