@@ -383,21 +383,20 @@ ThumbnailsBox.prototype = {
         this._background = new St.Bin({ style_class: 'workspace-thumbnails-background' });
         this.actor.add_actor(this._background);
 
-        let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator',
-                                     fixed_position_set: true });
+        let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator' });
 
         // We don't want the indicator to affect drag-and-drop
         Shell.util_set_hidden_from_pick(indicator, true);
 
         this._indicator = indicator;
         this.actor.add_actor(indicator);
-        this._indicatorConstrained = false;
 
         this._targetScale = 0;
         this._scale = 0;
         this._pendingScaleUpdate = false;
         this._stateUpdateQueued = false;
         this._animatingIndicator = false;
+        this._indicatorY = 0; // only used when _animatingIndicator is true
 
         this._stateCounts = {};
         for (key in ThumbnailState)
@@ -410,8 +409,6 @@ ThumbnailsBox.prototype = {
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
-
-        this._constrainThumbnailIndicator();
 
         this._targetScale = 0;
         this._scale = 0;
@@ -426,8 +423,6 @@ ThumbnailsBox.prototype = {
     },
 
     hide: function() {
-        this._unconstrainThumbnailIndicator();
-
         if (this._switchWorkspaceNotifyId > 0) {
             global.window_manager.disconnect(this._switchWorkspaceNotifyId);
             this._switchWorkspaceNotifyId = 0;
@@ -491,6 +486,15 @@ ThumbnailsBox.prototype = {
 
     get scale() {
         return this._scale;
+    },
+
+    set indicatorY(indicatorY) {
+        this._indicatorY = indicatorY;
+        this.actor.queue_relayout();
+    },
+
+    get indicatorY() {
+        return this._indicatorY;
     },
 
     _setThumbnailState: function(thumbnail, state) {
@@ -699,8 +703,9 @@ ThumbnailsBox.prototype = {
         childBox.y2 = box.y2;
         this._background.allocate(childBox, flags);
 
-        let indicatorWorkspace = this._indicatorConstrained ? global.screen.get_active_workspace() : null;
-        let indicatorBox;
+        let indicatorY = this._indicatorY;
+        // when not animating, the workspace position overrides this._indicatorY
+        let indicatorWorkspace = !this._animatingIndicator ? global.screen.get_active_workspace() : null;
 
         let y = contentBox.y1;
 
@@ -721,15 +726,8 @@ ThumbnailsBox.prototype = {
             let x1 = contentBox.x2 - thumbnailWidth + slideWidth * thumbnail.slidePosition;
             let x2 = x1 + thumbnailWidth;
 
-            if (thumbnail.metaWorkspace == indicatorWorkspace) {
-                let indicatorBox = new Clutter.ActorBox();
-                indicatorBox.x1 = x1;
-                indicatorBox.x2 = x2;
-                indicatorBox.y1 = y1;
-                indicatorBox.y2 = y2;
-
-                this._indicator.allocate(indicatorBox, flags);
-            }
+            if (thumbnail.metaWorkspace == indicatorWorkspace)
+                indicatorY = y1;
 
             // Allocating a scaled actor is funny - x1/y1 correspond to the origin
             // of the actor, but x2/y2 are increased by the *unscaled* size.
@@ -744,19 +742,11 @@ ThumbnailsBox.prototype = {
             y += thumbnailHeight * (1 - thumbnail.collapseFraction);
         }
 
-        if (indicatorWorkspace == null) {
-            this.actor.set_skip_paint(this._indicator, false);
-            this._indicator.allocate_preferred_size(flags);
-        }
-    },
-
-    _constrainThumbnailIndicator: function() {
-        this._indicatorConstrained = true;
-        this.actor.queue_relayout();
-    },
-
-    _unconstrainThumbnailIndicator: function() {
-        this._indicatorConstrained = false;
+        childBox.x1 = contentBox.x2 - thumbnailWidth;
+        childBox.x2 = contentBox.x2;
+        childBox.y1 = indicatorY;
+        childBox.y2 = childBox.y1 + thumbnailHeight;
+        this._indicator.allocate(childBox, flags);
     },
 
     _activeWorkspaceChanged: function(wm, from, to, direction) {
@@ -769,22 +759,14 @@ ThumbnailsBox.prototype = {
             }
         }
 
-        this._unconstrainThumbnailIndicator();
-        let oldAllocation = this._indicator.allocation;
-        this._indicator.x = oldAllocation.x1;
-        this._indicator.y = oldAllocation.y1;
-        this._indicator.width = oldAllocation.x2 - oldAllocation.x1;
-        this._indicator.height = oldAllocation.y2 - oldAllocation.y1;
-
         this._animatingIndicator = true;
-        Tweener.addTween(this._indicator,
-                         { x: thumbnail.actor.allocation.x1,
-                           y: thumbnail.actor.allocation.y1,
+        this.indicatorY = this._indicator.allocation.y1;
+        Tweener.addTween(this,
+                         { indicatorY: thumbnail.actor.allocation.y1,
                            time: WorkspacesView.WORKSPACE_SWITCH_TIME,
                            transition: 'easeOutQuad',
                            onComplete: function() {
                                this._animatingIndicator = false;
-                               this._constrainThumbnailIndicator();
                                this._queueUpdateStates();
                            },
                            onCompleteScope: this
