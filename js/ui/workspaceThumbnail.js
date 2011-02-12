@@ -397,6 +397,7 @@ ThumbnailsBox.prototype = {
         this._scale = 0;
         this._pendingScaleUpdate = false;
         this._stateUpdateQueued = false;
+        this._animatingIndicator = false;
 
         this._stateCounts = {};
         for (key in ThumbnailState)
@@ -476,15 +477,6 @@ ThumbnailsBox.prototype = {
         }
 
         this._queueUpdateStates();
-
-        // If we removed the current workspace, then metacity will have already
-        // switched to an adjacent workspace. Leaving the animation we
-        // started in response to that around will look funny because it's an
-        // animation for the *old* workspace configuration. So, kill it.
-        // If we animate the workspace removal in the future, we should animate
-        // the indicator as part of that.
-        Tweener.removeTweens(this._thumbnailIndicator);
-        this._constrainThumbnailIndicator();
     },
 
     syncStacking: function(stackIndices) {
@@ -529,7 +521,11 @@ ThumbnailsBox.prototype = {
     _updateStates: function() {
         this._stateUpdateQueued = false;
 
-        // First thing to do is to start sliding out any thumbnails that have been destroyed
+        // If we are animating the indicator, wait
+        if (this._animatingIndicator)
+            return;
+
+        // Then slide out any thumbnails that have been destroyed
         this._iterateStateThumbnails(ThumbnailState.REMOVING,
             function(thumbnail) {
                 this._setThumbnailState(thumbnail, ThumbnailState.ANIMATING_OUT);
@@ -780,13 +776,18 @@ ThumbnailsBox.prototype = {
         this._indicator.width = oldAllocation.x2 - oldAllocation.x1;
         this._indicator.height = oldAllocation.y2 - oldAllocation.y1;
 
+        this._animatingIndicator = true;
         Tweener.addTween(this._indicator,
                          { x: thumbnail.actor.allocation.x1,
                            y: thumbnail.actor.allocation.y1,
                            time: WorkspacesView.WORKSPACE_SWITCH_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this,
-                                                 this._constrainThumbnailIndicator)
+                           onComplete: function() {
+                               this._animatingIndicator = false;
+                               this._constrainThumbnailIndicator();
+                               this._queueUpdateStates();
+                           },
+                           onCompleteScope: this
                          });
     }
 };
