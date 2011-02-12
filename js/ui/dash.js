@@ -249,7 +249,7 @@ function Dash() {
 Dash.prototype = {
     _init : function() {
         this._maxHeight = -1;
-        this._iconSize = 64;
+        this.iconSize = 64;
         this._shownInitially = false;
 
         this._dragPlaceholder = null;
@@ -338,7 +338,7 @@ Dash.prototype = {
 
         if (srcIsFavorite && this._favRemoveTarget == null) {
                 this._favRemoveTarget = new RemoveFavoriteIcon();
-                this._favRemoveTarget.icon.setIconSize(this._iconSize);
+                this._favRemoveTarget.icon.setIconSize(this.iconSize);
                 this._box.add(this._favRemoveTarget.actor);
                 this._adjustIconSize();
                 this._favRemoveTarget.animateIn();
@@ -384,7 +384,7 @@ Dash.prototype = {
         let item = new DashItemContainer();
         item.setChild(display.actor);
 
-        display.icon.setIconSize(this._iconSize);
+        display.icon.setIconSize(this.iconSize);
 
         return item;
     },
@@ -417,23 +417,23 @@ Dash.prototype = {
 
         let newIconSize = 16;
         for (let i = 0; i < iconSizes.length; i++) {
-            if (iconSizes[i] < this._iconSize + diff)
+            if (iconSizes[i] < this.iconSize + diff)
                 newIconSize = iconSizes[i];
         }
 
-        if (newIconSize == this._iconSize)
+        if (newIconSize == this.iconSize)
             return;
 
-        let oldIconSize = this._iconSize;
-        this._iconSize = newIconSize;
+        let oldIconSize = this.iconSize;
+        this.iconSize = newIconSize;
 
         let scale = oldIconSize / newIconSize;
         for (let i = 0; i < iconChildren.length; i++) {
             let icon = iconChildren[i]._delegate.child._delegate.icon;
 
             // Set the new size immediately, to keep the icons' sizes
-            // in sync with this._iconSize
-            icon.setIconSize(this._iconSize);
+            // in sync with this.iconSize
+            icon.setIconSize(this.iconSize);
 
             // Don't animate the icon size change when the overview
             // is not visible or when initially filling the dash
