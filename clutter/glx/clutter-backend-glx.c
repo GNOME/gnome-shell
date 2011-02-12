@@ -525,8 +525,14 @@ _clutter_backend_glx_blit_sub_buffer (ClutterBackendGLX *backend_glx,
                                      x, y, x + width, y + height,
                                      GL_COLOR_BUFFER_BIT, GL_NEAREST);
       glDrawBuffer (GL_BACK);
-      glFlush();
     }
+
+  /* NB: unlike glXSwapBuffers, glXCopySubBuffer and
+   * glBlitFramebuffer don't issue an implicit glFlush() so we
+   * have to flush ourselves if we want the request to complete in
+   * finite amount of time since otherwise the driver can batch
+   * the command indefinitely. */
+  glFlush();
 }
 
 static XVisualInfo *
