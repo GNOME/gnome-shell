@@ -39,6 +39,7 @@ SearchEntry.prototype = {
                 this.reset();
             }));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('notify::mapped', Lang.bind(this, this._onMapped));
 
         global.stage.connect('notify::key-focus', Lang.bind(this, this._updateCursorVisibility));
 
@@ -56,17 +57,17 @@ SearchEntry.prototype = {
             this.entry.set_cursor_visible(false);
     },
 
-    show: function() {
-        if (this._capturedEventId == 0)
+    _onMapped: function() {
+        if (this.actor.mapped) {
+            // Enable 'find-as-you-type'
             this._capturedEventId = global.stage.connect('captured-event',
                                  Lang.bind(this, this._onCapturedEvent));
-        this.entry.set_cursor_visible(true);
-        this.entry.set_selection(0, 0);
-    },
-
-    hide: function() {
-        if (this._capturedEventId > 0) {
-            global.stage.disconnect(this._capturedEventId);
+            this.entry.set_cursor_visible(true);
+            this.entry.set_selection(0, 0);
+        } else {
+            // Disable 'find-as-you-type'
+            if (this._capturedEventId > 0)
+                global.stage.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
         }
     },
@@ -264,13 +265,6 @@ SearchTab.prototype = {
             this._searchResults.activateSelected();
             return true;
         }));
-    },
-
-    setFindAsYouType: function(enabled) {
-        if (enabled)
-            this._searchEntry.show();
-        else
-            this._searchEntry.hide();
     },
 
     show: function() {
@@ -580,8 +574,6 @@ ViewSelector.prototype = {
     },
 
     show: function() {
-        this._searchTab.setFindAsYouType(true);
-
         if (this._itemDragBeginId == 0)
             this._itemDragBeginId = Main.overview.connect('item-drag-begin',
                                                           Lang.bind(this, this._switchDefaultTab));
@@ -596,8 +588,6 @@ ViewSelector.prototype = {
     },
 
     hide: function() {
-        this._searchTab.setFindAsYouType(false);
-
         if (this._keyPressId > 0) {
             this.actor.disconnect(this._keyPressId);
             this._keyPressId = 0;
