@@ -190,9 +190,13 @@ static void
 meta_background_actor_paint (ClutterActor *actor)
 {
   MetaBackgroundActor *self = META_BACKGROUND_ACTOR (actor);
+  guchar opacity = clutter_actor_get_paint_opacity (actor);
   int width, height;
 
   meta_screen_get_size (self->screen, &width, &height);
+
+  cogl_material_set_color4ub (self->material,
+                              opacity, opacity, opacity, opacity);
 
   cogl_set_source (self->material);
 
