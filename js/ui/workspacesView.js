@@ -94,9 +94,6 @@ WorkspacesView.prototype = {
 
         this._timeoutId = 0;
 
-        this._windowSelectionAppId = null;
-        this._highlightWindow = null;
-
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
@@ -121,75 +118,14 @@ WorkspacesView.prototype = {
         return null;
     },
 
-    setHighlightWindow: function (metaWindow) {
-        // Looping over all workspaces is easier than keeping track of the last
-        // highlighted window while trying to handle the window or workspace possibly
-        // going away.
-        for (let i = 0; i < this._workspaces.length; i++) {
-            this._workspaces[i].setHighlightWindow(null);
-        }
-        if (metaWindow != null) {
-            let workspace = this._lookupWorkspaceForMetaWindow(metaWindow);
-            workspace.setHighlightWindow(metaWindow);
-        }
-    },
-
     getActiveWorkspace: function() {
         let active = global.screen.get_active_workspace_index();
         return this._workspaces[active];
     },
 
-    _clearApplicationWindowSelection: function(reposition) {
-        if (this._windowSelectionAppId == null)
-            return;
-        this._windowSelectionAppId = null;
-
-        for (let i = 0; i < this._workspaces.length; i++) {
-            this._workspaces[i].setLightboxMode(false);
-            this._workspaces[i].setShowOnlyWindows(null, reposition);
-        }
-    },
-
-    /**
-     * setApplicationWindowSelection:
-     * @appid: Application identifier string
-     *
-     * Enter a mode which shows only the windows owned by the
-     * given application, and allow highlighting of a specific
-     * window with setHighlightWindow().
-     */
-    setApplicationWindowSelection: function (appId) {
-        if (appId == null) {
-            this._clearApplicationWindowSelection(true);
-            return;
-        }
-
-        if (appId == this._windowSelectionAppId)
-            return;
-
-        this._windowSelectionAppId = appId;
-
-        let appSys = Shell.AppSystem.get_default();
-
-        let showOnlyWindows = {};
-        let app = appSys.get_app(appId);
-        let windows = app.get_windows();
-        for (let i = 0; i < windows.length; i++) {
-            showOnlyWindows[windows[i]] = 1;
-        }
-
-        for (let i = 0; i < this._workspaces.length; i++) {
-            this._workspaces[i].setLightboxMode(true);
-            this._workspaces[i].setShowOnlyWindows(showOnlyWindows, true);
-        }
-    },
-
     hide: function() {
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[activeWorkspaceIndex];
-
-        if (this._windowSelectionAppId != null)
-            this._clearApplicationWindowSelection(false);
 
         activeWorkspace.actor.raise_top();
 

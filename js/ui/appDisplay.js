@@ -433,18 +433,12 @@ AppWellIcon.prototype = {
 
         if (!this._menu) {
             this._menu = new AppIconMenu(this);
-            this._menu.connect('highlight-window', Lang.bind(this, function (menu, window) {
-                this.highlightWindow(window);
-            }));
             this._menu.connect('activate-window', Lang.bind(this, function (menu, window) {
                 this.activateWindow(window);
             }));
             this._menu.connect('popup', Lang.bind(this, function (menu, isPoppedUp) {
-                if (isPoppedUp) {
-                    this._onMenuPoppedUp();
-                } else {
+                if (!isPoppedUp)
                     this._onMenuPoppedDown();
-                }
             }));
 
             this._menuManager.addMenu(this._menu);
@@ -455,45 +449,16 @@ AppWellIcon.prototype = {
         return false;
     },
 
-    highlightWindow: function(metaWindow) {
-        if (this._didActivateWindow)
-            return;
-        if (!this._getRunning())
-            return;
-        Main.overview.getWorkspacesForWindow(metaWindow).setHighlightWindow(metaWindow);
-    },
-
     activateWindow: function(metaWindow) {
         if (metaWindow) {
-            this._didActivateWindow = true;
             Main.activateWindow(metaWindow);
         } else {
             Main.overview.hide();
         }
     },
 
-    _onMenuPoppedUp: function() {
-        if (this._getRunning()) {
-            Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(this.app.get_id());
-            this._setWindowSelection = true;
-            this._didActivateWindow = false;
-        }
-    },
-
     _onMenuPoppedDown: function() {
         this.actor.sync_hover();
-
-        if (this._didActivateWindow)
-            return;
-        if (!this._setWindowSelection)
-            return;
-
-        Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(null);
-        this._setWindowSelection = false;
-    },
-
-    _getRunning: function() {
-        return this.app.state != Shell.AppState.STOPPED;
     },
 
     _onActivate: function (event) {
@@ -507,11 +472,6 @@ AppWellIcon.prototype = {
             this.app.activate(-1);
         }
         Main.overview.hide();
-    },
-
-    // called by this._menuManager when it has the grab
-    menuEventFilter: function(event) {
-        return this._menu.menuEventFilter(event);
     },
 
     shellWorkspaceLaunch : function(params) {
@@ -549,7 +509,6 @@ AppIconMenu.prototype = {
 
         this._source = source;
 
-        this.connect('active-changed', Lang.bind(this, this._onActiveChanged));
         this.connect('activate', Lang.bind(this, this._onActivate));
         this.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
 
@@ -596,7 +555,6 @@ AppIconMenu.prototype = {
         this._toggleFavoriteMenuItem = this._appendMenuItem(isFavorite ? _("Remove from Favorites")
                                                                     : _("Add to Favorites"));
 
-        this._highlightedItem = null;
     },
 
     _appendSeparator: function () {
@@ -620,66 +578,8 @@ AppIconMenu.prototype = {
         if (open) {
             this.emit('popup', true);
         } else {
-            this._updateHighlight(null);
             this.emit('popup', false);
         }
-    },
-
-    // called by this._menuManager when it has the grab
-    menuEventFilter: function(event) {
-        let eventType = event.type();
-
-        // Check if the user is interacting with a window representation
-        // rather than interacting with the menu
-
-        if (eventType == Clutter.EventType.BUTTON_RELEASE) {
-            let metaWindow = this._findMetaWindowForActor(event.get_source());
-            if (metaWindow)
-                this.emit('activate-window', metaWindow);
-        } else if (eventType == Clutter.EventType.ENTER) {
-            let metaWindow = this._findMetaWindowForActor(event.get_source());
-            if (metaWindow)
-                this._selectMenuItemForWindow(metaWindow, true);
-        } else if (eventType == Clutter.EventType.LEAVE) {
-            let metaWindow = this._findMetaWindowForActor(event.get_source());
-            if (metaWindow)
-                this._selectMenuItemForWindow(metaWindow, false);
-        }
-
-        return false;
-    },
-
-    _findMetaWindowForActor: function (actor) {
-        if (actor._delegate.metaWindow)
-            return actor._delegate.metaWindow;
-        else if (actor.get_meta_window)
-            return actor.get_meta_window();
-        return null;
-    },
-
-    _updateHighlight: function (item) {
-        if (this._highlightedItem)
-            this.emit('highlight-window', null);
-        this._highlightedItem = item;
-        if (this._highlightedItem) {
-            let window = this._highlightedItem._window;
-            if (window)
-                this.emit('highlight-window', window);
-        }
-    },
-
-    _selectMenuItemForWindow: function (metaWindow, selected) {
-        let items = this.getMenuItems();
-        for (let i = 0; i < items.length; i++) {
-            let item = items[i];
-            let menuMetaWindow = item._window;
-            if (menuMetaWindow == metaWindow)
-                item.setActive(selected);
-        }
-    },
-
-    _onActiveChanged: function (menu, child) {
-        this._updateHighlight(child);
     },
 
     _onActivate: function (actor, child) {

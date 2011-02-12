@@ -564,9 +564,6 @@ Workspace.prototype = {
             }
         }
 
-        // A filter for what windows we display
-        this._showOnlyWindows = null;
-
         // Track window changes
         this._windowAddedId = this.metaWorkspace.connect('window-added',
                                                           Lang.bind(this, this._windowAdded));
@@ -597,66 +594,12 @@ Workspace.prototype = {
             new_parent.add_actor(this._windowOverlaysGroup);
     },
 
-    /**
-     * lookupCloneForMetaWindow:
-     * @metaWindow: A #MetaWindow
-     *
-     * Given a #MetaWindow instance, find the WindowClone object
-     * which represents it in the workspaces display.
-     */
-    lookupCloneForMetaWindow: function (metaWindow) {
-        let index = this._lookupIndex (metaWindow);
-        return index < 0 ? null : this._windows[index];
-    },
-
     containsMetaWindow: function (metaWindow) {
         return this._lookupIndex(metaWindow) >= 0;
     },
 
     isEmpty: function() {
         return this._windows.length == 0;
-    },
-
-    setShowOnlyWindows: function(showOnlyWindows, reposition) {
-        this._showOnlyWindows = showOnlyWindows;
-        this._resetCloneVisibility();
-        if (reposition)
-            this.positionWindows(WindowPositionFlags.ANIMATE);
-    },
-
-    /**
-     * setLightboxMode:
-     * @showLightbox: If true, dim background and allow highlighting a specific window
-     *
-     * This function also resets the highlighted window state.
-     */
-    setLightboxMode: function (showLightbox) {
-        if (!this._lightbox)
-            this._lightbox = new Lightbox.Lightbox(this.actor,
-                                                   { fadeTime: LIGHTBOX_FADE_TIME });
-
-        if (showLightbox)
-            this._lightbox.show();
-        else
-            this._lightbox.hide();
-    },
-
-    /**
-     * setHighlightWindow:
-     * @metaWindow: A #MetaWindow
-     *
-     * Draw the user's attention to the given window @metaWindow.
-     */
-    setHighlightWindow: function (metaWindow) {
-        if (!this._lightbox)
-            return;
-
-        let actor;
-        if (metaWindow != null) {
-            let clone = this.lookupCloneForMetaWindow(metaWindow);
-            actor = clone.actor;
-        }
-        this._lightbox.highlight(actor);
     },
 
     /**
@@ -667,47 +610,6 @@ Workspace.prototype = {
      **/
     setReactive: function(reactive) {
         this.actor.reactive = reactive;
-    },
-
-    _isCloneVisible: function(clone) {
-        return this._showOnlyWindows == null || (clone.metaWindow in this._showOnlyWindows);
-    },
-
-    /**
-     * _getVisibleClones:
-     *
-     * Returns a list WindowClone objects where the clone isn't filtered
-     * out by any application filter.
-     * The returned array will always be newly allocated; it is not in any
-     * defined order, and thus it's convenient to call .sort() with your
-     * choice of sorting function.
-     */
-    _getVisibleClones: function() {
-        let visible = [];
-
-        for (let i = 0; i < this._windows.length; i++) {
-            let clone = this._windows[i];
-
-            if (!this._isCloneVisible(clone))
-                continue;
-
-            visible.push(clone);
-        }
-        return visible;
-    },
-
-    _resetCloneVisibility: function () {
-        for (let i = 0; i < this._windows.length; i++) {
-            let clone = this._windows[i];
-            let overlay = this._windowOverlays[i];
-
-            if (!this._isCloneVisible(clone)) {
-                clone.actor.hide();
-                overlay.hide();
-            } else {
-                clone.actor.show();
-            }
-        }
     },
 
     // Only use this for n <= 20 say
@@ -948,25 +850,23 @@ Workspace.prototype = {
             this._repositionWindowsId = 0;
         }
 
-        let totalVisible = 0;
-
-        let visibleClones = this._getVisibleClones();
+        let clones = this._windows.slice();
         if (this._reservedSlot)
-            visibleClones.push(this._reservedSlot);
+            clones.push(this._reservedSlot);
 
         let workspaceZooming = flags & WindowPositionFlags.ZOOM;
         let animate = flags & WindowPositionFlags.ANIMATE;
 
         // Start the animations
-        let slots = this._computeAllWindowSlots(visibleClones.length);
-        visibleClones = this._orderWindowsByMotionAndStartup(visibleClones, slots);
+        let slots = this._computeAllWindowSlots(clones.length);
+        clones = this._orderWindowsByMotionAndStartup(clones, slots);
 
         let currentWorkspace = global.screen.get_active_workspace();
         let isOnCurrentWorkspace = this.metaWorkspace == currentWorkspace;
 
-        for (let i = 0; i < visibleClones.length; i++) {
+        for (let i = 0; i < clones.length; i++) {
             let slot = slots[i];
-            let clone = visibleClones[i];
+            let clone = clones[i];
             let metaWindow = clone.metaWindow;
             let mainIndex = this._lookupIndex(metaWindow);
             let overlay = this._windowOverlays[mainIndex];
@@ -1022,16 +922,16 @@ Workspace.prototype = {
     },
 
     syncStacking: function(stackIndices) {
-        let visibleClones = this._getVisibleClones();
-        visibleClones.sort(function (a, b) { return stackIndices[a.metaWindow.get_stable_sequence()] - stackIndices[b.metaWindow.get_stable_sequence()]; });
+        let clones = this._windows.slice();
+        clones.sort(function (a, b) { return stackIndices[a.metaWindow.get_stable_sequence()] - stackIndices[b.metaWindow.get_stable_sequence()]; });
 
-        for (let i = 0; i < visibleClones.length; i++) {
-            let clone = visibleClones[i];
+        for (let i = 0; i < clones.length; i++) {
+            let clone = clones[i];
             let metaWindow = clone.metaWindow;
             if (i == 0) {
                 clone.setStackAbove(null);
             } else {
-                let previousClone = visibleClones[i - 1];
+                let previousClone = clones[i - 1];
                 clone.setStackAbove(previousClone.actor);
             }
         }
@@ -1068,8 +968,6 @@ Workspace.prototype = {
         for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
             let overlay = this._windowOverlays[i];
-            if (this._showOnlyWindows != null && !(clone.metaWindow in this._showOnlyWindows))
-                continue;
             this._showWindowOverlay(clone, overlay, this.metaWorkspace == currentWorkspace);
         }
     },
