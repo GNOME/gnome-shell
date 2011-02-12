@@ -3184,7 +3184,7 @@ st_theme_node_adjust_preferred_height (StThemeNode  *node,
  * st_theme_node_get_content_box:
  * @node: a #StThemeNode
  * @allocation: the box allocated to a #ClutterAlctor
- * @content_box: (out): computed box occupied by the actor's content
+ * @content_box: (out caller-allocates): computed box occupied by the actor's content
  *
  * Gets the box within an actor's allocation that contents the content
  * of an actor (excluding borders and padding). This is a convenience function
@@ -3229,7 +3229,7 @@ st_theme_node_get_content_box (StThemeNode           *node,
  * st_theme_node_get_background_paint_box:
  * @node: a #StThemeNode
  * @allocation: the box allocated to a #ClutterActor
- * @paint_box: computed box occupied when painting the actor's background
+ * @paint_box: (out caller-allocates): computed box occupied when painting the actor's background
  *
  * Gets the box used to paint the actor's background, including the area
  * occupied by properties which paint outside the actor's assigned allocation.
@@ -3265,7 +3265,7 @@ st_theme_node_get_background_paint_box (StThemeNode           *node,
  * st_theme_node_get_paint_box:
  * @node: a #StThemeNode
  * @allocation: the box allocated to a #ClutterActor
- * @paint_box: computed box occupied when painting the actor
+ * @paint_box: (out caller-allocates): computed box occupied when painting the actor
  *
  * Gets the box used to paint the actor, including the area occupied
  * by properties which paint outside the actor's assigned allocation.
