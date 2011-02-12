@@ -350,6 +350,8 @@ ViewSelector.prototype = {
     _init : function() {
         this.actor = new St.BoxLayout({ name: 'viewSelector',
                                         vertical: true });
+        this.actor.connect('key-press-event',
+                           Lang.bind(this, this._onKeyPress));
 
         // The tab bar is located at the top of the view selector and
         // holds both "normal" tab labels and the search entry. The former
@@ -392,9 +394,12 @@ ViewSelector.prototype = {
                 this._switchTab(this._activeTab);
             }));
 
-        this._keyPressId = 0;
-        this._itemDragBeginId = 0;
-        this._overviewHidingId = 0;
+        Main.overview.connect('item-drag-begin',
+                              Lang.bind(this, this._switchDefaultTab));
+        Main.overview.connect('showing',
+                              Lang.bind(this, this._switchDefaultTab));
+        Main.overview.connect('hiding',
+                              Lang.bind(this, this._switchDefaultTab));
 
         // Public constraints which may be used to tie actors' height or
         // vertical position to the current tab's content; as the content's
@@ -571,37 +576,6 @@ ViewSelector.prototype = {
 
     addSearchProvider: function(provider) {
         this._searchTab.addSearchProvider(provider);
-    },
-
-    show: function() {
-        if (this._itemDragBeginId == 0)
-            this._itemDragBeginId = Main.overview.connect('item-drag-begin',
-                                                          Lang.bind(this, this._switchDefaultTab));
-        if (this._overviewHidingId == 0)
-            this._overviewHidingId = Main.overview.connect('hiding',
-                                                           Lang.bind(this, this._switchDefaultTab));
-        if (this._keyPressId == 0)
-            this._keyPressId = this.actor.connect('key-press-event',
-                                                  Lang.bind(this, this._onKeyPress));
-
-        this._switchDefaultTab();
-    },
-
-    hide: function() {
-        if (this._keyPressId > 0) {
-            this.actor.disconnect(this._keyPressId);
-            this._keyPressId = 0;
-        }
-
-        if (this._itemDragBeginId > 0) {
-            Main.overview.disconnect(this._itemDragBeginId);
-            this._itemDragBeginId = 0;
-        }
-
-        if (this._overviewHidingId > 0) {
-            Main.overview.disconnect(this._overviewHidingId);
-            this._overviewHidingId = 0;
-        }
     }
 };
 Signals.addSignalMethods(ViewSelector.prototype);

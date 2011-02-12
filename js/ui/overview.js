@@ -535,7 +535,6 @@ Overview.prototype = {
         this._group.show();
         this._background.show();
 
-        this.viewSelector.show();
         this._workspacesDisplay.show();
 
         this.workspaces = this._workspacesDisplay.workspacesView;
@@ -749,7 +748,6 @@ Overview.prototype = {
         this.workspaces = null;
 
         this._workspacesDisplay.hide();
-        this.viewSelector.hide();
 
         this._desktopFade.hide();
         this._background.hide();
