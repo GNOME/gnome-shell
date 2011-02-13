@@ -16,11 +16,11 @@ const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
+const History = imports.misc.history;
 
 const MAX_FILE_DELETED_BEFORE_INVALID = 10;
 
 const HISTORY_KEY = 'command-history';
-const HISTORY_LIMIT = 512;
 
 const DIALOG_GROW_TIME = 0.1;
 
@@ -172,14 +172,6 @@ __proto__: ModalDialog.ModalDialog.prototype,
         }));
         this._enableInternalCommands = global.settings.get_boolean('development-tools');
 
-        this._history = global.settings.get_strv(HISTORY_KEY);
-        this._historyIndex = -1;
-
-        global.settings.connect('changed::' + HISTORY_KEY, Lang.bind(this, function() {
-            this._history = global.settings.get_strv(HISTORY_KEY);
-            this._historyIndex = this._history.length;
-        }));
-
         this._internalCommands = { 'lg':
                                    Lang.bind(this, function() {
                                        Main.createLookingGlass().open();
@@ -241,14 +233,20 @@ __proto__: ModalDialog.ModalDialog.prototype,
         this._pathCompleter = new Gio.FilenameCompleter();
         this._commandCompleter = new CommandCompleter();
         this._group.connect('notify::visible', Lang.bind(this._commandCompleter, this._commandCompleter.update));
+
+        this._history = new History.HistoryManager(HISTORY_KEY);
+        this._history.connect('changed', Lang.bind(this, function(history, text) {
+            this._entryText.set_text(text);
+        }));
+
         this._entryText.connect('key-press-event', Lang.bind(this, function(o, e) {
             let symbol = e.get_key_symbol();
             if (symbol == Clutter.Down) {
-                this._setCommandFromHistory(this._historyIndex++);
+                this._history.nextItem(o.get_text());
                 return true;
             }
             if (symbol == Clutter.Up) {
-                this._setCommandFromHistory(this._historyIndex--);
+                this._history.prevItem(o.get_text());
                 return true;
             }
             if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
@@ -303,22 +301,10 @@ __proto__: ModalDialog.ModalDialog.prototype,
         }
     },
 
-    _saveHistory : function() {
-        if (this._history.length > HISTORY_LIMIT) {
-            this._history.splice(0, this._history.length - HISTORY_LIMIT);
-        }
-        global.settings.set_strv(HISTORY_KEY, this._history);
-    },
-
     _run : function(input, inTerminal) {
         let command = input;
 
-        if (this._history.length == 0 ||
-            this._history[this._history.length - 1] != input) {
-            this._history.push(input);
-            this._saveHistory();
-        }
-
+        this._history.addItem(input);
         this._commandError = false;
         let f;
         if (this._enableInternalCommands)
@@ -372,24 +358,8 @@ __proto__: ModalDialog.ModalDialog.prototype,
         }
     },
 
-    _setCommandFromHistory: function(lastI) {
-        if (this._historyIndex < 0)
-            this._historyIndex = 0;
-        if (this._historyIndex > this._history.length)
-            this._historyIndex = this._history.length;
-
-        let text = this._entryText.get_text();
-        if (text) {
-            this._history[lastI] = text;
-        }
-        if (this._history[this._historyIndex]) {
-            this._entryText.set_text(this._history[this._historyIndex]);
-        } else
-            this._entryText.set_text('');
-    },
-
     open: function() {
-        this._historyIndex = this._history.length;
+        this._history.lastItem();
         this._errorBox.hide();
         this._entryText.set_text('');
         this._commandError = false;
