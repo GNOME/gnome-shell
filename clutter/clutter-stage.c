@@ -1176,6 +1176,7 @@ clutter_stage_dispose (GObject *object)
     {
       CLUTTER_NOTE (BACKEND, "Disposing of the stage implementation");
 
+      _clutter_stage_window_unrealize (priv->impl);
       g_object_unref (priv->impl);
       priv->impl = NULL;
     }
