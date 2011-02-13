@@ -1341,7 +1341,13 @@ _clutter_stage_x11_destroy_window_untrapped (ClutterStageX11 *stage_x11)
   Window xwin = stage_x11->xwin;
 
   if (clutter_stages_by_xid != NULL)
-    g_hash_table_remove (clutter_stages_by_xid, GINT_TO_POINTER (xwin));
+    {
+      CLUTTER_NOTE (BACKEND, "Removing X11 stage 0x%x [%p]",
+                    (unsigned int) xwin,
+                    stage_x11);
+
+      g_hash_table_remove (clutter_stages_by_xid, GINT_TO_POINTER (xwin));
+    }
 
   if (!stage_x11->is_foreign_xwin && xwin != None)
     {
