@@ -93,7 +93,7 @@ PlaceDeviceInfo.prototype = {
         return St.TextureCache.get_default().load_gicon(null, icon, size);
     },
 
-    launch: function(param) {
+    launch: function(params) {
         Gio.app_info_launch_default_for_uri(this._mount.get_root().get_uri(),
                                             _makeLaunchContext(params));
     },
