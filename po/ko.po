@@ -1,16 +1,16 @@
-# gnome-shell korean translation.
-# Copyright (C) 2009 THE gnome-shell'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 # Young-Ho Cha <ganadist@gmail.com>, 2009.
+# Changwoo Ryu <cwryu@debian.org>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-21 10:09+0900\n"
-"PO-Revision-Date: 2009-08-21 10:10+0900\n"
-"Last-Translator: Young-Ho Cha <ganadist@gmail.com>\n"
-"Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
+"POT-Creation-Date: 2011-02-13 21:46+0900\n"
+"PO-Revision-Date: 2011-02-13 23:53+0900\n"
+"Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
+"Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
+"Language: Korean\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,149 +18,952 @@ msgstr ""
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
-msgstr "그놈 쉘"
+msgstr "그놈 셸"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "창 관리와 프로그램 시작"
 
-#. left side
-#: ../js/ui/panel.js:266
-msgid "Activities"
-msgstr ""
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr "Alt-F2 대화 상자를 사용할 때 내부 디버깅 및 감시 도구에 접근을 허용합니다."
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:433
-msgid "%a %l:%M %p"
-msgstr "%A %p %l:%M"
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr "Alt-F2를 이용해 개발자 및 테스트용 내부 프로그램 사용 가능"
 
-#: ../js/ui/dash.js:250
-msgid "Find apps or documents"
-msgstr "프로그램과 문서를 찾습니다"
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "File extension used for storing the screencast"
+msgstr "스크린 방송 저장에 사용할 파일 확장자"
 
-#: ../js/ui/dash.js:368
-msgid "Browse"
-msgstr "찾아보기"
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "Framerate used for recording screencasts."
+msgstr "스크린 방송 녹화에 사용할 프레임수."
 
-#. **** Applications ****
-#: ../js/ui/dash.js:504 ../js/ui/dash.js:577
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr "그놈 셸 확장 기능에 uuid 속성이 있습니다. 이 키는 읽어들이지 말아야 할 확장 기능을 지정합니다."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid "History for command (Alt-F2) dialog"
+msgstr "명령어 (Alt-F2) 대화 상자에 명령어 기록 기능"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "If true, display date in the clock, in addition to time."
+msgstr "참이면 시계에 날짜를 시각과 같이 표시합니다."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "If true, display seconds in time."
+msgstr "참이면 시각에 초를 표시합니다."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "If true, display the ISO week date in the calendar."
+msgstr "참이면 달력에 ISO 요일을 표시합니다."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "List of desktop file IDs for favorite applications"
+msgstr "즐겨찾기 프로그램의 데스크톱 파일 ID 목록"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#, no-c-format
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
+msgstr "녹화 인코딩에 사용할 GStreamer 파이프라인을 지정합니다. gst-launch에 사용하는 형식입니다. 파이프라인은 녹화된 영상을 저장하는 sink 패드를 연결하지 않은 상태여야 합니다. 하지만 파이프라인에서 출력 형식에 신경 써야 합니다. 이 파이프라인은 shout2send 프로그램으로 icecast 서버로 출력을 보낼 수도 있고 기타 여러가지에 사용될 수 있습니다. 설정하지 않거나 빈 문자열로 설정하면 기본 파이프라인을 사용합니다. 기본 파이프라인은 현재 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux'이고 VP8 코덱을 사용해 WEBM으로 녹화합니다. %T는 이 시스템에서 최적이라고 생각되는 스레드 개수입니다."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "Show date in clock"
+msgstr "시계에 날짜 표시"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Show the week date in the calendar"
+msgstr "달력에 요일 표시"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show time with seconds"
+msgstr "시각에 초 표시"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr "이 ID에 해당하는 프로그램은 즐겨찾기 영역에 표시됩니다."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr "스크린 방송 녹화 파일 이름은 현재 날짜와 이 확장자를 사용해서 결정됩니다. 녹화할 때 다른 형식으로 바꿀 수도 있습니다."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr "그놈 셸의 스크린 방송의 녹화 결과물에 사용할 프레임수, 초당 프레임 수 단위."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "스크린 방송 인코딩에 사용할 gstreamer 파이프라인"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr "셸에서는 최근에 사용한 프로그램을 (실행 메뉴 등에서) 표시하는 목적으로, 현재 사용 중인 프로그램을 감시합니다. 이 데이터는 비공개 데이터이지만 사생활 문제가 걱정된다면 이 기능을 끌 수도 있습니다. 단 이 기능을 사용하지 않더라도 이미 저장된 데이터를 제거하지는 않습니다."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid "Uuids of extensions to disable"
+msgstr "확장 기능의 UUID 사용하지 않음"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "Whether to collect stats about applications usage"
+msgstr "프로그램 사용 통계를 저장할지 여부"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid "disabled OpenSearch providers"
+msgstr "OpenSearch 서비스 사용하지 않음"
+
+#: ../js/misc/util.js:86
+msgid "Command not found"
+msgstr "명령이 없습니다"
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:113
+msgid "Could not parse command:"
+msgstr "명령어를 파싱할 수 없습니다:"
+
+#: ../js/misc/util.js:135
+msgid "No such application"
+msgstr "그런 프로그램이 없습니다"
+
+#: ../js/misc/util.js:148
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "'%s' 실행이 실패했습니다:"
+
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:174
+msgid "All"
+msgstr "모두"
+
+#: ../js/ui/appDisplay.js:261
 msgid "APPLICATIONS"
 msgstr "프로그램"
 
-#. **** Documents ****
-#: ../js/ui/dash.js:509 ../js/ui/dash.js:604
-msgid "RECENT DOCUMENTS"
-msgstr "최근 문서"
+#: ../js/ui/appDisplay.js:291
+msgid "PREFERENCES"
+msgstr "기본 설정"
 
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:597
-msgid "PLACES"
-msgstr "위치"
+#: ../js/ui/appDisplay.js:592
+msgid "New Window"
+msgstr "새 창"
 
-#: ../js/ui/runDialog.js:75
+#: ../js/ui/appDisplay.js:596
+msgid "Remove from Favorites"
+msgstr "즐겨찾기에서 제거"
+
+#: ../js/ui/appDisplay.js:597
+msgid "Add to Favorites"
+msgstr "즐겨찾기에 추가"
+
+#: ../js/ui/appFavorites.js:91
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr "%s 프로그램을 즐겨찾기에 추가했습니다."
+
+#: ../js/ui/appFavorites.js:122
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr "%s 프로그램을 즐겨찾기에서 제거했습니다."
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:65
+msgctxt "event list time"
+msgid "All Day"
+msgstr "하루 종일"
+
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:70
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:77
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%p %l:%M"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: ../js/ui/calendar.js:117
+msgctxt "grid sunday"
+msgid "S"
+msgstr "일"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:119
+msgctxt "grid monday"
+msgid "M"
+msgstr "월"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:121
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "화"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:123
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "수"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:125
+msgctxt "grid thursday"
+msgid "T"
+msgstr "목"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:127
+msgctxt "grid friday"
+msgid "F"
+msgstr "금"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:129
+msgctxt "grid saturday"
+msgid "S"
+msgstr "토"
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+#: ../js/ui/calendar.js:142
+msgctxt "list sunday"
+msgid "Su"
+msgstr "일"
+
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:144
+msgctxt "list monday"
+msgid "M"
+msgstr "월"
+
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:146
+msgctxt "list tuesday"
+msgid "T"
+msgstr "화"
+
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:148
+msgctxt "list wednesday"
+msgid "W"
+msgstr "수"
+
+#. Translators: Event list abbreviation for Thursday
+#: ../js/ui/calendar.js:150
+msgctxt "list thursday"
+msgid "Th"
+msgstr "목"
+
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:152
+msgctxt "list friday"
+msgid "F"
+msgstr "금"
+
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:154
+msgctxt "list saturday"
+msgid "S"
+msgstr "토"
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:701
+msgid "Nothing Scheduled"
+msgstr "일정이 없습니다"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:717
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%B %d일 %A"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:720
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%Y년 %B %d일 %A"
+
+#: ../js/ui/calendar.js:730
+msgid "Today"
+msgstr "오늘"
+
+#: ../js/ui/calendar.js:734
+msgid "Tomorrow"
+msgstr "내일"
+
+#: ../js/ui/calendar.js:743
+msgid "This week"
+msgstr "이번주"
+
+#: ../js/ui/calendar.js:751
+msgid "Next week"
+msgstr "다음주"
+
+#: ../js/ui/dash.js:174
+msgid "Remove"
+msgstr "제거"
+
+#: ../js/ui/dateMenu.js:91
+msgid "Date and Time Settings"
+msgstr "날짜 및 시각 설정"
+
+#: ../js/ui/dateMenu.js:110
+msgid "Open Calendar"
+msgstr "달력 열기"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:149
+msgid "%a %b %e, %R:%S"
+msgstr "%b %e일 (%a), %R:%S"
+
+#: ../js/ui/dateMenu.js:150
+msgid "%a %b %e, %R"
+msgstr "%b %e일 (%a), %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:154
+msgid "%a %R:%S"
+msgstr "(%a) %R:%S"
+
+#: ../js/ui/dateMenu.js:155
+msgid "%a %R"
+msgstr "(%a) %R"
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:162
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%b %e일 (%a), %p %l:%M:%S"
+
+#: ../js/ui/dateMenu.js:163
+msgid "%a %b %e, %l:%M %p"
+msgstr "%b %e일 (%a), %p %l:%M"
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:167
+msgid "%a %l:%M:%S %p"
+msgstr "(%a) %p %l:%M:%S"
+
+#: ../js/ui/dateMenu.js:168
+msgid "%a %l:%M %p"
+msgstr "(%a) %p %l:%M"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:194
+msgid "%A %B %e, %Y"
+msgstr "%Y년 %B %e일 %A"
+
+#: ../js/ui/docDisplay.js:19
+msgid "RECENT ITEMS"
+msgstr "최근 항목"
+
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+msgid "Log Out %s"
+msgstr "로그아웃 %s"
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+msgid "Log Out"
+msgstr "로그아웃"
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr "로그아웃을 누르면 이 프로그램을 끝내고 시스템에서 로그아웃합니다."
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "%s 사용자가 %d초 뒤에 자동으로 로그아웃합니다."
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "%d초 뒤에 자동으로 로그아웃합니다."
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "시스템에서 로그아웃."
+
+#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
+msgid "Shut Down"
+msgstr "컴퓨터 끄기"
+
+#: ../js/ui/endSessionDialog.js:75
+msgid "Click Shut Down to quit these applications and shut down the system."
+msgstr "컴퓨터 끄기를 누르면 이 프로그램을 끝내고 시스템을 끕니다."
+
+#: ../js/ui/endSessionDialog.js:76
+#, c-format
+msgid "The system will shut down automatically in %d seconds."
+msgstr "시스템이 %d초 뒤에 자동으로 꺼집니다."
+
+#: ../js/ui/endSessionDialog.js:77
+msgid "Shutting down the system."
+msgstr "시스템을 끕니다."
+
+#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+msgid "Restart"
+msgstr "다시 시작"
+
+#: ../js/ui/endSessionDialog.js:85
+msgid "Click Restart to quit these applications and restart the system."
+msgstr "다시 시작을 누르면 이 프로그램을 끝내고 시스템을 다시 시작합니다."
+
+#: ../js/ui/endSessionDialog.js:86
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "시스템이 %d초 뒤에 자동으로 다시 시작합니다."
+
+#: ../js/ui/endSessionDialog.js:87
+msgid "Restarting the system."
+msgstr "시스템을 다시 시작합니다."
+
+#: ../js/ui/endSessionDialog.js:395
+msgid "Confirm"
+msgstr "확인"
+
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+msgid "Cancel"
+msgstr "취소"
+
+#: ../js/ui/lookingGlass.js:584
+msgid "No extensions installed"
+msgstr "확장 기능을 설치하지 않았습니다"
+
+#: ../js/ui/lookingGlass.js:621
+msgid "Enabled"
+msgstr "사용"
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:623 ../src/gvc/gvc-mixer-control.c:1087
+msgid "Disabled"
+msgstr "사용 않음"
+
+#: ../js/ui/lookingGlass.js:625
+msgid "Error"
+msgstr "오류"
+
+#: ../js/ui/lookingGlass.js:627
+msgid "Out of date"
+msgstr "오래 된 버전"
+
+#: ../js/ui/lookingGlass.js:652
+msgid "View Source"
+msgstr "소스 보기"
+
+#: ../js/ui/lookingGlass.js:658
+msgid "Web Page"
+msgstr "웹페이지"
+
+#: ../js/ui/messageTray.js:1854
+msgid "System Information"
+msgstr "시스템 정보"
+
+#: ../js/ui/overview.js:88
+msgid "Undo"
+msgstr "실행 취소"
+
+#: ../js/ui/overview.js:159
+msgid "Windows"
+msgstr "창"
+
+#: ../js/ui/overview.js:162
+msgid "Applications"
+msgstr "프로그램"
+
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:480
+#, c-format
+msgid "Quit %s"
+msgstr "%s 끝내기"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:614
+msgid "Activities"
+msgstr "요약"
+
+#: ../js/ui/placeDisplay.js:122
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr "'%s' 마운트 해제에 실패했습니다"
+
+#: ../js/ui/placeDisplay.js:125
+msgid "Retry"
+msgstr "다시 시도"
+
+#: ../js/ui/placeDisplay.js:165
+msgid "Connect to..."
+msgstr "연결..."
+
+#: ../js/ui/placeDisplay.js:409
+msgid "PLACES & DEVICES"
+msgstr "위치 및 장치"
+
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:512
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
+
+#: ../js/ui/runDialog.js:209
 msgid "Please enter a command:"
 msgstr "명령을 입력하십시오:"
 
-#: ../src/shell-global.c:841
+#: ../js/ui/searchDisplay.js:295
+msgid "Searching..."
+msgstr "검색하는 중..."
+
+#: ../js/ui/searchDisplay.js:309
+msgid "No matching results."
+msgstr "일치하는 결과가 없습니다."
+
+#: ../js/ui/statusMenu.js:102
+msgid "Available"
+msgstr "대화 가능"
+
+#: ../js/ui/statusMenu.js:107
+msgid "Busy"
+msgstr "다른 용무 중"
+
+#: ../js/ui/statusMenu.js:115
+msgid "My Account"
+msgstr "내 계정"
+
+#: ../js/ui/statusMenu.js:119
+msgid "System Settings"
+msgstr "시스템 설정"
+
+#: ../js/ui/statusMenu.js:126
+msgid "Lock Screen"
+msgstr "화면 잠그기"
+
+#: ../js/ui/statusMenu.js:130
+msgid "Switch User"
+msgstr "사용자 바꾸기"
+
+#: ../js/ui/statusMenu.js:135
+msgid "Log Out..."
+msgstr "로그아웃..."
+
+#. This is temporarily removed, see
+#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
+#. for details.
+#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
+#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+#. this.menu.addMenuItem(item);
+#: ../js/ui/statusMenu.js:149
+msgid "Shut Down..."
+msgstr "컴퓨터 끄기..."
+
+#: ../js/ui/status/accessibility.js:83
+msgid "Zoom"
+msgstr "크기 조정"
+
+#: ../js/ui/status/accessibility.js:89
+msgid "Screen Reader"
+msgstr "화면 읽기"
+
+#: ../js/ui/status/accessibility.js:92
+msgid "Screen Keyboard"
+msgstr "화면 키보드"
+
+#: ../js/ui/status/accessibility.js:95
+msgid "Visual Alerts"
+msgstr "화면 알림"
+
+#: ../js/ui/status/accessibility.js:98
+msgid "Sticky Keys"
+msgstr "고정 키"
+
+#: ../js/ui/status/accessibility.js:101
+msgid "Slow Keys"
+msgstr "느린 키"
+
+#: ../js/ui/status/accessibility.js:104
+msgid "Bounce Keys"
+msgstr "탄력 키"
+
+#: ../js/ui/status/accessibility.js:107
+msgid "Mouse Keys"
+msgstr "마우스 키"
+
+#: ../js/ui/status/accessibility.js:111
+msgid "Universal Access Settings"
+msgstr "보편적 접근성 설정"
+
+#: ../js/ui/status/accessibility.js:163
+msgid "High Contrast"
+msgstr "고대비"
+
+#: ../js/ui/status/accessibility.js:205
+msgid "Large Text"
+msgstr "큰 글자"
+
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
+msgid "Bluetooth"
+msgstr "블루투스"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "파일을 장치로 보내기..."
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "새 장치 준비..."
+
+#: ../js/ui/status/bluetooth.js:95
+msgid "Bluetooth Settings"
+msgstr "블루투스 설정"
+
+#: ../js/ui/status/bluetooth.js:192
+msgid "Connection"
+msgstr "연결"
+
+#: ../js/ui/status/bluetooth.js:228
+msgid "Send Files..."
+msgstr "파일 보내기..."
+
+#: ../js/ui/status/bluetooth.js:233
+msgid "Browse Files..."
+msgstr "파일 찾아보기..."
+
+#: ../js/ui/status/bluetooth.js:242
+msgid "Error browsing device"
+msgstr "장치를 찾아보는데 오류"
+
+#: ../js/ui/status/bluetooth.js:243
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "요청한 장치를 찾아볼 수 없습니다. 오류는 '%s'"
+
+#: ../js/ui/status/bluetooth.js:251
+msgid "Keyboard Settings"
+msgstr "키보드 설정"
+
+#: ../js/ui/status/bluetooth.js:256
+msgid "Mouse Settings"
+msgstr "마우스 설정"
+
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+msgid "Sound Settings"
+msgstr "소리 설정"
+
+#: ../js/ui/status/bluetooth.js:372
+#, c-format
+msgid "Authorization request from %s"
+msgstr "%s 장치에서 권한 확인 요청"
+
+#: ../js/ui/status/bluetooth.js:378
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "%s 장치에서 '%s' 서비스에 접근을 요청합니다"
+
+#: ../js/ui/status/bluetooth.js:380
+msgid "Always grant access"
+msgstr "항상 접근 허용"
+
+#: ../js/ui/status/bluetooth.js:381
+msgid "Grant this time only"
+msgstr "이번에만 허용"
+
+#: ../js/ui/status/bluetooth.js:382
+msgid "Reject"
+msgstr "거부"
+
+#: ../js/ui/status/bluetooth.js:412
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "연결 확인 (%s)"
+
+#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "%s 장치가 이 컴퓨터와 연결하려 합니다."
+
+#: ../js/ui/status/bluetooth.js:419
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "PIN '%s'이(가) 해당 장치의 PIN과 일치하는지 확인하십시오."
+
+#: ../js/ui/status/bluetooth.js:421
+msgid "Matches"
+msgstr "일치"
+
+#: ../js/ui/status/bluetooth.js:422
+msgid "Does not match"
+msgstr "일치하지 않음"
+
+#: ../js/ui/status/bluetooth.js:445
+#, c-format
+msgid "Pairing request for %s"
+msgstr "연결 요청 (%s)"
+
+#: ../js/ui/status/bluetooth.js:453
+msgid "Please enter the PIN mentioned on the device."
+msgstr "해당 장치에 표시된 PIN을 입력하십시오."
+
+#: ../js/ui/status/bluetooth.js:469
+msgid "OK"
+msgstr "확인"
+
+#: ../js/ui/status/keyboard.js:72
+msgid "Localization Settings"
+msgstr "지역화 설정"
+
+#: ../js/ui/status/power.js:85
+msgid "Power Settings"
+msgstr "전원 설정"
+
+#: ../js/ui/status/power.js:112
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "%d시간 남음"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:115
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "%d%s %d%s 남음"
+
+#: ../js/ui/status/power.js:117
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "시간"
+
+#: ../js/ui/status/power.js:117
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "분"
+
+#: ../js/ui/status/power.js:120
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "%d분 남음"
+
+#: ../js/ui/status/power.js:235
+msgid "AC adapter"
+msgstr "AC 어댑터"
+
+#: ../js/ui/status/power.js:237
+msgid "Laptop battery"
+msgstr "노트북 배터리"
+
+#: ../js/ui/status/power.js:239
+msgid "UPS"
+msgstr "UPS"
+
+#: ../js/ui/status/power.js:241
+msgid "Monitor"
+msgstr "모니터"
+
+#: ../js/ui/status/power.js:243
+msgid "Mouse"
+msgstr "마우스"
+
+#: ../js/ui/status/power.js:245
+msgid "Keyboard"
+msgstr "키보드"
+
+#: ../js/ui/status/power.js:247
+msgid "PDA"
+msgstr "PDA"
+
+#: ../js/ui/status/power.js:249
+msgid "Cell phone"
+msgstr "휴대전화"
+
+#: ../js/ui/status/power.js:251
+msgid "Media player"
+msgstr "미디어 플레이어"
+
+#: ../js/ui/status/power.js:253
+msgid "Tablet"
+msgstr "태블릿"
+
+#: ../js/ui/status/power.js:255
+msgid "Computer"
+msgstr "컴퓨터"
+
+#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
+msgid "Unknown"
+msgstr "알 수 없음"
+
+# 오디오 볼륨
+#: ../js/ui/status/volume.js:42
+msgid "Volume"
+msgstr "볼륨"
+
+#: ../js/ui/status/volume.js:55
+msgid "Microphone"
+msgstr "마이크"
+
+#: ../js/ui/telepathyClient.js:563
+#, c-format
+msgid "%s is online."
+msgstr "%s 연결 중."
+
+#: ../js/ui/telepathyClient.js:568
+#, c-format
+msgid "%s is offline."
+msgstr "%s 연결 중지."
+
+#: ../js/ui/telepathyClient.js:571
+#, c-format
+msgid "%s is away."
+msgstr "%s 다른 용무 중."
+
+#: ../js/ui/telepathyClient.js:574
+#, c-format
+msgid "%s is busy."
+msgstr "%s 부재중."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:669
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "보낸 때: %A %H시 %M분"
+
+#: ../js/ui/viewSelector.js:26
+msgid "Search your computer"
+msgstr "컴퓨터 검색"
+
+#: ../js/ui/windowAttentionHandler.js:43
+#, c-format
+msgid "%s has finished starting"
+msgstr "%s 프로그램이 시작했습니다"
+
+#: ../js/ui/windowAttentionHandler.js:45
+#, c-format
+msgid "'%s' is ready"
+msgstr "'%s' 프로그램이 준비되었습니다"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1094
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u개 출력"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1104
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u개 입력"
+
+#: ../src/gvc/gvc-mixer-control.c:1402
+msgid "System Sounds"
+msgstr "시스템 소리"
+
+#: ../src/shell-global.c:1363
 msgid "Less than a minute ago"
 msgstr "1분 이내"
 
-#: ../src/shell-global.c:844
+#: ../src/shell-global.c:1367
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d분 전"
 
-#: ../src/shell-global.c:847
+#: ../src/shell-global.c:1372
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d시간 전"
 
-#: ../src/shell-global.c:850
+#: ../src/shell-global.c:1377
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d일 전"
 
-#: ../src/shell-global.c:853
+#: ../src/shell-global.c:1382
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d주 전"
 
-#: ../src/shell-status-menu.c:156
-msgid "Unknown"
-msgstr "알 수 없음"
-
-#: ../src/shell-status-menu.c:212
-#, c-format
-msgid "Can't lock screen: %s"
-msgstr "화면을 잠글 수 없습니다: %s"
-
-#: ../src/shell-status-menu.c:227
-#, c-format
-msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr "임시로 화면보호기를 빈 화면으로 설정할 수 없습니다: %s"
-
-#: ../src/shell-status-menu.c:351
-#, c-format
-msgid "Can't logout: %s"
-msgstr "로그아웃 할 수 없습니다: %s"
-
-#: ../src/shell-status-menu.c:492
-msgid "Account Information..."
-msgstr "계정 정보..."
-
-#: ../src/shell-status-menu.c:502
-msgid "Sidebar"
-msgstr "사이드바"
-
-#: ../src/shell-status-menu.c:510
-msgid "System Preferences..."
-msgstr "시스템 설정..."
-
-#: ../src/shell-status-menu.c:525
-msgid "Lock Screen"
-msgstr "화면 잠그기"
-
-#: ../src/shell-status-menu.c:535
-msgid "Switch User"
-msgstr "사용자 바꾸기"
-
-#. Only show switch user if there are other users
-#. Log Out
-#: ../src/shell-status-menu.c:546
-msgid "Log Out..."
-msgstr "로그아웃..."
-
-#. Shut down
-#: ../src/shell-status-menu.c:557
-msgid "Shut Down..."
-msgstr "컴퓨터 끄기..."
-
-#: ../src/shell-uri-util.c:87
+#: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "내 폴더"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:102
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "파일시스템"
 
-#: ../src/shell-uri-util.c:248
+#: ../src/shell-util.c:250
 msgid "Search"
-msgstr "찾기"
+msgstr "검색"
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:298
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%s: %s"
