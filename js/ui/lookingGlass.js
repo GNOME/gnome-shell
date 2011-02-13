@@ -14,6 +14,7 @@ const Mainloop = imports.mainloop;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const History = imports.misc.history;
 const ExtensionSystem = imports.ui.extensionSystem;
 const Link = imports.ui.link;
 const Tweener = imports.ui.tweener;
@@ -36,6 +37,8 @@ var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
                     /* Special lookingGlass functions */
                        'const it = Main.lookingGlass.getIt(); ' +
                     'const r = Lang.bind(Main.lookingGlass, Main.lookingGlass.getResult); ';
+
+const HISTORY_KEY = 'looking-glass-history';
 
 function Notebook() {
     this._init();
@@ -671,17 +674,9 @@ function LookingGlass() {
 
 LookingGlass.prototype = {
     _init : function() {
-        this._idleHistorySaveId = 0;
-        let historyPath = global.userdatadir + '/lookingglass-history.txt';
-        this._historyFile = Gio.file_new_for_path(historyPath);
-        this._savedText = null;
-        this._historyNavIndex = -1;
-        this._history = [];
         this._borderPaintTarget = null;
         this._borderPaintId = 0;
         this._borderDestroyId = 0;
-
-        this._readHistory();
 
         this._open = false;
 
@@ -779,31 +774,23 @@ LookingGlass.prototype = {
             if (text == '')
                 return true;
             this._evaluate(text);
-            this._historyNavIndex = -1;
             return true;
         }));
+
+        this._history = new History.HistoryManager(HISTORY_KEY);
+        this._history.connect('changed', Lang.bind(this, function(history, text) {
+            this._entry.text = text;
+        }));
+
         this._entry.clutter_text.connect('key-press-event', Lang.bind(this, function(o, e) {
             let symbol = e.get_key_symbol();
             if (symbol == Clutter.Up) {
-                if (this._historyNavIndex >= this._history.length - 1)
-                    return true;
-                this._historyNavIndex++;
-                if (this._historyNavIndex == 0)
-                    this._savedText = this._entry.text;
-                this._entry.text = this._history[this._history.length - this._historyNavIndex - 1];
+                this._history.prevItem(o.get_text());
                 return true;
             } else if (symbol == Clutter.Down) {
-                if (this._historyNavIndex <= 0)
-                    return true;
-                this._historyNavIndex--;
-                if (this._historyNavIndex < 0)
-                    this._entry.text = this._savedText;
-                else
-                    this._entry.text = this._history[this._history.length - this._historyNavIndex - 1];
+                this._history.nextItem(o.get_text());
                 return true;
             } else {
-                this._historyNavIndex = -1;
-                this._savedText = null;
                 return false;
             }
         }));
@@ -819,29 +806,6 @@ LookingGlass.prototype = {
         this.actor.style =
             'font-size: ' + fontDesc.get_size() / 1024. + (fontDesc.get_size_is_absolute() ? 'px' : 'pt') + ';'
             + 'font-family: "' + fontDesc.get_family() + '";';
-    },
-
-    _readHistory: function () {
-        if (!this._historyFile.query_exists(null))
-            return;
-        let [result, contents, length, etag] = this._historyFile.load_contents(null);
-        this._history = contents.split('\n').filter(function (e) { return e != ''; });
-    },
-
-    _queueHistorySave: function() {
-        if (this._idleHistorySaveId > 0)
-            return;
-        this._idleHistorySaveId = Mainloop.timeout_add_seconds(5, Lang.bind(this, this._doSaveHistory));
-    },
-
-    _doSaveHistory: function () {
-        this._idleHistorySaveId = false;
-        let output = this._historyFile.replace(null, true, Gio.FileCreateFlags.NONE, null);
-        let dataOut = new Gio.DataOutputStream({ base_stream: output });
-        dataOut.put_string(this._history.join('\n'), null);
-        dataOut.put_string('\n', null);
-        dataOut.close(null);
-        return false;
     },
 
     _pushResult: function(command, obj) {
@@ -874,8 +838,7 @@ LookingGlass.prototype = {
     },
 
     _evaluate : function(command) {
-        this._history.push(command);
-        this._queueHistorySave();
+        this._history.addItem(command);
 
         let fullCmd = commandHeader + command;
 
@@ -962,6 +925,7 @@ LookingGlass.prototype = {
         this.actor.show();
         this.actor.lower(Main.chrome.actor);
         this._open = true;
+        this._history.lastItem();
 
         Tweener.removeTweens(this.actor);
 
@@ -979,7 +943,6 @@ LookingGlass.prototype = {
 
         this._objInspector.actor.hide();
 
-        this._historyNavIndex = -1;
         this._open = false;
         Tweener.removeTweens(this.actor);
 
