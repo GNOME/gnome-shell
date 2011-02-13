@@ -3,6 +3,7 @@
 #undef CLUTTER_DISABLE_DEPRECATED
 #include <clutter/clutter.h>
 
+static GList *stages = NULL;
 static gint n_stages = 1;
 
 static gboolean
@@ -13,6 +14,12 @@ tex_button_cb (ClutterActor    *actor,
   clutter_actor_hide (actor);
 
   return TRUE;
+}
+
+static void
+on_destroy (ClutterActor *actor)
+{
+  stages = g_list_remove (stages, actor);
 }
 
 static gboolean
@@ -34,6 +41,8 @@ on_button_press (ClutterActor *actor,
 
   clutter_stage_set_color (CLUTTER_STAGE (new_stage), CLUTTER_COLOR_DarkScarletRed);
   clutter_actor_set_size (new_stage, 320, 240);
+
+  g_signal_connect (new_stage, "destroy", G_CALLBACK (on_destroy), NULL);
 
   tex = clutter_texture_new_from_file (TESTS_DATADIR
                                        G_DIR_SEPARATOR_S
@@ -91,6 +100,8 @@ on_button_press (ClutterActor *actor,
 
   clutter_actor_show_all (new_stage);
 
+  stages = g_list_prepend (stages, new_stage);
+
   return TRUE;
 }
 
@@ -126,6 +137,9 @@ test_multistage_main (int argc, char *argv[])
   clutter_actor_show (stage_default);
 
   clutter_main ();
+
+  g_list_foreach (stages, (GFunc) clutter_actor_destroy, NULL);
+  g_list_free (stages);
 
   return 0;
 }
