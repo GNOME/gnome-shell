@@ -679,7 +679,7 @@ Notification.prototype = {
             this.update(text, null, { customContent: true });
         else
             this.update(this.source.title, null, { customContent: true });
-        let label = this.addBody(text);
+        let label = this.addBody(text, true);
         label.add_style_class_name('chat-meta-message');
         this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false});
     },
