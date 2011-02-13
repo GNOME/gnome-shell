@@ -147,13 +147,13 @@ WorkspaceThumbnail.prototype = {
     _init : function(metaWorkspace) {
         this.metaWorkspace = metaWorkspace;
 
-        this.actor = new St.Bin({ reactive: true,
-                                  clip_to_allocation: true,
-                                  style_class: 'workspace-thumbnail' });
+        this.actor = new St.Group({ reactive: true,
+                                    clip_to_allocation: true,
+                                    style_class: 'workspace-thumbnail' });
         this.actor._delegate = this;
 
-        this._group = new Clutter.Group();
-        this.actor.add_actor(this._group);
+        this._contents = new Clutter.Group();
+        this.actor.add_actor(this._contents);
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         this.actor.connect('button-press-event', Lang.bind(this,
@@ -167,8 +167,9 @@ WorkspaceThumbnail.prototype = {
             }));
 
         this._background = new Clutter.Clone({ source: global.background_actor });
-        this._group.add_actor(this._background);
-        this._group.set_size(global.screen_width, global.screen_height);
+        this._contents.add_actor(this._background);
+
+        this.setPorthole(0, 0, global.screen_width, global.screen_height);
 
         let windows = global.get_window_actors().filter(this._isMyWindow, this);
 
@@ -189,6 +190,11 @@ WorkspaceThumbnail.prototype = {
         this.state = ThumbnailState.NORMAL;
         this._slidePosition = 0; // Fully slid in
         this._collapseFraction = 0; // Not collapsed
+    },
+
+    setPorthole: function(x, y, width, height) {
+        this.actor.set_size(width, height);
+        this._contents.set_position(-x, -y);
     },
 
     _lookupIndex: function (metaWindow) {
@@ -309,7 +315,7 @@ WorkspaceThumbnail.prototype = {
                       Lang.bind(this, function(clone) {
                           Main.overview.endWindowDrag();
                       }));
-        this._group.add_actor(clone.actor);
+        this._contents.add_actor(clone.actor);
 
         this._windows.push(clone);
 
@@ -419,6 +425,15 @@ ThumbnailsBox.prototype = {
         for (key in ThumbnailState)
             this._stateCounts[ThumbnailState[key]] = 0;
 
+        // The "porthole" is the portion of the screen that we show in the workspaces
+        let panelHeight = Main.panel.actor.height;
+        this._porthole = {
+            x: 0,
+            y: panelHeight,
+            width: global.screen_width,
+            height: global.screen_height - panelHeight
+        };
+
         this.addThumbnails(0, global.screen.n_workspaces);
     },
 
@@ -437,6 +452,8 @@ ThumbnailsBox.prototype = {
         for (let k = start; k < start + count; k++) {
             let metaWorkspace = global.screen.get_workspace_by_index(k);
             let thumbnail = new WorkspaceThumbnail(metaWorkspace);
+            thumbnail.setPorthole(this._porthole.x, this._porthole.y,
+                                  this._porthole.width, this._porthole.height);
             this._thumbnails.push(thumbnail);
             this.actor.add_actor(thumbnail.actor);
 
@@ -627,7 +644,7 @@ ThumbnailsBox.prototype = {
 
         [alloc.min_size, alloc.natural_size] =
             themeNode.adjust_preferred_height(totalSpacing,
-                                              totalSpacing + nWorkspaces * global.screen_height * MAX_THUMBNAIL_SCALE);
+                                              totalSpacing + nWorkspaces * this._porthole.height * MAX_THUMBNAIL_SCALE);
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
@@ -646,10 +663,10 @@ ThumbnailsBox.prototype = {
 
         let avail = forHeight - totalSpacing;
 
-        let scale = (avail / nWorkspaces) / global.screen_height;
+        let scale = (avail / nWorkspaces) / this._porthole.height;
         scale = Math.min(scale, MAX_THUMBNAIL_SCALE);
 
-        let width = Math.round(global.screen_width * scale);
+        let width = Math.round(this._porthole.width * scale);
         [alloc.min_size, alloc.natural_size] =
             themeNode.adjust_preferred_width(width, width);
     },
@@ -662,8 +679,8 @@ ThumbnailsBox.prototype = {
         if (this._thumbnails.length == 0) // not visible
             return;
 
-        let screenWidth = global.screen_width;
-        let screenHeight = global.screen_height;
+        let portholeWidth = this._porthole.width;
+        let portholeHeight = this._porthole.height;
         let spacing = this.actor.get_theme_node().get_length('spacing');
 
         // Compute the scale we'll need once everything is updated
@@ -671,7 +688,7 @@ ThumbnailsBox.prototype = {
         let totalSpacing = (nWorkspaces - 1) * spacing;
         let avail = (contentBox.y2 - contentBox.y1) - totalSpacing;
 
-        let newScale = (avail / nWorkspaces) / screenHeight;
+        let newScale = (avail / nWorkspaces) / portholeHeight;
         newScale = Math.min(newScale, MAX_THUMBNAIL_SCALE);
 
         if (newScale != this._targetScale) {
@@ -688,8 +705,8 @@ ThumbnailsBox.prototype = {
             this._queueUpdateStates();
         }
 
-        let thumbnailHeight = screenHeight * this._scale;
-        let thumbnailWidth = Math.round(screenWidth * this._scale);
+        let thumbnailHeight = portholeHeight * this._scale;
+        let thumbnailWidth = Math.round(portholeWidth * this._scale);
         let rightPadding = themeNode.get_padding(St.Side.RIGHT);
         let slideWidth = thumbnailWidth + rightPadding; // Amount to slide a thumbnail off to right
 
@@ -721,7 +738,7 @@ ThumbnailsBox.prototype = {
             // we compute an actual scale separately for each thumbnail.
             let y1 = Math.round(y);
             let y2 = Math.round(y + thumbnailHeight);
-            let roundedScale = (y2 - y1) / screenHeight;
+            let roundedScale = (y2 - y1) / portholeHeight;
 
             let x1 = contentBox.x2 - thumbnailWidth + slideWidth * thumbnail.slidePosition;
             let x2 = x1 + thumbnailWidth;
@@ -732,9 +749,9 @@ ThumbnailsBox.prototype = {
             // Allocating a scaled actor is funny - x1/y1 correspond to the origin
             // of the actor, but x2/y2 are increased by the *unscaled* size.
             childBox.x1 = x1;
-            childBox.x2 = x1 + screenWidth;
+            childBox.x2 = x1 + portholeWidth;
             childBox.y1 = y1;
-            childBox.y2 = y1 + screenHeight;
+            childBox.y2 = y1 + portholeHeight;
 
             thumbnail.actor.set_scale(roundedScale, roundedScale);
             thumbnail.actor.allocate(childBox, flags);
