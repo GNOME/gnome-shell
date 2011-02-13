@@ -95,7 +95,7 @@ PlaceDeviceInfo.prototype = {
 
     launch: function(param) {
         Gio.app_info_launch_default_for_uri(this._mount.get_root().get_uri(),
-                                            _makeLaunchContex(params));
+                                            _makeLaunchContext(params));
     },
 
     isRemovable: function() {
