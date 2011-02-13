@@ -565,7 +565,8 @@ st_widget_get_theme_node (StWidget *widget)
 
       if (stage == NULL)
         {
-          g_error ("st_widget_get_theme_node called on a widget not in a stage");
+          g_error ("st_widget_get_theme_node called on the widget %s which is not in the stage.",
+                    st_describe_actor (CLUTTER_ACTOR (widget)));
         }
 
       if (parent_node == NULL)
