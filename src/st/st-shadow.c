@@ -39,6 +39,7 @@
  * @yoffset: vertical offset
  * @blur: blur radius
  * @spread: spread radius
+ * @inset: whether the shadow should be inset
  *
  * Creates a new #StShadow
  *
@@ -49,7 +50,8 @@ st_shadow_new (ClutterColor *color,
                gdouble       xoffset,
                gdouble       yoffset,
                gdouble       blur,
-               gdouble       spread)
+               gdouble       spread,
+               gboolean      inset)
 {
   StShadow *shadow;
 
@@ -60,6 +62,7 @@ st_shadow_new (ClutterColor *color,
   shadow->yoffset   = yoffset;
   shadow->blur      = blur;
   shadow->spread    = spread;
+  shadow->inset     = inset;
   shadow->ref_count = 1;
 
   return shadow;
@@ -129,7 +132,8 @@ st_shadow_equal (StShadow *shadow,
           shadow->xoffset == other->xoffset &&
           shadow->yoffset == other->yoffset &&
           shadow->blur == other->blur &&
-          shadow->spread == other->spread);
+          shadow->spread == other->spread &&
+          shadow->inset == other->inset);
 }
 
 /**
@@ -149,6 +153,17 @@ st_shadow_get_box (StShadow              *shadow,
   g_return_if_fail (shadow != NULL);
   g_return_if_fail (actor_box != NULL);
   g_return_if_fail (shadow_box != NULL);
+
+  /* Inset shadows are drawn below the border, so returning
+   * the original box is not actually correct; still, it's
+   * good enough for the purpose of determing additional space
+   * required outside the actor box.
+   */
+  if (shadow->inset)
+    {
+      *shadow_box = *actor_box;
+      return;
+    }
 
   shadow_box->x1 = actor_box->x1 + shadow->xoffset
                    - shadow->blur - shadow->spread;

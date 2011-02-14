@@ -291,6 +291,13 @@ st_icon_style_changed (StWidget *widget)
     }
   priv->shadow_spec = st_theme_node_get_shadow (theme_node, "icon-shadow");
 
+  if (priv->shadow_spec && priv->shadow_spec->inset)
+    {
+      g_warning ("The icon-shadow property does not support inset shadows");
+      st_shadow_unref (priv->shadow_spec);
+      priv->shadow_spec = NULL;
+    }
+
   priv->theme_icon_size = (int)(0.5 + st_theme_node_get_length (theme_node, "icon-size"));
   st_icon_update_icon_size (self);
   st_icon_update (self);

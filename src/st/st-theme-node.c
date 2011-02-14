@@ -2649,9 +2649,9 @@ parse_shadow_property (StThemeNode       *node,
                        gdouble           *xoffset,
                        gdouble           *yoffset,
                        gdouble           *blur,
-                       gdouble           *spread)
+                       gdouble           *spread,
+                       gboolean          *inset)
 {
-  /* Set value for width/color/blur in any order */
   GetFromTermResult result;
   CRTerm *term;
   int n_offsets = 0;
@@ -2662,7 +2662,17 @@ parse_shadow_property (StThemeNode       *node,
   *yoffset = 0.;
   *blur = 0.;
   *spread = 0.;
+  *inset = FALSE;
 
+  /* The CSS3 draft of the box-shadow property[0] is a lot stricter
+   * regarding the order of terms:
+   * If the 'inset' keyword is specified, it has to be first or last,
+   * and the color may not be mixed with the lengths; while we parse
+   * length values in the correct order, we allow for arbitrary
+   * placement of the color and 'inset' keyword.
+   *
+   * [0] http://www.w3.org/TR/css3-background/#box-shadow
+   */
   for (term = decl->value; term; term = term->next)
     {
       if (term->type == TERM_NUMBER)
@@ -2706,6 +2716,12 @@ parse_shadow_property (StThemeNode       *node,
                 }
               continue;
             }
+        }
+      else if (term->type == TERM_IDENT &&
+               strcmp (term->content.str->stryng->str, "inset") == 0)
+        {
+          *inset = TRUE;
+          continue;
         }
 
       result = get_color_from_term (node, term, color);
@@ -2766,6 +2782,7 @@ st_theme_node_lookup_shadow (StThemeNode  *node,
   gdouble yoffset = 0.;
   gdouble blur = 0.;
   gdouble spread = 0.;
+  gboolean inset = FALSE;
 
   int i;
 
@@ -2783,10 +2800,14 @@ st_theme_node_lookup_shadow (StThemeNode  *node,
                                                             &xoffset,
                                                             &yoffset,
                                                             &blur,
-                                                            &spread);
+                                                            &spread,
+                                                            &inset);
           if (result == VALUE_FOUND)
             {
-              *shadow = st_shadow_new (&color, xoffset, yoffset, blur, spread);
+              *shadow = st_shadow_new (&color,
+                                       xoffset, yoffset,
+                                       blur, spread,
+                                       inset);
               return TRUE;
             }
           else if (result == VALUE_INHERIT)
@@ -2865,6 +2886,14 @@ st_theme_node_get_box_shadow (StThemeNode *node)
                                    FALSE,
                                    &shadow))
     {
+      if (shadow->inset)
+        {
+          g_warning ("Inset shadows are not implemented for the box-shadow "
+                     "property");
+          st_shadow_unref (shadow);
+          shadow = NULL;
+        }
+
       node->box_shadow = shadow;
 
       return node->box_shadow;
@@ -2898,6 +2927,14 @@ st_theme_node_get_background_image_shadow (StThemeNode *node)
                                    FALSE,
                                    &shadow))
     {
+      if (shadow->inset)
+        {
+          g_warning ("The -st-background-image-shadow property does not "
+                     "support inset shadows");
+          st_shadow_unref (shadow);
+          shadow = NULL;
+        }
+
       node->background_image_shadow = shadow;
 
       return node->background_image_shadow;
@@ -2936,6 +2973,13 @@ st_theme_node_get_text_shadow (StThemeNode *node)
           if (result)
             st_shadow_ref (result);
         }
+    }
+
+  if (result && result->inset)
+    {
+      g_warning ("The text-shadow property does not support inset shadows");
+      st_shadow_unref (result);
+      result = NULL;
     }
 
   node->text_shadow = result;

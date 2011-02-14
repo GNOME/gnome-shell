@@ -48,6 +48,7 @@ struct _StShadow {
     gdouble      yoffset;
     gdouble      blur;
     gdouble      spread;
+    gboolean     inset;
     volatile int ref_count;
 };
 
@@ -57,7 +58,8 @@ StShadow *st_shadow_new      (ClutterColor   *color,
                               gdouble         xoffset,
                               gdouble         yoffset,
                               gdouble         blur,
-                              gdouble         spread);
+                              gdouble         spread,
+                              gboolean        inset);
 StShadow *st_shadow_ref      (StShadow       *shadow);
 void      st_shadow_unref    (StShadow       *shadow);
 
