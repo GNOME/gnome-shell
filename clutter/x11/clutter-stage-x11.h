@@ -48,33 +48,34 @@ typedef enum
 
 struct _ClutterStageX11
 {
-  ClutterGroup parent_instance;
+  GObject parent_instance;
 
-  guint        is_foreign_xwin      : 1;
-  guint        fullscreening        : 1;
-  guint        is_cursor_visible    : 1;
-  guint        viewport_initialized : 1;
-  guint        accept_focus         : 1;
+  Window xwin;
+  gint xwin_width;
+  gint xwin_height; /* FIXME target_width / height */
 
-  Window       xwin;
-  gint         xwin_width;
-  gint         xwin_height; /* FIXME target_width / height */
-  gchar       *title;
+  gchar *title;
 
-  guint        clipped_redraws_cool_off;
+  guint clipped_redraws_cool_off;
 
-  ClutterStageState  state;
+  ClutterStageState state;
 
   ClutterStageX11State wm_state;
 
   /* backpointers */
   ClutterStage *wrapper;
   ClutterBackendX11 *backend;
+
+  guint is_foreign_xwin      : 1;
+  guint fullscreening        : 1;
+  guint is_cursor_visible    : 1;
+  guint viewport_initialized : 1;
+  guint accept_focus         : 1;
 };
 
 struct _ClutterStageX11Class
 {
-  ClutterGroupClass parent_class;
+  GObjectClass parent_class;
 };
 
 GType _clutter_stage_x11_get_type (void) G_GNUC_CONST;
