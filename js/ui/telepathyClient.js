@@ -557,21 +557,23 @@ Source.prototype = {
     },
 
     setPresence: function(presence, message) {
-        let msg, shouldNotify;
+        let msg, shouldNotify, title;
+
+        title = GLib.markup_escape_text(this.title, -1);
 
         if (presence == Telepathy.ConnectionPresenceType.AVAILABLE) {
-            msg = _("%s is online.").format(this.title);
+            msg = _("%s is online.").format(title);
             shouldNotify = (this._presence == Telepathy.ConnectionPresenceType.OFFLINE);
         } else if (presence == Telepathy.ConnectionPresenceType.OFFLINE ||
                    presence == Telepathy.ConnectionPresenceType.EXTENDED_AWAY) {
             presence = Telepathy.ConnectionPresenceType.OFFLINE;
-            msg = _("%s is offline.").format(this.title);
+            msg = _("%s is offline.").format(title);
             shouldNotify = (this._presence != Telepathy.ConnectionPresenceType.OFFLINE);
         } else if (presence == Telepathy.ConnectionPresenceType.AWAY) {
-            msg = _("%s is away.").format(this.title);
+            msg = _("%s is away.").format(title);
             shouldNotify = false;
         } else if (presence == Telepathy.ConnectionPresenceType.BUSY) {
-            msg = _("%s is busy.").format(this.title);
+            msg = _("%s is busy.").format(title);
             shouldNotify = false;
         } else
             return;
@@ -676,7 +678,7 @@ Notification.prototype = {
 
     appendPresence: function(text, asTitle) {
         if (asTitle)
-            this.update(text, null, { customContent: true });
+            this.update(text, null, { customContent: true, titleMarkup: true });
         else
             this.update(this.source.title, null, { customContent: true });
         let label = this.addBody(text, true);
