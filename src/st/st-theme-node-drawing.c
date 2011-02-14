@@ -714,7 +714,7 @@ paint_background_image_shadow_to_cairo_context (StThemeNode     *node,
  * cases (gradients, background images, etc).
  */
 static CoglHandle
-st_theme_node_render_background_with_border (StThemeNode *node)
+st_theme_node_prerender_background (StThemeNode *node)
 {
   StBorderImage *border_image;
   CoglHandle texture;
@@ -1171,7 +1171,7 @@ st_theme_node_render_resources (StThemeNode   *node,
    */
   if ((node->background_gradient_type != ST_GRADIENT_NONE)
       || (background_image && (has_border || has_border_radius)))
-    node->prerendered_texture = st_theme_node_render_background_with_border (node);
+    node->prerendered_texture = st_theme_node_prerender_background (node);
 
   if (node->prerendered_texture)
     node->prerendered_material = _st_create_texture_material (node->prerendered_texture);
