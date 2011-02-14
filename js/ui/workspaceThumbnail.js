@@ -328,6 +328,9 @@ WorkspaceThumbnail.prototype = {
     },
 
     _activate : function (clone, time) {
+        if (this.state > ThumbnailState.NORMAL)
+            return;
+
         // a click on the already current workspace should go back to the main view
         if (this.metaWorkspace == global.screen.get_active_workspace())
             Main.overview.hide();
@@ -337,6 +340,9 @@ WorkspaceThumbnail.prototype = {
 
     // Draggable target interface
     handleDragOver : function(source, actor, x, y, time) {
+        if (this.state > ThumbnailState.NORMAL)
+            return DND.DragMotionResult.CONTINUE;
+
         if (source.realWindow)
             return DND.DragMotionResult.MOVE_DROP;
         if (source.shellWorkspaceLaunch)
@@ -346,6 +352,9 @@ WorkspaceThumbnail.prototype = {
     },
 
     acceptDrop : function(source, actor, x, y, time) {
+        if (this.state > ThumbnailState.NORMAL)
+            return false;
+
         if (source.realWindow) {
             let win = source.realWindow;
             if (this._isMyWindow(win))
