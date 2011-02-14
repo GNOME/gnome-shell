@@ -11,7 +11,6 @@ const Signals = imports.signals;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
-const Calendar = imports.ui.calendar;
 const Config = imports.misc.config;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
@@ -898,65 +897,5 @@ Panel.prototype = {
         if (this._hotCornerActivationTime == 0 || Date.now() / 1000 - this._hotCornerActivationTime > HOT_CORNER_ACTIVATION_TIMEOUT)
             Main.overview.toggle();
         this._hotCornerActivationTime = 0;
-    }
-};
-
-function CalendarPopup() {
-    this._init();
-}
-
-CalendarPopup.prototype = {
-    _init: function() {
-        let panelActor = Main.panel.actor;
-        let alignConstraint = new Clutter.AlignConstraint({ source: panelActor,
-                                                            align_axis: Clutter.AlignAxis.X_AXIS,
-                                                            factor: 0.5 });
-
-        this.actor = new St.Bin({ name: 'calendarPopup' });
-
-        this.calendar = new Calendar.Calendar();
-        this.actor.set_child(this.calendar.actor);
-
-        this.isOpen = false;
-
-        Main.chrome.addActor(this.actor, { visibleInOverview: true,
-                                           affectsStruts: false });
-        this.actor.y = (panelActor.y + panelActor.height - this.actor.height);
-        this.actor.add_constraint(alignConstraint);
-    },
-
-    show: function() {
-        let panelActor = Main.panel.actor;
-
-        if (this.isOpen)
-            return;
-        this.isOpen = true;
-
-        // Reset the calendar to today's date
-        this.calendar.setDate(new Date());
-
-        this.actor.lower(panelActor);
-        this.actor.show();
-        Tweener.addTween(this.actor,
-                         { y: panelActor.y + panelActor.height,
-                           time: 0.2,
-                           transition: 'easeOutQuad'
-                         });
-    },
-
-    hide: function() {
-        let panelActor = Main.panel.actor;
-
-        if (!this.isOpen)
-            return;
-        this.isOpen = false;
-
-        Tweener.addTween(this.actor,
-                         { y: panelActor.y + panelActor.height - this.actor.height,
-                           time: 0.2,
-                           transition: 'easeOutQuad',
-                           onComplete: function() { this.actor.hide(); },
-                           onCompleteScope: this
-                         });
     }
 };
