@@ -12,6 +12,7 @@ compile
 *.lo
 *.la
 *.gcov
+README
 stamp-enum-types
 stamp-marshal
 /ChangeLog*

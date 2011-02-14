@@ -110,11 +110,32 @@ LT_INIT([disable-static])
 # Checks for header files.
 AC_HEADER_STDC
 
+# required versions for dependencies
+m4_define([glib_req_version],           [2.26.0])
+m4_define([json_glib_req_version],      [0.12.0])
+m4_define([atk_req_version],            [1.17])
+m4_define([cairo_req_version],          [1.10])
+m4_define([pango_req_version],          [1.20])
+m4_define([gi_req_version],             [0.9.5])
+m4_define([gdk_pixbuf_req_version],     [2.0])
+m4_define([uprof_req_version],          [0.3])
+m4_define([gtk_doc_req_version],        [1.13])
+
+AC_SUBST([GLIB_REQ_VERSION], [glib_req_version])
+AC_SUBST([JSON_GLIB_REQ_VERSION], [json_glib_req_version])
+AC_SUBST([ATK_REQ_VERSION], [atk_req_version])
+AC_SUBST([CAIRO_REQ_VERSION], [cairo_req_version])
+AC_SUBST([PANGO_REQ_VERSION], [pango_req_version])
+AC_SUBST([GI_REQ_VERSION], [gi_req_version])
+AC_SUBST([GDK_PIXBUF_REQ_VERSION], [gdk_pixbuf_req_version])
+AC_SUBST([UPROF_REQ_VERSION], [uprof_req_version])
+AC_SUBST([GTK_DOC_REQ_VERSION], [gtk_doc_req_version])
+
 # Checks for typedefs, structures, and compiler characteristics.
-AM_PATH_GLIB_2_0([2.26.0],
-                 [have_glib=yes], [have_glib=no],
+AM_PATH_GLIB_2_0([glib_req_version],
+                 [],
+                 [AC_MSG_ERROR([glib-2.0 is required])],
                  [gobject gthread gmodule-no-export])
-AS_IF([test "x$have_glib" = "xno"], AC_MSG_ERROR([glib-2.0 is required]))
 
 # Check for -Bsymbolic-functions to avoid intra-library PLT jumps
 AC_ARG_ENABLE([Bsymbolic],
@@ -137,8 +158,7 @@ AC_ARG_ENABLE([Bsymbolic],
                 LDFLAGS="${saved_LDFLAGS}"
               ])
 
-AS_IF([test "x$enable_Bsymbolic" = "xyes"],
-      [CLUTTER_LINK_FLAGS=-Wl[,]-Bsymbolic-functions])
+AS_IF([test "x$enable_Bsymbolic" = "xyes"], [CLUTTER_LINK_FLAGS=-Wl[,]-Bsymbolic-functions])
 AC_SUBST(CLUTTER_LINK_FLAGS)
 
 dnl ========================================================================
@@ -165,6 +185,9 @@ AC_ARG_WITH([gles],
             [AC_HELP_STRING([--with-gles=@<:@1.1/2.0@:>@],
                             [Select Clutter GLES version (for EGL backends)])],
             [glesversion=$with_gles])
+
+# base dependencies for core
+CLUTTER_BASE_PC_FILES="cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
 
 # backend specific pkg-config files
 BACKEND_PC_FILES=""
@@ -748,7 +771,7 @@ AS_CASE([$COGL_IMAGE_BACKEND],
         [gdk-pixbuf],
         [
           AC_DEFINE([USE_GDKPIXBUF], 1, [Use GdkPixbuf for loading image data])
-          IMAGE_PC_FILES="gdk-pixbuf-2.0"
+          IMAGE_PC_FILES="gdk-pixbuf-2.0 >= $GDK_PIXBUF_REQ_VERSION"
         ],
 
         [internal],
@@ -823,7 +846,7 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
                 AC_DEFINE(HAVE_XFIXES, [1], [Define to 1 if we have the XFIXES X extension])
 
                 X11_LIBS="$X11_LIBS -lXfixes"
-                X11_PC_FILES="$X11_PC_FILES xfixes"
+                X11_PC_FILES="$X11_PC_FILES xfixes >= 3"
 
                 AC_MSG_RESULT([found])
               ],
@@ -853,7 +876,7 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
                 AC_DEFINE(HAVE_XCOMPOSITE, [1], [Define to 1 if we have the XCOMPOSITE X extension])
 
                 X11_LIBS="$X11_LIBS -lXcomposite"
-                X11_PC_FILES="$X11_PC_FILES xcomposite"
+                X11_PC_FILES="$X11_PC_FILES xcomposite >= 0.4"
 
                 AC_MSG_RESULT([found])
               ],
@@ -1098,7 +1121,7 @@ AS_CASE([$enable_maintainer_flags],
 AC_SUBST(MAINTAINER_CFLAGS)
 
 dnl === Dependencies, compiler flags and linker libraries =====================
-CLUTTER_REQUIRES="cairo-gobject >= 1.10 atk >= 1.7 pangocairo >= 1.20 json-glib-1.0 >= 0.12 $IMAGE_PC_FILES $BACKEND_PC_FILES"
+CLUTTER_REQUIRES="$CLUTTER_BASE_PC_FILES $IMAGE_PC_FILES $BACKEND_PC_FILES"
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
 AC_SUBST(CLUTTER_REQUIRES)
 
@@ -1109,11 +1132,11 @@ AC_SUBST(CLUTTER_LIBS)
 
 dnl === GObject-Introspection check ===========================================
 
-GOBJECT_INTROSPECTION_CHECK([0.9.5])
+GOBJECT_INTROSPECTION_CHECK([gi_req_version])
 
 dnl === GTK Doc check =========================================================
 
-GTK_DOC_CHECK([1.13], [--flavour no-tmpl])
+GTK_DOC_CHECK([gtk_doc_req_version], [--flavour no-tmpl])
 
 # we don't want to build the documentation from a Git clone unless we
 # explicitly tell configure to do so; this allows avoiding to recurse into
@@ -1129,9 +1152,11 @@ AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes" || test ! -f "
 CAIRO_PREFIX="`$PKG_CONFIG --variable=prefix cairo`"
 GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
 PANGO_PREFIX="`$PKG_CONFIG --variable=prefix pango`"
+ATK_PREFIX="`$PKG_CONFIG --variable=prefix atk`"
 AC_SUBST(CAIRO_PREFIX)
 AC_SUBST(GLIB_PREFIX)
 AC_SUBST(PANGO_PREFIX)
+AC_SUBST(ATK_PREFIX)
 
 dnl === Manual ================================================================
 
@@ -1169,8 +1194,8 @@ AM_GNU_GETTEXT([external])
 
 GETTEXT_PACKAGE="clutter-1.0"
 AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,
-                   "$GETTEXT_PACKAGE",
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
+                   ["$GETTEXT_PACKAGE"],
                    [The prefix for our gettext translation domains.])
 AS_ALL_LINGUAS
 
@@ -1178,6 +1203,8 @@ dnl ===========================================================================
 
 AC_CONFIG_FILES([
 	Makefile
+
+        README
 
 	build/Makefile
 	build/autotools/Makefile
