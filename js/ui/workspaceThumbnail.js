@@ -317,6 +317,11 @@ WorkspaceThumbnail.prototype = {
                       }));
         this._contents.add_actor(clone.actor);
 
+        if (this._windows.length == 0)
+            clone.setStackAbove(this._background);
+        else
+            clone.setStackAbove(this._windows[this._windows.length - 1].actor);
+
         this._windows.push(clone);
 
         return clone;
