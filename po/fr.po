@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: clutter 1.3.14\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-02-07 15:50+0000\n"
+"POT-Creation-Date: 2011-02-14 16:07+0000\n"
 "PO-Revision-Date: 2010-10-05 09:02+0100\n"
 "Last-Translator: Damien Lespiau <damien.lespiau@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -418,7 +418,7 @@ msgid "Whether the meta is enabled"
 msgstr "Si le méta est activé"
 
 #: clutter/clutter-align-constraint.c:252
-#: clutter/clutter-bind-constraint.c:316 clutter/clutter-clone.c:322
+#: clutter/clutter-bind-constraint.c:316 clutter/clutter-clone.c:326
 msgid "Source"
 msgstr "Source"
 
@@ -762,7 +762,7 @@ msgid "The layout manager used by the box"
 msgstr ""
 
 #: clutter/clutter-box.c:514 clutter/clutter-rectangle.c:258
-#: clutter/clutter-stage.c:1317
+#: clutter/clutter-stage.c:1303
 msgid "Color"
 msgstr "Couleur"
 
@@ -919,7 +919,7 @@ msgstr ""
 msgid "Whether the clickable has a grab"
 msgstr ""
 
-#: clutter/clutter-clone.c:323
+#: clutter/clutter-clone.c:327
 msgid "Specifies the actor to be cloned"
 msgstr ""
 
@@ -1142,59 +1142,59 @@ msgstr "Gestionnaire"
 msgid "The manager that created this data"
 msgstr "Le gestionnaire qui a créé ces données"
 
-#: clutter/clutter-main.c:753
+#: clutter/clutter-main.c:761
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: clutter/clutter-main.c:1557
+#: clutter/clutter-main.c:1565
 msgid "Show frames per second"
 msgstr ""
 
-#: clutter/clutter-main.c:1559
+#: clutter/clutter-main.c:1567
 msgid "Default frame rate"
 msgstr ""
 
-#: clutter/clutter-main.c:1561
+#: clutter/clutter-main.c:1569
 msgid "Make all warnings fatal"
 msgstr ""
 
-#: clutter/clutter-main.c:1564
+#: clutter/clutter-main.c:1572
 msgid "Direction for the text"
 msgstr ""
 
-#: clutter/clutter-main.c:1567
+#: clutter/clutter-main.c:1575
 msgid "Disable mipmapping on text"
 msgstr ""
 
-#: clutter/clutter-main.c:1570
+#: clutter/clutter-main.c:1578
 msgid "Use 'fuzzy' picking"
 msgstr ""
 
-#: clutter/clutter-main.c:1573
+#: clutter/clutter-main.c:1581
 msgid "Clutter debugging flags to set"
 msgstr ""
 
-#: clutter/clutter-main.c:1575
+#: clutter/clutter-main.c:1583
 msgid "Clutter debugging flags to unset"
 msgstr ""
 
-#: clutter/clutter-main.c:1579
+#: clutter/clutter-main.c:1587
 msgid "Clutter profiling flags to set"
 msgstr ""
 
-#: clutter/clutter-main.c:1581
+#: clutter/clutter-main.c:1589
 msgid "Clutter profiling flags to unset"
 msgstr ""
 
-#: clutter/clutter-main.c:1584
+#: clutter/clutter-main.c:1592
 msgid "Enable accessibility"
 msgstr ""
 
-#: clutter/clutter-main.c:1771
+#: clutter/clutter-main.c:1779
 msgid "Clutter Options"
 msgstr ""
 
-#: clutter/clutter-main.c:1772
+#: clutter/clutter-main.c:1780
 msgid "Show Clutter Options"
 msgstr ""
 
@@ -1359,103 +1359,103 @@ msgstr ""
 msgid "The type of shader used"
 msgstr ""
 
-#: clutter/clutter-stage.c:1259
+#: clutter/clutter-stage.c:1245
 msgid "Fullscreen Set"
 msgstr ""
 
-#: clutter/clutter-stage.c:1260
+#: clutter/clutter-stage.c:1246
 msgid "Whether the main stage is fullscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1276
+#: clutter/clutter-stage.c:1262
 msgid "Offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1277
+#: clutter/clutter-stage.c:1263
 msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1289 clutter/clutter-text.c:2667
+#: clutter/clutter-stage.c:1275 clutter/clutter-text.c:2667
 msgid "Cursor Visible"
 msgstr ""
 
-#: clutter/clutter-stage.c:1290
+#: clutter/clutter-stage.c:1276
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr ""
 
-#: clutter/clutter-stage.c:1304
+#: clutter/clutter-stage.c:1290
 msgid "User Resizable"
 msgstr ""
 
-#: clutter/clutter-stage.c:1305
+#: clutter/clutter-stage.c:1291
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr ""
 
-#: clutter/clutter-stage.c:1318
+#: clutter/clutter-stage.c:1304
 msgid "The color of the stage"
 msgstr ""
 
-#: clutter/clutter-stage.c:1332
+#: clutter/clutter-stage.c:1318
 msgid "Perspective"
 msgstr ""
 
-#: clutter/clutter-stage.c:1333
+#: clutter/clutter-stage.c:1319
 msgid "Perspective projection parameters"
 msgstr ""
 
-#: clutter/clutter-stage.c:1348
+#: clutter/clutter-stage.c:1334
 msgid "Title"
 msgstr ""
 
-#: clutter/clutter-stage.c:1349
+#: clutter/clutter-stage.c:1335
 msgid "Stage Title"
 msgstr "Titre de la scène"
 
-#: clutter/clutter-stage.c:1364
+#: clutter/clutter-stage.c:1350
 msgid "Use Fog"
 msgstr "Utilise le brouillard"
 
-#: clutter/clutter-stage.c:1365
+#: clutter/clutter-stage.c:1351
 msgid "Whether to enable depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1379
+#: clutter/clutter-stage.c:1365
 msgid "Fog"
 msgstr "Brouillard"
 
-#: clutter/clutter-stage.c:1380
+#: clutter/clutter-stage.c:1366
 msgid "Settings for the depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1396
+#: clutter/clutter-stage.c:1382
 msgid "Use Alpha"
 msgstr ""
 
-#: clutter/clutter-stage.c:1397
+#: clutter/clutter-stage.c:1383
 msgid "Whether to honour the alpha component of the stage color"
 msgstr ""
 
-#: clutter/clutter-stage.c:1413
+#: clutter/clutter-stage.c:1399
 msgid "Key Focus"
 msgstr ""
 
-#: clutter/clutter-stage.c:1414
+#: clutter/clutter-stage.c:1400
 msgid "The currently key focused actor"
 msgstr ""
 
-#: clutter/clutter-stage.c:1430
+#: clutter/clutter-stage.c:1416
 msgid "No Clear Hint"
 msgstr ""
 
-#: clutter/clutter-stage.c:1431
+#: clutter/clutter-stage.c:1417
 msgid "Whether the stage should clear its contents"
 msgstr ""
 
-#: clutter/clutter-stage.c:1444
+#: clutter/clutter-stage.c:1430
 msgid "Accept Focus"
 msgstr ""
 
-#: clutter/clutter-stage.c:1445
+#: clutter/clutter-stage.c:1431
 #, fuzzy
 msgid "Whether the stage should accept focus on show"
 msgstr "Si le texte doit être affiché en une seule ligne ou non"
@@ -1786,19 +1786,19 @@ msgstr ""
 msgid "VBlank method to be used (none, dri or glx)"
 msgstr ""
 
-#: clutter/x11/clutter-backend-x11.c:473
+#: clutter/x11/clutter-backend-x11.c:482
 msgid "X display to use"
 msgstr "Affichage X à utiliser"
 
-#: clutter/x11/clutter-backend-x11.c:479
+#: clutter/x11/clutter-backend-x11.c:488
 msgid "X screen to use"
 msgstr "Écran X à utiliser"
 
-#: clutter/x11/clutter-backend-x11.c:484
+#: clutter/x11/clutter-backend-x11.c:493
 msgid "Make X calls synchronous"
 msgstr "Rendre les appels X synchrones"
 
-#: clutter/x11/clutter-backend-x11.c:491
+#: clutter/x11/clutter-backend-x11.c:500
 msgid "Enable XInput support"
 msgstr "Activer le support XInput"
 

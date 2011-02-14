@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.clutter-project.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2011-02-07 15:50+0000\n"
+"POT-Creation-Date: 2011-02-14 16:07+0000\n"
 "PO-Revision-Date: 2010-09-30 15:09+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -418,7 +418,7 @@ msgid "Whether the meta is enabled"
 msgstr ""
 
 #: clutter/clutter-align-constraint.c:252
-#: clutter/clutter-bind-constraint.c:316 clutter/clutter-clone.c:322
+#: clutter/clutter-bind-constraint.c:316 clutter/clutter-clone.c:326
 msgid "Source"
 msgstr "来源"
 
@@ -761,7 +761,7 @@ msgid "The layout manager used by the box"
 msgstr ""
 
 #: clutter/clutter-box.c:514 clutter/clutter-rectangle.c:258
-#: clutter/clutter-stage.c:1317
+#: clutter/clutter-stage.c:1303
 msgid "Color"
 msgstr "色彩"
 
@@ -914,7 +914,7 @@ msgstr "保持时"
 msgid "Whether the clickable has a grab"
 msgstr ""
 
-#: clutter/clutter-clone.c:323
+#: clutter/clutter-clone.c:327
 msgid "Specifies the actor to be cloned"
 msgstr ""
 
@@ -1137,59 +1137,59 @@ msgstr "管理器"
 msgid "The manager that created this data"
 msgstr "创建此数据的管理器"
 
-#: clutter/clutter-main.c:753
+#: clutter/clutter-main.c:761
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: clutter/clutter-main.c:1557
+#: clutter/clutter-main.c:1565
 msgid "Show frames per second"
 msgstr "显示帧速率"
 
-#: clutter/clutter-main.c:1559
+#: clutter/clutter-main.c:1567
 msgid "Default frame rate"
 msgstr "默认帧率"
 
-#: clutter/clutter-main.c:1561
+#: clutter/clutter-main.c:1569
 msgid "Make all warnings fatal"
 msgstr "视所有警告为致命错误"
 
-#: clutter/clutter-main.c:1564
+#: clutter/clutter-main.c:1572
 msgid "Direction for the text"
 msgstr "文本方向"
 
-#: clutter/clutter-main.c:1567
+#: clutter/clutter-main.c:1575
 msgid "Disable mipmapping on text"
 msgstr "在文本上禁用 MIP 映射"
 
-#: clutter/clutter-main.c:1570
+#: clutter/clutter-main.c:1578
 msgid "Use 'fuzzy' picking"
 msgstr "使用模糊选取"
 
-#: clutter/clutter-main.c:1573
+#: clutter/clutter-main.c:1581
 msgid "Clutter debugging flags to set"
 msgstr "要设置的 Clutter 调试标志"
 
-#: clutter/clutter-main.c:1575
+#: clutter/clutter-main.c:1583
 msgid "Clutter debugging flags to unset"
 msgstr "要取消设置的 Clutter 调试标志"
 
-#: clutter/clutter-main.c:1579
+#: clutter/clutter-main.c:1587
 msgid "Clutter profiling flags to set"
 msgstr "要设置的 Clutter 性能分析标志"
 
-#: clutter/clutter-main.c:1581
+#: clutter/clutter-main.c:1589
 msgid "Clutter profiling flags to unset"
 msgstr "要取消设置的 Clutter 性能分析标志"
 
-#: clutter/clutter-main.c:1584
+#: clutter/clutter-main.c:1592
 msgid "Enable accessibility"
 msgstr "启用辅助功能"
 
-#: clutter/clutter-main.c:1771
+#: clutter/clutter-main.c:1779
 msgid "Clutter Options"
 msgstr "Clutter 选项"
 
-#: clutter/clutter-main.c:1772
+#: clutter/clutter-main.c:1780
 msgid "Show Clutter Options"
 msgstr "显示 Clutter 选项"
 
@@ -1358,103 +1358,103 @@ msgstr "着色引擎类型"
 msgid "The type of shader used"
 msgstr "使用的着色引擎类型"
 
-#: clutter/clutter-stage.c:1259
+#: clutter/clutter-stage.c:1245
 msgid "Fullscreen Set"
 msgstr ""
 
-#: clutter/clutter-stage.c:1260
+#: clutter/clutter-stage.c:1246
 msgid "Whether the main stage is fullscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1276
+#: clutter/clutter-stage.c:1262
 msgid "Offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1277
+#: clutter/clutter-stage.c:1263
 msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
 
-#: clutter/clutter-stage.c:1289 clutter/clutter-text.c:2667
+#: clutter/clutter-stage.c:1275 clutter/clutter-text.c:2667
 msgid "Cursor Visible"
 msgstr ""
 
-#: clutter/clutter-stage.c:1290
+#: clutter/clutter-stage.c:1276
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr ""
 
-#: clutter/clutter-stage.c:1304
+#: clutter/clutter-stage.c:1290
 msgid "User Resizable"
 msgstr "用户可改变大小"
 
-#: clutter/clutter-stage.c:1305
+#: clutter/clutter-stage.c:1291
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr ""
 
-#: clutter/clutter-stage.c:1318
+#: clutter/clutter-stage.c:1304
 msgid "The color of the stage"
 msgstr ""
 
-#: clutter/clutter-stage.c:1332
+#: clutter/clutter-stage.c:1318
 msgid "Perspective"
 msgstr ""
 
-#: clutter/clutter-stage.c:1333
+#: clutter/clutter-stage.c:1319
 msgid "Perspective projection parameters"
 msgstr ""
 
-#: clutter/clutter-stage.c:1348
+#: clutter/clutter-stage.c:1334
 msgid "Title"
 msgstr "标题"
 
-#: clutter/clutter-stage.c:1349
+#: clutter/clutter-stage.c:1335
 msgid "Stage Title"
 msgstr ""
 
-#: clutter/clutter-stage.c:1364
+#: clutter/clutter-stage.c:1350
 msgid "Use Fog"
 msgstr ""
 
-#: clutter/clutter-stage.c:1365
+#: clutter/clutter-stage.c:1351
 msgid "Whether to enable depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1379
+#: clutter/clutter-stage.c:1365
 msgid "Fog"
 msgstr ""
 
-#: clutter/clutter-stage.c:1380
+#: clutter/clutter-stage.c:1366
 msgid "Settings for the depth cueing"
 msgstr ""
 
-#: clutter/clutter-stage.c:1396
+#: clutter/clutter-stage.c:1382
 msgid "Use Alpha"
 msgstr "使用 Alpha"
 
-#: clutter/clutter-stage.c:1397
+#: clutter/clutter-stage.c:1383
 msgid "Whether to honour the alpha component of the stage color"
 msgstr ""
 
-#: clutter/clutter-stage.c:1413
+#: clutter/clutter-stage.c:1399
 msgid "Key Focus"
 msgstr ""
 
-#: clutter/clutter-stage.c:1414
+#: clutter/clutter-stage.c:1400
 msgid "The currently key focused actor"
 msgstr ""
 
-#: clutter/clutter-stage.c:1430
+#: clutter/clutter-stage.c:1416
 msgid "No Clear Hint"
 msgstr ""
 
-#: clutter/clutter-stage.c:1431
+#: clutter/clutter-stage.c:1417
 msgid "Whether the stage should clear its contents"
 msgstr ""
 
-#: clutter/clutter-stage.c:1444
+#: clutter/clutter-stage.c:1430
 msgid "Accept Focus"
 msgstr ""
 
-#: clutter/clutter-stage.c:1445
+#: clutter/clutter-stage.c:1431
 #, fuzzy
 msgid "Whether the stage should accept focus on show"
 msgstr "文本是否只应使用一行"
@@ -1780,19 +1780,19 @@ msgstr ""
 msgid "VBlank method to be used (none, dri or glx)"
 msgstr "要使用的 VBlank 方式(none、dir 或 glx)"
 
-#: clutter/x11/clutter-backend-x11.c:473
+#: clutter/x11/clutter-backend-x11.c:482
 msgid "X display to use"
 msgstr "要使用的 X 显示"
 
-#: clutter/x11/clutter-backend-x11.c:479
+#: clutter/x11/clutter-backend-x11.c:488
 msgid "X screen to use"
 msgstr "要使用的 X 屏幕"
 
-#: clutter/x11/clutter-backend-x11.c:484
+#: clutter/x11/clutter-backend-x11.c:493
 msgid "Make X calls synchronous"
 msgstr "使 X 调用同步"
 
-#: clutter/x11/clutter-backend-x11.c:491
+#: clutter/x11/clutter-backend-x11.c:500
 msgid "Enable XInput support"
 msgstr "启用 XInput 支持"
 
