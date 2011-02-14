@@ -48,18 +48,20 @@ struct _ClutterStageGLX
 {
   ClutterStageX11 parent_instance;
 
-  int pending_swaps;
+  gint pending_swaps;
 
   GLXPixmap glxpixmap;
   GLXWindow glxwin;
 
   /* We only enable clipped redraws after 2 frames, since we've seen
    * a lot of drivers can struggle to get going and may output some
-   * junk frames to start with. */
-  unsigned long frame_count;
+   * junk frames to start with.
+   */
+  guint frame_count;
 
-  gboolean initialized_redraw_clip;
   ClutterGeometry bounding_redraw_clip;
+
+  guint initialized_redraw_clip : 1;
 };
 
 struct _ClutterStageGLXClass

@@ -71,10 +71,9 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageGLX,
 static void
 clutter_stage_glx_unrealize (ClutterStageWindow *stage_window)
 {
-  ClutterBackend *backend = clutter_get_default_backend ();
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
+  ClutterBackendX11 *backend_x11 = stage_x11->backend;
 
   /* Note unrealize should free up any backend stage related resources */
   CLUTTER_NOTE (BACKEND, "Unrealizing GLX stage [%p]", stage_glx);
@@ -101,18 +100,16 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
   ClutterBackendX11 *backend_x11;
   ClutterBackendGLX *backend_glx;
-  ClutterBackend *backend;
 
   CLUTTER_NOTE (ACTOR, "Realizing stage '%s' [%p]",
                 G_OBJECT_TYPE_NAME (stage_window),
                 stage_window);
 
-  backend     = clutter_get_default_backend ();
-  backend_glx = CLUTTER_BACKEND_GLX (backend);
-  backend_x11 = CLUTTER_BACKEND_X11 (backend);
-
   if (!_clutter_stage_x11_create_window (stage_x11))
     return FALSE;
+
+  backend_x11 = stage_x11->backend;
+  backend_glx = CLUTTER_BACKEND_GLX (backend_x11);
 
   if (stage_glx->glxwin == None)
     {
@@ -220,14 +217,12 @@ clutter_stage_glx_ignoring_redraw_clips (ClutterStageWindow *stage_window)
  * - when we come to redraw; if the bounding box is smaller than the
  *   stage we scissor the redraw to that box and use
  *   GLX_MESA_copy_sub_buffer to present the redraw to the front
- *   buffer. Some heuristics are used to decide when a clipped redraw
- *   should be promoted into a full stage redraw.
+ *   buffer.
  *
- * Currently we simply check that the bounding box height is < 300
- * pixels.
- *
- * XXX: we don't have any empirical data telling us what a sensible
- * thresholds is!
+ * XXX - In theory, we should have some sort of heuristics to promote
+ * a clipped redraw to a full screen redraw; in reality, it turns out
+ * that promotion is fairly expensive. See the Clutter bug described
+ * at: http://bugzilla.clutter-project.org/show_bug.cgi?id=2136 .
  *
  * TODO - we should use different heuristics depending on whether the
  * framebuffer is on screen and not redirected by a compositor VS
@@ -251,7 +246,6 @@ clutter_stage_glx_ignoring_redraw_clips (ClutterStageWindow *stage_window)
  * By promoting to a full stage redraw we trade off the cost involved
  * in rasterizing the extra pixels vs avoiding to use a blit to
  * present the back buffer.
- *
  */
 static void
 clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
@@ -286,7 +280,8 @@ clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
     }
   else if (stage_glx->bounding_redraw_clip.width > 0)
     {
-      clutter_geometry_union (&stage_glx->bounding_redraw_clip, stage_clip,
+      clutter_geometry_union (&stage_glx->bounding_redraw_clip,
+                              stage_clip,
 			      &stage_glx->bounding_redraw_clip);
     }
 
@@ -299,6 +294,11 @@ clutter_stage_glx_add_redraw_clip (ClutterStageWindow *stage_window,
    * expensive than redrawing the additional 30% to avoid the blit.
    *
    * FIXME: This threshold was plucked out of thin air!
+   *
+   * The threshold has been disabled after verifying that it indeed
+   * made redraws more expensive than intended; see bug reference:
+   *
+   * http://bugzilla.clutter-project.org/show_bug.cgi?id=2136
    */
   if (redraw_area > (stage_area * 0.7f))
     {
