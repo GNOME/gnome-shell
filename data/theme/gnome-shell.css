@@ -265,10 +265,10 @@ StTooltip StLabel {
 }
 
 .workspace-thumbnails-background {
-    border: 1px solid #424242;
+    border: 1px solid rgba(128, 128, 128, 0.4);
     border-right: 0px;
     border-radius: 9px 0px 0px 9px;
-    background: #071524;
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 8px;
 }
 
