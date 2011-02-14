@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
 "POT-Creation-Date: 2011-02-13 21:59+0000\n"
-"PO-Revision-Date: 2011-02-14 19:39+0800\n"
+"PO-Revision-Date: 2011-02-14 19:50+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -78,7 +78,7 @@ msgid "List of desktop file IDs for favorite applications"
 msgstr "收藏夹中的应用程序的 desktop 文件 ID 的列表"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:12
-#, fuzzy, no-c-format
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -96,7 +96,9 @@ msgstr ""
 "的 source 衬垫(pad)；这个衬垫的输出将被写入输出文件中。但是管道还能够处理自己"
 "的输出 - 这将用来通过 shout2send 或者类似方法把输出发送到一个 icecast 服务"
 "器。当管道未被设置或者设置为空值时，默认的管道将被启用。其值当前"
-"为“videorate ! theoraenc ! oggmux”并记录为 Ogg Theora 格式。"
+"为“videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux”并输出"
+"为 VP8 编码的 WebM 格式。这里的 %T 是一个占位符，其实际值是根据您系统的情况"
+"估计的线程数。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
 msgid "Show date in clock"
@@ -222,17 +224,15 @@ msgstr "全天"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:70
-#, fuzzy
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
 #: ../js/ui/calendar.js:77
-#, fuzzy
 msgctxt "event list time"
 msgid "%l:%M %p"
-msgstr "%a %l:%M %p"
+msgstr "%l:%M %p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
