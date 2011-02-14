@@ -3782,7 +3782,7 @@ clutter_text_set_selection_color (ClutterText        *self,
 /**
  * clutter_text_get_selection_color:
  * @self: a #ClutterText
- * @color: return location for a #ClutterColor
+ * @color: (out caller-allocates): return location for a #ClutterColor
  *
  * Retrieves the color of the selection of a #ClutterText actor.
  *
@@ -4126,7 +4126,7 @@ clutter_text_set_color (ClutterText        *self,
 /**
  * clutter_text_get_color:
  * @self: a #ClutterText
- * @color: (out): return location for a #ClutterColor
+ * @color: (out caller-allocates): return location for a #ClutterColor
  *
  * Retrieves the text color as set by clutter_text_set_color().
  *

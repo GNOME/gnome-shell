@@ -356,7 +356,7 @@ clutter_rectangle_new_with_color (const ClutterColor *color)
 /**
  * clutter_rectangle_get_color:
  * @rectangle: a #ClutterRectangle
- * @color: (out): return location for a #ClutterColor
+ * @color: (out caller-allocates): return location for a #ClutterColor
  *
  * Retrieves the color of @rectangle.
  */
@@ -476,7 +476,7 @@ clutter_rectangle_set_border_width (ClutterRectangle *rectangle,
 /**
  * clutter_rectangle_get_border_color:
  * @rectangle: a #ClutterRectangle
- * @color: (out): return location for a #ClutterColor
+ * @color: (out caller-allocates): return location for a #ClutterColor
  *
  * Gets the color of the border used by @rectangle and places
  * it into @color.

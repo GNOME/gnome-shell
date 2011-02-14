@@ -978,7 +978,7 @@ clutter_box_set_color (ClutterBox         *box,
 /**
  * clutter_box_get_color:
  * @box: a #ClutterBox
- * @color: (out): return location for a #ClutterColor
+ * @color: (out caller-allocates): return location for a #ClutterColor
  *
  * Retrieves the background color of @box
  *

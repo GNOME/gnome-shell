@@ -365,7 +365,7 @@ clutter_colorize_effect_set_tint (ClutterColorizeEffect *effect,
 /**
  * clutter_colorize_effect_get_tint:
  * @effect: a #ClutterColorizeEffect
- * @tint: (out): return location for the color used
+ * @tint: (out caller-allocates): return location for the color used
  *
  * Retrieves the tint used by @effect
  *
