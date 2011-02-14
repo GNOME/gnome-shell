@@ -11,6 +11,7 @@ ACLOCAL_AMFLAGS = -I build/autotools ${ACLOCAL_FLAGS}
 
 EXTRA_DIST = \
 	ChangeLog.pre-git-import	\
+	README.in			\
 	$(NULL)
 
 CLEANFILES = $(pcfiles)
