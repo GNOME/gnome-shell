@@ -343,7 +343,7 @@ WorkspaceThumbnail.prototype = {
         if (this.state > ThumbnailState.NORMAL)
             return DND.DragMotionResult.CONTINUE;
 
-        if (source.realWindow)
+        if (source.realWindow && !this._isMyWindow(source.realWindow))
             return DND.DragMotionResult.MOVE_DROP;
         if (source.shellWorkspaceLaunch)
             return DND.DragMotionResult.COPY_DROP;
