@@ -529,8 +529,8 @@ get_color_from_term (StThemeNode  *node,
  *   parent's parent, and so forth. Note that if the property has a
  *   value of 'inherit' it will be inherited even if %FALSE is passed
  *   in for @inherit; this only affects the default behavior for inheritance.
- * @color: location to store the color that was determined.
- *   If the property is not found, the value in this location
+ * @color: (out caller-allocates): location to store the color that was
+ *   determined. If the property is not found, the value in this location
  *   will not be changed.
  *
  * Generically looks up a property containing a single color value. When
@@ -585,7 +585,8 @@ st_theme_node_lookup_color (StThemeNode  *node,
  * st_theme_node_get_color:
  * @node: a #StThemeNode
  * @property_name: The name of the color property
- * @color: location to store the color that was determined.
+ * @color: (out caller-allocates): location to store the color that
+ *   was determined.
  *
  * Generically looks up a property containing a single color value. When
  * specific getters (like st_theme_node_get_background_color()) exist, they
@@ -1479,6 +1480,13 @@ st_theme_node_get_outline_width (StThemeNode  *node)
   return node->outline_width;
 }
 
+/**
+ * st_theme_node_get_outline_color:
+ * @node: a #StThemeNode
+ * @color: (out caller-allocates): location to store the color
+ *
+ * Returns the color of @node's outline.
+ */
 void
 st_theme_node_get_outline_color (StThemeNode  *node,
                                  ClutterColor *color)
@@ -1741,6 +1749,13 @@ _st_theme_node_ensure_background (StThemeNode *node)
     }
 }
 
+/**
+ * st_theme_node_get_background_color:
+ * @node: a #StThemeNode
+ * @color: (out caller-allocates): location to store the color
+ *
+ * Returns @node's background color.
+ */
 void
 st_theme_node_get_background_color (StThemeNode  *node,
                                     ClutterColor *color)
@@ -1762,6 +1777,13 @@ st_theme_node_get_background_image (StThemeNode *node)
   return node->background_image;
 }
 
+/**
+ * st_theme_node_get_foreground_color:
+ * @node: a #StThemeNode
+ * @color: (out caller-allocates): location to store the color
+ *
+ * Returns @node's foreground color.
+ */
 void
 st_theme_node_get_foreground_color (StThemeNode  *node,
                                     ClutterColor *color)
@@ -1805,8 +1827,8 @@ st_theme_node_get_foreground_color (StThemeNode  *node,
  * st_theme_node_get_background_gradient:
  * @node: A #StThemeNode
  * @type: (out): Type of gradient
- * @start: Color at start of gradient
- * @end: Color at end of gradient
+ * @start: (out caller-allocates): Color at start of gradient
+ * @end: (out caller-allocates): Color at end of gradient
  *
  * The @start and @end arguments will only be set if @type is not #ST_GRADIENT_NONE.
  */
@@ -1828,6 +1850,14 @@ st_theme_node_get_background_gradient (StThemeNode    *node,
     }
 }
 
+/**
+ * st_theme_node_get_border_color:
+ * @node: a #StThemeNode
+ * @side: a #StSide
+ * @color: (out caller-allocates): location to store the color
+ *
+ * Returns the color of @node's border on @side
+ */
 void
 st_theme_node_get_border_color (StThemeNode  *node,
                                 StSide        side,

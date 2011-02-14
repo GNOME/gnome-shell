@@ -151,8 +151,7 @@ PopupBaseMenuItem.prototype = {
     _onRepaintDot: function(area) {
         let cr = area.get_context();
         let [width, height] = area.get_surface_size();
-        let color = new Clutter.Color();
-        area.get_theme_node().get_foreground_color(color);
+        let color = area.get_theme_node().get_foreground_color();
 
         cr.setSourceRGBA (
             color.red / 255,
@@ -309,10 +308,8 @@ PopupSeparatorMenuItem.prototype = {
         let [width, height] = area.get_surface_size();
         let margin = themeNode.get_length('-margin-horizontal');
         let gradientHeight = themeNode.get_length('-gradient-height');
-        let startColor = new Clutter.Color();
-        themeNode.get_color('-gradient-start', startColor);
-        let endColor = new Clutter.Color();
-        themeNode.get_color('-gradient-end', endColor);
+        let startColor = themeNode.get_color('-gradient-start');
+        let endColor = themeNode.get_color('-gradient-end');
 
         let gradientWidth = (width - margin * 2);
         let gradientOffset = (height - gradientHeight) / 2;
@@ -373,10 +370,8 @@ PopupSliderMenuItem.prototype = {
 
         let sliderBorderWidth = themeNode.get_length('-slider-border-width');
 
-        let sliderBorderColor = new Clutter.Color();
-        themeNode.get_color('-slider-border-color', sliderBorderColor);
-        let sliderColor = new Clutter.Color();
-        themeNode.get_color('-slider-background-color', sliderColor);
+        let sliderBorderColor = themeNode.get_color('-slider-border-color');
+        let sliderColor = themeNode.get_color('-slider-background-color');
 
         cr.setSourceRGBA (
             sliderColor.red / 255,
@@ -396,8 +391,7 @@ PopupSliderMenuItem.prototype = {
         let handleY = height / 2;
         let handleX = handleRadius + (width - 2 * handleRadius) * this._value;
 
-        let color = new Clutter.Color();
-        themeNode.get_foreground_color(color);
+        let color = themeNode.get_foreground_color();
         cr.setSourceRGBA (
             color.red / 255,
             color.green / 255,

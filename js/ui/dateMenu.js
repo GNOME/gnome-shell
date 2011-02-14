@@ -29,10 +29,9 @@ function _onVertSepRepaint (area)
     let cr = area.get_context();
     let themeNode = area.get_theme_node();
     let [width, height] = area.get_surface_size();
-    let stippleColor = new Clutter.Color();
+    let stippleColor = themeNode.get_color('-stipple-color');
     let stippleWidth = themeNode.get_length('-stipple-width');
     let x = Math.floor(width/2) + 0.5;
-    themeNode.lookup_color('-stipple-color', false, stippleColor);
     cr.moveTo(x, 0);
     cr.lineTo(x, height);
     Clutter.cairo_set_source_color(cr, stippleColor);

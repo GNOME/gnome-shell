@@ -189,10 +189,8 @@ BoxPointer.prototype = {
         let halfBorder = borderWidth / 2;
         let halfBase = Math.floor(base/2);
 
-        let borderColor = new Clutter.Color();
-        themeNode.get_color('-arrow-border-color', borderColor);
-        let backgroundColor = new Clutter.Color();
-        themeNode.get_color('-arrow-background-color', backgroundColor);
+        let borderColor = themeNode.get_color('-arrow-border-color');
+        let backgroundColor = themeNode.get_color('-arrow-background-color');
 
         let [width, height] = area.get_surface_size();
         let [boxWidth, boxHeight] = [width, height];

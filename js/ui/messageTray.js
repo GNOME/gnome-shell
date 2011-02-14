@@ -89,8 +89,7 @@ URLHighlighter.prototype = {
         this.actor = new St.Label({ reactive: true, style_class: 'url-highlighter' });
         this._linkColor = '#ccccff';
         this.actor.connect('style-changed', Lang.bind(this, function() {
-            let color = new Clutter.Color();
-            let hasColor = this.actor.get_theme_node().get_color('link-color', color);
+            let [hasColor, color] = this.actor.get_theme_node().lookup_color('link-color', false);
             if (hasColor) {
                 let linkColor = color.to_string().substr(0, 7);
                 if (linkColor != this._linkColor) {
