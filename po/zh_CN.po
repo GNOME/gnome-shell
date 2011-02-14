@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
 "POT-Creation-Date: 2011-02-13 21:59+0000\n"
-"PO-Revision-Date: 2011-02-14 19:50+0800\n"
+"PO-Revision-Date: 2011-02-14 22:06+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -232,7 +232,7 @@ msgstr "%H:%M"
 #: ../js/ui/calendar.js:77
 msgctxt "event list time"
 msgid "%l:%M %p"
-msgstr "%l:%M %p"
+msgstr "%I:%M %p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -336,13 +336,13 @@ msgstr "无计划"
 #: ../js/ui/calendar.js:717
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr "%-m月%-d日%A"
+msgstr "%m月%d日%A"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%-Y年%-m月%-d日%A"
+msgstr "%Y年%m月%d日%A"
 
 #: ../js/ui/calendar.js:730
 msgid "Today"
@@ -376,48 +376,48 @@ msgstr "打开日历"
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:149
 msgid "%a %b %e, %R:%S"
-msgstr "%A %b %e, %R:%S"
+msgstr "%m月%d日%R:%S%A"
 
 #: ../js/ui/dateMenu.js:150
 msgid "%a %b %e, %R"
-msgstr "%A %m月%d日 %R"
+msgstr "%m月%d日%R%A"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:154
 msgid "%a %R:%S"
-msgstr "%A %R:%S"
+msgstr "%R:%S%A"
 
 #: ../js/ui/dateMenu.js:155
 msgid "%a %R"
-msgstr "%A %R"
+msgstr "%R%A"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:162
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%A %m月%d日 %p%I:%M:%S"
+msgstr "%m月%d日%A %I:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:163
 msgid "%a %b %e, %l:%M %p"
-msgstr "%A %m月%d日 %p%I:%M"
+msgstr "%m月%d日%A %I:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:167
 msgid "%a %l:%M:%S %p"
-msgstr "%A %p%I:%M:%S"
+msgstr "%A %I:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:168
 msgid "%a %l:%M %p"
-msgstr "%a %l:%M %p"
+msgstr "%I:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
 #: ../js/ui/dateMenu.js:194
 msgid "%A %B %e, %Y"
-msgstr "%-Y年%-m月%-d日%A"
+msgstr "%Y年%m月%d日%A"
 
 #: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
