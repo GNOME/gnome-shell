@@ -636,6 +636,23 @@ _st_create_shadow_material_from_actor (StShadow     *shadow_spec,
   return shadow_material;
 }
 
+/**
+ * _st_create_shadow_cairo_pattern:
+ * @shadow_spec: the definition of the shadow
+ * @src_pattern: surface pattern for which we create the shadow
+ *               (must be a surface pattern)
+ *
+ * This is a utility function for creating shadows used by
+ * st-theme-node.c; it's in this file to share the gaussian
+ * blur implementation. The usage of this function is quite different
+ * depending on whether shadow_spec->inset is %TRUE or not. If
+ * shadow_spec->inset is %TRUE, the caller should pass in a @src_pattern
+ * which is the <i>inverse</i> of what they want shadowed, and must take
+ * care of the spread and offset from the shadow spec themselves. If
+ * shadow_spec->inset is %FALSE then the caller should pass in what they
+ * want shadowed directly, and this function takes care of the spread and
+ * the offset.
+ */
 cairo_pattern_t *
 _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
                                  cairo_pattern_t *src_pattern)
@@ -649,6 +666,7 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
   gint             width_in, height_in, rowstride_in;
   gint             width_out, height_out, rowstride_out;
   cairo_matrix_t   shadow_matrix;
+  int i, j;
 
   g_return_val_if_fail (shadow_spec != NULL, NULL);
   g_return_val_if_fail (src_pattern != NULL, NULL);
@@ -684,6 +702,17 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
                             &width_out, &height_out, &rowstride_out);
   cairo_surface_destroy (surface_in);
 
+  /* Invert pixels for inset shadows */
+  if (shadow_spec->inset)
+    {
+      for (j = 0; j < height_out; j++)
+        {
+          guchar *p = pixels_out + rowstride_out * j;
+          for (i = 0; i < width_out; i++, p++)
+            *p = ~*p;
+        }
+    }
+
   surface_out = cairo_image_surface_create_for_data (pixels_out,
                                                      CAIRO_FORMAT_A8,
                                                      width_out,
@@ -694,6 +723,21 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
   cairo_surface_destroy (surface_out);
 
   cairo_pattern_get_matrix (src_pattern, &shadow_matrix);
+
+  if (shadow_spec->inset)
+    {
+      /* For inset shadows, offsets and spread radius have already been
+       * applied to the original pattern, so all left to do is shift the
+       * blurred image left, so that it aligns centered under the
+       * unblurred one
+       */
+      cairo_matrix_translate (&shadow_matrix,
+                              (width_out - width_in) / 2.0,
+                              (height_out - height_in) / 2.0);
+      cairo_pattern_set_matrix (dst_pattern, &shadow_matrix);
+
+      return dst_pattern;
+    }
 
   /* Read all the code from the cairo_pattern_set_matrix call
    * at the end of this function to here from bottom to top,

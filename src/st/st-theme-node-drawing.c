@@ -602,6 +602,89 @@ create_cairo_pattern_of_background_image (StThemeNode *node,
   return pattern;
 }
 
+/* fill_exterior = TRUE means that pattern is a surface pattern and
+ * we should extend the pattern with a solid fill from its edges.
+ * This is a bit of a hack; the alternative would be to make the
+ * surface of the surface pattern 1 pixel bigger and use CAIRO_EXTEND_PAD.
+ */
+static void
+paint_shadow_pattern_to_cairo_context (StShadow *shadow_spec,
+                                       cairo_pattern_t *pattern,
+                                       gboolean         fill_exterior,
+                                       cairo_t         *cr,
+                                       cairo_path_t    *interior_path,
+                                       cairo_path_t    *outline_path)
+{
+  /* If there are borders, clip the shadow to the interior
+   * of the borders; if there is a visible outline, clip the shadow to
+   * that outline
+   */
+  cairo_path_t *path = (interior_path != NULL) ? interior_path : outline_path;
+  double x1, x2, y1, y2;
+
+  /* fill_exterior only makes sense if we're clipping the shadow - filling
+   * to the edges of the surface would be silly */
+  g_assert (!(fill_exterior && path == NULL));
+
+  cairo_save (cr);
+  if (path != NULL)
+    {
+      cairo_append_path (cr, path);
+
+      /* There's no way to invert a path in cairo, so we need bounds for
+       * the area we are drawing in order to create the "exterior" region.
+       * Pixel align to hit fast paths.
+       */
+      if (fill_exterior)
+        {
+          cairo_path_extents (cr, &x1, &y1, &x2, &y2);
+          x1 = floor (x1);
+          y1 = floor (y1);
+          x2 = ceil (x2);
+          y2 = ceil (y2);
+        }
+
+      cairo_clip (cr);
+    }
+
+  cairo_set_source_rgba (cr,
+                         shadow_spec->color.red / 255.0,
+                         shadow_spec->color.green / 255.0,
+                         shadow_spec->color.blue / 255.0,
+                         shadow_spec->color.alpha / 255.0);
+  if (fill_exterior)
+    {
+      cairo_surface_t *surface;
+      int width, height;
+      cairo_matrix_t matrix;
+
+      cairo_save (cr);
+
+      /* Start with a rectangle enclosing the bounds of the clipped
+       * region */
+      cairo_rectangle (cr, x1, y1, x2 - x1, y2 - y1);
+
+      /* Then subtract out the bounds of the surface in the surface
+       * pattern; we transform the context by the inverse of the
+       * pattern matrix to get to surface coordinates */
+      cairo_pattern_get_surface (pattern, &surface);
+      width = cairo_image_surface_get_width  (surface);
+      height = cairo_image_surface_get_height (surface);
+
+      cairo_pattern_get_matrix (pattern, &matrix);
+      cairo_matrix_invert (&matrix);
+      cairo_transform (cr, &matrix);
+
+      cairo_rectangle (cr, 0, height, width, - height);
+      cairo_fill (cr);
+
+      cairo_restore (cr);
+    }
+
+  cairo_mask (cr, pattern);
+  cairo_restore (cr);
+}
+
 static void
 paint_background_image_shadow_to_cairo_context (StThemeNode     *node,
                                                 StShadow        *shadow_spec,
@@ -661,52 +744,128 @@ paint_background_image_shadow_to_cairo_context (StThemeNode     *node,
                                                         pattern);
     }
 
-  /* Stamp the shadow pattern out in the appropriate color
-   * in a new layer
-   */
-  cairo_push_group (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
-
-  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_rgba (cr,
-                         shadow_spec->color.red / 255.0,
-                         shadow_spec->color.green / 255.0,
-                         shadow_spec->color.blue / 255.0,
-                         shadow_spec->color.alpha / 255.0);
-  cairo_paint (cr);
-
-  cairo_set_operator (cr, CAIRO_OPERATOR_DEST_IN);
-
-  cairo_set_source (cr, shadow_pattern);
-  cairo_paint (cr);
+  paint_shadow_pattern_to_cairo_context (shadow_spec,
+                                         shadow_pattern, FALSE,
+                                         cr,
+                                         interior_path,
+                                         outline_path);
   cairo_pattern_destroy (shadow_pattern);
+}
 
-  cairo_pop_group_to_source (cr);
+/* gets the extents of a cairo_path_t; slightly inefficient, but much simpler than
+ * computing from the raw path data */
+static void
+path_extents (cairo_path_t *path,
+              double       *x1,
+              double       *y1,
+              double       *x2,
+              double       *y2)
 
-  /* mask and merge the shadow
+{
+  cairo_surface_t *dummy = cairo_image_surface_create (CAIRO_FORMAT_A8, 1, 1);
+  cairo_t *cr = cairo_create (dummy);
+
+  cairo_append_path (cr, path);
+  cairo_path_extents (cr, x1, y1, x2, y2);
+
+  cairo_destroy (cr);
+  cairo_surface_destroy (dummy);
+}
+
+static void
+paint_inset_box_shadow_to_cairo_context (StThemeNode     *node,
+                                         StShadow        *shadow_spec,
+                                         cairo_t         *cr,
+                                         cairo_path_t    *shadow_outline)
+{
+  cairo_surface_t *shadow_surface;
+  cairo_pattern_t *shadow_pattern;
+  double extents_x1, extents_y1, extents_x2, extents_y2;
+  double shrunk_extents_x1, shrunk_extents_y1, shrunk_extents_x2, shrunk_extents_y2;
+  gboolean fill_exterior;
+
+  g_assert (shadow_spec != NULL);
+  g_assert (shadow_outline != NULL);
+
+  /* Create the pattern used to create the inset shadow; as the shadow
+   * should be drawn as if everything outside the outline was opaque,
+   * we use a temporary surface to draw the background as a solid shape,
+   * which is inverted when creating the shadow pattern.
    */
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-  cairo_save (cr);
-  if (interior_path != NULL)
+
+  /* First we need to find the size of the temporary surface
+   */
+  path_extents (shadow_outline,
+                &extents_x1, &extents_y1, &extents_x2, &extents_y2);
+
+  /* Shrink the extents by the spread, and offset */
+  shrunk_extents_x1 = extents_x1 + shadow_spec->xoffset + shadow_spec->spread;
+  shrunk_extents_y1 = extents_y1 + shadow_spec->yoffset + shadow_spec->spread;
+  shrunk_extents_x2 = extents_x2 + shadow_spec->xoffset - shadow_spec->spread;
+  shrunk_extents_y2 = extents_y2 + shadow_spec->yoffset - shadow_spec->spread;
+
+  if (shrunk_extents_x1 >= shrunk_extents_x2 || shrunk_extents_y1 >= shrunk_extents_x2)
     {
-      /* If there are borders, clip the shadow to the interior
-       * of the borders
-       */
-      cairo_append_path (cr, interior_path);
-      cairo_clip (cr);
+      /* Shadow occupies entire area within border */
+      shadow_pattern = cairo_pattern_create_rgb (0., 0., 0.);
+      fill_exterior = FALSE;
     }
-  else if (outline_path != NULL)
+  else
     {
-      /* If there is a visible outline, clip the shadow to
-       * that outline
-       */
-      cairo_append_path (cr, outline_path);
-      cairo_clip (cr);
+      /* Bounds of temporary surface */
+      int surface_x = floor (shrunk_extents_x1);
+      int surface_y = floor (shrunk_extents_y1);
+      int surface_width = ceil (shrunk_extents_x2) - surface_x;
+      int surface_height = ceil (shrunk_extents_y2) - surface_y;
+
+      /* Center of the original path */
+      double x_center = (extents_x1 + extents_x2) / 2;
+      double y_center = (extents_y1 + extents_y2) / 2;
+
+      cairo_pattern_t *pattern;
+      cairo_t *temp_cr;
+      cairo_matrix_t matrix;
+
+      shadow_surface = cairo_image_surface_create (CAIRO_FORMAT_A8, surface_width, surface_height);
+      temp_cr = cairo_create (shadow_surface);
+
+      /* Match the coordinates in the temporary context to the parent context */
+      cairo_translate (temp_cr, - surface_x, - surface_y);
+
+      /* Shadow offset */
+      cairo_translate (temp_cr, shadow_spec->xoffset, shadow_spec->yoffset);
+
+      /* Scale the path around the center to match the shrunk bounds */
+      cairo_translate (temp_cr, x_center, y_center);
+      cairo_scale (temp_cr,
+                   (shrunk_extents_x2 - shrunk_extents_x1) / (extents_x2 - extents_x1),
+                   (shrunk_extents_y2 - shrunk_extents_y1) / (extents_y2 - extents_y1));
+      cairo_translate (temp_cr, - x_center, - y_center);
+
+      cairo_append_path (temp_cr, shadow_outline);
+      cairo_fill (temp_cr);
+      cairo_destroy (temp_cr);
+
+      pattern = cairo_pattern_create_for_surface (shadow_surface);
+      cairo_surface_destroy (shadow_surface);
+
+      /* The pattern needs to be offset back to coordinates in the parent context */
+      cairo_matrix_init_translate (&matrix, - surface_x, - surface_y);
+      cairo_pattern_set_matrix (pattern, &matrix);
+
+      shadow_pattern = _st_create_shadow_cairo_pattern (shadow_spec, pattern);
+      fill_exterior = TRUE;
+
+      cairo_pattern_destroy (pattern);
     }
 
-  cairo_paint (cr);
-  cairo_restore (cr);
+  paint_shadow_pattern_to_cairo_context (shadow_spec,
+                                         shadow_pattern, fill_exterior,
+                                         cr,
+                                         shadow_outline,
+                                         NULL);
+
+  cairo_pattern_destroy (shadow_pattern);
 }
 
 /* In order for borders to be smoothly blended with non-solid backgrounds,
@@ -722,6 +881,7 @@ st_theme_node_prerender_background (StThemeNode *node)
   cairo_t *cr;
   cairo_surface_t *surface;
   StShadow *shadow_spec;
+  StShadow *box_shadow_spec;
   cairo_pattern_t *pattern = NULL;
   cairo_path_t *outline_path = NULL;
   gboolean draw_solid_background = TRUE;
@@ -740,6 +900,7 @@ st_theme_node_prerender_background (StThemeNode *node)
   border_image = st_theme_node_get_border_image (node);
 
   shadow_spec = st_theme_node_get_background_image_shadow (node);
+  box_shadow_spec = st_theme_node_get_box_shadow (node);
 
   actor_box.x1 = 0;
   actor_box.x2 = node->alloc_width;
@@ -1019,6 +1180,15 @@ st_theme_node_prerender_background (StThemeNode *node)
       cairo_pattern_destroy (pattern);
     }
 
+  if (box_shadow_spec && box_shadow_spec->inset)
+    {
+      paint_inset_box_shadow_to_cairo_context (node,
+                                               box_shadow_spec,
+                                               cr,
+                                               interior_path ? interior_path
+                                                             : outline_path);
+    }
+
   if (outline_path != NULL)
     cairo_path_destroy (outline_path);
 
@@ -1107,6 +1277,7 @@ st_theme_node_render_resources (StThemeNode   *node,
   StBorderImage *border_image;
   gboolean has_border;
   gboolean has_border_radius;
+  gboolean has_inset_box_shadow;
   StShadow *box_shadow_spec;
   StShadow *background_image_shadow_spec;
   const char *background_image;
@@ -1126,6 +1297,7 @@ st_theme_node_render_resources (StThemeNode   *node,
   _st_theme_node_ensure_geometry (node);
 
   box_shadow_spec = st_theme_node_get_box_shadow (node);
+  has_inset_box_shadow = box_shadow_spec && box_shadow_spec->inset;
 
   if (node->border_width[ST_SIDE_TOP] > 0 ||
       node->border_width[ST_SIDE_LEFT] > 0 ||
@@ -1170,6 +1342,7 @@ st_theme_node_render_resources (StThemeNode   *node,
    * then we could use cogl for that case.
    */
   if ((node->background_gradient_type != ST_GRADIENT_NONE)
+      || (has_inset_box_shadow && (has_border || node->background_color.alpha > 0))
       || (background_image && (has_border || has_border_radius)))
     node->prerendered_texture = st_theme_node_prerender_background (node);
 
@@ -1178,7 +1351,7 @@ st_theme_node_render_resources (StThemeNode   *node,
   else
     node->prerendered_material = COGL_INVALID_HANDLE;
 
-  if (box_shadow_spec)
+  if (box_shadow_spec && !has_inset_box_shadow)
     {
       if (node->border_slices_texture != COGL_INVALID_HANDLE)
         node->box_shadow_material = _st_create_shadow_material (box_shadow_spec,

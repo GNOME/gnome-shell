@@ -2886,14 +2886,6 @@ st_theme_node_get_box_shadow (StThemeNode *node)
                                    FALSE,
                                    &shadow))
     {
-      if (shadow->inset)
-        {
-          g_warning ("Inset shadows are not implemented for the box-shadow "
-                     "property");
-          st_shadow_unref (shadow);
-          shadow = NULL;
-        }
-
       node->box_shadow = shadow;
 
       return node->box_shadow;
