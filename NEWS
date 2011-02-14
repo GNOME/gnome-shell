@@ -1,3 +1,62 @@
+Clutter 1.6.4                                                        2011-02-14
+===============================================================================
+
+  • List of changes since Clutter 1.6.2
+
+    » Fix handling of opacity in ClutterOffscreenEffect.
+
+    » Fix partially off-stage actors in ClutterOffscreenEffect.
+
+    » Add a recipe in the Cookbook for animating an actor on a path.
+
+    » Refresh key mapping when notified by X11.
+
+    » Clean up the ClutterStageWindow redraw implementations.
+
+    » Update the Wayland backend to match upstream API changes:
+      • allow using shared buffers if DRM fails;
+      • improve checks for the required extensions.
+
+    » Documentation fixes.
+
+    » Introspection annotations fixes.
+
+    » Fix setting the matrix for a pipeline layer.
+
+    » Fix flushing the framebuffer when switching to it.
+
+    » Make sure to call glFlush when blitting a stage region to the
+      front buffer, to avoid the driver batching the command for an
+      undefined amount of time.
+
+    » Fix the windowing system defines for non-X11 platforms.
+
+    » Fix the location of the shared objects in the Cally pkg-config
+      file.
+
+  • List of bugs fixed since Clutter 1.6.2
+
+    #1024 - test-multistage.c assertion failure
+    #1025 - test-paint-wrapper.c assertion failure
+    #1028 - test-random-text.c hangs with spinning beach ball
+    #1029 - test-cogl-primitives.c hangs with spinning beach ball
+    #1358 - scroll events not handled
+    #2373 - OSX Backend fix
+    #2525 - [PATCH] x11: Handle key map changes
+    #2541 - ClutterOffscreenEffect with multiply the actor's opacity
+    #2546 - [PATCH, git branch] update wayland backend
+    #2549 - Fix lib locations in *.pc.in
+    #2550 - offscreen effects are always clipped to stage boundaries
+    #2551 - Slight drawing lag with larger windows on Intel x3100 (i965)
+    #2554 - Add recipe per animating an actor on a curved path
+    #2555 - Per-framebuffer journal causes corruptions
+    #2558 - backend-glx: Remove redundant glFlush()
+    #2559 - x11: segfault on closing non-default stage window
+
+Many thanks to:
+
+  nobled, Chris Lord, Neil Roberts, Robert Bragg, Adel Gadllah, Elliot Smith
+
 Clutter 1.6.2                                                        2011-02-07
 ===============================================================================
 
