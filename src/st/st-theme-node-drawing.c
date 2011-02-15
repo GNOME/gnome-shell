@@ -452,8 +452,7 @@ st_theme_node_has_visible_outline (StThemeNode *node)
 }
 
 static cairo_pattern_t *
-create_cairo_pattern_of_background_gradient (StThemeNode *node,
-                                             gboolean    *needs_background_fill)
+create_cairo_pattern_of_background_gradient (StThemeNode *node)
 {
   cairo_pattern_t *pattern;
 
@@ -483,12 +482,6 @@ create_cairo_pattern_of_background_gradient (StThemeNode *node,
                                      node->background_gradient_end.green / 255.,
                                      node->background_gradient_end.blue / 255.,
                                      node->background_gradient_end.alpha / 255.);
-  if (node->background_color.alpha > 0 ||
-      node->background_gradient_end.alpha > 0)
-    *needs_background_fill = TRUE;
-  else
-    *needs_background_fill = FALSE;
-
   return pattern;
 }
 
@@ -794,8 +787,8 @@ st_theme_node_render_background_with_border (StThemeNode *node)
    */
   if (node->background_gradient_type != ST_GRADIENT_NONE)
     {
-      pattern = create_cairo_pattern_of_background_gradient (node,
-                                                             &draw_solid_background);
+      pattern = create_cairo_pattern_of_background_gradient (node);
+      draw_solid_background = FALSE;
     }
   else
     {
