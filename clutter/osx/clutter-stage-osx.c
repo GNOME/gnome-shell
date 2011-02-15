@@ -74,9 +74,10 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
 
 - (BOOL) windowShouldClose: (id) sender
 {
+  ClutterEvent event;
+
   CLUTTER_NOTE (BACKEND, "[%p] windowShouldClose", self->stage_osx);
 
-  ClutterEvent event;
   event.type = CLUTTER_DELETE;
   event.any.stage = CLUTTER_STAGE (self->stage_osx->wrapper);
   clutter_event_put (&event);
@@ -281,10 +282,12 @@ clutter_stage_osx_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
   ClutterBackendOSX *backend_osx;
-
-  CLUTTER_NOTE (BACKEND, "[%p] realize", self);
+  gfloat width, height;
+  NSRect rect;
 
   CLUTTER_OSX_POOL_ALLOC();
+
+  CLUTTER_NOTE (BACKEND, "[%p] realize", self);
 
   backend_osx = CLUTTER_BACKEND_OSX (self->backend);
   /* Call get_size - this will either get the geometry size (which
@@ -292,13 +295,11 @@ clutter_stage_osx_realize (ClutterStageWindow *stage_window)
    * is set, it will get that. This lets you set a size on the
    * stage before it's realized.
    */
-  gfloat width, height;
-  clutter_actor_get_size (CLUTTER_ACTOR (self->wrapper),
-                          &width,
-                          &height);
+  clutter_actor_get_size (CLUTTER_ACTOR (self->wrapper), &width, &height);
   self->requisition_width = width; 
   self->requisition_height= height;
-  NSRect rect = NSMakeRect(0, 0, self->requisition_width, self->requisition_height);
+
+  rect = NSMakeRect(0, 0, self->requisition_width, self->requisition_height);
 
   self->view = [[ClutterGLView alloc]
                 initWithFrame: rect
@@ -313,9 +314,9 @@ clutter_stage_osx_realize (ClutterStageWindow *stage_window)
   /* looks better than positioning to 0,0 (bottom right) */
   [self->window center];
 
-  CLUTTER_OSX_POOL_RELEASE();
-
   CLUTTER_NOTE (BACKEND, "Stage successfully realized");
+
+  CLUTTER_OSX_POOL_RELEASE();
 
   return TRUE;
 }
@@ -325,12 +326,12 @@ clutter_stage_osx_unrealize (ClutterStageWindow *stage_window)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
 
+  CLUTTER_OSX_POOL_ALLOC();
+
   CLUTTER_NOTE (BACKEND, "[%p] unrealize", self);
 
   /* ensure we get realize+unrealize properly paired */
   g_return_if_fail (self->view != NULL && self->window != NULL);
-
-  CLUTTER_OSX_POOL_ALLOC();
 
   [self->view release];
   [self->window close];
@@ -346,10 +347,11 @@ clutter_stage_osx_show (ClutterStageWindow *stage_window,
                         gboolean            do_raise)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
-
-  CLUTTER_NOTE (BACKEND, "[%p] show", self);
+  BOOL isViewHidden;
 
   CLUTTER_OSX_POOL_ALLOC();
+
+  CLUTTER_NOTE (BACKEND, "[%p] show", self);
 
   clutter_stage_osx_realize (stage_window);
   clutter_actor_map (CLUTTER_ACTOR (self->wrapper));
@@ -359,8 +361,8 @@ clutter_stage_osx_show (ClutterStageWindow *stage_window,
   /* Draw view should be avoided and it is the reason why
    * we should hide OpenGL view while we showing the stage.
    */
-  BOOL isViewHidden = [self->view isHidden];
-  if ( isViewHidden == NO)
+  isViewHidden = [self->view isHidden];
+  if (isViewHidden == NO)
     [self->view setHidden:YES];
 
   if (self->acceptFocus)
@@ -383,9 +385,9 @@ clutter_stage_osx_hide (ClutterStageWindow *stage_window)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
 
-  CLUTTER_NOTE (BACKEND, "[%p] hide", self);
-
   CLUTTER_OSX_POOL_ALLOC();
+
+  CLUTTER_NOTE (BACKEND, "[%p] hide", self);
 
   [self->window orderOut: nil];
 
@@ -415,8 +417,11 @@ clutter_stage_osx_resize (ClutterStageWindow *stage_window,
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
   ClutterActor *actor = clutter_stage_osx_get_wrapper (stage_window);
-
   guint min_width, min_height;
+  NSSize size;
+
+  CLUTTER_OSX_POOL_ALLOC ();
+
   clutter_stage_get_minimum_size (CLUTTER_STAGE (actor),
                                   &min_width,
                                   &min_height);
@@ -428,10 +433,7 @@ clutter_stage_osx_resize (ClutterStageWindow *stage_window,
   self->requisition_width = width;
   self->requisition_height = height;
 
-  CLUTTER_OSX_POOL_ALLOC ();
-
-  NSSize size = NSMakeSize (self->requisition_width,
-                            self->requisition_height);
+  size = NSMakeSize (self->requisition_width, self->requisition_height);
   [self->window setContentSize: size];
 
   CLUTTER_OSX_POOL_RELEASE ();
@@ -452,9 +454,9 @@ clutter_stage_osx_set_title (ClutterStageWindow *stage_window,
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
 
-  CLUTTER_NOTE (BACKEND, "[%p] set_title: %s", self, title);
-
   CLUTTER_OSX_POOL_ALLOC();
+
+  CLUTTER_NOTE (BACKEND, "[%p] set_title: %s", self, title);
 
   [self->window setTitle:[NSString stringWithUTF8String: title ? title : ""]];
 
@@ -467,9 +469,9 @@ clutter_stage_osx_set_fullscreen (ClutterStageWindow *stage_window,
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
 
-  CLUTTER_NOTE (BACKEND, "[%p] set_fullscreen: %u", self, fullscreen);
-
   CLUTTER_OSX_POOL_ALLOC();
+
+  CLUTTER_NOTE (BACKEND, "[%p] set_fullscreen: %u", self, fullscreen);
 
   /* Make sure to update the state before clutter_stage_osx_set_frame.
    *
@@ -496,10 +498,12 @@ clutter_stage_osx_set_cursor_visible (ClutterStageWindow *stage_window,
                                       gboolean            cursor_visible)
 {
   CLUTTER_OSX_POOL_ALLOC();
-  if ( cursor_visible )
+
+  if (cursor_visible)
     [NSCursor unhide];
   else
-    [NSCursor hide]; 
+    [NSCursor hide];
+
   CLUTTER_OSX_POOL_RELEASE();
 }
 
@@ -507,9 +511,12 @@ static void
 clutter_stage_osx_set_user_resizable (ClutterStageWindow *stage_window,
                                       gboolean            is_resizable)
 {
-  CLUTTER_OSX_POOL_ALLOC();
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
+
+  CLUTTER_OSX_POOL_ALLOC();
+
   [self->window setShowsResizeIndicator:is_resizable];
+
   CLUTTER_OSX_POOL_RELEASE();
 }
 
@@ -517,9 +524,12 @@ static void
 clutter_stage_osx_set_accept_focus (ClutterStageWindow *stage_window,
                                     gboolean            accept_focus)
 {
-  CLUTTER_OSX_POOL_ALLOC();
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
+
+  CLUTTER_OSX_POOL_ALLOC();
+
   self->acceptFocus = !!accept_focus;
+
   CLUTTER_OSX_POOL_RELEASE();
 }
 

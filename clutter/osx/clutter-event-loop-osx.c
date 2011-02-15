@@ -340,12 +340,13 @@ got_fd_activity (void *info)
 static void
 select_thread_start (void)
 {
+  CFRunLoopSourceContext source_context = {0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, got_fd_activity };
+
   g_return_if_fail (select_thread_state == BEFORE_START);
   
   pipe (select_thread_wakeup_pipe);
   fcntl (select_thread_wakeup_pipe[0], F_SETFL, O_NONBLOCK);
 
-  CFRunLoopSourceContext source_context = {0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, got_fd_activity };
   select_main_thread_source = CFRunLoopSourceCreate (NULL, 0, &source_context);
   
   CFRunLoopAddSource (main_thread_run_loop, select_main_thread_source, kCFRunLoopCommonModes);

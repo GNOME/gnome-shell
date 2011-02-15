@@ -220,13 +220,16 @@ static void
 process_scroll_event (ClutterEvent *event,
                       gboolean isVertical)
 {
-  ClutterStageWindow   *impl;
+  ClutterStageWindow *impl;
   ClutterStageOSX *stage_osx;
+  gfloat *scroll_pos;
+
+  impl = _clutter_stage_get_window (event->any.stage);
+  stage_osx = CLUTTER_STAGE_OSX (impl);
   
-  impl        = _clutter_stage_get_window (event->any.stage);
-  stage_osx   = CLUTTER_STAGE_OSX (impl);
-  
-  gfloat *scroll_pos = isVertical ? &(stage_osx->scroll_pos_y) : &(stage_osx->scroll_pos_x);
+  scroll_pos = isVertical
+             ? &(stage_osx->scroll_pos_y)
+             : &(stage_osx->scroll_pos_x);
  
   while (abs (*scroll_pos) >= WHEEL_DELTA) 
     {

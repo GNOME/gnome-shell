@@ -142,7 +142,7 @@ clutter_device_manager_osx_get_core_device (ClutterDeviceManager *manager,
 
 static ClutterInputDevice *
 clutter_device_manager_osx_get_device (ClutterDeviceManager *manager,
-                                       gint                  id)
+                                       gint                  id_)
 {
   ClutterDeviceManagerOSX *manager_osx = CLUTTER_DEVICE_MANAGER_OSX (manager);
   GSList *l;
@@ -151,7 +151,7 @@ clutter_device_manager_osx_get_device (ClutterDeviceManager *manager,
     {
       ClutterInputDevice *device = l->data;
 
-      if (clutter_input_device_get_device_id (device) == id)
+      if (clutter_input_device_get_device_id (device) == id_)
         return device;
     }
 
