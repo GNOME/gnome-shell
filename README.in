@@ -1,7 +1,7 @@
 README for Clutter @CLUTTER_VERSION@
 ===============================================================================
 
-Clutter is an open source software library for creating fast, compellin,
+Clutter is an open source software library for creating fast, compelling,
 portable, and dynamic graphical user interfaces.
 
 REQUIREMENTS
@@ -68,11 +68,11 @@ The official Clutter website is:
 
    http://www.clutter-project.org/
 
-The API reference for the latest stable release and unstable developers
-snapshot are available at:
+The API references for the latest stable release are available at:
 
    http://docs.clutter-project.org/docs/clutter/stable/
-   http://docs.clutter-project.org/docs/clutter/unstable/
+   http://docs.clutter-project.org/docs/cogl/stable/
+   http://docs.clutter-project.org/docs/cally/stable/
 
 New releases of Clutter are available at:
 
@@ -90,6 +90,7 @@ Mailman web interface available at:
 New bug page on Bugzilla:
 
    http://bugzilla.clutter-project.org/enter_bug.cgi?product=clutter
+   http://bugzilla.clutter-project.org/enter_bug.cgi?product=cogl
 
 Clutter is licensed under the terms of the GNU Lesser General Public
 License, version 2.1 or (at your option) later.
@@ -149,9 +150,9 @@ Clutter has additional command line options for the configure script:
                 Disable support for COGL runtime debugging notes.
 
  --enable-maintainer-flags=[no/yes/error]
-        Use strict compiler flags. This defaults to 'yes' for developers
-        snapshots and to 'no' for stable releases. If 'error' is used, then
-        -Werror will be enabled (if available).
+        Use strict compiler flags. This defaults to 'yes' for building from
+        Git to 'no' for tarball releases. If 'error' is used, then -Werror
+        will be enabled (if available).
 
  --enable-gtk-doc
 	use gtk-doc to build API documentation (default=no). Requires gtk-doc
@@ -175,7 +176,7 @@ Clutter has additional command line options for the configure script:
  --disable-Bsymbolic
         Disable linking with -Bsymbolic.
 
- --with-flavour=[glx/eglx/eglnative/osx/win32/fruity]
+ --with-flavour
         Select the Clutter backend: (default=glx)
 
 	glx:
@@ -261,6 +262,7 @@ BUGS
 Bugs should be reported to the Clutter Bugzilla at:
 
   http://bugzilla.clutter-project.org/enter_bug.cgi?product=clutter
+  http://bugzilla.clutter-project.org/enter_bug.cgi?product=cogl
 
 You will need a Bugzilla account.
 
@@ -285,8 +287,9 @@ CONTRIBUTING
 
 Patches should be submitted using Bugzilla. Patches fixing a bug should be
 attached to the bug report; patches for new features or for fixing bugs not
-yet reported should be attached to a newly opened bug. Patches should always
-be in the unified diff format, using:
+yet reported should be attached to a newly opened bug.
+
+Patches should always be in the unified diff format, using:
 
   diff -Nuarp clutter.source clutter.patched > clutter-patch.diff
 
