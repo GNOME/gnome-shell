@@ -600,7 +600,7 @@ enable_gl_state (CoglDrawFlags flags,
       CoglAttribute *attribute = attributes[i];
       CoglVertexArray *vertex_array;
       CoglBuffer *buffer;
-      void *base;
+      guint8 *base;
 #ifdef HAVE_COGL_GLES2
       int attrib_location;
 #endif
@@ -1186,7 +1186,7 @@ _cogl_draw_indexed_attributes_array (CoglVerticesMode mode,
   ValidateLayerState state;
   CoglPipeline *source;
   CoglBuffer *buffer;
-  void *base;
+  guint8 *base;
   size_t array_offset;
   size_t index_size;
   GLenum indices_gl_type = 0;

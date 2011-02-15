@@ -628,8 +628,8 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
       /* Mapping a buffer for read is probably a really bad thing to
          do but this will only happen during debugging so it probably
          doesn't matter */
-      verts = (cogl_buffer_map (COGL_BUFFER (state->vertex_array),
-                                COGL_BUFFER_ACCESS_READ, 0) +
+      verts = ((guint8 *) cogl_buffer_map (COGL_BUFFER (state->vertex_array),
+                                           COGL_BUFFER_ACCESS_READ, 0) +
                state->array_offset);
 
       _cogl_journal_dump_quad_batch (verts,
