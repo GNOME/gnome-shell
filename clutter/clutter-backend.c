@@ -50,6 +50,7 @@
 #include "clutter-profile.h"
 #include "clutter-stage-manager-private.h"
 #include "clutter-stage-private.h"
+#include "clutter-version.h"
 
 #include <cogl/cogl.h>
 

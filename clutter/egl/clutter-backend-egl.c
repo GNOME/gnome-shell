@@ -48,7 +48,6 @@
 #include "clutter-private.h"
 #include "clutter-main.h"
 #include "clutter-stage-private.h"
-#include "clutter-version.h"
 
 static ClutterBackendEGL *backend_singleton = NULL;
 
@@ -743,9 +742,6 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
   ClutterEventTranslator *translator;
   ClutterStageWindow *stage;
   ClutterStageX11 *stage_x11;
-
-  CLUTTER_NOTE (BACKEND, "Creating stage of type '%s'",
-                g_type_name (CLUTTER_STAGE_TYPE));
 
   stage = g_object_new (CLUTTER_TYPE_STAGE_EGL, NULL);
 

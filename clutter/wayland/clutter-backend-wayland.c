@@ -47,7 +47,6 @@
 #include "clutter-main.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
-#include "clutter-version.h"
 
 static ClutterBackendWayland *backend_singleton = NULL;
 
@@ -621,9 +620,6 @@ clutter_backend_wayland_create_stage (ClutterBackend  *backend,
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
   ClutterStageWindow *stage;
   ClutterStageWayland *stage_wayland;
-
-  CLUTTER_NOTE (BACKEND, "Creating stage of type '%s'",
-                g_type_name (CLUTTER_STAGE_TYPE));
 
   stage = g_object_new (CLUTTER_TYPE_STAGE_WAYLAND, NULL);
 

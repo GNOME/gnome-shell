@@ -36,7 +36,6 @@
 #include "clutter-debug.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
-#include "clutter-version.h"
 
 #include "cogl/cogl.h"
 
@@ -486,9 +485,6 @@ clutter_backend_win32_create_stage (ClutterBackend  *backend,
   ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
   ClutterStageWin32 *stage_win32;
   ClutterStageWindow *stage;
-
-  CLUTTER_NOTE (BACKEND, "Creating stage of type '%s'",
-		g_type_name (CLUTTER_STAGE_TYPE));
 
   stage = g_object_new (CLUTTER_TYPE_STAGE_WIN32, NULL);
 

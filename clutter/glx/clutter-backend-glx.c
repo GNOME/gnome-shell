@@ -47,7 +47,6 @@
 #include "clutter-main.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
-#include "clutter-version.h"
 
 #include "cogl/cogl.h"
 
@@ -787,9 +786,6 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
   ClutterEventTranslator *translator;
   ClutterStageWindow *stage_window;
   ClutterStageX11 *stage_x11;
-
-  CLUTTER_NOTE (BACKEND, "Creating stage of type '%s'",
-                g_type_name (CLUTTER_STAGE_TYPE));
 
   stage_window = g_object_new (CLUTTER_TYPE_STAGE_GLX, NULL);
 
