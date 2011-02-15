@@ -90,6 +90,7 @@ DateMenuButton.prototype = {
         vbox.add(item.actor, {y_align: St.Align.END, expand: true, y_fill: false});
         item = new PopupMenu.PopupMenuItem(_("Date and Time Settings"));
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
+        item.actor.can_focus = false;
         vbox.add(item.actor);
 
         // Add vertical separator
@@ -109,6 +110,7 @@ DateMenuButton.prototype = {
 
         item = new PopupMenu.PopupMenuItem(_("Open Calendar"));
         item.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
+        item.actor.can_focus = false;
         vbox.add(item.actor, {y_align: St.Align.END, expand: true, y_fill: false});
 
         // Whenever the menu is opened, select today
