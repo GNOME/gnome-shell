@@ -95,63 +95,86 @@ CoglBitmap *
 _cogl_bitmap_from_file (const char  *filename,
 			GError     **error)
 {
+  CFURLRef url;
+  CGImageSourceRef image_source;
+  CGImageRef image;
+  int save_errno;
+  CFStringRef type;
+  gsize width, height, rowstride;
+  guint8 *out_data;
+  CGColorSpaceRef color_space;
+  CGContextRef bitmap_context;
+
   g_assert (filename != NULL);
   g_assert (error == NULL || *error == NULL);
 
-  CFURLRef url = CFURLCreateFromFileSystemRepresentation (NULL, (guchar*)filename, strlen(filename), false);
-  CGImageSourceRef image_source = CGImageSourceCreateWithURL (url, NULL);
-  int save_errno = errno;
+  url = CFURLCreateFromFileSystemRepresentation (NULL,
+                                                 (guchar *) filename,
+                                                 strlen (filename),
+                                                 false);
+  image_source = CGImageSourceCreateWithURL (url, NULL);
+  save_errno = errno;
   CFRelease (url);
+
   if (image_source == NULL)
     {
       /* doesn't exist, not readable, etc. */
-      g_set_error (error, COGL_BITMAP_ERROR, COGL_BITMAP_ERROR_FAILED,
-                   "%s", g_strerror (save_errno));
+      g_set_error_literal (error,
+                           COGL_BITMAP_ERROR,
+                           COGL_BITMAP_ERROR_FAILED,
+                           g_strerror (save_errno));
       return NULL;
     }
 
   /* Unknown images would be cleanly caught as zero width/height below, but try
    * to provide better error message
    */
-  CFStringRef type = CGImageSourceGetType (image_source);
+  type = CGImageSourceGetType (image_source);
   if (type == NULL)
     {
       CFRelease (image_source);
-      g_set_error (error, COGL_BITMAP_ERROR, COGL_BITMAP_ERROR_UNKNOWN_TYPE,
-                   "Unknown image type");
+      g_set_error_literal (error,
+                           COGL_BITMAP_ERROR,
+                           COGL_BITMAP_ERROR_UNKNOWN_TYPE,
+                           "Unknown image type");
       return NULL;
     }
+
   CFRelease (type);
 
-  CGImageRef image = CGImageSourceCreateImageAtIndex (image_source, 0, NULL);
+  image = CGImageSourceCreateImageAtIndex (image_source, 0, NULL);
   CFRelease (image_source);
 
-  gsize width = CGImageGetWidth (image);
-  gsize height = CGImageGetHeight (image);
+  width = CGImageGetWidth (image);
+  height = CGImageGetHeight (image);
   if (width == 0 || height == 0)
     {
       /* incomplete or corrupt */
       CFRelease (image);
-      g_set_error (error, COGL_BITMAP_ERROR, COGL_BITMAP_ERROR_CORRUPT_IMAGE,
-                   "Image has zero width or height");
+      g_set_error_literal (error,
+                           COGL_BITMAP_ERROR,
+                           COGL_BITMAP_ERROR_CORRUPT_IMAGE,
+                           "Image has zero width or height");
       return NULL;
     }
 
   /* allocate buffer big enough to hold pixel data */
-  gsize rowstride;
   rowstride = 4 * width;
-  guint8 *out_data = g_malloc0 (height * rowstride);
+  out_data = g_malloc0 (height * rowstride);
 
   /* render to buffer */
-  CGColorSpaceRef color_space = CGColorSpaceCreateWithName (kCGColorSpaceGenericRGB);
-  CGContextRef bitmap_context = CGBitmapContextCreate (out_data,
-                                                       width, height, 8,
-                                                       rowstride, color_space,
-                                                       kCGImageAlphaPremultipliedFirst);
+  color_space = CGColorSpaceCreateWithName (kCGColorSpaceGenericRGB);
+  bitmap_context = CGBitmapContextCreate (out_data,
+                                          width, height, 8,
+                                          rowstride, color_space,
+                                          kCGImageAlphaPremultipliedFirst);
   CGColorSpaceRelease (color_space);
 
-  const CGRect rect = {{0, 0}, {width, height}};
-  CGContextDrawImage (bitmap_context, rect, image);
+  {
+    const CGRect rect = {{0, 0}, {width, height}};
+
+    CGContextDrawImage (bitmap_context, rect, image);
+  }
 
   CGImageRelease (image);
   CGContextRelease (bitmap_context);
