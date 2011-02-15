@@ -882,7 +882,7 @@ get_wire_lines (CoglAttribute *attribute,
   CoglIndicesType indices_type;
   int i;
   int n_lines;
-  CoglVertexP3 *out;
+  CoglVertexP3 *out = NULL;
 
   vertices = cogl_buffer_map (COGL_BUFFER (vertex_array),
                               COGL_BUFFER_ACCESS_READ, 0);
@@ -894,7 +894,11 @@ get_wire_lines (CoglAttribute *attribute,
       indices_type = cogl_indices_get_type (_indices);
     }
   else
-    indices = NULL;
+    {
+      index_array = NULL;
+      indices = NULL;
+      indices_type = COGL_INDICES_TYPE_UNSIGNED_BYTE;
+    }
 
   *n_vertices_out = 0;
 
@@ -977,10 +981,12 @@ get_wire_lines (CoglAttribute *attribute,
     }
 #endif
 
-  if (vertices)
+  if (vertices != NULL)
     cogl_buffer_unmap (COGL_BUFFER (vertex_array));
-  if (indices)
+
+  if (indices != NULL)
     cogl_buffer_unmap (COGL_BUFFER (index_array));
+
   return out;
 }
 

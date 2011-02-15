@@ -477,8 +477,8 @@ parse_argument (const char *string, /* original user string */
                 GError **error)
 {
   const char *p = *ret_p;
-  const char *mark;
-  const char *error_string;
+  const char *mark = NULL;
+  const char *error_string = NULL;
   ParserArgState state = PARSER_ARG_STATE_START;
   gboolean parsing_factor = FALSE;
 
