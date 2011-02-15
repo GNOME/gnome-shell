@@ -19,6 +19,8 @@ const _ = Gettext.gettext;
 const VOLUME_MAX = 65536.0; /* PA_VOLUME_NORM */
 const VOLUME_ADJUSTMENT_STEP = 0.05; /* Volume adjustment step in % */
 
+const VOLUME_NOTIFY_ID = 1;
+
 function Indicator() {
     this._init.apply(this, arguments);
 }
@@ -87,6 +89,8 @@ Indicator.prototype = {
             this._output.change_is_muted(false);
             this._output.push_volume();
         }
+
+        this._notifyVolumeChange();
     },
 
     _onControlReady: function() {
@@ -193,7 +197,8 @@ Indicator.prototype = {
     },
 
     _notifyVolumeChange: function() {
-        global.play_theme_sound('audio-volume-change');
+        global.cancel_theme_sound(VOLUME_NOTIFY_ID);
+        global.play_theme_sound(VOLUME_NOTIFY_ID, 'audio-volume-change');
     },
 
     _mutedChanged: function(object, param_spec, property) {

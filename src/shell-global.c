@@ -1889,6 +1889,7 @@ shell_global_run_at_leisure (ShellGlobal         *global,
 /**
  * shell_global_play_theme_sound:
  * @global: the #ShellGlobal
+ * @id: an id, used to cancel later (0 if not needed)
  * @name: the sound name
  *
  * Plays a simple sound picked according to Freedesktop sound theme.
@@ -1896,9 +1897,24 @@ shell_global_run_at_leisure (ShellGlobal         *global,
  */
 void
 shell_global_play_theme_sound (ShellGlobal *global,
+                               guint        id,
                                const char  *name)
 {
-  ca_context_play (global->sound_context, 0, CA_PROP_EVENT_ID, name, NULL);
+  ca_context_play (global->sound_context, id, CA_PROP_EVENT_ID, name, NULL);
+}
+
+/**
+ * shell_global_cancel_theme_sound:
+ * @global: the #ShellGlobal
+ * @id: the id previously passed to shell_global_play_theme_sound()
+ *
+ * Cancels a sound notification.
+ */
+void
+shell_global_cancel_theme_sound (ShellGlobal *global,
+                                 guint id)
+{
+  ca_context_cancel (global->sound_context, id);
 }
 
 /*

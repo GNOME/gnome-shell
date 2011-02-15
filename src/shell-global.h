@@ -140,7 +140,10 @@ void shell_global_run_at_leisure (ShellGlobal         *global,
                                   GDestroyNotify       notify);
 
 void shell_global_play_theme_sound (ShellGlobal       *global,
+                                    guint              id,
                                     const char        *name);
+void shell_global_cancel_theme_sound (ShellGlobal     *global,
+                                      guint            id);
 
 void shell_global_init_xdnd (ShellGlobal *global);
 
