@@ -1096,7 +1096,8 @@ AC_ARG_ENABLE([maintainer-flags],
 MAINTAINER_COMPILER_FLAGS="-Wall -Wshadow -Wcast-align -Wuninitialized
                            -Wno-strict-aliasing -Wempty-body -Wformat
                            -Wformat-security -Winit-self
-                           -Wdeclaration-after-statement -Wvla"
+                           -Wdeclaration-after-statement -Wvla
+                           -Wpointer-arith"
 
 AS_CASE([$enable_maintainer_flags],
         [yes],
