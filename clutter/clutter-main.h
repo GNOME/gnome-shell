@@ -159,12 +159,12 @@ void             clutter_clear_glyph_cache           (void);
 void             clutter_set_font_flags              (ClutterFontFlags flags);
 ClutterFontFlags clutter_get_font_flags              (void);
 
-ClutterInputDevice *clutter_get_input_device_for_id  (gint id);
+ClutterInputDevice *clutter_get_input_device_for_id  (gint id_);
 
 void             clutter_grab_pointer_for_device     (ClutterActor  *actor,
-                                                      gint           id);
+                                                      gint           id_);
 
-void             clutter_ungrab_pointer_for_device   (gint id);
+void             clutter_ungrab_pointer_for_device   (gint id_);
 
 PangoFontMap *   clutter_get_font_map                (void);
 

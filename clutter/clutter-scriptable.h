@@ -73,7 +73,7 @@ struct _ClutterScriptableIface
 
   /*< public >*/
   void         (* set_id)              (ClutterScriptable *scriptable,
-                                        const gchar       *id);
+                                        const gchar       *id_);
   const gchar *(* get_id)              (ClutterScriptable *scriptable);
 
   gboolean     (* parse_custom_node)   (ClutterScriptable *scriptable,
@@ -90,7 +90,7 @@ struct _ClutterScriptableIface
 GType                 clutter_scriptable_get_type            (void) G_GNUC_CONST;
 
 void                  clutter_scriptable_set_id              (ClutterScriptable *scriptable,
-                                                              const gchar       *id);
+                                                              const gchar       *id_);
 G_CONST_RETURN gchar *clutter_scriptable_get_id              (ClutterScriptable *scriptable);
 gboolean              clutter_scriptable_parse_custom_node   (ClutterScriptable *scriptable,
                                                               ClutterScript     *script,

@@ -8600,13 +8600,13 @@ parse_actor_metas (ClutterScript *script,
   for (l = elements; l != NULL; l = l->next)
     {
       JsonNode *element = l->data;
-      const gchar *id = _clutter_script_get_id_from_node (element);
+      const gchar *id_ = _clutter_script_get_id_from_node (element);
       GObject *meta;
 
-      if (id == NULL || *id == '\0')
+      if (id_ == NULL || *id_ == '\0')
         continue;
 
-      meta = clutter_script_get_object (script, id);
+      meta = clutter_script_get_object (script, id_);
       if (meta == NULL)
         continue;
 
@@ -8634,13 +8634,13 @@ parse_behaviours (ClutterScript *script,
   for (l = elements; l != NULL; l = l->next)
     {
       JsonNode *element = l->data;
-      const gchar *id = _clutter_script_get_id_from_node (element);
+      const gchar *id_ = _clutter_script_get_id_from_node (element);
       GObject *behaviour;
 
-      if (id == NULL || *id == '\0')
+      if (id_ == NULL || *id_ == '\0')
         continue;
 
-      behaviour = clutter_script_get_object (script, id);
+      behaviour = clutter_script_get_object (script, id_);
       if (behaviour == NULL)
         continue;
 

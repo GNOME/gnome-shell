@@ -335,17 +335,18 @@ clutter_get_motion_events_enabled (void)
 }
 
 static inline ClutterActor *
-_clutter_actor_get_by_id (guint32 id)
+_clutter_actor_get_by_id (guint32 actor_id)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
 
   g_assert (context->id_pool != NULL);
 
-  return clutter_id_pool_lookup (context->id_pool, id);
+  return clutter_id_pool_lookup (context->id_pool, actor_id);
 }
 
 void
-_clutter_id_to_color (guint id, ClutterColor *col)
+_clutter_id_to_color (guint         id_,
+                      ClutterColor *col)
 {
   ClutterMainContext *ctx;
   gint red, green, blue;
@@ -373,11 +374,11 @@ _clutter_id_to_color (guint id, ClutterColor *col)
     }
 
   /* compute the numbers we'll store in the components */
-  red   = (id >> (ctx->fb_g_mask_used+ctx->fb_b_mask_used))
+  red   = (id_ >> (ctx->fb_g_mask_used+ctx->fb_b_mask_used))
         & (0xff >> (8-ctx->fb_r_mask_used));
-  green = (id >> ctx->fb_b_mask_used)
+  green = (id_ >> ctx->fb_b_mask_used)
         & (0xff >> (8-ctx->fb_g_mask_used));
-  blue  = (id)
+  blue  = (id_)
         & (0xff >> (8-ctx->fb_b_mask_used));
 
   /* shift left bits a bit and add one, this circumvents
@@ -418,8 +419,8 @@ guint
 _clutter_pixel_to_id (guchar pixel[4])
 {
   ClutterMainContext *ctx;
-  gint  red, green, blue;
-  guint id;
+  gint red, green, blue;
+  guint retval;
 
   ctx = _clutter_context_get_default ();
 
@@ -455,16 +456,17 @@ _clutter_pixel_to_id (guchar pixel[4])
   blue  = blue  >> (ctx->fb_b_mask - ctx->fb_b_mask_used);
 
   /* combine the correct per component values into the final id */
-  id = blue
-     + (green <<  ctx->fb_b_mask_used)
-     + (red << (ctx->fb_b_mask_used + ctx->fb_g_mask_used));
+  retval = blue
+         + (green <<  ctx->fb_b_mask_used)
+         + (red << (ctx->fb_b_mask_used + ctx->fb_g_mask_used));
 
-  return id;
+  return retval;
 }
 
 #ifdef USE_GDKPIXBUF
 static void
-pixbuf_free (guchar *pixels, gpointer data)
+pixbuf_free (guchar   *pixels,
+             gpointer  data)
 {
   g_free (pixels);
 }
@@ -472,10 +474,10 @@ pixbuf_free (guchar *pixels, gpointer data)
 
 static void
 read_pixels_to_file (char *filename_stem,
-                     int x,
-                     int y,
-                     int width,
-                     int height)
+                     int   x,
+                     int   y,
+                     int   width,
+                     int   height)
 {
 #ifdef USE_GDKPIXBUF
   GLubyte *data;
@@ -535,12 +537,12 @@ _clutter_do_pick (ClutterStage   *stage,
 		  ClutterPickMode mode)
 {
   ClutterMainContext *context;
-  guchar              pixel[4] = { 0xff, 0xff, 0xff, 0xff };
-  CoglColor           stage_pick_id;
-  guint32             id;
-  GLboolean           dither_was_on;
-  ClutterActor       *actor;
-  gboolean            is_clipped;
+  guchar pixel[4] = { 0xff, 0xff, 0xff, 0xff };
+  CoglColor stage_pick_id;
+  guint32 id_;
+  GLboolean dither_was_on;
+  ClutterActor *actor;
+  gboolean is_clipped;
   CLUTTER_STATIC_COUNTER (do_pick_counter,
                           "_clutter_do_pick counter",
                           "Increments for each full pick run",
@@ -606,8 +608,8 @@ _clutter_do_pick (ClutterStage   *stage,
           goto result;
         }
 
-      id = _clutter_pixel_to_id (pixel);
-      actor = _clutter_actor_get_by_id (id);
+      id_ = _clutter_pixel_to_id (pixel);
+      actor = _clutter_actor_get_by_id (id_);
       goto result;
     }
 
@@ -698,8 +700,8 @@ _clutter_do_pick (ClutterStage   *stage,
       goto result;
     }
 
-  id = _clutter_pixel_to_id (pixel);
-  actor = _clutter_actor_get_by_id (id);
+  id_ = _clutter_pixel_to_id (pixel);
+  actor = _clutter_actor_get_by_id (id_);
 
 result:
 
@@ -2565,9 +2567,9 @@ _clutter_process_event (ClutterEvent *event)
 
 /**
  * clutter_get_actor_by_gid:
- * @id: a #ClutterActor ID.
+ * @id_: a #ClutterActor unique id.
  *
- * Retrieves the #ClutterActor with @id.
+ * Retrieves the #ClutterActor with @id_.
  *
  * Return value: (transfer none): the actor with the passed id or %NULL.
  *   The returned actor does not have its reference count increased.
@@ -2575,9 +2577,9 @@ _clutter_process_event (ClutterEvent *event)
  * Since: 0.6
  */
 ClutterActor *
-clutter_get_actor_by_gid (guint32 id)
+clutter_get_actor_by_gid (guint32 id_)
 {
-  return _clutter_actor_get_by_id (id);
+  return _clutter_actor_get_by_id (id_);
 }
 
 void
@@ -2713,7 +2715,7 @@ clutter_grab_pointer (ClutterActor *actor)
 /**
  * clutter_grab_pointer_for_device:
  * @actor: a #ClutterActor
- * @id: a device id, or -1
+ * @id_: a device id, or -1
  *
  * Grabs all the pointer events coming from the device @id for @actor.
  *
@@ -2723,22 +2725,21 @@ clutter_grab_pointer (ClutterActor *actor)
  */
 void
 clutter_grab_pointer_for_device (ClutterActor *actor,
-                                 gint          id)
+                                 gint          id_)
 {
   ClutterInputDevice *dev;
 
   g_return_if_fail (actor == NULL || CLUTTER_IS_ACTOR (actor));
 
   /* essentially a global grab */
-  if (id == -1)
+  if (id_ == -1)
     {
       clutter_grab_pointer (actor);
       return;
     }
 
-  dev = clutter_get_input_device_for_id (id);
-
-  if (!dev)
+  dev = clutter_get_input_device_for_id (id_);
+  if (dev == NULL)
     return;
 
   if (dev->pointer_grab_actor == actor)
@@ -2747,8 +2748,8 @@ clutter_grab_pointer_for_device (ClutterActor *actor,
   if (dev->pointer_grab_actor)
     {
       g_object_weak_unref (G_OBJECT (dev->pointer_grab_actor),
-                          on_pointer_grab_weak_notify,
-                          dev);
+                           on_pointer_grab_weak_notify,
+                           dev);
       dev->pointer_grab_actor = NULL;
     }
 
@@ -2757,8 +2758,8 @@ clutter_grab_pointer_for_device (ClutterActor *actor,
       dev->pointer_grab_actor = actor;
 
       g_object_weak_ref (G_OBJECT (actor),
-                        on_pointer_grab_weak_notify,
-                        dev);
+                         on_pointer_grab_weak_notify,
+                         dev);
     }
 }
 
@@ -2778,16 +2779,16 @@ clutter_ungrab_pointer (void)
 
 /**
  * clutter_ungrab_pointer_for_device:
- * @id: a device id
+ * @id_: a device id
  *
- * Removes an existing grab of the pointer events for device @id.
+ * Removes an existing grab of the pointer events for device @id_.
  *
  * Since: 0.8
  */
 void
-clutter_ungrab_pointer_for_device (gint id)
+clutter_ungrab_pointer_for_device (gint id_)
 {
-  clutter_grab_pointer_for_device (NULL, id);
+  clutter_grab_pointer_for_device (NULL, id_);
 }
 
 
@@ -3012,9 +3013,9 @@ clutter_get_font_flags (void)
 
 /**
  * clutter_get_input_device_for_id:
- * @id: the unique id for a device
+ * @id_: the unique id for a device
  *
- * Retrieves the #ClutterInputDevice from its @id. This is a convenience
+ * Retrieves the #ClutterInputDevice from its @id_. This is a convenience
  * wrapper for clutter_device_manager_get_device() and it is functionally
  * equivalent to:
  *
@@ -3031,13 +3032,13 @@ clutter_get_font_flags (void)
  * Since: 0.8
  */
 ClutterInputDevice *
-clutter_get_input_device_for_id (gint id)
+clutter_get_input_device_for_id (gint id_)
 {
   ClutterDeviceManager *manager;
 
   manager = clutter_device_manager_get_default ();
 
-  return clutter_device_manager_get_device (manager, id);
+  return clutter_device_manager_get_device (manager, id_);
 }
 
 /**

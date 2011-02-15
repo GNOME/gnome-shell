@@ -555,14 +555,14 @@ find_entry_by_timeline (ClutterScore    *score,
 
 static GNode *
 find_entry_by_id (ClutterScore *score,
-                  gulong        id)
+                  gulong        id_)
 {
   ClutterScorePrivate *priv = score->priv;
   TraverseClosure closure;
 
   closure.action = FIND_BY_ID;
   closure.score = score;
-  closure.d.id = id;
+  closure.d.id = id_;
   closure.result = NULL;
 
   g_node_traverse (priv->root,
@@ -1010,7 +1010,7 @@ clutter_score_append_at_marker (ClutterScore    *score,
 /**
  * clutter_score_remove:
  * @score: a #ClutterScore
- * @id: the id of the timeline to remove
+ * @id_: the id of the timeline to remove
  *
  * Removes the #ClutterTimeline with the given id inside @score. If
  * the timeline has other timelines attached to it, those are removed
@@ -1020,19 +1020,19 @@ clutter_score_append_at_marker (ClutterScore    *score,
  */
 void
 clutter_score_remove (ClutterScore *score,
-                      gulong        id)
+                      gulong        id_)
 {
   ClutterScorePrivate *priv;
   TraverseClosure closure;
 
   g_return_if_fail (CLUTTER_IS_SCORE (score));
-  g_return_if_fail (id > 0);
+  g_return_if_fail (id_ > 0);
 
   priv = score->priv;
 
   closure.action = REMOVE_BY_ID;
   closure.score = score;
-  closure.d.id = id;
+  closure.d.id = id_;
   closure.result = NULL;
 
   g_node_traverse (priv->root,
@@ -1075,9 +1075,9 @@ clutter_score_remove_all (ClutterScore *score)
 /**
  * clutter_score_get_timeline:
  * @score: a #ClutterScore
- * @id: the id of the timeline
+ * @id_: the id of the timeline
  *
- * Retrieves the #ClutterTimeline for @id inside @score.
+ * Retrieves the #ClutterTimeline for @id_ inside @score.
  *
  * Return value: (transfer none): the requested timeline, or %NULL. This
  *   function does not increase the reference count on the returned
@@ -1087,15 +1087,15 @@ clutter_score_remove_all (ClutterScore *score)
  */
 ClutterTimeline *
 clutter_score_get_timeline (ClutterScore *score,
-                            gulong        id)
+                            gulong        id_)
 {
   GNode *node;
   ClutterScoreEntry *entry;
 
   g_return_val_if_fail (CLUTTER_IS_SCORE (score), NULL);
-  g_return_val_if_fail (id > 0, NULL);
+  g_return_val_if_fail (id_ > 0, NULL);
 
-  node = find_entry_by_id (score, id);
+  node = find_entry_by_id (score, id_);
   if (G_UNLIKELY (!node))
     return NULL;
 

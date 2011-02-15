@@ -1865,13 +1865,13 @@ parse_state_transition (JsonArray *array,
 
   if (json_object_has_member (object, "animator"))
     {
-      const gchar *id = json_object_get_string_member (object, "animator");
+      const gchar *id_ = json_object_get_string_member (object, "animator");
       GObject *animator;
 
-      animator = clutter_script_get_object (clos->script, id);
+      animator = clutter_script_get_object (clos->script, id_);
       if (animator == NULL)
         {
-          g_warning ("No object with id '%s' has been defined.", id);
+          g_warning ("No object with id '%s' has been defined.", id_);
           return;
         }
 
@@ -1907,16 +1907,16 @@ parse_state_transition (JsonArray *array,
       ClutterStateKey *state_key;
       GObject *gobject;
       GParamSpec *pspec;
-      const gchar *id;
+      const gchar *id_;
       const gchar *property;
       gulong mode;
       gboolean res;
 
-      id = json_array_get_string_element (key, 0);
-      gobject = clutter_script_get_object (clos->script, id);
+      id_ = json_array_get_string_element (key, 0);
+      gobject = clutter_script_get_object (clos->script, id_);
       if (gobject == NULL)
         {
-          g_warning ("No object with id '%s' has been defined.", id);
+          g_warning ("No object with id '%s' has been defined.", id_);
           continue;
         }
 
@@ -1928,7 +1928,7 @@ parse_state_transition (JsonArray *array,
           g_warning ("The object of type '%s' and name '%s' has no "
                      "property named '%s'.",
                      G_OBJECT_TYPE_NAME (gobject),
-                     id,
+                     id_,
                      property);
           continue;
         }
@@ -1949,7 +1949,7 @@ parse_state_transition (JsonArray *array,
           g_warning ("Unable to parse the key value for the "
                      "property '%s' of object '%s' at index %d",
                      property,
-                     id,
+                     id_,
                      index_);
           clutter_state_key_free (state_key);
           continue;

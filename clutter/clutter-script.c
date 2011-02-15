@@ -1196,7 +1196,7 @@ _clutter_script_generate_fake_id (ClutterScript *script)
 /*
  * _clutter_script_warn_missing_attribute:
  * @script: a #ClutterScript
- * @id: the id of an object definition, or %NULL
+ * @id_: the id of an object definition, or %NULL
  * @attribute: the expected attribute
  *
  * Emits a warning, using GLib's log facilities, for a missing
@@ -1205,19 +1205,19 @@ _clutter_script_generate_fake_id (ClutterScript *script)
  */
 void
 _clutter_script_warn_missing_attribute (ClutterScript *script,
-                                        const gchar   *id,
+                                        const gchar   *id_,
                                         const gchar   *attribute)
 {
   ClutterScriptPrivate *priv = script->priv;
   JsonParser *parser = JSON_PARSER (priv->parser);
   gint current_line = json_parser_get_current_line (parser);
 
-  if (id != NULL && *id != '\0')
+  if (id_ != NULL && *id_ != '\0')
     {
       g_warning ("%s:%d: object '%s' has no '%s' attribute",
                  priv->is_filename ? priv->filename : "<input>",
                  current_line,
-                 id,
+                 id_,
                  attribute);
     }
   else

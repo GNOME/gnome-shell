@@ -112,10 +112,10 @@ gulong           clutter_score_append_at_marker (ClutterScore    *score,
                                                  const gchar     *marker_name,
                                                  ClutterTimeline *timeline);
 void             clutter_score_remove           (ClutterScore    *score,
-                                                 gulong           id);
+                                                 gulong           id_);
 void             clutter_score_remove_all       (ClutterScore    *score);
 ClutterTimeline *clutter_score_get_timeline     (ClutterScore    *score,
-                                                 gulong           id);
+                                                 gulong           id_);
 GSList *         clutter_score_list_timelines   (ClutterScore    *score);
 
 void             clutter_score_start            (ClutterScore    *score);

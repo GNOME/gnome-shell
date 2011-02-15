@@ -463,9 +463,9 @@ clutter_timeout_pool_add (ClutterTimeoutPool *pool,
 /**
  * clutter_timeout_pool_remove:
  * @pool: a #ClutterTimeoutPool
- * @id: the id of the timeout to remove
+ * @id_: the id of the timeout to remove
  *
- * Removes a timeout function with @id from the timeout pool. The id
+ * Removes a timeout function with @id_ from the timeout pool. The id
  * is the same returned when adding a function to the timeout pool with
  * clutter_timeout_pool_add().
  *
@@ -475,18 +475,18 @@ clutter_timeout_pool_add (ClutterTimeoutPool *pool,
  */
 void
 clutter_timeout_pool_remove (ClutterTimeoutPool *pool,
-                             guint               id)
+                             guint               id_)
 {
   GList *l;
 
-  if ((l = g_list_find_custom (pool->timeouts, GUINT_TO_POINTER (id),
+  if ((l = g_list_find_custom (pool->timeouts, GUINT_TO_POINTER (id_),
 			       clutter_timeout_find_by_id)))
     {
       clutter_timeout_unref (l->data);
       pool->timeouts = g_list_delete_link (pool->timeouts, l);
     }
   else if ((l = g_list_find_custom (pool->dispatched_timeouts,
-				    GUINT_TO_POINTER (id),
+				    GUINT_TO_POINTER (id_),
 				    clutter_timeout_find_by_id)))
     {
       clutter_timeout_unref (l->data);

@@ -63,9 +63,9 @@ clutter_scriptable_default_init (ClutterScriptableInterface *iface)
 /**
  * clutter_scriptable_set_id:
  * @scriptable: a #ClutterScriptable
- * @id: the #ClutterScript id of the object
+ * @id_: the #ClutterScript id of the object
  *
- * Sets @id as the unique Clutter script it for this instance of
+ * Sets @id_ as the unique Clutter script it for this instance of
  * #ClutterScriptableIface.
  *
  * This name can be used by user interface designer applications to
@@ -76,20 +76,20 @@ clutter_scriptable_default_init (ClutterScriptableInterface *iface)
  */
 void
 clutter_scriptable_set_id (ClutterScriptable *scriptable,
-                           const gchar       *id)
+                           const gchar       *id_)
 {
   ClutterScriptableIface *iface;
 
   g_return_if_fail (CLUTTER_IS_SCRIPTABLE (scriptable));
-  g_return_if_fail (id != NULL);
+  g_return_if_fail (id_ != NULL);
 
   iface = CLUTTER_SCRIPTABLE_GET_IFACE (scriptable);
   if (iface->set_id)
-    iface->set_id (scriptable, id);
+    iface->set_id (scriptable, id_);
   else
     g_object_set_data_full (G_OBJECT (scriptable),
                             "clutter-script-id",
-                            g_strdup (id),
+                            g_strdup (id_),
                             g_free);
 }
 

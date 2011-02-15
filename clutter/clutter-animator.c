@@ -1533,7 +1533,7 @@ parse_animator_property (JsonArray *array,
   JsonObject *object;
   JsonArray *keys;
   GObject *gobject;
-  const gchar *id, *pname;
+  const gchar *id_, *pname;
   GObjectClass *klass;
   GParamSpec *pspec;
   GSList *valid_keys = NULL;
@@ -1563,11 +1563,11 @@ parse_animator_property (JsonArray *array,
       return;
     }
 
-  id = json_object_get_string_member (object, "object");
-  gobject = clutter_script_get_object (clos->script, id);
+  id_ = json_object_get_string_member (object, "object");
+  gobject = clutter_script_get_object (clos->script, id_);
   if (gobject == NULL)
     {
-      g_warning ("No object with id '%s' has been defined.", id);
+      g_warning ("No object with id '%s' has been defined.", id_);
       return;
     }
 
@@ -1579,7 +1579,7 @@ parse_animator_property (JsonArray *array,
       g_warning ("The object of type '%s' and name '%s' has no "
                  "property named '%s'",
                  G_OBJECT_TYPE_NAME (gobject),
-                 id,
+                 id_,
                  pname);
       return;
     }

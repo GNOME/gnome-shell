@@ -69,46 +69,48 @@ clutter_id_pool_add (ClutterIDPool *id_pool,
                      gpointer       ptr)
 {
   gpointer *array;
-  guint32   id;
+  guint32 retval;
 
   g_return_val_if_fail (id_pool != NULL, 0);
 
   if (id_pool->free_ids) /* There are items on our freelist, reuse one */
     {
       array = (void*) id_pool->array->data;
-      id = GPOINTER_TO_UINT (id_pool->free_ids->data);
+      retval = GPOINTER_TO_UINT (id_pool->free_ids->data);
 
       id_pool->free_ids = g_slist_remove (id_pool->free_ids,
                                           id_pool->free_ids->data);
-      array[id] = ptr;
-      return id;
+      array[retval] = ptr;
+      return retval;
     }
 
   /* Allocate new id */
-  id = id_pool->array->len;
+  retval = id_pool->array->len;
   g_array_append_val (id_pool->array, ptr);
-  return id;
+
+  return retval;
 }
 
 void
 clutter_id_pool_remove (ClutterIDPool *id_pool,
-                        guint32        id)
+                        guint32        id_)
 {
   gpointer *array;
 
   g_return_if_fail (id_pool != NULL);
+
   array = (void*) id_pool->array->data;
 
-  array[id] = (void*)0xdecafbad;   /* set pointer to a recognizably voided
-                                      value */
+  /* set pointer to a recognizably voided value */
+  array[id_] = (void*)0xdecafbad;
 
   id_pool->free_ids = g_slist_prepend (id_pool->free_ids,
-                                       GUINT_TO_POINTER (id));
+                                       GUINT_TO_POINTER (id_));
 }
 
 gpointer
 clutter_id_pool_lookup (ClutterIDPool *id_pool,
-                        guint32        id)
+                        guint32        id_)
 {
   gpointer *array;
 
@@ -117,14 +119,14 @@ clutter_id_pool_lookup (ClutterIDPool *id_pool,
 
   array = (void*) id_pool->array->data;
 
-  if (id >= id_pool->array->len || array[id] == NULL)
+  if (id_ >= id_pool->array->len || array[id_] == NULL)
     {
       g_warning ("The required ID of %u does not refer to an existing actor; "
                  "this usually implies that the pick() of an actor is not "
                  "correctly implemented or that there is an error in the "
-                 "glReadPixels() implementation of the GL driver.", id);
+                 "glReadPixels() implementation of the GL driver.", id_);
       return NULL;
     }
 
-  return array[id];
+  return array[id_];
 }

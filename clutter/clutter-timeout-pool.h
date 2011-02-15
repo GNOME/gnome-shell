@@ -60,7 +60,7 @@ guint               clutter_timeout_pool_add    (ClutterTimeoutPool *pool,
                                                  gpointer            data,
                                                  GDestroyNotify      notify);
 void                clutter_timeout_pool_remove (ClutterTimeoutPool *pool,
-                                                 guint               id);
+                                                 guint               id_);
 
 #endif /* CLUTTER_DISABLE_DEPRECATED */
 

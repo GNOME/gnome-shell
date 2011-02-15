@@ -497,7 +497,7 @@ gboolean              clutter_actor_event                     (ClutterActor     
                                                                ClutterEvent          *event,
                                                                gboolean               capture);
 
-ClutterActor *        clutter_get_actor_by_gid                (guint32                id);
+ClutterActor *        clutter_get_actor_by_gid                (guint32                id_);
 
 gboolean              clutter_actor_set_shader                (ClutterActor          *self,
                                                                ClutterShader         *shader);

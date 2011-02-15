@@ -528,11 +528,11 @@ parse_children (ObjectInfo *oinfo,
   for (i = 0; i < array_len; i++)
     {
       JsonNode *child = json_array_get_element (array, i);
-      const gchar *id;
+      const gchar *id_;
 
-      id = _clutter_script_get_id_from_node (child);
-      if (id)
-        retval = g_list_prepend (retval, g_strdup (id));
+      id_ = _clutter_script_get_id_from_node (child);
+      if (id_ != NULL)
+        retval = g_list_prepend (retval, g_strdup (id_));
     }
 
   return g_list_reverse (retval);
@@ -820,10 +820,10 @@ _clutter_script_parse_alpha (ClutterScript *script,
       if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE &&
           json_node_get_string (val) != NULL)
         {
-          const gchar *id = json_node_get_string (val);
+          const gchar *id_ = json_node_get_string (val);
 
           timeline =
-            CLUTTER_TIMELINE (clutter_script_get_object (script, id));
+            CLUTTER_TIMELINE (clutter_script_get_object (script, id_));
         }
       else if (JSON_NODE_TYPE (val) == JSON_NODE_OBJECT)
         {
@@ -833,7 +833,7 @@ _clutter_script_parse_alpha (ClutterScript *script,
     }
 
   val = json_object_get_member (object, "mode");
-  if (val)
+  if (val != NULL)
     mode = clutter_script_resolve_animation_mode (val);
 
   if (mode == CLUTTER_CUSTOM_MODE)
@@ -884,7 +884,7 @@ clutter_script_parser_object_end (JsonParser *json_parser,
   ClutterScript *script = parser->script;
   ObjectInfo *oinfo;
   JsonNode *val;
-  const gchar *id;
+  const gchar *id_;
   GList *members, *l;
 
   /* if the object definition does not have an 'id' field we'll
@@ -922,17 +922,17 @@ clutter_script_parser_object_end (JsonParser *json_parser,
       return;
     }
 
-  id = json_object_get_string_member (object, "id");
-  CLUTTER_NOTE (SCRIPT, "Getting object info for object '%s'", id);
+  id_ = json_object_get_string_member (object, "id");
+  CLUTTER_NOTE (SCRIPT, "Getting object info for object '%s'", id_);
 
-  oinfo = _clutter_script_get_object_info (script, id);
+  oinfo = _clutter_script_get_object_info (script, id_);
   if (oinfo == NULL)
     {
       const gchar *class_name;
 
       oinfo = g_slice_new0 (ObjectInfo);
       oinfo->merge_id = _clutter_script_get_last_merge_id (script);
-      oinfo->id = g_strdup (id);
+      oinfo->id = g_strdup (id_);
 
       class_name = json_object_get_string_member (object, "type");
       oinfo->class_name = g_strdup (class_name);
@@ -1075,7 +1075,7 @@ clutter_script_parse_node (ClutterScript *script,
         {
           GType p_type;
           ObjectInfo *oinfo;
-          const gchar *id;
+          const gchar *id_;
 
           if (G_IS_VALUE (value))
             p_type = G_VALUE_TYPE (value);
@@ -1092,11 +1092,11 @@ clutter_script_parse_node (ClutterScript *script,
                * definitions are parsed leaf-first we are guaranteed
                * to have a defined object at this point
                */
-              id = _clutter_script_get_id_from_node (node);
-              if (id == NULL || *id == '\0')
+              id_ = _clutter_script_get_id_from_node (node);
+              if (id_ == NULL || *id_ == '\0')
                 return FALSE;
 
-              oinfo = _clutter_script_get_object_info (script, id);
+              oinfo = _clutter_script_get_object_info (script, id_);
               if (oinfo == NULL || oinfo->gtype == G_TYPE_INVALID )
                 return FALSE;
 
@@ -1806,13 +1806,13 @@ _clutter_script_check_unresolved (ClutterScript *script,
             {
               GObject *child = l->data;
               ObjectInfo *child_info;
-              const gchar *id;
+              const gchar *id_;
 
-              id = clutter_get_script_id (child);
-              if (id == NULL || *id == '\0')
+              id_ = clutter_get_script_id (child);
+              if (id_ == NULL || *id_ == '\0')
                 continue;
 
-              child_info = _clutter_script_get_object_info (script, id);
+              child_info = _clutter_script_get_object_info (script, id_);
               if (child_info == NULL)
                 continue;
 
