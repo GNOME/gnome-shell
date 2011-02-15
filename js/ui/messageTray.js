@@ -261,7 +261,7 @@ FocusGrabber.prototype = {
         switch (event.type()) {
             case Clutter.EventType.BUTTON_PRESS:
                 if (!this.actor.contains(source))
-                    this.ungrabFocus();
+                    this.emit('button-pressed', source);
                 break;
             case Clutter.EventType.KEY_PRESS:
                 let symbol = event.get_key_symbol();
@@ -991,6 +991,12 @@ MessageTray.prototype = {
                     this._lock();
             }));
         this._focusGrabber.connect('focus-ungrabbed', Lang.bind(this, this._unlock));
+        this._focusGrabber.connect('button-pressed', Lang.bind(this,
+           function(focusGrabber, source) {
+               if (this._clickedSummaryItem && !this._clickedSummaryItem.actor.contains(source))
+                   this._unsetClickedSummaryItem();
+               this._focusGrabber.ungrabFocus();
+           }));
         this._focusGrabber.connect('escape-pressed', Lang.bind(this, this._escapeTray));
 
         this._trayState = State.HIDDEN;
@@ -1023,18 +1029,22 @@ MessageTray.prototype = {
         Main.overview.connect('showing', Lang.bind(this,
             function() {
                 this._overviewVisible = true;
-                if (this._locked)
+                if (this._locked) {
+                    this._unsetClickedSummaryItem();
                     this._unlock();
-                else
+                } else {
                     this._updateState();
+                }
             }));
         Main.overview.connect('hiding', Lang.bind(this,
             function() {
                 this._overviewVisible = false;
-                if (this._locked)
+                if (this._locked) {
+                    this._unsetClickedSummaryItem();
                     this._unlock();
-                else
+                } else {
                     this._updateState();
+                }
             }));
 
         this._summaryItems = [];
@@ -1206,7 +1216,6 @@ MessageTray.prototype = {
         if (!this._locked)
             return;
         this._locked = false;
-        this._unsetClickedSummaryItem();
         this._updateState();
     },
 
@@ -1839,6 +1848,8 @@ MessageTray.prototype = {
             this._onNotify(summaryNotification.source, summaryNotification);
             this._reNotifyWithSummaryNotificationAfterHide = false;
         }
+        if (this._clickedSummaryItem)
+            this._updateState();
     }
 };
 
