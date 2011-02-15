@@ -725,6 +725,8 @@ st_theme_node_render_background_with_border (StThemeNode *node)
   cairo_pattern_t *pattern = NULL;
   cairo_path_t *outline_path = NULL;
   gboolean draw_solid_background = TRUE;
+  gboolean background_is_translucent;
+  gboolean interior_dirty;
   gboolean draw_background_image_shadow = FALSE;
   gboolean has_visible_outline;
   ClutterColor border_color;
@@ -765,6 +767,12 @@ st_theme_node_render_background_with_border (StThemeNode *node)
   rowstride = cairo_format_stride_for_width (CAIRO_FORMAT_ARGB32,
                                              paint_box.x2 - paint_box.x1);
   data = g_new0 (guchar, (paint_box.y2 - paint_box.y1) * rowstride);
+
+  /* We zero initialize the destination memory, so it's fully transparent
+   * by default.
+   */
+  interior_dirty = FALSE;
+
   surface = cairo_image_surface_create_for_data (data,
                                                  CAIRO_FORMAT_ARGB32,
                                                  paint_box.x2 - paint_box.x1,
@@ -789,6 +797,17 @@ st_theme_node_render_background_with_border (StThemeNode *node)
     {
       pattern = create_cairo_pattern_of_background_gradient (node);
       draw_solid_background = FALSE;
+
+      /* If the gradient has any translucent areas, we need to
+       * erase the interior region before drawing, so that we show
+       * what's actually under the gradient and not whatever is
+       * left over from filling the border, etc.
+       */
+      if (node->background_color.alpha < 255 ||
+          node->background_gradient_end.alpha < 255)
+        background_is_translucent = TRUE;
+      else
+        background_is_translucent = FALSE;
     }
   else
     {
@@ -803,10 +822,24 @@ st_theme_node_render_background_with_border (StThemeNode *node)
           if (shadow_spec && pattern != NULL)
             draw_background_image_shadow = TRUE;
         }
+
+      /* We never need to clear the interior region before drawing the
+       * background image, because it either always fills the entire area
+       * opaquely, or we draw the solid background behind it.
+       */
+      background_is_translucent = FALSE;
     }
 
   if (pattern == NULL)
     draw_solid_background = TRUE;
+
+  /* drawing the solid background implicitly clears the interior
+   * region, so if we're going to draw a solid background before drawing
+   * the background pattern, then we don't need to bother also clearing the
+   * background region.
+   */
+  if (draw_solid_background)
+    background_is_translucent = FALSE;
 
   has_visible_outline = st_theme_node_has_visible_outline (node);
 
@@ -857,6 +890,11 @@ st_theme_node_render_background_with_border (StThemeNode *node)
                              border_color.blue / 255.,
                              border_color.alpha / 255.);
       cairo_fill (cr);
+
+      /* We were sloppy when filling in the border, and now the interior
+       * is filled with the border color, too.
+       */
+      interior_dirty = TRUE;
 
       if (radius[ST_CORNER_TOPLEFT] > MAX(border_width[ST_SIDE_TOP],
                                           border_width[ST_SIDE_LEFT]))
@@ -935,6 +973,13 @@ st_theme_node_render_background_with_border (StThemeNode *node)
        * background-clip: border-box; semantics.
        */
       cairo_append_path (cr, outline_path);
+    }
+
+  if (interior_dirty && background_is_translucent)
+    {
+      cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+      cairo_fill_preserve (cr);
+      cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
     }
 
   if (draw_solid_background)
