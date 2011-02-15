@@ -151,7 +151,7 @@ clutter_container_default_init (ClutterContainerInterface *iface)
    * ClutterContainer::child-notify:
    * @container: the container which received the signal
    * @actor: the child that has had a property set
-   * @pspec: the #GParamSpec of the property set
+   * @pspec: (type GParamSpec): the #GParamSpec of the property set
    *
    * The ::child-notify signal is emitted each time a property is
    * being set through the clutter_container_child_set() and
