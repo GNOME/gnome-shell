@@ -332,16 +332,15 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
                                user_data,
                                &new_position))
     {
-      int waste =
-        _cogl_rectangle_map_get_remaining_space (atlas->map) *
-        100 / (_cogl_rectangle_map_get_width (atlas->map) *
-               _cogl_rectangle_map_get_height (atlas->map));
       COGL_NOTE (ATLAS, "%p: Atlas is %ix%i, has %i textures and is %i%% waste",
                  atlas,
                  _cogl_rectangle_map_get_width (atlas->map),
                  _cogl_rectangle_map_get_height (atlas->map),
                  _cogl_rectangle_map_get_n_rectangles (atlas->map),
-                 waste);
+                 /* waste as a percentage */
+                 _cogl_rectangle_map_get_remaining_space (atlas->map) *
+                 100 / (_cogl_rectangle_map_get_width (atlas->map) *
+                        _cogl_rectangle_map_get_height (atlas->map)));
 
       atlas->update_position_cb (user_data,
                                  atlas->texture,
