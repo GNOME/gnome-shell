@@ -1103,10 +1103,8 @@ ThumbnailList.prototype = {
 
 function _drawArrow(area, side) {
     let themeNode = area.get_theme_node();
-    let borderColor = new Clutter.Color();
-    themeNode.get_border_color(side, borderColor);
-    let bodyColor = new Clutter.Color();
-    themeNode.get_foreground_color(bodyColor);
+    let borderColor = themeNode.get_border_color(side);
+    let bodyColor = themeNode.get_foreground_color();
 
     let [width, height] = area.get_surface_size ();
     let cr = area.get_context();
