@@ -161,8 +161,6 @@ SearchTab.prototype = {
     },
 
     _reset: function () {
-        this._entry.sync_hover();
-
         this._text.text = '';
 
         // Return focus to the viewSelector
@@ -262,18 +260,14 @@ SearchTab.prototype = {
 
     _onCapturedEvent: function(actor, event) {
         let source = event.get_source();
-        let panelEvent = source && Main.panel.actor.contains(source);
 
         switch (event.type()) {
             case Clutter.EventType.BUTTON_PRESS:
                 // the user clicked outside after activating the entry, but
                 // with no search term entered - cancel the search
-                if (source != this._text && this._text.text == '') {
+                if (source != this._text && this._text.text == '')
                     this._reset();
-                    // allow only panel events to continue
-                    return !panelEvent;
-                }
-                return false;
+                break;
             case Clutter.EventType.KEY_PRESS:
                 // If some "special" actor grabbed the focus (run
                 // dialog, looking glass); we don't want to interfere
@@ -305,13 +299,10 @@ SearchTab.prototype = {
                     this._text.event(event, false);
                 }
 
-                return false;
-            default:
-                // Suppress all other events outside the panel while the entry
-                // is activated and no search has been entered - any click
-                // outside the entry will cancel the search
-                return (this._text.text == '' && !panelEvent);
+                break;
         }
+
+        return false;
     },
 
     _doSearch: function () {
