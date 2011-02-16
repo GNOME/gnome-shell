@@ -513,7 +513,7 @@ Overview.prototype = {
         if (this._shown)
             return;
         // Do this manually instead of using _syncInputMode, to handle failure
-        if (!Main.pushModal(this.viewSelector.actor))
+        if (!Main.pushModal(this._group))
             return;
         this._modal = true;
         this._animateVisible();

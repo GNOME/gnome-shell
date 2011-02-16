@@ -80,19 +80,17 @@ ViewTab.prototype = {
 };
 
 
-function SearchTab(focusBase) {
-    this._init(focusBase);
+function SearchTab() {
+    this._init();
 }
 
 SearchTab.prototype = {
     __proto__: BaseTab.prototype,
 
-    _init: function(focusBase) {
-        this._searchActive = false;
+    _init: function() {
+        this.active = false;
         this._searchPending = false;
-        this._keyPressId = 0;
         this._searchTimeoutId = 0;
-        this._focusBase = focusBase;
 
         this._searchSystem = new Search.SearchSystem();
         this._openSearchSystem = new Search.OpenSearchSystem();
@@ -105,6 +103,7 @@ SearchTab.prototype = {
                                      hint_text: _("Type to search..."),
                                      track_hover: true });
         this._text = this._entry.clutter_text;
+        this._text.connect('key-press-event', Lang.bind(this, this._onKeyPress));
 
         this._inactiveIcon = new St.Icon({ style_class: 'search-entry-icon',
                                            icon_name: 'edit-find',
@@ -142,29 +141,16 @@ SearchTab.prototype = {
         this._capturedEventId = 0;
     },
 
-    show: function() {
-        BaseTab.prototype.show.call(this);
-
-        if (this._keyPressId == 0)
-            this._keyPressId = this._text.connect('key-press-event',
-                                                  Lang.bind(this, this._onKeyPress));
-    },
-
     hide: function() {
         BaseTab.prototype.hide.call(this);
 
-        if (this._keyPressId > 0) {
-            this._text.disconnect(this._keyPressId);
-            this._keyPressId = 0;
-        }
         this._reset();
     },
 
     _reset: function () {
         this._text.text = '';
 
-        // Return focus to the viewSelector
-        global.stage.set_key_focus(this._focusBase);
+        global.stage.set_key_focus(null);
 
         this._text.set_cursor_visible(true);
         this._text.set_selection(0, 0);
@@ -172,10 +158,7 @@ SearchTab.prototype = {
 
     _updateCursorVisibility: function() {
         let focus = global.stage.get_key_focus();
-        if (focus == this._focusBase || focus == this._text)
-            this._text.set_cursor_visible(true);
-        else
-            this._text.set_cursor_visible(false);
+        this._text.set_cursor_visible(focus == this._text);
     },
 
     _onMapped: function() {
@@ -198,19 +181,24 @@ SearchTab.prototype = {
         this._searchResults.createProviderMeta(provider);
     },
 
+    startSearch: function(event) {
+        global.stage.set_key_focus(this._text);
+        this._text.event(event, false);
+    },
+
     // the entry does not show the hint
     _isActivated: function() {
         return this._text.text == this._entry.get_text();
     },
 
     _onTextChanged: function (se, prop) {
-        let searchPreviouslyActive = this._searchActive;
-        this._searchActive = this._entry.get_text() != '';
-        this._searchPending = this._searchActive && !searchPreviouslyActive;
+        let searchPreviouslyActive = this.active;
+        this.active = this._entry.get_text() != '';
+        this._searchPending = this.active && !searchPreviouslyActive;
         if (this._searchPending) {
             this._searchResults.startingSearch();
         }
-        if (this._searchActive) {
+        if (this.active) {
             this._entry.set_secondary_icon(this._activeIcon);
 
             if (this._iconClickedId == 0) {
@@ -228,7 +216,7 @@ SearchTab.prototype = {
             this._entry.set_secondary_icon(this._inactiveIcon);
             this.emit('search-cancelled');
         }
-        if (!this._searchActive) {
+        if (!this.active) {
             if (this._searchTimeoutId > 0) {
                 Mainloop.source_remove(this._searchTimeoutId);
                 this._searchTimeoutId = 0;
@@ -243,63 +231,35 @@ SearchTab.prototype = {
     _onKeyPress: function(entry, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.Up) {
-            if (!this._searchActive)
+            if (!this.active)
                 return true;
             this._searchResults.selectUp(false);
 
             return true;
         } else if (symbol == Clutter.Down) {
-            if (!this._searchActive)
+            if (!this.active)
                 return true;
 
             this._searchResults.selectDown(false);
             return true;
+        } else if (symbol == Clutter.Escape) {
+            if (this._isActivated()) {
+                this._reset();
+                return true;
+            }
         }
+
         return false;
     },
 
     _onCapturedEvent: function(actor, event) {
-        let source = event.get_source();
-
-        switch (event.type()) {
-            case Clutter.EventType.BUTTON_PRESS:
+        if (event.type() == Clutter.EventType.BUTTON_PRESS) {
+            let source = event.get_source();
+            if (source != this._text && this._text.text == '') {
                 // the user clicked outside after activating the entry, but
                 // with no search term entered - cancel the search
-                if (source != this._text && this._text.text == '')
-                    this._reset();
-                break;
-            case Clutter.EventType.KEY_PRESS:
-                // If some "special" actor grabbed the focus (run
-                // dialog, looking glass); we don't want to interfere
-                // with that
-                let focus = global.stage.get_key_focus();
-                if (focus != this._focusBase && focus != this._text)
-                    return false;
-
-                let sym = event.get_key_symbol();
-
-                // If we have an active search, Escape cancels it - if we
-                // haven't, the key is ignored
-                if (sym == Clutter.Escape)
-                    if (this._isActivated()) {
-                        this._reset();
-                        return true;
-                    } else {
-                        return false;
-                    }
-
-                // Ignore non-printable keys
-                if (!Clutter.keysym_to_unicode(sym))
-                    return false;
-
-                // Search started - move the key focus to the entry and
-                // "repeat" the event
-                if (!this._isActivated()) {
-                    global.stage.set_key_focus(this._text);
-                    this._text.event(event, false);
-                }
-
-                break;
+                this._reset();
+            }
         }
 
         return false;
@@ -323,8 +283,6 @@ ViewSelector.prototype = {
     _init : function() {
         this.actor = new St.BoxLayout({ name: 'viewSelector',
                                         vertical: true });
-        this.actor.connect('key-press-event',
-                           Lang.bind(this, this._onKeyPress));
 
         // The tab bar is located at the top of the view selector and
         // holds both "normal" tab labels and the search entry. The former
@@ -358,7 +316,7 @@ ViewSelector.prototype = {
         this._tabs = [];
         this._activeTab = null;
 
-        this._searchTab = new SearchTab(this.actor);
+        this._searchTab = new SearchTab();
         this._searchArea.set_child(this._searchTab.title);
         this._addTab(this._searchTab);
 
@@ -369,10 +327,22 @@ ViewSelector.prototype = {
 
         Main.overview.connect('item-drag-begin',
                               Lang.bind(this, this._switchDefaultTab));
-        Main.overview.connect('showing',
-                              Lang.bind(this, this._switchDefaultTab));
-        Main.overview.connect('hiding',
-                              Lang.bind(this, this._switchDefaultTab));
+
+        this._stageKeyPressId = 0;
+        Main.overview.connect('showing', Lang.bind(this,
+            function () {
+                this._switchDefaultTab();
+                this._stageKeyPressId = global.stage.connect('key-press-event',
+                                                             Lang.bind(this, this._onStageKeyPress));
+            }));
+        Main.overview.connect('hiding', Lang.bind(this,
+            function () {
+                this._switchDefaultTab();
+                if (this._stageKeyPressId != 0) {
+                    global.stage.disconnect(this._stageKeyPressId);
+                    this._stageKeyPressId = 0;
+                }
+            }));
 
         // Public constraints which may be used to tie actors' height or
         // vertical position to the current tab's content; as the content's
@@ -527,22 +497,25 @@ ViewSelector.prototype = {
             }));
     },
 
-    _onKeyPress: function(actor, event) {
+    _onStageKeyPress: function(actor, event) {
         let modifiers = Shell.get_event_state(event);
         let symbol = event.get_key_symbol();
+
         if (symbol == Clutter.Escape) {
             Main.overview.hide();
             return true;
         } else if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
             if (symbol == Clutter.Page_Up) {
-                if (!this._searchActive)
+                if (!this._searchTab.active)
                     this._prevTab();
                 return true;
             } else if (symbol == Clutter.Page_Down) {
-                if (!this._searchActive)
+                if (!this._searchTab.active)
                     this._nextTab();
                 return true;
             }
+        } else if (Clutter.keysym_to_unicode(symbol)) {
+            this._searchTab.startSearch(event);
         }
         return false;
     },
