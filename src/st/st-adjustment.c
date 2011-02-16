@@ -602,6 +602,18 @@ st_adjustment_set_values (StAdjustment *adjustment,
   g_object_thaw_notify (G_OBJECT (adjustment));
 }
 
+/**
+ * st_adjustment_get_values:
+ * @adjustment: an #StAdjustment
+ * @value: (out): the current value
+ * @lower: (out): the lower bound
+ * @upper: (out): the upper bound
+ * @step_increment: (out): the step increment
+ * @page_increment: (out): the page increment
+ * @page_size: (out): the page size
+ *
+ * Gets all of @adjustment's values at once.
+ */
 void
 st_adjustment_get_values (StAdjustment *adjustment,
                           gdouble      *value,
