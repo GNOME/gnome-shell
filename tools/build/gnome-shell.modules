@@ -213,8 +213,8 @@
     </dependencies>
   </autotools>
 
-  <autotools id="telepathy-glib">
-    <branch repo="git.collabora.co.uk" module="telepathy-glib"/>
+  <autotools id="telepathy-glib" autogenargs="--disable-Werror" >
+    <branch repo="git.collabora.co.uk" module="telepathy-glib" />
     <dependencies>
       <dep package="gobject-introspection"/>
     </dependencies>
