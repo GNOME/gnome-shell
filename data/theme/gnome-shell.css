@@ -763,6 +763,7 @@ StTooltip StLabel {
     color: #666666;
     font-size: 10px;
     padding: 2px;
+    font-weight: bold;
 }
 
 .calendar-change-month-back {
@@ -793,8 +794,9 @@ StTooltip StLabel {
 
 .datemenu-date-label {
     padding: .4em 1.75em;
-    font-size: 16px;
-    color: #ffffff;
+    font-size: 14px;
+    color: #cccccc;
+    font-weight: bold;
 }
 
 .calendar-day-base {
@@ -824,7 +826,7 @@ StTooltip StLabel {
 /* Hack used in lieu of border-collapse - see calendar.js */
 .calendar-day {
     border: 1px solid #333333;
-    color: #cccccc;
+    color: #888888;
     border-top-width: 0;
     border-left-width: 0;
 }
@@ -855,10 +857,11 @@ StTooltip StLabel {
 
 .calendar-day-with-events {
     font-weight: bold;
+    color: #cccccc;
 }
 
 .events-header-vbox {
-    spacing: 10px;
+    spacing: 8px;
 }
 
 .events-header {
@@ -866,13 +869,14 @@ StTooltip StLabel {
 }
 
 .events-header-hbox {
-    spacing: 8px;
     padding: 0.3em;
 }
 
 .events-day-header {
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: bold;
     color: rgba(153, 153, 153, 1.0);
+    padding-left: 0.3em;
 }
 
 .events-day-dayname {
@@ -883,7 +887,6 @@ StTooltip StLabel {
 
 .events-day-time {
     font-size: 12px;
-    font-weight: bold;
     color: #fff;
     text-align: right;
 }
@@ -899,6 +902,7 @@ StTooltip StLabel {
 
 .events-time-box {
     width: 70px;
+    padding-right: 8px;
 }
 
 .events-event-box {
