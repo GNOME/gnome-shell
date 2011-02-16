@@ -220,7 +220,7 @@ AppMenuButton.prototype = {
 
         this._visible = !Main.overview.visible;
         if (!this._visible)
-            this.hide();
+            this.actor.hide();
         Main.overview.connect('hiding', Lang.bind(this, function () {
             this.show();
         }));
@@ -255,28 +255,27 @@ AppMenuButton.prototype = {
         if (this._visible)
             return;
 
+        this._visible = true;
         this.actor.show();
+        Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor,
                          { opacity: 255,
                            time: Overview.ANIMATION_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: function() {
-                               this._visible = true;
-                           },
-                           onCompleteScope: this });
+                           transition: 'easeOutQuad' });
     },
 
     hide: function() {
         if (!this._visible)
             return;
 
+        this._visible = false;
+        Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor,
                          { opacity: 0,
                            time: Overview.ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: function() {
                                this.actor.hide();
-                               this._visible = false;
                            },
                            onCompleteScope: this });
     },
