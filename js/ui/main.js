@@ -224,12 +224,28 @@ function start() {
 let _workspaces = [];
 let _checkWorkspacesId = 0;
 
+/*
+ * When the last window closed on a workspace is a dialog or splash
+ * screen, we assume that it might be an initial window shown before
+ * the main window of an application, and give the app a grace period
+ * where it can map another window before we remove the workspace.
+ */
+const LAST_WINDOW_GRACE_TIME = 1000;
+
 function _checkWorkspaces() {
     let i;
     let emptyWorkspaces = [];
 
-    for (i = 0; i < _workspaces.length; i++)
-        emptyWorkspaces[i] = true;
+    for (i = 0; i < _workspaces.length; i++) {
+        let lastRemoved = _workspaces[i]._lastRemovedWindow;
+        if (lastRemoved &&
+            (lastRemoved.get_window_type() == Meta.WindowType.SPLASHSCREEN ||
+             lastRemoved.get_window_type() == Meta.WindowType.DIALOG ||
+             lastRemoved.get_window_type() == Meta.WindowType.MODAL_DIALOG))
+                emptyWorkspaces[i] = false;
+        else
+            emptyWorkspaces[i] = true;
+    }
 
     let windows = global.get_window_actors();
     for (i = 0; i < windows.length; i++) {
@@ -258,6 +274,17 @@ function _checkWorkspaces() {
     return false;
 }
 
+function _windowRemoved(workspace, window) {
+    workspace._lastRemovedWindow = window;
+    _queueCheckWorkspaces();
+    Mainloop.timeout_add(LAST_WINDOW_GRACE_TIME, function() {
+        if (workspace._lastRemovedWindow == window) {
+            workspace._lastRemovedWindow = null;
+            _queueCheckWorkspaces();
+        }
+    });
+}
+
 function _queueCheckWorkspaces() {
     if (_checkWorkspacesId == 0)
         _checkWorkspacesId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, _checkWorkspaces);
@@ -281,7 +308,7 @@ function _nWorkspacesChanged() {
         for (w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
             let workspace = _workspaces[w];
             workspace._windowAddedId = workspace.connect('window-added', _queueCheckWorkspaces);
-            workspace._windowRemovedId = workspace.connect('window-removed', _queueCheckWorkspaces);
+            workspace._windowRemovedId = workspace.connect('window-removed', _windowRemoved);
         }
 
     } else {
