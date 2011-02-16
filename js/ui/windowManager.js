@@ -93,6 +93,8 @@ WindowManager.prototype = {
 
         this._dimmedWindows = [];
 
+        this._animationBlockCount = 0;
+
         this._switchData = null;
         this._shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
         this._shellwm.connect('kill-window-effects', Lang.bind(this, function (shellwm, actor) {
@@ -139,8 +141,16 @@ WindowManager.prototype = {
             this._shellwm.connect('keybinding::' + keybinding, handler);
     },
 
+    blockAnimations: function() {
+        this._animationBlockCount++;
+    },
+
+    unblockAnimations: function() {
+        this._animationBlockCount = Math.max(0, this._animationBlockCount - 1);
+    },
+
     _shouldAnimate : function(actor) {
-        if (Main.overview.visible)
+        if (Main.overview.visible || this._animationsBlocked > 0)
             return false;
         if (actor && (actor.meta_window.get_window_type() != Meta.WindowType.NORMAL))
             return false;
