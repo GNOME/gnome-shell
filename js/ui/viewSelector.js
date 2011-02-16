@@ -23,7 +23,8 @@ function SearchEntry(focusBase) {
 SearchEntry.prototype = {
     _init : function(focusBase) {
         this.actor = new St.Entry({ name: 'searchEntry',
-                                    hint_text: _("Search your computer") });
+                                    hint_text: _("Search your computer"),
+                                    track_hover: true });
         this.entry = this.actor.clutter_text;
 
         this.actor.clutter_text.connect('text-changed', Lang.bind(this,
@@ -73,13 +74,7 @@ SearchEntry.prototype = {
     },
 
     reset: function () {
-        let [x, y, mask] = global.get_pointer();
-        let actor = global.stage.get_actor_at_pos (Clutter.PickMode.REACTIVE,
-                                                   x, y);
-        // this.actor is never hovered directly, only its clutter_text and icon
-        let hovered = this.actor == actor.get_parent();
-
-        this.actor.set_hover(hovered);
+        this.actor.sync_hover();
 
         this.entry.text = '';
 
