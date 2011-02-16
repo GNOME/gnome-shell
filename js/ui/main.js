@@ -262,10 +262,26 @@ function _checkWorkspaces() {
         emptyWorkspaces.push(false);
     }
 
+    let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+    let currentWorkspaceEmpty = emptyWorkspaces[activeWorkspaceIndex];
+
+    if (currentWorkspaceEmpty) {
+        // "Merge" the empty workspace we are removing with the one at the end
+        wm.blockAnimations();
+    }
+
     // Delete other empty workspaces; do it from the end to avoid index changes
     for (i = emptyWorkspaces.length - 2; i >= 0; i--) {
         if (emptyWorkspaces[i])
             global.screen.remove_workspace(_workspaces[i], global.get_current_time());
+    }
+
+    if (currentWorkspaceEmpty) {
+        global.screen.get_workspace_by_index(global.screen.n_workspaces - 1).activate(global.get_current_time());
+        wm.unblockAnimations();
+
+        if (!overview.visible)
+            overview.show();
     }
 
     _checkWorkspacesId = 0;
