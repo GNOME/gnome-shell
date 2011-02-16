@@ -1628,6 +1628,7 @@ shell_global_get_current_time (ShellGlobal *global)
 {
   guint32 time;
   MetaDisplay *display;
+  const ClutterEvent *clutter_event;
 
   /* In case we have a xdnd timestamp use it */
   if (global->xdnd_timestamp != 0)
@@ -1650,8 +1651,16 @@ shell_global_get_current_time (ShellGlobal *global)
   time = meta_display_get_current_time (display);
   if (time != CLUTTER_CURRENT_TIME)
       return time;
+  /*
+   * We don't use clutter_get_current_event_time as it can give us a
+   * too old timestamp if there is no current event.
+   */
+  clutter_event = clutter_get_current_event ();
 
-  return clutter_get_current_event_time ();
+  if (clutter_event != NULL)
+    return clutter_event_get_time (clutter_event);
+  else
+    return CLUTTER_CURRENT_TIME;
 }
 
 /**
