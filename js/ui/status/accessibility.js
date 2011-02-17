@@ -23,7 +23,7 @@ const KEY_BOUNCE_KEYS_ENABLED = 'bouncekeys-enable';
 const KEY_SLOW_KEYS_ENABLED   = 'slowkeys-enable';
 const KEY_MOUSE_KEYS_ENABLED  = 'mousekeys-enable';
 
-const MAGNIFIER_SCHEMA = 'org.gnome.desktop.a11y.magnifier';
+const APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const AT_SCREEN_KEYBOARD_SCHEMA = 'org.gnome.desktop.default-applications.at.mobility';
 const AT_SCREEN_READER_SCHEMA   = 'org.gnome.desktop.default-applications.at.visual';
 
@@ -80,7 +80,8 @@ ATIndicator.prototype = {
         let highContrast = this._buildHCItem();
         this.menu.addMenuItem(highContrast);
 
-        let magnifier = this._buildItem(_("Zoom"), MAGNIFIER_SCHEMA, 'show-magnifier');
+        let magnifier = this._buildItem(_("Zoom"), APPLICATIONS_SCHEMA,
+                                                   'screen-magnifier-enabled');
         this.menu.addMenuItem(magnifier);
 
         let textZoom = this._buildFontItem();

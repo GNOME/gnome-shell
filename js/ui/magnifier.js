@@ -33,7 +33,10 @@ const MOUSE_POLL_FREQUENCY = 50;
 const CROSSHAIRS_CLIP_SIZE = [100, 100];
 
 // Settings
-const SHOW_KEY                  = 'show-magnifier';
+const APPLICATIONS_SCHEMA       = 'org.gnome.desktop.a11y.applications';
+const SHOW_KEY                  = 'screen-magnifier-enabled';
+
+const MAGNIFIER_SCHEMA          = 'org.gnome.desktop.a11y.magnifier';
 const SCREEN_POSITION_KEY       = 'screen-position';
 const MAG_FACTOR_KEY            = 'mag-factor';
 const LENS_MODE_KEY             = 'lens-mode';
@@ -438,7 +441,8 @@ Magnifier.prototype = {
     },
 
     _settingsInit: function(zoomRegion) {
-        this._settings = new Gio.Settings({ schema: 'org.gnome.desktop.a11y.magnifier' });
+        this._appSettings = new Gio.Settings({ schema: APPLICATIONS_SCHEMA });
+        this._settings = new Gio.Settings({ schema: MAGNIFIER_SCHEMA });
 
         if (zoomRegion) {
             // Mag factor is accurate to two decimal places.
@@ -462,9 +466,9 @@ Magnifier.prototype = {
         this.addCrosshairs();
         this.setCrosshairsVisible(showCrosshairs);
 
-        this._settings.connect('changed::' + SHOW_KEY,
-                               Lang.bind(this, function() {
-            this.setActive(this._settings.get_boolean(SHOW_KEY));
+        this._appSettings.connect('changed::' + SHOW_KEY,
+                                  Lang.bind(this, function() {
+            this.setActive(this._appSettings.get_boolean(SHOW_KEY));
         }));
 
         this._settings.connect('changed::' + SCREEN_POSITION_KEY,
@@ -508,7 +512,7 @@ Magnifier.prototype = {
             this.setCrosshairsClip(this._settings.get_boolean(CROSS_HAIRS_CLIP_KEY));
         }));
 
-        return this._settings.get_boolean(SHOW_KEY);
+        return this._appSettings.get_boolean(SHOW_KEY);
    },
 
     _updateScreenPosition: function() {
