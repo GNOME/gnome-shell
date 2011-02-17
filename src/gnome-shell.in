@@ -524,8 +524,6 @@ parser.add_option("", "--perf-output", metavar="OUTPUT_FILE",
 		  help="Output file to write performance report")
 parser.add_option("", "--perf-upload", action="store_true",
 		  help="Upload performance report to server")
-parser.add_option("", "--eval-file", metavar="EVAL_FILE",
-                  help="Evaluate the contents of the given JavaScript file")
 parser.add_option("", "--version", action="callback", callback=show_version,
                   help="Display version and exit")
 
@@ -543,18 +541,6 @@ if options.perf and json is None:
 if 'DISPLAY' not in os.environ:
     running_env = get_running_session_environs()
     os.environ.update(running_env)
-
-if options.eval_file:
-    f = open(options.eval_file)
-    contents = f.read()
-    f.close()
-
-    session = dbus.SessionBus()
-    shell = session.get_object('org.gnome.Shell', '/org/gnome/Shell')
-    shell = dbus.Interface(shell, 'org.gnome.Shell')
-    result = shell.Eval(contents)
-    print result
-    sys.exit(0)
 
 if options.debug_command:
     options.debug = True
