@@ -168,7 +168,7 @@ Source.prototype = {
             let uri = file.get_uri();
             this._iconBox.child = textureCache.load_uri_async(uri, this._iconBox._size, this._iconBox._size);
         } else {
-            this._iconBox.child = new St.Icon({ icon_name: 'stock_person',
+            this._iconBox.child = new St.Icon({ icon_name: 'avatar-default',
                                                 icon_type: St.IconType.FULLCOLOR,
                                                 icon_size: this._iconBox._size });
         }
