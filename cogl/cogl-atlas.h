@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2010 Intel Corporation.
+ * Copyright (C) 2010,2011 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -55,7 +55,8 @@ struct _CoglAtlas
 
   CoglAtlasUpdatePositionCallback update_position_cb;
 
-  CoglCallbackList reorganize_callbacks;
+  CoglCallbackList pre_reorganize_callbacks;
+  CoglCallbackList post_reorganize_callbacks;
 };
 
 CoglAtlas *
@@ -84,12 +85,14 @@ _cogl_atlas_copy_rectangle (CoglAtlas        *atlas,
 
 void
 _cogl_atlas_add_reorganize_callback (CoglAtlas            *atlas,
-                                     CoglCallbackListFunc  callback,
+                                     CoglCallbackListFunc  pre_callback,
+                                     CoglCallbackListFunc  post_callback,
                                      void                 *user_data);
 
 void
 _cogl_atlas_remove_reorganize_callback (CoglAtlas            *atlas,
-                                        CoglCallbackListFunc  callback,
+                                        CoglCallbackListFunc  pre_callback,
+                                        CoglCallbackListFunc  post_callback,
                                         void                 *user_data);
 
 #endif /* __COGL_ATLAS_H */

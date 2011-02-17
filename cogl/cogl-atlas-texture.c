@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2009,2010 Intel Corporation.
+ * Copyright (C) 2009,2010,2011 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -83,18 +83,25 @@ _cogl_atlas_texture_update_position_cb (gpointer user_data,
 }
 
 static void
-_cogl_atlas_texture_reorganize_foreach_cb (const CoglRectangleMapEntry *entry,
-                                           void *rectangle_data,
-                                           void *user_data)
+_cogl_atlas_texture_pre_reorganize_foreach_cb
+                                         (const CoglRectangleMapEntry *entry,
+                                          void *rectangle_data,
+                                          void *user_data)
 {
+  CoglAtlasTexture *atlas_tex = rectangle_data;
+
+  /* Keep a reference to the texture because we don't want it to be
+     destroyed during the reorganization */
+  cogl_handle_ref (atlas_tex);
+
   /* Notify cogl-pipeline.c that the texture's underlying GL texture
    * storage is changing so it knows it may need to bind a new texture
    * if the CoglTexture is reused with the same texture unit. */
-  _cogl_pipeline_texture_storage_change_notify (rectangle_data);
+  _cogl_pipeline_texture_storage_change_notify (COGL_TEXTURE (atlas_tex));
 }
 
 static void
-_cogl_atlas_texture_reorganize_cb (void *data)
+_cogl_atlas_texture_pre_reorganize_cb (void *data)
 {
   CoglAtlas *atlas = data;
 
@@ -109,8 +116,61 @@ _cogl_atlas_texture_reorganize_cb (void *data)
 
   if (atlas->map)
     _cogl_rectangle_map_foreach (atlas->map,
-                                 _cogl_atlas_texture_reorganize_foreach_cb,
+                                 _cogl_atlas_texture_pre_reorganize_foreach_cb,
                                  NULL);
+}
+
+typedef struct
+{
+  CoglAtlasTexture **textures;
+  /* Number of textures found so far */
+  unsigned int n_textures;
+} CoglAtlasTextureGetRectanglesData;
+
+static void
+_cogl_atlas_texture_get_rectangles_cb (const CoglRectangleMapEntry *entry,
+                                       void *rectangle_data,
+                                       void *user_data)
+{
+  CoglAtlasTextureGetRectanglesData *data = user_data;
+
+  data->textures[data->n_textures++] = rectangle_data;
+}
+
+static void
+_cogl_atlas_texture_post_reorganize_cb (void *user_data)
+{
+  CoglAtlas *atlas = user_data;
+
+  if (atlas->map)
+    {
+      CoglAtlasTextureGetRectanglesData data;
+      unsigned int i;
+
+      data.textures = g_new (CoglAtlasTexture *,
+                             _cogl_rectangle_map_get_n_rectangles (atlas->map));
+      data.n_textures = 0;
+
+      /* We need to remove all of the references that we took during
+         the preorganize callback. We have to get a separate array of
+         the textures because CoglRectangleMap doesn't support
+         removing rectangles during iteration */
+      _cogl_rectangle_map_foreach (atlas->map,
+                                   _cogl_atlas_texture_get_rectangles_cb,
+                                   &data);
+
+      for (i = 0; i < data.n_textures; i++)
+        {
+          /* Ignore textures that don't have an atlas yet. This will
+             happen when a new texture is added because we allocate
+             the structure for the texture so that it can get stored
+             in the atlas but it isn't a valid object yet */
+          if (data.textures[i]->atlas)
+            cogl_object_unref (data.textures[i]);
+        }
+
+      g_free (data.textures);
+    }
 }
 
 static void
@@ -136,7 +196,8 @@ _cogl_atlas_texture_create_atlas (void)
                            _cogl_atlas_texture_update_position_cb);
 
   _cogl_atlas_add_reorganize_callback (atlas,
-                                       _cogl_atlas_texture_reorganize_cb,
+                                       _cogl_atlas_texture_pre_reorganize_cb,
+                                       _cogl_atlas_texture_post_reorganize_cb,
                                        atlas);
 
   ctx->atlases = g_slist_prepend (ctx->atlases, atlas);
@@ -582,6 +643,9 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
   /* We need to allocate the texture now because we need the pointer
      to set as the data for the rectangle in the atlas */
   atlas_tex = g_new (CoglAtlasTexture, 1);
+  /* Mark it as having no atlas so we don't try to unref it in
+     _cogl_atlas_texture_post_reorganize_cb */
+  atlas_tex->atlas = NULL;
 
   _cogl_texture_init (COGL_TEXTURE (atlas_tex),
                       &cogl_atlas_texture_vtable);

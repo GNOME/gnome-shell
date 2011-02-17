@@ -241,7 +241,7 @@ cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
             }
 
           _cogl_atlas_add_reorganize_callback
-            (atlas, cogl_pango_glyph_cache_reorganize_cb, cache);
+            (atlas, cogl_pango_glyph_cache_reorganize_cb, NULL, cache);
 
           cache->atlases = g_slist_prepend (cache->atlases, atlas);
         }
