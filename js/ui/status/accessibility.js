@@ -24,7 +24,6 @@ const KEY_SLOW_KEYS_ENABLED   = 'slowkeys-enable';
 const KEY_MOUSE_KEYS_ENABLED  = 'mousekeys-enable';
 
 const APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
-const AT_SCREEN_KEYBOARD_SCHEMA = 'org.gnome.desktop.default-applications.at.mobility';
 
 const XSETTINGS_SCHEMA = 'org.gnome.settings-daemon.plugins.xsettings';
 const KEY_DPI = 'dpi';
@@ -90,7 +89,8 @@ ATIndicator.prototype = {
                                                                'screen-reader-enabled');
         this.menu.addMenuItem(screenReader);
 
-        let screenKeyboard = this._buildItem(_("Screen Keyboard"), AT_SCREEN_KEYBOARD_SCHEMA, 'startup');
+        let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+                                                                   'screen-keyboard-enabled');
         this.menu.addMenuItem(screenKeyboard);
 
         let visualBell = this._buildItemGConf(_("Visual Alerts"), client, KEY_VISUAL_BELL);
