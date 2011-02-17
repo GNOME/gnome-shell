@@ -478,7 +478,7 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
                      muted_log_handler, NULL);
   g_log_set_handler ("GdmUser", G_LOG_LEVEL_DEBUG,
                      muted_log_handler, NULL);
-  g_log_set_handler ("libgnome-bluetooth", G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_MESSAGE,
+  g_log_set_handler ("Bluetooth", G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_MESSAGE,
                      muted_log_handler, NULL);
 
   /* Initialize the global object here. */
