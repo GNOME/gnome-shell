@@ -42,6 +42,9 @@ src/Makefile
 src/Makefile.in
 src/gnomeshell-taskpanel
 src/gnome-shell
+src/gnome-shell-extension-tool
+src/gnome-shell-installed
+src/gnome-shell-jhbuild
 src/run-js-test
 src/test-recorder
 src/test-recorder.ogg

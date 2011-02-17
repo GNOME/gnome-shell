@@ -220,7 +220,7 @@
     </dependencies>
   </autotools>
 
-  <autotools id="gnome-shell">
+  <autotools id="gnome-shell" autogenargs="--enable-jhbuild-wrapper-script">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
         <dep package="gobject-introspection"/>
