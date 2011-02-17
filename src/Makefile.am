@@ -8,20 +8,27 @@ noinst_PROGRAMS =
 
 .AUTOPARALLEL:
 
-bin_SCRIPTS = gnome-shell
+generated_bin_scripts = gnome-shell gnome-shell-extension-tool
 
-gnome-shell: gnome-shell.in
-	$(AM_V_GEN) sed -e "s|@MUTTER_BIN_DIR[@]|$(MUTTER_BIN_DIR)|" \
+bin_SCRIPTS = $(generated_bin_scripts)
+
+generated_script_substitutions = -e "s|@MUTTER_BIN_DIR[@]|$(MUTTER_BIN_DIR)|" \
 	    -e "s|@datadir[@]|$(datadir)|" \
 	    -e "s|@libexecdir[@]|$(libexecdir)|" \
 	    -e "s|@libdir[@]|$(libdir)|" \
 	    -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \
 	    -e "s|@PYTHON[@]|$(PYTHON)|" \
 	    -e "s|@VERSION[@]|$(VERSION)|" \
-	    -e "s|@sysconfdir[@]|$(sysconfdir)|" \
-	    $< > $@ && chmod a+x $@
-CLEANFILES += gnome-shell
-EXTRA_DIST += gnome-shell.in
+	    -e "s|@sysconfdir[@]|$(sysconfdir)|"
+
+gnome-shell: gnome-shell.in
+	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
+
+gnome-shell-extension-tool: gnome-shell-extension-tool.in
+	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
+
+CLEANFILES += $(generated_bin_scripts)
+EXTRA_DIST += $(generated_bin_scripts:=.in)
 
 include Makefile-gdmuser.am
 include Makefile-st.am
