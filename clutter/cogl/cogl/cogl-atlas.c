@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2010 Intel Corporation.
+ * Copyright (C) 2010,2011 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -58,7 +58,8 @@ _cogl_atlas_new (CoglPixelFormat texture_format,
   atlas->texture = NULL;
   atlas->flags = flags;
   atlas->texture_format = texture_format;
-  _cogl_callback_list_init (&atlas->reorganize_callbacks);
+  _cogl_callback_list_init (&atlas->pre_reorganize_callbacks);
+  _cogl_callback_list_init (&atlas->post_reorganize_callbacks);
 
   return _cogl_atlas_object_new (atlas);
 }
@@ -73,7 +74,8 @@ _cogl_atlas_free (CoglAtlas *atlas)
   if (atlas->map)
     _cogl_rectangle_map_free (atlas->map);
 
-  _cogl_callback_list_destroy (&atlas->reorganize_callbacks);
+  _cogl_callback_list_destroy (&atlas->pre_reorganize_callbacks);
+  _cogl_callback_list_destroy (&atlas->post_reorganize_callbacks);
 
   g_free (atlas);
 }
@@ -308,9 +310,15 @@ _cogl_atlas_compare_size_cb (const void *a,
 }
 
 static void
-_cogl_atlas_notify_reorganize (CoglAtlas *atlas)
+_cogl_atlas_notify_pre_reorganize (CoglAtlas *atlas)
 {
-  _cogl_callback_list_invoke (&atlas->reorganize_callbacks);
+  _cogl_callback_list_invoke (&atlas->pre_reorganize_callbacks);
+}
+
+static void
+_cogl_atlas_notify_post_reorganize (CoglAtlas *atlas)
+{
+  _cogl_callback_list_invoke (&atlas->post_reorganize_callbacks);
 }
 
 gboolean
@@ -349,8 +357,13 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
       return TRUE;
     }
 
-  /* We need to reorganise the atlas so we'll get an array of all the
-     textures currently in the atlas. */
+  /* If we make it here then we need to reorganize the atlas. First
+     we'll notify any users of the atlas that this is going to happen
+     so that for example in CoglAtlasTexture it can notify that the
+     storage has changed and cause a flush */
+  _cogl_atlas_notify_pre_reorganize (atlas);
+
+  /* Get an array of all the textures currently in the atlas. */
   data.n_textures = 0;
   if (atlas->map == NULL)
     data.textures = g_malloc (sizeof (CoglAtlasRepositionData));
@@ -423,8 +436,6 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
     {
       int waste;
 
-      _cogl_atlas_notify_reorganize (atlas);
-
       COGL_NOTE (ATLAS,
                  "%p: Atlas %s with size %ix%i",
                  atlas,
@@ -475,6 +486,8 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
     }
 
   g_free (data.textures);
+
+  _cogl_atlas_notify_post_reorganize (atlas);
 
   return ret;
 }
@@ -529,17 +542,30 @@ _cogl_atlas_copy_rectangle (CoglAtlas        *atlas,
 
 void
 _cogl_atlas_add_reorganize_callback (CoglAtlas            *atlas,
-                                     CoglCallbackListFunc  callback,
+                                     CoglCallbackListFunc  pre_callback,
+                                     CoglCallbackListFunc  post_callback,
                                      void                 *user_data)
 {
-  _cogl_callback_list_add (&atlas->reorganize_callbacks, callback, user_data);
+  if (pre_callback)
+    _cogl_callback_list_add (&atlas->pre_reorganize_callbacks,
+                             pre_callback,
+                             user_data);
+  if (post_callback)
+    _cogl_callback_list_add (&atlas->post_reorganize_callbacks,
+                             post_callback,
+                             user_data);
 }
 
 void
 _cogl_atlas_remove_reorganize_callback (CoglAtlas            *atlas,
-                                        CoglCallbackListFunc  callback,
+                                        CoglCallbackListFunc  pre_callback,
+                                        CoglCallbackListFunc  post_callback,
                                         void                 *user_data)
 {
-  _cogl_callback_list_remove (&atlas->reorganize_callbacks,
-                              callback, user_data);
+  if (pre_callback)
+    _cogl_callback_list_remove (&atlas->pre_reorganize_callbacks,
+                                pre_callback, user_data);
+  if (post_callback)
+    _cogl_callback_list_remove (&atlas->post_reorganize_callbacks,
+                                post_callback, user_data);
 }
