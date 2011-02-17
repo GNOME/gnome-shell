@@ -25,7 +25,6 @@ const KEY_MOUSE_KEYS_ENABLED  = 'mousekeys-enable';
 
 const APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const AT_SCREEN_KEYBOARD_SCHEMA = 'org.gnome.desktop.default-applications.at.mobility';
-const AT_SCREEN_READER_SCHEMA   = 'org.gnome.desktop.default-applications.at.visual';
 
 const XSETTINGS_SCHEMA = 'org.gnome.settings-daemon.plugins.xsettings';
 const KEY_DPI = 'dpi';
@@ -87,7 +86,8 @@ ATIndicator.prototype = {
         let textZoom = this._buildFontItem();
         this.menu.addMenuItem(textZoom);
 
-        let screenReader = this._buildItem(_("Screen Reader"), AT_SCREEN_READER_SCHEMA, 'startup');
+        let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+                                                               'screen-reader-enabled');
         this.menu.addMenuItem(screenReader);
 
         let screenKeyboard = this._buildItem(_("Screen Keyboard"), AT_SCREEN_KEYBOARD_SCHEMA, 'startup');
