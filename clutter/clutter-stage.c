@@ -157,6 +157,7 @@ struct _ClutterStagePrivate
   guint dirty_projection       : 1;
   guint have_valid_pick_buffer : 1;
   guint accept_focus           : 1;
+  guint motion_events_enabled  : 1;
 };
 
 enum
@@ -1636,6 +1637,7 @@ clutter_stage_init (ClutterStage *self)
   priv->use_fog                = FALSE;
   priv->throttle_motion_events = TRUE;
   priv->min_size_changed       = FALSE;
+  priv->motion_events_enabled  = clutter_get_motion_events_enabled ();
 
   priv->color = default_stage_color;
 
@@ -3464,4 +3466,24 @@ _clutter_stage_has_device (ClutterStage       *stage,
   ClutterStagePrivate *priv = stage->priv;
 
   return g_hash_table_lookup (priv->devices, device) != NULL;
+}
+
+void
+_clutter_stage_set_motion_events_enabled (ClutterStage *stage,
+                                          gboolean      enabled)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  enabled = !!enabled;
+
+  if (priv->motion_events_enabled != enabled)
+    {
+      priv->motion_events_enabled = enabled;
+    }
+}
+
+gboolean
+_clutter_stage_get_motion_events_enabled (ClutterStage *stage)
+{
+  return stage->priv->motion_events_enabled;
 }

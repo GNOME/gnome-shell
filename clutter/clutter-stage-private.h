@@ -90,6 +90,10 @@ void            _clutter_stage_remove_device    (ClutterStage       *stage,
 gboolean        _clutter_stage_has_device       (ClutterStage       *stage,
                                                  ClutterInputDevice *device);
 
+void     _clutter_stage_set_motion_events_enabled (ClutterStage *stage,
+                                                   gboolean      enabled);
+gboolean _clutter_stage_get_motion_events_enabled (ClutterStage *stage);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_PRIVATE_H__ */

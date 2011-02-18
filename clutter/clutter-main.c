@@ -109,6 +109,7 @@
 #include "clutter-master-clock.h"
 #include "clutter-private.h"
 #include "clutter-profile.h"
+#include "clutter-stage-manager.h"
 #include "clutter-stage-private.h"
 #include "clutter-version.h" 	/* For flavour define */
 
@@ -264,9 +265,28 @@ clutter_redraw (ClutterStage *stage)
 void
 clutter_set_motion_events_enabled (gboolean enable)
 {
-  ClutterMainContext *context = _clutter_context_get_default ();
+  ClutterStageManager *stage_manager;
+  ClutterMainContext *context;
+  const GSList *l;
 
+  enable = !!enable;
+
+  context = _clutter_context_get_default ();
+  if (context->motion_events_per_actor == enable)
+    return;
+
+  /* store the flag for later query and for newly created stages */
   context->motion_events_per_actor = enable;
+
+  /* propagate the change to all stages */
+  stage_manager = clutter_stage_manager_get_default ();
+
+  for (l = clutter_stage_manager_peek_stages (stage_manager);
+       l != NULL;
+       l = l->next)
+    {
+      _clutter_stage_set_motion_events_enabled (l->data, enable);
+    }
 }
 
 /**
@@ -2355,10 +2375,8 @@ _clutter_process_event_details (ClutterActor        *stage,
         break;
 
       case CLUTTER_MOTION:
-        /* Only stage gets motion events if clutter_set_motion_events is TRUE,
-         * and the event is not a synthetic event with source set.
-         */
-        if (!context->motion_events_per_actor &&
+        /* only the stage gets motion events if they are enabled */
+        if (!_clutter_stage_get_motion_events_enabled (CLUTTER_STAGE (stage)) &&
             event->any.source == NULL)
           {
             /* Only stage gets motion events */
@@ -2368,13 +2386,15 @@ _clutter_process_event_details (ClutterActor        *stage,
             if (context->pointer_grab_actor != NULL)
               {
                 clutter_actor_event (context->pointer_grab_actor,
-                                     event, FALSE);
+                                     event,
+                                     FALSE);
                 break;
               }
             else if (device != NULL && device->pointer_grab_actor != NULL)
               {
                 clutter_actor_event (device->pointer_grab_actor,
-                                     event, FALSE);
+                                     event,
+                                     FALSE);
                 break;
               }
 
