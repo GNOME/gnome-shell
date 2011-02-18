@@ -448,7 +448,6 @@ struct _ClutterActorPrivate
 
   gdouble         scale_x;
   gdouble         scale_y;
-
   AnchorCoord     scale_center;
 
   PangoContext   *pango_context;
@@ -1662,14 +1661,10 @@ clutter_actor_real_pick (ClutterActor       *self,
 gboolean
 clutter_actor_should_pick_paint (ClutterActor *self)
 {
-  ClutterMainContext *context;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  context = _clutter_context_get_default ();
-
   if (CLUTTER_ACTOR_IS_MAPPED (self) &&
-      (G_UNLIKELY (context->pick_mode == CLUTTER_PICK_ALL) ||
+      (_clutter_context_get_pick_mode () == CLUTTER_PICK_ALL ||
        CLUTTER_ACTOR_IS_REACTIVE (self)))
     return TRUE;
 
@@ -2559,7 +2554,7 @@ void
 clutter_actor_paint (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
-  ClutterMainContext *context;
+  ClutterPickMode pick_mode;
   gboolean clip_set = FALSE;
   CLUTTER_STATIC_COUNTER (actor_paint_counter,
                           "Actor real-paint counter",
@@ -2578,11 +2573,11 @@ clutter_actor_paint (ClutterActor *self)
 
   priv = self->priv;
 
-  context = _clutter_context_get_default ();
+  pick_mode = _clutter_context_get_pick_mode ();
 
   /* It's an important optimization that we consider painting of
    * actors with 0 opacity to be a NOP... */
-  if (context->pick_mode == CLUTTER_PICK_NONE &&
+  if (pick_mode == CLUTTER_PICK_NONE &&
       /* ignore top-levels, since they might be transparent */
       !CLUTTER_ACTOR_IS_TOPLEVEL (self) &&
       /* Use the override opacity if its been set */
@@ -2634,7 +2629,7 @@ clutter_actor_paint (ClutterActor *self)
       clip_set = TRUE;
     }
 
-  if (context->pick_mode == CLUTTER_PICK_NONE)
+  if (pick_mode == CLUTTER_PICK_NONE)
     {
       gboolean effect_painted = FALSE;
       gboolean need_paint_box;
@@ -10112,17 +10107,15 @@ PangoContext *
 clutter_actor_get_pango_context (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
-  ClutterMainContext *ctx;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
   priv = self->priv;
 
-  if (priv->pango_context)
+  if (priv->pango_context != NULL)
     return priv->pango_context;
 
-  ctx = CLUTTER_CONTEXT ();
-  priv->pango_context = _clutter_context_get_pango_context (ctx);
+  priv->pango_context = _clutter_context_get_pango_context ();
   g_object_ref (priv->pango_context);
 
   return priv->pango_context;
@@ -10147,15 +10140,9 @@ clutter_actor_get_pango_context (ClutterActor *self)
 PangoContext *
 clutter_actor_create_pango_context (ClutterActor *self)
 {
-  ClutterMainContext *ctx;
-  PangoContext *retval;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
-  ctx = CLUTTER_CONTEXT ();
-  retval = _clutter_context_create_pango_context (ctx);
-
-  return retval;
+  return _clutter_context_create_pango_context ();
 }
 
 /**

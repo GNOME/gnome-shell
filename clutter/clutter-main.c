@@ -814,13 +814,15 @@ update_pango_context (ClutterBackend *backend,
 }
 
 PangoContext *
-_clutter_context_get_pango_context (ClutterMainContext *self)
+_clutter_context_get_pango_context (void)
 {
+  ClutterMainContext *self = _clutter_context_get_default ();
+
   if (G_UNLIKELY (self->pango_context == NULL))
     {
       PangoContext *context;
 
-      context = _clutter_context_create_pango_context (self);
+      context = _clutter_context_create_pango_context ();
       self->pango_context = context;
 
       g_signal_connect (self->backend, "resolution-changed",
@@ -837,8 +839,9 @@ _clutter_context_get_pango_context (ClutterMainContext *self)
 }
 
 PangoContext *
-_clutter_context_create_pango_context (ClutterMainContext *self)
+_clutter_context_create_pango_context (void)
 {
+  ClutterMainContext *self = _clutter_context_get_default ();
   CoglPangoFontMap *font_map;
   PangoContext *context;
 
@@ -3312,4 +3315,12 @@ _clutter_clear_events_queue_for_stage (ClutterStage *stage)
           clutter_event_free (event);
         }
     }
+}
+
+ClutterPickMode
+_clutter_context_get_pick_mode (void)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  return context->pick_mode;
 }
