@@ -714,6 +714,7 @@ ThumbnailsBox.prototype = {
 
         let thumbnailHeight = portholeHeight * this._scale;
         let thumbnailWidth = Math.round(portholeWidth * this._scale);
+        let roundedHScale = thumbnailWidth / portholeWidth;
 
         let slideOffset; // X offset when thumbnail is fully slid offscreen
         if (rtl)
@@ -746,7 +747,7 @@ ThumbnailsBox.prototype = {
             let thumbnail = this._thumbnails[i];
 
             if (i > 0)
-                y += (1 - thumbnail.collapseFraction) * spacing;
+                y += spacing - Math.round(thumbnail.collapseFraction * spacing);
 
             // We might end up with thumbnailHeight being something like 99.33
             // pixels. To make this work and not end up with a gap at the bottom,
@@ -754,7 +755,7 @@ ThumbnailsBox.prototype = {
             // we compute an actual scale separately for each thumbnail.
             let y1 = Math.round(y);
             let y2 = Math.round(y + thumbnailHeight);
-            let roundedScale = (y2 - y1) / portholeHeight;
+            let roundedVScale = (y2 - y1) / portholeHeight;
 
             let x1, x2;
             if (rtl) {
@@ -775,10 +776,13 @@ ThumbnailsBox.prototype = {
             childBox.y1 = y1;
             childBox.y2 = y1 + portholeHeight;
 
-            thumbnail.actor.set_scale(roundedScale, roundedScale);
+            thumbnail.actor.set_scale(roundedHScale, roundedVScale);
             thumbnail.actor.allocate(childBox, flags);
 
-            y += thumbnailHeight * (1 - thumbnail.collapseFraction);
+            // We round the collapsing portion so that we don't get thumbnails resizing
+            // during an animation due to differences in rounded, but leave the uncollapsed
+            // portion unrounded so that non-animating we end up with the right total
+            y += thumbnailHeight - Math.round(thumbnailHeight * thumbnail.collapseFraction);
         }
 
         if (rtl) {
