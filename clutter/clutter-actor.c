@@ -451,8 +451,6 @@ struct _ClutterActorPrivate
 
   AnchorCoord     scale_center;
 
-  ShaderData     *shader_data;
-
   PangoContext   *pango_context;
 
   ClutterTextDirection text_direction;
@@ -607,8 +605,6 @@ static void clutter_actor_shader_pre_paint  (ClutterActor *actor,
                                              gboolean      repeat);
 static void clutter_actor_shader_post_paint (ClutterActor *actor);
 
-static void destroy_shader_data (ClutterActor *self);
-
 /* These setters are all static for now, maybe they should be in the
  * public API, but they are perhaps obscure enough to leave only as
  * properties
@@ -666,6 +662,8 @@ static ClutterPaintVolume *_clutter_actor_get_paint_volume_mutable (ClutterActor
   cogl_matrix_translate ((m), _tx, _ty, _tz);                          \
   { _transform; }                                                      \
   cogl_matrix_translate ((m), -_tx, -_ty, -_tz);        } G_STMT_END
+
+static GQuark quark_shader_data = 0;
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                   clutter_actor,
@@ -2533,6 +2531,12 @@ cull_actor (ClutterActor *self)
     return FALSE;
 }
 
+static inline gboolean
+actor_has_shader_data (ClutterActor *self)
+{
+  return g_object_get_qdata (G_OBJECT (self), quark_shader_data) != NULL;
+}
+
 /**
  * clutter_actor_paint:
  * @self: A #ClutterActor
@@ -2688,7 +2692,7 @@ clutter_actor_paint (ClutterActor *self)
 
       if (priv->effects != NULL)
         effect_painted = _clutter_actor_effects_pre_paint (self);
-      else if (priv->shader_data != NULL)
+      else if (actor_has_shader_data (self))
         clutter_actor_shader_pre_paint (self, FALSE);
 
       priv->propagated_one_redraw = FALSE;
@@ -2696,7 +2700,7 @@ clutter_actor_paint (ClutterActor *self)
 
       if (effect_painted)
         _clutter_actor_effects_post_paint (self);
-      else if (priv->shader_data != NULL)
+      else if (actor_has_shader_data (self))
         clutter_actor_shader_post_paint (self);
 
       if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES))
@@ -3348,8 +3352,6 @@ clutter_actor_dispose (GObject *object)
       g_assert (!CLUTTER_ACTOR_IS_REALIZED (self));
     }
 
-  destroy_shader_data (self);
-
   if (priv->pango_context)
     {
       g_object_unref (priv->pango_context);
@@ -3459,6 +3461,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GParamSpec *pspec;
+
+  quark_shader_data = g_quark_from_static_string ("-clutter-actor-shader-data");
 
   object_class->set_property = clutter_actor_set_property;
   object_class->get_property = clutter_actor_get_property;
@@ -4886,17 +4890,16 @@ clutter_actor_init (ClutterActor *self)
   self->priv = priv = CLUTTER_ACTOR_GET_PRIVATE (self);
 
   priv->parent_actor = NULL;
-  priv->has_clip     = FALSE;
-  priv->opacity      = 0xff;
-  priv->id           = clutter_id_pool_add (CLUTTER_CONTEXT()->id_pool, self);
-  priv->scale_x      = 1.0;
-  priv->scale_y      = 1.0;
-  priv->shader_data  = NULL;
+  priv->has_clip = FALSE;
+  priv->opacity = 0xff;
+  priv->id = clutter_id_pool_add (CLUTTER_CONTEXT()->id_pool, self);
+  priv->scale_x = 1.0;
+  priv->scale_y = 1.0;
   priv->show_on_set_parent = TRUE;
 
-  priv->needs_width_request  = TRUE;
+  priv->needs_width_request = TRUE;
   priv->needs_height_request = TRUE;
-  priv->needs_allocation     = TRUE;
+  priv->needs_allocation = TRUE;
 
   priv->cached_width_age = 1;
   priv->cached_height_age = 1;
@@ -9395,11 +9398,12 @@ G_DEFINE_BOXED_TYPE_WITH_CODE (ClutterVertex, clutter_vertex,
                                clutter_vertex_free,
                                CLUTTER_REGISTER_INTERVAL_PROGRESS (clutter_vertex_progress));
 
-/******************************************************************************/
-
 struct _ShaderData
 {
   ClutterShader *shader;
+
+  /* back pointer to the actor */
+  ClutterActor *actor;
 
   /* list of values that should be set on the shader
    * before each paint cycle
@@ -9416,28 +9420,26 @@ shader_value_free (gpointer data)
 }
 
 static void
-destroy_shader_data (ClutterActor *self)
+destroy_shader_data (gpointer data)
 {
-  ClutterActorPrivate *actor_priv = self->priv;
-  ShaderData *shader_data = actor_priv->shader_data;
+  ShaderData *shader_data = data;
 
   if (shader_data == NULL)
     return;
 
-  if (shader_data->shader)
+  if (shader_data->shader != NULL)
     {
       g_object_unref (shader_data->shader);
       shader_data->shader = NULL;
     }
 
-  if (shader_data->value_hash)
+  if (shader_data->value_hash != NULL)
     {
       g_hash_table_destroy (shader_data->value_hash);
       shader_data->value_hash = NULL;
     }
 
   g_slice_free (ShaderData, shader_data);
-  actor_priv->shader_data = NULL;
 }
 
 
@@ -9455,18 +9457,15 @@ destroy_shader_data (ClutterActor *self)
 ClutterShader *
 clutter_actor_get_shader (ClutterActor *self)
 {
-  ClutterActorPrivate *actor_priv;
-  ShaderData     *shader_data;
+  ShaderData *shader_data;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
-  actor_priv = self->priv;
-  shader_data = actor_priv->shader_data;
+  shader_data = g_object_get_qdata (G_OBJECT (self), quark_shader_data);
+  if (shader_data != NULL)
+    return shader_data->shader;
 
-  if (shader_data == NULL)
-    return NULL;
-
-  return shader_data->shader;
+  return NULL;
 }
 
 /**
@@ -9476,10 +9475,14 @@ clutter_actor_get_shader (ClutterActor *self)
  *
  * Sets the #ClutterShader to be used when rendering @self.
  *
- * If @shader is %NULL it will unset any currently set shader
+ * If @shader is %NULL this function will unset any currently set shader
  * for the actor.
  *
+ * <note>Any #ClutterEffect applied to @self will take the precedence
+ * over the #ClutterShader set using this function.</note>
+ *
  * Return value: %TRUE if the shader was successfully applied
+ *   or removed
  *
  * Since: 0.6
  */
@@ -9487,8 +9490,7 @@ gboolean
 clutter_actor_set_shader (ClutterActor  *self,
                           ClutterShader *shader)
 {
-  ClutterActorPrivate *actor_priv;
-  ShaderData          *shader_data;
+  ShaderData *shader_data;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
   g_return_val_if_fail (shader == NULL || CLUTTER_IS_SHADER (shader), FALSE);
@@ -9498,22 +9500,26 @@ clutter_actor_set_shader (ClutterActor  *self,
   else
     {
       /* if shader passed in is NULL we destroy the shader */
-      destroy_shader_data (self);
+      g_object_set_qdata (G_OBJECT (self), quark_shader_data, NULL);
       return TRUE;
     }
 
-  actor_priv = self->priv;
-  shader_data = actor_priv->shader_data;
-
+  shader_data = g_object_get_qdata (G_OBJECT (self), quark_shader_data);
   if (shader_data == NULL)
     {
-      actor_priv->shader_data = shader_data = g_slice_new (ShaderData);
+      shader_data = g_slice_new (ShaderData);
+      shader_data->actor = self;
       shader_data->shader = NULL;
       shader_data->value_hash =
         g_hash_table_new_full (g_str_hash, g_str_equal,
                                g_free,
                                shader_value_free);
+
+      g_object_set_qdata_full (G_OBJECT (self), quark_shader_data,
+                               shader_data,
+                               destroy_shader_data);
     }
+
   if (shader_data->shader != NULL)
     g_object_unref (shader_data->shader);
 
@@ -9530,31 +9536,29 @@ set_each_param (gpointer key,
                 gpointer value,
                 gpointer user_data)
 {
-  ClutterShader *shader      = user_data;
-  GValue        *var         = value;
+  ClutterShader *shader = user_data;
+  const gchar *uniform = key;
+  GValue *var = value;
 
-  clutter_shader_set_uniform (shader, (const gchar *)key, var);
+  clutter_shader_set_uniform (shader, uniform, var);
 }
 
 static void
 clutter_actor_shader_pre_paint (ClutterActor *actor,
                                 gboolean      repeat)
 {
-  ClutterActorPrivate *priv;
-  ShaderData          *shader_data;
-  ClutterShader       *shader;
-  ClutterMainContext  *context;
+  ShaderData *shader_data;
+  ClutterShader *shader;
+  ClutterMainContext *context;
 
-  priv = actor->priv;
-  shader_data = priv->shader_data;
-
-  if (!shader_data)
+  shader_data = g_object_get_qdata (G_OBJECT (actor), quark_shader_data);
+  if (shader_data == NULL)
     return;
 
   context = _clutter_context_get_default ();
   shader = shader_data->shader;
 
-  if (shader)
+  if (shader != NULL)
     {
       clutter_shader_set_is_enabled (shader, TRUE);
 
@@ -9568,21 +9572,18 @@ clutter_actor_shader_pre_paint (ClutterActor *actor,
 static void
 clutter_actor_shader_post_paint (ClutterActor *actor)
 {
-  ClutterActorPrivate *priv;
-  ShaderData          *shader_data;
-  ClutterShader       *shader;
-  ClutterMainContext  *context;
+  ShaderData *shader_data;
+  ClutterShader *shader;
+  ClutterMainContext *context;
 
-  priv = actor->priv;
-  shader_data = priv->shader_data;
-
-  if (!shader_data)
+  shader_data = g_object_get_qdata (G_OBJECT (actor), quark_shader_data);
+  if (shader_data == NULL)
     return;
 
   context = _clutter_context_get_default ();
   shader = shader_data->shader;
 
-  if (shader)
+  if (shader != NULL)
     {
       clutter_shader_set_is_enabled (shader, FALSE);
 
@@ -9614,7 +9615,6 @@ clutter_actor_set_shader_param (ClutterActor *self,
                                 const gchar  *param,
                                 const GValue *value)
 {
-  ClutterActorPrivate *priv;
   ShaderData *shader_data;
   GValue *var;
 
@@ -9626,10 +9626,8 @@ clutter_actor_set_shader_param (ClutterActor *self,
                     G_VALUE_HOLDS_FLOAT (value) ||
                     G_VALUE_HOLDS_INT (value));
 
-  priv = self->priv;
-  shader_data = priv->shader_data;
-
-  if (!shader_data)
+  shader_data = g_object_get_qdata (G_OBJECT (self), quark_shader_data);
+  if (shader_data == NULL)
     return;
 
   var = g_slice_new0 (GValue);

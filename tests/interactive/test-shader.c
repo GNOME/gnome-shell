@@ -310,8 +310,10 @@ test_shader_main (gint argc, gchar *argv[])
 
   clutter_init (&argc, &argv);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Shaders");
   clutter_actor_set_size (stage, 512, 384);
+  g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
   g_print ("applying shaders[%i] named '%s'\n",
            shader_no,
