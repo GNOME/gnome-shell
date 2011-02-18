@@ -27,11 +27,11 @@
 #include "clutter-backend-egl.h"
 #include "clutter-egl.h"
 
-#include "../clutter-backend.h"
-#include "../clutter-event.h"
-#include "../clutter-private.h"
-#include "../clutter-debug.h"
-#include "../clutter-main.h"
+#include "clutter-backend.h"
+#include "clutter-event-private.h"
+#include "clutter-private.h"
+#include "clutter-debug.h"
+#include "clutter-main.h"
 
 #include <string.h>
 
@@ -217,14 +217,11 @@ clutter_event_dispatch (GSource     *source,
                         GSourceFunc  callback,
                         gpointer     user_data)
 {
-  ClutterEvent *event;
   ClutterEventSource *event_source = (ClutterEventSource *) source;
-  struct ts_sample    tsevent;
-  ClutterMainContext *clutter_context;
+  struct ts_sample tsevent;
+  ClutterEvent *event;
 
   clutter_threads_enter ();
-
-  clutter_context = _clutter_context_get_default ();
 
   /* FIXME while would be better here but need to deal with lockups */
   if ((!clutter_events_pending()) &&

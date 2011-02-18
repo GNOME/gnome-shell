@@ -199,13 +199,6 @@ G_CONST_RETURN gchar *_clutter_gettext (const gchar *str);
 
 gboolean      _clutter_feature_init (GError **error);
 
-/* Reinjecting queued events for processing */
-void _clutter_process_event (ClutterEvent *event);
-
-/* clears the event queue inside the main context */
-void _clutter_clear_events_queue           (void);
-void _clutter_clear_events_queue_for_stage (ClutterStage *stage);
-
 /* Picking code */
 ClutterActor *_clutter_do_pick (ClutterStage    *stage,
 				gint             x,
@@ -231,17 +224,6 @@ void _clutter_constraint_update_allocation (ClutterConstraint *constraint,
                                             ClutterActorBox   *allocation);
 
 GType _clutter_layout_manager_get_child_meta_type (ClutterLayoutManager *manager);
-
-void     _clutter_event_set_platform_data (ClutterEvent       *event,
-                                           gpointer            data);
-gpointer _clutter_event_get_platform_data (const ClutterEvent *event);
-
-void     _clutter_event_push              (const ClutterEvent *event,
-                                           gboolean            do_copy);
-void     _clutter_event_set_device        (ClutterEvent       *event,
-                                           ClutterInputDevice *device);
-void     _clutter_event_set_source_device (ClutterEvent       *event,
-                                           ClutterInputDevice *device);
 
 void                _clutter_util_fully_transform_vertices (const CoglMatrix *modelview,
                                                             const CoglMatrix *projection,

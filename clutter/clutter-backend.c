@@ -44,7 +44,7 @@
 
 #include "clutter-backend-private.h"
 #include "clutter-debug.h"
-#include "clutter-fixed.h"
+#include "clutter-event-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-profile.h"

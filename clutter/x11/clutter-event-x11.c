@@ -31,9 +31,8 @@
 
 #include "clutter-backend-private.h"
 #include "clutter-debug.h"
-#include "clutter-event.h"
+#include "clutter-event-private.h"
 #include "clutter-main.h"
-#include "clutter-private.h"
 
 #include <string.h>
 

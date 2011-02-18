@@ -34,6 +34,7 @@
 #include "clutter-backend.h"
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
+#include "clutter-event-private.h"
 #include "clutter-event-translator.h"
 #include "clutter-stage-private.h"
 #include "clutter-private.h"

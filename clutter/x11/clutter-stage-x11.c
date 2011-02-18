@@ -36,7 +36,7 @@
 #include "clutter-device-manager-private.h"
 #include "clutter-enum-types.h"
 #include "clutter-event-translator.h"
-#include "clutter-event.h"
+#include "clutter-event-private.h"
 #include "clutter-feature.h"
 #include "clutter-main.h"
 #include "clutter-paint-volume-private.h"

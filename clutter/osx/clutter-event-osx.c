@@ -30,11 +30,13 @@
 #import <AppKit/AppKit.h>
 
 #include <glib.h>
-#include <clutter/clutter-debug.h>
-#include <clutter/clutter-device-manager.h>
-#include <clutter/clutter-keysyms.h>
-#include <clutter/clutter-private.h>
-#include <clutter/clutter-stage-private.h>
+
+#include "clutter-debug.h"
+#include "clutter-device-manager.h"
+#include "clutter-event-private.h"
+#include "clutter-keysyms.h"
+#include "clutter-private.h"
+#include "clutter-stage-private.h"
 
 #include "clutter-event-loop-osx.h"
 

@@ -40,7 +40,7 @@
 #include "clutter-debug.h"
 #include "clutter-device-manager.h"
 #include "clutter-device-manager-private.h"
-#include "clutter-event.h"
+#include "clutter-event-private.h"
 #include "clutter-input-device-evdev.h"
 #include "clutter-main.h"
 #include "clutter-private.h"

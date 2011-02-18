@@ -41,6 +41,7 @@
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
 #include "clutter-enum-types.h"
+#include "clutter-event-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"

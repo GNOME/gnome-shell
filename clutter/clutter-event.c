@@ -29,7 +29,7 @@
 
 #include "clutter-backend-private.h"
 #include "clutter-debug.h"
-#include "clutter-event.h"
+#include "clutter-event-private.h"
 #include "clutter-keysyms.h"
 #include "clutter-keysyms-table.h"
 #include "clutter-private.h"

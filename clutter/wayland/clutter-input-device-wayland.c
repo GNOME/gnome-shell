@@ -34,6 +34,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
+#include "clutter-event-private.h"
 #include "clutter-private.h"
 #include "clutter-keysyms.h"
 #include "clutter-xkb-utils.h"

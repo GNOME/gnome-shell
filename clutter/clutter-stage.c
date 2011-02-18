@@ -62,7 +62,7 @@
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
 #include "clutter-enum-types.h"
-#include "clutter-id-pool.h"
+#include "clutter-event-private.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
 #include "clutter-master-clock.h"

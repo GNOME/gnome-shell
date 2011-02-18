@@ -234,6 +234,7 @@ source_h_priv = \
 	$(srcdir)/clutter-device-manager-private.h	\
 	$(srcdir)/clutter-effect-private.h		\
 	$(srcdir)/clutter-event-translator.h		\
+	$(srcdir)/clutter-event-private.h		\
 	$(srcdir)/clutter-id-pool.h 			\
 	$(srcdir)/clutter-keysyms-table.h		\
 	$(srcdir)/clutter-master-clock.h		\
