@@ -67,10 +67,11 @@
 #include "clutter-enum-types.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
+#include "clutter-stage-private.h"
 
 struct _ClutterDragActionPrivate
 {
-  ClutterActor *stage;
+  ClutterStage *stage;
 
   gfloat x_drag_threshold;
   gfloat y_drag_threshold;
@@ -134,7 +135,8 @@ emit_drag_begin (ClutterDragAction *action,
 {
   ClutterDragActionPrivate *priv = action->priv;
 
-  clutter_set_motion_events_enabled (FALSE);
+  if (priv->stage != NULL)
+    _clutter_stage_set_motion_events_enabled (priv->stage, FALSE);
 
   g_signal_emit (action, drag_signals[DRAG_BEGIN], 0,
                  actor,
@@ -228,7 +230,8 @@ emit_drag_end (ClutterDragAction *action,
       priv->capture_id = 0;
     }
 
-  clutter_set_motion_events_enabled (priv->motion_events_enabled);
+  _clutter_stage_set_motion_events_enabled (priv->stage,
+                                            priv->motion_events_enabled);
 
   priv->in_drag = FALSE;
 }
@@ -295,7 +298,7 @@ on_button_press (ClutterActor      *actor,
     return FALSE;
 
   if (priv->stage == NULL)
-    priv->stage = clutter_actor_get_stage (actor);
+    priv->stage = CLUTTER_STAGE (clutter_actor_get_stage (actor));
 
   clutter_event_get_coords (event, &priv->press_x, &priv->press_y);
   priv->press_state = clutter_event_get_state (event);
@@ -309,7 +312,8 @@ on_button_press (ClutterActor      *actor,
                                        &priv->transformed_press_x,
                                        &priv->transformed_press_y);
 
-  priv->motion_events_enabled = clutter_get_motion_events_enabled ();
+  priv->motion_events_enabled =
+    _clutter_stage_get_motion_events_enabled (priv->stage);
 
   if (priv->x_drag_threshold == 0 || priv->y_drag_threshold == 0)
     emit_drag_begin (action, actor, event);
