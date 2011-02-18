@@ -387,6 +387,11 @@ ThumbnailsBox.prototype = {
         // an actor underneath the content and adjust the allocation of our children to leave space
         // for the border and padding of the background actor.
         this._background = new St.Bin({ style_class: 'workspace-thumbnails-background' });
+
+        // This will eventually be automatic, see https://bugzilla.gnome.org/show_bug.cgi?id=584662
+        if (St.Widget.get_default_direction () == St.TextDirection.RTL)
+            this._background.add_style_pseudo_class('rtl');
+
         this.actor.add_actor(this._background);
 
         let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator' });
@@ -672,6 +677,8 @@ ThumbnailsBox.prototype = {
     },
 
     _allocate: function(actor, box, flags) {
+        let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
+
         // See comment about this._background in _init()
         let themeNode = this._background.get_theme_node();
         let contentBox = themeNode.get_content_box(box);
@@ -707,15 +714,24 @@ ThumbnailsBox.prototype = {
 
         let thumbnailHeight = portholeHeight * this._scale;
         let thumbnailWidth = Math.round(portholeWidth * this._scale);
-        let rightPadding = themeNode.get_padding(St.Side.RIGHT);
-        let slideWidth = thumbnailWidth + rightPadding; // Amount to slide a thumbnail off to right
+
+        let slideOffset; // X offset when thumbnail is fully slid offscreen
+        if (rtl)
+            slideOffset = - (thumbnailWidth + themeNode.get_padding(St.Side.LEFT));
+        else
+            slideOffset = thumbnailWidth + themeNode.get_padding(St.Side.RIGHT);
 
         let childBox = new Clutter.ActorBox();
 
         // The background is horizontally restricted to correspond to the current thumbnail size
         // but otherwise covers the entire allocation
-        childBox.x1 = box.x1 + ((contentBox.x2 - contentBox.x1) - thumbnailWidth);
-        childBox.x2 = box.x2;
+        if (rtl) {
+            childBox.x1 = box.x1;
+            childBox.x2 = box.x2 - ((contentBox.x2 - contentBox.x1) - thumbnailWidth);
+        } else {
+            childBox.x1 = box.x1 + ((contentBox.x2 - contentBox.x1) - thumbnailWidth);
+            childBox.x2 = box.x2;
+        }
         childBox.y1 = box.y1;
         childBox.y2 = box.y2;
         this._background.allocate(childBox, flags);
@@ -740,8 +756,14 @@ ThumbnailsBox.prototype = {
             let y2 = Math.round(y + thumbnailHeight);
             let roundedScale = (y2 - y1) / portholeHeight;
 
-            let x1 = contentBox.x2 - thumbnailWidth + slideWidth * thumbnail.slidePosition;
-            let x2 = x1 + thumbnailWidth;
+            let x1, x2;
+            if (rtl) {
+                x1 = contentBox.x1 + slideOffset * thumbnail.slidePosition;
+                x2 = x1 + thumbnailWidth;
+            } else {
+                x1 = contentBox.x2 - thumbnailWidth + slideOffset * thumbnail.slidePosition;
+                x2 = x1 + thumbnailWidth;
+            }
 
             if (thumbnail.metaWorkspace == indicatorWorkspace)
                 indicatorY = y1;
@@ -759,8 +781,13 @@ ThumbnailsBox.prototype = {
             y += thumbnailHeight * (1 - thumbnail.collapseFraction);
         }
 
-        childBox.x1 = contentBox.x2 - thumbnailWidth;
-        childBox.x2 = contentBox.x2;
+        if (rtl) {
+            childBox.x1 = contentBox.x1;
+            childBox.x2 = contentBox.x1 + thumbnailWidth;
+        } else {
+            childBox.x1 = contentBox.x2 - thumbnailWidth;
+            childBox.x2 = contentBox.x2;
+        }
         childBox.y1 = indicatorY;
         childBox.y2 = childBox.y1 + thumbnailHeight;
         this._indicator.allocate(childBox, flags);

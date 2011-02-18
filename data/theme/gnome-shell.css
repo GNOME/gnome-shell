@@ -272,6 +272,12 @@ StTooltip StLabel {
     padding: 8px;
 }
 
+.workspace-thumbnails-background:rtl {
+    border-right: 1px;
+    border-left: 0px;
+    border-radius: 0px 9px 9px 0px;
+}
+
 .workspace-thumbnails {
     spacing: 7px;
 }
