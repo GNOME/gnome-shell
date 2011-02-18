@@ -144,8 +144,6 @@ struct _ClutterMainContext
   ClutterEvent *current_event;
   guint32 last_event_time;
 
-  gulong redraw_count;
-
   /* list of repaint functions installed through
    * clutter_threads_add_repaint_func()
    */

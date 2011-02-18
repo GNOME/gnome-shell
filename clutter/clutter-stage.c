@@ -140,6 +140,10 @@ struct _ClutterStagePrivate
   GTimer *fps_timer;
   gint32 timer_n_frames;
 
+#ifdef CLUTTER_ENABLE_DEBUG
+  gulong redraw_count;
+#endif /* CLUTTER_ENABLE_DEBUG */
+
   guint relayout_pending       : 1;
   guint redraw_pending         : 1;
   guint is_fullscreen          : 1;
@@ -883,13 +887,15 @@ _clutter_stage_do_update (ClutterStage *stage)
   /* reset the guard, so that new redraws are possible */
   priv->redraw_pending = FALSE;
 
-  if (CLUTTER_CONTEXT ()->redraw_count > 0)
+#ifdef CLUTTER_ENABLE_DEBUG
+  if (priv->redraw_count > 0)
     {
       CLUTTER_NOTE (SCHEDULER, "Queued %lu redraws during the last cycle",
-                    CLUTTER_CONTEXT ()->redraw_count);
+                    priv->redraw_count);
 
-      CLUTTER_CONTEXT ()->redraw_count = 0;
+      priv->redraw_count = 0;
     }
+#endif /* CLUTTER_ENABLE_DEBUG */
 
   return TRUE;
 }
@@ -3240,20 +3246,26 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
 {
   ClutterStagePrivate *priv = stage->priv;
 
-  CLUTTER_NOTE (PAINT, "Redraw request number %lu",
-                CLUTTER_CONTEXT ()->redraw_count + 1);
-
   if (!priv->redraw_pending)
     {
       ClutterMasterClock *master_clock;
+
+      CLUTTER_NOTE (PAINT, "First redraw request");
 
       priv->redraw_pending = TRUE;
 
       master_clock = _clutter_master_clock_get_default ();
       _clutter_master_clock_start_running (master_clock);
     }
+#ifdef CLUTTER_ENABLE_DEBUG
   else
-    CLUTTER_CONTEXT ()->redraw_count += 1;
+    {
+      CLUTTER_NOTE (PAINT, "Redraw request number %lu",
+                    priv->redraw_count + 1);
+
+      priv->redraw_count += 1;
+    }
+#endif /* CLUTTER_ENABLE_DEBUG */
 
   /* We have an optimization in _clutter_do_pick to detect when the
    * scene is static so we can cache a full, un-clipped pick buffer to
