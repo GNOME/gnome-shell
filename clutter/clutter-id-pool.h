@@ -34,15 +34,15 @@ G_BEGIN_DECLS
 
 typedef struct _ClutterIDPool   ClutterIDPool;
 
-ClutterIDPool *clutter_id_pool_new     (guint          initial_size);
-void           clutter_id_pool_free    (ClutterIDPool *id_pool);
+ClutterIDPool * _clutter_id_pool_new    (guint          initial_size);
+void            _clutter_id_pool_free   (ClutterIDPool *id_pool);
 
-guint32        clutter_id_pool_add     (ClutterIDPool *id_pool,
-                                        gpointer       ptr);
-void           clutter_id_pool_remove  (ClutterIDPool *id_pool,
-                                        guint32        id_);
-gpointer       clutter_id_pool_lookup  (ClutterIDPool *id_pool,
-                                        guint32        id_);
+guint32         _clutter_id_pool_add    (ClutterIDPool *id_pool,
+                                         gpointer       ptr);
+void            _clutter_id_pool_remove (ClutterIDPool *id_pool,
+                                         guint32        id_);
+gpointer        _clutter_id_pool_lookup (ClutterIDPool *id_pool,
+                                         guint32        id_);
 
 
 G_END_DECLS

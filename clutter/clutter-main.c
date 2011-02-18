@@ -293,7 +293,7 @@ _clutter_actor_get_by_id (guint32 actor_id)
 
   g_assert (context->id_pool != NULL);
 
-  return clutter_id_pool_lookup (context->id_pool, actor_id);
+  return _clutter_id_pool_lookup (context->id_pool, actor_id);
 }
 
 void
@@ -1571,7 +1571,7 @@ pre_parse_hook (GOptionContext  *context,
 
   clutter_context = _clutter_context_get_default ();
 
-  clutter_context->id_pool = clutter_id_pool_new (256);
+  clutter_context->id_pool = _clutter_id_pool_new (256);
 
   backend = clutter_context->backend;
   g_assert (CLUTTER_IS_BACKEND (backend));
@@ -3249,7 +3249,7 @@ _clutter_context_acquire_id (gpointer key)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
 
-  return clutter_id_pool_add (context->id_pool, key);
+  return _clutter_id_pool_add (context->id_pool, key);
 }
 
 void
@@ -3257,7 +3257,7 @@ _clutter_context_release_id (guint32 id_)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
 
-  return clutter_id_pool_remove (context->id_pool, id_);
+  return _clutter_id_pool_remove (context->id_pool, id_);
 }
 
 void

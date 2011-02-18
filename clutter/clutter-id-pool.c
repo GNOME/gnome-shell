@@ -42,7 +42,7 @@ struct _ClutterIDPool
 };
 
 ClutterIDPool *
-clutter_id_pool_new  (guint initial_size)
+_clutter_id_pool_new  (guint initial_size)
 {
   ClutterIDPool *self;
 
@@ -55,7 +55,7 @@ clutter_id_pool_new  (guint initial_size)
 }
 
 void
-clutter_id_pool_free (ClutterIDPool *id_pool)
+_clutter_id_pool_free (ClutterIDPool *id_pool)
 {
   g_return_if_fail (id_pool != NULL);
 
@@ -65,8 +65,8 @@ clutter_id_pool_free (ClutterIDPool *id_pool)
 }
 
 guint32
-clutter_id_pool_add (ClutterIDPool *id_pool,
-                     gpointer       ptr)
+_clutter_id_pool_add (ClutterIDPool *id_pool,
+                      gpointer       ptr)
 {
   gpointer *array;
   guint32 retval;
@@ -92,8 +92,8 @@ clutter_id_pool_add (ClutterIDPool *id_pool,
 }
 
 void
-clutter_id_pool_remove (ClutterIDPool *id_pool,
-                        guint32        id_)
+_clutter_id_pool_remove (ClutterIDPool *id_pool,
+                         guint32        id_)
 {
   gpointer *array;
 
@@ -109,8 +109,8 @@ clutter_id_pool_remove (ClutterIDPool *id_pool,
 }
 
 gpointer
-clutter_id_pool_lookup (ClutterIDPool *id_pool,
-                        guint32        id_)
+_clutter_id_pool_lookup (ClutterIDPool *id_pool,
+                         guint32        id_)
 {
   gpointer *array;
 
