@@ -3245,6 +3245,22 @@ _clutter_clear_events_queue (void)
     }
 }
 
+guint32
+_clutter_context_acquire_id (gpointer key)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  return clutter_id_pool_add (context->id_pool, key);
+}
+
+void
+_clutter_context_release_id (guint32 id_)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  return clutter_id_pool_remove (context->id_pool, id_);
+}
+
 void
 _clutter_clear_events_queue_for_stage (ClutterStage *stage)
 {

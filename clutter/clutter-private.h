@@ -179,6 +179,8 @@ ClutterPickMode         _clutter_context_get_pick_mode          (void);
 void                    _clutter_context_push_shader_stack      (ClutterActor *actor);
 ClutterActor *          _clutter_context_pop_shader_stack       (ClutterActor *actor);
 ClutterActor *          _clutter_context_peek_shader_stack      (void);
+guint32                 _clutter_context_acquire_id             (gpointer      key);
+void                    _clutter_context_release_id             (guint32       id_);
 
 #define CLUTTER_PARAM_READABLE  (G_PARAM_READABLE | G_PARAM_STATIC_STRINGS)
 #define CLUTTER_PARAM_WRITABLE  (G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS)

@@ -3316,7 +3316,7 @@ clutter_actor_dispose (GObject *object)
   ClutterActorPrivate *priv = self->priv;
 
   CLUTTER_NOTE (MISC, "Disposing of object (id=%d) of type '%s' (ref_count:%d)",
-		self->priv->id,
+		priv->id,
 		g_type_name (G_OBJECT_TYPE (self)),
                 object->ref_count);
 
@@ -3386,8 +3386,9 @@ clutter_actor_finalize (GObject *object)
 		priv->id,
 		g_type_name (G_OBJECT_TYPE (object)));
 
+  _clutter_context_release_id (priv->id);
+
   g_free (priv->name);
-  clutter_id_pool_remove (CLUTTER_CONTEXT()->id_pool, priv->id);
 
   G_OBJECT_CLASS (clutter_actor_parent_class)->finalize (object);
 }
@@ -4887,7 +4888,7 @@ clutter_actor_init (ClutterActor *self)
   priv->parent_actor = NULL;
   priv->has_clip = FALSE;
   priv->opacity = 0xff;
-  priv->id = clutter_id_pool_add (CLUTTER_CONTEXT()->id_pool, self);
+  priv->id = _clutter_context_acquire_id (self);
   priv->scale_x = 1.0;
   priv->scale_y = 1.0;
   priv->show_on_set_parent = TRUE;
