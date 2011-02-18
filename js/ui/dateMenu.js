@@ -56,7 +56,10 @@ DateMenuButton.prototype = {
         //this._eventSource = new Calendar.FakeEventSource();
         this._eventSource = new Calendar.EvolutionEventSource();
 
-        PanelMenu.Button.prototype._init.call(this, 0.25);
+        let menuAlignment = 0.25;
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+            menuAlignment = 1.0 - menuAlignment;
+        PanelMenu.Button.prototype._init.call(this, menuAlignment);
 
         this._clock = new St.Label();
         this.actor.set_child(this._clock);
