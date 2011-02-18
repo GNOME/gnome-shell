@@ -703,6 +703,10 @@ Panel.prototype = {
         this._rightBox.add(this._trayBox);
         this._rightBox.add(this._statusBox);
 
+        this._statusmenu = new StatusMenu.StatusMenuButton();
+        this._menus.addMenu(this._statusmenu.menu);
+        this._rightBox.add(this._statusmenu.actor);
+
         Main.statusIconDispatcher.connect('status-icon-added', Lang.bind(this, this._onTrayIconAdded));
         Main.statusIconDispatcher.connect('status-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
 
@@ -762,10 +766,6 @@ Panel.prototype = {
             this._statusBox.add(indicator.actor);
             this._menus.addMenu(indicator.menu);
         }
-
-        this._statusmenu = new StatusMenu.StatusMenuButton();
-        this._menus.addMenu(this._statusmenu.menu);
-        this._rightBox.add(this._statusmenu.actor);
     },
 
     startupAnimation: function() {
