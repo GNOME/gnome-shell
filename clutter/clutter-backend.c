@@ -181,11 +181,10 @@ clutter_backend_real_resolution_changed (ClutterBackend *backend)
   ClutterSettings *settings;
   gint dpi;
 
-  context = _clutter_context_get_default ();
-
   settings = clutter_settings_get_default ();
   g_object_get (settings, "font-dpi", &dpi, NULL);
 
+  context = _clutter_context_get_default ();
   if (context->font_map != NULL)
     cogl_pango_font_map_set_resolution (context->font_map, dpi / 1024.0);
 
@@ -311,7 +310,7 @@ _clutter_backend_add_options (ClutterBackend *backend,
 {
   ClutterBackendClass *klass;
 
-  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
+  g_assert (CLUTTER_IS_BACKEND (backend));
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->add_options)
@@ -324,7 +323,7 @@ _clutter_backend_pre_parse (ClutterBackend  *backend,
 {
   ClutterBackendClass *klass;
 
-  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), FALSE);
+  g_assert (CLUTTER_IS_BACKEND (backend));
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->pre_parse)
@@ -339,7 +338,7 @@ _clutter_backend_post_parse (ClutterBackend  *backend,
 {
   ClutterBackendClass *klass;
 
-  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), FALSE);
+  g_assert (CLUTTER_IS_BACKEND (backend));
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->post_parse)
@@ -357,8 +356,8 @@ _clutter_backend_create_stage (ClutterBackend  *backend,
   ClutterStageManager *stage_manager;
   ClutterStageWindow *stage_window;
 
-  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), NULL);
-  g_return_val_if_fail (CLUTTER_IS_STAGE (wrapper), NULL);
+  g_assert (CLUTTER_IS_BACKEND (backend));
+  g_assert (CLUTTER_IS_STAGE (wrapper));
 
   stage_manager = clutter_stage_manager_get_default ();
 
@@ -406,8 +405,6 @@ _clutter_backend_create_context (ClutterBackend  *backend,
 {
   ClutterBackendClass *klass;
 
-  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), FALSE);
-
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->create_context)
     return klass->create_context (backend, error);
@@ -430,8 +427,8 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
 {
   static ClutterStage *current_context_stage = NULL;
 
-  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+  g_assert (CLUTTER_IS_BACKEND (backend));
+  g_assert (CLUTTER_IS_STAGE (stage));
 
   if (current_context_stage != stage || !CLUTTER_ACTOR_IS_REALIZED (stage))
     {
@@ -500,7 +497,7 @@ _clutter_backend_get_features (ClutterBackend *backend)
   ClutterBackendClass *klass;
   GError *error;
 
-  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
+  g_assert (CLUTTER_IS_BACKEND (backend));
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
 
@@ -509,7 +506,7 @@ _clutter_backend_get_features (ClutterBackend *backend)
    * context already exists this should be a no-op
    */
   error = NULL;
-  if (klass->create_context)
+  if (klass->create_context != NULL)
     {
       gboolean res;
 
@@ -538,12 +535,8 @@ void
 _clutter_backend_init_events (ClutterBackend *backend)
 {
   ClutterBackendClass *klass;
-  ClutterMainContext  *clutter_context;
 
-  clutter_context = _clutter_context_get_default ();
-
-  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
-  g_return_if_fail (clutter_context != NULL);
+  g_assert (CLUTTER_IS_BACKEND (backend));
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->init_events)
@@ -555,8 +548,6 @@ _clutter_backend_get_units_per_em (ClutterBackend       *backend,
                                    PangoFontDescription *font_desc)
 {
   ClutterBackendPrivate *priv;
-
-  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
 
   priv = backend->priv;
 
@@ -577,10 +568,6 @@ _clutter_backend_copy_event_data (ClutterBackend     *backend,
 {
   ClutterBackendClass *klass;
 
-  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
-  g_return_if_fail (src != NULL);
-  g_return_if_fail (dest != NULL);
-
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->copy_event_data != NULL)
     klass->copy_event_data (backend, src, dest);
@@ -591,9 +578,6 @@ _clutter_backend_free_event_data (ClutterBackend *backend,
                                   ClutterEvent   *event)
 {
   ClutterBackendClass *klass;
-
-  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
-  g_return_if_fail (event != NULL);
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->free_event_data != NULL)
@@ -621,8 +605,6 @@ clutter_get_default_backend (void)
 
   return clutter_context->backend;
 }
-
-/* FIXME: below should probably be moved into clutter_main */
 
 /**
  * clutter_backend_set_double_click_time:
@@ -921,8 +903,6 @@ clutter_backend_get_font_name (ClutterBackend *backend)
 gint32
 _clutter_backend_get_units_serial (ClutterBackend *backend)
 {
-  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
-
   return backend->priv->units_serial;
 }
 
@@ -931,8 +911,6 @@ _clutter_backend_translate_event (ClutterBackend *backend,
                                   gpointer        native,
                                   ClutterEvent   *event)
 {
-  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), FALSE);
-
   return CLUTTER_BACKEND_GET_CLASS (backend)->translate_event (backend,
                                                                native,
                                                                event);
