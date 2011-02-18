@@ -204,6 +204,12 @@ StTooltip StLabel {
     spacing: 4px;
 }
 
+.panel-button:active #appMenuIcon,
+.panel-button:checked #appMenuIcon,
+.panel-button:focus #appMenuIcon {
+    app-icon-bottom-clip: 2px;
+}
+
 .app-menu-icon {
     width: 24px;
     height: 24px;

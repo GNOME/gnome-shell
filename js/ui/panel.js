@@ -210,6 +210,8 @@ AppMenuButton.prototype = {
         this._container.connect('allocate', Lang.bind(this, this._contentAllocate));
 
         this._iconBox = new Shell.Slicer({ name: 'appMenuIcon' });
+        this._iconBox.connect('style-changed',
+                              Lang.bind(this, this._onIconBoxStyleChanged));
         this._container.add_actor(this._iconBox);
         this._label = new TextShadower();
         this._container.add_actor(this._label.actor);
@@ -278,6 +280,17 @@ AppMenuButton.prototype = {
                                this.actor.hide();
                            },
                            onCompleteScope: this });
+    },
+
+    _onIconBoxStyleChanged: function() {
+        let node = this._iconBox.get_theme_node();
+        let bottomClip = node.get_length('app-icon-bottom-clip');
+        if (bottomClip > 0)
+            this._iconBox.set_clip(0, 0,
+                                   this._iconBox.width,
+                                   this._iconBox.height - bottomClip);
+        else
+            this._iconBox.remove_clip();
     },
 
     _stopAnimation: function(animate) {
