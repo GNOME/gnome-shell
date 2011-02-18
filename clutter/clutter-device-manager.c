@@ -46,6 +46,7 @@
 #include "clutter-enum-types.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
+#include "clutter-stage-private.h"
 
 #define CLUTTER_DEVICE_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_DEVICE_MANAGER, ClutterDeviceManagerPrivate))
 
@@ -400,13 +401,6 @@ _clutter_device_manager_update_devices (ClutterDeviceManager *device_manager)
 {
   const GSList *d;
 
-  /* the user disabled motion events delivery on actors; we
-   * don't perform any picking since the source of the events
-   * will always be set to be the stage
-   */
-  if (!clutter_get_motion_events_enabled ())
-    return;
-
   for (d = clutter_device_manager_peek_devices (device_manager);
        d != NULL;
        d = d->next)
@@ -421,6 +415,14 @@ _clutter_device_manager_update_devices (ClutterDeviceManager *device_manager)
 
       /* out of stage */
       if (device->stage == NULL)
+        continue;
+
+      /* the user disabled motion events delivery on actors for
+       * the stage the device is on; we don't perform any picking
+       * since the source of the events will always be set to be
+       * the stage
+       */
+      if (!_clutter_stage_get_motion_events_enabled (device->stage))
         continue;
 
       _clutter_input_device_update (device, TRUE);
