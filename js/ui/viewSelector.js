@@ -23,7 +23,11 @@ function SearchEntry(focusBase) {
 SearchEntry.prototype = {
     _init : function(focusBase) {
         this.actor = new St.Entry({ name: 'searchEntry',
-                                    hint_text: _("Search your computer"),
+                                    /* Translators: this is the text displayed
+                                       in the search entry when no search is
+                                       active; it should not exceed ~30
+                                       characters */
+                                    hint_text: _("Type to search..."),
                                     track_hover: true });
         this.entry = this.actor.clutter_text;
 
