@@ -61,6 +61,10 @@ void                  _clutter_meta_group_clear_metas (ClutterMetaGroup *group);
 ClutterActorMeta *    _clutter_meta_group_get_meta    (ClutterMetaGroup *group,
                                                        const gchar      *name);
 
+/* ActorMeta */
+void                  _clutter_actor_meta_set_actor   (ClutterActorMeta *meta,
+                                                       ClutterActor     *actor);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_META_PRIVATE_H__ */

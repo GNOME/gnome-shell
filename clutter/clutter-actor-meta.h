@@ -99,10 +99,6 @@ gboolean              clutter_actor_meta_get_enabled (ClutterActorMeta *meta);
 
 ClutterActor *        clutter_actor_meta_get_actor   (ClutterActorMeta *meta);
 
-/* private */
-void                 _clutter_actor_meta_set_actor   (ClutterActorMeta *meta,
-                                                      ClutterActor     *actor);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_META_H__ */
