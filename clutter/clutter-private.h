@@ -76,6 +76,20 @@ typedef struct _ClutterMainContext      ClutterMainContext;
 #define CLUTTER_ACTOR_IN_RELAYOUT(a)            ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_IN_RELAYOUT) != FALSE)
 #define CLUTTER_STAGE_IN_RESIZE(a)              ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_IN_RESIZE) != FALSE)
 
+#define CLUTTER_PARAM_READABLE  (G_PARAM_READABLE | G_PARAM_STATIC_STRINGS)
+#define CLUTTER_PARAM_WRITABLE  (G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS)
+#define CLUTTER_PARAM_READWRITE (G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS)
+
+/* automagic interning of a static string */
+#define I_(str)  (g_intern_static_string ((str)))
+
+/* mark all properties under the "Property" context */
+#ifdef ENABLE_NLS
+#define P_(String) (_clutter_gettext ((String)))
+#else
+#define P_(String) (String)
+#endif
+
 typedef enum {
   CLUTTER_ACTOR_UNUSED_FLAG = 0,
 
@@ -181,20 +195,6 @@ ClutterActor *          _clutter_context_peek_shader_stack      (void);
 guint32                 _clutter_context_acquire_id             (gpointer      key);
 void                    _clutter_context_release_id             (guint32       id_);
 
-#define CLUTTER_PARAM_READABLE  (G_PARAM_READABLE | G_PARAM_STATIC_STRINGS)
-#define CLUTTER_PARAM_WRITABLE  (G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS)
-#define CLUTTER_PARAM_READWRITE (G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS)
-
-/* automagic interning of a static string */
-#define I_(str)  (g_intern_static_string ((str)))
-
-/* mark all properties under the "Property" context */
-#ifdef ENABLE_NLS
-#define P_(String) (_clutter_gettext ((String)))
-#else
-#define P_(String) (String)
-#endif
-
 G_CONST_RETURN gchar *_clutter_gettext (const gchar *str);
 
 gboolean      _clutter_feature_init (GError **error);
@@ -225,12 +225,12 @@ void _clutter_constraint_update_allocation (ClutterConstraint *constraint,
 
 GType _clutter_layout_manager_get_child_meta_type (ClutterLayoutManager *manager);
 
-void                _clutter_util_fully_transform_vertices (const CoglMatrix *modelview,
-                                                            const CoglMatrix *projection,
-                                                            const int *viewport,
-                                                            const ClutterVertex *vertices_in,
-                                                            ClutterVertex *vertices_out,
-                                                            int n_vertices);
+void  _clutter_util_fully_transform_vertices (const CoglMatrix    *modelview,
+                                              const CoglMatrix    *projection,
+                                              const int           *viewport,
+                                              const ClutterVertex *vertices_in,
+                                              ClutterVertex       *vertices_out,
+                                              int                  n_vertices);
 
 G_END_DECLS
 
