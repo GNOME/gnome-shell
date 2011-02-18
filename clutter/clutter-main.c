@@ -227,54 +227,6 @@ clutter_get_accessibility_enabled (void)
   return cally_get_cally_initialized ();
 }
 
-void
-_clutter_do_redraw (ClutterStage *stage)
-{
-  static GTimer *timer = NULL;
-  static guint timer_n_frames = 0;
-  ClutterMainContext *ctx;
-
-  ctx = _clutter_context_get_default ();
-
-  _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
-  _clutter_stage_reset_picks_per_frame_counter (stage);
-
-  _clutter_backend_ensure_context (ctx->backend, stage);
-
-  /* Setup FPS count - not currently across *all* stages rather than per */
-  if (G_UNLIKELY (clutter_get_show_fps ()))
-    {
-      if (!timer)
-	timer = g_timer_new ();
-    }
-
-  /* The code below can't go in stage paint as base actor_paint
-   * will get called before it (and break picking, etc)
-   */
-  _clutter_stage_maybe_setup_viewport (stage);
-
-  /* Call through to the actual backend to do the painting down from
-   * the stage. It will likely need to swap buffers, vblank sync etc
-   * which will be windowing system dependent
-  */
-  _clutter_backend_redraw (ctx->backend, stage);
-
-  /* Complete FPS info */
-  if (G_UNLIKELY (clutter_get_show_fps ()))
-    {
-      timer_n_frames++;
-
-      if (g_timer_elapsed (timer, NULL) >= 1.0)
-	{
-	  g_print ("*** FPS: %i ***\n", timer_n_frames);
-	  timer_n_frames = 0;
-	  g_timer_start (timer);
-	}
-    }
-
-  CLUTTER_TIMESTAMP (SCHEDULER, "Redraw finish for stage:%p", stage);
-}
-
 /**
  * clutter_redraw:
  *

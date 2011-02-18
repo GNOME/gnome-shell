@@ -137,6 +137,9 @@ struct _ClutterStagePrivate
 
   GHashTable *devices;
 
+  GTimer *fps_timer;
+  gint32 timer_n_frames;
+
   guint relayout_pending       : 1;
   guint redraw_pending         : 1;
   guint is_fullscreen          : 1;
@@ -798,6 +801,52 @@ _clutter_stage_maybe_relayout (ClutterActor *actor)
     }
 }
 
+static void
+clutter_stage_do_redraw (ClutterStage *stage)
+{
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterActor *actor = CLUTTER_ACTOR (stage);
+  ClutterStagePrivate *priv = stage->priv;
+
+  CLUTTER_TIMESTAMP (SCHEDULER, "Redraw started for %s[%p]",
+                     _clutter_actor_get_debug_name (actor),
+                     stage);
+
+  _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
+  _clutter_stage_reset_picks_per_frame_counter (stage);
+
+  _clutter_backend_ensure_context (backend, stage);
+
+  if (clutter_get_show_fps ())
+    {
+      if (priv->fps_timer == NULL)
+        priv->fps_timer = g_timer_new ();
+    }
+
+  _clutter_stage_maybe_setup_viewport (stage);
+
+  _clutter_backend_redraw (backend, stage);
+
+  if (clutter_get_show_fps ())
+    {
+      priv->timer_n_frames += 1;
+
+      if (g_timer_elapsed (priv->fps_timer, NULL) >= 1.0)
+        {
+          g_print ("*** FPS for %s: %i ***\n",
+                   _clutter_actor_get_debug_name (actor),
+                   priv->timer_n_frames);
+
+          priv->timer_n_frames = 0;
+          g_timer_start (priv->fps_timer);
+        }
+    }
+
+  CLUTTER_TIMESTAMP (SCHEDULER, "Redraw finished for %s[%p]",
+                     _clutter_actor_get_debug_name (actor),
+                     stage);
+}
+
 /**
  * _clutter_stage_do_update:
  * @stage: A #ClutterStage
@@ -829,8 +878,7 @@ _clutter_stage_do_update (ClutterStage *stage)
 
   _clutter_stage_maybe_finish_queue_redraws (stage);
 
-  CLUTTER_NOTE (PAINT, "redrawing via idle for stage[%p]", stage);
-  _clutter_do_redraw (stage);
+  clutter_stage_do_redraw (stage);
 
   /* reset the guard, so that new redraws are possible */
   priv->redraw_pending = FALSE;
@@ -1198,6 +1246,9 @@ clutter_stage_finalize (GObject *object)
   g_array_free (priv->paint_volume_stack, TRUE);
 
   g_hash_table_destroy (priv->devices);
+
+  if (priv->fps_timer != NULL)
+    g_timer_destroy (priv->fps_timer);
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
 }
