@@ -262,6 +262,11 @@ Dash.prototype = {
                                        clip_to_allocation: true });
         this._box._delegate = this;
 
+        // This will eventually be automatic, see
+        // https://bugzilla.gnome.org/show_bug.cgi?id=584662
+        if (St.Widget.get_default_direction () == St.TextDirection.RTL)
+            this._box.add_style_pseudo_class('rtl');
+
         this.actor = new St.Bin({ y_align: St.Align.START, child: this._box });
         this.actor.connect('notify::height', Lang.bind(this,
             function() {

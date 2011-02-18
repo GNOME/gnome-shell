@@ -315,6 +315,12 @@ StTooltip StLabel {
     border-radius: 0px 9px 9px 0px;
 }
 
+#dash:rtl {
+    border-left: 1px;
+    border-right: 0px;
+    border-radius: 9px 0px 0px 9px;
+}
+
 #dash:empty {
     height: 100px;
     width: 60px;
