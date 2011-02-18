@@ -127,7 +127,7 @@ struct _ClutterMainContext
   ClutterActor *pointer_grab_actor;
   ClutterActor *keyboard_grab_actor;
 
-  /* stack of overridden shaders during paint */
+  /* stack of actors with shaders during paint */
   GSList *shaders;
 
   /* fb bit masks for col<->id mapping in picking */
@@ -170,12 +170,15 @@ typedef struct
 gboolean _clutter_threads_dispatch      (gpointer data);
 void     _clutter_threads_dispatch_free (gpointer data);
 
-#define CLUTTER_CONTEXT()	(_clutter_context_get_default ())
+#define CLUTTER_CONTEXT()       (_clutter_context_get_default ())
 ClutterMainContext *    _clutter_context_get_default            (void);
 gboolean                _clutter_context_is_initialized         (void);
 PangoContext *          _clutter_context_create_pango_context   (void);
 PangoContext *          _clutter_context_get_pango_context      (void);
 ClutterPickMode         _clutter_context_get_pick_mode          (void);
+void                    _clutter_context_push_shader_stack      (ClutterActor *actor);
+ClutterActor *          _clutter_context_pop_shader_stack       (ClutterActor *actor);
+ClutterActor *          _clutter_context_peek_shader_stack      (void);
 
 #define CLUTTER_PARAM_READABLE  (G_PARAM_READABLE | G_PARAM_STATIC_STRINGS)
 #define CLUTTER_PARAM_WRITABLE  (G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS)

@@ -9544,15 +9544,12 @@ clutter_actor_shader_pre_paint (ClutterActor *actor,
 {
   ShaderData *shader_data;
   ClutterShader *shader;
-  ClutterMainContext *context;
 
   shader_data = g_object_get_qdata (G_OBJECT (actor), quark_shader_data);
   if (shader_data == NULL)
     return;
 
-  context = _clutter_context_get_default ();
   shader = shader_data->shader;
-
   if (shader != NULL)
     {
       clutter_shader_set_is_enabled (shader, TRUE);
@@ -9560,7 +9557,7 @@ clutter_actor_shader_pre_paint (ClutterActor *actor,
       g_hash_table_foreach (shader_data->value_hash, set_each_param, shader);
 
       if (!repeat)
-        context->shaders = g_slist_prepend (context->shaders, actor);
+        _clutter_context_push_shader_stack (actor);
     }
 }
 
@@ -9569,28 +9566,27 @@ clutter_actor_shader_post_paint (ClutterActor *actor)
 {
   ShaderData *shader_data;
   ClutterShader *shader;
-  ClutterMainContext *context;
 
   shader_data = g_object_get_qdata (G_OBJECT (actor), quark_shader_data);
   if (shader_data == NULL)
     return;
 
-  context = _clutter_context_get_default ();
   shader = shader_data->shader;
-
   if (shader != NULL)
     {
+      ClutterActor *head;
+
       clutter_shader_set_is_enabled (shader, FALSE);
 
-      context->shaders = g_slist_remove (context->shaders, actor);
-      if (context->shaders)
-        {
-          /* call pre-paint again, this time with the second argument being
-           * TRUE, indicating that we are reapplying the shader and thus
-           * should not be prepended to the stack
-           */
-          clutter_actor_shader_pre_paint (context->shaders->data, TRUE);
-        }
+      /* remove the actor from the shaders stack; if there is another
+       * actor inside it, then call pre-paint again to set its shader
+       * but this time with the second argument being TRUE, indicating
+       * that we are re-applying an existing shader and thus should it
+       * not be prepended to the stack
+       */
+      head = _clutter_context_pop_shader_stack (actor);
+      if (head != NULL)
+        clutter_actor_shader_pre_paint (head, TRUE);
     }
 }
 

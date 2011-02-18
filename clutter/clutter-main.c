@@ -3276,3 +3276,32 @@ _clutter_context_get_pick_mode (void)
 
   return context->pick_mode;
 }
+
+void
+_clutter_context_push_shader_stack (ClutterActor *actor)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  context->shaders = g_slist_prepend (context->shaders, actor);
+}
+
+ClutterActor *
+_clutter_context_peek_shader_stack (void)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  if (context->shaders != NULL)
+    return context->shaders->data;
+
+  return NULL;
+}
+
+ClutterActor *
+_clutter_context_pop_shader_stack (ClutterActor *actor)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  context->shaders = g_slist_remove (context->shaders, actor);
+
+  return _clutter_context_peek_shader_stack ();
+}

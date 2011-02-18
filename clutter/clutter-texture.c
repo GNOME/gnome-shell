@@ -468,27 +468,26 @@ update_fbo (ClutterActor *self)
 {
   ClutterTexture        *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
-  ClutterMainContext    *context;
+  ClutterActor          *head;
   ClutterShader         *shader = NULL;
   ClutterActor          *stage = NULL;
   CoglMatrix             projection;
   CoglColor              transparent_col;
 
-  context = _clutter_context_get_default ();
+  head = _clutter_context_peek_shader_stack ();
+  if (head != NULL)
+    shader = clutter_actor_get_shader (head);
 
-  if (context->shaders)
-    shader = clutter_actor_get_shader (context->shaders->data);
-
-  /* Temporarily turn off the shader on the top of the context's shader stack,
-   * to restore the GL pipeline to it's natural state.
+  /* Temporarily turn off the shader on the top of the context's
+   * shader stack, to restore the GL pipeline to it's natural state.
    */
-  if (shader)
+  if (shader != NULL)
     clutter_shader_set_is_enabled (shader, FALSE);
 
   /* Redirect drawing to the fbo */
   cogl_push_framebuffer (priv->fbo_handle);
 
-  if ((stage = clutter_actor_get_stage (self)))
+  if ((stage = clutter_actor_get_stage (self)) != NULL)
     {
       gfloat stage_width, stage_height;
       ClutterActor *source_parent;
@@ -554,7 +553,7 @@ update_fbo (ClutterActor *self)
   cogl_pop_framebuffer ();
 
   /* If there is a shader on top of the shader stack, turn it back on. */
-  if (shader)
+  if (shader != NULL)
     clutter_shader_set_is_enabled (shader, TRUE);
 }
 
