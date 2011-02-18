@@ -168,9 +168,12 @@ ATIndicator.prototype = {
                 if (enabled) {
                     settings.set_string(KEY_GTK_THEME, HIGH_CONTRAST_THEME);
                     settings.set_string(KEY_ICON_THEME, HIGH_CONTRAST_THEME);
-                } else {
+                } else if(!hasHC) {
                     settings.set_string(KEY_GTK_THEME, gtkTheme);
                     settings.set_string(KEY_ICON_THEME, iconTheme);
+                } else {
+                    settings.reset(KEY_GTK_THEME);
+                    settings.reset(KEY_ICON_THEME);
                 }
             });
         settings.connect('changed::' + KEY_GTK_THEME, function() {
