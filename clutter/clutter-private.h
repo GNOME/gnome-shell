@@ -170,7 +170,6 @@ typedef struct
 gboolean _clutter_threads_dispatch      (gpointer data);
 void     _clutter_threads_dispatch_free (gpointer data);
 
-#define CLUTTER_CONTEXT()       (_clutter_context_get_default ())
 ClutterMainContext *    _clutter_context_get_default            (void);
 gboolean                _clutter_context_is_initialized         (void);
 PangoContext *          _clutter_context_create_pango_context   (void);

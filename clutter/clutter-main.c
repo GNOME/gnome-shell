@@ -667,13 +667,15 @@ result:
   return actor;
 }
 
-CoglPangoFontMap *
-_clutter_context_get_pango_fontmap (ClutterMainContext *self)
+static CoglPangoFontMap *
+clutter_context_get_pango_fontmap (void)
 {
+  ClutterMainContext *self;
   CoglPangoFontMap *font_map;
   gdouble resolution;
   gboolean use_mipmapping;
 
+  self = _clutter_context_get_default ();
   if (G_LIKELY (self->font_map != NULL))
     return self->font_map;
 
@@ -793,14 +795,13 @@ _clutter_context_get_pango_context (void)
 PangoContext *
 _clutter_context_create_pango_context (void)
 {
-  ClutterMainContext *self = _clutter_context_get_default ();
   CoglPangoFontMap *font_map;
   PangoContext *context;
 
-  font_map = _clutter_context_get_pango_fontmap (self);
+  font_map = clutter_context_get_pango_fontmap ();
 
   context = cogl_pango_font_map_create_context (font_map);
-  update_pango_context (self->backend, context);
+  update_pango_context (clutter_get_default_backend (), context);
   pango_context_set_language (context, pango_language_get_default ());
 
   return context;
@@ -872,12 +873,9 @@ clutter_main (void)
   if (clutter_main_loop_level == 0)
     CLUTTER_TIMER_START (uprof_get_mainloop_context (), mainloop_timer);
 
-  /* Make sure there is a context */
-  CLUTTER_CONTEXT ();
-
-  if (!clutter_is_initialized)
+  if (!_clutter_context_is_initialized ())
     {
-      g_warning ("Called clutter_main() but Clutter wasn't initialised.  "
+      g_warning ("Called clutter_main() but Clutter wasn't initialised. "
 		 "You must call clutter_init() first.");
       return;
     }
@@ -2872,8 +2870,11 @@ void
 clutter_clear_glyph_cache (void)
 {
   CoglPangoFontMap *font_map;
+  ClutterMainContext *context;
 
-  font_map = _clutter_context_get_pango_fontmap (CLUTTER_CONTEXT ());
+  context = _clutter_context_get_default ();
+
+  font_map = clutter_context_get_pango_fontmap ();
   cogl_pango_font_map_clear_glyph_cache (font_map);
 }
 
@@ -2905,7 +2906,7 @@ clutter_set_font_flags (ClutterFontFlags flags)
 
   backend = clutter_get_default_backend ();
 
-  font_map = _clutter_context_get_pango_fontmap (context);
+  font_map = clutter_context_get_pango_fontmap ();
   use_mipmapping = (flags & CLUTTER_FONT_MIPMAPPING) != 0;
   cogl_pango_font_map_set_use_mipmapping (font_map, use_mipmapping);
 
@@ -2946,21 +2947,21 @@ clutter_set_font_flags (ClutterFontFlags flags)
 ClutterFontFlags
 clutter_get_font_flags (void)
 {
-  ClutterMainContext *context = CLUTTER_CONTEXT ();
   CoglPangoFontMap *font_map = NULL;
   const cairo_font_options_t *font_options;
   ClutterFontFlags flags = 0;
+  cairo_hint_style_t hint_style;
 
-  font_map = _clutter_context_get_pango_fontmap (context);
+  font_map = clutter_context_get_pango_fontmap ();
   if (cogl_pango_font_map_get_use_mipmapping (font_map))
     flags |= CLUTTER_FONT_MIPMAPPING;
 
-  font_options = clutter_backend_get_font_options (context->backend);
+  font_options =
+    clutter_backend_get_font_options (clutter_get_default_backend ());
 
-  if ((cairo_font_options_get_hint_style (font_options)
-       != CAIRO_HINT_STYLE_DEFAULT)
-      && (cairo_font_options_get_hint_style (font_options)
-          != CAIRO_HINT_STYLE_NONE))
+  hint_style = cairo_font_options_get_hint_style (font_options);
+  if (hint_style != CAIRO_HINT_STYLE_DEFAULT &&
+      hint_style != CAIRO_HINT_STYLE_NONE)
     flags |= CLUTTER_FONT_HINTING;
 
   return flags;
@@ -3011,9 +3012,7 @@ clutter_get_input_device_for_id (gint id_)
 PangoFontMap *
 clutter_get_font_map (void)
 {
-  ClutterMainContext *context = _clutter_context_get_default ();
-
-  return PANGO_FONT_MAP (_clutter_context_get_pango_fontmap (context));
+  return PANGO_FONT_MAP (clutter_context_get_pango_fontmap ());
 }
 
 typedef struct _ClutterRepaintFunction
@@ -3041,7 +3040,7 @@ clutter_threads_remove_repaint_func (guint handle_id)
 
   g_return_if_fail (handle_id > 0);
 
-  context = CLUTTER_CONTEXT ();
+  context = _clutter_context_get_default ();
   l = context->repaint_funcs;
   while (l != NULL)
     {
@@ -3105,7 +3104,7 @@ clutter_threads_add_repaint_func (GSourceFunc    func,
 
   g_return_val_if_fail (func != NULL, 0);
 
-  context = CLUTTER_CONTEXT ();
+  context = _clutter_context_get_default ();
 
   /* XXX lock the context */
 
@@ -3136,7 +3135,7 @@ clutter_threads_add_repaint_func (GSourceFunc    func,
 void
 _clutter_run_repaint_functions (void)
 {
-  ClutterMainContext *context = CLUTTER_CONTEXT ();
+  ClutterMainContext *context = _clutter_context_get_default ();
   ClutterRepaintFunction *repaint_func;
   GList *reinvoke_list, *l;
 
