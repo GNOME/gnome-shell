@@ -367,7 +367,7 @@ _clutter_id_to_color (guint         id_,
     }
 }
 
-guint
+static inline guint
 _clutter_pixel_to_id (guchar pixel[4])
 {
   ClutterMainContext *ctx;
