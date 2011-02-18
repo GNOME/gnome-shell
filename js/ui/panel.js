@@ -871,6 +871,7 @@ Panel.prototype = {
         this._rightBox.add(this._statusBox);
 
         this._statusmenu = new StatusMenu.StatusMenuButton();
+        this._statusmenu.actor.name = 'panelStatus';
         this._menus.addMenu(this._statusmenu.menu);
         this._rightBox.add(this._statusmenu.actor);
 
