@@ -232,6 +232,7 @@ source_h_priv = \
 	$(srcdir)/clutter-bezier.h			\
 	$(srcdir)/clutter-debug.h 			\
 	$(srcdir)/clutter-device-manager-private.h	\
+	$(srcdir)/clutter-effect-private.h		\
 	$(srcdir)/clutter-event-translator.h		\
 	$(srcdir)/clutter-id-pool.h 			\
 	$(srcdir)/clutter-keysyms-table.h		\

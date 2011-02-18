@@ -295,7 +295,7 @@
 #include "clutter-constraint.h"
 #include "clutter-container.h"
 #include "clutter-debug.h"
-#include "clutter-effect.h"
+#include "clutter-effect-private.h"
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"

@@ -172,6 +172,7 @@
 
 #include "clutter-actor-meta-private.h"
 #include "clutter-debug.h"
+#include "clutter-effect-private.h"
 #include "clutter-enum-types.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
