@@ -239,6 +239,7 @@ source_h_priv = \
 	$(srcdir)/clutter-keysyms-table.h		\
 	$(srcdir)/clutter-master-clock.h		\
 	$(srcdir)/clutter-model-private.h		\
+	$(srcdir)/clutter-offscreen-effect-private.h	\
 	$(srcdir)/clutter-paint-volume-private.h	\
 	$(srcdir)/clutter-private.h 			\
 	$(srcdir)/clutter-profile.h			\

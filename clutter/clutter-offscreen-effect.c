@@ -475,3 +475,22 @@ clutter_offscreen_effect_create_texture (ClutterOffscreenEffect *effect,
                                                                       width,
                                                                       height);
 }
+
+gboolean
+_clutter_offscreen_effect_get_target_size (ClutterOffscreenEffect *effect,
+                                           gfloat                 *width,
+                                           gfloat                 *height)
+{
+  ClutterOffscreenEffectPrivate *priv = effect->priv;
+
+  if (priv->target == NULL)
+    return FALSE;
+
+  if (width)
+    *width = priv->target_width;
+
+  if (height)
+    *height = priv->target_height;
+
+  return TRUE;
+}
