@@ -420,7 +420,6 @@ cally_text_get_character_at_offset (AtkText *text,
                                     gint     offset)
 {
   ClutterActor *actor      = NULL;
-  CallyText    *cally_text = NULL;
   gchar        *string     = NULL;
   gchar        *index      = NULL;
   gunichar      unichar;
@@ -429,7 +428,6 @@ cally_text_get_character_at_offset (AtkText *text,
   if (actor == NULL) /* State is defunct */
     return '\0';
 
-  cally_text = CALLY_TEXT (text);
   string = clutter_text_get_chars (CLUTTER_TEXT (actor), 0, -1);
   if (offset >= g_utf8_strlen (string, -1))
     {
@@ -455,20 +453,27 @@ cally_text_get_text_before_offset (AtkText	    *text,
 				   gint		    *end_offset)
 {
   ClutterActor *actor        = NULL;
+#if 0
   ClutterText  *clutter_text = NULL;
   CallyText    *cally_text   = NULL;
+#endif
 
   actor = CALLY_GET_CLUTTER_ACTOR (text);
   if (actor == NULL) /* State is defunct */
     return NULL;
 
+#if 0
   clutter_text = CLUTTER_TEXT (actor);
   cally_text = CALLY_TEXT (text);
 
-/*   return gail_text_util_get_text (cally_text->priv->textutil, */
-/*                                   clutter_text_get_layout (clutter_text), */
-/*                                   GAIL_BEFORE_OFFSET, boundary_type, */
-/*                                   offset, start_offset, end_offset); */
+  return gail_text_util_get_text (cally_text->priv->textutil,
+                                  clutter_text_get_layout (clutter_text),
+                                  GAIL_BEFORE_OFFSET,
+                                  boundary_type,
+                                  offset,
+                                  start_offset, end_offset);
+#endif
+
   return NULL;
 }
 
@@ -480,19 +485,27 @@ cally_text_get_text_at_offset (AtkText         *text,
                                gint            *end_offset)
 {
   ClutterActor *actor        = NULL;
+#if 0
   ClutterText  *clutter_text = NULL;
   CallyText    *cally_text   = NULL;
+#endif
 
   actor = CALLY_GET_CLUTTER_ACTOR (text);
   if (actor == NULL) /* State is defunct */
     return NULL;
 
+#if 0
   clutter_text = CLUTTER_TEXT (actor);
   cally_text = CALLY_TEXT (text);
 
-/*   return gail_text_util_get_text (cally_text->priv->textutil, */
-/*                                   clutter_text_get_layout (clutter_text), GAIL_AT_OFFSET, */
-/*                                   boundary_type, offset, start_offset, end_offset); */
+  return gail_text_util_get_text (cally_text->priv->textutil,
+                                  clutter_text_get_layout (clutter_text),
+                                  GAIL_AT_OFFSET,
+                                  boundary_type,
+                                  offset,
+                                  start_offset, end_offset);
+#endif
+
   return NULL;
 }
 
@@ -504,19 +517,27 @@ cally_text_get_text_after_offset (AtkText         *text,
                                   gint            *end_offset)
 {
   ClutterActor *actor        = NULL;
+#if 0
   ClutterText  *clutter_text = NULL;
   CallyText    *cally_text   = NULL;
+#endif
 
   actor = CALLY_GET_CLUTTER_ACTOR (text);
   if (actor == NULL) /* State is defunct */
     return NULL;
 
+#if 0
   clutter_text = CLUTTER_TEXT (actor);
   cally_text = CALLY_TEXT (text);
 
-/*   return gail_text_util_get_text (cally_text->priv->textutil, */
-/*                                   clutter_text_get_layout (clutter_text), GAIL_AFTER_OFFSET, */
-/*                                   boundary_type, offset, start_offset, end_offset); */
+  return gail_text_util_get_text (cally_text->priv->textutil,
+                                  clutter_text_get_layout (clutter_text),
+                                  GAIL_AFTER_OFFSET,
+                                  boundary_type,
+                                  offset,
+                                  start_offset, end_offset);
+#endif
+
   return NULL;
 }
 

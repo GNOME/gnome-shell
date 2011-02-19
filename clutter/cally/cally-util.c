@@ -545,9 +545,8 @@ cally_util_stage_removed_cb (ClutterStageManager *stage_manager,
                              gpointer data)
 {
   GCallback cally_key_snooper_cb = G_CALLBACK (data);
-  gint num = 0;
 
-  num = g_signal_handlers_disconnect_by_func (stage, cally_key_snooper_cb, NULL);
+  g_signal_handlers_disconnect_by_func (stage, cally_key_snooper_cb, NULL);
 }
 
 static void

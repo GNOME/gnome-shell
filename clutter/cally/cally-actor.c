@@ -583,13 +583,11 @@ static gint
 cally_actor_get_n_children (AtkObject *obj)
 {
   ClutterActor     *actor    = NULL;
-  CallyActorPrivate *priv     = NULL;
   GList            *children = NULL;
   gint              num      = 0;
 
   g_return_val_if_fail (CALLY_IS_ACTOR (obj), 0);
 
-  priv = CALLY_ACTOR (obj)->priv;
   actor = CALLY_GET_CLUTTER_ACTOR (obj);
 
   if (actor == NULL) /* State is defunct */
@@ -618,13 +616,11 @@ cally_actor_ref_child (AtkObject *obj,
 {
   ClutterActor     *actor    = NULL;
   ClutterActor     *child    = NULL;
-  CallyActorPrivate *priv     = NULL;
   GList            *children = NULL;
   AtkObject        *result   = NULL;
 
   g_return_val_if_fail (CALLY_IS_ACTOR (obj), NULL);
 
-  priv = CALLY_ACTOR (obj)->priv;
   actor = CALLY_GET_CLUTTER_ACTOR (obj);
 
   if (actor == NULL) /* State is defunct */
@@ -982,15 +978,13 @@ static gboolean
 cally_actor_action_do_action (AtkAction *action,
                              gint       index)
 {
-  ClutterActor        *actor      = NULL;
   CallyActor           *cally_actor = NULL;
-  AtkStateSet         *set        = NULL;
-  CallyActorPrivate    *priv       = NULL;
-  CallyActorActionInfo *info       = NULL;
+  AtkStateSet          *set         = NULL;
+  CallyActorPrivate    *priv        = NULL;
+  CallyActorActionInfo *info        = NULL;
 
   cally_actor = CALLY_ACTOR (action);
   priv = cally_actor->priv;
-  actor = CALLY_GET_CLUTTER_ACTOR (cally_actor);
 
   set = atk_object_ref_state_set (ATK_OBJECT (cally_actor));
 
