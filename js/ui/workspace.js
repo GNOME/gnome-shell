@@ -554,7 +554,7 @@ Workspace.prototype = {
 
         let windows = Main.getWindowActorsForWorkspace(this.metaWorkspace.index());
 
-        // Create clones for remaining windows that should be
+        // Create clones for windows that should be
         // visible in the Overview
         this._windows = [];
         this._windowOverlays = [];
