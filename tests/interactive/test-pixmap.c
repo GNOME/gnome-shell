@@ -247,7 +247,6 @@ test_pixmap_main (int argc, char **argv)
   GOptionContext      *context;
   Display	      *xdpy;
   int		       screen;
-  Window	       rootwin;
   ClutterActor        *group = NULL, *label, *stage, *tex;
   Pixmap               pixmap;
   const ClutterColor   gry = { 0x99, 0x99, 0x99, 0xFF };
@@ -272,7 +271,6 @@ test_pixmap_main (int argc, char **argv)
   pixmap = create_pixmap (&w, &h, &d);
 
   screen = DefaultScreen(xdpy);
-  rootwin = RootWindow(xdpy, screen);
   win_remote = XCreateSimpleWindow (xdpy, DefaultRootWindow(xdpy),
 				    0, 0, 200, 200,
 				    0,

@@ -123,7 +123,6 @@ test_texture_async_main (int argc, char *argv[])
 {
   ClutterActor *stage;
   ClutterColor  stage_color = { 0x12, 0x34, 0x56, 0xff };
-  GError       *error;
   gchar        *path;
 
   clutter_init (&argc, &argv);
@@ -136,8 +135,6 @@ test_texture_async_main (int argc, char *argv[])
   g_signal_connect (stage,
                     "button-press-event", G_CALLBACK (clutter_main_quit),
                     NULL);
-
-  error = NULL;
 
   path = (argc > 1)
        ? g_strdup (argv[1])
