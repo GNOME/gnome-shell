@@ -104,21 +104,27 @@ Indicator.prototype = {
             if (device_type == UPDeviceType.BATTERY) {
                 this._hasPrimary = true;
                 let time = Math.round(seconds / 60);
-                let minutes = time % 60;
-                let hours = Math.floor(time / 60);
-                let timestring;
-                if (time > 60) {
-                    if (minutes == 0) {
-                        timestring = Gettext.ngettext("%d hour remaining", "%d hours remaining", hours).format(hours);
-                    } else {
-                        /* TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining" */
-                        let template = _("%d %s %d %s remaining");
+                if (time == 0) {
+                    // 0 is reported when UPower does not have enough data
+                    // to estimate battery life
+                    this._batteryItem.label.text = _("Estimating...");
+                } else {
+                    let minutes = time % 60;
+                    let hours = Math.floor(time / 60);
+                    let timestring;
+                    if (time > 60) {
+                        if (minutes == 0) {
+                            timestring = Gettext.ngettext("%d hour remaining", "%d hours remaining", hours).format(hours);
+                        } else {
+                            /* TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining" */
+                            let template = _("%d %s %d %s remaining");
 
-                        timestring = template.format (hours, Gettext.ngettext("hour", "hours", hours), minutes, Gettext.ngettext("minute", "minutes", minutes));
-                    }
-                } else
-                    timestring = Gettext.ngettext("%d minute remaining", "%d minutes remaining", minutes).format(minutes);
-                this._batteryItem.label.text = timestring;
+                            timestring = template.format (hours, Gettext.ngettext("hour", "hours", hours), minutes, Gettext.ngettext("minute", "minutes", minutes));
+                        }
+                    } else
+                        timestring = Gettext.ngettext("%d minute remaining", "%d minutes remaining", minutes).format(minutes);
+                    this._batteryItem.label.text = timestring;
+                }
                 this._primaryPercentage.text = Math.round(percentage) + '%';
                 this._batteryItem.actor.show();
                 if (this._deviceItems.length > 0)
