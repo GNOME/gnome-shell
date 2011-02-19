@@ -444,6 +444,9 @@ st_widget_unmap (ClutterActor *actor)
 
   if (priv->tooltip)
     clutter_actor_unmap ((ClutterActor *) priv->tooltip);
+
+  if (priv->track_hover && priv->hover)
+    st_widget_set_hover (ST_WIDGET (actor), FALSE);
 }
 
 static void notify_children_of_style_change (ClutterContainer *container);
