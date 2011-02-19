@@ -139,19 +139,15 @@ G_DEFINE_TYPE (ClutterX11TexturePixmap,
 static gboolean
 check_extensions (ClutterX11TexturePixmap *texture)
 {
-  int                             damage_error;
-  ClutterX11TexturePixmapPrivate *priv;
-  Display                        *dpy;
-
-  priv = texture->priv;
+  int damage_error;
+  Display *dpy;
 
   if (_damage_event_base)
     return TRUE;
 
   dpy = clutter_x11_get_default_display();
 
-  if (!XDamageQueryExtension (dpy,
-                              &_damage_event_base, &damage_error))
+  if (!XDamageQueryExtension (dpy, &_damage_event_base, &damage_error))
     {
       g_warning ("No Damage extension");
       return FALSE;
@@ -164,10 +160,6 @@ static void
 process_damage_event (ClutterX11TexturePixmap *texture,
                       XDamageNotifyEvent *damage_event)
 {
-  Display *dpy;
-
-  dpy = clutter_x11_get_default_display();
-
   /* Cogl will deal with updating the texture and subtracting from the
      damage region so we only need to queue a redraw */
   g_signal_emit (texture, signals[QUEUE_DAMAGE_REDRAW],
@@ -1255,7 +1247,6 @@ clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
                                           gboolean                 setting)
 {
   ClutterX11TexturePixmapPrivate *priv;
-  Display                        *dpy;
 
   g_return_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture));
 
@@ -1264,8 +1255,6 @@ clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
   setting = !!setting;
   if (setting == priv->automatic_updates)
     return;
-
-  dpy = clutter_x11_get_default_display();
 
   if (setting)
     create_damage_resources (texture);

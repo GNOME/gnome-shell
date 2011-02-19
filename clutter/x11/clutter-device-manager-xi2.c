@@ -327,7 +327,6 @@ translate_hierarchy_event (ClutterBackendX11       *backend_x11,
                            ClutterDeviceManagerXI2 *manager_xi2,
                            XIHierarchyEvent        *ev)
 {
-  ClutterInputDevice *device;
   int i;
 
   for (i = 0; i < ev->num_info; i++)
@@ -342,7 +341,7 @@ translate_hierarchy_event (ClutterBackendX11       *backend_x11,
           info = XIQueryDevice (backend_x11->xdpy,
                                 ev->info[i].deviceid,
                                 &n_devices);
-          device = add_device (manager_xi2, backend_x11, &info[0], FALSE);
+          add_device (manager_xi2, backend_x11, &info[0], FALSE);
         }
       else if (ev->info[i].flags & XIDeviceDisabled)
         {
@@ -1044,9 +1043,8 @@ clutter_device_manager_xi2_constructed (GObject *gobject)
   for (i = 0; i < n_devices; i++)
     {
       XIDeviceInfo *xi_device = &info[i];
-      ClutterInputDevice *device;
 
-      device = add_device (manager_xi2, backend_x11, xi_device, TRUE);
+      add_device (manager_xi2, backend_x11, xi_device, TRUE);
 
       if (xi_device->use == XIMasterPointer ||
           xi_device->use == XIMasterKeyboard)

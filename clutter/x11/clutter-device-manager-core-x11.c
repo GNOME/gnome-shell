@@ -295,15 +295,16 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
 {
   ClutterDeviceManagerX11 *manager_x11;
   ClutterBackendX11 *backend_x11;
-  ClutterInputDevice *device;
   ClutterStageX11 *stage_x11;
   ClutterTranslateReturn res;
   ClutterStage *stage;
   XEvent *xevent;
+#ifdef HAVE_XINPUT
+  ClutterInputDevice *device;
+#endif
 
   manager_x11 = CLUTTER_DEVICE_MANAGER_X11 (translator);
   backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
-  device = NULL;
 
   xevent = native;
 
@@ -535,19 +536,19 @@ clutter_device_manager_x11_constructed (GObject *gobject)
 {
   ClutterDeviceManagerX11 *manager_x11;
   ClutterBackendX11 *backend_x11;
-  ClutterDeviceManager *manager;
 #ifdef HAVE_XINPUT
+  ClutterDeviceManager *manager;
   XDeviceInfo *x_devices = NULL;
   int i, n_devices;
 #endif /* HAVE_XINPUT */
 
-  manager = CLUTTER_DEVICE_MANAGER (gobject);
   manager_x11 = CLUTTER_DEVICE_MANAGER_X11 (gobject);
 
   g_object_get (gobject, "backend", &backend_x11, NULL);
   g_assert (backend_x11 != NULL);
 
 #ifdef HAVE_XINPUT
+  manager = CLUTTER_DEVICE_MANAGER (gobject);
   x_devices = XListInputDevices (backend_x11->xdpy, &n_devices);
   if (n_devices == 0)
     {

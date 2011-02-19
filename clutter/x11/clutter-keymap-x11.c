@@ -189,10 +189,12 @@ static void
 update_locked_mods (ClutterKeymapX11 *keymap_x11,
                     gint              locked_mods)
 {
+#if 0
   gboolean old_caps_lock_state, old_num_lock_state;
 
   old_caps_lock_state = keymap_x11->caps_lock_state;
   old_num_lock_state  = keymap_x11->num_lock_state;
+#endif
 
   keymap_x11->caps_lock_state = (locked_mods & CLUTTER_LOCK_MASK) != 0;
   keymap_x11->num_lock_state  = (locked_mods & keymap_x11->num_lock_mask) != 0;

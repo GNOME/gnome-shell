@@ -220,7 +220,6 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterBackendX11 *backend_x11 = stage_x11->backend;
-  gboolean resize;
 
   if (stage_x11->is_foreign_xwin)
     {
@@ -237,8 +236,6 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
   /* If we're going fullscreen, don't mess with the size */
   if (stage_x11->fullscreening)
     return;
-
-  resize = clutter_stage_get_user_resizable (stage_x11->wrapper);
 
   if (width == 0 || height == 0)
     {
@@ -465,6 +462,7 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
 
   if (is_fullscreen)
     {
+#if 0
       int width, height;
 
       /* FIXME: this will do the wrong thing for dual-headed
@@ -474,6 +472,7 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
          until the ConfigureNotify for the correct size is received */
       width  = DisplayWidth (backend_x11->xdpy, backend_x11->xscreen_num);
       height = DisplayHeight (backend_x11->xdpy, backend_x11->xscreen_num);
+#endif
 
       /* Set the fullscreen hint so we can retain the old size of the window. */
       stage_x11->fullscreening = TRUE;
