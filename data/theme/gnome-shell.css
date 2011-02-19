@@ -353,6 +353,7 @@ StTooltip StLabel {
 
 .workspace-thumbnail-indicator {
     outline: 2px solid white;
+    border: 1px solid #888;
 }
 
 .window-caption {
