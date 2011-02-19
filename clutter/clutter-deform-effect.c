@@ -62,6 +62,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
+#include "clutter-offscreen-effect-private.h"
 #include "clutter-private.h"
 
 #define DEFAULT_N_TILES         32
@@ -182,7 +183,9 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
 
       actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
       opacity = clutter_actor_get_paint_opacity (actor);
-      clutter_actor_get_size (actor, &width, &height);
+
+      if (!_clutter_offscreen_effect_get_target_size (effect, &width, &height))
+        clutter_actor_get_size (actor, &width, &height);
 
       for (i = 0; i < priv->y_tiles + 1; i++)
         {
