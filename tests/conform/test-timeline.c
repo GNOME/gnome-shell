@@ -185,7 +185,7 @@ void
 test_timeline (TestConformSimpleFixture *fixture,
 	       gconstpointer data)
 {
-  ClutterActor *stage;
+  ClutterActor *stage G_GNUC_UNUSED;
   ClutterTimeline *timeline_1;
   TimelineData data_1;
   ClutterTimeline *timeline_2;
