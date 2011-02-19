@@ -400,13 +400,11 @@ _cogl_texture_2d_sliced_upload_to_gl (CoglTexture2DSliced *tex_2ds,
   CoglSpan        *x_span;
   CoglSpan        *y_span;
   CoglHandle       slice_tex;
-  int              bpp;
   int              x, y;
   guint8          *waste_buf;
   CoglPixelFormat  bmp_format;
 
   bmp_format = _cogl_bitmap_get_format (bmp);
-  bpp = _cogl_get_format_bpp (bmp_format);
 
   waste_buf = _cogl_texture_2d_sliced_allocate_waste_buffer (tex_2ds,
                                                              bmp_format);
@@ -485,7 +483,6 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
 {
   CoglSpan *x_span;
   CoglSpan *y_span;
-  int               bpp;
   CoglSpanIter      x_iter;
   CoglSpanIter      y_iter;
   CoglHandle        slice_tex;
@@ -496,7 +493,6 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
   CoglPixelFormat   source_format;
 
   source_format = _cogl_bitmap_get_format (source_bmp);
-  bpp = _cogl_get_format_bpp (source_format);
 
   waste_buf =
     _cogl_texture_2d_sliced_allocate_waste_buffer (tex_2ds, source_format);
