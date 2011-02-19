@@ -120,6 +120,8 @@ m4_define([gi_req_version],             [0.9.5])
 m4_define([gdk_pixbuf_req_version],     [2.0])
 m4_define([uprof_req_version],          [0.3])
 m4_define([gtk_doc_req_version],        [1.13])
+m4_define([xfixes_req_version],         [3])
+m4_define([xcomposite_req_version],     [0.4])
 
 AC_SUBST([GLIB_REQ_VERSION], [glib_req_version])
 AC_SUBST([JSON_GLIB_REQ_VERSION], [json_glib_req_version])
@@ -130,6 +132,8 @@ AC_SUBST([GI_REQ_VERSION], [gi_req_version])
 AC_SUBST([GDK_PIXBUF_REQ_VERSION], [gdk_pixbuf_req_version])
 AC_SUBST([UPROF_REQ_VERSION], [uprof_req_version])
 AC_SUBST([GTK_DOC_REQ_VERSION], [gtk_doc_req_version])
+AC_SUBST([XFIXES_REQ_VERSION], [xfixes_req_version])
+AC_SUBST([XCOMPOSITE_REQ_VERSION], [xcomposite_req_version])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AM_PATH_GLIB_2_0([glib_req_version],
@@ -839,14 +843,14 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
         )
 
         # XFIXES (required)
-        AC_MSG_CHECKING([for XFIXES extension >= 3])
-        PKG_CHECK_EXISTS([xfixes >= 3], [have_xfixes=yes], [have_xfixes=no])
+        AC_MSG_CHECKING([for XFIXES extension >= $XFIXES_REQ_VERSION])
+        PKG_CHECK_EXISTS([xfixes >= $XFIXES_REQ_VERSION], [have_xfixes=yes], [have_xfixes=no])
         AS_IF([test "x$have_xfixes" = "xyes"],
               [
                 AC_DEFINE(HAVE_XFIXES, [1], [Define to 1 if we have the XFIXES X extension])
 
                 X11_LIBS="$X11_LIBS -lXfixes"
-                X11_PC_FILES="$X11_PC_FILES xfixes >= 3"
+                X11_PC_FILES="$X11_PC_FILES xfixes >= $XFIXES_REQ_VERSION"
 
                 AC_MSG_RESULT([found])
               ],
@@ -869,14 +873,14 @@ AS_IF([test "x$SUPPORT_XLIB" = "x1"],
         )
 
         # XCOMPOSITE (optional)
-        AC_MSG_CHECKING([for XCOMPOSITE extension >= 0.4])
-        PKG_CHECK_EXISTS([xcomposite >= 0.4], [have_xcomposite=yes], [have_xcomposite=no])
+        AC_MSG_CHECKING([for XCOMPOSITE extension >= $XCOMPOSITE_REQ_VERSION])
+        PKG_CHECK_EXISTS([xcomposite >= $XCOMPOSITE_REQ_VERSION], [have_xcomposite=yes], [have_xcomposite=no])
         AS_IF([test "x$have_xcomposite" = "xyes"],
               [
                 AC_DEFINE(HAVE_XCOMPOSITE, [1], [Define to 1 if we have the XCOMPOSITE X extension])
 
                 X11_LIBS="$X11_LIBS -lXcomposite"
-                X11_PC_FILES="$X11_PC_FILES xcomposite >= 0.4"
+                X11_PC_FILES="$X11_PC_FILES xcomposite >= $XCOMPOSITE_REQ_VERSION"
 
                 AC_MSG_RESULT([found])
               ],

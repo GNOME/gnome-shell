@@ -23,10 +23,10 @@ Clutter also has optional dependencies:
 
 On X11, Clutter depends on the following extensions
 
-  • XComposite ≥ 0.4
+  • XComposite ≥ @XCOMPOSITE_REQ_VERSION@
   • XDamage
   • XExt
-  • XFixes ≥ 3
+  • XFixes ≥ @XFIXES_REQ_VERSION@
   • XInput (1.x or 2.x)
   • XKB
 
