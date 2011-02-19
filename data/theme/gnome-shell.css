@@ -196,8 +196,18 @@ StTooltip StLabel {
     padding-right: 4px;
 }
 
+#panelLeft:rtl {
+    padding-right: 0px;
+    padding-left: 4px;
+}
+
 #panelRight {
     padding-left: 4px;
+}
+
+#panelRight:rtl {
+    padding-left: 0px;
+    padding-right: 4px;
 }
 
 #appMenu {

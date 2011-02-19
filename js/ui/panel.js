@@ -528,6 +528,13 @@ Panel.prototype = {
         this._centerBox = new St.BoxLayout({ name: 'panelCenter' });
         this._rightBox = new St.BoxLayout({ name: 'panelRight' });
 
+        // This will eventually be automatic, see
+        // https://bugzilla.gnome.org/show_bug.cgi?id=584662
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
+            this._leftBox.add_style_pseudo_class('rtl');
+            this._rightBox.add_style_pseudo_class('rtl');
+        }
+
         /* This box container ensures that the centerBox is positioned in the *absolute*
          * center, but can be pushed aside if necessary. */
         this._boxContainer = new Shell.GenericContainer();
