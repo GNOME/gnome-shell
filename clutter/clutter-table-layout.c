@@ -1060,7 +1060,6 @@ calculate_row_heights (ClutterTableLayout *self,
     {
       ClutterActor *child = l->data;
       ClutterTableChild *meta;
-      DimensionData *row;
       gfloat c_min, c_pref;
       gfloat min_height, pref_height;
       gint start_row, end_row;
@@ -1075,7 +1074,6 @@ calculate_row_heights (ClutterTableLayout *self,
       if (meta->row_span < 2)
         continue;
 
-      row = &rows[meta->row];
       start_row = meta->row;
       end_row = meta->row + meta->row_span - 1;
 
@@ -1101,6 +1099,7 @@ calculate_row_heights (ClutterTableLayout *self,
               priv->visible_rows += 1;
             }
         }
+
       min_height += priv->row_spacing * (meta->row_span - 1);
       pref_height += priv->row_spacing * (meta->row_span - 1);
 
@@ -1390,7 +1389,7 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
   ClutterTableLayoutPrivate *priv = self->priv;
   GList *list, *children;
   gint row_spacing, col_spacing;
-  gint i, table_width, table_height;
+  gint i;
   DimensionData *rows, *columns;
 
   update_row_col (self, container);
@@ -1403,10 +1402,6 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
 
   col_spacing = (priv->col_spacing);
   row_spacing = (priv->row_spacing);
-
-
-  table_height = (int)(box->y2 - box->y1);
-  table_width = (int)(box->x2 - box->x1);
 
   calculate_table_dimensions (self, container, box->x2 - box->x1, box->y2 - box->y1);
 

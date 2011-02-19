@@ -2027,12 +2027,10 @@ event_click_count_generate (ClutterEvent *event)
 
   ClutterInputDevice *device = NULL;
   ClutterSettings *settings;
-  ClutterBackend *backend;
   guint double_click_time;
   guint double_click_distance;
 
   settings = clutter_settings_get_default ();
-  backend = clutter_get_default_backend ();
 
   g_object_get (settings,
                 "double-click-distance", &double_click_distance,
@@ -2890,9 +2888,6 @@ void
 clutter_clear_glyph_cache (void)
 {
   CoglPangoFontMap *font_map;
-  ClutterMainContext *context;
-
-  context = _clutter_context_get_default ();
 
   font_map = clutter_context_get_pango_fontmap ();
   cogl_pango_font_map_clear_glyph_cache (font_map);

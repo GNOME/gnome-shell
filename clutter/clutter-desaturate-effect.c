@@ -123,7 +123,6 @@ clutter_desaturate_effect_pre_paint (ClutterEffect *effect)
 {
   ClutterDesaturateEffect *self = CLUTTER_DESATURATE_EFFECT (effect);
   ClutterEffectClass *parent_class;
-  float factor;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
     return FALSE;
@@ -143,8 +142,6 @@ clutter_desaturate_effect_pre_paint (ClutterEffect *effect)
       clutter_actor_meta_set_enabled (CLUTTER_ACTOR_META (effect), FALSE);
       return FALSE;
     }
-
-  factor = (float) self->factor;
 
   if (self->shader == COGL_INVALID_HANDLE)
     {

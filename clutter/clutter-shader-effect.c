@@ -573,13 +573,9 @@ clutter_shader_effect_set_uniform_value (ClutterShaderEffect *effect,
                                          const gchar         *name,
                                          const GValue        *value)
 {
-  ClutterShaderEffectPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_SHADER_EFFECT (effect));
   g_return_if_fail (name != NULL);
   g_return_if_fail (value != NULL);
-
-  priv = effect->priv;
 
   clutter_shader_effect_add_uniform (effect, name, value);
 }

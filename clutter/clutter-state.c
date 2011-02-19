@@ -994,7 +994,6 @@ clutter_state_set_key (ClutterState  *state,
                        gdouble        pre_delay,
                        gdouble        post_delay)
 {
-  ClutterStatePrivate *priv;
   GParamSpec *pspec;
   ClutterStateKey *state_key;
   State *source_state = NULL;
@@ -1004,8 +1003,6 @@ clutter_state_set_key (ClutterState  *state,
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
   g_return_val_if_fail (property_name, NULL);
   g_return_val_if_fail (value, NULL);
-
-  priv = state->priv;
 
   pspec = get_property_from_object (object, property_name);
   if (pspec == NULL)
