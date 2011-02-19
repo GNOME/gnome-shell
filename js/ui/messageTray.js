@@ -11,11 +11,12 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
-const Tweener = imports.ui.tweener;
 
-const Main = imports.ui.main;
 const BoxPointer = imports.ui.boxpointer;
+const GnomeSession = imports.misc.gnomeSession;
+const Main = imports.ui.main;
 const Params = imports.misc.params;
+const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 
 const Gettext = imports.gettext.domain('gnome-shell');
@@ -24,6 +25,7 @@ const _ = Gettext.gettext;
 const ANIMATION_TIME = 0.2;
 const NOTIFICATION_TIMEOUT = 4;
 const SUMMARY_TIMEOUT = 1;
+const LONGER_SUMMARY_TIMEOUT = 4;
 
 const HIDE_TIMEOUT = 0.2;
 const LONGER_HIDE_TIMEOUT = 0.6;
@@ -940,6 +942,13 @@ function MessageTray() {
 
 MessageTray.prototype = {
     _init: function() {
+        this._presence = new GnomeSession.Presence();
+        this._userStatus = GnomeSession.PresenceStatus.AVAILABLE;
+        this._busy = false;
+        this._backFromAway = false;
+        this._presence.connect('StatusChanged', Lang.bind(this, this._onStatusChanged));
+        this._presence.getStatus(Lang.bind(this, this._onStatusChanged));
+
         this.actor = new St.Group({ name: 'message-tray',
                                     reactive: true,
                                     track_hover: true });
@@ -1412,6 +1421,28 @@ MessageTray.prototype = {
         }
     },
 
+    _onStatusChanged: function(presence, status) {
+        this._backFromAway = (this._userStatus == GnomeSession.PresenceStatus.IDLE && this._userStatus != status);
+        this._userStatus = status;
+
+        if (status == GnomeSession.PresenceStatus.BUSY) {
+            // remove notification and allow the summary to be closed now
+            this._updateNotificationTimeout(0);
+            if (this._summaryTimeoutId) {
+                Mainloop.source_remove(this._summaryTimeoutId);
+                this._summaryTimeoutId = 0;
+            }
+            this._busy = true;
+        } else if (status != GnomeSession.PresenceStatus.IDLE) {
+            // We preserve the previous value of this._busy if the status turns to IDLE
+            // so that we don't start showing notifications queued during the BUSY state
+            // as the screensaver gets activated.
+            this._busy = false;
+        }
+
+        this._updateState();
+    },
+
     _onTrayLeftTimeout: function() {
         let [x, y, mods] = global.get_pointer();
         // We extend the timeout once if the mouse moved no further than MOUSE_LEFT_ACTOR_THRESHOLD to either side or up.
@@ -1450,7 +1481,8 @@ MessageTray.prototype = {
     // at the present time.
     _updateState: function() {
         // Notifications
-        let notificationsPending = this._notificationQueue.length > 0;
+        let notificationsPending = this._notificationQueue.length > 0 &&
+                                   (!this._busy || this._notificationQueue[0].urgency == Urgency.CRITICAL);
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
         let notificationExpanded = this._notificationBin.y < 0;
         let notificationExpired = (this._notificationTimeoutId == 0 && !(this._notification && this._notification.urgency == Urgency.CRITICAL) && !this._pointerInTray && !this._locked) || this._notificationRemoved;
@@ -1479,10 +1511,16 @@ MessageTray.prototype = {
         let notificationsDone = !notificationsVisible && !notificationsPending;
 
         if (this._summaryState == State.HIDDEN) {
-            if (notificationsDone && this._newSummaryItems.length > 0)
-                this._showSummary(true);
-            else if (summarySummoned)
-                this._showSummary(false);
+            if (this._backFromAway) {
+                // Immediately set this to false, so that we don't schedule a timeout later
+                this._backFromAway = false;
+                if (!this._busy)
+                    this._showSummary(LONGER_SUMMARY_TIMEOUT);
+            } else if (notificationsDone && this._newSummaryItems.length > 0 && !this._busy) {
+                this._showSummary(SUMMARY_TIMEOUT);
+            } else if (summarySummoned) {
+                this._showSummary(0);
+            }
         } else if (this._summaryState == State.SHOWN) {
             if (!summaryPinned)
                 this._hideSummary();
@@ -1718,7 +1756,7 @@ MessageTray.prototype = {
         this._focusGrabber.grabFocus(this._notification.actor);
     },
 
-    _showSummary: function(withTimeout) {
+    _showSummary: function(timeout) {
         let primary = global.get_primary_monitor();
         this._summaryBin.opacity = 0;
         this._summaryBin.y = this.actor.height;
@@ -1729,16 +1767,16 @@ MessageTray.prototype = {
                       transition: 'easeOutQuad',
                       onComplete: this._showSummaryCompleted,
                       onCompleteScope: this,
-                      onCompleteParams: [withTimeout]
+                      onCompleteParams: [timeout]
                     });
     },
 
-    _showSummaryCompleted: function(withTimeout) {
+    _showSummaryCompleted: function(timeout) {
         this._newSummaryItems = [];
 
-        if (withTimeout) {
+        if (timeout != 0) {
             this._summaryTimeoutId =
-                Mainloop.timeout_add(SUMMARY_TIMEOUT * 1000,
+                Mainloop.timeout_add(timeout * 1000,
                                      Lang.bind(this, this._summaryTimeout));
         }
     },
