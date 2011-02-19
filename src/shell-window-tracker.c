@@ -382,10 +382,21 @@ get_app_from_window_group (ShellWindowTracker  *monitor,
   return result;
 }
 
+/**
+ * get_app_from_window_pid:
+ * @monitor: a #ShellWindowTracker
+ * @window: a #MetaWindow
+ *
+ * Check if the pid associated with @window corresponds to an
+ * application we launched.
+ *
+ * Return value: (transfer full): A newly-referenced #ShellApp, or %NULL
+ */
 static ShellApp *
 get_app_from_window_pid (ShellWindowTracker  *tracker,
                          MetaWindow          *window)
 {
+  ShellApp *result;
   int pid;
 
   if (meta_window_is_remote (window))
@@ -396,7 +407,11 @@ get_app_from_window_pid (ShellWindowTracker  *tracker,
   if (pid == -1)
     return NULL;
 
-  return g_hash_table_lookup (tracker->launched_pid_to_app, GINT_TO_POINTER (pid));
+  result = g_hash_table_lookup (tracker->launched_pid_to_app, GINT_TO_POINTER (pid));
+  if (result != NULL)
+    g_object_ref (result);
+
+  return result;
 }
 
 /**
@@ -405,6 +420,8 @@ get_app_from_window_pid (ShellWindowTracker  *tracker,
  * Determines the application associated with a window, using
  * all available information such as the window's MetaGroup,
  * and what we know about other windows.
+ *
+ * Returns: (transfer full): a #ShellApp, or NULL if none is found
  */
 static ShellApp *
 get_app_for_window (ShellWindowTracker    *monitor,
