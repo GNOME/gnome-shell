@@ -81,7 +81,7 @@ translate_valuator_class (Display             *xdisplay,
                           XIValuatorClassInfo *class)
 {
   static gboolean atoms_initialized = FALSE;
-  ClutterInputAxis axis, i;
+  ClutterInputAxis i, axis = CLUTTER_INPUT_AXIS_IGNORE;
 
   if (G_UNLIKELY (!atoms_initialized))
     {
