@@ -1,4 +1,4 @@
-# translation of metacity.HEAD.po to Español
+# translation of mutter.master.po to Español
 # Spanish trasnlation for Metacity
 # Copyright © 2001,2002,2003, 2006, 2007, 2008 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
@@ -6,15 +6,15 @@
 # Héctor García Álvarez <hector@scouts-es.org>, 2001.
 # Pablo Gonzalo del Campo <pablodc@bigfoot.com>,2002,2003.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2005, 2006.
-# Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008, 2009, 2010.
+# Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008, 2009, 2010, 2011.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.HEAD\n"
+"Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&component=general\n"
-"POT-Creation-Date: 2010-11-18 14:48+0000\n"
-"PO-Revision-Date: 2010-11-19 13:45+0100\n"
+"POT-Creation-Date: 2011-01-04 16:55+0000\n"
+"PO-Revision-Date: 2011-02-20 15:32+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -58,12 +58,12 @@ msgstr "_Forzar la salida"
 msgid "Missing %s extension required for compositing"
 msgstr "Falta la extensión %s requerida para la composición"
 
-#: ../src/core/display.c:451
+#: ../src/core/display.c:431
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ocurrió un error al abrir la pantalla de X Window System «%s»\n"
 
-#: ../src/core/keybindings.c:708
+#: ../src/core/keybindings.c:742
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -75,7 +75,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2408
+#: ../src/core/keybindings.c:2442
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -86,12 +86,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2498
+#: ../src/core/keybindings.c:2532
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "No ha sido definido ningún comando %d.\n"
 
-#: ../src/core/keybindings.c:3510
+#: ../src/core/keybindings.c:3544
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "No ha sido definido ningún comando de terminal.\n"
@@ -140,39 +140,31 @@ msgid "Make X calls synchronous"
 msgstr "Hacer que las llamadas a las X sean síncronas"
 
 #: ../src/core/main.c:302
-msgid "Turn compositing on"
-msgstr "Activar la composición"
-
-#: ../src/core/main.c:308
-msgid "Turn compositing off"
-msgstr "Desactivar la composición"
-
-#: ../src/core/main.c:314
 msgid ""
 "Don't make fullscreen windows that are maximized and have no decorations"
 msgstr ""
 "No poner a pantalla completa las ventanas maximizadas que no tienen "
 "decoración"
 
-#: ../src/core/main.c:320
+#: ../src/core/main.c:308
 msgid "Comma-separated list of compositor plugins"
 msgstr "Lista de complementos del compositor separados por comas"
 
-#: ../src/core/main.c:326
+#: ../src/core/main.c:314
 msgid "Whether window popup/frame should be shown when cycling windows."
 msgstr ""
 "Indica si se debe mostrar el marco de la ventana al cambiar entre ventanas."
 
-#: ../src/core/main.c:333
+#: ../src/core/main.c:321
 msgid "Internal argument for GObject introspection"
 msgstr "Argumento interno para introspección de GObject"
 
-#: ../src/core/main.c:660
+#: ../src/core/main.c:648
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Falló al inspeccionar el directorio de temas: %s\n"
 
-#: ../src/core/main.c:676
+#: ../src/core/main.c:664
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -180,7 +172,7 @@ msgstr ""
 "No se ha podido encontrar un tema. Asegúrese de que %s existe y contiene los "
 "temas usuales.\n"
 
-#: ../src/core/main.c:740
+#: ../src/core/main.c:725
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "No se pudo reiniciar: %s\n"
@@ -196,37 +188,37 @@ msgstr "No se pudo reiniciar: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:548 ../src/core/prefs.c:709
+#: ../src/core/prefs.c:541 ../src/core/prefs.c:702
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La clave GConf «%s» está configurada con un valor inválido\n"
 
-#: ../src/core/prefs.c:635 ../src/core/prefs.c:878
+#: ../src/core/prefs.c:628 ../src/core/prefs.c:871
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr ""
 "%d almacenado en la clave de GConf %s está fuera de rango %d hasta %d\n"
 
-#: ../src/core/prefs.c:679 ../src/core/prefs.c:756 ../src/core/prefs.c:804
-#: ../src/core/prefs.c:868 ../src/core/prefs.c:1343 ../src/core/prefs.c:1359
-#: ../src/core/prefs.c:1376 ../src/core/prefs.c:1392
+#: ../src/core/prefs.c:672 ../src/core/prefs.c:749 ../src/core/prefs.c:797
+#: ../src/core/prefs.c:861 ../src/core/prefs.c:1336 ../src/core/prefs.c:1352
+#: ../src/core/prefs.c:1369 ../src/core/prefs.c:1385
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La clave GConf «%s» está configurada con un tipo inválido\n"
 
-#: ../src/core/prefs.c:1222
+#: ../src/core/prefs.c:1215
 #, c-format
 msgid "GConf key %s is already in use and can't be used to override %s\n"
 msgstr ""
 "La clave de GConf %s ya está en uso y no se puede usar para sobreescribir "
 "%s\n"
 
-#: ../src/core/prefs.c:1281
+#: ../src/core/prefs.c:1274
 #, c-format
 msgid "Can't override GConf key, %s not found\n"
 msgstr "No se puede sobreescribir la clave de GConf, no se encontró %s\n"
 
-#: ../src/core/prefs.c:1483
+#: ../src/core/prefs.c:1476
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -234,14 +226,14 @@ msgstr ""
 "Los arreglos para aplicaciones rotas se han deshabilitado. Algunas "
 "aplicaciones podrían no comportarse correctamente.\n"
 
-#: ../src/core/prefs.c:1560
+#: ../src/core/prefs.c:1553
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "No se ha podido interpretar la descripción de la tipografía «%s» de la clave "
 "GConf %s\n"
 
-#: ../src/core/prefs.c:1622
+#: ../src/core/prefs.c:1615
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -250,18 +242,18 @@ msgstr ""
 "«%s» encontrado en la base de datos de configuración no es un valor válido "
 "para el modificador del botón del ratón\n"
 
-#: ../src/core/prefs.c:2055
+#: ../src/core/prefs.c:2045
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 "Ocurrió un error configurando la número de espacios de trabajo para %d: %s\n"
 
-#: ../src/core/prefs.c:2239 ../src/core/prefs.c:2741
+#: ../src/core/prefs.c:2229 ../src/core/prefs.c:2731
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de trabajo %d"
 
-#: ../src/core/prefs.c:2271 ../src/core/prefs.c:2449
+#: ../src/core/prefs.c:2261 ../src/core/prefs.c:2439
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -270,33 +262,28 @@ msgstr ""
 "«%s» encontrado en la base de datos de configuración no es un valor válido "
 "para la combinación de teclas «%s»\n"
 
-#: ../src/core/prefs.c:2822
+#: ../src/core/prefs.c:2812
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
 "Ocurrió un error al establecer el nombre del área de trabajo %d como «%s»: "
 "%s \n"
 
-#: ../src/core/prefs.c:3032
-#, c-format
-msgid "Error setting compositor status: %s\n"
-msgstr "Error al establecer el estado del compositor: %s\n"
-
-#: ../src/core/prefs.c:3066
+#: ../src/core/prefs.c:3028
 #, c-format
 msgid "Error setting clutter plugin list: %s\n"
 msgstr "Error al establecer la lista de complementos de «Clutter»: %s\n"
 
-#: ../src/core/prefs.c:3110
+#: ../src/core/prefs.c:3072
 #, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Error al establecer el estado de vida de las ventanas ocultas: %s\n"
 
-#: ../src/core/prefs.c:3138
+#: ../src/core/prefs.c:3100
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr ""
-"Error al establecer el estado de las solapas en ventanas emergentes: %s\n"
+"Error al establecer el estado de las pestañas en ventanas emergentes: %s\n"
 
 #: ../src/core/screen.c:577
 #, c-format
@@ -431,7 +418,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6438
+#: ../src/core/window.c:6472
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -447,7 +434,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7101
+#: ../src/core/window.c:7135
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -1881,7 +1868,6 @@ msgid "Border"
 msgstr "Borde"
 
 #: ../src/ui/theme-viewer.c:412
-#| msgid "Attach modal dialogs"
 msgid "Attached Modal Dialog"
 msgstr "Diálogo modal adjunto"
 
@@ -1985,6 +1971,15 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d expresiones de coordenadas interpretadas en %g segundos (%g segundos de "
 "media)\n"
+
+#~ msgid "Turn compositing on"
+#~ msgstr "Activar la composición"
+
+#~ msgid "Turn compositing off"
+#~ msgstr "Desactivar la composición"
+
+#~ msgid "Error setting compositor status: %s\n"
+#~ msgstr "Error al establecer el estado del compositor: %s\n"
 
 #~ msgid ""
 #~ "Lost connection to the display '%s';\n"
