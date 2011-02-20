@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.91.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-17 14:42+0100\n"
-"PO-Revision-Date: 2011-02-09 18:04+0100\n"
-"Last-Translator: Torstein Adolf Winterseth <kvikende@fsfe.org>\n"
+"POT-Creation-Date: 2011-02-20 12:22+0100\n"
+"PO-Revision-Date: 2011-02-20 12:24+0100\n"
+"Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -58,22 +58,26 @@ msgid "History for command (Alt-F2) dialog"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-msgid "If true, display date in the clock, in addition to time."
+msgid "History for the looking glass dialog"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "If true, display seconds in time."
+msgid "If true, display date in the clock, in addition to time."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display the ISO week date in the calendar."
+msgid "If true, display seconds in time."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "If true, display the ISO week date in the calendar."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -88,42 +92,42 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Vis dato i klokken"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Vis dato for uken i kalender"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Vis tid med sekunder"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -131,15 +135,15 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
 msgstr "Uuider på utvidelser som skal slås av"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr "Om det skal samles statistikk om bruk av programmer"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
 msgstr ""
 
@@ -347,58 +351,58 @@ msgstr "Neste uke"
 msgid "Remove"
 msgstr "Fjern"
 
-#: ../js/ui/dateMenu.js:90
+#: ../js/ui/dateMenu.js:93
 msgid "Date and Time Settings"
 msgstr "Innstillinger for dato og klokkeslett"
 
-#: ../js/ui/dateMenu.js:109
+#: ../js/ui/dateMenu.js:112
 msgid "Open Calendar"
 msgstr "Åpne kalender"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:148
+#: ../js/ui/dateMenu.js:151
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e %b, %R.%S"
 
-#: ../js/ui/dateMenu.js:149
+#: ../js/ui/dateMenu.js:152
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:153
+#: ../js/ui/dateMenu.js:156
 msgid "%a %R:%S"
 msgstr "%a %R.%S"
 
-#: ../js/ui/dateMenu.js:154
+#: ../js/ui/dateMenu.js:157
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:161
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l.%M.%S %p"
 
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l.%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:166
+#: ../js/ui/dateMenu.js:169
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l.%M.%S %p"
 
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:170
 msgid "%a %l:%M %p"
 msgstr "%a %l.%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:193
+#: ../js/ui/dateMenu.js:196
 msgid "%A %B %e, %Y"
 msgstr "%a %e %B, %Y"
 
@@ -413,7 +417,7 @@ msgstr "Logg ut %s"
 
 #: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
 msgid "Log Out"
-msgstr "Logg ut …"
+msgstr "Logg ut"
 
 #: ../js/ui/endSessionDialog.js:65
 msgid "Click Log Out to quit these applications and log out of the system."
@@ -478,33 +482,33 @@ msgstr "Bekreft"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../js/ui/lookingGlass.js:584
+#: ../js/ui/lookingGlass.js:587
 msgid "No extensions installed"
 msgstr "Ingen utvidelser installert"
 
-#: ../js/ui/lookingGlass.js:621
+#: ../js/ui/lookingGlass.js:624
 msgid "Enabled"
 msgstr "Aktivert"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:623 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:626 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "Deaktivert"
 
-#: ../js/ui/lookingGlass.js:625
+#: ../js/ui/lookingGlass.js:628
 msgid "Error"
 msgstr "Feil"
 
-#: ../js/ui/lookingGlass.js:627
+#: ../js/ui/lookingGlass.js:630
 msgid "Out of date"
 msgstr "Utdatert"
 
-#: ../js/ui/lookingGlass.js:652
+#: ../js/ui/lookingGlass.js:655
 msgid "View Source"
 msgstr "Vis kildekode"
 
-#: ../js/ui/lookingGlass.js:658
+#: ../js/ui/lookingGlass.js:661
 msgid "Web Page"
 msgstr "Nettside"
 
@@ -525,14 +529,14 @@ msgid "Applications"
 msgstr "Programmer"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:479
+#: ../js/ui/panel.js:478
 #, c-format
 msgid "Quit %s"
 msgstr "Avslutt %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:613
+#: ../js/ui/panel.js:612
 msgid "Activities"
 msgstr "Aktiviteter"
 
@@ -562,13 +566,13 @@ msgstr "STEDER & ENHETER"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:209
+#: ../js/ui/runDialog.js:201
 msgid "Please enter a command:"
 msgstr "Oppgi en kommando:"
 
 #: ../js/ui/searchDisplay.js:295
 msgid "Searching..."
-msgstr "Søker..."
+msgstr "Søker …"
 
 #: ../js/ui/searchDisplay.js:309
 msgid "No matching results."
@@ -612,11 +616,11 @@ msgstr "Logg ut …"
 msgid "Shut Down..."
 msgstr "Avslutt …"
 
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:81
 msgid "Zoom"
 msgstr "Zoom"
 
-#: ../js/ui/status/accessibility.js:89
+#: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
 msgstr "Skjermleser"
 
@@ -624,35 +628,35 @@ msgstr "Skjermleser"
 msgid "Screen Keyboard"
 msgstr "Tastatur på skjermen"
 
-#: ../js/ui/status/accessibility.js:95
+#: ../js/ui/status/accessibility.js:96
 msgid "Visual Alerts"
 msgstr "Synlig varsling"
 
-#: ../js/ui/status/accessibility.js:98
+#: ../js/ui/status/accessibility.js:99
 msgid "Sticky Keys"
 msgstr "Klebrige taster"
 
-#: ../js/ui/status/accessibility.js:101
+#: ../js/ui/status/accessibility.js:102
 msgid "Slow Keys"
 msgstr "Trege taster"
 
-#: ../js/ui/status/accessibility.js:104
+#: ../js/ui/status/accessibility.js:105
 msgid "Bounce Keys"
 msgstr "Spretne taster"
 
-#: ../js/ui/status/accessibility.js:107
+#: ../js/ui/status/accessibility.js:108
 msgid "Mouse Keys"
 msgstr "Mustaster"
 
-#: ../js/ui/status/accessibility.js:111
+#: ../js/ui/status/accessibility.js:112
 msgid "Universal Access Settings"
 msgstr "Innstillinger for tilgjengelighet"
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:164
 msgid "High Contrast"
 msgstr "Høy kontrast"
 
-#: ../js/ui/status/accessibility.js:205
+#: ../js/ui/status/accessibility.js:206
 msgid "Large Text"
 msgstr "Stor tekst"
 
@@ -668,11 +672,11 @@ msgstr "Synlighet"
 
 #: ../js/ui/status/bluetooth.js:69
 msgid "Send Files to Device..."
-msgstr "Send filer til enhet..."
+msgstr "Send filer til enhet …"
 
 #: ../js/ui/status/bluetooth.js:70
 msgid "Setup a New Device..."
-msgstr "Sett opp en ny enhet..."
+msgstr "Sett opp en ny enhet …"
 
 #: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
@@ -684,11 +688,11 @@ msgstr "Tilkobling"
 
 #: ../js/ui/status/bluetooth.js:228
 msgid "Send Files..."
-msgstr "Send filer..."
+msgstr "Send filer …"
 
 #: ../js/ui/status/bluetooth.js:233
 msgid "Browse Files..."
-msgstr "Bla gjennom filer..."
+msgstr "Bla gjennom filer …"
 
 #: ../js/ui/status/bluetooth.js:242
 msgid "Error browsing device"
@@ -707,7 +711,7 @@ msgstr "Innstillinger for tastatur"
 msgid "Mouse Settings"
 msgstr "Innstillinger for mus"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
 msgid "Sound Settings"
 msgstr "Innstillinger for lyd"
 
@@ -857,11 +861,11 @@ msgstr "Datamaskin"
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:44
 msgid "Volume"
 msgstr "Volum"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:57
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -893,9 +897,13 @@ msgstr "%s er opptatt."
 msgid "Sent at %X on %A"
 msgstr "Sendt %X på %A"
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "Søk på din datamaskin"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters
+#: ../js/ui/viewSelector.js:30
+msgid "Type to search..."
+msgstr "Skriv for å søke …"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -984,6 +992,9 @@ msgstr "Søk"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Search your computer"
+#~ msgstr "Søk på din datamaskin"
 
 #~ msgid "Enable lens mode"
 #~ msgstr "Slå på linsemodus"
