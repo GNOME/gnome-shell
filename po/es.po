@@ -1,17 +1,17 @@
 # Spanish translation of gnome-shell.
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
 # Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
+# Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2011-02-03 11:14+0000\n"
-"PO-Revision-Date: 2011-02-04 10:30+0100\n"
-"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
+"POT-Creation-Date: 2011-02-19 23:39+0000\n"
+"PO-Revision-Date: 2011-02-20 15:13+0100\n"
+"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,22 +61,27 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "Histórico del diálogo de comandos (Alt+F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
+#| msgid "History for command (Alt-F2) dialog"
+msgid "History for the looking glass dialog"
+msgstr "Histórico del diálogo de «looking glass»"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Si es cierta, muestra la fecha en el reloj, además de la hora."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
 msgstr "Si es cierta, muestra los segundos en la hora."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Si es cierta muestra la fecha de semana ISO en el calendario."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Lista de ID de archivos de escritorio para las aplicaciones favoritas"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -91,30 +96,30 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 "Establece la tubería GStreamer usada para codificar grabaciones. Sigue la "
-"sintaxis usada para gst-launch. La tubería debería tener un sumidero («sink») "
-"de ensamblaje/sesensamblaje donde el vídeo que se está grabando se graba. "
-"Generalmente tendrá un origen de ensamblado/desensamblado; la salida de ese "
-"punto se escibirá en el archivo de salida. No obstante la tubería también "
-"puede tomar parte en su propia salida; esto se puede usar para enviar la "
-"salida a un servidor «icecast» a través de shout2send o similar. Cuando no "
-"está establecido o lo está a un valor vacío, se usará la tubería "
-"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 threads="
-"%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T como "
-"suposición para el número de hilos óptimos en el sistema."
+"sintaxis usada para gst-launch. La tubería debería tener un sumidero "
+"(«sink») de ensamblaje/sesensamblaje donde el vídeo que se está grabando se "
+"graba. Generalmente tendrá un origen de ensamblado/desensamblado; la salida "
+"de ese punto se escibirá en el archivo de salida. No obstante la tubería "
+"también puede tomar parte en su propia salida; esto se puede usar para "
+"enviar la salida a un servidor «icecast» a través de shout2send o similar. "
+"Cuando no está establecido o lo está a un valor vacío, se usará la tubería "
+"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 "
+"threads=%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T "
+"como suposición para el número de hilos óptimos en el sistema."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Mostrar la fecha en el reloj"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Mostrar la fecha de la semana en el calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Mostrar la hora con segundos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -122,7 +127,7 @@ msgstr ""
 "Las aplicaciones correspondientes con esos identificadores se mostrarán en "
 "el área de favoritos."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -132,7 +137,7 @@ msgstr ""
 "basado en la fecha actual y usará esta extensión. Se debería cambiar al "
 "grabar en otro formato contenedor diferente."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -140,11 +145,11 @@ msgstr ""
 "La tasa de fotogramas de la grabación resultante grabada por el grabador de "
 "«screencast» de GNOME Shell, en fotogramas por segundo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "La tubería de gstreamer usada para codificar el «screencast»"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -156,175 +161,18 @@ msgstr ""
 "mantienen de forma privada, puede querer desactivarlo por razones de "
 "privacidad. Note que haciéndolo no eliminará los datos ya guardados."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
 msgstr "Uuid de las extensiones que desactivar"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 "Indica si se deben recolectar estadísticas acerca del uso de las aplicaciones"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
 msgstr "proveedores OpenSearch desactivados"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
-msgid "Clip the crosshairs at the center"
-msgstr "Fijar los cursores en el centro"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
-msgid "Color of the crosshairs"
-msgstr "Color de las cruces"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
-msgid ""
-"Determines the length of the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr ""
-"Determina la longitud de las líneas verticales y horizontales que conforman "
-"los cursores."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
-msgid ""
-"Determines the position of the magnified mouse image within the magnified "
-"view and how it reacts to system mouse movement. The values are - none: no "
-"mouse tracking; - centered: the mouse image is displayed at the center of "
-"the zoom region (which also represents the point under the system mouse) and "
-"the magnified contents are scrolled as the system mouse moves; - "
-"proportional: the position of the magnified mouse in the zoom region is "
-"proportionally the same as the position of the system mouse on screen; - "
-"push: when the magnified mouse intersects a boundary of the zoom region, the "
-"contents are scrolled into view."
-msgstr ""
-"Determina la posición de la imagen magnificada del ratón dentro de la vista "
-"magnificada y cómo reacciona al movimiento del ratón del sistema. Los "
-"valores son «none» (ninguno): sin seguimiento del ratón; "
-"«centered» (centrado): la imagen del ratón se muestra en el centro de la "
-"región ampliada (que también representa el punto bajo el ratón del sistema) "
-"y el contenido magnificado se desliza según se mueve el ratón del sistema; "
-"«proporcional»: la posición del ratón magnificado en la región de ampliación "
-"es proporcionalmente la misma que la posición del ratón del sistema en el "
-"ratón; «push» (empujar): cuando el ratón magnificado cruza un límite de la "
-"región de ampliación, el contenido se desliza en la vista."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
-msgid ""
-"Determines the transparency of the crosshairs, from fully opaque to fully "
-"transparent."
-msgstr ""
-"Determina la transparencia de los cursores, de completamente opacos a "
-"completamente transparentes."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
-msgid ""
-"Determines whether the crosshairs intersect the magnified mouse sprite, or "
-"are clipped such that the ends of the horizontal and vertical lines surround "
-"the mouse image."
-msgstr ""
-"Determina si las cruces cruzan el «sprite» magnificado del ratón o se fijan "
-"de tal forma que los finales de las líneas horizontales y verticales rodean "
-"la imagen del ratón."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-msgid "Enable lens mode"
-msgstr "Activar el modo lente"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
-msgid ""
-"Enables/disables display of crosshairs centered on the magnified mouse "
-"sprite."
-msgstr ""
-"Activa/desactiva el mostrado de los cursores centrados en el «sprite» "
-"magnificado del ratón."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
-msgid ""
-"For centered mouse tracking, when the system pointer is at or near the edge "
-"of the screen, the magnified contents continue to scroll such that the "
-"screen edge moves into the magnified view."
-msgstr ""
-"Para el seguimiento del centro del ratón, cuando el puntero del sistema está "
-"cerca del borde de la pantalla, el contenido magnificado continúa "
-"desplazándose de tal forma que el borde de la pantalla se mueve dentro de la "
-"vista magnificada."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
-msgid "Length of the crosshairs"
-msgstr "Longitud de las cruces"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:11
-msgid "Magnification factor"
-msgstr "Factor de magnificación"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:12
-msgid "Mouse Tracking Mode"
-msgstr "Modo de seguimiento del ratón"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:13
-msgid "Opacity of the crosshairs"
-msgstr "Opacidad de las cruces"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
-msgid "Screen position"
-msgstr "Posición de la pantalla"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
-msgid "Scroll magnified contents beyond the edges of the desktop"
-msgstr ""
-"Desplazar el contenido magnificado más allá de los bordes del escritorio"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
-msgid "Show or hide crosshairs"
-msgstr "Mostrar u ocultar las cruces"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
-msgid "Show or hide the magnifier"
-msgstr "Mostrar u ocultar el magnificador"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
-msgid "Show or hide the magnifier and all of its zoom regions."
-msgstr "Mostrar u ocultar el magnificador y todas sus regiones de ampliación."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
-msgid ""
-"The color of the the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr ""
-"El color de las líneas verticales y horizontales que conforman las cruces."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
-msgid ""
-"The magnified view either fills the entire screen, or occupies the top-half, "
-"bottom-half, left-half, or right-half of the screen."
-msgstr ""
-"La vista magnificada o llena la pantalla u ocupa la mitad superior, mitad "
-"inferior, mitad izquierda o mitad derecha de la pantalla."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
-msgid ""
-"The power of the magnification. A value of 1.0 means no magnification. A "
-"value of 2.0 doubles the size."
-msgstr ""
-"El poder de la magnificación. Un valor de 1.0 significa sin magnificación. "
-"Un valor de 2.0 duplica el tamaño."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
-msgid "Thickness of the crosshairs"
-msgstr "Grosor de las cruces"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
-msgid ""
-"Whether the magnified view should be centered over the location of the "
-"system mouse and move with it."
-msgstr ""
-"Indica si la vista magnificada se debe centrar sobre la ubicación del ratón "
-"del sistema y moverse con ella."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
-msgid "Width of the vertical and horizontal lines that make up the crosshairs."
-msgstr ""
-"Anchura de las líneas verticales y horizontales que conforman las cruces."
 
 #: ../js/misc/util.js:86
 msgid "Command not found"
@@ -346,27 +194,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Falló la ejecución de «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:164
+#: ../js/ui/appDisplay.js:174
 msgid "All"
 msgstr "Todas"
 
-#: ../js/ui/appDisplay.js:245
+#: ../js/ui/appDisplay.js:261
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
-#: ../js/ui/appDisplay.js:275
+#: ../js/ui/appDisplay.js:291
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/appDisplay.js:572
+#: ../js/ui/appDisplay.js:551
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:576
+#: ../js/ui/appDisplay.js:555
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:577
+#: ../js/ui/appDisplay.js:556
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
@@ -384,21 +232,18 @@ msgstr "Se ha quitado %s de sus favoritos."
 #. * Keep it short, best if you can use less then 10 characters
 #.
 #: ../js/ui/calendar.js:65
-#| msgid "All"
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Todo el día"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:70
-#| msgid "%H:%M"
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
 #: ../js/ui/calendar.js:77
-#| msgid "%a %l:%M %p"
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
@@ -509,7 +354,6 @@ msgstr "%A, %d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:720
-#| msgid "%a %b %e, %R"
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
@@ -530,68 +374,66 @@ msgstr "Esta semana"
 msgid "Next week"
 msgstr "La semana que viene"
 
-#: ../js/ui/dash.js:27
+#: ../js/ui/dash.js:174
 msgid "Remove"
 msgstr "Quitar"
 
-#: ../js/ui/dateMenu.js:91
-#| msgid "System Settings"
+#: ../js/ui/dateMenu.js:93
 msgid "Date and Time Settings"
 msgstr "Ajustes de hora y fecha"
 
-#: ../js/ui/dateMenu.js:110
+#: ../js/ui/dateMenu.js:112
 msgid "Open Calendar"
 msgstr "Abrir calendario"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:149
+#: ../js/ui/dateMenu.js:151
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e de %b, %R:%S"
 
-#: ../js/ui/dateMenu.js:150
+#: ../js/ui/dateMenu.js:152
 msgid "%a %b %e, %R"
 msgstr "%a %e de %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:154
+#: ../js/ui/dateMenu.js:156
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:155
+#: ../js/ui/dateMenu.js:157
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e de %b, %H:%M:%S"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e de %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:169
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:170
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:194
-#| msgid "%a %b %e, %R"
+#: ../js/ui/dateMenu.js:196
 msgid "%A %B %e, %Y"
 msgstr "%A, %e de %B de %Y"
 
-#: ../js/ui/docDisplay.js:18
+#: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
 msgstr "ELEMENTOS RECIENTES"
 
@@ -667,37 +509,37 @@ msgstr "Confirmar"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/ui/lookingGlass.js:556
+#: ../js/ui/lookingGlass.js:587
 msgid "No extensions installed"
 msgstr "No hay extensiones instaladas"
 
-#: ../js/ui/lookingGlass.js:593
+#: ../js/ui/lookingGlass.js:624
 msgid "Enabled"
 msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:595 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:626 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:597
+#: ../js/ui/lookingGlass.js:628
 msgid "Error"
 msgstr "Error"
 
-#: ../js/ui/lookingGlass.js:599
+#: ../js/ui/lookingGlass.js:630
 msgid "Out of date"
 msgstr "Caducado"
 
-#: ../js/ui/lookingGlass.js:624
+#: ../js/ui/lookingGlass.js:655
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: ../js/ui/lookingGlass.js:630
+#: ../js/ui/lookingGlass.js:661
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:1809
+#: ../js/ui/messageTray.js:1864
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -705,40 +547,40 @@ msgstr "Información del sistema"
 msgid "Undo"
 msgstr "Deshacer"
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:183
 msgid "Windows"
 msgstr "Ventanas"
 
-#: ../js/ui/overview.js:162
+#: ../js/ui/overview.js:186
 msgid "Applications"
 msgstr "Aplicaciones"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:480
+#: ../js/ui/panel.js:478
 #, c-format
 msgid "Quit %s"
 msgstr "Salir de %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:612
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/placeDisplay.js:106
+#: ../js/ui/placeDisplay.js:122
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Falló al desmontar «%s»"
 
-#: ../js/ui/placeDisplay.js:109
+#: ../js/ui/placeDisplay.js:125
 msgid "Retry"
 msgstr "Reintentar"
 
-#: ../js/ui/placeDisplay.js:150
+#: ../js/ui/placeDisplay.js:165
 msgid "Connect to..."
 msgstr "Conectar a…"
 
-#: ../js/ui/placeDisplay.js:386
+#: ../js/ui/placeDisplay.js:409
 msgid "PLACES & DEVICES"
 msgstr "LUGARES Y DISPOSITIVOS"
 
@@ -747,13 +589,21 @@ msgstr "LUGARES Y DISPOSITIVOS"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:33
+#: ../js/ui/popupMenu.js:506
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:209
+#: ../js/ui/runDialog.js:201
 msgid "Please enter a command:"
 msgstr "Introduzca un comando:"
+
+#: ../js/ui/searchDisplay.js:295
+msgid "Searching..."
+msgstr "Buscando…"
+
+#: ../js/ui/searchDisplay.js:309
+msgid "No matching results."
+msgstr "No se encontró ningún resultado coincidente."
 
 #: ../js/ui/statusMenu.js:102
 msgid "Available"
@@ -783,19 +633,21 @@ msgstr "Cambiar de usuario"
 msgid "Log Out..."
 msgstr "Cerrar la sesión…"
 
-#: ../js/ui/statusMenu.js:142
-msgid "Suspend..."
-msgstr "Suspender…"
-
-#: ../js/ui/statusMenu.js:146
+#. This is temporarily removed, see
+#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
+#. for details.
+#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
+#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+#. this.menu.addMenuItem(item);
+#: ../js/ui/statusMenu.js:149
 msgid "Shut Down..."
 msgstr "Apagar…"
 
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:81
 msgid "Zoom"
 msgstr "Ampliación"
 
-#: ../js/ui/status/accessibility.js:89
+#: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
 msgstr "Lector de pantalla"
 
@@ -803,39 +655,41 @@ msgstr "Lector de pantalla"
 msgid "Screen Keyboard"
 msgstr "Teclado en pantalla"
 
-#: ../js/ui/status/accessibility.js:95
+#: ../js/ui/status/accessibility.js:96
 msgid "Visual Alerts"
 msgstr "Alertas visuales"
 
-#: ../js/ui/status/accessibility.js:98
+#: ../js/ui/status/accessibility.js:99
 msgid "Sticky Keys"
 msgstr "Teclas persistentes"
 
-#: ../js/ui/status/accessibility.js:101
+#: ../js/ui/status/accessibility.js:102
 msgid "Slow Keys"
 msgstr "Teclas lentas"
 
-#: ../js/ui/status/accessibility.js:104
+#: ../js/ui/status/accessibility.js:105
 msgid "Bounce Keys"
 msgstr "Rechazo de teclas"
 
-#: ../js/ui/status/accessibility.js:107
+#: ../js/ui/status/accessibility.js:108
 msgid "Mouse Keys"
 msgstr "Teclas del ratón"
 
-#: ../js/ui/status/accessibility.js:111
+#: ../js/ui/status/accessibility.js:112
 msgid "Universal Access Settings"
 msgstr "Preferencias del acceso universal"
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:164
 msgid "High Contrast"
 msgstr "Contraste alto"
 
-#: ../js/ui/status/accessibility.js:205
+#: ../js/ui/status/accessibility.js:206
 msgid "Large Text"
 msgstr "<b>Texto:</b>"
 
 #: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -884,14 +738,9 @@ msgstr "Configuración del teclado"
 msgid "Mouse Settings"
 msgstr "Ajustes del ratón…"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
 msgid "Sound Settings"
 msgstr "Configuración del sonido"
-
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
-msgid "Bluetooth Agent"
-msgstr "Agente Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:372
 #, c-format
@@ -951,7 +800,7 @@ msgstr "Introduzca el PIN mencionado en el dispositivo."
 msgid "OK"
 msgstr "Aceptar"
 
-#: ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/keyboard.js:72
 msgid "Localization Settings"
 msgstr "Configuración regional"
 
@@ -1035,34 +884,34 @@ msgstr "Tableta"
 msgid "Computer"
 msgstr "Equipo"
 
-#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1012
+#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:44
 msgid "Volume"
 msgstr "Volumen"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:57
 msgid "Microphone"
 msgstr "Micrófono"
 
-#: ../js/ui/telepathyClient.js:563
+#: ../js/ui/telepathyClient.js:240
 #, c-format
 msgid "%s is online."
 msgstr "%s está conectado/a."
 
-#: ../js/ui/telepathyClient.js:568
+#: ../js/ui/telepathyClient.js:245
 #, c-format
 msgid "%s is offline."
 msgstr "%s está desconectado/a."
 
-#: ../js/ui/telepathyClient.js:571
+#: ../js/ui/telepathyClient.js:248
 #, c-format
 msgid "%s is away."
 msgstr "%s está ausente."
 
-#: ../js/ui/telepathyClient.js:574
+#: ../js/ui/telepathyClient.js:251
 #, c-format
 msgid "%s is busy."
 msgstr "%s está ocupado/a."
@@ -1070,14 +919,18 @@ msgstr "%s está ocupado/a."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:668
+#: ../js/ui/telepathyClient.js:349
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Enviado a las %X el %A"
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "Buscar en su equipo"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters
+#: ../js/ui/viewSelector.js:30
+msgid "Type to search..."
+msgstr "Teclear para buscar…"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -1088,17 +941,6 @@ msgstr "%s finalizó su lanzamiento"
 #, c-format
 msgid "'%s' is ready"
 msgstr "«%s» está preparado"
-
-#: ../js/ui/workspacesView.js:243
-msgid ""
-"Can't add a new workspace because maximum workspaces limit has been reached."
-msgstr ""
-"No se puede añadir un área de trabajo nueva porque se ha llegado al límite "
-"de áreas de trabajo."
-
-#: ../js/ui/workspacesView.js:259
-msgid "Can't remove the first workspace."
-msgstr "No se puede quitar el primer área de trabajo."
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -1122,32 +964,32 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
-#: ../src/shell-global.c:1365
+#: ../src/shell-global.c:1363
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:1369
+#: ../src/shell-global.c:1367
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:1374
+#: ../src/shell-global.c:1372
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:1379
+#: ../src/shell-global.c:1377
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:1384
+#: ../src/shell-global.c:1382
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1178,6 +1020,161 @@ msgstr "Buscar"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
+#~ msgid "Clip the crosshairs at the center"
+#~ msgstr "Fijar los cursores en el centro"
+
+#~ msgid "Color of the crosshairs"
+#~ msgstr "Color de las cruces"
+
+#~ msgid ""
+#~ "Determines the length of the vertical and horizontal lines that make up "
+#~ "the crosshairs."
+#~ msgstr ""
+#~ "Determina la longitud de las líneas verticales y horizontales que "
+#~ "conforman los cursores."
+
+#~ msgid ""
+#~ "Determines the position of the magnified mouse image within the magnified "
+#~ "view and how it reacts to system mouse movement. The values are - none: "
+#~ "no mouse tracking; - centered: the mouse image is displayed at the center "
+#~ "of the zoom region (which also represents the point under the system "
+#~ "mouse) and the magnified contents are scrolled as the system mouse moves; "
+#~ "- proportional: the position of the magnified mouse in the zoom region is "
+#~ "proportionally the same as the position of the system mouse on screen; - "
+#~ "push: when the magnified mouse intersects a boundary of the zoom region, "
+#~ "the contents are scrolled into view."
+#~ msgstr ""
+#~ "Determina la posición de la imagen magnificada del ratón dentro de la "
+#~ "vista magnificada y cómo reacciona al movimiento del ratón del sistema. "
+#~ "Los valores son «none» (ninguno): sin seguimiento del ratón; "
+#~ "«centered» (centrado): la imagen del ratón se muestra en el centro de la "
+#~ "región ampliada (que también representa el punto bajo el ratón del "
+#~ "sistema) y el contenido magnificado se desliza según se mueve el ratón "
+#~ "del sistema; «proporcional»: la posición del ratón magnificado en la "
+#~ "región de ampliación es proporcionalmente la misma que la posición del "
+#~ "ratón del sistema en el ratón; «push» (empujar): cuando el ratón "
+#~ "magnificado cruza un límite de la región de ampliación, el contenido se "
+#~ "desliza en la vista."
+
+#~ msgid ""
+#~ "Determines the transparency of the crosshairs, from fully opaque to fully "
+#~ "transparent."
+#~ msgstr ""
+#~ "Determina la transparencia de los cursores, de completamente opacos a "
+#~ "completamente transparentes."
+
+#~ msgid ""
+#~ "Determines whether the crosshairs intersect the magnified mouse sprite, "
+#~ "or are clipped such that the ends of the horizontal and vertical lines "
+#~ "surround the mouse image."
+#~ msgstr ""
+#~ "Determina si las cruces cruzan el «sprite» magnificado del ratón o se "
+#~ "fijan de tal forma que los finales de las líneas horizontales y "
+#~ "verticales rodean la imagen del ratón."
+
+#~ msgid "Enable lens mode"
+#~ msgstr "Activar el modo lente"
+
+#~ msgid ""
+#~ "Enables/disables display of crosshairs centered on the magnified mouse "
+#~ "sprite."
+#~ msgstr ""
+#~ "Activa/desactiva el mostrado de los cursores centrados en el «sprite» "
+#~ "magnificado del ratón."
+
+#~ msgid ""
+#~ "For centered mouse tracking, when the system pointer is at or near the "
+#~ "edge of the screen, the magnified contents continue to scroll such that "
+#~ "the screen edge moves into the magnified view."
+#~ msgstr ""
+#~ "Para el seguimiento del centro del ratón, cuando el puntero del sistema "
+#~ "está cerca del borde de la pantalla, el contenido magnificado continúa "
+#~ "desplazándose de tal forma que el borde de la pantalla se mueve dentro de "
+#~ "la vista magnificada."
+
+#~ msgid "Length of the crosshairs"
+#~ msgstr "Longitud de las cruces"
+
+#~ msgid "Magnification factor"
+#~ msgstr "Factor de magnificación"
+
+#~ msgid "Mouse Tracking Mode"
+#~ msgstr "Modo de seguimiento del ratón"
+
+#~ msgid "Opacity of the crosshairs"
+#~ msgstr "Opacidad de las cruces"
+
+#~ msgid "Screen position"
+#~ msgstr "Posición de la pantalla"
+
+#~ msgid "Scroll magnified contents beyond the edges of the desktop"
+#~ msgstr ""
+#~ "Desplazar el contenido magnificado más allá de los bordes del escritorio"
+
+#~ msgid "Show or hide crosshairs"
+#~ msgstr "Mostrar u ocultar las cruces"
+
+#~ msgid "Show or hide the magnifier"
+#~ msgstr "Mostrar u ocultar el magnificador"
+
+#~ msgid "Show or hide the magnifier and all of its zoom regions."
+#~ msgstr ""
+#~ "Mostrar u ocultar el magnificador y todas sus regiones de ampliación."
+
+#~ msgid ""
+#~ "The color of the the vertical and horizontal lines that make up the "
+#~ "crosshairs."
+#~ msgstr ""
+#~ "El color de las líneas verticales y horizontales que conforman las cruces."
+
+#~ msgid ""
+#~ "The magnified view either fills the entire screen, or occupies the top-"
+#~ "half, bottom-half, left-half, or right-half of the screen."
+#~ msgstr ""
+#~ "La vista magnificada o llena la pantalla u ocupa la mitad superior, mitad "
+#~ "inferior, mitad izquierda o mitad derecha de la pantalla."
+
+#~ msgid ""
+#~ "The power of the magnification. A value of 1.0 means no magnification. A "
+#~ "value of 2.0 doubles the size."
+#~ msgstr ""
+#~ "El poder de la magnificación. Un valor de 1.0 significa sin "
+#~ "magnificación. Un valor de 2.0 duplica el tamaño."
+
+#~ msgid "Thickness of the crosshairs"
+#~ msgstr "Grosor de las cruces"
+
+#~ msgid ""
+#~ "Whether the magnified view should be centered over the location of the "
+#~ "system mouse and move with it."
+#~ msgstr ""
+#~ "Indica si la vista magnificada se debe centrar sobre la ubicación del "
+#~ "ratón del sistema y moverse con ella."
+
+#~ msgid ""
+#~ "Width of the vertical and horizontal lines that make up the crosshairs."
+#~ msgstr ""
+#~ "Anchura de las líneas verticales y horizontales que conforman las cruces."
+
+#~ msgid "Suspend..."
+#~ msgstr "Suspender…"
+
+#~ msgid "Bluetooth Agent"
+#~ msgstr "Agente Bluetooth"
+
+#~ msgid "Search your computer"
+#~ msgstr "Buscar en su equipo"
+
+#~ msgid ""
+#~ "Can't add a new workspace because maximum workspaces limit has been "
+#~ "reached."
+#~ msgstr ""
+#~ "No se puede añadir un área de trabajo nueva porque se ha llegado al "
+#~ "límite de áreas de trabajo."
+
+#~ msgid "Can't remove the first workspace."
+#~ msgstr "No se puede quitar el primer área de trabajo."
+
 #~ msgid "Clock"
 #~ msgstr "Reloj"
 
@@ -1194,8 +1191,8 @@ msgstr "%1$s: %2$s"
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
-#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos "
-#~ "en la hora."
+#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los "
+#~ "segundos en la hora."
 
 #~ msgid ""
 #~ "This key specifies the format used by the panel clock when the format key "
@@ -1212,18 +1209,19 @@ msgstr "%1$s: %2$s"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
-#~ "01-01. If set to \"custom\", the clock will display time according to the "
-#~ "format specified in the custom_format key. Note that if set to either "
-#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
 #~ msgstr ""
 #~ "Esta clave especifica el formato de la hora especificado por el reloj del "
-#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
-#~ "«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará "
-#~ "la hora en segundos desde la época (1 de enero de 1970). Si se establece "
-#~ "a «custom» el reloj mostrará la hora según el formato especificado en la "
-#~ "clave «custom_format». Note que si se establece a «unix» o «custom» se "
-#~ "ignoran las claves «show_date» y «show_seconds»."
+#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 "
+#~ "horas), «unix» y «custom» (personalizado).Si se establece a «unix» el "
+#~ "reloj mostrará la hora en segundos desde la época (1 de enero de 1970). "
+#~ "Si se establece a «custom» el reloj mostrará la hora según el formato "
+#~ "especificado en la clave «custom_format». Note que si se establece a "
+#~ "«unix» o «custom» se ignoran las claves «show_date» y «show_seconds»."
 
 #~ msgid "Clock Format"
 #~ msgstr "Formato del reloj"
@@ -1267,12 +1265,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Find"
 #~ msgstr "Buscar"
-
-#~ msgid "Searching..."
-#~ msgstr "Buscando…"
-
-#~ msgid "No matching results."
-#~ msgstr "No se encontró ningún resultado coincidente."
 
 #~ msgid "Invisible"
 #~ msgstr "Invisible"
