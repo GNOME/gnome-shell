@@ -11,6 +11,7 @@ const Tp = imports.gi.TelepathyGLib;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const History = imports.misc.history;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 
@@ -291,6 +292,8 @@ Notification.prototype = {
             this._oldMaxScrollAdjustment = adjustment.upper;
         }));
 
+        this._inputHistory = new History.HistoryManager({ entry: this._responseEntry.clutter_text });
+
         this._history = [];
         this._timestampTimeoutId = 0;
     },
@@ -391,6 +394,8 @@ Notification.prototype = {
         let text = this._responseEntry.get_text();
         if (text == '')
             return;
+
+        this._inputHistory.addItem(text);
 
         // Telepathy sends out the Sent signal for us.
         // see Source._messageSent
