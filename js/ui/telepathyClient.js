@@ -41,7 +41,6 @@ function Client() {
 
 Client.prototype = {
     _init : function() {
-        this._accounts = {};
         // channel path -> Source
         this._sources = {};
 
@@ -55,7 +54,7 @@ Client.prototype = {
 
         // We only care about single-user text-based chats
         let props = {};
-        props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE] = Tp.IFACE_CHANNEL_TYPE_TEXT;
+        props[Tp.PROP_CHANNEL_CHANNEL_TYPE] = Tp.IFACE_CHANNEL_TYPE_TEXT;
         props[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE] = Tp.HandleType.CONTACT;
         this._observer.add_observer_filter(props);
 
