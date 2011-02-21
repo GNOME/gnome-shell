@@ -2,13 +2,13 @@
 # Copyright (C) 2009, 2010 the author(s) of gnome-shell.
 # This file is distributed under the same license as the gnome-shell package.
 # Andre Klapper <ak-47@gmx.net>, 2009.
-# Petr Kovar <pknbe@volny.cz>, 2009, 2010.
+# Petr Kovar <pknbe@volny.cz>, 2009, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-31 12:09+0100\n"
-"PO-Revision-Date: 2010-10-31 12:09+0100\n"
+"POT-Creation-Date: 2011-02-21 02:19+0100\n"
+"PO-Revision-Date: 2011-02-21 02:19+0100\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -26,14 +26,6 @@ msgstr "Prostředí GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Správa oken a spouštění aplikací"
 
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:1
-msgid "Clock"
-msgstr "Hodiny"
-
-#: ../data/gnome-shell-clock-preferences.desktop.in.in.h:2
-msgid "Customize the panel clock"
-msgstr "Přizpůsobit hodiny na panelu"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
@@ -43,22 +35,18 @@ msgstr ""
 "ovládaného přes Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Custom format of the clock"
-msgstr "Vlastní formát hodin"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr "Povolit přes Alt-F2 vnitřní nástroje určené pro vývojáře a testery"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:4
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
 msgid "File extension used for storing the screencast"
 msgstr "Přípona souboru s nahrávkou dění na obrazovce"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
 msgid "Framerate used for recording screencasts."
 msgstr "Frekvence snímků při nahrávání dění na obrazovce."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:6
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
@@ -66,43 +54,32 @@ msgstr ""
 "Rozšíření GNOME Shell mají vlastnost uuid; tento klíč uvádí rozšíření, která "
 "by neměla být načítána."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
 msgstr "Historie příkazového dialogového okna (Alt-F2)"
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for the looking glass dialog"
+msgstr "Historie dialogového okna \"looking glass\" (Alt-F2)"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "Hour format"
-msgstr "Formát hodin"
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Je-li \"true\", zobrazovat v hodinách kromě času i datum."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display date in the "
-"clock, in addition to time."
-msgstr ""
-"Je-li \"true\" a formát je buď \"12-hour\" nebo \"24-hour\", zobrazovat v "
-"hodinách kromě času i datum."
+msgid "If true, display seconds in time."
+msgstr "Je-li \"true\", zobrazovat čas včetně sekund."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid ""
-"If true and format is either \"12-hour\" or \"24-hour\", display seconds in "
-"time."
-msgstr ""
-"Je-li \"true\" a formát je buď \"12-hour\" nebo \"24-hour\", zobrazovat čas "
-"včetně sekund."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Je-li \"true\", zobrazovat v kalendáři čísla týdnů dle ISO."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Seznam ID souboru desktop oblíbených aplikací"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
-msgid "Overview workspace view mode"
-msgstr "Režim přehledu pracovních ploch"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -111,7 +88,9 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! theoraenc ! oggmux' and records to Ogg Theora."
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
 msgstr ""
 "Nastavuje rouru systému GStreamer určenou ke kódování nahrávek. Respektuje "
 "syntax gst-launch. Roura by měla mít nepřipojený cíl, ve kterém se video "
@@ -119,22 +98,24 @@ msgstr ""
 "zapisován do výstupního souboru. Roura je ale schopna zabezpečit i vlastní "
 "výstup, což lze využít při odeslání výstupu na server icecast přes "
 "shout2send apod. Není-li nastaveno nebo je-li nastaveno na prázdnou hodnotu, "
-"bude použita výchozí roura. Aktuálně to je 'videorate ! theoraenc ! oggmux' "
-"s nahráváním do Ogg Theora."
+"bude použita výchozí roura. Aktuálně to je 'videorate ! vp8enc quality=10 "
+"speed=2 threads=%T ! queue ! webmmux' s nahráváním do WEBM s kodekem VP8. %T "
+"je použito jako zástupný symbol odhadu nejvhodnějšího počtu vláken na "
+"systému."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Zobrazovat v hodinách datum"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Zobrazovat v kalendáři čísla týdnů"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Zobrazovat čas včetně sekund"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -142,7 +123,7 @@ msgstr ""
 "Aplikace odpovídající těmto identifikátorům budou zobrazeny oblasti "
 "oblíbených."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -152,7 +133,7 @@ msgstr ""
 "názvu vycházejícího z aktuálního data a bude používat tuto příponu. Při "
 "nahrávání do jiného formátu kontejneru by měla být provedena úprava pravidel."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -160,19 +141,11 @@ msgstr ""
 "Frekvence snímků za sekundu výsledné nahrávky dění na obrazovce, která byla "
 "nahrána záznamovým programem GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Roura systému gstreamer určená ke kódování nahrávky dění na obrazovce"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid ""
-"The selected workspace view mode in the overview. Supported values are "
-"\"single\" and \"grid\"."
-msgstr ""
-"Vybraný režim zobrazení pracovních ploch v přehledu. Podporované hodnoty "
-"jsou \"single\" a \"grid\"."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -184,471 +157,787 @@ msgstr ""
 "přesto ale můžete z důvodu ochrany soukromí tuto funkci zakázat. Vezměte "
 "prosím v potaz skutečnost, že zakázaní funkce neodstraní již uložená data."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
-msgid ""
-"This key specifies the format used by the panel clock when the format key is "
-"set to \"custom\". You can use conversion specifiers understood by strftime"
-"() to obtain a specific format. See the strftime() manual for more "
-"information."
-msgstr ""
-"Tento klíč určuje formát používaný hodinami na panelu, když je klíč format "
-"nastaven na \"custom\". K získání konkrétního formátu můžete použít "
-"specifikátory převodu, kterým rozumí strftime(). Více informací viz manuál k "
-"strftime()."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
-msgid ""
-"This key specifies the hour format used by the panel clock. Possible values "
-"are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to \"unix\", "
-"the clock will display time in seconds since Epoch, i.e. 1970-01-01. If set "
-"to \"custom\", the clock will display time according to the format specified "
-"in the custom_format key. Note that if set to either \"unix\" or \"custom\", "
-"the show_date and show_seconds keys are ignored."
-msgstr ""
-"Tento klíč určuje formát používaný hodinami na panelu. Možné hodnoty jsou "
-"\"12-hour\", \"24-hour\", \"unix\" a \"custom\". Je-li nastaven na \"unix\", "
-"hodiny budou zobrazovat čas v sekundách od počátku epochy, tj. 1970-01-01. "
-"Je-li nastaven na \"custom\", hodiny budou zobrazovat čas s ohledem na "
-"formát určený klíčem custom_format key. Je-li klíč nastaven buď na \"unix\" "
-"nebo \"custom\", budou ignorovány klíče show_date a show_seconds."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
 msgstr "Uuid rozšíření určených k vypnutí"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr "Zda sbírat statistická data o používání aplikací"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
-msgid "Clip the crosshairs at the center"
-msgstr ""
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "disabled OpenSearch providers"
+msgstr "zakázaní poskytovatelé OpenSearch"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
-msgid "Color of the crosshairs"
-msgstr ""
+#: ../js/misc/util.js:86
+msgid "Command not found"
+msgstr "Příkaz nenalezen"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
-msgid ""
-"Determines the length of the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr ""
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:113
+msgid "Could not parse command:"
+msgstr "Nelze analyzovat příkaz:"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
-msgid ""
-"Determines the position of the magnified mouse image within the magnified "
-"view and how it reacts to system mouse movement. The values are - none: no "
-"mouse tracking; - centered: the mouse image is displayed at the center of "
-"the zoom region (which also represents the point under the system mouse) and "
-"the magnified contents are scrolled as the system mouse moves; - "
-"proportional: the position of the magnified mouse in the zoom region is "
-"proportionally the same as the position of the system mouse on screen; - "
-"push: when the magnified mouse intersects a boundary of the zoom region, the "
-"contents are scrolled into view."
-msgstr ""
+#: ../js/misc/util.js:135
+msgid "No such application"
+msgstr "Taková aplikace neexistuje"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
-msgid ""
-"Determines the transparency of the crosshairs, from fully opaque to fully "
-"transparent."
-msgstr ""
+#: ../js/misc/util.js:148
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Vykonání \"%s\" selhalo:"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
-msgid ""
-"Determines whether the crosshairs intersect the magnified mouse sprite, or "
-"are clipped such that the ends of the horizontal and vertical lines surround "
-"the mouse image."
-msgstr ""
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:174
+msgid "All"
+msgstr "Všechny"
 
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-#, fuzzy
-msgid "Enable lens mode"
-msgstr "Povoleno"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
-msgid ""
-"Enables/disables display of crosshairs centered on the magnified mouse "
-"sprite."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
-msgid ""
-"For centered mouse tracking, when the system pointer is at or near the edge "
-"of the screen, the magnified contents continue to scroll such that the "
-"screen edge moves into the magnified view."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
-msgid "Length of the crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:11
-msgid "Magnification factor"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:12
-msgid "Mouse Tracking Mode"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:13
-msgid "Opacity of the crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
-msgid "Screen position"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
-msgid "Scroll magnified contents beyond the edges of the desktop"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
-msgid "Show or hide crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
-msgid "Show or hide the magnifier"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
-msgid "Show or hide the magnifier and all of its zoom regions."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
-msgid ""
-"The color of the the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
-msgid ""
-"The magnified view either fills the entire screen, or occupies the top-half, "
-"bottom-half, left-half, or right-half of the screen."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
-msgid ""
-"The power of the magnification. A value of 1.0 means no magnification. A "
-"value of 2.0 doubles the size."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
-msgid "Thickness of the crosshairs"
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
-msgid ""
-"Whether the magnified view should be centered over the location of the "
-"system mouse and move with it."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
-msgid "Width of the vertical and horizontal lines that make up the crosshairs."
-msgstr ""
-
-#: ../data/clock-preferences.ui.h:1
-msgid "Clock Format"
-msgstr "Formát hodin"
-
-#: ../data/clock-preferences.ui.h:2
-msgid "Clock Preferences"
-msgstr "Předvolby hodin"
-
-#: ../data/clock-preferences.ui.h:3
-msgid "Panel Display"
-msgstr "Zobrazení panelu"
-
-#: ../data/clock-preferences.ui.h:4
-msgid "Show seco_nds"
-msgstr "Zobrazit seku_ndy"
-
-#: ../data/clock-preferences.ui.h:5
-msgid "Show the _date"
-msgstr "Zobrazit _datum"
-
-#: ../data/clock-preferences.ui.h:6
-msgid "_12 hour format"
-msgstr "_12hodinový formát"
-
-#: ../data/clock-preferences.ui.h:7
-msgid "_24 hour format"
-msgstr "_24hodinový formát"
-
-#. **** Applications ****
-#: ../js/ui/appDisplay.js:316 ../js/ui/dash.js:778
+#: ../js/ui/appDisplay.js:261
 msgid "APPLICATIONS"
 msgstr "APLIKACE"
 
-#: ../js/ui/appDisplay.js:348
+#: ../js/ui/appDisplay.js:291
 msgid "PREFERENCES"
 msgstr "PŘEDVOLBY"
 
-#: ../js/ui/appDisplay.js:647
+#: ../js/ui/appDisplay.js:551
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appDisplay.js:651
+#: ../js/ui/appDisplay.js:555
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: ../js/ui/appDisplay.js:652
+#: ../js/ui/appDisplay.js:556
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
-#: ../js/ui/appDisplay.js:829
-msgid "Drag here to add favorites"
-msgstr "Oblíbené přidáte přetažením sem"
-
-#: ../js/ui/appFavorites.js:88
+#: ../js/ui/appFavorites.js:91
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s byl přidán mezi oblíbené."
 
-#: ../js/ui/appFavorites.js:107
+#: ../js/ui/appFavorites.js:122
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s byl odstraněn z oblíbených."
 
-#: ../js/ui/dash.js:142
-msgid "Find"
-msgstr "Najít"
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:65
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Celý den"
 
-#: ../js/ui/dash.js:473
-msgid "Searching..."
-msgstr "Hledá se..."
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:70
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr "%H:%M"
 
-#: ../js/ui/dash.js:487
-msgid "No matching results."
-msgstr "Neodpovídá ani jeden z výsledků."
+# Doesn't make much sense in Czech anyway.
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:77
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
 
-#. **** Places ****
-#. Translators: This is in the sense of locations for documents,
-#. network locations, etc.
-#: ../js/ui/dash.js:797 ../js/ui/placeDisplay.js:554
-msgid "PLACES & DEVICES"
-msgstr "MÍSTA A ZAŘÍZENÍ"
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: ../js/ui/calendar.js:117
+msgctxt "grid sunday"
+msgid "S"
+msgstr "N"
 
-#. **** Documents ****
-#: ../js/ui/dash.js:804 ../js/ui/docDisplay.js:494
-msgid "RECENT ITEMS"
-msgstr "NEDÁVNÉ POLOŽKY"
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:119
+msgctxt "grid monday"
+msgid "M"
+msgstr "Po"
 
-#: ../js/ui/lookingGlass.js:552
-msgid "No extensions installed"
-msgstr "Nejsou nainstalována žádná rozšíření"
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:121
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "Ú"
 
-#: ../js/ui/lookingGlass.js:589
-msgid "Enabled"
-msgstr "Povoleno"
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:123
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "St"
 
-#. translators:
-#. * The device has been disabled
-#: ../js/ui/lookingGlass.js:591 ../src/gvc/gvc-mixer-control.c:1087
-msgid "Disabled"
-msgstr "Zakázáno"
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:125
+msgctxt "grid thursday"
+msgid "T"
+msgstr "Č"
 
-#: ../js/ui/lookingGlass.js:593
-msgid "Error"
-msgstr "Chyba"
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:127
+msgctxt "grid friday"
+msgid "F"
+msgstr "Pá"
 
-#: ../js/ui/lookingGlass.js:595
-msgid "Out of date"
-msgstr "Neaktuální"
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:129
+msgctxt "grid saturday"
+msgid "S"
+msgstr "So"
 
-#: ../js/ui/lookingGlass.js:620
-msgid "View Source"
-msgstr "Zobrazit zdroj"
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+#: ../js/ui/calendar.js:142
+msgctxt "list sunday"
+msgid "Su"
+msgstr "N"
 
-#: ../js/ui/lookingGlass.js:626
-msgid "Web Page"
-msgstr "Webová stránka"
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:144
+msgctxt "list monday"
+msgid "M"
+msgstr "Po"
 
-#: ../js/ui/overview.js:160
-msgid "Undo"
-msgstr "Zpět"
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:146
+msgctxt "list tuesday"
+msgid "T"
+msgstr "Ú"
 
-#. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:469
-#, c-format
-msgid "Quit %s"
-msgstr "Ukončit %s"
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:148
+msgctxt "list wednesday"
+msgid "W"
+msgstr "St"
 
-#: ../js/ui/panel.js:494
-msgid "Preferences"
-msgstr "Předvolby"
+#. Translators: Event list abbreviation for Thursday
+#: ../js/ui/calendar.js:150
+msgctxt "list thursday"
+msgid "Th"
+msgstr "Č"
+
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:152
+msgctxt "list friday"
+msgid "F"
+msgstr "Pá"
+
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:154
+msgctxt "list saturday"
+msgid "S"
+msgstr "So"
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:701
+msgid "Nothing Scheduled"
+msgstr "Nic nenaplánováno"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:717
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %e. %B"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:720
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A, %e. %B %Y"
+
+#: ../js/ui/calendar.js:730
+msgid "Today"
+msgstr "Dnes"
+
+#: ../js/ui/calendar.js:734
+msgid "Tomorrow"
+msgstr "Zítra"
+
+#: ../js/ui/calendar.js:743
+msgid "This week"
+msgstr "Tento týden"
+
+#: ../js/ui/calendar.js:751
+msgid "Next week"
+msgstr "Následující týden"
+
+#: ../js/ui/dash.js:174
+msgid "Remove"
+msgstr "Odstranit"
+
+#: ../js/ui/dateMenu.js:93
+msgid "Date and Time Settings"
+msgstr "Nastavení data a času"
+
+#: ../js/ui/dateMenu.js:112
+msgid "Open Calendar"
+msgstr "Otevřít kalendář"
 
 # Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:580
+#: ../js/ui/dateMenu.js:151
 msgid "%a %b %e, %R:%S"
 msgstr "%A, %e. %B, %R:%S"
 
 # Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
-#: ../js/ui/panel.js:581
+#: ../js/ui/dateMenu.js:152
 msgid "%a %b %e, %R"
 msgstr "%A, %e. %B, %R"
 
 # Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/panel.js:585
+#: ../js/ui/dateMenu.js:156
 msgid "%a %R:%S"
 msgstr "%A, %R:%S"
 
 # Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
-#: ../js/ui/panel.js:586
+#: ../js/ui/dateMenu.js:157
 msgid "%a %R"
 msgstr "%A, %R"
 
 # Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/panel.js:593
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%A, %e. %B, %l:%M:%S %p"
 
 # Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
-#: ../js/ui/panel.js:594
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %l:%M %p"
 msgstr "%A, %e. %B, %l:%M %p"
 
 # Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/panel.js:598
+#: ../js/ui/dateMenu.js:169
 msgid "%a %l:%M:%S %p"
 msgstr "%A, %l:%M:%S %p"
 
 # Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
-#: ../js/ui/panel.js:599
+#: ../js/ui/dateMenu.js:170
 msgid "%a %l:%M %p"
 msgstr "%A, %l:%M %p"
 
+# Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:196
+msgid "%A %B %e, %Y"
+msgstr "%A, %e. %B, %Y"
+
+#: ../js/ui/docDisplay.js:19
+msgid "RECENT ITEMS"
+msgstr "NEDÁVNÉ POLOŽKY"
+
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+msgid "Log Out %s"
+msgstr "Odhlásit uživatele %s"
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+msgid "Log Out"
+msgstr "Odhlásit"
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Tyto aplikace ukončíte a ze systému se odhlásíte kliknutím na Odhlásit."
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "Uživatel %s bude automaticky odhlášen za %d sekund."
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "Budete automaticky odhlášeni za %d sekund."
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "Odhlašování ze systému."
+
+#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
+msgid "Shut Down"
+msgstr "Vypnout"
+
+#: ../js/ui/endSessionDialog.js:75
+msgid "Click Shut Down to quit these applications and shut down the system."
+msgstr "Tyto aplikace ukončíte a systém vypnete kliknutím na Vypnout."
+
+#: ../js/ui/endSessionDialog.js:76
+#, c-format
+msgid "The system will shut down automatically in %d seconds."
+msgstr "Systém bude automaticky vypnut za %d sekund."
+
+#: ../js/ui/endSessionDialog.js:77
+msgid "Shutting down the system."
+msgstr "Vypíná se systém."
+
+#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+msgid "Restart"
+msgstr "Restartovat"
+
+#: ../js/ui/endSessionDialog.js:85
+msgid "Click Restart to quit these applications and restart the system."
+msgstr "Tyto aplikace ukončíte a systém restartujete kliknutím na Vypnout."
+
+#: ../js/ui/endSessionDialog.js:86
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "Systém bude automaticky restartován za %d sekund."
+
+#: ../js/ui/endSessionDialog.js:87
+msgid "Restarting the system."
+msgstr "Restartuje se systém."
+
+#: ../js/ui/endSessionDialog.js:395
+msgid "Confirm"
+msgstr "Potvrdit"
+
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: ../js/ui/lookingGlass.js:587
+msgid "No extensions installed"
+msgstr "Nejsou nainstalována žádná rozšíření"
+
+#: ../js/ui/lookingGlass.js:624
+msgid "Enabled"
+msgstr "Povoleno"
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:626 ../src/gvc/gvc-mixer-control.c:1087
+msgid "Disabled"
+msgstr "Zakázáno"
+
+#: ../js/ui/lookingGlass.js:628
+msgid "Error"
+msgstr "Chyba"
+
+#: ../js/ui/lookingGlass.js:630
+msgid "Out of date"
+msgstr "Neaktuální"
+
+#: ../js/ui/lookingGlass.js:655
+msgid "View Source"
+msgstr "Zobrazit zdroj"
+
+#: ../js/ui/lookingGlass.js:661
+msgid "Web Page"
+msgstr "Webová stránka"
+
+#: ../js/ui/messageTray.js:1864
+msgid "System Information"
+msgstr "Informace o systému"
+
+#: ../js/ui/overview.js:88
+msgid "Undo"
+msgstr "Zpět"
+
+#: ../js/ui/overview.js:183
+msgid "Windows"
+msgstr "Okna"
+
+#: ../js/ui/overview.js:186
+msgid "Applications"
+msgstr "Aplikace"
+
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:478
+#, c-format
+msgid "Quit %s"
+msgstr "Ukončit %s"
+
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:744
+#: ../js/ui/panel.js:612
 msgid "Activities"
 msgstr "Činnosti"
 
-#: ../js/ui/placeDisplay.js:111
+#: ../js/ui/placeDisplay.js:122
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "Nelze odpojit \"%s\""
 
-#: ../js/ui/placeDisplay.js:114
+#: ../js/ui/placeDisplay.js:125
 msgid "Retry"
 msgstr "Opakovat"
 
-#: ../js/ui/placeDisplay.js:159
+#: ../js/ui/placeDisplay.js:165
 msgid "Connect to..."
 msgstr "Připojit se k..."
+
+#: ../js/ui/placeDisplay.js:409
+msgid "PLACES & DEVICES"
+msgstr "MÍSTA A ZAŘÍZENÍ"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:33
+#: ../js/ui/popupMenu.js:506
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:233
+#: ../js/ui/runDialog.js:201
 msgid "Please enter a command:"
 msgstr "Zadejte prosím příkaz:"
 
-#: ../js/ui/runDialog.js:378
-#, c-format
-msgid "Execution of '%s' failed:"
-msgstr "Vykonání \"%s\" selhalo:"
+#: ../js/ui/searchDisplay.js:295
+msgid "Searching..."
+msgstr "Hledá se..."
 
-#: ../js/ui/statusMenu.js:101
+#: ../js/ui/searchDisplay.js:309
+msgid "No matching results."
+msgstr "Neodpovídá ani jeden z výsledků."
+
+#: ../js/ui/statusMenu.js:102
 msgid "Available"
 msgstr "Přítomen"
 
-#: ../js/ui/statusMenu.js:106
+#: ../js/ui/statusMenu.js:107
 msgid "Busy"
 msgstr "Zaneprázdněn"
 
-#: ../js/ui/statusMenu.js:111
-msgid "Invisible"
-msgstr "Neviditelný"
+#: ../js/ui/statusMenu.js:115
+msgid "My Account"
+msgstr "Můj účet"
 
 #: ../js/ui/statusMenu.js:119
-msgid "My Account..."
-msgstr "Můj účet..."
+msgid "System Settings"
+msgstr "Nastavení systému"
 
-#: ../js/ui/statusMenu.js:123
-msgid "System Settings..."
-msgstr "Nastavení systému..."
-
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:126
 msgid "Lock Screen"
 msgstr "Uzamknout obrazovku"
 
-#: ../js/ui/statusMenu.js:134
+#: ../js/ui/statusMenu.js:130
 msgid "Switch User"
 msgstr "Přepnout uživatele"
 
-#: ../js/ui/statusMenu.js:139
+#: ../js/ui/statusMenu.js:135
 msgid "Log Out..."
 msgstr "Odhlásit..."
 
-#: ../js/ui/statusMenu.js:146
-msgid "Suspend"
-msgstr "Uspat do paměti"
-
-#: ../js/ui/statusMenu.js:150
-msgid "Restart..."
-msgstr "Restartovat..."
-
-#: ../js/ui/statusMenu.js:154
+#. This is temporarily removed, see
+#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
+#. for details.
+#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
+#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+#. this.menu.addMenuItem(item);
+#: ../js/ui/statusMenu.js:149
 msgid "Shut Down..."
 msgstr "Vypnout..."
+
+#: ../js/ui/status/accessibility.js:81
+msgid "Zoom"
+msgstr "Zvětšení"
 
 #: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
 msgstr "Čtení obrazovky"
 
-#: ../js/ui/status/accessibility.js:91
+#: ../js/ui/status/accessibility.js:92
 msgid "Screen Keyboard"
 msgstr "Klávesnice na obrazovce"
 
-#: ../js/ui/status/accessibility.js:94
+#: ../js/ui/status/accessibility.js:96
 msgid "Visual Alerts"
 msgstr "Vizuální upozornění"
 
-#: ../js/ui/status/accessibility.js:97
+#: ../js/ui/status/accessibility.js:99
 msgid "Sticky Keys"
 msgstr "Lepící klávesy"
 
-#: ../js/ui/status/accessibility.js:100
+#: ../js/ui/status/accessibility.js:102
 msgid "Slow Keys"
 msgstr "Pomalé klávesy"
 
-#: ../js/ui/status/accessibility.js:103
+#: ../js/ui/status/accessibility.js:105
 msgid "Bounce Keys"
 msgstr "Vícenásobné stisky kláves"
 
-#: ../js/ui/status/accessibility.js:106
+#: ../js/ui/status/accessibility.js:108
 msgid "Mouse Keys"
 msgstr "Myš klávesnicí"
 
-#: ../js/ui/status/accessibility.js:110
+#: ../js/ui/status/accessibility.js:112
 msgid "Universal Access Settings"
 msgstr "Nastavení zpřístupnění"
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:164
 msgid "High Contrast"
 msgstr "Vysoký kontrast"
 
-#: ../js/ui/status/accessibility.js:202
+#: ../js/ui/status/accessibility.js:206
 msgid "Large Text"
 msgstr "Styl velkého textu"
 
-#: ../js/ui/status/accessibility.js:223
-msgid "Zoom"
-msgstr "Zvětšení"
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "Viditelnost"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "Odeslat soubory na zařízení..."
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "Nastavit nové zařízení..."
+
+#: ../js/ui/status/bluetooth.js:95
+msgid "Bluetooth Settings"
+msgstr "Nastavit Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:192
+msgid "Connection"
+msgstr "Připojení"
+
+#: ../js/ui/status/bluetooth.js:228
+msgid "Send Files..."
+msgstr "Odeslat soubory..."
+
+#: ../js/ui/status/bluetooth.js:233
+msgid "Browse Files..."
+msgstr "Procházet soubory..."
+
+#: ../js/ui/status/bluetooth.js:242
+msgid "Error browsing device"
+msgstr "Chyba při procházení zařízením"
+
+#: ../js/ui/status/bluetooth.js:243
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "Procházení požadovaného zařízení se nezdařilo, chybou je \"%s\""
+
+#: ../js/ui/status/bluetooth.js:251
+msgid "Keyboard Settings"
+msgstr "Nastavení klávesnice"
+
+#: ../js/ui/status/bluetooth.js:256
+msgid "Mouse Settings"
+msgstr "Nastavení myši"
+
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
+msgid "Sound Settings"
+msgstr "Nastavení zvuku"
+
+#: ../js/ui/status/bluetooth.js:372
+#, c-format
+msgid "Authorization request from %s"
+msgstr "Požadavek na autorizaci od %s"
+
+#: ../js/ui/status/bluetooth.js:378
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "Zařízení %s požaduje přístup ke službě \"%s\""
+
+#: ../js/ui/status/bluetooth.js:380
+msgid "Always grant access"
+msgstr "Vždy udělovat přístup"
+
+#: ../js/ui/status/bluetooth.js:381
+msgid "Grant this time only"
+msgstr "Udělit pouze tentokrát"
+
+#: ../js/ui/status/bluetooth.js:382
+msgid "Reject"
+msgstr "Odmítnout"
+
+#: ../js/ui/status/bluetooth.js:412
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Potvrzení spárování pro %s"
+
+#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr "Zařízení %s se chce spárovat s tímto počítačem"
+
+#: ../js/ui/status/bluetooth.js:419
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Ověřte prosím, zda PIN \"%s\" souhlasí s tím na zařízení."
+
+#: ../js/ui/status/bluetooth.js:421
+msgid "Matches"
+msgstr "Souhlasí"
+
+#: ../js/ui/status/bluetooth.js:422
+msgid "Does not match"
+msgstr "Nesouhlasí"
+
+#: ../js/ui/status/bluetooth.js:445
+#, c-format
+msgid "Pairing request for %s"
+msgstr "Požadavek na spárování pro %s"
+
+#: ../js/ui/status/bluetooth.js:453
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Zadejte prosím PIN, který je uveden na zařízení."
+
+#: ../js/ui/status/bluetooth.js:469
+msgid "OK"
+msgstr "Budiž"
+
+#: ../js/ui/status/keyboard.js:72
+msgid "Localization Settings"
+msgstr "Nastavení národního prostředí"
+
+#: ../js/ui/status/power.js:85
+msgid "Power Settings"
+msgstr "Nastavení napájení"
+
+#: ../js/ui/status/power.js:112
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "Zbývá %d hodina"
+msgstr[1] "Zbývají %d hodiny"
+msgstr[2] "Zbývá %d hodin"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:115
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr "Zbývá %d %s %d %s"
+
+#: ../js/ui/status/power.js:117
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "hodina"
+msgstr[1] "hodiny"
+msgstr[2] "hodin"
+
+#: ../js/ui/status/power.js:117
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "minuta"
+msgstr[1] "minuty"
+msgstr[2] "minut"
+
+#: ../js/ui/status/power.js:120
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "zbývá %d minuta"
+msgstr[1] "zbývají %d minuty"
+msgstr[2] "zbývá %d minut"
+
+#: ../js/ui/status/power.js:235
+msgid "AC adapter"
+msgstr "Síťový adaptér"
+
+#: ../js/ui/status/power.js:237
+msgid "Laptop battery"
+msgstr "Baterie notebooku"
+
+#: ../js/ui/status/power.js:239
+msgid "UPS"
+msgstr "Záložní zdroj"
+
+#: ../js/ui/status/power.js:241
+msgid "Monitor"
+msgstr "Monitor"
+
+#: ../js/ui/status/power.js:243
+msgid "Mouse"
+msgstr "Myš"
+
+#: ../js/ui/status/power.js:245
+msgid "Keyboard"
+msgstr "Klávesnice"
+
+#: ../js/ui/status/power.js:247
+msgid "PDA"
+msgstr "PDA"
+
+#: ../js/ui/status/power.js:249
+msgid "Cell phone"
+msgstr "Mobilní telefon"
+
+#: ../js/ui/status/power.js:251
+msgid "Media player"
+msgstr "Multimediální přehrávač"
+
+#: ../js/ui/status/power.js:253
+msgid "Tablet"
+msgstr "Tablet"
+
+#: ../js/ui/status/power.js:255
+msgid "Computer"
+msgstr "Počítač"
+
+#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
+msgid "Unknown"
+msgstr "Neznámé"
+
+#: ../js/ui/status/volume.js:44
+msgid "Volume"
+msgstr "Hlasitost"
+
+#: ../js/ui/status/volume.js:57
+msgid "Microphone"
+msgstr "Mikrofon"
+
+#: ../js/ui/telepathyClient.js:240
+#, c-format
+msgid "%s is online."
+msgstr "Kontakt %s je připojen."
+
+#: ../js/ui/telepathyClient.js:245
+#, c-format
+msgid "%s is offline."
+msgstr "Kontakt %s je odpojen."
+
+#: ../js/ui/telepathyClient.js:248
+#, c-format
+msgid "%s is away."
+msgstr "Kontakt %s je nepřítomen."
+
+#: ../js/ui/telepathyClient.js:251
+#, c-format
+msgid "%s is busy."
+msgstr "Kontakt %s je zaneprázdněn."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:349
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr "Čas odeslání: %H:%M, den odeslání: %a"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters
+#: ../js/ui/viewSelector.js:30
+msgid "Type to search..."
+msgstr "Vyhledávejte psaním..."
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -659,17 +948,6 @@ msgstr "Spouštění %s dokončeno"
 #, c-format
 msgid "'%s' is ready"
 msgstr "Připraveno \"%s\""
-
-#: ../js/ui/workspacesView.js:229
-msgid ""
-"Can't add a new workspace because maximum workspaces limit has been reached."
-msgstr ""
-"Novou pracovní plochu nelze přidat, jelikož byl dosažen maximální počet "
-"pracovních ploch."
-
-#: ../js/ui/workspacesView.js:246
-msgid "Can't remove the first workspace."
-msgstr "Nelze odstranit první pracovní plochu."
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -695,11 +973,11 @@ msgstr[2] "%u vstupů"
 msgid "System Sounds"
 msgstr "Systémové zvuky"
 
-#: ../src/shell-global.c:1219
+#: ../src/shell-global.c:1363
 msgid "Less than a minute ago"
 msgstr "Před méně než minutou"
 
-#: ../src/shell-global.c:1223
+#: ../src/shell-global.c:1367
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -707,7 +985,7 @@ msgstr[0] "Před %d minutou"
 msgstr[1] "Před %d minutami"
 msgstr[2] "Před %d minutami"
 
-#: ../src/shell-global.c:1228
+#: ../src/shell-global.c:1372
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -715,7 +993,7 @@ msgstr[0] "Před %d hodinou"
 msgstr[1] "Před %d hodinami"
 msgstr[2] "Před %d hodinami"
 
-#: ../src/shell-global.c:1233
+#: ../src/shell-global.c:1377
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -723,7 +1001,7 @@ msgstr[0] "Před %d dnem"
 msgstr[1] "Před %d dny"
 msgstr[2] "Před %d dny"
 
-#: ../src/shell-global.c:1238
+#: ../src/shell-global.c:1382
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -731,17 +1009,17 @@ msgstr[0] "Před %d týdnem"
 msgstr[1] "Před %d týdny"
 msgstr[2] "Před %d týdny"
 
-#: ../src/shell-uri-util.c:89
+#: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "Domovská složka"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-uri-util.c:104
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "Systém souborů"
 
-#: ../src/shell-uri-util.c:250
+#: ../src/shell-util.c:250
 msgid "Search"
 msgstr "Hledat"
 
@@ -750,10 +1028,114 @@ msgstr "Hledat"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-uri-util.c:300
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#~ msgid "Account Information..."
-#~ msgstr "Informace o účtu..."
+#~ msgid "Clock"
+#~ msgstr "Hodiny"
+
+#~ msgid "Customize the panel clock"
+#~ msgstr "Přizpůsobit hodiny na panelu"
+
+#~ msgid "Custom format of the clock"
+#~ msgstr "Vlastní formát hodin"
+
+#~ msgid "Hour format"
+#~ msgstr "Formát hodin"
+
+#~ msgid ""
+#~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
+#~ "in time."
+#~ msgstr ""
+#~ "Je-li \"true\" a formát je buď \"12-hour\" nebo \"24-hour\", zobrazovat "
+#~ "čas včetně sekund."
+
+#~ msgid "Overview workspace view mode"
+#~ msgstr "Režim přehledu pracovních ploch"
+
+#~ msgid ""
+#~ "The selected workspace view mode in the overview. Supported values are "
+#~ "\"single\" and \"grid\"."
+#~ msgstr ""
+#~ "Vybraný režim zobrazení pracovních ploch v přehledu. Podporované hodnoty "
+#~ "jsou \"single\" a \"grid\"."
+
+#~ msgid ""
+#~ "This key specifies the format used by the panel clock when the format key "
+#~ "is set to \"custom\". You can use conversion specifiers understood by "
+#~ "strftime() to obtain a specific format. See the strftime() manual for "
+#~ "more information."
+#~ msgstr ""
+#~ "Tento klíč určuje formát používaný hodinami na panelu, když je klíč "
+#~ "format nastaven na \"custom\". K získání konkrétního formátu můžete "
+#~ "použít specifikátory převodu, kterým rozumí strftime(). Více informací "
+#~ "viz manuál k strftime()."
+
+#~ msgid ""
+#~ "This key specifies the hour format used by the panel clock. Possible "
+#~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
+#~ msgstr ""
+#~ "Tento klíč určuje formát používaný hodinami na panelu. Možné hodnoty jsou "
+#~ "\"12-hour\", \"24-hour\", \"unix\" a \"custom\". Je-li nastaven na \"unix"
+#~ "\", hodiny budou zobrazovat čas v sekundách od počátku epochy, tj. "
+#~ "1970-01-01. Je-li nastaven na \"custom\", hodiny budou zobrazovat čas s "
+#~ "ohledem na formát určený klíčem custom_format key. Je-li klíč nastaven "
+#~ "buď na \"unix\" nebo \"custom\", budou ignorovány klíče show_date a "
+#~ "show_seconds."
+
+#, fuzzy
+#~ msgid "Enable lens mode"
+#~ msgstr "Povoleno"
+
+#~ msgid "Clock Format"
+#~ msgstr "Formát hodin"
+
+#~ msgid "Clock Preferences"
+#~ msgstr "Předvolby hodin"
+
+#~ msgid "Panel Display"
+#~ msgstr "Zobrazení panelu"
+
+#~ msgid "Show seco_nds"
+#~ msgstr "Zobrazit seku_ndy"
+
+#~ msgid "Show the _date"
+#~ msgstr "Zobrazit _datum"
+
+#~ msgid "_12 hour format"
+#~ msgstr "_12hodinový formát"
+
+#~ msgid "_24 hour format"
+#~ msgstr "_24hodinový formát"
+
+#~ msgid "Drag here to add favorites"
+#~ msgstr "Oblíbené přidáte přetažením sem"
+
+#~ msgid "Find"
+#~ msgstr "Najít"
+
+#~ msgid "Preferences"
+#~ msgstr "Předvolby"
+
+#~ msgid "Invisible"
+#~ msgstr "Neviditelný"
+
+#~ msgid "Suspend"
+#~ msgstr "Uspat do paměti"
+
+#~ msgid ""
+#~ "Can't add a new workspace because maximum workspaces limit has been "
+#~ "reached."
+#~ msgstr ""
+#~ "Novou pracovní plochu nelze přidat, jelikož byl dosažen maximální počet "
+#~ "pracovních ploch."
+
+#~ msgid "Can't remove the first workspace."
+#~ msgstr "Nelze odstranit první pracovní plochu."
