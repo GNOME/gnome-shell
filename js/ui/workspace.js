@@ -1290,11 +1290,6 @@ Workspace.prototype = {
                             this.metaWorkspace.index());
     },
 
-    _removeSelf : function(actor, event) {
-        screen.remove_workspace(this.metaWorkspace, event.get_time());
-        return true;
-    },
-
     // Draggable target interface
     handleDragOver : function(source, actor, x, y, time) {
         if (source.realWindow && !this._isMyWindow(source.realWindow))
