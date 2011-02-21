@@ -3,9 +3,29 @@ Clutter 1.6.6                                                        2011-02-21
 
   • List of changes since Clutter 1.6.4
 
+    » Add four mechanisms for migrating textures inside a Cogl atlas; it
+      is possible to change the default by using the environment variable
+      COGL_ATLAS_DEFAULT_BLIT_MODE.
+
+    » Use the offscreen buffer size to compute the vertices of
+      ClutterDeformEffect.
+
+    » Make the FPS counter displayed using CLUTTER_SHOW_FPS per-stage.
+
+    » Documentation fixes.
+
+    » Annotation fixes for introspection.
+
   • List of bugs fixes since Clutter 1.6.4
 
+    #2538 - crash in gnome-shell
+    #2558 - backend-glx: Remove redundant glFlush()
+    #2561 - Updates to COGL sources regarding non-standard code usage
+    #2571 - DeformEffect should use the FBO size
+
 Many thanks to:
+
+  Neil Roberts
 
 Clutter 1.6.4                                                        2011-02-14
 ===============================================================================
