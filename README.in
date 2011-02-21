@@ -74,6 +74,10 @@ The API references for the latest stable release are available at:
    http://docs.clutter-project.org/docs/cogl/stable/
    http://docs.clutter-project.org/docs/cally/stable/
 
+The Clutter Cookbook is available at:
+
+   http://docs.clutter-project.org/docs/clutter-cookbook/@CLUTTER_API_VERSION@/
+
 New releases of Clutter are available at:
 
    http://source.clutter-project.org/sources/clutter/
