@@ -1958,7 +1958,7 @@ clutter_text_get_preferred_width (ClutterActor *self,
   logical_width = logical_rect.x + logical_rect.width;
 
   layout_width = logical_width > 0
-    ? (logical_width / 1024.0f)
+    ? ceilf (logical_width / 1024.0f)
     : 1;
 
   if (min_width_p)
@@ -2014,7 +2014,7 @@ clutter_text_get_preferred_height (ClutterActor *self,
        * the height accordingly
        */
       logical_height = logical_rect.y + logical_rect.height;
-      layout_height = ceilf ((gfloat) logical_height / 1024.0f + 0.5);
+      layout_height = ceilf (logical_height / 1024.0f);
 
       if (min_height_p)
         {
@@ -2030,7 +2030,7 @@ clutter_text_get_preferred_height (ClutterActor *self,
               pango_layout_line_get_extents (line, NULL, &logical_rect);
 
               logical_height = logical_rect.y + logical_rect.height;
-              line_height = (gfloat) logical_height / 1024.0f;
+              line_height = ceilf (logical_height / 1024.0f);
 
               *min_height_p = line_height;
             }
