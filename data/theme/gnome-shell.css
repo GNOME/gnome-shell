@@ -1066,8 +1066,8 @@ StTooltip StLabel {
 }
 
 .summary-source-button {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 4px;
+    padding-right: 16px;
 }
 
 .summary-source-button:last-child {
