@@ -363,41 +363,58 @@ Chrome.prototype = {
             if (!actorData.affectsStruts)
                 continue;
 
+            // Limit struts to the size of the screen
+            let x1 = Math.max(x, 0);
+            let x2 = Math.min(x + w, global.screen_width);
+            let y1 = Math.max(y, 0);
+            let y2 = Math.min(y + h, global.screen_height);
+
+            // NetWM struts are not really powerful enought to handle
+            // a multi-monitor scenario, they only describe what happens
+            // around the outer sides of the full display region. However
+            // it can describe a partial region along each side, so
+            // we can support having the struts only affect the
+            // primary monitor. This should be enough as we only have
+            // chrome affecting the struts on the primary monitor so
+            // far.
+            //
             // Metacity wants to know what side of the screen the
             // strut is considered to be attached to. If the actor is
             // only touching one edge, or is touching the entire
-            // width/height of one edge, then it's obvious which side
-            // to call it. If it's in a corner, we pick a side
+            // border of the primary monitor, then it's obvious which
+            // side to call it. If it's in a corner, we pick a side
             // arbitrarily. If it doesn't touch any edges, or it spans
             // the width/height across the middle of the screen, then
             // we don't create a strut for it at all.
             let side;
-            if (w >= global.screen_width) {
-                if (y <= 0)
+            let primary = this._primaryMonitor;
+            if (x1 <= primary.x && x2 >= primary.x + primary.width) {
+                if (y1 <= primary.y)
                     side = Meta.Side.TOP;
-                else if (y + h >= global.screen_height)
+                else if (y2 >= primary.y + primary.height)
                     side = Meta.Side.BOTTOM;
                 else
                     continue;
-            } else if (h >= global.screen_height) {
-                if (x <= 0)
+            } else if (y1 <= primary.y && y2 >= primary.y + primary.height) {
+                if (x1 <= 0)
                     side = Meta.Side.LEFT;
-                else if (x + w >= global.screen_width)
+                else if (x2 >= global.screen_width)
                     side = Meta.Side.RIGHT;
                 else
                     continue;
-            } else if (x <= 0)
+            } else if (x1 <= 0)
                 side = Meta.Side.LEFT;
-            else if (y <= 0)
+            else if (y1 <= 0)
                 side = Meta.Side.TOP;
-            else if (x + w >= global.screen_width)
+            else if (x2 >= global.screen_width)
                 side = Meta.Side.RIGHT;
-            else if (y + h >= global.screen_height)
+            else if (y2 >= global.screen_height)
                 side = Meta.Side.BOTTOM;
             else
                 continue;
 
-            let strut = new Meta.Strut({ rect: rect, side: side });
+            let strutRect = new Meta.Rectangle({ x: x1, y: y1, width: x2 - x1, height: y2 - y1});
+            let strut = new Meta.Strut({ rect: strutRect, side: side });
             struts.push(strut);
         }
 
