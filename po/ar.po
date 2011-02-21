@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-12 01:05+0200\n"
-"PO-Revision-Date: 2011-02-03 17:35+0300\n"
+"POT-Creation-Date: 2011-02-21 23:39+0200\n"
+"PO-Revision-Date: 2011-02-21 23:39+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -55,22 +55,26 @@ msgid "History for command (Alt-F2) dialog"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-msgid "If true, display date in the clock, in addition to time."
+msgid "History for the looking glass dialog"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "If true, display seconds in time."
+msgid "If true, display date in the clock, in addition to time."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display the ISO week date in the calendar."
+msgid "If true, display seconds in time."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "If true, display the ISO week date in the calendar."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -85,42 +89,42 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -128,15 +132,15 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
 msgstr ""
 
@@ -172,15 +176,15 @@ msgstr "التطبيقات"
 msgid "PREFERENCES"
 msgstr "التفضيلات"
 
-#: ../js/ui/appDisplay.js:592
+#: ../js/ui/appDisplay.js:551
 msgid "New Window"
 msgstr "نافذة جديدة"
 
-#: ../js/ui/appDisplay.js:596
+#: ../js/ui/appDisplay.js:555
 msgid "Remove from Favorites"
 msgstr "أزِل من المفضّلة"
 
-#: ../js/ui/appDisplay.js:597
+#: ../js/ui/appDisplay.js:556
 msgid "Add to Favorites"
 msgstr "أضِف إلى المفضّلة"
 
@@ -344,58 +348,58 @@ msgstr "الأسبوع القادم"
 msgid "Remove"
 msgstr "أزِل"
 
-#: ../js/ui/dateMenu.js:91
+#: ../js/ui/dateMenu.js:93
 msgid "Date and Time Settings"
 msgstr "إعدادات الوقت و التّأريخ"
 
-#: ../js/ui/dateMenu.js:110
+#: ../js/ui/dateMenu.js:112
 msgid "Open Calendar"
 msgstr "افتح التقويم"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:149
+#: ../js/ui/dateMenu.js:151
 msgid "%a %b %e, %R:%S"
 msgstr "%A %e %B، %R:%S"
 
-#: ../js/ui/dateMenu.js:150
+#: ../js/ui/dateMenu.js:152
 msgid "%a %b %e, %R"
 msgstr "%A %e %B، %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:154
+#: ../js/ui/dateMenu.js:156
 msgid "%a %R:%S"
 msgstr "%A %R:%S"
 
-#: ../js/ui/dateMenu.js:155
+#: ../js/ui/dateMenu.js:157
 msgid "%a %R"
 msgstr "%A %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%A %e %B، %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %l:%M %p"
 msgstr "%A %e %B، %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:169
 msgid "%a %l:%M:%S %p"
 msgstr "%A %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:170
 msgid "%a %l:%M %p"
 msgstr "%A %Ol:%OM %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:196
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B، %Y"
 
@@ -472,37 +476,37 @@ msgstr "أكّد"
 msgid "Cancel"
 msgstr "ألغِ"
 
-#: ../js/ui/lookingGlass.js:584
+#: ../js/ui/lookingGlass.js:587
 msgid "No extensions installed"
 msgstr "لم تثبّت أية امتدادات"
 
-#: ../js/ui/lookingGlass.js:621
+#: ../js/ui/lookingGlass.js:624
 msgid "Enabled"
 msgstr "مفعّل"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:623 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:626 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "معطّل"
 
-#: ../js/ui/lookingGlass.js:625
+#: ../js/ui/lookingGlass.js:628
 msgid "Error"
 msgstr "خطأ"
 
-#: ../js/ui/lookingGlass.js:627
+#: ../js/ui/lookingGlass.js:630
 msgid "Out of date"
 msgstr "غير محدث"
 
-#: ../js/ui/lookingGlass.js:652
+#: ../js/ui/lookingGlass.js:655
 msgid "View Source"
 msgstr "اعرض المصدر"
 
-#: ../js/ui/lookingGlass.js:658
+#: ../js/ui/lookingGlass.js:661
 msgid "Web Page"
 msgstr "صفحة الوب"
 
-#: ../js/ui/messageTray.js:1854
+#: ../js/ui/messageTray.js:1864
 msgid "System Information"
 msgstr "معلومات النظام"
 
@@ -510,23 +514,23 @@ msgstr "معلومات النظام"
 msgid "Undo"
 msgstr "تراجع"
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:183
 msgid "Windows"
 msgstr "النوافذ"
 
-#: ../js/ui/overview.js:162
+#: ../js/ui/overview.js:186
 msgid "Applications"
 msgstr "التطبيقات"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:480
+#: ../js/ui/panel.js:537
 #, c-format
 msgid "Quit %s"
 msgstr "أغلق %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:770
 msgid "Activities"
 msgstr "الأنشطة"
 
@@ -552,11 +556,11 @@ msgstr "الأماكن والأجهزة"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:512
+#: ../js/ui/popupMenu.js:511
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:209
+#: ../js/ui/runDialog.js:201
 msgid "Please enter a command:"
 msgstr "من فضلك اكتب أمرا:"
 
@@ -606,11 +610,11 @@ msgstr "اخرج..."
 msgid "Shut Down..."
 msgstr "أطفئ..."
 
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:81
 msgid "Zoom"
 msgstr "تقريب"
 
-#: ../js/ui/status/accessibility.js:89
+#: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
 msgstr "قارئ الشاشة"
 
@@ -618,35 +622,35 @@ msgstr "قارئ الشاشة"
 msgid "Screen Keyboard"
 msgstr "لوحة مفاتيح على الشاشة"
 
-#: ../js/ui/status/accessibility.js:95
+#: ../js/ui/status/accessibility.js:96
 msgid "Visual Alerts"
 msgstr "تنبيهات بصرية"
 
-#: ../js/ui/status/accessibility.js:98
+#: ../js/ui/status/accessibility.js:99
 msgid "Sticky Keys"
 msgstr "مفاتيح لاصقة"
 
-#: ../js/ui/status/accessibility.js:101
+#: ../js/ui/status/accessibility.js:102
 msgid "Slow Keys"
 msgstr "مفاتيح بطيئة"
 
-#: ../js/ui/status/accessibility.js:104
+#: ../js/ui/status/accessibility.js:105
 msgid "Bounce Keys"
 msgstr "مفاتيح لها صوت"
 
-#: ../js/ui/status/accessibility.js:107
+#: ../js/ui/status/accessibility.js:108
 msgid "Mouse Keys"
 msgstr "مفاتيح الفأرة"
 
-#: ../js/ui/status/accessibility.js:111
+#: ../js/ui/status/accessibility.js:112
 msgid "Universal Access Settings"
 msgstr "إعدادات الإتاحة"
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:164
 msgid "High Contrast"
 msgstr "تباين عال"
 
-#: ../js/ui/status/accessibility.js:205
+#: ../js/ui/status/accessibility.js:209
 msgid "Large Text"
 msgstr "نص كبير"
 
@@ -701,7 +705,7 @@ msgstr "إعدادات لوحة المفاتيح"
 msgid "Mouse Settings"
 msgstr "إعدادات الفأرة"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
 msgid "Sound Settings"
 msgstr "إعدادات الصوت"
 
@@ -763,7 +767,11 @@ msgstr "من فضلك أدخل الرقم المذكور على الجهاز."
 msgid "OK"
 msgstr "حسنا"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "أظهر تخطيط لوحة المفاتيح..."
+
+#: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "إعدادات اللغة"
 
@@ -867,30 +875,30 @@ msgstr "حاسوب"
 msgid "Unknown"
 msgstr "مجهول"
 
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:44
 msgid "Volume"
 msgstr "جزء"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:57
 msgid "Microphone"
 msgstr "ميكروفون"
 
-#: ../js/ui/telepathyClient.js:563
+#: ../js/ui/telepathyClient.js:240
 #, c-format
 msgid "%s is online."
 msgstr "‏%s متّصل."
 
-#: ../js/ui/telepathyClient.js:568
+#: ../js/ui/telepathyClient.js:245
 #, c-format
 msgid "%s is offline."
 msgstr "‏%s غير متّصل."
 
-#: ../js/ui/telepathyClient.js:571
+#: ../js/ui/telepathyClient.js:248
 #, c-format
 msgid "%s is away."
 msgstr "‏%s غائب."
 
-#: ../js/ui/telepathyClient.js:574
+#: ../js/ui/telepathyClient.js:251
 #, c-format
 msgid "%s is busy."
 msgstr "‏%s مشغول."
@@ -898,14 +906,18 @@ msgstr "‏%s مشغول."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:669
+#: ../js/ui/telepathyClient.js:349
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "أُرسلت الساعة %l:%M:%S في %A"
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "ابحث في حاسوبك"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters
+#: ../js/ui/viewSelector.js:30
+msgid "Type to search..."
+msgstr "اكتب نصا للبحث عنه..."
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -1018,6 +1030,9 @@ msgstr "ابحث"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "‏%1$s:‏ %2$s"
+
+#~ msgid "Search your computer"
+#~ msgstr "ابحث في حاسوبك"
 
 #~ msgid "Bluetooth Agent"
 #~ msgstr "عميل بلوتوث"
