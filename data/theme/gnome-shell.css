@@ -140,6 +140,10 @@ StTooltip StLabel {
     height: 1em;
 }
 
+.popup-alternating-menu-item:alternate {
+    font-weight: bold;
+}
+
 .popup-slider-menu-item {
     height: 1em;
     min-width: 15em;
