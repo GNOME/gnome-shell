@@ -13,12 +13,6 @@ const Params = imports.misc.params;
 // normal mode (ie, outside the Overview), that surrounds the main
 // workspace content.
 
-const Visibility = {
-    FULL:       1,
-    FULLSCREEN: 2,
-    OVERVIEW:   3
-};
-
 const defaultParams = {
     visibleInOverview: false,
     visibleInFullscreen: false,
@@ -39,7 +33,6 @@ Chrome.prototype = {
 
         this._inFullscreen = false;
         this._inOverview = false;
-        this.visibility = Visibility.FULL;
 
         this._trackedActors = [];
 
@@ -198,19 +191,6 @@ Chrome.prototype = {
                 this.actor.set_skip_paint(actorData.actor, true);
             else
                 this.actor.set_skip_paint(actorData.actor, false);
-        }
-
-        let newVisibility;
-        if (this._inOverview)
-            newVisibility = Visibility.OVERVIEW;
-        else if (this._inFullscreen)
-            newVisibility = Visibility.FULLSCREEN;
-        else
-            newVisibility = Visibility.FULL;
-
-        if (newVisibility != this.visibility) {
-            this.visibility = newVisibility;
-            this.emit('visibility-changed', this.visibility);
         }
     },
 
