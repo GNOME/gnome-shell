@@ -46,6 +46,7 @@
   <xi:include href="text.xml" />
   <xi:include href="layouts.xml" />
   <xi:include href="script.xml" />
+  <xi:include href="effects.xml" />
 
   <appendix id="contributing">
     <title>Contributing to this document</title>
