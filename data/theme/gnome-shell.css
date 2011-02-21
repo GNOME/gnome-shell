@@ -187,8 +187,7 @@ StTooltip StLabel {
 #panel {
     color: #ffffff;
     background-color: black;
-    border: 0px solid #536272;
-    border-bottom-width: 1px;
+    border-image: url("panel-border.svg") 1;
 }
 
 #panelLeft, #panelCenter, #panelRight {

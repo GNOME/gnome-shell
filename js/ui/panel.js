@@ -580,18 +580,19 @@ PanelCorner.prototype = {
         cr.moveTo(0, 0);
         if (this._side == St.Side.LEFT)
             cr.arc(cornerRadius,
-                   innerBorderWidth + outerBorderWidth + cornerRadius,
+                   innerBorderWidth + cornerRadius,
                    cornerRadius, Math.PI, 3 * Math.PI / 2);
         else
             cr.arc(0,
-                   innerBorderWidth + outerBorderWidth + cornerRadius,
+                   innerBorderWidth + cornerRadius,
                    cornerRadius, 3 * Math.PI / 2, 2 * Math.PI);
         cr.lineTo(cornerRadius, 0);
         cr.closePath();
 
         let savedPath = cr.copyPath();
 
-        let over = _over(outerBorderColor, backgroundColor);
+        let over = _over(innerBorderColor,
+                         _over(outerBorderColor, backgroundColor));
         Clutter.cairo_set_source_color(cr, over);
         cr.fill();
 
@@ -607,12 +608,12 @@ PanelCorner.prototype = {
         cr.restore();
 
         if (this._side == St.Side.LEFT)
-            cr.rectangle(cornerRadius - offset, 0, offset, innerBorderWidth);
+            cr.rectangle(cornerRadius - offset, 0, offset, outerBorderWidth);
         else
-            cr.rectangle(0, 0, offset, innerBorderWidth);
+            cr.rectangle(0, 0, offset, outerBorderWidth);
         cr.fill();
 
-        offset = innerBorderWidth + outerBorderWidth;
+        offset = innerBorderWidth;
         Clutter.cairo_set_source_color(cr, backgroundColor);
 
         cr.save();
@@ -627,16 +628,15 @@ PanelCorner.prototype = {
 
         let cornerRadius = node.get_length("-panel-corner-radius");
         let innerBorderWidth = node.get_length('-panel-corner-inner-border-width');
-        let outerBorderWidth = node.get_length('-panel-corner-outer-border-width');
 
         this.actor.set_size(cornerRadius,
-                            innerBorderWidth + outerBorderWidth + cornerRadius);
+                            innerBorderWidth + cornerRadius);
         if (this._side == St.Side.LEFT)
             this.actor.set_position(Main.panel.actor.x,
-                                    Main.panel.actor.y + Main.panel.actor.height - innerBorderWidth - outerBorderWidth);
+                                    Main.panel.actor.y + Main.panel.actor.height - innerBorderWidth);
         else
             this.actor.set_position(Main.panel.actor.x + Main.panel.actor.width - cornerRadius,
-                                    Main.panel.actor.y + Main.panel.actor.height - innerBorderWidth - outerBorderWidth);
+                                    Main.panel.actor.y + Main.panel.actor.height - innerBorderWidth);
     }
 };
 
