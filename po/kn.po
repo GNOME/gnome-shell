@@ -1,22 +1,22 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Kannada translation for gnome-shell.
+# Copyright (C) 2011 gnome-shell's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
 #
-#, fuzzy
+# Shankar Prasad <svenkate@redhat.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&component=general\n"
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=gnome-shell&component=general\n"
 "POT-Creation-Date: 2011-02-21 01:21+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2011-02-21 12:52+0530\n"
+"Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
+"Language-Team: Kannada <kn@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Lokalize 1.1\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -174,11 +174,11 @@ msgstr ""
 
 #: ../js/ui/appDisplay.js:291
 msgid "PREFERENCES"
-msgstr ""
+msgstr "PREFERENCES"
 
 #: ../js/ui/appDisplay.js:551
 msgid "New Window"
-msgstr ""
+msgstr "ಹೊಸ ವಿಂಡೊ"
 
 #: ../js/ui/appDisplay.js:555
 msgid "Remove from Favorites"
@@ -204,19 +204,19 @@ msgstr ""
 #: ../js/ui/calendar.js:65
 msgctxt "event list time"
 msgid "All Day"
-msgstr ""
+msgstr "ಎಲ್ಲಾ ದಿನ"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:70
 msgctxt "event list time"
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
 #: ../js/ui/calendar.js:77
 msgctxt "event list time"
 msgid "%l:%M %p"
-msgstr ""
+msgstr "%l:%M %p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -226,43 +226,43 @@ msgstr ""
 #: ../js/ui/calendar.js:117
 msgctxt "grid sunday"
 msgid "S"
-msgstr ""
+msgstr "ಭಾ"
 
 #. Translators: Calendar grid abbreviation for Monday
 #: ../js/ui/calendar.js:119
 msgctxt "grid monday"
 msgid "M"
-msgstr ""
+msgstr "ಸೋ"
 
 #. Translators: Calendar grid abbreviation for Tuesday
 #: ../js/ui/calendar.js:121
 msgctxt "grid tuesday"
 msgid "T"
-msgstr ""
+msgstr "ಮಂ"
 
 #. Translators: Calendar grid abbreviation for Wednesday
 #: ../js/ui/calendar.js:123
 msgctxt "grid wednesday"
 msgid "W"
-msgstr ""
+msgstr "ಬು"
 
 #. Translators: Calendar grid abbreviation for Thursday
 #: ../js/ui/calendar.js:125
 msgctxt "grid thursday"
 msgid "T"
-msgstr ""
+msgstr "ಗು"
 
 #. Translators: Calendar grid abbreviation for Friday
 #: ../js/ui/calendar.js:127
 msgctxt "grid friday"
 msgid "F"
-msgstr ""
+msgstr "ಶು"
 
 #. Translators: Calendar grid abbreviation for Saturday
 #: ../js/ui/calendar.js:129
 msgctxt "grid saturday"
 msgid "S"
-msgstr ""
+msgstr "ಶ"
 
 #. Translators: Event list abbreviation for Sunday.
 #. *
@@ -273,43 +273,43 @@ msgstr ""
 #: ../js/ui/calendar.js:142
 msgctxt "list sunday"
 msgid "Su"
-msgstr ""
+msgstr "ಭಾ"
 
 #. Translators: Event list abbreviation for Monday
 #: ../js/ui/calendar.js:144
 msgctxt "list monday"
 msgid "M"
-msgstr ""
+msgstr "ಸೋ"
 
 #. Translators: Event list abbreviation for Tuesday
 #: ../js/ui/calendar.js:146
 msgctxt "list tuesday"
 msgid "T"
-msgstr ""
+msgstr "ಮಂ"
 
 #. Translators: Event list abbreviation for Wednesday
 #: ../js/ui/calendar.js:148
 msgctxt "list wednesday"
 msgid "W"
-msgstr ""
+msgstr "ಬು"
 
 #. Translators: Event list abbreviation for Thursday
 #: ../js/ui/calendar.js:150
 msgctxt "list thursday"
 msgid "Th"
-msgstr ""
+msgstr "ಗು"
 
 #. Translators: Event list abbreviation for Friday
 #: ../js/ui/calendar.js:152
 msgctxt "list friday"
 msgid "F"
-msgstr ""
+msgstr "ಶು"
 
 #. Translators: Event list abbreviation for Saturday
 #: ../js/ui/calendar.js:154
 msgctxt "list saturday"
 msgid "S"
-msgstr ""
+msgstr "ಶ"
 
 #. Translators: Text to show if there are no events
 #: ../js/ui/calendar.js:701
@@ -320,33 +320,33 @@ msgstr ""
 #: ../js/ui/calendar.js:717
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr ""
+msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr ""
+msgstr "%A, %B %d, %Y"
 
 #: ../js/ui/calendar.js:730
 msgid "Today"
-msgstr ""
+msgstr "ಇಂದು"
 
 #: ../js/ui/calendar.js:734
 msgid "Tomorrow"
-msgstr ""
+msgstr "ನಾಳೆ"
 
 #: ../js/ui/calendar.js:743
 msgid "This week"
-msgstr ""
+msgstr "ಈ ವಾರ"
 
 #: ../js/ui/calendar.js:751
 msgid "Next week"
-msgstr ""
+msgstr "ಮುಂದಿನ ವಾರ"
 
 #: ../js/ui/dash.js:174
 msgid "Remove"
-msgstr ""
+msgstr "ತೆಗೆದು ಹಾಕು"
 
 #: ../js/ui/dateMenu.js:93
 msgid "Date and Time Settings"
@@ -360,48 +360,48 @@ msgstr ""
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:151
 msgid "%a %b %e, %R:%S"
-msgstr ""
+msgstr "%a %b %e, %R:%S"
 
 #: ../js/ui/dateMenu.js:152
 msgid "%a %b %e, %R"
-msgstr ""
+msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
 #: ../js/ui/dateMenu.js:156
 msgid "%a %R:%S"
-msgstr ""
+msgstr "%a %R:%S"
 
 #: ../js/ui/dateMenu.js:157
 msgid "%a %R"
-msgstr ""
+msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %l:%M:%S %p"
-msgstr ""
+msgstr "%a %b %e, %l:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %l:%M %p"
-msgstr ""
+msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
 #: ../js/ui/dateMenu.js:169
 msgid "%a %l:%M:%S %p"
-msgstr ""
+msgstr "%a %l:%M:%S %p"
 
 #: ../js/ui/dateMenu.js:170
 msgid "%a %l:%M %p"
-msgstr ""
+msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
 #: ../js/ui/dateMenu.js:196
 msgid "%A %B %e, %Y"
-msgstr ""
+msgstr "%A %B %e, %Y"
 
 #: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
@@ -474,7 +474,7 @@ msgstr ""
 
 #: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
 msgid "Cancel"
-msgstr ""
+msgstr "ರದ್ದು ಮಾಡು"
 
 #: ../js/ui/lookingGlass.js:587
 msgid "No extensions installed"
@@ -492,7 +492,7 @@ msgstr ""
 
 #: ../js/ui/lookingGlass.js:628
 msgid "Error"
-msgstr ""
+msgstr "ದೋಷ"
 
 #: ../js/ui/lookingGlass.js:630
 msgid "Out of date"
@@ -504,23 +504,23 @@ msgstr ""
 
 #: ../js/ui/lookingGlass.js:661
 msgid "Web Page"
-msgstr ""
+msgstr "ಜಾಲ ಪುಟ"
 
 #: ../js/ui/messageTray.js:1864
 msgid "System Information"
-msgstr ""
+msgstr "ವ್ಯವಸ್ಥೆಯ ಮಾಹಿತಿ"
 
 #: ../js/ui/overview.js:88
 msgid "Undo"
-msgstr ""
+msgstr "ರದ್ದುಗೊಳಿಸು"
 
 #: ../js/ui/overview.js:183
 msgid "Windows"
-msgstr ""
+msgstr "ವಿಂಡೋಗಳು"
 
 #: ../js/ui/overview.js:186
 msgid "Applications"
-msgstr ""
+msgstr "ಅನ್ವಯಗಳು"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
 #: ../js/ui/panel.js:478
@@ -549,7 +549,7 @@ msgstr ""
 
 #: ../js/ui/placeDisplay.js:409
 msgid "PLACES & DEVICES"
-msgstr ""
+msgstr "PLACES & DEVICES"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -562,11 +562,11 @@ msgstr ""
 
 #: ../js/ui/runDialog.js:201
 msgid "Please enter a command:"
-msgstr ""
+msgstr "ದಯವಿಟ್ಟು ಒಂದು ಆಜ್ಞೆಯನ್ನು ನಮೂದಿಸಿ:"
 
 #: ../js/ui/searchDisplay.js:295
 msgid "Searching..."
-msgstr ""
+msgstr "ಹುಡುಕಲಾಗುತ್ತಿದೆ..."
 
 #: ../js/ui/searchDisplay.js:309
 msgid "No matching results."
@@ -574,19 +574,19 @@ msgstr ""
 
 #: ../js/ui/statusMenu.js:102
 msgid "Available"
-msgstr ""
+msgstr "ಲಭ್ಯ"
 
 #: ../js/ui/statusMenu.js:107
 msgid "Busy"
-msgstr ""
+msgstr "ಕಾರ್ಯನಿರತ"
 
 #: ../js/ui/statusMenu.js:115
 msgid "My Account"
-msgstr ""
+msgstr "ನನ್ನ ಖಾತೆ"
 
 #: ../js/ui/statusMenu.js:119
 msgid "System Settings"
-msgstr ""
+msgstr "ವ್ಯವಸ್ಥೆಯ ಸಿದ್ಧತೆಗಳು"
 
 #: ../js/ui/statusMenu.js:126
 msgid "Lock Screen"
@@ -594,7 +594,7 @@ msgstr ""
 
 #: ../js/ui/statusMenu.js:130
 msgid "Switch User"
-msgstr ""
+msgstr "ಬಳಕೆದಾರನನ್ನು ಬದಲಿಸು"
 
 #: ../js/ui/statusMenu.js:135
 msgid "Log Out..."
@@ -658,11 +658,11 @@ msgstr ""
 #: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
 #: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
 msgid "Bluetooth"
-msgstr ""
+msgstr "ಬ್ಲೂಟೂತ್"
 
 #: ../js/ui/status/bluetooth.js:55
 msgid "Visibility"
-msgstr ""
+msgstr "ಗೋಚರಿಕೆ"
 
 #: ../js/ui/status/bluetooth.js:69
 msgid "Send Files to Device..."
@@ -674,19 +674,19 @@ msgstr ""
 
 #: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
-msgstr ""
+msgstr "ಬ್ಲೂಟೂತ್ ಸಿದ್ಧತೆಗಳು"
 
 #: ../js/ui/status/bluetooth.js:192
 msgid "Connection"
-msgstr ""
+msgstr "ಸಂಪರ್ಕ"
 
 #: ../js/ui/status/bluetooth.js:228
 msgid "Send Files..."
-msgstr ""
+msgstr "ಕಡತಗಳನ್ನು ಕಳುಹಿಸು..."
 
 #: ../js/ui/status/bluetooth.js:233
 msgid "Browse Files..."
-msgstr ""
+msgstr "ಕಡತಗಳಿಗಾಗಿ ವೀಕ್ಷಿಸು..."
 
 #: ../js/ui/status/bluetooth.js:242
 msgid "Error browsing device"
@@ -699,15 +699,15 @@ msgstr ""
 
 #: ../js/ui/status/bluetooth.js:251
 msgid "Keyboard Settings"
-msgstr ""
+msgstr "ಕೀಲಿಮಣೆ ಸಿದ್ಧತೆಗಳು"
 
 #: ../js/ui/status/bluetooth.js:256
 msgid "Mouse Settings"
-msgstr ""
+msgstr "ಮೌಸ್‌ನ ಸಿದ್ಧತೆಗಳು"
 
 #: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
 msgid "Sound Settings"
-msgstr ""
+msgstr "ಧ್ವನಿಯ ಸಿದ್ಧತೆಗಳು"
 
 #: ../js/ui/status/bluetooth.js:372
 #, c-format
@@ -729,7 +729,7 @@ msgstr ""
 
 #: ../js/ui/status/bluetooth.js:382
 msgid "Reject"
-msgstr ""
+msgstr "ತಿರಸ್ಕರಿಸು"
 
 #: ../js/ui/status/bluetooth.js:412
 #, c-format
@@ -748,11 +748,11 @@ msgstr ""
 
 #: ../js/ui/status/bluetooth.js:421
 msgid "Matches"
-msgstr ""
+msgstr "ಹೊಂದಾಣಿಕೆಗಳು"
 
 #: ../js/ui/status/bluetooth.js:422
 msgid "Does not match"
-msgstr ""
+msgstr "ತಾಳೆಯಾಗುತ್ತಿಲ್ಲ"
 
 #: ../js/ui/status/bluetooth.js:445
 #, c-format
@@ -765,7 +765,7 @@ msgstr ""
 
 #: ../js/ui/status/bluetooth.js:469
 msgid "OK"
-msgstr ""
+msgstr "ಸರಿ"
 
 #: ../js/ui/status/keyboard.js:72
 msgid "Localization Settings"
@@ -817,7 +817,7 @@ msgstr ""
 
 #: ../js/ui/status/power.js:239
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #: ../js/ui/status/power.js:241
 msgid "Monitor"
@@ -833,7 +833,7 @@ msgstr ""
 
 #: ../js/ui/status/power.js:247
 msgid "PDA"
-msgstr ""
+msgstr "PDA"
 
 #: ../js/ui/status/power.js:249
 msgid "Cell phone"
@@ -985,4 +985,5 @@ msgstr ""
 #: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
-msgstr ""
+msgstr "%1$s: %2$s"
+
