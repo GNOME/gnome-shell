@@ -16,6 +16,7 @@ XML_FILES = \
 	$(srcdir)/textures.xml		\
 	$(srcdir)/layouts.xml		\
 	$(srcdir)/script.xml		\
+	$(srcdir)/effects.xml		\
 	$(NULL)
 
 XSLTOPTS = \
@@ -36,6 +37,9 @@ HTML_FILES = $(top_builddir)/doc/cookbook/html/*.html
 CSS_FILES = $(top_builddir)/doc/cookbook/html/*.css
 IMAGE_FILES = \
 	$(srcdir)/images/clutter-logo.png \
+	$(srcdir)/images/effects-built-in.png \
+	$(srcdir)/images/effects-custom-deform.png \
+	$(srcdir)/images/effects-custom-deform-back-material.png \
 	$(srcdir)/images/textures-reflection.png \
 	$(srcdir)/images/actors-opacity.png \
 	$(srcdir)/images/actors-opacity-container-affects-opacity.png \
@@ -59,6 +63,7 @@ VIDEO_FILES = \
 	$(srcdir)/videos/animations-rotating-y-centered.ogv \
 	$(srcdir)/videos/animations-rotating-z-centered.ogv \
 	$(srcdir)/videos/animations-rotating-container-reverses-direction.ogv \
+	$(srcdir)/videos/effects-custom-deform.ogv \
 	$(srcdir)/videos/textures-split-go.ogv \
 	$(srcdir)/videos/events-mouse-scroll.ogv \
 	$(srcdir)/videos/textures-crossfade-two-textures.ogv \

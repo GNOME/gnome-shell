@@ -18,6 +18,8 @@ noinst_PROGRAMS = \
 	animations-rotating			\
 	animations-scaling			\
 	animations-scaling-zoom			\
+	effects-built-in      \
+	effects-custom-deform			\
 	text-shadow				\
 	textures-reflection			\
 	textures-split-go			\
@@ -81,6 +83,8 @@ animations_reuse_SOURCES                   = animations-reuse.c
 animations_rotating_SOURCES                = animations-rotating.c
 animations_scaling_SOURCES                 = animations-scaling.c
 animations_scaling_zoom_SOURCES            = animations-scaling-zoom.c
+effects_built_in_SOURCES                   = effects-built-in.c
+effects_custom_deform_SOURCES              = cb-page-fold-effect.c cb-page-fold-effect.h effects-custom-deform.c
 text_shadow_SOURCES                        = text-shadow.c
 textures_reflection_SOURCES                = textures-reflection.c
 textures_split_go_SOURCES                  = textures-split-go.c
