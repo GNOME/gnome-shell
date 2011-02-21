@@ -632,9 +632,11 @@ PanelCorner.prototype = {
         this.actor.set_size(cornerRadius,
                             innerBorderWidth + outerBorderWidth + cornerRadius);
         if (this._side == St.Side.LEFT)
-            this.actor.set_position(0, Main.panel.actor.height - innerBorderWidth - outerBorderWidth);
+            this.actor.set_position(Main.panel.actor.x,
+                                    Main.panel.actor.y + Main.panel.actor.height - innerBorderWidth - outerBorderWidth);
         else
-            this.actor.set_position(Main.panel.actor.width - cornerRadius, Main.panel.actor.height - innerBorderWidth - outerBorderWidth);
+            this.actor.set_position(Main.panel.actor.x + Main.panel.actor.width - cornerRadius,
+                                    Main.panel.actor.y + Main.panel.actor.height - innerBorderWidth - outerBorderWidth);
     }
 };
 
