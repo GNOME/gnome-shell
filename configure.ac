@@ -71,7 +71,7 @@ LIBEDATASERVER_REQUIRED=1.2.0
 LIBEDATASERVERUI2_REQUIRED=1.2.0
 LIBEDATASERVERUI3_REQUIRED=2.91.6
 TELEPATHY_GLIB_MIN_VERSION=0.13.12
-
+POLKIT_MIN_VERSION=0.100
 
 # Collect more than 20 libraries for a prize!
 PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
@@ -86,7 +86,8 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION
                                  libstartup-notification-1.0
                                  gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
 				 libcanberra
-                                 telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION)
+                                 telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
+                                 polkit-agent-1 >= $POLKIT_MIN_VERSION)
 
 GJS_VERSION=`$PKG_CONFIG --modversion gjs-internals-1.0`
 AC_DEFINE_UNQUOTED([GJS_VERSION], ["$GJS_VERSION"], [The version of GJS we're linking to])

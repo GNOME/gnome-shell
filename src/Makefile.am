@@ -94,6 +94,8 @@ libgnome_shell_la_SOURCES =		\
 	shell-gtk-embed.c		\
 	shell-global.c			\
 	shell-perf-log.c		\
+	shell-polkit-authentication-agent.h	\
+	shell-polkit-authentication-agent.c	\
 	shell-slicer.c			\
 	shell-stack.c			\
 	shell-tray-icon.c		\

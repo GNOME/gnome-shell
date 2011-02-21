@@ -1347,6 +1347,78 @@ StTooltip StLabel {
     color: #444444;
 }
 
+/* PolicyKit Authentication Dialog */
+.polkit-dialog {
+    /* this is the width of the entire modal popup */
+    width: 500px;
+}
+
+.polkit-dialog-main-layout {
+    spacing: 10px;
+    padding: 10px;
+}
+
+.polkit-dialog-message-layout {
+    spacing: 10px;
+}
+
+.polkit-dialog-headline {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #666666;
+}
+
+.polkit-dialog-description {
+    font-size: 10pt;
+    color: white;
+}
+
+.polkit-dialog-user-layout {
+    padding-left: 10px;
+    spacing: 10px;
+}
+
+.polkit-dialog-password-label {
+    padding-right: 0.5em;
+}
+
+.polkit-dialog-password-entry {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+}
+
+.polkit-dialog-error-label {
+    font-size: 12px;
+    color: white;
+}
+
+.polkit-dialog-error-box {
+    padding-top: 15px;
+    spacing: 5px;
+}
+
+.polkit-dialog-checking-label {
+    font-size: 12px;
+    color: white;
+}
+
+.polkit-dialog-checking-box {
+    padding-top: 15px;
+    spacing: 5px;
+}
+
+.polkit-dialog-info-label {
+    font-size: 12px;
+    color: white;
+}
+
+.polkit-dialog-info-box {
+    padding-top: 15px;
+    spacing: 5px;
+}
+
+
 /* Magnifier */
 
 .magnifier-zoom-region {
