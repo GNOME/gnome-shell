@@ -1,0 +1,988 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&component=general\n"
+"POT-Creation-Date: 2011-02-21 01:21+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr ""
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "File extension used for storing the screencast"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid "Framerate used for recording screencasts."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid "History for command (Alt-F2) dialog"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for the looking glass dialog"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid "If true, display date in the clock, in addition to time."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "If true, display seconds in time."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "If true, display the ISO week date in the calendar."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "List of desktop file IDs for favorite applications"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#, no-c-format
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Show date in clock"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "Show the week date in the calendar"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show time with seconds"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "Uuids of extensions to disable"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid "Whether to collect stats about applications usage"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid "disabled OpenSearch providers"
+msgstr ""
+
+#: ../js/misc/util.js:86
+msgid "Command not found"
+msgstr ""
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:113
+msgid "Could not parse command:"
+msgstr ""
+
+#: ../js/misc/util.js:135
+msgid "No such application"
+msgstr ""
+
+#: ../js/misc/util.js:148
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr ""
+
+#. Translators: Filter to display all applications
+#: ../js/ui/appDisplay.js:174
+msgid "All"
+msgstr ""
+
+#: ../js/ui/appDisplay.js:261
+msgid "APPLICATIONS"
+msgstr ""
+
+#: ../js/ui/appDisplay.js:291
+msgid "PREFERENCES"
+msgstr ""
+
+#: ../js/ui/appDisplay.js:551
+msgid "New Window"
+msgstr ""
+
+#: ../js/ui/appDisplay.js:555
+msgid "Remove from Favorites"
+msgstr ""
+
+#: ../js/ui/appDisplay.js:556
+msgid "Add to Favorites"
+msgstr ""
+
+#: ../js/ui/appFavorites.js:91
+#, c-format
+msgid "%s has been added to your favorites."
+msgstr ""
+
+#: ../js/ui/appFavorites.js:122
+#, c-format
+msgid "%s has been removed from your favorites."
+msgstr ""
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:65
+msgctxt "event list time"
+msgid "All Day"
+msgstr ""
+
+#. Translators: Shown in calendar event list, if 24h format
+#: ../js/ui/calendar.js:70
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr ""
+
+#. Transators: Shown in calendar event list, if 12h format
+#: ../js/ui/calendar.js:77
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: ../js/ui/calendar.js:117
+msgctxt "grid sunday"
+msgid "S"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:119
+msgctxt "grid monday"
+msgid "M"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:121
+msgctxt "grid tuesday"
+msgid "T"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:123
+msgctxt "grid wednesday"
+msgid "W"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:125
+msgctxt "grid thursday"
+msgid "T"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:127
+msgctxt "grid friday"
+msgid "F"
+msgstr ""
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:129
+msgctxt "grid saturday"
+msgid "S"
+msgstr ""
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#.
+#: ../js/ui/calendar.js:142
+msgctxt "list sunday"
+msgid "Su"
+msgstr ""
+
+#. Translators: Event list abbreviation for Monday
+#: ../js/ui/calendar.js:144
+msgctxt "list monday"
+msgid "M"
+msgstr ""
+
+#. Translators: Event list abbreviation for Tuesday
+#: ../js/ui/calendar.js:146
+msgctxt "list tuesday"
+msgid "T"
+msgstr ""
+
+#. Translators: Event list abbreviation for Wednesday
+#: ../js/ui/calendar.js:148
+msgctxt "list wednesday"
+msgid "W"
+msgstr ""
+
+#. Translators: Event list abbreviation for Thursday
+#: ../js/ui/calendar.js:150
+msgctxt "list thursday"
+msgid "Th"
+msgstr ""
+
+#. Translators: Event list abbreviation for Friday
+#: ../js/ui/calendar.js:152
+msgctxt "list friday"
+msgid "F"
+msgstr ""
+
+#. Translators: Event list abbreviation for Saturday
+#: ../js/ui/calendar.js:154
+msgctxt "list saturday"
+msgid "S"
+msgstr ""
+
+#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:701
+msgid "Nothing Scheduled"
+msgstr ""
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: ../js/ui/calendar.js:717
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr ""
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: ../js/ui/calendar.js:720
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr ""
+
+#: ../js/ui/calendar.js:730
+msgid "Today"
+msgstr ""
+
+#: ../js/ui/calendar.js:734
+msgid "Tomorrow"
+msgstr ""
+
+#: ../js/ui/calendar.js:743
+msgid "This week"
+msgstr ""
+
+#: ../js/ui/calendar.js:751
+msgid "Next week"
+msgstr ""
+
+#: ../js/ui/dash.js:174
+msgid "Remove"
+msgstr ""
+
+#: ../js/ui/dateMenu.js:93
+msgid "Date and Time Settings"
+msgstr ""
+
+#: ../js/ui/dateMenu.js:112
+msgid "Open Calendar"
+msgstr ""
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:151
+msgid "%a %b %e, %R:%S"
+msgstr ""
+
+#: ../js/ui/dateMenu.js:152
+msgid "%a %b %e, %R"
+msgstr ""
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode.
+#: ../js/ui/dateMenu.js:156
+msgid "%a %R:%S"
+msgstr ""
+
+#: ../js/ui/dateMenu.js:157
+msgid "%a %R"
+msgstr ""
+
+#. Translators: This is a time format with date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:164
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr ""
+
+#: ../js/ui/dateMenu.js:165
+msgid "%a %b %e, %l:%M %p"
+msgstr ""
+
+#. Translators: This is a time format without date used
+#. for AM/PM.
+#: ../js/ui/dateMenu.js:169
+msgid "%a %l:%M:%S %p"
+msgstr ""
+
+#: ../js/ui/dateMenu.js:170
+msgid "%a %l:%M %p"
+msgstr ""
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:196
+msgid "%A %B %e, %Y"
+msgstr ""
+
+#: ../js/ui/docDisplay.js:19
+msgid "RECENT ITEMS"
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:63
+#, c-format
+msgid "Log Out %s"
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:69
+msgid "Log Out"
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:66
+#, c-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:67
+#, c-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:74 ../js/ui/endSessionDialog.js:78
+msgid "Shut Down"
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:75
+msgid "Click Shut Down to quit these applications and shut down the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:76
+#, c-format
+msgid "The system will shut down automatically in %d seconds."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:77
+msgid "Shutting down the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:84 ../js/ui/endSessionDialog.js:88
+msgid "Restart"
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:85
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:86
+#, c-format
+msgid "The system will restart automatically in %d seconds."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:87
+msgid "Restarting the system."
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:395
+msgid "Confirm"
+msgstr ""
+
+#: ../js/ui/endSessionDialog.js:400 ../js/ui/status/bluetooth.js:470
+msgid "Cancel"
+msgstr ""
+
+#: ../js/ui/lookingGlass.js:587
+msgid "No extensions installed"
+msgstr ""
+
+#: ../js/ui/lookingGlass.js:624
+msgid "Enabled"
+msgstr ""
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:626 ../src/gvc/gvc-mixer-control.c:1087
+msgid "Disabled"
+msgstr ""
+
+#: ../js/ui/lookingGlass.js:628
+msgid "Error"
+msgstr ""
+
+#: ../js/ui/lookingGlass.js:630
+msgid "Out of date"
+msgstr ""
+
+#: ../js/ui/lookingGlass.js:655
+msgid "View Source"
+msgstr ""
+
+#: ../js/ui/lookingGlass.js:661
+msgid "Web Page"
+msgstr ""
+
+#: ../js/ui/messageTray.js:1864
+msgid "System Information"
+msgstr ""
+
+#: ../js/ui/overview.js:88
+msgid "Undo"
+msgstr ""
+
+#: ../js/ui/overview.js:183
+msgid "Windows"
+msgstr ""
+
+#: ../js/ui/overview.js:186
+msgid "Applications"
+msgstr ""
+
+#. TODO - _quit() doesn't really work on apps in state STARTING yet
+#: ../js/ui/panel.js:478
+#, c-format
+msgid "Quit %s"
+msgstr ""
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:612
+msgid "Activities"
+msgstr ""
+
+#: ../js/ui/placeDisplay.js:122
+#, c-format
+msgid "Failed to unmount '%s'"
+msgstr ""
+
+#: ../js/ui/placeDisplay.js:125
+msgid "Retry"
+msgstr ""
+
+#: ../js/ui/placeDisplay.js:165
+msgid "Connect to..."
+msgstr ""
+
+#: ../js/ui/placeDisplay.js:409
+msgid "PLACES & DEVICES"
+msgstr ""
+
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:506
+msgid "toggle-switch-us"
+msgstr ""
+
+#: ../js/ui/runDialog.js:201
+msgid "Please enter a command:"
+msgstr ""
+
+#: ../js/ui/searchDisplay.js:295
+msgid "Searching..."
+msgstr ""
+
+#: ../js/ui/searchDisplay.js:309
+msgid "No matching results."
+msgstr ""
+
+#: ../js/ui/statusMenu.js:102
+msgid "Available"
+msgstr ""
+
+#: ../js/ui/statusMenu.js:107
+msgid "Busy"
+msgstr ""
+
+#: ../js/ui/statusMenu.js:115
+msgid "My Account"
+msgstr ""
+
+#: ../js/ui/statusMenu.js:119
+msgid "System Settings"
+msgstr ""
+
+#: ../js/ui/statusMenu.js:126
+msgid "Lock Screen"
+msgstr ""
+
+#: ../js/ui/statusMenu.js:130
+msgid "Switch User"
+msgstr ""
+
+#: ../js/ui/statusMenu.js:135
+msgid "Log Out..."
+msgstr ""
+
+#. This is temporarily removed, see
+#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
+#. for details.
+#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
+#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
+#. this.menu.addMenuItem(item);
+#: ../js/ui/statusMenu.js:149
+msgid "Shut Down..."
+msgstr ""
+
+#: ../js/ui/status/accessibility.js:81
+msgid "Zoom"
+msgstr ""
+
+#: ../js/ui/status/accessibility.js:88
+msgid "Screen Reader"
+msgstr ""
+
+#: ../js/ui/status/accessibility.js:92
+msgid "Screen Keyboard"
+msgstr ""
+
+#: ../js/ui/status/accessibility.js:96
+msgid "Visual Alerts"
+msgstr ""
+
+#: ../js/ui/status/accessibility.js:99
+msgid "Sticky Keys"
+msgstr ""
+
+#: ../js/ui/status/accessibility.js:102
+msgid "Slow Keys"
+msgstr ""
+
+#: ../js/ui/status/accessibility.js:105
+msgid "Bounce Keys"
+msgstr ""
+
+#: ../js/ui/status/accessibility.js:108
+msgid "Mouse Keys"
+msgstr ""
+
+#: ../js/ui/status/accessibility.js:112
+msgid "Universal Access Settings"
+msgstr ""
+
+#: ../js/ui/status/accessibility.js:164
+msgid "High Contrast"
+msgstr ""
+
+#: ../js/ui/status/accessibility.js:206
+msgid "Large Text"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
+msgid "Bluetooth"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:95
+msgid "Bluetooth Settings"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:192
+msgid "Connection"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:228
+msgid "Send Files..."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:233
+msgid "Browse Files..."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:242
+msgid "Error browsing device"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:243
+#, c-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:251
+msgid "Keyboard Settings"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:256
+msgid "Mouse Settings"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
+msgid "Sound Settings"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:372
+#, c-format
+msgid "Authorization request from %s"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:378
+#, c-format
+msgid "Device %s wants access to the service '%s'"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:380
+msgid "Always grant access"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:381
+msgid "Grant this time only"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:382
+msgid "Reject"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:412
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:418 ../js/ui/status/bluetooth.js:452
+#, c-format
+msgid "Device %s wants to pair with this computer"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:419
+#, c-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:421
+msgid "Matches"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:422
+msgid "Does not match"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:445
+#, c-format
+msgid "Pairing request for %s"
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:453
+msgid "Please enter the PIN mentioned on the device."
+msgstr ""
+
+#: ../js/ui/status/bluetooth.js:469
+msgid "OK"
+msgstr ""
+
+#: ../js/ui/status/keyboard.js:72
+msgid "Localization Settings"
+msgstr ""
+
+#: ../js/ui/status/power.js:85
+msgid "Power Settings"
+msgstr ""
+
+#: ../js/ui/status/power.js:112
+#, c-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#: ../js/ui/status/power.js:115
+#, c-format
+msgid "%d %s %d %s remaining"
+msgstr ""
+
+#: ../js/ui/status/power.js:117
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../js/ui/status/power.js:117
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../js/ui/status/power.js:120
+#, c-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../js/ui/status/power.js:235
+msgid "AC adapter"
+msgstr ""
+
+#: ../js/ui/status/power.js:237
+msgid "Laptop battery"
+msgstr ""
+
+#: ../js/ui/status/power.js:239
+msgid "UPS"
+msgstr ""
+
+#: ../js/ui/status/power.js:241
+msgid "Monitor"
+msgstr ""
+
+#: ../js/ui/status/power.js:243
+msgid "Mouse"
+msgstr ""
+
+#: ../js/ui/status/power.js:245
+msgid "Keyboard"
+msgstr ""
+
+#: ../js/ui/status/power.js:247
+msgid "PDA"
+msgstr ""
+
+#: ../js/ui/status/power.js:249
+msgid "Cell phone"
+msgstr ""
+
+#: ../js/ui/status/power.js:251
+msgid "Media player"
+msgstr ""
+
+#: ../js/ui/status/power.js:253
+msgid "Tablet"
+msgstr ""
+
+#: ../js/ui/status/power.js:255
+msgid "Computer"
+msgstr ""
+
+#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
+msgid "Unknown"
+msgstr ""
+
+#: ../js/ui/status/volume.js:44
+msgid "Volume"
+msgstr ""
+
+#: ../js/ui/status/volume.js:57
+msgid "Microphone"
+msgstr ""
+
+#: ../js/ui/telepathyClient.js:240
+#, c-format
+msgid "%s is online."
+msgstr ""
+
+#: ../js/ui/telepathyClient.js:245
+#, c-format
+msgid "%s is offline."
+msgstr ""
+
+#: ../js/ui/telepathyClient.js:248
+#, c-format
+msgid "%s is away."
+msgstr ""
+
+#: ../js/ui/telepathyClient.js:251
+#, c-format
+msgid "%s is busy."
+msgstr ""
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/telepathyClient.js:349
+#, no-c-format
+msgid "Sent at %X on %A"
+msgstr ""
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters
+#: ../js/ui/viewSelector.js:30
+msgid "Type to search..."
+msgstr ""
+
+#: ../js/ui/windowAttentionHandler.js:43
+#, c-format
+msgid "%s has finished starting"
+msgstr ""
+
+#: ../js/ui/windowAttentionHandler.js:45
+#, c-format
+msgid "'%s' is ready"
+msgstr ""
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1094
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1104
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/gvc/gvc-mixer-control.c:1402
+msgid "System Sounds"
+msgstr ""
+
+#: ../src/shell-global.c:1363
+msgid "Less than a minute ago"
+msgstr ""
+
+#: ../src/shell-global.c:1367
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/shell-global.c:1372
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/shell-global.c:1377
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/shell-global.c:1382
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/shell-util.c:89
+msgid "Home Folder"
+msgstr ""
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-util.c:104
+msgid "File System"
+msgstr ""
+
+#: ../src/shell-util.c:250
+msgid "Search"
+msgstr ""
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-util.c:300
+#, c-format
+msgid "%1$s: %2$s"
+msgstr ""
