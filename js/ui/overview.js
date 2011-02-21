@@ -437,11 +437,11 @@ Overview.prototype = {
         this._coverPane.set_position(0, contentY);
         this._coverPane.set_size(primary.width, contentHeight);
 
-        let viewWidth = (1.0 - DASH_SPLIT_FRACTION) * primary.width - this._spacing;
+        let dashWidth = Math.round(DASH_SPLIT_FRACTION * primary.width);
+        let viewWidth = primary.width - dashWidth - this._spacing;
         let viewHeight = contentHeight - 2 * this._spacing;
         let viewY = contentY + this._spacing;
-        let viewX = rtl ? 0
-                        : Math.floor(DASH_SPLIT_FRACTION * primary.width) + this._spacing;
+        let viewX = rtl ? 0 : dashWidth + this._spacing;
 
         // Set the dash's x position - y is handled by a constraint
         let dashX;
