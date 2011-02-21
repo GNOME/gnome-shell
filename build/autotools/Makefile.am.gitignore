@@ -19,6 +19,6 @@ gitignore-clean:
 
 .PHONY: gitignore gitignore-clean
 
-all: gitignore
+all-am: gitignore
 
 maintainer-clean: gitignore-clean
