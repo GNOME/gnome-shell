@@ -14,7 +14,8 @@ test_shader_effects_main (int argc, char *argv[])
   ClutterActor *stage, *hand, *label, *rect;
   gchar *file;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   /* Make a timeline */
   timeline = clutter_timeline_new (7692);

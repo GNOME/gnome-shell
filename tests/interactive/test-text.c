@@ -20,7 +20,8 @@ test_text_main (gint    argc,
   ClutterColor  cursor_color     = { 0xff, 0x33, 0x33, 0xff };
   ClutterColor  background_color = { 0x00, 0x00, 0x00, 0xff };
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &background_color);

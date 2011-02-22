@@ -125,7 +125,8 @@ test_texture_async_main (int argc, char *argv[])
   ClutterColor  stage_color = { 0x12, 0x34, 0x56, 0xff };
   gchar        *path;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   g_thread_init (NULL);
   stage = clutter_stage_get_default ();

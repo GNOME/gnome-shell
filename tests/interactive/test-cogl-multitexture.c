@@ -112,7 +112,8 @@ test_cogl_multitexture_main (int argc, char *argv[])
          0,   0,   1,   1
     };
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   clutter_actor_get_geometry (stage, &geom);

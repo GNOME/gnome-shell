@@ -12,7 +12,8 @@ test_texture_material_main (int argc, char *argv[])
 
   g_thread_init (NULL);
   clutter_threads_init ();
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Texture Material");

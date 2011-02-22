@@ -88,7 +88,8 @@ test_animation_main (int argc, char *argv[])
   ClutterColor rect_color = { 0x44, 0xdd, 0x44, 0xff };
   ClutterAction *action;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);

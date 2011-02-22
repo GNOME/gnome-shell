@@ -75,16 +75,18 @@ main (int argc, char **argv)
   const ClutterColor black = { 0x00, 0x00, 0x00, 0xff };
   ClutterColor color = { 0x00, 0x00, 0x00, 0xff };
   ClutterActor *stage, *rect;
+  GError *error = NULL;
 
   g_setenv ("CLUTTER_VBLANK", "none", FALSE);
   g_setenv ("CLUTTER_DEFAULT_FPS", "1000", FALSE);
   g_setenv ("CLUTTER_SHOW_FPS", "1", FALSE);
 
-  clutter_init_with_args (&argc, &argv,
-                          NULL,
-                          entries,
-                          NULL,
-                          NULL);
+  if (clutter_init_with_args (&argc, &argv,
+                              NULL,
+                              entries,
+                              NULL,
+                              &error) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 512, 512);

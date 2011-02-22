@@ -247,7 +247,8 @@ test_binding_pool_main (int argc, char *argv[])
   ClutterActor *stage, *key_group;
   gint group_x, group_y;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   g_signal_connect (stage,

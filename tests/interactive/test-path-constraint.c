@@ -102,7 +102,8 @@ test_path_constraint_main (int   argc,
   ClutterPath *path;
   ClutterColor rect_color = { 0xcc, 0x00, 0x00, 0xff };
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Path Constraint");

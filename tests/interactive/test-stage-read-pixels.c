@@ -132,7 +132,8 @@ test_stage_read_pixels_main (int argc, char **argv)
 {
   CallbackData data;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   data.idle_source = 0;
   data.stage = clutter_stage_get_default ();

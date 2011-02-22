@@ -155,7 +155,8 @@ test_grab_main (int argc, char *argv[])
 		  ccol = { 0, 0xff, 0xff, 0xff },
 		  ycol = { 0xff, 0xff, 0, 0xff };
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   g_print ("Red box:    aquire grab on press, releases it on next button release\n");
   g_print ("Blue box:   aquire grab on press, destroys the blue box actor on release\n");

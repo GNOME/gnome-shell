@@ -259,7 +259,8 @@ test_pixmap_main (int argc, char **argv)
   int		       i;
   int                  row_height;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   xdpy = clutter_x11_get_default_display ();
   XSynchronize (xdpy, True);

@@ -319,7 +319,8 @@ test_clip_main (int argc, char **argv)
   ClutterActor *stub_actor, *label;
   gchar *file;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   data.current_clip.type = CLIP_NONE;
   data.clips = NULL;

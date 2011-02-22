@@ -221,7 +221,8 @@ test_devices_main (int argc, char **argv)
   /* force enabling X11 support */
   clutter_x11_enable_xinput ();
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   app = g_new0 (TestDevicesApp, 1);
   app->devices = g_hash_table_new (g_direct_hash, g_direct_equal) ;

@@ -319,7 +319,8 @@ test_cogl_shader_glsl_main (int argc, char *argv[])
   GError *error;
   ClutterColor stage_color = { 0x61, 0x64, 0x8c, 0xff };
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_new ();
 

@@ -333,7 +333,8 @@ test_cogl_vertex_buffer_main (int argc, char *argv[])
   ClutterGeometry stage_geom;
   gint            dummy_width, dummy_height;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
 

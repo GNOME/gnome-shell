@@ -136,7 +136,8 @@ test_bin_layout_main (int argc, char *argv[])
   ClutterColor *color;
   ClutterAction *action;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Box test");

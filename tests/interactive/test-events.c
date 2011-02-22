@@ -268,7 +268,8 @@ test_events_main (int argc, char *argv[])
 		  ncol = { 0,    0,    0,    0xff },
                   xcol = { 0xff, 0,    0xff, 0xff };
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
 
 

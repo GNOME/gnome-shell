@@ -186,7 +186,8 @@ test_cogl_tex_tile_main (int argc, char *argv[])
   ClutterActor     *coglbox;
   ClutterTimeline  *timeline;
 
-  clutter_init(&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   /* Stage */
   stage = clutter_stage_get_default ();

@@ -168,7 +168,8 @@ test_table_layout_main (int argc, char *argv[])
   ClutterActor *box;
   gchar *file;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Table Layout");

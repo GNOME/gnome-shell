@@ -47,7 +47,8 @@ main (int argc, char *argv[])
   ClutterGeometry geom = {0, 0, SIZE, SIZE};
   gint i = 0;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   cally_util_a11y_init (&argc, &argv);
 

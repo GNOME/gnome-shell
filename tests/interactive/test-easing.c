@@ -203,12 +203,14 @@ test_easing_main (int argc, char *argv[])
   gchar *text;
   gfloat stage_width, stage_height;
   gfloat label_width, label_height;
+  GError *error = NULL;
 
-  clutter_init_with_args (&argc, &argv,
-                          NULL,
-                          test_easing_entries,
-                          NULL,
-                          NULL);
+  if (clutter_init_with_args (&argc, &argv,
+                              NULL,
+                              test_easing_entries,
+                              NULL,
+                              &error) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);

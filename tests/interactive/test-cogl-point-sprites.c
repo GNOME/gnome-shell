@@ -226,7 +226,8 @@ test_cogl_point_sprites_main (int argc, char *argv[])
   GError *error = NULL;
   int i;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   data.material = cogl_material_new ();
   data.last_spark_time = g_timer_new ();

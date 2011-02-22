@@ -52,7 +52,8 @@ test_animator_main (gint    argc,
   ClutterActor *stage;
   ClutterActor *rects[COUNT];
   gint i;
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
 

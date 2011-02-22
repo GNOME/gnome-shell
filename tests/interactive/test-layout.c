@@ -748,7 +748,8 @@ test_layout_main (int argc, char *argv[])
   gint i, size;
   GError *error = NULL;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 800, 600);

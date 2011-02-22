@@ -96,7 +96,8 @@ test_state_main (gint    argc,
   ClutterActor *stage;
   ClutterState *layout_state;
   gint i;
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   layout_state = clutter_state_new ();

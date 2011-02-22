@@ -140,7 +140,8 @@ test_script_main (int argc, char *argv[])
   gchar *file;
   gint res;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   script = clutter_script_new ();
   g_assert (CLUTTER_IS_SCRIPT (script));

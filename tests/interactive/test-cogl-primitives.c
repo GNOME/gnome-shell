@@ -107,7 +107,8 @@ test_cogl_primitives_main (int argc, char *argv[])
   ClutterActor *coglbox;
   ClutterTimeline *tl;
 
-  clutter_init(&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   tl = clutter_timeline_new (G_N_ELEMENTS (paint_func) * 1000);
   clutter_timeline_set_loop (tl, TRUE);

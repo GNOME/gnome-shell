@@ -211,7 +211,8 @@ test_model_main (int argc, char *argv[])
 {
   ClutterModel    *model;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   model = clutter_list_model_new (N_COLUMNS,
                                   G_TYPE_INT,    "Foo",

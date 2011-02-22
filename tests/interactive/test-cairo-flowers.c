@@ -179,7 +179,8 @@ test_cairo_flowers_main (int argc, char **argv)
 
   srand (time (NULL));
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
 

@@ -361,7 +361,8 @@ test_cogl_tex_polygon_main (int argc, char *argv[])
   ClutterTimeline  *timeline;
   ClutterColor      blue = { 0x30, 0x30, 0xff, 0xff };
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   /* Stage */
   stage = clutter_stage_get_default ();

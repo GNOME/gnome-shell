@@ -9,7 +9,8 @@ test_snap_constraint_main (int   argc,
 {
   ClutterActor *stage, *layer_a, *layer_b, *layer_c;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   /* the main container */
   stage = clutter_stage_new ();

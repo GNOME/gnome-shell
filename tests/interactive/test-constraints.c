@@ -117,7 +117,8 @@ test_constraints_main (int argc, char *argv[])
   ClutterColor rect_color;
   gint i;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_new ();
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);

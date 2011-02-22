@@ -50,7 +50,8 @@ test_fbo_main (int argc, char *argv[])
   int               x_pos = 200;
   int               y_pos = 100;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   if (clutter_feature_available (CLUTTER_FEATURE_OFFSCREEN) == FALSE)
     g_error("This test requires CLUTTER_FEATURE_OFFSCREEN");
