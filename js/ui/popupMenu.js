@@ -1252,7 +1252,7 @@ PopupMenuManager.prototype = {
                 menu.sourceActor.grab_key_focus();
         } else if (menu == this._activeMenu) {
             let focus = global.stage.key_focus;
-            let fromActive = this._activeMenuContains(focus);
+            let fromActive = focus && this._activeMenuContains(focus);
 
             if (this.grabbed)
                 this._ungrab();
