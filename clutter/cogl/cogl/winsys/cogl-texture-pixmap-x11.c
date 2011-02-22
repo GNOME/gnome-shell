@@ -42,7 +42,7 @@
 #include "cogl-texture-rectangle-private.h"
 #include "cogl-context-private.h"
 #include "cogl-handle.h"
-#include "cogl-xlib.h"
+#include "cogl-winsys-xlib.h"
 #include "cogl-pipeline-opengl-private.h"
 
 #include <X11/Xlib.h>
