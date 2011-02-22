@@ -40,7 +40,8 @@ main (int argc, char *argv[])
   if (argc > 1)
     filename = argv[1];
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   script = clutter_script_new ();
   clutter_script_load_from_file (script, filename, &error);

@@ -114,7 +114,8 @@ main (int    argc,
   CoglHandle texture;
   Context context;
 
-  clutter_init (NULL, NULL);
+  if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   clutter_actor_get_size (stage, &stage_width, &stage_height);

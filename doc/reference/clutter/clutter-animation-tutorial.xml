@@ -299,7 +299,8 @@ main (int argc, char *argv[])
   ClutterAlpha     *alpha;
   ClutterActor     *stage, *actor;
 
-  clutter_init (&amp;argc, &amp;argv);
+  if (clutter_init (&amp;argc, &amp;argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
 

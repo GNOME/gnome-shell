@@ -8,7 +8,8 @@ main (int argc, char **argv)
   gfloat image_width, image_height;
 
   /* Initialize Clutter */
-  clutter_init (NULL, NULL);
+  if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   /* Get the default stage */
   stage = clutter_stage_get_default ();

@@ -14,7 +14,8 @@ main (int   argc,
   const ClutterColor *stage_color = clutter_color_new (51, 51, 85, 255);
   const ClutterColor *red_color = clutter_color_new (255, 0, 0, 255);
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_new ();
   clutter_actor_set_size (stage, 360, 300);

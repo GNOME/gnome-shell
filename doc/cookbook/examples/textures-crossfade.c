@@ -70,10 +70,11 @@ main (int argc, char *argv[])
   ClutterActor *top, *bottom;
   ClutterState *transitions;
 
-  clutter_init_with_args (&argc, &argv,
-                          " - cross-fade", entries,
-                          NULL,
-                          NULL);
+  if (clutter_init_with_args (&argc, &argv,
+                              " - cross-fade", entries,
+                              NULL,
+                              NULL) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   if (source == NULL || target == NULL)
     {
@@ -81,7 +82,8 @@ main (int argc, char *argv[])
       exit (EXIT_FAILURE);
     }
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "cross-fade");

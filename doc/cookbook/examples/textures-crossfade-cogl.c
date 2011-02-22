@@ -106,10 +106,11 @@ main (int argc, char *argv[])
   ClutterActor *texture;
   ClutterTimeline *timeline;
 
-  clutter_init_with_args (&argc, &argv,
-                          " - Crossfade", entries,
-                          NULL,
-                          NULL);
+  if (clutter_init_with_args (&argc, &argv,
+                              " - Crossfade", entries,
+                              NULL,
+                              NULL) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   if (source == NULL || target == NULL)
     return print_usage_and_exit (argv[0], EXIT_FAILURE);

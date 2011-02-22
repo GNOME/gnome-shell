@@ -106,7 +106,8 @@ main (int   argc,
 
   image_path = argv[1];
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, STAGE_SIDE, STAGE_SIDE);

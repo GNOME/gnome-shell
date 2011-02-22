@@ -73,7 +73,8 @@ main (int   argc,
   /* seed random number generator */
   srand ((unsigned int) time (NULL));
 
-clutter_init (&argc, &argv);
+if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   state->animator = clutter_animator_new ();
   clutter_animator_set_duration (state->animator, 500);

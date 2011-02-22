@@ -82,7 +82,8 @@ main (int argc, char *argv[])
   ClutterScript *script;
   ClutterActor *stage;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   script = clutter_script_new ();
   load_script_from_file (script, UI_FILE);

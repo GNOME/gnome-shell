@@ -441,7 +441,8 @@ main (int argc, char *argv[])
   /* initialize GLib's default threading implementation */
   g_thread_init (NULL);
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   /* ... get stage etc. */
 
@@ -711,7 +712,8 @@ _clone_paint_cb (ClutterActor *actor)
 int
 main (int argc, char *argv[])
 {
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   /* ... get stage etc. */
 

@@ -16,7 +16,8 @@ main (int argc, char *argv[])
   ClutterConstraint *width_binding;
   ClutterConstraint *height_binding;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_new ();
   clutter_actor_set_size (stage, 400, 400);

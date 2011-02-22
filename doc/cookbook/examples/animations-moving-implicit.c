@@ -44,7 +44,8 @@ main (int   argc,
   AnimationSpec y_move = { "y", 400.0 };
   AnimationSpec z_move = { "depth", -1000.0 };
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 500, 500);

@@ -107,7 +107,8 @@ main (int argc, char *argv[])
   ClutterActor *rect;
   ClutterActor *canvas;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   context->path = clutter_path_new ();
 

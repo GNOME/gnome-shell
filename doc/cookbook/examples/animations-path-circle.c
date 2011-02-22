@@ -70,7 +70,8 @@ main (int   argc,
   ClutterActor *stage;
   ClutterActor *rectangle;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_new ();
   clutter_actor_set_size (stage, STAGE_SIDE, STAGE_SIDE);

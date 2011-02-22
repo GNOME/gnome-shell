@@ -61,7 +61,8 @@ main (int argc, char *argv[])
   gchar *filename = "script-signals.json";
   GError *error = NULL;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   ui = clutter_script_new ();
 

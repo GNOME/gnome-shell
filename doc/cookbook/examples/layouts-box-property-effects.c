@@ -314,7 +314,8 @@ main (int   argc,
 
   State *state = g_new0 (State, 1);
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   state->x_fill = FALSE;
   state->y_fill = FALSE;

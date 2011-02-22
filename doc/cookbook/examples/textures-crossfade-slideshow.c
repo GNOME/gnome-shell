@@ -122,7 +122,8 @@ main (int argc, char *argv[])
   for (i = 1; i < argc; i++)
     app->image_paths = g_slist_append (app->image_paths, argv[i]);
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    return 1;
 
   stage = clutter_stage_get_default ();
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
