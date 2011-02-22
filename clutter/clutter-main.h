@@ -79,13 +79,15 @@ GQuark clutter_init_error_quark (void);
 /* Initialisation */
 void             clutter_base_init        (void);
 ClutterInitError clutter_init             (int          *argc,
-                                           char       ***argv);
+                                           char       ***argv)
+                                          G_GNUC_WARN_UNUSED_RESULT;
 ClutterInitError clutter_init_with_args   (int          *argc,
                                            char       ***argv,
                                            const char   *parameter_string,
                                            GOptionEntry *entries,
                                            const char   *translation_domain,
-                                           GError      **error);
+                                           GError      **error)
+                                          G_GNUC_WARN_UNUSED_RESULT;
 GOptionGroup *   clutter_get_option_group (void);
 GOptionGroup *   clutter_get_option_group_without_init (void);
 
