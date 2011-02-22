@@ -1,17 +1,17 @@
 # Spanish translation of gnome-shell.
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
 # Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2011-02-19 23:39+0000\n"
-"PO-Revision-Date: 2011-02-20 15:13+0100\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
+"POT-Creation-Date: 2011-02-21 17:49+0000\n"
+"PO-Revision-Date: 2011-02-22 09:50+0100\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,7 +61,6 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "Histórico del diálogo de comandos (Alt+F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-#| msgid "History for command (Alt-F2) dialog"
 msgid "History for the looking glass dialog"
 msgstr "Histórico del diálogo de «looking glass»"
 
@@ -96,16 +95,16 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 "Establece la tubería GStreamer usada para codificar grabaciones. Sigue la "
-"sintaxis usada para gst-launch. La tubería debería tener un sumidero "
-"(«sink») de ensamblaje/sesensamblaje donde el vídeo que se está grabando se "
-"graba. Generalmente tendrá un origen de ensamblado/desensamblado; la salida "
-"de ese punto se escibirá en el archivo de salida. No obstante la tubería "
-"también puede tomar parte en su propia salida; esto se puede usar para "
-"enviar la salida a un servidor «icecast» a través de shout2send o similar. "
-"Cuando no está establecido o lo está a un valor vacío, se usará la tubería "
-"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 "
-"threads=%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T "
-"como suposición para el número de hilos óptimos en el sistema."
+"sintaxis usada para gst-launch. La tubería debería tener un sumidero («sink») "
+"de ensamblaje/sesensamblaje donde el vídeo que se está grabando se graba. "
+"Generalmente tendrá un origen de ensamblado/desensamblado; la salida de ese "
+"punto se escibirá en el archivo de salida. No obstante la tubería también "
+"puede tomar parte en su propia salida; esto se puede usar para enviar la "
+"salida a un servidor «icecast» a través de shout2send o similar. Cuando no "
+"está establecido o lo está a un valor vacío, se usará la tubería "
+"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 threads="
+"%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T como "
+"suposición para el número de hilos óptimos en el sistema."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -556,14 +555,14 @@ msgid "Applications"
 msgstr "Aplicaciones"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:478
+#: ../js/ui/panel.js:537
 #, c-format
 msgid "Quit %s"
 msgstr "Salir de %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:612
+#: ../js/ui/panel.js:770
 msgid "Activities"
 msgstr "Actividades"
 
@@ -800,7 +799,11 @@ msgstr "Introduzca el PIN mencionado en el dispositivo."
 msgid "OK"
 msgstr "Aceptar"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "Mostrar la distribución del teclado…"
+
+#: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "Configuración regional"
 
@@ -1191,8 +1194,8 @@ msgstr "%1$s: %2$s"
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
-#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los "
-#~ "segundos en la hora."
+#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos "
+#~ "en la hora."
 
 #~ msgid ""
 #~ "This key specifies the format used by the panel clock when the format key "
@@ -1209,19 +1212,18 @@ msgstr "%1$s: %2$s"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
-#~ "1970-01-01. If set to \"custom\", the clock will display time according "
-#~ "to the format specified in the custom_format key. Note that if set to "
-#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
-#~ "ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
+#~ "01-01. If set to \"custom\", the clock will display time according to the "
+#~ "format specified in the custom_format key. Note that if set to either "
+#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
 #~ msgstr ""
 #~ "Esta clave especifica el formato de la hora especificado por el reloj del "
-#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 "
-#~ "horas), «unix» y «custom» (personalizado).Si se establece a «unix» el "
-#~ "reloj mostrará la hora en segundos desde la época (1 de enero de 1970). "
-#~ "Si se establece a «custom» el reloj mostrará la hora según el formato "
-#~ "especificado en la clave «custom_format». Note que si se establece a "
-#~ "«unix» o «custom» se ignoran las claves «show_date» y «show_seconds»."
+#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
+#~ "«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará "
+#~ "la hora en segundos desde la época (1 de enero de 1970). Si se establece "
+#~ "a «custom» el reloj mostrará la hora según el formato especificado en la "
+#~ "clave «custom_format». Note que si se establece a «unix» o «custom» se "
+#~ "ignoran las claves «show_date» y «show_seconds»."
 
 #~ msgid "Clock Format"
 #~ msgstr "Formato del reloj"
