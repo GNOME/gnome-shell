@@ -267,10 +267,10 @@
     </dependencies>
   </autotools>
 
-  <tarball id="polkit" version="0.99">
-    <source href="http://hal.freedesktop.org/releases/polkit-0.99.tar.gz"
-            hash="sha256:f612c7c26ec822f67751420057a4ae113fc50ab51070758faacf2ad30bb3583f"
-            md5sum="fcc4d7b19c08ad54d3ce0eae0ab12398" size="1042461"/>
+  <tarball id="polkit" version="0.100">
+    <source href="http://hal.freedesktop.org/releases/polkit-0.100.tar.gz"
+            hash="sha256:afe63bec81b7f49e884ea4f2671ec76db121d84d05f36e75cde9b4ca4c828186"
+            md5sum="9f957bf046ff5a32b0fa0ffe1e35c09c" size="1050355"/>
     <dependencies>
       <dep package="glib"/>
     </dependencies>
