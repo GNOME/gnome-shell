@@ -21,10 +21,10 @@
  *
  */
 
-#ifndef __COGL_WINSYS_H
-#define __COGL_WINSYS_H
+#ifndef __COGL_WINSYS_PRIVATE_H
+#define __COGL_WINSYS_PRIVATE_H
 
 CoglFuncPtr
 _cogl_winsys_get_proc_address (const char *name);
 
-#endif /* __COGL_WINSYS_H */
+#endif /* __COGL_WINSYS_PRIVATE_H */
