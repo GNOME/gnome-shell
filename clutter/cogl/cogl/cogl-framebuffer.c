@@ -148,12 +148,13 @@ _cogl_is_framebuffer (void *object)
 
 static void
 _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
+                        CoglContext *ctx,
                         CoglFramebufferType type,
                         CoglPixelFormat format,
                         int width,
                         int height)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  framebuffer->context = cogl_object_ref (ctx);
 
   framebuffer->type             = type;
   framebuffer->width            = width;
@@ -213,9 +214,7 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
 void
 _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  ctx->framebuffers = g_list_remove (ctx->framebuffers, framebuffer);
+  CoglContext *ctx = framebuffer->context;
 
   _cogl_clip_state_destroy (&framebuffer->clip_state);
 
@@ -226,6 +225,9 @@ _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
   framebuffer->projection_stack = NULL;
 
   cogl_object_unref (framebuffer->journal);
+
+  ctx->framebuffers = g_list_remove (ctx->framebuffers, framebuffer);
+  cogl_object_unref (ctx);
 }
 
 /* This version of cogl_clear can be used internally as an alternative
@@ -389,8 +391,7 @@ _cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_RECTANGLES)) &&
       buffers & COGL_BUFFER_BIT_COLOR)
     {
-      _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
-      ctxt->journal_rectangles_color = 1;
+      framebuffer->context->journal_rectangles_color = 1;
     }
 
   COGL_NOTE (DRAW, "Clear end");
@@ -499,8 +500,6 @@ _cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
                                 float width,
                                 float height)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   if (framebuffer->viewport_x == x &&
       framebuffer->viewport_y == y &&
       framebuffer->viewport_width == width &&
@@ -514,8 +513,8 @@ _cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
   framebuffer->viewport_width = width;
   framebuffer->viewport_height = height;
 
-  if (_cogl_get_draw_buffer () == framebuffer)
-    ctx->dirty_gl_viewport = TRUE;
+  if (framebuffer->context && _cogl_get_draw_buffer () == framebuffer)
+    framebuffer->context->dirty_gl_viewport = TRUE;
 }
 
 float
@@ -612,7 +611,9 @@ _cogl_framebuffer_flush_dependency_journals (CoglFramebuffer *framebuffer)
 static inline void
 _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+#ifdef HAVE_COGL_GL
+  CoglContext *ctx = framebuffer->context;
+#endif
 
   if (G_LIKELY (!framebuffer->dirty_bitmasks))
     return;
@@ -888,6 +889,7 @@ _cogl_offscreen_new_to_texture_full (CoglHandle texhandle,
       CoglOffscreen *ret;
 
       _cogl_framebuffer_init (COGL_FRAMEBUFFER (offscreen),
+                              ctx,
                               COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
                               cogl_texture_get_format (texhandle),
                               data.level_width,
@@ -920,12 +922,14 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
 static void
 _cogl_offscreen_free (CoglOffscreen *offscreen)
 {
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (offscreen);
+#ifndef HAVE_COGL_GLES2
+  CoglContext *ctx = framebuffer->context;
+#endif
   GSList *l;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   /* Chain up to parent */
-  _cogl_framebuffer_free (COGL_FRAMEBUFFER (offscreen));
+  _cogl_framebuffer_free (framebuffer);
 
   for (l = offscreen->renderbuffers; l; l = l->next)
     {
@@ -947,6 +951,8 @@ _cogl_onscreen_new (void)
 {
   CoglOnscreen *onscreen;
 
+  _COGL_GET_CONTEXT (ctx, NULL);
+
   /* XXX: Until we have full winsys support in Cogl then we can't fully
    * implement CoglOnscreen framebuffers, since we can't, e.g. keep track of
    * the window size. */
@@ -964,6 +970,7 @@ _cogl_onscreen_new (void)
 
   onscreen = g_new0 (CoglOnscreen, 1);
   _cogl_framebuffer_init (COGL_FRAMEBUFFER (onscreen),
+                          ctx,
                           COGL_FRAMEBUFFER_TYPE_ONSCREEN,
                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                           0xdeadbeef, /* width */
@@ -975,8 +982,6 @@ _cogl_onscreen_new (void)
 static void
 _cogl_onscreen_free (CoglOnscreen *onscreen)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   /* Chain up to parent */
   _cogl_framebuffer_free (COGL_FRAMEBUFFER (onscreen));
 
@@ -1057,9 +1062,11 @@ static void
 _cogl_set_framebuffers_real (CoglFramebuffer *draw_buffer,
                              CoglFramebuffer *read_buffer)
 {
+  CoglContext *ctx = draw_buffer->context;
   CoglFramebufferStackEntry *entry;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  g_return_if_fail (context != NULL);
+  g_return_if_fail (draw_buffer->context == read_buffer->context);
 
   entry = ctx->framebuffer_stack->data;
 
@@ -1171,13 +1178,17 @@ void
 _cogl_push_framebuffers (CoglFramebuffer *draw_buffer,
                          CoglFramebuffer *read_buffer)
 {
+  CoglContext *ctx;
   CoglFramebuffer *old_draw_buffer, *old_read_buffer;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   g_return_if_fail (_cogl_is_framebuffer (draw_buffer));
   g_return_if_fail (_cogl_is_framebuffer (read_buffer));
-  g_assert (ctx->framebuffer_stack);
+
+  ctx = draw_buffer->context;
+  g_return_if_fail (context != NULL);
+  g_return_if_fail (draw_buffer->context == read_buffer->context);
+
+  g_return_if_fail (context->framebuffer_stack != NULL);
 
   /* Copy the top of the stack so that when we call cogl_set_framebuffer
      it will still know what the old framebuffer was */
@@ -1272,7 +1283,7 @@ _cogl_framebuffer_flush_state (CoglFramebuffer *draw_buffer,
                                CoglFramebuffer *read_buffer,
                                CoglFramebufferFlushFlags flags)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = draw_buffer->context;
 
   if (cogl_features_available (COGL_FEATURE_OFFSCREEN) &&
       ctx->dirty_bound_framebuffer)
@@ -1442,11 +1453,11 @@ _cogl_blit_framebuffer (unsigned int src_x,
 {
   CoglFramebuffer *draw_buffer;
   CoglFramebuffer *read_buffer;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx;
 
   draw_buffer = _cogl_get_draw_buffer ();
   read_buffer = _cogl_get_read_buffer ();
+  ctx = draw_buffer->context;
 
   g_return_if_fail (cogl_features_available (COGL_FEATURE_OFFSCREEN_BLIT));
   /* We can only support blitting between offscreen buffers because
