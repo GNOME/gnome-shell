@@ -989,13 +989,10 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
 }
 
 void
-_cogl_onscreen_clutter_backend_set_size (int width, int height)
+_cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
+                                      int width, int height)
 {
-  CoglFramebuffer *framebuffer;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  framebuffer = COGL_FRAMEBUFFER (ctx->window_buffer);
+  CoglContext *ctx = framebuffer->context;
 
   if (framebuffer->width == width && framebuffer->height == height)
     return;

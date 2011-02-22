@@ -1277,9 +1277,6 @@ _cogl_check_driver_valid (GError **error);
 GQuark
 _cogl_driver_error_quark (void);
 
-void
-_cogl_onscreen_clutter_backend_set_size (int width, int height);
-
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 #define cogl_get_draw_framebuffer cogl_get_draw_framebuffer_EXP
 CoglFramebuffer *

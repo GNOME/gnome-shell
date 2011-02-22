@@ -26,6 +26,9 @@
 
 G_BEGIN_DECLS
 
+gboolean
+_cogl_check_extension (const char *name, const char *ext);
+
 void
 _cogl_clear (const CoglColor *color, unsigned long buffers);
 

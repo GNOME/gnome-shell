@@ -78,6 +78,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-attribute.h 		\
 	$(srcdir)/cogl-primitive.h 		\
 	$(srcdir)/cogl-clip-state.h		\
+	$(srcdir)/cogl-clutter.h       		\
 	$(srcdir)/cogl.h			\
 	$(NULL)
 
@@ -271,8 +272,9 @@ cogl_sources_c = \
 	$(srcdir)/cogl-shader-private.h			\
 	$(srcdir)/cogl-shader.c                        	\
 	$(srcdir)/cogl-gtype-private.h                  \
-	$(srcdir)/cogl-point-in-poly-private.h       \
-	$(srcdir)/cogl-point-in-poly.c       	\
+	$(srcdir)/cogl-point-in-poly-private.h       	\
+	$(srcdir)/cogl-point-in-poly.c       		\
+	$(srcdir)/cogl-clutter.c       			\
 	$(NULL)
 
 if SUPPORT_XLIB
