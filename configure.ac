@@ -52,7 +52,7 @@ AC_MSG_CHECKING([for GStreamer (needed for recording functionality)])
 if $PKG_CONFIG --exists gstreamer-0.10 '>=' $GSTREAMER_MIN_VERSION ; then
    AC_MSG_RESULT(yes)
    build_recorder=true
-   recorder_modules="gstreamer-0.10 gstreamer-base-0.10 xfixes"
+   recorder_modules="gstreamer-0.10 gstreamer-base-0.10 xfixes x11"
    PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules clutter-1.0)
 else
    AC_MSG_RESULT(no)
@@ -102,7 +102,7 @@ AC_CHECK_FUNCS(JS_NewGlobalObject sn_startup_sequence_get_application_id)
 CFLAGS=$saved_CFLAGS
 LIBS=$saved_LIBS
 
-PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 gnome-desktop-3.0 >= 2.90.0)
+PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 gnome-desktop-3.0 >= 2.90.0 x11)
 PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-3.0)
 PKG_CHECK_MODULES(TRAY, gtk+-3.0)
 PKG_CHECK_MODULES(GVC, libpulse libpulse-mainloop-glib gobject-2.0)
