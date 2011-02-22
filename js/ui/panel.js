@@ -874,7 +874,6 @@ Panel.prototype = {
 
         this._statusmenu = new StatusMenu.StatusMenuButton();
         this._statusmenu.actor.name = 'panelStatus';
-        this._menus.addMenu(this._statusmenu.menu);
         this._rightBox.add(this._statusmenu.actor);
 
         // Synchronize the buttons pseudo classes with its corner
@@ -951,6 +950,10 @@ Panel.prototype = {
             this._statusBox.add(indicator.actor);
             this._menus.addMenu(indicator.menu);
         }
+
+        // PopupMenuManager depends on menus being added in order for
+        // keyboard navigation
+        this._menus.addMenu(this._statusmenu.menu);
     },
 
     startupAnimation: function() {
