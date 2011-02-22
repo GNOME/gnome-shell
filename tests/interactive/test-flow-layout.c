@@ -78,12 +78,11 @@ test_flow_layout_main (int argc, char *argv[])
   gint i;
 
   error = NULL;
-  clutter_init_with_args (&argc, &argv,
-                          NULL,
-                          entries,
-                          NULL,
-                          &error);
-  if (error)
+  if (clutter_init_with_args (&argc, &argv,
+                              NULL,
+                              entries,
+                              NULL,
+                              &error) != CLUTTER_INIT_SUCCESS)
     {
       g_print ("Unable to run test-flow: %s", error->message);
       g_error_free (error);

@@ -124,12 +124,11 @@ main (int argc, char *argv[])
   g_setenv ("CLUTTER_VBLANK", "none", FALSE);
   g_setenv ("CLUTTER_SHOW_FPS", "1", FALSE);
 
-  clutter_init_with_args (&argc, &argv,
-                          NULL,
-                          entries,
-                          NULL,
-                          &error);
-  if (error)
+  if (clutter_init_with_args (&argc, &argv,
+                              NULL,
+                              entries,
+                              NULL,
+                              &error) != CLUTTER_INIT_SUCCESS)
     {
       g_warning ("Unable to initialise Clutter:\n%s",
                  error->message);

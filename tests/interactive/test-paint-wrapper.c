@@ -205,12 +205,11 @@ test_paint_wrapper_main (int argc, char *argv[])
   clutter_x11_set_use_argb_visual (TRUE);
 #endif
 
-  clutter_init_with_args (&argc, &argv,
-                          NULL,
-                          super_oh_entries,
-                          NULL,
-                          &error);
-  if (error)
+  if (clutter_init_with_args (&argc, &argv,
+                              NULL,
+                              super_oh_entries,
+                              NULL,
+                              &error) != CLUTTER_INIT_SUCCESS)
     {
       g_warning ("Unable to initialise Clutter:\n%s",
                  error->message);

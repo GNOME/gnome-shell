@@ -156,12 +156,11 @@ test_drag_main (int argc, char *argv[])
   GError *error;
 
   error = NULL;
-  clutter_init_with_args (&argc, &argv,
-                          "test-drag",
-                          entries,
-                          NULL,
-                          &error);
-  if (error != NULL)
+  if (clutter_init_with_args (&argc, &argv,
+                              "test-drag",
+                              entries,
+                              NULL,
+                              &error) != CLUTTER_INIT_SUCCESS)
     {
       g_print ("Unable to run test-drag: %s\n", error->message);
       g_error_free (error);
