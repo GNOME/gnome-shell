@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-21 09:25+0200\n"
-"PO-Revision-Date: 2011-02-21 09:26+0200\n"
+"POT-Creation-Date: 2011-02-22 08:14+0200\n"
+"PO-Revision-Date: 2011-02-22 08:14+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -547,14 +547,14 @@ msgid "Applications"
 msgstr "יישומים"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:478
+#: ../js/ui/panel.js:537
 #, c-format
 msgid "Quit %s"
 msgstr "יציאה מ־%s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:612
+#: ../js/ui/panel.js:772
 msgid "Activities"
 msgstr "פעילויות"
 
@@ -580,7 +580,7 @@ msgstr "מקומות והתקנים"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:506
+#: ../js/ui/popupMenu.js:511
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -674,7 +674,7 @@ msgstr "הגדרות גישה אוניברסלית"
 msgid "High Contrast"
 msgstr "ניגודיות גבוהה"
 
-#: ../js/ui/status/accessibility.js:206
+#: ../js/ui/status/accessibility.js:209
 msgid "Large Text"
 msgstr "טקסט גדול"
 
@@ -791,7 +791,11 @@ msgstr "נא להזין את קוד ה־PIN המוזכר בהתקן."
 msgid "OK"
 msgstr "אישור"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "הצגת פריסת המקלדת..."
+
+#: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "הגדרות אזוריות"
 
