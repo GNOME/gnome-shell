@@ -109,7 +109,6 @@ INCLUDES = \
 
 common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_SONAME_INFIX@-@CLUTTER_API_VERSION@.la
 
-
 noinst_PROGRAMS = test-interactive
 
 test_interactive_SOURCES = test-main.c $(UNIT_TESTS)

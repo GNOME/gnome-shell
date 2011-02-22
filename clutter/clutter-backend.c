@@ -53,7 +53,6 @@
 #include "clutter-version.h"
 
 #include <cogl/cogl.h>
-#include <cogl/cogl-internal.h>
 
 G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);
 

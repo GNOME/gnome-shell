@@ -58,8 +58,7 @@
 #include <X11/extensions/XInput2.h>
 #endif
 
-#include "cogl/cogl.h"
-#include "cogl/cogl-internal.h"
+#include <cogl/cogl.h>
 
 #include "clutter-backend.h"
 #include "clutter-debug.h"

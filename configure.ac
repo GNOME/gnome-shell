@@ -206,8 +206,23 @@ AC_ARG_WITH([gles],
                             [Select Clutter GLES version (for EGL backends)])],
             [glesversion=$with_gles])
 
+COGL_REQ=""
+AC_ARG_WITH([system-cogl],
+            [AS_HELP_STRING([--with-system-cogl=@<:@yes/no@:>@],
+                            [Use a system installed Cogl library])],
+            [
+              if test "x$with_system_cogl" = "xyes"; then
+                COGL_REQ="cogl-1.0"
+              fi
+            ],
+            [with_system_cogl=no])
+
+AM_CONDITIONAL(USE_SYSTEM_COGL, [test "x$with_system_cogl" = "xyes"])
+AS_IF([test "x$with_system_cogl" = "xyes"],
+      [ AC_DEFINE([CLUTTER_USING_SYSTEM_COGL], [1], [Built against the system Cogl library])])
+
 # base dependencies for core
-CLUTTER_BASE_PC_FILES="cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
+CLUTTER_BASE_PC_FILES="cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION json-glib-1.0 >= $JSON_GLIB_REQ_VERSION $COGL_REQ"
 
 # backend specific pkg-config files
 BACKEND_PC_FILES=""

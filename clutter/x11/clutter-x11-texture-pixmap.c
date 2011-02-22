@@ -52,7 +52,12 @@
 #include "clutter-private.h"
 
 #include "cogl/cogl.h"
+
+#ifdef CLUTTER_USING_SYSTEM_COGL
+#include <cogl/cogl-texture-pixmap-x11.h>
+#else
 #include "cogl/winsys/cogl-texture-pixmap-x11.h"
+#endif
 
 #include <X11/extensions/Xdamage.h>
 

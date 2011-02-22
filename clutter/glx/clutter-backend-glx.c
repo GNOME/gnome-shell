@@ -48,8 +48,7 @@
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
-#include "cogl/cogl.h"
-#include "cogl/cogl-internal.h"
+#include <cogl/cogl.h>
 
 #define clutter_backend_glx_get_type    _clutter_backend_glx_get_type
 
