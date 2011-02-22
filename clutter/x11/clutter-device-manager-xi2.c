@@ -657,11 +657,11 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
         source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                              GINT_TO_POINTER (xev->sourceid));
-        _clutter_event_set_source_device (event, source_device);
+        clutter_event_set_source_device (event, source_device);
 
         device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                       GINT_TO_POINTER (xev->deviceid));
-        _clutter_event_set_device (event, device);
+        clutter_event_set_device (event, device);
 
         /* XXX keep this in sync with the evdev device manager */
         n = print_keysym (event->key.keyval, buffer, sizeof (buffer));
@@ -729,11 +729,11 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
             source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                                  GINT_TO_POINTER (xev->sourceid));
-            _clutter_event_set_source_device (event, source_device);
+            clutter_event_set_source_device (event, source_device);
 
             device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                           GINT_TO_POINTER (xev->deviceid));
-            _clutter_event_set_device (event, device);
+            clutter_event_set_device (event, device);
 
             event->scroll.axes = translate_axes (event->scroll.device,
                                                  event->scroll.x,
@@ -760,11 +760,11 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
             source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                                  GINT_TO_POINTER (xev->sourceid));
-            _clutter_event_set_source_device (event, source_device);
+            clutter_event_set_source_device (event, source_device);
 
             device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                           GINT_TO_POINTER (xev->deviceid));
-            _clutter_event_set_device (event, device);
+            clutter_event_set_device (event, device);
 
             event->button.axes = translate_axes (event->button.device,
                                                  event->button.x,
@@ -813,11 +813,11 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
         source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                              GINT_TO_POINTER (xev->sourceid));
-        _clutter_event_set_source_device (event, source_device);
+        clutter_event_set_source_device (event, source_device);
 
         device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                       GINT_TO_POINTER (xev->deviceid));
-        _clutter_event_set_device (event, device);
+        clutter_event_set_device (event, device);
 
         event->motion.axes = translate_axes (event->motion.device,
                                              event->motion.x,
@@ -890,7 +890,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
           }
 
         clutter_event_set_device (event, device);
-        _clutter_event_set_source_device (event, source_device);
+        clutter_event_set_source_device (event, source_device);
 
         retval = CLUTTER_TRANSLATE_QUEUE;
       }

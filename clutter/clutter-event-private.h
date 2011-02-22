@@ -18,10 +18,6 @@ gpointer        _clutter_event_get_platform_data        (const ClutterEvent *eve
 
 void            _clutter_event_push                     (const ClutterEvent *event,
                                                          gboolean            do_copy);
-void            _clutter_event_set_device               (ClutterEvent       *event,
-                                                         ClutterInputDevice *device);
-void            _clutter_event_set_source_device        (ClutterEvent       *event,
-                                                         ClutterInputDevice *device);
 
 G_END_DECLS
 

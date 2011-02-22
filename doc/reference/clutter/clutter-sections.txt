@@ -1023,11 +1023,17 @@ clutter_event_free
 clutter_event_type
 
 <SUBSECTION>
+clutter_event_set_coords
 clutter_event_get_coords
+clutter_event_set_state
 clutter_event_get_state
+clutter_event_set_time
 clutter_event_get_time
+clutter_event_set_source
 clutter_event_get_source
+clutter_event_set_stage
 clutter_event_get_stage
+clutter_event_set_flags
 clutter_event_get_flags
 clutter_event_get_axes
 
@@ -1038,27 +1044,34 @@ clutter_event_put
 clutter_events_pending
 
 <SUBSECTION>
+clutter_event_set_button
 clutter_event_get_button
 clutter_event_get_click_count
 
 <SUBSECTION>
+clutter_event_set_key_symbol
 clutter_event_get_key_symbol
+clutter_event_set_key_code
 clutter_event_get_key_code
+clutter_event_set_key_unicode
 clutter_event_get_key_unicode
 clutter_keysym_to_unicode
 
 <SUBSECTION>
+clutter_event_set_related
 clutter_event_get_related
 
 <SUBSECTION>
+clutter_event_set_scroll_direction
 clutter_event_get_scroll_direction
 
 <SUBSECTION>
 clutter_event_set_device
 clutter_event_get_device
+clutter_event_set_source_device
+clutter_event_get_source_device
 clutter_event_get_device_id
 clutter_event_get_device_type
-clutter_event_get_source_device
 
 <SUBSECTION>
 clutter_get_current_event_time

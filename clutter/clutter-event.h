@@ -63,7 +63,7 @@ G_BEGIN_DECLS
  *
  * Since: 0.6
  */
-typedef enum {
+typedef enum { /*< flags prefix=CLUTTER_EVENT >*/
   CLUTTER_EVENT_NONE           = 0,
   CLUTTER_EVENT_FLAG_SYNTHETIC = 1 << 0
 } ClutterEventFlags;
@@ -88,8 +88,7 @@ typedef enum {
  *
  * Since: 0.4
  */
-typedef enum
-{
+typedef enum { /*< prefix=CLUTTER >*/
   CLUTTER_NOTHING = 0,
   CLUTTER_KEY_PRESS,
   CLUTTER_KEY_RELEASE,
@@ -116,8 +115,7 @@ typedef enum
  *
  * Since: 0.4
  */
-typedef enum
-{
+typedef enum { /*< prefix=CLUTTER_SCROLL >*/
   CLUTTER_SCROLL_UP,
   CLUTTER_SCROLL_DOWN,
   CLUTTER_SCROLL_LEFT,
@@ -134,8 +132,7 @@ typedef enum
  *
  * Since: 0.4
  */
-typedef enum
-{
+typedef enum {
   CLUTTER_STAGE_STATE_FULLSCREEN       = (1<<1),
   CLUTTER_STAGE_STATE_OFFSCREEN        = (1<<2),
   CLUTTER_STAGE_STATE_ACTIVATED        = (1<<3)
@@ -387,50 +384,78 @@ union _ClutterEvent
 
 GType clutter_event_get_type (void) G_GNUC_CONST;
 
-gboolean               clutter_events_pending               (void);
-ClutterEvent *         clutter_event_get                    (void);
-ClutterEvent *         clutter_event_peek                   (void);
-void                   clutter_event_put                    (const ClutterEvent *event);
+gboolean                clutter_events_pending                  (void);
+ClutterEvent *          clutter_event_get                       (void);
+ClutterEvent *          clutter_event_peek                      (void);
+void                    clutter_event_put                       (const ClutterEvent     *event);
 
-ClutterEvent *         clutter_event_new                    (ClutterEventType    type);
-ClutterEvent *         clutter_event_copy                   (const ClutterEvent *event);
-void                   clutter_event_free                   (ClutterEvent       *event);
+ClutterEvent *          clutter_event_new                       (ClutterEventType        type);
+ClutterEvent *          clutter_event_copy                      (const ClutterEvent     *event);
+void                    clutter_event_free                      (ClutterEvent           *event);
 
-ClutterEventType       clutter_event_type                   (const ClutterEvent *event);
-ClutterEventFlags      clutter_event_get_flags              (const ClutterEvent *event);
-guint32                clutter_event_get_time               (const ClutterEvent *event);
-ClutterModifierType    clutter_event_get_state              (const ClutterEvent *event);
-gint                   clutter_event_get_device_id          (const ClutterEvent *event);
-ClutterInputDeviceType clutter_event_get_device_type        (const ClutterEvent *event);
-ClutterInputDevice *   clutter_event_get_device             (const ClutterEvent *event);
-ClutterInputDevice *   clutter_event_get_source_device      (const ClutterEvent *event);
-ClutterActor *         clutter_event_get_source             (const ClutterEvent *event);
-ClutterStage *         clutter_event_get_stage              (const ClutterEvent *event);
+ClutterEventType        clutter_event_type                      (const ClutterEvent     *event);
+void                    clutter_event_set_flags                 (ClutterEvent           *event,
+                                                                 ClutterEventFlags       flags);
+ClutterEventFlags       clutter_event_get_flags                 (const ClutterEvent     *event);
+void                    clutter_event_set_time                  (ClutterEvent           *event,
+                                                                 guint32                 time_);
+guint32                 clutter_event_get_time                  (const ClutterEvent     *event);
+void                    clutter_event_set_state                 (ClutterEvent           *event,
+                                                                 ClutterModifierType     state);
+ClutterModifierType     clutter_event_get_state                 (const ClutterEvent     *event);
+void                    clutter_event_set_device                (ClutterEvent           *event,
+                                                                 ClutterInputDevice     *device);
+ClutterInputDevice *    clutter_event_get_device                (const ClutterEvent     *event);
+void                    clutter_event_set_source_device         (ClutterEvent           *event,
+                                                                 ClutterInputDevice     *device);
 
-void                   clutter_event_get_coords             (const ClutterEvent *event,
-                                                             gfloat             *x,
-                                                             gfloat             *y);
-gdouble *              clutter_event_get_axes               (const ClutterEvent *event,
-                                                             guint              *n_axes);
+ClutterInputDevice *    clutter_event_get_source_device         (const ClutterEvent     *event);
+ClutterActor *          clutter_event_get_source                (const ClutterEvent     *event);
+void                    clutter_event_set_stage                 (ClutterEvent           *event,
+                                                                 ClutterStage           *stage);
+ClutterStage *          clutter_event_get_stage                 (const ClutterEvent     *event);
 
-guint                  clutter_event_get_key_symbol         (const ClutterEvent *event);
-guint16                clutter_event_get_key_code           (const ClutterEvent *event);
-guint32                clutter_event_get_key_unicode        (const ClutterEvent *event);
+gint                    clutter_event_get_device_id             (const ClutterEvent     *event);
+ClutterInputDeviceType  clutter_event_get_device_type           (const ClutterEvent     *event);
 
-guint32                clutter_event_get_button             (const ClutterEvent *event);
-guint                  clutter_event_get_click_count        (const ClutterEvent *event);
+void                    clutter_event_set_coords                (ClutterEvent           *event,
+                                                                 gfloat                  x,
+                                                                 gfloat                  y);
+void                    clutter_event_get_coords                (const ClutterEvent     *event,
+                                                                 gfloat                 *x,
+                                                                 gfloat                 *y);
 
-ClutterActor *         clutter_event_get_related            (const ClutterEvent *event);
+gdouble *               clutter_event_get_axes                  (const ClutterEvent     *event,
+                                                                 guint                  *n_axes);
 
-ClutterScrollDirection clutter_event_get_scroll_direction   (const ClutterEvent *event);
+void                    clutter_event_set_key_symbol            (ClutterEvent           *event,
+                                                                 guint                   key_sym);
+guint                   clutter_event_get_key_symbol            (const ClutterEvent     *event);
+void                    clutter_event_set_key_code              (ClutterEvent           *event,
+                                                                 guint16                 key_code);
+guint16                 clutter_event_get_key_code              (const ClutterEvent     *event);
+void                    clutter_event_set_key_unicode           (ClutterEvent           *event,
+                                                                 guint32                 key_unicode);
+guint32                 clutter_event_get_key_unicode           (const ClutterEvent     *event);
 
-void                   clutter_event_set_device             (ClutterEvent       *event,
-                                                             ClutterInputDevice *device);
+void                    clutter_event_set_button                (ClutterEvent           *event,
+                                                                 guint32                 button);
+guint32                 clutter_event_get_button                (const ClutterEvent     *event);
+guint                   clutter_event_get_click_count           (const ClutterEvent     *event);
 
-guint32                clutter_keysym_to_unicode            (guint               keyval);
+void                    clutter_event_set_related               (ClutterEvent           *event,
+                                                                 ClutterActor           *actor);
+ClutterActor *          clutter_event_get_related               (const ClutterEvent     *event);
 
-guint32                clutter_get_current_event_time       (void);
-G_CONST_RETURN ClutterEvent *clutter_get_current_event      (void);
+void                    clutter_event_set_scroll_direction      (ClutterEvent           *event,
+                                                                 ClutterScrollDirection  direction);
+ClutterScrollDirection  clutter_event_get_scroll_direction      (const ClutterEvent     *event);
+
+guint32                 clutter_keysym_to_unicode               (guint                   keyval);
+
+guint32                 clutter_get_current_event_time          (void);
+
+G_CONST_RETURN ClutterEvent *clutter_get_current_event          (void);
 
 G_END_DECLS
 

@@ -300,40 +300,43 @@ text_password_char (void)
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
 
-static void
-init_event (ClutterKeyEvent *event)
+static ClutterEvent *
+init_event (void)
 {
-  event->type = CLUTTER_KEY_PRESS;
-  event->time = 0;      /* not needed */
-  event->flags = CLUTTER_EVENT_FLAG_SYNTHETIC;
-  event->stage = NULL;  /* not needed */
-  event->source = NULL; /* not needed */
-  event->modifier_state = 0;
-  event->hardware_keycode = 0; /* not needed */
+  ClutterEvent *retval = clutter_event_new (CLUTTER_KEY_PRESS);
+
+  clutter_event_set_time (retval, CLUTTER_CURRENT_TIME);
+  clutter_event_set_flags (retval, CLUTTER_EVENT_FLAG_SYNTHETIC);
+
+  return retval;
 }
 
 static void
 send_keyval (ClutterText *text, int keyval)
 {
-  ClutterKeyEvent event;
+  ClutterEvent *event = init_event ();
 
-  init_event (&event);
-  event.keyval = keyval;
-  event.unicode_value = 0; /* should be ignored for cursor keys etc. */
+  /* Unicode should be ignored for cursor keys etc. */
+  clutter_event_set_key_unicode (event, 0);
+  clutter_event_set_key_symbol (event, keyval);
 
-  clutter_actor_event (CLUTTER_ACTOR (text), (ClutterEvent *) &event, FALSE);
+  clutter_actor_event (CLUTTER_ACTOR (text), event, FALSE);
+
+  clutter_event_free (event);
 }
 
 static void
 send_unichar (ClutterText *text, gunichar unichar)
 {
-  ClutterKeyEvent event;
+  ClutterEvent *event = init_event ();
 
-  init_event (&event);
-  event.keyval = 0; /* should be ignored for printable characters */
-  event.unicode_value = unichar;
+  /* Key symbol should be ignored for printable characters */
+  clutter_event_set_key_symbol (event, 0);
+  clutter_event_set_key_unicode (event, unichar);
 
-  clutter_actor_event (CLUTTER_ACTOR (text), (ClutterEvent *) &event, FALSE);
+  clutter_actor_event (CLUTTER_ACTOR (text), event, FALSE);
+
+  clutter_event_free (event);
 }
 
 void
