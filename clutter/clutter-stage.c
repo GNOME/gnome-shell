@@ -373,7 +373,7 @@ clutter_stage_allocate (ClutterActor           *self,
    * window has a chance to update the window size based on the
    * allocation. */
   _clutter_stage_window_get_geometry (priv->impl, &geom);
-  _cogl_onscreen_clutter_backend_set_size (geom.width, geom.height);
+  cogl_onscreen_clutter_backend_set_size (geom.width, geom.height);
 
   clutter_actor_get_allocation_geometry (self, &geom);
   if (geom.width != prev_geom.width || geom.height != prev_geom.height)

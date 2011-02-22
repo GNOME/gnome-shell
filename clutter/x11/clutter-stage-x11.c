@@ -915,7 +915,7 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
 
               /* Queue a relayout - we want glViewport to be called
                * with the correct values, and this is done in ClutterStage
-               * via _cogl_onscreen_clutter_backend_set_size ().
+               * via cogl_onscreen_clutter_backend_set_size ().
                *
                * We queue a relayout, because if this ConfigureNotify is
                * in response to a size we set in the application, the

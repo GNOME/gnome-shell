@@ -465,7 +465,7 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
 
           clutter_actor_get_size (CLUTTER_ACTOR (stage), &width, &height);
 
-          _cogl_onscreen_clutter_backend_set_size (width, height);
+          cogl_onscreen_clutter_backend_set_size (width, height);
 
           /* Eventually we will have a separate CoglFramebuffer for
            * each stage and each one will track private projection

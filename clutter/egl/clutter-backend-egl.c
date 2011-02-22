@@ -690,7 +690,7 @@ clutter_backend_egl_get_features (ClutterBackend *backend)
 
   egl_extensions = eglQueryString (backend_egl->edpy, EGL_EXTENSIONS);
 
-  if (_cogl_check_extension ("EGL_NOK_swap_region", egl_extensions))
+  if (cogl_clutter_check_extension ("EGL_NOK_swap_region", egl_extensions))
     {
       CLUTTER_NOTE (BACKEND,
                     "Using EGL_NOK_swap_region for sub_buffer copies");
@@ -704,7 +704,7 @@ clutter_backend_egl_get_features (ClutterBackend *backend)
 
 #if 0 /* XXX need GL_ARB_draw_buffers */
   if (!backend_egl->swap_buffers_region &&
-      _cogl_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))
+      cogl_clutter_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))
     {
       CLUTTER_NOTE (BACKEND,
                     "Using glBlitFramebuffer fallback for sub_buffer copies");

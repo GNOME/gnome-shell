@@ -227,7 +227,7 @@ clutter_backend_win32_get_features (ClutterBackend *backend)
      for the swap control extension */
   if (getenv ("__GL_SYNC_TO_VBLANK") || check_vblank_env ("default"))
     CLUTTER_NOTE (BACKEND, "vblank sync: left at default at user request");
-  else if (_cogl_check_extension ("WGL_EXT_swap_control", extensions)
+  else if (cogl_clutter_check_extension ("WGL_EXT_swap_control", extensions)
 	   && (swap_interval = (SwapIntervalProc)
 	       cogl_get_proc_address ("wglSwapIntervalEXT")))
     {

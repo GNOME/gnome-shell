@@ -228,9 +228,9 @@ try_enable_drm (ClutterBackendWayland *backend_wayland, GError **error)
   glexts = glGetString(GL_EXTENSIONS);
   exts = eglQueryString (backend_wayland->edpy, EGL_EXTENSIONS);
 
-  if (!_cogl_check_extension ("EGL_KHR_image_base", exts) ||
-      !_cogl_check_extension ("EGL_MESA_drm_image", exts) ||
-      !_cogl_check_extension ("GL_OES_EGL_image", glexts))
+  if (!cogl_clutter_check_extension ("EGL_KHR_image_base", exts) ||
+      !cogl_clutter_check_extension ("EGL_MESA_drm_image", exts) ||
+      !cogl_clutter_check_extension ("GL_OES_EGL_image", glexts))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
 		   CLUTTER_INIT_ERROR_BACKEND,
@@ -456,7 +456,7 @@ clutter_backend_wayland_create_context (ClutterBackend  *backend,
 #endif
   egl_extensions = eglQueryString (backend_wayland->edpy, EGL_EXTENSIONS);
 
-  if (!_cogl_check_extension (_COGL_SURFACELESS_EXTENSION, egl_extensions))
+  if (!cogl_clutter_check_extension (_COGL_SURFACELESS_EXTENSION, egl_extensions))
     {
       g_debug("Could not find the " _COGL_SURFACELESS_EXTENSION
               " extension; falling back to binding a dummy surface");

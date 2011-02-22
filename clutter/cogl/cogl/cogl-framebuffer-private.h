@@ -114,6 +114,10 @@ void
 _cogl_framebuffer_state_init (void);
 
 void
+_cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
+                                      int width, int height);
+
+void
 _cogl_clear4f (unsigned long buffers,
                float red,
                float green,
