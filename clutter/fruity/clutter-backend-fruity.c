@@ -77,7 +77,6 @@ clutter_backend_egl_redraw (ClutterBackend *backend,
   cogl_flush ();
   eglWaitGL();
   eglSwapBuffers (backend_egl->edpy,  stage_egl->egl_surface);
-  _cogl_swap_buffers_notify ();
 }
 
 static ClutterActor *

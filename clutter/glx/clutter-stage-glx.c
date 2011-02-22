@@ -648,8 +648,6 @@ clutter_stage_glx_redraw (ClutterStageWindow *stage_window)
       CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
       glXSwapBuffers (backend_x11->xdpy, drawable);
       CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
-
-      _cogl_swap_buffers_notify ();
     }
 
   backend_glx->last_video_sync_count = video_sync_count;

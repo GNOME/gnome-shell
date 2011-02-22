@@ -1109,14 +1109,3 @@ _cogl_error_quark (void)
 {
   return g_quark_from_static_string ("cogl-error-quark");
 }
-
-/* Until Cogl becomes responsible for handling swap-buffer requests
- * this API is used by Clutter to notify us when it issues a
- * swap-buffer on our behalf. */
-void
-_cogl_swap_buffers_notify (void)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  _cogl_framebuffer_swap_notify (_cogl_get_draw_buffer ());
-}

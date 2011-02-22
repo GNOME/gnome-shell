@@ -506,8 +506,6 @@ wayland_swap_buffers (ClutterStageWayland *stage_wayland)
   wl_display_frame_callback (backend_wayland->wayland_display,
 			     wayland_frame_callback,
 			     stage_wayland);
-
-  _cogl_swap_buffers_notify ();
 }
 
 static void

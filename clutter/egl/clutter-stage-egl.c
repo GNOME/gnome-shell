@@ -413,7 +413,6 @@ clutter_stage_egl_redraw (ClutterStageWindow *stage_window)
       CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
       eglSwapBuffers (backend_egl->edpy, egl_surface);
       CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
-      _cogl_swap_buffers_notify ();
     }
 
   /* reset the redraw clipping for the next paint... */

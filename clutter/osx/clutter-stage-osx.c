@@ -159,7 +159,6 @@ clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window);
   _clutter_stage_do_paint (CLUTTER_STAGE (self->stage_osx->wrapper), NULL);
   cogl_flush ();
   [[self openGLContext] flushBuffer];
-  _cogl_swap_buffers_notify ();
 }
 
 /* In order to receive key events */

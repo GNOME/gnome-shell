@@ -528,10 +528,7 @@ clutter_stage_win32_redraw (ClutterStageWindow *stage_window)
   cogl_flush ();
 
   if (stage_win32->client_dc)
-    {
-      SwapBuffers (stage_win32->client_dc);
-      _cogl_swap_buffers_notify ();
-    }
+    SwapBuffers (stage_win32->client_dc);
 }
 
 static void

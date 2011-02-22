@@ -212,9 +212,6 @@ _cogl_framebuffer_flush_journal (CoglFramebuffer *framebuffer);
 void
 _cogl_framebuffer_flush_dependency_journals (CoglFramebuffer *framebuffer);
 
-void
-_cogl_framebuffer_swap_notify (CoglFramebuffer *framebuffer);
-
 gboolean
 _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
                                        int x,
