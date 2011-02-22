@@ -62,9 +62,16 @@ function addTween(target, tweeningParameters) {
 function _wrapTweening(target, tweeningParameters) {
     let state = _getTweenState(target);
 
-    if (target instanceof Clutter.Actor && !state.destroyedId)
-        state.destroyedId = target.connect('destroy', _actorDestroyed);
-    
+    if (!state.destroyedId) {
+        if (target instanceof Clutter.Actor) {
+            state.actor = target;
+            state.destroyedId = target.connect('destroy', _actorDestroyed);
+        } else if (target.actor && target.actor instanceof Clutter.Actor) {
+            state.actor = target.actor;
+            state.destroyedId = target.actor.connect('destroy', function() { _actorDestroyed(target); });
+        }
+    }
+
     _addHandler(target, tweeningParameters, 'onStart', _tweenStarted);
     _addHandler(target, tweeningParameters, 'onComplete', _tweenCompleted);
 }
@@ -82,7 +89,7 @@ function _resetTweenState(target) {
 
     if (state) {
         if (state.destroyedId)
-            target.disconnect(state.destroyedId);
+            state.actor.disconnect(state.destroyedId);
         if (state.idleCompletedId)
             Mainloop.source_remove(state.idleCompletedId);
     }
