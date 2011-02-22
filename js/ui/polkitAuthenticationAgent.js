@@ -192,10 +192,10 @@ AuthenticationDialog.prototype = {
                      }));
     },
 
-    _emitDone: function(keepVisible) {
+    _emitDone: function(keepVisible, dismissed) {
         if (!this._doneEmitted) {
             this._doneEmitted = true;
-            this.emit('done', keepVisible);
+            this.emit('done', keepVisible, dismissed);
         }
     },
 
@@ -214,7 +214,7 @@ AuthenticationDialog.prototype = {
 
     _onSessionCompleted: function(session, gainedAuthorization) {
         this._passwordBox.hide();
-        this._emitDone(!gainedAuthorization);
+        this._emitDone(!gainedAuthorization, false);
     },
 
     _onSessionRequest: function(session, request, echo_on) {
@@ -270,7 +270,7 @@ AuthenticationDialog.prototype = {
 
     cancel: function() {
         this.close(global.get_current_time());
-        this._emitDone(false);
+        this._emitDone(false, true);
     },
 
 };
@@ -302,30 +302,30 @@ AuthenticationAgent.prototype = {
             log('polkitAuthenticationAgent: Failed to show modal dialog');
             this._currentDialog.destroySession();
             this._currentDialog = null;
-            this._native.complete()
+            this._native.complete(false)
         } else {
             this._currentDialog.connect('done', Lang.bind(this, this._onDialogDone));
         }
     },
 
     _onCancel: function(nativeAgent) {
-        this._completeRequest(false);
+        this._completeRequest(false, false);
     },
 
-    _onDialogDone: function(dialog, keepVisible) {
-        this._completeRequest(keepVisible);
+    _onDialogDone: function(dialog, keepVisible, dismissed) {
+        this._completeRequest(keepVisible, dismissed);
     },
 
-    _reallyCompleteRequest: function() {
+    _reallyCompleteRequest: function(dismissed) {
         this._currentDialog.close();
         this._currentDialog.destroySession();
         this._currentDialog = null;
         this._isCompleting = false;
 
-        this._native.complete()
+        this._native.complete(dismissed)
     },
 
-    _completeRequest: function(keepVisible) {
+    _completeRequest: function(keepVisible, wasDismissed) {
         if (this._isCompleting)
             return;
 
@@ -337,10 +337,10 @@ AuthenticationAgent.prototype = {
             Mainloop.timeout_add(2000,
                                  Lang.bind(this,
                                            function() {
-                                               this._reallyCompleteRequest();
+                                               this._reallyCompleteRequest(wasDismissed);
                                            }));
         } else {
-            this._reallyCompleteRequest();
+            this._reallyCompleteRequest(wasDismissed);
         }
     }
 }

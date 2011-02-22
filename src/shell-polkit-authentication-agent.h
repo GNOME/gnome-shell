@@ -25,7 +25,8 @@ typedef struct _ShellPolkitAuthenticationAgentClass ShellPolkitAuthenticationAge
 
 GType                           shell_polkit_authentication_agent_get_type (void) G_GNUC_CONST;
 ShellPolkitAuthenticationAgent *shell_polkit_authentication_agent_new      (void);
-void                            shell_polkit_authentication_agent_complete (ShellPolkitAuthenticationAgent *agent);
+void                            shell_polkit_authentication_agent_complete (ShellPolkitAuthenticationAgent *agent,
+                                                                            gboolean                        dismissed);
 
 G_END_DECLS
 

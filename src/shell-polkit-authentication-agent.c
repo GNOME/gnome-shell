@@ -16,6 +16,8 @@
 #include <polkitagent/polkitagent.h>
 #include "shell-polkit-authentication-agent.h"
 
+#include <glib/gi18n.h>
+
 /* uncomment for useful debug output */
 /* #define SHOW_DEBUG */
 
@@ -282,7 +284,8 @@ auth_request_initiate (AuthRequest *request)
   g_strfreev (user_names);
 }
 
-static void auth_request_complete (AuthRequest *request);
+static void auth_request_complete (AuthRequest *request,
+                                   gboolean     dismissed);
 
 static gboolean
 handle_cancelled_in_idle (gpointer user_data)
@@ -298,7 +301,7 @@ handle_cancelled_in_idle (gpointer user_data)
     }
   else
     {
-      auth_request_complete (request);
+      auth_request_complete (request, FALSE);
     }
 
   return FALSE;
@@ -319,9 +322,16 @@ on_request_cancelled (GCancellable *cancellable,
 static void maybe_process_next_request (ShellPolkitAuthenticationAgent *agent);
 
 static void
-auth_request_complete (AuthRequest *request)
+auth_request_complete (AuthRequest *request,
+                       gboolean     dismissed)
 {
   ShellPolkitAuthenticationAgent *agent = request->agent;
+
+  if (dismissed)
+    g_simple_async_result_set_error (request->simple,
+                                     POLKIT_ERROR,
+                                     POLKIT_ERROR_CANCELLED,
+                                     _("Authentation dialog was dismissed by the user"));
 
   if (agent->current_request == request)
     {
@@ -415,10 +425,11 @@ initiate_authentication_finish (PolkitAgentListener  *listener,
 }
 
 void
-shell_polkit_authentication_agent_complete (ShellPolkitAuthenticationAgent *agent)
+shell_polkit_authentication_agent_complete (ShellPolkitAuthenticationAgent *agent,
+                                            gboolean                        dismissed)
 {
   g_return_if_fail (SHELL_IS_POLKIT_AUTHENTICATION_AGENT (agent));
   g_return_if_fail (agent->current_request != NULL);
 
-  auth_request_complete (agent->current_request);
+  auth_request_complete (agent->current_request, dismissed);
 }
