@@ -457,11 +457,6 @@ _cogl_framebuffer_clear (CoglFramebuffer *framebuffer,
                              cogl_color_get_alpha_float (color));
 }
 
-void
-_cogl_framebuffer_swap_notify (CoglFramebuffer *framebuffer)
-{
-}
-
 int
 _cogl_framebuffer_get_width (CoglFramebuffer *framebuffer)
 {
