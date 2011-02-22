@@ -20,16 +20,7 @@ DISTCLEANFILES =
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-maintainer-flags --enable-docs
 
-# Extra clean files so that maintainer-clean removes *everything*
-MAINTAINERCLEANFILES = 	\
-	aclocal.m4 	\
-	config.guess 	\
-	config.h.in 	\
-        configure 	\
-	gtk-doc.make 	\
-	Makefile.in 	\
-	$(NULL)
-
+# .release requires .changelog rules
 include $(top_srcdir)/build/autotools/Makefile.am.changelog
 include $(top_srcdir)/build/autotools/Makefile.am.release
 
