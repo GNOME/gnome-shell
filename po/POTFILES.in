@@ -30,5 +30,6 @@ src/gvc/gvc-mixer-control.c
 src/gdmuser/gdm-user.c
 src/shell-app-system.c
 src/shell-global.c
+src/shell-polkit-authentication-agent.c
 src/shell-util.c
 
