@@ -31,6 +31,7 @@ dist_theme_DATA =				\
 	theme/mosaic-view-active.svg		\
 	theme/mosaic-view.svg			\
 	theme/move-window-on-new.svg		\
+	theme/panel-border.svg			\
 	theme/panel-button-border.svg		\
 	theme/panel-button-highlight-narrow.svg	\
 	theme/panel-button-highlight-wide.svg	\
