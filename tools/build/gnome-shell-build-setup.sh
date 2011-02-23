@@ -63,7 +63,7 @@ fi
 # spidermonkey ({mozilla,firefox,xulrunner}-js), startup-notification,
 # xdamage, icon-naming-utils, upower, libtool-ltdl, libvorbis,
 # libgcrypt, libtasn1, libgnome-keyring, libgtop, cups,
-# evolution-data-server
+# evolution-data-server libusb
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
@@ -83,7 +83,7 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject
     xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good
-    libltdl-dev libvorbis-dev iso-codes libgnome-keyring-dev
+    libltdl-dev libvorbis-dev iso-codes libgnome-keyring-dev libusb-1.0.0-dev
     libupower-glib-dev libcups2-dev evolution-data-server-dev
     libecal1.2-dev libedataserverui1.2-dev
     "
@@ -122,7 +122,7 @@ if test "x$system" = xFedora ; then
     gstreamer-plugins-base gstreamer-plugins-good glx-utils expat-devel
     startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
     icon-naming-utils upower-devel libtool-ltdl-devel libvorbis-devel
-    iso-codes-devel libgcrypt-devel libtasn1-devel libtasn1-tools
+    iso-codes-devel libgcrypt-devel libtasn1-devel libtasn1-tools libusb1-devel
     libgnome-keyring-devel libgtop2-devel cups-devel evolution-data-server-devel
     "
 
