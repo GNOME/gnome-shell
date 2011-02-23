@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-21 23:39+0200\n"
-"PO-Revision-Date: 2011-02-21 23:39+0300\n"
+"POT-Creation-Date: 2011-02-23 18:51+0200\n"
+"PO-Revision-Date: 2011-02-23 18:51+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -506,7 +506,7 @@ msgstr "اعرض المصدر"
 msgid "Web Page"
 msgstr "صفحة الوب"
 
-#: ../js/ui/messageTray.js:1864
+#: ../js/ui/messageTray.js:1902
 msgid "System Information"
 msgstr "معلومات النظام"
 
@@ -530,7 +530,7 @@ msgstr "أغلق %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:770
+#: ../js/ui/panel.js:772
 msgid "Activities"
 msgstr "الأنشطة"
 
@@ -556,7 +556,7 @@ msgstr "الأماكن والأجهزة"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:511
+#: ../js/ui/popupMenu.js:612
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -572,43 +572,41 @@ msgstr "يبحث..."
 msgid "No matching results."
 msgstr "لا نتائج مطابقة."
 
-#: ../js/ui/statusMenu.js:102
+#: ../js/ui/statusMenu.js:99 ../js/ui/statusMenu.js:163
+msgid "Power Off..."
+msgstr "أطفئ..."
+
+#: ../js/ui/statusMenu.js:101 ../js/ui/statusMenu.js:162
+msgid "Suspend"
+msgstr "علّق"
+
+#: ../js/ui/statusMenu.js:122
 msgid "Available"
 msgstr "متاح"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:127
 msgid "Busy"
 msgstr "مشغول"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:135
 msgid "My Account"
 msgstr "حسابي"
 
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:139
 msgid "System Settings"
 msgstr "إعدادات النظام"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:146
 msgid "Lock Screen"
 msgstr "أوصد الشاشة"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:150
 msgid "Switch User"
 msgstr "بدّل المستخدم"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:155
 msgid "Log Out..."
 msgstr "اخرج..."
-
-#. This is temporarily removed, see
-#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
-#. for details.
-#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
-#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-#. this.menu.addMenuItem(item);
-#: ../js/ui/statusMenu.js:149
-msgid "Shut Down..."
-msgstr "أطفئ..."
 
 #: ../js/ui/status/accessibility.js:81
 msgid "Zoom"
@@ -1007,6 +1005,10 @@ msgstr[3] "منذ %d أسابيع"
 msgstr[4] "منذ %d أسبوعا"
 msgstr[5] "منذ %d أسبوع"
 
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentation dialog was dismissed by the user"
+msgstr "أغلق المستخدم مربع الاستيثاق الحِواري"
+
 #: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "مجلد المنزل"
@@ -1031,6 +1033,9 @@ msgstr "ابحث"
 msgid "%1$s: %2$s"
 msgstr "‏%1$s:‏ %2$s"
 
+#~ msgid "Shut Down..."
+#~ msgstr "أطفئ..."
+
 #~ msgid "Search your computer"
 #~ msgstr "ابحث في حاسوبك"
 
@@ -1044,9 +1049,6 @@ msgstr "‏%1$s:‏ %2$s"
 
 #~ msgid "Can't remove the first workspace."
 #~ msgstr "لا يمكن حذف مساحة العمل الأولى."
-
-#~ msgid "Suspend..."
-#~ msgstr "علّق..."
 
 #~ msgid "Clock"
 #~ msgstr "الساعة"
