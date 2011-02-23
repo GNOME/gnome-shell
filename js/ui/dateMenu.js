@@ -104,10 +104,10 @@ DateMenuButton.prototype = {
         // Fill up the second column
 
         vbox = new St.BoxLayout({vertical: true});
-        hbox.add(vbox);
+        hbox.add(vbox, { expand: true });
 
         // Event list
-        vbox.add(this._eventList.actor);
+        vbox.add(this._eventList.actor, { expand: true });
 
         item = new PopupMenu.PopupMenuItem(_("Open Calendar"));
         item.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
