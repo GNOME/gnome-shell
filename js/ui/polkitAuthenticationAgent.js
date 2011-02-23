@@ -36,16 +36,17 @@ const PolkitAgent = imports.gi.PolkitAgent;
 
 const ModalDialog = imports.ui.modalDialog;
 
-function AuthenticationDialog(message, cookie, userNames) {
-    this._init(message, cookie, userNames);
+function AuthenticationDialog(actionId, message, cookie, userNames) {
+    this._init(actionId, message, cookie, userNames);
 }
 
 AuthenticationDialog.prototype = {
     __proto__: ModalDialog.ModalDialog.prototype,
 
-    _init: function(message, cookie, userNames) {
+    _init: function(actionId, message, cookie, userNames) {
         ModalDialog.ModalDialog.prototype._init.call(this, { styleClass: 'polkit-dialog' });
 
+        this.actionId = actionId;
         this.message = message;
         this.userNames = userNames;
 
@@ -186,10 +187,39 @@ AuthenticationDialog.prototype = {
         this._session.connect('request', Lang.bind(this, this._onSessionRequest));
         this._session.connect('show-error', Lang.bind(this, this._onSessionShowError));
         this._session.connect('show-info', Lang.bind(this, this._onSessionShowInfo));
+
+        // Delay focus grab to avoid ModalDialog stealing focus with
+        // its buttons
         this.connect('opened',
                      Lang.bind(this, function() {
-                         this._session.initiate();
+                         this._passwordEntry.grab_key_focus();
                      }));
+    },
+
+    startAuthentication: function() {
+        this._session.initiate();
+    },
+
+    _ensureOpen: function() {
+        // NOTE: ModalDialog.open() is safe to call if the dialog is
+        // already open - it just returns true without side-effects
+        if (!this.open(global.get_current_time())) {
+            // This can fail if e.g. unable to get input grab
+            //
+            // In an ideal world this wouldn't happen (because the
+            // Shell is in complete control of the session) but that's
+            // just not how things work right now.
+            //
+            // One way to make this happen is by running 'sleep 3;
+            // pkexec bash' and then opening a popup menu.
+            //
+            // We could add retrying if this turns out to be a problem
+
+            log('polkitAuthenticationAgent: Failed to show modal dialog.' +
+                ' Dismissing authentication request for action-id ' + this.actionId +
+                ' cookie ' + this._cookie);
+            this._emitDone(false, true);
+        }
     },
 
     _emitDone: function(keepVisible, dismissed) {
@@ -232,18 +262,21 @@ AuthenticationDialog.prototype = {
         this._passwordBox.show();
         this._passwordEntry.set_text('');
         this._passwordEntry.grab_key_focus();
+        this._ensureOpen();
     },
 
     _onSessionShowError: function(session, text) {
         this._passwordEntry.set_text('');
         this._errorMessage.set_text(text);
         this._errorBox.show();
+        this._ensureOpen();
     },
 
     _onSessionShowInfo: function(session, text) {
         this._passwordEntry.set_text('');
         this._infoMessage.set_text(text);
         this._infoBox.show();
+        this._ensureOpen();
     },
 
     destroySession: function() {
@@ -290,22 +323,20 @@ AuthenticationAgent.prototype = {
     },
 
     _onInitiate: function(nativeAgent, actionId, message, iconName, cookie, userNames) {
-        this._currentDialog = new AuthenticationDialog(message, cookie, userNames);
-        if (!this._currentDialog.open(global.get_current_time())) {
-            // This can fail if e.g. unable to get input grab
-            //
-            // In an ideal world this wouldn't happen (because the
-            // Shell is in complete control of the session) but that's
-            // just not how things work right now.
-            //
-            // We could add retrying if this turns out to be a problem
-            log('polkitAuthenticationAgent: Failed to show modal dialog');
-            this._currentDialog.destroySession();
-            this._currentDialog = null;
-            this._native.complete(false)
-        } else {
-            this._currentDialog.connect('done', Lang.bind(this, this._onDialogDone));
-        }
+        this._currentDialog = new AuthenticationDialog(actionId, message, cookie, userNames);
+
+        // We actually don't want to open the dialog until we know for
+        // sure that we're going to interact with the user. For
+        // example, if the password for the identity to auth is blank
+        // (which it will be on a live CD) then there will be no
+        // conversation at all... of course, we don't *know* that
+        // until we actually try it.
+        //
+        // See https://bugzilla.gnome.org/show_bug.cgi?id=643062 for more
+        // discussion.
+
+        this._currentDialog.connect('done', Lang.bind(this, this._onDialogDone));
+        this._currentDialog.startAuthentication();
     },
 
     _onCancel: function(nativeAgent) {
