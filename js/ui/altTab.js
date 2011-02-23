@@ -217,33 +217,21 @@ AltTabPopup.prototype = {
 
         this._disableHover();
 
-        if (action == Meta.KeyBindingAction.SWITCH_GROUP)
-            this._select(this._currentApp, backwards ? this._previousWindow() : this._nextWindow());
-        else if (keysym == Clutter.Escape)
+        if (keysym == Clutter.Escape) {
             this.destroy();
-        else if (this._thumbnailsFocused) {
-            if (action == Meta.KeyBindingAction.SWITCH_WINDOWS)
-                if (backwards) {
-                    if (this._currentWindow == 0 || this._currentWindow == -1)
-                        this._select(this._previousApp());
-                    else
-                        this._select(this._currentApp, this._previousWindow());
-                } else {
-                    if (this._currentWindow == this._appIcons[this._currentApp].cachedWindows.length - 1)
-                        this._select(this._nextApp());
-                    else
-                        this._select(this._currentApp, this._nextWindow());
-                }
-            else if (keysym == Clutter.Left)
+        } else if (action == Meta.KeyBindingAction.SWITCH_GROUP) {
+            this._select(this._currentApp, backwards ? this._previousWindow() : this._nextWindow());
+        } else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS) {
+            this._select(backwards ? this._previousApp() : this._nextApp());
+        } else if (this._thumbnailsFocused) {
+            if (keysym == Clutter.Left)
                 this._select(this._currentApp, this._previousWindow());
             else if (keysym == Clutter.Right)
                 this._select(this._currentApp, this._nextWindow());
             else if (keysym == Clutter.Up)
                 this._select(this._currentApp, null, true);
         } else {
-            if (action == Meta.KeyBindingAction.SWITCH_WINDOWS)
-                this._select(backwards ? this._previousApp() : this._nextApp());
-            else if (keysym == Clutter.Left)
+            if (keysym == Clutter.Left)
                 this._select(this._previousApp());
             else if (keysym == Clutter.Right)
                 this._select(this._nextApp());
