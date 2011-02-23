@@ -156,29 +156,11 @@ AltTabPopup.prototype = {
                     this._select(0, 0);
             }
         } else if (this._appIcons.length == 1) {
-            if (!backward && this._appIcons[0].cachedWindows.length > 1) {
-                // For compatibility with the multi-app case below
-                this._select(0, 1, true);
-            } else
-                this._select(0);
+            this._select(0);
         } else if (backward) {
             this._select(this._appIcons.length - 1);
         } else {
-            let firstWindows = this._appIcons[0].cachedWindows;
-            if (firstWindows.length > 1) {
-                let curAppNextWindow = firstWindows[1];
-                let nextAppWindow = this._appIcons[1].cachedWindows[0];
-
-                // If the next window of the current app is more-recently-used
-                // than the first window of the next app, then select it.
-                if (curAppNextWindow.get_workspace() == global.screen.get_active_workspace() &&
-                    curAppNextWindow.get_user_time() > nextAppWindow.get_user_time())
-                    this._select(0, 1, true);
-                else
-                    this._select(1);
-            } else {
-                this._select(1);
-            }
+            this._select(1);
         }
 
         // There's a race condition; if the user released Alt before
