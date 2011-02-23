@@ -576,6 +576,10 @@ StTooltip StLabel {
     background-position: 10px 10px;
 }
 
+.app-filter:focus {
+    outline: 1px solid #aaa;
+}
+
 .dash-item-container > .app-well-app {
     padding: 4px 8px;
 }

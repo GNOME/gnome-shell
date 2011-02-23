@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
@@ -15,12 +16,12 @@ const Search = imports.ui.search;
 const SearchDisplay = imports.ui.searchDisplay;
 const Tweener = imports.ui.tweener;
 
-function BaseTab(titleActor, pageActor) {
-    this._init(titleActor, pageActor);
+function BaseTab(titleActor, pageActor, name, a11yIcon) {
+    this._init(titleActor, pageActor, name, a11yIcon);
 }
 
 BaseTab.prototype = {
-    _init: function(titleActor, pageActor) {
+    _init: function(titleActor, pageActor, name, a11yIcon) {
         this.title = titleActor;
         this.page = new St.Bin({ child: pageActor,
                                  x_align: St.Align.START,
@@ -28,6 +29,14 @@ BaseTab.prototype = {
                                  x_fill: true,
                                  y_fill: true,
                                  style_class: 'view-tab-page' });
+
+        if (this.title.can_focus) {
+            Main.ctrlAltTabManager.addGroup(this.title, name, a11yIcon);
+        } else {
+            Main.ctrlAltTabManager.addGroup(this.page, name, a11yIcon,
+                                            { proxy: this.title,
+                                              focusCallback: Lang.bind(this, this._a11yFocus) });
+        }
 
         this.visible = false;
     },
@@ -56,6 +65,11 @@ BaseTab.prototype = {
                          });
     },
 
+    _a11yFocus: function() {
+        this._activate();
+        this.page.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+    },
+
     _activate: function() {
         this.emit('activated');
     }
@@ -63,19 +77,19 @@ BaseTab.prototype = {
 Signals.addSignalMethods(BaseTab.prototype);
 
 
-function ViewTab(label, pageActor) {
-    this._init(label, pageActor);
+function ViewTab(label, pageActor, a11yIcon) {
+    this._init(label, pageActor, a11yIcon);
 }
 
 ViewTab.prototype = {
     __proto__: BaseTab.prototype,
 
-    _init: function(label, pageActor) {
+    _init: function(label, pageActor, a11yIcon) {
         let titleActor = new St.Button({ label: label,
                                          style_class: 'view-tab-title' });
         titleActor.connect('clicked', Lang.bind(this, this._activate));
 
-        BaseTab.prototype._init.call(this, titleActor, pageActor);
+        BaseTab.prototype._init.call(this, titleActor, pageActor, label, a11yIcon);
     }
 };
 
@@ -101,7 +115,8 @@ SearchTab.prototype = {
                                         active; it should not exceed ~30
                                         characters. */
                                      hint_text: _("Type to search..."),
-                                     track_hover: true });
+                                     track_hover: true,
+                                     can_focus: true });
         this._text = this._entry.clutter_text;
         this._text.connect('key-press-event', Lang.bind(this, this._onKeyPress));
 
@@ -118,7 +133,9 @@ SearchTab.prototype = {
         this._searchResults = new SearchDisplay.SearchResults(this._searchSystem, this._openSearchSystem);
         BaseTab.prototype._init.call(this,
                                      this._entry,
-                                     this._searchResults.actor);
+                                     this._searchResults.actor,
+                                     _("Search"),
+                                     'edit-find');
 
         this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));
         this._text.connect('activate', Lang.bind(this, function (se) {
@@ -366,8 +383,8 @@ ViewSelector.prototype = {
         }));
     },
 
-    addViewTab: function(title, pageActor) {
-        let viewTab = new ViewTab(title, pageActor);
+    addViewTab: function(title, pageActor, a11yIcon) {
+        let viewTab = new ViewTab(title, pageActor, a11yIcon);
         this._tabs.push(viewTab);
         this._tabBox.add(viewTab.title);
         this._addTab(viewTab);

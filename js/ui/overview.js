@@ -180,10 +180,10 @@ Overview.prototype = {
         this._group.add_actor(this.viewSelector.actor);
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
-        this.viewSelector.addViewTab(_("Windows"), this._workspacesDisplay.actor);
+        this.viewSelector.addViewTab(_("Windows"), this._workspacesDisplay.actor, 'text-x-generic');
 
         let appView = new AppDisplay.AllAppDisplay();
-        this.viewSelector.addViewTab(_("Applications"), appView.actor);
+        this.viewSelector.addViewTab(_("Applications"), appView.actor, 'system-run');
 
         // Default search providers
         this.viewSelector.addSearchProvider(new AppDisplay.AppSearchProvider());

@@ -176,7 +176,8 @@ st_scroll_view_set_vfade (StScrollView *self,
       if (priv->vfade_effect == NULL)
         priv->vfade_effect = g_object_new (ST_TYPE_SCROLL_VIEW_FADE, NULL);
 
-      clutter_actor_add_effect (CLUTTER_ACTOR (self), CLUTTER_EFFECT (priv->vfade_effect));
+      clutter_actor_add_effect_with_name (CLUTTER_ACTOR (self), "vfade",
+                                          CLUTTER_EFFECT (priv->vfade_effect));
     }
    else
     {
