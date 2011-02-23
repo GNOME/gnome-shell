@@ -706,6 +706,8 @@ HotCorner.prototype = {
                     }
                  }
             });
+
+        Main.chrome.addActor(this.actor, { visibleInOverview: true, affectsStruts: false });
     },
 
     destroy: function() {
@@ -866,16 +868,6 @@ Panel.prototype = {
             let childBox = new Clutter.ActorBox();
 
             childBox.y1 = 0;
-            childBox.y2 = this._hotCorner.actor.height;
-            if (this.actor.get_direction() == St.TextDirection.RTL) {
-                childBox.x1 = allocWidth;
-            } else {
-                childBox.x1 = 0;
-            }
-            childBox.x2 = childBox.x1 + this._hotCorner.actor.width;
-            this._hotCorner.actor.allocate(childBox, flags);
-
-            childBox.y1 = 0;
             childBox.y2 = allocHeight;
             if (this.actor.get_direction() == St.TextDirection.RTL) {
                 childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth),
@@ -941,8 +933,7 @@ Panel.prototype = {
                 corner.actor.set_style_pseudo_class(pseudoClass);
             }));
 
-        this._hotCorner = new HotCorner();
-        this._boxContainer.add_actor(this._hotCorner.actor);
+        this._hotCorner = null;
 
         let appMenuButton = new AppMenuButton();
         this._leftBox.add(appMenuButton.actor);
@@ -1030,6 +1021,14 @@ Panel.prototype = {
 
         Mainloop.source_remove(this.button._xdndTimeOut);
         this.button._xdndTimeOut = 0;
+    },
+
+
+    // While there can be multiple hotcorners (one per monitor), the hot corner
+    // that is on top of the Activities button is special since it needs special
+    // coordination with clicking on that button
+    setHotCorner: function(corner) {
+        this._hotCorner = corner;
     },
 
     startStatusArea: function() {

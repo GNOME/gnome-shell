@@ -48,6 +48,7 @@ DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
 let chrome = null;
 let panel = null;
+let hotCorner = null;
 let placesManager = null;
 let overview = null;
 let runDialog = null;
@@ -140,6 +141,7 @@ function start() {
     magnifier = new Magnifier.Magnifier();
     statusIconDispatcher = new StatusIconDispatcher.StatusIconDispatcher();
     panel = new Panel.Panel();
+    hotCorner = new Panel.HotCorner();
     wm = new WindowManager.WindowManager();
     messageTray = new MessageTray.MessageTray();
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
@@ -389,6 +391,11 @@ function _getAndClearErrorStack() {
 
 function _relayout() {
     let primary = global.get_primary_monitor();
+    if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+        hotCorner.actor.set_position(primary.x + primary.width, primary.y);
+    else
+        hotCorner.actor.set_position(primary.x, primary.y);
+    panel.setHotCorner(hotCorner);
     panel.actor.set_position(primary.x, primary.y);
     panel.actor.set_size(primary.width, Panel.PANEL_HEIGHT);
     overview.relayout();
