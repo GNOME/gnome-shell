@@ -141,7 +141,6 @@ function start() {
     magnifier = new Magnifier.Magnifier();
     statusIconDispatcher = new StatusIconDispatcher.StatusIconDispatcher();
     panel = new Panel.Panel();
-    hotCorner = new Panel.HotCorner();
     wm = new WindowManager.WindowManager();
     messageTray = new MessageTray.MessageTray();
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
