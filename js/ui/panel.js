@@ -1040,8 +1040,6 @@ Panel.prototype = {
     },
 
     _onHotCornerEntered : function() {
-        if (this._menus.grabbed)
-            return false;
         if (!this._hotCornerEntered) {
             this._hotCornerEntered = true;
             if (!Main.overview.animationInProgress) {
@@ -1055,8 +1053,6 @@ Panel.prototype = {
     },
 
     _onHotCornerClicked : function() {
-        if (this._menus.grabbed)
-            return false;
          if (!Main.overview.animationInProgress) {
              this._maybeToggleOverviewOnClick();
          }
