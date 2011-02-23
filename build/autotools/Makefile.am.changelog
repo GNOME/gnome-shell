@@ -16,7 +16,6 @@ CHANGELOGS = ChangeLog \
 		version=$(PREV_CHANGELOG_VERSION); \
 	done`
 
-MAINTAINERCLEANFILES += $(srcdir)/ChangeLog $(srcdir)/ChangeLog.pre-*
 CLEANFILES += $(srcdir)/ChangeLog.cache-*
 
 changelogs:
