@@ -1058,6 +1058,13 @@ Panel.prototype = {
                          });
     },
 
+    relayout: function() {
+        let primary = global.get_primary_monitor();
+
+        this.actor.set_position(primary.x, primary.y);
+        this.actor.set_size(primary.width, PANEL_HEIGHT);
+    },
+
     _onTrayIconAdded: function(o, icon, role) {
         icon.height = PANEL_ICON_SIZE;
 

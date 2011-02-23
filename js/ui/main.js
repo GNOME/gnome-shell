@@ -417,8 +417,7 @@ function _relayout() {
             panel.setHotCorner(corner);
     }
 
-    panel.actor.set_position(primary.x, primary.y);
-    panel.actor.set_size(primary.width, Panel.PANEL_HEIGHT);
+    panel.relayout();
     overview.relayout();
 
     // To avoid updating the position and size of the workspaces
