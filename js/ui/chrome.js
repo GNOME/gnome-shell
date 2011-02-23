@@ -31,11 +31,13 @@ Chrome.prototype = {
         Main.uiGroup.add_actor(this.actor);
         this.actor.connect('allocate', Lang.bind(this, this._allocated));
 
-        this._inFullscreen = false;
+        this._monitors = [];
         this._inOverview = false;
 
         this._trackedActors = [];
 
+        global.gdk_screen.connect('monitors-changed',
+                                  Lang.bind(this, this._monitorsChanged));
         global.screen.connect('restacked',
                               Lang.bind(this, this._windowsRestacked));
 
@@ -48,6 +50,8 @@ Chrome.prototype = {
         Main.overview.connect('hidden',
                              Lang.bind(this, this._overviewHidden));
 
+        this._updateMonitors();
+        this._updateFullscreen();
         this._queueUpdateRegions();
     },
 
@@ -187,7 +191,8 @@ Chrome.prototype = {
             let actorData = this._trackedActors[i];
             if (this._inOverview && !actorData.visibleInOverview)
                 this.actor.set_skip_paint(actorData.actor, true);
-            else if (!this._inOverview && this._inFullscreen && !actorData.visibleInFullscreen)
+            else if (!this._inOverview && !actorData.visibleInFullscreen &&
+                     this._findMonitorForActor(actorData.actor).inFullscreen)
                 this.actor.set_skip_paint(actorData.actor, true);
             else
                 this.actor.set_skip_paint(actorData.actor, false);
@@ -206,15 +211,77 @@ Chrome.prototype = {
         this._queueUpdateRegions();
     },
 
+    _updateMonitors: function() {
+        let monitors = global.get_monitors();
+        let primary = global.get_primary_monitor();
+        this._monitors = monitors;
+        for (let i = 0; i < monitors.length; i++) {
+            let monitor = monitors[i];
+            if (monitor.x == primary.x &&
+                monitor.y == primary.y &&
+                monitor.width == primary.width &&
+                monitor.height == primary.height)
+                this._primaryMonitor = monitor;
+        }
+    },
+
+    _findMonitorForRect: function(x, y, w, h) {
+        // First look at what monitor the center of the rectangle is at
+        let cx = x + w/2;
+        let cy = y + h/2;
+        for (let i = 0; i < this._monitors.length; i++) {
+            let monitor = this._monitors[i];
+            if (cx >= monitor.x && cx < monitor.x + monitor.width &&
+                cy >= monitor.y && cy < monitor.y + monitor.height)
+                return monitor;
+        }
+        // If the center is not on a monitor, return the first overlapping monitor
+        for (let i = 0; i < this._monitors.length; i++) {
+            let monitor = this._monitors[i];
+            if (x + w > monitor.x && x < monitor.x + monitor.width &&
+                y + h > monitor.y && y < monitor.y + monitor.height)
+                return monitor;
+        }
+        // otherwise on no monitor
+        return null;
+    },
+
+    _findMonitorForWindow: function(window) {
+        return this._findMonitorForRect(window.x, window.y, window.width, window.height);
+    },
+
+    // This call guarantees that we return some monitor to simplify usage of it
+    // In practice all tracked actors should be visible on some monitor anyway
+    _findMonitorForActor: function(actor) {
+        let [x, y] = actor.get_transformed_position();
+        let [w, h] = actor.get_transformed_size();
+        let monitor = this._findMonitorForRect(x, y, w, h);
+        if (monitor)
+            return monitor;
+        return this._primaryMonitor; // Not on any monitor, pretend its on the primary
+    },
+
+    _monitorsChanged: function() {
+        this._updateMonitors();
+
+        // Update everything that depends on monitor positions
+        this._updateFullscreen();
+        this._updateVisibility();
+        this._queueUpdateRegions();
+    },
+
     _queueUpdateRegions: function() {
         if (!this._updateRegionIdle)
             this._updateRegionIdle = Mainloop.idle_add(Lang.bind(this, this._updateRegions),
                                                        Meta.PRIORITY_BEFORE_REDRAW);
     },
 
-    _windowsRestacked: function() {
+    _updateFullscreen: function() {
         let windows = Main.getWindowActorsForWorkspace(global.screen.get_active_workspace_index());
-        let primary = global.get_primary_monitor();
+
+        // Reset all monitors to not fullscreen
+        for (let i = 0; i < this._monitors.length; i++)
+            this._monitors[i].inFullscreen = false;
 
         // The chrome layer should be visible unless there is a window
         // with layer FULLSCREEN, or a window with layer
@@ -228,39 +295,43 @@ Chrome.prototype = {
 
         // @windows is sorted bottom to top.
 
-        let wasInFullscreen = this._inFullscreen;
-        this._inFullscreen = false;
         for (let i = windows.length - 1; i > -1; i--) {
-            let layer = windows[i].get_meta_window().get_layer();
-
-            // There are 3 cases we check here for:
-            // 1.) Monitor sized window
-            // 2.) Window with a position somewhere on the primary screen having the _NET_WM_FULLSCREEN flag set
-            // 3.) Window that is partly off screen (tries to hide its decorations) which might have negative coords
-            // We check for 1.) and 2.) by checking if the upper right corner is on the primary monitor, but avoid the case
-            // where it overlaps with the secondary screen (like window.x + window.width == primary.x + primary.width)
-            // For 3.) we just ignore negative values as they don't really make sense
+            let window = windows[i];
+            let layer = window.get_meta_window().get_layer();
 
             if (layer == Meta.StackLayer.FULLSCREEN) {
-                if (Math.max(windows[i].x, 0) >= primary.x && Math.max(windows[i].x, 0) < primary.x + primary.width &&
-                    Math.max(windows[i].y, 0) >= primary.y && Math.max(windows[i].y, 0) < primary.y + primary.height) {
-                        this._inFullscreen = true;
-                        break;
-                }
+                let monitor = this._findMonitorForWindow(window);
+                if (monitor)
+                    monitor.inFullscreen = true;
             }
             if (layer == Meta.StackLayer.OVERRIDE_REDIRECT) {
-                if (windows[i].x <= primary.x &&
-                    windows[i].x + windows[i].width >= primary.x + primary.width &&
-                    windows[i].y <= primary.y &&
-                    windows[i].y + windows[i].height >= primary.y + primary.height) {
-                    this._inFullscreen = true;
-                    break;
-                }
+                let monitor = this._findMonitorForWindow(window);
+                if (monitor &&
+                    window.x <= monitor.x &&
+                    window.x + window.width >= monitor.x + monitor.width &&
+                    window.y <= monitor.y &&
+                    window.y + window.height >= monitor.y + monitor.height)
+                    monitor.inFullscreen = true;
             } else
                 break;
         }
+    },
 
-        if (this._inFullscreen != wasInFullscreen) {
+    _windowsRestacked: function() {
+        let wasInFullscreen = [];
+        for (let i = 0; i < this._monitors.length; i++)
+            wasInFullscreen[i] = this._monitors[i].inFullscreen;
+
+        this._updateFullscreen();
+
+        let changed = false;
+        for (let i = 0; i < wasInFullscreen.length; i++) {
+            if (wasInFullscreen[i] != this._monitors[i].inFullscreen) {
+                changed = true;
+                break;
+            }
+        }
+        if (changed) {
             this._updateVisibility();
             this._queueUpdateRegions();
         }
