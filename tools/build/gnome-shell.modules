@@ -237,6 +237,7 @@
 	<dep package="gnome-settings-daemon"/>
 	<dep package="gnome-bluetooth"/>
         <dep package="telepathy-glib"/>
+        <dep package="upower"/>
     </dependencies>
   </autotools>
 
@@ -285,7 +286,6 @@
             size="462754"/>
     <dependencies>
       <dep package="polkit"/>
-      <dep package="dbus-glib"/>
     </dependencies>
     <suggests>
       <dep package="gobject-introspection"/>
