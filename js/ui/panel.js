@@ -640,6 +640,158 @@ PanelCorner.prototype = {
     }
 };
 
+/**
+ * HotCorner:
+ *
+ * This class manages the "hot corner" that can toggle switching to
+ * overview.
+ */
+function HotCorner() {
+    this._init();
+}
+
+HotCorner.prototype = {
+    _init : function() {
+        // We use this flag to mark the case where the user has entered the
+        // hot corner and has not left both the hot corner and a surrounding
+        // guard area (the "environs"). This avoids triggering the hot corner
+        // multiple times due to an accidental jitter.
+        this._entered = false;
+
+        this.actor = new Clutter.Group({ width: 3,
+                                         height: 3,
+                                         reactive: true });
+
+        this._corner = new Clutter.Rectangle({ width: 1,
+                                               height: 1,
+                                               opacity: 0,
+                                               reactive: true });
+
+        this.actor.add_actor(this._corner);
+
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL) {
+            this._corner.set_position(this.actor.width - this._corner.width, 0);
+            this.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
+        } else {
+            this._corner.set_position(0, 0);
+        }
+
+        this._activationTime = 0;
+
+        this.actor.connect('leave-event',
+                           Lang.bind(this, this._onEnvironsLeft));
+        // Clicking on the hot corner environs should result in the same bahavior
+        // as clicking on the hot corner.
+        this.actor.connect('button-release-event',
+                           Lang.bind(this, this._onCornerClicked));
+
+        // In addition to being triggered by the mouse enter event, the hot corner
+        // can be triggered by clicking on it. This is useful if the user wants to
+        // undo the effect of triggering the hot corner once in the hot corner.
+        this._corner.connect('enter-event',
+                             Lang.bind(this, this._onCornerEntered));
+        this._corner.connect('button-release-event',
+                             Lang.bind(this, this._onCornerClicked));
+        this._corner.connect('leave-event',
+                             Lang.bind(this, this._onCornerLeft));
+
+        this._corner._delegate = this._corner;
+        this._corner.handleDragOver = Lang.bind(this,
+            function(source, actor, x, y, time) {
+                 if (source == Main.xdndHandler) {
+                    if(!Main.overview.visible && !Main.overview.animationInProgress) {
+                        this.rippleAnimation();
+                        Main.overview.showTemporarily();
+                        Main.overview.beginItemDrag(actor);
+                    }
+                 }
+            });
+    },
+
+    destroy: function() {
+        this.actor.destroy();
+    },
+
+    _addRipple : function(delay, time, startScale, startOpacity, finalScale, finalOpacity) {
+        // We draw a ripple by using a source image and animating it scaling
+        // outwards and fading away. We want the ripples to move linearly
+        // or it looks unrealistic, but if the opacity of the ripple goes
+        // linearly to zero it fades away too quickly, so we use Tweener's
+        // 'onUpdate' to give a non-linear curve to the fade-away and make
+        // it more visible in the middle section.
+
+        let [x, y] = this._corner.get_transformed_position();
+        let ripple = new St.BoxLayout({ style_class: 'ripple-box',
+                                        opacity: 255 * Math.sqrt(startOpacity),
+                                        scale_x: startScale,
+                                        scale_y: startScale,
+                                        x: x,
+                                        y: y });
+        ripple._opacity =  startOpacity;
+        Tweener.addTween(ripple, { _opacity: finalOpacity,
+                                   scale_x: finalScale,
+                                   scale_y: finalScale,
+                                   delay: delay,
+                                   time: time,
+                                   transition: 'linear',
+                                   onUpdate: function() { ripple.opacity = 255 * Math.sqrt(ripple._opacity); },
+                                   onComplete: function() { ripple.destroy(); } });
+        Main.uiGroup.add_actor(ripple);
+    },
+
+    rippleAnimation: function() {
+        // Show three concentric ripples expanding outwards; the exact
+        // parameters were found by trial and error, so don't look
+        // for them to make perfect sense mathematically
+
+        //              delay  time  scale opacity => scale opacity
+        this._addRipple(0.0,   0.83,  0.25,  1.0,    1.5,  0.0);
+        this._addRipple(0.05,  1.0,   0.0,   0.7,    1.25, 0.0);
+        this._addRipple(0.35,  1.0,   0.0,   0.3,    1,    0.0);
+    },
+
+    _onCornerEntered : function() {
+        if (!this._entered) {
+            this._entered = true;
+            if (!Main.overview.animationInProgress) {
+                this._activationTime = Date.now() / 1000;
+
+                this.rippleAnimation();
+                Main.overview.toggle();
+            }
+        }
+        return false;
+    },
+
+    _onCornerClicked : function() {
+         if (!Main.overview.animationInProgress)
+             this.maybeToggleOverviewOnClick();
+         return false;
+    },
+
+    _onCornerLeft : function(actor, event) {
+        if (event.get_related() != this.actor)
+            this._entered = false;
+        // Consume event, otherwise this will confuse onEnvironsLeft
+        return true;
+    },
+
+    _onEnvironsLeft : function(actor, event) {
+        if (event.get_related() != this._corner)
+            this._entered = false;
+        return false;
+    },
+
+    // Toggles the overview unless this is the first click on the Activities button within the HOT_CORNER_ACTIVATION_TIMEOUT time
+    // of the hot corner being triggered. This check avoids opening and closing the overview if the user both triggered the hot corner
+    // and clicked the Activities button.
+    maybeToggleOverviewOnClick: function() {
+        if (this._activationTime == 0 || Date.now() / 1000 - this._activationTime > HOT_CORNER_ACTIVATION_TIMEOUT)
+            Main.overview.toggle();
+        this._activationTime = 0;
+    }
+}
+
 
 function Panel() {
     this._init();
@@ -712,27 +864,16 @@ Panel.prototype = {
             sideWidth = (allocWidth - centerWidth) / 2;
 
             let childBox = new Clutter.ActorBox();
-            childBox.y1 = 0;
-            childBox.y2 = this._hotCornerEnvirons.height;
-            if (this.actor.get_direction() == St.TextDirection.RTL) {
-                childBox.x1 = allocWidth - this._hotCornerEnvirons.width;
-                childBox.x2 = allocWidth;
-            } else {
-                childBox.x1 = 0;
-                childBox.x2 = this._hotCornerEnvirons.width;
-            }
-            this._hotCornerEnvirons.allocate(childBox, flags);
 
             childBox.y1 = 0;
-            childBox.y2 = this._hotCorner.height;
+            childBox.y2 = this._hotCorner.actor.height;
             if (this.actor.get_direction() == St.TextDirection.RTL) {
-                childBox.x1 = allocWidth - this._hotCorner.width;
-                childBox.x2 = allocWidth;
+                childBox.x1 = allocWidth;
             } else {
                 childBox.x1 = 0;
-                childBox.x2 = this._hotCorner.width;
             }
-            this._hotCorner.allocate(childBox, flags);
+            childBox.x2 = childBox.x1 + this._hotCorner.actor.width;
+            this._hotCorner.actor.allocate(childBox, flags);
 
             childBox.y1 = 0;
             childBox.y2 = allocHeight;
@@ -800,55 +941,8 @@ Panel.prototype = {
                 corner.actor.set_style_pseudo_class(pseudoClass);
             }));
 
-        // We use this flag to mark the case where the user has entered the
-        // hot corner and has not left both the hot corner and a surrounding
-        // guard area (the "environs"). This avoids triggering the hot corner
-        // multiple times due to an accidental jitter.
-        this._hotCornerEntered = false;
-
-        this._hotCornerEnvirons = new Clutter.Rectangle({ width: 3,
-                                                          height: 3,
-                                                          opacity: 0,
-                                                          reactive: true });
-
-        this._hotCorner = new Clutter.Rectangle({ width: 1,
-                                                  height: 1,
-                                                  opacity: 0,
-                                                  reactive: true });
-
-        this._hotCornerActivationTime = 0;
-
-        this._hotCornerEnvirons.connect('leave-event',
-                                        Lang.bind(this, this._onHotCornerEnvironsLeft));
-        // Clicking on the hot corner environs should result in the same bahavior
-        // as clicking on the hot corner.
-        this._hotCornerEnvirons.connect('button-release-event',
-                                        Lang.bind(this, this._onHotCornerClicked));
-
-        // In addition to being triggered by the mouse enter event, the hot corner
-        // can be triggered by clicking on it. This is useful if the user wants to
-        // undo the effect of triggering the hot corner once in the hot corner.
-        this._hotCorner.connect('enter-event',
-                                Lang.bind(this, this._onHotCornerEntered));
-        this._hotCorner.connect('button-release-event',
-                                Lang.bind(this, this._onHotCornerClicked));
-        this._hotCorner.connect('leave-event',
-                                Lang.bind(this, this._onHotCornerLeft));
-
-        this._hotCorner._delegate = this._hotCorner;
-        this._hotCorner.handleDragOver = Lang.bind(this,
-            function(source, actor, x, y, time) {
-                 if (source == Main.xdndHandler) {
-                    if(!Main.overview.visible && !Main.overview.animationInProgress) {
-                        this.rippleAnimation();
-                        Main.overview.showTemporarily();
-                        Main.overview.beginItemDrag(actor);
-                    }
-                 }
-            });
-
-        this._boxContainer.add_actor(this._hotCornerEnvirons);
-        this._boxContainer.add_actor(this._hotCorner);
+        this._hotCorner = new HotCorner();
+        this._boxContainer.add_actor(this._hotCorner.actor);
 
         let appMenuButton = new AppMenuButton();
         this._leftBox.add(appMenuButton.actor);
@@ -894,7 +988,7 @@ Panel.prototype = {
         // to switch to.
         this.button.connect('clicked', Lang.bind(this, function(b) {
             if (!Main.overview.animationInProgress) {
-                this._maybeToggleOverviewOnClick();
+                this._hotCorner.maybeToggleOverviewOnClick();
                 return true;
             } else {
                 return false;
@@ -1001,84 +1095,4 @@ Panel.prototype = {
             this._trayBox.remove_actor(icon);
     },
 
-    _addRipple : function(delay, time, startScale, startOpacity, finalScale, finalOpacity) {
-        // We draw a ripple by using a source image and animating it scaling
-        // outwards and fading away. We want the ripples to move linearly
-        // or it looks unrealistic, but if the opacity of the ripple goes
-        // linearly to zero it fades away too quickly, so we use Tweener's
-        // 'onUpdate' to give a non-linear curve to the fade-away and make
-        // it more visible in the middle section.
-
-        let [x, y] = this._hotCorner.get_transformed_position();
-        let ripple = new St.BoxLayout({ style_class: 'ripple-box',
-                                        opacity: 255 * Math.sqrt(startOpacity),
-                                        scale_x: startScale,
-                                        scale_y: startScale,
-                                        x: x,
-                                        y: y });
-        ripple._opacity =  startOpacity;
-        Tweener.addTween(ripple, { _opacity: finalOpacity,
-                                   scale_x: finalScale,
-                                   scale_y: finalScale,
-                                   delay: delay,
-                                   time: time,
-                                   transition: 'linear',
-                                   onUpdate: function() { ripple.opacity = 255 * Math.sqrt(ripple._opacity); },
-                                   onComplete: function() { ripple.destroy(); } });
-        Main.uiGroup.add_actor(ripple);
-    },
-
-    rippleAnimation: function() {
-        // Show three concentric ripples expanding outwards; the exact
-        // parameters were found by trial and error, so don't look
-        // for them to make perfect sense mathematically
-
-        //              delay  time  scale opacity => scale opacity
-        this._addRipple(0.0,   0.83,  0.25,  1.0,    1.5,  0.0);
-        this._addRipple(0.05,  1.0,   0.0,   0.7,    1.25, 0.0);
-        this._addRipple(0.35,  1.0,   0.0,   0.3,    1,    0.0);
-    },
-
-    _onHotCornerEntered : function() {
-        if (!this._hotCornerEntered) {
-            this._hotCornerEntered = true;
-            if (!Main.overview.animationInProgress) {
-                this._hotCornerActivationTime = Date.now() / 1000;
-
-                this.rippleAnimation();
-                Main.overview.toggle();
-            }
-        }
-        return false;
-    },
-
-    _onHotCornerClicked : function() {
-         if (!Main.overview.animationInProgress) {
-             this._maybeToggleOverviewOnClick();
-         }
-         return false;
-    },
-
-    _onHotCornerLeft : function(actor, event) {
-        if (event.get_related() != this._hotCornerEnvirons) {
-            this._hotCornerEntered = false;
-        }
-        return false;
-    },
-
-    _onHotCornerEnvironsLeft : function(actor, event) {
-        if (event.get_related() != this._hotCorner) {
-            this._hotCornerEntered = false;
-        }
-        return false;
-    },
-
-    // Toggles the overview unless this is the first click on the Activities button within the HOT_CORNER_ACTIVATION_TIMEOUT time
-    // of the hot corner being triggered. This check avoids opening and closing the overview if the user both triggered the hot corner
-    // and clicked the Activities button.
-    _maybeToggleOverviewOnClick: function() {
-        if (this._hotCornerActivationTime == 0 || Date.now() / 1000 - this._hotCornerActivationTime > HOT_CORNER_ACTIVATION_TIMEOUT)
-            Main.overview.toggle();
-        this._hotCornerActivationTime = 0;
-    }
 };
