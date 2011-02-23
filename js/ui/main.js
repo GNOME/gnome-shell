@@ -48,7 +48,7 @@ DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
 let chrome = null;
 let panel = null;
-let hotCorner = null;
+let hotCorners = [];
 let placesManager = null;
 let overview = null;
 let runDialog = null;
@@ -390,12 +390,33 @@ function _getAndClearErrorStack() {
 }
 
 function _relayout() {
+    let monitors = global.get_monitors();
+    if (monitors.length != hotCorners.length) {
+        // destroy old corners
+        for (let i = 0; i < hotCorners.length; i++)
+            hotCorners[i].destroy();
+        hotCorners = [];
+        for (let i = 0; i < monitors.length; i++)
+            hotCorners[i] = new Panel.HotCorner();
+    }
+
+
     let primary = global.get_primary_monitor();
-    if (St.Widget.get_default_direction() == St.TextDirection.RTL)
-        hotCorner.actor.set_position(primary.x + primary.width, primary.y);
-    else
-        hotCorner.actor.set_position(primary.x, primary.y);
-    panel.setHotCorner(hotCorner);
+    for (let i = 0; i < monitors.length; i++) {
+        let monitor = monitors[i];
+        let corner = hotCorners[i];
+        let isPrimary = (monitor.x == primary.x &&
+                         monitor.y == primary.y &&
+                         monitor.width == primary.width &&
+                         monitor.height == primary.height);
+        if (St.Widget.get_default_direction() == St.TextDirection.RTL)
+            corner.actor.set_position(monitor.x + monitor.width, monitor.y);
+        else
+            corner.actor.set_position(monitor.x, monitor.y);
+        if (isPrimary)
+            panel.setHotCorner(corner);
+    }
+
     panel.actor.set_position(primary.x, primary.y);
     panel.actor.set_size(primary.width, Panel.PANEL_HEIGHT);
     overview.relayout();
