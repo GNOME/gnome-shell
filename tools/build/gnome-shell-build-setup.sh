@@ -83,7 +83,7 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject
     xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good
-    libltdl-dev libvorbis-dev iso-codes libgnome-keyring-dev libusb-1.0.0-dev
+    libltdl-dev libvorbis-dev iso-codes libgnome-keyring-dev libusb-1.0-0-dev
     libupower-glib-dev libcups2-dev evolution-data-server-dev
     libecal1.2-dev libedataserverui1.2-dev
     "
