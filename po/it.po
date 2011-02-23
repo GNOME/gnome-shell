@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-21 22:44+0100\n"
-"PO-Revision-Date: 2011-02-21 22:51+0100\n"
+"POT-Creation-Date: 2011-02-23 18:26+0100\n"
+"PO-Revision-Date: 2011-02-23 18:28+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -93,7 +93,18 @@ msgid ""
 "'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
 "records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
 "at the optimal thread count on the system."
-msgstr "Imposta la pipeline di GStreamer utilizzata per codificare le registrazioni, seguendo la sintassi di gst-launch. La pipeline dovrebbe presentare un pad sink scollegato dove il video viene effettivamente registrato. Dispone normalmente di un pad sorgente scollegato: l'output da quel pad viene scritto nel file di uscita. La pipeline può comunque gestire autonomamente il proprio output: questo può essere utile per inviare l'output verso un server icecast attraverso shout2send o simili. Quando non impostata o senza alcun valore, viene usata la pipeline predefinita il cui valore è \"videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux\" e che registra nel formato WEBM usando il codec VP8. %T è usato come un segnaposto per una stima del valore di thread ottimale per il sistema in uso."
+msgstr ""
+"Imposta la pipeline di GStreamer utilizzata per codificare le registrazioni, "
+"seguendo la sintassi di gst-launch. La pipeline dovrebbe presentare un pad "
+"sink scollegato dove il video viene effettivamente registrato. Dispone "
+"normalmente di un pad sorgente scollegato: l'output da quel pad viene "
+"scritto nel file di uscita. La pipeline può comunque gestire autonomamente "
+"il proprio output: questo può essere utile per inviare l'output verso un "
+"server icecast attraverso shout2send o simili. Quando non impostata o senza "
+"alcun valore, viene usata la pipeline predefinita il cui valore è "
+"\"videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux\" e che "
+"registra nel formato WEBM usando il codec VP8. %T è usato come un segnaposto "
+"per una stima del valore di thread ottimale per il sistema in uso."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -537,7 +548,7 @@ msgstr "Visualizza sorgente"
 msgid "Web Page"
 msgstr "Pagina web"
 
-#: ../js/ui/messageTray.js:1864
+#: ../js/ui/messageTray.js:1902
 msgid "System Information"
 msgstr "Informazione di sistema"
 
@@ -561,7 +572,7 @@ msgstr "Chiudi %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:770
+#: ../js/ui/panel.js:772
 msgid "Activities"
 msgstr "Attività"
 
@@ -588,7 +599,7 @@ msgstr "RISORSE E DISPOSITIVI"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:511
+#: ../js/ui/popupMenu.js:612
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -604,43 +615,41 @@ msgstr "Ricerca..."
 msgid "No matching results."
 msgstr "Nessun risultato corrispondente."
 
-#: ../js/ui/statusMenu.js:102
+#: ../js/ui/statusMenu.js:99 ../js/ui/statusMenu.js:163
+msgid "Power Off..."
+msgstr "Spegni..."
+
+#: ../js/ui/statusMenu.js:101 ../js/ui/statusMenu.js:162
+msgid "Suspend"
+msgstr "Sospendi"
+
+#: ../js/ui/statusMenu.js:122
 msgid "Available"
 msgstr "Disponibile"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:127
 msgid "Busy"
 msgstr "Non disponibile"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:135
 msgid "My Account"
 msgstr "Account personale"
 
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:139
 msgid "System Settings"
 msgstr "Impostazioni di sistema"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:146
 msgid "Lock Screen"
 msgstr "Blocca schermo"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:150
 msgid "Switch User"
 msgstr "Cambia utente"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:155
 msgid "Log Out..."
 msgstr "Termina sessione..."
-
-#. This is temporarily removed, see
-#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
-#. for details.
-#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
-#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-#. this.menu.addMenuItem(item);
-#: ../js/ui/statusMenu.js:149
-msgid "Shut Down..."
-msgstr "Arresta..."
 
 #: ../js/ui/status/accessibility.js:81
 msgid "Zoom"
@@ -1004,6 +1013,11 @@ msgid_plural "%d weeks ago"
 msgstr[0] "%d settimana fa"
 msgstr[1] "%d settimane fa"
 
+#: ../src/shell-polkit-authentication-agent.c:334
+#, fuzzy
+msgid "Authentation dialog was dismissed by the user"
+msgstr "Il dialogo di autenticazione è stato scartato|respinto|rimosso dall'utente"
+
 #: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "Cartella home"
@@ -1028,3 +1042,6 @@ msgstr "Cerca"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Shut Down..."
+#~ msgstr "Arresta..."
