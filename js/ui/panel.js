@@ -560,7 +560,7 @@ PanelCorner.prototype = {
         this._side = side;
         this.actor = new St.DrawingArea({ style_class: 'panel-corner' });
         this.actor.connect('repaint', Lang.bind(this, this._repaint));
-        this.actor.connect('style-changed', Lang.bind(this, this._reposition));
+        this.actor.connect('style-changed', Lang.bind(this, this.relayout));
     },
 
     _repaint: function() {
@@ -623,7 +623,7 @@ PanelCorner.prototype = {
         cr.restore();
     },
 
-    _reposition: function() {
+    relayout: function() {
         let node = this.actor.get_theme_node();
 
         let cornerRadius = node.get_length("-panel-corner-radius");
@@ -1063,6 +1063,9 @@ Panel.prototype = {
 
         this.actor.set_position(primary.x, primary.y);
         this.actor.set_size(primary.width, PANEL_HEIGHT);
+
+        this._leftCorner.relayout();
+        this._rightCorner.relayout();
     },
 
     _onTrayIconAdded: function(o, icon, role) {
