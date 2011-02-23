@@ -22,7 +22,7 @@
         <applyto>/desktop/gnome/shell/windows/button_layout</applyto>
         <owner>gnome-shell</owner>
         <type>string</type>
-        <default>:minimize,maximize,close</default>
+        <default>:close</default>
         <locale name="C">
            <short>Arrangement of buttons on the titlebar</short>
            <long>
