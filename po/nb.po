@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 2.91.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-20 12:22+0100\n"
-"PO-Revision-Date: 2011-02-20 12:24+0100\n"
+"POT-Creation-Date: 2011-02-23 09:39+0100\n"
+"PO-Revision-Date: 2011-02-23 09:40+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -512,7 +512,7 @@ msgstr "Vis kildekode"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/messageTray.js:1864
+#: ../js/ui/messageTray.js:1902
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -529,14 +529,14 @@ msgid "Applications"
 msgstr "Programmer"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:478
+#: ../js/ui/panel.js:537
 #, c-format
 msgid "Quit %s"
 msgstr "Avslutt %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:612
+#: ../js/ui/panel.js:772
 msgid "Activities"
 msgstr "Aktiviteter"
 
@@ -562,7 +562,7 @@ msgstr "STEDER & ENHETER"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:506
+#: ../js/ui/popupMenu.js:612
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -578,43 +578,41 @@ msgstr "Søker …"
 msgid "No matching results."
 msgstr "Ingen treff."
 
-#: ../js/ui/statusMenu.js:102
+#: ../js/ui/statusMenu.js:99 ../js/ui/statusMenu.js:163
+msgid "Power Off..."
+msgstr "Slå av …"
+
+#: ../js/ui/statusMenu.js:101 ../js/ui/statusMenu.js:162
+msgid "Suspend"
+msgstr "Hvilemodus"
+
+#: ../js/ui/statusMenu.js:122
 msgid "Available"
 msgstr "Tilgjengelig"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:127
 msgid "Busy"
 msgstr "Opptatt"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:135
 msgid "My Account"
 msgstr "Min konto"
 
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:139
 msgid "System Settings"
 msgstr "Systeminnstillinger"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:146
 msgid "Lock Screen"
 msgstr "Lås skjerm"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:150
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:155
 msgid "Log Out..."
 msgstr "Logg ut …"
-
-#. This is temporarily removed, see
-#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
-#. for details.
-#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
-#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-#. this.menu.addMenuItem(item);
-#: ../js/ui/statusMenu.js:149
-msgid "Shut Down..."
-msgstr "Avslutt …"
 
 #: ../js/ui/status/accessibility.js:81
 msgid "Zoom"
@@ -656,7 +654,7 @@ msgstr "Innstillinger for tilgjengelighet"
 msgid "High Contrast"
 msgstr "Høy kontrast"
 
-#: ../js/ui/status/accessibility.js:206
+#: ../js/ui/status/accessibility.js:209
 msgid "Large Text"
 msgstr "Stor tekst"
 
@@ -773,7 +771,11 @@ msgstr "Vennligst oppgi PIN som oppgitt på enheten."
 msgid "OK"
 msgstr "OK"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "Vis tastaturutforming …"
+
+#: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "Innstillinger for lokalisering"
 
@@ -992,21 +994,3 @@ msgstr "Søk"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
-#~ msgid "Search your computer"
-#~ msgstr "Søk på din datamaskin"
-
-#~ msgid "Enable lens mode"
-#~ msgstr "Slå på linsemodus"
-
-#~ msgid "Magnification factor"
-#~ msgstr "Forstørrelsesfaktor"
-
-#~ msgid "Screen position"
-#~ msgstr "Skjermposisjon"
-
-#~ msgid "Show or hide the magnifier"
-#~ msgstr "Vis eller skjul forstørrelsesglass"
-
-#~ msgid "Bluetooth Agent"
-#~ msgstr "Bluetooth-agent"
