@@ -194,7 +194,7 @@ StatusMenuButton.prototype = {
 
     _onQuitSessionActivate: function() {
         Main.overview.hide();
-        Util.spawn(['gnome-session-save', '--logout-dialog']);
+        Util.spawn(['gnome-session-quit', '--logout']);
     },
 
     _onSuspendOrPowerOffActivate: function() {
@@ -204,7 +204,7 @@ StatusMenuButton.prototype = {
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
             this._upClient.suspend_sync(null);
         } else {
-            Util.spawn(['gnome-session-save', '--shutdown-dialog']);
+            Util.spawn(['gnome-session-quit', '--power-off']);
         }
     }
 };
