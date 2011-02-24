@@ -48,6 +48,7 @@ units_sources += \
 	test-cogl-texture-mipmaps.c     	\
 	test-cogl-texture-pixmap-x11.c  	\
 	test-cogl-texture-rectangle.c   	\
+	test-cogl-atlas-migration.c		\
 	test-cogl-vertex-buffer-contiguous.c 	\
 	test-cogl-vertex-buffer-interleved.c 	\
 	test-cogl-vertex-buffer-mutability.c 	\
