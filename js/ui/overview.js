@@ -231,6 +231,8 @@ Overview.prototype = {
                              dragEvent.targetActor._delegate &&
                              dragEvent.targetActor._delegate.metaWindow;
 
+        this._windowSwitchTimestamp = global.get_current_time();
+
         if (targetIsWindow &&
             dragEvent.targetActor._delegate.metaWindow == this._lastHoveredWindow)
             return DND.DragMotionResult.CONTINUE;
@@ -245,7 +247,6 @@ Overview.prototype = {
 
         if (targetIsWindow) {
             this._lastHoveredWindow = dragEvent.targetActor._delegate.metaWindow;
-            this._windowSwitchTimestamp = global.get_current_time();
             this._windowSwitchTimeoutId = Mainloop.timeout_add(DND_WINDOW_SWITCH_TIMEOUT,
                                             Lang.bind(this, function() {
                                                 this._needsFakePointerEvent = true;
