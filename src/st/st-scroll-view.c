@@ -595,9 +595,17 @@ st_scroll_view_allocate (ClutterActor          *actor,
   /* Vertical scrollbar */
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
     {
-      child_box.x1 = content_box.x2 - sb_width;
+      if (st_widget_get_direction (ST_WIDGET (actor)) == ST_TEXT_DIRECTION_RTL)
+        {
+          child_box.x1 = content_box.x1;
+          child_box.x2 = content_box.x1 + sb_width;
+        }
+      else
+        {
+          child_box.x1 = content_box.x2 - sb_width;
+          child_box.x2 = content_box.x2;
+        }
       child_box.y1 = content_box.y1;
-      child_box.x2 = content_box.x2;
       child_box.y2 = content_box.y2 - (hscrollbar_visible ? sb_height : 0);
 
       clutter_actor_allocate (priv->vscroll, &child_box, flags);
@@ -606,9 +614,17 @@ st_scroll_view_allocate (ClutterActor          *actor,
   /* Horizontal scrollbar */
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->hscroll))
     {
-      child_box.x1 = content_box.x1;
+      if (st_widget_get_direction (ST_WIDGET (actor)) == ST_TEXT_DIRECTION_RTL)
+        {
+          child_box.x1 = content_box.x1 + (vscrollbar_visible ? sb_width : 0);
+          child_box.x2 = content_box.x2;
+        }
+      else
+        {
+          child_box.x1 = content_box.x1;
+          child_box.x2 = content_box.x2 - (vscrollbar_visible ? sb_width : 0);
+        }
       child_box.y1 = content_box.y2 - sb_height;
-      child_box.x2 = content_box.x2 - (vscrollbar_visible ? sb_width : 0);
       child_box.y2 = content_box.y2;
 
       clutter_actor_allocate (priv->hscroll, &child_box, flags);
@@ -623,9 +639,17 @@ st_scroll_view_allocate (ClutterActor          *actor,
     sb_width = 0;
 
   /* Child */
-  child_box.x1 = content_box.x1;
+  if (st_widget_get_direction (ST_WIDGET (actor)) == ST_TEXT_DIRECTION_RTL)
+    {
+      child_box.x1 = content_box.x1 + sb_width;
+      child_box.x2 = content_box.x2;
+    }
+  else
+    {
+      child_box.x1 = content_box.x1;
+      child_box.x2 = content_box.x2 - sb_width;
+    }
   child_box.y1 = content_box.y1;
-  child_box.x2 = content_box.x2 - sb_width;
   child_box.y2 = content_box.y2 - sb_height;
 
   if (priv->child)
