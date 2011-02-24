@@ -379,7 +379,7 @@ msgstr "Eltávolítás"
 
 #: ../js/ui/dateMenu.js:93
 msgid "Date and Time Settings"
-msgstr "Dátum és idő beállításai"
+msgstr "Dátum- és időbeállítások"
 
 #: ../js/ui/dateMenu.js:112
 msgid "Open Calendar"
@@ -430,7 +430,7 @@ msgstr "%a, %p %l.%M"
 #.
 #: ../js/ui/dateMenu.js:196
 msgid "%A %B %e, %Y"
-msgstr "%Y. %A %b %e"
+msgstr "%Y. %b %e %A"
 
 #: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
@@ -677,7 +677,7 @@ msgstr "Egérbillentyűk"
 
 #: ../js/ui/status/accessibility.js:112
 msgid "Universal Access Settings"
-msgstr "Akadálymentesítés beállításai"
+msgstr "Akadálymentesítési beállítások"
 
 #: ../js/ui/status/accessibility.js:164
 msgid "High Contrast"
@@ -707,7 +707,7 @@ msgstr "Új eszköz beállítása…"
 
 #: ../js/ui/status/bluetooth.js:95
 msgid "Bluetooth Settings"
-msgstr "Bluetooth beállításai"
+msgstr "Bluetooth-beállítások"
 
 #: ../js/ui/status/bluetooth.js:192
 msgid "Connection"
