@@ -665,19 +665,12 @@ clutter_main (void)
   loop = g_main_loop_new (NULL, TRUE);
   main_loops = g_slist_prepend (main_loops, loop);
 
-#ifdef HAVE_CLUTTER_FRUITY
-  /* clutter fruity creates an application that forwards events and manually
-   * spins the mainloop
-   */
-  clutter_fruity_main ();
-#else
   if (g_main_loop_is_running (main_loops->data))
     {
       clutter_threads_leave ();
       g_main_loop_run (loop);
       clutter_threads_enter ();
     }
-#endif
 
   main_loops = g_slist_remove (main_loops, loop);
 
@@ -1406,14 +1399,9 @@ pre_parse_hook (GOptionContext  *context,
   if (env_string)
     clutter_disable_mipmap_text = TRUE;
 
-#ifdef HAVE_CLUTTER_FRUITY
-  /* we always enable fuzzy picking in the "fruity" backend */
-  clutter_use_fuzzy_picking = TRUE;
-#else
   env_string = g_getenv ("CLUTTER_FUZZY_PICK");
   if (env_string)
     clutter_use_fuzzy_picking = TRUE;
-#endif /* HAVE_CLUTTER_FRUITY */
 
   return _clutter_backend_pre_parse (backend, error);
 }

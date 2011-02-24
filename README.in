@@ -210,9 +210,6 @@ Clutter has additional command line options for the configure script:
         win32:
                 Microsoft Windows(tm) WGL backend.
 
-        fruity:
-                Apple iPod Touch(tm)/iPhone(tm) backend. (EXPERIMENTAL)
-
  --with-imagebackend=[gdk-pixbuf/quartz/internal]
         Select the image loading backend used by COGL
 

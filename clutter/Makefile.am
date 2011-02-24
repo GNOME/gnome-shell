@@ -536,29 +536,6 @@ clutterosx_includedir = $(clutter_includedir)/osx
 clutterosx_include_HEADERS = $(osx_source_h)
 endif # SUPPORT_OSX
 
-# Fruity backend rules
-fruity_source_c = \
-	$(srcdir)/fruity/clutter-backend-fruity.c	\
-	$(srcdir)/fruity/clutter-stage-fruity.c		\
-	$(srcdir)/fruity/clutter-fruity.c		\
-	$(NULL)
-
-fruity_source_h = \
-	$(srcdir)/fruity/clutter-backend-fruity.h	\
-	$(srcdir)/fruity/clutter-stage-fruity.h		\
-	$(srcdir)/fruity/clutter-fruity.h		\
-	$(NULL)
-
-if SUPPORT_FRUITY
-AM_CFLAGS += -xobjective-c
-
-backend_source_c_priv += $(fruity_source_c)
-backend_source_h_priv += $(fruity_source_h)
-
-clutterfruity_includedir = $(clutter_includedir)/fruity
-clutterfruity_include_HEADERS = $(srcdir)/fruity/clutter-fruity.h
-endif # SUPPORT_FRUITY
-
 # Wayland backend rules
 if SUPPORT_WAYLAND
 backend_source_h += \

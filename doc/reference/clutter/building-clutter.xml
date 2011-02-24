@@ -141,7 +141,7 @@
               </varlistentry>
 
               <varlistentry>
-                <term>--with-flavour=[glx/eglx/eglnative/win32/osx/fruity/cex100]</term>
+                <term>--with-flavour=[glx/eglx/eglnative/win32/osx/cex100]</term>
                 <listitem>
                   <para>Select the Clutter backend; default=glx.
                   </para>

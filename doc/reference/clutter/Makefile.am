@@ -95,7 +95,6 @@ IGNORE_HFILES=\
 	cogl 				\
 	egl 				\
 	evdev				\
-	fruity				\
 	glx 				\
 	osx 				\
 	x11 				\

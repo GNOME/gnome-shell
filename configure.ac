@@ -197,7 +197,7 @@ experimental_backend=no
 experimental_image=no
 
 AC_ARG_WITH([flavour],
-            [AC_HELP_STRING([--with-flavour=@<:@glx/opengl-egl-xlib/wayland/eglx/eglnative/osx/win32/fruity/cex100@:>@],
+            [AC_HELP_STRING([--with-flavour=@<:@glx/opengl-egl-xlib/wayland/eglx/eglnative/osx/win32/cex100@:>@],
                             [Select the Clutter window system backend])],
             [CLUTTER_FLAVOUR=$with_flavour])
 
@@ -402,25 +402,6 @@ AS_CASE([$CLUTTER_FLAVOUR],
           FLAVOUR_LIBS="$FLAVOUR_LIBS -lgdl $EVDEV_LIBS"
         ],
 
-        [fruity],
-        [
-          experimental_backend="yes"
-          # the GL header is defined in the COGL checks above
-          CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_FRUITY"
-          AC_DEFINE([HAVE_CLUTTER_FRUITY], [1], [Have the Fruity backend])
-          AC_DEFINE([COGL_HAS_EGL_PLATFORM_FRUITY_SUPPORT], [1],
-                     [Cogl supports OpenGLES using the EGL API with Fruity platform typedefs])
-
-          COGL_DRIVER="gles"
-          # the fruity backend requires a different handling for GLES
-          glesversion=fruity
-
-          FLAVOUR_LIBS="$FLAVOUR_LIBS -ObjC -framework Foundation  -framework CoreFoundation  -framework CoreGraphics  -framework CoreSurface  -framework GraphicsServices  -framework OpenGLES  -framework LayerKit  -framework UIKit"
-
-          CLUTTER_WINSYS=fruity
-          CLUTTER_SONAME_INFIX=fruity
-        ],
-
         [osx],
         [
           experimental_backend="yes"
@@ -462,7 +443,8 @@ AS_CASE([$CLUTTER_FLAVOUR],
           CLUTTER_SONAME_INFIX=win32
         ],
 
-        [AC_MSG_ERROR([Invalid backend for Clutter: use glx, osx, win32, eglx, eglnative or fruity])]
+        [AC_MSG_ERROR([Invalid backend for Clutter: use glx, osx,
+                      win32, eglx or eglnative])]
 )
 
 AS_IF([test "x$SUPPORT_X11" = "x1"],
@@ -536,11 +518,8 @@ AM_CONDITIONAL(SUPPORT_EGL, [test "x$SUPPORT_EGL" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_X11, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_X11" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_NULL" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_GDL, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_GDL" = "x1"])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_FRUITY, [test "x$CLUTTER_WINSYS" = "xfruity"])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_DRM_SURFACELESS, [test "x$SUPPORT_EGL_PLATFORM_DRM_SURFACELESS" = "x1"])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_FRUITY, [test "x$CLUTTER_WINSYS" = "xfruity"])
 AM_CONDITIONAL(SUPPORT_OSX, [test "x$CLUTTER_WINSYS" = "xosx"])
-AM_CONDITIONAL(SUPPORT_FRUITY, [test "x$CLUTTER_WINSYS" = "xfruity"])
 AM_CONDITIONAL(SUPPORT_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
 AM_CONDITIONAL(SUPPORT_CEX100, [test "x$SUPPORT_EGL_PLATFORM_POWERVR_GDL" = "x1"])
 AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$CLUTTER_WINSYS" = "xwayland"])
@@ -647,17 +626,6 @@ AS_IF([test "x$COGL_DRIVER" = "xgles"],
               )
 
 	    NEED_SEPARATE_EGL=yes
-          ],
-
-          [fruity],
-          [
-            cogl_gl_headers="GLES/gl.h GLES/glext.h"
-            AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-            cogl_gles_version_define="COGL_HAS_GLES1"
-
-            AC_CHECK_HEADERS([GLES/egl.h],
-                             [],
-                             [AC_MSG_ERROR([Unable to locate required GLES headers])])
           ],
 
           [AC_MSG_ERROR([Unknown argument for --with-gles])]
