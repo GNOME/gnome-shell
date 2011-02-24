@@ -78,6 +78,12 @@ _cogl_blit_texture_render_begin (CoglBlitData *data)
       cogl_pipeline_set_layer_filters (ctx->blit_texture_pipeline, 0,
                                        COGL_PIPELINE_FILTER_NEAREST,
                                        COGL_PIPELINE_FILTER_NEAREST);
+
+      /* Disable blending by just directly taking the contents of the
+         source texture */
+      cogl_pipeline_set_blend (ctx->blit_texture_pipeline,
+                               "RGBA = ADD(SRC_COLOR, 0)",
+                               NULL);
     }
 
   pipeline = ctx->blit_texture_pipeline;
