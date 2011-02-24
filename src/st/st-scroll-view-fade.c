@@ -42,6 +42,7 @@ static const gchar *fade_glsl_shader =
 "uniform float scrollbar_width;\n"
 "uniform float offset_bottom;\n"
 "uniform float offset_top;\n"
+"uniform bool rtl;\n"
 "\n"
 "void main ()\n"
 "{\n"
@@ -51,11 +52,11 @@ static const gchar *fade_glsl_shader =
 " float ratio = 0.0;\n"
 " float fade_bottom_start = height - offset_bottom;\n"
 " \n"
-" if (offset_top != 0.0 && y < offset_top && x < (width - scrollbar_width)) {\n"
+" if (offset_top != 0.0 && y < offset_top && ((rtl && x > scrollbar_width) || (!rtl && x < (width - scrollbar_width)))) {\n"
 "  ratio = y / offset_top;\n"
 "  cogl_color_out = color * ratio;\n"
 " }\n"
-" else if (offset_bottom != 0.0 && y > fade_bottom_start && x < (width - scrollbar_width)) {\n"
+" else if (offset_bottom != 0.0 && y > fade_bottom_start && ((rtl && x > scrollbar_width) || (!rtl && x < (width - scrollbar_width)))) {\n"
 "  ratio = (height - y)/(height - fade_bottom_start);\n"
 "  cogl_color_out = color * ratio;\n"
 " }\n"
@@ -80,6 +81,7 @@ struct _StScrollViewFade
   gint scrollbar_width_uniform;
   gint offset_top_uniform;
   gint offset_bottom_uniform;
+  gint rtl_uniform;
 
   StAdjustment *vadjustment;
 
@@ -141,6 +143,8 @@ st_scroll_view_fade_pre_paint (ClutterEffect *effect)
         cogl_program_get_uniform_location (self->program, "width");
       self->scrollbar_width_uniform =
         cogl_program_get_uniform_location (self->program, "scrollbar_width");
+      self->rtl_uniform =
+        cogl_program_get_uniform_location (self->program, "rtl");
       self->offset_top_uniform =
         cogl_program_get_uniform_location (self->program, "offset_top");
       self->offset_bottom_uniform =
@@ -199,6 +203,8 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
     cogl_program_set_uniform_1f (self->program, self->width_uniform, clutter_actor_get_width (self->actor));
   if (self->scrollbar_width_uniform > -1)
     cogl_program_set_uniform_1f (self->program, self->scrollbar_width_uniform, clutter_actor_get_width (vscroll));
+  if (self->rtl_uniform > -1)
+    cogl_program_set_uniform_1i (self->program, self->rtl_uniform, (st_widget_get_direction (ST_WIDGET (self->actor)) == ST_TEXT_DIRECTION_RTL));
 
   material = clutter_offscreen_effect_get_target (effect);
   cogl_material_set_user_program (material, self->program);
@@ -408,6 +414,7 @@ st_scroll_view_fade_init (StScrollViewFade *self)
   self->height_uniform = -1;
   self->width_uniform = -1;
   self->scrollbar_width_uniform = -1;
+  self->rtl_uniform = -1;
   self->offset_top_uniform = -1;
   self->offset_bottom_uniform = -1;
   self->fade_offset = DEFAULT_FADE_OFFSET;
