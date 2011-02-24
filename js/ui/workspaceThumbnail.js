@@ -424,7 +424,7 @@ ThumbnailsBox.prototype = {
         this._indicatorY = 0; // only used when _animatingIndicator is true
 
         this._stateCounts = {};
-        for (key in ThumbnailState)
+        for (let key in ThumbnailState)
             this._stateCounts[ThumbnailState[key]] = 0;
 
         this._thumbnails = [];
@@ -441,7 +441,7 @@ ThumbnailsBox.prototype = {
         this._stateUpdateQueued = false;
 
         this._stateCounts = {};
-        for (key in ThumbnailState)
+        for (let key in ThumbnailState)
             this._stateCounts[ThumbnailState[key]] = 0;
 
         // The "porthole" is the portion of the screen that we show in the workspaces

@@ -17,7 +17,7 @@ function _patchContainerClass(containerClass) {
     // This one is a straightforward mapping of the C method
     containerClass.prototype.child_set = function(actor, props) {
         let meta = this.get_child_meta(actor);
-        for (prop in props)
+        for (let prop in props)
             meta[prop] = props[prop];
     };
 

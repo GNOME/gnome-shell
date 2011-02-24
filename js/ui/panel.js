@@ -410,7 +410,7 @@ AppMenuButton.prototype = {
         let [minSize, naturalSize] = this._iconBox.get_preferred_height(forWidth);
         alloc.min_size = minSize;
         alloc.natural_size = naturalSize;
-        [minSizfe, naturalSize] = this._label.actor.get_preferred_height(forWidth);
+        [minSize, naturalSize] = this._label.actor.get_preferred_height(forWidth);
         if (minSize > alloc.min_size)
             alloc.min_size = minSize;
         if (naturalSize > alloc.natural_size)
