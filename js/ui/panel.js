@@ -1042,9 +1042,10 @@ Panel.prototype = {
     },
 
     startupAnimation: function() {
-        this.actor.y = -this.actor.height;
+        let oldY = this.actor.y;
+        this.actor.y = oldY - this.actor.height;
         Tweener.addTween(this.actor,
-                         { y: 0,
+                         { y: oldY,
                            time: 0.2,
                            transition: 'easeOutQuad'
                          });

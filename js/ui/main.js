@@ -196,6 +196,9 @@ function start() {
     ExtensionSystem.init();
     ExtensionSystem.loadExtensions();
 
+    // Perform initial relayout here
+    _relayout();
+
     panel.startStatusArea();
     panel.startupAnimation();
 
@@ -203,9 +206,6 @@ function start() {
     display.connect('overlay-key', Lang.bind(overview, overview.toggle));
 
     global.stage.connect('captured-event', _globalKeyPressHandler);
-
-    // Perform initial relayout here
-    _relayout();
 
     _log('info', 'loaded at ' + _startDate);
     log('GNOME Shell started at ' + _startDate);
