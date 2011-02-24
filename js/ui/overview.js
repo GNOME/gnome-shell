@@ -213,8 +213,17 @@ Overview.prototype = {
             global.screen.get_workspace_by_index(this._lastActiveWorkspaceIndex).activate(time);
             this.hideTemporarily();
         }
+        this._resetWindowSwitchTimeout();
         this._lastHoveredWindow = null;
         DND.removeMonitor(this._dragMonitor);
+    },
+
+    _resetWindowSwitchTimeout: function() {
+        if (this._windowSwitchTimeoutId != 0) {
+            Mainloop.source_remove(this._windowSwitchTimeoutId);
+            this._windowSwitchTimeoutId = 0;
+            this._needsFakePointerEvent = false;
+        }
     },
 
     _fakePointerEvent: function() {
@@ -239,11 +248,7 @@ Overview.prototype = {
 
         this._lastHoveredWindow = null;
 
-        if (this._windowSwitchTimeoutId != 0) {
-            Mainloop.source_remove(this._windowSwitchTimeoutId);
-            this._windowSwitchTimeoutId = 0;
-            this._needsFakePointerEvent = false;
-        }
+        this._resetWindowSwitchTimeout();
 
         if (targetIsWindow) {
             this._lastHoveredWindow = dragEvent.targetActor._delegate.metaWindow;
