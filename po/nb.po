@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter 2.91.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-20 19:19+0100\n"
+"POT-Creation-Date: 2011-02-24 11:28+0100\n"
 "PO-Revision-Date: 2011-01-20 19:20+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
@@ -398,7 +398,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6472
+#: ../src/core/window.c:6492
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -414,7 +414,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7135
+#: ../src/core/window.c:7155
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -820,7 +820,10 @@ msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
 "the parent window."
-msgstr "Hvis denne er satt til sann vil modale dialoger vises festet til tittellinjen på opphavsvinduet og flyttes sammen med dette i stedet for å ha individuelle tittellinjer."
+msgstr ""
+"Hvis denne er satt til sann vil modale dialoger vises festet til "
+"tittellinjen på opphavsvinduet og flyttes sammen med dette i stedet for å ha "
+"individuelle tittellinjer."
 
 #: ../src/tools/mutter-message.c:151
 #, c-format
