@@ -539,10 +539,8 @@ function _globalKeyPressHandler(actor, event) {
 
 function _findModal(actor) {
     for (let i = 0; i < modalActorFocusStack.length; i++) {
-        let [stackActor, stackFocus] = modalActorFocusStack[i];
-        if (stackActor == actor) {
+        if (modalActorFocusStack[i].actor == actor)
             return i;
-        }
     }
     return -1;
 }
@@ -568,7 +566,6 @@ function _findModal(actor) {
  * Returns: true iff we successfully acquired a grab or already had one
  */
 function pushModal(actor, timestamp) {
-
     if (timestamp == undefined)
         timestamp = global.get_current_time();
 
@@ -582,20 +579,24 @@ function pushModal(actor, timestamp) {
     global.set_stage_input_mode(Shell.StageInputMode.FULLSCREEN);
 
     modalCount += 1;
-    actor.connect('destroy', function() {
+    let actorDestroyId = actor.connect('destroy', function() {
         let index = _findModal(actor);
         if (index >= 0)
             modalActorFocusStack.splice(index, 1);
     });
     let curFocus = global.stage.get_key_focus();
+    let curFocusDestroyId;
     if (curFocus != null) {
-        curFocus.connect('destroy', function() {
+        curFocusDestroyId = curFocus.connect('destroy', function() {
             let index = _findModal(actor);
             if (index >= 0)
-                modalActorFocusStack[index][1] = null;
+                modalActorFocusStack[index].actor = null;
         });
     }
-    modalActorFocusStack.push([actor, curFocus]);
+    modalActorFocusStack.push({ actor: actor,
+                                focus: curFocus,
+                                destroyId: actorDestroyId,
+                                focusDestroyId: curFocusDestroyId });
 
     global.stage.set_key_focus(actor);
     return true;
@@ -615,28 +616,42 @@ function pushModal(actor, timestamp) {
  * global.get_current_time() is assumed.
  */
 function popModal(actor, timestamp) {
-
     if (timestamp == undefined)
         timestamp = global.get_current_time();
 
-    modalCount -= 1;
     let focusIndex = _findModal(actor);
-    if (focusIndex >= 0) {
-        if (focusIndex == modalActorFocusStack.length - 1) {
-            let [stackActor, stackFocus] = modalActorFocusStack[focusIndex];
-            global.stage.set_key_focus(stackFocus);
-        } else {
-            // Remove from the middle, shift the focus chain up
-            for (let i = focusIndex; i < modalActorFocusStack.length - 1; i++) {
-                modalActorFocusStack[i + 1][1] = modalActorFocusStack[i][1];
-            }
-        }
-        modalActorFocusStack.splice(focusIndex, 1);
+    if (focusIndex < 0) {
+        global.stage.set_key_focus(null);
+        global.end_modal(timestamp);
+        global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
+
+        throw new Error('incorrect pop');
     }
+
+    modalCount -= 1;
+
+    let record = modalActorFocusStack[focusIndex];
+    record.actor.disconnect(record.destroyId);
+
+    if (focusIndex == modalActorFocusStack.length - 1) {
+        if (record.focus)
+            record.focus.disconnect(record.focusDestroyId);
+        global.stage.set_key_focus(record.focus);
+    } else {
+        let t = modalActorFocusStack[modalActorFocusStack.length - 1];
+        if (t.focus)
+            t.focus.disconnect(t.focusDestroyId);
+        // Remove from the middle, shift the focus chain up
+        for (let i = modalActorFocusStack.length - 1; i > focusIndex; i--) {
+            modalActorFocusStack[i].focus = modalActorFocusStack[i - 1].focus;
+            modalActorFocusStack[i].focusDestroyId = modalActorFocusStack[i - 1].focusDestroyId;
+        }
+    }
+    modalActorFocusStack.splice(focusIndex, 1);
+
     if (modalCount > 0)
         return;
 
-    global.stage.set_key_focus(null);
     global.end_modal(timestamp);
     global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
 }
