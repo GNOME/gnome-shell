@@ -86,17 +86,18 @@ _cogl_init_feature_overrides (CoglContext *ctx)
                             COGL_FEATURE_TEXTURE_NPOT_REPEAT);
 }
 
-/* FIXME: We don't report a GError here should we? With non NULL
- * displays then there should basically be no risk of error I think,
- * but NULL just says "please do the right thing" and we could hit any
- * number of problems that should be reported back to the caller!
- *
- * Also is it acceptable for construction to report an error
- * or should there be a separate cogl_context_check_status()
- * API of some kind?
+/* For reference: There was some deliberation over whether to have a
+ * constructor that could throw an exception but looking at standard
+ * practices with several high level OO languages including python, C++,
+ * C# Java and Ruby they all support exceptions in constructors and the
+ * general consensus appears to be that throwing an exception is neater
+ * than successfully constructing with an internal error status that
+ * would then have to be explicitly checked via some form of ::is_ok()
+ * method.
  */
 CoglContext *
-cogl_context_new (CoglDisplay *display)
+cogl_context_new (CoglDisplay *display,
+                  GError **error)
 {
   CoglContext *context;
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
@@ -144,6 +145,18 @@ cogl_context_new (CoglDisplay *display)
 
   context->texture_types = NULL;
   context->buffer_types = NULL;
+
+    if (!display)
+    display = cogl_display_new (NULL, NULL);
+  else
+    cogl_object_ref (display);
+
+  if (!cogl_display_setup (display, error))
+    {
+      cogl_object_unref (display);
+      g_free (context);
+      return NULL;
+    }
 
   /* Initialise the driver specific state */
   _cogl_gl_context_init (context);
@@ -411,15 +424,26 @@ _cogl_context_free (CoglContext *context)
 
   g_byte_array_free (context->buffer_map_fallback_array, TRUE);
 
+  cogl_object_unref (context->display);
+
   g_free (context);
 }
 
 CoglContext *
 _cogl_context_get_default (void)
 {
+  GError *error = NULL;
   /* Create if doesn't exist yet */
   if (_context == NULL)
-    _context = cogl_context_new (NULL);
+    {
+      _context = cogl_context_new (NULL, &error);
+      if (!_context)
+        {
+          g_warning ("Failed to create default context: %s",
+                     error->message);
+          g_error_free (error);
+        }
+    }
 
   return _context;
 }
