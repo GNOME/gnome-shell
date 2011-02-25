@@ -880,6 +880,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
   window->compositor_private = NULL;
 
+  window->monitor = meta_screen_get_monitor_for_window (window->screen, window);
+
   if (window->override_redirect)
     {
       window->decorated = FALSE;
@@ -3993,6 +3995,12 @@ move_attached_dialog (MetaWindow *window,
   return FALSE;
 }
 
+void
+meta_window_update_monitor (MetaWindow *window)
+{
+  window->monitor = meta_screen_get_monitor_for_window (window->screen, window);
+}
+
 static void
 meta_window_move_resize_internal (MetaWindow          *window,
                                   MetaMoveResizeFlags  flags,
@@ -4444,6 +4452,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   meta_window_refresh_resize_popup (window);
 
+  meta_window_update_monitor (window);
+
   /* Invariants leaving this function are:
    *   a) window->rect and frame->rect reflect the actual
    *      server-side size/pos of window->xwindow and frame->xwindow
@@ -4659,6 +4669,8 @@ meta_window_configure_notify (MetaWindow      *window,
   window->rect.y = event->y;
   window->rect.width = event->width;
   window->rect.height = event->height;
+  meta_window_update_monitor (window);
+
   if (!event->override_redirect && !event->send_event)
     meta_warning ("Unhandled change of windows override redirect status\n");
 

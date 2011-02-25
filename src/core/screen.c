@@ -2816,7 +2816,9 @@ void
 meta_screen_resize (MetaScreen *screen,
                     int         width,
                     int         height)
-{  
+{
+  GSList *windows, *tmp;
+
   screen->rect.width = width;
   screen->rect.height = height;
 
@@ -2829,6 +2831,19 @@ meta_screen_resize (MetaScreen *screen,
 
   /* Queue a resize on all the windows */
   meta_screen_foreach_window (screen, meta_screen_resize_func, 0);
+
+  /* Fix up monitor for all windows on this screen */
+  windows = meta_display_list_windows (screen->display,
+                                       META_LIST_INCLUDE_OVERRIDE_REDIRECT);
+  for (tmp = windows; tmp != NULL; tmp = tmp->next)
+    {
+      MetaWindow *window = tmp->data;
+
+      if (window->screen == screen)
+        meta_window_update_monitor (window);
+    }
+
+  g_slist_free (windows);
 
   g_signal_emit (screen, screen_signals[MONITORS_CHANGED], 0, index);
 }

@@ -67,6 +67,7 @@ struct _MetaWindow
   
   MetaDisplay *display;
   MetaScreen *screen;
+  const MetaMonitorInfo *monitor;
   MetaWorkspace *workspace;
   Window xwindow;
   /* may be NULL! not all windows get decorated */
@@ -625,5 +626,6 @@ void meta_window_update_icon_now (MetaWindow *window);
 
 void meta_window_update_role (MetaWindow *window);
 void meta_window_update_net_wm_type (MetaWindow *window);
+void meta_window_update_monitor (MetaWindow *window);
 
 #endif
