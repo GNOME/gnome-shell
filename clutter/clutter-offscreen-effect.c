@@ -89,6 +89,16 @@ struct _ClutterOffscreenEffectPrivate
   gfloat target_height;
 
   gint old_opacity_override;
+
+  /* The matrix that was current the last time the fbo was updated. We
+     need to keep track of this to detect when we can reuse the
+     contents of the fbo without redrawing the actor. We need the
+     actual matrix rather than just detecting queued redraws on the
+     actor because any change in the parent hierarchy (even just a
+     translation) could cause the actor to look completely different
+     and it won't cause a redraw to be queued on the parent's
+     children. */
+  CoglMatrix last_matrix_drawn;
 };
 
 G_DEFINE_ABSTRACT_TYPE (ClutterOffscreenEffect,
@@ -244,6 +254,11 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
    */
   cogl_get_modelview_matrix (&modelview);
 
+  /* Store the matrix that was last used when we updated the FBO so
+     that we can detect when we don't need to update the FBO to paint
+     a second time */
+  priv->last_matrix_drawn = modelview;
+
   /* let's draw offscreen */
   cogl_push_framebuffer (priv->offscreen);
 
@@ -347,19 +362,10 @@ clutter_offscreen_effect_real_paint_target (ClutterOffscreenEffect *effect)
 }
 
 static void
-clutter_offscreen_effect_post_paint (ClutterEffect *effect)
+clutter_offscreen_effect_paint_texture (ClutterOffscreenEffect *effect)
 {
-  ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
-  ClutterOffscreenEffectPrivate *priv = self->priv;
+  ClutterOffscreenEffectPrivate *priv = effect->priv;
   CoglMatrix modelview;
-
-  if (priv->offscreen == COGL_INVALID_HANDLE ||
-      priv->target == COGL_INVALID_HANDLE ||
-      priv->actor == NULL)
-    return;
-
-  cogl_pop_matrix ();
-  cogl_pop_framebuffer ();
 
   cogl_push_matrix ();
 
@@ -372,15 +378,58 @@ clutter_offscreen_effect_post_paint (ClutterEffect *effect)
   cogl_matrix_translate (&modelview, priv->x_offset, priv->y_offset, 0.0f);
   cogl_set_modelview_matrix (&modelview);
 
-  /* Restore the previous opacity override */
-  _clutter_actor_set_opacity_override (priv->actor, priv->old_opacity_override);
-
   /* paint the target material; this is virtualized for
    * sub-classes that require special hand-holding
    */
-  clutter_offscreen_effect_paint_target (self);
+  clutter_offscreen_effect_paint_target (effect);
 
   cogl_pop_matrix ();
+}
+
+static void
+clutter_offscreen_effect_post_paint (ClutterEffect *effect)
+{
+  ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
+  ClutterOffscreenEffectPrivate *priv = self->priv;
+
+  if (priv->offscreen == COGL_INVALID_HANDLE ||
+      priv->target == COGL_INVALID_HANDLE ||
+      priv->actor == NULL)
+    return;
+
+  /* Restore the previous opacity override */
+  _clutter_actor_set_opacity_override (priv->actor, priv->old_opacity_override);
+
+  cogl_pop_matrix ();
+  cogl_pop_framebuffer ();
+
+  clutter_offscreen_effect_paint_texture (self);
+}
+
+static void
+clutter_offscreen_effect_run (ClutterEffect         *effect,
+                              ClutterEffectRunFlags  flags)
+{
+  ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
+  ClutterOffscreenEffectPrivate *priv = self->priv;
+  CoglMatrix matrix;
+
+  cogl_get_modelview_matrix (&matrix);
+
+  /* If we've already got a cached image for the same matrix and the
+     actor hasn't been redrawn then we can just use the cached image
+     in the fbo */
+  if (priv->offscreen == NULL ||
+      (flags & CLUTTER_EFFECT_RUN_ACTOR_DIRTY) ||
+      !cogl_matrix_equal (&matrix, &priv->last_matrix_drawn))
+    {
+      /* Chain up to the parent run method which will call the pre and
+         post paint functions to update the image */
+      CLUTTER_EFFECT_CLASS (clutter_offscreen_effect_parent_class)->
+        run (effect, flags);
+    }
+  else
+    clutter_offscreen_effect_paint_texture (self);
 }
 
 static void
@@ -414,6 +463,7 @@ clutter_offscreen_effect_class_init (ClutterOffscreenEffectClass *klass)
 
   effect_class->pre_paint = clutter_offscreen_effect_pre_paint;
   effect_class->post_paint = clutter_offscreen_effect_post_paint;
+  effect_class->run = clutter_offscreen_effect_run;
 
   gobject_class->finalize = clutter_offscreen_effect_finalize;
 }
