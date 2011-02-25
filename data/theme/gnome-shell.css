@@ -534,22 +534,17 @@ StTooltip StLabel {
 
 .icon-grid {
     spacing: 36px;
-    -shell-grid-item-size: 70px;
+    -shell-grid-item-size: 118px;
+}
+
+.icon-grid .overview-icon {
+    icon-size: 96px;
 }
 
 .all-app {
     padding: 16px 25px 16px 16px;
     spacing: 20px;
 }
-
-.all-app .icon-grid {
-    -shell-grid-item-size: 118px;
-}
-
-.all-app .overview-icon {
-    icon-size: 96px;
-}
-
 
 .app-filter {
     font-size: 14px;

@@ -13,7 +13,7 @@ const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const Search = imports.ui.search;
 
-const MAX_SEARCH_RESULTS_ROWS = 2;
+const MAX_SEARCH_RESULTS_ROWS = 1;
 
 
 function SearchResult(provider, metaInfo, terms) {
