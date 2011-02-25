@@ -548,10 +548,9 @@ AppIconMenu.prototype = {
 
         let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._source.app.get_id());
 
-        this._newWindowMenuItem = windows.length > 0 ? this._appendMenuItem(_("New Window")) : null;
+        this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
+        this._appendSeparator();
 
-        if (windows.length > 0)
-            this._appendSeparator();
         this._toggleFavoriteMenuItem = this._appendMenuItem(isFavorite ? _("Remove from Favorites")
                                                                     : _("Add to Favorites"));
 
