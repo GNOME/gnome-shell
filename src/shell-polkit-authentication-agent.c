@@ -331,7 +331,7 @@ auth_request_complete (AuthRequest *request,
     g_simple_async_result_set_error (request->simple,
                                      POLKIT_ERROR,
                                      POLKIT_ERROR_CANCELLED,
-                                     _("Authentation dialog was dismissed by the user"));
+                                     _("Authentication dialog was dismissed by the user"));
 
   if (agent->current_request == request)
     {
