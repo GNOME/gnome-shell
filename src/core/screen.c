@@ -352,6 +352,18 @@ reload_monitor_infos (MetaScreen *screen)
   screen->n_monitor_infos = 0;
   screen->last_monitor_index = 0;
 
+  /* Xinerama doesn't have a concept of primary monitor, however XRandR
+   * does. However, the XRandR xinerama compat code always sorts the
+   * primary output first, so we rely on that here. We could use the
+   * native XRandR calls instead of xinerama, but that would be
+   * slightly problematic for _NET_WM_FULLSCREEN_MONITORS support, as
+   * that is defined in terms of xinerama monitor indexes.
+   * So, since we don't need anything in xrandr except the primary
+   * we can keep using xinerama and use the first monitor as the
+   * primary.
+   */
+  screen->primary_monitor_index = 0;
+
   screen->display->monitor_cache_invalidated = TRUE;
 
   if (g_getenv ("MUTTER_DEBUG_XINERAMA"))
@@ -2138,6 +2150,22 @@ meta_screen_get_n_monitors (MetaScreen *screen)
   g_return_val_if_fail (META_IS_SCREEN (screen), 0);
 
   return screen->n_monitor_infos;
+}
+
+/**
+ * meta_screen_get_primary_monitor:
+ * @screen: a #MetaScreen
+ *
+ * Gets the index of the primary monitor on this @screen.
+ *
+ * Return value: a monitor index
+ */
+int
+meta_screen_get_primary_monitor (MetaScreen *screen)
+{
+  g_return_val_if_fail (META_IS_SCREEN (screen), 0);
+
+  return screen->primary_monitor_index;
 }
 
 /**

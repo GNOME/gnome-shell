@@ -99,6 +99,7 @@ struct _MetaScreen
   guint32 wm_sn_timestamp;
   
   MetaMonitorInfo *monitor_infos;
+  int primary_monitor_index;
   int n_monitor_infos;
 
   /* Cache the current monitor */
