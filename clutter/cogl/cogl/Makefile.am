@@ -345,11 +345,6 @@ cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-egl.c \
        $(srcdir)/winsys/cogl-winsys-stub.c
 endif
-if SUPPORT_EGL_PLATFORM_DRM_SURFACELESS
-cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c \
-       $(srcdir)/winsys/cogl-winsys-stub.c
-endif
 if SUPPORT_WIN32
 cogl_sources_c += \
        $(srcdir)/winsys/cogl-winsys-win32.c \
