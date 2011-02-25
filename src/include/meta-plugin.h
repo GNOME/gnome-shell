@@ -64,6 +64,8 @@ struct _MetaPluginClass
 {
   GObjectClass parent_class;
 
+  void (*early_initialize) (MetaPlugin         *plugin);
+
   void (*start)            (MetaPlugin         *plugin);
 
   void (*minimize)         (MetaPlugin         *plugin,

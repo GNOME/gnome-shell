@@ -539,6 +539,9 @@ main (int argc, char **argv)
   /* Parse command line arguments.*/
   ctx = meta_parse_options (&argc, &argv, &meta_args);
 
+  if (meta_args.print_version)
+    version ();
+
   /* This must come before the introspect below, so we load all the plugins
    * in order to get their get_type functions.
    */
@@ -587,10 +590,18 @@ main (int argc, char **argv)
     }
 #endif
 
-  meta_set_syncing (meta_args.sync || (g_getenv ("MUTTER_SYNC") != NULL));
+  /* Early initialization for plugins comes before almost anything
+     else here */
+  {
+    MetaPluginManager *mgr = meta_plugin_manager_get_default ();
 
-  if (meta_args.print_version)
-    version ();
+    if (!meta_plugin_manager_load (mgr))
+      g_error ("failed to load plugins");
+
+    meta_plugin_manager_initialize_early (mgr);
+  }
+
+  meta_set_syncing (meta_args.sync || (g_getenv ("MUTTER_SYNC") != NULL));
 
   meta_select_display (meta_args.display_name);
   

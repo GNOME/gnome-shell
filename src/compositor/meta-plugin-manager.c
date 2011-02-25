@@ -55,6 +55,8 @@ struct MetaPluginManager
 {
   MetaScreen   *screen;
 
+  gboolean plugin_load_attempted;
+
   GList /* MetaPlugin */       *plugins;  /* TODO -- maybe use hash table */
   GList                        *unload;  /* Plugins that are disabled and pending unload */
 
@@ -181,6 +183,8 @@ meta_plugin_manager_unload (MetaPluginManager *plugin_mgr)
 
   g_list_free (plugin_mgr->plugins);
   plugin_mgr->plugins = NULL;
+
+  plugin_mgr->plugin_load_attempted = FALSE;
 }
 
 static void
@@ -217,6 +221,10 @@ meta_plugin_manager_load (MetaPluginManager *plugin_mgr)
 {
   const gchar *dpath = MUTTER_PLUGIN_DIR "/";
   GSList      *plugins, *fallback = NULL;
+
+  if (plugin_mgr->plugin_load_attempted)
+    return TRUE;
+  plugin_mgr->plugin_load_attempted = TRUE;
 
   plugins = meta_prefs_get_clutter_plugins ();
 
@@ -310,6 +318,34 @@ meta_plugin_manager_load (MetaPluginManager *plugin_mgr)
     }
 
   return FALSE;
+}
+
+/**
+ * meta_plugin_manager_initialize_early:
+ * @plugin_mgr: a #MetaPluginManager
+ *
+ * This function invokes any plugin handling code that needs to be run
+ * effectively immediately after we know which plugins are going to be
+ * used.  This means before the process has an X connection, or
+ * talks to the session manager, for example.
+ *
+ * An example intended use is claiming DBus names.
+ */
+gboolean
+meta_plugin_manager_initialize_early (MetaPluginManager *plugin_mgr)
+{
+  GList *iter;
+
+  for (iter = plugin_mgr->plugins; iter; iter = iter->next)
+    {
+      MetaPlugin *plugin = (MetaPlugin*) iter->data;
+      MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
+
+      if (klass->early_initialize)
+        klass->early_initialize (plugin);
+    }
+
+  return TRUE;
 }
 
 gboolean
