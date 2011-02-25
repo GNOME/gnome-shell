@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2011-02-04 22:28+0000\n"
-"PO-Revision-Date: 2011-02-05 08:04+0530\n"
+"POT-Creation-Date: 2011-02-23 16:51+0000\n"
+"PO-Revision-Date: 2011-02-25 07:31+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pa\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.1\n"
+"X-Generator: Lokalize 1.2\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -30,7 +30,9 @@ msgstr "ਵਿੰਡੋ ਪਰਬੰਧ ਅਤੇ ਐਪਲੀਕੇਸ਼ਨ �
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr "Alt-F2 ਡਾਈਲਾਗ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਅੰਦਰੂਨੀ ਡੀਬੱਗਿਗ ਤੇ ਮਾਨੀਟਰਿੰਗ ਟੂਲ ਵਰਤੋਂ ਕਰਨ ਲਈ ਸਹਾਇਕ ਹੈ"
+msgstr ""
+"Alt-F2 ਡਾਈਲਾਗ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਅੰਦਰੂਨੀ ਡੀਬੱਗਿਗ ਤੇ ਮਾਨੀਟਰਿੰਗ ਟੂਲ ਵਰਤੋਂ ਕਰਨ ਲਈ "
+"ਸਹਾਇਕ ਹੈ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -49,29 +51,35 @@ msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
 msgstr ""
-"ਗਨੋਮ ਸ਼ੈਲ ਇਕਸਟੈਨਸ਼ਨ ਲਈ ਇੱਕ uuid ਵਿਸ਼ੇਸ਼ਤਾ ਹੈ; ਇਹ ਕੁੰਜੀ ਇਕਸਟੈਨਸ਼ਨ ਦਰਸਾਉਂਦੀ ਹੈ, ਜੋ ਲੋਡ ਨਹੀਂ ਹਨ।"
+"ਗਨੋਮ ਸ਼ੈਲ ਇਕਸਟੈਨਸ਼ਨ ਲਈ ਇੱਕ uuid ਵਿਸ਼ੇਸ਼ਤਾ ਹੈ; ਇਹ ਕੁੰਜੀ ਇਕਸਟੈਨਸ਼ਨ ਦਰਸਾਉਂਦੀ ਹੈ, "
+"ਜੋ ਲੋਡ ਨਹੀਂ ਹਨ।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
 msgstr "ਕਮਾਂਡ (Alt-F2) ਡਾਈਲਾਗ ਲਈ ਅਤੀਤ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
+#| msgid "History for command (Alt-F2) dialog"
+msgid "History for the looking glass dialog"
+msgstr "ਗਲਾਸ ਡਾਈਲਾਗ ਖੋਜ ਲਈ ਅਤੀਤ"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "ਜੇ ਸੱਚ ਹੈ ਤਾਂ, ਘੜੀ ਵਿਚ ਸਮਾਂ ਨਾਲ ਮਿਤੀ ਵੀ ਵੇਖਾਈ ਜਾਵੇਗੀ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
 msgstr "ਜੇ ਸੱਚ ਹੈ ਤਾਂ ਸਮਾਂ ਵਿੱਚ ਸਕਿੰਟ ਵੀ ਵੇਖਾਏ ਜਾਣਗੇ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "ਜੇ ਚੋਣ ਕੀਤੀ ਤਾਂ ਕੈਲੰਡਰ ਵਿੱਚ ISO ਹਫਤਾ ਮਿਤੀ ਵੇਖਾਈ ਜਾਵੇਗੀ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "ਪਸੰਦੀਦਾ ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਡੈਸਕਟਾਪ ਫਾਇਲ ID ਦੀ ਲਿਸਟ ਹੈ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -86,199 +94,76 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "ਘੜੀ ਵਿੱਚ ਮਿਤੀ ਵੇਖੋ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "ਕੈਲੰਡਰ ਵਿੱਚ ਹਫ਼ਤਾ ਮਿਤੀ ਵੇਖੋ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "ਸਮਾਂ ਵਿੱਚ ਸਕਿੰਟ ਵੇਖੋ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
-msgstr "ਇਹਨਾਂ ਐਂਡਟਟੀਫਾਇਰ ਨਾਲ ਸਬੰਧਿਤ ਐਪਲੀਕੇਸ਼ਨ ਨੂੰ ਪਸੰਦੀਦਾ ਖੇਤਰ 'ਚ ਵੇਖਾਇਆ ਜਾਵੇਗਾ।"
+msgstr ""
+"ਇਹਨਾਂ ਐਂਡਟਟੀਫਾਇਰ ਨਾਲ ਸਬੰਧਿਤ ਐਪਲੀਕੇਸ਼ਨ ਨੂੰ ਪਸੰਦੀਦਾ ਖੇਤਰ 'ਚ ਵੇਖਾਇਆ ਜਾਵੇਗਾ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
-"ਰਿਕਾਰਡ ਕੀਤੇ ਸਕਰੀਨਕਾਸਟ ਲਈ ਫਾਇਲ ਨਾਂ ਮੌਜੂਦਾ ਮਿਤੀ ਦੇ ਮੁਤਾਬਕ ਵਿਲੱਖਣ ਫਾਇਲ ਨਾਂ ਹੋਵੇਗਾ ਅਤੇ ਇਹ "
-"ਇਕਸਟੈਨਸ਼ਨ ਵਰਤੀ ਜਾਵੇਗੀ। ਇਸ ਨੂੰ ਬਦਲਿਆ ਜਾਵੇਗਾ, ਜਦੋਂ ਵੱਖਰੇ ਕੰਨਟੇਨਰ ਫਾਰਮੈਟ ਵਿੱਚ ਰਿਕਾਰਡ ਕੀਤਾ "
+"ਰਿਕਾਰਡ ਕੀਤੇ ਸਕਰੀਨਕਾਸਟ ਲਈ ਫਾਇਲ ਨਾਂ ਮੌਜੂਦਾ ਮਿਤੀ ਦੇ ਮੁਤਾਬਕ ਵਿਲੱਖਣ ਫਾਇਲ ਨਾਂ "
+"ਹੋਵੇਗਾ ਅਤੇ ਇਹ "
+"ਇਕਸਟੈਨਸ਼ਨ ਵਰਤੀ ਜਾਵੇਗੀ। ਇਸ ਨੂੰ ਬਦਲਿਆ ਜਾਵੇਗਾ, ਜਦੋਂ ਵੱਖਰੇ ਕੰਨਟੇਨਰ ਫਾਰਮੈਟ ਵਿੱਚ "
+"ਰਿਕਾਰਡ ਕੀਤਾ "
 "ਜਾਵੇਗਾ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
-"ਗਨੋਮ ਸ਼ੈੱਲ ਦੇ ਸਕਰੀਨਕਾਸਟ ਰਿਕਾਰਡਰ ਵਲੋਂ ਰਿਕਾਰਡ ਕਰਕੇ ਬਣਾਈ ਗਈ ਸਕਰੀਨਕਾਸਟ ਦਾ ਫਰੇਮਰੇਟ ਫਰੇਮ ਪ੍ਰਤੀ "
+"ਗਨੋਮ ਸ਼ੈੱਲ ਦੇ ਸਕਰੀਨਕਾਸਟ ਰਿਕਾਰਡਰ ਵਲੋਂ ਰਿਕਾਰਡ ਕਰਕੇ ਬਣਾਈ ਗਈ ਸਕਰੀਨਕਾਸਟ ਦਾ ਫਰੇਮਰੇਟ "
+"ਫਰੇਮ ਪ੍ਰਤੀ "
 "ਸਕਿੰਟ 'ਚ ਹੈ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "ਸਕਰੀਨਕਾਸਟ ਇੰਕੋਡ ਕਰਨ ਲਈ ਵਰਤਣ ਵਾਸਤੇ ਜੀਸਟਰੀਮਰ ਪਾਇਪਲਾਇਨ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
 "want to disable this for privacy reasons. Please note that doing so won't "
 "remove already saved data."
 msgstr ""
-"ਸ਼ੈੱਲ ਲਗਾਤਾਰ ਸਰਗਰਮ ਐਪਲੀਕੇਸ਼ਨ ਦੀ ਨਿਗਰਾਨੀ ਕਰਦੀ ਰਹਿੰਦੀ ਹੈ ਤਾਂ ਕਿ ਸਭ ਤੋਂ ਵੱਧ ਵਰਤੀਆਂ ਐਪਲੀਕੇਸ਼ਨਾਂ "
-"ਨੂੰ ਵੇਖਾਇਆ ਜਾ ਸਕੇ (ਜਿਵੇਂ ਕਿ ਲਾਂਚਰ ਵਿੱਚ)। ਹਾਲਾਂਕਿ ਇਹ ਡਾਟਾ ਪ੍ਰਾਈਵੇਟ ਹੀ ਰੱਖਿਆ ਜਾਵੇਗਾ, ਤਾਂ ਵੀ "
-"ਜੇ ਤੁਸੀਂ ਚਾਹੋ ਤਾਂ ਇਸ ਨੂੰ ਸੁਰੱਖਿਆ ਕਾਰਨਾਂ ਕਰਕੇ ਬੰਦ ਕਰ ਸਕਦੇ ਹੋ। ਯਾਦ ਰੱਖੋ ਕਿ ਇੰਝ ਕਰਨ ਨਾਲ ਪਹਿਲਾਂ "
+"ਸ਼ੈੱਲ ਲਗਾਤਾਰ ਸਰਗਰਮ ਐਪਲੀਕੇਸ਼ਨ ਦੀ ਨਿਗਰਾਨੀ ਕਰਦੀ ਰਹਿੰਦੀ ਹੈ ਤਾਂ ਕਿ ਸਭ ਤੋਂ ਵੱਧ "
+"ਵਰਤੀਆਂ ਐਪਲੀਕੇਸ਼ਨਾਂ "
+"ਨੂੰ ਵੇਖਾਇਆ ਜਾ ਸਕੇ (ਜਿਵੇਂ ਕਿ ਲਾਂਚਰ ਵਿੱਚ)। ਹਾਲਾਂਕਿ ਇਹ ਡਾਟਾ ਪ੍ਰਾਈਵੇਟ ਹੀ ਰੱਖਿਆ "
+"ਜਾਵੇਗਾ, ਤਾਂ ਵੀ "
+"ਜੇ ਤੁਸੀਂ ਚਾਹੋ ਤਾਂ ਇਸ ਨੂੰ ਸੁਰੱਖਿਆ ਕਾਰਨਾਂ ਕਰਕੇ ਬੰਦ ਕਰ ਸਕਦੇ ਹੋ। ਯਾਦ ਰੱਖੋ ਕਿ ਇੰਝ "
+"ਕਰਨ ਨਾਲ ਪਹਿਲਾਂ "
 "ਸੰਭਾਲਿਆ ਗਿਆ ਡਾਟਾ ਹਟਾਇਆ ਨਹੀਂ ਜਾਵੇਗਾ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
 msgstr "ਇਕਟੈਨਸ਼ਨ ਦੀ Uuids ਬੰਦ ਹੈ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਵਰਤੋਂ ਬਾਰੇ ਅੰਕੜੇ ਇੱਕਠੇ ਕਰਨੇ ਹਨ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
 msgstr "ਓਪਨਸਰਚ ਉਪਲੱਬਧ ਕਰਵਾਉਣ ਵਾਲੇ ਬੰਦ ਹਨ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
-msgid "Clip the crosshairs at the center"
-msgstr "ਸੈਂਟਰ ਉੱਤੇ ਕਰਾਂਸਹੇਅਰ ਕਲਿੱਪ ਕਰੋ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
-msgid "Color of the crosshairs"
-msgstr "ਕਰਾਂਸਹੇਅਰ ਦਾ ਰੰਗ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
-msgid ""
-"Determines the length of the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr "ਵਰਟੀਕਲ ਤੇ ਹਰੀਜੱਟਲ ਲਾਈਨਾਂ ਦੀ ਲੰਬਾਈ ਦੱਸੋ, ਜੋ ਕਿ ਕਰਾਂਸਹੇਅਰ ਬਣਾਉਂਦੀਆਂ ਹਨ।"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
-msgid ""
-"Determines the position of the magnified mouse image within the magnified "
-"view and how it reacts to system mouse movement. The values are - none: no "
-"mouse tracking; - centered: the mouse image is displayed at the center of "
-"the zoom region (which also represents the point under the system mouse) and "
-"the magnified contents are scrolled as the system mouse moves; - "
-"proportional: the position of the magnified mouse in the zoom region is "
-"proportionally the same as the position of the system mouse on screen; - "
-"push: when the magnified mouse intersects a boundary of the zoom region, the "
-"contents are scrolled into view."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
-msgid ""
-"Determines the transparency of the crosshairs, from fully opaque to fully "
-"transparent."
-msgstr "ਕਰਾਂਸਹੇਅਰ ਦੀ ਟਰਾਂਸਪਰੇਸੀ ਤਹਿ ਕਰੋ, ਪੂਰੀ ਤਰ੍ਹਾਂ ਧੁੰਦਲੇ ਤੋਂ ਪਾਰਦਰਸ਼ੀ ਹੀ।"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
-msgid ""
-"Determines whether the crosshairs intersect the magnified mouse sprite, or "
-"are clipped such that the ends of the horizontal and vertical lines surround "
-"the mouse image."
-msgstr ""
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-msgid "Enable lens mode"
-msgstr "ਲੈਨਜ਼ ਮੋਡ ਚਾਲੂ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
-msgid ""
-"Enables/disables display of crosshairs centered on the magnified mouse "
-"sprite."
-msgstr "ਵੱਡਦਰਸ਼ੀ ਮਾਊਸ ਸਪਰਿਟ ਉੱਤੇ ਸੈਂਟਰ ਕੀਤੇ ਕਰਾਂਸਹੇਅਰ ਵੇਖਾਉਣਾ ਚਾਲੂ ਜਾਂ ਬੰਦ ਕਰੋ।"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
-msgid ""
-"For centered mouse tracking, when the system pointer is at or near the edge "
-"of the screen, the magnified contents continue to scroll such that the "
-"screen edge moves into the magnified view."
-msgstr ""
-"ਸੈਂਟਰਡ ਮਾਊਸ ਟਰੈਕ ਕਰਨ ਲਈ, ਜਦੋਂ ਸਿਸਟਮ ਪੁਆਇੰਟਰ ਸਕਰੀਨ ਦੇ ਕਿਸੇ ਕੋਨੇ ਕੋਲ ਜਾਂਦਾ ਹੈ ਤਾਂ ਵੱਡੇ ਰੂਪ ਵਿੱਚ "
-"ਵੇਖਾਈ ਜਾਂਦੀ ਸਮੱਗਰੀ ਇੰਝ ਸਕਰੋਲ ਕੀਤੀ ਜਾਂਦੀ ਹੈ ਤਾਂ ਕਿ ਸਕਰੀਨ ਕੋਨੇ ਵੱਡਦਰਸ਼ ਝਲਕ ਦੇ ਰੂਪ ਵਿੱਚ ਵੇਖਾਈ "
-"ਜਾਂਦੇ ਰਹਿੰਦੇ ਹਨ।"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
-msgid "Length of the crosshairs"
-msgstr "ਕਰਾਂਸਹੇਅਰ ਦੀ ਲੰਬਾਈ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:11
-msgid "Magnification factor"
-msgstr "ਵੱਡਦਰਸ਼ੀ ਗੁਣਾਂਕ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:12
-msgid "Mouse Tracking Mode"
-msgstr "ਮਾਊਸ ਟਰੈਕਿੰਗ ਮੋਡ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:13
-msgid "Opacity of the crosshairs"
-msgstr "ਕਰਾਂਸਹੇਅਰ ਦਾ ਧੁੰਦਲਾਪਨ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
-msgid "Screen position"
-msgstr "ਸਕਰੀਨ ਸਥਿਤੀ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
-msgid "Scroll magnified contents beyond the edges of the desktop"
-msgstr "ਡੈਸਕਟਾਪ ਦੇ ਕੋਨਿਆਂ ਤੋਂ ਪਾਰ ਵੱਡਦਰਸ਼ੀ ਸਮੱਗਰੀ ਸਕਰੋਲ ਕਰੋ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
-msgid "Show or hide crosshairs"
-msgstr "ਕਰਾਂਸਹੇਅਰ ਵੇਖੋ ਜਾਂ ਓਹਲੇ ਕਰੋ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
-msgid "Show or hide the magnifier"
-msgstr "ਵੱਡਦਰਸ਼ੀ ਵੇਖੋ ਜਾਂ ਓਹਲੇ ਕਰੋ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
-msgid "Show or hide the magnifier and all of its zoom regions."
-msgstr "ਵੱਡਦਰਸ਼ੀ ਵੇਖੋ ਜਾਂ ਓਹਲੇ ਕਰੋ ਤੇ ਇਸ ਦੇ ਸਭ ਖੇਤਰਾਂ ਨੂੰ ਜ਼ੂਮ ਕਰੋ।"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
-msgid ""
-"The color of the the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr "ਵਰਟੀਕਲ ਤੇ ਹਰੀਜੱਟਲ ਲਾਈਨਾਂ ਦਾ ਰੰਗ, ਜੋ ਕਿ ਕਰਾਂਸਹੇਅਰ ਬਣਾਉਂਦੀਆਂ ਹਨ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
-msgid ""
-"The magnified view either fills the entire screen, or occupies the top-half, "
-"bottom-half, left-half, or right-half of the screen."
-msgstr ""
-"ਵੱਡਦਰਸ਼ੀ ਝਲਕ ਪੂਰੀ ਸਕਰੀਨ ਨੂੰ ਭਰ ਸਕਦਾ ਹੈ ਜਾਂ ਅੱਧਾ-ਉੱਤੇ, ਅੱਧਾ ਹੇਠਾਂ, ਅੱਧਾ ਖੱਬੇ ਜਾਂ ਅੱਧਾ-ਸੱਜੇ ਭਾਗ ਨੂੰ "
-"ਭਰ ਸਕਦਾ ਹੈ।"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
-msgid ""
-"The power of the magnification. A value of 1.0 means no magnification. A "
-"value of 2.0 doubles the size."
-msgstr "ਵੱਡਦਰਸ਼ੀ ਦੀ ਤਾਕਤ ਹੈ। ੧.੦ ਦਾ ਮਤਲਬ ਹੈ ਕਿ ਕੋਈ ਵੀ ਨਹੀਂ। ੨.੦ ਦਾ ਮਤਲਬ ਹੈ ਆਕਾਰ ਦਾ ਦੋ ਗੁਣਾ।"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
-msgid "Thickness of the crosshairs"
-msgstr "ਕਰਾਂਸਹੇਅਰ ਦੀ ਮੋਟਾਈ"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
-msgid ""
-"Whether the magnified view should be centered over the location of the "
-"system mouse and move with it."
-msgstr "ਕੀ ਵੱਡਦਰਸ਼ੀ ਝਲਕ ਦੀ ਸਥਿਤੀ ਸਿਸਟਮ ਮਾਊਂਸ ਦੁਆਲੇ ਕੇਂਦਰਤ ਰਹੇ ਅਤੇ ਉਸ ਨਾਲ ਹੀ ਹਿੱਲੇ।"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
-msgid "Width of the vertical and horizontal lines that make up the crosshairs."
-msgstr "ਵਰਟੀਕਲ ਤੇ ਹਰੀਜੱਟਲ ਲਾਈਨਾਂ ਦੀ ਚੌੜਾਈ, ਜੋ ਕਿ ਕਰਾਂਸਹੇਅਰ ਬਣਾਉਂਦੀਆਂ ਹਨ"
 
 #: ../js/misc/util.js:86
 msgid "Command not found"
@@ -300,27 +185,27 @@ msgid "Execution of '%s' failed:"
 msgstr "'%s' ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:164
+#: ../js/ui/appDisplay.js:174
 msgid "All"
 msgstr "ਸਭ"
 
-#: ../js/ui/appDisplay.js:245
+#: ../js/ui/appDisplay.js:261
 msgid "APPLICATIONS"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../js/ui/appDisplay.js:275
+#: ../js/ui/appDisplay.js:291
 msgid "PREFERENCES"
 msgstr "ਪਸੰਦ"
 
-#: ../js/ui/appDisplay.js:572
+#: ../js/ui/appDisplay.js:551
 msgid "New Window"
 msgstr "ਨਵੀਂ ਵਿੰਡੋ"
 
-#: ../js/ui/appDisplay.js:576
+#: ../js/ui/appDisplay.js:555
 msgid "Remove from Favorites"
 msgstr "ਪਸੰਦ ਵਿੱਚੋਂ ਹਟਾਓ"
 
-#: ../js/ui/appDisplay.js:577
+#: ../js/ui/appDisplay.js:556
 msgid "Add to Favorites"
 msgstr "ਪਸੰਦ 'ਚ ਸ਼ਾਮਲ ਕਰੋ"
 
@@ -338,21 +223,18 @@ msgstr "%s ਨੂੰ ਤੁਹਾਡੀ ਪਸੰਦ ਤੋਂ ਹਟਾਇਆ �
 #. * Keep it short, best if you can use less then 10 characters
 #.
 #: ../js/ui/calendar.js:65
-#| msgid "All Day"
 msgctxt "event list time"
 msgid "All Day"
 msgstr "ਸਭ ਦਿਨ"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:70
-#| msgid "%H:%M"
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
 #: ../js/ui/calendar.js:77
-#| msgid "%a %l:%M %p"
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
@@ -363,49 +245,42 @@ msgstr "%l:%M %p"
 #. * and in order, e.g. "S M T W T F S".
 #.
 #: ../js/ui/calendar.js:117
-#| msgid "S"
 msgctxt "grid sunday"
 msgid "S"
 msgstr "ਐ"
 
 #. Translators: Calendar grid abbreviation for Monday
 #: ../js/ui/calendar.js:119
-#| msgid "M"
 msgctxt "grid monday"
 msgid "M"
 msgstr "ਸੋ"
 
 #. Translators: Calendar grid abbreviation for Tuesday
 #: ../js/ui/calendar.js:121
-#| msgid "T"
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "ਮੰ"
 
 #. Translators: Calendar grid abbreviation for Wednesday
 #: ../js/ui/calendar.js:123
-#| msgid "W"
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "ਬੁੱ"
 
 #. Translators: Calendar grid abbreviation for Thursday
 #: ../js/ui/calendar.js:125
-#| msgid "T"
 msgctxt "grid thursday"
 msgid "T"
 msgstr "ਵੀ"
 
 #. Translators: Calendar grid abbreviation for Friday
 #: ../js/ui/calendar.js:127
-#| msgid "F"
 msgctxt "grid friday"
 msgid "F"
 msgstr "ਸ਼ੁੱ"
 
 #. Translators: Calendar grid abbreviation for Saturday
 #: ../js/ui/calendar.js:129
-#| msgid "S"
 msgctxt "grid saturday"
 msgid "S"
 msgstr "ਸ਼"
@@ -417,49 +292,42 @@ msgstr "ਸ਼"
 #. * both be 'T').
 #.
 #: ../js/ui/calendar.js:142
-#| msgid "Su"
 msgctxt "list sunday"
 msgid "Su"
 msgstr "ਐ"
 
 #. Translators: Event list abbreviation for Monday
 #: ../js/ui/calendar.js:144
-#| msgid "M"
 msgctxt "list monday"
 msgid "M"
 msgstr "ਸੋ"
 
 #. Translators: Event list abbreviation for Tuesday
 #: ../js/ui/calendar.js:146
-#| msgid "T"
 msgctxt "list tuesday"
 msgid "T"
 msgstr "ਮੰ"
 
 #. Translators: Event list abbreviation for Wednesday
 #: ../js/ui/calendar.js:148
-#| msgid "W"
 msgctxt "list wednesday"
 msgid "W"
 msgstr "ਬੁੱ"
 
 #. Translators: Event list abbreviation for Thursday
 #: ../js/ui/calendar.js:150
-#| msgid "Th"
 msgctxt "list thursday"
 msgid "Th"
 msgstr "ਵੀ"
 
 #. Translators: Event list abbreviation for Friday
 #: ../js/ui/calendar.js:152
-#| msgid "F"
 msgctxt "list friday"
 msgid "F"
 msgstr "ਸ਼ੁੱ"
 
 #. Translators: Event list abbreviation for Saturday
 #: ../js/ui/calendar.js:154
-#| msgid "S"
 msgctxt "list saturday"
 msgid "S"
 msgstr "ਸ਼"
@@ -471,14 +339,12 @@ msgstr "ਕੋਈ ਵੀ ਸੈਡਿਊਲ ਨਹੀਂ ਹੈ"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:717
-#| msgid "%A %B %e, %Y"
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:720
-#| msgid "%A %B %e, %Y"
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
@@ -499,66 +365,66 @@ msgstr "ਇਹ ਹਫ਼ਤਾ"
 msgid "Next week"
 msgstr "ਹਫ਼ਤਾ ਅੱਗੇ"
 
-#: ../js/ui/dash.js:27
+#: ../js/ui/dash.js:174
 msgid "Remove"
 msgstr "ਹਟਾਓ"
 
-#: ../js/ui/dateMenu.js:91
+#: ../js/ui/dateMenu.js:93
 msgid "Date and Time Settings"
 msgstr "ਮਿਤੀ ਤੇ ਸਮਾਂ ਸੈਟਿੰਗ"
 
-#: ../js/ui/dateMenu.js:110
+#: ../js/ui/dateMenu.js:112
 msgid "Open Calendar"
 msgstr "ਕੈਲੰਡਰ ਖੋਲ੍ਹੋ"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:149
+#: ../js/ui/dateMenu.js:151
 msgid "%a %b %e, %R:%S"
 msgstr "%a, %e %b %R:%S"
 
-#: ../js/ui/dateMenu.js:150
+#: ../js/ui/dateMenu.js:152
 msgid "%a %b %e, %R"
 msgstr "%a %e %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:154
+#: ../js/ui/dateMenu.js:156
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:155
+#: ../js/ui/dateMenu.js:157
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e %b, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e %b, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:169
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:170
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:196
 msgid "%A %B %e, %Y"
 msgstr "%A, %e %B %Y"
 
-#: ../js/ui/docDisplay.js:18
+#: ../js/ui/docDisplay.js:19
 msgid "RECENT ITEMS"
 msgstr "ਤਾਜ਼ਾ ਆਈਟਮਾਂ"
 
@@ -573,7 +439,8 @@ msgstr "ਲਾਗਆਉਟ"
 
 #: ../js/ui/endSessionDialog.js:65
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr "ਇਹ ਐਪਲੀਕੇਸ਼ਨ ਬੰਦ ਕਰਨ ਤੇ ਸਿਸਟਮ ਨੂੰ ਲਾਗਆਉਟ ਕਰਨ ਲਈ ਲਾਗਆਉਟ ਕਰੋ ਨੂੰ ਕਲਿੱਕ ਕਰੋ।"
+msgstr ""
+"ਇਹ ਐਪਲੀਕੇਸ਼ਨ ਬੰਦ ਕਰਨ ਤੇ ਸਿਸਟਮ ਨੂੰ ਲਾਗਆਉਟ ਕਰਨ ਲਈ ਲਾਗਆਉਟ ਕਰੋ ਨੂੰ ਕਲਿੱਕ ਕਰੋ।"
 
 #: ../js/ui/endSessionDialog.js:66
 #, c-format
@@ -612,7 +479,8 @@ msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ"
 
 #: ../js/ui/endSessionDialog.js:85
 msgid "Click Restart to quit these applications and restart the system."
-msgstr "ਇਹ ਐਪਲੀਕੇਸ਼ਨ ਬੰਦ ਕਰਨ ਤੇ ਸਿਸਟਮ ਨੂੰ ਮੁੜ-ਚਾਲੂ ਕਰਨ ਲਈ ਮੁੜ-ਚਾਲੂ ਕਰੋ ਨੂੰ ਕਲਿੱਕ ਕਰੋ।"
+msgstr ""
+"ਇਹ ਐਪਲੀਕੇਸ਼ਨ ਬੰਦ ਕਰਨ ਤੇ ਸਿਸਟਮ ਨੂੰ ਮੁੜ-ਚਾਲੂ ਕਰਨ ਲਈ ਮੁੜ-ਚਾਲੂ ਕਰੋ ਨੂੰ ਕਲਿੱਕ ਕਰੋ।"
 
 #: ../js/ui/endSessionDialog.js:86
 #, c-format
@@ -631,37 +499,37 @@ msgstr "ਪੁਸ਼ਟੀ"
 msgid "Cancel"
 msgstr "ਰੱਦ ਕਰੋ"
 
-#: ../js/ui/lookingGlass.js:556
+#: ../js/ui/lookingGlass.js:587
 msgid "No extensions installed"
 msgstr "ਕੋਈ ਇਕਸਟੈਨਸ਼ਨ ਇੰਸਟਾਲ ਨਹੀਂ ਹੈ"
 
-#: ../js/ui/lookingGlass.js:593
+#: ../js/ui/lookingGlass.js:624
 msgid "Enabled"
 msgstr "ਚਾਲੂ ਹੈ"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:595 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:626 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "ਬੰਦ ਹੈ"
 
-#: ../js/ui/lookingGlass.js:597
+#: ../js/ui/lookingGlass.js:628
 msgid "Error"
 msgstr "ਗਲਤੀ"
 
-#: ../js/ui/lookingGlass.js:599
+#: ../js/ui/lookingGlass.js:630
 msgid "Out of date"
 msgstr "ਪੁਰਾਣਾ"
 
-#: ../js/ui/lookingGlass.js:624
+#: ../js/ui/lookingGlass.js:655
 msgid "View Source"
 msgstr "ਸਰੋਤ ਵੇਖੋ"
 
-#: ../js/ui/lookingGlass.js:630
+#: ../js/ui/lookingGlass.js:661
 msgid "Web Page"
 msgstr "ਵੈੱਬ ਪੇਜ਼"
 
-#: ../js/ui/messageTray.js:1809
+#: ../js/ui/messageTray.js:1902
 msgid "System Information"
 msgstr "ਸਿਸਟਮ ਜਾਣਕਾਰੀ"
 
@@ -669,40 +537,40 @@ msgstr "ਸਿਸਟਮ ਜਾਣਕਾਰੀ"
 msgid "Undo"
 msgstr "ਵਾਪਸ"
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:183
 msgid "Windows"
 msgstr "ਵਿੰਡੋ"
 
-#: ../js/ui/overview.js:162
+#: ../js/ui/overview.js:186
 msgid "Applications"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:480
+#: ../js/ui/panel.js:537
 #, c-format
 msgid "Quit %s"
 msgstr "%s ਬੰਦ ਕਰੋ"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:772
 msgid "Activities"
 msgstr "ਸਰਗਰਮੀਆਂ"
 
-#: ../js/ui/placeDisplay.js:106
+#: ../js/ui/placeDisplay.js:122
 #, c-format
 msgid "Failed to unmount '%s'"
 msgstr "'%s' ਅਣ-ਮਾਊਂਟ ਕਰਨ ਲਈ ਫੇਲ੍ਹ"
 
-#: ../js/ui/placeDisplay.js:109
+#: ../js/ui/placeDisplay.js:125
 msgid "Retry"
 msgstr "ਮੁੜ-ਕੋਸ਼ਿਸ਼"
 
-#: ../js/ui/placeDisplay.js:150
+#: ../js/ui/placeDisplay.js:165
 msgid "Connect to..."
 msgstr "...ਨਾਲ ਕੁਨੈਕਟ ਕਰੋ"
 
-#: ../js/ui/placeDisplay.js:386
+#: ../js/ui/placeDisplay.js:409
 msgid "PLACES & DEVICES"
 msgstr "ਥਾਵਾਂ ਤੇ ਜੰਤਰ"
 
@@ -711,57 +579,64 @@ msgstr "ਥਾਵਾਂ ਤੇ ਜੰਤਰ"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:33
+#: ../js/ui/popupMenu.js:612
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:209
+#: ../js/ui/runDialog.js:201
 msgid "Please enter a command:"
 msgstr "ਕਮਾਂਡ ਦਿਓ ਜੀ:"
 
-#: ../js/ui/statusMenu.js:102
+#: ../js/ui/searchDisplay.js:295
+msgid "Searching..."
+msgstr "ਖੋਜ ਜਾਰੀ ਹੈ..."
+
+#: ../js/ui/searchDisplay.js:309
+msgid "No matching results."
+msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਲੱਭਿਆ।"
+
+#: ../js/ui/statusMenu.js:99 ../js/ui/statusMenu.js:163
+msgid "Power Off..."
+msgstr "...ਬੰਦ ਕਰੋ"
+
+#: ../js/ui/statusMenu.js:101 ../js/ui/statusMenu.js:162
+#| msgid "Suspend..."
+msgid "Suspend"
+msgstr "ਸਸਪੈਂਡ"
+
+#: ../js/ui/statusMenu.js:122
 msgid "Available"
 msgstr "ਉਪਲੱਬਧ"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:127
 msgid "Busy"
 msgstr "ਰੁਝਿਆ"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:135
 msgid "My Account"
 msgstr "ਮੇਰਾ ਅਕਾਊਂਟ"
 
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:139
 msgid "System Settings"
 msgstr "ਸਿਸਟਮ ਸੈਟਿੰਗ"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:146
 msgid "Lock Screen"
 msgstr "ਸਕਰੀਨ ਲਾਕ ਕਰੋ"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:150
 msgid "Switch User"
 msgstr "ਯੂਜ਼ਰ ਬਦਲੋ"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:155
 msgid "Log Out..."
-msgstr "ਲਾਗਆਉਟ..."
+msgstr "...ਲਾਗਆਉਟ"
 
-#. This is temporarily removed, see
-#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
-#. for details.
-#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
-#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-#. this.menu.addMenuItem(item);
-#: ../js/ui/statusMenu.js:149
-msgid "Shut Down..."
-msgstr "ਬੰਦ ਕਰੋ..."
-
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:81
 msgid "Zoom"
 msgstr "ਜ਼ੂਮ"
 
-#: ../js/ui/status/accessibility.js:89
+#: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
 msgstr "ਸਕਰੀਨ ਰੀਡਰ"
 
@@ -769,39 +644,41 @@ msgstr "ਸਕਰੀਨ ਰੀਡਰ"
 msgid "Screen Keyboard"
 msgstr "ਸਕਰੀਨ ਕੀਬੋਰਡ"
 
-#: ../js/ui/status/accessibility.js:95
+#: ../js/ui/status/accessibility.js:96
 msgid "Visual Alerts"
 msgstr "ਦਿੱਖ ਚੇਤਾਵਨੀ"
 
-#: ../js/ui/status/accessibility.js:98
+#: ../js/ui/status/accessibility.js:99
 msgid "Sticky Keys"
 msgstr "ਸਟਿੱਕੀ ਸਵਿੱਚਾਂ"
 
-#: ../js/ui/status/accessibility.js:101
+#: ../js/ui/status/accessibility.js:102
 msgid "Slow Keys"
 msgstr "ਹੌਲੀ ਸਵਿੱਚਾਂ"
 
-#: ../js/ui/status/accessibility.js:104
+#: ../js/ui/status/accessibility.js:105
 msgid "Bounce Keys"
 msgstr "ਬਾਊਂਸ ਸਵਿੱਚਾਂ"
 
-#: ../js/ui/status/accessibility.js:107
+#: ../js/ui/status/accessibility.js:108
 msgid "Mouse Keys"
 msgstr "ਮਾਊਸ ਸਵਿੱਚਾਂ"
 
-#: ../js/ui/status/accessibility.js:111
+#: ../js/ui/status/accessibility.js:112
 msgid "Universal Access Settings"
 msgstr "ਯੂਨੀਵਰਸਲ ਅਸੈੱਸ ਸੈਟਿੰਗ"
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:164
 msgid "High Contrast"
 msgstr "ਵੱਧ ਕਨਟਰਾਸਟ"
 
-#: ../js/ui/status/accessibility.js:205
+#: ../js/ui/status/accessibility.js:209
 msgid "Large Text"
 msgstr "ਵੱਡੇ ਅੱਖਰ"
 
 #: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:241
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
 msgid "Bluetooth"
 msgstr "ਬਲਿਊਟੁੱਥ"
 
@@ -850,14 +727,9 @@ msgstr "ਕੀਬੋਰਡ ਸੈਟਿੰਗ"
 msgid "Mouse Settings"
 msgstr "ਮਾਊਸ ਸੈਟਿੰਗ"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
 msgid "Sound Settings"
 msgstr "ਸਾਊਂਡ ਸੈਟਿੰਗ"
-
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:411 ../js/ui/status/bluetooth.js:444
-msgid "Bluetooth Agent"
-msgstr "ਬਲਿਊਟੁੱਥ ਏਜੰਟ"
 
 #: ../js/ui/status/bluetooth.js:372
 #, c-format
@@ -917,7 +789,11 @@ msgstr "ਜੰਤਰ ਉੱਤੇ ਦਿੱਤਾ ਗਿਆ ਪਿੰਨ ਦਿ�
 msgid "OK"
 msgstr "ਠੀਕ ਹੈ"
 
-#: ../js/ui/status/keyboard.js:78
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "...ਕੀਬੋਰਡ ਲੇਆਉਟ ਵੇਖੋ"
+
+#: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "ਲੋਕਲਾਈਜ਼ੇਸ਼ਨ ਸੈਟਿੰਗ"
 
@@ -1001,34 +877,34 @@ msgstr "ਟੇਬਲੇਟ"
 msgid "Computer"
 msgstr "ਕੰਪਿਊਟਰ"
 
-#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1012
+#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
 msgid "Unknown"
 msgstr "ਅਣਜਾਣ"
 
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:44
 msgid "Volume"
 msgstr "ਆਵਾਜ਼"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:57
 msgid "Microphone"
 msgstr "ਮਾਈਕਰੋਫੋਨ"
 
-#: ../js/ui/telepathyClient.js:563
+#: ../js/ui/telepathyClient.js:240
 #, c-format
 msgid "%s is online."
 msgstr "%s ਆਨਲਾਈਨ ਹੈ।"
 
-#: ../js/ui/telepathyClient.js:568
+#: ../js/ui/telepathyClient.js:245
 #, c-format
 msgid "%s is offline."
 msgstr "%s ਆਫਲਾਈਨ ਹੈ।"
 
-#: ../js/ui/telepathyClient.js:571
+#: ../js/ui/telepathyClient.js:248
 #, c-format
 msgid "%s is away."
 msgstr "%s ਦੂਰ ਹੈ।"
 
-#: ../js/ui/telepathyClient.js:574
+#: ../js/ui/telepathyClient.js:251
 #, c-format
 msgid "%s is busy."
 msgstr "%s ਰੁੱਝਿਆ/ਰੁੱਝੀ ਹੈ।"
@@ -1036,14 +912,18 @@ msgstr "%s ਰੁੱਝਿਆ/ਰੁੱਝੀ ਹੈ।"
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:668
+#: ../js/ui/telepathyClient.js:349
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "%2$A ਨੂੰ %1$X ਵਜੇ ਭੇਜਿਆ"
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "ਆਪਣੇ ਕੰਪਿਊਟਰ ਉੱਤੇ ਲੱਭੋ"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters
+#: ../js/ui/viewSelector.js:30
+msgid "Type to search..."
+msgstr "...ਲੱਭਣ ਲਈ ਲਿਖੋ"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -1054,14 +934,6 @@ msgstr "%s ਸ਼ੁਰੂ ਹੋਣਾ ਖਤਮ ਹੋਇਆ"
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' ਤਿਆਰ ਹੈ"
-
-#: ../js/ui/workspacesView.js:243
-msgid "Can't add a new workspace because maximum workspaces limit has been reached."
-msgstr "ਨਵਾਂ ਵਰਕਸਪੇਸ ਜੋੜਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ, ਕਿਉਂਕਿ ਵਰਕਸਪੇਸਾਂ ਦੀ ਵੱਧੋ-ਵੱਧ ਗਿਣਤੀ ਪੂਰੀ ਹੋ ਚੁੱਕੀ ਹੈ।"
-
-#: ../js/ui/workspacesView.js:259
-msgid "Can't remove the first workspace."
-msgstr "ਪਹਿਲਾਂ ਵਰਕਸਪੇਸ ਨਹੀਂ ਹਟਾਇਆ ਜਾ ਸਕਦਾ।"
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -1085,37 +957,41 @@ msgstr[1] "%u ਇੰਪੁੱਟ"
 msgid "System Sounds"
 msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
-#: ../src/shell-global.c:1365
+#: ../src/shell-global.c:1363
 msgid "Less than a minute ago"
 msgstr "ਇੱਕ ਮਿੰਟ ਤੋਂ ਘੱਟ ਚਿਰ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1369
+#: ../src/shell-global.c:1367
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1374
+#: ../src/shell-global.c:1372
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ਘੰਟਾ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਘੰਟੇ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1379
+#: ../src/shell-global.c:1377
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d ਦਿਨ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਦਿਨ ਪਹਿਲਾਂ"
 
-#: ../src/shell-global.c:1384
+#: ../src/shell-global.c:1382
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d ਹਫ਼ਤਾ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਹਫ਼ਤੇ ਪਹਿਲਾਂ"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentation dialog was dismissed by the user"
+msgstr "ਪਰਮਾਣਕਿਤਾ ਡਾਈਲਾਗ ਯੂਜ਼ਰ ਨੇ ਰੱਦ ਕੀਤਾ"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
@@ -1141,8 +1017,113 @@ msgstr "ਖੋਜ"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#~ msgid "Suspend..."
-#~ msgstr "ਸਸਪੈਂਡ..."
+#~ msgid "Clip the crosshairs at the center"
+#~ msgstr "ਸੈਂਟਰ ਉੱਤੇ ਕਰਾਂਸਹੇਅਰ ਕਲਿੱਪ ਕਰੋ"
+
+#~ msgid "Color of the crosshairs"
+#~ msgstr "ਕਰਾਂਸਹੇਅਰ ਦਾ ਰੰਗ"
+
+#~ msgid ""
+#~ "Determines the length of the vertical and horizontal lines that make up "
+#~ "the crosshairs."
+#~ msgstr "ਵਰਟੀਕਲ ਤੇ ਹਰੀਜੱਟਲ ਲਾਈਨਾਂ ਦੀ ਲੰਬਾਈ ਦੱਸੋ, ਜੋ ਕਿ ਕਰਾਂਸਹੇਅਰ ਬਣਾਉਂਦੀਆਂ ਹਨ।"
+
+#~ msgid ""
+#~ "Determines the transparency of the crosshairs, from fully opaque to fully "
+#~ "transparent."
+#~ msgstr "ਕਰਾਂਸਹੇਅਰ ਦੀ ਟਰਾਂਸਪਰੇਸੀ ਤਹਿ ਕਰੋ, ਪੂਰੀ ਤਰ੍ਹਾਂ ਧੁੰਦਲੇ ਤੋਂ ਪਾਰਦਰਸ਼ੀ ਹੀ।"
+
+#~ msgid "Enable lens mode"
+#~ msgstr "ਲੈਨਜ਼ ਮੋਡ ਚਾਲੂ"
+
+#~ msgid ""
+#~ "Enables/disables display of crosshairs centered on the magnified mouse "
+#~ "sprite."
+#~ msgstr "ਵੱਡਦਰਸ਼ੀ ਮਾਊਸ ਸਪਰਿਟ ਉੱਤੇ ਸੈਂਟਰ ਕੀਤੇ ਕਰਾਂਸਹੇਅਰ ਵੇਖਾਉਣਾ ਚਾਲੂ ਜਾਂ ਬੰਦ ਕਰੋ।"
+
+#~ msgid ""
+#~ "For centered mouse tracking, when the system pointer is at or near the "
+#~ "edge of the screen, the magnified contents continue to scroll such that "
+#~ "the screen edge moves into the magnified view."
+#~ msgstr ""
+#~ "ਸੈਂਟਰਡ ਮਾਊਸ ਟਰੈਕ ਕਰਨ ਲਈ, ਜਦੋਂ ਸਿਸਟਮ ਪੁਆਇੰਟਰ ਸਕਰੀਨ ਦੇ ਕਿਸੇ ਕੋਨੇ ਕੋਲ ਜਾਂਦਾ ਹੈ ਤਾਂ ਵੱਡੇ ਰੂਪ "
+#~ "ਵਿੱਚ ਵੇਖਾਈ ਜਾਂਦੀ ਸਮੱਗਰੀ ਇੰਝ ਸਕਰੋਲ ਕੀਤੀ ਜਾਂਦੀ ਹੈ ਤਾਂ ਕਿ ਸਕਰੀਨ ਕੋਨੇ ਵੱਡਦਰਸ਼ ਝਲਕ ਦੇ ਰੂਪ ਵਿੱਚ "
+#~ "ਵੇਖਾਈ ਜਾਂਦੇ ਰਹਿੰਦੇ ਹਨ।"
+
+#~ msgid "Length of the crosshairs"
+#~ msgstr "ਕਰਾਂਸਹੇਅਰ ਦੀ ਲੰਬਾਈ"
+
+#~ msgid "Magnification factor"
+#~ msgstr "ਵੱਡਦਰਸ਼ੀ ਗੁਣਾਂਕ"
+
+#~ msgid "Mouse Tracking Mode"
+#~ msgstr "ਮਾਊਸ ਟਰੈਕਿੰਗ ਮੋਡ"
+
+#~ msgid "Opacity of the crosshairs"
+#~ msgstr "ਕਰਾਂਸਹੇਅਰ ਦਾ ਧੁੰਦਲਾਪਨ"
+
+#~ msgid "Screen position"
+#~ msgstr "ਸਕਰੀਨ ਸਥਿਤੀ"
+
+#~ msgid "Scroll magnified contents beyond the edges of the desktop"
+#~ msgstr "ਡੈਸਕਟਾਪ ਦੇ ਕੋਨਿਆਂ ਤੋਂ ਪਾਰ ਵੱਡਦਰਸ਼ੀ ਸਮੱਗਰੀ ਸਕਰੋਲ ਕਰੋ"
+
+#~ msgid "Show or hide crosshairs"
+#~ msgstr "ਕਰਾਂਸਹੇਅਰ ਵੇਖੋ ਜਾਂ ਓਹਲੇ ਕਰੋ"
+
+#~ msgid "Show or hide the magnifier"
+#~ msgstr "ਵੱਡਦਰਸ਼ੀ ਵੇਖੋ ਜਾਂ ਓਹਲੇ ਕਰੋ"
+
+#~ msgid "Show or hide the magnifier and all of its zoom regions."
+#~ msgstr "ਵੱਡਦਰਸ਼ੀ ਵੇਖੋ ਜਾਂ ਓਹਲੇ ਕਰੋ ਤੇ ਇਸ ਦੇ ਸਭ ਖੇਤਰਾਂ ਨੂੰ ਜ਼ੂਮ ਕਰੋ।"
+
+#~ msgid ""
+#~ "The color of the the vertical and horizontal lines that make up the "
+#~ "crosshairs."
+#~ msgstr "ਵਰਟੀਕਲ ਤੇ ਹਰੀਜੱਟਲ ਲਾਈਨਾਂ ਦਾ ਰੰਗ, ਜੋ ਕਿ ਕਰਾਂਸਹੇਅਰ ਬਣਾਉਂਦੀਆਂ ਹਨ"
+
+#~ msgid ""
+#~ "The magnified view either fills the entire screen, or occupies the top-"
+#~ "half, bottom-half, left-half, or right-half of the screen."
+#~ msgstr ""
+#~ "ਵੱਡਦਰਸ਼ੀ ਝਲਕ ਪੂਰੀ ਸਕਰੀਨ ਨੂੰ ਭਰ ਸਕਦਾ ਹੈ ਜਾਂ ਅੱਧਾ-ਉੱਤੇ, ਅੱਧਾ ਹੇਠਾਂ, ਅੱਧਾ ਖੱਬੇ ਜਾਂ ਅੱਧਾ-ਸੱਜੇ ਭਾਗ "
+#~ "ਨੂੰ ਭਰ ਸਕਦਾ ਹੈ।"
+
+#~ msgid ""
+#~ "The power of the magnification. A value of 1.0 means no magnification. A "
+#~ "value of 2.0 doubles the size."
+#~ msgstr ""
+#~ "ਵੱਡਦਰਸ਼ੀ ਦੀ ਤਾਕਤ ਹੈ। ੧.੦ ਦਾ ਮਤਲਬ ਹੈ ਕਿ ਕੋਈ ਵੀ ਨਹੀਂ। ੨.੦ ਦਾ ਮਤਲਬ ਹੈ ਆਕਾਰ ਦਾ ਦੋ ਗੁਣਾ।"
+
+#~ msgid "Thickness of the crosshairs"
+#~ msgstr "ਕਰਾਂਸਹੇਅਰ ਦੀ ਮੋਟਾਈ"
+
+#~ msgid ""
+#~ "Whether the magnified view should be centered over the location of the "
+#~ "system mouse and move with it."
+#~ msgstr "ਕੀ ਵੱਡਦਰਸ਼ੀ ਝਲਕ ਦੀ ਸਥਿਤੀ ਸਿਸਟਮ ਮਾਊਂਸ ਦੁਆਲੇ ਕੇਂਦਰਤ ਰਹੇ ਅਤੇ ਉਸ ਨਾਲ ਹੀ ਹਿੱਲੇ।"
+
+#~ msgid ""
+#~ "Width of the vertical and horizontal lines that make up the crosshairs."
+#~ msgstr "ਵਰਟੀਕਲ ਤੇ ਹਰੀਜੱਟਲ ਲਾਈਨਾਂ ਦੀ ਚੌੜਾਈ, ਜੋ ਕਿ ਕਰਾਂਸਹੇਅਰ ਬਣਾਉਂਦੀਆਂ ਹਨ"
+
+#~ msgid "Shut Down..."
+#~ msgstr "ਬੰਦ ਕਰੋ..."
+
+#~ msgid "Bluetooth Agent"
+#~ msgstr "ਬਲਿਊਟੁੱਥ ਏਜੰਟ"
+
+#~ msgid "Search your computer"
+#~ msgstr "ਆਪਣੇ ਕੰਪਿਊਟਰ ਉੱਤੇ ਲੱਭੋ"
+
+#~ msgid ""
+#~ "Can't add a new workspace because maximum workspaces limit has been "
+#~ "reached."
+#~ msgstr ""
+#~ "ਨਵਾਂ ਵਰਕਸਪੇਸ ਜੋੜਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ, ਕਿਉਂਕਿ ਵਰਕਸਪੇਸਾਂ ਦੀ ਵੱਧੋ-ਵੱਧ ਗਿਣਤੀ ਪੂਰੀ ਹੋ ਚੁੱਕੀ ਹੈ।"
+
+#~ msgid "Can't remove the first workspace."
+#~ msgstr "ਪਹਿਲਾਂ ਵਰਕਸਪੇਸ ਨਹੀਂ ਹਟਾਇਆ ਜਾ ਸਕਦਾ।"
 
 #~ msgid "Clock"
 #~ msgstr "ਘੜੀ"
@@ -1225,12 +1206,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Find"
 #~ msgstr "ਖੋਜ"
-
-#~ msgid "Searching..."
-#~ msgstr "ਖੋਜ ਜਾਰੀ ਹੈ..."
-
-#~ msgid "No matching results."
-#~ msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਲੱਭਿਆ।"
 
 #~ msgid "Invisible"
 #~ msgstr "ਅਦਿੱਖ"
