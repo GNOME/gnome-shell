@@ -141,6 +141,7 @@ struct _MetaScreenClass
 
   void (*restacked)         (MetaScreen *);
   void (*workareas_changed) (MetaScreen *);
+  void (*monitors_changed)  (MetaScreen *);
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,

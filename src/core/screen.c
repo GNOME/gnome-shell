@@ -86,6 +86,7 @@ enum
   WORKSPACE_SWITCHED,
   STARTUP_SEQUENCE_CHANGED,
   WORKAREAS_CHANGED,
+  MONITORS_CHANGED,
 
   LAST_SIGNAL
 };
@@ -226,6 +227,15 @@ meta_screen_class_init (MetaScreenClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  screen_signals[MONITORS_CHANGED] =
+    g_signal_new ("monitors-changed",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (MetaScreenClass, monitors_changed),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
 
   g_object_class_install_property (object_class,
                                    PROP_N_WORKSPACES,
@@ -2791,6 +2801,8 @@ meta_screen_resize (MetaScreen *screen,
 
   /* Queue a resize on all the windows */
   meta_screen_foreach_window (screen, meta_screen_resize_func, 0);
+
+  g_signal_emit (screen, screen_signals[MONITORS_CHANGED], 0, index);
 }
 
 void
