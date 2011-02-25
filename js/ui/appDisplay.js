@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
@@ -143,7 +144,7 @@ ViewByCategories.prototype = {
     },
 
     _addFilter: function(name, num) {
-        let button = new St.Button({ label: name,
+        let button = new St.Button({ label: GLib.markup_escape_text (name, -1),
                                      style_class: 'app-filter',
                                      x_align: St.Align.START });
         this._filters.add(button, { expand: true, x_fill: true, y_fill: false });
