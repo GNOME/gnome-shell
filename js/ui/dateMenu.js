@@ -52,9 +52,7 @@ DateMenuButton.prototype = {
         let hbox;
         let vbox;
 
-        //this._eventSource = new Calendar.EmptyEventSource();
-        //this._eventSource = new Calendar.FakeEventSource();
-        this._eventSource = new Calendar.EvolutionEventSource();
+        this._eventSource = new Calendar.DBusEventSource();
 
         let menuAlignment = 0.25;
         if (St.Widget.get_default_direction() == St.TextDirection.RTL)
@@ -117,7 +115,20 @@ DateMenuButton.prototype = {
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
             if (isOpen) {
                 let now = new Date();
-                this._calendar.setDate(now);
+                /* Passing true to setDate() forces events to be reloaded. We
+                 * want this behavior, because
+                 *
+                 *   o It will cause activation of the calendar server which is
+                 *     useful if it has crashed
+                 *
+                 *   o It will cause the calendar server to reload events which
+                 *     is useful if dynamic updates are not supported or not
+                 *     properly working
+                 *
+                 * Since this only happens when the menu is opened, the cost
+                 * isn't very big.
+                 */
+                this._calendar.setDate(now, true);
                 // No need to update this._eventList as ::selected-date-changed
                 // signal will fire
             }

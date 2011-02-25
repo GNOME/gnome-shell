@@ -197,7 +197,8 @@ def start_shell(perf_output=None):
     if running_from_source_tree:
         if os.environ.has_key('GI_TYPELIB_PATH'):
             typelib_dir = typelib_dir + ":" + os.environ.get('GI_TYPELIB_PATH')
-        env.update({'GNOME_SHELL_DATADIR'  : data_dir,
+        env.update({'GNOME_SHELL_BINDIR' : bin_dir,
+                    'GNOME_SHELL_DATADIR'  : data_dir,
                     'GI_TYPELIB_PATH'      : typelib_dir,
                     'GSETTINGS_SCHEMA_DIR' : data_dir })
     else:

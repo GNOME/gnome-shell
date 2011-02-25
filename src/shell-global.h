@@ -156,6 +156,8 @@ void shell_get_tp_contacts (TpConnection *self,
                             const TpContactFeature *features,
                             ShellGetTpContactCb callback);
 
+void shell_global_launch_calendar_server (ShellGlobal *global);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */

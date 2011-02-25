@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const DBus = imports.dbus;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
@@ -158,13 +159,14 @@ function _getEventDayAbbreviation(dayNumber) {
 
 // Abstraction for an appointment/event in a calendar
 
-function CalendarEvent(date, summary, allDay) {
-    this._init(date, summary, allDay);
+function CalendarEvent(date, end, summary, allDay) {
+    this._init(date, end, summary, allDay);
 }
 
 CalendarEvent.prototype = {
-    _init: function(date, summary, allDay) {
+    _init: function(date, end, summary, allDay) {
         this.date = date;
+        this.end = end;
         this.summary = summary;
         this.allDay = allDay;
     }
@@ -196,139 +198,136 @@ EmptyEventSource.prototype = {
 };
 Signals.addSignalMethods(EmptyEventSource.prototype);
 
-// Second, wrap native Evolution event source
-function EvolutionEventSource() {
-    this._init();
-}
-
-EvolutionEventSource.prototype = {
-    _init: function() {
-        this._native = new Shell.EvolutionEventSource();
-        this._native.connect('changed', Lang.bind(this, function() {
-            this.emit('changed');
-        }));
-    },
-
-    requestRange: function(begin, end) {
-        this._native.request_range(begin.getTime(), end.getTime());
-    },
-
-    getEvents: function(begin, end) {
-        let result = [];
-        let nativeEvents = this._native.get_events(begin.getTime(), end.getTime());
-        for (let n = 0; n < nativeEvents.length; n++) {
-            let nativeEvent = nativeEvents[n];
-            result.push(new CalendarEvent(new Date(nativeEvent.msec_begin), nativeEvent.summary, nativeEvent.all_day));
-        }
-        return result;
-    },
-
-    hasEvents: function(day) {
-        let dayBegin = _getBeginningOfDay(day);
-        let dayEnd = _getEndOfDay(day);
-
-        let events = this.getEvents(dayBegin, dayEnd);
-
-        if (events.length == 0)
-            return false;
-
-        return true;
-    }
+const CalendarServerIface = {
+    name: 'org.gnome.Shell.CalendarServer',
+    methods: [{ name: 'GetEvents',
+                inSignature: 'xxb',
+                outSignature: 'a(sssbxxa{sv})' }],
+    signals: [{ name: 'Changed',
+                inSignature: '' }]
 };
-Signals.addSignalMethods(EvolutionEventSource.prototype);
 
-// Finally, an implementation with fake events
-function FakeEventSource() {
+const CalendarServer = function () {
     this._init();
+};
+
+CalendarServer.prototype = {
+     _init: function() {
+         DBus.session.proxifyObject(this, 'org.gnome.Shell.CalendarServer', '/org/gnome/Shell/CalendarServer');
+     }
+};
+
+DBus.proxifyPrototype(CalendarServer.prototype, CalendarServerIface);
+
+// an implementation that reads data from a session bus service
+function DBusEventSource(owner) {
+    this._init(owner);
 }
 
-FakeEventSource.prototype = {
-    _init: function() {
+function _datesEqual(a, b) {
+    if (a < b)
+        return false;
+    else if (a > b)
+        return false;
+    return true;
+}
 
-        this._fakeEvents = [];
+function _dateIntervalsOverlap(a0, a1, b0, b1)
+{
+    if (a1 <= b0)
+        return false;
+    else if (b1 <= a0)
+        return false;
+    else
+        return true;
+}
 
-        // Generate fake events
-        //
-        let midnightToday = _getBeginningOfDay(new Date());
-        let summary = '';
 
-        // '10-oclock pow-wow' is an event occuring IN THE PAST every four days at 10am
-        for (let n = 0; n < 10; n++) {
-            let t = new Date(midnightToday.getTime() - n * 4 * 86400 * 1000);
-            t.setHours(10);
-            summary = '10-oclock pow-wow (n=' + n + ')';
-            this._fakeEvents.push(new CalendarEvent(t, summary, false));
-        }
+DBusEventSource.prototype = {
+    _init: function(owner) {
+        this._resetCache();
 
-        // '11-oclock thing' is an event occuring every three days at 11am
-        for (let n = 0; n < 10; n++) {
-            let t = new Date(midnightToday.getTime() + n * 3 * 86400 * 1000);
-            t.setHours(11);
-            summary = '11-oclock thing (n=' + n + ')';
-            this._fakeEvents.push(new CalendarEvent(t, summary, false));
-        }
+        this._dbusProxy = new CalendarServer(owner);
+        this._dbusProxy.connect('Changed', Lang.bind(this, this._onChanged));
 
-        // 'Weekly Meeting' is an event occuring every seven days at 1:45pm (two days displaced)
-        for (let n = 0; n < 5; n++) {
-            let t = new Date(midnightToday.getTime() + (n * 7 + 2) * 86400 * 1000);
-            t.setHours(13);
-            t.setMinutes(45);
-            summary = 'Weekly Meeting (n=' + n + ')';
-            this._fakeEvents.push(new CalendarEvent(t, summary, false));
-        }
-
-        // 'Fun All Day' is an all-day event occuring every fortnight (three days displayed)
-        for (let n = 0; n < 10; n++) {
-            let t = new Date(midnightToday.getTime() + (n * 14 + 3) * 86400 * 1000);
-            summary = 'Fun All Day (n=' + n + ')';
-            this._fakeEvents.push(new CalendarEvent(t, summary, true));
-        }
-
-        // 'Get Married' is an event that actually reflects reality (Dec 4, 2010) :-)
-        this._fakeEvents.push(new CalendarEvent(new Date(2010, 11, 4, 16, 0), 'Get Married', false));
-
-        // ditto for 'NE Patriots vs NY Jets'
-        this._fakeEvents.push(new CalendarEvent(new Date(2010, 11, 6, 20, 30), 'NE Patriots vs NY Jets', false));
-
-        // An event for tomorrow @6:30pm that is added/removed every five
-        // seconds (to check that the ::changed signal works)
-        let transientEventDate = new Date(midnightToday.getTime() + 86400 * 1000);
-        transientEventDate.setHours(18);
-        transientEventDate.setMinutes(30);
-        transientEventDate.setSeconds(0);
-        Mainloop.timeout_add(5000, Lang.bind(this, this._updateTransientEvent));
-        this._includeTransientEvent = false;
-        this._transientEvent = new CalendarEvent(transientEventDate, 'A Transient Event', false);
-        this._transientEventCounter = 1;
+        DBus.session.watch_name('org.gnome.Shell.CalendarServer',
+                                false, // do not launch a name-owner if none exists
+                                Lang.bind(this, this._onNameAppeared),
+                                Lang.bind(this, this._onNameVanished));
     },
 
-    _updateTransientEvent: function() {
-        this._includeTransientEvent = !this._includeTransientEvent;
-        this._transientEventCounter = this._transientEventCounter + 1;
-        this._transientEvent.summary = 'A Transient Event (' + this._transientEventCounter + ')';
+    _resetCache: function() {
+        this._events = [];
+        this._lastRequestBegin = null;
+        this._lastRequestEnd = null;
+    },
+
+    _onNameAppeared: function(owner) {
+        this._resetCache();
+        this._loadEvents(true);
+    },
+
+    _onNameVanished: function(oldOwner) {
+        this._resetCache();
         this.emit('changed');
-        Mainloop.timeout_add(5000, Lang.bind(this, this._updateTransientEvent));
     },
 
-    requestRange: function(begin, end) {
+    _onChanged: function() {
+        this._loadEvents(false);
+    },
+
+    _onEventsReceived: function(appointments) {
+        let newEvents = [];
+        if (appointments != null) {
+            for (let n = 0; n < appointments.length; n++) {
+                let a = appointments[n];
+                let date = new Date(a[4] * 1000);
+                let end = new Date(a[5] * 1000);
+                let summary = a[1];
+                let allDay = a[3];
+                let event = new CalendarEvent(date, end, summary, allDay);
+                newEvents.push(event);
+            }
+            newEvents.sort(function(event1, event2) {
+                return event1.date.getTime() - event2.date.getTime();
+            });
+        }
+
+        this._events = newEvents;
+        this.emit('changed');
+    },
+
+    _loadEvents: function(forceReload) {
+        if (this._curRequestBegin && this._curRequestEnd){
+            let callFlags = 0;
+            if (forceReload)
+                callFlags |= DBus.CALL_FLAG_START;
+            this._dbusProxy.GetEventsRemote(this._curRequestBegin.getTime() / 1000,
+                                            this._curRequestEnd.getTime() / 1000,
+                                            forceReload,
+                                            Lang.bind(this, this._onEventsReceived),
+                                            callFlags);
+        }
+    },
+
+    requestRange: function(begin, end, forceReload) {
+        if (forceReload || !(_datesEqual(begin, this._lastRequestBegin) && _datesEqual(end, this._lastRequestEnd))) {
+            this._lastRequestBegin = begin;
+            this._lastRequestEnd = end;
+            this._curRequestBegin = begin;
+            this._curRequestEnd = end;
+            this._loadEvents(forceReload);
+        }
     },
 
     getEvents: function(begin, end) {
         let result = [];
-        //log('begin:' + begin);
-        //log('end:  ' + end);
-        for(let n = 0; n < this._fakeEvents.length; n++) {
-            let event = this._fakeEvents[n];
-            if (event.date >= begin && event.date <= end) {
+        for(let n = 0; n < this._events.length; n++) {
+            let event = this._events[n];
+            if (_dateIntervalsOverlap (event.date, event.end, begin, end)) {
                 result.push(event);
             }
-            //log('when:' + event.date + ' summary:' + event.summary);
         }
-        if (this._includeTransientEvent && this._transientEvent.date >= begin && this._transientEvent.date <= end)
-            result.push(this._transientEvent);
-        result.sort(function(event1, event2) {
-            return event1.date.getTime() - event2.date.getTime();
-        });
         return result;
     },
 
@@ -343,9 +342,8 @@ FakeEventSource.prototype = {
 
         return true;
     }
-
 };
-Signals.addSignalMethods(FakeEventSource.prototype);
+Signals.addSignalMethods(DBusEventSource.prototype);
 
 // Calendar:
 // @eventSource: is an object implementing the EventSource API, e.g. the
@@ -358,7 +356,10 @@ Calendar.prototype = {
     _init: function(eventSource) {
         this._eventSource = eventSource;
 
-        this._eventSource.connect('changed', Lang.bind(this, this._update));
+        this._eventSource.connect('changed', Lang.bind(this,
+                                                       function() {
+                                                           this._update(false);
+                                                       }));
 
         // FIXME: This is actually the fallback method for GTK+ for the week start;
         // GTK+ by preference uses nl_langinfo (NL_TIME_FIRST_WEEKDAY). We probably
@@ -407,15 +408,17 @@ Calendar.prototype = {
                            Lang.bind(this, this._onScroll));
 
         this._buildHeader ();
-        this._update();
     },
 
     // Sets the calendar to show a specific date
-    setDate: function(date) {
+    setDate: function(date, forceReload) {
         if (!_sameDay(date, this._selectedDate)) {
             this._selectedDate = date;
-            this._update();
+            this._update(forceReload);
             this.emit('selected-date-changed', new Date(this._selectedDate));
+        } else {
+            if (forceReload)
+                this._update(forceReload);
         }
     },
 
@@ -510,7 +513,7 @@ Calendar.prototype = {
             }
         }
 
-        this.setDate(newDate);
+        this.setDate(newDate, false);
    },
 
    _onNextMonthButtonClicked: function() {
@@ -532,16 +535,16 @@ Calendar.prototype = {
             }
         }
 
-        this.setDate(newDate);
+       this.setDate(newDate, false);
     },
 
     _onSettingsChange: function() {
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
         this._buildHeader();
-        this._update();
+        this._update(false);
     },
 
-    _update: function() {
+    _update: function(forceReload) {
         let now = new Date();
 
         if (_sameYear(this._selectedDate, now))
@@ -570,7 +573,7 @@ Calendar.prototype = {
             let iterStr = iter.toUTCString();
             button.connect('clicked', Lang.bind(this, function() {
                 let newlySelectedDate = new Date(iterStr);
-                this.setDate(newlySelectedDate);
+                this.setDate(newlySelectedDate, false);
             }));
 
             let hasEvents = this._eventSource.hasEvents(iter);
@@ -620,7 +623,7 @@ Calendar.prototype = {
         }
         // Signal to the event source that we are interested in events
         // only from this date range
-        this._eventSource.requestRange(beginDate, iter);
+        this._eventSource.requestRange(beginDate, iter, forceReload);
     }
 };
 
@@ -698,7 +701,7 @@ EventsList.prototype = {
         if (events.length == 0 && showNothingScheduled) {
             let now = new Date();
             /* Translators: Text to show if there are no events */
-            let nothingEvent = new CalendarEvent(now, _("Nothing Scheduled"), true);
+            let nothingEvent = new CalendarEvent(now, now, _("Nothing Scheduled"), true);
             let timeString = _formatEventTime(nothingEvent, clockFormat);
             this._addEvent(dayNameBox, timeBox, eventTitleBox, false, "", timeString, nothingEvent.summary);
         }

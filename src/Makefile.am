@@ -27,13 +27,14 @@ include Makefile-gdmuser.am
 include Makefile-st.am
 include Makefile-tray.am
 include Makefile-gvc.am
-include Makefile-calendar-client.am
+include Makefile-calendar-server.am
 
 gnome_shell_cflags =				\
 	$(MUTTER_PLUGIN_CFLAGS)			\
 	$(LIBGNOMEUI_CFLAGS)                    \
 	-I$(srcdir)/tray			\
 	-DLOCALEDIR=\"$(datadir)/locale\" \
+	-DGNOME_SHELL_LIBEXECDIR=\"$(libexecdir)\"	\
 	-DGNOME_SHELL_DATADIR=\"$(pkgdatadir)\"	\
 	-DGNOME_SHELL_PKGLIBDIR=\"$(pkglibdir)\" \
 	-DJSDIR=\"$(pkgdatadir)/js\"
@@ -88,8 +89,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-arrow.c			\
 	shell-doc-system.c		\
 	shell-embedded-window.c		\
-	shell-evolution-event-source.h	\
-	shell-evolution-event-source.c	\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
 	shell-global.c			\
@@ -216,10 +215,9 @@ libgnome_shell_la_LIBADD =	\
 	libgdmuser-1.0.la	\
 	libtray.la		\
 	libgvc.la		\
-	libcalendar-client.la	\
 	$(NULL)
 
-libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
+libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags) $(LIBECAL_CFLAGS)
 
 typelibdir = $(pkglibdir)
 typelib_DATA = Shell-0.1.typelib St-1.0.typelib Gdm-1.0.typelib Gvc-1.0.typelib

@@ -95,6 +95,10 @@ function start() {
     // back into sync ones.
     DBus.session.flush();
 
+    // Load the calendar server. Note that we are careful about
+    // not loading any events until the user presses the clock
+    global.launch_calendar_server();
+
     Environment.init();
 
     // Ensure ShellWindowTracker and ShellAppUsage are initialized; this will
