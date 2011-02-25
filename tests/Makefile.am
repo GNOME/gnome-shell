@@ -27,7 +27,7 @@ EXTRA_DIST += $(TEST_MISC)
 
 run-test.sh: run-test.sh.in
 	$(AM_V_GEN) sed \
-	    -e "s|@MUTTER_LIB_DIR[@]|$(MUTTER_LIB_DIR)|" \
+	    -e "s|@MUTTER_TYPELIB_DIR[@]|$(MUTTER_TYPELIB_DIR)|" \
 	    -e "s|@srcdir[@]|$(srcdir)|" \
 	    $< > $@ && chmod a+x $@
 

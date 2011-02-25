@@ -203,7 +203,8 @@ static void
 shell_global_init (ShellGlobal *global)
 {
   const char *datadir = g_getenv ("GNOME_SHELL_DATADIR");
-  char *imagedir;
+  const char *shell_js = g_getenv("GNOME_SHELL_JS");
+  char *imagedir, **search_path;
 
   if (!datadir)
     datadir = GNOME_SHELL_DATADIR;
@@ -242,6 +243,15 @@ shell_global_init (ShellGlobal *global)
   ca_context_create (&global->sound_context);
   ca_context_change_props (global->sound_context, CA_PROP_APPLICATION_NAME, PACKAGE_NAME, CA_PROP_APPLICATION_ID, "org.gnome.Shell", NULL);
   ca_context_open (global->sound_context);
+
+  if (!shell_js)
+    shell_js = JSDIR;
+  search_path = g_strsplit (shell_js, ":", -1);
+  global->js_context = g_object_new (GJS_TYPE_CONTEXT,
+                                     "search-path", search_path,
+                                     "js-version", "1.8",
+                                     NULL);
+  g_strfreev (search_path);
 }
 
 static void
@@ -791,11 +801,10 @@ _shell_global_set_plugin (ShellGlobal *global,
   global->focus_manager = st_focus_manager_get_for_stage (CLUTTER_STAGE (stage));
 }
 
-void
-_shell_global_set_gjs_context (ShellGlobal *global,
-                               GjsContext  *context)
+GjsContext *
+_shell_global_get_gjs_context (ShellGlobal *global)
 {
-  global->js_context = context;
+  return global->js_context;
 }
 
 /**

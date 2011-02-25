@@ -134,9 +134,6 @@ shell_a11y_init (void)
 {
   char *bridge_path = NULL;
 
-  g_unsetenv ("NO_AT_BRIDGE");
-  g_unsetenv ("NO_GAIL");
-
   if (!should_enable_a11y ())
     return;
 
