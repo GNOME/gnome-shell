@@ -469,11 +469,12 @@ StTooltip StLabel {
 
 #searchResults {
     padding: 20px 10px 10px 10px;
+    spacing: 18px;
 }
 
 #searchResultsContent {
-    padding: 0 10px;
-    spacing: 8px;
+    padding: 0 20px 0 0;
+    spacing: 36px;
 }
 
 .search-statustext,
@@ -481,18 +482,11 @@ StTooltip StLabel {
     padding: 4px 12px;
     spacing: 4px;
     color: #6f6f6f;
-}
-
-.search-section {
-    background-color: rgba(128, 128, 128, .1);
-    border: 1px solid rgba(50, 50, 50, .4);
-    border-radius: 10px;
+    font-size: .8em;
 }
 
 .search-section-results {
     color: #ffffff;
-    border-radius: 10px;
-    border: 1px solid rgba(50, 50, 50, .4);
     padding: 6px;
 }
 
@@ -505,17 +499,18 @@ StTooltip StLabel {
 }
 
 .search-providers-box {
-    spacing: 4px;
+    spacing: 12px;
 }
 
 .dash-search-button {
     background-gradient-direction: vertical;
     background-gradient-start: rgba(255, 255, 255, 0.2);
     background-gradient-end: rgba(255, 255, 255, 0);
-/*    border: 1px solid #808080;*/
-    border-radius: 10px;
+    border: 1px solid #808080;
+    border-radius: 16px;
     height: 32px;
     width: 300px;
+    font-weight: bold;
 }
 
 .dash-search-button:selected,
