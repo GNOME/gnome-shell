@@ -83,6 +83,10 @@ cogl_public_h = \
 	$(NULL)
 
 cogl_experimental_h = \
+	$(srcdir)/cogl-renderer.h 		\
+	$(srcdir)/cogl-swap-chain.h 		\
+	$(srcdir)/cogl-onscreen-template.h 	\
+	$(srcdir)/cogl-display.h 		\
 	$(srcdir)/cogl-context.h 		\
 	$(srcdir)/cogl2-path.h 			\
 	$(srcdir)/cogl2-clip-state.h		\
@@ -161,6 +165,18 @@ cogl_sources_c = \
 	$(srcdir)/cogl-handle.h 			\
 	$(srcdir)/cogl-context-private.h		\
 	$(srcdir)/cogl-context.c			\
+	$(srcdir)/cogl-renderer-private.h		\
+	$(srcdir)/cogl-renderer.h			\
+	$(srcdir)/cogl-renderer.c			\
+	$(srcdir)/cogl-swap-chain-private.h		\
+	$(srcdir)/cogl-swap-chain.h			\
+	$(srcdir)/cogl-swap-chain.c			\
+	$(srcdir)/cogl-onscreen-template-private.h 	\
+	$(srcdir)/cogl-onscreen-template.h 		\
+	$(srcdir)/cogl-onscreen-template.c 		\
+	$(srcdir)/cogl-display-private.h		\
+	$(srcdir)/cogl-display.h			\
+	$(srcdir)/cogl-display.c			\
 	$(srcdir)/cogl-internal.h			\
 	$(srcdir)/cogl.c				\
 	$(srcdir)/cogl-object-private.h			\
