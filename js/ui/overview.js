@@ -644,18 +644,6 @@ Overview.prototype = {
             this.show();
     },
 
-    /**
-     * getWorkspacesForWindow:
-     * @metaWindow: A #MetaWindow
-     *
-     * Returns the Workspaces object associated with the given window.
-     * This method is not be accessible if the overview is not open
-     * and will return %null.
-     */
-    getWorkspacesForWindow: function(metaWindow) {
-        return this.workspaces;
-    },
-
     //// Private methods ////
 
     _syncInputMode: function() {
