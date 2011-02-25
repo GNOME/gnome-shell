@@ -35,9 +35,6 @@
 #endif
 #include "shell-jsapi-compat-private.h"
 
-#define SHELL_DBUS_SERVICE "org.gnome.Shell"
-#define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
-
 static void grab_notify (GtkWidget *widget, gboolean is_grab, gpointer user_data);
 
 struct _ShellGlobal {
@@ -1229,68 +1226,6 @@ void
 shell_global_maybe_gc (ShellGlobal *global)
 {
   gjs_context_maybe_gc (global->js_context);
-}
-
-void
-shell_global_grab_dbus_service (ShellGlobal *global)
-{
-  GError *error = NULL;
-  DBusGConnection *session;
-  DBusGProxy *bus;
-  guint32 request_name_result;
-  
-  session = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
-  
-  bus = dbus_g_proxy_new_for_name (session,
-                                   DBUS_SERVICE_DBUS,
-                                   DBUS_PATH_DBUS,
-                                   DBUS_INTERFACE_DBUS);
-  
-  if (!dbus_g_proxy_call (bus, "RequestName", &error,
-                          G_TYPE_STRING, SHELL_DBUS_SERVICE,
-                          G_TYPE_UINT, 0,
-                          G_TYPE_INVALID,
-                          G_TYPE_UINT, &request_name_result,
-                          G_TYPE_INVALID)) 
-    {
-      g_print ("failed to acquire org.gnome.Shell: %s\n", error->message);
-      /* If we somehow got started again, it's not an error to be running
-       * already.  So just exit 0.
-       */
-      exit (0);  
-    }
-
-  /* Also grab org.gnome.Panel to replace any existing panel process,
-   * unless a special environment variable is passed.  The environment
-   * variable is used by the gnome-shell (no --replace) launcher in
-   * Xephyr */
-  if (!g_getenv ("GNOME_SHELL_NO_REPLACE"))
-    {
-      if (!dbus_g_proxy_call (bus, "RequestName", &error, G_TYPE_STRING,
-                              "org.gnome.Panel", G_TYPE_UINT,
-                              DBUS_NAME_FLAG_REPLACE_EXISTING | DBUS_NAME_FLAG_DO_NOT_QUEUE,
-                              G_TYPE_INVALID, G_TYPE_UINT,
-                              &request_name_result, G_TYPE_INVALID))
-        {
-          g_print ("failed to acquire org.gnome.Panel: %s\n", error->message);
-          exit (1);
-        }
-    }
-
-  /* ...and the org.gnome.Magnifier service.
-   */
-  if (!dbus_g_proxy_call (bus, "RequestName", &error,
-                          G_TYPE_STRING, MAGNIFIER_DBUS_SERVICE,
-                          G_TYPE_UINT, 0,
-                          G_TYPE_INVALID,
-                          G_TYPE_UINT, &request_name_result,
-                          G_TYPE_INVALID))
-    {
-      g_print ("failed to acquire %s: %s\n", MAGNIFIER_DBUS_SERVICE, error->message);
-      /* Failing to acquire the magnifer service is not fatal.  Log the error,
-       * but keep going. */
-    }
-  g_object_unref (bus);
 }
 
 static void

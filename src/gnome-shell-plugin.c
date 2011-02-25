@@ -54,9 +54,13 @@
 #include "st.h"
 #include "shell-a11y.h"
 
+#define SHELL_DBUS_SERVICE "org.gnome.Shell"
+#define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
+
 static void gnome_shell_plugin_dispose     (GObject *object);
 static void gnome_shell_plugin_finalize    (GObject *object);
 
+static void gnome_shell_plugin_early_initialize (MetaPlugin          *plugin);
 static void gnome_shell_plugin_start            (MetaPlugin          *plugin);
 static void gnome_shell_plugin_minimize         (MetaPlugin          *plugin,
                                                  MetaWindowActor     *actor);
@@ -138,6 +142,7 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
   gobject_class->dispose         = gnome_shell_plugin_dispose;
   gobject_class->finalize        = gnome_shell_plugin_finalize;
 
+  plugin_class->early_initialize = gnome_shell_plugin_early_initialize;
   plugin_class->start            = gnome_shell_plugin_start;
   plugin_class->map              = gnome_shell_plugin_map;
   plugin_class->minimize         = gnome_shell_plugin_minimize;
@@ -401,6 +406,84 @@ muted_log_handler (const char     *log_domain,
                    gpointer        data)
 {
   /* Intentionally empty to discard message */
+}
+
+static void
+gnome_shell_plugin_early_initialize (MetaPlugin *plugin)
+{
+  GError *error = NULL;
+  DBusGConnection *session;
+  DBusGProxy *bus;
+  guint32 request_name_result;
+
+  /** TODO:
+   * In the future we should use GDBus for this.  However, in
+   * order to do that, we need to port all of the JavaScript
+   * code.  Otherwise, the name will be claimed on the wrong
+   * connection.
+   */
+  session = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
+
+  bus = dbus_g_proxy_new_for_name (session,
+                                   DBUS_SERVICE_DBUS,
+                                   DBUS_PATH_DBUS,
+                                   DBUS_INTERFACE_DBUS);
+
+  if (!dbus_g_proxy_call (bus, "RequestName", &error,
+                          G_TYPE_STRING, SHELL_DBUS_SERVICE,
+                          G_TYPE_UINT, 0,
+                          G_TYPE_INVALID,
+                          G_TYPE_UINT, &request_name_result,
+                          G_TYPE_INVALID))
+    {
+      g_print ("failed to acquire org.gnome.Shell: %s\n", error->message);
+      /* If we somehow got started again, it's not an error to be running
+       * already.  So just exit 0.
+       */
+      exit (0);
+    }
+
+  /* Also grab org.gnome.Panel to replace any existing panel process,
+   * unless a special environment variable is passed.  The environment
+   * variable is used by the gnome-shell (no --replace) launcher in
+   * Xephyr */
+  if (!dbus_g_proxy_call (bus, "RequestName", &error, G_TYPE_STRING,
+                          "org.gnome.Panel", G_TYPE_UINT,
+                          DBUS_NAME_FLAG_REPLACE_EXISTING | DBUS_NAME_FLAG_DO_NOT_QUEUE,
+                          G_TYPE_INVALID, G_TYPE_UINT,
+                          &request_name_result, G_TYPE_INVALID))
+    {
+      g_print ("failed to acquire org.gnome.Panel: %s\n", error->message);
+      exit (1);
+    }
+
+  /* ...and the org.gnome.Magnifier service.
+   */
+  if (!dbus_g_proxy_call (bus, "RequestName", &error,
+                          G_TYPE_STRING, MAGNIFIER_DBUS_SERVICE,
+                          G_TYPE_UINT, 0,
+                          G_TYPE_INVALID,
+                          G_TYPE_UINT, &request_name_result,
+                          G_TYPE_INVALID))
+    {
+      g_print ("failed to acquire %s: %s\n", MAGNIFIER_DBUS_SERVICE, error->message);
+      /* Failing to acquire the magnifer service is not fatal.  Log the error,
+       * but keep going. */
+    }
+
+  /* ...and the org.freedesktop.Notifications service.
+   */
+  if (!dbus_g_proxy_call (bus, "RequestName", &error,
+                          G_TYPE_STRING, "org.freedesktop.Notifications",
+                          G_TYPE_UINT, DBUS_NAME_FLAG_REPLACE_EXISTING | DBUS_NAME_FLAG_DO_NOT_QUEUE,
+                          G_TYPE_INVALID,
+                          G_TYPE_UINT, &request_name_result,
+                          G_TYPE_INVALID))
+    {
+      g_print ("failed to acquire org.freedesktop.Notifications: %s\n", error->message);
+    }
+
+  g_object_unref (bus);
 }
 
 static void

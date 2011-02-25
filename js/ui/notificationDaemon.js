@@ -93,16 +93,6 @@ NotificationDaemon.prototype = {
     _init: function() {
         DBus.session.exportObject('/org/freedesktop/Notifications', this);
 
-        this._everAcquiredName = false;
-        DBus.session.acquire_name('org.freedesktop.Notifications',
-                                  // We pass MANY_INSTANCES so that if
-                                  // notification-daemon is running, we'll
-                                  // get queued behind it and then get the
-                                  // name after killing it below
-                                  DBus.MANY_INSTANCES,
-                                  Lang.bind(this, this._acquiredName),
-                                  Lang.bind(this, this._lostName));
-
         this._sources = {};
         this._senderToPid = {};
         this._notifications = {};
@@ -115,22 +105,6 @@ NotificationDaemon.prototype = {
             Lang.bind(this, this._onFocusAppChanged));
         Main.overview.connect('hidden',
             Lang.bind(this, this._onFocusAppChanged));
-    },
-
-    _acquiredName: function() {
-        this._everAcquiredName = true;
-    },
-
-    _lostName: function() {
-        if (this._everAcquiredName)
-            log('Lost name org.freedesktop.Notifications!');
-        else if (GLib.getenv('GNOME_SHELL_NO_REPLACE'))
-            log('Failed to acquire org.freedesktop.Notifications');
-        else {
-            log('Failed to acquire org.freedesktop.Notifications; trying again');
-            Util.killall('notification-daemon');
-            Util.killall('notify-osd');
-        }
     },
 
     _iconForNotificationData: function(icon, hints, size) {

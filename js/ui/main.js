@@ -88,7 +88,6 @@ function start() {
 
     Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
-    global.grab_dbus_service();
     shellDBusService = new ShellDBus.GnomeShell();
     // Force a connection now; dbus.js will do this internally
     // if we use its name acquisition stuff but we aren't right

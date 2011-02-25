@@ -59,8 +59,6 @@ gboolean shell_global_add_extension_importer (ShellGlobal *global,
                                               const char  *directory,
                                               GError     **error);
 
-void shell_global_grab_dbus_service (ShellGlobal *global);
-
 typedef enum {
   SHELL_STAGE_INPUT_MODE_NONREACTIVE,
   SHELL_STAGE_INPUT_MODE_NORMAL,
