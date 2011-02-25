@@ -36,8 +36,6 @@ struct _ClutterStageEGL
 
   ClutterStageX11 parent_instance;
 
-  EGLSurface egl_surface;
-
 #else
 
   GObject parent_instance;
@@ -49,6 +47,8 @@ struct _ClutterStageEGL
   ClutterBackendEGL *backend;
 
 #endif
+
+  CoglOnscreen *onscreen;
 
   /* We only enable clipped redraws after 2 frames, since we've seen
    * a lot of drivers can struggle to get going and may output some

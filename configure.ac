@@ -459,6 +459,8 @@ AS_IF([test "x$SUPPORT_GLX" = "x1"],
 
         AC_DEFINE([HAVE_CLUTTER_GLX], [1], [Have the GLX backend])
 
+        AC_DEFINE([COGL_HAS_FULL_WINSYS], [1], [Cogl can create its own OpenGL context])
+
         AC_CHECK_HEADERS([GL/glx.h],
                          [],
                          [AC_MSG_ERROR([Unable to locate required GLX headers])])
@@ -489,12 +491,14 @@ AS_IF([test "x$SUPPORT_EGL_PLATFORM_POWERVR_X11" = "x1"],
       [
         AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT], [1],
                   [Cogl supports OpenGL[ES] using the EGL API with PowerVR X11 platform typedefs])
+        AC_DEFINE([COGL_HAS_FULL_WINSYS], [1], [Cogl can create its own OpenGL context])
       ])
 
 AS_IF([test "x$SUPPORT_EGL_PLATFORM_POWERVR_NULL" = "x1"],
       [
         AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT], [1],
                   [Cogl supports OpenGL[ES] using the EGL API with PowerVR NULL platform typedefs])
+        AC_DEFINE([COGL_HAS_FULL_WINSYS], [1], [Cogl can create its own OpenGL context])
       ])
 
 AS_IF([test "x$SUPPORT_EGL_PLATFORM_POWERVR_GDL" = "x1"],

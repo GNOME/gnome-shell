@@ -71,6 +71,11 @@ _cogl_winsys_context_init (CoglContext *context, GError **error);
 void
 _cogl_winsys_context_deinit (CoglContext *context);
 
+#ifdef COGL_HAS_EGL_SUPPORT
+EGLDisplay
+_cogl_winsys_context_egl_get_egl_display (CoglContext *context);
+#endif
+
 gboolean
 _cogl_winsys_has_feature (CoglWinsysFeature feature);
 

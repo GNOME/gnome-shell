@@ -56,16 +56,9 @@ struct _ClutterBackendGLX
 {
   ClutterBackendX11 parent_instance;
 
-  int                    error_base;
-  int                    event_base;
+  CoglContext *cogl_context;
 
-  CoglContext           *cogl_context;
-
-  /* Vblank stuff */
-  ClutterGLXVBlankType   vblank_type;
-  unsigned int           last_video_sync_count;
-
-  gboolean               can_blit_sub_buffer;
+  gboolean can_blit_sub_buffer;
 
   /* props */
   Atom atom_WM_STATE;

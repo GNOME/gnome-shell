@@ -32,41 +32,36 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageEGL,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init));
 
-#ifdef COGL_HAS_XLIB_SUPPORT
-
 static void
 clutter_stage_egl_unrealize (ClutterStageWindow *stage_window)
 {
-  ClutterBackend *backend = clutter_get_default_backend ();
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage_window);
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
   CLUTTER_NOTE (BACKEND, "Unrealizing EGL stage [%p]", stage_egl);
 
-  clutter_x11_trap_x_errors ();
+#ifdef COGL_HAS_XLIB_SUPPORT
+  /* chain up to the StageX11 implementation */
+  clutter_stage_window_parent_iface->unrealize (stage_window);
+#endif
 
-  if (stage_egl->egl_surface != EGL_NO_SURFACE)
-    {
-      eglDestroySurface (clutter_egl_get_egl_display (), stage_egl->egl_surface);
-      stage_egl->egl_surface = EGL_NO_SURFACE;
-    }
-
-  _clutter_stage_x11_destroy_window_untrapped (stage_x11);
-
-  XSync (backend_x11->xdpy, False);
-
-  clutter_x11_untrap_x_errors ();
+  cogl_object_unref (stage_egl->onscreen);
+  stage_egl->onscreen = NULL;
 }
 
 static gboolean
 clutter_stage_egl_realize (ClutterStageWindow *stage_window)
 {
-  ClutterStageEGL   *stage_egl = CLUTTER_STAGE_EGL (stage_window);
-  ClutterStageX11   *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
-  ClutterBackend    *backend;
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage_window);
+#ifdef COGL_HAS_XLIB_SUPPORT
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+#endif
+  ClutterBackend *backend;
   ClutterBackendEGL *backend_egl;
-  EGLDisplay         edpy;
+  CoglFramebuffer *framebuffer;
+  GError *error = NULL;
+  gfloat width = 800;
+  gfloat height = 600;
+  const char *clutter_vblank;
 
   CLUTTER_NOTE (BACKEND, "Realizing stage '%s' [%p]",
                 G_OBJECT_TYPE_NAME (stage_egl),
@@ -75,39 +70,48 @@ clutter_stage_egl_realize (ClutterStageWindow *stage_window)
   backend     = clutter_get_default_backend ();
   backend_egl = CLUTTER_BACKEND_EGL (backend);
 
-  edpy = clutter_egl_get_egl_display ();
+#ifdef COGL_HAS_XLIB_SUPPORT
+  clutter_actor_get_size (CLUTTER_ACTOR (stage_x11->wrapper), &width, &height);
+#endif
 
-  if (!_clutter_stage_x11_create_window (stage_x11))
-    return FALSE;
+  stage_egl->onscreen = cogl_onscreen_new (backend->cogl_context,
+                                           width, height);
+#ifdef COGL_HAS_XLIB_SUPPORT
+  if (stage_x11->xwin != None)
+    cogl_onscreen_x11_set_foreign_window_xid (stage_egl->onscreen,
+                                              stage_x11->xwin);
+#endif
 
-  if (stage_egl->egl_surface == EGL_NO_SURFACE)
+  clutter_vblank = _clutter_backend_egl_get_vblank ();
+  if (clutter_vblank && strcmp (clutter_vblank, "none") == 0)
+    cogl_onscreen_set_swap_throttled (stage_egl->onscreen, FALSE);
+
+  framebuffer = COGL_FRAMEBUFFER (stage_egl->onscreen);
+  if (!cogl_framebuffer_allocate (framebuffer, &error))
     {
-      stage_egl->egl_surface =
-        eglCreateWindowSurface (edpy,
-                                backend_egl->egl_config,
-                                (NativeWindowType) stage_x11->xwin,
-                                NULL);
+      g_warning ("Failed to allocate stage: %s", error->message);
+      g_error_free (error);
+      cogl_object_unref (stage_egl->onscreen);
+      stage_egl->onscreen = NULL;
+      return FALSE;
     }
+  /* FIXME: for fullscreen EGL platforms then the size we gave above
+   * will be ignored, so we need to make sure the stage size is
+   * updated to this size. */
 
-  if (stage_egl->egl_surface == EGL_NO_SURFACE)
-    g_warning ("Unable to create an EGL surface");
+#ifdef COGL_HAS_XLIB_SUPPORT
+  if (stage_x11->xwin == None)
+    stage_x11->xwin = cogl_onscreen_x11_get_window_xid (stage_egl->onscreen);
 
   return clutter_stage_egl_parent_iface->realize (stage_window);
-}
-
-#else /* COGL_HAS_XLIB_SUPPORT */
-
-static void
-clutter_stage_egl_unrealize (ClutterStageWindow *stage_window)
-{
-}
-
-static gboolean
-clutter_stage_egl_realize (ClutterStageWindow *stage_window)
-{
-  /* the EGL surface is created by the backend */
+#else
   return TRUE;
+#endif
 }
+
+#ifndef COGL_HAS_XLIB_SUPPORT
+
+/* FIXME: Move this warnings up into clutter-stage.c */
 
 static void
 clutter_stage_egl_set_fullscreen (ClutterStageWindow *stage_window,
@@ -161,14 +165,25 @@ clutter_stage_egl_get_geometry (ClutterStageWindow *stage_window,
                                 ClutterGeometry    *geometry)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage_window);
-  ClutterBackendEGL *backend_egl = stage_egl->backend;
 
   if (geometry)
     {
-      geometry->x = geometry->y = 0;
+      if (stage_egl->onscreen)
+        {
+          CoglFramebuffer *framebuffer =
+            COGL_FRAMEBUFFER (stage_egl->onscreen);
 
-      geometry->width = backend_egl->surface_width;
-      geometry->height = backend_egl->surface_height;
+          geometry->x = geometry->y = 0;
+
+          geometry->width = cogl_framebuffer_get_width (framebuffer);
+          geometry->height = cogl_framebuffer_get_height (framebuffer);
+        }
+      else
+        {
+          geometry->x = geometry->y = 0;
+          geometry->width = 800;
+          geometry->height = 600;
+        }
     }
 }
 
@@ -268,30 +283,51 @@ clutter_stage_egl_add_redraw_clip (ClutterStageWindow *stage_window,
   stage_egl->initialized_redraw_clip = TRUE;
 }
 
+/* XXX: This is basically identical to clutter_stage_glx_redraw */
 static void
 clutter_stage_egl_redraw (ClutterStageWindow *stage_window)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage_window);
-  ClutterBackend *backend = clutter_get_default_backend ();
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
   ClutterActor *wrapper;
-  EGLSurface egl_surface;
+  ClutterBackend *backend;
+  ClutterBackendEGL *backend_egl;
   gboolean may_use_clipped_redraw;
   gboolean use_clipped_redraw;
+
+  CLUTTER_STATIC_TIMER (painting_timer,
+                        "Redrawing", /* parent */
+                        "Painting actors",
+                        "The time spent painting actors",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (swapbuffers_timer,
+                        "Redrawing", /* parent */
+                        "eglSwapBuffers",
+                        "The time spent blocked by eglSwapBuffers",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (blit_sub_buffer_timer,
+                        "Redrawing", /* parent */
+                        "egl_blit_sub_buffer",
+                        "The time spent in _egl_blit_sub_buffer",
+                        0 /* no application private data */);
+
 #ifdef COGL_HAS_X11_SUPPORT
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_egl);
 
   wrapper = CLUTTER_ACTOR (stage_x11->wrapper);
-  egl_surface = stage_egl->egl_surface;
 #else
   wrapper = CLUTTER_ACTOR (stage_egl->wrapper);
-  /* Without X we only support one surface and that is associated
-   * with the backend directly instead of the stage */
-  egl_surface = backend_egl->egl_surface;
 #endif
 
+  if (!stage_egl->onscreen)
+    return;
+
+  backend = clutter_get_default_backend ();
+  backend_egl = CLUTTER_BACKEND_EGL (backend);
+
+  CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
+
   if (G_LIKELY (backend_egl->can_blit_sub_buffer) &&
-      /* NB: a zero width clip == full stage redraw */
+      /* NB: a zero width redraw clip == full stage redraw */
       stage_egl->bounding_redraw_clip.width != 0 &&
       /* some drivers struggle to get going and produce some junk
        * frames when starting up... */
@@ -303,7 +339,9 @@ clutter_stage_egl_redraw (ClutterStageWindow *stage_window)
       && G_LIKELY (stage_x11->clipped_redraws_cool_off == 0)
 #endif
       )
-    may_use_clipped_redraw = TRUE;
+    {
+      may_use_clipped_redraw = TRUE;
+    }
   else
     may_use_clipped_redraw = FALSE;
 
@@ -327,11 +365,12 @@ clutter_stage_egl_redraw (ClutterStageWindow *stage_window)
   else
     _clutter_stage_do_paint (CLUTTER_STAGE (wrapper), NULL);
 
-  if (clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS &&
-      may_use_clipped_redraw)
+  if (may_use_clipped_redraw &&
+      G_UNLIKELY ((clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS)))
     {
-      ClutterGeometry *clip = &stage_egl->bounding_redraw_clip;
       static CoglMaterial *outline = NULL;
+      ClutterGeometry *clip = &stage_egl->bounding_redraw_clip;
+      ClutterActor *actor = CLUTTER_ACTOR (wrapper);
       CoglHandle vbo;
       float x_1 = clip->x;
       float x_2 = clip->x + clip->width;
@@ -363,7 +402,7 @@ clutter_stage_egl_redraw (ClutterStageWindow *stage_window)
 
       cogl_push_matrix ();
       cogl_matrix_init_identity (&modelview);
-      _clutter_actor_apply_modelview_transform (wrapper, &modelview);
+      _clutter_actor_apply_modelview_transform (actor, &modelview);
       cogl_set_modelview_matrix (&modelview);
       cogl_set_source (outline);
       cogl_vertex_buffer_draw (vbo, COGL_VERTICES_MODE_LINE_LOOP,
@@ -372,46 +411,52 @@ clutter_stage_egl_redraw (ClutterStageWindow *stage_window)
       cogl_object_unref (vbo);
     }
 
-  cogl_flush ();
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);
 
   /* push on the screen */
   if (use_clipped_redraw)
     {
       ClutterGeometry *clip = &stage_egl->bounding_redraw_clip;
-      ClutterGeometry copy_area;
+      int copy_area[4];
+      ClutterActor *actor;
+
+      /* XXX: It seems there will be a race here in that the stage
+       * window may be resized before the cogl_framebuffer_swap_region
+       * is handled and so we may copy the wrong region. I can't
+       * really see how we can handle this with the current state of X
+       * but at least in this case a full redraw should be queued by
+       * the resize anyway so it should only exhibit temporary
+       * artefacts.
+       */
+
+      actor = CLUTTER_ACTOR (wrapper);
+      copy_area[0] = clip->x;
+      copy_area[1] = clutter_actor_get_height (actor) - clip->y - clip->height;
+      copy_area[2] = clip->width;
+      copy_area[3] = clip->height;
 
       CLUTTER_NOTE (BACKEND,
-                    "_egl_blit_sub_buffer (surface: %p, "
-                                          "x: %d, y: %d, "
-                                          "width: %d, height: %d)",
-                    egl_surface,
-                    stage_egl->bounding_redraw_clip.x,
-                    stage_egl->bounding_redraw_clip.y,
-                    stage_egl->bounding_redraw_clip.width,
-                    stage_egl->bounding_redraw_clip.height);
+                    "cogl_framebuffer_swap_region (onscreen: %p, "
+                                                  "x: %d, y: %d, "
+                                                  "width: %d, height: %d)",
+                    stage_egl->onscreen,
+                    copy_area[0], copy_area[1], copy_area[2], copy_area[3]);
 
-      copy_area.x = clip->x;
-      copy_area.y = clip->y;
-      copy_area.width = clip->width;
-      copy_area.height = clip->height;
 
       CLUTTER_TIMER_START (_clutter_uprof_context, blit_sub_buffer_timer);
-      _clutter_backend_egl_blit_sub_buffer (backend_egl,
-                                            egl_surface,
-                                            copy_area.x,
-                                            copy_area.y,
-                                            copy_area.width,
-                                            copy_area.height);
+
+      cogl_framebuffer_swap_region (COGL_FRAMEBUFFER (stage_egl->onscreen),
+                                    copy_area, 1);
+
       CLUTTER_TIMER_STOP (_clutter_uprof_context, blit_sub_buffer_timer);
     }
   else
     {
-      CLUTTER_NOTE (BACKEND, "eglwapBuffers (display: %p, surface: %p)",
-                    backend_egl->edpy,
-                    egl_surface);
+      CLUTTER_NOTE (BACKEND, "cogl_framebuffer_swap_buffers (onscreen: %p)",
+                    stage_egl->onscreen);
 
       CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
-      eglSwapBuffers (backend_egl->edpy, egl_surface);
+      cogl_framebuffer_swap_buffers (COGL_FRAMEBUFFER (stage_egl->onscreen));
       CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
     }
 
@@ -467,25 +512,14 @@ _clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
 
   gobject_class->dispose = clutter_stage_egl_dispose;
 }
-
-static void
-_clutter_stage_egl_init (ClutterStageEGL *stage)
-{
-  stage->egl_surface = EGL_NO_SURFACE;
-}
-
-#else /* COGL_HAS_X11_SUPPORT */
-
+#else
 static void
 _clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
 {
 }
+#endif /* COGL_HAS_X11_SUPPORT */
 
 static void
 _clutter_stage_egl_init (ClutterStageEGL *stage)
 {
-  /* Without X we only support one surface and that is associated
-   * with the backend directly instead of the stage */
 }
-
-#endif /* COGL_HAS_X11_SUPPORT */

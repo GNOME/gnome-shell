@@ -332,18 +332,15 @@ cogl_sources_c += \
 endif
 if SUPPORT_EGL_PLATFORM_POWERVR_X11
 cogl_sources_c += \
-	$(srcdir)/winsys/cogl-winsys-egl.c \
-	$(srcdir)/winsys/cogl-winsys-stub.c
+	$(srcdir)/winsys/cogl-winsys-egl.c
 endif
 if SUPPORT_EGL_PLATFORM_POWERVR_NULL
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c \
-       $(srcdir)/winsys/cogl-winsys-stub.c
+       $(srcdir)/winsys/cogl-winsys-egl.c
 endif
 if SUPPORT_EGL_PLATFORM_POWERVR_GDL
 cogl_sources_c += \
-       $(srcdir)/winsys/cogl-winsys-egl.c \
-       $(srcdir)/winsys/cogl-winsys-stub.c
+       $(srcdir)/winsys/cogl-winsys-egl.c
 endif
 if SUPPORT_WIN32
 cogl_sources_c += \

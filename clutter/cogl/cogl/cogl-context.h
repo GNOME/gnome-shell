@@ -33,6 +33,17 @@
 
 #include <cogl/cogl-display.h>
 
+#ifdef COGL_HAS_EGL_SUPPORT
+#ifdef COGL_HAS_GLES1
+#include <GLES/gl.h>
+#include <GLES/egl.h>
+#else
+#include <EGL/egl.h>
+#define NativeDisplayType EGLNativeDisplayType
+#define NativeWindowType EGLNativeWindowType
+#endif
+#endif
+
 G_BEGIN_DECLS
 
 /**
@@ -60,6 +71,12 @@ cogl_context_new (CoglDisplay *display,
 #define cogl_set_default_context cogl_set_default_context_EXP
 void
 cogl_set_default_context (CoglContext *context);
+
+#ifdef COGL_HAS_EGL_SUPPORT
+#define cogl_context_egl_get_egl_display cogl_context_egl_get_egl_display_EXP
+EGLDisplay
+cogl_context_egl_get_egl_display (CoglContext *context);
+#endif
 
 G_END_DECLS
 

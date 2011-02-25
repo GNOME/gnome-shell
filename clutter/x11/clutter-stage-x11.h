@@ -81,9 +81,6 @@ struct _ClutterStageX11Class
 GType _clutter_stage_x11_get_type (void) G_GNUC_CONST;
 
 /* Private to subclasses */
-gboolean        _clutter_stage_x11_create_window                (ClutterStageX11 *stage_x11);
-void            _clutter_stage_x11_destroy_window_untrapped     (ClutterStageX11 *stage_x11);
-void            _clutter_stage_x11_destroy_window               (ClutterStageX11 *stage_x11);
 void            _clutter_stage_x11_set_user_time                (ClutterStageX11 *stage_x11,
                                                                  guint32          user_time);
 gboolean        _clutter_stage_x11_get_root_coords              (ClutterStageX11 *stage_x11,

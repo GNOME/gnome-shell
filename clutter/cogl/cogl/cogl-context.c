@@ -475,3 +475,12 @@ cogl_set_default_context (CoglContext *context)
     cogl_object_unref (_context);
   _context = context;
 }
+
+#ifdef COGL_HAS_EGL_SUPPORT
+EGLDisplay
+cogl_context_egl_get_egl_display (CoglContext *context)
+{
+  return _cogl_winsys_context_egl_get_egl_display (context);
+}
+#endif
+

@@ -48,12 +48,20 @@
 #include "clutter-private.h"
 #include "clutter-main.h"
 #include "clutter-stage-private.h"
+/* FIXME: We should have CLUTTER_ define for this... */
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT
+#include "clutter-cex100.h"
+#endif
 
 static ClutterBackendEGL *backend_singleton = NULL;
 
-static const gchar *clutter_fb_device = NULL;
+static gchar *clutter_vblank = NULL;
 
-static gchar *clutter_vblank_name = NULL;
+/* FIXME: We should have CLUTTER_ define for this... */
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT
+static gdl_plane_id_t gdl_plane = GDL_PLANE_ID_UPP_C;
+static guint gdl_n_buffers = CLUTTER_CEX100_TRIPLE_BUFFERING;
+#endif
 
 #ifdef COGL_HAS_X11_SUPPORT
 G_DEFINE_TYPE (ClutterBackendEGL, _clutter_backend_egl, CLUTTER_TYPE_BACKEND_X11);
@@ -68,29 +76,34 @@ clutter_backend_at_exit (void)
     g_object_run_dispose (G_OBJECT (backend_singleton));
 }
 
+G_CONST_RETURN gchar*
+_clutter_backend_egl_get_vblank (void)
+{
+  if (clutter_vblank && strcmp (clutter_vblank, "0") == 0)
+    return "none";
+  else
+    return clutter_vblank;
+}
+
 static gboolean
 clutter_backend_egl_pre_parse (ClutterBackend  *backend,
                                GError         **error)
 {
   const gchar *env_string;
 #ifdef COGL_HAS_X11_SUPPORT
-  ClutterBackendClass *backend_x11_class =
+  ClutterBackendClass *parent_class =
     CLUTTER_BACKEND_CLASS (_clutter_backend_egl_parent_class);
 
-  if (!backend_x11_class->pre_parse (backend, error))
+  if (!parent_class->pre_parse (backend, error))
     return FALSE;
 #endif
 
   env_string = g_getenv ("CLUTTER_VBLANK");
   if (env_string)
     {
-      clutter_vblank_name = g_strdup (env_string);
+      clutter_vblank = g_strdup (env_string);
       env_string = NULL;
     }
-
-  env_string = g_getenv ("CLUTTER_FB_DEVICE");
-  if (env_string != NULL && env_string[0] != '\0')
-    clutter_fb_device = g_strdup (env_string);
 
   return TRUE;
 }
@@ -99,409 +112,19 @@ static gboolean
 clutter_backend_egl_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
 #ifdef COGL_HAS_X11_SUPPORT
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  ClutterBackendClass *backend_x11_class =
+  ClutterBackendClass *parent_class =
     CLUTTER_BACKEND_CLASS (_clutter_backend_egl_parent_class);
-#endif
-  EGLBoolean status;
 
-#ifdef COGL_HAS_X11_SUPPORT
-  if (!backend_x11_class->post_parse (backend, error))
+  if (!parent_class->post_parse (backend, error))
     return FALSE;
 
-#ifndef COGL_HAS_XLIB_SUPPORT
-#error "Clutter's EGL on X11 support currently only works with xlib Displays"
-#endif
-  backend_egl->edpy =
-    eglGetDisplay ((NativeDisplayType) backend_x11->xdpy);
-
-  status = eglInitialize (backend_egl->edpy,
-                          &backend_egl->egl_version_major,
-                          &backend_egl->egl_version_minor);
-#else
-  backend_egl->edpy = eglGetDisplay (EGL_DEFAULT_DISPLAY);
-
-  status = eglInitialize (backend_egl->edpy,
-			  &backend_egl->egl_version_major,
-			  &backend_egl->egl_version_minor);
+  return TRUE;
 #endif
 
   g_atexit (clutter_backend_at_exit);
 
-  if (status != EGL_TRUE)
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-		   CLUTTER_INIT_ERROR_BACKEND,
-		   "Unable to Initialize EGL");
-      return FALSE;
-    }
-
-  CLUTTER_NOTE (BACKEND, "EGL Reports version %i.%i",
-		backend_egl->egl_version_major,
-		backend_egl->egl_version_minor);
-
   return TRUE;
-}
-
-void
-_clutter_backend_egl_blit_sub_buffer (ClutterBackendEGL *backend_egl,
-                                      EGLSurface drawable,
-                                      int x, int y, int width, int height)
-{
-  if (backend_egl->swap_buffers_region)
-    {
-      EGLint rect[4] = {
-          x, y, width, height
-      };
-      backend_egl->swap_buffers_region (backend_egl->edpy,
-                                        drawable,
-                                        1,
-                                        rect);
-    }
-#if 0 /* XXX need GL_ARB_draw_buffers */
-  else if (backend_egl->blit_framebuffer)
-    {
-      glDrawBuffer (GL_FRONT);
-      backend_egl->blit_framebuffer (x, y, x + width, y + height,
-                                     x, y, x + width, y + height,
-                                     GL_COLOR_BUFFER_BIT, GL_NEAREST);
-      glDrawBuffer (GL_BACK);
-      glFlush();
-    }
-#endif
-}
-
-static gboolean
-clutter_backend_egl_create_context (ClutterBackend  *backend,
-                                    GError         **error)
-{
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
-#ifdef COGL_HAS_X11_SUPPORT
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-#endif
-  EGLConfig          config;
-  EGLint             config_count = 0;
-  EGLBoolean         status;
-  EGLint             cfg_attribs[] = {
-    /* NB: This must be the first attribute, since we may
-     * try and fallback to no stencil buffer */
-    EGL_STENCIL_SIZE,    2,
-
-    EGL_RED_SIZE,        1,
-    EGL_GREEN_SIZE,      1,
-    EGL_BLUE_SIZE,       1,
-    EGL_ALPHA_SIZE,      EGL_DONT_CARE,
-
-    EGL_DEPTH_SIZE,      1,
-
-    EGL_BUFFER_SIZE,     EGL_DONT_CARE,
-
-#if defined (HAVE_COGL_GL)
-    EGL_RENDERABLE_TYPE, EGL_OPENGL_BIT,
-#elif defined (HAVE_COGL_GLES2)
-    EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-#else
-    EGL_RENDERABLE_TYPE, EGL_OPENGL_ES_BIT,
-#endif
-
-    EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
-
-    EGL_NONE
-  };
-  EGLDisplay edpy;
-  gint retry_cookie = 0;
-  const char *error_message = NULL;
-#ifdef COGL_HAS_XLIB_SUPPORT
-  XVisualInfo *xvisinfo;
-  XSetWindowAttributes attrs;
-#endif
-
-  if (backend_egl->egl_context != EGL_NO_CONTEXT)
-    return TRUE;
-
-  edpy = clutter_egl_get_egl_display ();
-
-/* XXX: we should get rid of this goto yukkyness, there is a fail:
- * goto at the end and this retry: goto at the top, but we should just
- * have a try_create_context() function and call it in a loop that
- * tries a different fallback each iteration */
-retry:
-  /* Here we can change the attributes depending on the fallback count... */
-
-  /* Some GLES hardware can't support a stencil buffer: */
-  if (retry_cookie == 1)
-    {
-      g_warning ("Trying with stencil buffer disabled...");
-      cfg_attribs[1 /* EGL_STENCIL_SIZE */] = 0;
-    }
-
-  /* XXX: at this point we only have one fallback */
-
-  status = eglChooseConfig (edpy,
-                            cfg_attribs,
-                            &config, 1,
-                            &config_count);
-  if (status != EGL_TRUE || config_count == 0)
-    {
-      error_message = "Unable to select a valid EGL configuration";
-      goto fail;
-    }
-
-#ifdef HAVE_COGL_GL
-  eglBindAPI (EGL_OPENGL_API);
-#endif
-
-  if (backend_egl->egl_context == EGL_NO_CONTEXT)
-    {
-#ifdef HAVE_COGL_GLES2
-      static const EGLint attribs[] =
-        { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
-
-      backend_egl->egl_context = eglCreateContext (edpy,
-                                                   config,
-                                                   EGL_NO_CONTEXT,
-                                                   attribs);
-
-#else
-      backend_egl->egl_context = eglCreateContext (edpy,
-                                                   config,
-                                                   EGL_NO_CONTEXT,
-                                                   NULL);
-
-#endif
-      if (backend_egl->egl_context == EGL_NO_CONTEXT)
-        {
-          error_message = "Unable to create a suitable EGL context";
-          goto fail;
-        }
-
-#ifdef COGL_HAS_XLIB_SUPPORT
-      backend_egl->egl_config = config;
-#endif
-      CLUTTER_NOTE (GL, "Created EGL Context");
-    }
-
-#ifdef COGL_HAS_XLIB_SUPPORT
-  /* COGL assumes that there is always a GL context selected; in order
-   * to make sure that an EGL context exists and is made current, we use
-   * a dummy, offscreen override-redirect window to which we can always
-   * fall back if no stage is available */
-
-  xvisinfo = _clutter_backend_x11_get_visual_info (backend_x11);
-  if (xvisinfo == NULL)
-    {
-      g_critical ("Unable to find suitable GL visual.");
-      return FALSE;
-    }
-
-  attrs.override_redirect = True;
-  attrs.colormap = XCreateColormap (backend_x11->xdpy,
-                                    backend_x11->xwin_root,
-                                    xvisinfo->visual,
-                                    AllocNone);
-  attrs.border_pixel = 0;
-
-  backend_egl->dummy_xwin = XCreateWindow (backend_x11->xdpy,
-                                           backend_x11->xwin_root,
-                                           -100, -100, 1, 1,
-                                           0,
-                                           xvisinfo->depth,
-                                           CopyFromParent,
-                                           xvisinfo->visual,
-                                           CWOverrideRedirect |
-                                           CWColormap |
-                                           CWBorderPixel,
-                                           &attrs);
-
-  XFree (xvisinfo);
-
-  backend_egl->dummy_surface =
-    eglCreateWindowSurface (edpy,
-                            backend_egl->egl_config,
-                            (NativeWindowType) backend_egl->dummy_xwin,
-                            NULL);
-
-  if (backend_egl->dummy_surface == EGL_NO_SURFACE)
-    {
-      g_critical ("Unable to create an EGL surface");
-      return FALSE;
-    }
-
-  eglMakeCurrent (edpy,
-                  backend_egl->dummy_surface,
-                  backend_egl->dummy_surface,
-                  backend_egl->egl_context);
-
-#else /* COGL_HAS_XLIB_SUPPORT */
-
-  if (clutter_fb_device != NULL)
-    {
-      int fd = open (clutter_fb_device, O_RDWR);
-
-      if (fd < 0)
-        {
-          int errno_save = errno;
-
-          g_set_error (error, CLUTTER_INIT_ERROR,
-                       CLUTTER_INIT_ERROR_BACKEND,
-                       "Unable to open the framebuffer device '%s': %s",
-                       clutter_fb_device,
-                       g_strerror (errno_save));
-
-          return FALSE;
-        }
-      else
-        backend_egl->fb_device_id = fd;
-
-      backend_egl->egl_surface =
-        eglCreateWindowSurface (edpy,
-                                config,
-                                (NativeWindowType) backend_egl->fb_device_id,
-                                NULL);
-    }
-  else
-    {
-      backend_egl->egl_surface =
-        eglCreateWindowSurface (edpy,
-                                config,
-                                (NativeWindowType) NULL,
-                                NULL);
-    }
-
-  if (backend_egl->egl_surface == EGL_NO_SURFACE)
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to create EGL window surface");
-
-      return FALSE;
-    }
-
-  CLUTTER_NOTE (BACKEND, "Setting context");
-
-  /* Without X we assume we can have only one stage, so we
-   * store the EGL surface in the backend itself, instead
-   * of the StageWindow implementation, and we make it
-   * current immediately to make sure the Cogl and Clutter
-   * can query the EGL context for features.
-   */
-  status = eglMakeCurrent (backend_egl->edpy,
-                           backend_egl->egl_surface,
-                           backend_egl->egl_surface,
-                           backend_egl->egl_context);
-
-  eglQuerySurface (backend_egl->edpy,
-                   backend_egl->egl_surface,
-                   EGL_WIDTH,
-                   &backend_egl->surface_width);
-
-  eglQuerySurface (backend_egl->edpy,
-                   backend_egl->egl_surface,
-                   EGL_HEIGHT,
-                   &backend_egl->surface_height);
-
-  CLUTTER_NOTE (BACKEND, "EGL surface is %ix%i",
-                backend_egl->surface_width,
-                backend_egl->surface_height);
-
-#endif /* COGL_HAS_XLIB_SUPPORT */
-
-  return TRUE;
-
-fail:
-
-  /* NB: We currently only support a single fallback option */
-  if (retry_cookie == 0)
-    {
-      retry_cookie = 1;
-      goto retry;
-    }
-
-  g_set_error (error, CLUTTER_INIT_ERROR,
-               CLUTTER_INIT_ERROR_BACKEND,
-               "%s", error_message);
-
-  return FALSE;
-}
-
-static void
-clutter_backend_egl_ensure_context (ClutterBackend *backend,
-                                    ClutterStage   *stage)
-{
-#ifndef COGL_HAS_XLIB_SUPPORT
-  /* Without X we only have one EGL surface to worry about
-   * so we can assume it is permanently made current and
-   * don't have to do anything here. */
-#else
-  ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  ClutterStageWindow *impl;
-
-  if (stage == NULL ||
-      CLUTTER_ACTOR_IN_DESTRUCTION (stage) ||
-      ((impl = _clutter_stage_get_window (stage)) == NULL))
-    {
-      CLUTTER_NOTE (BACKEND, "Clearing EGL context");
-      eglMakeCurrent (backend_egl->edpy,
-                      EGL_NO_SURFACE,
-                      EGL_NO_SURFACE,
-                      EGL_NO_CONTEXT);
-    }
-  else
-    {
-      ClutterStageEGL    *stage_egl;
-      ClutterStageX11    *stage_x11;
-
-      g_assert (impl != NULL);
-
-      CLUTTER_NOTE (MULTISTAGE, "Setting context for stage of type %s [%p]",
-                    g_type_name (G_OBJECT_TYPE (impl)),
-                    impl);
-
-      stage_egl = CLUTTER_STAGE_EGL (impl);
-      stage_x11 = CLUTTER_STAGE_X11 (impl);
-
-      if (backend_egl->egl_context == EGL_NO_CONTEXT)
-        return;
-
-      clutter_x11_trap_x_errors ();
-
-      /* we might get here inside the final dispose cycle, so we
-       * need to handle this gracefully
-       */
-      if (stage_x11->xwin == None ||
-          stage_egl->egl_surface == EGL_NO_SURFACE)
-        {
-          CLUTTER_NOTE (MULTISTAGE,
-                        "Received a stale stage, clearing all context");
-
-          if (backend_egl->dummy_surface == EGL_NO_SURFACE)
-            eglMakeCurrent (backend_egl->edpy,
-                            EGL_NO_SURFACE,
-                            EGL_NO_SURFACE,
-                            EGL_NO_CONTEXT);
-          else
-            eglMakeCurrent (backend_egl->edpy,
-                            backend_egl->dummy_surface,
-                            backend_egl->dummy_surface,
-                            backend_egl->egl_context);
-        }
-      else
-        {
-          CLUTTER_NOTE (MULTISTAGE, "Setting real surface current");
-          eglMakeCurrent (backend_egl->edpy,
-                          stage_egl->egl_surface,
-                          stage_egl->egl_surface,
-                          backend_egl->egl_context);
-        }
-
-      if (clutter_x11_untrap_x_errors ())
-        g_critical ("Unable to make the stage window 0x%x the current "
-                    "EGLX drawable",
-                    (int) stage_x11->xwin);
-    }
-#endif /* COGL_HAS_XLIB_SUPPORT */
 }
 
 #ifndef COGL_HAS_XLIB_SUPPORT
@@ -553,72 +176,26 @@ clutter_backend_egl_finalize (GObject *gobject)
 static void
 clutter_backend_egl_dispose (GObject *gobject)
 {
+  ClutterBackend *backend = CLUTTER_BACKEND (gobject);
+#ifdef HAVE_TSLIB
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (gobject);
-#ifdef COGL_HAS_X11_SUPPORT
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (gobject);
-#else
-  ClutterStageEGL   *stage_egl = CLUTTER_STAGE_EGL (backend_egl->stage);
 #endif
 
-  /* We chain up before disposing our own resources so that
-     ClutterBackendX11 will destroy all of the stages before we
-     destroy the egl context. Otherwise the actors may try to make GL
-     calls during destruction which causes a crash */
+  /* We chain up before disposing our CoglContext so that we will
+   * destroy all of the stages first. Otherwise the actors may try to
+   * make Cogl calls during destruction which would cause a crash */
   G_OBJECT_CLASS (_clutter_backend_egl_parent_class)->dispose (gobject);
+
+  if (backend->cogl_context)
+    {
+      cogl_object_unref (backend->cogl_context);
+      backend->cogl_context = NULL;
+    }
 
 #ifdef HAVE_TSLIB
   /* XXX: This should be renamed to _clutter_events_tslib_uninit */
   _clutter_events_egl_uninit (backend_egl);
-#endif
 
-#ifdef COGL_HAS_XLIB_SUPPORT
-  if (backend_egl->dummy_surface != EGL_NO_SURFACE)
-    {
-      eglDestroySurface (backend_egl->edpy, backend_egl->dummy_surface);
-      backend_egl->dummy_surface = EGL_NO_SURFACE;
-    }
-
-  if (backend_egl->dummy_xwin)
-    {
-      XDestroyWindow (backend_x11->xdpy, backend_egl->dummy_xwin);
-      backend_egl->dummy_xwin = None;
-    }
-
-#else /* COGL_HAS_XLIB_SUPPORT */
-
-  if (backend_egl->egl_surface != EGL_NO_SURFACE)
-    {
-      eglDestroySurface (backend_egl->edpy, backend_egl->egl_surface);
-      backend_egl->egl_surface = EGL_NO_SURFACE;
-    }
-
-  if (backend_egl->stage != NULL)
-    {
-      clutter_actor_destroy (CLUTTER_ACTOR (stage_egl->wrapper));
-      backend_egl->stage = NULL;
-    }
-
-  if (backend_egl->fb_device_id != -1)
-    {
-      close (backend_egl->fb_device_id);
-      backend_egl->fb_device_id = -1;
-    }
-
-#endif /* COGL_HAS_XLIB_SUPPORT */
-
-  if (backend_egl->egl_context)
-    {
-      eglDestroyContext (backend_egl->edpy, backend_egl->egl_context);
-      backend_egl->egl_context = NULL;
-    }
-
-  if (backend_egl->edpy)
-    {
-      eglTerminate (backend_egl->edpy);
-      backend_egl->edpy = 0;
-    }
-
-#ifdef HAVE_TSLIB
   if (backend_egl->event_timer != NULL)
     {
       g_timer_destroy (backend_egl->event_timer);
@@ -651,85 +228,147 @@ clutter_backend_egl_constructor (GType                  gtype,
   return g_object_ref (backend_singleton);
 }
 
-static gboolean
-check_vblank_env (const char *name)
-{
-  if (clutter_vblank_name && !g_ascii_strcasecmp (clutter_vblank_name, name))
-    return TRUE;
-
-  return FALSE;
-}
-
 static ClutterFeatureFlags
 clutter_backend_egl_get_features (ClutterBackend *backend)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  const gchar *egl_extensions = NULL;
-  const gchar *gl_extensions = NULL;
-  ClutterFeatureFlags flags;
-
-  g_assert (backend_egl->egl_context != NULL);
+#ifdef COGL_HAS_XLIB_SUPPORT
+  ClutterBackendClass *parent_class;
+#endif
+  ClutterFeatureFlags flags = 0;
 
 #ifdef COGL_HAS_XLIB_SUPPORT
-  {
-    ClutterBackendClass *parent_class;
+  parent_class = CLUTTER_BACKEND_CLASS (_clutter_backend_egl_parent_class);
 
-    parent_class = CLUTTER_BACKEND_CLASS (_clutter_backend_egl_parent_class);
-    flags = parent_class->get_features (backend);
-    flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
-  }
-#else
-  flags = CLUTTER_FEATURE_STAGE_STATIC;
+  flags = parent_class->get_features (backend);
 #endif
 
-  /* First check for explicit disabling or it set elsewhere (eg NVIDIA) */
-  if (check_vblank_env ("none"))
-    backend_egl->vblank_type = CLUTTER_VBLANK_NONE;
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN))
+    {
+      CLUTTER_NOTE (BACKEND, "Cogl supports multiple onscreen framebuffers");
+      flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
+    }
   else
-    backend_egl->vblank_type = CLUTTER_VBLANK_SWAP_INTERVAL;
-
-  egl_extensions = eglQueryString (backend_egl->edpy, EGL_EXTENSIONS);
-
-  if (cogl_clutter_check_extension ("EGL_NOK_swap_region", egl_extensions))
     {
-      CLUTTER_NOTE (BACKEND,
-                    "Using EGL_NOK_swap_region for sub_buffer copies");
-      backend_egl->swap_buffers_region =
-        (void *)cogl_get_proc_address ("eglSwapBuffersRegionNOK");
-      backend_egl->can_blit_sub_buffer = TRUE;
-      backend_egl->blit_sub_buffer_is_synchronized = TRUE;
+      CLUTTER_NOTE (BACKEND, "Cogl only supports one onscreen framebuffer");
+      flags |= CLUTTER_FEATURE_STAGE_STATIC;
     }
 
-  gl_extensions = (const gchar *)glGetString (GL_EXTENSIONS);
-
-#if 0 /* XXX need GL_ARB_draw_buffers */
-  if (!backend_egl->swap_buffers_region &&
-      cogl_clutter_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_THROTTLE))
     {
-      CLUTTER_NOTE (BACKEND,
-                    "Using glBlitFramebuffer fallback for sub_buffer copies");
-      backend_egl->blit_framebuffer =
-        (BlitFramebufferProc) cogl_get_proc_address ("glBlitFramebuffer");
-      backend_egl->can_blit_sub_buffer = TRUE;
-      backend_egl->blit_sub_buffer_is_synchronized = FALSE;
+      CLUTTER_NOTE (BACKEND, "Cogl supports swap buffers throttling");
+      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
     }
-#endif
+  else
+    CLUTTER_NOTE (BACKEND, "Cogl doesn't support swap buffers throttling");
 
-  CLUTTER_NOTE (BACKEND, "Checking features\n"
-                "GL_VENDOR: %s\n"
-                "GL_RENDERER: %s\n"
-                "GL_VERSION: %s\n"
-                "EGL_VENDOR: %s\n"
-                "EGL_VERSION: %s\n"
-                "EGL_EXTENSIONS: %s\n",
-                glGetString (GL_VENDOR),
-                glGetString (GL_RENDERER),
-                glGetString (GL_VERSION),
-                eglQueryString (backend_egl->edpy, EGL_VENDOR),
-                eglQueryString (backend_egl->edpy, EGL_VERSION),
-                eglQueryString (backend_egl->edpy, EGL_EXTENSIONS));
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT))
+    {
+      CLUTTER_NOTE (BACKEND, "Cogl supports swap buffers complete events");
+      flags |= CLUTTER_FEATURE_SWAP_EVENTS;
+    }
+
+  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION))
+    {
+      CLUTTER_NOTE (BACKEND, "Cogl supports swapping buffer regions");
+      backend_egl->can_blit_sub_buffer = TRUE;
+    }
 
   return flags;
+}
+
+#ifdef COGL_HAS_XLIB_SUPPORT
+static XVisualInfo *
+clutter_backend_egl_get_visual_info (ClutterBackendX11 *backend_x11)
+{
+  return cogl_clutter_winsys_xlib_get_visual_info ();
+}
+#endif
+
+static gboolean
+clutter_backend_egl_create_context (ClutterBackend  *backend,
+                                    GError         **error)
+{
+#ifdef COGL_HAS_XLIB_SUPPORT
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+#endif
+  CoglSwapChain *swap_chain = NULL;
+  CoglOnscreenTemplate *onscreen_template = NULL;
+
+  if (backend->cogl_context)
+    return TRUE;
+
+  backend->cogl_renderer = cogl_renderer_new ();
+#ifdef COGL_HAS_XLIB_SUPPORT
+  cogl_renderer_xlib_set_foreign_display (backend->cogl_renderer,
+                                          backend_x11->xdpy);
+#endif
+  if (!cogl_renderer_connect (backend->cogl_renderer, error))
+    goto error;
+
+  swap_chain = cogl_swap_chain_new ();
+#ifdef COGL_HAS_XLIB_SUPPORT
+  cogl_swap_chain_set_has_alpha (swap_chain,
+                                 clutter_x11_get_use_argb_visual ());
+#endif
+
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT
+  cogl_swap_chain_set_length (swap_chain, gdl_n_buffers);
+#endif
+
+  onscreen_template = cogl_onscreen_template_new (swap_chain);
+  cogl_object_unref (swap_chain);
+
+  /* XXX: I have some doubts that this is a good design.
+   * Conceptually should we be able to check an onscreen_template
+   * without more details about the CoglDisplay configuration?
+   */
+  if (!cogl_renderer_check_onscreen_template (backend->cogl_renderer,
+                                              onscreen_template,
+                                              error))
+    goto error;
+
+  backend->cogl_display = cogl_display_new (backend->cogl_renderer,
+                                            onscreen_template);
+
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT
+  cogl_display_cex100_set_gdl_plane (backend->cogl_display, gdl_plane);
+#endif
+
+  cogl_object_unref (backend->cogl_renderer);
+  cogl_object_unref (onscreen_template);
+
+  if (!cogl_display_setup (backend->cogl_display, error))
+    goto error;
+
+  backend->cogl_context = cogl_context_new (backend->cogl_display, error);
+  if (!backend->cogl_context)
+    goto error;
+
+  /* XXX: eventually this should go away but a lot of Cogl code still
+   * depends on a global default context. */
+  cogl_set_default_context (backend->cogl_context);
+
+  return TRUE;
+
+error:
+  if (backend->cogl_display)
+    {
+      cogl_object_unref (backend->cogl_display);
+      backend->cogl_display = NULL;
+    }
+
+  if (onscreen_template)
+    cogl_object_unref (onscreen_template);
+  if (swap_chain)
+    cogl_object_unref (swap_chain);
+
+  if (backend->cogl_renderer)
+    {
+      cogl_object_unref (backend->cogl_renderer);
+      backend->cogl_renderer = NULL;
+    }
+  return FALSE;
 }
 
 static ClutterStageWindow *
@@ -768,7 +407,8 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_BACKEND,
-                   "The EGL native backend does not support multiple stages");
+                   "The Cogl backend does not support multiple "
+                   "onscreen windows");
       return backend_egl->stage;
     }
 
@@ -785,57 +425,15 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
   return stage;
 }
 
-#ifdef COGL_HAS_XLIB_SUPPORT
-static XVisualInfo *
-clutter_backend_egl_get_visual_info (ClutterBackendX11 *backend_x11)
+static void
+clutter_backend_egl_ensure_context (ClutterBackend *backend,
+                                    ClutterStage   *stage)
 {
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend_x11);
-  XVisualInfo visinfo_template;
-  int template_mask = 0;
-  XVisualInfo *visinfo = NULL;
-  int visinfos_count;
-  EGLint visualid, red_size, green_size, blue_size, alpha_size;
+  ClutterStageEGL *stage_egl =
+    CLUTTER_STAGE_EGL (_clutter_stage_get_window (stage));
 
-  if (!clutter_backend_egl_create_context (CLUTTER_BACKEND (backend_x11), NULL))
-    return NULL;
-
-  visinfo_template.screen = backend_x11->xscreen_num;
-  template_mask |= VisualScreenMask;
-
-  eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
-                      EGL_NATIVE_VISUAL_ID, &visualid);
-
-  if (visualid != 0)
-    {
-      visinfo_template.visualid = visualid;
-      template_mask |= VisualIDMask;
-    }
-  else
-    {
-      /* some EGL drivers don't implement the EGL_NATIVE_VISUAL_ID
-       * attribute, so attempt to find the closest match. */
-
-      eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
-                          EGL_RED_SIZE, &red_size);
-      eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
-                          EGL_GREEN_SIZE, &green_size);
-      eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
-                          EGL_BLUE_SIZE, &blue_size);
-      eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
-                          EGL_ALPHA_SIZE, &alpha_size);
-
-      visinfo_template.depth = red_size + green_size + blue_size + alpha_size;
-      template_mask |= VisualDepthMask;
-    }
-
-  visinfo = XGetVisualInfo (backend_x11->xdpy,
-                            template_mask,
-                            &visinfo_template,
-                            &visinfos_count);
-
-  return visinfo;
+  cogl_set_framebuffer (COGL_FRAMEBUFFER (stage_egl->onscreen));
 }
-#endif
 
 static void
 _clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
@@ -869,29 +467,16 @@ _clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
 static void
 _clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
 {
-#ifndef COGL_HAS_XLIB_SUPPORT
-
 #ifdef HAVE_TSLIB
   backend_egl->event_timer = g_timer_new ();
 #endif
-
-  backend_egl->fb_device_id = -1;
-
-#else
-
-  backend_egl->egl_context = EGL_NO_CONTEXT;
-  backend_egl->dummy_surface = EGL_NO_SURFACE;
-
-#endif
 }
 
-#ifdef CLUTTER_EGL_BACKEND_GENERIC
 GType
 _clutter_backend_impl_get_type (void)
 {
   return _clutter_backend_egl_get_type ();
 }
-#endif
 
 EGLDisplay
 clutter_eglx_display (void)
@@ -914,5 +499,25 @@ clutter_egl_get_egl_display (void)
       return 0;
     }
 
-  return backend_singleton->edpy;
+  return cogl_context_egl_get_egl_display (backend_singleton->cogl_context);
 }
+
+/* FIXME we should have a CLUTTER_ define for this */
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_GDL_SUPPORT
+void
+clutter_cex100_set_plane (gdl_plane_id_t plane)
+{
+  g_return_if_fail (plane >= GDL_PLANE_ID_UPP_A && plane <= GDL_PLANE_ID_UPP_E);
+
+  gdl_plane = plane;
+}
+
+void
+clutter_cex100_set_buffering_mode (ClutterCex100BufferingMode mode)
+{
+  g_return_if_fail (mode == CLUTTER_CEX100_DOUBLE_BUFFERING ||
+                    mode == CLUTTER_CEX100_TRIPLE_BUFFERING);
+
+  gdl_n_buffers = mode;
+}
+#endif
