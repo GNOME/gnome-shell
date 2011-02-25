@@ -29,6 +29,8 @@
 #include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
+#include "cogl-display-private.h"
+#include "cogl-renderer-private.h"
 #include "cogl-handle.h"
 #include "cogl-object-private.h"
 #include "cogl-util.h"
@@ -229,6 +231,12 @@ _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
 
   ctx->framebuffers = g_list_remove (ctx->framebuffers, framebuffer);
   cogl_object_unref (ctx);
+}
+
+static const CoglWinsysVtable *
+_cogl_framebuffer_get_winsys (CoglFramebuffer *framebuffer)
+{
+  return framebuffer->context->display->renderer->winsys_vtable;
 }
 
 /* This version of cogl_clear can be used internally as an alternative
@@ -1012,6 +1020,7 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
                            GError **error)
 {
   CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+  const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
 
   if (framebuffer->allocated)
     return TRUE;
@@ -1021,7 +1030,7 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
   g_return_val_if_fail (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN,
                         TRUE);
 
-  if (!_cogl_winsys_onscreen_init (onscreen, error))
+  if (!winsys->onscreen_init (onscreen, error))
     return FALSE;
 
   framebuffer->allocated = TRUE;
@@ -1032,10 +1041,14 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
 static void
 _cogl_onscreen_free (CoglOnscreen *onscreen)
 {
-  _cogl_winsys_onscreen_deinit (onscreen);
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
+
+  winsys->onscreen_deinit (onscreen);
+  g_return_if_fail (onscreen->winsys == NULL);
 
   /* Chain up to parent */
-  _cogl_framebuffer_free (COGL_FRAMEBUFFER (onscreen));
+  _cogl_framebuffer_free (framebuffer);
 
   g_free (onscreen);
 }
@@ -1350,7 +1363,9 @@ bind_gl_framebuffer (CoglContext *ctx,
   else
     {
 #ifdef COGL_HAS_FULL_WINSYS
-      _cogl_winsys_onscreen_bind (COGL_ONSCREEN (framebuffer));
+      const CoglWinsysVtable *winsys =
+        _cogl_framebuffer_get_winsys (framebuffer);
+      winsys->onscreen_bind (COGL_ONSCREEN (framebuffer));
 #endif
       GE (glBindFramebuffer (target, 0));
     }
@@ -1582,7 +1597,11 @@ cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer)
   /* FIXME: we shouldn't need to flush *all* journals here! */
   cogl_flush ();
   if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
-    _cogl_winsys_onscreen_swap_buffers (COGL_ONSCREEN (framebuffer));
+    {
+      const CoglWinsysVtable *winsys =
+        _cogl_framebuffer_get_winsys (framebuffer);
+      winsys->onscreen_swap_buffers (COGL_ONSCREEN (framebuffer));
+    }
 }
 
 void
@@ -1593,9 +1612,13 @@ cogl_framebuffer_swap_region (CoglFramebuffer *framebuffer,
   /* FIXME: we shouldn't need to flush *all* journals here! */
   cogl_flush ();
   if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
-    _cogl_winsys_onscreen_swap_region (COGL_ONSCREEN (framebuffer),
-                                       rectangles,
-                                       n_rectangles);
+    {
+      const CoglWinsysVtable *winsys =
+        _cogl_framebuffer_get_winsys (framebuffer);
+      winsys->onscreen_swap_region (COGL_ONSCREEN (framebuffer),
+                                    rectangles,
+                                    n_rectangles);
+    }
 }
 
 #ifdef COGL_HAS_X11_SUPPORT
@@ -1609,15 +1632,20 @@ cogl_onscreen_x11_set_foreign_window_xid (CoglOnscreen *onscreen,
 guint32
 cogl_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
 {
-  return _cogl_winsys_onscreen_x11_get_window_xid (onscreen);
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
+
+  return winsys->onscreen_x11_get_window_xid (onscreen);
 }
 
 guint32
 cogl_onscreen_x11_get_visual_xid (CoglOnscreen *onscreen)
 {
-  guint32 id;
-  XVisualInfo *visinfo = _cogl_winsys_xlib_get_visual_info ();
-  id = (guint32)visinfo->visualid;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
+  XVisualInfo *visinfo = winsys->xlib_get_visual_info ();
+  guint32 id = (guint32)visinfo->visualid;
+
   XFree (visinfo);
   return id;
 }
@@ -1629,13 +1657,14 @@ cogl_framebuffer_add_swap_buffers_callback (CoglFramebuffer *framebuffer,
                                             void *user_data)
 {
   CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+  const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
 
   /* Should this just be cogl_onscreen API instead? */
   g_return_val_if_fail (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN, 0);
 
-  return _cogl_winsys_onscreen_add_swap_buffers_callback (onscreen,
-                                                          callback,
-                                                          user_data);
+  return winsys->onscreen_add_swap_buffers_callback (onscreen,
+                                                     callback,
+                                                     user_data);
 }
 
 void
@@ -1643,15 +1672,21 @@ cogl_framebuffer_remove_swap_buffers_callback (CoglFramebuffer *framebuffer,
                                                unsigned int id)
 {
   CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+  const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
 
-  _cogl_winsys_onscreen_remove_swap_buffers_callback (onscreen, id);
+  winsys->onscreen_remove_swap_buffers_callback (onscreen, id);
 }
 
 void
 cogl_onscreen_set_swap_throttled (CoglOnscreen *onscreen,
                                   gboolean throttled)
 {
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   onscreen->swap_throttled = throttled;
-  if (COGL_FRAMEBUFFER (onscreen)->allocated)
-    _cogl_winsys_onscreen_update_swap_throttled (onscreen);
+  if (framebuffer->allocated)
+    {
+      const CoglWinsysVtable *winsys =
+        _cogl_framebuffer_get_winsys (framebuffer);
+      winsys->onscreen_update_swap_throttled (onscreen);
+    }
 }

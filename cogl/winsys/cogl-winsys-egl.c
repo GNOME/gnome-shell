@@ -168,7 +168,7 @@ static const CoglFeatureData winsys_feature_data[] =
 #include "cogl-winsys-egl-feature-functions.h"
   };
 
-CoglFuncPtr
+static CoglFuncPtr
 _cogl_winsys_get_proc_address (const char *name)
 {
   return (CoglFuncPtr) eglGetProcAddress (name);
@@ -237,7 +237,21 @@ event_filter_cb (void *event, void *data)
 }
 #endif /* COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT */
 
-gboolean
+static void
+_cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
+{
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+  _cogl_renderer_xlib_disconnect (renderer);
+#endif
+
+  eglTerminate (egl_renderer->edpy);
+
+  g_slice_free (CoglRendererEGL, egl_renderer);
+}
+
+static gboolean
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
 {
@@ -285,21 +299,7 @@ error:
   return FALSE;
 }
 
-void
-_cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
-{
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-  _cogl_renderer_xlib_disconnect (renderer);
-#endif
-
-  eglTerminate (egl_renderer->edpy);
-
-  g_slice_free (CoglRendererEGL, egl_renderer);
-}
-
-void
+static void
 update_winsys_features (CoglContext *context)
 {
   CoglDisplayEGL *egl_display = context->display->winsys;
@@ -675,7 +675,20 @@ create_context (CoglDisplay *display, GError **error)
   return status;
 }
 
-gboolean
+static void
+_cogl_winsys_display_destroy (CoglDisplay *display)
+{
+  CoglDisplayEGL *egl_display = display->winsys;
+
+  g_return_if_fail (egl_display != NULL);
+
+  cleanup_context (display);
+
+  g_slice_free (CoglDisplayEGL, display->winsys);
+  display->winsys = NULL;
+}
+
+static gboolean
 _cogl_winsys_display_setup (CoglDisplay *display,
                             GError **error)
 {
@@ -698,20 +711,7 @@ error:
   return FALSE;
 }
 
-void
-_cogl_winsys_display_destroy (CoglDisplay *display)
-{
-  CoglDisplayEGL *egl_display = display->winsys;
-
-  g_return_if_fail (egl_display != NULL);
-
-  cleanup_context (display);
-
-  g_slice_free (CoglDisplayEGL, display->winsys);
-  display->winsys = NULL;
-}
-
-gboolean
+static gboolean
 _cogl_winsys_context_init (CoglContext *context, GError **error)
 {
   context->winsys = g_new0 (CoglContextEGL, 1);
@@ -726,7 +726,7 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
   return TRUE;
 }
 
-void
+static void
 _cogl_winsys_context_deinit (CoglContext *context)
 {
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
@@ -737,7 +737,7 @@ _cogl_winsys_context_deinit (CoglContext *context)
   g_free (context->winsys);
 }
 
-gboolean
+static gboolean
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             GError **error)
 {
@@ -896,7 +896,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   return TRUE;
 }
 
-void
+static void
 _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
@@ -941,7 +941,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 #endif
 }
 
-void
+static void
 _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
@@ -982,7 +982,7 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
     eglSwapInterval (egl_renderer->edpy, 0);
 }
 
-void
+static void
 _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
                                    int *rectangles,
                                    int n_rectangles)
@@ -998,14 +998,14 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
     g_warning ("Error reported by eglSwapBuffersRegion");
 }
 
-guint32
+static guint32
 _cogl_winsys_get_vsync_counter (void)
 {
   /* Unsupported feature */
   return 0;
 }
 
-void
+static void
 _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
@@ -1015,14 +1015,14 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
   eglSwapBuffers (egl_renderer->edpy, egl_onscreen->egl_surface);
 }
 
-guint32
+static guint32
 _cogl_winsys_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
 {
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
   return xlib_onscreen->xwin;
 }
 
-unsigned int
+static unsigned int
 _cogl_winsys_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
                                                  CoglSwapBuffersNotify callback,
                                                  void *user_data)
@@ -1031,14 +1031,14 @@ _cogl_winsys_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
   return 0;
 }
 
-void
+static void
 _cogl_winsys_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
                                                     unsigned int id)
 {
   /* Unsupported feature */
 }
 
-void
+static void
 _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
@@ -1054,7 +1054,7 @@ _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
 
 #ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
 /* XXX: This is a particularly hacky _cogl_winsys interface... */
-XVisualInfo *
+static XVisualInfo *
 _cogl_winsys_xlib_get_visual_info (void)
 {
   CoglDisplayEGL *egl_display;
@@ -1072,7 +1072,7 @@ _cogl_winsys_xlib_get_visual_info (void)
 }
 #endif
 
-EGLDisplay
+static EGLDisplay
 _cogl_winsys_context_egl_get_egl_display (CoglContext *context)
 {
   CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
@@ -1080,37 +1080,47 @@ _cogl_winsys_context_egl_get_egl_display (CoglContext *context)
   return egl_renderer->edpy;
 }
 
-#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
-gboolean
-_cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
-{
-  /* Unsupported feature */
-  tex_pixmap->winsys = NULL;
-  return FALSE;
-}
-
-void
-_cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
-{
-  /* Unsupported feature */
-}
-
-gboolean
-_cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
-                                        gboolean needs_mipmap)
-{
-  /* Unsupported feature */
-}
-
-void
-_cogl_winsys_texture_pixmap_x11_damage_notify (CoglTexturePixmapX11 *tex_pixmap)
-{
-  /* Unsupported feature */
-}
-
-CoglHandle
-_cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
-{
-  /* Unsupported feature */
-}
+static CoglWinsysVtable _cogl_winsys_vtable =
+  {
+    .get_proc_address = _cogl_winsys_get_proc_address,
+    .renderer_connect = _cogl_winsys_renderer_connect,
+    .renderer_disconnect = _cogl_winsys_renderer_disconnect,
+    .display_setup = _cogl_winsys_display_setup,
+    .display_destroy = _cogl_winsys_display_destroy,
+    .context_init = _cogl_winsys_context_init,
+    .context_deinit = _cogl_winsys_context_deinit,
+    .context_egl_get_egl_display =
+      _cogl_winsys_context_egl_get_egl_display,
+#ifdef COGL_HAS_XLIB_SUPPORT
+    .xlib_get_visual_info = _cogl_winsys_xlib_get_visual_info,
 #endif
+    .onscreen_init = _cogl_winsys_onscreen_init,
+    .onscreen_deinit = _cogl_winsys_onscreen_deinit,
+    .onscreen_bind = _cogl_winsys_onscreen_bind,
+    .onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers,
+    .onscreen_swap_region = _cogl_winsys_onscreen_swap_region,
+    .onscreen_update_swap_throttled =
+      _cogl_winsys_onscreen_update_swap_throttled,
+    .onscreen_x11_get_window_xid =
+      _cogl_winsys_onscreen_x11_get_window_xid,
+    .onscreen_add_swap_buffers_callback =
+      _cogl_winsys_onscreen_add_swap_buffers_callback,
+    .onscreen_remove_swap_buffers_callback =
+      _cogl_winsys_onscreen_remove_swap_buffers_callback,
+    .get_vsync_counter = _cogl_winsys_get_vsync_counter
+  };
+
+/* XXX: we use a function because no doubt someone will complain
+ * about using c99 member initializers because they aren't portable
+ * to windows. We want to avoid having to rigidly follow the real
+ * order of members since some members are #ifdefd and we'd have
+ * to mirror the #ifdefing to add padding etc. For any winsys that
+ * can assume the platform has a sane compiler then we can just use
+ * c99 initializers for insane platforms they can initialize
+ * the members by name in a function.
+ */
+const CoglWinsysVtable *
+_cogl_winsys_egl_get_vtable (void)
+{
+  return &_cogl_winsys_vtable;
+}

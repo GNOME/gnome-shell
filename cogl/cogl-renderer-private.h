@@ -25,6 +25,7 @@
 #define __COGL_RENDERER_PRIVATE_H
 
 #include "cogl-object-private.h"
+#include "cogl-winsys-private.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xlib.h>
@@ -34,6 +35,7 @@ struct _CoglRenderer
 {
   CoglObject _parent;
   gboolean connected;
+  const CoglWinsysVtable *winsys_vtable;
 #ifdef COGL_HAS_XLIB_SUPPORT
   Display *foreign_xdpy;
 #endif
