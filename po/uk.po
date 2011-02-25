@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-10 09:04+0200\n"
-"PO-Revision-Date: 2011-02-10 21:29+0300\n"
+"POT-Creation-Date: 2011-02-25 20:45+0200\n"
+"PO-Revision-Date: 2011-02-25 20:51+0300\n"
 "Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
 "Language-Team: translation@linux.org.ua\n"
 "Language: uk\n"
@@ -32,8 +32,8 @@ msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
-"Надає доступ до внутрішніх засобів зневаджування та спостереження через "
-"Alt-F2."
+"Надає доступ до внутрішніх засобів зневаджування та спостереження через Alt-"
+"F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -62,23 +62,27 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "Історія для команд (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for the looking glass dialog"
+msgstr "Історія для пошуку дзеркальних діалогів"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Якщо це так, дата буде показуватись у годиннику разом з часом."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
 msgstr "Якщо це так, буде показано секунди в часі."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Якщо це так, буде показано дні тижня у календарі згідно з ISO."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Перелічити ідентифікатори файла стільниці для улюблених програм"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
-#, no-c-format, 
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -102,19 +106,19 @@ msgstr ""
 "webmmux» і записує у WEBM, використовуючи кодек VP8. %T використовується як "
 "заповнювач для гостей в оптимальній кількості потоків на систему."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "Показати дату в годиннику"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Показати дні тижня в календарі"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "Показати час з секундами"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -122,7 +126,7 @@ msgstr ""
 "Програми, які відповідають цьому ідентифікатору, буде показано в ділянці "
 "улюбленого."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -132,19 +136,20 @@ msgstr ""
 "даті, та буде використовувати це розширення. Слід змінити це, коли записуєте "
 "в різні формати контейнера. "
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
-"Частота кадрів кінцевої трансляції з екрана записано в записувачі GNOME Shell як "
-"«frames-per-second»."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr "Канал даних GStreamer використовується для кодування транcляції з екрана"
+"Частота кадрів кінцевої трансляції з екрана записано в записувачі GNOME "
+"Shell як «frames-per-second»."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr ""
+"Канал даних GStreamer використовується для кодування транcляції з екрана"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -156,167 +161,17 @@ msgstr ""
 "можете забажати вимкнути це через особисті мотиви. Будь ласка, завважте, це "
 "не вилучить уже збережені дані."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
 msgstr "Вимкнути розширення Uuids"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr "Чи потрібно збирати статистику про вживаність програм "
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
 msgstr "вимкнено постачальника OpenSearch"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:1
-msgid "Clip the crosshairs at the center"
-msgstr "Обрізати перехрестя в центрі"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:2
-msgid "Color of the crosshairs"
-msgstr "Колір перехрестя"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:3
-msgid ""
-"Determines the length of the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr ""
-"Визначає довжину вертикальних і горизонтальних ліній, які складають "
-"перехрестя."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:4
-msgid ""
-"Determines the position of the magnified mouse image within the magnified "
-"view and how it reacts to system mouse movement. The values are - none: no "
-"mouse tracking; - centered: the mouse image is displayed at the center of "
-"the zoom region (which also represents the point under the system mouse) and "
-"the magnified contents are scrolled as the system mouse moves; - "
-"proportional: the position of the magnified mouse in the zoom region is "
-"proportionally the same as the position of the system mouse on screen; - "
-"push: when the magnified mouse intersects a boundary of the zoom region, the "
-"contents are scrolled into view."
-msgstr ""
-"Визначає позиції збільшеного зображення миші у збільшеному перегляді і як це "
-"реагує на рух системної миші. Значення — none: без стеження за мишкою; — "
-"centered: зображення миші показується в центрі області масштабу (який також "
-"змальовує точку під системною мишею) і збільшений вміст прокручується в міру "
-"руху системної миші; —  proportional: позиція збільшеної миші в області "
-"масштабу пропорційно однакова до позиції системної миші на екрані; — push: "
-"коли збільшена миша перетинає межу області масштабу, вміст прокручується в "
-"перегляд."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:5
-msgid ""
-"Determines the transparency of the crosshairs, from fully opaque to fully "
-"transparent."
-msgstr ""
-"Визначає прозорість перехрестя, від повністю непрозорого до абсолютно "
-"прозорого."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:6
-msgid ""
-"Determines whether the crosshairs intersect the magnified mouse sprite, or "
-"are clipped such that the ends of the horizontal and vertical lines surround "
-"the mouse image."
-msgstr ""
-"Визначає, чи перехрестя перетинає спрайт збільшеної миші, або чи обрізано "
-"так, що кінці горизонтальних і вертикальних ліній межують із зображенням "
-"миші. "
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:7
-msgid "Enable lens mode"
-msgstr "Увімкнути режим лінзи"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:8
-msgid ""
-"Enables/disables display of crosshairs centered on the magnified mouse "
-"sprite."
-msgstr ""
-"Вмикає/вимикає показ перехрестя зосередженого на спрайті збільшеної миші."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:9
-msgid ""
-"For centered mouse tracking, when the system pointer is at or near the edge "
-"of the screen, the magnified contents continue to scroll such that the "
-"screen edge moves into the magnified view."
-msgstr ""
-"Для зосередженого стеження за мишею, коли системний вказівник близько до "
-"краю екрана, збільшений вміст і надалі гортається так, ніби краї екрана "
-"переходять у збільшений перегляд."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:10
-msgid "Length of the crosshairs"
-msgstr "Довжина перехрестя"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:11
-msgid "Magnification factor"
-msgstr "Коефіцієнт збільшення"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:12
-msgid "Mouse Tracking Mode"
-msgstr "Режим стеження за мишою"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:13
-msgid "Opacity of the crosshairs"
-msgstr "Непрозорість перехрестя"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:14
-msgid "Screen position"
-msgstr "Позиція на екрані"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:15
-msgid "Scroll magnified contents beyond the edges of the desktop"
-msgstr "Гортати збільшений вміст за краями стільниці"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:16
-msgid "Show or hide crosshairs"
-msgstr "Показати або сховати перехрестя"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:17
-msgid "Show or hide the magnifier"
-msgstr "Показати або сховати лупу"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:18
-msgid "Show or hide the magnifier and all of its zoom regions."
-msgstr "Показати або сховати лупу і всі її області масштабу."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:19
-msgid ""
-"The color of the the vertical and horizontal lines that make up the "
-"crosshairs."
-msgstr "Колір вертикальних і горизонтальних ліній, які складають перехрестя."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:20
-msgid ""
-"The magnified view either fills the entire screen, or occupies the top-half, "
-"bottom-half, left-half, or right-half of the screen."
-msgstr ""
-"Збільшений перегляд заповнює ввесь екран або займає верхню половину, нижню "
-"половину, ліву половину чи праву половину на екрані."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:21
-msgid ""
-"The power of the magnification. A value of 1.0 means no magnification. A "
-"value of 2.0 doubles the size."
-msgstr ""
-"Степінь збільшення. Значення 1.0 означає, що нема збільшення. Значення 2.0 — "
-"подвійний розмір."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:22
-msgid "Thickness of the crosshairs"
-msgstr "Товщина перехрестя"
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:23
-msgid ""
-"Whether the magnified view should be centered over the location of the "
-"system mouse and move with it."
-msgstr ""
-"Чи збільшений перегляд повинен зосередитись на адресі системної миші і "
-"рухатись з нею."
-
-#: ../data/org.gnome.accessibility.magnifier.gschema.xml.in.h:24
-msgid "Width of the vertical and horizontal lines that make up the crosshairs."
-msgstr "Ширина вертикальних і горизонтальних ліній, які складають перехрестя."
 
 #: ../js/misc/util.js:86
 msgid "Command not found"
@@ -338,27 +193,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Не вдалось виконати «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:164
+#: ../js/ui/appDisplay.js:175
 msgid "All"
 msgstr "Всі"
 
-#: ../js/ui/appDisplay.js:251
+#: ../js/ui/appDisplay.js:262
 msgid "APPLICATIONS"
 msgstr "ПРОГРАМИ"
 
-#: ../js/ui/appDisplay.js:281
+#: ../js/ui/appDisplay.js:292
 msgid "PREFERENCES"
 msgstr "ПАРАМЕТРИ"
 
-#: ../js/ui/appDisplay.js:582
+#: ../js/ui/appDisplay.js:552
 msgid "New Window"
 msgstr "Нове вікно"
 
-#: ../js/ui/appDisplay.js:586
+#: ../js/ui/appDisplay.js:555
 msgid "Remove from Favorites"
 msgstr "Вилучити з улюбленого"
 
-#: ../js/ui/appDisplay.js:587
+#: ../js/ui/appDisplay.js:556
 msgid "Add to Favorites"
 msgstr "Додати до улюбленого"
 
@@ -522,58 +377,58 @@ msgstr "Наступний тиждень"
 msgid "Remove"
 msgstr "Вилучити"
 
-#: ../js/ui/dateMenu.js:91
+#: ../js/ui/dateMenu.js:93
 msgid "Date and Time Settings"
 msgstr "Параметри дати і часу"
 
-#: ../js/ui/dateMenu.js:110
+#: ../js/ui/dateMenu.js:112
 msgid "Open Calendar"
 msgstr "Відкрити календар"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:149
+#: ../js/ui/dateMenu.js:151
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/dateMenu.js:150
+#: ../js/ui/dateMenu.js:152
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:154
+#: ../js/ui/dateMenu.js:156
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:155
+#: ../js/ui/dateMenu.js:157
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:169
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:170
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:196
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
 
@@ -619,7 +474,7 @@ msgstr "Натисніть «Вимкнути», щоб вийти з усіх �
 #: ../js/ui/endSessionDialog.js:76
 #, c-format
 msgid "The system will shut down automatically in %d seconds."
-msgstr "Систему буде вимкнуто автоматично через %d секунд."
+msgstr "Систему буде вимкнено автоматично через %d секунд."
 
 #: ../js/ui/endSessionDialog.js:77
 msgid "Shutting down the system."
@@ -651,37 +506,37 @@ msgstr "Підтвердити"
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: ../js/ui/lookingGlass.js:556
+#: ../js/ui/lookingGlass.js:587
 msgid "No extensions installed"
 msgstr "Не встановлено розширення"
 
-#: ../js/ui/lookingGlass.js:593
+#: ../js/ui/lookingGlass.js:624
 msgid "Enabled"
 msgstr "Увімкнено"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:595 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:626 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "Вимкнено"
 
-#: ../js/ui/lookingGlass.js:597
+#: ../js/ui/lookingGlass.js:628
 msgid "Error"
 msgstr "Помилка"
 
-#: ../js/ui/lookingGlass.js:599
+#: ../js/ui/lookingGlass.js:630
 msgid "Out of date"
 msgstr "Застаріло"
 
-#: ../js/ui/lookingGlass.js:624
+#: ../js/ui/lookingGlass.js:655
 msgid "View Source"
 msgstr "Переглянути джерело"
 
-#: ../js/ui/lookingGlass.js:630
+#: ../js/ui/lookingGlass.js:661
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
-#: ../js/ui/messageTray.js:1835
+#: ../js/ui/messageTray.js:1902
 msgid "System Information"
 msgstr "Інформація про систему"
 
@@ -689,23 +544,23 @@ msgstr "Інформація про систему"
 msgid "Undo"
 msgstr "Повернути"
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:183
 msgid "Windows"
 msgstr "Вікна"
 
-#: ../js/ui/overview.js:162
+#: ../js/ui/overview.js:186
 msgid "Applications"
 msgstr "Програми"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:480
+#: ../js/ui/panel.js:537
 #, c-format
 msgid "Quit %s"
 msgstr "Вийти з %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:905
 msgid "Activities"
 msgstr "Дії"
 
@@ -731,11 +586,11 @@ msgstr "МІСЦЯ ТА ПРИСТРОЇ"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:512
+#: ../js/ui/popupMenu.js:612
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:209
+#: ../js/ui/runDialog.js:201
 msgid "Please enter a command:"
 msgstr "Будь ласка, введіть команду:"
 
@@ -747,49 +602,47 @@ msgstr "Пошук…"
 msgid "No matching results."
 msgstr "Нема збігів."
 
-#: ../js/ui/statusMenu.js:102
+#: ../js/ui/statusMenu.js:99 ../js/ui/statusMenu.js:163
+msgid "Power Off..."
+msgstr "Вимкнення живлення…"
+
+#: ../js/ui/statusMenu.js:101 ../js/ui/statusMenu.js:162
+msgid "Suspend"
+msgstr "Призупинити"
+
+#: ../js/ui/statusMenu.js:122
 msgid "Available"
 msgstr "Доступний"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:127
 msgid "Busy"
 msgstr "Зайнятий"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:135
 msgid "My Account"
 msgstr "Мій обліковий запис"
 
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:139
 msgid "System Settings"
 msgstr "Системні параметри"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:146
 msgid "Lock Screen"
 msgstr "Заблокувати екран"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:150
 msgid "Switch User"
 msgstr "Змінити користувача"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:155
 msgid "Log Out..."
 msgstr "Завершити сеанс…"
 
-#. This is temporarily removed, see
-#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
-#. for details.
-#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
-#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-#. this.menu.addMenuItem(item);
-#: ../js/ui/statusMenu.js:149
-msgid "Shut Down..."
-msgstr "Вимкнути…"
-
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:81
 msgid "Zoom"
 msgstr "Масштаб"
 
-#: ../js/ui/status/accessibility.js:89
+#: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
 msgstr "Читання з екрану"
 
@@ -797,35 +650,35 @@ msgstr "Читання з екрану"
 msgid "Screen Keyboard"
 msgstr "Екранна клавіатура"
 
-#: ../js/ui/status/accessibility.js:95
+#: ../js/ui/status/accessibility.js:96
 msgid "Visual Alerts"
 msgstr "Візуальні тривоги"
 
-#: ../js/ui/status/accessibility.js:98
+#: ../js/ui/status/accessibility.js:99
 msgid "Sticky Keys"
 msgstr "Липкі клавіші"
 
-#: ../js/ui/status/accessibility.js:101
+#: ../js/ui/status/accessibility.js:102
 msgid "Slow Keys"
 msgstr "Повільні клавіші"
 
-#: ../js/ui/status/accessibility.js:104
+#: ../js/ui/status/accessibility.js:105
 msgid "Bounce Keys"
 msgstr "Пружні клавіші"
 
-#: ../js/ui/status/accessibility.js:107
+#: ../js/ui/status/accessibility.js:108
 msgid "Mouse Keys"
 msgstr "Клавіші миші"
 
-#: ../js/ui/status/accessibility.js:111
+#: ../js/ui/status/accessibility.js:112
 msgid "Universal Access Settings"
 msgstr "Параметри універсального доступу"
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:164
 msgid "High Contrast"
 msgstr "Висока контрастність"
 
-#: ../js/ui/status/accessibility.js:205
+#: ../js/ui/status/accessibility.js:209
 msgid "Large Text"
 msgstr "Більший текст"
 
@@ -880,7 +733,7 @@ msgstr "Параметри клавіатури"
 msgid "Mouse Settings"
 msgstr "Параметри миші"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
 msgid "Sound Settings"
 msgstr "Параметри звуку"
 
@@ -942,7 +795,11 @@ msgstr "Будь ласка, введіть PIN, згаданий на прис�
 msgid "OK"
 msgstr "Гаразд"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "Показувати розкладку клавіатури…"
+
+#: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "Параметри локалізації"
 
@@ -979,7 +836,7 @@ msgstr[1] "хвилини"
 msgstr[2] "хвилин"
 
 #: ../js/ui/status/power.js:120
-#, c-format, 
+#, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "Залишилось %d хвилина"
@@ -1034,30 +891,30 @@ msgstr "Комп'ютер"
 msgid "Unknown"
 msgstr "Невідомо"
 
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:44
 msgid "Volume"
 msgstr "Гучність"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:57
 msgid "Microphone"
 msgstr "Мікрофон"
 
-#: ../js/ui/telepathyClient.js:563
+#: ../js/ui/telepathyClient.js:239
 #, c-format
 msgid "%s is online."
 msgstr "%s в мережі."
 
-#: ../js/ui/telepathyClient.js:568
+#: ../js/ui/telepathyClient.js:244
 #, c-format
 msgid "%s is offline."
 msgstr "%s поза мережею."
 
-#: ../js/ui/telepathyClient.js:571
+#: ../js/ui/telepathyClient.js:247
 #, c-format
 msgid "%s is away."
 msgstr "%s відійшов."
 
-#: ../js/ui/telepathyClient.js:574
+#: ../js/ui/telepathyClient.js:250
 #, c-format
 msgid "%s is busy."
 msgstr "%s зайнятий."
@@ -1065,14 +922,18 @@ msgstr "%s зайнятий."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:668
+#: ../js/ui/telepathyClient.js:348
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Відправити на %X в %A"
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "Пошук на комп'ютері"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:103
+msgid "Type to search..."
+msgstr "Введіть для пошуку…"
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -1144,6 +1005,10 @@ msgstr[0] "%d тиждень тому"
 msgstr[1] "%d тижні тому"
 msgstr[2] "%d тижнів тому"
 
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Вікно авторизації відхилено користувачем"
+
 #: ../src/shell-util.c:89
 msgid "Home Folder"
 msgstr "Домашня тека"
@@ -1167,6 +1032,141 @@ msgstr "Пошук"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Clip the crosshairs at the center"
+#~ msgstr "Обрізати перехрестя в центрі"
+
+#~ msgid "Color of the crosshairs"
+#~ msgstr "Колір перехрестя"
+
+#~ msgid ""
+#~ "Determines the length of the vertical and horizontal lines that make up "
+#~ "the crosshairs."
+#~ msgstr ""
+#~ "Визначає довжину вертикальних і горизонтальних ліній, які складають "
+#~ "перехрестя."
+
+#~ msgid ""
+#~ "Determines the position of the magnified mouse image within the magnified "
+#~ "view and how it reacts to system mouse movement. The values are - none: "
+#~ "no mouse tracking; - centered: the mouse image is displayed at the center "
+#~ "of the zoom region (which also represents the point under the system "
+#~ "mouse) and the magnified contents are scrolled as the system mouse moves; "
+#~ "- proportional: the position of the magnified mouse in the zoom region is "
+#~ "proportionally the same as the position of the system mouse on screen; - "
+#~ "push: when the magnified mouse intersects a boundary of the zoom region, "
+#~ "the contents are scrolled into view."
+#~ msgstr ""
+#~ "Визначає позиції збільшеного зображення миші у збільшеному перегляді і як "
+#~ "це реагує на рух системної миші. Значення — none: без стеження за мишкою; "
+#~ "— centered: зображення миші показується в центрі області масштабу (який "
+#~ "також змальовує точку під системною мишею) і збільшений вміст "
+#~ "прокручується в міру руху системної миші; —  proportional: позиція "
+#~ "збільшеної миші в області масштабу пропорційно однакова до позиції "
+#~ "системної миші на екрані; — push: коли збільшена миша перетинає межу "
+#~ "області масштабу, вміст прокручується в перегляд."
+
+#~ msgid ""
+#~ "Determines the transparency of the crosshairs, from fully opaque to fully "
+#~ "transparent."
+#~ msgstr ""
+#~ "Визначає прозорість перехрестя, від повністю непрозорого до абсолютно "
+#~ "прозорого."
+
+#~ msgid ""
+#~ "Determines whether the crosshairs intersect the magnified mouse sprite, "
+#~ "or are clipped such that the ends of the horizontal and vertical lines "
+#~ "surround the mouse image."
+#~ msgstr ""
+#~ "Визначає, чи перехрестя перетинає спрайт збільшеної миші, або чи обрізано "
+#~ "так, що кінці горизонтальних і вертикальних ліній межують із зображенням "
+#~ "миші. "
+
+#~ msgid "Enable lens mode"
+#~ msgstr "Увімкнути режим лінзи"
+
+#~ msgid ""
+#~ "Enables/disables display of crosshairs centered on the magnified mouse "
+#~ "sprite."
+#~ msgstr ""
+#~ "Вмикає/вимикає показ перехрестя зосередженого на спрайті збільшеної миші."
+
+#~ msgid ""
+#~ "For centered mouse tracking, when the system pointer is at or near the "
+#~ "edge of the screen, the magnified contents continue to scroll such that "
+#~ "the screen edge moves into the magnified view."
+#~ msgstr ""
+#~ "Для зосередженого стеження за мишею, коли системний вказівник близько до "
+#~ "краю екрана, збільшений вміст і надалі гортається так, ніби краї екрана "
+#~ "переходять у збільшений перегляд."
+
+#~ msgid "Length of the crosshairs"
+#~ msgstr "Довжина перехрестя"
+
+#~ msgid "Magnification factor"
+#~ msgstr "Коефіцієнт збільшення"
+
+#~ msgid "Mouse Tracking Mode"
+#~ msgstr "Режим стеження за мишою"
+
+#~ msgid "Opacity of the crosshairs"
+#~ msgstr "Непрозорість перехрестя"
+
+#~ msgid "Screen position"
+#~ msgstr "Позиція на екрані"
+
+#~ msgid "Scroll magnified contents beyond the edges of the desktop"
+#~ msgstr "Гортати збільшений вміст за краями стільниці"
+
+#~ msgid "Show or hide crosshairs"
+#~ msgstr "Показати або сховати перехрестя"
+
+#~ msgid "Show or hide the magnifier"
+#~ msgstr "Показати або сховати лупу"
+
+#~ msgid "Show or hide the magnifier and all of its zoom regions."
+#~ msgstr "Показати або сховати лупу і всі її області масштабу."
+
+#~ msgid ""
+#~ "The color of the the vertical and horizontal lines that make up the "
+#~ "crosshairs."
+#~ msgstr ""
+#~ "Колір вертикальних і горизонтальних ліній, які складають перехрестя."
+
+#~ msgid ""
+#~ "The magnified view either fills the entire screen, or occupies the top-"
+#~ "half, bottom-half, left-half, or right-half of the screen."
+#~ msgstr ""
+#~ "Збільшений перегляд заповнює ввесь екран або займає верхню половину, "
+#~ "нижню половину, ліву половину чи праву половину на екрані."
+
+#~ msgid ""
+#~ "The power of the magnification. A value of 1.0 means no magnification. A "
+#~ "value of 2.0 doubles the size."
+#~ msgstr ""
+#~ "Степінь збільшення. Значення 1.0 означає, що нема збільшення. Значення "
+#~ "2.0 — подвійний розмір."
+
+#~ msgid "Thickness of the crosshairs"
+#~ msgstr "Товщина перехрестя"
+
+#~ msgid ""
+#~ "Whether the magnified view should be centered over the location of the "
+#~ "system mouse and move with it."
+#~ msgstr ""
+#~ "Чи збільшений перегляд повинен зосередитись на адресі системної миші і "
+#~ "рухатись з нею."
+
+#~ msgid ""
+#~ "Width of the vertical and horizontal lines that make up the crosshairs."
+#~ msgstr ""
+#~ "Ширина вертикальних і горизонтальних ліній, які складають перехрестя."
+
+#~ msgid "Shut Down..."
+#~ msgstr "Вимкнути…"
+
+#~ msgid "Search your computer"
+#~ msgstr "Пошук на комп'ютері"
 
 #~ msgid "Drag here to add favorites"
 #~ msgstr "Перетягніть сюди для додавання до улюбленого"
