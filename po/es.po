@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2011-02-22 23:47+0000\n"
-"PO-Revision-Date: 2011-02-23 16:41+0100\n"
+"POT-Creation-Date: 2011-02-25 12:51+0000\n"
+"PO-Revision-Date: 2011-02-25 13:56+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -562,7 +562,7 @@ msgstr "Salir de %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:772
+#: ../js/ui/panel.js:905
 msgid "Activities"
 msgstr "Actividades"
 
@@ -609,7 +609,6 @@ msgid "Power Off..."
 msgstr "Apagar…"
 
 #: ../js/ui/statusMenu.js:101 ../js/ui/statusMenu.js:162
-#| msgid "Suspend..."
 msgid "Suspend"
 msgstr "Suspender"
 
@@ -898,22 +897,22 @@ msgstr "Volumen"
 msgid "Microphone"
 msgstr "Micrófono"
 
-#: ../js/ui/telepathyClient.js:240
+#: ../js/ui/telepathyClient.js:239
 #, c-format
 msgid "%s is online."
 msgstr "%s está conectado/a."
 
-#: ../js/ui/telepathyClient.js:245
+#: ../js/ui/telepathyClient.js:244
 #, c-format
 msgid "%s is offline."
 msgstr "%s está desconectado/a."
 
-#: ../js/ui/telepathyClient.js:248
+#: ../js/ui/telepathyClient.js:247
 #, c-format
 msgid "%s is away."
 msgstr "%s está ausente."
 
-#: ../js/ui/telepathyClient.js:251
+#: ../js/ui/telepathyClient.js:250
 #, c-format
 msgid "%s is busy."
 msgstr "%s está ocupado/a."
@@ -921,7 +920,7 @@ msgstr "%s está ocupado/a."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:349
+#: ../js/ui/telepathyClient.js:348
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "Enviado a las %X el %A"
@@ -929,8 +928,8 @@ msgstr "Enviado a las %X el %A"
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
-#. characters
-#: ../js/ui/viewSelector.js:30
+#. characters.
+#: ../js/ui/viewSelector.js:103
 msgid "Type to search..."
 msgstr "Teclear para buscar…"
 
@@ -997,6 +996,10 @@ msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "Hace %d semana"
 msgstr[1] "Hace %d semanas"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr "El usuario rechazó el diálogo de autenticación"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
