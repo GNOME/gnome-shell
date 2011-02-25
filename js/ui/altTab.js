@@ -820,7 +820,7 @@ AppIcon.prototype = {
         this.actor = new St.BoxLayout({ style_class: 'alt-tab-app',
                                          vertical: true });
         this.icon = null;
-        this._iconBin = new St.Bin();
+        this._iconBin = new St.Bin({ x_fill: true, y_fill: true });
 
         this.actor.add(this._iconBin, { x_fill: false, y_fill: false } );
         this.label = new St.Label({ text: this.app.get_name() });
