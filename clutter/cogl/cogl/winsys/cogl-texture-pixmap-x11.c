@@ -42,6 +42,8 @@
 #include "cogl-texture-2d-private.h"
 #include "cogl-texture-rectangle-private.h"
 #include "cogl-context-private.h"
+#include "cogl-display-private.h"
+#include "cogl-renderer-private.h"
 #include "cogl-handle.h"
 #include "cogl-winsys-private.h"
 #include "cogl-pipeline-opengl-private.h"
@@ -101,12 +103,23 @@ cogl_damage_rectangle_is_whole (const CoglDamageRectangle *damage_rect,
           && damage_rect->x2 == width && damage_rect->y2 == height);
 }
 
+static const CoglWinsysVtable *
+_cogl_texture_pixmap_x11_get_winsys (CoglTexturePixmapX11 *tex_pixmap)
+{
+  /* FIXME: A CoglContext should be reachable from a CoglTexture
+   * pointer */
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  return ctx->display->renderer->winsys_vtable;
+}
+
 static void
 process_damage_event (CoglTexturePixmapX11 *tex_pixmap,
                       XDamageNotifyEvent *damage_event)
 {
   Display *display;
   enum { DO_NOTHING, NEEDS_SUBTRACT, NEED_BOUNDING_BOX } handle_mode;
+  const CoglWinsysVtable *winsys;
 
   _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
 
@@ -195,7 +208,8 @@ process_damage_event (CoglTexturePixmapX11 *tex_pixmap,
   /* If we're using the texture from pixmap extension then there's no
      point in getting the region and we can just mark that the texture
      needs updating */
-  _cogl_winsys_texture_pixmap_x11_damage_notify (tex_pixmap);
+  winsys = _cogl_texture_pixmap_x11_get_winsys (tex_pixmap);
+  winsys->texture_pixmap_x11_damage_notify (tex_pixmap);
 }
 
 static CoglFilterReturn
@@ -254,6 +268,7 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
   CoglTexture *tex = COGL_TEXTURE (tex_pixmap);
   XWindowAttributes window_attributes;
   int damage_base;
+  const CoglWinsysVtable *winsys;
 
   _COGL_GET_CONTEXT (ctxt, COGL_INVALID_HANDLE);
 
@@ -307,7 +322,9 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
   tex_pixmap->damage_rect.y1 = 0;
   tex_pixmap->damage_rect.y2 = tex_pixmap->height;
 
-  _cogl_winsys_texture_pixmap_x11_create (tex_pixmap);
+  winsys = _cogl_texture_pixmap_x11_get_winsys (tex_pixmap);
+  if (winsys->texture_pixmap_x11_create)
+    winsys->texture_pixmap_x11_create (tex_pixmap);
 
   return _cogl_texture_pixmap_x11_handle_new (tex_pixmap);
 }
@@ -390,6 +407,7 @@ cogl_texture_pixmap_x11_update_area (CoglHandle handle,
                                      int height)
 {
   CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (handle);
+  const CoglWinsysVtable *winsys;
 
   if (!cogl_is_texture_pixmap_x11 (handle))
     return;
@@ -398,7 +416,8 @@ cogl_texture_pixmap_x11_update_area (CoglHandle handle,
      texture because we can't determine which will be needed until we
      actually render something */
 
-  _cogl_winsys_texture_pixmap_x11_damage_notify (tex_pixmap);
+  winsys = _cogl_texture_pixmap_x11_get_winsys (tex_pixmap);
+  winsys->texture_pixmap_x11_damage_notify (tex_pixmap);
 
   cogl_damage_rectangle_union (&tex_pixmap->damage_rect,
                                x, y, width, height);
@@ -617,7 +636,10 @@ _cogl_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
 {
   if (tex_pixmap->winsys)
     {
-      if (_cogl_winsys_texture_pixmap_x11_update (tex_pixmap, needs_mipmap))
+      const CoglWinsysVtable *winsys =
+        _cogl_texture_pixmap_x11_get_winsys (tex_pixmap);
+
+      if (winsys->texture_pixmap_x11_update (tex_pixmap, needs_mipmap))
         {
           _cogl_texture_pixmap_x11_set_use_winsys_texture (tex_pixmap, TRUE);
           return;
@@ -649,7 +671,11 @@ _cogl_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
   for (i = 0; i < 2; i++)
     {
       if (tex_pixmap->use_winsys_texture)
-        tex = _cogl_winsys_texture_pixmap_x11_get_texture (tex_pixmap);
+        {
+          const CoglWinsysVtable *winsys =
+            _cogl_texture_pixmap_x11_get_winsys (tex_pixmap);
+          tex = winsys->texture_pixmap_x11_get_texture (tex_pixmap);
+        }
       else
         tex = tex_pixmap->tex;
 
@@ -912,7 +938,11 @@ _cogl_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
     cogl_handle_unref (tex_pixmap->tex);
 
   if (tex_pixmap->winsys)
-    _cogl_winsys_texture_pixmap_x11_free (tex_pixmap);
+    {
+      const CoglWinsysVtable *winsys =
+        _cogl_texture_pixmap_x11_get_winsys (tex_pixmap);
+      winsys->texture_pixmap_x11_free (tex_pixmap);
+    }
 
   /* Chain up */
   _cogl_texture_free (COGL_TEXTURE (tex_pixmap));

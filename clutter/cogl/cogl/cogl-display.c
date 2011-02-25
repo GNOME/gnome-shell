@@ -32,6 +32,7 @@
 #include "cogl-object.h"
 
 #include "cogl-display-private.h"
+#include "cogl-renderer-private.h"
 #include "cogl-winsys-private.h"
 
 static void _cogl_display_free (CoglDisplay *display);
@@ -93,15 +94,26 @@ cogl_display_new (CoglRenderer *renderer,
   return _cogl_display_object_new (display);
 }
 
+static const CoglWinsysVtable *
+_cogl_display_get_winsys (CoglDisplay *display)
+{
+  return display->renderer->winsys_vtable;
+}
+
 gboolean
 cogl_display_setup (CoglDisplay *display,
                     GError **error)
 {
+#ifdef COGL_HAS_FULL_WINSYS
+  const CoglWinsysVtable *winsys;
+#endif
+
   if (display->setup)
     return TRUE;
 
 #ifdef COGL_HAS_FULL_WINSYS
-  if (!_cogl_winsys_display_setup (display, error))
+  winsys = _cogl_display_get_winsys (display);
+  if (!winsys->display_setup (display, error))
     return FALSE;
 #endif
 

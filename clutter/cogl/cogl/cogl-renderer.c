@@ -37,6 +37,29 @@
 #include "cogl-display-private.h"
 #include "cogl-winsys-private.h"
 
+#ifdef COGL_HAS_FULL_WINSYS
+
+#ifdef COGL_HAS_GLX_SUPPORT
+extern const CoglWinsysVtable *_cogl_winsys_glx_get_vtable (void);
+#endif
+#ifdef COGL_HAS_EGL_SUPPORT
+extern const CoglWinsysVtable *_cogl_winsys_egl_get_vtable (void);
+#endif
+
+typedef const CoglWinsysVtable *(*CoglWinsysVtableGetter) (void);
+
+static CoglWinsysVtableGetter _cogl_winsys_vtable_getters[] =
+{
+#ifdef COGL_HAS_GLX_SUPPORT
+  _cogl_winsys_glx_get_vtable,
+#endif
+#ifdef COGL_HAS_EGL_SUPPORT
+  _cogl_winsys_egl_get_vtable
+#endif
+};
+
+#endif /* COGL_HAS_FULL_WINSYS */
+
 static void _cogl_renderer_free (CoglRenderer *renderer);
 
 COGL_OBJECT_DEFINE (Renderer, renderer);
@@ -53,6 +76,12 @@ cogl_renderer_error_quark (void)
   return g_quark_from_static_string ("cogl-renderer-error-quark");
 }
 
+static const CoglWinsysVtable *
+_cogl_renderer_get_winsys (CoglRenderer *renderer)
+{
+  return renderer->winsys_vtable;
+}
+
 static void
 native_filter_closure_free (CoglNativeFilterClosure *closure)
 {
@@ -63,7 +92,8 @@ static void
 _cogl_renderer_free (CoglRenderer *renderer)
 {
 #ifdef COGL_HAS_FULL_WINSYS
-  _cogl_winsys_renderer_disconnect (renderer);
+  const CoglWinsysVtable *winsys = _cogl_renderer_get_winsys (renderer);
+  winsys->renderer_disconnect (renderer);
 #endif
 
   g_slist_foreach (renderer->event_filters,
@@ -114,8 +144,9 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
 {
 #ifdef COGL_HAS_FULL_WINSYS
   CoglDisplay *display;
+  const CoglWinsysVtable *winsys = _cogl_renderer_get_winsys (renderer);
 
-  if (!_cogl_winsys_renderer_connect (renderer, error))
+  if (!winsys->renderer_connect (renderer, error))
     return FALSE;
 
   display = cogl_display_new (renderer, onscreen_template);
@@ -135,16 +166,51 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
 gboolean
 cogl_renderer_connect (CoglRenderer *renderer, GError **error)
 {
+#ifdef COGL_HAS_FULL_WINSYS
+  int i;
+#endif
+  GString *error_message;
+
   if (renderer->connected)
     return TRUE;
 
 #ifdef COGL_HAS_FULL_WINSYS
-  if (!_cogl_winsys_renderer_connect (renderer, error))
-    return FALSE;
-#endif
+  error_message = g_string_new ("");
+  for (i = 0; i < G_N_ELEMENTS (_cogl_winsys_vtable_getters); i++)
+    {
+      const CoglWinsysVtable *winsys = _cogl_winsys_vtable_getters[i]();
+      GError *tmp_error = NULL;
+      if (!winsys->renderer_connect (renderer, &tmp_error))
+        {
+          g_string_append_c (error_message, '\n');
+          g_string_append (error_message, tmp_error->message);
+          g_error_free (tmp_error);
+        }
+      else
+        {
+          renderer->winsys_vtable = winsys;
+          renderer->connected = TRUE;
+          g_string_free (error_message, TRUE);
+          return TRUE;
+        }
+    }
 
+  if (!renderer->connected)
+    {
+      renderer->winsys_vtable = NULL;
+      g_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "Failed to connected to any renderer: %s",
+                   error_message->str);
+      g_string_free (error_message, TRUE);
+      return FALSE;
+    }
+
+  return TRUE;
+#else
   renderer->connected = TRUE;
   return TRUE;
+#endif
 }
 
 CoglFilterReturn

@@ -277,7 +277,15 @@ glx_event_filter_cb (void *native_event, void *data)
   return COGL_FILTER_CONTINUE;
 }
 
-gboolean
+static void
+_cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
+{
+  _cogl_renderer_xlib_disconnect (renderer);
+
+  g_slice_free (CoglRendererGLX, renderer->winsys);
+}
+
+static gboolean
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                GError **error)
 {
@@ -325,15 +333,7 @@ error:
   return FALSE;
 }
 
-void
-_cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
-{
-  _cogl_renderer_xlib_disconnect (renderer);
-
-  g_slice_free (CoglRendererGLX, renderer->winsys);
-}
-
-void
+static void
 update_winsys_features (CoglContext *context)
 {
   CoglDisplayGLX *glx_display = context->display->winsys;
@@ -625,32 +625,7 @@ create_context (CoglDisplay *display, GError **error)
   return TRUE;
 }
 
-gboolean
-_cogl_winsys_display_setup (CoglDisplay *display,
-                            GError **error)
-{
-  CoglDisplayGLX *glx_display;
-  int i;
-
-  g_return_val_if_fail (display->winsys == NULL, FALSE);
-
-  glx_display = g_slice_new0 (CoglDisplayGLX);
-  display->winsys = glx_display;
-
-  if (!create_context (display, error))
-    goto error;
-
-  for (i = 0; i < COGL_GLX_N_CACHED_CONFIGS; i++)
-    glx_display->glx_cached_configs[i].depth = -1;
-
-  return TRUE;
-
-error:
-  _cogl_winsys_display_destroy (display);
-  return FALSE;
-}
-
-void
+static void
 _cogl_winsys_display_destroy (CoglDisplay *display)
 {
   CoglDisplayGLX *glx_display = display->winsys;
@@ -682,7 +657,32 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
   display->winsys = NULL;
 }
 
-gboolean
+static gboolean
+_cogl_winsys_display_setup (CoglDisplay *display,
+                            GError **error)
+{
+  CoglDisplayGLX *glx_display;
+  int i;
+
+  g_return_val_if_fail (display->winsys == NULL, FALSE);
+
+  glx_display = g_slice_new0 (CoglDisplayGLX);
+  display->winsys = glx_display;
+
+  if (!create_context (display, error))
+    goto error;
+
+  for (i = 0; i < COGL_GLX_N_CACHED_CONFIGS; i++)
+    glx_display->glx_cached_configs[i].depth = -1;
+
+  return TRUE;
+
+error:
+  _cogl_winsys_display_destroy (display);
+  return FALSE;
+}
+
+static gboolean
 _cogl_winsys_context_init (CoglContext *context, GError **error)
 {
   context->winsys = g_new0 (CoglContextGLX, 1);
@@ -695,7 +695,7 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
   return TRUE;
 }
 
-void
+static void
 _cogl_winsys_context_deinit (CoglContext *context)
 {
   cogl_renderer_remove_native_filter (context->display->renderer,
@@ -704,7 +704,7 @@ _cogl_winsys_context_deinit (CoglContext *context)
   g_free (context->winsys);
 }
 
-gboolean
+static gboolean
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             GError **error)
 {
@@ -859,7 +859,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   return TRUE;
 }
 
-void
+static void
 _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
@@ -890,7 +890,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   _cogl_xlib_untrap_errors (&old_state);
 }
 
-void
+static void
 _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
@@ -1002,7 +1002,7 @@ drm_wait_vblank (int fd, drm_wait_vblank_t *vbl)
 }
 #endif /* HAVE_DRM */
 
-void
+static void
 _cogl_winsys_wait_for_vblank (void)
 {
   CoglRendererGLX *glx_renderer;
@@ -1034,7 +1034,22 @@ _cogl_winsys_wait_for_vblank (void)
 #endif /* HAVE_DRM */
 }
 
-void
+static guint32
+_cogl_winsys_get_vsync_counter (void)
+{
+  guint32 video_sync_count;
+  CoglRendererGLX *glx_renderer;
+
+  _COGL_GET_CONTEXT (ctx, 0);
+
+  glx_renderer = ctx->display->renderer->winsys;
+
+  glx_renderer->pf_glXGetVideoSync (&video_sync_count);
+
+  return video_sync_count;
+}
+
+static void
 _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
                                    int *rectangles,
                                    int n_rectangles)
@@ -1167,22 +1182,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
     glx_onscreen->last_swap_vsync_counter = end_frame_vsync_counter;
 }
 
-guint32
-_cogl_winsys_get_vsync_counter (void)
-{
-  guint32 video_sync_count;
-  CoglRendererGLX *glx_renderer;
-
-  _COGL_GET_CONTEXT (ctx, 0);
-
-  glx_renderer = ctx->display->renderer->winsys;
-
-  glx_renderer->pf_glXGetVideoSync (&video_sync_count);
-
-  return video_sync_count;
-}
-
-void
+static void
 _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
@@ -1259,14 +1259,14 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
     glx_onscreen->last_swap_vsync_counter = _cogl_winsys_get_vsync_counter ();
 }
 
-guint32
+static guint32
 _cogl_winsys_onscreen_x11_get_window_xid (CoglOnscreen *onscreen)
 {
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
   return xlib_onscreen->xwin;
 }
 
-unsigned int
+static unsigned int
 _cogl_winsys_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
                                                  CoglSwapBuffersNotify callback,
                                                  void *user_data)
@@ -1285,7 +1285,7 @@ _cogl_winsys_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
   return entry->id;
 }
 
-void
+static void
 _cogl_winsys_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
                                                     unsigned int id)
 {
@@ -1305,7 +1305,7 @@ _cogl_winsys_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
     }
 }
 
-void
+static void
 _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
@@ -1323,7 +1323,7 @@ _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
 }
 
 /* XXX: This is a particularly hacky _cogl_winsys interface... */
-XVisualInfo *
+static XVisualInfo *
 _cogl_winsys_xlib_get_visual_info (void)
 {
   CoglDisplayGLX *glx_display;
@@ -1616,7 +1616,7 @@ try_create_glx_pixmap (CoglContext *context,
   return TRUE;
 }
 
-gboolean
+static gboolean
 _cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
 {
   CoglTexturePixmapGLX *glx_tex_pixmap;
@@ -1697,7 +1697,7 @@ free_glx_pixmap (CoglContext *context,
   glx_tex_pixmap->pixmap_bound = FALSE;
 }
 
-void
+static void
 _cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
 {
   CoglTexturePixmapGLX *glx_tex_pixmap;
@@ -1720,7 +1720,7 @@ _cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
   g_free (glx_tex_pixmap);
 }
 
-gboolean
+static gboolean
 _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
                                         gboolean needs_mipmap)
 {
@@ -1861,7 +1861,7 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
   return TRUE;
 }
 
-void
+static void
 _cogl_winsys_texture_pixmap_x11_damage_notify (CoglTexturePixmapX11 *tex_pixmap)
 {
   CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;
@@ -1869,10 +1869,66 @@ _cogl_winsys_texture_pixmap_x11_damage_notify (CoglTexturePixmapX11 *tex_pixmap)
   glx_tex_pixmap->bind_tex_image_queued = TRUE;
 }
 
-CoglHandle
+static CoglHandle
 _cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
 {
   CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;
 
   return glx_tex_pixmap->glx_tex;
+}
+
+
+static CoglWinsysVtable _cogl_winsys_vtable =
+  {
+    .get_proc_address = _cogl_winsys_get_proc_address,
+    .renderer_connect = _cogl_winsys_renderer_connect,
+    .renderer_disconnect = _cogl_winsys_renderer_disconnect,
+    .display_setup = _cogl_winsys_display_setup,
+    .display_destroy = _cogl_winsys_display_destroy,
+    .context_init = _cogl_winsys_context_init,
+    .context_deinit = _cogl_winsys_context_deinit,
+    .xlib_get_visual_info = _cogl_winsys_xlib_get_visual_info,
+    .onscreen_init = _cogl_winsys_onscreen_init,
+    .onscreen_deinit = _cogl_winsys_onscreen_deinit,
+    .onscreen_bind = _cogl_winsys_onscreen_bind,
+    .onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers,
+    .onscreen_swap_region = _cogl_winsys_onscreen_swap_region,
+    .onscreen_update_swap_throttled =
+      _cogl_winsys_onscreen_update_swap_throttled,
+    .onscreen_x11_get_window_xid =
+      _cogl_winsys_onscreen_x11_get_window_xid,
+    .onscreen_add_swap_buffers_callback =
+      _cogl_winsys_onscreen_add_swap_buffers_callback,
+    .onscreen_remove_swap_buffers_callback =
+      _cogl_winsys_onscreen_remove_swap_buffers_callback,
+    .get_vsync_counter = _cogl_winsys_get_vsync_counter,
+
+    /* X11 tfp support... */
+    /* XXX: instead of having a rather monolithic winsys vtable we could
+     * perhaps look for a way to separate these... */
+    .texture_pixmap_x11_create =
+      _cogl_winsys_texture_pixmap_x11_create,
+    .texture_pixmap_x11_free =
+      _cogl_winsys_texture_pixmap_x11_free,
+    .texture_pixmap_x11_update =
+      _cogl_winsys_texture_pixmap_x11_update,
+    .texture_pixmap_x11_damage_notify =
+      _cogl_winsys_texture_pixmap_x11_damage_notify,
+    .texture_pixmap_x11_get_texture =
+      _cogl_winsys_texture_pixmap_x11_get_texture,
+  };
+
+/* XXX: we use a function because no doubt someone will complain
+ * about using c99 member initializers because they aren't portable
+ * to windows. We want to avoid having to rigidly follow the real
+ * order of members since some members are #ifdefd and we'd have
+ * to mirror the #ifdefing to add padding etc. For any winsys that
+ * can assume the platform has a sane compiler then we can just use
+ * c99 initializers for insane platforms they can initialize
+ * the members by name in a function.
+ */
+const CoglWinsysVtable *
+_cogl_winsys_glx_get_vtable (void)
+{
+  return &_cogl_winsys_vtable;
 }

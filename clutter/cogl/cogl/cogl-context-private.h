@@ -268,6 +268,9 @@ struct _CoglContext
 CoglContext *
 _cogl_context_get_default ();
 
+const CoglWinsysVtable *
+_cogl_context_get_winsys (CoglContext *context);
+
 /* Obtains the context and returns retval if NULL */
 #define _COGL_GET_CONTEXT(ctxvar, retval) \
 CoglContext *ctxvar = _cogl_context_get_default (); \

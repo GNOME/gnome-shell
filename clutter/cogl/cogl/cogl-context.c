@@ -33,6 +33,8 @@
 #include "cogl-profile.h"
 #include "cogl-util.h"
 #include "cogl-context-private.h"
+#include "cogl-display-private.h"
+#include "cogl-renderer-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-pipeline-private.h"
@@ -83,6 +85,12 @@ _cogl_init_feature_overrides (CoglContext *ctx)
                             COGL_FEATURE_TEXTURE_NPOT_REPEAT);
 }
 
+const CoglWinsysVtable *
+_cogl_context_get_winsys (CoglContext *context)
+{
+  return context->display->renderer->winsys_vtable;
+}
+
 /* For reference: There was some deliberation over whether to have a
  * constructor that could throw an exception but looking at standard
  * practices with several high level OO languages including python, C++,
@@ -99,6 +107,7 @@ cogl_context_new (CoglDisplay *display,
   CoglContext *context;
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
   unsigned long enable_flags = 0;
+  const CoglWinsysVtable *winsys;
   int i;
 
 #ifdef CLUTTER_ENABLE_PROFILE
@@ -155,7 +164,8 @@ cogl_context_new (CoglDisplay *display,
 
 #ifdef COGL_HAS_FULL_WINSYS
   context->stub_winsys = FALSE;
-  if (!_cogl_winsys_context_init (context, error))
+  winsys = _cogl_context_get_winsys (context);
+  if (!winsys->context_init (context, error))
     {
       cogl_object_unref (display);
       g_free (context);
@@ -365,7 +375,9 @@ cogl_context_new (CoglDisplay *display,
 static void
 _cogl_context_free (CoglContext *context)
 {
-  _cogl_winsys_context_deinit (context);
+  const CoglWinsysVtable *winsys = _cogl_context_get_winsys (context);
+
+  winsys->context_deinit (context);
 
   _cogl_destroy_texture_units ();
 
@@ -480,7 +492,8 @@ cogl_set_default_context (CoglContext *context)
 EGLDisplay
 cogl_context_egl_get_egl_display (CoglContext *context)
 {
-  return _cogl_winsys_context_egl_get_egl_display (context);
+  const CoglWinsysVtable *winsys = _cogl_context_get_winsys (context);
+  return winsys->context_egl_get_egl_display (context);
 }
 #endif
 

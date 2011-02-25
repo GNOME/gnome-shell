@@ -68,6 +68,12 @@ cogl_onscreen_clutter_backend_set_size (int width, int height)
 XVisualInfo *
 cogl_clutter_winsys_xlib_get_visual_info (void)
 {
-  return _cogl_winsys_xlib_get_visual_info ();
+  const CoglWinsysVtable *winsys;
+
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  winsys = _cogl_context_get_winsys (ctx);
+
+  return winsys->xlib_get_visual_info ();
 }
 #endif

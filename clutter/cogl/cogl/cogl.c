@@ -93,8 +93,17 @@ cogl_get_proc_address (const char* name)
 {
   void *address;
   static GModule *module = NULL;
+#ifdef COGL_HAS_FULL_WINSYS
+  const CoglWinsysVtable *winsys;
 
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  winsys = _cogl_context_get_winsys (ctx);
+
+  address = winsys->get_proc_address (name);
+#else
   address = _cogl_winsys_get_proc_address (name);
+#endif
   if (address)
     return address;
 
