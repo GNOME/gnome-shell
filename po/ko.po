@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2011-02-13 21:46+0900\n"
-"PO-Revision-Date: 2011-02-13 23:53+0900\n"
+"POT-Creation-Date: 2011-02-27 06:38+0900\n"
+"PO-Revision-Date: 2011-02-27 06:40+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: Korean\n"
@@ -28,7 +28,8 @@ msgstr "창 관리와 프로그램 시작"
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr "Alt-F2 대화 상자를 사용할 때 내부 디버깅 및 감시 도구에 접근을 허용합니다."
+msgstr ""
+"Alt-F2 대화 상자를 사용할 때 내부 디버깅 및 감시 도구에 접근을 허용합니다."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -46,29 +47,35 @@ msgstr "스크린 방송 녹화에 사용할 프레임수."
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
-msgstr "그놈 셸 확장 기능에 uuid 속성이 있습니다. 이 키는 읽어들이지 말아야 할 확장 기능을 지정합니다."
+msgstr ""
+"그놈 셸 확장 기능에 uuid 속성이 있습니다. 이 키는 읽어들이지 말아야 할 확장 "
+"기능을 지정합니다."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
 msgid "History for command (Alt-F2) dialog"
 msgstr "명령어 (Alt-F2) 대화 상자에 명령어 기록 기능"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "History for the looking glass dialog"
+msgstr "돋보기 대화 창의 기록"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "참이면 시계에 날짜를 시각과 같이 표시합니다."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
 msgstr "참이면 시각에 초를 표시합니다."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "참이면 달력에 ISO 요일을 표시합니다."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "즐겨찾기 프로그램의 데스크톱 파일 ID 목록"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -81,60 +88,75 @@ msgid ""
 "'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
 "records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
 "at the optimal thread count on the system."
-msgstr "녹화 인코딩에 사용할 GStreamer 파이프라인을 지정합니다. gst-launch에 사용하는 형식입니다. 파이프라인은 녹화된 영상을 저장하는 sink 패드를 연결하지 않은 상태여야 합니다. 하지만 파이프라인에서 출력 형식에 신경 써야 합니다. 이 파이프라인은 shout2send 프로그램으로 icecast 서버로 출력을 보낼 수도 있고 기타 여러가지에 사용될 수 있습니다. 설정하지 않거나 빈 문자열로 설정하면 기본 파이프라인을 사용합니다. 기본 파이프라인은 현재 'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux'이고 VP8 코덱을 사용해 WEBM으로 녹화합니다. %T는 이 시스템에서 최적이라고 생각되는 스레드 개수입니다."
+msgstr ""
+"녹화 인코딩에 사용할 GStreamer 파이프라인을 지정합니다. gst-launch에 사용하"
+"는 형식입니다. 파이프라인은 녹화된 영상을 저장하는 sink 패드를 연결하지 않은 "
+"상태여야 합니다. 하지만 파이프라인에서 출력 형식에 신경 써야 합니다. 이 파이"
+"프라인은 shout2send 프로그램으로 icecast 서버로 출력을 보낼 수도 있고 기타 여"
+"러가지에 사용될 수 있습니다. 설정하지 않거나 빈 문자열로 설정하면 기본 파이프"
+"라인을 사용합니다. 기본 파이프라인은 현재 'videorate ! vp8enc quality=10 "
+"speed=2 threads=%T ! queue ! webmmux'이고 VP8 코덱을 사용해 WEBM으로 녹화합니"
+"다. %T는 이 시스템에서 최적이라고 생각되는 스레드 개수입니다."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "시계에 날짜 표시"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "달력에 요일 표시"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "시각에 초 표시"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr "이 ID에 해당하는 프로그램은 즐겨찾기 영역에 표시됩니다."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
-msgstr "스크린 방송 녹화 파일 이름은 현재 날짜와 이 확장자를 사용해서 결정됩니다. 녹화할 때 다른 형식으로 바꿀 수도 있습니다."
+msgstr ""
+"스크린 방송 녹화 파일 이름은 현재 날짜와 이 확장자를 사용해서 결정됩니다. 녹"
+"화할 때 다른 형식으로 바꿀 수도 있습니다."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
-msgstr "그놈 셸의 스크린 방송의 녹화 결과물에 사용할 프레임수, 초당 프레임 수 단위."
+msgstr ""
+"그놈 셸의 스크린 방송의 녹화 결과물에 사용할 프레임수, 초당 프레임 수 단위."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "스크린 방송 인코딩에 사용할 gstreamer 파이프라인"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
 "want to disable this for privacy reasons. Please note that doing so won't "
 "remove already saved data."
-msgstr "셸에서는 최근에 사용한 프로그램을 (실행 메뉴 등에서) 표시하는 목적으로, 현재 사용 중인 프로그램을 감시합니다. 이 데이터는 비공개 데이터이지만 사생활 문제가 걱정된다면 이 기능을 끌 수도 있습니다. 단 이 기능을 사용하지 않더라도 이미 저장된 데이터를 제거하지는 않습니다."
+msgstr ""
+"셸에서는 최근에 사용한 프로그램을 (실행 메뉴 등에서) 표시하는 목적으로, 현재 "
+"사용 중인 프로그램을 감시합니다. 이 데이터는 비공개 데이터이지만 사생활 문제"
+"가 걱정된다면 이 기능을 끌 수도 있습니다. 단 이 기능을 사용하지 않더라도 이"
+"미 저장된 데이터를 제거하지는 않습니다."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
 msgstr "확장 기능의 UUID 사용하지 않음"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr "프로그램 사용 통계를 저장할지 여부"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
 msgstr "OpenSearch 서비스 사용하지 않음"
 
@@ -158,27 +180,27 @@ msgid "Execution of '%s' failed:"
 msgstr "'%s' 실행이 실패했습니다:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:174
+#: ../js/ui/appDisplay.js:175
 msgid "All"
 msgstr "모두"
 
-#: ../js/ui/appDisplay.js:261
+#: ../js/ui/appDisplay.js:262
 msgid "APPLICATIONS"
 msgstr "프로그램"
 
-#: ../js/ui/appDisplay.js:291
+#: ../js/ui/appDisplay.js:292
 msgid "PREFERENCES"
 msgstr "기본 설정"
 
-#: ../js/ui/appDisplay.js:592
+#: ../js/ui/appDisplay.js:552
 msgid "New Window"
 msgstr "새 창"
 
-#: ../js/ui/appDisplay.js:596
+#: ../js/ui/appDisplay.js:555
 msgid "Remove from Favorites"
 msgstr "즐겨찾기에서 제거"
 
-#: ../js/ui/appDisplay.js:597
+#: ../js/ui/appDisplay.js:556
 msgid "Add to Favorites"
 msgstr "즐겨찾기에 추가"
 
@@ -198,7 +220,7 @@ msgstr "%s 프로그램을 즐겨찾기에서 제거했습니다."
 #: ../js/ui/calendar.js:65
 msgctxt "event list time"
 msgid "All Day"
-msgstr "하루 종일"
+msgstr "종일"
 
 #. Translators: Shown in calendar event list, if 24h format
 #: ../js/ui/calendar.js:70
@@ -342,58 +364,58 @@ msgstr "다음주"
 msgid "Remove"
 msgstr "제거"
 
-#: ../js/ui/dateMenu.js:91
+#: ../js/ui/dateMenu.js:93
 msgid "Date and Time Settings"
 msgstr "날짜 및 시각 설정"
 
-#: ../js/ui/dateMenu.js:110
+#: ../js/ui/dateMenu.js:112
 msgid "Open Calendar"
 msgstr "달력 열기"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:149
+#: ../js/ui/dateMenu.js:151
 msgid "%a %b %e, %R:%S"
 msgstr "%b %e일 (%a), %R:%S"
 
-#: ../js/ui/dateMenu.js:150
+#: ../js/ui/dateMenu.js:152
 msgid "%a %b %e, %R"
 msgstr "%b %e일 (%a), %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:154
+#: ../js/ui/dateMenu.js:156
 msgid "%a %R:%S"
 msgstr "(%a) %R:%S"
 
-#: ../js/ui/dateMenu.js:155
+#: ../js/ui/dateMenu.js:157
 msgid "%a %R"
 msgstr "(%a) %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%b %e일 (%a), %p %l:%M:%S"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:165
 msgid "%a %b %e, %l:%M %p"
 msgstr "%b %e일 (%a), %p %l:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:169
 msgid "%a %l:%M:%S %p"
 msgstr "(%a) %p %l:%M:%S"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:170
 msgid "%a %l:%M %p"
 msgstr "(%a) %p %l:%M"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:196
 msgid "%A %B %e, %Y"
 msgstr "%Y년 %B %e일 %A"
 
@@ -470,37 +492,37 @@ msgstr "확인"
 msgid "Cancel"
 msgstr "취소"
 
-#: ../js/ui/lookingGlass.js:584
+#: ../js/ui/lookingGlass.js:587
 msgid "No extensions installed"
 msgstr "확장 기능을 설치하지 않았습니다"
 
-#: ../js/ui/lookingGlass.js:621
+#: ../js/ui/lookingGlass.js:624
 msgid "Enabled"
 msgstr "사용"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:623 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:626 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "사용 않음"
 
-#: ../js/ui/lookingGlass.js:625
+#: ../js/ui/lookingGlass.js:628
 msgid "Error"
 msgstr "오류"
 
-#: ../js/ui/lookingGlass.js:627
+#: ../js/ui/lookingGlass.js:630
 msgid "Out of date"
 msgstr "오래 된 버전"
 
-#: ../js/ui/lookingGlass.js:652
+#: ../js/ui/lookingGlass.js:655
 msgid "View Source"
 msgstr "소스 보기"
 
-#: ../js/ui/lookingGlass.js:658
+#: ../js/ui/lookingGlass.js:661
 msgid "Web Page"
 msgstr "웹페이지"
 
-#: ../js/ui/messageTray.js:1854
+#: ../js/ui/messageTray.js:1902
 msgid "System Information"
 msgstr "시스템 정보"
 
@@ -508,23 +530,23 @@ msgstr "시스템 정보"
 msgid "Undo"
 msgstr "실행 취소"
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:183
 msgid "Windows"
 msgstr "창"
 
-#: ../js/ui/overview.js:162
+#: ../js/ui/overview.js:186
 msgid "Applications"
 msgstr "프로그램"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:480
+#: ../js/ui/panel.js:537
 #, c-format
 msgid "Quit %s"
 msgstr "%s 끝내기"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:905
 msgid "Activities"
 msgstr "요약"
 
@@ -550,11 +572,11 @@ msgstr "위치 및 장치"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:512
+#: ../js/ui/popupMenu.js:612
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:209
+#: ../js/ui/runDialog.js:201
 msgid "Please enter a command:"
 msgstr "명령을 입력하십시오:"
 
@@ -566,49 +588,47 @@ msgstr "검색하는 중..."
 msgid "No matching results."
 msgstr "일치하는 결과가 없습니다."
 
-#: ../js/ui/statusMenu.js:102
+#: ../js/ui/statusMenu.js:99 ../js/ui/statusMenu.js:163
+msgid "Power Off..."
+msgstr "컴퓨터 끄기..."
+
+#: ../js/ui/statusMenu.js:101 ../js/ui/statusMenu.js:162
+msgid "Suspend"
+msgstr "절전"
+
+#: ../js/ui/statusMenu.js:122
 msgid "Available"
 msgstr "대화 가능"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:127
 msgid "Busy"
 msgstr "다른 용무 중"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:135
 msgid "My Account"
 msgstr "내 계정"
 
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:139
 msgid "System Settings"
 msgstr "시스템 설정"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:146
 msgid "Lock Screen"
 msgstr "화면 잠그기"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:150
 msgid "Switch User"
 msgstr "사용자 바꾸기"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:155
 msgid "Log Out..."
 msgstr "로그아웃..."
 
-#. This is temporarily removed, see
-#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
-#. for details.
-#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
-#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-#. this.menu.addMenuItem(item);
-#: ../js/ui/statusMenu.js:149
-msgid "Shut Down..."
-msgstr "컴퓨터 끄기..."
-
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:81
 msgid "Zoom"
 msgstr "크기 조정"
 
-#: ../js/ui/status/accessibility.js:89
+#: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
 msgstr "화면 읽기"
 
@@ -616,35 +636,35 @@ msgstr "화면 읽기"
 msgid "Screen Keyboard"
 msgstr "화면 키보드"
 
-#: ../js/ui/status/accessibility.js:95
+#: ../js/ui/status/accessibility.js:96
 msgid "Visual Alerts"
 msgstr "화면 알림"
 
-#: ../js/ui/status/accessibility.js:98
+#: ../js/ui/status/accessibility.js:99
 msgid "Sticky Keys"
 msgstr "고정 키"
 
-#: ../js/ui/status/accessibility.js:101
+#: ../js/ui/status/accessibility.js:102
 msgid "Slow Keys"
 msgstr "느린 키"
 
-#: ../js/ui/status/accessibility.js:104
+#: ../js/ui/status/accessibility.js:105
 msgid "Bounce Keys"
 msgstr "탄력 키"
 
-#: ../js/ui/status/accessibility.js:107
+#: ../js/ui/status/accessibility.js:108
 msgid "Mouse Keys"
 msgstr "마우스 키"
 
-#: ../js/ui/status/accessibility.js:111
+#: ../js/ui/status/accessibility.js:112
 msgid "Universal Access Settings"
 msgstr "보편적 접근성 설정"
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:164
 msgid "High Contrast"
 msgstr "고대비"
 
-#: ../js/ui/status/accessibility.js:205
+#: ../js/ui/status/accessibility.js:209
 msgid "Large Text"
 msgstr "큰 글자"
 
@@ -656,7 +676,7 @@ msgstr "블루투스"
 
 #: ../js/ui/status/bluetooth.js:55
 msgid "Visibility"
-msgstr ""
+msgstr "보이기"
 
 #: ../js/ui/status/bluetooth.js:69
 msgid "Send Files to Device..."
@@ -699,7 +719,7 @@ msgstr "키보드 설정"
 msgid "Mouse Settings"
 msgstr "마우스 설정"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
 msgid "Sound Settings"
 msgstr "소리 설정"
 
@@ -761,7 +781,11 @@ msgstr "해당 장치에 표시된 PIN을 입력하십시오."
 msgid "OK"
 msgstr "확인"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "키보드 배치 보기..."
+
+#: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "지역화 설정"
 
@@ -846,30 +870,30 @@ msgid "Unknown"
 msgstr "알 수 없음"
 
 # 오디오 볼륨
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:44
 msgid "Volume"
 msgstr "볼륨"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:57
 msgid "Microphone"
 msgstr "마이크"
 
-#: ../js/ui/telepathyClient.js:563
+#: ../js/ui/telepathyClient.js:239
 #, c-format
 msgid "%s is online."
 msgstr "%s 연결 중."
 
-#: ../js/ui/telepathyClient.js:568
+#: ../js/ui/telepathyClient.js:244
 #, c-format
 msgid "%s is offline."
 msgstr "%s 연결 중지."
 
-#: ../js/ui/telepathyClient.js:571
+#: ../js/ui/telepathyClient.js:247
 #, c-format
 msgid "%s is away."
 msgstr "%s 다른 용무 중."
 
-#: ../js/ui/telepathyClient.js:574
+#: ../js/ui/telepathyClient.js:250
 #, c-format
 msgid "%s is busy."
 msgstr "%s 부재중."
@@ -877,14 +901,18 @@ msgstr "%s 부재중."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:669
+#: ../js/ui/telepathyClient.js:348
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "보낸 때: %A %H시 %M분"
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "컴퓨터 검색"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:103
+msgid "Type to search..."
+msgstr "검색하려면 입력하십시오..."
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -943,6 +971,10 @@ msgstr[0] "%d일 전"
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d주 전"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr "인증 대화 창을 사용자가 닫았습니다"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
