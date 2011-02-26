@@ -544,9 +544,16 @@ save_yourself_callback (SmcConn   smc_conn,
 static void
 die_callback (SmcConn smc_conn, SmPointer client_data)
 {
-  meta_topic (META_DEBUG_SM, "Exiting at request of session manager\n");
+  meta_topic (META_DEBUG_SM, "Disconnecting from session manager");
   disconnect ();
-  meta_quit (META_EXIT_SUCCESS);
+  /* We don't actually exit here - we will simply go away with the X
+   * server on logout, when we lose the X connection and libx11 kills
+   * us.  It looks like *crap* on logout if the user sees their
+   * windows lose the decorations, etc.
+   *
+   * Anything that wants us to go away outside of session management
+   * can use kill().
+   */
 }
 
 static void
