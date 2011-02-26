@@ -9459,6 +9459,14 @@ meta_window_is_skip_taskbar (MetaWindow *window)
   return window->skip_taskbar;
 }
 
+/**
+ * meta_window_get_rect:
+ * @window: a #MetaWindow
+ *
+ * Gets the rectangle that bounds @window, ignoring any window decorations.
+ *
+ * Return value: (transfer none): the #MetaRectangle for the window
+ */
 MetaRectangle *
 meta_window_get_rect (MetaWindow *window)
 {
