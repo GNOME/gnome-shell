@@ -68,7 +68,22 @@ Client.prototype = {
 
     _observeChannels: function(observer, account, conn, channels,
                                dispatchOp, requests, context) {
-        let connPath = conn.get_object_path();
+        // If the self_contact doesn't have the ALIAS, make sure
+        // to fetch it before trying to grab the channels.
+        let self_contact = conn.get_self_contact();
+        if (self_contact.has_feature(Tp.ContactFeature.ALIAS)) {
+            this._finishObserveChannels(account, conn, channels, context);
+        } else {
+            Shell.get_self_contact_features(conn,
+                                            contactFeatures.length, contactFeatures,
+                                            Lang.bind(this, function() {
+                                                this._finishObserveChannels(account, conn, channels, context);
+                                            }));
+            context.delay();
+        }
+    },
+
+    _finishObserveChannels: function(account, conn, channels, context) {
         let len = channels.length;
         for (let i = 0; i < len; i++) {
             let channel = channels[i];
@@ -91,7 +106,6 @@ Client.prototype = {
                     }), null);
         }
 
-        // Allow dbus method to return
         context.accept();
     },
 
