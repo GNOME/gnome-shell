@@ -240,7 +240,15 @@ Source.prototype = {
     },
 
     respond: function(text) {
-        let msg = Tp.ClientMessage.new_text(Tp.ChannelTextMessageType.NORMAL, text);
+        let type;
+        if (text.slice(0, 4) == '/me ') {
+            type = Tp.ChannelTextMessageType.ACTION;
+            text = text.slice(4);
+        } else {
+            type = Tp.ChannelTextMessageType.NORMAL;
+        }
+
+        let msg = Tp.ClientMessage.new_text(type, text);
         this._channel.send_message_async(msg, 0, null);
     },
 
@@ -313,14 +321,24 @@ Notification.prototype = {
     },
 
     appendMessage: function(message, direction) {
+        let type = message.get_message_type();
         let [text, flags] = message.to_text();
         let timestamp = message.get_received_timestamp();
 
-        this.update(this.source.title, text, { customContent: true });
-        this._append(text, direction, timestamp);
+        let messageBody = GLib.markup_escape_text(text, -1);
+        let styles = [direction];
+
+        if (type == Tp.ChannelTextMessageType.ACTION) {
+            let senderAlias = GLib.markup_escape_text(message.sender.alias, -1);
+            messageBody = '<i>%s</i> %s'.format(senderAlias, messageBody);
+            styles.push('chat-action');
+        }
+
+        this.update(this.source.title, messageBody, { customContent: true, bannerMarkup: true });
+        this._append(messageBody, styles, timestamp);
     },
 
-    _append: function(text, style, timestamp) {
+    _append: function(text, styles, timestamp) {
         let currentTime = (Date.now() / 1000);
         if (!timestamp)
             timestamp = currentTime;
@@ -332,8 +350,9 @@ Notification.prototype = {
         if (this._timestampTimeoutId)
             Mainloop.source_remove(this._timestampTimeoutId);
 
-        let body = this.addBody(text);
-        body.add_style_class_name(style);
+        let body = this.addBody(text, true);
+        for (let i = 0; i < styles.length; i ++)
+            body.add_style_class_name(styles[i]);
 
         this._history.unshift({ actor: body, time: timestamp, realMessage: true });
 
