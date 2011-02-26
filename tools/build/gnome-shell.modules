@@ -259,6 +259,13 @@
     </dependencies>
   </autotools>
 
+  <autotools id="telepathy-logger" autogenargs="--enable-introspection">
+    <branch repo="git.freedesktop.org" module="telepathy/telepathy-logger" />
+    <dependencies>
+      <dep package="telepathy-glib"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gnome-shell" autogenargs="--enable-jhbuild-wrapper-script">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
@@ -274,9 +281,10 @@
         <dep package="gnome-icon-theme"/>
         <dep package="gnome-icon-theme-symbolic"/>
         <dep package="libcanberra"/>
-	<dep package="gnome-settings-daemon"/>
-	<dep package="gnome-bluetooth"/>
+        <dep package="gnome-settings-daemon"/>
+        <dep package="gnome-bluetooth"/>
         <dep package="telepathy-glib"/>
+        <dep package="telepathy-logger"/>
         <dep package="upower"/>
     </dependencies>
   </autotools>

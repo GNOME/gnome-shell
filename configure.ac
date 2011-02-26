@@ -71,6 +71,7 @@ LIBEDATASERVER_MIN_VERSION=1.2.0
 LIBEDATASERVERUI2_MIN_VERSION=1.2.0
 LIBEDATASERVERUI3_MIN_VERSION=2.91.6
 TELEPATHY_GLIB_MIN_VERSION=0.13.12
+TELEPATHY_LOGGER_MIN_VERSION=0.2.4
 POLKIT_MIN_VERSION=0.100
 
 # Collect more than 20 libraries for a prize!
@@ -87,6 +88,7 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-2.0 >= $GIO_MIN_VERSION
                                gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
 			       libcanberra
                                telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
+                               telepathy-logger-0.2 >= $TELEPATHY_LOGGER_MIN_VERSION
                                polkit-agent-1 >= $POLKIT_MIN_VERSION)
 
 PKG_CHECK_MODULES(SHELL_PERF_HELPER, gtk+-3.0 gio-2.0)
