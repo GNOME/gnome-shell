@@ -49,7 +49,7 @@ const PowerManagerInterface = {
         { name: 'GetPrimaryDevice', inSignature: '', outSignature: '(susbut)' },
         ],
     signals: [
-        { name: 'Changed', outSignature: '' },
+        { name: 'Changed', inSignature: '' },
         ],
     properties: [
         { name: 'Icon', signature: 's', access: 'read' },

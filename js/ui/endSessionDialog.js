@@ -54,7 +54,7 @@ const EndSessionDialogIface = {
               }
              ],
     signals: [{ name: 'Canceled',
-                outSignature: '',
+                inSignature: '',
               }],
     properties: []
 };

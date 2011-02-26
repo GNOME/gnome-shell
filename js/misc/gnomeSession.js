@@ -7,7 +7,8 @@ const Signals = imports.signals;
 const PresenceIface = {
     name: 'org.gnome.SessionManager.Presence',
     methods: [{ name: 'SetStatus',
-                inSignature: 'u' }],
+                inSignature: 'u',
+                outSignature: '' }],
     properties: [{ name: 'status',
                    signature: 'u',
                    access: 'readwrite' }],
