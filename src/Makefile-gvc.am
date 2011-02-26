@@ -30,8 +30,7 @@ libgvc_la_gir_sources = \
 	gvc/gvc-mixer-event-role.h	\
 	gvc/gvc-mixer-event-role.c	\
 	gvc/gvc-mixer-control.h		\
-	gvc/gvc-mixer-control.c		\
-	gvc/gvc-pulseaudio-fake.h
+	gvc/gvc-mixer-control.c
 
 libgvc_la_private_sources = 		\
 	gvc/gvc-mixer-stream-private.h	\
@@ -44,26 +43,9 @@ libgvc_la_SOURCES =			\
 	$(libgvc_la_gir_sources)	\
 	$(libgvc_la_private_sources)
 
-Gvc-1.0.gir: $(G_IR_SCANNER) libgvc.la Makefile
-	$(AM_V_GEN) $(G_IR_SCANNER)			\
-		--namespace=Gvc				\
-		--nsversion=1.0				\
-		--warn-all				\
-		--quiet					\
-		--libtool="$(LIBTOOL)"			\
-		--add-include-path=$(builddir)		\
-		--include=GObject-2.0			\
-		--library=libgvc.la			\
-		--identifier-prefix=Gvc			\
-		--symbol-prefix=gvc_			\
-		$(addprefix $(srcdir)/,$(libgvc_la_gir_sources))	\
-		$(INCLUDES)				\
-		-I $(srcdir)				\
-		-I $(srcdir)/gvc			\
-		-DWITH_INTROSPECTION			\
-		-o $@
-CLEANFILES += Gvc-1.0.gir
-
-Gvc-1.0.typelib: Gvc-1.0.gir
-	$(AM_V_GEN) $(G_IR_COMPILER) $< -o $@
-CLEANFILES += Gvc-1.0.typelib
+Gvc-1.0.gir: libgvc.la
+Gvc_1_0_gir_INCLUDES = GObject-2.0
+Gvc_1_0_gir_CFLAGS = $(INCLUDES) -I$(srcdir)/gvc -DWITH_INTROSPECTION
+Gvc_1_0_gir_LIBS = libgvc.la
+Gvc_1_0_gir_FILES = $(addprefix $(srcdir)/,$(libgvc_la_gir_sources))
+INTROSPECTION_GIRS += Gvc-1.0.gir

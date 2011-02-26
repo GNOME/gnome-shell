@@ -7,7 +7,15 @@ libexec_PROGRAMS =
 noinst_LTLIBRARIES =
 noinst_PROGRAMS =
 
-.AUTOPARALLEL:
+-include $(INTROSPECTION_MAKEFILE)
+INTROSPECTION_GIRS =
+INTROSPECTION_SCANNER_ARGS = --warn-all --warn-error --add-include-path=$(srcdir)
+INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir) --includedir=$(MUTTER_LIB_DIR)/mutter/
+
+typelibdir = $(pkglibdir)
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+CLEANFILES += $(gir_DATA) $(typelib_DATA)
 
 generated_bin_scripts = gnome-shell-installed gnome-shell-jhbuild gnome-shell-extension-tool
 bin_SCRIPTS += gnome-shell $(generated_bin_scripts)
@@ -238,83 +246,29 @@ libgnome_shell_la_LIBADD =	\
 
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags) $(LIBECAL_CFLAGS)
 
-typelibdir = $(pkglibdir)
-typelib_DATA = Shell-0.1.typelib St-1.0.typelib Gdm-1.0.typelib Gvc-1.0.typelib
+Shell-0.1.gir: libgnome-shell.la St-1.0.gir
+Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-2.91 TelepathyGLib-0.12
+Shell_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
+Shell_0_1_gir_LIBS = libgnome-shell.la
+Shell_0_1_gir_FILES = $(addprefix $(srcdir)/,$(libgnome_shell_la_gir_sources))
+Shell_0_1_gir_SCANNERFLAGS = --include-uninstalled=$(builddir)/St-1.0.gir \
+	--add-include-path=$(MUTTER_LIB_DIR)/mutter/ \
+	--program=mutter \
+	--program-arg=--mutter-plugins=`pwd`/libgnome-shell.la
+INTROSPECTION_GIRS += Shell-0.1.gir
 
-Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) St-1.0.gir libgnome-shell.la Makefile
-	$(AM_V_GEN) $(G_IR_SCANNER)			\
-		--namespace=Shell			\
-		--nsversion=0.1				\
-		--warn-all				\
-		--warn-error				\
-		--add-include-path=$(MUTTER_LIB_DIR)/mutter/ \
-		--include=Clutter-1.0			\
-		--include=ClutterX11-1.0		\
-		--include=Meta-2.91			\
-		--include=TelepathyGLib-0.12		\
-		--libtool="$(LIBTOOL)"			\
-		--add-include-path=$(builddir)		\
-		--include=St-1.0			\
-		--program=mutter			\
-	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
-		$(addprefix $(srcdir)/,$(libgnome_shell_la_gir_sources)) \
-		$(libgnome_shell_la_CPPFLAGS)		\
-		-I $(srcdir)				\
-		-o $@
-CLEANFILES += Shell-0.1.gir
+St-1.0.gir: libst-1.0.la
+St_1_0_gir_INCLUDES = Clutter-1.0 Gtk-3.0
+St_1_0_gir_CFLAGS = $(st_cflags) -DST_COMPILATION
+St_1_0_gir_LIBS = libst-1.0.la
+St_1_0_gir_FILES = $(filter-out %-private.h $(st_non_gir_sources), $(addprefix $(srcdir)/,$(st_source_h))) \
+	$(addprefix $(srcdir)/,$(st_source_c))
+INTROSPECTION_GIRS += St-1.0.gir
 
-# The dependency on libgnome-shell.la here is because g-ir-compiler opens it
-# (not the fake library, since we've already done the rewriting)
-Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir
-	$(AM_V_GEN) \
-		$(G_IR_COMPILER)						\
-			--includedir=.						\
-			--includedir=$(MUTTER_LIB_DIR)/mutter/			\
-		Shell-0.1.gir -o $@
-CLEANFILES += Shell-0.1.typelib
-
-St-1.0.gir: $(mutter) $(G_IR_SCANNER) libst-1.0.la Makefile
-	$(AM_V_GEN) $(G_IR_SCANNER)						\
-	        --namespace=St							\
-	        --nsversion=1.0							\
-		--warn-all							\
-		--warn-error							\
-	        --include=Clutter-1.0						\
-	        --include=Gtk-3.0						\
-		--add-include-path=$(builddir)     				\
-	        --libtool="$(LIBTOOL)"						\
-	        --library=libst-1.0.la						\
-	        -DST_COMPILATION						\
-	        $(filter-out %-private.h $(st_non_gir_sources), $(addprefix $(srcdir)/,$(st_source_h))) \
-	        $(addprefix $(srcdir)/,$(st_source_c))				\
-	        $(srcdir)/st-enum-types.h					\
-	        $(st_cflags)							\
-	        -o $@
-CLEANFILES += St-1.0.gir
-
-St-1.0.typelib: St-1.0.gir
-	$(AM_V_GEN) $(G_IR_COMPILER)						\
-		$< -o $@
-
-CLEANFILES += St-1.0.typelib
-
-Gdm-1.0.gir: $(mutter) $(G_IR_SCANNER) libgdmuser-1.0.la Makefile
-	$(AM_V_GEN) $(G_IR_SCANNER)			\
-		--namespace=Gdm				\
-		--nsversion=1.0				\
-		--warn-all				\
-		--warn-error				\
-		--include=GObject-2.0			\
-		--include=GdkPixbuf-2.0			\
-		--libtool="$(LIBTOOL)"			\
-		--library=libgdmuser-1.0.la		\
-		$(filter-out %-private.h, $(addprefix $(srcdir)/,$(gdmuser_source_h)))	\
-		$(addprefix $(srcdir)/,$(gdmuser_source_c)) \
-		$(gdmuser_cflags)			\
-		-o $@
-CLEANFILES += Gdm-1.0.gir
-
-Gdm-1.0.typelib: Gdm-1.0.gir
-	$(AM_V_GEN) $(G_IR_COMPILER) Gdm-1.0.gir -o $@
-CLEANFILES += Gdm-1.0.typelib
-
+Gdm-1.0.gir: libgdmuser-1.0.la
+Gdm_1_0_gir_INCLUDES = GObject-2.0 GdkPixbuf-2.0
+Gdm_1_0_gir_CFLAGS = $(gdmuser_cflags)
+Gdm_1_0_gir_LIBS = libgdmuser-1.0.la
+Gdm_1_0_gir_FILES = $(filter-out %-private.h, $(addprefix $(srcdir)/,$(gdmuser_source_h))) \
+	$(addprefix $(srcdir)/,$(gdmuser_source_c))
+INTROSPECTION_GIRS += Gdm-1.0.gir

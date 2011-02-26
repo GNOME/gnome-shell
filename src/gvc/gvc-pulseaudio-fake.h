@@ -24,9 +24,9 @@
 #ifdef WITH_INTROSPECTION
 
 #ifndef PA_API_VERSION
-typedef int pa_channel_position_t;
-typedef guint32 pa_volume_t;
-typedef gpointer pa_context;
+#define pa_channel_position_t int
+#define pa_volume_t guint32
+#define pa_context gpointer
 #endif /* PA_API_VERSION */
 
 #endif /* WITH_INTROSPECTION */
