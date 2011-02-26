@@ -289,7 +289,7 @@ msgstr "%s eemaldati lemmikutest."
 #.
 msgctxt "event list time"
 msgid "All Day"
-msgstr "Kogu päeva"
+msgstr "Kogu päev"
 
 #. Translators: Shown in calendar event list, if 24h format
 msgctxt "event list time"
