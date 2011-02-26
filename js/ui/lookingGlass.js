@@ -27,6 +27,7 @@ var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
                     'const Mainloop = imports.mainloop; ' +
                     'const Meta = imports.gi.Meta; ' +
                     'const Shell = imports.gi.Shell; ' +
+                    'const Tp = imports.gi.TelepathyGLib; ' +
                     'const Main = imports.ui.main; ' +
                     'const Lang = imports.lang; ' +
                     'const Tweener = imports.ui.tweener; ' +
