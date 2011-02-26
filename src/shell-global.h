@@ -8,6 +8,7 @@
 #include <gtk/gtk.h>
 #include <meta/meta-plugin.h>
 #include <telepathy-glib/telepathy-glib.h>
+#include <telepathy-logger/telepathy-logger.h>
 
 G_BEGIN_DECLS
 
@@ -164,6 +165,12 @@ void shell_get_self_contact_features (TpConnection *self,
                                       guint n_features,
                                       const TpContactFeature *features,
                                       ShellGetSelfContactFeaturesCb callback);
+
+void shell_get_contact_events (TplLogManager *log_manager,
+                               TpAccount *account,
+                               TplEntity *entity,
+                               guint num_events,
+                               GAsyncReadyCallback callback);
 
 G_END_DECLS
 

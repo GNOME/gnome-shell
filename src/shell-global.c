@@ -2088,3 +2088,30 @@ shell_get_self_contact_features (TpConnection *self,
                                   shell_global_get_self_contact_features_cb,
                                   callback, NULL, NULL);
 }
+
+/**
+ * shell_get_contact_events:
+ * @log_manager: A #TplLogManager
+ * @account: A #TpAccount
+ * @entity: A #TplEntity
+ * @num_events: The number of events to retrieve
+ * @callback: (scope async): User callback to run when the contact is ready
+ * 
+ * Wrap tpl_log_manager_get_filtered_events_async because gjs cannot support
+ * multiple callbacks in the same function call.
+ */
+void
+shell_get_contact_events (TplLogManager *log_manager,
+                          TpAccount *account,
+                          TplEntity *entity,
+                          guint num_events,
+                          GAsyncReadyCallback callback)
+{
+  tpl_log_manager_get_filtered_events_async (log_manager,
+                                             account,
+                                             entity,
+                                             TPL_EVENT_MASK_TEXT,
+                                             num_events,
+                                             NULL, NULL,
+                                             callback, NULL);
+}
