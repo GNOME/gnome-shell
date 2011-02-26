@@ -157,6 +157,14 @@ void shell_get_tp_contacts (TpConnection *self,
 
 void shell_global_launch_calendar_server (ShellGlobal *global);
 
+typedef void (*ShellGetSelfContactFeaturesCb) (TpConnection *connection,
+                                               TpContact *contact);
+
+void shell_get_self_contact_features (TpConnection *self,
+                                      guint n_features,
+                                      const TpContactFeature *features,
+                                      ShellGetSelfContactFeaturesCb callback);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */

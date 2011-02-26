@@ -2048,3 +2048,43 @@ shell_global_launch_calendar_server (ShellGlobal *global)
 
   g_free (calendar_server_exe);
 }
+
+static void
+shell_global_get_self_contact_features_cb (TpConnection *connection,
+                                           guint n_contacts,
+                                           TpContact * const *contacts,
+                                           const GError *error,
+                                           gpointer user_data,
+                                           GObject *weak_object)
+{
+  if (error != NULL) {
+    g_print ("Failed to upgrade self contact: %s", error->message);
+    return;
+  }
+  ((ShellGetSelfContactFeaturesCb)user_data)(connection, *contacts);
+}
+
+/**
+ * shell_get_self_contact_features:
+ * @self: A connection, which must be ready
+ * @n_features: Number of features in features
+ * @features: (array length=n_features) (allow-none) (element-type uint):
+ *  Array of features
+ * @callback: (scope async): User callback to run when the contact is ready
+ * 
+ * Wrap tp_connection_upgrade_contacts due to the lack of support for
+ * proper arrays arguments in GJS.
+ */
+void
+shell_get_self_contact_features (TpConnection *self,
+                                 guint n_features,
+                                 const TpContactFeature *features,
+                                 ShellGetSelfContactFeaturesCb callback)
+{
+  TpContact *self_contact = tp_connection_get_self_contact (self);
+
+  tp_connection_upgrade_contacts (self, 1, &self_contact,
+                                  n_features, features,
+                                  shell_global_get_self_contact_features_cb,
+                                  callback, NULL, NULL);
+}
