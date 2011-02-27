@@ -109,7 +109,14 @@ ViewByCategories.prototype = {
 
         this._view = new AlphabeticalView();
 
-        this._filters = new St.BoxLayout({ vertical: true });
+        // categories can be -1 (the All view) or 0...n-1, where n
+        // is the number of sections
+        // -2 is a flag to indicate that nothing is selected
+        // (used only before the actor is mapped the first time)
+        this._currentCategory = -2;
+        this._filters = new St.BoxLayout({ vertical: true, reactive: true });
+        this._filters.connect('scroll-event', Lang.bind(this, this._scrollFilter));
+
         this.actor.add(this._view.actor, { expand: true, x_fill: true, y_fill: true });
         this.actor.add(this._filters, { expand: false, y_fill: false, y_align: St.Align.START });
 
@@ -123,7 +130,20 @@ ViewByCategories.prototype = {
         this._sections = [];
     },
 
+    _scrollFilter: function(actor, event) {
+        let direction = event.get_scroll_direction();
+        if (direction == Clutter.ScrollDirection.UP)
+            this._selectCategory(Math.max(this._currentCategory - 1, -1))
+        else if (direction == Clutter.ScrollDirection.DOWN)
+            this._selectCategory(Math.min(this._currentCategory + 1, this._sections.length - 1));
+    },
+
     _selectCategory: function(num) {
+        if (this._currentCategory == num) // nothing to do
+            return;
+
+        this._currentCategory = num;
+
         if (num != -1)
             this._allFilter.remove_style_pseudo_class('selected');
         else
