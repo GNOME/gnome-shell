@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-23 18:51+0200\n"
-"PO-Revision-Date: 2011-02-23 18:51+0300\n"
+"POT-Creation-Date: 2011-02-27 02:24+0200\n"
+"PO-Revision-Date: 2011-02-27 02:24+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -164,19 +164,19 @@ msgid "Execution of '%s' failed:"
 msgstr "فشل تنفيذ '%s':‏"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:174
+#: ../js/ui/appDisplay.js:175
 msgid "All"
 msgstr "الكل"
 
-#: ../js/ui/appDisplay.js:261
+#: ../js/ui/appDisplay.js:262
 msgid "APPLICATIONS"
 msgstr "التطبيقات"
 
-#: ../js/ui/appDisplay.js:291
+#: ../js/ui/appDisplay.js:292
 msgid "PREFERENCES"
 msgstr "التفضيلات"
 
-#: ../js/ui/appDisplay.js:551
+#: ../js/ui/appDisplay.js:552
 msgid "New Window"
 msgstr "نافذة جديدة"
 
@@ -530,7 +530,7 @@ msgstr "أغلق %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:772
+#: ../js/ui/panel.js:905
 msgid "Activities"
 msgstr "الأنشطة"
 
@@ -881,22 +881,22 @@ msgstr "جزء"
 msgid "Microphone"
 msgstr "ميكروفون"
 
-#: ../js/ui/telepathyClient.js:240
+#: ../js/ui/telepathyClient.js:239
 #, c-format
 msgid "%s is online."
 msgstr "‏%s متّصل."
 
-#: ../js/ui/telepathyClient.js:245
+#: ../js/ui/telepathyClient.js:244
 #, c-format
 msgid "%s is offline."
 msgstr "‏%s غير متّصل."
 
-#: ../js/ui/telepathyClient.js:248
+#: ../js/ui/telepathyClient.js:247
 #, c-format
 msgid "%s is away."
 msgstr "‏%s غائب."
 
-#: ../js/ui/telepathyClient.js:251
+#: ../js/ui/telepathyClient.js:250
 #, c-format
 msgid "%s is busy."
 msgstr "‏%s مشغول."
@@ -904,7 +904,7 @@ msgstr "‏%s مشغول."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:349
+#: ../js/ui/telepathyClient.js:348
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "أُرسلت الساعة %l:%M:%S في %A"
@@ -912,8 +912,8 @@ msgstr "أُرسلت الساعة %l:%M:%S في %A"
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
-#. characters
-#: ../js/ui/viewSelector.js:30
+#. characters.
+#: ../js/ui/viewSelector.js:103
 msgid "Type to search..."
 msgstr "اكتب نصا للبحث عنه..."
 
@@ -1006,7 +1006,7 @@ msgstr[4] "منذ %d أسبوعا"
 msgstr[5] "منذ %d أسبوع"
 
 #: ../src/shell-polkit-authentication-agent.c:334
-msgid "Authentation dialog was dismissed by the user"
+msgid "Authentication dialog was dismissed by the user"
 msgstr "أغلق المستخدم مربع الاستيثاق الحِواري"
 
 #: ../src/shell-util.c:89
