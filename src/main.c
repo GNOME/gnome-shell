@@ -221,6 +221,8 @@ shell_prefs_init (void)
 {
   meta_prefs_override_preference_location ("/apps/mutter/general/attach_modal_dialogs",
                                            "/desktop/gnome/shell/windows/attach_modal_dialogs");
+  meta_prefs_override_preference_location ("/apps/mutter/general/workspaces_only_on_primary",
+                                           "/desktop/gnome/shell/windows/workspaces_only_on_primary");
   meta_prefs_override_preference_location ("/apps/metacity/general/button_layout",
                                            "/desktop/gnome/shell/windows/button_layout");
   meta_prefs_override_preference_location ("/apps/metacity/general/edge_tiling",
