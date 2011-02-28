@@ -5,6 +5,7 @@ const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const Tp = imports.gi.TelepathyGLib;
 const UPowerGlib = imports.gi.UPowerGlib;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
@@ -38,6 +39,8 @@ StatusMenuButton.prototype = {
         this._user = this._gdm.get_user(GLib.get_user_name());
         this._presence = new GnomeSession.Presence();
         this._presenceItems = {};
+
+        this._account_mgr = Tp.AccountManager.dup()
 
         this._upClient = new UPowerGlib.Client();
 
@@ -169,6 +172,8 @@ StatusMenuButton.prototype = {
 
     _setPresenceStatus: function(item, event, status) {
         this._presence.setStatus(status);
+
+        this._setIMStatus(status);
     },
 
     _onMyAccountActivate: function() {
@@ -206,5 +211,31 @@ StatusMenuButton.prototype = {
         } else {
             Util.spawn(['gnome-session-quit', '--power-off']);
         }
+    },
+
+    _setIMStatus: function(session_status) {
+        let [presence_type, presence_status, msg] = this._account_mgr.get_most_available_presence();
+        let type, status;
+
+        // We change the IM presence only if there are connected accounts
+        if (presence_type == Tp.ConnectionPresenceType.UNSET ||
+            presence_type == Tp.ConnectionPresenceType.OFFLINE ||
+            presence_type == Tp.ConnectionPresenceType.UNKNOWN ||
+            presence_type == Tp.ConnectionPresenceType.ERROR)
+          return;
+
+        if (session_status == GnomeSession.PresenceStatus.AVAILABLE) {
+            type = Tp.ConnectionPresenceType.AVAILABLE;
+            status = "available";
+        }
+        else if (session_status == GnomeSession.PresenceStatus.BUSY) {
+            type = Tp.ConnectionPresenceType.BUSY;
+            status = "busy";
+        }
+        else {
+          return;
+        }
+
+        this._account_mgr.set_all_requested_presences(type, status, msg);
     }
 };
