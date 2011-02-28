@@ -1574,7 +1574,9 @@ should_be_on_all_workspaces (MetaWindow *window)
 {
   return
     window->on_all_workspaces_requested ||
-    window->override_redirect;
+    window->override_redirect ||
+    (meta_prefs_get_workspaces_only_on_primary () &&
+     !meta_window_is_on_primary_monitor (window));
 }
 
 void
@@ -4081,7 +4083,28 @@ meta_window_get_monitor (MetaWindow *window)
 void
 meta_window_update_monitor (MetaWindow *window)
 {
+  const MetaMonitorInfo *old;
+
+  old = window->monitor;
   window->monitor = meta_screen_get_monitor_for_window (window->screen, window);
+  if (old != window->monitor)
+    {
+      meta_window_update_on_all_workspaces (window);
+
+      /* If workspaces only on primary and we moved back to primary, ensure that the
+       * window is now in that workspace. We do this because while the window is on a
+       * non-primary monitor it is always visible, so it would be very jarring if it
+       * disappeared when it crossed the monitor border.
+       * The one time we want it to both change to the primary monitor and a non-active
+       * workspace is when dropping the window on some other workspace thumbnail directly.
+       * That should be handled by explicitly moving the window before changing the
+       * workspace
+       */
+      if (meta_prefs_get_workspaces_only_on_primary () &&
+          meta_window_is_on_primary_monitor (window)  &&
+          window->screen->active_workspace != window->workspace)
+        meta_window_change_workspace (window, window->screen->active_workspace);
+    }
 }
 
 static void

@@ -53,5 +53,20 @@
         </long>
       </locale>
     </schema>
-  </schemalist>  
+
+    <schema>
+      <key>/schemas/apps/mutter/general/workspaces_only_on_primary</key>
+      <applyto>/apps/mutter/general/workspaces_only_on_primary</applyto>
+      <owner>mutter</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Workspaces only on primary</short>
+        <long>
+          Determines whether workspace switching should happen for windows
+	  on all monitors or only the primary window.
+        </long>
+      </locale>
+    </schema>
+    </schemalist>
 </gconfschemafile>

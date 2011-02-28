@@ -62,6 +62,7 @@ typedef enum
   META_PREF_EDGE_TILING,
   META_PREF_FORCE_FULLSCREEN,
   META_PREF_LIVE_HIDDEN_WINDOWS,
+  META_PREF_WORKSPACES_ONLY_ON_PRIMARY,
   META_PREF_NO_TAB_POPUP
 } MetaPreference;
 
@@ -135,6 +136,8 @@ void meta_prefs_set_force_fullscreen (gboolean whether);
 
 gboolean meta_prefs_get_live_hidden_windows (void);
 void     meta_prefs_set_live_hidden_windows (gboolean whether);
+
+gboolean meta_prefs_get_workspaces_only_on_primary (void);
 
 gboolean meta_prefs_get_no_tab_popup (void);
 void     meta_prefs_set_no_tab_popup (gboolean whether);

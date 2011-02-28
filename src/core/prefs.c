@@ -67,6 +67,7 @@
 #define KEY_WORKSPACE_NAME_PREFIX "/apps/metacity/workspace_names/name_"
 
 #define KEY_LIVE_HIDDEN_WINDOWS "/apps/mutter/general/live_hidden_windows"
+#define KEY_WORKSPACES_ONLY_ON_PRIMARY "/apps/mutter/general/workspaces_only_on_primary"
 
 #define KEY_NO_TAB_POPUP "/apps/metacity/general/no_tab_popup"
 
@@ -114,6 +115,7 @@ static char *terminal_command = NULL;
 static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
 
 static gboolean live_hidden_windows = FALSE;
+static gboolean workspaces_only_on_primary = FALSE;
 
 static gboolean no_tab_popup = FALSE;
 
@@ -419,6 +421,11 @@ static MetaBoolPreference preferences_bool[] =
     { "/apps/mutter/general/live_hidden_windows",
       META_PREF_LIVE_HIDDEN_WINDOWS,
       &live_hidden_windows,
+      FALSE,
+    },
+    { "/apps/mutter/general/workspaces_only_on_primary",
+      META_PREF_WORKSPACES_ONLY_ON_PRIMARY,
+      &workspaces_only_on_primary,
       FALSE,
     },
     { "/apps/metacity/general/no_tab_popup",
@@ -1973,6 +1980,9 @@ meta_preference_to_string (MetaPreference pref)
     case META_PREF_LIVE_HIDDEN_WINDOWS:
       return "LIVE_HIDDEN_WINDOWS";
 
+    case META_PREF_WORKSPACES_ONLY_ON_PRIMARY:
+      return "WORKSPACES_ONLY_ON_PRIMARY";
+
     case META_PREF_NO_TAB_POPUP:
       return "NO_TAB_POPUP";
     }
@@ -2992,6 +3002,13 @@ meta_prefs_set_live_hidden_windows (gboolean whether)
   live_hidden_windows = whether;
 #endif
 }
+
+gboolean
+meta_prefs_get_workspaces_only_on_primary (void)
+{
+  return workspaces_only_on_primary;
+}
+
 
 gboolean
 meta_prefs_get_no_tab_popup (void)
