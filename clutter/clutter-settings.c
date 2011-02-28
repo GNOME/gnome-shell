@@ -310,12 +310,6 @@ static void
 clutter_settings_class_init (ClutterSettingsClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
-
-  gobject_class->set_property = clutter_settings_set_property;
-  gobject_class->get_property = clutter_settings_get_property;
-  gobject_class->notify = clutter_settings_notify;
-  gobject_class->finalize = clutter_settings_finalize;
 
   /**
    * ClutterSettings:backend:
@@ -324,14 +318,12 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_object ("backend",
-                               "Backend",
-                               "A pointer to the backend",
-                               CLUTTER_TYPE_BACKEND,
-                               CLUTTER_PARAM_WRITABLE |
-                               G_PARAM_CONSTRUCT_ONLY);
-  obj_props[PROP_BACKEND] = pspec;
-  g_object_class_install_property (gobject_class, PROP_BACKEND, pspec);
+  obj_props[PROP_BACKEND] =
+    g_param_spec_object ("backend",
+                         "Backend",
+                         "A pointer to the backend",
+                         CLUTTER_TYPE_BACKEND,
+                         CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY);
 
   /**
    * ClutterSettings:double-click-time:
@@ -341,17 +333,13 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_int ("double-click-time",
-                            "Double Click Time",
-                            "The time between clicks necessary to detect "
-                            "a multiple click",
-                            0, G_MAXINT,
-                            250,
-                            CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_DOUBLE_CLICK_TIME] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_DOUBLE_CLICK_TIME,
-                                   pspec);
+  obj_props[PROP_DOUBLE_CLICK_TIME] =
+    g_param_spec_int ("double-click-time",
+                      P_("Double Click Time"),
+                      P_("The time between clicks necessary to detect a multiple click"),
+                      0, G_MAXINT,
+                      250,
+                      CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterSettings:double-click-distance:
@@ -361,17 +349,13 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_int ("double-click-distance",
-                            "Double Click Distance",
-                            "The distance between clicks necessary to detect "
-                            "a multiple click",
-                            0, G_MAXINT,
-                            5,
-                            CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_DOUBLE_CLICK_DISTANCE] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_DOUBLE_CLICK_DISTANCE,
-                                   pspec);
+  obj_props[PROP_DOUBLE_CLICK_DISTANCE] =
+    g_param_spec_int ("double-click-distance",
+                      P_("Double Click Distance"),
+                      P_("The distance between clicks necessary to detect a multiple click"),
+                      0, G_MAXINT,
+                      5,
+                      CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterSettings:font-name:
@@ -381,16 +365,12 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_string ("font-name",
-                               "Font Name",
-                               "The description of the default font, as "
-                               "one that could be parsed by Pango",
-                               NULL,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_FONT_NAME] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_FONT_NAME,
-                                   pspec);
+  obj_props[PROP_FONT_NAME] =
+    g_param_spec_string ("font-name",
+                         P_("Font Name"),
+                         P_("The description of the default font, as one that could be parsed by Pango"),
+                         NULL,
+                         CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterSettings:font-antialias:
@@ -401,17 +381,13 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_int ("font-antialias",
-                            "Font Antialias",
-                            "Whether to use antialiasing (1 to enable, 0 to "
-                            "disable, and -1 to use the default)",
-                            -1, 1,
-                            -1,
-                            CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_FONT_ANTIALIAS] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_FONT_ANTIALIAS,
-                                   pspec);
+  obj_props[PROP_FONT_ANTIALIAS] =
+    g_param_spec_int ("font-antialias",
+                      P_("Font Antialias"),
+                      P_("Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the default)"),
+                      -1, 1,
+                      -1,
+                      CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterSettings:font-dpi:
@@ -422,17 +398,13 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_int ("font-dpi",
-                            "Font DPI",
-                            "The resolution of the font, in 1024 * dots/inch, "
-                            "or -1 to use the default",
-                            -1, 1024 * 1024,
-                            -1,
-                            CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_FONT_DPI] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_FONT_DPI,
-                                   pspec);
+  obj_props[PROP_FONT_DPI] =
+    g_param_spec_int ("font-dpi",
+                      P_("Font DPI"),
+                      P_("The resolution of the font, in 1024 * dots/inch, or -1 to use the default"),
+                      -1, 1024 * 1024,
+                      -1,
+                      CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterSettings:font-hinting:
@@ -443,17 +415,13 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_int ("font-hinting",
-                            "Font Hinting",
-                            "Whether to use hinting (1 to enable, 0 to disable "
-                            "and -1 to use the default)",
-                            -1, 1,
-                            -1,
-                            CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_FONT_HINTING] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_FONT_HINTING,
-                                   pspec);
+  obj_props[PROP_FONT_HINTING] =
+    g_param_spec_int ("font-hinting",
+                      P_("Font Hinting"),
+                      P_("Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"),
+                      -1, 1,
+                      -1,
+                      CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterSettings:font-hint-style:
@@ -469,16 +437,12 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_string ("font-hint-style",
-                               "Font Hint Style",
-                               "The style of hinting (hintnone, hintslight, "
-                               "hintmedium, hintfull)",
-                               NULL,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_FONT_HINT_STYLE] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_FONT_HINT_STYLE,
-                                   pspec);
+  obj_props[PROP_FONT_HINT_STYLE] =
+    g_param_spec_string ("font-hint-style",
+                         P_("Font Hint Style"),
+                         P_("The style of hinting (hintnone, hintslight, hintmedium, hintfull)"),
+                         NULL,
+                         CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterSettings:font-subpixel-order:
@@ -495,16 +459,18 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * Since: 1.4
    */
-  pspec = g_param_spec_string ("font-subpixel-order",
-                               "Font Subpixel Order",
-                               "The type of subpixel antialiasing (none, rgb, "
-                               "bgr, vrgb, vbgr)",
-                               NULL,
-                               CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_FONT_RGBA] = pspec;
-  g_object_class_install_property (gobject_class,
-                                   PROP_FONT_RGBA,
-                                   pspec);
+  obj_props[PROP_FONT_RGBA] =
+    g_param_spec_string ("font-subpixel-order",
+                         P_("Font Subpixel Order"),
+                         P_("The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"),
+                         NULL,
+                         CLUTTER_PARAM_READWRITE);
+
+  gobject_class->set_property = clutter_settings_set_property;
+  gobject_class->get_property = clutter_settings_get_property;
+  gobject_class->notify = clutter_settings_notify;
+  gobject_class->finalize = clutter_settings_finalize;
+  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
 }
 
 static void
