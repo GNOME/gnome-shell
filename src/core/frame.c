@@ -282,7 +282,7 @@ meta_frame_get_flags (MetaFrame *frame)
   if (frame->window->shaded)
     flags |= META_FRAME_SHADED;
 
-  if (frame->window->on_all_workspaces)
+  if (frame->window->on_all_workspaces_requested)
     flags |= META_FRAME_STUCK;
 
   /* FIXME: Should we have some kind of UI for windows that are just vertically

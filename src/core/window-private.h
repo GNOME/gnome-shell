@@ -161,6 +161,11 @@ struct _MetaWindow
    */
   guint on_all_workspaces : 1;
 
+  /* This is true if the client requested sticky, and implies on_all_workspaces == TRUE,
+   * however on_all_workspaces can be set TRUE for other internal reasons too, such as
+   * being override_redirect or being on the non-primary monitor. */
+  guint on_all_workspaces_requested : 1;
+
   /* Minimize is the state controlled by the minimize button */
   guint minimized : 1;
   guint tab_unminimized : 1;
@@ -627,5 +632,6 @@ void meta_window_update_icon_now (MetaWindow *window);
 void meta_window_update_role (MetaWindow *window);
 void meta_window_update_net_wm_type (MetaWindow *window);
 void meta_window_update_monitor (MetaWindow *window);
+void meta_window_update_on_all_workspaces (MetaWindow *window);
 
 #endif

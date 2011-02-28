@@ -3341,7 +3341,7 @@ handle_toggle_on_all_workspaces (MetaDisplay    *display,
                            MetaKeyBinding *binding,
                            gpointer        dummy)
 {
-  if (window->on_all_workspaces)
+  if (window->on_all_workspaces_requested)
     meta_window_unstick (window);
   else
     meta_window_stick (window);

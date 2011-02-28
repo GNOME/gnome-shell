@@ -111,7 +111,7 @@ static void     update_resize         (MetaWindow   *window,
                                        int           y,
                                        gboolean      force);
 static gboolean update_resize_timeout (gpointer data);
-
+static gboolean should_be_on_all_workspaces (MetaWindow *window);
 
 static void meta_window_flush_calc_showing   (MetaWindow *window);
 
@@ -776,6 +776,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->require_on_single_monitor = TRUE;
   window->require_titlebar_visible = TRUE;
   window->on_all_workspaces = FALSE;
+  window->on_all_workspaces_requested = FALSE;
   window->tile_mode = META_TILE_NONE;
   window->shaded = FALSE;
   window->initially_iconic = FALSE;
@@ -985,16 +986,17 @@ meta_window_new_with_attrs (MetaDisplay       *display,
     }
 
   if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK ||
-      window->override_redirect)
+      window->type == META_WINDOW_DOCK)
     {
       /* Change the default, but don't enforce this if the user
        * focuses the dock/desktop and unsticks it using key shortcuts.
        * Need to set this before adding to the workspaces so the MRU
        * lists will be updated.
        */
-      window->on_all_workspaces = TRUE;
+      window->on_all_workspaces_requested = TRUE;
     }
+
+  window->on_all_workspaces = should_be_on_all_workspaces (window);
 
   /* For the workspace, first honor hints,
    * if that fails put transients with parents,
@@ -1012,6 +1014,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 	  /* need to set on_all_workspaces first so that it will be
 	   * added to all the MRU lists
 	   */
+          window->on_all_workspaces_requested = TRUE;
           window->on_all_workspaces = TRUE;
           meta_workspace_add_window (window->screen->active_workspace, window);
         }
@@ -1053,8 +1056,11 @@ meta_window_new_with_attrs (MetaDisplay       *display,
                           "Putting window %s on same workspace as parent %s\n",
                           window->desc, parent->desc);
 
-              if (parent->on_all_workspaces)
-                window->on_all_workspaces = TRUE;
+              if (parent->on_all_workspaces_requested)
+                {
+                  window->on_all_workspaces_requested = TRUE;
+                  window->on_all_workspaces = TRUE;
+                }
 
               /* this will implicitly add to the appropriate MRU lists
                */
@@ -1239,10 +1245,11 @@ meta_window_apply_session_info (MetaWindow *window,
 
   if (info->on_all_workspaces_set)
     {
-      window->on_all_workspaces = info->on_all_workspaces;
+      window->on_all_workspaces_requested = info->on_all_workspaces;
+      meta_window_update_on_all_workspaces (window);
       meta_topic (META_DEBUG_SM,
                   "Restoring sticky state %d for window %s\n",
-                  window->on_all_workspaces, window->desc);
+                  window->on_all_workspaces_requested, window->desc);
     }
 
   if (info->workspace_indices)
@@ -1562,6 +1569,57 @@ meta_window_unmanage (MetaWindow  *window,
   g_object_unref (window);
 }
 
+static gboolean
+should_be_on_all_workspaces (MetaWindow *window)
+{
+  return
+    window->on_all_workspaces_requested ||
+    window->override_redirect;
+}
+
+void
+meta_window_update_on_all_workspaces (MetaWindow *window)
+{
+  gboolean old_value;
+
+  old_value = window->on_all_workspaces;
+
+  window->on_all_workspaces = should_be_on_all_workspaces (window);
+
+  if (window->on_all_workspaces != old_value &&
+      !window->override_redirect)
+    {
+      if (window->on_all_workspaces)
+        {
+          GList* tmp = window->screen->workspaces;
+
+          /* Add to all MRU lists */
+          while (tmp)
+            {
+              MetaWorkspace* work = (MetaWorkspace*) tmp->data;
+              if (!g_list_find (work->mru_list, window))
+                work->mru_list = g_list_prepend (work->mru_list, window);
+
+              tmp = tmp->next;
+            }
+        }
+      else
+        {
+          GList* tmp = window->screen->workspaces;
+
+          /* Remove from MRU lists except the window's workspace */
+          while (tmp)
+            {
+              MetaWorkspace* work = (MetaWorkspace*) tmp->data;
+              if (work != window->workspace)
+                work->mru_list = g_list_remove (work->mru_list, window);
+              tmp = tmp->next;
+            }
+        }
+      meta_window_set_current_workspace_hint (window);
+    }
+}
+
 static void
 set_wm_state (MetaWindow *window,
               int         state)
@@ -1647,7 +1705,7 @@ set_net_wm_state (MetaWindow *window)
       data[i] = window->display->atom__NET_WM_STATE_DEMANDS_ATTENTION;
       ++i;
     }
-  if (window->on_all_workspaces)
+  if (window->on_all_workspaces_requested)
     {
       data[i] = window->display->atom__NET_WM_STATE_STICKY;
       ++i;
@@ -5011,7 +5069,7 @@ meta_window_change_workspace_without_transients (MetaWindow    *window,
   meta_verbose ("Changing window %s to workspace %d\n",
                 window->desc, meta_workspace_index (workspace));
 
-  if (!window->on_all_workspaces)
+  if (!window->on_all_workspaces_requested)
     {
       old_workspace = meta_workspace_index (window->workspace);
     }
@@ -5020,7 +5078,7 @@ meta_window_change_workspace_without_transients (MetaWindow    *window,
    * meta_window_change_workspace recursively if the window
    * is not in the active workspace.
    */
-  if (window->on_all_workspaces)
+  if (window->on_all_workspaces_requested)
     meta_window_unstick (window);
 
   /* See if we're already on this space. If not, make sure we are */
@@ -5058,34 +5116,18 @@ meta_window_change_workspace (MetaWindow    *window,
 static void
 window_stick_impl (MetaWindow  *window)
 {
-  GList *tmp;
-  MetaWorkspace *workspace;
-
   meta_verbose ("Sticking window %s current on_all_workspaces = %d\n",
                 window->desc, window->on_all_workspaces);
 
-  if (window->on_all_workspaces)
+  if (window->on_all_workspaces_requested)
     return;
 
   /* We don't change window->workspaces, because we revert
    * to that original workspace list if on_all_workspaces is
    * toggled back off.
    */
-  window->on_all_workspaces = TRUE;
-
-  /* We do, however, change the MRU lists of all the workspaces
-   */
-  tmp = window->screen->workspaces;
-  while (tmp)
-    {
-      workspace = (MetaWorkspace *) tmp->data;
-      if (!g_list_find (workspace->mru_list, window))
-        workspace->mru_list = g_list_prepend (workspace->mru_list, window);
-
-      tmp = tmp->next;
-    }
-
-  meta_window_set_current_workspace_hint (window);
+  window->on_all_workspaces_requested = TRUE;
+  meta_window_update_on_all_workspaces (window);
 
   meta_window_queue(window, META_QUEUE_CALC_SHOWING);
 }
@@ -5093,25 +5135,13 @@ window_stick_impl (MetaWindow  *window)
 static void
 window_unstick_impl (MetaWindow  *window)
 {
-  GList *tmp;
-  MetaWorkspace *workspace;
-
-  if (!window->on_all_workspaces)
+  if (!window->on_all_workspaces_requested)
     return;
 
   /* Revert to window->workspaces */
 
-  window->on_all_workspaces = FALSE;
-
-  /* Remove window from MRU lists that it doesn't belong in */
-  tmp = window->screen->workspaces;
-  while (tmp)
-    {
-      workspace = (MetaWorkspace *) tmp->data;
-      if (window->workspace != workspace)
-        workspace->mru_list = g_list_remove (workspace->mru_list, window);
-      tmp = tmp->next;
-    }
+  window->on_all_workspaces_requested = FALSE;
+  meta_window_update_on_all_workspaces (window);
 
   /* We change ourselves to the active workspace, since otherwise you'd get
    * a weird window-vaporization effect. Once we have UI for being
@@ -5120,8 +5150,6 @@ window_unstick_impl (MetaWindow  *window)
    */
   if (window->screen->active_workspace != window->workspace)
     meta_window_change_workspace (window, window->screen->active_workspace);
-
-  meta_window_set_current_workspace_hint (window);
 
   meta_window_queue(window, META_QUEUE_CALC_SHOWING);
 }
@@ -5648,7 +5676,7 @@ meta_window_change_workspace_by_index (MetaWindow *window,
 
   if (workspace)
     {
-      if (window->on_all_workspaces)
+      if (window->on_all_workspaces_requested)
         meta_window_unstick (window);
 
       meta_window_change_workspace (window, workspace);
@@ -5723,7 +5751,7 @@ meta_window_client_message (MetaWindow *window,
 
       if (workspace)
         {
-          if (window->on_all_workspaces)
+          if (window->on_all_workspaces_requested)
             meta_window_unstick (window);
           meta_window_change_workspace (window, workspace);
         }
@@ -5922,7 +5950,7 @@ meta_window_client_message (MetaWindow *window,
           second == display->atom__NET_WM_STATE_STICKY)
         {
           if ((action == _NET_WM_STATE_ADD) ||
-              (action == _NET_WM_STATE_TOGGLE && !window->on_all_workspaces))
+              (action == _NET_WM_STATE_TOGGLE && !window->on_all_workspaces_requested))
             meta_window_stick (window);
           else
             meta_window_unstick (window);

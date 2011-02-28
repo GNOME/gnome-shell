@@ -959,7 +959,7 @@ save_state (void)
           g_free (title);
               
           /* Sticky */
-          if (window->on_all_workspaces)
+          if (window->on_all_workspaces_requested)
             fputs ("    <sticky/>\n", outfile);
 
           /* Minimized */
