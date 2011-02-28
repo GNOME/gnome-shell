@@ -67,10 +67,8 @@ fi
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
-# gvfs, python, pygobject, gnome-python (gconf), gnome-terminal*,
-# icon-naming-utils, Xephyr*, zenity, libtasn1-tools
-#
-# (*) only needed for --xephyr
+# gvfs, python, pygobject, gnome-python (gconf),
+# icon-naming-utils, zenity, libtasn1-tools
 
 if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint ; then
   reqd="
@@ -81,7 +79,7 @@ if test "x$system" = xUbuntu -o "x$system" = xDebian -o "x$system" = xLinuxMint 
     libjasper-dev libjpeg-dev libpng-dev libstartup-notification0-dev libtiff-dev
     libwnck-dev libgl1-mesa-dev liborbit2-dev libpulse-dev libreadline5-dev libxml2-dev
     mesa-common-dev mesa-utils libpam-dev python-dev python-gconf python-gobject
-    xulrunner-dev xserver-xephyr gnome-terminal libcroco3-dev
+    xulrunner-dev libcroco3-dev
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good
     libltdl-dev libvorbis-dev iso-codes libgnome-keyring-dev libusb-1.0-0-dev
     libupower-glib-dev libcups2-dev evolution-data-server-dev
@@ -120,7 +118,7 @@ if test "x$system" = xFedora ; then
     pulseaudio-libs-devel python-devel pygobject2 readline-devel xulrunner-devel
     libXdamage-devel libcroco-devel libxml2-devel gstreamer-devel
     gstreamer-plugins-base gstreamer-plugins-good glx-utils expat-devel
-    startup-notification-devel xorg-x11-server-Xephyr gnome-terminal zenity
+    startup-notification-devel zenity
     icon-naming-utils upower-devel libtool-ltdl-devel libvorbis-devel
     iso-codes-devel libgcrypt-devel libtasn1-devel libtasn1-tools libusb1-devel
     libgnome-keyring-devel libgtop2-devel cups-devel evolution-data-server-devel
@@ -170,7 +168,7 @@ if test "x$system" = xMandrivaLinux ; then
     bison flex gnome-common gnome-doc-utils gtk-doc icon-naming-utils \
     intltool ffi5-devel libwnck-1-devel GL-devel ORBit2-devel \
     readline-devel libxulrunner-devel \
-    libxdamage-devel mesa-demos x11-server-xephyr zenity \
+    libxdamage-devel mesa-demos zenity \
     libcroco0.6-devel libevolution-data-server3-devel \
     cvs iso-codes-devel \
     ; do
