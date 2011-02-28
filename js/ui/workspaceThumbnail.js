@@ -169,7 +169,8 @@ WorkspaceThumbnail.prototype = {
         this._background = new Clutter.Clone({ source: global.background_actor });
         this._contents.add_actor(this._background);
 
-        this.setPorthole(0, 0, global.screen_width, global.screen_height);
+        let monitor = global.get_primary_monitor();
+        this.setPorthole(monitor.x, monitor.y, monitor.width, monitor.height);
 
         let windows = global.get_window_actors().filter(this._isMyWindow, this);
 
@@ -442,11 +443,12 @@ ThumbnailsBox.prototype = {
 
         // The "porthole" is the portion of the screen that we show in the workspaces
         let panelHeight = Main.panel.actor.height;
+        let monitor = global.get_primary_monitor();
         this._porthole = {
-            x: 0,
-            y: panelHeight,
-            width: global.screen_width,
-            height: global.screen_height - panelHeight
+            x: monitor.x,
+            y: monitor.y + panelHeight,
+            width: monitor.width,
+            height: monitor.height - panelHeight
         };
 
         this.addThumbnails(0, global.screen.n_workspaces);
