@@ -472,7 +472,14 @@ struct _ClutterActorPrivate
   ClutterMetaGroup *effects;
 
   /* used when painting, to update the paint volume */
-  ClutterActorMeta *current_effect;
+  ClutterEffect *current_effect;
+
+  /* This is used to store an effect which needs to be redrawn. A
+     redraw can be queued to start from a particular effect. This is
+     used by parametrised effects that can cache an image of the
+     actor. If a parameter of the effect changes then it only needs to
+     redraw the cached image, not the actual actor */
+  ClutterEffect *effect_to_redraw;
 
   ClutterPaintVolume paint_volume;
 
@@ -1910,6 +1917,14 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
 
   self->priv->propagated_one_redraw = TRUE;
 
+  /* If the queue redraw is coming from a child actor then we'll
+     assume the queued effect is no longer valid. If this actor has
+     had a redraw queued then that will mean it will instead redraw
+     the whole actor. If it hasn't had a redraw queued then it will
+     stay that way */
+  if (self != origin)
+    self->priv->effect_to_redraw = NULL;
+
   /* notify parents, if they are all visible eventually we'll
    * queue redraw on the stage, which queues the redraw idle.
    */
@@ -2854,7 +2869,7 @@ clutter_actor_continue_paint (ClutterActor *self)
     }
   else
     {
-      ClutterActorMeta *old_current_effect;
+      ClutterEffect *old_current_effect;
       ClutterEffectRunFlags run_flags = 0;
 
       /* Cache the current effect so that we can put it back before
@@ -2865,9 +2880,18 @@ clutter_actor_continue_paint (ClutterActor *self)
       priv->next_effect_to_paint = priv->next_effect_to_paint->next;
 
       if (priv->propagated_one_redraw)
-        run_flags |= CLUTTER_EFFECT_RUN_ACTOR_DIRTY;
+        {
+          /* If there's an effect queued with this redraw then all
+             effects up to that one will be considered dirty. It is
+             expected the queued effect will paint the cached image
+             and not call clutter_actor_continue_paint again (although
+             it should work ok if it does) */
+          if (priv->effect_to_redraw == NULL ||
+              priv->current_effect != priv->effect_to_redraw)
+            run_flags |= CLUTTER_EFFECT_RUN_ACTOR_DIRTY;
+        }
 
-      _clutter_effect_run (CLUTTER_EFFECT (priv->current_effect), run_flags);
+      _clutter_effect_run (priv->current_effect, run_flags);
 
       priv->current_effect = old_current_effect;
     }
@@ -5172,38 +5196,60 @@ _clutter_actor_finish_queue_redraw (ClutterActor *self,
   priv->queue_redraw_entry = NULL;
 }
 
-/**
- * clutter_actor_queue_redraw:
- * @self: A #ClutterActor
- *
- * Queues up a redraw of an actor and any children. The redraw occurs
- * once the main loop becomes idle (after the current batch of events
- * has been processed, roughly).
- *
- * Applications rarely need to call this, as redraws are handled
- * automatically by modification functions.
- *
- * This function will not do anything if @self is not visible, or
- * if the actor is inside an invisible part of the scenegraph.
- *
- * Also be aware that painting is a NOP for actors with an opacity of
- * 0
- *
- * When you are implementing a custom actor you must queue a redraw
- * whenever some private state changes that will affect painting or
- * picking of your actor.
- */
-void
-clutter_actor_queue_redraw (ClutterActor *self)
+static void
+_clutter_actor_get_allocation_clip (ClutterActor *self,
+                                    ClutterActorBox *clip)
 {
+  ClutterActorBox allocation;
+
+  /* XXX: we don't care if we get an out of date allocation here
+   * because clutter_actor_queue_redraw_with_clip knows to ignore
+   * the clip if the actor's allocation is invalid.
+   *
+   * This is noted because clutter_actor_get_allocation_box does some
+   * unnecessary work to support buggy code with a comment suggesting
+   * that it could be changed later which would be good for this use
+   * case!
+   */
+  clutter_actor_get_allocation_box (self, &allocation);
+
+  /* NB: clutter_actor_queue_redraw_with_clip expects a box in the
+   * actor's own coordinate space but the allocation is in parent
+   * coordinates */
+  clip->x1 = 0;
+  clip->y1 = 0;
+  clip->x2 = allocation.x2 - allocation.x1;
+  clip->y2 = allocation.y2 - allocation.y1;
+}
+
+void
+_clutter_actor_queue_redraw_full (ClutterActor       *self,
+                                  ClutterRedrawFlags  flags,
+                                  ClutterPaintVolume *volume,
+                                  ClutterEffect      *effect)
+{
+  ClutterPaintVolume allocation_pv;
+  ClutterActorPrivate *priv;
+  ClutterPaintVolume *pv;
+  gboolean should_free_pv;
   ClutterActor *stage;
+  gboolean was_dirty;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
 
   /* Here's an outline of the actor queue redraw mechanism:
    *
-   * The process starts either here or in
-   * _clutter_actor_queue_redraw_with_clip.
+   * The process starts in one of the following two functions which
+   * are wrappers for this function:
+   * clutter_actor_queue_redraw
+   * _clutter_actor_queue_redraw_with_clip
    *
-   * These functions queue an entry in a list associated with the
+   * additionally, an effect can queue a redraw by wrapping this
+   * function in clutter_effect_queue_rerun
+   *
+   * This functions queues an entry in a list associated with the
    * stage which is a list of actors that queued a redraw while
    * updating the timelines, performing layouting and processing other
    * mainloop sources before the next paint starts.
@@ -5232,8 +5278,9 @@ clutter_actor_queue_redraw (ClutterActor *self)
    * difference to performance.
    *
    * So the control flow goes like this:
-   * clutter_actor_queue_redraw and
-   * _clutter_actor_queue_redraw_with_clip
+   * One of clutter_actor_queue_redraw,
+   *        _clutter_actor_queue_redraw_with_clip
+   *     or clutter_effect_queue_rerun
    *
    * then control moves to:
    *   _clutter_stage_queue_actor_redraw
@@ -5261,44 +5308,125 @@ clutter_actor_queue_redraw (ClutterActor *self)
    * paint.
    */
 
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  stage = _clutter_actor_get_stage_internal (self);
 
   /* Ignore queuing a redraw for actors not descended from a stage */
-  stage = _clutter_actor_get_stage_internal (self);
   if (stage == NULL)
     return;
 
-  self->priv->queue_redraw_entry =
-    _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
-                                       self->priv->queue_redraw_entry,
-                                       self,
-                                       NULL);
+  if (flags & CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION)
+    {
+      ClutterActorBox allocation_clip;
+      ClutterVertex origin;
+
+      /* If the actor doesn't have a valid allocation then we will
+       * queue a full stage redraw. */
+      if (priv->needs_allocation)
+        {
+          /* NB: NULL denotes an undefined clip which will result in a
+           * full redraw... */
+          _clutter_actor_set_queue_redraw_clip (self, NULL);
+          _clutter_actor_signal_queue_redraw (self, self);
+          return;
+        }
+
+      _clutter_paint_volume_init_static (&allocation_pv, self);
+      pv = &allocation_pv;
+
+      _clutter_actor_get_allocation_clip (self, &allocation_clip);
+
+      origin.x = allocation_clip.x1;
+      origin.y = allocation_clip.y1;
+      origin.z = 0;
+      clutter_paint_volume_set_origin (pv, &origin);
+      clutter_paint_volume_set_width (pv,
+                                      allocation_clip.x2 - allocation_clip.x1);
+      clutter_paint_volume_set_height (pv,
+                                       allocation_clip.y2 -
+                                       allocation_clip.y1);
+      should_free_pv = TRUE;
+    }
+  else
+    {
+      pv = volume;
+      should_free_pv = FALSE;
+    }
+
+  was_dirty = priv->queue_redraw_entry != NULL;
+
+  _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
+                                     priv->queue_redraw_entry,
+                                     self,
+                                     pv);
+
+  if (should_free_pv)
+    clutter_paint_volume_free (pv);
+
+  /* If this is the first redraw queued then we can directly use the
+     effect parameter */
+  if (!was_dirty)
+    priv->effect_to_redraw = effect;
+  /* Otherwise we need to merge it with the existing effect parameter */
+  else if (effect)
+    {
+      /* If there's already an effect then we need to use whichever is
+         later in the chain of actors. Otherwise a full redraw has
+         already been queued on the actor so we need to ignore the
+         effect parameter */
+      if (priv->effect_to_redraw)
+        {
+          if (priv->effects == NULL)
+            g_warning ("Redraw queued with an effect that is "
+                       "not applied to the actor");
+          else
+            {
+              const GList *l;
+
+              for (l = _clutter_meta_group_peek_metas (priv->effects);
+                   l != NULL;
+                   l = l->next)
+                {
+                  if (l->data == priv->effect_to_redraw ||
+                      l->data == effect)
+                    priv->effect_to_redraw = l->data;
+                }
+            }
+        }
+    }
+  else
+    /* If no effect is specified then we need to redraw the whole
+       actor */
+    priv->effect_to_redraw = NULL;
 }
 
-static void
-_clutter_actor_get_allocation_clip (ClutterActor *self,
-                                    ClutterActorBox *clip)
+/**
+ * clutter_actor_queue_redraw:
+ * @self: A #ClutterActor
+ *
+ * Queues up a redraw of an actor and any children. The redraw occurs
+ * once the main loop becomes idle (after the current batch of events
+ * has been processed, roughly).
+ *
+ * Applications rarely need to call this, as redraws are handled
+ * automatically by modification functions.
+ *
+ * This function will not do anything if @self is not visible, or
+ * if the actor is inside an invisible part of the scenegraph.
+ *
+ * Also be aware that painting is a NOP for actors with an opacity of
+ * 0
+ *
+ * When you are implementing a custom actor you must queue a redraw
+ * whenever some private state changes that will affect painting or
+ * picking of your actor.
+ */
+void
+clutter_actor_queue_redraw (ClutterActor *self)
 {
-  ClutterActorBox allocation;
-
-  /* XXX: we don't care if we get an out of date allocation here
-   * because clutter_actor_queue_redraw_with_clip knows to ignore
-   * the clip if the actor's allocation is invalid.
-   *
-   * This is noted because clutter_actor_get_allocation_box does some
-   * unnecessary work to support buggy code with a comment suggesting
-   * that it could be changed later which would be good for this use
-   * case!
-   */
-  clutter_actor_get_allocation_box (self, &allocation);
-
-  /* NB: clutter_actor_queue_redraw_with_clip expects a box in the
-   * actor's own coordinate space but the allocation is in parent
-   * coordinates */
-  clip->x1 = 0;
-  clip->y1 = 0;
-  clip->x2 = allocation.x2 - allocation.x1;
-  clip->y2 = allocation.y2 - allocation.y1;
+  _clutter_actor_queue_redraw_full (self,
+                                    0, /* flags */
+                                    NULL, /* clip volume */
+                                    NULL /* effect */);
 }
 
 /*
@@ -5343,62 +5471,10 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
                                        ClutterRedrawFlags  flags,
                                        ClutterPaintVolume *volume)
 {
-  ClutterPaintVolume allocation_pv;
-  ClutterPaintVolume *pv;
-  gboolean should_free_pv;
-  ClutterActor *stage;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  if (flags & CLUTTER_REDRAW_CLIPPED_TO_ALLOCATION)
-    {
-      ClutterActorBox allocation_clip;
-      ClutterVertex origin;
-
-      /* If the actor doesn't have a valid allocation then we will
-       * queue a full stage redraw. */
-      if (self->priv->needs_allocation)
-        {
-          /* NB: NULL denotes an undefined clip which will result in a
-           * full redraw... */
-          _clutter_actor_set_queue_redraw_clip (self, NULL);
-          _clutter_actor_signal_queue_redraw (self, self);
-          return;
-        }
-
-      _clutter_paint_volume_init_static (&allocation_pv, self);
-      pv = &allocation_pv;
-
-      _clutter_actor_get_allocation_clip (self, &allocation_clip);
-
-      origin.x = allocation_clip.x1;
-      origin.y = allocation_clip.y1;
-      origin.z = 0;
-      clutter_paint_volume_set_origin (pv, &origin);
-      clutter_paint_volume_set_width (pv,
-                                      allocation_clip.x2 - allocation_clip.x1);
-      clutter_paint_volume_set_height (pv,
-                                       allocation_clip.y2 -
-                                       allocation_clip.y1);
-      should_free_pv = TRUE;
-    }
-  else
-    {
-      pv = volume;
-      should_free_pv = FALSE;
-    }
-
-  /* Ignore queuing a redraw for actors not descended from a stage */
-  stage = _clutter_actor_get_stage_internal (self);
-
-  if (stage != NULL)
-    _clutter_stage_queue_actor_redraw (CLUTTER_STAGE (stage),
-                                       self->priv->queue_redraw_entry,
-                                       self,
-                                       pv);
-
-  if (should_free_pv)
-    clutter_paint_volume_free (pv);
+  _clutter_actor_queue_redraw_full (self,
+                                    flags, /* flags */
+                                    volume, /* clip volume */
+                                    NULL /* effect */);
 }
 
 static void

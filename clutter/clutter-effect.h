@@ -105,6 +105,8 @@ struct _ClutterEffectClass
 
 GType clutter_effect_get_type (void) G_GNUC_CONST;
 
+void           clutter_effect_queue_rerun          (ClutterEffect *effect);
+
 /*
  * ClutterActor API
  */
