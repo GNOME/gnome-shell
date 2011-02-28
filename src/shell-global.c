@@ -1411,6 +1411,23 @@ shell_global_get_primary_monitor (ShellGlobal  *global)
 }
 
 /**
+ * shell_global_get_primary_monitor_index:
+ * @global: the #ShellGlobal
+ *
+ * Gets the index of the primary monitor (the one that the
+ * panel is on).
+ *
+ * Return value: the index of the primary monitor
+ */
+int
+shell_global_get_primary_monitor_index (ShellGlobal  *global)
+{
+  MetaScreen *screen = shell_global_get_screen (global);
+
+  return meta_screen_get_primary_monitor (screen);
+}
+
+/**
  * shell_global_get_focus_monitor:
  * @global: the #ShellGlobal
  *

@@ -100,6 +100,7 @@ void shell_global_format_time_relative_pretty (ShellGlobal *global, guint delta,
 
 GSList       *shell_global_get_monitors        (ShellGlobal  *global);
 MetaRectangle *shell_global_get_primary_monitor (ShellGlobal  *global);
+int            shell_global_get_primary_monitor_index (ShellGlobal  *global);
 MetaRectangle *shell_global_get_focus_monitor   (ShellGlobal  *global);
 
 void shell_global_get_pointer (ShellGlobal         *global,
