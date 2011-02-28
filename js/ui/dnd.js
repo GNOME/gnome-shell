@@ -144,6 +144,8 @@ _Draggable.prototype = {
 
     _ungrabActor: function() {
         Clutter.ungrab_pointer();
+        if (!this._onEventId)
+            return;
         this.actor.disconnect(this._onEventId);
         this._onEventId = null;
     },
