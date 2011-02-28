@@ -778,23 +778,8 @@ LookingGlass.prototype = {
             return true;
         }));
 
-        this._history = new History.HistoryManager(HISTORY_KEY);
-        this._history.connect('changed', Lang.bind(this, function(history, text) {
-            this._entry.text = text;
-        }));
-
-        this._entry.clutter_text.connect('key-press-event', Lang.bind(this, function(o, e) {
-            let symbol = e.get_key_symbol();
-            if (symbol == Clutter.Up) {
-                this._history.prevItem(o.get_text());
-                return true;
-            } else if (symbol == Clutter.Down) {
-                this._history.nextItem(o.get_text());
-                return true;
-            } else {
-                return false;
-            }
-        }));
+        this._history = new History.HistoryManager({ gsettingsKey: HISTORY_KEY, 
+                                                     entry: this._entry.clutter_text });
     },
 
     _updateFont: function() {

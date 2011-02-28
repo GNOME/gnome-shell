@@ -234,21 +234,10 @@ __proto__: ModalDialog.ModalDialog.prototype,
         this._commandCompleter = new CommandCompleter();
         this._group.connect('notify::visible', Lang.bind(this._commandCompleter, this._commandCompleter.update));
 
-        this._history = new History.HistoryManager(HISTORY_KEY);
-        this._history.connect('changed', Lang.bind(this, function(history, text) {
-            this._entryText.set_text(text);
-        }));
-
+        this._history = new History.HistoryManager({ gsettingsKey: HISTORY_KEY,
+                                                     entry: this._entryText });
         this._entryText.connect('key-press-event', Lang.bind(this, function(o, e) {
             let symbol = e.get_key_symbol();
-            if (symbol == Clutter.Down) {
-                this._history.nextItem(o.get_text());
-                return true;
-            }
-            if (symbol == Clutter.Up) {
-                this._history.prevItem(o.get_text());
-                return true;
-            }
             if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
                 if (Shell.get_event_state(e) & Clutter.ModifierType.CONTROL_MASK)
                     this._run(o.get_text(), true);

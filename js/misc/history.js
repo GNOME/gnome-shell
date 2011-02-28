@@ -2,22 +2,40 @@
 
 const Lang = imports.lang;
 const Signals = imports.signals;
+const Clutter = imports.gi.Clutter;
+const Params = imports.misc.params;
 
 const DEFAULT_LIMIT = 512;
 
-function HistoryManager(settings_key) {
-    this._init(settings_key);
+function HistoryManager(params) {
+    this._init(params);
 }
 
 HistoryManager.prototype = {
-    _init: function(settings_key, limit) {
-        this._limit = limit || DEFAULT_LIMIT;
-        this._key = settings_key;
-        this._history = global.settings.get_strv(settings_key);
-        this._historyIndex = -1;
+    _init: function(params) {
+        params = Params.parse(params, { gsettingsKey: null,
+                                        limit: DEFAULT_LIMIT,
+                                        entry: null });
 
-        global.settings.connect('changed::' + settings_key,
-                                Lang.bind(this, this._historyChanged));
+        this._key = params.gsettingsKey;
+        this._limit = params.limit;
+
+        this._historyIndex = 0;
+        if (this._key) {
+            this._history = global.settings.get_strv(this._key);
+            global.settings.connect('changed::' + this._key,
+                                    Lang.bind(this, this._historyChanged));
+
+        } else {
+            this._history = [];
+        }
+
+        this._entry = params.entry;
+
+        if (this._entry) {
+            this._entry.connect('key-press-event', 
+                                Lang.bind(this, this._onEntryKeyPress));
+        }
     },
 
     _historyChanged: function() {
@@ -26,18 +44,32 @@ HistoryManager.prototype = {
     },
 
     prevItem: function(text) {
-        this._setHistory(this._historyIndex--, text);
+        if (this._historyIndex <= 0)
+            return text;
+
+        if (text)
+            this._history[this._historyIndex] = text;
+        this._historyIndex--;
         return this._indexChanged();
     },
 
     nextItem: function(text) {
-        this._setHistory(this._historyIndex++, text);
+        if (this._historyIndex >= this._history.length)
+            return text;
+
+        if (text)
+            this._history[this._historyIndex] = text;
+        this._historyIndex++;
         return this._indexChanged();
     },
 
     lastItem: function() {
-        this._historyIndex = this._history.length;
-        return this._indexChanged();
+        if (this._historyIndex != this._history.length) {
+            this._historyIndex = this._history.length;
+            this._indexChanged();
+        }
+
+        return this._historyIndex[this._history.length];
     },
 
     addItem: function(input) {
@@ -45,28 +77,39 @@ HistoryManager.prototype = {
             this._history[this._history.length - 1] != input) {
 
             this._history.push(input);
+            this._historyIndex = this._history.length;
             this._save();
         }   
+    },
+
+    _onEntryKeyPress: function(entry, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.KEY_Up) {
+            this.prevItem(entry.get_text());
+            return true;
+        } else if (symbol == Clutter.KEY_Down) {
+            this.nextItem(entry.get_text());
+            return true;
+        }
+        return false;
     },
 
     _indexChanged: function() {
         let current = this._history[this._historyIndex] || '';
         this.emit('changed', current);
+
+        if (this._entry)
+            this._entry.set_text(current);
+
         return current;
-    },
-
-    _setHistory: function(index, text) {
-        this._historyIndex = Math.max(this._historyIndex, 0);
-        this._historyIndex = Math.min(this._historyIndex, this._history.length);
-
-        if (text)
-            this._history[index] = text;
     },
 
     _save: function() {
         if (this._history.length > this._limit)
-            this._history.splice(0, this._history.length - this._key);
-        global.settings.set_strv(this._key, this._history);
+            this._history.splice(0, this._history.length - this._limit);
+
+        if (this._key)
+            global.settings.set_strv(this._key, this._history);
     }
 };
 Signals.addSignalMethods(HistoryManager.prototype);
