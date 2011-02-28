@@ -49,6 +49,8 @@ struct _ClutterSettings
   gint double_click_time;
   gint double_click_distance;
 
+  gint dnd_drag_threshold;
+
   gdouble resolution;
 
   gchar *font_name;
@@ -72,6 +74,8 @@ enum
 
   PROP_DOUBLE_CLICK_TIME,
   PROP_DOUBLE_CLICK_DISTANCE,
+
+  PROP_DND_DRAG_THRESHOLD,
 
   PROP_FONT_NAME,
 
@@ -210,6 +214,10 @@ clutter_settings_set_property (GObject      *gobject,
       self->double_click_distance = g_value_get_int (value);
       break;
 
+    case PROP_DND_DRAG_THRESHOLD:
+      self->dnd_drag_threshold = g_value_get_int (value);
+      break;
+
     case PROP_FONT_NAME:
       g_free (self->font_name);
       self->font_name = g_value_dup_string (value);
@@ -265,6 +273,10 @@ clutter_settings_get_property (GObject    *gobject,
 
     case PROP_DOUBLE_CLICK_DISTANCE:
       g_value_set_int (value, self->double_click_distance);
+      break;
+
+    case PROP_DND_DRAG_THRESHOLD:
+      g_value_set_int (value, self->dnd_drag_threshold);
       break;
 
     case PROP_FONT_NAME:
@@ -355,6 +367,22 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                       P_("The distance between clicks necessary to detect a multiple click"),
                       0, G_MAXINT,
                       5,
+                      CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterSettings:dnd-drag-threshold:
+   *
+   * The default distance that the cursor of a pointer device
+   * should travel before a drag operation should start.
+   *
+   * Since: 1.8
+   */
+  obj_props[PROP_DND_DRAG_THRESHOLD] =
+    g_param_spec_int ("dnd-drag-threshold",
+                      P_("Drag Threshold"),
+                      P_("The distance the cursor should travel before starting to drag"),
+                      1, G_MAXINT,
+                      8,
                       CLUTTER_PARAM_READWRITE);
 
   /**
@@ -480,6 +508,8 @@ clutter_settings_init (ClutterSettings *self)
 
   self->double_click_time = 250;
   self->double_click_distance = 5;
+
+  self->dnd_drag_threshold = 8;
 
   self->font_name = g_strdup (DEFAULT_FONT_NAME);
 
