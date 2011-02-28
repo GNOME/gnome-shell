@@ -8,6 +8,7 @@ static const struct {
 } _clutter_settings_map[] = {
   { "Net/DoubleClickTime",     "double-click-time" },
   { "Net/DoubleClickDistance", "double-click-distance" },
+  { "Net/DndDragThreshold",    "dnd-drag-threshold" },
   { "Gtk/FontName",            "font-name" },
   { "Xft/Antialias",           "font-antialias" },
   { "Xft/DPI",                 "font-dpi" },
