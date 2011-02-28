@@ -1016,6 +1016,7 @@ main (int    argc,
   loop = NULL;
   opt_context = NULL;
   name_owner_id = 0;
+  stdin_channel = NULL;
 
   g_type_init ();
 
