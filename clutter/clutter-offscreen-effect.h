@@ -93,12 +93,15 @@ struct _ClutterOffscreenEffectClass
 
 GType clutter_offscreen_effect_get_type (void) G_GNUC_CONST;
 
-CoglMaterial *clutter_offscreen_effect_get_target     (ClutterOffscreenEffect *effect);
+CoglMaterial *  clutter_offscreen_effect_get_target             (ClutterOffscreenEffect *effect);
 
-void          clutter_offscreen_effect_paint_target   (ClutterOffscreenEffect *effect);
-CoglHandle    clutter_offscreen_effect_create_texture (ClutterOffscreenEffect *effect,
-                                                       gfloat                  width,
-                                                       gfloat                  height);
+void            clutter_offscreen_effect_paint_target           (ClutterOffscreenEffect *effect);
+CoglHandle      clutter_offscreen_effect_create_texture         (ClutterOffscreenEffect *effect,
+                                                                 gfloat                  width,
+                                                                 gfloat                  height);
+gboolean        clutter_offscreen_effect_get_target_size        (ClutterOffscreenEffect *effect,
+                                                                 gfloat                 *width,
+                                                                 gfloat                 *height);
 
 G_END_DECLS
 

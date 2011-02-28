@@ -184,7 +184,10 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
       actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
       opacity = clutter_actor_get_paint_opacity (actor);
 
-      if (!_clutter_offscreen_effect_get_target_size (effect, &width, &height))
+      /* if we don't have a target size, fall back to the actor's
+       * allocation, though wrong it might be
+       */
+      if (!clutter_offscreen_effect_get_target_size (effect, &width, &height))
         clutter_actor_get_size (actor, &width, &height);
 
       for (i = 0; i < priv->y_tiles + 1; i++)

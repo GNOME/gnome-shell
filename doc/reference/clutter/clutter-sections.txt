@@ -2486,6 +2486,7 @@ ClutterOffscreenEffectClass
 clutter_offscreen_effect_get_target
 clutter_offscreen_effect_create_texture
 clutter_offscreen_effect_paint_target
+clutter_offscreen_effect_get_target_size
 <SUBSECTION Standard>
 CLUTTER_TYPE_OFFSCREEN_EFFECT
 CLUTTER_OFFSCREEN_EFFECT
