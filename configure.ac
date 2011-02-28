@@ -1123,6 +1123,8 @@ AS_CASE([$enable_maintainer_flags],
         [AC_MSG_ERROR([Invalid option for --enable-maintainer-flags])]
 )
 
+# strip leading spaces
+MAINTAINER_CFLAGS=${MAINTAINER_CFLAGS/#  }
 AC_SUBST(MAINTAINER_CFLAGS)
 
 dnl === Dependencies, compiler flags and linker libraries =====================
@@ -1279,7 +1281,7 @@ echo ""
 echo " • Compiler options:"
 echo "        Clutter debug level: ${enable_debug}"
 echo "        COGL debug level: ${enable_cogl_debug}"
-echo "        Compiler flags: ${MAINTAINER_CFLAGS}"
+echo "        Compiler flags: ${CFLAGS} ${MAINTAINER_CFLAGS}"
 echo "        Profiling enabled: ${enable_profile}"
 echo "        Enable coverage tests: ${enable_gcov}"
 
