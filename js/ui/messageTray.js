@@ -1691,14 +1691,15 @@ MessageTray.prototype = {
     // at the present time.
     _updateState: function() {
         // Notifications
-        let notificationsPending = this._notificationQueue.length > 0 &&
-                                   (!this._busy || this._notificationQueue[0].urgency == Urgency.CRITICAL);
+        let notificationUrgent = this._notificationQueue.length > 0 && this._notificationQueue[0].urgency == Urgency.CRITICAL;
+        let notificationsPending = this._notificationQueue.length > 0 && (!this._busy || notificationUrgent);
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
         let notificationExpanded = this._notificationBin.y < 0;
         let notificationExpired = (this._notificationTimeoutId == 0 && !(this._notification && this._notification.urgency == Urgency.CRITICAL) && !this._pointerInTray && !this._locked) || this._notificationRemoved;
+        let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
 
         if (this._notificationState == State.HIDDEN) {
-            if (notificationsPending)
+            if (canShowNotification)
                 this._showNotification();
         } else if (this._notificationState == State.SHOWN) {
             if (notificationExpired)
@@ -1720,7 +1721,11 @@ MessageTray.prototype = {
                                     this._notificationState == State.SHOWN);
         let notificationsDone = !notificationsVisible && !notificationsPending;
 
-        if (this._summaryState == State.HIDDEN) {
+        let summaryOptionalInOverview = this._overviewVisible && !this._locked && !summaryHovered;
+        let mustHideSummary = (notificationsPending && (notificationUrgent || summaryOptionalInOverview))
+                              || notificationsVisible;
+
+        if (this._summaryState == State.HIDDEN && !mustHideSummary) {
             if (this._backFromAway) {
                 // Immediately set this to false, so that we don't schedule a timeout later
                 this._backFromAway = false;
@@ -1732,7 +1737,7 @@ MessageTray.prototype = {
                 this._showSummary(0);
             }
         } else if (this._summaryState == State.SHOWN) {
-            if (!summaryPinned)
+            if (!summaryPinned || mustHideSummary)
                 this._hideSummary();
             else if (summaryVisibleWithNoHover && !summaryNotificationIsForExpandedSummaryItem)
                 // If we are hiding the summary, we'll collapse the expanded summary item when we are done
@@ -1761,7 +1766,7 @@ MessageTray.prototype = {
             if (haveClickedSummaryItem && !summarySourceIsMainNotificationSource && canShowSummaryBoxPointer && !requestedNotificationStackIsEmpty)
                 this._showSummaryBoxPointer();
         } else if (this._summaryBoxPointerState == State.SHOWN) {
-            if (!haveClickedSummaryItem || !canShowSummaryBoxPointer || wrongSummaryBoxPointer)
+            if (!haveClickedSummaryItem || !canShowSummaryBoxPointer || wrongSummaryBoxPointer || mustHideSummary)
                 this._hideSummaryBoxPointer();
         }
 
@@ -2016,8 +2021,7 @@ MessageTray.prototype = {
     },
 
     _hideSummaryCompleted: function() {
-        this._expandedSummaryItem = null;
-        this._expandedSummaryItemTitleWidth = this._summaryItemTitleWidth;
+        this._setExpandedSummaryItem(null);
     },
 
     _showSummaryBoxPointer: function() {
