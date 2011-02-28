@@ -1,12 +1,11 @@
-#ifndef __CLUTTER_KEYSYMS_TABLE_H__
-#define __CLUTTER_KEYSYMS_TABLE_H__
+#include <glib.h>
 
-/* Code below from GDK, which contains following comment; 
+/* Code below from GDK, which contains following comment:
  *
  * Thanks to Markus G. Kuhn <mkuhn@acm.org> for the ksysym<->Unicode
  * mapping functions, from the xterm sources.
  */
-struct {
+static const struct {
   unsigned short keysym;
   unsigned short ucs;
 } clutter_keysym_to_unicode_tab[] = {
@@ -801,7 +800,7 @@ struct {
   /* Following items added to GTK, not in the xterm table */
 
   /* Numeric keypad */
-  
+
   { 0xFF80 /* Space */, ' ' },
   { 0xFFAA /* Multiply */, '*' },
   { 0xFFAB /* Add */, '+' },
@@ -819,9 +818,56 @@ struct {
   { 0xFFB7 /* 7 */, '7' },
   { 0xFFB8 /* 8 */, '8' },
   { 0xFFB9 /* 9 */, '9' },
-  { 0xFFBD /* Equal */, '=' },  
+  { 0xFFBD /* Equal */, '=' },
 
   /* End numeric keypad */
 };
 
-#endif /* __CLUTTER_KEYSYMS_TABLE_H__ */
+static const int clutter_keysym_to_unicode_tab_size =
+  G_N_ELEMENTS (clutter_keysym_to_unicode_tab);
+
+/**
+ * clutter_keysym_to_unicode:
+ * @keyval: a key symbol
+ *
+ * Converts @keyval from a Clutter key symbol to the corresponding
+ * ISO10646 (Unicode) character.
+ *
+ * Return value: a Unicode character, or 0 if there  is no corresponding
+ *   character.
+ */
+guint32
+clutter_keysym_to_unicode (guint keyval)
+{
+  int min = 0;
+  int max = clutter_keysym_to_unicode_tab_size - 1;
+  int mid;
+
+  /* First check for Latin-1 characters (1:1 mapping) */
+  if ((keyval >= 0x0020 && keyval <= 0x007e) ||
+      (keyval >= 0x00a0 && keyval <= 0x00ff))
+    return keyval;
+
+  /* Also check for directly encoded 24-bit UCS characters: */
+  if ((keyval & 0xff000000) == 0x01000000)
+    return keyval & 0x00ffffff;
+
+  /* binary search in table */
+  while (max >= min)
+    {
+      mid = (min + max) / 2;
+
+      if (clutter_keysym_to_unicode_tab[mid].keysym < keyval)
+        min = mid + 1;
+      else if (clutter_keysym_to_unicode_tab[mid].keysym > keyval)
+        max = mid - 1;
+      else
+        {
+          /* found it */
+          return clutter_keysym_to_unicode_tab[mid].ucs;
+        }
+    }
+
+  /* No matching Unicode value found */
+  return 0;
+}

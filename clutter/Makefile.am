@@ -189,6 +189,7 @@ source_c = \
 	$(srcdir)/clutter-group.c 		\
 	$(srcdir)/clutter-input-device.c	\
 	$(srcdir)/clutter-interval.c            \
+	$(srcdir)/clutter-keysyms-table.c	\
 	$(srcdir)/clutter-layout-manager.c	\
 	$(srcdir)/clutter-layout-meta.c		\
 	$(srcdir)/clutter-list-model.c		\
@@ -236,7 +237,6 @@ source_h_priv = \
 	$(srcdir)/clutter-event-translator.h		\
 	$(srcdir)/clutter-event-private.h		\
 	$(srcdir)/clutter-id-pool.h 			\
-	$(srcdir)/clutter-keysyms-table.h		\
 	$(srcdir)/clutter-master-clock.h		\
 	$(srcdir)/clutter-model-private.h		\
 	$(srcdir)/clutter-offscreen-effect-private.h	\
