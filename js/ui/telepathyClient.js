@@ -116,7 +116,7 @@ Source.prototype = {
     __proto__:  MessageTray.Source.prototype,
 
     _init: function(account, conn, channel, contact) {
-        MessageTray.Source.prototype._init.call(this, channel.get_identifier());
+        MessageTray.Source.prototype._init.call(this, contact.get_alias());
 
         this.isChat = true;
 
@@ -126,8 +126,6 @@ Source.prototype = {
         this._conn = conn;
         this._channel = channel;
         this._closedId = this._channel.connect('invalidated', Lang.bind(this, this._channelClosed));
-
-        this._updateAlias();
 
         this._notification = new Notification(this);
         this._notification.setUrgency(MessageTray.Urgency.HIGH);
@@ -151,7 +149,10 @@ Source.prototype = {
     },
 
     _updateAlias: function() {
+        let oldAlias = this.title;
         this.title = this._contact.get_alias();
+        this._notification.appendAliasChange(oldAlias, this.title);
+        this.pushNotification(this._notification);
     },
 
     createNotificationIcon: function() {
@@ -371,6 +372,19 @@ Notification.prototype = {
         let label = this.addBody(text, true);
         label.add_style_class_name('chat-meta-message');
         this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false});
+    },
+
+    appendAliasChange: function(oldAlias, newAlias) {
+        oldAlias = GLib.markup_escape_text(oldAlias, -1);
+        newAlias = GLib.markup_escape_text(newAlias, -1);
+
+        /* Translators: this is the other person changing their old IM name to their new
+           IM name. */
+        let message = '<i>' + _("%s is now known as %s").format(oldAlias, newAlias) + '</i>';
+        let label = this.addBody(message, true);
+        label.add_style_class_name('chat-meta-message');
+        this._history.unshift({ actor: label, time: (Date.now() / 1000), realMessage: false });
+        this.update(newAlias, null, { customContent: true });
     },
 
     _onEntryActivated: function() {
