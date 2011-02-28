@@ -844,12 +844,13 @@ Source.prototype = {
         return this._iconBin;
     },
 
-    notify: function(notification) {
+    pushNotification: function(notification) {
         if (this.notification) {
             this.notification.disconnect(this._notificationClickedId);
             this.notification.disconnect(this._notificationDestroyedId);
         }
 
+        // FIXME: Right now, we don't save multiple notifications.
         this.notification = notification;
 
         this._notificationClickedId = notification.connect('clicked', Lang.bind(this, this.open));
@@ -862,7 +863,10 @@ Source.prototype = {
                     this._notificationRemoved();
                 }
             }));
+    },
 
+    notify: function(notification) {
+        this.pushNotification(notification);
         this.emit('notify', notification);
     },
 
