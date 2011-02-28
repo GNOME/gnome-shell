@@ -3995,6 +3995,20 @@ move_attached_dialog (MetaWindow *window,
   return FALSE;
 }
 
+/**
+ * meta_window_get_monitor:
+ * @window: a #MetaWindow
+ *
+ * Gets index of the monitor that this window is on.
+ *
+ * Return Value: The index of the monitor in the screens monitor list
+ */
+int
+meta_window_get_monitor (MetaWindow *window)
+{
+  return window->monitor->number;
+}
+
 void
 meta_window_update_monitor (MetaWindow *window)
 {
