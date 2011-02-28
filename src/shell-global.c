@@ -1400,44 +1400,12 @@ shell_global_get_monitors (ShellGlobal *global)
 MetaRectangle *
 shell_global_get_primary_monitor (ShellGlobal  *global)
 {
-  GdkScreen *screen = shell_global_get_gdk_screen (global);
-  GdkRectangle gdk_rect;
+  MetaScreen *screen = shell_global_get_screen (global);
   MetaRectangle rect;
   gint primary = 0;
 
-  /* gdk_screen_get_primary_monitor is only present in gtk-2.20+
-   * and is in a useable state (supports heuristics and fallback modes)
-   * starting with 2.20.1
-   */
-#if !GTK_CHECK_VERSION (2, 20, 1)
-  gint i;
-  gchar *output_name = NULL;
-  gint num_monitors = gdk_screen_get_n_monitors (screen);
-
-  for (i = 0; i < num_monitors; i++)
-    {
-      /* Prefer the laptop's internal screen if present */
-      output_name = gdk_screen_get_monitor_plug_name (screen, i);
-      if (output_name)
-        {
-          gboolean is_lvds = g_ascii_strncasecmp (output_name, "LVDS", 4) == 0;
-          g_free (output_name);
-          if (is_lvds)
-            {
-              primary = i;
-              break;
-            }
-        }
-    }
-#else
-  primary = gdk_screen_get_primary_monitor (screen);
-#endif
-
-  gdk_screen_get_monitor_geometry (screen, primary, &gdk_rect);
-  rect.x = gdk_rect.x;
-  rect.y = gdk_rect.y;
-  rect.width = gdk_rect.width;
-  rect.height = gdk_rect.height;
+  primary = meta_screen_get_primary_monitor (screen);
+  meta_screen_get_monitor_geometry (screen, primary, &rect);
 
   return meta_rectangle_copy (&rect);
 }

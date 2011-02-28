@@ -192,7 +192,7 @@ function start() {
     // Attempt to become a PolicyKit authentication agent
     PolkitAuthenticationAgent.init()
 
-    global.gdk_screen.connect('monitors-changed', _relayout);
+    global.screen.connect('monitors-changed', _relayout);
 
     ExtensionSystem.init();
     ExtensionSystem.loadExtensions();

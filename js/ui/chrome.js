@@ -36,8 +36,8 @@ Chrome.prototype = {
 
         this._trackedActors = [];
 
-        global.gdk_screen.connect('monitors-changed',
-                                  Lang.bind(this, this._monitorsChanged));
+        global.screen.connect('monitors-changed',
+                              Lang.bind(this, this._monitorsChanged));
         global.screen.connect('restacked',
                               Lang.bind(this, this._windowsRestacked));
 
