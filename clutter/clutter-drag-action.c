@@ -73,8 +73,8 @@ struct _ClutterDragActionPrivate
 {
   ClutterStage *stage;
 
-  gfloat x_drag_threshold;
-  gfloat y_drag_threshold;
+  gint x_drag_threshold;
+  gint y_drag_threshold;
   ClutterActor *drag_handle;
   ClutterDragAxis drag_axis;
 
@@ -127,6 +127,34 @@ static gboolean on_captured_event (ClutterActor      *stage,
                                    ClutterDragAction *action);
 
 G_DEFINE_TYPE (ClutterDragAction, clutter_drag_action, CLUTTER_TYPE_ACTION);
+
+static void
+get_drag_threshold (ClutterDragAction *action,
+                    gint              *x_threshold,
+                    gint              *y_threshold)
+{
+  ClutterDragActionPrivate *priv = action->priv;
+  ClutterSettings *settings = clutter_settings_get_default ();
+  gint x_res, y_res, default_threshold;
+
+  g_object_get (settings, "dnd-drag-threshold", &default_threshold, NULL);
+
+  if (priv->x_drag_threshold < 0)
+    x_res = default_threshold;
+  else
+    x_res = priv->x_drag_threshold;
+
+  if (priv->y_drag_threshold < 0)
+    y_res = default_threshold;
+  else
+    y_res = priv->y_drag_threshold;
+
+  if (x_threshold != NULL)
+    *x_threshold = x_res;
+
+  if (y_threshold != NULL)
+    *y_threshold = y_res;
+}
 
 static void
 emit_drag_begin (ClutterDragAction *action,
@@ -191,8 +219,12 @@ emit_drag_motion (ClutterDragAction *action,
 
   if (priv->emit_delayed_press)
     {
-      if (ABS (delta_x) >= priv->x_drag_threshold ||
-          ABS (delta_y) >= priv->y_drag_threshold)
+      gint x_drag_threshold, y_drag_threshold;
+
+      get_drag_threshold (action, &x_drag_threshold, &y_drag_threshold);
+
+      if (ABS (delta_x) >= x_drag_threshold ||
+          ABS (delta_y) >= y_drag_threshold)
         {
           priv->emit_delayed_press = FALSE;
 
@@ -387,13 +419,15 @@ clutter_drag_action_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_X_DRAG_THRESHOLD:
-      clutter_drag_action_set_drag_threshold (action, g_value_get_uint (value),
+      clutter_drag_action_set_drag_threshold (action,
+                                              g_value_get_int (value),
                                               priv->y_drag_threshold);
       break;
 
     case PROP_Y_DRAG_THRESHOLD:
-      clutter_drag_action_set_drag_threshold (action, priv->x_drag_threshold,
-                                              g_value_get_uint (value));
+      clutter_drag_action_set_drag_threshold (action,
+                                              priv->x_drag_threshold,
+                                              g_value_get_int (value));
       break;
 
     case PROP_DRAG_HANDLE:
@@ -420,11 +454,21 @@ clutter_drag_action_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_X_DRAG_THRESHOLD:
-      g_value_set_uint (value, priv->x_drag_threshold);
+      {
+        gint threshold;
+
+        get_drag_threshold (CLUTTER_DRAG_ACTION (gobject), &threshold, NULL);
+        g_value_set_int (value, threshold);
+      }
       break;
 
     case PROP_Y_DRAG_THRESHOLD:
-      g_value_set_uint (value, priv->y_drag_threshold);
+      {
+        gint threshold;
+
+        get_drag_threshold (CLUTTER_DRAG_ACTION (gobject), NULL, &threshold);
+        g_value_set_int (value, threshold);
+      }
       break;
 
     case PROP_DRAG_HANDLE:
@@ -481,42 +525,58 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
   /**
    * ClutterDragAction:x-drag-threshold:
    *
-   * The horizontal threshold, in pixels, that begins a drag action
+   * The horizontal threshold, in pixels, that the cursor must travel
+   * in order to begin a drag action.
    *
-   * When set to a non-zero value, #ClutterDragAction will only emit
+   * When set to a positive value, #ClutterDragAction will only emit
    * #ClutterDragAction::drag-begin if the pointer has moved
    * horizontally at least of the given amount of pixels since
-   * the button press event
+   * the button press event.
+   *
+   * When set to -1, #ClutterDragAction will use the default threshold
+   * stored in the #ClutterSettings:dnd-drag-threshold property of
+   * #ClutterSettings.
+   *
+   * When read, this property will always return a valid drag
+   * threshold, either as set or the default one.
    *
    * Since: 1.4
    */
   drag_props[PROP_X_DRAG_THRESHOLD] =
-    g_param_spec_uint ("x-drag-threshold",
-                       P_("Horizontal Drag Threshold"),
-                       P_("The horizontal amount of pixels required to start dragging"),
-                       0, G_MAXUINT,
-                       0,
-                       CLUTTER_PARAM_READWRITE);
+    g_param_spec_int ("x-drag-threshold",
+                      P_("Horizontal Drag Threshold"),
+                      P_("The horizontal amount of pixels required to start dragging"),
+                      -1, G_MAXINT,
+                      0,
+                      CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterDragAction:y-drag-threshold:
    *
-   * The vertical threshold, in pixels, that begins a drag action
+   * The vertical threshold, in pixels, that the cursor must travel
+   * in order to begin a drag action.
    *
-   * When set to a non-zero value, #ClutterDragAction will only emit
+   * When set to a positive value, #ClutterDragAction will only emit
    * #ClutterDragAction::drag-begin if the pointer has moved
    * vertically at least of the given amount of pixels since
-   * the button press event
+   * the button press event.
+   *
+   * When set to -1, #ClutterDragAction will use the value stored
+   * in the #ClutterSettings:dnd-drag-threshold property of
+   * #ClutterSettings.
+   *
+   * When read, this property will always return a valid drag
+   * threshold, either as set or the default one.
    *
    * Since: 1.4
    */
   drag_props[PROP_Y_DRAG_THRESHOLD] =
-    g_param_spec_uint ("y-drag-threshold",
-                       P_("Vertical Drag Threshold"),
-                       P_("The vertical amount of pixels required to start dragging"),
-                       0, G_MAXUINT,
-                       0,
-                       CLUTTER_PARAM_READWRITE);
+    g_param_spec_int ("y-drag-threshold",
+                      P_("Vertical Drag Threshold"),
+                      P_("The vertical amount of pixels required to start dragging"),
+                      -1, G_MAXINT,
+                      0,
+                      CLUTTER_PARAM_READWRITE);
 
   /**
    * ClutterDragAction:drag-handle:
@@ -687,18 +747,24 @@ clutter_drag_action_new (void)
 /**
  * clutter_drag_action_set_drag_threshold:
  * @action: a #ClutterDragAction
- * @x_threshold: a distance on the horizontal axis, in pixels
- * @y_threshold: a distance on the vertical axis, in pixels
+ * @x_threshold: a distance on the horizontal axis, in pixels, or
+ *   -1 to use the default drag threshold from #ClutterSettings
+ * @y_threshold: a distance on the vertical axis, in pixels, or
+ *   -1 to use the default drag threshold from #ClutterSettings
  *
  * Sets the horizontal and vertical drag thresholds that must be
- * cleared by the pointer before @action can begin the dragging
+ * cleared by the pointer before @action can begin the dragging.
+ *
+ * If @x_threshold or @y_threshold are set to -1 then the default
+ * drag threshold stored in the #ClutterSettings:dnd-drag-threshold
+ * property of #ClutterSettings will be used.
  *
  * Since: 1.4
  */
 void
 clutter_drag_action_set_drag_threshold (ClutterDragAction *action,
-                                        guint              x_threshold,
-					guint              y_threshold)
+                                        gint               x_threshold,
+                                        gint               y_threshold)
 {
   ClutterDragActionPrivate *priv;
   GObject *self;
@@ -735,22 +801,23 @@ clutter_drag_action_set_drag_threshold (ClutterDragAction *action,
  * @y_threshold: (out): return location for the vertical drag
  *   threshold value, in pixels
  *
- * Retrieves the values set by clutter_drag_action_set_drag_threshold()
+ * Retrieves the values set by clutter_drag_action_set_drag_threshold().
+ *
+ * If the #ClutterDragAction:x-drag-threshold property or the
+ * #ClutterDragAction:y-drag-threshold property have been set to -1 then
+ * this function will return the default drag threshold value as stored
+ * by the #ClutterSettings:dnd-drag-threshold property of #ClutterSettings.
  *
  * Since: 1.4
  */
 void
 clutter_drag_action_get_drag_threshold (ClutterDragAction *action,
                                         guint             *x_threshold,
-					guint             *y_threshold)
+                                        guint             *y_threshold)
 {
   g_return_if_fail (CLUTTER_IS_DRAG_ACTION (action));
 
-  if (x_threshold)
-    *x_threshold = action->priv->x_drag_threshold;
-
-  if (y_threshold)
-    *y_threshold = action->priv->y_drag_threshold;
+  get_drag_threshold (action, x_threshold, y_threshold);
 }
 
 /**
