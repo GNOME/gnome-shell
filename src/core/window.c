@@ -1085,6 +1085,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
       meta_window_update_struts (window);
     }
 
+  g_signal_emit_by_name (window->screen, "window-entered-monitor", window->monitor->number, window);
+
   /* Must add window to stack before doing move/resize, since the
    * window might have fullscreen size (i.e. should have been
    * fullscreen'd; acrobat is one such braindead case; it withdraws
@@ -1464,6 +1466,13 @@ meta_window_unmanage (MetaWindow  *window,
       tmp = tmp->next;
     }
 #endif
+
+  if (window->monitor)
+    {
+      g_signal_emit_by_name (window->screen, "window-left-monitor",
+                             window->monitor->number, window);
+      window->monitor = NULL;
+    }
 
   if (!window->override_redirect)
     meta_stack_remove (window->screen->stack, window);
@@ -4104,6 +4113,10 @@ meta_window_update_monitor (MetaWindow *window)
           meta_window_is_on_primary_monitor (window)  &&
           window->screen->active_workspace != window->workspace)
         meta_window_change_workspace (window, window->screen->active_workspace);
+
+      if (old)
+        g_signal_emit_by_name (window->screen, "window-left-monitor", old->number, window);
+      g_signal_emit_by_name (window->screen, "window-entered-monitor", window->monitor->number, window);
     }
 }
 

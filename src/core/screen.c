@@ -84,6 +84,8 @@ enum
   WORKSPACE_ADDED,
   WORKSPACE_REMOVED,
   WORKSPACE_SWITCHED,
+  WINDOW_ENTERED_MONITOR,
+  WINDOW_LEFT_MONITOR,
   STARTUP_SEQUENCE_CHANGED,
   WORKAREAS_CHANGED,
   MONITORS_CHANGED,
@@ -200,6 +202,28 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_INT,
                   G_TYPE_INT,
                   MUTTER_TYPE_MOTION_DIRECTION);
+
+  screen_signals[WINDOW_ENTERED_MONITOR] =
+    g_signal_new ("window-entered-monitor",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  _mutter_marshal_VOID__INT_OBJECT,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_INT,
+                  META_TYPE_WINDOW);
+
+  screen_signals[WINDOW_LEFT_MONITOR] =
+    g_signal_new ("window-left-monitor",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  _mutter_marshal_VOID__INT_OBJECT,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_INT,
+                  META_TYPE_WINDOW);
 
   screen_signals[STARTUP_SEQUENCE_CHANGED] =
     g_signal_new ("startup-sequence-changed",
@@ -2821,6 +2845,21 @@ meta_screen_resize (MetaScreen *screen,
 
   screen->rect.width = width;
   screen->rect.height = height;
+
+  /* Clear monitor for all windows on this screen, as it will become
+   * invalid. */
+  windows = meta_display_list_windows (screen->display,
+                                       META_LIST_INCLUDE_OVERRIDE_REDIRECT);
+  for (tmp = windows; tmp != NULL; tmp = tmp->next)
+    {
+      MetaWindow *window = tmp->data;
+
+      if (window->screen == screen)
+        {
+          g_signal_emit_by_name (screen, "window-left-monitor", window->monitor->number, window);
+          window->monitor = NULL;
+        }
+    }
 
   reload_monitor_infos (screen);
   set_desktop_geometry_hint (screen);
