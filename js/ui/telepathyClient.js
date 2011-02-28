@@ -143,6 +143,10 @@ Source.prototype = {
         this._notifyAvatarId = this._contact.connect('notify::avatar-file', Lang.bind(this, this._updateAvatarIcon));
         this._presenceChangedId = this._contact.connect('presence-changed', Lang.bind(this, this._presenceChanged));
 
+        // Add ourselves as a source.
+        Main.messageTray.add(this);
+        this.pushNotification(this._notification);
+
         this._displayPendingMessages();
     },
 
@@ -216,9 +220,6 @@ Source.prototype = {
     },
 
     notify: function() {
-        if (!Main.messageTray.contains(this))
-            Main.messageTray.add(this);
-
         MessageTray.Source.prototype.notify.call(this, this._notification);
     },
 
