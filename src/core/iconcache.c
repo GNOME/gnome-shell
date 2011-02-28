@@ -352,16 +352,10 @@ apply_mask (GdkPixbuf *pixbuf,
       j = 0;
       while (j < w)
         {
-          guchar *s = src + i * src_stride + j * 3;
+          guchar *s = src + i * src_stride + j * 4;
           guchar *d = dest + i * dest_stride + j * 4;
 
-          /* s[0] == s[1] == s[2], they are 255 if the bit was set, 0
-           * otherwise
-           */
-          if (s[0] == 0)
-            d[3] = 0;   /* transparent */
-          else
-            d[3] = 255; /* opaque */
+          d[3] = s[3];
 
           ++j;
         }
