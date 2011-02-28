@@ -15,8 +15,6 @@ const Main = imports.ui.main;
 
 const DISABLED_OPEN_SEARCH_PROVIDERS_KEY = 'disabled-open-search-providers';
 
-const RESULT_ICON_SIZE = 48;
-
 // Not currently referenced by the search API, but
 // this enumeration can be useful for provider
 // implementations.
@@ -165,8 +163,9 @@ SearchProvider.prototype = {
      * getResultInfo:
      * @id: Result identifier string
      *
-     * Return an object with 'id', 'name', (both strings) and 'icon' (Clutter.Texture)
-     * properties which describe the given search result.
+     * Return an object with 'id', 'name', (both strings) and 'createIcon'
+     * (function(size) returning a Clutter.Texture) properties which describe
+     * the given search result.
      */
     getResultMeta: function(id) {
         throw new Error('Not implemented');

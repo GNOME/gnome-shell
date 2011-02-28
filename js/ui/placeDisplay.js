@@ -415,7 +415,10 @@ PlaceSearchProvider.prototype = {
             return null;
         return { 'id': resultId,
                  'name': placeInfo.name,
-                 'icon': placeInfo.iconFactory(Search.RESULT_ICON_SIZE) };
+                 'createIcon': function(size) {
+                                   return placeInfo.iconFactory(size);
+                               }
+               };
     },
 
     activateResult: function(id, params) {

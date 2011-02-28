@@ -36,9 +36,7 @@ SearchResult.prototype = {
                                    reactive: true,
                                    track_hover: true });
             let icon = new IconGrid.BaseIcon(this.metaInfo['name'],
-                                             { createIcon: Lang.bind(this, function(size) {
-                                                 return this.metaInfo['icon'];
-                                             })});
+                                             { createIcon: this.metaInfo['createIcon'] });
             content.set_child(icon.actor);
         }
         this._content = content;

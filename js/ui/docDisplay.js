@@ -26,7 +26,10 @@ DocSearchProvider.prototype = {
             return null;
         return { 'id': resultId,
                  'name': docInfo.name,
-                 'icon': docInfo.createIcon(Search.RESULT_ICON_SIZE)};
+                 'createIcon': function(size) {
+                                   return docInfo.createIcon(size);
+                               }
+               };
     },
 
     activateResult: function(id, params) {

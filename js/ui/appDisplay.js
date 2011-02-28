@@ -251,7 +251,10 @@ BaseAppSearchProvider.prototype = {
             return null;
         return { 'id': resultId,
                  'name': app.get_name(),
-                 'icon': app.create_icon_texture(Search.RESULT_ICON_SIZE)};
+                 'createIcon': function(size) {
+                                   return app.create_icon_texture(size);
+                               }
+               };
     },
 
     activateResult: function(id, params) {
