@@ -175,6 +175,7 @@ source_c = \
 	$(srcdir)/clutter-feature.c 		\
 	$(srcdir)/clutter-fixed.c		\
 	$(srcdir)/clutter-fixed-layout.c	\
+	$(srcdir)/clutter-flatten-effect.c	\
 	$(srcdir)/clutter-flow-layout.c		\
 	$(srcdir)/clutter-frame-source.c	\
 	$(srcdir)/clutter-group.c 		\
@@ -227,6 +228,7 @@ source_h_priv = \
 	$(srcdir)/clutter-effect-private.h		\
 	$(srcdir)/clutter-event-translator.h		\
 	$(srcdir)/clutter-event-private.h		\
+	$(srcdir)/clutter-flatten-effect.h		\
 	$(srcdir)/clutter-id-pool.h 			\
 	$(srcdir)/clutter-master-clock.h		\
 	$(srcdir)/clutter-model-private.h		\

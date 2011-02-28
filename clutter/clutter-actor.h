@@ -117,6 +117,26 @@ typedef enum
 } ClutterActorFlags;
 
 /**
+ * ClutterOffscreenRedirect:
+ * @CLUTTER_OFFSCREEN_REDIRECT_NEVER: Never redirect the actor to an
+ *   offscreen buffer.
+ * @CLUTTER_OFFSCREEN_REDIRECT_ALWAYS: Always redirect the actor to an
+ *   offscreen buffer.
+ * @CLUTTER_OFFSCREEN_REDIRECT_OPACITY_ONLY: Only redirect the actor if
+ *   it is semi-transparent.
+ *
+ * Possible values to pass to clutter_actor_set_offscreen_redirect().
+ *
+ * Since: 1.8
+ */
+typedef enum
+{
+  CLUTTER_OFFSCREEN_REDIRECT_NEVER,
+  CLUTTER_OFFSCREEN_REDIRECT_ALWAYS,
+  CLUTTER_OFFSCREEN_REDIRECT_OPACITY_ONLY
+} ClutterOffscreenRedirect;
+
+/**
  * ClutterAllocationFlags:
  * @CLUTTER_ALLOCATION_NONE: No flag set
  * @CLUTTER_ABSOLUTE_ORIGIN_CHANGED: Whether the absolute origin of the
@@ -424,6 +444,10 @@ guint8                clutter_actor_get_opacity               (ClutterActor     
 guint8                clutter_actor_get_paint_opacity         (ClutterActor          *self);
 gboolean              clutter_actor_get_paint_visibility      (ClutterActor          *self);
 
+void                  clutter_actor_set_offscreen_redirect    (ClutterActor          *self,
+                                                               ClutterOffscreenRedirect redirect);
+ClutterOffscreenRedirect
+                      clutter_actor_get_offscreen_redirect    (ClutterActor          *self);
 
 void                  clutter_actor_set_name                  (ClutterActor          *self,
                                                                const gchar           *name);

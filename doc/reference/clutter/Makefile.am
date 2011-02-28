@@ -122,7 +122,8 @@ HTML_IMAGES=\
 	event-flow.png \
 	flow-layout-horizontal.png \
 	flow-layout-vertical.png \
-	path-alpha-func.png
+	path-alpha-func.png \
+	offscreen-redirect.png
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
 # e.g. content_files=running.sgml building.sgml changes-2.0.sgml
@@ -179,4 +180,5 @@ EXTRA_DIST += \
 	event-flow.png \
 	flow-layout-horizontal.png \
 	flow-layout-vertical.png \
-	path-alpha-func.png
+	path-alpha-func.png \
+	offscreen-redirect.png

@@ -299,6 +299,7 @@
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
+#include "clutter-flatten-effect.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 #include "clutter-profile.h"
@@ -442,6 +443,12 @@ struct _ClutterActorPrivate
   guint8 opacity;
   gint   opacity_override;
 
+  ClutterOffscreenRedirect offscreen_redirect;
+
+  /* This is an internal effect used to implement the
+     offscreen-redirect property */
+  ClutterEffect  *flatten_effect;
+
   ClutterActor   *parent_actor;
   GList          *children;
   gint            n_children;
@@ -544,6 +551,8 @@ enum
   PROP_CLIP_TO_ALLOCATION,
 
   PROP_OPACITY,
+
+  PROP_OFFSCREEN_REDIRECT,
 
   PROP_VISIBLE,
   PROP_MAPPED,
@@ -3017,6 +3026,10 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_opacity (actor, g_value_get_uint (value));
       break;
 
+    case PROP_OFFSCREEN_REDIRECT:
+      clutter_actor_set_offscreen_redirect (actor, g_value_get_enum (value));
+      break;
+
     case PROP_NAME:
       clutter_actor_set_name (actor, g_value_get_string (value));
       break;
@@ -3308,6 +3321,10 @@ clutter_actor_get_property (GObject    *object,
       g_value_set_uint (value, priv->opacity);
       break;
 
+    case PROP_OFFSCREEN_REDIRECT:
+      g_value_set_enum (value, priv->offscreen_redirect);
+      break;
+
     case PROP_NAME:
       g_value_set_string (value, priv->name);
       break;
@@ -3542,6 +3559,12 @@ clutter_actor_dispose (GObject *object)
     {
       g_object_unref (priv->effects);
       priv->effects = NULL;
+    }
+
+  if (priv->flatten_effect != NULL)
+    {
+      g_object_unref (priv->flatten_effect);
+      priv->flatten_effect = NULL;
     }
 
   g_signal_emit (self, actor_signals[DESTROY], 0);
@@ -4015,6 +4038,26 @@ clutter_actor_class_init (ClutterActorClass *klass)
                              CLUTTER_PARAM_READWRITE);
   obj_props[PROP_OPACITY] = pspec;
   g_object_class_install_property (object_class, PROP_OPACITY, pspec);
+
+  /**
+   * ClutterActor:offscreen-redirect:
+   *
+   * Whether to flatten the actor into a single image. See
+   * clutter_actor_set_offscreen_redirect() for details.
+   *
+   * Since: 1.8
+   */
+  pspec = g_param_spec_enum ("offscreen-redirect",
+                             P_("Offscreen redirect"),
+                             P_("Whether to flatten the actor into a "
+                                "single image"),
+                             CLUTTER_TYPE_OFFSCREEN_REDIRECT,
+                             CLUTTER_OFFSCREEN_REDIRECT_NEVER,
+                             CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_OFFSCREEN_REDIRECT] = pspec;
+  g_object_class_install_property (object_class,
+                                   PROP_OFFSCREEN_REDIRECT,
+                                   pspec);
 
   /**
    * ClutterActor:visible:
@@ -5061,6 +5104,7 @@ clutter_actor_init (ClutterActor *self)
   priv->parent_actor = NULL;
   priv->has_clip = FALSE;
   priv->opacity = 0xff;
+  priv->offscreen_redirect = CLUTTER_OFFSCREEN_REDIRECT_NEVER;
   priv->id = _clutter_context_acquire_id (self);
   priv->pick_id = -1;
   priv->scale_x = 1.0;
@@ -7259,7 +7303,16 @@ clutter_actor_set_opacity (ClutterActor *self,
     {
       priv->opacity = opacity;
 
-      clutter_actor_queue_redraw (self);
+      /* Queue a redraw from the flatten effect so that it can use
+         its cached image if available instead of having to redraw the
+         actual actor. If it doesn't end up using the FBO then the
+         effect is still able to continue the paint anyway. If there
+         is no flatten effect yet then this is equivalent to queueing
+         a full redraw */
+      _clutter_actor_queue_redraw_full (self,
+                                        0, /* flags */
+                                        NULL, /* clip */
+                                        priv->flatten_effect);
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_OPACITY]);
     }
@@ -7348,6 +7401,131 @@ clutter_actor_get_opacity (ClutterActor *self)
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
   return self->priv->opacity;
+}
+
+/**
+ * clutter_actor_set_offscreen_redirect:
+ * @self: A #ClutterActor
+ * @redirect: New offscreen redirect value for the actor.
+ *
+ * Sets whether to redirect the actor into an offscreen image. The
+ * offscreen image is used to flatten the actor into a single image
+ * while painting for two main reasons. Firstly, when the actor is
+ * painted a second time without any of its contents changing it can
+ * simply repaint the cached image without descending further down the
+ * actor hierarchy. Secondly, it will make the opacity look correct
+ * even if there are overlapping primitives in the actor.
+ *
+ * Caching the actor could in some cases be a performance win and in
+ * some cases be a performance lose so it is important to determine
+ * which value is right for an actor before modifying this value. For
+ * example, there is never any reason to flatten an actor that is just
+ * a single texture (such as a ClutterTexture) because it is
+ * effectively already cached in an image so the offscreen would be
+ * redundant. Also if the actor contains primitives that are far apart
+ * with a large transparent area in the middle (such as a large
+ * CluterGroup with a small actor in the top left and a small actor in
+ * the bottom right) then the cached image will contain the entire
+ * image of the large area and the paint will waste time blending all
+ * of the transparent pixels in the middle.
+ *
+ * The default method of implementing opacity on a container simply
+ * forwards on the opacity to all of the children. If the children are
+ * overlapping then it will appear as if they are two separate glassy
+ * objects and there will be a break in the color where they
+ * overlap. By setting the offscreen-redirect to
+ * %CLUTTER_OFFSCREEN_REDIRECT_OPACITY_ONLY it will be as if the two
+ * opaque objects are combined into one and then made transparent
+ * which is usually what is expected.
+ *
+ * The image below demonstrates the difference between the fast
+ * default opacity and the correct but inefficient opacity achieved
+ * through the offscreen redirect. The image shows two Clutter groups,
+ * each containing a red and a green rectangle which overlap. The
+ * opacity on the group is set to 128 (which is 50%). When the
+ * offscreen redirect is not used, the red rectangle can be seen
+ * through the blue rectangle as if the two rectangles were separately
+ * transparent. When the redirect is used the group as a whole is
+ * transparent instead so the red rectangle is not visible where they
+ * overlap.
+ *
+ * <figure id="offscreen-redirect">
+ *   <title>Sample of using an offscreen redirect for transparency</title>
+ *   <graphic fileref="offscreen-redirect.png" format="PNG"/>
+ * </figure>
+ *
+ * The default value is %CLUTTER_OFFSCREEN_REDIRECT_NEVER.
+ *
+ * Since: 1.8
+ */
+void
+clutter_actor_set_offscreen_redirect (ClutterActor *self,
+                                      ClutterOffscreenRedirect redirect)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (priv->offscreen_redirect != redirect)
+    {
+      priv->offscreen_redirect = redirect;
+
+      if (priv->flatten_effect == NULL)
+        {
+          ClutterActorMeta *actor_meta;
+          gint priority;
+
+          priv->flatten_effect = _clutter_flatten_effect_new ();
+          /* Keep a reference to the effect so that we can queue
+             redraws from it */
+          g_object_ref_sink (priv->flatten_effect);
+
+          /* Set the priority of the effect to high so that it will
+             always be applied to the actor first. It uses an internal
+             priority so that it won't be visible to applications */
+          actor_meta = CLUTTER_ACTOR_META (priv->flatten_effect);
+          priority = CLUTTER_ACTOR_META_PRIORITY_INTERNAL_HIGH;
+          _clutter_actor_meta_set_priority (actor_meta, priority);
+
+          /* This will also queue a full redraw of the actor */
+          clutter_actor_add_effect (self, priv->flatten_effect);
+        }
+      else
+        {
+          /* Queue a redraw from the effect so that it can use its
+             cached image if available instead of having to redraw the
+             actual actor. If it doesn't end up using the FBO then the
+             effect is still able to continue the paint anyway */
+          _clutter_actor_queue_redraw_full (self,
+                                            0, /* flags */
+                                            NULL, /* clip */
+                                            priv->flatten_effect);
+        }
+
+      g_object_notify_by_pspec (G_OBJECT (self),
+                                obj_props[PROP_OFFSCREEN_REDIRECT]);
+    }
+}
+
+/**
+ * clutter_actor_get_offscreen_redirect:
+ * @self: a #ClutterActor
+ *
+ * Retrieves whether to redirect the actor to an offscreen buffer, as
+ * set by clutter_actor_set_offscreen_redirect().
+ *
+ * Return value: the value of the offscreen-redirect property of the actor
+ *
+ * Since: 1.8
+ */
+ClutterOffscreenRedirect
+clutter_actor_get_offscreen_redirect (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
+
+  return self->priv->offscreen_redirect;
 }
 
 /**
