@@ -43,6 +43,14 @@ gboolean
 cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
                            GError **error);
 
+#define cogl_framebuffer_get_width cogl_framebuffer_get_width_EXP
+int
+cogl_framebuffer_get_width (CoglFramebuffer *framebuffer);
+
+#define cogl_framebuffer_get_height cogl_framebuffer_get_height_EXP
+int
+cogl_framebuffer_get_height (CoglFramebuffer *framebuffer);
+
 #define cogl_framebuffer_swap_buffers cogl_framebuffer_swap_buffers_EXP
 void
 cogl_framebuffer_swap_buffers (CoglFramebuffer *framebuffer);

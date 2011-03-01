@@ -743,8 +743,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
       unsigned long mask;
       int xerror;
 
-      width = _cogl_framebuffer_get_width (framebuffer);
-      height = _cogl_framebuffer_get_height (framebuffer);
+      width = cogl_framebuffer_get_width (framebuffer);
+      height = cogl_framebuffer_get_height (framebuffer);
 
       _cogl_renderer_xlib_trap_errors (display->renderer, &state);
 

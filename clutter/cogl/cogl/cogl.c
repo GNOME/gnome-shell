@@ -528,7 +528,7 @@ _cogl_read_pixels_with_rowstride (int x,
                                  framebuffer,
                                  0);
 
-  framebuffer_height = _cogl_framebuffer_get_height (framebuffer);
+  framebuffer_height = cogl_framebuffer_get_height (framebuffer);
 
   /* The y co-ordinate should be given in OpenGL's coordinate system
    * so 0 is the bottom row
