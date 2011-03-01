@@ -249,12 +249,7 @@ SearchResults.prototype = {
                                           y_fill: true });
         titleButton.connect('clicked', Lang.bind(this, function () { this._onHeaderClicked(provider); }));
         providerBox.add(titleButton);
-        let titleBox = new St.BoxLayout();
-        titleButton.set_child(titleBox);
-        let title = new St.Label({ text: provider.title });
-        let count = new St.Label();
-        titleBox.add(title, { expand: true });
-        titleBox.add(count);
+        titleButton.set_child(new St.Label({ text: provider.title }));
 
         let resultDisplayBin = new St.Bin({ style_class: 'search-section-results',
                                             x_fill: true,
@@ -267,8 +262,7 @@ SearchResults.prototype = {
         resultDisplayBin.set_child(resultDisplay.actor);
 
         this._providerMeta.push({ actor: providerBox,
-                                  resultDisplay: resultDisplay,
-                                  count: count });
+                                  resultDisplay: resultDisplay });
         this._content.add(providerBox);
     },
 
@@ -322,7 +316,6 @@ SearchResults.prototype = {
             let meta = this._metaForProvider(provider);
             meta.actor.show();
             meta.resultDisplay.renderResults(providerResults, terms);
-            meta.count.set_text('' + providerResults.length);
         }
 
         if (this._selectedOpenSearchButton == -1)
