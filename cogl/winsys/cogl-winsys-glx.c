@@ -41,6 +41,9 @@
 #include "cogl-display-xlib-private.h"
 #include "cogl-display-glx-private.h"
 #include "cogl-private.h"
+#include "cogl-texture-2d-private.h"
+#include "cogl-texture-rectangle-private.h"
+#include "cogl-pipeline-opengl-private.h"
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -87,6 +90,17 @@ typedef struct _CoglSwapBuffersNotifyEntry
   unsigned int id;
 } CoglSwapBuffersNotifyEntry;
 
+typedef struct _CoglTexturePixmapGLX
+{
+  GLXPixmap glx_pixmap;
+  gboolean has_mipmap_space;
+  gboolean can_mipmap;
+
+  CoglHandle glx_tex;
+
+  gboolean bind_tex_image_queued;
+  gboolean pixmap_bound;
+} CoglTexturePixmapGLX;
 
 /* Define a set of arrays containing the functions required from GL
    for each winsys feature */
@@ -1326,4 +1340,539 @@ _cogl_winsys_xlib_get_visual_info (void)
     return NULL;
 
   return glXGetVisualFromFBConfig (xlib_renderer->xdpy, glx_display->fbconfig);
+}
+
+static gboolean
+get_fbconfig_for_depth (CoglContext *context,
+                        unsigned int depth,
+                        GLXFBConfig *fbconfig_ret,
+                        gboolean *can_mipmap_ret)
+{
+  CoglRendererXlib *xlib_renderer;
+  CoglDisplayGLX *glx_display;
+  Display *dpy;
+  GLXFBConfig *fbconfigs;
+  int n_elements, i;
+  int db, stencil, alpha, mipmap, rgba, value;
+  int spare_cache_slot = 0;
+  gboolean found = FALSE;
+
+  xlib_renderer = context->display->renderer->winsys;
+  glx_display = context->display->winsys;
+
+  /* Check if we've already got a cached config for this depth */
+  for (i = 0; i < COGL_GLX_N_CACHED_CONFIGS; i++)
+    if (glx_display->glx_cached_configs[i].depth == -1)
+      spare_cache_slot = i;
+    else if (glx_display->glx_cached_configs[i].depth == depth)
+      {
+        *fbconfig_ret = glx_display->glx_cached_configs[i].fb_config;
+        *can_mipmap_ret = glx_display->glx_cached_configs[i].can_mipmap;
+        return glx_display->glx_cached_configs[i].found;
+      }
+
+  dpy = xlib_renderer->xdpy;
+
+  fbconfigs = glXGetFBConfigs (dpy, DefaultScreen (dpy), &n_elements);
+
+  db = G_MAXSHORT;
+  stencil = G_MAXSHORT;
+  mipmap = 0;
+  rgba = 0;
+
+  for (i = 0; i < n_elements; i++)
+    {
+      XVisualInfo *vi;
+      int visual_depth;
+
+      vi = glXGetVisualFromFBConfig (dpy, fbconfigs[i]);
+      if (vi == NULL)
+        continue;
+
+      visual_depth = vi->depth;
+
+      XFree (vi);
+
+      if (visual_depth != depth)
+        continue;
+
+      glXGetFBConfigAttrib (dpy,
+                            fbconfigs[i],
+                            GLX_ALPHA_SIZE,
+                            &alpha);
+      glXGetFBConfigAttrib (dpy,
+                            fbconfigs[i],
+                            GLX_BUFFER_SIZE,
+                            &value);
+      if (value != depth && (value - alpha) != depth)
+        continue;
+
+      value = 0;
+      if (depth == 32)
+        {
+          glXGetFBConfigAttrib (dpy,
+                                fbconfigs[i],
+                                GLX_BIND_TO_TEXTURE_RGBA_EXT,
+                                &value);
+          if (value)
+            rgba = 1;
+        }
+
+      if (!value)
+        {
+          if (rgba)
+            continue;
+
+          glXGetFBConfigAttrib (dpy,
+                                fbconfigs[i],
+                                GLX_BIND_TO_TEXTURE_RGB_EXT,
+                                &value);
+          if (!value)
+            continue;
+        }
+
+      glXGetFBConfigAttrib (dpy,
+                            fbconfigs[i],
+                            GLX_DOUBLEBUFFER,
+                            &value);
+      if (value > db)
+        continue;
+
+      db = value;
+
+      glXGetFBConfigAttrib (dpy,
+                            fbconfigs[i],
+                            GLX_STENCIL_SIZE,
+                            &value);
+      if (value > stencil)
+        continue;
+
+      stencil = value;
+
+      /* glGenerateMipmap is defined in the offscreen extension */
+      if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
+        {
+          glXGetFBConfigAttrib (dpy,
+                                fbconfigs[i],
+                                GLX_BIND_TO_MIPMAP_TEXTURE_EXT,
+                                &value);
+
+          if (value < mipmap)
+            continue;
+
+          mipmap =  value;
+        }
+
+      *fbconfig_ret = fbconfigs[i];
+      *can_mipmap_ret = mipmap;
+      found = TRUE;
+    }
+
+  if (n_elements)
+    XFree (fbconfigs);
+
+  glx_display->glx_cached_configs[spare_cache_slot].depth = depth;
+  glx_display->glx_cached_configs[spare_cache_slot].found = found;
+  glx_display->glx_cached_configs[spare_cache_slot].fb_config = *fbconfig_ret;
+  glx_display->glx_cached_configs[spare_cache_slot].can_mipmap = mipmap;
+
+  return found;
+}
+
+static gboolean
+should_use_rectangle (CoglContext *context)
+{
+
+  if (context->rectangle_state == COGL_WINSYS_RECTANGLE_STATE_UNKNOWN)
+    {
+      if (cogl_features_available (COGL_FEATURE_TEXTURE_RECTANGLE))
+        {
+          const char *rect_env;
+
+          /* Use the rectangle only if it is available and either:
+
+             the COGL_PIXMAP_TEXTURE_RECTANGLE environment variable is
+             set to 'force'
+
+             *or*
+
+             the env var is set to 'allow' or not set and NPOTs textures
+             are not available */
+
+          context->rectangle_state =
+            cogl_features_available (COGL_FEATURE_TEXTURE_NPOT) ?
+            COGL_WINSYS_RECTANGLE_STATE_DISABLE :
+            COGL_WINSYS_RECTANGLE_STATE_ENABLE;
+
+          if ((rect_env = g_getenv ("COGL_PIXMAP_TEXTURE_RECTANGLE")) ||
+              /* For compatibility, we'll also look at the old Clutter
+                 environment variable */
+              (rect_env = g_getenv ("CLUTTER_PIXMAP_TEXTURE_RECTANGLE")))
+            {
+              if (g_ascii_strcasecmp (rect_env, "force") == 0)
+                context->rectangle_state =
+                  COGL_WINSYS_RECTANGLE_STATE_ENABLE;
+              else if (g_ascii_strcasecmp (rect_env, "disable") == 0)
+                context->rectangle_state =
+                  COGL_WINSYS_RECTANGLE_STATE_DISABLE;
+              else if (g_ascii_strcasecmp (rect_env, "allow"))
+                g_warning ("Unknown value for COGL_PIXMAP_TEXTURE_RECTANGLE, "
+                           "should be 'force' or 'disable'");
+            }
+        }
+      else
+        context->rectangle_state = COGL_WINSYS_RECTANGLE_STATE_DISABLE;
+    }
+
+  return context->rectangle_state == COGL_WINSYS_RECTANGLE_STATE_ENABLE;
+}
+
+static gboolean
+try_create_glx_pixmap (CoglContext *context,
+                       CoglTexturePixmapX11 *tex_pixmap,
+                       gboolean mipmap)
+{
+  CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;
+  CoglRenderer *renderer;
+  CoglRendererXlib *xlib_renderer;
+  Display *dpy;
+  /* We have to initialize this *opaque* variable because gcc tries to
+   * be too smart for its own good and warns that the variable may be
+   * used uninitialized otherwise. */
+  GLXFBConfig fb_config = (GLXFBConfig)0;
+  int attribs[7];
+  int i = 0;
+  GLenum target;
+  CoglXlibTrapState trap_state;
+
+  renderer = context->display->renderer;
+  xlib_renderer = renderer->winsys;
+  dpy = xlib_renderer->xdpy;
+
+  if (!get_fbconfig_for_depth (context,
+                               tex_pixmap->depth, &fb_config,
+                               &glx_tex_pixmap->can_mipmap))
+    {
+      COGL_NOTE (TEXTURE_PIXMAP, "No suitable FBConfig found for depth %i",
+                 tex_pixmap->depth);
+      return FALSE;
+    }
+
+  if (should_use_rectangle (context))
+    {
+      target = GLX_TEXTURE_RECTANGLE_EXT;
+      glx_tex_pixmap->can_mipmap = FALSE;
+    }
+  else
+    target = GLX_TEXTURE_2D_EXT;
+
+  if (!glx_tex_pixmap->can_mipmap)
+    mipmap = FALSE;
+
+  attribs[i++] = GLX_TEXTURE_FORMAT_EXT;
+
+  if (tex_pixmap->depth == 24)
+    attribs[i++] = GLX_TEXTURE_FORMAT_RGB_EXT;
+  else if (tex_pixmap->depth == 32)
+    attribs[i++] = GLX_TEXTURE_FORMAT_RGBA_EXT;
+  else
+    return FALSE;
+
+  attribs[i++] = GLX_MIPMAP_TEXTURE_EXT;
+  attribs[i++] = mipmap;
+
+  attribs[i++] = GLX_TEXTURE_TARGET_EXT;
+  attribs[i++] = target;
+
+  attribs[i++] = None;
+
+  /* We need to trap errors from glXCreatePixmap because it can
+   * sometimes fail during normal usage. For example on NVidia it gets
+   * upset if you try to create two GLXPixmaps for the same drawable.
+   */
+
+  _cogl_renderer_xlib_trap_errors (renderer, &trap_state);
+
+  glx_tex_pixmap->glx_pixmap = glXCreatePixmap (dpy,
+                                                fb_config,
+                                                tex_pixmap->pixmap,
+                                                attribs);
+  glx_tex_pixmap->has_mipmap_space = mipmap;
+
+  XSync (dpy, False);
+
+  if (_cogl_renderer_xlib_untrap_errors (renderer, &trap_state))
+    {
+      COGL_NOTE (TEXTURE_PIXMAP, "Failed to create pixmap for %p", tex_pixmap);
+      _cogl_renderer_xlib_trap_errors (renderer, &trap_state);
+      glXDestroyPixmap (dpy, glx_tex_pixmap->glx_pixmap);
+      XSync (dpy, False);
+      _cogl_renderer_xlib_untrap_errors (renderer, &trap_state);
+
+      glx_tex_pixmap->glx_pixmap = None;
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+_cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
+{
+  CoglTexturePixmapGLX *glx_tex_pixmap;
+
+  /* FIXME: It should be possible to get to a CoglContext from any
+   * CoglTexture pointer. */
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  if (!_cogl_winsys_has_feature (COGL_WINSYS_FEATURE_TEXTURE_FROM_PIXMAP))
+    {
+      tex_pixmap->winsys = NULL;
+      return FALSE;
+    }
+
+  glx_tex_pixmap = g_new0 (CoglTexturePixmapGLX, 1);
+
+  glx_tex_pixmap->glx_pixmap = None;
+  glx_tex_pixmap->can_mipmap = FALSE;
+  glx_tex_pixmap->has_mipmap_space = FALSE;
+
+  glx_tex_pixmap->glx_tex = COGL_INVALID_HANDLE;
+
+  glx_tex_pixmap->bind_tex_image_queued = TRUE;
+  glx_tex_pixmap->pixmap_bound = FALSE;
+
+  tex_pixmap->winsys = glx_tex_pixmap;
+
+  if (!try_create_glx_pixmap (ctx, tex_pixmap, FALSE))
+    {
+      tex_pixmap->winsys = NULL;
+      g_free (glx_tex_pixmap);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+free_glx_pixmap (CoglContext *context,
+                 CoglTexturePixmapGLX *glx_tex_pixmap)
+{
+  CoglXlibTrapState trap_state;
+  CoglRenderer *renderer;
+  CoglRendererXlib *xlib_renderer;
+  CoglRendererGLX *glx_renderer;
+
+  renderer = context->display->renderer;
+  xlib_renderer = renderer->winsys;
+  glx_renderer = renderer->winsys;
+
+  if (glx_tex_pixmap->pixmap_bound)
+    glx_renderer->pf_glXReleaseTexImage (xlib_renderer->xdpy,
+                                         glx_tex_pixmap->glx_pixmap,
+                                         GLX_FRONT_LEFT_EXT);
+
+  /* FIXME - we need to trap errors and synchronize here because
+   * of ordering issues between the XPixmap destruction and the
+   * GLXPixmap destruction.
+   *
+   * If the X pixmap is destroyed, the GLX pixmap is destroyed as
+   * well immediately, and thus, when Cogl calls glXDestroyPixmap()
+   * it'll cause a BadDrawable error.
+   *
+   * this is technically a bug in the X server, which should not
+   * destroy either pixmaps until the call to glXDestroyPixmap(); so
+   * at some point we should revisit this code and remove the
+   * trap+sync after verifying that the destruction is indeed safe.
+   *
+   * for reference, see:
+   *   http://bugzilla.clutter-project.org/show_bug.cgi?id=2324
+   */
+  _cogl_renderer_xlib_trap_errors (renderer, &trap_state);
+  glXDestroyPixmap (xlib_renderer->xdpy, glx_tex_pixmap->glx_pixmap);
+  XSync (xlib_renderer->xdpy, False);
+  _cogl_renderer_xlib_untrap_errors (renderer, &trap_state);
+
+  glx_tex_pixmap->glx_pixmap = None;
+  glx_tex_pixmap->pixmap_bound = FALSE;
+}
+
+void
+_cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
+{
+  CoglTexturePixmapGLX *glx_tex_pixmap;
+
+  /* FIXME: It should be possible to get to a CoglContext from any
+   * CoglTexture pointer. */
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (!tex_pixmap->winsys)
+    return;
+
+  glx_tex_pixmap = tex_pixmap->winsys;
+
+  free_glx_pixmap (ctx, glx_tex_pixmap);
+
+  if (glx_tex_pixmap->glx_tex)
+    cogl_handle_unref (glx_tex_pixmap->glx_tex);
+
+  tex_pixmap->winsys = NULL;
+  g_free (glx_tex_pixmap);
+}
+
+gboolean
+_cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
+                                        gboolean needs_mipmap)
+{
+  CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;
+  CoglRendererGLX *glx_renderer;
+
+  /* FIXME: It should be possible to get to a CoglContext from any CoglTexture
+   * pointer. */
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  /* If we don't have a GLX pixmap then fallback */
+  if (glx_tex_pixmap->glx_pixmap == None)
+    return FALSE;
+
+  glx_renderer = ctx->display->renderer->winsys;
+
+  /* Lazily create a texture to hold the pixmap */
+  if (glx_tex_pixmap->glx_tex == COGL_INVALID_HANDLE)
+    {
+      CoglPixelFormat texture_format;
+
+      texture_format = (tex_pixmap->depth >= 32 ?
+                        COGL_PIXEL_FORMAT_RGBA_8888_PRE :
+                        COGL_PIXEL_FORMAT_RGB_888);
+
+      if (should_use_rectangle (ctx))
+        {
+          glx_tex_pixmap->glx_tex =
+            _cogl_texture_rectangle_new_with_size (tex_pixmap->width,
+                                                   tex_pixmap->height,
+                                                   COGL_TEXTURE_NO_ATLAS,
+                                                   texture_format);
+
+          if (glx_tex_pixmap->glx_tex)
+            COGL_NOTE (TEXTURE_PIXMAP, "Created a texture rectangle for %p",
+                       tex_pixmap);
+          else
+            {
+              COGL_NOTE (TEXTURE_PIXMAP, "Falling back for %p because a "
+                         "texture rectangle could not be created",
+                         tex_pixmap);
+              free_glx_pixmap (ctx, glx_tex_pixmap);
+              return FALSE;
+            }
+        }
+      else
+        {
+          glx_tex_pixmap->glx_tex =
+            _cogl_texture_2d_new_with_size (tex_pixmap->width,
+                                            tex_pixmap->height,
+                                            COGL_TEXTURE_NO_ATLAS,
+                                            texture_format);
+
+          if (glx_tex_pixmap->glx_tex)
+            COGL_NOTE (TEXTURE_PIXMAP, "Created a texture 2d for %p",
+                       tex_pixmap);
+          else
+            {
+              COGL_NOTE (TEXTURE_PIXMAP, "Falling back for %p because a "
+                         "texture 2d could not be created",
+                         tex_pixmap);
+              free_glx_pixmap (ctx, glx_tex_pixmap);
+              return FALSE;
+            }
+        }
+    }
+
+  if (needs_mipmap)
+    {
+      /* If we can't support mipmapping then temporarily fallback */
+      if (!glx_tex_pixmap->can_mipmap)
+        return FALSE;
+
+      /* Recreate the GLXPixmap if it wasn't previously created with a
+       * mipmap tree */
+      if (!glx_tex_pixmap->has_mipmap_space)
+        {
+          free_glx_pixmap (ctx, glx_tex_pixmap);
+
+          COGL_NOTE (TEXTURE_PIXMAP, "Recreating GLXPixmap with mipmap "
+                     "support for %p", tex_pixmap);
+          if (!try_create_glx_pixmap (ctx, tex_pixmap, TRUE))
+
+            {
+              /* If the pixmap failed then we'll permanently fallback
+               * to using XImage. This shouldn't happen. */
+              COGL_NOTE (TEXTURE_PIXMAP, "Falling back to XGetImage "
+                         "updates for %p because creating the GLXPixmap "
+                         "with mipmap support failed", tex_pixmap);
+
+              if (glx_tex_pixmap->glx_tex)
+                cogl_handle_unref (glx_tex_pixmap->glx_tex);
+              return FALSE;
+            }
+
+          glx_tex_pixmap->bind_tex_image_queued = TRUE;
+        }
+    }
+
+  if (glx_tex_pixmap->bind_tex_image_queued)
+    {
+      GLuint gl_handle, gl_target;
+      CoglRendererXlib *xlib_renderer = ctx->display->renderer->winsys;
+
+      cogl_texture_get_gl_texture (glx_tex_pixmap->glx_tex,
+                                   &gl_handle, &gl_target);
+
+      COGL_NOTE (TEXTURE_PIXMAP, "Rebinding GLXPixmap for %p", tex_pixmap);
+
+      GE( _cogl_bind_gl_texture_transient (gl_target, gl_handle, FALSE) );
+
+      if (glx_tex_pixmap->pixmap_bound)
+        glx_renderer->pf_glXReleaseTexImage (xlib_renderer->xdpy,
+                                             glx_tex_pixmap->glx_pixmap,
+                                             GLX_FRONT_LEFT_EXT);
+
+      glx_renderer->pf_glXBindTexImage (xlib_renderer->xdpy,
+                                        glx_tex_pixmap->glx_pixmap,
+                                        GLX_FRONT_LEFT_EXT,
+                                        NULL);
+
+      /* According to the recommended usage in the spec for
+       * GLX_EXT_texture_pixmap we should release the texture after
+       * we've finished drawing with it and it is undefined what
+       * happens if you render to a pixmap that is bound to a texture.
+       * However that would require the texture backend to know when
+       * Cogl has finished painting and it may be more expensive to
+       * keep unbinding the texture. Leaving it bound appears to work
+       * on Mesa and NVidia drivers and it is also what Compiz does so
+       * it is probably ok */
+
+      glx_tex_pixmap->bind_tex_image_queued = FALSE;
+      glx_tex_pixmap->pixmap_bound = TRUE;
+
+      _cogl_texture_2d_externally_modified (glx_tex_pixmap->glx_tex);
+    }
+
+  return TRUE;
+}
+
+void
+_cogl_winsys_texture_pixmap_x11_damage_notify (CoglTexturePixmapX11 *tex_pixmap)
+{
+  CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;
+
+  glx_tex_pixmap->bind_tex_image_queued = TRUE;
+}
+
+CoglHandle
+_cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
+{
+  CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;
+
+  return glx_tex_pixmap->glx_tex;
 }

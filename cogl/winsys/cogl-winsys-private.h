@@ -25,6 +25,9 @@
 #define __COGL_WINSYS_PRIVATE_H
 
 #include "cogl-framebuffer-private.h"
+#ifdef COGL_HAS_XLIB_SUPPORT
+#include "cogl-texture-pixmap-x11-private.h"
+#endif
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xutil.h>
@@ -119,5 +122,24 @@ _cogl_winsys_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
 void
 _cogl_winsys_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
                                                     unsigned int id);
+
+#ifdef COGL_HAS_XLIB_SUPPORT
+gboolean
+_cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap);
+
+void
+_cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap);
+
+gboolean
+_cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
+                                        gboolean needs_mipmap);
+
+void
+_cogl_winsys_texture_pixmap_x11_damage_notify (
+                                            CoglTexturePixmapX11 *tex_pixmap);
+
+CoglHandle
+_cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap);
+#endif
 
 #endif /* __COGL_WINSYS_PRIVATE_H */
