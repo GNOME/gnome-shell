@@ -206,6 +206,21 @@ def start_shell(perf_output=None):
         args.append('--sync')
     return subprocess.Popen(args, env=env)
 
+def _killall(processname):
+    subprocess.call(['pkill', '-u', '%d' % (os.getuid(), ),
+                     '-f', r'^([^ ]*/)?' + re.escape(processname) + '($| )'])
+
+def ensure_desktop_infrastructure_state():
+    # This is a collection of random hacks necessary to make sure
+    # that we can run in jhbuild scenarios or when dynamically
+    # replacing GNOME 2.
+
+    start_dconf_await_service()
+
+    # We need to terminate notification-daemon
+    _killall('notification-daemon')
+    _killall('notify-osd')
+
 def run_shell(perf_output=None):
     if options.debug:
         # Record initial terminal state so we can reset it to that
@@ -527,13 +542,11 @@ elif options.debug:
 # something else.
 normal_exit = False
 
-# Make sure dconf daemon is running
-start_dconf_await_service()
-
 try:
     if options.perf:
         normal_exit = run_performance_test()
     else:
+        ensure_desktop_infrastructure_state()
         normal_exit = run_shell()
 finally:
     if options.replace and (options.perf or not normal_exit):
