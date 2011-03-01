@@ -44,14 +44,6 @@ const STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION = {
 if (Config.HAVE_BLUETOOTH)
     STANDARD_TRAY_ICON_SHELL_IMPLEMENTATION['bluetooth'] = imports.ui.status.bluetooth.Indicator;
 
-// in org.gnome.desktop.interface
-const CLOCK_FORMAT_KEY        = 'clock-format';
-
-// in org.gnome.shell.clock
-const CLOCK_SHOW_DATE_KEY     = 'show-date';
-const CLOCK_SHOW_SECONDS_KEY  = 'show-seconds';
-
-
 // To make sure the panel corners blend nicely with the panel,
 // we draw background and borders the same way, e.g. drawing
 // them as filled shapes from the outside inwards instead of
