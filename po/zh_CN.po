@@ -4,20 +4,21 @@
 # jiero <lililjlj@gmail.com>, 2010.
 # Aron Xu <aronxu@gnome.org>, 2010.
 # Jessica Ban <bancage@gmail.com>, 2010.
-# YunQiang Su <wzssyqa@gmail.com>, 2010.
 # zhang ping <zhangping159@gmail.com>, 2010.
 # 指冷玉笙寒 (dhyang) <dhyang555@gmail.com>, 2010
 # Ray Wang <raywang@gnome.org>, 2009, 2011.
 # Aron Xu <aronxu@gnome.org>, 2010, 2011.
+# YunQiang Su <wzssyqa@gmail.com>, 2010, 2011.
+# 李炜 <lw124124@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2011-02-13 21:59+0000\n"
-"PO-Revision-Date: 2011-02-14 22:06+0800\n"
-"Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
+"POT-Creation-Date: 2011-03-01 14:37+0000\n"
+"PO-Revision-Date: 2011-03-01 15:55+0000\n"
+"Last-Translator: YunQiang Su <wzssyqa@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -62,22 +63,28 @@ msgid "History for command (Alt-F2) dialog"
 msgstr "命令对话框(Alt-F2)的历史记录"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
+#, fuzzy
+#| msgid "History for command (Alt-F2) dialog"
+msgid "History for the looking glass dialog"
+msgstr "命令对话框(Alt-F2)的历史记录"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
 msgid "If true, display date in the clock, in addition to time."
 msgstr "如果为真，在时钟中显示日期以及时间。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
 msgid "If true, display seconds in time."
 msgstr "如果为真，在时间上显示秒数。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
 msgid "If true, display the ISO week date in the calendar."
 msgstr "如果为真，在日历中显示 ISO 周日期。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "收藏夹中的应用程序的 desktop 文件 ID 的列表"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -97,28 +104,28 @@ msgstr ""
 "的输出 - 这将用来通过 shout2send 或者类似方法把输出发送到一个 icecast 服务"
 "器。当管道未被设置或者设置为空值时，默认的管道将被启用。其值当前"
 "为“videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux”并输出"
-"为 VP8 编码的 WebM 格式。这里的 %T 是一个占位符，其实际值是根据您系统的情况"
-"估计的线程数。"
+"为 VP8 编码的 WebM 格式。这里的 %T 是一个占位符，其实际值是根据您系统的情况估"
+"计的线程数。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
 msgstr "显示日期"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "在日历中显示星期"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
 msgid "Show time with seconds"
 msgstr "显示秒"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr "符合这些标示的应用程序将显示在收藏区中。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -127,17 +134,17 @@ msgstr ""
 "录制的屏幕录像的文件名将是根据当前时间得到的独特值，并使用这个扩展名。录制另"
 "外一个不同容器格式的录像时，它应该被更改。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr "GNOME Shell 的屏幕录像程序录制的屏幕录像的帧率，以 帧/秒 为格式。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "用于编码屏幕录像的 GStreamer 管线"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -148,15 +155,15 @@ msgstr ""
 "时，此数据将保持私密，您可能因为隐私原因想要禁用此项。请注意，这么做，并不会"
 "移除已经保存的数据。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Uuids of extensions to disable"
 msgstr "要禁用的扩展的 uuid"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "Whether to collect stats about applications usage"
 msgstr "是否收集应用程序的使用情况"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "disabled OpenSearch providers"
 msgstr "已禁用的 OpenSearch 提供商"
 
@@ -180,27 +187,27 @@ msgid "Execution of '%s' failed:"
 msgstr "运行“%s”失败："
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:174
+#: ../js/ui/appDisplay.js:195
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:261
+#: ../js/ui/appDisplay.js:282
 msgid "APPLICATIONS"
 msgstr "应用程序"
 
-#: ../js/ui/appDisplay.js:291
+#: ../js/ui/appDisplay.js:312
 msgid "PREFERENCES"
 msgstr "首选项"
 
-#: ../js/ui/appDisplay.js:592
+#: ../js/ui/appDisplay.js:572
 msgid "New Window"
 msgstr "新窗口"
 
-#: ../js/ui/appDisplay.js:596
+#: ../js/ui/appDisplay.js:575
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: ../js/ui/appDisplay.js:597
+#: ../js/ui/appDisplay.js:576
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
@@ -217,19 +224,19 @@ msgstr "%s 已经从您的收藏夹移除。"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:65
+#: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
 msgstr "全天"
 
 #. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:71
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:77
+#: ../js/ui/calendar.js:78
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%I:%M %p"
@@ -239,43 +246,43 @@ msgstr "%I:%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:118
 msgctxt "grid sunday"
 msgid "S"
 msgstr "六"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:120
 msgctxt "grid monday"
 msgid "M"
 msgstr "一"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:122
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "二"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:124
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "三"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:126
 msgctxt "grid thursday"
 msgid "T"
 msgstr "四"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:127
+#: ../js/ui/calendar.js:128
 msgctxt "grid friday"
 msgid "F"
 msgstr "五"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:130
 msgctxt "grid saturday"
 msgid "S"
 msgstr "六"
@@ -286,77 +293,77 @@ msgstr "六"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:142
+#: ../js/ui/calendar.js:143
 msgctxt "list sunday"
 msgid "Su"
 msgstr "星期日"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:144
+#: ../js/ui/calendar.js:145
 msgctxt "list monday"
 msgid "M"
 msgstr "星期一"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:146
+#: ../js/ui/calendar.js:147
 msgctxt "list tuesday"
 msgid "T"
 msgstr "星期二"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:148
+#: ../js/ui/calendar.js:149
 msgctxt "list wednesday"
 msgid "W"
 msgstr "星期三"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:150
+#: ../js/ui/calendar.js:151
 msgctxt "list thursday"
 msgid "Th"
 msgstr "星期四"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:152
+#: ../js/ui/calendar.js:153
 msgctxt "list friday"
 msgid "F"
 msgstr "星期五"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:154
+#: ../js/ui/calendar.js:155
 msgctxt "list saturday"
 msgid "S"
 msgstr "星期六"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:704
 msgid "Nothing Scheduled"
 msgstr "无计划"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717
+#: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:723
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%Y年%m月%d日%A"
 
-#: ../js/ui/calendar.js:730
+#: ../js/ui/calendar.js:733
 msgid "Today"
 msgstr "今天"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:737
 msgid "Tomorrow"
 msgstr "明天"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:746
 msgid "This week"
 msgstr "本周"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:754
 msgid "Next week"
 msgstr "下周"
 
@@ -374,48 +381,48 @@ msgstr "打开日历"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:149
+#: ../js/ui/dateMenu.js:162
 msgid "%a %b %e, %R:%S"
 msgstr "%m月%d日%R:%S%A"
 
-#: ../js/ui/dateMenu.js:150
+#: ../js/ui/dateMenu.js:163
 msgid "%a %b %e, %R"
 msgstr "%m月%d日%R%A"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:154
+#: ../js/ui/dateMenu.js:167
 msgid "%a %R:%S"
 msgstr "%R:%S%A"
 
-#: ../js/ui/dateMenu.js:155
+#: ../js/ui/dateMenu.js:168
 msgid "%a %R"
 msgstr "%R%A"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:162
+#: ../js/ui/dateMenu.js:175
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%m月%d日%A %I:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:163
+#: ../js/ui/dateMenu.js:176
 msgid "%a %b %e, %l:%M %p"
 msgstr "%m月%d日%A %I:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:167
+#: ../js/ui/dateMenu.js:180
 msgid "%a %l:%M:%S %p"
 msgstr "%A %I:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:168
+#: ../js/ui/dateMenu.js:181
 msgid "%a %l:%M %p"
 msgstr "%I:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:194
+#: ../js/ui/dateMenu.js:207
 msgid "%A %B %e, %Y"
 msgstr "%Y年%m月%d日%A"
 
@@ -492,37 +499,37 @@ msgstr "确定"
 msgid "Cancel"
 msgstr "取消"
 
-#: ../js/ui/lookingGlass.js:584
+#: ../js/ui/lookingGlass.js:587
 msgid "No extensions installed"
 msgstr "未安装扩展"
 
-#: ../js/ui/lookingGlass.js:621
+#: ../js/ui/lookingGlass.js:624
 msgid "Enabled"
 msgstr "已启用"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:623 ../src/gvc/gvc-mixer-control.c:1087
+#: ../js/ui/lookingGlass.js:626 ../src/gvc/gvc-mixer-control.c:1087
 msgid "Disabled"
 msgstr "已禁用"
 
-#: ../js/ui/lookingGlass.js:625
+#: ../js/ui/lookingGlass.js:628
 msgid "Error"
 msgstr "错误"
 
-#: ../js/ui/lookingGlass.js:627
+#: ../js/ui/lookingGlass.js:630
 msgid "Out of date"
 msgstr "过时"
 
-#: ../js/ui/lookingGlass.js:652
+#: ../js/ui/lookingGlass.js:655
 msgid "View Source"
 msgstr "查看源"
 
-#: ../js/ui/lookingGlass.js:658
+#: ../js/ui/lookingGlass.js:661
 msgid "Web Page"
 msgstr "网页"
 
-#: ../js/ui/messageTray.js:1854
+#: ../js/ui/messageTray.js:1902
 msgid "System Information"
 msgstr "系统信息"
 
@@ -530,23 +537,23 @@ msgstr "系统信息"
 msgid "Undo"
 msgstr "撤销"
 
-#: ../js/ui/overview.js:159
+#: ../js/ui/overview.js:183
 msgid "Windows"
 msgstr "窗口"
 
-#: ../js/ui/overview.js:162
+#: ../js/ui/overview.js:186
 msgid "Applications"
 msgstr "应用程序"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:480
+#: ../js/ui/panel.js:529
 #, c-format
 msgid "Quit %s"
 msgstr "退出 %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:614
+#: ../js/ui/panel.js:897
 msgid "Activities"
 msgstr "活动"
 
@@ -572,11 +579,11 @@ msgstr "位置和设备"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:512
+#: ../js/ui/popupMenu.js:612
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:209
+#: ../js/ui/runDialog.js:201
 msgid "Please enter a command:"
 msgstr "请输入一个命令："
 
@@ -588,49 +595,47 @@ msgstr "正在搜索..."
 msgid "No matching results."
 msgstr "无匹配结果。"
 
-#: ../js/ui/statusMenu.js:102
+#: ../js/ui/statusMenu.js:102 ../js/ui/statusMenu.js:166
+msgid "Power Off..."
+msgstr "关机..."
+
+#: ../js/ui/statusMenu.js:104 ../js/ui/statusMenu.js:165
+msgid "Suspend"
+msgstr "休眠"
+
+#: ../js/ui/statusMenu.js:125
 msgid "Available"
 msgstr "可用"
 
-#: ../js/ui/statusMenu.js:107
+#: ../js/ui/statusMenu.js:130
 msgid "Busy"
 msgstr "忙碌"
 
-#: ../js/ui/statusMenu.js:115
+#: ../js/ui/statusMenu.js:138
 msgid "My Account"
 msgstr "我的帐户"
 
-#: ../js/ui/statusMenu.js:119
+#: ../js/ui/statusMenu.js:142
 msgid "System Settings"
 msgstr "系统设置"
 
-#: ../js/ui/statusMenu.js:126
+#: ../js/ui/statusMenu.js:149
 msgid "Lock Screen"
 msgstr "锁住屏幕"
 
-#: ../js/ui/statusMenu.js:130
+#: ../js/ui/statusMenu.js:153
 msgid "Switch User"
 msgstr "切换用户"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:158
 msgid "Log Out..."
 msgstr "退出..."
 
-#. This is temporarily removed, see
-#. http://bugzilla.gnome.org/show_bug.cgi?id=636680
-#. for details.
-#. item = new PopupMenu.PopupMenuItem(_("Suspend..."));
-#. item.connect('activate', Lang.bind(this, this._onShutDownActivate));
-#. this.menu.addMenuItem(item);
-#: ../js/ui/statusMenu.js:149
-msgid "Shut Down..."
-msgstr "关机..."
-
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:81
 msgid "Zoom"
 msgstr "缩放"
 
-#: ../js/ui/status/accessibility.js:89
+#: ../js/ui/status/accessibility.js:88
 msgid "Screen Reader"
 msgstr "屏幕阅读器"
 
@@ -638,35 +643,35 @@ msgstr "屏幕阅读器"
 msgid "Screen Keyboard"
 msgstr "屏幕键盘"
 
-#: ../js/ui/status/accessibility.js:95
+#: ../js/ui/status/accessibility.js:96
 msgid "Visual Alerts"
 msgstr "视觉响铃"
 
-#: ../js/ui/status/accessibility.js:98
+#: ../js/ui/status/accessibility.js:99
 msgid "Sticky Keys"
 msgstr "粘滞键"
 
-#: ../js/ui/status/accessibility.js:101
+#: ../js/ui/status/accessibility.js:102
 msgid "Slow Keys"
 msgstr "慢速键"
 
-#: ../js/ui/status/accessibility.js:104
+#: ../js/ui/status/accessibility.js:105
 msgid "Bounce Keys"
 msgstr "筛选键"
 
-#: ../js/ui/status/accessibility.js:107
+#: ../js/ui/status/accessibility.js:108
 msgid "Mouse Keys"
 msgstr "鼠标按键"
 
-#: ../js/ui/status/accessibility.js:111
+#: ../js/ui/status/accessibility.js:112
 msgid "Universal Access Settings"
 msgstr "通用访问设置"
 
-#: ../js/ui/status/accessibility.js:163
+#: ../js/ui/status/accessibility.js:164
 msgid "High Contrast"
 msgstr "高对比度"
 
-#: ../js/ui/status/accessibility.js:205
+#: ../js/ui/status/accessibility.js:209
 msgid "Large Text"
 msgstr "大号文本"
 
@@ -721,7 +726,7 @@ msgstr "键盘设置"
 msgid "Mouse Settings"
 msgstr "鼠标设置"
 
-#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:63
+#: ../js/ui/status/bluetooth.js:263 ../js/ui/status/volume.js:65
 msgid "Sound Settings"
 msgstr "声音设置"
 
@@ -783,7 +788,11 @@ msgstr "请输入设备上的 PIN 码。"
 msgid "OK"
 msgstr "确定"
 
-#: ../js/ui/status/keyboard.js:72
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "显示键盘布局..."
+
+#: ../js/ui/status/keyboard.js:76
 msgid "Localization Settings"
 msgstr "本地化设置"
 
@@ -867,30 +876,30 @@ msgstr "计算机"
 msgid "Unknown"
 msgstr "未知"
 
-#: ../js/ui/status/volume.js:42
+#: ../js/ui/status/volume.js:44
 msgid "Volume"
 msgstr "音量"
 
-#: ../js/ui/status/volume.js:55
+#: ../js/ui/status/volume.js:57
 msgid "Microphone"
 msgstr "麦克风"
 
-#: ../js/ui/telepathyClient.js:563
+#: ../js/ui/telepathyClient.js:239
 #, c-format
 msgid "%s is online."
 msgstr "%s 在线。"
 
-#: ../js/ui/telepathyClient.js:568
+#: ../js/ui/telepathyClient.js:244
 #, c-format
 msgid "%s is offline."
 msgstr "%s 离线。"
 
-#: ../js/ui/telepathyClient.js:571
+#: ../js/ui/telepathyClient.js:247
 #, c-format
 msgid "%s is away."
 msgstr "%s 离开。"
 
-#: ../js/ui/telepathyClient.js:574
+#: ../js/ui/telepathyClient.js:250
 #, c-format
 msgid "%s is busy."
 msgstr "%s 忙碌。"
@@ -898,14 +907,18 @@ msgstr "%s 忙碌。"
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:669
+#: ../js/ui/telepathyClient.js:348
 #, no-c-format
 msgid "Sent at %X on %A"
 msgstr "发送于 %X on %A"
 
-#: ../js/ui/viewSelector.js:26
-msgid "Search your computer"
-msgstr "搜索您的计算机"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/viewSelector.js:103
+msgid "Type to search..."
+msgstr "搜索..."
 
 #: ../js/ui/windowAttentionHandler.js:43
 #, c-format
@@ -937,33 +950,37 @@ msgstr[0] "%u 个输入"
 msgid "System Sounds"
 msgstr "系统声音"
 
-#: ../src/shell-global.c:1363
+#: ../src/shell-global.c:1298
 msgid "Less than a minute ago"
 msgstr "少于一分钟前"
 
-#: ../src/shell-global.c:1367
+#: ../src/shell-global.c:1302
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分钟前"
 
-#: ../src/shell-global.c:1372
+#: ../src/shell-global.c:1307
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小时前"
 
-#: ../src/shell-global.c:1377
+#: ../src/shell-global.c:1312
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d 天前"
 
-#: ../src/shell-global.c:1382
+#: ../src/shell-global.c:1317
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d 周前"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr "认证对话框被用户驳回"
 
 #: ../src/shell-util.c:89
 msgid "Home Folder"
@@ -988,6 +1005,12 @@ msgstr "搜索"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Shut Down..."
+#~ msgstr "关机..."
+
+#~ msgid "Search your computer"
+#~ msgstr "搜索您的计算机"
 
 #~ msgid "Clock"
 #~ msgstr "时钟"
@@ -1165,9 +1188,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Preferences"
 #~ msgstr "首选项"
-
-#~ msgid "Suspend..."
-#~ msgstr "休眠..."
 
 #~ msgid "Bluetooth Agent"
 #~ msgstr "蓝牙助手"
