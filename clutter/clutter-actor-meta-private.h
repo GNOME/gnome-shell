@@ -50,6 +50,20 @@ struct _ClutterMetaGroupClass
   GObjectClass parent_class;
 };
 
+/* Each actor meta has a priority with zero as a default. A higher
+   number means higher priority. Higher priority metas stay at the
+   beginning of the list. The priority can be negative to give lower
+   priority than the default. */
+
+#define CLUTTER_ACTOR_META_PRIORITY_DEFAULT 0
+
+/* Any value greater than this is considered an 'internal' priority
+   and if we expose the priority property publicly then an application
+   would not be able to use these values. */
+
+#define CLUTTER_ACTOR_META_PRIORITY_INTERNAL_HIGH (G_MAXINT / 2)
+#define CLUTTER_ACTOR_META_PRIORITY_INTERNAL_LOW (G_MININT / 2)
+
 GType _clutter_meta_group_get_type (void) G_GNUC_CONST;
 
 void                  _clutter_meta_group_add_meta    (ClutterMetaGroup *group,
@@ -61,11 +75,23 @@ void                  _clutter_meta_group_clear_metas (ClutterMetaGroup *group);
 ClutterActorMeta *    _clutter_meta_group_get_meta    (ClutterMetaGroup *group,
                                                        const gchar      *name);
 
+GList *
+_clutter_meta_group_get_metas_no_internal (ClutterMetaGroup *group);
+
+void
+_clutter_meta_group_clear_metas_no_internal (ClutterMetaGroup *group);
+
 /* ActorMeta */
 void                  _clutter_actor_meta_set_actor   (ClutterActorMeta *meta,
                                                        ClutterActor     *actor);
 
 const gchar *           _clutter_actor_meta_get_debug_name        (ClutterActorMeta *meta);
+
+void                  _clutter_actor_meta_set_priority (ClutterActorMeta *meta,
+                                                        gint priority);
+int                   _clutter_actor_meta_get_priority (ClutterActorMeta *meta);
+
+gboolean              _clutter_actor_meta_is_internal  (ClutterActorMeta *meta);
 
 G_END_DECLS
 

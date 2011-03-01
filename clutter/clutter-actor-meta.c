@@ -58,6 +58,8 @@ struct _ClutterActorMetaPrivate
   gchar *name;
 
   guint is_enabled : 1;
+
+  gint priority;
 };
 
 enum
@@ -237,6 +239,8 @@ clutter_actor_meta_init (ClutterActorMeta *self)
                                             ClutterActorMetaPrivate);
 
   self->priv->is_enabled = TRUE;
+
+  self->priv->priority = CLUTTER_ACTOR_META_PRIORITY_DEFAULT;
 }
 
 /**
@@ -367,6 +371,40 @@ clutter_actor_meta_get_actor (ClutterActorMeta *meta)
   return meta->priv->actor;
 }
 
+void
+_clutter_actor_meta_set_priority (ClutterActorMeta *meta,
+                                  gint priority)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR_META (meta));
+
+  /* This property shouldn't be modified after the actor meta is in
+     use because ClutterMetaGroup doesn't resort the list when it
+     changes. If we made the priority public then we could either make
+     the priority a construct-only property or listen for
+     notifications on the property from the ClutterMetaGroup and
+     resort. */
+  g_return_if_fail (meta->priv->actor == NULL);
+
+  meta->priv->priority = priority;
+}
+
+gint
+_clutter_actor_meta_get_priority (ClutterActorMeta *meta)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR_META (meta), 0);
+
+  return meta->priv->priority;
+}
+
+gboolean
+_clutter_actor_meta_is_internal (ClutterActorMeta *meta)
+{
+  gint priority = meta->priv->priority;
+
+  return (priority <= CLUTTER_ACTOR_META_PRIORITY_INTERNAL_LOW ||
+          priority >= CLUTTER_ACTOR_META_PRIORITY_INTERNAL_HIGH);
+}
+
 /*
  * ClutterMetaGroup: a collection of ClutterActorMeta instances
  */
@@ -408,6 +446,8 @@ void
 _clutter_meta_group_add_meta (ClutterMetaGroup *group,
                               ClutterActorMeta *meta)
 {
+  GList *prev = NULL, *l;
+
   if (meta->priv->actor != NULL)
     {
       g_warning ("The meta of type '%s' with name '%s' is "
@@ -422,7 +462,22 @@ _clutter_meta_group_add_meta (ClutterMetaGroup *group,
       return;
     }
 
-  group->meta = g_list_append (group->meta, meta);
+  /* Find a meta that has lower priority and insert before that */
+  for (l = group->meta; l; l = l->next)
+    if (_clutter_actor_meta_get_priority (l->data) <
+        _clutter_actor_meta_get_priority (meta))
+      break;
+    else
+      prev = l;
+
+  if (prev == NULL)
+    group->meta = g_list_prepend (group->meta, meta);
+  else
+    {
+      prev->next = g_list_prepend (prev->next, meta);
+      prev->next->prev = prev;
+    }
+
   g_object_ref_sink (meta);
 
   _clutter_actor_meta_set_actor (meta, group->actor);
@@ -474,6 +529,30 @@ _clutter_meta_group_peek_metas (ClutterMetaGroup *group)
 }
 
 /*
+ * _clutter_meta_group_get_metas_no_internal:
+ * @group: a #ClutterMetaGroup
+ *
+ * Returns a new allocated list containing all of the metas that don't
+ * have an internal priority.
+ *
+ * Return value: A GList containing non-internal metas. Free with
+ * g_list_free.
+ */
+GList *
+_clutter_meta_group_get_metas_no_internal (ClutterMetaGroup *group)
+{
+  GList *ret = NULL;
+  GList *l;
+
+  /* Build a new list filtering out the internal metas */
+  for (l = group->meta; l; l = l->next)
+    if (!_clutter_actor_meta_is_internal (l->data))
+      ret = g_list_prepend (ret, l->data);
+
+  return g_list_reverse (ret);
+}
+
+/*
  * _clutter_meta_group_clear_metas:
  * @group: a #ClutterMetaGroup
  *
@@ -488,6 +567,42 @@ _clutter_meta_group_clear_metas (ClutterMetaGroup *group)
   g_list_foreach (group->meta, (GFunc) g_object_unref, NULL);
   g_list_free (group->meta);
   group->meta = NULL;
+}
+
+/*
+ * _clutter_meta_group_clear_metas_no_internal:
+ * @group: a #ClutterMetaGroup
+ *
+ * Clears @group of all #ClutterActorMeta instances that don't have an
+ * internal priority and releases the reference on them
+ */
+void
+_clutter_meta_group_clear_metas_no_internal (ClutterMetaGroup *group)
+{
+  GList *internal_list = NULL;
+  GList *l, *next;
+
+  for (l = group->meta; l; l = next)
+    {
+      next = l->next;
+
+      if (_clutter_actor_meta_is_internal (l->data))
+        {
+          if (internal_list)
+            internal_list->prev = l;
+          l->next = internal_list;
+          l->prev = NULL;
+          internal_list = l;
+        }
+      else
+        {
+          _clutter_actor_meta_set_actor (l->data, NULL);
+          g_object_unref (l->data);
+          g_list_free_1 (l);
+        }
+    }
+
+  group->meta = g_list_reverse (internal_list);
 }
 
 /*

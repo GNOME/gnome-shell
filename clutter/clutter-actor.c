@@ -11239,16 +11239,12 @@ clutter_actor_remove_action_by_name (ClutterActor *self,
 GList *
 clutter_actor_get_actions (ClutterActor *self)
 {
-  const GList *actions;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
   if (self->priv->actions == NULL)
     return NULL;
 
-  actions = _clutter_meta_group_peek_metas (self->priv->actions);
-
-  return g_list_copy ((GList *) actions);
+  return _clutter_meta_group_get_metas_no_internal (self->priv->actions);
 }
 
 /**
@@ -11294,7 +11290,7 @@ clutter_actor_clear_actions (ClutterActor *self)
   if (self->priv->actions == NULL)
     return;
 
-  _clutter_meta_group_clear_metas (self->priv->actions);
+  _clutter_meta_group_clear_metas_no_internal (self->priv->actions);
 }
 
 /**
@@ -11447,16 +11443,12 @@ clutter_actor_remove_constraint_by_name (ClutterActor *self,
 GList *
 clutter_actor_get_constraints (ClutterActor *self)
 {
-  const GList *constraints;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
   if (self->priv->constraints == NULL)
     return NULL;
 
-  constraints = _clutter_meta_group_peek_metas (self->priv->constraints);
-
-  return g_list_copy ((GList *) constraints);
+  return _clutter_meta_group_get_metas_no_internal (self->priv->constraints);
 }
 
 /**
@@ -11502,7 +11494,7 @@ clutter_actor_clear_constraints (ClutterActor *self)
   if (self->priv->constraints == NULL)
     return;
 
-  _clutter_meta_group_clear_metas (self->priv->constraints);
+  _clutter_meta_group_clear_metas_no_internal (self->priv->constraints);
 }
 
 /**
@@ -11704,7 +11696,6 @@ GList *
 clutter_actor_get_effects (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
-  const GList *effects;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
@@ -11713,9 +11704,7 @@ clutter_actor_get_effects (ClutterActor *self)
   if (priv->effects == NULL)
     return NULL;
 
-  effects = _clutter_meta_group_peek_metas (priv->effects);
-
-  return g_list_copy ((GList *) effects);
+  return _clutter_meta_group_get_metas_no_internal (priv->effects);
 }
 
 /**
@@ -11761,7 +11750,7 @@ clutter_actor_clear_effects (ClutterActor *self)
   if (self->priv->effects == NULL)
     return;
 
-  _clutter_meta_group_clear_metas (self->priv->effects);
+  _clutter_meta_group_clear_metas_no_internal (self->priv->effects);
 }
 
 /**
