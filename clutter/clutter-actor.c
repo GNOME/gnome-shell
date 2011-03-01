@@ -11495,6 +11495,8 @@ clutter_actor_clear_constraints (ClutterActor *self)
     return;
 
   _clutter_meta_group_clear_metas_no_internal (self->priv->constraints);
+
+  clutter_actor_queue_relayout (self);
 }
 
 /**
@@ -11751,6 +11753,8 @@ clutter_actor_clear_effects (ClutterActor *self)
     return;
 
   _clutter_meta_group_clear_metas_no_internal (self->priv->effects);
+
+  clutter_actor_queue_redraw (self);
 }
 
 /**
