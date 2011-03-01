@@ -294,10 +294,6 @@ AppSearchProvider.prototype = {
         let app = this._appSys.get_app(resultMeta['id']);
         let icon = new AppWellIcon(app);
         return icon.actor;
-    },
-
-    expandSearch: function(terms) {
-        log('TODO expand search');
     }
 };
 
@@ -318,12 +314,6 @@ PrefsSearchProvider.prototype = {
 
     getSubsearchResultSet: function(previousResults, terms) {
         return this._appSys.subsearch(true, previousResults, terms);
-    },
-
-    expandSearch: function(terms) {
-        let controlCenter = this._appSys.load_from_desktop_file('gnomecc.desktop');
-        controlCenter.launch();
-        Main.overview.hide();
     }
 };
 

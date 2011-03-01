@@ -43,9 +43,5 @@ DocSearchProvider.prototype = {
 
     getSubsearchResultSet: function(previousResults, terms) {
         return this._docManager.subsearch(previousResults, terms);
-    },
-
-    expandSearch: function(terms) {
-        log('TODO expand docs search');
     }
 };

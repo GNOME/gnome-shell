@@ -243,13 +243,9 @@ SearchResults.prototype = {
     createProviderMeta: function(provider) {
         let providerBox = new St.BoxLayout({ style_class: 'search-section',
                                              vertical: true });
-        let titleButton = new St.Button({ style_class: 'search-section-header',
-                                          reactive: true,
-                                          x_fill: true,
-                                          y_fill: true });
-        titleButton.connect('clicked', Lang.bind(this, function () { this._onHeaderClicked(provider); }));
-        providerBox.add(titleButton);
-        titleButton.set_child(new St.Label({ text: provider.title }));
+        let title = new St.Label({ style_class: 'search-section-header',
+                                   text: provider.title });
+        providerBox.add(title);
 
         let resultDisplayBin = new St.Bin({ style_class: 'search-section-results',
                                             x_fill: true,
@@ -322,10 +318,6 @@ SearchResults.prototype = {
             this.selectDown(false);
 
         return true;
-    },
-
-    _onHeaderClicked: function(provider) {
-        provider.expandSearch(this._searchSystem.getTerms());
     },
 
     _modifyActorSelection: function(resultDisplay, up) {

@@ -209,17 +209,6 @@ SearchProvider.prototype = {
      */
     activateResult: function(id) {
         throw new Error('Not implemented');
-    },
-
-    /**
-     * expandSearch:
-     *
-     * Called when the user clicks on the header for this
-     * search section.  Should typically launch an external program
-     * displaying search results for that item type.
-     */
-    expandSearch: function(terms) {
-        throw new Error('Not implemented');
     }
 };
 Signals.addSignalMethods(SearchProvider.prototype);
