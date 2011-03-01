@@ -76,6 +76,8 @@
 #include <gobject/gvaluecollector.h>
 
 #include "clutter-box.h"
+
+#include "clutter-actor-private.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-marshal.h"
@@ -296,6 +298,15 @@ clutter_box_real_paint (ClutterActor *actor)
   g_list_foreach (priv->children, (GFunc) clutter_actor_paint, NULL);
 }
 
+static gboolean
+clutter_box_real_get_paint_volume (ClutterActor       *actor,
+                                   ClutterPaintVolume *volume)
+{
+  return _clutter_actor_set_default_paint_volume (actor,
+                                                  CLUTTER_TYPE_BOX,
+                                                  volume);
+}
+
 static void
 clutter_box_real_pick (ClutterActor       *actor,
                        const ClutterColor *pick)
@@ -476,6 +487,7 @@ clutter_box_class_init (ClutterBoxClass *klass)
   actor_class->get_preferred_height = clutter_box_real_get_preferred_height;
   actor_class->allocate = clutter_box_real_allocate;
   actor_class->paint = clutter_box_real_paint;
+  actor_class->get_paint_volume = clutter_box_real_get_paint_volume;
   actor_class->pick = clutter_box_real_pick;
   actor_class->destroy = clutter_box_destroy;
 
