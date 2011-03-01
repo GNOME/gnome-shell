@@ -137,6 +137,8 @@
 #include "config.h"
 #endif
 
+#include <string.h>
+
 #include "clutter-constraint.h"
 
 #include "clutter-actor.h"
@@ -154,8 +156,29 @@ constraint_update_allocation (ClutterConstraint *constraint,
 }
 
 static void
+clutter_constraint_notify (GObject    *gobject,
+                           GParamSpec *pspec)
+{
+  if (strcmp (pspec->name, "enabled") == 0)
+    {
+      ClutterActorMeta *meta = CLUTTER_ACTOR_META (gobject);
+      ClutterActor *actor = clutter_actor_meta_get_actor (meta);
+
+      if (actor != NULL)
+        clutter_actor_queue_relayout (actor);
+    }
+
+  if (G_OBJECT_CLASS (clutter_constraint_parent_class)->notify != NULL)
+    G_OBJECT_CLASS (clutter_constraint_parent_class)->notify (gobject, pspec);
+}
+
+static void
 clutter_constraint_class_init (ClutterConstraintClass *klass)
 {
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+  gobject_class->notify = clutter_constraint_notify;
+
   klass->update_allocation = constraint_update_allocation;
 }
 
