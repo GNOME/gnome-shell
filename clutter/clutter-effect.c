@@ -200,8 +200,29 @@ clutter_effect_real_get_paint_volume (ClutterEffect      *effect,
 }
 
 static void
+clutter_effect_notify (GObject    *gobject,
+                       GParamSpec *pspec)
+{
+  if (strcmp (pspec->name, "enabled") == 0)
+    {
+      ClutterActorMeta *meta = CLUTTER_ACTOR_META (gobject);
+      ClutterActor *actor = clutter_actor_meta_get_actor (meta);
+
+      if (actor != NULL)
+        clutter_actor_queue_redraw (actor);
+    }
+
+  if (G_OBJECT_CLASS (clutter_effect_parent_class)->notify != NULL)
+    G_OBJECT_CLASS (clutter_effect_parent_class)->notify (gobject, pspec);
+}
+
+static void
 clutter_effect_class_init (ClutterEffectClass *klass)
 {
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+  gobject_class->notify = clutter_effect_notify;
+
   klass->pre_paint = clutter_effect_real_pre_paint;
   klass->post_paint = clutter_effect_real_post_paint;
   klass->get_paint_volume = clutter_effect_real_get_paint_volume;
