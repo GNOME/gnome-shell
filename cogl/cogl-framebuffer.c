@@ -464,13 +464,13 @@ _cogl_framebuffer_clear (CoglFramebuffer *framebuffer,
 }
 
 int
-_cogl_framebuffer_get_width (CoglFramebuffer *framebuffer)
+cogl_framebuffer_get_width (CoglFramebuffer *framebuffer)
 {
   return framebuffer->width;
 }
 
 int
-_cogl_framebuffer_get_height (CoglFramebuffer *framebuffer)
+cogl_framebuffer_get_height (CoglFramebuffer *framebuffer)
 {
   return framebuffer->height;
 }

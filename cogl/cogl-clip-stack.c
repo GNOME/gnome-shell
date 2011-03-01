@@ -644,7 +644,7 @@ _cogl_clip_stack_flush (CoglClipStack *stack)
       else
         {
           int framebuffer_height =
-            _cogl_framebuffer_get_height (framebuffer);
+            cogl_framebuffer_get_height (framebuffer);
 
           scissor_y_start = framebuffer_height - scissor_y1;
         }

@@ -155,12 +155,6 @@ _cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
 void
 _cogl_framebuffer_dirty (CoglFramebuffer *framebuffer);
 
-int
-_cogl_framebuffer_get_width (CoglFramebuffer *framebuffer);
-
-int
-_cogl_framebuffer_get_height (CoglFramebuffer *framebuffer);
-
 CoglClipState *
 _cogl_framebuffer_get_clip_state (CoglFramebuffer *framebuffer);
 
