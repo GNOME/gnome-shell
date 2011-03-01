@@ -10192,6 +10192,14 @@ _clutter_actor_set_opacity_override (ClutterActor *self,
   self->priv->opacity_override = opacity;
 }
 
+gint
+_clutter_actor_get_opacity_override (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), -1);
+
+  return self->priv->opacity_override;
+}
+
 /* Allows you to disable applying the actors model view transform during
  * a paint. Used by ClutterClone. */
 void
