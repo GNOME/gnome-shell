@@ -549,6 +549,8 @@ WorkspacesDisplay.prototype = {
         controls.connect('scroll-event',
                          Lang.bind(this, this._onScrollEvent));
 
+        this._monitorIndex = global.get_primary_monitor_index();
+        this._monitor = global.get_monitors()[this._monitorIndex];
 
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
         controls.add_actor(this._thumbnailsBox.actor);
@@ -577,7 +579,7 @@ WorkspacesDisplay.prototype = {
         this._workspaces = [];
         for (let i = 0; i < global.screen.n_workspaces; i++) {
             let metaWorkspace = global.screen.get_workspace_by_index(i);
-            this._workspaces[i] = new Workspace.Workspace(metaWorkspace);
+            this._workspaces[i] = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
         }
 
         if (this.workspacesView)
@@ -763,7 +765,7 @@ WorkspacesDisplay.prototype = {
             // Assume workspaces are only added at the end
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
                 let metaWorkspace = global.screen.get_workspace_by_index(w);
-                this._workspaces[w] = new Workspace.Workspace(metaWorkspace);
+                this._workspaces[w] = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
             }
 
             this._thumbnailsBox.addThumbnails(oldNumWorkspaces, newNumWorkspaces - oldNumWorkspaces);
