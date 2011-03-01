@@ -36,6 +36,7 @@
 
 #include "cogl-handle.h"
 #include "cogl-texture-private.h"
+#include "cogl-texture-pixmap-x11.h"
 
 #define COGL_TEXTURE_PIXMAP_X11(tex) ((CoglTexturePixmapX11 *) tex)
 
@@ -72,18 +73,12 @@ struct _CoglTexturePixmapX11
   gboolean damage_owned;
   CoglDamageRectangle damage_rect;
 
-#ifdef COGL_HAS_GLX_SUPPORT
+  void *winsys;
+
   /* During the pre_paint method, this will be set to TRUE if we
-     should use the GLX texture, otherwise we will use the regular
+     should use the winsys texture, otherwise we will use the regular
      texture */
-  gboolean use_glx_texture;
-  CoglHandle glx_tex;
-  GLXPixmap glx_pixmap;
-  gboolean glx_pixmap_has_mipmap;
-  gboolean glx_can_mipmap;
-  gboolean bind_tex_image_queued;
-  gboolean pixmap_bound;
-#endif
+  gboolean use_winsys_texture;
 };
 
 GQuark

@@ -1079,3 +1079,38 @@ _cogl_winsys_context_egl_get_egl_display (CoglContext *context)
 
   return egl_renderer->edpy;
 }
+
+#ifdef COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT
+gboolean
+_cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
+{
+  /* Unsupported feature */
+  tex_pixmap->winsys = NULL;
+  return FALSE;
+}
+
+void
+_cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
+{
+  /* Unsupported feature */
+}
+
+gboolean
+_cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
+                                        gboolean needs_mipmap)
+{
+  /* Unsupported feature */
+}
+
+void
+_cogl_winsys_texture_pixmap_x11_damage_notify (CoglTexturePixmapX11 *tex_pixmap)
+{
+  /* Unsupported feature */
+}
+
+CoglHandle
+_cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
+{
+  /* Unsupported feature */
+}
+#endif
