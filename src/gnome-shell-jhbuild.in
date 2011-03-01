@@ -144,7 +144,7 @@ def start_dconf_await_service():
 
 def start_shell(perf_output=None):
     bin_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-    if os.path.exists(os.path.join(bin_dir, 'gnome-shell.in')):
+    if os.path.exists(os.path.join(bin_dir, 'gnome-shell-jhbuild.in')):
         running_from_source_tree = True
         top_dir = os.path.dirname(bin_dir)
         plugin = os.path.join(top_dir, 'src', 'libgnome-shell.la')
