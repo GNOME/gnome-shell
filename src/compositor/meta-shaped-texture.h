@@ -31,6 +31,8 @@
 #include <clutter/clutter.h>
 #ifdef HAVE_GLX_TEXTURE_PIXMAP
 #include <clutter/glx/clutter-glx.h>
+#else
+#include <clutter/x11/clutter-x11.h>
 #endif /* HAVE_GLX_TEXTURE_PIXMAP */
 
 G_BEGIN_DECLS
