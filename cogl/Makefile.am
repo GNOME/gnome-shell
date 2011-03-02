@@ -76,7 +76,7 @@ cogl_public_h = \
 	$(srcdir)/cogl-texture-3d.h             \
 	$(srcdir)/cogl-types.h 			\
 	$(srcdir)/cogl-vertex-buffer.h 		\
-	$(srcdir)/cogl-index-array.h 		\
+	$(srcdir)/cogl-index-buffer.h 		\
 	$(srcdir)/cogl-attribute-buffer.h 	\
 	$(srcdir)/cogl-indices.h 		\
 	$(srcdir)/cogl-attribute.h 		\
@@ -220,8 +220,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-pixel-buffer.c			\
 	$(srcdir)/cogl-vertex-buffer-private.h 		\
 	$(srcdir)/cogl-vertex-buffer.c			\
-	$(srcdir)/cogl-index-array-private.h		\
-	$(srcdir)/cogl-index-array.c			\
+	$(srcdir)/cogl-index-buffer-private.h		\
+	$(srcdir)/cogl-index-buffer.c			\
 	$(srcdir)/cogl-attribute-buffer-private.h	\
 	$(srcdir)/cogl-attribute-buffer.c		\
 	$(srcdir)/cogl-indices-private.h		\

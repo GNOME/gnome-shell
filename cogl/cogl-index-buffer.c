@@ -33,17 +33,17 @@
 #include "cogl-indices.h"
 #include "cogl-indices-private.h"
 
-static void _cogl_index_array_free (CoglIndexArray *indices);
+static void _cogl_index_buffer_free (CoglIndexBuffer *indices);
 
-COGL_BUFFER_DEFINE (IndexArray, index_array);
+COGL_BUFFER_DEFINE (IndexBuffer, index_buffer);
 
 /* XXX: Unlike the wiki design this just takes a size. A single
  * indices buffer should be able to contain multiple ranges of indices
  * which the wiki design doesn't currently consider. */
-CoglIndexArray *
-cogl_index_array_new (gsize bytes)
+CoglIndexBuffer *
+cogl_index_buffer_new (gsize bytes)
 {
-  CoglIndexArray *indices = g_slice_new (CoglIndexArray);
+  CoglIndexBuffer *indices = g_slice_new (CoglIndexBuffer);
   gboolean use_malloc;
 
   if (!cogl_features_available (COGL_FEATURE_VBOS))
@@ -55,25 +55,25 @@ cogl_index_array_new (gsize bytes)
   _cogl_buffer_initialize (COGL_BUFFER (indices),
                            bytes,
                            use_malloc,
-                           COGL_BUFFER_BIND_TARGET_INDEX_ARRAY,
-                           COGL_BUFFER_USAGE_HINT_INDEX_ARRAY,
+                           COGL_BUFFER_BIND_TARGET_INDEX_BUFFER,
+                           COGL_BUFFER_USAGE_HINT_INDEX_BUFFER,
                            COGL_BUFFER_UPDATE_HINT_STATIC);
 
-  return _cogl_index_array_object_new (indices);
+  return _cogl_index_buffer_object_new (indices);
 }
 
 static void
-_cogl_index_array_free (CoglIndexArray *indices)
+_cogl_index_buffer_free (CoglIndexBuffer *indices)
 {
   /* parent's destructor */
   _cogl_buffer_fini (COGL_BUFFER (indices));
 
-  g_slice_free (CoglIndexArray, indices);
+  g_slice_free (CoglIndexBuffer, indices);
 }
 
 gboolean
-cogl_index_array_allocate (CoglIndexArray *indices,
-                             GError *error)
+cogl_index_buffer_allocate (CoglIndexBuffer *indices,
+                            GError *error)
 {
   /* TODO */
   return TRUE;
@@ -82,43 +82,28 @@ cogl_index_array_allocate (CoglIndexArray *indices,
 /* XXX: do we want a convenience function like this as an alternative
  * to using cogl_buffer_set_data? The advantage of this is that we can
  * track meta data such as the indices type and max_index_value for a
- * range as part of the indices array. If we just leave people to use
+ * range as part of the indices buffer. If we just leave people to use
  * cogl_buffer_set_data then we either need a way to specify the type
  * and max index value at draw time or we'll want a separate way to
  * declare the type and max value for a range after uploading the
  * data.
  *
  * XXX: I think in the end it'll be that CoglIndices are to
- * CoglIndexArrays as CoglAttributes are to CoglVertices. I.e
- * a CoglIndexArray is a lite subclass of CoglBuffer that simply
+ * CoglIndexBuffers as CoglAttributes are to CoglAttributeBuffers. I.e
+ * a CoglIndexBuffer is a lite subclass of CoglBuffer that simply
  * implies that the buffer will later be bound as indices but doesn't
  * track more detailed meta data. CoglIndices build on a
- * CoglIndexArray and define the type and max_index_value for some
- * sub-range of a CoglIndexArray.
- *
- * XXX: The double plurel form that "Indices" "Array" implies could be
- * a bit confusing. Also to be a bit more consistent with
- * CoglAttributeBuffer vs CoglAttribute it might be best to rename so
- * we have CoglIndexArray vs CoglIndices? maybe even
- * CoglIndexRange :-/ ?
- *
- * CoglBuffer
- *   CoglAttributeBuffer (buffer sub-class)
- *     CoglAttribute (defines meta data for sub-region of buffer)
- *     CoglPrimitive (object encapsulating a set of attributes)
- *   CoglPixelBuffer (buffer sub-class)
- *   CoglIndexArray (buffer sub-class)
- *     CoglIndices (defines meta data for sub-region of array)
- *
+ * CoglIndexBuffer and define the type and max_index_value for some
+ * sub-range of a CoglIndexBuffer.
  */
 #if 0
 void
-cogl_index_array_set_data (CoglIndexArray *indices,
-                           CoglIndicesType type,
-                           int max_index_value,
-                           gsize write_offset,
-                           void *user_indices,
-                           int n_indices)
+cogl_index_buffer_set_data (CoglIndexBuffer *indices,
+                            CoglIndicesType type,
+                            int max_index_value,
+                            gsize write_offset,
+                            void *user_indices,
+                            int n_indices)
 {
   GList *l;
 

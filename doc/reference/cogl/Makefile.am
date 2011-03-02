@@ -60,7 +60,7 @@ IGNORE_HFILES=\
 	cogl-feature-private.h			\
 	cogl-framebuffer-private.h		\
 	cogl-gtype-private.h			\
-	cogl-index-array-private.h		\
+	cogl-index-buffer-private.h		\
 	cogl-indices-private.h			\
 	cogl-journal-private.h			\
 	cogl-matrix-private.h			\

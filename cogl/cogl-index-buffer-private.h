@@ -25,15 +25,14 @@
  *   Robert Bragg <robert@linux.intel.com>
  */
 
-#ifndef __COGL_INDEX_ARRAY_PRIVATE_H
-#define __COGL_INDEX_ARRAY_PRIVATE_H
+#ifndef __COGL_INDEX_BUFFER_PRIVATE_H
+#define __COGL_INDEX_BUFFER_PRIVATE_H
 
 #include "cogl-buffer-private.h"
 
-struct _CoglIndexArray
+struct _CoglIndexBuffer
 {
   CoglBuffer _parent;
 };
 
-#endif /* __COGL_INDEX_ARRAY_PRIVATE_H */
-
+#endif /* __COGL_INDEX_BUFFER_PRIVATE_H */

@@ -34,7 +34,7 @@
 #include "cogl-context-private.h"
 #include "cogl-indices.h"
 #include "cogl-indices-private.h"
-#include "cogl-index-array.h"
+#include "cogl-index-buffer.h"
 
 #include <stdarg.h>
 
@@ -58,13 +58,13 @@ sizeof_indices_type (CoglIndicesType type)
 }
 
 CoglIndices *
-cogl_indices_new_for_array (CoglIndicesType type,
-                            CoglIndexArray *array,
-                            gsize offset)
+cogl_indices_new_for_buffer (CoglIndicesType type,
+                             CoglIndexBuffer *buffer,
+                             gsize offset)
 {
   CoglIndices *indices = g_slice_new (CoglIndices);
 
-  indices->array = cogl_object_ref (array);
+  indices->buffer = cogl_object_ref (buffer);
   indices->offset = offset;
 
   indices->type = type;
@@ -79,26 +79,26 @@ cogl_indices_new (CoglIndicesType type,
                   const void *indices_data,
                   int n_indices)
 {
-  size_t array_bytes = sizeof_indices_type (type) * n_indices;
-  CoglIndexArray *array = cogl_index_array_new (array_bytes);
-  CoglBuffer *buffer = COGL_BUFFER (array);
+  size_t buffer_bytes = sizeof_indices_type (type) * n_indices;
+  CoglIndexBuffer *index_buffer = cogl_index_buffer_new (buffer_bytes);
+  CoglBuffer *buffer = COGL_BUFFER (index_buffer);
   CoglIndices *indices;
 
   cogl_buffer_set_data (buffer,
                         0,
                         indices_data,
-                        array_bytes);
+                        buffer_bytes);
 
-  indices = cogl_indices_new_for_array (type, array, 0);
-  cogl_object_unref (array);
+  indices = cogl_indices_new_for_buffer (type, index_buffer, 0);
+  cogl_object_unref (index_buffer);
 
   return indices;
 }
 
-CoglIndexArray *
-cogl_indices_get_array (CoglIndices *indices)
+CoglIndexBuffer *
+cogl_indices_get_buffer (CoglIndices *indices)
 {
-  return indices->array;
+  return indices->buffer;
 }
 
 CoglIndicesType
@@ -144,7 +144,7 @@ cogl_indices_set_offset (CoglIndices *indices,
 static void
 _cogl_indices_free (CoglIndices *indices)
 {
-  cogl_object_unref (indices->array);
+  cogl_object_unref (indices->buffer);
   g_slice_free (CoglIndices, indices);
 }
 
@@ -154,7 +154,7 @@ _cogl_indices_immutable_ref (CoglIndices *indices)
   g_return_val_if_fail (cogl_is_indices (indices), NULL);
 
   indices->immutable_ref++;
-  _cogl_buffer_immutable_ref (COGL_BUFFER (indices->array));
+  _cogl_buffer_immutable_ref (COGL_BUFFER (indices->buffer));
   return indices;
 }
 
@@ -165,7 +165,7 @@ _cogl_indices_immutable_unref (CoglIndices *indices)
   g_return_if_fail (indices->immutable_ref > 0);
 
   indices->immutable_ref--;
-  _cogl_buffer_immutable_unref (COGL_BUFFER (indices->array));
+  _cogl_buffer_immutable_unref (COGL_BUFFER (indices->buffer));
 }
 
 CoglIndices *

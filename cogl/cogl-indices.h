@@ -31,14 +31,14 @@
 #ifndef __COGL_INDICES_H__
 #define __COGL_INDICES_H__
 
-#include <cogl/cogl-index-array.h>
+#include <cogl/cogl-index-buffer.h>
 
 G_BEGIN_DECLS
 
 /**
  * SECTION:cogl-index-range
  * @short_description: Fuctions for declaring a range of vertex indices
- *   stored in a #CoglIndexArray.
+ *   stored in a #CoglIndexBuffer.
  *
  * FIXME
  */
@@ -51,12 +51,12 @@ cogl_indices_new (CoglIndicesType type,
                   int n_indices);
 
 CoglIndices *
-cogl_indices_new_for_array (CoglIndicesType type,
-                            CoglIndexArray *array,
-                            gsize offset);
+cogl_indices_new_for_buffer (CoglIndicesType type,
+                             CoglIndexBuffer *buffer,
+                             gsize offset);
 
-CoglIndexArray *
-cogl_indices_get_array (CoglIndices *indices);
+CoglIndexBuffer *
+cogl_indices_get_buffer (CoglIndices *indices);
 
 CoglIndicesType
 cogl_indices_get_type (CoglIndices *indices);

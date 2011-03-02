@@ -29,14 +29,14 @@
 #define __COGL_INDICES_PRIVATE_H
 
 #include "cogl-object-private.h"
-#include "cogl-index-array-private.h"
+#include "cogl-index-buffer-private.h"
 #include "cogl-types.h"
 
 struct _CoglIndices
 {
   CoglObject _parent;
 
-  CoglIndexArray *array;
+  CoglIndexBuffer *buffer;
   size_t offset;
 
   CoglIndicesType type;

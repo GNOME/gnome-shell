@@ -321,8 +321,8 @@ cogl_attribute_get_buffer (CoglAttribute *attribute)
 }
 
 void
-cogl_attribute_set_array (CoglAttribute *attribute,
-                          CoglAttributeBuffer *attribute_buffer)
+cogl_attribute_set_buffer (CoglAttribute *attribute,
+                           CoglAttributeBuffer *attribute_buffer)
 {
   g_return_if_fail (cogl_is_attribute (attribute));
 
@@ -877,7 +877,7 @@ get_wire_lines (CoglAttribute *attribute,
 {
   CoglAttributeBuffer *attribute_buffer = cogl_attribute_get_buffer (attribute);
   void *vertices;
-  CoglIndexArray *index_array;
+  CoglIndexBuffer *index_buffer;
   void *indices;
   CoglIndicesType indices_type;
   int i;
@@ -888,14 +888,14 @@ get_wire_lines (CoglAttribute *attribute,
                               COGL_BUFFER_ACCESS_READ, 0);
   if (_indices)
     {
-      index_array = cogl_indices_get_array (_indices);
-      indices = cogl_buffer_map (COGL_BUFFER (index_array),
+      index_buffer = cogl_indices_get_buffer (_indices);
+      indices = cogl_buffer_map (COGL_BUFFER (index_buffer),
                                  COGL_BUFFER_ACCESS_READ, 0);
       indices_type = cogl_indices_get_type (_indices);
     }
   else
     {
-      index_array = NULL;
+      index_buffer = NULL;
       indices = NULL;
       indices_type = COGL_INDICES_TYPE_UNSIGNED_BYTE;
     }
@@ -985,7 +985,7 @@ get_wire_lines (CoglAttribute *attribute,
     cogl_buffer_unmap (COGL_BUFFER (attribute_buffer));
 
   if (indices != NULL)
-    cogl_buffer_unmap (COGL_BUFFER (index_array));
+    cogl_buffer_unmap (COGL_BUFFER (index_buffer));
 
   return out;
 }
@@ -1188,7 +1188,7 @@ _cogl_draw_indexed_attributes_array (CoglVerticesMode mode,
   CoglPipeline *source;
   CoglBuffer *buffer;
   guint8 *base;
-  size_t array_offset;
+  size_t buffer_offset;
   size_t index_size;
   GLenum indices_gl_type = 0;
 
@@ -1198,9 +1198,9 @@ _cogl_draw_indexed_attributes_array (CoglVerticesMode mode,
 
   source = enable_gl_state (flags, attributes, &state);
 
-  buffer = COGL_BUFFER (cogl_indices_get_array (indices));
-  base = _cogl_buffer_bind (buffer, COGL_BUFFER_BIND_TARGET_INDEX_ARRAY);
-  array_offset = cogl_indices_get_offset (indices);
+  buffer = COGL_BUFFER (cogl_indices_get_buffer (indices));
+  base = _cogl_buffer_bind (buffer, COGL_BUFFER_BIND_TARGET_INDEX_BUFFER);
+  buffer_offset = cogl_indices_get_offset (indices);
   index_size = sizeof_index_type (cogl_indices_get_type (indices));
 
   switch (cogl_indices_get_type (indices))
@@ -1219,7 +1219,7 @@ _cogl_draw_indexed_attributes_array (CoglVerticesMode mode,
   GE (glDrawElements ((GLenum)mode,
                       n_vertices,
                       indices_gl_type,
-                      base + array_offset + index_size * first_vertex));
+                      base + buffer_offset + index_size * first_vertex));
 
   _cogl_buffer_unbind (buffer);
 

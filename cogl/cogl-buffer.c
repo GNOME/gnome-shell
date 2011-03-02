@@ -130,7 +130,7 @@ convert_bind_target_to_gl_target (CoglBufferBindTarget target)
         return GL_PIXEL_UNPACK_BUFFER;
       case COGL_BUFFER_BIND_TARGET_ATTRIBUTE_BUFFER:
         return GL_ARRAY_BUFFER;
-      case COGL_BUFFER_BIND_TARGET_INDEX_ARRAY:
+      case COGL_BUFFER_BIND_TARGET_INDEX_BUFFER:
         return GL_ELEMENT_ARRAY_BUFFER;
       default:
         g_return_val_if_reached (COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK);

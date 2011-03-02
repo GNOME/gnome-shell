@@ -28,26 +28,26 @@
 #error "Only <cogl/cogl.h> can be included directly."
 #endif
 
-#ifndef __COGL_INDEX_ARRAY_H__
-#define __COGL_INDEX_ARRAY_H__
+#ifndef __COGL_INDEX_BUFFER_H__
+#define __COGL_INDEX_BUFFER_H__
 
 G_BEGIN_DECLS
 
 /**
- * SECTION:cogl-vertex-indices
+ * SECTION:cogl-index-buffer
  * @short_description: Functions for creating and manipulating vertex
  * indices.
  *
  * FIXME
  */
 
-typedef struct _CoglIndexArray	      CoglIndexArray;
+typedef struct _CoglIndexBuffer	      CoglIndexBuffer;
 
 /**
- * cogl_index_array_new:
+ * cogl_index_buffer_new:
  * @bytes: The number of bytes to allocate for vertex attribute data.
  *
- * Declares a new #CoglIndexArray of @size bytes to contain vertex
+ * Declares a new #CoglIndexBuffer of @size bytes to contain vertex
  * indices. Once declared, data can be set using
  * cogl_buffer_set_data() or by mapping it into the application's
  * address space using cogl_buffer_map().
@@ -55,25 +55,25 @@ typedef struct _CoglIndexArray	      CoglIndexArray;
  * Since: 1.4
  * Stability: Unstable
  */
-CoglIndexArray *
-cogl_index_array_new (gsize bytes);
+CoglIndexBuffer *
+cogl_index_buffer_new (gsize bytes);
 
 /**
- * cogl_is_indices_array:
+ * cogl_is_index_buffer:
  * @object: A #CoglObject
  *
- * Gets whether the given object references a #CoglIndexArray.
+ * Gets whether the given object references a #CoglIndexBuffer.
  *
- * Returns: %TRUE if the handle references a #CoglIndexArray,
+ * Returns: %TRUE if the handle references a #CoglIndexBuffer,
  *   %FALSE otherwise
  *
  * Since: 1.4
  * Stability: Unstable
  */
 gboolean
-cogl_is_indices_array (void *object);
+cogl_is_index_buffer (void *object);
 
 G_END_DECLS
 
-#endif /* __COGL_INDEX_ARRAY_H__ */
+#endif /* __COGL_INDEX_BUFFER_H__ */
 
