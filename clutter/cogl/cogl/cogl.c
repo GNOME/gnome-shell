@@ -62,8 +62,10 @@ static const struct {
   { GL_INVALID_ENUM,      "Invalid enumeration value" },
   { GL_INVALID_VALUE,     "Invalid value" },
   { GL_INVALID_OPERATION, "Invalid operation" },
+#ifdef HAVE_COGL_GL
   { GL_STACK_OVERFLOW,    "Stack overflow" },
   { GL_STACK_UNDERFLOW,   "Stack underflow" },
+#endif
   { GL_OUT_OF_MEMORY,     "Out of memory" },
 
 #ifdef GL_INVALID_FRAMEBUFFER_OPERATION_EXT
