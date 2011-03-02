@@ -21,30 +21,29 @@
  *
  */
 
-#if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
-#error "Only <cogl/cogl.h> can be included directly."
+#ifdef HAVE_CONFIG_H
+#include "config.h"
 #endif
 
-#ifndef __COGL_CLIP_STATE_H
-#define __COGL_CLIP_STATE_H
+#include "cogl.h"
+#include "cogl-clip-state-private.h"
+#include "cogl-framebuffer-private.h"
+#include "cogl-journal-private.h"
 
-#include <cogl/cogl-types.h>
-
-G_BEGIN_DECLS
-
-/**
- * cogl_clip_push_from_path:
- *
- * Sets a new clipping area using the current path. The current path
- * is then cleared. The clipping area is intersected with the previous
- * clipping area. To restore the previous clipping area, call
- * cogl_clip_pop().
- *
- * Since: 1.0
- */
 void
-cogl_clip_push_from_path (void);
+cogl2_clip_push_from_path (CoglPath *path)
+{
+  CoglFramebuffer *framebuffer;
+  CoglClipState *clip_state;
+  CoglMatrix modelview_matrix;
 
-G_END_DECLS
+  framebuffer = _cogl_get_draw_buffer ();
+  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
 
-#endif /* __COGL_CLIP_STATE_H */
+  cogl_get_modelview_matrix (&modelview_matrix);
+
+  clip_state->stacks->data =
+    _cogl_clip_stack_push_from_path (clip_state->stacks->data,
+                                     path,
+                                     &modelview_matrix);
+}

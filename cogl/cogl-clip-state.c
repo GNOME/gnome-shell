@@ -32,7 +32,7 @@
 
 #include "cogl.h"
 #include "cogl-clip-stack.h"
-#include "cogl-clip-state.h"
+#include "cogl-clip-state-private.h"
 #include "cogl-context.h"
 #include "cogl-internal.h"
 #include "cogl-framebuffer-private.h"
@@ -109,29 +109,17 @@ cogl_clip_push (float x_offset,
 void
 cogl_clip_push_from_path_preserve (void)
 {
-  CoglFramebuffer *framebuffer;
-  CoglClipState *clip_state;
-  CoglMatrix modelview_matrix;
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  framebuffer = _cogl_get_draw_buffer ();
-  clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-  cogl_get_modelview_matrix (&modelview_matrix);
-
-  clip_state->stacks->data =
-    _cogl_clip_stack_push_from_path (clip_state->stacks->data,
-                                     ctx->current_path,
-                                     &modelview_matrix);
+  cogl2_clip_push_from_path (ctx->current_path);
 }
 
+#undef cogl_clip_push_from_path
 void
 cogl_clip_push_from_path (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_clip_push_from_path_preserve ();
+  cogl2_clip_push_from_path (ctx->current_path);
 
   cogl_object_unref (ctx->current_path);
   ctx->current_path = cogl2_path_new ();

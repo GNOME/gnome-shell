@@ -25,26 +25,28 @@
 #error "Only <cogl/cogl.h> can be included directly."
 #endif
 
-#ifndef __COGL_CLIP_STATE_H
-#define __COGL_CLIP_STATE_H
+#ifndef __COGL2_CLIP_STATE_H
+#define __COGL2_CLIP_STATE_H
 
 #include <cogl/cogl-types.h>
 
 G_BEGIN_DECLS
 
+#define cogl_clip_push_from_path cogl2_clip_push_from_path
 /**
  * cogl_clip_push_from_path:
+ * @path: The path to clip with.
  *
- * Sets a new clipping area using the current path. The current path
- * is then cleared. The clipping area is intersected with the previous
- * clipping area. To restore the previous clipping area, call
- * cogl_clip_pop().
+ * Sets a new clipping area using @path. The clipping area is intersected
+ * with the previous clipping area. To restore the previous clipping area,
+ * call cogl_clip_pop().
  *
- * Since: 1.0
+ * Since: 1.8
+ * Stability: Unstable
  */
 void
-cogl_clip_push_from_path (void);
+cogl_clip_push_from_path (CoglPath *path);
 
 G_END_DECLS
 
-#endif /* __COGL_CLIP_STATE_H */
+#endif /* __COGL2_CLIP_STATE_H */
