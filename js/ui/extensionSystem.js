@@ -174,8 +174,15 @@ function init() {
 }
 
 function _loadExtensionsIn(dir, type) {
-    let fileEnum = dir.enumerate_children('standard::*', Gio.FileQueryInfoFlags.NONE, null);
+    let fileEnum;
     let file, info;
+    try {
+        fileEnum = dir.enumerate_children('standard::*', Gio.FileQueryInfoFlags.NONE, null);
+    } catch (e) {
+        global.logError('' + e);
+       return;
+    }
+
     while ((info = fileEnum.next_file(null)) != null) {
         let fileType = info.get_file_type();
         if (fileType != Gio.FileType.DIRECTORY)
