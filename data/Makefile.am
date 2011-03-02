@@ -36,7 +36,7 @@ dist_theme_DATA =				\
 	theme/panel-button-border.svg		\
 	theme/panel-button-highlight-narrow.svg	\
 	theme/panel-button-highlight-wide.svg	\
-	theme/process-working.png		\
+	theme/process-working.svg		\
 	theme/running-indicator.svg		\
 	theme/scroll-button-down-hover.png	\
 	theme/scroll-button-down.png		\

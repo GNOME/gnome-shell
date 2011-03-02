@@ -275,7 +275,7 @@ AppMenuButton.prototype = {
         this._clipWidth = PANEL_ICON_SIZE;
         this._direction = SPINNER_SPEED;
 
-        this._spinner = new AnimatedIcon('process-working.png',
+        this._spinner = new AnimatedIcon('process-working.svg',
                                          PANEL_ICON_SIZE);
         this._container.add_actor(this._spinner.actor);
         this._spinner.actor.lower_bottom();
