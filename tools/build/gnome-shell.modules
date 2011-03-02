@@ -200,6 +200,43 @@
     </dependencies>
   </autotools>
 
+  <autotools id="glib-networking">
+    <branch repo="git.gnome.org" module="glib-networking"/>
+    <dependencies>
+     <dep package="glib"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libsoup">
+    <branch repo="git.gnome.org" module="libsoup"/>
+    <dependencies>
+     <dep package="glib-networking"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libgdata">
+    <branch repo="git.gnome.org" module="libgdata"/>
+    <dependencies>
+     <dep package="libsoup"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libgweather">
+    <branch repo="git.gnome.org" module="libgweather"/>
+    <dependencies>
+     <dep package="libsoup"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="evolution-data-server">
+    <branch repo="git.gnome.org" module="evolution-data-server"/>
+    <dependencies>
+     <dep package="libgweather"/>
+     <dep package="libgdata"/>
+     <dep package="gtk3"/>
+    </dependencies>
+  </autotools>
+
   <autotools id="gnome-power-manager">
     <branch repo="git.gnome.org" module="gnome-power-manager" />
     <dependencies>
@@ -223,6 +260,7 @@
   <autotools id="gnome-shell" autogenargs="--enable-jhbuild-wrapper-script">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
+        <dep package="evolution-data-server"/>
         <dep package="gobject-introspection"/>
         <dep package="mutter"/>
         <dep package="gjs"/>
