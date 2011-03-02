@@ -485,31 +485,6 @@ Overview.prototype = {
         this.emit('window-drag-end');
     },
 
-    // Returns the scale the Overview has when we just start zooming out
-    // to overview mode. That is, when just the active workspace is showing.
-    getZoomedInScale : function() {
-        return 1 / this.workspaces.getScale();
-    },
-
-    // Returns the position the Overview has when we just start zooming out
-    // to overview mode. That is, when just the active workspace is showing.
-    getZoomedInPosition : function() {
-        let [posX, posY] = this.workspaces.getActiveWorkspacePosition();
-        let scale = this.getZoomedInScale();
-
-        return [- posX * scale, - posY * scale];
-    },
-
-    // Returns the current scale of the Overview.
-    getScale : function() {
-        return this.workspaces.actor.scaleX;
-    },
-
-    // Returns the current position of the Overview.
-    getPosition : function() {
-        return [this.workspaces.actor.x, this.workspaces.actor.y];
-    },
-
     // show:
     //
     // Animates the overview visible and grabs mouse and keyboard input
@@ -563,30 +538,13 @@ Overview.prototype = {
                              });
         }
 
-        // Create a zoom out effect. First scale the workspaces view up and
-        // position it so that the active workspace fills up the whole screen,
-        // then transform it to its normal dimensions and position.
-        // The opposite transition is used in hide().
-        this.workspaces.actor.scaleX = this.workspaces.actor.scaleY = this.getZoomedInScale();
-        [this.workspaces.actor.x, this.workspaces.actor.y] = this.getZoomedInPosition();
-        let primary = global.get_primary_monitor();
-        Tweener.addTween(this.workspaces.actor,
-                         { x: primary.x - this._group.x,
-                           y: primary.y - this._group.y,
-                           scaleX: 1,
-                           scaleY: 1,
-                           transition: 'easeOutQuad',
-                           time: ANIMATION_TIME,
-                           onComplete: this._showDone,
-                           onCompleteScope: this
-                          });
-
-        // Make the other elements fade in.
         this._group.opacity = 0;
         Tweener.addTween(this._group,
                          { opacity: 255,
                            transition: 'easeOutQuad',
-                           time: ANIMATION_TIME
+                           time: ANIMATION_TIME,
+                           onComplete: this._showDone,
+                           onCompleteScope: this
                          });
 
         this._coverPane.raise_top();
@@ -698,27 +656,13 @@ Overview.prototype = {
 
         this.workspaces.hide();
 
-        // Create a zoom in effect by transforming the workspaces view so that
-        // the active workspace fills up the whole screen. The opposite
-        // transition is used in show().
-        let scale = this.getZoomedInScale();
-        let [posX, posY] = this.getZoomedInPosition();
-        Tweener.addTween(this.workspaces.actor,
-                         { x: posX,
-                           y: posY,
-                           scaleX: scale,
-                           scaleY: scale,
-                           transition: 'easeOutQuad',
-                           time: ANIMATION_TIME,
-                           onComplete: this._hideDone,
-                           onCompleteScope: this
-                          });
-
         // Make other elements fade out.
         Tweener.addTween(this._group,
                          { opacity: 0,
                            transition: 'easeOutQuad',
-                           time: ANIMATION_TIME
+                           time: ANIMATION_TIME,
+                           onComplete: this._hideDone,
+                           onCompleteScope: this
                          });
 
         this._coverPane.raise_top();

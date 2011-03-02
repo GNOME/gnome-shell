@@ -25,14 +25,13 @@ const MAX_WORKSPACES = 16;
 const CONTROLS_POP_IN_TIME = 0.1;
 
 
-function WorkspacesView(width, height, x, y, workspaces) {
-    this._init(width, height, x, y, workspaces);
+function WorkspacesView(workspaces) {
+    this._init(workspaces);
 }
 
 WorkspacesView.prototype = {
-    _init: function(width, height, x, y, workspaces) {
+    _init: function(workspaces) {
         this.actor = new St.Group({ style_class: 'workspaces-view' });
-        this.actor.set_clip(x, y, width, height);
 
         // The actor itself isn't a drop target, so we don't want to pick on its area
         this.actor.set_size(0, 0);
@@ -43,19 +42,16 @@ WorkspacesView.prototype = {
             function() {
                 let node = this.actor.get_theme_node();
                 this._spacing = node.get_length('spacing');
-                this._computeWorkspacePositions();
+                this._updateWorkspaceActors(false);
             }));
         this.actor.connect('notify::mapped',
                            Lang.bind(this, this._onMappedChanged));
 
-        this._width = width;
-        this._height = height;
-        this._x = x;
-        this._y = y;
-        this._zoomScale = 1.0;
+        this._width = 0;
+        this._height = 0;
+        this._x = 0;
+        this._y = 0;
         this._spacing = 0;
-        this._activeWorkspaceX = 0; // x offset of active ws while dragging
-        this._activeWorkspaceY = 0; // y offset of active ws while dragging
         this._lostWorkspaces = [];
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
@@ -80,6 +76,11 @@ WorkspacesView.prototype = {
                                  Lang.bind(this, function() {
                 for (let w = 0; w < this._workspaces.length; w++)
                     this._workspaces[w].zoomToOverview();
+        }));
+        this._overviewShownId =
+            Main.overview.connect('shown',
+                                 Lang.bind(this, function() {
+                this.actor.set_clip(this._x, this._y, this._width, this._height);
         }));
 
         this._scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
@@ -109,30 +110,17 @@ WorkspacesView.prototype = {
         this._swipeScrollEndId = 0;
     },
 
-    setZoomScale: function(zoomScale) {
-        if (zoomScale == this._zoomScale)
-            return;
+    setGeometry: function(x, y, width, height) {
+      if (this._x == x && this._y == y &&
+          this._width == width && this._height == height)
+          return;
+        this._width = width;
+        this._height = height;
+        this._x = x;
+        this._y = y;
 
-        this._zoomScale = zoomScale;
-        if (this._zoomOut) {
-            // If we are already zoomed out, then we have to reposition.
-            // Note that when shown initially zoomOut is false, so we
-            // won't trigger this.
-
-            // setZoomScale can be invoked when the workspaces view is
-            // reallocated. Since we just want to animate things to the
-            // new position it seems OK to call updateWorkspaceActors
-            // immediately - adding a tween doesn't immediately cause
-            // a new allocation. But hide/show of the window overlays we
-            // do around animation does, so we need to do it later.
-            // This can be removed when we fix things to not hide/show
-            // the window overlay.
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                           Lang.bind(this, function() {
-                                         this._computeWorkspacePositions();
-                                         this._updateWorkspaceActors(true);
-                                     }));
-        }
+        for (let i = 0; i < this._workspaces.length; i++)
+            this._workspaces[i].setGeometry(x, y, width, height);
     },
 
     _lookupWorkspaceForMetaWindow: function (metaWindow) {
@@ -154,6 +142,8 @@ WorkspacesView.prototype = {
 
         activeWorkspace.actor.raise_top();
 
+       this.actor.remove_clip(this._x, this._y, this._width, this._height);
+
         for (let w = 0; w < this._workspaces.length; w++)
             this._workspaces[w].zoomFromOverview();
     },
@@ -162,93 +152,27 @@ WorkspacesView.prototype = {
         this.actor.destroy();
     },
 
-    getScale: function() {
-        return this._workspaces[0].scale;
-    },
-
     syncStacking: function(stackIndices) {
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].syncStacking(stackIndices);
     },
 
-    // Get the grid position of the active workspace.
-    getActiveWorkspacePosition: function() {
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        let activeWorkspace = this._workspaces[activeWorkspaceIndex];
-
-        return [activeWorkspace.x, activeWorkspace.y];
-    },
-
-    zoomOut: function() {
-        if (this._zoomOut)
-            return;
-
-        this._zoomOut = true;
-        this._computeWorkspacePositions();
-        this._updateWorkspaceActors(true);
-    },
-
-    zoomIn: function() {
-        if (!this._zoomOut)
-            return;
-
-        this._zoomOut = false;
-        this._computeWorkspacePositions();
-        this._updateWorkspaceActors(true);
-    },
-
-    // Compute the position, scale and opacity of the workspaces, but don't
-    // actually change the actors to match
-    _computeWorkspacePositions: function() {
-        let active = global.screen.get_active_workspace_index();
-        let zoomScale = this._zoomOut ? this._zoomScale : 1;
-        let scale = zoomScale * this._width / global.screen_width;
-
-        let _width = this._workspaces[0].actor.width * scale;
-        let _height = this._workspaces[0].actor.height * scale;
-
-        this._activeWorkspaceX = (this._width - _width) / 2;
-        this._activeWorkspaceY = (this._height - _height) / 2;
-
-        for (let w = 0; w < this._workspaces.length; w++) {
-            let workspace = this._workspaces[w];
-
-            workspace.opacity = (this._inDrag && w != active) ? 200 : 255;
-
-            workspace.scale = scale;
-            workspace.x = this._x + this._activeWorkspaceX;
-
-            // We adjust the center because the zoomScale is to leave space for
-            // the expanded workspace control so we want to zoom to either the
-            // left part of the area or the right part of the area
-            let offset = 0.5 * (1 - this._zoomScale) * this._width;
-            let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
-            if (this._zoomOut)
-                workspace.x += rtl ? offset : - offset;
-
-            // We divide by zoomScale so that adjacent workspaces are always offscreen
-            // except when we are switching between workspaces
-            workspace.y = this._y + this._activeWorkspaceY
-                                  + (w - active) * (_height + this._spacing) / zoomScale;
-        }
+    updateWindowPositions: function() {
+        for (let w = 0; w < this._workspaces.length; w++)
+            this._workspaces[w].positionWindows(Workspace.WindowPositionFlags.ANIMATE);
     },
 
     _scrollToActive: function(showAnimation) {
         let active = global.screen.get_active_workspace_index();
 
-        this._computeWorkspacePositions();
         this._updateWorkspaceActors(showAnimation);
         this._updateScrollAdjustment(active, showAnimation);
     },
 
-    // Update workspace actors parameters to the values calculated in
-    // _computeWorkspacePositions()
+    // Update workspace actors parameters
     // @showAnimation: iff %true, transition between states
     _updateWorkspaceActors: function(showAnimation) {
         let active = global.screen.get_active_workspace_index();
-        let targetWorkspaceNewY = this._y + this._activeWorkspaceY;
-        let targetWorkspaceCurrentY = this._workspaces[active].y;
-        let dy = targetWorkspaceNewY - targetWorkspaceCurrentY;
 
         this._animating = showAnimation;
 
@@ -257,14 +181,12 @@ WorkspacesView.prototype = {
 
             Tweener.removeTweens(workspace.actor);
 
-            workspace.y += dy;
+            let opacity = (this._inDrag && w != active) ? 200 : 255;
+            let y = (w - active) * (this._height + this._spacing);
 
             if (showAnimation) {
-                let params = { x: workspace.x,
-                               y: workspace.y,
-                               scale_x: workspace.scale,
-                               scale_y: workspace.scale,
-                               opacity: workspace.opacity,
+                let params = { y: y,
+                               opacity: opacity,
                                time: WORKSPACE_SWITCH_TIME,
                                transition: 'easeOutQuad'
                              };
@@ -281,9 +203,8 @@ WorkspacesView.prototype = {
                 }
                 Tweener.addTween(workspace.actor, params);
             } else {
-                workspace.actor.set_scale(workspace.scale, workspace.scale);
-                workspace.actor.set_position(workspace.x, workspace.y);
-                workspace.actor.opacity = workspace.opacity;
+                workspace.actor.set_position(0, y);
+                workspace.actor.opacity = opacity;
                 if (w == 0)
                     this._updateVisibility();
             }
@@ -294,7 +215,6 @@ WorkspacesView.prototype = {
 
             Tweener.removeTweens(workspace.actor);
 
-            workspace.y += dy;
             workspace.actor.show();
             workspace.hideWindowsOverlays();
 
@@ -338,7 +258,6 @@ WorkspacesView.prototype = {
             this._lostWorkspaces[l].destroy();
         this._lostWorkspaces = [];
 
-        this._computeWorkspacePositions();
         this._updateWorkspaceActors(false);
     },
 
@@ -380,7 +299,6 @@ WorkspacesView.prototype = {
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++)
                 this.actor.add_actor(this._workspaces[w].actor);
 
-            this._computeWorkspacePositions();
             this._updateWorkspaceActors(false);
         } else {
             this._lostWorkspaces = lostWorkspaces;
@@ -399,6 +317,7 @@ WorkspacesView.prototype = {
     _onDestroy: function() {
         this._scrollAdjustment.run_dispose();
         Main.overview.disconnect(this._overviewShowingId);
+        Main.overview.disconnect(this._overviewShownId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
 
         if (this._timeoutId) {
@@ -557,12 +476,6 @@ WorkspacesView.prototype = {
                 Main.overview.hide();
         }
 
-        if (result == Overview.SwipeScrollResult.SWIPE)
-            // The active workspace has changed; while swipe-scrolling
-            // has already taken care of the positioning, the cached
-            // positions need to be updated
-            this._computeWorkspacePositions();
-
         // Make sure title captions etc are shown as necessary
         this._updateVisibility();
     },
@@ -590,7 +503,7 @@ WorkspacesView.prototype = {
             return;
 
         let currentY = firstWorkspaceY;
-        let newY = this._y - adj.value / (adj.upper - 1) * workspacesHeight;
+        let newY =  - adj.value / (adj.upper - 1) * workspacesHeight;
 
         let dy = newY - currentY;
 
@@ -662,43 +575,10 @@ WorkspacesDisplay.prototype = {
             this._workspaces[i] = new Workspace.Workspace(metaWorkspace);
         }
 
-        let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
-
-        let totalAllocation = this.actor.allocation;
-        let totalWidth = totalAllocation.x2 - totalAllocation.x1;
-        let totalHeight = totalAllocation.y2 - totalAllocation.y1;
-
-        let controlsVisible = this._controls.get_theme_node().get_length('visible-width');
-
-        totalWidth -= controlsVisible;
-
-        // Workspaces expect to have the same ratio as the screen, so take
-        // this into account when fitting the workspace into the available space
-        let width, height;
-        let totalRatio = totalWidth / totalHeight;
-        let wsRatio = global.screen_width / global.screen_height;
-        if (wsRatio > totalRatio) {
-            width = totalWidth;
-            height = Math.floor(totalWidth / wsRatio);
-        } else {
-            width = Math.floor(totalHeight * wsRatio);
-            height = totalHeight;
-        }
-
-        // Position workspaces in the available space
-        let [x, y] = this.actor.get_transformed_position();
-        x = Math.floor(x + Math.abs(totalWidth - width) / 2);
-        y = Math.floor(y + Math.abs(totalHeight - height) / 2);
-
-        if (rtl)
-            x += controlsVisible;
-
-        let newView = new WorkspacesView(width, height, x, y, this._workspaces);
-        this._updateZoomScale();
-
         if (this.workspacesView)
             this.workspacesView.destroy();
-        this.workspacesView = newView;
+        this.workspacesView = new WorkspacesView(this._workspaces);
+        this._updateWorkspacesGeometry();
 
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
@@ -809,22 +689,34 @@ WorkspacesDisplay.prototype = {
         childBox.y2 = box.y2- box.y1;
         this._controls.allocate(childBox, flags);
 
-        this._updateZoomScale();
+        this._updateWorkspacesGeometry();
     },
 
-    _updateZoomScale: function() {
+    _updateWorkspacesGeometry: function() {
         if (!this.workspacesView)
             return;
 
-        let totalAllocation = this.actor.allocation;
-        let totalWidth = totalAllocation.x2 - totalAllocation.x1;
-        let totalHeight = totalAllocation.y2 - totalAllocation.y1;
+        let width = this.actor.allocation.x2 - this.actor.allocation.x1;
+        let height = this.actor.allocation.y2 - this.actor.allocation.y1;
 
-        let [controlsMin, controlsNatural] = this._controls.get_preferred_width(totalHeight);
+        let [controlsMin, controlsNatural] = this._controls.get_preferred_width(height);
         let controlsVisible = this._controls.get_theme_node().get_length('visible-width');
 
-        let zoomScale = (totalWidth - controlsNatural) / (totalWidth - controlsVisible);
-        this.workspacesView.setZoomScale(zoomScale);
+        let [x, y] = this.actor.get_transformed_position();
+
+        let rtl = (St.Widget.get_default_direction () == St.TextDirection.RTL);
+
+        if (this._zoomOut) {
+            width -= controlsNatural;
+            if (rtl)
+                x += controlsNatural;
+        } else {
+            width -= controlsVisible;
+            if (rtl)
+                x += controlsVisible;
+        }
+
+        this.workspacesView.setGeometry(x, y, width, height);
     },
 
     _onRestacked: function() {
@@ -893,6 +785,7 @@ WorkspacesDisplay.prototype = {
         let shouldZoom = this._controls.hover || this._inDrag;
         if (shouldZoom != this._zoomOut) {
             this._zoomOut = shouldZoom;
+            this._updateWorkspacesGeometry();
 
             if (!this.workspacesView)
                 return;
@@ -902,10 +795,7 @@ WorkspacesDisplay.prototype = {
                                time: WORKSPACE_SWITCH_TIME,
                                transition: 'easeOutQuad' });
 
-            if (shouldZoom)
-                this.workspacesView.zoomOut();
-            else
-                this.workspacesView.zoomIn();
+            this.workspacesView.updateWindowPositions();
         }
     },
 
