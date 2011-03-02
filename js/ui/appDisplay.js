@@ -309,7 +309,7 @@ PrefsSearchProvider.prototype = {
     __proto__: BaseAppSearchProvider.prototype,
 
     _init: function() {
-        BaseAppSearchProvider.prototype._init.call(this, _("PREFERENCES"));
+        BaseAppSearchProvider.prototype._init.call(this, _("SETTINGS"));
     },
 
     getInitialResultSet: function(terms) {
