@@ -52,8 +52,8 @@
 
 static void _cogl_path_free (CoglPath *path);
 
-static void _cogl_path_build_fill_vbo (CoglPath *path);
-static void _cogl_path_build_stroke_vbo (CoglPath *path);
+static void _cogl_path_build_fill_attribute_buffer (CoglPath *path);
+static void _cogl_path_build_stroke_attribute_buffer (CoglPath *path);
 
 COGL_OBJECT_DEFINE (Path, path);
 
@@ -62,27 +62,27 @@ _cogl_path_data_clear_vbos (CoglPathData *data)
 {
   int i;
 
-  if (data->fill_vbo)
+  if (data->fill_attribute_buffer)
     {
-      cogl_object_unref (data->fill_vbo);
+      cogl_object_unref (data->fill_attribute_buffer);
       cogl_object_unref (data->fill_vbo_indices);
 
       for (i = 0; i < COGL_PATH_N_ATTRIBUTES; i++)
-        cogl_object_unref (data->fill_vbo_attributes[i]);
+        cogl_object_unref (data->fill_attributes[i]);
 
-      data->fill_vbo = NULL;
+      data->fill_attribute_buffer = NULL;
     }
 
-  if (data->stroke_vbo)
+  if (data->stroke_attribute_buffer)
     {
-      cogl_object_unref (data->stroke_vbo);
+      cogl_object_unref (data->stroke_attribute_buffer);
 
-      for (i = 0; i < data->stroke_vbo_n_attributes; i++)
-        cogl_object_unref (data->stroke_vbo_attributes[i]);
+      for (i = 0; i < data->stroke_n_attributes; i++)
+        cogl_object_unref (data->stroke_attributes[i]);
 
-      g_free (data->stroke_vbo_attributes);
+      g_free (data->stroke_attributes);
 
-      data->stroke_vbo = NULL;
+      data->stroke_attribute_buffer = NULL;
     }
 }
 
@@ -118,13 +118,13 @@ _cogl_path_modify (CoglPath *path)
                            old_data->path_nodes->data,
                            old_data->path_nodes->len);
 
-      path->data->fill_vbo = COGL_INVALID_HANDLE;
+      path->data->fill_attribute_buffer = NULL;
       path->data->ref_count = 1;
 
       _cogl_path_data_unref (old_data);
     }
   /* The path is altered so the vbo will now be invalid */
-  else if (path->data->fill_vbo)
+  else if (path->data->fill_attribute_buffer)
     _cogl_path_data_clear_vbos (path->data);
 }
 
@@ -228,7 +228,7 @@ _cogl_path_stroke_nodes (CoglPath *path)
       source = copy;
     }
 
-  _cogl_path_build_stroke_vbo (path);
+  _cogl_path_build_stroke_attribute_buffer (path);
 
   cogl_push_source (source);
 
@@ -240,7 +240,7 @@ _cogl_path_stroke_nodes (CoglPath *path)
 
       cogl_draw_attributes (COGL_VERTICES_MODE_LINE_STRIP,
                                    0, node->path_size,
-                                   data->stroke_vbo_attributes[path_num],
+                                   data->stroke_attributes[path_num],
                                    NULL);
 
       path_num++;
@@ -341,14 +341,14 @@ _cogl_path_fill_nodes (CoglPath *path)
         }
     }
 
-  _cogl_path_build_fill_vbo (path);
+  _cogl_path_build_fill_attribute_buffer (path);
 
   _cogl_draw_indexed_attributes_array
                                  (COGL_VERTICES_MODE_TRIANGLES,
                                   0, /* first_vertex */
                                   path->data->fill_vbo_n_indices,
                                   path->data->fill_vbo_indices,
-                                  path->data->fill_vbo_attributes,
+                                  path->data->fill_attributes,
                                   COGL_DRAW_SKIP_JOURNAL_FLUSH |
                                   COGL_DRAW_SKIP_PIPELINE_VALIDATION |
                                   COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
@@ -1009,8 +1009,8 @@ cogl2_path_new (void)
   data->fill_rule = COGL_PATH_FILL_RULE_EVEN_ODD;
   data->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
   data->last_path = 0;
-  data->fill_vbo = COGL_INVALID_HANDLE;
-  data->stroke_vbo = NULL;
+  data->fill_attribute_buffer = NULL;
+  data->stroke_attribute_buffer = NULL;
   data->is_rectangle = FALSE;
 
   return _cogl_path_object_new (path);
@@ -1389,7 +1389,7 @@ _cogl_path_tesselator_combine (double coords[3],
 }
 
 static void
-_cogl_path_build_fill_vbo (CoglPath *path)
+_cogl_path_build_fill_attribute_buffer (CoglPath *path)
 {
   CoglPathTesselator tess;
   unsigned int path_start = 0;
@@ -1397,7 +1397,7 @@ _cogl_path_build_fill_vbo (CoglPath *path)
   int i;
 
   /* If we've already got a vbo then we don't need to do anything */
-  if (data->fill_vbo)
+  if (data->fill_attribute_buffer)
     return;
 
   tess.primitive_type = FALSE;
@@ -1480,27 +1480,28 @@ _cogl_path_build_fill_vbo (CoglPath *path)
 
   gluDeleteTess (tess.glu_tess);
 
-  data->fill_vbo = cogl_vertex_array_new (sizeof (CoglPathTesselatorVertex) *
-                                          tess.vertices->len,
-                                          tess.vertices->data);
+  data->fill_attribute_buffer =
+    cogl_attribute_buffer_new (sizeof (CoglPathTesselatorVertex) *
+                               tess.vertices->len,
+                               tess.vertices->data);
   g_array_free (tess.vertices, TRUE);
 
-  data->fill_vbo_attributes[0] =
-    cogl_attribute_new (data->fill_vbo,
-                               "cogl_position_in",
-                               sizeof (CoglPathTesselatorVertex),
-                               G_STRUCT_OFFSET (CoglPathTesselatorVertex, x),
-                               2, /* n_components */
-                               COGL_ATTRIBUTE_TYPE_FLOAT);
-  data->fill_vbo_attributes[1] =
-    cogl_attribute_new (data->fill_vbo,
-                               "cogl_tex_coord0_in",
-                               sizeof (CoglPathTesselatorVertex),
-                               G_STRUCT_OFFSET (CoglPathTesselatorVertex, s),
-                               2, /* n_components */
-                               COGL_ATTRIBUTE_TYPE_FLOAT);
+  data->fill_attributes[0] =
+    cogl_attribute_new (data->fill_attribute_buffer,
+                        "cogl_position_in",
+                        sizeof (CoglPathTesselatorVertex),
+                        G_STRUCT_OFFSET (CoglPathTesselatorVertex, x),
+                        2, /* n_components */
+                        COGL_ATTRIBUTE_TYPE_FLOAT);
+  data->fill_attributes[1] =
+    cogl_attribute_new (data->fill_attribute_buffer,
+                        "cogl_tex_coord0_in",
+                        sizeof (CoglPathTesselatorVertex),
+                        G_STRUCT_OFFSET (CoglPathTesselatorVertex, s),
+                        2, /* n_components */
+                        COGL_ATTRIBUTE_TYPE_FLOAT);
   /* NULL terminator */
-  data->fill_vbo_attributes[2] = NULL;
+  data->fill_attributes[2] = NULL;
 
   data->fill_vbo_indices = cogl_indices_new (tess.indices_type,
                                              tess.indices->data,
@@ -1510,25 +1511,26 @@ _cogl_path_build_fill_vbo (CoglPath *path)
 }
 
 static void
-_cogl_path_build_stroke_vbo (CoglPath *path)
+_cogl_path_build_stroke_attribute_buffer (CoglPath *path)
 {
   CoglPathData *data = path->data;
+  CoglBuffer *buffer;
   unsigned int n_attributes = 0;
   unsigned int path_start;
   CoglPathNode *node;
-  floatVec2 *vbo_p;
+  floatVec2 *buffer_p;
   unsigned int i;
 
   /* If we've already got a cached vbo then we don't need to do anything */
-  if (data->stroke_vbo)
+  if (data->stroke_attribute_buffer)
     return;
 
-  data->stroke_vbo = cogl_vertex_array_new (data->path_nodes->len *
-                                            sizeof (floatVec2),
-                                            NULL);
+  data->stroke_attribute_buffer =
+    cogl_attribute_buffer_new (data->path_nodes->len * sizeof (floatVec2),
+                               NULL);
 
-  vbo_p =
-    _cogl_buffer_map_for_fill_or_fallback (COGL_BUFFER (data->stroke_vbo));
+  buffer = COGL_BUFFER (data->stroke_attribute_buffer);
+  buffer_p = _cogl_buffer_map_for_fill_or_fallback (buffer);
 
   /* Copy the vertices in and count the number of sub paths. Each sub
      path will form a separate attribute so we can paint the disjoint
@@ -1541,16 +1543,16 @@ _cogl_path_build_stroke_vbo (CoglPath *path)
 
       for (i = 0; i < node->path_size; i++)
         {
-          vbo_p[path_start + i].x = node[i].x;
-          vbo_p[path_start + i].y = node[i].y;
+          buffer_p[path_start + i].x = node[i].x;
+          buffer_p[path_start + i].y = node[i].y;
         }
 
       n_attributes++;
     }
 
-  _cogl_buffer_unmap_for_fill_or_fallback (COGL_BUFFER (data->stroke_vbo));
+  _cogl_buffer_unmap_for_fill_or_fallback (buffer);
 
-  data->stroke_vbo_attributes = g_new (CoglAttribute *, n_attributes);
+  data->stroke_attributes = g_new (CoglAttribute *, n_attributes);
 
   /* Now we can loop the sub paths again to create the attributes */
   for (i = 0, path_start = 0;
@@ -1559,8 +1561,8 @@ _cogl_path_build_stroke_vbo (CoglPath *path)
     {
       node = &g_array_index (data->path_nodes, CoglPathNode, path_start);
 
-      data->stroke_vbo_attributes[i] =
-        cogl_attribute_new (data->stroke_vbo,
+      data->stroke_attributes[i] =
+        cogl_attribute_new (data->stroke_attribute_buffer,
                             "cogl_position_in",
                             sizeof (floatVec2),
                             path_start * sizeof (floatVec2),
@@ -1568,5 +1570,5 @@ _cogl_path_build_stroke_vbo (CoglPath *path)
                             COGL_ATTRIBUTE_TYPE_FLOAT);
     }
 
-  data->stroke_vbo_n_attributes = n_attributes;
+  data->stroke_n_attributes = n_attributes;
 }

@@ -30,17 +30,17 @@
 #endif
 
 #include "cogl-object-private.h"
-#include "cogl-vertex-array.h"
-#include "cogl-vertex-array-private.h"
+#include "cogl-attribute-buffer.h"
+#include "cogl-attribute-buffer-private.h"
 
-static void _cogl_vertex_array_free (CoglVertexArray *array);
+static void _cogl_attribute_buffer_free (CoglAttributeBuffer *array);
 
-COGL_BUFFER_DEFINE (VertexArray, vertex_array);
+COGL_BUFFER_DEFINE (AttributeBuffer, attribute_buffer);
 
-CoglVertexArray *
-cogl_vertex_array_new (gsize bytes, const void *data)
+CoglAttributeBuffer *
+cogl_attribute_buffer_new (gsize bytes, const void *data)
 {
-  CoglVertexArray *array = g_slice_new (CoglVertexArray);
+  CoglAttributeBuffer *array = g_slice_new (CoglAttributeBuffer);
   gboolean use_malloc;
 
   if (!cogl_features_available (COGL_FEATURE_VBOS))
@@ -52,11 +52,11 @@ cogl_vertex_array_new (gsize bytes, const void *data)
   _cogl_buffer_initialize (COGL_BUFFER (array),
                            bytes,
                            use_malloc,
-                           COGL_BUFFER_BIND_TARGET_VERTEX_ARRAY,
-                           COGL_BUFFER_USAGE_HINT_VERTEX_ARRAY,
+                           COGL_BUFFER_BIND_TARGET_ATTRIBUTE_BUFFER,
+                           COGL_BUFFER_USAGE_HINT_ATTRIBUTE_BUFFER,
                            COGL_BUFFER_UPDATE_HINT_STATIC);
 
-  _cogl_vertex_array_object_new (array);
+  _cogl_attribute_buffer_object_new (array);
 
   if (data)
     cogl_buffer_set_data (COGL_BUFFER (array),
@@ -67,11 +67,11 @@ cogl_vertex_array_new (gsize bytes, const void *data)
 }
 
 static void
-_cogl_vertex_array_free (CoglVertexArray *array)
+_cogl_attribute_buffer_free (CoglAttributeBuffer *array)
 {
   /* parent's destructor */
   _cogl_buffer_fini (COGL_BUFFER (array));
 
-  g_slice_free (CoglVertexArray, array);
+  g_slice_free (CoglAttributeBuffer, array);
 }
 

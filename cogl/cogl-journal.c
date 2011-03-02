@@ -95,7 +95,7 @@ typedef struct _CoglJournalFlushState
 {
   CoglJournal         *journal;
 
-  CoglVertexArray     *vertex_array;
+  CoglAttributeBuffer *attribute_buffer;
   GArray              *attributes;
   int                  current_attribute;
 
@@ -518,7 +518,7 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
       /* XXX: it may be worth having some form of static initializer for
        * attributes... */
       *attribute_entry =
-        cogl_attribute_new (state->vertex_array,
+        cogl_attribute_new (state->attribute_buffer,
                             name,
                             state->stride,
                             state->array_offset +
@@ -593,7 +593,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
   g_array_set_size (state->attributes, 2);
 
   attribute_entry = &g_array_index (state->attributes, CoglAttribute *, 0);
-  *attribute_entry = cogl_attribute_new (state->vertex_array,
+  *attribute_entry = cogl_attribute_new (state->attribute_buffer,
                                          "cogl_position_in",
                                          stride,
                                          state->array_offset,
@@ -602,7 +602,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
 
   attribute_entry = &g_array_index (state->attributes, CoglAttribute *, 1);
   *attribute_entry =
-    cogl_attribute_new (state->vertex_array,
+    cogl_attribute_new (state->attribute_buffer,
                         "cogl_color_in",
                         stride,
                         state->array_offset + (POS_STRIDE * 4),
@@ -614,9 +614,9 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
 #endif
 
   /* We only create new Attributes when the stride within the
-   * VertexArray changes. (due to a change in the number of pipeline
+   * AttributeBuffer changes. (due to a change in the number of pipeline
    * layers) While the stride remains constant we walk forward through
-   * the above VertexArray using a vertex offset passed to
+   * the above AttributeBuffer using a vertex offset passed to
    * cogl_draw_attributes
    */
   state->current_vertex = 0;
@@ -628,15 +628,15 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
       /* Mapping a buffer for read is probably a really bad thing to
          do but this will only happen during debugging so it probably
          doesn't matter */
-      verts = ((guint8 *) cogl_buffer_map (COGL_BUFFER (state->vertex_array),
-                                           COGL_BUFFER_ACCESS_READ, 0) +
+      verts = ((guint8 *)cogl_buffer_map (COGL_BUFFER (state->attribute_buffer),
+                                          COGL_BUFFER_ACCESS_READ, 0) +
                state->array_offset);
 
       _cogl_journal_dump_quad_batch (verts,
                                      batch_start->n_layers,
                                      batch_len);
 
-      cogl_buffer_unmap (COGL_BUFFER (state->vertex_array));
+      cogl_buffer_unmap (COGL_BUFFER (state->attribute_buffer));
     }
 
   batch_and_call (batch_start,
@@ -1092,13 +1092,13 @@ compare_entry_clip_stacks (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
   return entry0->clip_stack == entry1->clip_stack;
 }
 
-static CoglVertexArray *
+static CoglAttributeBuffer *
 upload_vertices (const CoglJournalEntry *entries,
                  int                     n_entries,
                  size_t                  needed_vbo_len,
                  GArray                 *vertices)
 {
-  CoglVertexArray *array;
+  CoglAttributeBuffer *attribute_buffer;
   CoglBuffer *buffer;
   const float *vin;
   float *vout;
@@ -1107,8 +1107,8 @@ upload_vertices (const CoglJournalEntry *entries,
 
   g_assert (needed_vbo_len);
 
-  array = cogl_vertex_array_new (needed_vbo_len * 4, NULL);
-  buffer = COGL_BUFFER (array);
+  attribute_buffer = cogl_attribute_buffer_new (needed_vbo_len * 4, NULL);
+  buffer = COGL_BUFFER (attribute_buffer);
   cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_STATIC);
 
   vout = _cogl_buffer_map_for_fill_or_fallback (buffer);
@@ -1182,7 +1182,7 @@ upload_vertices (const CoglJournalEntry *entries,
 
   _cogl_buffer_unmap_for_fill_or_fallback (buffer);
 
-  return array;
+  return attribute_buffer;
 }
 
 void
@@ -1340,7 +1340,7 @@ _cogl_journal_flush (CoglJournal *journal,
 
   /* We upload the vertices after the clip stack pass in case it
      modifies the entries */
-  state.vertex_array = upload_vertices (&g_array_index (journal->entries,
+  state.attribute_buffer = upload_vertices (&g_array_index (journal->entries,
                                                         CoglJournalEntry, 0),
                                         journal->entries->len,
                                         journal->needed_vbo_len,
@@ -1380,7 +1380,7 @@ _cogl_journal_flush (CoglJournal *journal,
     cogl_object_unref (g_array_index (state.attributes, CoglAttribute *, i));
   g_array_set_size (state.attributes, 0);
 
-  cogl_object_unref (state.vertex_array);
+  cogl_object_unref (state.attribute_buffer);
 
   _cogl_journal_discard (journal);
 

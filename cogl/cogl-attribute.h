@@ -31,7 +31,7 @@
 #ifndef __COGL_ATTRIBUTE_H__
 #define __COGL_ATTRIBUTE_H__
 
-#include <cogl/cogl-vertex-array.h>
+#include <cogl/cogl-attribute-buffer.h>
 #include <cogl/cogl-indices.h>
 
 G_BEGIN_DECLS
@@ -48,13 +48,14 @@ typedef struct _CoglAttribute CoglAttribute;
 
 /**
  * cogl_attribute_new:
- * @array: The #CoglVertexArray containing the actual attribute data
+ * @attribute_buffer: The #CoglAttributeBuffer containing the actual
+ *                    attribute data
  * @name: The name of the attribute (used to reference it from GLSL)
  * @stride: The number of bytes to jump to get to the next attribute
  *          value for the next vertex. (Usually
  *          <pre>sizeof (MyVertex)</pre>)
- * @offset: The byte offset from the start of @array for the first
- *          attribute value. (Usually
+ * @offset: The byte offset from the start of @attribute_buffer for
+ *          the first attribute value. (Usually
  *          <pre>offsetof (MyVertex, component0)</pre>
  * @components: The number of components (e.g. 4 for an rgba color or
  *              3 for and (x,y,z) position)
@@ -131,7 +132,7 @@ typedef struct _CoglAttribute CoglAttribute;
 /* XXX: look for a precedent to see if the stride/offset args should
  * have a different order. */
 CoglAttribute *
-cogl_attribute_new (CoglVertexArray *array,
+cogl_attribute_new (CoglAttributeBuffer *attribute_buffer,
                     const char *name,
                     gsize stride,
                     gsize offset,

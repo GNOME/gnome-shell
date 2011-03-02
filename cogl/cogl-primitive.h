@@ -245,7 +245,7 @@ cogl_primitive_new_with_attributes_array (CoglVerticesMode mode,
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
- * necessary #CoglVertexArray storage, describe the position
+ * necessary #CoglAttributeBuffer storage, describe the position
  * attribute with a #CoglAttribute and upload your data.
  *
  * For example to draw a convex polygon you can do:
@@ -289,7 +289,7 @@ cogl_primitive_new_p2 (CoglVerticesMode mode,
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
- * necessary #CoglVertexArray storage, describe the position
+ * necessary #CoglAttributeBuffer storage, describe the position
  * attribute with a #CoglAttribute and upload your data.
  *
  * For example to draw a convex polygon you can do:
@@ -333,7 +333,7 @@ cogl_primitive_new_p3 (CoglVerticesMode mode,
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
- * necessary #CoglVertexArray storage, describe the position
+ * necessary #CoglAttributeBuffer storage, describe the position
  * and color attributes with #CoglAttribute<!-- -->s and upload
  * your data.
  *
@@ -379,7 +379,7 @@ cogl_primitive_new_p2c4 (CoglVerticesMode mode,
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
- * necessary #CoglVertexArray storage, describe the position
+ * necessary #CoglAttributeBuffer storage, describe the position
  * and color attributes with #CoglAttribute<!-- -->s and upload
  * your data.
  *
@@ -425,7 +425,7 @@ cogl_primitive_new_p3c4 (CoglVerticesMode mode,
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
- * necessary #CoglVertexArray storage, describe the position and
+ * necessary #CoglAttributeBuffer storage, describe the position and
  * texture coordinate attributes with #CoglAttribute<!-- -->s and
  * upload your data.
  *
@@ -471,7 +471,7 @@ cogl_primitive_new_p2t2 (CoglVerticesMode mode,
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
- * necessary #CoglVertexArray storage, describe the position and
+ * necessary #CoglAttributeBuffer storage, describe the position and
  * texture coordinate attributes with #CoglAttribute<!-- -->s and
  * upload your data.
  *
@@ -517,7 +517,7 @@ cogl_primitive_new_p3t2 (CoglVerticesMode mode,
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
- * necessary #CoglVertexArray storage, describe the position, texture
+ * necessary #CoglAttributeBuffer storage, describe the position, texture
  * coordinate and color attributes with #CoglAttribute<!-- -->s and
  * upload your data.
  *
@@ -563,7 +563,7 @@ cogl_primitive_new_p2t2c4 (CoglVerticesMode mode,
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
- * necessary #CoglVertexArray storage, describe the position, texture
+ * necessary #CoglAttributeBuffer storage, describe the position, texture
  * coordinate and color attributes with #CoglAttribute<!-- -->s and
  * upload your data.
  *

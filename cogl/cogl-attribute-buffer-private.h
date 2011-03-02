@@ -25,15 +25,14 @@
  *   Robert Bragg <robert@linux.intel.com>
  */
 
-#ifndef __COGL_VERTEX_ARRAY_PRIVATE_H
-#define __COGL_VERTEX_ARRAY_PRIVATE_H
+#ifndef __COGL_ATTRIBUTE_BUFFER_PRIVATE_H
+#define __COGL_ATTRIBUTE_BUFFER_PRIVATE_H
 
 #include "cogl-buffer-private.h"
 
-struct _CoglVertexArray
+struct _CoglAttributeBuffer
 {
   CoglBuffer _parent;
 };
 
-#endif /* __COGL_VERTEX_ARRAY_PRIVATE_H */
-
+#endif /* __COGL_ATTRIBUTE_BUFFER_PRIVATE_H */

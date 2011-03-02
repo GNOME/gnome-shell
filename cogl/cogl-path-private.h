@@ -79,14 +79,14 @@ struct _CoglPathData
   floatVec2            path_nodes_min;
   floatVec2            path_nodes_max;
 
-  CoglVertexArray     *fill_vbo;
+  CoglAttributeBuffer *fill_attribute_buffer;
   CoglIndices         *fill_vbo_indices;
   unsigned int         fill_vbo_n_indices;
-  CoglAttribute       *fill_vbo_attributes[COGL_PATH_N_ATTRIBUTES + 1];
+  CoglAttribute       *fill_attributes[COGL_PATH_N_ATTRIBUTES + 1];
 
-  CoglVertexArray     *stroke_vbo;
-  CoglAttribute      **stroke_vbo_attributes;
-  unsigned int         stroke_vbo_n_attributes;
+  CoglAttributeBuffer *stroke_attribute_buffer;
+  CoglAttribute      **stroke_attributes;
+  unsigned int         stroke_n_attributes;
 
   /* This is used as an optimisation for when the path contains a
      single contour specified using cogl2_path_rectangle. Cogl is more

@@ -124,8 +124,8 @@ typedef struct _CoglVertexBufferVBO
 {
   CoglVertexBufferVBOFlags flags;
 
-  CoglVertexArray *array;
-  size_t array_bytes;
+  CoglAttributeBuffer *attribute_buffer;
+  size_t buffer_bytes;
 
   GList *attributes;
 } CoglVertexBufferVBO;

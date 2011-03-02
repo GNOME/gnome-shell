@@ -28,26 +28,27 @@
 #error "Only <cogl/cogl.h> can be included directly."
 #endif
 
-#ifndef __COGL_VERTEX_ARRAY_H__
-#define __COGL_VERTEX_ARRAY_H__
+#ifndef __COGL_ATTRIBUTE_BUFFER_H__
+#define __COGL_ATTRIBUTE_BUFFER_H__
 
 G_BEGIN_DECLS
 
 /**
- * SECTION:cogl-vertex-array
- * @short_description: Functions for creating and manipulating vertex arrays
+ * SECTION:cogl-attribute-buffer
+ * @short_description: Functions for creating and manipulating attribute
+ *   buffers
  *
  * FIXME
  */
 
-typedef struct _CoglVertexArray	      CoglVertexArray;
+typedef struct _CoglAttributeBuffer	      CoglAttributeBuffer;
 
 /**
- * cogl_vertex_array_new:
+ * cogl_attribute_buffer_new:
  * @bytes: The number of bytes to allocate for vertex attribute data.
  * @data: An optional pointer to vertex data to upload immediately.
  *
- * Declares a new #CoglVertexArray of @size bytes to contain arrays of vertex
+ * Declares a new #CoglAttributeBuffer of @size bytes to contain arrays of vertex
  * attribute data. Once declared, data can be set using cogl_buffer_set_data()
  * or by mapping it into the application's address space using cogl_buffer_map().
  *
@@ -57,26 +58,25 @@ typedef struct _CoglVertexArray	      CoglVertexArray;
  * Since: 1.4
  * Stability: Unstable
  */
-CoglVertexArray *
-cogl_vertex_array_new (gsize bytes,
-                       const void *data);
+CoglAttributeBuffer *
+cogl_attribute_buffer_new (gsize bytes, const void *data);
 
 /**
- * cogl_is_vertex_array:
+ * cogl_is_attribute_buffer:
  * @object: A #CoglObject
  *
- * Gets whether the given object references a #CoglVertexArray.
+ * Gets whether the given object references a #CoglAttributeBuffer.
  *
- * Returns: %TRUE if the handle references a #CoglVertexArray,
+ * Returns: %TRUE if the handle references a #CoglAttributeBuffer,
  *   %FALSE otherwise
  *
  * Since: 1.4
  * Stability: Unstable
  */
 gboolean
-cogl_is_vertex_array (void *object);
+cogl_is_attribute_buffer (void *object);
 
 G_END_DECLS
 
-#endif /* __COGL_VERTEX_ARRAY_H__ */
+#endif /* __COGL_ATTRIBUTE_BUFFER_H__ */
 

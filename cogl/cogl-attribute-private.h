@@ -44,7 +44,7 @@ struct _CoglAttribute
 {
   CoglObject _parent;
 
-  CoglVertexArray *array;
+  CoglAttributeBuffer *attribute_buffer;
   char *name;
   CoglAttributeNameID name_id;
   gsize stride;

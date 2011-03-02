@@ -833,8 +833,8 @@ filter_strided_attribute (CoglVertexBufferAttrib *attribute,
   new_cogl_vbo->attributes =
     g_list_prepend (new_cogl_vbo->attributes, attribute);
   /* Any one of the interleved attributes will have the same span_bytes */
-  new_cogl_vbo->array = NULL;
-  new_cogl_vbo->array_bytes = attribute->span_bytes;
+  new_cogl_vbo->attribute_buffer = NULL;
+  new_cogl_vbo->buffer_bytes = attribute->span_bytes;
   new_cogl_vbo->flags = COGL_VERTEX_BUFFER_VBO_FLAG_STRIDED;
 
   if (attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_INFREQUENT_RESUBMIT)
@@ -942,7 +942,7 @@ cogl_vertex_buffer_vbo_free (CoglVertexBufferVBO *cogl_vbo)
   g_list_free (cogl_vbo->attributes);
 
   if (cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_SUBMITTED)
-    cogl_object_unref (cogl_vbo->array);
+    cogl_object_unref (cogl_vbo->attribute_buffer);
 
   g_slice_free (CoglVertexBufferVBO, cogl_vbo);
 }
@@ -988,7 +988,7 @@ upload_multipack_vbo_via_map_buffer (CoglVertexBufferVBO *cogl_vbo)
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  buf = cogl_buffer_map (COGL_BUFFER (cogl_vbo->array),
+  buf = cogl_buffer_map (COGL_BUFFER (cogl_vbo->attribute_buffer),
                          COGL_BUFFER_ACCESS_WRITE,
                          COGL_BUFFER_MAP_HINT_DISCARD);
   if (!buf)
@@ -1009,7 +1009,7 @@ upload_multipack_vbo_via_map_buffer (CoglVertexBufferVBO *cogl_vbo)
       offset += attribute_size;
     }
 
-  cogl_buffer_unmap (COGL_BUFFER (cogl_vbo->array));
+  cogl_buffer_unmap (COGL_BUFFER (cogl_vbo->attribute_buffer));
 
   return TRUE;
 }
@@ -1028,7 +1028,7 @@ upload_multipack_vbo_via_buffer_sub_data (CoglVertexBufferVBO *cogl_vbo)
 
       PAD_FOR_ALIGNMENT (offset, type_size);
 
-      cogl_buffer_set_data (COGL_BUFFER (cogl_vbo->array),
+      cogl_buffer_set_data (COGL_BUFFER (cogl_vbo->attribute_buffer),
                             offset,
                             attribute->u.pointer,
                             attribute_size);
@@ -1050,15 +1050,15 @@ upload_attributes (CoglVertexBufferVBO *cogl_vbo)
     usage = COGL_BUFFER_UPDATE_HINT_DYNAMIC;
   else
     usage = COGL_BUFFER_UPDATE_HINT_STATIC;
-  cogl_buffer_set_update_hint (COGL_BUFFER (cogl_vbo->array), usage);
+  cogl_buffer_set_update_hint (COGL_BUFFER (cogl_vbo->attribute_buffer), usage);
 
   if (cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_STRIDED)
     {
       const void *pointer = prep_strided_vbo_for_upload (cogl_vbo);
-      cogl_buffer_set_data (COGL_BUFFER (cogl_vbo->array),
+      cogl_buffer_set_data (COGL_BUFFER (cogl_vbo->attribute_buffer),
                             0, /* offset */
                             pointer,
-                            cogl_vbo->array_bytes);
+                            cogl_vbo->buffer_bytes);
     }
   else /* MULTIPACK */
     {
@@ -1107,10 +1107,11 @@ cogl_vertex_buffer_vbo_resolve (CoglVertexBuffer *buffer,
 	  /* See if we can re-use this now empty VBO: */
 
 	  if (!found_target_vbo
-	      && conflict_vbo->array_bytes == new_cogl_vbo->array_bytes)
+	      && conflict_vbo->buffer_bytes == new_cogl_vbo->buffer_bytes)
 	    {
 	      found_target_vbo = TRUE;
-	      new_cogl_vbo->array = cogl_object_ref (conflict_vbo->array);
+	      new_cogl_vbo->attribute_buffer =
+                cogl_object_ref (conflict_vbo->attribute_buffer);
 	      cogl_vertex_buffer_vbo_free (conflict_vbo);
 
 	      upload_attributes (new_cogl_vbo);
@@ -1132,8 +1133,8 @@ cogl_vertex_buffer_vbo_resolve (CoglVertexBuffer *buffer,
 
   if (!found_target_vbo)
     {
-      new_cogl_vbo->array = cogl_vertex_array_new (new_cogl_vbo->array_bytes,
-                                                   NULL);
+      new_cogl_vbo->attribute_buffer =
+        cogl_attribute_buffer_new (new_cogl_vbo->buffer_bytes, NULL);
 
       upload_attributes (new_cogl_vbo);
       *final_vbos = g_list_prepend (*final_vbos, new_cogl_vbo);
@@ -1181,7 +1182,7 @@ update_primitive_attributes (CoglVertexBuffer *buffer)
               if (G_UNLIKELY (!attribute->attribute))
                 {
                   attribute->attribute =
-                    cogl_attribute_new (cogl_vbo->array,
+                    cogl_attribute_new (cogl_vbo->attribute_buffer,
                                         attribute->name_without_detail,
                                         attribute->stride,
                                         attribute->u.vbo_offset,
@@ -1346,8 +1347,8 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
    */
 
   new_multipack_vbo = g_slice_alloc (sizeof (CoglVertexBufferVBO));
-  new_multipack_vbo->array = NULL;
-  new_multipack_vbo->array_bytes = 0;
+  new_multipack_vbo->attribute_buffer = NULL;
+  new_multipack_vbo->buffer_bytes = 0;
   new_multipack_vbo->flags =
     COGL_VERTEX_BUFFER_VBO_FLAG_MULTIPACK
     | COGL_VERTEX_BUFFER_VBO_FLAG_INFREQUENT_RESUBMIT;
@@ -1400,8 +1401,8 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
 	  cogl_vbo->attributes = NULL;
 	  cogl_vbo->attributes = g_list_prepend (cogl_vbo->attributes,
 						 attribute);
-	  cogl_vbo->array = NULL;
-	  cogl_vbo->array_bytes = attribute->span_bytes;
+	  cogl_vbo->attribute_buffer = NULL;
+	  cogl_vbo->buffer_bytes = attribute->span_bytes;
 	  new_vbos = g_list_prepend (new_vbos, cogl_vbo);
 	}
       else
@@ -1423,9 +1424,9 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
 	   * is based on the adjacent attribute.
 	   */
 
-	  PAD_FOR_ALIGNMENT (new_multipack_vbo->array_bytes, type_size);
+	  PAD_FOR_ALIGNMENT (new_multipack_vbo->buffer_bytes, type_size);
 
-	  new_multipack_vbo->array_bytes += attribute->span_bytes;
+	  new_multipack_vbo->buffer_bytes += attribute->span_bytes;
 	}
     }
 

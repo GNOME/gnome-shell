@@ -29,7 +29,7 @@
 #define __COGL_PRIMITIVE_PRIVATE_H
 
 #include "cogl-object-private.h"
-#include "cogl-vertex-array-private.h"
+#include "cogl-attribute-buffer-private.h"
 
 struct _CoglPrimitive
 {

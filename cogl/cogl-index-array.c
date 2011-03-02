@@ -98,13 +98,14 @@ cogl_index_array_allocate (CoglIndexArray *indices,
  *
  * XXX: The double plurel form that "Indices" "Array" implies could be
  * a bit confusing. Also to be a bit more consistent with
- * CoglVertexArray vs CoglAttribute it might be best to rename so
+ * CoglAttributeBuffer vs CoglAttribute it might be best to rename so
  * we have CoglIndexArray vs CoglIndices? maybe even
  * CoglIndexRange :-/ ?
  *
  * CoglBuffer
- *   CoglVertexArray (buffer sub-class)
- *     CoglPrimitive (defines meta data for sub-region of array)
+ *   CoglAttributeBuffer (buffer sub-class)
+ *     CoglAttribute (defines meta data for sub-region of buffer)
+ *     CoglPrimitive (object encapsulating a set of attributes)
  *   CoglPixelArray (buffer sub-class)
  *   CoglIndexArray (buffer sub-class)
  *     CoglIndices (defines meta data for sub-region of array)

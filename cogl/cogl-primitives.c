@@ -933,11 +933,11 @@ _cogl_rectangle_immediate (float x_1,
       x_2, y_1,
       x_2, y_2
     };
-  CoglVertexArray *vertex_array;
+  CoglAttributeBuffer *attribute_buffer;
   CoglAttribute *attributes[2];
 
-  vertex_array = cogl_vertex_array_new (sizeof (vertices), vertices);
-  attributes[0] = cogl_attribute_new (vertex_array,
+  attribute_buffer = cogl_attribute_buffer_new (sizeof (vertices), vertices);
+  attributes[0] = cogl_attribute_new (attribute_buffer,
                                       "cogl_position_in",
                                       sizeof (float) * 2, /* stride */
                                       0, /* offset */
@@ -955,7 +955,7 @@ _cogl_rectangle_immediate (float x_1,
 
 
   cogl_object_unref (attributes[0]);
-  cogl_object_unref (vertex_array);
+  cogl_object_unref (attribute_buffer);
 }
 
 typedef struct _AppendTexCoordsState
@@ -1050,7 +1050,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
   int i;
   unsigned int stride;
   gsize stride_bytes;
-  CoglVertexArray *vertex_array;
+  CoglAttributeBuffer *attribute_buffer;
   float *v;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -1080,9 +1080,10 @@ cogl_polygon (const CoglTextureVertex *vertices,
    * but still support any number of vertices */
   g_array_set_size (ctx->polygon_vertices, n_vertices * stride);
 
-  vertex_array = cogl_vertex_array_new (n_vertices * stride_bytes, NULL);
+  attribute_buffer =
+    cogl_attribute_buffer_new (n_vertices * stride_bytes, NULL);
 
-  attributes[0] = cogl_attribute_new (vertex_array,
+  attributes[0] = cogl_attribute_new (attribute_buffer,
                                       "cogl_position_in",
                                       stride_bytes,
                                       0,
@@ -1104,7 +1105,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
       char *name = i < 8 ? (char *)names[i] :
         g_strdup_printf ("cogl_tex_coord%d_in", i);
 
-      attributes[i + 1] = cogl_attribute_new (vertex_array,
+      attributes[i + 1] = cogl_attribute_new (attribute_buffer,
                                               name,
                                               stride_bytes,
                                               /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
@@ -1116,7 +1117,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
   if (use_color)
     {
       attributes[n_attributes - 1] =
-        cogl_attribute_new (vertex_array,
+        cogl_attribute_new (attribute_buffer,
                             "cogl_color_in",
                             stride_bytes,
                             /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
@@ -1159,7 +1160,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
     }
 
   v = (float *)ctx->polygon_vertices->data;
-  cogl_buffer_set_data (COGL_BUFFER (vertex_array),
+  cogl_buffer_set_data (COGL_BUFFER (attribute_buffer),
                         0,
                         v,
                         ctx->polygon_vertices->len * sizeof (float));
