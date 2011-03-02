@@ -75,7 +75,7 @@ typedef struct _CoglFramebuffer CoglFramebuffer;
 #include <cogl/cogl-display.h>
 #include <cogl/cogl-context.h>
 #include <cogl/cogl-buffer.h>
-#include <cogl/cogl-pixel-array.h>
+#include <cogl/cogl-pixel-buffer.h>
 #include <cogl/cogl-vector.h>
 #include <cogl/cogl-euler.h>
 #include <cogl/cogl-quaternion.h>

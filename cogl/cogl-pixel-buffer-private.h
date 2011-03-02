@@ -25,8 +25,8 @@
  *   Robert Bragg <robert@linux.intel.com>
  */
 
-#ifndef __COGL_PIXEL_ARRAY_PRIVATE_H__
-#define __COGL_PIXEL_ARRAY_PRIVATE_H__
+#ifndef __COGL_PIXEL_BUFFER_PRIVATE_H__
+#define __COGL_PIXEL_BUFFER_PRIVATE_H__
 
 #include "cogl-handle.h"
 #include "cogl-buffer-private.h"
@@ -35,9 +35,9 @@
 
 G_BEGIN_DECLS
 
-#define COGL_PIXEL_ARRAY(array)     ((CoglPixelArray *)(array))
+#define COGL_PIXEL_BUFFER(array)     ((CoglPixelBuffer *)(array))
 
-struct _CoglPixelArray
+struct _CoglPixelBuffer
 {
   CoglBuffer            _parent;
 
@@ -48,8 +48,8 @@ struct _CoglPixelArray
 };
 
 GQuark
-_cogl_handle_pixel_array_get_type (void);
+_cogl_handle_pixel_buffer_get_type (void);
 
 G_END_DECLS
 
-#endif /* __COGL_PIXEL_ARRAY_PRIVATE_H__ */
+#endif /* __COGL_PIXEL_BUFFER_PRIVATE_H__ */

@@ -29,31 +29,31 @@
 #error "Only <cogl/cogl.h> can be included directly."
 #endif
 
-#ifndef __COGL_PIXEL_ARRAY_H__
-#define __COGL_PIXEL_ARRAY_H__
+#ifndef __COGL_PIXEL_BUFFER_H__
+#define __COGL_PIXEL_BUFFER_H__
 
 #include <glib.h>
 #include <cogl/cogl-types.h>
 
 G_BEGIN_DECLS
 
-/* All of the cogl-pixel-array API is currently experimental so we
+/* All of the cogl-pixel-buffer API is currently experimental so we
  * suffix the actual symbols with _EXP so if somone is monitoring for
  * ABI changes it will hopefully be clearer to them what's going on if
  * any of the symbols dissapear at a later date.
  */
 
-#define cogl_pixel_array_new cogl_pixel_array_new_EXP
-#define cogl_pixel_array_new_with_size cogl_pixel_array_new_with_size_EXP
-#define cogl_is_pixel_array cogl_is_pixel_array_EXP
+#define cogl_pixel_buffer_new cogl_pixel_buffer_new_EXP
+#define cogl_pixel_buffer_new_with_size cogl_pixel_buffer_new_with_size_EXP
+#define cogl_is_pixel_buffer cogl_is_pixel_buffer_EXP
 #if 0
-#define cogl_pixel_array_set_region cogl_pixel_array_set_region_EXP
+#define cogl_pixel_buffer_set_region cogl_pixel_buffer_set_region_EXP
 #endif
 
-typedef struct _CoglPixelArray CoglPixelArray;
+typedef struct _CoglPixelBuffer CoglPixelBuffer;
 
 /**
- * cogl_pixel_array_new_with_size:
+ * cogl_pixel_buffer_new_with_size:
  * @width: width of the pixel array in pixels
  * @height: height of the pixel array in pixels
  * @format: the format of the pixels the array will store
@@ -68,20 +68,20 @@ typedef struct _CoglPixelArray CoglPixelArray;
  * arrays are likely to have a stride larger than width * bytes_per_pixel. The
  * user must take the stride into account when writing into it.</note>
  *
- * Return value: a #CoglPixelArray representing the newly created array or
+ * Return value: a #CoglPixelBuffer representing the newly created array or
  *               %NULL on failure
  *
  * Since: 1.2
  * Stability: Unstable
  */
-CoglPixelArray *
-cogl_pixel_array_new_with_size (unsigned int     width,
-                                unsigned int     height,
-                                CoglPixelFormat  format,
-                                unsigned int    *stride);
+CoglPixelBuffer *
+cogl_pixel_buffer_new_with_size (unsigned int     width,
+                                 unsigned int     height,
+                                 CoglPixelFormat  format,
+                                 unsigned int    *stride);
 
 /**
- * cogl_is_pixel_array:
+ * cogl_is_pixel_buffer:
  * @object: a #CoglObject to test
  *
  * Checks whether @handle is a pixel array.
@@ -93,11 +93,11 @@ cogl_pixel_array_new_with_size (unsigned int     width,
  * Stability: Unstable
  */
 gboolean
-cogl_is_pixel_array (void *object);
+cogl_is_pixel_buffer (void *object);
 
 #if 0
 /*
- * cogl_pixel_array_set_region:
+ * cogl_pixel_buffer_set_region:
  * @array: the #CoglHandle of a pixel array
  * @data: pixel data to upload to @array
  * @src_width: width in pixels of the region to update
@@ -117,15 +117,15 @@ cogl_is_pixel_array (void *object);
  * Stability: Unstable
  */
 gboolean
-cogl_pixel_array_set_region (CoglHandle    array,
-                             guint8       *data,
-                             unsigned int  src_width,
-                             unsigned int  src_height,
-                             unsigned int  src_rowstride,
-                             unsigned int  dst_x,
-                             unsigned int  dst_y);
+cogl_pixel_buffer_set_region (CoglHandle    array,
+                              guint8       *data,
+                              unsigned int  src_width,
+                              unsigned int  src_height,
+                              unsigned int  src_rowstride,
+                              unsigned int  dst_x,
+                              unsigned int  dst_y);
 #endif
 
 G_END_DECLS
 
-#endif /* __COGL_PIXEL_ARRAY_H__ */
+#endif /* __COGL_PIXEL_BUFFER_H__ */

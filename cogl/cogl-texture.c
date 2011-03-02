@@ -37,7 +37,7 @@
 #include "cogl-bitmap.h"
 #include "cogl-bitmap-private.h"
 #include "cogl-buffer-private.h"
-#include "cogl-pixel-array-private.h"
+#include "cogl-pixel-buffer-private.h"
 #include "cogl-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-driver.h"
@@ -574,7 +574,7 @@ cogl_texture_new_from_buffer_EXP (CoglHandle          buffer,
 {
   CoglHandle texture;
   CoglBuffer *cogl_buffer;
-  CoglPixelArray *pixel_array;
+  CoglPixelBuffer *pixel_buffer;
   CoglBitmap *bmp;
 
   g_return_val_if_fail (cogl_is_buffer (buffer), COGL_INVALID_HANDLE);
@@ -583,23 +583,23 @@ cogl_texture_new_from_buffer_EXP (CoglHandle          buffer,
     return COGL_INVALID_HANDLE;
 
   cogl_buffer = COGL_BUFFER (buffer);
-  pixel_array = COGL_PIXEL_ARRAY (buffer);
+  pixel_buffer = COGL_PIXEL_BUFFER (buffer);
 
   /* Rowstride from CoglBuffer or even width * bpp if not given */
   if (rowstride == 0)
-    rowstride = pixel_array->stride;
+    rowstride = pixel_buffer->stride;
   if (rowstride == 0)
     rowstride = width * _cogl_get_format_bpp (format);
 
   /* use the CoglBuffer height and width as last resort */
   if (width == 0)
-    width = pixel_array->width;
+    width = pixel_buffer->width;
   if (height == 0)
-    height = pixel_array->height;
+    height = pixel_buffer->height;
   if (width == 0 || height == 0)
     {
       /* no width or height specified, neither at creation time (because the
-       * array was created by cogl_pixel_array_new()) nor when calling this
+       * array was created by cogl_pixel_buffer_new()) nor when calling this
        * function */
       return COGL_INVALID_HANDLE;
     }

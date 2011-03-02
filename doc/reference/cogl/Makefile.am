@@ -74,7 +74,7 @@ IGNORE_HFILES=\
 	cogl-pipeline-progend-glsl-private.h	\
 	cogl-pipeline-vertend-fixed-private.h	\
 	cogl-pipeline-vertend-glsl-private.h	\
-	cogl-pixel-array-private.h		\
+	cogl-pixel-buffer-private.h		\
 	cogl-primitive-private.h		\
 	cogl-primitives-private.h		\
 	cogl-private.h				\

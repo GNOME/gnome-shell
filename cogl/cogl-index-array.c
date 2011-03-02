@@ -106,7 +106,7 @@ cogl_index_array_allocate (CoglIndexArray *indices,
  *   CoglAttributeBuffer (buffer sub-class)
  *     CoglAttribute (defines meta data for sub-region of buffer)
  *     CoglPrimitive (object encapsulating a set of attributes)
- *   CoglPixelArray (buffer sub-class)
+ *   CoglPixelBuffer (buffer sub-class)
  *   CoglIndexArray (buffer sub-class)
  *     CoglIndices (defines meta data for sub-region of array)
  *

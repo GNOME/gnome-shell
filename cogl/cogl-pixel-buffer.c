@@ -26,7 +26,7 @@
  */
 
 /* For an overview of the functionality implemented here, please see
- * cogl-pixel-array.h, which contains the gtk-doc section overview for the
+ * cogl-buffer-array.h, which contains the gtk-doc section overview for the
  * Pixel Buffers API.
  */
 
@@ -43,8 +43,8 @@
 #include "cogl-util.h"
 #include "cogl-context-private.h"
 #include "cogl-object.h"
-#include "cogl-pixel-array-private.h"
-#include "cogl-pixel-array.h"
+#include "cogl-pixel-buffer-private.h"
+#include "cogl-pixel-buffer.h"
 
 /*
  * GL/GLES compatibility defines for the buffer API:
@@ -72,15 +72,15 @@
 #endif
 
 static void
-_cogl_pixel_array_free (CoglPixelArray *buffer);
+_cogl_pixel_buffer_free (CoglPixelBuffer *buffer);
 
-COGL_BUFFER_DEFINE (PixelArray, pixel_array)
+COGL_BUFFER_DEFINE (PixelBuffer, pixel_buffer)
 
-static CoglPixelArray *
-_cogl_pixel_array_new (unsigned int size)
+static CoglPixelBuffer *
+_cogl_pixel_buffer_new (unsigned int size)
 {
-  CoglPixelArray *pixel_array = g_slice_new0 (CoglPixelArray);
-  CoglBuffer *buffer = COGL_BUFFER (pixel_array);
+  CoglPixelBuffer *pixel_buffer = g_slice_new0 (CoglPixelBuffer);
+  CoglBuffer *buffer = COGL_BUFFER (pixel_buffer);
   gboolean use_malloc;
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
@@ -99,50 +99,50 @@ _cogl_pixel_array_new (unsigned int size)
                            COGL_BUFFER_UPDATE_HINT_STATIC);
 
   /* return COGL_INVALID_HANDLE; */
-  return _cogl_pixel_array_object_new (pixel_array);
+  return _cogl_pixel_buffer_object_new (pixel_buffer);
 }
 
-CoglPixelArray *
-cogl_pixel_array_new_with_size (unsigned int    width,
-                                unsigned int    height,
-                                CoglPixelFormat format,
-                                unsigned int   *rowstride)
+CoglPixelBuffer *
+cogl_pixel_buffer_new_with_size (unsigned int    width,
+                                 unsigned int    height,
+                                 CoglPixelFormat format,
+                                 unsigned int   *rowstride)
 {
-  CoglPixelArray *buffer;
-  CoglPixelArray *pixel_array;
+  CoglPixelBuffer *buffer;
+  CoglPixelBuffer *pixel_buffer;
   unsigned int stride;
 
   /* creating a buffer to store "any" format does not make sense */
   if (G_UNLIKELY (format == COGL_PIXEL_FORMAT_ANY))
     return COGL_INVALID_HANDLE;
 
-  /* for now we fallback to cogl_pixel_array_new, later, we could ask
+  /* for now we fallback to cogl_pixel_buffer_new, later, we could ask
    * libdrm a tiled buffer for instance */
   stride = width * _cogl_get_format_bpp (format);
   if (rowstride)
     *rowstride = stride;
 
-  buffer = _cogl_pixel_array_new (height * stride);
+  buffer = _cogl_pixel_buffer_new (height * stride);
   if (G_UNLIKELY (buffer == COGL_INVALID_HANDLE))
     return COGL_INVALID_HANDLE;
 
-  pixel_array = COGL_PIXEL_ARRAY (buffer);
-  pixel_array->width = width;
-  pixel_array->height = height;
-  pixel_array->format = format;
-  pixel_array->stride = stride;
+  pixel_buffer = COGL_PIXEL_BUFFER (buffer);
+  pixel_buffer->width = width;
+  pixel_buffer->height = height;
+  pixel_buffer->format = format;
+  pixel_buffer->stride = stride;
 
   return buffer;
 }
 
 static void
-_cogl_pixel_array_free (CoglPixelArray *buffer)
+_cogl_pixel_buffer_free (CoglPixelBuffer *buffer)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* parent's destructor */
   _cogl_buffer_fini (COGL_BUFFER (buffer));
 
-  g_slice_free (CoglPixelArray, buffer);
+  g_slice_free (CoglPixelBuffer, buffer);
 }
 
