@@ -200,6 +200,11 @@ void                  clutter_text_set_single_line_mode (ClutterText          *s
                                                          gboolean              single_line);
 gboolean              clutter_text_get_single_line_mode (ClutterText          *self);
 
+void                  clutter_text_set_selected_text_color  (ClutterText          *self,
+                                                             const ClutterColor   *color);
+void                  clutter_text_get_selected_text_color  (ClutterText          *self,
+                                                             ClutterColor         *color);
+
 gboolean              clutter_text_activate             (ClutterText          *self);
 gboolean              clutter_text_position_to_coords   (ClutterText          *self,
                                                          gint                  position,
