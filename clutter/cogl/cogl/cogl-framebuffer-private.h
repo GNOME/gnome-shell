@@ -26,7 +26,7 @@
 
 #include "cogl-handle.h"
 #include "cogl-matrix-stack.h"
-#include "cogl-clip-state.h"
+#include "cogl-clip-state-private.h"
 #include "cogl-journal-private.h"
 
 typedef enum _CoglFramebufferType {

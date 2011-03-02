@@ -77,11 +77,13 @@ cogl_public_h = \
 	$(srcdir)/cogl-indices.h 		\
 	$(srcdir)/cogl-attribute.h 		\
 	$(srcdir)/cogl-primitive.h 		\
+	$(srcdir)/cogl-clip-state.h		\
 	$(srcdir)/cogl.h			\
 	$(NULL)
 
 cogl_experimental_h = \
 	$(srcdir)/cogl2-path.h 			\
+	$(srcdir)/cogl2-clip-state.h		\
 	$(NULL)
 
 # driver sources
@@ -182,8 +184,11 @@ cogl_sources_c = \
 	$(srcdir)/cogl-bitmap-pixbuf.c 			\
 	$(srcdir)/cogl-clip-stack.h 			\
 	$(srcdir)/cogl-clip-stack.c			\
-	$(srcdir)/cogl-clip-state.h                     \
-	$(srcdir)/cogl-clip-state.c                     \
+	$(srcdir)/cogl-clip-state-private.h		\
+	$(srcdir)/cogl-clip-state.h			\
+	$(srcdir)/cogl-clip-state.c			\
+	$(srcdir)/cogl2-clip-state.h 			\
+	$(srcdir)/cogl2-clip-state.c 			\
 	$(srcdir)/cogl-feature-private.h                \
 	$(srcdir)/cogl-feature-private.c                \
 	$(srcdir)/cogl-fixed.c		    		\

@@ -53,8 +53,10 @@
 #include <cogl/cogl-primitives.h>
 #ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl2-path.h>
+#include <cogl/cogl2-clip-state.h>
 #else
 #include <cogl/cogl-path.h>
+#include <cogl/cogl-clip-state.h>
 #endif
 #include <cogl/cogl-shader.h>
 #include <cogl/cogl-texture.h>
@@ -856,19 +858,6 @@ cogl_clip_push_rectangle (float x0,
                           float y0,
                           float x1,
                           float y1);
-
-/**
- * cogl_clip_push_from_path:
- *
- * Sets a new clipping area using the current path. The current path
- * is then cleared. The clipping area is intersected with the previous
- * clipping area. To restore the previous clipping area, call
- * cogl_clip_pop().
- *
- * Since: 1.0
- */
-void
-cogl_clip_push_from_path (void);
 
 /**
  * cogl_clip_push_from_path_preserve:

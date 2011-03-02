@@ -21,30 +21,33 @@
  *
  */
 
-#if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
-#error "Only <cogl/cogl.h> can be included directly."
-#endif
+#ifndef __COGL_CLIP_STATE_PRIVATE_H
+#define __COGL_CLIP_STATE_PRIVATE_H
 
-#ifndef __COGL_CLIP_STATE_H
-#define __COGL_CLIP_STATE_H
+#include "cogl-clip-stack.h"
 
-#include <cogl/cogl-types.h>
+typedef struct _CoglClipState CoglClipState;
 
-G_BEGIN_DECLS
+struct _CoglClipState
+{
+  /* Stack of CoglClipStacks */
+  GSList *stacks;
+};
 
-/**
- * cogl_clip_push_from_path:
- *
- * Sets a new clipping area using the current path. The current path
- * is then cleared. The clipping area is intersected with the previous
- * clipping area. To restore the previous clipping area, call
- * cogl_clip_pop().
- *
- * Since: 1.0
- */
 void
-cogl_clip_push_from_path (void);
+_cogl_clip_state_init (CoglClipState *state);
 
-G_END_DECLS
+void
+_cogl_clip_state_destroy (CoglClipState *state);
 
-#endif /* __COGL_CLIP_STATE_H */
+void
+_cogl_clip_state_flush (CoglClipState *clip_state);
+
+CoglClipStack *
+_cogl_clip_state_get_stack (CoglClipState *clip_state);
+
+void
+_cogl_clip_state_set_stack (CoglClipState *clip_state,
+                            CoglClipStack *clip_stack);
+
+#endif /* __COGL_CLIP_STATE_PRIVATE_H */
