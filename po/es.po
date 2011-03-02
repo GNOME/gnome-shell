@@ -1,17 +1,17 @@
 # Spanish translation of gnome-shell.
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
 # Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
+# Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2011-02-25 12:51+0000\n"
-"PO-Revision-Date: 2011-02-25 13:56+0100\n"
-"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
+"POT-Creation-Date: 2011-03-02 00:20+0000\n"
+"PO-Revision-Date: 2011-03-02 20:39+0100\n"
+"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -95,16 +95,16 @@ msgid ""
 "at the optimal thread count on the system."
 msgstr ""
 "Establece la tubería GStreamer usada para codificar grabaciones. Sigue la "
-"sintaxis usada para gst-launch. La tubería debería tener un sumidero («sink») "
-"de ensamblaje/sesensamblaje donde el vídeo que se está grabando se graba. "
-"Generalmente tendrá un origen de ensamblado/desensamblado; la salida de ese "
-"punto se escibirá en el archivo de salida. No obstante la tubería también "
-"puede tomar parte en su propia salida; esto se puede usar para enviar la "
-"salida a un servidor «icecast» a través de shout2send o similar. Cuando no "
-"está establecido o lo está a un valor vacío, se usará la tubería "
-"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 threads="
-"%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T como "
-"suposición para el número de hilos óptimos en el sistema."
+"sintaxis usada para gst-launch. La tubería debería tener un sumidero "
+"(«sink») de ensamblaje/sesensamblaje donde el vídeo que se está grabando se "
+"graba. Generalmente tendrá un origen de ensamblado/desensamblado; la salida "
+"de ese punto se escibirá en el archivo de salida. No obstante la tubería "
+"también puede tomar parte en su propia salida; esto se puede usar para "
+"enviar la salida a un servidor «icecast» a través de shout2send o similar. "
+"Cuando no está establecido o lo está a un valor vacío, se usará la tubería "
+"predeterminada. Actualmente es «videorate ! vp8enc quality=10 speed=2 "
+"threads=%T ! queue ! webmmux» y greba en WEBM usando el códec VP8. Se usa %T "
+"como suposición para el número de hilos óptimos en el sistema."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:14
 msgid "Show date in clock"
@@ -193,27 +193,27 @@ msgid "Execution of '%s' failed:"
 msgstr "Falló la ejecución de «%s»:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:174
+#: ../js/ui/appDisplay.js:195
 msgid "All"
 msgstr "Todas"
 
-#: ../js/ui/appDisplay.js:261
+#: ../js/ui/appDisplay.js:282
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
-#: ../js/ui/appDisplay.js:291
-msgid "PREFERENCES"
-msgstr "PREFERENCIAS"
+#: ../js/ui/appDisplay.js:312
+msgid "SETTINGS"
+msgstr "CONFIGURACIÓN"
 
-#: ../js/ui/appDisplay.js:551
+#: ../js/ui/appDisplay.js:572
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:555
+#: ../js/ui/appDisplay.js:575
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:556
+#: ../js/ui/appDisplay.js:576
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
@@ -230,19 +230,19 @@ msgstr "Se ha quitado %s de sus favoritos."
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:65
+#: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Todo el día"
 
 #. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:71
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:77
+#: ../js/ui/calendar.js:78
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
@@ -252,43 +252,43 @@ msgstr "%l:%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:118
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:120
 msgctxt "grid monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:122
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:124
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "X"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:126
 msgctxt "grid thursday"
 msgid "T"
 msgstr "J"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:127
+#: ../js/ui/calendar.js:128
 msgctxt "grid friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:130
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -299,77 +299,77 @@ msgstr "S"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:142
+#: ../js/ui/calendar.js:143
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Dom"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:144
+#: ../js/ui/calendar.js:145
 msgctxt "list monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:146
+#: ../js/ui/calendar.js:147
 msgctxt "list tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:148
+#: ../js/ui/calendar.js:149
 msgctxt "list wednesday"
 msgid "W"
 msgstr "X"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:150
+#: ../js/ui/calendar.js:151
 msgctxt "list thursday"
 msgid "Th"
 msgstr "J"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:152
+#: ../js/ui/calendar.js:153
 msgctxt "list friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:154
+#: ../js/ui/calendar.js:155
 msgctxt "list saturday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:704
 msgid "Nothing Scheduled"
 msgstr "Nada programado"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717
+#: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:723
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:730
+#: ../js/ui/calendar.js:733
 msgid "Today"
 msgstr "Hoy"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:737
 msgid "Tomorrow"
 msgstr "Mañana"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:746
 msgid "This week"
 msgstr "Esta semana"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:754
 msgid "Next week"
 msgstr "La semana que viene"
 
@@ -377,58 +377,58 @@ msgstr "La semana que viene"
 msgid "Remove"
 msgstr "Quitar"
 
-#: ../js/ui/dateMenu.js:93
+#: ../js/ui/dateMenu.js:91
 msgid "Date and Time Settings"
 msgstr "Ajustes de hora y fecha"
 
-#: ../js/ui/dateMenu.js:112
+#: ../js/ui/dateMenu.js:110
 msgid "Open Calendar"
 msgstr "Abrir calendario"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:151
+#: ../js/ui/dateMenu.js:162
 msgid "%a %b %e, %R:%S"
 msgstr "%a %e de %b, %R:%S"
 
-#: ../js/ui/dateMenu.js:152
+#: ../js/ui/dateMenu.js:163
 msgid "%a %b %e, %R"
 msgstr "%a %e de %b, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:156
+#: ../js/ui/dateMenu.js:167
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:157
+#: ../js/ui/dateMenu.js:168
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:164
+#: ../js/ui/dateMenu.js:175
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %e de %b, %H:%M:%S"
 
-#: ../js/ui/dateMenu.js:165
+#: ../js/ui/dateMenu.js:176
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %e de %b, %H:%M"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:169
+#: ../js/ui/dateMenu.js:180
 msgid "%a %l:%M:%S %p"
 msgstr "%a %H:%M:%S"
 
-#: ../js/ui/dateMenu.js:170
+#: ../js/ui/dateMenu.js:181
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:196
+#: ../js/ui/dateMenu.js:207
 msgid "%A %B %e, %Y"
 msgstr "%A, %e de %B de %Y"
 
@@ -555,14 +555,14 @@ msgid "Applications"
 msgstr "Aplicaciones"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:537
+#: ../js/ui/panel.js:529
 #, c-format
 msgid "Quit %s"
 msgstr "Salir de %s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:905
+#: ../js/ui/panel.js:897
 msgid "Activities"
 msgstr "Actividades"
 
@@ -604,39 +604,39 @@ msgstr "Buscando…"
 msgid "No matching results."
 msgstr "No se encontró ningún resultado coincidente."
 
-#: ../js/ui/statusMenu.js:99 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:102 ../js/ui/statusMenu.js:166
 msgid "Power Off..."
 msgstr "Apagar…"
 
-#: ../js/ui/statusMenu.js:101 ../js/ui/statusMenu.js:162
+#: ../js/ui/statusMenu.js:104 ../js/ui/statusMenu.js:165
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/ui/statusMenu.js:122
+#: ../js/ui/statusMenu.js:125
 msgid "Available"
 msgstr "Disponible"
 
-#: ../js/ui/statusMenu.js:127
+#: ../js/ui/statusMenu.js:130
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:138
 msgid "My Account"
 msgstr "Mi cuenta"
 
-#: ../js/ui/statusMenu.js:139
+#: ../js/ui/statusMenu.js:142
 msgid "System Settings"
 msgstr "Configuración del sistema"
 
-#: ../js/ui/statusMenu.js:146
+#: ../js/ui/statusMenu.js:149
 msgid "Lock Screen"
 msgstr "Bloquear la pantalla"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:153
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/statusMenu.js:155
+#: ../js/ui/statusMenu.js:158
 msgid "Log Out..."
 msgstr "Cerrar la sesión…"
 
@@ -809,7 +809,13 @@ msgstr "Configuración regional"
 msgid "Power Settings"
 msgstr "Configuración de energía"
 
-#: ../js/ui/status/power.js:112
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:110
+msgid "Estimating..."
+msgstr "Estimando…"
+
+#: ../js/ui/status/power.js:117
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -817,75 +823,75 @@ msgstr[0] "Queda %d hora"
 msgstr[1] "Queda %d horas"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:115
+#: ../js/ui/status/power.js:120
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "Quedan %d %s %d %s"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:122
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "hora"
 msgstr[1] "horas"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:122
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "miuto"
 msgstr[1] "minutos"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:125
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "Queda %d minuto"
 msgstr[1] "Queda %d minutos"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:241
 msgid "AC adapter"
 msgstr "Adaptador de corriente"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:243
 msgid "Laptop battery"
 msgstr "Batería del portátil"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:245
 msgid "UPS"
 msgstr "SAI"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:247
 msgid "Monitor"
 msgstr "Monitor"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:249
 msgid "Mouse"
 msgstr "Ratón"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:251
 msgid "Keyboard"
 msgstr "Teclado"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:253
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:249
+#: ../js/ui/status/power.js:255
 msgid "Cell phone"
 msgstr "Teléfono móvil"
 
-#: ../js/ui/status/power.js:251
+#: ../js/ui/status/power.js:257
 msgid "Media player"
 msgstr "Reproductor multimedia"
 
-#: ../js/ui/status/power.js:253
+#: ../js/ui/status/power.js:259
 msgid "Tablet"
 msgstr "Tableta"
 
-#: ../js/ui/status/power.js:255
+#: ../js/ui/status/power.js:261
 msgid "Computer"
 msgstr "Equipo"
 
-#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
+#: ../js/ui/status/power.js:263 ../src/shell-app-system.c:1013
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -965,32 +971,32 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
-#: ../src/shell-global.c:1363
+#: ../src/shell-global.c:1298
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:1367
+#: ../src/shell-global.c:1302
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:1372
+#: ../src/shell-global.c:1307
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:1377
+#: ../src/shell-global.c:1312
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:1382
+#: ../src/shell-global.c:1317
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1024,6 +1030,9 @@ msgstr "Buscar"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "PREFERENCES"
+#~ msgstr "PREFERENCIAS"
 
 #~ msgid "Shut Down..."
 #~ msgstr "Apagar…"
@@ -1196,8 +1205,8 @@ msgstr "%1$s: %2$s"
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
-#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos "
-#~ "en la hora."
+#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los "
+#~ "segundos en la hora."
 
 #~ msgid ""
 #~ "This key specifies the format used by the panel clock when the format key "
@@ -1214,18 +1223,19 @@ msgstr "%1$s: %2$s"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
-#~ "01-01. If set to \"custom\", the clock will display time according to the "
-#~ "format specified in the custom_format key. Note that if set to either "
-#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
 #~ msgstr ""
 #~ "Esta clave especifica el formato de la hora especificado por el reloj del "
-#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
-#~ "«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará "
-#~ "la hora en segundos desde la época (1 de enero de 1970). Si se establece "
-#~ "a «custom» el reloj mostrará la hora según el formato especificado en la "
-#~ "clave «custom_format». Note que si se establece a «unix» o «custom» se "
-#~ "ignoran las claves «show_date» y «show_seconds»."
+#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 "
+#~ "horas), «unix» y «custom» (personalizado).Si se establece a «unix» el "
+#~ "reloj mostrará la hora en segundos desde la época (1 de enero de 1970). "
+#~ "Si se establece a «custom» el reloj mostrará la hora según el formato "
+#~ "especificado en la clave «custom_format». Note que si se establece a "
+#~ "«unix» o «custom» se ignoran las claves «show_date» y «show_seconds»."
 
 #~ msgid "Clock Format"
 #~ msgstr "Formato del reloj"
