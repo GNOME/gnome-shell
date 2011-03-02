@@ -464,6 +464,7 @@ StTooltip StLabel {
     background-gradient-start: rgba(5,5,6,0.1);
     background-gradient-end: rgba(254,254,254,0.1);
     background-gradient-direction: vertical;
+    selected-color: black;
     caret-color: rgb(128, 128, 128);
     caret-size: 1px;
     width: 250px;
@@ -724,6 +725,8 @@ StTooltip StLabel {
 .lg-dialog StEntry
 {
   color: #88ff66;
+  selection-background-color: #88ff66;
+  selected-color: black;
 }
 
 .lg-obj-inspector-title
@@ -1195,6 +1198,8 @@ StTooltip StLabel {
     color: #545454;
     background-color: #e8e8e8;
     caret-color: #545454;
+    selection-background-color: #bcbcbc;
+    selected-color: #323232;
     box-shadow: 0px 0px 6px 2px rgba(255,255,255,0.9);
 }
 
@@ -1486,6 +1491,8 @@ StTooltip StLabel {
     font-weight: bold;
     width: 23em;
     color: white;
+    selection-background-color: white;
+    selected-color: black;
 }
 
 .run-dialog {
