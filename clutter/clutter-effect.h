@@ -43,6 +43,20 @@ G_BEGIN_DECLS
 typedef struct _ClutterEffectClass      ClutterEffectClass;
 
 /**
+ * ClutterEffectRunFlags:
+ * @CLUTTER_EFFECT_RUN_ACTOR_DIRTY: The actor or one of its children
+ * has queued a redraw before this paint. This implies that the effect
+ * should call clutter_actor_continue_paint() to chain to the next
+ * effect and can not cache any results from a previous paint.
+ *
+ * Flags passed to the ‘run’ method of #ClutterEffect.
+ */
+typedef enum
+{
+  CLUTTER_EFFECT_RUN_ACTOR_DIRTY = (1 << 0)
+} ClutterEffectRunFlags;
+
+/**
  * ClutterEffect:
  *
  * The #ClutterEffect structure contains only private data and should
@@ -61,6 +75,7 @@ struct _ClutterEffect
  * @pre_paint: virtual function
  * @post_paint: virtual function
  * @get_paint_volume: virtual function
+ * @run: virtual function
  *
  * The #ClutterEffectClass structure contains only private data
  *
@@ -78,8 +93,10 @@ struct _ClutterEffectClass
   gboolean (* get_paint_volume) (ClutterEffect      *effect,
                                  ClutterPaintVolume *volume);
 
+  void     (* run)              (ClutterEffect      *effect,
+                                 ClutterEffectRunFlags flags);
+
   /*< private >*/
-  void (* _clutter_effect2) (void);
   void (* _clutter_effect3) (void);
   void (* _clutter_effect4) (void);
   void (* _clutter_effect5) (void);

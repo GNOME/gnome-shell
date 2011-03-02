@@ -314,6 +314,7 @@ void                  clutter_actor_unrealize                 (ClutterActor     
 void                  clutter_actor_map                       (ClutterActor          *self);
 void                  clutter_actor_unmap                     (ClutterActor          *self);
 void                  clutter_actor_paint                     (ClutterActor          *self);
+void                  clutter_actor_continue_paint            (ClutterActor          *self);
 void                  clutter_actor_queue_redraw              (ClutterActor          *self);
 
 void                  clutter_actor_queue_relayout            (ClutterActor          *self);

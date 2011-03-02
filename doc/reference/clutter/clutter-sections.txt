@@ -291,6 +291,7 @@ clutter_actor_hide_all
 clutter_actor_realize
 clutter_actor_unrealize
 clutter_actor_paint
+clutter_actor_continue_paint
 clutter_actor_queue_redraw
 clutter_actor_queue_relayout
 clutter_actor_destroy
@@ -2467,6 +2468,7 @@ ClutterClickActionPrivate
 <FILE>clutter-effect</FILE>
 ClutterEffect
 ClutterEffectClass
+ClutterEffectRunFlags
 <SUBSECTION Standard>
 CLUTTER_TYPE_EFFECT
 CLUTTER_EFFECT

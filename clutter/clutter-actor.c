@@ -476,6 +476,11 @@ struct _ClutterActorPrivate
 
   ClutterPaintVolume paint_volume;
 
+  /* This is used when painting effects to implement the
+     clutter_actor_continue_paint() function. It points to the node in
+     the list of effects that is next in the chain */
+  const GList *next_effect_to_paint;
+
   /* NB: This volume isn't relative to this actor, it is in eye
    * coordinates so that it can remain valid after the actor changes.
    */
@@ -2342,60 +2347,6 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self,
   CLUTTER_ACTOR_GET_CLASS (self)->apply_transform (self, matrix);
 }
 
-static gboolean
-_clutter_actor_effects_pre_paint (ClutterActor *self)
-{
-  ClutterActorPrivate *priv = self->priv;
-  const GList *effects, *l;
-  gboolean was_pre_painted = FALSE;
-
-  priv->current_effect = NULL;
-
-  effects = _clutter_meta_group_peek_metas (priv->effects);
-  for (l = effects; l != NULL; l = l->next)
-    {
-      ClutterEffect *effect = l->data;
-      ClutterActorMeta *meta = l->data;
-
-      if (!clutter_actor_meta_get_enabled (meta))
-        continue;
-
-      priv->current_effect = l->data;
-
-      was_pre_painted |= _clutter_effect_pre_paint (effect);
-    }
-
-  priv->current_effect = NULL;
-
-  return was_pre_painted;
-}
-
-static void
-_clutter_actor_effects_post_paint (ClutterActor *self)
-{
-  ClutterActorPrivate *priv = self->priv;
-  const GList *effects, *l;
-
-  priv->current_effect = NULL;
-
-  /* we walk the list backwards, to unwind the post-paint order */
-  effects = _clutter_meta_group_peek_metas (priv->effects);
-  for (l = g_list_last ((GList *) effects); l != NULL; l = l->prev)
-    {
-      ClutterEffect *effect = l->data;
-      ClutterActorMeta *meta = l->data;
-
-      if (!clutter_actor_meta_get_enabled (meta))
-        continue;
-
-      priv->current_effect = l->data;
-
-      _clutter_effect_post_paint (effect);
-    }
-
-  priv->current_effect = NULL;
-}
-
 /* Recursively applies the transforms associated with this actor and
  * its ancestors to the given matrix. Use NULL if you want this
  * to go all the way down to the stage.
@@ -2780,8 +2731,6 @@ clutter_actor_paint (ClutterActor *self)
 
   if (pick_mode == CLUTTER_PICK_NONE)
     {
-      gboolean effect_painted = FALSE;
-
       CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
 
       /* We save the current paint volume so that the next time the
@@ -2822,17 +2771,20 @@ clutter_actor_paint (ClutterActor *self)
             goto done;
         }
 
-      if (priv->effects != NULL)
-        effect_painted = _clutter_actor_effects_pre_paint (self);
-      else if (actor_has_shader_data (self))
-        clutter_actor_shader_pre_paint (self, FALSE);
+      if (priv->effects == NULL)
+        {
+          if (actor_has_shader_data (self))
+            clutter_actor_shader_pre_paint (self, FALSE);
+          priv->next_effect_to_paint = NULL;
+        }
+      else
+        priv->next_effect_to_paint =
+          _clutter_meta_group_peek_metas (priv->effects);
 
-      priv->propagated_one_redraw = FALSE;
-      g_signal_emit (self, actor_signals[PAINT], 0);
+      clutter_actor_continue_paint (self);
 
-      if (effect_painted)
-        _clutter_actor_effects_post_paint (self);
-      else if (actor_has_shader_data (self))
+      if (priv->effects == NULL &&
+          actor_has_shader_data (self))
         clutter_actor_shader_post_paint (self);
 
       if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES))
@@ -2861,6 +2813,64 @@ done:
 
   /* paint sequence complete */
   CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_PAINT);
+}
+
+/**
+ * clutter_actor_continue_paint:
+ * @self: A #ClutterActor
+ *
+ * Run the next stage of the paint sequence. This function should only
+ * be called within the implementation of the ‘run’ virtual of a
+ * #ClutterEffect. It will cause the run method of the next effect to
+ * be applied, or it will paint the actual actor if the current effect
+ * is the last effect in the chain.
+ *
+ * Since: 1.8
+ */
+void
+clutter_actor_continue_paint (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  /* This should only be called from with in the ‘run’ implementation
+     of a ClutterEffect */
+  g_return_if_fail (CLUTTER_ACTOR_IN_PAINT (self));
+
+  priv = self->priv;
+
+  /* Skip any effects that are disabled */
+  while (priv->next_effect_to_paint &&
+         !clutter_actor_meta_get_enabled (priv->next_effect_to_paint->data))
+    priv->next_effect_to_paint = priv->next_effect_to_paint->next;
+
+  /* If this has come from the last effect then we'll just paint the
+     actual actor */
+  if (priv->next_effect_to_paint == NULL)
+    {
+      priv->propagated_one_redraw = FALSE;
+
+      g_signal_emit (self, actor_signals[PAINT], 0);
+    }
+  else
+    {
+      ClutterActorMeta *old_current_effect;
+      ClutterEffectRunFlags run_flags = 0;
+
+      /* Cache the current effect so that we can put it back before
+         returning */
+      old_current_effect = priv->current_effect;
+
+      priv->current_effect = priv->next_effect_to_paint->data;
+      priv->next_effect_to_paint = priv->next_effect_to_paint->next;
+
+      if (priv->propagated_one_redraw)
+        run_flags |= CLUTTER_EFFECT_RUN_ACTOR_DIRTY;
+
+      _clutter_effect_run (CLUTTER_EFFECT (priv->current_effect), run_flags);
+
+      priv->current_effect = old_current_effect;
+    }
 }
 
 /* internal helper function set the rotation angle without affecting
