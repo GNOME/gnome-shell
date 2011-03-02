@@ -209,6 +209,9 @@ st_entry_style_changed (StWidget *self)
   if (st_theme_node_lookup_color (theme_node, "selection-background-color", FALSE, &color))
     clutter_text_set_selection_color (CLUTTER_TEXT (priv->entry), &color);
 
+  if (st_theme_node_lookup_color (theme_node, "selected-color", FALSE, &color))
+    clutter_text_set_selected_text_color (CLUTTER_TEXT (priv->entry), &color);
+
   font = st_theme_node_get_font (theme_node);
   font_string = pango_font_description_to_string (font);
   clutter_text_set_font_name (CLUTTER_TEXT (priv->entry), font_string);
