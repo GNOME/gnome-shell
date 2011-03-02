@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-27 22:58+0200\n"
-"PO-Revision-Date: 2011-02-27 22:58+0200\n"
+"POT-Creation-Date: 2011-03-02 19:57+0200\n"
+"PO-Revision-Date: 2011-03-02 19:58+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -188,27 +188,27 @@ msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:175
+#: ../js/ui/appDisplay.js:195
 msgid "All"
 msgstr "הכול"
 
-#: ../js/ui/appDisplay.js:262
+#: ../js/ui/appDisplay.js:282
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:292
-msgid "PREFERENCES"
-msgstr "העדפות"
+#: ../js/ui/appDisplay.js:312
+msgid "SETTINGS"
+msgstr "הגדרות"
 
-#: ../js/ui/appDisplay.js:552
+#: ../js/ui/appDisplay.js:572
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:555
+#: ../js/ui/appDisplay.js:575
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:556
+#: ../js/ui/appDisplay.js:576
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
@@ -225,19 +225,19 @@ msgstr "%s הוסר מהמועדפים שלך."
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:65
+#: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
 msgstr "יום שלם"
 
 #. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:71
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:77
+#: ../js/ui/calendar.js:78
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
@@ -247,43 +247,43 @@ msgstr "%l:%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:118
 msgctxt "grid sunday"
 msgid "S"
 msgstr "א"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:120
 msgctxt "grid monday"
 msgid "M"
 msgstr "ב"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:122
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "ג"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:124
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "ד"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:126
 msgctxt "grid thursday"
 msgid "T"
 msgstr "ה"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:127
+#: ../js/ui/calendar.js:128
 msgctxt "grid friday"
 msgid "F"
 msgstr "ו"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:130
 msgctxt "grid saturday"
 msgid "S"
 msgstr "ש"
@@ -294,77 +294,77 @@ msgstr "ש"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:142
+#: ../js/ui/calendar.js:143
 msgctxt "list sunday"
 msgid "Su"
 msgstr "א׳"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:144
+#: ../js/ui/calendar.js:145
 msgctxt "list monday"
 msgid "M"
 msgstr "ב׳"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:146
+#: ../js/ui/calendar.js:147
 msgctxt "list tuesday"
 msgid "T"
 msgstr "ג׳"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:148
+#: ../js/ui/calendar.js:149
 msgctxt "list wednesday"
 msgid "W"
 msgstr "ד׳"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:150
+#: ../js/ui/calendar.js:151
 msgctxt "list thursday"
 msgid "Th"
 msgstr "ה"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:152
+#: ../js/ui/calendar.js:153
 msgctxt "list friday"
 msgid "F"
 msgstr "ו׳"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:154
+#: ../js/ui/calendar.js:155
 msgctxt "list saturday"
 msgid "S"
 msgstr "ש׳"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:704
 msgid "Nothing Scheduled"
 msgstr "היומן ריק"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:717
+#: ../js/ui/calendar.js:720
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, ה־%e ב%B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:723
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, ה־%e ב%B, %Y"
 
-#: ../js/ui/calendar.js:730
+#: ../js/ui/calendar.js:733
 msgid "Today"
 msgstr "היום"
 
-#: ../js/ui/calendar.js:734
+#: ../js/ui/calendar.js:737
 msgid "Tomorrow"
 msgstr "מחר"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:746
 msgid "This week"
 msgstr "השבוע"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:754
 msgid "Next week"
 msgstr "בשבוע הבא"
 
@@ -372,58 +372,58 @@ msgstr "בשבוע הבא"
 msgid "Remove"
 msgstr "הסרה"
 
-#: ../js/ui/dateMenu.js:93
+#: ../js/ui/dateMenu.js:91
 msgid "Date and Time Settings"
 msgstr "הגדרות תאריך ושעה"
 
-#: ../js/ui/dateMenu.js:112
+#: ../js/ui/dateMenu.js:110
 msgid "Open Calendar"
 msgstr "פתיחת היומן"
 
 #. Translators: This is the time format with date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:151
+#: ../js/ui/dateMenu.js:162
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %R:%S"
 
-#: ../js/ui/dateMenu.js:152
+#: ../js/ui/dateMenu.js:163
 msgid "%a %b %e, %R"
 msgstr "%a %b %e, %R"
 
 #. Translators: This is the time format without date used
 #. in 24-hour mode.
-#: ../js/ui/dateMenu.js:156
+#: ../js/ui/dateMenu.js:167
 msgid "%a %R:%S"
 msgstr "%a %R:%S"
 
-#: ../js/ui/dateMenu.js:157
+#: ../js/ui/dateMenu.js:168
 msgid "%a %R"
 msgstr "%a %R"
 
 #. Translators: This is a time format with date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:164
+#: ../js/ui/dateMenu.js:175
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:165
+#: ../js/ui/dateMenu.js:176
 msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %l:%M %p"
 
 #. Translators: This is a time format without date used
 #. for AM/PM.
-#: ../js/ui/dateMenu.js:169
+#: ../js/ui/dateMenu.js:180
 msgid "%a %l:%M:%S %p"
 msgstr "%a %l:%M:%S %p"
 
-#: ../js/ui/dateMenu.js:170
+#: ../js/ui/dateMenu.js:181
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:196
+#: ../js/ui/dateMenu.js:207
 msgid "%A %B %e, %Y"
 msgstr "%A ה־%e ב%B, %Y"
 
@@ -547,14 +547,14 @@ msgid "Applications"
 msgstr "יישומים"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:537
+#: ../js/ui/panel.js:529
 #, c-format
 msgid "Quit %s"
 msgstr "יציאה מ־%s"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:905
+#: ../js/ui/panel.js:897
 msgid "Activities"
 msgstr "פעילויות"
 
@@ -596,39 +596,39 @@ msgstr "בחיפוש..."
 msgid "No matching results."
 msgstr "אין תוצאות תואמות."
 
-#: ../js/ui/statusMenu.js:99 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:102 ../js/ui/statusMenu.js:166
 msgid "Power Off..."
 msgstr "כיבוי..."
 
-#: ../js/ui/statusMenu.js:101 ../js/ui/statusMenu.js:162
+#: ../js/ui/statusMenu.js:104 ../js/ui/statusMenu.js:165
 msgid "Suspend"
 msgstr "השהיה"
 
-#: ../js/ui/statusMenu.js:122
+#: ../js/ui/statusMenu.js:125
 msgid "Available"
 msgstr "זמין"
 
-#: ../js/ui/statusMenu.js:127
+#: ../js/ui/statusMenu.js:130
 msgid "Busy"
 msgstr "עסוק"
 
-#: ../js/ui/statusMenu.js:135
+#: ../js/ui/statusMenu.js:138
 msgid "My Account"
 msgstr "החשבון שלי"
 
-#: ../js/ui/statusMenu.js:139
+#: ../js/ui/statusMenu.js:142
 msgid "System Settings"
 msgstr "הגדרות המערכת"
 
-#: ../js/ui/statusMenu.js:146
+#: ../js/ui/statusMenu.js:149
 msgid "Lock Screen"
 msgstr "נעילת המסך"
 
-#: ../js/ui/statusMenu.js:150
+#: ../js/ui/statusMenu.js:153
 msgid "Switch User"
 msgstr "החלפת משתמש"
 
-#: ../js/ui/statusMenu.js:155
+#: ../js/ui/statusMenu.js:158
 msgid "Log Out..."
 msgstr "ניתוק..."
 
@@ -801,7 +801,13 @@ msgstr "הגדרות אזוריות"
 msgid "Power Settings"
 msgstr "הגדרות צריכת החשמל"
 
-#: ../js/ui/status/power.js:112
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:110
+msgid "Estimating..."
+msgstr "מתבצע שיערוך..."
+
+#: ../js/ui/status/power.js:117
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -810,26 +816,26 @@ msgstr[1] "נותרו %d שעות"
 msgstr[2] "נותרו שעתיים"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:115
+#: ../js/ui/status/power.js:120
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s נותרו"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:122
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "שעה"
 msgstr[1] "שעות"
 msgstr[2] "שעתיים"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:122
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "דקה"
 msgstr[1] "דקות"
 msgstr[2] "דקות"
 
-#: ../js/ui/status/power.js:120
+#: ../js/ui/status/power.js:125
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
@@ -837,51 +843,51 @@ msgstr[0] "דקה אחת נותרה"
 msgstr[1] "%d דקות נותרו"
 msgstr[2] "שתי דקות נותרו"
 
-#: ../js/ui/status/power.js:235
+#: ../js/ui/status/power.js:241
 msgid "AC adapter"
 msgstr "מתאם חשמל"
 
-#: ../js/ui/status/power.js:237
+#: ../js/ui/status/power.js:243
 msgid "Laptop battery"
 msgstr "סוללת נייד"
 
-#: ../js/ui/status/power.js:239
+#: ../js/ui/status/power.js:245
 msgid "UPS"
 msgstr "אל־פסק"
 
-#: ../js/ui/status/power.js:241
+#: ../js/ui/status/power.js:247
 msgid "Monitor"
 msgstr "צג"
 
-#: ../js/ui/status/power.js:243
+#: ../js/ui/status/power.js:249
 msgid "Mouse"
 msgstr "עכבר"
 
-#: ../js/ui/status/power.js:245
+#: ../js/ui/status/power.js:251
 msgid "Keyboard"
 msgstr "מקלדת"
 
-#: ../js/ui/status/power.js:247
+#: ../js/ui/status/power.js:253
 msgid "PDA"
 msgstr "מחשב כף יד"
 
-#: ../js/ui/status/power.js:249
+#: ../js/ui/status/power.js:255
 msgid "Cell phone"
 msgstr "טלפון סלולרי"
 
-#: ../js/ui/status/power.js:251
+#: ../js/ui/status/power.js:257
 msgid "Media player"
 msgstr "נגן מדיה"
 
-#: ../js/ui/status/power.js:253
+#: ../js/ui/status/power.js:259
 msgid "Tablet"
 msgstr "טבלת שליטה"
 
-#: ../js/ui/status/power.js:255
+#: ../js/ui/status/power.js:261
 msgid "Computer"
 msgstr "מחשב"
 
-#: ../js/ui/status/power.js:257 ../src/shell-app-system.c:1013
+#: ../js/ui/status/power.js:263 ../src/shell-app-system.c:1013
 msgid "Unknown"
 msgstr "לא ידוע"
 
@@ -963,11 +969,11 @@ msgstr[2] "2 קלטים"
 msgid "System Sounds"
 msgstr "צלילי מערכת"
 
-#: ../src/shell-global.c:1363
+#: ../src/shell-global.c:1298
 msgid "Less than a minute ago"
 msgstr "לפני פחות מדקה"
 
-#: ../src/shell-global.c:1367
+#: ../src/shell-global.c:1302
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -975,7 +981,7 @@ msgstr[0] "לפני דקה"
 msgstr[1] "לפני %d דקות"
 msgstr[2] "לפני 2 דקות"
 
-#: ../src/shell-global.c:1372
+#: ../src/shell-global.c:1307
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -983,7 +989,7 @@ msgstr[0] "לפני שעה"
 msgstr[1] "לפני %d שעות"
 msgstr[2] "לפני שעתיים"
 
-#: ../src/shell-global.c:1377
+#: ../src/shell-global.c:1312
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -991,7 +997,7 @@ msgstr[0] "לפני יום"
 msgstr[1] "לפני %d ימים"
 msgstr[2] "לפני יומיים"
 
-#: ../src/shell-global.c:1382
+#: ../src/shell-global.c:1317
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -1026,6 +1032,9 @@ msgstr "חיפוש"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "PREFERENCES"
+#~ msgstr "העדפות"
 
 #~ msgid "Shut Down..."
 #~ msgstr "כיבוי..."
