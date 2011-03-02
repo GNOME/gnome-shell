@@ -467,17 +467,25 @@ Notification.prototype = {
 
         this._customContent = params.customContent;
 
+        let oldFocus = global.stage.key_focus;
+
         if (this._icon)
             this._icon.destroy();
         // We always clear the content area if we don't have custom
         // content because it might contain the @banner that didn't
         // fit in the banner mode.
         if (this._scrollArea && (!this._customContent || params.clear)) {
+            if (oldFocus && this._scrollArea.contains(oldFocus))
+                this.actor.grab_key_focus();
+
             this._scrollArea.destroy();
             this._scrollArea = null;
             this._contentArea = null;
         }
         if (this._actionArea && params.clear) {
+            if (oldFocus && this._actionArea.contains(oldFocus))
+                this.actor.grab_key_focus();
+
             this._actionArea.destroy();
             this._actionArea = null;
             this._buttonBox = null;
