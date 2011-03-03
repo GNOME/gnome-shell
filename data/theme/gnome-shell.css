@@ -324,7 +324,7 @@ StTooltip StLabel {
     background-color: rgba(0,0,0,0.6);
 }
 
-.workspaces-view {
+.window-caption {
     color: white;
     spacing: 25px;
 }
