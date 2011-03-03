@@ -735,6 +735,12 @@ Workspace.prototype = {
                 let delta = this._computeWindowMotion(cloneActor, slot);
 
                 motion += delta;
+
+                // Bail out early if we're already larger than the
+                // previous best
+                if (minimumMotionPermutation != null &&
+                    motion > minimumMotion)
+                    continue;
             }
 
             if (minimumMotionPermutation == null || motion < minimumMotion) {
