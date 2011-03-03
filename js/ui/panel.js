@@ -1051,6 +1051,20 @@ Panel.prototype = {
                            time: STARTUP_ANIMATION_TIME,
                            transition: 'easeOutQuad'
                          });
+
+        let oldCornerY = this._leftCorner.actor.y;
+        this._leftCorner.actor.y = oldCornerY - this.actor.height;
+        this._rightCorner.actor.y = oldCornerY - this.actor.height;
+        Tweener.addTween(this._leftCorner.actor,
+                         { y: oldCornerY,
+                           time: STARTUP_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
+        Tweener.addTween(this._rightCorner.actor,
+                         { y: oldCornerY,
+                           time: STARTUP_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
     },
 
     relayout: function() {
