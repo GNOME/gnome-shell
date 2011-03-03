@@ -87,6 +87,8 @@ struct _ClutterOffscreenEffectPrivate
 
   gfloat target_width;
   gfloat target_height;
+
+  gint old_opacity_override;
 };
 
 G_DEFINE_ABSTRACT_TYPE (ClutterOffscreenEffect,
@@ -296,6 +298,8 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
    * texture with the actor's paint opacity, so we need to do this to avoid
    * multiplying the opacity twice.
    */
+  priv->old_opacity_override =
+    _clutter_actor_get_opacity_override (priv->actor);
   _clutter_actor_set_opacity_override (priv->actor, 0xff);
 
   return TRUE;
@@ -354,8 +358,8 @@ clutter_offscreen_effect_post_paint (ClutterEffect *effect)
   cogl_matrix_translate (&modelview, priv->x_offset, priv->y_offset, 0.0f);
   cogl_set_modelview_matrix (&modelview);
 
-  /* Remove the opacity override */
-  _clutter_actor_set_opacity_override (priv->actor, -1);
+  /* Restore the previous opacity override */
+  _clutter_actor_set_opacity_override (priv->actor, priv->old_opacity_override);
 
   /* paint the target material; this is virtualized for
    * sub-classes that require special hand-holding
