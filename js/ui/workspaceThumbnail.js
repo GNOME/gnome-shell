@@ -402,10 +402,6 @@ ThumbnailsBox.prototype = {
         // for the border and padding of the background actor.
         this._background = new St.Bin({ style_class: 'workspace-thumbnails-background' });
 
-        // This will eventually be automatic, see https://bugzilla.gnome.org/show_bug.cgi?id=584662
-        if (St.Widget.get_default_direction () == St.TextDirection.RTL)
-            this._background.add_style_pseudo_class('rtl');
-
         this.actor.add_actor(this._background);
 
         let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator' });
